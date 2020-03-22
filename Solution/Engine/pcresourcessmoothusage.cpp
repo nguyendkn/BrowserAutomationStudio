@@ -1,0 +1,150 @@
+#include "pcresourcessmoothusage.h"
+#include <QSettings>
+#include <QDebug>
+#include <QMutableHashIterator>
+#include "every_cpp.h"
+
+namespace BrowserAutomationStudioFramework
+{
+    PCResourcesSmoothUsage::PCResourcesSmoothUsage(QObject *parent) : IPCResourcesSmoothUsage(parent)
+    {
+        PdhOpenQuery(NULL, NULL, &cpuQuery);
+        PdhAddEnglishCounter(cpuQuery, L"\\Processor(_Total)\\% Processor Time", NULL, &cpuTotal);
+        PdhCollectQueryData(cpuQuery);
+        MaxBrowserStartSimultaneously = 1;
+        MinFreeMemoryToStartBrowser = 500;
+        MinUnusedCpu = 0;
+        Timer = new QTimer(this);
+        connect(Timer,SIGNAL(timeout()),this,SLOT(TimerSlot()));
+        Timer->setSingleShot(false);
+        Timer->setInterval(5000);
+        Timer->start();
+        {
+            QSettings SettingsWorker("settings_worker.ini",QSettings::IniFormat);
+            MinUnusedCpu = SettingsWorker.value("MinUnusedCpu",MinUnusedCpu).toInt();
+            MinFreeMemoryToStartBrowser = SettingsWorker.value("MinFreeMemoryToStartBrowser",MinFreeMemoryToStartBrowser).toInt();
+            MaxBrowserStartSimultaneously = SettingsWorker.value("MaxBrowserStartSimultaneously",MaxBrowserStartSimultaneously).toInt();
+        }
+
+    }
+
+    bool PCResourcesSmoothUsage::CheckCanStartBrowser()
+    {
+        int UsedCpu = GetUsedCpu();
+        int FreeMem = GetFreeMemory();
+
+        bool CanStart = ((100 - UsedCpu) >= MinUnusedCpu) && (FreeMem >= MinFreeMemoryToStartBrowser);
+        if(CanStart)
+        {
+            LastSystemLoad = QDateTime();
+        }else
+        {
+            QDateTime now = QDateTime::currentDateTime();
+            if(!LastSystemLoad.isNull())
+            {
+                int sec = LastSystemLoad.secsTo(now);
+                if(sec > 30)
+                {
+                    QString log = tr("Failed to start browser, not enough system resources. Free memory %1 mb, processor usage %2 %").arg(QString::number(FreeMem)).arg(QString::number(UsedCpu));
+                    emit Log(log);
+                    LastSystemLoad = QDateTime();
+                }
+
+            }else
+            {
+                LastSystemLoad = now;
+            }
+        }
+
+
+        return CanStart;
+    }
+
+    int PCResourcesSmoothUsage::GetUsedCpu()
+    {
+        PDH_FMT_COUNTERVALUE counterVal;
+        PdhCollectQueryData(cpuQuery);
+        PdhGetFormattedCounterValue(cpuTotal, PDH_FMT_DOUBLE, NULL, &counterVal);
+        int res = counterVal.doubleValue;
+        if(res>100)
+            res = 100;
+        if(res<0)
+            res = 0;
+        return res;
+    }
+
+    int PCResourcesSmoothUsage::GetFreeMemory()
+    {
+        MEMORYSTATUSEX status;
+        status.dwLength = sizeof(status);
+        GlobalMemoryStatusEx(&status);
+        return status.ullAvailPageFile / (1024 * 1024);
+    }
+
+    void PCResourcesSmoothUsage::TimerSlot()
+    {
+
+        RemoveOldStartingBrowsers();
+        if(!BrowsersPending.empty() && CheckCanStartBrowser())
+            StartPendingBrowsers();
+    }
+
+    void PCResourcesSmoothUsage::RemoveOldStartingBrowsers()
+    {
+        QMutableHashIterator<int,QDateTime> i(BrowsersStarting);
+        QDateTime now = QDateTime::currentDateTime();
+        while (i.hasNext())
+        {
+            i.next();
+            int diff = i.value().secsTo(now);
+            if(diff > 30)
+            {
+                i.remove();
+            }
+        }
+    }
+
+    void PCResourcesSmoothUsage::StartPendingBrowsers()
+    {
+        int pending = CalculateNumberOfStartingBrowsers();
+        for(int i = 0;i<MaxBrowserStartSimultaneously - pending;i++)
+        {
+            if(BrowsersPending.empty())
+                return;
+            int BrowserId = BrowsersPending.first();
+            BrowsersPending.removeFirst();
+            QDateTime now = QDateTime::currentDateTime();
+            BrowsersStarting[BrowserId] = now;
+            emit CanStartBrowser(BrowserId);
+
+        }
+    }
+
+    int PCResourcesSmoothUsage::CalculateNumberOfStartingBrowsers()
+    {
+        return BrowsersStarting.size();
+    }
+
+    void PCResourcesSmoothUsage::NeedToStartBrowser(int BrowserId)
+    {
+        RemoveOldStartingBrowsers();
+        if(CalculateNumberOfStartingBrowsers() < MaxBrowserStartSimultaneously && CheckCanStartBrowser())
+        {
+            QDateTime now = QDateTime::currentDateTime();
+            BrowsersStarting[BrowserId] = now;
+            emit CanStartBrowser(BrowserId);
+        }else
+        {
+            BrowsersPending.append(BrowserId);
+        }
+
+    }
+
+    void PCResourcesSmoothUsage::BrowserStarted(int BrowserId)
+    {
+        BrowsersStarting.remove(BrowserId);
+        RemoveOldStartingBrowsers();
+        if(CheckCanStartBrowser())
+            StartPendingBrowsers();
+    }
+}

@@ -1,0 +1,1 @@
+<%= variable %> = native("clipboard", "getclipboard", JSON.stringify({base64: <%= base64 %>,mime:<%= mime %>}))

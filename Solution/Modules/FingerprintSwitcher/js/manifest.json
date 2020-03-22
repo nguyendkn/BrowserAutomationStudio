@@ -1,0 +1,122 @@
+{
+	
+	"name":"FingerprintSwitcher",
+	"info":{"en": "FingerprintSwitcher is like user agent switcher on steroids. It changes not only user agent, but a lot of browser internals to make BAS actually look like firefox, chrome, safari, on desktop or on mobile.", "ru": "FingerprintSwitcher - это более продвинутая версия смены юзер агента. Сервис меняет не только юзер агент, но и множество внутренних методов и переменных браузера, так, что он выглядел абсолютно идентично хрому, файерфоксу, сафари, настольному или мобильному браузеру."},
+	"description":"Fingerprint switcher",
+	"icon":"fingerprintswitcher.png",
+	"description_small":{"en": "Fingerprint switcher", "ru": "Смена отпечатка браузера"},
+	"major_version": 2,
+	"minor_version": 0,
+	"developer_name": "bablosoft", 
+	"developer_email": "mail.to.twaego@gmail.com", 
+	"developer_site": "https://bablosoft.com",
+	"api_version": 1,
+	"actions":
+	[
+
+		{
+			"name":"FingerprintSwitcher_Get",
+			"description":{"en": "Get fingerprint","ru": "Получить отпечаток"},
+			"template": "{{Tags}} -> {{Save}}",
+			"is_element": false,
+			"interface": "get_fingerprint_interface.js",
+			"select": "get_fingerprint_select.js",
+			"code": [{"file":"get_fingerprint_code.js", "name": "get_fingerprint_code"}]
+		},
+		{
+			"name":"FingerprintSwitcher_Apply",
+			"description":{"en": "Apply fingerprint","ru": "Применить отпечаток"},
+			"template": "{{Fingerprint}}",
+			"is_element": false,
+			"interface": "apply_fingerprint_interface.js",
+			"select": "apply_fingerprint_select.js",
+			"code": [{"file":"apply_fingerprint_code.js", "name": "apply_fingerprint_code"}]
+		},
+		{
+			"name":"FingerprintSwitcher_SynchronizeFlash",
+			"description":{"en": "Synchronize Flash","ru": "Синхронизировать Флеш"},
+			"template": "{{Fingerprint}}",
+			"is_element": false,
+			"interface": "synchronize_flash_interface.js",
+			"select": "synchronize_flash_select.js",
+			"code": [{"file":"synchronize_flash_code.js", "name": "synchronize_flash_code"}]
+		}
+	],
+	"localize": 
+	{
+		"Minimum added date": {"ru":"Минимальная дата добавления"},
+		"Select only fingerprints, which added date matches certain condition": {"ru":"Выбирать только те отпечатки, дата добавления которых соответствует определенному условию"},
+		"Doesn't filter on added date": {"ru":"Не фильтровать по дате добавления"},
+		"Select only fingerprints, which was added to database no more than 15 days ago": {"ru":"Выбирать только те отпечатки, которые были добавлены не позже 15 дней назад"},
+		"Minimum browser version": {"ru":"Минимальная версия браузера"},
+		"Select only fingerprints, which has certain browser version. It is recommended to use this option together with explicitly specifying browser name. For example, you can select fingerprints for Chrome browser with version greater than 75.": {"ru":"Выбирать только те отпечатки, которые имеют определенную версию браузера. Рекомендуется использовать эту опцию вместе с явным указанием названия браузера. Например, вы можете выбрать отпечатки для браузера Chrome с версией не меньше 75."},
+		"Doesn't filter on browser version": {"ru":"Не фильтровать по версии браузера"},
+		"Browser version must be equal or greater than 75": {"ru":"Версия браузера должна быть не меньше 75"},
+		"Minimum browser width": {"ru":"Минимальная ширина браузера"},
+		"Select only fingerprints, which has minimum browser width.": {"ru":"Выбирать только те отпечатки, ширина которых больше заданного значения."},
+		"Doesn't filter on browser width": {"ru":"Не фильтровать по ширине браузера"},
+		"Browser width must be equal or greater than 1600": {"ru":"Ширина браузера должна быть больше 1600"},
+		"Select only fingerprints, which has minimum browser height.": {"ru":"Выбирать только те отпечатки, высота которых больше заданного значения."},
+		"Doesn't filter on browser height": {"ru":"Не фильтровать по высоте браузера"},
+		"Browser height must be equal or greater than 900": {"ru":"Высота браузера должна быть больше 900"},
+		"Maximum browser width": {"ru":"Максимальная ширина браузера"},
+		"Select only fingerprints, which has maximum browser width.": {"ru":"Выбирать только те отпечатки, ширина которых меньше заданного значения."},
+		"Browser width must be equal or less than 2000": {"ru":"Ширина браузера должна быть меньше 2000"},
+		"Minimum browser height": {"ru":"Минимальная высота браузера"},
+		"Select only fingerprints, which has maximum browser height.": {"ru":"Выбирать только те отпечатки, высота которых меньше заданного значения."},
+		"Maximum browser height": {"ru":"Максимальная высота браузера"},
+		"Options": {"ru":"Параметры"},
+		"Browser height must be equal or less than 1200": {"ru":"Высота браузера должна быть меньше 1200"},
+
+
+		"Tags": {"ru":"Теги"},
+		"Service key. Can be empty": {"ru":"Ключ сервиса. Может быть пустым"},
+		"Fingerprint": {"ru":"Отпечаток"},
+		"Fingerprint switcher service": {"ru":"FingerprintSwitcher"},
+		"Synchronize flash state. May restart browser.": {"ru":"Синхронизировать наличие флеш с отпечатком. Может перезапустить браузер."},
+		"This action will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru":"Это действие перезапустит браузер и таким образом обнулит остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
+
+
+		"Select system and device for which you want to obtain fingerprint. Several tags may be combined together, in that case service will return only fingerprints, which matches all tags.": {"ru":"Выберите систему и устройство, для которых вы хотите получить отпечаток. Несколько параметров могут быть объединены вместе, в этом случае сервис вернет только те отпечатки, которые соответствуют всем параметрам."},
+		"Select Chrome fingerprint for any platform": {"ru":"Выберать отпечаток Chrome для любой платформы"},
+		"Select Chrome fingerprint for Windows. This is the only type of fingerprint which can be used for free.": {"ru":"Выбрать отпечаток Chrome для Windows. Это единственный тип отпечатков, который можно использовать бесплатно."},
+		"Select any fingerprint": {"ru":"Выбрать любой отпечаток"},
+		"Fingerprints are fetched from FingerprintSwitcher service, in order to use that service, you need to buy a key(see the link below). However, you may use it for free with Microsoft Windows,Chrome tags and with requests limits. In order to use free version, leave this field blank.": {"ru":"Отпечатки загружаются удаленно из службы FingerprintSwitcher, чтобы использовать этот сервис, вам нужно купить ключ (см. ссылку ниже). Однако вы можете использовать его бесплатно с тегами Microsoft Windows,Chrome и с ограничениями  на количество запросов. Чтобы использовать бесплатную версию, оставьте это поле пустым."},
+		"Key example": {"ru":"Пример ключа"},
+		"This action works with": {"ru":"Это действие работает вместе с"},
+		"You can get a key there": {"ru":"Там можно получить ключ"},
+		"This variable will contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be used immediately with 'Apply fingerprint' action. It also can be saved to a text file or database and reused later.": {"ru":"Эта переменная будет содержать данные отпечатка. Это данные, необходимые для его изменения. Они могут быть использованы как сразу, вместе с действием 'Применить отпечаток', так и в любое другое время, даже после перезапуска BAS. Для этого сохраните их в текстовый файл или базу данных и загрузите перед использованием."},
+		"Get browser fingerprint, which contains: user agent, screen size, navigator, fonts and many more.": {"ru":"Получить отпечаток браузера, который содержит: юзер агент, размер экрана, свойства navigator, шрифты и многое другое."},
+		"Using this action is like user agent switcher on steroids. It changes not only user agent, but a lot of browser internals to make BAS actually look like firefox, chrome, safari, on desktop or on mobile.": {"ru":"Это действие - более продвинутая версия смены юзер агента. Оно меняет не только юзер агент, но и множество внутренних методов и переменных браузера, так, что он выглядел абсолютно идентично хрому, файерфоксу, сафари, настольному или мобильному браузеру."},
+		"Several additional features may be used to make your browser less detectable. Apply proxy through 'Proxy' action. Change timezone with 'Set timezone and geolocation by ip' action. Use, store and reuse profiles, because starting browser on newly created profiles may be suspicious.": {"ru":"Некоторые дополнительные действия могут быть использованы, чтобы сделать ваш браузер более защищенным. Задайте прокси сервер через действие 'Прокси'. Измените часовой пояс с помощью действия 'Установить часовой пояс и координаты по ип'. Используйте, сохраняйте и повторно используйте профили, потому что запуск браузера на только что созданных профилях может быть подозрительным."},
+		"Fingerprints are fetched from": {"ru":"Отпечатки загружаются из сервиса"},
+		"service, in order to use that service, you need to ": {"ru":", чтобы его использовать вам необходимо"},
+		"However, you may get fingerprints for free with Microsoft Windows,Chrome tags and with requests limits. In order to run free version, leave 'Service key' field blank.": {"ru":"Тем не менее, вы можете бесплатно получать отпечатки с тегами Microsoft Windows,Chrome и с ограничениями на количество запросов. Чтобы использовать бесплатную версию, оставьте поле 'Ключ сервиса' пустым."},
+		"Fingerprint service fetches data from a real browsers on real devices, so you may be sure, that fingerprints are always fresh - contain actual user agent, plugin versions, etc.": {"ru":"Сервис FingerprintSwitcher извлекает данные из реальных браузеров на реальных устройствах, поэтому вы можете быть уверены, что отпечатки всегда актуальные, они содержат новые юзер агенты, версии плагинов и т. д."},
+		"Applying fingerprint doesn't require browser restart, so it won't reset your settings.": {"ru":"Применение отпечатка не требует перезапуск браузера, поэтому настройки не сбрасываются."},
+		"You can find more information and get test fingerprints on following page": {"ru":"Вы можете найти дополнительную информацию и получить тестовые отпечатки на следующей странице"},
+		"buy a key": {"ru":"купить ключ"},
+		"After execution of this action will complete, [[FINGERPRINT]] variable will contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be used immediately with 'Apply fingerprint' action. It also can be saved to a text file or database and reused later.": {"ru":"По завершении выполнения этого действия переменная [[FINGERPRINT]] будет содержать все данные, необходимые для изменения отпечатка. Они могут быть использованы как сразу, вместе с действием 'Применить отпечаток', так и в любое другое время, даже после перезапуска BAS. Для этого сохраните их в текстовый файл или базу данных и загрузите перед использованием."},
+		"This value must contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be obtained as result of 'Get fingerprint' action. Note that fingerprint may be reused - if you store them into file or database, and load on next BAS start, it will still work.": {"ru":"Этот параметр должен содержать данные, необходимые для изменения отпечатка. Их можно получить как результат действия 'Получить отпечаток'. Обратите внимание, что отпечаток может быть использован как сразу, так и в любое другое время, даже после перезапуска BAS. Для этого сохраните его в текстовый файл или базу данных и загрузите перед использованием."},
+		"Use a free version": {"ru":"Использовать бесплатную версию"},
+		"This value must contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be obtained as result of 'Get fingerprint' action. Note that this value may be reused - if you store it into file or database, and load on next BAS start, it will still work.": {"ru":"Этот параметр должен содержать данные, необходимые для изменения отпечатка. Их можно получить как результат действия 'Получить отпечаток'. Обратите внимание, что отпечаток может быть использован как сразу, так и в любое другое время, даже после перезапуска BAS. Для этого сохраните его в текстовый файл или базу данных и загрузите перед использованием."},
+		"Change browser fingerprint, which contains: user agent, screen size, navigator, fonts and many more.": {"ru":"Изменить отпечаток браузера, который содержит: юзер агент, размер экрана, свойства navigator, шрифты и многое другое."},
+		"'Fingerprint' input parameter must contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be obtained as result of 'Get fingerprint' action. Note that this value may be reused - if you store it into file or database, and load on next BAS start, it will still work.": {"ru":"Параметр 'Отпечаток' должен содержать данные, необходимые для изменения отпечатка. Их можно получить как результат действия 'Получить отпечаток'. Обратите внимание, что отпечаток может быть использован как сразу, так и в любое другое время, даже после перезапуска BAS. Для этого сохраните его в текстовый файл или базу данных и загрузите перед использованием."},
+		"Enable flash if fingerprint has it enabled and disable otherwise.": {"ru":"Включить флэш, если он содержится в отпечатке или отключить в противном случае."},
+		"Safe Canvas": {"ru":"Безопасное использование Canvas"},
+		"Safe Audio": {"ru":"Безопасное использование Audio"},
+		"Safe WebGL": {"ru":"Безопасное использование WegGL"},
+		"Safe Battery": {"ru":"Безопасное использование батареи"},
+		"Safe Element Size": {"ru":"Безопасное использование ClientRect"},
+		"If this settings is set to true battery API will show different values for each thread, this prevents sites for detecting your real identity. In case if device from which fingerprint was obtained doesn't have battery API, 100% charge level will always be returned.": {"ru":"Если в этом поле установлено значение true, заряд батареи будет показывать разные значения для каждого потока, что предотвращает обнаружение вас сайтом. В случае, если устройство, из которого был получен отпечаток, не имеет API для работы с батареей, всегда будет возвращен уровень заряда 100%."},
+		"If this settings is set to true, results of API which returns element coordinates will be updated to protect against 'client rects' fingerprinting.": {"ru":"Если в этом поле установлено значение true, результаты API, который возвращают координаты элемента, будут изменены для защиты от техники получения отпечатков браузера 'ClientRect'."},
+
+		"If this settings is set to true, audio will be enabled, noise will be added to sound and your hardware properties, like sample rate and naumber of channels, will be changed": {"ru":"Если в этом поле установлено значение true, audio api будет включен, шум будет добавлен к звуку, а ваши реальные свойства железа будут изменены"},
+		"If this settings is set to true, canvas will be enabled and noise will be added to all data returned from canvas": {"ru":"Если в этом поле установлено значение true, получение данных из canvas будет включено, но к этим данным будет добавлен шум."},
+		"If this settings is set to true, WebGL will be enabled, noise will be added to WebGL canvas and your hardware properties, like video card vendor and renderer, will be changed": {"ru":"Если в этом поле установлено значение true, WebGL будет включен, шум будет добавлен к изображениям получаемым из элементов отображаемым с помощью WebGL, а ваши реальные свойства видеокарты будут изменены"}
+	},
+	"engine": ["engine.js"],
+	"browser": [],
+	"depends": []	
+}
+

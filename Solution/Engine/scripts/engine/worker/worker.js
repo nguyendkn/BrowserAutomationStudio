@@ -1,0 +1,1460 @@
+VAR_WAS_ERROR = false;
+VAR_LAST_ERROR = "";
+VAR_ERROR_ID = 0;
+_BAS_SOLVER_PROPERTIES = {}
+GLOBAL = this
+_BROWSER_TYPE = 1;
+
+//Manual browser control
+function _manual_browser_control(text, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.StartManualBrowserControl(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+function _create_browser_if_needed(callback, arg)
+{
+
+    if(typeof(NetworkAccessManager)=='undefined' || NetworkAccessManager == null)
+    {
+        browser(callback)
+    }else
+    {
+        if(Browser.NeedToCreateVirtualProcessCommunicator())
+        {
+            Browser.CreateNewVirtualBrowser(true, "ScriptWorker.AttachNetworkAccessManager();" +_get_function_body(callback))
+        }else
+            callback()
+    }
+}
+
+/* Hard reset */
+function new_browser(callback)
+{
+    Browser.ResetSettings();
+
+    if(!Browser.IsBASBrowserVirtual())
+    {
+        //Reset only virtual browser
+        Browser.CreateNewVirtualBrowser(true, "ScriptWorker.AttachNetworkAccessManager();" +_get_function_body(callback))
+
+    }else
+    {
+        //Reset real browser
+        Browser.CreateNewBrowser(true, "ScriptWorker.AttachNetworkAccessManager();_reset_proxy();" + _get_function_body(callback))
+    }
+}
+
+/* Soft reset */
+function reset(callback)
+{
+    if(!_is_bas_browser_real())
+    {
+        new_browser(callback)
+        return
+    }
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        _DEFAULT_MOVE_PARAMS = {}
+        _reset_proxy();
+        Browser.Reset(_get_function_body(_ARG[0]));
+    })
+}
+
+/* Create browser caus used action which needs browser */
+function browser(callback)
+{
+    Browser.CreateNewBrowser(false, "_mbr();ScriptWorker.AttachNetworkAccessManager();_init_browser(function(){_mar();" + _get_function_body(callback) + "})")
+}
+
+/* Init browser after created */
+function _init_browser(callback)
+{
+    _DEFAULT_MOVE_PARAMS = {}
+    _INIT_BROWSER_CALLBACK = callback
+    Browser.ResetNoCookies(_get_function_body(function(){
+        var callback = _INIT_BROWSER_CALLBACK
+        delete _INIT_BROWSER_CALLBACK
+        if(Browser.IsBASBrowser())
+            Browser.ResetProxy();
+
+        _settings(_PROXY, callback)
+
+    }))
+}
+
+/* Check if bas browser is set through settings and it actually used */
+function _is_bas_browser_real()
+{
+    return Browser.IsBASBrowser() && Browser.IsBASBrowserVirtual();
+}
+
+function _is_bas_browser_virtual()
+{
+    return Browser.IsBASBrowser() && Browser.IsBASBrowserVirtual();
+}
+
+/* Check if in record mode */
+function _is_record()
+{
+    return ScriptWorker.GetIsRecord();
+}
+
+/* Close current browser and save profile, it will be created again after using browser action */
+function _disable_browser(callback)
+{
+    if(_is_record())
+    {
+        ScriptWorker.SetScript(_get_function_body(callback))
+        ScriptWorker.RunSubScript()
+        return
+    }
+    NetworkAccessManager = null;
+    Browser.DisableBrowser(_get_function_body(callback));
+}
+
+
+/* Online profiles */
+function _remove_local_profile(profile_id, callback)
+{
+    if(_is_bas_browser_real())
+    {
+        ScriptWorker.SetScript(_get_function_body(callback))
+        ScriptWorker.RunSubScript()
+        return
+    }
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.RemoveLocalProfile(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+function _remove_online_profile(profile_id, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.RemoveOnlineProfile(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+function _find_all_online_profiles(search_pattern, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.FindAllOnlineProfiles(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+
+/* Manual control */
+function open_browser(callback)
+{
+    Browser.SetManualBrowserControl();
+
+    if(!Browser.IsBASBrowserVirtual())
+    {
+        Browser.CreateNewVirtualBrowser(false, "ScriptWorker.AttachNetworkAccessManager();" +_get_function_body(callback))
+    }else
+    {
+        Browser.CreateNewBrowser(false, "_mbr();ScriptWorker.AttachNetworkAccessManager();_init_browser(function(){_mar();" + _get_function_body(callback) + "})")
+    }
+}
+
+function close_browser()
+{
+    if(!Browser.IsBASBrowserVirtual())
+    {
+        Browser.CloseVirtualBrowser();
+        ScriptWorker.AttachNetworkAccessManager();
+    }else
+    {
+        if(!ScriptWorker.GetIsRecord())
+        {
+            Browser.CloseBrowser();
+            ScriptWorker.AttachNetworkAccessManager();
+        }
+    }
+}
+
+function _ensure_browser_created()
+{
+    if(typeof(NetworkAccessManager)=='undefined' || NetworkAccessManager == null)
+        die("NetworkAccessManager is not accessible, try to create new browser with open browser command")
+}
+
+function _simulate_crush(callback)
+{
+    _ensure_browser_created();
+    Browser.SimulateCrush(_get_function_body(callback));
+}
+
+function _settings(json, callback)
+{
+    Browser.SendWorkerSettings(JSON.stringify(json), "if(_result() == 2)NetworkAccessManager=null;if(_result() == 1)ScriptWorker.AttachNetworkAccessManager();" + _get_function_body(callback))
+}
+
+
+
+function _mbr()
+{
+    Browser.MarkBeforeReset();
+}
+
+function _mar()
+{
+    Browser.MarkAfterReset();
+}
+
+function _get_profile()
+{
+    return Browser.GetProfilePath()
+}
+
+function mouse(x, y, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.MouseClick(_ARG[0],_ARG[1],_get_function_body(_ARG[2]))
+    })
+}
+
+function mouse_up(x, y, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.MouseClickUp(_ARG[0],_ARG[1],_get_function_body(_ARG[2]))
+    })
+}
+
+function mouse_down(x, y, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.MouseClickDown(_ARG[0],_ARG[1],_get_function_body(_ARG[2]))
+    })
+}
+
+function timezone(offset, callback)
+{
+    if(!_is_bas_browser_real())
+    {
+        _settings({
+                      "multilogin.fingerprintGeneration.timeZone":JSON.stringify(native("timezones", "timezone_offset_to_name", (-offset).toString()))
+                  }, callback)
+        return
+    }
+    _settings({
+                  "Timezone": (-parseInt(offset)).toString()
+              }, callback)
+
+}
+
+function _timezone_name(name, callback)
+{
+    _settings({
+                  "TimezoneName": name
+              }, callback)
+
+}
+
+
+function geolocation(latitude,longitude,callback)
+{
+    if(!_is_bas_browser_real())
+    {
+        _settings({
+                      "multilogin.fingerprintGeneration.geolocation.latitude":JSON.stringify(latitude),
+                      "multilogin.fingerprintGeneration.geolocation.longitude":JSON.stringify(longitude)
+                  }, callback)
+        return
+    }
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.Geolocation(_ARG[0],_ARG[1],_get_function_body(_ARG[2]))
+    })
+}
+
+function popupclose(index, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.PopupClose(_ARG[0],_get_function_body(_ARG[1]))
+    })
+}
+
+function popupselect(index, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.PopupSelect(_ARG[0],_get_function_body(_ARG[1]))
+    })
+}
+
+function _popupinfo(callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.PopupInfo(_get_function_body(_ARG[0]))
+    })
+}
+
+function _popupcreate(is_silent, url, callback)
+{
+    _ARG_POPUP = arguments
+    _create_browser_if_needed(function(){
+        _popupinfo(function(){
+            _if(JSON.parse(_result())["urls"].length == 0, function(){
+                load("data:text/html,", function(){})
+            },function(){
+                Browser.PopupCreate(_ARG_POPUP[0],_ARG_POPUP[1],_get_function_body(_ARG_POPUP[2]))
+                delete _ARG_POPUP
+            })
+
+
+        })
+
+    })
+}
+
+
+
+
+
+function render(x, y, width, height, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.Render(_ARG[0],_ARG[1],_ARG[2],_ARG[3],_get_function_body(_ARG[4]))
+    })
+}
+
+function scroll(x, y, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.Scroll(_ARG[0],_ARG[1],_get_function_body(_ARG[2]))
+    })
+}
+
+_DEFAULT_MOVE_PARAMS = {}
+
+function _default_move_params(params)
+{
+    if(params.hasOwnProperty("speed"))
+    {
+        params.speed = parseFloat(params.speed)
+    }
+    if(params.hasOwnProperty("gravity"))
+    {
+        params.gravity = parseFloat(params.gravity)
+    }
+    if(params.hasOwnProperty("deviation"))
+    {
+        params.deviation = parseFloat(params.deviation)
+    }
+
+    _DEFAULT_MOVE_PARAMS = params
+}
+
+function move()
+{
+    var length = arguments.length
+
+    var x = arguments[0]
+    var y = arguments[1]
+    var params = arguments[2]
+    var callback = arguments[3]
+    var iscoordinates = false
+
+
+    if(length == 4)
+    {
+        x = arguments[0]
+        y = arguments[1]
+        params = arguments[2]
+        callback = arguments[3]
+        iscoordinates = true
+    }else if(length == 3)
+    {
+        x = arguments[0]
+        y = arguments[1]
+        params = {}
+        callback = arguments[2]
+        iscoordinates = true
+    }else if(length == 2)
+    {
+        X = parseInt(_result().split(",")[0])
+        Y = parseInt(_result().split(",")[1])
+        x = X
+        y = Y
+        params = arguments[0]
+        callback = arguments[1]
+    }else if(length == 1)
+    {
+        X = parseInt(_result().split(",")[0])
+        Y = parseInt(_result().split(",")[1])
+        x = X
+        y = Y
+        callback = arguments[0]
+        params = {}
+    }else
+    {
+        fail("move, wrong number of arguments")
+    }
+
+    if(Object.keys(params).length == 0)
+    {
+        params = _DEFAULT_MOVE_PARAMS
+    }
+
+    params["iscoordinates"] = (iscoordinates) ? "true" : "false"
+
+    _ARG = [x,y,params,callback]
+    _create_browser_if_needed(function(){
+        Browser.MouseMove(_ARG[0],_ARG[1],JSON.stringify(_ARG[2]),_get_function_body(_ARG[3]))
+    })
+}
+
+function _clarify()
+{
+    _MOUSE_SETTINGS = _arguments
+    _if(_result().length > 0, function(){
+        X = parseInt(_result().split(",")[0])
+        Y = parseInt(_result().split(",")[1])
+        move(X,Y, _MOUSE_SETTINGS, function(){
+            delete _MOUSE_SETTINGS
+        })
+    }, function(){delete _MOUSE_SETTINGS})
+}
+
+function _random_point()
+{
+    _SELECTOR_DELTA = null
+    _SELECTOR_DELTA_PREV = null
+    _SELECTOR_JUMP_NUMBER = null
+    _SELECTOR_FOUND_ELEMENT = true
+    _do(function(){
+        if(_iterator() > 20)
+            _break();
+        get_element_selector(_SELECTOR.split(">FRAME>")[0], false).script("(function(){if(!(self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = self.getBoundingClientRect();var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()",function(){
+
+            if(_result() == "")
+            {
+                _SELECTOR_FOUND_ELEMENT = false
+                _break(1)
+                return;
+            }
+            _SELECTOR_DELTA = parseInt(_result())
+            if(_SELECTOR_DELTA == 0)
+            {
+                _break(1)
+                return;
+            }
+            if(_SELECTOR_DELTA_PREV != null && (Math.abs(_SELECTOR_DELTA_PREV) - Math.abs(_SELECTOR_DELTA) < 10))
+            {
+                _break(1)
+                return;
+            }
+
+
+            var Speed = 100
+            if(_SELECTOR_JUMP_NUMBER != null)
+                Speed = Math.round((Math.abs(_SELECTOR_DELTA_PREV) - Math.abs(_SELECTOR_DELTA))/_SELECTOR_JUMP_NUMBER)
+
+            _SELECTOR_DELTA_PREV = _SELECTOR_DELTA
+            var SleepTimeout = 100;
+
+
+            var TypeItem = (_SELECTOR_DELTA > 0) ? "\u003cMOUSESCROLLDOWN\u003e" : "\u003cMOUSESCROLLUP\u003e";
+            if(_SELECTOR_JUMP_NUMBER == null)
+                _SELECTOR_JUMP_NUMBER = 1;
+            else
+            {
+                _SELECTOR_JUMP_NUMBER = Math.round(Math.abs(_SELECTOR_DELTA)/Speed);
+
+                var RandJump = 20;
+
+                if(_SELECTOR_JUMP_NUMBER > 50)
+                {
+                    SleepTimeout = 30;
+                    RandJump = rand(40,49)
+                }else if(_SELECTOR_JUMP_NUMBER > 20)
+                {
+                    SleepTimeout = 30;
+                    RandJump = rand(15,19)
+                }
+                else
+                {
+                    SleepTimeout = 100;
+                    RandJump = rand(6,8)
+                }
+
+                if(_SELECTOR_JUMP_NUMBER > RandJump)
+                    _SELECTOR_JUMP_NUMBER = RandJump;
+            }
+            var TypeString = "";
+            for(var i = 0;i<_SELECTOR_JUMP_NUMBER;i++)
+            {
+                TypeString += TypeItem
+            }
+
+            page().type(TypeString,SleepTimeout,function(){sleep(rand(100,500), function(){})})
+
+        })
+    },function(){
+        _if_else(_SELECTOR_FOUND_ELEMENT,function(){
+            get_element_selector(_SELECTOR, false).random_point(function(){})
+        },function(){
+            _set_result("")
+        }, function(){})
+    })
+}
+
+function wait_code(callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.WaitCode(_get_function_body(_ARG[0]))
+    })
+}
+
+function section_end(callback)
+{
+    Browser.WaitCode(_get_function_body(callback))
+}
+
+function load(text, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        if(_ARG[0] == "about:blank")
+        {
+            Browser.LoadPageInstant(_ARG[0],_get_function_body(_ARG[1]));
+        }else
+        {
+            Browser.LoadPage(_ARG[0],"if(_result() == false){fail(tr('Failed to load page ') + _ARG[0])};" + _get_function_body(_ARG[1]));
+        }
+    })
+}
+
+function navigate_back(callback)
+{
+    _create_browser_if_needed(function(){
+        Browser.NavigateBack(_get_function_body(callback));
+    })
+}
+
+function load_instant(text, callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        Browser.LoadPageInstant(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+function open_file_dialog(text, callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        var sendtext = _ARG[0]
+        if(_ARG[0] instanceof Array)
+            sendtext = JSON.stringify(_ARG[0])
+        Browser.SetOpenFileName(sendtext,_get_function_body(_ARG[1]));
+    })
+}
+
+function drag_file(text, callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        Browser.DragFile(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+function prompt_result(text, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.SetPromptResult(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+function http_auth_result(login, pass, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.SetHttpAuthResult(_ARG[0],_ARG[1],_get_function_body(_ARG[2]));
+    })
+}
+
+function screenshot(path, callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        page().render_file(_ARG[0], _ARG[1]);
+    })
+}
+
+function url(callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        Browser.GetUrl(_get_function_body(_ARG[0]));
+    })
+}
+
+function get_cookies(url, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.GetCookiesForUrl(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+function resize(x, y, callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        Browser.Resize(_ARG[0], _ARG[1],_get_function_body(_ARG[2]));
+    })
+}
+
+function save_cookies(callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.SaveCookies(_get_function_body(_ARG[0]));
+    })
+}
+
+function restore_cookies(cookies, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.RestoreCookies(_ARG[0], _get_function_body(_ARG[1]));
+    })
+}
+
+function restore_localstorage(localstorage, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.RestoreLocalStorage(_ARG[0], _get_function_body(_ARG[1]));
+    })
+}
+
+function page()
+{
+    _ensure_browser_created();
+    return ScriptWorker.GetRootElement();
+}
+
+function clear_log()
+{
+    Logger.Clear();
+}
+
+function log(text)
+{
+    Logger.Write(ScriptWorker.PrepareMessage(text));
+}
+
+function log_html(html, text)
+{
+    Logger.WriteHtml(html, text);
+}
+
+function log_success(text)
+{
+    Logger.WriteSuccess(ScriptWorker.PrepareMessage(text));
+}
+
+function log_fail(text)
+{
+    Logger.WriteFail(ScriptWorker.PrepareMessage(text));
+}
+
+function ResultResolve(number)
+{
+    if(number === 0)
+    {
+        return Results1;
+    }else if(number === 1)
+    {
+        return Results2;
+    }else if(number === 2)
+    {
+        return Results3;
+    }
+    else if(number === 3)
+        {
+            return Results4;
+        }
+
+    else if(number === 4)
+        {
+            return Results5;
+        }
+
+    else if(number === 5)
+        {
+            return Results6;
+        }
+
+    else if(number === 6)
+        {
+            return Results7;
+        }
+
+    else if(number === 7)
+        {
+            return Results8;
+        }
+
+    else if(number === 8)
+        {
+            return Results9;
+        }
+
+}
+
+function result(text, number)
+{
+    if(typeof(number) === "undefined")
+    {
+        number = 0;
+    }
+    ResultResolve(number).Write(text);
+}
+
+function result_html(html, text, number)
+{
+    if(typeof(number) === "undefined")
+    {
+        number = 0;
+    }
+    ResultResolve(number).WriteHtml(html, text);
+}
+
+function result_file(number)
+{
+    if(typeof(number) === "undefined")
+    {
+        number = 0;
+    }
+    return ResultResolve(number).GetFileName(number);
+}
+
+function css(text)
+{
+    return page().css(text);
+}
+
+function frame(name)
+{
+    return page().frame(name);
+}
+
+function frame_css(name)
+{
+    return page().frame_css(name);
+}
+
+function xpath(name)
+{
+    return page().xpath(name);
+}
+
+function xpath_all(name)
+{
+    return page().xpath_all(name);
+}
+
+function frame_match(name)
+{
+    return page().frame_match(name);
+}
+
+
+function position(x, y)
+{
+    return page().position(x,y);
+}
+
+function match(text)
+{
+    return page().match(text);
+}
+
+function match_all(text)
+{
+    return page().match_all(text);
+}
+
+function all(text)
+{
+    return page().all(text);
+}
+
+function thread_number()
+{
+    return ScriptWorker.GetThreadNumber();
+}
+
+function success_number()
+{
+    return ScriptWorker.GetSuccessNumber();
+}
+
+function project_path()
+{
+    return ScriptWorker.GetProjectPath();
+}
+
+function fail_number()
+{
+    return ScriptWorker.GetFailNumber();
+}
+
+function sleep(milliseconds, callback)
+{
+    ScriptWorker.Sleep(milliseconds,_get_function_body(callback));
+}
+
+function script(text, callback)
+{
+    page().script(text,callback);
+}
+
+function font_list(fonts, callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        Browser.SetFontList(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+
+function onloadjavascript(text, callback)
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        Browser.SetStartupScript(_ARG[0],"Main",_get_target(),_get_function_body(_ARG[1]));
+    })
+}
+
+function onloadjavascriptinternal(text, script_id, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.SetStartupScript(_ARG[0],_ARG[1],_get_target(),_get_function_body(_ARG[2]));
+    })
+}
+
+function agent(text, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.SetUserAgent(_ARG[0],_get_function_body(_ARG[1]));
+    })
+}
+
+
+function antigate(key)
+{
+    solver_property("antigate","key",key)
+}
+
+function rucaptcha(key)
+{
+    solver_property("rucaptcha","key",key)
+}
+
+function twocaptcha(key)
+{
+    solver_property("2captcha","key",key)
+}
+
+function capmonster(key)
+{
+    solver_property("capmonster","key",key)
+}
+
+function xevil(key)
+{
+    solver_property("xevil","key",key)
+}
+
+function solver_properties_clear(solver)
+{
+
+    if(solver == "antigate")
+    {
+        _BAS_SOLVER_PROPERTIES[solver] = {serverurl: "http://antigate.com/"}
+    }else if(solver == "dbc")
+    {
+        _BAS_SOLVER_PROPERTIES[solver] = {serverurl: "http://api.dbcapi.me/"}
+    }else if(solver == "rucaptcha")
+    {
+        _BAS_SOLVER_PROPERTIES[solver] = {serverurl: "http://rucaptcha.com/"}
+    }else if(solver == "2captcha")
+    {
+        _BAS_SOLVER_PROPERTIES[solver] = {serverurl: "http://2captcha.com/"}
+    }else
+    {
+        _BAS_SOLVER_PROPERTIES[solver] = {}
+    }
+}
+
+function solver_property(solver,key,value)
+{
+    var h;
+    if(!(solver in _BAS_SOLVER_PROPERTIES && _BAS_SOLVER_PROPERTIES[solver]))
+    {
+        _BAS_SOLVER_PROPERTIES[solver] = {}
+    }
+    h = _BAS_SOLVER_PROPERTIES[solver]
+
+    h[key] = value
+
+    _BAS_SOLVER_PROPERTIES[solver] = h
+}
+
+function dbc(key)
+{
+    solver_property("dbc","key",key)
+}
+
+function _solver_properties_list(solver)
+{
+    var h;
+    if(!(solver in _BAS_SOLVER_PROPERTIES && _BAS_SOLVER_PROPERTIES[solver]))
+        _BAS_SOLVER_PROPERTIES[solver] = {}
+
+    h = _BAS_SOLVER_PROPERTIES[solver]
+    return Object.keys(h).reduce(function(a,k){a.push(k);a.push(h[k]);return a},[])
+}
+
+function solve(match, url, callback)
+{
+    LAST_CAPTCHA_METHOD = match
+    _ENGINE_CALLBACK = [match,url,callback];
+
+    is_load(_ENGINE_CALLBACK[1], function(){
+        if(_result() === false)
+        {
+            fail("CAPTCHA_FAIL : No image in cache");
+        }
+        cache_get_base64(_ENGINE_CALLBACK[1],function(){
+            ScriptWorker.Solve(_ENGINE_CALLBACK[0], _result(),_solver_properties_list(_ENGINE_CALLBACK[0]),_get_function_body(_ENGINE_CALLBACK[2]));
+        })
+    })
+}
+
+
+function _recaptchav3(action, method, rucaptcha, serverurl, score, use_proxy, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        ScriptWorker.SetRecaptchaV3SolverProperties(_ARG[1], _ARG[2], _ARG[3], _ARG[4], _ARG[5]);
+        if(_ARG[1] == "disable")
+        {
+            _ARG[0] = ""
+        }
+        Browser.SendRecaptchaV3List(_ARG[0],_get_function_body(_ARG[6]))
+    })
+}
+
+
+function solve_base64(match, data_base64, callback)
+{
+    LAST_CAPTCHA_METHOD = match
+    ScriptWorker.Solve(match, data_base64,_solver_properties_list(match),_get_function_body(callback));
+}
+
+function solve_base64_no_fail(match, data_base64, callback)
+{
+    LAST_CAPTCHA_METHOD = match
+    ScriptWorker.SolveNoFail(match, data_base64,_solver_properties_list(match),_get_function_body(callback));
+}
+
+function solver_failed()
+{
+    if(typeof(LAST_CAPTCHA_ID) != "undefined" && LAST_CAPTCHA_ID != "")
+        ScriptWorker.GetSolver(LAST_CAPTCHA_METHOD).ReportBad(LAST_CAPTCHA_ID);
+}
+
+
+
+function progress()
+{
+    progress_value(-1);
+}
+
+function progress_value(val)
+{
+    ScriptWorker.ProgressValueSlot(val);
+}
+
+function progress_maximum(val)
+{
+    ScriptWorker.ProgressMaximumSlot(val);
+}
+
+function on_fail(callback)
+{
+    ScriptWorker.SetFailFunction(_get_function_body(callback));
+}
+
+function clear_on_fail()
+{
+    ScriptWorker.SetFailFunction("");
+}
+
+function on_success(callback)
+{
+    ScriptWorker.SetSuccessFunction(_get_function_body(callback));
+}
+
+function clear_on_success()
+{
+    ScriptWorker.SetSuccessFunction("");
+}
+
+function _on_fail(callback)
+{
+    var label = rand()
+    _set_label(label)
+    var c = CYCLES.Current()
+    if(c)
+        c.OnFail = "_rewind('" + label + "');" + _get_function_body(callback)
+    ScriptWorker.SetFailFunction("_rewind('" + label + "');" + _get_function_body(callback));
+}
+
+function _on_fail_exceed(callback)
+{
+    var label = rand()
+    _set_label(label)
+    ScriptWorker.SetFailExceedFunction("_rewind('" + label + "');" + _get_function_body(callback));
+}
+
+function _on_success_exceed(callback)
+{
+    var label = rand()
+    _set_label(label)
+    ScriptWorker.SetSuccessExceedFunction("_rewind('" + label + "');" + _get_function_body(callback));
+}
+
+function _finnaly(callback)
+{
+    ScriptWorker.SetAbortFunction(_get_function_body(callback));
+}
+
+function _clear_on_fail()
+{
+    var c = CYCLES.Current()
+    if(c)
+        c.OnFail = ""
+
+    ScriptWorker.SetFailFunction("");
+}
+
+function _on_success(callback)
+{
+    var label = rand()
+    _set_label(label)
+    var c = CYCLES.Current()
+    if(c)
+        c.OnSuccess = "_rewind('" + label + "');" + _get_function_body(callback)
+    ScriptWorker.SetSuccessFunction("_rewind('" + label + "');" + _get_function_body(callback));
+}
+
+function _clear_on_success()
+{
+    var c = CYCLES.Current()
+    if(c)
+        c.OnSuccess = ""
+
+    ScriptWorker.SetSuccessFunction("");
+}
+
+function _set_max_fail(max_fail_number)
+{
+    ScriptWorker.SetMaxFail(max_fail_number);
+}
+
+function _set_max_success(max_success_number)
+{
+    ScriptWorker.SetMaxSuccess(max_success_number);
+}
+
+
+function DEC(callback)
+{
+    ScriptWorker.Decrypt(callback);
+}
+
+function _db_add_record(group_id, data_list, table_id, add_to_resources)
+{
+    if(!add_to_resources)
+    {
+        add_to_resources = false
+    }
+    return ScriptWorker.DatabaseAddRecord(group_id, data_list, table_id, add_to_resources);
+}
+function _db_select_records(selector, page_number,page_size, table_id,sorting_type,group_id,sort_column)
+{
+    if(!sorting_type)
+    {
+        sorting_type = "no sorting"
+    }
+    if(!group_id)
+    {
+        group_id = ""
+    }
+    if(!sort_column)
+    {
+        sort_column = -1
+    }
+    return ScriptWorker.DatabaseSelectRecords(JSON.stringify(selector),page_number,page_size, table_id,sorting_type,group_id,sort_column);
+}
+
+function _db_select_one_record(record_id, table_id)
+{
+    return ScriptWorker.DatabaseSelectOneRecord(record_id, table_id);
+}
+
+function _db_delete_group(group_id, delete_data, table_id)
+{
+    ScriptWorker.DatabaseDeleteGroup(group_id, delete_data, table_id);
+}
+function _db_delete_one_record(record_id, delete_resources, table_id)
+{
+    ScriptWorker.DatabaseDeleteOneRecord(record_id, delete_resources, table_id);
+}
+function _db_change_group(name, description, group, table_id)
+{
+    ScriptWorker.DatabaseChangeGroup(name, description, group, table_id);
+}
+function _db_copy_group(group_id, table_id)
+{
+    return ScriptWorker.DatabaseCopyGroup(group_id, table_id);
+}
+
+function _db_move_record_to_group(group_id, record_id, move_type, table_id)
+{
+    return ScriptWorker.DatabaseMoveRecordToGroup(group_id, record_id, move_type, table_id);
+}
+
+function _db_select_groups(table_id)
+{
+    return ScriptWorker.DatabaseSelectGroups(table_id);
+}
+
+
+function _db_delete_records(selector, table_id, group_id, delete_resources)
+{
+    if(!group_id)
+    {
+        group_id = ""
+    }
+    if(!delete_resources)
+    {
+        delete_resources = false
+    }
+    ScriptWorker.DatabaseDeleteRecords(JSON.stringify(selector),table_id,group_id,delete_resources);
+}
+
+function _db_count_records(selector, table_id, group_id)
+{
+    return ScriptWorker.DatabaseCountRecords(JSON.stringify(selector),table_id,group_id);
+}
+
+
+function _db_update_record(record_id, data_list, table_id, update_resources)
+{
+    if(!update_resources)
+    {
+        update_resources = false
+    }
+    return ScriptWorker.DatabaseUpdateRecord(record_id, data_list, table_id, update_resources);
+}
+
+function _db_update_records_by_criteria(data_list, table_id, update_resources, filters, group_id)
+{
+    return ScriptWorker.DatabaseUpdateRecordsByCriteria(data_list, table_id, update_resources, JSON.stringify(filters), group_id);
+}
+
+function _db_add_group(group_name, group_description, table_id)
+{
+    return ScriptWorker.DatabaseAddGroup(group_name, group_description, table_id);
+}
+
+function _BAS_WEBINTERFACE_WAIT()
+{
+    _do(function(){
+        ScriptWorker.WaitNextTask(_get_function_body(function(){
+            var Name = ScriptWorker.GetTaskFunctionName()
+            var Params = JSON.parse(ScriptWorker.GetTaskFunctionParams())
+            _call_task(eval(Name),Params,function(){
+                ScriptWorker.SendTaskResult(JSON.stringify({Message: "", Result: null,Success:true}))
+            })
+        }))
+    }, function(){
+        success("")
+    })
+}
+
+function _on_start()
+{
+    if(ScriptWorker.SubstageGetParentId() > 0)
+    {
+        _call(eval(ScriptWorker.SubstageGetStartingFunction()), null, function(){
+            success("")
+        })
+        return
+    }
+
+    if(typeof(OnApplicationStart) == "undefined")
+    {
+        _break(1)
+        return
+    }
+
+    _do(function(){
+        APP_START = P("_","_s")
+        if(APP_START == "2")
+        {
+            _break(2)
+            return
+        }
+        if(APP_START == "")
+        {
+            PSet("_","_s","1")
+            _break(1)
+            return
+        }
+        sleep(1000, function(){})
+    }, function(){
+        _call(OnApplicationStart,null, function(){
+            PSet("_","_s","2")
+            success("none")
+        })
+    })
+}
+
+function native(dll,func,data)
+{
+    return ScriptWorker.ExecuteNativeModuleCodeSync(dll,func,data);
+}
+
+function native_async(dll,func,data,callback)
+{
+    ScriptWorker.ExecuteNativeModuleCodeAsync(dll,func,data,_get_function_body(callback));
+}
+
+function general_timeout_next(timeout)
+{
+    ScriptWorker.SetGeneralWaitTimeoutNext(timeout);
+}
+
+function general_timeout(timeout)
+{
+    ScriptWorker.SetGeneralWaitTimeout(timeout);
+    BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT = Math.floor(timeout/1000);
+}
+
+function async_load_timeout(timeout)
+{
+    BROWSERAUTOMATIONSTUDIO_FULL_LOAD_TIMEOUT = Math.floor(timeout/1000);
+}
+
+function solver_timeout_next(timeout)
+{
+    ScriptWorker.SetSolverWaitTimeoutNext(timeout);
+}
+
+function solver_timeout(timeout)
+{
+    ScriptWorker.SetSolverWaitTimeout(timeout);
+}
+
+function _preprocess(script)
+{
+    return ScriptWorker.Preprocess(script);
+}
+
+function _embedded_parse_variables(data)
+{
+    var variables = JSON.parse(data["data"])
+    var keys = Object.keys(variables)
+    var length = keys.length
+    for(var i = 0;i<length;i++)
+    {
+        var v = keys[i]
+        GLOBAL["VAR_" + v] = variables[v]
+    }
+}
+
+function _embedded_prepare_variables(variables, error)
+{
+
+    var split = variables.split(",")
+    var variables_object = {}
+    for(var i = 0;i<split.length;i++)
+    {
+        var v = split[i]
+        try
+        {
+            variables_object[v] = GLOBAL["VAR_" + v]
+        }catch(e)
+        {
+        }
+    }
+    if(GLOBAL.hasOwnProperty("VAR__BAS_FUNCTION_RESULT_"))
+    {
+        try
+        {
+            variables_object["_BAS_FUNCTION_RESULT_"] = GLOBAL["VAR__BAS_FUNCTION_RESULT_"]
+        }catch(e)
+        {
+        }
+    }
+    if(error)
+    {
+        variables_object["-BAS-API-ERROR-"] = error;
+
+    }
+    var variables_string = JSON.stringify(variables_object);
+    delete GLOBAL["VAR__BAS_FUNCTION_RESULT_"]
+    return variables_string
+}
+
+
+function _embedded(function_name, language_name, language_version, variables, timeout, callback)
+{
+    var variables_string = _embedded_prepare_variables(variables);
+    ScriptWorker.Embedded(variables_string,variables,function_name,language_name,language_version,timeout,_get_function_body(callback));
+}
+
+/* Custom threads */
+
+
+function _thread_start(id, is_new_thread, name, params, stop_thread_after_finish, max_threads, start_postponed_on_idle, callback)
+{
+    if(ScriptWorker.GetIsRecord())
+    {
+        //Is record, fallback to task call
+        ScriptWorker.CustomThreadStartSlot(id);
+        ScriptWorker.CustomThreadRunFunctionSlot(id, name, JSON.stringify(params), stop_thread_after_finish, start_postponed_on_idle);
+        _call_task(eval(name),params,callback)
+    }else
+    {
+        if(ScriptWorker.CustomThreadExists(id))
+        {
+            //Start in existing thread
+            ScriptWorker.CustomThreadRunFunctionSlot(id, name, JSON.stringify(params), stop_thread_after_finish, start_postponed_on_idle);
+        }else if(is_new_thread && ScriptWorker.CustomThreadCanStartInIddleThread())
+        {
+            //Start in other thread, that is iddle
+            var iddle_thread_id = ScriptWorker.CustomThreadGetIddleThread();
+            if(iddle_thread_id != 0)
+                ScriptWorker.CustomThreadRunFunctionSlot(iddle_thread_id, name, JSON.stringify(params), stop_thread_after_finish, start_postponed_on_idle);
+        }else if(max_threads > ScriptWorker.CustomThreadsTotal())
+        {
+            //Start new thread
+            ScriptWorker.CustomThreadStartSlot(id);
+            ScriptWorker.CustomThreadRunFunctionSlot(id, name, JSON.stringify(params), stop_thread_after_finish, start_postponed_on_idle);
+        }else
+        {
+            //Queue thread to start later
+            ScriptWorker.CustomThreadQueueFunctionSlot(id, name, JSON.stringify(params), stop_thread_after_finish, start_postponed_on_idle, max_threads);
+        }
+
+        ScriptWorker.SetScript(_get_function_body(callback))
+        ScriptWorker.RunSubScript()
+    }
+
+}
+
+function _thread_stop(id)
+{
+    if(typeof(id) == "number")
+    {
+        ScriptWorker.CustomThreadStopSlot(id);
+    }else
+    {
+        ScriptWorker.CustomThreadStopListSlot(id.join(","));
+    }
+}
+
+function _thread_get_status(id)
+{
+    var result = null
+    try
+    {
+        result = JSON.parse(ScriptWorker.CustomThreadGetResult(id))
+    }catch(e)
+    {
+        result = null
+    }
+
+    return {
+        "is_running": ScriptWorker.CustomThreadGetIsRunning(id),
+        "is_success": ScriptWorker.CustomThreadGetIsSuccess(id),
+        "result": result,
+        "error": ScriptWorker.CustomThreadGetError(id),
+    }
+}
+
+function _thread_wait(id, func)
+{
+    _ARG = [id,false]
+    waiter_nofail_next()
+    wait("",function(){
+        var result = true
+        var id = _arguments()
+
+        if(typeof(id) == "number")
+        {
+            if(_thread_get_status(id).is_running)
+            {
+                result = false
+            }
+        }else
+        {
+            for(var i = 0;i<id.length;i++)
+            {
+                if(_thread_get_status(id[i]).is_running)
+                {
+                    result = false
+                    break
+                }
+            }
+        }
+
+        if(result)
+        {
+            _ARG[1] = true
+            _set_result(true);
+        }
+
+    },id,function(){
+        if(!_ARG[1])
+        {
+            _thread_stop(id);
+            fail(tr("Failed to wait for async function call"));
+        }
+        func();
+    });
+
+}

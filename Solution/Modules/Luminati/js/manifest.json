@@ -1,0 +1,34 @@
+{
+	
+	"name":"Luminati",
+	"info":{"en": "Luminati is world's largest proxy network. Thanks to this module, you can use it with BAS.", "ru": "Luminati - cамая большая прокси сеть в мире. Благодаря этому модулю, вы можете использовать ее вместе с БАС."},
+
+	"icon":"luminati.png",
+	"description":"Luminati",
+	"description_small":{"en": "Luminati proxies", "ru": "Luminati прокси"},
+	"major_version": 1,
+	"minor_version": 0,
+	"developer_name": "bablosoft", 
+	"developer_email": "mail.to.twaego@gmail.com", 
+	"developer_site": "https://bablosoft.com",
+	"api_version": 1,
+	"actions":
+	[
+		{
+			"name":"luminati_set_proxy",
+			"description":{"en": "Set Luminati proxy","ru": "Установить Luminati прокси"},
+			"template": "{{Zone}} -> {{Target}}",
+			"is_element": false,
+			"interface": "luminati_set_proxy_interface.js",
+			"select": "luminati_set_proxy_select.js",
+			"code": [{"file":"luminati_set_proxy_code.js", "name": "luminati_set_proxy_code"}]
+		}
+	],
+	"localize": 
+	{
+	},
+	"engine": [],
+	"browser": [],
+	"depends": [],
+	"dll": []	
+}

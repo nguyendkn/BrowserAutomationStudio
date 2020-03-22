@@ -33,3 +33,4 @@ Solution/FastExecuteScriptProtected/webinterface
 Solution/FastExecuteScriptProtected/*.exe
 not_first_run\.txt
 SchedulerDebug
+Solution/Private

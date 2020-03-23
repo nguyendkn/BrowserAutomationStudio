@@ -19,7 +19,7 @@ public:
     if (name == "CloseApplication")
     {
       CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("CloseApplication");
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     if (name == "ShowApplicationLogs")
@@ -60,7 +60,7 @@ public:
       msg->GetArgumentList()->SetSize(2);
       msg->GetArgumentList()->SetString(0, arguments.at(0)->GetStringValue());
       msg->GetArgumentList()->SetString(1, arguments.at(1)->GetStringValue());
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     return false;

@@ -24,7 +24,7 @@ public:
     if (name == "CloseApplication")
     {
       CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("CloseApplication");
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     if (name == "ResizeWindow" && arguments.size() == 2 && arguments.at(0)->IsInt() && arguments.at(1)->IsInt())
@@ -33,7 +33,7 @@ public:
       msg->GetArgumentList()->SetSize(2);
       msg->GetArgumentList()->SetInt(0,arguments.at(0)->GetIntValue());
       msg->GetArgumentList()->SetInt(1,arguments.at(1)->GetIntValue());
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     if (name == "ReadFileAsBinaryInternal" && arguments.size() == 1 && arguments.at(0)->IsString())
@@ -336,7 +336,7 @@ public:
       msg->GetArgumentList()->SetString(0,arguments.at(0)->GetStringValue());
       msg->GetArgumentList()->SetString(1,arguments.at(1)->GetStringValue());
 
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     if (name == "OpenUrl" && arguments.size() == 1 && arguments.at(0)->IsString())
@@ -345,7 +345,7 @@ public:
       msg->GetArgumentList()->SetSize(1);
       msg->GetArgumentList()->SetString(0,arguments.at(0)->GetStringValue());
 
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     if (name == "OpenUrl" && arguments.size() == 2 && arguments.at(0)->IsString() && arguments.at(1)->IsString())
@@ -355,7 +355,7 @@ public:
       msg->GetArgumentList()->SetString(0,arguments.at(0)->GetStringValue());
       msg->GetArgumentList()->SetString(1,arguments.at(1)->GetStringValue());
 
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     if (name == "MoveWindow" && arguments.size() == 2 && arguments.at(0)->IsInt() && arguments.at(1)->IsInt())
@@ -364,13 +364,13 @@ public:
       msg->GetArgumentList()->SetSize(2);
       msg->GetArgumentList()->SetInt(0,arguments.at(0)->GetIntValue());
       msg->GetArgumentList()->SetInt(1,arguments.at(1)->GetIntValue());
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     if (name == "ToggleVisibility")
     {
       CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("ToggleVisibility");
-      browser->SendProcessMessage (PID_BROWSER, msg);
+      browser->GetMainFrame()->SendProcessMessage (PID_BROWSER, msg);
       return true;
     }
     return false;

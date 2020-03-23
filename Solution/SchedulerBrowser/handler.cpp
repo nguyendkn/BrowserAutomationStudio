@@ -58,6 +58,7 @@ bool Handler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
                            CefWindowInfo& windowInfo,
                            CefRefPtr<CefClient>& client,
                            CefBrowserSettings& settings,
+                           CefRefPtr<CefDictionaryValue>& extra_info,
                            bool* no_javascript_access)
 {
     //ShellExecute(NULL, L"open", target_url.ToWString().c_str(), NULL, NULL, SW_SHOWNORMAL);
@@ -87,6 +88,7 @@ void Handler::OnDownloadUpdated(
 }
 
 bool Handler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
+                                       CefRefPtr<CefFrame> frame,
                                         CefProcessId source_process,
                                         CefRefPtr<CefProcessMessage> message)
 {

@@ -54,6 +54,7 @@ class Handler : public CefClient, public CefDisplayHandler, public CefLifeSpanHa
                              CefWindowInfo& windowInfo,
                              CefRefPtr<CefClient>& client,
                              CefBrowserSettings& settings,
+                             CefRefPtr<CefDictionaryValue>& extra_info,
                              bool* no_javascript_access) OVERRIDE;
 
 
@@ -70,6 +71,7 @@ class Handler : public CefClient, public CefDisplayHandler, public CefLifeSpanHa
       CefRefPtr<CefDownloadItemCallback> callback) OVERRIDE;
 
   bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
+                                CefRefPtr<CefFrame> frame,
                                           CefProcessId source_process,
                                           CefRefPtr<CefProcessMessage> message) OVERRIDE;
 

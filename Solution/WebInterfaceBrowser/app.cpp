@@ -128,7 +128,7 @@ void App::OnContextInitialized() {
         }
     }
 
-    CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(window_info, handler, url, browser_settings, NULL);
+    CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(window_info, handler, url, browser_settings, CefDictionaryValue::Create(), NULL);
     HWND hwnd = browser->GetHost()->GetWindowHandle();
 
     if(command_line->HasSwitch("debug"))

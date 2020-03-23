@@ -43,7 +43,7 @@ void App::OnContextInitialized() {
     window_info.SetAsPopup(NULL, Title);
     //window_info.style |= WS_MAXIMIZE;
 
-    CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(window_info, handler, DirString, browser_settings, NULL);
+    CefRefPtr<CefBrowser> browser = CefBrowserHost::CreateBrowserSync(window_info, handler, DirString, browser_settings, CefDictionaryValue::Create(), NULL);
     HWND hwnd = browser->GetHost()->GetWindowHandle();
     handler->hwnd = hwnd;
 

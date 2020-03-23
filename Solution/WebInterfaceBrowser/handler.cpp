@@ -3,6 +3,7 @@
 #include "include/cef_browser.h"
 #include <sstream>
 #include <string>
+#include "filesystem.h"
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
 #include "include/views/cef_browser_view.h"
@@ -83,12 +84,16 @@ void Handler::OnLoadError(CefRefPtr<CefBrowser> browser,
   if (errorCode == ERR_ABORTED)
     return;
 
-  std::stringstream ss;
-  ss << "<html><body bgcolor=\"white\">"
-        "<h2>Failed to load application with error "
-     << std::string(errorText)
-     << " (" << errorCode << ").</h2></body></html>";
-  frame->LoadString(ss.str(), failedUrl);
+  std::wstringstream ss;
+  ss << L"<html><body bgcolor=\"white\">"
+        L"<h2>Failed to load application with error "
+     << errorText.ToWString()
+     << L" (" << errorCode << L").</h2></body></html>";
+  //frame->LoadString(ss.str(), failedUrl);
+
+  std::wstring ErrorString = ss.str();
+  FileSystem _FileSystem;
+  _FileSystem.WriteFileAsBinary(L"error.html",std::vector<char>(ErrorString.begin(),ErrorString.end()), false);
 }
 
 void Handler::OnLoadingStateChange(CefRefPtr<CefBrowser> browser,
@@ -136,6 +141,7 @@ bool Handler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
                            CefWindowInfo& windowInfo,
                            CefRefPtr<CefClient>& client,
                            CefBrowserSettings& settings,
+                            CefRefPtr<CefDictionaryValue>& extra_info,
                            bool* no_javascript_access)
 {
     ShellExecute(NULL, L"open", target_url.ToWString().c_str(), NULL, NULL, SW_SHOWNORMAL);
@@ -143,6 +149,7 @@ bool Handler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 }
 
 bool Handler::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser,
+                                      CefRefPtr<CefFrame> frame,
                                       CefProcessId source_process,
                                       CefRefPtr<CefProcessMessage> message)
 {

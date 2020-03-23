@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     }
 
 
-    //qInstallMessageHandler(myMessageHandler);
+    qInstallMessageHandler(myMessageHandler);
 
     #if defined(BAS_DEBUG)
         CCrashHandler ch;

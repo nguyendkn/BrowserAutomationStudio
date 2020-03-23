@@ -24,12 +24,12 @@ std::string currentDateTime()
 
 void worker_log_init_no_delete(bool do_write)
 {
-    write_logs = true;
+    write_logs = false;
 }
 
 void worker_log_init(bool do_write)
 {
-    write_logs = true;
+    write_logs = false;
     if(write_logs)
     {
         try

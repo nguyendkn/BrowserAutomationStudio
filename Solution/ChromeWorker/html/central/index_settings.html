@@ -221,6 +221,7 @@
 			$("#SkipFrames").val(json["skip_frames"])
 			$("#ForceUTF8Encoding").prop("checked",json["force_utf8"])
 			$("#RestartBrowserProcessOnThreadStart").prop("checked",json["restart"])
+			$("#AutostartDebug").prop("checked",json["autostart_debug"])
 			$("#UseHumanLikeMouseMoves").prop("checked",json["emulatemouse"])
 			$("#ProxiesReconnect").prop("checked",json["proxies_reconnect"])
 			$('.language-switch[data-lang="Node"][data-version="8.6.0"]').prop("checked",json["languages"].indexOf("Node,8.6.0")>=0)
@@ -267,6 +268,7 @@
 				$("#WebglVendor").val("")
 
 				$("#RestartBrowserProcessOnThreadStart").prop("checked",true)
+				$("#AutostartDebug").prop("checked",true)
 				$("#UseHumanLikeMouseMoves").prop("checked",true)
 				$("#ProxiesReconnect").prop("checked",false)
 				$('.language-switch').prop("checked", false)
@@ -316,6 +318,7 @@
 		    			"skip_frames": parseInt($("#SkipFrames").val()),
 		    			"force_utf8": $("#ForceUTF8Encoding").prop("checked"),
 		    			"restart": $("#RestartBrowserProcessOnThreadStart").prop("checked"),
+						"autostart_debug": $("#AutostartDebug").prop("checked"),
 		    			"emulatemouse": $("#UseHumanLikeMouseMoves").prop("checked"),
 		    			"proxies_reconnect": $("#ProxiesReconnect").prop("checked"),
 		    			"languages": languages,
@@ -695,6 +698,16 @@
 		    <div class="text-center "><span class="tr">In order to debug BAS interface, open</span> <a href="#" class="tr" onclick="event.preventDefault();BrowserAutomationStudio_OpenUrl('http://127.0.0.1:%BAS_DEBUG_PORT%/')">this link</a> <span class="tr">in Chrome browser</span>.</div>
 		  </div>
 		</div>
+
+		<div class="form-group" style="margin-top:20px">
+		    <div class="col-sm-offset-5 col-sm-7">
+		      <div class="checkbox">
+		        <label>
+		          <input type="checkbox" id="AutostartDebug"> <span class="tr">Autostart debug interface on each run</span>
+		        </label>
+		      </div>
+		    </div>
+		  </div>
 	</div>
 
 	

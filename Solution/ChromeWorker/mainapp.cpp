@@ -438,6 +438,11 @@ void MainApp::ProcessMessage(CefRefPtr<CefBrowser> browser, CefProcessId source_
     }
     if(message->GetName().ToString() == std::string("NewScenarioBrowserContextCreated"))
     {
+        if(Settings->AutostartDebug() && Data->IsRecord)
+        {
+            std::wstring Url = std::wstring(L"http://127.0.0.1:") + std::to_wstring(Data->RemoteDebuggingPort);
+            ShellExecute(0, 0, Url.c_str(), 0, 0 , SW_SHOW );
+        }
         WORKER_LOG(std::string("OnProcessMessageReceived<<NewScenarioBrowserContextCreated<<"));
         if(!scenariov8handler)
             scenariov8handler = new ScenarioV8Handler();

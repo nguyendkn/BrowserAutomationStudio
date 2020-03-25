@@ -35,6 +35,7 @@ void settings::Init()
     restart = true;
     emulate_mouse = true;
     proxies_reconnect = false;
+    autostart_debug = false;
     debug_toolbox = false;
     debug_scenario = false;
     tunneling = true;
@@ -128,6 +129,10 @@ void settings::Init()
             if(line.find("ProxiesReconnect=true") != std::string::npos)
             {
                 proxies_reconnect = true;
+            }
+            if(line.find("AutostartDebug=true") != std::string::npos)
+            {
+                autostart_debug = true;
             }
             if(line.find("SkipFrames=") != std::string::npos)
             {
@@ -439,6 +444,12 @@ bool settings::ProxiesReconnect()
     return proxies_reconnect;
 }
 
+bool settings::AutostartDebug()
+{
+    return autostart_debug;
+}
+
+
 bool settings::ForceUtf8()
 {
     return force_utf8;
@@ -519,6 +530,7 @@ void settings::SaveToFile()
         {
             outfile<<"EnableFlash="<<((use_flash) ? "true" : "false")<<std::endl;
             outfile<<"ProxiesReconnect="<<((proxies_reconnect) ? "true" : "false")<<std::endl;
+            outfile<<"AutostartDebug="<<((autostart_debug) ? "true" : "false")<<std::endl;
             outfile<<"ForceUtf8="<<((force_utf8) ? "true" : "false")<<std::endl;
             outfile<<"SkipFrames="<<skip_frames<<std::endl;
             outfile<<"ToolboxHeight="<<toolbox_height<<std::endl;
@@ -561,6 +573,7 @@ std::string settings::Serialize()
     picojson::value::object res;
     res["use_flash"] = picojson::value(use_flash);
     res["proxies_reconnect"] = picojson::value(proxies_reconnect);
+    res["autostart_debug"] = picojson::value(autostart_debug);
     res["force_utf8"] = picojson::value(force_utf8);
     res["canvas"] = picojson::value(canvas);
     res["canvas_noise"] = picojson::value(canvas_noise);
@@ -601,6 +614,7 @@ void settings::Deserialize(const std::string & Data)
 
         use_flash = o["use_flash"].get<bool>();
         proxies_reconnect = o["proxies_reconnect"].get<bool>();
+        autostart_debug = o["autostart_debug"].get<bool>();
         force_utf8 = o["force_utf8"].get<bool>();
 
         canvas = o["canvas"].get<std::string>();

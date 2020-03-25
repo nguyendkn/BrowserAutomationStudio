@@ -30,6 +30,7 @@ class settings
     bool restart;
     bool emulate_mouse;
     bool proxies_reconnect;
+    bool autostart_debug;
     bool debug_toolbox;
     bool debug_scenario;
     bool no_embedded;
@@ -44,6 +45,7 @@ public:
     settings();
     bool UseFlash();
     bool ProxiesReconnect();
+    bool AutostartDebug();
     bool ForceUtf8();
     bool Maximized();
     bool DebugToolbox();

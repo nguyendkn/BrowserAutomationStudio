@@ -801,20 +801,21 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
                     {
                         if(Header.second == "_BAS_NO_REFERRER")
                         {
-                            //Data->_NextReferrer = "_BAS_NO_REFERRER";
                             ReqestHeaderMap.erase("Referer");
 
-                            request->SetReferrer("", REFERRER_POLICY_DEFAULT);
+                            //Disable set referer if we are creating new tab
+                            if(url != "tab://new/" && !Data->IsCreatingNewPopup)
+                                request->SetReferrer("", REFERRER_POLICY_DEFAULT);
                         }else
                         {
-
                             ReqestHeaderMap.erase("Referer");
-                            ReqestHeaderMap.insert(std::make_pair(Header.first, Header.second));
-                            //Data->_NextReferrer = Header.second;
 
-                            request->SetReferrer(Header.second, REFERRER_POLICY_DEFAULT);
-
-
+                            //Disable set referer if we are creating new tab
+                            if(url != "tab://new/" && !Data->IsCreatingNewPopup)
+                            {
+                                ReqestHeaderMap.insert(std::make_pair(Header.first, Header.second));
+                                request->SetReferrer(Header.second, REFERRER_POLICY_DEFAULT);
+                            }
                         }
                     }else if(Header.first == "Accept-Language")
                     {
@@ -833,9 +834,8 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
                 }
             }
 
-            //Clear referer only in case if there is "explicit" navigation
-            //Referer won't be removed in case if a link or javascript
-            if(url != "tab://new/" && request->GetTransitionType() == TT_EXPLICIT)
+            //Disable delete referer if we are creating new tab
+            if(url != "tab://new/" && !Data->IsCreatingNewPopup)
             {
                 for(std::shared_ptr<std::map<std::string,std::string> > Map: Data->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
                 {

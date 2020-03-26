@@ -6422,10 +6422,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           SearchUsed = true;
         }
 
+        // Handle Escape
         if (event.keyCode === 27)
         {
           $("#searchinput").val("")
           this.searchinput()
+          SearchUsed = false
         }
       },
 

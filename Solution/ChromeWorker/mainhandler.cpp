@@ -833,10 +833,15 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
                 }
             }
 
-            for(std::shared_ptr<std::map<std::string,std::string> > Map: Data->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
+            //Clear referer only in case if there is "explicit" navigation
+            //Referer won't be removed in case if a link or javascript
+            if(url != "tab://new/" && request->GetTransitionType() == TT_EXPLICIT)
             {
-                if(Map->count("Referer") > 0 && Map->at("Referer") != "_BAS_NO_REFERRER")
-                    Map->erase("Referer");
+                for(std::shared_ptr<std::map<std::string,std::string> > Map: Data->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
+                {
+                    if(Map->count("Referer") > 0 && Map->at("Referer") != "_BAS_NO_REFERRER")
+                        Map->erase("Referer");
+                }
             }
 
             if(!WasContentEncoding)

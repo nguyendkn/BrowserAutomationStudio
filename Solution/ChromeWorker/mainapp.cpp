@@ -1932,9 +1932,8 @@ void MainApp::OnComplete()
 
 CefRefPtr<CefResourceRequestHandler> MainApp::GetResourceRequestHandler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool is_navigation, bool is_download, const CefString& request_initiator, bool& disable_default_handling)
 {
-    //WORKER_LOG(std::string("????????????? GetResourceRequestHandler ") + request->GetURL().ToString());
-
-    if(starts_with(request->GetURL().ToString(),"devtools:"))
+    //Never use default request handler for dev tools
+    if(starts_with(request->GetURL().ToString(),"devtools:") || (browser && browser->GetMainFrame() && starts_with(browser->GetMainFrame()->GetURL().ToString(),"devtools:")))
         return NULL;
 
     int BrowserId = -1;

@@ -10385,6 +10385,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         $('[data-toggle="tooltip"]').tooltip({trigger:'hover', template:'<div class="mytooltip" role="tooltip"><div class="mytooltip-arrow tooltip-arrow"></div><div class="mytooltip-inner tooltip-inner"></div></div>',delay: { "show": 500, "hide": 100 }})
 
+        $('.typeahead').bind('typeahead:close', function() {
+          SearchUsed = false;
+        });
+
+        $('.typeahead').bind('typeahead:open', function() {
+          SearchUsed = true;
+        });
 
         _PreserveMainPosition.AfterUrlChanged(this.model.get("state"))
         _MultiSelectManager.AfterUrlChanged(this.model.get("state"))
@@ -11238,6 +11245,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     var BookmarkList = []
 
+    var SearchUsed = false;
+
     var CurrentGroup = ""
 
     var CurrentTab = ""
@@ -11804,9 +11813,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           }*/
           if (e.keyCode == 13)
           {
+            if(SearchUsed)
+            {
+              SearchUsed = false;
+              return;
+            }
 
             if( e.target.nodeName == "TEXTAREA" ) return
-
 
             if($('.modal.in').length > 0)
             {
@@ -11828,7 +11841,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             {
               el[0].click()
             }
-            
+
           }
         });
     });

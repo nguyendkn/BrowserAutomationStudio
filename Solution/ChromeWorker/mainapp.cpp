@@ -345,8 +345,17 @@ void MainApp::LinkCtrlClick(const std::string& current_url, const std::string& t
     if(_HandlersManager->GetBrowser())
     {
         AddHeaderCallbackInternal("Referer",current_url,"");
-        std::string script = std::string("window.open(") + picojson::value(target_url).serialize() + std::string(")");
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(script,"", 0);
+
+        Data->IsCreatingNewPopup = true;
+        Data->IsCreatingNewPopupIsLoaded = false;
+        Data->IsCreatingNewPopupIsContextCreated = false;
+        Data->IsCreatingNewPopupIsSilent = false;
+        Data->IsCreatingNewPopupIsLoadAfterOpen = true;
+        Data->IsCreatingNewPopupIndexBeforeChange = -1;
+        Data->IsCreatingNewPopupUrl = target_url;
+
+        std::string Script = std::string("window.open('tab://new/')");
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Script,"", 0);
     }
 }
 

@@ -6795,7 +6795,7 @@
         if(index!=0 && IsOnStartExists)
         {
 
-          var isfunctionnew = newres.match("function\\s+[^\\s]+\\(")!=null && newres.match('\\s*section_start\\(\\s*\\"[^\\"]')!=null
+          var isfunctionnew = IsFunctionNode(data[index].id)
           if(!isfunctionnew && isfunction)
           {
             res += "   _call(_on_start, null)!\n\n"

@@ -53,27 +53,11 @@ body {
   padding: 0;
 }
 
-.ais-Pagination-list {
+.result-list {
   justify-content: flex-end;
 }
 
-.ais-Header {
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-}
-
-.ais-SearchBox {
-  padding-right: 32px;
-  padding-left: 32px;
-  margin: 3em 0;
-}
-
-.ais-Pagination {
-  margin-top: 1em;
-}
-
-.ais-Hits-item {
+.result-item {
   padding: 0.5rem;
   margin-top: 0;
 }
@@ -106,6 +90,7 @@ body {
 }
 
 li::before {
+  background: attr(data-icon url);
   position: absolute;
   margin-left: -25px;
   margin-top: 5px;

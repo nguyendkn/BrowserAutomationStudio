@@ -1,25 +1,33 @@
-var SearchTemplate = `
+let searchTemplate = `
   <div class='container-fluid mainscreen'>
-    <div class="ais-SearchBox" id="searchbox">
-    
-    </div>
-    <header class="ais-Header">
-      <div class="description-switcher" id="switcher">
-    
-      </div>
-      <div class="pagination-container" id="pagination">
+    <div class="pagination-container" id="pagination">
 
-      </div>
-    </header>
-    <div class="ais-Hits-container" id="hits">
+    </div>
+    <div class="results-container" id="results">
     
     </div>
   </div>
 `;
 
+let itemTemplate = _.template(`
+<li class="result-item" data-icon="<%= icon %>">
+    <div class="hit hit-action" data-value='<%= k %>'>
+      <%= name %>
+    </div>
+    <div class="hit hit-module">
+      <%= groupId %>
+    </div>
+    <div class="hit hit-docs">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </div>
+    <div class="hit hit-docs">
+      {{sub}}
+    </div>
+</li>`);
+
 function BrowserAutomationStudio_InitSearch() {
   $(".search")
-    .append(SearchTemplate)
+    .append(searchTemplate)
     .hide();
 
   let keys = Object.keys(_A);
@@ -58,73 +66,38 @@ function BrowserAutomationStudio_InitSearch() {
     }
   });
 
-  let InstantSearch = instantsearch({
-    indexName: "InstantSearch",
-    searchClient: {
-      currentPage: 0,
+  $("#searchinput").keyup(event => {
+    $('#results').empty();
 
-      getHits(params) {
-        let query = params.query;
-        return actions.filter(el => {
-          return el.name.toLowerCase().indexOf(query) >= 0;
-        });
-      },
-
-      search(requests) {
-        return new Promise(resolve => {
-          let hitsResult = this.getHits(requests[0].params);
-          this.currentPage = this.currentPage == 0 ? 1 : 0;
-          resolve({
-            results: [
-              {
-                nbHits: hitsResult.length,
-                hits: hitsResult,
-                hitsPerPage: 6,
-                nbPages: 2,
-                page: 0
-              }
-            ]
-          });
-        });
+    let query = $("#searchinput").val();
+    let results = actions.filter(el => {
+      if (el.name.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+        return true;
       }
-    }
+      return false;
+    });
+
+    console.log(query);
+    console.log(results);
+
+    let box = $('<ol class="result-list"></ol>')
+    results.forEach((val) => {
+      if (val.groupId && val.groupId.length > 0) {
+        box.append(itemTemplate({
+          icon: _G[val.groupId]['icon'],
+          groupId: val.groupId,
+          name: val.name,
+          k: val.k
+        }));
+      } else {
+        box.append(itemTemplate({
+          groupId: val.groupId,
+          name: val.name,
+          k: val.k
+        }));
+      }
+
+    });
+    $('#results').append(box);
   });
-
-  InstantSearch.addWidgets([
-    customPagination({
-      container: document.querySelector("#pagination")
-    })
-  ]);
-
-  InstantSearch.addWidget(
-    instantsearch.widgets.searchBox({
-      container: "#searchinput"
-    })
-  );
-
-  InstantSearch.addWidget(
-    instantsearch.widgets.hits({
-      container: "#hits",
-      templates: {
-        item: `
-				  <div class="hit hit-action" data-value='{{k}}'>
-					  <div>
-						  {{name}}
-					  </div>
-				  </div>
-				  <div class="hit hit-module">
-					  {{groupName}}
-				  </div>
-				  <div class="hit hit-docs">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				  </div>
-				  <div class="hit hit-docs">
-					  {{sub}}
-				  </div>
-			  `
-      }
-    })
-  );
-
-  InstantSearch.start();
 }

@@ -1,0 +1,139 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.pagination-container {
+  align-items: center;
+  display: flex;
+}
+
+.pagination-results,
+.pagination-pages {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 1.33;
+}
+
+.pagination-results {
+  color: #848ab8;
+}
+
+.pagination-pages {
+  color: #5d6494;
+}
+
+.pagination-button-right {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+  margin-right: 8px;
+  left: -1px;
+}
+
+.pagination-button-left {
+  border-bottom-right-radius: 2px;
+  border-top-right-radius: 2px;
+  margin-left: 8px;
+}
+
+.pagination-button > svg {
+  color: #3a416f;
+  height: 14px;
+  width: 14px;
+}
+
+.pagination-button {
+  background-image: linear-gradient(rgb(255, 255, 255), rgb(249, 250, 251));
+  box-shadow: rgba(22, 29, 37, 0.05) 0px 1px 0px 0px;
+  border-color: #c5c9e0;
+  border-style: solid;
+  border-width: 1px;
+  height: 25px;
+  width: 25px;
+  padding: 0;
+}
+
+.ais-Pagination-list {
+  justify-content: flex-end;
+}
+
+.ais-Header {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.ais-SearchBox {
+  padding-right: 32px;
+  padding-left: 32px;
+  margin: 3em 0;
+}
+
+.ais-Pagination {
+  margin-top: 1em;
+}
+
+.ais-Hits-item {
+  padding: 0.5rem;
+  margin-top: 0;
+}
+
+.hit-action {
+  font-weight: bold;
+  font-size: 16px;
+  color: #21243d;
+  display: flex;
+}
+
+.hit-module {
+  margin-bottom: 8px;
+  margin-top: 4px;
+  font-weight: normal;
+  font-size: 12px;
+  color: #5d6494;
+  display: flex;
+}
+
+.hit-docs {
+  font-family: Hind, Arial, sans-serif;
+  font-weight: normal;
+  font-size: 14px;
+  color: #5d6494;
+}
+
+.hit {
+  line-height: 1.33;
+}
+
+li::before {
+  position: absolute;
+  margin-left: -25px;
+  margin-top: 5px;
+  height: 20px;
+  width: 20px;
+  content: "";
+}
+
+@media (min-width: 961px) {
+  ol {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 960px) {
+  ol {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  ol {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+ol {
+  padding: 0 0 0 20px;
+  display: grid;
+  margin: 0;
+}

@@ -286,6 +286,9 @@
         </div>
       </div>
     </div>
+    <div class="search">
+
+    </div>
     <div class="actions">
       <div class="leftpanel">
         <button type="button" id="showbookmarks" class="btn btn-default btn-sm" style="margin-bottom:5px"><i class="fa fa-bookmark" aria-hidden="true"></i></button>
@@ -6003,6 +6006,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="backbone.js" type="text/javascript"></script>
   <script src="bootstrap.min.js"></script>
   <script src="bootbox.min.js"></script>
+  <script src="./search/instantsearch.js"></script>
   <script src="../actions/actions.js"></script>
   <script src="translate.js"></script>
   <script src="expressioneditor.js"></script>
@@ -6018,8 +6022,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="vs/loader.js"></script>
   <script src="unfold-tooltip.js"></script>
   <script src="multiselectmanager.js"></script>
-
+  
   <!-- Actions Search (scripts) -->
+  <script src="./search/widgets/pagination.js"></script>
   <script src="./search/search.js"></script>
 
   <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
@@ -6207,6 +6212,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #searchinputclear": "searchinputclear",
         "input #searchinput": "searchinput",
         "keyup #searchinput": "searchinputkeyup",
+        "click #searchinput": "searchinputclick",
         "focus .dropdown-menu-path": "dropdownmenupathfocus",
         "blur .dropdown-menu-path": "dropdownmenupathblur",
         "click .dropdown-menu-path": "stoppropagation",
@@ -6419,9 +6425,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       {
         if (event.keyCode === 27)
         {
-          $("#searchinput").val("")
-          this.searchinput()
+          $('.actions').show();
+          $('.search').hide();
         }
+      },
+
+      searchinputclick: function(event)
+      {
+        $('.actions').hide();
+        $('.search').show();
       },
 
       searchinput: function(event)

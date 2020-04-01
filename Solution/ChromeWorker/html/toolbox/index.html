@@ -11804,12 +11804,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           }*/
           if (e.keyCode == 13)
           {
-            if(SearchUsed)
-            {
-              SearchUsed = false;
-              return;
-            }
-
             if( e.target.nodeName == "TEXTAREA" ) return
 
             if($('.modal.in').length > 0)

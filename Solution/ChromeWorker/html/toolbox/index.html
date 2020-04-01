@@ -276,7 +276,7 @@
       <div class="container-fluid">
         <div class="input-group input-group-sm">
           <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
-          <input type="text" class="form-control typeahead" id="searchinput" placeholder="What to search?"  aria-describedby="basic-addon1"
+          <input type="text" class="form-control" id="searchinput" placeholder="What to search?"  aria-describedby="basic-addon1"
           onfocus="this.placeholder = tr(`Search by action name, name part or keyword. Examples: 'Ignore Errors', 'phone'.`)"
           onblur="this.placeholder = tr(`What to search?`)"
           >
@@ -10386,14 +10386,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         $('[data-toggle="tooltip"]').tooltip({trigger:'hover', template:'<div class="mytooltip" role="tooltip"><div class="mytooltip-arrow tooltip-arrow"></div><div class="mytooltip-inner tooltip-inner"></div></div>',delay: { "show": 500, "hide": 100 }})
 
-        $('.typeahead').bind('typeahead:close', function() {
-          SearchUsed = false;
-        });
-
-        $('.typeahead').bind('typeahead:open', function() {
-          SearchUsed = true;
-        });
-
         _PreserveMainPosition.AfterUrlChanged(this.model.get("state"))
         _MultiSelectManager.AfterUrlChanged(this.model.get("state"))
 
@@ -11245,8 +11237,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     var ActionHistory = []
 
     var BookmarkList = []
-
-    var SearchUsed = false;
 
     var CurrentGroup = ""
 

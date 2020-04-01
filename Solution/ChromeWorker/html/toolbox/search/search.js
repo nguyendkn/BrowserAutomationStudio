@@ -3,16 +3,14 @@ let searchTemplate = `
     <div class='pagination-container' id='pagination'>
       <p class='pagination-results' id='count'>0 results</p>
       <nav>
-        <button class='pagination-button-left pagination-button' data-value='' id='prevpage' aria-label="Previous results">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <button class='pagination-button-left pagination-button' data-value='' id='prevpage' aria-label='Previous results'>
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 24 24">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
           </svg>
         </button>
-        <button class='pagination-button-left pagination-button' data-value='' id='nextpage' aria-label="Next results">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+        <button class='pagination-button-right pagination-button' data-value='' id='nextpage' aria-label='Next results'>
+          <svg xmlns='http://www.w3.org/2000/svg' viewBox="0 0 24 24">
             <line x1="5" y1="12" x2="19" y2="12"></line>
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
@@ -42,7 +40,9 @@ let itemTemplate = _.template(`
 </li>`);
 
 function BrowserAutomationStudio_InitSearch() {
-  $('.search').append(searchTemplate).hide();
+  $(".search")
+    .append(searchTemplate)
+    .hide();
 
   let keys = Object.keys(_A);
   let actions = [];
@@ -96,7 +96,7 @@ function BrowserAutomationStudio_InitSearch() {
     console.log(results);
 
     let container = $("#results");
-    let counter = $('#count');
+    let counter = $("#count");
 
     results.forEach(val => {
       if (val.groupId && val.groupId.length > 0) {
@@ -118,6 +118,10 @@ function BrowserAutomationStudio_InitSearch() {
           })
         );
       }
+    });
+
+    $(".hit-action").click(function() {
+      _Router.navigate("#!/" + $(this).data("value"), true);
     });
 
     counter.html(`${results.length} results`);

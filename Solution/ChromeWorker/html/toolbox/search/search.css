@@ -10,9 +10,10 @@ body {
 
 .pagination-results,
 .pagination-pages {
-  font-weight: normal;
-  font-size: 14px;
   line-height: 1.33;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 1em 0 1em 0;
 }
 
 .pagination-results {
@@ -37,9 +38,14 @@ body {
 }
 
 .pagination-button > svg {
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  stroke: currentColor;
+  stroke-width: 1;
   color: #3a416f;
   height: 14px;
   width: 14px;
+  fill: none;
 }
 
 .pagination-button {

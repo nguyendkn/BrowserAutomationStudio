@@ -900,7 +900,7 @@ namespace BrowserAutomationStudioFramework
 
     QString ScriptWorker::Preprocess(const QString& script)
     {
-        return GetPreprocessor()->Preprocess(script, 0);
+        return GetPreprocessor()->Preprocess(script, 0 , false);
     }
 
     void ScriptWorker::FailUser(const QString& message, bool dont_create_more)

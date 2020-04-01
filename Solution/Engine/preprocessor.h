@@ -12,9 +12,9 @@ namespace BrowserAutomationStudioFramework
 
         struct GotoLabelData
         {
-          bool IsGotoLabel;
-          int Index;
-          QString Label;
+        bool IsGotoLabel;
+        int Index;
+        QString Label;
         };
         GotoLabelData ParseSetGotoLabel(const QString& str,int start);
         QString Encrypt(const QString& Script,int ParanoicLevel);
@@ -22,16 +22,27 @@ namespace BrowserAutomationStudioFramework
         QString Key;
         int EncryptIterator;
         bool IsRecord;
+
+        struct ParsedMainScript
+        {
+            QString MainScript;
+            QStringList Functions;
+        };
+
+        ParsedMainScript ParseMainScript(const QString& Script);
+        void PreprocessInternal(QString& Res,int ParanoicLevel,QMap<QString,QString>& GotoData);
+        void PreprocessSections(QString& Res);
+
     public:
         explicit Preprocessor(QObject *parent = 0);
         virtual void SetEncryptor(IEncryptor* Encryptor);
-        virtual void SetKey(const QString& Key);
+            virtual void SetKey(const QString& Key);
 
         void SetIsRecord(bool IsRecord);
         bool GetIsRecord();
 
         void GenerateKey();
-        virtual QString Preprocess(const QString& Script,int ParanoicLevel);
+        virtual QString Preprocess(const QString& Script,int ParanoicLevel,bool IsMainScript);
 
         virtual QString Decrypt(const QString& Script);
         virtual QString DecryptNotSafe(const QString& Script);

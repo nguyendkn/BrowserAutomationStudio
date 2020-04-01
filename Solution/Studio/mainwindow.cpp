@@ -2601,11 +2601,11 @@ void MainWindow::RunInternal()
         QFile f(":/studio/data/default.txt");
         if(f.open(QFile::ReadOnly | QFile::Text))
         {
-            worker->SetScript(_Preprocessor->Preprocess(QString::fromUtf8(f.readAll()),0));
+            worker->SetScript(_Preprocessor->Preprocess(QString::fromUtf8(f.readAll()),0,true));
         }
         f.close();
     }else
-        worker->SetScript(_Preprocessor->Preprocess(TextEditor->GetText(),0));
+        worker->SetScript(_Preprocessor->Preprocess(TextEditor->GetText(),0,true));
 
 
     if(IsRecord)

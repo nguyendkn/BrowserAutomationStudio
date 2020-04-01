@@ -976,7 +976,7 @@ void MainWindow::Start()
 
     worker->SetLogger(ComplexLoggerLog);
 
-    worker->SetScript(_Preprocessor->Preprocess(loader.GetScript(),0));
+    worker->SetScript(_Preprocessor->Preprocess(loader.GetScript(),0,true));
     _EmbeddedLanguageManager->ReadData(loader.GetEmbeddedData());
 
     worker->SetScriptResources(ScriptResources);

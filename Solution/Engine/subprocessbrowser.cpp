@@ -969,7 +969,7 @@ namespace BrowserAutomationStudioFramework
                 QRegExp Regexp("section\\_start\\(\\s*\\\"[^\\\"]*\\\"\\s*\\,\\s*(\\-?\\d*)\\)\\!");
                 if(Regexp.indexIn(code, 0)>=0)
                     NextAction = Regexp.cap(1);
-                QString Script = Worker->GetPreprocessor()->Preprocess(QString(" { ") + code + QString(" } "),0);
+                QString Script = Worker->GetPreprocessor()->Preprocess(QString(" { ") + code + QString(" } "),0,false);
                 Worker->SetScript(Script);
                 emit WaitCode();
             }

@@ -1,16 +1,23 @@
 function SearchManager() {
+
   this.actions = [];
 
   this.Show = function () {
     $("body").css("overflow-y", "hidden");
+    $("#pagination").show();
     $(".actions").hide();
     $(".search").show();
+
+    this.Recent();
   };
 
   this.Hide = function () {
     $("body").css("overfloy-y", "visible");
+    $("#pagination").hide();
     $(".actions").show();
     $(".search").hide();
+
+    $("#searchinput").val("");
   };
 
   this.Search = function (query) {
@@ -85,12 +92,13 @@ function SearchManager() {
       _Router.navigate("#!/" + $(this).data("value"), true);
     });
 
-    counter.html(`${results.length} results`);
+    counter.html(`${items.length} results`);
   }
 
   this.Render = function () {
     $(".search").append(this.searchTemplate);
     $(".search").hide();
+    $("#pagination").hide();
 
     this.actions = [];
 
@@ -134,30 +142,6 @@ function SearchManager() {
   this.Highlight = function (str, element) {
     
   }
-
-  this.searchTemplate = `
-  <div class="container-fluid mainscreen">
-    <span class="input-group pagination-container" id="pagination" style="display: none;">
-      <p class="pagination-results" id="count">0 results</p>
-      <nav>
-        <button class="pagination-button-left pagination-button" data-value="" id="prevpage" aria-label="Previous results">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-        </button>
-        <button class="pagination-button-right pagination-button" data-value="" id="nextpage" aria-label="Next results">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <line x1="5" y1="12" x2="19" y2="12" />
-            <polyline points="12 5 19 12 12 19" />
-          </svg>
-        </button>
-      </nav>
-      <p class="pagination-pages">1 - 9</p>
-    </span>
-    <ol class="results-container" id="results"></ol>
-  </div>
-`;
 
   this.itemTemplate = _.template(`
 <li class="result-item">

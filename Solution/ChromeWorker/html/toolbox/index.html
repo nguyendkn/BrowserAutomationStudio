@@ -280,6 +280,28 @@
           onfocus="this.placeholder = tr(`Search by action name, name part or keyword. Examples: 'Ignore Errors', 'phone'.`)"
           onblur="this.placeholder = tr(`What to search?`)"
           >
+          <span class="input-group-addon" id="pagination">
+            <span class="pagination-results" id="count">
+              0 results
+            </span>
+            <span class="pagination-buttons">
+              <button class="pagination-button-left pagination-button" id="prevpage">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <line x1="19" y1="12" x2="5" y2="12" />
+                  <polyline points="12 19 5 12 12 5" />
+                </svg>
+              </button>
+              <button class="pagination-button-right pagination-button" id="nextpage">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </button>
+            </span>
+            <span class="pagination-pages" id="pages">
+              1 - 9
+            </span>
+          </span>
           <span class="input-group-btn">
             <button class="btn btn-default" type="button" id="searchinputclear"><i class="fa fa-times" aria-hidden="true"></i></button>
           </span>
@@ -287,7 +309,11 @@
       </div>
     </div>
     <div class="search">
-
+      <div class="container-fluid mainscreen">
+        <ol class="results-container" id="results">
+        
+        </ol>
+      </div>
     </div>
     <div class="actions">
       <div class="leftpanel">
@@ -6420,36 +6446,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         }
       },
 
-      searchinputkeyup: function(event)
+      searchinputclear: function(event)
       {
-        if (event.keyCode === 27)
-        {
-          $("#searchinput").val("");
-          _SearchManager.Hide();
-          return;
-        }
-
-        _SearchManager.Search($("#searchinput").val());
+        _SearchManager.Hide();
       },
 
       searchinputclick: function(event)
       {
         _SearchManager.Show();
-        _SearchManager.Recent();
       },
 
       searchinput: function(event)
       {
-        var tools = $(".toolbutton")
-        var searchterm = $("#searchinput").val().toLowerCase()
-
-      },
-
-      searchinputclear: function(event)
-      {
-        event.preventDefault();
-        $("#searchinput").val("")
-        this.searchinput()
+        _SearchManager.Search($("#searchinput").val());
       },
 
       usewaiterchange: function(event)
@@ -11788,10 +11797,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         $(document).keyup(function(e) {
           if($("#NodeAll").length>0)
             return
-          /*if (e.keyCode == 27)
+          if (e.keyCode == 27)
           {
-
-            if($('.modal.in').length > 0)
+            if ($(".search").is(":visible"))
+            {
+              _SearchManager.Hide();
+            }
+            /*if($('.modal.in').length > 0)
             {
               $('#' + $('.modal.in').attr("id")).modal('hide');
               return;
@@ -11813,9 +11825,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             if(el.length > 0)
             {
               el[0].click()
-            }
+            }*/
             
-          }*/
+          }
           if (e.keyCode == 13)
           {
             if( e.target.nodeName == "TEXTAREA" ) return

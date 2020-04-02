@@ -6424,15 +6424,18 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       {
         if (event.keyCode === 27)
         {
-          $('.actions').show();
-          $('.search').hide();
+          $("#searchinput").val("");
+          _SearchManager.Hide();
+          return;
         }
+
+        _SearchManager.Search($("#searchinput").val());
       },
 
       searchinputclick: function(event)
       {
-        $('.actions').hide();
-        $('.search').show();
+        _SearchManager.Show();
+        _SearchManager.Recent();
       },
 
       searchinput: function(event)
@@ -10410,13 +10413,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         BrowserAutomationStudio_InstallBookmarks();
 
-        BrowserAutomationStudio_InitSearch();
-
         BrowserAutomationStudio_TestPathInternal();
 
         BrowserAutomationStudio_SetExecuteType();
 
-        
+        _SearchManager.Render();
         
         $("body").show()
 
@@ -11220,6 +11221,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     var _PreserveMainPosition = new PreserveMainPosition();
 
     var _MultiSelectManager = new MultiSelectManager();
+
+    var _SearchManager = new SearchManager();
 
     var _GobalModel = new GobalModel();
 

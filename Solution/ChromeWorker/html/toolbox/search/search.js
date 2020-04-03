@@ -1,18 +1,47 @@
 function SearchManager() {
+  let lastQuery = "";
 
-  this.actions = [];
+  let maxItems = 8;
+  let current = 0;
+  let total = 0;
 
-  this.Show = function () {
+  let actions = [];
+  let pages = [];
+
+  const disableScrolling = () => {
     $("body").css("overflow-y", "hidden");
+  };
+
+  const enableScrolling = () => {
+    $("body").css("overflow-y", "visible");
+  };
+
+  this.Test = function() {
+    let itemHeight = $(".result-item").height();
+    let itemWidth = $(".result-item").width();
+    let windowHeight = $(window).height();
+    let windowWidth = $(window).width();
+
+    let maxColumns = Math.floor(windowWidth / itemWidth);
+    let maxRows = Math.floor(windowHeight / itemHeight) - 1;
+    console.log(maxColumns);
+    console.log(maxRows);
+  };
+
+  this.Show = function() {
+    disableScrolling();
+
     $("#pagination").show();
     $(".actions").hide();
     $(".search").show();
 
+    this.Test();
     this.Recent();
   };
 
-  this.Hide = function () {
-    $("body").css("overfloy-y", "visible");
+  this.Hide = function() {
+    enableScrolling();
+
     $("#pagination").hide();
     $(".actions").show();
     $(".search").hide();
@@ -20,87 +49,96 @@ function SearchManager() {
     $("#searchinput").val("");
   };
 
-  this.Search = function (query) {
-    $("#results").empty();
+  this.Search = function(query) {
+    let container = $("#results");
+    container.unmark();
+    container.empty();
 
-    let items = this.actions
-      .filter(el => {
-        if (el.name.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
-          return true;
-        }
-        return false;
-      })
-      .map(el => {
-        let queryLower = query.toLowerCase();
-        let nameLower = el.name.toLowerCase();
-        let hStart = nameLower.indexOf(queryLower);
-        let hEnd = hStart + queryLower.length;
-        return {
-          highlightStart: hStart,
-          highlightEnd: hEnd,
-          element: el
-        };
-      });
+    let items = actions.filter(el => {
+      let queryLower = query.toLowerCase();
+      let nameLower = el.name.toLowerCase();
+      return nameLower.indexOf(queryLower) >= 0;
+    });
+    pages = _.chunk(items, maxItems);
+    total = items.length;
+    lastQuery = query;
 
-    this.RenderItems(items);
+    this.RenderPage(pages[0]);
   };
 
-  this.Recent = function () {
-    $("#results").empty();
-
-    let items = this.actions
-      .filter(el => ActionHistory.includes(el.key))
-      .map(el => {
-        return {
-          element: el
-        };
-      });
-
-    this.RenderItems(items);
-  }
-
-  this.RenderItems = function (items) {
+  this.Recent = function() {
     let container = $("#results");
-    let counter = $("#count");
+    container.unmark();
+    container.empty();
 
-    items.forEach(result => {
-      let val = result.element;
-      if (val.groupId && val.groupId.length > 0) {
-        container.append(
-          this.itemTemplate({
-            icon: _G[val.groupId]["icon"],
-            description: val.description,
-            groupId: val.groupId,
-            name: val.name,
-            key: val.key
-          })
-        );
-      } else {
-        container.append(
-          this.itemTemplate({
-            description: val.description,
-            groupId: val.groupId,
-            name: val.name,
-            key: val.key,
-            icon: ""
-          })
-        );
-      }
+    let items = actions.filter(el => ActionHistory.includes(el.key));
+    pages = _.chunk(items, maxItems);
+    total = items.length;
+
+    this.RenderPage(pages[0]);
+  };
+
+  this.RenderPage = function(page) {
+    let container = $("#results");
+    let countBox = $("#count");
+    let pagesBox = $("#pages");
+    container.empty();
+
+    page.forEach(item => {
+      container.append(
+        template({
+          icon:
+            item.groupId && item.groupId.length > 0
+              ? _G[item.groupId]["icon"]
+              : "",
+          description: item.description,
+          groupId: item.groupId,
+          name: item.name,
+          key: item.key
+        })
+      );
     });
 
-    $(".hit-action").click(function () {
-      _Router.navigate("#!/" + $(this).data("value"), true);
+    $(".hit-action").click(function() {
+      enableScrolling();
+      
+      let value = $(this).data("value");
+      _Router.navigate(`#!/${value}`, true);
     });
 
-    counter.html(`${items.length} results`);
-  }
+    pagesBox.html(`${current + 1} - ${pages.length}`);
+    countBox.html(`${total} results`);
 
-  this.Render = function () {
-    $(".search").append(this.searchTemplate);
-    $(".search").hide();
+    if (pages.length == 1) {
+      $("#nextpage").prop("disabled", true);
+      $("#prevpage").prop("disabled", true);
+    } else if (current == pages.length - 1) {
+      $("#nextpage").prop("disabled", true);
+      $("#prevpage").prop("disabled", false);
+    } else if (current == 0) {
+      $("#prevpage").prop("disabled", true);
+      $("#nextpage").prop("disabled", false);
+    } else {
+      $("#nextpage").prop("disabled", false);
+      $("#prevpage").prop("disabled", false);
+    }
+
+    $("#results").mark(lastQuery);
+  };
+
+  this.Render = function() {
+    console.log('rendered');
+    $("#nextpage").click(() => {
+      this.RenderPage(pages[++current]);
+    });
+
+    $("#prevpage").click(() => {
+      this.RenderPage(pages[--current]);
+    });
+
     $("#pagination").hide();
-
-    this.actions = [];
+    $(".search").hide();
+    actions = [];
 
     Object.keys(_A).forEach(key => {
       let el = _A[key];
@@ -116,44 +154,29 @@ function SearchManager() {
           }
         }
 
-        if (el["suggestion"]) {
-          this.actions.push({
-            suggestionEn: el["suggestion"]["en"],
-            suggestionRu: el["suggestion"]["ru"],
-            description: el["description"],
-            groupName: groupName,
-            name: tr(el["name"]),
-            groupId: groupId,
-            key: key
-          });
-        } else {
-          this.actions.push({
-            description: el["description"],
-            groupName: groupName,
-            name: tr(el["name"]),
-            groupId: groupId,
-            key: key
-          });
-        }
+        actions.push({
+          description: el["description"],
+          groupName: groupName,
+          name: tr(el["name"]),
+          groupId: groupId,
+          key: key
+        });
       }
     });
-  }
+  };
 
-  this.Highlight = function (str, element) {
-    
-  }
-
-  this.itemTemplate = _.template(`
-<li class="result-item">
-    <img src="<%= icon %>">
-    <div class="hit hit-action" data-value="<%= key %>">
-      <%= name %>
-    </div>
-    <div class="hit hit-module">
-      <%= groupId %>
-    </div>
-    <div class="hit hit-docs">
-      <%= description %>
-    </div>
-</li>`);
+  let template = _.template(`
+    <li class="result-item">
+        <img src="<%= icon %>">
+        <div class="hit hit-action" data-value="<%= key %>">
+          <%= name %>
+        </div>
+        <div class="hit hit-module">
+          <%= groupId %>
+        </div>
+        <div class="hit hit-docs">
+          <%= description %>
+        </div>
+    </li>
+  `);
 }

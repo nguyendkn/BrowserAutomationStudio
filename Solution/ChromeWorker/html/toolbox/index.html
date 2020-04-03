@@ -299,7 +299,7 @@
               </button>
             </span>
             <span class="pagination-pages" id="pages">
-              1 - 9
+              1 - 1
             </span>
           </span>
           <span class="input-group-btn">
@@ -309,11 +309,9 @@
       </div>
     </div>
     <div class="search">
-      <div class="container-fluid mainscreen">
-        <ol class="results-container" id="results">
+      <ol class="results-container" id="results">
         
-        </ol>
-      </div>
+      </ol>
     </div>
     <div class="actions">
       <div class="leftpanel">
@@ -6038,6 +6036,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="rappid.js"></script>
   <script src="tooledViewPlugin.js"></script>
   <script src="preservemainpage.js"></script>
+  <script src="./search/mark.js"></script>
   <script src="databasefilter.js"></script>
   <script src="sortable.js"></script>
   <script src="cursorposition.js"></script>
@@ -6049,6 +6048,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="multiselectmanager.js"></script>
   
   <!-- Actions Search (scripts) -->
+  
   
   <script src="./search/search.js"></script>
 
@@ -6448,17 +6448,25 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       searchinputclear: function(event)
       {
+        if ($(".search").is(":hidden")) return;
         _SearchManager.Hide();
       },
 
       searchinputclick: function(event)
       {
+        if ($(".search").is(":visible")) return;
         _SearchManager.Show();
       },
 
       searchinput: function(event)
       {
-        _SearchManager.Search($("#searchinput").val());
+        var value = $("#searchinput").val();
+
+        if (value) {
+          _SearchManager.Search(value);
+        } else {
+          _SearchManager.Recent();
+        }
       },
 
       usewaiterchange: function(event)

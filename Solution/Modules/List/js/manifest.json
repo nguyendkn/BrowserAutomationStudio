@@ -224,6 +224,16 @@
 	],
 	"localize": 
 	{
+		"Remove an item with a specific value from the specified list.": {"ru": "Удалить элемент имеющий определенное значение из указанного списка."},
+		"Remove an item with a specific index from the specified list.": {"ru": "Удалить элемент имеющий определенный индекс из указанного списка."},
+		"Get the item with a specific index from the specified list.": {"ru": "Получить элемент с определенным индексом из указанного списка."},
+		"Insert an item into the specified list at a specific index.": {"ru": "Вставить элемент в указанный список по определенному индексу."},
+		"Set the specific value of an item in the specified list.": {"ru": "Установить определенное значение элемента в указанном списке."},
+		"Create a new list with initial values ​​(optional).": {"ru": "Создать новый список с начальными значениями (опционально)."},
+		"Get the random item from the specified list.": {"ru": "Получить случайный элемент из указанного списка."},
+		"Get the last item from the specified list.": {"ru": "Получить последний элемент из указанного списка."},
+		"Get the first item from the specified list.": {"ru": "Получить первый элемент из указанного списка."},
+		"Add an item to the end of the list.": {"ru": "Добавить элемент в конец списка."},
 		"Variable To Save List" : {"ru": "Переменная для сохранения списка"},
 		"Value 1. Can be empty" : {"ru": "Значение 1. Может быть пустым"},
 		"Value 2. Can be empty" : {"ru": "Значение 2. Может быть пустым"},

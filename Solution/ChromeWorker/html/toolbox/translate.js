@@ -862,6 +862,10 @@ _L =
 	"Save all browser cookies into variable.": {"ru": "Сохранить все куки браузера в переменную."},
 	"Set cookies for browser.": {"ru": "Установить куки для браузера."},
 
+	/* Tools */
+	"Generate a random string with a given length and allowed characters.": {"ru": "Сгенерировать случайную строку с заданной длиной и разрешенными символами."},
+	"Generate a random integer in a given range.": {"ru": "Сгенерировать случайное целое число в заданном диапазоне."},
+
 	"Prompt user input result": {"ru": "Результат ввода"},
 	"Http auth login": {"ru": "HTTP Аутентификация логин"},
 	"Http auth password": {"ru": "HTTP Аутентификация пароль"},

@@ -309,6 +309,12 @@
       </div>
     </div>
     <div class="search">
+      <span class="results-recent">
+        Recent actions
+      </span>
+      <span class="results-empty">
+        Nothing found
+      </span>
       <ol class="results-container" id="results">
         
       </ol>
@@ -6461,7 +6467,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       searchinput: function(event)
       {
         var value = $("#searchinput").val();
-
         if (value) {
           _SearchManager.Search(value);
         } else {
@@ -11796,6 +11801,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         })
 
         $( window ).resize(function() {
+          $(".search").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px")
           $(".actions").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px")
           $(".leftactionpanel").css("height", window.innerHeight * (100.0 / _Z) - 45 + "px")
           $(".leftactionpaneltitlebody").css("min-height", window.innerHeight * (100.0 / _Z) - 95 + "px")

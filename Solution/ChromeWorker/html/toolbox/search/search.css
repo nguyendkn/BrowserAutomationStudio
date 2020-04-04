@@ -3,8 +3,11 @@
   display: flex;
 }
 
+.pagination-buttons {
+  display: inline-flex;
+}
+
 .pagination-results,
-.pagination-buttons,
 .pagination-pages {
   margin: 1em 0 1em 0;
 }
@@ -15,6 +18,10 @@
 
 .pagination-pages {
   color: #5d6494;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
 }
 
 .pagination-button-right {
@@ -49,6 +56,11 @@
   height: 18px;
   width: 18px;
   padding: 0;
+}
+
+#pagination {
+  max-width: 175px;
+  width: 175px;
 }
 
 .hit-action:hover {
@@ -103,6 +115,23 @@
   list-style-type: none;
   padding: 0 0 0 20px;
   display: grid;
+}
+
+.results-recent {
+  margin: 0.5em 37px 0.5em 37px;
+  text-align: center;
+  color: #3a416f;
+  font-size: 18px;
+  display: block;
+}
+
+.results-empty {
+  justify-content: center;
+  text-align: center;
+  margin-top: 5.5em;
+  color: #3a416f;
+  font-size: 18px;
+  display: flex;
 }
 
 .result-item > img {

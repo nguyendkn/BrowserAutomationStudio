@@ -1,88 +1,79 @@
 function SearchManager() {
   let lastQuery = "";
 
-  let maxItems = 8;
-  let current = 0;
-  let total = 0;
-
   let actions = [];
   let pages = [];
 
-  const disableScrolling = () => {
-    $("body").css("overflow-y", "hidden");
-  };
+  let current = 0;
+  let total = 0;
 
-  const enableScrolling = () => {
-    $("body").css("overflow-y", "visible");
-  };
-
-  this.Test = function() {
-    let itemHeight = $(".result-item").height();
-    let itemWidth = $(".result-item").width();
-    let windowHeight = $(window).height();
-    let windowWidth = $(window).width();
-
-    let maxColumns = Math.floor(windowWidth / itemWidth);
-    let maxRows = Math.floor(windowHeight / itemHeight) - 1;
-    console.log(maxColumns);
-    console.log(maxRows);
-  };
-
-  this.Show = function() {
-    disableScrolling();
-
-    $("#pagination").show();
-    $(".actions").hide();
-    $(".search").show();
-
-    this.Test();
-    this.Recent();
-  };
-
-  this.Hide = function() {
-    enableScrolling();
-
-    $("#pagination").hide();
-    $(".actions").show();
-    $(".search").hide();
-
-    $("#searchinput").val("");
+  const getMaxItemsCount = (rows) => {
+    let screenWidth = $(window).width();
+    if (screenWidth > 960) {
+      return 3 * rows;
+    }
+    if (screenWidth > 480) {
+      return 2 * rows;
+    }
+    return rows;
   };
 
   this.Search = function(query) {
-    let container = $("#results");
-    container.unmark();
-    container.empty();
-
-    let items = actions.filter(el => {
+    renderSearch(query, actions.filter(el => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
       return nameLower.indexOf(queryLower) >= 0;
-    });
-    pages = _.chunk(items, maxItems);
-    total = items.length;
-    lastQuery = query;
-
-    this.RenderPage(pages[0]);
+    }));
   };
 
   this.Recent = function() {
+    renderSearch("", actions.filter(el => {
+      return ActionHistory.includes(el.key);
+    }));
+  };
+
+  const renderSearch = (query, items, rows) => {
+    rows = rows || Math.floor(window.innerHeight / 100);
+    let maxItemsCount = getMaxItemsCount(rows);
+    pages = _.chunk(items, maxItemsCount);
+    total = items.length;
+    lastQuery = query;
+    current = 0;
+
+    $(".results-recent").toggle(query == "");
+    $(".results-empty").hide();
+    
+    let allInView = renderPage(pages[0]);
+    if (maxItemsCount == 1) {
+      return;
+    }
+    if (!allInView) {
+      renderSearch(query, items, rows - 1);
+    }
+  };
+
+  const inViewport = element => {
+    let viewport = {};
+    viewport.top = $(window).scrollTop();
+    viewport.bottom = viewport.top + $(window).height();
+
+    let bounds = {};
+    bounds.top = element.offset().top;
+    bounds.bottom = bounds.top + element.outerHeight();
+
+    return ((bounds.top >= viewport.top) && (bounds.bottom <= viewport.bottom)); 
+  };
+
+  const renderPage = page => {
     let container = $("#results");
     container.unmark();
     container.empty();
-
-    let items = actions.filter(el => ActionHistory.includes(el.key));
-    pages = _.chunk(items, maxItems);
-    total = items.length;
-
-    this.RenderPage(pages[0]);
-  };
-
-  this.RenderPage = function(page) {
-    let container = $("#results");
-    let countBox = $("#count");
-    let pagesBox = $("#pages");
-    container.empty();
+    if (total == 0) {
+      $("#pages").html(`1 - 1`);
+      $("#count").html(`0 results`);
+      $(".results-empty").show();
+      return true;
+    }
 
     page.forEach(item => {
       container.append(
@@ -99,15 +90,18 @@ function SearchManager() {
       );
     });
 
-    $(".hit-action").click(function() {
-      enableScrolling();
-      
+    if (!inViewport(container)) {
+      return false;
+    }
+
+    $(".result-item").click(function() {
       let value = $(this).data("value");
+      $("body").css("overflow-y", "visible");
       _Router.navigate(`#!/${value}`, true);
     });
 
-    pagesBox.html(`${current + 1} - ${pages.length}`);
-    countBox.html(`${total} results`);
+    $("#pages").html(`${current + 1} - ${pages.length}`);
+    $("#count").html(`${total} results`);
 
     if (pages.length == 1) {
       $("#nextpage").prop("disabled", true);
@@ -123,20 +117,25 @@ function SearchManager() {
       $("#prevpage").prop("disabled", false);
     }
 
-    $("#results").mark(lastQuery);
+    container.mark(lastQuery);
+    return true;
   };
 
   this.Render = function() {
-    console.log('rendered');
-    $("#nextpage").click(() => {
-      this.RenderPage(pages[++current]);
-    });
+    $("#nextpage").click(() => renderPage(pages[++current]));
+    $("#prevpage").click(() => renderPage(pages[--current]));
 
-    $("#prevpage").click(() => {
-      this.RenderPage(pages[--current]);
+    $(window).resize(() => {
+      if (lastQuery != "") {
+        this.Search(lastQuery);
+      } else {
+        this.Recent();
+      }
     });
 
     $("#pagination").hide();
+    $(".results-recent").hide();
+    $(".results-empty").hide();
     $(".search").hide();
     actions = [];
 
@@ -165,10 +164,30 @@ function SearchManager() {
     });
   };
 
+  this.Show = function() {
+    $("body").css("overflow-y", "hidden");
+    $("#searchinput").focus();
+    $("#pagination").show();
+    $(".actions").hide();
+    $(".search").show();
+
+    this.Recent();
+  };
+
+  this.Hide = function() {
+    $("body").css("overflow-y", "visible");
+    $("#searchinput").blur();
+    $("#pagination").hide();
+    $(".actions").show();
+    $(".search").hide();
+
+    $("#searchinput").val("");
+  };
+
   let template = _.template(`
-    <li class="result-item">
+    <li class="result-item" data-value="<%= key %>">
         <img src="<%= icon %>">
-        <div class="hit hit-action" data-value="<%= key %>">
+        <div class="hit hit-action">
           <%= name %>
         </div>
         <div class="hit hit-module">

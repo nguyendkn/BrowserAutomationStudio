@@ -808,7 +808,6 @@ _L =
 	"Open browser.": {"ru": "Открыть браузер."},
 	"Restart process": {"ru": "Перезапуск процесса"},
 	"Variable To save file name": {"ru": "Переменная для сохранения пути к файлу"},
-	"Wait for the end of the current download.": {"ru": "Ждать окончания текущей загрузки"},
 	"Add As Base64 Data": {"ru": "Добавить как данные base64"},
 	"Additional Parameters": {"ru": "Дополнительные параметры"},
 	"Content Type": {"ru": "Тип содержимого"},
@@ -849,8 +848,19 @@ _L =
 	"Wait full page load after this action": {"ru": "Ждать полной загрузки страницы после этого действия"},
 	"Toggle target. Apply this action only to specific url or to specific tab.": {"ru": "Применить это действие только к определенным урл или определенным вкладкам."},
 
+	/* Waiters */
 	"Wait for full page load": {"ru": "Ждать полной загрузки"},
-	"Wait until full page load.": {"ru": "Ждать пока страница не будет полностью загружена."},
+	"Wait until page is fully loaded.": {"ru": "Ждать пока страница не будет загружена полностью."},
+	"Wait until browser loads the URL.": {"ru": "Ждать пока браузер не загрузит URL."},
+	"Wait until address bar contains the URL.": {"ru": "Ждать пока адресная строка не будет содержать URL."},
+	"Wait until specific text appears on the page.": {"ru": "Ждать пока на странице не появится определенный текст."},
+	"Wait until specific CSS-selector returns a non-empty result.": {"ru": "Ждать пока определенный CSS-селектор не вернет непустой результат."},
+	"Wait for the end of the current download.": {"ru": "Ждать окончания текущей загрузки."},
+	"Pauses current thread for the specified number of milliseconds.": {"ru": "Приостанавливает текущий поток на указанное количество миллисекунд."},
+
+	/* Network */
+	"Save all browser cookies into variable.": {"ru": "Сохранить все куки браузера в переменную."},
+	"Set cookies for browser.": {"ru": "Установить куки для браузера."},
 
 	"Prompt user input result": {"ru": "Результат ввода"},
 	"Http auth login": {"ru": "HTTP Аутентификация логин"},
@@ -993,11 +1003,6 @@ _L =
 	"Success Number" : {"ru": "Максимальное число удачных запусков"},
 	"Fail Number" : {"ru": "Максимальное число неудачных запусков"},
 	"Waiters" : {"ru": "Ожидание"},
-	/*"Wait until browser will load url" : {"ru": "Подождите, пока браузер не будет загружать URL"},
-	"Wait address bar will contain url" : {"ru": "Подождите, пока адресная строка будет содержать URL"},
-	"Wait until specific text will be present on page" : {"ru": "Подождите, пока конкретный текст будет присутствовать на странице"},
-	"Wait until specific css selector will return non empty result" : {"ru": "Подождите, пока селектор конкретного CSS вернет непустой результат"},
-	"Sleep for a specific time" : {"ru": "Сон в течение определенного времени"},*/
 	"Script logic" : {"ru": "Логика скрипта"},
 	/*"Execute conditional actions" : {"ru": "Выполнить условные действия"},
 	"Execute while loop" : {"ru": "Выполнить во время цикла"},

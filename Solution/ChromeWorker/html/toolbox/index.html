@@ -1194,6 +1194,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Length", description:tr("Result String Length"), default_selector: "int", disable_string:true, value_number:10, min_number:1, max_number:999999}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "RANDOM_STRING"}) %>
     </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Generate a random string with a given length and allowed characters.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -1203,50 +1206,89 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"MaxValue", description:tr("Maximum Value"), default_selector: "int", disable_string:true, value_number:100, min_number:-999999, max_number:999999}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "RANDOM_NUMBER"}) %>
     </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Generate a random integer in a given range.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
+  <!-- Waiters templates -->
+
+  <script type="text/template" id="waitfullload">
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until page is fully loaded.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", use_timeout: true, visible:true}) %>
+  </script>
 
   <script type="text/template" id="waitload">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait until browser will load url"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Url"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until browser loads the URL.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waiturl">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait address bar will contain url"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Url"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until address bar contains the URL.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waitcontent">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait until specific text will be present on page"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Text"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until specific text appears on the page.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waitcss">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait until specific css selector will return non empty result"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Selector"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until specific CSS-selector returns a non-empty result.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waitfiledownload">
-     <div class="container-fluid load">
-       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To save file name"), default_variable: "DOWNLOADED_FILE_PATH"}) %>
-      </div>
-     <div class="tooltipinternal tr">Wait for the end of the current download.</div>
-
-     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
+    <div class="container-fluid load">
+      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To save file name"), default_variable: "DOWNLOADED_FILE_PATH"}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait for the end of the current download.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
-  
-
-
+  <script type="text/template" id="sleep">
+    <div class="container-fluid sleep">
+      <span id="sleeprandomspan" style="display:none">
+        <%= _.template($('#input_constructor').html())({id:"sleepfrom", description:tr("Sleep from value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
+        <%= _.template($('#input_constructor').html())({id:"sleepto", description:tr("Sleep to value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
+      </span>
+      <span id="sleepspan">
+        <%= _.template($('#input_constructor').html())({id:"sleepfromto", description:tr("Sleep value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000}) %>
+      </span>
+      <span data-preserve="true" data-preserve-type="check" data-preserve-id="sleeprandom">
+        <input type="checkbox" class="groupselector" data-checked-group-id="sleeprandomspan" data-unchecked-group-id="sleepspan" id="sleeprandom" style="margin-left:20px"/> <label for="sleeprandom" class="tr">Sleep random time</label>
+      </span>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Pauses current thread for the specified number of milliseconds.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
 
   <script type="text/template" id="executefunction">
     <div class="container-fluid executefunction">
@@ -1547,7 +1589,10 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="savecookies">
     <div class="container-fluid savecookies">
-          <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_COOKIES"}) %>
+      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_COOKIES"}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Save all browser cookies into variable.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -1555,6 +1600,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   <script type="text/template" id="restorecookies">
     <div class="container-fluid restorecookies">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Cookies"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Set cookies for browser.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -3605,22 +3653,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <%= _.template($('#back').html())({action:"add", visible:false}) %>
   </script>
 
-  <script type="text/template" id="sleep">
-    <div class="container-fluid sleep">
-      <span id="sleeprandomspan" style="display:none">
-        <%= _.template($('#input_constructor').html())({id:"sleepfrom", description:tr("Sleep from value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
-        <%= _.template($('#input_constructor').html())({id:"sleepto", description:tr("Sleep to value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
-      </span>
-      <span id="sleepspan">
-        <%= _.template($('#input_constructor').html())({id:"sleepfromto", description:tr("Sleep value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000}) %>
-      </span>
-      <span data-preserve="true" data-preserve-type="check" data-preserve-id="sleeprandom">
-        <input type="checkbox" class="groupselector" data-checked-group-id="sleeprandomspan" data-unchecked-group-id="sleepspan" id="sleeprandom" style="margin-left:20px"/> <label for="sleeprandom" class="tr">Sleep random time</label>
-      </span>
-    </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
   <script type="text/template" id="setvariable">
     <div class="container-fluid setvariable">
       <%= _.template($('#variable_constructor').html())({id:"SetVariableName", description:tr("Name of variable"), default_variable: "NEW_VARIABLE", help: {description: tr("The name of the variable to be created or modified.")}}) %>
@@ -4178,12 +4210,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     <%= _.template($('#movefields').html())({}) %>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, use_move: true, name: tr("Set Checkbox")}) %>
-  </script>
-
-  <script type="text/template" id="waitfullload">
-    <div class="tooltipinternal tr">Wait until full page load.</div>
-
-    <%= _.template($('#back').html())({action:"executeandadd", use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waitelement">

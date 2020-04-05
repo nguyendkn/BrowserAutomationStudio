@@ -170,7 +170,7 @@ void CCrashHandler::CreateMiniDump(EXCEPTION_POINTERS* pExcPtrs)
 
     // Create the minidump file
     hFile = CreateFileA(
-        _T("crashdump.dmp"),
+        _T("crashdump_chrome.dmp"),
         GENERIC_WRITE,
         0,
         NULL,

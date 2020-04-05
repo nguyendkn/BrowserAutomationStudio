@@ -54,6 +54,10 @@
 	],
 	"localize": 
 	{
+		"Get the number of unsuccessful executions of the current script.": {"ru": "Получить количество неудачных выполнений текущего скрипта."},
+		"Get the number of successful executions of the current script.": {"ru": "Получить количество успешных выполнений текущего скрипта."},
+		"Get the number of the current working thread.": {"ru": "Получить номер текущего работающего потока."},
+		"Get the full path to the project file.": {"ru": "Получить полный путь к файлу проекта."},
 		"Variable to save thread index": {"ru": "Переменная для сохранения номера потока"}
 	},
 	"engine": [],

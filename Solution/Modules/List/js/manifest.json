@@ -228,7 +228,7 @@
 		"Get a sublist of a certain number of items from a specified list.": {"ru": "Получить подсписок из определенного количества элементов из указанного списка."},
 		"Get the item value with a specific index from the specified list.": {"ru": "Получить значение элемента с определенным индексом из указанного списка."},
 		"Get the item index with a specific value from the specified list.": {"ru": "Получить индекс элемента с определенным значением из указанного списка."},
-		"Split the specified string into an array by a specific separator.": {"ru": "Разделить указанную строку на массив по определенному разделителю."},
+		"Split the specified string into a list by a specific separator.": {"ru": "Разделить указанную строку на список по определенному разделителю."},
 		"Remove an item with a specific value from the specified list.": {"ru": "Удалить элемент имеющий определенное значение из указанного списка."},
 		"Remove an item with a specific index from the specified list.": {"ru": "Удалить элемент имеющий определенный индекс из указанного списка."},
 		"Insert an item into the specified list at a specific index.": {"ru": "Вставить элемент в указанный список по определенному индексу."},

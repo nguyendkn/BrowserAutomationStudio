@@ -1,4 +1,4 @@
-<div class="container-fluid" style="padding-top:35px">
+<div class="container-fluid">
 	<%= _.template($('#variable_constructor').html())({id:"Variable", description:tr("Variable With List"), default_variable: ""}) %>
     <%= _.template($('#variable_constructor').html())({id:"VariableNewList", description:tr("New List"), default_variable: "NEW_LIST"}) %>
 </div>

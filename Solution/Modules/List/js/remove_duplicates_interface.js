@@ -1,4 +1,4 @@
-<div class="container-fluid" style="padding-top:35px">
+<div class="container-fluid">
 	<%= _.template($('#variable_constructor').html())({id:"Variable", description:tr("Variable With List"), default_variable: ""}) %>
 </div>
 <div class="tooltipinternal">

@@ -97,6 +97,16 @@
 	],
 	"localize": 
 	{
+		"Find all files in the specified folder that satisfy certain conditions.": {"ru": "Найти в указанной папке все файлы, удовлетворяющие определенным условиям."},
+		"Get detailed information about a file or folder at the specified path.": {"ru": "Получить подробную информацию о файле или папке по указанному пути."},
+		"Read the contents of the specified file to the specific variable.": {"ru": "Прочитать содержимое указанного файла в определенную переменную."},
+		"Read the contents of the specified file to the specific list.": {"ru": "Прочитать содержимое указанного файла в определенный список."},
+		"Write the contents of the specified list to the specific file.": {"ru": "Записать содержимое указанного списка в определенный файл."},
+		"Copy the specified file or folder to a new file or folder.": {"ru": "Скопировать указанный файл или папку в новый файл или папку."},
+		"Move the specified file or folder to a new location.": {"ru": "Переместить указанный файл или папку в новое местоположение."},
+		"Write specific data to the specified file.": {"ru": "Записать в указанный файл определенные данные."},
+		"Create a new folder at the specified path.": {"ru": "Создать новую папку по указанному пути."},
+		"Remove the specified file or folder.": {"ru": "Удалить указанный файл или папку."},
 		"Start position" : {"ru": "Первый байт"},
 		"End position. Leave 0 to read all file." : {"ru": "Последний байт. Используйте 0, чтобы прочитать весь файл."},
 		"File path" : {"ru": "Путь к файлу"},

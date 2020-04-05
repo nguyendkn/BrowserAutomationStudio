@@ -30,7 +30,6 @@
 #include "browserip.h"
 #include "cefrequest2action.h"
 #include "fingerprintdetector.h"
-#include "devtoolsconnection.h"
 #include "browserdirectcontrol.h"
 #include "ipcsimple.h"
 #include "donothingcallback.h"
@@ -81,8 +80,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     int ScrollY;
 
     bool DoTour;
-
-    DevToolsConnection _DevToolsConnection;
 
     std::string LastUsedSelector;
     std::string LastUsedLabel;
@@ -426,9 +423,6 @@ public:
     void ShowContextMenu(int X, bool IsImageSelect, const std::string & Json);
     void MainContextMenu(POINT& p);
     std::pair<std::string, bool> GetMenuSelected();
-
-    //Detector
-    void ConnectDevtools();
 
     void SendTextResponce(const std::string&);
 

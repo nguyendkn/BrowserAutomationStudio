@@ -158,8 +158,6 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         frame->SendProcessMessage(PID_BROWSER, msg);
         object->SetValue("BrowserAutomationStudio_OpenUrl", CefV8Value::CreateFunction("BrowserAutomationStudio_OpenUrl", detectorv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_SaveFingerprintKey", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveFingerprintKey", detectorv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
-        object->SetValue("BrowserAutomationStudio_OpenSource", CefV8Value::CreateFunction("BrowserAutomationStudio_OpenSource", detectorv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
-        object->SetValue("BrowserAutomationStudio_EditSource", CefV8Value::CreateFunction("BrowserAutomationStudio_EditSource", detectorv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_ClearAll", CefV8Value::CreateFunction("BrowserAutomationStudio_ClearAll", detectorv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Logout", CefV8Value::CreateFunction("BrowserAutomationStudio_Logout", detectorv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Initialized", CefV8Value::CreateFunction("BrowserAutomationStudio_Initialized", detectorv8handler), V8_PROPERTY_ATTRIBUTE_NONE);

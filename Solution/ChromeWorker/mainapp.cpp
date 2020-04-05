@@ -321,11 +321,6 @@ void MainApp::CursorChanged(int Type)
     Layout->SetBrowserCursor(Type);
 }
 
-void MainApp::ConnectDevtools()
-{
-    _DevToolsConnection.Start(Data->RemoteDebuggingPort);
-}
-
 void MainApp::NewMainBrowserContextCreated(int BrowserId, bool IsMain)
 {
     WORKER_LOG(std::string("OnProcessMessageReceived<<NewMainBrowserContextCreated<<") + std::to_string(BrowserId) + std::string("<<") + std::to_string(IsMain));
@@ -1567,6 +1562,7 @@ void MainApp::CreateDetectorBrowser()
         std::string FingerprintKey = ReadAllString("fingerprint-detector.txt");
         ReplaceAllInPlace(ScenarioScript,"_RestoreFingerprintKey",picojson::value(FingerprintKey).serialize());
         ReplaceAllInPlace(ScenarioScript,"_CurrentLocale",picojson::value(Lang).serialize());
+        ReplaceAllInPlace(ScenarioScript,"_RemoteDebuggingPort",std::to_string(Data->RemoteDebuggingPort));
         WriteStringToFile("html/detector/index_prepared.html", ScenarioScript);
         BrowserDetector->GetMainFrame()->LoadURL("file:///html/detector/index_prepared.html");
     }else
@@ -3666,26 +3662,6 @@ void MainApp::HandleDetectorBrowserEvents()
     {
         Layout->UpdateFingerprintDetectorNumber(0);
     }
-
-    std::pair<DetectorV8Handler::SourceItem, bool> res3 = detector8handler->GetSource();
-    if(res3.second)
-    {
-        if(!_DevToolsConnection.GetSourceFromUrlStart(res3.first.Source,res3.first.LineNumber,res3.first.ColumnNumber))
-        {
-            if(BrowserDetector)
-                BrowserDetector->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_OpenSourceResult('',false)",BrowserDetector->GetMainFrame()->GetURL(), 0);
-        }
-    }
-
-    if(BrowserDetector)
-    {
-        std::string ScriptSource;
-        if(_DevToolsConnection.GetSourceFromUrlEnd(ScriptSource))
-        {
-            BrowserDetector->GetMainFrame()->ExecuteJavaScript(std::string("BrowserAutomationStudio_OpenSourceResult(") + picojson::value(ScriptSource).serialize() + std::string(",true)"),BrowserDetector->GetMainFrame()->GetURL(), 0);
-        }
-    }
-
 
 }
 

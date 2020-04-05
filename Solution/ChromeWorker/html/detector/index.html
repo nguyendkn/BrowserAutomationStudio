@@ -22,7 +22,8 @@
     <script src="js/sourcemap.js"></script>
     <script src="js/beautifier.min.js"></script>
     <script src="js/vue-i18n.js"></script>
-    <script src="js/translate.js"></script>
+	<script src="js/translate.js"></script>
+	<script src="js/opensource.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/latofonts.css">
 
 
@@ -56,6 +57,10 @@
 
 
 	<script type="text/javascript">
+
+		//Initialize class for inspecting source
+		window._OpenSource = new OpenSource();
+		window._OpenSource.Init(_RemoteDebuggingPort)
 
 		//Initialize components
 		Vue.component('input-key', window.InputKey)

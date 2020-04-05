@@ -3,7 +3,6 @@
 DetectorV8Handler::DetectorV8Handler()
 {
     url_changed = false;
-    source_changed = false;
     fingerprint_key_changed = false;
     clear_all = false;
     logout = false;
@@ -28,17 +27,6 @@ bool DetectorV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         {
             fingerprint_key = arguments->GetString(0);
             fingerprint_key_changed = true;
-        }
-    }
-
-    if(name == std::string("BrowserAutomationStudio_OpenSource"))
-    {
-        if (arguments->GetSize() == 3)
-        {
-            source.Source = arguments->GetString(0);
-            source.LineNumber = arguments->GetInt(1);
-            source.ColumnNumber = arguments->GetInt(2);
-            source_changed = true;
         }
     }
 
@@ -106,20 +94,6 @@ std::pair<std::string, bool> DetectorV8Handler::GetLoadUrl()
     url_changed = false;
 
     url.clear();
-
-    return r;
-}
-
-std::pair<DetectorV8Handler::SourceItem, bool> DetectorV8Handler::GetSource()
-{
-
-    std::pair<SourceItem, bool> r;
-    r.first = source;
-    r.second = source_changed;
-
-    source_changed = false;
-
-    source.Source.clear();
 
     return r;
 }

@@ -9,20 +9,11 @@
 class DetectorV8Handler : public CefBaseRefCounted
 {
     public:
-        struct SourceItem
-        {
-            std::string Source;
-            int LineNumber;
-            int ColumnNumber;
-        };
 
 private:
 
     std::string url;
     bool url_changed;
-
-    SourceItem source;
-    bool source_changed;
 
     std::string edit_source;
     bool edit_source_changed;
@@ -40,7 +31,6 @@ public:
     bool Execute(const CefString& name, CefRefPtr<CefListValue> arguments);
     std::pair<std::string, bool> GetLoadUrl();
 
-    std::pair<SourceItem, bool> GetSource();
     std::pair<std::string, bool> GetFingerprintKey();
     std::pair<std::string, bool> GetEditSource();
     bool GetClearAll();

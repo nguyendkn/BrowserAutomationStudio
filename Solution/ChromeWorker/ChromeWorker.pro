@@ -99,8 +99,6 @@ SOURCES += main.cpp \
     detectorhandler.cpp \
     fingerprintdetector.cpp \
     detectorv8handler.cpp \
-    devclientsource.cpp \
-    devtoolsconnection.cpp \
     browserdirectcontrol.cpp \
     popup.cpp
 
@@ -214,7 +212,6 @@ HEADERS += \
     detectorhandler.h \
     fingerprintdetector.h \
     detectorv8handler.h \
-    devtoolsconnection.h \
     browserdirectcontrol.h \
     popup.h
 
@@ -231,7 +228,4 @@ DISTFILES += \
 
 QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
 
-DEFINES += ASIO_STANDALONE
-DEFINES += _WEBSOCKETPP_CPP11_TYPE_TRAITS_
-DEFINES += _WEBSOCKETPP_CPP11_RANDOM_DEVICE_
 

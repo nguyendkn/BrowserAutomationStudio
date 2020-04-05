@@ -1288,7 +1288,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     {
                         Layout->SetLabelTop(Translate::Tr(L"Fingerprint detector"));
 
-                        app->ConnectDevtools();
                         app->CreateDetectorBrowser();
                         Layout->UpdateTabs(MainLayout::Detector);
                     }

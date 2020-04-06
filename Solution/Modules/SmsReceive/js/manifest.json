@@ -81,12 +81,20 @@
 	],
 	"localize":
 	{
-		"Api key": {"ru":"Ключ апи"},
-		"Number": {"ru":"Номер"},
-		"Site": {"ru":"Сайт"},
-		"Max wait minutes": {"ru":"Максимальное время ожидания в минутах"},
-		"Enable debug": {"ru":"Включить отладку"}
-
+		"Send a notification of the used phone number to the service.": {"ru": "Отправить на сервис уведомление об использованном номере телефона."},
+		"Get an activation code from the specified SMS receiving service.": {"ru": "Получить код активации от определенного СМС сервиса."},
+		"Get a phone number from the specified SMS receiving service.": {"ru": "Получить номер телефона от определенного СМС сервиса."},
+		"Send a notification of the incorrect SMS code to the service.": {"ru": "Отправить на сервис уведомление о неверном СМС коде."},
+		"Send a notification of the correct SMS code to the service.": {"ru": "Отправить на сервис уведомление о верном СМС коде."},
+		"Finish working with the current phone number.": {"ru": "Завершить работу с текущим номером телефона."},
+		"Enable debugging mode for SMS receiving.": {"ru": "Включить режим отладки для получения СМС."},
+		"Max waiting time in minutes": {"ru": "Максимальное время ожидания в минутах"},
+		"Enable debug": {"ru": "Включить отладку"},
+		"Phone number": {"ru": "Номер телефона"},
+		"API key": {"ru": "API ключ"},
+		"Service": {"ru": "Сервис"},
+		"Country": {"ru": "Страна"},
+		"Site": {"ru": "Сайт"}
 	},
 	"engine": ["engine.js"],
 	"browser": [],

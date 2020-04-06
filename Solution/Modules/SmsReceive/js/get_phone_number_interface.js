@@ -1,5 +1,5 @@
 <div class="container-fluid">
-   <%= _.template($('#input_constructor').html())({id:"Service", description:tr(""), default_selector: "string", disable_int:true, value_string: "smspva.com", variants: ["smspva.com","sms-activate.ru","sms-reg.com", "getsms.online"]}) %>
+  <%= _.template($('#input_constructor').html())({id:"Service", description:tr("Service"), default_selector: "string", disable_int:true, value_string: "smspva.com", variants: ["smspva.com","sms-activate.ru","sms-reg.com", "getsms.online"]}) %>
 
   <div class="col-xs-12">
     <form class="form-horizontal">
@@ -91,17 +91,11 @@
     "HK<br/><span style='color:gray'>Kong Kong (sms-activate.ru)</span>",
     "BY<br/><span style='color:gray'>Belarus (getsms.online)</span>",
     "DE<br/><span style='color:gray'>Germany (getsms.online)</span>",
-
   ]}) %>
-
-
-
-
-
-  <%= _.template($('#input_constructor').html())({id:"Apikey", description:tr("Api key"), default_selector: "string", disable_int:true}) %>
-
+  <%= _.template($('#input_constructor').html())({id:"Apikey", description:tr("API key"), default_selector: "string", disable_int:true}) %>
   <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "PHONE_NUMBER"}) %>
-
 </div>
-
+<div class="tooltipinternal">
+  <div class="tr tooltip-paragraph-first-fold">Get a phone number from the specified SMS receiving service.</div>
+</div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

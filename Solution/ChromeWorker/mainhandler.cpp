@@ -417,7 +417,12 @@ CefRefPtr<CefResourceHandler> MainHandler::GetResourceHandler(CefRefPtr<CefBrows
                     }
                 }
             }
+        }
 
+        //Don't add to cache if there is no browser which originated request
+        if(!browser)
+        {
+            UseHandler = false;
         }
 
         if(UseHandler)

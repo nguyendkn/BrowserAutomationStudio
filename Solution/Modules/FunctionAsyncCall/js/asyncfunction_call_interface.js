@@ -92,7 +92,7 @@
 
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Execute function asynchronously.</div>
+    <div class="tr tooltip-paragraph-first-fold">Execute the specified function asynchronously without waiting for its completion.</div>
 
     <div class="tooltip-paragraph-fold"><span class="tr">Function must be defined beforehand. BAS allows define functions through "Function Manager"</span> (<a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserautomationstudio_2020-02-19_12-28-39.png');return false">screen</a>)</div>
     <div class="tr tooltip-paragraph-fold">Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.</div> 

@@ -11348,6 +11348,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         }
         $(".recaptcha-notify").remove()
         BrowserAutomationStudio_NotifyInternal(tr("Recaptcha V3."), tr("It seams that this site uses recaptcha v3(action: ") + "<strong>" + parameters + "</strong>" + tr("). You can resolve it with \"Recaptcha V3\" action."), "#!/recaptchav3", "recaptcha-notify")  
+      }else if(subject == "search") 
+      {
+        BrowserAutomationStudio_NotifyInternal(tr(parameters), tr("Please select any element inside browser and click on the '") + tr(parameters) + tr("' action inside the menu that will appear."), "");
       }
     }
     

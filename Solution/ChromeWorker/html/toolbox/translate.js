@@ -5,6 +5,9 @@ _L =
 	"Create new tab, switch to it and load it immediately.": {"ru": "Создать новую вкладку, переключиться на нее и сразу же загрузить указанный url."},
 	"Load silently": {"ru": "Отложенная загрузка"},
 
+	// Toolbox notifications
+	"Please select any element inside browser and click on the '": {"ru": "Пожалуйста, выберите любой элемент в браузере и нажмите на действие '"},
+	"' action inside the menu that will appear.": {"ru": "' в появившемся меню."},
 
 	"Stop intercepting recaptcha v3 requests. Site will get your real score. You can enable intercepting later again.": {"ru": "Перестать перехватывать запросы. Сайт получит ваш реальный рейтинг. Вы можете снова включить перехват позже."},
 	"Rucaptcha/2captcha Key. Can be blank": {"ru": "Ключ Антигейт/Рукапча. Может быть пустым"},

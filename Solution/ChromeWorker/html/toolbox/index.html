@@ -8754,6 +8754,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           }else if(State == "label")
           {
             var val = GetInputConstructorValue("Label",loader)
+            if(!val["original"].match(/^[a-zA-Z0-9а-яА-Я_ ]+$/))
+            {
+                Invalid(tr("Label can contain only letters, digits, underscore and spaces"));
+                return;
+            }
             if(val["original"].length <= 0)
             {
                 Invalid("Label is empty");

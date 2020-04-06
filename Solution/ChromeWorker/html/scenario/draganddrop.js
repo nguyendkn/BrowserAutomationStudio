@@ -254,12 +254,17 @@ function DragAndDrop()
 					var data = event.originalEvent.dataTransfer.getData('bas/draganddrop')
 
 					bootbox.prompt({
-						title: ("<h4>" + tr("Label Name") + "</h4>"),
+						title: ("<h4>" + tr("Label Name") + "</h4> <span id='ValidationInsertLabel' style='font-size:small;color:red'></span>"),
 						message: '<p style="color: gray; font-size:small">' + tr("Please give a name to a new label. Labels helps to transfer execution point between two arbitrary places inside script.") + '</p><hr/>',
 						value: "label name " + (Math.floor(Math.random() * (10000 - 100)) + 100).toString(),
 						callback: function (Name) {
 							if(Name)
 							{
+								if(!Name.match(/^[a-zA-Z0-9а-яА-Я_ ]+$/))
+								{
+									$("#ValidationInsertLabel").text(tr("Label can contain only letters, digits, underscore and spaces"));
+									return false;
+								}
 								var IdLabelTo = Math.floor(Math.random() * (1000000000 - 100)) + 100
 								var IdLabelFrom = Math.floor(Math.random() * (1000000000 - 100)) + 100
 

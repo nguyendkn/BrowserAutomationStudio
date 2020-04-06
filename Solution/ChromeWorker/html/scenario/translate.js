@@ -621,7 +621,7 @@ _L =
       "ru":"Многопоточность означает, что задачи будут выполняться параллельно."
    },
 
-   
+   "Label can contain only letters, digits, underscore and spaces" :{"ru": "Название метки может содержать только цифры, буквы, нижнее подчеркивание и пробел"},
    "Run from C#" :{"ru": "Вызвать из C#"},
    "Run from Node.js" :{"ru": "Вызвать из Node.js"},
    "Run from Python" :{"ru": "Вызвать из Python"},

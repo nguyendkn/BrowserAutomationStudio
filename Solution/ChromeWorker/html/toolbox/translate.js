@@ -4,6 +4,7 @@ _L =
 	"Create new tab, load specified url only when tab gets switched to.": {"ru": "Создать новую вкладку, загрузить указанный url только после того, как она станет активной."},
 	"Create new tab, switch to it and load it immediately.": {"ru": "Создать новую вкладку, переключиться на нее и сразу же загрузить указанный url."},
 	"Load silently": {"ru": "Отложенная загрузка"},
+	"Label can contain only letters, digits, underscore and spaces" :{"ru": "Название метки может содержать только цифры, буквы, нижнее подчеркивание и пробел"},
 
 
 	"Stop intercepting recaptcha v3 requests. Site will get your real score. You can enable intercepting later again.": {"ru": "Перестать перехватывать запросы. Сайт получит ваш реальный рейтинг. Вы можете снова включить перехват позже."},

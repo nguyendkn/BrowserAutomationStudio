@@ -63,18 +63,17 @@
   width: 175px;
 }
 
-.hit-action:hover {
-  color: #5d6494;
+.result {
+  line-height: 1.33;
 }
 
-.hit-action {
+.result-action {
   font-weight: bold;
   font-size: 16px;
   color: #21243d;
-  cursor: pointer;
 }
 
-.hit-module {
+.result-module {
   margin-bottom: 8px;
   margin-top: 4px;
   font-weight: normal;
@@ -82,14 +81,10 @@
   color: #5d6494;
 }
 
-.hit-docs {
+.result-description {
   font-weight: normal;
   font-size: 14px;
   color: #5d6494;
-}
-
-.hit {
-  line-height: 1.33;
 }
 
 @media (min-width: 961px) {
@@ -132,6 +127,14 @@
   color: #3a416f;
   font-size: 18px;
   display: flex;
+}
+
+.result-item:hover > .result-action {
+  color: #5d6494;
+}
+
+.result-item:hover {
+  cursor: pointer;
 }
 
 .result-item > img {

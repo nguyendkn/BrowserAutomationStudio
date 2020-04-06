@@ -36,7 +36,7 @@ function OpenSource()
         let Data = await Response.json();
         let Endpoint = null
         Data.some((EndpointCandidate) => {
-            if(EndpointCandidate.url.indexOf("file:///") == 0)
+            if(EndpointCandidate.url.indexOf("file:///") == 0 || EndpointCandidate.url.indexOf("devtools://") == 0)
             {
                 return false
             }

@@ -651,9 +651,11 @@ _L =
 	"Without proxy": {"ru": "Без прокси"},
 	"String with information about proxy. It may contain ip, port, proxy type in different formats. This string may also contain login and password, if it doesn't, auth can be set with \"Proxy Login\" and \"Proxy Password\" parameters.": {"ru": "Строка, c информацией о прокси. Она может содержать ip, порт и тип прокси в разных форматах. Эта строка может также содержать логин и пароль, если их нету, данные для аутентификации могут быть заданы с параметрами \"Логин прокси\" и \"Прокси пароль\"."},
 	
+	/* Browser */
+
+	"Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;\">fingerprint switcher</a>.": {"ru": "Изменяет разрешение браузера. Стандартное значение 1024x600. Если вы хотите получить стандартные разрешения для разных платформ, используйте сервис <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;\">fingerprint switcher</a>."},
 	"Browser height in pixels": {"ru": "Высота браузера в пикселях"},
 	"Browser width in pixels": {"ru": "Ширина браузера в пикселях"},
-	"Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service": {"ru": "Изменяет разрешение браузера. Стандартное значение 1024x600. Если вы хотите получить стандартные разрешения для разных платформ, используйте сервис"},
 	"Press escape": {"ru": "Нажать escape"},
 	"Clear input": {"ru": "Очистить поле"},
 	"Paste text": {"ru": "Вставить значение из буфера обмена"},

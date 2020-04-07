@@ -15,19 +15,25 @@ function SearchManager() {
   _.forOwn(_A, (el, action) => {
     if (excludedActions.includes(action)) return;
 
-    let defaultDesc = ".tooltip-paragraph-first-fold";
-    let shortDesc = ".short-description";
-    let script = $("#" + action).text();
-    let data = $(script).find(shortDesc);
+    const getText = (element) => $(`<div>${tr(element.html())}</div>`).text();
 
-    if (data.length == 0) {
-      data = $(script).find(defaultDesc);
+    let script = $("#" + action).text();
+    let defaultDesc = $(script).find(".tooltip-paragraph-first-fold");
+    let shortDesc = $(script).find(".short-description");
+    let description = null;
+
+    if (defaultDesc.length) {
+      description = getText(defaultDesc);
+    }
+
+    if (shortDesc.length) {
+      description = getText(shortDesc);
     }
 
     actions.push({
       groupId: _A2G[action] || "browser",
-      description: tr(data.text()),
       popup: !_.has(_A2G, action),
+      description: description,
       name: tr(el["name"]),
       key: action,
     });

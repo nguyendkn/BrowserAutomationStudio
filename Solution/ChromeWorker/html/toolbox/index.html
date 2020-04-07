@@ -1545,7 +1545,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
 
   <script type="text/template" id="dragfile">
-    <div class="container-fluid dragfile">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("File path to start drag"), default_selector: "string", disable_int:true, help: {description: tr("This parameter is a string with file path. Slash type is not important."), examples:[{code:"C:\\file\\path.txt"},{code:"C:/file/path.txt"}]}}) %>
     </div>
     <div class="tooltipinternal">
@@ -1557,10 +1557,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="promptresult">
-    <div class="container-fluid promptresult">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Prompt user input result"), default_selector: "string", disable_int:true, help: {description: tr("Any string")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Prompt window displays a dialog with an optional message prompting the user to input some text. It is outdated functionality and most sites don't use it any more. BAS allows to input text into that window automatically, to do that you must call this action before prompt window will appear.</div>
       <div class="tr tooltip-paragraph-fold">Principle is the same as in "Open File Result", first you call action which sets result and than trigger dialog, BAS will recognize it and input previously setted up value.</div>
@@ -1570,21 +1569,20 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="httpauth">
-    <div class="container-fluid httpauth">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Login", description:tr("Http auth login"), default_selector: "string", disable_int:true, help: {description: tr("Site login, could be any string")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Password", description:tr("Http auth password"), default_selector: "string", disable_int:true, help: {description: tr("Site password, could be any string")}}) %>
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it. During authentication process browser shows window(<a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://thiscouldbebetter.files.wordpress.com/2016/05/authenticationrequired.png?w=640 screenshot');return false">screenshot</a>) and user must input authentication data there. This process can be automated, all you need to do is to call this action before window is triggered.</div>
+      <div class="tr tooltip-paragraph-first-fold">HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it. During authentication process browser shows window and user must input authentication data there. This process can be automated, all you need to do is to call this action before window is triggered.</div>
       <div class="tr tooltip-paragraph-fold">Good idea would be to put it to the start of the script.</div>
       <div class="tr tooltip-paragraph-last-fold">In case if this action will be called after window popup, authentication process will fail.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="getcookiesforurl">
-      <div class="container-fluid getcookiesforurl">
+      <div class="container-fluid">
         <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Url"), default_selector: "string", disable_int:true}) %>
         <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "COOKIES_FOR_URL"}) %>
       </div>
@@ -1592,7 +1590,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="savecookies">
-    <div class="container-fluid savecookies">
+    <div class="container-fluid">
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_COOKIES"}) %>
     </div>
     <div class="tooltipinternal">
@@ -1602,7 +1600,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="restorecookies">
-    <div class="container-fluid restorecookies">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Cookies"), default_selector: "string", disable_int:true}) %>
     </div>
     <div class="tooltipinternal">
@@ -1612,7 +1610,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="scroll">
-    <div class="container-fluid scroll">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"X", description:tr("Scroll x position"), default_selector: "int", disable_string:true, help: {description: tr("Integer value, offset from the left edge of the page")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Y", description:tr("Scroll y position"), default_selector: "int", disable_string:true, help: {description: tr("Integer value, offset from the top edge of the page"), examples:[{code:"0",description:tr("Scroll to top")},{code:"500",description:tr("Scroll page, so 500 px will be visible")},{code:"9999999",description:tr("Scroll to page bottom")}]}}) %>
     </div>
@@ -1627,7 +1625,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="html">
-      <div class="container-fluid html">
+      <div class="container-fluid">
         <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_PAGE_HTML", help: {description: tr("Variable where page source will be saved.")} }) %>
       </div>
       <div class="tooltipinternal">
@@ -1897,16 +1895,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         </form>
       </div>
     </div>
-
     <div class="tooltipinternal">
-      <div class="tooltip-paragraph-first-fold"><span class="tr">Output data to results tab</span> (<a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=results.png');return false">screen</a>)</div>
+      <div class="tr tooltip-paragraph-first-fold">Output data to the results tab.</div>
       <div class="tr tooltip-paragraph-fold">This action suites best to output raw data, like accounts registered, posts parsed, etc.</div>
       <div class="tr tooltip-paragraph-fold">If you want to write message, with date and thread number, better to use "Log" action.</div>
       <div class="tr tooltip-paragraph-fold">Before running script you can create up to nine tabs for different purposes and give names for them, for example, one for accounts, one for posts, avatars, etc.</div>
       <div class="tr tooltip-paragraph-fold">"Result Placeholder" parameter sets tab number, numeration is starting from from 1.</div>
       <div class="tooltip-paragraph-last-fold"><span class="tr">If you want to output data to file only, use this</span> (<span class="tr-en"><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_let_user_to_choose_output_file_name');return false">article</a></span><span class="tr-ru"><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:how_to_let_user_to_choose_output_file_name');return false">статью</a></span>)</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_output_script_result"}) %>
   </script>
 

@@ -968,12 +968,10 @@
   </script>
 
   <script type="text/template" id="custom">
-    <div class="container-fluid custom">
+    <div class="container-fluid">
       <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
         <div id="Code" data-is-code-editor="true" style="height:calc(100vh - 100px);border: none; overflow: hidden; outline: none;border:1px solid #e0e0e0;" />
       </span>
-      
-
       <%= "<s" + "cript>" %>
         window.Code = {Editor: null, InitialValue: ""}
 
@@ -997,11 +995,11 @@
         </a>
         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="res">
           <i class="fa fa-database"></i>
-            <span class="tr">Load from file, user input, database</span>
+          <span class="tr">Load from file, user input, database</span>
         </a>
       </div>
+      <span class="short-description tr">Execute custom javascript code.</span>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, modal_code_id:"custom-help-" + (_K || "en")}) %>
   </script>
 
@@ -1497,7 +1495,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 }) %>
         <%= _.template($('#targetfields').html())({}) %>
       </div>
-      <div class="tooltipinternal tr">This action sets script which must be executed inside every page and every frame immediately after page is created. Unlike javascript action, script defined here is executed at the very beginning of page load, which gives possibility to change browser internals like window.navigator. Action should be called before page load.</div>
+      <div class="tooltipinternal">
+        <div class="tr tooltip-paragraph-first-fold">This action sets script which must be executed inside every page and every frame immediately after page is created. Unlike javascript action, script defined here is executed at the very beginning of page load, which gives possibility to change browser internals like window.navigator. Action should be called before page load.</div>
+      </div>
       <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
   </script>
 
@@ -3697,12 +3697,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
   <script type="text/template" id="incvariable">
-    <div class="container-fluid setvariable">
+    <div class="container-fluid">
       <%= _.template($('#variable_constructor').html())({id:"SetVariableName", description:tr("Name of variable"), default_variable: "", help: {description: tr("Variable name. This variable will be changed.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"IncVariableValue", description:tr("Increase variable value"), default_selector: "int", min_number: -9999999, value_number: 1, help: {description: tr("The integer to which the variable will be incremented. If the value has a non-numeric type, then it will be converted."), examples:[{code:"1",description:tr("Increment")},{code:"-1",description:tr("Decrement")},{code:"0",description:tr("Convert variable to integer")}]}}) %>
-      
     </div>
-    
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Increase variable by the specified value.</div>
       <div class="tr tooltip-paragraph-fold">In other words, this action means [[VARIABLE]] = [[VARIABLE]] + num</div>
@@ -3710,18 +3708,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Parameter "Increase variable value" could be negative, in that case variable will be decreased.</div>
       <div class="tr tooltip-paragraph-last-fold">Parameter "Increase variable value" also could be zero, this will only convert variable to number type.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
 
   <script type="text/template" id="incglobalvariable">
-    <div class="container-fluid setvariable">
+    <div class="container-fluid">
       <%= _.template($('#variable_constructor').html())({id:"SetVariableName", description:tr("Name of variable"), default_variable: "", enable_globals:true, disable_locals: true, help: {description: tr("Variable name. This variable will be changed.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"IncVariableValue", description:tr("Increase variable value"), default_selector: "int", min_number: -9999999, value_number: 1, help: {description: tr("The integer to which the variable will be incremented. If the value has a non-numeric type, then it will be converted."), examples:[{code:"1",description:tr("Increment")},{code:"-1",description:tr("Decrement")},{code:"0",description:tr("Convert variable to integer")}]}}) %>
-      
     </div>
-    
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Increase global variable by the specified value.</div>
       <div class="tr tooltip-paragraph-fold">In other words, this action means [[GLOBAL:VARIABLE]] = [[GLOBAL:VARIABLE]] + num</div>
@@ -3729,29 +3724,28 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Parameter "Increase variable value" could be negative, in that case variable will be decreased.</div>
       <div class="tr tooltip-paragraph-last-fold">Parameter "Increase variable value" also could be zero, this will only convert variable to number type.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="url">
-    <div class="container-fluid url">
+    <div class="container-fluid">
       <%= _.template($('#variable_constructor').html())({id:"SaveUrl", description:tr("Variable To Save"), default_variable: "CURRENT_URL", help: {description: tr("Variable where browser url will be saved.")}}) %>
     </div>
-    <div class="tooltipinternal tr">Get current url from browser address bar.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get current url from browser address bar.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_get_current_url"}) %>
   </script>
 
   <script type="text/template" id="xml">
-    <div class="container-fluid xml">
+    <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#variable_constructor').html())({id:"SaveXml", description:tr("Variable To Save"), default_variable: "SAVED_XML", help: {description: tr("This variable will contain html source of selected element as string")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Get element html code and save it to variable.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Get Element Content")}) %>
   </script>
 
@@ -3785,7 +3779,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-first-fold">Get coordinates of element relative to current window position.</div>
       <div class="tr tooltip-paragraph-fold">For example, if element coordinates is 200,200 and window position is 50,50, then this action will return 150, 150. In case if window position is 0,0, than this action will return absolute element coordinates.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
-
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true,name:tr("Get Coordinates")}) %>
   </script>
@@ -3795,9 +3788,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#variable_constructor').html())({id:"SaveScript", description:tr("Variable To Save"), default_variable: "SAVED_SCRIPT_RESULT", help: {description: tr("Variable with result of javascript execution. Type of variable is always string, if expression is evaluated to other type, it will be converted. If exception will occur during script execution, than empty string will return.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"ScriptValue", description:tr("Script Text"), default_selector: "string", disable_int:true, help: {description: tr("Script that will be executed on found element. You can use self variable, which points to found element. Type of that value should be string. If you set type to expression, than script will be evaluated in BAS context first and than result of that evaluation will be send to browser. Using expression is usefull if you want to create script dynamically, but you need to use string type in most cases."), examples:[{code:"self.value",description:tr("Get input field value")},{code:"self.click()",description:tr("Pure javascript click")}, {code:"self.getBoundingClientRect().top",description:tr("Get element top coordinate")}, {code:"var text = self.innerHTML; text.match(/\d+/)[0]",description:tr("Extract digits from element text.")}]}}) %>
-
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Find element and execute javascript on it.</div>
       <div class="tr tooltip-paragraph-fold">Use self variable, which points to selected element.</div>
@@ -3806,8 +3797,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">You can also use resources and variables here but only in read mode. Following code will work self.getAttribute([[ATTRIBUTE]]), but you can't do like this <strike>[[RESULT]] = self.getAttribute([[ATTRIBUTE]])</strike>.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Execute Javascript On Element"), wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
   </script>
 
@@ -3816,14 +3805,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#variable_constructor').html())({id:"SaveText", description:tr("Variable To Save"), default_variable: "SAVED_TEXT", help: {description: tr("This variable will contain text of selected element as string")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Get element text, visible on screen.</div>
       <div class="tr tooltip-paragraph-fold">For example, if you apply that action to whole page, you will get page text without markup.</div>
       <div class="tr tooltip-paragraph-fold">This action can be applied to textarea or input to get its value.</div> 
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Get Element Text")}) %>
   </script>
 
@@ -4120,7 +4107,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     <%= _.template($('#movefields').html())({}) %>
 
-    <div class="tooltipinternal ">
+    <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Move mouse and click on given element.</div>
       <div class="tr tooltip-paragraph-fold">Target coordinates are always random but they are located close to center.</div>
       <% if(_SelectorModel.get("is_image") == false){ %>
@@ -4136,11 +4123,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="clear">
-    <div class="container-fluid clear">
+    <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
     </div>
     <%= _.template($('#movefields').html())({}) %>
-    <div class="tooltipinternal ">
+    <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Clear edit. Works only on edit.</div>
       <div class="tr tooltip-paragraph-fold">This action is equivalent to typing &lt;CONTROL&gt;A&lt;BACK&gt;.</div>
       <div class="tr tooltip-paragraph-fold">If element is not visible, page will be scrolled.</div> 
@@ -4152,7 +4139,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="typeelement">
 
-    <div class="container-fluid typeelement">
+    <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
 
       <%= _.template($('#input_constructor').html())({id:"TypeData", description:tr("Text to type"), default_selector: "string", disable_int:true, help: {description: tr("This could be any character sequence."), examples:[{code:"hello world!",description:tr("Input hello world!")},{code:"&lt;CONTROL&gt;V",description:tr("Paste text")},{code:"&lt;CONTROL&gt;A&lt;DELETE&gt;",description:tr("Clear input")},{code:"&lt;ESCAPE&gt;",description:tr("Press escape")}]}}) %>
@@ -4165,7 +4152,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
     <%= _.template($('#movefields').html())({}) %>
 
-    <div class="tooltipinternal ">
+    <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Type text inside element.</div>
       <div class="tr tooltip-paragraph-fold">This action is capable to input any characters including special keys like enter, backspace, insert, delete, etc.</div>
       <div class="tr tooltip-paragraph-fold">If you want to type big text, use 0 interval or "Set Clipboard" and type &lt;CONTROL&gt;V text.</div>
@@ -4207,12 +4194,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="style">
     <div class="container-fluid style">
       <%= _.template($('#path').html())({selector:selector}) %>
-
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_STYLE", help: {description: tr("Computed style as a string.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Style To Check"), default_selector: "string", disable_int:true, help: {description: tr("Css value to check. Internally this action calls window.getComputedStyle(self)."), examples:[{code:"display",description:tr("Check visibility")},{code:"width",description:tr("Get width")}]}}) %>
     </div>
-
-    <div class="tooltipinternal ">
+    <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Get element css style.</div>
       <div class="tr tooltip-paragraph-fold">Use "display" to check if element is visible, "width" to check element width etc.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
@@ -4223,10 +4208,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="check">
     <div class="container-fluid check">
       <%= _.template($('#path').html())({selector:selector}) %>
-
     </div>
-    <div class="tooltipinternal tr">Check cehckbox. Works only on checkboxes.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Check cehckbox. Works only on checkboxes.</div>
+    </div>
     <%= _.template($('#movefields').html())({}) %>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, use_move: true, name: tr("Set Checkbox")}) %>
   </script>
@@ -4272,7 +4257,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">You can use "type text" action to set combobox value. Click on combobox inside browser and select "Type Text" option, than input desired value or several first letters with &lt;RETURN&gt; at the end. For example, if combobox contains two values: male and female, you can select male by typing male&lt;RETURN&gt; or ma&lt;RETURN&gt;.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Set Combobox Value"), wiki: "how_to_set_combobox"}) %>
   </script>
 
@@ -4281,13 +4265,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Set Index"), default_selector: "int", disable_string:true, help: {description: tr("Integer which contains combobox index starting from zero")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Set combobox index to desired int. Works only on comboboxes(not text input).</div>
       <div class="tr tooltip-paragraph-fold">You can use "type text" action to set combobox value. Click on combobox inside browser and select "Type Text" option, than input desired value or several first letters with &lt;RETURN&gt; at the end. For example, if combobox contains two values: male and female, you can select male by typing male&lt;RETURN&gt; or ma&lt;RETURN&gt;.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-    
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Set Combobox Index"), wiki: "how_to_set_combobox"}) %>
   </script>
 
@@ -4408,19 +4390,16 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
 
     <%= _.template($('#multiselect').html())() %>
-
     </span>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Starts loop which iterates over all elements matching query.</div>
       <div class="tr tooltip-paragraph-fold">To start loop, click on element inside browser and choose Start Loop action. BAS will automatically guess, which elements are similar to element that you have chosen and create loop over them. This prediction won't always be correct, so you can tweak it in following way. Add element, which loop must include by selecting it and clicking with left button. This will create green background for element, it always will be included into loop. Alternatively click on element, which was inсluded into loop(elements with blue background). This will create red background for element, it always will be excluded from loop. By сonstantly clarifying which elements will be in the cycle and which will not, you can gradually achieve an acceptable result.</div>
-
       <div class="tr tooltip-paragraph-fold">You also can write selector manually. For example, selector &gt;CSS&gt; a will find all links on page, &gt;CSS&gt; .my-class will find elements by class, etc.</div>
       <div class="tr tooltip-paragraph-fold">Clicking ok button will create a loop. Than you need to put some actions inside loop body, every action which you will put there will be executed for each element matching query. To add action click on any element inside browser and select action, which you want to perform. Select "Element from the loop" in order to execute action for each element in the loop. BAS creates selector for your action automatically.</div>
       <div class="tr tooltip-paragraph-fold">You can also iterate over element with "Get Elements Count" action.</div> 
       <div class="tr tooltip-paragraph-fold">Selectors created by BAS usually looks like this [[FOR_EACH_CSS]]&gt;AT&gt;[[CYCLE_INDEX]] and you can update them. For example, if you want to get subelement, change selector like this [[FOR_EACH_CSS]]&gt;AT&gt;[[CYCLE_INDEX]]&gt;CSS&gt; your subselector.</div>
       <div class="tr tooltip-paragraph-fold">Not only element actions may be used inside loop, but any other action like: log, writing to file, etc.</div>
       <div class="tr tooltip-paragraph-last-fold">This type of cycle has small delay between each step, so if you want to parse page very fast, get page source and use xpath or regular expression.</div>
-      
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:false,use_timeout: true, name: tr("Start Loop"), wiki: "how_to_iterate_over_elements"}) %>
   </script>
@@ -4431,7 +4410,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"MoveY", description:tr("Move y position"), default_selector: "int", disable_string:true, value_number: model['y'], help: {description: tr("Integer value, offset from the top edge of the page")}}) %>
     </div>
     <%= _.template($('#movefields').html())({}) %>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Move cursor to given coordinates.</div>
       <div class="tr tooltip-paragraph-fold">If you want to move on element, select it inside browser and choose "Move On Element".</div>
@@ -4439,7 +4417,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">If coordinates is not visible, page will be scrolled.</div>
       <div class="tr tooltip-paragraph-last-fold">Mouse move trajectory is always random and reminds one made by human, you can twaek move parameters with settings button located near cancel.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, use_move: true, name: tr("Move"), wiki: "how_to_move_mouse"}) %>
   </script>
 
@@ -4448,7 +4425,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"ClickX", description:tr("Click x position"), default_selector: "int", disable_string:true, value_number: model['x'], help: {description: tr("Integer value, offset from the left edge of the page")}}) %>
       <%= _.template($('#input_constructor').html())({id:"ClickY", description:tr("Click y position"), default_selector: "int", disable_string:true, value_number: model['y'], help: {description: tr("Integer value, offset from the top edge of the page")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Click on given coordinates.</div>
       <div class="tr tooltip-paragraph-fold">If you want to click on element, select it inside browser and choose "Click On Element".</div>
@@ -4456,8 +4432,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">If coordinates is not visible, page will be scrolled.</div>
       <div class="tr tooltip-paragraph-last-fold">If you are clicking on some element, which causes page load, you should select "wait for full page load". Using this option will make browser wait for page load after click.</div>
     </div>
-
-
     <%= _.template($('#back').html())({action:"executeandadd", use_waiter:true,use_timeout:true, visible:true, name: tr("Click"), wiki:"how_to_click_on_x_y_coordinates"}) %>
   </script>
 
@@ -4476,7 +4450,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">If you used this action, you must also call "Drop" or "Drop On Element" action.</div>
       <div class="tr tooltip-paragraph-last-fold">If you want to drag file from outside of browser, use "Start Drag File" action.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, use_move: true, name: tr("Drag")}) %>
   </script>
 
@@ -4494,7 +4467,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Mouse move trajectory is always random and reminds one made by human, you can twaek move parameters with settings button located near cancel.</div>
       <div class="tr tooltip-paragraph-last-fold">Before using this action, you must also call "Drag" or "Drag On Element" action.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, use_move: true, name: tr("Drop")}) %>
   </script>
 
@@ -4574,7 +4546,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
     <%= _.template($('#mouseclicksettings').html())() %>
     <%= _.template($('#movefields').html())({}) %>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Move mouse and click on given coordinates.</div>
       <div class="tr tooltip-paragraph-fold">If you want to click on element, select it inside browser and choose "Move And Click On Element".</div>
@@ -4583,8 +4554,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Mouse move trajectory is always random and reminds one made by human, you can twaek move parameters with settings button located near cancel.</div>
       <div class="tr tooltip-paragraph-last-fold">If you are clicking on some element, which causes page load, you should select "wait for full page load". Using this option will make browser wait for page load after click.</div>
     </div>
-
-
     <%= _.template($('#back').html())({action:"executeandadd", use_waiter:true,use_timeout: true, use_move: true, visible:true, name: tr("Move And Click"), wiki: "how_to_click_on_x_y_coordinates"}) %>
   </script>
 
@@ -4726,7 +4695,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">It will be reported to service and money won't be removed from the balance.</div>
       <div class="tr tooltip-paragraph-last-fold">If last captcha was solved without service(with software or in manual mode) this action will do nothing.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -10461,6 +10429,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         this.updatepath()
         
         $(".actions").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px")
+        $(".search").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px")
         $(".leftactionpanel").css("height", window.innerHeight * (100.0 / _Z) - 45 + "px")
         $(".leftactionpaneltitlebody").css("min-height", window.innerHeight * (100.0 / _Z) - 95 + "px")
         $(".actions").css("overflow-y","auto")

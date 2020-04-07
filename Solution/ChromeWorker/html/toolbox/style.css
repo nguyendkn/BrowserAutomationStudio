@@ -732,3 +732,8 @@ label
   align-items: center;
   margin-top: -2px;
 }
+
+.short-description
+{
+  display: none;
+}

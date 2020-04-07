@@ -850,6 +850,10 @@ _L =
 	"Wait full page load after this action": {"ru": "Ждать полной загрузки страницы после этого действия"},
 	"Toggle target. Apply this action only to specific url or to specific tab.": {"ru": "Применить это действие только к определенным урл или определенным вкладкам."},
 
+	/* Custom */
+	"Run javascript code in web interface context.": {"ru": "Выполнить javascript код в контексте веб интерфейса."},
+	"Execute custom javascript code.": {"ru": "Выполнить пользовательский javascript код."},
+
 	/* Waiters */
 	"Wait for full page load": {"ru": "Ждать полной загрузки"},
 	"Wait until page is fully loaded.": {"ru": "Ждать пока страница не будет загружена полностью."},

@@ -15,9 +15,14 @@ function SearchManager() {
   _.forOwn(_A, (el, action) => {
     if (excludedActions.includes(action)) return;
 
-    let selector = '.tooltip-paragraph-first-fold';
+    let defaultDesc = ".tooltip-paragraph-first-fold";
+    let shortDesc = ".short-description";
     let script = $("#" + action).text();
-    let data = $(script).find(selector);
+    let data = $(script).find(shortDesc);
+
+    if (data.length == 0) {
+      data = $(script).find(defaultDesc);
+    }
 
     actions.push({
       groupId: _A2G[action] || "browser",
@@ -99,7 +104,6 @@ function SearchManager() {
       return true;
     }
 
-    console.log(page);
     page.forEach((item) => {
       container.append(
         template({

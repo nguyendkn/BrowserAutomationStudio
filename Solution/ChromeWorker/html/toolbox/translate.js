@@ -42,6 +42,7 @@ _L =
 	"Variable [[TAB_INDEX]] will hold index of active tab. Index starts from 0, so first tab will have index 0, second tab - index 1, etc.": {"ru": "Переменная [[TAB_INDEX]] будет содержать индекс активной вкладки. Индексация начинается с 0, поэтому первая вкладка будет иметь индекс 0, вторая - индекс 1 и т. д."},
 	"Switch to the tab with the specified index.": {"ru": "Переключиться на вкладку с указанным индексом."},
 	"Add a new tab with the specified Url.": {"ru": "Добавить новую вкладку с указанным Url."},
+	"Close tab with the specified index.": {"ru": "Закрыть вкладку с указанным индексом."},
 
 	"Url list": {"ru": "Список url"},
 	"List of urls. Each url corresponds to one tab.": {"ru": "Список url. Каждый url соответствует одной вкладке."},

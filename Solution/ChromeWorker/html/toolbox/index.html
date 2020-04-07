@@ -4508,8 +4508,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="closetab">
-    <div class="container-fluid closetab">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Index", description:tr("Tab Index"), default_selector: "int", disable_string:true, value_number: model['index'], min_number:1, max_number:999999}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Close tab with the specified index.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",visible:true, name: tr("Close Tab")}) %>
   </script>

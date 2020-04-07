@@ -3853,7 +3853,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
     
     <%= _.template($('#movefields').html())({}) %>
-    <div class="tooltipinternal ">
+    <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Move mouse pointer on element.</div> 
       <div class="tr tooltip-paragraph-fold">Target coordinates are always random but they are located close to center.</div>
       <div class="tr tooltip-paragraph-fold">If element is not visible, page will be scrolled.</div>
@@ -3864,22 +3864,22 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="mousesettings">
-    <div class="container-fluid dragelement">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Speed", description:tr("Speed"), default_selector: "expression", disable_int:true, disable_string:true, value_string: "100", help: {description: tr("Mouse movement speed as floating point value, if you change this, don't forget to change gravity and deviation proportionally.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Gravity", description:tr("Gravity"), default_selector: "expression", disable_int:true, disable_string:true, value_string: "6", help: {description: tr("Floating point value which sets force of cursor attraction to strait line between starting and ending points. If you set this value too big, cursor will move by straight line, if you set it too low, cursor will move chaotically on the screen.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Deviation", description:tr("Deviation"), default_selector: "expression", disable_int:true, disable_string:true, value_string: "2.5", help: {description: tr("Floating point value which sets force of cursor deviation from strait line between starting and ending points. Think of it as a wind, which blows cursor away from the line - the shortest path between two points.")}}) %>
     </div>
-    <div class="tooltipinternal tr">This is mouse movement settings. You set it either globally(through this action) or for each action individually by clicking on settings icon near cancel button inside any action, that uses mouse.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">This is mouse movement settings. You set it either globally(through this action) or for each action individually by clicking on settings icon near cancel button inside any action, that uses mouse.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
-
 
   <script type="text/template" id="notification">
     <div class="container-fluid dragelement">
      <%= _.template($('#input_constructor').html())({id:"AllowNotifications", description:tr("Allow notifications"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: {description: tr("Allow or deny notifications."), examples:[{code:"true",description:tr("Always allow notification for all subsequent requests.")},{code:"false",description:tr("Always deny notification for all subsequent requests.")}]}}) %>
     </div>
-    <div class="tooltipinternal ">
+    <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Allow or deny browser notifications.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">In a normal browser notifications are displayed on a user desktop. Before start receiving them user must enable notifications. Using this action is the same as enabling or disabling notifications depending on input parameter.</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('http://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=allownotifications.png');return false" class="tr">screen1</a>, <a href="#" onclick="BrowserAutomationStudio_OpenUrl('http://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=notificationexample.png');return false" class="tr">screen2</a>. </div>
       <div class="tr tooltip-paragraph-fold">By default notifications are disabled.</div>
@@ -3887,7 +3887,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">This action must be called before any page which shows notifications is loaded.</div>
       <div class="tr tooltip-paragraph-last-fold">IMPORTANT: Notifications are often used together with service workers and service worker works only with profiles enabled. So you may want to use local profile together with this action.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -3913,7 +3912,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         </form>
       </div>
     </div>
-
   </script>
 
   <script type="text/template" id="browsersettings">
@@ -4500,19 +4498,25 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, use_move: true, name: tr("Drop")}) %>
   </script>
 
+  <!-- Tabs templates -->
+
   <script type="text/template" id="addtab">
-    <div class="container-fluid addtab">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Url", description:tr("Url"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
-
       <%= _.template($('#input_constructor').html())({id:"IsSilent", description:tr("Load silently"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true","false"], help: {description: tr("Adding tab silently means, that new tab will be added and specified url will be loaded only when the tab becomes active for the first time."),examples:[{code:"true",description:tr("Create new tab, load specified url only when tab gets switched to.")},{code:"false",description:tr("Create new tab, switch to it and load it immediately.")}]}}) %>
-
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Add a new tab with the specified Url.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", use_waiter:true, waiter_enabled: true, use_timeout:true, visible:true, name: tr("Add Tab")}) %>
   </script>
 
   <script type="text/template" id="selecttab">
-    <div class="container-fluid selecttab">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Index", description:tr("Tab Index"), default_selector: "int", disable_string:true, value_number: model['index'], min_number:0, max_number:999999}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Switch to the tab with the specified index.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, name: tr("Select Tab")}) %>
   </script>
@@ -4522,7 +4526,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#variable_constructor').html())({id:"UrlList", description:tr("Url list"), default_variable: "URL_LIST", help: {description: tr("List of urls. Each url corresponds to one tab.")}}) %>
       <%= _.template($('#variable_constructor').html())({id:"TotalTabs", description:tr("Number of tabs"), default_variable: "TOTAL_TABS", help: {description: tr("Total number of tabs.")}}) %>
       <%= _.template($('#variable_constructor').html())({id:"CurrentIndex", description:tr("Current tab index"), default_variable: "TAB_INDEX", help: {description: tr("Index of current tab. Index starts with 0.")}}) %>
-      
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Get list of tabs, index of current tab and save it to variables.</div>

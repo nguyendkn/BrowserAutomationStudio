@@ -1,4 +1,9 @@
 function SearchManager() {
+  const excludedActions = [
+    "httpclientgetcookiesforurl",
+    "getcookiesforurl"
+  ]
+  
   let lastQuery = "";
 
   let actions = [];
@@ -7,13 +12,19 @@ function SearchManager() {
   let current = 0;
   let total = 0;
 
-  _.forOwn(_A, (el, key) => {
+  _.forOwn(_A, (el, action) => {
+    if (excludedActions.includes(action)) return;
+
+    let selector = '.tooltip-paragraph-first-fold';
+    let script = $("#" + action).text();
+    let data = $(script).find(selector);
+    
     actions.push({
-      description: el["description"],
-      groupId: _A2G[key] || "browser",
-      popup: !_.has(_A2G, key),
+      groupId: _A2G[action] || "browser",
+      description: tr(data.text()),
+      popup: !_.has(_A2G, action),
       name: tr(el["name"]),
-      key: key,
+      key: action,
     });
   });
 
@@ -33,7 +44,7 @@ function SearchManager() {
     );
   };
 
-  const getMaxItemsCount = (rows) => {
+  const getItemsCount = (rows) => {
     let screenWidth = $(window).width();
     if (screenWidth > 960) return 3 * rows;
     if (screenWidth > 480) return 2 * rows;
@@ -42,8 +53,8 @@ function SearchManager() {
 
   const renderSearch = (query, items, rows) => {
     rows = rows || Math.floor(window.innerHeight / 100);
-    let maxItemsCount = getMaxItemsCount(rows);
-    pages = _.chunk(items, maxItemsCount);
+    let itemsCount = getItemsCount(rows);
+    pages = _.chunk(items, itemsCount);
     total = items.length;
     lastQuery = query;
     current = 0;
@@ -53,7 +64,7 @@ function SearchManager() {
 
     let allInView = renderPage(pages[0]);
     console.log(rows);
-    if (maxItemsCount == 1) {
+    if (itemsCount == 1) {
       return;
     }
     if (!allInView) {

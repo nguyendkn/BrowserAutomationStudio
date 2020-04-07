@@ -1444,10 +1444,13 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
 
   <script type="text/template" id="setheader">
-    <div class="container-fluid setheader">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language","Referer"], size: 3}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Header Value"), default_selector: "string", disable_int:true, value_string: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0"}) %>
       <%= _.template($('#targetfields').html())({}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Set request header for subsequent browser requests.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
   </script>
@@ -1661,85 +1664,98 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
 <script type="text/template" id="cachemaskallow">
-    <div class="container-fluid cachemaskallow">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true, value_string: "*"}) %>
     </div>
-    <div class="tooltipinternal tr">Add page content to cache if url is matching. For example *.json - caches all json</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Add page content to cache if Url matches specified mask.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
   
   <script type="text/template" id="cachemaskdeny">
-    <div class="container-fluid cachemaskdeny">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
     </div>
-    <div class="tooltipinternal tr">Do not add page content to cache if url is matching.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Do not add page content to cache if Url matches specified mask.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="cachemaskclear">
-    <div class="tooltipinternal tr">Clear all cache masks.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Clear all cache masks.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="restrictpopups">
-    <div class="tooltipinternal tr">Restrict all popups. You can restrict specific popup with Request Mask Deny action.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Restrict all popups. You can restrict specific popup with Request Mask Deny action.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="restrictdownloads">
-    <div class="tooltipinternal tr">Restrict all downloads. You can restrict specific download with Request Mask Deny action.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Restrict all file downloads. You can restrict specific download with Request Mask Deny action.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="allowpopups">
-    <div class="tooltipinternal tr">Allow all popups. Revokes Allow popup action.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Allow all popups. Revokes Restrict popups action.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="allowdownloads">
-    <div class="tooltipinternal tr">Allow all downloads. Revokes Allow downloads action.</div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
-  <script type="text/template" id="requestmaskallow">
-    <div class="container-fluid requestmaskallow">
-      <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Allow all file downloads. Revokes Restrict downloads action.</div>
     </div>
-    <div class="tooltipinternal tr">Allow load url if url is matching. By default every url is loaded</div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="requestmaskdeny">
-    <div class="container-fluid requestmaskdeny">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
     </div>
-    <div class="tooltipinternal tr">Deny load url if url is matching. For example *.png disables loading png images.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Deny Url loading if Url matches specified mask. By default every Url is loaded.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
 
+  <script type="text/template" id="requestmaskallow">
+    <div class="container-fluid">
+      <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Allow Url loading if Url matches specified mask. By default every Url is loaded.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="requestmaskclear">
-    <div class="tooltipinternal tr">Clear all requests masks.</div>
-
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
-  <script type="text/template" id="cleardata">
-    <div class="tooltipinternal tr">Clear all cache masks.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Clear all previously added request masks.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="clearmasks">
-    <div class="tooltipinternal tr">Clear info about all loaded urls.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Clear all previously added cache masks.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
 
+  <script type="text/template" id="cleardata">
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Delete information about all loaded Urls from the cache.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -1753,7 +1769,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="loadcookiesfromhttpclient">
-    <div class="tooltipinternal tr">Load cookies from http client.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Load cookies from http client to browser.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -1794,6 +1812,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_STATUS"}) %>
     </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get request status for the specified Url.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -1802,6 +1823,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_IS_LOADED"}) %>
     </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Check if the specified Url has been loaded.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
   
@@ -1809,12 +1833,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <div class="container-fluid getfromcache">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_CACHE"}) %>
-       <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-         <input type="checkbox" id="Check"/> <label for="Check" class="tr">Encode in base64</label>
-       </span>
+      <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
+        <input type="checkbox" id="Check" /> 
+        <label for="Check" class="tr">Encode in base64</label>
+      </span>
     </div>
-    <div class="tooltipinternal tr">After execution variale will hold cached page content which matching url.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get last cache item for specified Url and save it to variable.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", use_timeout: true, visible:true}) %>
   </script>
 
@@ -1822,10 +1848,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <div class="container-fluid getallcache">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", value_string: "*", disable_int:true, help: {description: tr("An url, cache for which you want to obtain. Url can contain * symbol, which will be replaced by any symbol sequence."), examples:[{code:"*",description:tr("Get all cache")},{code:"*url/part*",description:tr("Get cache for urls, which contain url/part")},{code:"http://site.com/script.js",description:tr("Get cache for specific url")}]}}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "CACHE_LIST", help: {description: tr("This variable will contain list of cache items. Each cache item is object with information about request and response headers, received data, status, etc.")}}) %>
-       
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Get all cache items for specified url and save them to list.</div>
+      <div class="tr tooltip-paragraph-first-fold">Get all cache items for specified Url and save them to list.</div>
       <div class="tr tooltip-paragraph-fold">This action won't work by itself. In order to obtain cache items, you need to use "Cache Mask Allow" action first, it will specify pages, that will be cached. Then you need to load page, or do actions in browser, which will trigger page load, like inputting text or clicking mouse. Only after cache mask is set and page is loaded, you can use this action to obtain cache values.</div>
       <div class="tr tooltip-paragraph-fold">Try not to use "*" mask in "Cache Mask Allow" action and specify a mask as detailed as possible in order to add fewer cache items. Adding item to cache is resource consuming task, by limiting number of cache items you can optimize your script.</div>
       <div class="tr tooltip-paragraph-fold">Result of this action is a list, use "List" module to process it.</div>
@@ -1840,7 +1865,6 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <div class="tr tooltip-paragraph-fold">"is_error" - boolean value, indicates if there were error during request.</div>
       <div class="tr tooltip-paragraph-fold">"error" - error code as string.</div>
       <div class="tr tooltip-paragraph-last-fold">"is_finished" - boolean value, indicates, if request was finished.</div>
-      
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -6081,8 +6105,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="multiselectmanager.js"></script>
   
   <!-- Actions Search (scripts) -->
-  
-  
   <script src="./search/search.js"></script>
 
   <script type="text/javascript"> _L = $.extend(_L, _AL)</script>

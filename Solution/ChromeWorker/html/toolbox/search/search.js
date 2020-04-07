@@ -18,7 +18,7 @@ function SearchManager() {
     let selector = '.tooltip-paragraph-first-fold';
     let script = $("#" + action).text();
     let data = $(script).find(selector);
-    
+
     actions.push({
       groupId: _A2G[action] || "browser",
       description: tr(data.text()),
@@ -29,19 +29,17 @@ function SearchManager() {
   });
 
   this.Search = function (query) {
-    renderSearch(query, actions.filter((el) => {
-        let queryLower = query.toLowerCase();
-        let nameLower = el.name.toLowerCase();
-        return nameLower.indexOf(queryLower) >= 0;
-      })
-    );
+    renderSearch(actions.filter((el) => {
+      let queryLower = query.toLowerCase();
+      let nameLower = el.name.toLowerCase();
+      return nameLower.indexOf(queryLower) >= 0;
+    }), query);
   };
 
   this.Recent = function () {
-    renderSearch("", actions.filter((el) => {
-        return ActionHistory.includes(el.key);
-      })
-    );
+    renderSearch(actions.filter((el) => {
+      return ActionHistory.includes(el.key);
+    }));
   };
 
   const getItemsCount = (rows) => {
@@ -51,24 +49,20 @@ function SearchManager() {
     return rows;
   };
 
-  const renderSearch = (query, items, rows) => {
+  const renderSearch = (items, query, rows) => {
     rows = rows || Math.floor(window.innerHeight / 100);
     let itemsCount = getItemsCount(rows);
     pages = _.chunk(items, itemsCount);
+    lastQuery = query || "";
     total = items.length;
-    lastQuery = query;
     current = 0;
 
     $(".results-recent").toggle(query == "");
     $(".results-empty").hide();
 
     let allInView = renderPage(pages[0]);
-    console.log(rows);
-    if (itemsCount == 1) {
-      return;
-    }
-    if (!allInView) {
-      renderSearch(query, items, rows - 1);
+    if (!allInView && rows > 1) {
+      renderSearch(items, query, rows - 1);
     }
   };
 
@@ -84,18 +78,28 @@ function SearchManager() {
     return bounds.top >= viewport.top && bounds.bottom <= viewport.bottom;
   };
 
+  const renderPagination = () => {
+    $("#count").html(`${total} results`);
+    
+    if (total > 0) {
+      $("#pages").html(`${current + 1} - ${pages.length}`);
+    } else {
+      $("#pages").html(`${current + 1} - ${pages.length + 1}`);
+    }
+  };
+
   const renderPage = (page) => {
     let container = $("#results");
     container.unmark();
     container.empty();
 
     if (total == 0) {
-      $("#pages").html(`1 - 1`);
-      $("#count").html(`0 results`);
+      renderPagination();
       $(".results-empty").show();
       return true;
     }
 
+    console.log(page);
     page.forEach((item) => {
       container.append(
         template({
@@ -112,10 +116,6 @@ function SearchManager() {
       );
     });
 
-    if (!inViewport(container)) {
-      return false;
-    }
-
     $(".result-item").click(function () {
       let action = $(this).find(".result-action").text().trim();
       let popup = $(this).data("popup");
@@ -129,25 +129,17 @@ function SearchManager() {
       }
     });
 
-    $("#pages").html(`${current + 1} - ${pages.length}`);
-    $("#count").html(`${total} results`);
+    $("#nextpage").prop("disabled", () => {
+      return pages.length == 1 || current == pages.length - 1;
+    });
 
-    if (pages.length == 1) {
-      $("#nextpage").prop("disabled", true);
-      $("#prevpage").prop("disabled", true);
-    } else if (current == pages.length - 1) {
-      $("#nextpage").prop("disabled", true);
-      $("#prevpage").prop("disabled", false);
-    } else if (current == 0) {
-      $("#prevpage").prop("disabled", true);
-      $("#nextpage").prop("disabled", false);
-    } else {
-      $("#nextpage").prop("disabled", false);
-      $("#prevpage").prop("disabled", false);
-    }
+    $("#prevpage").prop("disabled", () => {
+      return pages.length == 1 || current == 0;
+    });
 
+    renderPagination();
     container.mark(lastQuery);
-    return true;
+    return inViewport(container);
   };
 
   this.Render = function () {
@@ -162,8 +154,6 @@ function SearchManager() {
       }
     });
 
-    $(".results-recent").hide();
-    $(".results-empty").hide();
     $("#pagination").hide();
     $(".search").hide();
   };

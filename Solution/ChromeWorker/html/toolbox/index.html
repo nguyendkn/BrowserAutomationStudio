@@ -903,6 +903,7 @@
         <div class="tr tooltip-paragraph-first-fold">This action finishes whole script, not just single thread, use it in case of fatal error and if script can't be continued under no circumstances. For example, if API key to some service doesn't match.</div>
         <div class="tr tooltip-paragraph-fold">BAS also uses this action internally in case of resource absence, so if, for example, user didn't set any proxy file, script will finish instantly.</div>
         <div class="tr tooltip-paragraph-last-fold">There are two modes, how this action works. First mode is instant finish, this means that script will finish at the same second as you called that action, each thread will also stop instantly even if it was in the middle of some task. Second mode is graceful finish, in this case BAS will wait until all threads will finish their tasks. Second mode is useful in case if you don't want to lose important data, for example, phone numbers or emails.</div>
+        <span class="short-description tr">This action finishes whole script, not just single thread, use it in case of fatal error and if script can't be continued under no circumstances.</span>
       </div>
      <%= _.template($('#back').html())({action:"executeandadd", visible:false}) %>
 
@@ -1491,6 +1492,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       </div>
       <div class="tooltipinternal">
         <div class="tr tooltip-paragraph-first-fold">This action sets script which must be executed inside every page and every frame immediately after page is created. Unlike javascript action, script defined here is executed at the very beginning of page load, which gives possibility to change browser internals like window.navigator. Action should be called before page load.</div>
+        <span class="short-description tr">This action sets script which must be executed inside every page and every frame immediately after page is created.</span>
       </div>
       <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
   </script>
@@ -1558,6 +1560,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <div class="tr tooltip-paragraph-first-fold">Prompt window displays a dialog with an optional message prompting the user to input some text. It is outdated functionality and most sites don't use it any more. BAS allows to input text into that window automatically, to do that you must call this action before prompt window will appear.</div>
       <div class="tr tooltip-paragraph-fold">Principle is the same as in "Open File Result", first you call action which sets result and than trigger dialog, BAS will recognize it and input previously setted up value.</div>
       <div class="tr tooltip-paragraph-last-fold">Prompt window browser documentation <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt');return false">link</a>.</div>
+      <span class="short-description tr">Prompt window displays a dialog with an optional message prompting the user to input some text. It is outdated functionality and most sites don't use it any more.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -1571,6 +1574,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <div class="tr tooltip-paragraph-first-fold">HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it. During authentication process browser shows window and user must input authentication data there. This process can be automated, all you need to do is to call this action before window is triggered.</div>
       <div class="tr tooltip-paragraph-fold">Good idea would be to put it to the start of the script.</div>
       <div class="tr tooltip-paragraph-last-fold">In case if this action will be called after window popup, authentication process will fail.</div>
+      <span class="short-description tr">HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -4576,6 +4580,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;">fingerprint switcher</a>.</div>
+      <span class="short-description tr">Changes browser resolution. Standart value is 1024x600.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:false}) %>
   </script>

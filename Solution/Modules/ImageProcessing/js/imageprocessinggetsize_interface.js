@@ -4,6 +4,6 @@
     <%= _.template($('#variable_constructor').html())({id:"Height", description:tr("Variable to save height"), default_variable: "IMAGE_HEIGHT"}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Get the image size - its height and width in pixels.</div>
+    <div class="tr tooltip-paragraph-first-fold">Get image width and height.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

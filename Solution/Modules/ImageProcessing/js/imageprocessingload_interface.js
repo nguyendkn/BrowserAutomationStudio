@@ -3,6 +3,6 @@
     <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save image id"), default_variable: "LOADED_IMAGE_ID"}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Start working with the specified image and get its id.</div>
+    <div class="tr tooltip-paragraph-first-fold">Load image from binary data (base64 format). Obtain image id, which will help to manipulate image.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

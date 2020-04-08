@@ -15,6 +15,6 @@
     <%= _.template($('#input_constructor').html())({id:"HorizontalAlign", description:tr("Horizontal align"), default_selector: "string", disable_int:true, value_string: "center", variants: ["left","right","center"]}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Add specific text to the specified image using certain parameters.</div>
+    <div class="tr tooltip-paragraph-first-fold">Add text to the image using specified parameters.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

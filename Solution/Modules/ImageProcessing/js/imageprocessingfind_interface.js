@@ -6,6 +6,6 @@
     <%= _.template($('#variable_constructor').html())({id:"Threshold", description:tr("How well the image fits. 100 - exactly fits, 0 - does not fit at all."), default_variable: "FOUND_THRESHOLD"}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Find one specified image in another and get the coordinates of the found image.</div>
+    <div class="tr tooltip-paragraph-first-fold">Find one image in another and get the coordinates of the found location.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

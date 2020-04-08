@@ -10,6 +10,6 @@
     <%= _.template($('#input_constructor').html())({id:"ColorA", description:tr("Color Transparency"), default_selector: "int", disable_string:true, value_number:255, min_number:0, max_number:255}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Fill the rectangle in the specified image with a specific color.</div>
+    <div class="tr tooltip-paragraph-first-fold">Fill the rectangle in the image with a specific color.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

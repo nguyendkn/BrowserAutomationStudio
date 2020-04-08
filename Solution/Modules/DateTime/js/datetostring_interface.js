@@ -5,6 +5,6 @@
     <a onclick="BrowserAutomationStudio_OpenUrl('http://doc.qt.io/qt-5/qdatetime.html#fromString')" class="tr" style="margin-left: 20px;cursor: pointer;">DateTime formatting</a>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Convert the specified date and time to string using a specific format.</div>
+    <div class="tr tooltip-paragraph-first-fold">Convert date and time to string using a specified format.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

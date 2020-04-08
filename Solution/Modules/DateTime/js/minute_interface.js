@@ -3,6 +3,6 @@
 	<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Minutes"), default_variable: "MINUTES"}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Get the integer number of minutes from the specified date.</div>
+    <div class="tr tooltip-paragraph-first-fold">Get the number of minutes from the specified date.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

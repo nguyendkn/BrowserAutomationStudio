@@ -81,7 +81,7 @@
 	],
 	"localize":
 	{
-		"Send a notification of the used phone number to the service.": {"ru": "Отправить на сервис уведомление об использованном номере телефона."},
+		"Send a notification that phone number was already in use on target site.": {"ru": "Отправить на сервис уведомление о том, что номер телефона уже использовался на целевом сайте."},
 		"Get an activation code from the specified SMS receiving service.": {"ru": "Получить код активации от определенного СМС сервиса."},
 		"Get a phone number from the specified SMS receiving service.": {"ru": "Получить номер телефона от определенного СМС сервиса."},
 		"Send a notification of the incorrect SMS code to the service.": {"ru": "Отправить на сервис уведомление о неверном СМС коде."},

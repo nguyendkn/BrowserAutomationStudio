@@ -56,7 +56,7 @@
 </div>
 
 <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Set browser timezone.</div>
+      <div class="tr tooltip-paragraph-first-fold">Set browser timezone. Timezone can be changed by "Proxy" action as well.</div>
       <div class="tooltip-paragraph-fold"><span class="tr">Site can obtain information about system timezone by using internal '</span><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset');return false">Date</a><span class="tr">' object. This action allows to spoof local time values returned by browser.</span></div>
       <div class="tooltip-paragraph-fold"><span class="tr">Full list of timezones can be found</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/List_of_UTC_time_offsets');return false">here</a>.</div>
       <div class="tr tooltip-paragraph-last-fold">It is recommended to use 'Proxy' action instead of this one, because it will set timezone automatically according to current proxy.</div>

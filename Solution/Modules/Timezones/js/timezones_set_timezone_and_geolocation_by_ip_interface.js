@@ -17,7 +17,7 @@
 }) %>
 </div>
 <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Set browser timezone and position the same as timezone and position of selected ip.</div>
+      <div class="tr tooltip-paragraph-first-fold">Set browser timezone and position the same as timezone and position of selected ip. Timezone can be changed by "Proxy" action as well.</div>
       <div class="tooltip-paragraph-fold"><span class="tr">Site can obtain information about system timezone and location using internal apis (</span><a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset');return false">example 1</a>, <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API');return false">example 2</a><span class="tr">). This action allows to spoof timezone and location values returned by browser.</span></div>
       <div class="tooltip-paragraph-fold"><span class="tr">Full list of timezones can be found</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/List_of_UTC_time_offsets');return false">here</a>.</div>
       <div class="tr tooltip-paragraph-fold">To obtain ip information internal database is used, no network requests will be done.</div>

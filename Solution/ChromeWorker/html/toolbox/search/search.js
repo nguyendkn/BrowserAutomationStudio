@@ -79,8 +79,6 @@ function SearchManager() {
     total = results.length;
     current = 0;
 
-    $(".results-empty").hide();
-
     let allInView = renderPage(pages[0]);
     if (!allInView && rows > 1) {
       renderSearch(results, rows - 1);
@@ -107,6 +105,8 @@ function SearchManager() {
     } else {
       $("#pages").html(`${current + 1} - ${pages.length + 1}`);
     }
+
+    $(".results-empty").toggle(total == 0);
   };
 
   const renderPage = (page) => {
@@ -116,7 +116,6 @@ function SearchManager() {
 
     if (total == 0) {
       renderPagination();
-      $(".results-empty").show();
       return true;
     }
 
@@ -168,20 +167,18 @@ function SearchManager() {
 
   this.Show = function () {
     $("body").css("overflow-y", "hidden");
+    $("#pagination, .search").show();
     $("#searchinput").focus();
-    $("#pagination").show();
     $(".actions").hide();
-    $(".search").show();
 
     this.Recent();
   };
 
   this.Hide = function () {
     $("body").css("overflow-y", "visible");
+    $("#pagination, .search").hide();
     $("#searchinput").blur();
-    $("#pagination").hide();
     $(".actions").show();
-    $(".search").hide();
 
     $("#searchinput").val("");
   };

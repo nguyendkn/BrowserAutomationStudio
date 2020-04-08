@@ -17,6 +17,6 @@
 	<div style="margin-left:20px;" class="tr">How to <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://core.telegram.org/bots#3-how-do-i-create-a-bot')">create bot</a> token and <a href="#" onclick="BrowserAutomationStudio_OpenUrl('http://stackoverflow.com/questions/32423837/telegram-bot-how-to-get-a-group-chat-id-ruby-gem-telegram-bot')">get chat id</a></div>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Send the specified message to the specific Telegram chat.</div>
+	<div class="tr tooltip-paragraph-first-fold">Send message to the specific Telegram chat.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

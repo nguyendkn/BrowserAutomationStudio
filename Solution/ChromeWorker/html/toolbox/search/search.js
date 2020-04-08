@@ -1,5 +1,6 @@
 function SearchManager() {
   const excludedActions = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"];
+  const groups = _.filter(_TaskCollection.toJSON(), {type: 'group'});
   
   let lastQuery = null;
 
@@ -31,11 +32,16 @@ function SearchManager() {
     if (shortDesc.length) 
       description = getText(shortDesc);
 
+    let group = _.find(groups, {
+      name: _A2G[action] || "browser"
+    });
+      
     actions.push({
-      groupId: _A2G[action] || "browser",
       popup: !_.has(_A2G, action),
+      module: group.description,
       description: description,
       name: tr(el["name"]),
+      icon: group.icon,
       key: action,
     });
   });
@@ -115,19 +121,7 @@ function SearchManager() {
     }
 
     page.forEach((item) => {
-      container.append(
-        template({
-          icon:
-            item.groupId && item.groupId.length > 0
-              ? _G[item.groupId]["icon"]
-              : "../icons/browser.png",
-          description: item.description,
-          groupId: item.groupId,
-          popup: item.popup,
-          name: item.name,
-          key: item.key,
-        })
-      );
+      container.append(template({item}));
     });
 
     $(".result-item").click(function () {
@@ -195,16 +189,16 @@ function SearchManager() {
   };
 
   let template = _.template(`
-    <li class="result-item" data-value="<%= key %>" data-popup="<%= popup %>">
-        <img src="<%= icon %>">
+    <li class="result-item" data-value="<%= item.key %>" data-popup="<%= item.popup %>">
+        <img src="<%= item.icon %>">
         <div class="result result-action">
-          <%= name %>
+          <%= item.name %>
         </div>
         <div class="result result-module">
-          <%= groupId %>
+          <%= item.module %>
         </div>
         <div class="result result-description">
-          <%= description %>
+          <%= item.description %>
         </div>
     </li>
   `);

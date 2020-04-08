@@ -18,7 +18,6 @@ function SearchManager() {
   };
 
   _.forOwn(_A, (el, action) => {
-    if (excludedActions.includes(action)) return;
     let actionContent = $("#" + action).text();
 
     let defaultDesc = $(actionContent)
@@ -52,6 +51,9 @@ function SearchManager() {
     renderSearch(_.filter(actions, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
+      if (excludedActions.includes(el.key)) {
+        return false;
+      }
       return nameLower.indexOf(queryLower) >= 0;
     }));
   };

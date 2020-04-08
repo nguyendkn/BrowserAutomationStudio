@@ -461,7 +461,7 @@ _L =
 	"If you want to change settings for every thread, it is better to use settings tab.": {"ru": "Если вы хотите поменять настройки для всех потоков, то лучше воспользоваться вкладкой настройки."},
 	"\"Flash\", \"Extensions\", \"Number of frames to skip in run mode\" and \"Process tunneling\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "\"Флеш\", \"Расширения\", \"Пропуск кадров в рабочем режиме\" и \"Туннелирование процесса\" перезапустят браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
 	"Empty string or 0 means, that value wont be changed.": {"ru": "Пустая строка или 0 означает, что значение изменяться не будут."},
-	"Changes browser settings.": {"ru": "Изменяет настройки браузера."},
+	"Changes browser settings: network, canvas, webgl, etc. Use \"Get Fingerprint\" action to change browser fingerprint.": {"ru": "Изменяет настройки браузера: работа с сетью, canvas, webgl и другое. Используйте действие \"Получить отпечаток\" чтобы поменять отпечаток браузера."},
 	"BAS allows to set timeout for every action individually, to do that click on hourglass icon near cancel button inside action interface.": {"ru": "BAS позволяет установить таймаут для каждого действия индивидуально, для этого щелкните на значок песочных часов возле кнопки отмены внутри интерфейса конкретного действия."},
 	"Or run this action with \"General\" timeout type to change maximum execution time for all other actions.": {"ru": "Или запустите это действие с типом таймаута \"General\", чтобы изменить максимальное время выполнения для всех других действий."},
 	"To change maximum captcha solving time run this action with \"Solver\" timeout type.": {"ru": "Чтобы изменить максимальное время решения капчи, выполните это действие с типом таймаута \"Solver\"."},
@@ -860,7 +860,7 @@ _L =
 
 	/* Custom */
 	"Run javascript code in web interface context.": {"ru": "Выполнить javascript код в контексте веб интерфейса."},
-	"Execute custom javascript code.": {"ru": "Выполнить пользовательский javascript код."},
+	"Execute javascript code. This code can work with variables but can't work with elements in web browser.": {"ru": "Выполнить javascript код. Этот код может работать с переменными, но не может работать с элементами в браузере."},
 
 	/* Waiters */
 	"Wait for full page load": {"ru": "Ждать полной загрузки"},

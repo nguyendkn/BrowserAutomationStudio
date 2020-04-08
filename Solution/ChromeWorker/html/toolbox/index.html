@@ -993,7 +993,7 @@
           <span class="tr">Load from file, user input, database</span>
         </a>
       </div>
-      <span class="short-description tr">Execute custom javascript code.</span>
+      <span class="short-description tr">Execute javascript code. This code can work with variables but can't work with elements in web browser.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, modal_code_id:"custom-help-" + (_K || "en")}) %>
   </script>
@@ -4031,7 +4031,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Changes browser settings.</div>
+      <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
       <div class="tr tooltip-paragraph-fold">"Flash", "Extensions", "Number of frames to skip in run mode" and "Process tunneling" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. Find extension</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">here</a>, <span class="tr">and download it from</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome-extension-downloader.com');return false" class="tr">here</a>. <span class="tr">Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.</span></div>

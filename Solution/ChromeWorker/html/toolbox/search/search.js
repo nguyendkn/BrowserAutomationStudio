@@ -102,11 +102,19 @@ function SearchManager() {
   const renderPagination = () => {
     $("#count").html(`${total} results`);
     
-    if (total > 0) {
-      $("#pages").html(`${current + 1} - ${pages.length}`);
-    } else {
+    if (total == 0) {
       $("#pages").html(`${current + 1} - ${pages.length + 1}`);
+    } else {
+      $("#pages").html(`${current + 1} - ${pages.length}`);
     }
+
+    $("#nextpage").prop("disabled", () => {
+      return total == 0 || pages.length == 1 || current == pages.length - 1;
+    });
+
+    $("#prevpage").prop("disabled", () => {
+      return total == 0 || pages.length == 1 || current == 0;
+    });
 
     $(".results-empty").toggle(total == 0);
   };
@@ -134,14 +142,6 @@ function SearchManager() {
         $("body").css("overflow-y", "visible");
         _Router.navigate(`#!/${value}`, true);
       }
-    });
-
-    $("#nextpage").prop("disabled", () => {
-      return pages.length == 1 || current == pages.length - 1;
-    });
-
-    $("#prevpage").prop("disabled", () => {
-      return pages.length == 1 || current == 0;
     });
 
     renderPagination();

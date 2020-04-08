@@ -4,6 +4,6 @@
     <%= _.template($('#input_constructor').html())({id:"Index", description:tr("Index"), default_selector: "int", value_number: 0, min_number: -999999}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Insert an item into the specified list at a specific index.</div>
+    <div class="tr tooltip-paragraph-first-fold">Insert an item into specific position inside the list.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

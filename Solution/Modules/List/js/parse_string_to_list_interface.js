@@ -4,6 +4,6 @@
 	<%= _.template($('#variable_constructor').html())({id:"VariableResult", description:tr("Result List"), default_variable: "PARSED_LIST"}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Split the specified string into a list by a specific separator.</div>
+    <div class="tr tooltip-paragraph-first-fold">Split string into a list by a specific separator.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

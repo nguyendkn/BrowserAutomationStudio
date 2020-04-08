@@ -5,6 +5,6 @@
     <%= _.template($('#variable_constructor').html())({id:"VariableNewList", description:tr("New List"), default_variable: "NEW_SUBLIST"}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Get a sublist of a certain number of items from a specified list.</div>
+    <div class="tr tooltip-paragraph-first-fold">Get a sublist of a certain number of items from a list.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

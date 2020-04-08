@@ -3,6 +3,6 @@
     <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Index"), default_selector: "int", disable_string:true, min_number: -999999, value_number: 0}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Remove an item with a specific index from the specified list.</div>
+    <div class="tr tooltip-paragraph-first-fold">Remove an item with a specific index from the list.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

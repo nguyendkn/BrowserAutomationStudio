@@ -4,6 +4,6 @@
     <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Value"), default_selector: "string"}) %>
 </div>
 <div class="tooltipinternal">
-    <div class="tr tooltip-paragraph-first-fold">Set the specific value of an item in the specified list.</div>
+    <div class="tr tooltip-paragraph-first-fold">Change list item at specific position.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

@@ -1664,7 +1664,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true, value_string: "*"}) %>
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Add page content to cache if Url matches specified mask.</div>
+      <div class="tr tooltip-paragraph-first-fold">Add page content to cache if Url matches specified mask. Works only on pages which will be loaded next after this action call.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -1674,7 +1674,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Do not add page content to cache if Url matches specified mask.</div>
+      <div class="tr tooltip-paragraph-first-fold">Do not add page content to cache if Url matches specified mask. Works only on pages which will be loaded next after this action call.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>

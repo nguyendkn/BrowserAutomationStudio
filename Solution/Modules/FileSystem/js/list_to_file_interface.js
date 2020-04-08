@@ -15,6 +15,6 @@
     </span>
 </div>
 <div class="tooltipinternal">
-  <div class="tr tooltip-paragraph-first-fold">Write the contents of the specified list to the specific file.</div>
+  <div class="tr tooltip-paragraph-first-fold">Write the content of the specified list to file. Each element of the list will be written as a line in a file.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

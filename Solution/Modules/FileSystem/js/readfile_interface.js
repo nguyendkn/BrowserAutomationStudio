@@ -9,6 +9,6 @@
   </span>
 </div>
 <div class="tooltipinternal">
-  <div class="tr tooltip-paragraph-first-fold">Read the contents of the specified file to the specific variable.</div>
+  <div class="tr tooltip-paragraph-first-fold">Read file content to the variable.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

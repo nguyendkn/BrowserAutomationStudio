@@ -21,7 +21,7 @@
   </span>
 </div>
 <div class="tooltipinternal">
-  <div class="tr tooltip-paragraph-first-fold">Write specific data to the specified file.</div>
+  <div class="tr tooltip-paragraph-first-fold">Write text or binary data to file.</div>
   <div class="tr tooltip-paragraph-last-fold">It is better to use <a href="#!/result">Result</a> action to output result.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

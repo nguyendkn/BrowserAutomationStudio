@@ -49,7 +49,7 @@ function SearchManager() {
   this.Search = function (query) {
     lastQuery = query;
     $('.results-recent').hide();
-    renderSearch(actions.filter((el) => {
+    renderSearch(_.filter(actions, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
       return nameLower.indexOf(queryLower) >= 0;
@@ -59,8 +59,8 @@ function SearchManager() {
   this.Recent = function () {
     lastQuery = null;
     $('.results-recent').show();
-    renderSearch(actions.filter((el) => {
-      return ActionHistory.includes(el.key);
+    renderSearch(_.map(ActionHistory, (el) => {
+      return _.find(actions, {key: el});
     }));
   };
 
@@ -120,9 +120,7 @@ function SearchManager() {
       return true;
     }
 
-    page.forEach((item) => {
-      container.append(template({item}));
-    });
+    page.forEach((item) =>  container.append(template({item})));
 
     $(".result-item").click(function () {
       let action = $(this).find(".result-action").text().trim();

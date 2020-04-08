@@ -1,6 +1,7 @@
 function SearchManager() {
   const excludedActions = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"];
-  const groups = _.filter(_TaskCollection.toJSON(), {type: 'group'});
+
+  const groups = _.filter(_TaskCollection.toJSON(), {type: "group"});
   
   let lastQuery = null;
 
@@ -17,8 +18,8 @@ function SearchManager() {
     return node.text();
   };
 
-  _.forOwn(_A, (el, action) => {
-    let actionContent = $("#" + action).text();
+  _.forOwn(_A, (value, key) => {
+    let actionContent = $("#" + key).text();
 
     let defaultDesc = $(actionContent)
       .find(".tooltip-paragraph-first-fold");
@@ -31,23 +32,26 @@ function SearchManager() {
     if (shortDesc.length) 
       description = getText(shortDesc);
 
-    let group = _.find(groups, {
-      name: _A2G[action] || "browser"
-    });
-      
-    actions.push({
-      popup: !_.has(_A2G, action),
-      module: group.description,
-      description: description,
-      name: tr(el["name"]),
-      icon: group.icon,
-      key: action,
-    });
+    let group = _.find(groups, {name: _A2G[key] || "browser"});
+    
+    let action = {description, name: tr(value.name), key};
+
+    if (value.class && value.class == "browser") {
+      action.icon = "../icons/element.png";
+      action.module = "Browser > Element";
+      action.popup = true;
+    } else {
+      action.module = group.description;
+      action.icon = group.icon;
+      action.popup = false;
+    }
+
+    actions.push(action);
   });
 
   this.Search = function (query) {
     lastQuery = query;
-    $('.results-recent').hide();
+    $(".results-recent").hide();
     renderSearch(_.filter(actions, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
@@ -60,7 +64,7 @@ function SearchManager() {
 
   this.Recent = function () {
     lastQuery = null;
-    $('.results-recent').show();
+    $(".results-recent").show();
     renderSearch(_.map(ActionHistory, (el) => {
       return _.find(actions, {key: el});
     }));

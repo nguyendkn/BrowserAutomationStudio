@@ -5,7 +5,7 @@ _L =
 	"Create new tab, switch to it and load it immediately.": {"ru": "Создать новую вкладку, переключиться на нее и сразу же загрузить указанный url."},
 	"Load silently": {"ru": "Отложенная загрузка"},
 
-	// Toolbox notifications
+	/* Toolbox notifications */
 	"Please select any element inside browser and click on the '": {"ru": "Пожалуйста, выберите любой элемент в браузере и нажмите на действие '"},
 	"' action inside the menu that will appear.": {"ru": "' в появившемся меню."},
 
@@ -1546,6 +1546,10 @@ _L =
 "You can always tweak selection by using up and down keys. This is useful if several elements holds same coordinates.": {"ru": "Вы всегда можете изменить выбранный элемент с помощью клавиш вверх и вниз. Это полезно, если несколько элементов перекрывают друг друга и имеют одинаковые координаты."},
 "In case if link nearest to selected element can't be found, empty string will be returned.": {"ru": "В случае, если ссылка, ближайшая к выбранному элементу, не может быть найдена, будет возвращена пустая строка."},
 "This action looks for \"href\" attribute on link element. Sometimes it may not be present, and sites processes link clicking by using javascript. In that case following action won't give any meaningful result.": {"ru": "Это действие получает атрибут \"href\" из ссылки. Иногда данный атрибут может отсутствовать, а сайты обрабатывают клики по ссылкам с помощью javascript. В этом случае данное действие не будет иметь пользы."},
+	
+	/* Actions search */
+	"Recent actions": {"ru": "Последние действия"},
+	"Nothing found": {"ru": "Ничего не найдено"},
 }
 
 /*window.un = {}

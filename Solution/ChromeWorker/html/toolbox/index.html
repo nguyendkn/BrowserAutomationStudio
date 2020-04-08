@@ -309,15 +309,9 @@
       </div>
     </div>
     <div class="search">
-      <span class="results-recent">
-        Recent actions
-      </span>
-      <span class="results-empty">
-        Nothing found
-      </span>
-      <ol class="results-container" id="results">
-        
-      </ol>
+      <span class="results-recent"></span>
+      <span class="results-empty"></span>
+      <ol class="results-container" id="results"></ol>
     </div>
     <div class="actions">
       <div class="leftpanel">
@@ -6261,9 +6255,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #use-move": "usemovechange",
 
         "click #searchinputclear": "searchinputclear",
-        "input #searchinput": "searchinput",
-        "keyup #searchinput": "searchinputkeyup",
         "click #searchinput": "searchinputclick",
+        "input #searchinput": "searchinput",
+        
         "focus .dropdown-menu-path": "dropdownmenupathfocus",
         "blur .dropdown-menu-path": "dropdownmenupathblur",
         "click .dropdown-menu-path": "stoppropagation",

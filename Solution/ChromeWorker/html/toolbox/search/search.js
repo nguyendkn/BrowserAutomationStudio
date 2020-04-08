@@ -1,10 +1,7 @@
 function SearchManager() {
-  const excludedActions = [
-    "httpclientgetcookiesforurl",
-    "getcookiesforurl"
-  ]
+  const excludedActions = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"];
   
-  let lastQuery = "";
+  let lastQuery = null;
 
   let actions = [];
   let pages = [];
@@ -12,23 +9,27 @@ function SearchManager() {
   let current = 0;
   let total = 0;
 
+  const getText = (element) => {
+    let html = tr(element.html());
+    let node = $("<div/>");
+    node.append(html);
+    return node.text();
+  };
+
   _.forOwn(_A, (el, action) => {
     if (excludedActions.includes(action)) return;
+    let actionContent = $("#" + action).text();
 
-    const getText = (element) => $(`<div>${tr(element.html())}</div>`).text();
-
-    let script = $("#" + action).text();
-    let defaultDesc = $(script).find(".tooltip-paragraph-first-fold");
-    let shortDesc = $(script).find(".short-description");
+    let defaultDesc = $(actionContent)
+      .find(".tooltip-paragraph-first-fold");
+    let shortDesc = $(actionContent)
+      .find(".short-description");
     let description = null;
 
-    if (defaultDesc.length) {
+    if (defaultDesc.length) 
       description = getText(defaultDesc);
-    }
-
-    if (shortDesc.length) {
+    if (shortDesc.length) 
       description = getText(shortDesc);
-    }
 
     actions.push({
       groupId: _A2G[action] || "browser",
@@ -40,14 +41,18 @@ function SearchManager() {
   });
 
   this.Search = function (query) {
+    lastQuery = query;
+    $('.results-recent').hide();
     renderSearch(actions.filter((el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
       return nameLower.indexOf(queryLower) >= 0;
-    }), query);
+    }));
   };
 
   this.Recent = function () {
+    lastQuery = null;
+    $('.results-recent').show();
     renderSearch(actions.filter((el) => {
       return ActionHistory.includes(el.key);
     }));
@@ -60,20 +65,19 @@ function SearchManager() {
     return rows;
   };
 
-  const renderSearch = (items, query, rows) => {
-    rows = rows || Math.floor(window.innerHeight / 100);
+  const renderSearch = (results, rows) => {
+    rows = rows || (Math.floor(window.innerHeight / 100) - 1);
     let itemsCount = getItemsCount(rows);
-    pages = _.chunk(items, itemsCount);
-    lastQuery = query || "";
-    total = items.length;
+    results = _.take(results, 100);
+    pages = _.chunk(results, itemsCount);
+    total = results.length;
     current = 0;
 
-    $(".results-recent").toggle(query == "");
     $(".results-empty").hide();
 
     let allInView = renderPage(pages[0]);
     if (!allInView && rows > 1) {
-      renderSearch(items, query, rows - 1);
+      renderSearch(results, rows - 1);
     }
   };
 
@@ -148,16 +152,18 @@ function SearchManager() {
     });
 
     renderPagination();
-    container.mark(lastQuery);
+    container.mark(lastQuery || "");
     return inViewport(container);
   };
 
   this.Render = function () {
     $("#nextpage").click(() => renderPage(pages[++current]));
     $("#prevpage").click(() => renderPage(pages[--current]));
+    $(".results-recent").text(tr("Recent actions"));
+    $(".results-empty").text(tr("Nothing found"));
 
     $(window).resize(() => {
-      if (lastQuery != "") {
+      if (lastQuery) {
         this.Search(lastQuery);
       } else {
         this.Recent();

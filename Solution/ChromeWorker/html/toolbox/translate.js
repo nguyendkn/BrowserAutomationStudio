@@ -865,8 +865,8 @@ _L =
 	/* Waiters */
 	"Wait for full page load": {"ru": "Ждать полной загрузки"},
 	"Wait until page is fully loaded.": {"ru": "Ждать пока страница не будет загружена полностью."},
-	"Wait until browser loads the URL.": {"ru": "Ждать пока браузер не загрузит URL."},
-	"Wait until address bar contains the URL.": {"ru": "Ждать пока адресная строка не будет содержать URL."},
+	"Wait until browser loads specified URL.": {"ru": "Ждать пока браузер не загрузит указанный URL."},
+	"Wait until address bar contains specified URL.": {"ru": "Ждать пока адресная строка не будет содержать указанный URL."},
 	"Wait until specific text appears on the page.": {"ru": "Ждать пока на странице не появится определенный текст."},
 	"Wait until specific CSS-selector returns a non-empty result.": {"ru": "Ждать пока определенный CSS-селектор не вернет непустой результат."},
 	"Wait for the end of the current download.": {"ru": "Ждать окончания текущей загрузки."},

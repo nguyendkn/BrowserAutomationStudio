@@ -1220,7 +1220,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Url"), default_selector: "string", disable_int:true}) %>
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Wait until browser loads the URL.</div>
+      <div class="tr tooltip-paragraph-first-fold">Wait until browser loads specified URL.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
@@ -1230,7 +1230,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Url"), default_selector: "string", disable_int:true}) %>
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Wait until address bar contains the URL.</div>
+      <div class="tr tooltip-paragraph-first-fold">Wait until address bar contains specified URL.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>

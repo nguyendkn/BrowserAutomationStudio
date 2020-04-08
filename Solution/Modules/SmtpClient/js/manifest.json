@@ -54,7 +54,7 @@
 	{
 		"By default SMTP client works without proxy, this action sets proxy for SMTP client.": {"ru": "По умолчанию SMTP клиент работает без прокси, это действие устанавливает прокси для SMTP клиента."},
 		"Configure SMTP server access required to send email.": {"ru": "Настроить доступ к SMTP серверу для отправки электронной почты."},
-		"Send an email message using the SMTP client.": {"ru": "Отправить сообщение электронной почты, используя SMTP-клиент."},
+		"Send an email message using the SMTP client. It must be configured with \"SMTP settings\" action preliminarily.": {"ru": "Отправить сообщение электронной почты, используя SMTP-клиент. Он должен быть предварительно настроен с помощью действия \"SMTP Настройки\"."},
 		"Enable debugging mode for sending emails.": {"ru": "Включить режим отладки для отправки электронной почты."},
 		"Attachments. Can be blank.": {"ru": "Прикрепляемые файлы. Может быть пустым."},
 		"Mail Subject. Can be blank.": {"ru": "Тема письма. Может быть пустым."},

@@ -79,10 +79,9 @@ function SearchManager() {
   };
 
   const renderSearch = (results, rows) => {
-    rows = rows || (Math.floor(window.innerHeight / 100) - 1);
-    let itemsCount = getItemsCount(rows);
+    rows = rows || Math.floor($(window).height() / 120);
     results = _.take(results, 100);
-    pages = _.chunk(results, itemsCount);
+    pages = _.chunk(results, getItemsCount(rows));
     total = results.length;
     current = 0;
 
@@ -112,11 +111,11 @@ function SearchManager() {
     }
 
     $("#nextpage").prop("disabled", () => {
-      return total == 0 || pages.length == 1 || current == pages.length - 1;
+      return pages.length <= 1 || current == pages.length - 1;
     });
 
     $("#prevpage").prop("disabled", () => {
-      return total == 0 || pages.length == 1 || current == 0;
+      return pages.length <= 1 || current == 0;
     });
 
     $(".results-empty").toggle(total == 0);

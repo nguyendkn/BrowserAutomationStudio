@@ -154,6 +154,10 @@
   justify-content: flex-end;
 }
 
+.search {
+  overflow: hidden;
+}
+
 mark {
   background: #fff;
   color: #5d6494;

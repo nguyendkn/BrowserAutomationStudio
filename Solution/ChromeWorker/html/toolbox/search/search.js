@@ -92,15 +92,13 @@ function SearchManager() {
   };
 
   const inViewport = (element) => {
-    let viewport = {};
-    viewport.top = $(window).scrollTop();
-    viewport.bottom = viewport.top + $(window).height();
+    let viewportTop = $(window).scrollTop();
+    let viewportBottom = viewportTop + $(window).height();
 
-    let bounds = {};
-    bounds.top = element.offset().top;
-    bounds.bottom = bounds.top + element.outerHeight();
+    let boundsTop = element.offset().top;
+    let boundsBottom = boundsTop + element.outerHeight();
 
-    return bounds.top >= viewport.top && bounds.bottom <= viewport.bottom;
+    return boundsTop >= viewportTop && boundsBottom <= viewportBottom;
   };
 
   const renderPagination = () => {
@@ -133,7 +131,7 @@ function SearchManager() {
       return true;
     }
 
-    page.forEach((item) =>  container.append(template({item})));
+    page.forEach((item) => container.append(template({item})));
 
     $(".result-item").click(function () {
       let action = $(this).find(".result-action").text().trim();
@@ -160,10 +158,12 @@ function SearchManager() {
     $(".results-empty").text(tr("Nothing found"));
 
     $(window).resize(() => {
-      if (lastQuery) {
-        this.Search(lastQuery);
-      } else {
-        this.Recent();
+      if ($(".search").is(":visible")) {
+        if (lastQuery) {
+          this.Search(lastQuery);
+        } else {
+          this.Recent();
+        }
       }
     });
 
@@ -172,7 +172,6 @@ function SearchManager() {
   };
 
   this.Show = function () {
-    $("body").css("overflow-y", "hidden");
     $("#pagination, .search").show();
     $("#searchinput").focus();
     $(".actions").hide();
@@ -181,7 +180,6 @@ function SearchManager() {
   };
 
   this.Hide = function () {
-    $("body").css("overflow-y", "visible");
     $("#pagination, .search").hide();
     $("#searchinput").blur();
     $(".actions").show();

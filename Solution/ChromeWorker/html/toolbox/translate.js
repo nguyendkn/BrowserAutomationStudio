@@ -660,6 +660,7 @@ _L =
 
 	"Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;\">fingerprint switcher</a>.": {"ru": "Изменяет разрешение браузера. Стандартное значение 1024x600. Если вы хотите получить стандартные разрешения для разных платформ, используйте сервис <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;\">fingerprint switcher</a>."},
 	"Changes browser resolution. Standart value is 1024x600.": {"ru": "Изменяет разрешение браузера. Стандартное значение 1024x600."},
+	" This action works only with element inside browser.": {"ru": " Это действие работает только с элементом внутри браузера."},
 	"Browser height in pixels": {"ru": "Высота браузера в пикселях"},
 	"Browser width in pixels": {"ru": "Ширина браузера в пикселях"},
 	"Press escape": {"ru": "Нажать escape"},

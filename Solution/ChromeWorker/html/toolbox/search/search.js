@@ -37,6 +37,7 @@ function SearchManager() {
     let action = {description, name: tr(value.name), key};
 
     if (value.class && value.class == "browser") {
+      action.description += tr(" This action works only with element inside browser.");
       action.icon = "../icons/element.png";
       action.module = "Browser > Element";
       action.popup = true;

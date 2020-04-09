@@ -142,8 +142,7 @@ function SearchManager() {
       if (popup) {
         BrowserAutomationStudio_Notify("search", action);
       } else {
-        $("body").css("overflow-y", "visible");
-        _Router.navigate(`#!/${value}`, true);
+        BrowserAutomationStudio_OpenAction(value);
       }
     });
 
@@ -174,6 +173,7 @@ function SearchManager() {
 
   this.Show = function () {
     $("#pagination, .search").show();
+    $("#searchinput").val("");
     $("#searchinput").focus();
     $(".actions").hide();
 
@@ -182,10 +182,9 @@ function SearchManager() {
 
   this.Hide = function () {
     $("#pagination, .search").hide();
+    $("#searchinput").val("");
     $("#searchinput").blur();
     $(".actions").show();
-
-    $("#searchinput").val("");
   };
 
   let template = _.template(`

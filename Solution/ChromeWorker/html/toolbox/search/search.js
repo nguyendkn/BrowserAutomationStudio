@@ -26,14 +26,14 @@ function SearchManager() {
       .find(".short-description");
     let description = null;
 
-    if (defaultDesc.length) 
+    if (defaultDesc.length)
       description = getText(defaultDesc);
-    if (shortDesc.length) 
+    if (shortDesc.length)
       description = getText(shortDesc);
 
     let group = _.find(groups, {name: _A2G[key] || "browser"});
-    
-    let action = {description, name: tr(value.name), key};
+
+    let action = {description, name: tr(value.name), type: "action", key};
 
     if (value.class && value.class == "browser") {
       action.description += tr(" This action works only with element inside browser.");
@@ -47,6 +47,26 @@ function SearchManager() {
     }
 
     searchItems.push(action);
+  });
+
+  _.forEach(_VIDEO, (value) => {
+    if (_K == value["lang"])
+      searchItems.push({
+        icon: "../icons/youtube.png",
+        name: value["name"],
+        key: value["url"],
+        type: "video",
+      });
+  });
+
+  _.forEach(_WIKI, (value) => {
+    if (_K == value["lang"])
+      searchItems.push({
+        icon: "../icons/wiki.png",
+        name: value["name"],
+        key: value["url"],
+        type: "wiki",
+      });
   });
 
   this.Search = function (query) {
@@ -129,17 +149,27 @@ function SearchManager() {
       return true;
     }
 
-    page.forEach((item) => container.append(template({item})));
+    page.forEach((item) => {
+      if (item.type == "action") {
+        container.append(actionTemplate({ item }));
+      } else {
+        container.append(linkTemplate({ item }));
+      }
+    });
 
     $(".result-item").click(function () {
       let action = $(this).find(".result-action").text().trim();
       let popup = $(this).data("popup");
       let value = $(this).data("value");
 
-      if (popup) {
-        BrowserAutomationStudio_Notify("search", action);
+      if (value.indexOf("https://") == 0 || value.indexOf("http://") == 0) {
+        BrowserAutomationStudio_OpenUrl(value);
       } else {
-        BrowserAutomationStudio_OpenAction(value);
+        if (popup) {
+          BrowserAutomationStudio_Notify("search", action);
+        } else {
+          BrowserAutomationStudio_OpenAction(value);
+        }
       }
     });
 
@@ -157,7 +187,7 @@ function SearchManager() {
     $("#prevpage").click((e) => {
       e.preventDefault();
       renderPage(searchPages[--current]);
-    });  
+    });
 
     $(window).resize(() => {
       if ($(".search").is(":visible")) {
@@ -192,27 +222,42 @@ function SearchManager() {
     this.Toggle(true);
   };
 
-  let template = _.template(`
-    <li class="result-item" data-value="<%= item.key %>" data-popup="<%= item.popup %>">
-        <div class="result-item-left">
-          <img class="item-icon" src="<%= item.icon %>">
-          <span class="item-index">
-            01
-          </span>
-        </div>
-        <div class="result-item-right">
-          <div>
-            <div class="item-action">
-              <%= item.name %>
-            </div>
-            <div class="item-description">
-              <%= item.description %>
-            </div>
+  let actionTemplate = _.template(`
+    <li class="result-item bg-action" data-value="<%= item.key %>" data-popup="<%= item.popup %>">
+      <div class="result-item-left">
+        <img class="item-icon" src="<%= item.icon %>">
+        <span class="item-index">01</span>
+      </div>
+      <div class="result-item-right">
+        <div>
+          <div class="item-action">
+            <%= item.name %>
           </div>
-          <div class="item-module">
-            <%= item.module %>
+          <div class="item-description">
+            <%= item.description %>
           </div>
         </div>
+        <div class="item-module">
+          <%= item.module %>
+        </div>
+      </div>
     </li>
   `);
+
+  let linkTemplate = _.template(`
+    <li class="result-item bg-link" data-value="<%= item.key %>">
+      <div class="result-item-left">
+        <img class="item-icon" src="<%= item.icon %>">
+        <span class="item-index">01</span>
+      </div>
+      <div class="result-item-right">
+        <div>
+          <div class="item-action">
+            <%= item.name %>
+          </div>
+        </div>
+      </div>
+    </li>
+  `);
+
 }

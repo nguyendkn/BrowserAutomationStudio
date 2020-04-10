@@ -71,7 +71,7 @@ function SearchManager() {
 
   this.Search = function (query) {
     lastQuery = query;
-    $(".results-recent").css("visibility", "hidden");
+    $(".results-recent").hide();
     renderSearch(_.filter(searchItems, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
@@ -84,7 +84,7 @@ function SearchManager() {
 
   this.Recent = function () {
     lastQuery = null;
-    $(".results-recent").css("visibility", "visible");
+    $(".results-recent").show();
     renderSearch(_.map(ActionHistory, (el) => {
       return _.find(searchItems, {key: el});
     }));
@@ -158,7 +158,7 @@ function SearchManager() {
     });
 
     $(".result-item").click(function () {
-      let action = $(this).find(".result-action").text().trim();
+      let action = $(this).data("name");
       let popup = $(this).data("popup");
       let value = $(this).data("value");
 
@@ -223,7 +223,7 @@ function SearchManager() {
   };
 
   let actionTemplate = _.template(`
-    <li class="result-item bg-action" data-value="<%= item.key %>" data-popup="<%= item.popup %>">
+    <li class="result-item bg-action" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
       <div class="result-item-left">
         <img class="item-icon" src="<%= item.icon %>">
         <span class="item-index">01</span>

@@ -271,46 +271,43 @@
     <div class="leftactionpaneltitledrop" style="display:none">
       <i class="fa fa-trash-o" aria-hidden="true"></i>
     </div>
-
-    <div class="searchbar" >
+    <div class="searchbar">
       <div class="container-fluid">
         <div class="input-group input-group-sm">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
           <input type="text" class="form-control" id="searchinput" placeholder="What to search?"  aria-describedby="basic-addon1"
           onfocus="this.placeholder = tr(`Search by action name, name part or keyword. Examples: 'Ignore Errors', 'phone'.`)"
-          onblur="this.placeholder = tr(`What to search?`)"
-          >
-          <span class="input-group-addon" id="pagination">
-            <span class="pagination-results" id="count">
-              0 results
-            </span>
-            <span class="pagination-buttons">
-              <button class="pagination-button-left pagination-button" id="prevpage">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <line x1="19" y1="12" x2="5" y2="12" />
-                  <polyline points="12 19 5 12 12 5" />
-                </svg>
-              </button>
-              <button class="pagination-button-right pagination-button" id="nextpage">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <line x1="5" y1="12" x2="19" y2="12" />
-                  <polyline points="12 5 19 12 12 19" />
-                </svg>
-              </button>
-            </span>
-            <span class="pagination-pages" id="pages">
-              1 - 1
-            </span>
+          onblur="this.placeholder = tr(`What to search?`)">
+          <span class="input-group-addon search-icon" id="basic-addon1">
+            <i class="fa fa-search" aria-hidden="true"></i>
           </span>
+          <div class="input-group-btn" id="pagination">
+
+            <button type="button" class="btn pagination-button" id="prevpage">
+              <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            </button>
+            
+            <span class="pagination-pages">
+              <span class="text-dark" id="currentpage"></span>
+              <span class="text-gray">-</span>
+              <span class="text-gray" id="lastpage"></span>
+            </span>
+
+            <button type="button" class="btn pagination-button" id="nextpage">
+              <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </button>
+            
+          </div>
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button" id="searchinputclear"><i class="fa fa-times" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-default search-clear" id="searchinputclear">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
           </span>
         </div>
       </div>
     </div>
     <div class="search">
-      <span class="results-recent"></span>
-      <span class="results-empty"></span>
+      <span class="results-recent"><%= tr("Recent actions") %></span>
+      <span class="results-empty"><%= tr("Nothing found") %></span>
       <ol class="results-container" id="results"></ol>
     </div>
     <div class="actions">

@@ -2,14 +2,13 @@ function SearchManager() {
   const excludedActions = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"];
 
   const groups = _.filter(_TaskCollection.toJSON(), {type: "group"});
-  
+
+  let searchItems = [];
+  let searchPages = [];
+
   let lastQuery = null;
 
-  let actions = [];
-  let pages = [];
-
   let current = 0;
-  let total = 0;
 
   const getText = (element) => {
     let html = tr(element.html());
@@ -47,13 +46,13 @@ function SearchManager() {
       action.popup = false;
     }
 
-    actions.push(action);
+    searchItems.push(action);
   });
 
   this.Search = function (query) {
     lastQuery = query;
-    $(".results-recent").hide();
-    renderSearch(_.filter(actions, (el) => {
+    $(".results-recent").css("visibility", "hidden");
+    renderSearch(_.filter(searchItems, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
       if (excludedActions.includes(el.key)) {
@@ -65,9 +64,9 @@ function SearchManager() {
 
   this.Recent = function () {
     lastQuery = null;
-    $(".results-recent").show();
+    $(".results-recent").css("visibility", "visible");
     renderSearch(_.map(ActionHistory, (el) => {
-      return _.find(actions, {key: el});
+      return _.find(searchItems, {key: el});
     }));
   };
 
@@ -81,11 +80,10 @@ function SearchManager() {
   const renderSearch = (results, rows) => {
     rows = rows || Math.floor($(window).height() / 120);
     results = _.take(results, 100);
-    pages = _.chunk(results, getItemsCount(rows));
-    total = results.length;
+    searchPages = _.chunk(results, getItemsCount(rows));
     current = 0;
 
-    let allInView = renderPage(pages[0]);
+    let allInView = renderPage(searchPages[0]);
     if (!allInView && rows > 1) {
       renderSearch(results, rows - 1);
     }
@@ -102,23 +100,23 @@ function SearchManager() {
   };
 
   const renderPagination = () => {
-    $("#count").html(`${total} results`);
-    
-    if (total == 0) {
-      $("#pages").html(`${current + 1} - ${pages.length + 1}`);
+    $("#currentpage").html(current + 1);
+
+    if (searchPages.length == 0) {
+      $("#lastpage").html(searchPages.length + 1);
     } else {
-      $("#pages").html(`${current + 1} - ${pages.length}`);
+      $("#lastpage").html(searchPages.length);
     }
 
     $("#nextpage").prop("disabled", () => {
-      return pages.length <= 1 || current == pages.length - 1;
+      return searchPages.length <= 1 || current == searchPages.length - 1;
     });
 
     $("#prevpage").prop("disabled", () => {
-      return pages.length <= 1 || current == 0;
+      return searchPages.length <= 1 || current == 0;
     });
 
-    $(".results-empty").toggle(total == 0);
+    $(".results-empty").toggle(searchPages.length == 0);
   };
 
   const renderPage = (page) => {
@@ -126,7 +124,7 @@ function SearchManager() {
     container.unmark();
     container.empty();
 
-    if (total == 0) {
+    if (searchPages.length == 0) {
       renderPagination();
       return true;
     }
@@ -151,10 +149,15 @@ function SearchManager() {
   };
 
   this.Render = function () {
-    $("#nextpage").click(() => renderPage(pages[++current]));
-    $("#prevpage").click(() => renderPage(pages[--current]));
-    $(".results-recent").text(tr("Recent actions"));
-    $(".results-empty").text(tr("Nothing found"));
+    $("#nextpage").click((e) => {
+      e.preventDefault();
+      renderPage(searchPages[++current]);
+    });
+
+    $("#prevpage").click((e) => {
+      e.preventDefault();
+      renderPage(searchPages[--current]);
+    });  
 
     $(window).resize(() => {
       if ($(".search").is(":visible")) {
@@ -170,33 +173,45 @@ function SearchManager() {
     $(".search").hide();
   };
 
-  this.Show = function () {
-    $("#pagination, .search").show();
+  this.Toggle = function (hide) {
+    $("#pagination, .search").toggle(!hide);
+    $(".actions").toggle(hide);
     $("#searchinput").val("");
-    $("#searchinput").focus();
-    $(".actions").hide();
+  }
 
+  this.Show = function () {
+    $(".search-clear").css("color", "#bf5d4e");
+    $("#searchinput").focus();
+    this.Toggle(false);
     this.Recent();
   };
 
   this.Hide = function () {
-    $("#pagination, .search").hide();
-    $("#searchinput").val("");
+    $(".search-clear").css("color", "#f2f2f2");
     $("#searchinput").blur();
-    $(".actions").show();
+    this.Toggle(true);
   };
 
   let template = _.template(`
     <li class="result-item" data-value="<%= item.key %>" data-popup="<%= item.popup %>">
-        <img src="<%= item.icon %>">
-        <div class="result result-action">
-          <%= item.name %>
+        <div class="result-item-left">
+          <img class="item-icon" src="<%= item.icon %>">
+          <span class="item-index">
+            01
+          </span>
         </div>
-        <div class="result result-module">
-          <%= item.module %>
-        </div>
-        <div class="result result-description">
-          <%= item.description %>
+        <div class="result-item-right">
+          <div>
+            <div class="item-action">
+              <%= item.name %>
+            </div>
+            <div class="item-description">
+              <%= item.description %>
+            </div>
+          </div>
+          <div class="item-module">
+            <%= item.module %>
+          </div>
         </div>
     </li>
   `);

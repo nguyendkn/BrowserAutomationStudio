@@ -134,8 +134,6 @@
 }
 
 .result-item {
-  background: url(../../icons/background4.png) no-repeat center center;
-  background-size: 105%;
   grid-template-columns: 0.1fr 1fr;
   border-color: #f2f5f7;
   border-style: solid;
@@ -165,6 +163,16 @@
   border: none;
 }
 
+.bg-action {
+  background: url(../../icons/background4.png) no-repeat center center;
+  background-size: 105%;
+}
+
+.bg-link {
+  background: rgb(242, 245, 247) no-repeat center center;
+  background-size: 105%;
+}
+
 .text-gray {
   color: #c2c2c2;
 }
@@ -178,7 +186,7 @@
 }
 
 mark {
-  background: #fff;
+  background: inherit;
   color: #ff553e;
   padding: 0;
 }

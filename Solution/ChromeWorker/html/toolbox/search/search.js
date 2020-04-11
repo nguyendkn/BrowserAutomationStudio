@@ -7,8 +7,7 @@ function SearchManager() {
   let searchPages = [];
 
   let lastQuery = null;
-
-  let current = 0;
+  let currentPage = 0;
 
   const getText = (element) => {
     let html = tr(element.html());
@@ -49,22 +48,22 @@ function SearchManager() {
     searchItems.push(action);
   });
 
-  _.forEach(_VIDEO, (value) => {
-    if (_K == value["lang"])
+  _.forEach(_VIDEO, (video) => {
+    if (_K == video["lang"])
       searchItems.push({
         icon: "../icons/youtube.png",
-        name: value["name"],
-        key: value["url"],
+        name: video["name"],
+        key: video["url"],
         type: "video",
       });
   });
 
-  _.forEach(_WIKI, (value) => {
-    if (_K == value["lang"])
+  _.forEach(_WIKI, (wiki) => {
+    if (_K == wiki["lang"])
       searchItems.push({
         icon: "../icons/wiki.png",
-        name: value["name"],
-        key: value["url"],
+        name: wiki["name"],
+        key: wiki["url"],
         type: "wiki",
       });
   });
@@ -98,10 +97,13 @@ function SearchManager() {
   };
 
   const renderSearch = (results, rows) => {
+    results = _.forEach(_.take(results, 100), (value, index) => {
+      value.index = String(index + 1).padStart(2, "0");
+    });
+
     rows = rows || Math.floor($(window).height() / 120);
-    results = _.take(results, 100);
     searchPages = _.chunk(results, getItemsCount(rows));
-    current = 0;
+    currentPage = 0;
 
     let allInView = renderPage(searchPages[0]);
     if (!allInView && rows > 1) {
@@ -120,7 +122,7 @@ function SearchManager() {
   };
 
   const renderPagination = () => {
-    $("#currentpage").html(current + 1);
+    $("#currentpage").html(currentPage + 1);
 
     if (searchPages.length == 0) {
       $("#lastpage").html(searchPages.length + 1);
@@ -129,11 +131,11 @@ function SearchManager() {
     }
 
     $("#nextpage").prop("disabled", () => {
-      return searchPages.length <= 1 || current == searchPages.length - 1;
+      return searchPages.length <= 1 || currentPage == searchPages.length - 1;
     });
 
     $("#prevpage").prop("disabled", () => {
-      return searchPages.length <= 1 || current == 0;
+      return searchPages.length <= 1 || currentPage == 0;
     });
 
     $(".results-empty").toggle(searchPages.length == 0);
@@ -181,12 +183,12 @@ function SearchManager() {
   this.Render = function () {
     $("#nextpage").click((e) => {
       e.preventDefault();
-      renderPage(searchPages[++current]);
+      renderPage(searchPages[++currentPage]);
     });
 
     $("#prevpage").click((e) => {
       e.preventDefault();
-      renderPage(searchPages[--current]);
+      renderPage(searchPages[--currentPage]);
     });
 
     $(window).resize(() => {
@@ -226,7 +228,9 @@ function SearchManager() {
     <li class="result-item bg-action" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
       <div class="result-item-left">
         <img class="item-icon" src="<%= item.icon %>">
-        <span class="item-index">01</span>
+        <span class="item-index">
+          <%= item.index %>
+        </span>
       </div>
       <div class="result-item-right">
         <div>
@@ -248,7 +252,9 @@ function SearchManager() {
     <li class="result-item bg-link" data-value="<%= item.key %>">
       <div class="result-item-left">
         <img class="item-icon" src="<%= item.icon %>">
-        <span class="item-index">01</span>
+        <span class="item-index">
+          <%= item.index %>
+        </span>
       </div>
       <div class="result-item-right">
         <div>

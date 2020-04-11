@@ -36,8 +36,8 @@ function SearchManager() {
 
     if (value.class && value.class == "browser") {
       action.description += tr(" This action works only with element inside browser.");
+      action.module = tr("Browser > Element");
       action.icon = "../icons/element.png";
-      action.module = "Browser > Element";
       action.popup = true;
     } else {
       action.module = group.description;
@@ -101,7 +101,7 @@ function SearchManager() {
       value.index = String(index + 1).padStart(2, "0");
     });
 
-    rows = rows || Math.floor($(window).height() / 120);
+    rows = rows || 10;
     searchPages = _.chunk(results, getItemsCount(rows));
     currentPage = 0;
 
@@ -139,6 +139,7 @@ function SearchManager() {
     });
 
     $(".results-empty").toggle(searchPages.length == 0);
+    $("#pagination").toggle(searchPages.length > 1);
   };
 
   const renderPage = (page) => {
@@ -206,20 +207,21 @@ function SearchManager() {
   };
 
   this.Toggle = function (hide) {
+    $("body").css("overflow-y", !hide ? 'hidden' : 'visible');
     $("#pagination, .search").toggle(!hide);
     $(".actions").toggle(hide);
     $("#searchinput").val("");
   }
 
   this.Show = function () {
-    $(".search-clear").css("color", "#bf5d4e");
+    $(".search-clear-button").css("color", "#bf5d4e");
     $("#searchinput").focus();
     this.Toggle(false);
     this.Recent();
   };
 
   this.Hide = function () {
-    $(".search-clear").css("color", "#f2f2f2");
+    $(".search-clear-button").css("color", "#f2f2f2");
     $("#searchinput").blur();
     this.Toggle(true);
   };

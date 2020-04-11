@@ -162,7 +162,7 @@
 }
 
 .search-input {
-  background: url(../../icons/background3.png) repeat center center;
+  background: url(../../icons/search-input.png) repeat center center;
   border: 1px solid rgb(230, 238, 244);
   -webkit-box-shadow: none;
   -webkit-transition: none;
@@ -193,22 +193,50 @@
   overflow: hidden;
 }
 
+.bg-action:nth-child(10n + 10) {
+  background-position: 50px -35px;
+}
+
+.bg-action:nth-child(10n + 9) {
+  background-position: -100px -60px;
+}
+
+.bg-action:nth-child(10n + 8) {
+  background-position: 95px -50px;
+}
+
+.bg-action:nth-child(10n + 7) {
+  background-position: 10px -80px;
+}
+
+.bg-action:nth-child(10n + 6) {
+  background-position: -50px -30px;
+}
+
+.bg-action:nth-child(10n + 5) {
+  background-position: -15px -90px;
+}
+
+.bg-action:nth-child(10n + 4) {
+  background-position: -65px -20px;
+}
+
+.bg-action:nth-child(10n + 3) {
+  background-position: 50px -75px;
+}
+
+.bg-action:nth-child(10n + 2) {
+  background-position: 25px 5px;
+}
+
+.bg-action:nth-child(10n + 1) {
+  background-position: -10px -10px;
+}
+
 .bg-action {
-  background: url(../../icons/background2.png) no-repeat;
+  background: url(../../icons/search-item.png) no-repeat;
   background-clip: border-box;
   background-size: 105%;
-}
-
-.bg-action:nth-child(1n) {
-  background-position: -10px -10px;
-}
-
-.bg-action:nth-child(2n) {
-  background-position: -10px -10px;
-}
-
-.bg-action:nth-child(3n) {
-  background-position: -10px -10px;
 }
 
 .bg-link {

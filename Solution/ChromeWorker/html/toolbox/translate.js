@@ -1554,6 +1554,8 @@ _L =
 "This action looks for \"href\" attribute on link element. Sometimes it may not be present, and sites processes link clicking by using javascript. In that case following action won't give any meaningful result.": {"ru": "Это действие получает атрибут \"href\" из ссылки. Иногда данный атрибут может отсутствовать, а сайты обрабатывают клики по ссылкам с помощью javascript. В этом случае данное действие не будет иметь пользы."},
 	
 	/* Actions search */
+	"No recent actions found": {"ru": "Недавние действия не найдены"},
+	"Browser > Element": {"ru": "Браузер > Элемент"},
 	"Recent actions": {"ru": "Последние действия"},
 	"Nothing found": {"ru": "Ничего не найдено"},
 }

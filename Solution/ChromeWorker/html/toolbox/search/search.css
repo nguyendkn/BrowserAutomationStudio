@@ -7,12 +7,11 @@
 
 .item-module {
   background-color: #54809c;
+  margin: 4px auto 1px 0px;
   padding: 0 6px 0 6px;
   border-radius: 3px;
-  margin-right: auto;
-  margin-top: 4px;
   font-size: 10px;
-  color: #ffffff;
+  color: #fff;
 }
 
 .item-action {
@@ -62,14 +61,15 @@
 
 .results-recent {
   margin: 4px auto 4px auto;
-  background-color: black;
+  padding: 0px 4px 0px 4px;
+  background-color: #000;
   border-radius: 3px;
+  width: max-content;
   text-align: center;
   user-select: none;
   font-size: 13px;
   color: white;
   display: block;
-  width: 140px;
 }
 
 .results-empty {
@@ -93,6 +93,8 @@
 .result-item-right {
   justify-content: space-between;
   flex-direction: column;
+  margin-right: 6px;
+  margin-left: 6px;
   display: flex;
 }
 
@@ -136,6 +138,7 @@
   background-color: white;
   display: inline-block;
   color: #bf5d4e;
+  margin: 0;
 }
 
 .search-page-button {
@@ -153,6 +156,7 @@
   border-right-width: 0px;
   border-left-width: 0px;
   display: inline-block;
+  background: white;
   text-align: center;
   user-select: none;
   padding: 5px 10px;
@@ -170,6 +174,7 @@
 .search-input {
   background: url(../../icons/search-input.png) no-repeat;
   border: 1px solid rgb(230, 238, 244);
+  background-size: auto 105%;
   border-radius: 0 !important;
   -webkit-box-shadow: none;
   -webkit-transition: none;

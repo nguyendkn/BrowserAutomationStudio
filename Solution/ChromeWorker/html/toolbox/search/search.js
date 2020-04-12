@@ -3,11 +3,10 @@ function SearchManager() {
 
   const groups = _.filter(_TaskCollection.toJSON(), { type: "group" });
 
-  let searchItems = [];
-  let searchPages = [];
-
   let lastQuery = null;
+  let searchItems = [];
   let currentPage = 0;
+  let pagesCount = 0;
 
   const getText = (element) => {
     let html = tr(element.html());
@@ -99,99 +98,85 @@ function SearchManager() {
     return boundsTop >= viewportTop && boundsBottom <= viewportBottom;
   };
 
-  const renderSearch = (results) => {
-    results = _.forEach(_.take(results, 100), (value, index) => {
+  const renderSearch = (items) => {
+    items = _.forEach(_.take(items, 100), (value, index) => {
       value.index = String(index + 1).padStart(2, "0");
     });
 
-    let copy = results.slice();
-    searchPages = [];
+    let container = $("#results");
+    container.unmark();
+    container.empty();
 
-    while (copy.length > 0) {
-      let container = $("#results").empty();
-      let pageIndex = searchPages.push([]);
+    let results = [];
+    pagesCount = 0;
 
-      _.each(copy, (item) => {
-        item.page = pageIndex;
+    _.each(items, (item) => {
+      item.page = pagesCount;
 
-        if (item.type == "action") {
-          container.append(actionTemplate({ item }));
-        } else {
-          container.append(linkTemplate({ item }));
-        }
-
-        if (!inViewport(container)) {
-          container.children().last().remove();
-          return false;
-        }
-
-        searchPages[pageIndex - 1].push(item);
-      });
-
-      if (searchPages[pageIndex - 1].length) {
-        copy.splice(0, searchPages[pageIndex - 1].length);
+      if (item.type == "action") {
+        results.push($(actionTemplate({ item })).appendTo(container));
       } else {
-        break;
+        results.push($(linkTemplate({ item })).appendTo(container));
       }
-    }
 
+      if (!inViewport(container)) {
+        container.children().last().data("page", pagesCount + 1);
+        results.slice(0, -1).forEach((item) => item.hide());
+        pagesCount += 1;
+      }
+    });
+
+    pagesCount = pagesCount + 1;
+
+    $(".result-item").click(function () {
+      let action = $(this).data("name");
+      let popup = $(this).data("popup");
+      let value = $(this).data("value");
+
+      if (value.indexOf("https://") == 0 || value.indexOf("http://") == 0) {
+        BrowserAutomationStudio_OpenUrl(value);
+      } else {
+        if (popup) {
+          BrowserAutomationStudio_Notify("search", action);
+        } else {
+          BrowserAutomationStudio_OpenAction(value);
+        }
+      }
+    });
+
+    container.mark(lastQuery || "");
     showPage(0);
   };
 
   const renderPagination = () => {
     $("#currentpage").html(currentPage + 1);
 
-    if (searchPages.length == 0) {
-      $("#lastpage").html(searchPages.length + 1);
+    if (pagesCount == 0) {
+      $("#lastpage").html(pagesCount + 1);
     } else {
-      $("#lastpage").html(searchPages.length);
+      $("#lastpage").html(pagesCount);
     }
 
     $("#nextpage").prop("disabled", () => {
-      return searchPages.length <= 1 || currentPage == searchPages.length - 1;
+      return pagesCount <= 1 || currentPage == pagesCount - 1;
     });
 
     $("#prevpage").prop("disabled", () => {
-      return searchPages.length <= 1 || currentPage == 0;
+      return pagesCount <= 1 || currentPage == 0;
     });
 
-    $(".results-empty").toggle(searchPages.length == 0);
-    $("#pagination").toggle(searchPages.length > 1);
+    $(".results-empty").toggle(pagesCount == 0);
+    $("#pagination").toggle(pagesCount > 1);
   };
 
   const showPage = (index) => {
-    let container = $("#results");
-    container.unmark();
-    container.empty();
-
-    if (searchPages.length > 0) {
-      _.each(searchPages[index], (item) => {
-        if (item.type == "action") {
-          container.append(actionTemplate({ item }));
-        } else {
-          container.append(linkTemplate({ item }));
-        }
+    if (pagesCount > 0) {
+      $(".result-item").each(function () {
+        let pageIndex = $(this).data("page");
+        $(this).toggle(pageIndex == index);
       });
-
-      $(".result-item").click(function () {
-        let action = $(this).data("name");
-        let popup = $(this).data("popup");
-        let value = $(this).data("value");
-
-        if (value.indexOf("https://") == 0 || value.indexOf("http://") == 0) {
-          BrowserAutomationStudio_OpenUrl(value);
-        } else {
-          if (popup) {
-            BrowserAutomationStudio_Notify("search", action);
-          } else {
-            BrowserAutomationStudio_OpenAction(value);
-          }
-        }
-      });
-
-      container.mark(lastQuery || "");
     }
-    
+
     renderPagination();
   };
 
@@ -243,7 +228,7 @@ function SearchManager() {
   };
 
   let actionTemplate = _.template(`
-    <li class="result-item bg-action" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
+    <li class="result-item bg-action" data-page="<%= item.page %>" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
       <div class="result-item-left">
         <img class="item-icon" src="<%= item.icon %>">
         <span class="item-index">
@@ -267,7 +252,7 @@ function SearchManager() {
   `);
 
   let linkTemplate = _.template(`
-    <li class="result-item bg-link" data-value="<%= item.key %>">
+    <li class="result-item bg-link" data-page="<%= item.page %>" data-value="<%= item.key %>">
       <div class="result-item-left">
         <img class="item-icon" src="<%= item.icon %>">
         <span class="item-index">

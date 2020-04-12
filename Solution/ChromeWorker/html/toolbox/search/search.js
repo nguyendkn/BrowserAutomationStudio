@@ -1,7 +1,7 @@
 function SearchManager() {
   const excludedActions = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"];
 
-  const groups = _.filter(_TaskCollection.toJSON(), {type: "group"});
+  const groups = _.filter(_TaskCollection.toJSON(), { type: "group" });
 
   let searchItems = [];
   let searchPages = [];
@@ -30,9 +30,9 @@ function SearchManager() {
     if (shortDesc.length)
       description = getText(shortDesc);
 
-    let group = _.find(groups, {name: _A2G[key] || "browser"});
+    let group = _.find(groups, { name: _A2G[key] || "browser" });
 
-    let action = {description, name: tr(value.name), type: "action", key};
+    let action = { description, name: tr(value.name), type: "action", key };
 
     if (value.class && value.class == "browser") {
       action.description += tr(" This action works only with element inside browser.");
@@ -85,30 +85,8 @@ function SearchManager() {
     lastQuery = null;
     $(".results-recent").show();
     renderSearch(_.map(ActionHistory, (el) => {
-      return _.find(searchItems, {key: el});
+      return _.find(searchItems, { key: el });
     }));
-  };
-
-  const getItemsCount = (rows) => {
-    let screenWidth = $(window).width();
-    if (screenWidth > 960) return 3 * rows;
-    if (screenWidth > 480) return 2 * rows;
-    return rows;
-  };
-
-  const renderSearch = (results, rows) => {
-    results = _.forEach(_.take(results, 100), (value, index) => {
-      value.index = String(index + 1).padStart(2, "0");
-    });
-
-    rows = rows || 10;
-    searchPages = _.chunk(results, getItemsCount(rows));
-    currentPage = 0;
-
-    let allInView = renderPage(searchPages[0]);
-    if (!allInView && rows > 1) {
-      renderSearch(results, rows - 1);
-    }
   };
 
   const inViewport = (element) => {
@@ -119,6 +97,45 @@ function SearchManager() {
     let boundsBottom = boundsTop + element.outerHeight();
 
     return boundsTop >= viewportTop && boundsBottom <= viewportBottom;
+  };
+
+  const renderSearch = (results) => {
+    results = _.forEach(_.take(results, 100), (value, index) => {
+      value.index = String(index + 1).padStart(2, "0");
+    });
+
+    let copy = results.slice();
+    searchPages = [];
+
+    while (copy.length > 0) {
+      let container = $("#results").empty();
+      let pageIndex = searchPages.push([]);
+
+      _.each(copy, (item) => {
+        item.page = pageIndex;
+
+        if (item.type == "action") {
+          container.append(actionTemplate({ item }));
+        } else {
+          container.append(linkTemplate({ item }));
+        }
+
+        if (!inViewport(container)) {
+          container.children().last().remove();
+          return false;
+        }
+
+        searchPages[pageIndex - 1].push(item);
+      });
+
+      if (searchPages[pageIndex - 1].length) {
+        copy.splice(0, searchPages[pageIndex - 1].length);
+      } else {
+        break;
+      }
+    }
+
+    showPage(0);
   };
 
   const renderPagination = () => {
@@ -142,54 +159,53 @@ function SearchManager() {
     $("#pagination").toggle(searchPages.length > 1);
   };
 
-  const renderPage = (page) => {
+  const showPage = (index) => {
     let container = $("#results");
     container.unmark();
     container.empty();
 
-    if (searchPages.length == 0) {
-      renderPagination();
-      return true;
-    }
-
-    page.forEach((item) => {
-      if (item.type == "action") {
-        container.append(actionTemplate({ item }));
-      } else {
-        container.append(linkTemplate({ item }));
-      }
-    });
-
-    $(".result-item").click(function () {
-      let action = $(this).data("name");
-      let popup = $(this).data("popup");
-      let value = $(this).data("value");
-
-      if (value.indexOf("https://") == 0 || value.indexOf("http://") == 0) {
-        BrowserAutomationStudio_OpenUrl(value);
-      } else {
-        if (popup) {
-          BrowserAutomationStudio_Notify("search", action);
+    if (searchPages.length > 0) {
+      _.each(searchPages[index], (item) => {
+        if (item.type == "action") {
+          container.append(actionTemplate({ item }));
         } else {
-          BrowserAutomationStudio_OpenAction(value);
+          container.append(linkTemplate({ item }));
         }
-      }
-    });
+      });
 
+      $(".result-item").click(function () {
+        let action = $(this).data("name");
+        let popup = $(this).data("popup");
+        let value = $(this).data("value");
+
+        if (value.indexOf("https://") == 0 || value.indexOf("http://") == 0) {
+          BrowserAutomationStudio_OpenUrl(value);
+        } else {
+          if (popup) {
+            BrowserAutomationStudio_Notify("search", action);
+          } else {
+            BrowserAutomationStudio_OpenAction(value);
+          }
+        }
+      });
+
+      container.mark(lastQuery || "");
+    }
+    
     renderPagination();
-    container.mark(lastQuery || "");
-    return inViewport(container);
   };
 
   this.Render = function () {
+    $(".results-recent").text(tr("Recent actions"));
+
     $("#nextpage").click((e) => {
       e.preventDefault();
-      renderPage(searchPages[++currentPage]);
+      showPage(++currentPage);
     });
 
     $("#prevpage").click((e) => {
       e.preventDefault();
-      renderPage(searchPages[--currentPage]);
+      showPage(--currentPage);
     });
 
     $(window).resize(() => {
@@ -207,21 +223,21 @@ function SearchManager() {
   };
 
   this.Toggle = function (hide) {
-    $("body").css("overflow-y", !hide ? 'hidden' : 'visible');
+    $("body").css("overflow-y", !hide ? "hidden" : "visible");
     $("#pagination, .search").toggle(!hide);
     $(".actions").toggle(hide);
     $("#searchinput").val("");
   }
 
   this.Show = function () {
-    $(".search-clear-button").css("color", "#bf5d4e");
+    $("#searchinputclear").css("color", "#bf5d4e");
     $("#searchinput").focus();
     this.Toggle(false);
     this.Recent();
   };
 
   this.Hide = function () {
-    $(".search-clear-button").css("color", "#f2f2f2");
+    $("#searchinputclear").css("color", "#f2f2f2");
     $("#searchinput").blur();
     this.Toggle(true);
   };

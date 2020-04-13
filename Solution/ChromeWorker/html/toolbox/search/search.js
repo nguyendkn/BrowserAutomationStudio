@@ -1,12 +1,22 @@
 function SearchManager() {
   const excludedActions = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"];
 
-  const groups = _.filter(_TaskCollection.toJSON(), { type: "group" });
-
   let lastQuery = null;
   let searchItems = [];
   let currentPage = 0;
-  let pagesCount = 0;
+  let itemsCount = 0;
+  let pagesCount = 1;
+
+  /* Helpers */
+  const inViewport = (element) => {
+    let viewportTop = $(window).scrollTop();
+    let viewportBottom = viewportTop + $(window).height();
+
+    let boundsTop = element.offset().top;
+    let boundsBottom = boundsTop + element.outerHeight();
+
+    return boundsTop >= viewportTop && boundsBottom <= viewportBottom;
+  };
 
   const getText = (element) => {
     let html = tr(element.html());
@@ -29,8 +39,7 @@ function SearchManager() {
     if (shortDesc.length)
       description = getText(shortDesc);
 
-    let group = _.find(groups, { name: _A2G[key] || "browser" });
-
+    let group = _.find(_TaskCollection.toJSON(), { name: _A2G[key] || "browser", type: "group" });
     let action = { description, name: tr(value.name), type: "action", key };
 
     if (value.class && value.class == "browser") {
@@ -69,7 +78,6 @@ function SearchManager() {
 
   this.Search = function (query) {
     lastQuery = query;
-    $(".results-recent").hide();
     renderSearch(_.filter(searchItems, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
@@ -82,20 +90,9 @@ function SearchManager() {
 
   this.Recent = function () {
     lastQuery = null;
-    $(".results-recent").show();
     renderSearch(_.map(ActionHistory, (el) => {
       return _.find(searchItems, { key: el });
     }));
-  };
-
-  const inViewport = (element) => {
-    let viewportTop = $(window).scrollTop();
-    let viewportBottom = viewportTop + $(window).height();
-
-    let boundsTop = element.offset().top;
-    let boundsBottom = boundsTop + element.outerHeight();
-
-    return boundsTop >= viewportTop && boundsBottom <= viewportBottom;
   };
 
   const renderSearch = (items) => {
@@ -108,10 +105,11 @@ function SearchManager() {
     container.empty();
 
     let results = [];
-    pagesCount = 0;
+    currentPage = 0;
+    pagesCount = 1;
 
     _.each(items, (item) => {
-      item.page = pagesCount;
+      item.page = pagesCount - 1;
 
       if (item.type == "action") {
         results.push($(actionTemplate({ item })).appendTo(container));
@@ -120,13 +118,16 @@ function SearchManager() {
       }
 
       if (!inViewport(container)) {
-        container.children().last().data("page", pagesCount + 1);
+        container.children().last().data("page", pagesCount);
         results.slice(0, -1).forEach((item) => item.hide());
         pagesCount += 1;
       }
     });
 
-    pagesCount = pagesCount + 1;
+    itemsCount = items.length;
+
+    console.log(`items - ${itemsCount}`);
+    console.log(`pages - ${pagesCount}`);
 
     $(".result-item").click(function () {
       let action = $(this).data("name");
@@ -148,40 +149,32 @@ function SearchManager() {
     showPage(0);
   };
 
-  const renderPagination = () => {
-    $("#currentpage").html(currentPage + 1);
-
-    if (pagesCount == 0) {
-      $("#lastpage").html(pagesCount + 1);
-    } else {
-      $("#lastpage").html(pagesCount);
-    }
-
-    $("#nextpage").prop("disabled", () => {
-      return pagesCount <= 1 || currentPage == pagesCount - 1;
-    });
-
-    $("#prevpage").prop("disabled", () => {
-      return pagesCount <= 1 || currentPage == 0;
-    });
-
-    $(".results-empty").toggle(pagesCount == 0);
-    $("#pagination").toggle(pagesCount > 1);
-  };
-
   const showPage = (index) => {
-    if (pagesCount > 0) {
-      $(".result-item").each(function () {
-        let pageIndex = $(this).data("page");
-        $(this).toggle(pageIndex == index);
-      });
+    $(".result-item").each(function () {
+      let pageIndex = $(this).data("page");
+      $(this).toggle(pageIndex == index);
+    });
+
+    $("#nextpage").prop("disabled", currentPage == pagesCount - 1);
+    $("#prevpage").prop("disabled", currentPage == 0);
+    $("#pagination").toggle(pagesCount > 1);
+
+    $("#currentpage").html(currentPage + 1);
+    $("#lastpage").html(pagesCount);
+
+    if (!lastQuery) {
+      $(".results-empty").html(tr("No recent actions found"));
+    } else {
+      $(".results-empty").html(tr("Nothing found"));
     }
 
-    renderPagination();
+    $(".results-recent").toggle(itemsCount > 0 && lastQuery == null);
+    $(".results-empty").toggle(itemsCount == 0);
   };
 
   this.Render = function () {
     $(".results-recent").text(tr("Recent actions"));
+    $(".results-recent, .results-empty").hide();
 
     $("#nextpage").click((e) => {
       e.preventDefault();
@@ -203,26 +196,25 @@ function SearchManager() {
       }
     });
 
+    $("#searchinputclear").hide();
     $("#pagination").hide();
     $(".search").hide();
   };
 
   this.Toggle = function (hide) {
+    $("#searchinputclear, #pagination, .search").toggle(!hide);
     $("body").css("overflow-y", !hide ? "hidden" : "visible");
-    $("#pagination, .search").toggle(!hide);
     $(".actions").toggle(hide);
     $("#searchinput").val("");
   }
 
   this.Show = function () {
-    $("#searchinputclear").css("color", "#bf5d4e");
     $("#searchinput").focus();
     this.Toggle(false);
     this.Recent();
   };
 
   this.Hide = function () {
-    $("#searchinputclear").css("color", "#f2f2f2");
     $("#searchinput").blur();
     this.Toggle(true);
   };
@@ -268,5 +260,4 @@ function SearchManager() {
       </div>
     </li>
   `);
-
 }

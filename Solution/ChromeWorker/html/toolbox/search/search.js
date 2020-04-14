@@ -62,7 +62,7 @@ function SearchManager() {
         icon: "../icons/youtube.png",
         name: video["name"],
         key: video["url"],
-        type: "video",
+        type: "link",
       });
   });
 
@@ -72,12 +72,13 @@ function SearchManager() {
         icon: "../icons/wiki.png",
         name: wiki["name"],
         key: wiki["url"],
-        type: "wiki",
+        type: "link",
       });
   });
 
   this.Search = function (query) {
     lastQuery = query;
+    $(".results-recent").hide();
     this.RenderSearch(_.filter(searchItems, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
@@ -90,6 +91,7 @@ function SearchManager() {
 
   this.Recent = function () {
     lastQuery = null;
+    $(".results-recent").hide();
     this.RenderSearch(_.map(ActionHistory, (el) => {
       return _.find(searchItems, { key: el });
     }));
@@ -108,27 +110,30 @@ function SearchManager() {
     currentPage = 0;
     pagesCount = 1;
 
-    _.each(items, (item) => {
-      item.page = pagesCount - 1;
-
-      if (item.type == "action") {
-        results.push($(actionTemplate({ item })).appendTo(container));
-      } else {
-        results.push($(linkTemplate({ item })).appendTo(container));
-      }
+    _.each(items, (item, index) => {
+      let template = templates[item.type]({ item, page: pagesCount - 1 });
+      results.push($(template).appendTo(container));
 
       if (!inViewport(container)) {
-        container.children().last().data("page", pagesCount);
-        results.slice(0, -1).forEach((item) => item.hide());
-        pagesCount += 1;
+        _.slice(results, 0, -1).forEach((el) => el.hide());
+
+        if (index == 0) {
+          _.last(results).data("page", pagesCount - 1);
+        } else {
+          _.last(results).data("page", pagesCount);   
+        }
+        
+        pagesCount += index == 0 ? 0 : 1;
       }
     });
 
     itemsCount = items.length;
+    container.mark(lastQuery || "");
+    this.AddOnClick();
+    this.ShowPage(0);
+  };
 
-    console.log(`items - ${itemsCount}`);
-    console.log(`pages - ${pagesCount}`);
-
+  this.AddOnClick = function () {
     $(".result-item").click(function () {
       let action = $(this).data("name");
       let popup = $(this).data("popup");
@@ -144,9 +149,6 @@ function SearchManager() {
         }
       }
     });
-
-    container.mark(lastQuery || "");
-    this.ShowPage(0);
   };
 
   this.ShowPage = function (index) {
@@ -219,45 +221,46 @@ function SearchManager() {
     this.Toggle(true);
   };
 
-  const actionTemplate = _.template(`
-    <li class="result-item bg-action" data-page="<%= item.page %>" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
-      <div class="result-item-left">
-        <img class="item-icon" src="<%= item.icon %>">
-        <span class="item-index">
-          <%= item.index %>
-        </span>
-      </div>
-      <div class="result-item-right">
-        <div>
-          <div class="item-action">
-            <%= item.name %>
-          </div>
-          <div class="item-description">
-            <%= item.description %>
-          </div>
+  const templates = {
+    action: _.template(`
+      <li class="result-item bg-action" data-page="<%= page %>" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
+        <div class="result-item-left">
+          <img class="item-icon" src="<%= item.icon %>">
+          <span class="item-index">
+            <%= item.index %>
+          </span>
         </div>
-        <div class="item-module">
-          <%= item.module %>
-        </div>
-      </div>
-    </li>
-  `);
-
-  const linkTemplate = _.template(`
-    <li class="result-item bg-link" data-page="<%= item.page %>" data-value="<%= item.key %>">
-      <div class="result-item-left">
-        <img class="item-icon" src="<%= item.icon %>">
-        <span class="item-index">
-          <%= item.index %>
-        </span>
-      </div>
-      <div class="result-item-right">
-        <div>
-          <div class="item-action">
-            <%= item.name %>
+        <div class="result-item-right">
+          <div>
+            <div class="item-action">
+              <%= item.name %>
+            </div>
+            <div class="item-description">
+              <%= item.description %>
+            </div>
+          </div>
+          <div class="item-module">
+            <%= item.module %>
           </div>
         </div>
-      </div>
-    </li>
-  `);
+      </li>
+    `),
+    link: _.template(`
+      <li class="result-item bg-link" data-page="<%= page %>" data-value="<%= item.key %>">
+        <div class="result-item-left">
+          <img class="item-icon" src="<%= item.icon %>">
+          <span class="item-index">
+            <%= item.index %>
+          </span>
+        </div>
+        <div class="result-item-right">
+          <div>
+            <div class="item-action">
+              <%= item.name %>
+            </div>
+          </div>
+        </div>
+      </li>
+    `),
+  };
 }

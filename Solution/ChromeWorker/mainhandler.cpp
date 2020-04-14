@@ -17,6 +17,7 @@
 #include "browsercontextmenu.h"
 #include <chrono>
 #include "converter.h"
+#include "fileutils.h"
 
 using namespace std::placeholders;
 using namespace std::chrono;
@@ -238,9 +239,10 @@ void MainHandler::OnBeforeDownload(CefRefPtr<CefBrowser> browser, CefRefPtr<CefD
     }
     if(Accept)
     {
-        std::string file = RandomId() + ".file";
-        WORKER_LOG(std::string("OnBeforeDownload<<") + file);
-        callback->Continue(file,false);
+        std::string FileName = RandomId() + ".file";
+        std::wstring FilePath = GetRelativePathToParentFolder(s2ws(FileName));
+        WORKER_LOG(std::string("OnBeforeDownload<<") + FileName);
+        callback->Continue(FilePath,false);
     }else
     {
         //WORKER_LOG(std::string("OnBeforeDownloadFiltered<<") + url);
@@ -277,7 +279,8 @@ void MainHandler::OnDownloadUpdated(CefRefPtr<CefBrowser> browser, CefRefPtr<Cef
                 std::string url = std::string("download://") + download_item->GetOriginalUrl().ToString();
                 p.first = url;
                 p.second = std::make_shared<BrowserData::CachedItem>();
-                std::string path = download_item->GetFullPath().ToString();
+                std::wstring path = download_item->GetFullPath().ToWString();
+                path = ExtractFilenameFromPath(path);
                 p.second->body.assign(path.begin(),path.end());
                 Data->_CachedData.push_back(p);
             }

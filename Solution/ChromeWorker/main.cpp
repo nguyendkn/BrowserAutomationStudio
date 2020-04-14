@@ -25,7 +25,7 @@
 #include <fstream>
 #include "emptyapp.h"
 #include "renderapp.h"
-#include "getrelativepathtoexe.h"
+#include "fileutils.h"
 #include "prepareurladressbar.h"
 #include "proxyconfigreplace.h"
 #include <iostream>

@@ -13,6 +13,7 @@ SOURCES += main.cpp \
     browsercontextmenu.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
+    fileutils.cpp \
     ipcsimple.cpp \
     mainapp.cpp \
     mainhandler.cpp \
@@ -92,7 +93,6 @@ SOURCES += main.cpp \
     renderapp.cpp \
     preparestartupscript.cpp \
     interprocessv8handler.cpp \
-    getrelativepathtoexe.cpp \
     browserip.cpp \
     languagemanager.cpp \
     browsersettingssaver.cpp \
@@ -118,6 +118,7 @@ HEADERS += \
     browsercontextmenu.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
+    fileutils.h \
     ipcsimple.h \
     mainapp.h \
     mainhandler.h \
@@ -205,7 +206,6 @@ HEADERS += \
     renderapp.h \
     preparestartupscript.h \
     interprocessv8handler.h \
-    getrelativepathtoexe.h \
     browserip.h \
     languagemanager.h \
     browsersettingssaver.h \

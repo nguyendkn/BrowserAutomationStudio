@@ -4,10 +4,8 @@ function SearchManager() {
   let lastQuery = null;
   let searchItems = [];
   let currentPage = 0;
-  let itemsCount = 0;
   let pagesCount = 1;
 
-  /* Helpers */
   const inViewport = (element) => {
     let viewportTop = $(window).scrollTop();
     let viewportBottom = viewportTop + $(window).height();
@@ -98,14 +96,14 @@ function SearchManager() {
   };
 
   this.RenderSearch = function (items) {
-    items = _.forEach(_.take(items, 100), (value, index) => {
+    items = _.each(_.take(items, 100), (value, index) => {
       value.index = String(index + 1).padStart(2, "0");
     });
 
     let container = $("#results");
     container.unmark();
     container.empty();
-
+    
     let results = [];
     currentPage = 0;
     pagesCount = 1;
@@ -115,19 +113,18 @@ function SearchManager() {
       results.push($(template).appendTo(container));
 
       if (!inViewport(container)) {
-        _.slice(results, 0, -1).forEach((el) => el.hide());
+        _.initial(results).forEach((el) => el.hide());
 
         if (index == 0) {
           _.last(results).data("page", pagesCount - 1);
         } else {
-          _.last(results).data("page", pagesCount);   
+          _.last(results).data("page", pagesCount);
         }
-        
+
         pagesCount += index == 0 ? 0 : 1;
       }
     });
 
-    itemsCount = items.length;
     container.mark(lastQuery || "");
     this.AddOnClick();
     this.ShowPage(0);
@@ -152,7 +149,9 @@ function SearchManager() {
   };
 
   this.ShowPage = function (index) {
-    $(".result-item").each(function () {
+    let results = $(".result-item");
+
+    results.each(function () {
       let pageIndex = $(this).data("page");
       $(this).toggle(pageIndex == index);
     });
@@ -170,8 +169,8 @@ function SearchManager() {
       $(".results-empty").html(tr("Nothing found"));
     }
 
-    $(".results-recent").toggle(itemsCount > 0 && lastQuery == null);
-    $(".results-empty").toggle(itemsCount == 0);
+    $(".results-recent").toggle(results.length > 0 && lastQuery == null);
+    $(".results-empty").toggle(results.length == 0);
   };
 
   this.Render = function () {

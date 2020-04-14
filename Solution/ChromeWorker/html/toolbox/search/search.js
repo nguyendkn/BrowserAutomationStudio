@@ -78,7 +78,7 @@ function SearchManager() {
 
   this.Search = function (query) {
     lastQuery = query;
-    renderSearch(_.filter(searchItems, (el) => {
+    this.RenderSearch(_.filter(searchItems, (el) => {
       let queryLower = query.toLowerCase();
       let nameLower = el.name.toLowerCase();
       if (excludedActions.includes(el.key)) {
@@ -90,12 +90,12 @@ function SearchManager() {
 
   this.Recent = function () {
     lastQuery = null;
-    renderSearch(_.map(ActionHistory, (el) => {
+    this.RenderSearch(_.map(ActionHistory, (el) => {
       return _.find(searchItems, { key: el });
     }));
   };
 
-  const renderSearch = (items) => {
+  this.RenderSearch = function (items) {
     items = _.forEach(_.take(items, 100), (value, index) => {
       value.index = String(index + 1).padStart(2, "0");
     });
@@ -146,10 +146,10 @@ function SearchManager() {
     });
 
     container.mark(lastQuery || "");
-    showPage(0);
+    this.ShowPage(0);
   };
 
-  const showPage = (index) => {
+  this.ShowPage = function (index) {
     $(".result-item").each(function () {
       let pageIndex = $(this).data("page");
       $(this).toggle(pageIndex == index);
@@ -178,12 +178,12 @@ function SearchManager() {
 
     $("#nextpage").click((e) => {
       e.preventDefault();
-      showPage(++currentPage);
+      this.ShowPage(++currentPage);
     });
 
     $("#prevpage").click((e) => {
       e.preventDefault();
-      showPage(--currentPage);
+      this.ShowPage(--currentPage);
     });
 
     $(window).resize(() => {
@@ -203,7 +203,7 @@ function SearchManager() {
 
   this.Toggle = function (hide) {
     $("#searchinputclear, #pagination, .search").toggle(!hide);
-    $("body").css("overflow-y", !hide ? "hidden" : "visible");
+    $("body").css("overflow", hide ? "visible" : "hidden");
     $(".actions").toggle(hide);
     $("#searchinput").val("");
   }
@@ -219,7 +219,7 @@ function SearchManager() {
     this.Toggle(true);
   };
 
-  let actionTemplate = _.template(`
+  const actionTemplate = _.template(`
     <li class="result-item bg-action" data-page="<%= item.page %>" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
       <div class="result-item-left">
         <img class="item-icon" src="<%= item.icon %>">
@@ -243,7 +243,7 @@ function SearchManager() {
     </li>
   `);
 
-  let linkTemplate = _.template(`
+  const linkTemplate = _.template(`
     <li class="result-item bg-link" data-page="<%= item.page %>" data-value="<%= item.key %>">
       <div class="result-item-left">
         <img class="item-icon" src="<%= item.icon %>">

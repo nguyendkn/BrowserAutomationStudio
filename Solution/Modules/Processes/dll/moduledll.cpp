@@ -126,7 +126,7 @@ extern "C" {
                 p.kill();
                 return;
             }
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 10);
         }
 
         QByteArray ResArray;

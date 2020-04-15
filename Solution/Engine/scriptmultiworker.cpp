@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QCoreApplication>
 #include "csvhelperwrapper.h"
 #include <limits>
 #include "every_cpp.h"
@@ -434,6 +435,29 @@ namespace BrowserAutomationStudioFramework
     void ScriptMultiWorker::NoResources(const QString& Message)
     {
         Logger->WriteFail(Message, LogFail);
+    }
+
+    void ScriptMultiWorker::WaitForAllModuleFunctionsToFinish()
+    {
+        //Set NeedToStop variable, this is a signal for all dlls, that funciton must finish
+        emit StopAllFunctions();
+
+        QTime EndTime = QTime::currentTime().addSecs(5);
+
+        while(true)
+        {
+            //Check how many functions are working
+            int NumberOfWorkingFunctions = 0;
+            emit GetNumberOfRunningFunctions(&NumberOfWorkingFunctions);
+
+            //Timeout
+            if(QTime::currentTime() >= EndTime)
+                break;
+
+            if(!NumberOfWorkingFunctions)
+                break;
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
     }
 
     void ScriptMultiWorker::Run()
@@ -1474,6 +1498,8 @@ namespace BrowserAutomationStudioFramework
         connect(this,SIGNAL(SubstageFinished(int)),worker,SLOT(SubstageFinished(int)));
         connect(this,SIGNAL(TaskDataReceived(int,QString,QString,int)),worker,SLOT(TaskDataReceived(int,QString,QString,int)));
         connect(this,SIGNAL(PrepareFunctionResult(QString,QString)),worker,SLOT(PrepareFunctionResult(QString,QString)));
+        connect(this,SIGNAL(StopAllFunctions()),worker,SLOT(StopAllFunctions()));
+        connect(this,SIGNAL(GetNumberOfRunningFunctions(int*)),worker,SLOT(GetNumberOfRunningFunctions(int*)),Qt::DirectConnection);
 
         QHash<QString,QObject*>::iterator i = ModulesScriptWorker.begin();
         while (i != ModulesScriptWorker.end())

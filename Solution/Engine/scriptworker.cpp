@@ -3446,6 +3446,18 @@ namespace BrowserAutomationStudioFramework
         }
     }
 
+    void ScriptWorker::StopAllFunctions()
+    {
+        for(FunctionRunData* func:FunctionDataList)
+            func->Stop();
+    }
+
+    void ScriptWorker::GetNumberOfRunningFunctions(int * FunctionsTotal)
+    {
+        *FunctionsTotal += FunctionDataList.size();
+    }
+
+
     void ScriptWorker::EmbeddedCallFinal()
     {
         if(EmbeddedIsApiCall)

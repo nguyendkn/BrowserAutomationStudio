@@ -224,6 +224,9 @@ namespace BrowserAutomationStudioFramework
         virtual IModuleManager* GetModuleManager();
 
         virtual void SetEmptyProject();
+
+        virtual void WaitForAllModuleFunctionsToFinish();
+
     signals:
         void InterruptActionSignal();
         void SubstageFinished(int);

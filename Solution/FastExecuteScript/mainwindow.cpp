@@ -1511,6 +1511,7 @@ void MainWindow::Finished()
         _SchedulerConnector->SetWorker(0);
     }
 
+    Worker->WaitForAllModuleFunctionsToFinish();
     _ModuleManager->StopAllDlls();
     ResVisualizer->SetDisabled();
     ui->actionResources_Report->setEnabled(false);

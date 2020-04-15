@@ -151,6 +151,8 @@ namespace BrowserAutomationStudioFramework
         virtual IWorkerSettings* GetWorkerSettings() = 0;
 
         virtual void SetEmptyProject() = 0;
+
+        virtual void WaitForAllModuleFunctionsToFinish() = 0;
     signals:
         void Finished();
         void StageFinished();
@@ -164,6 +166,9 @@ namespace BrowserAutomationStudioFramework
         //Total success, total fail
         void StageStatistic(int, int);
         void WebInterfaceEvalSignal(const QString& script);
+
+        void StopAllFunctions();
+        void GetNumberOfRunningFunctions(int * FunctionsTotal);
 
     public slots:
 

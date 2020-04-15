@@ -240,6 +240,9 @@ namespace BrowserAutomationStudioFramework
         virtual int RunningTaskId() = 0;
         virtual void PrepareFunctionResult(const QString& FunctionName, const QString& FunctionData) = 0;
 
+        virtual void StopAllFunctions() = 0;
+        virtual void GetNumberOfRunningFunctions(int * FunctionsTotal) = 0;
+
 
     };
 }

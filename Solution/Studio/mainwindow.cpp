@@ -1559,6 +1559,7 @@ void MainWindow::RestoreMaxHeight()
 
 void MainWindow::StopAction()
 {
+    Worker->WaitForAllModuleFunctionsToFinish();
     _ModuleManager->StopAllDlls();
     ui->verticalSpacer->changeSize(1,1, QSizePolicy::Fixed, QSizePolicy::Expanding);
     ui->VerticalSpacerRecordButtonUp->changeSize(1,1, QSizePolicy::Fixed, QSizePolicy::Expanding);

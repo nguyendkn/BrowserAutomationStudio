@@ -475,7 +475,8 @@ namespace BrowserAutomationStudioFramework
         void EmbeddedApiResponce(const QString& Variables);
         void PrepareFunction(const QString& FunctionName);
         virtual void PrepareFunctionResult(const QString& FunctionName, const QString& FunctionData);
-
+        virtual void StopAllFunctions();
+        virtual void GetNumberOfRunningFunctions(int * FunctionsTotal);
 
         void DNSLookup(const QString& Domain, const QString& Callback);
 

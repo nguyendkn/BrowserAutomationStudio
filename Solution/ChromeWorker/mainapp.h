@@ -68,7 +68,8 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     std::string BrowserScenarioDelayScript;
     std::string LastHighlightSelector;
 
-    IPCSimple RenderProcessIPC;
+    IPCSimple NetworkProcessIPC;
+    bool ProxyLibraryLoaded = false;
 
 
     bool IsLastCommandNull;
@@ -367,8 +368,8 @@ public:
     void NewMainBrowserContextCreated(int BrowserId, bool IsMain);
     void LinkCtrlClick(const std::string& current_url, const std::string& target_url);
     void CurrentTabChanged();
-    void CheckRenderProcessIPC();
-    void InitRenderProcessIPC();
+    void CheckNetworkProcessIPC();
+    void InitNetworkProcessIPC();
     void DownloadStart();
     void OldestRequestTimeChanged(int64 OldestTime);
     char* GetImageData();

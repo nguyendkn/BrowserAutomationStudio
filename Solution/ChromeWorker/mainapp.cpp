@@ -1923,7 +1923,13 @@ void MainApp::SetProxyCallback(const std::string& server, int Port, bool IsHttp,
 void MainApp::OnComplete()
 {
     WORKER_LOG("MainApp::OnComplete");
-    SendTextResponce("<SendWorkerSettings></SendWorkerSettings>");
+    if(!ProxyLibraryLoaded)
+    {
+        IPCSimple::Write(std::string("out") + Data->_UniqueProcessId,"attach-proxy");
+    }else
+    {
+        SendTextResponce("<SendWorkerSettings></SendWorkerSettings>");
+    }
 }
 
 CefRefPtr<CefResourceRequestHandler> MainApp::GetResourceRequestHandler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool is_navigation, bool is_download, const CefString& request_initiator, bool& disable_default_handling)
@@ -3192,27 +3198,26 @@ void MainApp::Timer()
 
     DirectControlInspectMouse();
 
-    CheckRenderProcessIPC();
+    if(!ProxyLibraryLoaded)
+        CheckNetworkProcessIPC();
 
 }
 
-void MainApp::InitRenderProcessIPC()
+void MainApp::InitNetworkProcessIPC()
 {
-    RenderProcessIPC.Init(Data->_UniqueProcessId);
+    NetworkProcessIPC.Init(std::string("in") + Data->_UniqueProcessId);
 }
 
-void MainApp::CheckRenderProcessIPC()
+void MainApp::CheckNetworkProcessIPC()
 {
-    if(RenderProcessIPC.Peek())
+    if(NetworkProcessIPC.Peek())
     {
-        std::vector<std::string> DataAll = RenderProcessIPC.Read();
-        for(std::string& Data:DataAll)
+        std::vector<std::string> DataAll = NetworkProcessIPC.Read();
+        if(!DataAll.empty())
         {
-            std::vector<std::string> DataSplit = split(Data,',');
-            if(DataSplit.size() == 2)
-            {
-                NewMainBrowserContextCreated(std::stoi(DataSplit[0]),std::stoi(DataSplit[1]));
-            }
+            WORKER_LOG("CheckNetworkProcessIPC");
+            SendTextResponce("<SendWorkerSettings></SendWorkerSettings>");
+            ProxyLibraryLoaded = true;
         }
     }
 }

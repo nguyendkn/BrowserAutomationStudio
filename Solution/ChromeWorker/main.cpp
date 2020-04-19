@@ -31,6 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include "MinHook.h"
+#include "ipcsimple.h"
 
 
 
@@ -110,6 +111,33 @@ void TerminateOnCloseMutex(const std::string& Id, bool DoSleep)
     );*/
     exit(0);
 
+}
+
+//Used only in network process
+void MainProcessIPC(const std::string& UniqueId, const std::string& ParentId)
+{
+    IPCSimple NetworkProcessIPC;
+    NetworkProcessIPC.Init(std::string("out") + UniqueId);
+
+    while(true)
+    {
+        if(NetworkProcessIPC.Peek())
+        {
+            std::vector<std::string> DataAll = NetworkProcessIPC.Read();
+            if(!DataAll.empty())
+            {
+                ProxyConfigReplace::GetInstance().SetPid(s2ws(ParentId));
+                ProxyConfigReplace::GetInstance().Replace();
+                LoadLibraryW(L"Proxy.dll");
+                ProxyConfigReplace::GetInstance().Disable();
+
+                IPCSimple::Write(std::string("in") + UniqueId,"done");
+                break;
+            }
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
 }
 
 void RepositionInterface(int x, int y)
@@ -1689,6 +1717,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     std::string ProcessType;
     std::string SandboxType;
     std::string ParentProcessId;
+    std::string UniqueProcessId;
+
 
     //Parse command line
     std::vector<std::wstring> Arguments;
@@ -1717,18 +1747,22 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                 ParentProcessId.erase(0,20);
             }
 
+            if(Item.find(L"--unique-process-id=") == 0)
+            {
+                UniqueProcessId = ws2s(Item);
+                UniqueProcessId.erase(0,20);
+            }
+
             Arguments.push_back(Item);
         }
         LocalFree(Arglist);
     }
 
 
+
     if(SandboxType == std::string("network"))
     {
-        ProxyConfigReplace::GetInstance().SetPid(s2ws(ParentProcessId));
-        ProxyConfigReplace::GetInstance().Replace();
-        LoadLibraryW(L"Proxy.dll");
-        ProxyConfigReplace::GetInstance().Disable();
+        new std::thread(MainProcessIPC, UniqueProcessId, ParentProcessId);
     }
 
     if(ProcessType == "renderer")
@@ -1850,7 +1884,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     app->SetData(Data);
     app->SetPostManager(_PostManager);
     app->SetCefReqest2Action(_CefReqest2Action);
-    app->InitRenderProcessIPC();
+    app->InitNetworkProcessIPC();
 
     int exit_code = CefExecuteProcess(main_args, app.get(), NULL);
 

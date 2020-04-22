@@ -1,5 +1,5 @@
 function SearchManager() {
-  const excludedActions = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"];
+  const excludedEntries = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"]
 
   let lastQuery = null;
   let searchItems = [];
@@ -77,13 +77,15 @@ function SearchManager() {
   this.Search = function (query) {
     lastQuery = query;
     $(".results-recent").hide();
-    this.RenderSearch(_.filter(searchItems, (el) => {
+    this.RenderSearch(_.filter(searchItems, item => {
+      let itemNameLower = item.name.toLowerCase();
       let queryLower = query.toLowerCase();
-      let nameLower = el.name.toLowerCase();
-      if (excludedActions.includes(el.key)) {
-        return false;
+
+      if (excludedEntries.includes(item.key)) {
+          return false;
       }
-      return nameLower.indexOf(queryLower) >= 0;
+      
+      return itemNameLower.indexOf(queryLower) >= 0;
     }));
   };
 
@@ -96,14 +98,14 @@ function SearchManager() {
   };
 
   this.RenderSearch = function (items) {
-    items = _.each(_.take(items, 100), (value, index) => {
-      value.index = String(index + 1).padStart(2, "0");
+    items = _.each(_.take(items, 100), (item, index) => {
+      item.index = _.padLeft(index + 1, 2, "0");
     });
 
     let container = $("#results");
     container.unmark();
     container.empty();
-    
+
     let results = [];
     currentPage = 0;
     pagesCount = 1;

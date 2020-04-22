@@ -1,8 +1,7 @@
 function SearchManager() {
-  const excludedEntries = ["httpclientgetcookiesforurl", "getcookiesforurl", "check"]
+  const searchEngine = new SearchEngine();
 
   let lastQuery = null;
-  let searchItems = [];
   let currentPage = 0;
   let pagesCount = 1;
 
@@ -16,85 +15,16 @@ function SearchManager() {
     return boundsTop >= viewportTop && boundsBottom <= viewportBottom;
   };
 
-  const getText = (element) => {
-    let html = tr(element.html());
-    let node = $("<div/>");
-    node.append(html);
-    return node.text();
-  };
-
-  _.forOwn(_A, (value, key) => {
-    let actionContent = $("#" + key).text();
-
-    let defaultDesc = $(actionContent)
-      .find(".tooltip-paragraph-first-fold");
-    let shortDesc = $(actionContent)
-      .find(".short-description");
-    let description = null;
-
-    if (defaultDesc.length)
-      description = getText(defaultDesc);
-    if (shortDesc.length)
-      description = getText(shortDesc);
-
-    let group = _.find(_TaskCollection.toJSON(), { name: _A2G[key] || "browser", type: "group" });
-    let action = { description, name: tr(value.name), type: "action", key };
-
-    if (value.class && value.class == "browser") {
-      action.description += tr(" This action works only with element inside browser.");
-      action.module = tr("Browser > Element");
-      action.icon = "../icons/element.png";
-      action.popup = true;
-    } else {
-      action.module = group.description;
-      action.icon = group.icon;
-      action.popup = false;
-    }
-
-    searchItems.push(action);
-  });
-
-  _.forEach(_VIDEO, (video) => {
-    if (_K == video["lang"])
-      searchItems.push({
-        icon: "../icons/youtube.png",
-        name: video["name"],
-        key: video["url"],
-        type: "link",
-      });
-  });
-
-  _.forEach(_WIKI, (wiki) => {
-    if (_K == wiki["lang"])
-      searchItems.push({
-        icon: "../icons/wiki.png",
-        name: wiki["name"],
-        key: wiki["url"],
-        type: "link",
-      });
-  });
-
   this.Search = function (query) {
     lastQuery = query;
     $(".results-recent").hide();
-    this.RenderSearch(_.filter(searchItems, item => {
-      let itemNameLower = item.name.toLowerCase();
-      let queryLower = query.toLowerCase();
-
-      if (excludedEntries.includes(item.key)) {
-          return false;
-      }
-      
-      return itemNameLower.indexOf(queryLower) >= 0;
-    }));
+    this.RenderSearch(searchEngine.search(query));
   };
 
   this.Recent = function () {
     lastQuery = null;
     $(".results-recent").hide();
-    this.RenderSearch(_.map(ActionHistory, (el) => {
-      return _.find(searchItems, { key: el });
-    }));
+    this.RenderSearch(searchEngine.recent());
   };
 
   this.RenderSearch = function (items) {

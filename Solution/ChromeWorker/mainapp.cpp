@@ -1225,7 +1225,11 @@ void MainApp::RestoreCookiesCallback(const std::string& value)
             CefCookie cookie;
             CookieVisitor::DeserializeCookie(o, cookie);
             cookie.secure = 0;
-            std::string res = std::to_string(CookieManager->SetCookie("http://" + url,cookie,NULL));
+            if(starts_with(url,"."))
+            {
+                url.erase(0,1);
+            }
+            std::string res = std::to_string(CookieManager->SetCookie(std::string("http://") + url,cookie,NULL));
             WORKER_LOG(res);
         }
     }

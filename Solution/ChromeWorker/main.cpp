@@ -74,7 +74,7 @@ bool ElementTweakReturnUsed = false;
 UINT uFindReplaceMsg = 0;
 
 
-void TerminateOnCloseMutex(const std::string& Id, bool DoSleep)
+void TerminateOnCloseMutex(const std::string& Id, bool DoSleep, bool DoFlush)
 {
     HANDLE HandleMutex = OpenMutexA(MUTEX_ALL_ACCESS,false,Id.c_str());
 
@@ -91,6 +91,13 @@ void TerminateOnCloseMutex(const std::string& Id, bool DoSleep)
 
     ReleaseMutex(HandleMutex);
     CloseHandle(HandleMutex);
+
+
+    if(DoFlush)
+    {
+        WORKER_LOG(std::string("FlushCallback TerminateOnCloseMutex "));
+        app->FlushCallback();
+    }
 
     if(DoSleep)
     {
@@ -1768,7 +1775,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if(ProcessType == "renderer")
     {
         if(!ParentProcessId.empty())
-            new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + ParentProcessId, false);
+            new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + ParentProcessId, false, false);
 
         // Start renderer process
         CefRefPtr<CefApp> app = new RenderApp();
@@ -1777,7 +1784,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }else if (ProcessType == "gpu-process")
     {
         if(!ParentProcessId.empty())
-            new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + ParentProcessId, false);
+            new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + ParentProcessId, false, false);
 
         // Start gpu process
         CefRefPtr<CefApp> app = new EmptyApp();
@@ -1786,7 +1793,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }else if(!ProcessType.empty())
     {
         if(!ParentProcessId.empty())
-            new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + ParentProcessId, false);
+            new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + ParentProcessId, false, false);
 
         // Other process type, for exampleflash plugin
         CefRefPtr<CefApp> app = new EmptyApp();
@@ -1807,7 +1814,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         Pid = ws2s(Arguments[4]);
         WORKER_LOG(std::string("Pid : ") + Pid);
 
-        new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + Pid, true);
+        new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + Pid, true, true);
     }
 
 
@@ -1951,6 +1958,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     Parser->EventDisableBorwser.push_back(std::bind(&MainApp::DisableBrowserCallback,app.get()));
     Parser->EventVisible.push_back(std::bind(&MainApp::VisibleCallback,app.get(),_1));
+    Parser->EventFlush.push_back(std::bind(&MainApp::FlushCallback,app.get()));
     Parser->EventBrowserIp.push_back(std::bind(&MainApp::BrowserIpCallback,app.get()));
     Parser->EventSetProxy.push_back(std::bind(&MainApp::SetProxyCallback,app.get(),_1,_2,_3,_4,_5,_6));
     Parser->EventAddHeader.push_back(std::bind(&MainApp::AddHeaderCallback,app.get(),_1,_2,_3));

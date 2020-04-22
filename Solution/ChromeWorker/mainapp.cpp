@@ -1761,6 +1761,12 @@ void MainApp::VisibleCallback(bool visible)
     }
 }
 
+void MainApp::FlushCallback()
+{
+    WORKER_LOG(std::string("FlushCallback "));
+    CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
+}
+
 void MainApp::Hide()
 {
     _HandlersManager->GetHandler()->Hide();

@@ -163,6 +163,14 @@ void CommandParser::Parse(const std::string& Xml)
                 f(std::stoi(value));
         }
 
+        CommandNode = MessagesNode->first_node("Flush");
+        if(CommandNode)
+        {
+            WORKER_LOG("Flush");
+            for(auto f:EventFlush)
+                f();
+        }
+
         CommandNode = MessagesNode->first_node("FindUrlByMask");
         if(CommandNode)
         {

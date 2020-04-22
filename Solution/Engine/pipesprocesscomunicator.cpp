@@ -147,6 +147,7 @@ namespace BrowserAutomationStudioFramework
         if(Process)
         {
             Send("<Visible>0</Visible>");
+            Send("<Flush></Flush>");
             Suspend();
             ProcessDeleter *Deleter = new ProcessDeleter();
             Deleter->Start(Process);
@@ -161,6 +162,7 @@ namespace BrowserAutomationStudioFramework
         if(Process)
         {
             Send("<Visible>0</Visible>");
+            Send("<Flush></Flush>");
             Suspend();
             ProcessDeleter *Deleter = new ProcessDeleter();
             Deleter->Start(Process);

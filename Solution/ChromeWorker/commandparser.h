@@ -22,6 +22,7 @@ public:
     std::vector<std::function<void()> > EventDisableBorwser;
 
     std::vector<std::function<void(bool)> > EventVisible;
+    std::vector<std::function<void()> > EventFlush;
     std::vector<std::function<void()> > EventBrowserIp;
     std::vector<std::function<void(const std::string&)> > EventSetNextAction;
     std::vector<std::function<void(const std::string&, int, bool, const std::string&, const std::string&, const std::string&)> > EventSetProxy;

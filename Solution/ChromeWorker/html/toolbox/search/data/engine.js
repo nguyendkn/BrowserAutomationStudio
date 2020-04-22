@@ -30,7 +30,7 @@ class SearchEngine {
   }
 
   /**
-   * Append all action items to `searchItems` array.
+   * Add all action items to `searchItems` array.
    * @private
    */
   _addActionItems() {
@@ -48,8 +48,7 @@ class SearchEngine {
       if (shortDesc.length)
         description = this._getTextContent(shortDesc);
 
-      let group = _.find(_TaskCollection.toJSON(), { name: _A2G[key] || "browser", type: "group" });
-      let action = { description, name: tr(value.name), type: "action", key };
+      let action = { name: tr(value.name), type: "action", description, key };
 
       if (value.class && value.class == "browser") {
         action.description += tr(" This action works only with element inside browser.");
@@ -57,6 +56,7 @@ class SearchEngine {
         action.icon = "../icons/element.png";
         action.popup = true;
       } else {
+        let group = this._getActionGroup(key);
         action.module = group.description;
         action.icon = group.icon;
         action.popup = false;
@@ -67,7 +67,7 @@ class SearchEngine {
   }
 
   /**
-   * Append all video items to `searchItems` array.
+   * Add all video items to `searchItems` array.
    * @private
    */
   _addVideoItems() {
@@ -83,7 +83,7 @@ class SearchEngine {
   }
 
   /**
-   * Append all wiki items to `searchItems` array.
+   * Add all wiki items to `searchItems` array.
    * @private
    */
   _addWikiItems() {
@@ -103,5 +103,11 @@ class SearchEngine {
     let node = $("<div/>");
     node.append(html);
     return node.text();
+  }
+
+  _getActionGroup(action) {
+    let name = _A2G[action] || "browser";
+    let tasks = _TaskCollection.toJSON();
+    return _.find(tasks, { type: "group", name });
   }
 }

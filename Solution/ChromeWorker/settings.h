@@ -41,6 +41,7 @@ class settings
     std::string languages;
     std::string modules;
     bool tunneling;
+    void SetProfile(std::wstring profile);
 public:
     settings();
     bool UseFlash();

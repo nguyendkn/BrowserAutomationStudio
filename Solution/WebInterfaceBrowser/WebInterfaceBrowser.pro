@@ -7,6 +7,7 @@ SOURCES += main.cpp \
     app.cpp \
     convertencoding.cpp \
     filesystem.cpp \
+    fileutils.cpp \
     handler.cpp \
     TrayIcon.cpp \
     iconlistener.cpp
@@ -27,6 +28,7 @@ HEADERS += \
     app.h \
     convertencoding.h \
     filesystem.h \
+    fileutils.h \
     handler.h \
     TrayIcon.h \
     iconlistener.h \

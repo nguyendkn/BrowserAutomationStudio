@@ -3,6 +3,7 @@
 #include "include/cef_sandbox_win.h"
 #include "app.h"
 #include "apprender.h"
+#include "fileutils.h"
 
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
@@ -19,7 +20,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmd
   settings.log_severity = LOGSEVERITY_DISABLE;
   settings.persist_user_preferences = 1;
   settings.persist_session_cookies = 1;
-  std::wstring wencoding = L"profile";
+  std::wstring wencoding = GetRelativePathToExe(L"profile");
   cef_string_utf16_set(wencoding.data(),wencoding.size(),&settings.cache_path,true);
   cef_string_utf16_set(wencoding.data(),wencoding.size(),&settings.user_data_path,true);
 

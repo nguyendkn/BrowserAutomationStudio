@@ -8,6 +8,7 @@
 #include "replaceall.h"
 #include "startwith.h"
 #include "converter.h"
+#include "fileutils.h"
 #include "log.h"
 
 settings::settings()
@@ -225,6 +226,15 @@ void settings::Init()
     fin.close();
 }
 
+void settings::SetProfile(std::wstring profile)
+{
+    this->profile = profile;
+    if(!IsAbsolutePath(this->profile))
+    {
+        this->profile = GetRelativePathToParentFolder(this->profile);
+    }
+}
+
 
 void settings::ParseCommandLine(std::vector<std::wstring>& Params)
 {
@@ -291,7 +301,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             continue;
         }else if(NextProfile)
         {
-            profile = param;
+            SetProfile(param);
             NextUseFlash = false;
             NextSkipFrames = false;
             NextRefreshConnections = false;

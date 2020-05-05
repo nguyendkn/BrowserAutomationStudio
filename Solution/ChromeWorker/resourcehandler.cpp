@@ -17,8 +17,22 @@ bool ResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPtr<Ce
     Client = new URLRequestClient();
     Client->Init(callback,request->GetURL().ToString(),_BrowserData);
     Client->Done.push_back(std::bind(&ResourceHandler::ResponceDoneCallback,this));
-    request->SetFlags(UR_FLAG_ALLOW_STORED_CREDENTIALS);
-    urlrequest = CefURLRequest::Create(request,Client,NULL);
+
+    //Need to copy request, because original is read only
+    CefRefPtr<CefRequest> request_copy = CefRequest::Create();
+    request_copy->SetFirstPartyForCookies(request->GetFirstPartyForCookies());
+    request_copy->SetFlags(request->GetFlags() | UR_FLAG_ALLOW_STORED_CREDENTIALS);
+
+    CefRequest::HeaderMap ReqestHeaderMap;
+    request->GetHeaderMap(ReqestHeaderMap);
+    request_copy->SetHeaderMap(ReqestHeaderMap);
+
+    request_copy->SetMethod(request->GetMethod());
+    request_copy->SetPostData(request->GetPostData());
+    request_copy->SetURL(request->GetURL());
+
+    urlrequest = CefURLRequest::Create(request_copy,Client,NULL);
+    //urlrequest = CefURLRequest::Create(request,Client,NULL);
     return true;
 }
 

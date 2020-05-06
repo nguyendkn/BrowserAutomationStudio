@@ -630,10 +630,15 @@ namespace BrowserAutomationStudioFramework
                 }
 
                 QString val = i.value();
-                val = val.replace(QRegExp("\\[\\[([^\\]]+)\\]\\]"),"module.parent.BAS_VARS[\"\\1\"]");
-                val = val.replace("console.log","module.parent.BAS_CONSOLE_LOG");
-                val = val.replace("BAS_API","module.parent.BAS_API");
-                val = val.replace("BAS_FUNCTION","module.parent.BAS_FUNCTION");
+                //Remove cache. This line is required in order to obtain correct module.parent value next time
+                QString prefix = QString("delete require.cache[__filename];\r\n") +
+                        QString("var BAS_VARS = module.parent.BAS_VARS;\r\n") +
+                        QString("var BAS_API = module.parent.BAS_API;\r\n") +
+                        QString("var BAS_FUNCTION = module.parent.BAS_FUNCTION;\r\n") +
+                        QString("var BAS_CONSOLE_LOG = module.parent.BAS_CONSOLE_LOG;\r\n");
+                val = prefix + val;
+                val = val.replace(QRegExp("\\[\\[([^\\]]+)\\]\\]"),"BAS_VARS[\"\\1\"]");
+                val = val.replace("console.log","BAS_CONSOLE_LOG");
 
                 file.write((val).toUtf8());
                 file.close();

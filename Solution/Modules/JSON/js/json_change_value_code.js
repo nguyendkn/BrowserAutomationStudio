@@ -1,6 +1,5 @@
 try {
     <%= variable %> = JPath.change(<%= data %>, <%= path %>, <%= value %>);
-}
-catch (e) {
+} catch (e) {
     fail(e);
 }

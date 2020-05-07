@@ -11,7 +11,7 @@
 		"ru": "JSON"
 	},
 	"major_version": 2,
-	"minor_version": 3,
+	"minor_version": 4,
 	"developer_name": "Oyasumi Punpun",
 	"developer_email": "likangt2012@gmail.com",
 	"developer_site": "https://github.com/CheshireCaat",
@@ -233,8 +233,8 @@
 		"Typical examples of using this function are working with the API of a website or, more often in the context of BAS, working with Cookies. In BAS, cookies are presented to the user in JSON format strings. This often causes difficulties. But with JSONPath, you can easily get the data you need.": {
 			"ru": "Типичные примеры применения данной функции - это работа с API какого-либо веб-сайта или, что бывает чаще в контексте BAS, работа с Cookies. В BAS куки представлены для пользователя в формате JSON строки. Это зачастую вызывает трудности. Но с помощью JSONPath, вы с лёгкостью сможете достать нужные данные."
 		},
-		"See full documentation and examples <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/BAS.Modules/jpath-documentation-en.html'); return false;\"><span class=\"tr\">here.</span></a>": {
-			"ru": "Смотрите полную документацию и примеры <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/BAS.Modules/jpath-documentation-ru.html'); return false;\"><span class=\"tr\">здесь.</span></a>"
+		"See full documentation and examples <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/bas-docs/json-path/json-path-en.html'); return false;\"><span class=\"tr\">here.</span></a>": {
+			"ru": "Смотрите полную документацию и примеры <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/bas-docs/json-path/json-path-ru.html'); return false;\"><span class=\"tr\">здесь.</span></a>"
 		},
 		"Use action <span style=\"color:black\">Check if string matches JSON</span> to make sure that string conversion is possible or just use <span style=\"color:black\">Ignore Errors</span> to handle possible errors.": {
 			"ru": "Используйте действие <span style=\"color:black\">Подходит ли строка под парсинг JSON</span>, чтобы проверить, что преобразование из строки возможно. Или просто используйте <span style=\"color:black\">Игнорировать ошибки</span>, чтобы обработать возможные исключения."

@@ -96,7 +96,7 @@
     <div class="tr tooltip-paragraph-fold">Typical examples of using this function are working with the API of a website or, more often in the context of BAS, working with Cookies. In BAS, cookies are presented to the user in JSON format strings. This often causes difficulties. But with JSONPath, you can easily get the data you need.</div>
     <div class="tr tooltip-paragraph-fold">Consider an example. Suppose we got a line of the form <span style="color:black">{"Kate":{"rating":5,"count":6},"John":{"rating":1,"count":2}}</span> from a particular site. We want to get the names of people whose rating is greater than or equal to 1. This can easily be done using a query like <span style="color:black">$.[?(@.rate &gt;= 1)]</span>. Thus, as a result, we get a first name satisfying our request.</div>
     <div class="tr tooltip-paragraph-fold">Please note, if you use this action - the output will be always a single value, but the action <span style="color:black">Get all keys</span> will return all elements as list.</div>
-    <div class="tr tooltip-paragraph-last-fold">See full documentation and examples <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/BAS.Modules/jpath-documentation-en.html'); return false;"><span class="tr">here.</span></a></div>
+    <div class="tr tooltip-paragraph-last-fold">See full documentation and examples <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/bas-docs/json-path/json-path-en.html'); return false;"><span class="tr">here.</span></a></div>
 </div>
 
 <%= _.template($('#back').html())({ action : "executeandadd", visible : true }) %>

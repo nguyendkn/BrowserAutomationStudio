@@ -45,7 +45,7 @@
     <div class="tr tooltip-paragraph-fold">For example, changing format of the string <span style="color:black">{"name":"John"}</span> will return object that contains one property - <span style="color:black">name</span> with value <span style="color:black">John</span></div>
     <div class="tr tooltip-paragraph-fold">In a similar way, we can do the inverse transformation, i.e. make a JSON format string from the object. For example, we have an object with two parameters. One of them is an array of three numbers, the other is a simple string. Let it be student performance data for the subject. After converting, we can get a JSON string of the form like <span style="color:black">{"name":"John","grades":[5,5,4]}</span>.</div>
     <div class="tr tooltip-paragraph-fold">Remember that this function is required for a simple conversion. You can use other actions with both the object and the string. It is recommended that you use the <span style="color:black">Get value</span> or <span style="color:black">Get all values</span> ​​actions if you want to get specific information about an object or JSON string.</div>
-    <div class="tr tooltip-paragraph-last-fold">See full documentation and examples <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/BAS.Modules/jpath-documentation-en.html'); return false;"><span class="tr">here.</span></a></div>
+    <div class="tr tooltip-paragraph-last-fold">See full documentation and examples <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://cheshirecaat.github.io/bas-docs/json-path/json-path-en.html'); return false;"><span class="tr">here.</span></a></div>
 </div>
 
 <%= _.template($('#back').html())({ action: "executeandadd", visible: true }) %>

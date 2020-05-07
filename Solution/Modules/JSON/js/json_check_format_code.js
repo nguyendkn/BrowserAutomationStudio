@@ -1,6 +1,5 @@
 try {
     <%= variable %> = JPath.checkFormat(<%= data %>);
-}
-catch (e) {
+} catch (e) {
     fail(e);
 }

@@ -1,6 +1,5 @@
 try {
     <%= variable %> = JPath.remove(<%= data %>, <%= path %>);
-}
-catch (e) {
+} catch (e) {
     fail(e);
 }

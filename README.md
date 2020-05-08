@@ -4,6 +4,8 @@ This repository contains public BAS source code.
 
 In order to commit, you have to create new branch and then make [merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html) in this repository. Branch name and merge request description must be informative. Description like ```changes``` not allowed.
 
+If you don't have write access permission, please [create fork](https://docs.gitlab.com/ee/user/project/repository/forking_workflow.html) and make a merge request.
+
 **How to build?**
 
 Information about building and running located in [BASBuild](https://gitlab.com/bablosoft/basbuild) repository.

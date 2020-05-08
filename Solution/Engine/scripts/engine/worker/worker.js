@@ -636,9 +636,22 @@ function save_cookies(callback)
 
 function restore_cookies(cookies, callback)
 {
-    _ARG = arguments
+    _ARG_RESTORE_COOKIES = arguments
     _create_browser_if_needed(function(){
-        Browser.RestoreCookies(_ARG[0], _get_function_body(_ARG[1]));
+        //Load about:blank if browser is not yet created
+        _popupinfo(function(){
+            var json = JSON.parse(_result())
+            _if_else(json["urls"].length == 0, function(){
+                load("about:blank",function(){
+                    log("load finished")
+                    Browser.RestoreCookies(_ARG_RESTORE_COOKIES[0], _get_function_body(_ARG_RESTORE_COOKIES[1]));
+                    delete _ARG_RESTORE_COOKIES
+                })
+            }, function(){
+                Browser.RestoreCookies(_ARG_RESTORE_COOKIES[0], _get_function_body(_ARG_RESTORE_COOKIES[1]));
+                delete _ARG_RESTORE_COOKIES
+            })
+        })
     })
 }
 

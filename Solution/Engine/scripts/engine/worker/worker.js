@@ -643,13 +643,14 @@ function restore_cookies(cookies, callback)
             var json = JSON.parse(_result())
             _if_else(json["urls"].length == 0, function(){
                 load("about:blank",function(){
-                    log("load finished")
                     Browser.RestoreCookies(_ARG_RESTORE_COOKIES[0], _get_function_body(_ARG_RESTORE_COOKIES[1]));
                     delete _ARG_RESTORE_COOKIES
                 })
             }, function(){
                 Browser.RestoreCookies(_ARG_RESTORE_COOKIES[0], _get_function_body(_ARG_RESTORE_COOKIES[1]));
                 delete _ARG_RESTORE_COOKIES
+            }, function(){
+
             })
         })
     })

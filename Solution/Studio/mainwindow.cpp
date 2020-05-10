@@ -2730,7 +2730,11 @@ void MainWindow::ChangeScriptLanguage()
 
 MainWindow::~MainWindow()
 {
-    delete _HttpSniffer;
+    if(_HttpSniffer)
+    {
+        delete _HttpSniffer;
+        _HttpSniffer = 0;
+    }
     delete ui;
 }
 

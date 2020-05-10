@@ -114,7 +114,7 @@ protected:
     QString ConnectionLogin;
     QString ConnectionPassword;
     bool IsDatabaseDirty;
-    HttpSniffer *_HttpSniffer;
+    HttpSniffer *_HttpSniffer = 0;
 
     QList<IRecordProcessCommunication::ResourceDescription> LastResourceList;
 

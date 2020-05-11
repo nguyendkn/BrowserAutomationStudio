@@ -43,6 +43,15 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			fail(e.message)
 		}
 	}
+	
+	//Check fingerprint is valid
+    if(FINGERPRINT_JSON["valid"] == false)
+	{
+		var error = "Unknown error"
+		if(FINGERPRINT_JSON["message"])
+			error = FINGERPRINT_JSON["message"]
+		fail("Fingerprint error: \""+ error + "\"") 
+	}
 
 	//Save fingerprint to profile
 	if(_get_profile().length > 0)
@@ -142,14 +151,6 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 		_settings(Settings)!
 	})!
-
-	if(FINGERPRINT_JSON["valid"] == false)
-	{
-		var error = "Unknown error"
-		if(FINGERPRINT_JSON["message"])
-			error = FINGERPRINT_JSON["message"]
-		fail("Fingerprint error: \""+ error + "\"") 
-	}
 
 	//Accept language pattern
 	_if(FINGERPRINT_JSON["lang"], function(){

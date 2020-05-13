@@ -25,7 +25,7 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="196"/>
-        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="170"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -65,42 +65,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="162"/>
+        <location filename="../mainwindow.cpp" line="167"/>
         <source>Stop instant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="162"/>
+        <location filename="../mainwindow.cpp" line="167"/>
         <source>Wait each thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="165"/>
+        <location filename="../mainwindow.cpp" line="170"/>
         <source>Stop type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1592"/>
+        <location filename="../mainwindow.cpp" line="1598"/>
         <source>All log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1593"/>
+        <location filename="../mainwindow.cpp" line="1599"/>
         <source>Clear log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1405"/>
+        <location filename="../mainwindow.cpp" line="1410"/>
         <source>Application is still running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1405"/>
+        <location filename="../mainwindow.cpp" line="1410"/>
         <source>Use exit menu item to shut it down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1555"/>
+        <location filename="../mainwindow.cpp" line="1561"/>
         <source>Captcha (%1)</source>
         <translation type="unfinished"></translation>
     </message>

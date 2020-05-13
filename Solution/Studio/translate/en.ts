@@ -746,37 +746,37 @@ Saves space if user will use several scripts.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="526"/>
+        <location filename="../mainwindow.ui" line="527"/>
         <source>toolBar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="574"/>
+        <location filename="../mainwindow.ui" line="575"/>
         <source>Data</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="711"/>
+        <location filename="../mainwindow.ui" line="712"/>
         <source> + Create New Resource</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="767"/>
+        <location filename="../mainwindow.ui" line="768"/>
         <source>Script</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="820"/>
+        <location filename="../mainwindow.ui" line="821"/>
         <source>Log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="866"/>
+        <location filename="../mainwindow.ui" line="867"/>
         <source>Result</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1086"/>
+        <location filename="../mainwindow.ui" line="1087"/>
         <source>Record</source>
         <translation></translation>
     </message>
@@ -786,67 +786,67 @@ Saves space if user will use several scripts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="507"/>
+        <location filename="../mainwindow.ui" line="508"/>
         <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="671"/>
+        <location filename="../mainwindow.ui" line="672"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/engine/images/question.png&quot;/&gt; Add all data, which script will use: files, text controls, database connection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="897"/>
+        <location filename="../mainwindow.ui" line="898"/>
         <source>New</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="900"/>
+        <location filename="../mainwindow.ui" line="901"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="909"/>
+        <location filename="../mainwindow.ui" line="910"/>
         <source>Open</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="912"/>
+        <location filename="../mainwindow.ui" line="913"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="921"/>
+        <location filename="../mainwindow.ui" line="922"/>
         <source>Save</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="924"/>
+        <location filename="../mainwindow.ui" line="925"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="929"/>
+        <location filename="../mainwindow.ui" line="930"/>
         <source>Exit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="932"/>
+        <location filename="../mainwindow.ui" line="933"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="941"/>
+        <location filename="../mainwindow.ui" line="942"/>
         <source>Compile</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="944"/>
+        <location filename="../mainwindow.ui" line="945"/>
         <source>Ctrl+F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="953"/>
+        <location filename="../mainwindow.ui" line="954"/>
         <source>Run</source>
         <translation></translation>
     </message>
@@ -876,263 +876,270 @@ Saves space if user will use several scripts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="797"/>
+        <location filename="../mainwindow.ui" line="798"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/studio/images/question.png&quot;/&gt; This panel contains script code. In most casses changing script can be performed through &quot;Record&quot; mode. Click on &lt;a href=&apos;open://script&apos; style=&apos;color:white&apos;&gt;Show script&lt;/a&gt; if you want to see it anyway.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="956"/>
+        <location filename="../mainwindow.ui" line="957"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="965"/>
-        <location filename="../mainwindow.cpp" line="1130"/>
+        <location filename="../mainwindow.ui" line="966"/>
+        <location filename="../mainwindow.cpp" line="1159"/>
         <source>Stop</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="974"/>
+        <location filename="../mainwindow.ui" line="975"/>
         <source>Save As</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="979"/>
+        <location filename="../mainwindow.ui" line="980"/>
         <source>test</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="988"/>
+        <location filename="../mainwindow.ui" line="989"/>
         <source>About Engine</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="993"/>
+        <location filename="../mainwindow.ui" line="994"/>
         <source>About Qt</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1002"/>
+        <location filename="../mainwindow.ui" line="1003"/>
         <source>Documentation</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1011"/>
+        <location filename="../mainwindow.ui" line="1012"/>
         <source>Localization</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1020"/>
+        <location filename="../mainwindow.ui" line="1021"/>
         <source>Interface Language</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1029"/>
+        <location filename="../mainwindow.ui" line="1030"/>
         <source>Script Report</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1050"/>
-        <location filename="../mainwindow.ui" line="1053"/>
+        <location filename="../mainwindow.ui" line="1051"/>
+        <location filename="../mainwindow.ui" line="1054"/>
         <source>Resources Report</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1058"/>
+        <location filename="../mainwindow.ui" line="1059"/>
         <source>Show</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1067"/>
-        <location filename="../mainwindow.cpp" line="2813"/>
+        <location filename="../mainwindow.ui" line="1068"/>
+        <location filename="../mainwindow.cpp" line="2853"/>
         <source>Show Database</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1072"/>
+        <location filename="../mainwindow.ui" line="1073"/>
         <source>Edit Schema</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1077"/>
+        <location filename="../mainwindow.ui" line="1078"/>
         <source>Delete Schema</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1095"/>
+        <location filename="../mainwindow.ui" line="1096"/>
         <source>Module Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1104"/>
+        <location filename="../mainwindow.ui" line="1105"/>
         <source>Regular Expression Constructor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1113"/>
+        <location filename="../mainwindow.ui" line="1114"/>
         <source>Fingerprint Switcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1118"/>
-        <location filename="../mainwindow.ui" line="1121"/>
+        <location filename="../mainwindow.ui" line="1119"/>
+        <location filename="../mainwindow.ui" line="1122"/>
         <source>Restore Original</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1130"/>
+        <location filename="../mainwindow.ui" line="1131"/>
         <source>Measure action execution time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1135"/>
+        <location filename="../mainwindow.ui" line="1136"/>
         <source>HTTP Sniffer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1144"/>
+        <location filename="../mainwindow.ui" line="1145"/>
         <source>Open From Url</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1153"/>
+        <location filename="../mainwindow.ui" line="1154"/>
         <source>GoogleDrive Upload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1162"/>
-        <location filename="../mainwindow.cpp" line="433"/>
+        <location filename="../mainwindow.ui" line="1163"/>
+        <location filename="../mainwindow.cpp" line="439"/>
+        <location filename="../mainwindow.cpp" line="452"/>
         <source>Scheduler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1038"/>
+        <location filename="../mainwindow.ui" line="1172"/>
+        <source>Debug Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1039"/>
         <source>Log Location Chooser</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2757"/>
-        <location filename="../mainwindow.cpp" line="2782"/>
+        <location filename="../mainwindow.cpp" line="2797"/>
+        <location filename="../mainwindow.cpp" line="2822"/>
         <source>All log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="847"/>
-        <location filename="../mainwindow.cpp" line="1263"/>
+        <location filename="../mainwindow.cpp" line="880"/>
+        <location filename="../mainwindow.cpp" line="1293"/>
         <source>Error saving file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="427"/>
+        <location filename="../mainwindow.cpp" line="433"/>
+        <location filename="../mainwindow.cpp" line="446"/>
         <source>Scheduler ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="467"/>
+        <location filename="../mainwindow.cpp" line="486"/>
         <source>premium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="469"/>
+        <location filename="../mainwindow.cpp" line="488"/>
         <source>free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="473"/>
+        <location filename="../mainwindow.cpp" line="492"/>
         <source>&lt;span style=&apos;color:gray&apos;&gt;You are using BrowserAutomationStudio version &lt;span style=&apos;color:white&apos;&gt;%1&lt;/span&gt; (&lt;span style=&apos;color:white&apos;&gt;%2&lt;/span&gt;).&lt;br&gt;Installation dir : &lt;span style=&apos;color:white&apos;&gt;%3&lt;/span&gt;.&lt;br&gt;This panel contains information about script execution, use &apos;Log&apos; action to write data here.&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="847"/>
-        <location filename="../mainwindow.cpp" line="1263"/>
+        <location filename="../mainwindow.cpp" line="880"/>
+        <location filename="../mainwindow.cpp" line="1293"/>
         <source>Error saving file : %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="888"/>
+        <location filename="../mainwindow.cpp" line="921"/>
         <source>Application is still running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="888"/>
+        <location filename="../mainwindow.cpp" line="921"/>
         <source>Use exit menu item to shut it down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="941"/>
+        <location filename="../mainwindow.cpp" line="974"/>
         <source>Open Project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="941"/>
-        <location filename="../mainwindow.cpp" line="1274"/>
-        <location filename="../mainwindow.cpp" line="1293"/>
+        <location filename="../mainwindow.cpp" line="974"/>
+        <location filename="../mainwindow.cpp" line="1304"/>
+        <location filename="../mainwindow.cpp" line="1323"/>
         <source>Project Files (*.xml);;All Files (*.*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="986"/>
+        <location filename="../mainwindow.cpp" line="1019"/>
         <source>Error loading file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="986"/>
+        <location filename="../mainwindow.cpp" line="1019"/>
         <source>Error loading file : %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1127"/>
+        <location filename="../mainwindow.cpp" line="1156"/>
         <source>Stop instant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1127"/>
+        <location filename="../mainwindow.cpp" line="1156"/>
         <source>Wait each thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1130"/>
+        <location filename="../mainwindow.cpp" line="1159"/>
         <source>Stop type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1274"/>
+        <location filename="../mainwindow.cpp" line="1304"/>
         <source>Save Project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1293"/>
+        <location filename="../mainwindow.cpp" line="1323"/>
         <source>Create Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1466"/>
+        <location filename="../mainwindow.cpp" line="1496"/>
         <source>Captcha (%1)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1517"/>
+        <location filename="../mainwindow.cpp" line="1547"/>
         <source>Running project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1633"/>
+        <location filename="../mainwindow.cpp" line="1664"/>
         <source>Project recorder has started. It should be visible in a second. Try to search in task bar if you don&apos;t see it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1788"/>
+        <location filename="../mainwindow.cpp" line="1819"/>
         <source>Multilogin log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2758"/>
-        <location filename="../mainwindow.cpp" line="2783"/>
+        <location filename="../mainwindow.cpp" line="2798"/>
+        <location filename="../mainwindow.cpp" line="2823"/>
         <source>Clear log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2815"/>
+        <location filename="../mainwindow.cpp" line="2855"/>
         <source> (Need Restart)</source>
         <translation type="unfinished"></translation>
     </message>

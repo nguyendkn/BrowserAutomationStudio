@@ -501,6 +501,7 @@
     <addaction name="actionRegexp_Constructor"/>
     <addaction name="actionScheduler"/>
     <addaction name="actionFingerprint_Switcher"/>
+    <addaction name="actionDebug_Version"/>
    </widget>
    <widget class="QMenu" name="menuInterface">
     <property name="title">
@@ -1160,6 +1161,15 @@
    </property>
    <property name="text">
     <string>Scheduler</string>
+   </property>
+  </action>
+  <action name="actionDebug_Version">
+   <property name="icon">
+    <iconset resource="studio.qrc">
+     <normaloff>:/studio/images/bug.png</normaloff>:/studio/images/bug.png</iconset>
+   </property>
+   <property name="text">
+    <string>Debug Version</string>
    </property>
   </action>
  </widget>

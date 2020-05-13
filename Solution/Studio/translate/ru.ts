@@ -828,32 +828,32 @@ Saves space if user will use several scripts.</source>
         <translation>Отчеты</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="526"/>
+        <location filename="../mainwindow.ui" line="527"/>
         <source>toolBar</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="574"/>
+        <location filename="../mainwindow.ui" line="575"/>
         <source>Data</source>
         <translation>Ресурсы</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="711"/>
+        <location filename="../mainwindow.ui" line="712"/>
         <source> + Create New Resource</source>
         <translation> + Создать новый ресурс</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="767"/>
+        <location filename="../mainwindow.ui" line="768"/>
         <source>Script</source>
         <translation>Скрипт</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="820"/>
+        <location filename="../mainwindow.ui" line="821"/>
         <source>Log</source>
         <translation>Лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="866"/>
+        <location filename="../mainwindow.ui" line="867"/>
         <source>Result</source>
         <translation>Результаты</translation>
     </message>
@@ -866,7 +866,7 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/studio/images/question.png&quot;/&gt; Нажмите запись, чтобы создать или редактировать приложение.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1086"/>
+        <location filename="../mainwindow.ui" line="1087"/>
         <source>Record</source>
         <translation>Запись</translation>
     </message>
@@ -880,67 +880,67 @@ Saves space if user will use several scripts.</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="507"/>
+        <location filename="../mainwindow.ui" line="508"/>
         <source>Interface</source>
         <translation>Интерфейс</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="671"/>
+        <location filename="../mainwindow.ui" line="672"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/engine/images/question.png&quot;/&gt; Add all data, which script will use: files, text controls, database connection.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/engine/images/question.png&quot;/&gt; Добавьте все данные, которые будeт использовать скрипт: файлы, текстовые поля, подключение к базе данных.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="897"/>
+        <location filename="../mainwindow.ui" line="898"/>
         <source>New</source>
         <translation>Новый</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="900"/>
+        <location filename="../mainwindow.ui" line="901"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="909"/>
+        <location filename="../mainwindow.ui" line="910"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="912"/>
+        <location filename="../mainwindow.ui" line="913"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="921"/>
+        <location filename="../mainwindow.ui" line="922"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="924"/>
+        <location filename="../mainwindow.ui" line="925"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="929"/>
+        <location filename="../mainwindow.ui" line="930"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="932"/>
+        <location filename="../mainwindow.ui" line="933"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="941"/>
+        <location filename="../mainwindow.ui" line="942"/>
         <source>Compile</source>
         <translation>Скомпилировать</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="944"/>
+        <location filename="../mainwindow.ui" line="945"/>
         <source>Ctrl+F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="953"/>
+        <location filename="../mainwindow.ui" line="954"/>
         <source>Run</source>
         <translation>Запуск</translation>
     </message>
@@ -970,141 +970,147 @@ Saves space if user will use several scripts.</source>
         <translation>Начинаю запись ...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="797"/>
+        <location filename="../mainwindow.ui" line="798"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/studio/images/question.png&quot;/&gt; This panel contains script code. In most casses changing script can be performed through &quot;Record&quot; mode. Click on &lt;a href=&apos;open://script&apos; style=&apos;color:white&apos;&gt;Show script&lt;/a&gt; if you want to see it anyway.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/studio/images/question.png&quot;/&gt; Эта панель содержит код скрипта. В большинстве случаев изменять скрипт можно через режим &quot;Запись&quot;. Нажмите на &lt;a href=&apos;open://script&apos; style=&apos;color:white&apos;&gt;Показать скрипт&lt;/a&gt; если вы все же хотите увидеть его.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="956"/>
+        <location filename="../mainwindow.ui" line="957"/>
         <source>F5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="965"/>
-        <location filename="../mainwindow.cpp" line="1130"/>
+        <location filename="../mainwindow.ui" line="966"/>
+        <location filename="../mainwindow.cpp" line="1159"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="974"/>
+        <location filename="../mainwindow.ui" line="975"/>
         <source>Save As</source>
         <translation>Сохранить как</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="979"/>
+        <location filename="../mainwindow.ui" line="980"/>
         <source>test</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="988"/>
+        <location filename="../mainwindow.ui" line="989"/>
         <source>About Engine</source>
         <translation>О движке</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="993"/>
+        <location filename="../mainwindow.ui" line="994"/>
         <source>About Qt</source>
         <translation>О Qt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1002"/>
+        <location filename="../mainwindow.ui" line="1003"/>
         <source>Documentation</source>
         <translation>Документация</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1011"/>
+        <location filename="../mainwindow.ui" line="1012"/>
         <source>Localization</source>
         <translation>Локализация</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1020"/>
+        <location filename="../mainwindow.ui" line="1021"/>
         <source>Interface Language</source>
         <translation>Язык интерфейса</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1029"/>
+        <location filename="../mainwindow.ui" line="1030"/>
         <source>Script Report</source>
         <translation>Отчет о работе</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1050"/>
-        <location filename="../mainwindow.ui" line="1053"/>
+        <location filename="../mainwindow.ui" line="1051"/>
+        <location filename="../mainwindow.ui" line="1054"/>
         <source>Resources Report</source>
         <translation>Отчет о ресурсах</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1058"/>
+        <location filename="../mainwindow.ui" line="1059"/>
         <source>Show</source>
         <translation>Показать</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1067"/>
-        <location filename="../mainwindow.cpp" line="2813"/>
+        <location filename="../mainwindow.ui" line="1068"/>
+        <location filename="../mainwindow.cpp" line="2853"/>
         <source>Show Database</source>
         <translation>База</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1072"/>
+        <location filename="../mainwindow.ui" line="1073"/>
         <source>Edit Schema</source>
         <translation>Редактировать структуру базы</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1077"/>
+        <location filename="../mainwindow.ui" line="1078"/>
         <source>Delete Schema</source>
         <translation>Удалить базу</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1095"/>
+        <location filename="../mainwindow.ui" line="1096"/>
         <source>Module Manager</source>
         <translation>Менеджер Модулей</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1104"/>
+        <location filename="../mainwindow.ui" line="1105"/>
         <source>Regular Expression Constructor</source>
         <translation>Конструктор Регулярных Выражений</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1113"/>
+        <location filename="../mainwindow.ui" line="1114"/>
         <source>Fingerprint Switcher</source>
         <translation>Смена отпечатка</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1118"/>
-        <location filename="../mainwindow.ui" line="1121"/>
+        <location filename="../mainwindow.ui" line="1119"/>
+        <location filename="../mainwindow.ui" line="1122"/>
         <source>Restore Original</source>
         <translation>Вернуть в исходное состояние</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1130"/>
+        <location filename="../mainwindow.ui" line="1131"/>
         <source>Measure action execution time</source>
         <translation>Измерять время выполнения действий</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1135"/>
+        <location filename="../mainwindow.ui" line="1136"/>
         <source>HTTP Sniffer</source>
         <translation>HTTP Анализ трафика</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1144"/>
+        <location filename="../mainwindow.ui" line="1145"/>
         <source>Open From Url</source>
         <translation>Открыть из url</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1153"/>
+        <location filename="../mainwindow.ui" line="1154"/>
         <source>GoogleDrive Upload</source>
         <translation type="unfinished">Загрузить на Google диск</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1162"/>
-        <location filename="../mainwindow.cpp" line="433"/>
+        <location filename="../mainwindow.ui" line="1163"/>
+        <location filename="../mainwindow.cpp" line="439"/>
+        <location filename="../mainwindow.cpp" line="452"/>
         <source>Scheduler</source>
         <translation>Планировщик</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1172"/>
+        <source>Debug Version</source>
+        <translation type="unfinished">Отладочная версия</translation>
     </message>
     <message>
         <source>Show Report</source>
         <translation type="vanished">Отчет</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1038"/>
+        <location filename="../mainwindow.ui" line="1039"/>
         <source>Log Location Chooser</source>
         <translation>Папка с логами</translation>
     </message>
@@ -1113,14 +1119,14 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Весь лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2757"/>
-        <location filename="../mainwindow.cpp" line="2782"/>
+        <location filename="../mainwindow.cpp" line="2797"/>
+        <location filename="../mainwindow.cpp" line="2822"/>
         <source>All log</source>
         <translation>Весь лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="847"/>
-        <location filename="../mainwindow.cpp" line="1263"/>
+        <location filename="../mainwindow.cpp" line="880"/>
+        <location filename="../mainwindow.cpp" line="1293"/>
         <source>Error saving file</source>
         <translation>Ошибка сохранения файла</translation>
     </message>
@@ -1137,23 +1143,23 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Нужно перезапустить приложение</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="467"/>
+        <location filename="../mainwindow.cpp" line="486"/>
         <source>premium</source>
         <translation>премиум версия</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="469"/>
+        <location filename="../mainwindow.cpp" line="488"/>
         <source>free</source>
         <translation>бесплатная версия</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="473"/>
+        <location filename="../mainwindow.cpp" line="492"/>
         <source>&lt;span style=&apos;color:gray&apos;&gt;You are using BrowserAutomationStudio version &lt;span style=&apos;color:white&apos;&gt;%1&lt;/span&gt; (&lt;span style=&apos;color:white&apos;&gt;%2&lt;/span&gt;).&lt;br&gt;Installation dir : &lt;span style=&apos;color:white&apos;&gt;%3&lt;/span&gt;.&lt;br&gt;This panel contains information about script execution, use &apos;Log&apos; action to write data here.&lt;/span&gt;</source>
         <translation type="unfinished">&lt;span style=&apos;color:gray&apos;&gt;Вы используете BrowserAutomationStudio &lt;span style=&apos;color:white&apos;&gt;v %1&lt;/span&gt; (&lt;span style=&apos;color:white&apos;&gt;%2&lt;/span&gt;).&lt;br&gt;Каталог установки : &lt;span style=&apos;color:white&apos;&gt;%3&lt;/span&gt;.&lt;br&gt;Эта панель содержит информацию о выполнении скрипта, чтобы добавить данные сюда используйте действие &apos;Лог&apos;.&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="847"/>
-        <location filename="../mainwindow.cpp" line="1263"/>
+        <location filename="../mainwindow.cpp" line="880"/>
+        <location filename="../mainwindow.cpp" line="1293"/>
         <source>Error saving file : %1</source>
         <translation>Ошибка сохранения файла : %1</translation>
     </message>
@@ -1166,85 +1172,86 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Проект изменен. Нужно загрузить его на сервер.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="427"/>
+        <location filename="../mainwindow.cpp" line="433"/>
+        <location filename="../mainwindow.cpp" line="446"/>
         <source>Scheduler ...</source>
         <translation type="unfinished">Планировщик ...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="888"/>
+        <location filename="../mainwindow.cpp" line="921"/>
         <source>Application is still running</source>
         <translation>Приложение еще работает</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="888"/>
+        <location filename="../mainwindow.cpp" line="921"/>
         <source>Use exit menu item to shut it down</source>
         <translation>Используйте кнопку выход, чтобы закрыть его</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="941"/>
+        <location filename="../mainwindow.cpp" line="974"/>
         <source>Open Project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="941"/>
-        <location filename="../mainwindow.cpp" line="1274"/>
-        <location filename="../mainwindow.cpp" line="1293"/>
+        <location filename="../mainwindow.cpp" line="974"/>
+        <location filename="../mainwindow.cpp" line="1304"/>
+        <location filename="../mainwindow.cpp" line="1323"/>
         <source>Project Files (*.xml);;All Files (*.*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="986"/>
+        <location filename="../mainwindow.cpp" line="1019"/>
         <source>Error loading file</source>
         <translation>Ошибка загрузки файла</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="986"/>
+        <location filename="../mainwindow.cpp" line="1019"/>
         <source>Error loading file : %1</source>
         <translation>Ошибка загрузки файла : %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1127"/>
+        <location filename="../mainwindow.cpp" line="1156"/>
         <source>Stop instant</source>
         <translation>Остановить мгновенно</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1127"/>
+        <location filename="../mainwindow.cpp" line="1156"/>
         <source>Wait each thread</source>
         <translation>Ждать каждый поток</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1130"/>
+        <location filename="../mainwindow.cpp" line="1159"/>
         <source>Stop type</source>
         <translation>Тип остановки</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1274"/>
+        <location filename="../mainwindow.cpp" line="1304"/>
         <source>Save Project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1517"/>
+        <location filename="../mainwindow.cpp" line="1547"/>
         <source>Running project ...</source>
         <translation>Проект выполняется ...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1633"/>
+        <location filename="../mainwindow.cpp" line="1664"/>
         <source>Project recorder has started. It should be visible in a second. Try to search in task bar if you don&apos;t see it.</source>
         <translation>Запись проекта началась. Интерфейс должен появится через секунду. Попробуйте посмотреть в панели задач, если этого не произойдет.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1788"/>
+        <location filename="../mainwindow.cpp" line="1819"/>
         <source>Multilogin log</source>
         <translation type="unfinished">Лог Multilogin</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2758"/>
-        <location filename="../mainwindow.cpp" line="2783"/>
+        <location filename="../mainwindow.cpp" line="2798"/>
+        <location filename="../mainwindow.cpp" line="2823"/>
         <source>Clear log</source>
         <translation type="unfinished">Очистить лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2815"/>
+        <location filename="../mainwindow.cpp" line="2855"/>
         <source> (Need Restart)</source>
         <translation> (Нужен Перезапуск)</translation>
     </message>
@@ -1253,7 +1260,7 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Вы хотите сохранить предыдущий проект?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1293"/>
+        <location filename="../mainwindow.cpp" line="1323"/>
         <source>Create Project</source>
         <translation>Создать проект</translation>
     </message>
@@ -1274,7 +1281,7 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Отмена</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1466"/>
+        <location filename="../mainwindow.cpp" line="1496"/>
         <source>Captcha (%1)</source>
         <translation>Капча (%1)</translation>
     </message>

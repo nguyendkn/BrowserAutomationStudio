@@ -248,6 +248,7 @@ private slots:
     void SaveActual(const QString& filename);
     void LoadActual(const QString& filename);
     void Documentation();
+    void ShowDebugVersion();
     void Localization();
     void ChangeScriptLanguage();
     void ChangeInterfaceLanguage();

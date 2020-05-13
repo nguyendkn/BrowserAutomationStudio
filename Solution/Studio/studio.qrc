@@ -29,6 +29,7 @@
         <file>images/LogoMedium.png</file>
         <file>images/download.png</file>
         <file>images/drive.png</file>
+        <file>images/bug.png</file>
     </qresource>
     <qresource prefix="/">
         <file>images/greenball.png</file>

@@ -340,6 +340,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(Close()));
     connect(ui->actionOpenUrl,SIGNAL(triggered()),this,SLOT(OpenUrl()));
+    connect(ui->actionDebug_Version,SIGNAL(triggered()),this,SLOT(ShowDebugVersion()));
     connect(ui->actionUploadToGoogleDrive,SIGNAL(triggered()),this,SLOT(UploadToGoogleDrive()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),this,SLOT(ClearState()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),this,SLOT(RestoreState()));
@@ -698,6 +699,16 @@ void MainWindow::OpenDefault()
         SetDefaultText();
     }
 
+}
+
+void MainWindow::ShowDebugVersion()
+{
+    QString Id;
+    if(LanguageInterface != "en")
+    {
+        Id = LanguageInterface + QString(":");
+    }
+    QDesktopServices::openUrl(QUrl(QString("https://wiki.bablosoft.com/doku.php?id=") + Id + QString("debug_version")));
 }
 
 void MainWindow::Documentation()

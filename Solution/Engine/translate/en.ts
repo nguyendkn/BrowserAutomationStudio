@@ -256,17 +256,17 @@
 <context>
     <name>BrowserAutomationStudioFramework::DesignResourceWidget</name>
     <message>
-        <location filename="../designresourcewidget.cpp" line="198"/>
+        <location filename="../designresourcewidget.cpp" line="213"/>
         <source>Are you sure, that you want to delete resource?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../designresourcewidget.cpp" line="664"/>
+        <location filename="../designresourcewidget.cpp" line="679"/>
         <source>Hide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../designresourcewidget.cpp" line="670"/>
+        <location filename="../designresourcewidget.cpp" line="685"/>
         <source>Show more</source>
         <translation type="unfinished"></translation>
     </message>
@@ -361,74 +361,74 @@
 <context>
     <name>BrowserAutomationStudioFramework::ModuleCreator</name>
     <message>
-        <location filename="../modulecreator.cpp" line="185"/>
+        <location filename="../modulecreator.cpp" line="201"/>
         <source>File %1 doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="201"/>
+        <location filename="../modulecreator.cpp" line="217"/>
         <source>Failed to remove temp directory </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="205"/>
-        <location filename="../modulecreator.cpp" line="212"/>
+        <location filename="../modulecreator.cpp" line="221"/>
+        <location filename="../modulecreator.cpp" line="228"/>
         <source>Failed to create temp directory </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="219"/>
+        <location filename="../modulecreator.cpp" line="235"/>
         <source>Failed to extract module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="226"/>
+        <location filename="../modulecreator.cpp" line="242"/>
         <source>Can&apos;t find folder containing module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="235"/>
+        <location filename="../modulecreator.cpp" line="251"/>
         <source>Can&apos;t find manifest.json file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="251"/>
+        <location filename="../modulecreator.cpp" line="267"/>
         <source>Failed to parse manifest.json</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="256"/>
+        <location filename="../modulecreator.cpp" line="272"/>
         <source>manifest.json file has wrong format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="263"/>
+        <location filename="../modulecreator.cpp" line="279"/>
         <source>manifest.json doesn&apos;t contain name property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="268"/>
+        <location filename="../modulecreator.cpp" line="284"/>
         <source>manifest.json doesn&apos;t contain major_version property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="273"/>
+        <location filename="../modulecreator.cpp" line="289"/>
         <source>manifest.json doesn&apos;t contain minor_version property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="281"/>
+        <location filename="../modulecreator.cpp" line="297"/>
         <source>Can&apos;t read manifest.json file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="298"/>
-        <location filename="../modulecreator.cpp" line="333"/>
+        <location filename="../modulecreator.cpp" line="314"/>
+        <location filename="../modulecreator.cpp" line="349"/>
         <source>Module already exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="328"/>
+        <location filename="../modulecreator.cpp" line="344"/>
         <source>Module &apos;%1&apos; already installed.
 
 Current version is %2.
@@ -437,17 +437,17 @@ Do you want to override it with version %3?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="366"/>
+        <location filename="../modulecreator.cpp" line="382"/>
         <source>Failed copy module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="607"/>
+        <location filename="../modulecreator.cpp" line="634"/>
         <source>Can&apos;t install module while script is running.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="621"/>
+        <location filename="../modulecreator.cpp" line="648"/>
         <source>Failed to install module.
 
 %1             
@@ -455,7 +455,7 @@ Do you want to override it with version %3?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="752"/>
+        <location filename="../modulecreator.cpp" line="779"/>
         <source>Result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -647,52 +647,52 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::QtResourceController</name>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="442"/>
+        <location filename="../qtresourcecontroller.cpp" line="463"/>
         <source>Looking for customizable user interface for your scripts?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="445"/>
+        <location filename="../qtresourcecontroller.cpp" line="466"/>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="446"/>
+        <location filename="../qtresourcecontroller.cpp" line="467"/>
         <source>interface constructor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="447"/>
+        <location filename="../qtresourcecontroller.cpp" line="468"/>
         <source>need premium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="450"/>
+        <location filename="../qtresourcecontroller.cpp" line="471"/>
         <source>See free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="451"/>
+        <location filename="../qtresourcecontroller.cpp" line="472"/>
         <source>demo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="452"/>
+        <location filename="../qtresourcecontroller.cpp" line="473"/>
         <source>to test how it works</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="455"/>
+        <location filename="../qtresourcecontroller.cpp" line="476"/>
         <source>And final result as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="456"/>
+        <location filename="../qtresourcecontroller.cpp" line="477"/>
         <source>generated interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qtresourcecontroller.cpp" line="459"/>
+        <location filename="../qtresourcecontroller.cpp" line="480"/>
         <source>This is how user interface will look like:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -792,66 +792,66 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::ScriptMultiWorker</name>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="553"/>
+        <location filename="../scriptmultiworker.cpp" line="577"/>
         <source>Script finished with error :</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="579"/>
+        <location filename="../scriptmultiworker.cpp" line="603"/>
         <source> during execution of action </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="581"/>
+        <location filename="../scriptmultiworker.cpp" line="605"/>
         <source>[%1] Script finished with error : </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="625"/>
-        <location filename="../scriptmultiworker.cpp" line="1030"/>
-        <location filename="../scriptmultiworker.cpp" line="1031"/>
+        <location filename="../scriptmultiworker.cpp" line="649"/>
+        <location filename="../scriptmultiworker.cpp" line="1073"/>
+        <location filename="../scriptmultiworker.cpp" line="1074"/>
         <source>Ended with message: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="641"/>
-        <location filename="../scriptmultiworker.cpp" line="654"/>
+        <location filename="../scriptmultiworker.cpp" line="665"/>
+        <location filename="../scriptmultiworker.cpp" line="678"/>
         <source>Aborted By User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="670"/>
+        <location filename="../scriptmultiworker.cpp" line="694"/>
         <source>[%1] Script finished correctly</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="762"/>
+        <location filename="../scriptmultiworker.cpp" line="786"/>
         <source>Script started with %1 threads and will finish after %2 success execution or %3 fail execution or when resource will finish.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="763"/>
+        <location filename="../scriptmultiworker.cpp" line="787"/>
         <source>You can change these params in record mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="783"/>
+        <location filename="../scriptmultiworker.cpp" line="807"/>
         <source>Success</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="817"/>
+        <location filename="../scriptmultiworker.cpp" line="841"/>
         <source>Stage Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="1020"/>
+        <location filename="../scriptmultiworker.cpp" line="1063"/>
         <source>Too Much Fails</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="1428"/>
-        <location filename="../scriptmultiworker.cpp" line="1429"/>
+        <location filename="../scriptmultiworker.cpp" line="1694"/>
+        <location filename="../scriptmultiworker.cpp" line="1695"/>
         <source>All data have been processed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -859,187 +859,187 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::ScriptWorker</name>
     <message>
-        <location filename="../scriptworker.cpp" line="579"/>
+        <location filename="../scriptworker.cpp" line="590"/>
         <source>Aborted By User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="804"/>
+        <location filename="../scriptworker.cpp" line="815"/>
         <source> during execution of action </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="831"/>
-        <location filename="../scriptworker.cpp" line="972"/>
+        <location filename="../scriptworker.cpp" line="849"/>
+        <location filename="../scriptworker.cpp" line="990"/>
         <source>Fail number exceed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="838"/>
-        <location filename="../scriptworker.cpp" line="1073"/>
+        <location filename="../scriptworker.cpp" line="856"/>
+        <location filename="../scriptworker.cpp" line="1091"/>
         <source>Success number exceed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1133"/>
+        <location filename="../scriptworker.cpp" line="1151"/>
         <source>Failed because process is stopped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1499"/>
+        <location filename="../scriptworker.cpp" line="1535"/>
         <source>Waiting for resource %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1530"/>
+        <location filename="../scriptworker.cpp" line="1566"/>
         <source>All data have been processed for </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1549"/>
+        <location filename="../scriptworker.cpp" line="1585"/>
         <source>Thread suspended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1556"/>
-        <location filename="../scriptworker.cpp" line="1557"/>
+        <location filename="../scriptworker.cpp" line="1592"/>
+        <location filename="../scriptworker.cpp" line="1593"/>
         <source>Thread ended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1558"/>
+        <location filename="../scriptworker.cpp" line="1594"/>
         <source>Thread succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1560"/>
+        <location filename="../scriptworker.cpp" line="1596"/>
         <source> with message &quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1623"/>
-        <location filename="../scriptworker.cpp" line="1634"/>
+        <location filename="../scriptworker.cpp" line="1659"/>
+        <location filename="../scriptworker.cpp" line="1670"/>
         <source>Thread #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1663"/>
-        <location filename="../scriptworker.cpp" line="1781"/>
-        <location filename="../scriptworker.cpp" line="1811"/>
+        <location filename="../scriptworker.cpp" line="1699"/>
+        <location filename="../scriptworker.cpp" line="1817"/>
+        <location filename="../scriptworker.cpp" line="1847"/>
         <source>CAPTCHA_FAIL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1663"/>
-        <location filename="../scriptworker.cpp" line="1781"/>
+        <location filename="../scriptworker.cpp" line="1699"/>
+        <location filename="../scriptworker.cpp" line="1817"/>
         <source>Failed to get solver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1824"/>
+        <location filename="../scriptworker.cpp" line="1860"/>
         <source>Captcha wait timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1837"/>
+        <location filename="../scriptworker.cpp" line="1873"/>
         <source>Async function is called in sync mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1845"/>
-        <location filename="../scriptworker.cpp" line="1909"/>
+        <location filename="../scriptworker.cpp" line="1881"/>
+        <location filename="../scriptworker.cpp" line="1945"/>
         <source>Failed to run function </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1864"/>
+        <location filename="../scriptworker.cpp" line="1900"/>
         <source>Sync function is called in async mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1874"/>
+        <location filename="../scriptworker.cpp" line="1910"/>
         <source>Failed to execute module function </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1934"/>
+        <location filename="../scriptworker.cpp" line="1970"/>
         <source>Failed to get mail number with Pop3CLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1942"/>
+        <location filename="../scriptworker.cpp" line="1978"/>
         <source>Failed to get message with Pop3CLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2005"/>
+        <location filename="../scriptworker.cpp" line="2041"/>
         <source>Failed to get mail number with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2013"/>
+        <location filename="../scriptworker.cpp" line="2049"/>
         <source>Failed to search mail with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2021"/>
+        <location filename="../scriptworker.cpp" line="2057"/>
         <source>Failed to custom search mail with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2029"/>
+        <location filename="../scriptworker.cpp" line="2065"/>
         <source>Failed to fetch mail with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2037"/>
+        <location filename="../scriptworker.cpp" line="2073"/>
         <source>Failed to execute custom query with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2100"/>
-        <location filename="../scriptworker.cpp" line="2282"/>
-        <location filename="../scriptworker.cpp" line="2290"/>
-        <location filename="../scriptworker.cpp" line="2299"/>
-        <location filename="../scriptworker.cpp" line="2328"/>
+        <location filename="../scriptworker.cpp" line="2136"/>
+        <location filename="../scriptworker.cpp" line="2318"/>
+        <location filename="../scriptworker.cpp" line="2326"/>
+        <location filename="../scriptworker.cpp" line="2335"/>
+        <location filename="../scriptworker.cpp" line="2364"/>
         <source>Failed to get page </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2100"/>
-        <location filename="../scriptworker.cpp" line="2179"/>
-        <location filename="../scriptworker.cpp" line="2231"/>
-        <location filename="../scriptworker.cpp" line="2282"/>
-        <location filename="../scriptworker.cpp" line="2290"/>
-        <location filename="../scriptworker.cpp" line="2299"/>
-        <location filename="../scriptworker.cpp" line="2328"/>
-        <location filename="../scriptworker.cpp" line="2357"/>
+        <location filename="../scriptworker.cpp" line="2136"/>
+        <location filename="../scriptworker.cpp" line="2215"/>
+        <location filename="../scriptworker.cpp" line="2267"/>
+        <location filename="../scriptworker.cpp" line="2318"/>
+        <location filename="../scriptworker.cpp" line="2326"/>
+        <location filename="../scriptworker.cpp" line="2335"/>
+        <location filename="../scriptworker.cpp" line="2364"/>
+        <location filename="../scriptworker.cpp" line="2393"/>
         <source> with HttpClient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2135"/>
+        <location filename="../scriptworker.cpp" line="2171"/>
         <source>Failed to resolve domain </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2179"/>
-        <location filename="../scriptworker.cpp" line="2231"/>
+        <location filename="../scriptworker.cpp" line="2215"/>
+        <location filename="../scriptworker.cpp" line="2267"/>
         <source>Failed to post page </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2357"/>
+        <location filename="../scriptworker.cpp" line="2393"/>
         <source>Failed to download page </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3357"/>
+        <location filename="../scriptworker.cpp" line="3512"/>
         <source>Embedded language execution timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3364"/>
+        <location filename="../scriptworker.cpp" line="3519"/>
         <source>Embedded call already running</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1054,42 +1054,44 @@ Do you want to override it with version %3?
         <location filename="../subprocessbrowser.cpp" line="114"/>
         <location filename="../subprocessbrowser.cpp" line="127"/>
         <location filename="../subprocessbrowser.cpp" line="140"/>
-        <location filename="../subprocessbrowser.cpp" line="156"/>
-        <location filename="../subprocessbrowser.cpp" line="169"/>
-        <location filename="../subprocessbrowser.cpp" line="182"/>
-        <location filename="../subprocessbrowser.cpp" line="195"/>
-        <location filename="../subprocessbrowser.cpp" line="208"/>
-        <location filename="../subprocessbrowser.cpp" line="221"/>
-        <location filename="../subprocessbrowser.cpp" line="234"/>
-        <location filename="../subprocessbrowser.cpp" line="249"/>
-        <location filename="../subprocessbrowser.cpp" line="269"/>
-        <location filename="../subprocessbrowser.cpp" line="285"/>
+        <location filename="../subprocessbrowser.cpp" line="157"/>
+        <location filename="../subprocessbrowser.cpp" line="170"/>
+        <location filename="../subprocessbrowser.cpp" line="186"/>
+        <location filename="../subprocessbrowser.cpp" line="199"/>
+        <location filename="../subprocessbrowser.cpp" line="212"/>
+        <location filename="../subprocessbrowser.cpp" line="225"/>
+        <location filename="../subprocessbrowser.cpp" line="238"/>
+        <location filename="../subprocessbrowser.cpp" line="251"/>
+        <location filename="../subprocessbrowser.cpp" line="264"/>
+        <location filename="../subprocessbrowser.cpp" line="279"/>
         <location filename="../subprocessbrowser.cpp" line="299"/>
-        <location filename="../subprocessbrowser.cpp" line="312"/>
-        <location filename="../subprocessbrowser.cpp" line="410"/>
-        <location filename="../subprocessbrowser.cpp" line="436"/>
-        <location filename="../subprocessbrowser.cpp" line="449"/>
-        <location filename="../subprocessbrowser.cpp" line="463"/>
-        <location filename="../subprocessbrowser.cpp" line="477"/>
-        <location filename="../subprocessbrowser.cpp" line="494"/>
+        <location filename="../subprocessbrowser.cpp" line="315"/>
+        <location filename="../subprocessbrowser.cpp" line="329"/>
+        <location filename="../subprocessbrowser.cpp" line="342"/>
+        <location filename="../subprocessbrowser.cpp" line="440"/>
+        <location filename="../subprocessbrowser.cpp" line="466"/>
+        <location filename="../subprocessbrowser.cpp" line="479"/>
+        <location filename="../subprocessbrowser.cpp" line="493"/>
         <location filename="../subprocessbrowser.cpp" line="507"/>
-        <location filename="../subprocessbrowser.cpp" line="521"/>
-        <location filename="../subprocessbrowser.cpp" line="534"/>
-        <location filename="../subprocessbrowser.cpp" line="547"/>
-        <location filename="../subprocessbrowser.cpp" line="560"/>
-        <location filename="../subprocessbrowser.cpp" line="572"/>
-        <location filename="../subprocessbrowser.cpp" line="598"/>
-        <location filename="../subprocessbrowser.cpp" line="611"/>
-        <location filename="../subprocessbrowser.cpp" line="624"/>
-        <location filename="../subprocessbrowser.cpp" line="637"/>
-        <location filename="../subprocessbrowser.cpp" line="650"/>
-        <location filename="../subprocessbrowser.cpp" line="663"/>
-        <location filename="../subprocessbrowser.cpp" line="676"/>
-        <location filename="../subprocessbrowser.cpp" line="696"/>
-        <location filename="../subprocessbrowser.cpp" line="709"/>
-        <location filename="../subprocessbrowser.cpp" line="721"/>
-        <location filename="../subprocessbrowser.cpp" line="737"/>
-        <location filename="../subprocessbrowser.cpp" line="1399"/>
+        <location filename="../subprocessbrowser.cpp" line="524"/>
+        <location filename="../subprocessbrowser.cpp" line="537"/>
+        <location filename="../subprocessbrowser.cpp" line="551"/>
+        <location filename="../subprocessbrowser.cpp" line="564"/>
+        <location filename="../subprocessbrowser.cpp" line="577"/>
+        <location filename="../subprocessbrowser.cpp" line="590"/>
+        <location filename="../subprocessbrowser.cpp" line="602"/>
+        <location filename="../subprocessbrowser.cpp" line="628"/>
+        <location filename="../subprocessbrowser.cpp" line="641"/>
+        <location filename="../subprocessbrowser.cpp" line="654"/>
+        <location filename="../subprocessbrowser.cpp" line="667"/>
+        <location filename="../subprocessbrowser.cpp" line="680"/>
+        <location filename="../subprocessbrowser.cpp" line="693"/>
+        <location filename="../subprocessbrowser.cpp" line="706"/>
+        <location filename="../subprocessbrowser.cpp" line="726"/>
+        <location filename="../subprocessbrowser.cpp" line="739"/>
+        <location filename="../subprocessbrowser.cpp" line="751"/>
+        <location filename="../subprocessbrowser.cpp" line="767"/>
+        <location filename="../subprocessbrowser.cpp" line="1437"/>
         <source>Timeout during </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1097,34 +1099,35 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::SubprocessNetworkAccessManager</name>
     <message>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="143"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="158"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="173"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="185"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="213"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="225"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="236"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="247"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="258"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="269"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="280"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="291"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="302"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="313"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="324"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="335"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="347"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="359"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="371"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="384"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="396"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="409"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="422"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="434"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="446"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="458"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="470"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="482"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="148"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="163"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="178"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="190"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="218"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="230"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="241"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="252"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="263"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="274"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="285"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="296"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="307"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="318"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="329"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="340"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="352"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="364"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="376"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="389"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="401"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="414"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="427"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="439"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="451"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="463"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="475"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="487"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="499"/>
         <source>Timeout during </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1183,17 +1186,17 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::WebInterfaceApi</name>
     <message>
-        <location filename="../webinterfaceapi.cpp" line="821"/>
+        <location filename="../webinterfaceapi.cpp" line="894"/>
         <source>Open Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webinterfaceapi.cpp" line="824"/>
+        <location filename="../webinterfaceapi.cpp" line="897"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../webinterfaceapi.cpp" line="890"/>
+        <location filename="../webinterfaceapi.cpp" line="963"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1201,7 +1204,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::XmlResourceController</name>
     <message>
-        <location filename="../xmlresourcecontroller.cpp" line="704"/>
+        <location filename="../xmlresourcecontroller.cpp" line="713"/>
         <source>This file doesn&apos;t look like BAS project.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1265,330 +1268,330 @@ Do you want to override it with version %3?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="286"/>
-        <location filename="../chooserresourcewidget.cpp" line="299"/>
-        <location filename="../chooserresourcewidget.cpp" line="312"/>
+        <location filename="../chooserresourcewidget.cpp" line="280"/>
+        <location filename="../chooserresourcewidget.cpp" line="292"/>
+        <location filename="../chooserresourcewidget.cpp" line="304"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="965"/>
+        <location filename="../chooserresourcewidget.cpp" line="957"/>
         <source>Minimum Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="977"/>
+        <location filename="../chooserresourcewidget.cpp" line="969"/>
         <source>Maximum Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="326"/>
+        <location filename="../chooserresourcewidget.cpp" line="318"/>
         <source>Filenames or directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="470"/>
+        <location filename="../chooserresourcewidget.cpp" line="462"/>
         <source>Urls separated by | symbol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="594"/>
+        <location filename="../chooserresourcewidget.cpp" line="586"/>
         <source>Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="668"/>
+        <location filename="../chooserresourcewidget.cpp" line="660"/>
         <source>Wildcard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="43"/>
+        <location filename="../chooserresourcewidget.cpp" line="39"/>
         <source>---</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="336"/>
+        <location filename="../chooserresourcewidget.cpp" line="328"/>
         <source>If lines in file will be erased after max success usage or max fail usage.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="337"/>
+        <location filename="../chooserresourcewidget.cpp" line="329"/>
         <source>Write file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="347"/>
-        <location filename="../chooserresourcewidget.cpp" line="480"/>
+        <location filename="../chooserresourcewidget.cpp" line="339"/>
+        <location filename="../chooserresourcewidget.cpp" line="472"/>
         <source>If lines will be mixed after load. This options selected will result data in random order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="348"/>
-        <location filename="../chooserresourcewidget.cpp" line="481"/>
+        <location filename="../chooserresourcewidget.cpp" line="340"/>
+        <location filename="../chooserresourcewidget.cpp" line="473"/>
         <source>Mix lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="358"/>
-        <location filename="../chooserresourcewidget.cpp" line="491"/>
+        <location filename="../chooserresourcewidget.cpp" line="350"/>
+        <location filename="../chooserresourcewidget.cpp" line="483"/>
         <source>Max success usage, after which line will be removed. Success definition depends on your script purpose. For example, if you register accounts and define proxy, this integer will designate maximum registration from one proxy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="359"/>
-        <location filename="../chooserresourcewidget.cpp" line="492"/>
-        <location filename="../chooserresourcewidget.cpp" line="627"/>
-        <location filename="../chooserresourcewidget.cpp" line="761"/>
+        <location filename="../chooserresourcewidget.cpp" line="351"/>
+        <location filename="../chooserresourcewidget.cpp" line="484"/>
+        <location filename="../chooserresourcewidget.cpp" line="619"/>
+        <location filename="../chooserresourcewidget.cpp" line="753"/>
         <source>Max success usage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="369"/>
+        <location filename="../chooserresourcewidget.cpp" line="361"/>
         <source>Max fail usage, after which line will be removed. Fail is often page load timeout or wait timeout. If you set this property low - resource will be banned quickly, otherwise engine will try a lot of time before give up with each file line.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="370"/>
-        <location filename="../chooserresourcewidget.cpp" line="503"/>
-        <location filename="../chooserresourcewidget.cpp" line="638"/>
-        <location filename="../chooserresourcewidget.cpp" line="772"/>
+        <location filename="../chooserresourcewidget.cpp" line="362"/>
+        <location filename="../chooserresourcewidget.cpp" line="495"/>
+        <location filename="../chooserresourcewidget.cpp" line="630"/>
+        <location filename="../chooserresourcewidget.cpp" line="764"/>
         <source>Max fail usage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="380"/>
-        <location filename="../chooserresourcewidget.cpp" line="513"/>
+        <location filename="../chooserresourcewidget.cpp" line="372"/>
+        <location filename="../chooserresourcewidget.cpp" line="505"/>
         <source>How many times one line could be used by different threads. For example is you set it to 5 and the resource is proxy - one proxy could be used with up to 5 threads simultaneously. If you set it too high - proxy could be banned by server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="381"/>
-        <location filename="../chooserresourcewidget.cpp" line="514"/>
-        <location filename="../chooserresourcewidget.cpp" line="649"/>
-        <location filename="../chooserresourcewidget.cpp" line="783"/>
+        <location filename="../chooserresourcewidget.cpp" line="373"/>
+        <location filename="../chooserresourcewidget.cpp" line="506"/>
+        <location filename="../chooserresourcewidget.cpp" line="641"/>
+        <location filename="../chooserresourcewidget.cpp" line="775"/>
         <source>Max number of simultaneous use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="391"/>
-        <location filename="../chooserresourcewidget.cpp" line="524"/>
+        <location filename="../chooserresourcewidget.cpp" line="383"/>
+        <location filename="../chooserresourcewidget.cpp" line="516"/>
         <source>Interval between usage. How much time needed to wait to use line repeatedly. For example, if you register accounts and define proxy this integer will designate maximum interval between usage of each proxy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="392"/>
-        <location filename="../chooserresourcewidget.cpp" line="525"/>
-        <location filename="../chooserresourcewidget.cpp" line="660"/>
-        <location filename="../chooserresourcewidget.cpp" line="794"/>
+        <location filename="../chooserresourcewidget.cpp" line="384"/>
+        <location filename="../chooserresourcewidget.cpp" line="517"/>
+        <location filename="../chooserresourcewidget.cpp" line="652"/>
+        <location filename="../chooserresourcewidget.cpp" line="786"/>
         <source>Interval between usage(millisecond)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="402"/>
+        <location filename="../chooserresourcewidget.cpp" line="394"/>
         <source>If file needs to be reloaded periodically in certain periods of time. For example, you can point external application to grab names and write result to file. Engine will reload this file and data with new names. This is expensive option, use it only if you sure, that file content will change.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="403"/>
-        <location filename="../chooserresourcewidget.cpp" line="536"/>
-        <location filename="../chooserresourcewidget.cpp" line="679"/>
-        <location filename="../chooserresourcewidget.cpp" line="816"/>
+        <location filename="../chooserresourcewidget.cpp" line="395"/>
+        <location filename="../chooserresourcewidget.cpp" line="528"/>
+        <location filename="../chooserresourcewidget.cpp" line="671"/>
+        <location filename="../chooserresourcewidget.cpp" line="808"/>
         <source>Reload periodically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="426"/>
-        <location filename="../chooserresourcewidget.cpp" line="559"/>
+        <location filename="../chooserresourcewidget.cpp" line="418"/>
+        <location filename="../chooserresourcewidget.cpp" line="551"/>
         <source>If data needs to be renewed in certain periods of time. In this case all information about usage of lines will be cleared periodically and data could be used again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="427"/>
-        <location filename="../chooserresourcewidget.cpp" line="560"/>
-        <location filename="../chooserresourcewidget.cpp" line="703"/>
-        <location filename="../chooserresourcewidget.cpp" line="840"/>
+        <location filename="../chooserresourcewidget.cpp" line="419"/>
+        <location filename="../chooserresourcewidget.cpp" line="552"/>
+        <location filename="../chooserresourcewidget.cpp" line="695"/>
+        <location filename="../chooserresourcewidget.cpp" line="832"/>
         <source>Renew periodically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="446"/>
-        <location filename="../chooserresourcewidget.cpp" line="579"/>
-        <location filename="../chooserresourcewidget.cpp" line="723"/>
-        <location filename="../chooserresourcewidget.cpp" line="804"/>
+        <location filename="../chooserresourcewidget.cpp" line="438"/>
+        <location filename="../chooserresourcewidget.cpp" line="571"/>
+        <location filename="../chooserresourcewidget.cpp" line="715"/>
+        <location filename="../chooserresourcewidget.cpp" line="796"/>
         <source>If this option is set, engine will try to use same lines again and again. Otherwise, new line will be used on every resource request.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="447"/>
-        <location filename="../chooserresourcewidget.cpp" line="580"/>
-        <location filename="../chooserresourcewidget.cpp" line="724"/>
-        <location filename="../chooserresourcewidget.cpp" line="805"/>
+        <location filename="../chooserresourcewidget.cpp" line="439"/>
+        <location filename="../chooserresourcewidget.cpp" line="572"/>
+        <location filename="../chooserresourcewidget.cpp" line="716"/>
+        <location filename="../chooserresourcewidget.cpp" line="797"/>
         <source>Greedy algorithm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="455"/>
+        <location filename="../chooserresourcewidget.cpp" line="447"/>
         <source>If engine will read from file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="456"/>
+        <location filename="../chooserresourcewidget.cpp" line="448"/>
         <source>Read file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="502"/>
+        <location filename="../chooserresourcewidget.cpp" line="494"/>
         <source>Max fail usage, after which line will be removed. Fail is often page load timeout or wait timeout. If you set this property low - resource will be banned quickly, otherwise engine will try a lot of time before give up with each line.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="535"/>
+        <location filename="../chooserresourcewidget.cpp" line="527"/>
         <source>If url needs to be reloaded periodically in certain periods of time. For example, you can load proxies from url and this option enable, engine will reload fresh proxies. This is expensive option, use it only if you sure, that url content will change.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="604"/>
+        <location filename="../chooserresourcewidget.cpp" line="596"/>
         <source>If files will be deleted after max success usage or max fail usage.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="605"/>
+        <location filename="../chooserresourcewidget.cpp" line="597"/>
         <source>Delete files after use</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="615"/>
+        <location filename="../chooserresourcewidget.cpp" line="607"/>
         <source>If files will be mixed after load. This options selected will result data in random order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="616"/>
+        <location filename="../chooserresourcewidget.cpp" line="608"/>
         <source>Mix files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="626"/>
+        <location filename="../chooserresourcewidget.cpp" line="618"/>
         <source>Max success usage, after which file will be removed. Success definition depends on your script purpose. For example, if you register accounts and define picture, this integer will designate maximum times one picture could be in different accounts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="637"/>
+        <location filename="../chooserresourcewidget.cpp" line="629"/>
         <source>Max fail usage, after which line will be removed. Fail is often page load timeout or wait timeout. If you set this property low - resource will be banned quickly, otherwise engine will try a lot of time before give up with each file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="648"/>
+        <location filename="../chooserresourcewidget.cpp" line="640"/>
         <source>How many times one file could be used by different threads.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="659"/>
+        <location filename="../chooserresourcewidget.cpp" line="651"/>
         <source>Interval between usage. How much time needed to wait to use file repeatedly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="678"/>
+        <location filename="../chooserresourcewidget.cpp" line="670"/>
         <source>If folder content needs to be reloaded periodically in certain periods of time. This is expensive option, use it only if you sure, that folder content will change.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="702"/>
+        <location filename="../chooserresourcewidget.cpp" line="694"/>
         <source>If data needs to be renewed in certain periods of time. In this case all information about usage of files will be cleared periodically and files could be used again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="738"/>
+        <location filename="../chooserresourcewidget.cpp" line="730"/>
         <source>If rows will be deleted after max success usage or max fail usage.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="739"/>
+        <location filename="../chooserresourcewidget.cpp" line="731"/>
         <source>Change table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="749"/>
+        <location filename="../chooserresourcewidget.cpp" line="741"/>
         <source>If rows will be mixed after load. This options selected will result data in random order.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="750"/>
+        <location filename="../chooserresourcewidget.cpp" line="742"/>
         <source>Mix rows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="760"/>
+        <location filename="../chooserresourcewidget.cpp" line="752"/>
         <source>Max success usage, after which row will be removed. Success definition depends on your script purpose.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="771"/>
+        <location filename="../chooserresourcewidget.cpp" line="763"/>
         <source>Max row usage, after which line will be removed. Fail is often page load timeout or wait timeout. If you set this property low - resource will be banned quickly, otherwise engine will try a lot of time before give up with each row.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="782"/>
+        <location filename="../chooserresourcewidget.cpp" line="774"/>
         <source>How many times one row could be used by different threads.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="793"/>
+        <location filename="../chooserresourcewidget.cpp" line="785"/>
         <source>Interval between usage. How much time needed to wait to use row repeatedly.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="815"/>
+        <location filename="../chooserresourcewidget.cpp" line="807"/>
         <source>If rows need to be reloaded periodically in certain periods of time. This is expensive option, use it only if you sure, that table content will change.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="839"/>
+        <location filename="../chooserresourcewidget.cpp" line="831"/>
         <source>If data needs to be renewed in certain periods of time. In this case all information about usage of files will be cleared periodically and rows could be used again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2044"/>
+        <location filename="../chooserresourcewidget.cpp" line="2036"/>
         <source>No groups selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2065"/>
+        <location filename="../chooserresourcewidget.cpp" line="2057"/>
         <source>Field is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2104"/>
+        <location filename="../chooserresourcewidget.cpp" line="2096"/>
         <source>File not exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2141"/>
+        <location filename="../chooserresourcewidget.cpp" line="2133"/>
         <source>Url not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2170"/>
+        <location filename="../chooserresourcewidget.cpp" line="2162"/>
         <source>Directory not exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2264"/>
+        <location filename="../chooserresourcewidget.cpp" line="2256"/>
         <source>Open File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2264"/>
-        <location filename="../chooserresourcewidget.cpp" line="2271"/>
+        <location filename="../chooserresourcewidget.cpp" line="2256"/>
+        <location filename="../chooserresourcewidget.cpp" line="2263"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2271"/>
+        <location filename="../chooserresourcewidget.cpp" line="2263"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../chooserresourcewidget.cpp" line="2282"/>
+        <location filename="../chooserresourcewidget.cpp" line="2274"/>
         <source>Open Directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3813,22 +3816,22 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../resourcewizard.cpp" line="43"/>
+        <location filename="../resourcewizard.cpp" line="45"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../resourcewizard.cpp" line="44"/>
+        <location filename="../resourcewizard.cpp" line="46"/>
         <source> Next &gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../resourcewizard.cpp" line="45"/>
+        <location filename="../resourcewizard.cpp" line="47"/>
         <source>&lt; Back </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../resourcewizard.cpp" line="74"/>
+        <location filename="../resourcewizard.cpp" line="76"/>
         <source>Are you sure, all changes will be lost?</source>
         <translation type="unfinished"></translation>
     </message>

@@ -1,10 +1,10 @@
 var q = (<%= tags %>).split(",").map(function(el){return el.trim()})
 if(q.length == 0 || q.length == 1 && q[0] == "*")
 {
-    q = ((<%= key %>).length > 0) ? ("?version=2&key=" + encodeURIComponent(<%= key %>)) : "?version=2"
+    q = ((<%= key %>).length > 0) ? ("?version=3&key=" + encodeURIComponent(<%= key %>)) : "?version=3"
 }else
 {
-    q = "?version=2&tags=" + encodeURIComponent(q.join(",")) + (((<%= key %>).length > 0) ? ("&key=" + encodeURIComponent(<%= key %>)) : "")
+    q = "?version=3&tags=" + encodeURIComponent(q.join(",")) + (((<%= key %>).length > 0) ? ("&key=" + encodeURIComponent(<%= key %>)) : "")
 }
 
 if(<%= min_browser_version %> != "*")

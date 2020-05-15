@@ -198,6 +198,12 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		FINGEPRINT_SETTINGS["Fingerprints.NativeCodeBefore"] = base64_encode(split[0])
 	}
 
+	if(FINGERPRINT_JSON["plugins"] && FINGERPRINT_JSON["mimes"])
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.Plugins"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["plugins"]))
+		FINGEPRINT_SETTINGS["Fingerprints.Mimes"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["mimes"]))
+	}
+
 	_if(FINGERPRINT_JSON["attr"], function(){
 		var Keys = Object.keys(FINGERPRINT_JSON["attr"])
 		for(var i = 0;i<Keys.length;i++)

@@ -1659,6 +1659,14 @@ void MainApp::AfterReadyToCreateBrowser(bool Reload)
 
     {
         CefRefPtr<CefValue> Value = CefValue::Create();
+        Value->SetInt(1);
+        CefString Error;
+        Context->SetPreference("profile.default_content_setting_values.plugins",Value,Error);
+        WORKER_LOG(std::string("Error enable flash<<") + Error.ToString());
+    }
+
+    {
+        CefRefPtr<CefValue> Value = CefValue::Create();
         CefRefPtr<CefDictionaryValue> Dictionary = CefDictionaryValue::Create();
 
         WORKER_LOG("System Proxy");

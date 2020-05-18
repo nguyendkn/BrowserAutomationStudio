@@ -16,6 +16,7 @@ void PcapDNSListenServer::NewConnection()
         return;
 
     connect(Connection,SIGNAL(readyRead()),this,SLOT(ReadyRead()));
+    connect(Connection,SIGNAL(disconnected()),Connection,SLOT(deleteLater()));
 
 }
 

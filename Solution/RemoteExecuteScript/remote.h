@@ -16,6 +16,8 @@ class Remote : public QObject
     QStringList Arguments;
     DownloadingWidget *UI;
 
+    int KeepVersionNumber = 100;
+
     //Errors
     bool IsValid;
     QString ErrorMessage;

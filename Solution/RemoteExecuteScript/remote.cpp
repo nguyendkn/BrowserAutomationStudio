@@ -64,6 +64,8 @@ void Remote::DetectSettings()
     QSettings Settings("data/remote_settings.ini",QSettings::IniFormat);
     IsEnginesInAppData = Settings.value("IsEnginesInAppData",false).toBool();
     qDebug()<<"IsEnginesInAppData"<<IsEnginesInAppData;
+    KeepVersionNumber = Settings.value("KeepVersionNumber",100).toInt();
+    qDebug()<<"KeepVersionNumber"<<KeepVersionNumber;
 
     IsRemote = Arguments.contains("--remote");
     Arguments.removeAll("--remote");
@@ -388,8 +390,8 @@ void Remote::ScriptPropertiesDetected(const QString& ScriptHash, const QString& 
                 UI->SetProgress(100);
 
             OldVersionRemover Remover;
-            Remover.Remove("enginesprotected");
-            Remover.Remove("engines");
+            Remover.Remove("enginesprotected",KeepVersionNumber);
+            Remover.Remove("engines",KeepVersionNumber);
 
             qDebug()<<"Run!";
 
@@ -713,8 +715,8 @@ void Remote::EnginePrepared()
         UI->SetProgress(100);
 
     OldVersionRemover Remover;
-    Remover.Remove("enginesprotected");
-    Remover.Remove("engines");
+    Remover.Remove("enginesprotected",KeepVersionNumber);
+    Remover.Remove("engines",KeepVersionNumber);
 
     qDebug()<<"Run!";
     Exit();

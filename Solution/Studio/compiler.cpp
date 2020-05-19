@@ -410,16 +410,19 @@ bool Compiler::Compile()
         FolderCompiled.rename(QFileInfo(ExeFilePath).fileName(),Name + QString(".exe"));
     }
 
-    if(IsEnginesInAppData)
+
+    QFile RemoteSettings(CompiledFolder + QString("/data/remote_settings.ini"));
+    if(RemoteSettings.open(QIODevice::WriteOnly))
     {
-        QFile RemoteSettings(CompiledFolder + QString("/data/remote_settings.ini"));
-        if(RemoteSettings.open(QIODevice::WriteOnly))
+        QTextStream stream(&RemoteSettings);
+        if(IsEnginesInAppData)
         {
-            QTextStream stream(&RemoteSettings);
             stream << "IsEnginesInAppData=true" << endl;
         }
-        RemoteSettings.close();
+        stream << "KeepVersionNumber=5" << endl;
     }
+    RemoteSettings.close();
+
 
     if(Type == NoProtection)
     {

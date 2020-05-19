@@ -10,12 +10,20 @@
 #include <QXmlStreamReader>
 #include <QDirIterator>
 #include <QStandardPaths>
+#include "oldversionremover.h"
 #include "JlCompress.h"
 
 Remote::Remote(QObject *parent) :
     QObject(parent)
 {
     Client = new HttpClient(this);
+    ClientForDownloader = new HttpClient(this);
+    Downloader = new ResumeDownloader(this);
+    Downloader->Init(ClientForDownloader);
+    connect(Downloader,SIGNAL(Finished()),this,SLOT(EngineDownloaded()));
+    connect(Downloader,SIGNAL(Log(QString)),this,SLOT(DownloadLog(QString)));
+    connect(Downloader,SIGNAL(DownloadProgress(qint64,qint64)),this,SLOT(DownloadProgress(qint64,qint64)));
+
     ForceFree = false;
     UI = 0;
 }
@@ -137,7 +145,7 @@ void Remote::DetectScriptProperties()
                     Exit();
                 }else
                 {
-                    UI->SetError("project.xml not fount");
+                    UI->SetError("project.xml not found");
                 }
                 return;
             }
@@ -379,6 +387,10 @@ void Remote::ScriptPropertiesDetected(const QString& ScriptHash, const QString& 
             if(UI)
                 UI->SetProgress(100);
 
+            OldVersionRemover Remover;
+            Remover.Remove("enginesprotected");
+            Remover.Remove("engines");
+
             qDebug()<<"Run!";
 
             Exit();
@@ -402,12 +414,11 @@ void Remote::ScriptPropertiesDetected(const QString& ScriptHash, const QString& 
         {
             if(UI)
                 UI->Show();
-            Client->Connect(this,SLOT(EngineDownloaded()));
-            connect(Client,SIGNAL(DownloadProgress(qint64,qint64)),this,SLOT(DownloadProgress(qint64,qint64)));
+
             QString Arch = (IsX64) ? "64" : "32";
             QString EngineUrl = Server + QString("distr/FastExecuteScript") + ProtectedAdd + Arch + QString("/") + EngineVersion + QString("/FastExecuteScript") + ProtectedAdd + QString(".x") + Arch + QString(".zip");
             qDebug()<<"Downloading"<<EngineUrl;
-            Client->Get(EngineUrl);
+            Downloader->Get(EngineUrl);
         }
     }
 }
@@ -418,16 +429,21 @@ void Remote::DownloadProgress(qint64 BytesReceived, qint64 BytesTotal)
         UI->SetProgress(10 + (80 * BytesReceived) / BytesTotal);
 }
 
+void Remote::DownloadLog(QString Text)
+{
+    qDebug()<<Text;
+}
+
 void Remote::EngineDownloaded()
 {
-    if(Client->WasError())
+    if(Downloader->WasError())
     {
         if(IsSilent)
         {
             Exit();
         }else
         {
-            UI->SetError(Client->GetErrorString().replace("bablosoft","server"));
+            UI->SetError(Downloader->GetErrorString().replace("bablosoft","server"));
         }
         return;
     }
@@ -454,7 +470,7 @@ void Remote::EngineDownloaded()
         return;
     }
 
-    file.write(Client->GetPageData());
+    file.write(Downloader->GetPageData());
     file.close();
 
     emit EnginePrepared();
@@ -695,6 +711,10 @@ void Remote::EnginePrepared()
 
     if(UI)
         UI->SetProgress(100);
+
+    OldVersionRemover Remover;
+    Remover.Remove("enginesprotected");
+    Remover.Remove("engines");
 
     qDebug()<<"Run!";
     Exit();

@@ -19,10 +19,13 @@ SOURCES += main.cpp\
     ihttpclient.cpp \
     ipostpreparestrategy.cpp \
     ipostpreparestrategyfactory.cpp \
+    oldversionremover.cpp \
     postpreparestrategymultipart.cpp \
     postpreparestrategyurlencode.cpp \
     networkcookiejar.cpp \
     downloadingwidget.cpp \
+    replytimeout.cpp \
+    resumedownloader.cpp \
     zip/JlCompress.cpp \
     zip/qioapi.cpp \
     zip/quaadler32.cpp \
@@ -44,11 +47,14 @@ HEADERS  += \
     ihttpclient.h \
     ipostpreparestrategy.h \
     ipostpreparestrategyfactory.h \
+    oldversionremover.h \
     postpreparestrategyfactory.h \
     postpreparestrategymultipart.h \
     postpreparestrategyurlencode.h \
     networkcookiejar.h \
     downloadingwidget.h \
+    replytimeout.h \
+    resumedownloader.h \
     zip/crypt.h \
     zip/ioapi.h \
     zip/JlCompress.h \

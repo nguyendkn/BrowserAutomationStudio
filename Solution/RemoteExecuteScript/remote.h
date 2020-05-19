@@ -4,12 +4,15 @@
 #include <QObject>
 #include <QTimer>
 #include "httpclient.h"
+#include "resumedownloader.h"
 #include "downloadingwidget.h"
 
 class Remote : public QObject
 {
     Q_OBJECT
     HttpClient *Client;
+    HttpClient *ClientForDownloader;
+    ResumeDownloader *Downloader;
     QStringList Arguments;
     DownloadingWidget *UI;
 
@@ -54,6 +57,7 @@ private slots:
     void ScriptPropertiesHttpClientResp();
     void ScriptPropertiesDetected(const QString& ScriptHash, const QString& EngineVersion);
     void DownloadProgress(qint64 BytesReceived, qint64 BytesTotal);
+    void DownloadLog(QString Text);
     void EngineDownloaded();
 
 };

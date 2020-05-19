@@ -9,6 +9,10 @@
 #include <QBuffer>
 #include "networkcookiejar.h"
 #include <QSslConfiguration>
+#include <QBasicTimer>
+#include <QTimerEvent>
+#include "replytimeout.h"
+
 
 
 HttpClient::HttpClient(QObject *parent) :
@@ -40,6 +44,12 @@ void HttpClient::Disconnect()
         request_holder = 0;
     }
 }
+
+void HttpClient::SetTimeout(int msec)
+{
+    RequestTimeout = msec;
+}
+
 
 void HttpClient::Stop()
 {
@@ -119,6 +129,10 @@ void HttpClient::Get(const QString &url)
 
 
     QNetworkReply *network_reply = network_manager->get(network_request);
+    if(RequestTimeout >= 0)
+    {
+        ReplyTimeout::set(network_reply, RequestTimeout);
+    }
     connect(network_reply,SIGNAL(downloadProgress(qint64,qint64)),this,SIGNAL(DownloadProgress(qint64,qint64)));
     request_holder = new QObject(network_manager);
     network_reply->setParent(request_holder);
@@ -336,6 +350,10 @@ void HttpClient::Post(const QString &url, const QHash<QString,ContentData> & par
 
 
     QNetworkReply * network_reply = network_manager->post(network_request,data);
+    if(RequestTimeout >= 0)
+    {
+        ReplyTimeout::set(network_reply, RequestTimeout);
+    }
 
     request_holder = new QObject(network_manager);
     network_reply->setParent(request_holder);

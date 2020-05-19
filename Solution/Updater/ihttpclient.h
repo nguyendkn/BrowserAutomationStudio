@@ -42,6 +42,7 @@ class IHttpClient : public QObject
         virtual void Connect(QObject *object, const char * slot) = 0;
         virtual void Disconnect() = 0;
         virtual void Stop() = 0;
+        virtual void SetTimeout(int msec) = 0;
 
         virtual QString GetHeader(const QString& header) = 0;
         virtual void AddHeader(const QString& name,const QString& value) = 0;

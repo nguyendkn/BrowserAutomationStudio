@@ -7,18 +7,21 @@
 #include <QJsonArray>
 #include <QSettings>
 #include "JlCompress.h"
+#include "oldversionremover.h"
 
 Updater::Updater(QObject *parent) :
     QObject(parent)
 {
     Client = new HttpClient(this);
+    ClientForDownloader = new HttpClient(this);
+    Downloader = new ResumeDownloader(this);
+    Downloader->Init(ClientForDownloader);
+    connect(Downloader,SIGNAL(Finished()),this,SLOT(DownloadFinished()));
+    connect(Downloader,SIGNAL(DownloadProgress(qint64,qint64)),this,SLOT(DownloadProgress(qint64,qint64)));
+
     CurrentVersion = GetLocalVersion();
     CanSkip = !CurrentVersion.isEmpty();
     Progress = 0;
-    Timer = new QTimer(this);
-    Timer->setInterval(60000);
-    Timer->setSingleShot(true);
-    connect(Timer,SIGNAL(timeout()),this,SLOT(Skip()));
 
 }
 
@@ -79,6 +82,9 @@ QString Updater::MaxVersion(const QStringList& Dirs)
 void Updater::Skip()
 {
     qDebug()<<"Arguments Output"<<Arguments;
+    OldVersionRemover Remover;
+    Remover.Remove("apps");
+
     QProcess::startDetached(QString("apps/") + CurrentVersion + "/BrowserAutomationStudio.exe", Arguments , QString("./apps/") + CurrentVersion);
     if(Progress)
     {
@@ -103,7 +109,6 @@ bool Updater::Start(const QStringList& Arguments)
     connect(Progress,SIGNAL(Update()),this,SLOT(Update()));
     Progress->SetStageCheckForUpdates();
     Client->Connect(this,SLOT(DoneLatestQuery()));
-    Timer->start();
     QSettings Settings("settings.ini",QSettings::IniFormat);
     Settings.sync();
     QString Server = Settings.value("ApiEndpoint").toString();
@@ -113,7 +118,6 @@ bool Updater::Start(const QStringList& Arguments)
 
 void Updater::DoneLatestQuery()
 {
-    Timer->stop();
     if(Client->WasError())
     {
         Skip();
@@ -160,10 +164,8 @@ void Updater::DoneLatestQuery()
 
 void Updater::Update()
 {
-    Client->Connect(this,SLOT(DownloadFinished()));
-    connect(Client,SIGNAL(DownloadProgress(qint64,qint64)),this,SLOT(DownloadProgress(qint64,qint64)));
     Progress->SetStageDownloading(CanSkip);
-    Client->Get(AppReference);
+    Downloader->Get(AppReference);
 }
 
 void Updater::DownloadProgress(qint64 BytesReceived, qint64 BytesTotal)
@@ -174,10 +176,7 @@ void Updater::DownloadProgress(qint64 BytesReceived, qint64 BytesTotal)
 
 void Updater::DownloadFinished()
 {
-    Client->Disconnect();
-    Client->deleteLater();
-
-    if(Client->WasError())
+    if(Downloader->WasError())
     {
         Skip();
         return;
@@ -205,7 +204,7 @@ void Updater::DownloadFinished()
         return;
     }
 
-    file.write(Client->GetPageData());
+    file.write(Downloader->GetPageData());
     file.close();
 
     JlCompress::extractDir(QFileInfo(TempFile).absoluteFilePath(),QFileInfo(TempFile).absoluteDir().absolutePath());

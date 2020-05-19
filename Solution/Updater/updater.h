@@ -5,6 +5,7 @@
 #include <QTimer>
 #include "updateprogress.h"
 #include "httpclient.h"
+#include "resumedownloader.h"
 
 class Updater : public QObject
 {
@@ -14,8 +15,9 @@ class Updater : public QObject
     QString GetLocalVersion();
     QString MaxVersion(const QStringList& Dirs);
     HttpClient *Client;
+    HttpClient *ClientForDownloader;
+    ResumeDownloader *Downloader;
     QString CurrentVersion;
-    QTimer *Timer;
     QString AppReference;
     QString RemoteVersion;
     QStringList Arguments;

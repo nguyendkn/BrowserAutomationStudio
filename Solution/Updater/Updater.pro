@@ -13,6 +13,9 @@ INCLUDEPATH += $(BAS_PATH)/include
 LIBS += -L$(BAS_PATH)/lib
 
 SOURCES += main.cpp\
+    oldversionremover.cpp \
+    replytimeout.cpp \
+    resumedownloader.cpp \
         updateprogress.cpp \
     checkforupdateswidget.cpp \
     updater.cpp \
@@ -41,6 +44,9 @@ SOURCES += main.cpp\
 
 HEADERS  += updateprogress.h \
     checkforupdateswidget.h \
+    oldversionremover.h \
+    replytimeout.h \
+    resumedownloader.h \
     updater.h \
     httpclient.h \
     ihttpclient.h \

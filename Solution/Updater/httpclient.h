@@ -23,6 +23,7 @@ Q_OBJECT
     QList<QPair<QByteArray, QByteArray> > ReturnHeaders;
     IPostPrepareStrategyFactory* PostPrepareStrategyFactory;
     QObject *request_holder;
+    int RequestTimeout = -1;
 public:
     explicit HttpClient(QObject *parent = 0);
     virtual void Get(const QString &url);
@@ -34,6 +35,7 @@ public:
     virtual void Connect(QObject *object, const char * slot);
     virtual void Disconnect();
     virtual void Stop();
+    virtual void SetTimeout(int msec);
 
 
 signals:

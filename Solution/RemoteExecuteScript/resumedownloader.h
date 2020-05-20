@@ -9,8 +9,8 @@ class ResumeDownloader : public QObject
     Q_OBJECT
     IHttpClient *Client = 0;
     qint64 ChunkSize = 10485760;
-    int RetryCount = 100;
-    int RetryInterval = 2000;
+    int RetryCount = 10;
+    int RetryInterval = 10000;
     bool _WasError = false;
     QString _LastError;
     QString Url;

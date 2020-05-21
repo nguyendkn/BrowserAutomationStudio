@@ -12,19 +12,32 @@
 
 ResumeDownloader::ResumeDownloader(QObject *parent) : QObject(parent)
 {
-
+    CheckSpeedTimer = new QTimer(this);
+    CheckSpeedTimer->setSingleShot(false);
+    CheckSpeedTimer->setInterval(CheckSpeedInterval);
+    connect(CheckSpeedTimer,SIGNAL(timeout()),this,SLOT(CheckSpeed()));
 }
 
-void ResumeDownloader::Init(IHttpClient *Client, qint64 ChunkSize, int RetryCount, int RetryInterval)
+void ResumeDownloader::CheckSpeed()
+{
+    emit Log(QString("Downloaded ") + QString::number(CheckSpeedCurrentValue - CheckSpeedLastValue) + QString(" bytes"));
+    if(CheckSpeedCurrentValue - CheckSpeedLastValue < CheckSpeedMinimumSize)
+    {
+        Client->Stop();
+        FinishDownloadNextChunk();
+        return;
+    }
+    CheckSpeedCurrentValue = CheckSpeedLastValue;
+}
+
+void ResumeDownloader::Init(IHttpClient *Client)
 {
     this->Client = Client;
-    this->ChunkSize = ChunkSize;
-    this->RetryCount = RetryCount;
-    this->RetryInterval = RetryInterval;
 }
 
 void ResumeDownloader::DownloadProgressSlot(qint64 BytesReceived, qint64 BytesTotal)
 {
+    CheckSpeedCurrentValue = BytesReceived;
     emit DownloadProgress(BytesReceived + CurrentDownloadPosition,TotalSize);
 }
 
@@ -57,7 +70,7 @@ void ResumeDownloader::Get(const QString &Url)
 
     //Download meta
     Client->Connect(this,SLOT(DownloadMetaResult()));
-    Client->SetTimeout(10000);
+    Client->SetTimeout(MaximumDownloadTimeForSimpleRequest);
     Client->Get(MetaUrl);
 }
 
@@ -108,7 +121,7 @@ void ResumeDownloader::DownloadMetaResult()
         emit Log(QString("Trying to get file size"));
         Client->AddHeader("Range", QString("bytes=0-0"));
         Client->Connect(this,SLOT(TotalSizeResult()));
-        Client->SetTimeout(10000);
+        Client->SetTimeout(MaximumDownloadTimeForSimpleRequest);
         Client->Get(Url);
     }else
     {
@@ -219,7 +232,10 @@ void ResumeDownloader::DownloadNextChunk()
     //Download chunk
     Client->Connect(this,SLOT(FinishDownloadNextChunk()));
     Client->AddHeader("Range", QString("bytes=") + QString::number(CurrentDownloadPosition) + QString("-") + QString::number(CurrentDownloadPosition + ChunkSize - 1));
-    Client->SetTimeout(1200000 /* 20 minutes */);
+    Client->SetTimeout(MaximumDownloadTimeForOneChunk);
+    CheckSpeedLastValue = 0;
+    CheckSpeedCurrentValue = 0;
+    CheckSpeedTimer->start();
     Client->Get(Url);
     disconnect(this->Client,SIGNAL(DownloadProgress(qint64,qint64)),this,SLOT(DownloadProgressSlot(qint64,qint64)));
     connect(this->Client,SIGNAL(DownloadProgress(qint64,qint64)),this,SLOT(DownloadProgressSlot(qint64,qint64)));
@@ -228,6 +244,7 @@ void ResumeDownloader::DownloadNextChunk()
 
 void ResumeDownloader::FinishDownloadNextChunk()
 {
+    CheckSpeedTimer->stop();
     bool IsSuccess = false;
     QString Error;
     if(Client->WasError())

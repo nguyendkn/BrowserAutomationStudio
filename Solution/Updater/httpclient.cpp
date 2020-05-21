@@ -53,6 +53,8 @@ void HttpClient::SetTimeout(int msec)
 
 void HttpClient::Stop()
 {
+    was_error = true;
+    last_error = "Request interrupted";
     Disconnect();
 }
 

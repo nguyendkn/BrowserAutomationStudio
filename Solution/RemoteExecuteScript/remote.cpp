@@ -389,10 +389,6 @@ void Remote::ScriptPropertiesDetected(const QString& ScriptHash, const QString& 
             if(UI)
                 UI->SetProgress(100);
 
-            OldVersionRemover Remover;
-            Remover.Remove("enginesprotected",KeepVersionNumber);
-            Remover.Remove("engines",KeepVersionNumber);
-
             qDebug()<<"Run!";
 
             Exit();
@@ -474,6 +470,9 @@ void Remote::EngineDownloaded()
 
     file.write(Downloader->GetPageData());
     file.close();
+
+    OldVersionRemover Remover;
+    Remover.Remove((IsRemote) ? "enginesprotected" : "engines", EngineVersion, KeepVersionNumber);
 
     emit EnginePrepared();
 }
@@ -713,10 +712,6 @@ void Remote::EnginePrepared()
 
     if(UI)
         UI->SetProgress(100);
-
-    OldVersionRemover Remover;
-    Remover.Remove("enginesprotected",KeepVersionNumber);
-    Remover.Remove("engines",KeepVersionNumber);
 
     qDebug()<<"Run!";
     Exit();

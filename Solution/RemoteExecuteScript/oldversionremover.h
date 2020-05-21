@@ -9,7 +9,7 @@ class OldVersionRemover : public QObject
 
 public:
     explicit OldVersionRemover(QObject *parent = nullptr);
-    void Remove(const QString& Dir, int NumberOfFoldersToKeep = 5);
+    void Remove(const QString& Dir, const QString& CurrentVersion, int NumberOfFoldersToKeep = 5);
 signals:
 
 };

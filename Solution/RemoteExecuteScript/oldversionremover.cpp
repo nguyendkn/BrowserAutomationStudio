@@ -1,6 +1,7 @@
 #include "oldversionremover.h"
 #include <QDir>
 #include <QRegularExpression>
+#include <QMutableStringListIterator>
 
 OldVersionRemover::OldVersionRemover(QObject *parent) : QObject(parent)
 {
@@ -47,11 +48,26 @@ bool CheckIfVersion(const QString& Text)
     return !match.hasMatch();
 }
 
-void OldVersionRemover::Remove(const QString& Dir, int NumberOfFoldersToKeep)
+void OldVersionRemover::Remove(const QString& Dir, const QString& CurrentVersion, int NumberOfFoldersToKeep)
 {
+    if(CheckIfVersion(CurrentVersion))
+    {
+        return;
+    }
+
     QDir dir(Dir);
     QStringList list = dir.entryList(QDir::NoDotAndDotDot | QDir::Dirs);
     list.erase(std::remove_if(list.begin(), list.end(), CheckIfVersion), list.end());
+    QMutableStringListIterator i(list);
+    while (i.hasNext())
+    {
+        QString &val = i.next();
+        if(CompareVersions(val,CurrentVersion) || CurrentVersion == val)
+        {
+            i.remove();
+        }
+    }
+
     std::sort(list.begin(), list.end(), CompareVersions);
     for(int i = 0;i<NumberOfFoldersToKeep;i++)
     {

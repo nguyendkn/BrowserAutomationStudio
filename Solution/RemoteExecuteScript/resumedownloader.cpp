@@ -27,7 +27,7 @@ void ResumeDownloader::CheckSpeed()
         FinishDownloadNextChunk();
         return;
     }
-    CheckSpeedCurrentValue = CheckSpeedLastValue;
+    CheckSpeedLastValue = CheckSpeedCurrentValue;
 }
 
 void ResumeDownloader::Init(IHttpClient *Client)

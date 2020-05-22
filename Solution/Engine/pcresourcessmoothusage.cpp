@@ -13,7 +13,7 @@ namespace BrowserAutomationStudioFramework
         PdhCollectQueryData(cpuQuery);
         MaxBrowserStartSimultaneously = 1;
         MinFreeMemoryToStartBrowser = 500;
-        MinUnusedCpu = 0;
+        MinUnusedCpu = 20;
         Timer = new QTimer(this);
         connect(Timer,SIGNAL(timeout()),this,SLOT(TimerSlot()));
         Timer->setSingleShot(false);

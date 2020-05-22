@@ -242,6 +242,28 @@ public:
         }
       return true;
     }
+    if (name == "FileLastWriteTimeInternal" && arguments.size() == 1 && arguments.at(0)->IsString())
+    {
+        try
+        {
+          FileSystem _FileSystem;
+          auto Result = _FileSystem.FileLastWriteTime(arguments.at(0)->GetStringValue());
+
+          retval = CefV8Value::CreateString(std::to_string(Result));
+        }catch (const boost::exception& ex)
+        {
+            exception = boost::diagnostic_information(ex);
+        }
+        catch(const std::exception& ex)
+        {
+            exception = ex.what();
+        }
+        catch (...)
+        {
+            exception = "Exception during getting file size";
+        }
+      return true;
+    }
     if (name == "MoveFileOrFolder" && arguments.size() == 2 && arguments.at(0)->IsString() && arguments.at(1)->IsString())
     {
         try
@@ -407,6 +429,7 @@ class AppRender : public CefApp, public CefRenderProcessHandler {
                 "AppendFileAsStringInternal,"
                 "FileExists,"
                 "FileSizeInternal,"
+                "FileLastWriteTimeInternal,"
                 "ParentFolder,"
                 "IsFolder,"
                 "CreateFolder,"

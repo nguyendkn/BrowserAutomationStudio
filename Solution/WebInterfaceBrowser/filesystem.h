@@ -13,6 +13,7 @@ class FileSystem
         void WriteFile(const std::wstring& Path, const std::string& Data, const std::string& Encoding, bool IsAppend);
         bool FileExists(const std::wstring& Path);
         unsigned long long FileSize(const std::wstring& Path);
+        unsigned long long FileLastWriteTime(const std::wstring& Path);
         std::wstring ParentFolder(const std::wstring& Path);
         bool IsFolder(const std::wstring& Path);
         void CreateFolder(const std::wstring& Path);

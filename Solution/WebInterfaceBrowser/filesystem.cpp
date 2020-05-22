@@ -146,6 +146,19 @@ unsigned long long FileSystem::FileSize(const std::wstring& Path)
     return 0;
 }
 
+unsigned long long FileSystem::FileLastWriteTime(const std::wstring& Path)
+{
+    try
+    {
+        return boost::filesystem::last_write_time(Path);
+    }catch(...)
+    {
+
+    }
+    return 0;
+}
+
+
 std::wstring FileSystem::ParentFolder(const std::wstring& Path)
 {
     try

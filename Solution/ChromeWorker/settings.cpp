@@ -31,7 +31,7 @@ void settings::Init()
     zoom = 100;
     max_browser_start_simultaneously = 1;
     min_free_memory_to_start_browser = 500;
-    min_unused_cpu = 0;
+    min_unused_cpu = 20;
     maximized = false;
     restart = true;
     emulate_mouse = true;

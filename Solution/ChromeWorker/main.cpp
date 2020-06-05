@@ -648,7 +648,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             Layout->BManualControlAction2 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION2), IMAGE_BITMAP, 0, 0, 0);
             Layout->BManualControlAction3 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION3), IMAGE_BITMAP, 0, 0, 0);
 
-            Layout->HEditUrl = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"about:blank", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT,0,0,100,100,hwnd,(HMENU)NULL, NULL, NULL);
+            Layout->HEditUrl = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"about:blank", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL,0,0,100,100,hwnd,(HMENU)NULL, NULL, NULL);
             app->GetData()->UrlHandler = Layout->HEditUrl;
 
             SetWindowSubclass(Layout->HEditUrl, UrlEditProc, 0,0);

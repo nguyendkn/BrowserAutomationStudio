@@ -122,7 +122,17 @@ Object.defineProperty(chrome, "runtime", {
             return res;
         })()),
         connect: ((function(){
-            var res = function(){return undefined}
+            
+            var res = function()
+            {
+                return {
+                    name: "",
+                    disconnect: function(){},
+                    onDisconnect: new Event('onDisconnect'),
+                    onMessage: new Event('onMessage'),
+                    postMessage: function(){}
+                }
+            }
             Object.defineProperty(res, "toString", {
                 configurable: false,
                 enumerable: false,

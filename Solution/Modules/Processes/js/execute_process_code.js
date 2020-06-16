@@ -1,5 +1,5 @@
 RANDOM_FILE = "temp_" + rand() + ".bat"
-native("filesystem", "writefile", JSON.stringify({path: RANDOM_FILE,value: "chcp 65001\r\n" + ((<%= working_folder %>.length>0) ? ("cd " + <%= working_folder %> + "\r\n") : "" ) + (<%= command %>.replace(/\r?\n/g, "\r\n")),base64:false,append:false}))
+native("filesystem", "writefile", JSON.stringify({path: RANDOM_FILE,value: "chcp 65001\r\n" + ((<%= working_folder %>.length>0) ? ("cd " + <%= working_folder %> + "\r\n") : "" ) + ((<%= command %>).replace(/\r?\n/g, "\r\n")),base64:false,append:false}))
 native_async("processmanager", "start", JSON.stringify({location: RANDOM_FILE, working_folder: "", waitfinish: <%= waitfinish %>, arguments: "", version: 2}))!
 
 try

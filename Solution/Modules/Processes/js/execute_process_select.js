@@ -20,7 +20,7 @@ if(Command["original"].length == 0)
   var code = loader.GetAdditionalData() + _.template($('#execute_process_code').html())(
   	{
   		variable:"VAR_" + Save,
-  		command: Command["updated"], 
+  		command: Command["updated"].replace(/\\n/g, "\\r\\n"), 
   		waitfinish:waitfinish,
   		working_folder: WorkingFolder["updated"],
   		variable_fail:"VAR_" + SaveError,

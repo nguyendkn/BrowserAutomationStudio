@@ -104,7 +104,7 @@ _BAS_HIDE(BrowserAutomationStudio_RecaptchaSolved) = function(result)
 				if(typeof(resp) == "string")
 				{
 					try{
-						eval(resp)(result)
+						(window[resp])(result)
 					}catch(e){}						
 				}else
 				{

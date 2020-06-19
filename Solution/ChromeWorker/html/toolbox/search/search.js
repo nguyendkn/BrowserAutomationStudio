@@ -1,9 +1,9 @@
 function SearchManager() {
-  const searchEngine = new SearchEngine();
+  const engine = new BasSearchEngine();
 
   let lastQuery = null;
-  let currentPage = 0;
   let pagesCount = 1;
+  let pageIndex = 0;
 
   const inViewport = (element) => {
     let viewportTop = $(window).scrollTop();
@@ -18,34 +18,34 @@ function SearchManager() {
   this.Search = function (query) {
     lastQuery = query;
     $(".results-recent").hide();
-    this.RenderSearch(searchEngine.search(query));
+    this.RenderSearch(engine.search(query));
   };
 
   this.Recent = function () {
     lastQuery = null;
     $(".results-recent").hide();
-    this.RenderSearch(searchEngine.recent());
+    this.RenderSearch(engine.recent());
   };
 
   this.RenderSearch = function (items) {
-    items = _.each(_.take(items, 100), (item, index) => {
-      item.index = _.padLeft(index + 1, 2, "0");
-    });
-
-    let container = $("#results");
-    container.unmark();
+    const container = $("#results");
+    // container.unmark();
     container.empty();
 
-    let results = [];
-    currentPage = 0;
+    const results = [];
     pagesCount = 1;
+    pageIndex = 0;
 
-    _.each(items, (item, index) => {
-      let template = templates[item.type]({ item, page: pagesCount - 1 });
+    _.each(_.take(items, 100), (item, index) => {
+      const template = templates[item.type]({
+        index: _.padLeft(index + 1, 2, "0"),
+        page: pagesCount - 1,
+        ...item,
+      });
       results.push($(template).appendTo(container));
 
       if (!inViewport(container)) {
-        _.initial(results).forEach((el) => el.hide());
+        _.initial(results).forEach((result) => result.hide());
 
         if (index == 0) {
           _.last(results).data("page", pagesCount - 1);
@@ -53,20 +53,20 @@ function SearchManager() {
           _.last(results).data("page", pagesCount);
         }
 
-        pagesCount += index == 0 ? 0 : 1;
+        pagesCount += (index == 0) ? 0 : 1;
       }
     });
 
-    container.mark(lastQuery || "");
+    // container.mark(lastQuery || "");
     this.AddOnClick();
     this.ShowPage(0);
   };
 
   this.AddOnClick = function () {
     $(".result-item").click(function () {
-      let action = $(this).data("name");
-      let popup = $(this).data("popup");
-      let value = $(this).data("value");
+      const action = $(this).data("name");
+      const popup = $(this).data("popup");
+      const value = $(this).data("value");
 
       if (value.indexOf("https://") == 0 || value.indexOf("http://") == 0) {
         BrowserAutomationStudio_OpenUrl(value);
@@ -81,18 +81,18 @@ function SearchManager() {
   };
 
   this.ShowPage = function (index) {
-    let results = $(".result-item");
+    const results = $(".result-item");
 
     results.each(function () {
-      let pageIndex = $(this).data("page");
+      const pageIndex = $(this).data("page");
       $(this).toggle(pageIndex == index);
     });
 
-    $("#nextpage").prop("disabled", currentPage == pagesCount - 1);
-    $("#prevpage").prop("disabled", currentPage == 0);
+    $("#nextpage").prop("disabled", pageIndex == pagesCount - 1);
+    $("#prevpage").prop("disabled", pageIndex == 0);
     $("#pagination").toggle(pagesCount > 1);
 
-    $("#currentpage").html(currentPage + 1);
+    $("#currentpage").html(pageIndex + 1);
     $("#lastpage").html(pagesCount);
 
     if (!lastQuery) {
@@ -107,16 +107,17 @@ function SearchManager() {
 
   this.Render = function () {
     $(".results-recent").text(tr("Recent actions"));
-    $(".results-recent, .results-empty").hide();
+    $(".results-recent").hide();
+    $(".results-empty").hide();
 
     $("#nextpage").click((e) => {
       e.preventDefault();
-      this.ShowPage(++currentPage);
+      this.ShowPage(++pageIndex);
     });
 
     $("#prevpage").click((e) => {
       e.preventDefault();
-      this.ShowPage(--currentPage);
+      this.ShowPage(--pageIndex);
     });
 
     $(window).resize(() => {
@@ -154,40 +155,40 @@ function SearchManager() {
 
   const templates = {
     action: _.template(`
-      <li class="result-item bg-action" data-page="<%= page %>" data-value="<%= item.key %>" data-popup="<%= item.popup %>" data-name="<%= item.name %>">
+      <li class="result-item bg-action" data-page="<%= page %>" data-value="<%= key %>" data-popup="<%= popup %>" data-name="<%= name %>">
         <div class="result-item-left">
-          <img class="item-icon" src="<%= item.icon %>">
+          <img class="item-icon" src="<%= icon %>">
           <span class="item-index">
-            <%= item.index %>
+            <%= index %>
           </span>
         </div>
         <div class="result-item-right">
           <div>
             <div class="item-action">
-              <%= item.name %>
+              <%= name %>
             </div>
             <div class="item-description">
-              <%= item.description %>
+              <%= description %>
             </div>
           </div>
           <div class="item-module">
-            <%= item.module %>
+            <%= module %>
           </div>
         </div>
       </li>
     `),
     link: _.template(`
-      <li class="result-item bg-link" data-page="<%= page %>" data-value="<%= item.key %>">
+      <li class="result-item bg-link" data-page="<%= page %>" data-value="<%= key %>">
         <div class="result-item-left">
-          <img class="item-icon" src="<%= item.icon %>">
+          <img class="item-icon" src="<%= icon %>">
           <span class="item-index">
-            <%= item.index %>
+            <%= index %>
           </span>
         </div>
         <div class="result-item-right">
           <div>
             <div class="item-action">
-              <%= item.name %>
+              <%= name %>
             </div>
           </div>
         </div>

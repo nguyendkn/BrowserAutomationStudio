@@ -282,7 +282,7 @@
             <i class="fa fa-fw fa-chevron-left" aria-hidden="true"></i>
           </button>
           <span class="search-page-label">
-            <span class="text-dark" id="currentpage"></span>
+            <span class="text-dark" id="currpage"></span>
             <span class="text-gray">-</span>
             <span class="text-gray" id="lastpage"></span>
           </span>
@@ -6490,12 +6490,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       searchinput: function(event)
       {
-        var value = $("#searchinput").val();
-        if (value) {
-          _SearchManager.Search(value);
-        } else {
-          _SearchManager.Recent();
-        }
+        _.debounce(() => {
+          const value = $("#searchinput").val();
+
+          if (value) {
+            _SearchManager.Search(value);
+          } else {
+            _SearchManager.Recent();
+          }
+        }, 500)();
       },
 
       usewaiterchange: function(event)

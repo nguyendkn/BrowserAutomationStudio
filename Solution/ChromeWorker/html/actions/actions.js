@@ -498,9 +498,9 @@ _A = {
       "group":"logic"
    },
    "recaptchav3":{  
-      "name":"Recatpcha V3",
+      "name":"Recaptcha V3",
       "class":"browser",
-      "description":"Recatpcha V3",
+      "description":"Recaptcha V3",
       "template":"{{Action}}",
       "group":"browser"
    },

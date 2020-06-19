@@ -15,13 +15,16 @@ class BasSearchEngine {
       fields: ['name'],
       ref: 'key'
     });
+
+    this.cache = {};
   }
 
   search(query) {
-    return this.engine.search(query)
+    if (_.has(this.cache, query)) return this.cache[query];
+
+    const results = this.engine.search(query)
       .map((match) => {
         const { ref } = match;
-        console.log(match);
         return this.engine.store.getDocumentByRef(ref);
       })
       .filter(({ key }) => {
@@ -32,11 +35,14 @@ class BasSearchEngine {
         ];
 
         return !ignoredItems.includes(key);
-      })
+      });
+
+    this.cache[query] = results;
+    return this.cache[query];
   }
 
   recent() {
-    return _.map(ActionHistory, (key) => this.engine.store.getDocumentByField('key', key));
+    return ActionHistory.map((key) => this.engine.store.getDocumentByField('key', key));
   }
 
   /**

@@ -221,6 +221,29 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	})!
 
+	{
+		var PerfectCanvasReplaceType = "Disable"
+		if(FINGERPRINT_JSON["perfectcanvas"])
+		{
+			
+			var Keys = Object.keys(FINGERPRINT_JSON["perfectcanvas"])
+			for(var i = 0;i<Keys.length;i++)
+			{
+				var Key = Keys[i]
+				
+				var Value = FINGERPRINT_JSON["perfectcanvas"][Key]
+				FINGEPRINT_SETTINGS["Fingerprints.PerfectCanvasReplace." + Key] = Value
+			}
+			if(Keys.length > 0)
+			{
+				PerfectCanvasReplaceType = "Enable"
+			}
+		}
+
+		FINGEPRINT_SETTINGS["Fingerprints.PerfectCanvasCapture"] = PerfectCanvasReplaceType
+		FINGEPRINT_SETTINGS["Fingerprints.PerfectCanvasDoReplace"] = PerfectCanvasReplaceType
+	}
+
 	FINGEPRINT_SETTINGS["Fingerprints.FontList"] = FINGERPRINT_JSON["fonts"].join(";")
 
 	_settings(FINGEPRINT_SETTINGS)!

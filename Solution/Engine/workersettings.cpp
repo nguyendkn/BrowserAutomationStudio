@@ -1027,7 +1027,9 @@ namespace BrowserAutomationStudioFramework
             Text += QString("WebglFingerprint=") + WebglNoise;
         }
 
-        for(const QString& Key: Keys())
+        QStringList keys = Keys();
+
+        for(const QString& Key: keys)
         {
             if(Key.startsWith("Webgl."))
             {
@@ -1037,7 +1039,7 @@ namespace BrowserAutomationStudioFramework
             }
         }
 
-        for(const QString& Key: Keys())
+        for(const QString& Key: keys)
         {
             if(Key.startsWith("Attribute."))
             {
@@ -1047,10 +1049,18 @@ namespace BrowserAutomationStudioFramework
             }
         }
 
-        for(const QString& Key: Keys())
+        //Check if fingerprint uses canvas replacement
+        bool ReplaceCanvas = keys.contains("Fingerprints.PerfectCanvasDoReplace") && Get("Fingerprints.PerfectCanvasDoReplace") == "Enable";
+
+        for(const QString& Key: keys)
         {
             if(Key.startsWith("Fingerprints."))
             {
+                if(Key.startsWith("Fingerprints.PerfectCanvasReplace.") && !ReplaceCanvas)
+                {
+                    //Disable PerfectCanvas data if no need to replace it
+                    continue;
+                }
                 if(!Text.isEmpty())
                     Text += "\r\n";
                 QString KeyUpdated = Key;

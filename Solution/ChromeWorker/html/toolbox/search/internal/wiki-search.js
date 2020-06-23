@@ -496,7 +496,7 @@ _WIKI = [
     },
     {
         "url": "https://wiki.bablosoft.com/doku.php?id=ru:how_to_move_mouse",
-        "name": "Как двигать мишь",
+        "name": "Как двигать мышь",
         "suggestion": "", lang: "ru"
     },
     {

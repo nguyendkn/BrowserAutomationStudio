@@ -23,9 +23,9 @@ class BasSearchEngine {
     if (_.has(this.cache, query)) return this.cache[query];
 
     const results = this.engine.search(query)
-      .map(({ ref, matchData }) => {
-        const document = this.engine.store.getDocumentByRef(ref);
-        const matches = this.getMatches(query, matchData);
+      .map((match) => {
+        const document = this.engine.store.getDocumentByRef(match.ref);
+        const matches = this.getMatches(document, query, match);
 
         return {
           ...document,
@@ -57,23 +57,24 @@ class BasSearchEngine {
     });
   }
 
-  getMatches(query, { metadata }) {
+  getMatches(document, query, { queryTokens, matchData }) {
     const matches = [];
 
-    Object.values(metadata).forEach((value) => {
-      Object.entries(value).forEach((entry) => {
-        const [field, data] = entry;
+    Object.values(matchData.metadata).forEach((value) => {
+      Object.entries(value).forEach(([field, data]) => {
+        const fieldLower = document[field].toLowerCase();
+        const queryLower = query.toLowerCase();
 
-        data.tokenOriginal.forEach((token) => {
-          const tokenLower = token.toLowerCase();
-          const queryLower = query.toLowerCase();
+        if (fieldLower.includes(queryLower)) {
+          matches.push({ comparator: query + field, match: query, field });
+        } else {
+          data.tokenOriginal.forEach((sourceToken) => {
+            const queryToken = queryTokens.find((v) => sourceToken.includes(v));
+            const match = queryToken || sourceToken;
 
-          const match = tokenLower.includes(queryLower)
-            ? queryLower
-            : tokenLower;
-
-          matches.push({ comparator: match + field, match, field });
-        });
+            matches.push({ comparator: match + field, match, field });
+          });
+        }
       });
     });
 

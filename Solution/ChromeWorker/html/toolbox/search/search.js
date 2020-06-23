@@ -1,198 +1,249 @@
-function SearchManager() {
-  const engine = new BasSearchEngine();
+class SearchManager {
+  /**
+   * Create an instance of `SearchManager` class.
+   * @constructor
+   */
+  constructor () {
+    this.engine = new BasSearchEngine();
 
-  let lastQuery = null;
-  let pagesCount = 1;
-  let pageIndex = 0;
+    this.lastQuery = null;
+    this.pagesCount = 1;
+    this.pageIndex = 0;
 
-  const inViewport = (element) => {
-    let viewportTop = $(window).scrollTop();
-    let viewportBottom = viewportTop + $(window).height();
+    this.registerEventHandlers();
+  }
 
-    let boundsTop = element.offset().top;
-    let boundsBottom = boundsTop + element.outerHeight();
+  /**
+   * Register all event handlers associated with the search page.
+   */
+  registerEventHandlers() {
+    $(document).on('click', '.result-item', function () {
+      const { popup, name, type, key } = $(this).data();
 
-    return boundsTop >= viewportTop && boundsBottom <= viewportBottom;
-  };
-
-  this.Search = function (query) {
-    lastQuery = query;
-    $('.results-recent').hide();
-    this.RenderSearch(engine.search(query));
-  };
-
-  this.Recent = function () {
-    lastQuery = null;
-    $('.results-recent').show();
-    this.RenderSearch(engine.recent());
-  };
-
-  this.RenderSearch = function (items) {
-    const container = $('#results');
-    // container.unmark();
-    container.empty();
-
-    const results = [];
-    pagesCount = 1;
-    pageIndex = 0;
-
-    _.each(_.take(items, 100), (item, index) => {
-      const template = templates[item.type]({
-        index: _.padLeft(index + 1, 2, '0'),
-        page: pagesCount - 1,
-        ...item,
-      });
-      results.push($(template).appendTo(container));
-
-      if (!inViewport(container)) {
-        _.initial(results).forEach((result) => result.hide());
-
-        if (index == 0) {
-          _.last(results).data('page', pagesCount - 1);
-        } else {
-          _.last(results).data('page', pagesCount);
-        }
-
-        pagesCount += (index == 0) ? 0 : 1;
+      if (type === 'link') {
+        BrowserAutomationStudio_OpenUrl(key);
+      } else if (!popup) {
+        BrowserAutomationStudio_OpenAction(key);
+      } else if (popup) {
+        BrowserAutomationStudio_Notify('search', name);
       }
     });
 
-    // container.mark(lastQuery || '');
-    this.AddOnClick();
-    this.ShowPage(0);
-  };
-
-  this.AddOnClick = function () {
-    $('.result-item').click(function () {
-      const action = $(this).data('name');
-      const popup = $(this).data('popup');
-      const value = $(this).data('value');
-
-      if (value.indexOf('https://') == 0 || value.indexOf('http://') == 0) {
-        BrowserAutomationStudio_OpenUrl(value);
-      } else {
-        if (popup) {
-          BrowserAutomationStudio_Notify('search', action);
-        } else {
-          BrowserAutomationStudio_OpenAction(value);
-        }
-      }
-    });
-  };
-
-  this.ShowPage = function (index) {
-    const results = $('.result-item');
-
-    results.each(function () {
-      const pageIndex = $(this).data('page');
-      $(this).toggle(pageIndex == index);
-    });
-
-    $('#nextpage').prop('disabled', pageIndex == pagesCount - 1);
-    $('#prevpage').prop('disabled', pageIndex == 0);
-    $('#pagination').toggle(pagesCount > 1);
-
-    $('#currpage').html(pageIndex + 1);
-    $('#lastpage').html(pagesCount);
-
-    if (!lastQuery) {
-      $('.results-empty').html(tr('No recent actions found'));
-    } else {
-      $('.results-empty').html(tr('Nothing found'));
-    }
-
-    $('.results-recent').toggle(results.length && lastQuery == null);
-    $('.results-empty').toggle(!results.length);
-  };
-
-  this.Render = function () {
-    $('.results-recent').text(tr('Recent actions'));
-    $('.results-recent').hide();
-    $('.results-empty').hide();
-
-    $('#nextpage').click((e) => {
+    $(document).on('click', '#nextpage', (e) => {
       e.preventDefault();
-      this.ShowPage(++pageIndex);
+      this.showPage(++this.pageIndex);
     });
 
-    $('#prevpage').click((e) => {
+    $(document).on('click', '#prevpage', (e) => {
       e.preventDefault();
-      this.ShowPage(--pageIndex);
+      this.showPage(--this.pageIndex);
     });
 
     $(window).resize(() => {
-      if ($('.search').is(':visible')) {
-        if (lastQuery) {
-          this.Search(lastQuery);
+      if (this.$searchContainer.is(':visible')) {
+        if (this.lastQuery) {
+          this.search(this.lastQuery);
         } else {
-          this.Recent();
+          this.recent();
         }
       }
     });
-
-    $('#searchinputclear').hide();
-    $('#pagination').hide();
-    $('.search').hide();
-  };
-
-  this.Toggle = function (hide) {
-    $('#searchinputclear, #pagination, .search').toggle(!hide);
-    $('body').css('overflow', hide ? 'visible' : 'hidden');
-    $('.actions').toggle(hide);
-    $('#searchinput').val('');
   }
 
-  this.Show = function () {
-    $('#searchinput').focus();
-    this.Toggle(false);
-    this.Recent();
-  };
+  /**
+   * Check if all results are visible on the search page.
+   * @readonly
+   */
+  get resultsVisible() {
+    const bounding = this.$resultsContainer.get(0).getBoundingClientRect();
+    const { clientHeight, clientWidth } = document.documentElement;
+    const { innerHeight, innerWidth } = window;
 
-  this.Hide = function () {
-    $('#searchinput').blur();
-    this.Toggle(true);
-  };
+    return _.every([
+      bounding.bottom <= (innerHeight || clientHeight),
+      bounding.right <= (innerWidth || clientWidth),
+      bounding.left >= 0,
+      bounding.top >= 0
+    ]);
+  }
 
-  const templates = {
-    action: _.template(`
-      <li class="result-item bg-action" data-page="<%= page %>" data-value="<%= key %>" data-popup="<%= popup %>" data-name="<%= name %>">
-        <div class="result-item-left">
-          <img class="item-icon" src="<%= icon %>">
-          <span class="item-index">
-            <%= index %>
-          </span>
-        </div>
-        <div class="result-item-right">
-          <div>
-            <div class="item-action">
-              <%= name %>
+  /**
+   * Perform an action search using the selected query.
+   * @param {String} query - selected query string.
+   */
+  search(query) {
+    this.$recentHeader.hide();
+    this.$emptyHeader.hide();
+    this.lastQuery = query;
+    this.renderSearch(this.engine.search(query));
+  }
+
+  /**
+   * Perform an action search using the action history.
+   */
+  recent() {
+    this.$recentHeader.show();
+    this.$emptyHeader.hide();
+    this.lastQuery = null;
+    this.renderSearch(this.engine.recent());
+  }
+
+  renderSearch(items) {
+    this.$resultsContainer.empty();
+    this.pagesCount = 1;
+    this.pageIndex = 0;
+    const results = [];
+
+    items.slice(0, 100).forEach((item, idx) => {
+      const prev = this.pagesCount - 1;
+      const next = this.pagesCount - 0;
+
+      const result = $(this.renderItem(item, idx))
+        .appendTo(this.$resultsContainer)
+        .data({ ...item, page: prev });
+
+      results.push(result);
+
+      if (!this.resultsVisible) {
+        _.initial(results).forEach((res) => res.hide());
+
+        if (idx === 0) {
+          _.last(results).data('page', prev);
+        } else {
+          _.last(results).data('page', next);
+        }
+
+        this.pagesCount += (idx === 0) ? 0 : 1;
+      }
+    });
+
+    this.showPage(0);
+  }
+
+  showPage(pageIndex) {
+    const results = $('.result-item');
+
+    results.each(function () {
+      const matches = $(this).data('matches');
+      const page = $(this).data('page');
+
+      if (page === pageIndex) {
+        $(this).unmark();
+
+        matches.forEach(({ match, field }) => {
+          $(this).find(`.item-${field}`).mark(match);
+        });
+      }
+
+      $(this).toggle(page === pageIndex);
+    });
+
+    this.$nextPage.prop('disabled', this.pageIndex === this.pagesCount - 1);
+    this.$prevPage.prop('disabled', this.pageIndex === 0);
+    this.$pagination.toggle(this.pagesCount > 1);
+    this.$currPage.html(this.pageIndex + 1);
+    this.$lastPage.html(this.pagesCount);
+
+    if (this.lastQuery === null) {
+      this.$emptyHeader.html(tr('No recent actions found'));
+    } else {
+      this.$emptyHeader.html(tr('Nothing found'));
+    }
+
+    this.$recentHeader.toggle(results.length !== 0 && this.lastQuery === null);
+    this.$emptyHeader.toggle(results.length === 0);
+  }
+
+  initialize() {
+    this.$recentHeader = $('.results-recent').hide();
+    this.$emptyHeader = $('.results-empty').hide();
+    this.$recentHeader.text(tr('Recent actions'));
+
+    this.$resultsContainer = $('#results');
+    this.$actionsContainer = $('.actions');
+    this.$searchContainer = $('.search');
+
+    this.$searchClear = $('#searchinputclear');
+    this.$searchInput = $('#searchinput');
+
+    this.$pagination = $('#pagination');
+    this.$prevPage = $('#prevpage');
+    this.$nextPage = $('#nextpage');
+    this.$currPage = $('#currpage');
+    this.$lastPage = $('#lastpage');
+
+    this.toggle(true);
+  }
+
+  /**
+   * Show or hide search page content depending on the condition.
+   * @param {Boolean} hide - toggle condition.
+   */
+  toggle(hide) {
+    $(document.body).css('overflow', hide ? 'visible' : 'hidden');
+
+    this.$actionsContainer.toggle(hide);
+    this.$searchContainer.toggle(!hide);
+    this.$pagination.toggle(!hide);
+
+    if (!hide) {
+      this.$searchInput.focus().val('');
+      this.recent();
+    } else {
+      this.$searchInput.blur().val('');
+    }
+
+    this.$searchClear.toggle(!hide);
+  }
+
+  /**
+   * Show search page content if it's not already visible.
+   */
+  show() {
+    if (this.$searchContainer.is(':visible')) return;
+    this.toggle(false);
+  }
+
+  /**
+   * Hide search page content if it's not already hidden.
+   */
+  hide() {
+    if (this.$searchContainer.is(':hidden')) return;
+    this.toggle(true);
+  }
+
+  renderItem(item, index) {
+    const templates = {
+      action: _.template(`
+        <li class="result-item bg-action">
+          <div class="result-item-left">
+            <img draggable="false" class="item-icon" src="<%= icon %>">
+            <span class="item-index"><%= _.padLeft(index + 1, 2, '0') %></span>
+          </div>
+          <div class="result-item-right">
+            <div>
+              <div class="item-name"><%= name %></div>
+              <div class="item-description"><%= description %></div>
             </div>
-            <div class="item-description">
-              <%= description %>
+            <div class="item-module"><%= module %></div>
+          </div>
+        </li>
+      `),
+      link: _.template(`
+        <li class="result-item bg-link">
+          <div class="result-item-left">
+            <img draggable="false" class="item-icon" src="<%= icon %>">
+            <span class="item-index"><%= _.padLeft(index + 1, 2, '0') %></span>
+          </div>
+          <div class="result-item-right">
+            <div>
+              <div class="item-name"><%= name %></div>
             </div>
           </div>
-          <div class="item-module">
-            <%= module %>
-          </div>
-        </div>
-      </li>
-    `),
-    link: _.template(`
-      <li class="result-item bg-link" data-page="<%= page %>" data-value="<%= key %>">
-        <div class="result-item-left">
-          <img class="item-icon" src="<%= icon %>">
-          <span class="item-index">
-            <%= index %>
-          </span>
-        </div>
-        <div class="result-item-right">
-          <div>
-            <div class="item-action">
-              <%= name %>
-            </div>
-          </div>
-        </div>
-      </li>
-    `),
-  };
+        </li>
+      `),
+    };
+
+    return templates[item.type]({ ...item, index });
+  }
 }

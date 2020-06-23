@@ -31,6 +31,7 @@
 .item-icon {
   height: 20px;
   width: 20px;
+  opacity: 0.7;
 }
 
 @media (min-width: 961px) {
@@ -61,14 +62,14 @@
 
 .results-recent {
   margin: 4px auto 4px auto;
-  padding: 0px 4px 0px 4px;
-  background-color: #000;
+  padding: 2px 6px 2px 6px;
+  background-color: #0000002e;
   border-radius: 3px;
   width: max-content;
   text-align: center;
   user-select: none;
   font-size: 13px;
-  color: white;
+  color: #000000c7;
   display: block;
 }
 
@@ -86,7 +87,7 @@
 }
 
 .result-item:hover {
-  border-color: #54809c;
+  border-color: #7699af;
   cursor: pointer;
 }
 
@@ -166,13 +167,15 @@
 }
 
 .bg-link {
-  background: rgb(242, 245, 247) no-repeat center center;
+  background: rgba(242, 245, 247, 0.45) no-repeat center center;
   background-clip: border-box;
   background-size: 105%;
 }
 
 .search-page-button:disabled:hover {
   cursor: not-allowed;
+  background-color: #dde6eb;
+
 }
 
 .search-page-button:active:hover {
@@ -184,7 +187,7 @@
 }
 
 .search-page-button:hover {
-  background-color: #dde6eb;
+  background-color: #54809c;
 }
 
 .search-page-button > i {
@@ -194,6 +197,7 @@
 .search-page-button {
   background-color: #54809c;
   color: #ffffff;
+  opacity:0.8
 }
 
 .search-clear-button:hover {
@@ -203,6 +207,8 @@
 .search-clear-button {
   background-color: #ffffff;
   color: #bf5d4e;
+  opacity:0.9
+  
 }
 
 .search-pagination {
@@ -244,6 +250,7 @@
 .search-icon {
   background-color: #bf5d4e;
   color: #fff;
+  opacity:0.9
 }
 
 .search-bar-container {

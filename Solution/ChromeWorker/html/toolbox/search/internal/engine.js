@@ -23,9 +23,14 @@ class BasSearchEngine {
     if (_.has(this.cache, query)) return this.cache[query];
 
     const results = this.engine.search(query)
-      .map((match) => {
-        const { ref } = match;
-        return this.engine.store.getDocumentByRef(ref);
+      .map(({ ref, matchData }) => {
+        const document = this.engine.store.getDocumentByRef(ref);
+        const matches = this.getMatches(query, matchData);
+
+        return {
+          ...document,
+          matches
+        }
       })
       .filter(({ key }) => {
         const ignoredItems = [
@@ -42,7 +47,37 @@ class BasSearchEngine {
   }
 
   recent() {
-    return ActionHistory.map((key) => this.engine.store.getDocumentByField('key', key));
+    return ActionHistory.map((key) => {
+      const document = this.engine.store.getDocumentByField('key', key);
+
+      return {
+        ...document,
+        matches: []
+      }
+    });
+  }
+
+  getMatches(query, { metadata }) {
+    const matches = [];
+
+    Object.values(metadata).forEach((value) => {
+      Object.entries(value).forEach((entry) => {
+        const [field, data] = entry;
+
+        data.tokenOriginal.forEach((token) => {
+          const tokenLower = token.toLowerCase();
+          const queryLower = query.toLowerCase();
+
+          const match = tokenLower.includes(queryLower)
+            ? queryLower
+            : tokenLower;
+
+          matches.push({ comparator: match + field, match, field });
+        });
+      });
+    });
+
+    return _.uniq(matches, 'comparator');
   }
 
   /**
@@ -53,11 +88,11 @@ class BasSearchEngine {
     const getTextContent = (el) => $('<div />').append(tr(el.html())).text();
 
     return _.map(_A, (value, key) => {
-      let content = $('#' + key).text();
+      const content = $(`#${key}`).text();
 
-      let defaultDesc = $(content)
+      const defaultDesc = $(content)
         .find('.tooltip-paragraph-first-fold');
-      let shortDesc = $(content)
+      const shortDesc = $(content)
         .find('.short-description');
       let description = null;
 
@@ -69,7 +104,7 @@ class BasSearchEngine {
         description = getTextContent(shortDesc);
       }
 
-      let action = { name: tr(value.name), type: 'action', description, key };
+      const action = { name: tr(value.name), type: 'action', description, key };
 
       if (value.class && value.class == 'browser') {
         action.description += tr(' This action works only with element inside browser.');
@@ -94,9 +129,25 @@ class BasSearchEngine {
   }
 
   /**
+   * Get all video items.
+   * @private
+   */
+  _getVideoItems() {
+    return _VIDEO.filter((v) => _K == v.lang).map((v) => this._getLinkItem(v, 'youtube'));
+  }
+
+  /**
+   * Get all wiki items.
+   * @private
+   */
+  _getWikiItems() {
+    return _WIKI.filter((w) => _K == w.lang).map((w) => this._getLinkItem(w, 'wiki'));
+  }
+
+  /**
    * Get link item for selected type.
    * @param {Object} item - item object. 
-   * @param {*} type - item type.
+   * @param {String} type - item type.
    * @private
    */
   _getLinkItem(item, type) {
@@ -106,21 +157,5 @@ class BasSearchEngine {
       key: item.url,
       type: 'link'
     }
-  }
-
-  /**
-   * Get all video items.
-   * @private
-   */
-  _getVideoItems() {
-    return _.filter(_VIDEO, (v) => _K == v.lang).map((v) => this._getLinkItem(v, 'youtube'));
-  }
-
-  /**
-   * Get all wiki items.
-   * @private
-   */
-  _getWikiItems() {
-    return _.filter(_WIKI, (w) => _K == w.lang).map((w) => this._getLinkItem(w, 'wiki'));
   }
 }

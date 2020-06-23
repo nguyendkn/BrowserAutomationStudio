@@ -14,18 +14,18 @@
   color: #fff;
 }
 
-.item-action {
-  font-weight: bold;
-  font-size: 14px;
-  color: #21243d;
-}
-
 .item-index {
   text-align: center;
   color: #54809c;
   font-weight: 600;
   font-size: 12px;
   width: 20px;
+}
+
+.item-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: #21243d;
 }
 
 .item-icon {

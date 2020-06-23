@@ -6464,16 +6464,24 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         }
       },
 
-      searchinputclear: function(event)
-      {
-        if ($(".search").is(":hidden")) return;
-        _SearchManager.Hide();
-      },
+      searchinput: _.debounce(function (event) {
+        const value = $(event.target).val().trim();
+
+        if (value) {
+          _SearchManager.search(value);
+        } else {
+          _SearchManager.recent();
+        }
+      }, 510),
 
       searchinputclick: function(event)
       {
-        if ($(".search").is(":visible")) return;
-        _SearchManager.Show();
+        _SearchManager.show();
+      },
+
+      searchinputclear: function(event)
+      {
+        _SearchManager.hide();
       },
 
       searchinputfocus: function(event)
@@ -6486,19 +6494,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       {
         $(event.target).attr("placeholder", 
           tr("What to search?"));
-      },
-
-      searchinput: function(event)
-      {
-        _.debounce(() => {
-          const value = $("#searchinput").val();
-
-          if (value) {
-            _SearchManager.Search(value);
-          } else {
-            _SearchManager.Recent();
-          }
-        }, 500)();
       },
 
       usewaiterchange: function(event)
@@ -10466,7 +10461,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         BrowserAutomationStudio_SetExecuteType();
 
-        _SearchManager.Render();
+        _SearchManager.initialize();
         
         $("body").show()
 
@@ -11844,7 +11839,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             if ($(".search").is(":visible"))
             {
-              _SearchManager.Hide();
+              _SearchManager.hide();
             }
             /*if($('.modal.in').length > 0)
             {

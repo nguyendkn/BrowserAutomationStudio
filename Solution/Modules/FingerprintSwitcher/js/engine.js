@@ -1,4 +1,162 @@
-_L["Fingerprint switcher is not integrated with Multilogin yet."] = {"ru": "Сервис Fingerprint switcher пока не работает вместе с Multilogin"}
+function BrowserAutomationStudio_GetFingerprint()
+{
+	if(_arguments().length != 1)
+		fail("Wrong number of input params")
+
+	FINGERPRINT_JSON = _arguments()[0]
+
+	var q = (FINGERPRINT_JSON.tags).split(",").map(function(el){return el.trim()})
+	if(q.length == 0 || q.length == 1 && q[0] == "*")
+	{
+		q = ((FINGERPRINT_JSON.key).length > 0) ? ("?version=3&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "?version=3"
+		if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
+		{
+			q += "&tags=*"
+		}
+	}else
+	{
+    	q = "?version=3&tags=" + encodeURIComponent(q.join(",")) + (((FINGERPRINT_JSON.key).length > 0) ? ("&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "")
+	}
+
+	if(FINGERPRINT_JSON.min_browser_version != "*")
+		q += "&min_browser_version=" + parseInt(FINGERPRINT_JSON.min_browser_version)
+
+	if(FINGERPRINT_JSON.min_width != "*")
+		q += "&min_width=" + parseInt(FINGERPRINT_JSON.min_width)	
+
+	if(FINGERPRINT_JSON.min_height != "*")
+		q += "&min_height=" + parseInt(FINGERPRINT_JSON.min_height)	
+
+	if(FINGERPRINT_JSON.max_width != "*")
+		q += "&max_width=" + parseInt(FINGERPRINT_JSON.max_width)	
+
+	if(FINGERPRINT_JSON.max_height != "*")
+		q += "&max_height=" + parseInt(FINGERPRINT_JSON.max_height)
+
+	if(FINGERPRINT_JSON.time_limit != "*")
+		q += "&time_limit=" + encodeURIComponent(FINGERPRINT_JSON.time_limit)	
+
+	var api_url;
+	
+	if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
+	{
+		api_url = "https://canvas.bablosoft.com/prepare"
+	}else
+	{
+		api_url = "https://fingerprints.bablosoft.com/prepare"
+	}
+
+	api_url += q
+
+	FINGERPRINT_JSON.perfectcanvas_logs = FINGERPRINT_JSON.perfectcanvas_logs == "true"
+
+
+	_switch_http_client_internal()
+	http_client_set_fail_on_error(false)
+
+	_if_else(FINGERPRINT_JSON.perfectcanvas_request.length > 0, function(){
+		if(FINGERPRINT_JSON.perfectcanvas_logs)
+		{
+			log("(PerfectCanvas) Start obtaining fingerprint")
+		}
+		_do(function(){
+			http_client_post(api_url, ["data", FINGERPRINT_JSON.perfectcanvas_request], {"content-type":"custom/" + ("application/octet-stream"), "encoding":("UTF-8"), "method":("POST"),headers:("Accept-Encoding: gzip, deflate")})!
+
+			var json = http_client_content()
+	
+			try
+			{
+				var json_parsed = JSON.parse(json)
+				if(json_parsed.Status == "success")
+				{
+					FINGERPRINT_JSON.request_id = json_parsed.Data
+					_break()
+				}else if(json_parsed.Status == "error")
+				{
+					log_fail("(PerfectCanvas) " + json_parsed.Message)
+					fail(json_parsed.Message)
+				}else
+				{
+					if(FINGERPRINT_JSON.perfectcanvas_logs)
+					{
+						log("(PerfectCanvas) " + json_parsed.Message)
+					}
+				}
+			}catch(e){}
+	
+			sleep(5000)!
+		})!
+
+		if(FINGERPRINT_JSON.perfectcanvas_logs)
+		{
+			log("(PerfectCanvas) Request id is " + FINGERPRINT_JSON.request_id)
+		}
+
+		sleep(5000)!
+
+		_do(function(){
+			http_client_get2("https://canvas.bablosoft.com/status/" + FINGERPRINT_JSON.request_id,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
+
+			var json = http_client_content()
+	
+			try
+			{
+				var json_parsed = JSON.parse(json)
+				if(json_parsed.Status == "success")
+				{
+					_set_result(json_parsed.Data)
+					_break()
+				}else if(json_parsed.Status == "error")
+				{
+					log_fail("(PerfectCanvas) " + json_parsed.Message)
+					fail(json_parsed.Message)
+				}else
+				{
+					if(FINGERPRINT_JSON.perfectcanvas_logs)
+					{
+						log("(PerfectCanvas) " + json_parsed.Message)
+					}
+				}
+			}catch(e){}
+	
+			sleep(5000)!
+		})!
+
+		if(FINGERPRINT_JSON.perfectcanvas_logs)
+		{
+			log_success("(PerfectCanvas) Fingerprint has been obtained")
+		}
+
+	},function(){
+		_do(function(){
+			if(_iterator()>15)
+				fail("Query limit reached")
+	
+			http_client_get2(api_url,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
+			var json = http_client_content()
+	
+			try
+			{
+				var json_parsed = JSON.parse(json)
+				if(!json_parsed["trylater"])
+				{
+					_set_result(json)
+					_break()
+				}
+			}catch(e){}
+	
+			sleep(20000)!
+		})!  
+	})!
+
+	
+	delete FINGERPRINT_JSON
+
+
+	http_client_set_fail_on_error(true)
+	_switch_http_client_main()
+}
+
 function BrowserAutomationStudio_ApplyFingerprint()
 {
 	if(!_is_bas_browser_real())
@@ -15,6 +173,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	FINGERPRINT_AUDIO = false
 	FINGERPRINT_BATTERY = false
 	FINGERPRINT_RECTANGLES = false
+	FINGERPRINT_PERFECTCANVAS = true
 
 	if(typeof(_arguments()) == "object")
 	{
@@ -34,6 +193,9 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGERPRINT_BATTERY = _arguments()[4]
 		if(_arguments().length > 5 && FINGERPRINT_JSON["rectangles"])
 			FINGERPRINT_RECTANGLES = _arguments()[5]
+		if(_arguments().length > 6 && FINGERPRINT_JSON["perfectcanvas"])
+			FINGERPRINT_PERFECTCANVAS = _arguments()[6]
+			
 	}else
 	{
 		try{
@@ -223,7 +385,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	{
 		var PerfectCanvasReplaceType = "Disable"
-		if(FINGERPRINT_JSON["perfectcanvas"])
+		if(FINGERPRINT_JSON["perfectcanvas"] && FINGERPRINT_PERFECTCANVAS)
 		{
 			
 			var Keys = Object.keys(FINGERPRINT_JSON["perfectcanvas"])

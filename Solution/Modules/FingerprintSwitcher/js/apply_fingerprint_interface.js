@@ -5,6 +5,8 @@
 	}}) %>
 
   <%= _.template($('#input_constructor').html())({id:"CanvasNoise", description:tr("Safe Canvas"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("If this settings is set to true, canvas will be enabled and noise will be added to all data returned from canvas")}}) %>
+  
+  <%= _.template($('#input_constructor').html())({id:"PerfectCanvas", description:tr("Use PerfectCanvas"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("If this settings is set to true, PerfectCanvas replacement will be enabled. Fingerprint must contain PerfectCanvas data in order to make it work. See \"Get fingerprint\" action for explanation.")}}) %>
 
   <%= _.template($('#input_constructor').html())({id:"WebglNoise", description:tr("Safe WebGL"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("If this settings is set to true, WebGL will be enabled, noise will be added to WebGL canvas and your hardware properties, like video card vendor and renderer, will be changed")}}) %>
 

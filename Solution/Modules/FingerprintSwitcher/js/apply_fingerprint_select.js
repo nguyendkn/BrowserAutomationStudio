@@ -4,6 +4,7 @@ var WebglNoise = GetInputConstructorValue("WebglNoise", loader);
 var AudioNoise = GetInputConstructorValue("AudioNoise", loader);
 var SafeBattery = GetInputConstructorValue("SafeBattery", loader);
 var SafeRectangles = GetInputConstructorValue("SafeRectangles", loader);
+var PerfectCanvas = GetInputConstructorValue("PerfectCanvas", loader);
 
 if(Fingerprint["original"].length == 0)
 {
@@ -14,6 +15,12 @@ if(Fingerprint["original"].length == 0)
 if(CanvasNoise["original"].length == 0)
 {
   Invalid("CanvasNoise is empty");
+  return;
+}
+
+if(PerfectCanvas["original"].length == 0)
+{
+  Invalid("PerfectCanvas is empty");
   return;
 }
 
@@ -49,7 +56,8 @@ try{
   		webgl: WebglNoise["updated"],
       audio: AudioNoise["updated"],
       battery: SafeBattery["updated"],
-      rectangles: SafeRectangles["updated"]
+      rectangles: SafeRectangles["updated"],
+      perfectcanvas: PerfectCanvas["updated"]
   	})
 
   code = Normalize(code,0)

@@ -8,6 +8,8 @@ var MinimumWidth = GetInputConstructorValue("MinimumWidth", loader);
 var MinimumHeight = GetInputConstructorValue("MinimumHeight", loader);
 var MaximumWidth = GetInputConstructorValue("MaximumWidth", loader);
 var MaximumHeight = GetInputConstructorValue("MaximumHeight", loader);
+var PerfectCanvasRequest = GetInputConstructorValue("PerfectCanvasRequest", loader);
+var PerfectCanvasDebug = GetInputConstructorValue("PerfectCanvasDebug", loader);
 
 
 if(Tags["original"].length == 0)
@@ -59,7 +61,9 @@ try{
       min_height: MinimumHeight["updated"],
       max_width: MaximumWidth["updated"],
       max_height: MaximumHeight["updated"],
-      time_limit: AddedDate["updated"]
+      time_limit: AddedDate["updated"],
+      perfectcanvas_request: PerfectCanvasRequest["updated"],
+	    perfectcanvas_logs: PerfectCanvasDebug["updated"],
     })
 
   code = Normalize(code,0)

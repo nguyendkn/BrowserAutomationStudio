@@ -5,7 +5,7 @@
 	"description":"Fingerprint switcher",
 	"icon":"fingerprintswitcher.png",
 	"description_small":{"en": "Fingerprint switcher", "ru": "Смена отпечатка браузера"},
-	"major_version": 2,
+	"major_version": 3,
 	"minor_version": 0,
 	"developer_name": "bablosoft", 
 	"developer_email": "mail.to.twaego@gmail.com", 
@@ -31,15 +31,6 @@
 			"interface": "apply_fingerprint_interface.js",
 			"select": "apply_fingerprint_select.js",
 			"code": [{"file":"apply_fingerprint_code.js", "name": "apply_fingerprint_code"}]
-		},
-		{
-			"name":"FingerprintSwitcher_SynchronizeFlash",
-			"description":{"en": "Synchronize Flash","ru": "Синхронизировать Флеш"},
-			"template": "{{Fingerprint}}",
-			"is_element": false,
-			"interface": "synchronize_flash_interface.js",
-			"select": "synchronize_flash_select.js",
-			"code": [{"file":"synchronize_flash_code.js", "name": "synchronize_flash_code"}]
 		}
 	],
 	"localize": 
@@ -90,6 +81,8 @@
 		"Using this action is like user agent switcher on steroids. It changes not only user agent, but a lot of browser internals to make BAS actually look like firefox, chrome, safari, on desktop or on mobile.": {"ru":"Это действие - более продвинутая версия смены юзер агента. Оно меняет не только юзер агент, но и множество внутренних методов и переменных браузера, так, что он выглядел абсолютно идентично хрому, файерфоксу, сафари, настольному или мобильному браузеру."},
 		"Several additional features may be used to make your browser less detectable. Apply proxy through 'Proxy' action. Change timezone with 'Set timezone and geolocation by ip' action. Use, store and reuse profiles, because starting browser on newly created profiles may be suspicious.": {"ru":"Некоторые дополнительные действия могут быть использованы, чтобы сделать ваш браузер более защищенным. Задайте прокси сервер через действие 'Прокси'. Измените часовой пояс с помощью действия 'Установить часовой пояс и координаты по ип'. Используйте, сохраняйте и повторно используйте профили, потому что запуск браузера на только что созданных профилях может быть подозрительным."},
 		"Fingerprints are fetched from": {"ru":"Отпечатки загружаются из сервиса"},
+		"If you want to use PerfectCanvas, you only need to fill this field:": {"ru":"Если вы хотите использовать PerfectCanvas, то необходимо заполнить только это поле:"},
+		
 		"service, in order to use that service, you need to ": {"ru":", чтобы его использовать вам необходимо"},
 		"However, you may get fingerprints for free with Microsoft Windows,Chrome tags and with requests limits. In order to run free version, leave 'Service key' field blank.": {"ru":"Тем не менее, вы можете бесплатно получать отпечатки с тегами Microsoft Windows,Chrome и с ограничениями на количество запросов. Чтобы использовать бесплатную версию, оставьте поле 'Ключ сервиса' пустым."},
 		"Fingerprint service fetches data from a real browsers on real devices, so you may be sure, that fingerprints are always fresh - contain actual user agent, plugin versions, etc.": {"ru":"Сервис FingerprintSwitcher извлекает данные из реальных браузеров на реальных устройствах, поэтому вы можете быть уверены, что отпечатки всегда актуальные, они содержат новые юзер агенты, версии плагинов и т. д."},
@@ -99,6 +92,8 @@
 		"After execution of this action will complete, [[FINGERPRINT]] variable will contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be used immediately with 'Apply fingerprint' action. It also can be saved to a text file or database and reused later.": {"ru":"По завершении выполнения этого действия переменная [[FINGERPRINT]] будет содержать все данные, необходимые для изменения отпечатка. Они могут быть использованы как сразу, вместе с действием 'Применить отпечаток', так и в любое другое время, даже после перезапуска BAS. Для этого сохраните их в текстовый файл или базу данных и загрузите перед использованием."},
 		"This value must contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be obtained as result of 'Get fingerprint' action. Note that fingerprint may be reused - if you store them into file or database, and load on next BAS start, it will still work.": {"ru":"Этот параметр должен содержать данные, необходимые для изменения отпечатка. Их можно получить как результат действия 'Получить отпечаток'. Обратите внимание, что отпечаток может быть использован как сразу, так и в любое другое время, даже после перезапуска BAS. Для этого сохраните его в текстовый файл или базу данных и загрузите перед использованием."},
 		"Use a free version": {"ru":"Использовать бесплатную версию"},
+		"Use PerfectCanvas": {"ru":"Использовать PerfectCanvas"},
+
 		"This value must contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be obtained as result of 'Get fingerprint' action. Note that this value may be reused - if you store it into file or database, and load on next BAS start, it will still work.": {"ru":"Этот параметр должен содержать данные, необходимые для изменения отпечатка. Их можно получить как результат действия 'Получить отпечаток'. Обратите внимание, что отпечаток может быть использован как сразу, так и в любое другое время, даже после перезапуска BAS. Для этого сохраните его в текстовый файл или базу данных и загрузите перед использованием."},
 		"Change browser fingerprint, which contains: user agent, screen size, navigator, fonts and many more.": {"ru":"Изменить отпечаток браузера, который содержит: юзер агент, размер экрана, свойства navigator, шрифты и многое другое."},
 		"'Fingerprint' input parameter must contain fingerprint string. Fingerprint string contains all data necessary to change fingerprint. It can be obtained as result of 'Get fingerprint' action. Note that this value may be reused - if you store it into file or database, and load on next BAS start, it will still work.": {"ru":"Параметр 'Отпечаток' должен содержать данные, необходимые для изменения отпечатка. Их можно получить как результат действия 'Получить отпечаток'. Обратите внимание, что отпечаток может быть использован как сразу, так и в любое другое время, даже после перезапуска BAS. Для этого сохраните его в текстовый файл или базу данных и загрузите перед использованием."},
@@ -113,7 +108,29 @@
 
 		"If this settings is set to true, audio will be enabled, noise will be added to sound and your hardware properties, like sample rate and naumber of channels, will be changed": {"ru":"Если в этом поле установлено значение true, audio api будет включен, шум будет добавлен к звуку, а ваши реальные свойства железа будут изменены"},
 		"If this settings is set to true, canvas will be enabled and noise will be added to all data returned from canvas": {"ru":"Если в этом поле установлено значение true, получение данных из canvas будет включено, но к этим данным будет добавлен шум."},
-		"If this settings is set to true, WebGL will be enabled, noise will be added to WebGL canvas and your hardware properties, like video card vendor and renderer, will be changed": {"ru":"Если в этом поле установлено значение true, WebGL будет включен, шум будет добавлен к изображениям получаемым из элементов отображаемым с помощью WebGL, а ваши реальные свойства видеокарты будут изменены"}
+		"If this settings is set to true, WebGL will be enabled, noise will be added to WebGL canvas and your hardware properties, like video card vendor and renderer, will be changed": {"ru":"Если в этом поле установлено значение true, WebGL будет включен, шум будет добавлен к изображениям получаемым из элементов отображаемым с помощью WebGL, а ваши реальные свойства видеокарты будут изменены"},
+
+		"With the help of PerfectCanvas technology, canvas data is replaced in the most accurate way possible. Data is drawn on real devices.": {"ru":"С помощью технологии PerfectCanvas замена данных canvas происходит максимально точным способом. Данные отрисовываются на реальных устройствах."},
+		"Learn more.": {"ru":"Узнать больше."},
+		"PerfectCanvas request. Can be blank.": {"ru":"Запрос PerfectCanvas. Может быть пустым."},
+		"PerfectCanvas request contains all data required to render canvas on remote machine. In order to obtain request, use CanvasInspector application, see wiki for more information and download link. \"PerfectCanvas request\" data is obtained one time for site, not for each fingerprint request.": {"ru":"Запрос PerfectCanvas содержит все данные, необходимые для отрисовки canvas на удаленной машине. Чтобы получить строку запроса, используйте приложение CanvasInspector, смотрите вики для получения дополнительной информации и ссылки для скачивания. \"Запрос PerfectCanvas\" должен быть получен один раз для сайта, а не для каждого отпечатка."},
+		"Use standard fingerprint. Canvas data will be replaced, by adding noise.": {"ru":"Использовать стандартный отпечаток. К данным canvas будет добавлен шум."},
+		"PerfectCanvas request": {"ru":"Запрос PerfectCanvas"},
+		"Use fingerprint with PerfectCanvas. All canvas data, which matches request will be replaced with images from real devices. Any other canvas data will be replaced by adding noise.": {"ru":"Использовать отпечаток с PerfectCanvas. Все данные, соответствующие запросу PerfectCanvas, будут заменены изображениями с реальных устройств. Любые другие данные canvas будут заменены добавлением шума."},
+		"How to get PerfectCanvas request?": {"ru":"Как получить запрос PerfectCanvas?"},
+		"PerfectCanvas logs": {"ru":"PerfectCanvas логи"},
+		"Is it necessary to add logs while obtaining fingerprint with PerfectCanvas.": {"ru":"Нужно ли добавлять логи при получении отпечатков с PerfectCanvas."},
+		"Add logs, may be useful for diagnostic.": {"ru":"Добавить логи, может быть полезно для диагностики."},
+		"Disable logs, fingerprint will be obtained without any messages.": {"ru":"Отключить логи, отпечаток будет получен без каких-либо сообщений."},
+		"By default FingerprintSwitcher adds noise to canvas data. If you want to have more accurate results, use PerfectCanvas technology. It renders canvas data on real device and then replaces canvas fingerprinting results inside your browser. In order to use it, some preparation must be made. You need to fill \"PerfectCanvas request\" field. Data for this field can be obtained by using CanvasInspector application. This application is free and easy to install, it allows to get PerfectCanvas request for site that you working with. More info and download link can be found": {"ru":"По умолчанию FingerprintSwitcher добавляет шум в данные canvas. Если вы хотите получить более точные результаты, используйте технологию PerfectCanvas. Она позволяет получать данные canvas из реального устройства, а затем заменяет результаты получения отпечатков canvas в вашем браузере. Для использования этой технологии, необходима подготовка. Необходимо заполнить поле \"Запрос PerfectCanvas\". Данные для этого поля могут быть получены с помощью приложения CanvasInspector. Это бесплатное и простое в использовании и установке приложение, которое позволяет получить запрос PerfectCanvas для сайта, с которым вы работаете. Более подробную информацию и ссылку для скачивания можно найти"},
+		"\"PerfectCanvas request\" data is obtained one time for site, not for each fingerprint request.": {"ru":"\"Запрос PerfectCanvas\" должен быть получен один раз для сайта, а не для каждого отпечатка."},
+		"If you leave \"PerfectCanvas request\" field empty, this action will return standart fingerprint with noise canvas replacement.": {"ru":"Если вы оставите поле \"Запрос PerfectCanvas\" пустым, это действие вернет стандартный отпечаток с подменой canvas с помощью добавления шума."},
+		"Getting fingerprint with PerfectCanvas may require some time depending on request queue length and tag combination that you are using. If you are using combination of tags which are rare, this can be slow. Use * as input for \"Tags\" field to speed up process. Obtaining fingerprint for popular service may also be slow.": {"ru":"Получение отпечатка с помощью PerfectCanvas может занять некоторое время в зависимости от длины очереди запросов и используемой комбинации тегов. Если вы используете комбинацию тегов, которые встречаются редко, это может привести к медленной работе этого действия. Используйте * в качестве значения для поля \"Теги\", чтобы ускорить процесс. Получение отпечатка для популярного сервиса также может быть медленным."},
+		"Getting fingerprint with PerfectCanvas can only performed in single thread, you can still use several threads, but rest of the threads will be waiting, while only one will work.": {"ru":"Получение отпечатка с помощью PerfectCanvas может выполняться только в одном потоке, вы можете использовать несколько потоков, но остальные потоки будут ожидать, а работать будет только один."},
+		"If you have \"PerfectCanvas request\" field prepared for \"site A\", and you visit \"site B\" then canvas data for \"site B\" will be replaced by adding noise. If you want canvas data to be replaced for both sites, you have to prepare request for both \"site A\" and \"site B\".": {"ru":"Если поле \"Запрос PerfectCanvas\", было подготовленно для \"сайта A\", и вы посещаете \"сайт Б\", то данные canvas для \"сайта Б\" будут заменены с помощью добавления шума. Если вы хотите, чтобы данные canvas заменялись для обоих сайтов, необходимо подготовить запрос как для \"сайта A\", так и для \"сайта Б\"."},
+		"In order to replace fingerprint with PerfectCanvas, it is sufficient to call this action with \"PerfectCanvas request\" field filled out, and then use fingerprint by calling \"Apply fingerprint\" action.": {"ru":"Чтобы заменить отпечаток с использованием PerfectCanvas, достаточно вызвать это действие с заполненым параметром \"Запрос PerfectCanvas\", а затем использовать этот отпечаток вызвав действие \"Применить отпечаток\"."},
+		"In order to check if data for PerfectCanvas was actually replaced check log at BrowserAutomationStudio/apps/CURRENT_BAS_VERSION/s/PROCESS_ID.txt file.": {"ru":"Чтобы проверить, действительно ли данные для PerfectCanvas были заменены, проверьте лог в файле BrowserAutomationStudio/apps/ТЕКУЩАЯ_ВЕРСИЯ_BAS/s/ID_ПРОЦЕССА.txt."},
+		"If this settings is set to true, PerfectCanvas replacement will be enabled. Fingerprint must contain PerfectCanvas data in order to make it work. See \"Get fingerprint\" action for explanation.": {"ru":"Если в этом поле установлено значение true, замена данных PerfectCanvas будет включена. Чтобы это работало, отпечаток должен содержать данные PerfectCanvas. Смотрите действие \"Получить отпечаток\" чтобы узнать больше."}
 	},
 	"engine": ["engine.js"],
 	"browser": [],

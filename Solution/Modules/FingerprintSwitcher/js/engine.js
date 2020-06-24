@@ -84,7 +84,7 @@ function BrowserAutomationStudio_GetFingerprint()
 				}
 			}catch(e){}
 	
-			sleep(5000)!
+			sleep(15000)!
 		})!
 
 		if(FINGERPRINT_JSON.perfectcanvas_logs)

@@ -12,7 +12,10 @@ class BasSearchEngine {
         ...this._getVideoItems(),
         ...this._getWikiItems()
       ],
-      fields: ['name'],
+      fields: [
+        { name: 'module', weight: 0.6 },
+        { name: 'name', weight: 0.4 },
+      ],
       ref: 'key'
     });
 
@@ -24,7 +27,7 @@ class BasSearchEngine {
 
     const results = this.engine.search(query)
       .map((match) => {
-        const document = this.engine.store.getDocumentByRef(match.ref);
+        const document = this.engine.store.findByRef(match.ref);
         const matches = this.getMatches(document, query, match);
 
         return {
@@ -48,7 +51,7 @@ class BasSearchEngine {
 
   recent() {
     return ActionHistory.map((key) => {
-      const document = this.engine.store.getDocumentByField('key', key);
+      const document = this.engine.store.findByField('key', key);
 
       return {
         ...document,
@@ -57,23 +60,23 @@ class BasSearchEngine {
     });
   }
 
-  getMatches(document, query, { queryTokens, matchData }) {
+  getMatches(document, query, { queryTokens, metadata }) {
     const matches = [];
 
-    Object.values(matchData.metadata).forEach((value) => {
+    Object.values(metadata).forEach((value) => {
       Object.entries(value).forEach(([field, data]) => {
         const fieldLower = document[field].toLowerCase();
         const queryLower = query.toLowerCase();
 
-        if (fieldLower.includes(queryLower)) {
-          matches.push({ comparator: query + field, match: query, field });
-        } else {
+        if (!fieldLower.includes(queryLower)) {
           data.tokenOriginal.forEach((sourceToken) => {
             const queryToken = queryTokens.find((v) => sourceToken.includes(v));
-            const match = queryToken || sourceToken;
+            const token = queryToken || sourceToken;
 
-            matches.push({ comparator: match + field, match, field });
+            matches.push({ comparator: token + field, match: token, field });
           });
+        } else {
+          matches.push({ comparator: query + field, match: query, field });
         }
       });
     });
@@ -105,18 +108,24 @@ class BasSearchEngine {
         description = getTextContent(shortDesc);
       }
 
-      const action = { name: tr(value.name), type: 'action', description, key };
+      const action = {
+        name: tr(value.name),
+        type: 'action',
+        popup: false,
+        description,
+        key
+      };
 
-      if (value.class && value.class == 'browser') {
+      if (value.class && value.class === 'browser') {
         action.description += tr(' This action works only with element inside browser.');
         action.module = tr('Browser > Element');
         action.icon = '../icons/element.png';
         action.popup = true;
       } else {
-        let group = this._getActionGroup(key);
+        const group = this._getActionGroup(key);
         action.module = group.description;
+        action.group = group.name;
         action.icon = group.icon;
-        action.popup = false;
       }
 
       return action;
@@ -124,9 +133,13 @@ class BasSearchEngine {
   }
 
   _getActionGroup(action) {
-    const name = _A2G[action] || 'browser';
     const tasks = _TaskCollection.toJSON();
-    return _.find(tasks, { type: 'group', name });
+    const name = _A2G[action] || 'browser';
+
+    return _.find(tasks, {
+      type: 'group',
+      name
+    });
   }
 
   /**

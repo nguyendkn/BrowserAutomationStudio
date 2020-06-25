@@ -1378,8 +1378,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     }
                 }else
                 {
-                    CefDoMessageLoopWork();
-                    app->CefMessageLoop();
+                    TimerLoop++;
+                    TimerLoop %= 10;
+                    //Skip 1 frame out of 10, this is required in order to avoid stack overflow in case if CefDoMessageLoopWork will dispatch message
+                    if(TimerLoop != 0)
+                    {
+                        CefDoMessageLoopWork();
+                        app->CefMessageLoop();
+                    }
                 }
 
                 if(app->IsNeedQuit())

@@ -1092,6 +1092,16 @@ namespace BrowserAutomationStudioFramework
     {
         WorkerSettings->Clear();
     }
+
+    QString SubprocessBrowser::GetBrowserUniqueId()
+    {
+        if(!WorkerSettings)
+            return QString();
+
+        return WorkerSettings->GetUniqueProcessId();
+    }
+
+
     void SubprocessBrowser::ResetProxy()
     {
         WorkerSettings->SetProxyServer(QString());

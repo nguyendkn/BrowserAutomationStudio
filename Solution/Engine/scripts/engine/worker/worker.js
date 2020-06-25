@@ -146,6 +146,11 @@ function _find_all_online_profiles(search_pattern, callback)
     })
 }
 
+function _get_browser_unique_id()
+{
+    return Browser.GetBrowserUniqueId();
+}
+
 
 /* Manual control */
 function open_browser(callback)

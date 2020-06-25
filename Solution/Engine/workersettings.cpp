@@ -18,6 +18,11 @@ namespace BrowserAutomationStudioFramework
         BrowserEngineVirtual = "BASChrome";
     }
 
+    QString WorkerSettings::GetUniqueProcessId()
+    {
+        return UniqueProcessId;
+    }
+
     void WorkerSettings::Clear()
     {
         Webrtc = "disable";

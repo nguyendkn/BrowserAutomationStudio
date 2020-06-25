@@ -85,6 +85,8 @@ namespace BrowserAutomationStudioFramework
         virtual void SetWebgl(const QString& Webgl) = 0;
         virtual void SetWebglNoise(const QString& WebglNoise) = 0;
 
+        virtual QString GetUniqueProcessId() = 0;
+
 
     signals:
 

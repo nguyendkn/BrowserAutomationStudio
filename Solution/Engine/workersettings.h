@@ -126,6 +126,8 @@ namespace BrowserAutomationStudioFramework
 
         virtual void Clear();
 
+        virtual QString GetUniqueProcessId();
+
 
     signals:
 

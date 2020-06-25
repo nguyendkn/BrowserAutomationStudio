@@ -110,6 +110,7 @@ namespace BrowserAutomationStudioFramework
         bool GetManualBrowserControl();
 
         void ResetSettings();
+        QString GetBrowserUniqueId();
 
         void ResetProxy();
         bool IsBASBrowser();

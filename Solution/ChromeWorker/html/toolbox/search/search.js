@@ -17,17 +17,44 @@ class SearchManager {
    * Register all event handlers associated with the search page.
    */
   registerEventHandlers() {
-    $(document).on('click', '.result-item', function () {
-      const { popup, name, type, key } = $(this).data();
+    const self = this;
 
-      if (type === 'link') {
-        BrowserAutomationStudio_OpenUrl(key);
-      } else if (!popup) {
-        BrowserAutomationStudio_OpenAction(key);
-      } else if (popup) {
-        BrowserAutomationStudio_Notify('search', name);
+    $(document).on({
+      mouseover: function (e) {
+        const parentClass = e.target.parentNode.className;
+        const targetClass = e.target.className;
+
+        if (![parentClass, targetClass].includes('item-module')) {
+          $(this).css('border-color', '#7699af');
+        }
+      },
+      mouseout: function (e) {
+        const parentClass = e.target.parentNode.className;
+        const targetClass = e.target.className;
+
+        if (![parentClass, targetClass].includes('item-module')) {
+          $(this).css('border-color', '#f2f5f7');
+        }
+      },
+      click: function (e) {
+        const { group, popup, name, type, key } = $(this).data();
+        const parentClass = e.target.parentNode.className;
+        const targetClass = e.target.className;
+
+        if ([parentClass, targetClass].includes('item-module')) {
+          BrowserAutomationStudio_GotoGroup(group);
+          return self.hide();
+        }
+
+        if (type === 'link') {
+          BrowserAutomationStudio_OpenUrl(key);
+        } else if (!popup) {
+          BrowserAutomationStudio_OpenAction(key);
+        } else if (popup) {
+          BrowserAutomationStudio_Notify('search', name);
+        }
       }
-    });
+    }, '.result-item');
 
     $(document).on('click', '#nextpage', (e) => {
       e.preventDefault();
@@ -40,12 +67,12 @@ class SearchManager {
     });
 
     $(window).resize(() => {
-      if (this.$searchContainer.is(':visible')) {
-        if (this.lastQuery) {
-          this.search(this.lastQuery);
-        } else {
-          this.recent();
-        }
+      if (this.$searchContainer.is(':hidden')) return;
+
+      if (this.lastQuery) {
+        this.search(this.lastQuery);
+      } else {
+        this.recent();
       }
     });
   }
@@ -154,6 +181,9 @@ class SearchManager {
     this.$emptyHeader.toggle(results.length === 0);
   }
 
+  /**
+   * Initialize search page.
+   */
   initialize() {
     this.$recentHeader = $('.results-recent').hide();
     this.$emptyHeader = $('.results-empty').hide();

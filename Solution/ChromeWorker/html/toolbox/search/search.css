@@ -5,6 +5,10 @@
   font-size: 12px;
 }
 
+.item-module:hover {
+  background-color: #dde6eb;
+}
+
 .item-module {
   background-color: #54809c;
   margin: 4px auto 1px 0px;
@@ -29,9 +33,9 @@
 }
 
 .item-icon {
+  opacity: 0.7;
   height: 20px;
   width: 20px;
-  opacity: 0.7;
 }
 
 @media (min-width: 961px) {
@@ -87,7 +91,6 @@
 }
 
 .result-item:hover {
-  border-color: #7699af;
   cursor: pointer;
 }
 
@@ -173,9 +176,8 @@
 }
 
 .search-page-button:disabled:hover {
-  cursor: not-allowed;
   background-color: #dde6eb;
-
+  cursor: not-allowed;
 }
 
 .search-page-button:active:hover {
@@ -197,7 +199,7 @@
 .search-page-button {
   background-color: #54809c;
   color: #ffffff;
-  opacity:0.8
+  opacity: 0.8;
 }
 
 .search-clear-button:hover {
@@ -207,8 +209,7 @@
 .search-clear-button {
   background-color: #ffffff;
   color: #bf5d4e;
-  opacity:0.9
-  
+  opacity: 0.9;
 }
 
 .search-pagination {
@@ -250,7 +251,7 @@
 .search-icon {
   background-color: #bf5d4e;
   color: #fff;
-  opacity:0.9
+  opacity: 0.9;
 }
 
 .search-bar-container {
@@ -286,8 +287,15 @@
   overflow: hidden;
 }
 
+.item-module > mark {
+  color: #f4f400;
+}
+
+.item-name > mark {
+  color: #ff553e;
+}
+
 mark {
   background: inherit;
-  color: #ff553e;
   padding: 0;
 }

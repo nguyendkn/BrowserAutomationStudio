@@ -78,6 +78,17 @@ class SearchManager {
   }
 
   /**
+   * Check that the event target contains a class that belongs to the action module.
+   * @param {{target: HTMLInputElement}} target - selected event target.
+   */
+  isModuleTarget({ target }) {
+    return [
+      target.parentNode.className,
+      target.className
+    ].includes('item-module');
+  }
+
+  /**
    * Check if all results are visible on the search page.
    * @readonly
    */
@@ -102,7 +113,7 @@ class SearchManager {
     this.$recentHeader.hide();
     this.$emptyHeader.hide();
     this.lastQuery = query;
-    this.renderSearch(this.engine.search(query));
+    this.render(this.engine.search(query));
   }
 
   /**
@@ -112,7 +123,7 @@ class SearchManager {
     this.$recentHeader.show();
     this.$emptyHeader.hide();
     this.lastQuery = null;
-    this.renderSearch(this.engine.recent());
+    this.render(this.engine.recent());
   }
 
   /**

@@ -20,28 +20,16 @@ class SearchManager {
     const self = this;
 
     $(document).on({
-      mouseover: function (e) {
-        const parentClass = e.target.parentNode.className;
-        const targetClass = e.target.className;
-
-        if (![parentClass, targetClass].includes('item-module')) {
-          $(this).css('border-color', '#7699af');
-        }
+      mouseover(e) {
+        if (!self.isModuleTarget(e)) $(this).css('border-color', '#7699af');
       },
-      mouseout: function (e) {
-        const parentClass = e.target.parentNode.className;
-        const targetClass = e.target.className;
-
-        if (![parentClass, targetClass].includes('item-module')) {
-          $(this).css('border-color', '#f2f5f7');
-        }
+      mouseout(e) {
+        if (!self.isModuleTarget(e)) $(this).css('border-color', '#f2f5f7');
       },
-      click: function (e) {
+      click(e) {
         const { group, popup, name, type, key } = $(this).data();
-        const parentClass = e.target.parentNode.className;
-        const targetClass = e.target.className;
 
-        if ([parentClass, targetClass].includes('item-module')) {
+        if (self.isModuleTarget(e) && group) {
           BrowserAutomationStudio_GotoGroup(group);
           return self.hide();
         }

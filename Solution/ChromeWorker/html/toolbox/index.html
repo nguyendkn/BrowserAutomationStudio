@@ -290,7 +290,7 @@
             <i class="fa fa-fw fa-chevron-right" aria-hidden="true"></i>
           </button>
         </span>
-        <button type="button" class="search-control search-clear-button" id="searchinputclear">
+        <button type="button" class="search-control search-clear-button" id="searchclear">
           <i class="fa fa-fw fa-times" aria-hidden="true"></i>
         </button>
       </div>
@@ -6250,7 +6250,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #use-target": "usetargetchange",
         "click #use-move": "usemovechange",
 
-        "click #searchinputclear": "searchinputclear",
+        "click #searchclear": "searchclearclick",
         "click #searchinput": "searchinputclick",
         "focus #searchinput": "searchinputfocus",
         "blur #searchinput": "searchinputblur",
@@ -6479,7 +6479,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         _SearchManager.show();
       },
 
-      searchinputclear: function(event)
+      searchclearclick: function(event)
       {
         _SearchManager.hide();
       },

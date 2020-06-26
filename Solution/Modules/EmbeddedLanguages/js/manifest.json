@@ -17,7 +17,7 @@
 		{
 			"name":"EmbeddedLanguagesNodeJs",
 			"description":{"en": "Node.js","ru": "Node.js"},
-			"suggestion":{"en": "javascript run execute","ru": "javascript джаваскрипт яваскрипт запустить"},
+			"suggestion":{"en": "run javascript, execute javascript, execute code, run code, external library","ru": "выполнить javascript, вызвать javascript, вызвать джаваскрипт, выполнить яваскрипт, подключить внешнюю библиотеку"},
 			"template":"",
 			"maximize":false,
 			"is_element": false,

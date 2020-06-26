@@ -17,7 +17,7 @@
 		{
 			"name":"UseProfile",
 			"description":{"en": "Create or switch to local profile","ru": "Создать или переключиться на локальный профиль"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Path}}",
 			"is_element": false,
 			"interface": "use_profile_interface.js",
@@ -27,7 +27,7 @@
 		{
 			"name":"StopUsingProfile",
 			"description":{"en": "Stop using profile","ru": "Перестать использовать профиль"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"",
 			"is_element": false,
 			"interface": "stop_using_profile_interface.js",
@@ -37,7 +37,7 @@
 		{
 			"name":"SaveProfile",
 			"description":{"en": "Move local profile to other folder","ru": "Перенести локальный профиль в другую папку"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Path}}",
 			"is_element": false,
 			"interface": "save_profile_interface.js",
@@ -47,7 +47,7 @@
 		{
 			"name":"RemoveLocalProfile",
 			"description":{"en": "Remove local profile","ru": "Удалить локальный профиль"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Path}}",
 			"is_element": false,
 			"interface": "remove_local_profile_interface.js",
@@ -57,7 +57,7 @@
 		{
 			"name":"GetCurrentProfile",
 			"description":{"en": "Get path/id of current profile","ru": "Получить путь/id текущего профиля"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Save}}",
 			"is_element": false,
 			"interface": "get_current_profile_interface.js",

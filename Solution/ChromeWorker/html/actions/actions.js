@@ -4,8 +4,8 @@ _A = {
       "description":"Load cookies from browser",
       "template":"",
       "suggestion":{  
-         "en":"Cookie , autologin",
-         "ru":"Cookie , кукисы , куки , автовход"
+         "en":"autologin",
+         "ru":"автовход"
       },
       "group":"httpclient"
    },
@@ -14,8 +14,8 @@ _A = {
       "description":"Restrict popups",
       "template":"",
       "suggestion":{  
-         "en":"popup аd blocking",
-         "ru":"блокировка рекламы реклама"
+         "en":"аd blocking",
+         "ru":"блокировать рекламу"
       },
       "group":"network"
    },
@@ -29,20 +29,12 @@ _A = {
       "name":"Restrict downloads",
       "description":"Restrict downloads",
       "template":"",
-      "suggestion":{  
-         "en":"download",
-         "ru":"загрузки загрузка загрузку"
-      },
       "group":"network"
    },
    "allowdownloads":{  
       "name":"Allow downloads",
       "description":"Allow downloads",
       "template":"",
-      "suggestion":{  
-         "en":"download",
-         "ru":"загрузки загрузка загрузку"
-      },
       "group":"network"
    },
    "loadcookiesfromhttpclient":{  
@@ -50,8 +42,8 @@ _A = {
       "description":"Load cookies from http client",
       "template":"",
       "suggestion":{  
-         "en":"Cookie , autologin",
-         "ru":"Cookie , кукисы , куки , автовход"
+         "en":"autologin",
+         "ru":"автовход"
       },
       "group":"network"
    },
@@ -59,30 +51,18 @@ _A = {
       "name":"Thread index",
       "description":"Thread index",
       "template":"{{Save}}",
-      "suggestion":{  
-         "en":"threads",
-         "ru":"потоков потока номер"
-      },
       "group":"ScriptStats"
    },
    "closebrowser":{  
       "name":"Close browser",
       "description":"Close browser",
       "template":"",
-      "suggestion":{  
-         "en":"stop",
-         "ru":"закрыть остановить"
-      },
       "group":"manual"
    },
    "openbrowser":{  
       "name":"Open browser",
       "description":"Open browser",
       "template":"",
-      "suggestion":{  
-         "en":"start",
-         "ru":"открыть запустить"
-      },
       "group":"manual"
    },
    "addtab":{  
@@ -90,8 +70,8 @@ _A = {
       "description":"Add Tab",
       "template":"{{Url}}",
       "suggestion":{  
-         "en":"tab tabs window",
-         "ru":"вкладку вкладки окно окна"
+         "en":"new window",
+         "ru":"новое окно"
       },
       "group":""
    },
@@ -99,20 +79,12 @@ _A = {
       "name":"Get information about tabs",
       "description":"Get information about tabs",
       "template":" -> {{UrlList}} -> {{CurrentIndex}}",
-      "suggestion":{  
-         "en":"tab tabs window",
-         "ru":"вкладку вкладки окно окна"
-      },
       "group":""
    },
    "selecttab":{  
       "name":"Select Tab",
       "description":"Select Tab",
       "template":"{{Index}}",
-      "suggestion":{  
-         "en":"tab tabs window",
-         "ru":"вкладку вкладки окно окна"
-      },
       "group":""
    },
    "closetab":{  
@@ -120,8 +92,8 @@ _A = {
       "description":"Close Tab",
       "template":"{{Index}}",
       "suggestion":{  
-         "en":"tab tabs window",
-         "ru":"вкладку вкладки окно окна"
+         "en":"close window",
+         "ru":"закрыть окно"
       },
       "group":""
    },
@@ -129,10 +101,6 @@ _A = {
       "name":"Load",
       "description":"Load specific url",
       "template":"{{LoadUrl}}",
-      "suggestion":{  
-         "en":"url page",
-         "ru":"урл страницу страница"
-      },
       "group":"browser"
    },
    "navigateback":{  
@@ -140,8 +108,8 @@ _A = {
       "description":"Load previous page",
       "template":"",
       "suggestion":{  
-         "en":"previous back",
-         "ru":"назад предыдущая"
+         "en":"browser history",
+         "ru":"история браузера"
       },
       "group":"browser"
    },
@@ -149,10 +117,6 @@ _A = {
       "name":"Current Url",
       "description":"Get current url",
       "template":"{{SaveUrl}}",
-      "suggestion":{  
-         "en":"url",
-         "ru":"урл"
-      },
       "group":"browser"
    },
    "html":{  
@@ -160,8 +124,8 @@ _A = {
       "description":"Save page html to variable",
       "template":"{{Save}}",
       "suggestion":{  
-         "en":"code source html",
-         "ru":"код хтмл"
+         "en":"page source, html code",
+         "ru":"html страницы, хтмл код"
       },
       "group":"browser"
    },
@@ -170,8 +134,8 @@ _A = {
       "description":"Type text on page. For example, put email in input field",
       "template":"{{TypeData}}",
       "suggestion":{  
-         "en":"type input esc escape enter key",
-         "ru":"печать напечатать ввести нажать прокрутка прокрутить энтер клавиша клавишу"
+         "en":"press esc, press escape, press enter, press key, enter key",
+         "ru":"печать текста, напечатать текст, ввести текст, нажать кнопку, прокрутка страницы, прокрутить страницу, нажать энтер, нажать клавишу"
       },
       "group":"browser"
    },
@@ -180,8 +144,8 @@ _A = {
       "description":"Change browser size",
       "template":"{{ResizeX}} : {{ResizeY}}",
       "suggestion":{  
-         "en":"resolution pixel width height pixels",
-         "ru":"разрешение пиксель ширина высота пикселей"
+         "en":"browser resolution, window resolution, window width, window height, browser width, browser height",
+         "ru":"разрешение браузера, ширина браузера, высота браузера, разрешение окна, ширина окна, высота окна"
       },
       "group":"browser"
    },
@@ -190,8 +154,8 @@ _A = {
       "description":"Set proxy",
       "template":"{{ProxyText}}",
       "suggestion":{  
-         "en":"Proxy , Change ip , Socks , Proxies",
-         "ru":"Прокси , Изменить ип , Сменить ип , Socks , Установить прокси , Сокс"
+         "en":"Change ip, Socks",
+         "ru":"Изменить ип, Сменить ип, Socks, Сокс"
       },
       "group":"browser"
    },
@@ -200,8 +164,8 @@ _A = {
       "description":"Execute javascript",
       "template":"{{Value}} -> {{Save}}",
       "suggestion":{  
-         "en":"Javascript , Execute on page , Element height , Element width , Element coordinates , Custom functions , Access page",
-         "ru":"Яваскрипт , Выполнить на странице , Высота элемента , Ширина элемента , Координаты элемента , Пользовательские функции , Доступ к странице"
+         "en":"Execute on page, Access page",
+         "ru":"Яваскрипт, Выполнить на странице, Доступ к странице"
       },
       "group":"browser"
    },
@@ -210,8 +174,8 @@ _A = {
       "description":"Execute javascript on every page load in browser",
       "template":"{{Value}}",
       "suggestion":{  
-         "en":"Javascript , Execute on page , Element height , Element width , Element coordinates , Custom functions , Access page , Before page load",
-         "ru":"Яваскрипт , Выполнить на странице , Высота элемента , Ширина элемента , Координаты элемента , Пользовательские функции , Доступ к странице , перед загрузкой"
+         "en":"Execute on page, Access page, inject code",
+         "ru":"Яваскрипт, Выполнить на странице, Доступ к странице, внедрить код"
       },
       "group":"browser"
    },
@@ -220,7 +184,7 @@ _A = {
       "description":"Clear all browser data",
       "template":"",
       "suggestion":{  
-         "en":"reset restart",
+         "en":"restart",
          "ru":"перезапуск"
       },
       "group":"browser"
@@ -230,8 +194,8 @@ _A = {
       "description":"Set open file dialog result",
       "template":"{{Value}}",
       "suggestion":{  
-         "en":"upload file files",
-         "ru":"загрузка файла файлов"
+         "en":"upload file",
+         "ru":"загрузить файл"
       },
       "group":"browser"
    },
@@ -239,20 +203,12 @@ _A = {
       "name":"Start Drag File",
       "description":"Start Drag File",
       "template":"{{Value}}",
-      "suggestion":{  
-         "en":"upload file files",
-         "ru":"загрузка файла файлов"
-      },
       "group":"browser"
    },
    "promptresult":{  
       "name":"Prompt Result",
       "description":"Set prompt result",
       "template":"{{Value}}",
-      "suggestion":{  
-         "en":"dialog",
-         "ru":"диалоговое диалог"
-      },
       "group":"browser"
    },
    "httpauth":{  
@@ -260,8 +216,8 @@ _A = {
       "description":"Set http auth login and password",
       "template":"{{Login}}:{{Password}}",
       "suggestion":{  
-         "en":"http dialog login pass auth",
-         "ru":"диалоговое диалог логин пароль аутентификация хттп"
+         "en":"http authentication",
+         "ru":"хттп авторизация"
       },
       "group":"browser"
    },
@@ -270,8 +226,8 @@ _A = {
       "description":"Scroll to position",
       "template":"{{X}},{{Y}}",
       "suggestion":{  
-         "en":"scrolling",
-         "ru":"прокрутка прокрутить скролл"
+         "en":"page scrolling",
+         "ru":"прокрутка страницы"
       },
       "group":"browser"
    },
@@ -280,8 +236,8 @@ _A = {
       "description":"Render screen part to variable as png base64 encoded",
       "template":"{{X}},{{Y}},{{Width}},{{Height}} -> {{Save}}",
       "suggestion":{  
-         "en":"screen screenshot render image",
-         "ru":"скрин скриншот изображение"
+         "en":"make screen, make screenshot, render image, render element",
+         "ru":"сделать скрин, сделать скриншот, сохранить изображение, сохранить элемент, рендер элемента"
       },
       "group":"browser"
    },
@@ -290,8 +246,8 @@ _A = {
       "description":"Solve captcha",
       "template":"{{Value}} -> {{Save}}",
       "suggestion":{  
-         "en":"captcha capcha solve",
-         "ru":"капча каптча решить картинка"
+         "en":"solve capcha, solve image",
+         "ru":"решить каптчу, решить картинку"
       },
       "group":"browser"
    },
@@ -306,8 +262,8 @@ _A = {
       "description":"Set Timeout",
       "template":"{{Value}}",
       "suggestion":{  
-         "en":"timeout max time",
-         "ru":"таймаут максимальное время ожидания"
+         "en":"max action execution time",
+         "ru":"максимальное время ожидания, максимальное время действия"
       },
       "group":"browser"
    },
@@ -316,8 +272,8 @@ _A = {
       "description":"Mouse Settings",
       "template":"{{Speed}}",
       "suggestion":{  
-         "en":"mouse speed setting",
-         "ru":"скорость мышь мыши настройки"
+         "en":"mouse speed",
+         "ru":"скорость мыши"
       },
       "group":"browser"
    },
@@ -325,10 +281,6 @@ _A = {
       "name":"Notifications",
       "description":"Browser notifications",
       "template":"{{AllowNotifications}}",
-      "suggestion":{  
-         "en":"notification notifications",
-         "ru":"уведомления"
-      },
       "group":"browser"
    },
    "browsersettings":{  
@@ -336,8 +288,8 @@ _A = {
       "description":"Browser Settings",
       "template":"",
       "suggestion":{  
-         "en":"flash utf encoding skip frames options",
-         "ru":"флеш флэш кодировка пропуск кадров настройки"
+         "en":"skip frames, browser options",
+         "ru":"пропуск кадров, свойства браузера"
       },
       "group":"browser"
    },
@@ -346,8 +298,8 @@ _A = {
       "description":"Execute conditional actions",
       "template":"{{IfExpression}}",
       "suggestion":{  
-         "en":"condition else",
-         "ru":"условие если иф условий"
+         "en":"condition, else, execute if condition",
+         "ru":"условие, если, иф, иначе, выполнить если"
       },
       "group":"logic"
    },
@@ -356,8 +308,8 @@ _A = {
       "description":"Execute while loop",
       "template":"{{WhileExpression}}",
       "suggestion":{  
-         "en":"cycle loop for while until",
-         "ru":"цикл циклы фор вайл пока перебор всех"
+         "en":"cycle, loop, for, until, execute several times",
+         "ru":"цикл, фор, выполнять пока не будет выполнено условие, вайл, перебор, выполнить несколько раз"
       },
       "group":"logic"
    },
@@ -366,8 +318,8 @@ _A = {
       "description":"Execute for loop",
       "template":"{{ForFrom}} : {{ForTo}}",
       "suggestion":{  
-         "en":"cycle loop for while until",
-         "ru":"цикл циклы фор вайл пока перебор всех"
+         "en":"cycle, loop, for, until, execute several times",
+         "ru":"цикл, фор, выполнять пока не будет выполнено условие, вайл, перебор, выполнить несколько раз"
       },
       "group":"logic"
    },
@@ -376,8 +328,8 @@ _A = {
       "description":"Execute foreach loop",
       "template":"{{ForArray}}",
       "suggestion":{  
-         "en":"cycle loop for while until",
-         "ru":"цикл циклы фор вайл пока перебор всех"
+         "en":"cycle, loop, for, until, traverse list, iterate list, execute several times",
+         "ru":"цикл, фор, выполнять пока не будет выполнено условие, вайл, перебор списка, выполнить несколько раз"
       },
       "group":"logic"
    },
@@ -386,8 +338,8 @@ _A = {
       "description":"Stop loop",
       "template":"",
       "suggestion":{  
-         "en":"stop cycle interrupt",
-         "ru":"остановить цикл прервать"
+         "en":"stop cycle, cycle interrupt, loop interrupt",
+         "ru":"остановить цикл, прервать цикл"
       },
       "group":"logic"
    },
@@ -396,8 +348,8 @@ _A = {
       "description":"Next loop iteration",
       "template":"",
       "suggestion":{  
-         "en":"resume",
-         "ru":"продолжить"
+         "en":"resume loop, resume cycle",
+         "ru":"продолжить цикл"
       },
       "group":"logic"
    },
@@ -407,8 +359,8 @@ _A = {
       "description":"Finish script with success result",
       "template":"{{SuccessMessage}}",
       "suggestion":{  
-         "en":"end stop thread",
-         "ru":"завершить прервать поток"
+         "en":"end thread, stop thread",
+         "ru":"завершить поток, прервать поток"
       },
       "group":"logic"
    },
@@ -418,8 +370,8 @@ _A = {
       "description":"Finish script with fail result",
       "template":"{{FailMessage}}",
       "suggestion":{  
-         "en":"end stop thread",
-         "ru":"завершить прервать поток"
+         "en":"end thread, stop thread",
+         "ru":"завершить поток, прервать поток"
       },
       "group":"logic"
    },
@@ -429,8 +381,8 @@ _A = {
       "description":"Immediately End Script",
       "template":"{{FailMessage}}",
       "suggestion":{  
-         "en":"end stop script template",
-         "ru":"завершить прервать скрипт шаблон"
+         "en":"end script, stop script",
+         "ru":"завершить скрипт, прервать скрипт"
       },
       "group":"logic"
    },
@@ -440,8 +392,8 @@ _A = {
       "description":"Move to label",
       "template":"<~ {{LabelName}}",
       "suggestion":{  
-         "en":"goto move execution point",
-         "ru":"гото переместить точку выполнения"
+         "en":"goto, move execution point",
+         "ru":"переместить точку выполнения"
       },
       "group":"logic"
    },
@@ -450,8 +402,8 @@ _A = {
       "description":"Set label",
       "template":"~> {{Label}}",
       "suggestion":{  
-         "en":"goto execution point label",
-         "ru":"гото точку точка выполнения"
+         "en":"goto, move execution point",
+         "ru":"переместить точку выполнения"
       },
       "group":"logic"
    },
@@ -460,8 +412,8 @@ _A = {
       "description":"Ignore errors",
       "template":"",
       "suggestion":{  
-         "en":"error resume break",
-         "ru":"прерывать ошибок ошибки"
+         "en":"catch, try, catch errors",
+         "ru":"catch, try, catch errors"
       },
       "group":"logic"
    },
@@ -523,8 +475,8 @@ _A = {
       "description":"Output string to log",
       "template":"{{LogText}}",
       "suggestion":{  
-         "en":"output print",
-         "ru":"вывод печать"
+         "en":"output text, print text, output data",
+         "ru":"вывод текста, печать текста, вывод данных"
       },
       "group":"tools"
    },
@@ -533,8 +485,8 @@ _A = {
       "description":"Clear Log",
       "template":"",
       "suggestion":{  
-         "en":"delete",
-         "ru":"удалить"
+         "en":"delete log",
+         "ru":"удалить лог"
       },
       "group":"tools"
    },
@@ -543,8 +495,8 @@ _A = {
       "description":"Save result",
       "template":"{{Value}}",
       "suggestion":{  
-         "en":"output print",
-         "ru":"вывод печать"
+         "en":"output data",
+         "ru":"вывод данных"
       },
       "group":"tools"
    },
@@ -553,8 +505,8 @@ _A = {
       "description":"Execute custom code",
       "template":"{{Code}}",
       "suggestion":{  
-         "en":"execute javascript run code",
-         "ru":"выполнить яваксрипт джаваскрипт код"
+         "en":"execute javascript code, run javascript",
+         "ru":"выполнить яваксрипт, код джаваскрипт, выполнить код"
       },
       "group":"tools"
    },
@@ -575,8 +527,8 @@ _A = {
       "description":"Parse line like this 'a1:a2:a3' and save to variables",
       "template":"{{Value}} -> {{VariablesList}}",
       "suggestion":{  
-         "en":"split",
-         "ru":"разбить разделить"
+         "en":"split line",
+         "ru":"разбить строку, разделить строку"
       },
       "group":"tools"
    },
@@ -585,8 +537,8 @@ _A = {
       "description":"Use Template",
       "template":"{{Template}} -> {{Save}}",
       "suggestion":{  
-         "en":"randomize string random spintax",
-         "ru":"рандомизировать случайная строка спинтакс"
+         "en":"randomize string, random string, spintax, multiline string",
+         "ru":"рандомизировать, случайная строка, спинтакс, многострочная переменная"
       },
       "group":"tools"
    },
@@ -594,10 +546,6 @@ _A = {
       "name":"Replace String",
       "description":"Replace all occurrences of one string to another",
       "template":"{{Value}} -> {{Save}}",
-      "suggestion":{  
-         "en":"replace",
-         "ru":"заменить замена"
-      },
       "group":"tools"
    },
    "randomstring":{  
@@ -617,8 +565,8 @@ _A = {
       "description":"Set HTTP Headers, like user agent, accept language, etc",
       "template":"{{Value}} -> {{Name}}",
       "suggestion":{  
-         "en":"User agent Referrer Referer Accept Language",
-         "ru":"юзер агент реферрер реферер"
+         "en":"User agent, Referrer, Referer, Accept Language",
+         "ru":"юзер агент, реферрер, реферер"
       },
       "group":"network"
    },
@@ -627,8 +575,8 @@ _A = {
       "description":"Get cookies for url",
       "template":"{{Value}} -> {{Save}}",
       "suggestion":{  
-         "en":"Cookie , autologin",
-         "ru":"Cookie , кукисы , куки , автовход"
+         "en":"autologin",
+         "ru":"кукисы, автовход"
       },
       "group":"network"
    },
@@ -637,8 +585,8 @@ _A = {
       "description":"Save all cookies to variable",
       "template":"{{Save}}",
       "suggestion":{  
-         "en":"Cookie , autologin",
-         "ru":"Cookie , кукисы , куки , автовход"
+         "en":"autologin",
+         "ru":"кукисы, автовход"
       },
       "group":"network"
    },
@@ -647,8 +595,8 @@ _A = {
       "description":"Restore cookies, which is saved with Save Cookies command",
       "template":"{{Value}}",
       "suggestion":{  
-         "en":"Cookie , autologin",
-         "ru":"Cookie , кукисы , куки , автовход"
+         "en":"autologin",
+         "ru":"кукисы, автовход"
       },
       "group":"network"
    },
@@ -656,20 +604,12 @@ _A = {
       "name":"Cache Mask Allow",
       "description":"Allow save loaded url content to cache",
       "template":"{{Value}}",
-      "suggestion":{  
-         "en":"cache",
-         "ru":"кеш кэш"
-      },
       "group":"network"
    },
    "cachemaskdeny":{  
       "name":"Cache Mask Deny",
       "description":"Deny save loaded url content to cache",
       "template":"{{Value}}",
-      "suggestion":{  
-         "en":"cache",
-         "ru":"кеш кэш"
-      },
       "group":"network"
    },
    "requestmaskallow":{  
@@ -683,8 +623,8 @@ _A = {
       "description":"Deny load url, which matching mask",
       "template":"{{Value}}",
       "suggestion":{  
-         "en":"deny images restrict",
-         "ru":"запретить запрещать запрос запросы картинки загружать"
+         "en":"images restrict, stop loading image",
+         "ru":"запретить запрос, запросы загружать картинки"
       },
       "group":"network"
    },
@@ -717,8 +657,8 @@ _A = {
       "description":"Get base64 encoded cached page",
       "template":"{{Value}} -> {{Save}}",
       "suggestion":{  
-         "en":"cache download",
-         "ru":"кеш кэш загрузить скачать загрузка"
+         "en":"get request content, get request headers",
+         "ru":"получить содержание запроса, получить хедеры запроса"
       },
       "group":"network"
    },
@@ -727,8 +667,8 @@ _A = {
       "description":"Get base64 encoded cached page",
       "template":"{{Value}} -> {{Save}}",
       "suggestion":{  
-         "en":"cache download",
-         "ru":"кеш кэш загрузить скачать загрузка"
+         "en":"get request content, get request headers",
+         "ru":"получить содержание запроса, получить хедеры запроса"
       },
       "group":"network"
    },
@@ -767,8 +707,8 @@ _A = {
       "description":"Wait file will download",
       "template":"{{Wait}}",
       "suggestion":{  
-         "en":"file download",
-         "ru":"кеш кэш загрузить скачать загрузка файл"
+         "en":"get download file path",
+         "ru":"получить путь загруженного файла"
       },
       "group":"waiters"
    },
@@ -777,8 +717,8 @@ _A = {
       "description":"Sleep for a specific time",
       "template":"{{sleepfromto}}",
       "suggestion":{  
-         "en":"sleep idle",
-         "ru":"спать сон ждать"
+         "en":"wait, idle",
+         "ru":"ждать, бездействие"
       },
       "group":"waiters"
    },
@@ -840,20 +780,12 @@ _A = {
       "name":"Get",
       "description":"Make GET request",
       "template":"{{Value}}",
-      "suggestion":{  
-         "en":"get request",
-         "ru":"гет запрос"
-      },
       "group":"httpclient"
    },
    "httpclientpost":{  
       "name":"Post",
       "description":"Make POST request",
       "template":"{{Value}}",
-      "suggestion":{  
-         "en":"post request",
-         "ru":"пост запрос"
-      },
       "group":"httpclient"
    },
    "httpclientdownload":{  

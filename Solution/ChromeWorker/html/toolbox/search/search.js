@@ -115,7 +115,11 @@ class SearchManager {
     this.renderSearch(this.engine.recent());
   }
 
-  renderSearch(items) {
+  /**
+   * Render the search results using selected items array.
+   * @param {Object[]} items - selected items array.
+   */
+  render(items) {
     this.$resultsContainer.empty();
     this.pagesCount = 1;
     this.pageIndex = 0;
@@ -147,6 +151,10 @@ class SearchManager {
     this.showPage(0);
   }
 
+  /**
+   * Show the results page with the selected page index.
+   * @param {Number} pageIndex - selected page index.
+   */
   showPage(pageIndex) {
     const results = $('.result-item');
 
@@ -193,7 +201,7 @@ class SearchManager {
     this.$actionsContainer = $('.actions');
     this.$searchContainer = $('.search');
 
-    this.$searchClear = $('#searchinputclear');
+    this.$searchClear = $('#searchclear');
     this.$searchInput = $('#searchinput');
 
     this.$pagination = $('#pagination');

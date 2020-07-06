@@ -60,7 +60,7 @@ class SearchManager {
     });
 
     $(window).resize(() => {
-      if (this.$searchContainer.is(':hidden')) return;
+      if (this.$search.is(':hidden')) return;
 
       if (this.lastQuery) {
         this.search(this.lastQuery);
@@ -86,7 +86,7 @@ class SearchManager {
    * @readonly
    */
   get resultsVisible() {
-    const bounding = this.$resultsContainer.get(0).getBoundingClientRect();
+    const bounding = this.$results.get(0).getBoundingClientRect();
     const { clientHeight, clientWidth } = document.documentElement;
     const { innerHeight, innerWidth } = window;
 
@@ -124,7 +124,7 @@ class SearchManager {
    * @param {Object[]} items - selected items array.
    */
   render(items) {
-    this.$resultsContainer.empty();
+    this.$results.empty();
     this.pagesCount = 1;
     this.pageIndex = 0;
     const results = [];
@@ -204,10 +204,6 @@ class SearchManager {
     this.$emptyHeader = $('.results-empty').hide();
     this.$recentHeader.text(tr('Recent actions'));
 
-    this.$resultsContainer = $('#results');
-    this.$actionsContainer = $('.actions');
-    this.$searchContainer = $('.search');
-
     this.$searchClear = $('#searchclear');
     this.$searchInput = $('#searchinput');
 
@@ -216,6 +212,10 @@ class SearchManager {
     this.$nextPage = $('#nextpage');
     this.$currPage = $('#currpage');
     this.$lastPage = $('#lastpage');
+
+    this.$results = $('#results');
+    this.$actions = $('.actions');
+    this.$search = $('.search');
 
     this.toggle(true);
   }
@@ -227,9 +227,9 @@ class SearchManager {
   toggle(hide) {
     $(document.body).css('overflow', hide ? 'visible' : 'hidden');
 
-    this.$actionsContainer.toggle(hide);
-    this.$searchContainer.toggle(!hide);
     this.$pagination.toggle(!hide);
+    this.$actions.toggle(hide);
+    this.$search.toggle(!hide);
 
     if (!hide) {
       this.$searchInput.focus().val('');
@@ -245,7 +245,7 @@ class SearchManager {
    * Show search page content if it's not already visible.
    */
   show() {
-    if (this.$searchContainer.is(':visible')) return;
+    if (this.$search.is(':visible')) return;
     this.toggle(false);
   }
 
@@ -253,11 +253,21 @@ class SearchManager {
    * Hide search page content if it's not already hidden.
    */
   hide() {
-    if (this.$searchContainer.is(':hidden')) return;
+    if (this.$search.is(':hidden')) return;
     this.toggle(true);
   }
 
+  /**
+   * Render the search result using selected properties.
+   * @param {Object} properties - selected properties.
+   * @param {Number} properties.index - result index.
+   * @param {Object} properties.item - result object.
+   * @param {Number} properties.page - result page.
+   * @returns {Object} rendered result.
+   */
   renderItem({ item, page, index }) {
+    const temp = { ...item, index };
+    const data = { ...item, page };
     const template = _.template(`
       <li class="result-item bg-<%= type %>">
         <div class="result-item-left">
@@ -281,8 +291,6 @@ class SearchManager {
       </li>
     `);
 
-    const htmlItem = { ...item, index };
-    const dataItem = { ...item, page };
-    return $(template(htmlItem)).data(dataItem).appendTo(this.$resultsContainer);
+    return $(template(temp)).data(data).appendTo(this.$results);
   }
 }

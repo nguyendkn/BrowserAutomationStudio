@@ -1,8 +1,17 @@
 .item-description {
-  font-weight: normal;
   padding-bottom: 5px;
   padding-top: 5px;
+  font-weight: normal;
+  font-style: normal;
   font-size: 12px;
+}
+
+.item-additional {
+  padding-bottom: 3px;
+  padding-top: 3px;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 11px;
 }
 
 .item-module:hover {
@@ -285,6 +294,10 @@
 .search {
   margin: 5px 0 5px 0;
   overflow: hidden;
+}
+
+.item-additional > mark {
+  color: #ff553e;
 }
 
 .item-module > mark {

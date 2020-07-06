@@ -4,19 +4,24 @@ class SearchManager {
    * @constructor
    */
   constructor () {
-    this.engine = new BasSearchEngine();
+    const store = new DocumentsStore();
 
+    this.searchEngine = new BasSearchEngine([
+      ...store.getActionItems(),
+      ...store.getVideoItems(),
+      ...store.getWikiItems(),
+    ]);
+
+    this.registerHandlers();
     this.lastQuery = null;
     this.pagesCount = 1;
     this.pageIndex = 0;
-
-    this.registerEventHandlers();
   }
 
   /**
    * Register all event handlers associated with the search page.
    */
-  registerEventHandlers() {
+  registerHandlers() {
     const self = this;
 
     $(document).on({
@@ -101,7 +106,7 @@ class SearchManager {
     this.$recentHeader.hide();
     this.$emptyHeader.hide();
     this.lastQuery = query;
-    this.render(this.engine.search(query));
+    this.render(this.searchEngine.search(query));
   }
 
   /**
@@ -111,7 +116,7 @@ class SearchManager {
     this.$recentHeader.show();
     this.$emptyHeader.hide();
     this.lastQuery = null;
-    this.render(this.engine.recent());
+    this.render(this.searchEngine.recent());
   }
 
   /**
@@ -124,26 +129,25 @@ class SearchManager {
     this.pageIndex = 0;
     const results = [];
 
-    items.slice(0, 100).forEach((item, idx) => {
+    items.slice(0, 100).forEach((item, index) => {
       const prev = this.pagesCount - 1;
       const next = this.pagesCount - 0;
-
-      const result = $(this.renderItem(item, idx))
-        .appendTo(this.$resultsContainer)
-        .data({ ...item, page: prev });
-
-      results.push(result);
+      results.push(this.renderItem({
+        page: prev,
+        index,
+        item
+      }));
 
       if (!this.resultsVisible) {
         _.initial(results).forEach((res) => res.hide());
 
-        if (idx === 0) {
+        if (index === 0) {
           _.last(results).data('page', prev);
         } else {
           _.last(results).data('page', next);
         }
 
-        this.pagesCount += (idx === 0) ? 0 : 1;
+        this.pagesCount += (index === 0) ? 0 : 1;
       }
     });
 
@@ -158,14 +162,18 @@ class SearchManager {
     const results = $('.result-item');
 
     results.each(function () {
-      const matches = $(this).data('matches');
-      const page = $(this).data('page');
+      const { keywords, page } = $(this).data();
+      // console.log('data:', $(this).data());
 
       if (page === pageIndex) {
         $(this).unmark();
 
-        matches.forEach(({ match, field }) => {
-          $(this).find(`.item-${field}`).mark(match);
+        keywords.forEach(({ match, field }) => {
+          if (field === 'suggestion') {
+            $(this).find(`.item-additional`).mark(match);
+          } else {
+            $(this).find(`.item-${field}`).mark(match);
+          }
         });
       }
 
@@ -249,38 +257,32 @@ class SearchManager {
     this.toggle(true);
   }
 
-  renderItem(item, index) {
-    const templates = {
-      action: _.template(`
-        <li class="result-item bg-action">
-          <div class="result-item-left">
-            <img draggable="false" class="item-icon" src="<%= icon %>">
-            <span class="item-index"><%= _.padLeft(index + 1, 2, '0') %></span>
-          </div>
-          <div class="result-item-right">
-            <div>
-              <div class="item-name"><%= name %></div>
+  renderItem({ item, page, index }) {
+    const template = _.template(`
+      <li class="result-item bg-<%= type %>">
+        <div class="result-item-left">
+          <img draggable="false" class="item-icon" src="<%= icon %>">
+          <span class="item-index"><%= _.padLeft(index + 1, 2, '0') %></span>
+        </div>
+        <div class="result-item-right">
+          <div>
+            <div class="item-name"><%= name %></div>
+            <% if (type === 'action') { %>
               <div class="item-description"><%= description %></div>
-            </div>
+            <% } %>
+            <% if (suggestionInfo.found) { %>
+              <div class="item-additional"><%= suggestion[suggestionInfo.index] %></div>
+            <% } %>
+          </div>
+          <% if (type === 'action') { %>
             <div class="item-module"><%= module %></div>
-          </div>
-        </li>
-      `),
-      link: _.template(`
-        <li class="result-item bg-link">
-          <div class="result-item-left">
-            <img draggable="false" class="item-icon" src="<%= icon %>">
-            <span class="item-index"><%= _.padLeft(index + 1, 2, '0') %></span>
-          </div>
-          <div class="result-item-right">
-            <div>
-              <div class="item-name"><%= name %></div>
-            </div>
-          </div>
-        </li>
-      `),
-    };
+          <% } %>
+        </div>
+      </li>
+    `);
 
-    return templates[item.type]({ ...item, index });
+    const htmlItem = { ...item, index };
+    const dataItem = { ...item, page };
+    return $(template(htmlItem)).data(dataItem).appendTo(this.$resultsContainer);
   }
 }

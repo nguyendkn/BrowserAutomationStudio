@@ -1,175 +1,118 @@
 class BasSearchEngine {
   /**
    * Create an instance of `BasSearchEngine` class.
+   * @param {Object[]} documents - documents array.
    * @constructor
    */
-  constructor () {
+  constructor (documents) {
     this.engine = new SearchEngine();
 
     this.engine.createIndex({
-      documents: [
-        ...this._getActionItems(),
-        ...this._getVideoItems(),
-        ...this._getWikiItems()
-      ],
       fields: [
-        { name: 'module', weight: 0.6 },
-        { name: 'name', weight: 0.4 },
+        {
+          name: 'suggestion',
+          weight: 0.2
+        },
+        {
+          name: 'module',
+          weight: 0.5
+        },
+        {
+          name: 'name',
+          weight: 0.3
+        },
       ],
-      ref: 'key'
+      ref: 'key',
+      documents
     });
 
     this.cache = {};
   }
 
+  /**
+   * Perform an action search using the selected query.
+   * @param {String} query - selected query string.
+   * @returns {Object[]} search results array.
+   */
   search(query) {
     if (_.has(this.cache, query)) return this.cache[query];
 
-    const results = this.engine.search(query)
-      .map((match) => {
-        const document = this.engine.store.findByRef(match.ref);
-        const matches = this.getMatches(document, query, match);
-
-        return {
-          ...document,
-          matches
-        }
-      })
-      .filter(({ key }) => {
-        const ignoredItems = [
+    this.cache[query] = this.engine
+      .search(query)
+      .filter(({ document }) => {
+        const ignored = [
           'httpclientgetcookiesforurl',
           'getcookiesforurl',
-          'check'
+          'check',
         ];
 
-        return !ignoredItems.includes(key);
+        return !ignored.includes(document.key);
+      })
+      .map((match) => {
+        const keywords = this.getKeywords(match);
+
+        return {
+          suggestionInfo: this.getSuggestionInfo(match),
+          ...match.document,
+          keywords
+        };
       });
 
-    this.cache[query] = results;
     return this.cache[query];
   }
 
+  /**
+   * Perform an action search using the action history.
+   * @returns {Object[]} search results array.
+   */
   recent() {
     return ActionHistory.map((key) => {
       const document = this.engine.store.findByField('key', key);
-
       return {
-        ...document,
-        matches: []
-      }
+        suggestionInfo: {},
+        keywords: [],
+        ...document
+      };
     });
   }
 
-  getMatches(document, query, { queryTokens, metadata }) {
-    const matches = [];
+  getKeywords({ document, metadata, tokens, query }) {
+    const keywords = [];
 
     Object.values(metadata).forEach((value) => {
-      Object.entries(value).forEach(([field, data]) => {
-        const fieldLower = document[field].toLowerCase();
+      Object.entries(value).forEach(([key, data]) => {
+        const [field, index] = key.split('_');
+
+        const fieldLower = index
+          ? document[field][index].toLowerCase()
+          : document[field].toLowerCase();
         const queryLower = query.toLowerCase();
 
         if (!fieldLower.includes(queryLower)) {
-          data.tokenOriginal.forEach((sourceToken) => {
-            const queryToken = queryTokens.find((v) => sourceToken.includes(v));
-            const token = queryToken || sourceToken;
+          data.tokenOriginal.forEach((source) => {
+            const token = (tokens.find((v) => source.includes(v)) || source);
 
-            matches.push({ comparator: token + field, match: token, field });
+            keywords.push({ comparator: token + field, match: token, field });
           });
         } else {
-          matches.push({ comparator: query + field, match: query, field });
+          keywords.push({ comparator: query + field, match: query, field });
         }
       });
     });
 
-    return _.uniq(matches, 'comparator');
+    return _.uniq(keywords, 'comparator');
   }
 
-  /**
-   * Get all action items.
-   * @private
-   */
-  _getActionItems() {
-    const getTextContent = (el) => $('<div />').append(tr(el.html())).text();
+  getSuggestionInfo({ scores }) {
+    const suggestion = scores.find((v) => v.field === 'suggestion');
+    const module = scores.find((v) => v.field === 'module');
+    const name = scores.find((v) => v.field === 'name');
 
-    return _.map(_A, (value, key) => {
-      const content = $(`#${key}`).text();
+    const score = suggestion.score * suggestion.weight;
+    const gtModule = score > (module.score * module.weight);
+    const gtName = score > (name.score * name.weight);
+    const found = gtModule && gtName;
 
-      const defaultDesc = $(content)
-        .find('.tooltip-paragraph-first-fold');
-      const shortDesc = $(content)
-        .find('.short-description');
-      let description = null;
-
-      if (defaultDesc.length) {
-        description = getTextContent(defaultDesc);
-      }
-
-      if (shortDesc.length) {
-        description = getTextContent(shortDesc);
-      }
-
-      const action = {
-        name: tr(value.name),
-        type: 'action',
-        popup: false,
-        description,
-        key
-      };
-
-      if (value.class && value.class === 'browser') {
-        action.description += tr(' This action works only with element inside browser.');
-        action.module = tr('Browser > Element');
-        action.icon = '../icons/element.png';
-        action.popup = true;
-      } else {
-        const group = this._getActionGroup(key);
-        action.module = group.description;
-        action.group = group.name;
-        action.icon = group.icon;
-      }
-
-      return action;
-    });
-  }
-
-  _getActionGroup(action) {
-    const tasks = _TaskCollection.toJSON();
-    const name = _A2G[action] || 'browser';
-
-    return _.find(tasks, {
-      type: 'group',
-      name
-    });
-  }
-
-  /**
-   * Get all video items.
-   * @private
-   */
-  _getVideoItems() {
-    return _VIDEO.filter((v) => _K == v.lang).map((v) => this._getLinkItem(v, 'youtube'));
-  }
-
-  /**
-   * Get all wiki items.
-   * @private
-   */
-  _getWikiItems() {
-    return _WIKI.filter((w) => _K == w.lang).map((w) => this._getLinkItem(w, 'wiki'));
-  }
-
-  /**
-   * Get link item for selected type.
-   * @param {Object} item - item object. 
-   * @param {String} type - item type.
-   * @private
-   */
-  _getLinkItem(item, type) {
-    return {
-      icon: `../icons/${type}.png`,
-      name: item.name,
-      key: item.url,
-      type: 'link'
-    }
+    return { index: found ? suggestion.index : null, found };
   }
 }

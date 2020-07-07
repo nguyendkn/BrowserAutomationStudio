@@ -4,12 +4,12 @@ class SearchManager {
    * @constructor
    */
   constructor () {
-    const store = new DocumentsStore();
+    this.store = new DocumentsStore();
 
     this.searchEngine = new BasSearchEngine([
-      ...store.getActionItems(),
-      ...store.getVideoItems(),
-      ...store.getWikiItems(),
+      ...this.store.getActionItems(),
+      ...this.store.getVideoItems(),
+      ...this.store.getWikiItems(),
     ]);
 
     this.registerHandlers();
@@ -163,7 +163,6 @@ class SearchManager {
 
     results.each(function () {
       const { keywords, page } = $(this).data();
-      // console.log('data:', $(this).data());
 
       if (page === pageIndex) {
         $(this).unmark();

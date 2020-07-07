@@ -14,7 +14,7 @@ _A = {
       "description":"Restrict popups",
       "template":"",
       "suggestion":{  
-         "en":"аd blocking",
+         "en":"ad blocking",
          "ru":"блокировать рекламу"
       },
       "group":"network"

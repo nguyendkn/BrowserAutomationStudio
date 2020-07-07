@@ -60,7 +60,7 @@ class DocumentsStore {
   }
 
   /**
-   * Get action suggestion array using the selected action object
+   * Get action suggestion array using the selected action object.
    * @param {Object} action - selected action object.
    */
   getActionSuggestion(action) {
@@ -104,12 +104,12 @@ class DocumentsStore {
   /**
    * Get an array of all video items.
    */
-  getVideoItems() { return this._getLinkItems(this.video, 'youtube'); }
+  getVideoItems() { return this.getLinkItems(this.video, 'youtube'); }
 
   /**
    * Get an array of all wiki items.
    */
-  getWikiItems() { return this._getLinkItems(this.wiki, 'wiki'); }
+  getWikiItems() { return this.getLinkItems(this.wiki, 'wiki'); }
 
   /**
    * Get an array of all link items for the selected type.
@@ -117,7 +117,7 @@ class DocumentsStore {
    * @param {String} type - selected items type.
    * @private
    */
-  _getLinkItems(items, type) {
+  getLinkItems(items, type) {
     return items
       .filter((item) => this.lang === item.lang)
       .map((item) => ({

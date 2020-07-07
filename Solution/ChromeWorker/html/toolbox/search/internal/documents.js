@@ -37,7 +37,7 @@ class DocumentsStore {
 
       const item = {
         popup: action.class && action.class === "browser",
-        suggestion: this._getActionSuggestion(action),
+        suggestion: this.getActionSuggestion(action),
         name: tr(action.name),
         type: 'action',
         description,
@@ -49,7 +49,7 @@ class DocumentsStore {
         item.module = tr('Browser > Element');
         item.icon = '../icons/element.png';
       } else {
-        const group = this._getActionGroup(key);
+        const group = this.getActionGroup(key);
         item.module = group.description;
         item.group = group.name;
         item.icon = group.icon;
@@ -63,25 +63,36 @@ class DocumentsStore {
    * Get action suggestion array using the selected action object
    * @param {Object} action - selected action object.
    */
-  _getActionSuggestion(action) {
-    const suggestion = action.suggestion;
+  getActionSuggestion(action) {
+    const source = action.suggestion;
+    return source ? this.getSuggestion(source[this.lang]) : [];
+  }
 
-    if (suggestion) {
-      return suggestion[this.lang]
-        .split(',')
-        .map((s) => s.trim())
-        .filter((s) => s !== ' ')
-        .filter((s) => s !== '');
-    }
+  /**
+   * Get link suggestion array using the selected link object.
+   * @param {Object} link - selected link object.
+   */
+  getLinkSuggestion(link) {
+    const source = link.suggestion;
+    return source ? this.getSuggestion(source) : [];
+  }
 
-    return [];
+  /**
+   * Get suggestion array from the selected suggestion string.
+   * @param {String} suggestion - selected suggestion string.
+   */
+  getSuggestion(suggestion) {
+    return suggestion.split(',')
+      .map((str) => str.trim())
+      .filter((s) => s !== ' ')
+      .filter((s) => s !== '');
   }
 
   /**
    * Get action group object using the selected action name.
    * @param {String} action - selected action name.
    */
-  _getActionGroup(action) {
+  getActionGroup(action) {
     const name = _.get(this.collection, action, 'browser');
 
     return _.find(this.tasks, {
@@ -110,6 +121,7 @@ class DocumentsStore {
     return items
       .filter((item) => this.lang === item.lang)
       .map((item) => ({
+        suggestion: this.getLinkSuggestion(item),
         icon: `../icons/${type}.png`,
         name: item.name,
         key: item.url,

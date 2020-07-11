@@ -165,14 +165,23 @@ class SearchManager {
       const { keywords, page } = $(this).data();
 
       if (page === pageIndex) {
+        const additional = $(this).find(`.item-additional`);
+        const module = $(this).find('.item-module');
+        const name = $(this).find('.item-name');
         $(this).unmark();
 
-        keywords.forEach(({ match, field }) => {
-          if (field === 'suggestion') {
-            $(this).find(`.item-additional`).mark(match);
-          } else {
-            $(this).find(`.item-${field}`).mark(match);
+        keywords.forEach(({ field, matches }) => {
+          if (!matches.length) return;
+
+          if (field === 'module') {
+            return module.mark(matches);
           }
+
+          if (field === 'name') {
+            return name.mark(matches);
+          }
+
+          additional.mark(matches);
         });
       }
 
@@ -279,8 +288,11 @@ class SearchManager {
             <% if (type === 'action') { %>
               <div class="item-description"><%= description %></div>
             <% } %>
-            <% if (suggestionInfo.found) { %>
-              <div class="item-additional"><%= suggestion[suggestionInfo.index] %></div>
+            <% if (descriptionInfo.found && descriptionInfo.max) { %>
+              <div class="item-additional"><%= descriptions[descriptionInfo.index] %></div>
+            <% } %>
+            <% if (suggestionInfo.found && suggestionInfo.max) { %>
+              <div class="item-additional"><%= suggestions[suggestionInfo.index] %></div>
             <% } %>
           </div>
           <% if (type === 'action') { %>

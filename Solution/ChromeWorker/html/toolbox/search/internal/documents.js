@@ -18,30 +18,17 @@ class DocumentsStore {
    * Get an array of all action items.
    */
   getActionItems() {
-    const getDescription = (el) => $('<div />').append(tr(el.html())).text();
-
-    return _.map(this.actions, (action, key) => {
-      const actionTemplate = $(`#${key}`).text();
-
-      const defaultDesc = $(actionTemplate).find('.tooltip-paragraph-first-fold');
-      const shortDesc = $(actionTemplate).find('.short-description');
-      let description = null;
-
-      if (defaultDesc.length) {
-        description = getDescription(defaultDesc);
-      }
-
-      if (shortDesc.length) {
-        description = getDescription(shortDesc);
-      }
+    return _.map(this.actions, (action, name) => {
+      const description = this.getActionDescription($(`#${name}`).text());
 
       const item = {
-        popup: action.class && action.class === "browser",
-        suggestion: this.getActionSuggestion(action),
+        popup: action.class && action.class === 'browser',
+        suggestions: this.getActionSuggestion(action),
+        descriptions: description.array,
+        description: description.short,
         name: tr(action.name),
         type: 'action',
-        description,
-        key,
+        key: name,
       };
 
       if (item.popup) {
@@ -49,7 +36,7 @@ class DocumentsStore {
         item.module = tr('Browser > Element');
         item.icon = '../icons/element.png';
       } else {
-        const group = this.getActionGroup(key);
+        const group = this.getActionGroup(name);
         item.module = group.description;
         item.group = group.name;
         item.icon = group.icon;
@@ -57,6 +44,31 @@ class DocumentsStore {
 
       return item;
     });
+  }
+
+  /**
+   * Get action description object using the selected action source.
+   * @param {String} source - selected action source.
+   */
+  getActionDescription(source) {
+    const getTextContent = (el) => {
+      const target = tr($(el).html());
+      const html = $('<div />');
+      html.append(target);
+      return html.text();
+    };
+
+    const array = _.map(
+      $(source).find('[class*="tooltip-paragraph"]'),
+      getTextContent
+    );
+
+    const short = _.map(
+      $(source).find('[class*="short-description"]'),
+      getTextContent
+    );
+
+    return { short: short.length ? short[0] : array[0], array };
   }
 
   /**
@@ -89,19 +101,6 @@ class DocumentsStore {
   }
 
   /**
-   * Get action group object using the selected action name.
-   * @param {String} action - selected action name.
-   */
-  getActionGroup(action) {
-    const name = _.get(this.collection, action, 'browser');
-
-    return _.find(this.tasks, {
-      type: 'group',
-      name: name,
-    });
-  }
-
-  /**
    * Get an array of all video items.
    */
   getVideoItems() { return this.getLinkItems(this.video, 'youtube'); }
@@ -121,11 +120,24 @@ class DocumentsStore {
     return items
       .filter((item) => this.lang === item.lang)
       .map((item) => ({
-        suggestion: this.getLinkSuggestion(item),
+        suggestions: this.getLinkSuggestion(item),
         icon: `../icons/${type}.png`,
         name: item.name,
         key: item.url,
         type: 'link',
       }));
+  }
+
+  /**
+   * Get action group object using the selected action name.
+   * @param {String} action - selected action name.
+   */
+  getActionGroup(action) {
+    const name = _.get(this.collection, action, 'browser');
+
+    return _.find(this.tasks, {
+      type: 'group',
+      name: name,
+    });
   }
 }

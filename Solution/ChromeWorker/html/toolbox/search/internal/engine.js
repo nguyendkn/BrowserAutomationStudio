@@ -55,15 +55,21 @@ class BasSearchEngine {
         return !ignored.includes(document.key);
       })
       .map((match) => {
-        const description = this.getDescriptionInfo(match);
-        const suggestion = this.getSuggestionInfo(match);
-        const infos = [description, suggestion];
+        const descInfo = this.getDescriptionInfo(match);
+        const suggInfo = this.getSuggestionInfo(match);
+        const infos = [descInfo, suggInfo];
         _.max(infos, 'score').max = true;
+
+        if (match.document.type === 'action') {
+          const array = match.document.descriptions;
+          const short = match.document.description;
+          descInfo.skip = short.includes(array[descInfo.index]);
+        }
 
         return {
           keywords: this.getKeywords(match),
-          descriptionInfo: description,
-          suggestionInfo: suggestion,
+          descriptionInfo: descInfo,
+          suggestionInfo: suggInfo,
           ...match.document
         };
       });
@@ -155,6 +161,12 @@ class BasSearchEngine {
     const gtName = score > name.score * name.weight;
     const found = gtModule && gtName;
 
-    return { index: found ? additional.index : null, found, score };
+    return {
+      index: found ? additional.index : null,
+      skip: false,
+      max: false,
+      found,
+      score
+    };
   }
 }

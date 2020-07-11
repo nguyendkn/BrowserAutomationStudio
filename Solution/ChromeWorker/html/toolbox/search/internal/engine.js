@@ -89,11 +89,12 @@ class BasSearchEngine {
   }
 
   getKeywords({ document, metadata, tokens, query }) {
-    const keywords = [];
+    const keywords = {};
 
-    Object.values(metadata).forEach((value) => {
-      Object.entries(value).forEach(([key, data]) => {
-        const [field, index] = key.split('_');
+    Object.values(metadata).forEach((found) => {
+      Object.entries(found).forEach(([fieldName, fieldData]) => {
+        const [field, index] = fieldName.split('_');
+        if (!keywords[field]) keywords[field] = [];
 
         const fieldLower = index
           ? document[field][index].toLowerCase()
@@ -101,18 +102,26 @@ class BasSearchEngine {
         const queryLower = query.toLowerCase();
 
         if (!fieldLower.includes(queryLower)) {
-          data.tokenOriginal.forEach((source) => {
-            const token = (tokens.find((v) => source.includes(v)) || source);
+          fieldData.tokenOriginal.forEach((source) => {
+            const token = tokens.find((v) => source.includes(v)) || source;
 
-            keywords.push({ comparator: token + field, match: token, field });
+            keywords[field].push({ comparator: token + field, match: token });
           });
         } else {
-          keywords.push({ comparator: query + field, match: query, field });
+          keywords[field].push({ comparator: query + field, match: query });
         }
       });
     });
 
-    return _.uniq(keywords, 'comparator');
+    return Object.entries(keywords).map(([field, array]) => {
+      const matches = _(array)
+        .uniq('comparator')
+        .map((v) => v.match)
+        .value();
+      return { field, matches };
+    });
+  }
+
   /**
    * Get the description info object using the selected scores array.
    * @param {Object} source - selected source object with scores.

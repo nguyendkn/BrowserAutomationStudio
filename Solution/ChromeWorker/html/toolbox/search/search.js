@@ -177,15 +177,15 @@ class SearchManager {
 
   /**
    * Show the results page with the selected page index.
-   * @param {Number} pageIndex - selected page index.
+   * @param {Number} index - selected page index.
    */
-  showPage(pageIndex) {
+  showPage(index) {
     const results = $('.result-item');
 
     results.each(function () {
       const { keywords, page } = $(this).data();
 
-      if (page === pageIndex) {
+      if (page === index) {
         const additional = $(this).find(`.item-additional`);
         const module = $(this).find('.item-module');
         const name = $(this).find('.item-name');
@@ -195,18 +195,18 @@ class SearchManager {
           if (!matches.length) return;
 
           if (field === 'module') {
-            return module.mark(matches);
+            return module.mark(matches, { separateWordSearch: false });
           }
 
           if (field === 'name') {
-            return name.mark(matches);
+            return name.mark(matches, { separateWordSearch: false });
           }
 
-          additional.mark(matches);
+          additional.mark(matches, { separateWordSearch: false });
         });
       }
 
-      $(this).toggle(page === pageIndex);
+      $(this).toggle(page === index);
     });
 
     this.updateHtml(results.length);

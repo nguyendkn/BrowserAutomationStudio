@@ -5,9 +5,9 @@ class DocumentsStore {
    */
   constructor () {
     this.tasks = _TaskCollection.toJSON();
-    this.collection = _A2G;
     this.actions = _A;
     this.groups = _G;
+    this.map = _A2G;
 
     this.video = _VIDEO;
     this.wiki = _WIKI;
@@ -52,7 +52,8 @@ class DocumentsStore {
    */
   getActionDescription(source) {
     const getTextContent = (el) => {
-      const target = tr($(el).html());
+      const source = $(el).html();
+      const target = tr(source);
       const html = $('<div />');
       html.append(target);
       return html.text();
@@ -124,7 +125,7 @@ class DocumentsStore {
         icon: `../icons/${type}.png`,
         name: item.name,
         key: item.url,
-        type: 'link',
+        type: 'link'
       }));
   }
 
@@ -133,11 +134,11 @@ class DocumentsStore {
    * @param {String} action - selected action name.
    */
   getActionGroup(action) {
-    const name = _.get(this.collection, action, 'browser');
+    const name = _.get(this.map, action, 'browser');
 
     return _.find(this.tasks, {
       type: 'group',
-      name: name,
+      name: name
     });
   }
 }

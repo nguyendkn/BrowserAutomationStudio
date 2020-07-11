@@ -53,7 +53,7 @@
 		"All you need to do is to click on any element inside recaptcha box, for example, on text \"I'm not a robot\" or a checkbox which is located to the left of the text": {"ru": "Все, что вам нужно сделать, это щелкнуть по любому элементу внутри окна recaptcha, например, по тексту \"Я не робот\" или флажок, расположенный слева от текста"},
 		"video": {"ru": "видео"},
 		"screen": {"ru": "скрин"},
-		"This action solves google recaptcha 2.0": {"ru": "Это действие решает google recaptcha 2.0"}
+		"This action solves google recaptcha 2.0.": {"ru": "Это действие решает google recaptcha 2.0."}
 		
 	},
 	"engine": ["engine.js"],

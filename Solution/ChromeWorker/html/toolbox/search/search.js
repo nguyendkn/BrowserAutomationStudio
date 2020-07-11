@@ -253,16 +253,14 @@ class SearchManager {
    * Show search page content if it's not already visible.
    */
   show() {
-    if (this.$search.is(':visible')) return;
-    this.toggle(false);
+    if (!this.$search.is(':visible')) this.toggle(false);
   }
 
   /**
    * Hide search page content if it's not already hidden.
    */
   hide() {
-    if (this.$search.is(':hidden')) return;
-    this.toggle(true);
+    if (!this.$search.is(':hidden')) this.toggle(true);
   }
 
   /**
@@ -288,10 +286,10 @@ class SearchManager {
             <% if (type === 'action') { %>
               <div class="item-description"><%= description %></div>
             <% } %>
-            <% if (descriptionInfo.found && descriptionInfo.max) { %>
+            <% if ((descriptionInfo.found && descriptionInfo.max) && !descriptionInfo.skip) { %>
               <div class="item-additional"><%= descriptions[descriptionInfo.index] %></div>
             <% } %>
-            <% if (suggestionInfo.found && suggestionInfo.max) { %>
+            <% if ((suggestionInfo.found && suggestionInfo.max) && !suggestionInfo.skip) { %>
               <div class="item-additional"><%= suggestions[suggestionInfo.index] %></div>
             <% } %>
           </div>

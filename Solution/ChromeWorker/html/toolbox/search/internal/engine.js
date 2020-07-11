@@ -55,12 +55,16 @@ class BasSearchEngine {
         return !ignored.includes(document.key);
       })
       .map((match) => {
-        const keywords = this.getKeywords(match);
+        const description = this.getDescriptionInfo(match);
+        const suggestion = this.getSuggestionInfo(match);
+        const infos = [description, suggestion];
+        _.max(infos, 'score').max = true;
 
         return {
-          suggestionInfo: this.getSuggestionInfo(match),
-          ...match.document,
-          keywords
+          keywords: this.getKeywords(match),
+          descriptionInfo: description,
+          suggestionInfo: suggestion,
+          ...match.document
         };
       });
 
@@ -74,7 +78,9 @@ class BasSearchEngine {
   recent() {
     return ActionHistory.map((key) => {
       const document = this.engine.store.findByField('key', key);
+
       return {
+        descriptionInfo: {},
         suggestionInfo: {},
         keywords: [],
         ...document
@@ -107,18 +113,39 @@ class BasSearchEngine {
     });
 
     return _.uniq(keywords, 'comparator');
+  /**
+   * Get the description info object using the selected scores array.
+   * @param {Object} source - selected source object with scores.
+   * @param {Object[]} source.scores - selected scores array.
+   */
+  getDescriptionInfo({ scores }) {
+    return this.getFieldInfo('descriptions', scores);
   }
 
+  /**
+   * Get the suggestion info object using the selected scores array.
+   * @param {Object} source - selected source object with scores.
+   * @param {Object[]} source.scores - selected scores array.
+   */
   getSuggestionInfo({ scores }) {
-    const suggestion = scores.find((v) => v.field === 'suggestion');
+    return this.getFieldInfo('suggestions', scores);
+  }
+
+  /**
+   * Get the field info object using the selected scores array.
+   * @param {Object[]} scores - selected scores array.
+   * @param {String} source - selected source string.
+   */
+  getFieldInfo(source, scores) {
+    const additional = scores.find((v) => v.field === source);
     const module = scores.find((v) => v.field === 'module');
     const name = scores.find((v) => v.field === 'name');
 
-    const score = suggestion.score * suggestion.weight;
-    const gtModule = score > (module.score * module.weight);
-    const gtName = score > (name.score * name.weight);
+    const score = additional.score * additional.weight;
+    const gtModule = score > module.score * module.weight;
+    const gtName = score > name.score * name.weight;
     const found = gtModule && gtName;
 
-    return { index: found ? suggestion.index : null, found };
+    return { index: found ? additional.index : null, found, score };
   }
 }

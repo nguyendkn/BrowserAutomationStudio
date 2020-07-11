@@ -10,16 +10,20 @@ class BasSearchEngine {
     this.engine.createIndex({
       fields: [
         {
-          name: 'suggestion',
-          weight: 0.2
+          name: 'descriptions',
+          weight: 0.125,
+        },
+        {
+          name: 'suggestions',
+          weight: 0.125,
         },
         {
           name: 'module',
-          weight: 0.5
+          weight: 0.5,
         },
         {
           name: 'name',
-          weight: 0.3
+          weight: 0.25,
         },
       ],
       ref: 'key',
@@ -35,7 +39,9 @@ class BasSearchEngine {
    * @returns {Object[]} search results array.
    */
   search(query) {
-    if (_.has(this.cache, query)) return this.cache[query];
+    if (Object.prototype.hasOwnProperty.call(this.cache, query)) {
+      return this.cache[query];
+    }
 
     this.cache[query] = this.engine
       .search(query)

@@ -52,10 +52,9 @@ class DocumentsStore {
    */
   getActionDescription(source) {
     const getTextContent = (el) => {
-      const source = $(el).html();
-      const target = tr(source);
+      const data = $(el).html();
       const html = $('<div />');
-      html.append(target);
+      html.append(tr(data));
       return html.text();
     };
 

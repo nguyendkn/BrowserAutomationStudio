@@ -155,6 +155,27 @@ class SearchManager {
   }
 
   /**
+   * Update the results page using the total results count.
+   * @param {Number} count - total results count.
+   */
+  updateHtml(count) {
+    this.$nextPage.prop('disabled', this.pageIndex === this.pagesCount - 1);
+    this.$prevPage.prop('disabled', this.pageIndex === 0);
+    this.$pagination.toggle(this.pagesCount > 1);
+    this.$currPage.html(this.pageIndex + 1);
+    this.$lastPage.html(this.pagesCount);
+
+    if (this.lastQuery === null) {
+      this.$emptyHeader.html(tr('No recent actions found'));
+    } else {
+      this.$emptyHeader.html(tr('Nothing found'));
+    }
+
+    this.$recentHeader.toggle(count !== 0 && this.lastQuery === null);
+    this.$emptyHeader.toggle(count === 0);
+  }
+
+  /**
    * Show the results page with the selected page index.
    * @param {Number} pageIndex - selected page index.
    */
@@ -188,20 +209,7 @@ class SearchManager {
       $(this).toggle(page === pageIndex);
     });
 
-    this.$nextPage.prop('disabled', this.pageIndex === this.pagesCount - 1);
-    this.$prevPage.prop('disabled', this.pageIndex === 0);
-    this.$pagination.toggle(this.pagesCount > 1);
-    this.$currPage.html(this.pageIndex + 1);
-    this.$lastPage.html(this.pagesCount);
-
-    if (this.lastQuery === null) {
-      this.$emptyHeader.html(tr('No recent actions found'));
-    } else {
-      this.$emptyHeader.html(tr('Nothing found'));
-    }
-
-    this.$recentHeader.toggle(results.length !== 0 && this.lastQuery === null);
-    this.$emptyHeader.toggle(results.length === 0);
+    this.updateHtml(results.length);
   }
 
   /**

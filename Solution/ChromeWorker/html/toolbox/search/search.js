@@ -186,23 +186,29 @@ class SearchManager {
       const { keywords, page } = $(this).data();
 
       if (page === index) {
+        const opts = { separateWordSearch: false, diacritics: false };
+        const description = $(this).find(`.item-description`);
         const additional = $(this).find(`.item-additional`);
         const module = $(this).find('.item-module');
         const name = $(this).find('.item-name');
         $(this).unmark();
 
         keywords.forEach(({ field, matches }) => {
-          if (!matches.length) return;
+          if (matches.length === 0) return;
 
-          if (field === 'module') {
-            return module.mark(matches, { separateWordSearch: false });
+          if (field === 'descriptions' && (!additional.length)) {
+            return description.mark(matches, opts);
           }
 
-          if (field === 'name') {
-            return name.mark(matches, { separateWordSearch: false });
+          if (field === 'module' && (!module.is(':empty'))) {
+            return module.mark(matches, opts);
           }
 
-          additional.mark(matches, { separateWordSearch: false });
+          if (field === 'name' && (!name.is(':empty'))) {
+            return name.mark(matches, opts);
+          }
+
+          additional.mark(matches, opts);
         });
       }
 

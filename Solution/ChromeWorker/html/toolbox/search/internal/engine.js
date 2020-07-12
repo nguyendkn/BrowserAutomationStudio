@@ -82,16 +82,12 @@ class BasSearchEngine {
    * @returns {Object[]} search results array.
    */
   recent() {
-    return ActionHistory.map((key) => {
-      const document = this.engine.store.findByField('key', key);
-
-      return {
-        descriptionInfo: {},
-        suggestionInfo: {},
-        keywords: [],
-        ...document
-      };
-    });
+    return ActionHistory.map((key) => ({
+      ...this.engine.store.findByField('key', key),
+      descriptionInfo: {},
+      suggestionInfo: {},
+      keywords: []
+    }));
   }
 
   getKeywords({ document, metadata, tokens, query }) {

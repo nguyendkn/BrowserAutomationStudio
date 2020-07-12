@@ -66,6 +66,9 @@ std::string PrepareStartupScript(BrowserData* Data, const std::string Url, int T
             jscode += ",";
             jscode += picojson::value(std::to_string(Data->Longitude)).serialize();
             jscode += ");";
+            jscode += "_BAS_HIDE(BrowserAutomationStudio_SetGeolocationObject)(";
+            jscode += picojson::value(Data->GeolocationObject).serialize();
+            jscode += ");";
             jscode += "}catch(e){};";
         }else
         {

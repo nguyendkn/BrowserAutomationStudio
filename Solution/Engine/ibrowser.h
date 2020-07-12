@@ -62,6 +62,7 @@ namespace BrowserAutomationStudioFramework
         virtual void MouseMove(int x, int y, const QString& params, const QString& callback) = 0;
         virtual void Timezone(int offset, const QString& callback) = 0;
         virtual void Geolocation(float latitude, float longitude, const QString& callback) = 0;
+        virtual void GeolocationObject(const QString& data, const QString& callback) = 0;
         virtual void PopupClose(int index, const QString& callback) = 0;
         virtual void PopupSelect(int index, const QString& callback) = 0;
         virtual void PopupCreate(bool is_silent, const QString& url, const QString& callback) = 0;

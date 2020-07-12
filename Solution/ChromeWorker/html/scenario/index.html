@@ -5130,7 +5130,7 @@
       return true
     }
 
-    function BrowserAutomationStudio_PrepareFunction(FunctionName)
+    function PrepareFunction(FunctionName)
     {
       var FunctionData = ""
       
@@ -5158,9 +5158,13 @@
       }
 
       
-      console.log(FunctionData)
+      return FunctionData
 
-      BrowserAutomationStudio_PrepareFunctionResult(FunctionName, FunctionData)
+    }
+
+    function BrowserAutomationStudio_PrepareFunction(FunctionName)
+    {
+      BrowserAutomationStudio_PrepareFunctionResult(FunctionName, PrepareFunction(FunctionName))
     }
 
 
@@ -5393,6 +5397,18 @@
           var name = match[1]
           code = GetFunctionBody(name) + "\n" + code
         }
+        
+        
+        var FunctionRegexp2 = new RegExp(/\/\*CallsFunction\:([^\*]+)\*\//)
+        var match2 = code.match(FunctionRegexp2)
+        if(match2)
+        {
+
+          var name = match2[1]
+          code = PrepareFunction(name) + "\n" + code
+        }
+      
+
         
         var CustomThreadRegexp = new RegExp("\\_thread_start\\(\\s*[^\\,]+\\,\\s*[^\\,]+\\,\\s*\\\"([^\\,\\s\\\"]+)\\\"\\s*\\,")
         if(!match)

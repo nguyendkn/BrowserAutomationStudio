@@ -33,23 +33,20 @@
   	<span class="tr">You can get a key there</span>. 
   </div>
 
+  <%= _.template($('#block_start').html())({id: "PerfectCanvasBlock", name: "PerfectCanvas", description: 
+  `
+	<span>${tr('With the help of PerfectCanvas technology, canvas data is replaced in the most accurate way possible. Data is drawn on real devices.')}</span> 
+	<a href="#" class="tr-en"  onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=perfectcanvas'); return false;">
+		<span>${tr('Learn more.')}</span>
+	</a>
+	<a href="#" class="tr-ru"  onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:perfectcanvas'); return false;">
+		<span>${tr('Learn more.')}</span>
+	</a>
+	<span>${tr('If you want to use PerfectCanvas, you only need to fill this field:')}</span> 
+  `}) %>
 
-  <div style="margin-left: 15px; background-color: #f1f1f1; padding: left:10px; padding-left: 10px; border-radius: 2px; margin-bottom: 3px; margin-right: 15px;">
-  	<input type="checkbox" id="PerfectCanvasCheck" onchange="$('#PerfectCanvas').toggle()" style="margin-top: 6px;" /> 
-  	<label for="PerfectCanvasCheck" class="tr" style="margin-bottom: 6px;width: calc(100% - 40px);cursor:pointer" >PerfectCanvas</label>
-  </div>
 
-  <span id="PerfectCanvas" style="display:none;margin-bottom:-4px;">
-		<div style="margin-bottom:5px;margin-left:20px;font-size:small">
-			<span class="tr">With the help of PerfectCanvas technology, canvas data is replaced in the most accurate way possible. Data is drawn on real devices.</span> 
-			<a href="#" class="tr-en"  onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=perfectcanvas'); return false;">
-				<span class="tr">Learn more.</span>
-			</a>
-			<a href="#" class="tr-ru"  onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:perfectcanvas'); return false;">
-				<span class="tr">Learn more.</span>
-			</a>
-			<span class="tr">If you want to use PerfectCanvas, you only need to fill this field:</span>
-		</div>
+  
 		 <%= _.template($('#input_constructor').html())({id:"PerfectCanvasRequest", description:tr("PerfectCanvas request. Can be blank."), default_selector: "string", disable_int:true, disable_expression:true, value_string:"", use_textarea:true, disable_type_chooser:true,textarea_height:80,
 		 help: 
 		 {
@@ -89,17 +86,10 @@
 			 ]
 		 } }) %>
 		
-		<div style="height:0px;clear: both;margin-bottom:-4px">&nbsp;</div>
-  </span>
+	<%= _.template($('#block_end').html())() %>
 
-  
+	<%= _.template($('#block_start').html())({id: "Advanced", name: tr("Options"), description: tr("")}) %>
 
-  <div style="margin-left: 15px; background-color: #f1f1f1; padding: left:10px; padding-left: 10px; border-radius: 2px; margin-top: 3px; margin-bottom: 4px; margin-right: 15px;">
-  	<input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" style="margin-top: 6px;" /> 
-  	<label for="AdvancedCheck" class="tr" style="margin-bottom: 6px;width: calc(100% - 40px);cursor:pointer" >Options</label>
-  </div>
-
-  <span id="Advanced" style="display:none;">
   		<%= _.template($('#input_constructor').html())({id:"AddedDate", description:tr("Minimum added date"), default_selector: "string", disable_int:true, value_string:"*", variants: ["*", '15 days', '30 days', '60 days'], help: 
 		{
 			description: tr("Select only fingerprints, which added date matches certain condition"), examples:
@@ -174,7 +164,8 @@
 			]
 		} }) %>
 		
-  </span>
+	<%= _.template($('#block_end').html())() %>
+
 
   <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "FINGERPRINT", help: 
 	{

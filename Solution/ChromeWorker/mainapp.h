@@ -257,6 +257,8 @@ public:
     void SetNextActionCallback(const std::string& NextActionId);
     void TimezoneCallback(int offset);
     void GeolocationCallback(float latitude, float longitude);
+    void GeolocationObjectCallback(const std::string& ObjectData);
+
     void VisibleCallback(bool visible);
     void FlushCallback();
     void SetProxyCallback(const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target);

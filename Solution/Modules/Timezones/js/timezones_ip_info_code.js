@@ -1,4 +1,5 @@
-var json = JSON.parse(native("timezones", "ipinfo", <%= value %>))
+_call(_get_ip_info, [<%= value %>, <%= ip_info_method %>, <%= ip_api_key %>, <%= function_name %>])!
+var json = _result()
 <%= variable_valid %> = json["valid"]
 <%= variable_country %> = json["country"]
 <%= variable_city %> = json["city"]

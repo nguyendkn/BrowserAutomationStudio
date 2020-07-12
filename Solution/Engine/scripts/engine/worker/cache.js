@@ -140,6 +140,10 @@ function set_proxy_extended()
     var ChangeBrowserLanguage = false
     var callback = null
 
+    var IpInfoMethod = "database"
+    var IpInfoKey = ""
+    var IpInfoFunctionName = null
+
     if(arguments.length == 5)
     {
         callback = arguments[4]
@@ -152,9 +156,23 @@ function set_proxy_extended()
     }
 
 
+    if(arguments.length == 9)
+    {
+        ChangeBrowserLanguage = arguments[4]
+        IpInfoMethod = arguments[5]
+        IpInfoKey = arguments[6]
+        IpInfoFunctionName = arguments[7]
+        callback = arguments[8]
+    }
+
+
 
     _if_else(DetectExternalIp && _PROXY["server"].length > 0, function(){
         browser_ip(function(){
+            if(typeof(_result()) != "string")
+            {
+                fail("Failed to get proxy ip")
+            }
             _PROXY["ip"] = _result()
             if(_PROXY["ip"].length == 0)
                 _PROXY["ip"] = _PROXY["server"]
@@ -180,40 +198,48 @@ function set_proxy_extended()
                 })
             })
         }, function(){
-            JSON_TEMP = JSON.parse(native("timezones", "ipinfo", _PROXY["ip"]))
-            _if(ChangeGeolocation, function(){
-                _if_else(JSON_TEMP["valid"], function(){
-                    geolocation(JSON_TEMP["latitude"],JSON_TEMP["longitude"],function(){})
-                }, function(){
-                    geolocation(100000,100000, function(){})
-                }, function(){})
-            }, function(){
-                _if(ChangeWebrtcIp, function(){
+
+            _call(_get_ip_info, [_PROXY["ip"], IpInfoMethod, IpInfoKey, IpInfoFunctionName], function(){
+
+                JSON_TEMP = _result()
+
+                _if(ChangeGeolocation, function(){
                     _if_else(JSON_TEMP["valid"], function(){
-                        _settings({"Webrtc":"replace","WebrtcIps":_PROXY["ip"]},function(){})
+                        geolocation(JSON_TEMP["latitude"],JSON_TEMP["longitude"],function(){})
                     }, function(){
-                        _settings({"Webrtc":"disable"},function(){})
+                        geolocation(100000,100000, function(){})
                     }, function(){})
                 }, function(){
-                    _if(ChangeTimezone, function(){
+                    _if(ChangeWebrtcIp, function(){
                         _if_else(JSON_TEMP["valid"], function(){
-                            _settings({"Timezone":(-JSON_TEMP["offset"]).toString(),"TimezoneName":JSON_TEMP["timezone"]}, function(){})
+                            _settings({"Webrtc":"replace","WebrtcIps":_PROXY["ip"]},function(){})
                         }, function(){
-                            _settings({"Timezone":"0","TimezoneName":""}, function(){})
+                            _settings({"Webrtc":"disable"},function(){})
                         }, function(){})
                     }, function(){
-                        _if(ChangeBrowserLanguage, function(){
+                        _if(ChangeTimezone, function(){
                             _if_else(JSON_TEMP["valid"], function(){
-                                var country = JSON_TEMP["country"].toUpperCase()
-                                var language = native("timezones", "country_to_language", country)
-                                header("Accept-Language", language + "-" + country, function(){})
+                                _settings({"Timezone":(-JSON_TEMP["offset"]).toString(),"TimezoneName":JSON_TEMP["timezone"]}, function(){})
                             }, function(){
-                                header("Accept-Language", "en", function(){})
+                                _settings({"Timezone":"0","TimezoneName":""}, function(){})
                             }, function(){})
-                        }, function(){delete JSON_TEMP})
+                        }, function(){
+                            _if(ChangeBrowserLanguage, function(){
+                                _if_else(JSON_TEMP["valid"], function(){
+                                    var country = JSON_TEMP["country"].toUpperCase()
+                                    var language = native("timezones", "country_to_language", country)
+                                    header("Accept-Language", language + "-" + country, function(){})
+                                }, function(){
+                                    header("Accept-Language", "en", function(){})
+                                }, function(){})
+                            }, function(){delete JSON_TEMP})
+                        })
                     })
                 })
+
             })
+
+
 
         }, callback)
     })

@@ -1733,6 +1733,17 @@ void MainApp::GeolocationCallback(float latitude, float longitude)
 
 }
 
+void MainApp::GeolocationObjectCallback(const std::string& ObjectData)
+{
+    {
+        LOCK_GEOLOCATION
+        Data->GeolocationObject = ObjectData;
+    }
+    SendStartupScriptUpdated();
+    SendTextResponce("<GeolocationObject></GeolocationObject>");
+
+}
+
 void MainApp::BrowserIpCallback()
 {
     if(IpClient)

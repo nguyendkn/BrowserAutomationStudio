@@ -7,6 +7,21 @@ var SaveTimezone = this.$el.find("#SaveTimezone").val().toUpperCase();
 var SaveOffset = this.$el.find("#SaveOffset").val().toUpperCase();
 var SaveDstOffset = this.$el.find("#SaveDstOffset").val().toUpperCase();
 
+var IpInfoMethod = GetInputConstructorValue("IpInfoMethod", loader);
+var IpApiKey = GetInputConstructorValue("IpApiKey", loader);
+var FunctionName = this.$el.find("#FunctionName").val();
+var CallsFunctionCode = ""
+
+if(FunctionName.length == 0)
+{
+  FunctionName = "null"
+}else
+{
+  CallsFunctionCode = "\/*CallsFunction:" + FunctionName + "*\/\n"
+}
+
+
+
 var Value = GetInputConstructorValue("Value", loader);
 
 
@@ -22,6 +37,12 @@ if(Value["original"].length == 0)
   return;
 }
 
+if(IpInfoMethod["original"].length == 0)
+{
+  Invalid("IpInfoMethod is empty");
+  return;
+}
+
  try{
   var code = loader.GetAdditionalData() + _.template($("#timezones_ip_info_code").html())({
   	variable_valid:"VAR_" + SaveValid,
@@ -32,9 +53,12 @@ if(Value["original"].length == 0)
   	variable_timezone:"VAR_" + SaveTimezone,
   	variable_offset:"VAR_" + SaveOffset,
     variable_dst_offset:"VAR_" + SaveDstOffset,
-  	value: Value["updated"]
+    value: Value["updated"],
+    ip_info_method: IpInfoMethod["updated"],
+    ip_api_key: IpApiKey["updated"],
+    function_name: FunctionName
   })
   code = Normalize(code,0)
-  BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+  BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + CallsFunctionCode + code, action, DisableIfAdd);
 }catch(e)
 {}

@@ -120,6 +120,7 @@ public:
     std::atomic_int Timezone;
 
     std::atomic_bool GeolocationSelected;
+    std::string GeolocationObject;
     std::atomic<float> Latitude;
     std::atomic<float> Longitude;
 

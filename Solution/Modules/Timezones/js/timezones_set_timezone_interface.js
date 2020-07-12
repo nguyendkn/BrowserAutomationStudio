@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Timezone UTC offset"), default_selector: "int", disable_string:true, value_number: 60 , variants: [
+  <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Timezone UTC offset. Can be blank"), default_selector: "expression", disable_string:true, variants: [
 
   	"-840<br/><span style='color:gray;font-size:small'>UTC+14:00</span>",
   	"-780<br/><span style='color:gray;font-size:small'>UTC+13:00</span>",
@@ -44,6 +44,9 @@
 	description: tr("The UTC offset is the difference in minutes from Coordinated Universal Time (UTC) for a particular place and date. Note that this means that the offset is positive if the local timezone is behind UTC and negative if it is ahead. For example, time zone UTC+10:00 (Australian Eastern Standard Time, Vladivostok Time, Chamorro Standard Time) corresponds to -600 offset, because 600 minutes equals to 10 hours."), examples:
 	[
 		{
+			code:tr("Empty string"),description:tr("Don't set timezone UTC offset")
+		},
+		{
 			code:"-60",description:tr("UTC+01:00 - Spain, France, Germany")
 		},
 		{
@@ -53,12 +56,29 @@
 }
 
  }) %>
+
+<%= _.template($('#input_constructor').html())({id:"TimezoneName", description:tr("Timezone name. Can be blank"), default_selector: "string", disable_int:true, variants: ["Europe/Berlin","America/Santiago"], help: 
+{
+	description: tr("Timezone name."), examples:
+[
+  {
+	  code:tr("Empty string"),description:tr("Don't set timezone name")
+  },
+  {
+	  code:"Europe/Berlin"
+  }
+]
+}
+
+}) %>
 </div>
 
 <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Set browser timezone.</div>
       <div class="tooltip-paragraph-fold"><span class="tr">Site can obtain information about system timezone by using internal '</span><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset');return false">Date</a><span class="tr">' object. This action allows to spoof local time values returned by browser.</span></div>
-      <div class="tooltip-paragraph-fold"><span class="tr">Full list of timezones can be found</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/List_of_UTC_time_offsets');return false">here</a>.</div>
+      <div class="tooltip-paragraph-fold"><span class="tr">Full list of offsets can be found</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/List_of_UTC_time_offsets');return false">here</a>, <span class="tr">list of timezone names can be found</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/List_of_tz_database_time_zones');return false">here</a> .</div>
+	  <div class="tr tooltip-paragraph-fold">Leave any field blank if you don't want to change it.</div>
+
       <div class="tr tooltip-paragraph-last-fold">It is recommended to use 'Proxy' action instead of this one, because it will set timezone automatically according to current proxy.</div>
 </div>
 

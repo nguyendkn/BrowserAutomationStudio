@@ -118,6 +118,50 @@ extern "C" {
 
     }
 
+    void TimezoneNameToOffset(char *InputJson, ResizeFunction AllocateSpace, void* AllocateData, void* DllData, void* ThreadData, unsigned int ThreadId, bool *NeedToStop, bool* WasError)
+    {
+        QString TimezoneName = QString(InputJson);
+
+
+
+
+
+        QVariantMap res;
+
+        if(!QTimeZone(TimezoneName.toUtf8()).isValid())
+        {
+            res.insert("valid", false);
+        }else
+        {
+            res.insert("valid", true);
+            QDateTime now = QDateTime::currentDateTime();
+
+            int offset = - QTimeZone(TimezoneName.toUtf8()).standardTimeOffset(now) / 60;
+            int dst = 0;
+            for(int i = 1;i<=12;i++)
+            {
+                dst = - QTimeZone(TimezoneName.toUtf8()).daylightTimeOffset(QDateTime(QDate(now.date().year(),i,1),QTime(0,0))) / 60;
+                if(dst != 0)
+                    break;
+            }
+
+            res.insert("offset", offset);
+            res.insert("dstoffset", dst + offset);
+        }
+
+
+        QJsonObject object = QJsonObject::fromVariantMap(res);
+
+        QJsonDocument document;
+        document.setObject(object);
+
+        QByteArray ResArray = document.toJson();
+
+        char * ResMemory = AllocateSpace(ResArray.size(),AllocateData);
+        memcpy(ResMemory, ResArray.data(), ResArray.size() );
+
+    }
+
     void IpInfo(char *InputJson, ResizeFunction AllocateSpace, void* AllocateData, void* DllData, void* ThreadData, unsigned int ThreadId, bool *NeedToStop, bool* WasError)
     {
         GeoDllData * data = (GeoDllData *)DllData;

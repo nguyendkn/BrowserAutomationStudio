@@ -280,6 +280,15 @@ function geolocation(latitude,longitude,callback)
     })
 }
 
+function geolocation_object(object_string,callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.GeolocationObject(JSON.stringify(_ARG[0]),_get_function_body(_ARG[1]))
+    })
+}
+
+
 function popupclose(index, callback)
 {
     _ARG = arguments

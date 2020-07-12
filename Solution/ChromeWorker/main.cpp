@@ -1980,6 +1980,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventResize.push_back(std::bind(&MainApp::ResizeCallback,app.get(),_1,_2));
     Parser->EventTimezone.push_back(std::bind(&MainApp::TimezoneCallback,app.get(),_1));
     Parser->EventGeolocation.push_back(std::bind(&MainApp::GeolocationCallback,app.get(),_1,_2));
+    Parser->EventGeolocationObject.push_back(std::bind(&MainApp::GeolocationObjectCallback,app.get(),_1));
     Parser->EventSetWindow.push_back(std::bind(&MainApp::SetWindowCallback,app.get(),_1));
     Parser->EventHighlightAction.push_back(std::bind(&MainApp::HighlightActionCallback,app.get(),_1));
     Parser->EventMouseClick.push_back(std::bind(&MainApp::MouseClickCallback,app.get(),_1,_2));

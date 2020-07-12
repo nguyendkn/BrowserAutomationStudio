@@ -98,8 +98,17 @@
 	description: tr("An offset for daylight saving time.")
 }}) %>
 </div>
+
+
+
+
+
+
+<div class="container-fluid resize">
+	<%= _.template($('#ip_information').html())() %>
+</div>
 <div class="tooltipinternal">
     <div class="tr tooltip-paragraph-first-fold">Get information for selected ip, this includes timezone UTC offset and other.</div>
-    <div class="tr tooltip-paragraph-last-fold">To obtain ip information internal database is used, no network requests will be done.</div>
+    <div class="tr tooltip-paragraph-last-fold">To obtain ip information internal database or external service is used, check "IP information" section for more details.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

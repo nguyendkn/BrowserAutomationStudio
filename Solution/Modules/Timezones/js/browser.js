@@ -6,19 +6,38 @@
 	delete window.navigator.permissions.query
 }
 
+;_BAS_HIDE(BrowserAutomationStudio_SetGeolocationObject) = function(ObjectString)
+{
+	try
+	{
+		var NewObject = JSON.parse(ObjectString);
+		delete NewObject["latitude"]
+		delete NewObject["longitude"]
+		Object.assign(_BAS_HIDE(BrowserAutomationStudio_Location), NewObject);
+	}catch(e)
+	{
+		
+	}
+}
 
 
 ;_BAS_HIDE(BrowserAutomationStudio_SetGeolocation) = function(Latitude,Longitude)
 {
 
-	;_BAS_HIDE(BrowserAutomationStudio_Location) = 
+	if(typeof(_BAS_HIDE(BrowserAutomationStudio_Location)) != "object")
 	{
-		accuracy: 10000,
-		altitude: 0,
-		altitudeAccuracy: 0,
-		latitude: parseFloat(Latitude),
-		longitude: parseFloat(Longitude)
-	};
+		;_BAS_HIDE(BrowserAutomationStudio_Location) = 
+		{
+			accuracy: 4413,
+			altitude: null,
+			altitudeAccuracy: null,
+			heading: null,
+			speed: null
+		};
+	}
+
+	_BAS_HIDE(BrowserAutomationStudio_Location)["latitude"] = parseFloat(Latitude);
+	_BAS_HIDE(BrowserAutomationStudio_Location)["longitude"] = parseFloat(Longitude);
 
 
 	(function(query_original){

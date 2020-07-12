@@ -106,7 +106,7 @@ _L =
 	"'Security settings' will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. This will make your application less detectable, check information for each individual setting to understand what are they needed for. Default settings will work fine.": {"ru": "'Настройки безопасности' задают различные настройки браузера в соответствии с новым прокси, например: часовой пояс и месторасположение. Эти сделает ваше приложение менее обнаруживаемым. Проверьте информацию для каждого отдельного параметра, чтобы понять, для чего он нужны. Настройки по умолчанию обеспечат оптимальную работу."},
 
 	"Use default server url, http://rucaptcha.com for rucaptcha, etc": {"ru": "Использовать url по умолчанию, например, http://rucaptcha.com для rucaptcha."},
-
+	"Security settings": {"ru": "Настройки безопасности"},
 	
 
 	"Replace ips exposed by WebRTC with values from 'WebRTC ip list' field.": {"ru": "Заменить ip, возвращаемые WebRTC значениями из поля 'WebRTC список ip'."},
@@ -717,6 +717,26 @@ _L =
 	"Synchronize" :{"ru": "Синхронизировать"},
 	"Call API" :{"ru": "Вызвать API"},
 	"Fail" :{"ru": "Fail"},
+
+	"IP information" :{"ru": "Информация об IP"},
+	"Options below will define method to obtain information about IP. Default settings will work fine." :{"ru": "Параметры ниже отвечают за метод получения информации о IP. Настройки по умолчанию обеспечат оптимальную работу."},
+	"IP info method" :{"ru": "Метод получения информации о IP"},
+	"Use internal IP database" :{"ru": "Использовать внутреннюю базу IP адресов"},
+	"Use ip-api.com service" :{"ru": "Использовать сервис ip-api.com"},
+	"Сustom BAS function to obtain IP information" :{"ru": "Отдельная BAS функция для получения информации."},
+	"Method which will be used to obtain information about IP." :{"ru": "Метод, который будет использоваться для получения информации об IP."},
+	"Use internal database, it is fast and always available. Even though the database is constantly being updated, this method may not be the most accurate compared to the others." :{"ru": "Использовать внутреннюю базу данных, данный подход работает быстро и всегда доступен. Хотя база данных постоянно обновляется, этот метод может быть не самым точным по сравнению с другими."},
+	"Use ip-api.com service. Free version has limit - 45 requests from single IP. Pro version is not limited to request number but costs 15$ per month." :{"ru": "Использовать сервис ip-api.com. Бесплатная версия имеет ограничение - 45 запросов с одного IP. Pro версия не ограничена количеством запросов, но стоит 15$ в месяц."},
+	"Use custom BAS function to obtain IP information." :{"ru": "Использовать отдельную BAS функцию для получения информации."},
+	"ip-api.com key. Can be blank." :{"ru": "Ключ ip-api.com. Может быть пустым."},
+	"Key from the ip-api.com service, pro version. Key available after purchase. This parameter is used only if \"IP info method\" is set to \"ip-api.com\" value." :{"ru": "Ключ от сервиса ip-api.com pro версии. Ключ доступен после покупки. Этот параметр используется только в том случае, если для параметра \"Метод получения информации о IP\" задано значение \"ip-api.com\"."},
+	"Use free version" :{"ru": "Использовать бесплатную версию"},
+	"Use pro version" :{"ru": "Использовать pro версию"},
+	"Custom IP information function" :{"ru": "Отдельная функция для получения информации об IP"},
+	"Custom BAS function, which takes IP string as input(&quot;IP&quot; input parameter) and returns JSON with IP information. This parameter is used only if &quot;IP info method&quot; is set to &quot;custom function&quot; value." :{"ru": "Отдельная функция BAS, которая получает строку IP (входной параметр называется &quot;IP&quot;) и возвращает JSON с информацией об IP. Этот параметр используется только в том случае, если для параметра &quot;Метод получения информации о IP&quot; задано значение &quot;custom function&quot;."},
+	"JSON example, which must return custom function." :{"ru": "Пример JSON, который должна возвращать функция."},
+	"Key" :{"ru": "Ключ"},
+
 
 	"Failed to update" :{"ru": "Не удалось обновить"},
 	

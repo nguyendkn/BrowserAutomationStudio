@@ -266,6 +266,95 @@
     <div><a href="#" class="expressioneditor-tool" data-name="<%= name %>"><%= name_translate %></a> : <%= description %></div>
   </script>
 
+  <script type="text/template" id="block_start">
+
+    <div style="height:0px;clear: both;margin-bottom:-4px">&nbsp;</div>
+
+
+    <div style="margin-left: 15px; background-color: #f1f1f1; padding: left:10px; padding-left: 10px; border-radius: 2px; margin-top: 3px; margin-bottom: 4px; margin-right: 15px;">
+      <input type="checkbox" id="<%= id %>Check" onchange="$('#<%= id %>Block').toggle()" style="margin-top: 6px;" /> 
+      <label for="<%= id %>Check" style="margin-bottom: 6px;width: calc(100% - 40px);cursor:pointer" ><%= name %></label>
+    </div>
+
+    <span id="<%= id %>Block" style="display:none;">
+
+      <% if(description){ %>
+        <hr style="margin-top:5px;margin-bottom:5px"/>
+        <div style="margin-left:20px;margin-right:20px;font-size:small"><%= description %></div>
+        <hr style="margin-top:5px;margin-bottom:5px"/>
+      <% } %>
+
+  </script>
+
+  <script type="text/template" id="block_end">
+    </span>
+  </script>
+
+  <script type="text/template" id="ip_information">
+
+    <%= _.template($('#block_start').html())({id: "IpInfo", name: tr("IP information"), description: tr("Options below will define method to obtain information about IP. Default settings will work fine.")}) %>
+
+      <%= _.template($('#input_constructor').html())({id:"IpInfoMethod", description:tr("IP info method"), default_selector: "string", disable_int:true, value_string: "database", variants: ["database<br/><span style='color:gray;font-size:small'>" + tr("Use internal IP database") + "</span>","ip-api.com<br/><span style='color:gray;font-size:small'>" + tr("Use ip-api.com service") + "</span>","custom function<br/><span style='color:gray;font-size:small'>" + tr("Сustom BAS function to obtain IP information") + "</span>"], help: {description: tr("Method which will be used to obtain information about IP."),examples:[{code:"database",description:tr("Use internal database, it is fast and always available. Even though the database is constantly being updated, this method may not be the most accurate compared to the others.")},{code:"ip-api.com",description:tr("Use ip-api.com service. Free version has limit - 45 requests from single IP. Pro version is not limited to request number but costs 15$ per month.")},{code:"custom function",description:tr("Use custom BAS function to obtain IP information.")}]}}) %>
+
+      <%= _.template($('#input_constructor').html())({id:"IpApiKey", description:tr("ip-api.com key. Can be blank."), default_selector: "string", disable_int:true, help: {description: tr("Key from the ip-api.com service, pro version. Key available after purchase. This parameter is used only if \"IP info method\" is set to \"ip-api.com\" value."), examples:[{code:tr("Empty string"),description:tr("Use free version")},{code:tr("Key"),description:tr("Use pro version")}]}}) %>
+
+      <div class="container-fluid executefunction">
+        <div class="col-xs-12" style="margin-bottom: 5px;padding-right: 0px;">
+          
+          <div class="input-group">
+            
+            <span data-preserve="true" data-preserve-type="text" data-preserve-id="FunctionName">
+              <input class="form-control function-input" type="text" id="FunctionName" placeholder="Custom IP information function">
+              <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                <li>
+                  <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
+                    <span class="tr">Select function</span>
+                  </a>
+                </li>
+              </ul>
+            </span>        
+
+            <span class="input-group-addon input-description">
+              <span class="tr">Custom IP information function</span>
+            
+              <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="" data-original-title="
+              <div style='text-align:left;min-width:200px'>
+                <strong><u><%= tr('Custom IP information function') %></u></strong>
+                
+                  <div style='font-style: italic;font-size:small;margin-top:5px'><%= tr('Custom BAS function, which takes IP string as input(&quot;IP&quot; input parameter) and returns JSON with IP information. This parameter is used only if &quot;IP info method&quot; is set to &quot;custom function&quot; value.') %></div>
+                
+                    <div style='margin-top:5px;' class='tr'><strong><u><%= tr('Examples : ') %></u></strong></div>
+                    
+                    <div style='font-size:small;' >
+                    <strong> 
+                      {
+                        <div style='margin-left:5px'>valid: true,</div>
+                        <div style='margin-left:5px'>city: &quot;Frankfurt am Main&quot;,</div>
+                        <div style='margin-left:5px'>country: &quot;DE&quot;,</div>
+                        <div style='margin-left:5px'>dstoffset: -120,</div>
+                        <div style='margin-left:5px'>offset: -60,</div>
+                        <div style='margin-left:5px'>timezone: &quot;Europe/Berlin&quot;,</div>
+                        <div style='margin-left:5px'>longitude: 8.6843,</div>
+                        <div style='margin-left:5px'>latitude: 50.1188</div>
+                      }
+                    </strong> 
+                      
+                        - <%= tr('JSON example, which must return custom function.') %>
+                      
+                    </div>
+          
+              </div>
+            "></i>
+            
+            </span>
+          </div>
+          
+        </div>
+        
+      </div>
+
+      <%= _.template($('#block_end').html())() %>
+  </script>
 
   <script type="text/template" id="main">
     <div class="leftactionpaneltitledrop" style="display:none">
@@ -421,7 +510,7 @@
 
                 <span class="input-group-addon input-description"><%= description %>
                   <% if(typeof(help) == "object"){ %>
-                    <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
+                    <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
                   <% } %>
                 </span>
               </div>
@@ -470,7 +559,7 @@
 
                 <span class="input-group-addon input-description"><%= description %>
                   <% if(typeof(help) == "object"){ %>
-                    <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
+                    <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
                   <% } %>
                 </span>
               </div>
@@ -634,14 +723,14 @@
                 class="form-control input_selector_string" id="<%= id %>" <%= (default_selector == "int") ? "style=\"display:none\"" : "" %>
                 placeholder="<%= je(description).replace(/\\n/g,"&#10;") %>" 
                 <%= (typeof(replace_linebreaks) != "undefined") ? "data-replace-linebreaks='true' " : "" %>
-                value="<%= (typeof(value_string) != "undefined") ? value_string : ((typeof(value_expression) != "undefined") ? eval(value_expression) : "") %>"/>
+                value="<%= (typeof(value_string) != "undefined") ? value_string : ((typeof(value_expression) != "undefined") ? eval(value_expression) : "") %>" <%= (typeof(use_textarea) == "undefined") ? "/>" : (">" + ((typeof(value_string) != "undefined") ? value_string : ((typeof(value_expression) != "undefined") ? eval(value_expression) : "")) + "\<\/textarea>") %>
                 <input class="form-control input_selector_number" type="number" id="<%= id %>_number" <%= (default_selector != "int") ? "style=\"display:none\"" : "" %> placeholder="<%= je(description) %>" value="<%= (typeof(value_number) != "undefined") ? value_number : 1%>" step="<%= (typeof(step_number) != "undefined") ? step_number : 1%>" min="<%= (typeof(min_number) != "undefined") ? min_number : 0%>" max="<%= (typeof(max_number) != "undefined") ? max_number : 10000%>" />
                 
                 <% if(typeof(use_textarea) != "undefined" && (typeof(help) == "object" || typeof(modal_code_id) == "string")){ %>
                   <div style="position: relative;width: 0px;height: 0px;top: -34px;left: -10px;">
                     <div style="position: absolute; left: 14px; top: 14px">
                       <% if(typeof(help) == "object"){ %>
-                        <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
+                        <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
                       <% } %>
                       <% if(typeof(modal_code_id) == "string"){ %>
                         <a onclick="bootbox.alert({message: $('#<%= modal_code_id %>').html(), size: 'large'});return false;" href="#"><i class="fa fa-question-circle help-input"></i>  </a>
@@ -695,7 +784,7 @@
                 <% if(typeof(use_textarea) == "undefined" && typeof(disable_label) == "undefined" && typeof(description) == "string" && description.length > 0){ %>
                   <span  tabindex="-1" class="input-group-addon input-description"><%= description %> 
                     <% if(typeof(help) == "object"){ %>
-                      <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
+                      <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:description,description:help["description"],examples:help["examples"]})) %>" ></i>
                     <% } %>
                      
                    </span>
@@ -4560,20 +4649,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"ProxyPassword", description:tr("Proxy password. Can be blank."), default_selector: "string", disable_int:true, help: {description: tr("Proxy password, overrides password set in proxy string. Useful if you have many proxy with same login and password.")}}) %>
 
 
-
-
-
-      <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Security settings</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <div class="tr" style="margin-left:15px;color:gray;font-size:small">Options below will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. Default settings will work fine.</div>
-
-          </div>
-        </form>
-      </div>
+    <%= _.template($('#block_start').html())({id: "SecuritySettings", name: tr("Security settings"), description: tr("Options below will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. Default settings will work fine.")}) %>
 
 
       <%= _.template($('#input_constructor').html())({id:"ChangeTimezone", description:tr("Change timezone"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true","false"], help: {description: tr("Change browser timezone according to proxy ip. For example, if proxy is located in United Kingdom, then browser timezone offset will be equal to 0(UTC+00:00). You can set timezone to custom value with 'Timezone' module."),examples:[{code:"true",description:tr("Change timezone.")},{code:"false",description:tr("Don't change timezone.")}]}}) %>
@@ -4586,16 +4662,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"ChangeBrowserLanguage", description:tr("Change browser language"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true","false"], help: {description: tr("Change browser language according to country of proxy. This setting will change 'Accept-Language' header as well as navigator.language and navigator.languages javascript properties. By default language value will be equal to language and country code separated with dash, for example 'de-DE' for Germany. This value is valid, but most browsers uses more complicated strings. If you want to make BAS look like real browser, use FingerprintSwitcher service, it will set language to more natural value, for example for iPhone from Germany it will equal 'de, en;q=0.8, *;q=0.01'. You can also set this value explicitly by using 'Set Header' action"),examples:[{code:"true",description:tr("Change browser language according to proxy country.")},{code:"false",description:tr("Don't change browser language, default will be 'en-US,en;q=0.9'.")}]}}) %>
 
       <%= _.template($('#input_constructor').html())({id:"DetectExternalIp", description:tr("Detect external ip"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true","false"], help: {description: tr("Detect proxy ip by querying external service. This option may be used in case if ip that you are using to connect proxy doesn't match ip which is visible to site(external ip). BAS will use an ip.bablosoft.com service to detect external ip and will set 'Change timezone', 'Change geolocation' and 'Change WebRTC ip' according to correct ip value."),examples:[{code:"true",description:tr("Use external ip obtained by service.")},{code:"false",description:tr("Don't use external service, detect ip from proxy string.")}]}}) %>
+    
+    <%= _.template($('#block_end').html())() %>
 
-
-      <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
-
+      <%= _.template($('#ip_information').html())() %>
+  
       <%= _.template($('#targetfields').html())({}) %>
     </div>
 
@@ -5891,7 +5962,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       }
       set_proxy(hash["server"], hash["Port"], hash["IsHttp"], hash["name"], hash["password"])!
       sleep(1000)!
-      set_proxy_extended(<%= DetectExternalIp %> == "true", <%= ChangeGeolocation %> == "true", <%= ChangeWebrtcIp %> == "true", <%= ChangeTimezone %> == "true", <%= ChangeBrowserLanguage %> == "true")!
+      set_proxy_extended(<%= DetectExternalIp %> == "true", <%= ChangeGeolocation %> == "true", <%= ChangeWebrtcIp %> == "true", <%= ChangeTimezone %> == "true", <%= ChangeBrowserLanguage %> == "true", <%= ip_info_method %>, <%= ip_api_key %>, <%= function_name %>)!
   </script>
 
   <script type="text/template" id="for_code">
@@ -6020,6 +6091,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="vs/loader.js"></script>
   <script src="unfold-tooltip.js"></script>
   <script src="multiselectmanager.js"></script>
+  <script src="tooltips.js"></script>
 
   
   <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
@@ -7175,8 +7247,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           })
           $("#FunctionParameters").append(Template)
         }
-
-        $('[data-toggle="tooltip"]').tooltip({trigger:'hover', template:'<div class="mytooltip" role="tooltip"><div class="mytooltip-arrow tooltip-arrow"></div><div class="mytooltip-inner tooltip-inner"></div></div>',delay: { "show": 500, "hide": 100 }})
+        SetupTooltips();
       },
 
       labeladd: function(event)
@@ -8844,6 +8915,21 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               var DetectExternalIp = GetInputConstructorValue("DetectExternalIp",loader)
               var ChangeBrowserLanguage = GetInputConstructorValue("ChangeBrowserLanguage",loader)
 
+              var IpInfoMethod = GetInputConstructorValue("IpInfoMethod", loader);
+              var IpApiKey = GetInputConstructorValue("IpApiKey", loader);
+              var FunctionName = this.$el.find("#FunctionName").val();
+
+              var CallsFunctionCode = ""
+
+              if(FunctionName.length == 0)
+              {
+                FunctionName = "null"
+              }else
+              {
+                CallsFunctionCode = "\/*CallsFunction:" + FunctionName + "*\/\n"
+              }
+
+
               if(ProxyLogin["updated"] == "")
                 ProxyLogin["updated"] = '""'
               var ProxyPassword = GetInputConstructorValue("ProxyPassword",loader)
@@ -8863,9 +8949,23 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
               try{
                 var TargetCode = BrowserAutomationStudio_GetTargetCode(loader)
-                var code = loader.GetAdditionalData() + TargetCode + _.template($('#' + State + "_code").html())({ProxyText:ProxyText["updated"], ProxyType:ProxyType["updated"],ProxyLogin:ProxyLogin["updated"],ProxyPassword:ProxyPassword["updated"], ChangeTimezone:ChangeTimezone["updated"], ChangeGeolocation:ChangeGeolocation["updated"], ChangeWebrtcIp:ChangeWebrtcIp["updated"], DetectExternalIp:DetectExternalIp["updated"], ChangeBrowserLanguage: ChangeBrowserLanguage["updated"]})
+                var code = loader.GetAdditionalData() + TargetCode + _.template($('#' + State + "_code").html())(
+                  {
+                    ProxyText:ProxyText["updated"], 
+                    ProxyType:ProxyType["updated"],
+                    ProxyLogin:ProxyLogin["updated"],
+                    ProxyPassword:ProxyPassword["updated"], 
+                    ChangeTimezone:ChangeTimezone["updated"], 
+                    ChangeGeolocation:ChangeGeolocation["updated"], 
+                    ChangeWebrtcIp:ChangeWebrtcIp["updated"], 
+                    DetectExternalIp:DetectExternalIp["updated"], 
+                    ChangeBrowserLanguage: ChangeBrowserLanguage["updated"],
+                    ip_info_method: IpInfoMethod["updated"],
+                    ip_api_key: IpApiKey["updated"],
+                    function_name: FunctionName,
+                  })
                 code = Normalize(code,0)
-                BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+                BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + CallsFunctionCode + code, action, DisableIfAdd);
               }catch(e){}
 
 
@@ -10388,7 +10488,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         $(".leftactionpanel").css("overflow-x","hidden")
         
 
-        $('[data-toggle="tooltip"]').tooltip({trigger:'hover', template:'<div class="mytooltip" role="tooltip"><div class="mytooltip-arrow tooltip-arrow"></div><div class="mytooltip-inner tooltip-inner"></div></div>',delay: { "show": 500, "hide": 100 }})
+        SetupTooltips();
 
         $('.typeahead').bind('typeahead:close', function() {
           SearchUsed = false;

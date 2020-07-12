@@ -228,7 +228,10 @@ function set_proxy_extended()
                                 _if_else(JSON_TEMP["valid"], function(){
                                     var country = JSON_TEMP["country"].toUpperCase()
                                     var language = native("timezones", "country_to_language", country)
-                                    header("Accept-Language", language + "-" + country, function(){})
+                                    header("Accept-Language", language + "-" + country, function(){
+                                        _settings({"Fingerprints.Locale":JSON_TEMP["country"].toLowerCase()}, function(){})
+                                    })
+
                                 }, function(){
                                     header("Accept-Language", "en", function(){})
                                 }, function(){})

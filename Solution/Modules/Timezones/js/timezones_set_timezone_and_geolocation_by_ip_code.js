@@ -19,4 +19,5 @@ _if((<%= change_browserlanguage %>) == "true", function(){
 	var country = IP_INFO["country"].toUpperCase()
 	var language = native("timezones", "country_to_language", country)
 	header("Accept-Language", language + "-" + country)!
+	_settings({"Fingerprints.Locale":IP_INFO["country"].toLowerCase()})!
 })!

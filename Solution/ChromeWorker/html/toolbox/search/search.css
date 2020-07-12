@@ -296,6 +296,10 @@
   overflow: hidden;
 }
 
+.item-description > mark {
+  color: #ff553e;
+}
+
 .item-additional > mark {
   color: #ff553e;
 }

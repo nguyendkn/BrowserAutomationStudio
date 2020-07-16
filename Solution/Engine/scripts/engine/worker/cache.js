@@ -167,21 +167,19 @@ function set_proxy_extended()
 
 
 
-    _if_else(DetectExternalIp && _PROXY["server"].length > 0, function(){
+    _if_else(DetectExternalIp || _PROXY["server"].length == 0, function(){
         browser_ip(function(){
-            if(typeof(_result()) != "string")
+            if(typeof(_result()) != "string" || _result().length == 0)
             {
                 fail("Failed to get proxy ip")
             }
             _PROXY["ip"] = _result()
-            if(_PROXY["ip"].length == 0)
-                _PROXY["ip"] = _PROXY["server"]
         })
     }, function(){
         _PROXY["ip"] = _PROXY["server"]
     }, function(){
 
-        _if_else(_PROXY["server"].length == 0, function(){
+        _if_else(_PROXY["ip"].length == 0, function(){
             _if(ChangeGeolocation, function(){
                 geolocation(100000,100000, function(){})
             }, function(){

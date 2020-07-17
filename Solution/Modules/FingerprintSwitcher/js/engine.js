@@ -383,6 +383,21 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	})!
 
+	if(FINGERPRINT_JSON["css"])
+	{
+		var Keys = Object.keys(FINGERPRINT_JSON["css"])
+		for(var i = 0;i<Keys.length;i++)
+		{
+			var Key = "css-" + Keys[i]
+			Key = Key.split("-").map(function(word){
+				if(!word)
+					return word;
+				return word.charAt(0).toUpperCase() + word.slice(1)
+			}).join("")
+			FINGEPRINT_SETTINGS["Fingerprints." + Key] = FINGERPRINT_JSON["css"][Keys[i]].toString()
+		}
+	}
+
 	{
 		var PerfectCanvasReplaceType = "Disable"
 		if(FINGERPRINT_JSON["perfectcanvas"] && FINGERPRINT_PERFECTCANVAS)

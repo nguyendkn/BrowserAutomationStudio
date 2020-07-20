@@ -267,20 +267,26 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			{
 				var Key = Keys[i]
 				var Value = FINGERPRINT_JSON["webgl_properties"][Key]
-				if(typeof(Value) != "string")
+				if(typeof(Value) == "number")
 				{
-					try
-					{
-						Value = JSON.stringify(Value)
-					}catch(e)
-					{
-
-					}
+					Value = Value.toString()
 				}
 				if(!Value)
 					Value = ""
+				if(typeof(Value) == "object")
+				{
+					var ValueKeys = Object.keys(Value)
+					for(var j = 0;j<ValueKeys.length;j++)
+					{
+						var Key2 = ValueKeys[j]
+						Settings["Webgl." + Key + "." + Key2] = Value[Key2].toString()
+					}
+				}else
+				{
+					Settings["Webgl." + Key] = Value
+				}
 				
-				Settings["Webgl." + Key] = Value
+				
 			}
 		}
 

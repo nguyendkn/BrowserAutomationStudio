@@ -267,8 +267,19 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			{
 				var Key = Keys[i]
 				var Value = FINGERPRINT_JSON["webgl_properties"][Key]
+				if(typeof(Value) != "string")
+				{
+					try
+					{
+						Value = JSON.stringify(Value)
+					}catch(e)
+					{
+
+					}
+				}
 				if(!Value)
 					Value = ""
+				
 				Settings["Webgl." + Key] = Value
 			}
 		}

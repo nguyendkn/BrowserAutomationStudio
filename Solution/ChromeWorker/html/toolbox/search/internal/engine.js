@@ -1,35 +1,20 @@
-class BasSearchEngine {
+class BasSearchEngine extends SearchEngine {
   /**
    * Create an instance of `BasSearchEngine` class.
    * @param {Object} config - search engine configuration object.
    * @param {Object[]} config.documents - documents array.
+   * @param {Object[]} config.fields - fields array.
    * @param {Number} config.limit - limit number.
+   * @param {String} config.ref - ref string.
    * @constructor
    */
-  constructor ({ documents, limit }) {
-    this.engine = new SearchEngine(limit);
+  constructor ({ documents, fields, limit, ref }) {
+    super(limit);
 
-    this.engine.createIndex({
-      fields: [
-        {
-          name: 'descriptions',
-          weight: 0.125,
-        },
-        {
-          name: 'suggestions',
-          weight: 0.125,
-        },
-        {
-          name: 'module',
-          weight: 0.5,
-        },
-        {
-          name: 'name',
-          weight: 0.25,
-        },
-      ],
-      ref: 'key',
-      documents
+    this.createIndex({
+      documents,
+      fields,
+      ref
     });
 
     this.cache = {};

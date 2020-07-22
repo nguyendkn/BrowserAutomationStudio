@@ -38,12 +38,12 @@ class BasSearchEngine extends SearchEngine {
 
     let results = [];
 
-    if (!this.engine.canceled) {
-      results = this.engine.search(query, false);
+    if (!this.canceled) {
+      results = super.search(query, []);
     }
 
-    if (this.engine.canceled) {
-      results = this.engine.search(query, true);
+    if (this.canceled) {
+      results = super.search(query, ['descriptions']);
     }
 
     this.cache[query] = results
@@ -86,7 +86,7 @@ class BasSearchEngine extends SearchEngine {
    */
   recent() {
     return ActionHistory.map((key) => ({
-      ...this.engine.store.findByField('key', key),
+      ...this.store.findByRef(key),
       descriptionInfo: {},
       suggestionInfo: {},
       keywords: []

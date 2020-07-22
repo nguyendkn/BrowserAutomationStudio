@@ -6,11 +6,14 @@ class SearchManager {
   constructor () {
     this.store = new DocumentsStore();
 
-    this.searchEngine = new BasSearchEngine([
-      ...this.store.getActionItems(),
-      ...this.store.getVideoItems(),
-      ...this.store.getWikiItems(),
-    ]);
+    this.searchEngine = new BasSearchEngine({
+      documents: [
+        ...this.store.getActionItems(),
+        ...this.store.getVideoItems(),
+        ...this.store.getWikiItems(),
+      ],
+      limit: 500
+    });
 
     this.registerHandlers();
     this.lastQuery = null;
@@ -248,7 +251,6 @@ class SearchManager {
    */
   toggle(hide) {
     $(document.body).css('overflow', hide ? 'visible' : 'hidden');
-
     this.$pagination.toggle(!hide);
     this.$actions.toggle(hide);
     this.$search.toggle(!hide);

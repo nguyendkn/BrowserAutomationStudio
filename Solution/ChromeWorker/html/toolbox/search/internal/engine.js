@@ -1,11 +1,13 @@
 class BasSearchEngine {
   /**
    * Create an instance of `BasSearchEngine` class.
-   * @param {Object[]} documents - documents array.
+   * @param {Object} config - search engine configuration object.
+   * @param {Object[]} config.documents - documents array.
+   * @param {Number} config.limit - limit number.
    * @constructor
    */
-  constructor (documents) {
-    this.engine = new SearchEngine();
+  constructor ({ documents, limit }) {
+    this.engine = new SearchEngine(limit);
 
     this.engine.createIndex({
       fields: [
@@ -34,17 +36,32 @@ class BasSearchEngine {
   }
 
   /**
+   * Check that the selected query string exists in the search cache.
+   * @param {String} query - selected query string.
+   */
+  inCache(query) {
+    return Object.prototype.hasOwnProperty.call(this.cache, query) === true;
+  }
+
+  /**
    * Perform an action search using the selected query.
    * @param {String} query - selected query string.
    * @returns {Object[]} search results array.
    */
   search(query) {
-    if (Object.prototype.hasOwnProperty.call(this.cache, query)) {
-      return this.cache[query];
+    if (this.inCache(query)) return this.cache[query];
+
+    let results = [];
+
+    if (!this.engine.canceled) {
+      results = this.engine.search(query, false);
     }
 
-    this.cache[query] = this.engine
-      .search(query)
+    if (this.engine.canceled) {
+      results = this.engine.search(query, true);
+    }
+
+    this.cache[query] = results
       .filter(({ document }) => {
         const ignored = [
           'httpclientgetcookiesforurl',
@@ -59,10 +76,11 @@ class BasSearchEngine {
         const suggInfo = this.getSuggestionInfo(match);
         const infos = [descInfo, suggInfo];
         _.max(infos, 'score').max = true;
+        const document = match.document;
 
-        if (match.document.type === 'action') {
-          const array = match.document.descriptions;
-          const short = match.document.description;
+        if (document.type === 'action') {
+          const array = document.descriptions;
+          const short = document.description;
           descInfo.skip = short.includes(array[descInfo.index]);
         }
 
@@ -70,7 +88,7 @@ class BasSearchEngine {
           keywords: this.getKeywords(match),
           descriptionInfo: descInfo,
           suggestionInfo: suggInfo,
-          ...match.document
+          ...document
         };
       });
 
@@ -101,12 +119,10 @@ class BasSearchEngine {
         const fieldLower = index
           ? document[field][index].toLowerCase()
           : document[field].toLowerCase();
-        const queryLower = query.toLowerCase();
 
-        if (!fieldLower.includes(queryLower)) {
+        if (!fieldLower.includes(query.toLowerCase())) {
           fieldData.tokenOriginal.forEach((source) => {
-            const token = tokens.find((v) => source.includes(v)) || source;
-
+            const token = tokens.find((t) => source.includes(t)) || source;
             keywords[field].push({ comparator: token + field, match: token });
           });
         } else {
@@ -115,13 +131,13 @@ class BasSearchEngine {
       });
     });
 
-    return Object.entries(keywords).map(([field, array]) => {
-      const matches = _(array)
+    return Object.entries(keywords).map(([field, collection]) => ({
+      matches: _(collection)
         .uniq('comparator')
-        .map((v) => v.match)
-        .value();
-      return { field, matches };
-    });
+        .map(v => v.match)
+        .value(),
+      field
+    }));
   }
 
   /**

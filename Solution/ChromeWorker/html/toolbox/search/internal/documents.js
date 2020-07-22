@@ -22,7 +22,7 @@ class DocumentsStore {
       const description = this.getActionDescription($(`#${name}`).text());
 
       const item = {
-        popup: action.class && action.class === 'browser',
+        popup: (!action.group && action.class && action.class === 'browser'),
         suggestions: this.getActionSuggestion(action),
         descriptions: description.array,
         description: description.short,

@@ -12,7 +12,14 @@ class SearchManager {
         ...this.store.getVideoItems(),
         ...this.store.getWikiItems(),
       ],
-      limit: 500
+      fields: [
+        { name: 'descriptions', weight: 0.125 },
+        { name: 'suggestions', weight: 0.125 },
+        { name: 'module', weight: 0.50 },
+        { name: 'name', weight: 0.25 }
+      ],
+      limit: 500,
+      ref: 'key'
     });
 
     this.registerHandlers();

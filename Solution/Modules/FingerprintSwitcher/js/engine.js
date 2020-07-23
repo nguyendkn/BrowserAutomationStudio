@@ -415,6 +415,46 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	}
 
+	if(typeof(FINGERPRINT_JSON["media"]) == "object" && typeof(FINGERPRINT_JSON["media"]["devices"]) == "object" && typeof(FINGERPRINT_JSON["media"]["constraints"]) == "object")
+	{
+		try
+		{
+			var AllDevices = []
+			for(var i = 0;i<FINGERPRINT_JSON["media"]["devices"].length;i++)
+			{
+				var Device = FINGERPRINT_JSON["media"]["devices"][i]
+				if(typeof(Device) == "object" && typeof(Device.deviceId) == "string" && typeof(Device.kind) == "string" && typeof(Device.label) == "string" && typeof(Device.groupId) == "string")
+				{
+					AllDevices.push(Device.deviceId)
+					AllDevices.push(Device.kind)
+					AllDevices.push(Device.label)
+					AllDevices.push(Device.groupId)
+				}
+			}
+			FINGEPRINT_SETTINGS["Fingerprints.MediaDevices"] = base64_encode(JSON.stringify(AllDevices))
+
+		}catch(e)
+		{
+		}
+
+		try
+		{
+			var AllConstrains = Object.keys(FINGERPRINT_JSON["media"]["constraints"])
+			var ActualConstrains = []
+			for(var i = 0;i<AllConstrains.length;i++)
+			{
+				var Constrain = AllConstrains[i]
+				if(typeof(FINGERPRINT_JSON["media"]["constraints"][Constrain]) == "boolean" && FINGERPRINT_JSON["media"]["constraints"][Constrain] === true)
+				{
+					ActualConstrains.push(Constrain)
+				}
+			}
+			FINGEPRINT_SETTINGS["Fingerprints.MediaConstrains"] = base64_encode(JSON.stringify(ActualConstrains))
+		}catch(e)
+		{
+		}
+	}
+
 	{
 		var PerfectCanvasReplaceType = "Disable"
 		if(FINGERPRINT_JSON["perfectcanvas"] && FINGERPRINT_PERFECTCANVAS)

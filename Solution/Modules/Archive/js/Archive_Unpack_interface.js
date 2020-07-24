@@ -1,11 +1,13 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"ArchivePath", description:tr("Archive path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the zip archive which needs to be unpacked."),examples:[{code:"C:/test/ImapCustom.zip"},{code:"D:\\test\\CaptchaCustom.zip"},{code:"C:/Program Files/test.zip"}]} }) %>
-<%= _.template($('#input_constructor').html())({id:"DestinationFolder", description:tr("Destination folder path") + ". " + tr("Can be blank"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the folder into which the contents of the archive will be unpacked."),examples:[{code:"C:/test"},{code:"D:\\test"},{code:"C:/Program Files"},{code:tr("Empty string"), description: tr("The folder in which the archive is located")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"ArchivePath", description:tr("Archive path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the archive which needs to be unpacked."),examples:[{code:"C:/test/ImapCustom.zip"},{code:"D:\\test\\CaptchaCustom.zip"},{code:"C:/Program Files/test.rar"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"ArchiveType", description:tr("Archive type"), default_selector: "string", variants: ["auto","zip","7zip","rar"], disable_int:true, value_string: "auto", help: {description:tr("The archive type is usually written in the file extension. But there are exceptions, such as Chrome extensions files have the extension .crx, but are zip archive with additional headers."),examples:[{code:"auto", description: tr("The archive type will be determined by the file extension")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"DestinationPath", description:tr("Destination path") + ". " + tr("Can be blank"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the location where the contents of the archive will be unpacked."),examples:[{code:"C:/test"},{code:"D:\\test"},{code:"C:/Program Files"},{code:tr("Empty string"), description: tr("The place in which the archive")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"ListOfFiles", description:tr("List of files") + ". " + tr("Can be blank"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("List of files to extract from the archive. The list of files can be obtained using the \"Get file list from archive\" action. If this parameter is not specified, the archive will be completely unpacked."),examples:[{code:tr("Empty string"), description: tr("The archive will be completely unpacked")}]} }) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Unpack the contents of the zip archive to the specified folder.</div>
-	<div class="tr tooltip-paragraph-fold">If the path to destination folder is not specified, the archive will be unpacked to the folder in which it is located.</div>
-	<div class="tr tooltip-paragraph-fold">This action only works with zip archives.</div>
-	<div class="tr tooltip-paragraph-last-fold">The names of the files contained in the archive must consist only of Latin characters, otherwise they will be distorted.</div>
+	<div class="tr tooltip-paragraph-first-fold">Unpack the contents of the archive to the specified location.</div>
+	<div class="tr tooltip-paragraph-fold">If the destination path is not specified, the archive will be unpacked to the location where it is located.</div>
+	<div class="tr tooltip-paragraph-fold">This action can unpack not the entire archive, but only a part of it, for this you need to specify a list of files that need to be unpacked.</div>
+	<div class="tr tooltip-paragraph-last-fold">This action only works with zip archives.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

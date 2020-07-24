@@ -415,6 +415,11 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	}
 
+	if(typeof(FINGERPRINT_JSON["keyboard"]) == "object" && typeof(FINGERPRINT_JSON["keyboard"].length) == "number")
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.KeyboardLayout"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["keyboard"]))
+	}
+
 	if(typeof(FINGERPRINT_JSON["media"]) == "object" && typeof(FINGERPRINT_JSON["media"]["devices"]) == "object" && typeof(FINGERPRINT_JSON["media"]["constraints"]) == "object")
 	{
 		try

@@ -283,14 +283,6 @@
   width: 100%;
 }
 
-.text-dark {
-  color: #000000;
-}
-
-.text-gray {
-  color: #c2c2c2;
-}
-
 .search {
   margin: 5px 0 5px 0;
   overflow: hidden;
@@ -310,6 +302,18 @@
 
 .item-name > mark {
   color: #ff553e;
+}
+
+.text-green {
+  color: #529653;
+}
+
+.text-dark {
+  color: #000000;
+}
+
+.text-gray {
+  color: #c2c2c2;
 }
 
 mark {

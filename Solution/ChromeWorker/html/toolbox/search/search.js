@@ -4,28 +4,37 @@ class SearchManager {
    * @constructor
    */
   constructor () {
-    this.store = new DocumentsStore();
+    this.create = () => {
+      if (this.renderCalls === 1) {
+        const store = new DocumentsStore();
 
-    this.searchEngine = new BasSearchEngine({
-      documents: [
-        ...this.store.getActionItems(),
-        ...this.store.getVideoItems(),
-        ...this.store.getWikiItems(),
-      ],
-      fields: [
-        { name: 'descriptions', weight: 0.125 },
-        { name: 'suggestions', weight: 0.125 },
-        { name: 'module', weight: 0.50 },
-        { name: 'name', weight: 0.25 }
-      ],
-      limit: 500,
-      ref: 'key'
-    });
+        this.engine = new BasSearchEngine({
+          documents: [
+            ...store.getActionItems(),
+            ...store.getVideoItems(),
+            ...store.getWikiItems(),
+          ],
+          fields: [
+            { name: 'descriptions', weight: 0.1 },
+            { name: 'suggestions', weight: 0.1 },
+            { name: 'variables', weight: 0.1 },
+            { name: 'module', weight: 0.5 },
+            { name: 'name', weight: 0.2 }
+          ],
+          limit: 500,
+          ref: 'key'
+        });
+      }
+
+      this.renderCalls += 1;
+    };
 
     this.registerHandlers();
-    this.lastQuery = null;
+    this.renderCalls = 0;
     this.pagesCount = 1;
     this.pageIndex = 0;
+    this.engine = null;
+    this.query = null;
   }
 
   /**
@@ -69,11 +78,16 @@ class SearchManager {
       this.showPage(--this.pageIndex);
     });
 
+    $(document).on('click', '#results', (e) => {
+      e.preventDefault();
+      this.hide();
+    });
+
     $(window).resize(() => {
       if (this.$search.is(':hidden')) return;
 
-      if (this.lastQuery) {
-        this.search(this.lastQuery);
+      if (this.query) {
+        this.search(this.query);
       } else {
         this.recent();
       }
@@ -115,8 +129,8 @@ class SearchManager {
   search(query) {
     this.$recentHeader.hide();
     this.$emptyHeader.hide();
-    this.lastQuery = query;
-    this.render(this.searchEngine.search(query));
+    this.query = query;
+    this.render(this.engine.search(query));
   }
 
   /**
@@ -125,8 +139,8 @@ class SearchManager {
   recent() {
     this.$recentHeader.show();
     this.$emptyHeader.hide();
-    this.lastQuery = null;
-    this.render(this.searchEngine.recent());
+    this.query = null;
+    this.render(this.engine.recent());
   }
 
   /**
@@ -149,7 +163,7 @@ class SearchManager {
       }));
 
       if (!this.resultsVisible) {
-        _.initial(results).forEach((res) => res.hide());
+        _.initial(results).forEach((result) => result.hide());
 
         if (index === 0) {
           _.last(results).data('page', prev);
@@ -175,13 +189,13 @@ class SearchManager {
     this.$currPage.html(this.pageIndex + 1);
     this.$lastPage.html(this.pagesCount);
 
-    if (this.lastQuery === null) {
+    if (this.query === null) {
       this.$emptyHeader.html(tr('No recent actions found'));
     } else {
       this.$emptyHeader.html(tr('Nothing found'));
     }
 
-    this.$recentHeader.toggle(count !== 0 && this.lastQuery === null);
+    this.$recentHeader.toggle(count !== 0 && this.query === null);
     this.$emptyHeader.toggle(count === 0);
   }
 
@@ -190,21 +204,19 @@ class SearchManager {
    * @param {Number} index - selected page index.
    */
   showPage(index) {
-    const results = $('.result-item');
-
-    results.each(function () {
+    const results = $('.result-item').each(function () {
       const { keywords, page } = $(this).data();
 
       if (page === index) {
         const opts = { separateWordSearch: false, diacritics: false };
-        const description = $(this).find(`.item-description`);
-        const additional = $(this).find(`.item-additional`);
+        const description = $(this).find('.item-description');
+        const additional = $(this).find('.item-additional');
         const module = $(this).find('.item-module');
         const name = $(this).find('.item-name');
         $(this).unmark();
 
         keywords.forEach(({ field, matches }) => {
-          if (matches.length === 0) return;
+          if (!matches.length) return;
 
           if (field === 'descriptions' && (!additional.length)) {
             return description.mark(matches, opts);
@@ -232,6 +244,8 @@ class SearchManager {
    * Initialize search page.
    */
   initialize() {
+    this.create();
+
     this.$recentHeader = $('.results-recent').hide();
     this.$emptyHeader = $('.results-empty').hide();
     this.$recentHeader.text(tr('Recent actions'));
@@ -287,12 +301,12 @@ class SearchManager {
   }
 
   /**
-   * Render the search result using selected properties.
-   * @param {Object} properties - selected properties.
+   * Render the search result using selected item properties.
+   * @param {Object} properties - selected item properties.
    * @param {Number} properties.index - result index.
-   * @param {Object} properties.item - result object.
+   * @param {Object} properties.item - result item.
    * @param {Number} properties.page - result page.
-   * @returns {Object} rendered result.
+   * @returns {Object} rendered result object.
    */
   renderItem({ item, page, index }) {
     const temp = { ...item, index };
@@ -309,11 +323,20 @@ class SearchManager {
             <% if (type === 'action') { %>
               <div class="item-description"><%= description %></div>
             <% } %>
-            <% if ((descriptionInfo.found && descriptionInfo.max) && !descriptionInfo.skip) { %>
-              <div class="item-additional"><%= descriptions[descriptionInfo.index] %></div>
+            <% if ((descInfo.found && descInfo.max) && !descInfo.skip) { %>
+              <div class="item-additional text-<%= descInfo.color %>">
+                <%= descriptions[descInfo.index] %>
+              </div>
             <% } %>
-            <% if ((suggestionInfo.found && suggestionInfo.max) && !suggestionInfo.skip) { %>
-              <div class="item-additional"><%= suggestions[suggestionInfo.index] %></div>
+            <% if ((suggInfo.found && suggInfo.max) && !suggInfo.skip) { %>
+              <div class="item-additional text-<%= suggInfo.color %>">
+                <%= suggestions[suggInfo.index] %>
+              </div>
+            <% } %>
+            <% if ((varsInfo.found && varsInfo.max) && !varsInfo.skip) { %>
+              <div class="item-additional text-<%= varsInfo.color %>">
+                <%= variables[varsInfo.index] %>
+              </div>
             <% } %>
           </div>
           <% if (type === 'action') { %>

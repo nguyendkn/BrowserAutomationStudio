@@ -4,7 +4,7 @@ class DocumentsStore {
    * @constructor
    */
   constructor () {
-    this.tasks = _TaskCollection.toJSON();
+    this.collection = _TaskCollection.toJSON();
     this.actions = _A;
     this.groups = _G;
     this.map = _A2G;
@@ -18,15 +18,18 @@ class DocumentsStore {
    * Get an array of all action items.
    */
   getActionItems() {
-    return _.map(this.actions, (action, name) => {
-      const description = this.getActionDescription($(`#${name}`).text());
+    return Object.entries(this.actions).map(([name, action]) => {
+      const source = $(`#${name}`);
+      const descriptions = this.getActionDescriptions(source.text());
+      const variables = this.getActionVariables(source.html());
 
       const item = {
         popup: (!action.group && action.class && action.class === 'browser'),
         suggestions: this.getActionSuggestion(action),
-        descriptions: description.array,
-        description: description.short,
+        descriptions: descriptions.array,
+        description: descriptions.short,
         name: tr(action.name),
+        variables: variables,
         type: 'action',
         key: name,
       };
@@ -47,10 +50,10 @@ class DocumentsStore {
   }
 
   /**
-   * Get action description object using the selected action source.
+   * Get action descriptions object using the selected action source.
    * @param {String} source - selected action source.
    */
-  getActionDescription(source) {
+  getActionDescriptions(source) {
     const getTextContent = (el) => {
       const data = $(el).html();
       const html = $('<div />');
@@ -69,6 +72,33 @@ class DocumentsStore {
     );
 
     return { short: short.length ? short[0] : array[0], array };
+  }
+
+  /**
+   * Get action variables array using the selected action source.
+   * @param {String} source - selected action source.
+   */
+  getActionVariables(source) {
+    const template = _.template(source)({
+      function_params: [],
+      selector: {},
+      model: {}
+    });
+
+    const outputVariables = $.map(
+      $(template).find('input[data-variable-constructor=true]'),
+      (e) => e.value
+    );
+    const inputNumbers = $.map(
+      $(template).find('.input_selector_number'),
+      (e) => e.placeholder
+    );
+    const inputStrings = $.map(
+      $(template).find('.input_selector_string'),
+      (e) => e.placeholder
+    );
+
+    return _.uniq([...outputVariables, ...inputStrings, ...inputNumbers]);
   }
 
   /**
@@ -135,7 +165,7 @@ class DocumentsStore {
   getActionGroup(action) {
     const name = _.get(this.map, action, 'browser');
 
-    return _.find(this.tasks, {
+    return _.find(this.collection, {
       type: 'group',
       name: name
     });

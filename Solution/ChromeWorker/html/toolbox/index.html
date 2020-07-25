@@ -6466,14 +6466,14 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       },
 
       searchinput: _.debounce(function (event) {
-        const value = $(event.target).val().trim();
+        const query = $(event.target).val().trim();
 
-        if (value) {
-          _SearchManager.search(value);
+        if (query) {
+          _SearchManager.search(query);
         } else {
           _SearchManager.recent();
         }
-      }, 510),
+      }, 500),
 
       searchinputclick: function(event)
       {
@@ -10464,7 +10464,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         _SearchManager.initialize();
         
-        $("body").show()
+        $("body").show();
 
       },
 

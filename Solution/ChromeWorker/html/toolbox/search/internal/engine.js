@@ -57,22 +57,33 @@ class BasSearchEngine extends SearchEngine {
         return !ignored.includes(document.key);
       })
       .map((match) => {
-        const descInfo = this.getDescriptionInfo(match);
-        const suggInfo = this.getSuggestionInfo(match);
-        const infos = [descInfo, suggInfo];
+        const desc = this.getDescriptionInfo(match);
+        const sugg = this.getSuggestionInfo(match);
+        const vars = this.getVariableInfo(match);
+        const infos = [desc, sugg, vars];
         _.max(infos, 'score').max = true;
         const document = match.document;
 
         if (document.type === 'action') {
+          const variable = document.variables[vars.index];
           const array = document.descriptions;
           const short = document.description;
-          descInfo.skip = short.includes(array[descInfo.index]);
+          const item = array[desc.index];
+
+          if (variable && this.isVariable(variable)) {
+            vars.color = 'green';
+          } else {
+            vars.color = 'dark';
+          }
+
+          desc.skip = short.includes(item);
         }
 
         return {
           keywords: this.getKeywords(match),
-          descriptionInfo: descInfo,
-          suggestionInfo: suggInfo,
+          descInfo: desc,
+          suggInfo: sugg,
+          varsInfo: vars,
           ...document
         };
       });
@@ -87,8 +98,9 @@ class BasSearchEngine extends SearchEngine {
   recent() {
     return ActionHistory.map((key) => ({
       ...this.store.findByRef(key),
-      descriptionInfo: {},
-      suggestionInfo: {},
+      descInfo: {},
+      suggInfo: {},
+      varsInfo: {},
       keywords: []
     }));
   }
@@ -130,18 +142,21 @@ class BasSearchEngine extends SearchEngine {
    * @param {Object} source - selected source object with scores.
    * @param {Object[]} source.scores - selected scores array.
    */
-  getDescriptionInfo({ scores }) {
-    return this.getFieldInfo('descriptions', scores);
-  }
+  getDescriptionInfo({ scores }) { return this.getFieldInfo('descriptions', scores); }
 
   /**
    * Get the suggestion info object using the selected scores array.
    * @param {Object} source - selected source object with scores.
    * @param {Object[]} source.scores - selected scores array.
    */
-  getSuggestionInfo({ scores }) {
-    return this.getFieldInfo('suggestions', scores);
-  }
+  getSuggestionInfo({ scores }) { return this.getFieldInfo('suggestions', scores); }
+
+  /**
+   * Get the variable info object using the selected scores array.
+   * @param {Object} source - selected source object with scores.
+   * @param {Object[]} source.scores - selected scores array.
+   */
+  getVariableInfo({ scores }) { return this.getFieldInfo('variables', scores); }
 
   /**
    * Get the field info object using the selected scores array.
@@ -154,16 +169,25 @@ class BasSearchEngine extends SearchEngine {
     const name = scores.find((v) => v.field === 'name');
 
     const score = additional.score * additional.weight;
-    const gtModule = score > module.score * module.weight;
-    const gtName = score > name.score * name.weight;
+    const gtModule = score > (module.score * module.weight);
+    const gtName = score > (name.score * name.weight);
     const found = gtModule && gtName;
 
     return {
       index: found ? additional.index : null,
+      color: 'dark',
       skip: false,
       max: false,
       found,
       score
     };
+  }
+
+  /**
+   * Check that the selected string is variable string.
+   * @param {String} variable - selected string.
+   */
+  isVariable(variable) {
+    return variable === variable.toUpperCase();
   }
 }

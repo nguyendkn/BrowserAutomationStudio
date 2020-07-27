@@ -8,6 +8,7 @@ function Archive_Unpack(){
 	var archive_type = getArchiveType(archive_type, archive_info["extension"]);
 	
 	var destination_path = destination_path ? destination_path : archive_info["directory"];
+	checkDiskExistence(destination_path);
 	var list_of_files = filesListParse(list_of_files);
 	
 	VAR_ARCHIVE_UNPACK_PARAMETERS = [archive_path, destination_path, list_of_files];
@@ -25,6 +26,7 @@ function Archive_ArchiveFolder(){
 	var archive_type = getArchiveType(archive_type, getFileInfo(destination_path, false)["extension"]);
 	
 	var destination_path = destination_path ? destination_path : folder_path + "." + archive_type;
+	checkDiskExistence(destination_path);
 	
 	VAR_ARCHIVE_FOLDER_PARAMETERS = [folder_path, destination_path, folder_info["file"]];
 	
@@ -41,6 +43,7 @@ function Archive_ArchiveFiles(){
 	var list_of_files = _function_argument("ListOfFiles");
 	
 	var archive_type = getArchiveType(archive_type, getFileInfo(destination_path, false)["extension"]);
+	checkDiskExistence(destination_path);
 	
 	var list_of_files = filesListParse(list_of_files).concat([file1, file2, file3].filter(function(e){return e})).map(function(e){
 		var path = formatPath(e);
@@ -113,5 +116,15 @@ function getArchiveType(type, extension){
 			fail(_K=="ru" ? ("Поддерживаются только zip, rar и 7z архивы") : ("Only zip, rar and 7z archives are supported"));
 		};
 		return type;
+	};
+};
+ 
+function checkDiskExistence(path){
+	if(path.indexOf(":/") > -1){
+		var disk = path.slice(0, 1);
+		var disk_exists = JSON.parse(native("filesystem", "fileinfo", disk + ":/"))["exists"];
+		if(!disk_exists){
+			fail(_K=="ru" ? ("В пути \"" + path + "\" указан не существующий диск \"" + disk + "\"") : ("The path \"" + path + "\" contains a non-existing disk \"" + disk + "\""));
+		};
 	};
 };

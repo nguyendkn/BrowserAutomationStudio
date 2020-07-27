@@ -42,7 +42,6 @@ namespace BrowserAutomationStudioFramework
         void AllowPopups();
         void RestrictDownloads();
         void AllowDownloads();
-        void EnableNotifications();
     public slots:
         virtual void SetWorker(IWorker *Worker);
         virtual IWorker * GetWorker();
@@ -64,7 +63,6 @@ namespace BrowserAutomationStudioFramework
         virtual void ClearData(const QString& callback);
         virtual void RestrictPopups(const QString& callback);
         virtual void AllowPopups(const QString& callback);
-        virtual void EnableNotifications(bool Enable, const QString& callback);
         virtual void RestrictDownloads(const QString& callback);
         virtual void AllowDownloads(const QString& callback);
         virtual void FindCacheByMaskBase64(const QString& Mask, const QString& callback);

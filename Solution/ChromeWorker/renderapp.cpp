@@ -198,7 +198,6 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
             //object->SetValue("BrowserAutomationStudio_SaveLocalStorage", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveLocalStorage", v8handler), V8_PROPERTY_ATTRIBUTE_NONE);
             //object->SetValue("BrowserAutomationStudio_DomainDataNeedClear", CefV8Value::CreateFunction("BrowserAutomationStudio_DomainDataNeedClear", v8handler), V8_PROPERTY_ATTRIBUTE_NONE);
             object->SetValue("BrowserAutomationStudio_SaveBlob", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveBlob", v8handler), V8_PROPERTY_ATTRIBUTE_NONE);
-            object->SetValue("BrowserAutomationStudio_ReqestNotification", CefV8Value::CreateFunction("BrowserAutomationStudio_ReqestNotification", v8handler), V8_PROPERTY_ATTRIBUTE_NONE);
             object->SetValue("BrowserAutomationStudio_RecaptchaV3", CefV8Value::CreateFunction("BrowserAutomationStudio_RecaptchaV3", v8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         }
 

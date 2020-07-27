@@ -1,40 +1,3 @@
-;window.Notification = function(title, data) {
-    this.title = title
-    this.body = ""
-    this.data = null
-    this.dir = "auto"
-    this.lang = ""
-    this.tag = ""
-    this.icon = ""
-    if (data)
-        Object.assign(this, data);
-    var self = this
-    setTimeout(function() {
-        if(self.onshow)
-            self.onshow()
-
-        if(self.onclose)
-            setTimeout(function() {
-                self.onclose()
-            },2000)
-            
-    }, 10)
-};
-
-Object.defineProperty(window.Notification, "toString", {
-    configurable: false,
-    enumerable: false,
-    value: function()
-    {
-        return "function Notification() { [native code] }"
-    }
-});
-
-Object.defineProperty(window.Notification, "maxActions", {
-    configurable: false,
-    enumerable: true,
-    value: 2
-});
 Object.defineProperty(chrome, "app", {
     configurable: false,
     enumerable: true,
@@ -145,27 +108,3 @@ Object.defineProperty(chrome, "runtime", {
         })())
     }
 });
-
-
-try{
-	ServiceWorkerRegistration.prototype.showNotification = function(){}
-}catch(e){}
-
-window.Notification.requestPermission = function() {
-	
-    var Arguments = arguments
-    if (arguments.length == 0) {
-        return new Promise(function(resolve, reject) {
-        	_BAS_HIDE(BrowserAutomationStudio_ReqestNotification)();
-            setTimeout(function() {
-                resolve(window.Notification.permission)
-            }, 3000);
-        })
-    } else {
-    	_BAS_HIDE(BrowserAutomationStudio_ReqestNotification)();
-        setTimeout(function() {
-            Arguments[0](window.Notification.permission);
-        }, 3000)
-    }
-	
-};

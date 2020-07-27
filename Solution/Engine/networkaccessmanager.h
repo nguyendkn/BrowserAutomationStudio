@@ -59,7 +59,6 @@ namespace BrowserAutomationStudioFramework
         virtual void ClearAll(const QString& callback);
         virtual void RestrictPopups(const QString& callback);
         virtual void AllowPopups(const QString& callback);
-        virtual void EnableNotifications(bool Enable, const QString& callback);
         virtual void RestrictDownloads(const QString& callback);
         virtual void AllowDownloads(const QString& callback);
         QByteArray FindCacheByMask(const QString& Mask);

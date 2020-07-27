@@ -35,6 +35,7 @@ void BrowserSettingsSaver::Save()
 
 
             outfile<<"FingerprintDetectorEnabled="<<((IsRecord && Detector && !TemporaryDisableDetector) ? "true" : "false")<<std::endl;
+            outfile<<"NotificationsInfo="<<((IsRecord) ? "Enable" : "Disable")<<std::endl;
 
             outfile<<"LocaleName="<<Language<<std::endl;
 

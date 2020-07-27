@@ -14,6 +14,7 @@ namespace BrowserAutomationStudioFramework
         QString PathSafe;
         QString PathNotSafe;
         QString Profile;
+        QString TempProfile;
         QString BrowserEngine;
         QString BrowserEngineVirtual;
         bool UseFlash;

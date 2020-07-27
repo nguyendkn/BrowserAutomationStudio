@@ -40,7 +40,6 @@ namespace BrowserAutomationStudioFramework
         virtual void ClearData(const QString& callback) = 0;
         virtual void RestrictPopups(const QString& callback) = 0;
         virtual void AllowPopups(const QString& callback) = 0;
-        virtual void EnableNotifications(bool Enable, const QString& callback) = 0;
         virtual void RestrictDownloads(const QString& callback) = 0;
         virtual void AllowDownloads(const QString& callback) = 0;
         virtual void SetProxy(const QString& server, int Port, bool IsHttp, const QString& name, const QString& password,const QString& target, const QString& callback) = 0;

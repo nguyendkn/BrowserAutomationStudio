@@ -1849,6 +1849,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if(Data->IsRecord)
     {
         app->Detector.Init(Settings.UniqueProcessId());
+        app->Notifications.Init(Settings.UniqueProcessId());
     }
 
     WORKER_LOG("Proxy tunneling");
@@ -1882,7 +1883,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->IsMutiloginEngine = false;
     Data->MultiloginIPC = new SharedMemoryIPC();
     Data->BASPID = Pid;
-    Data->EnableNotifications = false;
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
     Data->_UniqueProcessId = Settings.UniqueProcessId();
     Data->RemoteDebuggingPort = 10000 + rand()%10000;
@@ -2027,7 +2027,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventClearCacheMask.push_back(std::bind(&MainApp::ClearCacheMaskCallback,app.get()));
     Parser->EventClearRequestMask.push_back(std::bind(&MainApp::ClearRequestMaskCallback,app.get()));
     Parser->EventAllowPopups.push_back(std::bind(&MainApp::AllowPopups,app.get()));
-    Parser->EventEnableNotifications.push_back(std::bind(&MainApp::EnableNotifications,app.get(),_1));
     Parser->EventRestrictPopups.push_back(std::bind(&MainApp::RestrictPopups,app.get()));
     Parser->EventAllowDownloads.push_back(std::bind(&MainApp::AllowDownloads,app.get()));
     Parser->EventRestrictDownloads.push_back(std::bind(&MainApp::RestrictDownloads,app.get()));

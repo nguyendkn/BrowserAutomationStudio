@@ -394,7 +394,7 @@ function _enable_notifications(enable, callback)
 {
     _ARG = arguments
     _create_browser_if_needed(function(){
-        _get_network_access_manager().EnableNotifications(_ARG[0], _get_function_body(_ARG[1]))
+        _settings({"Fingerprints.Notifications":((_ARG[0]) ? "Enable" : "Disable")}, _ARG[1])
     })
 }
 

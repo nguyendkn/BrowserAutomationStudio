@@ -85,7 +85,6 @@ public:
     std::vector<std::function<void()> > EventClearCacheMask;
     std::vector<std::function<void()> > EventClearRequestMask;
     std::vector<std::function<void()> > EventAllowPopups;
-    std::vector<std::function<void(bool)> > EventEnableNotifications;
     std::vector<std::function<void()> > EventAllowDownloads;
     std::vector<std::function<void()> > EventRestrictPopups;
     std::vector<std::function<void()> > EventRestrictDownloads;

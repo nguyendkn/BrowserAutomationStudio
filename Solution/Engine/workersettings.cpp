@@ -39,6 +39,7 @@ namespace BrowserAutomationStudioFramework
         ProxyPassword.clear();
         ProxyTarget.clear();
         Profile.clear();
+        TempProfile = QString("prof/") + GetRandomString();
         Extensions.clear();
         Timezone = TIMEZONE_NONE;
         TimezoneName = "BAS_NOT_SET";
@@ -1054,6 +1055,24 @@ namespace BrowserAutomationStudioFramework
             }
         }
 
+        QString ActualProfile = GetProfile();
+        if(ActualProfile.isEmpty())
+        {
+            ActualProfile = TempProfile;
+        }
+        if(!QFileInfo(ActualProfile).isAbsolute())
+        {
+            QDir HomeDir(".");
+            ActualProfile = HomeDir.absoluteFilePath(ActualProfile);
+        }
+        ActualProfile += QString("/data.notification");
+        ActualProfile = QDir::cleanPath(ActualProfile);
+        if(!Text.isEmpty())
+            Text += "\r\n";
+
+        Text += "NotificationData" + QString("=") + QString::fromUtf8(ActualProfile.toUtf8().toBase64());
+
+
         //Check if fingerprint uses canvas replacement
         bool ReplaceCanvas = keys.contains("Fingerprints.PerfectCanvasDoReplace") && Get("Fingerprints.PerfectCanvasDoReplace") == "Enable";
 
@@ -1100,6 +1119,7 @@ namespace BrowserAutomationStudioFramework
                     QFile(FilePath + ".ini").remove();
                     QFile(FilePath + "1.ini").remove();
                     QFile(FilePath + ".detect").remove();
+                    QFile(FilePath + ".notification").remove();
                 }
 
             }
@@ -1137,7 +1157,7 @@ namespace BrowserAutomationStudioFramework
             QString ActualProfile = GetProfile();
             if(ActualProfile.isEmpty())
             {
-                ActualProfile = QString("prof/") + GetRandomString();
+                ActualProfile = TempProfile;
             }
             res.append(ActualProfile);
 

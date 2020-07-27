@@ -71,9 +71,6 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "AllowPopups" && token == QXmlStreamReader::StartElement)
             {
                 emit AllowPopups();
-            }else if(xmlReader.name() == "EnableNotifications" && token == QXmlStreamReader::StartElement)
-            {
-                emit EnableNotifications();
             }else if(xmlReader.name() == "RestrictPopups" && token == QXmlStreamReader::StartElement)
             {
                 emit RestrictPopups();
@@ -364,19 +361,6 @@ namespace BrowserAutomationStudioFramework
         Worker->SetFailMessage(tr("Timeout during ") + QString("AllowPopups"));
         Worker->GetWaiter()->WaitForSignal(this,SIGNAL(AllowPopups()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
         Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
-
-    void SubprocessNetworkAccessManager::EnableNotifications(bool Enable, const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("EnableNotifications",QString::number(Enable));
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("EnableNotifications"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(EnableNotifications()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
-        Worker->GetProcessComunicatorActual()->Send(WriteString);
-
     }
 
     void SubprocessNetworkAccessManager::RestrictDownloads(const QString& callback)

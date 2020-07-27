@@ -40,7 +40,6 @@ class V8Handler : public CefBaseRefCounted
     bool ChangedHighlight;
     bool ChangedLocalStorage;
     bool ChangedFrameFind;
-    bool ReqestNotification;
     bool RecaptchaV3;
     bool ChangedMultiSelectPositions;
     bool ChangedMultiSelectReport;
@@ -76,8 +75,6 @@ public:
     std::pair<InspectResult,bool> GetFrameFindResult();
     void ResetFrameFindResult();
     bool GetFrameFindResultReady();
-
-    bool GetReqestNotification();
 
     bool IsChangedMultiSelectPositions();
     std::pair<std::string,bool> GetMultiSelectPositions();

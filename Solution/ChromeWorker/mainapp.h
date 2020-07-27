@@ -30,6 +30,7 @@
 #include "browserip.h"
 #include "cefrequest2action.h"
 #include "fingerprintdetector.h"
+#include "notificationmanager.h"
 #include "browserdirectcontrol.h"
 #include "ipcsimple.h"
 #include "donothingcallback.h"
@@ -199,6 +200,7 @@ public:
     void UpdateManualControl(bool NoFocus = false);
     void DirectControlAddAction(const std::string& Script);
     FingerprintDetector Detector;
+    NotificationManager Notifications;
     std::string Javascript(const std::string& Script);
     void SendStartupScriptUpdated();
     int GetHighlightOffsetX();
@@ -304,7 +306,6 @@ public:
     void AddRequestMaskDenyCallback(const std::string& value);
     void ClearCacheMaskCallback();
     void AllowPopups();
-    void EnableNotifications(bool Enable);
     void RestrictPopups();
     void AllowDownloads();
     void RestrictDownloads();

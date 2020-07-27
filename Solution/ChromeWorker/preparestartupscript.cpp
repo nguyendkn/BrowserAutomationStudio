@@ -98,18 +98,7 @@ std::string PrepareStartupScript(BrowserData* Data, const std::string Url, int T
 
     }
 
-    if(Data->EnableNotifications)
-    {
-        jscode += ";window.Notification[\"permission\"] = \"granted\";";
-    }else
-    {
-        jscode += ";window.Notification[\"permission\"] = \"denied\";";
-    }
-
-
     jscode += std::string(";_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3ActionList) = ") + picojson::value(Data->_RecaptchaV3List).serialize() + std::string(";");
-
-
 
     return jscode;
 

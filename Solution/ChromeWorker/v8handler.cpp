@@ -10,7 +10,6 @@ V8Handler::V8Handler()
     ChangedHighlight = false;
     ChangedLocalStorage = false;
     ChangedFrameFind = false;
-    ReqestNotification = false;
     RecaptchaV3 = false;
     NewLocalStorage.clear();
     ChangedMultiSelectPositions = false;
@@ -95,15 +94,6 @@ bool V8Handler::IsChangedMultiSelectReport()
 {
     return ChangedMultiSelectReport;
 }
-
-
-bool V8Handler::GetReqestNotification()
-{
-    bool res = ReqestNotification;
-    ReqestNotification = false;
-    return res;
-}
-
 
 std::pair<InspectResult,bool> V8Handler::GetInspectResult()
 {
@@ -247,9 +237,6 @@ bool V8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> arguments
         _InspectResult.position = arguments->GetInt(20);
 
         ChangedInspect = true;
-    }else if(name == std::string("BrowserAutomationStudio_ReqestNotification"))
-    {
-        ReqestNotification = true;
     }else if(name == std::string("BrowserAutomationStudio_RecaptchaV3"))
     {
         if(arguments->GetSize() == 4 && (arguments->GetType(0) == VTYPE_STRING) && (arguments->GetType(1) == VTYPE_STRING) && (arguments->GetType(2) == VTYPE_STRING) && (arguments->GetType(3) == VTYPE_STRING))

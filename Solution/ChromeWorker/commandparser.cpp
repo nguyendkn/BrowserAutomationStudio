@@ -1029,16 +1029,6 @@ void CommandParser::Parse(const std::string& Xml)
                 f();
         }
 
-        CommandNode = MessagesNode->first_node("EnableNotifications");
-        if(CommandNode)
-        {
-            WORKER_LOG("EnableNotifications");
-            std::string value = CommandNode->value();
-
-            for(auto f:EventEnableNotifications)
-                f(std::stoi(value));
-        }
-
         CommandNode = MessagesNode->first_node("RestrictDownloads");
         if(CommandNode)
         {

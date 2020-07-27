@@ -975,8 +975,6 @@ void MainApp::ResetCallbackFinalize()
         Data->AllowDownloads = true;
     }
 
-    Data->EnableNotifications = false;
-
     {
         LOCK_GEOLOCATION
         Data->GeolocationSelected = false;
@@ -2316,27 +2314,6 @@ void MainApp::AllowPopups()
     SendTextResponce("<AllowPopups/>");
 }
 
-void MainApp::EnableNotifications(bool Enable)
-{
-    WORKER_LOG("EnableNotifications<<" + std::to_string(Enable));
-    Data->EnableNotifications = Enable;
-    SendStartupScriptUpdated();
-    if(_HandlersManager->GetBrowser())
-    {
-        std::string Code;
-        if(Enable)
-        {
-            Code += "window.Notification[\"permission\"] = \"granted\"";
-        }else
-        {
-            Code += "window.Notification[\"permission\"] = \"denied\"";
-        }
-
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Code,"",0);
-    }
-    SendTextResponce("<EnableNotifications/>");
-}
-
 void MainApp::RestrictPopups()
 {
     Data->AllowPopups = false;
@@ -3146,7 +3123,10 @@ void MainApp::Timer()
         }
     }
 
-
+    if(Data->IsRecord && BrowserToolbox)
+    {
+        Notifications.Timer(BrowserToolbox);
+    }
 
     if(Data->IsMutiloginEngine)
     {
@@ -4966,11 +4946,6 @@ void MainApp::HandleMainBrowserEvents()
             RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
             InvalidateRect(Data->_MainWindowHandle,&r,false);
         }
-    }
-
-    if(Data->IsRecord && BrowserToolbox && v8handler->GetReqestNotification())
-    {
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Notify('notification')")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 
     if(v8handler->GetRecaptchaV3RequestReady())

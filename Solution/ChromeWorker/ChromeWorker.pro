@@ -18,6 +18,7 @@ SOURCES += main.cpp \
     mainapp.cpp \
     mainhandler.cpp \
     newtabschemehandlerfactory.cpp \
+    notificationmanager.cpp \
     pipesclient.cpp \
     log.cpp \
     commandparser.cpp \
@@ -123,6 +124,7 @@ HEADERS += \
     mainapp.h \
     mainhandler.h \
     newtabschemehandlerfactory.h \
+    notificationmanager.h \
     pipesclient.h \
     log.h \
     commandparser.h \

@@ -112,9 +112,6 @@ public:
     //LocalStorage
     //LocalStorageData _LocalStorageData;
 
-    //Notifications
-    std::atomic_bool EnableNotifications;
-
     //Timezone
     std::atomic_bool TimezoneSelected;
     std::atomic_int Timezone;

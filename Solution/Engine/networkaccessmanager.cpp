@@ -213,13 +213,6 @@ namespace BrowserAutomationStudioFramework
         Worker->RunSubScript();
     }
 
-    void NetworkAccessManager::EnableNotifications(bool Enable, const QString& callback)
-    {
-        Worker->SetScript(callback);
-        Worker->RunSubScript();
-    }
-
-
     void NetworkAccessManager::RestrictDownloads(const QString& callback)
     {
         Worker->SetScript(callback);

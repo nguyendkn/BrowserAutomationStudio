@@ -975,11 +975,6 @@ void MainApp::ResetCallbackFinalize()
         Data->AllowDownloads = true;
     }
 
-    {
-        LOCK_GEOLOCATION
-        Data->GeolocationSelected = false;
-    }
-
     SendStartupScriptUpdated();
 
     if(_HandlersManager->GetBrowser())
@@ -1710,36 +1705,6 @@ void MainApp::TimezoneCallback(int offset)
 {
     //For backward compability only
     SendTextResponce("<Timezone></Timezone>");
-}
-
-void MainApp::GeolocationCallback(float latitude, float longitude)
-{
-    {
-        LOCK_GEOLOCATION
-        if(latitude > 99999)
-        {
-            Data->GeolocationSelected = false;
-        }else
-        {
-            Data->GeolocationSelected = true;
-            Data->Longitude = longitude;
-            Data->Latitude = latitude;
-        }
-    }
-    SendStartupScriptUpdated();
-    SendTextResponce("<Geolocation></Geolocation>");
-
-}
-
-void MainApp::GeolocationObjectCallback(const std::string& ObjectData)
-{
-    {
-        LOCK_GEOLOCATION
-        Data->GeolocationObject = ObjectData;
-    }
-    SendStartupScriptUpdated();
-    SendTextResponce("<GeolocationObject></GeolocationObject>");
-
 }
 
 void MainApp::BrowserIpCallback()

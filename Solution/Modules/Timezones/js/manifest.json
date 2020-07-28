@@ -133,7 +133,7 @@
 		
 	},
 	"engine": ["engine.js"],
-	"browser": ["browser.js"],
+	"browser": [],
 	"depends": [],
 	"dll": [
 			{

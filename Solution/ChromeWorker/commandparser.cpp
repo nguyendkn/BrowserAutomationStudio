@@ -678,31 +678,6 @@ void CommandParser::Parse(const std::string& Xml)
                 f(std::stoi(value));
         }
 
-        CommandNode = MessagesNode->first_node("Geolocation");
-        if(CommandNode)
-        {
-            std::string value = CommandNode->value();
-            WORKER_LOG("Geolocation");
-            std::size_t pos = value.find(";");
-            if(pos != std::string::npos)
-            {
-                std::string x = value.substr(0,pos);
-                std::string y = value.substr(pos + 1,value.length() - pos - 1);
-                for(auto f:EventGeolocation)
-                    f(std::stof(x),std::stof(y));
-
-            }
-        }
-
-        CommandNode = MessagesNode->first_node("GeolocationObject");
-        if(CommandNode)
-        {
-            std::string value = CommandNode->value();
-            WORKER_LOG("GeolocationObject");
-            for(auto f:EventGeolocationObject)
-                f(value);
-        }
-
         CommandNode = MessagesNode->first_node("MouseClickUp");
         if(CommandNode)
         {

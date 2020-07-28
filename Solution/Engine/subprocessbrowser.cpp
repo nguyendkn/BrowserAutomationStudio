@@ -104,32 +104,6 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
-    void SubprocessBrowser::Geolocation(float latitude, float longitude, const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("Geolocation",QString("%1;%2").arg(QString::number(latitude)).arg(QString::number(longitude)));
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("Geolocation"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(Geolocation()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
-        if(Worker->GetProcessComunicatorActual())
-            Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
-
-    void SubprocessBrowser::GeolocationObject(const QString& data, const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("GeolocationObject",data);
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("GeolocationObject"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(GeolocationObject()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
-        if(Worker->GetProcessComunicatorActual())
-            Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
-
     void SubprocessBrowser::PopupClose(int index, const QString& callback)
     {
         QString WriteString;
@@ -870,12 +844,6 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "Timezone" && token == QXmlStreamReader::StartElement)
             {
                 emit Timezone();
-            }else if(xmlReader.name() == "Geolocation" && token == QXmlStreamReader::StartElement)
-            {
-                emit Geolocation();
-            }else if(xmlReader.name() == "GeolocationObject" && token == QXmlStreamReader::StartElement)
-            {
-                emit GeolocationObject();
             }else if(xmlReader.name() == "MouseMove" && token == QXmlStreamReader::StartElement)
             {
                 emit MouseMove();

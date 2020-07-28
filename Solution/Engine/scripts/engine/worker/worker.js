@@ -266,17 +266,20 @@ function _timezone_name(name, callback)
 
 function geolocation(latitude,longitude,callback)
 {
-    if(!_is_bas_browser_real())
-    {
-        _settings({
-                      "multilogin.fingerprintGeneration.geolocation.latitude":JSON.stringify(latitude),
-                      "multilogin.fingerprintGeneration.geolocation.longitude":JSON.stringify(longitude)
-                  }, callback)
-        return
-    }
     _ARG = arguments
+
     _create_browser_if_needed(function(){
-        Browser.Geolocation(_ARG[0],_ARG[1],_get_function_body(_ARG[2]))
+
+        var SettingsObject = {}
+        if(_ARG[0] > 99999)
+        {
+            SettingsObject = {"Fingerprints.Geolocation": "Disable"};
+        }else
+        {
+            SettingsObject = {"Fingerprints.Geolocation": "Enable", "Fingerprints.Geolocation.latitude": _ARG[0].toString(), "Fingerprints.Geolocation.longitude": _ARG[1].toString()};
+        }
+
+        _settings(SettingsObject,_ARG[2])
     })
 }
 
@@ -284,7 +287,23 @@ function geolocation_object(object_string,callback)
 {
     _ARG = arguments
     _create_browser_if_needed(function(){
-        Browser.GeolocationObject(JSON.stringify(_ARG[0]),_get_function_body(_ARG[1]))
+        var SettingsObject = {}
+        var properties = ["altitude", "altitudeAccuracy", "heading", "speed" ]
+        for(var i = 0;i < properties.length;i++)
+        {
+            if(typeof(_ARG[0][ properties[i] ]) == "object" && _ARG[0][ properties[i] ] == null)
+            {
+                SettingsObject[ "Fingerprints.Geolocation." + properties[i] ] = "-100000.0";
+            }else if(typeof(_ARG[0][ properties[i] ]) == "number")
+            {
+                SettingsObject[ "Fingerprints.Geolocation." + properties[i] ] = _ARG[0][ properties[i] ].toString();
+            }
+        }
+        if(typeof(_ARG[0].accuracy) == "number")
+        {
+            SettingsObject["Fingerprints.Geolocation.accuracy"] = _ARG[0].accuracy.toString();
+        }
+        _settings(SettingsObject,_ARG[1])
     })
 }
 

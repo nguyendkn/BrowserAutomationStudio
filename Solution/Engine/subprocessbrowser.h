@@ -79,8 +79,6 @@ namespace BrowserAutomationStudioFramework
         virtual void PopupCreate(bool is_silent, const QString& url, const QString& callback);
         virtual void PopupInfo(const QString& callback);
         virtual void Timezone(int offset, const QString& callback);
-        virtual void Geolocation(float latitude, float longitude, const QString& callback);
-        virtual void GeolocationObject(const QString& data, const QString& callback);
         virtual void MouseMove(int x, int y,const QString& params, const QString& callback);
         virtual void Resize(int x, int y, const QString& callback);
         virtual void Reset(const QString& callback);
@@ -162,8 +160,6 @@ namespace BrowserAutomationStudioFramework
         void DebugVariablesResult();
         void RecaptchaV3List();
         void Timezone();
-        void Geolocation();
-        void GeolocationObject();
         void Crush();
         void ClearImageData();
         void SetImageData();

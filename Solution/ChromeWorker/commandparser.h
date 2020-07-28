@@ -58,8 +58,6 @@ public:
     std::vector<std::function<void(int)> > EventPopupSelect;
     std::vector<std::function<void(bool, std::string)> > EventPopupCreate;
     std::vector<std::function<void()> > EventPopupInfo;
-    std::vector<std::function<void(float,float)> > EventGeolocation;
-    std::vector<std::function<void(const std::string&)> > EventGeolocationObject;
     std::vector<std::function<void(int)> > EventTimezone;
     std::vector<std::function<void()> > EventCleanHeader;
     std::vector<std::function<void(const std::string&)> > EventGetCookiesForUrl;

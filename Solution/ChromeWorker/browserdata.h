@@ -116,11 +116,6 @@ public:
     std::atomic_bool TimezoneSelected;
     std::atomic_int Timezone;
 
-    std::atomic_bool GeolocationSelected;
-    std::string GeolocationObject;
-    std::atomic<float> Latitude;
-    std::atomic<float> Longitude;
-
     //Tesing
     bool IsTesing;
 

@@ -53,33 +53,6 @@ std::string PrepareStartupScript(BrowserData* Data, const std::string Url, int T
         Data->Saver.Save();
     }
 
-
-    {
-        LOCK_GEOLOCATION
-        if(Data->GeolocationSelected)
-        {
-            if(!jscode.empty())
-                jscode += ";";
-            jscode += "try{";
-            jscode += "_BAS_HIDE(BrowserAutomationStudio_SetGeolocation)(";
-            jscode += picojson::value(std::to_string(Data->Latitude)).serialize();
-            jscode += ",";
-            jscode += picojson::value(std::to_string(Data->Longitude)).serialize();
-            jscode += ");";
-            jscode += "_BAS_HIDE(BrowserAutomationStudio_SetGeolocationObject)(";
-            jscode += picojson::value(Data->GeolocationObject).serialize();
-            jscode += ");";
-            jscode += "}catch(e){};";
-        }else
-        {
-            if(!jscode.empty())
-                jscode += ";";
-            jscode += "try{";
-            jscode += "_BAS_HIDE(BrowserAutomationStudio_GeolocationRestore)();";
-            jscode += "}catch(e){};";
-        }
-    }
-
     {
         LOCK_BROWSER_DATA
         for (auto& Startup : Data->_StartupScript)

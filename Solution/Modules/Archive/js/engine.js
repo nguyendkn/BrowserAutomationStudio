@@ -3,6 +3,7 @@ function Archive_Unpack(){
 	var destination_path = formatPath(_function_argument("DestinationPath"));
 	var archive_type = _function_argument("ArchiveType");
 	var list_of_files = _function_argument("ListOfFiles");
+	var supported_types = ["zip","rar","7z"];
 	
 	var archive_info = getFileInfo(archive_path, true);
 	var archive_type = getArchiveType(archive_type, archive_info["extension"]);
@@ -25,6 +26,7 @@ function Archive_ArchiveFolder(){
 	var folder_path = formatPath(_function_argument("FolderPath"));
 	var destination_path = formatPath(_function_argument("DestinationPath"));
 	var archive_type = _function_argument("ArchiveType");
+	var supported_types = ["zip","7z"];
 	
 	var folder_info = getFileInfo(folder_path, true);
 	var archive_type = getArchiveType(archive_type, getFileInfo(destination_path, false)["extension"]);
@@ -45,6 +47,7 @@ function Archive_ArchiveFiles(){
 	var file2 = _function_argument("File2");
 	var file3 = _function_argument("File3");
 	var list_of_files = _function_argument("ListOfFiles");
+	var supported_types = ["zip","7z"];
 	
 	var archive_type = getArchiveType(archive_type, getFileInfo(destination_path, false)["extension"]);
 	checkDiskExistence(destination_path);
@@ -68,6 +71,7 @@ function Archive_ArchiveFiles(){
 function Archive_GetFileList(){
 	var archive_path = formatPath(_function_argument("ArchivePath"));
 	var archive_type = _function_argument("ArchiveType");
+	var supported_types = ["zip","rar","7z"];
 	
 	var archive_info = getFileInfo(archive_path, true);
 	var archive_type = getArchiveType(archive_type, archive_info["extension"]);
@@ -113,7 +117,6 @@ function getFileInfo(path, exist){
 	return {file: file, name: file_name, extension: file_extension, directory: file_directory, isFolder: isFolder};
 };
 function getArchiveType(type, extension){
-	var supported_types = ["zip","rar","7z"];
 	if(type=="auto"){
 		if(supported_types.indexOf(extension) < 0 || extension.length<=0){
 			fail(_K=="ru" ? ("Не удалось определить тип архива") : ("Could not determine archive type"));

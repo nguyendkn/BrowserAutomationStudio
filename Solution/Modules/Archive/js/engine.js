@@ -14,7 +14,11 @@ function Archive_Unpack(){
 	VAR_ARCHIVE_UNPACK_PARAMETERS = [archive_path, destination_path, list_of_files];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("Unpack", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
+		_embedded("UnpackZIP", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
+	})!
+	
+	_if(archive_type=="rar",function(){
+		_embedded("UnpackRAR", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
 	})!
 };
 function Archive_ArchiveFolder(){
@@ -31,7 +35,7 @@ function Archive_ArchiveFolder(){
 	VAR_ARCHIVE_FOLDER_PARAMETERS = [folder_path, destination_path, folder_info["file"]];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("ArchiveFolder", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", 60000)!
+		_embedded("ArchiveFolderZIP", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", 60000)!
 	})!
 };
 function Archive_ArchiveFiles(){
@@ -58,7 +62,7 @@ function Archive_ArchiveFiles(){
 	VAR_ARCHIVE_FILES_PARAMETERS = [list_of_files, destination_path];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("ArchiveFiles", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", 60000)!
+		_embedded("ArchiveFilesZIP", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", 60000)!
 	})!
 };
 function Archive_GetFileList(){
@@ -71,7 +75,11 @@ function Archive_GetFileList(){
 	VAR_ARCHIVE_GETFILELIST_PARAMETERS = archive_path;
 	
 	_if(archive_type=="zip",function(){
-		_embedded("GetFileList", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
+		_embedded("GetFileListZIP", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
+	})!
+	
+	_if(archive_type=="rar",function(){
+		_embedded("GetFileListRAR", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
 	})!
 	
 	_function_return(VAR_ARCHIVE_GETFILELIST_PARAMETERS)

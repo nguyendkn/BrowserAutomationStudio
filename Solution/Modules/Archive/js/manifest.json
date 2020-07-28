@@ -91,28 +91,42 @@
     "embeddeddata": [
         {
             "Data": "const fs = require('fs');\r\nconst path = require('path');\r\nconst unzipper = require(\"unzipper\");\r\nconst il = require('iconv-lite');\r\n\r\nvar archive_path = [[ARCHIVE_UNPACK_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_UNPACK_PARAMETERS]][1];\r\nvar list_of_files = [[ARCHIVE_UNPACK_PARAMETERS]][2];\r\nvar unpack_all = list_of_files.length<=0;\r\n\r\nfunction ensureDirectoryExistence(filePath) {\r\n    var dirname = path.dirname(filePath);\r\n    if(fs.existsSync(dirname)){\r\n        return true;\r\n    };\r\n    ensureDirectoryExistence(dirname);\r\n    fs.mkdirSync(dirname);\r\n};\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var readStream = fs.createReadStream(archive_path);\r\n    readStream.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    var parse = readStream.pipe(unzipper.Parse());\r\n    parse.on('entry', function (entry){\r\n        var isUnicode = entry.props.flags.isUnicode;\r\n        var filePath = isUnicode ? entry.path : il.decode(entry.props.pathBuffer, 'cp866');\r\n        var fullPath = destination_path + '/' + filePath;\r\n        var fileType = entry.type;\r\n        if(unpack_all || list_of_files.indexOf(filePath) > -1){\r\n            if(fileType===\"File\"){\r\n                ensureDirectoryExistence(fullPath);\r\n                var writeStream = entry.pipe(fs.createWriteStream(fullPath));\r\n                writeStream.on(\"error\", function error(e) {\r\n                    reject(e);\r\n                });\r\n            }else{\r\n                if(!fs.existsSync(fullPath)){\r\n                    ensureDirectoryExistence(fullPath);\r\n                    fs.mkdirSync(fullPath);\r\n                };\r\n            };\r\n            var autodrain = entry.autodrain();\r\n            autodrain.on(\"error\", function error(e) {\r\n                reject(e);\r\n            });\r\n        }else{\r\n            var autodrain = entry.autodrain();\r\n            autodrain.on(\"error\", function error(e) {\r\n                reject(e);\r\n            });\r\n        };\r\n    });\r\n    parse.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    parse.on(\"close\", function close() {\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "Unpack",
+            "DataName": "UnpackZIP",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "8.6.0"
+        },
+        {
+            "Data": "const unrarp = require('unrar-promise');\r\n\r\nvar archive_path = [[ARCHIVE_UNPACK_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_UNPACK_PARAMETERS]][1];\r\nvar list_of_files = [[ARCHIVE_UNPACK_PARAMETERS]][2];\r\nvar unpack_all = list_of_files.length<=0;\r\nvar list_of_files = unpack_all ? [] : list_of_files.map(function(f){return f.split(\"/\").join(\"\\\\\")});\r\n\r\nawait (new Promise((resolve, reject) => {\r\n\tvar unrar = unrarp.unrar(archive_path, destination_path, {filter({path, type}){return unpack_all || list_of_files.indexOf(path) > -1},overwrite: true});\r\n    unrar.then(function(result){\r\n        resolve();\r\n    })\r\n    unrar.catch(function(err){\r\n        reject(err);\r\n    });\r\n}));",
+            "DataName": "UnpackRAR",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "8.6.0"
         },
         {
             "Data": "const fs = require('fs');\r\nconst archiver = require('archiver');\r\n\r\nvar folder_path = [[ARCHIVE_FOLDER_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FOLDER_PARAMETERS]][1];\r\nvar folder_name = [[ARCHIVE_FOLDER_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var archive = archiver('zip').directory(folder_path, folder_name);\r\n    var writeStream = archive.pipe(fs.createWriteStream(destination_path));\r\n    archive.finalize();\r\n    archive.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('close', function close(){\r\n        resolve();\r\n    });\r\n}));\r\n",
-            "DataName": "ArchiveFolder",
+            "DataName": "ArchiveFolderZIP",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "8.6.0"
         },
 		{
             "Data": "const fs = require('fs');\r\nconst archiver = require('archiver');\r\n\r\nvar list_of_files = [[ARCHIVE_FILES_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FILES_PARAMETERS]][1];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var archive = archiver('zip');\r\n    list_of_files.forEach(function(e){\r\n        if(e.isFolder){\r\n            archive.directory(e.path, e.name);\r\n        }else{\r\n            archive.file(e.path, {name: e.name});\r\n        }\r\n    });\r\n    var writeStream = archive.pipe(fs.createWriteStream(destination_path));\r\n    archive.finalize();\r\n    archive.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('close', function close(){\r\n        resolve();\r\n    });\r\n}));\r\n",
-            "DataName": "ArchiveFiles",
+            "DataName": "ArchiveFilesZIP",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "8.6.0"
         },
 		{
             "Data": "const unzipper = require(\"unzipper\");\r\nconst fs = require('fs');\r\nconst il = require('iconv-lite');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\nvar list_of_files = [];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var readStream = fs.createReadStream(archive_path);\r\n    readStream.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    var parse = readStream.pipe(unzipper.Parse());\r\n    parse.on('entry', function (entry){\r\n        var isUnicode = entry.props.flags.isUnicode;\r\n        var filePath = isUnicode ? entry.path : il.decode(entry.props.pathBuffer, 'cp866');\r\n        list_of_files.push(filePath);\r\n        var autodrain = entry.autodrain();\r\n        autodrain.on(\"error\", function error(e) {\r\n            reject(e);\r\n        });\r\n    });\r\n    parse.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    parse.on(\"close\", function close() {\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = list_of_files;\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "GetFileList",
+            "DataName": "GetFileListZIP",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "8.6.0"
+        },
+        {
+            "Data": "const unrarp = require('unrar-promise');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n\tvar list = unrarp.list(archive_path);\r\n    list.then(function(result){\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = result.sort().map(function(f){return f.split(\"\\\\\").join(\"/\")});\r\n        resolve();\r\n    })\r\n    list.catch(function(err){\r\n        reject(err);\r\n    });\r\n}));",
+            "DataName": "GetFileListRAR",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "8.6.0"
@@ -206,6 +220,12 @@
             "LanguageVersion": "8.6.0",
             "ModuleName": "archiver",
             "ModuleVersion": "4.0.2"
+        },
+        {
+            "LanguageName": "Node",
+            "LanguageVersion": "8.6.0",
+            "ModuleName": "unrar-promise",
+            "ModuleVersion": "*"
         }
     ],
     "name": "Archive"

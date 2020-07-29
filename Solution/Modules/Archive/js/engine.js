@@ -6,7 +6,7 @@ function Archive_Unpack(){
 	var supported_types = ["zip","rar","7z"];
 	
 	var archive_info = getFileInfo(archive_path, true);
-	var archive_type = getArchiveType(archive_type, archive_info["extension"]);
+	var archive_type = getArchiveType(supported_types, archive_type, archive_info["extension"]);
 	
 	var destination_path = destination_path ? destination_path : archive_info["directory"];
 	checkDiskExistence(destination_path);
@@ -21,6 +21,11 @@ function Archive_Unpack(){
 	_if(archive_type=="rar",function(){
 		_embedded("UnpackRAR", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
 	})!
+	
+	_if(archive_type=="7z",function(){
+		_call_function(Archive_Fix7zModule,{})!
+		_embedded("Unpack7Z", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
+	})!
 };
 function Archive_ArchiveFolder(){
 	var folder_path = formatPath(_function_argument("FolderPath"));
@@ -29,7 +34,7 @@ function Archive_ArchiveFolder(){
 	var supported_types = ["zip","7z"];
 	
 	var folder_info = getFileInfo(folder_path, true);
-	var archive_type = getArchiveType(archive_type, getFileInfo(destination_path, false)["extension"]);
+	var archive_type = getArchiveType(supported_types, archive_type, getFileInfo(destination_path, false)["extension"]);
 	
 	var destination_path = destination_path ? destination_path : folder_path + "." + archive_type;
 	checkDiskExistence(destination_path);
@@ -38,6 +43,11 @@ function Archive_ArchiveFolder(){
 	
 	_if(archive_type=="zip",function(){
 		_embedded("ArchiveFolderZIP", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", 60000)!
+	})!
+	
+	_if(archive_type=="7z",function(){
+		_call_function(Archive_Fix7zModule,{})!
+		_embedded("ArchiveFolder7Z", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", 60000)!
 	})!
 };
 function Archive_ArchiveFiles(){
@@ -49,7 +59,7 @@ function Archive_ArchiveFiles(){
 	var list_of_files = _function_argument("ListOfFiles");
 	var supported_types = ["zip","7z"];
 	
-	var archive_type = getArchiveType(archive_type, getFileInfo(destination_path, false)["extension"]);
+	var archive_type = getArchiveType(supported_types, archive_type, getFileInfo(destination_path, false)["extension"]);
 	checkDiskExistence(destination_path);
 	
 	var list_of_files = filesListParse(list_of_files).concat([file1, file2, file3].filter(function(e){return e})).map(function(e){
@@ -67,6 +77,11 @@ function Archive_ArchiveFiles(){
 	_if(archive_type=="zip",function(){
 		_embedded("ArchiveFilesZIP", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", 60000)!
 	})!
+	
+	_if(archive_type=="7z",function(){
+		_call_function(Archive_Fix7zModule,{})!
+		_embedded("ArchiveFiles7Z", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", 60000)!
+	})!
 };
 function Archive_GetFileList(){
 	var archive_path = formatPath(_function_argument("ArchivePath"));
@@ -74,7 +89,7 @@ function Archive_GetFileList(){
 	var supported_types = ["zip","rar","7z"];
 	
 	var archive_info = getFileInfo(archive_path, true);
-	var archive_type = getArchiveType(archive_type, archive_info["extension"]);
+	var archive_type = getArchiveType(supported_types, archive_type, archive_info["extension"]);
 	
 	VAR_ARCHIVE_GETFILELIST_PARAMETERS = archive_path;
 	
@@ -84,6 +99,11 @@ function Archive_GetFileList(){
 	
 	_if(archive_type=="rar",function(){
 		_embedded("GetFileListRAR", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
+	})!
+	
+	_if(archive_type=="7z",function(){
+		_call_function(Archive_Fix7zModule,{})!
+		_embedded("GetFileList7Z", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
 	})!
 	
 	_function_return(VAR_ARCHIVE_GETFILELIST_PARAMETERS)
@@ -116,7 +136,7 @@ function getFileInfo(path, exist){
 	
 	return {file: file, name: file_name, extension: file_extension, directory: file_directory, isFolder: isFolder};
 };
-function getArchiveType(type, extension){
+function getArchiveType(supported_types, type, extension){
 	if(type=="auto"){
 		if(supported_types.indexOf(extension) < 0 || extension.length<=0){
 			fail(_K=="ru" ? ("Не удалось определить тип архива") : ("Could not determine archive type"));
@@ -124,7 +144,7 @@ function getArchiveType(type, extension){
 		return extension;
 	}else{
 		if(supported_types.indexOf(type) < 0 || type.length<=0){
-			fail(_K=="ru" ? ("Поддерживаются только zip, rar и 7z архивы") : ("Only zip, rar and 7z archives are supported"));
+			fail(_K=="ru" ? (type + " архивы не поддерживаются") : (type + " archives are not supported"));
 		};
 		return type;
 	};
@@ -138,4 +158,8 @@ function checkDiskExistence(path){
 			fail(_K=="ru" ? ("В пути \"" + path + "\" указан не существующий диск \"" + disk + "\"") : ("The path \"" + path + "\" contains a non-existing disk \"" + disk + "\""));
 		};
 	};
+};
+function Archive_Fix7zModule(){
+	VAR_NODE_REGEXPJS_TEMPLATE = "const LINE_SPLIT = new RegExp(\u0027\u005cn|\u005cr\u005cn|\u005cx08+|\u005cr +\u005cr\u0027)\nconst BODY_PROGRESS = new RegExp(\u0027^ *(\u003cpercent\u003e\u005c\u005cd+)% ?(\u003cfileCount\u003e\u005c\u005cd+)? ?(\u003cfile\u003e.*)$\u0027)\nconst BODY_SYMBOL_FILE = new RegExp(\u0027^(\u003csymbol\u003e[=TU+R.-]) (\u003cfile\u003e.+)$\u0027)\nconst BODY_HASH = new RegExp(\u0027^(\u003chash\u003e\u005c\u005cS+)? +(\u003csize\u003e\u005c\u005cd*) +(\u003cfile\u003e.+)$\u0027)\nconst END_OF_STAGE_HYPHEN = new RegExp(\u0027^(-+ +)+-+$\u0027)\nconst INFOS = new RegExp(\u0027^(\u003cproperty\u003e.+?)(\u003cseparator\u003e( = )|(: +))(\u003cvalue\u003e.+)$\u0027)\nconst INFOS_SPLIT = new RegExp(\u0027, +# \u0027)\nconst ERROR = new RegExp(\u0027(\u003clevel\u003eWARNING|ERROR): (\u003cmessage\u003e.*)(\u005cr\u005cn)?(\u005cn)?\u0027, \u0027i\u0027)\n\nmodule.exports = \u007b\n  LINE_SPLIT,\n  BODY_PROGRESS,\n  BODY_SYMBOL_FILE,\n  BODY_HASH,\n  END_OF_STAGE_HYPHEN,\n  INFOS,\n  INFOS_SPLIT,\n  ERROR\n\u007d"
+	_embedded("Fix7zModule", "Node", "8.6.0", "NODE_REGEXPJS_TEMPLATE", 60000)!
 };

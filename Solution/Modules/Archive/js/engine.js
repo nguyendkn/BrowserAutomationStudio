@@ -1,16 +1,16 @@
 function Archive_Unpack(){
-	var archive_path = formatPath(_function_argument("ArchivePath"));
-	var destination_path = formatPath(_function_argument("DestinationPath"));
+	var archive_path = Archive_FormatPath(_function_argument("ArchivePath"));
+	var destination_path = Archive_FormatPath(_function_argument("DestinationPath"));
 	var archive_type = _function_argument("ArchiveType");
 	var list_of_files = _function_argument("ListOfFiles");
 	var supported_types = ["zip","rar","7z"];
 	
-	var archive_info = getFileInfo(archive_path, true);
-	var archive_type = getArchiveType(supported_types, archive_type, archive_info["extension"]);
+	var archive_info = Archive_GetFileInfo(archive_path, true);
+	var archive_type = Archive_GetArchiveType(supported_types, archive_type, archive_info["extension"]);
 	
 	var destination_path = destination_path ? destination_path : archive_info["directory"];
-	checkDiskExistence(destination_path);
-	var list_of_files = filesListParse(list_of_files);
+	Archive_CheckDiskExistence(destination_path);
+	var list_of_files = Archive_filesListParse(list_of_files);
 	
 	VAR_ARCHIVE_UNPACK_PARAMETERS = [archive_path, destination_path, list_of_files];
 	
@@ -28,16 +28,16 @@ function Archive_Unpack(){
 	})!
 };
 function Archive_ArchiveFolder(){
-	var folder_path = formatPath(_function_argument("FolderPath"));
-	var destination_path = formatPath(_function_argument("DestinationPath"));
+	var folder_path = Archive_FormatPath(_function_argument("FolderPath"));
+	var destination_path = Archive_FormatPath(_function_argument("DestinationPath"));
 	var archive_type = _function_argument("ArchiveType");
 	var supported_types = ["zip","7z"];
 	
-	var folder_info = getFileInfo(folder_path, true);
-	var archive_type = getArchiveType(supported_types, archive_type, getFileInfo(destination_path, false)["extension"]);
+	var folder_info = Archive_GetFileInfo(folder_path, true);
+	var archive_type = Archive_GetArchiveType(supported_types, archive_type, Archive_GetFileInfo(destination_path, false)["extension"]);
 	
 	var destination_path = destination_path ? destination_path : folder_path + "." + archive_type;
-	checkDiskExistence(destination_path);
+	Archive_CheckDiskExistence(destination_path);
 	
 	VAR_ARCHIVE_FOLDER_PARAMETERS = [folder_path, destination_path, folder_info["file"]];
 	
@@ -51,7 +51,7 @@ function Archive_ArchiveFolder(){
 	})!
 };
 function Archive_ArchiveFiles(){
-	var destination_path = formatPath(_function_argument("DestinationPath"));
+	var destination_path = Archive_FormatPath(_function_argument("DestinationPath"));
 	var archive_type = _function_argument("ArchiveType");
 	var file1 = _function_argument("File1");
 	var file2 = _function_argument("File2");
@@ -59,12 +59,12 @@ function Archive_ArchiveFiles(){
 	var list_of_files = _function_argument("ListOfFiles");
 	var supported_types = ["zip","7z"];
 	
-	var archive_type = getArchiveType(supported_types, archive_type, getFileInfo(destination_path, false)["extension"]);
-	checkDiskExistence(destination_path);
+	var archive_type = Archive_GetArchiveType(supported_types, archive_type, Archive_GetFileInfo(destination_path, false)["extension"]);
+	Archive_CheckDiskExistence(destination_path);
 	
-	var list_of_files = filesListParse(list_of_files).concat([file1, file2, file3].filter(function(e){return e})).map(function(e){
-		var path = formatPath(e);
-		var info = getFileInfo(path);
+	var list_of_files = Archive_filesListParse(list_of_files).concat([file1, file2, file3].filter(function(e){return e})).map(function(e){
+		var path = Archive_FormatPath(e);
+		var info = Archive_GetFileInfo(path);
 		return {path:path,name:info.file,isFolder:info.isFolder};
 	});
 	
@@ -84,12 +84,12 @@ function Archive_ArchiveFiles(){
 	})!
 };
 function Archive_GetFileList(){
-	var archive_path = formatPath(_function_argument("ArchivePath"));
+	var archive_path = Archive_FormatPath(_function_argument("ArchivePath"));
 	var archive_type = _function_argument("ArchiveType");
 	var supported_types = ["zip","rar","7z"];
 	
-	var archive_info = getFileInfo(archive_path, true);
-	var archive_type = getArchiveType(supported_types, archive_type, archive_info["extension"]);
+	var archive_info = Archive_GetFileInfo(archive_path, true);
+	var archive_type = Archive_GetArchiveType(supported_types, archive_type, archive_info["extension"]);
 	
 	VAR_ARCHIVE_GETFILELIST_PARAMETERS = archive_path;
 	
@@ -108,13 +108,13 @@ function Archive_GetFileList(){
 	
 	_function_return(VAR_ARCHIVE_GETFILELIST_PARAMETERS)
 };
-function formatPath(path){
+function Archive_FormatPath(path){
 	return path.split("\\").join("/");
 };
-function filesListParse(list){
+function Archive_filesListParse(list){
 	return list ? (typeof list=="object" ? list : JSON.parse(list)) : [];
 };
-function getFileInfo(path, exist){
+function Archive_GetFileInfo(path, exist){
 	var file_info = JSON.parse(native("filesystem", "fileinfo", path));
 	var file_exists = file_info["exists"];
 	var isFolder = file_info["is_directory"];
@@ -136,7 +136,7 @@ function getFileInfo(path, exist){
 	
 	return {file: file, name: file_name, extension: file_extension, directory: file_directory, isFolder: isFolder};
 };
-function getArchiveType(supported_types, type, extension){
+function Archive_GetArchiveType(supported_types, type, extension){
 	if(type=="auto"){
 		if(supported_types.indexOf(extension) < 0 || extension.length<=0){
 			fail(_K=="ru" ? ("Не удалось определить тип архива") : ("Could not determine archive type"));
@@ -150,7 +150,7 @@ function getArchiveType(supported_types, type, extension){
 	};
 };
  
-function checkDiskExistence(path){
+function Archive_CheckDiskExistence(path){
 	if(path.indexOf(":/") > -1){
 		var disk = path.slice(0, 1);
 		var disk_exists = JSON.parse(native("filesystem", "fileinfo", disk + ":/"))["exists"];

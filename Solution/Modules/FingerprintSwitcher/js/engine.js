@@ -400,6 +400,50 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	})!
 
+	if(FINGERPRINT_JSON["connection"])
+	{
+		var NetInfoDownlinkMax = false
+		var Keys = Object.keys(FINGERPRINT_JSON["connection"])
+		var HasConnection = Keys.length > 0
+
+		for(var i = 0;i<Keys.length;i++)
+		{
+			var Key = Keys[i]
+
+			if(Key == "downlinkMax")
+			{
+				NetInfoDownlinkMax = true;
+			}
+
+			var KeySettings = "Attribute." + Key
+			try
+			{
+				if(typeof(FINGERPRINT_JSON["connection"][Key]) == "boolean")
+				{
+					FINGEPRINT_SETTINGS[KeySettings] = (FINGERPRINT_JSON["connection"][Key]) ? "1" : "0";
+				}else if(typeof(FINGERPRINT_JSON["connection"][Key]) == "object" && FINGERPRINT_JSON["connection"][Key] == null)
+				{
+					FINGEPRINT_SETTINGS[KeySettings] = "0";
+				}else
+				{
+					FINGEPRINT_SETTINGS[KeySettings] = FINGERPRINT_JSON["connection"][Key].toString()
+				}
+			}catch(e)
+			{
+				FINGEPRINT_SETTINGS[KeySettings] = ""
+			}
+		}
+		if(!HasConnection)
+		{
+			FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsConnection"] = "Disable"
+		}
+
+		if(NetInfoDownlinkMax)
+		{
+			FINGEPRINT_SETTINGS["Fingerprints.Feature.NetInfoDownlinkMax"] = "Enable"
+		}
+	}
+
 	if(FINGERPRINT_JSON["css"])
 	{
 		var Keys = Object.keys(FINGERPRINT_JSON["css"])

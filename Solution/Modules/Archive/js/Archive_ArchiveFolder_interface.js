@@ -10,4 +10,4 @@
 	<div class="tr tooltip-paragraph-fold">If with same name archive already exists along the destination path, it will be overwritten.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
-<%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+<%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

@@ -3,6 +3,7 @@ function Archive_Unpack(){
 	var destination_path = Archive_FormatPath(_function_argument("DestinationPath"));
 	var archive_type = _function_argument("ArchiveType");
 	var list_of_files = _function_argument("ListOfFiles");
+	var timeout = _function_argument("Timeout");
 	var supported_types = ["zip","rar","7z"];
 	
 	var archive_info = Archive_GetFileInfo(archive_path, true);
@@ -15,22 +16,23 @@ function Archive_Unpack(){
 	VAR_ARCHIVE_UNPACK_PARAMETERS = [archive_path, destination_path, list_of_files];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("UnpackZIP", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
+		_embedded("UnpackZIP", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="rar",function(){
-		_embedded("UnpackRAR", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
+		_embedded("UnpackRAR", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("Unpack7Z", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", 60000)!
+		_embedded("Unpack7Z", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
 	})!
 };
 function Archive_ArchiveFolder(){
 	var folder_path = Archive_FormatPath(_function_argument("FolderPath"));
 	var destination_path = Archive_FormatPath(_function_argument("DestinationPath"));
 	var archive_type = _function_argument("ArchiveType");
+	var timeout = _function_argument("Timeout");
 	var supported_types = ["zip","7z"];
 	
 	var folder_info = Archive_GetFileInfo(folder_path, true);
@@ -42,12 +44,12 @@ function Archive_ArchiveFolder(){
 	VAR_ARCHIVE_FOLDER_PARAMETERS = [folder_path, destination_path, folder_info["file"]];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("ArchiveFolderZIP", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", 60000)!
+		_embedded("ArchiveFolderZIP", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("ArchiveFolder7Z", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", 60000)!
+		_embedded("ArchiveFolder7Z", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", timeout)!
 	})!
 };
 function Archive_ArchiveFiles(){
@@ -57,6 +59,7 @@ function Archive_ArchiveFiles(){
 	var file2 = _function_argument("File2");
 	var file3 = _function_argument("File3");
 	var list_of_files = _function_argument("ListOfFiles");
+	var timeout = _function_argument("Timeout");
 	var supported_types = ["zip","7z"];
 	
 	var archive_type = Archive_GetArchiveType(supported_types, archive_type, Archive_GetFileInfo(destination_path, false)["extension"]);
@@ -75,17 +78,18 @@ function Archive_ArchiveFiles(){
 	VAR_ARCHIVE_FILES_PARAMETERS = [list_of_files, destination_path];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("ArchiveFilesZIP", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", 60000)!
+		_embedded("ArchiveFilesZIP", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("ArchiveFiles7Z", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", 60000)!
+		_embedded("ArchiveFiles7Z", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", timeout)!
 	})!
 };
 function Archive_GetFileList(){
 	var archive_path = Archive_FormatPath(_function_argument("ArchivePath"));
 	var archive_type = _function_argument("ArchiveType");
+	var timeout = _function_argument("Timeout");
 	var supported_types = ["zip","rar","7z"];
 	
 	var archive_info = Archive_GetFileInfo(archive_path, true);
@@ -94,16 +98,16 @@ function Archive_GetFileList(){
 	VAR_ARCHIVE_GETFILELIST_PARAMETERS = archive_path;
 	
 	_if(archive_type=="zip",function(){
-		_embedded("GetFileListZIP", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
+		_embedded("GetFileListZIP", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="rar",function(){
-		_embedded("GetFileListRAR", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
+		_embedded("GetFileListRAR", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("GetFileList7Z", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", 60000)!
+		_embedded("GetFileList7Z", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_ARCHIVE_GETFILELIST_PARAMETERS)

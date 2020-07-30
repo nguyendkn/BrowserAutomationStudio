@@ -335,17 +335,17 @@ class SearchManager {
             <% } %>
             <% if ((descInfo.found && descInfo.max) && !descInfo.skip) { %>
               <div class="item-additional text-<%= descInfo.color %>">
-                <%= truncate(descriptions[descInfo.index], keywords.find((k) => k.field === 'descriptions')) %>
+                <%= truncate(descriptions[descInfo.index], keywords.find((k) => k.field === 'descriptions').matches) %>
               </div>
             <% } %>
             <% if ((suggInfo.found && suggInfo.max) && !suggInfo.skip) { %>
               <div class="item-additional text-<%= suggInfo.color %>">
-                <%= truncate(suggestions[suggInfo.index], keywords.find((k) => k.field === 'suggestions')) %>
+                <%= truncate(suggestions[suggInfo.index], keywords.find((k) => k.field === 'suggestions').matches) %>
               </div>
             <% } %>
             <% if ((varsInfo.found && varsInfo.max) && !varsInfo.skip) { %>
               <div class="item-additional text-<%= varsInfo.color %>">
-                <%= truncate(variables[varsInfo.index], keywords.find((k) => k.field === 'variables')) %>
+                <%= truncate(variables[varsInfo.index], keywords.find((k) => k.field === 'variables').matches) %>
               </div>
             <% } %>
           </div>

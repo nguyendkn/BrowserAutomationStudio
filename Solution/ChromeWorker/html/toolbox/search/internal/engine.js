@@ -1,4 +1,4 @@
-class BasSearchEngine extends SearchEngine {
+class BasSearchEngine extends SearchLib.SearchEngine {
   /**
    * Create an instance of `BasSearchEngine` class.
    * @param {Object} config - search engine configuration object.

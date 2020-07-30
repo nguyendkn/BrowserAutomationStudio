@@ -309,6 +309,7 @@ class SearchManager {
    * @returns {Object} rendered result object.
    */
   renderItem({ item, page, index }) {
+    item.truncate = SearchLib.TextProcessor.truncate.bind(SearchLib.TextProcessor);
     const temp = { ...item, index };
     const data = { ...item, page };
     const template = _.template(`
@@ -325,17 +326,17 @@ class SearchManager {
             <% } %>
             <% if ((descInfo.found && descInfo.max) && !descInfo.skip) { %>
               <div class="item-additional text-<%= descInfo.color %>">
-                <%= descriptions[descInfo.index] %>
+                <%= truncate(descriptions[descInfo.index], keywords.find((k) => k.field === 'descriptions')) %>
               </div>
             <% } %>
             <% if ((suggInfo.found && suggInfo.max) && !suggInfo.skip) { %>
               <div class="item-additional text-<%= suggInfo.color %>">
-                <%= suggestions[suggInfo.index] %>
+                <%= truncate(suggestions[suggInfo.index], keywords.find((k) => k.field === 'suggestions')) %>
               </div>
             <% } %>
             <% if ((varsInfo.found && varsInfo.max) && !varsInfo.skip) { %>
               <div class="item-additional text-<%= varsInfo.color %>">
-                <%= variables[varsInfo.index] %>
+                <%= truncate(variables[varsInfo.index], keywords.find((k) => k.field === 'variables')) %>
               </div>
             <% } %>
           </div>

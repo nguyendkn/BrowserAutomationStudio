@@ -4227,6 +4227,15 @@ void MainApp::HandleFrameFindEvents()
             return;
         }
 
+        if(res.second && !res.first.active && !IsLastCommandNull && ExecuteFrameSearching && LastCommand.CommandName == std::string("length"))
+        {
+            IsLastCommandNull = true;
+            v8handler->SetResultProcessed();
+            std::string data = "0";
+            FinishedLastCommand(data);
+            return;
+        }
+
         if(res.second && !res.first.active && !IsLastCommandNull && ExecuteFrameSearching && LastCommand.CommandName == std::string("highlight"))
         {
             ClearHighlight();

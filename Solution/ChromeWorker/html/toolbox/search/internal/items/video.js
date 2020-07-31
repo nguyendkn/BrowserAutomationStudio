@@ -1,523 +1,433 @@
 _VIDEO = [
   {
-    url: 'https://www.youtube.com/watch?v=FCfcgDX8ezk',
-    name: 'Proxy checker',
-    suggestion: 'change set proxy proxies ip hide checker loop',
-    lang: 'en'
+    url: 'https://youtu.be/L6ajX1d-fmk',
+    name: 'Введение в BAS',
+    description: 'В видео сделан обзор основных возможностей BAS. Посмотреть его - лучший способ начать знакомство с программой.', 
+    timestamps: 
+    {
+      "00:24": "Возможности софта.",
+      "06:36": "Описание интерфейса редактора скрипта.",
+      "09:25": "Описание действий, редактор сценария.",
+      "12:04": "Работа с браузером в BAS.",
+      "18:18": "Редактирования скрипта.",
+      "25:08": "Поиск элемента по изображению.",
+      "26:24": "Лог, отлов ошибок, id действия.",
+      "30:01": "Поиск действий.",
+      "33:03": "Переменные.",
+      "41:29": "Настройки браузера и кнопки скролла.",
+      "46:11": "Ожидание загрузки страницы.",
+      "51:18": "Режим запуска.",
+      "56:15": "Пользовательский интерфейс, ресурсы.",
+      "01:05:58": "Как исправить \"зависания\" скрипта.",
+      "01:11:05": "Условия.",
+      "01:19:34": "Создание автономного бота. Компиляция.",
+    },
+    lang: 'ru'
   },
   {
-    url: 'https://www.youtube.com/watch?v=FCfcgDX8ezk',
-    name: 'Чеккер прокси',
-    suggestion: 'установить сменить поменять прокси ип чеккер чекер циклы цикл',
+    url: 'https://youtu.be/K-jT-GwjTjg',
+    name: 'BAS introduction',
+    description: 'This video provides an overview of BAS main features. It is the best way to get started with the program.', 
+    timestamps: 
+    {
+      "04:50": "Description of the script editor interface.",
+      "05:54": "Actions.",
+      "09:42": "Working with browser.",
+      "15:01": "Script editing.",
+      "19:15": "Find element by image.",
+      "19:49": "Log, troubleshooting, action id.",
+      "21:47": "Finding actions.",
+      "23:35": "Variables.",
+      "28:43": "Browser settings.",
+      "32:07": "Waiting for page load.",
+      "35:07": "Run mode.",
+      "38:12": "User interface, resources.",
+      "42:05": "How to fix if a script \"freezes\".",
+      "45:35": "Conditions.",
+      "50:01": "Making standalone bot, compilation.",
+    },
+    lang: 'en'
+  },
+
+
+
+
+  {
+    url: 'https://youtu.be/joDn1VMO9KM',
+    name: 'Селекторы. Поиск элементов.',
+    description: 'В этом видео рассказано о поиске элементов на странице. В нем содержится вся необходимая информация для создания парсеров любой сложности.', 
+    timestamps: 
+    {
+      "01:25": "Введение в селекторы. Входной параметр \"Селектор элемента\".",
+      "10:43": "Составление селекторов для элементов со сменным id.",
+      "13:40": "Настройки поведения БАС в случае ошибки поиска элемента.",
+      "22:09": "Поиск элемента по координатам.",
+      "26:09": "Селекторы css.",
+      "54:12": "Парсер твиттов из ленты.",
+      "01:09:36": "Парсер картинок из твиттов. Вложенные селекторы.",
+      "01:21:39": "Селекторы match.",
+      "01:26:43": "Селекторы xpath.",
+      "01:34:19": "Поиск элементов внутри фрейма.",
+      "01:40:08": "Поиск по изображению.",
+    },
+    lang: 'ru'
+  },
+
+
+
+  {
+    url: 'https://youtu.be/kW9ag7-3nDk',
+    name: 'Ресурсы. Работа с файлами.',
+    description: 'В видео рассмотрены все тонкости в работе с данными через систему ресурсов: чтение и запись в файлы, в том числе в режиме многопоточности, пользовательский интерфейс, распределение прокси между потоками.', 
+    timestamps: 
+    {
+      "02:17": "Описание системы ресурсов.",
+      "06:56": "Ресурс типа \"строка\".",
+      "12:06": "Получение значения ресурса на стороне разработчика.",
+      "15:58": "Ресурс типа \"число\".",
+      "21:21": "Ресурс типа \"случайное число\".",
+      "23:29": "Ресурс типа \"генератор строк\". Spintax.",
+      "28:05": "Ресурс типа \"Из файла\". Чтение файлов.",
+      "37:49": "Запись в файл выбранный пользователем.",
+      "43:52": "Режимы чтения файлов. Работа со строками из нескольких потоков.",
+      "53:42": "Работа с файлами(изображениями) из папки в режиме многопотока.",
+      "59:39": "Обработка ошибок при использовании ресурсов. ",
+      "01:04:22": "Получение нескольких ресурсов в одном потоке.",
+      "01:10:22": "Работа с прокси. Проверка прокси на валидность.",
+      "01:18:34": "Дополнительные настройки ресурсов.",
+      "01:29:40": "Ручное удаление строк из файла.",
+      "01:31:44": "Выполнение действий в начале работы скрипта(перед запуском потоков).",
+      "01:34:52": "Парсинг файлов со сложным форматом в ресурс. Конструктор регулярных выражений.",
+      "01:54:15": "Ресурсы с несколькими типами.",
+      "01:58:23": "Внешний вид пользовательского интерфейса.",
+      "02:02:38": "Ресурс типа \"Список\".",
+      "02:14:07": "Основы конструктора javascript выражений.",
+      "02:24:25": "Условная видимость ресурсов.",
+    },
+    lang: 'ru'
+  },
+
+
+
+  {
+    url: 'https://youtu.be/jwp-2JM0f6E',
+    name: 'Переменные.',
+    description: 'В этом видео рассказывается о переменных, о формате выражений, о том, как использовать javascript код в BAS.', 
+    timestamps: 
+    {
+      "00:42": "Что такое переменные.",
+      "04:48": "Переменные как результат работы действий, инспектор переменных.",
+      "11:51": "Использование переменных.",
+      "15:01": "Типы переменных.",
+      "23:03": "Создание переменных разных типов.",
+      "25:28": "Входные параметры типа expression.",
+      "35:36": "Использование javascript функций.",
+      "39:09": "Операторы сравнения.",
+      "41:22": "Пример, проверка кода страницы на содержание стоп слова.",
+      "48:07": "Получения типа переменной.",
+      "52:32": "Преобразование типов. Пример, получения числа лайков на странице.",
+      "01:06:47": "Задание нескольких переменных сразу.",
+      "01:09:21": "Выполнения произвольного js кода.",
+      "01:11:33": "Создание многострочных переменных. Действие \"Шаблон\".",
+      "01:15:31": "Глобальные переменные.",
+      "01:22:08": "Пример, завершение скрипта через заданное время.",
+      "01:34:59": "Специальное значение null.",
+      "01:38:42": "Переменная типа object.",
+      "01:44:10": "Парсим ответ от апи. JSON.parse",
+    },
+    lang: 'ru'
+  },
+  
+
+
+  {
+    url: 'https://youtu.be/uLfi_c8DwwI',
+    name: 'Конструктор javascript.',
+    description: 'Видео о том, как создавать сложные javascript выражения с помощью визуального программирования. Показан основной принцип и множество примеров.', 
+    timestamps: 
+    {
+      "01:27": "Описание конструктора.",
+      "03:45": "Простейшие примеры использования конструктора.",
+      "08:37": "Простые операции с числами.",
+      "15:10": "Использование переменных в конструкторе.",
+      "17:47": "Пример, формирование урл.",
+      "24:33": "Использование блоков с произвольным кодом.",
+      "29:25": "Пример, парсер широты/долготы городов.",
+      "43:36": "Пример, фильтр для твиттер парсера.",
+      "01:00:43": "Пример, форматирование строки.",
+    },
+    lang: 'ru'
+  },
+  
+
+
+  {
+    url: 'https://youtu.be/59KSijwvRTw',
+    name: 'Условия. Действие If.',
+    description: 'Теория об условиях и практические примеры', 
+    timestamps: 
+    {
+      "01:21": "Условия, теория.",
+      "06:30": "Пример. Поиск картинки на сайте.",
+      "10:09": "Как составлять выражения для if.",
+      "25:13": "Постер twitter.",
+      "37:30": "Перебор всех аккаунтов.",
+      "40:36": "Игнорирование ошибок.",
+      "47:22": "Делаем код более читаемым.",
+      "51:13": "Использование функций для упрощения скрипта.",
+      "55:10": "Проверка на дату последнего твитта.",
+      "01:08:49": "Использование меток.",
+      "01:25:58": "Постинг, проверка успешности выполнения.",
+      "01:36:42": "Сохранение скриншота в случае ошибки.",
+    },
+    lang: 'ru'
+  },
+  
+
+
+  {
+    url: 'https://youtu.be/BhmOwzIW1lU',
+    name: 'Циклы.',
+    description: 'Данное видео расскацывает о циклах и повторении действий', 
+    timestamps: 
+    {
+      "02:00": "Когда возникает необходимость в использовании циклов.",
+      "03:30": "Цикл for.",
+      "08:25": "Границы цикла, переменная CYCLE_INDEX.",
+      "10:46": "Чтение из файла построчно.",
+      "22:36": "Использования выражений в качестве границы цикла.",
+      "28:31": "Цикл foreach.",
+      "33:44": "Браузерный цикл.",
+      "50:11": "Прерывание цикла. Ожидание события с помощью цикла.",
+      "58:10": "Пример, загрузка видео на ютуб.",
+      "01:05:52": "Использование меток вместе с циклом.",
+    },
+    lang: 'ru'
+  },
+
+
+  {
+    url: 'https://youtu.be/Vj2Q50FIBi4',
+    name: 'Многопоточность.',
+    description: 'Данное видео содержит информацию о многопоточности, глобальных переменных, обменом данных между потоками.', 
+    timestamps: 
+    {
+      "04:50": "Запуск в однопоточном режиме.",
+      "08:17": "Однопоточный режим несколько выполнений.",
+      "10:17": "Завершение потока с ошибкой.",
+      "14:00": "Запуск в 2 потока.",
+      "20:17": "Завершение работы скрипта после отсутствия ресурса.",
+      "23:13": "Остановка через действие \"Прервать скрипт\".",
+      "28:19": "Пример, постер картинок из папки на imgur.com.",
+      "45:53": "OnApplicationStart.",
+      "58:50": "Обмен данными между потоками.",
+      "01:06:01": "Пример, автовход gmail.",
+      "01:14:14": "Синхронные и асинхронные действия.",
+      "01:25:00": "Lock, выполнение действий в одном потоке.",
+      "01:30:22": "Выполнение разных действий в потоках, обмен данными.",
+      "01:35:56": "Обмен данными через список и глобальные переменные. ",
+    },
+    lang: 'ru'
+  },
+  
+
+  {
+    url: 'https://youtu.be/MsKkzZVnfBA',
+    name: 'Профили.',
+    description: 'Работа с профилями, автовход на сайт.', 
     lang: 'ru'
   },
 
   {
-    url: 'https://www.youtube.com/watch?v=lq2Anqlnliw',
-    name: 'Change proxy',
-    suggestion: 'change set proxy proxies ip hide',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=lq2Anqlnliw',
-    name: 'Сменить прокси',
-    suggestion: 'установить сменить поменять прокси ип',
+    url: 'https://youtu.be/YojWxGcGGEg',
+    name: 'Node.js, npm.',
+    description: 'В этом видео показано множество примеров использования node.js.', 
+    timestamps: 
+    {
+      "05:33": "Криптография, вычисление хешей.",
+      "11:06": "Загрузка данных из таблицы excel.",
+      "21:33": "Работа с mysql.",
+      "35:52": "Постинг на facebook через апи.",
+      "38:34": "Работа с фтп.",
+      "44:28": "Скачивание видео с ютуб.",
+      "47:55": "Работа с браузером через node.js.",
+      "51:02": "Менеджер проекта.",
+      
+    },
     lang: 'ru'
   },
 
+
   {
-    url: 'https://www.youtube.com/watch?v=64He614lmmg',
-    name: 'Solve captcha antigate/dbc',
-    suggestion: 'solve resolve captcha capcha antigate rucaptcha 2captha dbc',
-    lang: 'en'
+    url: 'https://youtu.be/x8_0Bk3_4qY',
+    name: 'FingerprintDetector',
+    description: 'FingerprintDetector позволяет получать отчет о всех методах использованных на сайте для получения отпечатка браузера.', 
+    suggestion: 'антибот защита, аутентичность браузера',
+    lang: 'ru'
+  },
+  
+
+  {
+    url: 'https://youtu.be/M0tlLgzwVhI',
+    name: 'Ручное управление браузером.',
+    description: 'Описание работы с браузером в ручном режиме.', 
+    timestamps: 
+    {
+      "04:55": "Как начать использовать ручное управление",
+      "07:00": "Возможности и ограничения ручного ввода",
+      "17:21": "Автоматическое создание скрипта",
+      "22:28": "Ручное управление в многопотоке",
+      "29:54": "Веб-интерфейс и ручное управление",
+      "37:58": "Пример 1. Решение капчи в режиме ручного контроля браузера",
+      "43:17": "Пример 2. Сохранение состояния браузера при ошибке",
+      "46:02": "Пример 3. Вход в аккаунт выполненный без участия БАС",
+      "48:24": "Пример 4. Создание сложной версии пользовательского ввода",
+      "54:39": "Пример 5. Простой менеджер профилей в БАС",
+    },
+    lang: 'ru'
+  },
+  
+
+  {
+    url: 'https://youtu.be/ZGOdwn8DN80',
+    name: 'FingerprintSwitcher',
+    description: 'Смена отпечатка браузера с помощью FingerprintSwitcher.', 
+    suggestion: 'антибот защита, аутентичность браузера, отпечаток canvas, отпечаток webgl',
+    lang: 'ru'
   },
   {
-    url: 'https://www.youtube.com/watch?v=64He614lmmg',
-    name: 'Решить капчу через антигейт/рукачпу',
-    suggestion: 'решить капчу антигейт рукапча 2капча каптча каптчу',
-    lang: 'ru'
+    url: 'https://youtu.be/tHs1DUQqQzA',
+    name: 'FingerprintSwitcher',
+    description: 'Changing browser fingerprint with FingerprintSwitcher.', 
+    suggestion: 'antibot protection, browser authenticity, canvas fingerprint, webgl fingerprint',
+    lang: 'en'
   },
 
   {
-    url: 'https://www.youtube.com/watch?v=7MQFctMCNCw',
-    name: 'Set user agent',
-    suggestion: 'user agent header referrer referer accept language',
+    url: 'https://youtu.be/ELAWwE69KGA',
+    name: 'FingerprintDetector',
+    description: 'This short video shows how to detect which fingerprint techniques site uses.', 
+    suggestion: 'antibot protection, browser authenticity, canvas fingerprint, webgl fingerprint',
     lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=7MQFctMCNCw',
-    name: 'Установить юзер агент',
-    suggestion: 'Юзер агент хедер рефферер реферер',
-    lang: 'ru'
   },
 
   {
-    url: 'https://www.youtube.com/watch?v=qZ4fuY0Uz2E',
-    name: 'Get current browser url',
-    suggestion: 'url address',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=qZ4fuY0Uz2E',
-    name: 'Получить текущий урл браузера',
-    suggestion: 'текущий адрес урл',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=cbppjfetsiU',
-    name: 'Fill form with and without mouse',
-    suggestion: 'type key enter escape',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=cbppjfetsiU',
-    name: 'Заполнить форму без мыши',
-    suggestion: 'ввод клавиша',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=Y5WkLilf5ds',
-    name: 'Execute custom javascript',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=Y5WkLilf5ds',
-    name: 'Выполнить яваскрипт на элементе',
-    suggestion: 'яваскрипт скрипт',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=njXI1bXxlrA',
-    name: 'Scroll page',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=njXI1bXxlrA',
-    name: 'Прокрутка страницы',
-    suggestion: 'скролл',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=3DOzVdGluMY',
-    name: 'Make screnshot',
-    suggestion: 'render page',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=3DOzVdGluMY',
-    name: 'Сделать скриншот',
-    suggestion: 'скрин снимок экран',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=jscgmDpib_U',
-    name: 'Get page from cache',
-    suggestion: 'cache download',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=jscgmDpib_U',
-    name: 'Получить страницу из кеша',
-    suggestion: 'кеша кеш скачать загрузить',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=eNhf3XuZxfY',
-    name: 'Disable images',
-    suggestion: 'restrict images videos',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=eNhf3XuZxfY',
-    name: 'Запретить картинки',
-    suggestion: 'запретить запрещать загрузку изображений',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=3alpI6Gc_yI',
-    name: 'Сheck if url is loaded',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=3alpI6Gc_yI',
-    name: 'Проверить загрузку урл',
-    suggestion: '',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=i8DxUatkqzs',
-    name: 'Set combobox value',
-    suggestion: 'dropdown list',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=i8DxUatkqzs',
-    name: 'Установить значение выпадающего списка',
-    suggestion: 'выпадающий список комбобокс',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=ySSY3KNxAF0',
-    name: 'Check element existence',
-    suggestion: 'visible visibility',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=ySSY3KNxAF0',
-    name: 'Проверить существование элемента',
-    suggestion: 'видимость',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=YF0bgVGWUSI',
-    name: 'Image uploader',
-    suggestion: 'upload file loop iterations',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=YF0bgVGWUSI',
-    name: 'Загрузка изображений',
-    suggestion: 'аплоадер циклы',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=7qciisy0TL0',
-    name: 'Task scheduler',
-    suggestion: 'Task scheduler run launch from command line',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=7qciisy0TL0',
+    url: 'https://youtu.be/XzQmYeOWQyQ',
     name: 'Планировщик заданий',
-    suggestion: 'планировщик заданий запустить командная строка',
+    description: 'Планировщик задач позволяет задавать время выполнения задачи, сохранять несколько скриптов в одном месте, выполнять приложения без BAS и многое другое.', 
+    timestamps: 
+    {
+      "02:30": "Добавляем простое задание.",
+      "07:32": "Редаткирование задачи.",
+      "10:36": "Поиск сообщений в логах.",
+      "11:23": "Задание графика выполнения задачи",
+      "18:33": "Цепочки из проектов.",
+      "24:31": "Интеграция планировщика и скомпилированного приложения.",
+      "28:34": "Запуск нескольких проектов на VPS.",
+    },
     lang: 'ru'
   },
 
+
   {
-    url: 'https://www.youtube.com/watch?v=UTrYzXNcb_0',
-    name: 'Disable iframe loader',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=UTrYzXNcb_0',
-    name: 'Запретить загрузку фреймов',
-    suggestion: '',
+    url: 'https://youtu.be/SOu0uBhNewE',
+    name: 'Создание интерфейса бота.',
+    description: 'Данное видео показывает как можно использовать html и javascript для создания интерфейса бота.', 
+    timestamps: 
+    {
+      "03:57": "Характеристики модульной системы.",
+      "10:56": "Создание модуля.",
+      "25:21": "Перенос модуля в скомпилированный скрипт.",
+      "25:07": "Создание потоков из веб интерфейса.",
+      "36:01": "Обработка ошибок при вызове BAS функций.",
+      "34:52": "Создание модуля с использованием Node.js. FTP клиент.",
+      "45:40": "Запуск действий модуля из Node.js.",
+      "50:11": "Изменение функционала BAS с помощью модульной системы.",
+    },
     lang: 'ru'
   },
 
+
   {
-    url: 'https://www.youtube.com/watch?v=U88xUpj2BiI',
-    name: 'Apply regexp to page source',
-    suggestion: 'regular expression regexpr parse parser',
-    lang: 'en'
+    url: 'https://youtu.be/sLNxrcZMOA0',
+    name: 'Создание модулей.',
+    description: 'Данное видео описывает конструктор модулей, возможность делиться модулями, а также встраивать их в скомпилированные приложения.', 
+    timestamps: 
+    {
+      "03:57": "Характеристики модульной системы.",
+      "10:56": "Создание модуля.",
+      "25:21": "Перенос модуля в скомпилированный скрипт.",
+      "34:52": "Создание модуля с использованием Node.js. FTP клиент.",
+      "45:40": "Запуск действий модуля из Node.js.",
+      "50:12": "Изменение функционала BAS с помощью модульной системы.",
+    },
+    lang: 'ru'
+  },
+  
+
+  {
+    url: 'https://youtu.be/Lho2Ghd7hj8',
+    name: 'Мультипарсинг.',
+    description: 'В этом видео описывается механизм для работы со списком элементов. Вы указываете ключевые элементы, которые должны быть в выделении и те, которых быть не должно, а BAS сам пытается угадать нужный вам селектор.', 
+    timestamps: 
+    {
+      "00:51": "Парсинг выдачи Google.",
+      "05:13": "Выполнение действий для каждого элемента в цикле.",
+      "07:11": "Сложные запросы, парсинг ссылок на reddit.com.",
+      "09:48": "Парсинг изображений из instagram.com. Выделение нескольких элементов с одинаковыми размерами.",
+      "18:11": "Новое действие \"Получить адрес ссылки\".",
+    },
+    lang: 'ru'
   },
   {
-    url: 'https://www.youtube.com/watch?v=U88xUpj2BiI',
-    name: 'Применить регулярное выражение к коду страницы',
-    suggestion: 'регулярка парсить парсер',
+    url: 'https://youtu.be/5XxXsgPj75U',
+    name: 'Multiparsing.',
+    description: 'This short video demonstrates how to parse several elements by using visual tool.', 
+    lang: 'en'
+  },
+
+
+
+
+
+  {
+    url: 'https://youtu.be/zBOYqA09lx4',
+    name: 'Асинхронный вызов функций.',
+    description: 'В этом видео описан механизм динамического содания потоков, а также взаимодействия с ними.', 
+    timestamps: 
+    {
+      "01:34": "Превращаем однопоточный парсер в многопоточный.",
+      "05:21": "Асинхронный запуск функции.",
+      "08:33": "Получение результата асинхронной функции.",
+      "12:21": "Ожидание завершения асинхронной функции.",
+      "16:46": "Условия завершения скрипта целиком.",
+      "19:22": "Запуск множества потоков.",
+      "24:01": "Ожидание списка функций.",
+      "30:47": "Работа в режиме записи.",
+      "33:36": "Передача данных между потоками.",
+      "35:24": "Последовательный запуск нескольких функций в одном потоке.",
+      
+    },
     lang: 'ru'
   },
 
+
+
+
+
   {
-    url: 'https://www.youtube.com/watch?v=nRwkELvb6vE',
-    name: 'Autologin',
-    suggestion: 'cookies cookie save cache',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=nRwkELvb6vE',
-    name: 'Автовход',
-    suggestion: 'куки автологин логин куки кукисы',
+    url: 'https://youtu.be/-YYySZtR--g',
+    name: 'Интерфейс на C#',
+    description: 'В этом видео описан подход, который позволяет использовать BAS для работы с браузером, а остальной функционал приложения реализовывать на других ЯП.', 
+    timestamps: 
+    {
+      "03:47": "BAS проект для работы с браузером.",
+      "05:19": "Загрузка на сервер.",
+      "07:09": "Создание C# приложения.",
+    },
     lang: 'ru'
   },
 
-  {
-    url: 'https://www.youtube.com/watch?v=c-K0Ni8gccs',
-    name: 'Write to custom file',
-    suggestion: 'write file choose',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=c-K0Ni8gccs',
-    name: 'Запись в файл выбранный пользователем',
-    suggestion: 'запись файл выбрать открыть файл',
-    lang: 'ru'
-  },
 
-  {
-    url: 'https://www.youtube.com/watch?v=2vbcN95hynw',
-    name: 'Temp resource',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=2vbcN95hynw',
-    name: 'Временный ресурс',
-    suggestion: '',
-    lang: 'ru'
-  },
 
-  {
-    url: 'https://www.youtube.com/watch?v=cG_j0QoQfYw',
-    name: 'Construct javascript',
-    suggestion: 'create script expression editor',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=cG_j0QoQfYw',
-    name: 'Конструктор яваскрипт',
-    suggestion: 'создать сконструировать яваскрипт скрипт джаваскрипт',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=6lr07wMrukM',
-    name: 'Use ipv6 proxies',
-    suggestion: 'proxy',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=6lr07wMrukM',
-    name: 'ipv6 прокси',
-    suggestion: 'прокси',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=UBgpWayk0SU',
-    name: 'Variable inspector',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=UBgpWayk0SU',
-    name: 'Инспектор переменных',
-    suggestion: '',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=StmlVY1D5Yg',
-    name: 'Ignore errors',
-    suggestion: 'error resume break',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=StmlVY1D5Yg',
-    name: 'Игнорировать ошибки',
-    suggestion: 'прерывать ошибок ошибки',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=5ktCtp6jsI0',
-    name: 'How to bypass id protection',
-    suggestion: 'css xpath match selectors',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=5ktCtp6jsI0',
-    name: 'Как выбрать элемент со сменным ид',
-    suggestion: 'селектор селекторы',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=UkNvH-QNyxc',
-    name: 'Regular expression constructor',
-    suggestion: 'regexp constructor parsing parser',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=UkNvH-QNyxc',
-    name: 'Конструктор регулярных выражений',
-    suggestion: 'регулярки регулярные выражения выражение конструктор',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=oQfhNRhLd4k',
-    name: 'Drag and drop',
-    suggestion: 'dragging move elements',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=oQfhNRhLd4k',
-    name: 'Перетаскивание',
-    suggestion: 'перетаскивать перетаскивание',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=9wFhvarHRVY',
-    name: 'Xpath parser',
-    suggestion: 'parser xpath html xml',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=9wFhvarHRVY',
-    name: 'Xpath парсер',
-    suggestion: 'парсер хтмл',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=Ofqvf_Rg_7M',
-    name: 'Capmonster image recaptcha',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=Ofqvf_Rg_7M',
-    name: 'Решение рекапча с помощью капмонстр',
-    suggestion: 'Капмонстр рекаптча рекапча',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=sPR6CnzEA4k',
-    name: 'Capmonster audio recaptcha',
-    suggestion: '',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=sPR6CnzEA4k',
-    name: 'Решение рекапча с помощью капмонстр аудио',
-    suggestion: 'Капмонстр рекаптча рекапча',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=jDRFKWUofk0',
-    name: 'Solve recaptcha',
-    suggestion: 'google recaptcha recapcha',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=jDRFKWUofk0',
-    name: 'Решение рекапчи',
-    suggestion: 'Гугл рекаптча рекапча',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=-zhs0oqUwHc',
-    name: 'Change timezone',
-    suggestion: 'date time change proxy',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=-zhs0oqUwHc',
-    name: 'Смена часового пояса',
-    suggestion: 'Изменить часовой пояс прокси',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=E7-Xa2Fl4vs',
-    name: 'Clear evercookies',
-    suggestion: 'clear purge restart reset full remove cookies cookie',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=E7-Xa2Fl4vs',
-    name: 'Полная очистка куки',
-    suggestion:
-          'Очистка куки кукисы перезапуск перезагрузка чистить полная чистка',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=E7-Xa2Fl4vs',
-    name: 'Clear evercookies',
-    suggestion: 'clear purge restart reset full remove cookies cookie',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=E7-Xa2Fl4vs',
-    name: 'Полная очистка куки',
-    suggestion:
-          'Очистка куки кукисы перезапуск перезагрузка чистить полная чистка',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=dkuuHl1LL0U',
-    name: 'Phone activation',
-    suggestion: 'receive sms text message phone number',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=dkuuHl1LL0U',
-    name: 'Активация телефона',
-    suggestion: 'получить смс подтвердить номер телефон телефона',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=EOPqKl9o20o',
-    name: 'Working with frames',
-    suggestion: 'selector frame',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=EOPqKl9o20o',
-    name: 'Работа с фреймами',
-    suggestion: 'селектор селекторы фрейм',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=3AXjUH08qxg',
-    name: 'Cheap solve recaptcha',
-    suggestion: 'google recaptcha recapcha',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=3AXjUH08qxg',
-    name: 'Дешевое решение рекапчи',
-    suggestion: 'Гугл рекаптча рекапча',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=ltWy6O9jsTo',
-    name: 'Solve invisible recaptcha',
-    suggestion: 'google recaptcha recapcha',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=ltWy6O9jsTo',
-    name: 'Решение невидимой рекапчи',
-    suggestion: 'Гугл рекаптча рекапча',
-    lang: 'ru'
-  },
-
-  {
-    url: 'https://www.youtube.com/watch?v=Pal3HsU_UTA',
-    name: 'Change thread number',
-    suggestion: 'thread section function',
-    lang: 'en'
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=Pal3HsU_UTA',
-    name: 'Смена количества потоков',
-    suggestion: 'потоков потоки функции',
-    lang: 'ru'
-  }
 ];

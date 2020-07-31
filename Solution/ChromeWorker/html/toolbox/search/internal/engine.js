@@ -9,7 +9,19 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    * @constructor
    */
   constructor ({ documents, fields, limit, ref }) {
-    super(limit);
+    super(limit, (match, score) => {
+      const document = match.document;
+
+      if (document.site === 'youtube') {
+        return score * 0.7;
+      }
+
+      if (document.site === 'wiki') {
+        return score * 0.7;
+      }
+
+      return score;
+    });
 
     this.createIndex({
       documents,

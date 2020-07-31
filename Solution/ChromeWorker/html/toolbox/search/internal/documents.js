@@ -154,7 +154,8 @@ class DocumentsStore {
         icon: `../icons/${type}.png`,
         name: item.name,
         key: item.url,
-        type: 'link'
+        type: 'link',
+        site: type
       }));
   }
 

@@ -31,7 +31,7 @@ SearchLib.TextProcessor = {
    * @returns {String} truncated text string.
    */
   truncate(string, keywords) {
-    let { sentence } = this.getSentence(string, keywords);
+    let { sentence } = this.getSentence(string, keywords.flatMap((k) => this.tokenize(k)));
     let truncStart = false;
     let truncEnd = false;
     let next = 'start';

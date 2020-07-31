@@ -83,14 +83,11 @@ class SearchManager {
       this.hide();
     });
 
-    // $(document).keydown((e) => {
-    //   if (e.keyCode === 27) return;
-    //   if (e.keyCode === 13) return;
-
-    //   if (this.$actions.is(':visible')) {
-    //     this.show();
-    //   }
-    // });
+    $(document).keydown((e) => {
+      if (this.$actions.is(':visible') && e.key.length === 1) {
+        this.show();
+      }
+    });
 
     $(window).resize(() => {
       if (this.$search.is(':hidden')) return;

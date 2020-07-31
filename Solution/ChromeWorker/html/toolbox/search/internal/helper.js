@@ -36,14 +36,10 @@ SearchLib.TextProcessor = {
     let truncEnd = false;
     let next = 'start';
 
-    while (sentence.length > this.truncateLimit) {
-      sentence = this.trim(sentence);
+    while ((sentence = this.trim(sentence)).length >= this.truncateLimit) {
       const tokens = this.tokenize(sentence);
       const head = tokens.shift();
       const last = tokens.pop();
-
-      const skipHead = keywords.includes(head);
-      const skipLast = keywords.includes(last);
 
       const truncate = (defaultNext) => {
         next = defaultNext || next;
@@ -51,24 +47,26 @@ SearchLib.TextProcessor = {
         if (next === 'start') {
           sentence = sentence.slice(head.length, sentence.length);
           if (!truncStart) truncStart = true;
-          next = 'end';
+          return (next = 'end');
         }
 
         if (next === 'end') {
           sentence = sentence.slice(0, sentence.length - last.length - 1);
           if (!truncEnd) truncEnd = true;
-          next = 'start';
+          return (next = 'start');
         }
       };
 
+      const skipHead = keywords.includes(head);
+      const skipLast = keywords.includes(last);
       if (!skipHead && !skipLast) truncate();
       else if (skipLast) truncate('start');
       else if (skipHead) truncate('end');
       else truncate();
     }
 
-    if (truncStart) sentence = '... ' + sentence;
-    if (truncEnd) sentence = sentence + ' ...';
+    if (truncStart) sentence = `... ${sentence}`;
+    if (truncEnd) sentence = `${sentence} ...`;
     return sentence;
   },
 

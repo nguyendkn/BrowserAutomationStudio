@@ -51,19 +51,23 @@ class SearchManager {
         if (!self.isModuleTarget(e)) $(this).css('border-color', '#f2f5f7');
       },
       click(e) {
-        const { group, popup, name, type, key } = $(this).data();
+        const data = $(this).data();
+        const group = data.group;
+        const popup = data.popup;
+        const key = data.key;
+        e.stopPropagation();
 
         if (self.isModuleTarget(e) && group) {
           BrowserAutomationStudio_GotoGroup(group);
           return self.hide();
         }
 
-        if (type === 'link') {
+        if (data.type === 'link') {
           BrowserAutomationStudio_OpenUrl(key);
         } else if (!popup) {
           BrowserAutomationStudio_OpenAction(key);
         } else if (popup) {
-          BrowserAutomationStudio_Notify('search', name);
+          BrowserAutomationStudio_Notify('search', data.name);
         }
       }
     }, '.result-item');

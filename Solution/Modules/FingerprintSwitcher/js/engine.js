@@ -8,14 +8,14 @@ function BrowserAutomationStudio_GetFingerprint()
 	var q = (FINGERPRINT_JSON.tags).split(",").map(function(el){return el.trim()})
 	if(q.length == 0 || q.length == 1 && q[0] == "*")
 	{
-		q = ((FINGERPRINT_JSON.key).length > 0) ? ("?version=3&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "?version=3"
+		q = ((FINGERPRINT_JSON.key).length > 0) ? ("?version=4&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "?version=4"
 		if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
 		{
 			q += "&tags=*"
 		}
 	}else
 	{
-    	q = "?version=3&tags=" + encodeURIComponent(q.join(",")) + (((FINGERPRINT_JSON.key).length > 0) ? ("&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "")
+    	q = "?version=4&tags=" + encodeURIComponent(q.join(",")) + (((FINGERPRINT_JSON.key).length > 0) ? ("&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "")
 	}
 
 	if(FINGERPRINT_JSON.min_browser_version != "*")
@@ -415,7 +415,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 				NetInfoDownlinkMax = true;
 			}
 
-			var KeySettings = "Attribute." + Key
+			var KeySettings = "Attribute.Connection." + Key
 			try
 			{
 				if(typeof(FINGERPRINT_JSON["connection"][Key]) == "boolean")
@@ -441,6 +441,36 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		if(NetInfoDownlinkMax)
 		{
 			FINGEPRINT_SETTINGS["Fingerprints.Feature.NetInfoDownlinkMax"] = "Enable"
+		}
+	}
+
+	if(FINGERPRINT_JSON["orientation"])
+	{
+		var Keys = Object.keys(FINGERPRINT_JSON["orientation"])
+
+		for(var i = 0;i<Keys.length;i++)
+		{
+			var Key = Keys[i]
+
+			var KeySettings = "Attribute.Orientation." + Key
+			try
+			{
+				FINGEPRINT_SETTINGS[KeySettings] = FINGERPRINT_JSON["orientation"][Key].toString()
+			}catch(e)
+			{
+				FINGEPRINT_SETTINGS[KeySettings] = ""
+			}
+		}
+	}
+
+	if(typeof(FINGERPRINT_JSON["doNotTrack"]) == "string")
+	{
+		try
+		{
+			FINGEPRINT_SETTINGS["Attribute.doNotTrack"] = FINGERPRINT_JSON["doNotTrack"]
+		}catch(e)
+		{
+			
 		}
 	}
 

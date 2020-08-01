@@ -13,24 +13,6 @@ JavaScriptExtensions::JavaScriptExtensions()
 
 }
 
-std::string JavaScriptExtensions::GetOutterSizeExtension(int width, int height)
-{
-    std::string rescode;
-    {
-        rescode += std::string("Object.defineProperty(window, 'outerHeight', {"
-        "    configurable: true, get: function() {"
-         "        return window.screen.availHeight;"
-         "    }"
-         "});");
-        rescode += std::string("Object.defineProperty(window, 'outerWidth', {"
-        "    configurable: true, get: function() {"
-         "        return window.screen.availWidth;"
-         "    }"
-         "});");
-    }
-    return rescode;
-}
-
 std::string JavaScriptExtensions::GetReferrerExtension(const std::string& Referrer)
 {
     std::string rescode;
@@ -47,111 +29,6 @@ std::string JavaScriptExtensions::GetReferrerExtension(const std::string& Referr
 std::string JavaScriptExtensions::GetReferrerEmptyExtension()
 {
     return "delete window.document.referrer;";
-}
-
-
-std::string JavaScriptExtensions::GetUserAgentExtension(const std::string& UserAgent)
-{
-    std::string rescode;
-    if(!UserAgent.empty())
-    {
-        rescode += std::string("Object.defineProperty(window.navigator, 'userAgent', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value(UserAgent).serialize() + std::string(";"
-         "    }"
-         "});");
-
-        rescode += std::string("Object.defineProperty(window.navigator, 'appVersion', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value(ReplaceAll( UserAgent, "Mozilla/", "")).serialize() + std::string(";"
-         "    }"
-         "});");
-
-        rescode += std::string("Object.defineProperty(window.navigator, 'vendor', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value("").serialize() + std::string(";"
-         "    }"
-         "});");
-
-        rescode += std::string("Object.defineProperty(window.navigator, 'platform', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value("").serialize() + std::string(";"
-         "    }"
-         "});");
-    }
-    return rescode;
-}
-
-
-std::string JavaScriptExtensions::GetUserAgentEmptyExtension()
-{
-    std::string rescode;
-    rescode += "delete window.navigator.userAgent;";
-    rescode += "delete window.navigator.appVersion;";
-    rescode += "delete window.navigator.vendor;";
-    rescode += "delete window.navigator.platform;";
-    return rescode;
-}
-
-std::string JavaScriptExtensions::GetLanguage(const std::string& AcceptLanguageHeader,const std::string& Pattern)
-{
-    AcceptLanguageCombineResult CombineAcceptLanguage = CombineAcceptLanguageWithPattern(AcceptLanguageHeader,Pattern);
-    std::string Language = CombineAcceptLanguage.NavigatorLanguage;
-    picojson::array Languages;
-    for(const std::string& Lang: CombineAcceptLanguage.NavigatorLanguages)
-    {
-        Languages.push_back(picojson::value(Lang));
-    }
-
-    std::string rescode;
-    if(!CombineAcceptLanguage.NavigatorLanguage.empty())
-    {
-        rescode += std::string("Object.defineProperty(window.navigator, 'language', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value(CombineAcceptLanguage.NavigatorLanguage).serialize() + std::string(";"
-         "    }"
-         "});");
-
-        rescode += std::string("Object.defineProperty(window.navigator, 'languages', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value(Languages).serialize() + std::string(";"
-         "    }"
-         "});");
-
-
-        rescode += std::string("if(typeof(Intl.DateTimeFormatOriginal) == 'undefined')"
-        "{"
-            "Intl.DateTimeFormatOriginal = Intl.DateTimeFormat();"
-            "Intl.ResolvedOptionsOriginal = Intl.DateTimeFormatOriginal.resolvedOptions();"
-            "Intl.ResolvedOptionsOriginal['locale'] = ") + picojson::value(split(split(CombineAcceptLanguage.NavigatorLanguage,';')[0],',')[0]).serialize() + std::string(";"
-            "Object.defineProperty(Intl, 'DateTimeFormat', {"
-                "configurable: true, get: function() {"
-                     "return function(){"
-                        "var dtres = Intl.DateTimeFormatOriginal;"
-                        "dtres.resolvedOptions = function()"
-                        "{"
-                            "return Intl.ResolvedOptionsOriginal;"
-                        "};"
-                        "return dtres;"
-                     "};"
-                 "}"
-             "});"
-        "}else"
-        "{"
-            "Intl.ResolvedOptionsOriginal['locale'] = ") + picojson::value(split(split(Language,';')[0],',')[0]).serialize() + std::string(";"
-        "};");
-
-
-    }
-    return rescode;
-}
-
-std::string JavaScriptExtensions::GetEmptyLanguage()
-{
-    std::string rescode;
-    rescode += "delete window.navigator.language;";
-    rescode += "delete window.navigator.languages;";
-    return rescode;
 }
 
 

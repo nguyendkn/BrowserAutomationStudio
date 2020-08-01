@@ -223,6 +223,7 @@ class SearchManager {
         const additional = $(this).find('.item-additional');
         const module = $(this).find('.item-module');
         const name = $(this).find('.item-name');
+        const data = additional.data();
         $(this).unmark();
 
         keywords.forEach(({ field, matches }) => {
@@ -240,7 +241,9 @@ class SearchManager {
             return name.mark(matches, opts);
           }
 
-          additional.mark(matches, opts);
+          if (data && field === data.type) {
+            additional.mark(matches, opts);
+          }
         });
       }
 
@@ -335,17 +338,17 @@ class SearchManager {
               <div class="item-description"><%= description %></div>
             <% } %>
             <% if ((descInfo.found && descInfo.max) && !descInfo.skip) { %>
-              <div class="item-additional text-<%= descInfo.color %>">
+              <div class="item-additional text-<%= descInfo.color %>" data-type="descriptions">
                 <%= truncate(descriptions[descInfo.index], keywords.find((k) => k.field === 'descriptions').matches) %>
               </div>
             <% } %>
             <% if ((suggInfo.found && suggInfo.max) && !suggInfo.skip) { %>
-              <div class="item-additional text-<%= suggInfo.color %>">
+              <div class="item-additional text-<%= suggInfo.color %>" data-type="suggestions">
                 <%= truncate(suggestions[suggInfo.index], keywords.find((k) => k.field === 'suggestions').matches) %>
               </div>
             <% } %>
             <% if ((varsInfo.found && varsInfo.max) && !varsInfo.skip) { %>
-              <div class="item-additional text-<%= varsInfo.color %>">
+              <div class="item-additional text-<%= varsInfo.color %>" data-type="variables">
                 <%= truncate(variables[varsInfo.index], keywords.find((k) => k.field === 'variables').matches) %>
               </div>
             <% } %>

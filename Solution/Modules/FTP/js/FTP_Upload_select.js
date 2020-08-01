@@ -1,11 +1,11 @@
-var FilePath = GetInputConstructorValue("FilePath", loader);
+var FilePath = GetInputConstructorValueFilename("FilePath", loader);
 if(FilePath["original"].length == 0){
-	Invalid(tr("Remote path to file or folder") + " " + tr("is empty"));
+	Invalid(tr("Remote path") + " " + tr("is empty"));
     return;
 };
-var DestinationPath = GetInputConstructorValueFilename("DestinationPath", loader);
+var DestinationPath = GetInputConstructorValue("DestinationPath", loader);
 if(DestinationPath["original"].length == 0){
-    Invalid(tr("Destination path") + " " + tr("is empty"));
+    Invalid(tr("Remote destination path") + " " + tr("is empty"));
     return;
 };
 try{

@@ -7,17 +7,17 @@ SearchLib.TextProcessor = {
   /**
    * Regex pattern for default tokenization.
    */
-  tokenizeRegex: /[^\wА-Яа-яЁё0-9_.]+/,
+  tokenizeRegex: /[^\wА-Яа-яЁё0-9_.#+]+/,
 
   /**
    * Regex pattern for trimming (right).
    */
-  trimRightRegex: /[^\wА-Яа-яЁё]+$/,
+  trimRightRegex: /[^\wА-Яа-яЁё#+]+$/,
 
   /**
    * Regex pattern for trimming (left).
    */
-  trimLeftRegex: /^[^\wА-Яа-яЁё]+/,
+  trimLeftRegex: /^[^\wА-Яа-яЁё#+]+/,
 
   /**
    * Max chars limit for truncating.

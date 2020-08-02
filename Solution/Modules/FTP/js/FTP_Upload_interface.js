@@ -4,7 +4,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Upload the file/folder to the specified location on the remote server.</div>
-	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure" action first.</div>
+	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
 	<div class="tr tooltip-paragraph-fold">If a non-existent destination path is specified, it will be created.</div>
 	<div class="tr tooltip-paragraph-fold">If uploaded files already exist along the destination path, they will be overwritten.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File or folder path" parameter, instead of the content of the resource will indicate its location.</div>

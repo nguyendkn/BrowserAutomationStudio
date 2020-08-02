@@ -31,7 +31,7 @@ SearchLib.TextProcessor = {
    * @returns {String} truncated text string.
    */
   truncate(string, keywords) {
-    let { sentence } = this.getSentence(string, keywords.flatMap((k) => this.tokenize(k)));
+    let { sentence } = this.getSentence(string, keywords.flatMap((k) => this.tokenize(k.toLowerCase())));
     let truncStart = false;
     let truncEnd = false;
     let next = 'start';
@@ -78,7 +78,10 @@ SearchLib.TextProcessor = {
    */
   getSentence(string, keywords) {
     const sentences = this.sentenceTokenizer.tokenize(string).map((sentence) => {
-      const filtered = keywords.filter((k) => sentence.includes(k));
+      const filtered = keywords.filter((k) => {
+        const lower = sentence.toLowerCase();
+        return lower.includes(k);
+      });
 
       return {
         filtered: filtered,

@@ -9,18 +9,28 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    * @constructor
    */
   constructor ({ documents, fields, limit, ref }) {
-    super(limit, (match, score) => {
-      const document = match.document;
+    const processor = SearchLib.TextProcessor;
 
-      if (document.site === 'youtube') {
-        return score * 0.7;
-      }
+    super({
+      scoring(match, score) {
+        const document = match.document;
 
-      if (document.site === 'wiki') {
-        return score * 0.7;
-      }
+        if (document.site === 'youtube') {
+          return score * 0.7;
+        }
 
-      return score;
+        if (document.site === 'wiki') {
+          return score * 0.7;
+        }
+
+        return score;
+      },
+      tokenizerOptions: {
+        trimRightRegex: processor.trimRightRegex,
+        trimLeftRegex: processor.trimLeftRegex,
+        tokenizeRegex: processor.tokenizeRegex
+      },
+      limit: limit
     });
 
     this.createIndex({

@@ -1,5 +1,4 @@
 _WIKI = [
-  
   {
     url: 'https://wiki.bablosoft.com/doku.php?id=tutorial3',
     name: 'Database.',
@@ -54,7 +53,6 @@ _WIKI = [
     description: 'Как создать интерфейс бота, используя html и javascript.',
     lang: 'ru'
   },
-
   {
     url: 'https://wiki.bablosoft.com/doku.php?id=node.js',
     name: 'Node.js, npm.',
@@ -67,5 +65,4 @@ _WIKI = [
     description: 'В этом руководстве показано множество примеров использования node.js.',
     lang: 'ru'
   },
-  
 ];

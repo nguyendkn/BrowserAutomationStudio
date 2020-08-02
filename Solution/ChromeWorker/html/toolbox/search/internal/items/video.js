@@ -2,8 +2,8 @@ _VIDEO = [
   {
     url: 'https://youtu.be/L6ajX1d-fmk',
     name: 'Введение в BAS',
-    description: 'В видео сделан обзор основных возможностей BAS. Посмотреть его - лучший способ начать знакомство с программой.', 
-    timestamps: 
+    description: 'В видео сделан обзор основных возможностей BAS. Посмотреть его - лучший способ начать знакомство с программой.',
+    timestamps:
     {
       "00:24": "Возможности софта.",
       "06:36": "Описание интерфейса редактора скрипта.",
@@ -27,8 +27,8 @@ _VIDEO = [
   {
     url: 'https://youtu.be/K-jT-GwjTjg',
     name: 'BAS introduction',
-    description: 'This video provides an overview of BAS main features. It is the best way to get started with the program.', 
-    timestamps: 
+    description: 'This video provides an overview of BAS main features. It is the best way to get started with the program.',
+    timestamps:
     {
       "04:50": "Description of the script editor interface.",
       "05:54": "Actions.",
@@ -48,15 +48,11 @@ _VIDEO = [
     },
     lang: 'en'
   },
-
-
-
-
   {
     url: 'https://youtu.be/joDn1VMO9KM',
     name: 'Селекторы. Поиск элементов.',
-    description: 'В этом видео рассказано о поиске элементов на странице. В нем содержится вся необходимая информация для создания парсеров любой сложности.', 
-    timestamps: 
+    description: 'В этом видео рассказано о поиске элементов на странице. В нем содержится вся необходимая информация для создания парсеров любой сложности.',
+    timestamps:
     {
       "01:25": "Введение в селекторы. Входной параметр \"Селектор элемента\".",
       "10:43": "Составление селекторов для элементов со сменным id.",
@@ -72,14 +68,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-
-
-
   {
     url: 'https://youtu.be/kW9ag7-3nDk',
     name: 'Ресурсы. Работа с файлами.',
-    description: 'В видео рассмотрены все тонкости в работе с данными через систему ресурсов: чтение и запись в файлы, в том числе в режиме многопоточности, пользовательский интерфейс, распределение прокси между потоками.', 
-    timestamps: 
+    description: 'В видео рассмотрены все тонкости в работе с данными через систему ресурсов: чтение и запись в файлы, в том числе в режиме многопоточности, пользовательский интерфейс, распределение прокси между потоками.',
+    timestamps:
     {
       "02:17": "Описание системы ресурсов.",
       "06:56": "Ресурс типа \"строка\".",
@@ -106,14 +99,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-
-
-
   {
     url: 'https://youtu.be/jwp-2JM0f6E',
     name: 'Переменные.',
-    description: 'В этом видео рассказывается о переменных, о формате выражений, о том, как использовать javascript код в BAS.', 
-    timestamps: 
+    description: 'В этом видео рассказывается о переменных, о формате выражений, о том, как использовать javascript код в BAS.',
+    timestamps:
     {
       "00:42": "Что такое переменные.",
       "04:48": "Переменные как результат работы действий, инспектор переменных.",
@@ -137,14 +127,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-  
-
-
   {
     url: 'https://youtu.be/uLfi_c8DwwI',
     name: 'Конструктор javascript.',
-    description: 'Видео о том, как создавать сложные javascript выражения с помощью визуального программирования. Показан основной принцип и множество примеров.', 
-    timestamps: 
+    description: 'Видео о том, как создавать сложные javascript выражения с помощью визуального программирования. Показан основной принцип и множество примеров.',
+    timestamps:
     {
       "01:27": "Описание конструктора.",
       "03:45": "Простейшие примеры использования конструктора.",
@@ -158,14 +145,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-  
-
-
   {
     url: 'https://youtu.be/59KSijwvRTw',
     name: 'Условия. Действие If.',
-    description: 'Теория об условиях и практические примеры', 
-    timestamps: 
+    description: 'Теория об условиях и практические примеры',
+    timestamps:
     {
       "01:21": "Условия, теория.",
       "06:30": "Пример. Поиск картинки на сайте.",
@@ -182,14 +166,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-  
-
-
   {
     url: 'https://youtu.be/BhmOwzIW1lU',
     name: 'Циклы.',
-    description: 'Данное видео расскацывает о циклах и повторении действий', 
-    timestamps: 
+    description: 'Данное видео расскацывает о циклах и повторении действий',
+    timestamps:
     {
       "02:00": "Когда возникает необходимость в использовании циклов.",
       "03:30": "Цикл for.",
@@ -204,13 +185,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-
-
   {
     url: 'https://youtu.be/Vj2Q50FIBi4',
     name: 'Многопоточность.',
-    description: 'Данное видео содержит информацию о многопоточности, глобальных переменных, обменом данных между потоками.', 
-    timestamps: 
+    description: 'Данное видео содержит информацию о многопоточности, глобальных переменных, обменом данных между потоками.',
+    timestamps:
     {
       "04:50": "Запуск в однопоточном режиме.",
       "08:17": "Однопоточный режим несколько выполнений.",
@@ -229,20 +208,17 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-  
-
   {
     url: 'https://youtu.be/MsKkzZVnfBA',
     name: 'Профили.',
-    description: 'Работа с профилями, автовход на сайт.', 
+    description: 'Работа с профилями, автовход на сайт.',
     lang: 'ru'
   },
-
   {
     url: 'https://youtu.be/YojWxGcGGEg',
     name: 'Node.js, npm.',
-    description: 'В этом видео показано множество примеров использования node.js.', 
-    timestamps: 
+    description: 'В этом видео показано множество примеров использования node.js.',
+    timestamps:
     {
       "05:33": "Криптография, вычисление хешей.",
       "11:06": "Загрузка данных из таблицы excel.",
@@ -252,26 +228,22 @@ _VIDEO = [
       "44:28": "Скачивание видео с ютуб.",
       "47:55": "Работа с браузером через node.js.",
       "51:02": "Менеджер проекта.",
-      
+
     },
     lang: 'ru'
   },
-
-
   {
     url: 'https://youtu.be/x8_0Bk3_4qY',
     name: 'FingerprintDetector',
-    description: 'FingerprintDetector позволяет получать отчет о всех методах использованных на сайте для получения отпечатка браузера.', 
+    description: 'FingerprintDetector позволяет получать отчет о всех методах использованных на сайте для получения отпечатка браузера.',
     suggestion: 'антибот защита, аутентичность браузера',
     lang: 'ru'
   },
-  
-
   {
     url: 'https://youtu.be/M0tlLgzwVhI',
     name: 'Ручное управление браузером.',
-    description: 'Описание работы с браузером в ручном режиме.', 
-    timestamps: 
+    description: 'Описание работы с браузером в ручном режиме.',
+    timestamps:
     {
       "04:55": "Как начать использовать ручное управление",
       "07:00": "Возможности и ограничения ручного ввода",
@@ -286,36 +258,32 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-  
-
   {
     url: 'https://youtu.be/ZGOdwn8DN80',
     name: 'FingerprintSwitcher',
-    description: 'Смена отпечатка браузера с помощью FingerprintSwitcher.', 
+    description: 'Смена отпечатка браузера с помощью FingerprintSwitcher.',
     suggestion: 'антибот защита, аутентичность браузера, отпечаток canvas, отпечаток webgl',
     lang: 'ru'
   },
   {
     url: 'https://youtu.be/tHs1DUQqQzA',
     name: 'FingerprintSwitcher',
-    description: 'Changing browser fingerprint with FingerprintSwitcher.', 
+    description: 'Changing browser fingerprint with FingerprintSwitcher.',
     suggestion: 'antibot protection, browser authenticity, canvas fingerprint, webgl fingerprint',
     lang: 'en'
   },
-
   {
     url: 'https://youtu.be/ELAWwE69KGA',
     name: 'FingerprintDetector',
-    description: 'This short video shows how to detect which fingerprint techniques site uses.', 
+    description: 'This short video shows how to detect which fingerprint techniques site uses.',
     suggestion: 'antibot protection, browser authenticity, canvas fingerprint, webgl fingerprint',
     lang: 'en'
   },
-
   {
     url: 'https://youtu.be/XzQmYeOWQyQ',
     name: 'Планировщик заданий',
-    description: 'Планировщик задач позволяет задавать время выполнения задачи, сохранять несколько скриптов в одном месте, выполнять приложения без BAS и многое другое.', 
-    timestamps: 
+    description: 'Планировщик задач позволяет задавать время выполнения задачи, сохранять несколько скриптов в одном месте, выполнять приложения без BAS и многое другое.',
+    timestamps:
     {
       "02:30": "Добавляем простое задание.",
       "07:32": "Редаткирование задачи.",
@@ -327,13 +295,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-
-
   {
     url: 'https://youtu.be/SOu0uBhNewE',
     name: 'Создание интерфейса бота.',
-    description: 'Данное видео показывает как можно использовать html и javascript для создания интерфейса бота.', 
-    timestamps: 
+    description: 'Данное видео показывает как можно использовать html и javascript для создания интерфейса бота.',
+    timestamps:
     {
       "03:57": "Характеристики модульной системы.",
       "10:56": "Создание модуля.",
@@ -346,13 +312,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-
-
   {
     url: 'https://youtu.be/sLNxrcZMOA0',
     name: 'Создание модулей.',
-    description: 'Данное видео описывает конструктор модулей, возможность делиться модулями, а также встраивать их в скомпилированные приложения.', 
-    timestamps: 
+    description: 'Данное видео описывает конструктор модулей, возможность делиться модулями, а также встраивать их в скомпилированные приложения.',
+    timestamps:
     {
       "03:57": "Характеристики модульной системы.",
       "10:56": "Создание модуля.",
@@ -363,13 +327,11 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-  
-
   {
     url: 'https://youtu.be/Lho2Ghd7hj8',
     name: 'Мультипарсинг.',
-    description: 'В этом видео описывается механизм для работы со списком элементов. Вы указываете ключевые элементы, которые должны быть в выделении и те, которых быть не должно, а BAS сам пытается угадать нужный вам селектор.', 
-    timestamps: 
+    description: 'В этом видео описывается механизм для работы со списком элементов. Вы указываете ключевые элементы, которые должны быть в выделении и те, которых быть не должно, а BAS сам пытается угадать нужный вам селектор.',
+    timestamps:
     {
       "00:51": "Парсинг выдачи Google.",
       "05:13": "Выполнение действий для каждого элемента в цикле.",
@@ -382,19 +344,14 @@ _VIDEO = [
   {
     url: 'https://youtu.be/5XxXsgPj75U',
     name: 'Multiparsing.',
-    description: 'This short video demonstrates how to parse several elements by using visual tool.', 
+    description: 'This short video demonstrates how to parse several elements by using visual tool.',
     lang: 'en'
   },
-
-
-
-
-
   {
     url: 'https://youtu.be/zBOYqA09lx4',
     name: 'Асинхронный вызов функций.',
-    description: 'В этом видео описан механизм динамического содания потоков, а также взаимодействия с ними.', 
-    timestamps: 
+    description: 'В этом видео описан механизм динамического содания потоков, а также взаимодействия с ними.',
+    timestamps:
     {
       "01:34": "Превращаем однопоточный парсер в многопоточный.",
       "05:21": "Асинхронный запуск функции.",
@@ -406,20 +363,15 @@ _VIDEO = [
       "30:47": "Работа в режиме записи.",
       "33:36": "Передача данных между потоками.",
       "35:24": "Последовательный запуск нескольких функций в одном потоке.",
-      
+
     },
     lang: 'ru'
   },
-
-
-
-
-
   {
     url: 'https://youtu.be/-YYySZtR--g',
     name: 'Интерфейс на C#',
-    description: 'В этом видео описан подход, который позволяет использовать BAS для работы с браузером, а остальной функционал приложения реализовывать на других ЯП.', 
-    timestamps: 
+    description: 'В этом видео описан подход, который позволяет использовать BAS для работы с браузером, а остальной функционал приложения реализовывать на других ЯП.',
+    timestamps:
     {
       "03:47": "BAS проект для работы с браузером.",
       "05:19": "Загрузка на сервер.",
@@ -427,7 +379,4 @@ _VIDEO = [
     },
     lang: 'ru'
   },
-
-
-
 ];

@@ -1129,7 +1129,18 @@ namespace BrowserAutomationStudioFramework
             switch(ResultStatus)
             {
                 case IWorker::FailStatus: ResourceHandlers->Fail(); break;
-                case IWorker::DieStatus: ResourceHandlers->Die(); break;
+                case IWorker::DieStatus:
+                {
+                    if(SubstageParentId)
+                    {
+                        //If this thread is created as async function call, or from web interface, don't delete resource
+                        ResourceHandlers->Success();
+                    }else
+                    {
+                        ResourceHandlers->Die();
+                    }
+                }break;
+
                 case IWorker::SuccessStatus: ResourceHandlers->Success(); break;
             }
         }

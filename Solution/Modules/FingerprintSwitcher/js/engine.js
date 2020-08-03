@@ -1,3 +1,27 @@
+function BrowserAutomationStudio_PerformanceFingerprint()
+{
+	FINGERPRINT_JSON = _arguments()
+	if(!FINGERPRINT_JSON.time_deformation)
+	{
+		FINGERPRINT_JSON.time_deformation = Math.random() * (FINGERPRINT_JSON.time_deformation_to - FINGERPRINT_JSON.time_deformation_from) + FINGERPRINT_JSON.time_deformation_from
+	}
+
+	delete FINGERPRINT_JSON.time_deformation_to
+	delete FINGERPRINT_JSON.time_deformation_from
+
+	if(_get_profile().length > 0)
+	{
+	    native("filesystem", "writefile", JSON.stringify({path: _get_profile() + "/performance.json",value: JSON.stringify(FINGERPRINT_JSON),base64:false,append:false}))
+	}
+
+	_settings(
+		{
+			"Fingerprints.Performance.Precision": (FINGERPRINT_JSON.disable_performance_precision ? "Enable": "Disable"),
+			"Fingerprints.Performance.TimeDeformation": (FINGERPRINT_JSON.time_deformation).toString(),
+			"Fingerprints.Performance.MaxMeasurmentTime": (FINGERPRINT_JSON.max_measurement_time).toString()
+		})!
+}
+
 function BrowserAutomationStudio_GetFingerprint()
 {
 	if(_arguments().length != 1)

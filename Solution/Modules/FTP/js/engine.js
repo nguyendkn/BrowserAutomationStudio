@@ -29,7 +29,7 @@ function FTP_ReadFile(){
 function FTP_WriteFile(){
 	var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var value = _function_argument("Value");
-	var base64 = _function_argument("base64"));
+	var base64 = _function_argument("base64");
 	var ending_symbol = _function_argument("EndingSymbol");
 	var append = _function_argument("Append");
 	var timeout = _function_argument("Timeout");

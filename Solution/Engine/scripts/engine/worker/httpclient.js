@@ -296,6 +296,7 @@ function http_client_xpath_parse()
 
 function http_client_xpath_xml(query, do_not_fail)
 {
+    _ensure_http_client();
     http_client_xpath_parse()
     if(!do_not_fail && !http_client_xpath_exist(query))
         fail("Can't resolve query " + query);
@@ -306,6 +307,7 @@ function http_client_xpath_xml(query, do_not_fail)
 
 function http_client_xpath_text(query, do_not_fail)
 {
+    _ensure_http_client();
     http_client_xpath_parse()
     if(!do_not_fail && !http_client_xpath_exist(query))
         fail("Can't resolve query " + query);
@@ -316,6 +318,7 @@ function http_client_xpath_text(query, do_not_fail)
 
 function http_client_xpath_xml_list(query, do_not_fail)
 {
+    _ensure_http_client();
     http_client_xpath_parse()
     if(!do_not_fail && !http_client_xpath_exist(query))
         fail("Can't resolve query " + query);
@@ -326,6 +329,7 @@ function http_client_xpath_xml_list(query, do_not_fail)
 
 function http_client_xpath_text_list(query, do_not_fail)
 {
+    _ensure_http_client();
     http_client_xpath_parse()
     if(!do_not_fail && !http_client_xpath_exist(query))
         fail("Can't resolve query " + query);
@@ -335,12 +339,14 @@ function http_client_xpath_text_list(query, do_not_fail)
 
 function http_client_xpath_count(query)
 {
+    _ensure_http_client();
     http_client_xpath_parse()
     return html_parser_xpath_count(query)
 }
 
 function http_client_xpath_exist(query)
 {
+    _ensure_http_client();
     http_client_xpath_parse()
     return html_parser_xpath_exist(query)
 }

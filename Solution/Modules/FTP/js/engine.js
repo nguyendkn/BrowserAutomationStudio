@@ -8,8 +8,45 @@ function FTP_Config(protocol, host, port, username, password){
     _FTP_CONFIG["username"] = username;
     _FTP_CONFIG["password"] = password;
 };
+function FTP_ReadFile(){
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
+	var base64 = _function_argument("base64");
+	var timeout = _function_argument("Timeout");
+	
+	FTP_CheckProtocol();
+	VAR_FTP_NODE_PARAMETERS = [file_path, base64, _FTP_CONFIG];
+	
+	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
+		_embedded("ReadFileSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+	
+	_if(_FTP_PROTOCOL=="FTP",function(){
+		_embedded("ReadFileFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+	
+	_function_return(VAR_FTP_NODE_PARAMETERS);
+};
+function FTP_WriteFile(){
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
+	var value = _function_argument("Value");
+	var base64 = _function_argument("base64"));
+	var ending_symbol = _function_argument("EndingSymbol");
+	var append = _function_argument("Append");
+	var timeout = _function_argument("Timeout");
+	
+	FTP_CheckProtocol();
+	VAR_FTP_NODE_PARAMETERS = [file_path, (value + (ending_symbol ? "\r\n" : "")), base64, append, _FTP_CONFIG];
+	
+	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
+		_embedded("WriteFileSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+	
+	_if(_FTP_PROTOCOL=="FTP",function(){
+		_embedded("WriteFileFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+};
 function FTP_CheckExist(){
-	var file_path = _function_argument("FilePath");
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
@@ -26,7 +63,7 @@ function FTP_CheckExist(){
 	_function_return(VAR_FTP_NODE_PARAMETERS);
 };
 function FTP_GetInfo() {
-    var file_path = _function_argument("FilePath");
+    var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
@@ -42,8 +79,24 @@ function FTP_GetInfo() {
 
     _function_return(VAR_FTP_NODE_PARAMETERS);
 };
+function FTP_Create(){
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
+	var file_type = _function_argument("isFile") ? "file" : "directory";
+	var timeout = _function_argument("Timeout");
+	
+	FTP_CheckProtocol();
+	VAR_FTP_NODE_PARAMETERS = [file_path, file_type, _FTP_CONFIG];
+	
+	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
+		_embedded("CreateSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+	
+	_if(_FTP_PROTOCOL=="FTP",function(){
+		_embedded("CreateFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+};
 function FTP_Delete(){
-	var file_path = _function_argument("FilePath");
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
@@ -58,8 +111,8 @@ function FTP_Delete(){
 	})!
 };
 function FTP_Move(){
-	var file_path = _function_argument("FilePath");
-	var new_file_path = _function_argument("NewFilePath");
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
+	var new_file_path = FTP_FormatPath(_function_argument("NewFilePath"));
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
@@ -73,20 +126,41 @@ function FTP_Move(){
 		_embedded("MoveFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
+function FTP_Search(){
+	var folder_path = FTP_FormatPath(_function_argument("FolderPath"));
+	var mask = _function_argument("Mask");
+	var recursive = _function_argument("Recursive");
+	var search_files = _function_argument("SearchFiles");
+	var search_folders = _function_argument("SearchFolders");
+	var timeout = _function_argument("Timeout");
+	
+	FTP_CheckProtocol();
+	VAR_FTP_NODE_PARAMETERS = [folder_path, mask, recursive, search_files, search_folders, _FTP_CONFIG];
+	
+	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
+		_embedded("SearchSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+	
+	_if(_FTP_PROTOCOL=="FTP",function(){
+		_embedded("SearchFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	})!
+	
+	_function_return(VAR_FTP_NODE_PARAMETERS);
+};
 function FTP_Download(){
 	var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var destination_path = FTP_FormatPath(_function_argument("DestinationPath"));
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-    VAR_FTP_DOWNLOAD_PARAMETERS = [file_path, destination_path, _FTP_CONFIG];
+    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, _FTP_CONFIG];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("DownloadSFTP", "Node", "8.6.0", "FTP_DOWNLOAD_PARAMETERS", timeout)!
+        _embedded("DownloadSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("DownloadFTP", "Node", "8.6.0", "FTP_DOWNLOAD_PARAMETERS", timeout)!
+        _embedded("DownloadFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 };
 function FTP_Upload(){
@@ -95,15 +169,34 @@ function FTP_Upload(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-    VAR_FTP_UPLOAD_PARAMETERS = [file_path, destination_path, _FTP_CONFIG];
+    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, _FTP_CONFIG];
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("UploadSFTP", "Node", "8.6.0", "FTP_UPLOAD_PARAMETERS", timeout)!
+        _embedded("UploadSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("UploadFTP", "Node", "8.6.0", "FTP_UPLOAD_PARAMETERS", timeout)!
+        _embedded("UploadFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
+};
+function FTP_FileToList(){
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
+	var timeout = _function_argument("Timeout");
+	
+	_call_function(FTP_ReadFile,{"FilePath":file_path,"base64":false,"Timeout":timeout})!
+	VAR_FTP_NODE_PARAMETERS = _result_function();
+	
+	_function_return(VAR_FTP_NODE_PARAMETERS.split(/\r?\n/));
+};
+function FTP_ListToFile(){
+	var file_path = FTP_FormatPath(_function_argument("FilePath"));
+    var value = _function_argument("Value").join("\r\n");
+    var ending_symbol = _function_argument("EndingSymbol");
+    var append = _function_argument("Append");
+	var timeout = _function_argument("Timeout");
+	
+	_call_function(FTP_WriteFile,{"FilePath":file_path,"Value":value,"EndingSymbol":ending_symbol,"base64":false,"Append":append,"Timeout":timeout})!
+	_result_function();
 };
 function FTP_CheckProtocol(){
 	if(_FTP_PROTOCOL!="SFTP" && _FTP_PROTOCOL!="SSH" && _FTP_PROTOCOL!="FTP"){

@@ -43,7 +43,15 @@ void CommandParser::Parse(const std::string& Xml)
 
         std::vector<char> data(CurrentXml.begin(), CurrentXml.end());
         data.push_back(0);
-        doc.parse<0>(data.data());
+        try
+        {
+            doc.parse<0>(data.data());
+        }catch(...)
+        {
+            //Parsing error, this should not happen.
+            //In case of error, skip this entry, action will end with timeout.
+            continue;
+        }
 
         rapidxml::xml_node<> *MessagesNode = doc.first_node("Messages");
         if(!MessagesNode)

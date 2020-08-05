@@ -1761,14 +1761,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   <script type="text/template" id="closebrowser">
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Close browser which was created with 'Open Browser' action. This action is not mandatory for use to work with browser.</div>
-      <div class="tooltip-paragraph-fold"><span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
   ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimemanual.png');return false">screen</a> ).
-
       </div>
-      <div class="tooltip-paragraph-fold"><span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
         ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimefail.png');return false">screen</a> ).
       </div>
-
       <div class="tr tooltip-paragraph-last-fold">It is very important to understand, that by default browser is created automatically and you don't need to call 'Open Browser' action, unless to want to control browser lifetime.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
@@ -1777,14 +1777,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   <script type="text/template" id="openbrowser">
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Create a browser if it has not already been created. This action is not mandatory for use to work with browser.</div>
-      <div class="tooltip-paragraph-fold"><span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
   ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimemanual.png');return false">screen</a> ).
-
       </div>
-      <div class="tooltip-paragraph-fold"><span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
         ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimefail.png');return false">screen</a> ).
       </div>
-
       <div class="tr tooltip-paragraph-last-fold">It is very important to understand, that by default browser is created automatically and you don't need to call 'Open Browser' action, unless to want to control browser lifetime.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

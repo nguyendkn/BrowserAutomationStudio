@@ -56,9 +56,20 @@ class DocumentsStore {
   getActionDescriptions(source) {
     const getTextContent = (el) => {
       const data = $(el).html();
-      const html = $('<div />');
-      html.append(tr(data));
-      return html.text();
+      const node = $('<div />');
+      node.append(data);
+
+      const contents = node.contents();
+
+      if (contents.length > 1) {
+        contents.each(function () {
+          $(this).text((index, text) => tr(text));
+        });
+
+        return node.text().trim();
+      }
+
+      return _.unescape(tr(node.html()));
     };
 
     const array = _.map(

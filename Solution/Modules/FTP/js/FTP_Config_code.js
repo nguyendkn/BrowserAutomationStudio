@@ -1,1 +1,1 @@
-FTP_Config(<%= Protocol %>,<%= Host %>,<%= Port %>,<%= Username %>,<%= Password %>)
+FTP_Config(<%= Protocol %>,<%= Host %>,<%= Port %>,<%= Username %>,<%= Password %>,<%= Timeout %>)

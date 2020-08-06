@@ -23,13 +23,19 @@ if(Password["original"].length == 0){
 	Invalid(tr("Password") + " " + tr("is empty"));
     return;
 };
+var Timeout = GetInputConstructorValue("Timeout", loader);
+if(Timeout["original"].length == 0){
+	Invalid(tr("Timeout") + " " + tr("is empty"));
+    return;
+};
 try{
     var code = loader.GetAdditionalData() + _.template($("#FTP_Config_code").html())({
         "Protocol": Protocol["updated"],
         "Host": Host["updated"],
         "Port": Port["updated"],
         "Username": Username["updated"],
-        "Password": Password["updated"]
+        "Password": Password["updated"],
+        "Timeout": Timeout["updated"]
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

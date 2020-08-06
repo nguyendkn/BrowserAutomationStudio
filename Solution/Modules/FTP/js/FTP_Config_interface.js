@@ -4,6 +4,7 @@
 <%= _.template($('#input_constructor').html())({id:"Port", description:tr("Port"), default_selector: "string", disable_int:true, value_string: "22", help: {description: tr("Port of the remote server."),examples:[{code:"21",description:tr("Default port for FTP protocol")},{code:"22",description:tr("Default port for SFTP and SSH protocols")}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"Username", description:tr("Username"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Username of the remote server.")} }) %>
 <%= _.template($('#input_constructor').html())({id:"Password", description:tr("Password"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Password of the remote server.")} }) %>
+<%= _.template($('#input_constructor').html())({id:"Timeout", description:tr("Timeout (seconds)"), default_selector: "int", disable_string:true, value_number: 300, min_number:0, max_number:999999, help: {description: tr("The time after which the connection will be closed if it is not in use.")} }) %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Configure access to a remote server for working with files.</div>

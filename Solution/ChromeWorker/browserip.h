@@ -17,7 +17,7 @@ class BrowserIp : public CefURLRequestClient
 public:
     BrowserIp();
 
-    void Start(int IpReuestId);
+    void Start(int IpReuestId, bool IsHttps);
     void Stop();
     
     virtual void OnRequestComplete(CefRefPtr<CefURLRequest> request) OVERRIDE;

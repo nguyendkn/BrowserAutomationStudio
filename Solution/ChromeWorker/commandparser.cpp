@@ -196,6 +196,14 @@ void CommandParser::Parse(const std::string& Xml)
                 f();
         }
 
+        CommandNode = MessagesNode->first_node("BrowserIpHttps");
+        if(CommandNode)
+        {
+            WORKER_LOG("EventBrowserIpHttps");
+            for(auto f:EventBrowserIpHttps)
+                f();
+        }
+
         CommandNode = MessagesNode->first_node("Reset");
         if(CommandNode)
         {

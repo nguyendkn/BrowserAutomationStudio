@@ -1965,6 +1965,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventVisible.push_back(std::bind(&MainApp::VisibleCallback,app.get(),_1));
     Parser->EventFlush.push_back(std::bind(&MainApp::FlushCallback,app.get()));
     Parser->EventBrowserIp.push_back(std::bind(&MainApp::BrowserIpCallback,app.get()));
+    Parser->EventBrowserIpHttps.push_back(std::bind(&MainApp::BrowserIpHttpsCallback,app.get()));
     Parser->EventSetProxy.push_back(std::bind(&MainApp::SetProxyCallback,app.get(),_1,_2,_3,_4,_5,_6));
     Parser->EventAddHeader.push_back(std::bind(&MainApp::AddHeaderCallback,app.get(),_1,_2,_3));
     Parser->EventSetHeaderList.push_back(std::bind(&MainApp::SetHeaderListCallback,app.get(),_1));

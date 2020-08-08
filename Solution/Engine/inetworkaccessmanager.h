@@ -45,6 +45,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetProxy(const QString& server, int Port, bool IsHttp, const QString& name, const QString& password,const QString& target, const QString& callback) = 0;
 
         virtual void BrowserIp(const QString& callback) = 0;
+        virtual void BrowserIpHttps(const QString& callback) = 0;
         virtual void FindCacheByMaskBase64(const QString& Mask, const QString& callback) = 0;
         virtual void FindStatusByMask(const QString& Mask, const QString& callback) = 0;
         virtual void FindUrlByMask(const QString& Mask, const QString& callback) = 0;

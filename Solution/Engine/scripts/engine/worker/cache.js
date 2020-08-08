@@ -171,9 +171,20 @@ function set_proxy_extended()
         browser_ip(function(){
             if(typeof(_result()) != "string" || _result().length == 0)
             {
-                fail("Failed to get proxy ip")
+                browser_ip_https(function(){
+                    if(typeof(_result()) != "string" || _result().length == 0)
+                    {
+                        fail("Failed to get proxy ip")
+                    }else
+                    {
+                        _PROXY["ip"] = _result()
+                    }
+                })
+
+            }else
+            {
+                _PROXY["ip"] = _result()
             }
-            _PROXY["ip"] = _result()
         })
     }, function(){
         _PROXY["ip"] = _PROXY["server"]
@@ -253,12 +264,21 @@ function set_proxy_extended()
 }
 
 
-function browser_ip(match, callback)
+function browser_ip(callback)
 {
     _ARG = arguments
     _set_result("")
     _create_browser_if_needed(function(){
         _get_network_access_manager().BrowserIp(_get_function_body(_ARG[0]))
+    })
+}
+
+function browser_ip_https(callback)
+{
+    _ARG = arguments
+    _set_result("")
+    _create_browser_if_needed(function(){
+        _get_network_access_manager().BrowserIpHttps(_get_function_body(_ARG[0]))
     })
 }
 

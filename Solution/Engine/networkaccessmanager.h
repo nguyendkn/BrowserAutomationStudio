@@ -64,6 +64,7 @@ namespace BrowserAutomationStudioFramework
         QByteArray FindCacheByMask(const QString& Mask);
         virtual void FindCacheByMaskBase64(const QString& Mask, const QString& callback);
         virtual void BrowserIp(const QString& callback);
+        virtual void BrowserIpHttps(const QString& callback);
         virtual void FindStatusByMask(const QString& Mask, const QString& callback);
         virtual void FindUrlByMask(const QString& Mask, const QString& callback);
         virtual void FindCacheByMaskString(const QString& Mask, const QString& callback);

@@ -89,6 +89,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     //IpRequest
     CefRefPtr<BrowserIp> IpClient;
     int IpReuestId;
+    bool IpRequestIsHttps;
 
     //MouseMove
     bool IsMouseMoveSimulation;
@@ -272,6 +273,7 @@ public:
     void ProcessContextMenu(int MenuId);
     void ProcessFind(LPFINDREPLACE lpfr);
     void BrowserIpCallback();
+    void BrowserIpHttpsCallback();
     void SendBrowserIp(const std::string& Ip, int IpReuestId);
     void SetUserAgentCallback(const std::string& value);
     void PrepareFunctionCallback(const std::string& value);

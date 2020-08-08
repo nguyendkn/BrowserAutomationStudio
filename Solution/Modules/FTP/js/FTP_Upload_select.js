@@ -9,7 +9,7 @@ if(DestinationPath["original"].length == 0){
     return;
 };
 try{
-    var code = loader.GetAdditionalData() + _.template($("#FTP_Download_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#FTP_Upload_code").html())({
         "FilePath": FilePath["updated"],
         "DestinationPath": DestinationPath["updated"]
     });

@@ -12,7 +12,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
     const processor = SearchLib.TextProcessor;
 
     super({
-      scoring(match, score) {
+      scoring(score, match) {
         const document = match.document;
 
         if (document.site === 'youtube') {
@@ -30,6 +30,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
         trimLeftRegex: processor.trimLeftRegex,
         tokenizeRegex: processor.tokenizeRegex
       },
+      distance: 2,
       limit: limit
     });
 

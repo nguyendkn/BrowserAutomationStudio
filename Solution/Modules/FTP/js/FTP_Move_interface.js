@@ -5,6 +5,8 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Move the file/folder to another location on the remote server.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action works with both files and folders.</div>
+	<div class="tr tooltip-paragraph-fold">Move a folder can take a long time, so it's best to increase the action timeout by clicking on the hourglass next to the cancel button.</div>
 	<div class="tr tooltip-paragraph-fold">This action can be used to rename a file/folder on a remote server.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

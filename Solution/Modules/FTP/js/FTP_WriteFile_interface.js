@@ -14,6 +14,12 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Write data to a file on a remote server.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
+	<div class="tr tooltip-paragraph-fold">If a non-existent file path is specified, it will be created.</div>
+	<div class="tr tooltip-paragraph-fold">If you want the data to be written on more than one line when adding new data to the file, use "Add line ending symbol" option.</div>
+	<div class="tr tooltip-paragraph-fold">If the "Append file" option is enabled, the new data will be added to the data already in the file, or will be written to a new file if the file does not already exist.</div>
+	<div class="tr tooltip-paragraph-fold">If the "Append file" option is disabled, the new data will overwrite the data already in the file, or will be written to a new file if the file does not already exist.</div>
+	<div class="tr tooltip-paragraph-fold">If the data is in base64 format, use the "Data is in base64 format" parameter for correct writing to the file.</div>
+	<div class="tr tooltip-paragraph-fold">To write the list to a file correctly, use the "Write list to file" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

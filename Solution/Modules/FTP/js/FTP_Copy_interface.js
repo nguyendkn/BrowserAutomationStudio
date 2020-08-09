@@ -4,7 +4,10 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Copy file/folder to another location on the remote server.</div>
+	<div class="tr tooltip-paragraph-fold">The file/folder will be copied to a new location on the remote server, and the original file/folder will remain unchanged.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action works with both files and folders.</div>
+	<div class="tr tooltip-paragraph-fold">Copy a folder can take a long time, so it is better to increase the action timeout by clicking on the hourglass next to the cancel button.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

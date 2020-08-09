@@ -4,10 +4,15 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Download file/folder from a remote server and save to the specified location.</div>
+	<div class="tr tooltip-paragraph-fold">The file/folder will be copied to your computer, and the original file/folder on the remote server will remain unchanged.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action works with both files and folders.</div>
+	<div class="tr tooltip-paragraph-fold">Downloading a folder can take a long time, so it is better to increase the action timeout by clicking on the hourglass next to the cancel button.</div>
 	<div class="tr tooltip-paragraph-fold">If a non-existent destination path is specified, it will be created.</div>
 	<div class="tr tooltip-paragraph-fold">If downloaded files already exist along the destination path, they will be overwritten.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "Destination path" parameter, instead of the content of the resource will indicate its location.</div>
+	<div class="tr tooltip-paragraph-fold">If you need to get a list from a file use the "Read file to list" action.</div>
+	<div class="tr tooltip-paragraph-fold">If you just need to save the contents of a file to a variable, use the "Read file" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

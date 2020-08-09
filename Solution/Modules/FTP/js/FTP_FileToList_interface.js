@@ -6,6 +6,8 @@
 	<div class="tr tooltip-paragraph-first-fold">Read the file on the remote server, convert its contents to a list, and store this list into a variable.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting list can be processed using actions from the "List" module.</div>
+	<div class="tr tooltip-paragraph-fold">If you just need to save the contents of a file to a variable, use the "Read file" action.</div>
+	<div class="tr tooltip-paragraph-fold">If you need to save the file directly to computer, use the "Download file/folder" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

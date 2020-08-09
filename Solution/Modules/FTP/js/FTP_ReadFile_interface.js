@@ -8,6 +8,10 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Read a file on a remote server and store its contents into a variable.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
+	<div class="tr tooltip-paragraph-fold">For binary data use "Save in base64 format" option.</div>
+	<div class="tr tooltip-paragraph-fold">Images obtained with the "Save in base64 format" option can be used in the "Solve Captcha" action or in the "Image processing" module.</div>
+	<div class="tr tooltip-paragraph-fold">If you need to get a list from a file use the "Read file to list" action.</div>
+	<div class="tr tooltip-paragraph-fold">If you need to save the file directly to computer, use the "Download file/folder" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

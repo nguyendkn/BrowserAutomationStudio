@@ -17,6 +17,12 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Search for files/folders in the specified directory on the remote server.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
+	<div class="tr tooltip-paragraph-fold">Using a mask, you can search for files/folders with a specific name or extension.</div>
+	<div class="tr tooltip-paragraph-fold">Instead of a mask, you can use a regular expression, for this you need to switch the field type to "expression" and write a regular expression into it.</div>
+	<div class="tr tooltip-paragraph-fold">If "Search files" option is enabled, the final list will include files.</div>
+	<div class="tr tooltip-paragraph-fold">If "Search folders" option is enabled, the final list will include folders.</div>
+	<div class="tr tooltip-paragraph-fold">If "Search in subfolders" option is enabled, the search will be performed not only in the specified directory, but also recursively in all folders that are in it.</div>
+	<div class="tr tooltip-paragraph-fold">If "Search in subfolders" option is enabled, the search can take a long time, so it is better to increase the action timeout by clicking on the hourglass next to the cancel button.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting list will contain not only the names of the files/folders, but their full path.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting list can be processed using actions from the "List" module.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

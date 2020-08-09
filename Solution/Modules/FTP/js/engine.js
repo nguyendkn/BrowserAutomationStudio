@@ -24,6 +24,10 @@ function FTP_Connection(){
 	_if(module=="FTP",function(){
 		_embedded("ConnectionFTP", "Node", "8.6.0", "FTP_CONNECTION_PARAMETERS", 60000)!
 	})!
+	
+	_if(module=="SSH",function(){
+		_embedded("ConnectionSSH", "Node", "8.6.0", "FTP_CONNECTION_PARAMETERS", 60000)!
+	})!
 };
 function FTP_ReadFile(){
 	var file_path = FTP_FormatPath(_function_argument("FilePath"));

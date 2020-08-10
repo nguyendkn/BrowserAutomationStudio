@@ -30,7 +30,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
         trimLeftRegex: processor.trimLeftRegex,
         tokenizeRegex: processor.tokenizeRegex
       },
-      distance: 2,
+      distance: 0.3,
       limit: limit
     });
 

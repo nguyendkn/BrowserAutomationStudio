@@ -54,6 +54,7 @@ public:
                           );
     static void MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight,bool IsMousePress, bool IsDrag);
     static bool IsPointOnScreen(int PointX, int PointY, int ScrollX, int ScrollY, int BrowserWidth, int BrowserHeight);
+    static int GetNativeCode(int key);
     static void Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey);
 };
 

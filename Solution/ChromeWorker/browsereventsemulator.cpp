@@ -448,6 +448,63 @@ void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int
     }
 }
 
+int BrowserEventsEmulator::GetNativeCode(int key)
+{
+    if(key == 27) return 1;
+    if(key == 49) return 2;
+    if(key == 50) return 3;
+    if(key == 51) return 4;
+    if(key == 52) return 5;
+    if(key == 53) return 6;
+    if(key == 54) return 7;
+    if(key == 55) return 8;
+    if(key == 56) return 9;
+    if(key == 57) return 10;
+    if(key == 48) return 11;
+    if(key == 189) return 12;
+    if(key == 187) return 13;
+    if(key == 8) return 14;
+    if(key == 9) return 15;
+    if(key == 81) return 16;
+    if(key == 87) return 17;
+    if(key == 69) return 18;
+    if(key == 82) return 19;
+    if(key == 84) return 20;
+    if(key == 89) return 21;
+    if(key == 85) return 22;
+    if(key == 73) return 23;
+    if(key == 79) return 24;
+    if(key == 80) return 25;
+    if(key == 219) return 26;
+    if(key == 221) return 27;
+    if(key == 13) return 28;
+    if(key == 65) return 30;
+    if(key == 83) return 31;
+    if(key == 68) return 32;
+    if(key == 70) return 33;
+    if(key == 71) return 34;
+    if(key == 72) return 35;
+    if(key == 74) return 36;
+    if(key == 75) return 37;
+    if(key == 76) return 38;
+    if(key == 186) return 39;
+    if(key == 222) return 40;
+    if(key == 192) return 41;
+    if(key == 220) return 43;
+    if(key == 90) return 44;
+    if(key == 88) return 45;
+    if(key == 67) return 46;
+    if(key == 86) return 47;
+    if(key == 66) return 48;
+    if(key == 78) return 49;
+    if(key == 77) return 50;
+    if(key == 188) return 51;
+    if(key == 190) return 52;
+    if(key == 191) return 53;
+    if(key == 32) return 57;
+    return 0;
+}
+
 void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey)
 {
     if(!Browser)
@@ -470,10 +527,10 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
             event.type = KEYEVENT_KEYUP;
             event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
             event.windows_key_code = State.PresingKey;
-            event.native_key_code = -1073741823;
+            event.native_key_code = GetNativeCode(State.PresingKey);
             event.is_system_key = false;
-            event.character = State.PresingCharacter;
-            event.unmodified_character = State.PresingCharacter;
+            event.character = 0;
+            event.unmodified_character = 0;
             event.focus_on_editable_field = true;
             Browser->GetHost()->SendKeyEvent(event);
         }
@@ -518,7 +575,8 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
     if(text_whcar.empty() && State.IsClear())
         return;
 
-    char key = -1;
+    bool IsKeyParsed = false;
+    unsigned char key = 0;
     char state = -1;
     wchar_t letter_wchar;
     bool ismouse = false;
@@ -678,10 +736,11 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
             max_locales = GetKeyboardLayoutList(max_locales,Locales.data());
 
             int index = 0;
-            while((key == -1 || state == -1) && index < max_locales)
+            while((!IsKeyParsed || state == -1) && index < max_locales)
             {
                 short c = VkKeyScanEx(letter_wchar,Locales[index]);
                 key = c & 0xFF;
+                IsKeyParsed = true;
                 state = c >> 8;
                 index ++;
             }
@@ -717,7 +776,7 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
             event.type = (IsShift) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
             event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
             event.windows_key_code = VK_SHIFT;
-            event.native_key_code = (IsShift) ? 1 : -1073741823;
+            event.native_key_code = 42;
             event.is_system_key = false;
             event.character = VK_SHIFT;
             event.unmodified_character = VK_SHIFT;
@@ -733,7 +792,7 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
             event.type = (IsAlt) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
             event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
             event.windows_key_code = VK_MENU;
-            event.native_key_code = (IsAlt) ? 1 : -1073741823;
+            event.native_key_code = 56;
             event.is_system_key = false;
             event.character = VK_MENU;
             event.unmodified_character = VK_MENU;
@@ -749,7 +808,7 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
             event.type = (IsCtrl) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
             event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
             event.windows_key_code = VK_CONTROL;
-            event.native_key_code = (IsCtrl) ? 1 : -1073741823;
+            event.native_key_code = 29;
             event.is_system_key = false;
             event.character = VK_CONTROL;
             event.unmodified_character = VK_CONTROL;
@@ -818,10 +877,10 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
                 event.type = KEYEVENT_KEYDOWN;
                 event.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
                 event.windows_key_code = key;
-                event.native_key_code = 1;
+                event.native_key_code = GetNativeCode(key);
                 event.is_system_key = false;
-                event.character = letter_wchar;
-                event.unmodified_character = letter_wchar;
+                event.character = 0;
+                event.unmodified_character = 0;
                 event.focus_on_editable_field = true;
                 Browser->GetHost()->SendKeyEvent(event);
             }
@@ -832,10 +891,10 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
                 event.type = KEYEVENT_CHAR;
                 event.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
                 event.windows_key_code = letter_wchar;
-                event.native_key_code = 0;
+                event.native_key_code = GetNativeCode(key);
                 event.is_system_key = false;
-                event.character = letter_wchar;
-                event.unmodified_character = letter_wchar;
+                event.character = 0;
+                event.unmodified_character = 0;
                 event.focus_on_editable_field = true;
                 Browser->GetHost()->SendKeyEvent(event);
             }

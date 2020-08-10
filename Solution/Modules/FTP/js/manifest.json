@@ -156,18 +156,18 @@
         {
             "code": [
                 {
-                    "file": "FTP_MoveSFTP_code.js",
-                    "name": "FTP_MoveSFTP_code"
+                    "file": "FTP_Move_code.js",
+                    "name": "FTP_Move_code"
                 }
             ],
             "description": {
-                "en": "MoveSFTP file/folder",
+                "en": "Move file/folder",
                 "ru": "Переместить Файл/папку"
             },
-            "interface": "FTP_MoveSFTP_interface.js",
+            "interface": "FTP_Move_interface.js",
             "is_element": false,
-            "name": "FTP_MoveSFTP",
-            "select": "FTP_MoveSFTP_select.js",
+            "name": "FTP_Move",
+            "select": "FTP_Move_select.js",
             "template": "{{FilePath}} -> {{NewFilePath}}"
         },
         {
@@ -282,7 +282,7 @@
         "FTP_GetInfo",
         "FTP_Create",
         "FTP_Delete",
-        "FTP_MoveSFTP",
+        "FTP_Move",
 		"FTP_Copy",
         "FTP_Search",
         "FTP_Download",
@@ -581,7 +581,7 @@
 		"You can specify several masks by separating them with \";\".": {"ru":"Можно указать несколько масок, разделив их при помощи \";\"."},
 		"The path on the remote server to the file/folder after moving.": {"ru":"Путь на удаленном сервере к файлу/папке после перемещения."},
 		"The path to the file on the remote server which needs to read.": {"ru":"Путь к файлу на удаленном сервере который нужно прочитать."},
-		"MoveSFTP the file/folder to another location on the remote server.": {"ru":"Переместить файл/папку в другое место на удаленном сервере."},
+		"Move the file/folder to another location on the remote server.": {"ru":"Переместить файл/папку в другое место на удаленном сервере."},
 		"If a non-existent destination path is specified, it will be created.": {"ru":"Если указан несуществующий путь назначения, он будет создан."},
 		"Upload the file/folder to the specified location on the remote server.": {"ru":"Загрузить файл/папку в указанное место на удаленном сервере."},
 		"This variable will contain the result of the command with error.": {"ru":"Эта переменная будет содержать результат выполнения команды с ошибкой."},

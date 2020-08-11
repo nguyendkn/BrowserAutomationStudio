@@ -1,6 +1,6 @@
 <div class="container-fluid">
 <%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote path to file or folder"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path on the remote server to the file/folder which needs to be downloaded."),examples:[{code:"/html/test"},{code:"/public_html/test1.zip"},{code:"/domains/site.com/public_html/test2.txt"}]} }) %>
-<%= _.template($('#input_constructor').html())({id:"DestinationPath", description:tr("Destination path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the location where the file/folder downloaded from the remote server will be saved."),examples:[{code:"C:/test"},{code:"C:/Program Files"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"DestinationPath", description:tr("Destination path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the location where the file downloaded from the remote server or the contents of the downloaded folder will be saved."),examples:[{code:"C:/test"},{code:"C:/Program Files"}]} }) %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Download file/folder from a remote server and save to the specified location.</div>

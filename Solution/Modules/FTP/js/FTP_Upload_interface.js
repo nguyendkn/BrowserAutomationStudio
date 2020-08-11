@@ -1,6 +1,6 @@
 <div class="container-fluid">
 <%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("File or folder path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the file/folder which needs to be uploaded to the remote server."),examples:[{code:"C:/test"},{code:"C:/Program Files"},{code:"C:/Program Files/test2.txt"}]} }) %>
-<%= _.template($('#input_constructor').html())({id:"DestinationPath", description:tr("Remote destination path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the location on the remote server where the uploaded file/folder will be saved."),examples:[{code:"/html"},{code:"/public_html"},{code:"/domains/site.com/public_html"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"DestinationPath", description:tr("Remote destination path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the location on the remote server where the uploaded file or the contents of the uploaded folder will be saved."),examples:[{code:"/html"},{code:"/public_html"},{code:"/domains/site.com/public_html"}]} }) %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Upload the file/folder to the specified location on the remote server.</div>

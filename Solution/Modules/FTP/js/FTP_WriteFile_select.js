@@ -4,10 +4,6 @@ if(FilePath["original"].length == 0){
     return;
 };
 var Value = GetInputConstructorValue("Value", loader);
-if(Value["original"].length==0){
-	Invalid(tr("Data") + " " + tr("is empty"));
-    return;
-};
 var EndingSymbol = $("#Check").is(':checked');
 var Append = $("#Check2").is(':checked');
 var base64 = $("#Check3").is(':checked');

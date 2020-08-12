@@ -165,6 +165,8 @@ class DocumentsStore {
       .filter((item) => this.lang === item.lang)
       .map((item) => ({
         suggestions: this.getLinkSuggestion(item),
+        descriptions: [item.description],
+        description: item.description,
         icon: `../icons/${type}.png`,
         name: item.name,
         key: item.url,

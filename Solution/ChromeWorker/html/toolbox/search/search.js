@@ -21,6 +21,7 @@ class SearchManager {
             { name: 'module', weight: 0.5 },
             { name: 'name', weight: 0.2 }
           ],
+          distance: 0.3,
           limit: 500,
           ref: 'key'
         });
@@ -333,10 +334,12 @@ class SearchManager {
         </div>
         <div class="result-item-right">
           <div>
-            <div class="item-name"><%= name %></div>
-            <% if (type === 'action') { %>
-              <div class="item-description"><%= description %></div>
-            <% } %>
+            <div class="item-name">
+              <%= name %>
+            </div>
+            <div class="item-description">
+              <%= description %>
+            </div>
             <% if ((descInfo.found && descInfo.max) && !descInfo.skip) { %>
               <div class="item-additional text-<%= descInfo.color %>" data-type="descriptions">
                 <%= truncate(descriptions[descInfo.index], keywords.find((k) => k.field === 'descriptions').matches) %>

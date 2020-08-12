@@ -73,6 +73,14 @@ class SearchManager {
       }
     }, '.result-item');
 
+    $(document).on('click', '.results-recent', (e) => {
+      e.stopPropagation();
+    });
+
+    $(document).on('click', '.results-empty', (e) => {
+      e.stopPropagation();
+    });
+
     $(document).on('click', '#nextpage', (e) => {
       e.preventDefault();
       this.showPage(++this.pageIndex);
@@ -84,6 +92,11 @@ class SearchManager {
     });
 
     $(document).on('click', '#results', (e) => {
+      e.preventDefault();
+      this.hide();
+    });
+
+    $(document).on('click', '.search', (e) => {
       e.preventDefault();
       this.hide();
     });

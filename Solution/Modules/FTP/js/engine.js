@@ -270,13 +270,17 @@ function FTP_ListToFile(){
 };
 function FTP_RunCommand(){
 	var сommand = _function_argument("Command");
+	var working_folder = _function_argument("WorkingFolder");
+	var wait_finish = _function_argument("WaitFinish");
 	var timeout = _function_argument("Timeout");
+	
+	сommand = (working_folder.length>0 ? ("cd " + working_folder + "\n") : "") + сommand;
 	
 	if(_FTP_PROTOCOL!="SSH"){
 		fail(_K=="ru" ? ("Выполнить команду можно только через SSH протокол") : ("The command can only be executed via SSH protocol"));
 	};
 	
-	VAR_FTP_NODE_PARAMETERS = [сommand, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
+	VAR_FTP_NODE_PARAMETERS = [сommand, wait_finish, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
 	
 	_call_function(FTP_Connection,{"module":"SSH"})!
 	_result_function();

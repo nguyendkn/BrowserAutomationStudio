@@ -6,7 +6,7 @@ _FTP_CONNECTION_TIMEOUT = 5*60*1000;
 function FTP_Config(protocol, host, port, username, password, timeout){
     _FTP_PROTOCOL = protocol;
     _FTP_CONFIG["host"] = host;
-    _FTP_CONFIG["port"] = port;
+    _FTP_CONFIG["port"] = port=="auto" ? (protocol=="FTP" ? "21" : "22") : port;
     _FTP_CONFIG["username"] = username;
 	_FTP_CONFIG["user"] = username;
     _FTP_CONFIG["password"] = password;
@@ -59,7 +59,7 @@ function FTP_WriteFile(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, (value + (ending_symbol ? "\r\n" : "")), base64, append, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
+	VAR_FTP_NODE_PARAMETERS = [file_path, value, ending_symbol, base64, append, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
 	
 	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
 	_result_function();

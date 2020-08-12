@@ -2,27 +2,21 @@ class BasSearchEngine extends SearchLib.SearchEngine {
   /**
    * Create an instance of `BasSearchEngine` class.
    * @param {Object} config - search engine configuration object.
-   * @param {Object[]} config.documents - documents array.
-   * @param {Object[]} config.fields - fields array.
+   * @param {Object[]} config.documents - index documents array.
+   * @param {Object[]} config.fields - index fields array.
+   * @param {Number} config.distance - distance number.
    * @param {Number} config.limit - limit number.
    * @param {String} config.ref - ref string.
    * @constructor
    */
-  constructor ({ documents, fields, limit, ref }) {
+  constructor ({ documents, distance, fields, limit, ref }) {
     const processor = SearchLib.TextProcessor;
 
     super({
-      scoring(score, match) {
-        const document = match.document;
-
-        if (document.site === 'youtube') {
-          return score * 0.7;
-        }
-
-        if (document.site === 'wiki') {
-          return score * 0.7;
-        }
-
+      scoring(score, { document }) {
+        const { site } = document;
+        if (site === 'youtube') return score * 0.7;
+        if (site === 'wiki') return score * 0.7;
         return score;
       },
       tokenizerOptions: {
@@ -30,16 +24,11 @@ class BasSearchEngine extends SearchLib.SearchEngine {
         trimLeftRegex: processor.trimLeftRegex,
         tokenizeRegex: processor.tokenizeRegex
       },
-      distance: 0.3,
-      limit: limit
+      distance,
+      limit
     });
 
-    this.createIndex({
-      documents,
-      fields,
-      ref
-    });
-
+    this.createIndex({ documents, fields, ref });
     this.cache = {};
   }
 

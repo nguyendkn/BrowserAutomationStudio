@@ -272,6 +272,7 @@ function FTP_RunCommand(){
 	var сommand = _function_argument("Command");
 	var working_folder = _function_argument("WorkingFolder");
 	var wait_finish = _function_argument("WaitFinish");
+	var pty = true;
 	var timeout = _function_argument("Timeout");
 	
 	сommand = (working_folder.length>0 ? ("cd " + working_folder + "\n") : "") + сommand;
@@ -280,7 +281,7 @@ function FTP_RunCommand(){
 		fail(_K=="ru" ? ("Выполнить команду можно только через SSH протокол") : ("The command can only be executed via SSH protocol"));
 	};
 	
-	VAR_FTP_NODE_PARAMETERS = [сommand, wait_finish, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
+	VAR_FTP_NODE_PARAMETERS = [сommand, wait_finish, pty, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
 	
 	_call_function(FTP_Connection,{"module":"SSH"})!
 	_result_function();

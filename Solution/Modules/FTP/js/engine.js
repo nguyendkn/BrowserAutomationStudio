@@ -290,6 +290,26 @@ function FTP_RunCommand(){
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
 }
+function FTP_CalculateChecksum(){
+	var file_path = _function_argument("FilePath");
+	var timeout = _function_argument("Timeout");
+	
+	if(_FTP_PROTOCOL!="SSH"){
+		fail(_K=="ru" ? ("Рассчитать контрольную сумму можно только через SSH протокол") : ("The checksum can be calculated only via the SSH protocol"));
+	};
+	
+	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
+	
+	_call_function(FTP_Connection,{"module":"SFTP"})!
+	_result_function();
+	
+	_call_function(FTP_Connection,{"module":"SSH"})!
+	_result_function();
+	
+	_embedded("CalculateChecksumSSH", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_FTP_NODE_PARAMETERS);
+};
 function FTP_Close(){
 	VAR_FTP_NODE_PARAMETERS = _FTP_CONNECTION_ID;
 	_embedded("CloseFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", 60000)!

@@ -258,6 +258,23 @@
 		{
             "code": [
                 {
+                    "file": "FTP_CalculateChecksum_code.js",
+                    "name": "FTP_CalculateChecksum_code"
+                }
+            ],
+            "description": {
+                "en": "Calculate checksum (SSH)",
+                "ru": "Рассчитать контрольную сумму (SSH)"
+            },
+            "interface": "FTP_CalculateChecksum_interface.js",
+            "is_element": false,
+            "name": "FTP_CalculateChecksum",
+            "select": "FTP_CalculateChecksum_select.js",
+            "template": "{{FilePath}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "FTP_Close_code.js",
                     "name": "FTP_Close_code"
                 }
@@ -290,6 +307,7 @@
         "FTP_FileToList",
         "FTP_ListToFile",
 		"FTP_RunCommand",
+		"FTP_CalculateChecksum",
 		"FTP_Close"
     ],
     "browser": [
@@ -493,6 +511,13 @@
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "8.6.0"
+        },
+        {
+            "Data": "var remote_path = [[FTP_NODE_PARAMETERS]][0];\r\nvar id = [[FTP_NODE_PARAMETERS]][1];\r\nvar timeout = [[FTP_NODE_PARAMETERS]][2];\r\nvar sftp = ftp_connections[id].sftp;\r\nvar sftp_client = sftp.client;\r\nvar ssh = ftp_connections[id].ssh;\r\nvar client = ssh.client;\r\nvar command = \"sha1sum -b \" + remote_path;\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var exists = sftp_client.exists(remote_path);\r\n    exists.then(function(exist){\r\n        if(exist){\r\n            var stat = sftp_client.stat(remote_path);\r\n            stat.then(function(stats){\r\n                sftp.setTimeout(timeout);\r\n                if(stats.isFile){\r\n                    client.exec(command, function(err, stream){\r\n                        if(err){\r\n                            ssh.setTimeout(timeout);\r\n                            reject(err);\r\n                        }else{\r\n                            var standart_output = \"\";\r\n                            var error_output = \"\";\r\n                            stream.on('close', function(code, signal){\r\n                                if(standart_output.indexOf(\"sha1sum: command not found\") > -1 || error_output.indexOf(\"sha1sum: command not found\") > -1){\r\n                                    ssh.setTimeout(timeout);\r\n                                    reject('sha1sum not installed');\r\n                                }else{\r\n                                    if(error_output!=\"\"){\r\n                                        ssh.setTimeout(timeout);\r\n                                        reject(error_output);\r\n                                    }else{\r\n                                        [[FTP_NODE_PARAMETERS]] = standart_output.split(\" \")[0];\r\n                                        ssh.setTimeout(timeout);\r\n                                        resolve();\r\n                                    };\r\n                                };\r\n                            });\r\n                            stream.on('data', function(data) {\r\n                                standart_output += data.toString('utf8');\r\n                            });\r\n                            stream.stderr.on('data', function(data) {\r\n                                error_output += data.toString('utf8');\r\n                            });\r\n                        };\r\n                    });\r\n                    client.on('error', function(err){\r\n                        ssh.setTimeout(timeout);\r\n                        reject(err);\r\n                    });\r\n                    client.on('close', function close(){\r\n                        reject(\"Connection closed\");\r\n                    });\r\n                }else{\r\n                    ssh.setTimeout(timeout);\r\n                    reject('\"' + remote_path + '\" is not a file');\r\n                };\r\n            });\r\n            stat.catch(function(err){\r\n                sftp.setTimeout(timeout);\r\n                reject(err);\r\n            });\r\n        }else{\r\n            sftp.setTimeout(timeout);\r\n            ssh.setTimeout(timeout);\r\n            reject('The file/folder \"' + remote_path + '\" does not exist');\r\n        };\r\n    });\r\n    exists.catch(function(err){\r\n        sftp.setTimeout(timeout);\r\n        ssh.setTimeout(timeout);\r\n        reject(err);\r\n    });\r\n}));",
+            "DataName": "CalculateChecksumSSH",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "8.6.0"
         }
     ],
     "engine": [
@@ -587,7 +612,7 @@
 		"Configure access to a remote server for working with files.": {"ru":"Настроить доступ к удаленному серверу для работы с файлами."},
 		"You can specify several masks by separating them with \";\".": {"ru":"Можно указать несколько масок, разделив их при помощи \";\"."},
 		"The path on the remote server to the file/folder after moving.": {"ru":"Путь на удаленном сервере к файлу/папке после перемещения."},
-		"The path to the file on the remote server which needs to read.": {"ru":"Путь к файлу на удаленном сервере который нужно прочитать."},
+		"The path to the file on the remote server which needs to read.": {"ru":"Путь к файлу на удаленном сервере, который нужно прочитать."},
 		"Move the file/folder to another location on the remote server.": {"ru":"Переместить файл/папку в другое место на удаленном сервере."},
 		"If a non-existent destination path is specified, it will be created.": {"ru":"Если указан несуществующий путь назначения, он будет создан."},
 		"Upload the file/folder to the specified location on the remote server.": {"ru":"Загрузить файл/папку в указанное место на удаленном сервере."},
@@ -596,7 +621,7 @@
 		"For binary data use \"Save in base64 format\" option.": {"ru":"Для работы с бинарными данными используйте параметр \"Сохранить в формате base64\"."},
 		"Search for files/folders in the specified directory on the remote server.": {"ru":"Поиск файлов/папок в указанной директории на удаленном сервере."},
 		"Data that will be written to the specified file on the remote server.": {"ru":"Данные которые будут записаны в указанный файл на удаленном сервере."},
-		"The path to the file on the remote server in which needs to write data.": {"ru":"Путь к файлу на удаленном сервере в который нужно записать данные."},
+		"The path to the file on the remote server in which needs to write data.": {"ru":"Путь к файлу на удаленном сервере, в который нужно записать данные."},
 		"The path on the remote server to the file/folder which needs to be deleted.": {"ru":"Путь на удаленном сервере к файлу/папке который нужно удалить."},
 		"This variable will contain the date the file/folder was last modified.": {"ru":"Эта переменная будет содержать дату последнего изменения файла/папки."},
 		"The path on the remote server to the file/folder which needs to be moved.": {"ru":"Путь на удаленном сервере к файлу/папке который нужно переместить."},
@@ -604,7 +629,7 @@
 		"The path on the remote server to the file/folder which needs to be copied.": {"ru":"Путь на удаленном сервере к файлу/папке который нужно скопировать."},
 		"The list that will be written to the specified file on the remote server.": {"ru":"Список, который будет записан в указанный файл на удаленном сервере."},
 		"The path on the remote server to the file/folder which needs to be downloaded.": {"ru":"Путь на удаленном сервере к файлу/папке который нужно скачать."},
-		"The path to the file on the remote server in which needs to write the list.": {"ru":"Путь к файлу на удаленном сервере в который нужно записать список."},
+		"The path to the file on the remote server in which needs to write the list.": {"ru":"Путь к файлу на удаленном сервере, в который нужно записать список."},
 		"The command  can have multiple lines, you can learn more about bash in": {"ru":"Команда может иметь несколько строк, подробнее о bash вы можете узнать в"},
 		"Read a file on a remote server and store its contents into a variable.": {"ru":"Читать файл на удаленном сервере и сохранить его содержимое в переменную."},
 		"The time after which the connection will be closed if it is not in use.": {"ru":"Время, через которое будет закрыто соединение, если оно не используется."},
@@ -616,6 +641,7 @@
 		"If \"Search files\" option is enabled, the final list will include files.": {"ru":"Если параметр \"Искать файлы\" включен, в итоговый список будут включены файлы."},
 		"Execute bash command on a remote server and save the results to variables.": {"ru":"Выполнить bash команду на удаленном сервере и сохранить результаты в переменные."},
 		"This action can be used to rename a file/folder on a remote server.": {"ru":"Данное действие можно использовать, чтобы переименовать файл/папку на удаленном сервере."},
+		"The path to the file on the remote server, the checksum of which needs to get.": {"ru":"Путь к файлу на удаленном сервере, контрольную сумму которого нужно получить."},
 		"If \"Search folders\" option is enabled, the final list will include folders.": {"ru":"Если параметр \"Искать папки\" включен, в итоговый список будут включены папки."},
 		"The path to the directory on the remote server in which the search will be performed.": {"ru":"Путь к директории на удаленном сервере в которой будет производиться поиск."},
 		"Using a mask, you can search for files/folders with a specific name or extension.": {"ru":"С помощью маски можно искать файлы/папки с определенным именем или расширением."},
@@ -632,13 +658,16 @@
 		"In order to execute this action correctly you need to run \"Configure FTP/SSH\" action first.": {"ru":"Для правильной работы необходимо сначала выполнить действие \"Настроить FTP/SSH\"."},
 		"The path on the remote server to the location where the file will be copied or folder contents.": {"ru":"Путь на удаленном сервере к месту куда будет скопирован файл или содержимое папки."},
 		"The resulting list will contain not only the names of the files/folders, but their full path.": {"ru":"Полученный список будет содержать не только названия файлов/папок, но их полный путь."},
+		"Get the checksum of the file located on the remote server and save it to a variable.": {"ru":"Получить контрольную сумму файла, находящегося на удаленном сервере, и сохранить её в переменную."},
 		"If you need to save the file directly to computer, use the \"Download file/folder\" action.": {"ru":"Если вам нужно сохранить файл сразу на компьютер, используйте действие \"Скачать файл/папку\"."},
 		"If you just need to save the contents of a file to a variable, use the \"Read file\" action.": {"ru":"Если вам просто нужно сохранить содержимое файла в переменную, используйте действие \"Читать файл\"."},
+		"For this action to work, sha1sum must be installed on the server. Learn more about sha1sum": {"ru":"Чтобы это действие работало, на сервере должен быть установлен sha1sum. Подробнее о sha1sum можно узнать"},
 		"This action should be called once before any other action that works with the remote server.": {"ru":"Это действие нужно вызвать один раз перед любым другим действием, которое работает с удаленным сервером."},
 		"This variable will be true or false depending on whether the specified path leads to the file is or not.": {"ru":"Эта переменная будет равна true или false в зависимости от того ведет ли указанный путь к файлу или нет."},
 		"This variable will be true or false depending on whether the specified path leads to the directory is or not.": {"ru":"Эта переменная будет равна true или false в зависимости от того ведет ли указанный путь к папке или нет."},
 		"Variable in which, after the successful execution of the action, the contents of the read file will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано содержимое прочитанного файла."},
 		"Read the file on the remote server, convert its contents to a list, and store this list into a variable.": {"ru":"Прочитайте файл на удаленном сервере, преобразовать его содержимое в список и сохранить этот список в переменную."},
+		"Variable in which, after the successful execution of the action, the checksum of the specified file will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана контрольная сумма указанного файла."},
 		"The file/folder will be copied to the remote server, and the original file/folder on the computer will remain unchanged.": {"ru":"Файл/Папка будет скопирован на удаленный сервер, а исходный файл/папка на компьютере останется без изменений."},
 		"The file/folder will be copied to your computer, and the original file/folder on the remote server will remain unchanged.": {"ru":"Файл/Папка будет скопирован на компьютер, а исходный файл/папка на удаленном сервере останется без изменений."},
 		"The list can be obtained using the \"Read file to list\" action or create using actions from the \"List\" module.": {"ru":"Список можно получить с помощью действия \"Читать файл в список\" или создать с помощью действий из модуля \"Список\"."},

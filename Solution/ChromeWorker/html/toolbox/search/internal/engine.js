@@ -124,10 +124,10 @@ class BasSearchEngine extends SearchLib.SearchEngine {
   }
 
   getKeywords({ document, metadata, tokens, query }) {
-    const keywords = {};
+    const trim = (str) => SearchLib.TextProcessor.trim(str); const keywords = {};
 
-    Object.values(metadata).forEach((found) => {
-      Object.entries(found).forEach(([fieldName, fieldData]) => {
+    Object.values(metadata).forEach((value) => {
+      Object.entries(value).forEach(([fieldName, fieldData]) => {
         const [field, index] = fieldName.split('_');
         if (!keywords[field]) keywords[field] = [];
 
@@ -137,10 +137,11 @@ class BasSearchEngine extends SearchLib.SearchEngine {
 
         if (!fieldLower.includes(query.toLowerCase())) {
           fieldData.tokenOriginal.forEach((source) => {
-            const token = tokens.find((t) => source.includes(t)) || source;
+            const token = tokens.find((str) => source.includes(str)) || source;
             keywords[field].push({ comparator: token + field, match: token });
           });
         } else {
+          keywords[field].push({ comparator: trim(query) + field, match: trim(query) });
           keywords[field].push({ comparator: query + field, match: query });
         }
       });
@@ -153,6 +154,24 @@ class BasSearchEngine extends SearchLib.SearchEngine {
         .value(),
       field
     }));
+  }
+
+  getTimecode({ timestamps, timecodes }, { index }) {
+    if (timestamps.length && index !== null) {
+      const time = timecodes[timestamps[index]].split(':');
+
+      if (time.length === 3) {
+        return `?t=${time[0]}h${time[1]}m${time[2]}s`;
+      }
+
+      if (time.length === 2) {
+        return `?t=${time[0]}m${time[1]}s`;
+      }
+
+      return null;
+    }
+
+    return null;
   }
 
   /**

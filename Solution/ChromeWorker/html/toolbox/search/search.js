@@ -187,7 +187,7 @@ class SearchManager {
       }));
 
       if (!this.resultsVisible) {
-        _.initial(results).forEach((result) => result.hide());
+        _.initial(results).forEach(result => result.hide());
 
         if (index === 0) {
           _.last(results).data('page', prev);

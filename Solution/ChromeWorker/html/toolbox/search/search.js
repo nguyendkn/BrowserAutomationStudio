@@ -340,30 +340,31 @@ class SearchManager {
     const temp = { ...item, index };
     const data = { ...item, page };
     const template = _.template(`
-      <li class="result-item bg-<%= type %>">
+      <li class="result-item bg-<%= type === 'action' ? 'bg-action' : 'bg-link' %>">
         <div class="result-item-left">
           <img draggable="false" class="item-icon" src="<%= icon %>">
           <span class="item-index"><%= _.padLeft(index + 1, 2, '0') %></span>
         </div>
         <div class="result-item-right">
           <div>
-            <div class="item-name">
-              <%= name %>
-            </div>
-            <div class="item-description">
-              <%= description %>
-            </div>
-            <% if ((descInfo.found && descInfo.max) && !descInfo.skip) { %>
+            <div class="item-name"><%= name %></div>
+            <div class="item-description"><%= description %></div>
+            <% if (descInfo.best) { %>
               <div class="item-additional text-<%= descInfo.color %>" data-type="descriptions">
                 <%= truncate(descriptions[descInfo.index], keywords.find((k) => k.field === 'descriptions').matches) %>
               </div>
             <% } %>
-            <% if ((suggInfo.found && suggInfo.max) && !suggInfo.skip) { %>
+            <% if (suggInfo.best) { %>
               <div class="item-additional text-<%= suggInfo.color %>" data-type="suggestions">
                 <%= truncate(suggestions[suggInfo.index], keywords.find((k) => k.field === 'suggestions').matches) %>
               </div>
             <% } %>
-            <% if ((varsInfo.found && varsInfo.max) && !varsInfo.skip) { %>
+            <% if (timeInfo.best) { %>
+              <div class="item-additional text-<%= timeInfo.color %>" data-type="timestamps">
+                <%= truncate(timestamps[timeInfo.index], keywords.find((k) => k.field === 'timestamps').matches) %>
+              </div>
+            <% } %>
+            <% if (varsInfo.best) { %>
               <div class="item-additional text-<%= varsInfo.color %>" data-type="variables">
                 <%= truncate(variables[varsInfo.index], keywords.find((k) => k.field === 'variables').matches) %>
               </div>

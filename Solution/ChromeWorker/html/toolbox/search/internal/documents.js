@@ -31,6 +31,8 @@ class DocumentsStore {
         name: tr(action.name),
         variables: variables,
         type: 'action',
+        timestamps: [],
+        timecodes: {},
         key: name,
       };
 
@@ -163,16 +165,19 @@ class DocumentsStore {
   getLinkItems(items, type) {
     return items
       .filter((item) => this.lang === item.lang)
-      .map((item) => ({
-        suggestions: this.getLinkSuggestion(item),
-        descriptions: [item.description],
-        description: item.description,
-        icon: `../icons/${type}.png`,
-        name: item.name,
-        key: item.url,
-        type: 'link',
-        site: type
-      }));
+      .map((item) => {
+        return {
+          timestamps: _.values(item.timestamps || {}),
+          timecodes: _.invert(item.timestamps || {}),
+          suggestions: this.getLinkSuggestion(item),
+          descriptions: [item.description],
+          description: item.description,
+          icon: `../icons/${type}.png`,
+          name: item.name,
+          key: item.url,
+          type: type
+        };
+      });
   }
 
   /**

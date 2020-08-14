@@ -271,8 +271,6 @@ class SearchManager {
    * Initialize search page.
    */
   initialize() {
-    this.create();
-
     this.$recentHeader = $('.results-recent').hide();
     this.$emptyHeader = $('.results-empty').hide();
     this.$recentHeader.text(tr('Recent actions'));

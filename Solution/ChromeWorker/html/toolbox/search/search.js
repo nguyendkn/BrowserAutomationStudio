@@ -4,34 +4,32 @@ class SearchManager {
    * @constructor
    */
   constructor () {
-    this.create = () => {
-      if (this.renderCalls === 1) {
-        const store = new DocumentsStore();
+    const store = new DocumentsStore();
 
-        this.engine = new BasSearchEngine({
-          documents: [
-            ...store.getActionItems(),
-            ...store.getVideoItems(),
-            ...store.getWikiItems(),
-          ],
-          fields: [
-            { name: 'descriptions', weight: 0.1 },
-            { name: 'suggestions', weight: 0.1 },
-            { name: 'variables', weight: 0.1 },
-            { name: 'module', weight: 0.5 },
-            { name: 'name', weight: 0.2 }
-          ],
-          distance: 0.3,
-          limit: 500,
-          ref: 'key'
-        });
-      }
+    $(window).load(() => _.defer(() => {
+      const weights = BasSearchEngine.weights;
 
-      this.renderCalls += 1;
-    };
+      this.engine = new BasSearchEngine({
+        documents: [
+          ...store.getActionItems(),
+          ...store.getVideoItems(),
+          ...store.getWikiItems(),
+        ],
+        fields: [
+          { name: 'descriptions', weight: ({ type }) => weights.descriptions[type] },
+          { name: 'suggestions', weight: ({ type }) => weights.suggestions[type] },
+          { name: 'timestamps', weight: ({ type }) => weights.timestamps[type] },
+          { name: 'variables', weight: ({ type }) => weights.variables[type] },
+          { name: 'module', weight: ({ type }) => weights.module[type] },
+          { name: 'name', weight: ({ type }) => weights.name[type] }
+        ],
+        distance: 0.3,
+        limit: 500,
+        ref: 'key'
+      });
+    }));
 
     this.registerHandlers();
-    this.renderCalls = 0;
     this.pagesCount = 1;
     this.pageIndex = 0;
     this.engine = null;

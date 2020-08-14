@@ -63,8 +63,12 @@ class SearchManager {
           return self.hide();
         }
 
-        if (data.type === 'link') {
-          BrowserAutomationStudio_OpenUrl(key);
+        if (data.type === 'youtube' || data.type === 'wiki') {
+          if (data.timecode) {
+            BrowserAutomationStudio_OpenUrl(key + data.timecode);
+          } else {
+            BrowserAutomationStudio_OpenUrl(key);
+          }
         } else if (!popup) {
           BrowserAutomationStudio_OpenAction(key);
         } else if (popup) {

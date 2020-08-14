@@ -1,4 +1,13 @@
 class BasSearchEngine extends SearchLib.SearchEngine {
+  static weights = {
+    descriptions: { youtube: 0.1, action: 0.1, wiki: 0.1 },
+    suggestions: { youtube: 0.1, action: 0.1, wiki: 0.1 },
+    timestamps: { youtube: 0.1, action: 0.1, wiki: 0.1 },
+    variables: { youtube: 0.1, action: 0.1, wiki: 0.1 },
+    module: { youtube: 0.5, action: 0.5, wiki: 0.5 },
+    name: { youtube: 0.2, action: 0.2, wiki: 0.2 }
+  };
+
   /**
    * Create an instance of `BasSearchEngine` class.
    * @param {Object} config - search engine configuration object.
@@ -10,26 +19,23 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    * @constructor
    */
   constructor ({ documents, distance, fields, limit, ref }) {
-    const processor = SearchLib.TextProcessor;
-
     super({
-      scoring(score, { document }) {
+      scoring: (score, { document }) => {
         const { site } = document;
         if (site === 'youtube') return score * 0.7;
         if (site === 'wiki') return score * 0.7;
         return score;
       },
       tokenizerOptions: {
-        trimRightRegex: processor.trimRightRegex,
-        trimLeftRegex: processor.trimLeftRegex,
-        tokenizeRegex: processor.tokenizeRegex
+        trimRightRegex: SearchLib.TextProcessor.trimRightRegex,
+        trimLeftRegex: SearchLib.TextProcessor.trimLeftRegex,
+        tokenizeRegex: SearchLib.TextProcessor.tokenizeRegex
       },
       distance,
       limit
     });
 
-    this.createIndex({ documents, fields, ref });
-    this.cache = {};
+    this.createIndex({ documents, fields, ref }); this.cache = {};
   }
 
   /**

@@ -101,20 +101,20 @@ class DocumentsStore {
       model: {}
     });
 
-    const outputVariables = $.map(
-      $(template).find('input[data-variable-constructor=true]'),
-      (e) => e.value
-    );
-    const inputNumbers = $.map(
-      $(template).find('.input_selector_number'),
-      (e) => e.placeholder
-    );
-    const inputStrings = $.map(
-      $(template).find('.input_selector_string'),
-      (e) => e.placeholder
-    );
-
-    return _.uniq([...outputVariables, ...inputStrings, ...inputNumbers]);
+    return _.uniq([
+      ...$.map(
+        $(template).find('input[data-variable-constructor=true]'),
+        (e) => e.value
+      ),
+      ...$.map(
+        $(template).find('.input_selector_string'),
+        (e) => e.placeholder
+      ),
+      ...$.map(
+        $(template).find('.input_selector_number'),
+        (e) => e.placeholder
+      )
+    ]);
   }
 
   /**

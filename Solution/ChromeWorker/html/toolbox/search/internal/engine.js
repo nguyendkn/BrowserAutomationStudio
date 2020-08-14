@@ -194,21 +194,18 @@ class BasSearchEngine extends SearchLib.SearchEngine {
     const gtName = score > (name.score * name.weight);
     const found = gtModule && gtName;
 
-    return {
+    const info = {
       index: found ? additional.index : null,
-      color: 'dark',
+      color: "dark",
+      found: found,
+      score: score,
       skip: false,
       max: false,
-      found,
-      score
+      get best() {
+        return info.found && info.max && !info.skip;
+      },
     };
-  }
 
-  /**
-   * Check that the selected string is variable string.
-   * @param {String} variable - selected string.
-   */
-  isVariable(variable) {
-    return variable === variable.toUpperCase();
+    return info;
   }
 }

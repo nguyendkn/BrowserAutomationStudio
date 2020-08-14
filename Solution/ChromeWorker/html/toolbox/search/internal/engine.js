@@ -157,22 +157,25 @@ class BasSearchEngine extends SearchLib.SearchEngine {
 
   /**
    * Get the description info object using the selected scores array.
-   * @param {Object} source - selected source object with scores.
-   * @param {Object[]} source.scores - selected scores array.
+   * @param {{scores: Object[]}} source - selected source object with scores array.
    */
   getDescriptionInfo({ scores }) { return this.getFieldInfo('descriptions', scores); }
 
   /**
    * Get the suggestion info object using the selected scores array.
-   * @param {Object} source - selected source object with scores.
-   * @param {Object[]} source.scores - selected scores array.
+   * @param {{scores: Object[]}} source - selected source object with scores array.
    */
   getSuggestionInfo({ scores }) { return this.getFieldInfo('suggestions', scores); }
 
   /**
+   * Get the timestamp info object using the selected scores array.
+   * @param {{scores: Object[]}} source - selected source object with scores array.
+   */
+  getTimestampInfo({ scores }) { return this.getFieldInfo('timestamps', scores); }
+
+  /**
    * Get the variable info object using the selected scores array.
-   * @param {Object} source - selected source object with scores.
-   * @param {Object[]} source.scores - selected scores array.
+   * @param {{scores: Object[]}} source - selected source object with scores array.
    */
   getVariableInfo({ scores }) { return this.getFieldInfo('variables', scores); }
 

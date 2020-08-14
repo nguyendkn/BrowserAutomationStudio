@@ -52,19 +52,21 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    * @returns {Object[]} search results array.
    */
   search(query) {
-    if (this.inCache(query)) return this.cache[query];
+    const queryStr = SearchLib.TextProcessor.trim(query); let results = [];
 
-    let results = [];
+    if (this.inCache(queryStr)) {
+      return this.cache[queryStr];
+    }
 
     if (!this.canceled) {
-      results = super.search(query, []);
+      results = super.search(queryStr, []);
     }
 
     if (this.canceled) {
-      results = super.search(query, ['descriptions']);
+      results = super.search(queryStr, ['descriptions']);
     }
 
-    this.cache[query] = results
+    this.cache[queryStr] = _.uniq(results, ({ document }) => document.key)
       .filter(({ document }) => {
         const ignored = [
           'httpclientgetcookiesforurl',
@@ -75,38 +77,33 @@ class BasSearchEngine extends SearchLib.SearchEngine {
         return !ignored.includes(document.key);
       })
       .map((match) => {
-        const desc = this.getDescriptionInfo(match);
-        const sugg = this.getSuggestionInfo(match);
-        const vars = this.getVariableInfo(match);
-        const infos = [desc, sugg, vars];
-        _.max(infos, 'score').max = true;
+        const descInfo = this.getDescriptionInfo(match);
+        const suggInfo = this.getSuggestionInfo(match);
+        const timeInfo = this.getTimestampInfo(match);
+        const varsInfo = this.getVariableInfo(match);
+        const keywords = this.getKeywords(match);
+        _.max([descInfo, suggInfo, timeInfo, varsInfo], 'score').max = true;
         const document = match.document;
 
         if (document.type === 'action') {
-          const variable = document.variables[vars.index];
+          const variable = document.variables[varsInfo.index];
           const array = document.descriptions;
           const short = document.description;
-          const item = array[desc.index];
+          const item = array[descInfo.index];
 
-          if (variable && this.isVariable(variable)) {
-            vars.color = 'green';
+          if (variable && variable === variable.toUpperCase()) {
+            varsInfo.color = 'green';
           } else {
-            vars.color = 'dark';
+            varsInfo.color = 'dark';
           }
 
-          desc.skip = short.includes(item);
+          descInfo.skip = short.includes(item);
         }
 
-        return {
-          keywords: this.getKeywords(match),
-          descInfo: desc,
-          suggInfo: sugg,
-          varsInfo: vars,
-          ...document
-        };
+        return { keywords, descInfo, suggInfo, timeInfo, varsInfo, timecode: this.getTimecode(document, timeInfo), ...document };
       });
 
-    return this.cache[query];
+    return this.cache[queryStr];
   }
 
   /**
@@ -118,6 +115,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
       ...this.store.findByRef(key),
       descInfo: {},
       suggInfo: {},
+      timeInfo: {},
       varsInfo: {},
       keywords: []
     }));

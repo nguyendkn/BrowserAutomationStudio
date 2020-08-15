@@ -277,6 +277,8 @@ function FTP_RunCommand(){
 	
 	сommand = (working_folder.length>0 ? ("cd " + working_folder + "\n") : "") + сommand;
 	
+	FTP_CheckProtocol();
+	
 	if(_FTP_PROTOCOL!="SSH"){
 		fail(_K=="ru" ? ("Выполнить команду можно только через SSH протокол") : ("The command can only be executed via SSH protocol"));
 	};
@@ -293,6 +295,8 @@ function FTP_RunCommand(){
 function FTP_CalculateChecksum(){
 	var file_path = _function_argument("FilePath");
 	var timeout = _function_argument("Timeout");
+	
+	FTP_CheckProtocol();
 	
 	if(_FTP_PROTOCOL!="SSH"){
 		fail(_K=="ru" ? ("Рассчитать контрольную сумму можно только через SSH протокол") : ("The checksum can be calculated only via the SSH protocol"));

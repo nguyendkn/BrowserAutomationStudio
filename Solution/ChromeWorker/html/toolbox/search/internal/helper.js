@@ -12,12 +12,12 @@ SearchLib.TextProcessor = {
   /**
    * Regex pattern for trimming (right).
    */
-  trimRightRegex: /[^\wА-Яа-яЁё#+]+$/,
+  trimRightRegex: /[^\wА-Яа-яЁё"#+]+$/,
 
   /**
    * Regex pattern for trimming (left).
    */
-  trimLeftRegex: /^[^\wА-Яа-яЁё#+]+/,
+  trimLeftRegex: /^[^\wА-Яа-яЁё"#+]+/,
 
   /**
    * Max chars limit for truncating.
@@ -116,7 +116,10 @@ SearchLib.TextProcessor = {
    * @returns {String[]} array of tokens.
    */
   tokenize(string) {
-    return string.split(this.tokenizeRegex).map((token) => this.trim(token));
+    return string.split(this.tokenizeRegex)
+      .map((token) => this.trim(token))
+      .filter((token) => token !== ' ')
+      .filter((token) => token !== '');
   },
 
   /**

@@ -1,6 +1,6 @@
 <div class="container-fluid">
 <%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote path to file or folder"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path on the remote server to the file/folder which needs to be copied."),examples:[{code:"/html/test"},{code:"/public_html/test1.zip"},{code:"/domains/site.com/public_html/test2.txt"}]} }) %>
-<%= _.template($('#input_constructor').html())({id:"CopyPath", description:tr("Remote destination path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path on the remote server to the location where the file will be copied or folder contents."),examples:[{code:"/html/new_test"},{code:"/public_html/new_test1"},{code:"/domains/site.com/public_html/new/test"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"CopyPath", description:tr("Remote destination path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path on the remote server to the location where the file will be copied."),examples:[{code:"/html/new_test"},{code:"/public_html/new_test1"},{code:"/domains/site.com/public_html/new/test"}]} }) %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Copy file/folder to another location on the remote server.</div>

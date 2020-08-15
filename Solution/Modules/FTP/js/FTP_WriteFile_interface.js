@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote file path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the file on the remote server in which needs to write data."),examples:[{code:"/html/test/index.html"},{code:"/public_html/test1.js"},{code:"/domains/site.com/public_html/test2.txt"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote file path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the file on the remote server in which data will be written."),examples:[{code:"/html/test/index.html"},{code:"/public_html/test1.js"},{code:"/domains/site.com/public_html/test2.txt"}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Data"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Data that will be written to the specified file on the remote server.")} }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<div><input type="checkbox" id="Check"/> <label for="Check" class="tr">Add line ending symbol</label></div>

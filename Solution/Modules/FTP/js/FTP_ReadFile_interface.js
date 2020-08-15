@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote file path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the file on the remote server which needs to read."),examples:[{code:"/html/test/index.html"},{code:"/public_html/test1.js"},{code:"/domains/site.com/public_html/test2.txt"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote file path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the file on the remote server which will be read."),examples:[{code:"/html/test/index.html"},{code:"/public_html/test1.js"},{code:"/domains/site.com/public_html/test2.txt"}]} }) %>
 <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "REMOTEFILE_CONTENT", help: {description: tr("Variable in which, after the successful execution of the action, the contents of the read file will be written.")}}) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<input type="checkbox" id="Check"/> <label for="Check" class="tr">Save in base64 format</label>

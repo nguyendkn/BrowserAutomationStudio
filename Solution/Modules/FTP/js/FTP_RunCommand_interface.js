@@ -8,11 +8,11 @@
 <%= _.template($('#variable_constructor').html())({id:"Error", description:tr("Error output"), default_variable: "ERROR_OUTPUT", help: {description: tr("This variable will contain the result of the command with error.")}}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Execute bash command on a remote server and save the results to variables.</div>
+	<div class="tr tooltip-paragraph-first-fold">Execute bash command on a remote server.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action only works with the SSH protocol.</div>
-	<div class="tooltip-paragraph-fold"><span class="tr">The command  can have multiple lines, you can learn more about bash in</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html');return false">Bash Manual</a><span>.</span></div>
-	<div class="tr tooltip-paragraph-fold">Working folder by default is is the current working directory of the remote server, you may want to change it with "Working folder" parameter or by running "cd" command.</div>
+	<div class="tooltip-paragraph-fold"><span class="tr">The command  can have multiple lines, you can learn more about bash in</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html');return false">manual</a><span>.</span></div>
+	<div class="tr tooltip-paragraph-fold">Working folder by default is the home folder of current user, you may want to change it with "Working folder" parameter or by running "cd" command.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

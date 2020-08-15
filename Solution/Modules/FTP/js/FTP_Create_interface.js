@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote path to new file/folder"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path on the remote server to the new file/folder available after creation."),examples:[{code:"/html/new_test"},{code:"/public_html/new_test1.zip"},{code:"/domains/site.com/public_html/new_test2.txt"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"FilePath", description:tr("Remote path to new file/folder"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path on the remote server to the new file/folder which will be available after creation."),examples:[{code:"/html/new_test"},{code:"/public_html/new_test1.zip"},{code:"/domains/site.com/public_html/new_test2.txt"}]} }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<div><input type="radio" id="Check"  name="filetype" checked/> <label for="Check" class="tr">File</label></div>
 </span>

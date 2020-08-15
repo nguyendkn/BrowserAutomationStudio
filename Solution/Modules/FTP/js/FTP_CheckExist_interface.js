@@ -4,7 +4,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Check if a file/folder exists at the specified path on the remote server.</div>
-	<div class="tr tooltip-paragraph-fold">This action will return true or false depending on the existence of the file/folder.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return true or false depending on the existence of the file/folder. This result may be used with "If" action.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure FTP/SSH" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action works with both files and folders.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

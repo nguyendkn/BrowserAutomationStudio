@@ -1,11 +1,11 @@
 class BasSearchEngine extends SearchLib.SearchEngine {
   static weights = {
-    descriptions: { youtube: 0.1, action: 0.1, wiki: 0.1 },
-    suggestions: { youtube: 0.1, action: 0.1, wiki: 0.1 },
-    timestamps: { youtube: 0.1, action: 0.1, wiki: 0.1 },
-    variables: { youtube: 0.1, action: 0.1, wiki: 0.1 },
-    module: { youtube: 0.5, action: 0.5, wiki: 0.5 },
-    name: { youtube: 0.2, action: 0.2, wiki: 0.2 }
+    descriptions: { youtube: 0.25, action: 0.10, wiki: 0.25 },
+    suggestions: { youtube: 0.00, action: 0.10, wiki: 0.25 },
+    timestamps: { youtube: 0.25, action: 0.00, wiki: 0.00 },
+    variables: { youtube: 0.00, action: 0.10, wiki: 0.00 },
+    module: { youtube: 0.00, action: 0.50, wiki: 0.00 },
+    name: { youtube: 0.50, action: 0.20, wiki: 0.50 }
   };
 
   /**

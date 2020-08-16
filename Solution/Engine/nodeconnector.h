@@ -27,6 +27,7 @@ namespace BrowserAutomationStudioFramework
         QSharedPointer<QFile> NodeExeLock;
         bool LogEnabled = false;
         bool IsRecord = false;
+        bool HasPipeVersion = false;
 
         QString Suffix;
 
@@ -83,6 +84,7 @@ namespace BrowserAutomationStudioFramework
         virtual void AddFile(const QString& Path,const QString& Code);
         virtual QHash<QString,QString> GetFiles();
         virtual void ClearLanguageSettings();
+        void SetHasPipeVersion();
     signals:
 
     public slots:

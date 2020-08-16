@@ -124,6 +124,11 @@ namespace BrowserAutomationStudioFramework
         return Files;
     }
 
+    void NodeConnector::SetHasPipeVersion()
+    {
+        this->HasPipeVersion = true;
+    }
+
 
     void NodeConnector::ClearLanguageSettings()
     {
@@ -814,7 +819,11 @@ namespace BrowserAutomationStudioFramework
         Server = QSharedPointer<QLocalServer>::create();
         connect(Server.data(),SIGNAL(newConnection()),this,SLOT(NewConnection()));
 
-        Server->listen(QString("\\\\.\\pipe\\basembeddedpipes") + QString::number(qApp->applicationPid()));
+        QString PipeName = QString("\\\\.\\pipe\\basembeddedpipes");
+        if(HasPipeVersion)
+            PipeName += GetLanguageVersion();
+        PipeName += QString::number(qApp->applicationPid());
+        Server->listen(PipeName);
     }
 
     void NodeConnector::StartProcess()

@@ -201,7 +201,7 @@ namespace BrowserAutomationStudioFramework
         for(QString& LanguageString:LanguageStrings.split(";"))
         {
             QStringList LanguageSplit = LanguageString.split(",");
-            if(LanguageSplit.length() == 2 && LanguageSplit[0] == QString("Node") && LanguageSplit[1] == QString("8.6.0"))
+            if(LanguageSplit.length() == 2 && LanguageSplit[0] == QString("Node") && (LanguageSplit[1] == QString("8.6.0") || LanguageSplit[1] == QString("12.18.3")))
             {
                 EmbeddedLanguage l;
                 l.Name = LanguageSplit[0];
@@ -440,7 +440,7 @@ namespace BrowserAutomationStudioFramework
         emit InitializationTitle(DialogTitle);
 
         /* Validation */
-        if(Lang.Name != "Node" || Lang.Version != "8.6.0")
+        if(Lang.Name != "Node" || (Lang.Version != "8.6.0" && Lang.Version != "12.18.3"))
         {
             Error(QString(tr("Unknown language or version %1 %2")).arg(Lang.Name).arg(Lang.Version));
             return;
@@ -452,6 +452,8 @@ namespace BrowserAutomationStudioFramework
         {
             /* Setup node connector */
             Connector = new NodeConnector(this);
+            if(Lang.Version != "8.6.0")
+                Connector->SetHasPipeVersion();
             Connector->SetLanguageVersion(Lang.Version);
             Connector->SetIsRecord(IsRecord);
 

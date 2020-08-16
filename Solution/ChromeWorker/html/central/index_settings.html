@@ -225,9 +225,15 @@
 			$("#UseHumanLikeMouseMoves").prop("checked",json["emulatemouse"])
 			$("#ProxiesReconnect").prop("checked",json["proxies_reconnect"])
 			$('.language-switch[data-lang="Node"][data-version="8.6.0"]').prop("checked",json["languages"].indexOf("Node,8.6.0")>=0)
+			$('.language-switch[data-lang="Node"][data-version="12.18.3"]').prop("checked",json["languages"].indexOf("Node,12.18.3")>=0)
+
 			if(json["languages"].indexOf("Node,8.6.0")>=0)
 			{
 				$('.language-panel[data-lang="Node"][data-version="8.6.0"]').show()
+			}
+			if(json["languages"].indexOf("Node,12.18.3")>=0)
+			{
+				$('.language-panel[data-lang="Node"][data-version="12.18.3"]').show()
 			}
 			var modules = json["modules"].split(";")
 			modules.forEach((module) => {
@@ -274,6 +280,7 @@
 				$('.language-switch').prop("checked", false)
 				$('.language-panel').hide()
 				$('[data-lang="Node"][data-version="8.6.0"][data-is-modules="true"]').html("")
+				$('[data-lang="Node"][data-version="12.18.3"][data-is-modules="true"]').html("")
 
 				UpdateInterfaceVisibility();
 
@@ -347,6 +354,35 @@
 	<div id="no-languages" class="no-lang tr">Started without embedded languages.</div>
 
 	<span id="all-languages">
+
+
+		<div class="container">
+			<div class="checkbox text-center">
+				<label>
+				  <input type="checkbox" class="language-switch" data-lang="Node" data-version="12.18.3"> <span class="tr">Node.js v12.18.3</span>
+				</label>
+			</div>
+		</div>
+
+
+		<span class="language-panel" data-lang="Node" data-version="12.18.3" style="display:none">
+
+			<div class="container" >
+				<div class="text-center" style="margin-top:12px;margin-bottom:12px;" data-lang="Node" data-version="12.18.3" data-is-modules="true" >
+
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="text-center">
+					<a class="btn btn-sm btn-success tr" href="#" data-lang="Node" data-version="12.18.3" data-is-add-modules="true"  >+ Add npm module</a>	
+				</div>
+			</div>
+		</span>
+
+		<hr>
+
+
 		<div class="container">
 			<div class="checkbox text-center">
 				<label>
@@ -359,17 +395,21 @@
 		<span class="language-panel" data-lang="Node" data-version="8.6.0" style="display:none">
 
 			<div class="container" >
-				<div class="text-center" style="margin-top:12px;" data-lang="Node" data-version="8.6.0" data-is-modules="true" >
+				<div class="text-center" style="margin-top:12px;margin-bottom:12px;" data-lang="Node" data-version="8.6.0" data-is-modules="true" >
 
 				</div>
 			</div>
 
 			<div class="container">
-				<div class="text-center" style="margin-top:20px">
-					<a class="btn btn-sm btn-success tr" href="#" id="addmodule" data-lang="Node" data-version="8.6.0" data-is-add-modules="true"  >+ Add npm module</a>	
+				<div class="text-center">
+					<a class="btn btn-sm btn-success tr" href="#" data-lang="Node" data-version="8.6.0" data-is-add-modules="true"  >+ Add npm module</a>	
 				</div>
 			</div>
 		</span>
+
+		
+
+		
 	</span>
 
 

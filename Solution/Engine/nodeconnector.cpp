@@ -18,7 +18,7 @@ namespace BrowserAutomationStudioFramework
     QString NodeConnector::GetRandomString()
     {
        const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-       const int randomStringLength = 12;
+       const int randomStringLength = 4;
 
        QString randomString;
        for(int i=0; i<randomStringLength; ++i)
@@ -167,19 +167,19 @@ namespace BrowserAutomationStudioFramework
         hash.addData(Str.toUtf8());
 
         Str = QString::fromUtf8(hash.result().toHex());
-        Str = Str.mid(0,8);
+        Str = Str.mid(0,4);
         return Str;
 
     }
 
     QString NodeConnector::GetExecutableLocationForNode()
     {
-        return QDir::cleanPath(QString("embedded") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"));
+        return QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"));
     }
 
     QString NodeConnector::GetExecutableLocationForMain()
     {
-        return QDir::cleanPath(QString("embedded") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("lib") + QDir::separator() + QString("main.js"));
+        return QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("lib") + QDir::separator() + QString("main.js"));
     }
 
     bool NodeConnector::IsX64()
@@ -196,11 +196,11 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::RemoveCacheCurrentInstall(bool RemoveZip)
     {
-        QString dir = QFileInfo(QDir::cleanPath(QString("embedded") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
+        QString dir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
         QDir(dir).removeRecursively();
         if(RemoveZip)
         {
-            QString cache = QString("embedded/cache.node.%1.zip").arg(LanguageVersion);
+            QString cache = QString("e/cache.node.%1.zip").arg(LanguageVersion);
             QFile file(cache);
             file.remove();
         }
@@ -208,7 +208,7 @@ namespace BrowserAutomationStudioFramework
 
     QString NodeConnector::FindInstalledDistr()
     {
-        QDir dir("embedded");
+        QDir dir("e");
         dir.setNameFilters(QStringList() << "*");
         dir.setFilter(QDir::Dirs);
         foreach(QString dirString, dir.entryList())
@@ -243,7 +243,7 @@ namespace BrowserAutomationStudioFramework
     {
         LOG(QString("Autoclean"));
 
-        QDir dir("embedded");
+        QDir dir("e");
         dir.setNameFilters(QStringList() << "*");
         dir.setFilter(QDir::Dirs);
         QDateTime now = QDateTime::currentDateTime();
@@ -304,7 +304,7 @@ namespace BrowserAutomationStudioFramework
 
         if(!Suffix.isEmpty())
         {
-            QString NodePath = QDir::cleanPath(QString("embedded") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr"));
+            QString NodePath = QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr"));
             if(!DeleteFunctionsAndFiles(NodePath))
             {
                 LOG(QString("Failed to delete function files").arg(NodePath));
@@ -327,7 +327,7 @@ namespace BrowserAutomationStudioFramework
 
         LOG(QString("Suffix %1").arg(Suffix));
 
-        QString cache = QString("embedded/cache.node.%1.zip").arg(LanguageVersion);
+        QString cache = QString("e/cache.node.%1.zip").arg(LanguageVersion);
         if(QFileInfo(cache).exists())
         {
             LOG(QString("Found cache %1").arg(A(cache)));
@@ -358,11 +358,11 @@ namespace BrowserAutomationStudioFramework
             return;
         }
 
-        QString Path = QFileInfo(QString("embedded/cache.node.%1.zip").arg(LanguageVersion)).absoluteFilePath();
+        QString Path = QFileInfo(QString("e/cache.node.%1.zip").arg(LanguageVersion)).absoluteFilePath();
 
         LOG(QString("Writting to %1").arg(Path));
 
-        QString Dir = QFileInfo(QDir::cleanPath(QString("embedded") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
+        QString Dir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
         QDir(Dir).mkpath(".");
 
         QString Base64 = _HttpClient->GetBase64();
@@ -384,9 +384,9 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::ExtractDistr()
     {
-        QString Path = QFileInfo(QString("embedded/cache.node.%1.zip").arg(LanguageVersion)).absoluteFilePath();
+        QString Path = QFileInfo(QString("e/cache.node.%1.zip").arg(LanguageVersion)).absoluteFilePath();
 
-        QString Dir = QFileInfo(QDir::cleanPath(QString("embedded") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
+        QString Dir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
         LOG(QString("Extracting to folder %1").arg(Dir));
 
 
@@ -422,13 +422,13 @@ namespace BrowserAutomationStudioFramework
         QJsonDocument document;
         document.setObject(object);
 
-        QFile FileJson(QString("embedded/cache.%1/distr/package.json").arg(Suffix));
+        QFile FileJson(QString("e/cache.%1/distr/package.json").arg(Suffix));
         if(!FileJson.open(QIODevice::WriteOnly))
         {
-            LOG(QString("Failed to write to json file %1. Maybe damaged archive?").arg(A(QString("embedded/cache.%1/distr/package.json").arg(Suffix))));
+            LOG(QString("Failed to write to json file %1. Maybe damaged archive?").arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
 
             RemoveCacheCurrentInstall(true);
-            emit Started(true,QString(tr("Failed to write to json file %1")).arg(A(QString("embedded/cache.%1/distr/package.json").arg(Suffix))));
+            emit Started(true,QString(tr("Failed to write to json file %1")).arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
             return;
         }
         FileJson.write(document.toJson());
@@ -439,8 +439,8 @@ namespace BrowserAutomationStudioFramework
         QStringList params;
         params.append("node_modules\\npm\\bin\\npm-cli.js");
         params.append("install");
-        QString WorkingDir = QFileInfo(QDir::cleanPath(QString("embedded") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"))).absoluteFilePath();
-        QString NpmPath = QFileInfo(QDir::cleanPath(QString("embedded") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"))).absoluteFilePath();
+        QString WorkingDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"))).absoluteFilePath();
+        QString NpmPath = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"))).absoluteFilePath();
         LOG(QString("npm install with %1").arg(NpmPath));
 
         NpmInstallProcess->setWorkingDirectory(WorkingDir);
@@ -489,7 +489,7 @@ namespace BrowserAutomationStudioFramework
             return;
         }*/
 
-        QString NodePath = QDir::cleanPath(QString("embedded") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"));
+        QString NodePath = QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"));
         if(!DeleteFunctionsAndFiles(NodePath))
         {
             LOG(QString("Failed to delete function files"));
@@ -514,8 +514,8 @@ namespace BrowserAutomationStudioFramework
             QFutureWatcher<void> Watcher;
             QEventLoop loop;
             connect(&Watcher, SIGNAL(finished()), &loop, SLOT(quit()));
-            QString from = A(QString("embedded/cache.") + Suffix);
-            QString to = A(QString("embedded/") + GetLanguageSettingsHash() + QString(".") + Suffix);
+            QString from = A(QString("e/cache.") + Suffix);
+            QString to = A(QString("e/") + GetLanguageSettingsHash() + QString(".") + Suffix);
             QDir(to).mkpath(".");
             LOG(QString("Renaming directory %1 -> %2").arg(from).arg(to));
             QFuture<void> Future = QtConcurrent::run([from,to,&res]() {
@@ -527,8 +527,8 @@ namespace BrowserAutomationStudioFramework
             loop.exec();
         }*/
 
-        QString from = A(QString("embedded/cache.") + Suffix);
-        QString to = A(QString("embedded/") + GetLanguageSettingsHash() + QString(".") + Suffix);
+        QString from = A(QString("e/cache.") + Suffix);
+        QString to = A(QString("e/") + GetLanguageSettingsHash() + QString(".") + Suffix);
         QDir(to).mkpath(".");
         LOG(QString("Renaming directory %1 -> %2").arg(from).arg(to));
         RecurseCopyAddDir(from,to);
@@ -656,7 +656,7 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::StartInternal()
     {
-        QString LockPath = QDir::cleanPath(QString("embedded") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("lock.file"));
+        QString LockPath = QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("lock.file"));
         LockPath = QFileInfo(LockPath).absoluteFilePath();
 
         if(NodeExeLock.isNull())

@@ -26,6 +26,8 @@ class BasSearchEngine extends SearchLib.SearchEngine {
         if (site === 'wiki') return score * 0.7;
         return score;
       },
+      useEnglishStemmer: false,
+      useRussianStemmer: false,
       tokenizerOptions: {
         trimRightRegex: SearchLib.TextProcessor.trimRightRegex,
         trimLeftRegex: SearchLib.TextProcessor.trimLeftRegex,

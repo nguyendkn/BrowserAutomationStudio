@@ -66,6 +66,8 @@ class BasSearchEngine extends SearchLib.SearchEngine {
       results = super.search(queryStr, ['descriptions']);
     }
 
+    console.log('after #3:', this.canceled);
+
     this.cache[queryStr] = _.uniq(results, ({ document }) => document.key)
       .filter(({ document }) => {
         const ignored = [
@@ -87,20 +89,20 @@ class BasSearchEngine extends SearchLib.SearchEngine {
 
         if (document.type === 'action') {
           const variable = document.variables[varsInfo.index];
-          const array = document.descriptions;
-          const short = document.description;
-          const item = array[descInfo.index];
 
           if (variable && variable === variable.toUpperCase()) {
             varsInfo.color = 'green';
           } else {
             varsInfo.color = 'dark';
           }
-
-          descInfo.skip = short.includes(item);
         }
 
-        return { keywords, descInfo, suggInfo, timeInfo, varsInfo, timecode: this.getTimecode(document, timeInfo), ...document };
+        const array = document.descriptions;
+        const short = document.description;
+        const item = array[descInfo.index];
+        descInfo.skip = short.includes(item);
+
+        return { descInfo, suggInfo, timeInfo, varsInfo, keywords, timecode: this.getTimecode(document, timeInfo), ...document };
       });
 
     return this.cache[queryStr];

@@ -66,8 +66,6 @@ class BasSearchEngine extends SearchLib.SearchEngine {
       results = super.search(queryStr, ['descriptions']);
     }
 
-    console.log('after #3:', this.canceled);
-
     this.cache[queryStr] = _.uniq(results, ({ document }) => document.key)
       .filter(({ document }) => {
         const ignored = [

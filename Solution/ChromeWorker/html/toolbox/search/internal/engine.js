@@ -54,7 +54,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    * @returns {Object[]} search results array.
    */
   search(query) {
-    const queryStr = SearchLib.TextProcessor.trim(query); let results = [];
+    const queryStr = SearchLib.TextProcessor.trim(query, true); let results = [];
 
     if (this.inCache(queryStr)) {
       return this.cache[queryStr];

@@ -5,6 +5,16 @@ SearchLib.TextProcessor = {
   sentenceTokenizer: new SearchLib.SentenceTokenizer(),
 
   /**
+   * Regex pattern for trimming sentences (right).
+   */
+  trimRightSentenceRegex: /[^\wА-Яа-яЁё)"'#+]+$/,
+
+  /**
+   * Regex pattern for trimming sentences (left).
+   */
+  trimLeftSentenceRegex: /^[^\wА-Яа-яЁё("'#+]+/,
+
+  /**
    * Regex pattern for default tokenization.
    */
   tokenizeRegex: /[^\wА-Яа-яЁё0-9_.#+]+/,
@@ -36,7 +46,7 @@ SearchLib.TextProcessor = {
     let truncEnd = false;
     let next = 'start';
 
-    while ((sentence = this.trim(sentence)).length >= this.truncateLimit) {
+    while ((sentence = this.trim(sentence, true)).length >= this.truncateLimit) {
       const tokens = this.tokenize(sentence);
       const head = tokens.shift();
       const last = tokens.pop();
@@ -67,7 +77,7 @@ SearchLib.TextProcessor = {
 
     if (truncStart) sentence = `... ${sentence}`;
     if (truncEnd) sentence = `${sentence} ...`;
-    return sentence;
+    return _.escape(sentence);
   },
 
   /**
@@ -94,20 +104,35 @@ SearchLib.TextProcessor = {
 
   /**
    * Trim the selected text by removing non-word characters from the right end of the string.
+   * @param {Boolean} asSentence - trim selected text as a sentence.
    * @param {String} string - selected text string.
    * @returns {String} processed text string.
    */
-  trimRight(string) {
-    return string.replace(this.trimRightRegex, '');
+  trimRight(string, asSentence = false) {
+    return string.replace(asSentence ? this.trimRightSentenceRegex : this.trimRightRegex, '');
   },
 
   /**
    * Trim the selected text by removing non-word characters from the left end of the string.
+   * @param {Boolean} asSentence - trim selected text as a sentence.
    * @param {String} string - selected text string.
    * @returns {String} processed text string.
    */
-  trimLeft(string) {
-    return string.replace(this.trimLeftRegex, '');
+  trimLeft(string, asSentence = false) {
+    return string.replace(asSentence ? this.trimLeftSentenceRegex : this.trimLeftRegex, '');
+  },
+
+  /**
+   * Trim the selected text by removing non-word characters using the processor patterns.
+   * @param {Boolean} asSentence - trim selected text as a sentence.
+   * @param {String} string - selected text string.
+   * @returns {String} processed text string.
+   */
+  trim(string, asSentence = false) {
+    let result = string.slice();
+    result = this.trimRight(result, asSentence);
+    result = this.trimLeft(result, asSentence);
+    return result;
   },
 
   /**
@@ -120,17 +145,5 @@ SearchLib.TextProcessor = {
       .map((token) => this.trim(token))
       .filter((token) => token !== ' ')
       .filter((token) => token !== '');
-  },
-
-  /**
-   * Trim the selected text by removing non-word characters.
-   * @param {String} string - selected text string.
-   * @returns {String} processed text string.
-   */
-  trim(string) {
-    let result = string.slice();
-    result = this.trimRight(result);
-    result = this.trimLeft(result);
-    return result;
   }
 }

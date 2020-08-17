@@ -61,17 +61,19 @@ class DocumentsStore {
       const node = $('<div />');
       node.append(data);
 
-      const contents = node.contents();
-
-      if (contents.length > 1) {
-        contents.each(function () {
-          $(this).text((index, text) => tr(text));
-        });
-
-        return node.text().trim();
+      if (this.lang === 'en') {
+        node.find('.tr-ru').remove();
       }
 
-      return _.unescape(tr(node.html()));
+      if (this.lang === 'ru') {
+        node.find('.tr-en').remove();
+      }
+
+      node.find('.tr').each(function () {
+        $(this).html((_, html) => tr(html));
+      });
+
+      return $('<div />').append(tr(node.html())).text();
     };
 
     const array = _.map(
@@ -95,11 +97,7 @@ class DocumentsStore {
    * @param {String} source - selected action source.
    */
   getActionVariables(source) {
-    const template = _.template(source)({
-      function_params: [],
-      selector: {},
-      model: {}
-    });
+    const template = _.template(source)({ function_params: [], selector: {}, model: {} });
 
     return _.uniq([
       ...$.map(

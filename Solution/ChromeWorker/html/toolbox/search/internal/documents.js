@@ -61,13 +61,9 @@ class DocumentsStore {
       const node = $('<div />');
       node.append(data);
 
-      if (this.lang === 'en') {
-        node.find('.tr-ru').remove();
-      }
+      if (this.lang === 'en') node.find('.tr-ru').remove();
 
-      if (this.lang === 'ru') {
-        node.find('.tr-en').remove();
-      }
+      if (this.lang === 'ru') node.find('.tr-en').remove();
 
       node.find('.tr').each(function () {
         $(this).html((_, html) => tr(html));

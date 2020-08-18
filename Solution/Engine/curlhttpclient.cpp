@@ -538,7 +538,7 @@ namespace BrowserAutomationStudioFramework
         foreach(QNetworkCookie cookie,Cookies.cookiesForUrl(QUrl(url)))
         {
             if(!first)
-                res.append(";");
+                res.append("; ");
             first = false;
             res.append(cookie.toRawForm(QNetworkCookie::NameAndValueOnly));
 

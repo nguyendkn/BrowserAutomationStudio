@@ -2116,14 +2116,29 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptWorker::FollowRedirectInternal(bool IsGet)
     {
+        bool CopyLastRedirectIsPost = LastRedirectIsPost;
+        QHash<QString,QString> CopyLastRedirectPostData = LastRedirectPostData;
+        PostOptions CopyLastRedirectPostSettings = LastRedirectPostSettings;
+        GetOptions CopyLastRedirectGetSettings = LastRedirectGetSettings;
+
+        LastRedirectIsPost = false;
+        LastRedirectPostData.clear();
+        LastRedirectPostSettings.Headers.clear();
+        LastRedirectGetSettings.Headers.clear();
 
         QString Location = GetActualHttpClient()->GetHeader("Location");
 
-        //Relative location
-        while(Location.startsWith("."))
-            Location.remove(0,1);
 
-        if(Location.startsWith("//"))
+        bool IsAbsolute = false;
+        {
+            QUrl url(Location);
+            IsAbsolute = url.isValid() && !url.isEmpty() && !url.isRelative();
+        }
+
+        if(IsAbsolute)
+        {
+            //Use Location without modifications
+        }else if(Location.startsWith("//"))
         {
             QUrl url = QUrl(GetActualHttpClient()->GetLastUrl());
 
@@ -2140,6 +2155,12 @@ namespace BrowserAutomationStudioFramework
             url.setFragment(urllocation.fragment());
 
             Location = url.toString();
+        }else if(!Location.isEmpty())
+        {
+            QUrl url = QUrl(GetActualHttpClient()->GetLastUrl());
+            QUrl urllocation = QUrl(Location);
+
+            Location = url.resolved(urllocation).toString();
         }
         GetActualHttpClient()->Disconnect();
         if(!Location.isEmpty())
@@ -2150,7 +2171,13 @@ namespace BrowserAutomationStudioFramework
                 if(HttpClientNextTimeout >= 0)
                     Waiter->SetGeneralWaitTimeoutNext(HttpClientNextTimeout);
                 Waiter->WaitForSignal(GetActualHttpClient(),SIGNAL(Finished()),this,SLOT(FollowRedirect()),this,SLOT(FailBecauseOfTimeout()));
-                GetActualHttpClient()->Get(Location);
+                if((GetActualHttpClient()->GetStatus() == 307 || GetActualHttpClient()->GetStatus() == 308) && CopyLastRedirectIsPost)
+                {
+                    GetActualHttpClient()->Post(Location,CopyLastRedirectPostData, CopyLastRedirectPostSettings);
+                }else
+                {
+                    GetActualHttpClient()->Get(Location, CopyLastRedirectGetSettings);
+                }
             }else
             {
                 if(HttpClientNextTimeout >= 0)
@@ -2269,6 +2296,12 @@ namespace BrowserAutomationStudioFramework
             Options.Method = p1["method"];
         }
         Options.Headers = p1["headers"].split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
+
+        LastRedirectIsPost = true;
+        LastRedirectPostData = p;
+        LastRedirectPostSettings = Options;
+        LastRedirectGetSettings.Method = "GET";
+        LastRedirectGetSettings.Headers = Options.Headers;
         GetActualHttpClient()->Post(url,p,Options);
     }
 
@@ -2337,6 +2370,7 @@ namespace BrowserAutomationStudioFramework
         SetFailMessage(tr("Failed to get page ") + url + tr(" with HttpClient"));
         HttpClientNextTimeout = Waiter->GetGeneralWaitTimeoutNext();
         Waiter->WaitForSignal(GetActualHttpClient(),SIGNAL(Finished()),this,SLOT(FollowRedirect()),this,SLOT(FailBecauseOfTimeout()));
+        LastRedirectIsPost = false;
         GetActualHttpClient()->Get(url);
     }
 
@@ -2395,6 +2429,8 @@ namespace BrowserAutomationStudioFramework
         }
         HttpClientNextTimeout = Waiter->GetGeneralWaitTimeoutNext();
         Waiter->WaitForSignal(GetActualHttpClient(),SIGNAL(Finished()),this,SLOT(FollowRedirect()),this,SLOT(FailBecauseOfTimeout()));
+        LastRedirectIsPost = false;
+        LastRedirectGetSettings = Options;
         GetActualHttpClient()->Get(url,Options);
     }
 

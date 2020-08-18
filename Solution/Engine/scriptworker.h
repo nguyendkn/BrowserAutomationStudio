@@ -153,6 +153,12 @@ namespace BrowserAutomationStudioFramework
         double RecaptchaV3Score = 0.6;
         bool RecaptchaV3UseProxy = false;
 
+        /*Http redirect*/
+        bool LastRedirectIsPost = false;
+        QHash<QString,QString> LastRedirectPostData;
+        PostOptions LastRedirectPostSettings;
+        GetOptions LastRedirectGetSettings;
+
     public:
         explicit ScriptWorker(QObject *parent = 0);
         ~ScriptWorker();

@@ -116,6 +116,17 @@ namespace BrowserAutomationStudioFramework
         }
         QStringList Folders = AutoCleanPrepare();
         Folders.append(CacheDir);
+        if(IsError)
+        {
+            if(!NodeExeLock.isNull())
+            {
+                NodeExeLock->close();
+                NodeExeLock.reset();
+            }
+            QString Path = A(QString("e/") + GetLanguageSettingsHash() + QString(".") + Suffix);
+            Folders.append(Path);
+            LOG(QString("Autoclean current folder becuase of error %1").arg(Path));
+        }
 
         if(IsError)
         {

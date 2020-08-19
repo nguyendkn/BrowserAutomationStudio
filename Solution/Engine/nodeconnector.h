@@ -21,6 +21,7 @@ namespace BrowserAutomationStudioFramework
         QSharedPointer<QProcess> NpmInstallProcess;
         QLocalSocket *Client;
         bool IsActive = false;
+        bool IsProcessRestart = false;
         bool NoNeedRestartProcess = false;
         QList<QString> SendQueue;
         QString DataAll;
@@ -76,6 +77,8 @@ namespace BrowserAutomationStudioFramework
         void OnDistrExtracted();
         void OnFolderMoved();
         void OnFinalizeInstall();
+        void FailedToStartNpm(QProcess::ProcessError error);
+        void FailedToStartNode(QProcess::ProcessError error);
 
     public:
 

@@ -499,6 +499,7 @@ namespace BrowserAutomationStudioFramework
 
         NpmInstallProcess = QSharedPointer<QProcess>::create();
         connect(NpmInstallProcess.data(),SIGNAL(finished(int)),this,SLOT(NpmInstalled(int)));
+        connect(NpmInstallProcess.data(),SIGNAL(errorOccurred(QProcess::ProcessError)),this,SLOT(FailedToStartNpm(QProcess::ProcessError)));
         QStringList params;
         params.append("node_modules\\npm\\bin\\npm-cli.js");
         params.append("install");
@@ -508,6 +509,26 @@ namespace BrowserAutomationStudioFramework
 
         NpmInstallProcess->setWorkingDirectory(WorkingDir);
         NpmInstallProcess->start(NpmPath, params);
+    }
+
+    void NodeConnector::FailedToStartNpm(QProcess::ProcessError error)
+    {
+        if(error == QProcess::FailedToStart)
+        {
+            LOG(QString("Failed to execute npm install"));
+            FinalizeInstall(true,tr("Failed to execute npm install"));
+            return;
+        }
+    }
+
+    void NodeConnector::FailedToStartNode(QProcess::ProcessError error)
+    {
+        if(error == QProcess::FailedToStart && !IsProcessRestart)
+        {
+            LOG(QString("Failed to start node"));
+            FinalizeInstall(true,tr("Failed to start node"));
+            return;
+        }
     }
 
     void NodeConnector::NpmInstalled(int StatusCode)
@@ -709,6 +730,8 @@ namespace BrowserAutomationStudioFramework
         if(!Process.isNull())
         {
             disconnect(Process.data(),SIGNAL(finished(int)),this,SLOT(ProcessFinished()));
+            disconnect(Process.data(),SIGNAL(errorOccurred(QProcess::ProcessError)),this,SLOT(FailedToStartNode(QProcess::ProcessError)));
+
             Process->kill();
             Process.reset();
             emit Stopped(QString(""));
@@ -816,6 +839,7 @@ namespace BrowserAutomationStudioFramework
         if(IsActive)
         {
             IsActive = false;
+            IsProcessRestart = true;
             QString log = Process->readAllStandardError();
             LOG(QString("Stopped %1").arg(log));
             emit Stopped(log);
@@ -851,6 +875,8 @@ namespace BrowserAutomationStudioFramework
         Process = QSharedPointer<QProcess>(new QProcess,&QObject::deleteLater);
         //Process->setProcessChannelMode(QProcess::ForwardedChannels);
         connect(Process.data(),SIGNAL(finished(int)),this,SLOT(ProcessFinished()));
+        connect(Process.data(),SIGNAL(errorOccurred(QProcess::ProcessError)),this,SLOT(FailedToStartNode(QProcess::ProcessError)));
+
         QStringList Params;
         Params.append(GetExecutableLocationForMain());
         Params.append(QString::number(qApp->applicationPid()));

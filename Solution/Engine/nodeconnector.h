@@ -39,6 +39,11 @@ namespace BrowserAutomationStudioFramework
 
         QSharedPointer<HttpClient> _HttpClient;
 
+        /* FinalizeInstall */
+        void FinalizeInstall(bool IsError, const QString& Message);
+        bool FinalizeInstallIsError;
+        QString FinalizeInstallMessage;
+
     public:
         explicit NodeConnector(QObject *parent = 0);
         ~NodeConnector();
@@ -63,13 +68,14 @@ namespace BrowserAutomationStudioFramework
         /*Returns is success*/
         bool DeleteFunctionsAndFiles(const QString& NodePath);
         bool InstallFunctionsAndFiles(const QString& NodePath);
-        void RemoveCacheCurrentInstall(bool RemoveZip);
         QString FindInstalledDistr();
         void LOG(const QString& Text);
-        void AutoClean();
+        QStringList AutoCleanPrepare();
         QString GetRandomString();
         QString A(const QString& RelativePath);
-
+        void OnDistrExtracted();
+        void OnFolderMoved();
+        void OnFinalizeInstall();
 
     public:
 

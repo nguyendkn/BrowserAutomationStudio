@@ -67,6 +67,74 @@ namespace BrowserAutomationStudioFramework
     {
     }
 
+    void ExtractDir(QString Path, QString Dir)
+    {
+        JlCompress::extractDir(Path,Dir);
+    }
+
+    void RemoveDir(QString Dir)
+    {
+        QDir(Dir).removeRecursively();
+    }
+
+    bool RenameDir(QString From, QString To)
+    {
+        QDir dir;
+        return dir.rename(From,To);
+    }
+
+    void RemoveData(QStringList Folders, QStringList Files)
+    {
+        for(const QString& Folder:Folders)
+        {
+            RemoveDir(Folder);
+        }
+        for(const QString& File:Files)
+        {
+            QFile file(File);
+            file.remove();
+        }
+    }
+
+    void NodeConnector::FinalizeInstall(bool IsError, const QString& Message)
+    {
+        FinalizeInstallIsError = IsError;
+        FinalizeInstallMessage = Message;
+
+        QFutureWatcher<void> *watcher = new QFutureWatcher<void>();
+        QFuture<void> future;
+        connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater()));
+        connect(watcher, SIGNAL(finished()), this, SLOT(OnFinalizeInstall()));
+
+        QString CacheDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
+        QString ZipLocation = QString("e/cache.node.%1.zip").arg(LanguageVersion);
+
+        QStringList Files;
+        if(IsError)
+        {
+            Files.append(ZipLocation);
+        }
+        QStringList Folders = AutoCleanPrepare();
+        Folders.append(CacheDir);
+
+        if(IsError)
+        {
+            LOG(QString("Autoclean distr becuase of error %1").arg(ZipLocation));
+        }
+        LOG(QString("Autoclean current cache %1").arg(CacheDir));
+
+        future = QtConcurrent::run(RemoveData, Folders, Files);
+        watcher->setFuture(future);
+
+    }
+
+    void NodeConnector::OnFinalizeInstall()
+    {
+        emit Started(FinalizeInstallIsError,FinalizeInstallMessage);
+    }
+
+
+
     /* Language Settings*/
 
     QString NodeConnector::GetLanguageName()
@@ -194,17 +262,7 @@ namespace BrowserAutomationStudioFramework
         NoNeedRestartProcess = true;
     }
 
-    void NodeConnector::RemoveCacheCurrentInstall(bool RemoveZip)
-    {
-        QString dir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
-        QDir(dir).removeRecursively();
-        if(RemoveZip)
-        {
-            QString cache = QString("e/cache.node.%1.zip").arg(LanguageVersion);
-            QFile file(cache);
-            file.remove();
-        }
-    }
+
 
     QString NodeConnector::FindInstalledDistr()
     {
@@ -239,8 +297,9 @@ namespace BrowserAutomationStudioFramework
         return QString();
     }
 
-    void NodeConnector::AutoClean()
+    QStringList NodeConnector::AutoCleanPrepare()
     {
+        QStringList Result;
         LOG(QString("Autoclean"));
 
         QDir dir("e");
@@ -260,7 +319,8 @@ namespace BrowserAutomationStudioFramework
                 if(Diff > 5 * 60)
                 {
                     LOG(QString("Autoclean %1").arg(i.absoluteFilePath()));
-                    QDir(i.absoluteFilePath()).removeRecursively();
+                    Result.append(i.absoluteFilePath());
+                    //RemoveDir(i.absoluteFilePath());
                 }
 
             }else
@@ -279,13 +339,14 @@ namespace BrowserAutomationStudioFramework
                     if(!LockPathFile.exists())
                     {
                         LOG(QString("Autoclean %1").arg(dir.absoluteFilePath(dirString)));
-                        QDir(dir.absoluteFilePath(dirString)).removeRecursively();
+                        Result.append(dir.absoluteFilePath(dirString));
+                        //RemoveDir(dir.absoluteFilePath(dirString));
                     }
                 }
 
             }
         }
-
+        return Result;
     }
 
     void NodeConnector::Start()
@@ -353,8 +414,7 @@ namespace BrowserAutomationStudioFramework
         if(_HttpClient->WasError())
         {
             LOG(QString("Http error ").arg(_HttpClient->GetErrorString()));
-            RemoveCacheCurrentInstall(true);
-            emit Started(true,_HttpClient->GetErrorString());
+            FinalizeInstall(true,_HttpClient->GetErrorString());
             return;
         }
 
@@ -365,18 +425,16 @@ namespace BrowserAutomationStudioFramework
         QString Dir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
         QDir(Dir).mkpath(".");
 
-        QString Base64 = _HttpClient->GetBase64();
+        QByteArray Data = _HttpClient->GetPageData();
 
         QFile file(Path);
         if(!file.open(QIODevice::WriteOnly))
         {
             LOG(QString("Failed to write to zip file to %1").arg(Path));
-
-            RemoveCacheCurrentInstall(true);
-            emit Started(true,QString(tr("Failed to write to zip file to %1")).arg(Path));
+            FinalizeInstall(true,QString(tr("Failed to write to zip file to %1")).arg(Path));
             return;
         }
-        file.write(QByteArray::fromBase64(Base64.toUtf8()));
+        file.write(Data);
         file.close();
 
         ExtractDistr();
@@ -389,22 +447,18 @@ namespace BrowserAutomationStudioFramework
         QString Dir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
         LOG(QString("Extracting to folder %1").arg(Dir));
 
+        QFutureWatcher<void> *watcher = new QFutureWatcher<void>();
+        QFuture<void> future;
+        connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater()));
+        connect(watcher, SIGNAL(finished()), this, SLOT(OnDistrExtracted()));
 
-        /*{
-            QFutureWatcher<void> Watcher;
-            QEventLoop loop;
-            connect(&Watcher, SIGNAL(finished()), &loop, SLOT(quit()));
+        future = QtConcurrent::run(ExtractDir,Path,Dir);
+        watcher->setFuture(future);
 
-            QFuture<void> Future = QtConcurrent::run([Path,Dir]() {
-                JlCompress::extractDir(Path,Dir);
-            });
-            Watcher.setFuture(Future);
+    }
 
-            loop.exec();
-        }*/
-
-        JlCompress::extractDir(Path,Dir);
-
+    void NodeConnector::OnDistrExtracted()
+    {
         QVariantMap dependencies;
         QHashIterator<QString, QString> i(Modules);
         while (i.hasNext())
@@ -426,9 +480,7 @@ namespace BrowserAutomationStudioFramework
         if(!FileJson.open(QIODevice::WriteOnly))
         {
             LOG(QString("Failed to write to json file %1. Maybe damaged archive?").arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
-
-            RemoveCacheCurrentInstall(true);
-            emit Started(true,QString(tr("Failed to write to json file %1")).arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
+            FinalizeInstall(true,QString(tr("Failed to write to json file %1")).arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
             return;
         }
         FileJson.write(document.toJson());
@@ -447,35 +499,6 @@ namespace BrowserAutomationStudioFramework
         NpmInstallProcess->start(NpmPath, params);
     }
 
-    static void RecurseCopyAddDir(const QString& dest, const QString& target)
-    {
-        QDir d(dest);
-        QDir t(target);
-        QStringList qsl = d.entryList(QStringList()<<"*",QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
-
-        foreach (QString file, qsl)
-        {
-            QFileInfo finfo(d.absoluteFilePath(file));
-
-            if (finfo.isSymLink())
-                return;
-
-            if (finfo.isDir())
-            {
-                t.mkdir(file);
-                QDir sd(finfo.filePath());
-                RecurseCopyAddDir(sd.absolutePath(), QDir(t.absoluteFilePath(file)).absolutePath());
-            } else
-            {
-                bool Exclude = false;
-
-                if(!Exclude)
-                    QFile::copy(finfo.absoluteFilePath(),t.absoluteFilePath(file));
-            }
-        }
-    }
-
-
     void NodeConnector::NpmInstalled(int StatusCode)
     {
         if(NoNeedRestartProcess)
@@ -493,55 +516,43 @@ namespace BrowserAutomationStudioFramework
         if(!DeleteFunctionsAndFiles(NodePath))
         {
             LOG(QString("Failed to delete function files"));
-            RemoveCacheCurrentInstall(true);
-            emit Started(true,tr("Failed to delete function files"));
+            FinalizeInstall(true,tr("Failed to delete function files"));
             return;
         }
 
         if(!InstallFunctionsAndFiles(NodePath))
         {
             LOG(QString("Failed to install function files"));
-            RemoveCacheCurrentInstall(true);
-            emit Started(true,tr("Failed to install function files"));
+            FinalizeInstall(true,tr("Failed to install function files"));
             return;
         }
 
-
-
-
-        bool res;
-        /*{
-            QFutureWatcher<void> Watcher;
-            QEventLoop loop;
-            connect(&Watcher, SIGNAL(finished()), &loop, SLOT(quit()));
-            QString from = A(QString("e/cache.") + Suffix);
-            QString to = A(QString("e/") + GetLanguageSettingsHash() + QString(".") + Suffix);
-            QDir(to).mkpath(".");
-            LOG(QString("Renaming directory %1 -> %2").arg(from).arg(to));
-            QFuture<void> Future = QtConcurrent::run([from,to,&res]() {
-                RecurseCopyAddDir(from,to);
-                res = true;
-            });
-            Watcher.setFuture(Future);
-
-            loop.exec();
-        }*/
-
         QString from = A(QString("e/cache.") + Suffix);
         QString to = A(QString("e/") + GetLanguageSettingsHash() + QString(".") + Suffix);
-        QDir(to).mkpath(".");
         LOG(QString("Renaming directory %1 -> %2").arg(from).arg(to));
-        RecurseCopyAddDir(from,to);
-        res = true;
-
-        RemoveCacheCurrentInstall(false);
 
 
-        if(!res)
+        QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>();
+        QFuture<bool> future;
+        connect(watcher, SIGNAL(finished()), this, SLOT(OnFolderMoved()));
+        connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater()));
+
+        future = QtConcurrent::run(RenameDir,from,to);
+        watcher->setFuture(future);
+
+
+    }
+
+    void NodeConnector::OnFolderMoved()
+    {
+        QFutureWatcher<bool> *watcher = ((QFutureWatcher<bool> *)sender());
+        bool result = watcher->future().result();
+
+        if(!result)
         {
-            LOG(QString("Failed to rename directory %1 -> %2").arg(QFileInfo(QString("cache.") + Suffix).absoluteFilePath()).arg(QFileInfo(GetLanguageSettingsHash() + QString(".") + Suffix).absoluteFilePath()));
-            RemoveCacheCurrentInstall(true);
-            emit Started(true,QString("Failed to rename directory %1 -> %2").arg(QFileInfo(QString("cache.") + Suffix).absoluteFilePath()).arg(QFileInfo(GetLanguageSettingsHash() + QString(".") + Suffix).absoluteFilePath()));
+            QString Message = QString("Failed to move folder");
+            LOG(Message);
+            FinalizeInstall(true,Message);
             return;
         }
 
@@ -666,8 +677,7 @@ namespace BrowserAutomationStudioFramework
             if(!NodeExeLock->open(QIODevice::WriteOnly))
             {
                 LOG(QString("Failed to lock file"));
-                RemoveCacheCurrentInstall(true);
-                emit Started(true,"Failed to lock file");
+                FinalizeInstall(true,"Failed to lock file");
                 return;
             }
         }
@@ -694,7 +704,6 @@ namespace BrowserAutomationStudioFramework
 
         }
         IsActive = false;
-        //RemoveCacheCurrentInstall();
         LOG(QString("EndStop"));
 
     }
@@ -808,8 +817,7 @@ namespace BrowserAutomationStudioFramework
             QString log = Process->readAllStandardError();
             LOG(QString("Failed to start %1").arg(log));
 
-            RemoveCacheCurrentInstall(true);
-            emit Started(true,log);
+            FinalizeInstall(true,log);
         }
     }
 
@@ -930,9 +938,7 @@ namespace BrowserAutomationStudioFramework
 
         IsActive = true;
         LOG(QString("Started success"));
-        AutoClean();
-        RemoveCacheCurrentInstall(false);
-        emit Started(false,QString());
+        FinalizeInstall(false, QString());
     }
 
     void NodeConnector::Write(const QString& Text)

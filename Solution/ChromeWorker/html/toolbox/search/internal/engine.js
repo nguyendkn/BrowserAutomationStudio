@@ -20,7 +20,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    */
   constructor ({ documents, distance, fields, limit, ref }) {
     super({
-      scoring: (score, { document }) => {
+      scoring(score, { document }) {
         const { type } = document;
         if (type === 'youtube') return score * 0.7;
         if (type === 'wiki') return score * 0.7;
@@ -75,7 +75,6 @@ class BasSearchEngine extends SearchLib.SearchEngine {
           'getcookiesforurl',
           'check',
         ];
-
         return !ignored.includes(document.key);
       })
       .map((match) => {
@@ -230,7 +229,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
 
     const info = {
       index: found ? additional.index : null,
-      color: "dark",
+      color: 'dark',
       found: found,
       score: score,
       skip: false,

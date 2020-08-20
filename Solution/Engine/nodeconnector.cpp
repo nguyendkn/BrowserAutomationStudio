@@ -645,6 +645,30 @@ namespace BrowserAutomationStudioFramework
         }
         QJsonObject DependenciesObject = QJsonObject::fromVariantMap(dependencies);
 
+        //Merge package.original with DependenciesObject
+        {
+            QFile PackageOriginalFile(QString("e/cache.%1/distr/package.original").arg(Suffix));
+            if(PackageOriginalFile.open(QIODevice::ReadOnly))
+            {
+                QByteArray PackageOriginalData = PackageOriginalFile.readAll();
+                PackageOriginalFile.close();
+
+                QJsonParseError err;
+                QJsonDocument doc = QJsonDocument::fromJson(PackageOriginalData, &err);
+                if (err.error == QJsonParseError::NoError)
+                {
+                    if(doc.isObject() && doc.object().contains("dependencies") && doc.object()["dependencies"].isObject())
+                    {
+                        QJsonObject DependenciesObjectOriginal = doc.object()["dependencies"].toObject();
+                        for(const QString& Key: DependenciesObjectOriginal.keys())
+                        {
+                            DependenciesObject[Key] = DependenciesObjectOriginal[Key];
+                        }
+                    }
+                }
+            }
+        }
+
         QVariantMap res;
         res.insert("dependencies",DependenciesObject);
 
@@ -660,6 +684,7 @@ namespace BrowserAutomationStudioFramework
             FinalizeInstall(true,QString(tr("Failed to write to json file %1")).arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
             return;
         }
+        LOG(QString("package.json file content ") + document.toJson());
         FileJson.write(document.toJson());
         FileJson.close();
 
@@ -1060,7 +1085,6 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::StartPipes()
     {
-        LOG(QString("Starting pipes server %1").arg(QString("\\\\.\\pipe\\basembeddedpipes") + QString::number(qApp->applicationPid())));
         Server = QSharedPointer<QLocalServer>::create();
         connect(Server.data(),SIGNAL(newConnection()),this,SLOT(NewConnection()));
 
@@ -1068,6 +1092,9 @@ namespace BrowserAutomationStudioFramework
         if(HasPipeVersion)
             PipeName += GetLanguageVersion();
         PipeName += QString::number(qApp->applicationPid());
+
+        LOG(QString("Starting pipes server %1").arg(PipeName));
+
         Server->listen(PipeName);
     }
 

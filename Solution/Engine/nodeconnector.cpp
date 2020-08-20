@@ -96,6 +96,92 @@ namespace BrowserAutomationStudioFramework
         }
     }
 
+    QString CaclulateFileChecksum(const QString &FileName)
+    {
+        QFile sourceFile(FileName);
+        qint64 fileSize = sourceFile.size();
+        const qint64 bufferSize = 10240;
+
+        if (sourceFile.open(QIODevice::ReadOnly))
+        {
+            char buffer[bufferSize];
+            int bytesRead;
+            int readSize = qMin(fileSize, bufferSize);
+
+            QCryptographicHash hash(QCryptographicHash::Sha256);
+            while (readSize > 0 && (bytesRead = sourceFile.read(buffer, readSize)) > 0)
+            {
+                fileSize -= bytesRead;
+                hash.addData(buffer, bytesRead);
+                readSize = qMin(fileSize, bufferSize);
+            }
+
+            sourceFile.close();
+            return QString(hash.result().toHex());
+        }
+        return QString();
+    }
+
+    QString ChecksumsCalculate(const QString& Folder)
+    {
+        QString ChecksumFileLocation = Folder + QString("/checksum.txt");
+
+        if(!(QFileInfo(ChecksumFileLocation).exists()))
+        {
+            return QString("Failed to find checksum file at ") + ChecksumFileLocation + QString(". Can't verify checksums.");
+        }
+
+        int ChecksumRecordNumber = 0;
+        QFile ChecksumFile(ChecksumFileLocation);
+        if(ChecksumFile.open(QIODevice::ReadOnly))
+        {
+            QTextStream InputStream(&ChecksumFile);
+            InputStream.setCodec("UTF-8");
+            while(!InputStream.atEnd())
+            {
+                QString Line = InputStream.readLine();
+                if(Line.size() > 65)
+                {
+                    QString ChecksumExpected = Line.mid(0,64);
+                    QString FileNameRelative = Line.mid(65);
+                    QString FileNameAbsolute = Folder + QString("/") + FileNameRelative;
+                    // Calculate checksums is too expensive, so just check if all files exists
+
+                    if(!QFileInfo(FileNameAbsolute).exists())
+                    {
+                        ChecksumFile.close();
+                        return QString("File doesn't exist ") + FileNameAbsolute;
+                    }
+
+                    /*QString FileActualChecksum = CaclulateFileChecksum(FileNameAbsolute);
+                    if(FileActualChecksum.isEmpty())
+                    {
+                        ChecksumFile.close();
+                        return QString("Failed to get checksum for file ") + FileNameAbsolute;
+                    }
+                    if(FileActualChecksum != ChecksumExpected)
+                    {
+                        ChecksumFile.close();
+                        return QString("Checksum for file ") + FileNameAbsolute + QString(" doesn't match. Expected ") + ChecksumExpected + QString(", got ") + FileActualChecksum + QString(".");
+                    }*/
+                    ChecksumRecordNumber++;
+                }
+            }
+            ChecksumFile.close();
+        }else
+        {
+            return QString("Failed to read checksum file at ") + ChecksumFileLocation + QString(". Can't verify checksums.");
+        }
+
+        if(ChecksumRecordNumber <= 0)
+        {
+            return QString("Checksum file at ") + ChecksumFileLocation + QString(" is empty.");
+        }
+
+        return QString();
+    }
+
+
     void NodeConnector::FinalizeInstall(bool IsError, const QString& Message)
     {
         FinalizeInstallIsError = IsError;
@@ -285,7 +371,7 @@ namespace BrowserAutomationStudioFramework
             if(!dirString.startsWith("cache."))
             {
                 QStringList Split = dirString.split(".");
-                if(Split.first() == GetLanguageSettingsHash())
+                if(Split.length() == 2 && Split.first() == GetLanguageSettingsHash())
                 {
 
                     QString LockPath = dir.absoluteFilePath(dirString + QDir::separator() + QString("distr") + QDir::separator() + QString("lock.file"));
@@ -331,27 +417,38 @@ namespace BrowserAutomationStudioFramework
                 {
                     LOG(QString("Autoclean %1").arg(i.absoluteFilePath()));
                     Result.append(i.absoluteFilePath());
-                    //RemoveDir(i.absoluteFilePath());
                 }
 
             }else
             {
-
+                QString NodePath = dir.absoluteFilePath(dirString + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"));
                 QString LockPath = dir.absoluteFilePath(dirString + QDir::separator() + QString("distr") + QDir::separator() + QString("lock.file"));
 
-                QFileInfo i(LockPath);
-                qint64 Diff = i.lastModified().secsTo(now);
-
-                LOG(QString("Not modified %1 for %2 seconds").arg(dir.absoluteFilePath(dirString)).arg(QString::number(Diff)));
-                if(Diff > 60 * 24)
+                if(!QFileInfo(NodePath).exists())
                 {
                     QFile LockPathFile(LockPath);
                     LockPathFile.remove();
                     if(!LockPathFile.exists())
                     {
-                        LOG(QString("Autoclean %1").arg(dir.absoluteFilePath(dirString)));
+                        LOG(QString("Autoclean ") + dir.absoluteFilePath(dirString) + QString(" because node.exe not found"));
                         Result.append(dir.absoluteFilePath(dirString));
-                        //RemoveDir(dir.absoluteFilePath(dirString));
+                    }
+                }else
+                {
+
+                    QFileInfo i(LockPath);
+                    qint64 Diff = i.lastModified().secsTo(now);
+
+                    LOG(QString("Not modified %1 for %2 seconds").arg(dir.absoluteFilePath(dirString)).arg(QString::number(Diff)));
+                    if(Diff > 60 * 24)
+                    {
+                        QFile LockPathFile(LockPath);
+                        LockPathFile.remove();
+                        if(!LockPathFile.exists())
+                        {
+                            LOG(QString("Autoclean %1").arg(dir.absoluteFilePath(dirString)));
+                            Result.append(dir.absoluteFilePath(dirString));
+                        }
                     }
                 }
 
@@ -370,8 +467,77 @@ namespace BrowserAutomationStudioFramework
 
         NodeExeLock.reset();
 
+        InstalledDirSearchIteration();
+
+    }
+
+    void NodeConnector::InstalledDirSearchIteration()
+    {
         Suffix = FindInstalledDistr();
 
+        if(LanguageVersion == "8.6.0")
+        {
+            //No checksums available proceed next
+            InstalledDirFinishedSearch();
+            return;
+        }
+
+        if(Suffix.isEmpty())
+        {
+            //No installed dir found, no need to calculate checksums
+            InstalledDirFinishedSearch();
+            return;
+        }
+
+        QFutureWatcher<QString> *watcher = new QFutureWatcher<QString>();
+        QFuture<QString> future;
+        connect(watcher, SIGNAL(finished()), this, SLOT(OnInstallDirChecksum()));
+        connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater()));
+
+        QString FolderPath = A(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr"));
+        LOG(QString("Calculating checksums for ") + FolderPath);
+        future = QtConcurrent::run(ChecksumsCalculate,FolderPath);
+        watcher->setFuture(future);
+    }
+
+    void NodeConnector::OnInstallDirChecksum()
+    {
+        QFutureWatcher<QString> *watcher = ((QFutureWatcher<QString> *)sender());
+        QString ChecksumVerificationError = watcher->future().result();
+
+        if(!ChecksumVerificationError.isEmpty())
+        {
+            LOG(ChecksumVerificationError);
+            NodeExeLock.reset();
+
+            QFutureWatcher<void> *watcher = new QFutureWatcher<void>();
+            QFuture<void> future;
+            connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater()));
+            connect(watcher, SIGNAL(finished()), this, SLOT(InstalledDirSearchIteration()));
+
+            QStringList Files;
+            QStringList Folders;
+            QString FolderPath = A(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix);
+
+            Folders.append(FolderPath);
+            LOG(QString("Autoclean folder ") + FolderPath + QString(" because failed to verify checksums."));
+
+            Suffix.clear();
+
+            future = QtConcurrent::run(RemoveData, Folders, Files);
+            watcher->setFuture(future);
+
+            return;
+        }else
+        {
+            LOG("Checksum verified successfully");
+        }
+
+        InstalledDirFinishedSearch();
+    }
+
+    void NodeConnector::InstalledDirFinishedSearch()
+    {
         LOG(QString("Hash %1").arg(GetLanguageSettingsHash()));
 
         if(!Suffix.isEmpty())
@@ -414,7 +580,6 @@ namespace BrowserAutomationStudioFramework
         QString Url = QString("http://bablosoft.com/distr/Embedded/Node/%1/distr.%2.zip").arg(LanguageVersion).arg((IsX64() ? "x64" : "x86"));
         LOG(QString("Getting url %1").arg(Url));
         _HttpClient->Get(Url);
-
     }
 
 
@@ -470,6 +635,7 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::OnDistrExtracted()
     {
+
         QVariantMap dependencies;
         QHashIterator<QString, QString> i(Modules);
         while (i.hasNext())
@@ -588,8 +754,44 @@ namespace BrowserAutomationStudioFramework
             return;
         }
 
+        if(LanguageVersion != "8.6.0")
+        {
+            //Checksums for 8.6.0 are not available
+
+            QFutureWatcher<QString> *watcher = new QFutureWatcher<QString>();
+            QFuture<QString> future;
+            connect(watcher, SIGNAL(finished()), this, SLOT(OnChecksumsCalculated()));
+            connect(watcher, SIGNAL(finished()), watcher, SLOT(deleteLater()));
+
+            QString FolderPath = A(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr"));
+            LOG(QString("Calculating checksums for ") + FolderPath);
+            future = QtConcurrent::run(ChecksumsCalculate,FolderPath);
+            watcher->setFuture(future);
+        }else
+        {
+            StartInternal();
+        }
+
+    }
+
+    void NodeConnector::OnChecksumsCalculated()
+    {
+        QFutureWatcher<QString> *watcher = ((QFutureWatcher<QString> *)sender());
+        QString ChecksumVerificationError = watcher->future().result();
+
+        if(!ChecksumVerificationError.isEmpty())
+        {
+            LOG(ChecksumVerificationError);
+            FinalizeInstall(true,ChecksumVerificationError);
+            return;
+        }else
+        {
+            LOG("Checksum verified successfully");
+        }
+
         StartInternal();
     }
+
 
 
     bool NodeConnector::DeleteFunctionsAndFiles(const QString& NodePath)

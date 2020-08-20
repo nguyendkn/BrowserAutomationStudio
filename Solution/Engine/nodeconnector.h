@@ -45,6 +45,7 @@ namespace BrowserAutomationStudioFramework
         bool FinalizeInstallIsError;
         QString FinalizeInstallMessage;
 
+
     public:
         explicit NodeConnector(QObject *parent = 0);
         ~NodeConnector();
@@ -77,8 +78,12 @@ namespace BrowserAutomationStudioFramework
         void OnDistrExtracted();
         void OnFolderMoved();
         void OnFinalizeInstall();
+        void OnChecksumsCalculated();
+        void OnInstallDirChecksum();
         void FailedToStartNpm(QProcess::ProcessError error);
         void FailedToStartNode(QProcess::ProcessError error);
+        void InstalledDirFinishedSearch();
+        void InstalledDirSearchIteration();
 
     public:
 

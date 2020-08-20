@@ -980,6 +980,15 @@ namespace BrowserAutomationStudioFramework
         IsActive = false;
         LOG(QString("EndStop"));
 
+        //Auto clean cache folder in background
+
+        /*QString CacheDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
+        QStringList Folders;
+        QStringList Files;
+        Folders.append(CacheDir);
+        LOG(QString("Autoclean current cache %1").arg(CacheDir));
+
+        QtConcurrent::run(RemoveData, Folders, Files);*/
     }
 
     void NodeConnector::SendRaw(const QString& Text)

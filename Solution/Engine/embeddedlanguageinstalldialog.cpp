@@ -9,15 +9,14 @@ EmbeddedLanguageInstallDialog::EmbeddedLanguageInstallDialog(QWidget *parent) :
     ui(new Ui::EmbeddedLanguageInstallDialog)
 {
     ui->setupUi(this);
-    connect(ui->RunAnyway,SIGNAL(clicked(bool)),this,SIGNAL(RunWithoutEmbeddedLanguages()));
-    connect(ui->Close,SIGNAL(clicked(bool)),this,SIGNAL(Close()));
+    connect(ui->Close,SIGNAL(clicked(bool)),this,SIGNAL(RunWithoutEmbeddedLanguages()));
 }
 
 
 void EmbeddedLanguageInstallDialog::closeEvent(QCloseEvent *event)
 {
     event->ignore();
-    emit Close();
+    emit RunWithoutEmbeddedLanguages();
 }
 
 void EmbeddedLanguageInstallDialog::SetIsError()

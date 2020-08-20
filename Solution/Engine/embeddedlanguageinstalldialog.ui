@@ -203,23 +203,6 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="RunAnyway">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>27</height>
-           </size>
-          </property>
-          <property name="text">
-           <string> Skip installation</string>
-          </property>
-          <property name="icon">
-           <iconset resource="engine.qrc">
-            <normaloff>:/engine/images/right.png</normaloff>:/engine/images/right.png</iconset>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="Close">
           <property name="minimumSize">
            <size>

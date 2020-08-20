@@ -124,24 +124,38 @@ class BasSearchEngine extends SearchLib.SearchEngine {
   }
 
   getKeywords({ document, metadata, tokens, query }) {
-    const trim = (str) => SearchLib.TextProcessor.trim(str); const keywords = {};
+    const trim = (str) => SearchLib.TextProcessor.trim(str);
+    const keywords = {};
+    const ignored = {};
 
     Object.values(metadata).forEach((value) => {
       Object.entries(value).forEach(([fieldName, fieldData]) => {
         const [field, index] = fieldName.split('_');
         if (!keywords[field]) keywords[field] = [];
+        if (!ignored[field]) ignored[field] = [];
+        const keywordsList = keywords[field];
+        const ignoredList = ignored[field];
 
-        const fieldLower = index
+        const property = index
           ? document[field][index].toLowerCase()
           : document[field].toLowerCase();
 
-        if (!fieldLower.includes(query.toLowerCase())) {
-          fieldData.tokenOriginal.forEach((token) => {
-            keywords[field].push({ comparator: token + field, match: token });
+        if (!property.includes(query.toLowerCase())) {
+          fieldData.tokenOriginal.forEach((source) => {
+            const token = tokens.find((string) => {
+              if (ignoredList.includes(string)) return false;
+              const includes = source.includes(string);
+              ignoredList.push(string);
+              return includes;
+            });
+
+            if (!token) keywordsList.push({ comparator: source + field, match: source });
+            else keywordsList.push({ comparator: token + field, match: token });
           });
         } else {
-          keywords[field].push({ comparator: trim(query) + field, match: trim(query) });
-          keywords[field].push({ comparator: query + field, match: query });
+          const token = trim(query);
+          keywordsList.push({ comparator: token + field, match: token });
+          keywordsList.push({ comparator: query + field, match: query });
         }
       });
     });

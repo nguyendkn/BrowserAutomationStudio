@@ -21,9 +21,9 @@ class BasSearchEngine extends SearchLib.SearchEngine {
   constructor ({ documents, distance, fields, limit, ref }) {
     super({
       scoring: (score, { document }) => {
-        const { site } = document;
-        if (site === 'youtube') return score * 0.7;
-        if (site === 'wiki') return score * 0.7;
+        const { type } = document;
+        if (type === 'youtube') return score * 0.7;
+        if (type === 'wiki') return score * 0.7;
         return score;
       },
       useEnglishStemmer: false,
@@ -136,8 +136,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
           : document[field].toLowerCase();
 
         if (!fieldLower.includes(query.toLowerCase())) {
-          fieldData.tokenOriginal.forEach((source) => {
-            const token = tokens.find((str) => source.includes(str)) || source;
+          fieldData.tokenOriginal.forEach((token) => {
             keywords[field].push({ comparator: token + field, match: token });
           });
         } else {

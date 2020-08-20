@@ -14,7 +14,6 @@ class EmbeddedLanguageInstallDialog : public QWidget
 public:
     explicit EmbeddedLanguageInstallDialog(QWidget *parent = 0);
     ~EmbeddedLanguageInstallDialog();
-    void AddLog(const QString& Log);
     void SetIsError();
     void SetLabel(const QString& Label);
     void SetTitle(const QString& Title);

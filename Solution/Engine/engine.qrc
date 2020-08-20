@@ -96,6 +96,7 @@
         <file>images/scheduler.png</file>
         <file>images/Power.png</file>
         <file>images/install.png</file>
+        <file>images/right.png</file>
     </qresource>
     <qresource prefix="/">
         <file>images/grayball.png</file>

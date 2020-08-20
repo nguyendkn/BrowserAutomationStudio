@@ -36,7 +36,6 @@ namespace BrowserAutomationStudioFramework
         QString _ErrorString;
         EmbeddedLanguageInstallDialog *_EmbeddedLanguageInstallDialog;
         QString DialogTitle;
-        QString DialogText;
         QString DialogLabel;
         bool IsActive;
         bool RunWithoutEmbeddedLanguages;

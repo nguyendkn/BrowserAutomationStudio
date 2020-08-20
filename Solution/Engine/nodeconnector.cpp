@@ -41,15 +41,16 @@ namespace BrowserAutomationStudioFramework
         return QFileInfo(RelativePath).absoluteFilePath();
     }
 
+    void NodeConnector::LOGINTERFACE(const QString& Text)
+    {
+        emit Log(Text);
+    }
 
     void NodeConnector::LOG(const QString& Text)
     {
-        if(!IsRecord)
-            return;
         QString txt;
         QString datestring = QTime::currentTime().toString("hh:mm:ss");
         txt = QString("[%1] %2").arg(datestring).arg(Text);
-        emit Log(txt);
 
         QFile outFile("node_log.txt");
         outFile.open(QIODevice::WriteOnly | QIODevice::Append);
@@ -227,6 +228,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::OnFinalizeInstall()
     {
+        if(FinalizeInstallIsError)
+            LOGINTERFACE(tr("Error occurred. See log for more details."));
         emit Started(FinalizeInstallIsError,FinalizeInstallMessage);
     }
 
@@ -462,6 +465,8 @@ namespace BrowserAutomationStudioFramework
         if(IsActive)
             return;
 
+        LOGINTERFACE(tr("Initialization ... "));
+
         LOG(QString("----------------------"));
         LOG(QString("Starting"));
 
@@ -576,6 +581,7 @@ namespace BrowserAutomationStudioFramework
         _HttpClient = QSharedPointer<HttpClient>::create();
         _HttpClient->Connect(this,SLOT(DistrDownloaded()));
 
+        LOGINTERFACE(tr("Downloading Node.js distribution ... "));
 
         QString Url = QString("http://bablosoft.com/distr/Embedded/Node/%1/distr.%2.zip").arg(LanguageVersion).arg((IsX64() ? "x64" : "x86"));
         LOG(QString("Getting url %1").arg(Url));
@@ -593,6 +599,8 @@ namespace BrowserAutomationStudioFramework
             FinalizeInstall(true,_HttpClient->GetErrorString());
             return;
         }
+
+        LOGINTERFACE(tr("Extracting Node.js distribution ... "));
 
         QString Path = QFileInfo(QString("e/cache.node.%1.zip").arg(LanguageVersion)).absoluteFilePath();
 
@@ -697,6 +705,8 @@ namespace BrowserAutomationStudioFramework
         QString WorkingDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"))).absoluteFilePath();
         QString NpmPath = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"))).absoluteFilePath();
         LOG(QString("npm install with %1").arg(NpmPath));
+        LOGINTERFACE(tr("Installing npm modules ... "));
+
 
         NpmInstallProcess->setWorkingDirectory(WorkingDir);
         NpmInstallProcess->start(NpmPath, params);
@@ -940,6 +950,9 @@ namespace BrowserAutomationStudioFramework
                 return;
             }
         }
+
+        LOGINTERFACE(tr("Running Node.js ... "));
+
         StartPipes();
 
         StartProcess();
@@ -971,7 +984,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::SendRaw(const QString& Text)
     {
-        LOG(QString("-> %1").arg(Text));
+        if(IsRecord)
+            LOG(QString("-> %1").arg(Text));
         if(!IsActive)
         {
             SendQueue.append(Text);
@@ -1136,7 +1150,8 @@ namespace BrowserAutomationStudioFramework
 
         for(const QString& Text:DataSplit)
         {
-            LOG(QString("<- %1").arg(Text));
+            if(IsRecord)
+                LOG(QString("<- %1").arg(Text));
             QJsonParseError err;
             QJsonDocument Document = QJsonDocument::fromJson(Text.toUtf8(),&err);
             if(!err.error)
@@ -1204,6 +1219,8 @@ namespace BrowserAutomationStudioFramework
 
         IsActive = true;
         LOG(QString("Started success"));
+        LOGINTERFACE(tr("Finalization ... "));
+
         FinalizeInstall(false, QString());
     }
 

@@ -1,6 +1,8 @@
 #include "embeddedlanguageinstalldialog.h"
 #include "ui_embeddedlanguageinstalldialog.h"
 #include <QCloseEvent>
+#include <QFileInfo>
+#include <QDesktopServices>
 
 EmbeddedLanguageInstallDialog::EmbeddedLanguageInstallDialog(QWidget *parent) :
     QWidget(parent),
@@ -9,7 +11,6 @@ EmbeddedLanguageInstallDialog::EmbeddedLanguageInstallDialog(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->RunAnyway,SIGNAL(clicked(bool)),this,SIGNAL(RunWithoutEmbeddedLanguages()));
     connect(ui->Close,SIGNAL(clicked(bool)),this,SIGNAL(Close()));
-    ui->plainTextEdit->setVisible(false);
 }
 
 
@@ -30,11 +31,6 @@ void EmbeddedLanguageInstallDialog::SetLabel(const QString& Label)
     ui->Label->setText(Label);
 }
 
-void EmbeddedLanguageInstallDialog::AddLog(const QString& Log)
-{
-    ui->plainTextEdit->setPlainText(Log + ui->plainTextEdit->toPlainText());
-}
-
 void EmbeddedLanguageInstallDialog::SetTitle(const QString& Title)
 {
     ui->Title->setText(Title);
@@ -49,7 +45,6 @@ EmbeddedLanguageInstallDialog::~EmbeddedLanguageInstallDialog()
 
 void EmbeddedLanguageInstallDialog::on_ShowLog_clicked()
 {
-    ui->ShowLog->setVisible(false);
-    ui->plainTextEdit->setVisible(true);
-    ui->Label->setVisible(false);
+    QFileInfo info("node_log.txt");
+    QDesktopServices::openUrl(QUrl::fromLocalFile(info.absoluteFilePath()));
 }

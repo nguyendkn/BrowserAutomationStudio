@@ -274,37 +274,37 @@
 <context>
     <name>BrowserAutomationStudioFramework::EmbeddedLanguageManager</name>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="369"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="368"/>
         <source>Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="377"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="376"/>
         <source>Canceled by user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="437"/>
-        <source>Starting %1 %2 ... </source>
+        <location filename="../embeddedlanguagemanager.cpp" line="434"/>
+        <source>Starting %1 %2     </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="445"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="442"/>
         <source>Unknown language or version %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="546"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="542"/>
         <source>Running script without embedded languages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="562"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="558"/>
         <source>Failed to find language connector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="569"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="565"/>
         <source>Error during send function to connector</source>
         <translation type="unfinished"></translation>
     </message>
@@ -570,25 +570,70 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::NodeConnector</name>
     <message>
-        <location filename="../nodeconnector.cpp" line="306"/>
-        <location filename="../nodeconnector.cpp" line="492"/>
+        <location filename="../nodeconnector.cpp" line="232"/>
+        <source>Error occurred. See log for more details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="468"/>
+        <source>Initialization ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="554"/>
+        <location filename="../nodeconnector.cpp" line="752"/>
         <source>Failed to delete function files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="313"/>
-        <location filename="../nodeconnector.cpp" line="500"/>
+        <location filename="../nodeconnector.cpp" line="561"/>
+        <location filename="../nodeconnector.cpp" line="759"/>
         <source>Failed to install function files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="371"/>
+        <location filename="../nodeconnector.cpp" line="584"/>
+        <source>Downloading Node.js distribution ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="603"/>
+        <source>Extracting Node.js distribution ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="618"/>
         <source>Failed to write to zip file to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="426"/>
+        <location filename="../nodeconnector.cpp" line="692"/>
         <source>Failed to write to json file %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="708"/>
+        <source>Installing npm modules ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="720"/>
+        <source>Failed to execute npm install</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="730"/>
+        <source>Failed to start node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="954"/>
+        <source>Running Node.js ... </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="1222"/>
+        <source>Finalization ... </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -881,165 +926,165 @@ Do you want to override it with version %3?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1151"/>
+        <location filename="../scriptworker.cpp" line="1162"/>
         <source>Failed because process is stopped</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1535"/>
+        <location filename="../scriptworker.cpp" line="1546"/>
         <source>Waiting for resource %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1566"/>
+        <location filename="../scriptworker.cpp" line="1577"/>
         <source>All data have been processed for </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1585"/>
+        <location filename="../scriptworker.cpp" line="1596"/>
         <source>Thread suspended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1592"/>
-        <location filename="../scriptworker.cpp" line="1593"/>
+        <location filename="../scriptworker.cpp" line="1603"/>
+        <location filename="../scriptworker.cpp" line="1604"/>
         <source>Thread ended</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1594"/>
+        <location filename="../scriptworker.cpp" line="1605"/>
         <source>Thread succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1596"/>
+        <location filename="../scriptworker.cpp" line="1607"/>
         <source> with message &quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1659"/>
         <location filename="../scriptworker.cpp" line="1670"/>
+        <location filename="../scriptworker.cpp" line="1681"/>
         <source>Thread #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1699"/>
-        <location filename="../scriptworker.cpp" line="1817"/>
-        <location filename="../scriptworker.cpp" line="1847"/>
+        <location filename="../scriptworker.cpp" line="1710"/>
+        <location filename="../scriptworker.cpp" line="1828"/>
+        <location filename="../scriptworker.cpp" line="1858"/>
         <source>CAPTCHA_FAIL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1699"/>
-        <location filename="../scriptworker.cpp" line="1817"/>
+        <location filename="../scriptworker.cpp" line="1710"/>
+        <location filename="../scriptworker.cpp" line="1828"/>
         <source>Failed to get solver</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1860"/>
+        <location filename="../scriptworker.cpp" line="1871"/>
         <source>Captcha wait timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1873"/>
+        <location filename="../scriptworker.cpp" line="1884"/>
         <source>Async function is called in sync mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1881"/>
-        <location filename="../scriptworker.cpp" line="1945"/>
+        <location filename="../scriptworker.cpp" line="1892"/>
+        <location filename="../scriptworker.cpp" line="1956"/>
         <source>Failed to run function </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1900"/>
+        <location filename="../scriptworker.cpp" line="1911"/>
         <source>Sync function is called in async mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1910"/>
+        <location filename="../scriptworker.cpp" line="1921"/>
         <source>Failed to execute module function </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1970"/>
+        <location filename="../scriptworker.cpp" line="1981"/>
         <source>Failed to get mail number with Pop3CLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1978"/>
+        <location filename="../scriptworker.cpp" line="1989"/>
         <source>Failed to get message with Pop3CLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2041"/>
+        <location filename="../scriptworker.cpp" line="2052"/>
         <source>Failed to get mail number with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2049"/>
+        <location filename="../scriptworker.cpp" line="2060"/>
         <source>Failed to search mail with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2057"/>
+        <location filename="../scriptworker.cpp" line="2068"/>
         <source>Failed to custom search mail with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2065"/>
+        <location filename="../scriptworker.cpp" line="2076"/>
         <source>Failed to fetch mail with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2073"/>
+        <location filename="../scriptworker.cpp" line="2084"/>
         <source>Failed to execute custom query with ImapCLient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2136"/>
-        <location filename="../scriptworker.cpp" line="2318"/>
-        <location filename="../scriptworker.cpp" line="2326"/>
-        <location filename="../scriptworker.cpp" line="2335"/>
-        <location filename="../scriptworker.cpp" line="2364"/>
+        <location filename="../scriptworker.cpp" line="2168"/>
+        <location filename="../scriptworker.cpp" line="2362"/>
+        <location filename="../scriptworker.cpp" line="2370"/>
+        <location filename="../scriptworker.cpp" line="2380"/>
+        <location filename="../scriptworker.cpp" line="2409"/>
         <source>Failed to get page </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2136"/>
-        <location filename="../scriptworker.cpp" line="2215"/>
-        <location filename="../scriptworker.cpp" line="2267"/>
-        <location filename="../scriptworker.cpp" line="2318"/>
-        <location filename="../scriptworker.cpp" line="2326"/>
-        <location filename="../scriptworker.cpp" line="2335"/>
-        <location filename="../scriptworker.cpp" line="2364"/>
-        <location filename="../scriptworker.cpp" line="2393"/>
+        <location filename="../scriptworker.cpp" line="2168"/>
+        <location filename="../scriptworker.cpp" line="2253"/>
+        <location filename="../scriptworker.cpp" line="2311"/>
+        <location filename="../scriptworker.cpp" line="2362"/>
+        <location filename="../scriptworker.cpp" line="2370"/>
+        <location filename="../scriptworker.cpp" line="2380"/>
+        <location filename="../scriptworker.cpp" line="2409"/>
+        <location filename="../scriptworker.cpp" line="2440"/>
         <source> with HttpClient</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2171"/>
+        <location filename="../scriptworker.cpp" line="2209"/>
         <source>Failed to resolve domain </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2215"/>
-        <location filename="../scriptworker.cpp" line="2267"/>
+        <location filename="../scriptworker.cpp" line="2253"/>
+        <location filename="../scriptworker.cpp" line="2311"/>
         <source>Failed to post page </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2393"/>
+        <location filename="../scriptworker.cpp" line="2440"/>
         <source>Failed to download page </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3512"/>
+        <location filename="../scriptworker.cpp" line="3559"/>
         <source>Embedded language execution timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3519"/>
+        <location filename="../scriptworker.cpp" line="3566"/>
         <source>Embedded call already running</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1053,45 +1098,44 @@ Do you want to override it with version %3?
         <location filename="../subprocessbrowser.cpp" line="101"/>
         <location filename="../subprocessbrowser.cpp" line="114"/>
         <location filename="../subprocessbrowser.cpp" line="127"/>
-        <location filename="../subprocessbrowser.cpp" line="140"/>
+        <location filename="../subprocessbrowser.cpp" line="144"/>
         <location filename="../subprocessbrowser.cpp" line="157"/>
-        <location filename="../subprocessbrowser.cpp" line="170"/>
+        <location filename="../subprocessbrowser.cpp" line="173"/>
         <location filename="../subprocessbrowser.cpp" line="186"/>
         <location filename="../subprocessbrowser.cpp" line="199"/>
         <location filename="../subprocessbrowser.cpp" line="212"/>
         <location filename="../subprocessbrowser.cpp" line="225"/>
         <location filename="../subprocessbrowser.cpp" line="238"/>
         <location filename="../subprocessbrowser.cpp" line="251"/>
-        <location filename="../subprocessbrowser.cpp" line="264"/>
-        <location filename="../subprocessbrowser.cpp" line="279"/>
-        <location filename="../subprocessbrowser.cpp" line="299"/>
-        <location filename="../subprocessbrowser.cpp" line="315"/>
+        <location filename="../subprocessbrowser.cpp" line="266"/>
+        <location filename="../subprocessbrowser.cpp" line="286"/>
+        <location filename="../subprocessbrowser.cpp" line="302"/>
+        <location filename="../subprocessbrowser.cpp" line="316"/>
         <location filename="../subprocessbrowser.cpp" line="329"/>
-        <location filename="../subprocessbrowser.cpp" line="342"/>
-        <location filename="../subprocessbrowser.cpp" line="440"/>
+        <location filename="../subprocessbrowser.cpp" line="427"/>
+        <location filename="../subprocessbrowser.cpp" line="453"/>
         <location filename="../subprocessbrowser.cpp" line="466"/>
-        <location filename="../subprocessbrowser.cpp" line="479"/>
-        <location filename="../subprocessbrowser.cpp" line="493"/>
-        <location filename="../subprocessbrowser.cpp" line="507"/>
+        <location filename="../subprocessbrowser.cpp" line="480"/>
+        <location filename="../subprocessbrowser.cpp" line="494"/>
+        <location filename="../subprocessbrowser.cpp" line="511"/>
         <location filename="../subprocessbrowser.cpp" line="524"/>
-        <location filename="../subprocessbrowser.cpp" line="537"/>
+        <location filename="../subprocessbrowser.cpp" line="538"/>
         <location filename="../subprocessbrowser.cpp" line="551"/>
         <location filename="../subprocessbrowser.cpp" line="564"/>
         <location filename="../subprocessbrowser.cpp" line="577"/>
-        <location filename="../subprocessbrowser.cpp" line="590"/>
-        <location filename="../subprocessbrowser.cpp" line="602"/>
+        <location filename="../subprocessbrowser.cpp" line="589"/>
+        <location filename="../subprocessbrowser.cpp" line="615"/>
         <location filename="../subprocessbrowser.cpp" line="628"/>
         <location filename="../subprocessbrowser.cpp" line="641"/>
         <location filename="../subprocessbrowser.cpp" line="654"/>
         <location filename="../subprocessbrowser.cpp" line="667"/>
         <location filename="../subprocessbrowser.cpp" line="680"/>
         <location filename="../subprocessbrowser.cpp" line="693"/>
-        <location filename="../subprocessbrowser.cpp" line="706"/>
+        <location filename="../subprocessbrowser.cpp" line="713"/>
         <location filename="../subprocessbrowser.cpp" line="726"/>
-        <location filename="../subprocessbrowser.cpp" line="739"/>
-        <location filename="../subprocessbrowser.cpp" line="751"/>
-        <location filename="../subprocessbrowser.cpp" line="767"/>
-        <location filename="../subprocessbrowser.cpp" line="1437"/>
+        <location filename="../subprocessbrowser.cpp" line="738"/>
+        <location filename="../subprocessbrowser.cpp" line="754"/>
+        <location filename="../subprocessbrowser.cpp" line="1431"/>
         <source>Timeout during </source>
         <translation type="unfinished"></translation>
     </message>
@@ -1099,35 +1143,35 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::SubprocessNetworkAccessManager</name>
     <message>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="148"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="163"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="178"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="190"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="218"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="230"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="241"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="252"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="263"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="274"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="285"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="296"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="307"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="318"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="329"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="340"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="352"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="364"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="376"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="389"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="401"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="414"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="427"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="439"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="451"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="463"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="475"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="487"/>
-        <location filename="../subprocessnetworkaccessmanager.cpp" line="499"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="150"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="165"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="180"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="192"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="220"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="232"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="243"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="254"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="265"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="276"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="287"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="298"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="309"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="320"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="331"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="342"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="354"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="366"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="378"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="390"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="403"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="416"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="428"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="440"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="452"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="464"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="476"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="488"/>
+        <location filename="../subprocessnetworkaccessmanager.cpp" line="500"/>
         <source>Timeout during </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2661,18 +2705,18 @@ Do you want to override it with version %3?
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguageinstalldialog.ui" line="73"/>
-        <source>Show log</source>
+        <location filename="../embeddedlanguageinstalldialog.ui" line="184"/>
+        <source> Show log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguageinstalldialog.ui" line="80"/>
-        <source>Run without embedded languages</source>
+        <location filename="../embeddedlanguageinstalldialog.ui" line="214"/>
+        <source> Skip installation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../embeddedlanguageinstalldialog.ui" line="87"/>
-        <source>Close</source>
+        <location filename="../embeddedlanguageinstalldialog.ui" line="231"/>
+        <source> Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

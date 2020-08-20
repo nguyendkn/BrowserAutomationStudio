@@ -342,7 +342,6 @@ namespace BrowserAutomationStudioFramework
         _WasError = false;
         _ErrorString.clear();
         DialogTitle.clear();
-        DialogText.clear();
         DialogLabel.clear();
         if(IsSilent)
         {
@@ -394,9 +393,7 @@ namespace BrowserAutomationStudioFramework
             _EmbeddedLanguageInstallDialog = new EmbeddedLanguageInstallDialog();
             connect(_EmbeddedLanguageInstallDialog,SIGNAL(RunWithoutEmbeddedLanguages()),this,SLOT(ContinueEmbeddedLanguages()));
             connect(_EmbeddedLanguageInstallDialog,SIGNAL(Close()),this,SLOT(Cancel()));
-            _EmbeddedLanguageInstallDialog->AddLog(DialogText);
             _EmbeddedLanguageInstallDialog->SetLabel(DialogLabel);
-            DialogText.clear();
             DialogLabel.clear();
             _EmbeddedLanguageInstallDialog->SetTitle(DialogTitle);
             _EmbeddedLanguageInstallDialog->show();
@@ -434,7 +431,7 @@ namespace BrowserAutomationStudioFramework
         }
         EmbeddedLanguage& Lang = AllLanguages[LanguageStartIterator];
 
-        DialogTitle = QString(tr("Starting %1 %2 ... ")).arg(Lang.Name).arg(Lang.Version);
+        DialogTitle = QString(tr("Starting %1 %2     ")).arg(Lang.Name).arg(Lang.Version);
         if(_EmbeddedLanguageInstallDialog)
             _EmbeddedLanguageInstallDialog->SetTitle(DialogTitle);
         emit InitializationTitle(DialogTitle);
@@ -490,7 +487,7 @@ namespace BrowserAutomationStudioFramework
         connect(Connector,SIGNAL(ReceivedResultData(quint64,QString,bool,QString)),this,SIGNAL(ReceivedResultData(quint64,QString,bool,QString)));
         connect(Connector,SIGNAL(ReceivedApiData(quint64,QString,QString)),this,SIGNAL(ReceivedApiData(quint64,QString,QString)));
         connect(Connector,SIGNAL(LogConsole(QString,quint64)),this,SIGNAL(ConsoleLog(QString,quint64)));
-        connect(this,SIGNAL(IsRecordChanged(IsRecord)),Connector,SLOT(SetIsRecord(bool)));
+        connect(this,SIGNAL(IsRecordChanged(bool)),Connector,SLOT(SetIsRecord(bool)));
         Connectors.append(Connector);
         Connector->Start();
 
@@ -498,14 +495,11 @@ namespace BrowserAutomationStudioFramework
 
     void EmbeddedLanguageManager::ConnectorStartingLog(QString Text)
     {
-        DialogText = Text + QString("\n\n") + DialogText;
         DialogLabel = Text;
 
         if(_EmbeddedLanguageInstallDialog)
         {
-            _EmbeddedLanguageInstallDialog->AddLog(DialogText);
             _EmbeddedLanguageInstallDialog->SetLabel(DialogLabel);
-            DialogText.clear();
             DialogLabel.clear();
         }
         emit InitializationLog(Text);

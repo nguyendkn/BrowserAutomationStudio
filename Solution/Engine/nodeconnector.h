@@ -72,6 +72,7 @@ namespace BrowserAutomationStudioFramework
         bool InstallFunctionsAndFiles(const QString& NodePath);
         QString FindInstalledDistr();
         void LOG(const QString& Text);
+        void LOGINTERFACE(const QString& Text);
         QStringList AutoCleanPrepare();
         QString GetRandomString();
         QString A(const QString& RelativePath);

@@ -144,13 +144,15 @@ class BasSearchEngine extends SearchLib.SearchEngine {
           fieldData.tokenOriginal.forEach((source) => {
             const token = tokens.find((string) => {
               if (ignoredList.includes(string)) return false;
-              const includes = source.includes(string);
               ignoredList.push(string);
-              return includes;
+              return source.includes(string);
             });
 
-            if (!token) keywordsList.push({ comparator: source + field, match: source });
-            else keywordsList.push({ comparator: token + field, match: token });
+            if (!token) {
+              keywordsList.push({ comparator: source + field, match: source });
+            } else {
+              keywordsList.push({ comparator: token + field, match: token });
+            }
           });
         } else {
           const token = trim(query);
@@ -160,12 +162,11 @@ class BasSearchEngine extends SearchLib.SearchEngine {
       });
     });
 
-    return Object.entries(keywords).map(([field, collection]) => ({
-      matches: _(collection)
+    return Object.entries(keywords).map(([field, array]) => ({
+      field, matches: _(array)
         .uniq('comparator')
         .map(v => v.match)
-        .value(),
-      field
+        .value()
     }));
   }
 

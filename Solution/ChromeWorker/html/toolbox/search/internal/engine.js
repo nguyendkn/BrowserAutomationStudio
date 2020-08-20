@@ -144,8 +144,9 @@ class BasSearchEngine extends SearchLib.SearchEngine {
           fieldData.tokenOriginal.forEach((source) => {
             const token = tokens.find((string) => {
               if (ignoredList.includes(string)) return false;
+              const includes = source.includes(string);
               ignoredList.push(string);
-              return source.includes(string);
+              return includes;
             });
 
             if (!token) {

@@ -13,7 +13,7 @@ class SearchManager {
         documents: [
           ...store.getActionItems(),
           ...store.getVideoItems(),
-          ...store.getWikiItems(),
+          ...store.getWikiItems()
         ],
         fields: [
           { name: 'descriptions', weight: ({ type }) => weights.descriptions[type] },

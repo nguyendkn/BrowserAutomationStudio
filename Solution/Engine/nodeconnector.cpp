@@ -654,7 +654,7 @@ namespace BrowserAutomationStudioFramework
         QJsonObject DependenciesObject = QJsonObject::fromVariantMap(dependencies);
 
         //Merge package.original with DependenciesObject
-        {
+        /*{
             QFile PackageOriginalFile(QString("e/cache.%1/distr/package.original").arg(Suffix));
             if(PackageOriginalFile.open(QIODevice::ReadOnly))
             {
@@ -675,7 +675,7 @@ namespace BrowserAutomationStudioFramework
                     }
                 }
             }
-        }
+        }*/
 
         QVariantMap res;
         res.insert("dependencies",DependenciesObject);
@@ -702,6 +702,9 @@ namespace BrowserAutomationStudioFramework
         QStringList params;
         params.append("node_modules\\npm\\bin\\npm-cli.js");
         params.append("install");
+        params.append("--loglevel");
+        params.append("verbose");
+
         QString WorkingDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"))).absoluteFilePath();
         QString NpmPath = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"))).absoluteFilePath();
         LOG(QString("npm install with %1").arg(NpmPath));
@@ -744,6 +747,15 @@ namespace BrowserAutomationStudioFramework
             emit Started(true,tr("Failed to install modules"));
             return;
         }*/
+
+        if(NpmInstallProcess)
+        {
+            QString InstallLogStandart = QString::fromUtf8(NpmInstallProcess->readAllStandardOutput());
+            LOG(QString("Npm install log standart ") + InstallLogStandart);
+
+            QString InstallLogError = QString::fromUtf8(NpmInstallProcess->readAllStandardError());
+            LOG(QString("Npm install log error ") + InstallLogError);
+        }
 
         QString NodePath = QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"));
         if(!DeleteFunctionsAndFiles(NodePath))

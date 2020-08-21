@@ -6,4 +6,7 @@
     </span>
     <%= _.template($('#variable_constructor').html())({id:"VariableResult", description:tr("List Element"), default_variable: "LIST_ELEMENT"}) %>
 </div>
+<div class="tooltipinternal">
+    <div class="tr tooltip-paragraph-first-fold">Get element of the list at specific index.</div>
+</div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

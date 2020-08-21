@@ -6,4 +6,7 @@
       <%= _.template($('#variable_constructor').html())({id:"SaveIsDirectory", description:tr("Is Directory"), default_variable: "FILEINFO_IS_DIRECTORY"}) %>
       <%= _.template($('#variable_constructor').html())({id:"SaveLastModified", description:tr("Last Modified"), default_variable: "FILEINFO_LAST_MODIFIED"}) %>
 </div>
+<div class="tooltipinternal">
+  <div class="tr tooltip-paragraph-first-fold">Get detailed information about a file or folder: size, base folder, check existence, etc.</div>
+</div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

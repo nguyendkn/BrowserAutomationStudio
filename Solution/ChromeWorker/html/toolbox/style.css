@@ -263,15 +263,6 @@ input[type="number"]::-webkit-outer-spin-button {
   outline: none;
 }
 
-.searchbar
-{
-  width:100%;
-  height: 36px;
-  padding-top: 1px;
-  padding-left:6px;
-  padding-right:12px;
-}
-
 .toolbutton-searchfailed
 {
   color:gray !important;
@@ -731,4 +722,9 @@ label
   display:inline-flex;
   align-items: center;
   margin-top: -2px;
+}
+
+.short-description
+{
+  display: none;
 }

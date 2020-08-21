@@ -31,7 +31,7 @@
 </div>
 
 <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Set browser location.</div>
+      <div class="tr tooltip-paragraph-first-fold">Set browser location. Geolocation can be changed by "Proxy" action as well.</div>
       <div class="tooltip-paragraph-fold"><span class="tr">Site can obtain information about your position using </span><a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API');return false">following api</a><span class="tr">. This action allows to spoof position returned by browser.</span></div>
       <div class="tr tooltip-paragraph-fold">Using this action is not necessary to hide your location, because coordintes can be obtained only after user accepts request from site in a special popup window. By default, if you don't use this action, this popup is rejected by BAS.</div>
 	  <div class="tr tooltip-paragraph-fold">Leave any field blank if you don't want to change it.</div>

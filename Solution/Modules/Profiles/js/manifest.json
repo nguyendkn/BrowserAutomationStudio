@@ -17,7 +17,7 @@
 		{
 			"name":"UseProfile",
 			"description":{"en": "Create or switch to local profile","ru": "Создать или переключиться на локальный профиль"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Path}}",
 			"is_element": false,
 			"interface": "use_profile_interface.js",
@@ -27,7 +27,7 @@
 		{
 			"name":"StopUsingProfile",
 			"description":{"en": "Stop using profile","ru": "Перестать использовать профиль"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"",
 			"is_element": false,
 			"interface": "stop_using_profile_interface.js",
@@ -37,7 +37,7 @@
 		{
 			"name":"SaveProfile",
 			"description":{"en": "Move local profile to other folder","ru": "Перенести локальный профиль в другую папку"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Path}}",
 			"is_element": false,
 			"interface": "save_profile_interface.js",
@@ -47,7 +47,7 @@
 		{
 			"name":"RemoveLocalProfile",
 			"description":{"en": "Remove local profile","ru": "Удалить локальный профиль"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Path}}",
 			"is_element": false,
 			"interface": "remove_local_profile_interface.js",
@@ -57,7 +57,7 @@
 		{
 			"name":"GetCurrentProfile",
 			"description":{"en": "Get path/id of current profile","ru": "Получить путь/id текущего профиля"},
-			"suggestion":{"en": "profile cookie local storage","ru": "профиль куки local storage"},
+			"suggestion":{"en": "set profile, save cookies, save local storage, autologin","ru": "путь к профилю, сохранить куки, сохранить local storage, автовход"},
 			"template":"{{Save}}",
 			"is_element": false,
 			"interface": "get_current_profile_interface.js",
@@ -123,7 +123,7 @@
 		"Best place to use this action is thread end, if you want to preserve your cookies and don't login to sites that you visited when running BAS later.": {"ru": "Лучшее место для использования этого действия - конец работы потока, если вы хотите сохранить свои cookie и не заходить на сайт второй раз когда позже запускаете BAS."},
 		"String with profile folder. Slash type is not important. It is better to use empty or non existing folder here.": {"ru": "Строка с путем к профилю. Тип разделителя не имеет значения. Здесь лучше использовать пустую папку или путь к несуществующей папке(она будет создана)."},
 		"This action can be used with Multilogin and BAS browsers.": {"ru": "Это действие может быть использовано как с браузером Multilogin, так и с браузером БАС."},
-		"By default BAS browser stores all profile data in memory and Multilogin stores profile data in temporary folder, which will be deleted after thread ends. This actions restores default values for profile location.": {"ru": "По умолчанию браузер BAS сохраняет все данные профиля в памяти, а Multilogin хранит данные профиля во временной папке, которая будет удалена после окончания работы потока. Это действие восстанавливает значения по умолчанию для пути к папке профиля."},
+		"By default BAS browser stores all profile data in temporary folder. This actions restores default values for profile location.": {"ru": "По умолчанию браузер BAS сохраняет все данные профиля во временной папке. Это действие восстанавливает значения по умолчанию для пути к папке профиля."},
 		"Switching profile requires browser restart, so this action may restart browser in case if it exists. Restarting browser will also reset all browser settings.": {"ru": "Для переключения профиля требуется перезапуск браузера, поэтому это действие может перезапустить браузер, если он уже открыт. Перезапуск браузера также сбросит все настройки."},
 		"Old profile data won't be deleted.": {"ru": "Старый профиль не будет удален."},
 		"Tells browser to load profile data(cookies, localstorage, cache) from cloud.": {"ru": "Загрузить данные профиля(куки, localstorage, кэш) из облака."},

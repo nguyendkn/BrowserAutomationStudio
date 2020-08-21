@@ -4,16 +4,21 @@
     <%= _.template($('#input_constructor').html())({id:"FileContains", description:tr("File Data Must Contain. Can Be Blank"), default_selector: "string", disable_int:true}) %>
     <div>
 	    <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-	      <input type="checkbox" id="Check" checked/> <label for="Check" class="tr">Include Folders</label>  
+	    	<input type="checkbox" id="Check" checked /> 
+			<label for="Check" class="tr">Include Folders</label>  
 	    </span>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check2">
-	    	<input type="checkbox" id="Check2" checked/> <label for="Check2" class="tr">Include Files</label>
+	    	<input type="checkbox" id="Check2" checked />
+			<label for="Check2" class="tr">Include Files</label>
 	    </span>
 	    <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check3">
-	    	<input type="checkbox" id="Check3" checked/> <label for="Check3" class="tr">Search In Subfolders</label> 
+	    	<input type="checkbox" id="Check3" checked />
+			<label for="Check3" class="tr">Search In Subfolders</label> 
 	    </span>
     </div>
     <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "FILE_SEARCH_RESULT"}) %>
-
+</div>
+<div class="tooltipinternal">
+	<div class="tr tooltip-paragraph-first-fold">Find all files in the specified folder that satisfy certain conditions.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

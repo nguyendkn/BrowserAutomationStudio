@@ -360,20 +360,34 @@
     <div class="leftactionpaneltitledrop" style="display:none">
       <i class="fa fa-trash-o" aria-hidden="true"></i>
     </div>
-
-    <div class="searchbar" >
-      <div class="container-fluid">
-        <div class="input-group input-group-sm">
-          <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
-          <input type="text" class="form-control typeahead" id="searchinput" placeholder="What to search?"  aria-describedby="basic-addon1"
-          onfocus="this.placeholder = tr(`Search by action name, name part or keyword. Examples: 'Ignore Errors', 'phone'.`)"
-          onblur="this.placeholder = tr(`What to search?`)"
-          >
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="button" id="searchinputclear"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <div class="container-fluid search-bar-container">
+      <div class="search-bar">
+        <input type="text" class="search-input" id="searchinput" placeholder="What to search?">
+        <span class="search-control search-icon">
+          <i class="fa fa-fw fa-search" aria-hidden="true"></i>
+        </span>
+        <span class="search-pagination" id="pagination">
+          <button type="button" class="search-control search-page-button" id="prevpage">
+            <i class="fa fa-fw fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <span class="search-page-label">
+            <span class="text-dark" id="currpage"></span>
+            <span class="text-gray">-</span>
+            <span class="text-gray" id="lastpage"></span>
           </span>
+          <button type="button" class="search-control search-page-button" id="nextpage">
+            <i class="fa fa-fw fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          </span>
+        <button type="button" class="search-control search-clear-button" id="searchclear">
+          <i class="fa fa-fw fa-times" aria-hidden="true"></i>
+        </button>
         </div>
       </div>
+    <div class="search">
+      <span class="results-recent"></span>
+      <span class="results-empty"></span>
+      <ol class="results-list" id="results"></ol>
     </div>
     <div class="actions">
       <div class="leftpanel">
@@ -965,6 +979,7 @@
         <div class="tr tooltip-paragraph-first-fold">This action finishes whole script, not just single thread, use it in case of fatal error and if script can't be continued under no circumstances. For example, if API key to some service doesn't match.</div>
         <div class="tr tooltip-paragraph-fold">BAS also uses this action internally in case of resource absence, so if, for example, user didn't set any proxy file, script will finish instantly.</div>
         <div class="tr tooltip-paragraph-last-fold">There are two modes, how this action works. First mode is instant finish, this means that script will finish at the same second as you called that action, each thread will also stop instantly even if it was in the middle of some task. Second mode is graceful finish, in this case BAS will wait until all threads will finish their tasks. Second mode is useful in case if you don't want to lose important data, for example, phone numbers or emails.</div>
+        <span class="short-description tr">This action finishes whole script, not just single thread, use it in case of fatal error and if script can't be continued under no circumstances.</span>
       </div>
      <%= _.template($('#back').html())({action:"executeandadd", visible:false}) %>
 
@@ -1024,12 +1039,10 @@
   </script>
 
   <script type="text/template" id="custom">
-    <div class="container-fluid custom">
+    <div class="container-fluid">
       <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
         <div id="Code" data-is-code-editor="true" style="height:calc(100vh - 100px);border: none; overflow: hidden; outline: none;border:1px solid #e0e0e0;" />
       </span>
-      
-
       <%= "<s" + "cript>" %>
         window.Code = {Editor: null, InitialValue: ""}
 
@@ -1056,8 +1069,8 @@
             <span class="tr">Load from file, user input, database</span>
         </a>
       </div>
+      <span class="short-description tr">Execute javascript code. This code can work with variables but can't work with elements in web browser.</span>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, modal_code_id:"custom-help-" + (_K || "en")}) %>
   </script>
 
@@ -1181,6 +1194,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     </span>
   </script>
 
+   <!-- Tools templates -->
 
   <script type="text/template" id="template">
     <div class="container-fluid template">
@@ -1250,6 +1264,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Length", description:tr("Result String Length"), default_selector: "int", disable_string:true, value_number:10, min_number:1, max_number:999999}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "RANDOM_STRING"}) %>
     </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Generate a random string with a given length and allowed characters.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -1259,34 +1276,57 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"MaxValue", description:tr("Maximum Value"), default_selector: "int", disable_string:true, value_number:100, min_number:-999999, max_number:999999}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "RANDOM_NUMBER"}) %>
     </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Generate a random integer in a given range.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
+  <!-- Waiters templates -->
+
+  <script type="text/template" id="waitfullload">
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until page is fully loaded.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", use_timeout: true, visible:true}) %>
+  </script>
 
   <script type="text/template" id="waitload">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait until browser will load url"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Url"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until browser loads specified URL.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waiturl">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait address bar will contain url"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Url"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until address bar contains specified URL.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waitcontent">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait until specific text will be present on page"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Text"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until specific text appears on the page.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waitcss">
     <div class="container-fluid load">
-      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Wait until specific css selector will return non empty result"), default_selector: "string", disable_int:true}) %>
+      <%= _.template($('#input_constructor').html())({id:"Wait", description:tr("Selector"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait until specific CSS-selector returns a non-empty result.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
@@ -1295,14 +1335,30 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
      <div class="container-fluid load">
        <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To save file name"), default_variable: "DOWNLOADED_FILE_PATH"}) %>
       </div>
-     <div class="tooltipinternal tr">Wait for the end of the current download.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Wait for the end of the current download.</div>
+    </div>
      <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
   </script>
 
-  
-
-
+  <script type="text/template" id="sleep">
+    <div class="container-fluid sleep">
+      <span id="sleeprandomspan" style="display:none">
+        <%= _.template($('#input_constructor').html())({id:"sleepfrom", description:tr("Sleep from value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
+        <%= _.template($('#input_constructor').html())({id:"sleepto", description:tr("Sleep to value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
+      </span>
+      <span id="sleepspan">
+        <%= _.template($('#input_constructor').html())({id:"sleepfromto", description:tr("Sleep value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000}) %>
+      </span>
+      <span data-preserve="true" data-preserve-type="check" data-preserve-id="sleeprandom">
+        <input type="checkbox" class="groupselector" data-checked-group-id="sleeprandomspan" data-unchecked-group-id="sleepspan" id="sleeprandom" style="margin-left:20px"/> <label for="sleeprandom" class="tr">Sleep random time</label>
+      </span>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Pauses current thread for the specified number of milliseconds.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
 
   <script type="text/template" id="executefunction">
     <div class="container-fluid executefunction">
@@ -1395,7 +1451,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       </span>
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">This action solves google recaptcha 3.0</div>
+      <div class="tr tooltip-paragraph-first-fold">This action solves google recaptcha 3.0.</div>
       <div class="tr tooltip-paragraph-fold">Recaptcha v3, unlike other captchas, doesn't show any image or challenges. It works silently without any user interactions. Therefore, it can be placed in several places on site, or even on each page. For each page or event where Recaptcha v3 is attached to it returns user score. User score reflects how likely the site visitor to be a bot.</div>
       <div class="tr tooltip-paragraph-fold">The site can use the result score as it sees fit. For example, site can show captcha if user score is lower than 0.4, other site may require phone verification if score is lower than 0.6 and block the user if it is lower than 0.3.</div>
       <div class="tr tooltip-paragraph-fold">This action intercepts user verification request and send it to specified service. When service will return result, it will replace browser real score with score obtained for one of the worker of selected service.</div>
@@ -1457,10 +1513,13 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
 
   <script type="text/template" id="setheader">
-    <div class="container-fluid setheader">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language","Referer"], size: 3}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Header Value"), default_selector: "string", disable_int:true, value_string: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0"}) %>
       <%= _.template($('#targetfields').html())({}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Set request header for subsequent browser requests.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
   </script>
@@ -1507,7 +1566,10 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 }) %>
         <%= _.template($('#targetfields').html())({}) %>
       </div>
-      <div class="tooltipinternal tr">This action sets script which must be executed inside every page and every frame immediately after page is created. Unlike javascript action, script defined here is executed at the very beginning of page load, which gives possibility to change browser internals like window.navigator. Action should be called before page load.</div>
+      <div class="tooltipinternal">
+        <div class="tr tooltip-paragraph-first-fold">This action sets script which must be executed inside every page and every frame immediately after page is created. Unlike javascript action, script defined here is executed at the very beginning of page load, which gives possibility to change browser internals like window.navigator. Action should be called before page load.</div>
+        <span class="short-description tr">This action sets script which must be executed inside every page and every frame immediately after page is created.</span>
+      </div>
       <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
   </script>
 
@@ -1555,7 +1617,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
 
   <script type="text/template" id="dragfile">
-    <div class="container-fluid dragfile">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("File path to start drag"), default_selector: "string", disable_int:true, help: {description: tr("This parameter is a string with file path. Slash type is not important."), examples:[{code:"C:\\file\\path.txt"},{code:"C:/file/path.txt"}]}}) %>
     </div>
     <div class="tooltipinternal">
@@ -1567,34 +1629,34 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="promptresult">
-    <div class="container-fluid promptresult">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Prompt user input result"), default_selector: "string", disable_int:true, help: {description: tr("Any string")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Prompt window displays a dialog with an optional message prompting the user to input some text. It is outdated functionality and most sites don't use it any more. BAS allows to input text into that window automatically, to do that you must call this action before prompt window will appear.</div>
       <div class="tr tooltip-paragraph-fold">Principle is the same as in "Open File Result", first you call action which sets result and than trigger dialog, BAS will recognize it and input previously setted up value.</div>
       <div class="tr tooltip-paragraph-last-fold">Prompt window browser documentation <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt');return false">link</a>.</div>
+      <span class="short-description tr">Prompt window displays a dialog with an optional message prompting the user to input some text. It is outdated functionality and most sites don't use it any more.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="httpauth">
-    <div class="container-fluid httpauth">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Login", description:tr("Http auth login"), default_selector: "string", disable_int:true, help: {description: tr("Site login, could be any string")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Password", description:tr("Http auth password"), default_selector: "string", disable_int:true, help: {description: tr("Site password, could be any string")}}) %>
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it. During authentication process browser shows window(<a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://thiscouldbebetter.files.wordpress.com/2016/05/authenticationrequired.png?w=640 screenshot');return false">screenshot</a>) and user must input authentication data there. This process can be automated, all you need to do is to call this action before window is triggered.</div>
+      <div class="tr tooltip-paragraph-first-fold">HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it. During authentication process browser shows window and user must input authentication data there. This process can be automated, all you need to do is to call this action before window is triggered.</div>
       <div class="tr tooltip-paragraph-fold">Good idea would be to put it to the start of the script.</div>
       <div class="tr tooltip-paragraph-last-fold">In case if this action will be called after window popup, authentication process will fail.</div>
+      <span class="short-description tr">HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it.</span>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="getcookiesforurl">
-      <div class="container-fluid getcookiesforurl">
+      <div class="container-fluid">
         <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Url"), default_selector: "string", disable_int:true}) %>
         <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "COOKIES_FOR_URL"}) %>
       </div>
@@ -1602,21 +1664,27 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="savecookies">
-    <div class="container-fluid savecookies">
+    <div class="container-fluid">
           <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_COOKIES"}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Save all browser cookies into variable.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="restorecookies">
-    <div class="container-fluid restorecookies">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Cookies"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Set cookies for browser.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="scroll">
-    <div class="container-fluid scroll">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"X", description:tr("Scroll x position"), default_selector: "int", disable_string:true, help: {description: tr("Integer value, offset from the left edge of the page")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Y", description:tr("Scroll y position"), default_selector: "int", disable_string:true, help: {description: tr("Integer value, offset from the top edge of the page"), examples:[{code:"0",description:tr("Scroll to top")},{code:"500",description:tr("Scroll page, so 500 px will be visible")},{code:"9999999",description:tr("Scroll to page bottom")}]}}) %>
     </div>
@@ -1631,7 +1699,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="html">
-      <div class="container-fluid html">
+      <div class="container-fluid">
         <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_PAGE_HTML", help: {description: tr("Variable where page source will be saved.")} }) %>
       </div>
       <div class="tooltipinternal">
@@ -1668,85 +1736,98 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
 <script type="text/template" id="cachemaskallow">
-    <div class="container-fluid cachemaskallow">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true, value_string: "*"}) %>
     </div>
-    <div class="tooltipinternal tr">Add page content to cache if url is matching. For example *.json - caches all json</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Add page content to cache if Url matches specified mask. Works only on pages which will be loaded next after this action call.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
   
   <script type="text/template" id="cachemaskdeny">
-    <div class="container-fluid cachemaskdeny">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
     </div>
-    <div class="tooltipinternal tr">Do not add page content to cache if url is matching.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Do not add page content to cache if Url matches specified mask. Works only on pages which will be loaded next after this action call.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="cachemaskclear">
-    <div class="tooltipinternal tr">Clear all cache masks.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Clear all cache masks.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="restrictpopups">
-    <div class="tooltipinternal tr">Restrict all popups. You can restrict specific popup with Request Mask Deny action.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Restrict all popups. You can restrict specific popup with Request Mask Deny action.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="restrictdownloads">
-    <div class="tooltipinternal tr">Restrict all downloads. You can restrict specific download with Request Mask Deny action.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Restrict all file downloads. You can restrict specific download with Request Mask Deny action.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="allowpopups">
-    <div class="tooltipinternal tr">Allow all popups. Revokes Allow popup action.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Allow all popups. Revokes Restrict popups action.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="allowdownloads">
-    <div class="tooltipinternal tr">Allow all downloads. Revokes Allow downloads action.</div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
-  <script type="text/template" id="requestmaskallow">
-    <div class="container-fluid requestmaskallow">
-      <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Allow all file downloads. Revokes Restrict downloads action.</div>
     </div>
-    <div class="tooltipinternal tr">Allow load url if url is matching. By default every url is loaded</div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="requestmaskdeny">
-    <div class="container-fluid requestmaskdeny">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
     </div>
-    <div class="tooltipinternal tr">Deny load url if url is matching. For example *.png disables loading png images.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Deny Url loading if Url matches specified mask. By default every Url is loaded.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
 
+  <script type="text/template" id="requestmaskallow">
+    <div class="container-fluid">
+      <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Allow Url loading if Url matches specified mask. By default every Url is loaded.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="requestmaskclear">
-    <div class="tooltipinternal tr">Clear all requests masks.</div>
-
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
-  <script type="text/template" id="cleardata">
-    <div class="tooltipinternal tr">Clear all cache masks.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Clear all previously added request masks.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="clearmasks">
-    <div class="tooltipinternal tr">Clear info about all loaded urls.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Clear all previously added cache masks.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
 
+  <script type="text/template" id="cleardata">
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Delete information about all loaded Urls from the cache.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -1760,21 +1841,23 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
   <script type="text/template" id="loadcookiesfromhttpclient">
-    <div class="tooltipinternal tr">Load cookies from http client.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Load cookies from http client to browser.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="closebrowser">
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Close browser which was created with 'Open Browser' action. This action is not mandatory for use to work with browser.</div>
-      <div class="tooltip-paragraph-fold"><span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
   ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimemanual.png');return false">screen</a> ).
-
       </div>
-      <div class="tooltip-paragraph-fold"><span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
         ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimefail.png');return false">screen</a> ).
       </div>
-
       <div class="tr tooltip-paragraph-last-fold">It is very important to understand, that by default browser is created automatically and you don't need to call 'Open Browser' action, unless to want to control browser lifetime.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
@@ -1783,14 +1866,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   <script type="text/template" id="openbrowser">
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Create a browser if it has not already been created. This action is not mandatory for use to work with browser.</div>
-      <div class="tooltip-paragraph-fold"><span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">By default browser is created only after running first action that uses browser. After browser is created, it won't be deleted until thread end</span> ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimedefault.png');return false">screen</a> ). <span class="tr">Running browser, especially in multithreaded mode, is task that consumes a lot of PC resources. So this approach may not be always effective. To avoid using browser, when you don't need it, you can explicitly specify browser lifetime with 'Open browser' and 'Close browser'</span>
   ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimemanual.png');return false">screen</a> ).
-
       </div>
-      <div class="tooltip-paragraph-fold"><span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
+      <div class="tooltip-paragraph-fold">
+        <span class="tr">In case if script has at least one 'Open browser' or 'Close browser' action, then browser manual control mode is on. This means, that you must explicitly set all places where browser must be created and places where browser must be closed. If you try to use browser when it is yet not created or already closed, thread will fail with error</span> 
         ( <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserlifetimefail.png');return false">screen</a> ).
       </div>
-
       <div class="tr tooltip-paragraph-last-fold">It is very important to understand, that by default browser is created automatically and you don't need to call 'Open Browser' action, unless to want to control browser lifetime.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
@@ -1801,6 +1884,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_STATUS"}) %>
     </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get request status for the specified Url.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -1808,6 +1894,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <div class="container-fluid isloaded">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_IS_LOADED"}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Check if the specified Url has been loaded.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -1817,11 +1906,13 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", disable_int:true}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_CACHE"}) %>
        <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-         <input type="checkbox" id="Check"/> <label for="Check" class="tr">Encode in base64</label>
+        <input type="checkbox" id="Check" /> 
+        <label for="Check" class="tr">Encode in base64</label>
        </span>
     </div>
-    <div class="tooltipinternal tr">After execution variale will hold cached page content which matching url.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get last cache item for specified Url and save it to variable.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", use_timeout: true, visible:true}) %>
   </script>
 
@@ -1829,10 +1920,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <div class="container-fluid getallcache">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Match"), default_selector: "string", value_string: "*", disable_int:true, help: {description: tr("An url, cache for which you want to obtain. Url can contain * symbol, which will be replaced by any symbol sequence."), examples:[{code:"*",description:tr("Get all cache")},{code:"*url/part*",description:tr("Get cache for urls, which contain url/part")},{code:"http://site.com/script.js",description:tr("Get cache for specific url")}]}}) %>
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "CACHE_LIST", help: {description: tr("This variable will contain list of cache items. Each cache item is object with information about request and response headers, received data, status, etc.")}}) %>
-       
     </div>
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Get all cache items for specified url and save them to list.</div>
+      <div class="tr tooltip-paragraph-first-fold">Get all cache items for specified Url and save them to list.</div>
       <div class="tr tooltip-paragraph-fold">This action won't work by itself. In order to obtain cache items, you need to use "Cache Mask Allow" action first, it will specify pages, that will be cached. Then you need to load page, or do actions in browser, which will trigger page load, like inputting text or clicking mouse. Only after cache mask is set and page is loaded, you can use this action to obtain cache values.</div>
       <div class="tr tooltip-paragraph-fold">Try not to use "*" mask in "Cache Mask Allow" action and specify a mask as detailed as possible in order to add fewer cache items. Adding item to cache is resource consuming task, by limiting number of cache items you can optimize your script.</div>
       <div class="tr tooltip-paragraph-fold">Result of this action is a list, use "List" module to process it.</div>
@@ -1847,7 +1937,6 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <div class="tr tooltip-paragraph-fold">"is_error" - boolean value, indicates if there were error during request.</div>
       <div class="tr tooltip-paragraph-fold">"error" - error code as string.</div>
       <div class="tr tooltip-paragraph-last-fold">"is_finished" - boolean value, indicates, if request was finished.</div>
-      
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
@@ -1880,16 +1969,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         </form>
       </div>
     </div>
-
     <div class="tooltipinternal">
-      <div class="tooltip-paragraph-first-fold"><span class="tr">Output data to results tab</span> (<a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=results.png');return false">screen</a>)</div>
+      <div class="tr tooltip-paragraph-first-fold">Output data to the results tab.</div>
       <div class="tr tooltip-paragraph-fold">This action suites best to output raw data, like accounts registered, posts parsed, etc.</div>
       <div class="tr tooltip-paragraph-fold">If you want to write message, with date and thread number, better to use "Log" action.</div>
       <div class="tr tooltip-paragraph-fold">Before running script you can create up to nine tabs for different purposes and give names for them, for example, one for accounts, one for posts, avatars, etc.</div>
       <div class="tr tooltip-paragraph-fold">"Result Placeholder" parameter sets tab number, numeration is starting from from 1.</div>
       <div class="tooltip-paragraph-last-fold"><span class="tr">If you want to output data to file only, use this</span> (<span class="tr-en"><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_let_user_to_choose_output_file_name');return false">article</a></span><span class="tr-ru"><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:how_to_let_user_to_choose_output_file_name');return false">статью</a></span>)</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_output_script_result"}) %>
   </script>
 
@@ -3661,22 +3748,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <%= _.template($('#back').html())({action:"add", visible:false}) %>
   </script>
 
-  <script type="text/template" id="sleep">
-    <div class="container-fluid sleep">
-      <span id="sleeprandomspan" style="display:none">
-        <%= _.template($('#input_constructor').html())({id:"sleepfrom", description:tr("Sleep from value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
-        <%= _.template($('#input_constructor').html())({id:"sleepto", description:tr("Sleep to value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000,max_number: 99999999}) %>
-      </span>
-      <span id="sleepspan">
-        <%= _.template($('#input_constructor').html())({id:"sleepfromto", description:tr("Sleep value in milliseconds"), default_selector: "int", disable_string:true, min_number: 100, value_number: 1000}) %>
-      </span>
-      <span data-preserve="true" data-preserve-type="check" data-preserve-id="sleeprandom">
-        <input type="checkbox" class="groupselector" data-checked-group-id="sleeprandomspan" data-unchecked-group-id="sleepspan" id="sleeprandom" style="margin-left:20px"/> <label for="sleeprandom" class="tr">Sleep random time</label>
-      </span>
-    </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
   <script type="text/template" id="setvariable">
     <div class="container-fluid setvariable">
       <%= _.template($('#variable_constructor').html())({id:"SetVariableName", description:tr("Name of variable"), default_variable: "NEW_VARIABLE", help: {description: tr("The name of the variable to be created or modified.")}}) %>
@@ -3700,12 +3771,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
   <script type="text/template" id="incvariable">
-    <div class="container-fluid setvariable">
+    <div class="container-fluid">
       <%= _.template($('#variable_constructor').html())({id:"SetVariableName", description:tr("Name of variable"), default_variable: "", help: {description: tr("Variable name. This variable will be changed.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"IncVariableValue", description:tr("Increase variable value"), default_selector: "int", min_number: -9999999, value_number: 1, help: {description: tr("The integer to which the variable will be incremented. If the value has a non-numeric type, then it will be converted."), examples:[{code:"1",description:tr("Increment")},{code:"-1",description:tr("Decrement")},{code:"0",description:tr("Convert variable to integer")}]}}) %>
-      
     </div>
-    
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Increase variable by the specified value.</div>
       <div class="tr tooltip-paragraph-fold">In other words, this action means [[VARIABLE]] = [[VARIABLE]] + num</div>
@@ -3713,18 +3782,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Parameter "Increase variable value" could be negative, in that case variable will be decreased.</div>
       <div class="tr tooltip-paragraph-last-fold">Parameter "Increase variable value" also could be zero, this will only convert variable to number type.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
 
   <script type="text/template" id="incglobalvariable">
-    <div class="container-fluid setvariable">
+    <div class="container-fluid">
       <%= _.template($('#variable_constructor').html())({id:"SetVariableName", description:tr("Name of variable"), default_variable: "", enable_globals:true, disable_locals: true, help: {description: tr("Variable name. This variable will be changed.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"IncVariableValue", description:tr("Increase variable value"), default_selector: "int", min_number: -9999999, value_number: 1, help: {description: tr("The integer to which the variable will be incremented. If the value has a non-numeric type, then it will be converted."), examples:[{code:"1",description:tr("Increment")},{code:"-1",description:tr("Decrement")},{code:"0",description:tr("Convert variable to integer")}]}}) %>
-      
     </div>
-    
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Increase global variable by the specified value.</div>
       <div class="tr tooltip-paragraph-fold">In other words, this action means [[GLOBAL:VARIABLE]] = [[GLOBAL:VARIABLE]] + num</div>
@@ -3732,29 +3798,28 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Parameter "Increase variable value" could be negative, in that case variable will be decreased.</div>
       <div class="tr tooltip-paragraph-last-fold">Parameter "Increase variable value" also could be zero, this will only convert variable to number type.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="url">
-    <div class="container-fluid url">
+    <div class="container-fluid">
       <%= _.template($('#variable_constructor').html())({id:"SaveUrl", description:tr("Variable To Save"), default_variable: "CURRENT_URL", help: {description: tr("Variable where browser url will be saved.")}}) %>
     </div>
-    <div class="tooltipinternal tr">Get current url from browser address bar.</div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get current url from browser address bar.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_get_current_url"}) %>
   </script>
 
   <script type="text/template" id="xml">
-    <div class="container-fluid xml">
+    <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#variable_constructor').html())({id:"SaveXml", description:tr("Variable To Save"), default_variable: "SAVED_XML", help: {description: tr("This variable will contain html source of selected element as string")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Get element html code and save it to variable.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Get Element Content")}) %>
   </script>
 
@@ -3788,7 +3853,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-first-fold">Get coordinates of element relative to current window position.</div>
       <div class="tr tooltip-paragraph-fold">For example, if element coordinates is 200,200 and window position is 50,50, then this action will return 150, 150. In case if window position is 0,0, than this action will return absolute element coordinates.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
-
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true,name:tr("Get Coordinates")}) %>
   </script>
@@ -3798,9 +3862,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#variable_constructor').html())({id:"SaveScript", description:tr("Variable To Save"), default_variable: "SAVED_SCRIPT_RESULT", help: {description: tr("Variable with result of javascript execution. Type of variable is always string, if expression is evaluated to other type, it will be converted. If exception will occur during script execution, than empty string will return.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"ScriptValue", description:tr("Script Text"), default_selector: "string", disable_int:true, help: {description: tr("Script that will be executed on found element. You can use self variable, which points to found element. Type of that value should be string. If you set type to expression, than script will be evaluated in BAS context first and than result of that evaluation will be send to browser. Using expression is usefull if you want to create script dynamically, but you need to use string type in most cases."), examples:[{code:"self.value",description:tr("Get input field value")},{code:"self.click()",description:tr("Pure javascript click")}, {code:"self.getBoundingClientRect().top",description:tr("Get element top coordinate")}, {code:"var text = self.innerHTML; text.match(/\d+/)[0]",description:tr("Extract digits from element text.")}]}}) %>
-
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Find element and execute javascript on it.</div>
       <div class="tr tooltip-paragraph-fold">Use self variable, which points to selected element.</div>
@@ -3809,8 +3871,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">You can also use resources and variables here but only in read mode. Following code will work self.getAttribute([[ATTRIBUTE]]), but you can't do like this <strike>[[RESULT]] = self.getAttribute([[ATTRIBUTE]])</strike>.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Execute Javascript On Element"), wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
   </script>
 
@@ -3819,14 +3879,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#variable_constructor').html())({id:"SaveText", description:tr("Variable To Save"), default_variable: "SAVED_TEXT", help: {description: tr("This variable will contain text of selected element as string")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Get element text, visible on screen.</div>
       <div class="tr tooltip-paragraph-fold">For example, if you apply that action to whole page, you will get page text without markup.</div>
       <div class="tr tooltip-paragraph-fold">This action can be applied to textarea or input to get its value.</div> 
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Get Element Text")}) %>
   </script>
 
@@ -3867,16 +3925,16 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="mousesettings">
-    <div class="container-fluid dragelement">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Speed", description:tr("Speed"), default_selector: "expression", disable_int:true, disable_string:true, value_string: "100", help: {description: tr("Mouse movement speed as floating point value, if you change this, don't forget to change gravity and deviation proportionally.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Gravity", description:tr("Gravity"), default_selector: "expression", disable_int:true, disable_string:true, value_string: "6", help: {description: tr("Floating point value which sets force of cursor attraction to strait line between starting and ending points. If you set this value too big, cursor will move by straight line, if you set it too low, cursor will move chaotically on the screen.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Deviation", description:tr("Deviation"), default_selector: "expression", disable_int:true, disable_string:true, value_string: "2.5", help: {description: tr("Floating point value which sets force of cursor deviation from strait line between starting and ending points. Think of it as a wind, which blows cursor away from the line - the shortest path between two points.")}}) %>
     </div>
-    <div class="tooltipinternal tr">This is mouse movement settings. You set it either globally(through this action) or for each action individually by clicking on settings icon near cancel button inside any action, that uses mouse.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">This is mouse movement settings. You set it either globally(through this action) or for each action individually by clicking on settings icon near cancel button inside any action, that uses mouse.</div>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
-
 
   <script type="text/template" id="notification">
     <div class="container-fluid dragelement">
@@ -3890,7 +3948,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">This action must be called before any page which shows notifications is loaded.</div>
       <div class="tr tooltip-paragraph-last-fold">IMPORTANT: Notifications are often used together with service workers and service worker works only with profiles enabled. So you may want to use local profile together with this action.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -3916,7 +3973,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         </form>
       </div>
     </div>
-
   </script>
 
   <script type="text/template" id="browsersettings">
@@ -4051,7 +4107,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
     <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Changes browser settings.</div>
+      <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
       <div class="tr tooltip-paragraph-fold">"Flash", "Extensions", "Number of frames to skip in run mode" and "Process tunneling" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. Find extension</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">here</a>, <span class="tr">and download it from</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome-extension-downloader.com');return false" class="tr">here</a>. <span class="tr">Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.</span></div>
@@ -4141,7 +4197,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="clear">
-    <div class="container-fluid clear">
+    <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
     </div>
     <%= _.template($('#movefields').html())({}) %>
@@ -4157,7 +4213,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="typeelement">
 
-    <div class="container-fluid typeelement">
+    <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
 
       <%= _.template($('#input_constructor').html())({id:"TypeData", description:tr("Text to type"), default_selector: "string", disable_int:true, help: {description: tr("This could be any character sequence."), examples:[{code:"hello world!",description:tr("Input hello world!")},{code:"&lt;CONTROL&gt;V",description:tr("Paste text")},{code:"&lt;CONTROL&gt;A&lt;DELETE&gt;",description:tr("Clear input")},{code:"&lt;ESCAPE&gt;",description:tr("Press escape")}]}}) %>
@@ -4212,11 +4268,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="style">
     <div class="container-fluid style">
       <%= _.template($('#path').html())({selector:selector}) %>
-
       <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "SAVED_STYLE", help: {description: tr("Computed style as a string.")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Style To Check"), default_selector: "string", disable_int:true, help: {description: tr("Css value to check. Internally this action calls window.getComputedStyle(self)."), examples:[{code:"display",description:tr("Check visibility")},{code:"width",description:tr("Get width")}]}}) %>
     </div>
-
     <div class="tooltipinternal ">
       <div class="tr tooltip-paragraph-first-fold">Get element css style.</div>
       <div class="tr tooltip-paragraph-fold">Use "display" to check if element is visible, "width" to check element width etc.</div>
@@ -4228,18 +4282,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="check">
     <div class="container-fluid check">
       <%= _.template($('#path').html())({selector:selector}) %>
-
     </div>
-    <div class="tooltipinternal tr">Check cehckbox. Works only on checkboxes.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Check cehckbox. Works only on checkboxes.</div>
+    </div>
     <%= _.template($('#movefields').html())({}) %>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, use_move: true, name: tr("Set Checkbox")}) %>
-  </script>
-
-  <script type="text/template" id="waitfullload">
-    <div class="tooltipinternal tr">Wait until full page load.</div>
-
-    <%= _.template($('#back').html())({action:"executeandadd", use_timeout: true, visible:true}) %>
   </script>
 
   <script type="text/template" id="waitelement">
@@ -4283,7 +4331,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">You can use "type text" action to set combobox value. Click on combobox inside browser and select "Type Text" option, than input desired value or several first letters with &lt;RETURN&gt; at the end. For example, if combobox contains two values: male and female, you can select male by typing male&lt;RETURN&gt; or ma&lt;RETURN&gt;.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Set Combobox Value"), wiki: "how_to_set_combobox"}) %>
   </script>
 
@@ -4292,13 +4339,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#path').html())({selector:selector}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Set Index"), default_selector: "int", disable_string:true, help: {description: tr("Integer which contains combobox index starting from zero")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Set combobox index to desired int. Works only on comboboxes(not text input).</div>
       <div class="tr tooltip-paragraph-fold">You can use "type text" action to set combobox value. Click on combobox inside browser and select "Type Text" option, than input desired value or several first letters with &lt;RETURN&gt; at the end. For example, if combobox contains two values: male and female, you can select male by typing male&lt;RETURN&gt; or ma&lt;RETURN&gt;.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-    
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Set Combobox Index"), wiki: "how_to_set_combobox"}) %>
   </script>
 
@@ -4419,19 +4464,16 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
 
     <%= _.template($('#multiselect').html())() %>
-
     </span>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Starts loop which iterates over all elements matching query.</div>
       <div class="tr tooltip-paragraph-fold">To start loop, click on element inside browser and choose Start Loop action. BAS will automatically guess, which elements are similar to element that you have chosen and create loop over them. This prediction won't always be correct, so you can tweak it in following way. Add element, which loop must include by selecting it and clicking with left button. This will create green background for element, it always will be included into loop. Alternatively click on element, which was inсluded into loop(elements with blue background). This will create red background for element, it always will be excluded from loop. By сonstantly clarifying which elements will be in the cycle and which will not, you can gradually achieve an acceptable result.</div>
-
       <div class="tr tooltip-paragraph-fold">You also can write selector manually. For example, selector &gt;CSS&gt; a will find all links on page, &gt;CSS&gt; .my-class will find elements by class, etc.</div>
       <div class="tr tooltip-paragraph-fold">Clicking ok button will create a loop. Than you need to put some actions inside loop body, every action which you will put there will be executed for each element matching query. To add action click on any element inside browser and select action, which you want to perform. Select "Element from the loop" in order to execute action for each element in the loop. BAS creates selector for your action automatically.</div>
       <div class="tr tooltip-paragraph-fold">You can also iterate over element with "Get Elements Count" action.</div> 
       <div class="tr tooltip-paragraph-fold">Selectors created by BAS usually looks like this [[FOR_EACH_CSS]]&gt;AT&gt;[[CYCLE_INDEX]] and you can update them. For example, if you want to get subelement, change selector like this [[FOR_EACH_CSS]]&gt;AT&gt;[[CYCLE_INDEX]]&gt;CSS&gt; your subselector.</div>
       <div class="tr tooltip-paragraph-fold">Not only element actions may be used inside loop, but any other action like: log, writing to file, etc.</div>
       <div class="tr tooltip-paragraph-last-fold">This type of cycle has small delay between each step, so if you want to parse page very fast, get page source and use xpath or regular expression.</div>
-      
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:false,use_timeout: true, name: tr("Start Loop"), wiki: "how_to_iterate_over_elements"}) %>
   </script>
@@ -4442,7 +4484,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"MoveY", description:tr("Move y position"), default_selector: "int", disable_string:true, value_number: model['y'], help: {description: tr("Integer value, offset from the top edge of the page")}}) %>
     </div>
     <%= _.template($('#movefields').html())({}) %>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Move cursor to given coordinates.</div>
       <div class="tr tooltip-paragraph-fold">If you want to move on element, select it inside browser and choose "Move On Element".</div>
@@ -4450,7 +4491,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">If coordinates is not visible, page will be scrolled.</div>
       <div class="tr tooltip-paragraph-last-fold">Mouse move trajectory is always random and reminds one made by human, you can twaek move parameters with settings button located near cancel.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, use_move: true, name: tr("Move"), wiki: "how_to_move_mouse"}) %>
   </script>
 
@@ -4459,7 +4499,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"ClickX", description:tr("Click x position"), default_selector: "int", disable_string:true, value_number: model['x'], help: {description: tr("Integer value, offset from the left edge of the page")}}) %>
       <%= _.template($('#input_constructor').html())({id:"ClickY", description:tr("Click y position"), default_selector: "int", disable_string:true, value_number: model['y'], help: {description: tr("Integer value, offset from the top edge of the page")}}) %>
     </div>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Click on given coordinates.</div>
       <div class="tr tooltip-paragraph-fold">If you want to click on element, select it inside browser and choose "Click On Element".</div>
@@ -4467,8 +4506,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">If coordinates is not visible, page will be scrolled.</div>
       <div class="tr tooltip-paragraph-last-fold">If you are clicking on some element, which causes page load, you should select "wait for full page load". Using this option will make browser wait for page load after click.</div>
     </div>
-
-
     <%= _.template($('#back').html())({action:"executeandadd", use_waiter:true,use_timeout:true, visible:true, name: tr("Click"), wiki:"how_to_click_on_x_y_coordinates"}) %>
   </script>
 
@@ -4487,7 +4524,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">If you used this action, you must also call "Drop" or "Drop On Element" action.</div>
       <div class="tr tooltip-paragraph-last-fold">If you want to drag file from outside of browser, use "Start Drag File" action.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, use_move: true, name: tr("Drag")}) %>
   </script>
 
@@ -4505,23 +4541,28 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Mouse move trajectory is always random and reminds one made by human, you can twaek move parameters with settings button located near cancel.</div>
       <div class="tr tooltip-paragraph-last-fold">Before using this action, you must also call "Drag" or "Drag On Element" action.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, use_move: true, name: tr("Drop")}) %>
   </script>
 
+  <!-- Tabs templates -->
+
   <script type="text/template" id="addtab">
-    <div class="container-fluid addtab">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Url", description:tr("Url"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
-
       <%= _.template($('#input_constructor').html())({id:"IsSilent", description:tr("Load silently"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true","false"], help: {description: tr("Adding tab silently means, that new tab will be added and specified url will be loaded only when the tab becomes active for the first time."),examples:[{code:"true",description:tr("Create new tab, load specified url only when tab gets switched to.")},{code:"false",description:tr("Create new tab, switch to it and load it immediately.")}]}}) %>
-
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Add a new tab with the specified Url.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", use_waiter:true, waiter_enabled: true, use_timeout:true, visible:true, name: tr("Add Tab")}) %>
   </script>
 
   <script type="text/template" id="selecttab">
-    <div class="container-fluid selecttab">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Index", description:tr("Tab Index"), default_selector: "int", disable_string:true, value_number: model['index'], min_number:0, max_number:999999}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Switch to the tab with the specified index.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, name: tr("Select Tab")}) %>
   </script>
@@ -4531,7 +4572,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#variable_constructor').html())({id:"UrlList", description:tr("Url list"), default_variable: "URL_LIST", help: {description: tr("List of urls. Each url corresponds to one tab.")}}) %>
       <%= _.template($('#variable_constructor').html())({id:"TotalTabs", description:tr("Number of tabs"), default_variable: "TOTAL_TABS", help: {description: tr("Total number of tabs.")}}) %>
       <%= _.template($('#variable_constructor').html())({id:"CurrentIndex", description:tr("Current tab index"), default_variable: "TAB_INDEX", help: {description: tr("Index of current tab. Index starts with 0.")}}) %>
-      
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Get list of tabs, index of current tab and save it to variables.</div>
@@ -4542,8 +4582,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="closetab">
-    <div class="container-fluid closetab">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Index", description:tr("Tab Index"), default_selector: "int", disable_string:true, value_number: model['index'], min_number:1, max_number:999999}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Close tab with the specified index.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd",visible:true, name: tr("Close Tab")}) %>
   </script>
@@ -4580,7 +4623,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
     <%= _.template($('#mouseclicksettings').html())() %>
     <%= _.template($('#movefields').html())({}) %>
-
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Move mouse and click on given coordinates.</div>
       <div class="tr tooltip-paragraph-fold">If you want to click on element, select it inside browser and choose "Move And Click On Element".</div>
@@ -4589,8 +4631,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Mouse move trajectory is always random and reminds one made by human, you can twaek move parameters with settings button located near cancel.</div>
       <div class="tr tooltip-paragraph-last-fold">If you are clicking on some element, which causes page load, you should select "wait for full page load". Using this option will make browser wait for page load after click.</div>
     </div>
-
-
     <%= _.template($('#back').html())({action:"executeandadd", use_waiter:true,use_timeout: true, use_move: true, visible:true, name: tr("Move And Click"), wiki: "how_to_click_on_x_y_coordinates"}) %>
   </script>
 
@@ -4610,12 +4650,14 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="resize">
-    <div class="container-fluid resize">
+    <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"ResizeX", description:tr("Width"), default_selector: "int", disable_string:true,value_number: 1024, step_number: 1, min_number: 100, max_number:10000, help: {description: tr("Browser width in pixels")}}) %>
       <%= _.template($('#input_constructor').html())({id:"ResizeY", description:tr("Height"), default_selector: "int", disable_string:true,value_number: 768, step_number: 1, min_number: 100, max_number:10000, help: {description: tr("Browser height in pixels")}}) %>
     </div>
-    <div class="tooltipinternal"><span class="tr">Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;">fingerprint switcher</a>.</div>
-
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;">fingerprint switcher</a>.</div>
+      <span class="short-description tr">Changes browser resolution. Standart value is 1024x600.</span>
+    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:false}) %>
   </script>
 
@@ -4662,11 +4704,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"ChangeBrowserLanguage", description:tr("Change browser language"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true","false"], help: {description: tr("Change browser language according to country of proxy. This setting will change 'Accept-Language' header as well as navigator.language and navigator.languages javascript properties. By default language value will be equal to language and country code separated with dash, for example 'de-DE' for Germany. This value is valid, but most browsers uses more complicated strings. If you want to make BAS look like real browser, use FingerprintSwitcher service, it will set language to more natural value, for example for iPhone from Germany it will equal 'de, en;q=0.8, *;q=0.01'. You can also set this value explicitly by using 'Set Header' action"),examples:[{code:"true",description:tr("Change browser language according to proxy country.")},{code:"false",description:tr("Don't change browser language, default will be 'en-US,en;q=0.9'.")}]}}) %>
 
       <%= _.template($('#input_constructor').html())({id:"DetectExternalIp", description:tr("Detect external ip"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true","false"], help: {description: tr("Detect proxy ip by querying external service. This option may be used in case if ip that you are using to connect proxy doesn't match ip which is visible to site(external ip). BAS will use an ip.bablosoft.com service to detect external ip and will set 'Change timezone', 'Change geolocation' and 'Change WebRTC ip' according to correct ip value."),examples:[{code:"true",description:tr("Use external ip obtained by service.")},{code:"false",description:tr("Don't use external service, detect ip from proxy string.")}]}}) %>
-    
+
     <%= _.template($('#block_end').html())() %>
 
       <%= _.template($('#ip_information').html())() %>
-  
+
       <%= _.template($('#targetfields').html())({}) %>
     </div>
 
@@ -4714,7 +4756,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">It will be reported to service and money won't be removed from the balance.</div>
       <div class="tr tooltip-paragraph-last-fold">If last captcha was solved without service(with software or in manual mode) this action will do nothing.</div>
     </div>
-
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -6080,10 +6121,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="rappid.js"></script>
   <script src="tooledViewPlugin.js"></script>
   <script src="preservemainpage.js"></script>
+  <script src="./search/internal/library.min.js"></script>
+  <script src="./search/internal/mark.min.js"></script>
   <script src="databasefilter.js"></script>
   <script src="sortable.js"></script>
-  <script src="search.js"></script>
-  <script src="typeahead.js"></script>
   <script src="cursorposition.js"></script>
   <script src="toastr.min.js"></script>
   <script src="embeddedmodel.js"></script>
@@ -6093,6 +6134,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="multiselectmanager.js"></script>
   <script src="tooltips.js"></script>
 
+  <!-- Actions Search (scripts) -->
+  <script src="./search/internal/items/video.js"></script>
+  <script src="./search/internal/items/wiki.js"></script>
+  <script src="./search/internal/documents.js"></script>
+  <script src="./search/internal/engine.js"></script>
+  <script src="./search/internal/helper.js"></script>
+  <script src="./search/search.js"></script>
   
   <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
   <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
@@ -6106,10 +6154,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <link rel="stylesheet" href="font-awesome.min.css">
   <link rel="stylesheet" href="expressioneditor.css">
   <link rel="stylesheet" href="rappid.css">
-  <link rel="stylesheet" href="typeahead.css">
   <link rel="stylesheet" href="bootstrap-checkbox.css">
   <link rel="stylesheet" href="toastr.min.css">
 
+  <!-- Actions Search (styles) -->
+  <link rel="stylesheet" href="./search/search.css">
 
   <!-- =============== -->
   <!-- Javascript code -->
@@ -6275,9 +6324,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #use-target": "usetargetchange",
         "click #use-move": "usemovechange",
 
-        "click #searchinputclear": "searchinputclear",
+        "click #searchclear": "searchclearclick",
+        "click #searchinput": "searchinputclick",
+        "focus #searchinput": "searchinputfocus",
+        "blur #searchinput": "searchinputblur",
         "input #searchinput": "searchinput",
-        "keyup #searchinput": "searchinputkeyup",
+        
         "focus .dropdown-menu-path": "dropdownmenupathfocus",
         "blur .dropdown-menu-path": "dropdownmenupathblur",
         "click .dropdown-menu-path": "stoppropagation",
@@ -6486,27 +6538,36 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         }
       },
 
-      searchinputkeyup: function(event)
-      {
-        if (event.keyCode === 27)
-        {
-          $("#searchinput").val("")
-          this.searchinput()
+      searchinput: _.debounce(function (event) {
+        const query = $(event.target).val().trim();
+
+        if (query) {
+          _SearchManager.search(query);
+        } else {
+          _SearchManager.recent();
         }
+      }, 500),
+
+      searchinputclick: function(event)
+      {
+        _SearchManager.show();
       },
 
-      searchinput: function(event)
-      {
-        var tools = $(".toolbutton")
-        var searchterm = $("#searchinput").val().toLowerCase()
-
+      searchclearclick: function(event)
+        {
+        _SearchManager.hide();
       },
 
-      searchinputclear: function(event)
+      searchinputfocus: function(event)
       {
-        event.preventDefault();
-        $("#searchinput").val("")
-        this.searchinput()
+        $(event.target).attr("placeholder", 
+          tr("Search by action name, name part or keyword. Examples: 'Ignore Errors', 'phone'."));
+      },
+
+      searchinputblur: function(event)
+      {
+        $(event.target).attr("placeholder", 
+          tr("What to search?"));
       },
 
       usewaiterchange: function(event)
@@ -10480,7 +10541,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         InitUnfoldTooltip()
         this.updatepath()
         
-        $(".actions").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px")
+        $(".search").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px");
+        $(".actions").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px");
         $(".leftactionpanel").css("height", window.innerHeight * (100.0 / _Z) - 45 + "px")
         $(".leftactionpaneltitlebody").css("min-height", window.innerHeight * (100.0 / _Z) - 95 + "px")
         $(".actions").css("overflow-y","auto")
@@ -10489,14 +10551,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         
 
         SetupTooltips();
-
-        $('.typeahead').bind('typeahead:close', function() {
-          SearchUsed = false;
-        });
-
-        $('.typeahead').bind('typeahead:open', function() {
-          SearchUsed = true;
-        });
 
         _PreserveMainPosition.AfterUrlChanged(this.model.get("state"))
         _MultiSelectManager.AfterUrlChanged(this.model.get("state"))
@@ -10511,16 +10565,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         BrowserAutomationStudio_InstallBookmarks();
 
-        BrowserAutomationStudio_InitSearch();
-
         BrowserAutomationStudio_TestPathInternal();
 
         BrowserAutomationStudio_SetExecuteType();
 
+        _SearchManager.initialize();
         
-        
-        $("body").show()
-
+        $("body").show();
       },
 
       /*showtooltip: function(e)
@@ -10532,8 +10583,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           $("#tooltip").html("<strong>" + name + "</strong> : " + description)
         }
       },*/
-
-
     });
 
     var Router = Backbone.Router.extend({
@@ -11322,6 +11371,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     var _MultiSelectManager = new MultiSelectManager();
 
+    var _SearchManager = new SearchManager();
+
     var _GobalModel = new GobalModel();
 
     var _SelectorModel = new SelectorModel();
@@ -11349,8 +11400,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     var ActionHistory = []
 
     var BookmarkList = []
-
-    var SearchUsed = false;
 
     var CurrentGroup = ""
 
@@ -11399,6 +11448,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         }
         $(".recaptcha-notify").remove()
         BrowserAutomationStudio_NotifyInternal(tr("Recaptcha V3."), tr("It seams that this site uses recaptcha v3(action: ") + "<strong>" + parameters + "</strong>" + tr("). You can resolve it with \"Recaptcha V3\" action."), "#!/recaptchav3", "recaptcha-notify")  
+      }else if(subject == "search") 
+      {
+        BrowserAutomationStudio_NotifyInternal(tr(parameters), tr("Please select any element inside browser and click on the '") + tr(parameters) + tr("' action inside the menu that will appear."), "");
       }
     }
     
@@ -11879,7 +11931,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         })
 
         $( window ).resize(function() {
-          $(".actions").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px")
+          $(".search").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px");
+          $(".actions").css("height", window.innerHeight * (100.0 / _Z) - 40 + "px");
           $(".leftactionpanel").css("height", window.innerHeight * (100.0 / _Z) - 45 + "px")
           $(".leftactionpaneltitlebody").css("min-height", window.innerHeight * (100.0 / _Z) - 95 + "px")
 
@@ -11888,10 +11941,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         $(document).keyup(function(e) {
           if($("#NodeAll").length>0)
             return
-          /*if (e.keyCode == 27)
+          if (e.keyCode == 27)
           {
-
-            if($('.modal.in').length > 0)
+            if ($(".search").is(":visible"))
+            {
+              _SearchManager.hide();
+            }
+            /*if($('.modal.in').length > 0)
             {
               $('#' + $('.modal.in').attr("id")).modal('hide');
               return;
@@ -11913,17 +11969,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             if(el.length > 0)
             {
               el[0].click()
-            }
+            }*/
             
-          }*/
+            }
           if (e.keyCode == 13)
           {
-            if(SearchUsed)
-            {
-              SearchUsed = false;
-              return;
-            }
-
             if( e.target.nodeName == "TEXTAREA" ) return
 
             if($('.modal.in').length > 0)

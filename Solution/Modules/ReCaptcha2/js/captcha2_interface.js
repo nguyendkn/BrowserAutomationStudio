@@ -22,7 +22,7 @@
   </span>
 </div>
 <div class="tooltipinternal">
-  <div class="tr tooltip-paragraph-first-fold">This action solves google recaptcha 2.0</div>
+  <div class="tr tooltip-paragraph-first-fold">This action solves google recaptcha 2.0.</div>
   <div class="tooltip-paragraph-fold"><span class="tr">All you need to do is to click on any element inside recaptcha box, for example, on text "I'm not a robot" or a checkbox which is located to the left of the text</span>(<a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('http://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=wheretoclickoncaptcha.png'); return false;">screen</a>). <span class="tr">Choose "Solve Recaptcha 2.0" and click ok button</span>(<a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://www.youtube.com/watch?v=3AXjUH08qxg'); return false;">video</a>).</div>
   <div class="tr tooltip-paragraph-fold">By default solver type is manual, which means that BAS user must answer image challenges manually. But you can change it by editing "Solve Method" parameter.</div> 
   <div class="tooltip-paragraph-fold"><span class="tr">Manual solver shows image to user and requires answer as text. This text is correct image indexes separated by spaces, commas or completely without separator. Here are some valid examples: 1,5,9 or 1 5 9 or 159. If captcha has 16 blocks, than answer should have separator: 7,13,15 or 7 13 15. This is not valid: <strike>71315</strike>. Image indexes are increased from left to right and from top to bottom like on</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('http://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=captchaimagenumbers.png'); return false;">screenshot</a>.</div>

@@ -34,6 +34,8 @@
 	"localize": 
 	{
 		"Clipboard is global to whole system and should be locked in multithreaded mode." : {"ru": "Буфер обмена является глобальным для всей системы и должен быть заблокирован перед использованием в многопоточном режиме."},
+		"Read data of the specified type from the clipboard.": {"ru": "Прочитать данные указанного типа из буфера обмена."},
+		"Write data of the specified type to the clipboard.": {"ru": "Записать данные указанного типа в буфер обмена."},
 		"Mime Type" : {"ru": "Mime Тип"}
 	},
 	"engine": [],

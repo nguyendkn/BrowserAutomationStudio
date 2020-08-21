@@ -17,7 +17,7 @@
 		{
 			"name":"EmbeddedLanguagesNodeJs",
 			"description":{"en": "Node.js","ru": "Node.js"},
-			"suggestion":{"en": "javascript run execute","ru": "javascript джаваскрипт яваскрипт запустить"},
+			"suggestion":{"en": "run javascript, execute javascript, execute code, run code, external library","ru": "выполнить javascript, вызвать javascript, вызвать джаваскрипт, выполнить яваскрипт, подключить внешнюю библиотеку"},
 			"template":"",
 			"maximize":false,
 			"is_element": false,
@@ -29,15 +29,15 @@
 	],
 	"localize": 
 	{
-		"Code": {"ru": "Код"},
-		"Manual": {"ru": "Руководство"},
 		"You can call any BAS action from node.js code, including working with browser. To do that, you need just copy and paste any action right into code editor.": {"ru": "Вы можете вызвать любое действие BAS из кода node.js, включая действия работающие с браузером. Для этого вам нужно просто скопировать и вставить нужное действие прямо в редактор кода."},
+		"Execute custom code using NodeJS.": {"ru": "Выполнить пользовательский код используя NodeJS."},
 		"See following": {"ru": "Смотрите данное"},
 		"for more info.": {"ru": "чтобы узнать больше"},
 		"video": {"ru": "видео"},
 		"You can also call BAS functions and obtain result.": {"ru": "Вы также можете вызывать функции BAS и получать результат."},
-		"More info": {"ru": "Больше информации"}
-		
+		"More info": {"ru": "Больше информации"},
+		"Manual": {"ru": "Руководство"},
+		"Code": {"ru": "Код"}
 	},
 	"engine": [],
 	"browser": [],

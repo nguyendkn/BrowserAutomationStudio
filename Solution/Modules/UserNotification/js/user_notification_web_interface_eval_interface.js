@@ -30,6 +30,7 @@
             <span class="tr">Load from file, user input, database</span>
         </a>
       </div>
+      <span class="short-description tr">Run javascript code in web interface context.</span>
     </div>
 
 

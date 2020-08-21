@@ -6,6 +6,9 @@ _L =
 	"Load silently": {"ru": "Отложенная загрузка"},
 	"Label can contain only letters, digits, underscore and spaces" :{"ru": "Название метки может содержать только цифры, буквы, нижнее подчеркивание и пробел"},
 
+	/* Toolbox notifications */
+	"Please select any element inside browser and click on the '": {"ru": "Пожалуйста, выберите любой элемент в браузере и нажмите на действие '"},
+	"' action inside the menu that will appear.": {"ru": "' в появившемся меню."},
 
 	"Stop intercepting recaptcha v3 requests. Site will get your real score. You can enable intercepting later again.": {"ru": "Перестать перехватывать запросы. Сайт получит ваш реальный рейтинг. Вы можете снова включить перехват позже."},
 	"Rucaptcha/2captcha Key. Can be blank": {"ru": "Ключ Антигейт/Рукапча. Может быть пустым"},
@@ -21,7 +24,7 @@ _L =
 	"Forces person who solves recaptcha use proxy that you setted up with \"Proxy\" action.": {"ru": "Заставляет работника, который решает капчу, использовать прокси, который вы настроили с помощью действия \"Прокси\"."},
 	"Send current proxy to server. Proxy value is obtained from \"Proxy\" action.": {"ru": "Отправлять текущий прокси на сервис. Значение прокси получается из действия \"Прокси\"."},
 	"Don't send proxy. Default value.": {"ru": "Не отправлять прокси. Стандартное значение."},
-	"This action solves google recaptcha 3.0": {"ru": "Это действие решает google recaptcha 3.0"},
+	"This action solves google recaptcha 3.0.": {"ru": "Это действие решает google recaptcha 3.0."},
 	"Recaptcha v3, unlike other captchas, doesn't show any image or challenges. It works silently without any user interactions. Therefore, it can be placed in several places on site, or even on each page. For each page or event where Recaptcha v3 is attached to it returns user score. User score reflects how likely the site visitor to be a bot.": {"ru": "Recaptcha v3, в отличие от других капч, не показывает изображения и не требует от пользователя какого-либо взаимодействия. Она работает абсолютно незаметно. Поэтому ее можно разместить в нескольких местах на сайте или даже на каждой странице. При переходе на страницу или при вызове события, к которым прикреплена Recaptcha v3, сайт получает рейтинг браузера. Рейтинг отражает вероятность того, что посетитель сайта является ботом."},
 	"The site can use the result score as it sees fit. For example, site can show captcha if user score is lower than 0.4, other site may require phone verification if score is lower than 0.6 and block the user if it is lower than 0.3.": {"ru": "Сайт может использовать результат по своему усмотрению. Например, один сайт может показывать капчу, если рейтинг пользователя ниже 0.4, на другом сайте может потребоваться проверка телефона, если оценка ниже 0.6, и пользователь будет заблокирован, если она ниже 0.3."},
 	"This action intercepts user verification request and send it to specified service. When service will return result, it will replace browser real score with score obtained for one of the worker of selected service.": {"ru": "Это действие перехватывает запрос верификации пользователя сайтом и отправляет его в указанный сервис. Когда сервис вернет результат, он заменит реальный рейтинг браузера на то, что был получен от одного из работников выбранного сервиса."},
@@ -34,9 +37,13 @@ _L =
 	"Alternatively to this action, you can try to bypass Recapthca V3. Here are things which influence on final score: mature profile with Gmail authorization and Google search history, good proxy, long history with site, that you are working with. Let us dwell on the last point more carefully. Recaptcha v3 track your activities on each site by logging every action you perform. For example, if you visit a store, do a search, visit support page and only after that will try to register account, it would be much less suspicious than trying to register account immediately, and it high likely to get a better score.": {"ru": "В качестве альтернативы этому действию вы можете попытаться обойти Recapthca V3. Вот что влияет на итоговый рейтинг: профиль с авторизацией Gmail и историей поиска Google созданный некоторе время назад, хороший прокси, продолжительная история действий на сайте, с которым вы работаете. Остановимся подробнее на последнем пункте. Recaptcha v3 отслеживает ваши действия на каждом сайте, регистрируя каждое действие, которое вы выполняете. Например, если вы посещаете страницу покупок, ищете какой-то товар, посещаете страницу с часто задаваемыми вопросами и только после этого пытаетесь зарегистрировать учетную запись, это будет гораздо менее подозрительно, чем попытка зарегистрировать учетную запись немедленно, и с высокой вероятностью получит лучший результат."},
 	"There is another type of recaptcha called invisible recaptcha. It works almost the same as Recaptcha v3, but instead of returning user score, it shows image if user seem to suspicious, this is equivalent of having low user score. BAS is capable of solving it also, check 'Solve Recaptcha 2.0' action.": {"ru": "Существует еще один тип рекапчи, который называется невидимая рекапча. Он работает почти так же, как Recaptcha v3, но вместо того, чтобы возвращать рейтинг пользователя, он показывает изображение, если пользователь кажется подозрительным, это эквивалентно низкому рейтингу. BAS также может решать невидимую рекапчу, для этого используйте действие 'Решить Recaptcha 2.0'."},
 	
+	/* Browser tabs */
 	"Get list of tabs, index of current tab and save it to variables.": {"ru": "Получить список вкладок и индекс текущей вкладки, сохранить информацию в переменных."},
 	"Variable [[URL_LIST]] will contain list of urls. Each url corresponds to one tab. Use \"List\" module to process it. For example, action \"First Element\" can get url of first tab, action \"Get Element\" can get url of specified tab.": {"ru": "Переменная [[URL_LIST]] будет содержать список url. Каждый url соответствует одной вкладке. Используйте модуль \"Список\" для его обработки. Например, с помощью действия \"Первый элемент\" можно получить url первой вкладки, а с помощью действия \"Получить элемент\" можно получить url вкладки с заданным индексом."},
 	"Variable [[TAB_INDEX]] will hold index of active tab. Index starts from 0, so first tab will have index 0, second tab - index 1, etc.": {"ru": "Переменная [[TAB_INDEX]] будет содержать индекс активной вкладки. Индексация начинается с 0, поэтому первая вкладка будет иметь индекс 0, вторая - индекс 1 и т. д."},
+	"Switch to the tab with the specified index.": {"ru": "Переключиться на вкладку с указанным индексом."},
+	"Add a new tab with the specified Url.": {"ru": "Добавить новую вкладку с указанным Url."},
+	"Close tab with the specified index.": {"ru": "Закрыть вкладку с указанным индексом."},
 
 	"Url list": {"ru": "Список url"},
 	"List of urls. Each url corresponds to one tab.": {"ru": "Список url. Каждый url соответствует одной вкладке."},
@@ -235,7 +242,7 @@ _L =
 	"Output avatar": {"ru": "Вывести урл автара"},
 	"Output created account": {"ru": "Вывести созданный аккаунт"},
 	"Data. Can contain variables and resources.": {"ru": "Данные. Может содержать переменные и ресурсы."},
-		"Output data to results tab": {"ru": "Вывод данных на вкладку результатов"},
+	"Output data to the results tab.": {"ru": "Вывести данные на вкладку результатов."},
 	"This action suites best to output raw data, like accounts registered, posts parsed, etc.": {"ru": "Это действие лучше всего подходит для вывода необработанных данных, таких как учетные записи, url профилей и т. д."},
 	"If you want to write message, with date and thread number, better to use \"Log\" action.": {"ru": "Если вы хотите вывести сообщение с датой и номером потока, лучше использовать действие \"Лог\"."},
 	"Before running script you can create up to nine tabs for different purposes and give names for them, for example, one for accounts, one for posts, avatars, etc.": {"ru": "Перед запуском скрипта вы можете создать до девяти вкладок под разные данные и указать имена для них, например, одну для аккаунтов, одну для сообщений, для аватаров и т. д."},
@@ -327,7 +334,8 @@ _L =
 	"One of typical use example for labels maybe setting label at the thread start and returning to it on some condition.": {"ru": "Одним из примеров использования меток может служить установка метки в начале работы потока и возвращения к ней при некотором условии."},
 	"It is not recommended to use labels very often, if you overdo with using labels your script may become unreadable and hard to modify. It is better to use functions instead, unless you absolutely need labels.": {"ru": "Не рекомендовано использовать метки очень часто, если вы переборщите с ними, скрипт может стать нечитаемым и его сложно будет изменять. Лучше вместо этого использовать функции, если только вы не можете обойтись без меток."},
 
-		"This action finishes whole script, not just single thread, use it in case of fatal error and if script can't be continued under no circumstances. For example, if API key to some service doesn't match.": {"ru": "Это действие завершает весь скрипт, а не только отдельный поток, Используйте его в случае возникновения критической ошибки и если скрипт не может быть продолжен ни при каких обстоятельствах. Например, если ключ API к какому-то сервису не подходит."},
+	"This action finishes whole script, not just single thread, use it in case of fatal error and if script can't be continued under no circumstances. For example, if API key to some service doesn't match.": {"ru": "Это действие завершает весь скрипт, а не только отдельный поток, Используйте его в случае возникновения критической ошибки и если скрипт не может быть продолжен ни при каких обстоятельствах. Например, если ключ API к какому-то сервису не подходит."},
+	"This action finishes whole script, not just single thread, use it in case of fatal error and if script can't be continued under no circumstances.": {"ru": "Это действие завершает весь скрипт, а не только отдельный поток, Используйте его в случае возникновения критической ошибки и если скрипт не может быть продолжен ни при каких обстоятельствах."},
 	"BAS also uses this action internally in case of resource absence, so if, for example, user didn't set any proxy file, script will finish instantly.": {"ru": "БАС тоже используют это действие в случае отсутствия ресурса, таким образом, если пользователь не задал файл с прокси, скрипт закончится мгновенно."},
 	"There are two modes, how this action works. First mode is instant finish, this means that script will finish at the same second as you called that action, each thread will also stop instantly even if it was in the middle of some task. Second mode is graceful finish, in this case BAS will wait until all threads will finish their tasks. Second mode is useful in case if you don't want to lose important data, for example, phone numbers or emails.": {"ru": "Есть два режима работы этого действия. Первый режим - это  мгновенное завершение, Это означает что скрипт завершится в ту же самую секунду, в которую вызвано это действие, каждый поток также остановиться мгновенно даже если он выполнял какое-то важное задание. Второй режим -  это плавное завершение потоков, в этом случае БАС будет ждать пока все потоки закончат свою работу, и только потом завершить скрипт. Второй режим полезен в том случае если вы не хотите потерять важных данных, например, номера телефонов или почтовые адреса."},
 
@@ -374,7 +382,7 @@ _L =
 		"There is a special variable called [[CYCLE_INDEX]] available inside while loop and it always contains current iteration index and always have number type.": {"ru": "Существует специальная переменная под названием [[CYCLE_INDEX]] доступная внутри цикла while, она всегда содержит текущий номер выполнения цикла и является целым числом."},
 	"Summarizing all the above, when BAS encounters while loop it checks condition, if it's true execute loop body then checks condition again and so on. It also updates [[CYCLE_INDEX]] on each iteration.": {"ru": "Суммируя сказанное выше, когда БАС находит цикл while, он проверяет условие, если оно истинно выполняет тело цикла, проверяет условие ещё раз и так далее. При этом переменная [[CYCLE_INDEX]] обновляется на каждом при каждом выполнении цикла."},
 
-	"Execute defined list of actions while some condition is true.": {"ru": "Выполнить заданий список действий пока какое-то условие является истинным."},
+	"Execute defined list of actions while some condition is true.": {"ru": "Выполнять заданный список действий пока какое-то условие является истинным."},
 	"For example, take element from list and post it to the site, then delete element and repeat all these actions while list is not empty.": {"ru": "Например, взять элемент из списка и запостить его на каком-то сайте, потом удалить этот элемент и повторять всю цепочку действий пока список не станет пустым."},
 	"If you know how many times loop should be repeated, then it is better to use for loop.": {"ru": "Если вы знаете сколько раз должен быть запущен цикл, тогда лучше использовать цикл for."},
 	"If you want to iterate over list elements it is better to use foreach action.": {"ru": "Если вы хотите запустить цикл по всем элементам списка, тогда лучше использовать цикл foreach."},
@@ -415,9 +423,9 @@ _L =
 	"This action always returns immediately and doesn't wait in case if element doesn't exist.": {"ru": "Это действие всегда возвращается мгновенно и не ждет, если элемент не существует."},
 	"For example, you can change id of element with markup &lt;div id=\"message-old\"&gt;text&lt;/a&gt; if you use this action with parameters id and message-new.": {"ru": "Например, можно поменять атрибут id элемента с разметкой &lt;div id=\"message-old\"&gt;text&lt;/a&gt; если использовать это действие с параметрами id и message-new."},
 	"Set html attribute of given element.": {"ru": "Установить html атрибут заданного элемента."},
-	"If element has markup &lt;div id=\"message\"&gt;text&lt;/a&gt;, you can get id by selecting attribute id.": {"ru": "Если элемент содержит разметку &lt;div id=\"message\"&gt;text&lt;/a&gt;, вы можете получить идентиификатор элемента через аттрибут id."},
-	"For example, if element is a link and has following markup &lt;a href=\"https://google.com\"&gt;google&lt;/a&gt;, than you can find reference by getting attribute href.": {"ru": "Например, если элемент содержит такую разметку &lt;a href=\"https://google.com\"&gt;google&lt;/a&gt;, тогда вы можете найти адрес ссылки получая аттрибут href."},
-	"Get html attribute of selected element.": {"ru": "Получить html аттрибут выбранного элемента."},
+	"If element has markup &lt;div id=\"message\"&gt;text&lt;/a&gt;, you can get id by selecting attribute id.": {"ru": "Если элемент содержит разметку &lt;div id=\"message\"&gt;text&lt;/a&gt;, вы можете получить идентиификатор элемента через атрибут id."},
+	"For example, if element is a link and has following markup &lt;a href=\"https://google.com\"&gt;google&lt;/a&gt;, than you can find reference by getting attribute href.": {"ru": "Например, если элемент содержит такую разметку &lt;a href=\"https://google.com\"&gt;google&lt;/a&gt;, тогда вы можете найти адрес ссылки получая атрибут href."},
+	"Get html attribute of selected element.": {"ru": "Получить html атрибут выбранного элемента."},
 	"For example, if element coordinates is 200,200 and window position is 50,50, then this action will return 150, 150. In case if window position is 0,0, than this action will return absolute element coordinates.": {"ru": "Например, если координаты элемента 200,200, а положение окна - 50,50, то это действие вернет 150,150. Если позиция окна равна 0,0, то это действие вернет абсолютные координаты элемента."},
 	"Get coordinates of element relative to current window position.": {"ru": "Получить координаты элемента относительно текущей позиции окна."},
 	"If element is already visible, than this action will do nothing, otherwise it will scroll viewport in such way, that element are located as close as possible to screen center.": {"ru": "Если элемент уже виден, то это действие ничего не сделает, иначе оно будет прокручивать окно таким образом, чтобы элемент располагался как можно ближе к центру."},
@@ -454,7 +462,7 @@ _L =
 	"If you want to change settings for every thread, it is better to use settings tab.": {"ru": "Если вы хотите поменять настройки для всех потоков, то лучше воспользоваться вкладкой настройки."},
 	"\"Flash\", \"Extensions\", \"Number of frames to skip in run mode\" and \"Process tunneling\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "\"Флеш\", \"Расширения\", \"Пропуск кадров в рабочем режиме\" и \"Туннелирование процесса\" перезапустят браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
 	"Empty string or 0 means, that value wont be changed.": {"ru": "Пустая строка или 0 означает, что значение изменяться не будут."},
-	"Changes browser settings.": {"ru": "Изменяет настройки браузера."},
+	"Changes browser settings: network, canvas, webgl, etc. Use \"Get Fingerprint\" action to change browser fingerprint.": {"ru": "Изменяет настройки браузера: работа с сетью, canvas, webgl и другое. Используйте действие \"Получить отпечаток\" чтобы поменять отпечаток браузера."},
 	"BAS allows to set timeout for every action individually, to do that click on hourglass icon near cancel button inside action interface.": {"ru": "BAS позволяет установить таймаут для каждого действия индивидуально, для этого щелкните на значок песочных часов возле кнопки отмены внутри интерфейса конкретного действия."},
 	"Or run this action with \"General\" timeout type to change maximum execution time for all other actions.": {"ru": "Или запустите это действие с типом таймаута \"General\", чтобы изменить максимальное время выполнения для всех других действий."},
 	"To change maximum captcha solving time run this action with \"Solver\" timeout type.": {"ru": "Чтобы изменить максимальное время решения капчи, выполните это действие с типом таймаута \"Solver\"."},
@@ -478,10 +486,12 @@ _L =
 	"Scroll browser. The objective of this action is to make specified coordinates visible.": {"ru": "Прокрутка браузера. Цель этого действия - сделать указанные координаты видимыми на экране."},
 	"In case if this action will be called after window popup, authentication process will fail.": {"ru": "В случае, если оно будет вызвано после отображения окна, аутентификация работать не будет."},
 	"Good idea would be to put it to the start of the script.": {"ru": "Хорошей идеей было бы поставить действие в начало сценария."},
-	"HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it. During authentication process browser shows window(<a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://thiscouldbebetter.files.wordpress.com/2016/05/authenticationrequired.png?w=640 screenshot');return false\">screenshot</a>) and user must input authentication data there. This process can be automated, all you need to do is to call this action before window is triggered.": {"ru": "HTTP аутентификация предоставляет метод для ввода логина и пароля от сайта. В настоящее время он редко используется, но некоторые сайты все еще полагаются на него. Во время аутентификации браузер показывает окно(<a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://thiscouldbebetter.files.wordpress.com/2016/05/authenticationrequired.png?w=640 screenshot');return false\">скрин</a>), и пользователь должен ввести данные. Этот процесс может быть автоматизирован, все, что вам нужно сделать, - это вызвать данное действие до отображения окна."},
+	"HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it. During authentication process browser shows window and user must input authentication data there. This process can be automated, all you need to do is to call this action before window is triggered.": {"ru": "HTTP аутентификация предоставляет метод для ввода логина и пароля от сайта. В настоящее время он редко используется, но некоторые сайты все еще полагаются на него. Во время аутентификации браузер показывает окно, и пользователь должен ввести данные. Этот процесс может быть автоматизирован, все, что вам нужно сделать, - это вызвать данное действие до отображения окна."},
+	"HTTP authentication provides method for user to input site login and password. It is rarely used nowadays, but some sites still rely on it.": {"ru": "HTTP аутентификация предоставляет метод для ввода логина и пароля от сайта. В настоящее время он редко используется, но некоторые сайты все еще полагаются на него."},
 	"Prompt window browser documentation <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt');return false\">link</a>.": {"ru": "<a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt');return false\">Ссылка</a> на документацию."},
 	"Principle is the same as in \"Open File Result\", first you call action which sets result and than trigger dialog, BAS will recognize it and input previously setted up value.": {"ru": "Принцип такой же, как в \"Диалог Открыть Файл\", сначала вы вызываете действие, которое задает результат, а потом запускаете диалог, BAS распознает его и вводит ранее установленное значение."},
 	"Prompt window displays a dialog with an optional message prompting the user to input some text. It is outdated functionality and most sites don't use it any more. BAS allows to input text into that window automatically, to do that you must call this action before prompt window will appear.": {"ru": "Prompt отображает диалоговое окно с необязательным запросом на ввод текста. Это устаревшая функциональность, и большинство сайтов больше не используют ее. BAS позволяет автоматически вводить текст в это окно, для этого вы должны вызвать действие до появления диалога."},
+	"Prompt window displays a dialog with an optional message prompting the user to input some text. It is outdated functionality and most sites don't use it any more.": {"ru": "Prompt отображает диалоговое окно с необязательным запросом на ввод текста. Это устаревшая функциональность, и большинство сайтов больше не используют ее."},
 	"Dont forget to drop it with Drop or Drop On Element action.": {"ru": "Не забудьте закончить перетягивание с помощью действия Закончить Перетаскивание или Закончить Перетаскивание На Элементе."},
 	"Calling this action is the same as start dragging file into ordinary browser.": {"ru": "Вызов этого действия аналогичен началу перетаскивания файла в обычном браузере."},
 	"This action is alternative to \"Open File Result\" with only difference - it drag file into browser instead of opening dialog.": {"ru": "Это действие является альтернативой \"Диалог Открыть Файл\" с одной разницей - оно перетаскивает файл в браузер вместо открытия диалога."},
@@ -520,7 +530,7 @@ _L =
 	"Attribute name as a string.": {"ru": "Имя атрибута как строка."},
 	"Get element styles": {"ru": "Получить стили элемента"},
 	"Get element id": {"ru": "Получить id элемента"},
-	"This variable will contain element attribute value as a string": {"ru": "Эта переменная будет содержать значение аттрибута элемента как строку"},
+	"This variable will contain element attribute value as a string": {"ru": "Эта переменная будет содержать значение атрибута элемента как строку"},
 	
 	"Set combobox index to random int. Works only on comboboxes(not text input).": {"ru": "Установить номер значения выпадающего списка в случайное число. Работает только на выпадающих списках(не на текстовых полях для ввода)."},
 	"Integer which contains combobox index starting from zero": {"ru": "Целое число, содержащее индекс выпадающего списка начиная с нуля"},
@@ -623,6 +633,7 @@ _L =
 	"Set global variable in browser context": {"ru": "Установка глобальной переменной в контексте браузера"},
 	"Script which must be executed at page start. May contain variables or resources.": {"ru": "Скрипт, который должен быть выполнен на этапе создания страницы. Может содержать переменные или ресурсы."},
 	"This action sets script which must be executed inside every page and every frame immediately after page is created. Unlike javascript action, script defined here is executed at the very beginning of page load, which gives possibility to change browser internals like window.navigator. Action should be called before page load.": {"ru": "Это действие задает скрипт, который должен выполняться на каждой странице и в каждом фрейме сразу после создания страницы. В отличие от действия \"Яваскрипт\", скрипт, определенный здесь, выполняется в самом начале загрузки страницы, что дает возможность изменять внутренние элементы браузера, такие как window.navigator. Действие должно быть выполнено до загрузки страницы."},
+	"This action sets script which must be executed inside every page and every frame immediately after page is created.": {"ru": "Это действие задает скрипт, который должен выполняться на каждой странице и в каждом фрейме сразу после создания страницы."},
 	"Click on element with id from [[ID]] variable": {"ru": "Кликнуть по элементу с идентификатором из переменной [[ID]]"},
 	"Find number of links on page": {"ru": "Найти количество ссылок на странице"},
 	"Check if page is loading": {"ru": "Проверить статус загрузки страницы"},
@@ -646,9 +657,13 @@ _L =
 	"Without proxy": {"ru": "Без прокси"},
 	"String with information about proxy. It may contain ip, port, proxy type in different formats. This string may also contain login and password, if it doesn't, auth can be set with \"Proxy Login\" and \"Proxy Password\" parameters.": {"ru": "Строка, c информацией о прокси. Она может содержать ip, порт и тип прокси в разных форматах. Эта строка может также содержать логин и пароль, если их нету, данные для аутентификации могут быть заданы с параметрами \"Логин прокси\" и \"Прокси пароль\"."},
 	
+	/* Browser */
+
+	"Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;\">fingerprint switcher</a>.": {"ru": "Изменяет разрешение браузера. Стандартное значение 1024x600. Если вы хотите получить стандартные разрешения для разных платформ, используйте сервис <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;\">fingerprint switcher</a>."},
+	"Changes browser resolution. Standart value is 1024x600.": {"ru": "Изменяет разрешение браузера. Стандартное значение 1024x600."},
+	" This action works only with element inside browser.": {"ru": " Это действие работает только с элементом внутри браузера."},
 	"Browser height in pixels": {"ru": "Высота браузера в пикселях"},
 	"Browser width in pixels": {"ru": "Ширина браузера в пикселях"},
-	"Changes browser resolution. Standart value is 1024x600. If you want to get typical resolutions for different platforms, use service": {"ru": "Изменяет разрешение браузера. Стандартное значение 1024x600. Если вы хотите получить стандартные разрешения для разных платформ, используйте сервис"},
 	"Press escape": {"ru": "Нажать escape"},
 	"Clear input": {"ru": "Очистить поле"},
 	"Paste text": {"ru": "Вставить значение из буфера обмена"},
@@ -804,10 +819,6 @@ _L =
 	"Filter type": {"ru": "Тип фильтра"},
 	"Add filter": {"ru": "Добавить фильтр"},
 	"If this setting is enabled, then every time you use resource, it will be replaced with same value. For example, if you are reading from file with 'Reuse Resource' enabled, then same line will be used during all thread lifetime. You need to disable this setting to take new line.": {"ru": "Если использовать этот параметр, то каждый раз, когда вы получаете ресурс, он будет заменен одним и тем же значением. Например, если вы читаете из файла с настройкой 'Повторное использование', то одна и та же строка будет использоваться в течение всего времени жизни потока. Вы можете отключить эту настройку, чтобы брать новую строку."},
-	"Restrict all popups. You can restrict specific popup with Request Mask Deny action.": {"ru": "Запретить все всплывающие окна. Запретить конкретные окна можно с помощью действия Запретить запрос"},
-	"Restrict all downloads. You can restrict specific download with Request Mask Deny action.": {"ru": "Запретить загрузку файлов. Запретить конкретные загрузки можно с помощью действия Запретить запрос"},
-	"Allow all popups. Revokes Allow popup action.": {"ru": "Разрешить все всплывающие окна. Отменяет действие Запретить всплывающие окна"},
-	"Allow all downloads. Revokes Allow downloads action.": {"ru": "Разрешить все загрузки. Отменяет действие Запретить загрузку файлов"},
 	"Tweak speed and other parameters for mouse move.": {"ru": "Настроить скорость и другие параметры для перемещения мыши."},
 	"Speed": {"ru": "Скорость"},
 	"Gravity": {"ru": "Притяжение"},
@@ -829,7 +840,6 @@ _L =
 	"Open browser.": {"ru": "Открыть браузер."},
 	"Restart process": {"ru": "Перезапуск процесса"},
 	"Variable To save file name": {"ru": "Переменная для сохранения пути к файлу"},
-	"Wait for the end of the current download.": {"ru": "Ждать окончания текущей загрузки"},
 	"Add As Base64 Data": {"ru": "Добавить как данные base64"},
 	"Additional Parameters": {"ru": "Дополнительные параметры"},
 	"Content Type": {"ru": "Тип содержимого"},
@@ -870,16 +880,54 @@ _L =
 	"Wait full page load after this action": {"ru": "Ждать полной загрузки страницы после этого действия"},
 	"Toggle target. Apply this action only to specific url or to specific tab.": {"ru": "Применить это действие только к определенным урл или определенным вкладкам."},
 
+	/* Custom */
+	"Run javascript code in web interface context.": {"ru": "Выполнить javascript код в контексте веб интерфейса."},
+	"Execute javascript code. This code can work with variables but can't work with elements in web browser.": {"ru": "Выполнить javascript код. Этот код может работать с переменными, но не может работать с элементами в браузере."},
+
+	/* Waiters */
 	"Wait for full page load": {"ru": "Ждать полной загрузки"},
-	"Wait until full page load.": {"ru": "Ждать пока страница не будет полностью загружена."},
+	"Wait until page is fully loaded.": {"ru": "Ждать пока страница не будет загружена полностью."},
+	"Wait until browser loads specified URL.": {"ru": "Ждать пока браузер не загрузит указанный URL."},
+	"Wait until address bar contains specified URL.": {"ru": "Ждать пока адресная строка не будет содержать указанный URL."},
+	"Wait until specific text appears on the page.": {"ru": "Ждать пока на странице не появится определенный текст."},
+	"Wait until specific CSS-selector returns a non-empty result.": {"ru": "Ждать пока определенный CSS-селектор не вернет непустой результат."},
+	"Wait for the end of the current download.": {"ru": "Ждать окончания текущей загрузки."},
+	"Pauses current thread for the specified number of milliseconds.": {"ru": "Приостанавливает текущий поток на указанное количество миллисекунд."},
+
+	/* Network */
+	"Restrict all file downloads. You can restrict specific download with Request Mask Deny action.": {"ru": "Запретить все загрузки файлов. Запретить конкретные загрузки можно с помощью действия Запретить запрос."},
+	"Restrict all popups. You can restrict specific popup with Request Mask Deny action.": {"ru": "Запретить все всплывающие окна. Запретить конкретные окна можно с помощью действия Запретить запрос."},
+	"Allow Url loading if Url matches specified mask. By default every Url is loaded.": {"ru": "Разрешить загрузку Url, если Url соответствует указанной маске. По умолчанию каждый Url загружается."},
+	"Deny Url loading if Url matches specified mask. By default every Url is loaded.": {"ru": "Запретить загрузку Url, если Url соответствует указанной маске. По умолчанию каждый Url загружается."},
+	"Allow all file downloads. Revokes Restrict downloads action.": {"ru": "Разрешить все загрузки файлов. Отменяет действие Запретить загрузку файлов."},
+	"Allow all popups. Revokes Restrict popups action.": {"ru": "Разрешить все всплывающие окна. Отменяет действие Запретить всплывающие окна."},
+	"Do not add page content to cache if Url matches specified mask. Works only on pages which will be loaded next after this action call.": {"ru": "Не добавлять содержимое страницы в кэш, если Url соответствует указанной маске. Работает только на страницах, которые будут загружены после вызова этого действия."},
+	"Add page content to cache if Url matches specified mask. Works only on pages which will be loaded next after this action call.": {"ru": "Добавлять содержимое страницы в кэш, если Url соответствует указанной маске. Работает только на страницах, которые будут загружены после вызова этого действия."},
+	"Get last cache item for specified Url and save it to variable.": {"ru": "Получить последний элемент кэша для заданного Url и сохранить его в переменную."},
+	"Get all cache items for specified Url and save them to list.": {"ru": "Получить все элементы кэша для заданного Url и сохранить их в список."},
+	"Set request header for subsequent browser requests.": {"ru": "Установить заголовок запроса для последующих запросов браузера."},
+	"Delete information about all loaded Urls from the cache.": {"ru": "Удалить информацию о всех загруженных Url из кэша."},
+	"Load cookies from http client to browser.": {"ru": "Загрузить cookies из http клиента в браузер."},
+	"Get request status for the specified Url.": {"ru": "Получить статус запроса для указанного Url."},
+	"Check if the specified Url has been loaded.": {"ru": "Проверить был ли загружен указанный Url."},
+	"Clear all previously added request masks.": {"ru": "Очистить все ранее добавленные маски запросов."},
+	"Clear all previously added cache masks.": {"ru": "Очистить все ранее добавленные маски кэша."},
+	"Save all browser cookies into variable.": {"ru": "Сохранить все куки браузера в переменную."},
+	"Set cookies for browser.": {"ru": "Установить куки для браузера."},
+	"Network": {"ru": "Сеть"},
+
+	/* Tools */
+	"Generate a random string with a given length and allowed characters.": {"ru": "Сгенерировать случайную строку с заданной длиной и разрешенными символами."},
+	"Generate a random integer in a given range.": {"ru": "Сгенерировать случайное целое число в заданном диапазоне."},
+	
+	"Http auth password": {"ru": "HTTP Аутентификация пароль"},
+	"Http auth login": {"ru": "HTTP Аутентификация логин"},
 
 	"Prompt user input result": {"ru": "Результат ввода"},
-	"Http auth login": {"ru": "HTTP Аутентификация логин"},
-	"Http auth password": {"ru": "HTTP Аутентификация пароль"},
 
+	"EXPRESSION": {"ru": "ВЫРАЖЕНИЕ"},
 	"STRING": {"ru": "СТРОКА"},
 	"INT": {"ru": "ЧИСЛО"},
-	"EXPRESSION": {"ru": "ВЫРАЖЕНИЕ"},
 	
 	"Confirm Changes": {"ru": "Подтвердить Изменения"},
 	"Replace old value": {"ru": "Заменить старое значение"},
@@ -1014,11 +1062,6 @@ _L =
 	"Success Number" : {"ru": "Максимальное число удачных запусков"},
 	"Fail Number" : {"ru": "Максимальное число неудачных запусков"},
 	"Waiters" : {"ru": "Ожидание"},
-	/*"Wait until browser will load url" : {"ru": "Подождите, пока браузер не будет загружать URL"},
-	"Wait address bar will contain url" : {"ru": "Подождите, пока адресная строка будет содержать URL"},
-	"Wait until specific text will be present on page" : {"ru": "Подождите, пока конкретный текст будет присутствовать на странице"},
-	"Wait until specific css selector will return non empty result" : {"ru": "Подождите, пока селектор конкретного CSS вернет непустой результат"},
-	"Sleep for a specific time" : {"ru": "Сон в течение определенного времени"},*/
 	"Script logic" : {"ru": "Логика скрипта"},
 	/*"Execute conditional actions" : {"ru": "Выполнить условные действия"},
 	"Execute while loop" : {"ru": "Выполнить во время цикла"},
@@ -1039,18 +1082,9 @@ _L =
 	"Set global variable" : {"ru": "Установить глобальную переменную"},
 	"Get global variable" : {"ru": "Получить глобальную переменную"},
 	"Parse line like this 'a1:a2:a3' and save to variables" : {"ru": "Анализировать линии, как это 'a1: a2: a3' и сохранить в переменных"},*/
-	"Network" : {"ru": "Сеть"},
 	/*"Set HTTP Headers, like user agent, accept language, etc" : {"ru": "Установить HTTP-заголовки, как агент пользователя, принимают язык и т.д."},
 	"Save all cookies to variable" : {"ru": "Сохранить все куки для переменной"},
 	"Restore cookies, which is saved with Save Cookies command" : {"ru": "Восстановление куки, которая сохраняется с помощью команды Сохранить Cookies"},
-	"Allow save loaded url content to cache" : {"ru": "Разрешить сохранить загруженный URL-адрес содержимого в кэше"},
-	"Deny save loaded url content to cache" : {"ru": "Запретить сохранить загруженный URL-адрес содержимого в кэше"},
-	"Allow load url, which matching mask" : {"ru": "Разрешить нагрузки URL, который соответствующий маска"},
-	"Deny load url, which matching mask" : {"ru": "Запретить нагрузки URL, который соответствующего маске"},
-	"Clear loaded cache data" : {"ru": "Очистить данные, загруженные кэш"},
-	"Clear cache masks" : {"ru": "Очистить кэш маски"},
-	"Get url load status" : {"ru": "Получить статус Загрузить URL"},
-	"Check if url is loaded" : {"ru": "Проверьте, если URL загружается"},
 	"Get base64 encoded cached page" : {"ru": "Получить base64 закодирован кэшированной страницы"},*/
 	"Email" : {"ru": "Почта"},
 	/*"Configure email settings" : {"ru": "Настройка электронной почты"},
@@ -1135,13 +1169,12 @@ _L =
 	"Height" : {"ru": "Высота"},
 	"Variable to save as base64 png" : {"ru": "Переменная, в которую сохранять в формате base64 PNG"},
 	"Match" : {"ru": "Маска"},
-
+	
 	"An url, cache for which you want to obtain. Url can contain * symbol, which will be replaced by any symbol sequence." : {"ru": "Url, кеш для которого вы хотите получить. url может содержать символ *, который будет заменен любой последовательностью символов."},
 	"Get all cache" : {"ru": "Получить весь кеш"},
 	"Get cache for urls, which contain url/part" : {"ru": "Получить кеш для url, который содержит url/part"},
 	"Get cache for specific url" : {"ru": "Получить кеш для заданного url"},
 	"This variable will contain list of cache items. Each cache item is object with information about request and response headers, received data, status, etc." : {"ru": "Эта переменная будет содержать список элементов кэша. Каждый элемент является объектом с информацией о заголовках запроса и ответа, полученных данных, статусе запроса и т. д."},
-	"Get all cache items for specified url and save them to list." : {"ru": "Получить все элементы кэша для заданного url и сохранить их в список."},
 	"This action won't work by itself. In order to obtain cache items, you need to use \"Cache Mask Allow\" action first, it will specify pages, that will be cached. Then you need to load page, or do actions in browser, which will trigger page load, like inputting text or clicking mouse. Only after cache mask is set and page is loaded, you can use this action to obtain cache values." : {"ru": "Это действие не будет работать само по себе. Чтобы получить элементы кэша, вам нужно сначала использовать действие \"Разрешить кэш\", оно задаст страницы, которые будут кэшироваться. Затем нужно загрузить страницу или выполнить действия в браузере, которые будут вызывать загрузку страницы, например ввод текста или клики мышью. Только после выполнения \"Разрешить кэш\" и загрузки страницы вы можете использовать это действие для получения кеша."},
 	"Try not to use \"*\" mask in \"Cache Mask Allow\" action and specify a mask as detailed as possible in order to add fewer cache items. Adding item to cache is resource consuming task, by limiting number of cache items you can optimize your script." : {"ru": "Старайтесь не использовать маску \"*\" для действия \"Разрешить кэш\", вместо этого укажите маску как можно более подробно, чтобы сохранять меньше элементов кэша. Добавление страницы в кеш является ресурсоемкой задачей, ограничивая количество элементов, вы можете оптимизировать скрипт."},
 	"Result of this action is a list, use \"List\" module to process it." : {"ru": "Результатом этого действия является список, используйте модуль \"Список\" для его обработки."},
@@ -1157,16 +1190,8 @@ _L =
 	"\"error\" - error code as string." : {"ru": "\"error\" - код ошибки в виде строки."},
 	"\"is_finished\" - boolean value, indicates, if request was finished." : {"ru": "\"is_finished\" - значение true/false, указывает был ли запрос завершен."},
 
-	"Add page content to cache if url is matching. For example *.json - caches all json" : {"ru": "Добавить содержимое страницы в кэш, если URL соответствует маске. Например * .json - кэширует все JSON запросы"},
-	"Do not add page content to cache if url is matching." : {"ru": "Не добавлять содержимое страницы в кэш, если URL соответствует маске."},
-	"Clear all cache masks." : {"ru": "Очистить все маски кэша."},
-	"Allow load url if url is matching. By default every url is loaded" : {"ru": "Разрешить загрузку URL, если URL соответствует маске. По умолчанию каждый URL загружается"},
-	"Deny load url if url is matching. For example *.png disables loading png images." : {"ru": "Запретить загрузки URL, если URL соответствует маске. Например *.png отключает загрузку изображений в формате PNG."},
-	"Clear all requests masks." : {"ru": "Очистить все маски запросов."},
-	"Clear all cache data." : {"ru": "Очистить все маски кэша."},
-	"Clear info about all loaded urls." : {"ru": "Очистить информацию о всех загруженных URL."},
 	"Encode in base64" : {"ru": "Кодировать в base64"},
-	"After execution variale will hold cached page content which matching url." : {"ru": "После выполнения переменная будет держать кэшированное содержание страницы."},
+	"Get last cache item for specific url and save it to variable." : {"ru": "Получить содержимое кэшированной страницы, URL которой совпадает с указанным."},
 	"Result Data" : {"ru": "Данные"},
 	"Result Placeholder" : {"ru": "Номер результата"},
 	"File path" : {"ru": "Путь к файлу"},
@@ -1548,6 +1573,12 @@ _L =
 "You can always tweak selection by using up and down keys. This is useful if several elements holds same coordinates.": {"ru": "Вы всегда можете изменить выбранный элемент с помощью клавиш вверх и вниз. Это полезно, если несколько элементов перекрывают друг друга и имеют одинаковые координаты."},
 "In case if link nearest to selected element can't be found, empty string will be returned.": {"ru": "В случае, если ссылка, ближайшая к выбранному элементу, не может быть найдена, будет возвращена пустая строка."},
 "This action looks for \"href\" attribute on link element. Sometimes it may not be present, and sites processes link clicking by using javascript. In that case following action won't give any meaningful result.": {"ru": "Это действие получает атрибут \"href\" из ссылки. Иногда данный атрибут может отсутствовать, а сайты обрабатывают клики по ссылкам с помощью javascript. В этом случае данное действие не будет иметь пользы."},
+	
+	/* Actions search */
+	"No recent actions found": {"ru": "Недавние действия не найдены"},
+	"Browser > Element": {"ru": "Браузер > Элемент"},
+	"Recent actions": {"ru": "Последние действия"},
+	"Nothing found": {"ru": "Ничего не найдено"},
 }
 
 /*window.un = {}

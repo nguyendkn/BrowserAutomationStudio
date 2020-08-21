@@ -4,4 +4,7 @@
     <%= _.template($('#input_constructor').html())({id:"Value2", description:tr("Value 2. Can be empty"), default_selector: "string"}) %>
     <%= _.template($('#input_constructor').html())({id:"Value3", description:tr("Value 3. Can be empty"), default_selector: "string"}) %>
 </div>
+<div class="tooltipinternal">
+    <div class="tr tooltip-paragraph-first-fold">Create a new list with initial values ​​(optional).</div>
+</div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

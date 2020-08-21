@@ -1,10 +1,10 @@
 {
 	
-	"name":"FunctionAsyncCall",
-	"info":{"en": "This module allows to start function execution in separate thread, wait for results or stop it if necessary.", "ru": "Этот модуль позволяет начать выполнение функции в отдельном потоке, дождаться результатов или остановить его при необходимости."},
-	"icon":"async.png",
-	"description":"Call function asynchronously",
-	"description_small":{"en": "Call function asynchronously", "ru": "Асинхронный вызов функции"},
+	"name": "FunctionAsyncCall",
+	"info": {"en": "This module allows to start function execution in separate thread, wait for results or stop it if necessary.", "ru": "Этот модуль позволяет начать выполнение функции в отдельном потоке, дождаться результатов или остановить его при необходимости."},
+	"icon": "async.png",
+	"description": "Call function asynchronously",
+	"description_small": {"en": "Call function asynchronously", "ru": "Асинхронный вызов функции"},
 	"major_version": 1,
 	"minor_version": 0,
 	"developer_name": "bablosoft", 
@@ -14,8 +14,8 @@
 	"actions":
 	[
 		{
-			"name":"asyncfunction_call",
-			"description":{"en": "Call function asynchronously","ru": "Вызов функции асинхронно"},
+			"name": "asyncfunction_call",
+			"description": {"en": "Call function asynchronously","ru": "Вызов функции асинхронно"},
 			"template": "{{FunctionName}}",
 			"is_element": false,
 			"interface": "asyncfunction_call_interface.js",
@@ -23,8 +23,8 @@
 			"code": [{"file":"asyncfunction_call_code.js", "name": "asyncfunction_call_code"}]
 		},
 		{
-			"name":"asyncfunction_wait",
-			"description":{"en": "Wait for async function completion","ru": "Ждать завершение асинхронной функции"},
+			"name": "asyncfunction_wait",
+			"description": {"en": "Wait for async function completion","ru": "Ждать завершение асинхронной функции"},
 			"template": "{{ThreadId}}",
 			"is_element": false,
 			"interface": "asyncfunction_wait_interface.js",
@@ -32,8 +32,8 @@
 			"code": [{"file":"asyncfunction_wait_code.js", "name": "asyncfunction_wait_code"}]
 		},
 		{
-			"name":"asyncfunction_result",
-			"description":{"en": "Get async function result","ru": "Получить результат асинхронной функции"},
+			"name": "asyncfunction_result",
+			"description": {"en": "Get async function result","ru": "Получить результат асинхронной функции"},
 			"template": "{{ThreadId}} -> {{Result}}",
 			"is_element": false,
 			"interface": "asyncfunction_result_interface.js",
@@ -41,8 +41,8 @@
 			"code": [{"file":"asyncfunction_result_code.js", "name": "asyncfunction_result_code"}]
 		},
 		{
-			"name":"asyncfunction_stop",
-			"description":{"en": "Stop async function","ru": "Прервать асинхронную функцию"},
+			"name": "asyncfunction_stop",
+			"description": {"en": "Stop async function","ru": "Прервать асинхронную функцию"},
 			"template": "{{ThreadId}}",
 			"is_element": false,
 			"interface": "asyncfunction_stop_interface.js",
@@ -71,7 +71,7 @@
 		"Limit the number of threads to 100.": {"ru": "Ограничить количество потоков до 100."},
 		"List where thread id will be added": {"ru": "Список, куда будет добавлен ID потока"},
 		"List, where thread id will be added. This variable has a list type and can be processed with \"List\" module. It accumulates all started threads so, you can perform bulk actions on it, for example, stop them immediately all together. If variable doesn't exist, it will be created.": {"ru": "Список, куда будет добавлен ID потока. Эта переменная имеет тип список и может обрабатываться модулем \"Список\". Он накапливает все запущенные потоки, поэтому вы можете выполнять с помощью него действия сразу над несколькими потоками, например, немедленно останавливать их. Если переменная не существует, она будет создана."},
-		"Execute function asynchronously.": {"ru": "Выполнить функцию асинхронно."},
+		"Execute function asynchronously without waiting for its completion.": {"ru": "Выполнить функцию асинхронно не дожидаясь её завершения."},
 		"Function must be defined beforehand. BAS allows define functions through \"Function Manager\"": {"ru": "Функция должна быть определена заранее. BAS позволяет определять функции используя \"Менеджер функций\""},
 		"Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.": {"ru": "Функции - это контейнеры, в которых содержится список действий. Они помогают группировать несколько действий, которые выполняют одну и ту же задачу. Например, может быть функция, которая логинится на сайте, функция, которая проверяет баланс и т. д. Это делает ваш код понятным и хорошо организованным."},
 		"Another advantage is that one function may be executed as many times as you want from any place in the script. This helps to avoid code duplication. If you want to update function, you need to do that only once, not in every place where it used.": {"ru": "Другим преимуществом является то, что одна функция может выполняться столько раз, сколько вы хотите и из любого места. Это помогает избежать повторения кода. Если вы хотите изменить функцию, вам нужно сделать это только один раз, а не в любом месте, где она используется."},
@@ -126,10 +126,7 @@
 		"Default. When thread has no work to do, it will wait to new function call.": {"ru": "Значение по умолчанию. Когда поток находится в состоянии бездействия, он будет ждать вызова новой функции."},
 		"In idle state thread will look for postdonded functions, thoose, which was queued due to 'Maximum async tasks executed simultaneously' setting. If such function will be found, it will be executed in current thread.": {"ru": "В состоянии бездействия поток будет искать отложенные функции, то есть те, которые были поставлены в очередь из-за установки 'Максимальное количество асинхронных функций, выполняемых одновременно'. Если такая функция будет найдена, она будет выполнена в текущем потоке."},
 		"On idle": {"ru": "Поведение во время бездействия потока"}
-		
-
-		
-		
+				
 	},
 	"engine": [],
 	"browser": [],

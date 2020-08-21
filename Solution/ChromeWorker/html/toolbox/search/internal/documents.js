@@ -82,10 +82,14 @@ class DocumentsStore {
       getTextContent
     );
 
-    return {
-      short: short.length ? short[0] : array[0],
-      array: array.length ? array : short
-    };
+    if (!array.length && !short.length) {
+      return { short: [], array: [] };
+    } else {
+      return {
+        short: short.length ? short[0] : array[0],
+        array: array.length ? array : short
+      };
+    }
   }
 
   /**

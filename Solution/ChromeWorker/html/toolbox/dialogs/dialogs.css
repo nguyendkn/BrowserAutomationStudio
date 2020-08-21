@@ -1,0 +1,62 @@
+.modal-dialog-container {
+  background: white;
+  overflow-x: hidden;
+  position: fixed;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.modal-search-container {
+  margin: 4px 6px 4px 6px;
+  font-weight: normal;
+  font-size: 14px;
+  display: flex;
+  height: 30px;
+}
+
+.modal-search-recent {
+  text-align: center;
+  line-height: 0.5em;
+  padding: 6px 6px;
+  font-size: 12px;
+  min-width: 30px;
+  max-width: 30px;
+  outline: none;
+  height: 30px;
+}
+
+.modal-search-close {
+  text-align: center;
+  line-height: 0.5em;
+  padding: 6px 6px;
+  font-size: 12px;
+  min-width: 30px;
+  max-width: 30px;
+  outline: none;
+  height: 30px;
+}
+
+.modal-search-input {
+  padding: 6px 12px;
+  color: #000;
+  outline: none;
+  height: 30px;
+  width: 100%;
+}
+
+.modal-list-splitter {
+  text-transform: uppercase;
+  border-bottom: 2px solid;
+  padding-top: 10px;
+  font-weight: bold;
+  font-size: 1.25em;
+  margin-top: 10px;
+  list-style: none;
+}
+
+.modal-list-item {
+  list-style: none;
+}

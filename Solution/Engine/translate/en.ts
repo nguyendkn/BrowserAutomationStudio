@@ -570,69 +570,74 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::NodeConnector</name>
     <message>
-        <location filename="../nodeconnector.cpp" line="232"/>
+        <location filename="../nodeconnector.cpp" line="235"/>
         <source>Error occurred. See log for more details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="468"/>
+        <location filename="../nodeconnector.cpp" line="476"/>
         <source>Initialization ... </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="554"/>
-        <location filename="../nodeconnector.cpp" line="752"/>
+        <location filename="../nodeconnector.cpp" line="562"/>
+        <location filename="../nodeconnector.cpp" line="771"/>
         <source>Failed to delete function files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="561"/>
-        <location filename="../nodeconnector.cpp" line="759"/>
+        <location filename="../nodeconnector.cpp" line="569"/>
+        <location filename="../nodeconnector.cpp" line="778"/>
         <source>Failed to install function files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="584"/>
+        <location filename="../nodeconnector.cpp" line="592"/>
         <source>Downloading Node.js distribution ... </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="603"/>
+        <location filename="../nodeconnector.cpp" line="611"/>
         <source>Extracting Node.js distribution ... </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="618"/>
+        <location filename="../nodeconnector.cpp" line="626"/>
         <source>Failed to write to zip file to %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="692"/>
+        <location filename="../nodeconnector.cpp" line="700"/>
         <source>Failed to write to json file %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="708"/>
+        <location filename="../nodeconnector.cpp" line="719"/>
         <source>Installing npm modules ... </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="720"/>
+        <location filename="../nodeconnector.cpp" line="731"/>
         <source>Failed to execute npm install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="730"/>
+        <location filename="../nodeconnector.cpp" line="741"/>
         <source>Failed to start node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="954"/>
+        <location filename="../nodeconnector.cpp" line="763"/>
+        <source>Failed to install modules. See log for more details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../nodeconnector.cpp" line="973"/>
         <source>Running Node.js ... </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="1222"/>
+        <location filename="../nodeconnector.cpp" line="1250"/>
         <source>Finalization ... </source>
         <translation type="unfinished"></translation>
     </message>
@@ -2711,11 +2716,6 @@ Do you want to override it with version %3?
     </message>
     <message>
         <location filename="../embeddedlanguageinstalldialog.ui" line="214"/>
-        <source> Skip installation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../embeddedlanguageinstalldialog.ui" line="231"/>
         <source> Close</source>
         <translation type="unfinished"></translation>
     </message>

@@ -41,9 +41,10 @@ namespace BrowserAutomationStudioFramework
         QSharedPointer<HttpClient> _HttpClient;
 
         /* FinalizeInstall */
-        void FinalizeInstall(bool IsError, const QString& Message);
+        void FinalizeInstall(bool IsError, const QString& Message, bool RemoveZip = true, const QString& IntefaceMessage = QString());
         bool FinalizeInstallIsError;
         QString FinalizeInstallMessage;
+        QString FinalizeInstallInterfaceMessage;
 
 
     public:

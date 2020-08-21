@@ -183,10 +183,11 @@ namespace BrowserAutomationStudioFramework
     }
 
 
-    void NodeConnector::FinalizeInstall(bool IsError, const QString& Message)
+    void NodeConnector::FinalizeInstall(bool IsError, const QString& Message, bool RemoveZip, const QString& InterfaceMessage)
     {
         FinalizeInstallIsError = IsError;
         FinalizeInstallMessage = Message;
+        FinalizeInstallInterfaceMessage = InterfaceMessage;
 
         QFutureWatcher<void> *watcher = new QFutureWatcher<void>();
         QFuture<void> future;
@@ -197,7 +198,7 @@ namespace BrowserAutomationStudioFramework
         QString ZipLocation = QString("e/cache.node.%1.zip").arg(LanguageVersion);
 
         QStringList Files;
-        if(IsError)
+        if(IsError && RemoveZip)
         {
             Files.append(ZipLocation);
         }
@@ -215,7 +216,7 @@ namespace BrowserAutomationStudioFramework
             LOG(QString("Autoclean current folder becuase of error %1").arg(Path));
         }
 
-        if(IsError)
+        if(IsError && RemoveZip)
         {
             LOG(QString("Autoclean distr becuase of error %1").arg(ZipLocation));
         }
@@ -229,7 +230,14 @@ namespace BrowserAutomationStudioFramework
     void NodeConnector::OnFinalizeInstall()
     {
         if(FinalizeInstallIsError)
-            LOGINTERFACE(tr("Error occurred. See log for more details."));
+        {
+            if(FinalizeInstallInterfaceMessage.isEmpty())
+                LOGINTERFACE(tr("Error occurred. See log for more details."));
+            else
+            {
+                LOGINTERFACE(FinalizeInstallInterfaceMessage);
+            }
+        }
         emit Started(FinalizeInstallIsError,FinalizeInstallMessage);
     }
 
@@ -467,8 +475,8 @@ namespace BrowserAutomationStudioFramework
 
         LOGINTERFACE(tr("Initialization ... "));
 
-        LOG(QString("----------------------"));
-        LOG(QString("Starting"));
+        LOG(QString("------------------------------------------------------------------"));
+        LOG(QString("Starting Node.js ") + LanguageVersion);
 
         NodeExeLock.reset();
 
@@ -740,14 +748,6 @@ namespace BrowserAutomationStudioFramework
         if(NoNeedRestartProcess)
             return;
 
-        /*if(StatusCode)
-        {
-            LOG(QString("Failed to install modules"));
-            RemoveCacheCurrentInstall();
-            emit Started(true,tr("Failed to install modules"));
-            return;
-        }*/
-
         if(NpmInstallProcess)
         {
             QString InstallLogStandart = QString::fromUtf8(NpmInstallProcess->readAllStandardOutput());
@@ -755,6 +755,13 @@ namespace BrowserAutomationStudioFramework
 
             QString InstallLogError = QString::fromUtf8(NpmInstallProcess->readAllStandardError());
             LOG(QString("Npm install log error ") + InstallLogError);
+        }
+
+        if(StatusCode)
+        {
+            LOG(QString("Failed to install npm modules"));
+            FinalizeInstall(true, "Failed to install npm modules", false, tr("Failed to install modules. See log for more details."));
+            return;
         }
 
         QString NodePath = QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"));

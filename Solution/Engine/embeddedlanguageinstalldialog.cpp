@@ -5,7 +5,7 @@
 #include <QDesktopServices>
 
 EmbeddedLanguageInstallDialog::EmbeddedLanguageInstallDialog(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::EmbeddedLanguageInstallDialog)
 {
     ui->setupUi(this);

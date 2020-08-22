@@ -1,13 +1,13 @@
 #ifndef EMBEDDEDLANGUAGEINSTALLDIALOG_H
 #define EMBEDDEDLANGUAGEINSTALLDIALOG_H
 
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
 class EmbeddedLanguageInstallDialog;
 }
 
-class EmbeddedLanguageInstallDialog : public QWidget
+class EmbeddedLanguageInstallDialog : public QDialog
 {
     Q_OBJECT
 

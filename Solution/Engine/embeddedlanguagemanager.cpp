@@ -44,6 +44,7 @@ namespace BrowserAutomationStudioFramework
     {
         if(_EmbeddedLanguageInstallDialog)
         {
+            _EmbeddedLanguageInstallDialog->hide();
             _EmbeddedLanguageInstallDialog->deleteLater();
             _EmbeddedLanguageInstallDialog = 0;
         }
@@ -396,6 +397,7 @@ namespace BrowserAutomationStudioFramework
             _EmbeddedLanguageInstallDialog->SetLabel(DialogLabel);
             DialogLabel.clear();
             _EmbeddedLanguageInstallDialog->SetTitle(DialogTitle);
+            _EmbeddedLanguageInstallDialog->setModal(true);
             _EmbeddedLanguageInstallDialog->show();
         }
         emit InitializationShow();

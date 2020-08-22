@@ -451,6 +451,9 @@ namespace BrowserAutomationStudioFramework
             Connector = new NodeConnector(this);
             if(Lang.Version != "8.6.0")
                 Connector->SetHasPipeVersion();
+
+            if(LanguageStartIterator == AllLanguages.length() - 1)
+                Connector->SetAutoCleanWhenFinishedSuccess();
             Connector->SetLanguageVersion(Lang.Version);
             Connector->SetIsRecord(IsRecord);
 

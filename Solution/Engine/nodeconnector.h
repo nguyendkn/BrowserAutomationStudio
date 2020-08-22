@@ -29,6 +29,7 @@ namespace BrowserAutomationStudioFramework
         bool LogEnabled = false;
         bool IsRecord = false;
         bool HasPipeVersion = false;
+        bool AutoCleanWhenFinishedSuccess = false;
 
         QString Suffix;
 
@@ -100,7 +101,10 @@ namespace BrowserAutomationStudioFramework
         virtual void AddFile(const QString& Path,const QString& Code);
         virtual QHash<QString,QString> GetFiles();
         virtual void ClearLanguageSettings();
+
+        /* Other settings*/
         void SetHasPipeVersion();
+        void SetAutoCleanWhenFinishedSuccess();
     signals:
 
     public slots:

@@ -204,7 +204,13 @@ namespace BrowserAutomationStudioFramework
         {
             Files.append(ZipLocation);
         }
-        QStringList Folders = AutoCleanPrepare();
+        QStringList Folders;
+        if(AutoCleanWhenFinishedSuccess || IsError)
+        {
+            Folders = AutoCleanPrepare();
+        }
+
+
         Folders.append(CacheDir);
         if(IsError)
         {
@@ -306,6 +312,12 @@ namespace BrowserAutomationStudioFramework
     {
         this->HasPipeVersion = true;
     }
+
+    void NodeConnector::SetAutoCleanWhenFinishedSuccess()
+    {
+        this->AutoCleanWhenFinishedSuccess = true;
+    }
+
 
 
     void NodeConnector::ClearLanguageSettings()

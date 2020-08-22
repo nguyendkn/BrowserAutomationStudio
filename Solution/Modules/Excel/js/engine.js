@@ -47,3 +47,39 @@ function Excel_DeleteSheet(){
 	
 	_embedded("ExcelDeleteSheet", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
 };
+function Excel_ReadCell(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address];
+	
+	_embedded("ExcelReadCell", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
+};
+function Excel_WriteToCell(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
+	var data = _function_argument("Data");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, data];
+	
+	_embedded("ExcelWriteToCell", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_FormatAddress(address){
+	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]) + address.split("*")[1]) : address;
+};
+function Excel_ConvertToLetter(column){
+    var temp = '';
+    var letter = '';
+    while(column>0){
+        temp = (column-1)%26;
+        letter = String.fromCharCode(temp+65)+letter;
+        column = (column-temp-1)/26;
+    };
+    return letter;
+};

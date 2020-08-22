@@ -183,13 +183,14 @@ namespace BrowserAutomationStudioFramework
     }
 
 
-    void NodeConnector::FinalizeInstall(bool IsError, const QString& Message, bool RemoveZip, const QString& InterfaceMessage)
+    void NodeConnector::FinalizeInstall(bool IsError, const QString& Message, bool RemoveZip, const QString& InterfaceMessage, bool AllowRetry)
     {
         if(NoNeedRestartProcess)
             return;
         FinalizeInstallIsError = IsError;
         FinalizeInstallMessage = Message;
         FinalizeInstallInterfaceMessage = InterfaceMessage;
+        FinalizeInstallAllowRetry = AllowRetry;
 
         QFutureWatcher<void> *watcher = new QFutureWatcher<void>();
         QFuture<void> future;
@@ -205,10 +206,16 @@ namespace BrowserAutomationStudioFramework
             Files.append(ZipLocation);
         }
         QStringList Folders;
-        if(AutoCleanWhenFinishedSuccess || IsError)
+        if(
+                (IsError && AutoCleanWhenFinishedFail)
+                ||
+                (!IsError && AutoCleanWhenFinishedSuccess)
+          )
         {
+            //Autoclean only on last start
             Folders = AutoCleanPrepare();
         }
+
 
 
         Folders.append(CacheDir);
@@ -246,7 +253,7 @@ namespace BrowserAutomationStudioFramework
                 LOGINTERFACE(FinalizeInstallInterfaceMessage);
             }
         }
-        emit Started(FinalizeInstallIsError,FinalizeInstallMessage);
+        emit Started(FinalizeInstallIsError,FinalizeInstallMessage, FinalizeInstallAllowRetry);
     }
 
 
@@ -316,6 +323,11 @@ namespace BrowserAutomationStudioFramework
     void NodeConnector::SetAutoCleanWhenFinishedSuccess()
     {
         this->AutoCleanWhenFinishedSuccess = true;
+    }
+
+    void NodeConnector::SetAutoCleanWhenFinishedFail()
+    {
+        this->AutoCleanWhenFinishedFail = true;
     }
 
 
@@ -585,14 +597,14 @@ namespace BrowserAutomationStudioFramework
             if(!DeleteFunctionsAndFiles(NodePath))
             {
                 LOG(QString("Failed to delete function files").arg(NodePath));
-                emit Started(true,tr("Failed to delete function files"));
+                emit Started(true,tr("Failed to delete function files"),true);
                 return;
             }
 
             if(!InstallFunctionsAndFiles(NodePath))
             {
                 LOG(QString("Failed to install function files").arg(NodePath));
-                emit Started(true,tr("Failed to install function files"));
+                emit Started(true,tr("Failed to install function files"),true);
                 return;
             }
 
@@ -797,7 +809,7 @@ namespace BrowserAutomationStudioFramework
         if(StatusCode)
         {
             LOG(QString("Failed to install npm modules"));
-            FinalizeInstall(true, "Failed to install npm modules", false, tr("Failed to install modules. See log for more details."));
+            FinalizeInstall(true, "Failed to install npm modules", false, tr("Failed to install modules. See log for more details."), false);
             return;
         }
 

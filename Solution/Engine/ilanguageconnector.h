@@ -28,8 +28,8 @@ namespace BrowserAutomationStudioFramework
 
     /* API */
     signals:
-        /* IsError, ErrorMessage */
-        void Started(bool, QString);
+        /* IsError, ErrorMessage, AllowRetry */
+        void Started(bool, QString, bool);
         /* ErrorMessage */
         void Stopped(QString);
         /* Function finished, id, variables json, is success, error message */

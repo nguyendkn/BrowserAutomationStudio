@@ -47,6 +47,9 @@ namespace BrowserAutomationStudioFramework
         bool IsCheckingFail;
         QString CheckFailError;
 
+        /* Language start retries */
+        int MaxRetryNumber = 1;
+        int CurrentRetryNumber = 0;
 
         bool IsRecord;
 
@@ -81,7 +84,7 @@ namespace BrowserAutomationStudioFramework
         virtual void Start();
 
         virtual void DeserializeData(const QString& Data);
-        virtual void NextLanguageStarted(bool IsError, QString ErrorMessage);
+        virtual void NextLanguageStarted(bool IsError, QString ErrorMessage, bool AllowRetry);
 
         /* Execute function */
         virtual quint64 SendFunction(const QString& Variables, const QString& Function, const QString& LanguageName, const QString& LanguageVersion, QString& StartErrorString);

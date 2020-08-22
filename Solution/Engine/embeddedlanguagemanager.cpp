@@ -360,6 +360,8 @@ namespace BrowserAutomationStudioFramework
             LanguageStartIterator = 0;
         }
 
+        CurrentRetryNumber = 0;
+
         StartNextLanguage();
     }
 
@@ -433,7 +435,12 @@ namespace BrowserAutomationStudioFramework
         }
         EmbeddedLanguage& Lang = AllLanguages[LanguageStartIterator];
 
-        DialogTitle = QString(tr("Starting %1 %2     ")).arg(Lang.Name).arg(Lang.Version);
+        QString RetryString;
+        if(CurrentRetryNumber > 0)
+        {
+            RetryString = QString(tr(" (retry %1)")).arg(QString::number(CurrentRetryNumber + 1));
+        }
+        DialogTitle = QString(tr("Starting %1 %2%3     ")).arg(Lang.Name).arg(Lang.Version).arg(RetryString);
         if(_EmbeddedLanguageInstallDialog)
             _EmbeddedLanguageInstallDialog->SetTitle(DialogTitle);
         emit InitializationTitle(DialogTitle);
@@ -454,8 +461,10 @@ namespace BrowserAutomationStudioFramework
             if(Lang.Version != "8.6.0")
                 Connector->SetHasPipeVersion();
 
-            if(LanguageStartIterator == AllLanguages.length() - 1)
+            if(LanguageStartIterator >= AllLanguages.length() - 1)
                 Connector->SetAutoCleanWhenFinishedSuccess();
+            if(CurrentRetryNumber >= MaxRetryNumber)
+                Connector->SetAutoCleanWhenFinishedFail();
             Connector->SetLanguageVersion(Lang.Version);
             Connector->SetIsRecord(IsRecord);
 
@@ -487,7 +496,7 @@ namespace BrowserAutomationStudioFramework
 
         }
 
-        connect(Connector,SIGNAL(Started(bool,QString)),this,SLOT(NextLanguageStarted(bool,QString)));
+        connect(Connector,SIGNAL(Started(bool,QString,bool)),this,SLOT(NextLanguageStarted(bool,QString,bool)));
         connect(Connector,SIGNAL(Log(QString)),this,SLOT(ConnectorStartingLog(QString)));
         connect(Connector,SIGNAL(ReceivedResultData(quint64,QString,bool,QString)),this,SIGNAL(ReceivedResultData(quint64,QString,bool,QString)));
         connect(Connector,SIGNAL(ReceivedApiData(quint64,QString,QString)),this,SIGNAL(ReceivedApiData(quint64,QString,QString)));
@@ -510,10 +519,21 @@ namespace BrowserAutomationStudioFramework
         emit InitializationLog(Text);
     }
 
-    void EmbeddedLanguageManager::NextLanguageStarted(bool IsError, QString ErrorMessage)
+    void EmbeddedLanguageManager::NextLanguageStarted(bool IsError, QString ErrorMessage, bool AllowRetry)
     {
-        disconnect(Connectors.last(),SIGNAL(Started(bool,QString)),this,SLOT(NextLanguageStarted(bool,QString)));
+        disconnect(Connectors.last(),SIGNAL(Started(bool,QString,bool)),this,SLOT(NextLanguageStarted(bool,QString,bool)));
         disconnect(Connectors.last(),SIGNAL(Log(QString)),this,SLOT(ConnectorStartingLog(QString)));
+
+        if(!Connectors.isEmpty() && AllowRetry && IsError && (CurrentRetryNumber < MaxRetryNumber))
+        {
+            CurrentRetryNumber++;
+            Connectors.last()->deleteLater();
+            Connectors.removeLast();
+            StartNextLanguage();
+            return;
+        }
+
+        CurrentRetryNumber = 0;
 
         _WasError = IsError;
         _ErrorString = ErrorMessage;

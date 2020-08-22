@@ -30,6 +30,7 @@ namespace BrowserAutomationStudioFramework
         bool IsRecord = false;
         bool HasPipeVersion = false;
         bool AutoCleanWhenFinishedSuccess = false;
+        bool AutoCleanWhenFinishedFail = false;
 
         QString Suffix;
 
@@ -42,8 +43,9 @@ namespace BrowserAutomationStudioFramework
         QSharedPointer<HttpClient> _HttpClient;
 
         /* FinalizeInstall */
-        void FinalizeInstall(bool IsError, const QString& Message, bool RemoveZip = true, const QString& IntefaceMessage = QString());
+        void FinalizeInstall(bool IsError, const QString& Message, bool RemoveZip = true, const QString& IntefaceMessage = QString(), bool AllowRetry = true);
         bool FinalizeInstallIsError;
+        bool FinalizeInstallAllowRetry;
         QString FinalizeInstallMessage;
         QString FinalizeInstallInterfaceMessage;
 
@@ -105,6 +107,7 @@ namespace BrowserAutomationStudioFramework
         /* Other settings*/
         void SetHasPipeVersion();
         void SetAutoCleanWhenFinishedSuccess();
+        void SetAutoCleanWhenFinishedFail();
     signals:
 
     public slots:

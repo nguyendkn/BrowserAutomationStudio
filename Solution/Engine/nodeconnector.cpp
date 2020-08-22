@@ -49,7 +49,7 @@ namespace BrowserAutomationStudioFramework
     void NodeConnector::LOG(const QString& Text)
     {
         QString txt;
-        QString datestring = QTime::currentTime().toString("hh:mm:ss");
+        QString datestring = QTime::currentTime().toString("hh:mm:ss.z");
         txt = QString("[%1] %2").arg(datestring).arg(Text);
 
         QFile outFile("node_log.txt");
@@ -185,6 +185,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::FinalizeInstall(bool IsError, const QString& Message, bool RemoveZip, const QString& InterfaceMessage)
     {
+        if(NoNeedRestartProcess)
+            return;
         FinalizeInstallIsError = IsError;
         FinalizeInstallMessage = Message;
         FinalizeInstallInterfaceMessage = InterfaceMessage;
@@ -470,6 +472,9 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::Start()
     {
+        if(NoNeedRestartProcess)
+            return;
+
         if(IsActive)
             return;
 
@@ -486,6 +491,9 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::InstalledDirSearchIteration()
     {
+        if(NoNeedRestartProcess)
+            return;
+
         Suffix = FindInstalledDistr();
 
         if(LanguageVersion == "8.6.0")
@@ -515,6 +523,9 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::OnInstallDirChecksum()
     {
+        if(NoNeedRestartProcess)
+            return;
+
         QFutureWatcher<QString> *watcher = ((QFutureWatcher<QString> *)sender());
         QString ChecksumVerificationError = watcher->future().result();
 
@@ -551,6 +562,9 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::InstalledDirFinishedSearch()
     {
+        if(NoNeedRestartProcess)
+            return;
+
         LOG(QString("Hash %1").arg(GetLanguageSettingsHash()));
 
         if(!Suffix.isEmpty())
@@ -601,6 +615,10 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::DistrDownloaded()
     {
+
+        if(NoNeedRestartProcess)
+            return;
+
         if(_HttpClient->WasError())
         {
             LOG(QString("Http error ").arg(_HttpClient->GetErrorString()));
@@ -634,6 +652,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::ExtractDistr()
     {
+        if(NoNeedRestartProcess)
+            return;
         QString Path = QFileInfo(QString("e/cache.node.%1.zip").arg(LanguageVersion)).absoluteFilePath();
 
         QString Dir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.%1").arg(Suffix))).absoluteFilePath();
@@ -651,7 +671,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::OnDistrExtracted()
     {
-
+        if(NoNeedRestartProcess)
+            return;
         QVariantMap dependencies;
         QHashIterator<QString, QString> i(Modules);
         while (i.hasNext())
@@ -725,6 +746,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::FailedToStartNpm(QProcess::ProcessError error)
     {
+        if(NoNeedRestartProcess)
+            return;
         if(error == QProcess::FailedToStart)
         {
             LOG(QString("Failed to execute npm install"));
@@ -735,6 +758,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::FailedToStartNode(QProcess::ProcessError error)
     {
+        if(NoNeedRestartProcess)
+            return;
         if(error == QProcess::FailedToStart && !IsProcessRestart)
         {
             LOG(QString("Failed to start node"));
@@ -797,6 +822,9 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::OnFolderMoved()
     {
+        if(NoNeedRestartProcess)
+            return;
+
         QFutureWatcher<bool> *watcher = ((QFutureWatcher<bool> *)sender());
         bool result = watcher->future().result();
 
@@ -830,6 +858,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::OnChecksumsCalculated()
     {
+        if(NoNeedRestartProcess)
+            return;
         QFutureWatcher<QString> *watcher = ((QFutureWatcher<QString> *)sender());
         QString ChecksumVerificationError = watcher->future().result();
 
@@ -955,6 +985,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::StartInternal()
     {
+        if(NoNeedRestartProcess)
+            return;
         QString LockPath = QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("lock.file"));
         LockPath = QFileInfo(LockPath).absoluteFilePath();
 
@@ -979,7 +1011,7 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::Stop()
     {
-        LOG(QString("Stop"));
+        LOG(QString("Stopped by user (begin)"));
         if(!NodeExeLock.isNull())
         {
             NodeExeLock->close();
@@ -997,7 +1029,8 @@ namespace BrowserAutomationStudioFramework
 
         }
         IsActive = false;
-        LOG(QString("EndStop"));
+        NoNeedRestartProcess = true;
+        LOG(QString("Stopped by user (end)"));
 
         //Auto clean cache folder in background
 
@@ -1012,6 +1045,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::SendRaw(const QString& Text)
     {
+        if(NoNeedRestartProcess)
+            return;
         if(IsRecord)
             LOG(QString("-> %1").arg(Text));
         if(!IsActive)
@@ -1127,6 +1162,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::StartPipes()
     {
+        if(NoNeedRestartProcess)
+            return;
         Server = QSharedPointer<QLocalServer>::create();
         connect(Server.data(),SIGNAL(newConnection()),this,SLOT(NewConnection()));
 
@@ -1142,6 +1179,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::StartProcess()
     {
+        if(NoNeedRestartProcess)
+            return;
 
         Process = QSharedPointer<QProcess>(new QProcess,&QObject::deleteLater);
         //Process->setProcessChannelMode(QProcess::ForwardedChannels);
@@ -1161,6 +1200,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::ReadData()
     {
+        if(NoNeedRestartProcess)
+            return;
         QLocalSocket *Client = (QLocalSocket *)(sender());
         QString Data = QString::fromUtf8(Client->readAll());
 
@@ -1231,6 +1272,9 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::NewConnection()
     {
+        if(NoNeedRestartProcess)
+            return;
+
         Client = Server->nextPendingConnection();
 
         if(!Client)
@@ -1254,6 +1298,8 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::Write(const QString& Text)
     {
+        if(NoNeedRestartProcess)
+            return;
         QString TextToWrite = Text + "--BAS-BOUNDARY--";
         Client->write(TextToWrite.toUtf8());
     }

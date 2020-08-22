@@ -706,8 +706,8 @@ namespace BrowserAutomationStudioFramework
         }
         QJsonObject DependenciesObject = QJsonObject::fromVariantMap(dependencies);
 
-        //Merge package.original with DependenciesObject
-        /*{
+        //Remove packages that is already present in package.original
+        {
             QFile PackageOriginalFile(QString("e/cache.%1/distr/package.original").arg(Suffix));
             if(PackageOriginalFile.open(QIODevice::ReadOnly))
             {
@@ -723,12 +723,15 @@ namespace BrowserAutomationStudioFramework
                         QJsonObject DependenciesObjectOriginal = doc.object()["dependencies"].toObject();
                         for(const QString& Key: DependenciesObjectOriginal.keys())
                         {
-                            DependenciesObject[Key] = DependenciesObjectOriginal[Key];
+                            if(DependenciesObject.contains(Key) && DependenciesObject[Key] == DependenciesObjectOriginal[Key])
+                            {
+                                DependenciesObject.remove(Key);
+                            }
                         }
                     }
                 }
             }
-        }*/
+        }
 
         QVariantMap res;
         res.insert("dependencies",DependenciesObject);
@@ -748,6 +751,13 @@ namespace BrowserAutomationStudioFramework
         LOG(QString("package.json file content ") + document.toJson());
         FileJson.write(document.toJson());
         FileJson.close();
+
+        if(DependenciesObject.isEmpty())
+        {
+            LOG(QString("No need to run npm install because module list is empty"));
+            NpmInstalled(0);
+            return;
+        }
 
         NpmInstallProcess = QSharedPointer<QProcess>::create();
         connect(NpmInstallProcess.data(),SIGNAL(finished(int)),this,SLOT(NpmInstalled(int)));

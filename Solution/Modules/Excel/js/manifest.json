@@ -118,6 +118,40 @@
             "name": "Excel_WriteToCell",
             "select": "Excel_WriteToCell_select.js",
             "template": "{{Data}} -> {{CellAddress}}"
+        },
+        {
+            "code": [
+                {
+                    "file": "Excel_ReadSheet_code.js",
+                    "name": "Excel_ReadSheet_code"
+                }
+            ],
+            "description": {
+                "en": "Read sheet",
+                "ru": "Читать лист"
+            },
+            "interface": "Excel_ReadSheet_interface.js",
+            "is_element": false,
+            "name": "Excel_ReadSheet",
+            "select": "Excel_ReadSheet_select.js",
+            "template": "{{SheetIndexOrName}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_WriteToSheet_code.js",
+                    "name": "Excel_WriteToSheet_code"
+                }
+            ],
+            "description": {
+                "en": "Write to sheet",
+                "ru": "Запись на лист"
+            },
+            "interface": "Excel_WriteToSheet_interface.js",
+            "is_element": false,
+            "name": "Excel_WriteToSheet",
+            "select": "Excel_WriteToSheet_select.js",
+            "template": "{{Data}} -> {{SheetIndexOrName}}"
         }
     ],
     "api_version": 1,
@@ -128,7 +162,9 @@
 		"Excel_MoveSheet",
         "Excel_DeleteSheet",
         "Excel_ReadCell",
-        "Excel_WriteToCell"
+        "Excel_WriteToCell",
+        "Excel_ReadSheet",
+        "Excel_WriteToSheet"
     ],
     "browser": [
     ],
@@ -191,6 +227,20 @@
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "8.6.0"
+        },
+        {
+            "Data": "const xlsx = require('xlsx-populate');\r\nconst fs = require('fs');\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar data_format = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    fs.exists(file_path, function(exist){\r\n        if(exist){\r\n            var fromFile = xlsx.fromFileAsync(file_path);\r\n            fromFile.then(function(workbook){\r\n                try{\r\n                    var usedRange = workbook.sheet(sheet_index_or_name).usedRange();\r\n                    var list = (typeof usedRange!==\"undefined\") ? usedRange.value() : [];\r\n                    if(data_format==\"CSV list\" || data_format==\"CSV string\"){\r\n                        list = list.map(function(row){return csv_generate(row, \":\")});\r\n                        if(data_format==\"CSV string\"){\r\n                            list = list.join(\"\\r\\n\");\r\n                        };\r\n                    };\r\n                    [[XLSX_NODE_PARAMETERS]] = list;\r\n                }catch(err){\r\n                    reject(err);\r\n                };\r\n                \r\n                return resolve();\r\n            });\r\n            fromFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        }else{\r\n            reject('The file \"' + file_path + '\" does not exist');\r\n        };\r\n    });\r\n\r\n    function csv_generate(list, separator=\",\"){\r\n        var res = '';\r\n        var first = true;\r\n        list.forEach(function(item=\"\"){\r\n            var add = item;\r\n            if(item.indexOf(\";\") > -1 || item.indexOf(\":\") > -1 || item.indexOf(\",\") > -1 || item.indexOf(separator) > -1){\r\n                add = \"\\\"\" + add.replace(/[\"]/gi, \"\\\"\\\"\") + \"\\\"\";\r\n            };\r\n            if(!first){\r\n                res += separator;\r\n            }else{\r\n                first = false;\r\n            };\r\n            res += add;\r\n        });\r\n        return res;\r\n    };\r\n}));",
+            "DataName": "ExcelReadSheet",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "8.6.0"
+        },
+        {
+            "Data": "const xlsx = require('xlsx-populate');\r\nconst fs = require('fs');\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar data = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    if(typeof data!==\"object\"){\r\n        data = data.split(/\\r?\\n/);\r\n    };\r\n    if(typeof data[0]!==\"object\"){\r\n        data = data.map(function(row){return (typeof row!==\"object\") ? csv_parse(row) : row});\r\n    };\r\n    fs.exists(file_path, function(exist){\r\n        var file = exist ? xlsx.fromFileAsync(file_path) : xlsx.fromBlankAsync();\r\n        file.then(function(workbook){\r\n            try{\r\n                workbook.sheet(sheet_index_or_name).cell(\"A1\").value(data);\r\n            }catch(err){\r\n                reject(err);\r\n            };\r\n            \r\n            var toFile = workbook.toFileAsync(file_path);\r\n            toFile.then(function(){\r\n                return resolve();\r\n            });\r\n            toFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        });\r\n        file.catch(function(err){\r\n            return reject(err);\r\n        });\r\n    });\r\n    \r\n    function csv_parse(line){\r\n        var res = [];\r\n        var index = 0;\r\n        var len = line.length;\r\n        var InsideQuotes = false;\r\n        var CurrentElement = '';\r\n        \r\n        while(index<len){\r\n            var c = line[index];\r\n            var n = '';\r\n            var HasNext = (index + 1) < len;\r\n            if(HasNext){\r\n                n = line[index + 1];\r\n            };\r\n            index++;\r\n\r\n            if(c=='\\\"'){\r\n                if(InsideQuotes){\r\n                    if(!HasNext || n!='\\\"'){\r\n                        InsideQuotes = false;\r\n                        continue;\r\n                    }else{\r\n                        CurrentElement += \"\\\"\";\r\n                        index++;\r\n                        continue;\r\n                    }\r\n                }else{\r\n                    InsideQuotes = true;\r\n                    continue;\r\n                }\r\n            };\r\n\r\n            if(c==':' || c==';' || c==','){\r\n                if(InsideQuotes){\r\n                    CurrentElement += c;\r\n                    continue;\r\n                }else{\r\n                    res.push(CurrentElement);\r\n                    CurrentElement = '';\r\n                    continue;\r\n                }\r\n            };\r\n            CurrentElement += c;\r\n        };\r\n        res.push(CurrentElement);\r\n\r\n        return res;\r\n    };\r\n}));",
+            "DataName": "ExcelWriteToSheet",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "8.6.0"
         }
     ],
     "engine": [
@@ -219,6 +269,7 @@
 		"Sheet name": {"ru":"Имя листа"},
 		"File path": {"ru":"Путь к файлу"},
 		"Sheet index": {"ru":"Индекс листа"},
+		"Data format": {"ru":"Формат данных"},
 		"Cell address": {"ru":"Адрес ячейки"},
 		"Can be blank": {"ru":"Может быть пустым"},
 		"New sheet name": {"ru":"Новое имя листа"},
@@ -235,6 +286,7 @@
 		"Add new sheet to excel file.": {"ru":"Добавить новый лист в excel файл."},
 		"Variable to save the result": {"ru":"Переменная, в которую сохранить результат"},
 		"Index or sheet name in excel file.": {"ru":"Индекс или имя листа в excel файле."},
+		"Write data to sheet in excel file.": {"ru":"Записать данные на лист в excel файле."},
 		"The sheet will have the specified index": {"ru":"Лист будет иметь указанный индекс"},
 		"Get list of sheets from excel file.": {"ru":"Получить список листов из excel файла."},
 		"Move specified sheet in excel file.": {"ru":"Переместить указанный лист в excel файле."},
@@ -248,20 +300,26 @@
 		"The path to the excel file which needs to add the sheet.": {"ru":"Путь к excel файлу в который нужно добавить лист."},
 		"If the file or sheet is missing, no error will occur.": {"ru":"Если файл или лист отсутствуют, ошибки не произойдет."},
 		"The data which needs to be written to the specified cell.": {"ru":"Данные которые нужно записать в указанную ячейку."},
+		"The data which needs to be written to the specified sheet.": {"ru":"Данные которые нужно записать на указанный лист."},
 		"The name of the sheet after successful completion of the action.": {"ru":"Имя листа после успешного выполнения действия."},
 		"The path to the excel file in which needs to move the sheet.": {"ru":"Путь к excel файлу в котором нужно переместить лист."},
+		"The path to the excel file from which needs to read the sheet.": {"ru":"Путь к excel файлу из которого нужно прочитать лист."},
 		"The path to the excel file from which needs to delete the sheet.": {"ru":"Путь к excel файлу из которого нужно удалить лист."},
 		"The index of the sheet after successful completion of the action.": {"ru":"Индекс листа после успешного выполнения действия."},
 		"The path to the excel file from which needs to read the cell.": {"ru":"Путь к excel файлу из которого нужно прочитать ячейку."},
 		"The path to the excel file in which needs to rename the sheet.": {"ru":"Путь к excel файлу в котором нужно переименовать лист."},
+		"The format in which the read data will be saved to variable.": {"ru":"Формат, в котором прочитанные данные будут сохранены в переменную."},
 		"The path to the excel file where in the cell needs to write the data.": {"ru":"Путь к excel файлу в ячейку которого нужно записать данные."},
+		"The path to the excel file where on the sheet needs to write the data.": {"ru":"Путь к excel файлу на лист которого нужно записать данные."},
 		"The path to the excel file from which needs to get the list of sheets.": {"ru":"Путь к excel файлу из которого нужно получить список листов."},
 		"Read a cell from an excel file and save its contents to a variable.": {"ru":"Читать ячейку из excel файла и сохранить её содержимое в переменную."},
+		"Read a sheet from an excel file and save its contents to a variable.": {"ru":"Читать лист из excel файла и сохранить его содержимое в переменную."},
 		"The resulting list can be processed using actions from the \"List\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"Список\"."},
 		"If the \"Sheet index\" parameter is empty, the sheet will be added to the end of the book.": {"ru":"Если параметр \"Индекс листа\" пуст, лист будет добавлен в конец книги."},
 		"If the \"New sheet index\" parameter is empty, the sheet will be moved to the end of the book.": {"ru":"Если параметр \"Новый индекс листа\" пуст, лист будет перемещен в конец книги."},
 		"Variable in which, after successful execution of the action, the list of sheets will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список листов."},
 		"Variable in which, after successful execution of the action, the contents of the cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано содержимое ячейки."},
+		"Variable in which, after successful execution of the action, the contents of the sheet will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано содержимое листа."},
 		"In the \"Sheet index\" parameter, you can specify the name of an existing sheet, then a new sheet will be added before it.": {"ru":"В параметр \"Индекс листа\" можно указать имя уже существующего листа, тогда новый лист будет добавлен перед ним."},
 		"In the \"New sheet index\" parameter, you can specify the name of an existing sheet, then the specified sheet will be placed in front of it.": {"ru":"В параметр \"Новый индекс листа\" можно указать имя существующего листа, тогда указанный лист будет помещен перед ним."},
 		"Cell address in excel file. You can specify a standard address with a column letter and row number, or the column number and row number separated by *.": {"ru":"Адрес ячейки в excel файле. Можно указать стандартный адрес с буквой колонки и номером строки, или номер колонки и номер строки через разделитель *."},

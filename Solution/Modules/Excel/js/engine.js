@@ -70,6 +70,28 @@ function Excel_WriteToCell(){
 	
 	_embedded("ExcelWriteToCell", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
 };
+function Excel_ReadSheet(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var data_format = _function_argument("DataFormat");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data_format];
+	
+	_embedded("ExcelReadSheet", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
+};
+function Excel_WriteToSheet(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var data = _function_argument("Data");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data];
+	
+	_embedded("ExcelWriteToSheet", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+};
 function Excel_FormatAddress(address){
 	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]) + address.split("*")[1]) : address;
 };

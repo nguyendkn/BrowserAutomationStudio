@@ -117,7 +117,8 @@ namespace BrowserAutomationStudioFramework
         virtual bool GetIsRunning() = 0;
         virtual FunctionRunData * PrepareExecuteFunction(const QString& DllName, const QString& FunctionName, const QString& InputParam, unsigned int ThreadId) = 0;
 
-        virtual QList<ModulePreserve> GetModulesUsedInProject(const QString& Project) = 0;
+        virtual QList<ModulePreserve> GetAllModules() = 0;
+        virtual QList<ModulePreserve> GetModulesUsedInProject(const QString& Project, bool IncludeStandartModulesWithEmbeddedLanguages = false) = 0;
         virtual QStringList GetStandartModulesNotUsedInProject(const QString& Project) = 0;
         virtual bool PackModules(QList<ModulePreserve>& Modules) = 0;
         virtual void UnpackModules(QList<ModulePreserve>& Modules) = 0;

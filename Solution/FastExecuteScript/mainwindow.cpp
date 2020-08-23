@@ -425,8 +425,16 @@ void MainWindow::Start()
        _ModuleManager->UnpackModules(Modules);
     }
 
-    _EmbeddedLanguageManager->ReadLanguageList(false, IsSilent, false, _ModuleManager->GetAllEmbeddedLanguages(), _ModuleManager->GetAllEmbeddedModules());
-    _EmbeddedLanguageManager->SetModuleCode(_ModuleManager->GetAllEmbeddedCodeItems());
+    QStringList UnusedModules = loader.GetUnusedModules();
+    QStringList ActiveModules;
+    for(IModuleManager::ModulePreserve &Module: _ModuleManager->GetAllModules())
+    {
+        if(!UnusedModules.contains(Module->Name))
+            ActiveModules.append(Module->Name);
+    }
+
+    _EmbeddedLanguageManager->ReadLanguageList(false, IsSilent, false, _ModuleManager->GetAllEmbeddedLanguages(ActiveModules), _ModuleManager->GetAllEmbeddedModules(ActiveModules));
+    _EmbeddedLanguageManager->SetModuleCode(_ModuleManager->GetAllEmbeddedCodeItems(ActiveModules));
 
     if(!DataBaseConnectorPreserved)
     {

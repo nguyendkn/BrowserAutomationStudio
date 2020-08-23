@@ -909,12 +909,45 @@ namespace BrowserAutomationStudioFramework
         return 1;
     }
 
-
-    QList<IModuleManager::ModulePreserve> ModuleManager::GetModulesUsedInProject(const QString& Project)
+    QList<IModuleManager::ModulePreserve> ModuleManager::GetAllModules()
     {
         QList<IModuleManager::ModulePreserve> Result;
         GetModulePreserveFromFolder(QString("external/") + QString::number(qApp->applicationPid()),Result);
         GetModulePreserveFromFolder("custom",Result);
+        GetModulePreserveFromFolder("modules",Result);
+        return Result;
+    }
+
+    QList<IModuleManager::ModulePreserve> ModuleManager::GetModulesUsedInProject(const QString& Project, bool IncludeStandartModulesWithEmbeddedLanguages)
+    {
+        QList<IModuleManager::ModulePreserve> Result;
+        GetModulePreserveFromFolder(QString("external/") + QString::number(qApp->applicationPid()),Result);
+        GetModulePreserveFromFolder("custom",Result);
+
+        if(IncludeStandartModulesWithEmbeddedLanguages)
+        {
+            QList<IModuleManager::ModulePreserve> StandartPreserve;
+            QList<IModuleManager::ModuleInfo> StandartInfo;
+
+            GetModuleInfoFromFolder("modules",StandartInfo,false);
+            GetModulePreserveFromFolder("modules",StandartPreserve);
+
+            for(const IModuleManager::ModulePreserve& _ModulePreserve: StandartPreserve)
+            {
+                for(const IModuleManager::ModuleInfo& _ModuleInfo: StandartInfo)
+                {
+                    if(_ModuleInfo->Name == _ModulePreserve->Name)
+                    {
+                        if(!_ModuleInfo->EmbeddedLanguages.empty())
+                        {
+                            Result.append(_ModulePreserve);
+                        }
+                        break;
+                    }
+                }
+            }
+
+        }
         QMap<QString,QString> ActionToModule;
         for(IModuleManager::ModulePreserve Module:Result)
         {

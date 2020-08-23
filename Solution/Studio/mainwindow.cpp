@@ -2015,10 +2015,11 @@ void MainWindow::Run()
     IsRecordLast = false;
     _EmbeddedLanguageManager->Stop();
     QStringList ActiveModules;
-    for(IModuleManager::ModulePreserve &Module: _ModuleManager->GetModulesUsedInProject(TextEditor->GetText()))
+    for(IModuleManager::ModulePreserve &Module: _ModuleManager->GetModulesUsedInProject(TextEditor->GetText(), true))
     {
         ActiveModules.append(Module->Name);
     }
+
     _EmbeddedLanguageManager->ReadLanguageList(true,false, false, _ModuleManager->GetAllEmbeddedLanguages(ActiveModules), _ModuleManager->GetAllEmbeddedModules(ActiveModules));
     _EmbeddedLanguageManager->SetModuleCode(_ModuleManager->GetAllEmbeddedCodeItems(ActiveModules));
     _EmbeddedLanguageManager->SetIsRecord(IsRecordLast || Settings->value("ForceEmbeddedLanguagesLog", false).toBool());

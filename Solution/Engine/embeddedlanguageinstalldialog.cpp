@@ -12,6 +12,17 @@ EmbeddedLanguageInstallDialog::EmbeddedLanguageInstallDialog(QWidget *parent) :
     connect(ui->Close,SIGNAL(clicked(bool)),this,SIGNAL(RunWithoutEmbeddedLanguages()));
 }
 
+void EmbeddedLanguageInstallDialog::keyPressEvent(QKeyEvent *e)
+{
+   if (e->key() == Qt::Key_Escape)
+   {
+       emit RunWithoutEmbeddedLanguages();
+       return;
+   }
+
+   QDialog::keyPressEvent(e);
+}
+
 
 void EmbeddedLanguageInstallDialog::closeEvent(QCloseEvent *event)
 {

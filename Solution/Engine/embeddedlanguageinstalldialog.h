@@ -21,6 +21,8 @@ public:
 
 private:
     Ui::EmbeddedLanguageInstallDialog *ui;
+    void keyPressEvent(QKeyEvent *e);
+
 signals:
     void RunWithoutEmbeddedLanguages();
     void Close();

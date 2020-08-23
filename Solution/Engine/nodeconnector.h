@@ -9,6 +9,7 @@
 #include <QFile>
 #include "httpclient.h"
 #include <QObject>
+#include <QTimer>
 
 namespace BrowserAutomationStudioFramework
 {
@@ -32,6 +33,8 @@ namespace BrowserAutomationStudioFramework
         bool AutoCleanWhenFinishedSuccess = false;
         bool AutoCleanWhenFinishedFail = false;
 
+        QStringList DistrAlreadyTried;
+
         QString Suffix;
 
         /* Language Settings*/
@@ -49,7 +52,9 @@ namespace BrowserAutomationStudioFramework
         QString FinalizeInstallMessage;
         QString FinalizeInstallInterfaceMessage;
 
-
+        /* Timeout */
+        QTimer *Timer = 0;
+        bool NewProcessWaitTimeout = false;
     public:
         explicit NodeConnector(QObject *parent = 0);
         ~NodeConnector();
@@ -89,6 +94,7 @@ namespace BrowserAutomationStudioFramework
         void FailedToStartNode(QProcess::ProcessError error);
         void InstalledDirFinishedSearch();
         void InstalledDirSearchIteration();
+        void StartProcessTimeout();
 
     public:
 

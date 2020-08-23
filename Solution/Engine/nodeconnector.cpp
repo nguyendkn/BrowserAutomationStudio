@@ -66,6 +66,11 @@ namespace BrowserAutomationStudioFramework
 
     NodeConnector::NodeConnector(QObject *parent) : ILanguageConnector(parent)
     {
+        Timer = new QTimer(this);
+        connect(Timer,SIGNAL(timeout()),this,SLOT(StartProcessTimeout()));
+        Timer->setInterval(30000);
+        Timer->setSingleShot(true);
+
     }
 
     void ExtractDir(QString Path, QString Dir)
@@ -405,11 +410,15 @@ namespace BrowserAutomationStudioFramework
         dir.setFilter(QDir::Dirs);
         foreach(QString dirString, dir.entryList())
         {
+
+
             if(!dirString.startsWith("cache."))
             {
                 QStringList Split = dirString.split(".");
-                if(Split.length() == 2 && Split.first() == GetLanguageSettingsHash())
+                if(Split.length() == 2 && Split.first() == GetLanguageSettingsHash() && !DistrAlreadyTried.contains(dirString))
                 {
+
+                    DistrAlreadyTried.append(dirString);
 
                     QString LockPath = dir.absoluteFilePath(dirString + QDir::separator() + QString("distr") + QDir::separator() + QString("lock.file"));
 
@@ -1228,7 +1237,7 @@ namespace BrowserAutomationStudioFramework
         Location = GetExecutableLocationForNode();
         LOG(QString("Starting process %1").arg(A(Location)));
         Process->start(Location,Params);
-
+        Timer->start();
         IsActive = false;
     }
 
@@ -1304,10 +1313,24 @@ namespace BrowserAutomationStudioFramework
 
     }
 
-    void NodeConnector::NewConnection()
+    void NodeConnector::StartProcessTimeout()
     {
         if(NoNeedRestartProcess)
             return;
+        NewProcessWaitTimeout = true;
+        LOG(QString("Timeout for starting node.exe process"));
+        FinalizeInstall(true,"Timeout for starting node.exe process");
+    }
+
+    void NodeConnector::NewConnection()
+    {
+        if(NewProcessWaitTimeout)
+            return;
+
+        if(NoNeedRestartProcess)
+            return;
+
+        Timer->stop();
 
         Client = Server->nextPendingConnection();
 

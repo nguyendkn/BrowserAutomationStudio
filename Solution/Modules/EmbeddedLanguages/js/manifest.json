@@ -37,7 +37,9 @@
 		"You can also call BAS functions and obtain result.": {"ru": "Вы также можете вызывать функции BAS и получать результат."},
 		"More info": {"ru": "Больше информации"},
 		"Manual": {"ru": "Руководство"},
-		"Code": {"ru": "Код"}
+		"Code": {"ru": "Код"},
+		"Variables are not allowed inside files": {"ru": "Переменные не разрешено использовать внутри файлов"}
+
 	},
 	"engine": [],
 	"browser": [],

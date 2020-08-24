@@ -344,6 +344,11 @@
 
 		$("#NodeInsertVariable").click(function(event){
 			event.preventDefault()
+			if(window.NodeJsGlobal.Selected != "current")
+			{
+				bootbox.alert(tr("Variables are not allowed inside files"))
+				return
+			}
 			$("#NodeInsertVariableHidden").val("")
 			_MainView.currentInputVariable = "#NodeInsertVariableHidden"
 	        _MainView.disable_locals = false
@@ -355,7 +360,6 @@
 		$("#NodeInsertVariableHidden").change(function(){
 			event.preventDefault()
 			InsertText($("#NodeInsertVariableHidden").val());
-			
 		})
 
 		$("#NodeSynchronize").click(function(event){

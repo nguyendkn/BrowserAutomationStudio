@@ -17,6 +17,9 @@ function EmbeddedModel()
 
 	this.Update = function(update_data)
 	{
+		bootbox.hideAll()
+		bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> ' + tr("Updating") + '...</div>', closeButton: false, animate: false})
+
 
 		update_data.split(";").forEach((el) => {
 			var split = el.split(",")
@@ -69,7 +72,27 @@ function EmbeddedModel()
 			}
 
 		})
-		this.SendCode("")
+
+
+		var id = Math.random().toString(36).substring(2)
+		
+		CheckData = DataRaw
+		CheckCallback = function(is_success, error_string){
+			bootbox.hideAll()
+
+			if(is_success)
+			{
+				$("#ok").click()
+			}else
+			{
+				var el = $("<pre style='overflow:scroll;max-height: 80vh;'/>")
+				el.text(tr("Failed to update") + ":\n\n\n" + error_string)
+				bootbox.dialog({ message: el, animate: false, size: "large", onEscape: true, backdrop: true})
+			}
+
+		}
+
+		this.SendCode(id)
 
 
 	}

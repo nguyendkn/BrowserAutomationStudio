@@ -257,6 +257,9 @@ namespace BrowserAutomationStudioFramework
             {
                 LOGINTERFACE(FinalizeInstallInterfaceMessage);
             }
+        }else
+        {
+            LOG(QString("Started success"));
         }
         emit Started(FinalizeInstallIsError,FinalizeInstallMessage, FinalizeInstallAllowRetry);
     }
@@ -1351,7 +1354,7 @@ namespace BrowserAutomationStudioFramework
         connect(Client,SIGNAL(readyRead()),this,SLOT(ReadData()));
 
         IsActive = true;
-        LOG(QString("Started success"));
+
         LOGINTERFACE(tr("Finalization ... "));
 
         FinalizeInstall(false, QString());

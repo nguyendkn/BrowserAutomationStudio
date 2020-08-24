@@ -7,6 +7,8 @@ function EmbeddedModel()
 	var CheckData = null
 	var CheckId = ""
 	var CheckCallback = null
+	var UpdateQueue = []
+	var IsUpdating = false
 
 	this.GetAllFiles = function()
 	{
@@ -15,8 +17,22 @@ function EmbeddedModel()
 		})
 	}
 
+	this.UpdateUnconditionally = function(update_data)
+	{
+		IsUpdating = false;
+		this.Update(update_data)
+	}
+
 	this.Update = function(update_data)
 	{
+		if(IsUpdating)
+		{
+			UpdateQueue.push(update_data)
+			return
+		}
+
+		IsUpdating = true;
+
 		bootbox.hideAll()
 		bootbox.dialog({ message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> ' + tr("Updating") + '...</div>', closeButton: false, animate: false})
 
@@ -77,14 +93,27 @@ function EmbeddedModel()
 		var id = Math.random().toString(36).substring(2)
 		
 		CheckData = DataRaw
+		var self = this
 		CheckCallback = function(is_success, error_string){
-			bootbox.hideAll()
 
 			if(is_success)
 			{
-				$("#ok").click()
+				if(UpdateQueue.length > 0)
+				{
+					setTimeout(function(){
+						self.UpdateUnconditionally(UpdateQueue.shift())
+					},100)
+					
+				}else
+				{
+					bootbox.hideAll()
+					IsUpdating = false;
+				}
 			}else
 			{
+				bootbox.hideAll()
+				IsUpdating = false;
+				UpdateQueue = []
 				var el = $("<pre style='overflow:scroll;max-height: 80vh;'/>")
 				el.text(tr("Failed to update") + ":\n\n\n" + error_string)
 				bootbox.dialog({ message: el, animate: false, size: "large", onEscape: true, backdrop: true})

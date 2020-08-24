@@ -398,8 +398,20 @@
 	    			inputType: 'select',
 	    			inputOptions: options,
 	    			callback: function (result) {
-	    				if(result && result.length > 0)
-	        				InsertText("\nawait require(\"../" + result + "\")();\n");
+						if(result && result.length > 0)
+						{
+							var FolderName = ""
+							if(window.NodeJsGlobal.Selected == "current")
+							{
+								FolderName = "..";
+							}else
+							{
+								FolderName = ".";
+							}
+							
+							
+							InsertText("\nawait require(\"" + FolderName + "/" + result + "\")();\n");
+						}
 	    			}
 				});
 			

@@ -1,0 +1,13 @@
+<div class="container-fluid">
+<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file from which needs to read the rows."),examples:[{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"SheetIndexOrName", description: tr("Sheet index or name"), default_selector: "int", value_number: 0, min_number:0, max_number:999999, help: {description: tr("Index or sheet name in excel file."),examples:[{code:0, description: tr("First sheet index")}, {code:1, description: tr("Second sheet index")}, {code:tr("Sheet1"), description: tr("First sheet name")}, {code:tr("Sheet2"), description: tr("Second sheet name")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"FromRow", description: tr("From row"), default_selector: "int", disable_string:true, value_number: "", min_number:1, max_number:999999, help: {description: tr("Row number from which reading starts.")} }) %>
+<%= _.template($('#input_constructor').html())({id:"ToRow", description: tr("To row"), default_selector: "int", disable_string:true, value_number: "", min_number:1, max_number:999999, help: {description: tr("Row number where reading ends.")} }) %>
+<%= _.template($('#variable_constructor').html())({id:"Save", description: tr("Variable to save the result"), default_variable: "XLSX_ROWS_CONTENT", help: {description: tr("Variable in which, after successful execution of the action, the contents of the rows will be written.")}}) %>
+<%= _.template($('#input_constructor').html())({id:"DataFormat", description: tr("Data format"), default_selector: "string", variants:["CSV list","CSV string","2D list"], disable_int:true, value_string: "CSV list", help: {description: tr("The format in which the read data will be saved to variable."),examples:[{code:"CSV list", description:"[\"A1:B1:C1\",\"A2:B2:C2\",\"A3:B3:C3\"]"},{code:"CSV string", description:"A1:B1:C1\r\nA2:B2:C2\r\nA3:B3:C3"},{code:"2D list", description:"[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]"}]} }) %>
+</div>
+<div class="tooltipinternal">
+	<div class="tr tooltip-paragraph-first-fold">Read a rows from an excel file and save its contents to a variable.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
+</div>
+<%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

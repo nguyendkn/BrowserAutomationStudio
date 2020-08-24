@@ -1,0 +1,12 @@
+<div class="container-fluid">
+<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file where on needs to insert the rows."),examples:[{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"SheetIndexOrName", description: tr("Sheet index or name"), default_selector: "int", value_number: 0, min_number:0, max_number:999999, help: {description: tr("Index or sheet name in excel file."),examples:[{code:0, description: tr("First sheet index")}, {code:1, description: tr("Second sheet index")}, {code:tr("Sheet1"), description: tr("First sheet name")}, {code:tr("Sheet2"), description: tr("Second sheet name")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"FromRow", description: tr("From row"), default_selector: "int", disable_string:true, value_number: "", min_number:1, max_number:999999, help: {description: tr("Row number from which to start inserting rows.")} }) %>
+<%= _.template($('#input_constructor').html())({id:"Data", description: tr("Data"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("The rows data which needs to be inserted.")} }) %>
+</div>
+<div class="tooltipinternal">
+	<div class="tr tooltip-paragraph-first-fold">Insert rows into an excel file.</div>
+	<div class="tr tooltip-paragraph-fold">Rows that are in the new rows insertion zone will be shifted down.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
+</div>
+<%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

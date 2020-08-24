@@ -1199,7 +1199,11 @@ namespace BrowserAutomationStudioFramework
             QString log = Process->readAllStandardError();
             LOG(QString("Failed to start %1").arg(log));
 
-            FinalizeInstall(true,log);
+            FinalizeInstallIsError = true;
+            FinalizeInstallInterfaceMessage.clear();
+            FinalizeInstallMessage = log;
+            FinalizeInstallAllowRetry = false;
+            OnFinalizeInstall();
         }
     }
 

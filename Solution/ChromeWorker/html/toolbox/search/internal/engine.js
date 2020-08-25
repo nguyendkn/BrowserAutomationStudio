@@ -112,7 +112,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    * @returns {Object[]} search results array.
    */
   recent() {
-    return ActionHistory.filter((key) => _A[key]).map((key) => ({
+    return ActionHistory.filter((key) => this.store.findByRef(key)).map((key) => ({
       ...this.store.findByRef(key),
       descInfo: {},
       suggInfo: {},

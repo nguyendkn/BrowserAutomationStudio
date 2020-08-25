@@ -411,7 +411,12 @@ namespace BrowserAutomationStudioFramework
         for(EmbeddedCodeItem& Code:CodeItems)
         {
             QJsonObject CodeObject;
-            QString NewName = GetEmbeddedId();
+            QString NewName;
+            if(Code.DataType == 0)
+                NewName = GetEmbeddedId();
+            else
+                NewName = Code.DataName;
+
             EmbeddedMap[Code.DataName] = NewName;
 
             CodeObject.insert("Data", QJsonValue::fromVariant(Code.Data));

@@ -168,7 +168,7 @@ function EmbeddedModel()
 	{
 		data.forEach(function(dat){
 			var found = Data.find((el) => {
-				return el["data_type"] == dat["data_type"] && el["data_name"] == dat["data_name"] && el["language_version"] == dat["language_version"] && el["language_name"] == dat["language_name"]
+				return el["data_type"] == dat["data_type"] && el["data_name"] == dat["data_name"] && el["language_name"] == dat["language_name"]
 			})
 			if(typeof(found) == "undefined")
 			{
@@ -187,7 +187,7 @@ function EmbeddedModel()
 		var file_names = data.filter(function(el){return el["data_type"] == 1 }).map(function(el){return el["data_name"]})
 
 		Data = Data.filter((d) => {
-			var same = d["data_type"] == 1 && d["language_name"] == language_name && d["language_version"] == language_version
+			var same = d["data_type"] == 1 && d["language_name"] == language_name
 			if(!same)
 				return true
 			return file_names.indexOf(d["data_name"]) >= 0

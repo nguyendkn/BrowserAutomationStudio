@@ -481,7 +481,7 @@ namespace BrowserAutomationStudioFramework
             Data.append(AdditionalData);
             for(EmbeddedCodeItem&i: Data)
             {
-                if(i.LanguageName == Lang.Name && i.LanguageVersion == Lang.Version)
+                if(i.LanguageName == Lang.Name)
                 {
                     if(i.DataType == 0)
                     {

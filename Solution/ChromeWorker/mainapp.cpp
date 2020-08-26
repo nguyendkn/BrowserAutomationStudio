@@ -1493,7 +1493,7 @@ void MainApp::CreateTooboxBrowser()
 
     BrowserToolbox = CefBrowserHost::CreateBrowserSync(window_info, thandler, "file:///html/toolbox/index.html", browser_settings, CefDictionaryValue::Create(), Context);
     std::string ToolboxScript = ReadAllString("html/toolbox/index.html");
-    ToolboxPreprocess(Data->_ModulesData, ToolboxScript);
+    ToolboxPreprocess(Data->_ModulesData, Data->_UnusedModulesData, ToolboxScript);
     //BrowserToolbox->GetMainFrame()->LoadString(ToolboxScript, "file:///html/toolbox/index.html");
     WriteStringToFile("html/toolbox/index_prepared.html", ToolboxScript);
     BrowserToolbox->GetMainFrame()->LoadURL("file:///html/toolbox/index_prepared.html");
@@ -4144,6 +4144,16 @@ void MainApp::HandleToolboxBrowserEvents()
             {
                 ShellExecute(0, 0, s2ws(res.first).c_str(), 0, 0 , SW_SHOW );
             }
+        }
+    }
+
+    {
+        std::pair<std::string, bool> res = toolboxv8handler->GetEnableModule();
+        if(res.second)
+        {
+            WORKER_LOG(std::string("EnableModule<<") + res.first);
+            EnableModule(res.first);
+            Restart();
         }
     }
 

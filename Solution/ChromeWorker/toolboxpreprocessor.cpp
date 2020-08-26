@@ -58,12 +58,29 @@ void ScenarioPreprocess(const ModulesDataList & Modules, std::string& OriginalSc
 }
 
 
-void ToolboxPreprocess(const ModulesDataList & Modules, std::string& OriginalScript)
+void ToolboxPreprocess(const ModulesDataList & Modules, const ModulesDataList & UnusedModules, std::string& OriginalScript)
 {
     {
         std::string Actions;
         picojson::value::object ActionsObject;
         picojson::value::object GroupsObject;
+        picojson::value::array Unused;
+
+        for(ModulesData Module:UnusedModules)
+        {
+            picojson::value::object Object;
+
+            if(!Module->Icon.empty())
+            {
+                Object["icon"] = picojson::value(std::string("../../") + Module->Folder + std::string("/") + Module->Name + std::string("/") + Module->Icon);
+            }
+
+
+            Object["name"] = picojson::value(Module->Name);
+            Object["description"] = picojson::value(Module->Description);
+
+            Unused.push_back(picojson::value(Object));
+        }
 
         for(ModulesData Module:Modules)
         {
@@ -100,6 +117,7 @@ void ToolboxPreprocess(const ModulesDataList & Modules, std::string& OriginalScr
         }
         Actions = "_A = $.extend(_A," +  picojson::value(ActionsObject).serialize() + ");";
         Actions += "_G = $.extend(_G," +  picojson::value(GroupsObject).serialize() + ");";
+        Actions += "_U = " +  picojson::value(Unused).serialize() + ";";
         WORKER_LOG("_MACRO_INSERT_ACTIONS_");
         WORKER_LOG(Actions);
         ReplaceAllInPlace(OriginalScript,"_MACRO_INSERT_ACTIONS_",Actions);

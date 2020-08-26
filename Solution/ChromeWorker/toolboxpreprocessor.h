@@ -3,7 +3,7 @@
 
 #include "modulesdata.h"
 
-void ToolboxPreprocess(const ModulesDataList & Modules, std::string& OriginalScript);
+void ToolboxPreprocess(const ModulesDataList & Modules, const ModulesDataList & UnusedModules, std::string& OriginalScript);
 void ScenarioPreprocess(const ModulesDataList & Modules, std::string& OriginalScript);
 
 

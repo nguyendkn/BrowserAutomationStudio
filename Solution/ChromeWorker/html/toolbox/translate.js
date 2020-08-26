@@ -392,6 +392,12 @@ _L =
 	"Setting \"while expression\" to true will make loop run infinite amount of times, and this is necessary to finish it with break action.": {"ru": "Установка \"while выражение\" значением true заставить цикл выполняться бесконечное число раз, в таком случае его обязательно необходимо завершить с помощью действия Break."},
 
 	"Always false.": {"ru": "Всегда ложь."},
+
+	"Enable module ": {"ru": "Включить модуль "},
+	"In order to use this module, you need to enable it first. It will restart script.": {"ru": "Чтобы использовать этот модуль, вам необходимо сначала включить его. Это перезапустит скрипт."},
+	"You can disable it later by using Menu -> Module manager.": {"ru": "Вы можете отключить его позже, используя Меню -> Менеджер модулей."},
+
+	 
 	"Always true.": {"ru": "Всегда истина."},
 	"Executes only if VARIABLE is equal to \"val\"": {"ru": "Выполняется только если переменная VARIABLE будет равна \"val\""},
 	"Executes only if VARIABLE don't contain substring \"val\"": {"ru": "Выполняется только если переменная VARIABLE не будет содержать \"val\""},

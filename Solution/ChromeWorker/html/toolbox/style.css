@@ -322,6 +322,34 @@ input[type="number"]::-webkit-outer-spin-button {
 .panelgrid img{display:inline-block;vertical-align:middle;}
 .panelgridimage{height: auto;}
 
+.panelunused .panelgridtitle, .panelunused .panelgridimage
+{
+  filter: grayscale(90%) opacity(50%);
+}
+
+.panelunused
+{
+  position: relative;
+}
+
+.panelunused:hover{background-color: transparent !important}
+
+
+.panelunused:hover .unused-add-icon
+{
+  opacity: 1 !important;
+}
+
+.unused-add-icon
+{
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  color: #bf5d4e;
+  opacity: 0.55;
+  font-size: 16px !important;
+}
+
 .helper {
     display: inline-block;
     height: 100%;

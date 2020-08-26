@@ -9,6 +9,7 @@ ToolboxV8Handler::ToolboxV8Handler()
     IsMinimize = false;
     IsInterfaceState = false;
     url_changed = false;
+    enable_module_changed = false;
     ChangedExecute = false;
     IsEmbeddedData = false;
     ChangedMultiselectState = false;
@@ -167,6 +168,13 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
             url = arguments->GetString(0);
             url_changed = true;
         }
+    }else if(name == std::string("BrowserAutomationStudio_EnableModule"))
+    {
+        if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
+        {
+            enable_module = arguments->GetString(0);
+            enable_module_changed = true;
+        }
     }else if(name == std::string("BrowserAutomationStudio_MultiselectStateChanged"))
     {
         if (arguments->GetSize() == 2 && arguments->GetType(0) == VTYPE_INT && arguments->GetType(1) == VTYPE_STRING)
@@ -220,6 +228,20 @@ std::pair<std::string, bool> ToolboxV8Handler::GetLoadUrl()
     url_changed = false;
 
     url.clear();
+
+    return r;
+}
+
+std::pair<std::string, bool> ToolboxV8Handler::GetEnableModule()
+{
+
+    std::pair<std::string, bool> r;
+    r.first = enable_module;
+    r.second = enable_module_changed;
+
+    enable_module_changed = false;
+
+    enable_module.clear();
 
     return r;
 }

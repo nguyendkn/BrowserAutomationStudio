@@ -49,6 +49,8 @@ private:
     std::string url;
     bool url_changed;
 
+    std::string enable_module;
+    bool enable_module_changed;
 
     std::string interfacestate;
     ExecuteClass LastExecute;
@@ -66,6 +68,7 @@ public:
     std::pair<std::string, bool> GetInterfaceState();
 
     std::pair<std::string, bool> GetLoadUrl();
+    std::pair<std::string, bool> GetEnableModule();
     std::pair<ExecuteClass, bool> GetExecuteCode();
     std::pair<std::string, bool> GetEmbeddedData();
     std::pair<MultiSelectStateClass, bool> GetMultiselectStateChanged();

@@ -81,6 +81,7 @@ public:
     InspectResult _Inspect;
     HighlightResult _Highlight;
     ModulesDataList _ModulesData;
+    ModulesDataList _UnusedModulesData;
     MultiSelectData _MultiSelectData;
 
     //Recaptcha V3

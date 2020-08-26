@@ -1,6 +1,7 @@
 #include "modulesdata.h"
 #include "picojson.h"
 #include "readallfile.h"
+#include "writefile.h"
 #include "log.h"
 
 
@@ -19,8 +20,25 @@ std::string GetAllBrowserDataCode(const ModulesDataList& Modules)
     return Result;
 }
 
+void EnableModule(const std::string& ModuleName)
+{
+    try
+    {
+        std::string Meta = ReadAllString("modules/meta.json");
+        picojson::value MetaJson;
+        picojson::parse(MetaJson, Meta);
+        picojson::value::object MetaObject = MetaJson.get<picojson::value::object>();
+        MetaObject[ModuleName] = picojson::value(true);
+        std::string MetaText = picojson::value(MetaObject).serialize();
+        WriteStringToFile("modules/meta.json", MetaText);
 
-ModulesDataList LoadModulesData(const std::string& Locale, bool IsTunneling, const std::string& BASPid)
+    }catch(...)
+    {
+
+    }
+}
+
+ModulesDataList LoadModulesData(const std::string& Locale, bool IsTunneling, const std::string& BASPid, ModulesDataList& UnusedModules)
 {
     WORKER_LOG("Start Loading Modules");
     ModulesDataList Result;
@@ -117,9 +135,20 @@ ModulesDataList LoadModulesData(const std::string& Locale, bool IsTunneling, con
                             }
                         }
 
+                        picojson::value::object DescriptionObject = ManifestObject["description_small"].get<picojson::value::object>();
+                        if((DescriptionObject).find(Locale) != DescriptionObject.end())
+                        {
+                            DataItem->Description = DescriptionObject[Locale].get<std::string>();
+                        }else if((DescriptionObject).find("en") != DescriptionObject.end())
+                        {
+                            DataItem->Description = DescriptionObject["en"].get<std::string>();
+                        }
+                        WORKER_LOG(std::string("Description ") + DataItem->Description);
+
                         if(std::find(std::begin(DisabledModules), std::end(DisabledModules), DataItem->Name) != std::end(DisabledModules))
                         {
                             WORKER_LOG(std::string("Skip because module is disabled"));
+                            UnusedModules.push_back(DataItem);
                             continue;
                         }
 
@@ -134,15 +163,7 @@ ModulesDataList LoadModulesData(const std::string& Locale, bool IsTunneling, con
                             DataItem->OnlyWithDatabase = ManifestObject["show_only_with_database"].get<bool>();
                         }
 
-                        picojson::value::object DescriptionObject = ManifestObject["description_small"].get<picojson::value::object>();
-                        if((DescriptionObject).find(Locale) != DescriptionObject.end())
-                        {
-                            DataItem->Description = DescriptionObject[Locale].get<std::string>();
-                        }else if((DescriptionObject).find("en") != DescriptionObject.end())
-                        {
-                            DataItem->Description = DescriptionObject["en"].get<std::string>();
-                        }
-                        WORKER_LOG(std::string("Description ") + DataItem->Description);
+
 
                         picojson::value::array BrowserArray = ManifestObject["browser"].get<picojson::value::array>();
                         for(picojson::value BrowserValue: BrowserArray)

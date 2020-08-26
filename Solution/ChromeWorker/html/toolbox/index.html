@@ -405,6 +405,8 @@
       <div class="container-fluid mainscreen" >
         <div class="panel-group" style="margin-bottom: 0px;">
             <% var group = null; %>
+
+
             <% _.each(data, function(task) { %>
                 <% if(typeof(task.type) != "undefined" && task.type == "group") { %>
                   <% group = task.name; %>
@@ -445,6 +447,33 @@
                     </a>
                 <% } %>
             <% }); %>
+
+
+            <% _.each(unused, function(task) { %>
+              
+                <span data-group="<%= task.name %>" data-group-all="<%= task.name %>"  ondragstart="return false;" ondrop="return false;">
+                  <a href="#" data-group="<%= task.name %>" data-group-all="<%= task.name %>" class="groupshow" style="color:black" >
+                    <div class="panelgrid panelunused text-center" data-toggle-none="tooltip" data-placement-none="auto" title-none="<%=task.name%>" data-task-name="<%= task.name %>">
+                      
+                      
+                      
+                      <div class="panelgridtitle"><div class="panelgridtitleinner"><%= task.description %></div></div>
+                      <div class="panelgridimage">
+                        <span class="helper"></span>
+                        <% if(typeof(task.icon) != "undefined") { %>
+                          <img src="<%= task.icon %>" class="center-block img-responsive" />
+                        <% } else { %>
+                          <img src="../icons/modules.png" class="center-block img-responsive" />
+                        <% } %>
+                      </div>
+                      <i class="fa fa-plus-square unused-add-icon" ></i>
+                    </div>
+                  </a>
+                </span>
+              
+          <% }); %>
+
+
             </div>
           </div>
         </div>
@@ -6476,6 +6505,38 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       {
         event.preventDefault();
         event.stopPropagation();
+        if($(event.target).closest(".panelgrid").hasClass("panelunused"))
+        {
+          var ModuleName = $(event.target).closest(".panelgrid").attr("data-task-name")
+          var ModuleDescription = $(event.target).closest(".panelgrid").find(".panelgridtitleinner").text()
+          //Clicked on unused module
+          bootbox.confirm(
+          {
+            title: tr("Enable module ") + ModuleDescription + "?",
+            message: tr("In order to use this module, you need to enable it first. It will restart script.") + "<br><br><span style='color:gray;font-size:small'>" + tr("You can disable it later by using Menu -> Module manager.")  + "</span>",
+            buttons:
+            {
+              confirm:
+              {
+                label: tr('Enable'),
+                className: 'btn-success'
+              },
+              cancel:
+              {
+                label: tr('Cancel'),
+                className: 'btn-primary'
+              }
+            },
+            callback: function (result)
+            {
+              if(result == 1)
+              {
+                BrowserAutomationStudio_EnableModule(ModuleName)
+              }
+            }
+          });
+          return
+        }
         if(CurrentGroup == "")
         {
           var group = $(event.target).closest("a").attr("data-group")
@@ -10529,7 +10590,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           })
         }
 
-        $("#containerdata").html(this.templates[this.model.get("state")]({data:d,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters}))
+        $("#containerdata").html(this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters}))
         _Filter.InstallEvents()
         $(".variable-input, .function-input").keypress(function(e){
           var charCode = !e.charCode ? e.which : e.charCode;

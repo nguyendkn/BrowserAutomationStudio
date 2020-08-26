@@ -1946,7 +1946,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     std::string Lang = ws2s(Arguments[1]);
 
     Translate::SetLanguage(Lang);
-    app->GetData()->_ModulesData = LoadModulesData(Lang, Settings.ProxyTunneling(), Pid);
+    app->GetData()->_ModulesData = LoadModulesData(Lang, Settings.ProxyTunneling(), Pid, app->GetData()->_UnusedModulesData);
     app->SetInitialStateCallback(Lang);
 
     std::string Key = ws2s(Arguments[2]);

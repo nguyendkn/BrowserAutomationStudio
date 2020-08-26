@@ -77,6 +77,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_Execute", CefV8Value::CreateFunction("BrowserAutomationStudio_Execute", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_MultiselectStateChanged", CefV8Value::CreateFunction("BrowserAutomationStudio_MultiselectStateChanged", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_MultiselectReset", CefV8Value::CreateFunction("BrowserAutomationStudio_MultiselectReset", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_EnableModule", CefV8Value::CreateFunction("BrowserAutomationStudio_EnableModule", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
 
         object->SetValue("_K", CefV8Value::CreateString(Lang), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_Z", CefV8Value::CreateInt(Zoom), V8_PROPERTY_ATTRIBUTE_NONE);

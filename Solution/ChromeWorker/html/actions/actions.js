@@ -154,8 +154,8 @@ _A = {
       "description":"Set proxy",
       "template":"{{ProxyText}}",
       "suggestion":{  
-         "en":"Change ip, Socks",
-         "ru":"Изменить ип, Сменить ип, Socks, Сокс"
+         "en":"Change ip, Socks, change browser language, change timezone",
+         "ru":"Изменить ип, Сменить ип, Socks, Сокс, изменить язык браузера, изменить часовой пояс"
       },
       "group":"browser"
    },
@@ -227,7 +227,7 @@ _A = {
       "template":"{{X}},{{Y}}",
       "suggestion":{  
          "en":"page scrolling",
-         "ru":"прокрутка страницы"
+         "ru":"прокрутка страницы, скролить страницу"
       },
       "group":"browser"
    },

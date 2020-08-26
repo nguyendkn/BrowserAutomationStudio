@@ -38,7 +38,8 @@
 			"is_element": false,
 			"interface": "smtp_send_mail_interface.js",
 			"select": "smtp_send_mail_select.js",
-			"code": [{"file":"smtp_send_mail_code.js", "name": "smtp_send_mail_code"}]
+			"code": [{"file":"smtp_send_mail_code.js", "name": "smtp_send_mail_code"}],
+			"suggestion":{"en": "send message, send email","ru": "отправить почту"}
 		},
 		{
 			"name":"smtp_enable_debug",

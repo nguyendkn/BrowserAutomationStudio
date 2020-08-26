@@ -20,7 +20,9 @@
 			"is_element": false,
 			"interface": "asyncfunction_call_interface.js",
 			"select": "asyncfunction_call_select.js",
-			"code": [{"file":"asyncfunction_call_code.js", "name": "asyncfunction_call_code"}]
+			"code": [{"file":"asyncfunction_call_code.js", "name": "asyncfunction_call_code"}],
+			"suggestion":{"en": "create new thread, start thread, multithreading","ru": "создать новый поток, запустить поток, многопоточность, многопоток"}
+
 		},
 		{
 			"name": "asyncfunction_wait",

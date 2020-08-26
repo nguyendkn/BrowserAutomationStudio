@@ -21,7 +21,9 @@
 			"is_element": false,
 			"interface": "regexp_first_interface.js",
 			"select": "regexp_first_select.js",
-			"code": [{"file":"regexp_first_code.js", "name": "regexp_first_code"}]
+			"code": [{"file":"regexp_first_code.js", "name": "regexp_first_code"}],
+			"suggestion":{"en": "parse text, search string","ru": "парсить текст, регулярка, регулярки, поиск строки"}
+
 		},
 		{
 			"name":"RegexpScan",
@@ -30,7 +32,8 @@
 			"is_element": false,
 			"interface": "regexp_scan_interface.js",
 			"select": "regexp_scan_select.js",
-			"code": [{"file":"regexp_scan_code.js", "name": "regexp_scan_code"}]
+			"code": [{"file":"regexp_scan_code.js", "name": "regexp_scan_code"}],
+			"suggestion":{"en": "parse text, search string","ru": "парсить текст, регулярка, регулярки, поиск строки"}
 		},
 		{
 			"name":"RegexpMatch",
@@ -39,7 +42,8 @@
 			"is_element": false,
 			"interface": "regexp_match_interface.js",
 			"select": "regexp_match_select.js",
-			"code": [{"file":"regexp_match_code.js", "name": "regexp_match_code"}]
+			"code": [{"file":"regexp_match_code.js", "name": "regexp_match_code"}],
+			"suggestion":{"en": "parse text, search string","ru": "парсить текст, регулярка, регулярки, поиск строки"}
 		},
 		{
 			"name":"RegexpSplit",
@@ -49,6 +53,7 @@
 			"interface": "regexp_split_interface.js",
 			"select": "regexp_split_select.js",
 			"code": [{"file":"regexp_split_code.js", "name": "regexp_split_code"}]
+			
 		},
 		{
 			"name":"RegexpReplace",

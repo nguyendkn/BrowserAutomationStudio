@@ -48,7 +48,8 @@
 			"is_element": false,
 			"interface": "user_notification_manual_browser_control_interface.js",
 			"select": "user_notification_manual_browser_control_select.js",
-			"code": [{"file":"user_notification_manual_browser_control_code.js", "name": "user_notification_manual_browser_control_code"}]
+			"code": [{"file":"user_notification_manual_browser_control_code.js", "name": "user_notification_manual_browser_control_code"}],
+			"suggestion":{"en": "interact with the browser, direct browser control","ru": "взаимодействовать с браузером, прямое управление браузером"}
 		}
 	],
 	"localize": 

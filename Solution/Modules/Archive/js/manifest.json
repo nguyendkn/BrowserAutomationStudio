@@ -15,7 +15,9 @@
             "is_element": false,
             "name": "Archive_Unpack",
             "select": "Archive_Unpack_select.js",
-            "template": "{{ArchivePath}} -> {{DestinationPath}}"
+            "template": "{{ArchivePath}} -> {{DestinationPath}}",
+            "suggestion":{"en": "zip, rar, 7z, unzip","ru": "zip, rar, 7z, разархивировать"}
+
         },
 		{
             "code": [
@@ -32,7 +34,8 @@
             "is_element": false,
             "name": "Archive_ArchiveFolder",
             "select": "Archive_ArchiveFolder_select.js",
-            "template": "{{FolderPath}} -> {{DestinationPath}}"
+            "template": "{{FolderPath}} -> {{DestinationPath}}",
+            "suggestion":{"en": "zip, rar, 7z, unzip","ru": "zip, rar, 7z, разархивировать"}
         },
 		{
             "code": [
@@ -49,7 +52,8 @@
             "is_element": false,
             "name": "Archive_ArchiveFiles",
             "select": "Archive_ArchiveFiles_select.js",
-            "template": "{{DestinationPath}}"
+            "template": "{{DestinationPath}}",
+            "suggestion":{"en": "zip, rar, 7z, create archive","ru": "zip, rar, 7z, запаковать"}
         },
 		{
             "code": [
@@ -66,7 +70,8 @@
             "is_element": false,
             "name": "Archive_GetFileList",
             "select": "Archive_GetFileList_select.js",
-            "template": "{{ArchivePath}} -> {{Save}}"
+            "template": "{{ArchivePath}} -> {{Save}}",
+            "suggestion":{"en": "zip, rar, 7z, create archive","ru": "zip, rar, 7z, запаковать"}
         }
     ],
     "api_version": 1,

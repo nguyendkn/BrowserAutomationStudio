@@ -21,7 +21,9 @@
 			"is_element": false,
 			"interface": "get_fingerprint_interface.js",
 			"select": "get_fingerprint_select.js",
-			"code": [{"file":"get_fingerprint_code.js", "name": "get_fingerprint_code"}]
+			"code": [{"file":"get_fingerprint_code.js", "name": "get_fingerprint_code"}],
+			"suggestion":{"en": "change canvas fingerprint, antibot protection, browser authenticity","ru": "вебгл, смена отпечатка канвас, антибот, антибот защита, аутентичность браузера"}
+
 		},
 		{
 			"name":"FingerprintSwitcher_Apply",
@@ -30,7 +32,9 @@
 			"is_element": false,
 			"interface": "apply_fingerprint_interface.js",
 			"select": "apply_fingerprint_select.js",
-			"code": [{"file":"apply_fingerprint_code.js", "name": "apply_fingerprint_code"}]
+			"code": [{"file":"apply_fingerprint_code.js", "name": "apply_fingerprint_code"}],
+			"suggestion":{"en": "change canvas fingerprint, antibot protection, browser authenticity","ru": "вебгл, смена отпечатка канвас, антибот, антибот защита, аутентичность браузера"}
+
 		},
 		{
 			"name":"FingerprintSwitcher_Performance",
@@ -39,7 +43,9 @@
 			"is_element": false,
 			"interface": "performance_fingerprint_interface.js",
 			"select": "performance_fingerprint_select.js",
-			"code": [{"file":"performance_fingerprint_code.js", "name": "performance_fingerprint_code"}]
+			"code": [{"file":"performance_fingerprint_code.js", "name": "performance_fingerprint_code"}],
+			"suggestion":{"en": "antibot protection, browser authenticity","ru": "антибот, антибот защита, аутентичность браузера"}
+
 		}
 	],
 	"localize": 

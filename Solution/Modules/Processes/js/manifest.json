@@ -17,7 +17,7 @@
 		{
 			"name":"ExecuteProcess",
 			"description":{"en": "Run Process","ru": "Запустить Процесс"},
-			"suggestion":{"en": "execute batch file, execute command","ru": "выполнить батч файл, выполнить комманду, вызвать комманду"},
+			"suggestion":{"en": "execute batch file, execute command, run command","ru": "выполнить батч файл, выполнить команду, вызвать команду"},
 			"template":"{{Command}} -> {{Save}}",
 			"is_element": false,
 			"interface": "execute_process_interface.js",

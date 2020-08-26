@@ -20,7 +20,9 @@
 			"is_element": false,
 			"interface": "idle_emulation_interface.js",
 			"select": "idle_emulation_select.js",
-			"code": [{"file":"idle_emulation_code.js", "name": "idle_emulation_code"}]
+			"code": [{"file":"idle_emulation_code.js", "name": "idle_emulation_code"}],
+			"suggestion":{"en": "move mouse and scroll randomly","ru": "перемещать мышь и скролить страницу"}
+
 		}
 	],
 	"localize": 

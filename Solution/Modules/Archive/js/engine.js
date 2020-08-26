@@ -16,16 +16,16 @@ function Archive_Unpack(){
 	VAR_ARCHIVE_UNPACK_PARAMETERS = [archive_path, destination_path, list_of_files];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("UnpackZIP", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
+		_embedded("UnpackZIP", "Node", "12.18.3", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="rar",function(){
-		_embedded("UnpackRAR", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
+		_embedded("UnpackRAR", "Node", "12.18.3", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("Unpack7Z", "Node", "8.6.0", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
+		_embedded("Unpack7Z", "Node", "12.18.3", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
 	})!
 };
 function Archive_ArchiveFolder(){
@@ -44,12 +44,12 @@ function Archive_ArchiveFolder(){
 	VAR_ARCHIVE_FOLDER_PARAMETERS = [folder_path, destination_path, folder_info["file"]];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("ArchiveFolderZIP", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", timeout)!
+		_embedded("ArchiveFolderZIP", "Node", "12.18.3", "ARCHIVE_FOLDER_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("ArchiveFolder7Z", "Node", "8.6.0", "ARCHIVE_FOLDER_PARAMETERS", timeout)!
+		_embedded("ArchiveFolder7Z", "Node", "12.18.3", "ARCHIVE_FOLDER_PARAMETERS", timeout)!
 	})!
 };
 function Archive_ArchiveFiles(){
@@ -78,12 +78,12 @@ function Archive_ArchiveFiles(){
 	VAR_ARCHIVE_FILES_PARAMETERS = [list_of_files, destination_path];
 	
 	_if(archive_type=="zip",function(){
-		_embedded("ArchiveFilesZIP", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", timeout)!
+		_embedded("ArchiveFilesZIP", "Node", "12.18.3", "ARCHIVE_FILES_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("ArchiveFiles7Z", "Node", "8.6.0", "ARCHIVE_FILES_PARAMETERS", timeout)!
+		_embedded("ArchiveFiles7Z", "Node", "12.18.3", "ARCHIVE_FILES_PARAMETERS", timeout)!
 	})!
 };
 function Archive_GetFileList(){
@@ -98,16 +98,16 @@ function Archive_GetFileList(){
 	VAR_ARCHIVE_GETFILELIST_PARAMETERS = archive_path;
 	
 	_if(archive_type=="zip",function(){
-		_embedded("GetFileListZIP", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
+		_embedded("GetFileListZIP", "Node", "12.18.3", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="rar",function(){
-		_embedded("GetFileListRAR", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
+		_embedded("GetFileListRAR", "Node", "12.18.3", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
 	})!
 	
 	_if(archive_type=="7z",function(){
 		_call_function(Archive_Fix7zModule,{})!
-		_embedded("GetFileList7Z", "Node", "8.6.0", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
+		_embedded("GetFileList7Z", "Node", "12.18.3", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_ARCHIVE_GETFILELIST_PARAMETERS)
@@ -165,5 +165,5 @@ function Archive_CheckDiskExistence(path){
 };
 function Archive_Fix7zModule(){
 	VAR_NODE_REGEXPJS_TEMPLATE = "const LINE_SPLIT = new RegExp(\u0027\u005cn|\u005cr\u005cn|\u005cx08+|\u005cr +\u005cr\u0027)\nconst BODY_PROGRESS = new RegExp(\u0027^ *(\u003cpercent\u003e\u005c\u005cd+)% ?(\u003cfileCount\u003e\u005c\u005cd+)? ?(\u003cfile\u003e.*)$\u0027)\nconst BODY_SYMBOL_FILE = new RegExp(\u0027^(\u003csymbol\u003e[=TU+R.-]) (\u003cfile\u003e.+)$\u0027)\nconst BODY_HASH = new RegExp(\u0027^(\u003chash\u003e\u005c\u005cS+)? +(\u003csize\u003e\u005c\u005cd*) +(\u003cfile\u003e.+)$\u0027)\nconst END_OF_STAGE_HYPHEN = new RegExp(\u0027^(-+ +)+-+$\u0027)\nconst INFOS = new RegExp(\u0027^(\u003cproperty\u003e.+?)(\u003cseparator\u003e( = )|(: +))(\u003cvalue\u003e.+)$\u0027)\nconst INFOS_SPLIT = new RegExp(\u0027, +# \u0027)\nconst ERROR = new RegExp(\u0027(\u003clevel\u003eWARNING|ERROR): (\u003cmessage\u003e.*)(\u005cr\u005cn)?(\u005cn)?\u0027, \u0027i\u0027)\n\nmodule.exports = \u007b\n  LINE_SPLIT,\n  BODY_PROGRESS,\n  BODY_SYMBOL_FILE,\n  BODY_HASH,\n  END_OF_STAGE_HYPHEN,\n  INFOS,\n  INFOS_SPLIT,\n  ERROR\n\u007d"
-	_embedded("Fix7zModule", "Node", "8.6.0", "NODE_REGEXPJS_TEMPLATE", 60000)!
+	_embedded("Fix7zModule", "Node", "12.18.3", "NODE_REGEXPJS_TEMPLATE", 60000)!
 };

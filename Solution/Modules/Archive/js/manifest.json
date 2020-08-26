@@ -94,77 +94,77 @@
             "DataName": "UnpackZIP",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const unrarp = require('unrar-promise');\r\n\r\nvar archive_path = [[ARCHIVE_UNPACK_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_UNPACK_PARAMETERS]][1];\r\nvar list_of_files = [[ARCHIVE_UNPACK_PARAMETERS]][2];\r\nvar unpack_all = list_of_files.length<=0;\r\nvar list_of_files = unpack_all ? [] : list_of_files.map(function(f){return f.split(\"/\").join(\"\\\\\")});\r\n\r\nawait (new Promise((resolve, reject) => {\r\n\tvar unrar = unrarp.unrar(archive_path, destination_path, {filter({path, type}){return unpack_all || list_of_files.indexOf(path) > -1},overwrite: true});\r\n    unrar.then(function(result){\r\n        resolve();\r\n    })\r\n    unrar.catch(function(err){\r\n        reject(err);\r\n    });\r\n}));",
             "DataName": "UnpackRAR",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar archive_path = [[ARCHIVE_UNPACK_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_UNPACK_PARAMETERS]][1];\r\nvar list_of_files = [[ARCHIVE_UNPACK_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var extract = Seven.extractFull(archive_path, destination_path, {\r\n        $bin: pathTo7zip,\r\n        charset: 'UTF-8',\r\n        overwrite: 'a',\r\n        $cherryPick: list_of_files\r\n    })\r\n    extract.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    extract.on('end', function(){\r\n        resolve();\r\n    });\r\n}));",
             "DataName": "Unpack7Z",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const fs = require('fs');\r\nconst archiver = require('archiver');\r\n\r\nvar folder_path = [[ARCHIVE_FOLDER_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FOLDER_PARAMETERS]][1];\r\nvar folder_name = [[ARCHIVE_FOLDER_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var archive = archiver('zip').directory(folder_path, folder_name);\r\n    var writeStream = archive.pipe(fs.createWriteStream(destination_path));\r\n    archive.finalize();\r\n    archive.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('close', function close(){\r\n        resolve();\r\n    });\r\n}));\r\n",
             "DataName": "ArchiveFolderZIP",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar folder_path = [[ARCHIVE_FOLDER_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FOLDER_PARAMETERS]][1];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var delete_old = Seven.delete(destination_path, '*', {$bin: pathTo7zip});\r\n    delete_old.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    var extract = Seven.add(destination_path, folder_path, {\r\n        $bin: pathTo7zip,\r\n        overwrite: 'a',\r\n        charset: 'UTF-8'\r\n    })\r\n    extract.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    extract.on('end', function(){\r\n        resolve();\r\n    });\r\n}));",
             "DataName": "ArchiveFolder7Z",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
 		{
             "Data": "const fs = require('fs');\r\nconst archiver = require('archiver');\r\n\r\nvar list_of_files = [[ARCHIVE_FILES_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FILES_PARAMETERS]][1];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var archive = archiver('zip');\r\n    list_of_files.forEach(function(e){\r\n        if(e.isFolder){\r\n            archive.directory(e.path, e.name);\r\n        }else{\r\n            archive.file(e.path, {name: e.name});\r\n        }\r\n    });\r\n    var writeStream = archive.pipe(fs.createWriteStream(destination_path));\r\n    archive.finalize();\r\n    archive.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('close', function close(){\r\n        resolve();\r\n    });\r\n}));\r\n",
             "DataName": "ArchiveFilesZIP",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar list_of_files = [[ARCHIVE_FILES_PARAMETERS]][0].map(function(f){return f.path});\r\nvar destination_path = [[ARCHIVE_FILES_PARAMETERS]][1];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var delete_old = Seven.delete(destination_path, '*', {$bin: pathTo7zip});\r\n    delete_old.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    var extract = Seven.add(destination_path, list_of_files, {\r\n        $bin: pathTo7zip,\r\n        overwrite: 'a',\r\n        charset: 'UTF-8'\r\n    });\r\n    extract.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    extract.on('end', function(){\r\n        resolve();\r\n    });\r\n}));",
             "DataName": "ArchiveFiles7Z",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
 		{
             "Data": "const unzipper = require(\"unzipper\");\r\nconst fs = require('fs');\r\nconst il = require('iconv-lite');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\nvar list_of_files = [];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var readStream = fs.createReadStream(archive_path);\r\n    readStream.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    var parse = readStream.pipe(unzipper.Parse());\r\n    parse.on('entry', function (entry){\r\n        var isUnicode = entry.props.flags.isUnicode;\r\n        var filePath = isUnicode ? entry.path : il.decode(entry.props.pathBuffer, 'cp866');\r\n        list_of_files.push(filePath);\r\n        var autodrain = entry.autodrain();\r\n        autodrain.on(\"error\", function error(e) {\r\n            reject(e);\r\n        });\r\n    });\r\n    parse.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    parse.on(\"close\", function close() {\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = list_of_files;\r\n        resolve();\r\n    });\r\n}));",
             "DataName": "GetFileListZIP",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const unrarp = require('unrar-promise');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n\tvar list = unrarp.list(archive_path);\r\n    list.then(function(result){\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = result.sort().map(function(f){return f.split(\"\\\\\").join(\"/\")});\r\n        resolve();\r\n    })\r\n    list.catch(function(err){\r\n        reject(err);\r\n    });\r\n}));",
             "DataName": "GetFileListRAR",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\nvar list_of_files = [];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var list = Seven.list(archive_path, {\r\n        $bin: pathTo7zip,\r\n        charset: 'UTF-8'\r\n    })\r\n    list.on(\"error\", function error(err){\r\n        reject(err);\r\n    });\r\n    list.on('data', function(data){\r\n        list_of_files.push(data.file);\r\n    });\r\n    list.on('end', function(){\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = list_of_files.sort();\r\n        resolve();\r\n    });\r\n}));",
             "DataName": "GetFileList7Z",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         },
         {
             "Data": "const fs = require('fs');\r\n\r\nvar path = __dirname.split(\"\\\\\").join(\"/\").replace(\"lib/custom\",\"\") + \"node_modules/node-7z/src/regexp.js\";\r\nvar fileContent = fs.readFileSync(path, \"utf8\");\r\n[[AAA]] = fileContent;\r\nif(fileContent.indexOf(\"quentin.rossetti@gmail.com\") > -1){\r\n    fs.writeFileSync(path, [[NODE_REGEXPJS_TEMPLATE]]);\r\n};",
             "DataName": "Fix7zModule",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0"
+            "LanguageVersion": "12.18.3"
         }
     ],
     "engine": [
@@ -179,7 +179,7 @@
     "languages": [
         {
             "Name": "Node",
-            "Version": "8.6.0"
+            "Version": "12.18.3"
         }
     ],
     "localize": {
@@ -240,37 +240,37 @@
     "modules": [
         {
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0",
+            "LanguageVersion": "12.18.3",
             "ModuleName": "unzipper",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0",
+            "LanguageVersion": "12.18.3",
             "ModuleName": "iconv-lite",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0",
+            "LanguageVersion": "12.18.3",
             "ModuleName": "archiver",
             "ModuleVersion": "4.0.2"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0",
+            "LanguageVersion": "12.18.3",
             "ModuleName": "unrar-promise",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0",
+            "LanguageVersion": "12.18.3",
             "ModuleName": "node-7z",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "8.6.0",
+            "LanguageVersion": "12.18.3",
             "ModuleName": "7zip-bin",
             "ModuleVersion": "*"
         }

@@ -18,15 +18,15 @@ function FTP_Connection(){
 	VAR_FTP_CONNECTION_PARAMETERS = [_FTP_CONNECTION_ID, _FTP_CONFIG];
 	
 	_if(module=="SFTP",function(){
-		_embedded("ConnectionSFTP", "Node", "8.6.0", "FTP_CONNECTION_PARAMETERS", 60000)!
+		_embedded("ConnectionSFTP", "Node", "12.18.3", "FTP_CONNECTION_PARAMETERS", 60000)!
 	})!
 	
 	_if(module=="FTP",function(){
-		_embedded("ConnectionFTP", "Node", "8.6.0", "FTP_CONNECTION_PARAMETERS", 60000)!
+		_embedded("ConnectionFTP", "Node", "12.18.3", "FTP_CONNECTION_PARAMETERS", 60000)!
 	})!
 	
 	_if(module=="SSH",function(){
-		_embedded("ConnectionSSH", "Node", "8.6.0", "FTP_CONNECTION_PARAMETERS", 60000)!
+		_embedded("ConnectionSSH", "Node", "12.18.3", "FTP_CONNECTION_PARAMETERS", 60000)!
 	})!
 };
 function FTP_ReadFile(){
@@ -41,11 +41,11 @@ function FTP_ReadFile(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("ReadFileSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("ReadFileSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("ReadFileFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("ReadFileFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
@@ -65,11 +65,11 @@ function FTP_WriteFile(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("WriteFileSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("WriteFileSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("WriteFileFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("WriteFileFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Download(){
@@ -84,11 +84,11 @@ function FTP_Download(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("DownloadSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("DownloadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("DownloadFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("DownloadFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
     })!
 };
 function FTP_Upload(){
@@ -103,11 +103,11 @@ function FTP_Upload(){
 	_result_function();
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("UploadSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("UploadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("UploadFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("UploadFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
     })!
 };
 function FTP_CheckExist(){
@@ -121,11 +121,11 @@ function FTP_CheckExist(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("CheckExistSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CheckExistSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("CheckExistFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CheckExistFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
@@ -141,11 +141,11 @@ function FTP_GetInfo() {
 	_result_function();
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("GetInfoSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("GetInfoSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("GetInfoFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("GetInfoFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _function_return(VAR_FTP_NODE_PARAMETERS);
@@ -162,11 +162,11 @@ function FTP_Create(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("CreateSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CreateSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("CreateFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CreateFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Delete(){
@@ -180,11 +180,11 @@ function FTP_Delete(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("DeleteSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("DeleteSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("DeleteFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("DeleteFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Move(){
@@ -199,11 +199,11 @@ function FTP_Move(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("MoveSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("MoveSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("MoveFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("MoveFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Copy(){
@@ -218,11 +218,11 @@ function FTP_Copy(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("CopySFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CopySFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("CopyFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CopyFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Search(){
@@ -240,11 +240,11 @@ function FTP_Search(){
 	_result_function();
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("SearchSFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("SearchSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("SearchFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("SearchFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
@@ -288,7 +288,7 @@ function FTP_RunCommand(){
 	_call_function(FTP_Connection,{"module":"SSH"})!
 	_result_function();
 	
-	_embedded("RunCommandSSH", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	_embedded("RunCommandSSH", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
 }
@@ -310,13 +310,13 @@ function FTP_CalculateChecksum(){
 	_call_function(FTP_Connection,{"module":"SSH"})!
 	_result_function();
 	
-	_embedded("CalculateChecksumSSH", "Node", "8.6.0", "FTP_NODE_PARAMETERS", timeout)!
+	_embedded("CalculateChecksumSSH", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
 };
 function FTP_Close(){
 	VAR_FTP_NODE_PARAMETERS = _FTP_CONNECTION_ID;
-	_embedded("CloseFTP", "Node", "8.6.0", "FTP_NODE_PARAMETERS", 60000)!
+	_embedded("CloseFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", 60000)!
 };
 function FTP_CheckProtocol(){
 	if(_FTP_PROTOCOL!="SFTP" && _FTP_PROTOCOL!="SSH" && _FTP_PROTOCOL!="FTP"){

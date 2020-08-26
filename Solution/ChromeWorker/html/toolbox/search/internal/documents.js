@@ -18,37 +18,44 @@ class DocumentsStore {
    * Get an array of all action items.
    */
   getActionItems() {
-    return Object.entries(this.actions).map(([name, action]) => {
-      const source = $(`#${name}`);
-      const descriptions = this.getActionDescriptions(source.text());
-      const variables = this.getActionVariables(source.html());
+    return Object.entries(this.actions)
+      .filter(([name]) => {
+        if (_Schema && _Schema.length === 0) {
+          return !name.includes('Database');
+        }
+        return true;
+      })
+      .map(([name, action]) => {
+        const source = $(`#${name}`);
+        const descriptions = this.getActionDescriptions(source.text());
+        const variables = this.getActionVariables(source.html());
 
-      const item = {
-        popup: (!action.group && action.class && action.class === 'browser'),
-        suggestions: this.getActionSuggestion(action),
-        descriptions: descriptions.array,
-        description: descriptions.short,
-        name: tr(action.name),
-        variables: variables,
-        type: 'action',
-        timestamps: [],
-        timecodes: {},
-        key: name,
-      };
+        const item = {
+          popup: (!action.group && action.class && action.class === 'browser'),
+          suggestions: this.getActionSuggestion(action),
+          descriptions: descriptions.array,
+          description: descriptions.short,
+          name: tr(action.name),
+          variables: variables,
+          type: 'action',
+          timestamps: [],
+          timecodes: {},
+          key: name,
+        };
 
-      if (item.popup) {
-        item.description += tr(' This action works only with element inside browser.');
-        item.module = tr('Browser > Element');
-        item.icon = '../icons/element.png';
-      } else {
-        const group = this.getActionGroup(name);
-        item.module = group.description;
-        item.group = group.name;
-        item.icon = group.icon;
-      }
+        if (item.popup) {
+          item.description += tr(' This action works only with element inside browser.');
+          item.module = tr('Browser > Element');
+          item.icon = '../icons/element.png';
+        } else {
+          const group = this.getActionGroup(name);
+          item.module = group.description;
+          item.group = group.name;
+          item.icon = group.icon;
+        }
 
-      return item;
-    });
+        return item;
+      });
   }
 
   /**
@@ -82,10 +89,14 @@ class DocumentsStore {
       getTextContent
     );
 
-    return {
-      short: short.length ? short[0] : array[0],
-      array: array.length ? array : short
-    };
+    if (!array.length && !short.length) {
+      return { short: [], array: [] };
+    } else {
+      return {
+        short: short.length ? short[0] : array[0],
+        array: array.length ? array : short
+      };
+    }
   }
 
   /**
@@ -93,22 +104,21 @@ class DocumentsStore {
    * @param {String} source - selected action source.
    */
   getActionVariables(source) {
-    const template = _.template(source)({ function_params: [], selector: {}, model: {} });
+    try {
+      const template = _.template(source)({
+        function_params: [],
+        selector: {},
+        model: {}
+      });
 
-    return _.uniq([
-      ...$.map(
-        $(template).find('input[data-variable-constructor=true]'),
-        (e) => e.value
-      ),
-      ...$.map(
-        $(template).find('.input_selector_string'),
-        (e) => e.placeholder
-      ),
-      ...$.map(
-        $(template).find('.input_selector_number'),
-        (e) => e.placeholder
-      )
-    ]);
+      return _.uniq([
+        ...$.map($(template).find('input[data-variable-constructor=true]'), (e) => e.value),
+        ...$.map($(template).find('.input_selector_string'), (e) => e.placeholder),
+        ...$.map($(template).find('.input_selector_number'), (e) => e.placeholder)
+      ]);
+    } catch (e) {
+      return [];
+    }
   }
 
   /**

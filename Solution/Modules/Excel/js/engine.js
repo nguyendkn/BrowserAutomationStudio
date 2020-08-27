@@ -154,6 +154,69 @@ function Excel_WriteToCellsRange(){
 	
 	_embedded("ExcelWriteToCellsRange", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
 };
+function Excel_SyncWithResource(){
+	var file_path = _function_argument("FilePath");
+	var success_number = _function_argument("SuccessNumber");
+	var fail_number = _function_argument("FailNumber");
+	var simultaneous_usage = _function_argument("SimultaneousUsage");
+	var interval = _function_argument("Interval");
+	var greedy = _function_argument("Greedy");
+	var dont_give_up = _function_argument("DontGiveUp");
+	var timeout = _function_argument("Timeout");
+
+	_call_function(Excel_GetSheetsList,{"FilePath":file_path,"Timeout":timeout})!
+	var sheets_list = _result_function();
+	
+	_do_with_params({"foreach_data":sheets_list},function(){
+		var cycle_index = _iterator() - 1;
+		if(cycle_index > _cycle_param("foreach_data").length - 1){_break()};
+		var sheet = _cycle_param("foreach_data")[cycle_index];
+		
+		_call_function(Excel_ReadSheet,{"FilePath":file_path,"SheetIndexOrName":sheet,"DataFormat":"CSV list","Timeout":timeout})!
+		var sheet_content_list = _result_function();
+
+		RCreate(sheet, success_number, fail_number, simultaneous_usage, interval, greedy, dont_give_up);
+
+		var res = RMap(sheet);
+
+		res.clear();
+		res.sync();
+		sheet_content_list.forEach(function(ell){
+			res.insert(ell);
+		});
+		res.sync();
+	})!
+};
+function Excel_ClearSheet(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name];
+	
+	_embedded("ExcelClearSheet", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_ClearCell(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var cell_address = _function_argument("CellAddress");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address];
+	
+	_embedded("ExcelClearCell", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_ClearCellsRange(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var from_cell = _function_argument("FromCell");
+	var to_cell = _function_argument("ToCell");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell];
+	
+	_embedded("ExcelClearCellsRange", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+};
 function Excel_FormatAddress(address){
 	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]) + address.split("*")[1]) : address;
 };

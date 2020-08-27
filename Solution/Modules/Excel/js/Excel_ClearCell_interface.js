@@ -1,0 +1,10 @@
+<div class="container-fluid">
+<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file in which needs to clear the cell."),examples:[{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"SheetIndexOrName", description: tr("Sheet index or name"), default_selector: "int", value_number: 0, min_number:0, max_number:999999, help: {description: tr("Index or sheet name in excel file."),examples:[{code:0, description: tr("First sheet index")}, {code:1, description: tr("Second sheet index")}, {code:tr("Sheet1"), description: tr("First sheet name")}, {code:tr("Sheet2"), description: tr("Second sheet name")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"CellAddress", description: tr("Cell address"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Cell address in excel file.") + " " + tr("You can specify a standard address with a column letter and row number, or the column number and row number separated by *."),examples:[{code:"A1", description: tr("First column, first row")}, {code:"B2", description: tr("Second column, second row")}, {code:tr("1*1"), description: tr("Analog") + " A1. " + tr("First column, first row")}, {code:tr("2*2"), description: tr("Analog") + " B2. " + tr("Second column, second row")}]} }) %>
+</div>
+<div class="tooltipinternal">
+	<div class="tr tooltip-paragraph-first-fold">Clear cell from excel file.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
+</div>
+<%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

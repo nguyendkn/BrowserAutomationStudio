@@ -1,0 +1,1 @@
+_call_function(Excel_SyncWithResource,{ "FilePath": (<%= FilePath %>),"SuccessNumber": (<%= SuccessNumber %>),"FailNumber": (<%= FailNumber %>),"SimultaneousUsage": (<%= SimultaneousUsage %>),"Interval": (<%= Interval %>),"Greedy": (<%= Greedy %>),"DontGiveUp": (<%= DontGiveUp %>),"Timeout": (<%= timeout_value() || 60000 %>) })!

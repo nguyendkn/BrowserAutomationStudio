@@ -168,20 +168,20 @@ function Excel_SyncWithResource(){
 	var sheets_list = _result_function();
 	
 	_do_with_params({"foreach_data":sheets_list},function(){
-		var cycle_index = _iterator() - 1;
-		if(cycle_index > _cycle_param("foreach_data").length - 1){_break()};
-		var sheet = _cycle_param("foreach_data")[cycle_index];
+		var sheet_index = _iterator() - 1;
+		if(sheet_index > _cycle_param("foreach_data").length - 1){_break()};
+		var sheet_name = _cycle_param("foreach_data")[sheet_index];
 		
-		_call_function(Excel_ReadSheet,{"FilePath":file_path,"SheetIndexOrName":sheet,"DataFormat":"CSV list","Timeout":timeout})!
-		var sheet_content_list = _result_function();
+		_call_function(Excel_ReadSheet,{"FilePath":file_path,"SheetIndexOrName":sheet_name,"DataFormat":"CSV list","Timeout":timeout})!
+		var sheet_data = _result_function();
 
-		RCreate(sheet, success_number, fail_number, simultaneous_usage, interval, greedy, dont_give_up);
+		RCreate(sheet_name, success_number, fail_number, simultaneous_usage, interval, greedy, dont_give_up);
 
-		var res = RMap(sheet);
+		var res = RMap(sheet_name);
 
 		res.clear();
 		res.sync();
-		sheet_content_list.forEach(function(ell){
+		sheet_data.forEach(function(ell){
 			res.insert(ell);
 		});
 		res.sync();
@@ -216,6 +216,49 @@ function Excel_ClearCellsRange(){
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell];
 	
 	_embedded("ExcelClearCellsRange", "Node", "8.6.0", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_ConvertToJSON(){
+	var file_path = _function_argument("FilePath");
+	var timeout = _function_argument("Timeout");
+	
+	var sheets = [];
+
+	_call_function(Excel_GetSheetsList,{"FilePath":file_path,"Timeout":timeout})!
+	var sheets_list = _result_function();
+
+	_do_with_params({"foreach_data":sheets_list},function(){
+		var sheet_index = _iterator() - 1;
+		if(sheet_index > _cycle_param("foreach_data").length - 1){_break()};
+		var sheet_name = _cycle_param("foreach_data")[sheet_index];
+		
+		_call_function(Excel_ReadSheet,{"FilePath":file_path,"SheetIndexOrName":sheet_name,"DataFormat":"2D list","Timeout":timeout})!
+		var sheet_data = _result_function();
+
+		sheets.push({name:sheet_name,data:sheet_data});
+	})!
+
+	_function_return(JSON.stringify({sheets:sheets}));
+};
+function Excel_ConvertFromJSON(){
+	var file_path = _function_argument("FilePath");
+	var data = _function_argument("Data");
+	var timeout = _function_argument("Timeout");
+	
+	data = (typeof data=="object") ? data : JSON.parse(data);
+	
+	var sheets = data.sheets;
+
+	_do_with_params({"foreach_data":sheets},function(){
+		var sheet_index = _iterator() - 1;
+		if(sheet_index > _cycle_param("foreach_data").length - 1){_break()};
+		var sheet = _cycle_param("foreach_data")[sheet_index];
+
+		var sheet_name = sheet.name;
+		var sheet_data = sheet.data;
+
+		_call_function(Excel_WriteToSheet,{"FilePath":file_path,"SheetIndexOrName":sheet_name,"Data":sheet_data,"Timeout":timeout})!
+		_result_function();
+	})!
 };
 function Excel_FormatAddress(address){
 	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]) + address.split("*")[1]) : address;

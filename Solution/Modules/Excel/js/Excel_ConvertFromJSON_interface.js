@@ -1,0 +1,9 @@
+<div class="container-fluid">
+<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file where on the sheet needs to write the data."),examples:[{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"Data", description: tr("JSON string"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("JSON string which needs to be converted to excel file."),examples:[{code:"{\"sheets\":[{\"name\":\"Sheet1\",\"data\":[]},{\"name\":\"Sheet2\",\"data\":[]}]}"}]} }) %>
+</div>
+<div class="tooltipinternal">
+	<div class="tr tooltip-paragraph-first-fold">Convert data from JSON string and write it to excel file.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
+</div>
+<%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

@@ -163,13 +163,6 @@
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const fs = require('fs');\r\n\r\nvar path = __dirname.split(\"\\\\\").join(\"/\").replace(\"lib/custom\",\"\") + \"node_modules/node-7z/src/regexp.js\";\r\nvar fileContent = fs.readFileSync(path, \"utf8\");\r\n[[AAA]] = fileContent;\r\nif(fileContent.indexOf(\"quentin.rossetti@gmail.com\") > -1){\r\n    fs.writeFileSync(path, [[NODE_REGEXPJS_TEMPLATE]]);\r\n};",
-            "DataName": "Fix7zModule",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
         }
     ],
     "engine": [
@@ -200,11 +193,11 @@
 		"The archive will be completely unpacked": {"ru":"Архив будет распакован полностью"},
 		"Place archive next to the original folder": {"ru":"Поместите архив рядом с исходной папкой"},
 		"Place the contents of the archive next to it": {"ru":"Поместить содержимое архива рядом с ним"},
-		"The path to the file which needs be added to archive.": {"ru":"Путь к файлу, который нужно добавить в архив."},
 		"This action only works with zip archives.": {"ru":"Данное действие работает только с zip архивами."},
 		"Get a list of files contained in the archive.": {"ru":"Получить список файлов содержащихся в архиве."},
 		"The path to the archive which needs to be unpacked.": {"ru":"Путь к архиву который нужно распаковать."},
 		"The path to the folder which needs to be archived.": {"ru":"Путь к папке которую нужно заархивировать."},
+		"The path to the file which needs be added to archive.": {"ru":"Путь к файлу, который нужно добавить в архив."},
 		"The path to the location where the archive will be saved.": {"ru":"Путь к месту в которое будет сохранен архив."},
 		"This action works with both files and folders.": {"ru":"Данное действие работает как с файлами, так и с папками."},
 		"The archive type will be determined by the file extension": {"ru":"Тип архива будет определен по расширению файла"},
@@ -212,13 +205,14 @@
 		"Archive files and save the archive to the specified location.": {"ru":"Заархивировать файлы, и сохранить архив в указанное место."},
 		"Archive folder and save the archive to the specified location.": {"ru":"Заархивировать папку, и сохранить архив в указанное место."},
 		"The path to the archive from which needs to get the list of files.": {"ru":"Путь к архиву из которого нужно получить список файлов."},
+		"The list can be created using actions from the \"List\" module.": {"ru":"Список можно создать с помощью действий из модуля \"Список\"."},
 		"The parameters \"File 1\", \"File 2\", \"File 3\" will be used": {"ru":"Будут использованы параметры \"Файл 1\", \"Файл 2\", \"Файл 3\""},
+		"If a non-existent destination path is specified, it will be created.": {"ru":"Если указан несуществующий путь назначения, он будет создан."},
 		"The resulting list can be used in the \"Unpack archive\" action.": {"ru":"Полученный список можно использовать в действии \"Распаковать архив\"."},
 		"The path to the location where the contents of the archive will be unpacked.": {"ru":"Путь к месту в которое будет распаковано содержимое архива."},
 		"The parameters \"File 2\", \"File 3\", \"List of files\" will be used": {"ru":"Будут использованы параметры \"Файл 2\", \"Файл 3\", \"Список файлов\""},
 		"The parameters \"File 1\", \"File 3\", \"List of files\" will be used": {"ru":"Будут использованы параметры \"Файл 1\", \"Файл 3\", \"Список файлов\""},
 		"The parameters \"File 1\", \"File 2\", \"List of files\" will be used": {"ru":"Будут использованы параметры \"Файл 1\", \"Файл 2\", \"Список файлов\""},
-		"The list can be created using actions from the \"List\" module.": {"ru":"Список можно создать с помощью действий из модуля \"Список\"."},
 		"The resulting list can be processed using actions from the \"List\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"Список\"."},
 		"The list of files should contain not only their names but their path in the archive.": {"ru":"Список файлов должен содержать не только их названия, но и их путь в архиве."},
 		"If with same name archive already exists along the destination path, it will be overwritten.": {"ru":"Если архив с таким именем уже существует по пути назначения, то он будет перезаписан."},
@@ -226,14 +220,13 @@
 		"Files from separate fields and the list are added to a general list of files that will be archived.": {"ru":"Файлы из отдельных полей и списка складываются в общий список файлов которые будут заархивированы."},
 		"If the destination path is not specified, the archive will be unpacked to the location where it is located.": {"ru":"Если путь назначения не указан, архив будет распакован в то место, в котором он находится."},
 		"If the files contained in the archive already exist along the destination path, they will be overwritten.": {"ru":"Если по пути назначения уже существуют файлы содержащиеся в архиве, то они будут перезаписаны."},
-		"If a non-existent destination path is specified, it will be created.": {"ru":"Если указан несуществующий путь назначения, он будет создан."},
 		"List of paths to the files which needs be added to archive. The list can be created using actions from the \"List\" module.": {"ru":"Список путей к файлам, которые нужно добавить в архив. Список можно создать с помощью действий из модуля \"Список\"."},
 		"The list of files can be obtained using the \"Get file list from archive\" action or create using actions from the \"List\" module.": {"ru":"Список файлов можно получить с помощью действия \"Получить список файлов из архива\" или создать с помощью действий из модуля \"Список\"."},
 		"This action can unpack not the entire archive, but only a part of it, for this you need to specify a list of files that need to be unpacked.": {"ru":"Данное действие может распаковывать не весь архив, а только его часть, для этого нужно указать список файлов которые нужно распаковать."},
 		"If some of the parameters (\"File 1\", \"File 2\", \"File 3\", \"List of files\") are not specified, all parameters will be used except for them.": {"ru":"Если какие-то из параметров (\"Файл 1\", \"Файл 2\", \"Файл 3\", \"Список файлов\") не указаны, будут использованы все параметры кроме них."},
 		"For example, if a file is specified in the \"File 1\" field and a list of 4 files is specified in the \"List of files\" field, then 5 files will be archived.": {"ru":"Например, если в поле \"Файл 1\" указан файл и в поле \"Список файлов\" указан список из 4 файлов, то заархивировано будет 5 файлов."},
-		"If the destination path is not specified, the archive will be saved to the location where the folder is located and will have the folder name and archive type in the extension.": {"ru":"Если путь назначения не указан, архив будет сохранен в то место, в котором находится папка и будет иметь её название и тип архива в расширении."},
 		"If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use \"Ignore errors\" action.":{"ru":"Если во время выполнения действия произойдет ошибка, поток остановится с сообщением об ошибке. Если вы хотите продолжить работу, используйте действие \"Игнорировать ошибки\"."},
+		"If the destination path is not specified, the archive will be saved to the location where the folder is located and will have the folder name and archive type in the extension.": {"ru":"Если путь назначения не указан, архив будет сохранен в то место, в котором находится папка и будет иметь её название и тип архива в расширении."},
 		"The archive type is usually written in the file extension. But there are exceptions, such as Chrome extensions files have the extension .crx, but are zip archive with additional headers.": {"ru":"Тип архива обычно пишется в расширении файла. Но бывают и исключения, например файлы расширений Chrome имеют расширение .crx, но являются zip архивом с дополнительными заголовками."},
 		"Variable in which, after successful completion of the action, will be recorded list of files contained in the archive. The list will contain not only the names of the files but their path in the archive.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список файлов содержащихся в архиве. Список будет содержать не только названия файлов но их путь в архиве."},
 		"If the archive has incorrect format or an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use \"Ignore errors\" action.":{"ru":"Если архив будет иметь неверный формат или во время выполнения действия произойдет ошибка, поток остановится с сообщением об ошибке. Если вы хотите продолжить работу, используйте действие \"Игнорировать ошибки\"."},
@@ -259,7 +252,7 @@
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3",
             "ModuleName": "archiver",
-            "ModuleVersion": "4.0.2"
+            "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",

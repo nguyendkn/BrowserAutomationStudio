@@ -24,7 +24,6 @@ function Archive_Unpack(){
 	})!
 	
 	_if(archive_type=="7z",function(){
-		_call_function(Archive_Fix7zModule,{})!
 		_embedded("Unpack7Z", "Node", "12.18.3", "ARCHIVE_UNPACK_PARAMETERS", timeout)!
 	})!
 };
@@ -48,7 +47,6 @@ function Archive_ArchiveFolder(){
 	})!
 	
 	_if(archive_type=="7z",function(){
-		_call_function(Archive_Fix7zModule,{})!
 		_embedded("ArchiveFolder7Z", "Node", "12.18.3", "ARCHIVE_FOLDER_PARAMETERS", timeout)!
 	})!
 };
@@ -82,7 +80,6 @@ function Archive_ArchiveFiles(){
 	})!
 	
 	_if(archive_type=="7z",function(){
-		_call_function(Archive_Fix7zModule,{})!
 		_embedded("ArchiveFiles7Z", "Node", "12.18.3", "ARCHIVE_FILES_PARAMETERS", timeout)!
 	})!
 };
@@ -106,7 +103,6 @@ function Archive_GetFileList(){
 	})!
 	
 	_if(archive_type=="7z",function(){
-		_call_function(Archive_Fix7zModule,{})!
 		_embedded("GetFileList7Z", "Node", "12.18.3", "ARCHIVE_GETFILELIST_PARAMETERS", timeout)!
 	})!
 	
@@ -162,8 +158,4 @@ function Archive_CheckDiskExistence(path){
 			fail(_K=="ru" ? ("В пути \"" + path + "\" указан не существующий диск \"" + disk + "\"") : ("The path \"" + path + "\" contains a non-existing disk \"" + disk + "\""));
 		};
 	};
-};
-function Archive_Fix7zModule(){
-	VAR_NODE_REGEXPJS_TEMPLATE = "const LINE_SPLIT = new RegExp(\u0027\u005cn|\u005cr\u005cn|\u005cx08+|\u005cr +\u005cr\u0027)\nconst BODY_PROGRESS = new RegExp(\u0027^ *(\u003cpercent\u003e\u005c\u005cd+)% ?(\u003cfileCount\u003e\u005c\u005cd+)? ?(\u003cfile\u003e.*)$\u0027)\nconst BODY_SYMBOL_FILE = new RegExp(\u0027^(\u003csymbol\u003e[=TU+R.-]) (\u003cfile\u003e.+)$\u0027)\nconst BODY_HASH = new RegExp(\u0027^(\u003chash\u003e\u005c\u005cS+)? +(\u003csize\u003e\u005c\u005cd*) +(\u003cfile\u003e.+)$\u0027)\nconst END_OF_STAGE_HYPHEN = new RegExp(\u0027^(-+ +)+-+$\u0027)\nconst INFOS = new RegExp(\u0027^(\u003cproperty\u003e.+?)(\u003cseparator\u003e( = )|(: +))(\u003cvalue\u003e.+)$\u0027)\nconst INFOS_SPLIT = new RegExp(\u0027, +# \u0027)\nconst ERROR = new RegExp(\u0027(\u003clevel\u003eWARNING|ERROR): (\u003cmessage\u003e.*)(\u005cr\u005cn)?(\u005cn)?\u0027, \u0027i\u0027)\n\nmodule.exports = \u007b\n  LINE_SPLIT,\n  BODY_PROGRESS,\n  BODY_SYMBOL_FILE,\n  BODY_HASH,\n  END_OF_STAGE_HYPHEN,\n  INFOS,\n  INFOS_SPLIT,\n  ERROR\n\u007d"
-	_embedded("Fix7zModule", "Node", "12.18.3", "NODE_REGEXPJS_TEMPLATE", 60000)!
 };

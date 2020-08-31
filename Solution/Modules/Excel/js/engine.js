@@ -308,6 +308,80 @@ function Excel_SetFormulaToCell(){
 	
 	_embedded("ExcelSetFormulaToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
+function Excel_GetCellStyle(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var cell_address = _function_argument("CellAddress");
+	var style_name = _function_argument("StyleName");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, style_name];
+	
+	_embedded("ExcelGetCellStyle", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
+};
+function Excel_GetCellStyles(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var cell_address = _function_argument("CellAddress");
+	var styles_name_list = _function_argument("StylesNameList");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, styles_name_list];
+	
+	_embedded("ExcelGetCellStyles", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(JSON.stringify(VAR_XLSX_NODE_PARAMETERS));
+};
+function Excel_SetStyleToCell(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var cell_address = _function_argument("CellAddress");
+	var style_name = _function_argument("StyleName");
+	var style_value = _function_argument("StyleValue");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, style_name, style_value];
+	
+	_embedded("ExcelSetStyleToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_SetStylesToCell(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var cell_address = _function_argument("CellAddress");
+	var styles = _function_argument("Styles");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, styles];
+	
+	_embedded("ExcelSetStylesToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_SetStyleToCellsRange(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var from_cell = _function_argument("FromCell");
+	var to_cell = _function_argument("ToCell");
+	var style_name = _function_argument("StyleName");
+	var style_value = _function_argument("StyleValue");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, style_name, style_value];
+	
+	_embedded("ExcelSetStyleToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_SetStylesToCellsRange(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var from_cell = _function_argument("FromCell");
+	var to_cell = _function_argument("ToCell");
+	var styles = _function_argument("Styles");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, styles];
+	
+	_embedded("ExcelSetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
 function Excel_FormatAddress(address){
 	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]) + address.split("*")[1]) : address;
 };

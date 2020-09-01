@@ -95,8 +95,8 @@ function Excel_WriteToSheet(){
 function Excel_ReadRows(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_row = _function_argument("FromRow");
-	var to_row = _function_argument("ToRow");
+	var from_row = _function_argument("FromRow")+1;
+	var to_row = _function_argument("ToRow")+1;
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
 	
@@ -109,7 +109,7 @@ function Excel_ReadRows(){
 function Excel_InsertRows(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_row = _function_argument("FromRow");
+	var from_row = _function_argument("FromRow")+1;
 	var data = _function_argument("Data");
 	var timeout = _function_argument("Timeout");
 	
@@ -120,7 +120,7 @@ function Excel_InsertRows(){
 function Excel_DeleteRows(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_row = _function_argument("FromRow");
+	var from_row = _function_argument("FromRow")+1;
 	var count = _function_argument("Count");
 	var timeout = _function_argument("Timeout");
 	
@@ -404,7 +404,7 @@ function Excel_SetStylesToCellsRange(){
 	_embedded("ExcelSetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_FormatAddress(address){
-	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]) + address.split("*")[1]) : address;
+	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]+1) + address.split("*")[1]+1) : address;
 };
 function Excel_ConvertToLetter(column){
     var temp = '';

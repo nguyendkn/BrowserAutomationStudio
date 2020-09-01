@@ -3,6 +3,7 @@ if(FilePath["original"].length == 0){
     Invalid(tr("File path") + " " + tr("is empty"));
     return;
 };
+var SheetList = GetInputConstructorValue("SheetList", loader);
 var SuccessNumber = GetInputConstructorValue("SuccessNumber", loader);
 if(SuccessNumber["original"].length == 0){
 	Invalid(tr("Success Usage") + " " + tr("is empty"));
@@ -28,6 +29,7 @@ var DontGiveUp = $("#Check2").is(':checked');
 try{
     var code = loader.GetAdditionalData() + _.template($("#Excel_ImportToResources_code").html())({
         "FilePath": FilePath["updated"],
+		"SheetList": SheetList["updated"],
         "SuccessNumber": SuccessNumber["updated"],
         "FailNumber": FailNumber["updated"],
         "SimultaneousUsage": SimultaneousUsage["updated"],

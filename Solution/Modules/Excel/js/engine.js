@@ -156,6 +156,7 @@ function Excel_WriteToCellsRange(){
 };
 function Excel_ImportToResources(){
 	var file_path = _function_argument("FilePath");
+	var sheet_list = _function_argument("SheetList");
 	var success_number = _function_argument("SuccessNumber");
 	var fail_number = _function_argument("FailNumber");
 	var simultaneous_usage = _function_argument("SimultaneousUsage");
@@ -166,6 +167,10 @@ function Excel_ImportToResources(){
 
 	_call_function(Excel_GetSheetsList,{"FilePath":file_path,"Timeout":timeout})!
 	var sheets_list = _result_function();
+	
+	if(sheet_list){
+		sheets_list = sheets_list.filter(function(sheet_name, sheet_index){return sheet_list.indexOf(sheet_name) > -1 || sheet_list.indexOf(sheet_index) > -1});
+	};
 	
 	_do_with_params({"foreach_data":sheets_list},function(){
 		var sheet_index = _iterator() - 1;

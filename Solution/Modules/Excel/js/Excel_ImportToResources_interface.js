@@ -25,6 +25,7 @@
 	<div class="tr tooltip-paragraph-fold">Typical example of using this action would be creation of resource(in OnApplicationStart), which takes data from custom place(for example, from rare database engine) or in custom format or both.</div>
 	<div class="tr tooltip-paragraph-fold">'Wait For Resource' is very important setting, it determines behaviour in case, when resource data list is empty. If prameter is set, then action that acquires resource will wait until data will be added, otherwise action will fail instantly.</div>
 	<div class="tr tooltip-paragraph-fold">When 'Greedy Usage Algorithm' is set, resource system will try to acquire same line again and again until that line will exhaust all success or fail usages, only after that next line will be used.</div>
+	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

@@ -938,6 +938,7 @@
 		"Variable in which, after successful execution of the action, the contents of the cells will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано содержимое ячеек."},
 		"Variable in which, after successful execution of the action, the contents of the sheet will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано содержимое листа."},
 		"Variable in which, after successful execution of the action, the formula from the cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана формула из ячейки."},
+        "If a resource is specified in the \"File path\" parameter, resource location will be used.": {"ru":"Если в параметре \"Путь к файлу\" указан ресурс, вместо содержимого ресурса будет браться его расположение."},
 		"List of indexes or names of sheets from excel file, data from which should be imported into resources.": {"ru":"Список индексов или имен листов из excel файла, данные из которых нужно импортировать в ресурсы."},
 		"Variable in which, after successful execution of the action, the value of the cell style will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано значение стиля ячейки."},
 		"Variable in which, after successful execution of the action, the address of the found cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан адрес найденной ячейки."},

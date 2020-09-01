@@ -1,4 +1,4 @@
-var FilePath = GetInputConstructorValue("FilePath", loader);
+var FilePath = GetInputConstructorValueFilename("FilePath", loader);
 if(FilePath["original"].length == 0){
 	Invalid(tr("File path") + " " + tr("is empty"));
     return;

@@ -26,7 +26,7 @@ if(Interval["original"].length == 0){
 var Greedy = $("#Check").is(':checked');
 var DontGiveUp = $("#Check2").is(':checked');
 try{
-    var code = loader.GetAdditionalData() + _.template($("#Excel_SyncWithResource_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#Excel_ImportToResources_code").html())({
         "FilePath": FilePath["updated"],
         "SuccessNumber": SuccessNumber["updated"],
         "FailNumber": FailNumber["updated"],

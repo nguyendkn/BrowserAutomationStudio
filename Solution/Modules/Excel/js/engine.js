@@ -154,7 +154,7 @@ function Excel_WriteToCellsRange(){
 	
 	_embedded("ExcelWriteToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
-function Excel_SyncWithResource(){
+function Excel_ImportToResources(){
 	var file_path = _function_argument("FilePath");
 	var success_number = _function_argument("SuccessNumber");
 	var fail_number = _function_argument("FailNumber");
@@ -185,6 +185,22 @@ function Excel_SyncWithResource(){
 			res.insert(ell);
 		});
 		res.sync();
+	})!
+};
+function Excel_ExportFromResources(){
+	var file_path = _function_argument("FilePath");
+	var resource_list = _function_argument("ResourceList");
+	var timeout = _function_argument("Timeout");
+
+	_do_with_params({"foreach_data":resource_list},function(){
+		var resource_index = _iterator() - 1;
+		if(resource_index > _cycle_param("foreach_data").length - 1){_break()};
+		var resource_name = _cycle_param("foreach_data")[resource_index];
+
+		var resource_data = RMap(resource_name).toList();
+		
+		_call_function(Excel_WriteToSheet,{"FilePath":file_path,"SheetIndexOrName":resource_name,"Data":resource_data,"Timeout":timeout})!
+		_result_function();
 	})!
 };
 function Excel_ClearSheet(){

@@ -13,11 +13,6 @@ if(FromCell["original"].length == 0){
 	Invalid(tr("From cell") + " " + tr("is empty"));
     return;
 };
-var ToCell = GetInputConstructorValue("ToCell", loader);
-if(ToCell["original"].length == 0){
-	Invalid(tr("To cell") + " " + tr("is empty"));
-    return;
-};
 var Data = GetInputConstructorValue("Data", loader);
 if(Data["original"].length == 0){
 	Invalid(tr("Data") + " " + tr("is empty"));

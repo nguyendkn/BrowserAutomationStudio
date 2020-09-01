@@ -100,6 +100,9 @@ function Excel_ReadRows(){
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
 	
+	from_row = from_row=="" ? "" : from_row+1;
+	to_row = to_row=="" ? "" : to_row+1;
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row, data_format];
 	
 	_embedded("ExcelReadRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -146,11 +149,10 @@ function Excel_WriteToCellsRange(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
-	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
 	var data = _function_argument("Data");
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data];
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, data];
 	
 	_embedded("ExcelWriteToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };

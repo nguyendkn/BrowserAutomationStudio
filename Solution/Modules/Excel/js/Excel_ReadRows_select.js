@@ -9,15 +9,7 @@ if(SheetIndexOrName["original"].length == 0){
     return;
 };
 var FromRow = GetInputConstructorValue("FromRow", loader);
-if(FromRow["original"].length == 0){
-	Invalid(tr("From row") + " " + tr("is empty"));
-    return;
-};
 var ToRow = GetInputConstructorValue("ToRow", loader);
-if(ToRow["original"].length == 0){
-	Invalid(tr("To row") + " " + tr("is empty"));
-    return;
-};
 var DataFormat = GetInputConstructorValue("DataFormat", loader);
 if(DataFormat["original"].length == 0){
 	Invalid(tr("Data format") + " " + tr("is empty"));

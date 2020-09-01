@@ -2,6 +2,7 @@
 #include "replaceall.h"
 #include "writefile.h"
 #include "aes.h"
+#include "replaceall.h"
 #include <Windows.h>
 #include "md5.h"
 
@@ -43,8 +44,8 @@ void ProxyData::Write()
         std::string proxy =
                 Server + std::string("|") +
                 std::to_string(Port) + std::string("|") +
-                UserName + std::string("|") +
-                Password + std::string("|") +
+                ReplaceAll(UserName,"|","") + std::string("|") +
+                ReplaceAll(Password,"|","") + std::string("|") +
                 proxy_type_string + std::string("|2|29815|0|0|1111|SCAP_END!");
 
         data += std::string("\x4d\x43\x23\x23\x01\x01\x01\x01\x73\x6f\x63\x6b\x73\x63\x61\x70\x36\x34\x2e\x63\x6f\x6d\x23",23);

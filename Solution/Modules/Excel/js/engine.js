@@ -92,6 +92,17 @@ function Excel_WriteToSheet(){
 	
 	_embedded("ExcelWriteToSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
+function Excel_CountRows(){
+	var file_path = _function_argument("FilePath");
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name];
+	
+	_embedded("ExcelCountRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
+};
 function Excel_ReadRows(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");

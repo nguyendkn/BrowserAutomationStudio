@@ -4,6 +4,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get list of sheets from excel file.</div>
+	<div class="tr tooltip-paragraph-fold">The resulting list will contain the names of all sheets in the excel file.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting list can be processed using actions from the "List" module.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

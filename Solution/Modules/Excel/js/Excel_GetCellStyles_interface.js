@@ -6,8 +6,9 @@
 <%= _.template($('#variable_constructor').html())({id:"Save", description: tr("Variable to save the result"), default_variable: "XLSX_CELL_STYLES", help: {description: tr("Variable in which, after successful execution of the action, a JSON string containing the names of the styles and their values will be written."),examples:[{code:"{\"bold\":true, \"italic\":true}"}]}}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Get cell styles values ​​of excel file.</div>
+	<div class="tr tooltip-paragraph-first-fold">Get cell styles values from specified sheet excel file.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting JSON string can be processed using actions from the "JSON" module.</div>
+	<div class="tooltip-paragraph-fold"><span class="tr">For details on the supported styles, see</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://www.npmjs.com/package/xlsx-populate#style-reference');return false">Style Reference</a>.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

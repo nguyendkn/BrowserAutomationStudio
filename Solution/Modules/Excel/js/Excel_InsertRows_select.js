@@ -9,10 +9,6 @@ if(SheetIndexOrName["original"].length == 0){
     return;
 };
 var FromRow = GetInputConstructorValue("FromRow", loader);
-if(FromRow["original"].length == 0){
-	Invalid(tr("From row") + " " + tr("is empty"));
-    return;
-};
 var Data = GetInputConstructorValue("Data", loader);
 if(Data["original"].length == 0){
 	Invalid(tr("Data") + " " + tr("is empty"));

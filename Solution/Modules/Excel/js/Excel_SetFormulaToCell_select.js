@@ -19,7 +19,7 @@ if(Formula["original"].length == 0){
     return;
 };
 try{
-    var code = loader.GetAdditionalFormula() + _.template($("#Excel_SetFormulaToCell_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#Excel_SetFormulaToCell_code").html())({
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
         "CellAddress": CellAddress["updated"],

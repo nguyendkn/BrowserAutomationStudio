@@ -9,21 +9,13 @@ if(SheetIndexOrName["original"].length == 0){
     return;
 };
 var FromRow = GetInputConstructorValue("FromRow", loader);
-if(FromRow["original"].length == 0){
-	Invalid(tr("From row") + " " + tr("is empty"));
-    return;
-};
-var Count = GetInputConstructorValue("Count", loader);
-if(Count["original"].length == 0){
-	Invalid(tr("Count") + " " + tr("is empty"));
-    return;
-};
+var ToRow = GetInputConstructorValue("ToRow", loader);
 try{
     var code = loader.GetAdditionalData() + _.template($("#Excel_DeleteRows_code").html())({
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
         "FromRow": FromRow["updated"],
-        "Count": Count["updated"]
+        "ToRow": ToRow["updated"]
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

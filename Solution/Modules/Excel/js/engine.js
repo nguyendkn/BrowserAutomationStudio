@@ -106,8 +106,8 @@ function Excel_CountRows(){
 function Excel_ReadRows(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_row = _function_argument("FromRow")+1;
-	var to_row = _function_argument("ToRow")+1;
+	var from_row = _function_argument("FromRow");
+	var to_row = _function_argument("ToRow");
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
 	
@@ -123,9 +123,11 @@ function Excel_ReadRows(){
 function Excel_InsertRows(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_row = _function_argument("FromRow")+1;
+	var from_row = _function_argument("FromRow");
 	var data = _function_argument("Data");
 	var timeout = _function_argument("Timeout");
+	
+	from_row = from_row=="" ? "" : from_row+1;
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, data];
 	
@@ -134,11 +136,14 @@ function Excel_InsertRows(){
 function Excel_DeleteRows(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_row = _function_argument("FromRow")+1;
-	var count = _function_argument("Count");
+	var from_row = _function_argument("FromRow");
+	var to_row = _function_argument("ToRow");
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, count];
+	from_row = from_row=="" ? "" : from_row+1;
+	to_row = to_row=="" ? "" : to_row+1;
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row];
 	
 	_embedded("ExcelDeleteRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };

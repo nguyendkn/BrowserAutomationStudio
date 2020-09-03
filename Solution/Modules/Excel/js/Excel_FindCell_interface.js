@@ -5,7 +5,7 @@
 <%= _.template($('#variable_constructor').html())({id:"Save", description: tr("Variable to save the result"), default_variable: "XLSX_FOUND_CELL", help: {description: tr("Variable in which, after successful execution of the action, the address of the found cell will be written."),examples:[{code:"A1"},{code:"A2"},{code:"B2"},{code:"H5"}]}}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Find cell in an excel file by its content.</div>
+	<div class="tr tooltip-paragraph-first-fold">Find cell on specified sheet of excel file, by its content.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return the address of the first cell found or an empty string if the cell was not found.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

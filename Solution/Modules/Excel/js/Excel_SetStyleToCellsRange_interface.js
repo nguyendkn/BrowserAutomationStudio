@@ -7,7 +7,8 @@
 <%= _.template($('#input_constructor').html())({id:"StyleValue", description: tr("Style value"), default_selector: "string", value_string: "", help: {description: tr("The style value which needs to be set.")} }) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Set the style value for cells range of ​​the excel file.</div>
+	<div class="tr tooltip-paragraph-first-fold">Set style value for cells range on specified sheet excel file.</div>
+	<div class="tooltip-paragraph-fold"><span class="tr">For details on the supported styles, see</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://www.npmjs.com/package/xlsx-populate#style-reference');return false">Style Reference</a>.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file where on the sheet needs to write the data."),examples:[{code:"{{excel_file}}"},{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file."),examples:[{code:"{{excel_file}}"},{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"Data", description: tr("JSON string"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("JSON string which needs to be converted to excel file."),examples:[{code:"{\"sheets\":[{\"name\":\"S1\",\"data\":[]},{\"name\":\"S2\",\"data\":[]}]}"}]} }) %>
 </div>
 <div class="tooltipinternal">

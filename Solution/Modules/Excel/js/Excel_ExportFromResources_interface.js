@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file where needs to export data from resources."),examples:[{code:"{{excel_file}}"},{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file."),examples:[{code:"{{excel_file}}"},{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"ResourceList", description: tr("List of resource names"), default_selector: "expression", disable_int:true, value_string: "", help: {description: tr("List of names of resources, data from which needs be exported to an excel file."),examples:[{code:"[\"Res1\", \"res3\", \"res4\"]"}]} }) %>
 </div>
 <div class="tooltipinternal">

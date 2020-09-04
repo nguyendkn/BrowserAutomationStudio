@@ -248,8 +248,8 @@ function Excel_ClearCell(){
 function Excel_ClearCellsRange(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_cell = _function_argument("FromCell");
-	var to_cell = _function_argument("ToCell");
+	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
+	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
 	var timeout = _function_argument("Timeout");
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell];
@@ -350,7 +350,7 @@ function Excel_SetFormulaToCell(){
 function Excel_GetCellStyle(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var cell_address = _function_argument("CellAddress");
+	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var style_name = _function_argument("StyleName");
 	var timeout = _function_argument("Timeout");
 	
@@ -363,7 +363,7 @@ function Excel_GetCellStyle(){
 function Excel_GetCellStyles(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var cell_address = _function_argument("CellAddress");
+	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var styles_name_list = _function_argument("StylesNameList");
 	var timeout = _function_argument("Timeout");
 	
@@ -376,7 +376,7 @@ function Excel_GetCellStyles(){
 function Excel_SetStyleToCell(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var cell_address = _function_argument("CellAddress");
+	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var style_name = _function_argument("StyleName");
 	var style_value = _function_argument("StyleValue");
 	var timeout = _function_argument("Timeout");
@@ -388,7 +388,7 @@ function Excel_SetStyleToCell(){
 function Excel_SetStylesToCell(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var cell_address = _function_argument("CellAddress");
+	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var styles = _function_argument("Styles");
 	var timeout = _function_argument("Timeout");
 	
@@ -399,8 +399,8 @@ function Excel_SetStylesToCell(){
 function Excel_SetStyleToCellsRange(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_cell = _function_argument("FromCell");
-	var to_cell = _function_argument("ToCell");
+	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
+	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
 	var style_name = _function_argument("StyleName");
 	var style_value = _function_argument("StyleValue");
 	var timeout = _function_argument("Timeout");
@@ -412,8 +412,8 @@ function Excel_SetStyleToCellsRange(){
 function Excel_SetStylesToCellsRange(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var from_cell = _function_argument("FromCell");
-	var to_cell = _function_argument("ToCell");
+	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
+	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
 	var styles = _function_argument("Styles");
 	var timeout = _function_argument("Timeout");
 	
@@ -422,7 +422,7 @@ function Excel_SetStylesToCellsRange(){
 	_embedded("ExcelSetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_FormatAddress(address){
-	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(address.split("*")[0]+1) + address.split("*")[1]+1) : address;
+	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(parseInt(address.split("*")[0])+1) + (parseInt(address.split("*")[1])+1)) : address;
 };
 function Excel_ConvertToLetter(column){
     var temp = '';

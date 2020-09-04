@@ -23,7 +23,6 @@ try{
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
         "FromCell": FromCell["updated"],
-        "ToCell": ToCell["updated"],
         "Data": Data["updated"]
     });
     code = Normalize(code, 0);

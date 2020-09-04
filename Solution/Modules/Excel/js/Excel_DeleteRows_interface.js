@@ -7,7 +7,7 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Delete rows from specified excel file.</div>
 	<div class="tr tooltip-paragraph-fold">Rows following the deleted rows will be shifted up.</div>
-	<div class="tr tooltip-paragraph-fold">Deletion is performed up to and including row specified in "To row" parameter, to delete one row, you need to specify its index in both parameters.</div>
+	<div class="tr tooltip-paragraph-fold">Removing row is performed up to and including row specified in "To row" parameter. To delete one row, you need to specify its index in both parameters.</div>
 	<div class="tr tooltip-paragraph-fold">If the "From row" and "To row" parameters are not specified, all rows will be deleted.</div>
 	<div class="tr tooltip-paragraph-fold">If the "From row" parameter is specified and the "To row" parameter is not specified, all rows from the specified to the last will be deleted.</div>
 	<div class="tr tooltip-paragraph-fold">If the "From row" parameter is not specified and the "To row" parameter is specified, all rows from the first to the specified will be deleted.</div>

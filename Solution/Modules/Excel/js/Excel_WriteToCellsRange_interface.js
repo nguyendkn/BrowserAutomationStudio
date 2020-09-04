@@ -10,7 +10,7 @@
 	<div class="tr tooltip-paragraph-fold">Old data that doesn't interact with new one will remain unchanged.</div>
 	<div class="tr tooltip-paragraph-fold">This action accepts data in any of three formats: "CSV list", "CSV string", "2D list".</div>
 	<div class="tr tooltip-paragraph-fold">CSV list - a list that consists of CSV lines and CSV line consists of cell values separated with ":" symbol. Example: <code>["A1:B1:C1","A2:B2:C2","A3:B3:C3"]</code></div>
-	<div class="tooltip-paragraph-fold"><span class="tr">CSV string - this CSV lines separated by a line break, and consisting of cell values separated with ":" symbol. Example: </span><code>A1:B1:C1<br/>A2:B2:C2<br/>A3:B3:C3</code></div>
+	<div class="tooltip-paragraph-fold"><span class="tr">CSV string - this CSV lines separated by a line break, and consisting of cell values separated with ":" symbol. Example: </span><code><br/>A1:B1:C1<br/>A2:B2:C2<br/>A3:B3:C3</code></div>
 	<div class="tr tooltip-paragraph-fold">2D list - a list that consists of lists containing the cell values. Example: <code>[["A1","B1","C1"],["A2","B2","C2"],["A3","B3","C3"]]</code></div>
 	<div class="tr tooltip-paragraph-fold">Data in a suitable format can be obtained from the actions: "Read sheet", "Read rows", "Read cells range".</div>
 	<div class="tr tooltip-paragraph-fold">Data can be generated manually by using "List" module or "Template" action.</div>

@@ -430,15 +430,17 @@ function Excel_SetStylesToCellsRange(){
 	_embedded("ExcelSetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_FormatAddress(address){
-	return (address.indexOf("*") > -1) ? (Excel_ConvertToLetter(parseInt(address.split("*")[0])+1) + (parseInt(address.split("*")[1])+1)) : address;
-};
-function Excel_ConvertToLetter(column){
-    var temp = '';
-    var letter = '';
-    while(column>0){
-        temp = (column-1)%26;
-        letter = String.fromCharCode(temp+65)+letter;
-        column = (column-temp-1)/26;
-    };
-    return letter;
+	if(address.indexOf("*") > -1){
+		var split = address.split("*");
+		var column_number = parseInt(split[0]) + 1;
+		var row_number = parseInt(split[1]) + 1;
+		var column_letter = "";
+		while(column_number>0){
+			var temp = (column_number-1)%26;
+			column_letter = String.fromCharCode(temp+65)+column_letter;
+			column_number = (column_number-temp-1)/26;
+		};
+		address = column_letter + row_number;
+	};
+	return address;
 };

@@ -1,3 +1,11 @@
+function Excel_CreateFile(){
+	var file_path = _function_argument("FilePath");
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path];
+	
+	_embedded("ExcelCreateFile", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
 function Excel_GetSheetsList(){
 	var file_path = _function_argument("FilePath");
 	var timeout = _function_argument("Timeout");

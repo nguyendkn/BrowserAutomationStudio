@@ -19,7 +19,7 @@ namespace BrowserAutomationStudioFramework
         GotoLabelData ParseSetGotoLabel(const QString& str,int start);
         QString Encrypt(const QString& Script,int ParanoicLevel);
         IEncryptor* Encryptor;
-        QString Key;
+        QByteArray Key;
         int EncryptIterator;
         bool IsRecord;
 
@@ -36,16 +36,16 @@ namespace BrowserAutomationStudioFramework
     public:
         explicit Preprocessor(QObject *parent = 0);
         virtual void SetEncryptor(IEncryptor* Encryptor);
-            virtual void SetKey(const QString& Key);
+        virtual IEncryptor* GetEncryptor();
+        virtual void SetKey(const QByteArray& Key);
 
         void SetIsRecord(bool IsRecord);
         bool GetIsRecord();
 
-        void GenerateKey();
         virtual QString Preprocess(const QString& Script,int ParanoicLevel,bool IsMainScript);
 
         virtual QString Decrypt(const QString& Script);
-        virtual QString DecryptNotSafe(const QString& Script);
+        virtual QString Encrypt(const QString& Script);
 
     signals:
 

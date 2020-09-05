@@ -6,6 +6,10 @@
 #include <QFile>
 #include <QJsonObject>
 #include <QSettings>
+#include <QXmlStreamReader>
+#include <QDomDocument>
+#include "preprocessor.h"
+#include "noneencryptor.h"
 
 #include "ui_compileresults.h"
 
@@ -157,6 +161,7 @@ void CompileResults::Submit()
     Query.addQueryItem("email",ui->Login->text());
     Query.addQueryItem("name",_Compiler->GetName());
     Query.addQueryItem("pass",ui->Password->text());
+    Query.addQueryItem("mode","2");
     Url.setQuery(Query);
     QString UrlString = Url.toString();
 
@@ -168,8 +173,34 @@ void CompileResults::Submit()
 
     QFile File(CurrentProject);
     File.open(QFile::ReadOnly);
-    p["data"].DataRaw = File.readAll();
+    QString DataRaw = File.readAll();
     File.close();
+
+    Preprocessor _Preprocessor;
+    _Preprocessor.SetIsRecord(false);
+    NoneEncryptor _NoneEncryptor;
+    _Preprocessor.SetEncryptor(&_NoneEncryptor);
+
+    {
+        QDomDocument Document;
+
+        if(Document.setContent(DataRaw, false))
+        {
+            QDomElement ProjectElement = Document.documentElement();
+            QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
+            QDomNode ScriptTextElement = ScriptElement.firstChild();
+            QString Script = ScriptTextElement.toText().data();
+            Script = _Preprocessor.Preprocess(Script, 3, true);
+            Script = _Preprocessor.Encrypt(Script);
+
+            QDomNode NewScriptTextElement = Document.createCDATASection(Script);
+            ScriptElement.replaceChild(NewScriptTextElement, ScriptTextElement);
+            DataRaw = Document.toString();
+
+        }
+    }
+
+    p["data"].DataRaw = DataRaw.toUtf8();
 
     PostOptions Options;
     Options.Method = "POST";

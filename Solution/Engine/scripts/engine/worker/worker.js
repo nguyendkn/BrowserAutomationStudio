@@ -1145,7 +1145,7 @@ function _set_max_success(max_success_number)
 }
 
 
-function DEC(callback)
+function _BAS_DEC(callback)
 {
     ScriptWorker.Decrypt(callback);
 }

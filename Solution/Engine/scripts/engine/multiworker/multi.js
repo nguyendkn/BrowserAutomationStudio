@@ -121,7 +121,7 @@ function _finnaly(callback)
     MultiScriptWorker.SetAbortFunction(_get_function_body(callback));
 }
 
-function DEC(callback)
+function _BAS_DEC(callback)
 {
     MultiScriptWorker.Decrypt(callback);
 }

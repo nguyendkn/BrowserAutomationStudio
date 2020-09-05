@@ -11,7 +11,6 @@ namespace BrowserAutomationStudioFramework
         IPreprocessor(parent)
     {
         Encryptor = 0;
-        GenerateKey();
         IsRecord = false;
     }
 
@@ -95,20 +94,15 @@ namespace BrowserAutomationStudioFramework
         this->Encryptor = Encryptor;
     }
 
-    void Preprocessor::SetKey(const QString& Key)
+    IEncryptor* Preprocessor::GetEncryptor()
     {
-        this->Key = Key;
+        return this->Encryptor;
     }
 
-    void Preprocessor::GenerateKey()
+
+    void Preprocessor::SetKey(const QByteArray& Key)
     {
-        QString res;
-        static const char alphanum[] = "abcdefghijklmnopqrstuvwxyz0123456789";
-        for(int i = 0;i<10;i++)
-        {
-            res += QString(alphanum[qrand() % (sizeof(alphanum) - 1)]);
-        }
-        Key = res;
+        this->Key = Key;
     }
 
     QString Preprocessor::Encrypt(const QString& Script,int ParanoicLevel)
@@ -120,20 +114,21 @@ namespace BrowserAutomationStudioFramework
         {
             EncryptIterator++;
             if(EncryptIterator % ParanoicLevel == 0)
-                return QString("DEC('") + QString::fromUtf8(Encryptor->Encrypt(Script.toUtf8(),Key).toBase64()) + QString("')");
+                //Encryption is done on server
+                return QString("_BAS_DEC('") + Script.toUtf8().toBase64() + QString("')");
         }
 
         return Script;
     }
 
-    QString Preprocessor::Decrypt(const QString& Script)
+    QString Preprocessor::Encrypt(const QString& Script)
     {
-        return QString::fromUtf8(Encryptor->Decrypt(QByteArray::fromBase64(Script.toUtf8()),Key));
+        return QString("_BAS_DEC('") + Script.toUtf8().toBase64() + QString("')");
     }
 
-    QString Preprocessor::DecryptNotSafe(const QString& Script)
+    QString Preprocessor::Decrypt(const QString& Script)
     {
-        return QString::fromUtf8(Encryptor->DecryptNotSafe(QByteArray::fromBase64(Script.toUtf8()),Key));
+        return QString::fromUtf8(Encryptor->HybridDecrypt(QByteArray::fromBase64(Script.toUtf8()),Key));
     }
 
     void Preprocessor::PreprocessInternal(QString& Res,int ParanoicLevel,QMap<QString,QString>& GotoData)

@@ -399,14 +399,14 @@
                 }
             ],
             "description": {
-                "en": "Find cell",
-                "ru": "Найти ячейку"
+                "en": "Find single cell",
+                "ru": "Найти одну ячейку"
             },
             "interface": "Excel_FindCell_interface.js",
             "is_element": false,
             "name": "Excel_FindCell",
             "select": "Excel_FindCell_select.js",
-            "template": "{{FilePath}} -> {{Save}}"
+            "template": "{{FilePath}} -> {{Column}}*{{Row}}"
         },
         {
             "code": [
@@ -416,8 +416,8 @@
                 }
             ],
             "description": {
-                "en": "Find cells",
-                "ru": "Найти ячейки"
+                "en": "Find all cells",
+                "ru": "Найти все ячейки"
             },
             "interface": "Excel_FindCells_interface.js",
             "is_element": false,
@@ -653,13 +653,6 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const xlsx = require('xlsx-populate');\r\nconst RichText = require('xlsx-Populate').RichText;\r\nconst fs = require('fs');\r\nconst util = require(\"../ExcelUtil\");\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar data_format = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    fs.exists(file_path, function(exist){\r\n        if(exist){\r\n            var fromFile = xlsx.fromFileAsync(file_path);\r\n            fromFile.then(function(workbook){\r\n                try{\r\n                    var sheet = workbook.sheet(sheet_index_or_name);\r\n                    if(sheet){\r\n                        var list = [];\r\n                        var usedRange = sheet.usedRange();\r\n                        if(usedRange){\r\n                            var endCell = usedRange.endCell();\r\n                            var endColumn = endCell.columnNumber();\r\n                            var endRow = endCell.rowNumber();\r\n                            var range = sheet.range(1, 1, endRow, endColumn);\r\n                            list = range ? range.map(function(cell){return (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value())}) : [];\r\n                        };\r\n                        [[XLSX_NODE_PARAMETERS]] = util.format_results(list, data_format);\r\n                    }else{\r\n                        reject('Sheet ' + JSON.stringify(sheet_index_or_name) + ' does not exist');\r\n                    };\r\n                }catch(err){\r\n                    reject(err);\r\n                };\r\n                \r\n                return resolve();\r\n            });\r\n            fromFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        }else{\r\n            reject('The file \"' + file_path + '\" does not exist');\r\n        };\r\n    });\r\n}));",
-            "DataName": "ExcelReadSheet",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
             "Data": "const xlsx = require('xlsx-populate');\r\nconst fs = require('fs');\r\nconst util = require(\"../ExcelUtil\");\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar data = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    data = util.format_data(data);\r\n    fs.exists(file_path, function(exist){\r\n        var file = exist ? xlsx.fromFileAsync(file_path) : xlsx.fromBlankAsync();\r\n        file.then(function(workbook){\r\n            try{\r\n                util.get_or_create_sheet(workbook, sheet_index_or_name, exist).cell(\"A1\").value(data);\r\n            }catch(err){\r\n                reject(err);\r\n            };\r\n            \r\n            var toFile = workbook.toFileAsync(file_path);\r\n            toFile.then(function(){\r\n                return resolve();\r\n            });\r\n            toFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        });\r\n        file.catch(function(err){\r\n            return reject(err);\r\n        });\r\n    });\r\n}));",
             "DataName": "ExcelWriteToSheet",
             "DataType": 0,
@@ -723,7 +716,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const xlsx = require('xlsx-populate');\r\nconst fs = require('fs');\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar contains = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    fs.exists(file_path, function(exist){\r\n        if(exist){\r\n            var fromFile = xlsx.fromFileAsync(file_path);\r\n            fromFile.then(function(workbook){\r\n                try{\r\n                    var sheet = workbook.sheet(sheet_index_or_name);\r\n                    [[XLSX_NODE_PARAMETERS]] = sheet ? sheet.find(contains).map(function(cell){return cell.address()}) : [];\r\n                }catch(err){\r\n                    reject(err);\r\n                };\r\n                \r\n                return resolve();\r\n            });\r\n            fromFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        }else{\r\n            [[XLSX_NODE_PARAMETERS]] = [];\r\n        };\r\n    });\r\n}));",
+            "Data": "const xlsx = require('xlsx-populate');\r\nconst fs = require('fs');\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar contains = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    fs.exists(file_path, function(exist){\r\n        if(exist){\r\n            var fromFile = xlsx.fromFileAsync(file_path);\r\n            fromFile.then(function(workbook){\r\n                try{\r\n                    var sheet = workbook.sheet(sheet_index_or_name);\r\n                    [[XLSX_NODE_PARAMETERS]] = sheet ? sheet.find(contains).map(function(cell){return (cell.columnNumber()-1) + \"*\" + (cell.rowNumber()-1)}) : [];\r\n                }catch(err){\r\n                    reject(err);\r\n                };\r\n                \r\n                return resolve();\r\n            });\r\n            fromFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        }else{\r\n            [[XLSX_NODE_PARAMETERS]] = [];\r\n        };\r\n    });\r\n}));",
             "DataName": "ExcelFindCells",
             "DataType": 0,
             "LanguageName": "Node",
@@ -800,8 +793,22 @@
             "LanguageVersion": "12.18.3"
         },
         {
+            "Data": "const xlsx = require('xlsx-populate');\r\nconst RichText = require('xlsx-Populate').RichText;\r\nconst fs = require('fs');\r\nconst util = require(\"../ExcelUtil\");\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar data_format = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    fs.exists(file_path, function(exist){\r\n        if(exist){\r\n            var fromFile = xlsx.fromFileAsync(file_path);\r\n            fromFile.then(function(workbook){\r\n                try{\r\n                    var sheet = workbook.sheet(sheet_index_or_name);\r\n                    if(sheet){\r\n                        var list = [];\r\n                        var usedRange = sheet.usedRange();\r\n                        if(usedRange){\r\n                            var endCell = usedRange.endCell();\r\n                            var endColumn = endCell.columnNumber();\r\n                            var endRow = endCell.rowNumber();\r\n                            var range = sheet.range(1, 1, endRow, endColumn);\r\n                            list = range ? range.map(function(cell){return (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value())}) : [];\r\n                        };\r\n                        [[XLSX_NODE_PARAMETERS]] = util.format_results(list, data_format);\r\n                    }else{\r\n                        reject('Sheet ' + JSON.stringify(sheet_index_or_name) + ' does not exist');\r\n                    };\r\n                }catch(err){\r\n                    reject(err);\r\n                };\r\n                \r\n                return resolve();\r\n            });\r\n            fromFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        }else{\r\n            reject('The file \"' + file_path + '\" does not exist');\r\n        };\r\n    });\r\n}));",
+            "DataName": "ExcelReadSheet",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
             "Data": "const xlsx = require('xlsx-populate');\r\nconst fs = require('fs');\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    fs.exists(file_path, function(exist){\r\n        var file = exist ? xlsx.fromFileAsync(file_path) : xlsx.fromBlankAsync();\r\n        file.then(function(workbook){\r\n            if(exist){\r\n                try{\r\n                    var sheets_list = workbook.sheets();\r\n                    sheets_list.forEach(function(sheet){\r\n                        var usedRange = sheet.usedRange();\r\n                        usedRange ? usedRange.clear() : \"\";\r\n                    });\r\n                }catch(err){\r\n                    reject(err);\r\n                };\r\n            };\r\n            \r\n            var toFile = workbook.toFileAsync(file_path);\r\n            toFile.then(function(){\r\n                return resolve();\r\n            });\r\n            toFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        });\r\n        file.catch(function(err){\r\n            return reject(err);\r\n        });\r\n    });\r\n}));",
             "DataName": "ExcelCreateFile",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const xlsx = require('xlsx-populate');\r\nconst fs = require('fs');\r\nvar file_path = [[XLSX_NODE_PARAMETERS]][0];\r\nvar sheet_index_or_name = [[XLSX_NODE_PARAMETERS]][1];\r\nvar contains = [[XLSX_NODE_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    fs.exists(file_path, function(exist){\r\n        if(exist){\r\n            var fromFile = xlsx.fromFileAsync(file_path);\r\n            fromFile.then(function(workbook){\r\n                try{\r\n                    var found_cell = [\"\", \"\", \"\"];\r\n                    if(sheet_index_or_name!==\"\"){\r\n                        var sheet = workbook.sheet(sheet_index_or_name);\r\n                        var cells = sheet ? sheet.find(contains) : [];\r\n                        if(cells.length!==0){\r\n                            var cell = cells[0];\r\n                            found_cell[0] = cell.columnNumber() - 1;\r\n                            found_cell[1] = cell.rowNumber() - 1;\r\n                            found_cell[2] = sheet_index_or_name;\r\n                        };\r\n                    }else{\r\n                        var sheets = workbook.sheets();\r\n                        sheets.forEach(function(sheet, index){\r\n                            var cells = sheet.find(contains);\r\n                            if(cells.length!==0){\r\n                                var cell = cells[0];\r\n                                found_cell[0] = cell.columnNumber() - 1;\r\n                                found_cell[1] = cell.rowNumber() - 1;\r\n                                found_cell[2] = index;\r\n                                return;\r\n                            };\r\n                        });\r\n                    };\r\n                    [[XLSX_NODE_PARAMETERS]] = found_cell;\r\n                }catch(err){\r\n                    reject(err);\r\n                };\r\n                \r\n                return resolve();\r\n            });\r\n            fromFile.catch(function(err){\r\n                return reject(err);\r\n            });\r\n        }else{\r\n            [[XLSX_NODE_PARAMETERS]] = [];\r\n        };\r\n    });\r\n}));",
+            "DataName": "ExcelFindCell",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
@@ -855,12 +862,16 @@
 		"Data format": {"ru":"Формат данных"},
 		"Cell address": {"ru":"Адрес ячейки"},
 		"Style value": {"ru":"Значение стиля"},
+		"First column": {"ru":"Первый столбец"},
+		"Second column": {"ru":"Второй столбец"},
 		"List of sheets": {"ru":"Список листов"},
 		"Cell contains": {"ru":"Ячейка содержит"},
 		"Can be blank": {"ru":"Может быть пустым"},
 		"Cells contains": {"ru":"Ячейки содержат"},
 		"New sheet name.": {"ru":"Новое имя листа."},
 		"Subscript text": {"ru":"Подстрочный текст"},
+		"Cell not found": {"ru":"Ячейка не найдена"},
+		"Cells not found": {"ru":"Ячейки не найдены"},
 		"New sheet index": {"ru":"Новый индекс листа"},
 		"Superscript text": {"ru":"Надстрочный текст"},
 		"First sheet name": {"ru":"Имя первого листа"},
@@ -877,15 +888,19 @@
 		"List of resource names": {"ru":"Список имен ресурсов"},
 		"The path to the excel file.": {"ru":"Путь к excel файлу."},
 		"Insert at the end of the sheet": {"ru":"Вставить в конец листа"},
-		"First column, first row": {"ru":"Первая колонка, первая строка"},
-		"Second column, second row": {"ru":"Вторая колонка, вторая строка"},
+		"First column, first row": {"ru":"Первый столбец, первая строка"},
+		"Second column, second row": {"ru":"Второй столбец, вторая строка"},
 		"All sheets will be imported": {"ru":"Все листы будут импортированы"},
+		"Row index of the found cell": {"ru":"Индекс строки найденной ячейки"},
 		"Clear sheet from excel file.": {"ru":"Очистить лист из excel файла."},
+		"Sheet index of the found cell": {"ru":"Индекс листа найденной ячейки"},
 		"Up to and including first row": {"ru":"До первой строки включительно"},
 		"Create or clear excel file.": {"ru":"Создать или очистить excel файл."},
 		"Up to and including second row": {"ru":"До второй строки включительно"},
 		"Up to and including last row": {"ru":"До последней строки включительно"},
 		"Add new sheet to excel file.": {"ru":"Добавить новый лист в excel файл."},
+		"Column index of the found cell": {"ru":"Индекс столбца найденной ячейки"},
+		"Search all sheets of excel file": {"ru":"Поиск по всем листам excel файла"},
 		"Variable to save the result": {"ru":"Переменная, в которую сохранить результат"},
 		"Index or sheet name in excel file.": {"ru":"Индекс или имя листа в excel файле."},
 		"Read entire sheet from an excel file.": {"ru":"Читать весь лист из excel файла."},
@@ -899,6 +914,7 @@
 		"Move specified sheet in excel file.": {"ru":"Переместить указанный лист в excel файле."},
 		"Read cell from specified excel file.": {"ru":"Читать ячейку из указанного excel файла."},
 		"Read rows from specified excel file.": {"ru":"Читать строки из указанного excel файла."},
+		"The data which will be searched.": {"ru":"Данные, по которым будет производиться поиск."},
 		"The starting cell address in excel file.": {"ru":"Адрес начальной ячейки в excel файле."},
 		"Delete specified sheet from excel file.": {"ru":"Удалить указанный лист из excel файла."},
 		"The rows data which needs to be inserted.": {"ru":"Данные строк, которые нужно вставить."},
@@ -923,6 +939,7 @@
 		"Import data from excel file into resources.": {"ru":"Импортировать данные из excel файла в ресурсы."},
 		"Read cells range from specified excel file.": {"ru":"Читать область ячеек из указанного excel файла."},
 		"Write data to cell on specified excel file.": {"ru":"Записать данные в ячейку указанного excel файла."},
+		"Each cell from specified sheet will be cleared.": {"ru":"Каждая ячейка указанного листа будет очищена."},
 		"The sheet will be added before the specified sheet": {"ru":"Лист будет добавлен перед указанным листом"},
 		"Clear cells range from specified excel file.": {"ru":"Очистить область ячеек из указанного excel файла."},
 		"Convert data from excel file to JSON string.": {"ru":"Преобразовать данные из excel файла в JSON строку."},
@@ -930,6 +947,8 @@
 		"The sheet will be placed in before the specified sheet": {"ru":"Лист будет помещен перед указанным листом"},
 		"Get formula from cell in specified excel file.": {"ru":"Получить формулу из ячейки указанного excel файла."},
 		"Returns the smallest number in cells E1 to H1": {"ru":"Возвращает наименьшее значение в ячейках от E1 до H1"},
+		"Find all cells by their content in excel file.": {"ru":"Найдите все ячейки в excel файле по их содержимому."},
+		"Find single cell by its content in excel file.": {"ru":"Найдите одну ячейку в excel файле по ее содержимому."},
 		"Calculates the sum of all numbers in cells E1 to H1": {"ru":"Вычисляет сумму всех чисел в ячейках от E1 до H1"},
 		"Set formula to cell from specified excel file.": {"ru":"Установить формулу в ячейку из указанного excel файла."},
 		"JSON string containing style names and values.": {"ru":"JSON строка, содержащая названия стилей и их значения."},
@@ -938,7 +957,6 @@
 		"Write data to cells range on specified excel file.": {"ru":"Записать данные в область ячеек указанного excel файла."},
 		"If the file or sheet is missing, no error will occur.": {"ru":"Если файл или лист отсутствуют, ошибки не произойдет."},
 		"Get cell styles values from specified excel file.": {"ru":"Получить значения стилей ячейки из указанного excel файла."},
-		"The data that is contained in the cell to be found.": {"ru":"Данные которые содержатся в ячейке, которую нужно найти."},
 		"The data which needs to be written to the specified cell.": {"ru":"Данные, которые нужно записать в указанную ячейку."},
 		"The data which needs to be written to the specified sheet.": {"ru":"Данные, которые нужно записать на указанный лист."},
 		"The name of the style which needs to set a value for.": {"ru":"Название стиля, для которого нужно установить значение."},
@@ -952,8 +970,7 @@
 		"Get the number of rows in a specified sheet of an excel file.": {"ru":"Получить количество строк на указанном листе excel файла."},
 		"Convert data from JSON string and write it to excel file.": {"ru":"Преобразовать данные из JSON строки и записать их в excel файл."},
 		"The data which needs to be written to the specified cells range.": {"ru":"Данные, которые нужно записать в указанную область ячеек."},
-		"Find cell on specified sheet of excel file, by its content.": {"ru":"Найти ячейку на указанном листе excel файла, по её содержимому."},
-		"Find cells on specified sheet of excel file, by their content.": {"ru":"Найти ячейки на указанном листе excel файла, по их содержимому."},
+		"If the cell is not found, the action will return empty strings.": {"ru":"Если ячейка не будет найдена, действие вернет пустые строки."},
 		"The format in which the read data will be saved to variable.": {"ru":"Формат, в котором прочитанные данные будут сохранены в переменную."},
 		"Lists can be processed using actions from the \"List\" module.": {"ru":"Списки можно обработать с помощью действий из модуля \"Список\"."},
 		"Set style value for cells range from specified excel file.": {"ru":"Установить значение стиля для области ячеек из указанного excel файла."},
@@ -961,7 +978,7 @@
 		"Rows that are in the new rows insertion zone will be shifted down.": {"ru":"Строки, находящиеся в зоне вставки новых строк, будут смещены вниз."},
 		"Old data that doesn't interact with new one will remain unchanged.": {"ru":"Старые данные, которые не взаимодействуют с новыми, останутся без изменений."},
 		"The format of the saved data depends on the \"Data Format\" setting.": {"ru":"Формат сохраняемых данных зависит от значения параметра \"Формат данных\"."},
-		"Column index from variable [[COLUMN]], row index from variable [[ROW]]": {"ru":"Индекс колонки из переменной [[COLUMN]], индекс строки из переменной [[ROW]]"},
+		"Column index from variable [[COLUMN]], row index from variable [[ROW]]": {"ru":"Индекс столбца из переменной [[COLUMN]], индекс строки из переменной [[ROW]]"},
 		"(Value <code>true</code> for italic, <code>false</code> for not italic)": {"ru":"(Значение <code>true</code> для курсива, <code>false</code> для не курсива)"},
 		"Returns the average (arithmetic mean) of the numbers in cells E1 to H1": {"ru":"Возвращает среднее значение (среднее арифметическое) чисел в ячейках от E1 до H1"},
 		"(Value <code>true</code> for bold, <code>false</code> for not bold)": {"ru":"(Значение <code>true</code> для полужирного, <code>false</code> для не полужирного)"},
@@ -993,10 +1010,11 @@
 		"This action creates file if it does not already exist, and clears all sheets if file already exists.": {"ru":"Это действие создает файл, если он еще не существует, и очищает все листы, если файл уже существует."},
 		"When specifying a sheet name in the \"Sheet index\" parameter, the field type must be <code>string</code>.": {"ru":"При указании имени листа в параметр \"Индекс листа\" тип поля должен быть <code>string</code>."},
 		"Variable in which, after successful execution of the action, the value of the cell style will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано значение стиля ячейки."},
-		"Variable in which, after successful execution of the action, the address of the found cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан адрес найденной ячейки."},
-		"This action will return the address of the first cell found or an empty string if the cell was not found.": {"ru":"Данное действие вернет адрес первой найденной ячейки или пустую строку, если ячейка не была найдена."},
 		"When specifying a sheet name in the \"New sheet index\" parameter, the field type must be <code>string</code>.": {"ru":"При указании имени листа в параметр \"Новый индекс листа\" тип поля должен быть <code>string</code>."},
+		"Variable in which, after successful execution of the action, the row index of the found cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс строки найденной ячейки."},
 		"This action accepts styles as a JSON string, where key is the style name and value is the style value.": {"ru":"Данное действие принимает стили в виде JSON строки, где ключ - это название стиля, а значение - это значение стиля."},
+		"Variable in which, after successful execution of the action, the column index of the found cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс столбца найденной ячейки."},
+		"Variable in which, after successful execution of the action, the index of the sheet of the found cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс листа найденной ячейки."},
 		"Variable in which, after successful execution of the action, the list of addresses of the found cells will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список адресов найденных ячеек."},
 		"This action creates a resource from each specified sheet of the excel file that has the sheet name and its contents.": {"ru":"Данное действие создает ресурс из каждого указанного листа excel файла, имеющий название листа и его содержимое."},
 		"Data in a suitable format can be obtained from the actions: \"Read sheet\", \"Read rows\", \"Read cells range\".": {"ru":"Данные в подходящем формате можно получить из действий: \"Читать лист\", \"Читать строки\", \"Читать область ячеек\"."},
@@ -1006,18 +1024,21 @@
 		"Formulas must be specified in English, a list of formulas in English and their translation from different languages can be found": {"ru":"Формулы нужно указывать на Английском языке, список формул на Английском и их перевод с разных языков можно найти"},
 		"CSV string - this CSV lines separated by a line break, and consisting of cell values separated with \":\" symbol. Example: ": {"ru":"CSV string - это CSV строки, разделенные переносом строки и состоящие из значений ячеек, разделенных символом \":\". Пример: "},
 		"In the \"New sheet index\" parameter, you can specify the name of an existing sheet, then the specified sheet will be placed in front of it.": {"ru":"В параметр \"Новый индекс листа\" можно указать имя существующего листа, тогда указанный лист будет помещен перед ним."},
+		"This action save in variables the column, row and sheet indexes of the found cell or empty strings if the cell was not found.": {"ru":"Данное действие сохраняет в переменные индексы столбца, строки и листа найденной ячейки или пустые строки, если ячейка не была найдена."},
 		"If the \"From row\" parameter is not specified and the \"To row\" parameter is specified, all rows from the first to the specified will be read.": {"ru":"Если параметр \"Со строки\" не указан, а параметр \"До строки\" указан, будут прочитаны все строки с первой до указанной."},
 		"If the \"From row\" parameter is not specified and the \"To row\" parameter is specified, all rows from the first to the specified will be deleted.": {"ru":"Если параметр \"Со строки\" не указан, а параметр \"До строки\" указан, будут удалены все строки с первой до указанной."},
 		"If the \"From row\" parameter is specified and the \"To row\" parameter is not specified, all rows from the specified to the last will be read.": {"ru":"Если параметр \"Со строки\" указан, а параметр \"До строки\" не указан, будут прочитаны все строки с указанной до последней."},
 		"If the \"From row\" parameter is specified and the \"To row\" parameter is not specified, all rows from the specified to the last will be deleted.": {"ru":"Если параметр \"Со строки\" указан, а параметр \"До строки\" не указан, будут удалены все строки с указанной до последней."},
 		"Variable in which, after successful execution of the action, a JSON string containing the names of the styles and their values will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана JSON строка, содержащая названия стилей и их значения."},
+		"Cell addresses can be parsed into column and row indexes by the \"*\" separator using the \"Parse String\" action from the \"List\" module.": {"ru":"Адреса ячеек можно распарсить на индексы столбца и строки, по разделителю \"*\" с помощью действия \"Парсить Строку\" из модуля \"Список\"."},
 		"(Value <code>true</code> for single underline, <code>false</code> for no underline, <code>'double'</code> for double-underline)": {"ru":"(Значение <code>true</code> для одинарного подчеркивания, <code>false</code> для отсутствия подчеркивания, <code>'double'</code> для двойного подчеркивания)"},
 		"Reading is performed up to and including row specified in \"To row\" parameter, to read one row, you need to specify its index in both parameters.": {"ru":"Чтение осуществляется включительно до строки, указанной в параметре \"До строки\", чтобы прочитать одну строку, нужно в оба параметра указать её индекс."},
 		"Removing row is performed up to and including row specified in \"To row\" parameter. To delete one row, you need to specify its index in both parameters.": {"ru":"Удаление выполняется включительно до строки, указанной в параметре \"До строки\". Чтобы удалить одну строку, нужно в оба параметра указать её индекс."},
 		"If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use \"Ignore errors\" action.":{"ru":"Если во время выполнения действия произойдет ошибка, поток остановится с сообщением об ошибке. Если вы хотите продолжить работу, используйте действие \"Игнорировать ошибки\"."},
 		"2D list - a list that consists of lists containing the cell values. Example: <code>[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]</code>": {"ru":"2D list - это список, состоящий из списков, содержащих значения ячеек. Пример: <code>[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]</code>"},
 		"CSV list - a list that consists of CSV lines and CSV line consists of cell values separated with \":\" symbol. Example: <code>[\"A1:B1:C1\",\"A2:B2:C2\",\"A3:B3:C3\"]</code>": {"ru":"CSV list - это список, состоящий из CSV строк, а CSV строка состоит из значений ячеек, разделенных символом \":\". Пример: <code>[\"A1:B1:C1\",\"A2:B2:C2\",\"A3:B3:C3\"]</code>"},
-		"You can specify a standard address with a column letter and row number, or the column index and row index separated by *. The column/row index is not equal to their number, because the index starts from 0, and the number starts from 1.": {"ru":"Можно указать стандартный адрес с буквой колонки и номером строки, или индекс колонки и индекс строки через разделитель *. Индекс колонки/строки не равен их номеру, потому что индекс начинается с 0, а номер с 1."}
+		"This action returns a list of addresses of found cells, cell addresses consist of a column index and a row index separated with \"*\" symbol. Example: <code>[\"4*3\",\"2*6\",\"1*8\"]</code>": {"ru":"Данное действие возвращает список адресов найденных ячеек, адреса ячеек состоят из индекса столбца и индекса строки разделенных символом \"*\". Пример: <code>[\"4*3\",\"2*6\",\"1*8\"]</code>"},
+		"You can specify a standard address with a column letter and row number, or the column index and row index separated by *. The column/row index is not equal to their number, because the index starts from 0, and the number starts from 1.": {"ru":"Можно указать стандартный адрес с буквой столбца и номером строки, или индекс столбца и индекс строки через разделитель *. Индекс столбца/строки не равен их номеру, потому что индекс начинается с 0, а номер с 1."}
     },
     "major_version": 1,
     "minor_version": 0,

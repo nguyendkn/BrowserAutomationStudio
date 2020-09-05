@@ -325,12 +325,11 @@ function Excel_FindCell(){
 	var contains = _function_argument("Contains");
 	var timeout = _function_argument("Timeout");
 	
-	_call_function(Excel_FindCells,{"FilePath":file_path,"SheetIndexOrName":sheet_index_or_name,"Contains":contains,"Timeout":timeout})!
-	var cells_list = _result_function();
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
 	
-	var cell = cells_list.length==0 ? "" : cells_list[0];
+	_embedded("ExcelFindCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
-	_function_return(cell);
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_GetFormulaFromCell(){
 	var file_path = _function_argument("FilePath");

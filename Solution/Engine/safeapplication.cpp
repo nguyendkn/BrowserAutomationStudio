@@ -19,10 +19,10 @@ namespace BrowserAutomationStudioFramework
 
     bool SafeApplication::notify(QObject * receiver, QEvent * event)
     {
-        try
-        {
+        //try
+        //{
             return QApplication::notify(receiver, event);
-        }
+        /*}
         catch(std::exception& e)
         {
             qDebug() << "Exception thrown:" << e.what()<<receiver->metaObject()->className()<<event->type();
@@ -35,7 +35,7 @@ namespace BrowserAutomationStudioFramework
             if(Logger)
                 Logger->Write(QString("[") + QTime::currentTime().toString("hh:mm:ss") + "]" + QString("Unknown exception") + receiver->metaObject()->className() + QString::number(event->type()), LogFail);
             Terminate().DoTerminate(4);
-        }
+        }*/
 
     }
 }

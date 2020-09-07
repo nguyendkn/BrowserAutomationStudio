@@ -4,7 +4,8 @@
 #include <limits>
 #include <algorithm>
 #include <QHostAddress>
-
+#define NOMINMAX
+#include <windows.h>
 #include "every_cpp.h"
 
 namespace BrowserAutomationStudioFramework
@@ -432,6 +433,12 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptWorker::SetScript(const QString& Script)
     {
+        if(!this->Script.isEmpty())
+        {
+            QChar* chars = const_cast<QChar*>(this->Script.constData());
+            SecureZeroMemory(chars, this->Script.length() * sizeof(QChar));
+            this->Script.clear();
+        }
         this->Script = Script;
     }
 
@@ -839,7 +846,7 @@ namespace BrowserAutomationStudioFramework
 
                 if(!IsAborted && !OnFinishScript.isEmpty())
                 {
-                    Script = OnFinishScript;
+                    SetScript(OnFinishScript);
                     OnFinishScript.clear();
                 }else if(!IsAborted && Waiter && !Waiter->IsActive())
                 {
@@ -858,7 +865,7 @@ namespace BrowserAutomationStudioFramework
                         Abort(true);
                         break;
                     }
-                    Script = "_next()";
+                    SetScript("_next()");
                     continue;
 
                 }else
@@ -873,7 +880,7 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptWorker::Decrypt(const QString& Data)
     {
-        Script = Preprocessor->Decrypt(Data);
+        SetScript(Preprocessor->Decrypt(Data));
         RunSubScript();
     }
 
@@ -1184,13 +1191,13 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptWorker::Sleep(int msec, const QString& callback)
     {
-        Script = callback;
+        SetScript(callback);
         Waiter->Sleep(msec,this,SLOT(RunSubScript()));
     }
 
     void ScriptWorker::WaitNextTask(const QString& callback)
     {
-        Script = callback;
+        SetScript(callback);
         Waiter->WaitInfinity(this,SIGNAL(TaskReceivedSignal()),this,SLOT(StartNextTask()));
         if(WaitForNextTaskRunning)
         {
@@ -1214,7 +1221,7 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptWorker::Suspend(int msec, const QString& callback)
     {
-        Script = callback;
+        SetScript(callback);
         IWorker::WorkerStatus State = this->ResultStatus;
         ResultStatus = IWorker::SuspendStatus;
         if(!ScriptSuspender->Suspend(msec, this))
@@ -1483,7 +1490,7 @@ namespace BrowserAutomationStudioFramework
     {
         LastHandlerName = name;
         DieOnFailHandler = die_on_fail;
-        Script = callback;
+        SetScript(callback);
         Waiter->WaitForHandler(EngineRes,name,RefuseData[name],this,SLOT(HandlerWaitFinishedSuccess()),this,SLOT(HandlerWaitFinishedFailed()));
 
     }
@@ -1828,7 +1835,7 @@ namespace BrowserAutomationStudioFramework
             Fail(tr("CAPTCHA_FAIL") + " : " + tr("Failed to get solver"), false);
             return;
         }
-        Script = callback;
+        SetScript(callback);
 
         QString id = solver->Solve(base64,params);
         GetWaiter()->WaitForSolver(solver,id,this,SLOT(SolverSuccess()),this,SLOT(SolverFailed()));

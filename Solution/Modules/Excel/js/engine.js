@@ -1,3 +1,7 @@
+var date_base = new Date(1900, 0, 0);
+var incorrect_leap_date = new Date(1900, 1, 28);
+var milliseconds_in_day = 1000 * 60 * 60 * 24;
+
 function Excel_CreateFile(){
 	var file_path = _function_argument("FilePath");
 	var timeout = _function_argument("Timeout");
@@ -427,6 +431,28 @@ function Excel_SetStylesToCellsRange(){
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, styles];
 	
 	_embedded("ExcelSetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_DateToNumber(date){
+	date = date instanceof Date ? date : new Date(date);
+	
+	var date_only = new Date(date.getTime());
+	date_only.setHours(0, 0, 0, 0);
+	var number = Math.round((date_only - date_base) / milliseconds_in_day);
+	number += (date - date_only) / milliseconds_in_day;
+	if(date > incorrect_leap_date){number += 1};
+	
+	return(number);
+};
+function Excel_NumberToDate(number){
+	number = typeof number==="number" ? number : Number(number);
+	
+	if(number > Excel_DateToNumber(incorrect_leap_date)){number--};
+	var full_days = Math.floor(number);
+	var partial_milliseconds = Math.round((number - full_days) * milliseconds_in_day);
+	var date = new Date(date_base.getTime() + partial_milliseconds);
+	date.setDate(date.getDate() + full_days);
+	
+	return(date);
 };
 function Excel_FormatAddress(address){
 	if(address.indexOf("*") > -1){

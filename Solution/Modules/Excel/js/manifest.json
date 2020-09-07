@@ -560,6 +560,40 @@
             "name": "Excel_SetStylesToCellsRange",
             "select": "Excel_SetStylesToCellsRange_select.js",
             "template": "{{Styles}} -> {{FromCell}}:{{ToCell}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_DateToNumber_code.js",
+                    "name": "Excel_DateToNumber_code"
+                }
+            ],
+            "description": {
+                "en": "Date to number",
+                "ru": "Дату в число"
+            },
+            "interface": "Excel_DateToNumber_interface.js",
+            "is_element": false,
+            "name": "Excel_DateToNumber",
+            "select": "Excel_DateToNumber_select.js",
+            "template": "{{Date}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_NumberToDate_code.js",
+                    "name": "Excel_NumberToDate_code"
+                }
+            ],
+            "description": {
+                "en": "Number to date",
+                "ru": "Число в дату"
+            },
+            "interface": "Excel_NumberToDate_interface.js",
+            "is_element": false,
+            "name": "Excel_NumberToDate",
+            "select": "Excel_NumberToDate_select.js",
+            "template": "{{Number}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -595,7 +629,9 @@
         "Excel_SetStyleToCell",
         "Excel_SetStylesToCell",
         "Excel_SetStyleToCellsRange",
-        "Excel_SetStylesToCellsRange"
+        "Excel_SetStylesToCellsRange",
+        "Excel_DateToNumber",
+		"Excel_NumberToDate"
     ],
     "browser": [
     ],
@@ -837,6 +873,7 @@
         }
     ],
     "localize": {
+		"Date": {"ru":"Дата"},
 		"Styles": {"ru":"Стили"},
 		"Numbеr": {"ru":"Число"},
 		"Sheet1": {"ru":"Лист1"},
@@ -905,6 +942,8 @@
 		"Index or sheet name in excel file.": {"ru":"Индекс или имя листа в excel файле."},
 		"Read entire sheet from an excel file.": {"ru":"Читать весь лист из excel файла."},
 		"Cell address in the excel file sheet.": {"ru":"Адрес ячейки на листе excel файла."},
+		"Convert date to excel date number.": {"ru":"Преобразовать дату в число даты excel."},
+		"Convert excel date number to date.": {"ru":"Преобразовать число даты excel в дату."},
 		"Write data to sheet in excel file.": {"ru":"Записать данные на лист в excel файле."},
 		"The sheet will have the specified index": {"ru":"Лист будет иметь указанный индекс"},
 		"The number of rows to be deleted.": {"ru":"Количество строк, которое будет удалено."},
@@ -931,6 +970,8 @@
 		"Cell address from which cleaning starts.": {"ru":"Адрес ячейки, с которой начинается очистка."},
 		"Rename the specified sheet in excel file.": {"ru":"Переименовать указанный лист в excel файле."},
 		"Row index after which reading ends.": {"ru":"Индекс строки, после которой заканчивается чтение."},
+		"The date which needs to convert to a number.": {"ru":"Дата, которую нужно преобразовать в число."},
+		"The number which needs to convert to a date.": {"ru":"Число, которое нужно преобразовать в дату."},
 		"Cell address after which reading ends.": {"ru":"Адрес ячейки, после которой заканчивается чтение."},
 		"Row index after which deleting ends.": {"ru":"Индекс строки, после которой заканчивается удаление."},
 		"Export data from resources to excel file.": {"ru":"Экспортировать данные из ресурсов в excel файл."},
@@ -966,6 +1007,7 @@
 		"Rows following the deleted rows will be shifted up.": {"ru":"Строки, идущие после удаляемых строк, будут смещены вверх."},
 		"The formula which needs to be set to the specified cell.": {"ru":"Формула, которую нужно установить в указанную ячейку."},
 		"Set style value for cell on specified excel file.": {"ru":"Установить значение стиля для ячейки на указанном excel файла."},
+		"Date now (Field type must be <code>expression</code>)": {"ru":"Дата сейчас (Тип поля должен быть <code>expression</code>)"},
 		"Set styles values ​​for cell from specified excel file.": {"ru":"Установить значения стилей для ячейки из указанного excel файла."},
 		"Get the number of rows in a specified sheet of an excel file.": {"ru":"Получить количество строк на указанном листе excel файла."},
 		"Convert data from JSON string and write it to excel file.": {"ru":"Преобразовать данные из JSON строки и записать их в excel файл."},
@@ -976,6 +1018,7 @@
 		"Set style value for cells range from specified excel file.": {"ru":"Установить значение стиля для области ячеек из указанного excel файла."},
 		"Set styles values ​​for cells range on specified excel file.": {"ru":"Установить значения стилей для области ячеек на указанном excel файла."},
 		"Rows that are in the new rows insertion zone will be shifted down.": {"ru":"Строки, находящиеся в зоне вставки новых строк, будут смещены вниз."},
+		"Date can be created using actions from the \"Date and time\" module.": {"ru":"Дату можно создать с помощью действий из модуля \"Дата и время\"."},
 		"Old data that doesn't interact with new one will remain unchanged.": {"ru":"Старые данные, которые не взаимодействуют с новыми, останутся без изменений."},
 		"The format of the saved data depends on the \"Data Format\" setting.": {"ru":"Формат сохраняемых данных зависит от значения параметра \"Формат данных\"."},
 		"Column index from variable [[COLUMN]], row index from variable [[ROW]]": {"ru":"Индекс столбца из переменной [[COLUMN]], индекс строки из переменной [[ROW]]"},
@@ -987,8 +1030,11 @@
 		"List of names of resources, data from which needs be exported to an excel file.": {"ru":"Список имен ресурсов, данные из которых нужно экспортировать в excel файл."},
 		"The resulting JSON string can be processed using actions from the \"JSON\" module.": {"ru":"Полученную JSON строку можно обработать с помощью действий из модуля \"JSON\"."},
 		"If the \"Sheet index\" parameter is empty, the sheet will be added to the end of the book.": {"ru":"Если параметр \"Индекс листа\" пуст, лист будет добавлен в конец книги."},
+		"The resulting date can be processed using actions from the \"Date and time\" module.": {"ru":"Полученную дату можно обработать с помощью действий из модуля \"Дата и время\"."},
 		"Old data that falls into the new data area will be overwritten with the new data.": {"ru":"Старые данные, попадающие в область новых данных, будут перезаписаны новыми данными."},
+		"Variable in which, after successful execution of the action, the date will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана дата."},
 		"Data can be generated manually by using \"List\" module or \"Template\" action.": {"ru":"Данные можно сгенерировать вручную с помощью модуля \"Список\" или действия \"Шаблон\"."},
+		"Variable in which, after successful execution of the action, a number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано число."},
 		"(Value <code>true</code> for strikethrough <code>false</code> for not strikethrough)": {"ru":"(Значение <code>true</code> для зачеркивания, <code>false</code> для не зачеркивания)"},
 		"If the \"From row\" and \"To row\" parameters are not specified, all rows will be read.": {"ru":"Если параметры \"Со строки\" и \"До строки\" не указаны, будут прочитаны все строки."},
 		"If the \"From row\" and \"To row\" parameters are not specified, all rows will be deleted.": {"ru":"Если параметры \"Со строки\" и \"До строки\" не указаны, будут удалены все строки."},
@@ -1016,6 +1062,7 @@
 		"Variable in which, after successful execution of the action, the column index of the found cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс столбца найденной ячейки."},
 		"Variable in which, after successful execution of the action, the index of the sheet of the found cell will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс листа найденной ячейки."},
 		"Variable in which, after successful execution of the action, the list of addresses of the found cells will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список адресов найденных ячеек."},
+		"To set the date value, you also need to set the cell's \"numberFormat\" style, if it is not already set.": {"ru":"Чтобы установить значение даты, вам также нужно установить стиль \"numberFormat\" для ячейки, если он ещё не установлен."},
 		"This action creates a resource from each specified sheet of the excel file that has the sheet name and its contents.": {"ru":"Данное действие создает ресурс из каждого указанного листа excel файла, имеющий название листа и его содержимое."},
 		"Data in a suitable format can be obtained from the actions: \"Read sheet\", \"Read rows\", \"Read cells range\".": {"ru":"Данные в подходящем формате можно получить из действий: \"Читать лист\", \"Читать строки\", \"Читать область ячеек\"."},
 		"In the \"Sheet index\" parameter, you can specify the name of an existing sheet, then a new sheet will be added before it.": {"ru":"В параметр \"Индекс листа\" можно указать имя уже существующего листа, тогда новый лист будет добавлен перед ним."},
@@ -1033,6 +1080,7 @@
 		"Cell addresses can be parsed into column and row indexes by the \"*\" separator using the \"Parse String\" action from the \"List\" module.": {"ru":"Адреса ячеек можно распарсить на индексы столбца и строки, по разделителю \"*\" с помощью действия \"Парсить Строку\" из модуля \"Список\"."},
 		"(Value <code>true</code> for single underline, <code>false</code> for no underline, <code>'double'</code> for double-underline)": {"ru":"(Значение <code>true</code> для одинарного подчеркивания, <code>false</code> для отсутствия подчеркивания, <code>'double'</code> для двойного подчеркивания)"},
 		"Reading is performed up to and including row specified in \"To row\" parameter, to read one row, you need to specify its index in both parameters.": {"ru":"Чтение осуществляется включительно до строки, указанной в параметре \"До строки\", чтобы прочитать одну строку, нужно в оба параметра указать её индекс."},
+		"Excel stores date/times as the number of days since <code>1/1/1900</code>. It just applies a number formatting to make the number appear as a date.": {"ru":"Excel сохраняет дату/время как количество дней с <code>01.01.1900</code>. Он просто применяет числовое форматирование, чтобы число отображалось как дата."},
 		"Removing row is performed up to and including row specified in \"To row\" parameter. To delete one row, you need to specify its index in both parameters.": {"ru":"Удаление выполняется включительно до строки, указанной в параметре \"До строки\". Чтобы удалить одну строку, нужно в оба параметра указать её индекс."},
 		"If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use \"Ignore errors\" action.":{"ru":"Если во время выполнения действия произойдет ошибка, поток остановится с сообщением об ошибке. Если вы хотите продолжить работу, используйте действие \"Игнорировать ошибки\"."},
 		"2D list - a list that consists of lists containing the cell values. Example: <code>[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]</code>": {"ru":"2D list - это список, состоящий из списков, содержащих значения ячеек. Пример: <code>[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]</code>"},

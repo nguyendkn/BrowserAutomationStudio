@@ -76,6 +76,7 @@
 #include "downloadprojectdialog.h"
 #include "uploadproject.h"
 #include "schedulerinstaller.h"
+#include "checkscript.h"
 #include "every_cpp.h"
 
 
@@ -769,6 +770,13 @@ void MainWindow::ShowModuleManager()
 
 void MainWindow::Compile()
 {
+    {
+        CheckScript Check;
+        if(!Check.Check(TextEditor->GetText()))
+        {
+            return;
+        }
+    }
     CompileWindow *compile = new CompileWindow(compiler);
     
     if(compile->exec())
@@ -2002,6 +2010,13 @@ void MainWindow::LoadActual(const QString& filename)
 
 void MainWindow::Record()
 {
+    {
+        CheckScript Check;
+        if(!Check.Check(TextEditor->GetText()))
+        {
+            return;
+        }
+    }
     IsRecordLast = true;
     _EmbeddedLanguageManager->Stop();
     _EmbeddedLanguageManager->ReadLanguageList(true,false, false, _ModuleManager->GetAllEmbeddedLanguages(), _ModuleManager->GetAllEmbeddedModules());
@@ -2012,6 +2027,13 @@ void MainWindow::Record()
 
 void MainWindow::Run()
 {
+    {
+        CheckScript Check;
+        if(!Check.Check(TextEditor->GetText()))
+        {
+            return;
+        }
+    }
     IsRecordLast = false;
     _EmbeddedLanguageManager->Stop();
     QStringList ActiveModules;

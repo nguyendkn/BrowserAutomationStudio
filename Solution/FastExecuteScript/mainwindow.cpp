@@ -58,6 +58,7 @@
 #include "pcresourcessmoothusage.h"
 #include "noneencryptor.h"
 #include "schedulerlogger.h"
+#include "checkscript.h"
 #include "schedulersolver.h"
 
 using namespace BrowserAutomationStudioFramework;
@@ -379,6 +380,15 @@ void MainWindow::Start()
 
     qDebug()<<"Start 066";
     Res->FromViewToModel(&loader);
+
+    {
+        CheckScript Check;
+        if(!Check.Check(loader.GetScript()))
+        {
+            QTimer::singleShot(50,this,SLOT(Close()));
+            return;
+        }
+    }
 
     //Create default if not exists
     if(!QFile::exists(DefaultFilePath))

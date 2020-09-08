@@ -144,6 +144,11 @@ namespace BrowserAutomationStudioFramework
         this->ScriptName = Name;
     }
 
+    void XmlResourceController::SetProtectionStrength(int ProtectionStrength)
+    {
+        this->ProtectionStrength = ProtectionStrength;
+    }
+
     void XmlResourceController::SetUnusedModules(const QStringList & UnusedModules)
     {
         this->UnusedModules = UnusedModules;
@@ -270,6 +275,10 @@ namespace BrowserAutomationStudioFramework
     QString XmlResourceController::GetScriptName()
     {
         return ScriptName;
+    }
+    int XmlResourceController::GetProtectionStrength()
+    {
+        return ProtectionStrength;
     }
     QStringList XmlResourceController::GetUnusedModules()
     {
@@ -819,6 +828,10 @@ namespace BrowserAutomationStudioFramework
             {
                 xmlReader.readNext();
                 ScriptName = xmlReader.text().toString();
+            }else if(xmlReader.name() == "ProtectionStrength" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                ProtectionStrength = xmlReader.text().toString().toInt();
             }else if(xmlReader.name() == "UnusedModules" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -1224,6 +1237,7 @@ namespace BrowserAutomationStudioFramework
         xmlWriter.writeTextElement("ConnectionPassword",ConnectionPassword);
 
         xmlWriter.writeTextElement("ScriptName",ScriptName);
+        xmlWriter.writeTextElement("ProtectionStrength",QString::number(ProtectionStrength));
         xmlWriter.writeTextElement("UnusedModules",UnusedModules.join(";"));
         xmlWriter.writeTextElement("ScriptIcon",ScriptIcon);
         xmlWriter.writeTextElement("IsCustomIcon",(IsCutomIcon) ? "true" : "false");

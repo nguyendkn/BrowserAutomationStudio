@@ -60,6 +60,8 @@ CompileWindow::CompileWindow(Compiler *compiler,QWidget *parent) :
     if(!compiler->GetName().isEmpty())
         ui->lineEdit->setText(compiler->GetName());
 
+    ui->ProtectionStrengthSlider->setValue(compiler->GetProtectionStrength());
+
 
     UpdateIcon(QByteArray::fromBase64(this->compiler->GetIcon().toUtf8()));
     if(!compiler->GetVersion().isEmpty())
@@ -75,6 +77,7 @@ CompileWindow::CompileWindow(Compiler *compiler,QWidget *parent) :
 
     connect(this,SIGNAL(accepted()),this,SLOT(Accepted()));
     connect(ui->label_10,SIGNAL(linkActivated(QString)),this,SLOT(SetDefaultIcon()));
+    connect(ui->ProtectionStrengthSlider,SIGNAL(valueChanged(int)),this,SLOT(SliderUpdate()));
     IsDefaultIcon = !this->compiler->GetIsCustomIcon();
     GuiUpdate();
     ui->UesrInterface->setOpenExternalLinks(true);
@@ -150,8 +153,32 @@ void CompileWindow::UpdateIcon(const QByteArray& Data)
     }
 }
 
+void CompileWindow::SliderUpdate()
+{
+    int Value = ui->ProtectionStrengthSlider->value();
+    if(Value == 0)
+    {
+        ui->ProtectionStrengthLabel->setText(tr("No protection"));
+    }else if(Value < 4)
+    {
+        ui->ProtectionStrengthLabel->setText(tr("Low"));
+    }else if(Value < 7)
+    {
+        ui->ProtectionStrengthLabel->setText(tr("Medium"));
+    }else if(Value < 10)
+    {
+        ui->ProtectionStrengthLabel->setText(tr("High"));
+    }else
+    {
+        ui->ProtectionStrengthLabel->setText(tr("Ultra"));
+    }
+}
+
 void CompileWindow::GuiUpdate()
 {
+    SliderUpdate();
+
+
     bool Visible = ui->PrivateScriptEnterPassForUser->isChecked();
     /*ui->UserName->setVisible(Visible);
     ui->Password->setVisible(Visible);
@@ -188,6 +215,9 @@ void CompileWindow::GuiUpdate()
         UserInterfaceText = QString("<div>%1</div>")
                         .arg(tr("Custom interface is available only to premium users and private scripts."));
 
+        ui->NameContainer_4->setVisible(false);
+        ui->widget_9->setVisible(false);
+
 
 
     }else
@@ -208,6 +238,10 @@ void CompileWindow::GuiUpdate()
                         .arg(tr("Visit"))
                         .arg(tr("this page"))
                         .arg(tr("in order to modify interface of your script"));
+
+        ui->NameContainer_4->setVisible(true);
+        ui->widget_9->setVisible(true);
+
     }
 
 
@@ -364,6 +398,7 @@ void CompileWindow::Accepted()
         compiler->SetType(Compiler::PrivateScriptUserEnterPass);
     }
     compiler->SetName(ui->lineEdit->text());
+    compiler->SetProtectionStrength(ui->ProtectionStrengthSlider->value());
     compiler->SetIcon(QString::fromUtf8(LastIcon.toBase64()));
     compiler->SetIsCustomIcon(!IsDefaultIcon);
     compiler->SetHideBrowsers(ui->HideBrowsers->isChecked());

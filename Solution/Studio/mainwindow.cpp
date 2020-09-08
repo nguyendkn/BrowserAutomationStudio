@@ -812,6 +812,7 @@ void MainWindow::CreateArchive()
         saver.SetConnectionPassword(ConnectionPassword);
 
         saver.SetScriptName(compiler->GetName());
+        saver.SetProtectionStrength(compiler->GetProtectionStrength());
         saver.SetScriptIcon(compiler->GetIcon());
         saver.SetIsCustomIcon(compiler->GetIsCustomIcon());
         saver.SetHideBrowsers(compiler->GetHideBrowsers());
@@ -1062,6 +1063,7 @@ QString MainWindow::OpenFromFile(const QString& fileName)
 
     compiler->SetVersion(loader.GetScriptVersion());
     compiler->SetName(loader.GetScriptName());
+    compiler->SetProtectionStrength(loader.GetProtectionStrength());
     compiler->SetIcon(loader.GetScriptIcon());
     compiler->SetIsCustomIcon(loader.GetIsCustomIcon());
     compiler->SetHideBrowsers(loader.GetHideBrowsers());
@@ -1214,6 +1216,7 @@ QPair<bool,QString> MainWindow::SaveToFileSilent(const QString& file)
     saver.SetEmbeddedData(_EmbeddedLanguageManager->SerializeData());
 
     saver.SetScriptName(compiler->GetName());
+    saver.SetProtectionStrength(compiler->GetProtectionStrength());
     saver.SetScriptIcon(compiler->GetIcon());
     saver.SetIsCustomIcon(compiler->GetIsCustomIcon());
     saver.SetHideBrowsers(compiler->GetHideBrowsers());

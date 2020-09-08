@@ -27,6 +27,7 @@ namespace BrowserAutomationStudioFramework
         bool Result;
         QString ErrorString;
         QString ScriptName;
+        int ProtectionStrength = 4;
         QStringList UnusedModules;
         QString ScriptIcon;
         bool IsCutomIcon;
@@ -82,6 +83,7 @@ namespace BrowserAutomationStudioFramework
 
         void SetAvailableLanguages(const QString & AvailableLanguages);
         void SetScriptName(const QString & Name);
+        void SetProtectionStrength(int ProtectionStrength);
         void SetUnusedModules(const QStringList & UnusedModules);
         void SetScriptIcon(const QString & Icon);
         void SetIsCustomIcon(bool IsCustomIcon);
@@ -138,6 +140,7 @@ namespace BrowserAutomationStudioFramework
 
 
         QString GetScriptName();
+        int GetProtectionStrength();
         QStringList GetUnusedModules();
         QString GetScriptIcon();
         bool GetIsCustomIcon();

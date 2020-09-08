@@ -181,6 +181,12 @@ void CompileResults::Submit()
     NoneEncryptor _NoneEncryptor;
     _Preprocessor.SetEncryptor(&_NoneEncryptor);
 
+    int ParanoicLevel = _Compiler->GetProtectionStrength();
+    if(ParanoicLevel > 0)
+    {
+        ParanoicLevel = 11 - ParanoicLevel;
+    }
+
     {
         QDomDocument Document;
 
@@ -190,7 +196,7 @@ void CompileResults::Submit()
             QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
             QDomNode ScriptTextElement = ScriptElement.firstChild();
             QString Script = ScriptTextElement.toText().data();
-            Script = _Preprocessor.Preprocess(Script, 3, true);
+            Script = _Preprocessor.Preprocess(Script, ParanoicLevel, true);
             Script = _Preprocessor.Encrypt(Script);
 
             QDomNode NewScriptTextElement = Document.createCDATASection(Script);

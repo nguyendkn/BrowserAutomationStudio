@@ -7,6 +7,7 @@ class Compiler : public QObject
 {
     Q_OBJECT
     QString Name;
+    int ProtectionStrength = 4;
     QString Version;
     QString Username;
     QString Password;
@@ -32,6 +33,7 @@ private:
 public:
 
     void SetName(const QString & Name);
+    void SetProtectionStrength(int ProtectionStrength);
     void SetIcon(const QString & Icon);
     void SetIsCustomIcon(bool IsCustomIcon);
     void SetHideBrowsers(bool HideBrowsers);
@@ -59,6 +61,7 @@ public:
     bool GetIsCustomIcon();
 
     QString GetName();
+    int GetProtectionStrength();
     QString GetIcon();
     QString GetOs();
     QString GetVersion();

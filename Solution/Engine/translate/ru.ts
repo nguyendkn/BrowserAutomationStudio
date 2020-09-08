@@ -308,12 +308,12 @@
 <context>
     <name>BrowserAutomationStudioFramework::EmbeddedLanguageManager</name>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="368"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="371"/>
         <source>Timeout</source>
         <translation>Таймаут</translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="376"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="379"/>
         <source>Canceled by user</source>
         <translation>Отменено пользователем</translation>
     </message>
@@ -322,27 +322,36 @@
         <translation type="vanished">Запускаю %1 %2</translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="434"/>
         <source>Starting %1 %2     </source>
-        <translation>Запуск %1 %2     </translation>
+        <translation type="vanished">Запуск %1 %2     </translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="442"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="441"/>
+        <source> (retry %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../embeddedlanguagemanager.cpp" line="443"/>
+        <source>Starting %1 %2%3     </source>
+        <translation type="unfinished">Запуск %1 %2      {1 %2%3 ?}</translation>
+    </message>
+    <message>
+        <location filename="../embeddedlanguagemanager.cpp" line="451"/>
         <source>Unknown language or version %1 %2</source>
         <translation>Неизвестная версия или язык %1 %2</translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="542"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="567"/>
         <source>Running script without embedded languages</source>
         <translation>Запускаю скрипт без встроенных языков</translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="558"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="583"/>
         <source>Failed to find language connector</source>
         <translation>Не удалось найти коннектор</translation>
     </message>
     <message>
-        <location filename="../embeddedlanguagemanager.cpp" line="565"/>
+        <location filename="../embeddedlanguagemanager.cpp" line="590"/>
         <source>Error during send function to connector</source>
         <translation>Ошибка во время отправки сообщения коннектору</translation>
     </message>
@@ -491,12 +500,12 @@ Do you want to override it with version %3?
         <translation>Не удалось скопировать модуль</translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="634"/>
+        <location filename="../modulecreator.cpp" line="639"/>
         <source>Can&apos;t install module while script is running.</source>
         <translation>Не удается установить модуль в то время как скрипт работает.</translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="648"/>
+        <location filename="../modulecreator.cpp" line="653"/>
         <source>Failed to install module.
 
 %1             
@@ -507,7 +516,7 @@ Do you want to override it with version %3?
 </translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="779"/>
+        <location filename="../modulecreator.cpp" line="784"/>
         <source>Result</source>
         <translation>Результат</translation>
     </message>
@@ -626,74 +635,74 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::NodeConnector</name>
     <message>
-        <location filename="../nodeconnector.cpp" line="235"/>
+        <location filename="../nodeconnector.cpp" line="255"/>
         <source>Error occurred. See log for more details.</source>
         <translation>Произошла ошибка. Смотрите лог для более подробной информации.</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="476"/>
+        <location filename="../nodeconnector.cpp" line="517"/>
         <source>Initialization ... </source>
         <translation>Инициализация ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="562"/>
-        <location filename="../nodeconnector.cpp" line="771"/>
+        <location filename="../nodeconnector.cpp" line="612"/>
+        <location filename="../nodeconnector.cpp" line="842"/>
         <source>Failed to delete function files</source>
         <translation>Не удалось удалить функции</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="569"/>
-        <location filename="../nodeconnector.cpp" line="778"/>
+        <location filename="../nodeconnector.cpp" line="619"/>
+        <location filename="../nodeconnector.cpp" line="849"/>
         <source>Failed to install function files</source>
         <translation>Не удалось установить функции</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="592"/>
+        <location filename="../nodeconnector.cpp" line="642"/>
         <source>Downloading Node.js distribution ... </source>
         <translation>Скачивается дистрибутив Node.js ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="611"/>
+        <location filename="../nodeconnector.cpp" line="665"/>
         <source>Extracting Node.js distribution ... </source>
         <translation>Распаковка дистрибутива Node.js ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="626"/>
+        <location filename="../nodeconnector.cpp" line="680"/>
         <source>Failed to write to zip file to %1</source>
         <translation>Не удалось записать архив %1</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="700"/>
+        <location filename="../nodeconnector.cpp" line="760"/>
         <source>Failed to write to json file %1</source>
         <translation>Не удалось записать конфиг %1</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="719"/>
+        <location filename="../nodeconnector.cpp" line="786"/>
         <source>Installing npm modules ... </source>
         <translation>Установка npm модулей ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="731"/>
+        <location filename="../nodeconnector.cpp" line="800"/>
         <source>Failed to execute npm install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="741"/>
+        <location filename="../nodeconnector.cpp" line="812"/>
         <source>Failed to start node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="763"/>
+        <location filename="../nodeconnector.cpp" line="834"/>
         <source>Failed to install modules. See log for more details.</source>
         <translation type="unfinished">Не удалось установить npm модули. Смотрите лог для более подробной информации.</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="973"/>
+        <location filename="../nodeconnector.cpp" line="1052"/>
         <source>Running Node.js ... </source>
         <translation>Запуск Node.js ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="1250"/>
+        <location filename="../nodeconnector.cpp" line="1359"/>
         <source>Finalization ... </source>
         <translation>Завершение установки ... </translation>
     </message>
@@ -1007,7 +1016,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::ScriptWorker</name>
     <message>
-        <location filename="../scriptworker.cpp" line="590"/>
+        <location filename="../scriptworker.cpp" line="597"/>
         <source>Aborted By User</source>
         <translation>Прервано Пользователем</translation>
     </message>
@@ -1020,19 +1029,19 @@ Do you want to override it with version %3?
         <translation type="vanished"> Во время выполнения скрипта </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="849"/>
-        <location filename="../scriptworker.cpp" line="990"/>
+        <location filename="../scriptworker.cpp" line="856"/>
+        <location filename="../scriptworker.cpp" line="997"/>
         <source>Fail number exceed</source>
         <translation>Превышено количество ошибок</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="856"/>
-        <location filename="../scriptworker.cpp" line="1091"/>
+        <location filename="../scriptworker.cpp" line="863"/>
+        <location filename="../scriptworker.cpp" line="1098"/>
         <source>Success number exceed</source>
         <translation>Превышено количество успехов</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1162"/>
+        <location filename="../scriptworker.cpp" line="1169"/>
         <source>Failed because process is stopped</source>
         <translation>Процесс остановлен</translation>
     </message>
@@ -1041,7 +1050,7 @@ Do you want to override it with version %3?
         <translation type="vanished">не удалось получить ресурс </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1596"/>
+        <location filename="../scriptworker.cpp" line="1603"/>
         <source>Thread suspended</source>
         <translation>Поток приостановлен</translation>
     </message>
@@ -1054,160 +1063,160 @@ Do you want to override it with version %3?
         <translation type="vanished">Поток аварийно завершился</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="815"/>
+        <location filename="../scriptworker.cpp" line="822"/>
         <source> during execution of action </source>
         <translation> во время выполнения действия </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1546"/>
+        <location filename="../scriptworker.cpp" line="1553"/>
         <source>Waiting for resource %1</source>
         <translation type="unfinished">Ожидаю ресурс %1</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1577"/>
+        <location filename="../scriptworker.cpp" line="1584"/>
         <source>All data have been processed for </source>
         <translation>Все данные были обработаны для </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1603"/>
-        <location filename="../scriptworker.cpp" line="1604"/>
+        <location filename="../scriptworker.cpp" line="1610"/>
+        <location filename="../scriptworker.cpp" line="1611"/>
         <source>Thread ended</source>
         <translation>Поток завершился</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1605"/>
+        <location filename="../scriptworker.cpp" line="1612"/>
         <source>Thread succeeded</source>
         <translation>Поток выполнен успешно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1607"/>
+        <location filename="../scriptworker.cpp" line="1614"/>
         <source> with message &quot;</source>
         <translation> с сообщением &quot;</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1670"/>
-        <location filename="../scriptworker.cpp" line="1681"/>
+        <location filename="../scriptworker.cpp" line="1677"/>
+        <location filename="../scriptworker.cpp" line="1688"/>
         <source>Thread #</source>
         <translation>Поток №</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1710"/>
-        <location filename="../scriptworker.cpp" line="1828"/>
-        <location filename="../scriptworker.cpp" line="1858"/>
+        <location filename="../scriptworker.cpp" line="1717"/>
+        <location filename="../scriptworker.cpp" line="1835"/>
+        <location filename="../scriptworker.cpp" line="1865"/>
         <source>CAPTCHA_FAIL</source>
         <translation>Ошибка решения капчи</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1710"/>
-        <location filename="../scriptworker.cpp" line="1828"/>
+        <location filename="../scriptworker.cpp" line="1717"/>
+        <location filename="../scriptworker.cpp" line="1835"/>
         <source>Failed to get solver</source>
         <translation>Неизвестный метод решения капчи</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1871"/>
+        <location filename="../scriptworker.cpp" line="1878"/>
         <source>Captcha wait timeout</source>
         <translation>Время ожидания решения капчи истекло</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1884"/>
+        <location filename="../scriptworker.cpp" line="1891"/>
         <source>Async function is called in sync mode</source>
         <translation>Асинхронная функция вызвана синхронно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1892"/>
-        <location filename="../scriptworker.cpp" line="1956"/>
+        <location filename="../scriptworker.cpp" line="1899"/>
+        <location filename="../scriptworker.cpp" line="1963"/>
         <source>Failed to run function </source>
         <translation>Ошибка при запуске функции </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1911"/>
+        <location filename="../scriptworker.cpp" line="1918"/>
         <source>Sync function is called in async mode</source>
         <translation>Синхронная функция вызвана асинхронно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1921"/>
+        <location filename="../scriptworker.cpp" line="1928"/>
         <source>Failed to execute module function </source>
         <translation>Не удалось выполнить функцию </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1981"/>
+        <location filename="../scriptworker.cpp" line="1988"/>
         <source>Failed to get mail number with Pop3CLient</source>
         <translation>Не удалось получить количество писем с помощью Pop3 клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1989"/>
+        <location filename="../scriptworker.cpp" line="1996"/>
         <source>Failed to get message with Pop3CLient</source>
         <translation>Не удалось получить письмо с помощью Pop3 клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2052"/>
+        <location filename="../scriptworker.cpp" line="2059"/>
         <source>Failed to get mail number with ImapCLient</source>
         <translation>Не удалось получить количество писем с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2060"/>
+        <location filename="../scriptworker.cpp" line="2067"/>
         <source>Failed to search mail with ImapCLient</source>
         <translation>Не удалось выполнить поиск с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2068"/>
+        <location filename="../scriptworker.cpp" line="2075"/>
         <source>Failed to custom search mail with ImapCLient</source>
         <translation>Не удалось выполнить специальный поиск с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2076"/>
+        <location filename="../scriptworker.cpp" line="2083"/>
         <source>Failed to fetch mail with ImapCLient</source>
         <translation>Не удалось получить письмо с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2084"/>
+        <location filename="../scriptworker.cpp" line="2091"/>
         <source>Failed to execute custom query with ImapCLient</source>
         <translation>Не удалось выполнить специальный запрос с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2168"/>
-        <location filename="../scriptworker.cpp" line="2362"/>
-        <location filename="../scriptworker.cpp" line="2370"/>
-        <location filename="../scriptworker.cpp" line="2380"/>
-        <location filename="../scriptworker.cpp" line="2409"/>
+        <location filename="../scriptworker.cpp" line="2175"/>
+        <location filename="../scriptworker.cpp" line="2369"/>
+        <location filename="../scriptworker.cpp" line="2377"/>
+        <location filename="../scriptworker.cpp" line="2387"/>
+        <location filename="../scriptworker.cpp" line="2416"/>
         <source>Failed to get page </source>
         <translation>Не удалось получить страницу </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2168"/>
-        <location filename="../scriptworker.cpp" line="2253"/>
-        <location filename="../scriptworker.cpp" line="2311"/>
-        <location filename="../scriptworker.cpp" line="2362"/>
-        <location filename="../scriptworker.cpp" line="2370"/>
-        <location filename="../scriptworker.cpp" line="2380"/>
-        <location filename="../scriptworker.cpp" line="2409"/>
-        <location filename="../scriptworker.cpp" line="2440"/>
+        <location filename="../scriptworker.cpp" line="2175"/>
+        <location filename="../scriptworker.cpp" line="2260"/>
+        <location filename="../scriptworker.cpp" line="2318"/>
+        <location filename="../scriptworker.cpp" line="2369"/>
+        <location filename="../scriptworker.cpp" line="2377"/>
+        <location filename="../scriptworker.cpp" line="2387"/>
+        <location filename="../scriptworker.cpp" line="2416"/>
+        <location filename="../scriptworker.cpp" line="2447"/>
         <source> with HttpClient</source>
         <translation> с помощью ХТТП клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2209"/>
+        <location filename="../scriptworker.cpp" line="2216"/>
         <source>Failed to resolve domain </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2253"/>
-        <location filename="../scriptworker.cpp" line="2311"/>
+        <location filename="../scriptworker.cpp" line="2260"/>
+        <location filename="../scriptworker.cpp" line="2318"/>
         <source>Failed to post page </source>
         <translation>Не удалось выполнить пост запрос </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2440"/>
+        <location filename="../scriptworker.cpp" line="2447"/>
         <source>Failed to download page </source>
         <translation>Не удалось скачать страницу </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3559"/>
+        <location filename="../scriptworker.cpp" line="3566"/>
         <source>Embedded language execution timeout</source>
         <translation>Таймаут во время выполнения функции на встроенном языке</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3566"/>
+        <location filename="../scriptworker.cpp" line="3573"/>
         <source>Embedded call already running</source>
         <translation>Другая функция на встроенном языке уже выполняется</translation>
     </message>
@@ -1451,7 +1460,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::XmlResourceController</name>
     <message>
-        <location filename="../xmlresourcecontroller.cpp" line="713"/>
+        <location filename="../xmlresourcecontroller.cpp" line="722"/>
         <source>This file doesn&apos;t look like BAS project.</source>
         <translation type="unfinished"></translation>
     </message>

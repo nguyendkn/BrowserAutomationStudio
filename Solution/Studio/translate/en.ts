@@ -48,8 +48,8 @@
     </message>
     <message>
         <location filename="../compileresults.ui" line="370"/>
-        <location filename="../compileresults.cpp" line="116"/>
-        <location filename="../compileresults.cpp" line="222"/>
+        <location filename="../compileresults.cpp" line="120"/>
+        <location filename="../compileresults.cpp" line="259"/>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -59,67 +59,67 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="57"/>
+        <location filename="../compileresults.cpp" line="61"/>
         <source>Save setting to current project located in %1 file. It is recommended to use this option.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="60"/>
+        <location filename="../compileresults.cpp" line="64"/>
         <source>Update project &apos;%1&apos; on server, it requires authentication with premium account, and you must be the script owner.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="63"/>
+        <location filename="../compileresults.cpp" line="67"/>
         <source>Create new project &apos;%1&apos; on server, it requires authentication with premium account.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="70"/>
+        <location filename="../compileresults.cpp" line="74"/>
         <source>Create standalone application which you can give to other person.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="73"/>
+        <location filename="../compileresults.cpp" line="77"/>
         <source>Create standalone application which you can give to other person. If you are just updated your script or even changed BAS version it is not necessary to create application again and send to all users, it is enough just to upload project on server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="106"/>
+        <location filename="../compileresults.cpp" line="110"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="120"/>
+        <location filename="../compileresults.cpp" line="124"/>
         <source>Failed to connect to server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="131"/>
+        <location filename="../compileresults.cpp" line="135"/>
         <source>Username or password is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="148"/>
+        <location filename="../compileresults.cpp" line="152"/>
         <source>Uploading project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="211"/>
+        <location filename="../compileresults.cpp" line="248"/>
         <source>&lt;div&gt;Project &apos;%1&apos; was uploaded. Here are some links that may help you tweak it:&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/scripts&apos;&gt;List of your scripts&lt;/a&gt;&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/users&apos;&gt;List of your users&lt;/a&gt;&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/interface&apos;&gt;Customize script interface&lt;/a&gt;&lt;/div&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="226"/>
+        <location filename="../compileresults.cpp" line="263"/>
         <source>Failed to upload with error: &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="255"/>
+        <location filename="../compileresults.cpp" line="292"/>
         <source>Local project located in %1 file was updated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="265"/>
+        <location filename="../compileresults.cpp" line="302"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Standalone application created, it is located in &lt;a style=&apos;color:white&apos; href=&apos;http://opencompiled.com&apos;&gt;%1&lt;/a&gt; folder.&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -148,160 +148,182 @@
     </message>
     <message>
         <location filename="../compilewindow.ui" line="413"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;By default BAS generates user interface automatically. Custom interface function helps you to change every part of compiled application: every button, every label, colors, styles, animations, backgrounds and so on can be changed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;BAS encrypts and decrypts script dynamically on user machine. Only those parts of the project, which are currently being executed stays unencrypted. This parameter sets how frequently protection will encrypt and decrypt code and thus how many CPU time will be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../compilewindow.ui" line="420"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Protection strength &lt;img src=&quot;:/engine/images/info.png&quot;/&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.ui" line="491"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.ui" line="520"/>
+        <source>The higher this value, the more secure script code will be and more CPU time will be used on client machine.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.ui" line="614"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;By default BAS generates user interface automatically. Custom interface function helps you to change every part of compiled application: every button, every label, colors, styles, animations, backgrounds and so on can be changed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.ui" line="621"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Custom interface &lt;img src=&quot;:/engine/images/info.png&quot;/&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="582"/>
+        <location filename="../compilewindow.ui" line="783"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;Icon of compiled application can be changed as well&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="589"/>
+        <location filename="../compilewindow.ui" line="790"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Application icon &lt;img src=&quot;:/engine/images/info.png&quot;/&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="804"/>
+        <location filename="../compilewindow.ui" line="1005"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;Compiled script can be protected, this means that: source code of your script will be hidden, you can manage your users online and allow or restrict access to your script to certain users at any time. More information in manual.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="810"/>
+        <location filename="../compilewindow.ui" line="1011"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copy protection (&lt;a href=&quot;https://wiki.bablosoft.com/doku.php?id=how_to_protect_your_script&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#bc89da&quot;&gt;Manual&lt;/span&gt;&lt;/a&gt;)  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="900"/>
-        <location filename="../compilewindow.ui" line="919"/>
+        <location filename="../compilewindow.ui" line="1101"/>
+        <location filename="../compilewindow.ui" line="1120"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;Create standalone application without protection. Everyone can view your script and send it to unlimited number of other users.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="903"/>
+        <location filename="../compilewindow.ui" line="1104"/>
+        <location filename="../compilewindow.cpp" line="161"/>
         <source>No protection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="948"/>
-        <location filename="../compilewindow.ui" line="964"/>
+        <location filename="../compilewindow.ui" line="1149"/>
+        <location filename="../compilewindow.ui" line="1165"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;Create protected standalone application. No one can view script source, only authorized users may use it. Script owner must create user online and send login and password to script user. Script user must authorize with given credentials on first launch.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="951"/>
+        <location filename="../compilewindow.ui" line="1152"/>
         <source>Private script, user must enter password before launch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="993"/>
-        <location filename="../compilewindow.ui" line="1046"/>
+        <location filename="../compilewindow.ui" line="1194"/>
+        <location filename="../compilewindow.ui" line="1247"/>
         <source>Script protection is available only to premium users</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1010"/>
-        <location filename="../compilewindow.ui" line="1020"/>
+        <location filename="../compilewindow.ui" line="1211"/>
+        <location filename="../compilewindow.ui" line="1221"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;Create protected standalone application. No one can view script source, only authorized users may use it. Script owner must create user and enter his login and password during compilation. User will run script without authorization.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1013"/>
+        <location filename="../compilewindow.ui" line="1214"/>
         <source>Private script, enter password for user</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1162"/>
+        <location filename="../compilewindow.ui" line="1363"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style=&apos;width:500px&apos;&gt;Script owner can create user and enter his login and password during compilation,  in order that user doesn&apos;t need to enter that data when script starts.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1168"/>
+        <location filename="../compilewindow.ui" line="1369"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;User credentials &lt;img src=&quot;:/engine/images/info.png&quot;/&gt; &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1353"/>
+        <location filename="../compilewindow.ui" line="1554"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1460"/>
+        <location filename="../compilewindow.ui" line="1661"/>
         <source>If this option is set, user will be prompted at script start, if he want to use scheduler.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1463"/>
+        <location filename="../compilewindow.ui" line="1664"/>
         <source>Integrate scheduler into application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1481"/>
+        <location filename="../compilewindow.ui" line="1682"/>
         <source>Only for premium users and private scirpts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1490"/>
+        <location filename="../compilewindow.ui" line="1691"/>
         <source>Allow only single application instance.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1614"/>
+        <location filename="../compilewindow.ui" line="1815"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;img src=&quot;:/studio/images/question.png&quot;/&gt; You can create standalone application with a help of this dialog. It can be sent to other person or shared online. User doesn&apos;t need install BAS to run compiled application&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1701"/>
+        <location filename="../compilewindow.ui" line="1902"/>
         <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1708"/>
+        <location filename="../compilewindow.ui" line="1909"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1241"/>
+        <location filename="../compilewindow.ui" line="1442"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1251"/>
+        <location filename="../compilewindow.ui" line="1452"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="693"/>
-        <location filename="../compilewindow.cpp" line="205"/>
+        <location filename="../compilewindow.ui" line="894"/>
+        <location filename="../compilewindow.cpp" line="235"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;div&gt;Click on icon to change it.&lt;/div&gt;&lt;div&gt;Only for premium users and for private scripts. &lt;/div&gt;&lt;div&gt;&lt;a href=&quot;restore://defaults&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;Restore default icon.&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1418"/>
+        <location filename="../compilewindow.ui" line="1619"/>
         <source>Hide browsers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1436"/>
-        <location filename="../compilewindow.ui" line="1508"/>
+        <location filename="../compilewindow.ui" line="1637"/>
+        <location filename="../compilewindow.ui" line="1709"/>
         <source>Only for premium users and private scripts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1445"/>
+        <location filename="../compilewindow.ui" line="1646"/>
         <source>Install BAS engine inside AppData folder.
 Saves space if user will use several scripts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.ui" line="1453"/>
+        <location filename="../compilewindow.ui" line="1654"/>
         <source>Copy executable to run script in console mode.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -316,82 +338,102 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Название скрипта</translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="219"/>
+        <location filename="../compilewindow.cpp" line="253"/>
         <source>See free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="220"/>
+        <location filename="../compilewindow.cpp" line="254"/>
         <source>demo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="221"/>
+        <location filename="../compilewindow.cpp" line="255"/>
         <source>to test how it works</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="185"/>
+        <location filename="../compilewindow.cpp" line="212"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;div&gt;Only for premium users and for private scripts. &lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="189"/>
+        <location filename="../compilewindow.cpp" line="164"/>
+        <source>Low</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.cpp" line="167"/>
+        <source>Medium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.cpp" line="170"/>
+        <source>High</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.cpp" line="173"/>
+        <source>Ultra</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../compilewindow.cpp" line="216"/>
         <source>Custom interface is available only to premium users and private scripts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="208"/>
+        <location filename="../compilewindow.cpp" line="238"/>
         <source>Visit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="209"/>
+        <location filename="../compilewindow.cpp" line="239"/>
         <source>this page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="210"/>
+        <location filename="../compilewindow.cpp" line="240"/>
         <source>in order to modify interface of your script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="222"/>
+        <location filename="../compilewindow.cpp" line="256"/>
         <source>Final result may look like</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="223"/>
+        <location filename="../compilewindow.cpp" line="257"/>
         <source>this</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="246"/>
+        <location filename="../compilewindow.cpp" line="280"/>
         <source>Validating name ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="252"/>
+        <location filename="../compilewindow.cpp" line="286"/>
         <source>You are using default script name. It is recommended to change it to something meaningful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="275"/>
+        <location filename="../compilewindow.cpp" line="309"/>
         <source>Script name only allows letters, first char should be letter.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="332"/>
+        <location filename="../compilewindow.cpp" line="366"/>
         <source>Script already exists, if you are a script owner, you can use it, otherwise you must change it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="399"/>
+        <location filename="../compilewindow.cpp" line="434"/>
         <source>Open Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../compilewindow.cpp" line="399"/>
+        <location filename="../compilewindow.cpp" line="434"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -887,7 +929,7 @@ Saves space if user will use several scripts.</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="966"/>
-        <location filename="../mainwindow.cpp" line="1159"/>
+        <location filename="../mainwindow.cpp" line="1169"/>
         <source>Stop</source>
         <translation></translation>
     </message>
@@ -944,7 +986,7 @@ Saves space if user will use several scripts.</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1068"/>
-        <location filename="../mainwindow.cpp" line="2853"/>
+        <location filename="../mainwindow.cpp" line="2879"/>
         <source>Show Database</source>
         <translation></translation>
     </message>
@@ -1001,8 +1043,8 @@ Saves space if user will use several scripts.</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1163"/>
-        <location filename="../mainwindow.cpp" line="439"/>
-        <location filename="../mainwindow.cpp" line="452"/>
+        <location filename="../mainwindow.cpp" line="440"/>
+        <location filename="../mainwindow.cpp" line="453"/>
         <source>Scheduler</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1017,129 +1059,129 @@ Saves space if user will use several scripts.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2797"/>
-        <location filename="../mainwindow.cpp" line="2822"/>
+        <location filename="../mainwindow.cpp" line="2823"/>
+        <location filename="../mainwindow.cpp" line="2848"/>
         <source>All log</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="880"/>
-        <location filename="../mainwindow.cpp" line="1293"/>
+        <location filename="../mainwindow.cpp" line="889"/>
+        <location filename="../mainwindow.cpp" line="1304"/>
         <source>Error saving file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="433"/>
-        <location filename="../mainwindow.cpp" line="446"/>
+        <location filename="../mainwindow.cpp" line="434"/>
+        <location filename="../mainwindow.cpp" line="447"/>
         <source>Scheduler ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="486"/>
+        <location filename="../mainwindow.cpp" line="487"/>
         <source>premium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="488"/>
+        <location filename="../mainwindow.cpp" line="489"/>
         <source>free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="492"/>
+        <location filename="../mainwindow.cpp" line="493"/>
         <source>&lt;span style=&apos;color:gray&apos;&gt;You are using BrowserAutomationStudio version &lt;span style=&apos;color:white&apos;&gt;%1&lt;/span&gt; (&lt;span style=&apos;color:white&apos;&gt;%2&lt;/span&gt;).&lt;br&gt;Installation dir : &lt;span style=&apos;color:white&apos;&gt;%3&lt;/span&gt;.&lt;br&gt;This panel contains information about script execution, use &apos;Log&apos; action to write data here.&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="880"/>
-        <location filename="../mainwindow.cpp" line="1293"/>
+        <location filename="../mainwindow.cpp" line="889"/>
+        <location filename="../mainwindow.cpp" line="1304"/>
         <source>Error saving file : %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="921"/>
+        <location filename="../mainwindow.cpp" line="930"/>
         <source>Application is still running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="921"/>
+        <location filename="../mainwindow.cpp" line="930"/>
         <source>Use exit menu item to shut it down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="974"/>
+        <location filename="../mainwindow.cpp" line="983"/>
         <source>Open Project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="974"/>
-        <location filename="../mainwindow.cpp" line="1304"/>
-        <location filename="../mainwindow.cpp" line="1323"/>
+        <location filename="../mainwindow.cpp" line="983"/>
+        <location filename="../mainwindow.cpp" line="1315"/>
+        <location filename="../mainwindow.cpp" line="1334"/>
         <source>Project Files (*.xml);;All Files (*.*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1019"/>
+        <location filename="../mainwindow.cpp" line="1028"/>
         <source>Error loading file</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1019"/>
+        <location filename="../mainwindow.cpp" line="1028"/>
         <source>Error loading file : %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1156"/>
+        <location filename="../mainwindow.cpp" line="1166"/>
         <source>Stop instant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1156"/>
+        <location filename="../mainwindow.cpp" line="1166"/>
         <source>Wait each thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1159"/>
+        <location filename="../mainwindow.cpp" line="1169"/>
         <source>Stop type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1304"/>
+        <location filename="../mainwindow.cpp" line="1315"/>
         <source>Save Project</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1323"/>
+        <location filename="../mainwindow.cpp" line="1334"/>
         <source>Create Project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1496"/>
+        <location filename="../mainwindow.cpp" line="1507"/>
         <source>Captcha (%1)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1547"/>
+        <location filename="../mainwindow.cpp" line="1558"/>
         <source>Running project ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1664"/>
+        <location filename="../mainwindow.cpp" line="1675"/>
         <source>Project recorder has started. It should be visible in a second. Try to search in task bar if you don&apos;t see it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1819"/>
+        <location filename="../mainwindow.cpp" line="1830"/>
         <source>Multilogin log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2798"/>
-        <location filename="../mainwindow.cpp" line="2823"/>
+        <location filename="../mainwindow.cpp" line="2824"/>
+        <location filename="../mainwindow.cpp" line="2849"/>
         <source>Clear log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2855"/>
+        <location filename="../mainwindow.cpp" line="2881"/>
         <source> (Need Restart)</source>
         <translation type="unfinished"></translation>
     </message>

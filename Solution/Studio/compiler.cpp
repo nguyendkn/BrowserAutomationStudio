@@ -145,6 +145,7 @@ void Compiler::Reset()
     Name = "ScriptName";
     Icon.clear();
     IsCustomIcon = false;
+    ProtectionStrength = 4;
 }
 
 void Compiler::SetHideBrowsers(bool HideBrowsers)
@@ -209,6 +210,12 @@ void Compiler::SetName(const QString & Name)
 {
     this->Name = Name;
 }
+
+void Compiler::SetProtectionStrength(int ProtectionStrength)
+{
+    this->ProtectionStrength = ProtectionStrength;
+}
+
 void Compiler::SetIcon(const QString & Icon)
 {
     this->Icon = Icon;
@@ -268,6 +275,12 @@ QString Compiler::GetName()
 {
     return Name;
 }
+int Compiler::GetProtectionStrength()
+{
+    return ProtectionStrength;
+}
+
+
 QString Compiler::GetIcon()
 {
     if(Icon.isEmpty())

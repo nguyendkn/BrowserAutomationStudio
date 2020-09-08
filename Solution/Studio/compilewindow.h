@@ -42,6 +42,8 @@ private slots:
     void Validate();
     void ValidateResult();
     void ValidateTimer();
+    void SliderUpdate();
+
 
     void on_lineEdit_textChanged(const QString &arg1);
     void on_Ok_clicked();

@@ -234,6 +234,9 @@ function Excel_ExportFromResources(){
 
 		var resource_data = RMap(resource_name).toList();
 		
+		_call_function(Excel_ClearSheet,{"FilePath":file_path,"SheetIndexOrName":resource_name,"Timeout":timeout})!
+		_result_function();
+		
 		_call_function(Excel_WriteToSheet,{"FilePath":file_path,"SheetIndexOrName":resource_name,"Data":resource_data,"Timeout":timeout})!
 		_result_function();
 	})!

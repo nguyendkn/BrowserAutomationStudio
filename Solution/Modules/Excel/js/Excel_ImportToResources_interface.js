@@ -1,6 +1,7 @@
 <div class="container-fluid">
 <%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file."),examples:[{code:"{{excel_file}}"},{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
-<%= _.template($('#input_constructor').html())({id:"SheetList", description: tr("List of sheets") + ". " + tr("Can be blank"), default_selector: "expression", disable_int:true, value_string: "", help: {description: tr("List of indexes or names of sheets from excel file, data from which should be imported into resources."),examples:[{code:"[\"Sheet1\", \"Sheet2\", \"Sheet5\"]"},{code:tr("Empty string"), description: tr("All sheets will be imported")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"SheetList", description: tr("List of sheets") + ". " + tr("Can be blank"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("List of indexes or names of sheets from excel file, data from which should be imported into resources. As a list, you can use a string consisting of names or indexes of sheets, separated by commas."),examples:[{code:"Sheet1,Sheet2,Sheet5"},{code:"Sheet1, Sheet2, Sheet5"},{code:"[\"Sheet1\", \"Sheet2\", \"Sheet5\"]"},{code:tr("Empty string"), description: tr("All sheets will be imported")}]} }) %>
+<%= _.template($('#block_start').html())({id: "Advanced", name: tr("Resources settings"), description: tr("The settings that each resource created by this action will have.")}) %>
 <%= _.template($('#input_constructor').html())({id:"SuccessNumber", description:tr("Success Usage"), default_selector: "int", disable_string:true, value_number:1, help: {description: tr("Maximum number of success usages of current resource. Usage of resource is considered successful if thread, which used it is ended with success. For example, if resource holds proxies and script creates accounts, then this parameter indicates how many accounts may be registered for with one proxy.")}}) %>
 <%= _.template($('#input_constructor').html())({id:"FailNumber", description:tr("Fail Usage"), default_selector: "int", disable_string:true, value_number:1, help: {description: tr("Maximum number of fail usages of current resource. Usage of resource is considered as fail if thread, which used it is ended with failure. For example, if resource holds proxies and script creates accounts, then this parameter indicates how many bad retries is allowed for one proxy.")}}) %>
 <%= _.template($('#input_constructor').html())({id:"SimultaneousUsage", description:tr("Simultaneous Usage"), default_selector: "int", disable_string:true, value_number:1, help: {description: tr("Maximum simultaneous usages. For example, if resource holds proxies, then this parameter indicates how many times single proxy may be used simultaneously.")}}) %>
@@ -11,6 +12,7 @@
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check2">
 	<input type="checkbox" id="Check2"/> <label for="Check2" class="tr">Wait For Resource</label>
 </span>
+<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Import data from excel file into resources.</div>

@@ -186,7 +186,7 @@ function Excel_WriteToCellsRange(){
 };
 function Excel_ImportToResources(){
 	var file_path = _function_argument("FilePath");
-	var sheet_list = _function_argument("SheetList");
+	var sheet_list = Excel_ConvertToList(_function_argument("SheetList"));
 	var success_number = _function_argument("SuccessNumber");
 	var fail_number = _function_argument("FailNumber");
 	var simultaneous_usage = _function_argument("SimultaneousUsage");
@@ -199,7 +199,7 @@ function Excel_ImportToResources(){
 	var sheets_list = _result_function();
 	
 	if(sheet_list){
-		sheets_list = sheets_list.filter(function(sheet_name, sheet_index){return sheet_list.indexOf(sheet_name) > -1 || sheet_list.indexOf(sheet_index) > -1});
+		sheets_list = sheets_list.filter(function(sheet_name, sheet_index){return sheet_list.indexOf(sheet_name) > -1 || sheet_list.indexOf(sheet_index) > -1 || sheet_list.indexOf(String(sheet_index)) > -1});
 	};
 	
 	_do_with_params({"foreach_data":sheets_list},function(){
@@ -224,7 +224,7 @@ function Excel_ImportToResources(){
 };
 function Excel_ExportFromResources(){
 	var file_path = _function_argument("FilePath");
-	var resource_list = _function_argument("ResourceList");
+	var resource_list = Excel_ConvertToList(_function_argument("ResourceList"));
 	var timeout = _function_argument("Timeout");
 
 	_do_with_params({"foreach_data":resource_list},function(){
@@ -453,6 +453,17 @@ function Excel_NumberToDate(number){
 	date.setDate(date.getDate() + full_days);
 	
 	return(date);
+};
+function Excel_IsJsonString(str){
+    try{
+        JSON.parse(str);
+    }catch(e){
+        return false;
+    };
+    return true;
+};
+function Excel_ConvertToList(str){
+	return (str==="" || typeof str==="object") ? str : (Excel_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
 };
 function Excel_FormatAddress(address){
 	if(address.indexOf("*") > -1){

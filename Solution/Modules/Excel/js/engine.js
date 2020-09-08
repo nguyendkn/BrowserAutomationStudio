@@ -310,6 +310,9 @@ function Excel_ConvertFromJSON(){
 		var sheet_name = sheet.name;
 		var sheet_data = sheet.data;
 		
+		_call_function(Excel_ClearSheet,{"FilePath":file_path,"SheetIndexOrName":resource_name,"Timeout":timeout})!
+		_result_function();
+		
 		_call_function(Excel_WriteToSheet,{"FilePath":file_path,"SheetIndexOrName":sheet_name,"Data":sheet_data,"Timeout":timeout})!
 		_result_function();
 	})!
@@ -378,7 +381,7 @@ function Excel_GetCellStyles(){
 	var file_path = _function_argument("FilePath");
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
-	var styles_name_list = _function_argument("StylesNameList");
+	var styles_name_list = Excel_ConvertToList(_function_argument("StylesNameList"));
 	var timeout = _function_argument("Timeout");
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, styles_name_list];

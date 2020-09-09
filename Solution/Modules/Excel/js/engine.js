@@ -3,25 +3,25 @@ var incorrect_leap_date = new Date(1900, 1, 28);
 var milliseconds_in_day = 1000 * 60 * 60 * 24;
 
 function Excel_CreateFile(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path];
+	VAR_XLSX_NODE_PARAMETERS = file_path;
 	
 	_embedded("ExcelCreateFile", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_GetSheetsList(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path];
+	VAR_XLSX_NODE_PARAMETERS = file_path;
 	
 	_embedded("ExcelGetSheetsList", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_AddSheet(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_name = _function_argument("SheetName");
 	var sheet_index = _function_argument("SheetIndex");
 	var timeout = _function_argument("Timeout");
@@ -31,7 +31,7 @@ function Excel_AddSheet(){
 	_embedded("ExcelAddSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_RenameSheet(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var new_sheet_name = _function_argument("NewSheetName");
 	var timeout = _function_argument("Timeout");
@@ -41,7 +41,7 @@ function Excel_RenameSheet(){
 	_embedded("ExcelRenameSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_MoveSheet(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var new_sheet_index = _function_argument("NewSheetIndex");
 	var timeout = _function_argument("Timeout");
@@ -51,7 +51,7 @@ function Excel_MoveSheet(){
 	_embedded("ExcelMoveSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_DeleteSheet(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var timeout = _function_argument("Timeout");
 	
@@ -60,7 +60,7 @@ function Excel_DeleteSheet(){
 	_embedded("ExcelDeleteSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ReadCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var timeout = _function_argument("Timeout");
@@ -72,7 +72,7 @@ function Excel_ReadCell(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_WriteToCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var data = _function_argument("Data");
@@ -83,7 +83,7 @@ function Excel_WriteToCell(){
 	_embedded("ExcelWriteToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ReadSheet(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
@@ -95,7 +95,7 @@ function Excel_ReadSheet(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_WriteToSheet(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var data = _function_argument("Data");
 	var timeout = _function_argument("Timeout");
@@ -105,7 +105,7 @@ function Excel_WriteToSheet(){
 	_embedded("ExcelWriteToSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_CountRows(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var timeout = _function_argument("Timeout");
 	
@@ -116,7 +116,7 @@ function Excel_CountRows(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_ReadRows(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_row = _function_argument("FromRow");
 	var to_row = _function_argument("ToRow");
@@ -133,7 +133,7 @@ function Excel_ReadRows(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_InsertRows(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_row = _function_argument("FromRow");
 	var data = _function_argument("Data");
@@ -146,7 +146,7 @@ function Excel_InsertRows(){
 	_embedded("ExcelInsertRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_DeleteRows(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_row = _function_argument("FromRow");
 	var to_row = _function_argument("ToRow");
@@ -160,7 +160,7 @@ function Excel_DeleteRows(){
 	_embedded("ExcelDeleteRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ReadCellsRange(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
 	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
@@ -174,7 +174,7 @@ function Excel_ReadCellsRange(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_WriteToCellsRange(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
 	var data = _function_argument("Data");
@@ -185,7 +185,7 @@ function Excel_WriteToCellsRange(){
 	_embedded("ExcelWriteToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ImportToResources(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_list = Excel_ConvertToList(_function_argument("SheetList"));
 	var success_number = _function_argument("SuccessNumber");
 	var fail_number = _function_argument("FailNumber");
@@ -223,7 +223,7 @@ function Excel_ImportToResources(){
 	})!
 };
 function Excel_ExportFromResources(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var resource_list = Excel_ConvertToList(_function_argument("ResourceList"));
 	var timeout = _function_argument("Timeout");
 
@@ -242,7 +242,7 @@ function Excel_ExportFromResources(){
 	})!
 };
 function Excel_ClearSheet(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var timeout = _function_argument("Timeout");
 	
@@ -251,7 +251,7 @@ function Excel_ClearSheet(){
 	_embedded("ExcelClearSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ClearCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var timeout = _function_argument("Timeout");
@@ -261,7 +261,7 @@ function Excel_ClearCell(){
 	_embedded("ExcelClearCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ClearCellsRange(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
 	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
@@ -272,7 +272,7 @@ function Excel_ClearCellsRange(){
 	_embedded("ExcelClearCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ConvertToJSON(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
 	
 	var sheets = [];
@@ -294,7 +294,7 @@ function Excel_ConvertToJSON(){
 	_function_return(JSON.stringify({sheets:sheets}));
 };
 function Excel_ConvertFromJSON(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var data = _function_argument("Data");
 	var timeout = _function_argument("Timeout");
 	
@@ -318,7 +318,7 @@ function Excel_ConvertFromJSON(){
 	})!
 };
 function Excel_FindCells(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var contains = _function_argument("Contains");
 	var timeout = _function_argument("Timeout");
@@ -330,7 +330,7 @@ function Excel_FindCells(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_FindCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var contains = _function_argument("Contains");
 	var timeout = _function_argument("Timeout");
@@ -342,7 +342,7 @@ function Excel_FindCell(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_GetFormulaFromCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var timeout = _function_argument("Timeout");
@@ -354,7 +354,7 @@ function Excel_GetFormulaFromCell(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_SetFormulaToCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var formula = _function_argument("Formula");
@@ -365,7 +365,7 @@ function Excel_SetFormulaToCell(){
 	_embedded("ExcelSetFormulaToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_GetCellStyle(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var style_name = _function_argument("StyleName");
@@ -378,7 +378,7 @@ function Excel_GetCellStyle(){
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
 function Excel_GetCellStyles(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var styles_name_list = Excel_ConvertToList(_function_argument("StylesNameList"));
@@ -391,7 +391,7 @@ function Excel_GetCellStyles(){
 	_function_return(JSON.stringify(VAR_XLSX_NODE_PARAMETERS));
 };
 function Excel_SetStyleToCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var style_name = _function_argument("StyleName");
@@ -403,7 +403,7 @@ function Excel_SetStyleToCell(){
 	_embedded("ExcelSetStyleToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_SetStylesToCell(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var styles = _function_argument("Styles");
@@ -414,7 +414,7 @@ function Excel_SetStylesToCell(){
 	_embedded("ExcelSetStylesToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_SetStyleToCellsRange(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
 	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
@@ -427,7 +427,7 @@ function Excel_SetStyleToCellsRange(){
 	_embedded("ExcelSetStyleToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_SetStylesToCellsRange(){
-	var file_path = _function_argument("FilePath");
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
 	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
@@ -460,6 +460,14 @@ function Excel_NumberToDate(number){
 	
 	return(date);
 };
+function Excel_CloseFile(){
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
+	var timeout = _function_argument("Timeout");
+	
+	VAR_XLSX_NODE_PARAMETERS = file_path;
+	
+	_embedded("ExcelCloseFile", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+}
 function Excel_IsJsonString(str){
     try{
         JSON.parse(str);
@@ -485,4 +493,7 @@ function Excel_FormatAddress(address){
 		address = column_letter + row_number;
 	};
 	return address;
+};
+function Excel_FormatPath(path){
+	return path.split("\\").join("/");
 };

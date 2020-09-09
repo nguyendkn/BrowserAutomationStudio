@@ -468,7 +468,14 @@ void Remote::EngineDownloaded()
         return;
     }
 
-    file.write(Downloader->GetPageData());
+    QList<QByteArray>* AllData = Downloader->GetPageData();
+    int Length = AllData->size();
+
+    for(int i = 0;i<Length;i++)
+    {
+        file.write(AllData->at(i));
+    }
+
     file.close();
 
     OldVersionRemover Remover;

@@ -333,7 +333,7 @@
     <message>
         <location filename="../embeddedlanguagemanager.cpp" line="443"/>
         <source>Starting %1 %2%3     </source>
-        <translation type="unfinished">Запуск %1 %2      {1 %2%3 ?}</translation>
+        <translation type="unfinished">Запуск %1 %2%3     </translation>
     </message>
     <message>
         <location filename="../embeddedlanguagemanager.cpp" line="451"/>

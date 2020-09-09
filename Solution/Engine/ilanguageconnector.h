@@ -42,6 +42,8 @@ namespace BrowserAutomationStudioFramework
         void Log(QString);
         /* LogConsole */
         void LogConsole(QString, quint64);
+        /* Log to file, containes raw messages, not recomended to show in ui */
+        void LogFile(QString);
 
     public slots:
         /* Start process */

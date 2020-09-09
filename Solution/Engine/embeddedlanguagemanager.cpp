@@ -498,6 +498,7 @@ namespace BrowserAutomationStudioFramework
 
         connect(Connector,SIGNAL(Started(bool,QString,bool)),this,SLOT(NextLanguageStarted(bool,QString,bool)));
         connect(Connector,SIGNAL(Log(QString)),this,SLOT(ConnectorStartingLog(QString)));
+        connect(Connector,SIGNAL(LogFile(QString)),this,SIGNAL(InitializationLog(QString)));
         connect(Connector,SIGNAL(ReceivedResultData(quint64,QString,bool,QString)),this,SIGNAL(ReceivedResultData(quint64,QString,bool,QString)));
         connect(Connector,SIGNAL(ReceivedApiData(quint64,QString,QString)),this,SIGNAL(ReceivedApiData(quint64,QString,QString)));
         connect(Connector,SIGNAL(LogConsole(QString,quint64)),this,SIGNAL(ConsoleLog(QString,quint64)));

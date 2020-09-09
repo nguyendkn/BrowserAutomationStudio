@@ -56,7 +56,11 @@ namespace BrowserAutomationStudioFramework
         outFile.open(QIODevice::WriteOnly | QIODevice::Append);
         QTextStream ts(&outFile);
         ts << txt << endl;
+
+        emit LogFile(txt);
+
         outFile.close();
+
     }
 
     void NodeConnector::EnableLog(bool LogEnabled)

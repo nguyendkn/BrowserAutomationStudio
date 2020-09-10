@@ -66,6 +66,7 @@ void Remote::DetectSettings()
     qDebug()<<"IsEnginesInAppData"<<IsEnginesInAppData;
     KeepVersionNumber = Settings.value("KeepVersionNumber",100).toInt();
     qDebug()<<"KeepVersionNumber"<<KeepVersionNumber;
+    qDebug()<<"InstallerVersion 3.0";
 
     IsRemote = Arguments.contains("--remote");
     Arguments.removeAll("--remote");
@@ -294,7 +295,9 @@ void Remote::ScriptPropertiesHttpClientResp()
 
 void Remote::ScriptPropertiesDetected(const QString& ScriptHash, const QString& EngineVersion)
 {
-    QString ScriptHashUpdated = ScriptHash.mid(0,8);
+    QString ScriptHashUpdated = QString::fromUtf8(QCryptographicHash::hash(EngineVersion.toUtf8(), QCryptographicHash::Sha256).toHex());
+    ScriptHashUpdated = ScriptHashUpdated.mid(0,8);
+
     this->ScriptHash = "SID" + ScriptHashUpdated;
     this->EngineVersion = EngineVersion;
     this->IsValid = IsValid;
@@ -561,7 +564,17 @@ void Remote::EnginePrepared()
         while (it.hasNext())
         {
             QString f = it.next();
+            QString relative = f;
+            relative.remove(dir.absolutePath());
+
             bool Exclude = false;
+
+            //Don't copy node.js files to new folder
+            if(relative.startsWith("/e/"))
+            {
+                Exclude = true;
+            }else
+            {
             for(QString ExcludeFile: FileList)
             {
                 if(f.endsWith(ExcludeFile))
@@ -569,6 +582,7 @@ void Remote::EnginePrepared()
                     Exclude = true;
                     break;
                 }
+            }
             }
             if(!Exclude)
             {

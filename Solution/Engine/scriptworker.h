@@ -118,6 +118,8 @@ namespace BrowserAutomationStudioFramework
 
         bool EmptyProject = false;
 
+        bool DeleteScriptLater = false;
+
         /* Substage */
         QString SubstageStartingFunction;
         int SubstageId;

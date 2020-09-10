@@ -433,13 +433,18 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptWorker::SetScript(const QString& Script)
     {
-        if(!this->Script.isEmpty())
+        if(DeleteScriptLater)
         {
-            QChar* chars = const_cast<QChar*>(this->Script.constData());
-            SecureZeroMemory(chars, this->Script.length() * sizeof(QChar));
-            this->Script.clear();
+            if(!this->Script.isEmpty())
+            {
+                QChar* chars = const_cast<QChar*>(this->Script.constData());
+                SecureZeroMemory(chars, this->Script.length() * sizeof(QChar));
+                this->Script.clear();
+            }
+            DeleteScriptLater = false;
         }
         this->Script = Script;
+
     }
 
     QString ScriptWorker::GetScript()
@@ -694,7 +699,7 @@ namespace BrowserAutomationStudioFramework
 
         if(EmptyProject)
         {
-            Script = "sleep(2147483647, function(){})";
+            SetScript("sleep(2147483647, function(){})");
         }
         RunSubScript();
     }
@@ -881,6 +886,8 @@ namespace BrowserAutomationStudioFramework
     void ScriptWorker::Decrypt(const QString& Data)
     {
         SetScript(Preprocessor->Decrypt(Data));
+        //Next time decrypted data will be deleted
+        DeleteScriptLater = true;
         RunSubScript();
     }
 

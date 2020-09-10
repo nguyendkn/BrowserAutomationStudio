@@ -184,7 +184,7 @@ void CompileResults::Submit()
     int ParanoicLevel = _Compiler->GetProtectionStrength();
     if(ParanoicLevel > 0)
     {
-        ParanoicLevel = 11 - ParanoicLevel;
+        ParanoicLevel = 13 - ParanoicLevel;
     }
 
     {

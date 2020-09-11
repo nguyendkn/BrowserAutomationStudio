@@ -1188,8 +1188,14 @@ namespace BrowserAutomationStudioFramework
 
     void NodeConnector::ProcessFinished()
     {
+        if(NewProcessWaitTimeout)
+            return;
+
         if(NoNeedRestartProcess)
             return;
+
+        Timer->stop();
+
         LOG(QString("ProcessFinished"));
         if(IsActive)
         {

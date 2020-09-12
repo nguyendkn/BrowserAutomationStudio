@@ -13,6 +13,7 @@ if(FromCell["original"].length == 0){
 	Invalid(tr("From cell") + " " + tr("is empty"));
     return;
 };
+var ToCell = GetInputConstructorValue("ToCell", loader);
 var Data = GetInputConstructorValue("Data", loader);
 if(Data["original"].length == 0){
 	Invalid(tr("Data") + " " + tr("is empty"));
@@ -23,6 +24,7 @@ try{
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
         "FromCell": FromCell["updated"],
+        "ToCell": ToCell["updated"],
         "Data": Data["updated"]
     });
     code = Normalize(code, 0);

@@ -177,10 +177,11 @@ function Excel_WriteToCellsRange(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
+	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
 	var data = _function_argument("Data");
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, data];
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data];
 	
 	_embedded("ExcelWriteToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };

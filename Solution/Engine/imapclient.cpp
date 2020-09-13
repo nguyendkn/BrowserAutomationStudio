@@ -335,7 +335,7 @@ namespace BrowserAutomationStudioFramework
         SetProxyToCurl(options);
         options.insert(CURLOPT_USERNAME, Username);
         options.insert(CURLOPT_PASSWORD, Password);
-        QString url = GenerateUrl(options) + EncodeUrl(InboxFolder) + "/;UID=" + uid;
+        QString url = GenerateUrl(options) + EncodeUrl(InboxFolder) + "/;MAILINDEX=" + uid;
         options.insert(CURLOPT_URL, url);
         options.insert(CURLOPT_LOGIN_OPTIONS, "AUTH=PLAIN");
         alloptions->append(options);

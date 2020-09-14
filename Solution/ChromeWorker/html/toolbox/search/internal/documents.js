@@ -104,16 +104,16 @@ class DocumentsStore {
    */
   getActionVariables(source) {
     try {
-      const template = _.template(source)({
+      const template = $(_.template(source)({
         function_params: [],
         selector: {},
         model: {}
-      });
+      }));
 
       return _.uniq([
-        ...$.map($(template).find('input[data-variable-constructor=true]'), (e) => e.value),
-        ...$.map($(template).find('.input_selector_string'), (e) => e.placeholder),
-        ...$.map($(template).find('.input_selector_number'), (e) => e.placeholder)
+        ...$.map(template.find('input[data-variable-constructor=true]'), (e) => e.value),
+        ...$.map(template.find('.input_selector_string'), (e) => e.placeholder),
+        ...$.map(template.find('.input_selector_number'), (e) => e.placeholder)
       ]);
     } catch (e) {
       return [];

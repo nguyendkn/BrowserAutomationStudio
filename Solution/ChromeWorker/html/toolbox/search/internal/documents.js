@@ -69,7 +69,6 @@ class DocumentsStore {
       node.append(data);
 
       if (this.lang === 'en') node.find('.tr-ru').remove();
-
       if (this.lang === 'ru') node.find('.tr-en').remove();
 
       node.find('.tr').each(function () {

@@ -5,13 +5,13 @@ class SearchManager {
    */
   constructor () {
     this.worker = SearchLib.Worker.create({
-      onmessage: (e) => {
-        if (e.data.type === 'search') {
-          this.render(e.data.results);
+      onmessage: ({ data }) => {
+        if (data.type === 'search') {
+          this.render(data.results);
         }
 
-        if (e.data.type === 'recent') {
-          this.render(e.data.results);
+        if (data.type === 'recent') {
+          this.render(data.results);
         }
       }
     });

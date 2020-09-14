@@ -4,35 +4,34 @@ class SearchManager {
    * @constructor
    */
   constructor () {
-    const store = new DocumentsStore();
+    this.worker = SearchLib.Worker.create({
+      onmessage: (e) => {
+        if (e.data.type === 'search') {
+          this.render(e.data.results);
+        }
+
+        if (e.data.type === 'recent') {
+          this.render(e.data.results);
+        }
+      }
+    });
 
     $(window).load(() => _.defer(() => {
-      const weights = BasSearchEngine.weights;
+      const store = new DocumentsStore();
 
-      this.engine = new BasSearchEngine({
+      this.worker.postMessage({
+        type: 'initialize',
         documents: [
           ...store.getActionItems(),
           ...store.getVideoItems(),
           ...store.getWikiItems()
-        ],
-        fields: [
-          { name: 'descriptions', weight: ({ type }) => weights.descriptions[type] },
-          { name: 'suggestions', weight: ({ type }) => weights.suggestions[type] },
-          { name: 'timestamps', weight: ({ type }) => weights.timestamps[type] },
-          { name: 'variables', weight: ({ type }) => weights.variables[type] },
-          { name: 'module', weight: ({ type }) => weights.module[type] },
-          { name: 'name', weight: ({ type }) => weights.name[type] }
-        ],
-        distance: 0.3,
-        limit: 500,
-        ref: 'key'
+        ]
       });
     }));
 
     this.registerHandlers();
     this.pagesCount = 1;
     this.pageIndex = 0;
-    this.engine = null;
     this.query = null;
   }
 
@@ -110,7 +109,7 @@ class SearchManager {
     });
 
     $(window).resize(() => {
-      if (this.$search.is(':hidden')) return;
+      if (!this.$search.length || this.$search.is(':hidden')) return;
 
       if (this.query) {
         this.search(this.query);
@@ -156,7 +155,7 @@ class SearchManager {
     this.$recentHeader.hide();
     this.$emptyHeader.hide();
     this.query = query;
-    this.render(this.engine.search(query));
+    this.worker.postMessage({ type: 'search', query: query });
   }
 
   /**
@@ -166,7 +165,7 @@ class SearchManager {
     this.$recentHeader.show();
     this.$emptyHeader.hide();
     this.query = null;
-    this.render(this.engine.recent());
+    this.worker.postMessage({ type: 'recent', query: null });
   }
 
   /**
@@ -298,6 +297,7 @@ class SearchManager {
    * @param {Boolean} hide - toggle condition.
    */
   toggle(hide) {
+    this.worker.postMessage({ history: ActionHistory, type: 'update' });
     $(document.body).css('overflow', hide ? 'visible' : 'hidden');
     this.$pagination.toggle(!hide);
     this.$actions.toggle(hide);

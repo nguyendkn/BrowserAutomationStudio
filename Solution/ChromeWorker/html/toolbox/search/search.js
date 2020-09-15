@@ -24,10 +24,14 @@ class SearchManager {
     this.worker = SearchLib.Worker.create({
       onmessage: ({ data }) => {
         if (data.type === 'search') {
+          this.$recentHeader.hide();
+          this.$emptyHeader.hide();
           this.render(data.results);
         }
 
         if (data.type === 'recent') {
+          this.$recentHeader.show();
+          this.$emptyHeader.hide();
           this.render(data.results);
         }
       }
@@ -168,8 +172,6 @@ class SearchManager {
    */
   search(query) {
     this.$search.addClass('disabled').css('filter', 'grayscale(100%)');
-    this.$recentHeader.hide();
-    this.$emptyHeader.hide();
     this.query = query;
     this.worker.postMessage({ type: 'search', query: query });
   }
@@ -179,8 +181,6 @@ class SearchManager {
    */
   recent() {
     this.$search.addClass('disabled').css('filter', 'grayscale(100%)');
-    this.$recentHeader.show();
-    this.$emptyHeader.hide();
     this.query = null;
     this.worker.postMessage({ type: 'recent', query: null });
   }

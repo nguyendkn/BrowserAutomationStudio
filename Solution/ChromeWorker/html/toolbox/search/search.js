@@ -167,20 +167,24 @@ class SearchManager {
    * @param {String} query - selected query string.
    */
   search(query) {
-    this.$recentHeader.hide();
-    this.$emptyHeader.hide();
-    this.query = query;
-    this.worker.postMessage({ type: 'search', query: query });
+    this.$search.addClass('disabled').fadeTo(150, 0.33, () => {
+      this.$recentHeader.hide();
+      this.$emptyHeader.hide();
+      this.query = query;
+      this.worker.postMessage({ type: 'search', query: query });
+    });
   }
 
   /**
    * Perform an action search using the action history.
    */
   recent() {
-    this.$recentHeader.show();
-    this.$emptyHeader.hide();
-    this.query = null;
-    this.worker.postMessage({ type: 'recent', query: null });
+    this.$search.addClass('disabled').fadeTo(150, 0.33, () => {
+      this.$recentHeader.show();
+      this.$emptyHeader.hide();
+      this.query = null;
+      this.worker.postMessage({ type: 'recent', query: null });
+    });
   }
 
   /**
@@ -188,6 +192,7 @@ class SearchManager {
    * @param {Object[]} items - selected items array.
    */
   render(items) {
+    this.$search.removeClass('disabled').fadeTo(150, 1);
     this.$results.empty();
     this.pagesCount = 1;
     this.pageIndex = 0;

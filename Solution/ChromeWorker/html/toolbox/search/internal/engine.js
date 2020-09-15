@@ -37,7 +37,9 @@ class BasSearchEngine extends SearchLib.SearchEngine {
       limit
     });
 
-    this.createIndex({ documents, fields, ref }); this.cache = {};
+    this.createIndex({ documents, fields, ref }); 
+    this.history = [];
+    this.cache = {};
   }
 
   /**
@@ -112,7 +114,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
    * @returns {Object[]} search results array.
    */
   recent() {
-    return ActionHistory.filter((key) => this.store.findByRef(key)).map((key) => ({
+    return this.history.filter((key) => this.store.findByRef(key)).map((key) => ({
       ...this.store.findByRef(key),
       descInfo: {},
       suggInfo: {},

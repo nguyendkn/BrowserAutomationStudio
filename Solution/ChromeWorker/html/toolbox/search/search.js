@@ -4,35 +4,53 @@ class SearchManager {
    * @constructor
    */
   constructor () {
-    const store = new DocumentsStore();
+    const store = new DocumentsStore({
+      actions: Object.entries(_A).map(([name, action]) => {
+        const source = $(`#${name}`);
+        return [name, {
+          srcText: source.text(),
+          srcHtml: source.html(),
+          ...action
+        }];
+      }),
+      tasks: _TaskCollection.toJSON(),
+      schema: _Schema,
+      video: _VIDEO,
+      wiki: _WIKI,
+      dict: _A2G,
+      lang: _K
+    });
+
+    this.worker = SearchLib.Worker.create({
+      onmessage: ({ data }) => {
+        if (data.type === 'search') {
+          this.$recentHeader.hide();
+          this.$emptyHeader.hide();
+          this.render(data.results);
+        }
+
+        if (data.type === 'recent') {
+          this.$recentHeader.show();
+          this.$emptyHeader.hide();
+          this.render(data.results);
+        }
+      }
+    });
 
     $(window).load(() => _.defer(() => {
-      const weights = BasSearchEngine.weights;
-
-      this.engine = new BasSearchEngine({
+      this.worker.postMessage({
+        type: 'initialize',
         documents: [
           ...store.getActionItems(),
           ...store.getVideoItems(),
           ...store.getWikiItems()
-        ],
-        fields: [
-          { name: 'descriptions', weight: ({ type }) => weights.descriptions[type] },
-          { name: 'suggestions', weight: ({ type }) => weights.suggestions[type] },
-          { name: 'timestamps', weight: ({ type }) => weights.timestamps[type] },
-          { name: 'variables', weight: ({ type }) => weights.variables[type] },
-          { name: 'module', weight: ({ type }) => weights.module[type] },
-          { name: 'name', weight: ({ type }) => weights.name[type] }
-        ],
-        distance: 0.3,
-        limit: 500,
-        ref: 'key'
+        ]
       });
     }));
 
     this.registerHandlers();
     this.pagesCount = 1;
     this.pageIndex = 0;
-    this.engine = null;
     this.query = null;
   }
 
@@ -110,7 +128,7 @@ class SearchManager {
     });
 
     $(window).resize(() => {
-      if (this.$search.is(':hidden')) return;
+      if (!this.$search.length || this.$search.is(':hidden')) return;
 
       if (this.query) {
         this.search(this.query);
@@ -153,20 +171,18 @@ class SearchManager {
    * @param {String} query - selected query string.
    */
   search(query) {
-    this.$recentHeader.hide();
-    this.$emptyHeader.hide();
+    this.$search.addClass('disabled').css('filter', 'grayscale(100%)');
     this.query = query;
-    this.render(this.engine.search(query));
+    this.worker.postMessage({ type: 'search', query: query });
   }
 
   /**
    * Perform an action search using the action history.
    */
   recent() {
-    this.$recentHeader.show();
-    this.$emptyHeader.hide();
+    this.$search.addClass('disabled').css('filter', 'grayscale(100%)');
     this.query = null;
-    this.render(this.engine.recent());
+    this.worker.postMessage({ type: 'recent', query: null });
   }
 
   /**
@@ -174,6 +190,7 @@ class SearchManager {
    * @param {Object[]} items - selected items array.
    */
   render(items) {
+    this.$search.removeClass('disabled').css('filter', 'grayscale(0%)');
     this.$results.empty();
     this.pagesCount = 1;
     this.pageIndex = 0;
@@ -298,10 +315,11 @@ class SearchManager {
    * @param {Boolean} hide - toggle condition.
    */
   toggle(hide) {
+    this.worker.postMessage({ history: ActionHistory, type: 'update' });
     $(document.body).css('overflow', hide ? 'visible' : 'hidden');
-    this.$pagination.toggle(!hide);
     this.$actions.toggle(hide);
     this.$search.toggle(!hide);
+    this.$pagination.hide();
 
     if (!hide) {
       this.$searchInput.focus().val('');

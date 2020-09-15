@@ -4,6 +4,23 @@ class SearchManager {
    * @constructor
    */
   constructor () {
+    const store = new DocumentsStore({
+      actions: Object.entries(_A).map(([name, action]) => {
+        const source = $(`#${name}`);
+        return [name, {
+          srcText: source.text(),
+          srcHtml: source.html(),
+          ...action
+        }];
+      }),
+      tasks: _TaskCollection.toJSON(),
+      schema: _Schema,
+      video: _VIDEO,
+      wiki: _WIKI,
+      dict: _A2G,
+      lang: _K
+    });
+
     this.worker = SearchLib.Worker.create({
       onmessage: ({ data }) => {
         if (data.type === 'search') {
@@ -17,8 +34,6 @@ class SearchManager {
     });
 
     $(window).load(() => _.defer(() => {
-      const store = new DocumentsStore();
-
       this.worker.postMessage({
         type: 'initialize',
         documents: [

@@ -228,6 +228,7 @@ namespace BrowserAutomationStudioFramework
                    n->SetStringBoxProxy(proxy);
                    n->SetDatabase(DatabaseConnector,r->GetTableId(),CsvHelper,r->GetColumnIds());
                    n->SetInfo("TableId",QString::number(r->GetTableId()));
+                   n->SetInfo("Groups",r->GetGroupList().join(","));
                    QStringList ColumnIds;
                    for(int id: r->GetColumnIds())
                    {

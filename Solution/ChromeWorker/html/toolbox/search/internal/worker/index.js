@@ -11,10 +11,11 @@ SearchLib.Worker = {
 
   source: function () {
     const libUrl = 'file:///html/toolbox/search/internal';
-    self.importScripts('file:///html/toolbox/lodash.js');
-    self.importScripts(`${libUrl}/library.min.js`);
-    self.importScripts(`${libUrl}/engine.js`);
-    self.importScripts(`${libUrl}/helper.js`);
+    importScripts('file:///html/toolbox/lodash.js');
+    importScripts(`${libUrl}/library.min.js`);
+    importScripts(`${libUrl}/documents.js`);
+    importScripts(`${libUrl}/engine.js`);
+    importScripts(`${libUrl}/helper.js`);
     const map = BasSearchEngine.weights;
 
     self.onmessage = function (e) {
@@ -34,22 +35,22 @@ SearchLib.Worker = {
           ref: 'key'
         });
 
-        postMessage({ success: true, type: e.data.type });
-      }
-
-      if (e.data.type === 'update') {
-        if (self.engine) self.engine.history = e.data.history;
-        postMessage({ success: true, type: e.data.type });
+        postMessage({ type: e.data.type });
       }
 
       if (e.data.type === 'search') {
         const results = self.engine.search(e.data.query);
-        postMessage({ success: true, type: e.data.type, results });
+        postMessage({ type: e.data.type, results });
       }
 
       if (e.data.type === 'recent') {
         const results = self.engine.recent(e.data.query);
-        postMessage({ success: true, type: e.data.type, results });
+        postMessage({ type: e.data.type, results });
+      }
+
+      if (e.data.type === 'update') {
+        if (self.engine) self.engine.history = e.data.history;
+        postMessage({ type: e.data.type });
       }
     };
   }

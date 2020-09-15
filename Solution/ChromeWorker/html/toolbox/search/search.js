@@ -317,9 +317,9 @@ class SearchManager {
   toggle(hide) {
     this.worker.postMessage({ history: ActionHistory, type: 'update' });
     $(document.body).css('overflow', hide ? 'visible' : 'hidden');
-    this.$pagination.toggle(!hide);
     this.$actions.toggle(hide);
     this.$search.toggle(!hide);
+    this.$pagination.hide();
 
     if (!hide) {
       this.$searchInput.focus().val('');

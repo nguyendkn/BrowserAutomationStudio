@@ -3,32 +3,30 @@ class DocumentsStore {
    * Create an instance of `DocumentsStore` class.
    * @constructor
    */
-  constructor () {
-    this.collection = _TaskCollection.toJSON();
-    this.actions = _A;
-    this.groups = _G;
-    this.map = _A2G;
-
-    this.video = _VIDEO;
-    this.wiki = _WIKI;
-    this.lang = _K;
+  constructor ({ actions, schema, video, tasks, wiki, dict, lang }) {
+    this.actions = actions;
+    this.schema = schema;
+    this.tasks = tasks;
+    this.video = video;
+    this.wiki = wiki;
+    this.dict = dict;
+    this.lang = lang;
   }
 
   /**
    * Get an array of all action items.
    */
   getActionItems() {
-    return Object.entries(this.actions)
+    return this.actions
       .filter(([name]) => {
-        if (_Schema && _Schema.length === 0) {
+        if (this.schema && this.schema.length === 0) {
           return !name.includes('Database');
         }
         return true;
       })
       .map(([name, action]) => {
-        const source = $(`#${name}`);
-        const descriptions = this.getActionDescriptions(source.text());
-        const variables = this.getActionVariables(source.html());
+        const descriptions = this.getActionDescriptions(action.srcText);
+        const variables = this.getActionVariables(action.srcHtml);
 
         const item = {
           popup: (!action.group && action.class && action.class === 'browser'),
@@ -104,17 +102,42 @@ class DocumentsStore {
    */
   getActionVariables(source) {
     try {
-      const template = $(_.template(source)({
-        function_params: [],
-        selector: {},
-        model: {}
-      }));
+      const results = _.uniq([...source.split(/<%=(.*?)%>/gs)
+        .filter((src) => !src.includes('#path'))
+        .filter((src) => !src.includes('#back'))
+        .map((src) => {
+          const variables = [...src.matchAll(/html\(\)\)\((.*)\)/gs)]
+            .filter((match) => match[1].length)
+            .map((match) => {
+              const function_params = {}, model = {}, t = {}, c = {};
+              const obj = eval('(' + match[1] + ')');
 
-      return _.uniq([
-        ...$.map(template.find('input[data-variable-constructor=true]'), (e) => e.value),
-        ...$.map(template.find('.input_selector_string'), (e) => e.placeholder),
-        ...$.map(template.find('.input_selector_number'), (e) => e.placeholder)
-      ]);
+              if (!obj.default_selector) {
+                if (obj.default_variable && obj.default_variable.length) {
+                  return obj.default_variable;
+                } else {
+                  return '';
+                }
+              }
+
+              return obj.description;
+            });
+
+          if (src.includes('#targetfields')) {
+            variables.push(tr('Target tab number'));
+            variables.push(tr('Target url'));
+          }
+
+          if (src.includes('#movefields')) {
+            variables.push(tr('Deviation'));
+            variables.push(tr('Gravity'));
+            variables.push(tr('Speed'));
+          }
+
+          return variables;
+        })].flat());
+
+      return _.compact(results);
     } catch (e) {
       return [];
     }
@@ -188,9 +211,9 @@ class DocumentsStore {
    * @param {String} action - selected action name.
    */
   getActionGroup(action) {
-    const name = _.get(this.map, action, 'browser');
+    const name = _.get(this.dict, action, 'browser');
 
-    return _.find(this.collection, {
+    return _.find(this.tasks, {
       type: 'group',
       name: name
     });

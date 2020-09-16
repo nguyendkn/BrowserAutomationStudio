@@ -46,15 +46,22 @@ class BasVariablesDialog extends BasModalDialog {
           }
         } else {
           if (el.is('[data-append-array]')) {
-            if (el.val().length == 0)
+            if (el.val().length === 0) {
               el.val(name);
-            else
+            } else {
               el.val(el.val() + ',' + name);
+            }
           } else {
             el.val(name);
           }
         }
       }
+    }
+
+    if (!data.isGlobal) {
+      BasModalDialog.store.addVariable(name, false);
+    } else {
+      BasModalDialog.store.addVariable(name, true);
     }
 
     this.helper.checkPathEdited(data.selector);

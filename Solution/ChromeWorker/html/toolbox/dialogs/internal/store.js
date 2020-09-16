@@ -19,6 +19,7 @@ class DialogsStore {
    * @param {Object} source - target variable object.
    */
   addVariable(source, global) {
+    if (!source) return;
     if (global) {
       if (!this.variablesInit.global) { this.variablesInit.global = true; return; }
       this.add(this.uniq(source, _GlobalVariableCollection.toJSON()), this.recentVariables);
@@ -33,6 +34,7 @@ class DialogsStore {
    * @param {Object} source - target resource object.
    */
   addResource(source) {
+    if (!source) return;
     if (!this.resourcesInit) { this.resourcesInit = true; return; }
     this.add(this.uniq(source, _ResourceCollection.toJSON()), this.recentResources);
   }
@@ -42,6 +44,7 @@ class DialogsStore {
    * @param {Object} source - target function object.
    */
   addFunction(source) {
+    if (!source) return;
     if (!this.functionsInit) { this.functionsInit = true; return; }
     this.add(this.uniq(source, _FunctionCollection.toJSON()), this.recentFunctions);
   }

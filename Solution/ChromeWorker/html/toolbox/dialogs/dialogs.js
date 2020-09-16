@@ -97,6 +97,7 @@ class BasModalDialog {
     });
 
     $(window).resize(function (e) {
+      if (!self.$modal) return;
       self.$modal.css('height', window.innerHeight * (100.0 / _Z) + 'px');
     });
   }
@@ -144,11 +145,17 @@ class BasModalDialog {
       <div class="modal-dialog-container">
         <div class="modal-search-container">
           <input type="text" id="modalSearchInput" class="modal-search-input" placeholder="<%= tr('Start typing ' + itemTypes.single + ' name...') %>">
-          <button type="button" id="modalSearchClose" class="modal-search-button modal-search-close">
-            <i class="fa fa-fw fa-times" aria-hidden="true" />
-          </button>
-          <button type="button" id="modalSearchRecent" class="modal-search-button modal-search-recent">
-            <i class="fa fa-fw fa-list" aria-hidden="true" />
+          <span id="modalSearchIcon" class="modal-search-control modal-search-icon">
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 16.1667 22.8333 C 19.8486 22.8333 22.8333 19.8486 22.8333 16.1667 C 22.8333 12.4848 19.8486 9.5 16.1667 9.5 C 12.4848 9.5 9.5 12.4848 9.5 16.1667 C 9.5 19.8486 12.4848 22.8333 16.1667 22.8333Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 24.5 24.5 L20.875 20.875" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>          
+          </span>
+          <button type="button" id="modalSearchClose" class="modal-search-control modal-search-close">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 14 6 L 6 14" stroke="#c56d5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 6 6 L 14 14" stroke="#c56d5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </button>
         </div>
         <div class="modal-content-container">
@@ -197,13 +204,15 @@ class BasModalDialog {
 
     this.$modal = $(template(this)).appendTo('body').show();
 
-    this.$recent = $('.modal-recent-container');
-    this.$recent.scrollTop(this.constructor.recentItemsScrollTop);
-    this.$list = $('.modal-list-container');
-    this.$list.scrollTop(this.constructor.listItemsScrollTop);
+    this.$recent = $('.modal-recent-container')
+      .scrollTop(this.constructor.recentItemsScrollTop)
+      .hide();
 
-    $('.modal-recent-container').hide();
+    this.$list = $('.modal-list-container')
+      .scrollTop(this.constructor.listItemsScrollTop)
+      .show();
 
+    $('body').css('overflow', 'hidden');
     this.addHandlers();
   }
 
@@ -216,10 +225,11 @@ class BasModalDialog {
     const options = _.object(this.options.map((o) => [o.id, $(`#${o.id}`).is(':checked')]));
     this.constructor.recentItemsScrollTop = this.$recent.scrollTop();
     this.constructor.listItemsScrollTop = this.$list.scrollTop();
+    $('body').css('overflow', 'visible');
     this.$modal.remove();
     this.$modal = null;
 
-    this.handler(value.name ? value.name : '', { selector: this.selector, options, ...value });
+    this.handler(value.name || '', { selector: this.selector, options, ...value });
   }
 
 

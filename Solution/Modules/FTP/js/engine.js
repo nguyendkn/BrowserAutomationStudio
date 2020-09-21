@@ -53,10 +53,11 @@ function FTP_WriteFile(){
 function FTP_Download(){
 	var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var destination_path = FTP_FormatPath(_function_argument("DestinationPath"));
+	var verify_checksums = _function_argument("VerifyChecksums");
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
+    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, verify_checksums, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT, _FTP_PROTOCOL];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
         _embedded("DownloadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -69,10 +70,11 @@ function FTP_Download(){
 function FTP_Upload(){
     var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var destination_path = FTP_FormatPath(_function_argument("DestinationPath"));
+	var verify_checksums = _function_argument("VerifyChecksums");
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
+    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, verify_checksums, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT, _FTP_PROTOCOL];
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
         _embedded("UploadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!

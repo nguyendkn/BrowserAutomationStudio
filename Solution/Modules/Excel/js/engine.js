@@ -8,7 +8,7 @@ function Excel_CreateFile(){
 	
 	VAR_XLSX_NODE_PARAMETERS = file_path;
 	
-	_embedded("ExcelCreateFile", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_CreateFile", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_GetSheetsList(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -16,7 +16,7 @@ function Excel_GetSheetsList(){
 	
 	VAR_XLSX_NODE_PARAMETERS = file_path;
 	
-	_embedded("ExcelGetSheetsList", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_GetSheetsList", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -28,7 +28,7 @@ function Excel_AddSheet(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_name, sheet_index];
 	
-	_embedded("ExcelAddSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_AddSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_RenameSheet(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -38,7 +38,7 @@ function Excel_RenameSheet(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, new_sheet_name];
 	
-	_embedded("ExcelRenameSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_RenameSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_MoveSheet(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -48,7 +48,7 @@ function Excel_MoveSheet(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, new_sheet_index];
 	
-	_embedded("ExcelMoveSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_MoveSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_DeleteSheet(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -57,7 +57,7 @@ function Excel_DeleteSheet(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name];
 	
-	_embedded("ExcelDeleteSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_DeleteSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ReadCell(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -67,7 +67,7 @@ function Excel_ReadCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address];
 	
-	_embedded("ExcelReadCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_ReadCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -80,7 +80,7 @@ function Excel_WriteToCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, data];
 	
-	_embedded("ExcelWriteToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_WriteToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ReadSheet(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -90,7 +90,7 @@ function Excel_ReadSheet(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data_format];
 	
-	_embedded("ExcelReadSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_ReadSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -102,7 +102,7 @@ function Excel_WriteToSheet(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data];
 	
-	_embedded("ExcelWriteToSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_WriteToSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_CountRows(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -111,7 +111,7 @@ function Excel_CountRows(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name];
 	
-	_embedded("ExcelCountRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_CountRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -128,7 +128,7 @@ function Excel_ReadRows(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row, data_format];
 	
-	_embedded("ExcelReadRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_ReadRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -143,7 +143,7 @@ function Excel_InsertRows(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, data];
 	
-	_embedded("ExcelInsertRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_InsertRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_DeleteRows(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -157,7 +157,7 @@ function Excel_DeleteRows(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row];
 	
-	_embedded("ExcelDeleteRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_DeleteRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ReadCellsRange(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -169,7 +169,7 @@ function Excel_ReadCellsRange(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data_format];
 	
-	_embedded("ExcelReadCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_ReadCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -183,7 +183,7 @@ function Excel_WriteToCellsRange(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data];
 	
-	_embedded("ExcelWriteToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_WriteToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ImportToResources(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -249,7 +249,7 @@ function Excel_ClearSheet(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name];
 	
-	_embedded("ExcelClearSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_ClearSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ClearCell(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -259,7 +259,7 @@ function Excel_ClearCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address];
 	
-	_embedded("ExcelClearCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_ClearCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ClearCellsRange(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -270,7 +270,7 @@ function Excel_ClearCellsRange(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell];
 	
-	_embedded("ExcelClearCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_ClearCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_ConvertToJSON(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -326,7 +326,7 @@ function Excel_FindCells(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
 	
-	_embedded("ExcelFindCells", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_FindCells", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -338,7 +338,7 @@ function Excel_FindCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
 	
-	_embedded("ExcelFindCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_FindCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -350,7 +350,7 @@ function Excel_GetFormulaFromCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address];
 	
-	_embedded("ExcelGetFormulaFromCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_GetFormulaFromCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -363,7 +363,7 @@ function Excel_SetFormulaToCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, formula];
 	
-	_embedded("ExcelSetFormulaToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_SetFormulaToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_GetCellStyle(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -374,7 +374,7 @@ function Excel_GetCellStyle(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, style_name];
 	
-	_embedded("ExcelGetCellStyle", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_GetCellStyle", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -387,7 +387,7 @@ function Excel_GetCellStyles(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, styles_name_list];
 	
-	_embedded("ExcelGetCellStyles", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_GetCellStyles", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(JSON.stringify(VAR_XLSX_NODE_PARAMETERS));
 };
@@ -401,7 +401,7 @@ function Excel_SetStyleToCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, style_name, style_value];
 	
-	_embedded("ExcelSetStyleToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_SetStyleToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_SetStylesToCell(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -412,7 +412,7 @@ function Excel_SetStylesToCell(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, styles];
 	
-	_embedded("ExcelSetStylesToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_SetStylesToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_SetStyleToCellsRange(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -425,7 +425,7 @@ function Excel_SetStyleToCellsRange(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, style_name, style_value];
 	
-	_embedded("ExcelSetStyleToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_SetStyleToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_SetStylesToCellsRange(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
@@ -437,7 +437,7 @@ function Excel_SetStylesToCellsRange(){
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, styles];
 	
-	_embedded("ExcelSetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_SetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
 function Excel_DateToNumber(date){
 	date = date instanceof Date ? date : new Date(date);
@@ -467,7 +467,7 @@ function Excel_CloseFile(){
 	
 	VAR_XLSX_NODE_PARAMETERS = file_path;
 	
-	_embedded("ExcelCloseFile", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	_embedded("Excel_CloseFile", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 }
 function Excel_IsJsonString(str){
     try{

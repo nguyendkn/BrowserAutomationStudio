@@ -153,17 +153,12 @@ void CompileResults::Submit()
     ui->RemoteProjectLabel->setStyleSheet("*{color:gray}");
 
 
-    QUrl Url;
-    Url.setScheme("https");
-    Url.setHost("bablosoft.com");
-    Url.setPath("/createorupdatescript");
-    QUrlQuery Query;
-    Query.addQueryItem("email",ui->Login->text());
-    Query.addQueryItem("name",_Compiler->GetName());
-    Query.addQueryItem("pass",ui->Password->text());
-    Query.addQueryItem("mode","2");
-    Url.setQuery(Query);
-    QString UrlString = Url.toString();
+    QString UrlString =
+            QString("https://bablosoft.com/createorupdatescript") +
+            QString("?email=") + QUrl::toPercentEncoding(ui->Login->text()) +
+            QString("&name=") + QUrl::toPercentEncoding(_Compiler->GetName()) +
+            QString("&pass=") + QUrl::toPercentEncoding(ui->Password->text()) +
+            QString("&mode=") + QUrl::toPercentEncoding("2");
 
     IHttpClient * Client = _HttpClientFactory->GetHttpClient(false);
     Client->setParent(this);

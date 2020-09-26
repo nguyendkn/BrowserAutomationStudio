@@ -448,7 +448,7 @@ function Excel_DateToNumber(date){
 	number += (date - date_only) / milliseconds_in_day;
 	if(date > incorrect_leap_date){number += 1};
 	
-	return(number);
+	return number;
 };
 function Excel_NumberToDate(number){
 	number = typeof number==="number" ? number : Number(number);
@@ -459,7 +459,7 @@ function Excel_NumberToDate(number){
 	var date = new Date(date_base.getTime() + partial_milliseconds);
 	date.setDate(date.getDate() + full_days);
 	
-	return(date);
+	return date;
 };
 function Excel_CloseFile(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));

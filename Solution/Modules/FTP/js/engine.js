@@ -13,32 +13,13 @@ function FTP_Config(protocol, host, port, username, password, timeout){
 	_FTP_CONFIG["pass"] = password;
 	_FTP_CONNECTION_TIMEOUT = timeout*1000;
 };
-function FTP_Connection(){
-	var module = _function_argument("module");
-	VAR_FTP_CONNECTION_PARAMETERS = [_FTP_CONNECTION_ID, _FTP_CONFIG];
-	
-	_if(module=="SFTP",function(){
-		_embedded("ConnectionSFTP", "Node", "12.18.3", "FTP_CONNECTION_PARAMETERS", 60000)!
-	})!
-	
-	_if(module=="FTP",function(){
-		_embedded("ConnectionFTP", "Node", "12.18.3", "FTP_CONNECTION_PARAMETERS", 60000)!
-	})!
-	
-	_if(module=="SSH",function(){
-		_embedded("ConnectionSSH", "Node", "12.18.3", "FTP_CONNECTION_PARAMETERS", 60000)!
-	})!
-};
 function FTP_ReadFile(){
 	var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var base64 = _function_argument("base64");
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, base64, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, base64, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("ReadFileSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -59,10 +40,7 @@ function FTP_WriteFile(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, value, ending_symbol, base64, append, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, value, ending_symbol, base64, append, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("WriteFileSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -75,13 +53,11 @@ function FTP_WriteFile(){
 function FTP_Download(){
 	var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var destination_path = FTP_FormatPath(_function_argument("DestinationPath"));
+	var verify_checksums = _function_argument("VerifyChecksums");
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, verify_checksums, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT, _FTP_PROTOCOL];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
         _embedded("DownloadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -94,13 +70,11 @@ function FTP_Download(){
 function FTP_Upload(){
     var file_path = FTP_FormatPath(_function_argument("FilePath"));
 	var destination_path = FTP_FormatPath(_function_argument("DestinationPath"));
+	var verify_checksums = _function_argument("VerifyChecksums");
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+    VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, verify_checksums, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT, _FTP_PROTOCOL];
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
         _embedded("UploadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -115,10 +89,7 @@ function FTP_CheckExist(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("CheckExistSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -135,10 +106,7 @@ function FTP_GetInfo() {
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-    VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+    VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
         _embedded("GetInfoSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -156,10 +124,7 @@ function FTP_Create(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, file_type, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, file_type, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("CreateSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -174,10 +139,7 @@ function FTP_Delete(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("DeleteSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -193,10 +155,7 @@ function FTP_Move(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, new_file_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, new_file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("MoveSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -212,10 +171,7 @@ function FTP_Copy(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [file_path, copy_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, copy_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("CopySFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -234,10 +190,7 @@ function FTP_Search(){
 	var timeout = _function_argument("Timeout");
 	
 	FTP_CheckProtocol();
-	VAR_FTP_NODE_PARAMETERS = [folder_path, mask, recursive, search_files, search_folders, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":(_FTP_PROTOCOL=="FTP" ? "FTP" : "SFTP")})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [folder_path, mask, recursive, search_files, search_folders, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
 		_embedded("SearchSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
@@ -283,10 +236,7 @@ function FTP_RunCommand(){
 		fail(_K=="ru" ? ("Выполнить команду можно только через SSH протокол") : ("The command can only be executed via SSH protocol"));
 	};
 	
-	VAR_FTP_NODE_PARAMETERS = [сommand, wait_finish, pty, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":"SSH"})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [сommand, wait_finish, pty, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_embedded("RunCommandSSH", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	
@@ -302,13 +252,7 @@ function FTP_CalculateChecksum(){
 		fail(_K=="ru" ? ("Рассчитать контрольную сумму можно только через SSH протокол") : ("The checksum can be calculated only via the SSH protocol"));
 	};
 	
-	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONNECTION_TIMEOUT];
-	
-	_call_function(FTP_Connection,{"module":"SFTP"})!
-	_result_function();
-	
-	_call_function(FTP_Connection,{"module":"SSH"})!
-	_result_function();
+	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_embedded("CalculateChecksumSSH", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
 	

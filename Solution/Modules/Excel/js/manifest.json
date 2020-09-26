@@ -785,7 +785,7 @@
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, style_name, style_value] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(cell_address).style(style_name, style_value);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "xExcel_SetStyleToCell",
+            "DataName": "Excel_SetStyleToCell",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"

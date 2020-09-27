@@ -11,7 +11,7 @@
 	<div class="tr tooltip-paragraph-fold">To get a list of all sheet names, use the JPath query <span style="color:black">$.sheets[*].name</span> in the "Get all values" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">To get data for the first sheet, use the JPath query <span style="color:black">$.sheets[0].data</span> in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">To get data for a sheet with a name from the [[NAME]] variable, use the JPath query <span style="color:black">$.sheets[?(@.name=="[[NAME]]")].data</span> in the "Get value" action from the "JSON" module.</div>
-	<div class="tr tooltip-paragraph-fold">To get from the first sheet the value of the cell with row index 1 and column index 0, use the JPath query <span style="color:black">$.sheets[0].data[1][0]</span> in the "Get value" action from the "JSON" module.</div>
+	<div class="tr tooltip-paragraph-fold">To get the value of the cell with row index 1 and column index 0, use the JPath query <span style="color:black">$.sheets[0].data[1][0]</span> in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">This action can be used in conjunction with the "JSON" module and the "Convert from JSON" action to edit an excel file.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

@@ -311,7 +311,7 @@ function Excel_ConvertFromJSON(){
 		var sheet_name = sheet.name;
 		var sheet_data = sheet.data;
 		
-		_call_function(Excel_ClearSheet,{"FilePath":file_path,"SheetIndexOrName":resource_name,"Timeout":timeout})!
+		_call_function(Excel_ClearSheet,{"FilePath":file_path,"SheetIndexOrName":sheet_name,"Timeout":timeout})!
 		_result_function();
 		
 		_call_function(Excel_WriteToSheet,{"FilePath":file_path,"SheetIndexOrName":sheet_name,"Data":sheet_data,"Timeout":timeout})!

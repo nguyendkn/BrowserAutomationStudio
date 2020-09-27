@@ -15,7 +15,7 @@
 	<div class="tr tooltip-paragraph-fold">2D list - a list that consists of lists containing the cell values. Example: <code>[["A1","B1","C1"],["A2","B2","C2"],["A3","B3","C3"]]</code></div>
 	<div class="tr tooltip-paragraph-fold">Data in a suitable format can be obtained from the actions: "Read sheet", "Read rows", "Read cells range".</div>
 	<div class="tr tooltip-paragraph-fold">Data can be generated manually by using "List" module or "Template" action.</div>
-	<div class="tr tooltip-paragraph-fold">The "To cell" parameter is an optional limiter of the recording range, if it is not specified the end of the recording range will depend on the amount of data being written.</div>
+	<div class="tr tooltip-paragraph-fold">The "To cell" parameter is an optional limiter of data to be written. If it is empty, number of affected cells will depend only on "Data" parameter.</div>
 	<div class="tr tooltip-paragraph-fold">With this action, you can write the same data into several cells, for this need to fill in the "From cell" and "To cell" parameters and specify the string or number that needs to write to all cells of the specified range.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

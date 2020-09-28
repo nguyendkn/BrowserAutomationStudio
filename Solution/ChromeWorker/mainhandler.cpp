@@ -822,7 +822,7 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
                             if(url != "tab://new/" && !Data->IsCreatingNewPopup)
                             {
                                 ReqestHeaderMap.insert(std::make_pair(Header.first, Header.second));
-                                request->SetReferrer(Header.second, REFERRER_POLICY_DEFAULT);
+                                request->SetReferrer(Header.second, REFERRER_POLICY_NEVER_CLEAR_REFERRER);
                             }
                         }
                     }else if(Header.first == "Accept-Language")

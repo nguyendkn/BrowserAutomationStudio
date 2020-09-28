@@ -6257,8 +6257,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     var MainView = Backbone.View.extend({
       el: '#container',
 
-      currentInputResource: "none",
-      currentInputVariable: "none",
       currentInputLabel: "none",
 
       events: {
@@ -6266,18 +6264,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #WaitingDisable": "interrupt",
         //"mouseover .toolbutton": "showtooltip",
         "click #backtomain": "backtomain",
-        "show.bs.modal #VariableModal": "varaddstart",
+        "show.bs.modal #LabelModal": "labeladdstart",
         "mousedown .var": "varaddstarttrigger",
+        "mousedown .res": "resaddstarttrigger",
         "mousedown .func": "funcaddstarttrigger",
         "click #PathCount": "nextpath",
 
-        "click .varok": "varadd",
-        "show.bs.modal #FunctionModal": "funcaddstart",
-        "show.bs.modal #LabelModal": "labeladdstart",
-
-        "click .funcok": "funcadd",
         "click .labelok": "labeladd",
-
         "click .timeoutok": "timeoutadd",
         "click .timeoutdefault": "timeoutdefault",
         "click .groupshow": "groupshow",
@@ -6286,12 +6279,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #showbookmarks": "showbookmarks",
         "mouseup #showhistory": "showhistorymouseup",
         "mouseup #showbookmarks": "showbookmarksmouseup",
-        
 
-        "show.bs.modal #RecourseModal": "resaddstart",
-        "mousedown .res": "resaddstarttrigger",
-        "click .resok": "resadd",
-        "click .rescontinue": "rescontinue",
         "mousedown .edit": "editstart",
         "click .specialletter": "specialletter",
         "click #executetype button":"clickexecutetype",
@@ -6445,6 +6433,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         event.stopPropagation();
         BrowserAutomationStudio_ShowHideBookmarks();
       },
+
       showhistorymouseup:function(event)
       {
         $("#showhistory").blur();
@@ -6843,348 +6832,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         InsertAtCaret("TypeData","<" + $(event.target).attr("data-key") + ">");
       },
 
-      resaddstarttrigger: function(event)
+      funcaddstarttrigger: function({ target })
       {
-        this.currentInputResource = $(event.target).closest("a").attr("data-result-target")
-
-        $('#RecourseModal').modal('show')   
-
+        BasFunctionsDialog.create($(target).closest('a'));
       },
 
-      rescontinue: function(event)
+      resaddstarttrigger: function({ target })
       {
-        $('#RecourseModal').find(".step-2").show()
-        $('#RecourseModal').find(".step-1").hide()
-
+        BasResourcesDialog.create($(target).closest('a'));
       },
 
-      resaddstart: function(event)
+      varaddstarttrigger: function({ target })
       {
-
-        $('#RecourseModal').find(".step-1").show()
-        $('#RecourseModal').find(".step-2").hide()
-
-
-        var json = _ResourceCollection.toJSON();
-        $('#RecourseName').html("")
-        if(json.length == 0)
-        {
-          $("#NoResources").show()
-          $("#RecourseControls").hide()
-          $(".rescontinue").hide()
-        }else
-        {
-          $("#NoResources").hide()
-          $("#RecourseControls").show()
-          $("#ResourceReuse").prop('checked', true);
-          $("#ResourceDontDie").prop('checked', false);
-          $(".rescontinue").show()
-          json = jsort(json);
-          for(var i = 0;i<json.length;i+=1)
-          {
-            $('#RecourseName')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"] + ": " + json[i]["description"]));
-           }
-         }
-
-        $('#RecourseName').focus()
-      },
-
-      varaddstarttrigger: function(event)
-      {
-        this.currentInputVariable = $(event.target).closest("a").attr("data-result-target")
-        this.disable_locals = $(event.target).closest("a").attr("disable_locals") == "true"
-        this.disable_globals = $(event.target).closest("a").attr("disable_globals") == "true"
-
-
-        $('#VariableModal').modal('show');
-      },
-
-      funcaddstarttrigger: function(event)
-      {
-        event.preventDefault();
-        this.currentInputVariable = $(event.target).closest("a").attr("data-result-target")
-        $('#FunctionModal').modal('show');
-      },
-
-      varaddstart: function(event)
-      {
-        //console.log("varaddstart")
-
-        var json = _VariableCollection.toJSON();
-        var json2 = _GlobalVariableCollection.toJSON();
-        var total = 0
-
-
-        
-        if(!this.disable_locals)
-        {
-          total += json.length  
-        }        
-
-        if(!this.disable_globals)
-        {
-          total += json2.length
-        }
-
-        $('#VariableName').html("")
-        if(total == 0)
-        {
-          $("#NoVariable").show()
-          $("#VariableName").hide()
-          $(".varok").hide()
-
-        }else
-        {
-          $("#NoVariable").hide()
-          $("#VariableName").show()
-          $(".varok").show()
-          if(!this.disable_locals)
-          {
-            json = jsort(json);
-            for(var i = 0;i<json.length;i+=1)
-            {
-              $('#VariableName')
-               .append($("<option></option>")
-               .attr("value",json[i]["name"])
-               .text(json[i]["name"]));
-            }
-          }
-          if(!this.disable_globals)
-          {
-            json2 = jsort(json2);
-            for(var i = 0;i<json2.length;i+=1)
-            {
-              $('#VariableName')
-               .append($("<option></option>")
-               .attr("value",json2[i]["name"])
-               .attr("isglobal","true")
-               .text(tr("Global: ") + json2[i]["name"]));
-            }
-          }
-         }
-
-
-
-        $('#VariableName').focus()
-      },
-
-      funcaddstart: function(event)
-      {
-        var json = _FunctionCollection.toJSON();
-
-        $('#FunctionNameInput').html("")
-        if(json.length == 0)
-        {
-          $("#NoFunctionFound").show()
-          $("#FunctionNameInput").hide()
-          $(".funcok").hide()
-
-        }else
-        {
-          $("#NoFunctionFound").hide()
-          $("#FunctionNameInput").show()
-          $(".funcok").show()
-          for(var i = 0;i<json.length;i+=1)
-          {
-            json = jsort(json);
-            $('#FunctionNameInput')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"]));
-           }
-         }
-
-        $('#FunctionNameInput').focus()
-
-
-
-      },
-
-      labeladdstart: function(event)
-      {
-        var json = _LabelCollection.toJSON();
-
-        $('#LabelNameInput').html("")
-        if(json.length == 0)
-        {
-          $("#NoLabelFound").show()
-          $("#LabelNameInput").hide()
-          $(".labelok").hide()
-
-        }else
-        {
-          $("#NoLabelFound").hide()
-          $("#LabelNameInput").show()
-          $(".labelok").show()
-          json = jsort(json);
-          for(var i = 0;i<json.length;i+=1)
-          {
-            $('#LabelNameInput')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"]));
-           }
-         }
-
-        $('#LabelNameInput').focus()
-        this.currentInputLabel = $(event.relatedTarget).attr("data-result-target")
-
-      },
-
-
-
-      resadd: function(event)
-      {
-        var el = $(this.currentInputResource)
-        var isnumber = $(this.currentInputResource + "_number:visible").length > 0
-
-        var res = $("#RecourseName").val();
-        if(!$("#ResourceReuse").is(':checked'))
-          res+="|notreuse";
-        if($("#ResourceDontDie").is(':checked'))
-          res+="|onlyfail";
-
-        if(isnumber)
-        {
-          el.closest(".input-group").find(".selector").html("expression")
-          el.closest(".input-group").find(".input_selector_number").hide()
-          el.closest(".input-group").find(".input_selector_string").show()
-          
-          el.val("{{" + res + "}}")
-        }else
-        {
-          var name = $("#RecourseName").val();
-          if(name.length > 0)
-          {
-            if(el.is("[data-resource-constructor]"))
-            {
-              el.val(res)
-            }else
-            {
-              if(!el.is("[data-is-code-editor]"))
-              {
-                var start = 0
-                try{
-                  start = el.val().length
-                  start = cursorposition(el[0]).start
-                }catch(e){}
-                var val = el.val()
-                val = val.slice(0, start) + "{{" + res + "}}" + val.slice(start)
-                el.val(val)
-              }else
-              {
-                var line = window[el.attr("id")].Editor.getPosition();
-                var range = new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column);
-                var id = { major: 1, minor: 1 };             
-                var op = {identifier: id, range: range, text: "{{" + res + "}}", forceMoveMarkers: true};
-                window[el.attr("id")].Editor.executeEdits("my-source", [op]);
-              }
-              
-            }
-          }
-        }
-        if(this.currentInputResource == "#selector-input")
-        {
-          _MultiSelectManager.PathManualyEdited()
-          BrowserAutomationStudio_TestPathInternal();
-        }
-
-      },
-
-      varadd: function(event)
-      {
-        var el = $(this.currentInputVariable)
-        var isnumber = $(this.currentInputVariable + "_number:visible").length > 0
-        var isglobal = $("#VariableName option:selected").attr("isglobal") == "true"
-
-        if(isnumber)
-        {
-          el.closest(".input-group").find(".selector").html("expression")
-          el.closest(".input-group").find(".input_selector_number").hide()
-          el.closest(".input-group").find(".input_selector_string").show()
-          if(isglobal)
-          {
-            el.val("[[GLOBAL:" + $("#VariableName").val() + "]]")
-          }else
-          {
-            el.val("[[" + $("#VariableName").val() + "]]")  
-          }
-          
-        }else
-        {
-
-          var name = $("#VariableName").val();
-          if(name.length > 0)
-          {
-            if(!el.is("[data-variable-constructor]"))
-            {
-
-              var insert = ""
-              if(isglobal)
-              {
-                insert = "[[GLOBAL:" + $("#VariableName").val() + "]]"
-              }else
-              {
-                insert = "[[" + $("#VariableName").val() + "]]"
-              }
-
-              if(!el.is("[data-is-code-editor]"))
-              {
-                var start = 0
-                try{
-                  start = el.val().length
-                  start = cursorposition(el[0]).start
-                }catch(e){}
-                var val = el.val()
-                val = val.slice(0, start) + insert + val.slice(start)
-
-                el.val(val).trigger("change")
-              }else
-              {
-                var line = window[el.attr("id")].Editor.getPosition();
-                var range = new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column);
-                var id = { major: 1, minor: 1 };             
-                var op = {identifier: id, range: range, text: insert, forceMoveMarkers: true};
-                window[el.attr("id")].Editor.executeEdits("my-source", [op]);
-              }
-            }else
-            {
-              if(el.is("[data-append-array]"))
-              {
-                if(el.val().length == 0)
-                  el.val($("#VariableName").val())
-                else
-                  el.val(el.val() + "," + $("#VariableName").val())
-              }else
-              {
-                el.val($("#VariableName").val())
-              }
-            }
-          }
-        }
-        if(this.currentInputVariable == "#selector-input")
-        {
-          _MultiSelectManager.PathManualyEdited()
-          BrowserAutomationStudio_TestPathInternal();
-        }
-
-      },
-
-      funcadd: function(event)
-      {
-        var el = $(this.currentInputVariable)
-
-        var name = $("#FunctionNameInput").val();
-        if(name.length > 0)
-        {
-          var Value = $("#FunctionNameInput").val()
-          el.val(Value)
-          this.funcchange(Value)
-        }
-        
+        BasVariablesDialog.create($(target).closest('a'));
       },
 
       funcchange: function(FuncName)
@@ -7301,6 +6961,37 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         SetupTooltips();
       },
 
+      labeladdstart: function(event)
+      {
+        var json = _LabelCollection.toJSON();
+
+        $('#LabelNameInput').html("")
+        if(json.length == 0)
+        {
+          $("#NoLabelFound").show()
+          $("#LabelNameInput").hide()
+          $(".labelok").hide()
+
+        }else
+        {
+          $("#NoLabelFound").hide()
+          $("#LabelNameInput").show()
+          $(".labelok").show()
+          json = jsort(json);
+          for(var i = 0;i<json.length;i+=1)
+          {
+            $('#LabelNameInput')
+             .append($("<option></option>")
+             .attr("value",json[i]["name"])
+             .text(json[i]["name"]));
+           }
+         }
+
+        $('#LabelNameInput').focus()
+        this.currentInputLabel = $(event.relatedTarget).attr("data-result-target")
+
+      },
+      
       labeladd: function(event)
       {
         var el = $(this.currentInputLabel)

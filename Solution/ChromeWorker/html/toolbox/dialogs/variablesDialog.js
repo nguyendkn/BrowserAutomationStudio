@@ -14,12 +14,13 @@ class BasVariablesDialog extends BasModalDialog {
       : []);
 
     super({
+      template: _.template(`<%= (isGlobal ? 'GLOBAL:' : '') + name %>`),
       items: [...globalVariables, ...localVariables],
       history: BasModalDialog.store.recentVariables,
       selector: element.attr('data-result-target'),
       handler: BasVariablesDialog.handler,
       itemColor: 'green',
-      itemTypes: {
+      itemNames: {
         single: 'variable',
         many: 'variables'
       },
@@ -28,10 +29,9 @@ class BasVariablesDialog extends BasModalDialog {
   }
 
   static handler(name, data) {
-    const el = $(data.selector), isNumber = $(`${data.selector}_number:visible`).length > 0;
-    let insert = `[[${data.isGlobal ? 'GLOBAL:' : ''}${name}]]`;
+    const el = $(data.selector); let insert = `[[${data.isGlobal ? 'GLOBAL:' : ''}${name}]]`;
 
-    if (isNumber) {
+    if ($(`${data.selector}_number:visible`).length) {
       el.closest('.input-group').find('.selector').html('expression');
       el.closest('.input-group').find('.input_selector_number').hide();
       el.closest('.input-group').find('.input_selector_string').show();
@@ -58,18 +58,14 @@ class BasVariablesDialog extends BasModalDialog {
       }
     }
 
-    if (!data.isGlobal) {
-      BasModalDialog.store.addVariable(name, false);
-    } else {
-      BasModalDialog.store.addVariable(name, true);
+    if (name.length) {
+      if (!data.isGlobal) {
+        BasModalDialog.store.addVariable({ name }, false);
+      } else {
+        BasModalDialog.store.addVariable({ name }, true);
+      }
     }
 
     this.helper.checkPathEdited(data.selector);
   }
-
-  /**
-   * Get the item template function for `BasFunctionsDialog` class instance.
-   * @readonly
-   */
-  get itemContentTemplate() { return _.template(`<%= item.isGlobal ? ('Global: ' + item.name) : item.name %>`); }
 }

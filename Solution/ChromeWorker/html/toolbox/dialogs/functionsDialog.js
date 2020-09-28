@@ -6,30 +6,23 @@ class BasFunctionsDialog extends BasModalDialog {
    */
   constructor (element) {
     super({
-      items: _FunctionCollection.toJSON(),
       history: BasModalDialog.store.recentFunctions,
       selector: element.attr('data-result-target'),
-      handler: BasFunctionsDialog.handler,
-      selector: selector,
+      template: _.template(`<%= name %>`),
+      items: _FunctionCollection.toJSON(),
+      handler: (name, data) => {
+        if (name.length) {
+          BasModalDialog.store.addFunction({ name });
+          $(data.selector).val(name);
+        }
+        _MainView.funcchange(name);
+      },
       itemColor: 'dark',
-      itemTypes: {
+      itemNames: {
         single: 'function',
         many: 'functions'
       },
       options: []
     });
   }
-
-  static handler(name, data) {
-    if (name.length) {
-      $(data.selector).val(name);
-    }
-    _MainView.funcchange(name);
-  }
-
-  /**
-   * Get the item template function for `BasFunctionsDialog` class instance.
-   * @readonly
-   */
-  get itemContentTemplate() { return _.template(`<%= item.name %>`); }
 }

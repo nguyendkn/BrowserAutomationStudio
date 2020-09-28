@@ -6,12 +6,13 @@ class BasResourcesDialog extends BasModalDialog {
    */
   constructor (element) {
     super({
-      items: _ResourceCollection.toJSON(),
       history: BasModalDialog.store.recentResources,
       selector: element.attr('data-result-target'),
+      template: _.template(`<%= name %>`),
+      items: _ResourceCollection.toJSON(),
       handler: BasResourcesDialog.handler,
       itemColor: 'dark',
-      itemTypes: {
+      itemNames: {
         single: 'resource',
         many: 'resources'
       },
@@ -40,12 +41,12 @@ class BasResourcesDialog extends BasModalDialog {
   }
 
   static handler(name, data) {
-    const el = $(data.selector), isNumber = $(`${data.selector}_number:visible`).length > 0; let res = name;
+    const el = $(data.selector); let res = name;
     if (data.options.resourceDontDie) res += '|onlyfail';
     if (!data.options.resourceReuse) res += '|notreuse';
     let insert = `{{${res}}}`;
 
-    if (isNumber) {
+    if ($(`${data.selector}_number:visible`).length) {
       el.closest('.input-group').find('.selector').html('expression');
       el.closest('.input-group').find('.input_selector_number').hide();
       el.closest('.input-group').find('.input_selector_string').show();
@@ -64,12 +65,10 @@ class BasResourcesDialog extends BasModalDialog {
       }
     }
 
+    if (name.length) {
+      BasModalDialog.store.addResource({ name });
+    }
+
     this.helper.checkPathEdited(data.selector);
   }
-
-  /**
-   * Get the item template function for `BasFunctionsDialog` class instance.
-   * @readonly
-   */
-  get itemContentTemplate() { return _.template(`<%= item.name %>`); }
 }

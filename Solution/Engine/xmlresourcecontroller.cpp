@@ -662,7 +662,11 @@ namespace BrowserAutomationStudioFramework
             m->SetAllowedTypes(attr["AllowedTypes"]);
             m->SetEnabledByUser(attr["Enabled"].toInt());
 
-            m->SetValues(attr["Values"].split(QRegExp("[\r\n]"),QString::SkipEmptyParts));
+
+            QStringList Values = attr["Values"].split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
+            if(Values.empty())
+                Values.append(" ");
+            m->SetValues(Values);
 
 
             QList<int> selected;

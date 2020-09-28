@@ -17,19 +17,19 @@ class BasModalDialog {
    * Scroll position in pixels for `recent-items` container.
    * @static
    */
-  static recentItemsScrollTop = 0;
+  static recentItemsScroll = 0;
 
   /**
    * Scroll position in pixels for `list-items` container.
    * @static
    */
-  static listItemsScrollTop = 0;
+  static listItemsScroll = 0;
 
   /**
    * Create an instance of `BasModalDialog` class.
    * @param {Object} configuration - dialog configuration object.
    * @param {String} configuration.itemColor - item color string.
-   * @param {Object} configuration.itemTypes - item types object.
+   * @param {Object} configuration.itemNames - item names object.
    * @param {String} configuration.selector - element selector.
    * @param {Object[]} configuration.options - options array.
    * @param {Object[]} configuration.history - history array.
@@ -37,9 +37,10 @@ class BasModalDialog {
    * @constructor
    */
   constructor ({
+    template = () => { },
     handler = () => { },
     itemColor = 'dark',
-    itemTypes = {},
+    itemNames = {},
     selector = '',
     options = [],
     history = [],
@@ -53,8 +54,9 @@ class BasModalDialog {
 
     this.helper = new DialogsHelper();
     this.itemColor = itemColor;
-    this.itemTypes = itemTypes;
+    this.itemNames = itemNames;
     this.selector = selector;
+    this.template = template;
     this.handler = handler;
     this.options = options;
     this.history = history;
@@ -72,28 +74,34 @@ class BasModalDialog {
   addHandlers() {
     const self = this;
 
-    $(document).on('click', '#modalSearchRecent', function (e) {
-      self.recent();
-    });
-
-    $(document).on('click', '#modalSearchClose', function (e) {
-      self.close();
-    });
-
-    $(document).on('input', '#modalSearchInput', function (e) {
-      const value = $(e.target).val().trim();
-      self.search(value);
+    $(document).on('click', '.modal-recent-item', function (e) {
+      self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
     });
 
     $(document).on('click', '.modal-list-item', function (e) {
-      const value = self.items.find((i) => i.id === $(this).data('id'));
-      self.close(value);
+      self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
+    });
+
+    $(document).on('input', '#modalSearchInput', (e) => {
+      self.search($(e.target).val());
+    });
+
+    $(document).on('click', '#modalSearchClose', (e) => {
+      self.closeDialog();
+    });
+
+    $(document).on('click', '#modalRecentClose', (e) => {
+      self.closeRecent();
+    });
+
+    $(document).on('click', '#modalRecentOpen', (e) => {
+      self.openRecent();
     });
 
     $(document).on('keyup', function (e) {
       if (!(self.$modal && e.key === 'Escape')) return;
       e.stopPropagation();
-      self.close();
+      self.closeDialog();
     });
 
     $(window).resize(function (e) {
@@ -112,27 +120,37 @@ class BasModalDialog {
     _.each($('.modal-list'), (list) => {
       const $header = $(list).find('.modal-list-header');
       const $items = $(list).find('.modal-list-item');
+      const $list = $(list), search = !!target.length;
+      let some = false;
 
-      if (trim($header.text()) === target[0] || !target.length) {
+      if (trim($header.text()) === target[0] || !search) {
         _.each($items, (item) => {
-          if (target.length) {
-            const { name } = _.find(this.items, { id: $(item).data('id') });
+          const $item = $(item).unmark();
+
+          if (search) {
+            const { name } = _.find(this.items, { id: $item.data('id') });
 
             if (trim(name).includes(target)) {
-              $(item).show();
-            } else {
-              $(item).hide();
+              some = true; return $item.show().mark(target, {
+                className: 'modal-text-mark',
+                diacritics: false,
+                iframes: false
+              });
             }
 
-            return;
+            return $item.hide();
           }
 
-          $(item).show();
+          $item.show();
         });
 
-        $(list).show();
+        if (search && !some) {
+          $list.hide();
+        } else {
+          $list.show();
+        }
       } else {
-        $(list).hide();
+        $list.hide();
       }
     });
   }
@@ -142,50 +160,81 @@ class BasModalDialog {
    */
   render() {
     const template = _.template(`
-      <div class="modal-dialog-container">
-        <div class="modal-search-container">
-          <input type="text" id="modalSearchInput" class="modal-search-input" placeholder="<%= tr('Start typing ' + itemTypes.single + ' name...') %>">
-          <span id="modalSearchIcon" class="modal-search-control modal-search-icon">
+      <div id="modalDialogContainer">
+        <div id="modalSearchContainer">
+          <input type="text" id="modalSearchInput" placeholder="<%= tr('Start typing ' + itemNames.single + ' name...') %>">
+          <span id="modalSearchIcon" class="modal-search-control">
             <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 16.1667 22.8333 C 19.8486 22.8333 22.8333 19.8486 22.8333 16.1667 C 22.8333 12.4848 19.8486 9.5 16.1667 9.5 C 12.4848 9.5 9.5 12.4848 9.5 16.1667 C 9.5 19.8486 12.4848 22.8333 16.1667 22.8333Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M 24.5 24.5 L20.875 20.875" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>          
+              <path d="M16.167 22.833a6.667 6.667 0 100-13.333 6.667 6.667 0 000 13.333zM24.5 24.5l-3.625-3.625" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>        
           </span>
-          <button type="button" id="modalSearchClose" class="modal-search-control modal-search-close">
+          <button id="modalSearchClose" class="modal-search-control">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M 14 6 L 6 14" stroke="#c56d5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M 6 6 L 14 14" stroke="#c56d5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 6l-8 8M6 6l8 8" stroke="#c56d5f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
         </div>
-        <div class="modal-content-container">
+        <div id="modalContentContainer">
           <div class="modal-list-container">
-            <% _.keys(map).forEach((header) => { %>
-              <div class="modal-list">
-                <div class="modal-list-header">
-                  <div class="modal-list-header-content"><%= header %></div>
-                  <div class="modal-list-header-splitter"></div>
+            <div class="modal-list-wrapper">
+              <% _.keys(map).forEach((header) => { %>
+                <div class="modal-list-wrap">
+                  <div class="modal-list">
+                    <div class="modal-list-header">
+                      <div class="modal-list-header-content"><%= header %></div>
+                      <div class="modal-list-header-splitter"></div>
+                    </div>
+                    <ul class="modal-list-items">
+                      <% map[header].forEach((item) => { %>
+                        <li class="modal-list-item" data-id="<%= item.id %>">
+                          <div class="modal-text-normal modal-text-<%= itemColor %>">
+                            <%= template(item) %>
+                          </div>
+                        </li>
+                      <% }); %>
+                    </ul>
+                  </div>
                 </div>
-                <ul class="modal-list-items">
-                  <% map[header].forEach((item) => { %>
-                    <li class="modal-list-item" data-id="<%= item.id %>">
-                      <div class="modal-text-normal modal-text-<%= itemColor %>">
-                        <%= itemContentTemplate({ item }) %>
-                      </div>
-                    </li>
-                  <% }); %>
-                </ul>
-              </div>
-            <% }); %>
+              <% }); %>
+            </div>
           </div>
           <div class="modal-recent-container">
-            <div class="modal-recent">
-              <div class="modal-recent-header">Recent <%= itemTypes.many %>:</div>
+            <div id="modalRecentHeader">
+              <div class="modal-recent-header-content">Recent <%= itemNames.many %>:</div>
+              <div class="modal-recent-header-image-icon">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11 16L11 1M14.3333 16L2.66667 16C1.74619 16 1 15.2538 1 14.3333L1 2.66667C1 1.74619 1.74619 1 2.66667 1L14.3333 1C15.2538 1 16 1.74619 16 2.66667V14.3333C16 15.2538 15.2538 16 14.3333 16Z" stroke="#4f4f4f" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <button id="modalRecentClose" class="modal-recent-header-button">
+                <svg width="6" height="17" viewBox="0 0 6 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 1 12.5 L 5 8.5 L 1 4.5" stroke="#7b7b7b" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>                
+              </button>
+            </div>
+            <div id="modalRecentContent">
               <ul class="modal-recent-items">
                 <% history.forEach((item) => { %>
-                  <li class="modal-recent-item"><%= item.name %></li>
+                  <li class="modal-recent-wrap">
+                    <div class="modal-recent-item" data-id="<%= items.find(({ name }) => name === item.name).id %>">
+                      <div class="modal-recent-icon-left"></div>
+                      <div class="modal-recent-text modal-text-<%= itemColor %>">
+                        <%= item.name %>
+                      </div>
+                      <div class="modal-recent-icon-right">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12.5 5.583H15a4.167 4.167 0 010 8.334h-2.5m-5 0H5a4.167 4.167 0 010-8.334h2.5M6.667 9.75h6.666" stroke="#E3E3E3" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>                
+                      </div>
+                    </div>
+                  </li>
                 <% }); %>
               </ul>
+              <button id="modalRecentOpen" class="modal-recent-header-button">
+                <svg width="6" height="17" viewBox="0 0 6 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 1 12.5 L 5 8.5 L 1 4.5" stroke="#7b7b7b" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>                
+              </button>
             </div>
           </div>
         </div>
@@ -204,27 +253,31 @@ class BasModalDialog {
 
     this.$modal = $(template(this)).appendTo('body').show();
 
-    this.$recent = $('.modal-recent-container')
-      .scrollTop(this.constructor.recentItemsScrollTop)
-      .hide();
+    this.$recent = $('.modal-recent-container').show()
+      .scrollTop(this.constructor.recentItemsScroll);
 
-    this.$list = $('.modal-list-container')
-      .scrollTop(this.constructor.listItemsScrollTop)
-      .show();
+    this.$list = $('.modal-list-container').show()
+      .scrollTop(this.constructor.listItemsScroll);
 
     $('body').css('overflow', 'hidden');
+
+    if (!this.history.length) {
+      this.$recent.hide();
+    }
+
     this.addHandlers();
+    this.closeRecent();
   }
 
   /**
-   * Close the modal window.
+   * Close the dialog window.
    */
-  close(value = {}) {
+  closeDialog(value = {}) {
     if (!this.$modal) return;
 
     const options = _.object(this.options.map((o) => [o.id, $(`#${o.id}`).is(':checked')]));
-    this.constructor.recentItemsScrollTop = this.$recent.scrollTop();
-    this.constructor.listItemsScrollTop = this.$list.scrollTop();
+    this.constructor.recentItemsScroll = this.$recent.scrollTop();
+    this.constructor.listItemsScroll = this.$list.scrollTop();
     $('body').css('overflow', 'visible');
     this.$modal.remove();
     this.$modal = null;
@@ -232,15 +285,33 @@ class BasModalDialog {
     this.handler(value.name || '', { selector: this.selector, options, ...value });
   }
 
+  /**
+   * Close the recent window.
+   */
+  closeRecent() {
+    const recent = this.$recent.css('width', '48px');
+    recent.find('.modal-recent-header-content').hide();
+    recent.find('.modal-recent-items').hide();
+    recent.find('#modalRecentClose').hide();
+    recent.find('#modalRecentOpen').show();
+    recent.find('#modalRecentContent')
+      .removeClass('modal-pseudo-lg')
+      .addClass('modal-pseudo-sm')
+      .css('overflow', 'visible');
+  }
 
   /**
-   * Show or hide the recent elements.
+   * Open the recent window.
    */
-  recent() {
-    if (this.$recent.is(':visible')) {
-      this.$recent.hide();
-    } else {
-      this.$recent.show();
-    }
+  openRecent() {
+    const recent = this.$recent.css('width', 'auto');
+    recent.find('.modal-recent-header-content').show();
+    recent.find('.modal-recent-items').show();
+    recent.find('#modalRecentClose').show();
+    recent.find('#modalRecentOpen').hide();
+    recent.find('#modalRecentContent')
+      .removeClass('modal-pseudo-sm')
+      .addClass('modal-pseudo-lg')
+      .css('overflow', 'hidden');
   }
 }

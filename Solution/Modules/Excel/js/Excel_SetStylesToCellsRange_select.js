@@ -29,7 +29,8 @@ try{
         "SheetIndexOrName": SheetIndexOrName["updated"],
         "FromCell": FromCell["updated"],
         "ToCell": ToCell["updated"],
-        "Styles": Styles["updated"]
+        "Styles": Styles["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

@@ -11,7 +11,8 @@ if(SheetIndexOrName["original"].length == 0){
 try{
     var code = loader.GetAdditionalData() + _.template($("#Excel_ClearSheet_code").html())({
         "FilePath": FilePath["updated"],
-        "SheetIndexOrName": SheetIndexOrName["updated"]
+        "SheetIndexOrName": SheetIndexOrName["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

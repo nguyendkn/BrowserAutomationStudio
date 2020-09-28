@@ -13,7 +13,8 @@ try{
     var code = loader.GetAdditionalData() + _.template($("#Excel_MoveSheet_code").html())({
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
-        "NewSheetIndex": NewSheetIndex["updated"]
+        "NewSheetIndex": NewSheetIndex["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

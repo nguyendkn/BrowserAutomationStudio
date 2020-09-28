@@ -25,7 +25,8 @@ try{
         "SheetIndexOrName": SheetIndexOrName["updated"],
         "FromCell": FromCell["updated"],
         "ToCell": ToCell["updated"],
-        "Data": Data["updated"]
+        "Data": Data["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

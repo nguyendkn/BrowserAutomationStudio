@@ -1,1 +1,1 @@
-_call_function(Excel_DeleteRows,{ "FilePath": (<%= FilePath %>),"SheetIndexOrName": (<%= SheetIndexOrName %>),"FromRow": (<%= FromRow %>),"ToRow": (<%= ToRow %>),"Timeout": (<%= timeout_value() || 60000 %>) })!
+_call_function(Excel_DeleteRows,{ "FilePath": (<%= FilePath %>),"SheetIndexOrName": (<%= SheetIndexOrName %>),"FromRow": (<%= FromRow %>),"ToRow": (<%= ToRow %>),"Sync": (<%= Sync %>),"Timeout": (<%= timeout_value() || 60000 %>) })!

@@ -23,7 +23,8 @@ try{
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
         "CellAddress": CellAddress["updated"],
-        "Formula": Formula["updated"]
+        "Formula": Formula["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

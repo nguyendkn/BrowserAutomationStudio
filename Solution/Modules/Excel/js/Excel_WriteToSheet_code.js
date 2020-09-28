@@ -1,1 +1,1 @@
-_call_function(Excel_WriteToSheet,{ "FilePath": (<%= FilePath %>),"SheetIndexOrName": (<%= SheetIndexOrName %>),"Data": (<%= Data %>),"Timeout": (<%= timeout_value() || 60000 %>) })!
+_call_function(Excel_WriteToSheet,{ "FilePath": (<%= FilePath %>),"SheetIndexOrName": (<%= SheetIndexOrName %>),"Data": (<%= Data %>),"Sync": (<%= Sync %>),"Timeout": (<%= timeout_value() || 60000 %>) })!

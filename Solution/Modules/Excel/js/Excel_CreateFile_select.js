@@ -5,7 +5,8 @@ if(FilePath["original"].length == 0){
 };
 try{
     var code = loader.GetAdditionalData() + _.template($("#Excel_CreateFile_code").html())({
-        "FilePath": FilePath["updated"]
+        "FilePath": FilePath["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

@@ -35,7 +35,8 @@ try{
         "FromCell": FromCell["updated"],
         "ToCell": ToCell["updated"],
         "StyleName": StyleName["updated"],
-        "StyleValue": StyleValue["updated"]
+        "StyleValue": StyleValue["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

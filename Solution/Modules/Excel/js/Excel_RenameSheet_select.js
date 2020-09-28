@@ -17,7 +17,8 @@ try{
     var code = loader.GetAdditionalData() + _.template($("#Excel_RenameSheet_code").html())({
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
-        "NewSheetName": NewSheetName["updated"]
+        "NewSheetName": NewSheetName["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

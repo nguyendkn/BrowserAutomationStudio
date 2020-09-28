@@ -11,7 +11,8 @@ if(ResourceList["original"].length == 0){
 try{
     var code = loader.GetAdditionalData() + _.template($("#Excel_ExportFromResources_code").html())({
         "FilePath": FilePath["updated"],
-        "ResourceList": ResourceList["updated"]
+        "ResourceList": ResourceList["updated"],
+		"Sync": BrowserAutomationStudio_UsesWaitCode()
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

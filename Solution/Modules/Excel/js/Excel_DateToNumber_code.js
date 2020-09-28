@@ -1,1 +1,0 @@
-<%= variable %> = Excel_DateToNumber(<%= Date %>)

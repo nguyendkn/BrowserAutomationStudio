@@ -4,7 +4,8 @@ class DialogsStore {
    * @constructor
    */
   constructor () {
-    this.variablesInit = { global: false, local: false };
+    this.globalVariablesInit = false;
+    this.localVariablesInit = false;
     this.resourcesInit = false;
     this.functionsInit = false;
 
@@ -16,37 +17,38 @@ class DialogsStore {
   /**
    * Add the variable object to the recent variables list.
    * @param {Boolean} global - add as global variable.
-   * @param {Object} source - target variable object.
+   * @param {Object} target - target variable object.
    */
-  addVariable(source, global) {
-    if (!source) return;
+  addVariable(target, global) {
     if (global) {
-      if (!this.variablesInit.global) { this.variablesInit.global = true; return; }
-      this.add(this.uniq(source, _GlobalVariableCollection.toJSON()), this.recentVariables);
+      if (!target) return;
+      if (!this.globalVariablesInit) { this.globalVariablesInit = true; return; }
+      this.add(this.uniq(target, _GlobalVariableCollection.toJSON()), this.recentVariables);
     } else {
-      if (!this.variablesInit.local) { this.variablesInit.local = true; return; }
-      this.add(this.uniq(source, _VariableCollection.toJSON()), this.recentVariables);
+      if (!target) return;
+      if (!this.localVariablesInit) { this.localVariablesInit = true; return; }
+      this.add(this.uniq(target, _VariableCollection.toJSON()), this.recentVariables);
     }
   }
 
   /**
    * Add the resource object to the recent resources list.
-   * @param {Object} source - target resource object.
+   * @param {Object} target - target resource object.
    */
-  addResource(source) {
-    if (!source) return;
+  addResource(target) {
+    if (!target) return;
     if (!this.resourcesInit) { this.resourcesInit = true; return; }
-    this.add(this.uniq(source, _ResourceCollection.toJSON()), this.recentResources);
+    this.add(this.uniq(target, _ResourceCollection.toJSON()), this.recentResources);
   }
 
   /**
    * Add the function object to the recent functions list.
-   * @param {Object} source - target function object.
+   * @param {Object} target - target function object.
    */
-  addFunction(source) {
-    if (!source) return;
+  addFunction(target) {
+    if (!target) return;
     if (!this.functionsInit) { this.functionsInit = true; return; }
-    this.add(this.uniq(source, _FunctionCollection.toJSON()), this.recentFunctions);
+    this.add(this.uniq(target, _FunctionCollection.toJSON()), this.recentFunctions);
   }
 
   /**
@@ -73,6 +75,7 @@ class DialogsStore {
    * @returns {Object} unique item.
    */
   uniq(arr1, arr2) {
+    if (!Array.isArray(arr1)) return arr1;
     return arr1.filter((a) => !arr2.some((b) => b.name === a.name)).pop();
   }
 }

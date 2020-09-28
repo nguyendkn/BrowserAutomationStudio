@@ -1,7 +1,8 @@
 class DialogsHelper {
   insertTextToCodeEditor(element, text) {
-    const id = element.attr('id'), line = window[id].Editor.getPosition();
-    window[id].Editor.executeEdits('my-source', [{
+    const editor = window[element.attr('id')].Editor, line = editor.getPosition();
+
+    editor.executeEdits('my-source', [{
       range: new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column),
       identifier: { major: 1, minor: 1 },
       forceMoveMarkers: true,

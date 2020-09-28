@@ -1,3 +1,4 @@
+_XLSX_DATE_FORMAT = "dd.MM.yyyy hh:mm:ss";
 var date_base = new Date(1900, 0, 0);
 var incorrect_leap_date = new Date(1900, 1, 28);
 var milliseconds_in_day = 1000 * 60 * 60 * 24;
@@ -65,17 +66,21 @@ function Excel_ReadCell(){
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address];
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, _XLSX_DATE_FORMAT];
 	
 	_embedded("Excel_ReadCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
-	_function_return(VAR_XLSX_NODE_PARAMETERS);
+	var results = VAR_XLSX_NODE_PARAMETERS;
+	var value = results[0];
+	var is_date = results[1];
+	
+	_function_return(is_date ? _parse_date(value,"auto") : value);
 };
 function Excel_WriteToCell(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
-	var data = _function_argument("Data");
+	var data = Excel_PreparationOfDates(_function_argument("Data"));
 	var timeout = _function_argument("Timeout");
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, data];
@@ -88,16 +93,16 @@ function Excel_ReadSheet(){
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data_format];
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data_format, _XLSX_DATE_FORMAT];
 	
 	_embedded("Excel_ReadSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
-	_function_return(VAR_XLSX_NODE_PARAMETERS);
+	_function_return(Excel_ConvertDates(VAR_XLSX_NODE_PARAMETERS));
 };
 function Excel_WriteToSheet(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var data = _function_argument("Data");
+	var data = Excel_PreparationOfDates(_function_argument("Data"));
 	var timeout = _function_argument("Timeout");
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data];
@@ -126,17 +131,17 @@ function Excel_ReadRows(){
 	from_row = from_row=="" ? "" : from_row+1;
 	to_row = to_row=="" ? "" : to_row+1;
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row, data_format];
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row, data_format, _XLSX_DATE_FORMAT];
 	
 	_embedded("Excel_ReadRows", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
-	_function_return(VAR_XLSX_NODE_PARAMETERS);
+	_function_return(Excel_ConvertDates(VAR_XLSX_NODE_PARAMETERS));
 };
 function Excel_InsertRows(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_row = _function_argument("FromRow");
-	var data = _function_argument("Data");
+	var data = Excel_PreparationOfDates(_function_argument("Data"));
 	var timeout = _function_argument("Timeout");
 	
 	from_row = from_row=="" ? "" : from_row+1;
@@ -167,18 +172,18 @@ function Excel_ReadCellsRange(){
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
 	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data_format];
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data_format, _XLSX_DATE_FORMAT];
 	
 	_embedded("Excel_ReadCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
-	_function_return(VAR_XLSX_NODE_PARAMETERS);
+	_function_return(Excel_ConvertDates(VAR_XLSX_NODE_PARAMETERS));
 };
 function Excel_WriteToCellsRange(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
 	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
-	var data = _function_argument("Data");
+	var data = Excel_PreparationOfDates(_function_argument("Data"));
 	var timeout = _function_argument("Timeout");
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data];
@@ -451,7 +456,7 @@ function Excel_DateToNumber(date){
 	return number;
 };
 function Excel_NumberToDate(number){
-	number = typeof number==="number" ? number : Number(number);
+	number = typeof number=="number" ? number : Number(number);
 	
 	if(number > Excel_DateToNumber(incorrect_leap_date)){number--};
 	var full_days = Math.floor(number);
@@ -478,7 +483,48 @@ function Excel_IsJsonString(str){
     return true;
 };
 function Excel_ConvertToList(str){
-	return (str==="" || typeof str==="object") ? str : (Excel_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
+	return (str=="" || typeof str=="object") ? str : (Excel_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
+};
+function Excel_ConvertDates(results){
+	var values = results[0];
+	var present_date = results[1];
+	var date_addresses = results[2];
+	if(present_date){
+		for(var i = 0; i < date_addresses.length; i++){
+			var address = date_addresses[i];
+			var ri = address[0];
+			var ci = address[1];
+			values[ri][ci] = _parse_date(values[ri][ci],"auto");
+		};
+	};
+	return values;
+};
+function Excel_PreparationOfDates(data){
+	var present_date = false;
+	var styles = [];
+	if(typeof data=="object"){
+        if(data instanceof Date){
+			return [Excel_DateToNumber(data), true, _XLSX_DATE_FORMAT];
+        }else{
+			for(var row_index = 0; row_index < data.length; row_index++){
+				styles[row_index] = [];
+				var row = data[row_index];
+				if(typeof row=="object"){
+					for(var cell_index = 0; cell_index < row.length; cell_index++){
+						var cell = row[cell_index];
+						if(cell instanceof Date){
+							present_date = true;
+							data[row_index][cell_index] = Excel_DateToNumber(cell);
+							styles[row_index][cell_index] = _XLSX_DATE_FORMAT;
+						};
+					};
+				};
+			};
+			return [data, present_date, present_date ? styles : null];
+		};
+    }else{
+		return [data, false, null];
+	};
 };
 function Excel_FormatAddress(address){
 	if(address.indexOf("*") > -1){

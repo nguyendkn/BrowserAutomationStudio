@@ -467,8 +467,8 @@
                 }
             ],
             "description": {
-                "en": "Get cell style",
-                "ru": "Получить стиль ячейки"
+                "en": "Get one style for single cell",
+                "ru": "Получите один стиль для одной ячейки"
             },
             "interface": "Excel_GetCellStyle_interface.js",
             "is_element": false,
@@ -484,8 +484,8 @@
                 }
             ],
             "description": {
-                "en": "Get cell styles",
-                "ru": "Получить стили ячейки"
+                "en": "Get style list for single cell",
+                "ru": "Получить список стилей для одной ячейки"
             },
             "interface": "Excel_GetCellStyles_interface.js",
             "is_element": false,
@@ -501,8 +501,8 @@
                 }
             ],
             "description": {
-                "en": "Set style to cell",
-                "ru": "Установить стиль для ячейки"
+                "en": "Set one style to single cell",
+                "ru": "Установить один стиль в одну ячейку"
             },
             "interface": "Excel_SetStyleToCell_interface.js",
             "is_element": false,
@@ -518,8 +518,8 @@
                 }
             ],
             "description": {
-                "en": "Set styles to cell",
-                "ru": "Установить стили для ячейки"
+                "en": "Set list of styles to single cell",
+                "ru": "Установить список стилей в одну ячейку"
             },
             "interface": "Excel_SetStylesToCell_interface.js",
             "is_element": false,
@@ -535,8 +535,8 @@
                 }
             ],
             "description": {
-                "en": "Set style to cells range",
-                "ru": "Установить стиль для области ячеек"
+                "en": "Set one style to cells range",
+                "ru": "Установить один стиль в область ячеек"
             },
             "interface": "Excel_SetStyleToCellsRange_interface.js",
             "is_element": false,
@@ -552,48 +552,14 @@
                 }
             ],
             "description": {
-                "en": "Set styles to cells range",
-                "ru": "Установить стили для области ячеек"
+                "en": "Set list of styles to cells range",
+                "ru": "Установить список стилей в область ячеек"
             },
             "interface": "Excel_SetStylesToCellsRange_interface.js",
             "is_element": false,
             "name": "Excel_SetStylesToCellsRange",
             "select": "Excel_SetStylesToCellsRange_select.js",
             "template": "{{Styles}} -> {{FromCell}}:{{ToCell}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_DateToNumber_code.js",
-                    "name": "Excel_DateToNumber_code"
-                }
-            ],
-            "description": {
-                "en": "Date to number",
-                "ru": "Дату в число"
-            },
-            "interface": "Excel_DateToNumber_interface.js",
-            "is_element": false,
-            "name": "Excel_DateToNumber",
-            "select": "Excel_DateToNumber_select.js",
-            "template": "{{Date}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_NumberToDate_code.js",
-                    "name": "Excel_NumberToDate_code"
-                }
-            ],
-            "description": {
-                "en": "Number to date",
-                "ru": "Число в дату"
-            },
-            "interface": "Excel_NumberToDate_interface.js",
-            "is_element": false,
-            "name": "Excel_NumberToDate",
-            "select": "Excel_NumberToDate_select.js",
-            "template": "{{Number}} -> {{Save}}"
         },
 		{
             "code": [
@@ -647,8 +613,6 @@
         "Excel_SetStylesToCell",
         "Excel_SetStyleToCellsRange",
         "Excel_SetStylesToCellsRange",
-        "Excel_DateToNumber",
-		"Excel_NumberToDate",
         "Excel_CloseFile"
     ],
     "browser": [
@@ -679,35 +643,35 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, cell_address] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var value = sheet.cell(cell_address).value();\r\n    [[XLSX_NODE_PARAMETERS]] = (typeof value==\"undefined\") ? \"\" : (value instanceof RichText ? value.text() : (value.error ? \"\" : value));\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, cell_address, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var cell = sheet.cell(cell_address);\r\n    var number_format = cell.style(\"numberFormat\");\r\n    var value = cell.value();\r\n    value = (typeof value==\"undefined\") ? \"\" : (value instanceof RichText ? value.text() : (value.error ? \"\" : value));\r\n    [[XLSX_NODE_PARAMETERS]] = number_format==date_format ? [util.number_to_date(value).toString(), true] : [value, false];\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadCell",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, data] = [[XLSX_NODE_PARAMETERS]];\r\ndata = util.convert(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(cell_address).value(data);\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, data] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, present_date, styles] = data;\r\ndata = util.convert(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var cell = sheet.cell(cell_address);\r\n    cell.value(data);\r\n    present_date ? cell.style(\"numberFormat\", styles) : \"\";\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_WriteToCell",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, data] = [[XLSX_NODE_PARAMETERS]];\r\ndata = util.format_data(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(\"A1\").value(data);\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, data] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, present_date, styles] = data;\r\ndata = util.format_data(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var cell = sheet.cell(\"A1\");\r\n    cell.value(data);\r\n    present_date ? cell.style(\"numberFormat\", styles) : \"\";\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_WriteToSheet",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, from_row, to_row, data_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var list = [];\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var endCell = usedRange.endCell();\r\n        var endColumn = endCell.columnNumber();\r\n        var endRow = endCell.rowNumber();\r\n        from_row = from_row===0 ? endRow : (from_row==\"\" ? 1 : from_row);\r\n        to_row = (to_row===0 || to_row==\"\") ? endRow : to_row;\r\n        var range = sheet.range(from_row, 1, to_row, endColumn);\r\n        list = range ? range.map(function(cell){return (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value())}) : [];\r\n    };\r\n    [[XLSX_NODE_PARAMETERS]] = util.format_results(list, data_format);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, from_row, to_row, data_format, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var list = [];\r\n    var present_date = false;\r\n    var date_addresses = [];\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var endCell = usedRange.endCell();\r\n        var endColumn = endCell.columnNumber();\r\n        var endRow = endCell.rowNumber();\r\n        from_row = from_row===0 ? endRow : (from_row==\"\" ? 1 : from_row);\r\n        to_row = (to_row===0 || to_row==\"\") ? endRow : to_row;\r\n        var range = sheet.range(from_row, 1, to_row, endColumn);\r\n        var list = range ? range.map(function(cell, ri, ci){\r\n            var number_format = cell.style(\"numberFormat\");\r\n            var value = cell.value();\r\n            value = (typeof value==\"undefined\") ? \"\" : (value instanceof RichText ? value.text() : (value.error ? \"\" : value));\r\n            if(number_format==date_format){\r\n                present_date = true;\r\n                date_addresses.push([ri, ci]);\r\n                return util.number_to_date(value).toString();\r\n            }else{\r\n                return value;\r\n            };\r\n        }) : [];\r\n    };\r\n    if(data_format==\"2D list\"){\r\n        [[XLSX_NODE_PARAMETERS]] = [util.format_results(list, data_format), present_date, date_addresses];\r\n    }else{\r\n        [[XLSX_NODE_PARAMETERS]] = [util.format_results(list, data_format), false, \"\"];\r\n    };\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadRows",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_row, data] = [[XLSX_NODE_PARAMETERS]];\r\ndata = util.format_data(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var last_row = usedRange.endCell().rowNumber();\r\n        if(from_row===0 || from_row==\"\"){\r\n            last_row++;\r\n            sheet.cell(\"A\" + last_row).value(data);\r\n        }else{\r\n            var first_row = usedRange.startCell().rowNumber();\r\n            if(last_row<from_row || from_row<first_row){\r\n                sheet.cell(\"A\" + from_row).value(data);\r\n            }else{\r\n                last_row++;\r\n                sheet.cell(\"A\" + last_row).value(data);\r\n                var ready_data = sheet._rows.splice(last_row);\r\n                sheet._rows.splice(from_row, 0, ...ready_data);\r\n                sheet._rows.map(function(row, index){\r\n                    row._node.attributes.r = index;\r\n                    return row;\r\n                });\r\n            };\r\n        };\r\n    }else{\r\n        if(from_row===0 || from_row==\"\"){\r\n            sheet.cell(\"A1\").value(data);\r\n        }else{\r\n            sheet.cell(\"A\" + from_row).value(data);\r\n        };\r\n    };\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_row, data] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, present_date, styles] = data;\r\ndata = util.format_data(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var last_row = usedRange.endCell().rowNumber();\r\n        if(from_row===0 || from_row==\"\"){\r\n            last_row++;\r\n            var cell = sheet.cell(\"A\" + last_row);\r\n            cell.value(data);\r\n            present_date ? cell.style(\"numberFormat\", styles) : \"\";\r\n        }else{\r\n            var first_row = usedRange.startCell().rowNumber();\r\n            if(last_row<from_row || from_row<first_row){\r\n                var cell = sheet.cell(\"A\" + from_row);\r\n                cell.value(data);\r\n                present_date ? cell.style(\"numberFormat\", styles) : \"\";\r\n            }else{\r\n                last_row++;\r\n                var cell = sheet.cell(\"A\" + last_row);\r\n                cell.value(data);\r\n                present_date ? cell.style(\"numberFormat\", styles) : \"\";\r\n                var ready_data = sheet._rows.splice(last_row);\r\n                sheet._rows.splice(from_row, 0, ...ready_data);\r\n                sheet._rows.map(function(row, index){\r\n                    row._node.attributes.r = index;\r\n                    return row;\r\n                });\r\n            };\r\n        };\r\n    }else{\r\n        var cell = (from_row===0 || from_row==\"\") ?  sheet.cell(\"A1\") : sheet.cell(\"A\" + from_row);\r\n        cell.value(data);\r\n        present_date ? cell.style(\"numberFormat\", styles) : \"\";\r\n    };\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_InsertRows",
             "DataType": 0,
             "LanguageName": "Node",
@@ -721,7 +685,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, data_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var range = sheet.range(from_cell, to_cell);\r\n    var list = range ? range.map(function(cell){return (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value())}) : [];\r\n    [[XLSX_NODE_PARAMETERS]] = util.format_results(list, data_format);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, data_format, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var present_date = false;\r\n    var date_addresses = [];\r\n    var range = sheet.range(from_cell, to_cell);\r\n    var list = range ? range.map(function(cell, ri, ci){\r\n        var number_format = cell.style(\"numberFormat\");\r\n        var value = cell.value();\r\n        value = (typeof value==\"undefined\") ? \"\" : (value instanceof RichText ? value.text() : (value.error ? \"\" : value));\r\n        if(number_format==date_format){\r\n            present_date = true;\r\n            date_addresses.push([ri, ci]);\r\n            return util.number_to_date(value).toString();\r\n        }else{\r\n            return value;\r\n        };\r\n    }) : [];\r\n    if(data_format==\"2D list\"){\r\n        [[XLSX_NODE_PARAMETERS]] = [util.format_results(list, data_format), present_date, date_addresses];\r\n    }else{\r\n        [[XLSX_NODE_PARAMETERS]] = [util.format_results(list, data_format), false, \"\"];\r\n    };\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
@@ -784,7 +748,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, style_name, style_value] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(cell_address).style(style_name, style_value);\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, style_name, style_value] = [[XLSX_NODE_PARAMETERS]];\r\nstyle_value = util.convert(style_value);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(cell_address).style(style_name, style_value);\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetStyleToCell",
             "DataType": 0,
             "LanguageName": "Node",
@@ -798,7 +762,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, style_name, style_value] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.range(from_cell, to_cell).style(style_name, style_value);\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, style_name, style_value] = [[XLSX_NODE_PARAMETERS]];\r\nstyle_value = util.convert(style_value);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.range(from_cell, to_cell).style(style_name, style_value);\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetStyleToCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
@@ -819,7 +783,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, data_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var list = [];\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var endCell = usedRange.endCell();\r\n        var endColumn = endCell.columnNumber();\r\n        var endRow = endCell.rowNumber();\r\n        var range = sheet.range(1, 1, endRow, endColumn);\r\n        list = range ? range.map(function(cell){return (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value())}) : [];\r\n    };\r\n    [[XLSX_NODE_PARAMETERS]] = util.format_results(list, data_format);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, data_format, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var list = [];\r\n    var present_date = false;\r\n    var date_addresses = [];\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var endCell = usedRange.endCell();\r\n        var endColumn = endCell.columnNumber();\r\n        var endRow = endCell.rowNumber();\r\n        var range = sheet.range(1, 1, endRow, endColumn);\r\n        var list = range ? range.map(function(cell, ri, ci){\r\n            var number_format = cell.style(\"numberFormat\");\r\n            var value = cell.value();\r\n            value = (typeof value==\"undefined\") ? \"\" : (value instanceof RichText ? value.text() : (value.error ? \"\" : value));\r\n            if(number_format==date_format){\r\n                present_date = true;\r\n                date_addresses.push([ri, ci]);\r\n                return util.number_to_date(value).toString();\r\n            }else{\r\n                return value;\r\n            };\r\n        }) : [];\r\n    };\r\n    if(data_format==\"2D list\"){\r\n        [[XLSX_NODE_PARAMETERS]] = [util.format_results(list, data_format), present_date, date_addresses];\r\n    }else{\r\n        [[XLSX_NODE_PARAMETERS]] = [util.format_results(list, data_format), false, \"\"];\r\n    };\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadSheet",
             "DataType": 0,
             "LanguageName": "Node",
@@ -868,14 +832,14 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, data] = [[XLSX_NODE_PARAMETERS]];\r\ndata = util.format_data(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    if(to_cell===\"\"){\r\n        sheet.cell(from_cell).value(data);\r\n    }else{\r\n        sheet.range(from_cell, to_cell).value(data);\r\n    };\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, data] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, present_date, styles] = data;\r\ndata = util.format_data(data);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var cell_or_range = to_cell===\"\" ? sheet.cell(from_cell) : sheet.range(from_cell, to_cell);\r\n    cell_or_range.value(data);\r\n    present_date ? cell_or_range.style(\"numberFormat\", styles) : \"\";\r\n    await workbook.toFileAsync(file_path);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_WriteToCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const xlsx = require('xlsx-populate');\nconst fs = require('fs');\nvar self = this;\n\nthis.create_or_open_file = async function(file_path, create, must_exist){\n    var id = require('crypto').createHash('md5').update(file_path).digest('hex');\n    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\" && excel_files[id].lock){\n        return new Promise((resolve, reject) => {\n            try{\n                function lock_check(){\n                    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\" && excel_files[id].lock){\n                        setTimeout(lock_check, 50);\n                    }else{\n                        var file = self.create_or_open_file(file_path, create, must_exist);\n                        file.then(function(res){\n                            return resolve(res);\n                        });\n                        file.catch(function(err){\n                            return reject(err);\n                        });\n                    };\n                };\n                lock_check();\n            }catch(err){\n                reject(err);\n            };\n        });\n    }else{\n        if(typeof excel_files==\"undefined\" || typeof excel_files[id]==\"undefined\" || typeof excel_files[id].workbook==\"undefined\"){\n            if(typeof excel_files==\"undefined\"){\n                excel_files = {};\n            };\n            excel_files[id] = {\n                path: file_path,\n                id: id,\n                lock: true,\n                timeout: 0,\n                delete: function(id){\n                    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\n                        excel_files[id].clearTimeout();\n                        return delete excel_files[id];\n                    }\n                },\n                setTimeout: function(){\n                    if(!this.timeout[\"_destroyed\"]){\n                        this.clearTimeout();\n                    };\n                    this.timeout = setTimeout(this.delete, 5000, this.id);\n                },\n                clearTimeout: function(){clearTimeout(this.timeout)}\n            };\n            try{\n                var exist = fs.existsSync(file_path);\n                var workbook = \"\";\n                if(exist){\n                    try{\n                        fs.accessSync(file_path, fs.constants.R_OK);\n                    }catch(err){\n                        throw 'The file \"' + file_path + '\" is not readable';\n                    };\n                    if(create){\n                        try{\n                            fs.accessSync(file_path, fs.constants.W_OK);\n                        }catch(err){\n                            throw 'The file \"' + file_path + '\" is not writable';\n                        };\n                    };\n                    workbook = await xlsx.fromFileAsync(file_path);\n                }else{\n                    if(create){\n                        workbook = await xlsx.fromBlankAsync();\n                    }else{\n                        if(must_exist){\n                            throw 'The file \"' + file_path + '\" does not exist';\n                        }else{\n                            excel_files[id].lock = false;\n                            return [excel_files[id], exist];\n                        };\n                    };\n                };\n                excel_files[id].workbook = workbook;\n                excel_files[id].lock = false;\n                return [excel_files[id], exist];\n            }catch(err){\n                excel_files[id].lock = false;\n                throw err;\n            };\n        }else{\n            excel_files[id].clearTimeout();\n            if(typeof excel_files==\"undefined\" || typeof excel_files[id]==\"undefined\" || typeof excel_files[id].workbook==\"undefined\"){\n                return await self.create_or_open_file(file_path, create, must_exist);\n            }else{\n                return [excel_files[id], true];\n            };\n        };\n    };\n};\nthis.get_sheets = function(workbook){\n    return workbook.sheets().map(function(sheet){return sheet.name()});\n}\nthis.get_sheet = function(workbook, sheet_index_or_name){\n    var sheet = workbook.sheet(sheet_index_or_name);\n    if(!sheet){\n        throw 'Sheet ' + JSON.stringify(sheet_index_or_name) + ' does not exist';\n    };\n    return sheet;\n};\nthis.get_or_create_sheet = function(workbook, sheet_index_or_name, exist){\n    var sheet = workbook.sheet(sheet_index_or_name);\n    if(!sheet){\n        var sheet_name = \"\";\n        var sheet_index = \"\";\n        if(typeof sheet_index_or_name==\"number\"){\n            sheet_index = sheet_index_or_name;\n            sheet_name = \"Sheet\" + (sheet_index + 1);\n            var i = 1;\n            while(self.get_sheets(workbook).indexOf(sheet_name) > -1){\n                sheet_name = \"Sheet\" + i;\n                i++;\n            };\n        }else{\n            sheet_name = sheet_index_or_name;\n            sheet_index = null;\n        };\n        sheet = exist ? workbook.addSheet(sheet_name, sheet_index) : (sheet_index ? workbook.addSheet(sheet_name, sheet_index) : workbook.sheet(0).name(sheet_name));\n    };\n    return sheet;\n};\nthis.csv_generate = function(list, separator=\",\"){\n    var res = '';\n    var first = true;\n    list.forEach(function(item=\"\"){\n        item = item.error ? \"\" : item;\n        var add = item;\n        if(typeof item!==\"number\" && typeof item!==\"boolean\" && (item.indexOf(\";\") > -1 || item.indexOf(\":\") > -1 || item.indexOf(\",\") > -1 || item.indexOf(separator) > -1)){\n            add = \"\\\"\" + add.replace(/[\"]/gi, \"\\\"\\\"\") + \"\\\"\";\n        };\n        if(!first){\n            res += separator;\n        }else{\n            first = false;\n        };\n        res += add;\n    });\n    return res;\n};\nthis.csv_parse = function(line){\n    var res = [];\n    var index = 0;\n    var len = line.length;\n    var InsideQuotes = false;\n    var CurrentElement = '';\n    \n    while(index<len){\n        var c = line[index];\n        var n = '';\n        var HasNext = (index + 1) < len;\n        if(HasNext){\n            n = line[index + 1];\n        };\n        index++;\n\n        if(c=='\\\"'){\n            if(InsideQuotes){\n                if(!HasNext || n!='\\\"'){\n                    InsideQuotes = false;\n                    continue;\n                }else{\n                    CurrentElement += \"\\\"\";\n                    index++;\n                    continue;\n                }\n            }else{\n                InsideQuotes = true;\n                continue;\n            }\n        };\n\n        if(c==':' || c==';' || c==','){\n            if(InsideQuotes){\n                CurrentElement += c;\n                continue;\n            }else{\n                res.push(self.convert(CurrentElement));\n                CurrentElement = '';\n                continue;\n            }\n        };\n        CurrentElement += c;\n    };\n    res.push(self.convert(CurrentElement));\n\n    return res;\n};\nthis.date_to_number = function(date){\n    var date_only = new Date(date.getTime());\n    date_only.setHours(0, 0, 0, 0);\n    var date_base = new Date(1900, 0, 0);\n    var incorrect_leap_date = new Date(1900, 1, 28);\n    var milliseconds_in_day = 1000 * 60 * 60 * 24;\n    var number = Math.round((date_only - date_base) / milliseconds_in_day);\n    number += (date - date_only) / milliseconds_in_day;\n    if(date > incorrect_leap_date){number += 1};\n    return number;\n};\nthis.date_check = function(data){\n\tvar date = new Date(data);\n\treturn date=='Invalid Date' ? data : self.date_to_number(date);\n};\nthis.convert = function(data){\n    return (typeof data===\"string\" && data!==\"\") ? (isNaN(data) ? (data===\"true\" || data===\"false\" ? data===\"true\" : self.date_check(data)) : Number(data)) : data;\n};\nthis.replace_null = function(rows){\n    return rows.map(function(row){return row.map(function(cell){return (cell==null) ? \"\" : cell})})\n};\nthis.format_data = function(data){\n    if(data.length!==0){\n        if(typeof data!==\"object\"){\n            var reg = /\\r?\\n/;\n            if(data.match(reg)!=null){\n                data = data.split(reg);\n            }else{\n                return data;\n            };\n        };\n        data = data.map(function(row){return (typeof row!==\"object\") ? self.csv_parse(row) : row.map(function(cell){return self.convert(cell)})});\n\t\treturn self.replace_null(data);\n    }else{\n\t\treturn \"\";\n\t};\n};\nthis.format_results = function(results, format){\n    results = self.replace_null(results);\n    results = self.remove_empty_arrays(results);\n    if(format==\"CSV list\" || format==\"CSV string\"){\n        results = results.map(function(row){return self.csv_generate(row, \":\")});\n        if(format==\"CSV string\"){\n            results = results.join(\"\\n\");\n        };\n    };\n    return results;\n};\nthis.remove_empty_arrays = function(arrays){\n    for(i = (arrays.length-1); i > -1; i--){\n        if(arrays[i].filter(function(ell){return ell!=\"\"}).length==0){\n            arrays.pop();\n        }else{\n            break;\n        };\n    };\n    return arrays;\n};\nthis.check_writable = function(file_path){\n    try{\n        fs.accessSync(file_path, fs.constants.W_OK);\n    }catch(err){\n        throw 'The file \"' + file_path + '\" is not writable';\n    };\n};",
+            "Data": "const xlsx = require('xlsx-populate');\nconst fs = require('fs');\nvar date_base = new Date(1900, 0, 0);\nvar incorrect_leap_date = new Date(1900, 1, 28);\nvar milliseconds_in_day = 1000 * 60 * 60 * 24;\nvar self = this;\n\nthis.create_or_open_file = async function(file_path, create, must_exist){\n    var id = require('crypto').createHash('md5').update(file_path).digest('hex');\n    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\" && excel_files[id].lock){\n        return new Promise((resolve, reject) => {\n            try{\n                function lock_check(){\n                    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\" && excel_files[id].lock){\n                        setTimeout(lock_check, 50);\n                    }else{\n                        var file = self.create_or_open_file(file_path, create, must_exist);\n                        file.then(function(res){\n                            return resolve(res);\n                        });\n                        file.catch(function(err){\n                            return reject(err);\n                        });\n                    };\n                };\n                lock_check();\n            }catch(err){\n                reject(err);\n            };\n        });\n    }else{\n        if(typeof excel_files==\"undefined\" || typeof excel_files[id]==\"undefined\" || typeof excel_files[id].workbook==\"undefined\"){\n            if(typeof excel_files==\"undefined\"){\n                excel_files = {};\n            };\n            excel_files[id] = {\n                path: file_path,\n                id: id,\n                lock: true,\n                timeout: 0,\n                delete: function(id){\n                    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\n                        excel_files[id].clearTimeout();\n                        return delete excel_files[id];\n                    }\n                },\n                setTimeout: function(){\n                    if(!this.timeout[\"_destroyed\"]){\n                        this.clearTimeout();\n                    };\n                    this.timeout = setTimeout(this.delete, 5000, this.id);\n                },\n                clearTimeout: function(){clearTimeout(this.timeout)}\n            };\n            try{\n                var exist = fs.existsSync(file_path);\n                var workbook = \"\";\n                if(exist){\n                    try{\n                        fs.accessSync(file_path, fs.constants.R_OK);\n                    }catch(err){\n                        throw 'The file \"' + file_path + '\" is not readable';\n                    };\n                    if(create){\n                        try{\n                            fs.accessSync(file_path, fs.constants.W_OK);\n                        }catch(err){\n                            throw 'The file \"' + file_path + '\" is not writable';\n                        };\n                    };\n                    workbook = await xlsx.fromFileAsync(file_path);\n                }else{\n                    if(create){\n                        workbook = await xlsx.fromBlankAsync();\n                    }else{\n                        if(must_exist){\n                            throw 'The file \"' + file_path + '\" does not exist';\n                        }else{\n                            excel_files[id].lock = false;\n                            return [excel_files[id], exist];\n                        };\n                    };\n                };\n                excel_files[id].workbook = workbook;\n                excel_files[id].lock = false;\n                return [excel_files[id], exist];\n            }catch(err){\n                excel_files[id].lock = false;\n                throw err;\n            };\n        }else{\n            excel_files[id].clearTimeout();\n            if(typeof excel_files==\"undefined\" || typeof excel_files[id]==\"undefined\" || typeof excel_files[id].workbook==\"undefined\"){\n                return await self.create_or_open_file(file_path, create, must_exist);\n            }else{\n                return [excel_files[id], true];\n            };\n        };\n    };\n};\nthis.get_sheets = function(workbook){\n    return workbook.sheets().map(function(sheet){return sheet.name()});\n}\nthis.get_sheet = function(workbook, sheet_index_or_name){\n    var sheet = workbook.sheet(sheet_index_or_name);\n    if(!sheet){\n        throw 'Sheet ' + JSON.stringify(sheet_index_or_name) + ' does not exist';\n    };\n    return sheet;\n};\nthis.get_or_create_sheet = function(workbook, sheet_index_or_name, exist){\n    var sheet = workbook.sheet(sheet_index_or_name);\n    if(!sheet){\n        var sheet_name = \"\";\n        var sheet_index = \"\";\n        if(typeof sheet_index_or_name==\"number\"){\n            sheet_index = sheet_index_or_name;\n            sheet_name = \"Sheet\" + (sheet_index + 1);\n            var i = 1;\n            while(self.get_sheets(workbook).indexOf(sheet_name) > -1){\n                sheet_name = \"Sheet\" + i;\n                i++;\n            };\n        }else{\n            sheet_name = sheet_index_or_name;\n            sheet_index = null;\n        };\n        sheet = exist ? workbook.addSheet(sheet_name, sheet_index) : (sheet_index ? workbook.addSheet(sheet_name, sheet_index) : workbook.sheet(0).name(sheet_name));\n    };\n    return sheet;\n};\nthis.csv_generate = function(list, separator=\",\"){\n    var res = '';\n    var first = true;\n    list.forEach(function(item=\"\"){\n        item = item.error ? \"\" : item;\n        var add = item;\n        if(typeof item==\"string\" && (item.indexOf(\";\") > -1 || item.indexOf(\":\") > -1 || item.indexOf(\",\") > -1 || item.indexOf(separator) > -1)){\n            add = \"\\\"\" + add.replace(/[\"]/gi, \"\\\"\\\"\") + \"\\\"\";\n        };\n        if(item instanceof Date){\n            add = \"\\\"\" + add.toString() + \"\\\"\";\n        };\n        if(!first){\n            res += separator;\n        }else{\n            first = false;\n        };\n        res += add;\n    });\n    return res;\n};\nthis.csv_parse = function(line){\n    var res = [];\n    var index = 0;\n    var len = line.length;\n    var InsideQuotes = false;\n    var CurrentElement = '';\n    \n    while(index<len){\n        var c = line[index];\n        var n = '';\n        var HasNext = (index + 1) < len;\n        if(HasNext){\n            n = line[index + 1];\n        };\n        index++;\n\n        if(c=='\\\"'){\n            if(InsideQuotes){\n                if(!HasNext || n!='\\\"'){\n                    InsideQuotes = false;\n                    continue;\n                }else{\n                    CurrentElement += \"\\\"\";\n                    index++;\n                    continue;\n                }\n            }else{\n                InsideQuotes = true;\n                continue;\n            }\n        };\n\n        if(c==':' || c==';' || c==','){\n            if(InsideQuotes){\n                CurrentElement += c;\n                continue;\n            }else{\n                res.push(self.convert(CurrentElement));\n                CurrentElement = '';\n                continue;\n            }\n        };\n        CurrentElement += c;\n    };\n    res.push(self.convert(CurrentElement));\n\n    return res;\n};\nthis.date_to_number = function(date){\n\tdate = date instanceof Date ? date : new Date(date);\n\t\n\tvar date_only = new Date(date.getTime());\n\tdate_only.setHours(0, 0, 0, 0);\n\tvar number = Math.round((date_only - date_base) / milliseconds_in_day);\n\tnumber += (date - date_only) / milliseconds_in_day;\n\tif(date > incorrect_leap_date){number += 1};\n\t\n\treturn number;\n};\nthis.number_to_date = function(number){\n\tnumber = typeof number==\"number\" ? number : Number(number);\n\t\n\tif(number > self.date_to_number(incorrect_leap_date)){number--};\n\tvar full_days = Math.floor(number);\n\tvar partial_milliseconds = Math.round((number - full_days) * milliseconds_in_day);\n\tvar date = new Date(date_base.getTime() + partial_milliseconds);\n\tdate.setDate(date.getDate() + full_days);\n\t\n\treturn date;\n};\nthis.convert = function(data){\n    return (typeof data==\"string\" && data!=\"\") ? (isNaN(data) ? (data==\"true\" || data==\"false\" ? data==\"true\" : data) : Number(data)) : data;\n};\nthis.replace_null = function(rows){\n    return rows.map(function(row){return row.map(function(cell){return (cell==null) ? \"\" : cell})})\n};\nthis.format_data = function(data){\n    if(data.length!=0){\n        if(typeof data!=\"object\"){\n            var reg = /\\r?\\n/;\n            if(data.match(reg)!=null){\n                data = data.split(reg);\n            }else{\n                return data;\n            };\n        };\n        data = data.map(function(row){return (typeof row!=\"object\") ? self.csv_parse(row) : row.map(function(cell){return self.convert(cell)})});\n\t\treturn self.replace_null(data);\n    }else{\n\t\treturn \"\";\n\t};\n};\nthis.format_results = function(results, format){\n    results = self.replace_null(results);\n    results = self.remove_empty_arrays(results);\n    if(format==\"CSV list\" || format==\"CSV string\"){\n        results = results.map(function(row){return self.csv_generate(row, \":\")});\n        if(format==\"CSV string\"){\n            results = results.join(\"\\n\");\n        };\n    };\n    return results;\n};\nthis.remove_empty_arrays = function(arrays){\n    for(var i = (arrays.length-1); i > -1; i--){\n        if(arrays[i].filter(function(ell){return ell!=\"\"}).length==0){\n            arrays.pop();\n        }else{\n            break;\n        };\n    };\n    return arrays;\n};\nthis.check_writable = function(file_path){\n    try{\n        fs.accessSync(file_path, fs.constants.W_OK);\n    }catch(err){\n        throw 'The file \"' + file_path + '\" is not writable';\n    };\n};",
             "DataName": "ExcelUtil",
             "DataType": 1,
             "LanguageName": "Node",
@@ -906,6 +870,7 @@
 		"Analog": {"ru":"Аналог"},
 		"String": {"ru":"Строка"},
 		"is empty": {"ru":"пуст"},
+		"Boolean": {"ru":"Булево"},
 		"Formula": {"ru":"Формула"},
 		"Count": {"ru":"Количество"},
 		"To row": {"ru":"До строки"},
@@ -913,10 +878,12 @@
 		"To cell": {"ru":"До ячейки"},
 		"From row": {"ru":"Со строки"},
 		"From cell": {"ru":"С ячейки"},
+		"Integer": {"ru":"Целое число"},
 		"New Sheet": {"ru":"Новый лист"},
 		"Sheet name": {"ru":"Имя листа"},
 		"File path": {"ru":"Путь к файлу"},
 		"First row": {"ru":"Первая строка"},
+		"Date object": {"ru":"Объект даты"},
 		"JSON string": {"ru":"JSON строка"},
 		"Second row": {"ru":"Вторая строка"},
 		"Sheet index": {"ru":"Индекс листа"},
@@ -952,10 +919,12 @@
 		"Second sheet index": {"ru":"Индекс второго листа"},
 		"Sheet index or name": {"ru":"Индекс или имя листа"},
 		"List of resource names": {"ru":"Список имен ресурсов"},
+		"Floating point number": {"ru":"Число с плавающей запятой"},
 		"The path to the excel file.": {"ru":"Путь к excel файлу."},
 		"Insert at the end of the sheet": {"ru":"Вставить в конец листа"},
 		"First column, first row": {"ru":"Первый столбец, первая строка"},
 		"Second column, second row": {"ru":"Второй столбец, вторая строка"},
+		"\"I'm just an example text\"": {"ru":"\"Я просто пример текста\""},
 		"All sheets will be imported": {"ru":"Все листы будут импортированы"},
 		"Row index of the found cell": {"ru":"Индекс строки найденной ячейки"},
 		"Clear sheet from excel file.": {"ru":"Очистить лист из excel файла."},
@@ -1037,21 +1006,26 @@
 		"The formula which needs to be set to the specified cell.": {"ru":"Формула, которую нужно установить в указанную ячейку."},
 		"Set style value for cell on specified excel file.": {"ru":"Установить значение стиля для ячейки на указанном excel файла."},
 		"Date now (Field type must be <code>expression</code>)": {"ru":"Дата сейчас (Тип поля должен быть <code>expression</code>)"},
+		"String which will be automatically converted to boolean": {"ru":"Строка, которая будет автоматически преобразована в булево"},
 		"Set styles values ​​for cell from specified excel file.": {"ru":"Установить значения стилей для ячейки из указанного excel файла."},
 		"Get the number of rows in a specified sheet of an excel file.": {"ru":"Получить количество строк на указанном листе excel файла."},
 		"Convert data from JSON string and write it to excel file.": {"ru":"Преобразовать данные из JSON строки и записать их в excel файл."},
+		"String which will be automatically converted to an integer": {"ru":"Строка, которая будет автоматически преобразована в целое число"},
 		"The data which needs to be written to the specified cells range.": {"ru":"Данные, которые нужно записать в указанную область ячеек."},
 		"If the cell is not found, the action will return empty strings.": {"ru":"Если ячейка не будет найдена, действие вернет пустые строки."},
-		"The end of the range is determined by the amount of data being written": {"ru":"Конец области определяется по объему записываемых данных"},
 		"The format in which the read data will be saved to variable.": {"ru":"Формат, в котором прочитанные данные будут сохранены в переменную."},
 		"Lists can be processed using actions from the \"List\" module.": {"ru":"Списки можно обработать с помощью действий из модуля \"Список\"."},
+		"The end of the range is determined by the amount of data being written": {"ru":"Конец области определяется по объему записываемых данных"},
 		"Set style value for cells range from specified excel file.": {"ru":"Установить значение стиля для области ячеек из указанного excel файла."},
 		"Set styles values ​​for cells range on specified excel file.": {"ru":"Установить значения стилей для области ячеек на указанном excel файла."},
 		"Rows that are in the new rows insertion zone will be shifted down.": {"ru":"Строки, находящиеся в зоне вставки новых строк, будут смещены вниз."},
 		"Date can be created using actions from the \"Date and time\" module.": {"ru":"Дату можно создать с помощью действий из модуля \"Дата и время\"."},
 		"The settings that each resource created by this action will have.": {"ru":"Настройки, которые будет иметь каждый ресурс, созданный этим действием."},
+		"If you need to read whole row, use the \"Read rows\" action.": {"ru":"Если вам нужно прочитать строку полностью, используйте действие \"Читать строки\"."},
 		"Old data that doesn't interact with new one will remain unchanged.": {"ru":"Старые данные, которые не взаимодействуют с новыми, останутся без изменений."},
 		"The format of the saved data depends on the \"Data Format\" setting.": {"ru":"Формат сохраняемых данных зависит от значения параметра \"Формат данных\"."},
+		"If you need to read whole worksheet, use the \"Read sheet\" action.": {"ru":"Если вам нужно прочитать лист полностью, используйте действие \"Читать лист\"."},
+		"String which will be automatically converted to floating point number": {"ru":"Строка, которая будет автоматически преобразована в число с плавающей запятой"},
 		"Column index from variable [[COLUMN]], row index from variable [[ROW]]": {"ru":"Индекс столбца из переменной [[COLUMN]], индекс строки из переменной [[ROW]]"},
 		"(Value <code>true</code> for italic, <code>false</code> for not italic)": {"ru":"(Значение <code>true</code> для курсива, <code>false</code> для не курсива)"},
 		"If the file is already closed or not open yet, this action will do nothing.": {"ru":"Если файл уже закрыт или ещё не открыт, это действие ничего не сделает."},
@@ -1142,7 +1116,8 @@
 		"With this action, you can write the same data into several cells, for this need to fill in the \"From cell\" and \"To cell\" parameters and specify the string or number that needs to write to all cells of the specified range.": {"ru":"Данным действием можно записать одни и те же данные в несколько ячеек, для этого нужно заполнить параметры \"С ячейки\" и \"До ячейки\" и указать строку или число, которые нужно записать во все ячейки указанной области."},
 		"You can specify a standard address with a column letter and row number, or the column index and row index separated by *. The column/row index is not equal to their number, because the index starts from 0, and the number starts from 1.": {"ru":"Можно указать стандартный адрес с буквой столбца и номером строки, или индекс столбца и индекс строки через разделитель *. Индекс столбца/строки не равен их номеру, потому что индекс начинается с 0, а номер с 1."},
 		"This action creates a resource from each worksheet of the excel file. Resources will be named after worksheets. For example, if book contains 3 worksheets: \"Work1\", \"Work2\" and \"Work3\", then 3 resources with the same names will be created.": {"ru":"Данное действие создает ресурс из каждого листа excel файла. Ресурсы будут названы в честь листов. Например, если книга содержит 3 листа: \"Work1\", \"Work2\" и \"Work3\", то будут созданы 3 ресурса с такими же именами."},
-		"This action creates a sheet in excel file from each specified resource. The sheets will be named after the resources. For example, if 3 resources are specified: \"Work1\", \"Work2\" and \"Work3\", then 3 sheets with the same names will be created.": {"ru":"Данное действие создает лист в excel файле из каждого указанного ресурса. Листы будут названы в честь ресурсов. Например, если указано 3 ресурса: \"Work1\", \"Work2\" и \"Work3\", то будут созданы 3 листа с такими же именами."}
+		"This action creates a sheet in excel file from each specified resource. The sheets will be named after the resources. For example, if 3 resources are specified: \"Work1\", \"Work2\" and \"Work3\", then 3 sheets with the same names will be created.": {"ru":"Данное действие создает лист в excel файле из каждого указанного ресурса. Листы будут названы в честь ресурсов. Например, если указано 3 ресурса: \"Work1\", \"Work2\" и \"Work3\", то будут созданы 3 листа с такими же именами."},
+		"You can write strings, numbers, booleans and dates to a cell. Numbers and booleans can be specified as a string and they will be automatically converted to the correct type, and dates are perceived only as a javascript date object. When writing the date, the numberFormat style is automatically set to the cell for correct display in excel.": {"ru":"В ячейку можно записывать строки, числа, булево и дату. Числа и булево можно указывать в виде строки и они будут автоматически конвертированы в нужный тип, а даты воспринимаются только в виде javascript объекта даты. При записи даты, в ячейку автоматически устанавливается стиль numberFormat для коректного отоброжения в excel."}
     },
     "major_version": 1,
     "minor_version": 0,

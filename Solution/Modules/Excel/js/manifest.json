@@ -1063,6 +1063,7 @@
 		"When specifying a sheet name in the \"Sheet index\" parameter, the field type must be <code>string</code>.": {"ru":"При указании имени листа в параметр \"Индекс листа\" тип поля должен быть <code>string</code>."},
 		"Variable in which, after successful execution of the action, the value of the cell style will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано значение стиля ячейки."},
 		"This action creates file if it does not already exist, and clears all sheets if file already exists.": {"ru":"Данное действие создает файл, если он еще не существует, и очищает все листы, если файл уже существует."},
+		"The date object will be automatically converted to a number and the cell will be set style numberFormat": {"ru":"Объект даты будет автоматически преобразован в число и для ячейки будет установлен стиль numberFormat"},
 		"Data in this format can be obtained using the \"Convert to JSON\" action, or you can create them yourself.": {"ru":"Данные в таком формате можно получить с помощью действия \"Преобразовать в JSON\" или создать самому."},
 		"Styles in this format can be obtained using the \"Get cell styles\" action, or you can create them yourself.": {"ru":"Стили в таком формате можно получить с помощью действия \"Получить стили ячейки\" или создать самому."},
 		"When specifying a sheet name in the \"New sheet index\" parameter, the field type must be <code>string</code>.": {"ru":"При указании имени листа в параметр \"Новый индекс листа\" тип поля должен быть <code>string</code>."},

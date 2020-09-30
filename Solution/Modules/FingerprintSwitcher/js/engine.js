@@ -582,6 +582,22 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	}
 
 	FINGEPRINT_SETTINGS["Fingerprints.FontList"] = FINGERPRINT_JSON["fonts"].join(";")
+	
+	try
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.Tags"] = FINGERPRINT_JSON["tags"].join(",")
+	}catch(e)
+	{
+
+	}
+
+	try
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.Speech"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["speech"]))
+	}catch(e)
+	{
+		
+	}
 
 	_settings(FINGEPRINT_SETTINGS)!
 

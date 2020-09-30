@@ -1,4 +1,4 @@
-_XLSX_DATE_FORMAT = "dd.MM.yyyy hh:mm:ss";
+_XLSX_DATE_FORMAT = "dd.mm.yyyy hh:mm:ss";
 var date_base = new Date(1900, 0, 0);
 var incorrect_leap_date = new Date(1900, 1, 28);
 var milliseconds_in_day = 1000 * 60 * 60 * 24;
@@ -536,6 +536,8 @@ function Excel_PreparationOfDates(data){
 							present_date = true;
 							data[row_index][cell_index] = Excel_DateToNumber(cell);
 							styles[row_index][cell_index] = _XLSX_DATE_FORMAT;
+						}else{
+							styles[row_index][cell_index] = "General";
 						};
 					};
 				};

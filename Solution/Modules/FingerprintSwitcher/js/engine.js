@@ -599,6 +599,14 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		
 	}
 
+	try
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.Heap"] = FINGERPRINT_JSON["heap"]
+	}catch(e)
+	{
+		
+	}
+
 	_settings(FINGEPRINT_SETTINGS)!
 
 	PAYLOAD = ""

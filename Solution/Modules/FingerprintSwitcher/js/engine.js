@@ -593,18 +593,30 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	try
 	{
-		FINGEPRINT_SETTINGS["Fingerprints.Speech"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["speech"]))
+		if(FINGERPRINT_JSON["speech"])
+			FINGEPRINT_SETTINGS["Fingerprints.Speech"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["speech"]))
+		else
+			FINGEPRINT_SETTINGS["Fingerprints.Speech"] = base64_encode("[]")
 	}catch(e)
 	{
-		
+		FINGEPRINT_SETTINGS["Fingerprints.Speech"] = base64_encode("[]")
 	}
 
 	try
 	{
-		FINGEPRINT_SETTINGS["Fingerprints.Heap"] = FINGERPRINT_JSON["heap"]
+		if(FINGERPRINT_JSON["heap"])
+		{
+			FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Enable"
+			FINGEPRINT_SETTINGS["Fingerprints.Heap"] = FINGERPRINT_JSON["heap"]
+		}
+		else
+		{
+			FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Disable"
+		}
+
 	}catch(e)
 	{
-		
+		FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Disable"
 	}
 
 	_settings(FINGEPRINT_SETTINGS)!

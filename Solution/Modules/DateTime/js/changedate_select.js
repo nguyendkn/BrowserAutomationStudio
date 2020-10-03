@@ -4,9 +4,9 @@ var Year = GetInputConstructorValue("Year", loader);
 var Month = GetInputConstructorValue("Month", loader);
 var Day = GetInputConstructorValue("Day", loader);
 var Hour = GetInputConstructorValue("Hour", loader);
-var Minute = GetInputConstructorValue("Minute", loader);
-var Second = GetInputConstructorValue("Second", loader);
-var Millisecond = GetInputConstructorValue("Millisecond", loader);
+var Minutes = GetInputConstructorValue("Minutes", loader);
+var Seconds = GetInputConstructorValue("Seconds", loader);
+var Milliseconds = GetInputConstructorValue("Milliseconds", loader);
 
 
 if(Save.length == 0)
@@ -39,21 +39,21 @@ if(Hour["original"].length == 0)
   return;
 }
 
-if(Minute["original"].length == 0)
+if(Minutes["original"].length == 0)
 {
-  Invalid("Minute is empty");
+  Invalid("Minutes is empty");
   return;
 }
 
-if(Second["original"].length == 0)
+if(Seconds["original"].length == 0)
 {
-  Invalid("Second is empty");
+  Invalid("Seconds is empty");
   return;
 }
 
-if(Millisecond["original"].length == 0)
+if(Milliseconds["original"].length == 0)
 {
-  Invalid("Millisecond is empty");
+  Invalid("Milliseconds is empty");
   return;
 }
 
@@ -72,9 +72,9 @@ if(Year["original"].length == 0)
   		month: Month["updated"],
   		day: Day["updated"],
   		hour: Hour["updated"],
-  		minute: Minute["updated"],
-  		second: Second["updated"],
-  		millisecond: Millisecond["updated"],
+  		minute: Minutes["updated"],
+  		second: Seconds["updated"],
+  		millisecond: Milliseconds["updated"],
   		year: Year["updated"]
   	
   	})

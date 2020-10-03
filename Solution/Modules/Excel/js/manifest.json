@@ -832,7 +832,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        var sheets_list = workbook.sheets();\r\n        for(var sheet of sheets_list){\r\n            var usedRange = sheet.usedRange();\r\n            usedRange ? usedRange.clear() : \"\";\r\n        };\r\n    };\r\n    sync ? await workbook.toFileAsync(file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    if(exist){\r\n        var sheets_list = workbook.sheets();\r\n        for(var sheet of sheets_list){\r\n            var usedRange = sheet.usedRange();\r\n            usedRange ? usedRange.clear() : \"\";\r\n        };\r\n    };\r\n    sync ? await workbook.toFileAsync(file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_CreateFile",
             "DataType": 0,
             "LanguageName": "Node",

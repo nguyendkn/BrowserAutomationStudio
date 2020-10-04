@@ -1,18 +1,38 @@
-class DialogsStore {
+BasDialogsLib.store = {
   /**
-   * Create an instance of `DialogsStore` class.
-   * @constructor
+   * Initialization state for global variables.
    */
-  constructor () {
-    this.globalVariablesInit = false;
-    this.localVariablesInit = false;
-    this.resourcesInit = false;
-    this.functionsInit = false;
+  globalVariablesInit: false,
 
-    this.recentVariables = [];
-    this.recentFunctions = [];
-    this.recentResources = [];
-  }
+  /**
+   * Initialization state for local variables.
+   */
+  localVariablesInit: false,
+
+  /**
+   * Initialization state for resources.
+   */
+  resourcesInit: false,
+
+  /**
+   * Initialization state for functions.s
+   */
+  functionsInit: false,
+
+  /**
+   * Recent variables list.
+   */
+  recentVariables: [],
+
+  /**
+   * Recent functions list.
+   */
+  recentFunctions: [],
+
+  /**
+   * Recent resources list.
+   */
+  recentResources: [],
 
   /**
    * Add the variable object to the recent variables list.
@@ -29,7 +49,7 @@ class DialogsStore {
       if (!this.localVariablesInit) { this.localVariablesInit = true; return; }
       this.add(this.uniq(target, _VariableCollection.toJSON()), this.recentVariables);
     }
-  }
+  },
 
   /**
    * Add the resource object to the recent resources list.
@@ -39,7 +59,7 @@ class DialogsStore {
     if (!target) return;
     if (!this.resourcesInit) { this.resourcesInit = true; return; }
     this.add(this.uniq(target, _ResourceCollection.toJSON()), this.recentResources);
-  }
+  },
 
   /**
    * Add the function object to the recent functions list.
@@ -49,7 +69,7 @@ class DialogsStore {
     if (!target) return;
     if (!this.functionsInit) { this.functionsInit = true; return; }
     this.add(this.uniq(target, _FunctionCollection.toJSON()), this.recentFunctions);
-  }
+  },
 
   /**
    * Add the item object to the selected list.
@@ -64,9 +84,9 @@ class DialogsStore {
         list.splice(index, 1);
       }
 
-      list.unshift(item);
+      list.unshift({ name: item.name });
     }
-  }
+  },
 
   /**
    * Get the unique item from the two arrays.

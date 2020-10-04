@@ -1,4 +1,4 @@
-_XLSX_DATE_FORMAT = "dd.mm.yyyy hh:mm:ss";
+_XLSX_DATE_FORMAT = "dd\\.mm\\.yyyy\\ hh:mm:ss";
 var date_base = new Date(1900, 0, 0);
 var incorrect_leap_date = new Date(1900, 1, 28);
 var milliseconds_in_day = 1000 * 60 * 60 * 24;

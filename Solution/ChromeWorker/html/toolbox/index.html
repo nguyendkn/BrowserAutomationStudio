@@ -11664,6 +11664,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               return;
             }
 
+            if($('#modalDialogContainer').length > 0) 
+            {
+              return;
+            }
+
             if($("#expressioneditor-container").is(":visible"))
             {
               return;

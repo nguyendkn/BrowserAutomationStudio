@@ -907,6 +907,7 @@
 		"Superscript text": {"ru":"Надстрочный текст"},
 		"First sheet name": {"ru":"Имя первого листа"},
 		"Underline text": {"ru":"Подчеркивание текста"},
+		"Clear all sheets": {"ru":"Очистить все листы"},
 		"Second sheet name": {"ru":"Имя второго листа"},
 		"Just sample text": {"ru":"Просто пример текста"},
 		"Close excel file.": {"ru":"Закрыть excel файл."},

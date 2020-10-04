@@ -12335,56 +12335,78 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     }
 
 
-    function BrowserAutomationStudio_SetResources(resources, additional_resources)
+    function BrowserAutomationStudio_SetResources(resources, additionalResources)
     {
-      _ResourceCollection.reset()
+      const additionalSource = JSON.parse(additionalResources);
+      const source = JSON.parse(resources);
+      _ResourceCollection.reset();
 
-      var res = JSON.parse(resources)
-      var additional_res = JSON.parse(additional_resources) 
-
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _ResourceCollection.add({name:res[i]["name"],description:res[i]["description"],type:res[i]["type"]})
+      for (let i = 0; i < source.length; i++) {
+        _ResourceCollection.add({ name: source[i]["name"], description: source[i]["description"], type: source[i]["type"] });
       }
 
-      for(var i = 0;i < additional_res.length;i+=1)
-      {
-        _ResourceCollection.add({name:additional_res[i]["name"],description:additional_res[i]["name"]})
+      for (let i = 0; i < additionalSource.length; i++) {
+        _ResourceCollection.add({ name: additionalSource[i]["name"], description: additionalSource[i]["name"] });
       }
+
+      BasDialogsLib.store.addResource([...additionalSource, ...source]);
+    }
+
+    function BrowserAutomationStudio_SetGlobalVariables(globalVariables)
+    {
+      const source = JSON.parse(globalVariables);
+      _GlobalVariableCollection.reset();
+
+      source.sort((a, b) => a["name"] >= b["name"]);
+      for (let i = 0; i < source.length; i++) {
+        _GlobalVariableCollection.add({ name: source[i]["name"] });
+      }
+
+      BasDialogsLib.store.addVariable(source, true);
     }
 
     function BrowserAutomationStudio_SetVariables(variables)
     {
-      _VariableCollection.reset()
-      var res = JSON.parse(variables);
-      var added_cycle_index = false
-      for(var i = 0;i < res.length;i+=1)
-      {
-        if(res[i]["name"] == "CYCLE_INDEX")
-          added_cycle_index = true
-      }
-      if(!added_cycle_index)
-        res.push({name:"CYCLE_INDEX"})
-      
-      res.sort(function(a,b){return a["name"] >= b["name"]})
+      const source = JSON.parse(variables);
+      _VariableCollection.reset();
 
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _VariableCollection.add({name:res[i]["name"]})
+      let addedCycleIndex = false;
+
+      for (let i = 0; i < source.length; i++) {
+        if (source[i]["name"] === "CYCLE_INDEX") {
+          addedCycleIndex = true;
+        }
       }
+
+      if (!addedCycleIndex) {
+        source.push({ name: "CYCLE_INDEX" });
+      }
+
+      source.sort((a, b) => a["name"] >= b["name"]);
+      for (let i = 0; i < source.length; i++) {
+        _VariableCollection.add({ name: source[i]["name"] });
+      }
+
+      BasDialogsLib.store.addVariable(source, false);
     }
 
-    function BrowserAutomationStudio_SetGlobalVariables(global_variables)
+    function BrowserAutomationStudio_SetFunctions(functions)
     {
+      const source = JSON.parse(functions);
+      _FunctionCollection.reset();
 
-      _GlobalVariableCollection.reset()
-      var res = JSON.parse(global_variables)
-      res.sort(function(a,b){return a["name"] >= b["name"]})
-      var added_cycle_index = false
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _GlobalVariableCollection.add({name:res[i]["name"]})
+      for (let i = 0; i < source.length; i++) {
+        try {
+          const dat = JSON.parse(JSON.parse(source[i]["name"]));
+          const prop = { name: dat["n"] };
+          if (dat["fd"]) {
+            prop["properties"] = JSON.parse(dat["fd"]);
+          }
+          _FunctionCollection.add(prop);
+        } catch (e) { }
       }
+
+      BasDialogsLib.store.addFunction(source);
     }
 
     function BrowserAutomationStudio_SetSchema(schema)
@@ -12397,29 +12419,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     function BrowserAutomationStudio_SetEmbeddedData(data, languages)
     {
       _EmbeddedModel.ParseData(data, languages)
-    }
-
-    function BrowserAutomationStudio_SetFunctions(functions)
-    {
-      _FunctionCollection.reset()
-      var res = JSON.parse(functions)
-
-      for(var i = 0;i < res.length;i+=1)
-      {
-        try
-        {
-          var dat = JSON.parse(JSON.parse(res[i]["name"]))
-          var prop = {name:dat["n"]}
-          if(dat["fd"])
-          {
-            prop["properties"] = JSON.parse(dat["fd"])
-          }
-          _FunctionCollection.add(prop)
-        }catch(e)
-        {
-
-        }
-      }
     }
 
     function BrowserAutomationStudio_SetCurrentFunction(FunctionData)

@@ -1,4 +1,9 @@
-class BasResourcesDialog extends BasModalDialog {
+class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
+  /**
+   * Utility methods for the dialog handler.
+   */
+  utils = BasDialogsLib.utils;
+
   /**
    * Create an instance of `BasResourcesDialog` class.
    * @param {Object} element - target element object.
@@ -6,69 +11,68 @@ class BasResourcesDialog extends BasModalDialog {
    */
   constructor (element) {
     super({
-      history: BasModalDialog.store.recentResources,
-      selector: element.attr('data-result-target'),
-      template: _.template(`<%= name %>`),
+      recent: BasDialogsLib.store.recentResources,
       items: _ResourceCollection.toJSON(),
-      handler: BasResourcesDialog.handler,
-      itemColor: 'dark',
-      itemNames: {
-        single: 'resource',
-        many: 'resources'
-      },
       options: [
         {
           checked: false,
           id: 'resourceDontDie',
-          text: 'Don\'t end application if not exists',
-          description: [
+          text: tr('Don\'t end application if not exists'),
+          description: tr([
             'By default script will stop after resource is finished.',
             'You can use this option to complete not the entire script, but only the thread.'
-          ].join(' ')
+          ].join(' '))
         },
         {
           checked: true,
           id: 'resourceReuse',
-          text: 'Reuse Resource',
-          description: [
+          text: tr('Reuse Resource'),
+          description: tr([
             'If this setting is enabled, then every time you use resource, it will be replaced with same value.',
             'For example, if you are reading from file with \'Reuse Resource\' enabled, then same line will be used during all thread lifetime.',
             'You need to disable this setting to take new line.'
-          ].join(' ')
+          ].join(' '))
         }
-      ]
+      ],
+      metadata: {
+        template: _.template(`<%= name %>`),
+        pluralName: 'resources',
+        singleName: 'resource',
+        color: 'dark'
+      }
     });
+
+    this.selector = element.attr('data-result-target');
   }
 
-  static handler(name, data) {
-    const el = $(data.selector); let res = name;
-    if (data.options.resourceDontDie) res += '|onlyfail';
-    if (!data.options.resourceReuse) res += '|notreuse';
-    let insert = `{{${res}}}`;
+  handler(name, data) {
+    const el = $(this.selector); let resource = name;
+    if (data.options.resourceDontDie) {
+      resource += '|onlyfail';
+    }
+    if (!data.options.resourceReuse) {
+      resource += '|notreuse';
+    }
+    const insert = `{{${resource}}}`;
 
-    if ($(`${data.selector}_number:visible`).length) {
-      el.closest('.input-group').find('.selector').html('expression');
-      el.closest('.input-group').find('.input_selector_number').hide();
-      el.closest('.input-group').find('.input_selector_string').show();
-      el.val(insert);
-    } else {
-      if (name.length) {
+    if (name.length) {
+      if ($(`${this.selector}_number:visible`).length) {
+        this.utils.insertAsExpression(el, insert);
+      } else {
         if (el.is('[data-resource-constructor]')) {
-          el.val(res);
+          el.val(resource);
         } else {
           if (el.is('[data-is-code-editor]')) {
-            this.helper.insertTextToCodeEditor(el, insert);
+            this.utils.insertTextToEditor(el, insert);
           } else {
-            this.helper.insertTextAtCursor(el, insert);
+            this.utils.insertTextAtCursor(el, insert);
           }
         }
       }
+
+      BasDialogsLib.store.addResource({ name });
     }
 
-    if (name.length) {
-      BasModalDialog.store.addResource({ name });
-    }
-
-    this.helper.checkPathEdited(data.selector);
+    this.utils.checkPathEdited(this.selector);
   }
 }

@@ -1,48 +1,59 @@
-class BasVariablesDialog extends BasModalDialog {
+class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
+  /**
+   * Utility methods for the dialog handler.
+   */
+  utils = BasDialogsLib.utils;
+
   /**
    * Create an instance of `BasVariablesDialog` class.
    * @param {Object} element - target element object.
    * @constructor
    */
   constructor (element) {
-    const globalVariables = (element.attr('disable_globals') != 'true'
-      ? _GlobalVariableCollection.toJSON().map((v) => ({ isGlobal: !false, ...v }))
+    const globals = (element.attr('disable_globals') !== 'true'
+      ? _GlobalVariableCollection.toJSON().map((item) => ({ global: !false, ...item }))
       : []);
 
-    const localVariables = (element.attr('disable_locals') != 'true'
-      ? _VariableCollection.toJSON().map((v) => ({ isGlobal: false, ...v }))
+    const locals = (element.attr('disable_locals') !== 'true'
+      ? _VariableCollection.toJSON().map((item) => ({ global: false, ...item }))
       : []);
+
+    const actions = BasDialogsLib.getActions();
 
     super({
-      template: _.template(`<%= (isGlobal ? 'GLOBAL:' : '') + name %>`),
-      items: [...globalVariables, ...localVariables],
-      history: BasModalDialog.store.recentVariables,
-      selector: element.attr('data-result-target'),
-      handler: BasVariablesDialog.handler,
-      itemColor: 'green',
-      itemNames: {
-        single: 'variable',
-        many: 'variables'
-      },
-      options: []
+      items: [...globals, ...locals].map((item) => {
+        const action = actions.find(({ variables }) => variables.includes(item.name));
+
+        if (action) {
+          return { action: action, ...item };
+        } else {
+          return { action: null, ...item };
+        }
+      }),
+      recent: BasDialogsLib.store.recentVariables,
+      metadata: {
+        template: _.template(`<%= (global ? 'GLOBAL:' : '') + name %>`),
+        pluralName: 'variables',
+        singleName: 'variable',
+        color: 'green'
+      }
     });
+
+    this.selector = element.attr('data-result-target');
   }
 
-  static handler(name, data) {
-    const el = $(data.selector); let insert = `[[${data.isGlobal ? 'GLOBAL:' : ''}${name}]]`;
+  handler(name, data) {
+    const el = $(this.selector); const insert = `[[${data.global ? 'GLOBAL:' : ''}${name}]]`;
 
-    if ($(`${data.selector}_number:visible`).length) {
-      el.closest('.input-group').find('.selector').html('expression');
-      el.closest('.input-group').find('.input_selector_number').hide();
-      el.closest('.input-group').find('.input_selector_string').show();
-      el.val(insert);
-    } else {
-      if (name.length) {
+    if (name.length) {
+      if ($(`${this.selector}_number:visible`).length) {
+        this.utils.insertAsExpression(el, insert);
+      } else {
         if (!el.is('[data-variable-constructor]')) {
           if (el.is('[data-is-code-editor]')) {
-            this.helper.insertTextToCodeEditor(el, insert);
+            this.utils.insertTextToEditor(el, insert);
           } else {
-            this.helper.insertTextAtCursor(el, insert);
+            this.utils.insertTextAtCursor(el, insert);
           }
         } else {
           if (el.is('[data-append-array]')) {
@@ -56,16 +67,10 @@ class BasVariablesDialog extends BasModalDialog {
           }
         }
       }
+
+      BasDialogsLib.store.addVariable({ name }, data.global);
     }
 
-    if (name.length) {
-      if (!data.isGlobal) {
-        BasModalDialog.store.addVariable({ name }, false);
-      } else {
-        BasModalDialog.store.addVariable({ name }, true);
-      }
-    }
-
-    this.helper.checkPathEdited(data.selector);
+    this.utils.checkPathEdited(this.selector);
   }
 }

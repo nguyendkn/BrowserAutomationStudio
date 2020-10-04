@@ -1,4 +1,4 @@
-class BasFunctionsDialog extends BasModalDialog {
+class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
   /**
    * Create an instance of `BasFunctionsDialog` class.
    * @param {Object} element - target element object.
@@ -6,23 +6,24 @@ class BasFunctionsDialog extends BasModalDialog {
    */
   constructor (element) {
     super({
-      history: BasModalDialog.store.recentFunctions,
-      selector: element.attr('data-result-target'),
-      template: _.template(`<%= name %>`),
+      recent: BasDialogsLib.store.recentFunctions,
       items: _FunctionCollection.toJSON(),
-      handler: (name, data) => {
-        if (name.length) {
-          BasModalDialog.store.addFunction({ name });
-          $(data.selector).val(name);
-        }
-        _MainView.funcchange(name);
-      },
-      itemColor: 'dark',
-      itemNames: {
-        single: 'function',
-        many: 'functions'
-      },
-      options: []
+      metadata: {
+        template: _.template(`<%= name %>`),
+        pluralName: 'functions',
+        singleName: 'function',
+        color: 'dark'
+      }
     });
+
+    this.selector = element.attr('data-result-target');
+  }
+
+  handler(name, data) {
+    if (name.length) {
+      BasDialogsLib.store.addFunction({ name });
+      $(this.selector).val(name);
+    }
+    _MainView.funcchange(name);
   }
 }

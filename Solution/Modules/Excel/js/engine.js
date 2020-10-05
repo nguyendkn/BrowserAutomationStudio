@@ -2,11 +2,14 @@ _XLSX_DATE_FORMAT = "dd\\.mm\\.yyyy\\ hh:mm:ss";
 var date_base = new Date(1900, 0, 0);
 var incorrect_leap_date = new Date(1900, 1, 28);
 var milliseconds_in_day = 1000 * 60 * 60 * 24;
+_XLSX_LAST_ACTION = {ru:"Модуль Excel еще не использовался",en:"Excel module has not been used yet"};
 
 function Excel_CreateFile(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Создать файл",en:"Create file"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sync];
 	
@@ -15,6 +18,8 @@ function Excel_CreateFile(){
 function Excel_GetSheetsList(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Получить список листов",en:"Get sheets list"};
 	
 	VAR_XLSX_NODE_PARAMETERS = file_path;
 	
@@ -29,6 +34,8 @@ function Excel_AddSheet(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Добавить лист",en:"Add sheet"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_name, sheet_index, sync];
 	
 	_embedded("Excel_AddSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -39,6 +46,8 @@ function Excel_RenameSheet(){
 	var new_sheet_name = _function_argument("NewSheetName");
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Переименовать лист",en:"Rename sheet"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, new_sheet_name, sync];
 	
@@ -51,6 +60,8 @@ function Excel_MoveSheet(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Переместить лист",en:"Move sheet"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, new_sheet_index, sync];
 	
 	_embedded("Excel_MoveSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -61,6 +72,8 @@ function Excel_DeleteSheet(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Удалить лист",en:"Delete sheet"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, sync];
 	
 	_embedded("Excel_DeleteSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -70,6 +83,8 @@ function Excel_ReadCell(){
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Читать ячейку",en:"Read cell"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, _XLSX_DATE_FORMAT];
 	
@@ -89,6 +104,8 @@ function Excel_WriteToCell(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Запись в ячейку",en:"Write to cell"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, data, sync];
 	
 	_embedded("Excel_WriteToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -98,6 +115,8 @@ function Excel_ReadSheet(){
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Читать лист",en:"Read sheet"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data_format, _XLSX_DATE_FORMAT];
 	
@@ -112,6 +131,8 @@ function Excel_WriteToSheet(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Запись на лист",en:"Write to sheet"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, data, sync];
 	
 	_embedded("Excel_WriteToSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -120,6 +141,8 @@ function Excel_CountRows(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Количество строк",en:"Count rows"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name];
 	
@@ -135,8 +158,10 @@ function Excel_ReadRows(){
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
 	
-	from_row = from_row=="" ? "" : from_row+1;
-	to_row = to_row=="" ? "" : to_row+1;
+	_XLSX_LAST_ACTION = {ru:"Читать строки",en:"Read rows"};
+	
+	from_row = from_row==="" ? "" : from_row+1;
+	to_row = to_row==="" ? "" : to_row+1;
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row, data_format, _XLSX_DATE_FORMAT];
 	
@@ -152,7 +177,9 @@ function Excel_InsertRows(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
-	from_row = from_row=="" ? "" : from_row+1;
+	_XLSX_LAST_ACTION = {ru:"Вставить строки",en:"Insert rows"};
+	
+	from_row = from_row==="" ? "" : from_row+1;
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, data, sync];
 	
@@ -166,8 +193,10 @@ function Excel_DeleteRows(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
-	from_row = from_row=="" ? "" : from_row+1;
-	to_row = to_row=="" ? "" : to_row+1;
+	_XLSX_LAST_ACTION = {ru:"Удалить строки",en:"Delete rows"};
+	
+	from_row = from_row==="" ? "" : from_row+1;
+	to_row = to_row==="" ? "" : to_row+1;
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_row, to_row, sync];
 	
@@ -180,6 +209,8 @@ function Excel_ReadCellsRange(){
 	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
 	var data_format = _function_argument("DataFormat");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Читать область ячеек",en:"Read cells range"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data_format, _XLSX_DATE_FORMAT];
 	
@@ -196,6 +227,8 @@ function Excel_WriteToCellsRange(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Запись в область ячеек",en:"Write to cells range"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, data, sync];
 	
 	_embedded("Excel_WriteToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -210,6 +243,8 @@ function Excel_ImportToResources(){
 	var greedy = _function_argument("Greedy");
 	var dont_give_up = _function_argument("DontGiveUp");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Импорт из файла в ресурсы",en:"Import from file to resources"};
 
 	_call_function(Excel_GetSheetsList,{"FilePath":file_path,"Timeout":timeout})!
 	var sheets_list = _result_function();
@@ -243,6 +278,8 @@ function Excel_ExportFromResources(){
 	var resource_list = Excel_ConvertToList(_function_argument("ResourceList"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Экспорт из ресурсов в файл",en:"Export from resources to file"};
 
 	_do_with_params({"foreach_data":resource_list},function(){
 		var resource_index = _iterator() - 1;
@@ -264,6 +301,8 @@ function Excel_ClearSheet(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Очистить лист",en:"Clear sheet"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, sync];
 	
 	_embedded("Excel_ClearSheet", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -274,6 +313,8 @@ function Excel_ClearCell(){
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Очистить ячейку",en:"Clear cell"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, sync];
 	
@@ -287,6 +328,8 @@ function Excel_ClearCellsRange(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Очистить область ячеек",en:"Clear cells range"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, sync];
 	
 	_embedded("Excel_ClearCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -294,6 +337,8 @@ function Excel_ClearCellsRange(){
 function Excel_ConvertToJSON(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Преобразовать в JSON",en:"Convert to JSON"};
 	
 	var sheets = [];
 
@@ -318,6 +363,8 @@ function Excel_ConvertFromJSON(){
 	var data = _function_argument("Data");
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Преобразовать из JSON",en:"Convert from JSON"};
 	
 	data = (typeof data=="object") ? data : JSON.parse(data);
 	
@@ -344,6 +391,8 @@ function Excel_FindCells(){
 	var contains = _function_argument("Contains");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Найти одну ячейку",en:"Find single cell"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
 	
 	_embedded("Excel_FindCells", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -356,6 +405,8 @@ function Excel_FindCell(){
 	var contains = _function_argument("Contains");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Найти все ячейки",en:"Find all cells"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
 	
 	_embedded("Excel_FindCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -367,6 +418,8 @@ function Excel_GetFormulaFromCell(){
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Получить формулу из ячейки",en:"Get formula from cell"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address];
 	
@@ -382,6 +435,8 @@ function Excel_SetFormulaToCell(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Установить формулу в ячейку",en:"Set formula to cell"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, formula, sync];
 	
 	_embedded("Excel_SetFormulaToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -392,6 +447,8 @@ function Excel_GetCellStyle(){
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var style_name = _function_argument("StyleName");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Получите один стиль для одной ячейки",en:"Get one style for single cell"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, style_name];
 	
@@ -405,6 +462,8 @@ function Excel_GetCellStyles(){
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
 	var styles_name_list = Excel_ConvertToList(_function_argument("StylesNameList"));
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Получить список стилей для одной ячейки",en:"Get style list for single cell"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, styles_name_list];
 	
@@ -421,6 +480,8 @@ function Excel_SetStyleToCell(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Установить один стиль в одну ячейку",en:"Set one style to single cell"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, style_name, style_value, sync];
 	
 	_embedded("Excel_SetStyleToCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -432,6 +493,8 @@ function Excel_SetStylesToCell(){
 	var styles = _function_argument("Styles");
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Установить список стилей в одну ячейку",en:"Set list of styles to single cell"};
 	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, cell_address, styles, sync];
 	
@@ -447,6 +510,8 @@ function Excel_SetStyleToCellsRange(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Установить один стиль в область ячеек",en:"Set one style to cells range"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, style_name, style_value, sync];
 	
 	_embedded("Excel_SetStyleToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -460,6 +525,8 @@ function Excel_SetStylesToCellsRange(){
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
+	_XLSX_LAST_ACTION = {ru:"Установить список стилей в область ячеек",en:"Set list of styles to cells range"};
+	
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, from_cell, to_cell, styles, sync];
 	
 	_embedded("Excel_SetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
@@ -467,6 +534,8 @@ function Excel_SetStylesToCellsRange(){
 function Excel_CloseFile(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Закрыть файл",en:"Close file"};
 	
 	VAR_XLSX_NODE_PARAMETERS = file_path;
 	
@@ -503,7 +572,7 @@ function Excel_IsJsonString(str){
     return true;
 };
 function Excel_ConvertToList(str){
-	return (str=="" || typeof str=="object") ? str : (Excel_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
+	return (str==="" || typeof str=="object") ? str : (Excel_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
 };
 function Excel_ConvertDates(results){
 	var values = results[0];

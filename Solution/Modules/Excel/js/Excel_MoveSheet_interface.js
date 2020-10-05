@@ -6,7 +6,7 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Move specified sheet in excel file.</div>
 	<div class="tr tooltip-paragraph-fold">If the "New sheet index" parameter is empty, the sheet will be moved to the end of the book.</div>
-	<div class="tr tooltip-paragraph-fold">In the "New sheet index" parameter, you can specify the name of an existing sheet, then the specified sheet will be before in front of it.</div>
+	<div class="tr tooltip-paragraph-fold">In the "New sheet index" parameter, you can specify the name of an existing sheet, then the specified sheet will be placed in before of it.</div>
 	<div class="tr tooltip-paragraph-fold">When specifying a sheet name in the "New sheet index" parameter, the field type must be <code>string</code>.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

@@ -84,7 +84,7 @@ BasDialogsLib.BasModalDialog = class {
 
     $document.on('keyup', function (e) {
       if (!(self.$modal && e.key === 'Escape')) return;
-      e.stopPropagation();
+      e.preventDefault();
       self.closeDialog();
     });
 
@@ -125,10 +125,10 @@ BasDialogsLib.BasModalDialog = class {
           $item.show();
         });
 
-        if (search && !some) {
-          $list.hide();
-        } else {
+        if (!search || some) {
           $list.show();
+        } else {
+          $list.hide();
         }
       } else {
         $list.hide();
@@ -136,9 +136,9 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     if ($('.modal-list-wrap:hidden').size() === _.size(this.map)) {
-      $('.modal-list-empty').show();
+      this.$listEmpty.show();
     } else {
-      $('.modal-list-empty').hide();
+      this.$listEmpty.hide();
     }
   }
 
@@ -154,6 +154,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$recentItems = $('#modalRecentItems');
     this.$hideRecent = $('#modalRecentHide');
     this.$showRecent = $('#modalRecentShow');
+    this.$listEmpty = $('#modalListEmpty');
 
     this.$recentItems.scrollTop(this.constructor.recentItemsScroll);
     this.$listContainer.scrollTop(this.constructor.listItemsScroll);
@@ -229,20 +230,6 @@ BasDialogsLib.BasModalDialog = class {
 
     if (window.matchMedia('(min-width: 525px)').matches && this.recent.length) {
       this.$recentContainer.show();
-    }
-
-    const columns = Math.floor(this.$listContent.width() / 264);
-
-    if (columns > 0) {
-      const maximum = _.size(this.map);
-
-      if (columns >= maximum) {
-        this.$listContent.css('column-count', maximum);
-      } else {
-        this.$listContent.css('column-count', columns);
-      }
-    } else {
-      this.$listContent.css('column-count', 1);
     }
 
     this.$modal.css('height', `${window.innerHeight * (100.0 / _Z)}px`);

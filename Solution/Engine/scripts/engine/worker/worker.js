@@ -215,38 +215,41 @@ function _browser_mode(mode, callback)
 {
     _ARG = arguments
 
-    var current_settings = {}
+    _create_browser_if_needed(function(){
 
-    if(mode == "mobile")
-    {
-        current_settings = {
-            "Fingerprints.Setting.forceAndroidOverlayScrollbar":"Enable",
-            "Fingerprints.Setting.passwordEchoEnabled":"Enable",
-            "Fingerprints.Setting.textAreasAreResizable":"Disable",
-            "Fingerprints.Setting.useSolidColorScrollbars":"Enable",
-            "Fingerprints.Setting.availablePointerTypes":"2",
-            "Fingerprints.Setting.availableHoverTypes":"1",
-            "Fingerprints.Setting.primaryPointerType":"2",
-            "Fingerprints.Setting.primaryHoverType":"1"
+        var current_settings = {}
+
+        if(_ARG[0] == "mobile")
+        {
+            current_settings = {
+                "Fingerprints.Setting.forceAndroidOverlayScrollbar":"Enable",
+                "Fingerprints.Setting.passwordEchoEnabled":"Enable",
+                "Fingerprints.Setting.textAreasAreResizable":"Disable",
+                "Fingerprints.Setting.useSolidColorScrollbars":"Enable",
+                "Fingerprints.Setting.availablePointerTypes":"2",
+                "Fingerprints.Setting.availableHoverTypes":"1",
+                "Fingerprints.Setting.primaryPointerType":"2",
+                "Fingerprints.Setting.primaryHoverType":"1"
+            }
         }
-    }
 
-    if(mode == "desktop")
-    {
-        current_settings = {
-            "Fingerprints.Setting.forceAndroidOverlayScrollbar":"Disable",
-            "Fingerprints.Setting.passwordEchoEnabled":"Disable",
-            "Fingerprints.Setting.textAreasAreResizable":"Enable",
-            "Fingerprints.Setting.useSolidColorScrollbars":"Disable",
-            "Fingerprints.Setting.availablePointerTypes":"4",
-            "Fingerprints.Setting.availableHoverTypes":"2",
-            "Fingerprints.Setting.primaryPointerType":"4",
-            "Fingerprints.Setting.primaryHoverType":"2"
+        if(_ARG[0] == "desktop")
+        {
+            current_settings = {
+                "Fingerprints.Setting.forceAndroidOverlayScrollbar":"Disable",
+                "Fingerprints.Setting.passwordEchoEnabled":"Disable",
+                "Fingerprints.Setting.textAreasAreResizable":"Enable",
+                "Fingerprints.Setting.useSolidColorScrollbars":"Disable",
+                "Fingerprints.Setting.availablePointerTypes":"4",
+                "Fingerprints.Setting.availableHoverTypes":"2",
+                "Fingerprints.Setting.primaryPointerType":"4",
+                "Fingerprints.Setting.primaryHoverType":"2"
+            }
         }
-    }
 
-    _settings(current_settings, function(){
-         Browser.SetMode(_ARG[0],_get_function_body(_ARG[1]))
+        _settings(current_settings, function(){
+             Browser.SetMode(_ARG[0],_get_function_body(_ARG[1]))
+        })
     })
 
 }

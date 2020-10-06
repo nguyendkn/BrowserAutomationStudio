@@ -101,6 +101,7 @@ public:
     std::vector<std::function<void(const std::string&)> > EventDebugVariablesResult;
     std::vector<std::function<void()> > EventGetLoadStats;
     std::vector<std::function<void()> > EventRestoreOriginalStage;
+    std::vector<std::function<void(const std::string&)> > EventSetMode;
 
 
     std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool)> > EventSetCode;

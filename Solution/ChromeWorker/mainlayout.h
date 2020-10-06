@@ -29,6 +29,7 @@ public:
     std::string ManualControlLabel;
 
     bool IsRecord;
+    bool IsTouchMode;
     bool IsHome;
     bool IsCentralShown;
     bool IsContextMenuShown;
@@ -72,8 +73,9 @@ public:
     HWND HLabelTop;
 
     //Cursors
-    HCURSOR hcSizeNS, hcSizeEW, hcArrow, hcCross, hcHand, hcHelp, hcIbeam, hcIcon, hcWait;
+    HCURSOR hcSizeNS, hcSizeEW, hcArrow, hcArrowTouch, hcCross, hcHand, hcHelp, hcIbeam, hcIcon, hcWait;
     int Cursor;
+    bool IsCursorOverBrowser;
 
     //Browsers
     HWND BrowserHandle;
@@ -150,9 +152,10 @@ public:
     bool OnMouseUp();
     bool OnMouseLeave();
     bool OnMouseDown(int x, int y, int BrowserWidth,int BrowserHeight,int WindowWidth,int WindowHeight, bool IsControlButton);
-    void SplitterSetCursor();
     void SetBrowserCursor(int Cursor);
+    void SetTouchMode(bool IsTouchMode);
     HCURSOR GetCursor();
+    bool IsTouchCursor();
 
     void SplitterHideInterface();
     void SplitterShowInterface();

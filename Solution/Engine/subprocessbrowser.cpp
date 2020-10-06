@@ -52,6 +52,19 @@ namespace BrowserAutomationStudioFramework
 
     }
 
+    void SubprocessBrowser::SetMode(const QString& mode, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeTextElement("SetMode",mode);
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("SetMode"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(SetMode()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+    }
+
     void SubprocessBrowser::MouseClick(int x, int y, const QString& callback)
     {
         QString WriteString;
@@ -829,6 +842,9 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "RestoreLocalStorage" && token == QXmlStreamReader::StartElement)
             {
                 emit RestoreLocalStorage();
+            }else if(xmlReader.name() == "SetMode" && token == QXmlStreamReader::StartElement)
+            {
+                emit SetMode();
             }else if(xmlReader.name() == "MouseClick" && token == QXmlStreamReader::StartElement)
             {
                 emit MouseClick();

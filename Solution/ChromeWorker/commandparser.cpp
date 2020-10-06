@@ -674,6 +674,15 @@ void CommandParser::Parse(const std::string& Xml)
             }
         }
 
+        CommandNode = MessagesNode->first_node("SetMode");
+        if(CommandNode)
+        {
+            std::string value = CommandNode->value();
+            WORKER_LOG("SetMode");
+            for(auto f:EventSetMode)
+                f(value);
+        }
+
 
         CommandNode = MessagesNode->first_node("RestoreOriginalStage");
         if(CommandNode)

@@ -48,6 +48,7 @@ HWND HButtonUpUp,HButtonDownDown,HButtonLeftLeft,HButtonRightRight;
 enum{IDButtonTerminate = 1000,IDButtonQuit,IDButtonUp,IDButtonBackUrl,IDBrowserTabs,IDBrowserMenu,IDButtonLoadUrl,IDButtonDown,IDButtonLeft,IDButtonRight,IDButtonUpUp,IDButtonDownDown,IDButtonLeftLeft,IDButtonRightRight,IDButtonMinimizeMaximize,IDButtonMenu,IDButtonSettings,IDButtonDirectRecord,IDButtonDirectNoRecord,IDButtonIndirect,IDTextHold,IDBrowserLabel,IDLabelTop,IDTextFinished,IDClick,IDMove,IDNone,IDMoveAndClick,IDDrag,IDDrop,IDDragElement,IDDropElement,IDInspect,IDXml,IDText,IDScript,IDClickElement,IDMoveElement,IDMoveAndClickElement,IDClear,IDType,IDExists,IDStyle,IDCheck,IDScreenshot,IDCoordinates,IDFocus,IDSet,IDSetInteger,IDSetRandom,IDGetAttr,IDSetAttr,IDCaptcha,IDLength,IDWaitElement,
     IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000};
 HCURSOR HCursor = 0;
+HCURSOR HCursorTouch = 0;
 using namespace std::placeholders;
 HMENU hPopupMenu = 0;
 HMENU hTabsManualMenu = 0;
@@ -167,6 +168,13 @@ void RestoreOriginalStage()
     Settings.SetToolboxHeight(Layout->ToolBoxRectHeight);
     Settings.SetScenarioWidth(Layout->DevToolsRectWidth);
     Settings.SaveToFile();
+}
+
+void SetMode(const std::string& mode)
+{
+    app->GetData()->IsTouchScreen = mode == "mobile";
+    Layout->IsTouchMode = app->GetData()->IsTouchScreen;
+    app->SendTextResponce("<SetMode/>");
 }
 
 std::string GetUrl()
@@ -538,6 +546,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             Layout->hcSizeNS = LoadCursor(NULL, IDC_SIZENS);
             Layout->hcSizeEW = LoadCursor(NULL, IDC_SIZEWE);
             Layout->hcArrow = LoadCursor(NULL, IDC_ARROW);
+            Layout->hcArrowTouch = LoadCursor(hInst, MAKEINTRESOURCEW(IDB_TOUCHCURSOR));
 
             Layout->hcCross = LoadCursor(NULL, IDC_CROSS);
             Layout->hcHand = LoadCursor(NULL, IDC_HAND);
@@ -706,6 +715,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             }
 
             HCursor = LoadCursor(NULL, IDC_ARROW);
+            HCursorTouch = LoadCursor(hInst, MAKEINTRESOURCEW(IDB_TOUCHCURSOR));
 
 
             RepositionInterface(0,0);
@@ -949,11 +959,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;
 
+        case WM_SETCURSOR:
+        {
+            SetCursor(Layout->GetCursor());
+        }
+        break;
+
         case WM_MOUSEMOVE:
         {
 
             int xPos = LOWORD(lParam);
             int yPos = HIWORD(lParam);
+
+            //compensate touch cursor offset
+            if(Layout->IsTouchCursor())
+            {
+                xPos += 7;
+                yPos += 7;
+            }
 
             LastMousePositionRawX = xPos;
             LastMousePositionRawY = yPos;
@@ -1003,12 +1026,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             Layout->Focus();
                         if(app->GetData()->IsRecord)
                             app->MouseMoveAt(MousePositionX,MousePositionY);
-                        SetCursor(Layout->GetCursor());
+
+                        Layout->IsCursorOverBrowser = true;
                     }else
                     {
                         Layout->SetBrowserCursor(0);
                         if(app->GetData()->IsRecord)
                             app->MouseLeave();
+
+                        Layout->IsCursorOverBrowser = false;
                     }
                 }
             }
@@ -1582,12 +1608,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             RECT r = Layout->GetStateIndicatorRectangle(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
                         }*/
 
-                        if(!Layout->IsCentralShown && HCursor && !Layout->IsContextMenuShown && (app->GetData()->ManualControl == BrowserData::Indirect || app->GetData()->IsRecord))
+                        HCURSOR CurrentCursor = 0;
+
+                        if(app->GetData()->IsTouchScreen)
+                        {
+                            CurrentCursor = 0;
+                        }else
+                        {
+                            CurrentCursor = HCursor;
+                        }
+
+                        if(!Layout->IsCentralShown && CurrentCursor && !Layout->IsContextMenuShown && (app->GetData()->ManualControl == BrowserData::Indirect || app->GetData()->IsRecord))
                         {
                             LOCK_BROWSER_DATA
                             BrowserData * d = app->GetData();
                             if(d->CursorX >= 0 && d->CursorX <= d->WidthBrowser && d->CursorY >= 0 && d->CursorY <= d->HeightBrowser)
-                                DrawIcon(hdc, br.left + (float)(d->CursorX) * (float)(br.right - br.left) / (float)(d->WidthBrowser) , br.top + (float)(d->CursorY) * (float)(br.bottom - br.top) / (float)(d->HeightBrowser), HCursor);
+                                DrawIcon(hdc, br.left + (float)(d->CursorX) * (float)(br.right - br.left) / (float)(d->WidthBrowser) , br.top + (float)(d->CursorY) * (float)(br.bottom - br.top) / (float)(d->HeightBrowser), CurrentCursor);
                         }
 
                         if(Layout->IsManualControlAction && !Layout->IsCentralShown)
@@ -1859,6 +1895,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     WORKER_LOG(std::string("IsRecord<<") + std::to_string(Data->IsRecord));
 
     Data->IsRecordHttp = false;
+    Data->IsTouchScreen = false;
     Data->OldestRequestTime = 0;
     Data->_MainWindowHandle = 0;
     Data->_ParentWindowHandle = 0;
@@ -2042,6 +2079,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventElementCommand.push_back(std::bind(&MainApp::ElementCommandCallback,app.get(),_1));
     Parser->EventDebugVariablesResult.push_back(std::bind(&MainApp::DebugVariablesResultCallback,app.get(),_1));
     Parser->EventRestoreOriginalStage.push_back(RestoreOriginalStage);
+    Parser->EventSetMode.push_back(SetMode);
 
     Parser->EventClearImageData.push_back(std::bind(&MainApp::ClearImageDataCallback,app.get()));
     Parser->EventSetImageData.push_back(std::bind(&MainApp::SetImageDataCallback,app.get(),_1));

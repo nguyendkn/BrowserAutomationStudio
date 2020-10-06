@@ -21,4 +21,5 @@
 535 BITMAP "BrowserTabs.bmp"
 536 BITMAP "menu.bmp"
 537 BITMAP "BrowserMenu.bmp"
+538 CURSOR "TouchCursor.cur"
 

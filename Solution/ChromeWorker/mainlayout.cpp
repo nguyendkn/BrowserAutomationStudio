@@ -11,9 +11,12 @@ MainLayout::MainLayout(int ToolboxHeight, int ScenarioWidth)
 {
     IsRecord = false;
     IsHome = false;
+    IsTouchMode = false;
     CanGoBack = false;
 
     IsManualControlAction = false;
+
+    IsCursorOverBrowser = false;
 
     Cursor = 0;
 
@@ -1202,50 +1205,74 @@ HBITMAP MainLayout::GetManualAnimationButton()
 
 //Splitter
 
-void MainLayout::SplitterSetCursor()
-{
-    if(IsMoveScrollVertical || IsInsideScrollVertical)
-    {
-        SetCursor(hcSizeNS);
-
-
-    }else if(IsMoveScrollHorizontal || IsInsideScrollHorizontal)
-    {
-        SetCursor(hcSizeEW);
-    }
-    else
-    {
-        switch(Cursor)
-        {
-            case 0: SetCursor(hcArrow); break;
-            case 1: SetCursor(hcCross); break;
-            case 2: SetCursor(hcHand); break;
-            case 5: SetCursor(hcHelp); break;
-            case 3: SetCursor(hcIbeam); break;
-            case 4: SetCursor(hcWait); break;
-            default: SetCursor(hcArrow);
-        }
-    }
-
-}
-
 void MainLayout::SetBrowserCursor(int Cursor)
 {
     this->Cursor = Cursor;
-    SplitterSetCursor();
+}
+
+void MainLayout::SetTouchMode(bool IsTouchMode)
+{
+    this->IsTouchMode = IsTouchMode;
+}
+
+bool MainLayout::IsTouchCursor()
+{
+    if(IsMoveScrollVertical || IsInsideScrollVertical)
+    {
+        return false;
+    }else if(IsMoveScrollHorizontal || IsInsideScrollHorizontal)
+    {
+        return false;
+    }
+    else
+    {
+        if(IsTouchMode && ManualControl != BrowserData::Indirect && !IsContextMenuShown)
+        {
+            return true;
+        }else
+        {
+            return false;
+        }
+
+    }
+    return false;
 }
 
 HCURSOR MainLayout::GetCursor()
 {
-    switch(Cursor)
+    if(IsMoveScrollVertical || IsInsideScrollVertical)
     {
-        case 0: return hcArrow; break;
-        case 1: return hcCross; break;
-        case 2: return hcHand; break;
-        case 5: return hcHelp; break;
-        case 3: return hcIbeam; break;
-        case 4: return hcWait; break;
-        default: return hcArrow;
+        return hcSizeNS;
+
+
+    }else if(IsMoveScrollHorizontal || IsInsideScrollHorizontal)
+    {
+        return hcSizeEW;
+    }
+    else
+    {
+        if(IsCursorOverBrowser)
+        {
+            if(IsTouchMode && ManualControl != BrowserData::Indirect && !IsContextMenuShown)
+            {
+                return hcArrowTouch;
+            }else
+            {
+                switch(Cursor)
+                {
+                    case 0: return hcArrow; break;
+                    case 1: return hcCross; break;
+                    case 2: return hcHand; break;
+                    case 5: return hcHelp; break;
+                    case 3: return hcIbeam; break;
+                    case 4: return hcWait; break;
+                    default: return hcArrow;
+                }
+            }
+        }else
+        {
+            return hcArrow;
+        }
     }
     return hcArrow;
 }
@@ -1331,7 +1358,6 @@ bool MainLayout::OnMouseMove(int x, int y, int BrowserWidth,int BrowserHeight,in
         IsInsideScrollHorizontal = false;
         IsInsideScrollVertical = false;
     }
-    SplitterSetCursor();
     return false;
 }
 
@@ -1368,8 +1394,6 @@ bool MainLayout::OnMouseUp()
     IsMoveScrollVertical = false;
     SplitterShowInterface();
 
-    SplitterSetCursor();
-
     return NeedUpdate;
 }
 bool MainLayout::OnMouseDown(int x, int y, int BrowserWidth,int BrowserHeight,int WindowWidth,int WindowHeight, bool IsControlButton)
@@ -1392,7 +1416,6 @@ bool MainLayout::OnMouseDown(int x, int y, int BrowserWidth,int BrowserHeight,in
         SplitterHideInterface();
 
     }
-    SplitterSetCursor();
     if(IsControlButton)
     {
         if(!IsImageSelect)

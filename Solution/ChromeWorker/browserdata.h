@@ -72,6 +72,7 @@ public:
     std::atomic_int ScrollY;
     std::atomic_int CursorX;
     std::atomic_int CursorY;
+    std::atomic_bool IsTouchScreen;
     std::atomic_bool IsRecord;
     std::atomic_bool IsRecordHttp;
     std::atomic_bool AllowPopups;

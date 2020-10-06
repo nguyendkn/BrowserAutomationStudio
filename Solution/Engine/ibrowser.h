@@ -58,6 +58,7 @@ namespace BrowserAutomationStudioFramework
         virtual void MouseClick(int x, int y, const QString& callback) = 0;
         virtual void MouseClickUp(int x, int y, const QString& callback) = 0;
         virtual void MouseClickDown(int x, int y, const QString& callback) = 0;
+        virtual void SetMode(const QString& mode, const QString& callback) = 0;
 
         virtual void MouseMove(int x, int y, const QString& params, const QString& callback) = 0;
         virtual void Timezone(int offset, const QString& callback) = 0;

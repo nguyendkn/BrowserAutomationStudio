@@ -1896,6 +1896,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     Data->IsRecordHttp = false;
     Data->IsTouchScreen = false;
+    Data->IsTouchPressed = false;
+    Data->TouchEventId = 1;
     Data->OldestRequestTime = 0;
     Data->_MainWindowHandle = 0;
     Data->_ParentWindowHandle = 0;

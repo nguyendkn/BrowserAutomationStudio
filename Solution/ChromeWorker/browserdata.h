@@ -72,7 +72,6 @@ public:
     std::atomic_int ScrollY;
     std::atomic_int CursorX;
     std::atomic_int CursorY;
-    std::atomic_bool IsTouchScreen;
     std::atomic_bool IsRecord;
     std::atomic_bool IsRecordHttp;
     std::atomic_bool AllowPopups;
@@ -84,6 +83,12 @@ public:
     ModulesDataList _ModulesData;
     ModulesDataList _UnusedModulesData;
     MultiSelectData _MultiSelectData;
+
+    //Touch
+    std::atomic_bool IsTouchScreen;
+    std::atomic_bool IsTouchPressed;
+    std::atomic_int TouchEventId;
+
 
     //Recaptcha V3
     std::string _RecaptchaV3List;

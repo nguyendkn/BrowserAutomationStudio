@@ -876,6 +876,10 @@ void BrowserDirectControl::ScrollUp()
     if(!Pointer->GetBrowser())
         return;
 
+    //No mouse wheele in touch mode
+    if(_BrowserData->IsTouchScreen)
+        return;
+
 
     CefMouseEvent e;
     e.x = LastMoveX;
@@ -899,6 +903,10 @@ void BrowserDirectControl::ScrollDown()
 
     //Check if browser created
     if(!Pointer->GetBrowser())
+        return;
+
+    //No mouse wheele in touch mode
+    if(_BrowserData->IsTouchScreen)
         return;
 
 
@@ -927,6 +935,30 @@ void BrowserDirectControl::MouseMove(int X, int Y, bool IsMousePressed, bool IsC
     //Check if browser created
     if(!Pointer->GetBrowser())
         return;
+
+
+
+    if(_BrowserData->IsTouchScreen)
+    {
+        if(_BrowserData->IsTouchPressed)
+        {
+            CefTouchEvent Event;
+            Event.id = _BrowserData->TouchEventId;
+            Event.x = X;
+            Event.y = Y;
+            Event.radius_x = 0.0;
+            Event.radius_y = 0.0;
+            Event.rotation_angle = 0.0;
+            Event.pressure = 0.0;
+            Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
+            Event.modifiers = EVENTFLAG_NONE;
+            Event.type = CEF_TET_MOVED;
+
+            Pointer->GetBrowser()->GetHost()->SendTouchEvent(Event);
+        }
+
+        return;
+    }
 
 
     if(Pointer->GetBrowser())
@@ -1255,6 +1287,100 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
     //Check if browser created
     if(!Pointer->GetBrowser())
         return;
+
+
+    if(_BrowserData->IsTouchScreen)
+    {
+
+        CefTouchEvent Event;
+        Event.id = _BrowserData->TouchEventId;
+        Event.x = X;
+        Event.y = Y;
+        Event.radius_x = 0.0;
+        Event.radius_y = 0.0;
+        Event.rotation_angle = 0.0;
+        Event.pressure = 0.0;
+        Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
+        Event.modifiers = EVENTFLAG_NONE;
+
+        bool SendEvent = false;
+        if(_BrowserData->IsTouchPressed && !IsDownOrUp)
+        {
+            Event.type = CEF_TET_RELEASED;
+            SendEvent = true;
+            _BrowserData->TouchEventId++;
+            _BrowserData->IsTouchPressed = false;
+
+            //Check if click was used
+            int64 now = Now();
+
+            if(LastClickTime >= 0 &&
+                    (
+                            abs(LastClickX - X) <= (GetSystemMetrics(SM_CXDOUBLECLK) / 2)
+                        &&
+                            abs(LastClickY - Y) <= (GetSystemMetrics(SM_CYDOUBLECLK) / 2)
+                        &&
+                            (now - LastClickTime) < GetDoubleClickTime()
+                    )
+                )
+            {
+                //Save click to scenario tab
+                MouseClickItem NewItem;
+                NewItem.X = X;
+                NewItem.Y = Y;
+                NewItem.IsDrop = false;
+                NewItem.IsDownOrUp = false;
+                NewItem.IsDoubleClick = false;
+                NewItem.IsDrag = false;
+
+                NewItem.IsLeftMousePressed = false;
+                NewItem.IsRightMousePressed = false;
+                NewItem.IsCtrlPressed = false;
+                NewItem.IsShiftPressed = false;
+                NewItem.IsLeftMouseButton = false;
+
+                NewItem.AllowedOptions = allowedops;
+
+                ApplyInspectResult(NewItem, PreviousMouseInspect);
+            }
+
+        }else if(!_BrowserData->IsTouchPressed && IsDownOrUp)
+        {
+            Event.type = CEF_TET_PRESSED;
+            SendEvent = true;
+            _BrowserData->IsTouchPressed = true;
+
+            //Save info about position and time in order to check if click was performed later.
+            int64 now = Now();
+            LastClickTime = now;
+            LastClickX = X;
+            LastClickY = Y;
+
+            //Send item to inspect
+            MouseClickItem NewItem;
+            NewItem.X = X;
+            NewItem.Y = Y;
+            NewItem.IsDrop = false;
+            NewItem.IsDownOrUp = true;
+            NewItem.IsDoubleClick = false;
+            NewItem.IsDrag = false;
+
+            NewItem.IsLeftMousePressed = false;
+            NewItem.IsRightMousePressed = false;
+            NewItem.IsCtrlPressed = false;
+            NewItem.IsShiftPressed = false;
+            NewItem.IsLeftMouseButton = false;
+
+            NewItem.AllowedOptions = allowedops;
+
+            MouseClicks.push_back(NewItem);
+        }
+
+        if(SendEvent)
+            Pointer->GetBrowser()->GetHost()->SendTouchEvent(Event);
+        return;
+    }
+
 
 
     _BrowserData->LastClickIsFromIndirectControl = false;

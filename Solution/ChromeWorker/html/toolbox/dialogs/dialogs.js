@@ -82,9 +82,13 @@ BasDialogsLib.BasModalDialog = class {
       self.showRecent();
     });
 
-    $document.on('keyup', function (e) {
-      if (!(self.$modal && e.key === 'Escape')) return;
-      e.preventDefault();
+    $document.keydown(function (e) {
+      if (!self.$modal || e.key.length !== 1) return;
+      self.focusSearch();
+    });
+
+    $document.keyup(function (e) {
+      if (!self.$modal || e.key !== 'Escape') return;
       self.closeDialog();
     });
 

@@ -155,6 +155,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$listContainer = $('#modalListContainer');
     this.$recentContent = $('#modalRecentContent');
     this.$listContent = $('#modalListContent');
+    this.$searchInput = $('#modalSearchInput');
     this.$recentItems = $('#modalRecentItems');
     this.$hideRecent = $('#modalRecentHide');
     this.$showRecent = $('#modalRecentShow');
@@ -187,6 +188,15 @@ BasDialogsLib.BasModalDialog = class {
 
     if (this.handler) {
       this.handler(selected.name || '', { options, ...selected });
+    }
+  }
+
+  /**
+   * Focus the modal search input. 
+   */
+  focusSearch() {
+    if (!this.$searchInput.is(':focus')) {
+      this.$searchInput.focus();
     }
   }
 

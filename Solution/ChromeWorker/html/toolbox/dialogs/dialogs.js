@@ -53,6 +53,10 @@ BasDialogsLib.BasModalDialog = class {
   addHandlers() {
     const self = this, $document = $(document), $window = $(window);
 
+    $document.on('input', '#modalSearchInput', _.debounce((e) => {
+      self.search($(e.target).val());
+    }, 250));
+
     $document.on('click', '.modal-recent-item', function (e) {
       self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
       e.preventDefault();
@@ -61,10 +65,6 @@ BasDialogsLib.BasModalDialog = class {
     $document.on('click', '.modal-list-item', function (e) {
       self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
       e.preventDefault();
-    });
-
-    $document.on('input', '#modalSearchInput', (e) => {
-      self.search($(e.target).val());
     });
 
     $document.on('click', '#modalSearchClose', (e) => {
@@ -108,32 +108,28 @@ BasDialogsLib.BasModalDialog = class {
       const $list = $(list), search = !!target.length;
       let some = false;
 
-      if (trim($header.text()) === target[0] || !search) {
-        _.each($items, (item) => {
-          const $item = $(item).unmark();
+      _.each($items, (item) => {
+        const $item = $(item).unmark();
 
-          if (search) {
-            const { name } = _.find(this.items, { id: $item.data('id') });
+        if (search) {
+          const { name } = _.find(this.items, { id: $item.data('id') });
 
-            if (trim(name).includes(target)) {
-              some = true; return $item.show().mark(target, {
-                className: 'modal-text-mark',
-                diacritics: false,
-                iframes: false
-              });
-            }
-
-            return $item.hide();
+          if (trim(name).includes(target)) {
+            some = true; return $item.show().mark(target, {
+              className: 'modal-text-mark',
+              diacritics: false,
+              iframes: false
+            });
           }
 
-          $item.show();
-        });
-
-        if (!search || some) {
-          $list.show();
-        } else {
-          $list.hide();
+          return $item.hide();
         }
+
+        $item.show();
+      });
+
+      if (!search || some) {
+        $list.show();
       } else {
         $list.hide();
       }

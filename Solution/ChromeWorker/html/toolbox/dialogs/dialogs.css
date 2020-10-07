@@ -65,6 +65,7 @@
   filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.15));
   border: 1px solid #cccdce;
   border-radius: 1px;
+  cursor: pointer;
 }
 
 #modalRecentHeaderIcon svg {

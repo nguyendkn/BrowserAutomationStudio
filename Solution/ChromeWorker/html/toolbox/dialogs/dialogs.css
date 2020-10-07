@@ -347,7 +347,7 @@
 }
 
 #modalContentContainer {
-  margin: 14px 0px 4px 0px;
+  margin: 14px 0px 0px 0px;
   overflow: hidden;
   font-weight: 400;
   font-size: 14px;
@@ -396,13 +396,13 @@
  ********************/
 
 #modalListContainer::-webkit-scrollbar-track {
-  background: #ffffff;
-  border-radius: 8px;
+  background: #eaeaea;
+  border-radius: 0px;
 }
 
 #modalListContainer::-webkit-scrollbar-thumb {
-  background: #828282;
-  border-radius: 8px;
+  background: #b7b7b7;
+  border-radius: 1px;
 }
 
 #modalListContainer::-webkit-scrollbar {
@@ -410,13 +410,13 @@
 }
 
 #modalRecentItems::-webkit-scrollbar-track {
-  background: #ffffff;
-  border-radius: 8px;
+  background: #eaeaea;
+  border-radius: 0px;
 }
 
 #modalRecentItems::-webkit-scrollbar-thumb {
-  background: #828282;
-  border-radius: 8px;
+  background: #b7b7b7;
+  border-radius: 1px;
 }
 
 #modalRecentItems::-webkit-scrollbar {

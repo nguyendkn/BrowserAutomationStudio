@@ -385,20 +385,6 @@ function Excel_ConvertFromJSON(){
 		_result_function();
 	})!
 };
-function Excel_FindCells(){
-	var file_path = Excel_FormatPath(_function_argument("FilePath"));
-	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var contains = _function_argument("Contains");
-	var timeout = _function_argument("Timeout");
-	
-	_XLSX_LAST_ACTION = {ru:"Найти одну ячейку",en:"Find single cell"};
-	
-	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
-	
-	_embedded("Excel_FindCells", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
-	
-	_function_return(VAR_XLSX_NODE_PARAMETERS);
-};
 function Excel_FindCell(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
@@ -410,6 +396,20 @@ function Excel_FindCell(){
 	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
 	
 	_embedded("Excel_FindCell", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
+};
+function Excel_FindCells(){
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
+	var sheet_index_or_name = _function_argument("SheetIndexOrName");
+	var contains = _function_argument("Contains");
+	var timeout = _function_argument("Timeout");
+	
+	_XLSX_LAST_ACTION = {ru:"Найти одну ячейку",en:"Find single cell"};
+	
+	VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, contains];
+	
+	_embedded("Excel_FindCells", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_XLSX_NODE_PARAMETERS);
 };
@@ -591,30 +591,35 @@ function Excel_ConvertDates(results){
 function Excel_PreparationOfDates(data){
 	var present_date = false;
 	var styles = [];
-	if(typeof data=="object"){
-        if(data instanceof Date){
-			return [Excel_DateToNumber(data), true, _XLSX_DATE_FORMAT];
-        }else{
-			for(var row_index = 0; row_index < data.length; row_index++){
-				styles[row_index] = [];
-				var row = data[row_index];
-				if(typeof row=="object"){
-					for(var cell_index = 0; cell_index < row.length; cell_index++){
-						var cell = row[cell_index];
-						if(cell instanceof Date){
-							present_date = true;
-							data[row_index][cell_index] = Excel_DateToNumber(cell);
-							styles[row_index][cell_index] = _XLSX_DATE_FORMAT;
-						}else{
-							styles[row_index][cell_index] = "General";
-						};
+	if(typeof data=="object" && Array.isArray(data)){
+		var new_data = [];
+		for(var row_index = 0; row_index < data.length; row_index++){
+			styles[row_index] = [];
+			new_data[row_index] = [];
+			var row = data[row_index];
+			if(typeof row=="object" && Array.isArray(row)){
+				for(var cell_index = 0; cell_index < row.length; cell_index++){
+					var cell = row[cell_index];
+					if(cell instanceof Date){
+						present_date = true;
+						new_data[row_index][cell_index] = Excel_DateToNumber(cell);
+						styles[row_index][cell_index] = _XLSX_DATE_FORMAT;
+					}else{
+						new_data[row_index][cell_index] = cell;
+						styles[row_index][cell_index] = "General";
 					};
 				};
+			}else{
+				new_data[row_index] = row;
 			};
-			return [data, present_date, present_date ? styles : null];
 		};
+		return [new_data, present_date ? styles : "General"];
     }else{
-		return [data, false, null];
+		if(data instanceof Date){
+			return [Excel_DateToNumber(data), _XLSX_DATE_FORMAT];
+        }else{
+			return [data, "General"];
+		};
 	};
 };
 function Excel_FormatAddress(address){

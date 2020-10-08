@@ -161,22 +161,21 @@
   border-left: 1px solid rgba(224, 224, 224, 0.5);
   background: rgba(249, 249, 249, 0.5);
   flex-direction: column;
-  padding-right: 16px;
-  padding-left: 16px;
   display: flex;
   height: 100%;
 }
 
 #modalRecentContent {
   position: relative;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  margin-right: 16px;
+  margin-left: 16px;
+  overflow: hidden;
   display: flex;
   flex-grow: 1;
 }
 
 #modalRecentHeader {
-  padding: 20px 0px 13px 0px;
+  padding: 20px 16px 13px 16px;
   justify-content: center;
   flex-direction: row;
   align-items: center;

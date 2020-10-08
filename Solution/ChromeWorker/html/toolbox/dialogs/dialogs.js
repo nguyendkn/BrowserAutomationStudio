@@ -67,12 +67,28 @@ BasDialogsLib.BasModalDialog = class {
       e.preventDefault();
     });
 
+    $document.on('click', '#modalRecentContainer', (e) => {
+      if (self.$showRecent.is(':hidden')) return;
+      e.stopPropagation();
+      e.preventDefault();
+      self.showRecent();
+    });
+
+    $document.on('click', '#modalRecentHeader', (e) => {
+      if (self.$hideRecent.is(':hidden')) return;
+      e.stopPropagation();
+      e.preventDefault();
+      self.hideRecent();
+    });
+
     $document.on('click', '#modalSearchClose', (e) => {
+      e.stopPropagation();
       e.preventDefault();
       self.closeDialog();
     });
 
     $document.on('click', '#modalRecentHide', (e) => {
+      e.stopPropagation();
       e.preventDefault();
       self.hideRecent();
     });

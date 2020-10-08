@@ -24,11 +24,21 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
       items: [...globals, ...locals].map((item) => {
         const action = actions.find(({ variables }) => variables.includes(item.name));
 
-        if (action) {
-          return { action: action, ...item };
-        } else {
-          return { action: null, ...item };
+        if (!action) {
+          let description;
+
+          if (item.name === 'FOREACH_DATA') {
+            description = tr('Current list element in foreach loop');
+          }
+
+          if (item.name === 'CYCLE_INDEX') {
+            description = tr('Current loop repetition');
+          }
+
+          return { description, ...item };
         }
+
+        return { description: action.description, ...item };
       }),
       recent: BasDialogsLib.store.recentVariables,
       metadata: {

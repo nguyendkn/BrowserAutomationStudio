@@ -29,14 +29,14 @@ BasDialogsLib.template = _.template(`
                       <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>">
                         <%= metadata.template(item) %>
                       </div>
-                      <% if (item.action) { %>
+                      <% if (item.description) { %>
                         <div class="modal-list-item-content">
                           <svg width="9" height="3" viewBox="0 0 9 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="0.5" y="2.5" width="2" height="2" transform="rotate(-90 0.5 2.5)" fill="white" stroke="#bdbdbd" />
                             <rect y="2" width="1" height="9" transform="rotate(-90 0 2)" fill="#bdbdbd" />
                           </svg>    
                           <div class="modal-list-text-sm modal-text-nowrap modal-text-gray">
-                            <%= item.action.description %>
+                            <%= item.description %>
                           </div>
                         </div>
                       <% } %>

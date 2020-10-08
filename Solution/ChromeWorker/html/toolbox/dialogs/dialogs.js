@@ -98,6 +98,12 @@ BasDialogsLib.BasModalDialog = class {
       self.showRecent();
     });
 
+    _GobalModel.on('change:isedit', (model) => {
+      if (self.$modal && model.get('isedit')) {
+        self.closeDialog();
+      }
+    });
+
     $document.keydown(function (e) {
       if (!self.$modal || e.key.length !== 1) return;
       self.focusSearch();

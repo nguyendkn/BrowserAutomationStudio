@@ -378,8 +378,6 @@
 #modalDialogContainer {
   background-color: #fff;
   flex-direction: column;
-  font-family: Roboto;
-  font-style: normal;
   overflow: hidden;
   position: fixed;
   display: flex;

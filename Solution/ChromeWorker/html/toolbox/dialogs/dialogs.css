@@ -274,19 +274,20 @@
   flex: 1;
 }
 
-.modal-list-item-content:not(:hover) {
+.modal-list-item-desc[data-clickable="false"]:hover {
   color: #828282;
 }
 
-.modal-list-item-content:hover {
+.modal-list-item-desc[data-clickable="true"]:hover {
   color: #000000;
 }
 
-.modal-list-item-content {
+.modal-list-item-desc {
   margin: 8px 0px 0px 0px;
   justify-content: start;
   max-width: min-content;
   align-items: center;
+  color: #828282;
   display: flex;
 }
 

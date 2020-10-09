@@ -38,7 +38,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
           return { description, ...item };
         }
 
-        return { description: action.description, ref: actions.name, ...item };
+        return { description: action.description, ref: action.name, ...item };
       }),
       recent: BasDialogsLib.store.recentVariables,
       metadata: {

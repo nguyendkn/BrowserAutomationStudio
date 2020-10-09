@@ -57,20 +57,31 @@ BasDialogsLib.BasModalDialog = class {
       self.search($(e.target).val());
     }, 250));
 
-    $document.on('click', '.modal-recent-item', function (e) {
-      self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
+    $document.on('click', '.modal-list-item-desc', function (e) {
+      const { ref, clickable } = $(this).data();
+
+      if (clickable) {
+        BrowserAutomationStudio_OpenAction(ref);
+        self.closeDialog();
+      }
+
       e.preventDefault();
     });
 
     $document.on('mouseover', '.modal-list-item', function (e) {
-      if (isDescription(e.target)) return;
+      if (isClickable(e.target)) return;
       $(this).css('background', '#f0fbeb');
       e.preventDefault();
     });
 
     $document.on('mouseout', '.modal-list-item', function (e) {
-      if (isDescription(e.target)) return;
+      if (isClickable(e.target)) return;
       $(this).css('background', '#ffffff');
+      e.preventDefault();
+    });
+
+    $document.on('click', '.modal-recent-item', function (e) {
+      self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
       e.preventDefault();
     });
 
@@ -128,12 +139,10 @@ BasDialogsLib.BasModalDialog = class {
 
     $window.resize(() => self.resize());
 
-    function isDescription(target) {
-      const name = 'modal-list-item-content';
-
+    function isClickable(target) {
       return _.any([
-        target.parentNode.classList.contains(name),
-        target.classList.contains(name)
+        target.parentNode.dataset.clickable === 'true',
+        target.dataset.clickable === 'true'
       ]);
     }
   }

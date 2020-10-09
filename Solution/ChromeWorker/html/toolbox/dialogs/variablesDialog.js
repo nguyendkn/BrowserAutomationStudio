@@ -81,6 +81,6 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
       BasDialogsLib.store.addVariable({ name }, global);
     }
 
-    this.utils.checkPathEdited(this.selector);
+    if (this.selector === '#selector-input') MainView.prototype.pathchanged();
   }
 }

@@ -73,6 +73,6 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
       BasDialogsLib.store.addResource({ name });
     }
 
-    this.utils.checkPathEdited(this.selector);
+    if (this.selector === '#selector-input') MainView.prototype.pathchanged();
   }
 }

@@ -27,12 +27,5 @@ BasDialogsLib.utils = {
     let val = $element.val();
     val = val.slice(0, start) + text + val.slice(start);
     $element.val(val).trigger('change');
-  },
-
-  checkPathEdited: (selector) => {
-    if (selector === '#selector-input') {
-      _MultiSelectManager.PathManualyEdited();
-      BrowserAutomationStudio_TestPathInternal();
-    }
   }
 }

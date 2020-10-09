@@ -52,8 +52,8 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     this.selector = element.attr('data-result-target');
   }
 
-  handler(name, data) {
-    const el = $(this.selector); const insert = `[[${data.global ? 'GLOBAL:' : ''}${name}]]`;
+  handler(name, { global }) {
+    const el = $(this.selector); const insert = `[[${global ? 'GLOBAL:' : ''}${name}]]`;
 
     if (name.length) {
       if ($(`${this.selector}_number:visible`).length) {
@@ -78,7 +78,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
         }
       }
 
-      BasDialogsLib.store.addVariable({ name }, data.global);
+      BasDialogsLib.store.addVariable({ name }, global);
     }
 
     this.utils.checkPathEdited(this.selector);

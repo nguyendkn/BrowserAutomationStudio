@@ -45,12 +45,12 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
     this.selector = element.attr('data-result-target');
   }
 
-  handler(name, data) {
+  handler(name, { options }) {
     const el = $(this.selector); let resource = name;
-    if (data.options.resourceDontDie) {
+    if (options.resourceDontDie) {
       resource += '|onlyfail';
     }
-    if (!data.options.resourceReuse) {
+    if (!options.resourceReuse) {
       resource += '|notreuse';
     }
     const insert = `{{${resource}}}`;

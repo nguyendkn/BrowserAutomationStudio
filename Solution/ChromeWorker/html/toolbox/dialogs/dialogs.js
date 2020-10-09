@@ -28,12 +28,7 @@ BasDialogsLib.BasModalDialog = class {
    * @param {Object[]} configuration.items - items array.
    * @constructor
    */
-  constructor ({
-    metadata = {},
-    options = [],
-    recent = [],
-    items = []
-  } = {}) {
+  constructor ({ metadata = {}, options = [], recent = [], items = [] } = {}) {
     this.map = _(jsort(items))
       .map((item, id) => ({ id, ...item }))
       .tap((array) => this.items = array)
@@ -180,11 +175,7 @@ BasDialogsLib.BasModalDialog = class {
         $item.show();
       });
 
-      if (!search || some) {
-        $list.show();
-      } else {
-        $list.hide();
-      }
+      $list.toggle(!search || some);
     });
 
     if ($('.modal-list-wrap:hidden').size() === _.size(this.map)) {

@@ -188,6 +188,10 @@ BasDialogsLib.BasModalDialog = class {
       this.$recentContainer.hide();
     }
 
+    if (!this.items.length) {
+      this.$listEmpty.show();
+    }
+
     this.showRecent();
   }
 

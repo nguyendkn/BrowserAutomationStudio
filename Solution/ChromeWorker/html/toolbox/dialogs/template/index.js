@@ -47,7 +47,14 @@ BasDialogsLib.template = _.template(`
             </div>
           <% }); %>
         </div>
-        <div id="modalListEmpty"><%= tr('No ' + metadata.pluralName + ' found') %></div>
+        <div id="modalListEmpty">
+          <% if (!items.length) { %>
+            <%= tr('No ' + metadata.singleName + ' has been created') %>
+          <% } else { %>
+            <%= tr('No ' + metadata.pluralName + ' found') %>
+          <% } %>
+        </div>
+        <div id="modalListAdd">+</div>
       </div>
       <div id="modalRecentContainer">
         <div id="modalRecentHeader">

@@ -35,7 +35,7 @@ BasDialogsLib.template = _.template(`
                             <rect x="0.5" y="2.5" width="2" height="2" transform="rotate(-90 0.5 2.5)" fill="white" stroke="#bdbdbd" />
                             <rect y="2" width="1" height="9" transform="rotate(-90 0 2)" fill="#bdbdbd" />
                           </svg>    
-                          <div class="modal-list-text-sm modal-text-nowrap modal-text-gray">
+                          <div class="modal-list-text-sm modal-text-nowrap">
                             <%= item.description %>
                           </div>
                         </div>

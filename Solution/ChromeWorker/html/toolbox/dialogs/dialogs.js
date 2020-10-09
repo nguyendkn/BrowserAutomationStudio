@@ -62,6 +62,18 @@ BasDialogsLib.BasModalDialog = class {
       e.preventDefault();
     });
 
+    $document.on('mouseover', '.modal-list-item', function (e) {
+      if (isDescription(e.target)) return;
+      $(this).css('background', '#f0fbeb');
+      e.preventDefault();
+    });
+
+    $document.on('mouseout', '.modal-list-item', function (e) {
+      if (isDescription(e.target)) return;
+      $(this).css('background', '#ffffff');
+      e.preventDefault();
+    });
+
     $document.on('click', '.modal-list-item', function (e) {
       self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
       e.preventDefault();
@@ -115,6 +127,15 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     $window.resize(() => self.resize());
+
+    function isDescription(target) {
+      const name = 'modal-list-item-content';
+
+      return _.any([
+        target.parentNode.classList.contains(name),
+        target.classList.contains(name)
+      ]);
+    }
   }
 
   /**

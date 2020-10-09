@@ -251,7 +251,6 @@
 }
 
 .modal-list-item:hover {
-  background-color: #f0fbeb;
   cursor: pointer;
 }
 
@@ -275,10 +274,18 @@
   flex: 1;
 }
 
+.modal-list-item-content:not(:hover) {
+  color: #828282;
+}
+
+.modal-list-item-content:hover {
+  color: #000000;
+}
+
 .modal-list-item-content {
   margin: 8px 0px 0px 0px;
   justify-content: start;
-  flex-direction: row;
+  max-width: min-content;
   align-items: center;
   display: flex;
 }

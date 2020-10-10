@@ -502,7 +502,7 @@
 
         <% if(typeof(only_cancel) == "undefined"){ %>
           <% if(typeof(use_waiter) != "undefined"){ %>
-            <a href="#" tabindex="-1" id="use-waiter" class="<%= (typeof(waiter_enabled) != "undefined" && waiter_enabled) ? "" : "use-waiter-disabled" %> trtitle" data-enabled="<%= (typeof(waiter_enabled) != "undefined" && waiter_enabled) ? "true" : "false" %>" data-toggle="tooltip" data-placement="top" title="Wait full page load after this action"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
+            <a href="#" tabindex="-1" id="use-waiter" class="<%= (typeof(waiter_enabled) != "undefined" && waiter_enabled) ? "" : "use-waiter-disabled" %> trtitle" data-enabled="<%= (typeof(waiter_enabled) != "undefined" && waiter_enabled) ? "true" : "false" %>" data-toggle="tooltip" data-placement="top" title="<%= (typeof(waiter_title) != "undefined") ? waiter_title : "Wait full page load after this action" %>"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
 
           <% } %>
 

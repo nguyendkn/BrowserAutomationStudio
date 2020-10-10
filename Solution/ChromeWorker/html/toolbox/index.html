@@ -5725,8 +5725,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="drop_code">
       /*Browser*/
-      move(<%= x %>,<%= y %>, <%= move_settings %>)!
-      mouse_up(<%= x %>,<%= y %>)!
+      var move_settings = <%= move_settings %>;
+      move_settings["do_mouse_up"] = "true"
+      move(<%= x %>,<%= y %>, move_settings)!
   </script>
 
   <script type="text/template" id="load_code">

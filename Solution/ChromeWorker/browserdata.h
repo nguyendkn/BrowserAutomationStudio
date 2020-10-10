@@ -86,7 +86,8 @@ public:
 
     //Touch
     std::atomic_bool IsTouchScreen;
-    std::atomic_bool IsTouchPressed;
+    std::atomic_bool IsTouchPressedDirectControl;
+    std::atomic_bool IsTouchPressedAutomation;
     std::atomic_int TouchEventId;
 
 

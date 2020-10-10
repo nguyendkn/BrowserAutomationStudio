@@ -97,6 +97,8 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     int MouseStartY;
     int MouseEndX;
     int MouseEndY;
+    bool DoMouseUpOnFinishMove;
+    double MouseReleaseRadius;
 
     double MouseSpeed;
     double MouseGravity;
@@ -343,7 +345,7 @@ public:
     void PopupSelectCallback(int index);
     void PopupCreateCallback(bool is_silent, const std::string& url);
     void PopupInfoCallback();
-    void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates);
+    void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius);
     void LoadSuccessCallback();
     void ResizeCallback(int width, int height);
     void SetWindowCallback(const std::string& Window);

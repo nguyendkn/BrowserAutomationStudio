@@ -2,6 +2,7 @@
 #define BROWSEREVENTSEMULATOR_H
 
 #include "include/cef_app.h"
+#include <atomic>
 
 
 struct KeyState
@@ -37,9 +38,9 @@ public:
      * @type == 1 - up
      * @type == 2 - down
      * */
-    static void MouseClick(CefRefPtr<CefBrowser> Browser, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag);
+    static void MouseClick(CefRefPtr<CefBrowser> Browser, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation);
 
-    static void StartDrag(CefRefPtr<CefBrowser> Browser, CefRefPtr<CefDragData> drag_data,CefBrowserHost::DragOperationsMask allowed_ops, int x, int y);
+    static void StartDrag(CefRefPtr<CefBrowser> Browser, CefRefPtr<CefDragData> drag_data,CefBrowserHost::DragOperationsMask allowed_ops, int x, int y, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation);
 
     static void MouseMove(CefRefPtr<CefBrowser> Browser,
                           bool & IsMouseMoveSimulation,
@@ -50,9 +51,9 @@ public:
                           int BrowserWidth, int BrowserHeight,
                           float Gravity, float Wind, float TargetArea,
                           bool IsInit, bool IsDouble,
-                          bool IsMousePress, bool IsDrag
+                          bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation
                           );
-    static void MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight,bool IsMousePress, bool IsDrag);
+    static void MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight,bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation);
     static bool IsPointOnScreen(int PointX, int PointY, int ScrollX, int ScrollY, int BrowserWidth, int BrowserHeight);
     static int GetNativeCode(int key);
     static void Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey);

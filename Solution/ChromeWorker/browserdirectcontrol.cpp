@@ -940,7 +940,7 @@ void BrowserDirectControl::MouseMove(int X, int Y, bool IsMousePressed, bool IsC
 
     if(_BrowserData->IsTouchScreen)
     {
-        if(_BrowserData->IsTouchPressed)
+        if(_BrowserData->IsTouchPressedDirectControl)
         {
             CefTouchEvent Event;
             Event.id = _BrowserData->TouchEventId;
@@ -1304,12 +1304,12 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
         Event.modifiers = EVENTFLAG_NONE;
 
         bool SendEvent = false;
-        if(_BrowserData->IsTouchPressed && !IsDownOrUp)
+        if(_BrowserData->IsTouchPressedDirectControl && !IsDownOrUp)
         {
             Event.type = CEF_TET_RELEASED;
             SendEvent = true;
             _BrowserData->TouchEventId++;
-            _BrowserData->IsTouchPressed = false;
+            _BrowserData->IsTouchPressedDirectControl = false;
 
             //Check if click was used
             int64 now = Now();
@@ -1344,11 +1344,11 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
                 ApplyInspectResult(NewItem, PreviousMouseInspect);
             }
 
-        }else if(!_BrowserData->IsTouchPressed && IsDownOrUp)
+        }else if(!_BrowserData->IsTouchPressedDirectControl && IsDownOrUp)
         {
             Event.type = CEF_TET_PRESSED;
             SendEvent = true;
-            _BrowserData->IsTouchPressed = true;
+            _BrowserData->IsTouchPressedDirectControl = true;
 
             //Save info about position and time in order to check if click was performed later.
             int64 now = Now();

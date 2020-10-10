@@ -1177,7 +1177,7 @@ bool MainHandler::StartDragging(CefRefPtr<CefBrowser> browser,CefRefPtr<CefDragD
     if(Data->LastClickIsFromIndirectControl)
     {
         Data->IsDrag = true;
-        BrowserEventsEmulator::StartDrag(browser,drag_data,allowed_ops,x,y);
+        BrowserEventsEmulator::StartDrag(browser,drag_data,allowed_ops,x,y,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
     }else
     {
         DirectControl->StartDrag(browser,drag_data,allowed_ops,x,y);

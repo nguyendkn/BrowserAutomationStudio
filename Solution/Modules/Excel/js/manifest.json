@@ -17,6 +17,213 @@
             "select": "Excel_CreateFile_select.js",
             "template": "{{FilePath}}"
         },
+        {
+            "code": [
+                {
+                    "file": "Excel_ReadCell_code.js",
+                    "name": "Excel_ReadCell_code"
+                }
+            ],
+            "description": {
+                "en": "Read cell",
+                "ru": "Читать ячейку"
+            },
+            "interface": "Excel_ReadCell_interface.js",
+            "is_element": false,
+            "name": "Excel_ReadCell",
+            "select": "Excel_ReadCell_select.js",
+            "template": "{{CellAddress}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_WriteToCell_code.js",
+                    "name": "Excel_WriteToCell_code"
+                }
+            ],
+            "description": {
+                "en": "Write to cell",
+                "ru": "Запись в ячейку"
+            },
+            "interface": "Excel_WriteToCell_interface.js",
+            "is_element": false,
+            "name": "Excel_WriteToCell",
+            "select": "Excel_WriteToCell_select.js",
+            "template": "{{Data}} -> {{CellAddress}}"
+        },
+        
+		{
+            "code": [
+                {
+                    "file": "Excel_CountRows_code.js",
+                    "name": "Excel_CountRows_code"
+                }
+            ],
+            "description": {
+                "en": "Count rows",
+                "ru": "Количество строк"
+            },
+            "interface": "Excel_CountRows_interface.js",
+            "is_element": false,
+            "name": "Excel_CountRows",
+            "select": "Excel_CountRows_select.js",
+            "template": "{{SheetIndexOrName}} -> {{Save}}"
+        },
+        {
+            "code": [
+                {
+                    "file": "Excel_ReadRows_code.js",
+                    "name": "Excel_ReadRows_code"
+                }
+            ],
+            "description": {
+                "en": "Read rows",
+                "ru": "Читать строки"
+            },
+            "interface": "Excel_ReadRows_interface.js",
+            "is_element": false,
+            "name": "Excel_ReadRows",
+            "select": "Excel_ReadRows_select.js",
+            "template": "{{FromRow}}:{{ToRow}} -> {{Save}}"
+        },
+        {
+            "code": [
+                {
+                    "file": "Excel_InsertRows_code.js",
+                    "name": "Excel_InsertRows_code"
+                }
+            ],
+            "description": {
+                "en": "Insert rows",
+                "ru": "Вставить строки"
+            },
+            "interface": "Excel_InsertRows_interface.js",
+            "is_element": false,
+            "name": "Excel_InsertRows",
+            "select": "Excel_InsertRows_select.js",
+            "template": "{{Data}} -> {{FromRow}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_DeleteRows_code.js",
+                    "name": "Excel_DeleteRows_code"
+                }
+            ],
+            "description": {
+                "en": "Delete rows",
+                "ru": "Удалить строки"
+            },
+            "interface": "Excel_DeleteRows_interface.js",
+            "is_element": false,
+            "name": "Excel_DeleteRows",
+            "select": "Excel_DeleteRows_select.js",
+            "template": "{{FromRow}} - {{ToRow}}"
+        },
+        {
+            "code": [
+                {
+                    "file": "Excel_ReadSheet_code.js",
+                    "name": "Excel_ReadSheet_code"
+                }
+            ],
+            "description": {
+                "en": "Read sheet",
+                "ru": "Читать лист"
+            },
+            "interface": "Excel_ReadSheet_interface.js",
+            "is_element": false,
+            "name": "Excel_ReadSheet",
+            "select": "Excel_ReadSheet_select.js",
+            "template": "{{SheetIndexOrName}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_WriteToSheet_code.js",
+                    "name": "Excel_WriteToSheet_code"
+                }
+            ],
+            "description": {
+                "en": "Write to sheet",
+                "ru": "Запись на лист"
+            },
+            "interface": "Excel_WriteToSheet_interface.js",
+            "is_element": false,
+            "name": "Excel_WriteToSheet",
+            "select": "Excel_WriteToSheet_select.js",
+            "template": "{{Data}} -> {{SheetIndexOrName}}"
+        },
+        {
+            "code": [
+                {
+                    "file": "Excel_ReadCellsRange_code.js",
+                    "name": "Excel_ReadCellsRange_code"
+                }
+            ],
+            "description": {
+                "en": "Read cells range",
+                "ru": "Читать область ячеек"
+            },
+            "interface": "Excel_ReadCellsRange_interface.js",
+            "is_element": false,
+            "name": "Excel_ReadCellsRange",
+            "select": "Excel_ReadCellsRange_select.js",
+            "template": "{{FromCell}}:{{ToCell}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_WriteToCellsRange_code.js",
+                    "name": "Excel_WriteToCellsRange_code"
+                }
+            ],
+            "description": {
+                "en": "Write to cells range",
+                "ru": "Запись в область ячеек"
+            },
+            "interface": "Excel_WriteToCellsRange_interface.js",
+            "is_element": false,
+            "name": "Excel_WriteToCellsRange",
+            "select": "Excel_WriteToCellsRange_select.js",
+            "template": "{{Data}} -> {{FromCell}}:{{ToCell}}"
+        },
+        
+        {
+            "code": [
+                {
+                    "file": "Excel_ImportToResources_code.js",
+                    "name": "Excel_ImportToResources_code"
+                }
+            ],
+            "description": {
+                "en": "Import from file to resources",
+                "ru": "Импорт из файла в ресурсы"
+            },
+            "interface": "Excel_ImportToResources_interface.js",
+            "is_element": false,
+            "name": "Excel_ImportToResources",
+            "select": "Excel_ImportToResources_select.js",
+            "template": "{{FilePath}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_ExportFromResources_code.js",
+                    "name": "Excel_ExportFromResources_code"
+                }
+            ],
+            "description": {
+                "en": "Export from resources to file",
+                "ru": "Экспорт из ресурсов в файл"
+            },
+            "interface": "Excel_ExportFromResources_interface.js",
+            "is_element": false,
+            "name": "Excel_ExportFromResources",
+            "select": "Excel_ExportFromResources_select.js",
+            "template": "{{ResourceList}} -> {{FilePath}}"
+        },
+
 		{
             "code": [
                 {
@@ -102,210 +309,7 @@
             "select": "Excel_DeleteSheet_select.js",
             "template": "{{SheetIndexOrName}}"
         },
-        {
-            "code": [
-                {
-                    "file": "Excel_ReadCell_code.js",
-                    "name": "Excel_ReadCell_code"
-                }
-            ],
-            "description": {
-                "en": "Read cell",
-                "ru": "Читать ячейку"
-            },
-            "interface": "Excel_ReadCell_interface.js",
-            "is_element": false,
-            "name": "Excel_ReadCell",
-            "select": "Excel_ReadCell_select.js",
-            "template": "{{CellAddress}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_WriteToCell_code.js",
-                    "name": "Excel_WriteToCell_code"
-                }
-            ],
-            "description": {
-                "en": "Write to cell",
-                "ru": "Запись в ячейку"
-            },
-            "interface": "Excel_WriteToCell_interface.js",
-            "is_element": false,
-            "name": "Excel_WriteToCell",
-            "select": "Excel_WriteToCell_select.js",
-            "template": "{{Data}} -> {{CellAddress}}"
-        },
-        {
-            "code": [
-                {
-                    "file": "Excel_ReadSheet_code.js",
-                    "name": "Excel_ReadSheet_code"
-                }
-            ],
-            "description": {
-                "en": "Read sheet",
-                "ru": "Читать лист"
-            },
-            "interface": "Excel_ReadSheet_interface.js",
-            "is_element": false,
-            "name": "Excel_ReadSheet",
-            "select": "Excel_ReadSheet_select.js",
-            "template": "{{SheetIndexOrName}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_WriteToSheet_code.js",
-                    "name": "Excel_WriteToSheet_code"
-                }
-            ],
-            "description": {
-                "en": "Write to sheet",
-                "ru": "Запись на лист"
-            },
-            "interface": "Excel_WriteToSheet_interface.js",
-            "is_element": false,
-            "name": "Excel_WriteToSheet",
-            "select": "Excel_WriteToSheet_select.js",
-            "template": "{{Data}} -> {{SheetIndexOrName}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_CountRows_code.js",
-                    "name": "Excel_CountRows_code"
-                }
-            ],
-            "description": {
-                "en": "Count rows",
-                "ru": "Количество строк"
-            },
-            "interface": "Excel_CountRows_interface.js",
-            "is_element": false,
-            "name": "Excel_CountRows",
-            "select": "Excel_CountRows_select.js",
-            "template": "{{SheetIndexOrName}} -> {{Save}}"
-        },
-        {
-            "code": [
-                {
-                    "file": "Excel_ReadRows_code.js",
-                    "name": "Excel_ReadRows_code"
-                }
-            ],
-            "description": {
-                "en": "Read rows",
-                "ru": "Читать строки"
-            },
-            "interface": "Excel_ReadRows_interface.js",
-            "is_element": false,
-            "name": "Excel_ReadRows",
-            "select": "Excel_ReadRows_select.js",
-            "template": "{{FromRow}}:{{ToRow}} -> {{Save}}"
-        },
-        {
-            "code": [
-                {
-                    "file": "Excel_InsertRows_code.js",
-                    "name": "Excel_InsertRows_code"
-                }
-            ],
-            "description": {
-                "en": "Insert rows",
-                "ru": "Вставить строки"
-            },
-            "interface": "Excel_InsertRows_interface.js",
-            "is_element": false,
-            "name": "Excel_InsertRows",
-            "select": "Excel_InsertRows_select.js",
-            "template": "{{Data}} -> {{FromRow}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_DeleteRows_code.js",
-                    "name": "Excel_DeleteRows_code"
-                }
-            ],
-            "description": {
-                "en": "Delete rows",
-                "ru": "Удалить строки"
-            },
-            "interface": "Excel_DeleteRows_interface.js",
-            "is_element": false,
-            "name": "Excel_DeleteRows",
-            "select": "Excel_DeleteRows_select.js",
-            "template": "{{FromRow}} - {{ToRow}}"
-        },
-        {
-            "code": [
-                {
-                    "file": "Excel_ReadCellsRange_code.js",
-                    "name": "Excel_ReadCellsRange_code"
-                }
-            ],
-            "description": {
-                "en": "Read cells range",
-                "ru": "Читать область ячеек"
-            },
-            "interface": "Excel_ReadCellsRange_interface.js",
-            "is_element": false,
-            "name": "Excel_ReadCellsRange",
-            "select": "Excel_ReadCellsRange_select.js",
-            "template": "{{FromCell}}:{{ToCell}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_WriteToCellsRange_code.js",
-                    "name": "Excel_WriteToCellsRange_code"
-                }
-            ],
-            "description": {
-                "en": "Write to cells range",
-                "ru": "Запись в область ячеек"
-            },
-            "interface": "Excel_WriteToCellsRange_interface.js",
-            "is_element": false,
-            "name": "Excel_WriteToCellsRange",
-            "select": "Excel_WriteToCellsRange_select.js",
-            "template": "{{Data}} -> {{FromCell}}:{{ToCell}}"
-        },
-        {
-            "code": [
-                {
-                    "file": "Excel_ImportToResources_code.js",
-                    "name": "Excel_ImportToResources_code"
-                }
-            ],
-            "description": {
-                "en": "Import from file to resources",
-                "ru": "Импорт из файла в ресурсы"
-            },
-            "interface": "Excel_ImportToResources_interface.js",
-            "is_element": false,
-            "name": "Excel_ImportToResources",
-            "select": "Excel_ImportToResources_select.js",
-            "template": "{{FilePath}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "Excel_ExportFromResources_code.js",
-                    "name": "Excel_ExportFromResources_code"
-                }
-            ],
-            "description": {
-                "en": "Export from resources to file",
-                "ru": "Экспорт из ресурсов в файл"
-            },
-            "interface": "Excel_ExportFromResources_interface.js",
-            "is_element": false,
-            "name": "Excel_ExportFromResources",
-            "select": "Excel_ExportFromResources_select.js",
-            "template": "{{ResourceList}} -> {{FilePath}}"
-        },
+        
 		{
             "code": [
                 {
@@ -1127,7 +1131,7 @@
 		"This action creates a sheet in excel file from each specified resource. The sheets will be named after the resources. For example, if 3 resources are specified: \"Work1\", \"Work2\" and \"Work3\", then 3 sheets with the same names will be created.": {"ru":"Данное действие создает лист в excel файле из каждого указанного ресурса. Листы будут названы в честь ресурсов. Например, если указано 3 ресурса: \"Work1\", \"Work2\" и \"Work3\", то будут созданы 3 листа с такими же именами."}
     },
     "major_version": 1,
-    "minor_version": 0,
+    "minor_version": 1,
     "modules": [
         {
             "LanguageName": "Node",

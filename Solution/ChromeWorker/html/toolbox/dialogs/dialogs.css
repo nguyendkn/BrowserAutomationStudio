@@ -217,6 +217,10 @@
  * List container *
  ******************/
 
+#modalListAdd:hover {
+  cursor: pointer;
+}
+
 #modalListContainer {
   position: relative;
   overflow-x: hidden;
@@ -240,6 +244,21 @@
   display: none;
   left: 50%;
   top: 50%;
+}
+
+#modalListAdd {
+  background: #c56d5f;
+  border-radius: 50%;
+  text-align: center;
+  position: absolute;
+  user-select: none;
+  line-height: 35px;
+  font-size: 18px;
+  color: white;
+  height: 35px;
+  width: 35px;
+  bottom: 24px;
+  right: 24px;
 }
 
 .modal-list-item:not(:last-child) {

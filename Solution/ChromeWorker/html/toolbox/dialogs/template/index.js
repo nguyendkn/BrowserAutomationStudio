@@ -105,7 +105,7 @@ BasDialogsLib.template = _.template(`
               <label for="<%= option.id %>"></label>
             </div>
             <div class="modal-option-text">
-              <%= option.text %>
+              <%= tr(option.text) %>
             </div>
           </div>
         <% }); %>

@@ -100,8 +100,13 @@ BasDialogsLib.template = _.template(`
       <div id="modalOptionsContainer">
         <% options.forEach((option) => { %>
           <div class="modal-option" data-toggle="tooltip" data-placement="top" title="<%= tr(option.description) %>">
-            <input type="checkbox" id="<%= option.id %>" <%= option.checked ? 'checked' : '' %> /> 
-            <label for="<%= option.id %>"><%= option.text %></label>
+            <div class="modal-option-switch">
+              <input type="checkbox" id="<%= option.id %>" <%= option.checked ? 'checked' : '' %> /> 
+              <label for="<%= option.id %>"></label>
+            </div>
+            <div class="modal-option-text">
+              <%= option.text %>
+            </div>
           </div>
         <% }); %>
       </div>

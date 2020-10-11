@@ -378,24 +378,89 @@
   font-weight: 400;
   font-size: 14px;
   display: flex;
-  height: 100%;
+  flex: 1;
 }
 
 /*********************
  * Options container *
  *********************/
 
+#modalOptionsContainer > .modal-option + .modal-option {
+  border-left: 1px solid rgba(224, 224, 224, 1);
+}
+
+.modal-option-switch > input:checked + label:before {
+  transform: translateX(13px) translateY(-50%);
+}
+
+.modal-option-switch > input:not(:checked) + label {
+  background: #cccccc;
+}
+
+.modal-option-switch > input:checked + label {
+  background: #c56d5f;
+}
+
+.modal-option-switch > label::before {
+  transform: translateX(0px) translateY(-50%);
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  transition: 0.2s;
+  display: block;
+  height: 12px;
+  width: 12px;
+  content: "";
+  left: 3px;
+  top: 50%;
+}
+
+.modal-option-switch > input {
+  display: none;
+}
+
+.modal-option-switch > label {
+  border-radius: 16px;
+  position: relative;
+  transition: 0.2s;
+  cursor: pointer;
+  margin: 0px 0px;
+  height: 16px;
+  width: 30px;
+}
+
 #modalOptionsContainer {
-  background-color: #dadada;
-  padding: 5px 8px 5px 8px;
-  height: max-content;
-  width: max-content;
-  margin-bottom: 2px;
-  margin-right: 2px;
-  overflow: hidden;
-  position: fixed;
-  bottom: 0;
-  right: 0;
+  border-top: 1px solid rgba(224, 224, 224, 1);
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+  width: 100%;
+}
+
+.modal-option-switch {
+  display: inline-block;
+  position: relative;
+  margin: 4px 5px;
+  height: 16px;
+  width: 30px;
+}
+
+.modal-option-text {
+  line-height: 16px;
+  font-size: 13px;
+}
+
+.modal-option:hover {
+  cursor: pointer;
+}
+
+.modal-option {
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  padding: 5px 0px;
+  display: flex;
+  width: 100%;
 }
 
 /********************

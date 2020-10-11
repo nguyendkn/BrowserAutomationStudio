@@ -85,6 +85,13 @@ BasDialogsLib.BasModalDialog = class {
       e.preventDefault();
     });
 
+    $document.on('click', '.modal-option', function (e) {
+      $(this).find('input').prop('checked', (_, checked) => {
+        return !checked;
+      });
+      e.preventDefault();
+    });
+
     $document.on('click', '#modalRecentContainer', (e) => {
       if (self.$showRecent.is(':hidden')) return;
       e.stopPropagation();

@@ -375,8 +375,8 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
 
         if(dist >= TargetArea)
         {
-            windX = windX / sqrt3 + (random((int)round(Wind) * 2 + 1) - Wind) / sqrt5;
-            windY = windY / sqrt3 + (random((int)round(Wind) * 2 + 1) - Wind) / sqrt5;
+            windX = (8.0 * windX / sqrt3 + 2.0 * (random((int)round(Wind) * 2 + 1) - Wind) / sqrt5) / 5.0;
+            windY = (8.0 * windY / sqrt3 + 2.0 * (random((int)round(Wind) * 2 + 1) - Wind) / sqrt5) / 5.0;
         }else
         {
             windX = windX / sqrt2;

@@ -11,7 +11,7 @@ namespace BrowserAutomationStudioFramework
         Timer = new QTimer(this);
         Timer->setSingleShot(false);
         QSettings Settings("settings.ini",QSettings::IniFormat);
-        Timer->setInterval(Settings.value("MultiTimerTimeout",1000).toInt());
+        Timer->setInterval(Settings.value("MultiTimerTimeout",100).toInt());
         connect(Timer,SIGNAL(timeout()),this,SLOT(TimeoutSlot()));
         Timer->start();
     }

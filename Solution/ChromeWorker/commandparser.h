@@ -46,6 +46,7 @@ public:
     std::vector<std::function<void(const std::string&,const std::string&)> > EventSetHttpAuthResult;
 
     std::vector<std::function<void()> > EventGetUrl;
+    std::vector<std::function<void()> > EventGetBrowserScreenSettings;
     std::vector<std::function<void(int, int)> > EventResize;
     std::vector<std::function<void(const std::string&)> > EventSetWindow;
     std::vector<std::function<void(const std::string&)> > EventHighlightAction;

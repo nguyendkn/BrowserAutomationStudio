@@ -271,6 +271,7 @@ public:
     void SetAcceptLanguagePatternCallback(const std::string& pattern);
     void CleanHeaderCallback();
     void GetUrlCallback();
+    void GetBrowserScreenSettingsCallback();
     std::string GetUrl();
     void ProcessContextMenu(int MenuId);
     void ProcessFind(LPFINDREPLACE lpfr);

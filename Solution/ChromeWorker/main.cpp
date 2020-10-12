@@ -2023,6 +2023,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventRecaptchaV3List.push_back(std::bind(&MainApp::RecaptchaV3ListCallback,app.get(),_1));
     Parser->EventRecaptchaV3Result.push_back(std::bind(&MainApp::RecaptchaV3ResultCallback,app.get(),_1,_2));
     Parser->EventGetUrl.push_back(std::bind(&MainApp::GetUrlCallback,app.get()));
+    Parser->EventGetBrowserScreenSettings.push_back(std::bind(&MainApp::GetBrowserScreenSettingsCallback,app.get()));
     Parser->EventResize.push_back(RepositionInterface);
     Parser->EventResize.push_back(std::bind(&MainApp::ResizeCallback,app.get(),_1,_2));
     Parser->EventTimezone.push_back(std::bind(&MainApp::TimezoneCallback,app.get(),_1));

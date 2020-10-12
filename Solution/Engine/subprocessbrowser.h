@@ -48,6 +48,7 @@ namespace BrowserAutomationStudioFramework
 
         virtual IWebElement* GetRootElement();
         virtual void GetUrl(const QString& callback);
+        virtual void GetBrowserScreenSettings(const QString& callback);
         virtual void CreateNewBrowser(bool ForseNewBrowserCreation, const QString& callback);
         void CreateNewVirtualBrowser(bool ForseNewBrowserCreation, const QString& callback);
 
@@ -131,6 +132,7 @@ namespace BrowserAutomationStudioFramework
         void Loaded();
         void LoadedInstant();
         void GetUrl();
+        void GetBrowserScreenSettings();
         void SetUserAgent();
         void GetCookiesForUrl();
         void SaveCookies();

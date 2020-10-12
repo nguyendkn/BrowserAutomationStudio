@@ -614,6 +614,14 @@ void CommandParser::Parse(const std::string& Xml)
                 f();
         }
 
+        CommandNode = MessagesNode->first_node("GetBrowserScreenSettings");
+        if(CommandNode)
+        {
+            WORKER_LOG("GetBrowserScreenSettings");
+            for(auto f:EventGetBrowserScreenSettings)
+                f();
+        }
+
         CommandNode = MessagesNode->first_node("Crush");
         if(CommandNode)
         {

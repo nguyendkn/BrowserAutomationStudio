@@ -729,6 +729,19 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
+    void SubprocessBrowser::GetBrowserScreenSettings(const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeTextElement("GetBrowserScreenSettings","");
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("GetBrowserScreenSettings"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(GetBrowserScreenSettings()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+    }
+
     void SubprocessBrowser::RemoveOnlineProfile(const QString& ProfileId, const QString& callback)
     {
         QString WriteString;
@@ -791,6 +804,11 @@ namespace BrowserAutomationStudioFramework
                 xmlReader.readNext();
                 Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
                 emit GetUrl();
+            }else if(xmlReader.name() == "GetBrowserScreenSettings" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
+                emit GetBrowserScreenSettings();
             }else if(xmlReader.name() == "SetUserAgent" && token == QXmlStreamReader::StartElement)
             {
                 emit SetUserAgent();

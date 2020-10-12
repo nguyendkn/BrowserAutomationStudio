@@ -2143,6 +2143,21 @@ void MainApp::GetUrlCallback()
     SendTextResponce(std::string("<GetUrl>") + url + std::string("</GetUrl>"));
 }
 
+void MainApp::GetBrowserScreenSettingsCallback()
+{
+    picojson::object result;
+    result["CursorX"] = picojson::value((double)Data->CursorX);
+    result["CursorY"] = picojson::value((double)Data->CursorY);
+    result["ScrollX"] = picojson::value((double)Data->ScrollX);
+    result["ScrollY"] = picojson::value((double)Data->ScrollY);
+    result["Width"] = picojson::value((double)Data->WidthBrowser);
+    result["Height"] = picojson::value((double)Data->HeightBrowser);
+
+    std::string result_string = picojson::value(result).serialize();
+    xml_encode(result_string);
+    SendTextResponce(std::string("<GetBrowserScreenSettings>") + result_string + std::string("</GetBrowserScreenSettings>"));
+}
+
 std::string MainApp::GetUrl()
 {
     std::string url;

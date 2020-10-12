@@ -433,6 +433,160 @@ function _default_move_params(params)
     _DEFAULT_MOVE_PARAMS = params
 }
 
+function _get_browser_screen_settings()
+{
+    _ARG = arguments
+
+    _create_browser_if_needed(function(){
+        Browser.GetBrowserScreenSettings(_get_function_body(_ARG[0]));
+    })
+}
+
+function _slide()
+{
+    _ARG2 = arguments
+    _get_browser_screen_settings(function(){
+        var screen_settings = JSON.parse(_result())
+        var X1 = (rand(0,150) + rand(0,150) + 600) * 0.001
+        var X2 = X1 + rand(-90,90) * 0.001
+        if(_ARG2[0] <= 100)
+        {
+            X2 = X1 + rand(-50,50) * 0.001
+        }else if(_ARG2[0] <= 200)
+        {
+            X2 = X1 + rand(-70,70) * 0.001
+        }
+        if(X2 >= 1)
+            X2 = 1
+        if(X2 < 0)
+            X2 = 0
+
+        X2 = X2 * screen_settings["Width"]
+
+        var Y1 = (rand(0,100) + rand(0,100) + 700) * 0.001
+        var Y2 = (Y1) * screen_settings["Height"] - _ARG2[0] * (1 + rand(-30,30)*0.01)
+        if(Y2 < 10)
+            Y2 = 10
+
+        var ReleaseRadius = rand(30,50)
+
+        if(_ARG2[0] <= 100)
+        {
+            ReleaseRadius = rand(0,10)
+        }else if(_ARG2[0] <= 200)
+        {
+            ReleaseRadius = rand(0,20)
+        }
+
+        var DoMouseUp = "true"
+
+        if(rand(0,100) > 85)
+        {
+            ReleaseRadius = 0;
+        }
+
+        if(ReleaseRadius == 0)
+        {
+            DoMouseUp = "false"
+        }
+
+        var Speed = rand(110,150)
+
+        if(_ARG2[0] <= 100)
+        {
+            if(ReleaseRadius == 0)
+            {
+                Speed *= 0.8
+            }else
+            {
+                Speed *= 1.7
+            }
+        }else if(_ARG2[0] <= 200)
+        {
+            if(ReleaseRadius == 0)
+            {
+                Speed *= 0.9
+            }else
+            {
+                Speed *= 1.1
+            }
+        }
+
+        var Deviation = 2.3
+
+        if(_ARG2[0] <= 100)
+        {
+            Deviation = 3.0
+        }else if(_ARG2[0] <= 200)
+        {
+            Deviation = 2.5
+        }
+
+        _ARG2 = [_ARG2[1]]
+
+        _ARG2.push(screen_settings["ScrollX"] + (X1) * screen_settings["Width"])
+        _ARG2.push(screen_settings["ScrollY"] + (Y1) * screen_settings["Height"])
+        _ARG2.push(screen_settings["ScrollX"] + X2)
+        _ARG2.push(screen_settings["ScrollY"] + Y2)
+        _ARG2.push({
+                       "speed": Speed,
+                       "gravity": rand(10,15),
+                       "deviation": Deviation,
+                       "do_mouse_up": DoMouseUp,
+                       "release_radius": ReleaseRadius
+                   })
+
+        if(ReleaseRadius == 0)
+        {
+            //sleep time
+            if(rand(0,10) > 7)
+            {
+                _ARG2.push(rand(100,600))
+            }else
+            {
+                _ARG2.push(0)
+            }
+            X2 += rand(-10,10)
+            if(X2 >= screen_settings["Width"])
+                X2 = screen_settings["Width"] - 1
+            if(X2 <= 0)
+                X2 = 1
+            Y2 += rand(-45,5)
+            if(Y2 >= screen_settings["Height"])
+                Y2 = screen_settings["Height"] - 1
+            if(Y2 <= 0)
+                Y2 = 1
+
+            _ARG2.push(X2)
+            _ARG2.push(Y2)
+
+            _ARG2.push({
+                           "speed": rand(50,80),
+                           "gravity": rand(8,10),
+                           "deviation": 1.0,
+                           "do_mouse_up": "true",
+                           "release_radius": 0
+                       })
+        }
+        move(_ARG2[1], _ARG2[2], function(){
+            mouse_down(_ARG2[1], _ARG2[2], function(){
+                move(_ARG2[3], _ARG2[4], _ARG2[5], function(){
+                    _if(_ARG2.length > 6, function(){
+                        _if(_ARG2[6] > 0, function(){
+                            sleep(_ARG2[6], function(){})
+                        },function(){
+                            _get_browser_screen_settings(function(){
+                                var screen_settings = JSON.parse(_result())
+                                move(_ARG2[7] + screen_settings["ScrollX"], _ARG2[8] + screen_settings["ScrollY"], _ARG2[9], function(){})
+                            })
+                        })
+                    },_ARG2[0])
+                })
+            })
+        })
+    })
+}
+
 function move()
 {
     var length = arguments.length

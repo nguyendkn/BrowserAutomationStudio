@@ -3111,9 +3111,6 @@ void MainApp::Timer()
                 ScrollTrackingY = 0;
                 ScrollStopTrackingStart = 0;
                 SendTextResponce("<MouseMove></MouseMove>");
-            }else
-            {
-                WORKER_LOG(std::to_string(ScrollStopTracking));
             }
         }else
         {

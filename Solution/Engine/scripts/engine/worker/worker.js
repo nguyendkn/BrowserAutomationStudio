@@ -465,10 +465,6 @@ function _slide()
         {
             X2 = X1 + rand(-70,70) * 0.001
         }
-        if(X2 >= 1)
-            X2 = 1
-        if(X2 < 0)
-            X2 = 0
 
         X2 = X2 * screen_settings["Width"]
 
@@ -481,8 +477,35 @@ function _slide()
             Y1 = (rand(0,100) + rand(0,100) + 700) * 0.001
         }
         var Y2 = (Y1) * screen_settings["Height"] - _ARG2[0] * (1 + rand(-30,30)*0.01)
-        if(Y2 < 10)
-            Y2 = 10
+
+        X1 = (X1) * screen_settings["Width"];
+        Y1 = (Y1) * screen_settings["Height"];
+
+        if(X1 < screen_settings["Width"] * 0.05)
+            X1 = screen_settings["Width"] * 0.05
+
+        if(X1 > screen_settings["Width"] * 0.95)
+            X1 = screen_settings["Width"] * 0.95
+
+        if(X2 < screen_settings["Width"] * 0.05)
+            X2 = screen_settings["Width"] * 0.05
+
+        if(X2 > screen_settings["Width"] * 0.95)
+            X2 = screen_settings["Width"] * 0.95
+
+
+        if(Y1 < screen_settings["Height"] * 0.05)
+            Y1 = screen_settings["Height"] * 0.05
+
+        if(Y1 > screen_settings["Height"] * 0.95)
+            Y1 = screen_settings["Height"] * 0.95
+
+        if(Y2 < screen_settings["Height"] * 0.05)
+            Y2 = screen_settings["Height"] * 0.05
+
+        if(Y2 > screen_settings["Height"] * 0.95)
+            Y2 = screen_settings["Height"] * 0.95
+
 
         var ReleaseRadius = rand(30,50)
 
@@ -542,16 +565,16 @@ function _slide()
 
         if(IsSlideDown)
         {
-            _ARG2.push(screen_settings["ScrollX"] + (X1) * screen_settings["Width"])
-            _ARG2.push(screen_settings["ScrollY"] + (Y1) * screen_settings["Height"])
+            _ARG2.push(screen_settings["ScrollX"] + X1)
+            _ARG2.push(screen_settings["ScrollY"] + Y1)
             _ARG2.push(screen_settings["ScrollX"] + X2)
             _ARG2.push(screen_settings["ScrollY"] + Y2)
         }else
         {
             _ARG2.push(screen_settings["ScrollX"] + X2)
             _ARG2.push(screen_settings["ScrollY"] + Y2)
-            _ARG2.push(screen_settings["ScrollX"] + (X1) * screen_settings["Width"])
-            _ARG2.push(screen_settings["ScrollY"] + (Y1) * screen_settings["Height"])
+            _ARG2.push(screen_settings["ScrollX"] + X1)
+            _ARG2.push(screen_settings["ScrollY"] + Y1)
         }
         _ARG2.push({
                        "speed": Speed,
@@ -572,20 +595,25 @@ function _slide()
                 _ARG2.push(0)
             }
             X2 += rand(-10,10)
-            if(X2 >= screen_settings["Width"])
-                X2 = screen_settings["Width"] - 1
-            if(X2 <= 0)
-                X2 = 1
+
 
             if(IsSlideDown)
                 Y2 += rand(-45,5)
             else
-                Y2 = (Y1) * screen_settings["Height"] + rand(-5,45)
+                Y2 = Y1 + rand(-5,45)
 
-            if(Y2 >= screen_settings["Height"])
-                Y2 = screen_settings["Height"] - 1
-            if(Y2 <= 0)
-                Y2 = 1
+            if(X2 < screen_settings["Width"] * 0.05)
+                X2 = screen_settings["Width"] * 0.05
+
+            if(X2 > screen_settings["Width"] * 0.95)
+                X2 = screen_settings["Width"] * 0.95
+
+
+            if(Y2 < screen_settings["Height"] * 0.05)
+                Y2 = screen_settings["Height"] * 0.05
+
+            if(Y2 > screen_settings["Height"] * 0.95)
+                Y2 = screen_settings["Height"] * 0.95
 
             _ARG2.push(X2)
             _ARG2.push(Y2)

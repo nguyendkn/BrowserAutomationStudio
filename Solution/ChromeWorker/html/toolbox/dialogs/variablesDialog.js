@@ -55,6 +55,10 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     this.localsEnabled = localsEnabled;
   }
 
+  /**
+   * Handler function for `close` event.
+   * @param {String} name - selected item name.
+   */
   onClose(name, { global }) {
     const el = $(this.selector); const insert = `[[${global ? 'GLOBAL:' : ''}${name}]]`;
 
@@ -87,6 +91,9 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     if (this.selector === '#selector-input') MainView.prototype.pathchanged();
   }
 
+  /**
+   * Handler function for `add` event.
+   */
   onAdd() {
     if (this.localsEnabled) {
       BrowserAutomationStudio_OpenAction('setvariable');

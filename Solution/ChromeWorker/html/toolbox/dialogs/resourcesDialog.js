@@ -25,6 +25,10 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
     this.selector = element.attr('data-result-target');
   }
 
+  /**
+   * Handler function for `close` event.
+   * @param {String} name - selected item name.
+   */
   onClose(name, { options }) {
     const el = $(this.selector); let resource = name;
     if (options.resourceDontDie) {
@@ -56,7 +60,10 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
     if (this.selector === '#selector-input') MainView.prototype.pathchanged();
   }
 
+  /**
+   * Handler function for `add` event.
+   */
   onAdd() {
-
+    const template = BasDialogsLib.templates.createResource();
   }
 }

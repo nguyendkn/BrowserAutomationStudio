@@ -34,7 +34,7 @@ window.BasDialogsLib = {
     });
   },
 
-  template: () => { },
+  templates: {},
 
   options: {},
 

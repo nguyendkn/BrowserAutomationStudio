@@ -201,7 +201,7 @@ BasDialogsLib.BasModalDialog = class {
    * Render the modal dialog window.
    */
   renderDialog() {
-    this.$modal = $(BasDialogsLib.template(this)).appendTo('body');
+    this.$modal = $(BasDialogsLib.templates.main(this)).appendTo('body');
     this.$recentContainer = $('#modalRecentContainer');
     this.$recentContent = $('#modalRecentContent');
     this.$recentWrapper = $('#modalRecentWrapper');

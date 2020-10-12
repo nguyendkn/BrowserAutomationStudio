@@ -20,7 +20,11 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
     this.selector = element.attr('data-result-target');
   }
 
-  onClose(name, data) {
+  /**
+   * Handler function for `close` event.
+   * @param {String} name - selected item name.
+   */
+  onClose(name) {
     if (name.length) {
       BasDialogsLib.store.addFunction({ name });
       $(this.selector).val(name);
@@ -28,7 +32,10 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
     _MainView.funcchange(name);
   }
 
+  /**
+   * Handler function for `add` event.
+   */
   onAdd() {
-
+    const template = BasDialogsLib.templates.createFunction();
   }
 }

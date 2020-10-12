@@ -193,7 +193,7 @@ function SQL_ConvertValuesToObject(){
 		_call_function(SQL_Template,{"e":value})!
 		var value = _result_function();
 		
-		values_object[key] = SQL_ConvertValue(res);
+		values_object[key] = SQL_ConvertValue(value);
 	})!
 	
 	_function_return(values_object);

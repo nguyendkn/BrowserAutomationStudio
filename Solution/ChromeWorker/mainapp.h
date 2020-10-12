@@ -100,6 +100,12 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     bool DoMouseUpOnFinishMove;
     double MouseReleaseRadius;
 
+    //Scroll stop tracking
+    int ScrollTrackingX;
+    int ScrollTrackingY;
+    clock_t ScrollStopTracking;
+    clock_t ScrollStopTrackingStart;
+
     double MouseSpeed;
     double MouseGravity;
     double MouseDeviation;

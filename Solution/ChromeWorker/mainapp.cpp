@@ -56,6 +56,10 @@ MainApp::MainApp()
     InspectPosition = 0;
     TypeTextLastTime = 0;
     LastMouseTrack = 0;
+    ScrollStopTracking = 0;
+    ScrollStopTrackingStart = 0;
+    ScrollTrackingX = 0;
+    ScrollTrackingY = 0;
     LastHighlight = 0;
     ImageWidth = 0;
     ImageHeight = 0;
@@ -1393,6 +1397,10 @@ void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, doub
         LastCommand.CommandParam2 = std::to_string(y);
         DoMouseUpOnFinishMove = domouseup;
         MouseReleaseRadius = release_radius;
+        ScrollTrackingX = 0;
+        ScrollTrackingY = 0;
+        ScrollStopTrackingStart = 0;
+        ScrollStopTracking = 0;
         MouseStartX = Data->CursorX;
         MouseStartY = Data->CursorY;
         if(speed>=-0.01)
@@ -3088,6 +3096,43 @@ void MainApp::CefMessageLoop()
 
 void MainApp::Timer()
 {
+
+    //Tracking page scrolling
+    if(ScrollStopTracking > 0)
+    {
+        clock_t CurrentTime = clock();
+
+        if(Data->ScrollX == ScrollTrackingX && Data->ScrollY == ScrollTrackingY)
+        {
+            if(float( CurrentTime - ScrollStopTracking ) / CLOCKS_PER_SEC > 0.1)
+            {
+                ScrollStopTracking = 0;
+                ScrollTrackingX = 0;
+                ScrollTrackingY = 0;
+                ScrollStopTrackingStart = 0;
+                SendTextResponce("<MouseMove></MouseMove>");
+            }else
+            {
+                WORKER_LOG(std::to_string(ScrollStopTracking));
+            }
+        }else
+        {
+            ScrollStopTracking = CurrentTime;
+            ScrollTrackingX = Data->ScrollX;
+            ScrollTrackingY = Data->ScrollY;
+        }
+
+        if(ScrollStopTracking > 0 && float( CurrentTime - ScrollStopTrackingStart ) / CLOCKS_PER_SEC > 5.0)
+        {
+            ScrollStopTracking = 0;
+            ScrollTrackingX = 0;
+            ScrollTrackingY = 0;
+            ScrollStopTrackingStart = 0;
+            SendTextResponce("<MouseMove></MouseMove>");
+        }
+    }
+
+
     if(DelayClickType == 1 || DelayClickType == 2)
     {
         clock_t CurrentTime = clock();
@@ -4867,6 +4912,10 @@ void MainApp::HandleMainBrowserEvents()
 
                     DoMouseUpOnFinishMove = false;
                     MouseReleaseRadius = 0.0;
+                    ScrollTrackingX = 0;
+                    ScrollTrackingY = 0;
+                    ScrollStopTrackingStart = 0;
+                    ScrollStopTracking = 0;
 
                     MouseSpeed = 15.0;
                     MouseGravity = 6.0;
@@ -5199,6 +5248,8 @@ void MainApp::ExecuteMouseMove()
     RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,false);
 
+    bool TrackScroll = false;
+
     if(MouseReleaseRadius > 0.01 && DoMouseUpOnFinishMove)
     {
         //Check if need to release mouse during movement
@@ -5207,6 +5258,9 @@ void MainApp::ExecuteMouseMove()
         if(DistanceSquareCurrent < MouseReleaseRadius)
         {
             IsMouseMoveSimulation = false;
+
+            if(Data->IsTouchScreen)
+                TrackScroll = true;
         }
     }
 
@@ -5222,7 +5276,17 @@ void MainApp::ExecuteMouseMove()
                 Data->LastClickIsFromIndirectControl = true;
                 BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),Data->CursorX,Data->CursorY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
             }
-            SendTextResponce("<MouseMove></MouseMove>");
+            if(TrackScroll)
+            {
+                ScrollStopTracking = clock();
+                ScrollTrackingX = Data->ScrollX;
+                ScrollTrackingY = Data->ScrollY;
+                ScrollStopTrackingStart = ScrollStopTracking;
+            }else
+            {
+                SendTextResponce("<MouseMove></MouseMove>");
+            }
+
         }
     }
 }

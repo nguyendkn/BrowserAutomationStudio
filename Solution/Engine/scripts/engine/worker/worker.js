@@ -447,7 +447,14 @@ function _slide()
     _ARG2 = arguments
     _get_browser_screen_settings(function(){
         var screen_settings = JSON.parse(_result())
-        var X1 = (rand(0,150) + rand(0,150) + 600) * 0.001
+        var X1 = 0
+        if(rand(0,100) >= 96)
+        {
+            X1 = (rand(0,400) + rand(0,400) + 100) * 0.001
+        }else
+        {
+            X1 = (rand(0,150) + rand(0,150) + 600) * 0.001
+        }
         var X2 = X1 + rand(-90,90) * 0.001
         var IsSlideDown = _ARG2[0] > 0
         _ARG2[0] = Math.abs(_ARG2[0])
@@ -465,7 +472,14 @@ function _slide()
 
         X2 = X2 * screen_settings["Width"]
 
-        var Y1 = (rand(0,100) + rand(0,100) + 700) * 0.001
+        var Y1 = 0
+        if(rand(0,100) >= 96)
+        {
+            Y1 = (rand(0,400) + rand(0,400) + 100) * 0.001
+        }else
+        {
+            Y1 = (rand(0,100) + rand(0,100) + 700) * 0.001
+        }
         var Y2 = (Y1) * screen_settings["Height"] - _ARG2[0] * (1 + rand(-30,30)*0.01)
         if(Y2 < 10)
             Y2 = 10

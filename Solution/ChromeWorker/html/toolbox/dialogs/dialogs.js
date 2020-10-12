@@ -76,19 +76,17 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     $document.on('click', '.modal-recent-item', function (e) {
-      self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
+      self.closeDialog(_.find(self.items, 'id', $(this).data('id')));
       e.preventDefault();
     });
 
     $document.on('click', '.modal-list-item', function (e) {
-      self.closeDialog(self.items.find((i) => i.id === $(this).data('id')));
+      self.closeDialog(_.find(self.items, 'id', $(this).data('id')));
       e.preventDefault();
     });
 
     $document.on('click', '.modal-option', function (e) {
-      $(this).find('input').prop('checked', (_, checked) => {
-        return !checked;
-      });
+      $(this).find('input').prop('checked', (_, checked) => !checked);
       e.preventDefault();
     });
 
@@ -119,6 +117,7 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     $document.on('click', '#modalRecentShow', (e) => {
+      e.stopPropagation();
       e.preventDefault();
       self.showRecent();
     });

@@ -449,6 +449,8 @@ function _slide()
         var screen_settings = JSON.parse(_result())
         var X1 = (rand(0,150) + rand(0,150) + 600) * 0.001
         var X2 = X1 + rand(-90,90) * 0.001
+        var IsSlideDown = _ARG2[0] > 0
+        _ARG2[0] = Math.abs(_ARG2[0])
         if(_ARG2[0] <= 100)
         {
             X2 = X1 + rand(-50,50) * 0.001
@@ -524,10 +526,19 @@ function _slide()
 
         _ARG2 = [_ARG2[1]]
 
-        _ARG2.push(screen_settings["ScrollX"] + (X1) * screen_settings["Width"])
-        _ARG2.push(screen_settings["ScrollY"] + (Y1) * screen_settings["Height"])
-        _ARG2.push(screen_settings["ScrollX"] + X2)
-        _ARG2.push(screen_settings["ScrollY"] + Y2)
+        if(IsSlideDown)
+        {
+            _ARG2.push(screen_settings["ScrollX"] + (X1) * screen_settings["Width"])
+            _ARG2.push(screen_settings["ScrollY"] + (Y1) * screen_settings["Height"])
+            _ARG2.push(screen_settings["ScrollX"] + X2)
+            _ARG2.push(screen_settings["ScrollY"] + Y2)
+        }else
+        {
+            _ARG2.push(screen_settings["ScrollX"] + X2)
+            _ARG2.push(screen_settings["ScrollY"] + Y2)
+            _ARG2.push(screen_settings["ScrollX"] + (X1) * screen_settings["Width"])
+            _ARG2.push(screen_settings["ScrollY"] + (Y1) * screen_settings["Height"])
+        }
         _ARG2.push({
                        "speed": Speed,
                        "gravity": rand(10,15),
@@ -551,7 +562,12 @@ function _slide()
                 X2 = screen_settings["Width"] - 1
             if(X2 <= 0)
                 X2 = 1
-            Y2 += rand(-45,5)
+
+            if(IsSlideDown)
+                Y2 += rand(-45,5)
+            else
+                Y2 = (Y1) * screen_settings["Height"] + rand(-5,45)
+
             if(Y2 >= screen_settings["Height"])
                 Y2 = screen_settings["Height"] - 1
             if(Y2 <= 0)

@@ -6,6 +6,7 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
    */
   constructor (element) {
     super({
+      options: BasDialogsLib.options.functionsOptions,
       recent: BasDialogsLib.store.recentFunctions,
       items: _FunctionCollection.toJSON(),
       metadata: {
@@ -19,11 +20,15 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
     this.selector = element.attr('data-result-target');
   }
 
-  handler(name, data) {
+  onClose(name, data) {
     if (name.length) {
       BasDialogsLib.store.addFunction({ name });
       $(this.selector).val(name);
     }
     _MainView.funcchange(name);
+  }
+
+  onAdd() {
+
   }
 }

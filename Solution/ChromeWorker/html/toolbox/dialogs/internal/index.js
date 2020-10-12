@@ -36,6 +36,8 @@ window.BasDialogsLib = {
 
   template: () => { },
 
+  options: {},
+
   store: {},
 
   utils: {},

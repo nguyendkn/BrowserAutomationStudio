@@ -122,6 +122,12 @@ BasDialogsLib.BasModalDialog = class {
       self.showRecent();
     });
 
+    $document.on('click', '#modalListAdd', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      self.onAdd();
+    });
+
     _GobalModel.on('change:isedit', (model) => {
       if (self.$modal && model.get('isedit')) {
         self.closeDialog();
@@ -236,8 +242,8 @@ BasDialogsLib.BasModalDialog = class {
     this.$modal.remove();
     this.$modal = null;
 
-    if (this.handler) {
-      this.handler(selected.name || '', { options, ...selected });
+    if (this.onClose) {
+      this.onClose(selected.name || '', { options, ...selected });
     }
   }
 

@@ -10,11 +10,11 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
    * @constructor
    */
   constructor (element) {
-    const globals = element.attr('disable_globals') !== 'true'
+    const globalsEnabled = element.attr('disable_globals') !== 'true', globals = globalsEnabled
       ? _GlobalVariableCollection.toJSON().map((item) => ({ global: !false, ...item }))
       : [];
 
-    const locals = element.attr('disable_locals') !== 'true'
+    const localsEnabled = element.attr('disable_locals') !== 'true', locals = localsEnabled
       ? _VariableCollection.toJSON().map((item) => ({ global: false, ...item }))
       : [];
 
@@ -40,6 +40,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
 
         return { description: action.description, ref: action.name, ...item };
       }),
+      options: BasDialogsLib.options.variablesOptions,
       recent: BasDialogsLib.store.recentVariables,
       metadata: {
         template: _.template(`<%= (global ? 'GLOBAL:' : '') + name %>`),
@@ -50,9 +51,11 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     });
 
     this.selector = element.attr('data-result-target');
+    this.globalsEnabled = globalsEnabled;
+    this.localsEnabled = localsEnabled;
   }
 
-  handler(name, { global }) {
+  onClose(name, { global }) {
     const el = $(this.selector); const insert = `[[${global ? 'GLOBAL:' : ''}${name}]]`;
 
     if (name.length) {
@@ -82,5 +85,15 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     }
 
     if (this.selector === '#selector-input') MainView.prototype.pathchanged();
+  }
+
+  onAdd() {
+    if (this.localsEnabled) {
+      BrowserAutomationStudio_OpenAction('setvariable');
+    } else {
+      BrowserAutomationStudio_OpenAction('globalset');
+    }
+
+    this.closeDialog();
   }
 }

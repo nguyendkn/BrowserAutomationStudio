@@ -15,37 +15,39 @@ BasDialogsLib.template = _.template(`
     </div>
     <div id="modalContentContainer">
       <div id="modalListContainer">
-        <div id="modalListContent">
-          <% _.keys(map).forEach((header) => { %>
-            <div class="modal-list-wrap">
-              <div class="modal-list">
-                <div class="modal-list-header">
-                  <div class="modal-list-header-content"><%= header %></div>
-                  <div class="modal-list-header-column"></div>
-                </div>
-                <ul class="modal-list-items">
-                  <% map[header].forEach((item) => { %>
-                    <li class="modal-list-item" data-id="<%= item.id %>">
-                      <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>">
-                        <%= metadata.template(item) %>
-                      </div>
-                      <% if (item.description) { %>
-                        <div class="modal-list-item-desc" data-clickable="<%= item.ref ? true : false %>" data-ref="<%= item.ref %>">
-                          <svg width="9" height="3" viewBox="0 0 9 3" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="0.5" y="2.5" width="2" height="2" transform="rotate(-90 0.5 2.5)" fill="white" stroke="#bdbdbd" />
-                            <rect y="2" width="1" height="9" transform="rotate(-90 0 2)" fill="#bdbdbd" />
-                          </svg>    
-                          <div class="modal-list-text-sm modal-text-nowrap">
-                            <%= item.description %>
-                          </div>
+        <div id="modalListWrapper">
+          <div id="modalListContent">
+            <% _.keys(map).forEach((header) => { %>
+              <div class="modal-list-wrap">
+                <div class="modal-list">
+                  <div class="modal-list-header">
+                    <div class="modal-list-header-content"><%= header %></div>
+                    <div class="modal-list-header-column"></div>
+                  </div>
+                  <ul class="modal-list-items">
+                    <% map[header].forEach((item) => { %>
+                      <li class="modal-list-item" data-id="<%= item.id %>">
+                        <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>">
+                          <%= metadata.template(item) %>
                         </div>
-                      <% } %>
-                    </li>
-                  <% }); %>
-                </ul>
+                        <% if (item.description) { %>
+                          <div class="modal-list-item-desc" data-clickable="<%= item.ref ? true : false %>" data-ref="<%= item.ref %>">
+                            <svg width="9" height="3" viewBox="0 0 9 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="0.5" y="2.5" width="2" height="2" transform="rotate(-90 0.5 2.5)" fill="white" stroke="#bdbdbd" />
+                              <rect y="2" width="1" height="9" transform="rotate(-90 0 2)" fill="#bdbdbd" />
+                            </svg>    
+                            <div class="modal-list-text-sm modal-text-nowrap">
+                              <%= item.description %>
+                            </div>
+                          </div>
+                        <% } %>
+                      </li>
+                    <% }); %>
+                  </ul>
+                </div>
               </div>
-            </div>
-          <% }); %>
+            <% }); %>
+          </div>
         </div>
         <div id="modalListEmpty">
           <% if (!items.length) { %>
@@ -73,7 +75,7 @@ BasDialogsLib.template = _.template(`
           </button>
         </div>
         <div id="modalRecentContent">
-          <ul id="modalRecentItems">
+          <ul id="modalRecentWrapper">
             <% recent.forEach((item) => { %>
               <li class="modal-recent-item" data-id="<%= items.find(({ name }) => name === item.name).id %>">
                 <div class="modal-recent-icon-left"></div>

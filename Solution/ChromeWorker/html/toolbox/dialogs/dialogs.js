@@ -197,17 +197,18 @@ BasDialogsLib.BasModalDialog = class {
   renderDialog() {
     this.$modal = $(BasDialogsLib.template(this)).appendTo('body');
     this.$recentContainer = $('#modalRecentContainer');
-    this.$listContainer = $('#modalListContainer');
     this.$recentContent = $('#modalRecentContent');
+    this.$recentWrapper = $('#modalRecentWrapper');
+    this.$listWrapper = $('#modalListWrapper');
     this.$listContent = $('#modalListContent');
     this.$searchInput = $('#modalSearchInput');
-    this.$recentItems = $('#modalRecentItems');
     this.$hideRecent = $('#modalRecentHide');
     this.$showRecent = $('#modalRecentShow');
     this.$listEmpty = $('#modalListEmpty');
+    this.$listAdd = $('#modalListAdd');
 
-    this.$recentItems.scrollTop(this.constructor.recentItemsScroll);
-    this.$listContainer.scrollTop(this.constructor.listItemsScroll);
+    this.$recentWrapper.scrollTop(this.constructor.recentItemsScroll);
+    this.$listWrapper.scrollTop(this.constructor.listItemsScroll);
 
     $(document.body).css('overflow', 'hidden');
 
@@ -229,8 +230,8 @@ BasDialogsLib.BasModalDialog = class {
     if (!this.$modal) return;
 
     const options = _.object(this.options.map((o) => [o.id, $(`#${o.id}`).is(':checked')]));
-    this.constructor.recentItemsScroll = this.$recentItems.scrollTop();
-    this.constructor.listItemsScroll = this.$listContainer.scrollTop();
+    this.constructor.recentItemsScroll = this.$recentWrapper.scrollTop();
+    this.constructor.listItemsScroll = this.$listWrapper.scrollTop();
     $(document.body).css('overflow', 'visible');
     this.$modal.remove();
     this.$modal = null;
@@ -258,7 +259,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$recentContent.css('overflow', 'visible')
       .removeClass('modal-pseudo-lg')
       .addClass('modal-pseudo-sm');
-    this.$recentItems.hide();
+    this.$recentWrapper.hide();
     this.$hideRecent.hide();
     this.$showRecent.show();
     this.resize();
@@ -273,7 +274,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$recentContent.css('overflow', 'hidden')
       .removeClass('modal-pseudo-sm')
       .addClass('modal-pseudo-lg');
-    this.$recentItems.show();
+    this.$recentWrapper.show();
     this.$hideRecent.show();
     this.$showRecent.hide();
     this.resize();

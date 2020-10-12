@@ -21,7 +21,7 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
   }
 
   /**
-   * Handler function for `close` event.
+   * Handler function for the `close` event.
    * @param {String} name - selected item name.
    */
   onClose(name) {
@@ -33,9 +33,11 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
   }
 
   /**
-   * Handler function for `add` event.
+   * Handler function for the `add` event.
    */
   onAdd() {
-    const template = BasDialogsLib.templates.createFunction();
+    $(BasDialogsLib.templates.createFunction())
+      .css('z-index', '9999999')
+      .modal('show');
   }
 }

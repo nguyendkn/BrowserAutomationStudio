@@ -118,24 +118,22 @@ BasDialogsLib.templates = {
   `),
 
   createFunction: _.template(`
-    <div class="modal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
+            <h4 class="modal-title tr">Create Function</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title tr" id="myModalLabel">Create Function</h4>
           </div>
           <div class="modal-body" style="padding-top:5px">
-            <div class="tr" style="color:gray;font-size:small;margin-top:10px">
+            <div class="tr" style="color: gray; font-size: small; margin-top: 10px;">
               You can create resource with "+ Create New Resource" button which is located in the panel to the right.
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">
-              Cancel
-            </button>
+            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
           </div>
         </div>
       </div>
@@ -143,24 +141,22 @@ BasDialogsLib.templates = {
   `),
 
   createResource: _.template(`
-    <div class="modal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
+            <h4 class="modal-title tr">Create Resource</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title tr" id="myModalLabel">Create Resource</h4>
           </div>
           <div class="modal-body" style="padding-top:5px">
-            <div class="tr" style="color:gray;font-size:small;margin-top:10px">
+            <div class="tr" style="color: gray; font-size: small; margin-top: 10px;">
               You can create resource with "+ Create New Resource" button which is located in the panel to the right.
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">
-              Cancel
-            </button>
+            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
           </div>
         </div>
       </div>

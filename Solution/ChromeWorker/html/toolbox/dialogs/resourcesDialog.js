@@ -26,7 +26,7 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
   }
 
   /**
-   * Handler function for `close` event.
+   * Handler function for the `close` event.
    * @param {String} name - selected item name.
    */
   onClose(name, { options }) {
@@ -61,9 +61,11 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
   }
 
   /**
-   * Handler function for `add` event.
+   * Handler function for the `add` event.
    */
   onAdd() {
-    const template = BasDialogsLib.templates.createResource();
+    $(BasDialogsLib.templates.createResource())
+      .css('z-index', '9999999')
+      .modal('show');
   }
 }

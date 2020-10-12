@@ -56,7 +56,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
   }
 
   /**
-   * Handler function for `close` event.
+   * Handler function for the `close` event.
    * @param {String} name - selected item name.
    */
   onClose(name, { global }) {
@@ -92,7 +92,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
   }
 
   /**
-   * Handler function for `add` event.
+   * Handler function for the `add` event.
    */
   onAdd() {
     if (this.localsEnabled) {

@@ -249,6 +249,7 @@
 #modalListEmpty {
   transform: translate(-50%, -50%);
   position: absolute;
+  user-select: none;
   font-weight: 400;
   font-size: 18px;
   display: none;

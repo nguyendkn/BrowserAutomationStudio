@@ -117,29 +117,6 @@ BasDialogsLib.templates = {
     </div>
   `),
 
-  createFunction: _.template(`
-    <div class="modal" role="dialog" id="createFunctionModal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title tr">Create Function</h4>
-          </div>
-          <div class="modal-body" style="padding-top:5px">
-            <div class="tr" style="color: gray; font-size: small; margin-top: 10px;">
-              
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `),
-
   createResource: _.template(`
     <div class="modal" role="dialog" id="createResourceModal">
       <div class="modal-dialog" role="document">
@@ -152,7 +129,30 @@ BasDialogsLib.templates = {
           </div>
           <div class="modal-body" style="padding-top:5px">
             <div class="tr" style="color: gray; font-size: small; margin-top: 10px;">
-              You can create resource with "+ Create New Resource" button which is located in the panel to the right (screen).
+              You can create resource using the "+ Create New Resource" button, which is located on the right panel (<a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://imgur.com/03EyXLL'); return false;" class="tr">screen</a>).
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `),
+
+  createFunction: _.template(`
+    <div class="modal" role="dialog" id="createFunctionModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title tr">Create Function</h4>
+          </div>
+          <div class="modal-body" style="padding-top:5px">
+            <div class="tr" style="color: gray; font-size: small; margin-top: 10px;">
+              No functions found.
             </div>
           </div>
           <div class="modal-footer">

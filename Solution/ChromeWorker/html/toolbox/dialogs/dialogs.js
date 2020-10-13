@@ -162,12 +162,9 @@ BasDialogsLib.BasModalDialog = class {
     const trim = (str) => str.toLowerCase().trim(), target = trim(query);
 
     _.each($('.modal-list-wrap'), (list) => {
-      const $header = $(list).find('.modal-list-header');
-      const $items = $(list).find('.modal-list-item');
-      const $list = $(list), search = !!target.length;
-      let some = false;
+      const $list = $(list), search = !!target.length; let some = false;
 
-      _.each($items, (item) => {
+      _.each($(list).find('.modal-list-item'), (item) => {
         const $item = $(item).unmark();
 
         if (search) {

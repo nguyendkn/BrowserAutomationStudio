@@ -38,7 +38,7 @@ BasDialogsLib.templates = {
                                 <rect y="2" width="1" height="9" transform="rotate(-90 0 2)" fill="#bdbdbd" />
                               </svg>    
                               <div class="modal-list-text-sm modal-text-nowrap">
-                                <%= item.description %>
+                                <%= tr(item.description) %>
                               </div>
                             </div>
                           <% } %>

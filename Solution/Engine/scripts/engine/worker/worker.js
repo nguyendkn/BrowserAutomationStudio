@@ -453,17 +453,17 @@ function _slide()
             X1 = (rand(0,400) + rand(0,400) + 100) * 0.001
         }else
         {
-            X1 = (rand(0,150) + rand(0,150) + 600) * 0.001
+            X1 = (rand(0,100) + rand(0,100) + 700) * 0.001
         }
-        var X2 = X1 + rand(-90,90) * 0.001
+        var X2 = X1 + rand(-30,80) * 0.001
         var IsSlideDown = _ARG2[0] > 0
         _ARG2[0] = Math.abs(_ARG2[0])
         if(_ARG2[0] <= 100)
         {
-            X2 = X1 + rand(-50,50) * 0.001
+            X2 = X1 + rand(-15,40) * 0.001
         }else if(_ARG2[0] <= 200)
         {
-            X2 = X1 + rand(-70,70) * 0.001
+            X2 = X1 + rand(-20,60) * 0.001
         }
 
         X2 = X2 * screen_settings["Width"]
@@ -476,6 +476,17 @@ function _slide()
         {
             Y1 = (rand(0,100) + rand(0,100) + 700) * 0.001
         }
+
+        var SpeedMultiplier = 1.0
+
+        if(_ARG2[0] >= 400 && rand(0,100) > 5)
+        {
+            SpeedMultiplier = 1.0 + (_ARG2[0] - 250) / 250
+            if(SpeedMultiplier > 3.0)
+                SpeedMultiplier = 3.0
+            _ARG2[0] = 300
+        }
+
         var Y2 = (Y1) * screen_settings["Height"] - _ARG2[0] * (1 + rand(-30,30)*0.01)
 
         X1 = (X1) * screen_settings["Width"];
@@ -524,6 +535,11 @@ function _slide()
             ReleaseRadius = 0;
         }
 
+        if(SpeedMultiplier > 1.0)
+        {
+            ReleaseRadius = rand(80,120)
+        }
+
         if(ReleaseRadius == 0)
         {
             DoMouseUp = "false"
@@ -550,6 +566,8 @@ function _slide()
                 Speed *= 1.1
             }
         }
+
+        Speed *= SpeedMultiplier;
 
         var Deviation = 2.3
 
@@ -594,7 +612,7 @@ function _slide()
             {
                 _ARG2.push(0)
             }
-            X2 += rand(-10,10)
+            X2 += rand(-5,15)
 
 
             if(IsSlideDown)

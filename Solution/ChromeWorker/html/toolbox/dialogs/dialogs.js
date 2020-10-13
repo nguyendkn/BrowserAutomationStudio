@@ -48,11 +48,11 @@ BasDialogsLib.BasModalDialog = class {
   addHandlers() {
     const self = this, $document = $(document), $window = $(window);
 
-    $document.on('input', '#modalSearchInput', _.debounce((e) => {
+    this.$modal.on('input', '#modalSearchInput', _.debounce((e) => {
       self.search($(e.target).val());
     }, 250));
 
-    $document.on('click', '.modal-list-item-desc', function (e) {
+    this.$modal.on('click', '.modal-list-item-desc', function (e) {
       const { ref, clickable } = $(this).data();
 
       if (clickable) {
@@ -63,66 +63,66 @@ BasDialogsLib.BasModalDialog = class {
       e.preventDefault();
     });
 
-    $document.on('mouseover', '.modal-list-item', function (e) {
+    this.$modal.on('mouseover', '.modal-list-item', function (e) {
       if (isClickable(e.target)) return;
       $(this).css('background', '#f0fbeb');
       e.preventDefault();
     });
 
-    $document.on('mouseout', '.modal-list-item', function (e) {
+    this.$modal.on('mouseout', '.modal-list-item', function (e) {
       if (isClickable(e.target)) return;
       $(this).css('background', '#ffffff');
       e.preventDefault();
     });
 
-    $document.on('click', '.modal-recent-item', function (e) {
+    this.$modal.on('click', '.modal-recent-item', function (e) {
       self.closeDialog(_.find(self.items, 'id', $(this).data('id')));
       e.preventDefault();
     });
 
-    $document.on('click', '.modal-list-item', function (e) {
+    this.$modal.on('click', '.modal-list-item', function (e) {
       self.closeDialog(_.find(self.items, 'id', $(this).data('id')));
       e.preventDefault();
     });
 
-    $document.on('click', '.modal-option', function (e) {
+    this.$modal.on('click', '.modal-option', function (e) {
       $(this).find('input').prop('checked', (_, checked) => !checked);
       e.preventDefault();
     });
 
-    $document.on('click', '#modalRecentContainer', (e) => {
+    this.$modal.on('click', '#modalRecentContainer', (e) => {
       if (self.$showRecent.is(':hidden')) return;
       e.stopPropagation();
       e.preventDefault();
       self.showRecent();
     });
 
-    $document.on('click', '#modalRecentHeader', (e) => {
+    this.$modal.on('click', '#modalRecentHeader', (e) => {
       if (self.$hideRecent.is(':hidden')) return;
       e.stopPropagation();
       e.preventDefault();
       self.hideRecent();
     });
 
-    $document.on('click', '#modalSearchClose', (e) => {
+    this.$modal.on('click', '#modalSearchClose', (e) => {
       e.stopPropagation();
       e.preventDefault();
       self.closeDialog();
     });
 
-    $document.on('click', '#modalRecentHide', (e) => {
+    this.$modal.on('click', '#modalRecentHide', (e) => {
       e.stopPropagation();
       e.preventDefault();
       self.hideRecent();
     });
 
-    $document.on('click', '#modalRecentShow', (e) => {
+    this.$modal.on('click', '#modalRecentShow', (e) => {
       e.stopPropagation();
       e.preventDefault();
       self.showRecent();
     });
 
-    $document.on('click', '#modalListAdd', (e) => {
+    this.$modal.on('click', '#modalListAdd', (e) => {
       e.stopPropagation();
       e.preventDefault();
       self.onAdd();
@@ -239,6 +239,7 @@ BasDialogsLib.BasModalDialog = class {
     this.constructor.recentItemsScroll = this.$recentWrapper.scrollTop();
     this.constructor.listItemsScroll = this.$listWrapper.scrollTop();
     $(document.body).css('overflow', 'visible');
+    this.$modal.unbind();
     this.$modal.remove();
     this.$modal = null;
 

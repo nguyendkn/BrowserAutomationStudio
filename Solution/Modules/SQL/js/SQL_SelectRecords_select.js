@@ -17,6 +17,11 @@ var order_direction = GetInputConstructorValue("order_direction", loader);
 var offset = GetInputConstructorValue("offset", loader);
 var limit = GetInputConstructorValue("limit", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
+var data_format = GetInputConstructorValue("data_format", loader);
+if(data_format["original"].length == 0){
+	Invalid(tr("Data format") + " " + tr("is empty"));
+    return;
+};
 try{
     var code = loader.GetAdditionalData() + _.template($("#SQL_SelectRecords_code").html())({
 		"table": table["updated"],
@@ -28,7 +33,8 @@ try{
         "offset": offset["updated"],
         "order_column": order_column["updated"],
         "order_direction": order_direction["updated"],
-        "variable": "VAR_" + Save
+        "variable": "VAR_" + Save,
+		"data_format": data_format["updated"]
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

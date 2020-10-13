@@ -14,24 +14,26 @@ function SQL_Setup(dialect, host, port, username, password, database, storage, t
 };
 function SQL_Query(){
 	var query = _function_argument("query");
-	var query_type = _function_argument("type");
 	var query_parameterize = _function_argument("query_parameterize");
+	var data_format = _function_argument("data_format");
 	var timeout = _function_argument("timeout");
 	
 	SQL_CheckDialect();
 	
-	if(query_type==="auto"){
-		query_type = ["SELECT", "INSERT", "UPDATE", "BULKUPDATE", "BULKDELETE", "DELETE", "UPSERT", "VERSION", "SHOWTABLES", "SHOWINDEXES", "DESCRIBE", "FOREIGNKEYS", "SHOWCONSTRAINTS"].filter(function(type){return query_sql.indexOf(type) > -1})[0] || "RAW";
-	};
+	var query_type = ["SELECT", "INSERT", "UPDATE", "BULKUPDATE", "BULKDELETE", "DELETE", "UPSERT", "VERSION", "SHOWTABLES", "SHOWINDEXES", "DESCRIBE", "FOREIGNKEYS", "SHOWCONSTRAINTS"].filter(function(type){return query.indexOf(type) > -1})[0] || "RAW";
 	
 	_call_function(SQL_PreParameterization,{"query":query,"parameterize":query_parameterize})!
 	query = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, query, query_type];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, query, query_type, data_format];
 	
 	_embedded("SQL_Query", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 	
-	_function_return(VAR_SQL_NODE_PARAMETERS);
+	var results = VAR_SQL_NODE_PARAMETERS[0];
+	var data_format = VAR_SQL_NODE_PARAMETERS[1];
+	var query_type = VAR_SQL_NODE_PARAMETERS[2];
+	
+	_function_return(query_type=="SELECT" ? SQL_RestoreDates(results, data_format) : results);
 };
 function SQL_CountRecords(){
 	var table = _function_argument("table");
@@ -60,6 +62,7 @@ function SQL_SelectRecords(){
 	var order_direction = _function_argument("order_direction");
 	var offset = _function_argument("offset");
 	var limit = _function_argument("limit");
+	var data_format = _function_argument("data_format");
 	var timeout = _function_argument("timeout");
 	var order = order_direction=="no sorting" ? "" : [ [order_column, order_direction=="ascending" ? "ASC" : "DESC"] ];
 	
@@ -68,11 +71,14 @@ function SQL_SelectRecords(){
 	_call_function(SQL_PreParameterization,{"query":where,"parameterize":where_parameterize})!
 	where = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where, included_columns, excluded_columns, order, offset, limit];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where, included_columns, excluded_columns, order, offset, limit, data_format];
 	
 	_embedded("SQL_SelectRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 	
-	_function_return(VAR_SQL_NODE_PARAMETERS);
+	var results = VAR_SQL_NODE_PARAMETERS[0];
+	var data_format = VAR_SQL_NODE_PARAMETERS[1];
+	
+	_function_return(SQL_RestoreDates(results, data_format));
 };
 function SQL_UpdateRecords(){
 	var table = _function_argument("table");
@@ -125,6 +131,15 @@ function SQL_CheckDialect(){
 function SQL_ConvertDates(data){
 	return data instanceof Date ? {isDate:true,date:data} : (Array.isArray(data) ? data.map(function(e){return e instanceof Date ? {isDate:true,date:e} : e}) : data);
 };
+function SQL_RestoreDates(results, format){
+	if(format=="Object list"){
+		results.forEach(function(row, ir){return Object.keys(row).forEach(function(key){return results[ir][key] = row[key].isDate ? _parse_date(row[key].date,"auto") : row[key]})});
+	};
+	if(format=="2D list"){
+		results = results.map(function(row){return row.map(function(cell){return cell.isDate ? _parse_date(cell.date,"auto") : cell})});
+	};
+	return results;
+};
 function SQL_ConvertValue(value){
 	return (typeof value=="string" ? (isNaN(value) ? (value=="true" || value=="false" ? value=="true" : value) : Number(value)) : SQL_ConvertDates(value));
 };
@@ -143,8 +158,8 @@ function SQL_PreParameterization(){
 	_if_else(parameterize, function(){
 		var reg = new RegExp("\\[\\[[^\\]]+\\]\\]|\\{\\{[^\\}]+\\}\\}", "g");
 		var replacements = query.match(reg) || [];
-		var parameterize = (replacements && replacements.length > 0) ? true : false;
-		_if(replacements && replacements.length > 0,function(){
+		parameterize = (replacements && replacements.length > 0) ? true : false;
+		_if(parameterize,function(){
 			_do_with_params({"foreach_data":replacements},function(){
 				var cycle_index = _iterator() - 1;
 				if(cycle_index > _cycle_param("foreach_data").length - 1){_break()};
@@ -168,12 +183,16 @@ function SQL_ConvertValuesToObject(){
 	
 	_if(values.indexOf("=") < 0,function(){
 		_call_function(SQL_Template,{"e":values})!
-		var values = _result_function();
+		values = _result_function();
 		
 		_if(typeof values=="object",function(){
 			_function_return(values);
 		})!
 	})!
+	
+	if(values.slice(-1)==","){
+		values = values.slice(0, -1);
+	};
 	
 	var values_object = {};
 	var values_array = values.split(/,?\r?\n/);
@@ -207,7 +226,7 @@ function SQL_IsJsonString(str){
     return true;
 };
 function SQL_ConvertToList(str){
-	return (str=="" || typeof str=="object") ? str : (SQL_IsJsonString(str) ? JSON.parse(str) : str.split(/,?\s/));
+	return (str==="" || typeof str=="object") ? str : (SQL_IsJsonString(str) ? JSON.parse(str) : str.split(/,?\s/));
 };
 function SQL_FormatPath(path){
 	return path.split("\\").join("/");

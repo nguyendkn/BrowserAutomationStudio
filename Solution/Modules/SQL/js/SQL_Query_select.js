@@ -8,21 +8,19 @@ if($("#query").val().length == 0){
 	Invalid(tr("Query") + " " + tr("is empty"));
     return;
 };
-var type = GetInputConstructorValue("type", loader);
-if(type["original"].length == 0){
-	Invalid(tr("Query type") + " " + tr("is empty"));
+var parameterize = $("#Check").is(':checked');
+var Save = this.$el.find("#Save").val().toUpperCase();
+var data_format = GetInputConstructorValue("data_format", loader);
+if(data_format["original"].length == 0){
+	Invalid(tr("Data format") + " " + tr("is empty"));
     return;
 };
-var parameterize = $("#Check").is(':checked');
-var results = this.$el.find("#results").val().toUpperCase();
-var metadata = this.$el.find("#metadata").val().toUpperCase();
 try{
     var code = loader.GetAdditionalData() + _.template($("#SQL_Query_code").html())({
         "query": query,
 		"parameterize": parameterize,
-        "type": type["updated"],
-        "results": "VAR_" + results,
-        "metadata": "VAR_" + metadata
+        "variable": "VAR_" + Save,
+		"data_format": data_format["updated"]
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

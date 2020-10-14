@@ -92,39 +92,33 @@ BasDialogsLib.BasModalDialog = class {
 
     this.$modal.on('click', '#modalRecentContainer', (e) => {
       if (self.$showRecent.is(':hidden')) return;
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation(); e.preventDefault();
       self.showRecent();
     });
 
     this.$modal.on('click', '#modalRecentHeader', (e) => {
       if (self.$hideRecent.is(':hidden')) return;
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation(); e.preventDefault();
       self.hideRecent();
     });
 
     this.$modal.on('click', '#modalSearchClose', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation(); e.preventDefault();
       self.closeDialog();
     });
 
     this.$modal.on('click', '#modalRecentHide', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation(); e.preventDefault();
       self.hideRecent();
     });
 
     this.$modal.on('click', '#modalRecentShow', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation(); e.preventDefault();
       self.showRecent();
     });
 
     this.$modal.on('click', '#modalListAdd', (e) => {
-      e.stopPropagation();
-      e.preventDefault();
+      e.stopPropagation(); e.preventDefault();
       self.onAdd();
     });
 

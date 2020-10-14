@@ -18,16 +18,16 @@ BasDialogsLib.templates = {
         <div id="modalListContainer">
           <div id="modalListWrapper">
             <div id="modalListContent">
-              <% _.keys(map).forEach((header) => { %>
-                <div class="modal-list-wrap">
-                  <div class="modal-list">
-                    <div class="modal-list-header">
-                      <div class="modal-list-header-content"><%= header %></div>
-                      <div class="modal-list-header-column"></div>
-                    </div>
-                    <ul class="modal-list-items">
-                      <% map[header].forEach((item) => { %>
-                        <li class="modal-list-item" data-id="<%= item.id %>">
+              <ul id="modalListItems">
+                <% _.keys(map).forEach((header) => { %>
+                  <% map[header].forEach((item) => { %>
+                    <li class="modal-list-item">
+                      <div class="modal-list-wrap">
+                        <div class="modal-list-header">
+                          <div class="modal-list-header-content"><%= header %></div>
+                          <div class="modal-list-header-column"></div>
+                        </div>
+                        <div class="modal-list-content" data-id="<%= item.id %>">
                           <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>">
                             <%= metadata.template(item) %>
                           </div>
@@ -42,12 +42,12 @@ BasDialogsLib.templates = {
                               </div>
                             </div>
                           <% } %>
-                        </li>
-                      <% }); %>
-                    </ul>
-                  </div>
-                </div>
-              <% }); %>
+                        </div>
+                      </div>
+                    </li>
+                  <% }); %>
+                <% }); %>
+              </ul>
             </div>
           </div>
           <div id="modalListEmpty">

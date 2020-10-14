@@ -239,11 +239,16 @@
 }
 
 #modalListContent {
-  column-width: 264px;
   padding: 15px 10px;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+#modalListItems {
+  column-width: 264px;
   column-gap: 11px;
+  padding-right: 0;
+  padding-left: 0;
 }
 
 #modalListEmpty {
@@ -280,7 +285,7 @@
   margin-bottom: 0px;
 }
 
-.modal-list-item:hover {
+.modal-list-content:hover {
   cursor: pointer;
 }
 
@@ -293,7 +298,7 @@
   line-height: 30px;
   font-weight: bold;
   font-size: 13px;
-  color: #fff;
+  color: white;
   height: 30px;
   width: 30px;
 }
@@ -335,39 +340,32 @@
   font-size: 12px;
 }
 
+.modal-list-content {
+  box-shadow: 0px 2px 6px 0px rgba(130, 130, 130, 0.25);
+  border: thin solid #cccdce;
+  border-radius: 1px;
+  padding: 14px 15px;
+  margin: 0 0 0 8px;
+  width: 226px;
+}
+
 .modal-list-header {
   justify-content: center;
   flex-direction: column;
   align-items: center;
   flex-wrap: wrap;
   display: flex;
-}
-
-.modal-list-items {
-  margin: 0 0 0 8px;
-  padding-right: 0;
-  padding-left: 0;
-  width: 226px;
+  width: 30px;
 }
 
 .modal-list-item {
-  box-shadow: 0px 2px 6px 0px rgba(130, 130, 130, 0.25);
-  border: thin solid #cccdce;
-  border-radius: 1px;
-  padding: 14px 15px;
+  display: inline-block;
   user-select: none;
   list-style: none;
-  margin: 0;
-}
-
-.modal-list-wrap {
-  display: inline-block;
-  margin-bottom: 11px;
-  margin-right: 11px;
   width: 264px;
 }
 
-.modal-list {
+.modal-list-wrap {
   display: flex;
 }
 

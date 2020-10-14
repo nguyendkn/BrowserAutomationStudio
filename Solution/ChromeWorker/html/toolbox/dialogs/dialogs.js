@@ -63,24 +63,24 @@ BasDialogsLib.BasModalDialog = class {
       e.preventDefault();
     });
 
-    this.$modal.on('mouseover', '.modal-list-item', function (e) {
+    this.$modal.on('mouseover', '.modal-list-content', function (e) {
       if (isClickable(e.target)) return;
       $(this).css('background', '#f0fbeb');
       e.preventDefault();
     });
 
-    this.$modal.on('mouseout', '.modal-list-item', function (e) {
+    this.$modal.on('mouseout', '.modal-list-content', function (e) {
       if (isClickable(e.target)) return;
       $(this).css('background', '#ffffff');
       e.preventDefault();
     });
 
-    this.$modal.on('click', '.modal-recent-item', function (e) {
+    this.$modal.on('click', '.modal-list-content', function (e) {
       self.closeDialog(_.find(self.items, 'id', $(this).data('id')));
       e.preventDefault();
     });
 
-    this.$modal.on('click', '.modal-list-item', function (e) {
+    this.$modal.on('click', '.modal-recent-item', function (e) {
       self.closeDialog(_.find(self.items, 'id', $(this).data('id')));
       e.preventDefault();
     });

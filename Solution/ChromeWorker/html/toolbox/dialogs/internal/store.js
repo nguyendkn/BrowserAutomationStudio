@@ -15,7 +15,7 @@ BasDialogsLib.store = {
   resourcesInit: false,
 
   /**
-   * Initialization state for functions.s
+   * Initialization state for functions.
    */
   functionsInit: false,
 

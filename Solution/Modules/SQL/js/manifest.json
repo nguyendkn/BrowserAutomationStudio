@@ -323,6 +323,7 @@
 		"Execute an arbitrary query against an SQL database.": {"ru":"Выполнить произвольный запрос к SQL базе данных."},
 		"The format in which the received data will be stored in a variable.": {"ru":"Формат, в котором полученные данные будут сохранены в переменной."},
 		"In order to execute this action correctly you need to run \"Setup connection\" action first.": {"ru":"Для правильной работы необходимо сначала выполнить действие \"Настроить соединение\"."},
+		"Data from variables and resources will be escaped according to their type and used SQL dialect": {"ru":"Данные из переменных и ресурсов будут экранированы в соответствии с их типом и используемым SQL диалектом"},
 		"Variable in which, after successful execution of the action, the results of the query will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записаны результаты выполнения запроса."},
 		"If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use \"Ignore errors\" action.":{"ru":"Если во время выполнения действия произойдет ошибка, поток остановится с сообщением об ошибке. Если вы хотите продолжить работу, используйте действие \"Игнорировать ошибки\"."},
 		

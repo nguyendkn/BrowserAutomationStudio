@@ -2,7 +2,7 @@
 <%= _.template($('#input_constructor').html())({id:"table", description:tr("Database table"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Table name, for which operation will be applied"), examples:[{code:"table1"},{code:"table2"}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"where", description:tr("Filter"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("A set of conditions intended for selecting the records."), examples:[{code:"id = 10"},{code:"id = [[ID]]"},{code:"title = {{title}}"},{code:"name='john' AND balance > 100"},{code:"radius BETWEEN 30 AND 90"},{code:"amount IS NULL"},{code:"id IN (4, 12, 58, 67)"},{code:tr("Empty string"), description:tr("Do not filter records")}]} }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check" style="padding-left:5px">
-	<input type="checkbox" id="Check" checked="checked"/> <label for="Check" class="tr">Parameterize variables and resources in the filter.</label>
+	<input type="checkbox" id="Check" checked="checked"/> <label for="Check" class="tr">Parameterize variables and resources in the filter.</label> <i class="fa fa-question-circle help-input trtitle" data-toggle="tooltip" title="Data from variables and resources will be escaped according to their type and used SQL dialect"></i>
 </span>
 <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Number of records"), default_variable: "SQL_NUMBER_OF_RECORDS", help: {description: tr("Variable in which, after successful execution of the action, the number of records will be written.")}}) %>
 </div>

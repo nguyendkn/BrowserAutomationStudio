@@ -786,6 +786,8 @@ void CommandParser::Parse(const std::string& Xml)
                 bool iscoordinates = false;
                 bool domouseup = false;
                 double releaseradius = 0.0;
+                bool relativecoordinates = false;
+                bool trackscroll = false;
                 for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
                 {
                     if(std::string(attr->name()) == std::string("params"))
@@ -817,12 +819,19 @@ void CommandParser::Parse(const std::string& Xml)
                         {
                             releaseradius = obj["release_radius"].get<double>();
                         }
-
+                        if(obj.count("relative_coordinates")>0)
+                        {
+                            relativecoordinates = obj["relative_coordinates"].get<std::string>() == std::string("true");
+                        }
+                        if(obj.count("track_scroll")>0)
+                        {
+                            trackscroll = obj["track_scroll"].get<std::string>() == std::string("true");
+                        }
                     }
                 }
 
                 for(auto f:EventMouseMove)
-                    f(std::stoi(x),std::stoi(y),speed,gravity,deviation,iscoordinates,domouseup,releaseradius);
+                    f(std::stoi(x),std::stoi(y),speed,gravity,deviation,iscoordinates,domouseup,releaseradius,relativecoordinates,trackscroll);
 
             }
         }

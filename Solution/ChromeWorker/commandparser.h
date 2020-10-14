@@ -55,7 +55,7 @@ public:
     std::vector<std::function<void(int, int)> > EventMouseClickDown;
     std::vector<std::function<void(int, int)> > EventScroll;
     std::vector<std::function<void(int, int, int, int)> > EventRender;
-    std::vector<std::function<void(int, int, double, double, double, bool,bool,float)> > EventMouseMove;
+    std::vector<std::function<void(int, int, double, double, double, bool,bool,float,bool,bool)> > EventMouseMove;
     std::vector<std::function<void(int)> > EventPopupClose;
     std::vector<std::function<void(int)> > EventPopupSelect;
     std::vector<std::function<void(bool, std::string)> > EventPopupCreate;

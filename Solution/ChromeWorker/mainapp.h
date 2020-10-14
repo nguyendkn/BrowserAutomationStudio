@@ -105,6 +105,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     int ScrollTrackingY;
     clock_t ScrollStopTracking;
     clock_t ScrollStopTrackingStart;
+    bool DoTrackScroll;
 
     double MouseSpeed;
     double MouseGravity;
@@ -352,7 +353,7 @@ public:
     void PopupSelectCallback(int index);
     void PopupCreateCallback(bool is_silent, const std::string& url);
     void PopupInfoCallback();
-    void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius);
+    void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll);
     void LoadSuccessCallback();
     void ResizeCallback(int width, int height);
     void SetWindowCallback(const std::string& Window);

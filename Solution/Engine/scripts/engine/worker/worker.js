@@ -4,6 +4,7 @@ VAR_ERROR_ID = 0;
 _BAS_SOLVER_PROPERTIES = {}
 GLOBAL = this
 _BROWSER_TYPE = 1;
+_IS_MOBILE = false;
 
 //Manual browser control
 function _manual_browser_control(text, callback)
@@ -221,6 +222,7 @@ function _browser_mode(mode, callback)
 
         if(_ARG[0] == "mobile")
         {
+            _IS_MOBILE = true;
             current_settings = {
                 "Fingerprints.Setting.forceAndroidOverlayScrollbar":"Enable",
                 "Fingerprints.Setting.passwordEchoEnabled":"Enable",
@@ -235,6 +237,7 @@ function _browser_mode(mode, callback)
 
         if(_ARG[0] == "desktop")
         {
+            _IS_MOBILE = false;
             current_settings = {
                 "Fingerprints.Setting.forceAndroidOverlayScrollbar":"Disable",
                 "Fingerprints.Setting.passwordEchoEnabled":"Disable",
@@ -579,27 +582,31 @@ function _slide()
             Deviation = 2.5
         }
 
-        _ARG2 = [_ARG2[1]]
+        var TrackScroll = (_ARG2[1]) ? "true" : "false"
+
+        _ARG2 = [_ARG2[2]]
 
         if(IsSlideDown)
         {
-            _ARG2.push(screen_settings["ScrollX"] + X1)
-            _ARG2.push(screen_settings["ScrollY"] + Y1)
-            _ARG2.push(screen_settings["ScrollX"] + X2)
-            _ARG2.push(screen_settings["ScrollY"] + Y2)
+            _ARG2.push(X1)
+            _ARG2.push(Y1)
+            _ARG2.push(X2)
+            _ARG2.push(Y2)
         }else
         {
-            _ARG2.push(screen_settings["ScrollX"] + X2)
-            _ARG2.push(screen_settings["ScrollY"] + Y2)
-            _ARG2.push(screen_settings["ScrollX"] + X1)
-            _ARG2.push(screen_settings["ScrollY"] + Y1)
+            _ARG2.push(X2)
+            _ARG2.push(Y2)
+            _ARG2.push(X1)
+            _ARG2.push(Y1)
         }
         _ARG2.push({
                        "speed": Speed,
                        "gravity": rand(10,15),
                        "deviation": Deviation,
                        "do_mouse_up": DoMouseUp,
-                       "release_radius": ReleaseRadius
+                       "release_radius": ReleaseRadius,
+                       "relative_coordinates": "true",
+                       "track_scroll": TrackScroll
                    })
 
         if(ReleaseRadius == 0)
@@ -641,20 +648,19 @@ function _slide()
                            "gravity": rand(8,10),
                            "deviation": 1.0,
                            "do_mouse_up": "true",
-                           "release_radius": 0
+                           "release_radius": 0,
+                           "relative_coordinates": "true",
+                           "track_scroll": TrackScroll
                        })
         }
-        move(_ARG2[1], _ARG2[2], function(){
+        move(_ARG2[1], _ARG2[2], {"speed": 300,"gravity": 10,"deviation": 0,"do_mouse_up": "false","release_radius": 0,"relative_coordinates": "true"}, function(){
             mouse_down(_ARG2[1], _ARG2[2], function(){
                 move(_ARG2[3], _ARG2[4], _ARG2[5], function(){
                     _if(_ARG2.length > 6, function(){
                         _if(_ARG2[6] > 0, function(){
                             sleep(_ARG2[6], function(){})
                         },function(){
-                            _get_browser_screen_settings(function(){
-                                var screen_settings = JSON.parse(_result())
-                                move(_ARG2[7] + screen_settings["ScrollX"], _ARG2[8] + screen_settings["ScrollY"], _ARG2[9], function(){})
-                            })
+                            move(_ARG2[7], _ARG2[8], _ARG2[9], function(){})
                         })
                     },_ARG2[0])
                 })
@@ -763,49 +769,148 @@ function _random_point()
                 return;
             }
 
+            _if_else(_IS_MOBILE,function(){
+                _SELECTOR_DELTA_PREV = _SELECTOR_DELTA
 
-            var Speed = 100
-            if(_SELECTOR_JUMP_NUMBER != null)
-                Speed = Math.round((Math.abs(_SELECTOR_DELTA_PREV) - Math.abs(_SELECTOR_DELTA))/_SELECTOR_JUMP_NUMBER)
+                var _ARG3 = []
 
-            _SELECTOR_DELTA_PREV = _SELECTOR_DELTA
-            var SleepTimeout = 100;
+                var SizeLeft = Math.abs(_SELECTOR_DELTA)
 
+                var ScrollDirection = _SELECTOR_DELTA >= 0 ? 1.0 : -1.0
 
-            var TypeItem = (_SELECTOR_DELTA > 0) ? "\u003cMOUSESCROLLDOWN\u003e" : "\u003cMOUSESCROLLUP\u003e";
-            if(_SELECTOR_JUMP_NUMBER == null)
-                _SELECTOR_JUMP_NUMBER = 1;
-            else
-            {
-                _SELECTOR_JUMP_NUMBER = Math.round(Math.abs(_SELECTOR_DELTA)/Speed);
-
-                var RandJump = 20;
-
-                if(_SELECTOR_JUMP_NUMBER > 50)
+                for(var i = 0;i<5;i++)
                 {
-                    SleepTimeout = 30;
-                    RandJump = rand(40,49)
-                }else if(_SELECTOR_JUMP_NUMBER > 20)
-                {
-                    SleepTimeout = 30;
-                    RandJump = rand(15,19)
+                    if(SizeLeft < 100)
+                    {
+                        break
+                    }
+                    if(
+                            (i == 0) ||
+                            (i == 1 && rand(0,100) < 80) ||
+                            (i == 2 && rand(0,100) < 70) ||
+                            (i == 3 && rand(0,100) < 60) ||
+                            (i == 4 && rand(0,100) < 50)
+                        )
+                    {
+                        var ScrollSize = rand(100, SizeLeft)
+                        if(rand(0, 100) < 10)
+                        {
+                            var MaxSize = SizeLeft
+                            if(MaxSize > 500)
+                                MaxSize = 500
+                            ScrollSize = rand(100, MaxSize)
+                        }
+                        var Track = false
+                        ScrollSize *= 0.8
+                        if(ScrollSize < 100)
+                        {
+                            ScrollSize = 100
+                            SizeLeft -= 100
+                        }
+                        else if(ScrollSize > 1000)
+                        {
+                            Track = rand(0,100) < 10
+                            ScrollSize = rand(250,500)
+                        }else
+                        {
+                            ScrollSize = rand(200,500)
+                        }
+
+                        if(!Track)
+                        {
+                            if(SizeLeft - ScrollSize * 2.0 < 0 && SizeLeft - ScrollSize > 0)
+                            {
+                                SizeLeft -= ScrollSize
+                                Track = true
+                            }else
+                            {
+                                SizeLeft -= ScrollSize * 2.0
+                            }
+                        }
+                        else
+                            SizeLeft -= ScrollSize
+
+
+                        if(SizeLeft>=0)
+                        {
+                            _ARG3.push([ScrollSize * ScrollDirection, Track])
+                        }
+                    }else
+                    {
+                        break;
+                    }
                 }
+
+                if(_ARG3.length == 0)
+                {
+                    _ARG3.push([100 * ScrollDirection, false])
+                }
+
+                _ARG3[_ARG3.length - 1][1] = true
+
+                _do(function(){
+                    if(_iterator() - 1 >= _ARG3.length)
+                        _break();
+
+                    _slide(_ARG3[_iterator() - 1][0], _ARG3[_iterator() - 1][1], function(){
+                        _if(rand(0,100) > 70, function(){
+                            sleep(rand(100,1000), function(){})
+                        }, function(){})
+
+                    })
+                }, function(){delete _ARG3})
+
+            }, function(){
+
+                var Speed = 100
+                if(_SELECTOR_JUMP_NUMBER != null)
+                    Speed = Math.round((Math.abs(_SELECTOR_DELTA_PREV) - Math.abs(_SELECTOR_DELTA))/_SELECTOR_JUMP_NUMBER)
+
+                _SELECTOR_DELTA_PREV = _SELECTOR_DELTA
+                var SleepTimeout = 100;
+
+
+                var TypeItem = (_SELECTOR_DELTA > 0) ? "\u003cMOUSESCROLLDOWN\u003e" : "\u003cMOUSESCROLLUP\u003e";
+                if(_SELECTOR_JUMP_NUMBER == null)
+                    _SELECTOR_JUMP_NUMBER = 1;
                 else
                 {
-                    SleepTimeout = 100;
-                    RandJump = rand(6,8)
+                    _SELECTOR_JUMP_NUMBER = Math.round(Math.abs(_SELECTOR_DELTA)/Speed);
+
+                    var RandJump = 20;
+
+                    if(_SELECTOR_JUMP_NUMBER > 50)
+                    {
+                        SleepTimeout = 30;
+                        RandJump = rand(40,49)
+                    }else if(_SELECTOR_JUMP_NUMBER > 20)
+                    {
+                        SleepTimeout = 30;
+                        RandJump = rand(15,19)
+                    }
+                    else
+                    {
+                        SleepTimeout = 100;
+                        RandJump = rand(6,8)
+                    }
+
+                    if(_SELECTOR_JUMP_NUMBER > RandJump)
+                        _SELECTOR_JUMP_NUMBER = RandJump;
+                }
+                var TypeString = "";
+                for(var i = 0;i<_SELECTOR_JUMP_NUMBER;i++)
+                {
+                    TypeString += TypeItem
                 }
 
-                if(_SELECTOR_JUMP_NUMBER > RandJump)
-                    _SELECTOR_JUMP_NUMBER = RandJump;
-            }
-            var TypeString = "";
-            for(var i = 0;i<_SELECTOR_JUMP_NUMBER;i++)
-            {
-                TypeString += TypeItem
-            }
+                page().type(TypeString,SleepTimeout,function(){sleep(rand(100,500), function(){})})
 
-            page().type(TypeString,SleepTimeout,function(){sleep(rand(100,500), function(){})})
+            }, function(){
+
+            })
+
+
+
 
         })
     },function(){

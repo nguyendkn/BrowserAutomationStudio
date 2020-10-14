@@ -57,6 +57,7 @@ MainApp::MainApp()
     TypeTextLastTime = 0;
     LastMouseTrack = 0;
     ScrollStopTracking = 0;
+    DoTrackScroll = false;
     ScrollStopTrackingStart = 0;
     ScrollTrackingX = 0;
     ScrollTrackingY = 0;
@@ -1354,6 +1355,11 @@ void MainApp::MouseClickDownCallback(int x, int y)
     {
         BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
         LastCommand.CommandName = "_mouseclickdown";
+        if(Data->IsTouchScreen)
+        {
+            x = Data->ScrollX + Data->CursorX;
+            y = Data->ScrollY + Data->CursorY;
+        }
         LastCommand.CommandParam1 = std::to_string(x);
         LastCommand.CommandParam2 = std::to_string(y);
         IsLastCommandNull = false;
@@ -1386,7 +1392,7 @@ void MainApp::PopupInfoCallback()
     SendTextResponce(std::string("<PopupInfo>") + string_res + std::string("</PopupInfo>"));
 }
 
-void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius)
+void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll)
 {
     WORKER_LOG(std::string("MouseMoveCallback<<") + std::to_string(x) + std::string("<<") + std::to_string(y) + std::string("<<") + std::to_string(speed) + std::string("<<") + std::to_string(gravity) + std::string("<<") + std::to_string(deviation) + std::string("<<") + std::to_string(iscoordinates));
     if(_HandlersManager->GetBrowser())
@@ -1401,6 +1407,7 @@ void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, doub
         ScrollTrackingY = 0;
         ScrollStopTrackingStart = 0;
         ScrollStopTracking = 0;
+        DoTrackScroll = track_scroll;
         MouseStartX = Data->CursorX;
         MouseStartY = Data->CursorY;
         if(speed>=-0.01)
@@ -1426,9 +1433,20 @@ void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, doub
         }
         MouseEndX = x;
         MouseEndY = y;
-        IsLastCommandNull = false;
-        std::string AllowOutOfBounds = iscoordinates ? "true" : "false";
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + AllowOutOfBounds + std::string(")")),"", 0);
+        if(relative_coordinates)
+        {
+            IsMouseMoveSimulation = true;
+            if(Settings->EmulateMouse())
+            {
+                int t1,t2;
+                BrowserEventsEmulator::MouseMove(_HandlersManager->GetBrowser(), IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,Data->IsMousePress,Data->IsDrag, Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+            }
+        }else
+        {
+            IsLastCommandNull = false;
+            std::string AllowOutOfBounds = iscoordinates ? "true" : "false";
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + AllowOutOfBounds + std::string(")")),"", 0);
+        }
 
 
     }else
@@ -3110,6 +3128,7 @@ void MainApp::Timer()
                 ScrollTrackingX = 0;
                 ScrollTrackingY = 0;
                 ScrollStopTrackingStart = 0;
+                DoTrackScroll = false;
                 SendTextResponce("<MouseMove></MouseMove>");
             }
         }else
@@ -3125,6 +3144,7 @@ void MainApp::Timer()
             ScrollTrackingX = 0;
             ScrollTrackingY = 0;
             ScrollStopTrackingStart = 0;
+            DoTrackScroll = false;
             SendTextResponce("<MouseMove></MouseMove>");
         }
     }
@@ -4913,6 +4933,7 @@ void MainApp::HandleMainBrowserEvents()
                     ScrollTrackingY = 0;
                     ScrollStopTrackingStart = 0;
                     ScrollStopTracking = 0;
+                    DoTrackScroll = false;
 
                     MouseSpeed = 15.0;
                     MouseGravity = 6.0;
@@ -5224,12 +5245,6 @@ void MainApp::ExecuteMouseMove()
 
     double MouseSpeedActual = MouseSpeed;
     double MouseDeviationActual = MouseDeviation;
-    if(Data->IsTouchScreen && !Data->IsTouchPressedAutomation)
-    {
-
-        MouseSpeedActual = 150.0;
-        MouseDeviationActual = 0.0;
-    }
 
     if(Settings->EmulateMouse())
     {
@@ -5256,10 +5271,14 @@ void MainApp::ExecuteMouseMove()
         {
             IsMouseMoveSimulation = false;
 
-            if(Data->IsTouchScreen)
+            if(Data->IsTouchScreen && DoTrackScroll)
+            {
                 TrackScroll = true;
+                DoTrackScroll = false;
+            }
         }
     }
+
 
 
     if(!IsMouseMoveSimulation)

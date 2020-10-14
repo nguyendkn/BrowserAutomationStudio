@@ -156,12 +156,12 @@ BasDialogsLib.BasModalDialog = class {
     const trim = (str) => str.toLowerCase().trim(), target = trim(query);
 
     _.each($('.modal-list-wrap'), (list) => {
-      const $list = $(list), search = !!target.length; let some = false;
+      const $list = $(list); let some = false;
 
       _.each($(list).find('.modal-list-item'), (item) => {
         const $item = $(item).unmark();
 
-        if (search) {
+        if (target.length) {
           const { name } = _.find(this.items, { id: $item.data('id') });
 
           if (trim(name).includes(target)) {
@@ -178,7 +178,7 @@ BasDialogsLib.BasModalDialog = class {
         $item.show();
       });
 
-      $list.toggle(!search || some);
+      $list.toggle(target.length === 0 || some);
     });
 
     if ($('.modal-list-wrap:hidden').size() === _.size(this.map)) {

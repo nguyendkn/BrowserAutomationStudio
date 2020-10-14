@@ -65,6 +65,9 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
    */
   onAdd() {
     $(BasDialogsLib.templates.createResource())
+      .on('hidden.bs.modal', function () {
+        $(this).remove();
+      })
       .css('z-index', '9999999')
       .modal('show');
   }

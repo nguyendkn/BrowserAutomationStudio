@@ -125,15 +125,18 @@ BasDialogsLib.templates = {
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title tr">Create Resource</h4>
+            <h4 class="modal-title"><%= tr('Create Resource') %></h4>
           </div>
-          <div class="modal-body" style="padding-top:5px">
-            <div class="tr" style="color: gray; font-size: small; margin-top: 10px;">
-              You can create resource using the "+ Create New Resource" button, which is located on the right panel (<a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://imgur.com/03EyXLL'); return false;" class="tr">screen</a>).
+          <div class="modal-body" style="padding-top: 5px;">
+            <div style="color: gray; font-size: small; margin-top: 10px;">
+              <%= tr('You can create resource using the "+ Create New Resource" button, which is located on the right panel') %>
+              (<a href="#" onclick="BrowserAutomationStudio_OpenUrl(tr('https://i.imgur.com/03EyXLL.png')); return false;"><%= tr('screen') %></a>).
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-default standartbutton" data-dismiss="modal">
+              <%= tr('Cancel') %>
+            </button>
           </div>
         </div>
       </div>
@@ -148,15 +151,17 @@ BasDialogsLib.templates = {
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title tr">Create Function</h4>
+            <h4 class="modal-title"><%= tr('Create Function') %></h4>
           </div>
-          <div class="modal-body" style="padding-top:5px">
-            <div class="tr" style="color: gray; font-size: small; margin-top: 10px;">
+          <div class="modal-body" style="padding-top: 5px;">
+            <div style="color: gray; font-size: small; margin-top: 10px;">
               No functions found.
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-default standartbutton" data-dismiss="modal">
+              <%= tr('Cancel') %>
+            </button>
           </div>
         </div>
       </div>

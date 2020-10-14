@@ -37,6 +37,9 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
    */
   onAdd() {
     $(BasDialogsLib.templates.createFunction())
+      .on('hidden.bs.modal', function () {
+        $(this).remove();
+      })
       .css('z-index', '9999999')
       .modal('show');
   }

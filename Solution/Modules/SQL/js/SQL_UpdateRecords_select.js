@@ -1,5 +1,5 @@
 var table = GetInputConstructorValue("table", loader);
-if (table["original"].length == 0) {
+if(table["original"].length == 0){
 	Invalid(tr("Database table") + " " + tr("is empty"));
     return;
 };

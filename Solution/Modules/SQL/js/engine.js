@@ -1,4 +1,4 @@
-_SQL_CONNECTION_ID = rand(10);
+_SQL_CONNECTION_ID = rand(10) + thread_number();
 _SQL_CONFIG = {dialect:"", host:"", port:"", username:"", password:"", database:"", storage:""};
 _SQL_CONNECTION_TIMEOUT = 5*60*1000;
 
@@ -117,16 +117,20 @@ function SQL_DeleteRecords(){
 	
 	_embedded("SQL_DeleteRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
+function SQL_Insert(){
+	var table = _function_argument("table");
+	var data = SQL_DataPreparation(_function_argument("data"));
+	var fields = SQL_ConvertToList(_function_argument("fields"));
+	var timeout = _function_argument("timeout");
+	
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, data, fields];
+	
+	_embedded("SQL_Insert", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+};
 function SQL_Close(){
 	VAR_SQL_NODE_PARAMETERS = _SQL_CONNECTION_ID;
 	
 	_embedded("SQL_Close", "Node", "12.18.3", "SQL_NODE_PARAMETERS", 60000)!
-};
-function SQL_CheckDialect(){
-	var dialect = _SQL_CONFIG["dialect"];
-	if(["mysql","mariadb","postgres","sqlite","mssql"].indexOf(dialect) < 0){
-		fail(_K=="ru" ? ("Настройка доступа к базе данных не выполнена или выполнена неправильно") : ("Database access configuration failed or incorrect"));
-	};
 };
 function SQL_ConvertDates(data){
 	return data instanceof Date ? {isDate:true,date:data} : (Array.isArray(data) ? data.map(function(e){return e instanceof Date ? {isDate:true,date:e} : e}) : data);
@@ -216,6 +220,27 @@ function SQL_ConvertValuesToObject(){
 	})!
 	
 	_function_return(values_object);
+};
+function SQL_DataPreparation(data){
+	if(typeof data=="string" && SQL_IsJsonString(data)){
+		data = JSON.parse(data);
+	};
+	if((typeof data=="object" && !Array.isArray(data)) || (typeof data=="object" && Array.isArray(data) && typeof data[0]!="object" && csv_parse(data[0]).length==1)){
+		data = [data];
+	};
+	if(typeof data=="object" && (typeof data[0]=="object" && Array.isArray(data[0]))){
+		data = data.map(function(row){return row.map(function(cell){return SQL_ConvertDates(cell)})});
+	};
+	if(typeof data=="object" && (typeof data[0]=="object" && !Array.isArray(data[0]))){
+		data = data.map(function(row){return Object.keys(row).map(function(key){return SQL_ConvertDates(row[key])})});
+	};
+	return data;
+};
+function SQL_CheckDialect(){
+	var dialect = _SQL_CONFIG["dialect"];
+	if(["mysql","mariadb","postgres","sqlite","mssql"].indexOf(dialect) < 0){
+		fail(_K=="ru" ? ("Настройка доступа к базе данных не выполнена или выполнена неправильно") : ("Database access configuration failed or incorrect"));
+	};
 };
 function SQL_IsJsonString(str){
     try{

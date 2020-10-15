@@ -10,6 +10,7 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
       recent: BasDialogsLib.store.recentFunctions,
       items: _FunctionCollection.toJSON(),
       metadata: {
+        comparator: (a, b) => a.name === b.name,
         template: _.template(`<%= name %>`),
         pluralName: 'functions',
         singleName: 'function',

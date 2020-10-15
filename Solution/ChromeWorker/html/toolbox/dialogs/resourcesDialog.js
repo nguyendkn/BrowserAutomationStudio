@@ -15,6 +15,7 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
       recent: BasDialogsLib.store.recentResources,
       items: _ResourceCollection.toJSON(),
       metadata: {
+        comparator: (a, b) => a.name === b.name,
         template: _.template(`<%= name %>`),
         pluralName: 'resources',
         singleName: 'resource',

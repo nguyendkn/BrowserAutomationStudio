@@ -43,6 +43,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
       options: BasDialogsLib.options.variablesOptions,
       recent: BasDialogsLib.store.recentVariables,
       metadata: {
+        comparator: (a, b) => a.name === b.name && a.global === b.global,
         template: _.template(`<%= (global ? 'GLOBAL:' : '') + name %>`),
         pluralName: 'variables',
         singleName: 'variable',
@@ -85,7 +86,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
         }
       }
 
-      BasDialogsLib.store.addVariable({ name }, global);
+      BasDialogsLib.store.addVariable({ name, global }, global);
     }
 
     if (this.selector === '#selector-input') MainView.prototype.pathchanged();

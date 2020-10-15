@@ -35,6 +35,26 @@ BasDialogsLib.store = {
   recentResources: [],
 
   /**
+   * Add unique item from the target list to the source list.
+   * @param {Object[]} collection - base collection.
+   * @param {Object[]} source - source items list.
+   * @param {Object[]} target - target items list.
+   */
+  add(target, source, collection) {
+    const item = this.uniq(target, collection);
+
+    if (item) {
+      const index = source.findIndex((val) => _.eq(item, val));
+
+      if (index >= 0) {
+        source.splice(index, 1);
+      }
+
+      source.unshift({ ...item });
+    }
+  },
+
+  /**
    * Add the variable object to the recent variables list.
    * @param {Boolean} global - add as global variable.
    * @param {Object} target - target variable object.
@@ -69,26 +89,6 @@ BasDialogsLib.store = {
     if (!target) return;
     if (!this.functionsInit) { this.functionsInit = true; return; }
     this.add(target, this.recentFunctions, _FunctionCollection.toJSON());
-  },
-
-  /**
-   * Add items from the target list to the source list.
-   * @param {Object[]} collection - base collection.
-   * @param {Object[]} target - target items list.
-   * @param {Object[]} source-- source items list.
-   */
-  add(target, source, collection) {
-    const item = this.uniq(target, collection);
-
-    if (item) {
-      const index = source.findIndex((v) => v.name === item.name);
-
-      if (index >= 0) {
-        source.splice(index, 1);
-      }
-
-      source.unshift({ ...item });
-    }
   },
 
   /**

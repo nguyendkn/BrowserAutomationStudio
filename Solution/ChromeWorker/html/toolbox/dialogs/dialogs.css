@@ -349,6 +349,14 @@
   width: 226px;
 }
 
+.modal-header-visible > .modal-list-header-content {
+  display: block;
+}
+
+.modal-header-hidden > .modal-list-header-content {
+  display: none;
+}
+
 .modal-list-header {
   justify-content: center;
   flex-direction: column;

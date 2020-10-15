@@ -155,33 +155,49 @@ BasDialogsLib.BasModalDialog = class {
   search(query) {
     const trim = (str) => str.toLowerCase().trim(), target = trim(query);
 
-    _.each($('.modal-list-wrap'), (list) => {
-      const $list = $(list); let some = false;
+    const showHeader = ($h) => $h.addClass('modal-header-visible')
+      .removeClass('modal-header-hidden');
 
-      _.each($(list).find('.modal-list-item'), (item) => {
-        const $item = $(item).unmark();
+    const hideHeader = ($h) => $h.addClass('modal-header-hidden')
+      .removeClass('modal-header-visible');
+
+    _.each(this.map, (items) => {
+      let first = true;
+
+      _.each(items, ({ name, id }, index) => {
+        const $item = $(`.modal-list-item[data-id="${id}"]`),
+          $content = $item.find('.modal-list-content'),
+          $header = $item.find('.modal-list-header');
+        $content.unmark();
 
         if (target.length) {
-          const { name } = _.find(this.items, { id: $item.data('id') });
-
           if (trim(name).includes(target)) {
-            some = true; return $item.show().mark(target, {
+            $content.mark(target, {
               className: 'modal-text-mark',
               diacritics: false,
-              iframes: false
+              iframes: false,
             });
+
+            if (first) {
+              showHeader($header);
+              first = false;
+            }
+
+            return $item.show();
           }
 
           return $item.hide();
+        } else if (index === 0) {
+          showHeader($header);
+        } else if (index !== 0) {
+          hideHeader($header);
         }
 
         $item.show();
       });
-
-      $list.toggle(target.length === 0 || some);
     });
 
-    if ($('.modal-list-wrap:hidden').size() === _.size(this.map)) {
+    if ($('.modal-list-item:hidden').size() === _.size(this.items)) {
       this.$listEmpty.show();
     } else {
       this.$listEmpty.hide();

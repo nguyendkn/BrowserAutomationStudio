@@ -6178,7 +6178,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     });
     var VariableModel = Backbone.Model.extend({
         defaults: {
-            name: ""
+            name: "",
+            global: false
         }
     });
     var FunctionModel = Backbone.Model.extend({
@@ -12366,7 +12367,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       source.sort((a, b) => a["name"] >= b["name"]);
       for (let i = 0; i < source.length; i++) {
-        _GlobalVariableCollection.add({ name: source[i]["name"] });
+        _GlobalVariableCollection.add({ name: source[i]["name"], global: true });
       }
 
       BasDialogsLib.store.addVariable(source, true);
@@ -12391,7 +12392,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       source.sort((a, b) => a["name"] >= b["name"]);
       for (let i = 0; i < source.length; i++) {
-        _VariableCollection.add({ name: source[i]["name"] });
+        _VariableCollection.add({ name: source[i]["name"], global: false });
       }
 
       BasDialogsLib.store.addVariable(source, false);

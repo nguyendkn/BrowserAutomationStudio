@@ -11,11 +11,11 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
    */
   constructor (element) {
     const globalsEnabled = element.attr('disable_globals') !== 'true', globals = globalsEnabled
-      ? _GlobalVariableCollection.toJSON().map((item) => ({ global: !false, ...item }))
+      ? _GlobalVariableCollection.toJSON()
       : [];
 
     const localsEnabled = element.attr('disable_locals') !== 'true', locals = localsEnabled
-      ? _VariableCollection.toJSON().map((item) => ({ global: false, ...item }))
+      ? _VariableCollection.toJSON()
       : [];
 
     const actions = BasDialogsLib.getActions();

@@ -44,12 +44,18 @@
 	</div>
 </div>
 <%= _.template($('#block_end').html())() %>
-<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Record"), default_variable: "SQL_RECORD", help: {description: tr("Variable in which, after successful execution of the action, the record will be written.")}}) %>
-<%= _.template($('#input_constructor').html())({id:"data_format", description: tr("Data format"), default_selector: "string", variants:["CSV list<br/><span style='color:gray;font-size:small'>[\"A1:B1:C1\",\"A2:B2:C2\",\"A3:B3:C3\"]</span>","CSV string<br/><span style='color:gray;font-size:small'>A1:B1:C1<br/>A2:B2:C2<br/>A3:B3:C3</span>","2D list<br/><span style='color:gray;font-size:small'>[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]</span>","Object list<br/><span style='color:gray;font-size:small'>[{\"a\":\"A1\",\"b\":\"B1\",\"c\":\"C1\"},{\"a\":\"A2\",\"b\":\"B2\",\"c\":\"C2\"},{\"a\":\"A3\",\"b\":\"B3\",\"c\":\"C3\"}]</span>"], disable_int:true, value_string: "CSV list", help: {description: tr("The format in which the received data will be stored in a variable."),examples:[{code:"CSV list", description:"[\"A1:B1:C1\",\"A2:B2:C2\",\"A3:B3:C3\"]"},{code:"CSV string", description:"A1:B1:C1<br/>A2:B2:C2<br/>A3:B3:C3"},{code:"2D list", description:"[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]"},{code:"Object list", description:"[{\"a\":\"A1\",\"b\":\"B1\",\"c\":\"C1\"},{\"a\":\"A2\",\"b\":\"B2\",\"c\":\"C2\"},{\"a\":\"A3\",\"b\":\"B3\",\"c\":\"C3\"}]"}]} }) %>
+<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "SQL_RECORD", help: {description: tr("Variable in which, after successful execution of the action, the received record will be written.") + " " + tr("The format of the saved data depends on the \"Data Format\" setting.")}}) %>
+<%= _.template($('#input_constructor').html())({id:"data_format", description: tr("Data format"), default_selector: "string", variants:["CSV<br/><span style='color:gray;font-size:small'>1:test1:true</span>","List<br/><span style='color:gray;font-size:small'>[1,\"test1\",true]</span>","Object<br/><span style='color:gray;font-size:small'>{\"id\":1,\"name\":\"test1\",\"active\":true}</span>"], disable_int:true, value_string: "CSV", help: {description: tr("The format in which the received data will be stored in a variable."),examples:[{code:"CSV", description:"1:test1:true"},{code:"List", description:"[1,\"test1\",true]"},{code:"Object", description:"{\"id\":1,\"name\":\"test1\",\"active\":true}"}]} }) %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Select single record from SQL database.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Setup connection" action first.</div>
+	<div class="tooltip-paragraph-fold"><span class="tr">CSV - a string consisting of field values separated by ":".</span> <span class="tr">Example:</span> <code>1:test1:true</code></div>
+	<div class="tooltip-paragraph-fold"><span class="tr">List - a list consists the field values.</span> <span class="tr">Example:</span> <code>[1,"test1",true]</code></div>
+	<div class="tooltip-paragraph-fold"><span class="tr">Object - an object, in which the key - a field name and value - the content of the field.</span> <span class="tr">Example:</span> <code>{"id":1,"name":"test1","active":true}</code></div>
+	<div class="tr tooltip-paragraph-fold">CSV lines can be parsed using the "Parse Line" action from the "Tools" module.</div>
+	<div class="tr tooltip-paragraph-fold">Lists can be processed using actions from the "List" module.</div>
+	<div class="tr tooltip-paragraph-fold">Objects can be processed using actions from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

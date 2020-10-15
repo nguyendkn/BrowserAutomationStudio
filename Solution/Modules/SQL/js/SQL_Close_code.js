@@ -1,1 +1,1 @@
-_call_function(SQL_Close,{  })!
+_call_function(SQL_Close,{})!

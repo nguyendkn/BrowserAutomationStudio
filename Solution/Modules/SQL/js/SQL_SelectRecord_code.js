@@ -1,6 +1,2 @@
-_call_function(SQL_SelectRecords,{ "table": (<%= table %>),"where": (<%= where %>),"parameterize": (<%= parameterize %>),"included_columns": (<%= included_columns %>),"excluded_columns": (<%= excluded_columns %>),"order_column": (<%= order_column %>),"order_direction": (<%= order_direction %>),"offset": (<%= offset %>),"limit": (1),"data_format": (<%= data_format %>),"timeout": (<%= timeout_value() || 60000 %>) })!
-<% if(data_format=='"Object list"' || data_format=='"2D list"'){ %>
-	<%= variable %> = _result_function()[0] || ""
-<% } else {%>
-	<%= variable %> = _result_function();
-<% }%>
+_call_function(SQL_SelectRecords,{ "table": (<%= table %>),"where": (<%= where %>),"parameterize": (<%= parameterize %>),"included_columns": (<%= included_columns %>),"excluded_columns": (<%= excluded_columns %>),"order_column": (<%= order_column %>),"order_direction": (<%= order_direction %>),"offset": (<%= offset %>),"limit": (1),"data_format": (<%= data_format=='"CSV"' ? '"CSV list"' : (data_format=='"List"' ? '"2D list"' : '"Object list"') %>),"timeout": (<%= timeout_value() || 60000 %>) })!
+<%= variable %> = _result_function()[0] || "";

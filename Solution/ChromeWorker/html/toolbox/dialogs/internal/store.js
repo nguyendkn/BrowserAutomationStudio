@@ -43,11 +43,11 @@ BasDialogsLib.store = {
     if (global) {
       if (!target) return;
       if (!this.globalVariablesInit) { this.globalVariablesInit = true; return; }
-      this.add(this.uniq(target, _GlobalVariableCollection.toJSON()), this.recentVariables);
+      this.add(target, this.recentVariables, _GlobalVariableCollection.toJSON());
     } else {
       if (!target) return;
       if (!this.localVariablesInit) { this.localVariablesInit = true; return; }
-      this.add(this.uniq(target, _VariableCollection.toJSON()), this.recentVariables);
+      this.add(target, this.recentVariables, _VariableCollection.toJSON());
     }
   },
 
@@ -58,7 +58,7 @@ BasDialogsLib.store = {
   addResource(target) {
     if (!target) return;
     if (!this.resourcesInit) { this.resourcesInit = true; return; }
-    this.add(this.uniq(target, _ResourceCollection.toJSON()), this.recentResources);
+    this.add(target, this.recentResources, _ResourceCollection.toJSON());
   },
 
   /**
@@ -68,23 +68,26 @@ BasDialogsLib.store = {
   addFunction(target) {
     if (!target) return;
     if (!this.functionsInit) { this.functionsInit = true; return; }
-    this.add(this.uniq(target, _FunctionCollection.toJSON()), this.recentFunctions);
+    this.add(target, this.recentFunctions, _FunctionCollection.toJSON());
   },
 
   /**
-   * Add the item object to the selected list.
-   * @param {Object[]} list - selected list.
-   * @param {Object} item - selected item.
+   * Add items from the target list to the source list.
+   * @param {Object[]} collection - base collection.
+   * @param {Object[]} target - target items list.
+   * @param {Object[]} source-- source items list.
    */
-  add(item, list) {
+  add(target, source, collection) {
+    const item = this.uniq(target, collection);
+
     if (item) {
-      const index = list.findIndex((v) => v.name === item.name);
+      const index = source.findIndex((v) => v.name === item.name);
 
       if (index >= 0) {
-        list.splice(index, 1);
+        source.splice(index, 1);
       }
 
-      list.unshift({ name: item.name });
+      source.unshift({ ...item });
     }
   },
 

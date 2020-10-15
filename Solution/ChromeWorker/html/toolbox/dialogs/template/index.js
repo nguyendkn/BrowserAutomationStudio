@@ -27,7 +27,7 @@ BasDialogsLib.templates = {
                           <div class="modal-list-header-content"><%= header %></div>
                           <div class="modal-list-header-column"></div>
                         </div>
-                        <div class="modal-list-content">
+                        <div class="modal-list-content" data-id="<%= item.id %>">
                           <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>">
                             <%= metadata.template(item) %>
                           </div>

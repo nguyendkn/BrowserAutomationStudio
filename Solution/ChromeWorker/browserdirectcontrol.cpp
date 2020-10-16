@@ -946,10 +946,10 @@ void BrowserDirectControl::MouseMove(int X, int Y, bool IsMousePressed, bool IsC
             Event.id = _BrowserData->TouchEventId;
             Event.x = X;
             Event.y = Y;
-            Event.radius_x = 0.0;
-            Event.radius_y = 0.0;
+            Event.radius_x = 11.5;
+            Event.radius_y = 11.5;
             Event.rotation_angle = 0.0;
-            Event.pressure = 0.0;
+            Event.pressure = 1.0;
             Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
             Event.modifiers = EVENTFLAG_NONE;
             Event.type = CEF_TET_MOVED;
@@ -1296,10 +1296,10 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
         Event.id = _BrowserData->TouchEventId;
         Event.x = X;
         Event.y = Y;
-        Event.radius_x = 0.0;
-        Event.radius_y = 0.0;
+        Event.radius_x = 11.5;
+        Event.radius_y = 11.5;
         Event.rotation_angle = 0.0;
-        Event.pressure = 0.0;
+        Event.pressure = 1.0;
         Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
         Event.modifiers = EVENTFLAG_NONE;
 

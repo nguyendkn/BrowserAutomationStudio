@@ -44,10 +44,10 @@ void BrowserEventsEmulator::StartDrag(CefRefPtr<CefBrowser> Browser, CefRefPtr<C
         Event.id = TouchId;
         Event.x = x;
         Event.y = y;
-        Event.radius_x = 0.0;
-        Event.radius_y = 0.0;
+        Event.radius_x = 11.5;
+        Event.radius_y = 11.5;
         Event.rotation_angle = 0.0;
-        Event.pressure = 0.0;
+        Event.pressure = 1.0;
         Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
         Event.modifiers = EVENTFLAG_NONE;
         Event.type = CEF_TET_PRESSED;
@@ -126,10 +126,10 @@ void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & 
                 Event.id = TouchId;
                 Event.x = MouseCurrentX;
                 Event.y = MouseCurrentY;
-                Event.radius_x = 0.0;
-                Event.radius_y = 0.0;
+                Event.radius_x = 11.5;
+                Event.radius_y = 11.5;
                 Event.rotation_angle = 0.0;
-                Event.pressure = 0.0;
+                Event.pressure = 1.0;
                 Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
                 Event.modifiers = EVENTFLAG_NONE;
                 Event.type = CEF_TET_MOVED;
@@ -169,10 +169,10 @@ void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & 
             Event.id = TouchId;
             Event.x = MouseCurrentX;
             Event.y = MouseCurrentY;
-            Event.radius_x = 0.0;
-            Event.radius_y = 0.0;
+            Event.radius_x = 11.5;
+            Event.radius_y = 11.5;
             Event.rotation_angle = 0.0;
-            Event.pressure = 0.0;
+            Event.pressure = 1.0;
             Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
             Event.modifiers = EVENTFLAG_NONE;
             Event.type = CEF_TET_MOVED;
@@ -278,10 +278,10 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
                     Event.id = TouchId;
                     Event.x = MouseCurrentX;
                     Event.y = MouseCurrentY;
-                    Event.radius_x = 0.0;
-                    Event.radius_y = 0.0;
+                    Event.radius_x = 11.5;
+                    Event.radius_y = 11.5;
                     Event.rotation_angle = 0.0;
-                    Event.pressure = 0.0;
+                    Event.pressure = 1.0;
                     Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
                     Event.modifiers = EVENTFLAG_NONE;
                     Event.type = CEF_TET_MOVED;
@@ -412,10 +412,10 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
                     Event.id = TouchId;
                     Event.x = MouseCurrentX;
                     Event.y = MouseCurrentY;
-                    Event.radius_x = 0.0;
-                    Event.radius_y = 0.0;
+                    Event.radius_x = 11.5;
+                    Event.radius_y = 11.5;
                     Event.rotation_angle = 0.0;
-                    Event.pressure = 0.0;
+                    Event.pressure = 1.0;
                     Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
                     Event.modifiers = EVENTFLAG_NONE;
                     Event.type = CEF_TET_MOVED;
@@ -511,10 +511,10 @@ void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int
     eventtouch.id = TouchId;
     eventtouch.x = event.x;
     eventtouch.y = event.y;
-    eventtouch.radius_x = 0.0;
-    eventtouch.radius_y = 0.0;
+    eventtouch.radius_x = 11.5;
+    eventtouch.radius_y = 11.5;
     eventtouch.rotation_angle = 0.0;
-    eventtouch.pressure = 0.0;
+    eventtouch.pressure = 1.0;
     eventtouch.pointer_type = CEF_POINTER_TYPE_TOUCH;
     eventtouch.modifiers = EVENTFLAG_NONE;
     eventtouch.type = CEF_TET_MOVED;
@@ -630,7 +630,7 @@ int BrowserEventsEmulator::GetNativeCode(int key)
     return 0;
 }
 
-void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey)
+void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
 {
     if(!Browser)
         return;

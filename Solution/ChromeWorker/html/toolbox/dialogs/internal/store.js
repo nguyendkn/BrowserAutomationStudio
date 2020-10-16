@@ -32,10 +32,11 @@ BasDialogsLib.store = {
    * Recent variables list.
    */
   get variables() {
-    return [
-      ...this.globalVariables,
-      ...this.localVariables,
-    ]
+    return _.sortByOrder(
+      [...this.globalVariables, ...this.localVariables],
+      ['timestamp'],
+      ['desc']
+    );
   },
 
   /**
@@ -56,7 +57,7 @@ BasDialogsLib.store = {
         source.splice(index, 1);
       }
 
-      source.unshift({ ...item });
+      source.unshift({ ...item, timestamp: (+new Date()) });
     }
 
     _.remove(source, (src) => !collection.some(predicate(src)));

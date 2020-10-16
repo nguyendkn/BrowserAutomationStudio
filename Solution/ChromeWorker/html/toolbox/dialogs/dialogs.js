@@ -35,9 +35,9 @@ BasDialogsLib.BasModalDialog = class {
       .groupBy((item) => item.name[0])
       .value();
 
+    this.recent = recent.filter((r) => items.some(metadata.findPredicate(r)));
     this.metadata = metadata;
     this.options = options;
-    this.recent = recent;
     this.renderDialog();
     this.addHandlers();
   }

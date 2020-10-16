@@ -10,11 +10,11 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
    * @constructor
    */
   constructor (element) {
-    const globalsEnabled = element.attr('disable_globals') !== 'true', globals = globalsEnabled
+    const useGlobals = element.attr('disable_globals') !== 'true', globals = useGlobals
       ? _GlobalVariableCollection.toJSON()
       : [];
 
-    const localsEnabled = element.attr('disable_locals') !== 'true', locals = localsEnabled
+    const useLocals = element.attr('disable_locals') !== 'true', locals = useLocals
       ? _VariableCollection.toJSON()
       : [];
 
@@ -52,8 +52,8 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     });
 
     this.selector = element.attr('data-result-target');
-    this.globalsEnabled = globalsEnabled;
-    this.localsEnabled = localsEnabled;
+    this.useGlobals = useGlobals;
+    this.useLocals = useLocals;
   }
 
   /**
@@ -96,7 +96,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
    * Handler function for the `add` event.
    */
   onAdd() {
-    if (this.localsEnabled) {
+    if (this.useLocals) {
       BrowserAutomationStudio_OpenAction('setvariable');
     } else {
       BrowserAutomationStudio_OpenAction('globalset');

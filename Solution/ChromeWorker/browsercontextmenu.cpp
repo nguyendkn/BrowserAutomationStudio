@@ -133,7 +133,7 @@ void BrowserContextMenu::Input(CefRefPtr<CefBrowser> Browser, const std::string 
     KeyState State;
     while(true)
     {
-        BrowserEventsEmulator::Key(Browser, TextCurrent, State, LastClickX, LastClickY);
+        BrowserEventsEmulator::Key(Browser, TextCurrent, State, LastClickX, LastClickY, false);
         if(TextCurrent.length() == 0 && State.IsClear() && !State.IsPresingCharacter())
         {
             return;

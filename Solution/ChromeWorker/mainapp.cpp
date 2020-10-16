@@ -5321,7 +5321,7 @@ void MainApp::ExecuteTypeText()
     {
         if(CurrentTime > TypeTextState.PresingKeyNext)
         {
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY);
+            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
             if(TypeText.length() == 0 && TypeTextState.IsClear())
             {
                 //Nothing more to type
@@ -5377,7 +5377,7 @@ void MainApp::ExecuteTypeText()
         {
             for(int i = 0;i<1000;i++)
             {
-                BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY);
+                BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
 
                 if(TypeText.length() == 0 && TypeTextState.IsClear() && !TypeTextState.IsPresingCharacter())
                 {
@@ -5404,7 +5404,7 @@ void MainApp::ExecuteTypeText()
         //Print all letters instantly
         for(int i = 0;i<1000;i++)
         {
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY);
+            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
             if(TypeText.length() == 0 && TypeTextState.IsClear() && !TypeTextState.IsPresingCharacter())
             {
                 TypeTextTaskIsActive = false;
@@ -5419,7 +5419,7 @@ void MainApp::ExecuteTypeText()
     }else
     {
         //Print one letter
-        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY);
+        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
         TypeTextDelayCurrent = TypeTextDelay + (rand()) % ((int)(TypeTextDelay * 1.6)) - (int)(TypeTextDelay * 0.8);
     }
 
@@ -5452,7 +5452,7 @@ void MainApp::ScrollUp()
         {
             KeyState TypeTextState;
             std::string KeyText = "<MOUSESCROLLUP>";
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY);
+            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;
@@ -5476,7 +5476,7 @@ void MainApp::ScrollDown()
             KeyState TypeTextState;
             std::string KeyText = "<MOUSESCROLLDOWN>";
 
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY);
+            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;
@@ -5500,7 +5500,7 @@ void MainApp::ScrollUpUp()
         {
             KeyState TypeTextState;
             std::string KeyText = "<HOME>";
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY);
+            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;
@@ -5523,7 +5523,7 @@ void MainApp::ScrollDownDown()
             KeyState TypeTextState;
             std::string KeyText = "<END>";
 
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY);
+            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;

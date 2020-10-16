@@ -231,7 +231,9 @@ function _browser_mode(mode, callback)
                 "Fingerprints.Setting.availablePointerTypes":"2",
                 "Fingerprints.Setting.availableHoverTypes":"1",
                 "Fingerprints.Setting.primaryPointerType":"2",
-                "Fingerprints.Setting.primaryHoverType":"1"
+                "Fingerprints.Setting.primaryHoverType":"1",
+                "Fingerprints.BrowserMode":"Mobile"
+
             }
         }
 
@@ -246,7 +248,8 @@ function _browser_mode(mode, callback)
                 "Fingerprints.Setting.availablePointerTypes":"4",
                 "Fingerprints.Setting.availableHoverTypes":"2",
                 "Fingerprints.Setting.primaryPointerType":"4",
-                "Fingerprints.Setting.primaryHoverType":"2"
+                "Fingerprints.Setting.primaryHoverType":"2",
+                "Fingerprints.BrowserMode":"Desktop"
             }
         }
 

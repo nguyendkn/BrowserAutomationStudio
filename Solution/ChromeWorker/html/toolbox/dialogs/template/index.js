@@ -78,7 +78,7 @@ BasDialogsLib.templates = {
           <div id="modalRecentContent">
             <ul id="modalRecentWrapper">
               <% recent.forEach((item) => { %>
-                <li class="modal-recent-item" data-id="<%= items.find((val) => metadata.comparator(item, val)).id %>">
+                <li class="modal-recent-item" data-id="<%= items.find(metadata.findPredicate(item)).id %>">
                   <div class="modal-recent-icon-left"></div>
                   <div class="modal-recent-text modal-text-nowrap modal-text-<%= metadata.color %>">
                     <%= item.name %>

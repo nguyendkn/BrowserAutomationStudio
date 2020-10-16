@@ -1,9 +1,4 @@
-class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
-  /**
-   * Utility methods for the dialog handler.
-   */
-  utils = BasDialogsLib.utils;
-
+class BasVariablesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasModalDialog) {
   /**
    * Create an instance of `BasVariablesDialog` class.
    * @param {Object} element - target element object.
@@ -65,13 +60,13 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
 
     if (name.length) {
       if ($(`${this.selector}_number:visible`).length) {
-        this.utils.insertAsExpression(el, insert);
+        this.insertAsExpression(el, insert);
       } else {
         if (!el.is('[data-variable-constructor]')) {
           if (el.is('[data-is-code-editor]')) {
-            this.utils.insertTextToEditor(el, insert);
+            this.insertTextToEditor(el, insert);
           } else {
-            this.utils.insertTextAtCursor(el, insert);
+            this.insertTextAtCursor(el, insert);
           }
         } else {
           if (el.is('[data-append-array]')) {

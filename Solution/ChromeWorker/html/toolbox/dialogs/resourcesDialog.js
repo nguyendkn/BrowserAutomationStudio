@@ -1,9 +1,4 @@
-class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
-  /**
-   * Utility methods for the dialog handler.
-   */
-  utils = BasDialogsLib.utils;
-
+class BasResourcesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasModalDialog) {
   /**
    * Create an instance of `BasResourcesDialog` class.
    * @param {Object} element - target element object.
@@ -42,15 +37,15 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
 
     if (name.length) {
       if ($(`${this.selector}_number:visible`).length) {
-        this.utils.insertAsExpression(el, insert);
+        this.insertAsExpression(el, insert);
       } else {
         if (el.is('[data-resource-constructor]')) {
           el.val(resource);
         } else {
           if (el.is('[data-is-code-editor]')) {
-            this.utils.insertTextToEditor(el, insert);
+            this.insertTextToEditor(el, insert);
           } else {
-            this.utils.insertTextAtCursor(el, insert);
+            this.insertTextAtCursor(el, insert);
           }
         }
       }

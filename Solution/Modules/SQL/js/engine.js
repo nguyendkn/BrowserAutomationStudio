@@ -119,11 +119,13 @@ function SQL_DeleteRecords(){
 };
 function SQL_Insert(){
 	var table = _function_argument("table");
-	var data = SQL_DataPreparation(_function_argument("data"));
 	var fields = SQL_ConvertToList(_function_argument("fields"));
+	var data = SQL_DataPreparation(_function_argument("data"));
 	var timeout = _function_argument("timeout");
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, data, fields];
+	SQL_CheckDialect();
+	
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, fields, data];
 	
 	_embedded("SQL_Insert", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
@@ -243,6 +245,9 @@ function SQL_CheckDialect(){
 	};
 };
 function SQL_IsJsonString(str){
+	if(str.indexOf("[") < 0 && str.indexOf("{") < 0){
+		return false;
+	};
     try{
         JSON.parse(str);
     }catch(e){

@@ -7,7 +7,7 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
   constructor (element) {
     super({
       options: BasDialogsLib.options.functionsOptions,
-      recent: BasDialogsLib.store.recentFunctions,
+      recent: BasDialogsLib.store.functions,
       items: _FunctionCollection.toJSON(),
       metadata: {
         comparator: (a, b) => a.name === b.name,

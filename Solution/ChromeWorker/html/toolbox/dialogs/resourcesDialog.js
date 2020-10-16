@@ -12,7 +12,7 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
   constructor (element) {
     super({
       options: BasDialogsLib.options.resourcesOptions,
-      recent: BasDialogsLib.store.recentResources,
+      recent: BasDialogsLib.store.resources,
       items: _ResourceCollection.toJSON(),
       metadata: {
         comparator: (a, b) => a.name === b.name,

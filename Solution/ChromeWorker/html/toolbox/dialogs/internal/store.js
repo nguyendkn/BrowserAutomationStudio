@@ -1,38 +1,33 @@
 BasDialogsLib.store = {
   /**
-   * Initialization state for global variables.
+   * Recent global variables list.
    */
-  globalVariablesInit: false,
+  globalVariables: null,
 
   /**
-   * Initialization state for local variables.
+   * Recent local variables list.
    */
-  localVariablesInit: false,
-
-  /**
-   * Initialization state for resources.
-   */
-  resourcesInit: false,
-
-  /**
-   * Initialization state for functions.
-   */
-  functionsInit: false,
-
-  /**
-   * Recent variables list.
-   */
-  recentVariables: [],
+  localVariables: null,
 
   /**
    * Recent functions list.
    */
-  recentFunctions: [],
+  functions: null,
 
   /**
    * Recent resources list.
    */
-  recentResources: [],
+  resources: null,
+
+  /**
+   * Recent variables list.
+   */
+  get variables() {
+    return [
+      ...this.globalVariables,
+      ...this.localVariables,
+    ]
+  },
 
   /**
    * Add unique item from the target list to the source list.
@@ -40,11 +35,12 @@ BasDialogsLib.store = {
    * @param {Object[]} source - source items list.
    * @param {Object[]} target - target items list.
    */
-  add(target, source, collection) {
-    const item = this.uniq(target, collection);
+  add(target, source, collection, props = ['name']) {
+    const predicate = (a) => (b) => _.eq(_.pick(a, props), _.pick(b, props));
+    const item = this.uniq(target, collection, predicate);
 
     if (item) {
-      const index = source.findIndex((val) => _.eq(item, val));
+      const index = source.findIndex(predicate(item));
 
       if (index >= 0) {
         source.splice(index, 1);
@@ -52,6 +48,8 @@ BasDialogsLib.store = {
 
       source.unshift({ ...item });
     }
+
+    _.remove(source, (src) => !collection.some(predicate(src)));
   },
 
   /**
@@ -60,14 +58,14 @@ BasDialogsLib.store = {
    * @param {Object} target - target variable object.
    */
   addVariable(target, global) {
+    if (!target) return;
+
     if (global) {
-      if (!target) return;
-      if (!this.globalVariablesInit) { this.globalVariablesInit = true; return; }
-      this.add(target, this.recentVariables, _GlobalVariableCollection.toJSON());
+      if (!this.globalVariables) { this.globalVariables = []; return; }
+      this.add(target, this.globalVariables, _GlobalVariableCollection.toJSON(), ['global', 'name']);
     } else {
-      if (!target) return;
-      if (!this.localVariablesInit) { this.localVariablesInit = true; return; }
-      this.add(target, this.recentVariables, _VariableCollection.toJSON());
+      if (!this.localVariables) { this.localVariables = []; return; }
+      this.add(target, this.localVariables, _VariableCollection.toJSON(), ['global', 'name']);
     }
   },
 
@@ -77,8 +75,8 @@ BasDialogsLib.store = {
    */
   addResource(target) {
     if (!target) return;
-    if (!this.resourcesInit) { this.resourcesInit = true; return; }
-    this.add(target, this.recentResources, _ResourceCollection.toJSON());
+    if (!this.resources) { this.resources = []; return; }
+    this.add(target, this.resources, _ResourceCollection.toJSON());
   },
 
   /**
@@ -87,8 +85,8 @@ BasDialogsLib.store = {
    */
   addFunction(target) {
     if (!target) return;
-    if (!this.functionsInit) { this.functionsInit = true; return; }
-    this.add(target, this.recentFunctions, _FunctionCollection.toJSON());
+    if (!this.functions) { this.functions = []; return; }
+    this.add(target, this.functions, _FunctionCollection.toJSON());
   },
 
   /**
@@ -97,8 +95,9 @@ BasDialogsLib.store = {
    * @param {Object[]} arr1 - first array.
    * @returns {Object} unique item.
    */
-  uniq(arr1, arr2) {
-    if (!Array.isArray(arr1)) return arr1;
-    return arr1.filter((a) => !arr2.some((b) => b.name === a.name)).pop();
+  uniq(arr1, arr2, predicate) {
+    return Array.isArray(arr1)
+      ? arr1.filter((a) => !arr2.some(predicate(a))).pop()
+      : arr1;
   }
 }

@@ -64,13 +64,13 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     this.$modal.on('mouseover', '.modal-list-content', function (e) {
-      if (isClickable(e.target)) return;
+      if (BasDialogsLib.utils.isClickable(e.target)) return;
       $(this).css('background', '#f0fbeb');
       e.preventDefault();
     });
 
     this.$modal.on('mouseout', '.modal-list-content', function (e) {
-      if (isClickable(e.target)) return;
+      if (BasDialogsLib.utils.isClickable(e.target)) return;
       $(this).css('background', '#ffffff');
       e.preventDefault();
     });
@@ -139,13 +139,6 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     $window.resize(() => self.resize());
-
-    function isClickable(target) {
-      return _.any([
-        target.parentNode.dataset.clickable === 'true',
-        target.dataset.clickable === 'true'
-      ]);
-    }
   }
 
   /**

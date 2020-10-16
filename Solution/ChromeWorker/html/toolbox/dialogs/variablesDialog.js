@@ -43,7 +43,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
       options: BasDialogsLib.options.variablesOptions,
       recent: BasDialogsLib.store.variables,
       metadata: {
-        comparator: (a, b) => a.name === b.name && a.global === b.global,
+        findPredicate: BasDialogsLib.store.predicates.variables,
         template: _.template(`<%= (global ? 'GLOBAL:' : '') + name %>`),
         pluralName: 'variables',
         singleName: 'variable',

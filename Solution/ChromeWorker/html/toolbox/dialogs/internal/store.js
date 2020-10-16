@@ -1,5 +1,14 @@
 BasDialogsLib.store = {
   /**
+   * Dictionary of predicates for different collection types.
+   */
+  predicates: {
+    variables: (a) => (b) => a.name === b.name && a.global === b.global,
+    resources: (a) => (b) => a.name === b.name,
+    functions: (a) => (b) => a.name === b.name,
+  },
+
+  /**
    * Recent global variables list.
    */
   globalVariables: null,
@@ -35,9 +44,10 @@ BasDialogsLib.store = {
    * @param {Object[]} source - source items list.
    * @param {Object[]} target - target items list.
    */
-  add(target, source, collection, props = ['name']) {
-    const predicate = (a) => (b) => _.eq(_.pick(a, props), _.pick(b, props));
-    const item = this.uniq(target, collection, predicate);
+  add(target, source, collection, predicate) {
+    const item = Array.isArray(target)
+      ? target.filter((a) => !collection.some(predicate(a))).pop()
+      : target;
 
     if (item) {
       const index = source.findIndex(predicate(item));
@@ -62,10 +72,12 @@ BasDialogsLib.store = {
 
     if (global) {
       if (!this.globalVariables) { this.globalVariables = []; return; }
-      this.add(target, this.globalVariables, _GlobalVariableCollection.toJSON(), ['global', 'name']);
+      const predicate = this.predicates.variables;
+      this.add(target, this.globalVariables, _GlobalVariableCollection.toJSON(), predicate);
     } else {
       if (!this.localVariables) { this.localVariables = []; return; }
-      this.add(target, this.localVariables, _VariableCollection.toJSON(), ['global', 'name']);
+      const predicate = this.predicates.variables;
+      this.add(target, this.localVariables, _VariableCollection.toJSON(), predicate);
     }
   },
 
@@ -76,7 +88,8 @@ BasDialogsLib.store = {
   addResource(target) {
     if (!target) return;
     if (!this.resources) { this.resources = []; return; }
-    this.add(target, this.resources, _ResourceCollection.toJSON());
+    const predicate = this.predicates.functions;
+    this.add(target, this.resources, _ResourceCollection.toJSON(), predicate);
   },
 
   /**
@@ -86,18 +99,7 @@ BasDialogsLib.store = {
   addFunction(target) {
     if (!target) return;
     if (!this.functions) { this.functions = []; return; }
-    this.add(target, this.functions, _FunctionCollection.toJSON());
-  },
-
-  /**
-   * Get the unique item from the two arrays.
-   * @param {Object[]} arr2 - second array.
-   * @param {Object[]} arr1 - first array.
-   * @returns {Object} unique item.
-   */
-  uniq(arr1, arr2, predicate) {
-    return Array.isArray(arr1)
-      ? arr1.filter((a) => !arr2.some(predicate(a))).pop()
-      : arr1;
+    const predicate = this.predicates.resources;
+    this.add(target, this.functions, _FunctionCollection.toJSON(), predicate);
   }
 }

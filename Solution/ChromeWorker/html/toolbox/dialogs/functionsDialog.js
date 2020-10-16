@@ -10,7 +10,7 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
       recent: BasDialogsLib.store.functions,
       items: _FunctionCollection.toJSON(),
       metadata: {
-        comparator: (a, b) => a.name === b.name,
+        findPredicate: BasDialogsLib.store.predicates.functions,
         template: _.template(`<%= name %>`),
         pluralName: 'functions',
         singleName: 'function',

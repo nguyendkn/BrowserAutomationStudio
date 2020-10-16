@@ -246,9 +246,10 @@
 
 #modalListItems {
   column-width: 264px;
+  padding-right: 0px;
+  padding-left: 0px;
   column-gap: 11px;
-  padding-right: 0;
-  padding-left: 0;
+  margin: 0px;
 }
 
 #modalListEmpty {
@@ -277,19 +278,47 @@
   right: 24px;
 }
 
-.modal-list-item:not(:last-child) {
-  margin-bottom: 8px;
+.modal-list-item-desc[data-clickable="false"]:hover {
+  color: #828282;
 }
 
-.modal-list-item:last-child {
-  margin-bottom: 0px;
+.modal-list-item-desc[data-clickable="true"]:hover {
+  color: #000000;
+}
+
+.modal-header-visible > .modal-list-header-text {
+  visibility: visible;
+}
+
+.modal-header-hidden > .modal-list-header-text {
+  visibility: hidden;
+}
+
+.modal-header-visible::after {
+  background: rgba(227, 227, 227, 0.5);
+  height: calc(100% - 30px);
+  position: absolute;
+  content: "";
+  width: 1px;
+  left: 15px;
+  top: 30px;
+}
+
+.modal-header-hidden::after {
+  background: rgba(227, 227, 227, 0.5);
+  height: calc(100% - 0px);
+  position: absolute;
+  content: "";
+  width: 1px;
+  left: 15px;
+  top: 0px;
 }
 
 .modal-list-content:hover {
   cursor: pointer;
 }
 
-.modal-list-header-content {
+.modal-list-header-text {
   background-color: #3279bb;
   text-transform: uppercase;
   text-align: center;
@@ -301,20 +330,6 @@
   color: white;
   height: 30px;
   width: 30px;
-}
-
-.modal-list-header-column {
-  background: rgba(227, 227, 227, 0.5);
-  width: 1px;
-  flex: 1;
-}
-
-.modal-list-item-desc[data-clickable="false"]:hover {
-  color: #828282;
-}
-
-.modal-list-item-desc[data-clickable="true"]:hover {
-  color: #000000;
 }
 
 .modal-list-item-desc {
@@ -343,26 +358,14 @@
 .modal-list-content {
   box-shadow: 0px 2px 6px 0px rgba(130, 130, 130, 0.25);
   border: thin solid #cccdce;
+  margin: 0 0 8px 8px;
   border-radius: 1px;
   padding: 14px 15px;
-  margin: 0 0 0 8px;
   width: 226px;
 }
 
-.modal-header-visible > .modal-list-header-content {
-  display: block;
-}
-
-.modal-header-hidden > .modal-list-header-content {
-  display: none;
-}
-
 .modal-list-header {
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  flex-wrap: wrap;
-  display: flex;
+  position: relative;
   width: 30px;
 }
 

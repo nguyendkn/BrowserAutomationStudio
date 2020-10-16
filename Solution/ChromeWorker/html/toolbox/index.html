@@ -12111,8 +12111,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         ControlsText["p"] = all
       }
 
-      ControlsText = "/*Dat:" + utf8_to_b64(JSON.stringify(ControlsText)) +  "*/\n"
-      return ControlsText
+      ControlsText = "/*Dat:" + utf8_to_b64(JSON.stringify(ControlsText)) +  "*/\n";
+      BasDialogsLib.store.addElements(Elements);
+      return ControlsText;
     }
 
     function BrowserAutomationStudio_EditStart(dataraw)

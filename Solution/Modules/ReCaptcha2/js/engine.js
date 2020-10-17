@@ -651,7 +651,7 @@ function BAS_SolveRecaptcha()
 			})!
 	        mouse(LEFT + LEFT_BUTTON + 12, TOP + TOP_BUTTON + 12)!
 
-	        page().type(RECAPTCHA2_RESULT,100)!
+	        _type(RECAPTCHA2_RESULT,100)!
 
 	      })!
 

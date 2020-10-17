@@ -35,7 +35,7 @@ _do(function(){
     _do(function(){
       if(_iterator() >= IDDLE_EMULATION_CURRENT_NUMBER)
         _break()
-      page().type(IDDLE_EMULATION_CURRENT_DIRECTION,1000)!
+      _type(IDDLE_EMULATION_CURRENT_DIRECTION,1000)!
       sleep(rand(300,1000))!
     })!
     

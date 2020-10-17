@@ -250,7 +250,7 @@ void BrowserDirectControl::ApplyInspectResult(MouseClickItem Item, InspectResult
                                std::string("move( {} )!\n") +
                                std::string("get_element_selector(_SELECTOR, false).clarify(X,Y)!\n") +
                                std::string("_call(_clarify, {} )!\n") +
-                               std::string("page().type(\"<MOUSEDOUBLE>\",100)!\n") +
+                               std::string("_type(\"<MOUSEDOUBLE>\",100)!\n") +
                                std::string("})!");
 
 
@@ -420,7 +420,7 @@ void BrowserDirectControl::SendSequenceItems(std::vector<SequenceItem>& Items)
                                     std::string("get_element_selector(_SELECTOR, false).clarify(X,Y)!\n") +
                                     std::string("_call(_clarify, {} )!\n") +
                                     std::string("mouse(X,Y)!\n") +
-                                    std::string("page().type(") + JsonEscape(Main.Text) + std::string(",100)!\n") +
+                                    std::string("_type(") + JsonEscape(Main.Text) + std::string(",100)!\n") +
                                     std::string("})!");
 
 
@@ -452,7 +452,7 @@ void BrowserDirectControl::SendSequenceItems(std::vector<SequenceItem>& Items)
 
             }else if(Main.Type == KeyType)
             {
-                Main.Code = std::string("page().type(") + JsonEscape(Main.Text) + std::string(",100)!");
+                Main.Code = std::string("_type(") + JsonEscape(Main.Text) + std::string(",100)!");
                 Main.Meta = std::string("{\"s\":\"type\",\"v\":1,\"f\":[],\"uw\":\"0\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"TypeData\",\"type\":\"constr\",\"data\":") +
                         JsonEscape(Main.Text) +
                         std::string(",\"class\":\"string\"},{\"id\":\"TypeInterval\",\"type\":\"constr\",\"data\":\"100\",\"class\":\"int\"}]}");

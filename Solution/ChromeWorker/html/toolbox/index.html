@@ -5412,7 +5412,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           _call(_clarify,<%= move_settings %>)!
           mouse(X,Y)!
           <%= timeout_general() %>
-          page().type(<%= text %>,<%= interval %>)!
+          _type(<%= text %>,<%= interval %>)!
         })!
       <% }else{ %>
         <%= path %>.script("self.value=(" + JSON.stringify(<%= text %>) + ")")!
@@ -5432,7 +5432,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         <%= path %>.clarify(X,Y)!
         _call(_clarify,<%= move_settings %>)!
         mouse(X,Y)!
-        page().type("<CONTROL>a<BACK>", 30)!
+        _type("<CONTROL>a<BACK>", 30)!
       })!
   </script>
 
@@ -5987,7 +5987,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="type_code">
       /*Browser*/
       <%= timeout_general() %>
-      page().type(<%= text %>,<%= interval %>)!
+      _type(<%= text %>,<%= interval %>)!
   </script>
 
   <script type="text/template" id="html_code">
@@ -12156,7 +12156,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if($("#Check2").is(':checked'))
       {
-        return "page().type(" + JSON.stringify("<CONTROL><MOUSELEFT>") + ",100)!";
+        return "_type(" + JSON.stringify("<CONTROL><MOUSELEFT>") + ",100)!";
       }
 
       var type = $("#Select").val();
@@ -12191,7 +12191,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       }
 
 
-      return "page().type(" + JSON.stringify(text) + ",100)!";
+      return "_type(" + JSON.stringify(text) + ",100)!";
 
 
       //return "mouse_custom(" + x + "," + y + "," + JSON.stringify($("#Select").val()) + ", " + (($("#MouseClickShift").is(':checked')) ? "true" : "false") + ", " + (($("#MouseClickCtrl").is(':checked')) ? "true" : "false") + ")!";

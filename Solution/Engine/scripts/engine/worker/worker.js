@@ -448,6 +448,189 @@ function _get_browser_screen_settings()
     })
 }
 
+function _type()
+{
+    _ARG3 = arguments
+    _if_else(_IS_MOBILE,function(){
+        var Result = []
+        var CurrentString = _ARG3[0]
+
+        while(true)
+        {
+            var IndexNext = 999999;
+            var LengthNext = -1;
+            var ReplacementNext = "";
+
+            var WasReplacement = false
+
+            var AllReplacementStrings =
+                    [
+                        "<MOUSESCROLLUP>","<MOUSESCROLLDOWN>",
+                        "<MOUSESCROLLUP><MOUSESCROLLUP>","<MOUSESCROLLDOWN><MOUSESCROLLDOWN>",
+                        "<MOUSESCROLLUP><MOUSESCROLLUP><MOUSESCROLLUP>","<MOUSESCROLLDOWN><MOUSESCROLLDOWN><MOUSESCROLLDOWN>"
+                    ]
+            for(var i = 0;i<AllReplacementStrings.length;i++)
+            {
+                var IndexCandidate = CurrentString.indexOf(AllReplacementStrings[i])
+                var LengthCandidate = AllReplacementStrings[i].length
+                if(IndexCandidate <= IndexNext && IndexCandidate >= 0)
+                {
+                    IndexNext = IndexCandidate
+                    LengthNext = LengthCandidate
+                    ReplacementNext = AllReplacementStrings[i]
+                    WasReplacement = true
+                }
+            }
+
+            if(!WasReplacement)
+            {
+                break;
+            }else
+            {
+                if(IndexNext > 0)
+                {
+                    Result.push({
+                                    is_string: true,
+                                    offset: 0,
+                                    track_scroll: true,
+                                    text: CurrentString.substring(0,IndexNext)
+                                })
+                }
+
+                var AddItem = {
+                    is_string: false,
+                    offset: 0,
+                    track_scroll: true,
+                    text: ""
+                }
+                if(ReplacementNext == "<MOUSESCROLLUP>")
+                {
+                    AddItem.offset = -100;
+                }else if(ReplacementNext == "<MOUSESCROLLDOWN>")
+                {
+                    AddItem.offset = 100;
+                }else if(ReplacementNext == "<MOUSESCROLLUP><MOUSESCROLLUP>")
+                {
+                    if(rand(0,100) > 45)
+                        AddItem.offset = -200;
+                    else
+                    {
+                        Result.push({
+                                        is_string: false,
+                                        offset: -100,
+                                        track_scroll: true,
+                                        text: ""
+                                    })
+                        AddItem.offset = -100;
+                    }
+                }else if(ReplacementNext == "<MOUSESCROLLDOWN><MOUSESCROLLDOWN>")
+                {
+                    if(rand(0,100) > 45)
+                        AddItem.offset = 200;
+                    else
+                    {
+                        Result.push({
+                                        is_string: false,
+                                        offset: 100,
+                                        track_scroll: true,
+                                        text: ""
+                                    })
+                        AddItem.offset = 100;
+                    }
+                }else if(ReplacementNext == "<MOUSESCROLLUP><MOUSESCROLLUP><MOUSESCROLLUP>")
+                {
+                    var Random = rand(0,100)
+                    if(Random > 66)
+                    {
+                        Result.push({
+                                        is_string: false,
+                                        offset: -100,
+                                        track_scroll: true,
+                                        text: ""
+                                    })
+                        AddItem.offset = -200;
+                    }
+                    else if(Random > 33)
+                    {
+                        Result.push({
+                                        is_string: false,
+                                        offset: -200,
+                                        track_scroll: false,
+                                        text: ""
+                                    })
+                        AddItem.offset = -100;
+                    }else
+                    {
+                        AddItem.offset = -300;
+                    }
+                }else if(ReplacementNext == "<MOUSESCROLLDOWN><MOUSESCROLLDOWN><MOUSESCROLLDOWN>")
+                {
+                    var Random = rand(0,100)
+                    if(Random > 66)
+                    {
+                        Result.push({
+                                        is_string: false,
+                                        offset: 100,
+                                        track_scroll: true,
+                                        text: ""
+                                    })
+                        AddItem.offset = 200;
+                    }
+                    else if(Random > 33)
+                    {
+                        Result.push({
+                                        is_string: false,
+                                        offset: 200,
+                                        track_scroll: false,
+                                        text: ""
+                                    })
+                        AddItem.offset = 100;
+                    }else
+                    {
+                        AddItem.offset = 300;
+                    }
+                }
+                Result.push(AddItem)
+                CurrentString = CurrentString.substring(IndexNext + LengthNext)
+            }
+        }
+
+
+
+        if(CurrentString.length > 0)
+        {
+            Result.push({
+                            is_string: true,
+                            offset: 0,
+                            track_scroll: true,
+                            text: CurrentString
+                        })
+        }
+
+
+
+        _ARG3[0] = Result
+
+        _do(function(){
+            if(_ARG3[0].length == 0)
+                _break();
+
+            _if_else(_ARG3[0][0].is_string, function(){
+                page().type(_ARG3[0][0].text,_ARG3[1], function(){})
+            }, function(){
+               _slide(_ARG3[0][0].offset,_ARG3[0][0].track_scroll, function(){})
+            },function(){
+                _ARG3[0].shift()
+            })
+
+        }, _ARG3[2])
+    }, function(){
+        page().type(_ARG3[0],_ARG3[1],_ARG3[2])
+    }, function(){
+
+    })
+}
+
 function _slide()
 {
     _ARG2 = arguments
@@ -906,7 +1089,7 @@ function _random_point()
                     TypeString += TypeItem
                 }
 
-                page().type(TypeString,SleepTimeout,function(){sleep(rand(100,500), function(){})})
+                _type(TypeString,SleepTimeout,function(){sleep(rand(100,500), function(){})})
 
             }, function(){
 

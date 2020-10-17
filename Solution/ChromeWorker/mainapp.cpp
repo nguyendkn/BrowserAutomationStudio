@@ -1336,6 +1336,9 @@ void MainApp::MouseClickUpCallback(int x, int y)
         {
             x = Data->ScrollX + Data->CursorX;
             y = Data->ScrollY + Data->CursorY;
+            BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+            SendTextResponce("<MouseClickUp></MouseClickUp>");
+            return;
         }
         LastCommand.CommandParam1 = std::to_string(x);
         LastCommand.CommandParam2 = std::to_string(y);
@@ -1359,6 +1362,9 @@ void MainApp::MouseClickDownCallback(int x, int y)
         {
             x = Data->ScrollX + Data->CursorX;
             y = Data->ScrollY + Data->CursorY;
+            BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+            SendTextResponce("<MouseClickDown></MouseClickDown>");
+            return;
         }
         LastCommand.CommandParam1 = std::to_string(x);
         LastCommand.CommandParam2 = std::to_string(y);

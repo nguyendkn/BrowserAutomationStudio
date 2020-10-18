@@ -952,9 +952,7 @@ function _random_point()
             Selector = "";
             Code = "(function(){var height = window.innerHeight;var current_position = document.documentElement.scrollTop;var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return Math.floor(target_position - (current_position + height * 0.5)).toString();})()";
         }
-        log("start")
         get_element_selector(Selector, false).script(Code,function(){
-            log("result " + _result())
             if(_result() == "")
             {
                 _SELECTOR_FOUND_ELEMENT = false

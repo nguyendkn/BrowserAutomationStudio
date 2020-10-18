@@ -154,7 +154,7 @@ BasDialogsLib.templates = {
           </div>
           <div class="modal-body" style="padding-top: 5px;">
             <div style="color: gray; font-size: small; margin-top: 10px;">
-              No functions found.
+              <%= tr('No functions found') %>.
             </div>
           </div>
           <div class="modal-footer">

@@ -6,6 +6,10 @@ _.extend(_L, {
     ru: 'https://i.imgur.com/DHd9Xk3.png'
   },
 
+  'Current list element in foreach loop': {
+    ru: 'Текущий элемент списка в цикле foreach'
+  },
+
   'Start typing variable name...': {
     ru: 'Начните вводить имя переменной...'
   },

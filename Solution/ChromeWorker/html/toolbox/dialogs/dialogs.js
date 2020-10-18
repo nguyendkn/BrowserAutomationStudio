@@ -91,11 +91,13 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     this.$modal.on('click', '#modalRecentContainer', (e) => {
+      if (self.$showRecent.is(':hidden')) return;
       e.stopPropagation(); e.preventDefault();
       self.showRecent();
     });
 
     this.$modal.on('click', '#modalRecentHeader', (e) => {
+      if (self.$hideRecent.is(':hidden')) return;
       e.stopPropagation(); e.preventDefault();
       self.hideRecent();
     });
@@ -249,7 +251,6 @@ BasDialogsLib.BasModalDialog = class {
    * Hide the recent items window.
    */
   hideRecent() {
-    if (this.$hideRecent.is(':hidden')) return;
     this.$recentContainer.css('width', '48px');
     $('#modalRecentHeaderText').hide();
     this.$recentContent.css('overflow', 'visible')
@@ -265,7 +266,6 @@ BasDialogsLib.BasModalDialog = class {
    * Show the recent items window.
    */
   showRecent() {
-    if (this.$showRecent.is(':hidden')) return;
     this.$recentContainer.css('width', 'auto');
     $('#modalRecentHeaderText').show();
     this.$recentContent.css('overflow', 'hidden')

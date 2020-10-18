@@ -70,6 +70,18 @@ _L =
 	"Current browser viewport height, this doesn't include space which takes adress bar or native window. Works same as window.innerHeight.": {"ru": "Текущая высота браузера, это значение не включает пространство, которое занимает адресная строка или окно браузера. Работает так же, как window.innerHeight."},
 
 
+	"Use touch screen": {"ru": "Использовать сенсорный экран"},
+	"Enable touch screen for current browser session.": {"ru": "Включить эмуляцию сенсорного экрана для текущей сессии браузера."},
+	"Enable touch screen": {"ru": "Включить эмуляцию сенсорного экрана"},
+	"Desktop mode": {"ru": "Десктопный режим"},
+	"Enable touch screen.": {"ru": "Включить эмуляцию сенсорного экрана."},
+	"Touch screen will be enabled automatically after changing fingerprint, so this action is not required to call explicitly.": {"ru": "Сенсорный экран будет включен автоматически после изменения отпечатка, поэтому это действие не требуется вызывать явно."},
+	"In touch mode browser will behave exactly the same as mobile browser: mouse movement events won't be sent, click events will be replaced with touch events, lots of browser internal methods will be modified, etc.": {"ru": "В режиме cенсорного экрана браузер будет вести себя точно так же, как мобильный браузер: события движения мыши не будут отправляться, клики мыши будут заменены событиями касания, многие внутренние методы браузера также будут модифицированы, и т. д."},
+	"Special keys like TAB, CTRL or arrows will remain functional, but browser won't receive any notifications about these events.": {"ru": "Специальные клавиши, такие как TAB, CTRL или стрелки на клавиатуре, останутся функциональными, но браузер не будет получать никаких уведомлений об этих событиях."},
+	"Mouse wheel will be replaced with swipes.": {"ru": "События колеса мыши будет заменено свайпами."},
+	
+
+
 	"Use mouse wheel or touch": {"ru": "Использовать колесо мыши или касания"},
 	"If \"Use mouse wheel or touch\" is checked, scrolling will be emulated as if it will be done by a real user. Mouse wheel will be used in desktop environment and touch screen in mobile. If checkbox is unchecked, scroll will be performed instantly.": {"ru": "Если выбрана настройка \"Использовать колесо мыши или касания\", прокрутка будет выполнена так, как если бы ее делал реальный человек. Колесо мыши будет использоваться для настольного ПК и касания для сенсорного экрана в мобильном телефоне. Если флажок не установлен, прокрутка будет выполняться мгновенно."},
 

@@ -129,6 +129,16 @@ _A = {
       },
       "group":"browser"
    },
+   "touch":{  
+      "name":"Touch screen mode",
+      "description":"Touch screen mode",
+      "template":"{{Enable}}",
+      "suggestion":{  
+         "en":"swipe",
+         "ru":"свайп, тач"
+      },
+      "group":"browser"
+   },
    "html":{  
       "name":"Page Html",
       "description":"Save page html to variable",
@@ -1228,6 +1238,7 @@ _AL =
    "Load" : {"ru": "Загрузить"},
    "Current Url" : {"ru": "Текущий Url"},
    "Get resolution and cursor position" : {"ru": "Получить разрешение и положение курсора"},
+   "Touch screen mode" : {"ru": "Режим сенсорного экрана"},
    
    "Page Html" : {"ru": "Код страницы"},
    "Type" : {"ru": "Ввод текста"},

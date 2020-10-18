@@ -4465,6 +4465,22 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Solve Captcha"),wiki: "how_to_solve_captcha"}) %>
   </script>
 
+  <script type="text/template" id="touch">
+    <div class="container-fluid">
+      <%= _.template($('#input_constructor').html())({id:"Enable", description:tr("Use touch screen"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true","false"], help: {description: tr("Enable touch screen for current browser session."), examples:[{code:"true",description:tr("Enable touch screen")},{code:"false",description:tr("Desktop mode")}]}}) %>
+
+      
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Enable touch screen.</div>
+      <div class="tr tooltip-paragraph-fold">Touch screen will be enabled automatically after changing fingerprint, so this action is not required to call explicitly.</div>
+      <div class="tr tooltip-paragraph-fold">In touch mode browser will behave exactly the same as mobile browser: mouse movement events won't be sent, click events will be replaced with touch events, lots of browser internal methods will be modified, etc.</div>
+      <div class="tr tooltip-paragraph-fold">Special keys like TAB, CTRL or arrows will remain functional, but browser won't receive any notifications about these events.</div> 
+      <div class="tr tooltip-paragraph-last-fold">Mouse wheel will be replaced with swipes.</div> 
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
+
   <script type="text/template" id="screenshot">
     <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
@@ -5678,6 +5694,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= width %> = result["Width"]
       <%= height %> = result["Height"]
     }
+  </script>
+
+  <script type="text/template" id="touch_code">
+    _browser_mode((<%= enable %>) == "true" ? "mobile" : "desktop")!
   </script>
 
   <script type="text/template" id="setvariable_code">
@@ -9597,6 +9617,27 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
           
+          }else if(State == "touch")
+          {
+            var Enable = GetInputConstructorValue("Enable",loader);
+
+
+            if(Enable["original"].length == 0)
+            {
+              Invalid("Enable field is empty");
+              return;
+            }
+
+            try{
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())(
+                {
+                  enable:Enable["updated"]
+                })
+              code = Normalize(code,0)
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            }catch(e)
+            {}
+          
           }else if(State == "executefunction")
           {
             var FunctionName = $("#FunctionName").val();
@@ -10541,6 +10582,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "clearlog" : _.template($('#clearlog').html()),
           "url" : _.template($('#url').html()),
           "screen" : _.template($('#screen').html()),
+          "touch" : _.template($('#touch').html()),
           "xml" : _.template($('#xml').html()),
           "linkurl" : _.template($('#linkurl').html()),
           "coordinates" : _.template($('#coordinates').html()),
@@ -10780,6 +10822,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/clearlog": "clearlog",
             "!/url": "url",
             "!/screen": "screen",
+            "!/touch": "touch",
             "!/xml": "xml",
             "!/linkurl": "linkurl",
             "!/coordinates": "coordinates",
@@ -10986,6 +11029,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         },
         screen: function () {
           _GobalModel.set({ state: "screen" });
+        },
+        touch: function () {
+          _GobalModel.set({ state: "touch" });
         },
         xml: function () {
           _GobalModel.set({ state: "xml" });
@@ -11419,6 +11465,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },
                 { name: tr(_A["timeout"]["name"]), description: tr(_A["timeout"]["description"]), ref: "timeout" },
                 { name: tr(_A["browsersettings"]["name"]), description: tr(_A["browsersettings"]["description"]), ref: "browsersettings" },
+                { name: tr(_A["touch"]["name"]), description: tr(_A["touch"]["description"]), ref: "touch" },
                 { name: tr(_A["mousesettings"]["name"]), description: tr(_A["mousesettings"]["description"]), ref: "mousesettings" },
                 { name: tr(_A["notification"]["name"]), description: tr(_A["notification"]["description"]), ref: "notification" },
                 { description: tr("Script logic"), type: "group", name: "logic", icon: _G["logic"]["icon"], info: tr(_G["logic"]["info"]) },

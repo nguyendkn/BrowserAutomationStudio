@@ -43,6 +43,26 @@ BasDialogsLib.BasModalDialog = class {
   }
 
   /**
+   * Restore scroll state for recent and default items of the modal dialog.
+   */
+  restoreScrollState() {
+    if (!this.$modal) return;
+    this.$recentWrapper.scrollTop(this.constructor.recentItemsScroll);
+    this.$listWrapper.scrollTop(this.constructor.listItemsScroll);
+    $(document.body).css('overflow', 'hidden');
+  }
+
+  /**
+   * Save scroll state for recent and default items of the modal dialog.
+   */
+  saveScrollState() {
+    if (!this.$modal) return;
+    this.constructor.recentItemsScroll = this.$recentWrapper.scrollTop();
+    this.constructor.listItemsScroll = this.$listWrapper.scrollTop();
+    $(document.body).css('overflow', 'visible');
+  }
+
+  /**
    * Add all event handlers associated with the modal dialog.
    */
   addHandlers() {
@@ -136,13 +156,7 @@ BasDialogsLib.BasModalDialog = class {
    * @param {String} query - selected query string.
    */
   search(query) {
-    const trim = (str) => str.toLowerCase().trim(), target = trim(query);
-
-    const showHeader = ($h) => $h.addClass('modal-header-visible')
-      .removeClass('modal-header-hidden');
-
-    const hideHeader = ($h) => $h.addClass('modal-header-hidden')
-      .removeClass('modal-header-visible');
+    const utils = BasDialogsLib.utils, target = utils.format(query);
 
     _.each(this.map, (items) => {
       let first = true;
@@ -154,7 +168,7 @@ BasDialogsLib.BasModalDialog = class {
         $content.unmark();
 
         if (target.length) {
-          if (trim(name).includes(target)) {
+          if (utils.format(name).includes(target)) {
             $content.mark(target, {
               className: 'modal-text-mark',
               diacritics: false,
@@ -162,7 +176,7 @@ BasDialogsLib.BasModalDialog = class {
             });
 
             if (first) {
-              showHeader($header);
+              utils.showHeader($header);
               first = false;
             }
 
@@ -171,9 +185,9 @@ BasDialogsLib.BasModalDialog = class {
 
           return $item.hide();
         } else if (index === 0) {
-          showHeader($header);
+          utils.showHeader($header);
         } else if (index !== 0) {
-          hideHeader($header);
+          utils.hideHeader($header);
         }
 
         $item.show();
@@ -203,11 +217,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$showRecent = $('#modalRecentShow');
     this.$listEmpty = $('#modalListEmpty');
     this.$listAdd = $('#modalListAdd');
-
-    this.$recentWrapper.scrollTop(this.constructor.recentItemsScroll);
-    this.$listWrapper.scrollTop(this.constructor.listItemsScroll);
-
-    $(document.body).css('overflow', 'hidden');
+    this.restoreScrollState();
 
     if (!this.recent.length) {
       this.$recentContainer.hide();
@@ -227,9 +237,7 @@ BasDialogsLib.BasModalDialog = class {
     if (!this.$modal) return;
 
     const options = _.object(this.options.map((o) => [o.id, $(`#${o.id}`).is(':checked')]));
-    this.constructor.recentItemsScroll = this.$recentWrapper.scrollTop();
-    this.constructor.listItemsScroll = this.$listWrapper.scrollTop();
-    $(document.body).css('overflow', 'visible');
+    this.saveScrollState();
     this.$modal.unbind();
     this.$modal.remove();
     this.$modal = null;

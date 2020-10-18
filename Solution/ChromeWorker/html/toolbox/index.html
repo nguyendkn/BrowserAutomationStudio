@@ -1716,11 +1716,16 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"X", description:tr("Scroll x position"), default_selector: "int", disable_string:true, help: {description: tr("Integer value, offset from the left edge of the page")}}) %>
       <%= _.template($('#input_constructor').html())({id:"Y", description:tr("Scroll y position"), default_selector: "int", disable_string:true, help: {description: tr("Integer value, offset from the top edge of the page"), examples:[{code:"0",description:tr("Scroll to top")},{code:"500",description:tr("Scroll page, so 500 px will be visible")},{code:"9999999",description:tr("Scroll to page bottom")}]}}) %>
+      <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
+        <input type="checkbox" id="Check" /> 
+        <label for="Check" class="tr">Use mouse wheel or touch</label>
+       </span>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Scroll browser. The objective of this action is to make specified coordinates visible.</div>
       <div class="tr tooltip-paragraph-fold">It doesn't move left top corner of screen to desired position, just ensures that certian position is visible on screen. If coordinates are already visible, than this action will do nothing, otherwise it will scroll viewport in such way, that coordinates are located as close as possible to screen center.</div>
       <div class="tr tooltip-paragraph-fold">If you want to make certain element visible, use "Scroll to element" instead.</div> 
+      <div class="tr tooltip-paragraph-fold">If "Use mouse wheel or touch" is checked, scrolling will be emulated as if it will be done by a real user. Mouse wheel will be used in desktop environment and touch screen in mobile. If checkbox is unchecked, scroll will be performed instantly.</div> 
       <div class="tr tooltip-paragraph-last-fold">If you want to scroll to page bottom, use following settings "Scroll x position" = 0, "Scroll y position" = 999999.</div>
     </div>
 
@@ -5928,7 +5933,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="scroll_code">
       /*Browser*/
-      scroll(<%= x %>,<%= y %>)!
+      <% if(native_emulation){ %>
+        _scroll_to(<%= y %>)!
+      <% }else{ %>
+        scroll(<%= x %>,<%= y %>)!
+      <% } %>
   </script>
 
   <script type="text/template" id="waitload_code">
@@ -10292,9 +10301,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             var X = GetInputConstructorValue("X", loader);
             var Y = GetInputConstructorValue("Y", loader);
+            var NativeEmulation = $("#Check").is(':checked')
+
 
             try{
-              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({x:X["updated"],y:Y["updated"]}) + BrowserAutomationStudio_GetWaitCode()
+              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({x:X["updated"],y:Y["updated"],native_emulation:NativeEmulation}) + BrowserAutomationStudio_GetWaitCode()
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)

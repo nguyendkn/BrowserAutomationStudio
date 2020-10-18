@@ -53,6 +53,9 @@ _L =
 	"Current tab index": {"ru": "Индекс текущей вкладки"},
 	"Hold ctrl key. Open link in a new tab.": {"ru": "Зажать клавишу ctrl. Открыть ссылку в новой вкладке."},
 
+	"Use mouse wheel or touch": {"ru": "Использовать колесо мыши или касания"},
+	"If \"Use mouse wheel or touch\" is checked, scrolling will be emulated as if it will be done by a real user. Mouse wheel will be used in desktop environment and touch screen in mobile. If checkbox is unchecked, scroll will be performed instantly.": {"ru": "Если выбрана настройка \"Использовать колесо мыши или касания\", прокрутка будет выполнена так, как если бы ее делал реальный человек. Колесо мыши будет использоваться для настольного ПК и касания для сенсорного экрана в мобильном телефоне. Если флажок не установлен, прокрутка будет выполняться мгновенно."},
+
 
 	"Current element xml": {"ru": "Код текущего элемента"},
 	"Loads previous url from a history list.": {"ru": "Открыть предыдущий url."},

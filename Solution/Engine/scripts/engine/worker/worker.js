@@ -631,6 +631,12 @@ function _type()
     })
 }
 
+function _scroll_to(target, callback)
+{
+    _SELECTOR = target
+    _call(_random_point, {}, callback)
+}
+
 function _slide()
 {
     _ARG2 = arguments
@@ -935,8 +941,20 @@ function _random_point()
     _do(function(){
         if(_iterator() > 20)
             _break();
-        get_element_selector(_SELECTOR.split(">FRAME>")[0], false).script("(function(){if(!(self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = self.getBoundingClientRect();var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()",function(){
-
+        var Selector;
+        var Code;
+        if(typeof(_SELECTOR) == "string")
+        {
+            Selector = _SELECTOR.split(">FRAME>")[0];
+            Code = "(function(){if(!(self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = self.getBoundingClientRect();var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()";
+        }else
+        {
+            Selector = "";
+            Code = "(function(){var height = window.innerHeight;var current_position = document.documentElement.scrollTop;var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return Math.floor(target_position - (current_position + height * 0.5)).toString();})()";
+        }
+        log("start")
+        get_element_selector(Selector, false).script(Code,function(){
+            log("result " + _result())
             if(_result() == "")
             {
                 _SELECTOR_FOUND_ELEMENT = false
@@ -1100,7 +1118,7 @@ function _random_point()
 
         })
     },function(){
-        _if_else(_SELECTOR_FOUND_ELEMENT,function(){
+        _if_else(_SELECTOR_FOUND_ELEMENT && typeof(_SELECTOR) == "string",function(){
             get_element_selector(_SELECTOR, false).random_point(function(){})
         },function(){
             _set_result("")

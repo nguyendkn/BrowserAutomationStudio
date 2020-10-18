@@ -971,15 +971,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             int xPos = LOWORD(lParam);
             int yPos = HIWORD(lParam);
 
-            //compensate touch cursor offset
-            if(Layout->IsTouchCursor())
-            {
-                xPos += 7;
-                yPos += 7;
-            }
 
-            LastMousePositionRawX = xPos;
-            LastMousePositionRawY = yPos;
+
+
 
 
             {
@@ -993,11 +987,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     LastMousePositionY = -1;
                 }else
                 {
+                    //compensate touch cursor offset
+                    if(Layout->IsTouchCursor())
+                    {
+                        xPos += 7;
+                        yPos += 7;
+                    }
                     LastMousePositionX = xPos - r.left;
                     LastMousePositionY = yPos - r.top;
                 }
             }
 
+            LastMousePositionRawX = xPos;
+            LastMousePositionRawY = yPos;
 
 
             if(app->GetData()->IsRecord && Layout->OnMouseMove(xPos,yPos,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll))

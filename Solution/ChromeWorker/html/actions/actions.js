@@ -119,6 +119,16 @@ _A = {
       "template":"{{SaveUrl}}",
       "group":"browser"
    },
+   "screen":{  
+      "name":"Get resolution and cursor position",
+      "description":"Get resolution and cursor position",
+      "template":"",
+      "suggestion":{  
+         "en":"mouse position, get browser size, get curor coordinates, mouse coordinates",
+         "ru":"положение мыши, получить размер браузера, получить координаты курсора, координаты мыши"
+      },
+      "group":"browser"
+   },
    "html":{  
       "name":"Page Html",
       "description":"Save page html to variable",
@@ -1217,6 +1227,8 @@ _AL =
    "Initialize" : {"ru": "Инициализация"},
    "Load" : {"ru": "Загрузить"},
    "Current Url" : {"ru": "Текущий Url"},
+   "Get resolution and cursor position" : {"ru": "Получить разрешение и положение курсора"},
+   
    "Page Html" : {"ru": "Код страницы"},
    "Type" : {"ru": "Ввод текста"},
    "Resize" : {"ru": "Разрешение"},

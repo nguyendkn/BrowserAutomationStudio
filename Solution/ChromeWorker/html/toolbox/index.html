@@ -3845,6 +3845,26 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_get_current_url"}) %>
   </script>
 
+  <script type="text/template" id="screen">
+    <div class="container-fluid">
+      
+      <%= _.template($('#variable_constructor').html())({id:"CursorX", description:tr("Cursor position X"), default_variable: "CURSOR_X", help: {description: tr("Current cursor coordinates relative to screen position.")}}) %>
+      <%= _.template($('#variable_constructor').html())({id:"CursorY", description:tr("Cursor position Y"), default_variable: "CURSOR_Y", help: {description: tr("Current cursor coordinates relative to screen position.")}}) %>
+      <%= _.template($('#variable_constructor').html())({id:"ScrollX", description:tr("Browser scroll X"), default_variable: "SCROLL_X", help: {description: tr("Current scroll value. Combined with CURSOR_X this value will give absolute cursor position.")}}) %>
+      <%= _.template($('#variable_constructor').html())({id:"ScrollY", description:tr("Browser scroll Y"), default_variable: "SCROLL_Y", help: {description: tr("Current scroll value. Combined with CURSOR_Y this value will give absolute cursor position.")}}) %>
+      <%= _.template($('#variable_constructor').html())({id:"Width", description:tr("Browser width"), default_variable: "BROWSER_WIDTH", help: {description: tr("Current browser viewport width, this doesn't include space which takes adress bar or native window. Works same as window.innerWidth.")}}) %>
+      <%= _.template($('#variable_constructor').html())({id:"Height", description:tr("Browser height"), default_variable: "BROWSER_HEIGHT", help: {description: tr("Current browser viewport height, this doesn't include space which takes adress bar or native window. Works same as window.innerHeight.")}}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get current browser size, cursor and scroll position.</div>
+      <div class="tr tooltip-paragraph-fold">In order to change browser resolution, use "Resize" action.</div>
+      <div class="tr tooltip-paragraph-fold">In order to change current scroll, use "Scroll" action.</div>
+      <div class="tr tooltip-paragraph-last-fold">In order to change cursor position, use "Move on element" action.</div>
+
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
+
   <script type="text/template" id="xml">
     <div class="container-fluid">
       <%= _.template($('#path').html())({selector:selector}) %>
@@ -5645,6 +5665,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       /*Browser*/
       url()!
       <%= variable %> = _result()
+  </script>
+
+  <script type="text/template" id="screen_code">
+    _get_browser_screen_settings()!
+    {
+      var result = JSON.parse(_result())
+      <%= scroll_x %> = result["ScrollX"]
+      <%= scroll_y %> = result["ScrollY"]
+      <%= cursor_x %> = result["CursorX"]
+      <%= cursor_y %> = result["CursorY"]
+      <%= width %> = result["Width"]
+      <%= height %> = result["Height"]
+    }
   </script>
 
   <script type="text/template" id="setvariable_code">
@@ -9504,6 +9537,66 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               Invalid("Variable is empty");
               return;
             }
+          }else if(State == "screen")
+          {
+            var CursorX = this.$el.find("#CursorX").val().toUpperCase();
+            var CursorY = this.$el.find("#CursorY").val().toUpperCase();
+            var ScrollX = this.$el.find("#ScrollX").val().toUpperCase();
+            var ScrollY = this.$el.find("#ScrollY").val().toUpperCase();
+            var Width = this.$el.find("#Width").val().toUpperCase();
+            var Height = this.$el.find("#Height").val().toUpperCase();
+
+            if(CursorX.length <= 0)
+            {
+              Invalid("CursorX is empty");
+              return;
+            }
+
+            if(CursorY.length <= 0)
+            {
+              Invalid("CursorY is empty");
+              return;
+            }
+
+            if(ScrollX.length <= 0)
+            {
+              Invalid("ScrollX is empty");
+              return;
+            }
+
+            if(ScrollY.length <= 0)
+            {
+              Invalid("ScrollY is empty");
+              return;
+            }
+
+            if(Width.length <= 0)
+            {
+              Invalid("Width is empty");
+              return;
+            }
+
+            if(Height.length <= 0)
+            {
+              Invalid("Height is empty");
+              return;
+            }
+
+            try{
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())(
+                {
+                  cursor_x:"VAR_" + CursorX,
+                  cursor_y:"VAR_" + CursorY,
+                  scroll_x:"VAR_" + ScrollX,
+                  scroll_y:"VAR_" + ScrollY,
+                  width:"VAR_" + Width,
+                  height:"VAR_" + Height
+                })
+              code = Normalize(code,0)
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            }catch(e)
+            {}
+          
           }else if(State == "executefunction")
           {
             var FunctionName = $("#FunctionName").val();
@@ -10447,6 +10540,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "log" : _.template($('#log').html()),
           "clearlog" : _.template($('#clearlog').html()),
           "url" : _.template($('#url').html()),
+          "screen" : _.template($('#screen').html()),
           "xml" : _.template($('#xml').html()),
           "linkurl" : _.template($('#linkurl').html()),
           "coordinates" : _.template($('#coordinates').html()),
@@ -10685,6 +10779,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/log": "log",
             "!/clearlog": "clearlog",
             "!/url": "url",
+            "!/screen": "screen",
             "!/xml": "xml",
             "!/linkurl": "linkurl",
             "!/coordinates": "coordinates",
@@ -10888,6 +10983,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         },
         url: function () {
           _GobalModel.set({ state: "url" });
+        },
+        screen: function () {
+          _GobalModel.set({ state: "screen" });
         },
         xml: function () {
           _GobalModel.set({ state: "xml" });
@@ -11305,6 +11403,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["html"]["name"]), description: tr(_A["html"]["description"]), ref: "html" },
                 { name: tr(_A["type"]["name"]), description: tr(_A["type"]["description"]), ref: "type" },
                 { name: tr(_A["resize"]["name"]), description: tr(_A["resize"]["description"]), ref: "resize" },
+                { name: tr(_A["screen"]["name"]), description: tr(_A["screen"]["description"]), ref: "screen" },
                 { name: tr(_A["proxy"]["name"]), description: tr(_A["proxy"]["description"]), ref: "proxy" },
                 { name: tr(_A["javascript"]["name"]), description: tr(_A["javascript"]["description"]), ref: "javascript" },
                 { name: tr(_A["onloadjavascript"]["name"]), description: tr(_A["onloadjavascript"]["description"]), ref: "onloadjavascript" },

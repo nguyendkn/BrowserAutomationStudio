@@ -53,6 +53,23 @@ _L =
 	"Current tab index": {"ru": "Индекс текущей вкладки"},
 	"Hold ctrl key. Open link in a new tab.": {"ru": "Зажать клавишу ctrl. Открыть ссылку в новой вкладке."},
 
+	"Cursor position X": {"ru": "Положение курсора X"},
+	"Cursor position Y": {"ru": "Положение курсора Y"},
+	"Browser scroll X": {"ru": "Положение прокрутки X"},
+	"Browser scroll Y": {"ru": "Положение прокрутки Y"},
+	"Browser width": {"ru": "Ширина браузера"},
+	"Browser height": {"ru": "Высота браузера"},
+	"Get current browser size, cursor and scroll position.": {"ru": "Получить текущий размер браузера, положение курсора и прокрутки."},
+	"In order to change browser resolution, use \"Resize\" action.": {"ru": "Чтобы изменить размеры браузера, используйте действие \"Разрешение\"."},
+	"In order to change current scroll, use \"Scroll\" action.": {"ru": "Чтобы изменить текущее положение прокрутки, используйте действие \"Прокрутка\"."},
+	"In order to change cursor position, use \"Move on element\" action.": {"ru": "Чтобы изменить текущее положение курсора, используйте действие \"Двигать Мышь\"."},
+	"Current cursor coordinates relative to screen position.": {"ru": "Текущие координаты курсора относительно экрана."},
+	"Current scroll value. Combined with CURSOR_X this value will give absolute cursor position.": {"ru": "Текущее положение прокрутки. В сочетании с CURSOR_X может дать абсолютную позицию курсора."},
+	"Current scroll value. Combined with CURSOR_Y this value will give absolute cursor position.": {"ru": "Текущее положение прокрутки. В сочетании с CURSOR_Y может дать абсолютную позицию курсора."},
+	"Current browser viewport width, this doesn't include space which takes adress bar or native window. Works same as window.innerWidth.": {"ru": "Текущая ширина браузера, это значение не включает пространство, которое занимает адресная строка или окно браузера. Работает так же, как window.innerWidth."},
+	"Current browser viewport height, this doesn't include space which takes adress bar or native window. Works same as window.innerHeight.": {"ru": "Текущая высота браузера, это значение не включает пространство, которое занимает адресная строка или окно браузера. Работает так же, как window.innerHeight."},
+
+
 	"Use mouse wheel or touch": {"ru": "Использовать колесо мыши или касания"},
 	"If \"Use mouse wheel or touch\" is checked, scrolling will be emulated as if it will be done by a real user. Mouse wheel will be used in desktop environment and touch screen in mobile. If checkbox is unchecked, scroll will be performed instantly.": {"ru": "Если выбрана настройка \"Использовать колесо мыши или касания\", прокрутка будет выполнена так, как если бы ее делал реальный человек. Колесо мыши будет использоваться для настольного ПК и касания для сенсорного экрана в мобильном телефоне. Если флажок не установлен, прокрутка будет выполняться мгновенно."},
 

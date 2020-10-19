@@ -98,7 +98,7 @@ BasDialogsLib.templates = {
           </div>
         </div>
       </div>
-      <% if (options.length) { %>
+      <% if (options.length && items.length) { %>
         <div id="modalOptionsContainer">
           <% options.forEach((option) => { %>
             <div class="modal-option" data-toggle="tooltip" data-placement="top" title="<%= tr(option.description) %>">

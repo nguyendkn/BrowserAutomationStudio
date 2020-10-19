@@ -1,6 +1,8 @@
 window.BasDialogsLib = {
   getActions: () => {
     return Object.entries(_A).map(([name, action]) => {
+      const popup = (!action.group && action.class && action.class === 'browser');
+
       try {
         const html = $(`#${name}`).html(), list = _([...html.split(/<%=(.*?)%>/gs)
           .filter((src) => !src.includes('#path'))
@@ -27,9 +29,9 @@ window.BasDialogsLib = {
           .uniq()
           .run();
 
-        return { description: tr(action.name), name, variables: list };
+        return { description: tr(action.name), ref: name, popup, variables: list };
       } catch (e) {
-        return { description: tr(action.name), name, variables: [] };
+        return { description: tr(action.name), ref: name, popup, variables: [] };
       }
     });
   },

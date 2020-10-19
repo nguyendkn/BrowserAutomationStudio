@@ -73,11 +73,17 @@ BasDialogsLib.BasModalDialog = class {
     }, 250));
 
     this.$modal.on('click', '.modal-list-item-desc', function (e) {
-      const { ref, clickable } = $(this).data();
+      const data = $(this).data();
 
-      if (clickable) {
-        BrowserAutomationStudio_OpenAction(ref);
-        self.closeDialog();
+      if (data.clickable) {
+        if (data.popup) {
+          BrowserAutomationStudio_Notify('search', data.description);
+        } else {
+          BrowserAutomationStudio_OpenAction(data.ref);
+          self.closeDialog();
+        }
+
+        e.stopPropagation();
       }
 
       e.preventDefault();

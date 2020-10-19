@@ -31,7 +31,11 @@ BasDialogsLib.templates = {
                             <%= metadata.template(item) %>
                           </div>
                           <% if (item.description) { %>
-                            <div class="modal-list-item-desc" data-clickable="<%= item.ref ? true : false %>" data-ref="<%= item.ref %>">
+                            <div class="modal-list-item-desc" 
+                              data-clickable="<%= item.ref ? true : false %>"
+                              data-description="<%= item.description %>"
+                              data-popup="<%= item.popup %>"
+                              data-ref="<%= item.ref %>">
                               <svg width="9" height="3" viewBox="0 0 9 3" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="2.5" width="2" height="2" transform="rotate(-90 0.5 2.5)" fill="white" stroke="#bdbdbd" />
                                 <rect y="2" width="1" height="9" transform="rotate(-90 0 2)" fill="#bdbdbd" />

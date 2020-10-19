@@ -33,7 +33,13 @@ class BasVariablesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasM
           return { description, ...item };
         }
 
-        return { description: action.description, ref: action.name, ...item };
+        return {
+          description: action.description,
+          popup: action.popup,
+          name: action.name,
+          ref: action.ref,
+          ...item
+        };
       }),
       options: BasDialogsLib.options.variablesOptions,
       recent: BasDialogsLib.store.variables,

@@ -267,9 +267,9 @@ BasDialogsLib.BasModalDialog = class {
    */
   hideRecent() {
     this.$recentContainer.css('width', '48px');
-    this.$recentContent.css('overflow', 'visible')
-      .removeClass('modal-pseudo-lg')
-      .addClass('modal-pseudo-sm');
+    this.$recentContent
+      .removeClass('modal-recent-lg')
+      .addClass('modal-recent-sm');
     this.$recentHeaderText.hide();
     this.$recentWrapper.hide();
     this.$hideRecent.hide();
@@ -282,9 +282,9 @@ BasDialogsLib.BasModalDialog = class {
    */
   showRecent() {
     this.$recentContainer.css('width', 'auto');
-    this.$recentContent.css('overflow', 'hidden')
-      .removeClass('modal-pseudo-sm')
-      .addClass('modal-pseudo-lg');
+    this.$recentContent
+      .removeClass('modal-recent-sm')
+      .addClass('modal-recent-lg');
     this.$recentHeaderText.show();
     this.$recentWrapper.show();
     this.$hideRecent.show();

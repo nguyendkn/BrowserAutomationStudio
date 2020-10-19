@@ -31,8 +31,8 @@ BasDialogsLib.BasModalDialog = class {
   constructor ({ metadata = {}, options = [], recent = [], items = [] } = {}) {
     this.map = _(jsort(items))
       .map((item, id) => ({ id, ...item }))
-      .tap((array) => this.items = array)
-      .groupBy((item) => item.name[0])
+      .tap((array) => (this.items = array))
+      .groupBy((item) => item.name[0].toUpperCase())
       .value();
 
     this.recent = recent.filter((r) => items.some(metadata.findPredicate(r)));

@@ -11,7 +11,7 @@ class BasResourcesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasM
       items: _ResourceCollection.toJSON(),
       metadata: {
         findPredicate: BasDialogsLib.store.predicates.resources,
-        template: _.template(`<%= name %>`),
+        template: BasDialogsLib.templates.resourcesContent,
         pluralName: 'resources',
         singleName: 'resource',
         color: 'dark'

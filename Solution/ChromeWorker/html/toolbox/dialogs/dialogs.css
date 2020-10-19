@@ -400,6 +400,17 @@
   width: 226px;
 }
 
+.modal-list-prefix {
+  background: #8e8e8e;
+  font-style: italic;
+  border-radius: 2px;
+  padding-right: 2px;
+  padding-left: 2px;
+  margin-right: 5px;
+  font-size: 13px;
+  color: white;
+}
+
 .modal-list-header {
   position: relative;
   width: 30px;

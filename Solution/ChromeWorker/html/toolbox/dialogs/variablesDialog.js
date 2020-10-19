@@ -45,7 +45,7 @@ class BasVariablesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasM
       recent: BasDialogsLib.store.variables,
       metadata: {
         findPredicate: BasDialogsLib.store.predicates.variables,
-        template: _.template(`<%= (global ? 'GLOBAL:' : '') + name %>`),
+        template: BasDialogsLib.templates.variablesContent,
         pluralName: 'variables',
         singleName: 'variable',
         color: 'green'

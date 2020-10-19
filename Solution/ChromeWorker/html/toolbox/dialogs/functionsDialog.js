@@ -11,7 +11,7 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
       items: _FunctionCollection.toJSON(),
       metadata: {
         findPredicate: BasDialogsLib.store.predicates.functions,
-        template: _.template(`<%= name %>`),
+        template: BasDialogsLib.templates.functionsContent,
         pluralName: 'functions',
         singleName: 'function',
         color: 'dark'

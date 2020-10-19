@@ -17,68 +17,6 @@
     </div>
    <div id="containerdata" ></div>
 
-
-   
-   <div class="modal" id="RecourseModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr step-1" data-step="1" id="myModalLabel">Select Resource</h4>
-            <h4 class="modal-title tr step-2" data-step="2" id="myModalLabel">Select Resource</h4>
-          </div>
-          
-          <div class="modal-body step step-1">
-            <span id="RecourseControls">
-              <select class="form-control" id="RecourseName" placeholder="Recourse Name">
-              </select>
-            </span>
-            <span id="NoResources">
-              <span class="tr">No resources found.</span>
-              <div class="tr" style="color:gray;font-size:small;margin-top:10px">You can create resource with "+ Create New Resource" button which is located in the panel to the right.</div>
-            </span>
-          </div>
-
-          <div class="modal-body step step-2" style="padding-top:5px">
-            <span id="RecourseControls">
-              <input type="checkbox" id="ResourceReuse" checked /> <label style="margin-bottom:0px" for="ResourceReuse" class="tr res-margin">Reuse Resource</label>
-              <div class="tr" style="color:gray;font-size:small">If this setting is enabled, then every time you use resource, it will be replaced with same value. For example, if you are reading from file with 'Reuse Resource' enabled, then same line will be used during all thread lifetime. You need to disable this setting to take new line.</div>
-              <input type="checkbox" id="ResourceDontDie" style="margin-top:15px"/> <label for="ResourceDontDie" class="tr res-margin" style="margin-bottom:0px">Don't end application if not exists</label>
-              <div class="tr" style="color:gray;font-size:small">By default script will stop after resource is finished. You can use this option to complete not the entire script, but only the thread.</div>
-            </span>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary rescontinue standartbutton tr step step-1" data-step="1">Next</button>
-            <button type="button" class="btn btn-primary resok standartbutton tr step step-2" data-step="2" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal " id="VariableModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr" id="myModalLabel">Select Variable</h4>
-          </div>
-          <div class="modal-body">
-            <select class="form-control" id="VariableName" placeholder="Variable Name">
-            </select>
-            <span id="NoVariable" class="tr">No variables found.</span>
-            <div class="tr" style="color:gray;font-size:small;margin-top:10px">Use "Set Variable" action to create variable.</div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary varok standartbutton tr" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="modal" id="LabelModal" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">

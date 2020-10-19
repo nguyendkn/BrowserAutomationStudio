@@ -154,7 +154,8 @@ BasDialogsLib.templates = {
           </div>
           <div class="modal-body" style="padding-top: 5px;">
             <div style="color: gray; font-size: small; margin-top: 10px;">
-              <%= tr('No functions found') %>.
+              <%= tr('To create a new function use the function manager') %>
+              (<a href="#" onclick="BrowserAutomationStudio_OpenUrl(tr('https://i.imgur.com/bsQ0SMY.png')); return false;"><%= tr('screen') %></a>).
             </div>
           </div>
           <div class="modal-footer">

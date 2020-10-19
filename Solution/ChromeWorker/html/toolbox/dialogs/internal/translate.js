@@ -2,8 +2,14 @@ _.extend(_L, {
   'You can create resource using the "+ Create New Resource" button, which is located on the right panel': {
     ru: 'Вы можете создать ресурс с помощью кнопки "+ Создать новый ресурс", которая находится на правой панели'
   },
+  'To create a new function use the function manager': {
+    ru: 'Для создания новой функции используйте менеджер функций'
+  },
   'https://i.imgur.com/03EyXLL.png': {
     ru: 'https://i.imgur.com/DHd9Xk3.png'
+  },
+  'https://i.imgur.com/bsQ0SMY.png': {
+    ru: 'https://i.imgur.com/bsQ0SMY.png'
   },
 
   'Current list element in foreach loop': {

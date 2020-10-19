@@ -2,7 +2,7 @@
  * Search container *
  ********************/
 
- .modal-search-control {
+.modal-search-control {
   background: #fff;
   min-width: 34px;
   max-width: 34px;
@@ -35,8 +35,6 @@
 
 #modalSearchInput {
   padding: 6px 12px;
-  line-height: 15px;
-  font-size: 13px;
   outline: none;
   border: none;
   height: 34px;

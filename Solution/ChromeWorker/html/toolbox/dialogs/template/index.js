@@ -84,7 +84,7 @@ BasDialogsLib.templates = {
                 <li class="modal-recent-item" data-id="<%= items.find(metadata.findPredicate(item)).id %>">
                   <div class="modal-recent-icon-left"></div>
                   <div class="modal-recent-text modal-text-nowrap modal-text-<%= metadata.color %>">
-                    <%= item.name %>
+                    <%= metadata.template(item) %>
                   </div>
                   <div class="modal-recent-icon-right">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

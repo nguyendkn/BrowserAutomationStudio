@@ -2,7 +2,7 @@
  * Search container *
  ********************/
 
-.modal-search-control {
+ .modal-search-control {
   background: #fff;
   min-width: 34px;
   max-width: 34px;
@@ -420,7 +420,7 @@
 }
 
 .modal-option-switch > input:checked + label {
-  background: #c56d5f;
+  background: #529653;
 }
 
 .modal-option-switch > label::before {
@@ -483,6 +483,11 @@
   padding: 5px 0px;
   display: flex;
   width: 100%;
+  background-color: rgba(249, 249, 249, 0.5);
+}
+
+.modal-option:hover {
+  background-color: rgba(249, 249, 249, 1) !important;
 }
 
 /********************

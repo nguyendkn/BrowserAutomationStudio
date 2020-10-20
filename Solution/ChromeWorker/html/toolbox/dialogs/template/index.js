@@ -172,14 +172,18 @@ BasDialogsLib.templates = {
     </div>
   `),
 
-  resourcesContent: _.template(`<%= name %>`),
-
-  functionsContent: _.template(`<%= name %>`),
-
   variablesContent: _.template(`
     <% if (global) { %>
       <span class="modal-list-prefix" title="<%= tr('Global variable') %>">G</span>
     <% } %>
-    <%= name %>
+    <span class="modal-list-name"><%= name %></span>
+  `),
+
+  resourcesContent: _.template(`
+    <span class="modal-list-name"><%= name %></span>
+  `),
+
+  functionsContent: _.template(`
+    <span class="modal-list-name"><%= name %></span>
   `),
 };

@@ -298,12 +298,16 @@ BasDialogsLib.BasModalDialog = class {
   resize() {
     if (!this.$modal) return;
 
-    if (window.matchMedia('(max-width: 525px)').matches && this.recent.length) {
-      this.$recentContainer.hide();
-    }
+    if (this.recent.length) {
+      const width = this.$recentContainer.outerWidth() + 292;
 
-    if (window.matchMedia('(min-width: 525px)').matches && this.recent.length) {
-      this.$recentContainer.show();
+      if (window.matchMedia(`(max-width: ${width}px)`).matches) {
+        this.$recentContainer.hide();
+      }
+
+      if (window.matchMedia(`(min-width: ${width}px)`).matches) {
+        this.$recentContainer.show();
+      }
     }
 
     this.$modal.css('height', `${window.innerHeight * (100.0 / _Z)}px`);

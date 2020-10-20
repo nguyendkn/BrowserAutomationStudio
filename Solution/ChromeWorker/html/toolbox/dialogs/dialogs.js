@@ -260,9 +260,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$modal.remove();
     this.$modal = null;
 
-    if (this.onClose) {
-      this.onClose(selected.name || '', { options, ...selected });
-    }
+    this.onClose(selected.name || '', { options, ...selected });
   }
 
   /**

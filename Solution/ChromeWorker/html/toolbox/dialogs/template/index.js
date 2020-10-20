@@ -27,7 +27,7 @@ BasDialogsLib.templates = {
                           <div class="modal-list-header-text"><%= header %></div>
                         </div>
                         <div class="modal-list-content" data-id="<%= item.id %>">
-                          <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>">
+                          <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>" data-title="<%= item.name %>">
                             <%= metadata.template(item) %>
                           </div>
                           <% if (item.description) { %>
@@ -40,7 +40,7 @@ BasDialogsLib.templates = {
                                 <rect x="0.5" y="2.5" width="2" height="2" transform="rotate(-90 0.5 2.5)" fill="white" stroke="#bdbdbd" />
                                 <rect y="2" width="1" height="9" transform="rotate(-90 0 2)" fill="#bdbdbd" />
                               </svg>    
-                              <div class="modal-list-text-sm modal-text-nowrap">
+                              <div class="modal-list-text-sm modal-text-nowrap" data-title="<%= tr(item.description) %>">
                                 <%= tr(item.description) %>
                               </div>
                             </div>
@@ -83,7 +83,7 @@ BasDialogsLib.templates = {
               <% recent.forEach((item) => { %>
                 <li class="modal-recent-item" data-id="<%= items.find(metadata.findPredicate(item)).id %>">
                   <div class="modal-recent-icon-left"></div>
-                  <div class="modal-recent-text modal-text-nowrap modal-text-<%= metadata.color %>">
+                  <div class="modal-recent-text modal-text-nowrap modal-text-<%= metadata.color %>" data-title="<%= item.name %>">
                     <%= metadata.template(item) %>
                   </div>
                   <div class="modal-recent-icon-right">

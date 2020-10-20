@@ -43,6 +43,17 @@ BasDialogsLib.BasModalDialog = class {
   }
 
   /**
+   * Initialize tooltips for all items that can be truncated in a modal dialog.
+   */
+  initializeTooltips() {
+    $('.modal-text-nowrap').each(function () {
+      if (this.scrollWidth > this.clientWidth) {
+        $(this).attr('title', $(this).data('title'));
+      }
+    });
+  }
+
+  /**
    * Restore scroll state for recent and default items of the modal dialog.
    */
   restoreScrollState() {
@@ -223,6 +234,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$showRecent = $('#modalRecentShow');
     this.$listEmpty = $('#modalListEmpty');
     this.$listAdd = $('#modalListAdd');
+    this.initializeTooltips();
     this.restoreScrollState();
 
     if (!this.recent.length) {
@@ -266,8 +278,7 @@ BasDialogsLib.BasModalDialog = class {
    * Hide the recent items window.
    */
   hideRecent() {
-    this.$recentContainer.css('width', '48px');
-    this.$recentContent
+    this.$recentContainer
       .removeClass('modal-recent-lg')
       .addClass('modal-recent-sm');
     this.$recentHeaderText.hide();
@@ -281,8 +292,7 @@ BasDialogsLib.BasModalDialog = class {
    * Show the recent items window.
    */
   showRecent() {
-    this.$recentContainer.css('width', 'auto');
-    this.$recentContent
+    this.$recentContainer
       .removeClass('modal-recent-sm')
       .addClass('modal-recent-lg');
     this.$recentHeaderText.show();

@@ -156,13 +156,15 @@ BasDialogsLib.BasModalDialog = class {
     });
 
     $document.keydown(function (e) {
-      if (!self.$modal || e.key.length !== 1) return;
-      self.focusSearch();
-    });
+      if (!self.$modal) return;
 
-    $document.keyup(function (e) {
-      if (!self.$modal || e.key !== 'Escape') return;
-      self.closeDialog();
+      if (e.key.length === 1) {
+        return self.focusSearch();
+      }
+
+      if (e.key === 'Escape') {
+        return self.closeDialog();
+      }
     });
 
     $window.resize(() => self.resize());

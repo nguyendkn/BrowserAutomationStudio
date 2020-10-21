@@ -261,6 +261,18 @@
  * List container *
  ******************/
 
+@media (max-width: 564px) {
+  #modalListItems {
+    column-gap: 4px;
+  }
+}
+
+@media (min-width: 564px) {
+  #modalListItems {
+    column-gap: 8px;
+  }
+}
+
 #modalListAdd:not(:hover) {
   cursor: default;
 }
@@ -293,7 +305,6 @@
   column-width: 264px;
   padding-right: 0px;
   padding-left: 0px;
-  column-gap: 11px;
   margin: 0px;
 }
 

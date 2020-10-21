@@ -164,6 +164,9 @@ BasDialogsLib.BasModalDialog = class {
 
     this.$modal.on('click', '#modalSearchClose', (e) => {
       e.stopPropagation(); e.preventDefault();
+      if (self.$searchInput.val()) {
+        return self.$searchInput.val('').trigger('input');
+      }
       self.closeDialog();
     });
 
@@ -182,11 +185,11 @@ BasDialogsLib.BasModalDialog = class {
       if (!self.$modal) return;
 
       if (e.key.length === 1) {
-        return self.focusSearch();
+        return self.$searchInput.focus();
       }
 
       if (e.key === 'Escape') {
-        return self.closeDialog();
+        return self.$searchClose.click();
       }
     });
 
@@ -256,6 +259,7 @@ BasDialogsLib.BasModalDialog = class {
     this.$recentWrapper = $('#modalRecentWrapper');
     this.$listContent = $('#modalListContent');
     this.$listWrapper = $('#modalListWrapper');
+    this.$searchClose = $('#modalSearchClose');
     this.$searchInput = $('#modalSearchInput');
     this.$hideRecent = $('#modalRecentHide');
     this.$showRecent = $('#modalRecentShow');
@@ -288,15 +292,6 @@ BasDialogsLib.BasModalDialog = class {
     this.$modal = null;
 
     this.onClose(selected.name || '', { options, ...selected });
-  }
-
-  /**
-   * Focus the modal search input. 
-   */
-  focusSearch() {
-    if (!this.$searchInput.is(':focus')) {
-      this.$searchInput.focus();
-    }
   }
 
   /**

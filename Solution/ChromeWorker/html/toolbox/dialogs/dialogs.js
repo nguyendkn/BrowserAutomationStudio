@@ -74,6 +74,29 @@ BasDialogsLib.BasModalDialog = class {
   }
 
   /**
+   * Detect the first items in each column and show their headers.
+   */
+  detectTopItems() {
+    const $items = $('.modal-list-item:visible'), $first = $items.first();
+
+    $items.each(function () {
+      const $item = $(this);
+
+      if (!$item.data('first') && $item.data('index') > 0) {
+        const $header = $item.find('.modal-list-header');
+
+        if ($item.position().top !== $first.position().top) {
+          BasDialogsLib.utils.hideHeader($header);
+          $item.data('top', false);
+        } else {
+          BasDialogsLib.utils.showHeader($header);
+          $item.data('top', true);
+        }
+      }
+    });
+  }
+
+  /**
    * Add all event handlers associated with the modal dialog.
    */
   addHandlers() {
@@ -188,7 +211,7 @@ BasDialogsLib.BasModalDialog = class {
 
         if (target.length) {
           if (utils.format(name).includes(target)) {
-            $content.mark(target, {
+            $item.data('first', first); $content.mark(target, {
               className: 'modal-text-mark',
               diacritics: false,
               iframes: false,
@@ -218,6 +241,8 @@ BasDialogsLib.BasModalDialog = class {
     } else {
       this.$listEmpty.hide();
     }
+
+    this.detectTopItems();
   }
 
   /**
@@ -306,7 +331,7 @@ BasDialogsLib.BasModalDialog = class {
    * Resize the modal window.
    */
   resize() {
-    if (!this.$modal) return;
+    if (!this.$modal) return; this.detectTopItems();
 
     if (this.recent.length) {
       const width = this.$recentContainer.outerWidth() + 292;

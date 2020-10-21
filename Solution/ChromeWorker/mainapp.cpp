@@ -80,6 +80,7 @@ MainApp::MainApp()
     HighlightOffsetX = 0;
     HighlightOffsetY = 0;
     _CefReqest2Action = 0;
+    IsMainBrowserCreating = true;
 
     ReadDoTour();
 
@@ -1529,8 +1530,10 @@ void MainApp::CreateTooboxBrowser()
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
     //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
-
+    IsMainBrowserCreating = false;
     BrowserToolbox = CefBrowserHost::CreateBrowserSync(window_info, thandler, "file:///html/toolbox/index.html", browser_settings, CefDictionaryValue::Create(), Context);
+    IsMainBrowserCreating = true;
+
     std::string ToolboxScript = ReadAllString("html/toolbox/index.html");
     ToolboxPreprocess(Data->_ModulesData, Data->_UnusedModulesData, ToolboxScript);
     //BrowserToolbox->GetMainFrame()->LoadString(ToolboxScript, "file:///html/toolbox/index.html");
@@ -1561,7 +1564,9 @@ void MainApp::CreateScenarioBrowser()
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
     //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
+    IsMainBrowserCreating = false;
     BrowserScenario = CefBrowserHost::CreateBrowserSync(window_info, shandler, "file:///html/scenario/index.html", browser_settings, CefDictionaryValue::Create(), Context);
+    IsMainBrowserCreating = true;
     std::string ScenarioScript = ReadAllString("html/scenario/index.html");
     ScenarioPreprocess(Data->_ModulesData, ScenarioScript);
     WriteStringToFile("html/scenario/index_prepared.html", ScenarioScript);
@@ -1592,7 +1597,9 @@ void MainApp::CreateDetectorBrowser()
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
     //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
+    IsMainBrowserCreating = false;
     BrowserDetector = CefBrowserHost::CreateBrowserSync(window_info, detecthandler, "file:///html/detector/index.html", browser_settings, CefDictionaryValue::Create(), Context);
+    IsMainBrowserCreating = true;
     if(Settings->Detector())
     {
         std::string ScenarioScript = ReadAllString("html/detector/index.html");
@@ -1632,7 +1639,9 @@ void MainApp::CreateCentralBrowser()
 
     std::string page = std::string("file:///html/central/index_") + Lang + std::string(".html");
 
+    IsMainBrowserCreating = false;
     BrowserCentral = CefBrowserHost::CreateBrowserSync(window_info, chandler, page, browser_settings, CefDictionaryValue::Create(), Context);
+    IsMainBrowserCreating = true;
 
     Layout->CentralHandle = BrowserCentral->GetHost()->GetWindowHandle();
     Layout->ShowCentralBrowser(false, true);
@@ -2268,7 +2277,11 @@ void MainApp::OnBeforeCommandLineProcessing(const CefString& process_type,CefRef
 void MainApp::OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line)
 {
     command_line->AppendSwitchWithValue("parent-process-id",std::to_string(GetCurrentProcessId()));
-    command_line->AppendSwitchWithValue("unique-process-id",Settings->UniqueProcessId());
+    if(IsMainBrowserCreating)
+    {
+        command_line->AppendSwitchWithValue("unique-process-id",Settings->UniqueProcessId());
+    }
+
 }
 
 bool MainApp::IsNeedQuit()

@@ -173,6 +173,8 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     std::string SetNextActionId;
 
+    bool IsMainBrowserCreating;
+
     int TypeTextDelay;
     int TypeTextDelayCurrent;
     clock_t TypeTextLastTime;

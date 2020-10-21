@@ -256,7 +256,7 @@ function SQL_IsJsonString(str){
     return true;
 };
 function SQL_ConvertToList(str){
-	return (str==="" || typeof str=="object") ? str : (SQL_IsJsonString(str) ? JSON.parse(str) : str.split(/,?\s/));
+	return (str==="" || typeof str=="object") ? str : (SQL_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
 };
 function SQL_FormatPath(path){
 	return path.split("\\").join("/");

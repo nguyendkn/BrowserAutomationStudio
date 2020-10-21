@@ -415,6 +415,7 @@
 
 .modal-list-prefix {
   background: #8e8e8e;
+  display: inline-block;
   font-style: italic;
   border-radius: 2px;
   padding-right: 2px;

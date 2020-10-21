@@ -21,7 +21,7 @@ BasDialogsLib.templates = {
               <ul id="modalListItems">
                 <% _.keys(map).forEach((header) => { %>
                   <% map[header].forEach((item, index) => { %>
-                    <li class="modal-list-item" data-id="<%= item.id %>">
+                    <li class="modal-list-item" data-first="<%= index === 0 %>" data-id="<%= item.id %>">
                       <div class="modal-list-wrap">
                         <div class="modal-list-header <%= index === 0 ? 'modal-header-visible' : 'modal-header-hidden' %>">
                           <div class="modal-list-header-text"><%= header %></div>

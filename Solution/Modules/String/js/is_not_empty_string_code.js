@@ -1,1 +1,1 @@
-<%= variable %> = _is_not_empty_string(<%= string %>);
+<%= variable %> = _is_not_empty_string(<%= data %>);

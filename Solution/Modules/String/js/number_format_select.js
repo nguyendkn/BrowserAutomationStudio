@@ -1,0 +1,20 @@
+var number = GetInputConstructorValue("number", loader);
+if(number["original"].length == 0){
+	Invalid(tr("Number") + " " + tr("is empty"));
+    return;
+};
+var decimals = GetInputConstructorValue("decimals", loader);
+var dec_point = GetInputConstructorValue("dec_point", loader);
+var thousands_sep = GetInputConstructorValue("thousands_sep", loader);
+var Save = this.$el.find("#Save").val().toUpperCase();
+try{
+    var code = loader.GetAdditionalData() + _.template($("#number_format_code").html())({
+        "number": number["updated"],
+		"decimals": decimals["updated"],
+		"dec_point": dec_point["updated"],
+		"thousands_sep": thousands_sep["updated"],
+        "variable": "VAR_" + Save
+    });
+    code = Normalize(code, 0);
+    BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+}catch(e){}

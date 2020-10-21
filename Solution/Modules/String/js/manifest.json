@@ -32,7 +32,7 @@
             "is_element": false,
             "name": "is_not_empty_string",
             "select": "is_not_empty_string_select.js",
-            "template": "{{string}} -> {{Save}}"
+            "template": "{{data}} -> {{Save}}"
         },
 		{
             "code": [
@@ -67,6 +67,91 @@
             "name": "to_number",
             "select": "to_number_select.js",
             "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "number_format_code.js",
+                    "name": "number_format_code"
+                }
+            ],
+            "description": {
+                "en": "Format number",
+                "ru": "Форматировать число"
+            },
+            "interface": "number_format_interface.js",
+            "is_element": false,
+            "name": "number_format",
+            "select": "number_format_select.js",
+            "template": "{{number}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "count_substrings_code.js",
+                    "name": "count_substrings_code"
+                }
+            ],
+            "description": {
+                "en": "Count substrings",
+                "ru": "Количество подстрок"
+            },
+            "interface": "count_substrings_interface.js",
+            "is_element": false,
+            "name": "count_substrings",
+            "select": "count_substrings_select.js",
+            "template": "{{substring}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "get_substring_code.js",
+                    "name": "get_substring_code"
+                }
+            ],
+            "description": {
+                "en": "Get substring",
+                "ru": "Получить подстроку"
+            },
+            "interface": "get_substring_interface.js",
+            "is_element": false,
+            "name": "get_substring",
+            "select": "get_substring_select.js",
+            "template": "{{from}} : {{to}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "get_substring_between_code.js",
+                    "name": "get_substring_between_code"
+                }
+            ],
+            "description": {
+                "en": "Get substring between",
+                "ru": "Получить подстроку между"
+            },
+            "interface": "get_substring_between_interface.js",
+            "is_element": false,
+            "name": "get_substring_between",
+            "select": "get_substring_between_select.js",
+            "template": "{{left}} : {{right}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "remove_string_part_code.js",
+                    "name": "remove_string_part_code"
+                }
+            ],
+            "description": {
+                "en": "Remove string part",
+                "ru": "Удалить часть строки"
+            },
+            "interface": "remove_string_part_interface.js",
+            "is_element": false,
+            "name": "remove_string_part",
+            "select": "remove_string_part_select.js",
+            "template": "{{from}} * {{count}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -74,7 +159,11 @@
         "is_string",
 		"is_not_empty_string",
 		"to_string",
-		"to_number"
+		"to_number",
+		"number_format",
+		"count_substrings",
+		"get_substring",
+		"get_substring_between"
 	],
     "browser": [
     ],
@@ -110,11 +199,10 @@
 		"The data that need to check out whether they is a string.": {"ru":"Данные, которые нужно проверить на то являются ли они строкой."},
 		"This variable will be true or false depending on whether the specified data is a string.":{"ru":"Эта переменная будет равна true или false в зависимости от того, являются ли указанные данные строкой."},
 		
-		"Empty string": {"ru":"Пустая строка"},
-		"The string is not empty.": {"ru":"Строка не пустая."},
-		"The string is empty. Or specified not string.": {"ru":"Строка пустая. Или указана не строка."},
-		"Check if the specified string is not empty.": {"ru":"Проверьте, не пуста ли указанная строка."},
-		"The string that need to check if it is not empty.": {"ru":"Строка, которую нужно проверить на то не является ли она не пустой."},		
+		"Not empty string.": {"ru":"Не пустая строка."},
+		"Empty string or not string.": {"ru":"Пустая строка или не строка."},
+		"Check if the specified data is not an empty string.": {"ru":"Проверить, являются ли указанные данные не пустой строкой."},
+		"The data that need to check out whether they is not empty string.": {"ru":"Данные, которые нужно проверить на то являются ли они не пустой строкой."},		
 		"This variable will be true or false depending on whether the specified string is not empty.":{"ru":"Эта переменная будет равна true или false в зависимости от того, являются ли указанные строка не пустой."},
 		
 		"Date": {"ru":"Дата"},
@@ -136,7 +224,62 @@
 		"Convert the specified string to a number.": {"ru":"Преобразовать указанную строку в число."},
 		"Separator between integer and decimal parts of a number.": {"ru":"Разделитель между целой и дробной частями числа."},
 		"The number of decimal places to which the number will be rounded.": {"ru":"Количество знаков в дробной части, до которого будет округлено число."},
-		"Variable in which, after successful execution of the action, the numeric representation of the specified string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано числовое представление указанной строки."}
+		"Variable in which, after successful execution of the action, the numeric representation of the specified string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано числовое представление указанной строки."},
+		
+		"The number to format and convert to a string.": {"ru":"Число, которое нужно форматировать и преобразовать в строку."},
+		"Format and convert the specified number to a string.": {"ru":"Форматировать и преобразовать в строку указанное число."},
+		"This action can bring the number into a more readable form, for example, for further output to the log.": {"ru":"Данным действием можно привести число в более читабельный вид, например, для дальнейшего вывода в лог."},
+		"Variable in which, after successful execution of the action, the formatted string representation of the specified number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано форматированное строковое представление указанного числа."},
+		
+		"sample": {"ru":"пример"},
+		"Substring": {"ru":"Подстрока"},
+		"Contiguous sequence of characters within a string.": {"ru":"Непустая связная часть строки."},
+		"The string from which to get the number of substrings.": {"ru":"Строка, из которой нужно получить количество подстрок."},
+		"The specified substring is not present in the specified string.": {"ru":"Указанная подстрока отсутствует в указанной строке."},
+		"Get the number of specified substrings in the specified string.": {"ru":"Получить количество указанных подстрок в указанной строке."},
+		"Variable in which, after successful execution of the action, the number of specified substrings in the specified string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество указанных подстрок в указанной строке."},
+		
+		"To index": {"ru":"До индекса"},
+		"From index": {"ru":"С индекса"},
+		"Can be blank": {"ru":"Может быть пустым"},
+		"To the end of the string": {"ru":"До конца строки"},
+		"To the first character": {"ru":"До первого символа"},
+		"To the second character": {"ru":"До второго символа"},
+		"From the first character": {"ru":"С первого символа"},
+		"To the last character": {"ru":"До последнего символа"},
+		"From the second character": {"ru":"С второго символа"},
+		"From the last character": {"ru":"С последнего символа"},
+		"From the beginning of the string": {"ru":"С начала строки"},
+		"Get a substring from the specified string.": {"ru":"Получить подстроку из указанной строки."},
+		"The string from which to get the substring.": {"ru":"Строка, из которой нужно получить подстроку."},
+		"If negative, indicates an offset from the end of the string.": {"ru":"Если отрицателен, то указывает смещение от конца строки."},
+		"The index of the character at which to start getting the substring.": {"ru":"Индекс символа, с которого начинается получение подстроки."},
+		"The index of the character at which the retrieval of the substring ends.": {"ru":"Индекс символа, которым заканчивается получение подстроки."},
+		"Variable in which, after successful execution of the action, the substring will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана подстрока."},
+		"If the \"From index\" and \"To index\" parameters are not specified, the entire string will be returned.": {"ru":"Если параметры \"С индекса\" и \"До индекса\" не указаны, будут получена вся строка."},
+		"If the \"From index\" parameter is not specified and the \"To index\" parameter is specified, all characters from the first to the specified one will be retrieved.": {"ru":"Если параметр \"С индекса\" не указан, а параметр \"До индекса\" указан, будут получены все символы с первого до указанного."},
+		"If the \"From index\" parameter is specified and the \"To index\" parameter is not specified, all characters from the specified to the end of the string will be retrieved.": {"ru":"Если параметр \"С индекса\" указан, а параметр \"До индекса\" не указан, будут получены все символы с указанного до конца строки."},
+		
+		"Left substring": {"ru":"Левая подстрока"},
+		"Right substring": {"ru":"Правая подстрока"},
+		"Get a substring between two substrings.": {"ru":"Получить подстроку между двумя подстроками."},
+		"The substring to the left of the substring to get.": {"ru":"Подстрока находящаяся слева от подстроки которую нужно получить."},
+		"The substring to the right of the substring to get.": {"ru":"Подстрока находящаяся справа от подстроки которую нужно получить."},
+		"If the \"Left substring\" and \"Right substring\" parameters are not specified, the entire string will be returned.": {"ru":"Если параметры \"Левая подстрока\" и \"Правая подстрока\" не указаны, будут получена вся строка."},
+		"If the \"Left substring\" parameter is not specified and the \"Right substring\" parameter is specified, all characters from the first to the specified substring will be retrieved.": {"ru":"Если параметр \"Левая подстрока\" не указан, а параметр \"Правая подстрока\" указан, будут получены все символы с первого до указанной подстрки."},
+		"If the \"Left substring\" parameter is specified and the \"Right substring\" parameter is not specified, all characters from the specified substring to the end of the string will be retrieved.": {"ru":"Если параметр \"Левая подстрока\" указан, а параметр \"Правая подстрока\" не указан, будут получены все символы от указанной подстроки до конца строки."},
+		
+		"sample text": {"ru":"пример текста"},
+		"Insertable substring": {"ru":"Вставляемая подстрока"},
+		"Don't remove characters": {"ru":"Не удалять символы"},
+		"Don't insert a substring": {"ru":"Не вставить подстроку"},
+		"Number of characters to remove": {"ru":"Количество удаляемых символов"},
+		"The number of characters to be removed.": {"ru":"Количество символов, которые будут удалены."},
+		"Remove part of the string and/or insert a new one.": {"ru":"Удалите часть строки и/или вставьте новую."},
+		"The character index at which the removing begins.": {"ru":"Индекс символа, с которого начинается удаление."},
+		"The substring to be inserted instead of the removed part.": {"ru":"Подстрока, которая будет вставлена вместо удаленной части."},
+		"The string from which want to remove a part and/or add a new one.": {"ru":"Строка, из которой нужно удалить часть и/или добавить новую."},
+		"Variable in which, after successful execution of the action, the final string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана итоговая строка."}
     },
     "major_version": 1,
     "minor_version": 0,

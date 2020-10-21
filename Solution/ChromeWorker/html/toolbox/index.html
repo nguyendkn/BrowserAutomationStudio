@@ -222,7 +222,7 @@
             
             <span data-preserve="true" data-preserve-type="text" data-preserve-id="FunctionName">
               <input class="form-control function-input" type="text" id="FunctionName" placeholder="Custom IP information function">
-              <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+              <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                 <li>
                   <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                     <span class="tr">Select function</span>
@@ -430,7 +430,7 @@
               <div class="input-group">
                 <input class="form-control variable-input" style='text-transform: uppercase;color:#529653;'  type="text" id="<%= id %>" placeholder="<%= description %>" value="<%= default_variable %>" data-variable-constructor="true" <%= (typeof(append_mode) != "undefined") ? "data-append-array=\"true\"" : "" %> >
                 
-                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                   <li>
                     <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="var" data-toggle="modal" data-target="#VariableModal" data-result-target="#<%= id %>" <%= (typeof(disable_locals) != "undefined") ? "disable_locals=\"true\"" : "" %> <%= (typeof(enable_globals) != "undefined") ? "":"disable_globals=true" %> >
                       <i class="fa fa-at"/>
@@ -479,7 +479,7 @@
               <div class="input-group">
                 <input class="form-control resource-input" type="text" id="<%= id %>" placeholder="<%= description %>" value="" data-resource-constructor="true" />
 
-                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                   <li>
                     <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="res" data-toggle="modal" data-target="#RecourseModal" data-result-target="#<%= id %>">
                       <i class="fa fa-database"/>
@@ -671,7 +671,7 @@
                 <% } %>
 
                 <% if((typeof(variants) != "undefined" && variants != null) || typeof(disable_editor) == "undefined" || typeof(disable_resource) == "undefined" || typeof(disable_variable) == "undefined") { %>
-                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                     <% if(typeof(variants) != "undefined") { %>
                       <% for(var i = 0;i<variants.length;i++) { %>
                         <li>
@@ -1285,7 +1285,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           
           <span data-preserve="true" data-preserve-type="text" data-preserve-id="FunctionName">
             <input class="form-control function-input" type="text" id="FunctionName" placeholder="Function name">
-            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
               <li>
                 <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                   <span class="tr">Select function</span>
@@ -1395,7 +1395,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
             <input class="form-control function-input" type="text" id="FunctionName" placeholder="Function name">
             
-            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
               <li>
                 <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                   <span class="tr">Select function</span>
@@ -6345,12 +6345,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       input_selector_focus:function(event)
       {
-        $(event.target).siblings(".input-field-dropdown").show();
+        $(event.target).siblings(".input-field-dropdown").dropdown('toggle');
       },
 
       input_selector_blur:function(event)
       {
-        $(event.target).siblings(".input-field-dropdown").hide();  
+        $(event.target).siblings(".input-field-dropdown").dropdown('toggle');
       },
 
 

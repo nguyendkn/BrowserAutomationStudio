@@ -173,7 +173,7 @@ function SQL_PreParameterization(){
 				
 				_call_function(SQL_Template,{"e":ell})!
 				var res = _result_function();
-				replacements[cycle_index] = SQL_ConvertDates(res);
+				replacements[cycle_index] = SQL_ConvertValue(res);
 			})!
 			
 			query = query.replace(reg, "?");

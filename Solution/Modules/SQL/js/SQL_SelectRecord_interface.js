@@ -44,7 +44,7 @@
 	</div>
 </div>
 <%= _.template($('#block_end').html())() %>
-<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "SQL_RECORD", help: {description: tr("Variable in which, after successful execution of the action, the received record will be written.") + " " + tr("The format of the saved data depends on the \"Data Format\" setting.")}}) %>
+<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "SQL_RECORD", help: {description: tr("Variable in which, after successful execution of the action, the received record will be written.") + " " + tr("The format of the saved data depends on the \"Data format\" setting.")}}) %>
 <%= _.template($('#input_constructor').html())({id:"data_format", description: tr("Data format"), default_selector: "string", variants:["CSV<br/><span style='color:gray;font-size:small'>1:test1:true</span>","List<br/><span style='color:gray;font-size:small'>[1,\"test1\",true]</span>","Object<br/><span style='color:gray;font-size:small'>{\"id\":1,\"name\":\"test1\",\"active\":true}</span>"], disable_int:true, value_string: "CSV", help: {description: tr("The format in which the received data will be stored in a variable."),examples:[{code:"CSV", description:"1:test1:true"},{code:"List", description:"[1,\"test1\",true]"},{code:"Object", description:"{\"id\":1,\"name\":\"test1\",\"active\":true}"}]} }) %>
 </div>
 <div class="tooltipinternal">

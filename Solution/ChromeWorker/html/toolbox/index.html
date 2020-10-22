@@ -6345,12 +6345,14 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       input_selector_focus:function(event)
       {
-        $(event.target).siblings(".input-field-dropdown").dropdown('toggle');
+        $(event.target).siblings(".input-field-dropdown").show();
+        $(event.target).trigger('show.bs.dropdown');
       },
 
       input_selector_blur:function(event)
       {
-        $(event.target).siblings(".input-field-dropdown").dropdown('toggle');
+        $(event.target).siblings(".input-field-dropdown").hide();
+        $(event.target).trigger('hide.bs.dropdown');
       },
 
 

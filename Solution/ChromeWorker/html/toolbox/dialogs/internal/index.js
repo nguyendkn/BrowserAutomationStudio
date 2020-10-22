@@ -5,16 +5,26 @@ window.BasDialogsLib = {
 
       if ($dropdown.length) {
         $dropdown.css('visibility', 'hidden');
-        $dropdown.css('display', 'block');
-        $parent.removeClass('dropup');
 
-        if ($dropdown.offset().top + $dropdown.outerHeight() > $(window).innerHeight() + $(window).scrollTop()) {
-          $parent.addClass('dropup');
-        }
+        $parent.removeClass('dropup'); const heightTop = visibleHeight($dropdown);
+        $parent.addClass('dropup'); const heightBot = visibleHeight($dropdown);
+        if (heightTop >= heightBot) $parent.removeClass('dropup');
 
-        $dropdown.removeAttr('style');
+        $dropdown.css('visibility', 'visible');
       }
     });
+
+    function visibleHeight($target) {
+      const topScroll = $(window).scrollTop();
+      const botScroll = topScroll + $(window).height();
+
+      const topOffset = $target.offset().top;
+      const botOffset = topOffset + $target.outerHeight();
+
+      const topHeight = Math.max(topScroll, topOffset);
+      const botHeight = Math.min(botScroll, botOffset);
+      return botHeight - topHeight;
+    }
   },
 
   templates: {},

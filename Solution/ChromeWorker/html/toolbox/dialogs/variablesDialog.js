@@ -1,4 +1,4 @@
-class BasVariablesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasModalDialog) {
+class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
   /**
    * Create an instance of `BasVariablesDialog` class.
    * @param {Object} element - target element object.
@@ -62,35 +62,10 @@ class BasVariablesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasM
    * @param {String} name - selected item name.
    */
   onClose(name, { global }) {
-    const el = $(this.selector); const insert = `[[${global ? 'GLOBAL:' : ''}${name}]]`;
-
     if (name.length) {
-      if ($(`${this.selector}_number:visible`).length) {
-        this.insertAsExpression(el, insert);
-      } else {
-        if (!el.is('[data-variable-constructor]')) {
-          if (el.is('[data-is-code-editor]')) {
-            this.insertTextToEditor(el, insert);
-          } else {
-            this.insertTextAtCursor(el, insert);
-          }
-        } else {
-          if (el.is('[data-append-array]')) {
-            if (el.val().length === 0) {
-              el.val(name);
-            } else {
-              el.val(el.val() + ',' + name);
-            }
-          } else {
-            el.val(name);
-          }
-        }
-      }
-
+      BasDialogsLib.insertHelper.insertVariable(this.selector, name, `[[${global ? 'GLOBAL:' : ''}${name}]]`);
       BasDialogsLib.store.addVariable({ name, global }, global);
     }
-
-    if (this.selector === '#selector-input') MainView.prototype.pathchanged();
   }
 
   /**

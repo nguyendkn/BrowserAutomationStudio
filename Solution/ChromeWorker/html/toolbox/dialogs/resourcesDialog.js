@@ -1,4 +1,4 @@
-class BasResourcesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasModalDialog) {
+class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
   /**
    * Create an instance of `BasResourcesDialog` class.
    * @param {Object} element - target element object.
@@ -26,34 +26,20 @@ class BasResourcesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasM
    * @param {String} name - selected item name.
    */
   onClose(name, { options }) {
-    const el = $(this.selector); let resource = name;
+    let resource = name;
+
     if (options.resourceDontDie) {
       resource += '|onlyfail';
     }
+
     if (!options.resourceReuse) {
       resource += '|notreuse';
     }
-    const insert = `{{${resource}}}`;
 
     if (name.length) {
-      if ($(`${this.selector}_number:visible`).length) {
-        this.insertAsExpression(el, insert);
-      } else {
-        if (el.is('[data-resource-constructor]')) {
-          el.val(resource);
-        } else {
-          if (el.is('[data-is-code-editor]')) {
-            this.insertTextToEditor(el, insert);
-          } else {
-            this.insertTextAtCursor(el, insert);
-          }
-        }
-      }
-
+      BasDialogsLib.insertHelper.insertResource(this.selector, resource, `{{${resource}}}`);
       BasDialogsLib.store.addResource({ name });
     }
-
-    if (this.selector === '#selector-input') MainView.prototype.pathchanged();
   }
 
   /**

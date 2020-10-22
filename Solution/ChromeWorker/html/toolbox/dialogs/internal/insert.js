@@ -42,8 +42,6 @@ BasDialogsLib.insertHelper = {
           if (type === 'variable' && $element.is('[data-append-array]')) {
             if (value.length) {
               return [value, name].join(',');
-            } else {
-              return name;
             }
           }
 

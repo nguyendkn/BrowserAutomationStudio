@@ -152,6 +152,91 @@
             "name": "remove_string_part",
             "select": "remove_string_part_select.js",
             "template": "{{from}} * {{count}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "to_lower_case_code.js",
+                    "name": "to_lower_case_code"
+                }
+            ],
+            "description": {
+                "en": "To lower case",
+                "ru": "В нижний регистр"
+            },
+            "interface": "to_lower_case_interface.js",
+            "is_element": false,
+            "name": "to_lower_case",
+            "select": "to_lower_case_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "to_upper_case_code.js",
+                    "name": "to_upper_case_code"
+                }
+            ],
+            "description": {
+                "en": "To upper case",
+                "ru": "В верхний регистр"
+            },
+            "interface": "to_upper_case_interface.js",
+            "is_element": false,
+            "name": "to_upper_case",
+            "select": "to_upper_case_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "string_contains_code.js",
+                    "name": "string_contains_code"
+                }
+            ],
+            "description": {
+                "en": "Contains",
+                "ru": "Содержит"
+            },
+            "interface": "string_contains_interface.js",
+            "is_element": false,
+            "name": "string_contains",
+            "select": "string_contains_select.js",
+            "template": "{{substring}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "string_length_code.js",
+                    "name": "string_length_code"
+                }
+            ],
+            "description": {
+                "en": "Get length",
+                "ru": "Получить длину"
+            },
+            "interface": "string_length_interface.js",
+            "is_element": false,
+            "name": "string_length",
+            "select": "string_length_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "capitalize_words_code.js",
+                    "name": "capitalize_words_code"
+                }
+            ],
+            "description": {
+                "en": "Capitalize word",
+                "ru": "Слово с большой буквы"
+            },
+            "interface": "capitalize_words_interface.js",
+            "is_element": false,
+            "name": "capitalize_words",
+            "select": "capitalize_words_select.js",
+            "template": "{{string}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -163,7 +248,13 @@
 		"number_format",
 		"count_substrings",
 		"get_substring",
-		"get_substring_between"
+		"get_substring_between",
+		"remove_string_part",
+		"to_lower_case",
+		"to_upper_case",
+		"string_contains",
+		"string_length",
+		"capitalize_words"
 	],
     "browser": [
     ],
@@ -203,7 +294,7 @@
 		"Empty string or not string.": {"ru":"Пустая строка или не строка."},
 		"Check if the specified data is not an empty string.": {"ru":"Проверить, являются ли указанные данные не пустой строкой."},
 		"The data that need to check out whether they is not empty string.": {"ru":"Данные, которые нужно проверить на то являются ли они не пустой строкой."},		
-		"This variable will be true or false depending on whether the specified string is not empty.":{"ru":"Эта переменная будет равна true или false в зависимости от того, являются ли указанные строка не пустой."},
+		"This variable will be true or false depending on whether the specified data is not an empty string.":{"ru":"Эта переменная будет равна true или false в зависимости от того, являются ли указанные данные не пустой строкой."},
 		
 		"Date": {"ru":"Дата"},
 		"Number": {"ru":"Число"},
@@ -279,7 +370,32 @@
 		"The character index at which the removing begins.": {"ru":"Индекс символа, с которого начинается удаление."},
 		"The substring to be inserted instead of the removed part.": {"ru":"Подстрока, которая будет вставлена вместо удаленной части."},
 		"The string from which want to remove a part and/or add a new one.": {"ru":"Строка, из которой нужно удалить часть и/или добавить новую."},
-		"Variable in which, after successful execution of the action, the final string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана итоговая строка."}
+		"Variable in which, after successful execution of the action, the final string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана итоговая строка."},
+		
+		"just sample text": {"ru":"просто пример текста"},
+		"The string to be converted to lowercase.": {"ru":"Строка, которую нужно преобразовать в нижний регистр."},
+		"Convert all letters of the string to lowercase.": {"ru":"Преобразовать все буквы строки в нижний регистр."},
+		"Variable in which, after successful execution of the action, the converted string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана преобразованная строка."},
+		
+		"JUST SAMPLE TEXT": {"ru":"ПРОСТО ПРИМЕР ТЕКСТА"},
+		"The string to be converted to uppercase.": {"ru":"Строка, которую нужно преобразовать в верхний регистр."},
+		"Convert all letters of the string to uppercase.": {"ru":"Преобразовать все буквы строки в верхний регистр."},
+		
+		"The string contains a substring.": {"ru":"Строка содержит подстроку."},
+		"The string does not contain a substring.": {"ru":"Строка не содержит подстроку."},
+		"Substring, the contains of which is necessary to check.": {"ru":"Подстрока, содержание которой нужно проверить."},
+		"Check if the string contains the specified substring.": {"ru":"Проверить содержит ли строка указанную подстроку."},
+		"The string in which to check the contains of the substring.": {"ru":"Строка, в которой нужно проверить содержание подстроки."},
+		"This variable will be true or false depending on whether the string contains a substring.":{"ru":"Эта переменная будет равна true или false в зависимости от того, содержит ли строка подстроку."},
+		
+		"Get the number of characters in a string.": {"ru":"Получить количество символов в строке."},
+		"The string from which to get the number of characters.": {"ru":"Строка, из которой нужно получить количество символов."},
+		"Variable in which, after successful execution of the action, the number of characters contained in the string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество символов, содержащихся в строке."},
+		
+		"Capitalize all words": {"ru":"Сделать все слова заглавными"},
+		"All other letters in lowercase": {"ru":"Все остальные буквы в нижний регистр"},
+		"The string in which to convert words.": {"ru":"Строка, в которой нужно преобразовать слова."},
+		"Convert the first letter of a word to uppercase.": {"ru":"Преобразовать первую букву слова в верхний регистр."}
     },
     "major_version": 1,
     "minor_version": 0,

@@ -4,8 +4,26 @@ function _is_string(data){
 function _is_not_empty_string(str){
 	return _is_string(str) && str.length > 0;
 };
+function _no_exponents(num){
+	var data = String(num).split(/[eE]/);
+	if(data.length == 1){return data[0]};
+
+	var z = '';
+	var sign = num < 0 ? '-' : '';
+	var str = data[0].replace('.', '');
+	var mag = Number(data[1]) + 1;
+
+	if(mag < 0){
+		z = sign + '0.';
+		while (mag++) z += '0';
+		return z + str.replace(/^\-/, '');
+	};
+	mag -= str.length;
+	while (mag--) z += '0';
+	return str + z;
+};
 function _to_string(data){
-	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date)) ? JSON.stringify(data) : String(data));
+	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : String(data)));
 };
 function _to_number(str, dec, dsep, tsep){
 	str = _avoid_nil(str);
@@ -29,7 +47,7 @@ function _number_format(num, dec, dsep, tsep){
 	dsep = _avoid_nil(dsep, '.');
 	tsep = _avoid_nil(tsep, ',');
 
-	num = (dec===-1 || dec==="") ? String(num) : num.toFixed(dec);
+	num = (dec===-1 || dec==="") ? _no_exponents(num) : num.toFixed(dec);
 
 	var parts = num.split('.');
 	var fnums = parts[0];
@@ -76,14 +94,14 @@ function _to_lower_case(str){
 function _to_upper_case(str){
 	return str.toUpperCase();
 };
-function _contains(str, contains){
-	return str.indexOf(contains) > -1;
+function _contains(str, sub){
+	return str.indexOf(sub) > -1;
 };
 function _length(str){
 	return str.length;
 };
 function _capitalize(str, all, lower){
-	return (lower ? str.toLowerCase() : str).replace(new RegExp("(?:^|\\s|[\"'([{])+\\S", (all ? "g" : null)), function(match){return match.toUpperCase()});
+	return (lower ? str.toLowerCase() : str).replace(new RegExp("(?:^|\\s|[\"'([{])+\\S", (all ? "g" : "")), function(match){return match.toUpperCase()});
 };
 function _sentences(str){
     return str.replace(/(\.+|\:|\!|\?)(\"*|\'*|\)*|}*|]*)(\s|\n|\r|\r\n)/gm, "$1$2|").split("|");

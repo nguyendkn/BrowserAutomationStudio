@@ -60,7 +60,11 @@ BasDialogsLib.store = {
       source.unshift({ ...item, timestamp: (+new Date()) });
     }
 
-    if (sync) _.remove(source, (src) => !collection.some(predicate(src)));
+    if (sync) {
+      _.remove(source, (src) => !collection.some(predicate(src)));
+    }
+
+    BrowserAutomationStudio_PreserveInterfaceState();
   },
 
   /**
@@ -120,11 +124,37 @@ BasDialogsLib.store = {
     });
   },
 
+  /**
+   * Add the recent elements from the selected source.
+   * @param {Object[]} source - selected source array. 
+   */
   addElements(source) {
     source.forEach((item) => {
       if (item.type === 'var') {
         this.addVariable({ name: item.data, global: false }, false, false);
       }
     });
+  },
+
+  /**
+   * Load the store data from object.
+   */
+  load(json) {
+    this.globalVariables = json.globalVariables;
+    this.localVariables = json.localVariables;
+    this.resources = json.resources;
+    this.functions = json.functions;
+  },
+
+  /**
+   * Save the store data to object.
+   */
+  save() {
+    return {
+      globalVariables: this.globalVariables,
+      localVariables: this.localVariables,
+      resources: this.resources,
+      functions: this.functions
+    }
   }
 }

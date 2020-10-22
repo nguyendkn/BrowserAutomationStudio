@@ -44,20 +44,16 @@ BasDialogsLib.dropdowns = {
     $dropdown.find('li.recent-resource').remove();
     if (!BasDialogsLib.store.resources.length) return;
 
-    const $resourceItem = $dropdown.find('a.res');
-    $resourceItem.parent().after(BasDialogsLib.templates.recentResourcesList({
-      id: $resourceItem.data('result-target')
-    }));
+    const $element = $dropdown.find('a.res');
+    $element.parent().after(BasDialogsLib.templates.recentResourcesList({ $element }));
   },
 
   renderVariables($dropdown) {
     $dropdown.find('li.recent-variable').remove();
     if (!BasDialogsLib.store.variables.length) return;
 
-    const $variableItem = $dropdown.find('a.var');
-    $variableItem.parent().after(BasDialogsLib.templates.recentVariablesList({
-      id: $variableItem.data('result-target')
-    }));
+    const $element = $dropdown.find('a.var');
+    $element.parent().after(BasDialogsLib.templates.recentVariablesList({ $element }));
   },
 
   getVisibleHeight($target) {

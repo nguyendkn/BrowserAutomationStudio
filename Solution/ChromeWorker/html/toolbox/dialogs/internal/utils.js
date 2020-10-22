@@ -1,23 +1,28 @@
 BasDialogsLib.utils = {
   /**
+   * Get a collection of recent items for the selected type.
+   */
+  getRecentCollection: (type, $element) => {
+    if (type === 'resource') return BasDialogsLib.store.resources;
+    if (type === 'function') return BasDialogsLib.store.functions;
+
+    const useGlobals = $element.attr('disable_globals') !== 'true';
+    const useLocals = $element.attr('disable_locals') !== 'true';
+    if (useGlobals && useLocals) return BasDialogsLib.store.variables;
+    if (useGlobals) return BasDialogsLib.store.globalVariables;
+    return BasDialogsLib.store.localVariables;
+  },
+
+  /**
    * Get the display name for the selected object using its type.
    * @param {Object} target - selected object.
    * @param {String} type - selected type.
    */
   getDisplayName: (target, type) => {
-    if (type === 'variable') {
-      return target.global ? `GLOBAL:${target.name}` : target.name;
-    }
+    if (type === 'resource') return target.name;
+    if (type === 'function') return target.name;
 
-    if (type === 'resource') {
-      return target.name;
-    }
-
-    if (type === 'function') {
-      return target.name;
-    }
-
-    return null;
+    return target.global ? `GLOBAL:${target.name}` : target.name;
   },
 
   /**

@@ -43,7 +43,6 @@ BasDialogsLib.dropdowns = {
   renderResources($dropdown) {
     $dropdown.find('li.recent-resource').remove();
     if (!BasDialogsLib.store.resources.length) return;
-
     const $element = $dropdown.find('a.res');
     $element.parent().after(BasDialogsLib.templates.recentResourcesList({ $element }));
   },
@@ -51,7 +50,6 @@ BasDialogsLib.dropdowns = {
   renderVariables($dropdown) {
     $dropdown.find('li.recent-variable').remove();
     if (!BasDialogsLib.store.variables.length) return;
-
     const $element = $dropdown.find('a.var');
     $element.parent().after(BasDialogsLib.templates.recentVariablesList({ $element }));
   },

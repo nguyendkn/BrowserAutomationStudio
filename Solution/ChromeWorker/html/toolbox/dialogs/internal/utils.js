@@ -1,6 +1,8 @@
 BasDialogsLib.utils = {
   /**
    * Get a collection of recent items for the selected type.
+   * @param {JQuery} $element - selected element.
+   * @param {String} type - selected type.
    */
   getRecentCollection: (type, $element) => {
     if (type === 'resource') return BasDialogsLib.store.resources;
@@ -38,6 +40,7 @@ BasDialogsLib.utils = {
 
   /**
    * Show the list item header by toggling CSS classes.
+   * @param {JQuery} $header - selected header element.
    */
   showHeader: ($header) => {
     $header.addClass('modal-header-visible')
@@ -46,6 +49,7 @@ BasDialogsLib.utils = {
 
   /**
    * Hide the list item header by toggling CSS classes.
+   * @param {JQuery} $header - selected header element.
    */
   hideHeader: ($header) => {
     $header.addClass('modal-header-hidden')

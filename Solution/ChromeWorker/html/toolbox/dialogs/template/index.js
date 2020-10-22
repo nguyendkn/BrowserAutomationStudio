@@ -68,12 +68,12 @@ BasDialogsLib.templates = {
               <%= tr('Recent ' + metadata.pluralName + ':') %>
             </div>
             <div id="modalRecentHeaderIcon">
-              <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg class="modal-svg-normal" width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M11 16L11 1M14.3333 16L2.66667 16C1.74619 16 1 15.2538 1 14.3333L1 2.66667C1 1.74619 1.74619 1 2.66667 1L14.3333 1C15.2538 1 16 1.74619 16 2.66667V14.3333C16 15.2538 15.2538 16 14.3333 16Z" stroke="#4f4f4f" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </div>
-            <button id="modalRecentHide" class="modal-recent-button">
-              <svg width="6" height="17" viewBox="0 0 6 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button id="modalRecentHide">
+              <svg class="modal-svg-toggle" width="6" height="17" viewBox="0 0 6 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 1 12.5 L 5 8.5 L 1 4.5" stroke="#7b7b7b" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>                
             </button>
@@ -87,15 +87,15 @@ BasDialogsLib.templates = {
                     <%= metadata.template(item) %>
                   </div>
                   <div class="modal-recent-icon-right">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg class="modal-svg-normal" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M12.5 5.583H15a4.167 4.167 0 010 8.334h-2.5m-5 0H5a4.167 4.167 0 010-8.334h2.5M6.667 9.75h6.666" stroke="#E3E3E3" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>                
                   </div>
                 </li>
               <% }); %>
             </ul>
-            <button id="modalRecentShow" class="modal-recent-button">
-              <svg width="6" height="17" viewBox="0 0 6 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <button id="modalRecentShow">
+              <svg class="modal-svg-toggle" width="6" height="17" viewBox="0 0 6 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M 1 12.5 L 5 8.5 L 1 4.5" stroke="#7b7b7b" stroke-opacity="0.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
               </svg>                
             </button>

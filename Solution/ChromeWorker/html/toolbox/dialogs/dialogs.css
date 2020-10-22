@@ -55,6 +55,10 @@
  * Recent container *
  ********************/
 
+.modal-recent-item:hover .modal-recent-icon-right {
+  background: transparent;
+}
+
 .modal-recent-item:hover .modal-recent-icon-left {
   background: #e5e5e5;
 }
@@ -68,21 +72,6 @@
 
 #modalRecentHeader:hover {
   cursor: pointer;
-}
-
-#modalRecentHeaderIcon svg {
-  margin: 0 0 0 0;
-  display: block;
-}
-
-.modal-recent-icon-right svg {
-  margin: 0 0 0 0;
-  display: block;
-}
-
-.modal-recent-button svg {
-  margin: 0 0 0 auto;
-  display: block;
 }
 
 .modal-recent-icon-right {
@@ -606,4 +595,18 @@
 
 .modal-text-mark {
   color: #ff553e;
+}
+
+/**************
+ * Svg styles *
+ **************/
+
+.modal-svg-toggle {
+  margin: 0px 0px 0px auto;
+  display: block;
+}
+
+.modal-svg-normal {
+  margin: 0px 0px 0px 0px;
+  display: block;
 }

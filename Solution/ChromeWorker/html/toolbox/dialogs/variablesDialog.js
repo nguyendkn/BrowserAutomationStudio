@@ -13,7 +13,7 @@ class BasVariablesDialog extends BasDialogsLib.InsertionMixin(BasDialogsLib.BasM
       ? _VariableCollection.toJSON()
       : [];
 
-    const actions = BasDialogsLib.getActions();
+    const actions = BasDialogsLib.utils.getActions();
 
     super({
       items: [...globals, ...locals].map((item) => {

@@ -232,7 +232,8 @@ function _browser_mode(mode, callback)
                 "Fingerprints.Setting.availableHoverTypes":"1",
                 "Fingerprints.Setting.primaryPointerType":"2",
                 "Fingerprints.Setting.primaryHoverType":"1",
-                "Fingerprints.BrowserMode":"Mobile"
+                "Fingerprints.BrowserMode":"Mobile",
+                "Fingerprints.Feature.TouchEventFeatureDetection":"Enable"
 
             }
         }
@@ -249,7 +250,8 @@ function _browser_mode(mode, callback)
                 "Fingerprints.Setting.availableHoverTypes":"2",
                 "Fingerprints.Setting.primaryPointerType":"4",
                 "Fingerprints.Setting.primaryHoverType":"2",
-                "Fingerprints.BrowserMode":"Desktop"
+                "Fingerprints.BrowserMode":"Desktop",
+                "Fingerprints.Feature.TouchEventFeatureDetection":"Disable"
             }
         }
 

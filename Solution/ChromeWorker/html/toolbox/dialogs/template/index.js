@@ -174,10 +174,11 @@ BasDialogsLib.templates = {
 
   recentVariablesList: _.template(`
     <% for (let i = 0; i < Math.min(3, BasDialogsLib.store.variables.length); ++i) { %>
-      <% const name = BasDialogsLib.utils.getDisplayName(BasDialogsLib.store.variables[i], 'variable'); %>
+      <% const displayName = BasDialogsLib.utils.getDisplayName(BasDialogsLib.store.variables[i], 'variable'); %>
+      <% const name = BasDialogsLib.store.variables[i].name %>
       <li class="recent-variable">
-        <a tabindex="-1" href="#" data-value="<%= name %>" data-result="<%= id %>">
-          <span style="margin-left: 15px; color: #bcbcbc !important;">[[<%= name %>]]</span>
+        <a tabindex="-1" href="#" data-display-name="[[<%= displayName %>]]" data-name="<%= name %>" data-result="<%= id %>">
+          <span style="margin-left: 15px; color: #bcbcbc !important;">[[<%= displayName %>]]</span>
         </a>
       </li>
     <% } %>
@@ -185,10 +186,11 @@ BasDialogsLib.templates = {
 
   recentResourcesList: _.template(`
     <% for (let i = 0; i < Math.min(3, BasDialogsLib.store.resources.length); ++i) { %>
-      <% const name = BasDialogsLib.utils.getDisplayName(BasDialogsLib.store.resources[i], 'resource'); %>
+      <% const displayName = BasDialogsLib.utils.getDisplayName(BasDialogsLib.store.resources[i], 'resource'); %>
+      <% const name = BasDialogsLib.store.resources[i].name %>
       <li class="recent-resource">
-        <a tabindex="-1" href="#" data-value="<%= name %>" data-result="<%= id %>">
-          <span style="margin-left: 15px; color: #bcbcbc !important;">{{<%= name %>}}</span>
+        <a tabindex="-1" href="#" data-display-name="{{<%= displayName %>}}" data-name="<%= name %>" data-result="<%= id %>">
+          <span style="margin-left: 15px; color: #bcbcbc !important;">{{<%= displayName %>}}</span>
         </a>
       </li>
     <% } %>

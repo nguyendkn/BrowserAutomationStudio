@@ -1,30 +1,43 @@
 BasDialogsLib.dropdowns = {
   initialize() {
-    $(document).on('show.bs.dropdown', '.input-group', function () {
-      const $parent = $(this), $dropdown = $parent.find('ul[data-toggle="dropdown"]');
+    const self = this;
 
-      if ($dropdown.length) {
-        this.renderResources($dropdown);
-        this.renderVariables($dropdown);
-        $dropdown.css('visibility', 'hidden');
+    $(document).off('show.bs.dropdown', '.input-group')
+      .on('show.bs.dropdown', '.input-group', function () {
+        const $parent = $(this), $dropdown = $parent.find('ul[data-toggle="dropdown"]');
 
-        $parent.removeClass('dropup'); const heightTop = this.visibleHeight($dropdown);
-        $parent.addClass('dropup'); const heightBot = this.visibleHeight($dropdown);
-        if (heightTop >= heightBot) $parent.removeClass('dropup');
+        if ($dropdown.length) {
+          self.renderResources($dropdown);
+          self.renderVariables($dropdown);
+          $dropdown.css('visibility', 'hidden');
 
-        $dropdown.css('visibility', 'visible');
-      }
-    });
+          $parent.removeClass('dropup'); const heightTop = self.getVisibleHeight($dropdown);
+          $parent.addClass('dropup'); const heightBot = self.getVisibleHeight($dropdown);
+          if (heightTop >= heightBot) $parent.removeClass('dropup');
 
-    $(document).on('click', 'li.recent-resource > a', function (e) {
-      e.preventDefault(); const selector = $(this).data('result');
-      const $element = $(selector);
-    });
+          $dropdown.css('visibility', 'visible');
+        }
+      });
 
-    $(document).on('click', 'li.recent-variable > a', function (e) {
-      e.preventDefault(); const selector = $(this).data('result');
-      const $element = $(selector);
-    });
+    $(document).off('mousedown', 'li.recent-resource > a')
+      .on('mousedown', 'li.recent-resource > a', function (e) {
+        e.preventDefault(); const data = $(this).data();
+        BasDialogsLib.insertHelper.insertResource(
+          data.result,
+          data.name,
+          data.displayName
+        );
+      });
+
+    $(document).off('mousedown', 'li.recent-variable > a')
+      .on('mousedown', 'li.recent-variable > a', function (e) {
+        e.preventDefault(); const data = $(this).data();
+        BasDialogsLib.insertHelper.insertVariable(
+          data.result,
+          data.name,
+          data.displayName
+        );
+      });
   },
 
   renderResources($dropdown) {
@@ -47,7 +60,7 @@ BasDialogsLib.dropdowns = {
     }));
   },
 
-  visibleHeight($target) {
+  getVisibleHeight($target) {
     const topScroll = $(window).scrollTop();
     const botScroll = topScroll + $(window).height();
 

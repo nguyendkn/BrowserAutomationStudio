@@ -38,15 +38,17 @@ BasDialogsLib.insertHelper = {
           $element.val(val).trigger('change');
         }
       } else {
-        if ($element.is('[data-append-array]') && type === 'variable') {
-          if ($element.val().length === 0) {
-            $element.val(name);
-          } else {
-            $element.val($element.val() + ',' + name);
+        $element.val((_, value) => {
+          if (type === 'variable' && $element.is('[data-append-array]')) {
+            if (value.length) {
+              return [value, name].join(',');
+            } else {
+              return name;
+            }
           }
-        } else {
-          $element.val(name);
-        }
+
+          return name;
+        });
       }
     }
 

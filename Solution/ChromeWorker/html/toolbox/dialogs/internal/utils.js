@@ -1,5 +1,26 @@
 BasDialogsLib.utils = {
   /**
+   * Get the display name for the selected object using its type.
+   * @param {Object} target - selected object.
+   * @param {String} type - selected type.
+   */
+  getDisplayName: (target, type) => {
+    if (type === 'variable') {
+      return target.global ? `GLOBAL:${target.name}` : target.name;
+    }
+
+    if (type === 'resource') {
+      return target.name;
+    }
+
+    if (type === 'function') {
+      return target.name;
+    }
+
+    return null;
+  },
+
+  /**
    * Check that selected html element is clickable.
    * @param {HTMLElement} element - html element.
    */

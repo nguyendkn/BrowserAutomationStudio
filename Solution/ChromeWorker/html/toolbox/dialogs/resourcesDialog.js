@@ -1,14 +1,14 @@
 class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
   /**
    * Create an instance of `BasResourcesDialog` class.
-   * @param {Object} element - target element object.
+   * @param {JQuery} element - target element object.
    * @constructor
    */
   constructor (element) {
     super({
+      items: BasDialogsLib.utils.getDefaultCollection('resource', element),
       options: BasDialogsLib.options.resourcesOptions,
       recent: BasDialogsLib.store.resources,
-      items: _ResourceCollection.toJSON(),
       metadata: {
         findPredicate: BasDialogsLib.store.predicates.resources,
         template: BasDialogsLib.templates.resourcesContent,

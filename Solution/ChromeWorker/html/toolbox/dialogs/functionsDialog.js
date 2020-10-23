@@ -1,14 +1,14 @@
 class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
   /**
    * Create an instance of `BasFunctionsDialog` class.
-   * @param {Object} element - target element object.
+   * @param {JQuery} element - target element object.
    * @constructor
    */
   constructor (element) {
     super({
+      items: BasDialogsLib.utils.getDefaultCollection('function', element),
       options: BasDialogsLib.options.functionsOptions,
       recent: BasDialogsLib.store.functions,
-      items: _FunctionCollection.toJSON(),
       metadata: {
         findPredicate: BasDialogsLib.store.predicates.functions,
         template: BasDialogsLib.templates.functionsContent,

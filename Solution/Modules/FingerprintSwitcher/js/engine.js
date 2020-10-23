@@ -424,6 +424,22 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	})!
 
+	
+	var BrowserMode = "desktop"
+	try
+	{
+		if(parseInt(FINGERPRINT_JSON["attr"]["maxTouchPoints"]) > 0)
+		{
+			BrowserMode = "mobile"
+		}
+	}catch(e)
+	{
+
+	}
+
+	_browser_mode(BrowserMode)!
+	
+
 	if(FINGERPRINT_JSON["connection"])
 	{
 		var NetInfoDownlinkMax = false

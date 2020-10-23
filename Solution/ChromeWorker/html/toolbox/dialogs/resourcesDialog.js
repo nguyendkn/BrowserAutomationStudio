@@ -1,0 +1,56 @@
+class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
+  /**
+   * Create an instance of `BasResourcesDialog` class.
+   * @param {Object} element - target element object.
+   * @constructor
+   */
+  constructor (element) {
+    super({
+      options: BasDialogsLib.options.resourcesOptions,
+      recent: BasDialogsLib.store.resources,
+      items: _ResourceCollection.toJSON(),
+      metadata: {
+        findPredicate: BasDialogsLib.store.predicates.resources,
+        template: BasDialogsLib.templates.resourcesContent,
+        pluralName: 'resources',
+        singleName: 'resource',
+        color: 'dark'
+      }
+    });
+
+    this.selector = element.attr('data-result-target');
+  }
+
+  /**
+   * Handler function for the `close` event.
+   * @param {String} name - selected item name.
+   */
+  onClose(name, { options }) {
+    let resource = name;
+
+    if (options.resourceDontDie) {
+      resource += '|onlyfail';
+    }
+
+    if (!options.resourceReuse) {
+      resource += '|notreuse';
+    }
+
+    if (name.length) {
+      BasDialogsLib.insertHelper.insertResource(this.selector, resource, `{{${resource}}}`);
+      BasDialogsLib.store.addResource({ name });
+    }
+  }
+
+  /**
+   * Handler function for the `add` event.
+   */
+  onAdd() {
+    $(BasDialogsLib.templates.createResource())
+      .on('hidden.bs.modal', function () {
+        $(this).remove();
+      })
+      .css('z-index', '9999999')
+      .modal('show');
+  }
+}

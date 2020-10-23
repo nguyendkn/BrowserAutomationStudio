@@ -1963,3 +1963,22 @@ mark
 {
   opacity: 0.3 !important;
 }
+
+/********************
+ * Scrollbar styles *
+ ********************/
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b7b7b7;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}

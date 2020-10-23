@@ -17,89 +17,6 @@
     </div>
    <div id="containerdata" ></div>
 
-
-   
-   <div class="modal" id="RecourseModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr step-1" data-step="1" id="myModalLabel">Select Resource</h4>
-            <h4 class="modal-title tr step-2" data-step="2" id="myModalLabel">Select Resource</h4>
-          </div>
-          
-          <div class="modal-body step step-1">
-            <span id="RecourseControls">
-              <select class="form-control" id="RecourseName" placeholder="Recourse Name">
-              </select>
-            </span>
-            <span id="NoResources">
-              <span class="tr">No resources found.</span>
-              <div class="tr" style="color:gray;font-size:small;margin-top:10px">You can create resource with "+ Create New Resource" button which is located in the panel to the right.</div>
-            </span>
-          </div>
-
-          <div class="modal-body step step-2" style="padding-top:5px">
-            <span id="RecourseControls">
-              <input type="checkbox" id="ResourceReuse" checked /> <label style="margin-bottom:0px" for="ResourceReuse" class="tr res-margin">Reuse Resource</label>
-              <div class="tr" style="color:gray;font-size:small">If this setting is enabled, then every time you use resource, it will be replaced with same value. For example, if you are reading from file with 'Reuse Resource' enabled, then same line will be used during all thread lifetime. You need to disable this setting to take new line.</div>
-              <input type="checkbox" id="ResourceDontDie" style="margin-top:15px"/> <label for="ResourceDontDie" class="tr res-margin" style="margin-bottom:0px">Don't end application if not exists</label>
-              <div class="tr" style="color:gray;font-size:small">By default script will stop after resource is finished. You can use this option to complete not the entire script, but only the thread.</div>
-            </span>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary rescontinue standartbutton tr step step-1" data-step="1">Next</button>
-            <button type="button" class="btn btn-primary resok standartbutton tr step step-2" data-step="2" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal " id="VariableModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr" id="myModalLabel">Select Variable</h4>
-          </div>
-          <div class="modal-body">
-            <select class="form-control" id="VariableName" placeholder="Variable Name">
-            </select>
-            <span id="NoVariable" class="tr">No variables found.</span>
-            <div class="tr" style="color:gray;font-size:small;margin-top:10px">Use "Set Variable" action to create variable.</div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary varok standartbutton tr" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="FunctionModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr" id="myModalLabel">Select Function</h4>
-          </div>
-          <div class="modal-body">
-            <select class="form-control" id="FunctionNameInput" placeholder="Function Name">
-            </select>
-            <span id="NoFunctionFound" class="tr">No functions found.</span>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary funcok standartbutton tr" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="modal" id="LabelModal" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -305,7 +222,7 @@
             
             <span data-preserve="true" data-preserve-type="text" data-preserve-id="FunctionName">
               <input class="form-control function-input" type="text" id="FunctionName" placeholder="Custom IP information function">
-              <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+              <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                 <li>
                   <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                     <span class="tr">Select function</span>
@@ -542,7 +459,7 @@
               <div class="input-group">
                 <input class="form-control variable-input" style='text-transform: uppercase;color:#529653;'  type="text" id="<%= id %>" placeholder="<%= description %>" value="<%= default_variable %>" data-variable-constructor="true" <%= (typeof(append_mode) != "undefined") ? "data-append-array=\"true\"" : "" %> >
                 
-                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                   <li>
                     <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="var" data-toggle="modal" data-target="#VariableModal" data-result-target="#<%= id %>" <%= (typeof(disable_locals) != "undefined") ? "disable_locals=\"true\"" : "" %> <%= (typeof(enable_globals) != "undefined") ? "":"disable_globals=true" %> >
                       <i class="fa fa-at"/>
@@ -591,7 +508,7 @@
               <div class="input-group">
                 <input class="form-control resource-input" type="text" id="<%= id %>" placeholder="<%= description %>" value="" data-resource-constructor="true" />
 
-                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                   <li>
                     <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="res" data-toggle="modal" data-target="#RecourseModal" data-result-target="#<%= id %>">
                       <i class="fa fa-database"/>
@@ -783,7 +700,7 @@
                 <% } %>
 
                 <% if((typeof(variants) != "undefined" && variants != null) || typeof(disable_editor) == "undefined" || typeof(disable_resource) == "undefined" || typeof(disable_variable) == "undefined") { %>
-                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                     <% if(typeof(variants) != "undefined") { %>
                       <% for(var i = 0;i<variants.length;i++) { %>
                         <li>
@@ -1397,7 +1314,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           
           <span data-preserve="true" data-preserve-type="text" data-preserve-id="FunctionName">
             <input class="form-control function-input" type="text" id="FunctionName" placeholder="Function name">
-            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
               <li>
                 <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                   <span class="tr">Select function</span>
@@ -1507,7 +1424,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
             <input class="form-control function-input" type="text" id="FunctionName" placeholder="Function name">
             
-            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
               <li>
                 <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                   <span class="tr">Select function</span>
@@ -6234,7 +6151,21 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="./search/internal/engine.js"></script>
   <script src="./search/internal/helper.js"></script>
   <script src="./search/search.js"></script>
-  
+
+  <!-- Modal Dialogs (scripts) -->
+  <script src="./dialogs/internal/index.js"></script>
+  <script src="./dialogs/internal/translate.js"></script>
+  <script src="./dialogs/internal/options.js"></script>
+  <script src="./dialogs/internal/insert.js"></script>
+  <script src="./dialogs/internal/menus.js"></script>
+  <script src="./dialogs/internal/utils.js"></script>
+  <script src="./dialogs/internal/store.js"></script>
+  <script src="./dialogs/template/index.js"></script>
+  <script src="./dialogs/dialogs.js"></script>
+  <script src="./dialogs/functionsDialog.js"></script>
+  <script src="./dialogs/resourcesDialog.js"></script>
+  <script src="./dialogs/variablesDialog.js"></script>
+
   <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
   <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
   <script type="text/javascript"> _MACRO_INSERT_ACTIONS_ </script>
@@ -6249,6 +6180,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <link rel="stylesheet" href="rappid.css">
   <link rel="stylesheet" href="bootstrap-checkbox.css">
   <link rel="stylesheet" href="toastr.min.css">
+
+  <!-- Modal Dialogs (styles) -->
+  <link rel="stylesheet" href="./dialogs/dialogs.css">
 
   <!-- Actions Search (styles) -->
   <link rel="stylesheet" href="./search/search.css">
@@ -6277,7 +6211,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     });
     var VariableModel = Backbone.Model.extend({
         defaults: {
-            name: ""
+            name: "",
+            global: false
         }
     });
     var FunctionModel = Backbone.Model.extend({
@@ -6360,8 +6295,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     var MainView = Backbone.View.extend({
       el: '#container',
 
-      currentInputResource: "none",
-      currentInputVariable: "none",
       currentInputLabel: "none",
 
       events: {
@@ -6369,18 +6302,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #WaitingDisable": "interrupt",
         //"mouseover .toolbutton": "showtooltip",
         "click #backtomain": "backtomain",
-        "show.bs.modal #VariableModal": "varaddstart",
+        "show.bs.modal #LabelModal": "labeladdstart",
         "mousedown .var": "varaddstarttrigger",
+        "mousedown .res": "resaddstarttrigger",
         "mousedown .func": "funcaddstarttrigger",
         "click #PathCount": "nextpath",
 
-        "click .varok": "varadd",
-        "show.bs.modal #FunctionModal": "funcaddstart",
-        "show.bs.modal #LabelModal": "labeladdstart",
-
-        "click .funcok": "funcadd",
         "click .labelok": "labeladd",
-
         "click .timeoutok": "timeoutadd",
         "click .timeoutdefault": "timeoutdefault",
         "click .groupshow": "groupshow",
@@ -6389,12 +6317,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #showbookmarks": "showbookmarks",
         "mouseup #showhistory": "showhistorymouseup",
         "mouseup #showbookmarks": "showbookmarksmouseup",
-        
 
-        "show.bs.modal #RecourseModal": "resaddstart",
-        "mousedown .res": "resaddstarttrigger",
-        "click .resok": "resadd",
-        "click .rescontinue": "rescontinue",
         "mousedown .edit": "editstart",
         "click .specialletter": "specialletter",
         "click #executetype button":"clickexecutetype",
@@ -6517,11 +6440,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       input_selector_focus:function(event)
       {
         $(event.target).siblings(".input-field-dropdown").show();
+        $(event.target).trigger('show.bs.dropdown');
       },
 
       input_selector_blur:function(event)
       {
-        $(event.target).siblings(".input-field-dropdown").hide();  
+        $(event.target).siblings(".input-field-dropdown").hide();
+        $(event.target).trigger('hide.bs.dropdown');
       },
 
 
@@ -6548,6 +6473,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         event.stopPropagation();
         BrowserAutomationStudio_ShowHideBookmarks();
       },
+
       showhistorymouseup:function(event)
       {
         $("#showhistory").blur();
@@ -6978,348 +6904,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         InsertAtCaret("TypeData","<" + $(event.target).attr("data-key") + ">");
       },
 
-      resaddstarttrigger: function(event)
+      funcaddstarttrigger: function({ target })
       {
-        this.currentInputResource = $(event.target).closest("a").attr("data-result-target")
-
-        $('#RecourseModal').modal('show')   
-
+        BasFunctionsDialog.create($(target).closest('a'));
       },
 
-      rescontinue: function(event)
+      resaddstarttrigger: function({ target })
       {
-        $('#RecourseModal').find(".step-2").show()
-        $('#RecourseModal').find(".step-1").hide()
-
+        BasResourcesDialog.create($(target).closest('a'));
       },
 
-      resaddstart: function(event)
+      varaddstarttrigger: function({ target })
       {
-
-        $('#RecourseModal').find(".step-1").show()
-        $('#RecourseModal').find(".step-2").hide()
-
-
-        var json = _ResourceCollection.toJSON();
-        $('#RecourseName').html("")
-        if(json.length == 0)
-        {
-          $("#NoResources").show()
-          $("#RecourseControls").hide()
-          $(".rescontinue").hide()
-        }else
-        {
-          $("#NoResources").hide()
-          $("#RecourseControls").show()
-          $("#ResourceReuse").prop('checked', true);
-          $("#ResourceDontDie").prop('checked', false);
-          $(".rescontinue").show()
-          json = jsort(json);
-          for(var i = 0;i<json.length;i+=1)
-          {
-            $('#RecourseName')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"] + ": " + json[i]["description"]));
-           }
-         }
-
-        $('#RecourseName').focus()
-      },
-
-      varaddstarttrigger: function(event)
-      {
-        this.currentInputVariable = $(event.target).closest("a").attr("data-result-target")
-        this.disable_locals = $(event.target).closest("a").attr("disable_locals") == "true"
-        this.disable_globals = $(event.target).closest("a").attr("disable_globals") == "true"
-
-
-        $('#VariableModal').modal('show');
-      },
-
-      funcaddstarttrigger: function(event)
-      {
-        event.preventDefault();
-        this.currentInputVariable = $(event.target).closest("a").attr("data-result-target")
-        $('#FunctionModal').modal('show');
-      },
-
-      varaddstart: function(event)
-      {
-        //console.log("varaddstart")
-
-        var json = _VariableCollection.toJSON();
-        var json2 = _GlobalVariableCollection.toJSON();
-        var total = 0
-
-
-        
-        if(!this.disable_locals)
-        {
-          total += json.length  
-        }        
-
-        if(!this.disable_globals)
-        {
-          total += json2.length
-        }
-
-        $('#VariableName').html("")
-        if(total == 0)
-        {
-          $("#NoVariable").show()
-          $("#VariableName").hide()
-          $(".varok").hide()
-
-        }else
-        {
-          $("#NoVariable").hide()
-          $("#VariableName").show()
-          $(".varok").show()
-          if(!this.disable_locals)
-          {
-            json = jsort(json);
-            for(var i = 0;i<json.length;i+=1)
-            {
-              $('#VariableName')
-               .append($("<option></option>")
-               .attr("value",json[i]["name"])
-               .text(json[i]["name"]));
-            }
-          }
-          if(!this.disable_globals)
-          {
-            json2 = jsort(json2);
-            for(var i = 0;i<json2.length;i+=1)
-            {
-              $('#VariableName')
-               .append($("<option></option>")
-               .attr("value",json2[i]["name"])
-               .attr("isglobal","true")
-               .text(tr("Global: ") + json2[i]["name"]));
-            }
-          }
-         }
-
-
-
-        $('#VariableName').focus()
-      },
-
-      funcaddstart: function(event)
-      {
-        var json = _FunctionCollection.toJSON();
-
-        $('#FunctionNameInput').html("")
-        if(json.length == 0)
-        {
-          $("#NoFunctionFound").show()
-          $("#FunctionNameInput").hide()
-          $(".funcok").hide()
-
-        }else
-        {
-          $("#NoFunctionFound").hide()
-          $("#FunctionNameInput").show()
-          $(".funcok").show()
-          for(var i = 0;i<json.length;i+=1)
-          {
-            json = jsort(json);
-            $('#FunctionNameInput')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"]));
-           }
-         }
-
-        $('#FunctionNameInput').focus()
-
-
-
-      },
-
-      labeladdstart: function(event)
-      {
-        var json = _LabelCollection.toJSON();
-
-        $('#LabelNameInput').html("")
-        if(json.length == 0)
-        {
-          $("#NoLabelFound").show()
-          $("#LabelNameInput").hide()
-          $(".labelok").hide()
-
-        }else
-        {
-          $("#NoLabelFound").hide()
-          $("#LabelNameInput").show()
-          $(".labelok").show()
-          json = jsort(json);
-          for(var i = 0;i<json.length;i+=1)
-          {
-            $('#LabelNameInput')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"]));
-           }
-         }
-
-        $('#LabelNameInput').focus()
-        this.currentInputLabel = $(event.relatedTarget).attr("data-result-target")
-
-      },
-
-
-
-      resadd: function(event)
-      {
-        var el = $(this.currentInputResource)
-        var isnumber = $(this.currentInputResource + "_number:visible").length > 0
-
-        var res = $("#RecourseName").val();
-        if(!$("#ResourceReuse").is(':checked'))
-          res+="|notreuse";
-        if($("#ResourceDontDie").is(':checked'))
-          res+="|onlyfail";
-
-        if(isnumber)
-        {
-          el.closest(".input-group").find(".selector").html("expression")
-          el.closest(".input-group").find(".input_selector_number").hide()
-          el.closest(".input-group").find(".input_selector_string").show()
-          
-          el.val("{{" + res + "}}")
-        }else
-        {
-          var name = $("#RecourseName").val();
-          if(name.length > 0)
-          {
-            if(el.is("[data-resource-constructor]"))
-            {
-              el.val(res)
-            }else
-            {
-              if(!el.is("[data-is-code-editor]"))
-              {
-                var start = 0
-                try{
-                  start = el.val().length
-                  start = cursorposition(el[0]).start
-                }catch(e){}
-                var val = el.val()
-                val = val.slice(0, start) + "{{" + res + "}}" + val.slice(start)
-                el.val(val)
-              }else
-              {
-                var line = window[el.attr("id")].Editor.getPosition();
-                var range = new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column);
-                var id = { major: 1, minor: 1 };             
-                var op = {identifier: id, range: range, text: "{{" + res + "}}", forceMoveMarkers: true};
-                window[el.attr("id")].Editor.executeEdits("my-source", [op]);
-              }
-              
-            }
-          }
-        }
-        if(this.currentInputResource == "#selector-input")
-        {
-          _MultiSelectManager.PathManualyEdited()
-          BrowserAutomationStudio_TestPathInternal();
-        }
-
-      },
-
-      varadd: function(event)
-      {
-        var el = $(this.currentInputVariable)
-        var isnumber = $(this.currentInputVariable + "_number:visible").length > 0
-        var isglobal = $("#VariableName option:selected").attr("isglobal") == "true"
-
-        if(isnumber)
-        {
-          el.closest(".input-group").find(".selector").html("expression")
-          el.closest(".input-group").find(".input_selector_number").hide()
-          el.closest(".input-group").find(".input_selector_string").show()
-          if(isglobal)
-          {
-            el.val("[[GLOBAL:" + $("#VariableName").val() + "]]")
-          }else
-          {
-            el.val("[[" + $("#VariableName").val() + "]]")  
-          }
-          
-        }else
-        {
-
-          var name = $("#VariableName").val();
-          if(name.length > 0)
-          {
-            if(!el.is("[data-variable-constructor]"))
-            {
-
-              var insert = ""
-              if(isglobal)
-              {
-                insert = "[[GLOBAL:" + $("#VariableName").val() + "]]"
-              }else
-              {
-                insert = "[[" + $("#VariableName").val() + "]]"
-              }
-
-              if(!el.is("[data-is-code-editor]"))
-              {
-                var start = 0
-                try{
-                  start = el.val().length
-                  start = cursorposition(el[0]).start
-                }catch(e){}
-                var val = el.val()
-                val = val.slice(0, start) + insert + val.slice(start)
-
-                el.val(val).trigger("change")
-              }else
-              {
-                var line = window[el.attr("id")].Editor.getPosition();
-                var range = new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column);
-                var id = { major: 1, minor: 1 };             
-                var op = {identifier: id, range: range, text: insert, forceMoveMarkers: true};
-                window[el.attr("id")].Editor.executeEdits("my-source", [op]);
-              }
-            }else
-            {
-              if(el.is("[data-append-array]"))
-              {
-                if(el.val().length == 0)
-                  el.val($("#VariableName").val())
-                else
-                  el.val(el.val() + "," + $("#VariableName").val())
-              }else
-              {
-                el.val($("#VariableName").val())
-              }
-            }
-          }
-        }
-        if(this.currentInputVariable == "#selector-input")
-        {
-          _MultiSelectManager.PathManualyEdited()
-          BrowserAutomationStudio_TestPathInternal();
-        }
-
-      },
-
-      funcadd: function(event)
-      {
-        var el = $(this.currentInputVariable)
-
-        var name = $("#FunctionNameInput").val();
-        if(name.length > 0)
-        {
-          var Value = $("#FunctionNameInput").val()
-          el.val(Value)
-          this.funcchange(Value)
-        }
-        
+        BasVariablesDialog.create($(target).closest('a'));
       },
 
       funcchange: function(FuncName)
@@ -7436,6 +7033,37 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         SetupTooltips();
       },
 
+      labeladdstart: function(event)
+      {
+        var json = _LabelCollection.toJSON();
+
+        $('#LabelNameInput').html("")
+        if(json.length == 0)
+        {
+          $("#NoLabelFound").show()
+          $("#LabelNameInput").hide()
+          $(".labelok").hide()
+
+        }else
+        {
+          $("#NoLabelFound").hide()
+          $("#LabelNameInput").show()
+          $(".labelok").show()
+          json = jsort(json);
+          for(var i = 0;i<json.length;i+=1)
+          {
+            $('#LabelNameInput')
+             .append($("<option></option>")
+             .attr("value",json[i]["name"])
+             .text(json[i]["name"]));
+           }
+         }
+
+        $('#LabelNameInput').focus()
+        this.currentInputLabel = $(event.relatedTarget).attr("data-result-target")
+
+      },
+      
       labeladd: function(event)
       {
         var el = $(this.currentInputLabel)
@@ -10779,6 +10407,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         BrowserAutomationStudio_SetExecuteType();
 
+        BasDialogsLib.dropdowns.initialize();
+
         _SearchManager.initialize();
         
         $("body").show();
@@ -12101,7 +11731,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         var el = $(`.mainscreen [data-ref="${name}"]`)
         el.addClass("toolbookmark")          
       })
-      BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({history: ActionHistory,tab: CurrentTab, bookmarks: BookmarkList}));
+      BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
+        recent: BasDialogsLib.store.save(), 
+        bookmarks: BookmarkList,
+        history: ActionHistory,
+        tab: CurrentTab
+      }));
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(interface_json)
@@ -12109,6 +11744,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       try
       {
         var interface_obj = JSON.parse(interface_json)
+        BasDialogsLib.store.load(interface_obj["recent"])
         ActionHistory = interface_obj["history"]
         BookmarkList = interface_obj["bookmarks"]
         var tab = interface_obj["tab"] || ""
@@ -12125,7 +11761,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         })
 
       }catch(e){}
-
     }
 
 
@@ -12197,6 +11832,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             if( e.target.nodeName == "TEXTAREA" ) return
 
             if($('.modal.in').length > 0)
+            {
+              return;
+            }
+
+            if($('#modalDialogContainer').length > 0) 
             {
               return;
             }
@@ -12640,8 +12280,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         ControlsText["p"] = all
       }
 
-      ControlsText = "/*Dat:" + utf8_to_b64(JSON.stringify(ControlsText)) +  "*/\n"
-      return ControlsText
+      ControlsText = "/*Dat:" + utf8_to_b64(JSON.stringify(ControlsText)) +  "*/\n";
+      BasDialogsLib.store.addElements(Elements);
+      return ControlsText;
     }
 
     function BrowserAutomationStudio_EditStart(dataraw)
@@ -12872,56 +12513,78 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     }
 
 
-    function BrowserAutomationStudio_SetResources(resources, additional_resources)
+    function BrowserAutomationStudio_SetResources(resources, additionalResources)
     {
-      _ResourceCollection.reset()
+      const additionalSource = JSON.parse(additionalResources);
+      const source = JSON.parse(resources);
+      _ResourceCollection.reset();
 
-      var res = JSON.parse(resources)
-      var additional_res = JSON.parse(additional_resources) 
-
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _ResourceCollection.add({name:res[i]["name"],description:res[i]["description"],type:res[i]["type"]})
+      for (let i = 0; i < source.length; i++) {
+        _ResourceCollection.add({ name: source[i]["name"], description: source[i]["description"], type: source[i]["type"] });
       }
 
-      for(var i = 0;i < additional_res.length;i+=1)
-      {
-        _ResourceCollection.add({name:additional_res[i]["name"],description:additional_res[i]["name"]})
+      for (let i = 0; i < additionalSource.length; i++) {
+        _ResourceCollection.add({ name: additionalSource[i]["name"], description: additionalSource[i]["name"] });
       }
+
+      BasDialogsLib.store.addResource([...additionalSource, ...source]);
+    }
+
+    function BrowserAutomationStudio_SetGlobalVariables(globalVariables)
+    {
+      const source = JSON.parse(globalVariables);
+      _GlobalVariableCollection.reset();
+
+      source.sort((a, b) => a["name"] >= b["name"]);
+      for (let i = 0; i < source.length; i++) {
+        _GlobalVariableCollection.add({ name: source[i]["name"], global: true });
+      }
+
+      BasDialogsLib.store.addVariable(source, true);
     }
 
     function BrowserAutomationStudio_SetVariables(variables)
     {
-      _VariableCollection.reset()
-      var res = JSON.parse(variables);
-      var added_cycle_index = false
-      for(var i = 0;i < res.length;i+=1)
-      {
-        if(res[i]["name"] == "CYCLE_INDEX")
-          added_cycle_index = true
-      }
-      if(!added_cycle_index)
-        res.push({name:"CYCLE_INDEX"})
-      
-      res.sort(function(a,b){return a["name"] >= b["name"]})
+      const source = JSON.parse(variables);
+      _VariableCollection.reset();
 
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _VariableCollection.add({name:res[i]["name"]})
+      let addedCycleIndex = false;
+
+      for (let i = 0; i < source.length; i++) {
+        if (source[i]["name"] === "CYCLE_INDEX") {
+          addedCycleIndex = true;
+        }
       }
+
+      if (!addedCycleIndex) {
+        source.push({ name: "CYCLE_INDEX" });
+      }
+
+      source.sort((a, b) => a["name"] >= b["name"]);
+      for (let i = 0; i < source.length; i++) {
+        _VariableCollection.add({ name: source[i]["name"], global: false });
+      }
+
+      BasDialogsLib.store.addVariable(source, false);
     }
 
-    function BrowserAutomationStudio_SetGlobalVariables(global_variables)
+    function BrowserAutomationStudio_SetFunctions(functions)
     {
+      const source = JSON.parse(functions);
+      _FunctionCollection.reset();
 
-      _GlobalVariableCollection.reset()
-      var res = JSON.parse(global_variables)
-      res.sort(function(a,b){return a["name"] >= b["name"]})
-      var added_cycle_index = false
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _GlobalVariableCollection.add({name:res[i]["name"]})
+      for (let i = 0; i < source.length; i++) {
+        try {
+          const dat = JSON.parse(JSON.parse(source[i]["name"]));
+          const prop = { name: dat["n"] };
+          if (dat["fd"]) {
+            prop["properties"] = JSON.parse(dat["fd"]);
+          }
+          _FunctionCollection.add(prop);
+        } catch (e) { }
       }
+
+      BasDialogsLib.store.addFunction(source);
     }
 
     function BrowserAutomationStudio_SetSchema(schema)
@@ -12934,29 +12597,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     function BrowserAutomationStudio_SetEmbeddedData(data, languages)
     {
       _EmbeddedModel.ParseData(data, languages)
-    }
-
-    function BrowserAutomationStudio_SetFunctions(functions)
-    {
-      _FunctionCollection.reset()
-      var res = JSON.parse(functions)
-
-      for(var i = 0;i < res.length;i+=1)
-      {
-        try
-        {
-          var dat = JSON.parse(JSON.parse(res[i]["name"]))
-          var prop = {name:dat["n"]}
-          if(dat["fd"])
-          {
-            prop["properties"] = JSON.parse(dat["fd"])
-          }
-          _FunctionCollection.add(prop)
-        }catch(e)
-        {
-
-        }
-      }
     }
 
     function BrowserAutomationStudio_SetCurrentFunction(FunctionData)

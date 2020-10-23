@@ -237,6 +237,74 @@
             "name": "capitalize_words",
             "select": "capitalize_words_select.js",
             "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "count_words_code.js",
+                    "name": "count_words_code"
+                }
+            ],
+            "description": {
+                "en": "Count words",
+                "ru": "Количество слов"
+            },
+            "interface": "count_words_interface.js",
+            "is_element": false,
+            "name": "count_words",
+            "select": "count_words_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "split_to_words_code.js",
+                    "name": "split_to_words_code"
+                }
+            ],
+            "description": {
+                "en": "Split sentence to words",
+                "ru": "Разделить предложение на слова"
+            },
+            "interface": "split_to_words_interface.js",
+            "is_element": false,
+            "name": "split_to_words",
+            "select": "split_to_words_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "split_to_sentences_code.js",
+                    "name": "split_to_sentences_code"
+                }
+            ],
+            "description": {
+                "en": "Split text to sentences",
+                "ru": "Разделить текст на предложения"
+            },
+            "interface": "split_to_sentences_interface.js",
+            "is_element": false,
+            "name": "split_to_sentences",
+            "select": "split_to_sentences_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "find_substring_code.js",
+                    "name": "find_substring_code"
+                }
+            ],
+            "description": {
+                "en": "Find substring",
+                "ru": "Найти подстроку"
+            },
+            "interface": "find_substring_interface.js",
+            "is_element": false,
+            "name": "find_substring",
+            "select": "find_substring_select.js",
+            "template": "{{substring}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -254,7 +322,11 @@
 		"to_upper_case",
 		"string_contains",
 		"string_length",
-		"capitalize_words"
+		"capitalize_words",
+		"count_words",
+		"split_to_words",
+		"split_to_sentences",
+		"find_substring"
 	],
     "browser": [
     ],
@@ -395,7 +467,29 @@
 		"Capitalize all words": {"ru":"Сделать все слова заглавными"},
 		"All other letters in lowercase": {"ru":"Все остальные буквы в нижний регистр"},
 		"The string in which to convert words.": {"ru":"Строка, в которой нужно преобразовать слова."},
-		"Convert the first letter of a word to uppercase.": {"ru":"Преобразовать первую букву слова в верхний регистр."}
+		"Convert the first letter of a word to uppercase.": {"ru":"Преобразовать первую букву слова в верхний регистр."},
+		
+		"The string does not contain the words": {"ru":"Строка не содержит слов"},
+		"Get the number of words in a string.": {"ru":"Получить количество слов в строке."},
+		"The string from which to get the word count.": {"ru":"Строка, из которой нужно получить количество слов."},
+		"Variable in which, after successful execution of the action, the number of words contained in the string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество слов, содержащихся в строке."},
+		
+		"Split sentence to words.": {"ru":"Разделить предложение на слова."},
+		"[\"Just\", \"sample\", \"text\"]": {"ru":"[\"Просто\", \"пример\", \"текста\"]"},
+		"The string containing a sentence to be split into words.": {"ru":"Строка, содержащая предложение, которое нужно разделить на слова."},
+		"Variable in which, after successful execution of the action, the list of words will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список слов."},
+		
+		"Split text to sentences.": {"ru":"Разделить текст на предложения."},
+		"Just sample text. Test text, string": {"ru":"Просто пример текста. Тестовый текст, строка"},
+		"[\"Just sample text.\", \"Test text, string\"]": {"ru":"[\"Просто пример текста.\", \"Тестовый текст, строка\"]"},
+		"The string containing text to be split into sentences.": {"ru":"Строка, содержащая текст, который нужно разделить на предложения."},
+		"Variable in which, after successful execution of the action, the list of sentences will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список предложений."},
+		
+		"Find a substring in a string.": {"ru":"Найти подстроку в строке."},
+		"The substring to find in the string.": {"ru":"Подстрока, которую нужно найти в строке."},
+		"The string in which to find the substring.": {"ru":"Строка, в которой нужно найти подстроку."},
+		"String does not contain the specified substring": {"ru":"Строка не содержит указанную подстроку"},
+		"Variable in which, after successful execution of the action, the index of the beginning of the substring will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс начала подстроки."}
     },
     "major_version": 1,
     "minor_version": 0,

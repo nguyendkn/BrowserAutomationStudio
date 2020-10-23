@@ -5,7 +5,7 @@ if(string["original"].length == 0){
 };
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
-    var code = loader.GetAdditionalData() + _.template($("#string_length_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#split_to_sentences_code").html())({
         "string": string["updated"],
         "variable": "VAR_" + Save
     });

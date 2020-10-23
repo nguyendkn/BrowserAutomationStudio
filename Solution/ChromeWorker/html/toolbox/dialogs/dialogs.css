@@ -339,10 +339,6 @@
   visibility: hidden;
 }
 
-.modal-list-name::first-letter {
-  font-weight: bold;
-}
-
 .modal-header-visible::after {
   background: rgba(227, 227, 227, 0.5);
   height: calc(100% - 30px);

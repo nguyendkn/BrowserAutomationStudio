@@ -1,22 +1,14 @@
 class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
   /**
    * Create an instance of `BasVariablesDialog` class.
-   * @param {Object} element - target element object.
+   * @param {JQuery} element - target element object.
    * @constructor
    */
   constructor (element) {
-    const useGlobals = element.attr('disable_globals') !== 'true', globals = useGlobals
-      ? _GlobalVariableCollection.toJSON()
-      : [];
-
-    const useLocals = element.attr('disable_locals') !== 'true', locals = useLocals
-      ? _VariableCollection.toJSON()
-      : [];
-
     const actions = BasDialogsLib.utils.getActions();
 
     super({
-      items: [...globals, ...locals].map((item) => {
+      items: BasDialogsLib.utils.getDefaultCollection('variable', element).map((item) => {
         const action = actions.find(({ variables }) => variables.includes(item.name));
 
         if (!action) {

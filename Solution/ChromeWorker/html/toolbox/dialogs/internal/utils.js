@@ -1,18 +1,44 @@
 BasDialogsLib.utils = {
   /**
+   * Get a collection of default items for the selected type.
+   * @param {JQuery} $element - selected element.
+   * @param {String} type - selected type.
+   */
+  getDefaultCollection(type, $element) {
+    if (type === 'resource') return _ResourceCollection.toJSON();
+    if (type === 'function') return _FunctionCollection.toJSON();
+
+    return [
+      ...($element.attr('disable_globals') !== 'true'
+        ? _GlobalVariableCollection.toJSON()
+        : []),
+      ...($element.attr('disable_locals') !== 'true'
+        ? _VariableCollection.toJSON()
+        : []),
+    ];
+  },
+
+  /**
    * Get a collection of recent items for the selected type.
    * @param {JQuery} $element - selected element.
    * @param {String} type - selected type.
    */
-  getRecentCollection: (type, $element) => {
-    if (type === 'resource') return BasDialogsLib.store.resources;
-    if (type === 'function') return BasDialogsLib.store.functions;
+  getRecentCollection(type, $element) {
+    const store = BasDialogsLib.store, base = this.getDefaultCollection(type, $element);
 
-    const useGlobals = $element.attr('disable_globals') !== 'true';
-    const useLocals = $element.attr('disable_locals') !== 'true';
-    if (useGlobals && useLocals) return BasDialogsLib.store.variables;
-    if (useGlobals) return BasDialogsLib.store.globalVariables;
-    return BasDialogsLib.store.localVariables;
+    if (type === 'resource')
+      return store.resources.filter((r) =>
+        base.some(store.predicates.resources(r))
+      );
+
+    if (type === 'function')
+      return store.functions.filter((f) =>
+        base.some(store.predicates.functions(f))
+      );
+
+    return store.variables.filter((v) =>
+      base.some(store.predicates.variables(v))
+    );
   },
 
   /**
@@ -20,7 +46,7 @@ BasDialogsLib.utils = {
    * @param {Object} target - selected object.
    * @param {String} type - selected type.
    */
-  getDisplayName: (target, type) => {
+  getDisplayName(target, type) {
     if (type === 'resource') return target.name;
     if (type === 'function') return target.name;
 
@@ -31,7 +57,7 @@ BasDialogsLib.utils = {
    * Check that selected html element is clickable.
    * @param {HTMLElement} element - html element.
    */
-  isClickable: (element) => {
+  isClickable(element) {
     return _.any([
       element.parentNode.dataset.clickable === 'true',
       element.dataset.clickable === 'true',
@@ -42,7 +68,7 @@ BasDialogsLib.utils = {
    * Show the list item header by toggling CSS classes.
    * @param {JQuery} $header - selected header element.
    */
-  showHeader: ($header) => {
+  showHeader($header) {
     $header.addClass('modal-header-visible')
       .removeClass('modal-header-hidden');
   },
@@ -51,7 +77,7 @@ BasDialogsLib.utils = {
    * Hide the list item header by toggling CSS classes.
    * @param {JQuery} $header - selected header element.
    */
-  hideHeader: ($header) => {
+  hideHeader($header) {
     $header.addClass('modal-header-hidden')
       .removeClass('modal-header-visible');
   },
@@ -59,14 +85,14 @@ BasDialogsLib.utils = {
   /** 
    * Trim the selected string and convert to lowercase.
    */
-  format: (string) => {
+  format(string) {
     return string.toLowerCase().trim();
   },
 
   /**
    * Get an array of all possible action objects.
    */
-  getActions: () => {
+  getActions() {
     return Object.entries(_A).map(([name, action]) => {
       const popup = (!action.group && action.class && action.class === 'browser');
 

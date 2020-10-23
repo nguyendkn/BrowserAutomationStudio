@@ -131,7 +131,7 @@ BasDialogsLib.store = {
   addElements(source) {
     source.forEach((item) => {
       if (item.type === 'var') {
-        this.addVariable({ name: item.data, global: false }, false, false);
+        this.addVariable({ name: item.data.toUpperCase(), global: false }, false, false);
       }
     });
   },

@@ -11511,7 +11511,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         var el = $(`.mainscreen [data-ref="${name}"]`)
         el.addClass("toolbookmark")          
       })
-      BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({history: ActionHistory,tab: CurrentTab, bookmarks: BookmarkList}));
+      BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
+        recent: BasDialogsLib.store.save(), 
+        bookmarks: BookmarkList,
+        history: ActionHistory,
+        tab: CurrentTab
+      }));
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(interface_json)
@@ -11519,6 +11524,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       try
       {
         var interface_obj = JSON.parse(interface_json)
+        BasDialogsLib.store.load(interface_obj["recent"])
         ActionHistory = interface_obj["history"]
         BookmarkList = interface_obj["bookmarks"]
         var tab = interface_obj["tab"] || ""
@@ -11535,7 +11541,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         })
 
       }catch(e){}
-
     }
 
 

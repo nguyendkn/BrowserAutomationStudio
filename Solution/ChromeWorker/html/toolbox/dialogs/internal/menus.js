@@ -27,6 +27,7 @@ BasDialogsLib.dropdowns = {
           data.name,
           data.displayName
         );
+        $(data.result).trigger('blur');
       });
 
     $(document).off('mousedown', 'li.recent-variable > a')
@@ -37,6 +38,7 @@ BasDialogsLib.dropdowns = {
           data.name,
           data.displayName
         );
+        $(data.result).trigger('blur');
       });
   },
 

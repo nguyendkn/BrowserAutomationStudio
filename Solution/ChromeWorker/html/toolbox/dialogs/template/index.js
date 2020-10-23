@@ -178,7 +178,7 @@ BasDialogsLib.templates = {
       <% const displayName = BasDialogsLib.utils.getDisplayName(collection[i], 'variable'); %>
       <li class="recent-variable">
         <a tabindex="-1" href="#" data-display-name="[[<%= displayName %>]]" data-name="<%= collection[i].name %>" data-result="<%= id %>">
-          <span style="margin-left: 15px; color: #bcbcbc !important;">[[<%= displayName %>]]</span>
+          <span style="margin-left: 15px; color: #bcbcbc !important;">[[<%= _.trunc(displayName, 48) %>]]</span>
         </a>
       </li>
     <% } %>
@@ -190,7 +190,7 @@ BasDialogsLib.templates = {
       <% const displayName = BasDialogsLib.utils.getDisplayName(collection[i], 'resource'); %>
       <li class="recent-resource">
         <a tabindex="-1" href="#" data-display-name="{{<%= displayName %>}}" data-name="<%= collection[i].name %>" data-result="<%= id %>">
-          <span style="margin-left: 15px; color: #bcbcbc !important;">{{<%= displayName %>}}</span>
+          <span style="margin-left: 15px; color: #bcbcbc !important;">{{<%= _.trunc(displayName, 48) %>}}</span>
         </a>
       </li>
     <% } %>

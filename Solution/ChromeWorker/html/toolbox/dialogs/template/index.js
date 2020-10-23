@@ -28,7 +28,7 @@ BasDialogsLib.templates = {
                         </div>
                         <div class="modal-list-content" data-id="<%= item.id %>">
                           <div class="modal-list-text-lg modal-text-nowrap modal-text-<%= metadata.color %>" data-title="<%= item.name %>">
-                            <%= metadata.template(item) %>
+                            <%= metadata.template({ ...item, isRecent: false }) %>
                           </div>
                           <% if (item.description) { %>
                             <div class="modal-list-item-desc" 
@@ -84,7 +84,7 @@ BasDialogsLib.templates = {
                 <li class="modal-recent-item" data-id="<%= items.find(metadata.findPredicate(item)).id %>">
                   <div class="modal-recent-icon-left"></div>
                   <div class="modal-recent-text modal-text-nowrap modal-text-<%= metadata.color %>" data-title="<%= item.name %>">
-                    <%= metadata.template(item) %>
+                    <%= metadata.template({ ...item, isRecent: true }) %>
                   </div>
                   <div class="modal-recent-icon-right">
                     <svg class="modal-svg-normal" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -200,14 +200,24 @@ BasDialogsLib.templates = {
     <% if (global) { %>
       <span class="modal-list-prefix" title="<%= tr('Global variable') %>">G</span>
     <% } %>
-    <span class="modal-list-name"><%= name %></span>
+    <%= BasDialogsLib.templates.visibleName({ name, isRecent }) %>
   `),
 
   resourcesContent: _.template(`
-    <span class="modal-list-name"><%= name %></span>
+    <%= BasDialogsLib.templates.visibleName({ name, isRecent }) %>
   `),
 
   functionsContent: _.template(`
-    <span class="modal-list-name"><%= name %></span>
+    <%= BasDialogsLib.templates.visibleName({ name, isRecent }) %>
+  `),
+
+  visibleName: _.template(`
+    <span class="modal-list-name">
+      <% if (!isRecent) { %>
+        <b><%= name[0] %></b><%= name.slice(1) %>
+      <% } else { %>
+        <%= name %>
+      <% } %>
+    </span>
   `),
 };

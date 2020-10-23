@@ -181,6 +181,12 @@ BasDialogsLib.BasModalDialog = class {
       }
     });
 
+    _GobalModel.on('change:state', (model) => {
+      if (self.$modal && model.get('state')) {
+        self.closeDialog();
+      }
+    });
+
     $document.keydown(function (e) {
       if (!self.$modal) return;
 

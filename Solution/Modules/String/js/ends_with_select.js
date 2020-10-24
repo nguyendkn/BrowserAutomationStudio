@@ -3,10 +3,18 @@ if(string["original"].length == 0){
 	Invalid(tr("String") + " " + tr("is empty"));
     return;
 };
+var substring = GetInputConstructorValue("substring", loader);
+if(substring["original"].length == 0){
+	Invalid(tr("Substring") + " " + tr("is empty"));
+    return;
+};
+var lenght = GetInputConstructorValue("lenght", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
-    var code = loader.GetAdditionalData() + _.template($("#split_to_sentences_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#ends_with_code").html())({
         "string": string["updated"],
+        "substring": substring["updated"],
+        "lenght": lenght["updated"],
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

@@ -305,6 +305,91 @@
             "name": "find_substring",
             "select": "find_substring_select.js",
             "template": "{{substring}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "starts_with_code.js",
+                    "name": "starts_with_code"
+                }
+            ],
+            "description": {
+                "en": "Starts with",
+                "ru": "Начинается с"
+            },
+            "interface": "starts_with_interface.js",
+            "is_element": false,
+            "name": "starts_with",
+            "select": "starts_with_select.js",
+            "template": "{{substring}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "ends_with_code.js",
+                    "name": "ends_with_code"
+                }
+            ],
+            "description": {
+                "en": "Ends with",
+                "ru": "Заканчивается на"
+            },
+            "interface": "ends_with_interface.js",
+            "is_element": false,
+            "name": "ends_with",
+            "select": "ends_with_select.js",
+            "template": "{{substring}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "insert_substring_code.js",
+                    "name": "insert_substring_code"
+                }
+            ],
+            "description": {
+                "en": "Insert at",
+                "ru": "Вставить в"
+            },
+            "interface": "insert_substring_interface.js",
+            "is_element": false,
+            "name": "insert_substring",
+            "select": "insert_substring_select.js",
+            "template": "{{substring}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "concat_strings_code.js",
+                    "name": "concat_strings_code"
+                }
+            ],
+            "description": {
+                "en": "Concatenate strings",
+                "ru": "Соединить строки"
+            },
+            "interface": "concat_strings_interface.js",
+            "is_element": false,
+            "name": "concat_strings",
+            "select": "concat_strings_select.js",
+            "template": "{{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "latinize_code.js",
+                    "name": "latinize_code"
+                }
+            ],
+            "description": {
+                "en": "Latinize",
+                "ru": "Латинизировать"
+            },
+            "interface": "latinize_interface.js",
+            "is_element": false,
+            "name": "latinize",
+            "select": "latinize_select.js",
+            "template": "{{string}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -326,7 +411,12 @@
 		"count_words",
 		"split_to_words",
 		"split_to_sentences",
-		"find_substring"
+		"find_substring",
+		"starts_with",
+		"ends_with",
+		"insert_substring",
+		"concat_strings",
+		"latinize"
 	],
     "browser": [
     ],
@@ -356,6 +446,7 @@
 		"String": {"ru":"Строка"},
 		"Not string": {"ru":"Не строка"},
 		"Just sample text": {"ru":"Просто пример текста"},
+		"Optional parameter.": {"ru":"Необязательный параметр."},
 		"The data is a string.": {"ru":"Данные являются строкой."},
 		"The data is not a string.": {"ru":"Данные не являются строкой."},
 		"Check if the specified data is a string.": {"ru":"Проверить, являются ли указанные данные строкой."},
@@ -456,7 +547,7 @@
 		"The string contains a substring.": {"ru":"Строка содержит подстроку."},
 		"The string does not contain a substring.": {"ru":"Строка не содержит подстроку."},
 		"Substring, the contains of which is necessary to check.": {"ru":"Подстрока, содержание которой нужно проверить."},
-		"Check if the string contains the specified substring.": {"ru":"Проверить содержит ли строка указанную подстроку."},
+		"Check if the string contains the specified substring.": {"ru":"Проверить, содержит ли строка указанную подстроку."},
 		"The string in which to check the contains of the substring.": {"ru":"Строка, в которой нужно проверить содержание подстроки."},
 		"This variable will be true or false depending on whether the string contains a substring.":{"ru":"Эта переменная будет равна true или false в зависимости от того, содержит ли строка подстроку."},
 		
@@ -489,7 +580,47 @@
 		"The substring to find in the string.": {"ru":"Подстрока, которую нужно найти в строке."},
 		"The string in which to find the substring.": {"ru":"Строка, в которой нужно найти подстроку."},
 		"String does not contain the specified substring": {"ru":"Строка не содержит указанную подстроку"},
-		"Variable in which, after successful execution of the action, the index of the beginning of the substring will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс начала подстроки."}
+		"The character index at which to start the search.": {"ru":"Индекс символа, с которого следует начать поиск."},
+		"Variable in which, after successful execution of the action, the index of the beginning of the substring will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс начала подстроки."},
+		
+		"The string to check.": {"ru":"Строка, которую нужно проверить."},
+		"The string starts with a substring.": {"ru":"Строка начинается с подстроки."},
+		"The string does not start with a substring.": {"ru":"Строка не начинается с подстроки."},
+		"The substring that the string should start with.": {"ru":"Подстрока, с которой должна начинатся строка."},
+		"Check if the string starts with the specified substring.": {"ru":"Проверить, начинается ли строка с указанной подстроки."},
+		"This variable will be true or false depending on whether the string starts with the specified substring.":{"ru":"Эта переменная будет равна true или false в зависимости от того, начинается ли строка с указанной подстроки."},
+		
+		"String length": {"ru":"Длина строки"},
+		"The string ends with a substring.": {"ru":"Строка заканчивается подстрокой."},
+		"The string does not end with a substring.": {"ru":"Строка не заканчивается подстрокой."},
+		"The substring that the string must end with.": {"ru":"Подстрока, которой должна заканчиваться строка."},
+		"Check if a string ends with a specified substring.": {"ru":"Проверить, заканчивается ли строка указанной подстрокой."},
+		"The length to which the string will be truncated when searching for a substring allows searching within the string.": {"ru":"Длина, до которой будет обрезана строка при поиске подстроки,  позволяет искать внутри строки."},
+		"This variable will be true or false depending on whether the string ends with the specified substring.":{"ru":"Эта переменная будет равна true или false в зависимости от того, заканчиваться ли строка указанной подстрокой."},
+		
+		"Just not sample text": {"ru":"Просто не пример текста"},
+		"To the beginning of the string": {"ru":"В начало строки"},
+		"After the first character": {"ru":"После первого символа"},
+		"After the second character": {"ru":"После второго символа"},
+		"After the last character": {"ru":"После последнего символа"},
+		"The substring to insert.": {"ru":"Подстрока, которую нужно вставить."},
+		"Insert a substring into a string.": {"ru":"Вставить подстроку в строку."},
+		"The string to insert the substring into.": {"ru":"Строка, в которую нужно вставить подстроку."},
+		"The character index after which the substring will be inserted.": {"ru":"Индекс символа, после которого будет вставлена подстрока."},
+		
+		"List of strings": {"ru":"Список строк"},
+		"Concatenate strings without separator": {"ru":"Соединять строки без разделителя"},
+		"Concatenate multiple strings into one.": {"ru":"Соединить несколько строк в одну."},
+		"List of strings to be concatenated.": {"ru":"Список строк которые нужно соединить."},
+		"The string to be concatenated with other strings.": {"ru":"Строка, которую нужно соединить с другими строкой."},
+		"The parameters \"String 1\", \"String 2\", \"String 3\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 2\", \"Строка 3\""},
+		"The parameters \"String 2\", \"String 3\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 2\", \"Строка 3\", \"Список строк\""},
+		"The parameters \"String 1\", \"String 3\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 3\", \"Список строк\""},
+		"The parameters \"String 1\", \"String 2\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 2\", \"Список строк\""},
+		"As a list, you can use a string consisting of strings, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из строк, разделенных запятыми."},
+		
+		"The string to be latinized.": {"ru":"Строка, которую нужно латинизировать."},
+		"Convert all letters and symbols to Latin.": {"ru":"Преобразуйте все буквы и символы в латиницу."}
     },
     "major_version": 1,
     "minor_version": 0,

@@ -1,1 +1,1 @@
-<%= variable %> = _find_substring(<%= string %>,<%= substring %>);
+<%= variable %> = _find_substring(<%= string %>,<%= substring %>,<%= from %>);

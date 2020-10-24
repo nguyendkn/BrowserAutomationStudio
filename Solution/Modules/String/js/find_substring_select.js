@@ -8,11 +8,13 @@ if(substring["original"].length == 0){
 	Invalid(tr("Substring") + " " + tr("is empty"));
     return;
 };
+var from = GetInputConstructorValue("from", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
     var code = loader.GetAdditionalData() + _.template($("#find_substring_code").html())({
         "string": string["updated"],
         "substring": substring["updated"],
+        "from": from["updated"],
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

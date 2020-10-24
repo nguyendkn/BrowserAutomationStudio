@@ -7,6 +7,7 @@ BasDialogsLib.dropdowns = {
         const $parent = $(this), $dropdown = $parent.find('ul[data-toggle="dropdown"]');
 
         if ($dropdown.length) {
+          self.registerHotkeys($dropdown);
           self.renderResources($dropdown);
           self.renderVariables($dropdown);
           $dropdown.css('visibility', 'hidden');
@@ -40,6 +41,30 @@ BasDialogsLib.dropdowns = {
         );
         $(data.result).trigger('blur');
       });
+  },
+
+  registerHotkeys($dropdown) {
+    const $input = $dropdown.siblings('input:visible'),
+      $edit = $dropdown.find('a.edit'),
+      $res = $dropdown.find('a.res'),
+      $var = $dropdown.find('a.var');
+
+    if ($edit.length && $res.length && $var.length) {
+      $input.off('keyup').on('keyup', (e) => {
+        if (e.key === 'F6') {
+          $edit.trigger('mousedown');
+          $input.trigger('blur');
+        }
+        if (e.key === 'F7') {
+          $res.trigger('mousedown');
+          $input.trigger('blur');
+        }
+        if (e.key === 'F8') {
+          $var.trigger('mousedown');
+          $input.trigger('blur');
+        }
+      });
+    }
   },
 
   renderResources($dropdown) {

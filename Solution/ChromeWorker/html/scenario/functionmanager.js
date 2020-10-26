@@ -29,7 +29,9 @@ function FunctionManager()
             <div class="FunctionManagerItem" data-name="<%= func["name"] %>">
             	<a href="#" data-toggle="tooltip" data-placement="auto" title="${tr('Click to show function in scenario editor')}" class="FunctionManagerItemClick FunctionManagerItem<%= (index%3) + 1 %> <%= (func["name"] == global.function_name) ? "FunctionManagerItemSelected" : "" %>" data-func-name="<%= func["name"] %>" ><%= func["name"] %></a>
 				<% if (func["name"] !== "Main") { %>
-					<a href="#" class="FunctionManagerItemMenu" data-menu-toggle="false" data-name="<%= func["name"] %>"><i class="fa fa-bolt FunctionManagerItemBar" aria-hidden="true"></i></a>
+					<a href="#" class="FunctionManagerItemMenu" data-menu-toggle="false" data-name="<%= func["name"] %>" title="<%= tr('Run this function') %>">
+						<i class="fa fa-bolt FunctionManagerItemBar" aria-hidden="true"></i>
+					</a>
 				<% } %>
 				<a href="#" class="FunctionManagerItemMenu" data-menu-toggle="true" data-name="<%= func["name"] %>"><i class="fa fa-bars FunctionManagerItemBar" aria-hidden="true"></i></a>
             </div>

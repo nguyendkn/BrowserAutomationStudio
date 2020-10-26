@@ -700,7 +700,7 @@
                 <% } %>
 
                 <% if((typeof(variants) != "undefined" && variants != null) || typeof(disable_editor) == "undefined" || typeof(disable_resource) == "undefined" || typeof(disable_variable) == "undefined") { %>
-                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
+                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown" data-use-hotkeys="true">
                     <% if(typeof(variants) != "undefined") { %>
                       <% for(var i = 0;i<variants.length;i++) { %>
                         <li>

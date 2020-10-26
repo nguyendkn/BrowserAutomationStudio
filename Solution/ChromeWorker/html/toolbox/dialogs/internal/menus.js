@@ -2,9 +2,9 @@ BasDialogsLib.dropdowns = {
   initialize() {
     const self = this;
 
-    $(document).off('show.bs.dropdown', '.input-group')
-      .on('show.bs.dropdown', '.input-group', function () {
-        const $parent = $(this), $dropdown = $parent.find('ul[data-toggle="dropdown"]');
+    $(document).off('show.bs.dropdown', 'span[data-preserve="true"]')
+      .on('show.bs.dropdown', 'span[data-preserve="true"]', function () {
+        const $dropdown = $(this).find('ul[data-toggle="dropdown"]'), $parent = $dropdown.parent();
 
         if ($dropdown.length) {
           self.registerHotkeys($dropdown);
@@ -44,12 +44,12 @@ BasDialogsLib.dropdowns = {
   },
 
   registerHotkeys($dropdown) {
-    const $input = $dropdown.siblings('input:visible'),
-      $edit = $dropdown.find('a.edit'),
-      $res = $dropdown.find('a.res'),
-      $var = $dropdown.find('a.var');
+    if ($dropdown.data('use-hotkeys')) {
+      const $input = $dropdown.siblings('.form-control:visible'),
+        $edit = $dropdown.find('a.edit'),
+        $res = $dropdown.find('a.res'),
+        $var = $dropdown.find('a.var');
 
-    if ($edit.length && $res.length && $var.length) {
       $input.off('keyup').on('keyup', (e) => {
         if (e.key === 'F6') {
           $edit.trigger('mousedown');

@@ -155,12 +155,13 @@ class SearchManager {
    */
   get resultsVisible() {
     const bounding = this.$results.get(0).getBoundingClientRect();
-    const { clientHeight, clientWidth } = document.documentElement;
-    const { innerHeight, innerWidth } = window;
+    const docElement = document.documentElement;
+    const docHeight = docElement.clientHeight;
+    const docWidth = docElement.clientWidth;
 
     return _.every([
-      bounding.bottom <= (innerHeight || clientHeight),
-      bounding.right <= (innerWidth || clientWidth),
+      bounding.bottom <= (window.innerHeight || docHeight) * (100 / _Z),
+      bounding.right <= (window.innerWidth || docWidth) * (100 / _Z),
       bounding.left >= 0,
       bounding.top >= 0
     ]);
@@ -358,7 +359,7 @@ class SearchManager {
     const temp = { ...item, index };
     const data = { ...item, page };
     const template = _.template(`
-      <li class="result-item bg-<%= type === 'action' ? 'bg-action' : 'bg-link' %>">
+      <li class="result-item bg-<%= type === 'action' ? 'action' : 'link' %>">
         <div class="result-item-left">
           <img draggable="false" class="item-icon" src="<%= icon %>">
           <span class="item-index"><%= _.padLeft(index + 1, 2, '0') %></span>

@@ -1238,8 +1238,9 @@ bool MainLayout::IsTouchCursor()
     return false;
 }
 
-HCURSOR MainLayout::GetCursor()
+HCURSOR MainLayout::GetCursor(bool& NeedUpdate)
 {
+    NeedUpdate = true;
     if(IsMoveScrollVertical || IsInsideScrollVertical)
     {
         return hcSizeNS;
@@ -1271,9 +1272,11 @@ HCURSOR MainLayout::GetCursor()
             }
         }else
         {
+            NeedUpdate = false;
             return hcArrow;
         }
     }
+    NeedUpdate = false;
     return hcArrow;
 }
 

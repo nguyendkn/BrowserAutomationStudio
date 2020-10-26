@@ -154,7 +154,7 @@ public:
     bool OnMouseDown(int x, int y, int BrowserWidth,int BrowserHeight,int WindowWidth,int WindowHeight, bool IsControlButton);
     void SetBrowserCursor(int Cursor);
     void SetTouchMode(bool IsTouchMode);
-    HCURSOR GetCursor();
+    HCURSOR GetCursor(bool& NeedUpdate);
     bool IsTouchCursor();
 
     void SplitterHideInterface();

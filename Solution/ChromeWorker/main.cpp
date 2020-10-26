@@ -961,7 +961,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
         case WM_SETCURSOR:
         {
-            SetCursor(Layout->GetCursor());
+            bool NeedUpdate;
+            HCURSOR Cursor = Layout->GetCursor(NeedUpdate);
+            if(NeedUpdate)
+            {
+                SetCursor(Cursor);
+            }else
+            {
+                return DefWindowProc(hwnd, msg, wParam, lParam);
+            }
         }
         break;
 

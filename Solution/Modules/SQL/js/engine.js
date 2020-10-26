@@ -139,10 +139,10 @@ function SQL_ConvertDates(data){
 };
 function SQL_RestoreDates(results, format){
 	if(format=="Object list"){
-		results.forEach(function(row, ir){return Object.keys(row).forEach(function(key){return results[ir][key] = row[key].isDate ? _parse_date(row[key].date,"auto") : row[key]})});
+		results.forEach(function(row, ir){return Object.keys(row).forEach(function(key){return results[ir][key] = (row[key]!==null && row[key].isDate) ? _parse_date(row[key].date,"auto") : row[key]})});
 	};
 	if(format=="2D list"){
-		results = results.map(function(row){return row.map(function(cell){return cell.isDate ? _parse_date(cell.date,"auto") : cell})});
+		results = results.map(function(row){return row.map(function(cell){return (cell!==null && cell.isDate) ? _parse_date(cell.date,"auto") : cell})});
 	};
 	return results;
 };
@@ -245,7 +245,7 @@ function SQL_CheckDialect(){
 	};
 };
 function SQL_IsJsonString(str){
-	if(str.indexOf("[") < 0 && str.indexOf("{") < 0){
+	if(str.indexOf("[") < 0 && str.indexOf("]") < 0 && str.indexOf("{") < 0 && str.indexOf("}") < 0){
 		return false;
 	};
     try{

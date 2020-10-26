@@ -390,6 +390,57 @@
             "name": "latinize",
             "select": "latinize_select.js",
             "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "declination_code.js",
+                    "name": "declination_code"
+                }
+            ],
+            "description": {
+                "en": "Decline",
+                "ru": "Склонять"
+            },
+            "interface": "declination_interface.js",
+            "is_element": false,
+            "name": "declination",
+            "select": "declination_select.js",
+            "template": "{{number}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "parse_csv_string_code.js",
+                    "name": "parse_csv_string_code"
+                }
+            ],
+            "description": {
+                "en": "Parse CSV string",
+                "ru": "Парсить CSV строку"
+            },
+            "interface": "parse_csv_string_interface.js",
+            "is_element": false,
+            "name": "parse_csv_string",
+            "select": "parse_csv_string_select.js",
+            "template": "{{string}} -> {{VariablesList}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "create_csv_string_code.js",
+                    "name": "create_csv_string_code"
+                }
+            ],
+            "description": {
+                "en": "Create CSV string",
+                "ru": "Создать CSV строку"
+            },
+            "interface": "create_csv_string_interface.js",
+            "is_element": false,
+            "name": "create_csv_string",
+            "select": "create_csv_string_select.js",
+            "template": "{{Save}}"
         }
     ],
     "api_version": 1,
@@ -416,7 +467,10 @@
 		"ends_with",
 		"insert_substring",
 		"concat_strings",
-		"latinize"
+		"latinize",
+		"declination",
+		"parse_csv_string",
+		"create_csv_string"
 	],
     "browser": [
     ],
@@ -613,6 +667,7 @@
 		"Concatenate multiple strings into one.": {"ru":"Соединить несколько строк в одну."},
 		"List of strings to be concatenated.": {"ru":"Список строк которые нужно соединить."},
 		"The string to be concatenated with other strings.": {"ru":"Строка, которую нужно соединить с другими строкой."},
+		"Separator to insert between the concatenated strings.": {"ru":"Разделитель, вставляемый между соединяемыми строками."},
 		"The parameters \"String 1\", \"String 2\", \"String 3\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 2\", \"Строка 3\""},
 		"The parameters \"String 2\", \"String 3\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 2\", \"Строка 3\", \"Список строк\""},
 		"The parameters \"String 1\", \"String 3\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 3\", \"Список строк\""},
@@ -620,7 +675,46 @@
 		"As a list, you can use a string consisting of strings, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из строк, разделенных запятыми."},
 		
 		"The string to be latinized.": {"ru":"Строка, которую нужно латинизировать."},
-		"Convert all letters and symbols to Latin.": {"ru":"Преобразуйте все буквы и символы в латиницу."}
+		"Convert all letters and symbols to Latin.": {"ru":"Преобразуйте все буквы и символы в латиницу."},
+		
+		"year": {"ru":"год"},
+		"yeаrs": {"ru":"лет"},
+		"years": {"ru":"года"},
+		"at 10": {"ru":"при 10"},
+		"at 21": {"ru":"при 21"},
+		"at 22": {"ru":"при 22"},
+		"minutеs": {"ru":"минут"},
+		"minute": {"ru":"минута"},
+		"minutes": {"ru":"минуты"},
+		"account": {"ru":"аккаунт"},
+		"Word at": {"ru":"Слово при"},
+		"accounts": {"ru":"аккаунта"},
+		"аccounts": {"ru":"аккаунтов"},
+		"Word if number is": {"ru":"Слово, если число равно"},
+		"Decline a word depending on the specified number.": {"ru":"Склонять слово в зависимости от указанного числа."},
+		"The number by which the declension of the returned word will be determined.": {"ru":"Число, по которому будет определяется склонение возвращаемого слова."},
+		"Variable in which, after successful execution of the action, the word corresponding to the specified number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано слово, сответствующее указанному числу."},
+		
+		"Variables list": {"ru":"Список переменных"},
+		"Convert types.": {"ru":"Преобразовывать типы."},
+		"List of separators": {"ru":"Список разделителей"},
+		"Parse CSV string into items.": {"ru":"Распарсить CSV строку на элементы."},
+		"CSV string with want to parse into items.": {"ru":"CSV строка, которую нужно распарсить на элементы."},
+		"Convert strings to numbers, booleans and objects": {"ru":"Преобразовывать строки в числа, булевый тип и объекты"},
+		"The list of delimiters by which the string can be split.": {"ru":"Список разделителей, по которым можно разбить строку."},
+		"As a list, you can use a string consisting only of the separators.": {"ru":"В качестве списка можно использовать строку, состоящую только из разделителей."},
+		
+		"Item": {"ru":"Элемент"},
+		"List of items": {"ru":"Список элементов"},
+		"The item to add to the CSV string.": {"ru":"Элемент, который нужно добавить в CSV строку."},
+		"Create CSV string from multiple items.": {"ru":"Создать CSV строку из нескольких элементов."},
+		"List of items to add to the CSV string.": {"ru":"Список элементов, которые нужно добавить  в CSV строку."},
+		"Separator to insert between elements of CSV string.": {"ru":"Разделитель, вставляемый между элементами CSV строки."},
+		"The parameters \"Item 1\", \"Item 2\", \"Item 3\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 2\", \"Элемент 3\""},
+		"The parameters \"Item 2\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 2\", \"Элемент 3\", \"Список элементов\""},
+		"The parameters \"Item 1\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 3\", \"Список элементов\""},
+		"The parameters \"Item 1\", \"Item 2\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 2\", \"Список элементов\""},
+		"Variable in which, after successful execution of the action, the CSV string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана CSV строка."}
     },
     "major_version": 1,
     "minor_version": 0,

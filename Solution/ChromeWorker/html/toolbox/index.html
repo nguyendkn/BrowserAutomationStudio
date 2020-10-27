@@ -6359,16 +6359,26 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "mouseenter .tool": "toolmouseenter",
         "mouseleave .tool": "toolmouseleave",
 
+        "click .input_selector_string": "input_selector_focus",
         "focus .input_selector_string": "input_selector_focus",
         "blur .input_selector_string": "input_selector_blur",
+
+        "click .input_selector_number": "input_selector_focus",
         "focus .input_selector_number": "input_selector_focus",
         "blur .input_selector_number": "input_selector_blur",
+
+        "click .variable-input": "input_selector_focus",
         "focus .variable-input": "input_selector_focus",
         "blur .variable-input": "input_selector_blur",
+
+        "click .function-input": "input_selector_focus",
         "focus .function-input": "input_selector_focus",
         "blur .function-input": "input_selector_blur",
+
+        "click .resource-input": "input_selector_focus",
         "focus .resource-input": "input_selector_focus",
         "blur .resource-input": "input_selector_blur",
+
         "change #checkbox-image-show-data": "toggleimageshowdata",
         "change #ImageBase64": "imagebase64changed",
         "click #ImageDataRef": "showimage",

@@ -23,23 +23,23 @@ BasDialogsLib.dropdowns = {
     $(document).off('mousedown', 'li.recent-resource > a')
       .on('mousedown', 'li.recent-resource > a', function (e) {
         e.preventDefault(); const data = $(this).data();
+        BasDialogsLib.utils.saveCursor(data.result);
         BasDialogsLib.insertHelper.insertResource(
           data.result,
           data.name,
           data.displayName
         );
-        $(data.result).trigger('blur');
       });
 
     $(document).off('mousedown', 'li.recent-variable > a')
       .on('mousedown', 'li.recent-variable > a', function (e) {
         e.preventDefault(); const data = $(this).data();
+        BasDialogsLib.utils.saveCursor(data.result);
         BasDialogsLib.insertHelper.insertVariable(
           data.result,
           data.name,
           data.displayName
         );
-        $(data.result).trigger('blur');
       });
   },
 

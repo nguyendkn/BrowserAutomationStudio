@@ -87,7 +87,7 @@ BasDialogsLib.utils = {
       position = cursorPosition($input[0]).start;
     }
 
-    $input.data('position', position + _.size($input.val()));
+    $input.data('position', _.size($input.val()) - position);
   },
 
   /**

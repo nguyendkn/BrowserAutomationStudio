@@ -67,6 +67,7 @@ BasDialogsLib.utils = {
     }
 
     $input[0].setSelectionRange(position.start, position.start);
+    MainView.prototype.input_selector_blur({ target: selector });
   },
 
   /**

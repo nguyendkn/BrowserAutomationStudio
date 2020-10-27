@@ -51,6 +51,8 @@ BasDialogsLib.dropdowns = {
 
     if ($edit.length && $res.length && $var.length) {
       $input.off('keyup').on('keyup', (e) => {
+        if ($dropdown.is(':hidden')) return;
+
         if (e.key === 'F6') {
           $edit.trigger('mousedown');
           $input.trigger('blur');

@@ -11,10 +11,10 @@ BasDialogsLib.insertHelper = {
     const $element = $(selector);
 
     if ($(`${selector}_number:visible`).length) {
-      const group = $element.closest('.input-group');
-      group.find('.input_selector_number').hide();
-      group.find('.input_selector_string').show();
-      group.find('.selector').html('expression');
+      const $group = $element.closest('.input-group');
+      $group.find('.input_selector_number').hide();
+      $group.find('.input_selector_string').show();
+      $group.find('.selector').html('expression');
       $element.val(text);
     } else {
       if (!$element.is(`[data-${type}-constructor]`)) {
@@ -31,7 +31,7 @@ BasDialogsLib.insertHelper = {
           let start = 0;
           try {
             start = $element.val().length;
-            start = cursorposition($element[0]).start;
+            start = cursorPosition($element[0]).start;
           } catch (e) { }
           let val = $element.val();
           val = val.slice(0, start) + text + val.slice(start);

@@ -1502,7 +1502,7 @@ void MainApp::RenderCallback(int x, int y, int width, int height)
         RenderHeight = height;
 
         IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x + width/2) + std::string(",") + std::to_string(y + width/2) + std::string(")")),"", 0);
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x + width/2) + std::string(",") + std::to_string(y + height/2) + std::string(")")),"", 0);
     }else
     {
         SendTextResponce("<Render></Render>");

@@ -50,6 +50,10 @@ BasDialogsLib.insertHelper = {
       }
     }
 
-    if (selector === '#selector-input') MainView.prototype.pathchanged();
+    if (selector === '#selector-input') {
+      MainView.prototype.pathchanged();
+    }
+
+    BasDialogsLib.utils.restoreCursor(selector);
   }
 }

@@ -60,13 +60,13 @@ BasDialogsLib.utils = {
   restoreCursor(selector) {
     const $input = $(selector).trigger('focus'), position = $input.data('position');
 
-    if (!$input.is('[data-is-code-editor]')) {
-      $input[0].setSelectionRange(position.start, position.start);
-    } else {
-      // const { Editor } = window[$input.attr('id')];
-      // Editor.setPosition(position);
-      // Editor.focus();
+    if ($input.is('[data-is-code-editor]')) {
+      const { Editor } = window[$input.attr('id')];
+      Editor.setPosition(position);
+      return Editor.focus();
     }
+
+    $input[0].setSelectionRange(position.start, position.start);
   },
 
   /**
@@ -76,11 +76,10 @@ BasDialogsLib.utils = {
   saveCursor(selector) {
     const $input = $(selector); let position = {};
 
-    if (!$input.is('[data-is-code-editor]')) {
-      position = cursorposition($input[0]);
+    if ($input.is('[data-is-code-editor]')) {
+      position = window[$input.attr('id')].Editor.getPosition();
     } else {
-      // const { Editor } = window[$input.attr('id')];
-      // position = Editor.getPosition();
+      position = cursorPosition($input[0]);
     }
 
     $input.data('position', position);

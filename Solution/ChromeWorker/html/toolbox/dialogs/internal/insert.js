@@ -1,10 +1,10 @@
 BasDialogsLib.insertHelper = {
-  insertResource(selector, name, insert) {
-    this.insert(selector, name, insert, 'resource');
+  insertResource(selector, name, text) {
+    this.insert(selector, name, text, 'resource');
   },
 
-  insertVariable(selector, name, insert) {
-    this.insert(selector, name, insert, 'variable');
+  insertVariable(selector, name, text) {
+    this.insert(selector, name, text, 'variable');
   },
 
   insert(selector, name, text, type) {

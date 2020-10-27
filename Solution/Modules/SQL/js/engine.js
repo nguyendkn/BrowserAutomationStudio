@@ -1,6 +1,7 @@
 _SQL_CONNECTION_ID = rand(10) + thread_number();
 _SQL_CONFIG = {dialect:"", host:"", port:"", username:"", password:"", database:"", storage:""};
 _SQL_CONNECTION_TIMEOUT = 5*60*1000;
+_SQL_DEBUG = false;
 
 function SQL_Setup(dialect, host, port, username, password, database, storage, timeout){
 	_SQL_CONFIG["dialect"] = dialect;
@@ -25,7 +26,7 @@ function SQL_Query(){
 	_call_function(SQL_PreParameterization,{"query":query,"parameterize":query_parameterize})!
 	query = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, query, query_type, data_format];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, query, query_type, data_format, _SQL_DEBUG];
 	
 	_embedded("SQL_Query", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 	
@@ -46,7 +47,7 @@ function SQL_CountRecords(){
 	_call_function(SQL_PreParameterization,{"query":where,"parameterize":where_parameterize})!
 	where = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where, _SQL_DEBUG];
 	
 	_embedded("SQL_CountRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 	
@@ -71,7 +72,7 @@ function SQL_SelectRecords(){
 	_call_function(SQL_PreParameterization,{"query":where,"parameterize":where_parameterize})!
 	where = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where, included_columns, excluded_columns, order, offset, limit, data_format];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where, included_columns, excluded_columns, order, offset, limit, data_format, _SQL_DEBUG];
 	
 	_embedded("SQL_SelectRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 	
@@ -97,7 +98,7 @@ function SQL_UpdateRecords(){
 	_call_function(SQL_ConvertValuesToObject,{"values":values})!
 	values = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, values, where, fields, limit];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, values, where, fields, limit, _SQL_DEBUG];
 	
 	_embedded("SQL_UpdateRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
@@ -113,7 +114,7 @@ function SQL_DeleteRecords(){
 	_call_function(SQL_PreParameterization,{"query":where,"parameterize":where_parameterize})!
 	where = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where, limit];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, where, limit, _SQL_DEBUG];
 	
 	_embedded("SQL_DeleteRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
@@ -125,9 +126,12 @@ function SQL_Insert(){
 	
 	SQL_CheckDialect();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, fields, data];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONNECTION_ID, _SQL_CONFIG, _SQL_CONNECTION_TIMEOUT, table, fields, data, _SQL_DEBUG];
 	
 	_embedded("SQL_Insert", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+};
+function SQL_Debug(enable){
+	_SQL_DEBUG = enable;
 };
 function SQL_Close(){
 	VAR_SQL_NODE_PARAMETERS = _SQL_CONNECTION_ID;

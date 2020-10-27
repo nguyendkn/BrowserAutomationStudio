@@ -19,14 +19,21 @@ BasDialogsLib.insertHelper = {
     } else {
       if (!$element.is(`[data-${type}-constructor]`)) {
         if ($element.is('[data-is-code-editor]')) {
-          const { Editor } = window[$element.attr('id')];
+          const { Editor } = window[$element.attr('id')], position = Editor.getPosition();
 
           Editor.executeEdits('my-source', [{
-            range: monaco.Range.fromPositions(Editor.getPosition()),
+            range: monaco.Range.fromPositions(position),
             identifier: { major: 1, minor: 1 },
             forceMoveMarkers: true,
             text: text
-          }]);
+          }], [
+            monaco.Selection.fromPositions({
+              column: position.column + text.length,
+              lineNumber: position.lineNumber
+            })
+          ]);
+
+          Editor.focus();
         } else {
           let start = 0;
           try {

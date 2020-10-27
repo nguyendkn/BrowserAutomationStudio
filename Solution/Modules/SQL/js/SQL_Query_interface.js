@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"query", description:tr("SQL query"), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("The query to be executed against the database."),examples:[{code:"INSERT INTO users (name, age) VALUES ('John', 25)", description:tr("Insert new record into \"users\" table, the \"name\" field is \"John\", the \"age\" field is 25")},{code:"<br/>INSERT INTO users (name, surname, age) VALUES ([[NAME]], [[SURNAME]], [[AGE]])", description:tr("Insert new record into \"users\" table, where field values are obtained from variables")},{code:"<br/>DELETE FROM users WHERE id = 10", description:tr("Delete records with id equal to 10 from \"users\" table")},{code:"<br/>DELETE FROM users WHERE age IS NULL", description:tr("Delete records in which \"age\" is an empty field from the table \"users\"")},{code:"<br/>SELECT * FROM users", description:tr("Select all records from \"users\" table")},{code:"<br/>SELECT * FROM users WHERE name = [[NAME]]", description:tr("Select all records from \"users\" table in which the \"name\" field is equal to the value from the [[NAME]] variable")}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"query", description:tr("SQL query"), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, modal_code_id:"sql-query-help-" + (_K || "en") }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<input type="checkbox" id="Check" checked="checked"/> <label for="Check" class="tr">Parameterize variables and resources in the query.</label> <i class="fa fa-question-circle help-input trtitle" data-toggle="tooltip" title="Data from variables and resources will be escaped according to their type and used SQL dialect"></i>
 </span>
@@ -10,10 +10,8 @@
 	<div class="tr tooltip-paragraph-first-fold">Execute an arbitrary query against an SQL database.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Setup connection" action first.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">A query can have multiple lines, you can learn more about SQL in</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://www.w3schools.com/sql');return false">tutorial</a><span>.</span></div>
-	<div class="tr tooltip-paragraph-fold">If the parameter "Parameterize variables and resources" is activated, then data from variables and resources will be escaped according to their type and used SQL dialect.</div>
-	<div class="tr tooltip-paragraph-fold">For example, a string will be wrapped in quotes, the list will be converted to a string containing all the elements of the list, escaped and separated by commas.</div>
-	<div class="tooltip-paragraph-fold"><span class="tr">Before parameterization:</span> <code>string</code>, <span class="tr">after parameterization:</span> <code>'string'</code></div>
-	<div class="tooltip-paragraph-fold"><span class="tr">Before parameterization:</span> <code>[1,"test1",true]</code>, <span class="tr">after parameterization:</span> <code>1, 'test1', true</code></div>
+	<div class="tr tooltip-paragraph-fold">If the parameter "Parameterize variables and resources" is activated, then data from variables and resources will be escaped.</div>
+	<div class="tr tooltip-paragraph-fold">For example, this query <code>SELECT * FROM users WHERE name = [[NAME]]</code> will be replaced with this one <code>SELECT * FROM users WHERE name = 'NAME variable content'</code>. In case if parameter "Parameterize variables and resources" is disabled, query will be following <code>SELECT * FROM users WHERE name = NAME variable content</code>.</div>
 	<div class="tr tooltip-paragraph-fold">For different dialects, the result of parameterization may differ.</div>
 	<div class="tr tooltip-paragraph-fold">If a SELECT query is executed, the format of the saved data depends on the "Data format" setting.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">CSV list - a list that consists of CSV lines and CSV line consists of field values separated with ":" symbol.</span> <span class="tr">Example:</span> <code>["1:test1:true","2:test2:false","3:test3:false"]</code></div>
@@ -27,3 +25,77 @@
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>
+
+<script type="text/template" id="sql-query-help-en">
+	<span style="font-size:small">
+		This field should contain the SQL query to be executed against the database.<br/><br/>
+		
+		Example #1. Insert new record into "users" table, the "name" field is "John", the "age" field is 25
+		<pre>INSERT INTO users (name, age)
+VALUES ('John', 25)</pre>
+
+		Example #2.1. Insert new record into "users" table, where field values are obtained from variables.<br/><code>The parameter "Parameterize variables and resources" must be disabled, since the variables are already escaped.</code>
+		<pre>INSERT INTO users (name, surname, age)
+VALUES ('[[NAME]]', '[[SURNAME]]', [[AGE]])</pre>
+
+		Example #2.2. Insert new record into "users" table, where field values are obtained from variables.<br/><code>The parameter "Parameterize variables and resources" must be enabled, as variables are not escaped.</code>
+		<pre>INSERT INTO users (name, surname, age)
+VALUES ([[NAME]], [[SURNAME]], [[AGE]])</pre>
+
+		Example #3. Delete from table "users" records with "id" equal to 10
+		<pre>DELETE FROM users
+WHERE id = 10</pre>
+
+		Example #4. Delete from table "users" records in which "age" is empty field
+		<pre>DELETE FROM users
+WHERE age IS NULL</pre>
+
+		Example #5. Select all records from "users" table
+		<pre>SELECT * FROM users</pre>
+
+		Example #6.1. Select all records from "users" table in which the "name" field is equal to the value from the [[NAME]] variable.<br/><code>The parameter "Parameterize variables and resources" must be disabled, since the variable is already escaped.</code>
+		<pre>SELECT * FROM users
+WHERE name = '[[NAME]]'</pre>
+
+		Example #6.2. Select all records from "users" table in which the "name" field is equal to the value from the [[NAME]] variable.<br/><code>The parameter "Parameterize variables and resources" must be enabled, since the variable is not escaped.</code>
+		<pre>SELECT * FROM users
+WHERE name = [[NAME]]</pre>
+	</span>
+</script>
+
+<script type="text/template" id="sql-query-help-ru">
+	<span style="font-size:small">
+		Это поле должно содержать SQL запрос, который нужно выполнить к базе данных.<br/><br/>
+		
+		Пример #1. Вставить новую запись в таблицу "users", поле "name" равно "John", поле "age" равно 25
+		<pre>INSERT INTO users (name, age)
+VALUES ('John', 25)</pre>
+
+		Пример #2.1. Вставить новую запись в таблицу "users", где значения полей получены из переменных.<br/><code>Параметр "Параметризировать переменные и ресурсы" должен быть отключен, так как переменные уже экранированы.</code>
+		<pre>INSERT INTO users (name, surname, age)
+VALUES ('[[NAME]]', '[[SURNAME]]', [[AGE]])</pre>
+
+		Пример #2.2. Вставить новую запись в таблицу "users", где значения полей получены из переменных.<br/><code>Параметр "Параметризировать переменные и ресурсы" должен быть включен, так как переменные не экранированы.</code>
+		<pre>INSERT INTO users (name, surname, age)
+VALUES ([[NAME]], [[SURNAME]], [[AGE]])</pre>
+
+		Пример #3. Удалить из таблицы "users" записи в которых "id" равен 10
+		<pre>DELETE FROM users
+WHERE id = 10</pre>
+
+		Пример #4. Удалить из таблицы "users" записи, в которых "age" пустое поле
+		<pre>DELETE FROM users
+WHERE age IS NULL</pre>
+
+		Пример #5. Получить все записи из таблицы "users"
+		<pre>SELECT * FROM users</pre>
+
+		Пример #6.1. Получить все записи из таблицы "users", в которых поле "name" равно значению из переменной [[NAME]].<br/><code>Параметр "Параметризировать переменные и ресурсы" должен быть отключен, так как переменная уже экранированы.</code>
+		<pre>SELECT * FROM users
+WHERE name = '[[NAME]]'</pre>
+
+		Пример #6.2. Получить все записи из таблицы "users", в которых поле "name" равно значению из переменной [[NAME]].<br/><code>Параметр "Параметризировать переменные и ресурсы" должен быть включен, так как переменная не экранированы.</code>
+		<pre>SELECT * FROM users
+WHERE name = [[NAME]]</pre>
+	</span>
+</script>

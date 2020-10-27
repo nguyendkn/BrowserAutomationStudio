@@ -47,6 +47,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     this.useGlobals = element.attr('disable_globals') !== 'true';
     this.useLocals = element.attr('disable_locals') !== 'true';
     this.selector = element.attr('data-result-target');
+    BasDialogsLib.utils.saveCursor(this.selector);
   }
 
   /**

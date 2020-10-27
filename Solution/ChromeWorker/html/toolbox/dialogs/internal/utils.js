@@ -58,14 +58,15 @@ BasDialogsLib.utils = {
    * @param {String} selector - input field selector.
    */
   restoreCursor(selector) {
-    const $input = $(selector).trigger('focus'), { start } = $input.data('position');
+    const $input = $(selector).trigger('focus');
 
-    if ($input.prop('tagName') === 'TEXTAREA') {
-      $input[0].setSelectionRange(start, start);
-    }
+    if ($input.is('textarea') || $input.is('input')) {
+      const position = $input.data('position'), value = $input.val();
 
-    if ($input.prop('tagName') === 'INPUT') {
-      $input[0].setSelectionRange(start, start);
+      $input[0].setSelectionRange(
+        value.length - position,
+        value.length - position
+      );
     }
 
     MainView.prototype.input_selector_blur({ target: selector });
@@ -76,17 +77,17 @@ BasDialogsLib.utils = {
    * @param {String} selector - input field selector.
    */
   saveCursor(selector) {
-    const $input = $(selector); let position = {};
+    const $input = $(selector); let position = 0;
 
-    if ($input.prop('tagName') === 'TEXTAREA') {
-      position = cursorPosition($input[0]);
+    if ($input.is('textarea')) {
+      position = cursorPosition($input[0]).start;
     }
 
-    if ($input.prop('tagName') === 'INPUT') {
-      position = cursorPosition($input[0]);
+    if ($input.is('input')) {
+      position = cursorPosition($input[0]).start;
     }
 
-    $input.data('position', position);
+    $input.data('position', position + _.size($input.val()));
   },
 
   /**

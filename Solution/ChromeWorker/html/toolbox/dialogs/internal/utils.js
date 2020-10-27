@@ -79,7 +79,9 @@ BasDialogsLib.utils = {
 
     if ($input.is('[data-is-code-editor]')) {
       position = window[$input.attr('id')].Editor.getPosition();
-    } else {
+    } else if ($input.prop('tagName') === 'TEXTAREA') {
+      position = cursorPosition($input[0]);
+    } else if ($input.prop('tagName') === 'INPUT') {
       position = cursorPosition($input[0]);
     }
 

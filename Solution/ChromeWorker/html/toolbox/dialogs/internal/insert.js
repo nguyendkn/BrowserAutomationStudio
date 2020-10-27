@@ -19,10 +19,10 @@ BasDialogsLib.insertHelper = {
     } else {
       if (!$element.is(`[data-${type}-constructor]`)) {
         if ($element.is('[data-is-code-editor]')) {
-          const editor = window[$element.attr('id')].Editor, line = editor.getPosition();
+          const { Editor } = window[$element.attr('id')];
 
-          editor.executeEdits('my-source', [{
-            range: new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column),
+          Editor.executeEdits('my-source', [{
+            range: monaco.Range.fromPositions(Editor.getPosition()),
             identifier: { major: 1, minor: 1 },
             forceMoveMarkers: true,
             text: text

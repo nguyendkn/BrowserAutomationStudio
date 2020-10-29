@@ -987,6 +987,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 RECT r = Layout->GetBrowserRectangle(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
 
+                if(xPos > r.left + 1 && xPos < r.right - 1 && yPos > r.top + 1 && yPos < r.bottom - 1)
+                {
+                    Layout->IsCursorOverBrowser = true;                    
+                }
+                else
+                {
+                    Layout->IsCursorOverBrowser = false;                    
+                }
 
 
                 if(xPos > r.right || yPos > r.bottom || xPos < r.left || yPos < r.top)
@@ -1036,15 +1044,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             Layout->Focus();
                         if(app->GetData()->IsRecord)
                             app->MouseMoveAt(MousePositionX,MousePositionY);
-
-                        Layout->IsCursorOverBrowser = true;
                     }else
                     {
                         Layout->SetBrowserCursor(0);
                         if(app->GetData()->IsRecord)
                             app->MouseLeave();
-
-                        Layout->IsCursorOverBrowser = false;
                     }
                 }
             }

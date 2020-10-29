@@ -1366,6 +1366,9 @@ bool MainLayout::OnMouseMove(int x, int y, int BrowserWidth,int BrowserHeight,in
 
 bool MainLayout::OnMouseLeave()
 {
+    IsInsideScrollVertical = false;
+    IsInsideScrollHorizontal = false;
+
     if(!IsRecord)
         return false;
 

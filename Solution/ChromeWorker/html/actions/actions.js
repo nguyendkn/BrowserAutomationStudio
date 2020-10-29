@@ -179,15 +179,25 @@ _A = {
       },
       "group":"browser"
    },
-   "javascript":{  
-      "name":"Javascript",
-      "description":"Execute javascript",
-      "template":"{{Value}} -> {{Save}}",
-      "suggestion":{  
-         "en":"Execute on page, Access page",
-         "ru":"Яваскрипт, Выполнить на странице, Доступ к странице"
+   "javascript": {  
+      "name": "Javascript (Deprecated)",
+      "description": "Execute javascript",
+      "template": "{{Value}} -> {{Save}}",
+      "suggestion": {  
+         "en": "Execute on page, Access page",
+         "ru": "Яваскрипт, Выполнить на странице, Доступ к странице"
       },
-      "group":"browser"
+      "group": "browser"
+   },
+   "browserjavascript": {  
+      "name": "Javascript",
+      "description": "Execute javascript",
+      "template":" {{Code}}",
+      "suggestion": {  
+         "en": "Execute on page, Access page",
+         "ru": "Яваскрипт, Выполнить на странице, Доступ к странице"
+      },
+      "group": "browser"
    },
    "onloadjavascript":{  
       "name":"Execute On Every Page Load In Browser",

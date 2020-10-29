@@ -1509,6 +1509,37 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
   </script>
 
+  <script type="text/template" id="browserjavascript">
+    <div class="container-fluid">
+      <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
+        <div id="Code" data-is-code-editor="true" />
+      </span>
+      <%= "<s" + "cript>" %>
+        window.Code = {Editor: null, InitialValue: ""}
+    
+        require(['vs/editor/editor.main'], function() {
+          if($("#Code").attr("data-installed") == "true")
+            return;
+          $("#Code").attr("data-installed", "true")
+          window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
+            value: window.Code.InitialValue,
+            language: 'javascript',
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            fontSize: 12
+          });
+        });
+      <%= "</" + "script>" %>
+      <div style="text-align:center">
+        <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="var">
+          <i class="fa fa-at"></i>
+          <span class="tr">Insert variable</span>
+        </a>
+      </div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+  </script>
+
   <script type="text/template" id="onloadjavascript">
       <div class="container-fluid javascript">
         <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Script Text"), default_selector: "string", disable_int:true, disable_editor:true, use_textarea:true, size: 8, disable_type_chooser:true, help: {description: tr("Script which must be executed at page start. May contain variables or resources."), examples:[{code:"window.secret = 123",description:tr("Set global variable in browser context")},{code:"Object.defineProperty(navigator,\"platform\", {  get: () => \"MacIntel\" });",description:tr("Set navigator.platform")}]}
@@ -5543,6 +5574,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= variable %> = _result()
   </script>
 
+  <script type="text/template" id="browserjavascript_code">
+      /*Browser*/
+      page().script(<%= javascriptSource %> )!
+      {
+        var result = JSON.parse(_result())
+        <%= javascriptResult %>
+      }
+  </script>
+
   <script type="text/template" id="onloadjavascript_code">
       /*Browser*/
       onloadjavascript(<%= value %>)!
@@ -6138,6 +6178,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="databasefilter.js"></script>
   <script src="sortable.js"></script>
   <script src="cursorposition.js"></script>
+  <script src="./utils/prepareJavascript.js"></script>
   <script src="toastr.min.js"></script>
   <script src="embeddedmodel.js"></script>
   <script src="diff_match_patch.js"></script>
@@ -8353,6 +8394,25 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
+          }else if(State == "browserjavascript")
+          {
+            var Value = window.Code.Editor.getValue();
+
+            if(Value.length === 0) {
+              Invalid("Code is empty");
+              return;
+            }
+
+            var prepared = prepareBrowserJavascript(Value);
+
+            try {
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
+                javascriptResult: prepared.javascriptResult,
+                javascriptSource: prepared.javascriptSource,
+              });
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            } catch(e) { }
           }else if(State == "onloadjavascript")
           {
             var Value = GetInputConstructorValue("Value", loader);
@@ -10315,6 +10375,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "promptresult": _.template($('#promptresult').html()),
           "httpauth": _.template($('#httpauth').html()),
           "solverfailed": _.template($('#solverfailed').html()),
+          "browserjavascript": _.template($('#browserjavascript').html()),
           "onloadjavascript": _.template($('#onloadjavascript').html()),
           "incvariable": _.template($('#incvariable').html()),
           "incglobalvariable": _.template($('#incglobalvariable').html()),
@@ -10556,6 +10617,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/promptresult": "promptresult",
             "!/httpauth": "httpauth",
             "!/solverfailed": "solverfailed",
+            "!/browserjavascript": "browserjavascript",
             "!/onloadjavascript": "onloadjavascript",
             "!/incvariable": "incvariable",
             "!/incglobalvariable": "incglobalvariable",
@@ -10966,6 +11028,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         solverfailed: function(){
           _GobalModel.set({ state: "solverfailed" });
         },
+        browserjavascript: function(){
+          _GobalModel.set({ state: "browserjavascript" });
+        },
         onloadjavascript: function(){
           _GobalModel.set({ state: "onloadjavascript" });
         },
@@ -11085,6 +11150,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["screen"]["name"]), description: tr(_A["screen"]["description"]), ref: "screen" },
                 { name: tr(_A["proxy"]["name"]), description: tr(_A["proxy"]["description"]), ref: "proxy" },
                 { name: tr(_A["javascript"]["name"]), description: tr(_A["javascript"]["description"]), ref: "javascript" },
+                { name: tr(_A["browserjavascript"]["name"]), description: tr(_A["browserjavascript"]["description"]), ref: "browserjavascript" },
                 { name: tr(_A["onloadjavascript"]["name"]), description: tr(_A["onloadjavascript"]["description"]), ref: "onloadjavascript" },
                 { name: tr(_A["reset"]["name"]), description: tr(_A["reset"]["description"]), ref: "reset" },
                 { name: tr(_A["openfile"]["name"]), description: tr(_A["openfile"]["description"]), ref: "openfile" },

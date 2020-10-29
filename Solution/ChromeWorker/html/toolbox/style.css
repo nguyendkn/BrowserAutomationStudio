@@ -775,3 +775,14 @@ label
   height: 8px;
   width: 8px;
 }
+
+/***************
+ * Code editor *
+ ***************/
+
+#Code {
+  border: 1px solid #e0e0e0;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+  outline: none;
+}

@@ -1255,6 +1255,7 @@ _AL =
    "Resize" : {"ru": "Разрешение"},
    "Proxy" : {"ru": "Прокси"},
    "Javascript" : {"ru": "Яваскрипт"},
+   "Javascript (Deprecated)" : {"ru": "Яваскрипт (Устаревшее)"},
    "Execute On Every Page Load In Browser" :{"ru": "Выполнять при каждой загрузке страницы в браузере"},
    "Reset" : {"ru": "Сброс"},
    "Open File Result" : {"ru": "Диалог Открыть Файл"},

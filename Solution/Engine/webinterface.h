@@ -64,6 +64,7 @@ namespace BrowserAutomationStudioFramework
         int WindowHeight;
 
         bool IsRemoteControl;
+        bool FailedToGetLoginInterface;
         QString RemoteControlScript;
         QString RemoteControlLogin;
         QString RemoteControlPassword;
@@ -90,6 +91,7 @@ namespace BrowserAutomationStudioFramework
 
         virtual bool HasWebInterface();
         virtual bool Init(bool IsSilent);
+        virtual bool GetFailedToGetLoginInterface();
         virtual void Send(const QString& MessageType,
                           bool IsAsync = false,
                           int Id = 0,

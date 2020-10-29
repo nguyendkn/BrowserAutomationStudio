@@ -1024,17 +1024,43 @@
   </script>
 
   <script type="text/template" id="custom-help-browser-ru">
-    <div>Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
-    <div>Action works exactly the same as if you input code into browser console and output result into variable.</div>
-    <div>You can also use resources and variables here but only in read mode. Following code will work document.getElementById([[ID]]).innerHTML, but you can't do like this <strike>[[RESULT]] = document.getElementById([[ID]]).innerHTML</strike>.</div> 
-    <div>Use <a href="#!/custom">Execute Code</a> action if you want to run javascript inside thread.</div>
+    <div>Выполнить javascript внутри браузера. Это означает, что доступны document, window и другие javascript объекты браузера.</div>
+    <div>Действие работает точно так же, как если бы вы вводили код в консоль браузера.</div>
+    <div>Вы можете использовать переменные BAS в данном действии как для чтения, так и для записи.</div>
+    <div>Ресурсы не доступны для использования в данном действии.</div>
+    <br />
+    <div>Пример #1. Изменение HTML определенного элемента:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Пример #2. Получение HTML определенных элементов:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
   </script>
 
   <script type="text/template" id="custom-help-browser-en">
     <div>Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
-    <div>Action works exactly the same as if you input code into browser console and output result into variable.</div>
-    <div>You can also use resources and variables here but only in read mode. Following code will work document.getElementById([[ID]]).innerHTML, but you can't do like this <strike>[[RESULT]] = document.getElementById([[ID]]).innerHTML</strike>.</div> 
-    <div>Use <a href="#!/custom">Execute Code</a> action if you want to run javascript inside thread.</div>
+    <div>Action works exactly the same as if you input code into browser console.</div>
+    <div>You can use BAS variables in this action for both reading and writing.</div>
+    <div>Resources are not available for use in this action.</div>
+    <br />
+    <div>Example #1. Changing the HTML of the specific element:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Example #2. Getting the HTML of the specific elements:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
   </script>
 
   <script type="text/template" id="custom-help-interface-ru">
@@ -1064,6 +1090,7 @@
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
   </script>
+
   <script type="text/template" id="custom-help-interface-en">
     <div>Run javascript code in web interface context.</div>
     <div>If web interface is not enabled, this action does nothing.</div>
@@ -1090,7 +1117,6 @@
     <div>Example #4. Set input value.</div>
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
-
   </script>
 
   <script type="text/template" id="custom-help-en">
@@ -1544,12 +1570,13 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           });
         });
       <%= "</" + "script>" %>
-      <div style="text-align:center">
+      <div style="text-align: center">
         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="var">
           <i class="fa fa-at"></i>
           <span class="tr">Insert variable</span>
         </a>
       </div>
+      <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
     </div>
     <%= _.template($('#back').html())({ action: "executeandadd", visible: true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
   </script>

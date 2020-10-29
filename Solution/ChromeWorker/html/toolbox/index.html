@@ -1015,12 +1015,26 @@
         </a>
         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="res">
           <i class="fa fa-database"></i>
-            <span class="tr">Load from file, user input, database</span>
+          <span class="tr">Load from file, user input, database</span>
         </a>
       </div>
       <span class="short-description tr">Execute javascript code. This code can work with variables but can't work with elements in web browser.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, modal_code_id:"custom-help-" + (_K || "en")}) %>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-ru">
+    <div>Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
+    <div>Action works exactly the same as if you input code into browser console and output result into variable.</div>
+    <div>You can also use resources and variables here but only in read mode. Following code will work document.getElementById([[ID]]).innerHTML, but you can't do like this <strike>[[RESULT]] = document.getElementById([[ID]]).innerHTML</strike>.</div> 
+    <div>Use <a href="#!/custom">Execute Code</a> action if you want to run javascript inside thread.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-en">
+    <div>Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
+    <div>Action works exactly the same as if you input code into browser console and output result into variable.</div>
+    <div>You can also use resources and variables here but only in read mode. Following code will work document.getElementById([[ID]]).innerHTML, but you can't do like this <strike>[[RESULT]] = document.getElementById([[ID]]).innerHTML</strike>.</div> 
+    <div>Use <a href="#!/custom">Execute Code</a> action if you want to run javascript inside thread.</div>
   </script>
 
   <script type="text/template" id="custom-help-interface-ru">
@@ -1537,7 +1551,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         </a>
       </div>
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="onloadjavascript">

@@ -1,5 +1,10 @@
 <div style="margin-top:-4px;overflow:hidden;" id="NodeAll">
-	<input id="NodeInsertVariableHidden" style="display:none"/>
+	<input data-result-target="#NodeInsertVariableHidden"
+		id="NodeInsertVariableHidden"
+		disable_globals="true"
+		disable_locals="false"
+		style="display: none"
+	/>
 	<table style=" height:100vh; width:100vw;position:relative" >
 	<tr>
 		<td width="200">
@@ -349,12 +354,8 @@
 				bootbox.alert(tr("Variables are not allowed inside files"))
 				return
 			}
-			$("#NodeInsertVariableHidden").val("")
-			_MainView.currentInputVariable = "#NodeInsertVariableHidden"
-	        _MainView.disable_locals = false
-    	    _MainView.disable_globals = true
-
-			$('#VariableModal').modal('show');
+			$("#NodeInsertVariableHidden").val("");
+			BasVariablesDialog.create($("#NodeInsertVariableHidden"));
 		})
 
 		$("#NodeInsertVariableHidden").change(function(){

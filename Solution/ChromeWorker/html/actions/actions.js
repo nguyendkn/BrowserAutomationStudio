@@ -180,7 +180,7 @@ _A = {
       "group":"browser"
    },
    "javascript": {  
-      "name": "Javascript (Deprecated)",
+      "name": "Javascript (deprecated)",
       "description": "Execute javascript",
       "template": "{{Value}} -> {{Save}}",
       "suggestion": {  
@@ -1255,7 +1255,7 @@ _AL =
    "Resize" : {"ru": "Разрешение"},
    "Proxy" : {"ru": "Прокси"},
    "Javascript" : {"ru": "Яваскрипт"},
-   "Javascript (Deprecated)" : {"ru": "Яваскрипт (Устаревшее)"},
+   "Javascript (deprecated)" : {"ru": "Яваскрипт (устаревшее)"},
    "Execute On Every Page Load In Browser" :{"ru": "Выполнять при каждой загрузке страницы в браузере"},
    "Reset" : {"ru": "Сброс"},
    "Open File Result" : {"ru": "Диалог Открыть Файл"},

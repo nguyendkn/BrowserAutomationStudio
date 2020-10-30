@@ -1,8 +1,8 @@
 function prepareBrowserJavascript(source) {
   const variables = [...source.matchAll(/\[\[([^\]]+)\]\]/g)].map((match) => {
     const result = match[0].trim()
-      .replace(/\[/g, "")
-      .replace(/\]/g, "")
+      .replace(/\[/g, '')
+      .replace(/\]/g, '')
 
     source = source.replace(match[0], `_BAS_VARS['${result}']`); return result;
   });
@@ -22,7 +22,7 @@ function prepareBrowserJavascript(source) {
       .replace(/\s\s+/g, ' ')
       .replace(/\n/g, '')
       .replace(/\r/g, '')
-      .concat(` + `)
+      .concat(' + ')
       .concat(args),
     javascriptResult: variables.map((name) => `VAR_${name} = result['${name}'];`).join('\n')
   };

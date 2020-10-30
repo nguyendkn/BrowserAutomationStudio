@@ -68,8 +68,6 @@ BasDialogsLib.utils = {
         value.length - position
       );
     }
-
-    MainView.prototype.input_selector_blur({ target: selector });
   },
 
   /**

@@ -56,8 +56,8 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
    */
   onClose(name, { global }) {
     if (name.length) {
-      BasDialogsLib.insertHelper.insertVariable(this.selector, name, `[[${global ? 'GLOBAL:' : ''}${name}]]`);
       BasDialogsLib.store.addVariable({ name, global }, global);
+      BasDialogsLib.insertHelper.insertVariable(this.selector, name, `[[${global ? 'GLOBAL:' : ''}${name}]]`);
     }
   }
 

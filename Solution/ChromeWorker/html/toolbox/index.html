@@ -5636,9 +5636,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
+      VAR_JS_WAS_ERROR = false;
+      VAR_JS_LAST_ERROR = "";
       page().script(<%= javascriptSource %> )!
       {
-        var result = JSON.parse(_result())
+        var result = JSON.parse(_result());
+        VAR_JS_LAST_ERROR = result["lastError"];
+        VAR_JS_WAS_ERROR = result["wasError"];
         <%= javascriptResult %>
       }
   </script>

@@ -19,6 +19,7 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
     });
 
     this.selector = element.attr('data-result-target');
+    BasDialogsLib.utils.saveCursor(this.selector);
   }
 
   /**
@@ -37,8 +38,8 @@ class BasResourcesDialog extends BasDialogsLib.BasModalDialog {
     }
 
     if (name.length) {
-      BasDialogsLib.insertHelper.insertResource(this.selector, resource, `{{${resource}}}`);
       BasDialogsLib.store.addResource({ name });
+      BasDialogsLib.insertHelper.insertResource(this.selector, resource, `{{${resource}}}`);
     }
   }
 

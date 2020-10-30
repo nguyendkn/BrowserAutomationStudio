@@ -19,6 +19,7 @@ class BasFunctionsDialog extends BasDialogsLib.BasModalDialog {
     });
 
     this.selector = element.attr('data-result-target');
+    BasDialogsLib.utils.saveCursor(this.selector);
   }
 
   /**

@@ -6137,7 +6137,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="./search/internal/mark.min.js"></script>
   <script src="databasefilter.js"></script>
   <script src="sortable.js"></script>
-  <script src="cursorposition.js"></script>
+  <script src="./utils/cursorPosition.js"></script>
   <script src="toastr.min.js"></script>
   <script src="embeddedmodel.js"></script>
   <script src="diff_match_patch.js"></script>
@@ -6361,14 +6361,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         "focus .input_selector_string": "input_selector_focus",
         "blur .input_selector_string": "input_selector_blur",
+
         "focus .input_selector_number": "input_selector_focus",
         "blur .input_selector_number": "input_selector_blur",
+
         "focus .variable-input": "input_selector_focus",
         "blur .variable-input": "input_selector_blur",
+
         "focus .function-input": "input_selector_focus",
         "blur .function-input": "input_selector_blur",
+
         "focus .resource-input": "input_selector_focus",
         "blur .resource-input": "input_selector_blur",
+
         "change #checkbox-image-show-data": "toggleimageshowdata",
         "change #ImageBase64": "imagebase64changed",
         "click #ImageDataRef": "showimage",

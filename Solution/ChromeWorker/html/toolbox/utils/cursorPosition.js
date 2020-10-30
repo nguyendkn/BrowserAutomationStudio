@@ -1,4 +1,4 @@
-function cursorposition(el) {
+function cursorPosition(el) {
     var start = 0, end = 0, normalizedValue, range,
         textInputRange, len, endRange;
 

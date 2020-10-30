@@ -47,6 +47,7 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
     this.useGlobals = element.attr('disable_globals') !== 'true';
     this.useLocals = element.attr('disable_locals') !== 'true';
     this.selector = element.attr('data-result-target');
+    BasDialogsLib.utils.saveCursor(this.selector);
   }
 
   /**
@@ -55,8 +56,8 @@ class BasVariablesDialog extends BasDialogsLib.BasModalDialog {
    */
   onClose(name, { global }) {
     if (name.length) {
-      BasDialogsLib.insertHelper.insertVariable(this.selector, name, `[[${global ? 'GLOBAL:' : ''}${name}]]`);
       BasDialogsLib.store.addVariable({ name, global }, global);
+      BasDialogsLib.insertHelper.insertVariable(this.selector, name, `[[${global ? 'GLOBAL:' : ''}${name}]]`);
     }
   }
 

@@ -54,6 +54,41 @@ BasDialogsLib.utils = {
   },
 
   /**
+   * Restore cursor position for input field using its selector.
+   * @param {String} selector - input field selector.
+   */
+  restoreCursor(selector) {
+    const $input = $(selector).trigger('focus');
+
+    if ($input.is('textarea') || $input.is('input')) {
+      const position = $input.data('position'), value = $input.val();
+
+      $input[0].setSelectionRange(
+        value.length - position,
+        value.length - position
+      );
+    }
+  },
+
+  /**
+   * Save cursor position for input field using its selector.
+   * @param {String} selector - input field selector.
+   */
+  saveCursor(selector) {
+    const $input = $(selector); let position = 0;
+
+    if ($input.is('textarea')) {
+      position = cursorPosition($input[0]).start;
+    }
+
+    if ($input.is('input')) {
+      position = cursorPosition($input[0]).start;
+    }
+
+    $input.data('position', _.size($input.val()) - position);
+  },
+
+  /**
    * Check that selected html element is clickable.
    * @param {HTMLElement} element - html element.
    */

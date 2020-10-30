@@ -10470,8 +10470,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         {
           d = d.filter(function(el){
             return !el["show_only_with_database"]
-          })
+          });
         }
+        d = d.filter(function(el) {
+          return !["javascript"].includes(el["ref"]);
+        });
 
         $("#containerdata").html(this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters}))
         _Filter.InstallEvents()

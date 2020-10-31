@@ -1,13 +1,8 @@
 <div class="container-fluid">
-<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-	<div><input type="radio" id="Check"  name="filetype" checked/> <label for="Check" class="tr">Enable debug</label></div>
-</span>
-<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check2">
-	<div><input type="radio" id="Check2"  name="filetype"/> <label for="Check2" class="tr">Disable debug</label></div>
-</span>
+<%= _.template($('#input_constructor').html())({id:"enable", description:tr("Enable debug"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true","false"], help: {description: tr("Enable SQL module debug."), examples:[{code:"true",description:tr("Enable debug")},{code:"false",description:tr("Disable debug")}]}}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Enable or disable debug.</div>
+	<div class="tr tooltip-paragraph-first-fold">Enable or disable SQL module debug.</div>
 	<div class="tr tooltip-paragraph-last-fold">If debug is enabled, all queries and their results will be displayed in the log.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

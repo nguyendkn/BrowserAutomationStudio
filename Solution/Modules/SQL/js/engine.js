@@ -21,7 +21,7 @@ function SQL_Query(){
 	
 	SQL_CheckDialect();
 	
-	var query_type = ["SELECT", "INSERT", "UPDATE", "BULKUPDATE", "BULKDELETE", "DELETE", "UPSERT", "VERSION", "SHOWTABLES", "SHOWINDEXES", "DESCRIBE", "FOREIGNKEYS", "SHOWCONSTRAINTS"].filter(function(type){return query.indexOf(type) > -1})[0] || "RAW";
+	var query_type = ["SELECT", "INSERT", "UPDATE", "BULKUPDATE", "BULKDELETE", "DELETE", "UPSERT", "VERSION", "SHOWTABLES", "SHOWINDEXES", "DESCRIBE", "FOREIGNKEYS", "SHOWCONSTRAINTS"].filter(function(type){return query.indexOf(type)===0})[0] || "RAW";
 	
 	_call_function(SQL_PreParameterization,{"query":query,"parameterize":query_parameterize})!
 	query = _result_function();
@@ -131,7 +131,7 @@ function SQL_Insert(){
 	_embedded("SQL_Insert", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
 function SQL_Debug(enable){
-	_SQL_DEBUG = enable;
+	_SQL_DEBUG = (enable==true || enable=="true");
 };
 function SQL_Close(){
 	VAR_SQL_NODE_PARAMETERS = _SQL_CONNECTION_ID;

@@ -202,7 +202,7 @@
             "is_element": false,
             "name": "SQL_Debug",
             "select": "SQL_Debug_select.js",
-            "template": ""
+            "template": "{{enable}}"
         }
     ],
     "api_version": 1,
@@ -241,7 +241,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [id, config, timeout, query, query_type, data_format, debug] = [[SQL_NODE_PARAMETERS]];\r\nvar [query_sql, query_parameterize, query_replacements] = query;\r\n\r\nvar options = {type:query_type};\r\nif(query_parameterize){\r\n    options.replacements = util.restore_dates(query_replacements);\r\n};\r\nif(debug){\r\n    options.logging = BAS_CONSOLE_LOG;\r\n};\r\n\r\nvar sql = await util.connect_sql(id, config, debug);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var results = await sequelize.query(query_sql, options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    [[SQL_NODE_PARAMETERS]] = query_type==\"SELECT\" ? [util.format_results(results, data_format), data_format, query_type] : [results, data_format, query_type];\r\n    await sequelize.sync();\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
+            "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [id, config, timeout, query, query_type, data_format, debug] = [[SQL_NODE_PARAMETERS]];\r\nvar [query_sql, query_parameterize, query_replacements] = query;\r\n\r\nvar options = {type:query_type};\r\nif(query_parameterize){\r\n    options.replacements = util.restore_dates(query_replacements);\r\n};\r\nif(debug){\r\n    options.logging = BAS_CONSOLE_LOG;\r\n};\r\n\r\nvar sql = await util.connect_sql(id, config, debug);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var results = await sequelize.query(query_sql, options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    if(query_type==\"RAW\"){\r\n        results = (results[0]==null || typeof results[0]==\"undefined\") ? \"\" : results[0];\r\n    };\r\n    [[SQL_NODE_PARAMETERS]] = query_type==\"SELECT\" ? [util.format_results(results, data_format), data_format, query_type] : [results, data_format, query_type];\r\n    await sequelize.sync();\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_Query",
             "DataType": 0,
             "LanguageName": "Node",
@@ -457,7 +457,8 @@
 		
 		"Enable debug": {"ru":"Включить отладку"},
 		"Disable debug": {"ru":"Отключить отладку"},
-		"Enable or disable debug.": {"ru":"Включить или отключить отладку."},
+		"Enable SQL module debug.": {"ru":"Включить отладку SQL модуля."},
+		"Enable or disable SQL module debug.": {"ru":"Включить или отключить отладку SQL модуля."},
 		"If debug is enabled, all queries and their results will be displayed in the log.": {"ru":"Если отладка включена, все запросы и их результаты будут выводится в лог."}
     },
     "major_version": 1,

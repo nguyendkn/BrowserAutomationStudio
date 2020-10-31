@@ -13,30 +13,33 @@ function prepareBrowserJavascript(source) {
   args = `\"(\" + ${args} + \")\"`;
 
   return {
-    javascriptSource: JSON.stringify(
+    variables, source: JSON.stringify(
       `((_BAS_DATA) => {  
-        const _BAS_VARS = JSON.parse(_BAS_DATA);
-        let _BAS_WAS_ERROR = false;
-        let _BAS_LAST_ERROR = '';
-
-        try { 
-          ${source} 
-        } catch (err) {
-          _BAS_LAST_ERROR = err.message;
-          _BAS_WAS_ERROR = true;
-        }
-
-        return JSON.stringify({
-          lastError: _BAS_LAST_ERROR,
-          wasError: _BAS_WAS_ERROR,
+        const _BAS_VARS = JSON.parse(_BAS_DATA); let _BAS_ERROR = null;
+        _BAS_HIDE(AsyncJsResult) = {
+          error: _BAS_ERROR,
           vars: _BAS_VARS,
-        }); 
+          done: false
+        };
+
+        (new Promise(async (resolve) => {
+          try { 
+            ${source}
+          } catch (err) {
+            _BAS_ERROR = err.message;
+          }
+
+          resolve();
+        }).then(() => {
+          _BAS_HIDE(AsyncJsResult).error = _BAS_ERROR;
+          _BAS_HIDE(AsyncJsResult).vars = _BAS_VARS;
+          _BAS_HIDE(AsyncJsResult).done = true;
+        }));
       })`)
       .replace(/\s\s+/g, ' ')
       .replace(/\n/g, '')
       .replace(/\r/g, '')
       .concat(' + ')
-      .concat(args),
-    javascriptResult: variables.map((name) => `VAR_${name} = result["vars"]["${name}"];`).join('\n')
+      .concat(args)
   };
 }

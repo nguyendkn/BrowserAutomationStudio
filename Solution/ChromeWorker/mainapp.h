@@ -213,7 +213,7 @@ public:
     void DirectControlAddAction(const std::string& Script);
     FingerprintDetector Detector;
     NotificationManager Notifications;
-    std::string Javascript(const std::string& Script);
+    std::string Javascript(const std::string& Script, const std::string& BrowserType);
     void SendStartupScriptUpdated();
     int GetHighlightOffsetX();
     int GetHighlightOffsetY();

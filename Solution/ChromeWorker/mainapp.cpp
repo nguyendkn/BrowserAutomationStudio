@@ -112,8 +112,10 @@ void MainApp::UpdateManualControl(bool NoFocus)
     InvalidateRect(Data->_MainWindowHandle,&r,true);
 }
 
-std::string MainApp::Javascript(const std::string& Script)
+std::string MainApp::Javascript(const std::string& Script, const std::string& BrowserType)
 {
+    if(BrowserType != "main")
+        return Script;
     JavaScriptExtensions Extensions;
     return Extensions.ProcessJs(Script,Data->_UniqueProcessId);
 }
@@ -288,7 +290,7 @@ void MainApp::DownloadStart()
 {
     if(Data->IsRecord && BrowserToolbox)
     {
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_Notify('download')"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_Notify('download')","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 }
 
@@ -296,7 +298,7 @@ void MainApp::ComboboxOpened()
 {
     if(Data->IsRecord && BrowserToolbox)
     {
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_Notify('combobox')"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_Notify('combobox')","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 }
 
@@ -304,7 +306,7 @@ void MainApp::UploadStart()
 {
     if(Data->IsRecord && BrowserToolbox)
     {
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_Notify('upload')"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_Notify('upload')","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 }
 
@@ -834,7 +836,7 @@ void MainApp::IsChangedCallback()
 {
     if(BrowserScenario)
     {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_IsChanged()"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_IsChanged()","scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
 }
 
@@ -1281,7 +1283,7 @@ void MainApp::HighlightActionCallback(const std::string& ActionId)
     if(BrowserScenario)
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(
                     Javascript(std::string("BrowserAutomationStudio_UnfoldParents(") + ActionId + std::string(");") +
-                    std::string("BrowserAutomationStudio_FocusAction(") + ActionId + std::string(");"))
+                    std::string("BrowserAutomationStudio_FocusAction(") + ActionId + std::string(");"),"scenario")
                     ,BrowserScenario->GetMainFrame()->GetURL(), 0);
 
 }
@@ -1319,7 +1321,7 @@ void MainApp::MouseClickCallback(int x, int y)
         LastCommand.CommandParam1 = std::to_string(x);
         LastCommand.CommandParam2 = std::to_string(y);
         IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),"", 0);
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
     }else
     {
         SendTextResponce("<MouseClick></MouseClick>");
@@ -1344,7 +1346,7 @@ void MainApp::MouseClickUpCallback(int x, int y)
         LastCommand.CommandParam1 = std::to_string(x);
         LastCommand.CommandParam2 = std::to_string(y);
         IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),"", 0);
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
     }else
     {
         SendTextResponce("<MouseClickUp></MouseClickUp>");
@@ -1370,7 +1372,7 @@ void MainApp::MouseClickDownCallback(int x, int y)
         LastCommand.CommandParam1 = std::to_string(x);
         LastCommand.CommandParam2 = std::to_string(y);
         IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),"", 0);
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
     }else
     {
         SendTextResponce("<MouseClickDown></MouseClickDown>");
@@ -1452,7 +1454,7 @@ void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, doub
         {
             IsLastCommandNull = false;
             std::string AllowOutOfBounds = iscoordinates ? "true" : "false";
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + AllowOutOfBounds + std::string(")")),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + AllowOutOfBounds + std::string(")"),"main"),"", 0);
         }
 
 
@@ -1474,7 +1476,7 @@ void MainApp::ScrollCallback(int x, int y)
         LastCommand.CommandParam1 = std::to_string(x);
         LastCommand.CommandParam2 = std::to_string(y);
         IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),"", 0);
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
     }else
     {
         SendTextResponce("<Scroll></Scroll>");
@@ -1484,7 +1486,7 @@ void MainApp::ScrollCallback(int x, int y)
 void MainApp::DebugVariablesResultCallback(const std::string & data)
 {
     if(BrowserScenario)
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_UpdateVariablesResult(") + picojson::value(data).serialize() + std::string(")")),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_UpdateVariablesResult(") + picojson::value(data).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
 
     SendTextResponce("<DebugVariablesResult></DebugVariablesResult>");
 }
@@ -1502,7 +1504,7 @@ void MainApp::RenderCallback(int x, int y, int width, int height)
         RenderHeight = height;
 
         IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x + width/2) + std::string(",") + std::to_string(y + height/2) + std::string(")")),"", 0);
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x + width/2) + std::string(",") + std::to_string(y + height/2) + std::string(")"),"main"),"", 0);
     }else
     {
         SendTextResponce("<Render></Render>");
@@ -1933,7 +1935,7 @@ void MainApp::InspectMouseAt(int x, int y, clock_t CurrentTime)
     {
         if(_HandlersManager->GetBrowser())
         {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + std::to_string(InspectPosition) + std::string(")")),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + std::to_string(InspectPosition) + std::string(")"),"main"),"", 0);
         }
     }
 }
@@ -2118,7 +2120,7 @@ void MainApp::PrepareFunctionCallback(const std::string& value)
 {
     if(BrowserScenario)
     {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_PrepareFunction(") + picojson::value(value).serialize() + std::string(")")),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_PrepareFunction(") + picojson::value(value).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
 
 }
@@ -2133,7 +2135,7 @@ void MainApp::RecaptchaV3ListCallback(const std::string& value)
     {
         std::vector<int64> FrameIds;
         _HandlersManager->GetBrowser()->GetFrameIdentifiers(FrameIds);
-        std::string Js = Javascript(std::string(";_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3ActionList) = ") + picojson::value(Data->_RecaptchaV3List).serialize() + std::string(";"));
+        std::string Js = Javascript(std::string(";_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3ActionList) = ") + picojson::value(Data->_RecaptchaV3List).serialize() + std::string(";"),"main");
         for(int64 Id: FrameIds)
         {
             CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(Id);
@@ -2151,7 +2153,7 @@ void MainApp::RecaptchaV3ResultCallback(const std::string& id, const std::string
     {
         std::vector<int64> FrameIds;
         _HandlersManager->GetBrowser()->GetFrameIdentifiers(FrameIds);
-        std::string Js = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Solved)(") + picojson::value(id).serialize() + std::string(", ") + picojson::value(result).serialize() + std::string(");"));
+        std::string Js = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Solved)(") + picojson::value(id).serialize() + std::string(", ") + picojson::value(result).serialize() + std::string(");"),"main");
         for(int64 Id: FrameIds)
         {
             CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(Id);
@@ -2451,9 +2453,9 @@ void MainApp::WaitCodeCallback()
     CreateScenarioBrowser();
     Layout->UpdateState(MainLayout::Ready);
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     if(BrowserScenario)
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_NotRunningTask()"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_NotRunningTask()","scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     Layout->UpdateTabs();
 }
 
@@ -2468,9 +2470,9 @@ void MainApp::StartSectionCallback(int Id)
     CreateScenarioBrowser();
     Layout->UpdateState(MainLayout::Ready);
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     if(BrowserScenario)
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + std::to_string(Id) + std::string(")")),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + std::to_string(Id) + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     Layout->UpdateTabs();
 }
 
@@ -2479,9 +2481,9 @@ void MainApp::ScriptFinishedCallback()
     WORKER_LOG("ScriptFinishedCallback");
     Layout->UpdateState(MainLayout::Finished);
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     if(BrowserScenario)
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_RunningTask()"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_RunningTask()","scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     Hide();
 }
 
@@ -2734,7 +2736,7 @@ void MainApp::SetNextActionCallback(const std::string& NextActionId)
     if(scenariov8handler && scenariov8handler->GetIsInitialized())
     {
         if(BrowserScenario)
-            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + NextActionId + std::string(")")),BrowserScenario->GetMainFrame()->GetURL(), 0);
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + NextActionId + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     }else
     {
         SetNextActionId = NextActionId;
@@ -2855,14 +2857,14 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
 
         if(ExecuteFrameScrollingSwitch)
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + path + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + path + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }else
         {
             script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + path + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_frame_find_result)(0,0,'','','','',0,0,false);return;};"
                 "var rect = el.getBoundingClientRect();"
                 "var frame_index=_BAS_HIDE(BrowserAutomationStudio_GetFrameIndex)(el);"
                 "var r = _BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(el);"
-                "_BAS_HIDE(browser_automation_studio_frame_find_result)(parseInt(rect.left),parseInt(rect.top),el.getAttribute('name')||'',el.getAttribute('src')||'',el.outerHTML||'',frame_index,r.left,r.top,true);}"));
+                "_BAS_HIDE(browser_automation_studio_frame_find_result)(parseInt(rect.left),parseInt(rect.top),el.getAttribute('name')||'',el.getAttribute('src')||'',el.outerHTML||'',frame_index,r.left,r.top,true);}"),"main");
         }
         script = std::string("(function(){") + script + std::string("})()");
         //WORKER_LOG(script);
@@ -2893,32 +2895,32 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
         std::string script;
         if(Command.CommandName == "xml")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res = '';if(el){res = el.outerHTML}_BAS_HIDE(browser_automation_studio_result)(res);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res = '';if(el){res = el.outerHTML}_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
         }else if(Command.CommandName == "text")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res = '';try{if(el){if(el.tagName.toLowerCase()=='input'||el.tagName.toLowerCase()=='textarea')res=el.value;else res=el.textContent}}catch(e){}_BAS_HIDE(browser_automation_studio_result)(res);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res = '';try{if(el){if(el.tagName.toLowerCase()=='input'||el.tagName.toLowerCase()=='textarea')res=el.value;else res=el.textContent}}catch(e){}_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
         }else if(Command.CommandName == "script")
         {
-            std::string script_escaped = picojson::value(Javascript(LastCommand.CommandParam1)).serialize();
-            std::string script_alternative = Javascript(std::string("(function(){var positionx=") + std::to_string(ExecuteSearchCoordinatesX) + std::string(";var positiony=") + std::to_string(ExecuteSearchCoordinatesY) + std::string(";var scrollx=") + std::to_string(Data->ScrollX) + std::string(";var scrolly=") + std::to_string(Data->ScrollY) + std::string(";var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!self){_BAS_HIDE(browser_automation_studio_result)('');return;};var obj=null;try{obj = ") + LastCommand.CommandParam1 + std::string(";}catch(e){}var res='';if(typeof(obj)!='undefined'&&obj !== null){res=obj.toString()}_BAS_HIDE(browser_automation_studio_result)(res);})()"));
+            std::string script_escaped = picojson::value(Javascript(LastCommand.CommandParam1,"main")).serialize();
+            std::string script_alternative = Javascript(std::string("(function(){var positionx=") + std::to_string(ExecuteSearchCoordinatesX) + std::string(";var positiony=") + std::to_string(ExecuteSearchCoordinatesY) + std::string(";var scrollx=") + std::to_string(Data->ScrollX) + std::string(";var scrolly=") + std::to_string(Data->ScrollY) + std::string(";var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!self){_BAS_HIDE(browser_automation_studio_result)('');return;};var obj=null;try{obj = ") + LastCommand.CommandParam1 + std::string(";}catch(e){}var res='';if(typeof(obj)!='undefined'&&obj !== null){res=obj.toString()}_BAS_HIDE(browser_automation_studio_result)(res);})()"),"main");
             script_alternative = picojson::value(script_alternative).serialize();
-            script = Javascript(std::string("{var positionx=") + std::to_string(ExecuteSearchCoordinatesX) + std::string(";var positiony=") + std::to_string(ExecuteSearchCoordinatesY) + std::string(";var scrollx=") + std::to_string(Data->ScrollX) + std::string(";var scrolly=") + std::to_string(Data->ScrollY) + std::string(";var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!self){_BAS_HIDE(browser_automation_studio_result)('');return;};var obj=null;try{obj = eval(") + script_escaped + std::string(");}catch(e){if(e.message.indexOf('Content Security Policy')>=0){_BAS_HIDE(browser_automation_studio_eval)(") + script_alternative + std::string(");return}}var res='';if(typeof(obj)!='undefined'&&obj !== null){res=obj.toString()}_BAS_HIDE(browser_automation_studio_result)(res);}"));
+            script = Javascript(std::string("{var positionx=") + std::to_string(ExecuteSearchCoordinatesX) + std::string(";var positiony=") + std::to_string(ExecuteSearchCoordinatesY) + std::string(";var scrollx=") + std::to_string(Data->ScrollX) + std::string(";var scrolly=") + std::to_string(Data->ScrollY) + std::string(";var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!self){_BAS_HIDE(browser_automation_studio_result)('');return;};var obj=null;try{obj = eval(") + script_escaped + std::string(");}catch(e){if(e.message.indexOf('Content Security Policy')>=0){_BAS_HIDE(browser_automation_studio_eval)(") + script_alternative + std::string(");return}}var res='';if(typeof(obj)!='undefined'&&obj !== null){res=obj.toString()}_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
 
         }else if(Command.CommandName == "click")
         {
             BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};if(el)el.click();_BAS_HIDE(browser_automation_studio_result)('');}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};if(el)el.click();_BAS_HIDE(browser_automation_studio_result)('');}"),"main");
         }else if(Command.CommandName == "system_click" || Command.CommandName == "check" || Command.CommandName == "system_click_down" || Command.CommandName == "system_click_up")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }else if(Command.CommandName == "move")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }else if(Command.CommandName == "fill")
         {
             BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
             std::string text_escaped = picojson::value(LastCommand.CommandParam1).serialize();
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};if(el){el.value = ") + text_escaped + std::string("};_BAS_HIDE(browser_automation_studio_result)('');}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};if(el){el.value = ") + text_escaped + std::string("};_BAS_HIDE(browser_automation_studio_result)('');}"),"main");
         }else if(Command.CommandName == "type")
         {
             BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
@@ -2935,7 +2937,7 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
 
             if(LastCommand.Path.size()>0)
             {
-                script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+                script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
             }
             else
             {
@@ -2951,7 +2953,7 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
             TypeTextDelay = 100;
             if(LastCommand.Path.size()>0)
             {
-                script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+                script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
             }
             else
             {
@@ -2962,14 +2964,14 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
             }
         }else if(Command.CommandName == "exist")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");var res;if(el)res='1';else res='0';_BAS_HIDE(browser_automation_studio_result)(res);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");var res;if(el)res='1';else res='0';_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
         }else if(Command.CommandName == "submit")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};if(el)el.submit();_BAS_HIDE(browser_automation_studio_result)('');}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};if(el)el.submit();_BAS_HIDE(browser_automation_studio_result)('');}"),"main");
         }else if(Command.CommandName == "style")
         {
             std::string style_escaped = picojson::value(LastCommand.CommandParam1).serialize();
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res='';if(el)res=window.getComputedStyle(el)[") + style_escaped + std::string("];_BAS_HIDE(browser_automation_studio_result)(res);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res='';if(el)res=window.getComputedStyle(el)[") + style_escaped + std::string("];_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
         }
         else if(Command.CommandName == "set")
         {
@@ -2985,7 +2987,7 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
                     "}"
                     "keys += \"<RETURN>\";}"
                      );
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var keys='';if(el){") + proc + std::string("}_BAS_HIDE(browser_automation_studio_result)(keys);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var keys='';if(el){") + proc + std::string("}_BAS_HIDE(browser_automation_studio_result)(keys);}"),"main");
 
         }else if(Command.CommandName == "set_integer")
         {
@@ -2998,7 +3000,7 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
                     "}"
                     "keys += \"<RETURN>\";}"
                      );
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var keys='';if(el){") + proc + std::string("}_BAS_HIDE(browser_automation_studio_result)(keys);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var keys='';if(el){") + proc + std::string("}_BAS_HIDE(browser_automation_studio_result)(keys);}"),"main");
 
         }else if(Command.CommandName == "set_random")
         {
@@ -3014,27 +3016,27 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
                     "}"
                     "keys += \"<RETURN>\";}"
                      );
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var keys='';if(el){") + proc + std::string("}_BAS_HIDE(browser_automation_studio_result)(keys);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var keys='';if(el){") + proc + std::string("}_BAS_HIDE(browser_automation_studio_result)(keys);}"),"main");
         }else if(Command.CommandName == "random_point")
         {
             LastCommand.StageId = 0;
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }else if(Command.CommandName == "clarify")
         {
             LastCommand.StageId = 0;
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }else if(Command.CommandName == "attr")
         {
             std::string attr_escaped = picojson::value(LastCommand.CommandParam1).serialize();
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res='';var attr=") + attr_escaped + std::string(";if(el){if(el.hasAttribute(attr))res=el.getAttribute(attr);}_BAS_HIDE(browser_automation_studio_result)(res);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res='';var attr=") + attr_escaped + std::string(";if(el){if(el.hasAttribute(attr))res=el.getAttribute(attr);}_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
         }else if(Command.CommandName == "set_attr")
         {
             std::string attr_escaped = picojson::value(LastCommand.CommandParam1).serialize();
             std::string val_escaped = picojson::value(LastCommand.CommandParam2).serialize();
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var attr=") + attr_escaped + std::string(";var val=") + val_escaped + std::string(";if(el){if(val.length === 0)el.removeAttribute(attr);else el.setAttribute(attr,val);}_BAS_HIDE(browser_automation_studio_result)('');}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var attr=") + attr_escaped + std::string(";var val=") + val_escaped + std::string(";if(el){if(val.length === 0)el.removeAttribute(attr);else el.setAttribute(attr,val);}_BAS_HIDE(browser_automation_studio_result)('');}"),"main");
         }else if(Command.CommandName == "length")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res = '';if(el){res = el.length;}_BAS_HIDE(browser_automation_studio_result)(res);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res = '';if(el){res = el.length;}_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
         }else if(Command.CommandName == "highlight")
         {
             ClearHighlight();
@@ -3061,13 +3063,13 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
                 Data->_MultiSelectData.IsDirty = false;
             }
 
-            script = Javascript(std::string("{") + MultiloginCheckData + std::string("var p = ") + LastCommand.SerializePath() + std::string(";var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(p);if(JSON.parse(p).length == 0 || !el){el = []}else if(typeof(el.length) != 'number'){el = [el];};_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)(el);_BAS_HIDE(browser_automation_studio_result)(el.length);}"));
+            script = Javascript(std::string("{") + MultiloginCheckData + std::string("var p = ") + LastCommand.SerializePath() + std::string(";var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(p);if(JSON.parse(p).length == 0 || !el){el = []}else if(typeof(el.length) != 'number'){el = [el];};_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)(el);_BAS_HIDE(browser_automation_studio_result)(el.length);}"),"main");
         }else if(Command.CommandName == "render_base64")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }else if(Command.CommandName == "focus")
         {
-            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"));
+            script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }
         if(!script.empty())
         {
@@ -3442,7 +3444,7 @@ void MainApp::HandleMultiloginIPCData()
                 IsLastCommandNull = true;
                 FinishedLastCommand(std::string());
                 if(BrowserToolbox)
-                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetPathCount(") + std::to_string((int)(a.size()/4)) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetPathCount(") + std::to_string((int)(a.size()/4)) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
             }
 
         }
@@ -3579,13 +3581,13 @@ void MainApp::UpdateMultiSelect()
 
         if(HighlightFrameId<0)
         {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData,"main"),"", 0);
         }else
         {
 
             CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
             if(Frame.get())
-                Frame->ExecuteJavaScript(Javascript(MultiloginCheckData),"", 0);
+                Frame->ExecuteJavaScript(Javascript(MultiloginCheckData,"main"),"", 0);
         }
     }
 }
@@ -3633,13 +3635,13 @@ void MainApp::UpdateHighlight()
             if(HighlightFrameId<0)
             {
 
-                _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();")),"", 0);
+                _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
             }else
             {
 
                 CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
                 if(Frame.get())
-                    Frame->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();")),"", 0);
+                    Frame->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
             }
         }
     }
@@ -3680,7 +3682,7 @@ void MainApp::HandleCentralBrowserEvents()
         }else if(starts_with(url,"open://help"))
         {
             if(BrowserScenario)
-                BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_HighlightHelp()")),BrowserScenario->GetMainFrame()->GetURL(), 0);
+                BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_HighlightHelp()"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
         }else
         {
             ReplaceAllInPlace(res.first, "%BAS_DEBUG_PORT%", std::to_string(Data->RemoteDebuggingPort));
@@ -3774,20 +3776,20 @@ void MainApp::HandleScenarioBrowserEvents()
     }
     if(scenariov8handler->GetIsInitialized() && !Code.empty())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_Parse(") + picojson::value(Code.data()).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_Parse(") + picojson::value(Code.data()).serialize() + std::string(")"),"scenario");
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(script,BrowserScenario->GetMainFrame()->GetURL(), 0);
         Code.clear();
         if(Data->IsTesing)
         {
             Data->IsTesing = false;
-            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Play()")),BrowserScenario->GetMainFrame()->GetURL(), 0);
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Play()"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
         }
     }
 
     if(scenariov8handler->GetIsInitialized() && !SetNextActionId.empty())
     {
         if(BrowserScenario)
-            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + SetNextActionId + std::string(")")),BrowserScenario->GetMainFrame()->GetURL(), 0);
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + SetNextActionId + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
         SetNextActionId.clear();
     }
 
@@ -3862,7 +3864,7 @@ void MainApp::HandleScenarioBrowserEvents()
     {
         Layout->UpdateState(MainLayout::Hold);
         if(BrowserToolbox)
-            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         std::string CodeSend = res2.first;
         WORKER_LOG(std::string("GetExecuteCode<<") + CodeSend);
         xml_encode(CodeSend);
@@ -3875,7 +3877,7 @@ void MainApp::HandleScenarioBrowserEvents()
         if(res.second)
         {
             if(BrowserToolbox)
-                BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetCurrentFunction(") + picojson::value(res.first).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+                BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetCurrentFunction(") + picojson::value(res.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         }
     }
 
@@ -3898,7 +3900,7 @@ void MainApp::HandleScenarioBrowserEvents()
     if(scenariov8handler->GetClipboardGetRequest())
     {
         std::string res = read_clipboard();
-        std::string script = Javascript(std::string("BrowserAutomationStudio_GetClipboardResult(") + picojson::value(res).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_GetClipboardResult(") + picojson::value(res).serialize() + std::string(")"),"scenario");
         if(BrowserScenario)
             BrowserScenario->GetMainFrame()->ExecuteJavaScript(script,BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
@@ -3908,7 +3910,7 @@ void MainApp::HandleScenarioBrowserEvents()
     {
         std::string data = res5.first;
         WORKER_LOG(std::string("EditStart<<") + data);
-        std::string script = Javascript(std::string("BrowserAutomationStudio_EditStart(") + picojson::value(data).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_EditStart(") + picojson::value(data).serialize() + std::string(")"),"toolbox");
         if(BrowserToolbox)
             BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
@@ -3916,7 +3918,7 @@ void MainApp::HandleScenarioBrowserEvents()
 
     if(scenariov8handler->GetIsEditSaveStart())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_EditSaveStart()"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_EditSaveStart()"),"toolbox");
         if(BrowserToolbox)
             BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
@@ -3926,7 +3928,7 @@ void MainApp::HandleScenarioBrowserEvents()
     if(res4)
     {
         WORKER_LOG(std::string("EditEnd<<"));
-        std::string script = Javascript("BrowserAutomationStudio_EditEnd()");
+        std::string script = Javascript("BrowserAutomationStudio_EditEnd()","toolbox");
         if(BrowserToolbox)
             BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
@@ -3943,19 +3945,19 @@ void MainApp::HandleScenarioBrowserEvents()
     }
 
     if(scenariov8handler->GetIsThreadNumberEditStart() && BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_ThreadNumberEdit()"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_ThreadNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
     if(scenariov8handler->GetIsSuccessNumberEditStart() && BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_SuccessNumberEdit()"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_SuccessNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
     if(scenariov8handler->GetIsFailNumberEditStart() && BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_FailNumberEdit()"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_FailNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
     std::pair<std::string, bool> res8 = scenariov8handler->GetIsRunFunctionStart();
 
     if(res8.second && BrowserToolbox)
     {
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunction(") + picojson::value(res8.first).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunction(") + picojson::value(res8.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 
     {
@@ -3978,19 +3980,19 @@ void MainApp::HandleScenarioBrowserEvents()
         std::pair<std::string, bool> res = scenariov8handler->GetIsOpenAction();
         if(res.second)
         {
-            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_OpenAction(") + picojson::value(res.first).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_OpenAction(") + picojson::value(res.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         }
     }
 
     std::pair<std::string, bool> res9 = scenariov8handler->GetIsRunFunctionSeveralThreadsStart();
 
     if(res9.second && BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionSeveralThreads(") + picojson::value(res9.first).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionSeveralThreads(") + picojson::value(res9.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
     std::pair<std::string, bool> res10 = scenariov8handler->GetIsRunFunctionAsync();
 
     if(res10.second && BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
     ScenarioV8Handler::RestartType res3 = scenariov8handler->GetNeedRestart();
 
@@ -4015,13 +4017,13 @@ void MainApp::HandleToolboxBrowserEvents()
         if(HighlightFrameId<0)
         {
 
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([]);")),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([]);"),"main"),"", 0);
         }else
         {
 
             CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
             if(Frame.get())
-                Frame->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([]);")),"", 0);
+                Frame->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([]);"),"main"),"", 0);
         }
     }
 
@@ -4077,7 +4079,7 @@ void MainApp::HandleToolboxBrowserEvents()
                     }
                     CodeSend += std::string(" \n section_end()!");
                     if(BrowserToolbox)
-                        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(CodeSend).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+                        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(CodeSend).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
                     xml_encode(CodeSend);
                     std::string DelayedSendCode = std::string("<WaitCode>") + CodeSend + std::string("</WaitCode>");
                     if(res.first.HowToExecute == ToolboxV8Handler::OnlyExecute)
@@ -4088,7 +4090,7 @@ void MainApp::HandleToolboxBrowserEvents()
                     else
                         DelayedSend = DelayedSendCode;
 
-                    scriptscenario += Javascript("BrowserAutomationStudio_RunningTask();");
+                    scriptscenario += Javascript("BrowserAutomationStudio_RunningTask();","scenario");
 
                 }
             }
@@ -4108,7 +4110,7 @@ void MainApp::HandleToolboxBrowserEvents()
                 script.append(",");
                 script.append(id);
                 script.append(");");
-                script = Javascript(script);
+                script = Javascript(script,"scenario");
                 WORKER_LOG(std::string("ScenarioExecuteCode<<") + script);
                 scriptscenario += script;
             }
@@ -4143,7 +4145,7 @@ void MainApp::HandleToolboxBrowserEvents()
 
     if(toolboxv8handler->GetIsEditCancel())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_EditCancel()"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_EditCancel()"),"scenario");
         WORKER_LOG("BrowserAutomationStudio_EditCancel<<");
         if(BrowserScenario)
             BrowserScenario->GetMainFrame()->ExecuteJavaScript(script,BrowserScenario->GetMainFrame()->GetURL(), 0);
@@ -4162,21 +4164,21 @@ void MainApp::HandleToolboxBrowserEvents()
 
     if(toolboxv8handler->GetIsInitialized() && (ResourcesChanged))
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_SetResources(") + picojson::value(Resources.data()).serialize() + "," + picojson::value(AdditionalResources.data()).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_SetResources(") + picojson::value(Resources.data()).serialize() + "," + picojson::value(AdditionalResources.data()).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         ResourcesChanged = false;
     }
 
     if(toolboxv8handler->GetIsInitialized() && !Variables.empty())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_SetVariables(") + picojson::value(Variables.data()).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_SetVariables(") + picojson::value(Variables.data()).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         Variables.clear();
     }
 
     if(toolboxv8handler->GetIsInitialized() && !GlobalVariables.empty())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_SetGlobalVariables(") + picojson::value(GlobalVariables.data()).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_SetGlobalVariables(") + picojson::value(GlobalVariables.data()).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         GlobalVariables.clear();
     }
@@ -4184,35 +4186,35 @@ void MainApp::HandleToolboxBrowserEvents()
     if(!IsInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
     {
         std::string InterfaceInitial = ReadAllString("interface.json");
-        std::string script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         IsInterfaceInitialSent = true;
     }
 
     if(toolboxv8handler->GetIsInitialized() && !Schema.empty())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_SetSchema(") + picojson::value(Schema).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_SetSchema(") + picojson::value(Schema).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         Schema.clear();
     }
 
     if(toolboxv8handler->GetIsInitialized() && !Labels.empty())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_SetLabels(") + picojson::value(Labels.data()).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_SetLabels(") + picojson::value(Labels.data()).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         Labels.clear();
     }
 
     if(toolboxv8handler->GetIsInitialized() && !Functions.empty())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_SetFunctions(") + picojson::value(Functions.data()).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_SetFunctions(") + picojson::value(Functions.data()).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         Functions.clear();
     }
 
     if(toolboxv8handler->GetIsInitialized() && !EmbeddedData.empty())
     {
-        std::string script = Javascript(std::string("BrowserAutomationStudio_SetEmbeddedData(") + picojson::value(EmbeddedData.data()).serialize() + std::string(",") + picojson::value(Settings->Languages().data()).serialize() + std::string(")"));
+        std::string script = Javascript(std::string("BrowserAutomationStudio_SetEmbeddedData(") + picojson::value(EmbeddedData.data()).serialize() + std::string(",") + picojson::value(Settings->Languages().data()).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         EmbeddedData.clear();
     }
@@ -4222,7 +4224,7 @@ void MainApp::HandleToolboxBrowserEvents()
         if(BrowserToolbox)
         {
             Layout->MaximizeToolbox(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_MaximizeCallback()"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_MaximizeCallback()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
         }
     }
@@ -4299,12 +4301,12 @@ void MainApp::HandleToolboxBrowserEvents()
         std::string Script = "_BAS_HIDE(BrowserAutomationStudio_MultiSelectData) = []";
         if(HighlightFrameId<0)
         {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(Script),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(Script,"main"),"", 0);
         }else
         {
             CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
             if(Frame.get())
-                Frame->ExecuteJavaScript(Javascript(Script),"", 0);
+                Frame->ExecuteJavaScript(Javascript(Script,"main"),"", 0);
         }
     }
 
@@ -4375,10 +4377,10 @@ void MainApp::HandleFrameFindEvents()
             HighlightOffsetY = 0;
 
 
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([])"),"",0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([])","main"),"",0);
 
             if(BrowserToolbox)
-                BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_SetPathCount(0)"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+                BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_SetPathCount(0)","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
             IsLastCommandNull = true;
             v8handler->SetResultProcessed();
@@ -4691,7 +4693,7 @@ void MainApp::HandleMainBrowserEvents()
                                      "var res=x+','+y;"
                                      "_BAS_HIDE(browser_automation_studio_result)(res);}");
                 script = std::string("(function(){") + script + std::string("})()");
-                script = Javascript(script);
+                script = Javascript(script,"main");
 
 
 
@@ -4750,7 +4752,7 @@ void MainApp::HandleMainBrowserEvents()
                                      "var res=x+','+y;"
                                      "_BAS_HIDE(browser_automation_studio_result)(res);}");
                 script = std::string("(function(){") + script + std::string("})()");
-                script = Javascript(script);
+                script = Javascript(script,"main");
 
 
 
@@ -4907,7 +4909,7 @@ void MainApp::HandleMainBrowserEvents()
                 v8handler->SetResultProcessed();
                 std::string data = res.first;
                 if(BrowserToolbox)
-                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetPathCount(") + data + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetPathCount(") + data + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
                 xml_encode(data);
                 FinishedLastCommand(data);
@@ -5018,7 +5020,7 @@ void MainApp::HandleMainBrowserEvents()
                 TypeText = res.first;
                 TypeTextDelay = 30;
                 LastCommand.StageId = 1;
-                std::string script = Javascript(std::string("(function(){var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el)})()"));
+                std::string script = Javascript(std::string("(function(){var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el)})()"),"main");
                 if(!script.empty())
                 {
                     WORKER_LOG(std::string("EXEC<<") + script);
@@ -5070,7 +5072,7 @@ void MainApp::HandleMainBrowserEvents()
                 if(BrowserToolbox)
                 {
                     std::string ActionName = res.first.ActionName;
-                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Notify('recaptchav3',") + picojson::value(ActionName).serialize() + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Notify('recaptchav3',") + picojson::value(ActionName).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
                 }
             }
 
@@ -5108,7 +5110,7 @@ void MainApp::HandleMainBrowserEvents()
         std::pair<std::string,bool> res2 = v8handler->GetMultiSelectReport();
         if(res2.second && BrowserToolbox && Data->MultiselectMode)
         {
-            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_MultiSelectReport(") + res2.first + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_MultiSelectReport(") + res2.first + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         }
     }
 
@@ -5174,7 +5176,7 @@ void MainApp::HandleMainBrowserEvents()
 
                         //WORKER_LOG(std::string("BrowserAutomationStudio_InspectElement <<") + std::to_string(InspectX - x) + std::string(" <<") + std::to_string(InspectY - y) );
 
-                        _HandlersManager->GetBrowser()->GetFrame(ID)->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(InspectX - x) + std::string(",") + std::to_string(InspectY - y) + std::string(",") + std::to_string(InspectPosition) + std::string(")")),"", 0);
+                        _HandlersManager->GetBrowser()->GetFrame(ID)->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(InspectX - x) + std::string(",") + std::to_string(InspectY - y) + std::string(",") + std::to_string(InspectPosition) + std::string(")"),"main"),"", 0);
                     }
                 }
 
@@ -5562,7 +5564,7 @@ void MainApp::ScrollLeft()
         }
         if(!Data->IsMutiloginEngine)
         {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeft)()"),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeft)()","main"),"", 0);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;
@@ -5582,7 +5584,7 @@ void MainApp::ScrollRight()
         }
         if(!Data->IsMutiloginEngine)
         {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRight)()"),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRight)()","main"),"", 0);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;
@@ -5603,7 +5605,7 @@ void MainApp::ScrollLeftLeft()
         }
         if(!Data->IsMutiloginEngine)
         {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeftLeft)()"),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeftLeft)()","main"),"", 0);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;
@@ -5624,7 +5626,7 @@ void MainApp::ScrollRightRight()
         }
         if(!Data->IsMutiloginEngine)
         {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRightRight)()"),"", 0);
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRightRight)()","main"),"", 0);
         }else
         {
             SharedMemoryIPC * IPC = Data->MultiloginIPC;
@@ -5637,56 +5639,56 @@ void MainApp::ScrollRightRight()
 void MainApp::EmulateClick(int x, int y)
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Click(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Click(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::EmulateMove(int x, int y)
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Move(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Move(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::EmulateDrag(int x, int y)
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Drag(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Drag(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::EmulateDrop(int x, int y)
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Drop(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Drop(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::EmulateMoveAndClick(int x, int y)
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_MoveAndClick(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_MoveAndClick(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::AddTab()
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_AddTab()")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_AddTab()"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::SelectTab(int i)
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SelectTab(") + std::to_string(i) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SelectTab(") + std::to_string(i) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::TabInfo()
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_TabInfo()")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_TabInfo()"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 
 void MainApp::CloseTab(int i)
 {
     if(BrowserToolbox)
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_CloseTab(") + std::to_string(i) + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_CloseTab(") + std::to_string(i) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::Terminate()
@@ -5710,7 +5712,7 @@ void MainApp::ExecuteElementFunction(const std::string& FuncName, bool AskIfUseL
             serialize = Data->_Inspect.Serialize();
         }
         std::string AskIfUseLoopFunctionString = (AskIfUseLoopFunction ? std::string("1") : std::string("0"));
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_") + FuncName + std::string("(") + serialize + std::string(",") + AskIfUseLoopFunctionString + std::string(")")),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_") + FuncName + std::string("(") + serialize + std::string(",") + AskIfUseLoopFunctionString + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 }
 

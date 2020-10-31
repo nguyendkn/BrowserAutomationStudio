@@ -113,6 +113,10 @@ BasDialogsLib.BasModalDialog = class {
         if (data.popup) {
           BrowserAutomationStudio_Notify('search', data.description);
         } else {
+          if ($('#expressioneditor-cancel').is(':visible')) {
+            $('#expressioneditor-cancel').click();
+          }
+
           BrowserAutomationStudio_OpenAction(data.ref);
           self.closeDialog();
         }

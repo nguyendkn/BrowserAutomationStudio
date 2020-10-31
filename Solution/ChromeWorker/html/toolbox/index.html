@@ -1597,7 +1597,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       </div>
       <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
     </div>
-    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, timeout_value: 1, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="onloadjavascript">
@@ -5636,15 +5636,28 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
-      VAR_JS_WAS_ERROR = false;
-      VAR_JS_LAST_ERROR = "";
-      page().script(<%= javascriptSource %> )!
-      {
-        var result = JSON.parse(_result());
-        VAR_JS_LAST_ERROR = result["lastError"];
-        VAR_JS_WAS_ERROR = result["wasError"];
-        <%= javascriptResult %>
-      }
+      var wait = 0; page().script(<%= source %>)!
+
+      _do(function() {
+        page().script("_BAS_HIDE(AsyncJsResult).done")!
+        
+        if (_result() === "true" || wait >= <%= timeout_value() %>) {
+          _break()
+        }
+
+        wait += 100;
+        sleep(100)!
+      })!
+
+      page().script("JSON.stringify(_BAS_HIDE(AsyncJsResult))")!
+      const result = JSON.parse(_result());
+
+      VAR_JS_LAST_ERROR = result.error ? result.error : "";
+      VAR_JS_WAS_ERROR = result.error ? true : false;
+        
+      <% variables.forEach(function (name) { %>
+        VAR_<%= name %> = result.vars["<%= name %>"];
+      <% }); %>
   </script>
 
   <script type="text/template" id="onloadjavascript_code">
@@ -8471,8 +8484,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
             try {
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
-                javascriptResult: prepared.javascriptResult,
-                javascriptSource: prepared.javascriptSource,
+                variables: prepared.variables,
+                source: prepared.source,
               });
               code = Normalize(code,0);
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

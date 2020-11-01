@@ -12129,6 +12129,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     function BrowserAutomationStudio_OpenAction(Name)
     {
+        if ($("#expressioneditor-container").is(":visible")) {
+          $("#expressioneditor-cancel").click();
+        }
+
         _Router.navigate("#!/" + Name, true);
     }
     

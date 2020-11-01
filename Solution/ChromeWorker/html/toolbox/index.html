@@ -5639,14 +5639,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       var wait = 0; page().script(<%= source %>)!
 
       _do(function() {
-        page().script("_BAS_HIDE(AsyncJsResult).done")!
-        
-        if (_result() === "true" || wait >= <%= timeout_value() %>) {
+        if (wait >= <%= timeout_value() %> || _result() === "true") {
           _break()
         }
 
-        wait += 100;
-        sleep(100)!
+        page().script("_BAS_HIDE(AsyncJsResult).done")!
+        wait += 1000;
+        sleep(1000)!
       })!
 
       page().script("JSON.stringify(_BAS_HIDE(AsyncJsResult))")!

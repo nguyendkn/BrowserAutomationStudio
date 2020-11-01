@@ -14,9 +14,9 @@ function prepareBrowserJavascript(source) {
 
   return {
     variables, source: JSON.stringify(
-      `((_BAS_DATA) => {  
+      `((_BAS_VARS) => {  
         _BAS_HIDE(AsyncJsResult) = {
-          vars: JSON.parse(_BAS_DATA),
+          vars: JSON.parse(_BAS_VARS),
           error: null,
           done: null,
         };
@@ -33,7 +33,7 @@ function prepareBrowserJavascript(source) {
           _BAS_HIDE(AsyncJsResult).done = true;
         }));
 
-        return _BAS_HIDE(AsyncJsResult).done;
+        return JSON.stringify(_BAS_HIDE(AsyncJsResult));
       })`)
       .replace(/\s\s+/g, ' ')
       .replace(/\n/g, '')

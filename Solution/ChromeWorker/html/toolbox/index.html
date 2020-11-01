@@ -5636,27 +5636,32 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
-      var wait = 0; page().script(<%= source %>)!
+      page().script(<%= source %>)!
+      VAR_JS_WAS_ERROR = false;
+      VAR_JS_LAST_ERROR = "";
 
-      _do(function() {
-        if (wait >= <%= timeout_value() %> || _result() === "true") {
-          _break()
-        }
+      _if (_result().length, function() {
+        var result = {}; var wait = 0;
 
-        page().script("_BAS_HIDE(AsyncJsResult).done")!
-        wait += 1000;
-        sleep(1000)!
+        _do(function() {
+          result = JSON.parse(_result());
+  
+          if (wait >= <%= timeout_value() %> || result.done) {
+            _break()
+          }
+  
+          page().script("JSON.stringify(_BAS_HIDE(AsyncJsResult))")!
+          wait += 1000;
+          sleep(1000)!
+        })!
+  
+        VAR_JS_LAST_ERROR = result.error ? result.error : "";
+        VAR_JS_WAS_ERROR = result.error ? true : false;
+
+        <% variables.forEach(function (name) { %>
+          VAR_<%= name %> = result.vars["<%= name %>"];
+        <% }); %>
       })!
-
-      page().script("JSON.stringify(_BAS_HIDE(AsyncJsResult))")!
-      const result = JSON.parse(_result());
-
-      VAR_JS_LAST_ERROR = result.error ? result.error : "";
-      VAR_JS_WAS_ERROR = result.error ? true : false;
-        
-      <% variables.forEach(function (name) { %>
-        VAR_<%= name %> = result.vars["<%= name %>"];
-      <% }); %>
   </script>
 
   <script type="text/template" id="onloadjavascript_code">

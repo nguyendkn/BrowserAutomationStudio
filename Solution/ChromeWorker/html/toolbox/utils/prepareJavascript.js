@@ -4,7 +4,7 @@ function prepareBrowserJavascript(source) {
       .replace(/\[/g, '')
       .replace(/\]/g, '')
 
-    source = source.replace(match[0], `_BAS_VARS['${result}']`); return result;
+    source = source.replace(match[0], `_BAS_HIDE(AsyncJsResult).vars['${result}']`); return result;
   });
 
   let args = `{${variables.map((name) => `"${name}": VAR_${name}`).join(',')}}`;
@@ -15,26 +15,25 @@ function prepareBrowserJavascript(source) {
   return {
     variables, source: JSON.stringify(
       `((_BAS_DATA) => {  
-        const _BAS_VARS = JSON.parse(_BAS_DATA); let _BAS_ERROR = null;
         _BAS_HIDE(AsyncJsResult) = {
-          error: _BAS_ERROR,
-          vars: _BAS_VARS,
-          done: false
+          vars: JSON.parse(_BAS_DATA),
+          error: null,
+          done: null,
         };
 
         (new Promise(async (resolve) => {
           try { 
             ${source}
           } catch (err) {
-            _BAS_ERROR = err.message;
+            _BAS_HIDE(AsyncJsResult).error = err.message;
           }
 
           resolve();
         }).then(() => {
-          _BAS_HIDE(AsyncJsResult).error = _BAS_ERROR;
-          _BAS_HIDE(AsyncJsResult).vars = _BAS_VARS;
           _BAS_HIDE(AsyncJsResult).done = true;
         }));
+
+        return _BAS_HIDE(AsyncJsResult).done;
       })`)
       .replace(/\s\s+/g, ' ')
       .replace(/\n/g, '')

@@ -757,6 +757,10 @@ label
   display: none;
 }
 
+textarea {
+  cursor: auto;
+}
+
 /********************
  * Scrollbar styles *
  ********************/

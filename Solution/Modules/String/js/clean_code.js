@@ -1,0 +1,1 @@
+<%= variable %> = _clean(<%= string %>,(''<% if(breaks){ %> + '\r\n'<% }%><% if(tabs){ %> + '\t'<% }%><% if(characters_to_delete!=='""'){ %> + <%= characters_to_delete %><% }%>),<%= characters_to_space %>,<%= spaces %>);

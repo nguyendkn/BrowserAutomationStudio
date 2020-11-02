@@ -1,3 +1,4 @@
+_STR_WHITESPACE = '\\s\\uFEFF\\xA0';
 function _is_string(data){
 	return typeof data==="string";
 };
@@ -229,6 +230,25 @@ function _csv_parse(str, convert_types, separators){
     res.push(convert_types ? _convert_type(CurrentElement) : CurrentElement);
 
     return res;
+};
+function _trim_left(str, characters){
+	return str.replace(new RegExp('^[' + _avoid_nilb(characters, _STR_WHITESPACE) + ']+', 'g'), '');
+};
+function _trim_right(str, characters){
+	return str.replace(new RegExp('[' + _avoid_nilb(characters, _STR_WHITESPACE) + ']+$', 'g'), '');
+};
+function _trim(str, characters, left, right){
+	characters = _avoid_nilb(characters, _STR_WHITESPACE);
+	str = _avoid_nilb(left, true) ? _trim_left(str, characters) : str;
+	str = _avoid_nilb(right, true) ? _trim_right(str, characters) : str;
+	return str;
+};
+function _clean(str, characters_to_delete, characters_to_space, multiple_spaces){
+	str = _is_nilb(characters_to_delete) ? str : str.replace(new RegExp('[' + characters_to_delete + ']+', 'g'), '');
+	str = _is_nilb(characters_to_space) ? str : str.replace(new RegExp('[' + characters_to_space + ']+', 'g'), ' ');
+	str = _trim(str);
+	str = _avoid_nilb(multiple_spaces, true) ? str.replace(new RegExp('[' + _STR_WHITESPACE + ']+', 'g'), ' ') : str.replace(new RegExp('[\\uFEFF\\xA0]', 'g'), ' ');
+	return str;
 };
 function _is_json_string(str){
 	if(str.indexOf("[") < 0 && str.indexOf("]") < 0 && str.indexOf("{") < 0 && str.indexOf("}") < 0){

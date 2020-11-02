@@ -441,6 +441,40 @@
             "name": "create_csv_string",
             "select": "create_csv_string_select.js",
             "template": "{{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "trim_code.js",
+                    "name": "trim_code"
+                }
+            ],
+            "description": {
+                "en": "Trim",
+                "ru": "Подровнять"
+            },
+            "interface": "trim_interface.js",
+            "is_element": false,
+            "name": "trim",
+            "select": "trim_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "clean_code.js",
+                    "name": "clean_code"
+                }
+            ],
+            "description": {
+                "en": "Clean",
+                "ru": "Очистить"
+            },
+            "interface": "clean_interface.js",
+            "is_element": false,
+            "name": "clean",
+            "select": "clean_select.js",
+            "template": "{{string}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -470,7 +504,9 @@
 		"latinize",
 		"declination",
 		"parse_csv_string",
-		"create_csv_string"
+		"create_csv_string",
+		"trim",
+		"clean"
 	],
     "browser": [
     ],
@@ -714,7 +750,29 @@
 		"The parameters \"Item 2\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 2\", \"Элемент 3\", \"Список элементов\""},
 		"The parameters \"Item 1\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 3\", \"Список элементов\""},
 		"The parameters \"Item 1\", \"Item 2\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 2\", \"Список элементов\""},
-		"Variable in which, after successful execution of the action, the CSV string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана CSV строка."}
+		"Variable in which, after successful execution of the action, the CSV string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана CSV строка."},
+		
+		"Trim left": {"ru":"Обрезать слева"},
+		"Trim right": {"ru":"Обрезать справа"},
+		"Trim tabs": {"ru":"Обрезать табуляцию"},
+		"Trim spaces": {"ru":"Обрезать пробелы"},
+		"Trim characters": {"ru":"Обрезать символы"},
+		"Trim line breaks": {"ru":"Обрезать переносы строк"},
+		"Trim on both sides": {"ru":"Обрезать с обеих сторон"},
+		"Trim string along the edges.": {"ru":"Подровнять строку по краям."},
+		"The string which needs to be trimmed.": {"ru":"Строка, которую нужно подровнять."},
+		"Characters to be trimmed at the edges of the string.": {"ru":"Символы, обрезаемые с краев строки."},
+		
+		"Remove tabs": {"ru":"Удалять табуляцию"},
+		"Remove characters": {"ru":"Удалять символы"},
+		"Remove line breaks": {"ru":"Удалять переносы строк"},
+		"Replace characters with space": {"ru":"Заменять символы на пробел"},
+		"The string which needs to be cleaned.": {"ru":"Строка, которую нужно очистить."},
+		"Characters which needs to be removed.": {"ru":"Символы, которые нужно удалять."},
+		"Clean string from unnecessary characters.": {"ru":"Очистить строку от ненужных символов."},
+		"Replace multiple spaces with single ones": {"ru":"Заменять многочисленные пробелы на одиночные"},
+		"Just\\xA0\\xA0\\xA0\\xA0sample\\xA0\\xA0text": {"ru":"Просто\\xA0\\xA0\\xA0\\xA0пример\\xA0\\xA0текста"},
+		"Characters which needs to be replaced with a space.": {"ru":"Символы, которые нужно заменить на пробел."}
     },
     "major_version": 1,
     "minor_version": 0,

@@ -1595,9 +1595,21 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           <span class="tr">Insert variable</span>
         </a>
       </div>
+      <%= _.template($('#variable_constructor').html())({ 
+        description: tr("Variable to save error message"),
+        default_variable: "JS_LAST_ERROR",
+        help: { description: tr("") },
+        id: "LastErrorVariable"
+      }) %>
+      <%= _.template($('#variable_constructor').html())({ 
+        description: tr("Variable to save error state"),
+        default_variable: "JS_WAS_ERROR",
+        help: { description: tr("") },
+        id: "WasErrorVariable"
+      }) %>
       <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
     </div>
-    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, timeout_value: 1, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="onloadjavascript">
@@ -5636,9 +5648,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
+      <%= wasErrorVariable %> = false;
+      <%= lastErrorVariable %> = "";
       page().script(<%= source %>)!
-      VAR_JS_WAS_ERROR = false;
-      VAR_JS_LAST_ERROR = "";
 
       _if(_result().length, function() {
         var result = {}; var wait = 0;
@@ -5655,8 +5667,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           sleep(1000)!
         })!
   
-        VAR_JS_LAST_ERROR = result.error ? result.error : "";
-        VAR_JS_WAS_ERROR = result.error ? true : false;
+        <%= lastErrorVariable %> = result.error ? result.error : "";
+        <%= wasErrorVariable %> = result.error ? true : false;
 
         <% variables.forEach(function (name) { %>
           VAR_<%= name %> = result.vars["<%= name %>"];
@@ -8477,17 +8489,21 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
           }else if(State == "browserjavascript")
           {
-            var Value = window.Code.Editor.getValue();
+            var lastErrorVariable = this.$el.find("#LastErrorVariable").val().toUpperCase();
+            var wasErrorVariable = this.$el.find("#WasErrorVariable").val().toUpperCase();
+            var source = window.Code.Editor.getValue();
 
-            if(Value.length === 0) {
+            if(source.length === 0) {
               Invalid("Code is empty");
               return;
             }
 
-            var prepared = prepareBrowserJavascript(Value);
+            var prepared = prepareBrowserJavascript(source);
 
             try {
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
+                lastErrorVariable: `VAR_${lastErrorVariable}`,
+                wasErrorVariable: `VAR_${wasErrorVariable}`,
                 variables: prepared.variables,
                 source: prepared.source,
               });

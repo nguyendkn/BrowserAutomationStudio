@@ -1207,6 +1207,8 @@ _L =
 	"Width" : {"ru": "Ширина"},
 	"Height" : {"ru": "Высота"},
 	"Variable to save as base64 png" : {"ru": "Переменная, в которую сохранять в формате base64 PNG"},
+	"Variable to save error message": {"ru": "Переменная для сохранения сообщения ошибки"},
+	"Variable to save error state": {"ru": "Переменная для сохранения состояния ошибки"},
 	"Match" : {"ru": "Маска"},
 	
 	"An url, cache for which you want to obtain. Url can contain * symbol, which will be replaced by any symbol sequence." : {"ru": "Url, кеш для которого вы хотите получить. url может содержать символ *, который будет заменен любой последовательностью символов."},

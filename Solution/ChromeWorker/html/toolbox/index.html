@@ -1598,14 +1598,18 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#variable_constructor').html())({ 
         description: tr("Variable to save error message"),
         default_variable: "JS_LAST_ERROR",
-        help: { description: tr("") },
-        id: "LastErrorVariable"
+        id: "LastErrorVariable",
+        help: { 
+          description: tr("If there was no error, the value will be an empty string. Otherwise, the value will be an error message.") 
+        },
       }) %>
       <%= _.template($('#variable_constructor').html())({ 
         description: tr("Variable to save error state"),
         default_variable: "JS_WAS_ERROR",
-        help: { description: tr("") },
-        id: "WasErrorVariable"
+        id: "WasErrorVariable",
+        help: { 
+          description: tr("If there was no error, the value will be false. Otherwise, the value will be true.") 
+        },
       }) %>
       <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
     </div>

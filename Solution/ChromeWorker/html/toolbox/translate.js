@@ -1207,8 +1207,6 @@ _L =
 	"Width" : {"ru": "Ширина"},
 	"Height" : {"ru": "Высота"},
 	"Variable to save as base64 png" : {"ru": "Переменная, в которую сохранять в формате base64 PNG"},
-	"Variable to save error message": {"ru": "Переменная для сохранения сообщения ошибки"},
-	"Variable to save error state": {"ru": "Переменная для сохранения состояния ошибки"},
 	"Match" : {"ru": "Маска"},
 	
 	"An url, cache for which you want to obtain. Url can contain * symbol, which will be replaced by any symbol sequence." : {"ru": "Url, кеш для которого вы хотите получить. url может содержать символ *, который будет заменен любой последовательностью символов."},
@@ -1615,6 +1613,20 @@ _L =
 "In case if link nearest to selected element can't be found, empty string will be returned.": {"ru": "В случае, если ссылка, ближайшая к выбранному элементу, не может быть найдена, будет возвращена пустая строка."},
 "This action looks for \"href\" attribute on link element. Sometimes it may not be present, and sites processes link clicking by using javascript. In that case following action won't give any meaningful result.": {"ru": "Это действие получает атрибут \"href\" из ссылки. Иногда данный атрибут может отсутствовать, а сайты обрабатывают клики по ссылкам с помощью javascript. В этом случае данное действие не будет иметь пользы."},
 	
+	/* `browserjavascript` action */
+	"If there was no error, the value will be an empty string. Otherwise, the value will be an error message.": {
+		"ru": "Если ошибки не было, то значением будет пустая строка. В противном случае значением будет сообщение об ошибке."
+	},
+	"If there was no error, the value will be false. Otherwise, the value will be true.": {
+		"ru": "Если ошибки не было, то значением будет false. В противном случае значением будет true."
+	},
+	"Variable to save error message": {
+		"ru": "Переменная для сохранения сообщения ошибки"
+	},
+	"Variable to save error state": {
+		"ru": "Переменная для сохранения состояния ошибки"
+	},
+
 	/* Actions search */
 	"No recent actions found": {"ru": "Недавние действия не найдены"},
 	"Browser > Element": {"ru": "Браузер > Элемент"},

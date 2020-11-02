@@ -7,7 +7,8 @@ function prepareBrowserJavascript(source) {
     source = source.replace(match[0], `_BAS_HIDE(AsyncJsResult).vars['${result}']`); return result;
   });
 
-  let args = `{${variables.map((name) => `"${name}": VAR_${name}`).join(',')}}`;
+  const vars = variables.map((name) => `"${name}": typeof(VAR_${name}) !== "undefined" ? VAR_${name} : null`);
+  let args = `{${vars.join(',')}}`;
   args = `JSON.stringify(${args})`;
   args = `JSON.stringify(${args})`;
   args = `\"(\" + ${args} + \")\"`;

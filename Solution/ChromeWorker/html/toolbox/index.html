@@ -1056,6 +1056,13 @@
       <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
     </div>
     <br />
+    <div>Другой пример. Получение данных со стороннего сайта с помощью функции <i>fetch</i>:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    .then((res) => res.json());
+}
+const post = await getPost(1);</pre></div>
+    <br />
     <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
   </script>
 
@@ -1091,6 +1098,13 @@
     <div>
       <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
     </div>
+    <br />
+    <div>Another example. Getting data from a third-party site using the <i>fetch</i> function:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    .then((res) => res.json());
+}
+const post = await getPost(1);</pre></div>
     <br />
     <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
   </script>

@@ -8541,9 +8541,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
             try {
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
-                lastErrorVariable: `VAR_${lastErrorVariable}`,
-                wasErrorVariable: `VAR_${wasErrorVariable}`,
-                variables: prepared.variables,
+                variables: `[${prepared.variables.map((v) => `"${v}"`).join(",")}]`,
+                lastError: `"VAR_${lastErrorVariable}"`,
+                wasError: `"VAR_${wasErrorVariable}"`,
                 source: prepared.source,
               });
               code = Normalize(code,0);

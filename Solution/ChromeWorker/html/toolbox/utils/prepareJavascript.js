@@ -22,17 +22,15 @@ function prepareBrowserJavascript(source) {
           done: null,
         };
 
-        (new Promise(async (resolve) => {
+        (async function () {
           try { 
             ${source}
           } catch (err) {
             _BAS_HIDE(AsyncJsResult).error = err.message;
           }
 
-          resolve();
-        }).then(() => {
           _BAS_HIDE(AsyncJsResult).done = true;
-        }));
+        })();
 
         return JSON.stringify(_BAS_HIDE(AsyncJsResult));
       })`)

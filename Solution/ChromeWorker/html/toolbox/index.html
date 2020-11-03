@@ -990,7 +990,7 @@
   <script type="text/template" id="custom">
     <div class="container-fluid">
       <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
-        <div id="Code" data-is-code-editor="true" />
+        <div id="Code" class="custom-code-editor" data-is-code-editor="true" />
       </span>
       <%= "<s" + "cript>" %>
         window.Code = {Editor: null, InitialValue: ""}
@@ -998,7 +998,7 @@
         require(['vs/editor/editor.main'], function() {
           if($("#Code").attr("data-installed") == "true")
             return;
-          $("#Code").attr("data-installed", "true")
+          $("#Code").attr("data-installed", "true");
           window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
             value: window.Code.InitialValue,
             language: 'javascript',
@@ -1605,7 +1605,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   <script type="text/template" id="browserjavascript">
     <div class="container-fluid">
       <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
-        <div id="Code" data-is-code-editor="true" />
+        <div id="Code" class="browser-code-editor" data-is-code-editor="true" />
       </span>
       <%= "<s" + "cript>" %>
         window.Code = {Editor: null, InitialValue: ""}
@@ -1613,7 +1613,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         require(['vs/editor/editor.main'], function() {
           if($("#Code").attr("data-installed") == "true")
             return;
-          $("#Code").attr("data-installed", "true")
+          $("#Code").attr("data-installed", "true");
           window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
             value: window.Code.InitialValue,
             language: 'javascript',

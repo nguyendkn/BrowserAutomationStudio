@@ -780,9 +780,16 @@ label
  * Code editor *
  ***************/
 
+#Code.browser-code-editor {
+  height: calc(100vh - 178px);
+}
+
+#Code.custom-code-editor {
+  height: calc(100vh - 100px);
+}
+
 #Code {
   border: 1px solid #e0e0e0;
-  height: calc(100vh - 100px);
   overflow: hidden;
   outline: none;
 }

@@ -1064,7 +1064,7 @@
   return await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
     .then((res) => res.json());
 }
-const post = await getPost(1);</pre></div>
+[[POST]] = await getPost(1);</pre></div>
     <br />
     <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
   </script>
@@ -1110,7 +1110,7 @@ const post = await getPost(1);</pre></div>
   return await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
     .then((res) => res.json());
 }
-const post = await getPost(1);</pre></div>
+[[POST]] = await getPost(1);</pre></div>
     <br />
     <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
   </script>
@@ -5691,26 +5691,27 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       page().script(<%= source %>)!
 
       _if(_result().length, function() {
-        var result = {}; var wait = 0;
+        _BAS_JS_RESULT = {};
 
         _do(function() {
-          result = JSON.parse(_result());
+          _BAS_JS_RESULT = JSON.parse(_result());
   
-          if (wait >= <%= timeout_value() %> || result.done) {
+          if ((_iterator() - 1) * 1000 >= <%= timeout_value() %> || _BAS_JS_RESULT.done) {
             _break()
           }
   
           page().script("JSON.stringify(_BAS_HIDE(AsyncJsResult))")!
-          wait += 1000;
           sleep(1000)!
         })!
-  
-        <%= lastErrorVariable %> = result.error ? result.error : "";
-        <%= wasErrorVariable %> = result.error ? true : false;
+
+        <%= lastErrorVariable %> = _BAS_JS_RESULT.error ? _BAS_JS_RESULT.error : "";
+        <%= wasErrorVariable %> = _BAS_JS_RESULT.error ? true : false;
 
         <% variables.forEach(function (name) { %>
-          VAR_<%= name %> = result.vars["<%= name %>"];
+          VAR_<%= name %> = _BAS_JS_RESULT.vars["<%= name %>"];
         <% }); %>
+
+        delete _BAS_JS_RESULT;
       })!
   </script>
 

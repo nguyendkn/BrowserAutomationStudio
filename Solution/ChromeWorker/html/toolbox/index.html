@@ -1049,6 +1049,13 @@
       </pre>
     </div>
     <br />
+    <div>В данном действии вы можете писать код с использованием <i>async</i> и <i>await</i>. Действие будет ожидать завершения асинхронных операций.</div>
+    <br />
+    <div>Простой пример. Асинхронное ожидание в течение заданного времени:</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
+    </div>
+    <br />
     <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
   </script>
 
@@ -1076,6 +1083,13 @@
         document.querySelector('textarea').value = [[TEXTAREA_VALUE]].join('\r\n');
         document.querySelector('input').value = [[INPUT_VALUE]];
       </pre>
+    </div>
+    <br />
+    <div>In this action you can write code using <i>async</i> and <i>await</i>. The action will wait for asynchronous operations to complete.</div>
+    <br />
+    <div>A simple example. Wait asynchronously for a specified time:</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
     </div>
     <br />
     <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>

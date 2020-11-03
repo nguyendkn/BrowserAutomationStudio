@@ -5686,33 +5686,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
-      <%= wasErrorVariable %> = false;
-      <%= lastErrorVariable %> = "";
-      page().script(<%= source %>)!
-
-      _if(_result().length, function() {
-        _BAS_JS_RESULT = {};
-
-        _do(function() {
-          _BAS_JS_RESULT = JSON.parse(_result());
-  
-          if ((_iterator() - 1) * 1000 >= <%= timeout_value() %> || _BAS_JS_RESULT.done) {
-            _break()
-          }
-  
-          page().script("JSON.stringify(_BAS_HIDE(AsyncJsResult))")!
-          sleep(1000)!
-        })!
-
-        <%= lastErrorVariable %> = _BAS_JS_RESULT.error ? _BAS_JS_RESULT.error : "";
-        <%= wasErrorVariable %> = _BAS_JS_RESULT.error ? true : false;
-
-        <% variables.forEach(function (name) { %>
-          VAR_<%= name %> = _BAS_JS_RESULT.vars["<%= name %>"];
-        <% }); %>
-
-        delete _BAS_JS_RESULT;
-      })!
+      browserjavascript(<%= source %>, <%= timeout_value() || 60000 %>, <%= variables %>, <%= wasError %>, <%= lastError %>)!
   </script>
 
   <script type="text/template" id="onloadjavascript_code">

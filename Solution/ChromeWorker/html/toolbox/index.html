@@ -1050,6 +1050,9 @@
     </div>
     <br />
     <div>В данном действии вы можете писать код с использованием <i>async</i> и <i>await</i>. Действие будет ожидать завершения асинхронных операций.</div>
+    <div>При использовании асинхронного кода всегда дожидайтесь завершения функций с помощью <i>await</i>.</div>
+    <div>В противном случае переменные, значение которых задается в коллбэках либо в функциях then/catch/finally у класса <i>Promise</i>, не будут синхронизированы с BAS.</div>
+    <div>Если в таких участках кода вам не нужно обновлять переменные, вы можете не ждать их завершения.</div>
     <br />
     <div>Простой пример. Асинхронное ожидание в течение заданного времени (2 секунды):</div>
     <div>
@@ -1093,6 +1096,9 @@ const post = await getPost(1);</pre></div>
     </div>
     <br />
     <div>In this action you can write code using <i>async</i> and <i>await</i>. The action will wait for asynchronous operations to complete.</div>
+    <div>When using asynchronous code, always wait for functions to complete using <i>await</i>.</div>
+    <div>Otherwise, variables whose value is set in callbacks or in the then/catch/finally functions of the <i>Promise</i> class will not be synchronized with the BAS.</div>
+    <div>If you don't need to update variables in these sections of code, you don't have to wait for them to complete.</div>
     <br />
     <div>A simple example. Wait asynchronously for a specified time (2 seconds):</div>
     <div>

@@ -52,7 +52,10 @@ function debug_variables(list, callback)
                 var o = eval(v)
                 if(o instanceof Date)
                 {
-                    o = "__DATE__" + _format_date(o,"yyyy-MM-dd hh:mm:ss t")
+                    o = "__DATE__" + _format_date(o,"yyyy-MM-dd hh:mm:ss t");
+                }else 
+                {
+                    o = truncate_variable(o, 1000);
                 }
                 res[v.slice(4)] = o
             }catch(e)
@@ -64,6 +67,26 @@ function debug_variables(list, callback)
     Browser.DebugVariablesResult(JSON.stringify([res,JSON.parse(ScriptWorker.PickResources())]),_get_function_body(callback));
 }
 
+function truncate_variable(item, limit) {
+    if (item instanceof Object) {
+        var keys = Object.keys(item);
+
+        keys.forEach(function (key) {
+            item[key] = truncate_variable(item[key], limit);
+        });
+
+        if (item instanceof Array) {
+            return item.slice(0, limit);
+        }
+
+        return keys.slice(0, limit).reduce(function (acc, key) {
+            acc[key] = item[key];
+            return acc;
+        }, {});
+    }
+
+    return item;
+}
 
 function _web_interface_eval(Script)
 {

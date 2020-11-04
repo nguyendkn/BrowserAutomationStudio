@@ -5686,7 +5686,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
-      browserjavascript(<%= source %>, <%= timeout_value() || 60000 %>, <%= variables %>, <%= wasError %>, <%= lastError %>)!
+      browserjavascript(<%= source %>, <%= timeout_value() %>, <%= variables %>, <%= wasError %>, <%= lastError %>)!
   </script>
 
   <script type="text/template" id="onloadjavascript_code">

@@ -2087,3 +2087,51 @@ function _thread_wait(id, func)
     });
 
 }
+
+// Browser javascript execution
+function browserjavascript() {
+    _TIMEOUT = (arguments[1] || BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT * 1000);
+    _LAST_ERROR_VAR = arguments[4];
+    _WAS_ERROR_VAR = arguments[3];
+    _VARIABLES = arguments[2];
+    _CALLBACK = arguments[5];
+    _TEXT = arguments[0];
+
+    _create_browser_if_needed(function () {
+        GLOBAL[_WAS_ERROR_VAR] = false;
+        GLOBAL[_LAST_ERROR_VAR] = "";
+
+        script(_TEXT, function () {
+            _if(_result().length, function () {
+                _do(function () {
+                    _RESULT = JSON.parse(_result());
+
+                    if ((_iterator() - 1) * 1000 >= _TIMEOUT || _RESULT.done) {
+                        _break();
+                    }
+
+                    script("JSON.stringify(_BAS_HIDE(AsyncJsResult))", function () {
+                        sleep(1000, function () { });
+                    });
+                }, function () {
+                    GLOBAL[_LAST_ERROR_VAR] = _RESULT.error ? _RESULT.error : "";
+                    GLOBAL[_WAS_ERROR_VAR] = _RESULT.error ? true : false;
+
+                    _VARIABLES.forEach(function (name) {
+                        GLOBAL["VAR_" + name] = _RESULT.vars[name];
+                    });
+                });
+            }, function () {
+                _CALLBACK();
+
+                delete _LAST_ERROR_VAR;
+                delete _WAS_ERROR_VAR;
+                delete _VARIABLES;
+                delete _CALLBACK;
+                delete _TIMEOUT;
+                delete _RESULT;
+                delete _TEXT;
+            });
+        });
+    });
+}

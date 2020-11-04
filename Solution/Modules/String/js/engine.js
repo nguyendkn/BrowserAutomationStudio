@@ -2,8 +2,8 @@ _STR_WHITESPACE = '\\s\\uFEFF\\xA0';
 function _is_string(data){
 	return typeof data==="string";
 };
-function _is_not_empty_string(str){
-	return _is_string(str) && str.length > 0;
+function _is_not_empty_string(data){
+	return _is_string(data) && data.length > 0;
 };
 function _no_exponents(num){
 	var data = String(num).split(/[eE]/);
@@ -24,11 +24,10 @@ function _no_exponents(num){
 	return str + z;
 };
 function _to_string(data){
-	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : String(data)));
+	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? data.source : String(data))));
 };
 function _to_number(str, dec, dsep, tsep){
-	str = _avoid_nil(str);
-	str = _is_string(str) ? str : _to_string(str);
+	str = _to_string(_avoid_nil(str));
 	dec = _avoid_nil(dec);
 	dsep = _avoid_nil(dsep, '.');
 	tsep = _avoid_nil(tsep, ',');
@@ -80,7 +79,7 @@ function _get_substring_between(str, left, right){
 	};
 };
 function _splice_string(str, from, count, add){
-	from = (_is_nil(from) || from==="") ? 0 : from;
+	from = _avoid_nilb(from, 0);
 	if(from < 0){
 		from = str.length + from;
 		if(from < 0){
@@ -105,15 +104,14 @@ function _capitalize(str, all, lower){
 	return (lower ? str.toLowerCase() : str).replace(new RegExp("(?:^|\\s|[\"'([{])+\\S", (all ? "g" : "")), function(match){return match.toUpperCase()});
 };
 function _sentences(str){
-    return str.replace(/(\.+|\:|\!|\?)(\"*|\'*|\)*|}*|]*)(\s|\n|\r|\r\n)/gm, "$1$2|+|").split("|+|");
+    return _clean(str).replace(/(\.+|\:|\!|\?)(\"*|\'*|\)*|}*|]*)(\s|\n|\r|\r\n)/gm, "$1$2|+|").split("|+|");
 };
 function _words(str){
-    return _avoid_nil(str.replace(/[\-]{2}/g, " ").match(/[A-ZА-Я\xC0-\xD6\xD8-\xDE\-]+(?![a-zа-я\xDF-\xF6\xF8-\xFF\-\d])|[A-ZА-Я\xC0-\xD6\xD8-\xDE\-]?[a-zа-я\xDF-\xF6\xF8-\xFF\-\d]+/g), []).filter(function(s){return /([^\-]+)/.test(s)}).map(function(s){return s.replace(/([\-]+$|^[\-]+)/g, "")});
+    return _avoid_nil(_clean(str).replace(/[\-]{2,}/g, " ").match(/[A-ZА-Я\xC0-\xD6\xD8-\xDE\-]+(?![a-zа-я\xDF-\xF6\xF8-\xFF\-\d])|[A-ZА-Я\xC0-\xD6\xD8-\xDE\-]?[a-zа-я\xDF-\xF6\xF8-\xFF\-\d]+/g), []).filter(function(s){return /([^\-]+)/.test(s)}).map(function(s){return _trim(s, _STR_WHITESPACE + "-")});
 };
 function _count_words(str){
     return _words(str).length;
 };
-
 function _find_substring(str, sub, from){
 	return str.indexOf(sub, from);
 };
@@ -138,7 +136,7 @@ function _remove_combining_marks(character, clean_character){
 	return clean_character;
 };
 function _latinize(str){
-	str = _is_string(str) ? str : _to_string(str);
+	str = _to_string(str);
 	if(str===''){
 		return '';
 	};
@@ -181,7 +179,7 @@ function _csv_generate(list, separator){
     });
     return res;
 };
-function _csv_parse(str, convert_types, separators){
+function _csv_parse(str, separators, convert_types){
 	separators = _avoid_nilb(separators, [":", ";", ","]);
 	convert_types = _avoid_nilb(convert_types, false);
     var res = [];
@@ -251,15 +249,16 @@ function _clean(str, characters_to_delete, characters_to_space, multiple_spaces)
 	return str;
 };
 function _is_json_string(str){
-	if(str.indexOf("[") < 0 && str.indexOf("]") < 0 && str.indexOf("{") < 0 && str.indexOf("}") < 0){
+	if((str.indexOf("[") > -1 && str.indexOf("]") > -1) || (str.indexOf("{") > -1 && str.indexOf("}") > -1)){
+		try{
+			JSON.parse(str);
+		}catch(e){
+			return false;
+		};
+		return true;
+	}else{
 		return false;
 	};
-    try{
-        JSON.parse(str);
-    }catch(e){
-        return false;
-    };
-    return true;
 };
 function _convert_to_list(str){
 	return (str==="" || typeof str=="object") ? str : (_is_json_string(str) ? JSON.parse(str) : str.split(/,\s|,/));

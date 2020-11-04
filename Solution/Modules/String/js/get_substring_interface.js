@@ -5,9 +5,13 @@
 <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "SUBSTRING", help: {description: tr("Variable in which, after successful execution of the action, the substring will be written."),examples:[{code:tr("sample")},{code:"text"},{code:"str"}]} }) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Get a substring from the specified string.</div>
-	<div class="tr tooltip-paragraph-fold">If the "From index" and "To index" parameters are not specified, the entire string will be returned.</div>
-	<div class="tr tooltip-paragraph-fold">If the "From index" parameter is specified and the "To index" parameter is not specified, all characters from the specified to the end of the string will be retrieved.</div>
-	<div class="tr tooltip-paragraph-last-fold">If the "From index" parameter is not specified and the "To index" parameter is specified, all characters from the first to the specified one will be retrieved.</div>
+	<div class="tr tooltip-paragraph-first-fold">Get a substring from the string.</div>
+	<div class="tr tooltip-paragraph-fold">This action returns the received substring.</div>
+	<div class="tr tooltip-paragraph-fold">For example, to get the substring <code>"example"</code> from the string <code>"Just example string"</code>, you need to specify 5 in the "From index" parameter and specify 12 in the "To index" parameter.</div>
+	<div class="tr tooltip-paragraph-fold">If the "From index" and "To index" parameters are not specified, the entire string will be received.</div>
+	<div class="tr tooltip-paragraph-fold">If the "From index" parameter is specified and the "To index" parameter is not specified, all characters from the specified to the end of the string will be received.</div>
+	<div class="tr tooltip-paragraph-fold">If the "From index" parameter is not specified and the "To index" parameter is specified, all characters from the first to the specified one will be received.</div>
+	<div class="tr tooltip-paragraph-fold">If both parameters "From Index" and "To Index" are specified, all characters from specified to specified will be received.</div>
+	<div class="tr tooltip-paragraph-last-fold">If the index is a negative number, then it is interpreted as the number of characters from the end of the string.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

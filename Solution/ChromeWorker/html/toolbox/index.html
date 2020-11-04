@@ -9371,7 +9371,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               return;
             }
 
-            if(VariableValue["original"].length == 0)
+            if(!VariableValue["isString"] && VariableValue["original"].length == 0)
             {
               Invalid("Variable value is empty");
               return;
@@ -12681,7 +12681,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         var ResTextUpdated = loader.Resolve(ResText+"");
         if(ResTextUpdated.length == 0)
           ResTextUpdated = "\"\""
-        return {"updated" : ResTextUpdated, "original" : ResText}
+        return {"updated" : ResTextUpdated, "original" : ResText, "isString": ResTextTypeIsString};
     }
 
     function GetPath(loader, need_all, need_visible, selector_index)

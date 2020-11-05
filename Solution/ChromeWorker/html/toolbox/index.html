@@ -8854,7 +8854,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             {
                var UpdatedVal = val["updated"];
 
-               if ((/VAR_\w+$/).test(UpdatedVal.trim())) {
+               if ((/^VAR_\w+$/).test(UpdatedVal.trim())) {
                  UpdatedVal = `typeof(${UpdatedVal}) !== "undefined" ? (${UpdatedVal}) : undefined`;
                }
 

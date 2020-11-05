@@ -8851,7 +8851,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             var ElseEnabled = $("#IfElse").is(":checked")
             if(val["original"].length > 0)
             {
-               var UpdatedVal = `typeof(${val["updated"]}) !== "undefined" ? ${val["updated"]} : undefined`;
+               var UpdatedVal = `typeof(${val["updated"]}) !== "undefined" ? (${val["updated"]}) : undefined`;
                try{
                 if(!ElseEnabled)
                 {

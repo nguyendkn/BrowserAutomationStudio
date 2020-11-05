@@ -5686,7 +5686,35 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
-      browserjavascript(<%= source %>, <%= timeout_value() %>, <%= variables %>, <%= wasError %>, <%= lastError %>)!
+      page().script(<%= source %>)!
+      <%= wasError %> = false;
+      <%= lastError %> = "";
+
+      _if(_result().length, function() {
+        _BAS_JS_TIMEOUT = (<%= timeout_value() %> || BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT * 1000);
+        _BAS_JS_RESULT = {};
+
+        _do(function() {
+          _BAS_JS_RESULT = JSON.parse(_result());
+  
+          if ((_iterator() - 1) * 1000 >= <%= timeout_value() %> || _BAS_JS_RESULT.done) {
+            _break()
+          }
+  
+          page().script("JSON.stringify(_BAS_HIDE(AsyncJsResult))")!
+          sleep(1000)!
+        })!
+
+        <%= lastError %> = _BAS_JS_RESULT.error ? _BAS_JS_RESULT.error : "";
+        <%= wasError %> = _BAS_JS_RESULT.error ? true : false;
+
+        <% variables.forEach(function (name) { %>
+          VAR_<%= name %> = _BAS_JS_RESULT.vars["<%= name %>"];
+        <% }); %>
+
+        delete _BAS_JS_TIMEOUT;
+        delete _BAS_JS_RESULT;
+      })!
   </script>
 
   <script type="text/template" id="onloadjavascript_code">
@@ -8515,9 +8543,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
             try {
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
-                variables: `[${prepared.variables.map((v) => `"${v}"`).join(",")}]`,
-                lastError: `"VAR_${lastErrorVariable}"`,
-                wasError: `"VAR_${wasErrorVariable}"`,
+                lastError: `VAR_${lastErrorVariable}`,
+                wasError: `VAR_${wasErrorVariable}`,
+                variables: prepared.variables,
                 source: prepared.source,
               });
               code = Normalize(code,0);

@@ -5696,8 +5696,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         _do(function() {
           _BAS_JS_RESULT = JSON.parse(_result());
+
+          if ((_iterator() - 1) * 1000 >= _BAS_JS_TIMEOUT) {
+            fail("Failed to wait for script completion");
+          }
   
-          if ((_iterator() - 1) * 1000 >= <%= timeout_value() %> || _BAS_JS_RESULT.done) {
+          if (_BAS_JS_RESULT.done) {
             _break()
           }
   

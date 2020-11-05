@@ -55,7 +55,7 @@ function debug_variables(list, callback)
                     o = "__DATE__" + _format_date(o,"yyyy-MM-dd hh:mm:ss t");
                 }else 
                 {
-                    o = truncate_variable(o, 1000);
+                    o = truncate_variable(o, 100);
                 }
                 res[v.slice(4)] = o
             }catch(e)

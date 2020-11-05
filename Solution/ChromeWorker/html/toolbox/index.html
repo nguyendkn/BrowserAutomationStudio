@@ -8849,9 +8849,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             var val = GetInputConstructorValue("IfExpression",loader)
             var ElseEnabled = $("#IfElse").is(":checked")
+
             if(val["original"].length > 0)
             {
-               var UpdatedVal = `typeof(${val["updated"]}) !== "undefined" ? (${val["updated"]}) : undefined`;
+               var UpdatedVal = val["updated"];
+
+               if ((/VAR_\w+$/).test(UpdatedVal.trim())) {
+                 UpdatedVal = `typeof(${UpdatedVal}) !== "undefined" ? (${UpdatedVal}) : undefined`;
+               }
+
                try{
                 if(!ElseEnabled)
                 {

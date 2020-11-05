@@ -49,15 +49,7 @@ function debug_variables(list, callback)
 
             try
             {
-                var o = eval(v)
-                if(o instanceof Date)
-                {
-                    o = "__DATE__" + _format_date(o,"yyyy-MM-dd hh:mm:ss t");
-                }else 
-                {
-                    o = truncate_variable(o, 100);
-                }
-                res[v.slice(4)] = o
+                res[v.slice(4)] = truncate_variable(eval(v), 100);
             }catch(e)
             {
                 res[v.slice(4)] = "undefined"
@@ -69,20 +61,24 @@ function debug_variables(list, callback)
 
 function truncate_variable(item, limit) {
     if (item instanceof Object) {
-        var keys = Object.keys(item);
+        if (!(item instanceof Date)) {
+            var keys = Object.keys(item);
 
-        keys.forEach(function (key) {
-            item[key] = truncate_variable(item[key], limit);
-        });
-
-        if (item instanceof Array) {
-            return item.slice(0, limit);
+            keys.forEach(function (key) {
+                item[key] = truncate_variable(item[key], limit);
+            });
+        
+            if (item instanceof Array) {
+                return item.slice(0, limit);
+            }
+        
+            return keys.slice(0, limit).reduce(function (acc, key) {
+                acc[key] = item[key];
+                return acc;
+            }, {});
         }
-
-        return keys.slice(0, limit).reduce(function (acc, key) {
-            acc[key] = item[key];
-            return acc;
-        }, {});
+        
+        return "__DATE__" + _format_date(item, "yyyy-MM-dd hh:mm:ss t");
     }
 
     return item;

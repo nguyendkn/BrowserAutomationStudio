@@ -4,7 +4,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get the number of words from a string.</div>
-	<div class="tr tooltip-paragraph-fold">This action returns a number equal to the number of words in the string.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a number equal to the number of words in the string.</div>
 	<div class="tr tooltip-paragraph-last-fold">For example, if the string <code>"Test text"</code> is specified, then the action will return 2, and if the string <code>"Just example string"</code> is specified, then the action will return 3.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

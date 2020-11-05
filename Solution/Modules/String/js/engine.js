@@ -135,12 +135,14 @@ function _get_latin_character(character){
 function _remove_combining_marks(character, clean_character){
 	return clean_character;
 };
-function _latinize(str){
+function _latinize(str, cyrillic){
 	str = _to_string(str);
 	if(str===''){
 		return '';
 	};
-	return str.replace(/[^A-Za-z0-9]/g, _get_latin_character).replace(/([\0-\u02FF\u0370-\u1AAF\u1B00-\u1DBF\u1E00-\u20CF\u2100-\uD7FF\uE000-\uFE1F\uFE30-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])([\u0300-\u036F\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]+)/g, _remove_combining_marks);
+	cyrillic = _avoid_nilb(cyrillic, true);
+	var letters_reg = cyrillic ? /[^A-Za-z0-9]/g : /[^A-ZА-Яa-zа-я0-9]/g;
+	return str.replace(letters_reg, _get_latin_character).replace(/([\0-\u02FF\u0370-\u1AAF\u1B00-\u1DBF\u1E00-\u20CF\u2100-\uD7FF\uE000-\uFE1F\uFE30-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])([\u0300-\u036F\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]+)/g, _remove_combining_marks);
 };
 function _declination(num, words){  
     num = Math.abs(num) % 100;

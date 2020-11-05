@@ -4,7 +4,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Convert the specified data to a string.</div>
-	<div class="tr tooltip-paragraph-fold">This action returns a string representation of the specified data.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a string representation of the specified data.</div>
 	<div class="tr tooltip-paragraph-fold">This action works with any type of data.</div>
 	<div class="tr tooltip-paragraph-last-fold">For example, if <code>123</code> is specified, then the action will return <code>"123"</code>, and if <code>true</code> is specified, then the action will return <code>"true"</code>.</div>
 </div>

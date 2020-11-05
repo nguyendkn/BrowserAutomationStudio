@@ -9,7 +9,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Convert the specified string to a number.</div>
-	<div class="tr tooltip-paragraph-fold">This action returns the numeric representation of the specified string.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return the numeric representation of the specified string.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if <code>"123"</code> is specified, then the action will return <code>123</code>, and if <code>"123.45"</code> is specified, then the action will return <code>123.45</code>.</div>
 	<div class="tr tooltip-paragraph-fold">The final number can be rounded off by specifying the "Number of decimal places" parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-fold">This action can convert numbers in a non-standard format for this, you need to specify the "Decimal separator" and "Thousandth separator" parameters located in the additional settings.</div>

@@ -1,1 +1,1 @@
-<%= variable %> = _latinize(<%= string %>);
+<%= variable %> = _latinize(<%= string %>,<%= cyrillic %>);

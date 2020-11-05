@@ -3,10 +3,12 @@ if(string["original"].length == 0){
 	Invalid(tr("String") + " " + tr("is empty"));
     return;
 };
+var cyrillic = $("#Check").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
     var code = loader.GetAdditionalData() + _.template($("#latinize_code").html())({
         "string": string["updated"],
+        "cyrillic": cyrillic,
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

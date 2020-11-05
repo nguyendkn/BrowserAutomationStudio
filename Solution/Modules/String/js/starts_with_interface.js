@@ -8,5 +8,8 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Check if the string starts with the specified substring.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return true or false, depending on whether the string begins with the specified substring. This result may be used with "If" action.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the string is <code>"Test text"</code> and the substring <code>"Test"</code>, then the action will return true, and if the string is <code>"Just example string"</code> and substring <code>"example"</code>, then the action will return false.</div>
+	<div class="tr tooltip-paragraph-last-fold">By default, the search is performed from the beginning of the string, but this can be changed by specifying the index from which to start the search in the "From index" parameter located in the additional settings.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

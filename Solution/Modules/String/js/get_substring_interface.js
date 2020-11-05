@@ -6,7 +6,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get a substring from the string.</div>
-	<div class="tr tooltip-paragraph-fold">This action returns the received substring.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return the received substring.</div>
 	<div class="tr tooltip-paragraph-fold">For example, to get the substring <code>"example"</code> from the string <code>"Just example string"</code>, you need to specify 5 in the "From index" parameter and specify 12 in the "To index" parameter.</div>
 	<div class="tr tooltip-paragraph-fold">If the "From index" and "To index" parameters are not specified, the entire string will be received.</div>
 	<div class="tr tooltip-paragraph-fold">If the "From index" parameter is specified and the "To index" parameter is not specified, all characters from the specified to the end of the string will be received.</div>

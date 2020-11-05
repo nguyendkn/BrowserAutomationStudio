@@ -9,7 +9,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Format and convert the specified number to a string.</div>
 	<div class="tr tooltip-paragraph-fold">This action can bring the number into a more readable form, for example, for further output to the log.</div>
 	<div class="tr tooltip-paragraph-fold">Before formatting, the number can be rounded by specifying the "Number of decimal places" parameter.</div>
-	<div class="tr tooltip-paragraph-fold">This action returns the formatted string representation of the specified number.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return the formatted string representation of the specified number.</div>
 	<div class="tr tooltip-paragraph-last-fold">For example, the number <code>1967567.3245</code> will be converted to the string <code>"1 967 567.3245"</code> if a comma is specified in the "Decimal separator" parameter, and a space is specified in the "Thousandth separator" parameter.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

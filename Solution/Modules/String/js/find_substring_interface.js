@@ -8,5 +8,8 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Find a substring in a string.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a number equal to the index of the beginning of the first substring found, or -1 if the substring was not found.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"Test text"</code> is specified and the substring <code>"text"</code> is specified, then the action will return 5, and if the string is <code>"Just example string"</code> and the substring <code>"test"</code>, then the action will return -1.</div>
+	<div class="tr tooltip-paragraph-last-fold">By default, the search is performed from the beginning of the string, but this can be changed by specifying the index from which to start the search in the "From index" parameter located in the additional settings.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

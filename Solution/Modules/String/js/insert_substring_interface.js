@@ -6,5 +6,9 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Insert a substring into a string.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return the string resulting from the substring insertion.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"Just string"</code> is specified, the substring <code>"example " </code> and index 5, then the action will return <code>"Just example string"</code>.</div>
+	<div class="tr tooltip-paragraph-fold">If the index is a negative number, then it is interpreted as the number of characters from the end of the string.</div>
+	<div class="tr tooltip-paragraph-last-fold">If you need to not only insert a substring, but also delete part of the original string, then use the "Remove string part" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

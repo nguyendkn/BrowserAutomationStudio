@@ -7,5 +7,6 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Remove part of the string and/or insert a new one.</div>
+	<div class="tr tooltip-paragraph-last-fold">This action can either delete part of the string, or insert a new part, or all at the same time.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

@@ -8849,13 +8849,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             var val = GetInputConstructorValue("IfExpression",loader)
             var ElseEnabled = $("#IfElse").is(":checked")
+
             if(val["original"].length > 0)
             {
+               var UpdatedVal = val["updated"];
+
+               if ((/^VAR_\w+$/).test(UpdatedVal.trim())) {
+                 UpdatedVal = `typeof(${UpdatedVal}) !== "undefined" ? (${UpdatedVal}) : undefined`;
+               }
 
                try{
                 if(!ElseEnabled)
                 {
-                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:val["updated"], do_delete: ""})
+                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
                   code = Normalize(code,0)
                   BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, 1, false);
                 }else
@@ -8877,8 +8883,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   }
 
 
-                  var code = loader.GetAdditionalData() + "\n" +  v + " = " + val["updated"] + ";\n"
-
+                  var code = loader.GetAdditionalData() + "\n" +  v + " = " + UpdatedVal + ";\n"
  
 
                   code += _.template($('#' + State + "_code").html())({expression:v, do_delete: ""})

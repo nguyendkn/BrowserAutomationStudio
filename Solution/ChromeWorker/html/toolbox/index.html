@@ -1629,22 +1629,6 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           <span class="tr">Insert variable</span>
         </a>
       </div>
-      <%= _.template($('#variable_constructor').html())({ 
-        description: tr("Variable to save error message"),
-        default_variable: "JS_LAST_ERROR",
-        id: "LastErrorVariable",
-        help: { 
-          description: tr("If there was no error, the value will be an empty string. Otherwise, the value will be an error message.") 
-        },
-      }) %>
-      <%= _.template($('#variable_constructor').html())({ 
-        description: tr("Variable to save error state"),
-        default_variable: "JS_WAS_ERROR",
-        id: "WasErrorVariable",
-        help: { 
-          description: tr("If there was no error, the value will be false. Otherwise, the value will be true.") 
-        },
-      }) %>
       <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
     </div>
     <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
@@ -5687,8 +5671,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="browserjavascript_code">
       /*Browser*/
       page().script(<%= source %>)!
-      <%= wasError %> = false;
-      <%= lastError %> = "";
 
       _if(_result().length, function() {
         _BAS_JS_TIMEOUT = (<%= timeout_value() %> || BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT * 1000);
@@ -5709,15 +5691,17 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           sleep(1000)!
         })!
 
-        <%= lastError %> = _BAS_JS_RESULT.error ? _BAS_JS_RESULT.error : "";
-        <%= wasError %> = _BAS_JS_RESULT.error ? true : false;
-
         <% variables.forEach(function (name) { %>
           VAR_<%= name %> = _BAS_JS_RESULT.vars["<%= name %>"];
         <% }); %>
 
+        var error = _BAS_JS_RESULT.error;
         delete _BAS_JS_TIMEOUT;
         delete _BAS_JS_RESULT;
+
+        if (error) {
+          fail(error);
+        }
       })!
   </script>
 
@@ -8534,8 +8518,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
           }else if(State == "browserjavascript")
           {
-            var lastErrorVariable = this.$el.find("#LastErrorVariable").val().toUpperCase();
-            var wasErrorVariable = this.$el.find("#WasErrorVariable").val().toUpperCase();
             var source = window.Code.Editor.getValue();
 
             if(source.length === 0) {
@@ -8547,8 +8529,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
             try {
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
-                lastError: `VAR_${lastErrorVariable}`,
-                wasError: `VAR_${wasErrorVariable}`,
                 variables: prepared.variables,
                 source: prepared.source,
               });

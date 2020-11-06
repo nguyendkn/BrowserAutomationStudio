@@ -26,7 +26,11 @@ function prepareBrowserJavascript(source) {
           try { 
             ${source}
           } catch (err) {
-            _BAS_HIDE(AsyncJsResult).error = err.message;
+            if (err instanceof Error) {
+              _BAS_HIDE(AsyncJsResult).error = err.message;
+            } else {
+              _BAS_HIDE(AsyncJsResult).error = err;
+            }
           }
 
           _BAS_HIDE(AsyncJsResult).done = true;

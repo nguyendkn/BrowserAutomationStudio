@@ -475,6 +475,82 @@
             "name": "clean",
             "select": "clean_select.js",
             "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "parseline_code.js",
+                    "name": "parseline_code"
+                }
+            ],
+            "description": {
+                "en": "Parse line",
+                "ru": "Парсить строку"
+            },
+            "interface": "parseline_interface.js",
+            "is_element": false,
+            "name": "parseline",
+            "select": "parseline_select.js",
+            "template": "{{Value}} -> {{VariablesList}}",
+			"suggestion":{  
+				"en":"split line",
+				"ru":"разбить строку, разделить строку"
+			}
+        },
+		{
+            "code": [
+                {
+                    "file": "template_code.js",
+                    "name": "template_code"
+                }
+            ],
+            "description": {
+                "en": "Template",
+                "ru": "Шаблон"
+            },
+            "interface": "template_interface.js",
+            "is_element": false,
+            "name": "template",
+            "select": "template_select.js",
+            "template": "{{Template}} -> {{Save}}",
+			"suggestion":{  
+				"en":"randomize string, random string, spintax, multiline string",
+				"ru":"рандомизировать, случайная строка, спинтакс, многострочная переменная"
+			}
+        },
+		{
+            "code": [
+                {
+                    "file": "replacestring_code.js",
+                    "name": "replacestring_code"
+                }
+            ],
+            "description": {
+                "en": "Replace string",
+                "ru": "Заменить строку"
+            },
+            "interface": "replacestring_interface.js",
+            "is_element": false,
+            "name": "replacestring",
+            "select": "replacestring_select.js",
+            "template": "{{Value}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "randomstring_code.js",
+                    "name": "randomstring_code"
+                }
+            ],
+            "description": {
+                "en": "Random string",
+                "ru": "Случайная строка"
+            },
+            "interface": "randomstring_interface.js",
+            "is_element": false,
+            "name": "randomstring",
+            "select": "randomstring_select.js",
+            "template": "{{Save}}"
         }
     ],
     "api_version": 1,
@@ -643,11 +719,19 @@
 		"Number of characters to remove": {"ru":"Количество удаляемых символов"},
 		"The number of characters to be removed.": {"ru":"Количество символов, которые будут удалены."},
 		"Remove part of the string and/or insert a new one.": {"ru":"Удалите часть строки и/или вставьте новую."},
-		"The character index at which the removing begins.": {"ru":"Индекс символа, с которого начинается удаление."},
+		"The character index at which to start modifying the string.": {"ru":"Индекс символа, с которого начинается изменение строки."},
 		"The substring to be inserted instead of the removed part.": {"ru":"Подстрока, которая будет вставлена вместо удаленной части."},
 		"The string from which want to remove a part and/or add a new one.": {"ru":"Строка, из которой нужно удалить часть и/или добавить новую."},
+		"This action will return the string resulting from all the manipulations.": {"ru":"Данное действие вернет строку, полученную в итоге выполнения всех манипуляций."},
+		"If you only need to insert a substring, then you can use the \"Insert at\" action.": {"ru":"Если вам нужно только вставить подстроку, то вы можете использовать действие \"Вставить в\"."},
 		"Variable in which, after successful execution of the action, the final string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана итоговая строка."},
 		"This action can either delete part of the string, or insert a new part, or all at the same time.": {"ru":"Данное действие может либо удалить часть строки, либо вставить новую часть, либо все одновременно."},
+		"To insert only, you need to specify the \"Insertable substring\" parameter, and specify zero in the \"Number of characters to remove\" parameter.": {"ru":"Чтобы только вставить, нужно указать параметр \"Вставляемая подстрока\", а в параметр \"Количество удаляемых символов\" указать ноль."},
+		"For example, if is specified the string <code>\"Test text\"</code>, index is 0 and the number of characters is 5, then the action will return <code>\"text\"</code>.": {"ru":"Например, если указана строка <code>\"Тест текст\"</code>, индекс 0 и количество символов 5, то действие вернет <code>\"текст\"</code>."},
+		"To delete and insert, you need to specify a value greater than zero in the \"Number of characters to remove\" parameter, and specify the \"Insertable substring\" parameter.": {"ru":"Чтобы удалить и вставить, нужно указать в параметр \"Количество удаляемых символов\" значение больше нуля, и указать параметр \"Вставляемая подстрока\"."},
+		"To only remove, you need to specify a value greater than zero in the \"Number of characters to remove\" parameter, and do not specify the \"Insertable substring\" parameter.": {"ru":"Чтобы только удалить, нужно указать в параметр \"Количество удаляемых символов\" значение больше нуля, а параметр \"Вставляемая подстрока\" не указывать."},
+		"For example, if is specified the string <code>\"Test not text\"</code>, index 5, number of characters 3 and substring <code>\"new\"</code>, then the action will return <code>\"Test new text\"</code>.": {"ru":"Например, если указана строка <code>\"Тест не текст\"</code>, индекс 5, количество символов 2 и подстрока <code>\"новый\"</code>, то действие вернет <code>\"Тест новый текст\"</code>."},
+		"For example, if is specified the string <code>\"Just string\"</code>, index 5, number of characters 0 and substring <code>\"example \"</code>, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"Просто строки\"</code>, индекс 7, количество символов 0 и подстрока <code>\"пример \"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
 		
 		"just sample text": {"ru":"просто пример текста"},
 		"The string to be converted to lowercase.": {"ru":"Строка, которую нужно преобразовать в нижний регистр."},
@@ -754,7 +838,7 @@
 		"The character index after which the substring will be inserted.": {"ru":"Индекс символа, после которого будет вставлена подстрока."},
 		"This action will return the string resulting from the substring insertion.": {"ru":"Данное действие вернет строку, полученную в итоге вставки подстроки."},
 		"If you need to not only insert a substring, but also delete part of the original string, then use the \"Remove string part\" action.": {"ru":"Если вам нужно не только вставить подстроку, но и удалить часть исходной строки, то используйте действие \"Удалить часть строки\"."},
-		"For example, if the string <code>\"Just string\"</code> is specified, the substring <code>\"example \" </code> and index 5, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"Просто строки\"</code>, подстрока <code>\"пример \"</code> и индекс 7, то действие вернет <code>\"Просто пример строки\"</code>."},
+		"For example, if the string <code>\"Just string\"</code> is specified, the substring <code>\"example \"</code> and index 5, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"Просто строки\"</code>, подстрока <code>\"пример \"</code> и индекс 7, то действие вернет <code>\"Просто пример строки\"</code>."},
 		
 		"List of strings": {"ru":"Список строк"},
 		"Concatenate strings without separator": {"ru":"Соединять строки без разделителя"},
@@ -774,7 +858,7 @@
 		"If some of the parameters (\"String 1\", \"String 2\", \"String 3\", \"List of strings\") are not specified, all parameters will be used except for them.": {"ru":"Если какие-то из параметров (\"Строка 1\", \"Строка 2\", \"Строка 3\", \"Список строк\") не указаны, будут использованы все параметры кроме них."},
 		"For example, if a string is specified in the \"String 1\" field and a list of 4 strings is specified in the \"List of strings\" field, then 5 strings will be concatenated.": {"ru":"Например, если в поле \"Строка 1\" указана строка и в поле \"Список строк\" указан список из 4 строк, то соеденено будет 5 строк."},
 		"By default, strings are concatenated without a separator, but this can be changed by specifying the \"Separator\" parameter located in the additional settings.": {"ru":"По умолчанию строки соединяются без разделителя, но это можно изменить, указав параметр \"Разделитель\", находящийся в дополнительных настройках."},
-		"For example, if the parameters \"String 1\" and \"String 2\" are specified, the values of which are respectively <code>\"Just example\" </code> and <code>\" string\"</code>, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указаны параметры \"Строка 1\" и \"Строка 2\" значения которых сответственно равны <code>\"Просто пример\"</code> и <code>\" строки\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
+		"For example, if the parameters \"String 1\" and \"String 2\" are specified, the values of which are respectively <code>\"Just example\"</code> and <code>\" string\"</code>, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указаны параметры \"Строка 1\" и \"Строка 2\" значения которых сответственно равны <code>\"Просто пример\"</code> и <code>\" строки\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
 		"For example, if \"List of strings\" is not specified, then the list will be formed from the parameters \"String 1\" and \"String 2\" and \"String 3\". If the parameters \"String 1\", \"String 2\", \"String 3\" are empty, then the \"List of strings\" will be used. If all parameters are specified, then all of them will be used.": {"ru":"Например, если \"Список строк\" не указан, то список будет сформирован из параметров \"Строка 1\" и \"Строка 2\" и \"Строка 3\". Если параметры \"Строка 1\", \"Строка 2\", \"Строка 3\" пусты, то будет использован \"Список строк\". Если указаны все параметры, то все они будут использованы."},
 		
 		"Latinize Cyrillic": {"ru":"Латинизировать кириллицу"},
@@ -804,14 +888,17 @@
 		"Variable in which, after successful execution of the action, the word corresponding to the specified number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано слово, сответствующее указанному числу."},
 		"For example, if the words \"account\", \"accounts\", \"accounts\" are specified and the number is 1, then the action will return <code>\"account\"</code>, and if the number is 22, then the action will return <code>\"accounts\"</code>.": {"ru":"Например, если указаны слова \"аккаунт\", \"аккаунта\", \"аккаунтов\" и число равно 5, то действие вернет <code>\"аккаунтов\"</code>, а если число равно 22, то действие вернет <code>\"аккаунта\"</code>."},
 		
-		"Variables list": {"ru":"Список переменных"},
-		"Convert types.": {"ru":"Преобразовывать типы."},
+		"Convert types": {"ru":"Преобразовывать типы"},
 		"List of separators": {"ru":"Список разделителей"},
 		"Parse CSV string into items.": {"ru":"Распарсить CSV строку на элементы."},
 		"CSV string with want to parse into items.": {"ru":"CSV строка, которую нужно распарсить на элементы."},
-		"Convert strings to numbers, booleans and objects": {"ru":"Преобразовывать строки в числа, булевый тип и объекты"},
 		"The list of delimiters by which the string can be split.": {"ru":"Список разделителей, по которым можно разбить строку."},
 		"As a list, you can use a string consisting only of the separators.": {"ru":"В качестве списка можно использовать строку, состоящую только из разделителей."},
+		"This action will parse the string by the specified separators and save the parsed data by the specified variables.": {"ru":"Данное действие распарсит строку по указанным разделителям и сохранит распарсенные данные по указанным переменным."},
+		"If the number of variables is greater than the number of items in the string, then an empty string will be written to the excess variables.": {"ru":"Если количество переменных больше, чем количество элементов в строке, то в лишние переменные будет записана пустая строка."},
+		"By default, the action returns strings, but this can be changed by enabling the \"Convert types\" parameter located in the additional settings, then strings will automatically be converted to numbers, true or false, objects, null and undefined.": {"ru":"По умолчанию действие возвращает строки, но это можно изменить, включив параметр \"Преобразовывать типы\", находящийся в дополнительных настройках, тогда страки автоматически будут конвертироватся в числа, true или false, обекты, null и undefined."},
+		"For example, if the string <code>\"test:123:true\"</code> is specified, then the string <code>\"test\"</code> will be saved in the first variable, and the number <code>123</code> in the second variable and in the third variable the boolean value <code>true</code>.": {"ru":"Например, если указана строка <code>\"test:123:true\"</code>, то в первую переменную будет сохранена строка <code>\"test\"</code>, во вторую переменную число <code>123</code> и в третью переменную логическое значение <code>true</code>."},
+		"For example, if the string <code>\"email@gmail.com:mypass1\"</code> and the variables <code>USERNAME,PASSWORD</code> are specified, then the action will save <code>\"email@gmail.com\"</code> to the variable <code>[[USERNAME]]</code> and <code>\"mypass1\"</code> to the variable <code>[[PASSWORD]]</code>.": {"ru":"Например, если указана строка <code>\"email@gmail.com:mypass1\"</code> и переменные <code>USERNAME,PASSWORD</code>, то действие сохранит <code>\"email@gmail.com\"</code> в переменную <code>[[USERNAME]]</code> и <code>\"mypass1\"</code> в переменную <code>[[PASSWORD]]</code>."},
 		
 		"Item": {"ru":"Элемент"},
 		"List of items": {"ru":"Список элементов"},
@@ -820,10 +907,20 @@
 		"List of items to add to the CSV string.": {"ru":"Список элементов, которые нужно добавить  в CSV строку."},
 		"Separator to insert between elements of CSV string.": {"ru":"Разделитель, вставляемый между элементами CSV строки."},
 		"The parameters \"Item 1\", \"Item 2\", \"Item 3\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 2\", \"Элемент 3\""},
+		"If the element contains a separator, then it will be enclosed in quotes.": {"ru":"Если элемент содержит разделитель, то он будет заключен в кавычки."},
+		"The values of all elements are converted to a string before concatenating.": {"ru":"Значения всех элементов перед соединением преобразуются в строку."},
 		"The parameters \"Item 2\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 2\", \"Элемент 3\", \"Список элементов\""},
 		"The parameters \"Item 1\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 3\", \"Список элементов\""},
 		"The parameters \"Item 1\", \"Item 2\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 2\", \"Список элементов\""},
 		"Variable in which, after successful execution of the action, the CSV string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана CSV строка."},
+		"Items from separate fields and a list are added to a general list of items that will be concatenated.": {"ru":"Элементы из отдельных полей и списка складываются в общий список элементов которые будут соединены."},
+		"The order of concating the fields is as follows \"Item 1\", \"Item 2\", \"Item 3\", \"List of items\".": {"ru":"Порядок соединения полей следующий: \"Элемент 1\", \"Элемент 2\", \"Элемент 3\", \"Список элементов\"."},
+		"This action will return a CSV string composed of all the specified items, separated by the specified character.": {"ru":"Данное действие вернет CSV строку, составленную из всех указанных элементов, разделенных указанным символом."},
+		"If some of the parameters (\"Item 1\", \"Item 2\", \"Item 3\", \"List of items\") are not specified, all parameters will be used except for them.": {"ru":"Если какие-то из параметров (\"Элемент 1\", \"Элемент 2\", \"Элемент 3\", \"Список элементов\") не указаны, будут использованы все параметры кроме них."},
+		"For example, if a item is specified in the \"Item 1\" field and a list of 4 items is specified in the \"List of items\" field, then 5 items will be concatenated.": {"ru":"Например, если в поле \"Элемент 1\" указан элемент и в поле \"Список элементов\" указан список из 4 элементов, то соеденено будет 5 элементов."},
+		"By default, strings are concatenated without a separator, but this can be changed by specifying the \"Separator\" parameter located in the additional settings.": {"ru":"По умолчанию строки соединяются без разделителя, но это можно изменить, указав параметр \"Разделитель\", находящийся в дополнительных настройках."},
+		"For example, if the parameters \"Item 1\" and \"Item 2\" are specified, the values of which are respectively <code>\"test\"</code> and <code>\"text\"</code>, and the separator <code>\":\"</code>, then the action will return <code>\"test:text\"</code>.": {"ru":"Например, если указаны параметры \"Элемент 1\" и \"Элемент 2\" значения которых сответственно равны <code>\"тест\"</code> и <code>\"текст\"</code>, а разделитель <code>\":\"</code>, то действие вернет <code>\"тест:текст\"</code>."},
+		"For example, if \"List of items\" is not specified, then the list will be formed from the parameters \"Item 1\" and \"Item 2\" and \"Item 3\". If the parameters \"Item 1\", \"Item 2\", \"Item 3\" are empty, then the \"List of items\" will be used. If all parameters are specified, then all of them will be used.": {"ru":"Например, если \"Список элементов\" не указан, то список будет сформирован из параметров \"Элемент 1\" и \"Элемент 2\" и \"Элемент 3\". Если параметры \"Элемент 1\", \"Элемент 2\", \"Элемент 3\" пусты, то будет использован \"Список элементов\". Если указаны все параметры, то все они будут использованы."},
 		
 		"Trim left": {"ru":"Обрезать слева"},
 		"Trim right": {"ru":"Обрезать справа"},
@@ -835,6 +932,10 @@
 		"Trim string along the edges.": {"ru":"Подровнять строку по краям."},
 		"The string which needs to be trimmed.": {"ru":"Строка, которую нужно подровнять."},
 		"Characters to be trimmed at the edges of the string.": {"ru":"Символы, обрезаемые с краев строки."},
+		"This action will return a string, from the beginning and end of which unnecessary characters such as spaces, line breaks, tabs will be trimmed.": {"ru":"Данное действие вернет строку, с начала и конца которой будут обрезаны ненужные символы, такие как пробелы, переносы строк, табуляция."},
+		"By default, the action trim the string on both sides, but this can be changed using the radio buttons located in the additional settings.": {"ru":"По умолчанию действие обрезает строку с обеих сторон, но это можно изменить с помощью переключателей, находящихся в дополнительных настройках."},
+		"The characters to be trimmed are determined by the \"Trim spaces\", \"Trim line breaks\", \"Trim tabs\" parameters, but you can also specify your own characters in the \"Trim characters\" parameter located in the additional settings.": {"ru":"Символы, которые будут обрезаны, определяются параметрами \"Обрезать пробелы\", \"Обрезать переносы строк\", \"Обрезать табуляцию\", но также можно указать свои символы в параметр \"Обрезать символы\", находящийся в дополнительных настройках."},
+		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just example string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто пример строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
 		
 		"Remove tabs": {"ru":"Удалять табуляцию"},
 		"Remove characters": {"ru":"Удалять символы"},
@@ -844,8 +945,12 @@
 		"Characters which needs to be removed.": {"ru":"Символы, которые нужно удалять."},
 		"Clean string from unnecessary characters.": {"ru":"Очистить строку от ненужных символов."},
 		"Replace multiple spaces with single ones": {"ru":"Заменять многочисленные пробелы на одиночные"},
-		"Just\\xA0\\xA0\\xA0\\xA0sample\\xA0\\xA0text": {"ru":"Просто\\xA0\\xA0\\xA0\\xA0пример\\xA0\\xA0текста"},
-		"Characters which needs to be replaced with a space.": {"ru":"Символы, которые нужно заменить на пробел."}
+		"Characters which needs to be replaced with a space.": {"ru":"Символы, которые нужно заменить на пробел."},
+		"Just&nbsp;&nbsp;&nbsp;&nbsp;sample&nbsp;&nbsp;text": {"ru":"Просто&nbsp;&nbsp;&nbsp;&nbsp;пример&nbsp;&nbsp;текста"},
+		"This action will return a string from which all unnecessary characters will be removed, such as multiple spaces, line breaks, tabs.": {"ru":"Данное действие вернет строку, из которой будут удалены все ненужные символы, такие как множественные пробелы, переносы строк, табуляция."},
+		"The characters to be removed are determined by the \"Remove line breaks\", \"Remove tabs\" parameters, but you can also specify your own characters in the \"Remove characters\" parameter located in the additional settings.": {"ru":"Символы, которые будут удалены, определяются параметрами \"Удалять переносы строк\", \"Удалять табуляцию\", но также можно указать свои символы в параметр \"Удалять символы\", находящийся в дополнительных настройках."},
+		"In addition to replacing multiple spaces with single ones, activated by the corresponding parameter, in the \"Replace characters with space\" parameter located in the additional settings, you can specify your own characters that will be replaced by a space.": {"ru":"Кроме замены множественных пробелов на единичные, активируемой соответствующим параметром, можно указать свои символы, которые будут заменены пробелом, в параметр \"Заменять символы на пробел\", находящийся в дополнительных настройках."},
+		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test&nbsp;&nbsp;&nbsp;text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый&nbsp;&nbsp;&nbsp;текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто&nbsp;&nbsp;пример&nbsp;&nbsp;&nbsp;строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."}
     },
     "major_version": 1,
     "minor_version": 0,

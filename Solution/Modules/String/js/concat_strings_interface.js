@@ -11,7 +11,7 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Concatenate multiple strings into one.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a string composed of all the specified strings.</div>
-	<div class="tr tooltip-paragraph-fold">For example, if the parameters "String 1" and "String 2" are specified, the values of which are respectively <code>"Just example" </code> and <code>" string"</code>, then the action will return <code>"Just example string"</code>.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the parameters "String 1" and "String 2" are specified, the values of which are respectively <code>"Just example"</code> and <code>" string"</code>, then the action will return <code>"Just example string"</code>.</div>
 	<div class="tr tooltip-paragraph-fold">Strings from separate fields and a list are added to a general list of strings that will be concatenated.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if a string is specified in the "String 1" field and a list of 4 strings is specified in the "List of strings" field, then 5 strings will be concatenated.</div>
 	<div class="tr tooltip-paragraph-fold">If some of the parameters ("String 1", "String 2", "String 3", "List of strings") are not specified, all parameters will be used except for them.</div>

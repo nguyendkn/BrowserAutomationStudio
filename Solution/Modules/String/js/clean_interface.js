@@ -17,5 +17,9 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Clean string from unnecessary characters.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a string from which all unnecessary characters will be removed, such as multiple spaces, line breaks, tabs.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test&nbsp;&nbsp;&nbsp;text&nbsp;&nbsp;&nbsp;"</code> is specified, then the action will return <code>"Test text"</code>, and if the string <code>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;"</code> is specified, then the action will return <code>"Just example string"</code>.</div>
+	<div class="tr tooltip-paragraph-fold">The characters to be removed are determined by the "Remove line breaks", "Remove tabs" parameters, but you can also specify your own characters in the "Remove characters" parameter located in the additional settings.</div>
+	<div class="tr tooltip-paragraph-last-fold">In addition to replacing multiple spaces with single ones, activated by the corresponding parameter, in the "Replace characters with space" parameter located in the additional settings, you can specify your own characters that will be replaced by a space.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

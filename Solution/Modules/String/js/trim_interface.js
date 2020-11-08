@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", value_string: "", help: {description: tr("The string which needs to be trimmed."),examples:[{code:"\"\xA0\xA0\xA0\xA0\xA0\xA0\xA0" + tr("Just sample text") + "\xA0\xA0\xA0\xA0\""},{code:"\"\xA0\xA0\xA0\xA0\xA0Test text\xA0\xA0\xA0\""},{code:"\"\xA0\xA0\xA0\xA0\xA0\xA0string\xA0\xA0\xA0\xA0\""}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", value_string: "", help: {description: tr("The string which needs to be trimmed."),examples:[{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + tr("Just sample text") + "&nbsp;&nbsp;&nbsp;&nbsp;\""},{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test text&nbsp;&nbsp;&nbsp;\""},{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\""}]} }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<div><input type="checkbox" id="Check" checked="checked" style="margin-left:25px"/> <label for="Check" class="tr">Trim spaces</label></div>
 </span>
@@ -25,5 +25,9 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Trim string along the edges.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a string, from the beginning and end of which unnecessary characters such as spaces, line breaks, tabs will be trimmed.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test text&nbsp;&nbsp;&nbsp;"</code> is specified, then the action will return <code>"Test text"</code>, and if the string <code>"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just example string&nbsp;&nbsp;&nbsp;&nbsp;"</code> is specified, then the action will return <code>"Just example string"</code>.</div>
+	<div class="tr tooltip-paragraph-fold">The characters to be trimmed are determined by the "Trim spaces", "Trim line breaks", "Trim tabs" parameters, but you can also specify your own characters in the "Trim characters" parameter located in the additional settings.</div>
+	<div class="tr tooltip-paragraph-last-fold">By default, the action trim the string on both sides, but this can be changed using the radio buttons located in the additional settings.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

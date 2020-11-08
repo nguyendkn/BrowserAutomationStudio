@@ -1,4 +1,4 @@
-_STR_WHITESPACE = '\\s\\uFEFF\\xA0';
+_STR_WHITESPACE = '\\s\\uFEFF\\xA0;';
 function _is_string(data){
 	return typeof data==="string";
 };
@@ -29,11 +29,9 @@ function _to_string(data){
 function _to_number(str, dec, dsep, tsep){
 	str = _to_string(_avoid_nil(str));
 	dec = _avoid_nil(dec);
-	dsep = _avoid_nil(dsep, '.');
-	tsep = _avoid_nil(tsep, ',');
 	
-	str = str.split(tsep).join('');
-	str = str.split(dsep).join('.');
+	str = _replace_string(str, _avoid_nil(tsep, ','), '');
+	str = _replace_string(str, _avoid_nil(dsep, '.'), '.');
 	
 	if(dec===-1 || dec===""){return Number(str)};
 	
@@ -80,6 +78,7 @@ function _get_substring_between(str, left, right){
 };
 function _splice_string(str, from, count, add){
 	from = _avoid_nilb(from, 0);
+	count = _avoid_nilb(count, 0);
 	if(from < 0){
 		from = str.length + from;
 		if(from < 0){
@@ -155,23 +154,15 @@ function _declination(num, words){
     return words[2];
 };
 function _csv_generate(list, separator){
-	list = list.filter(function(e){return e!==""});
-	separator = _avoid_nilb(separator, ',');
+	separator = _avoid_nilb(separator, ':');
     var res = '';
     var first = true;
     list.forEach(function(item){
-		item = _avoid_nil(item);
+		item = _to_string(item);
         var add = item;
         if(typeof item=="string" && (item.indexOf(':') > -1 || item.indexOf(';') > -1 || item.indexOf(',') > -1 || item.indexOf(separator) > -1)){
             add = '"' + add.replace(/["]/gi, '""') + '"';
         };
-        if(typeof item=="object"){
-			if(item instanceof Date){
-				add = '"' + add.toString() + '"';
-			}else{
-				add = '"' + JSON.stringify(item).replace(/["]/gi, '""') + '"';
-			};
-		};
         if(!first){
             res += separator;
         }else{
@@ -231,24 +222,30 @@ function _csv_parse(str, separators, convert_types){
 
     return res;
 };
-function _trim_left(str, characters){
-	return str.replace(new RegExp('^[' + _avoid_nilb(characters, _STR_WHITESPACE) + ']+', 'g'), '');
+function _trim_left(str, chars){
+	return str.replace(new RegExp('^[' + _avoid_nilb(chars, _STR_WHITESPACE) + ']+', 'g'), '');
 };
-function _trim_right(str, characters){
-	return str.replace(new RegExp('[' + _avoid_nilb(characters, _STR_WHITESPACE) + ']+$', 'g'), '');
+function _trim_right(str, chars){
+	return str.replace(new RegExp('[' + _avoid_nilb(chars, _STR_WHITESPACE) + ']+$', 'g'), '');
 };
-function _trim(str, characters, left, right){
-	characters = _avoid_nilb(characters, _STR_WHITESPACE);
-	str = _avoid_nilb(left, true) ? _trim_left(str, characters) : str;
-	str = _avoid_nilb(right, true) ? _trim_right(str, characters) : str;
+function _trim(str, chars, left, right){
+	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	str = _avoid_nilb(left, true) ? _trim_left(str, chars) : str;
+	str = _avoid_nilb(right, true) ? _trim_right(str, chars) : str;
 	return str;
 };
-function _clean(str, characters_to_delete, characters_to_space, multiple_spaces){
-	str = _is_nilb(characters_to_delete) ? str : str.replace(new RegExp('[' + characters_to_delete + ']+', 'g'), '');
-	str = _is_nilb(characters_to_space) ? str : str.replace(new RegExp('[' + characters_to_space + ']+', 'g'), ' ');
+function _clean(str, chars_to_delete, chars_to_space, multiple_spaces){
+	str = _is_nilb(chars_to_space) ? str : str.replace(new RegExp('[' + chars_to_space + ']+', 'g'), ' ');
+	str = _is_nilb(chars_to_delete) ? str : str.replace(new RegExp('[' + chars_to_delete + ']+', 'g'), '');
 	str = _trim(str);
-	str = _avoid_nilb(multiple_spaces, true) ? str.replace(new RegExp('[' + _STR_WHITESPACE + ']+', 'g'), ' ') : str.replace(new RegExp('[\\uFEFF\\xA0]', 'g'), ' ');
+	str = _avoid_nilb(multiple_spaces, true) ? str.replace(new RegExp('[' + _STR_WHITESPACE + ']+', 'g'), ' ') : str.replace(new RegExp('[\\uFEFF\\xA0;]', 'g'), ' ');
 	return str;
+};
+function _replace_string(str, from, to){
+	return str.split(from).join(to);
+};
+function _random_string(chars, length){
+	return Array(length).join().split(',').map(function(){ return chars.charAt(Math.floor(Math.random() * chars.length)); }).join('');
 };
 function _is_json_string(str){
 	if((str.indexOf("[") > -1 && str.indexOf("]") > -1) || (str.indexOf("{") > -1 && str.indexOf("}") > -1)){
@@ -266,7 +263,7 @@ function _convert_to_list(str){
 	return (str==="" || typeof str=="object") ? str : (_is_json_string(str) ? JSON.parse(str) : str.split(/,\s|,/));
 };
 function _convert_type(data){
-    return (typeof data=="string" && data!=="") ? (isNaN(data) ? (data=="true" || data=="false" ? data=="true" : (_is_json_string(data) ? JSON.parse(data) : data)) : Number(data)) : data;
+    return (typeof data=="string" && data!=="") ? (isNaN(data) ? (data=="true" || data=="false" ? data=="true" : (_is_json_string(data) ? JSON.parse(data) : (data=="null" ? null : (data=="undefined" ? undefined : data)))) : Number(data)) : data;
 };
 function _is_nil(str){
 	return typeof str==="undefined" || str===null;

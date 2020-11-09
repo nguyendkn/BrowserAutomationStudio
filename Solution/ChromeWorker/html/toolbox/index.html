@@ -1030,6 +1030,10 @@
     <div>Переменные используемые в коде автоматически обновляются после выполнения действия.</div>
     <div>Ресурсы не доступны для использования в данном действии.</div>
     <br />
+    <div>Во время выполнения скрипта могут возникать разные ошибки. В случае ошибки BAS прекратит выполнение скрипта.</div>
+    <div>Для того чтобы обработать подобные ситуации используйте действие <b>Игнорировать ошибки</b>.</div>
+    <div>В таком случае вы сможете использовать переменные [[WAS_ERROR]] и [[LAST_ERROR]], чтобы узнать, была ли ошибка, и обработать её.</div>
+    <br />
     <div>Пример #1. Изменение HTML определенного элемента:</div>
     <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
     <br />
@@ -1075,6 +1079,10 @@
     <div>You can use BAS variables in this action for both reading and writing. Moreover, they can be of any type, including objects and arrays.</div>
     <div>Variables used in the code are automatically updated after the action is performed.</div>
     <div>Resources are not available for use in this action.</div>
+    <br />
+    <div>During the execution of the script, various errors may occur. If an error occurs, BAS will stop the script execution.</div>
+    <div>To handle such situations, use the <b>Ignore errors</b> action.</div>
+    <div>In this case, you can use the [[WAS_ERROR]] and [[LAST_ERROR]] variables to find out if there was an error and process it.</div>
     <br />
     <div>Example #1. Changing the HTML of the specific element:</div>
     <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>

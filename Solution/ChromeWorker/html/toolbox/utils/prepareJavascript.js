@@ -4,7 +4,7 @@ function prepareBrowserJavascript(source) {
       .replace(/\[/g, '')
       .replace(/\]/g, '')
 
-    source = source.replace(match[0], `_BAS_HIDE(AsyncJsResult).vars['${result}']`); return result;
+    source = source.replace(match[0], `;_BAS_HIDE(AsyncJsResult).vars['${result}']`); return result;
   });
 
   const vars = variables.map((name) => `"${name}": typeof(VAR_${name}) !== "undefined" ? VAR_${name} : null`);

@@ -306,7 +306,7 @@ function _regexp_extract_validation(){
 	var email_address = "([a-z0-9!#$%&'*+=?^_`{|}~-]+(\\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*)";
 	var domain_with_tld = "([a-z0-9]+(-+[a-z0-9]+)*\\.)+(" + tlds + ")";
 	var domain_with_any_tld = "([a-z0-9]+(-+[a-z0-9]+)*\\.)+([a-z0-9][a-z0-9-]{0," + (tlds.split("|").sort(function(a, b){return b.length - a.length;})[0].length - 2) + "}[a-z0-9])";
-	var allowed_in_path = "a-zA-Z\\d\\-._~\\!$&*+,;=:@%'\"\\[\\]()";
+	var allowed_in_path = "a-zA-Z\\d\\-._~\\!$&*+,;=:@%\\[\\]()";
 	var path = "(((\\/(([" + allowed_in_path + "]+(\\/[" + allowed_in_path + "]*)*))?)?)((\\?([" + allowed_in_path + "\\/?]*))?)((\\#([" + allowed_in_path + "\\/?]*))?))?";
 	var ipv4 = "((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
 	var ipv6 = "\\[(([a-f0-9:]+:+)+[a-f0-9]+)\\]";

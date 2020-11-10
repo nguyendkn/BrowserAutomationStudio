@@ -479,6 +479,23 @@
 		{
             "code": [
                 {
+                    "file": "base64_code.js",
+                    "name": "base64_code"
+                }
+            ],
+            "description": {
+                "en": "Base64 encode/decode",
+                "ru": "Base64 кодировать/декодировать"
+            },
+            "interface": "base64_interface.js",
+            "is_element": false,
+            "name": "base64",
+            "select": "base64_select.js",
+            "template": "{{Value}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "parseline_code.js",
                     "name": "parseline_code"
                 }
@@ -950,7 +967,62 @@
 		"This action will return a string from which all unnecessary characters will be removed, such as multiple spaces, line breaks, tabs.": {"ru":"Данное действие вернет строку, из которой будут удалены все ненужные символы, такие как множественные пробелы, переносы строк, табуляция."},
 		"The characters to be removed are determined by the \"Remove line breaks\", \"Remove tabs\" parameters, but you can also specify your own characters in the \"Remove characters\" parameter located in the additional settings.": {"ru":"Символы, которые будут удалены, определяются параметрами \"Удалять переносы строк\", \"Удалять табуляцию\", но также можно указать свои символы в параметр \"Удалять символы\", находящийся в дополнительных настройках."},
 		"In addition to replacing multiple spaces with single ones, activated by the corresponding parameter, in the \"Replace characters with space\" parameter located in the additional settings, you can specify your own characters that will be replaced by a space.": {"ru":"Кроме замены множественных пробелов на единичные, активируемой соответствующим параметром, можно указать свои символы, которые будут заменены пробелом, в параметр \"Заменять символы на пробел\", находящийся в дополнительных настройках."},
-		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test&nbsp;&nbsp;&nbsp;text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый&nbsp;&nbsp;&nbsp;текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто&nbsp;&nbsp;пример&nbsp;&nbsp;&nbsp;строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."}
+		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test&nbsp;&nbsp;&nbsp;text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый&nbsp;&nbsp;&nbsp;текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто&nbsp;&nbsp;пример&nbsp;&nbsp;&nbsp;строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
+		
+		"encode": {"ru":"шифровать"},
+		"decode": {"ru":"расшифровать"},
+		"Encodes or decodes base64 string.": {"ru": "Кодирует или декодирует строку в base64."},
+		"Arbitrary string. Works with encode mode": {"ru": "Любая строка. Работает в режиме encode"},
+		"Base64 string. Works with decode mode": {"ru": "Строка в формате base64. Работает в режиме decode."},
+		"Variable which holds file read result. Works with decode mode": {"ru": "Переменная, которая содержит результат чтения файла. Работает в режиме decode."},
+		"Variable name with result. It will be base64 encoded string in encode mode and decode result as string in decode mode.": {"ru": "Переменная, в которую будет записан результат. Это будет строка в формате base64 в случае использования режима encode и результат декодирования при использовании режима decode."},
+		"Depending on mode data parameter is base64 encoded string which needs to be decoded, or ordinary string which needs to be encoded.": {"ru": "В зависимости от режима, входным параметром будет либо строка с кодировкой base64, которая должна быть декодирована, либо обычная строка, которая должна быть закодирована."},
+		"BAS stores binary data as base64 strings. It could be binary files, pictures, video, etc. Base64 encoding represent binary data in ascii string.": {"ru": "Кодировка base64 представляет двоичные данные в виде ascii строки. BAS хранит двоичные данные как строки в формате base64. Это могут быть файлы, изображения, видео и т. д."},
+		"This action can work with in two modes: encode and decode. Modes can be switched with \"Encode or decode\" parameter. Depending on mode data parameter is base64 encoded string which needs to be decoded, or ordinary string which needs to be encoded.": {"ru": "Это действие может работать в двух режимах: кодирование и декодирование. Режимы могут переключаться параметром \"Шифровать или расшифровывать\". В зависимости от режима, входным параметром будет либо строка с кодировкой base64, которая должна быть декодирована, либо обычная строка, которая должна быть закодирована."},
+		"Most of the times you don't need to convert base64 data to string, some actions accept base64 data as input parameters, for example: \"Write File\", \"Start working with image\". Moreover, if you try to decode binary data encoded as base64 string, result string may be damaged, so it is better to use base64 data without decoding.": {"ru": "В большинстве случаев вам не нужно декодировать base64 строки, некоторые действия принимают входные данные прямо в формате base64, это такие действия как: \"Запись В Файл\", \"Начать работу с изображением\". Более того, если вы попытаетесь декодировать бинарные данные, закодированные как base64, результат может быть поврежден, поэтому лучше использовать строку в формате base64 без декодирования."},
+		
+		"This action also may parse strings in csv format.": {"ru": "Это действие также может парсить строки в формате csv."},
+		"Line with several elements separated with \":\" or \",\" or \";\"": {"ru": "Строка с несколькими элементами разделенными \":\" или \",\" или \";\""},
+		"Use \"Parse String\" action if you want to get list as a result.": {"ru": "Используйте действие \"Парсить строку\" из модуля Список если хотите получить результат в виде списка."},
+		"List of variables separated by commas. Results will be written into that variables.": {"ru": "Список переменных разделенных запятыми. В эти переменные будут записаны результаты."},
+		"Parses line, which contains several elements. Elements are separated with one of following symbols: \":\", \";\", \",\".": {"ru": "Парсить сторку содержащую несколько элементов. Элементы разделяются одним из следующих символов: \":\", \";\", \",\"."},
+		"If \"Variables To Save Result\" will contain more variables, than number of elements in string, than extra variables will be left unchanged.": {"ru": "Если параметр \"Переменные, в которые сохранять результат\" будет содержать больше переменных, чем количество элементов в строке, то лишние переменные не будут изменены."},
+		"For example, if you apply this action to line email@gmail.com:mypass1 and set \"Variables To Save Result\" param to USERNAME,PASSWORD, than this action will set [[USERNAME]] variable to email@gmail.com and [[PASSWORD]] variable to mypass1.": {"ru": "Например, если вы примените это действие к строке email@gmail.com:mypass1 и установите параметр \"Переменные, в которые сохранять результат\" в USERNAME,PASSWORD, то это действие сохранит email@gmail.com в переменную [[USERNAME]] и mypass1 в переменную [[PASSWORD]]."},
+		
+		"Spintax": {"ru": "Спинтакс"},
+		"a1, a2, a3 or nothing": {"ru": "a1, a2, a3 или пустая строка"},
+		"Will be replaced with male name": {"ru": "Будет заменено мужским именем"},
+		"&lt;EUpVow&gt; - same as {a|e|i|o|u}": {"ru": "&lt;EUpVow&gt; - тоже самое, что {a|e|i|o|u}"},
+		"&lt;ESurnameLow&gt; - english surnames.": {"ru": "&lt;ESurnameLow&gt; - английские фамилии."},
+		"&lt;ELowVow&gt; - same as {a|e|i|o|u}": {"ru": "&lt;ELowVow&gt; - тоже самое, что {a|e|i|o|u}"},
+		"&lt;EMaleNameLow&gt; - english male names.": {"ru": "&lt;EMaleNameLow&gt; - английские мужские имена."},
+		"&lt;EFemNameLow&gt; - english female names.": {"ru": "&lt;EFemNameLow&gt; - английские женские имена."},
+		"&lt;AnyDigit&gt; - will be converted to any digit.": {"ru": "&lt;AnyDigit&gt; - будет заменено на любую цифру."},
+		"&lt;AnyLetter&gt; - will be converted to any letter.": {"ru": "&lt;AnyLetter&gt; - будет заменено на любую букву."},
+		"Variables [[VARIABLE]] will be expanded to variable value.": {"ru": "Переменные [[VARIABLE]] будут заменены на их значения."},
+		"&lt;EUp&gt; - same as {&lt;EUpVow&gt;|&lt;EUpCons&gt;}": {"ru": "&lt;EUp&gt; - тоже самое, что {&lt;EUpVow&gt;|&lt;EUpCons&gt;}"},
+		"Resources {{resource}} also will be expanded to resource value.": {"ru": "Ресурсы {{resource}} также будут заменены на их значения."},
+		"&lt;ELow&gt; - same as {&lt;ELowVow&gt;|&lt;ELowCons&gt;}": {"ru": "&lt;ELow&gt; - тоже самое, что {&lt;ELowVow&gt;|&lt;ELowCons&gt;}"},
+		"Spintax {value1|value2} will be expanded to value1 or value2.": {"ru": "Спинтакс {value1|value2} будет заменен на одно из значений value1 или value2."},
+		"&lt;ESurname&gt; - english surnames starting from capital letter.": {"ru": "&lt;ESurname&gt; - английские фамилии имена начинающиеся с заглавной буквы."},
+		"&lt;EMaleName&gt; - english male names starting from capital letter.": {"ru": "&lt;EMaleName&gt; - английские мужские имена начинающиеся с заглавной буквы."},
+		"&lt;EFemName&gt; - english female names starting from capital letter.": {"ru": "&lt;EFemName&gt; - английские женские имена начинающиеся с заглавной буквы."},
+		"&lt;EUpCons&gt; - same as {B|C|D|F|G|H|J|K|L|M|N|P|Q|R|S|T|V|W|X|Y|Z}": {"ru": "&lt;EUpCons&gt; - тоже самое, что {B|C|D|F|G|H|J|K|L|M|N|P|Q|R|S|T|V|W|X|Y|Z}"},
+		"&lt;ELowCons&gt; - same as {b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z}": {"ru": "&lt;ELowCons&gt; - тоже самое, что {b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z}"},
+		"This action gets text from \"Template\" multiline textbox and saves it to variable defined in \"Variable To Save Result\". Thats it, unless text doesn't contain special values. Here are list of them:": {"ru": "Это действие получает текст из многострочного текстового поля \"Шаблон\" и сохраняет его в переменную, определенной в параметре \"Переменная, в которую сохранять результат\". И это все, что делает это действие, если только текст не содержит специальных значений. Вот их список:"},
+		"Create new variable or update existing with multiline text. Can expand resources, variables, spintax, may be used to load template from file or dynamically generate it. This action suites best if you want to generate post text.": {"ru": "Создать новую переменную или изменить существующую на многострочный текст. Может заменять спинтакс, ресурсы, переменные на их значения. Действие может использоваться для загрузки шаблона из файла или его динамической генерации. Оно лучше всего подходит, если нужно генерировать текст для постинга."},
+		"If \"Additional processing\" is checked, than this action will process dynamic templates, i.e template will be taken from variable. Consider following example: you have file with content \"{Hello|Hi}, &lt;EMaleName&gt;{!|}\" and want to expand it with BAS. At first you have to load file to variable [[FILE_CONTENT]]. If you put [[FILE_CONTENT]] to template action and don't set \"Additional processing\" flag, that result will be the same as original file content. But if you set this flag, BAS will expand [[FILE_CONTENT]] first and then expend result again, finally you will get something like this \"Hello, John!\".": {"ru": "Если выбрана установка \"Дополнительная обработка\", то это действие будет работать с динамическим шаблоном, т. е. шаблон будет взят из переменной. Рассмотрим следующий пример: у вас есть файл с содержанием \"{Hello|Hi}, &lt;EMaleName&gt; {!|}\" и вам нужно его обработать с помощью BAS. Сначала нужно загрузить файл в переменную [[FILE_CONTENT]]. Если вы поместите [[FILE_CONTENT]] в действие \"шаблон\" и не устанавливаете флаг \"Дополнительная обработка\", то результат будет таким же, как и исходное содержимое файла. Но если вы установите этот флаг, BAS сначала заменит переменную [[FILE_CONTENT]] на содержание файла, а затем проведет замену переменых, спинтакса и ресурсов уже в содержании файла. Наконец, результат будет похож на \"Hi, John!\"."},
+		
+		"New value": {"ru": "Новое значение"},
+		"The string to be searched for": {"ru": "Строка для поиска"},
+		"The string in which the replacement will be made": {"ru": "Строка, в которой будет выполнена замена"},
+		"This action replaces all occurrences.": {"ru": "Это действие заменяет все вхождения, а не только самое первое."},
+		"Variable, which will hold copy of the original string with the replacement": {"ru": "Переменная, которая будет содержать копию оригинальной строки с проведенной заменой"},
+		"If you want to replace with regexp, use \"Replace text with regexp\" action.": {"ru": "Используйте действие \"Заменить строку\" из модуля \"Регулярные выражения\" для замены с помощью регулярного выражения."},
+		"Searches a string defined with \"Original String\" for a specified value defined with \"Replace From\", and returns a new string where the specified values are replaced to value defined with \"Replace To\" parameter.": {"ru": "Это действие ищет в строке, определенной с помощью параметра \"Оригинальная Строка\", значения, определенные с помощью параметра \"Заменить Из\", и заменяет их на значение определенное с помощью параметра \"Заменить На\"."},
+		
+		"Generate a random integer in a given range.": {"ru": "Сгенерировать случайное целое число в заданном диапазоне."},
+		"Generate a random string with a given length and allowed characters.": {"ru": "Сгенерировать случайную строку с заданной длиной и разрешенными символами."}
     },
     "major_version": 1,
     "minor_version": 0,

@@ -530,49 +530,11 @@ _A = {
       },
       "group":"tools"
    },
-   "base64":{  
-      "name":"Base64 Encode/Decode",
-      "description":"Base64 encode or decode",
-      "template":"{{Value}} -> {{Save}}",
-      "group":"tools"
-   },
    "globalset":{  
       "name":"Set Global Variable",
       "description":"Set global variable",
       "template":"{{Value}} -> {{Name}}",
       "group":"logic"
-   },
-   "parseline":{  
-      "name":"Parse Line",
-      "description":"Parse line like this 'a1:a2:a3' and save to variables",
-      "template":"{{Value}} -> {{VariablesList}}",
-      "suggestion":{  
-         "en":"split line",
-         "ru":"разбить строку, разделить строку"
-      },
-      "group":"tools"
-   },
-   "template":{  
-      "name":"Template",
-      "description":"Use Template",
-      "template":"{{Template}} -> {{Save}}",
-      "suggestion":{  
-         "en":"randomize string, random string, spintax, multiline string",
-         "ru":"рандомизировать, случайная строка, спинтакс, многострочная переменная"
-      },
-      "group":"tools"
-   },
-   "replacestring":{  
-      "name":"Replace String",
-      "description":"Replace all occurrences of one string to another",
-      "template":"{{Value}} -> {{Save}}",
-      "group":"tools"
-   },
-   "randomstring":{  
-      "name":"Random String",
-      "description":"Generate random string",
-      "template":"{{Save}}",
-      "group":"tools"
    },
    "randomint":{  
       "name":"Random Number",
@@ -1274,13 +1236,8 @@ _AL =
    "Log" : {"ru": "Лог"},
    "Result" : {"ru": "Результат"},
    "Execute code" : {"ru": "Выполнить код"},
-   "Base64 Encode/Decode" : {"ru": "Base64"},
    "Set Global Variable" : {"ru": "Установить глобальную переменную"},
    "Get Global Variable" : {"ru": "Читать глобальную переменную"},
-   "Parse Line" : {"ru": "Парсить строку"},
-   "Template": {"ru": "Шаблон"},
-   "Replace String": {"ru": "Заменить Строку"},
-   "Random String": {"ru": "Случайная строка"},
    "Random Number": {"ru": "Случайное Число"},
 
    "Set Header" : {"ru": "Установить заголовок"},

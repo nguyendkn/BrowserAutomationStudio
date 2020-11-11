@@ -1,0 +1,21 @@
+{
+	"name": "FunCaptchaVerify",
+	"description": "FunCaptcha automatic verification",
+	"description_small": {
+		"ru": "Автоматическая верификация FunCaptcha",
+		"en": "FunCaptcha automatic verification"
+	},
+	"major_version": 1,
+	"minor_version": 0,
+	"developer_name": "Oyasumi Punpun",
+	"developer_email": "likangt2012@gmail.com",
+	"developer_site": "https://github.com/CheshireCaat",
+	"api_version": 1,
+	"localize": {},
+	"depends": [],
+	"actions": [],
+	"engine": [],
+	"browser": [
+		"browser.js"
+	]
+}

@@ -1,0 +1,16 @@
+var string = GetInputConstructorValue("string", loader);
+if(string["original"].length == 0){
+	Invalid(tr("String") + " " + tr("is empty"));
+    return;
+};
+var encode = $("#Select").val()=="encode";
+var Save = this.$el.find("#Save").val().toUpperCase();
+try{
+	var code = loader.GetAdditionalData() + _.template($("#html_special_characters_code").html())({
+		"string": string["updated"],
+		"encode": encode,
+		"variable": "VAR_" + Save
+	});
+	code = Normalize(code, 0);
+	BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+}catch(e){}

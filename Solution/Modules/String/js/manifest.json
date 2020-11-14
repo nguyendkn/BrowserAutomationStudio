@@ -479,6 +479,91 @@
 		{
             "code": [
                 {
+                    "file": "extract_emails_code.js",
+                    "name": "extract_emails_code"
+                }
+            ],
+            "description": {
+                "en": "Extract all emails",
+                "ru": "Извлечь все почты"
+            },
+            "interface": "extract_emails_interface.js",
+            "is_element": false,
+            "name": "extract_emails",
+            "select": "extract_emails_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "extract_urls_code.js",
+                    "name": "extract_urls_code"
+                }
+            ],
+            "description": {
+                "en": "Extract all links",
+                "ru": "Извлечь все ссылки"
+            },
+            "interface": "extract_urls_interface.js",
+            "is_element": false,
+            "name": "extract_urls",
+            "select": "extract_urls_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "extract_phone_numbers_code.js",
+                    "name": "extract_phone_numbers_code"
+                }
+            ],
+            "description": {
+                "en": "Extract all phone numbers",
+                "ru": "Извлечь все телефонные номера"
+            },
+            "interface": "extract_phone_numbers_interface.js",
+            "is_element": false,
+            "name": "extract_phone_numbers",
+            "select": "extract_phone_numbers_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "url_component_code.js",
+                    "name": "url_component_code"
+                }
+            ],
+            "description": {
+                "en": "Url component encode/decode",
+                "ru": "Url компонент кодировать/декодировать"
+            },
+            "interface": "url_component_interface.js",
+            "is_element": false,
+            "name": "url_component",
+            "select": "url_component_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "html_special_characters_code.js",
+                    "name": "html_special_characters_code"
+                }
+            ],
+            "description": {
+                "en": "HTML special characters encode/decode",
+                "ru": "Специальные HTML символы кодировать/декодировать"
+            },
+            "interface": "html_special_characters_interface.js",
+            "is_element": false,
+            "name": "html_special_characters",
+            "select": "html_special_characters_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "base64_code.js",
                     "name": "base64_code"
                 }
@@ -599,7 +684,17 @@
 		"parse_csv_string",
 		"create_csv_string",
 		"trim",
-		"clean"
+		"clean",
+		"extract_emails",
+		"extract_urls",
+		"extract_phone_numbers",
+		"url_component",
+		"html_special_characters",
+		"base64",
+		"parseline",
+		"template",
+		"replacestring",
+		"randomstring"
 	],
     "browser": [
     ],
@@ -968,6 +1063,30 @@
 		"The characters to be removed are determined by the \"Remove line breaks\", \"Remove tabs\" parameters, but you can also specify your own characters in the \"Remove characters\" parameter located in the additional settings.": {"ru":"Символы, которые будут удалены, определяются параметрами \"Удалять переносы строк\", \"Удалять табуляцию\", но также можно указать свои символы в параметр \"Удалять символы\", находящийся в дополнительных настройках."},
 		"In addition to replacing multiple spaces with single ones, activated by the corresponding parameter, in the \"Replace characters with space\" parameter located in the additional settings, you can specify your own characters that will be replaced by a space.": {"ru":"Кроме замены множественных пробелов на единичные, активируемой соответствующим параметром, можно указать свои символы, которые будут заменены пробелом, в параметр \"Заменять символы на пробел\", находящийся в дополнительных настройках."},
 		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test&nbsp;&nbsp;&nbsp;text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый&nbsp;&nbsp;&nbsp;текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто&nbsp;&nbsp;пример&nbsp;&nbsp;&nbsp;строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
+		
+		"Extract all email addresses from string.": {"ru":"Извлеките все адреса электронной почты из строки."},
+		"The string from which to extract email addresses.": {"ru":"Строка, из которой нужно извлечь адреса электронной почты."},
+		"Suggestions for cooperation you can send to email: cooperation@marketplace.com": {"ru":"Предложения по сотрудничеству вы можете присылать на почту: cooperation@marketplace.com"},
+		"</br>Test text - test@gmail.com. Just example text - example@gmail.com.": {"ru":"</br>Тестовый текст - test@gmail.com. - test@gmail.com. Просто пример текста - example@gmail.com."},
+		"Variable in which, after successful execution of the action, the list of email addresses will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список адресов электронной почты."},
+		"</br>Proposals for advertising, you can send to email: ad@site.com</br>Suggestions for improving the site, you can send to email: feedback@site.com</br>To get help in solving problems with the site, you can write to the email: support@site.com": {"ru":"</br>Предложения по рекламе, вы можете отправлять на почту: ad@site.com</br>Предложения по улучшению сайта вы можете отправлять на почту: feedback@site.com</br>Чтобы получить помощь в решении проблем с сайтом, вы можете написать на почту: support@site.com"},
+		
+		"Extract all links from string.": {"ru":"Извлеките все ссылки из строки."},
+		"The string from which to extract links.": {"ru":"Строка, из которой нужно извлечь ссылки."},
+		"</br>Test text http://test.com, string test example.org": {"ru":"</br>Тестовый текст http://test.com, строка тест example.org"},
+		"Text https://marketplace.biz/section_3/product_213234.php": {"ru":"Текст https://marketplace.biz/section_3/product_213234.php"},
+		"Variable in which, after successful execution of the action, the list of links will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список ссылок."},
+		"</br>Ad -> http://www.ad.by/info, feedback -> www.feedback.io, support -> https://support.co/new/ticket.php": {"ru":"</br>Реклама -> http://www.ad.by/info, обратная связь -> www.feedback.io, поддержка -> https://support.co/new/ticket.php"},
+		
+		"Extract all phone numbers from the string.": {"ru":"Извлечь все телефонные номера из строки."},
+		"The string from which to extract phone numbers.": {"ru":"Строка, из которой нужно извлечь телефонные номера."},
+		"Variable in which, after successful execution of the action, the list of phone numbers will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список телефонных номеров."},
+		
+		"Encodes or decodes string containing the Url component.": {"ru":"Кодирует или декодирует строку содержащую Url компонент."},
+		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing the Url component which needs to be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая Url компонент, которая должна быть закодирована."},
+		
+		"Encodes or decodes string containing special HTML characters.": {"ru":"Кодирует или декодирует строку содержащую специальные HTML символы."},
+		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing special HTML characters that must be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая специальные HTML символы, которые должны быть закодированы."},
 		
 		"encode": {"ru":"шифровать"},
 		"decode": {"ru":"расшифровать"},

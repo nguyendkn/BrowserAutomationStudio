@@ -526,14 +526,12 @@ function _normalize_url(url_string, user_options, validate){
 	if(/^data:/i.test(url_string)){
 		return normalize_data_url(url_string);
 	};
-
+	
+	if(!new RegExp("^(?:f|ht)tps?://").test(url_string)){
+		url_string = url_string.replace(new RegExp("^((?:f|ht)tps?)?:?/?/?"), function(a, p){return (p || options.default_protocol).split(":")[0] + "://"});
+	};
+	
 	var has_relative_protocol = _starts_with(url_string, '//');
-	var is_relative_url = !has_relative_protocol && new RegExp("^\\.*\\/").test(url_string);
-
-	if (!is_relative_url) {
-		url_string = url_string.replace(new RegExp("^(?!(?:\\w+:)?\\/\\/)|^\\/\\/"), options.default_protocol);
-		url_string = url_string.replace(new RegExp("(https?)([:/]{0,2})"), '$1://');
-	}
 
 	var url_obj = new _url(url_string, false, false);
 

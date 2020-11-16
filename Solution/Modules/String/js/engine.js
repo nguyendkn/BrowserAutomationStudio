@@ -642,7 +642,7 @@ function _url(address, validate, normalize, location, parser){
 	address = _trim_left(address, whitespace);
 	normalize = _avoid_nilb(normalize, true);
 	if(normalize){
-		address = _normalize_url(address {
+		address = _normalize_url(address, {
 			strip_authentication: false,
 			strip_hash: false,
 			strip_www: false,

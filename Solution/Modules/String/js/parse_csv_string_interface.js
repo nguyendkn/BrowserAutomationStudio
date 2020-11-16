@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", value_string: "", help: {description: tr("CSV string with want to parse into items."),examples:[{code:"login:password"},{code:"id,name,login"},{code:tr("Just sample text") + ";Test text;string"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", value_string: "", help: {description: tr("String containing the URL with want to parse."),examples:[{code:"login:password"},{code:"id,name,login"},{code:tr("Just sample text") + ";Test text;string"}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"separators", description:tr("List of separators"), default_selector: "string", disable_int:true, value_string: ":;,", help: {description: tr("The list of delimiters by which the string can be split.") + " " + tr("As a list, you can use a string consisting only of the separators."),examples:[{code:":;,"},{code:"[\":\", \";\", \",\"]"},{code:tr("Empty string"), description: "[\":\", \";\", \",\"]"}]} }) %>
 <%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">

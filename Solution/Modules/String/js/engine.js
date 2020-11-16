@@ -299,9 +299,12 @@ function _regexp_extract_validation(mode, type){
 		var ipv6 = "\\[(([a-f0-9:]+:+)+[a-f0-9]+)\\]";
 		var port = "(:(\\d{1,5}))?";
 		var protocol = "(https?:|ftps?:)\\/\\/";
+		var username = "[a-zA-Z\\d\\-._~\\!$&*+=]+";
+		var password = ":[a-zA-Z\\d\\-._~\\!$&*+=]+";
 		var confirmed_by_protocol = "(" + protocol + ")\\S+";
 		var additional_slashes = "(([\\/]?))+";
-		var fqdn = "(((" + protocol + ")?(" + domain_with_tld + "|" + ipv4 + "|(" + protocol + ")(" + ipv6 + "|" + domain_with_any_tld + "))(?!@\\w)" + port + ")|(" + confirmed_by_protocol + "))";
+		var protocol_and_auth = protocol + "(" + username + "(" + password + ")?@)?"
+		var fqdn = "(((" + protocol_and_auth + ")?(" + domain_with_tld + "|" + ipv4 + "|(" + protocol_and_auth + ")(" + ipv6 + "|" + domain_with_any_tld + "))(?!@\\w)" + port + ")|(" + confirmed_by_protocol + "))";
 		var non_latin_matches = fqdn + "((((\\/(([" + allowed_in_path + "]+(\\/[" + allowed_in_path + non_latin_alphabet_ranges + "]*)*))?)?)((\\?([" + allowed_in_path + "\\/?]*))?)((\\#([" + allowed_in_path + "\\/?]*))?))?\\b((([" + allowed_in_path + "\\/" + non_latin_alphabet_ranges + "][a-zA-Z\\d\\-_~+=\\/" + non_latin_alphabet_ranges + "]+)?))+)";
 		var email = "\\b(mailto:)?" + email_address + "@(" + domain_with_tld + "|" + ipv4 + ")\\b";
 		var url = "(" + non_latin_matches + ")|(\\b" + fqdn + path + "\\b" + additional_slashes + ")";
@@ -357,6 +360,29 @@ function _validate_ip(str){
 function _validate_file(str){
 	return _regexp_extract_validation("validate", "file").test(str);
 };
+function _query_string_encode(obj, sep, eq, name){
+	sep = _avoid_nil(sep, '&');
+	eq = _avoid_nil(eq, '=');
+	if(obj === null){
+		obj = undefined;
+	};
+
+	if(typeof obj === 'object'){
+		return Object.keys(obj).map(function(k){
+			var ks = encodeURIComponent(_to_string(k)) + eq;
+			if (Array.isArray(obj[k])) {
+				return obj[k].map(function(v){
+					return ks + encodeURIComponent(_to_string(v));
+				}).join(sep);
+			} else {
+				return ks + encodeURIComponent(_to_string(obj[k]));
+			}
+		}).filter(Boolean).join(sep);
+	};
+
+	if (!name) return '';
+	return encodeURIComponent(_to_string(name)) + eq + encodeURIComponent(_to_string(obj));
+};
 function _query_string_decode(qs, sep, eq, options){
 	sep = _avoid_nil(sep, '&');
 	eq = _avoid_nil(eq, '=');
@@ -396,7 +422,7 @@ function _query_string_decode(qs, sep, eq, options){
 		};
 
 		k = decodeURIComponent(kstr);
-		v = decodeURIComponent(_from_string(vstr));
+		v = decodeURIComponent(vstr);
 
 		if (!obj.hasOwnProperty(k)) {
 			obj[k] = v;
@@ -409,41 +435,247 @@ function _query_string_decode(qs, sep, eq, options){
 
 	return obj;
 };
-function _query_string_encode(obj, sep, eq, name){
-	sep = _avoid_nil(sep, '&');
-	eq = _avoid_nil(eq, '=');
-	if(obj === null){
-		obj = undefined;
+function _normalize_url(url_string, user_options, validate){
+	var options = {
+		default_protocol: 'http:',
+		normalize_protocol: true,
+		force_http: false,
+		force_https: false,
+		strip_authentication: true,
+		strip_hash: false,
+		strip_www: true,
+		strip_protocol: false,
+		remove_query_parameters: [/^utm_\w+/i],
+		remove_trailing_slash: true,
+		remove_single_slash: true,
+		remove_directory_index: false,
+		sort_query_parameters: true,
+	};
+	
+	if(!_is_nilb(user_options)){
+		var keys = Object.keys(user_options);
+		for(var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			options[key] = user_options[key]
+		};
+	};
+	
+	var DATA_URL_DEFAULT_MIME_TYPE = 'text/plain';
+	var DATA_URL_DEFAULT_CHARSET = 'us-ascii';
+
+	var test_parameter = function(name, filters){
+		return filters.some(function(filter){return filter instanceof RegExp ? filter.test(name) : filter === name});
 	};
 
-	if(typeof obj === 'object'){
-		return Object.keys(obj).map(function(k){
-			var ks = encodeURIComponent(_to_string(k)) + eq;
-			if (Array.isArray(obj[k])) {
-				return obj[k].map(function(v){
-					return ks + encodeURIComponent(_to_string(v));
-				}).join(sep);
-			} else {
-				return ks + encodeURIComponent(_to_string(obj[k]));
-			}
-		}).filter(Boolean).join(sep);
+	var normalize_data_url = function(url_string){
+		var strip_hash = options.strip_hash;
+		var match = /^data:(<type>.*?),(<data>.*?)(?:#(<hash>.*))?$/.exec(url_string);
+
+		if(!match){
+			if(validate){
+				fail(_K=="ru" ? ("Указан недействительный URL | " + url_string) : ("Invalid URL specified | " + url_string));
+			}else{
+				return url_string;
+			};
+		};
+
+		var type = match.groups.type;
+		var data = match.groups.data;
+		var hash = match.hash;
+		var media_type = type.split(';');
+		hash = strip_hash ? '' : hash;
+
+		var isBase64 = false;
+		if(media_type[media_type.length - 1] === 'base64'){
+			media_type.pop();
+			isBase64 = true;
+		};
+
+		var mime_type = (media_type.shift() || '').toLowerCase();
+		var attributes = media_type.map(function(attribute){
+			var split = attribute.split('=').map(function(string){return string.trim()});
+			var key = split[0];
+			var value = _avoid_nilb(split[1], '');
+
+			if(key === 'charset'){
+				value = value.toLowerCase();
+
+				if(value === DATA_URL_DEFAULT_CHARSET){
+					return '';
+				};
+			};
+
+			return key + _is_nilb(value) ? '' : '=' + value;
+		}).filter(Boolean);
+
+		var normalized_media_type = attributes.slice();
+
+		if(isBase64){
+			normalized_media_type.push('base64');
+		};
+
+		if(normalized_media_type.length !== 0 || (mime_type && mime_type !== DATA_URL_DEFAULT_MIME_TYPE)){
+			normalized_media_type.unshift(mime_type);
+		};
+
+		return 'data:' + normalized_media_type.join(';') + ',' + (isBase64 ? data.trim() : data) + (hash ? ('#' + hash) : '')
 	};
 
-	if (!name) return '';
-	return encodeURIComponent(_to_string(name)) + eq + encodeURIComponent(_to_string(obj));
+	url_string = url_string.trim();
+
+	if(/^data:/i.test(url_string)){
+		return normalize_data_url(url_string);
+	};
+
+	var has_relative_protocol = _starts_with(url_string, '//');
+	var is_relative_url = !has_relative_protocol && new RegExp("^\\.*\\/").test(url_string);
+
+	if (!is_relative_url) {
+		url_string = url_string.replace(new RegExp("^(?!(?:\\w+:)?\\/\\/)|^\\/\\/"), options.default_protocol);
+		url_string = url_string.replace(new RegExp("(https?)([:/]{0,2})"), '$1://');
+	}
+
+	var url_obj = new _url(url_string, false, false);
+
+	if(options.force_http && url_obj.protocol === 'https:'){
+		url_obj.set('protocol', 'http:');
+	};
+
+	if(options.force_https && url_obj.protocol === 'http:'){
+		url_obj.set('protocol', 'https:');
+	};
+
+	if(options.strip_authentication){
+		url_obj.set('username', '');
+		url_obj.set('password', '');
+	};
+
+	if(options.strip_hash){
+		url_obj.set('hash', '');
+	};
+
+	if(url_obj.pathname){
+		url_obj.set('pathname', url_obj.pathname.replace(/(<!\b(?:[a-z][a-z\d+\-.]{1,50}:))\/{2,}/g, '/'));
+	};
+
+	if(url_obj.pathname){
+		try {
+			url_obj.set('pathname', decodeURI(url_obj.pathname));
+		} catch (_) {}
+	};
+
+	if(options.remove_directory_index === true){
+		options.remove_directory_index = [/^index\.[a-z]+$/];
+	};
+
+	if(Array.isArray(options.remove_directory_index) && options.remove_directory_index.length > 0){
+		var path_components = url_obj.pathname.split('/');
+		var last_component = path_components[path_components.length - 1];
+
+		if(test_parameter(last_component, options.remove_directory_index)){
+			path_components = path_components.slice(0, path_components.length - 1);
+			url_obj.set('pathname', path_components.slice(1).join('/') + '/');
+		};
+	};
+
+	if(url_obj.hostname){
+		url_obj.set('hostname', url_obj.hostname.replace(/\.$/, ''));
+
+		if(options.strip_www && /^www\.(?!www\.)(?:[a-z\-\d]{1,63})\.(?:[a-z.\-\d]{2,63})$/.test(url_obj.hostname)){
+			url_obj.set('hostname', url_obj.hostname.replace(/^www\./, ''));
+		};
+	};
+	
+	if(Array.isArray(options.remove_query_parameters)){
+		var keys = Object.keys(url_obj.query);
+		for(var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			if(test_parameter(key, options.remove_query_parameters)){
+				delete url_obj.query[key];
+			};
+		};
+	};
+
+	if(options.sort_query_parameters){
+		var sortable = [];
+		for(var key in url_obj.query){
+			sortable.push([key, url_obj.query[key]]);
+		};
+		sortable.sort(function(a, b){
+			return a[1] - b[1];
+		});
+		var obj_sorted = {}
+		sortable.forEach(function(item){
+			obj_sorted[item[0]]=item[1]
+		});
+		url_obj.set('query', obj_sorted);
+	};
+
+	if(options.remove_trailing_slash){
+		url_obj.set('pathname', url_obj.pathname.replace(/\/$/, ''));
+	};
+	
+	var old_url_string = url_string;
+
+	url_string = url_obj.to_string();
+
+	if(!options.remove_single_slash && url_obj.pathname === '/' && !_ends_with(old_url_string, '/') && url_obj.hash === ''){
+		url_string = url_string.replace(/\/$/, '');
+	};
+
+	if((options.remove_trailing_slash || url_obj.pathname === '/') && url_obj.hash === '' && options.remove_single_slash){
+		url_string = url_string.replace(/\/$/, '');
+	};
+
+	if(has_relative_protocol && !options.normalize_protocol){
+		url_string = url_string.replace(new RegExp("^http:\\/\\/"), '//');
+	};
+
+	if(options.strip_protocol){
+		url_string = url_string.replace(new RegExp("^(?:https?:)?\\/\\/"), '');
+	};
+
+	return url_string;
 };
-function _parse_url(url){
-	url = _trim_left(url, "\\x09\\x0A\\x0B\\x0C\\x0D\\x20\\xA0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u202F\\u205F\\u3000\\u2028\\u2029\\uFEFF");
-	if(!_validate_url(url) && !_validate_file(url)){
-		fail(_K=="ru" ? ("Указан недействительный URL | " + url) : ("Invalid URL specified | " + url));
+function _url(address, validate, normalize, location, parser){
+	var whitespace = '\\x09\\x0A\\x0B\\x0C\\x0D\\x20\\xA0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u202F\\u205F\\u3000\\u2028\\u2029\\uFEFF';
+	address = _trim_left(address, whitespace);
+	normalize = _avoid_nilb(normalize, true);
+	if(normalize){
+		address = _normalize_url(address {
+			strip_authentication: false,
+			strip_hash: false,
+			strip_www: false,
+			strip_protocol: false,
+		}, validate);
 	};
-	var required = function(port, protocol){
+	
+	if(!(this instanceof _url)){
+		return new _url(address, validate, false, location, parser);
+	};
+	
+	var slashes = new RegExp("^[A-Za-z][A-Za-z0-9+-.]*:\\/\\/");
+	var protocolre = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i;
+	var rules = [
+		['#', 'hash'],
+		['?', 'query'],
+		function sanitize(address){
+			return address.replace('\\', '/');
+		},
+		['/', 'pathname'],
+		['@', 'auth', 1],
+		[NaN, 'host', undefined, 1, 1],
+		[/:(\d+)$/, 'port', undefined, 1],
+		[NaN, 'hostname', undefined, 1, 1]
+	];
+	var ignore = {hash:1,query:1};
+	function required(port, protocol){
 		protocol = protocol.split(':')[0];
 		port = +port;
 
 		if(!port){return false};
 
-		switch (protocol){
+		switch(protocol){
 			case 'http':
 			case 'ws':
 				return port !== 80;
@@ -456,7 +688,7 @@ function _parse_url(url){
 				return port !== 21;
 
 			case 'gopher':
-				return port !== 70;
+			return port !== 70;
 
 			case 'file':
 				return false;
@@ -464,21 +696,172 @@ function _parse_url(url){
 
 		return port !== 0;
 	};
-	var extract_protocol = function(address){
-		var match = /^([a-z][a-z0-9.+-]*:)?(\/\/)?([\S\s]*)/i.exec(address);
+	function lolcation(loc){
+		var globalVar = '';
+
+		if(typeof window !== 'undefined'){
+			globalVar = window;
+		}else if(typeof global !== 'undefined'){
+			globalVar = global;
+		}else if(typeof self !== 'undefined'){
+			globalVar = self;
+		}else{
+			globalVar = {}
+		};
+
+		var location = globalVar.location || {};
+		loc = loc || location;
+
+		var finaldestination = {};
+		var type = typeof loc;
+		var key = '';
+
+		if('blob:' === loc.protocol){
+			finaldestination = new _url(unescape(loc.pathname), {});
+		}else if('string' === type){
+			finaldestination = new _url(loc, {});
+			for (key in ignore) delete finaldestination[key];
+		}else if('object' === type){
+			for(key in loc){
+				if(key in ignore){continue};
+				finaldestination[key] = loc[key];
+			};
+
+			if(finaldestination.slashes === undefined){
+				finaldestination.slashes = slashes.test(loc.href);
+			};
+		};
+
+		return finaldestination;
+	};
+	function extract_protocol(address){
+		address = _trim_left(address, whitespace);
+		var match = protocolre.exec(address);
 
 		return {
 			protocol: match[1] ? match[1].toLowerCase() : '',
 			slashes: !!match[2],
-			rest: match[3],
-			href: address.replace(/\/$/, "")
+			rest: match[3]
 		};
 	};
-	var instructions = [
+	function resolve(relative, base){
+		if(relative === ''){return base};
+
+		var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/'));
+		var i = path.length;
+		var last = path[i - 1];
+		var unshift = false;
+		var up = 0;
+
+		while (i--) {
+			if(path[i] === '.'){
+				path.splice(i, 1);
+			}else if(path[i] === '..'){
+				path.splice(i, 1);
+				up++;
+			}else if(up){
+				if(i === 0){unshift = true};
+				path.splice(i, 1);
+				up--;
+			};
+		};
+
+		if(unshift){path.unshift('')};
+		if(last === '.' || last === '..'){path.push('')};
+
+		return path.join('/');
+	};
+
+	var index = '';
+	var url = this;
+	var instructions = rules.slice();
+	var type = typeof location;
+	
+
+	if('object' !== type && 'string' !== type){
+		parser = location;
+		location = null;
+	};
+	
+	if(_is_nilb(parser) && 'function' !== typeof parser){parser = _query_string_decode};
+	
+	location = lolcation(location);
+
+	var extracted = extract_protocol(address || '');
+	var relative = !extracted.protocol && !extracted.slashes;
+	url.slashes = extracted.slashes || relative && location.slashes;
+	url.protocol = extracted.protocol || location.protocol || '';
+	address = extracted.rest;
+
+	if(!extracted.slashes){instructions[3] = [/(.*)/, 'pathname']};
+
+	for(var i = 0; i < instructions.length; i++){
+		var instruction = instructions[i];
+
+		if(typeof instruction === 'function'){
+			address = instruction(address);
+			continue;
+		};
+
+		var parse = instruction[0];
+		var key = instruction[1];
+
+		if(parse !== parse){
+			url[key] = address;
+		}else if('string' === typeof parse){
+			if(~(index = address.indexOf(parse))){
+				if('number' === typeof instruction[2]){
+					url[key] = address.slice(0, index);
+					address = address.slice(index + instruction[2]);
+				}else{
+					url[key] = address.slice(index);
+					address = address.slice(0, index);
+				};
+			};
+		}else if((index = parse.exec(address))){
+			url[key] = index[1];
+			address = address.slice(0, index.index);
+		};
+	
+		url[key] = url[key] || (relative && instruction[3] ? location[key] || '' : '');
+
+		if(instruction[4]){url[key] = url[key].toLowerCase()};
+	};
+	
+	if(parser){url.query = parser(url.query)};
+	
+	if(relative && location.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || location.pathname !== '')){
+		url.pathname = resolve(url.pathname, location.pathname);
+	};
+	
+	if(!required(url.port, url.protocol)){
+		url.host = url.hostname;
+		url.port = '';
+	};
+	
+	url.username = '';
+	url.password = '';
+	if(url.auth){
+		var instruction = url.auth.split(':');
+		url.username = instruction[0] || '';
+		url.password = instruction[1] || '';
+	};
+	
+	url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol +'//'+ url.host : 'null';
+	
+	if(validate && url.protocol==="" && url.host==="" && url.origin==="null" && !_validate_url(url.href)){
+		fail(_K=="ru" ? ("Указан недействительный URL | " + url.href) : ("Invalid URL specified | " + url.href));
+	};
+	
+	url.href = url.to_string();
+};
+_url.prototype.set = function(part, value, fn){
+	var url = this;
+	var rules = [
 		['#', 'hash'],
 		['?', 'query'],
-		function sanitize(url){
-			return url.replace('\\', '/');
+		function sanitize(address){
+			return address.replace('\\', '/');
 		},
 		['/', 'pathname'],
 		['@', 'auth', 1],
@@ -486,76 +869,106 @@ function _parse_url(url){
 		[/:(\d+)$/, 'port', undefined, 1],
 		[NaN, 'hostname', undefined, 1, 1]
 	];
-	var instruction = '';
-	var index = '';
-	var obj = extract_protocol(url || '');
-	url = obj.rest;
-	delete obj.rest;
-	if(!obj.slashes){instructions[3] = [/(.*)/, 'pathname']};
+	if(!url.slashes){rules[3] = [/(.*)/, 'pathname']};
 	
-	for(var i = 0; i < instructions.length; i++){
-		instruction = instructions[i];
-
-		if(typeof instruction === 'function'){
-			url = instruction(url);
-			continue;
-		};
-
-		var parse = instruction[0];
-		var key = instruction[1];
-
-		if (parse !== parse){
-			obj[key] = url;
-		} else if ('string' === typeof parse) {
-			if (~(index = url.indexOf(parse))) {
-				if ('number' === typeof instruction[2]) {
-					obj[key] = url.slice(0, index);
-					url = url.slice(index + instruction[2]);
-				} else {
-					obj[key] = url.slice(index);
-					url = url.slice(0, index);
-				}
-			}
-		} else if ((index = parse.exec(url))) {
-			obj[key] = index[1];
-			url = url.slice(0, index.index);
-		}
-
-		obj[key] = obj[key] || '';
-		
-		if(instruction[4]){obj[key] = obj[key].toLowerCase()};
+	switch(part){
+		case 'query':
+			if('string' === typeof value && value.length){
+				value = (fn || _query_string_decode)(value);
+			};
+			url[part] = value;
+			break;
+		case 'port':
+			url[part] = value;
+			if(!required(value, url.protocol)){
+				url.host = url.hostname;
+				url[part] = '';
+			}else if(value){
+				url.host = url.hostname +':'+ value;
+			};
+			break;
+		case 'hostname':
+			url[part] = value;
+			if(url.port){
+				value += ':'+ url.port
+			};
+			url.host = value;
+			break;
+		case 'host':
+			url[part] = value;
+			if(/:\d+$/.test(value)){
+				value = value.split(':');
+				url.port = value.pop();
+				url.hostname = value.join(':');
+			}else{
+				url.hostname = value;
+				url.port = '';
+			};
+			break;
+		case 'protocol':
+			url.protocol = value.toLowerCase();
+			url.slashes = !fn;
+			break;
+		case 'pathname':
+		case 'hash':
+			if(value){
+				var char = part === 'pathname' ? '/' : '#';
+				url[part] = value.charAt(0) !== char ? char + value : value;
+			}else{
+				url[part] = value;
+			};
+			break;
+		default:
+			url[part] = value;
 	};
 	
-	obj.query = _query_string_decode(obj.query);
-	
-	if(!required(obj.port, obj.protocol)){
-		obj.host = obj.hostname;
-		obj.port = '';
-	}
-	
-	if(obj.auth){
-		instruction = obj.auth.split(':');
-		obj.username = instruction[0] || '';
-		obj.password = instruction[1] || '';
-	}else{
-		obj.username = '';
-		obj.password = '';
+	for(var i = 0; i < rules.length; i++){
+		var ins = rules[i];
+		if(ins[4]){url[ins[1]] = url[ins[1]].toLowerCase()};
 	};
 	
-	obj.origin = obj.protocol && obj.host && obj.protocol !== 'file:' ? obj.protocol +'//'+ obj.host : 'null';
+	url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol +'//'+ url.host : 'null';
 	
-	return obj;
+	url.href = url.to_string();
+	
+	return url;
 };
-function _parse_ua(uastring, extensions){
+_url.prototype.to_string = function(stringify){
+	if(_is_nilb(stringify) || 'function' !== typeof stringify){stringify = _query_string_encode};
+	
+	var query = '';
+	var url = this;
+	var protocol = url.protocol;
+	if(protocol && protocol.charAt(protocol.length - 1) !== ':'){protocol += ':'};
+	
+	var result = protocol + (url.slashes ? '//' : '');
+	
+	if(url.username){
+		result += url.username;
+		if(url.password){result += ':' + url.password};
+		result += '@';
+	};
+	
+	result += url.host + url.pathname;
+	
+	query = 'object' === typeof url.query ? stringify(url.query) : url.query;
+	
+	if(query){result += '?' !== query.charAt(0) ? '?' + query : query};
+	
+	if(url.hash){result += url.hash};
+	
+	return result;
+};
+function _ua(uastring, extensions){
 	uastring = _trim(uastring, "\\x09\\x0A\\x0B\\x0C\\x0D\\x20\\xA0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u202F\\u205F\\u3000\\u2028\\u2029\\uFEFF");
 
-    if (typeof uastring === 'object') {
+    if(typeof uastring === 'object'){
         extensions = uastring;
         uastring = undefined;
     }
 
-    if (!(this instanceof _parse_ua)) {
-        return new _parse_ua(uastring, extensions).getResult();
+    if (!(this instanceof _ua)) {
+        return new _ua(uastring, extensions).get_result();
     }
 	
 	var EMPTY = '';
@@ -601,7 +1014,7 @@ function _parse_ua(uastring, extensions){
 			return str.toLowerCase();
 		},
 		major: function (version) {
-			return typeof(version) === STR_TYPE ? version.replace(/[^\d\.]/g, '').split(".")[0] : undefined;
+			return typeof(version) === STR_TYPE ? _to_number(version.replace(/[^\d\.]/g, '').split(".")[0]) : undefined;
 		},
 		trim: function (str) {
 			return str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
@@ -610,7 +1023,7 @@ function _parse_ua(uastring, extensions){
 	
 	var mapper = {
 
-		rgx: function (ua, arrays) {
+		rgx: function(ua, arrays){
 
 			var i = 0;
 			var j = '';
@@ -678,6 +1091,54 @@ function _parse_ua(uastring, extensions){
 		}
 	};
 	
+	this.get_type = function(){
+        if(!ua || ua === ''){
+            return 'desktop';
+        } else if (ua.match(/FlipboardProxy/i)) {
+            return 'bot';
+        } else if (ua.match(/Applebot/i)) {
+            return 'bot';
+        } else if (ua.match(/GoogleTV|SmartTV|SMART-TV|Internet TV|NetCast|NETTV|AppleTV|boxee|Kylo|Roku|DLNADOC|hbbtv|CrKey|CE\-HTML/i)) {
+            return 'tv';
+        } else if (ua.match(/Xbox|PLAYSTATION (3|4)|Wii/i)) {
+            return 'tv';
+        } else if (ua.match(/QtCarBrowser/i)) {
+            return 'car';
+        } else if (ua.match(/Googlebot|bingbot/i)) {
+            return 'bot';
+        } else if (ua.match(/WhatsApp/i)) {
+            return 'bot';
+        } else if (ua.match(/iP(a|ro)d/i) || (ua.match(/tablet/i) && !ua.match(/RX-34/i)) || ua.match(/FOLIO/i)) {
+            return 'tablet';
+        } else if (ua.match(/Linux/i) && ua.match(/Android/i) && !ua.match(/Fennec|mobi|HTC Magic|HTCX06HT|Nexus One|SC-02B|fone 945/i)) {
+            return 'tablet';
+        } else if (ua.match(/Kindle/i) || (ua.match(/Mac OS/i) && ua.match(/Silk/i)) || (ua.match(/AppleWebKit/i) && ua.match(/Silk/i) && !ua.match(/Playstation Vita/i))) {
+            return 'tablet';
+        } else if (ua.match(/GT-P10|SC-01C|SHW-M180S|SGH-T849|SCH-I800|SHW-M180L|SPH-P100|SGH-I987|zt180|HTC( Flyer|_Flyer)|Sprint ATP51|ViewPad7|pandigital(sprnova|nova)|Ideos S7|Dell Streak 7|Advent Vega|A101IT|A70BHT|MID7015|Next2|nook/i) || (ua.match(/MB511/i) && ua.match(/RUTEM/i))) {
+            return 'tablet';
+        } else if (ua.match(/BOLT|Fennec|Iris|Maemo|Minimo|Mobi|mowser|NetFront|Novarra|Prism|RX-34|Skyfire|Tear|XV6875|XV6975|Google Wireless Transcoder/i) && !ua.match(/AdsBot-Google-Mobile/i)) {
+            return 'mobile';
+        } else if (ua.match(/Opera/i) && ua.match(/Windows NT 5/i) && ua.match(/HTC|Xda|Mini|Vario|SAMSUNG\-GT\-i8000|SAMSUNG\-SGH\-i9/i)) {
+            return 'mobile';
+        } else if ((ua.match(/Windows( )?(NT|XP|ME|9)/) && !ua.match(/Phone/i)) && !ua.match(/Bot|Spider|ia_archiver|NewsGator/i) || ua.match(/Win( ?9|NT)/i) || ua.match(/Go-http-client/i)) {
+            return 'desktop';
+        } else if (ua.match(/Macintosh|PowerPC/i) && !ua.match(/Silk|moatbot/i)) {
+            return 'desktop';
+        } else if (ua.match(/Linux/i) && ua.match(/X11/i) && !ua.match(/Charlotte|JobBot/i)) {
+            return 'desktop';
+        } else if (ua.match(/CrOS/)) {
+            return 'desktop';
+        } else if (ua.match(/Solaris|SunOS|BSD/i)) {
+            return 'desktop';
+        } else if (ua.match(/Mozilla\/5\.0 \(\)|AdsBot-Google-Mobile/i) && ua.match(/Phone/i)) {
+            return 'bot';
+        } else if (ua.match(/Mozilla\/5\.0 \(\)|jack|Applebot|FlipboardProxy|Go 1.1 package|HTMLParser|simplereach|python-requests|ShowyouBot|MetaURI|nineconnections|(^Java\/[0-9._]*)|Commons-HttpClient|InAGist|HTTP-Java-Client|curl|Wget|Bot|B-O-T|Crawler|Spider|Spyder|Yahoo|ia_archiver|Covario-IDS|findlinks|DataparkSearch|larbin|Mediapartners-Google|NG-Search|Snappy|Teoma|Jeeves|Charlotte|NewsGator|TinEye|Cerberian|SearchSight|Zao|Scrubby|Qseero|PycURL|Pompos|oegp|SBIder|yoogliFetchAgent|yacy|webcollage|VYU2|voyager|updated|truwoGPS|StackRambler|Sqworm|silk|semanticdiscovery|ScoutJet|Nymesis|NetResearchServer|MVAClient|mogimogi|Mnogosearch|Arachmo|Accoona|holmes|htdig|ichiro|webis|LinkWalker|lwp-trivial|facebookexternalhit|monit\/|ELB-HealthChecker\/|JobBot|GoogleCloudMonitoring|GoogleStackdriverMonitoring|gomezagent|apm synthetic agent|ruxitsynthetic|ktxn|khte|ktht|dynatrace|TrendsmapResolver|WinHTTP/i) && !ua.match(/phone|Playstation/i)) {
+            return 'bot';
+        } else {
+            return 'mobile';
+        }
+    };
+	
 	var maps = {browser:{oldsafari:{version:{'1.0':'/8','1.2':'/1','1.3':'/3','2.0':'/412','2.0.2':'/416','2.0.3':'/417','2.0.4':'/419','?':'/'}}},device:{amazon:{model:{'Fire Phone':['SD','KF']}},sprint:{model:{'Evo Shift 4G':'7373KT'},vendor:{'HTC':'APA','Sprint':'Sprint'}}},os:{windows:{version:{'ME':'4.90','NT 3.11':'NT3.51','NT 4.0':'NT4.0','2000':'NT 5.0','XP':['NT 5.1','NT 5.2'],'Vista':'NT 6.0','7':'NT 6.1','8':'NT 6.2','8.1':'NT 6.3','10':['NT 6.4','NT 10.0'],'RT':'ARM'}}}};
 	
 	var regexes = {browser:[[/(opera\smini)\/([\w\.-]+)/i,/(opera\s[mobiletab]+).+version\/([\w\.-]+)/i,/(opera).+version\/([\w\.]+)/i,/(opera)[\/\s]+([\w\.]+)/i],[NAME,VERSION],[/(opios)[\/\s]+([\w\.]+)/i],[[NAME,'Opera Mini'],VERSION],[/\s(opr)\/([\w\.]+)/i],[[NAME,'Opera'],VERSION],[/(kindle)\/([\w\.]+)/i,/(lunascape|maxthon|netfront|jasmine|blazer)[\/\s]?([\w\.]*)/i,/(avant\s|iemobile|slim)(?:browser)?[\/\s]?([\w\.]*)/i,/(bidubrowser|baidubrowser)[\/\s]?([\w\.]+)/i,/(?:ms|\()(ie)\s([\w\.]+)/i,/(rekonq)\/([\w\.]*)/i,/(chromium|flock|rockmelt|midori|epiphany|silk|skyfire|ovibrowser|bolt|iron|vivaldi|iridium|phantomjs|bowser|quark|qupzilla|falkon)\/([\w\.-]+)/i],[NAME,VERSION],[/(konqueror)\/([\w\.]+)/i],[[NAME,'Konqueror'],VERSION],[/(trident).+rv[:\s]([\w\.]+).+like\sgecko/i],[[NAME,'IE'],VERSION],[/(edge|edgios|edga|edg)\/((\d+)?[\w\.]+)/i],[[NAME,'Edge'],VERSION],[/(yabrowser)\/([\w\.]+)/i],[[NAME,'Yandex'],VERSION],[/(Avast)\/([\w\.]+)/i],[[NAME,'Avast Secure Browser'],VERSION],[/(AVG)\/([\w\.]+)/i],[[NAME,'AVG Secure Browser'],VERSION],[/(puffin)\/([\w\.]+)/i],[[NAME,'Puffin'],VERSION],[/(focus)\/([\w\.]+)/i],[[NAME,'Firefox Focus'],VERSION],[/(opt)\/([\w\.]+)/i],[[NAME,'Opera Touch'],VERSION],[/((?:[\s\/])uc?\s?browser|(?:juc.+)ucweb)[\/\s]?([\w\.]+)/i],[[NAME,'UCBrowser'],VERSION],[/(comodo_dragon)\/([\w\.]+)/i],[[NAME,/_/g,' '],VERSION],[/(windowswechat qbcore)\/([\w\.]+)/i],[[NAME,'WeChat(Win) Desktop'],VERSION],[/(micromessenger)\/([\w\.]+)/i],[[NAME,'WeChat'],VERSION],[/(brave)\/([\w\.]+)/i],[[NAME,'Brave'],VERSION],[/(qqbrowserlite)\/([\w\.]+)/i],[NAME,VERSION],[/(QQ)\/([\d\.]+)/i],[NAME,VERSION],[/m?(qqbrowser)[\/\s]?([\w\.]+)/i],[NAME,VERSION],[/(baiduboxapp)[\/\s]?([\w\.]+)/i],[NAME,VERSION],[/(2345Explorer)[\/\s]?([\w\.]+)/i],[NAME,VERSION],[/(MetaSr)[\/\s]?([\w\.]+)/i],[NAME],[/(LBBROWSER)/i],[NAME],[/xiaomi\/miuibrowser\/([\w\.]+)/i],[VERSION,[NAME,'MIUI Browser']],[/;fbav\/([\w\.]+);/i],[VERSION,[NAME,'Facebook']],[/safari\s(line)\/([\w\.]+)/i,/android.+(line)\/([\w\.]+)\/iab/i],[NAME,VERSION],[/headlesschrome(?:\/([\w\.]+)|\s)/i],[VERSION,[NAME,'Chrome Headless']],[/\swv\).+(chrome)\/([\w\.]+)/i],[[NAME,/(.+)/,'$1 WebView'],VERSION],[/((?:oculus|samsung)browser)\/([\w\.]+)/i],[[NAME,/(.+(?:g|us))(.+)/,'$1 $2'],VERSION],[/android.+version\/([\w\.]+)\s+(?:mobile\s?safari|safari)*/i],[VERSION,[NAME,'Android Browser']],[/(sailfishbrowser)\/([\w\.]+)/i],[[NAME,'Sailfish Browser'],VERSION],[/(chrome|omniweb|arora|[tizenoka]{5}\s?browser)\/v?([\w\.]+)/i],[NAME,VERSION],[/(dolfin)\/([\w\.]+)/i],[[NAME,'Dolphin'],VERSION],[/(qihu|qhbrowser|qihoobrowser|360browser)/i],[[NAME,'360 Browser']],[/((?:android.+)crmo|crios)\/([\w\.]+)/i],[[NAME,'Chrome'],VERSION],[/(coast)\/([\w\.]+)/i],[[NAME,'Opera Coast'],VERSION],[/fxios\/([\w\.-]+)/i],[VERSION,[NAME,'Firefox']],[/version\/([\w\.]+).+?mobile\/\w+\s(safari)/i],[VERSION,[NAME,'Mobile Safari']],[/version\/([\w\.]+).+?(mobile\s?safari|safari)/i],[VERSION,NAME],[/webkit.+?(gsa)\/([\w\.]+).+?(mobile\s?safari|safari)(\/[\w\.]+)/i],[[NAME,'GSA'],VERSION],[/webkit.+?(mobile\s?safari|safari)(\/[\w\.]+)/i],[NAME,[VERSION,mapper.str,maps.browser.oldsafari.version]],[/(webkit|khtml)\/([\w\.]+)/i],[NAME,VERSION],[/(navigator|netscape)\/([\w\.-]+)/i],[[NAME,'Netscape'],VERSION],[/(swiftfox)/i,/(icedragon|iceweasel|camino|chimera|fennec|maemo\sbrowser|minimo|conkeror)[\/\s]?([\w\.\+]+)/i,/(firefox|seamonkey|k-meleon|icecat|iceape|firebird|phoenix|palemoon|basilisk|waterfox)\/([\w\.-]+)$/i,/(mozilla)\/([\w\.]+).+rv\:.+gecko\/\d+/i,/(polaris|lynx|dillo|icab|doris|amaya|w3m|netsurf|sleipnir)[\/\s]?([\w\.]+)/i,/(links)\s\(([\w\.]+)/i,/(gobrowser)\/?([\w\.]*)/i,/(ice\s?browser)\/v?([\w\._]+)/i,/(mosaic)[\/\s]([\w\.]+)/i],[NAME,VERSION]],cpu:[[/(?:(amd|x(?:(?:86|64)[_-])?|wow|win)64)[;\)]/i],[[ARCHITECTURE,'amd64']],[/(ia32(?=;))/i],[[ARCHITECTURE,util.lowerize]],[/((?:i[346]|x)86)[;\)]/i],[[ARCHITECTURE,'ia32']],[/windows\s(ce|mobile);\sppc;/i],[[ARCHITECTURE,'arm']],[/((?:ppc|powerpc)(?:64)?)(?:\smac|;|\))/i],[[ARCHITECTURE,/ower/,'',util.lowerize]],[/(sun4\w)[;\)]/i],[[ARCHITECTURE,'sparc']],[/((?:avr32|ia64(?=;))|68k(?=\))|arm(?:64|(?=v\d+[;l]))|(?=atmel\s)avr|(?:irix|mips|sparc)(?:64)?(?=;)|pa-risc)/i],[[ARCHITECTURE,util.lowerize]]],device:[[/\((ipad|playbook);[\w\s\),;-]+(rim|apple)/i],[MODEL,VENDOR,[TYPE,TABLET]],[/applecoremedia\/[\w\.]+ \((ipad)/],[MODEL,[VENDOR,'Apple'],[TYPE,TABLET]],[/(apple\s{0,1}tv)/i],[[MODEL,'Apple TV'],[VENDOR,'Apple'],[TYPE,SMARTTV]],[/(archos)\s(gamepad2?)/i,/(hp).+(touchpad)/i,/(hp).+(tablet)/i,/(kindle)\/([\w\.]+)/i,/\s(nook)[\w\s]+build\/(\w+)/i,/(dell)\s(strea[kpr\s\d]*[\dko])/i],[VENDOR,MODEL,[TYPE,TABLET]],[new RegExp("(kf[A-z]+)\sbuild\/.+silk\\/","i")],[MODEL,[VENDOR,'Amazon'],[TYPE,TABLET]],[new RegExp("(sd|kf)[0349hijorstuw]+\\sbuild\\/.+silk\\/","i")],[[MODEL,mapper.str,maps.device.amazon.model],[VENDOR,'Amazon'],[TYPE,MOBILE]],[/android.+aft([bms])\sbuild/i],[MODEL,[VENDOR,'Amazon'],[TYPE,SMARTTV]],[/\((ip[honed|\s\w*]+);.+(apple)/i],[MODEL,VENDOR,[TYPE,MOBILE]],[/\((ip[honed|\s\w*]+);/i],[MODEL,[VENDOR,'Apple'],[TYPE,MOBILE]],[/(blackberry)[\s-]?(\w+)/i,/(blackberry|benq|palm(?=\-)|sonyericsson|acer|asus|dell|meizu|motorola|polytron)[\s_-]?([\w-]*)/i,/(hp)\s([\w\s]+\w)/i,/(asus)-?(\w+)/i],[VENDOR,MODEL,[TYPE,MOBILE]],[/\(bb10;\s(\w+)/i],[MODEL,[VENDOR,'BlackBerry'],[TYPE,MOBILE]],[/android.+(transfo[prime\s]{4,10}\s\w+|eeepc|slider\s\w+|nexus 7|padfone|p00c)/i],[MODEL,[VENDOR,'Asus'],[TYPE,TABLET]],[new RegExp("(sony)\\s(tablet\\s[ps])\\sbuild\\/","i"),new RegExp("(sony)?(?:sgp.+)\\sbuild\\/","i")],[[VENDOR,'Sony'],[MODEL,'Xperia Tablet'],[TYPE,TABLET]],[/android.+\s([c-g]\d{4}|so[-l]\w+)(?=\sbuild\/|\).+chrome\/(?![1-6]{0,1}\d\.))/i],[MODEL,[VENDOR,'Sony'],[TYPE,MOBILE]],[/\s(ouya)\s/i,/(nintendo)\s([wids3u]+)/i],[VENDOR,MODEL,[TYPE,CONSOLE]],[/android.+;\s(shield)\sbuild/i],[MODEL,[VENDOR,'Nvidia'],[TYPE,CONSOLE]],[/(playstation\s[34portablevi]+)/i],[MODEL,[VENDOR,'Sony'],[TYPE,CONSOLE]],[/(sprint\s(\w+))/i],[[VENDOR,mapper.str,maps.device.sprint.vendor],[MODEL,mapper.str,maps.device.sprint.model],[TYPE,MOBILE]],[/(htc)[;_\s-]+([\w\s]+(?=\)|\sbuild)|\w+)/i,/(zte)-(\w*)/i,/(alcatel|geeksphone|nexian|panasonic|(?=;\s)sony)[_\s-]?([\w-]*)/i],[VENDOR,[MODEL,/_/g,' '],[TYPE,MOBILE]],[/(nexus\s9)/i],[MODEL,[VENDOR,'HTC'],[TYPE,TABLET]],[/d\/huawei([\w\s-]+)[;\)]/i,/(nexus\s6p|vog-l29|ane-lx1|eml-l29|ele-l29)/i],[MODEL,[VENDOR,'Huawei'],[TYPE,MOBILE]],[/android.+(bah2?-a?[lw]\d{2})/i],[MODEL,[VENDOR,'Huawei'],[TYPE,TABLET]],[/(microsoft);\s(lumia[\s\w]+)/i],[VENDOR,MODEL,[TYPE,MOBILE]],[/[\s\(;](xbox(?:\sone)?)[\s\);]/i],[MODEL,[VENDOR,'Microsoft'],[TYPE,CONSOLE]],[/(kin\.[onetw]{3})/i],[[MODEL,/\./g,' '],[VENDOR,'Microsoft'],[TYPE,MOBILE]],[new RegExp("\\s(milestone|droid(?:[2-4x]|\\s(?:bionic|x2|pro|razr))?:?(\\s4g)?)[\\w\\s]+build\\/","i"),/mot[\s-]?(\w*)/i,new RegExp("(XT\\d{3,4}) build\\/","i"),/(nexus\s6)/i],[MODEL,[VENDOR,'Motorola'],[TYPE,MOBILE]],[new RegExp("android.+\\s(mz60\\d|xoom[\\s2]{0,2})\\sbuild\\/","i")],[MODEL,[VENDOR,'Motorola'],[TYPE,TABLET]],[/hbbtv\/\d+\.\d+\.\d+\s+\([\w\s]*;\s*(\w[^;]*);([^;]*)/i],[[VENDOR,util.trim],[MODEL,util.trim],[TYPE,SMARTTV]],[/hbbtv.+maple;(\d+)/i],[[MODEL,/^/,'SmartTV'],[VENDOR,'Samsung'],[TYPE,SMARTTV]],[/\(dtv[\);].+(aquos)/i],[MODEL,[VENDOR,'Sharp'],[TYPE,SMARTTV]],[/android.+((sch-i[89]0\d|shw-m380s|gt-p\d{4}|gt-n\d+|sgh-t8[56]9|nexus 10))/i,/((SM-T\w+))/i],[[VENDOR,'Samsung'],MODEL,[TYPE,TABLET]],[/smart-tv.+(samsung)/i],[VENDOR,[TYPE,SMARTTV],MODEL],[/((s[cgp]h-\w+|gt-\w+|galaxy\snexus|sm-\w[\w\d]+))/i,/(sam[sung]*)[\s-]*(\w+-?[\w-]*)/i,/sec-((sgh\w+))/i],[[VENDOR,'Samsung'],MODEL,[TYPE,MOBILE]],[/sie-(\w*)/i],[MODEL,[VENDOR,'Siemens'],[TYPE,MOBILE]],[/(maemo|nokia).*(n900|lumia\s\d+)/i,/(nokia)[\s_-]?([\w-]*)/i],[[VENDOR,'Nokia'],MODEL,[TYPE,MOBILE]],[/android[x\d\.\s;]+\s([ab][1-7]\-?[0178a]\d\d?)/i],[MODEL,[VENDOR,'Acer'],[TYPE,TABLET]],[/android.+([vl]k\-?\d{3})\s+build/i],[MODEL,[VENDOR,'LG'],[TYPE,TABLET]],[/android\s3\.[\s\w;-]{10}(lg?)-([06cv9]{3,4})/i],[[VENDOR,'LG'],MODEL,[TYPE,TABLET]],[/(lg) netcast\.tv/i],[VENDOR,MODEL,[TYPE,SMARTTV]],[/(nexus\s[45])/i,/lg[e;\s\/-]+(\w*)/i,/android.+lg(\-?[\d\w]+)\s+build/i],[MODEL,[VENDOR,'LG'],[TYPE,MOBILE]],[/(lenovo)\s?(s(?:5000|6000)(?:[\w-]+)|tab(?:[\s\w]+))/i],[VENDOR,MODEL,[TYPE,TABLET]],[/android.+(ideatab[a-z0-9\-\s]+)/i],[MODEL,[VENDOR,'Lenovo'],[TYPE,TABLET]],[/(lenovo)[_\s-]?([\w-]+)/i],[VENDOR,MODEL,[TYPE,MOBILE]],[/linux;.+((jolla));/i],[VENDOR,MODEL,[TYPE,MOBILE]],[/((pebble))app\/[\d\.]+\s/i],[VENDOR,MODEL,[TYPE,WEARABLE]],[/android.+;\s(oppo)\s?([\w\s]+)\sbuild/i],[VENDOR,MODEL,[TYPE,MOBILE]],[/crkey/i],[[MODEL,'Chromecast'],[VENDOR,'Google'],[TYPE,SMARTTV]],[/android.+;\s(glass)\s\d/i],[MODEL,[VENDOR,'Google'],[TYPE,WEARABLE]],[/android.+;\s(pixel c)[\s)]/i],[MODEL,[VENDOR,'Google'],[TYPE,TABLET]],[/android.+;\s(pixel( [23])?( xl)?)[\s)]/i],[MODEL,[VENDOR,'Google'],[TYPE,MOBILE]],[/android.+;\s(\w+)\s+build\/hm\1/i,/android.+(hm[\s\-_]*note?[\s_]*(?:\d\w)?)\s+build/i,/android.+(mi[\s\-_]*(?:a\d|one|one[\s_]plus|note lte)?[\s_]*(?:\d?\w?)[\s_]*(?:plus)?)\s+build/i,/android.+(redmi[\s\-_]*(?:note)?(?:[\s_]?[\w\s]+))\s+build/i],[[MODEL,/_/g,' '],[VENDOR,'Xiaomi'],[TYPE,MOBILE]],[/android.+(mi[\s\-_]*(?:pad)(?:[\s_]?[\w\s]+))\s+build/i],[[MODEL,/_/g,' '],[VENDOR,'Xiaomi'],[TYPE,TABLET]],[/android.+;\s(m[1-5]\snote)\sbuild/i],[MODEL,[VENDOR,'Meizu'],[TYPE,MOBILE]],[/(mz)-([\w-]{2,})/i],[[VENDOR,'Meizu'],MODEL,[TYPE,MOBILE]],[/android.+a000(1)\s+build/i,/android.+oneplus\s(a\d{4})[\s)]/i],[MODEL,[VENDOR,'OnePlus'],[TYPE,MOBILE]],[/android.+[;\/]\s*(RCT[\d\w]+)\s+build/i],[MODEL,[VENDOR,'RCA'],[TYPE,TABLET]],[/android.+[;\/\s]+(Venue[\d\s]{2,7})\s+build/i],[MODEL,[VENDOR,'Dell'],[TYPE,TABLET]],[/android.+[;\/]\s*(Q[T|M][\d\w]+)\s+build/i],[MODEL,[VENDOR,'Verizon'],[TYPE,TABLET]],[/android.+[;\/]\s+(Barnes[&\s]+Noble\s+|BN[RT])(V?.*)\s+build/i],[[VENDOR,'Barnes & Noble'],MODEL,[TYPE,TABLET]],[/android.+[;\/]\s+(TM\d{3}.*\b)\s+build/i],[MODEL,[VENDOR,'NuVision'],[TYPE,TABLET]],[/android.+;\s(k88)\sbuild/i],[MODEL,[VENDOR,'ZTE'],[TYPE,TABLET]],[/android.+[;\/]\s*(gen\d{3})\s+build.*49h/i],[MODEL,[VENDOR,'Swiss'],[TYPE,MOBILE]],[/android.+[;\/]\s*(zur\d{3})\s+build/i],[MODEL,[VENDOR,'Swiss'],[TYPE,TABLET]],[/android.+[;\/]\s*((Zeki)?TB.*\b)\s+build/i],[MODEL,[VENDOR,'Zeki'],[TYPE,TABLET]],[/(android).+[;\/]\s+([YR]\d{2})\s+build/i,/android.+[;\/]\s+(Dragon[\-\s]+Touch\s+|DT)(\w{5})\sbuild/i],[[VENDOR,'Dragon Touch'],MODEL,[TYPE,TABLET]],[/android.+[;\/]\s*(NS-?\w{0,9})\sbuild/i],[MODEL,[VENDOR,'Insignia'],[TYPE,TABLET]],[/android.+[;\/]\s*((NX|Next)-?\w{0,9})\s+build/i],[MODEL,[VENDOR,'NextBook'],[TYPE,TABLET]],[/android.+[;\/]\s*(Xtreme\_)?(V(1[045]|2[015]|30|40|60|7[05]|90))\s+build/i],[[VENDOR,'Voice'],MODEL,[TYPE,MOBILE]],[/android.+[;\/]\s*(LVTEL\-)?(V1[12])\s+build/i],[[VENDOR,'LvTel'],MODEL,[TYPE,MOBILE]],[/android.+;\s(PH-1)\s/i],[MODEL,[VENDOR,'Essential'],[TYPE,MOBILE]],[/android.+[;\/]\s*(V(100MD|700NA|7011|917G).*\b)\s+build/i],[MODEL,[VENDOR,'Envizen'],[TYPE,TABLET]],[/android.+[;\/]\s*(Le[\s\-]+Pan)[\s\-]+(\w{1,9})\s+build/i],[VENDOR,MODEL,[TYPE,TABLET]],[/android.+[;\/]\s*(Trio[\s\-]*.*)\s+build/i],[MODEL,[VENDOR,'MachSpeed'],[TYPE,TABLET]],[/android.+[;\/]\s*(Trinity)[\-\s]*(T\d{3})\s+build/i],[VENDOR,MODEL,[TYPE,TABLET]],[/android.+[;\/]\s*TU_(1491)\s+build/i],[MODEL,[VENDOR,'Rotor'],[TYPE,TABLET]],[/android.+(KS(.+))\s+build/i],[MODEL,[VENDOR,'Amazon'],[TYPE,TABLET]],[/android.+(Gigaset)[\s\-]+(Q\w{1,9})\s+build/i],[VENDOR,MODEL,[TYPE,TABLET]],[/\s(tablet|tab)[;\/]/i,/\s(mobile)(?:[;\/]|\ssafari)/i],[[TYPE,util.lowerize],VENDOR,MODEL],[/[\s\/\(](smart-?tv)[;\)]/i],[[TYPE,SMARTTV]],[/(android[\w\.\s\-]{0,9});.+build/i],[MODEL,[VENDOR,'Generic']]],engine:[[/windows.+\sedge\/([\w\.]+)/i],[VERSION,[NAME,'EdgeHTML']],[/webkit\/537\.36.+chrome\/(?!27)([\w\.]+)/i],[VERSION,[NAME,'Blink']],[/(presto)\/([\w\.]+)/i,/(webkit|trident|netfront|netsurf|amaya|lynx|w3m|goanna)\/([\w\.]+)/i,/(khtml|tasman|links)[\/\s]\(?([\w\.]+)/i,/(icab)[\/\s]([23]\.[\d\.]+)/i],[NAME,VERSION],[/rv\:([\w\.]{1,9}).+(gecko)/i],[VERSION,NAME]],os:[[/microsoft\s(windows)\s(vista|xp)/i],[NAME,VERSION],[/(windows)\snt\s6\.2;\s(arm)/i,/(windows\sphone(?:\sos)*)[\s\/]?([\d\.\s\w]*)/i,/(windows\smobile|windows)[\s\/]?([ntce\d\.\s]+\w)/i],[NAME,[VERSION,mapper.str,maps.os.windows.version]],[/(win(?=3|9|n)|win\s9x\s)([nt\d\.]+)/i],[[NAME,'Windows'],[VERSION,mapper.str,maps.os.windows.version]],[/\((bb)(10);/i],[[NAME,'BlackBerry'],VERSION],[/(blackberry)\w*\/?([\w\.]*)/i,/(tizen|kaios)[\/\s]([\w\.]+)/i,/(android|webos|palm\sos|qnx|bada|rim\stablet\sos|meego|sailfish|contiki)[\/\s-]?([\w\.]*)/i],[NAME,VERSION],[/(symbian\s?os|symbos|s60(?=;))[\/\s-]?([\w\.]*)/i],[[NAME,'Symbian'],VERSION],[/\((series40);/i],[NAME],[/mozilla.+\(mobile;.+gecko.+firefox/i],[[NAME,'Firefox OS'],VERSION],[/(nintendo|playstation)\s([wids34portablevu]+)/i,/(mint)[\/\s\(]?(\w*)/i,/(mageia|vectorlinux)[;\s]/i,/(joli|[kxln]?ubuntu|debian|suse|opensuse|gentoo|(?=\s)arch|slackware|fedora|mandriva|centos|pclinuxos|redhat|zenwalk|linpus)[\/\s-]?(?!chrom)([\w\.-]*)/i,/(hurd|linux)\s?([\w\.]*)/i,/(gnu)\s?([\w\.]*)/i],[NAME,VERSION],[/(cros)\s[\w]+\s([\w\.]+\w)/i],[[NAME,'Chromium OS'],VERSION],[/(sunos)\s?([\w\.\d]*)/i],[[NAME,'Solaris'],VERSION],[/\s([frentopc-]{0,4}bsd|dragonfly)\s?([\w\.]*)/i],[NAME,VERSION],[/(haiku)\s(\w+)/i],[NAME,VERSION],[/cfnetwork\/.+darwin/i,/ip[honead]{2,4}(?:.*os\s([\w]+)\slike\smac|;\sopera)/i],[[VERSION,/_/g,'.'],[NAME,'iOS']],[/(mac\sos\sx)\s?([\w\s\.]*)/i,/(macintosh|mac(?=_powerpc)\s)/i],[[NAME,'Mac OS'],[VERSION,/_/g,'.']],[/((?:open)?solaris)[\/\s-]?([\w\.]*)/i,/(aix)\s((\d)(?=\.|\)|\s)[\w\.])*/i,/(plan\s9|minix|beos|os\/2|amigaos|morphos|risc\sos|openvms|fuchsia)/i,/(unix)\s?([\w\.]*)/i],[NAME,VERSION]]};
@@ -685,7 +1146,7 @@ function _parse_ua(uastring, extensions){
     var ua = uastring || ((window && window.navigator && window.navigator.userAgent) ? window.navigator.userAgent : EMPTY);
     var rgxmap = extensions ? util.extend(regexes, extensions) : regexes;
 
-    this.getBrowser = function () {
+    this.get_browser = function(){
         var browser = {
             name: undefined,
             version: undefined
@@ -694,14 +1155,14 @@ function _parse_ua(uastring, extensions){
         browser.major = util.major(browser.version);
         return browser;
     };
-    this.getCPU = function () {
+    this.get_cpu = function(){
         var cpu = {
             architecture: undefined
         };
         mapper.rgx.call(cpu, ua, rgxmap.cpu);
         return cpu;
     };
-    this.getDevice = function () {
+    this.get_device = function(){
         var device = {
             vendor: undefined,
             model: undefined,
@@ -710,7 +1171,7 @@ function _parse_ua(uastring, extensions){
         mapper.rgx.call(device, ua, rgxmap.device);
         return device;
     };
-    this.getEngine = function () {
+    this.get_engine = function(){
         var engine = {
             name: undefined,
             version: undefined
@@ -718,7 +1179,7 @@ function _parse_ua(uastring, extensions){
         mapper.rgx.call(engine, ua, rgxmap.engine);
         return engine;
     };
-    this.getOS = function () {
+    this.get_os = function (){
         var os = {
             name: undefined,
             version: undefined
@@ -726,20 +1187,26 @@ function _parse_ua(uastring, extensions){
         mapper.rgx.call(os, ua, rgxmap.os);
         return os;
     };
-    this.getResult = function () {
+	this.get_platform = function (){
         return {
-            ua: this.getUA(),
-            browser: this.getBrowser(),
-            engine: this.getEngine(),
-            os: this.getOS(),
-            device: this.getDevice(),
-            cpu: this.getCPU()
+            type: this.get_type()
         };
     };
-    this.getUA = function () {
+    this.get_result = function(){
+        return {
+            ua: this.get_ua(),
+            platform: this.get_platform(),
+            browser: this.get_browser(),
+            engine: this.get_engine(),
+            os: this.get_os(),
+            device: this.get_device(),
+            cpu: this.get_cpu()
+        };
+    };
+    this.get_ua = function(){
         return ua;
     };
-    this.setUA = function (uastring) {
+    this.set_ua = function(uastring){
         ua = uastring;
         return this;
     };

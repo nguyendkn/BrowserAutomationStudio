@@ -564,6 +564,40 @@
 		{
             "code": [
                 {
+                    "file": "parse_url_code.js",
+                    "name": "parse_url_code"
+                }
+            ],
+            "description": {
+                "en": "Parse URL",
+                "ru": "Парсить URL"
+            },
+            "interface": "parse_url_interface.js",
+            "is_element": false,
+            "name": "parse_url",
+            "select": "parse_url_select.js",
+            "template": "{{string}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "parse_ua_code.js",
+                    "name": "parse_ua_code"
+                }
+            ],
+            "description": {
+                "en": "Parse User-Agent",
+                "ru": "Парсить User-Agent"
+            },
+            "interface": "parse_ua_interface.js",
+            "is_element": false,
+            "name": "parse_ua",
+            "select": "parse_ua_select.js",
+            "template": "{{string}}"
+        },
+		{
+            "code": [
+                {
                     "file": "base64_code.js",
                     "name": "base64_code"
                 }
@@ -690,6 +724,8 @@
 		"extract_phone_numbers",
 		"url_component",
 		"html_special_characters",
+		"parse_url",
+		"parse_ua",
 		"base64",
 		"parseline",
 		"template",
@@ -1082,14 +1118,67 @@
 		"The string from which to extract phone numbers.": {"ru":"Строка, из которой нужно извлечь телефонные номера."},
 		"Variable in which, after successful execution of the action, the list of phone numbers will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список телефонных номеров."},
 		
+		"encode": {"ru":"шифровать"},
+		"decode": {"ru":"расшифровать"},
 		"Encodes or decodes string containing the Url component.": {"ru":"Кодирует или декодирует строку содержащую Url компонент."},
 		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing the Url component which needs to be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая Url компонент, которая должна быть закодирована."},
 		
 		"Encodes or decodes string containing special HTML characters.": {"ru":"Кодирует или декодирует строку содержащую специальные HTML символы."},
 		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing special HTML characters that must be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая специальные HTML символы, которые должны быть закодированы."},
 		
-		"encode": {"ru":"шифровать"},
-		"decode": {"ru":"расшифровать"},
+		"Host": {"ru":"Хост"},
+		"Path": {"ru":"Путь"},
+		"Query": {"ru":"Запрос"},
+		"URL string": {"ru":"Строка URL"},
+		"Fragment": {"ru":"Фрагмент/Якорь"},
+		"Protocol/Scheme": {"ru":"Протокол/Схема"},
+		"Parse the URL string into items.": {"ru":"Распарсить строку URL на элементы."},
+		"The specified URL does not contain a port": {"ru":"Указанный URL не содержит порт"},
+		"The specified URL does not contain a username": {"ru":"Указанный URL не содержит логина"},
+		"The specified URL does not contain a password": {"ru":"Указанный URL не содержит пароля"},
+		"The specified URL does not contain the fragment": {"ru":"Указанный URL не содержит фрагмент/якорь"},
+		"String containing the URL with want to parse.": {"ru":"Строка, содержащая URL, который нужно распарсить."},
+		"The specified URL does not contain query parameters": {"ru":"Указанный URL не содержит параметров запроса"},
+		"The specified URL does not contain the protocol/scheme": {"ru":"Указанный URL не содержит протокола/схемы"},
+		"This variable will contain the port of the specified URL.": {"ru":"Эта переменная будет содержать порт указанного URL."},
+		"This variable will contain the password for the specified user.": {"ru":"Эта переменная будет содержать пароль указанного пользователя."},
+		"This variable will contain the hostname or ip (IPv4 or IPv6) of the specified URL.": {"ru":"Эта переменная будет содержать имя хоста или ip (IPv4 или IPv6) указанного URL."},
+		"You can get a list of links from a string using the \"Extract all links\" action.": {"ru":"Получить из строки список ссылок можно с помощью действия \"Извлечь все ссылки\"."},
+		"This variable will contain the username of the specified URL. The username used to access the resource.": {"ru":"Эта переменная будет содержать имя пользователя указанного URL. Имя пользователя, используемое для доступа к ресурсу."},
+		"This variable will contain the path of the specified URL. The path specifies information about the location of the resource.": {"ru":"Эта переменная будет содержать путь указанного URL. Путь уточняет информацию о месте нахождения ресурса."},
+		"This variable will contain the protocol/scheme of the specified URL. The scheme of accessing a resource, in most cases, means a network protocol.": {"ru":"Эта переменная будет содержать протокол/схему указанного URL. Схема обращения к ресурсу, в большинстве случаев, имеется в виду сетевой протокол."},
+		"This variable will contain an object consisting of query parameters and their values obtained from the specified URL. The query is the part of the URL that starts with the \"?\" character, parameters are separated by \"&\", and parameter name and value are separated by \"=\".": {"ru":"Эта переменная будет содержать объект, состоящий из параметров запроса и полученных их значений из указанного URL. Запрос - это часть URL-адреса, начинающаяся с символа \"?\", параметры разделяются знаком \"&\", а имя параметра и его значение разделяются знаком \"=\"."},
+		"This variable will contain the fragment of the specified URL. Fragment is the part of the URL that starts with the \"#\" character and can indicate a title within a document or the id attribute of an element. Following the link with the fragment, the browser will open the page and move the window to the specified element.": {"ru":"Эта переменная будет содержать фрагмент/якорь указанного URL. Фрагмент/Якорь - это часть URL-адреса, начинающаяся с символа \"#\", он может указывать заголовок внутри документа или id атрибут элемента. По ссылке с фрагментом/якорем браузер откроет страницу и переместит окно к указанному элементу."},
+		
+		"OS name": {"ru":"Название ОС"},
+		"OS version": {"ru":"Версия ОС"},
+		"Device type": {"ru":"Тип устройства"},
+		"Engine name": {"ru":"Название движка"},
+		"Platform type": {"ru":"Тип платформы"},
+		"Engine version": {"ru":"Версия движка"},
+		"Device model": {"ru":"Модель устройства"},
+		"Browser name": {"ru":"Название браузера"},
+		"Browser version": {"ru":"Версия браузера"},
+		"User-Agent string": {"ru":"Строка User-Agent"},
+		"Device vendor": {"ru":"Производитель устройства"},
+		"Processor architecture": {"ru":"Архитектура процессора"},
+		"Browser major version": {"ru":"Основная версия браузера"},
+		"Parse the User-Agent string into items.": {"ru":"Распарсить строку User-Agent на элементы."},
+		"This variable will contain the device type.": {"ru":"Эта переменная будет содержать тип устройства."},
+		"This variable will contain the platform type.": {"ru":"Эта переменная будет содержать тип платформы."},
+		"This variable will contain the device model.": {"ru":"Эта переменная будет содержать модель устройства."},
+		"This variable will contain the name of the browser.": {"ru":"Эта переменная будет содержать название браузера."},
+		"This variable will contain the version of the browser.": {"ru":"Эта переменная будет содержать версию браузера."},
+		"String containing the User-Agent with want to parse.": {"ru":"Строка, содержащая User-Agent, который нужно распарсить."},
+		"This variable will contain the processor architecture.": {"ru":"Эта переменная будет содержать архитектуру процессора."},
+		"This variable will contain the name of the browser engine.": {"ru":"Эта переменная будет содержать название движка браузера."},
+		"This variable will contain the version of the browser engine.": {"ru":"Эта переменная будет содержать версию движка браузера."},
+		"This variable will contain the major version of the browser.": {"ru":"Эта переменная будет содержать основную версию браузера."},
+		"This variable will contain the name of the operating system.": {"ru":"Эта переменная будет содержать название операционной системы."},
+		"This variable will contain the version of the operating system.": {"ru":"Эта переменная будет содержать версию операционной системы."},
+		"This variable will contain the name of the device vendor.": {"ru":"Эта переменная будет содержать название производителя устройства."},
+		"User-agent is a string containing information about the browser used, operating system, device. You can learn more about User-agent from <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/User_agent');return false\">Wiki</a>.": {"ru":"User-agent - эта строка, содержащая информацию о используемом браузере, операционной системе, девайсе. Подробнее об User-agent можно узнать из <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/User_agent');return false\">Wiki</a>."},
+		
 		"Encodes or decodes base64 string.": {"ru": "Кодирует или декодирует строку в base64."},
 		"Arbitrary string. Works with encode mode": {"ru": "Любая строка. Работает в режиме encode"},
 		"Base64 string. Works with decode mode": {"ru": "Строка в формате base64. Работает в режиме decode."},
@@ -1108,6 +1197,7 @@
 		"If \"Variables To Save Result\" will contain more variables, than number of elements in string, than extra variables will be left unchanged.": {"ru": "Если параметр \"Переменные, в которые сохранять результат\" будет содержать больше переменных, чем количество элементов в строке, то лишние переменные не будут изменены."},
 		"For example, if you apply this action to line email@gmail.com:mypass1 and set \"Variables To Save Result\" param to USERNAME,PASSWORD, than this action will set [[USERNAME]] variable to email@gmail.com and [[PASSWORD]] variable to mypass1.": {"ru": "Например, если вы примените это действие к строке email@gmail.com:mypass1 и установите параметр \"Переменные, в которые сохранять результат\" в USERNAME,PASSWORD, то это действие сохранит email@gmail.com в переменную [[USERNAME]] и mypass1 в переменную [[PASSWORD]]."},
 		
+		"Template": {"ru": "Шаблон"},
 		"Spintax": {"ru": "Спинтакс"},
 		"a1, a2, a3 or nothing": {"ru": "a1, a2, a3 или пустая строка"},
 		"Will be replaced with male name": {"ru": "Будет заменено мужским именем"},

@@ -4,7 +4,7 @@
 	<div class="col-xs-12">
 		<form class="form-horizontal">
 			<div class="form-group">
-				<div class="col-xs-2">
+				<div class="col-xs-2" style="width: auto;">
 					<div class="input-group">
 						<span data-preserve="true" data-preserve-type="select" data-preserve-id="Select">
 							<select class="form-control input-sm" id="Select" placeholder="Is Encode">

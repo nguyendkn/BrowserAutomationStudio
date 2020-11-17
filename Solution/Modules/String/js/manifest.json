@@ -564,6 +564,23 @@
 		{
             "code": [
                 {
+                    "file": "normalize_url_code.js",
+                    "name": "normalize_url_code"
+                }
+            ],
+            "description": {
+                "en": "Normalize URL",
+                "ru": "Нормализовать URL"
+            },
+            "interface": "normalize_url_interface.js",
+            "is_element": false,
+            "name": "normalize_url",
+            "select": "normalize_url_select.js",
+            "template": "{{url}}"
+        },
+		{
+            "code": [
+                {
                     "file": "parse_url_code.js",
                     "name": "parse_url_code"
                 }
@@ -576,7 +593,7 @@
             "is_element": false,
             "name": "parse_url",
             "select": "parse_url_select.js",
-            "template": "{{string}}"
+            "template": "{{url}}"
         },
 		{
             "code": [
@@ -593,7 +610,7 @@
             "is_element": false,
             "name": "parse_ua",
             "select": "parse_ua_select.js",
-            "template": "{{string}}"
+            "template": "{{ua}}"
         },
 		{
             "code": [
@@ -724,6 +741,7 @@
 		"extract_phone_numbers",
 		"url_component",
 		"html_special_characters",
+		"normalize_url",
 		"parse_url",
 		"parse_ua",
 		"base64",
@@ -1126,12 +1144,27 @@
 		"Encodes or decodes string containing special HTML characters.": {"ru":"Кодирует или декодирует строку содержащую специальные HTML символы."},
 		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing special HTML characters that must be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая специальные HTML символы, которые должны быть закодированы."},
 		
+		"Base URL": {"ru":"Базовый URL"},
+		"Strip WWW": {"ru":"Вырезать WWW"},
+		"Force http": {"ru":"Принудительно http"},
+		"Force https": {"ru":"Принудительно https"},
+		"Strip protocol": {"ru":"Вырезать протокол"},
+		"Normalize URL.": {"ru":"Нормализовать URL."},
+		"Strip fragment": {"ru":"Вырезать фрагмент/якорь"},
+		"Normalize protocol": {"ru":"Нормализовать протокол"},
+		"Remove single slash": {"ru":"Удалить одиночный слеш"},
+		"Strip authentication": {"ru":"Вырезать аутентификацию"},
+		"Remove trailing slash": {"ru":"Удалить завершающий слэш"},
+		"Remove directory index": {"ru":"Удалить индекс каталога"},
+		"Remove query parameters": {"ru":"Удалить параметры запроса"},
+		"Sort query parameters": {"ru":"Сортировать параметры запроса"},
+		
 		"Host": {"ru":"Хост"},
 		"Path": {"ru":"Путь"},
 		"Query": {"ru":"Запрос"},
-		"URL string": {"ru":"Строка URL"},
 		"Fragment": {"ru":"Фрагмент/Якорь"},
 		"Protocol/Scheme": {"ru":"Протокол/Схема"},
+		"Normalize URL before parsing": {"ru":"Нормализовать URL перед парсингом"},
 		"Parse the URL string into items.": {"ru":"Распарсить строку URL на элементы."},
 		"The specified URL does not contain a port": {"ru":"Указанный URL не содержит порт"},
 		"The specified URL does not contain a username": {"ru":"Указанный URL не содержит логина"},
@@ -1141,6 +1174,8 @@
 		"The specified URL does not contain query parameters": {"ru":"Указанный URL не содержит параметров запроса"},
 		"The specified URL does not contain the protocol/scheme": {"ru":"Указанный URL не содержит протокола/схемы"},
 		"This variable will contain the port of the specified URL.": {"ru":"Эта переменная будет содержать порт указанного URL."},
+		"The URL used when the main URL is relative.": {"ru":"URL используемый в случае, если основной URL является относительным."},
+		"Complete action with fail if an invalid URL is specified": {"ru":"Завершить действие ошибкой, если указан недействительный URL"},
 		"This variable will contain the password for the specified user.": {"ru":"Эта переменная будет содержать пароль указанного пользователя."},
 		"This variable will contain the hostname or ip (IPv4 or IPv6) of the specified URL.": {"ru":"Эта переменная будет содержать имя хоста или ip (IPv4 или IPv6) указанного URL."},
 		"You can get a list of links from a string using the \"Extract all links\" action.": {"ru":"Получить из строки список ссылок можно с помощью действия \"Извлечь все ссылки\"."},
@@ -1159,7 +1194,6 @@
 		"Device model": {"ru":"Модель устройства"},
 		"Browser name": {"ru":"Название браузера"},
 		"Browser version": {"ru":"Версия браузера"},
-		"User-Agent string": {"ru":"Строка User-Agent"},
 		"Device vendor": {"ru":"Производитель устройства"},
 		"Processor architecture": {"ru":"Архитектура процессора"},
 		"Browser major version": {"ru":"Основная версия браузера"},

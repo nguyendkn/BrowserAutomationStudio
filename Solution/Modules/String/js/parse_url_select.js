@@ -1,6 +1,6 @@
-var string = GetInputConstructorValue("string", loader);
-if(string["original"].length == 0){
-	Invalid(tr("String") + " " + tr("is empty"));
+var url = GetInputConstructorValue("url", loader);
+if(url["original"].length == 0){
+	Invalid("URL" + " " + tr("is empty"));
     return;
 };
 var protocol = this.$el.find("#protocol").val().toUpperCase();
@@ -10,10 +10,13 @@ var host = this.$el.find("#host").val().toUpperCase();
 var port = this.$el.find("#port").val().toUpperCase();
 var path = this.$el.find("#path").val().toUpperCase();
 var query = this.$el.find("#query").val().toUpperCase();
-var fragment = this.$el.find("#fragment").val().toUpperCase();
+var hash = this.$el.find("#hash").val().toUpperCase();
+var normalize = $("#Check").is(':checked');
+var rfail = $("#Check2").is(':checked');
+var base_url = GetInputConstructorValue("base_url", loader);
 try{
     var code = loader.GetAdditionalData() + _.template($("#parse_url_code").html())({
-        "string": string["updated"],
+        "url": url["updated"],
         "protocol": "VAR_" + protocol,
         "username": "VAR_" + username,
         "password": "VAR_" + password,
@@ -21,7 +24,10 @@ try{
         "port": "VAR_" + port,
         "path": "VAR_" + path,
         "query": "VAR_" + query,
-        "fragment": "VAR_" + fragment
+        "hash": "VAR_" + hash,
+		"normalize": normalize,
+		"rfail": rfail,		
+        "base_url": base_url["updated"],
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

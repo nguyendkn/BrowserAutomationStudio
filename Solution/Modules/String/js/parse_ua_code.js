@@ -1,4 +1,4 @@
-var parse_res = new _ua(<%= string %>);
+var parse_res = new _ua(<%= ua %>);
 <%= platform_type %> = _avoid_nilb(parse_res["platform"]["type"], "");
 <%= browser_name %> = _avoid_nilb(parse_res["browser"]["name"], "");
 <%= browser_version %> = _avoid_nilb(parse_res["browser"]["version"], "");

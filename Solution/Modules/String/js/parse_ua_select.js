@@ -1,6 +1,6 @@
-var string = GetInputConstructorValue("string", loader);
-if(string["original"].length == 0){
-	Invalid(tr("String") + " " + tr("is empty"));
+var ua = GetInputConstructorValue("ua", loader);
+if(ua["original"].length == 0){
+	Invalid("User-Agent" + " " + tr("is empty"));
     return;
 };
 var platform_type = this.$el.find("#platform_type").val().toUpperCase();
@@ -17,7 +17,7 @@ var device_type = this.$el.find("#device_type").val().toUpperCase();
 var cpu_architecture = this.$el.find("#cpu_architecture").val().toUpperCase();
 try{
     var code = loader.GetAdditionalData() + _.template($("#parse_ua_code").html())({
-        "string": string["updated"],
+        "ua": ua["updated"],
         "platform_type": "VAR_" + platform_type,
         "browser_name": "VAR_" + browser_name,
         "browser_version": "VAR_" + browser_version,

@@ -1197,6 +1197,10 @@ _ua.prototype.set_ua = function(uastring){
 		ua_obj[key] = new_ua_obj[key];
 	};
 };
+_ua.prototype.change_browser_version = function(version){
+	var ua_obj = this;
+	this.set_ua(_replace_string(ua_obj.ua, ua_obj.browser.version, _to_string(version)));
+};
 _ua.prototype.get_platform = function(){
 	return this.platform;
 };

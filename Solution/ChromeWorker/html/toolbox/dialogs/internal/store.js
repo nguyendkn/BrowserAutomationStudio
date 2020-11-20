@@ -140,10 +140,10 @@ BasDialogsLib.store = {
    * Load the store data from object.
    */
   load(json) {
-    this.globalVariables = json.globalVariables;
-    this.localVariables = json.localVariables;
-    this.resources = json.resources;
-    this.functions = json.functions;
+    this.globalVariables = Array.isArray(json.globalVariables) ? json.globalVariables : [];
+    this.localVariables = Array.isArray(json.localVariables) ? json.localVariables : [];
+    this.resources = Array.isArray(json.resources) ? json.resources : [];
+    this.functions = Array.isArray(json.functions) ? json.functions : [];
   },
 
   /**

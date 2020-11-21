@@ -4,5 +4,8 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Extract all email addresses from string.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a list containing the email addresses obtained from the string.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"Test text - test@gmail.com. Just example text - example@gmail.com."</code> is specified, then the action will return <code>["test@gmail.com", "example@gmail.com"]</code>.</div>
+	<div class="tr tooltip-paragraph-last-fold">The list can be processed using actions from the "List" module.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

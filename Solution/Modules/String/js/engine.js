@@ -238,12 +238,18 @@ function _trim(str, chars, left, right){
 	str = _avoid_nilb(right, true) ? _trim_right(str, chars) : str;
 	return str;
 };
+function _trim_arr(arr, chars, left, right){
+	return arr.map(function(e){return _trim(e, chars, left, right)});
+};
 function _clean(str, chars_to_delete, chars_to_space, multiple_spaces){
 	str = _is_nilb(chars_to_space) ? str : str.replace(new RegExp('[' + chars_to_space + ']+', 'g'), ' ');
 	str = _is_nilb(chars_to_delete) ? str : str.replace(new RegExp('[' + chars_to_delete + ']+', 'g'), '');
 	str = _trim(str);
 	str = _avoid_nilb(multiple_spaces, true) ? str.replace(new RegExp('[' + _STR_WHITESPACE + ']+', 'g'), ' ') : str.replace(new RegExp('[\\uFEFF\\xA0;]', 'g'), ' ');
 	return str;
+};
+function _clean_arr(arr, chars_to_delete, chars_to_space, multiple_spaces){
+	return arr.map(function(e){return _clean(e, chars_to_delete, chars_to_space, multiple_spaces)});
 };
 function _replace_string(str, from, to){
 	return str.split(from).join(to);
@@ -331,19 +337,19 @@ function _regexp_extract_validation(mode, type){
 	return !_is_nilb(mode) && !_is_nilb(type) ? _STR_REGEXP_EV[mode][type] : (!_is_nilb(mode) && _is_nilb(type) ? _STR_REGEXP_EV[mode] : _STR_REGEXP_EV);
 };
 function _extract_urls(str){
-	return _uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "url")), []));
+	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "url")), [])));
 };
 function _extract_emails(str){
-	return _uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "email")), []));
+	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "email")), [])));
 };
 function _extract_phone_numbers(str){
-	return _uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "phone")), []));
+	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "phone")), [])));
 };
 function _extract_ips(str){
-	return _uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "ip")), []));
+	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "ip")), [])));
 };
 function _extract_files(str){
-	return _uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "file")), []));
+	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "file")), [])));
 };
 function _validate_url(str){
 	return _regexp_extract_validation("validate", "url").test(str);
@@ -449,7 +455,7 @@ function _normalize_url(url_string, user_options){
 		remove_query_parameters: [/^utm_\w+/i],
 		remove_trailing_slash: true,
 		remove_single_slash: true,
-		remove_directory_index: false,
+		remove_directory_index: [/^index\.[a-z]+$/],
 		sort_query_parameters: true
 	};
 	
@@ -457,7 +463,7 @@ function _normalize_url(url_string, user_options){
 		var keys = Object.keys(user_options);
 		for(var i = 0; i < keys.length; i++) {
 			var key = keys[i];
-			options[key] = (key=="remove_query_parameters" || key=="remove_query_parameters") ? _from_string(user_options[key]) : user_options[key];
+			options[key] = (key=="remove_query_parameters" || key=="remove_directory_index") ? _convert_to_arr(user_options[key]) : user_options[key];
 		};
 	};
 	
@@ -560,10 +566,6 @@ function _normalize_url(url_string, user_options){
 		} catch (_) {}
 	};
 
-	if(options.remove_directory_index === true){
-		options.remove_directory_index = [/^index\.[a-z]+$/];
-	};
-
 	if(Array.isArray(options.remove_directory_index) && options.remove_directory_index.length > 0){
 		var path_components = url_obj.pathname.split('/');
 		var last_component = path_components[path_components.length - 1];
@@ -582,7 +584,7 @@ function _normalize_url(url_string, user_options){
 		};
 	};
 	
-	if(Array.isArray(options.remove_query_parameters)){
+	if(Array.isArray(options.remove_query_parameters) && options.remove_query_parameters.length > 0){
 		var keys = Object.keys(url_obj.query);
 		for(var i = 0; i < keys.length; i++) {
 			var key = keys[i];
@@ -1199,7 +1201,7 @@ _ua.prototype.set_ua = function(uastring){
 };
 _ua.prototype.change_browser_version = function(version){
 	var ua_obj = this;
-	this.set_ua(_replace_string(ua_obj.ua, ua_obj.browser.version, _to_string(version)));
+	ua_obj.set_ua(_replace_string(ua_obj.ua, ua_obj.browser.version, _to_string(version)));
 };
 _ua.prototype.get_platform = function(){
 	return this.platform;
@@ -1229,7 +1231,7 @@ function _uniq_arr(arr){
 	return arr.filter(function(e,i){return arr.indexOf(e)===i});
 };
 function _is_json_string(str){
-	if((str.indexOf("[") > -1 && str.indexOf("]") > -1) || (str.indexOf("{") > -1 && str.indexOf("}") > -1)){
+	if(_is_not_empty_string(str) && ((str.indexOf("[") > -1 && str.indexOf("]") > -1) || (str.indexOf("{") > -1 && str.indexOf("}") > -1))){
 		try{
 			JSON.parse(str);
 		}catch(e){
@@ -1240,7 +1242,7 @@ function _is_json_string(str){
 		return false;
 	};
 };
-function _convert_to_list(str){
+function _convert_to_arr(str){
 	return (str==="" || typeof str=="object") ? str : (_is_json_string(str) ? JSON.parse(str) : str.split(/,\s|,/));
 };
 function _from_string(str){

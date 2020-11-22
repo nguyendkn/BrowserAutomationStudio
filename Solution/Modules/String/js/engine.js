@@ -577,7 +577,7 @@ function _normalize_url(url_string, user_options){
 	};
 
 	if(url_obj.hostname){
-		url_obj.set('hostname', url_obj.hostname.replace(/\.$/, ''));
+		url_obj.set('hostname', url_obj.hostname.replace(/\.$/g, ''));
 
 		if(options.strip_www && /^www\.(?!www\.)(?:[a-z\-\d]{1,63})\.(?:[a-z.\-\d]{2,63})$/.test(url_obj.hostname)){
 			url_obj.set('hostname', url_obj.hostname.replace(/^www\./, ''));
@@ -708,7 +708,7 @@ function _url(address, user_options){
 				return port !== 21;
 
 			case 'gopher':
-			return port !== 70;
+				return port !== 70;
 
 			case 'file':
 				return false;
@@ -841,7 +841,7 @@ function _url(address, user_options){
 	
 	if(parser){url.query = parser(url.query)};
 	
-	if(relative && base_url.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || base_url.pathname !== '')){
+	if((relative && base_url.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || base_url.pathname !== '')) || new RegExp("\\/..?\\/").test(url.pathname)){
 		url.pathname = resolve(url.pathname, base_url.pathname);
 	};
 	
@@ -962,9 +962,10 @@ _url.prototype.to_string = function(stringify){
 	
 	result += url.host + url.pathname;
 	
-	query = 'object' === typeof url.query ? stringify(url.query) : url.query;
-	
-	if(query){result += '?' !== query.charAt(0) ? '?' + query : query};
+	if(url.query && !(JSON.stringify(url.query)==="{\"\":\"\"}")){
+		query = 'object' === typeof url.query ? stringify(url.query) : url.query;
+		if(query){result += '?' !== query.charAt(0) ? '?' + query : query};
+	};
 	
 	if(url.hash){result += url.hash};
 	

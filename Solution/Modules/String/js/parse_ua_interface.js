@@ -81,6 +81,7 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Parse the User-Agent string into items.</div>
+	<div class="tr tooltip-paragraph-fold">This action will save each User-Agent item to its own variable.</div>
 	<div class="tr tooltip-paragraph-last-fold">User-agent is a string containing information about the browser used, operating system, device. You can learn more about User-agent from <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/User_agent');return false">Wiki</a>.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

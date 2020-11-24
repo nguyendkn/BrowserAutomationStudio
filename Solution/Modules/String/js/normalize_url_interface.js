@@ -41,6 +41,6 @@
 	<div class="tooltip-paragraph-fold"><span class="tr">This action will return a string containing the URL, normalized according to the specified parameters. You can learn more about the URL normalization in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false">Wiki</a>.</span></div>
 	<div class="tr tooltip-paragraph-fold">All parameters except "Force http" and "Force https" can be used together. If "Forced http" and "Forced https" are activated, then only the latter will work.</div>
 	<div class="tr tooltip-paragraph-fold">You can get a list of links from a string using the "Extract all links" action.</div>
-	<div class="tr tooltip-paragraph-last-fold">You can parse a link to elements using the "Parse URL" action.</div>
+	<div class="tr tooltip-paragraph-last-fold">You can parse a link to items using the "Parse URL" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

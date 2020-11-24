@@ -20,7 +20,9 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Parse the URL string into items.</div>
-	<div class="tooltip-paragraph-fold"><span class="tr">This action will save each element of the URL to its own variable. You can learn more about URL in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URL');return false">Wiki</a>.</span></div>
+	<div class="tooltip-paragraph-fold"><span class="tr">This action will save each item of the URL to its own variable. You can learn more about URL in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URL');return false">Wiki</a>.</span></div>
+	<div class="tr tooltip-paragraph-fold">The query is saved as an object, where the key is the parameter name and the value is the parameter value.</div>
+	<div class="tr tooltip-paragraph-fold">To get the value of the query parameter, use the JPath query <span style="color:black">$.key</span>, where key is the name of the parameter, in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">Before parsing, you can normalize the URL by activating the corresponding parameter in the additional settings, or use the "Normalize URL" action for flexible normalization.</div>
 	<div class="tr tooltip-paragraph-fold">You can get a list of links from a string using the "Extract all links" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an invalid URL is specified, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action, or deactivate the corresponding parameter in the additional settings.</div>

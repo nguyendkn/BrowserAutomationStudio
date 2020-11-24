@@ -530,40 +530,6 @@
 		{
             "code": [
                 {
-                    "file": "url_component_code.js",
-                    "name": "url_component_code"
-                }
-            ],
-            "description": {
-                "en": "Url component encode/decode",
-                "ru": "Url компонент кодировать/декодировать"
-            },
-            "interface": "url_component_interface.js",
-            "is_element": false,
-            "name": "url_component",
-            "select": "url_component_select.js",
-            "template": "{{string}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "html_special_characters_code.js",
-                    "name": "html_special_characters_code"
-                }
-            ],
-            "description": {
-                "en": "HTML special characters encode/decode",
-                "ru": "Специальные HTML символы кодировать/декодировать"
-            },
-            "interface": "html_special_characters_interface.js",
-            "is_element": false,
-            "name": "html_special_characters",
-            "select": "html_special_characters_select.js",
-            "template": "{{string}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
                     "file": "normalize_url_code.js",
                     "name": "normalize_url_code"
                 }
@@ -611,6 +577,40 @@
             "name": "parse_ua",
             "select": "parse_ua_select.js",
             "template": "{{ua}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "url_component_code.js",
+                    "name": "url_component_code"
+                }
+            ],
+            "description": {
+                "en": "Url component encode/decode",
+                "ru": "Url компонент кодировать/декодировать"
+            },
+            "interface": "url_component_interface.js",
+            "is_element": false,
+            "name": "url_component",
+            "select": "url_component_select.js",
+            "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "html_special_characters_code.js",
+                    "name": "html_special_characters_code"
+                }
+            ],
+            "description": {
+                "en": "HTML special characters encode/decode",
+                "ru": "Специальные HTML символы кодировать/декодировать"
+            },
+            "interface": "html_special_characters_interface.js",
+            "is_element": false,
+            "name": "html_special_characters",
+            "select": "html_special_characters_select.js",
+            "template": "{{string}} -> {{Save}}"
         },
 		{
             "code": [
@@ -739,11 +739,11 @@
 		"extract_emails",
 		"extract_urls",
 		"extract_phone_numbers",
-		"url_component",
-		"html_special_characters",
 		"normalize_url",
 		"parse_url",
 		"parse_ua",
+		"url_component",
+		"html_special_characters",
 		"base64",
 		"parseline",
 		"template",
@@ -784,7 +784,7 @@
 		"Check if the specified data is a string.": {"ru":"Проверить, являются ли указанные данные строкой."},
 		"The data that need to check out whether they is a string.": {"ru":"Данные, которые нужно проверить на то являются ли они строкой."},
 		"This variable will be true or false depending on whether the specified data is a string.":{"ru":"Эта переменная будет равна true или false в зависимости от того, являются ли указанные данные строкой."},
-		"This action will return true or false depending on whether the specified data is a string. This result may be used with \"If\" action.": {"ru":"Данное действие вернет true или false в зависимости от того, являются ли указанные данные строкой. Результат может быть использован вместе с действием \"If\"."},
+		"This action will return true or false depending on whether the specified data is a string. This result may be used with \"If\" action.": {"ru":"Это действие вернет true или false в зависимости от того, являются ли указанные данные строкой. Результат может быть использован вместе с действием \"If\"."},
 		"For example, if <code>\"Test text\"</code> is specified, then the action will return true, and if <code>123</code> or <code>true</code> is specified, then the action will return false.": {"ru":"Например, если указано <code>\"Тестовый текст\"</code>, то действие вернет true, а если укзано <code>123</code> или <code>true</code>, то действие вернет false."},
 		
 		"Not empty string.": {"ru":"Не пустая строка."},
@@ -792,7 +792,7 @@
 		"Check if the specified data is not an empty string.": {"ru":"Проверить, являются ли указанные данные не пустой строкой."},
 		"The data that need to check out whether they is not empty string.": {"ru":"Данные, которые нужно проверить на то являются ли они не пустой строкой."},		
 		"This variable will be true or false depending on whether the specified data is not an empty string.":{"ru":"Эта переменная будет равна true или false в зависимости от того, являются ли указанные данные не пустой строкой."},
-		"This action will return true or false depending on whether the specified data is not an empty string. This result may be used with \"If\" action.": {"ru":"Данное действие вернет true или false в зависимости от того, являются ли указанные данные не пустой строкой. Результат может быть использован вместе с действием \"If\"."},
+		"This action will return true or false depending on whether the specified data is not an empty string. This result may be used with \"If\" action.": {"ru":"Это действие вернет true или false в зависимости от того, являются ли указанные данные не пустой строкой. Результат может быть использован вместе с действием \"If\"."},
 		"For example, if <code>\"Test text\"</code> is specified, then the action will return true, and if <code>\"\"</code> or <code>123</code> is specified, then the action will return false.": {"ru":"Например, если указано <code>\"Тестовый текст\"</code>, то действие вернет true, а если укзано <code>\"\"</code> или <code>123</code>, то действие вернет false."},
 		
 		"Date": {"ru":"Дата"},
@@ -801,8 +801,8 @@
 		"Boolean": {"ru":"Булевый тип"},
 		"Convert the specified data to a string.": {"ru":"Преобразовать указанные данные в строку."},
 		"The data to be converted to a string.": {"ru":"Данные, которые нужно преобразовать в строку."},
-		"This action works with any type of data.": {"ru":"Данное действие работает с любым типом данных."},
-		"This action will return a string representation of the specified data.": {"ru":"Данное действие вернет строковое представление указанных данных."},
+		"This action works with any type of data.": {"ru":"Это действие работает с любым типом данных."},
+		"This action will return a string representation of the specified data.": {"ru":"Это действие вернет строковое представление указанных данных."},
 		"Variable in which, after successful execution of the action, the string representation of the specified data will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано строковое представление указанных данных."},
 		"For example, if <code>123</code> is specified, then the action will return <code>\"123\"</code>, and if <code>true</code> is specified, then the action will return <code>\"true\"</code>.": {"ru":"Например, если указано <code>123</code>, то действие вернет <code>\"123\"</code>, а если укзано <code>true</code>, то действие вернет <code>\"true\"</code>."},
 		
@@ -818,16 +818,16 @@
 		"Convert the specified string to a number.": {"ru":"Преобразовать указанную строку в число."},
 		"Separator between integer and decimal parts of a number.": {"ru":"Разделитель между целой и дробной частями числа."},
 		"The number of decimal places to which the number will be rounded.": {"ru":"Количество знаков в дробной части, до которого будет округлено число."},
-		"This action will return the numeric representation of the specified string.": {"ru":"Данное действие вернет числовое представление указанной строки."},
+		"This action will return the numeric representation of the specified string.": {"ru":"Это действие вернет числовое представление указанной строки."},
 		"Variable in which, after successful execution of the action, the numeric representation of the specified string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано числовое представление указанной строки."},
 		"The final number can be rounded off by specifying the \"Number of decimal places\" parameter located in the additional settings.": {"ru":"Итоговое число можно округлить, указав параметр \"Количество знаков в дробной части\", находящийся в дополнительных настройках."},
 		"For example, if <code>\"123\"</code> is specified, then the action will return <code>123</code>, and if <code>\"123.45\"</code> is specified, then the action will return <code>123.45</code>.": {"ru":"Например, если указано <code>\"123\"</code>, то действие вернет <code>123</code>, а если укзано <code>\"123.45\"</code>, то действие вернет <code>123.45</code>."},
-		"This action can convert numbers in a non-standard format for this, you need to specify the \"Decimal separator\" and \"Thousandth separator\" parameters located in the additional settings.": {"ru":"Данное действие может преобразовывать числа в нестандартном формате для этого нужно указать параметры \"Разделитель целой и дробной части\" и \"Разделитель тысячных\" находящиеся в дополнительных настройках."},
+		"This action can convert numbers in a non-standard format for this, you need to specify the \"Decimal separator\" and \"Thousandth separator\" parameters located in the additional settings.": {"ru":"Это действие может преобразовывать числа в нестандартном формате для этого нужно указать параметры \"Разделитель целой и дробной части\" и \"Разделитель тысячных\" находящиеся в дополнительных настройках."},
 		"For example, the string <code>\"1 967 567.3245\"</code> will be converted to the number <code>1967567.3245</code> if a comma is specified in the \"Decimal separator\" parameter, and a space is specified in the \"Thousandth separator\" parameter.": {"ru":"Например, строка <code>\"1 967 567,3245\"</code> будет преобразована в число <code>1967567.3245</code>, если в параметре \"Разделитель целой и дробной части\" указана запятая, а в параметре \"Разделитель тысячных\" указан пробел."},
 		
 		"The number to format and convert to a string.": {"ru":"Число, которое нужно форматировать и преобразовать в строку."},
 		"Format and convert the specified number to a string.": {"ru":"Форматировать и преобразовать в строку указанное число."},
-		"This action will return the formatted string representation of the specified number.": {"ru":"Данное действие вернет форматированное строковое представление указанного числа."},
+		"This action will return the formatted string representation of the specified number.": {"ru":"Это действие вернет форматированное строковое представление указанного числа."},
 		"Before formatting, the number can be rounded by specifying the \"Number of decimal places\" parameter.": {"ru":"Перед форматирование число можно округлить, указав параметр \"Количество знаков в дробной части\"."},
 		"This action can bring the number into a more readable form, for example, for further output to the log.": {"ru":"Данным действием можно привести число в более читабельный вид, например, для дальнейшего вывода в лог."},
 		"Variable in which, after successful execution of the action, the formatted string representation of the specified number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано форматированное строковое представление указанного числа."},
@@ -839,7 +839,7 @@
 		"Contiguous sequence of characters within a string.": {"ru":"Непустая связная часть строки."},
 		"Get the number of substrings in the string.": {"ru":"Получить количество подстрок в строке."},
 		"The string from which to get the number of substrings.": {"ru":"Строка, из которой нужно получить количество подстрок."},
-		"This action will return a number equal to the number of substrings in the string.": {"ru":"Данное действие вернет число, равное количеству подстрок в строке."},
+		"This action will return a number equal to the number of substrings in the string.": {"ru":"Это действие вернет число, равное количеству подстрок в строке."},
 		"Variable in which, after successful execution of the action, the number of substrings in the string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество подстрок в строке."},
 		"For example, if the string <code>\"test text\"</code> is specified and the substring <code>\"te\"</code> is specified, then the action will return 2, and if the string is <code>\"Just example string\"</code> and the substring <code>\"example\"</code>, then the action will return 1.": {"ru":"Например, если указана строка <code>\"Тестовый текст\"</code> и подстрока <code>\"те\"</code>, то действие вернет 2, а если указана строка <code>\"Просто пример строки\"</code> и подстрока <code>\"пример\"</code>, то действие вернет 1."},
 		
@@ -855,7 +855,7 @@
 		"From the beginning of the string": {"ru":"С начала строки"},
 		"Get a substring from the string.": {"ru":"Получить подстроку из строки."},
 		"The string from which to get the substring.": {"ru":"Строка, из которой нужно получить подстроку."},
-		"This action will return the received substring.": {"ru":"Данное действие вернет полученную подстроку."},
+		"This action will return the received substring.": {"ru":"Это действие вернет полученную подстроку."},
 		"If negative, indicates an offset from the end of the string.": {"ru":"Если отрицателен, то указывает смещение от конца строки."},
 		"The index of the character at which to start getting the substring.": {"ru":"Индекс символа, с которого начинается получение подстроки."},
 		"The index of the character at which the retrieval of the substring ends.": {"ru":"Индекс символа, которым заканчивается получение подстроки."},
@@ -888,10 +888,10 @@
 		"The character index at which to start modifying the string.": {"ru":"Индекс символа, с которого начинается изменение строки."},
 		"The substring to be inserted instead of the removed part.": {"ru":"Подстрока, которая будет вставлена вместо удаленной части."},
 		"The string from which want to remove a part and/or add a new one.": {"ru":"Строка, из которой нужно удалить часть и/или добавить новую."},
-		"This action will return the string resulting from all the manipulations.": {"ru":"Данное действие вернет строку, полученную в итоге выполнения всех манипуляций."},
+		"This action will return the string resulting from all the manipulations.": {"ru":"Это действие вернет строку, полученную в итоге выполнения всех манипуляций."},
 		"If you only need to insert a substring, then you can use the \"Insert at\" action.": {"ru":"Если вам нужно только вставить подстроку, то вы можете использовать действие \"Вставить в\"."},
 		"Variable in which, after successful execution of the action, the final string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана итоговая строка."},
-		"This action can either delete part of the string, or insert a new part, or all at the same time.": {"ru":"Данное действие может либо удалить часть строки, либо вставить новую часть, либо все одновременно."},
+		"This action can either delete part of the string, or insert a new part, or all at the same time.": {"ru":"Это действие может либо удалить часть строки, либо вставить новую часть, либо все одновременно."},
 		"To insert only, you need to specify the \"Insertable substring\" parameter, and specify zero in the \"Number of characters to remove\" parameter.": {"ru":"Чтобы только вставить, нужно указать параметр \"Вставляемая подстрока\", а в параметр \"Количество удаляемых символов\" указать ноль."},
 		"For example, if is specified the string <code>\"Test text\"</code>, index is 0 and the number of characters is 5, then the action will return <code>\"text\"</code>.": {"ru":"Например, если указана строка <code>\"Тест текст\"</code>, индекс 0 и количество символов 5, то действие вернет <code>\"текст\"</code>."},
 		"To delete and insert, you need to specify a value greater than zero in the \"Number of characters to remove\" parameter, and specify the \"Insertable substring\" parameter.": {"ru":"Чтобы удалить и вставить, нужно указать в параметр \"Количество удаляемых символов\" значение больше нуля, и указать параметр \"Вставляемая подстрока\"."},
@@ -903,14 +903,14 @@
 		"The string to be converted to lowercase.": {"ru":"Строка, которую нужно преобразовать в нижний регистр."},
 		"Convert all letters of the string to lowercase.": {"ru":"Преобразовать все буквы строки в нижний регистр."},
 		"Variable in which, after successful execution of the action, the converted string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана преобразованная строка."},
-		"This action will return a string in which all letters will be uppercase, and the rest of the characters will remain unchanged.": {"ru":"Данное действие вернет строку, в которой все буквы будут иметь верхний регистр, а остальные символы останутся без изменений."},
+		"This action will return a string in which all letters will be uppercase, and the rest of the characters will remain unchanged.": {"ru":"Это действие вернет строку, в которой все буквы будут иметь верхний регистр, а остальные символы останутся без изменений."},
 		"If you need to convert the first letter to uppercase, and the rest to lowercase, then use the action \"Capitalize word\".": {"ru":"Если вам нужно преобразовать первую букву в верхний регистр, а остальные в нижний регистр, то используйте действие \"Слово с большой буквы\"."},
 		"For example, the string <code>\"TEST\"</code> will be converted to the string <code>\"test\"</code>, and the string <code>\"Example String\"</code> will be converted to the string <code>\"example string\"</code>.": {"ru":"Например строка <code>\"ТЕСТ\"</code> будет преобразована в строку <code>\"тест\"</code>, а строка <code>\"Пример Строки\"</code> будет преобразована в строку <code>\"пример строки\"</code>."},
 		
 		"JUST SAMPLE TEXT": {"ru":"ПРОСТО ПРИМЕР ТЕКСТА"},
 		"The string to be converted to uppercase.": {"ru":"Строка, которую нужно преобразовать в верхний регистр."},
 		"Convert all letters of the string to uppercase.": {"ru":"Преобразовать все буквы строки в верхний регистр."},
-		"This action will return a string in which all letters will be lowercase, and the rest of the characters will remain unchanged.": {"ru":"Данное действие вернет строку, в которой все буквы будут иметь нижний регистр, а остальные символы останутся без изменений."},
+		"This action will return a string in which all letters will be lowercase, and the rest of the characters will remain unchanged.": {"ru":"Это действие вернет строку, в которой все буквы будут иметь нижний регистр, а остальные символы останутся без изменений."},
 		"For example, the string <code>\"test\"</code> will be converted to the string <code>\"TEST\"</code>, and the string <code>\"example string\"</code> will be converted to the string <code>\"EXAMPLE STRING\"</code>.": {"ru":"Например строка <code>\"тест\"</code> будет преобразована в строку <code>\"ТЕСТ\"</code>, а строка <code>\"пример строки\"</code> будет преобразована в строку <code>\"ПРИМЕР СТРОКИ\"</code>."},
 		
 		"The string contains a substring.": {"ru":"Строка содержит подстроку."},
@@ -919,12 +919,12 @@
 		"Substring, the contains of which is necessary to check.": {"ru":"Подстрока, содержание которой нужно проверить."},
 		"The string in which to check the contains of the substring.": {"ru":"Строка, в которой нужно проверить содержание подстроки."},
 		"This variable will be true or false depending on whether the string contains a substring.":{"ru":"Эта переменная будет равна true или false в зависимости от того, содержит ли строка подстроку."},
-		"This action will return true or false depending on whether the string contains a substring. This result may be used with \"If\" action.": {"ru":"Данное действие вернет true или false в зависимости от того, содержит ли строка подстроку. Результат может быть использован вместе с действием \"If\"."},
+		"This action will return true or false depending on whether the string contains a substring. This result may be used with \"If\" action.": {"ru":"Это действие вернет true или false в зависимости от того, содержит ли строка подстроку. Результат может быть использован вместе с действием \"If\"."},
 		"For example, if the string is <code>\"Test text\"</code> and the substring <code>\"text\"</code>, then the action will return true, and if the string is <code>\"Just example string\"</code> and substring <code>\"test\"</code>, then the action will return false.": {"ru":"Например если указана строка <code>\"Тестовый текст\"</code> и подстрока <code>\"текст\"</code>, то действие вернет true, а если указана строка <code>\"Просто пример строки\"</code> и подстрока <code>\"тест\"</code>, то действие вернет false."},
 		
 		"Get the number of characters from a string.": {"ru":"Получить количество символов из строки."},
 		"The string from which to get the number of characters.": {"ru":"Строка, из которой нужно получить количество символов."},
-		"This action will return a number equal to the number of characters in the string.": {"ru":"Данное действие вернет число, равное количеству символов в строке."},
+		"This action will return a number equal to the number of characters in the string.": {"ru":"Это действие вернет число, равное количеству символов в строке."},
 		"Variable in which, after successful execution of the action, the number of characters contained in the string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество символов, содержащихся в строке."},
 		"For example, if the string <code>\"Test text\"</code> is specified, then the action will return 9, and if the string <code>\"Just example string\"</code> is specified, then the action will return 22.": {"ru":"Например, если указана строка <code>\"Тестовый текст\"</code>, то действие вернет 14, а если указана строка <code>\"Просто пример строки\"</code>, то действие вернет 20."},
 		
@@ -933,7 +933,7 @@
 		"The string in which to convert words.": {"ru":"Строка, в которой нужно преобразовать слова."},
 		"Convert the first letter of a word to uppercase.": {"ru":"Преобразовать первую букву слова в верхний регистр."},
 		"If the \"Capitalize all words\" parameter is enabled, the first letters in all words will be uppercase.": {"ru":"Если активирован параметр \"Сделать все слова заглавными\", то первые буквы во всех словах будут иметь верхний регистр."},
-		"This action will return a string in which the first letter will be uppercase and the rest will remain unchanged.": {"ru":"Данное действие вернет строку, в которой первая буква будут иметь верхний регистр, а остальные останутся без изменений."},
+		"This action will return a string in which the first letter will be uppercase and the rest will remain unchanged.": {"ru":"Это действие вернет строку, в которой первая буква будут иметь верхний регистр, а остальные останутся без изменений."},
 		"If the \"All other letters in lowercase\" parameter is enabled, then all letters that were not converted to uppercase will be converted to lowercase.": {"ru":"Если активирован параметр \"Все остальные буквы в нижний регистр\", то все буквы, которые не были преобразованы в верхний регистр, будут преобразованы в нижний регистр."},
 		"If both \"Capitalize all words\" and \"All other letters in lowercase\" are both enabled, the first letters in all words will be uppercase and all other lowercase.": {"ru":"Если активированы оба параметра \"Сделать все слова заглавными\" и \"Все остальные буквы в нижний регистр\", то первые буквы во всех словах будут иметь верхний регистр, а все остальные нижний регистр."},
 		"For example, if the string <code>\"test text\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"just example string\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"тестовый текст\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"просто пример строки\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
@@ -944,7 +944,7 @@
 		"The string does not contain the words": {"ru":"Строка не содержит слов"},
 		"Get the number of words from a string.": {"ru":"Получить количество слов из строки."},
 		"The string from which to get the word count.": {"ru":"Строка, из которой нужно получить количество слов."},
-		"This action will return a number equal to the number of words in the string.": {"ru":"Данное действие вернет число, равное количеству слов в строке."},
+		"This action will return a number equal to the number of words in the string.": {"ru":"Это действие вернет число, равное количеству слов в строке."},
 		"Variable in which, after successful execution of the action, the number of words contained in the string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество слов, содержащихся в строке."},
 		"For example, if the string <code>\"Test text\"</code> is specified, then the action will return 2, and if the string <code>\"Just example string\"</code> is specified, then the action will return 3.": {"ru":"Например, если указана строка <code>\"Тестовый текст\"</code>, то действие вернет 2, а если указана строка <code>\"Просто пример строки\"</code>, то действие вернет 3."},
 		
@@ -952,7 +952,7 @@
 		"[\"Just\", \"sample\", \"text\"]": {"ru":"[\"Просто\", \"пример\", \"текста\"]"},
 		"The string containing a sentence to be split into words.": {"ru":"Строка, содержащая предложение, которое нужно разделить на слова."},
 		"The list can be processed using actions from the \"List\" module.": {"ru":"Список можно обработать с помощью действий из модуля \"Список\"."},
-		"This action will return a list containing the words obtained from the string.": {"ru":"Данное действие вернет список, содержащий слова, полученные из строки."},
+		"This action will return a list containing the words obtained from the string.": {"ru":"Это действие вернет список, содержащий слова, полученные из строки."},
 		"Variable in which, after successful execution of the action, the list of words will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список слов."},
 		"For example, if the string <code>\"Test text\"</code> is specified, then the action will return <code>[\"Test\",\"text\"]</code>, and if the string <code>\"Just example string.\"</code> is specified, then the action will return <code>[\"Just\",\"example\",\"string\"]</code>.": {"ru":"Например, если указана строка <code>\"Тестовый текст\"</code>, то действие вернет <code>[\"Тестовый\",\"текст\"]</code>, а если указана строка <code>\"Просто пример строки.\"</code>, то действие вернет <code>[\"Просто\",\"пример\",\"строки\"]</code>."},
 		
@@ -960,7 +960,7 @@
 		"Just sample text. Test text, string": {"ru":"Просто пример текста. Тестовый текст, строка"},
 		"[\"Just sample text.\", \"Test text, string\"]": {"ru":"[\"Просто пример текста.\", \"Тестовый текст, строка\"]"},
 		"The string containing text to be split into sentences.": {"ru":"Строка, содержащая текст, который нужно разделить на предложения."},
-		"This action will return a list containing the sentences obtained from the string.": {"ru":"Данное действие вернет список, содержащий предложения, полученные из строки."},
+		"This action will return a list containing the sentences obtained from the string.": {"ru":"Это действие вернет список, содержащий предложения, полученные из строки."},
 		"Variable in which, after successful execution of the action, the list of sentences will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список предложений."},
 		"For example, if the string <code>\"Just sample text. Test text, string\"</code> is specified, then the action will return <code>[\"Just sample text.\", \"Test text, string\"]</code>, and if the string <code>\"Test text! Test text! Test text!\"</code> is specified, then the action will return <code>[\"Test text!\", \"Test text!\", \"Test text!\"]</code>.": {"ru":"Например, если указана строка <code>\"Просто пример текста. Тестовый текст, строка\"</code>, то действие вернет <code>[\"Просто пример текста.\",\"Тестовый текст, строка\"]</code>, а если указана строка <code>\"Тестовый текст! Тестовый текст! Тестовый текст!\"</code>, то действие вернет <code>[\"Тестовый текст!\",\"Тестовый текст!\",\"Тестовый текст!\"]</code>."},
 		
@@ -970,7 +970,7 @@
 		"String does not contain the specified substring": {"ru":"Строка не содержит указанную подстроку"},
 		"The character index at which to start the search.": {"ru":"Индекс символа, с которого следует начать поиск."},
 		"Variable in which, after successful execution of the action, the index of the beginning of the substring will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан индекс начала подстроки."},
-		"This action will return a number equal to the index of the beginning of the first substring found, or -1 if the substring was not found.": {"ru":"Данное действие вернет число, равное индексу начала первой найденной подстроки, или -1, если подстрока не найдена."},
+		"This action will return a number equal to the index of the beginning of the first substring found, or -1 if the substring was not found.": {"ru":"Это действие вернет число, равное индексу начала первой найденной подстроки, или -1, если подстрока не найдена."},
 		"By default, the search is performed from the beginning of the string, but this can be changed by specifying the index from which to start the search in the \"From index\" parameter located in the additional settings.": {"ru":"По умолчанию поиск производится с начала строки, но это можно изменить, указав индекс, с которого следует начинать поиск, в параметр \"С индекса\", находящийся в дополнительных настройках."},
 		"For example, if the string <code>\"Test text\"</code> is specified and the substring <code>\"text\"</code> is specified, then the action will return 5, and if the string is <code>\"Just example string\"</code> and the substring <code>\"test\"</code>, then the action will return -1.": {"ru":"Например, если указана строка <code>\"Тестовый текст\"</code> и подстрока <code>\"текст\"</code>, то действие вернет 9, а если указана строка <code>\"Просто пример строки\"</code> и подстрока <code>\"тест\"</code>, то действие вернет -1."},
 		
@@ -980,7 +980,7 @@
 		"The substring that the string should start with.": {"ru":"Подстрока, с которой должна начинатся строка."},
 		"Check if the string starts with the specified substring.": {"ru":"Проверить, начинается ли строка с указанной подстроки."},
 		"This variable will be true or false depending on whether the string starts with the specified substring.":{"ru":"Эта переменная будет равна true или false в зависимости от того, начинается ли строка с указанной подстроки."},
-		"This action will return true or false, depending on whether the string begins with the specified substring. This result may be used with \"If\" action.": {"ru":"Данное действие вернет true или false в зависимости от того, начинается ли строка с указанной подстроки. Результат может быть использован вместе с действием \"If\"."},
+		"This action will return true or false, depending on whether the string begins with the specified substring. This result may be used with \"If\" action.": {"ru":"Это действие вернет true или false в зависимости от того, начинается ли строка с указанной подстроки. Результат может быть использован вместе с действием \"If\"."},
 		"For example, if the string is <code>\"Test text\"</code> and the substring <code>\"Test\"</code>, then the action will return true, and if the string is <code>\"Just example string\"</code> and substring <code>\"example\"</code>, then the action will return false.": {"ru":"Например если указана строка <code>\"Тестовый текст\"</code> и подстрока <code>\"Тестовый\"</code>, то действие вернет true, а если указана строка <code>\"Просто пример строки\"</code> и подстрока <code>\"пример\"</code>, то действие вернет false."},
 		
 		"String length": {"ru":"Длина строки"},
@@ -990,7 +990,7 @@
 		"Check if a string ends with a specified substring.": {"ru":"Проверить, заканчивается ли строка указанной подстрокой."},
 		"The length to which the string will be truncated when searching for a substring allows searching within the string.": {"ru":"Длина, до которой будет обрезана строка при поиске подстроки,  позволяет искать внутри строки."},
 		"This variable will be true or false depending on whether the string ends with the specified substring.":{"ru":"Эта переменная будет равна true или false в зависимости от того, заканчиваться ли строка указанной подстрокой."},
-		"This action will return true or false depending on whether the string ends with the specified substring. This result may be used with \"If\" action.": {"ru":"Данное действие вернет true или false в зависимости от того, заканчиваться ли строка указанной подстрокой. Результат может быть использован вместе с действием \"If\"."},
+		"This action will return true or false depending on whether the string ends with the specified substring. This result may be used with \"If\" action.": {"ru":"Это действие вернет true или false в зависимости от того, заканчиваться ли строка указанной подстрокой. Результат может быть использован вместе с действием \"If\"."},
 		"By default, the search is performed from the end of the string, but this can be changed by specifying the index from which to start the search in the \"Length\" parameter located in the additional settings.": {"ru":"По умолчанию поиск производится с конца строки, но это можно изменить, указав индекс, с которого следует начинать поиск, в параметр \"Длина\", находящийся в дополнительных настройках."},
 		"For example, if the string is <code>\"Test text\"</code> and the substring <code>\"text\"</code>, then the action will return true, and if the string is <code>\"Just example string\"</code> and substring <code>\"example\"</code>, then the action will return false.": {"ru":"Например если указана строка <code>\"Тестовый текст\"</code> и подстрока <code>\"текст\"</code>, то действие вернет true, а если указана строка <code>\"Просто пример строки\"</code> и подстрока <code>\"пример\"</code>, то действие вернет false."},
 		
@@ -1003,7 +1003,7 @@
 		"Insert a substring into a string.": {"ru":"Вставить подстроку в строку."},
 		"The string to insert the substring into.": {"ru":"Строка, в которую нужно вставить подстроку."},
 		"The character index after which the substring will be inserted.": {"ru":"Индекс символа, после которого будет вставлена подстрока."},
-		"This action will return the string resulting from the substring insertion.": {"ru":"Данное действие вернет строку, полученную в итоге вставки подстроки."},
+		"This action will return the string resulting from the substring insertion.": {"ru":"Это действие вернет строку, полученную в итоге вставки подстроки."},
 		"If you need to not only insert a substring, but also delete part of the original string, then use the \"Remove string part\" action.": {"ru":"Если вам нужно не только вставить подстроку, но и удалить часть исходной строки, то используйте действие \"Удалить часть строки\"."},
 		"For example, if the string <code>\"Just string\"</code> is specified, the substring <code>\"example \"</code> and index 5, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"Просто строки\"</code>, подстрока <code>\"пример \"</code> и индекс 7, то действие вернет <code>\"Просто пример строки\"</code>."},
 		
@@ -1015,7 +1015,7 @@
 		"Separator to insert between the concatenated strings.": {"ru":"Разделитель, вставляемый между соединяемыми строками."},
 		"The list can be created using actions from the \"List\" module.": {"ru":"Список можно создать с помощью действий из модуля \"Список\"."},
 		"The parameters \"String 1\", \"String 2\", \"String 3\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 2\", \"Строка 3\""},
-		"This action will return a string composed of all the specified strings.": {"ru":"Данное действие вернет строку, составленную из всех указанных строк."},
+		"This action will return a string composed of all the specified strings.": {"ru":"Это действие вернет строку, составленную из всех указанных строк."},
 		"The parameters \"String 2\", \"String 3\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 2\", \"Строка 3\", \"Список строк\""},
 		"The parameters \"String 1\", \"String 3\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 3\", \"Список строк\""},
 		"The parameters \"String 1\", \"String 2\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 2\", \"Список строк\""},
@@ -1031,7 +1031,7 @@
 		"Latinize Cyrillic": {"ru":"Латинизировать кириллицу"},
 		"Convert all letters to Latin.": {"ru":"Преобразуйте все буквы в латиницу."},
 		"The string to be latinized.": {"ru":"Строка, которую нужно латинизировать."},
-		"This action will return a string in which all letters will be latinized, and the rest of the characters will remain unchanged.": {"ru":"Данное действие вернет строку, в которой все буквы будут латинизированы, а остальные символы останутся без изменений."},
+		"This action will return a string in which all letters will be latinized, and the rest of the characters will remain unchanged.": {"ru":"Это действие вернет строку, в которой все буквы будут латинизированы, а остальные символы останутся без изменений."},
 		"By default, the Cyrillic is also latinized, but this can be changed by disabling the \"Latinize Cyrillic\" parameter located in the additional settings.": {"ru":"По умолчанию кириллица тоже латинизируется, но это можно изменить, отключив параметр \"Латинизировать кириллицу\", находящийся в дополнительных настройках."},
 		"For example, the string <code>\"ỆᶍǍᶆṔƚÉ áéíóúýčďěňřšťžů\"</code> will be converted to the string <code>\"ExAmPlE aeiouycdenrstzu\"</code>, and the string <code>\"Привет мир!\"</code> will be converted to the string <code>\"Privet mir!\"</code>.": {"ru":"Например строка <code>\"ỆᶍǍᶆṔƚÉ áéíóúýčďěňřšťžů\"</code> будет преобразована в строку <code>\"ExAmPlE aeiouycdenrstzu\"</code>, а строка <code>\"Привет мир!\"</code> будет преобразована в строку <code>\"Privet mir!\"</code>."},
 		
@@ -1051,7 +1051,7 @@
 		"Word if number is": {"ru":"Слово, если число равно"},
 		"Decline a word depending on the specified number.": {"ru":"Склонять слово в зависимости от указанного числа."},
 		"The number by which the declension of the returned word will be determined.": {"ru":"Число, по которому будет определяется склонение возвращаемого слова."},
-		"This action will return one of three words matching the declension to the specified number.": {"ru":"Данное действие вернет одно из трех слов, подходящее по склонению к указанному числу."},
+		"This action will return one of three words matching the declension to the specified number.": {"ru":"Это действие вернет одно из трех слов, подходящее по склонению к указанному числу."},
 		"Variable in which, after successful execution of the action, the word corresponding to the specified number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано слово, сответствующее указанному числу."},
 		"For example, if the words \"account\", \"accounts\", \"accounts\" are specified and the number is 1, then the action will return <code>\"account\"</code>, and if the number is 22, then the action will return <code>\"accounts\"</code>.": {"ru":"Например, если указаны слова \"аккаунт\", \"аккаунта\", \"аккаунтов\" и число равно 5, то действие вернет <code>\"аккаунтов\"</code>, а если число равно 22, то действие вернет <code>\"аккаунта\"</code>."},
 		
@@ -1061,7 +1061,7 @@
 		"CSV string with want to parse into items.": {"ru":"CSV строка, которую нужно распарсить на элементы."},
 		"The list of delimiters by which the string can be split.": {"ru":"Список разделителей, по которым можно разбить строку."},
 		"As a list, you can use a string consisting only of the separators.": {"ru":"В качестве списка можно использовать строку, состоящую только из разделителей."},
-		"This action will parse the string by the specified separators and save the parsed data by the specified variables.": {"ru":"Данное действие распарсит строку по указанным разделителям и сохранит распарсенные данные по указанным переменным."},
+		"This action will parse the string by the specified separators and save the parsed data by the specified variables.": {"ru":"Это действие распарсит строку по указанным разделителям и сохранит распарсенные данные по указанным переменным."},
 		"If the number of variables is greater than the number of items in the string, then an empty string will be written to the excess variables.": {"ru":"Если количество переменных больше, чем количество элементов в строке, то в лишние переменные будет записана пустая строка."},
 		"By default, the action returns strings, but this can be changed by enabling the \"Convert types\" parameter located in the additional settings, then strings will automatically be converted to numbers, true or false, objects, null and undefined.": {"ru":"По умолчанию действие возвращает строки, но это можно изменить, включив параметр \"Преобразовывать типы\", находящийся в дополнительных настройках, тогда страки автоматически будут конвертироватся в числа, true или false, обекты, null и undefined."},
 		"For example, if the string <code>\"test:123:true\"</code> is specified, then the string <code>\"test\"</code> will be saved in the first variable, and the number <code>123</code> in the second variable and in the third variable the boolean value <code>true</code>.": {"ru":"Например, если указана строка <code>\"test:123:true\"</code>, то в первую переменную будет сохранена строка <code>\"test\"</code>, во вторую переменную число <code>123</code> и в третью переменную логическое значение <code>true</code>."},
@@ -1082,7 +1082,7 @@
 		"Variable in which, after successful execution of the action, the CSV string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана CSV строка."},
 		"Items from separate fields and a list are added to a general list of items that will be concatenated.": {"ru":"Элементы из отдельных полей и списка складываются в общий список элементов которые будут соединены."},
 		"The order of concating the fields is as follows \"Item 1\", \"Item 2\", \"Item 3\", \"List of items\".": {"ru":"Порядок соединения полей следующий: \"Элемент 1\", \"Элемент 2\", \"Элемент 3\", \"Список элементов\"."},
-		"This action will return a CSV string composed of all the specified items, separated by the specified character.": {"ru":"Данное действие вернет CSV строку, составленную из всех указанных элементов, разделенных указанным символом."},
+		"This action will return a CSV string composed of all the specified items, separated by the specified character.": {"ru":"Это действие вернет CSV строку, составленную из всех указанных элементов, разделенных указанным символом."},
 		"If some of the parameters (\"Item 1\", \"Item 2\", \"Item 3\", \"List of items\") are not specified, all parameters will be used except for them.": {"ru":"Если какие-то из параметров (\"Элемент 1\", \"Элемент 2\", \"Элемент 3\", \"Список элементов\") не указаны, будут использованы все параметры кроме них."},
 		"For example, if a item is specified in the \"Item 1\" field and a list of 4 items is specified in the \"List of items\" field, then 5 items will be concatenated.": {"ru":"Например, если в поле \"Элемент 1\" указан элемент и в поле \"Список элементов\" указан список из 4 элементов, то соеденено будет 5 элементов."},
 		"By default, strings are concatenated without a separator, but this can be changed by specifying the \"Separator\" parameter located in the additional settings.": {"ru":"По умолчанию строки соединяются без разделителя, но это можно изменить, указав параметр \"Разделитель\", находящийся в дополнительных настройках."},
@@ -1099,7 +1099,7 @@
 		"Trim string along the edges.": {"ru":"Подровнять строку по краям."},
 		"The string which needs to be trimmed.": {"ru":"Строка, которую нужно подровнять."},
 		"Characters to be trimmed at the edges of the string.": {"ru":"Символы, обрезаемые с краев строки."},
-		"This action will return a string, from the beginning and end of which unnecessary characters such as spaces, line breaks, tabs will be trimmed.": {"ru":"Данное действие вернет строку, с начала и конца которой будут обрезаны ненужные символы, такие как пробелы, переносы строк, табуляция."},
+		"This action will return a string, from the beginning and end of which unnecessary characters such as spaces, line breaks, tabs will be trimmed.": {"ru":"Это действие вернет строку, с начала и конца которой будут обрезаны ненужные символы, такие как пробелы, переносы строк, табуляция."},
 		"By default, the action trim the string on both sides, but this can be changed using the radio buttons located in the additional settings.": {"ru":"По умолчанию действие обрезает строку с обеих сторон, но это можно изменить с помощью переключателей, находящихся в дополнительных настройках."},
 		"The characters to be trimmed are determined by the \"Trim spaces\", \"Trim line breaks\", \"Trim tabs\" parameters, but you can also specify your own characters in the \"Trim characters\" parameter located in the additional settings.": {"ru":"Символы, которые будут обрезаны, определяются параметрами \"Обрезать пробелы\", \"Обрезать переносы строк\", \"Обрезать табуляцию\", но также можно указать свои символы в параметр \"Обрезать символы\", находящийся в дополнительных настройках."},
 		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just example string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто пример строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
@@ -1114,7 +1114,7 @@
 		"Replace multiple spaces with single ones": {"ru":"Заменять многочисленные пробелы на одиночные"},
 		"Characters which needs to be replaced with a space.": {"ru":"Символы, которые нужно заменить на пробел."},
 		"Just&nbsp;&nbsp;&nbsp;&nbsp;sample&nbsp;&nbsp;text": {"ru":"Просто&nbsp;&nbsp;&nbsp;&nbsp;пример&nbsp;&nbsp;текста"},
-		"This action will return a string from which all unnecessary characters will be removed, such as multiple spaces, line breaks, tabs.": {"ru":"Данное действие вернет строку, из которой будут удалены все ненужные символы, такие как множественные пробелы, переносы строк, табуляция."},
+		"This action will return a string from which all unnecessary characters will be removed, such as multiple spaces, line breaks, tabs.": {"ru":"Это действие вернет строку, из которой будут удалены все ненужные символы, такие как множественные пробелы, переносы строк, табуляция."},
 		"The characters to be removed are determined by the \"Remove line breaks\", \"Remove tabs\" parameters, but you can also specify your own characters in the \"Remove characters\" parameter located in the additional settings.": {"ru":"Символы, которые будут удалены, определяются параметрами \"Удалять переносы строк\", \"Удалять табуляцию\", но также можно указать свои символы в параметр \"Удалять символы\", находящийся в дополнительных настройках."},
 		"In addition to replacing multiple spaces with single ones, activated by the corresponding parameter, in the \"Replace characters with space\" parameter located in the additional settings, you can specify your own characters that will be replaced by a space.": {"ru":"Кроме замены множественных пробелов на единичные, активируемой соответствующим параметром, можно указать свои символы, которые будут заменены пробелом, в параметр \"Заменять символы на пробел\", находящийся в дополнительных настройках."},
 		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test&nbsp;&nbsp;&nbsp;text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый&nbsp;&nbsp;&nbsp;текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто&nbsp;&nbsp;пример&nbsp;&nbsp;&nbsp;строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
@@ -1123,7 +1123,7 @@
 		"The string from which to extract email addresses.": {"ru":"Строка, из которой нужно извлечь адреса электронной почты."},
 		"</br>Test text - test@gmail.com. Just example text - example@gmail.com.": {"ru":"</br>Тестовый текст - test@gmail.com. Просто пример текста - example@gmail.com."},
 		"Suggestions for cooperation you can send to email: cooperation@marketplace.com": {"ru":"Предложения по сотрудничеству вы можете присылать на почту: cooperation@marketplace.com"},
-		"This action will return a list containing the email addresses obtained from the string.": {"ru":"Данное действие вернет список, содержащий адреса электронной почты, полученные из строки."},
+		"This action will return a list containing the email addresses obtained from the string.": {"ru":"Это действие вернет список, содержащий адреса электронной почты, полученные из строки."},
 		"Variable in which, after successful execution of the action, the list of email addresses will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список адресов электронной почты."},
 		"For example, if the string <code>\"Test text - test@gmail.com. Just example text - example@gmail.com.\"</code> is specified, then the action will return <code>[\"test@gmail.com\", \"example@gmail.com\"]</code>.": {"ru":"Например, если указана строка <code>\"Тестовый текст - test@gmail.com. Просто пример текста - example@gmail.com.\"</code>, то действие вернет <code>[\"test@gmail.com\", \"example@gmail.com\"]</code>."},
 		"</br>Proposals for advertising, you can send to email: ad@site.com</br>Suggestions for improving the site, you can send to email: feedback@site.com</br>To get help in solving problems with the site, you can write to the email: support@site.com": {"ru":"</br>Предложения по рекламе, вы можете отправлять на почту: ad@site.com</br>Предложения по улучшению сайта вы можете отправлять на почту: feedback@site.com</br>Чтобы получить помощь в решении проблем с сайтом, вы можете написать на почту: support@site.com"},
@@ -1131,7 +1131,8 @@
 		"Extract all links from string.": {"ru":"Извлеките все ссылки из строки."},
 		"The string from which to extract links.": {"ru":"Строка, из которой нужно извлечь ссылки."},
 		"</br>Test text http://test.com, string test example.org": {"ru":"</br>Тестовый текст http://test.com, строка тест example.org"},
-		"This action will return a list containing the links obtained from the string.": {"ru":"Данное действие вернет список, содержащий ссылки, полученные из строки."},
+		"You can parse a link to items using the \"Parse URL\" action.": {"ru":"Распарсить ссылку на элементы можно с помощью действия \"Парсить URL\"."},
+		"This action will return a list containing the links obtained from the string.": {"ru":"Это действие вернет список, содержащий ссылки, полученные из строки."},
 		"You can buy the product by the link - https://marketplace.biz/section_3/product_213234.php": {"ru":"Купить товар вы можете по ссылке - https://marketplace.biz/section_3/product_213234.php"},
 		"Variable in which, after successful execution of the action, the list of links will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список ссылок."},
 		"</br>Ad -> http://www.ad.by/info, feedback -> www.feedback.io, support -> https://support.co/new/ticket.php": {"ru":"</br>Реклама -> http://www.ad.by/info, обратная связь -> www.feedback.io, поддержка -> https://support.co/new/ticket.php"},
@@ -1141,17 +1142,10 @@
 		"Extract all phone numbers from the string.": {"ru":"Извлечь все телефонные номера из строки."},
 		"The string from which to extract phone numbers.": {"ru":"Строка, из которой нужно извлечь телефонные номера."},
 		"</br>Business enquiries/press: Alexandra +7 900 000-00-00": {"ru":"</br>Деловые вопросы/пресса: Александра +7 900 000-00-00"},
-		"This action will return a list containing the phone numbers obtained from the string.": {"ru":"Данное действие вернет список, содержащий телефонные номера, полученные из строки."},
+		"This action will return a list containing the phone numbers obtained from the string.": {"ru":"Это действие вернет список, содержащий телефонные номера, полученные из строки."},
 		"Variable in which, after successful execution of the action, the list of phone numbers will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список телефонных номеров."},
 		"</br>PR: Maria +7(900)000-00-01 | Agent 1: Valeria +7(900)000-00-02 | Agent 2: Ekaterina +7(900)00-00-03": {"ru":"</br>PR: Мария +7(900)000-00-01 | Агент 1: Валерия +7(900)000-00-02 | Агент 2: Екатерина +7(900)00-00-03"},
 		"For example, if the string <code>\"Test text - 89001112233. Just example text - +7 900 999 4455.\"</code> is specified, then the action will return <code>[\"89001112233\", \"+7 900 999 4455\"]</code>.": {"ru":"Например, если указана строка <code>\"Тестовый текст - 89001112233. Просто пример текста - +7 900 999 4455.\"</code>, то действие вернет <code>[\"89001112233\", \"+7 900 999 4455\"]</code>."},
-		
-		"Encodes or decodes string containing the Url component.": {"ru":"Кодирует или декодирует строку содержащую Url компонент."},
-		"Variable name with result. It will be encoded string in encode mode and decode result as string in decode mode.": {"ru": "Переменная, в которую будет записан результат. Это будет закодированная строка в случае использования режима encode и результат декодирования при использовании режима decode."},
-		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing the Url component which needs to be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая Url компонент, которая должна быть закодирована."},
-		
-		"Encodes or decodes string containing special HTML characters.": {"ru":"Кодирует или декодирует строку содержащую специальные HTML символы."},
-		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing special HTML characters that must be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая специальные HTML символы, которые должны быть закодированы."},
 		
 		"Base URL": {"ru":"Базовый URL"},
 		"Activated": {"ru":"Активирован"},
@@ -1184,9 +1178,9 @@
 		"If enabled, authentication data will be stripped from the URL.": {"ru":"Если активирован, то из URL будут вырезаны данные аутентификации."},
 		"If enabled, the https protocol will be replaced with http in the URL.": {"ru":"Если активирован, то в URL протокол https будут заменен на http."},
 		"If enabled, the http protocol will be replaced with https in the URL.": {"ru":"Если активирован, то в URL протокол http будут заменен на https."},
-		"You can parse a link to elements using the \"Parse URL\" action.": {"ru":"Распарсить ссылку на элементы можно с помощью действия \"Парсить URL\"."},
+		"You can parse a link to items using the \"Parse URL\" action.": {"ru":"Распарсить ссылку на элементы можно с помощью действия \"Парсить URL\"."},
 		"If enabled, the single pathname slash will be removed from the URL.": {"ru":"Если активирован, то из URL будет удален одиночный слэш, являющийся путем."},
-		"This action will return the string resulting from all the manipulations.": {"ru":"Данное действие вернет строку, полученную в итоге выполнения всех манипуляций."},
+		"This action will return the string resulting from all the manipulations.": {"ru":"Это действие вернет строку, полученную в итоге выполнения всех манипуляций."},
 		"If enabled, the query parameters will be sorted alphabetically by name.": {"ru":"Если активирован, то параметры запроса будут отсортированы по имени в алфавитном порядке."},
 		"You can get a list of links from a string using the \"Extract all links\" action.": {"ru":"Получить из строки список ссылок можно с помощью действия \"Извлечь все ссылки\"."},
 		"Directory indexes that match any of the specified list items will be removed.": {"ru":"Индексы каталога, которые соответствуют любому из указанных элементов списка, будут удалены."},
@@ -1195,7 +1189,7 @@
 		"As a list, you can use a string consisting of the names of the query parameters, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из имен параметров запроса, разделенных запятыми."},
 		"If enabled and the URL contains a relative protocol, then the protocol from the \"Default protocol\" parameter will be added to the URL.": {"ru":"Если активирован и URL содержит относительный протокол, то к URL будет добавлен протокол из параметра \"Протокол по умолчанию\"."},
 		"All parameters except \"Force http\" and \"Force https\" can be used together. If \"Forced http\" and \"Forced https\" are activated, then only the latter will work.": {"ru":"Все параметры кроме \"Принудительно http\" и \"Принудительно https\" можно использовать вместе. Если активированн \"Принудительно http\" и \"Принудительно https\", то работать будет только последний."},
-		"This action will return a string containing the URL, normalized according to the specified parameters. You can learn more about the URL normalization in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false\">Wiki</a>.": {"ru":"Данное действие вернет строку, содержащую URL, нормализованный в соответствии с указанными параметрами. Подробнее о нормализации URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/%D0%9D%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F_URL');return false\">Wiki</a>."},
+		"This action will return a string containing the URL, normalized according to the specified parameters. You can learn more about the URL normalization in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false\">Wiki</a>.": {"ru":"Это действие вернет строку, содержащую URL, нормализованный в соответствии с указанными параметрами. Подробнее о нормализации URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/%D0%9D%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F_URL');return false\">Wiki</a>."},
 		
 		"Host": {"ru":"Хост"},
 		"Path": {"ru":"Путь"},
@@ -1215,12 +1209,13 @@
 		"Complete action with fail if an invalid URL is specified": {"ru":"Завершить действие ошибкой, если указан недействительный URL"},
 		"This variable will contain the password for the specified user.": {"ru":"Эта переменная будет содержать пароль указанного пользователя."},
 		"This variable will contain the hostname or ip (IPv4 or IPv6) of the specified URL.": {"ru":"Эта переменная будет содержать имя хоста или ip (IPv4 или IPv6) указанного URL."},
-		"This variable will contain the username of the specified URL. The username used to access the resource.": {"ru":"Эта переменная будет содержать имя пользователя указанного URL. Имя пользователя, используемое для доступа к ресурсу."},
+		"The query is saved as an object, where the key is the parameter name and the value is the parameter value.": {"ru":"Запрос сохраняется в виде объекта, в котором ключ - это имя параметра, а значение - это значение параметра."},
 		"This variable will contain the username of the specified URL. The username used to access the resource.": {"ru":"Эта переменная будет содержать имя пользователя указанного URL. Имя пользователя, используемое для доступа к ресурсу."},
 		"This variable will contain the path of the specified URL. The path specifies information about the location of the resource.": {"ru":"Эта переменная будет содержать путь указанного URL. Путь уточняет информацию о месте нахождения ресурса."},
 		"This variable will contain the protocol/scheme of the specified URL. The scheme of accessing a resource, in most cases, means a network protocol.": {"ru":"Эта переменная будет содержать протокол/схему указанного URL. Схема обращения к ресурсу, в большинстве случаев, имеется в виду сетевой протокол."},
 		"Before parsing, you can normalize the URL by activating the corresponding parameter in the additional settings, or use the \"Normalize URL\" action for flexible normalization.": {"ru":"Перед парсингом URL можно нормализовать, активировав соответствующий параметр в дополнительных настройках, или использовать действие \"Нормализовать URL\" для гибкой нормализации."},
-		"This action will save each element of the URL to its own variable. You can learn more about URL in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URL');return false\">Wiki</a>.": {"ru":"Данное действие сохранит каждый элемент URL в свою переменную. Подробнее о URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/URL');return false\">Wiki</a>."},
+		"To get the value of the query parameter, use the JPath query <span style=\"color:black\">$.key</span>, where key is the name of the parameter, in the \"Get value\" action from the \"JSON\" module.": {"ru":"Чтобы получить значение параметра запроса, используйте JPath запрос <span style=\"color:black\">$.key</span>, где key - это имя параметра, в действии \"Получить значение\" из модуля \"JSON\"."},
+		"This action will save each item of the URL to its own variable. You can learn more about URL in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URL');return false\">Wiki</a>.": {"ru":"Это действие сохранит каждый элемент URL в свою переменную. Подробнее о URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/URL');return false\">Wiki</a>."},
 		"If an invalid URL is specified, the thread will stop with fail message. If you want to continue thread, use \"Ignore errors\" action, or deactivate the corresponding parameter in the additional settings.":{"ru":"Если указан недействительный URL, поток остановится с сообщением об ошибке. Если вы хотите продолжить работу, используйте действие \"Игнорировать ошибки\", или деактивируйте соответствующий параметр в дополнительных настройках."},
 		"This variable will contain an object consisting of query parameters and their values obtained from the specified URL. The query is the part of the URL that starts with the \"?\" character, parameters are separated by \"&\", and parameter name and value are separated by \"=\".": {"ru":"Эта переменная будет содержать объект, состоящий из параметров запроса и полученных их значений из указанного URL. Запрос - это часть URL-адреса, начинающаяся с символа \"?\", параметры разделяются знаком \"&\", а имя параметра и его значение разделяются знаком \"=\"."},
 		"This variable will contain the fragment of the specified URL. Fragment is the part of the URL that starts with the \"#\" character and can indicate a title within a document or the id attribute of an element. Following the link with the fragment, the browser will open the page and move the window to the specified element.": {"ru":"Эта переменная будет содержать фрагмент/якорь указанного URL. Фрагмент/Якорь - это часть URL-адреса, начинающаяся с символа \"#\", он может указывать заголовок внутри документа или id атрибут элемента. По ссылке с фрагментом/якорем браузер откроет страницу и переместит окно к указанному элементу."},
@@ -1251,12 +1246,25 @@
 		"This variable will contain the name of the operating system.": {"ru":"Эта переменная будет содержать название операционной системы."},
 		"This variable will contain the version of the operating system.": {"ru":"Эта переменная будет содержать версию операционной системы."},
 		"This variable will contain the name of the device vendor.": {"ru":"Эта переменная будет содержать название производителя устройства."},
+		"This action will save each User-Agent item to its own variable.": {"ru":"Это действие сохранит каждый элемент User-Agent в свою переменную."},
 		"User-agent is a string containing information about the browser used, operating system, device. You can learn more about User-agent from <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/User_agent');return false\">Wiki</a>.": {"ru":"User-agent - эта строка, содержащая информацию о используемом браузере, операционной системе, девайсе. Подробнее об User-agent можно узнать из <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/User_agent');return false\">Wiki</a>."},
 		
-		"Encodes or decodes base64 string.": {"ru": "Кодирует или декодирует строку в base64."},
 		"Arbitrary string. Works with encode mode": {"ru": "Любая строка. Работает в режиме encode"},
-		"Base64 string. Works with decode mode": {"ru": "Строка в формате base64. Работает в режиме decode."},
-		"Variable which holds file read result. Works with decode mode": {"ru": "Переменная, которая содержит результат чтения файла. Работает в режиме decode."},
+		"Encoded string. Works with decode mode": {"ru": "Закодированная строка. Работает в режиме decode"},
+		"Encodes or decodes string containing the Url component.": {"ru":"Кодирует или декодирует строку содержащую Url компонент."},
+		"Variable name with result. It will be encoded string in encode mode and decode result as string in decode mode.": {"ru": "Переменная, в которую будет записан результат. Это будет закодированная строка в случае использования режима encode и результат декодирования при использовании режима decode."},
+		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing the Url component which needs to be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая Url компонент, которая должна быть закодирована."},
+		"For example, if the string <code>\"?x=test\"</code> is specified and encode mode is activated, the action will return <code>\"%3Fx%3Dtest\"</code>. And if the string <code>\"%D1%82%D0%B5%D1%81%D1%82\"</code> is specified and decode mode is activated, then the action will return <code>\"тест\"</code>.": {"ru":"Например, если указана строка <code>\"?x=test\"</code> и активирован режим encode, то действие вернет <code>\"%3Fx%3Dtest\"</code>. А если указана строка <code>\"%D1%82%D0%B5%D1%81%D1%82\"</code> и активирован режим decode, то действие вернет <code>\"тест\"</code>."},
+		"This action can work with in two modes: encode and decode. Modes can be switched with \"Encode or decode\" parameter. Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing the Url component which needs to be encoded.": {"ru": "Это действие может работать в двух режимах: кодирование и декодирование. Режимы могут переключаться параметром \"Шифровать или расшифровывать\". В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая Url компонент, которая должна быть закодирована."},
+		
+		"Encodes or decodes string containing special HTML characters.": {"ru":"Кодирует или декодирует строку содержащую специальные HTML символы."},
+		"Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing special HTML characters that must be encoded.": {"ru":"В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая специальные HTML символы, которые должны быть закодированы."},
+		"This action can work with in two modes: encode and decode. Modes can be switched with \"Encode or decode\" parameter. Depending on mode data parameter is encoded string which needs to be decoded, or ordinary string containing special HTML characters which needs to be encoded.": {"ru": "Это действие может работать в двух режимах: кодирование и декодирование. Режимы могут переключаться параметром \"Шифровать или расшифровывать\". В зависимости от режима, входным параметром будет либо закодированая строка, которая должна быть декодирована, либо обычная строка содержащая специальные HTML символы, которая должна быть закодирована."},
+		"For example, if the string <code>\"&lt;div&gt;Blah blah blah&lt;/div&gt;\"</code> is specified and encode mode is activated, the action will return <code>\"&amp;lt;div&amp;gt;Blah blah blah&amp;lt;/div&amp;gt;\"</code>. And if the string <code>\"&amp;lt;h1&amp;gt;Text title&amp;lt;/h1&amp;gt;\"</code> is specified and decode mode is activated, then the action will return <code>\"&lt;h1&gt;Text title&lt;/h1&gt;\"</code>.": {"ru":"Например, если указана строка <code>\"&lt;div&gt;Blah blah blah&lt;/div&gt;\"</code> и активирован режим encode, то действие вернет <code>\"&amp;lt;div&amp;gt;Blah blah blah&amp;lt;/div&amp;gt;\"</code>. А если указана строка <code>\"&amp;lt;h1&amp;gt;Text title&amp;lt;/h1&amp;gt;\"</code> и активирован режим decode, то действие вернет <code>\"&lt;h1&gt;Text title&lt;/h1&gt;\"</code>."},
+		
+		"Encodes or decodes base64 string.": {"ru": "Кодирует или декодирует строку в base64."},
+		"Base64 string. Works with decode mode": {"ru": "Строка в формате base64. Работает в режиме decode"},
+		"Variable which holds file read result. Works with decode mode": {"ru": "Переменная, которая содержит результат чтения файла. Работает в режиме decode"},
 		"Variable name with result. It will be base64 encoded string in encode mode and decode result as string in decode mode.": {"ru": "Переменная, в которую будет записан результат. Это будет строка в формате base64 в случае использования режима encode и результат декодирования при использовании режима decode."},
 		"Depending on mode data parameter is base64 encoded string which needs to be decoded, or ordinary string which needs to be encoded.": {"ru": "В зависимости от режима, входным параметром будет либо строка с кодировкой base64, которая должна быть декодирована, либо обычная строка, которая должна быть закодирована."},
 		"BAS stores binary data as base64 strings. It could be binary files, pictures, video, etc. Base64 encoding represent binary data in ascii string.": {"ru": "Кодировка base64 представляет двоичные данные в виде ascii строки. BAS хранит двоичные данные как строки в формате base64. Это могут быть файлы, изображения, видео и т. д."},

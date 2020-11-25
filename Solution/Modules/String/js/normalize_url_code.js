@@ -5,6 +5,7 @@
 	force_http: <%= force_http %>,
 	force_https: <%= force_https %>,
 	strip_authentication: <%= strip_authentication %>,
+	strip_query: <%= strip_query %>,
 	strip_hash: <%= strip_hash %>,
 	strip_protocol: <%= strip_protocol %>,
 	strip_www: <%= strip_www %>,

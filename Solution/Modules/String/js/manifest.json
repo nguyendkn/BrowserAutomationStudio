@@ -542,7 +542,7 @@
             "is_element": false,
             "name": "normalize_url",
             "select": "normalize_url_select.js",
-            "template": "{{url}}"
+            "template": "{{url}} -> {{Save}}"
         },
 		{
             "code": [
@@ -1151,6 +1151,7 @@
 		"Activated": {"ru":"Активирован"},
 		"Strip WWW": {"ru":"Вырезать WWW"},
 		"Deactivated": {"ru":"Деактивирован"},
+		"Strip query": {"ru":"Вырезать запрос"},
 		"Force http": {"ru":"Принудительно http"},
 		"Force https": {"ru":"Принудительно https"},
 		"Strip protocol": {"ru":"Вырезать протокол"},
@@ -1170,6 +1171,7 @@
 		"List of strings or regular expressions.": {"ru":"Список, состоящий из строк или регулярных выражений."},
 		"If enabled, the WWW will be stripped from the URL.": {"ru":"Если активирован, то из URL будут вырезан WWW."},
 		"String containing the URL with want to normalize.": {"ru":"Строка, содержащая URL, который нужно нормализовать."},
+		"If enabled, the query will be stripped from the URL.": {"ru":"Если активирован, то из URL будут вырезан запрос."},
 		"If enabled, the protocol will be stripped from the URL.": {"ru":"Если активирован, то из URL будут вырезан протокол."},
 		"The URL used when the main URL is relative.": {"ru":"URL используемый в случае, если основной URL является относительным."},
 		"If enabled, the fragment will be stripped from the URL.": {"ru":"Если активирован, то из URL будут вырезан фрагмент/якорь."},

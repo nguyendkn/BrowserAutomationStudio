@@ -449,6 +449,7 @@ function _normalize_url(url_string, user_options){
 		force_http: false,
 		force_https: false,
 		strip_authentication: true,
+		strip_query: false,
 		strip_hash: false,
 		strip_protocol: false,
 		strip_www: true,
@@ -617,6 +618,10 @@ function _normalize_url(url_string, user_options){
 		url_obj.set('protocol', '');
 	};
 	
+	if(options.strip_query){
+		url_obj.set('query', {});
+	};
+	
 	var old_url_string = url_string;
 
 	url_string = url_obj.to_string();
@@ -634,7 +639,7 @@ function _normalize_url(url_string, user_options){
 	};
 
 	if(options.strip_protocol){
-		url_string = url_string.replace(new RegExp("^(?:https?:)?\\/\\/"), '');
+		url_string = url_string.replace(new RegExp("^(?:(?:f|ht)tps?:)?\\/\\/"), '');
 	};
 
 	return url_string;

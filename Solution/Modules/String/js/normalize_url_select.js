@@ -11,12 +11,13 @@ var normalize_protocol = $("#Check").is(':checked');
 var force_http = $("#Check2").is(':checked');
 var force_https = $("#Check3").is(':checked');
 var strip_authentication = $("#Check4").is(':checked');
-var strip_hash = $("#Check5").is(':checked');
-var strip_protocol = $("#Check6").is(':checked');
-var strip_www = $("#Check7").is(':checked');
-var remove_trailing_slash = $("#Check8").is(':checked');
-var remove_single_slash = $("#Check9").is(':checked');
-var sort_query_parameters = $("#Check10").is(':checked');
+var strip_query = $("#Check5").is(':checked');
+var strip_hash = $("#Check6").is(':checked');
+var strip_protocol = $("#Check7").is(':checked');
+var strip_www = $("#Check8").is(':checked');
+var remove_trailing_slash = $("#Check9").is(':checked');
+var remove_single_slash = $("#Check10").is(':checked');
+var sort_query_parameters = $("#Check11").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
     var code = loader.GetAdditionalData() + _.template($("#normalize_url_code").html())({
@@ -29,6 +30,7 @@ try{
 		"force_http": force_http,
 		"force_https": force_https,
 		"strip_authentication": strip_authentication,
+		"strip_query": strip_query,
 		"strip_hash": strip_hash,
 		"strip_protocol": strip_protocol,
 		"strip_www": strip_www,

@@ -477,15 +477,15 @@ function _normalize_url(url_string, user_options){
 
 	var normalize_data_url = function(url_string){
 		var strip_hash = options.strip_hash;
-		var match = /^data:(<type>.*?),(<data>.*?)(?:#(<hash>.*))?$/.exec(url_string);
+		var match = /^data:(.*?),(.*?)(?:#(.*))?$/.exec(url_string);
 
 		if(!match){
 			return url_string;
 		};
 
-		var type = match.groups.type;
-		var data = match.groups.data;
-		var hash = match.hash;
+		var type = match[1];
+		var data = match[2];
+		var hash = match[3];
 		var media_type = type.split(';');
 		hash = strip_hash ? '' : hash;
 

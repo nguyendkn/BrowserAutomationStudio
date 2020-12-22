@@ -1286,6 +1286,9 @@ _AL =
    "Xpath Get Exists" : {"ru": "Xpath проверить существование"},
    "Function" : {"ru": "Функция"},
    "Get link URL" : {"ru": "Получить адрес ссылки"},
+
+   "The module containing " : {"ru": "Модуль, содержащий действие "},
+   " action is not installed, disabled, or damaged" : {"ru": ", не установлен, отключен или поврежден"}
    
 }
 
@@ -1706,6 +1709,9 @@ function BrowserAutomationStudio_GenerateActionText(action, data, max_len, no_ht
    {
       return max_length(action,max_len)
    }
+
+   if(typeof _A[State]==="undefined")
+      return tr("The module containing ") + State + tr(" action is not installed, disabled, or damaged")
 
    var Data = data["d"]
    var Template = _A[State]["template"]

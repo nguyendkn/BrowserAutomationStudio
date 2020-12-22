@@ -1,9 +1,33 @@
 _STR_WHITESPACE = '\\s\\uFEFF\\xA0;';
-function _is_string(data){
-	return typeof data==="string";
+function _is_nil(str){
+	return typeof str==="undefined" || str===null;
 };
-function _is_not_empty_string(data){
-	return _is_string(data) && data.length > 0;
+function _is_nilb(str){
+	return _is_nil(str) || str==="";
+};
+function _avoid_nil(str, def){
+	return _is_nil(str) ? _avoid_nil(def, "") : str;
+};
+function _avoid_nilb(str, def){
+	return _is_nilb(str) ? _avoid_nil(def, "") : str;
+};
+function _uniq_arr(arr){
+	return arr.filter(function(e,i){return arr.indexOf(e)===i});
+};
+function _is_json_string(str){
+	if(_is_not_empty_string(str) && ((_starts_with(str, "[") && _ends_with(str, "]")) || (_starts_with(str, "{") && _ends_with(str, "}")))){
+		try{
+			JSON.parse(str);
+		}catch(e){
+			return false;
+		};
+		return true;
+	}else{
+		return false;
+	};
+};
+function _to_arr(str){
+	return (str==="" || typeof str=="object") ? str : (_is_json_string(str) ? JSON.parse(str) : str.split(/,\s|,/));
 };
 function _no_exponents(num){
 	var data = String(num).split(/[eE]/);
@@ -22,6 +46,15 @@ function _no_exponents(num){
 	mag -= str.length;
 	while (mag--) z += '0';
 	return str + z;
+};
+function _is_string(data){
+	return typeof data==="string";
+};
+function _is_not_empty_string(data){
+	return _is_string(data) && data.length > 0;
+};
+function _from_string(str){
+    return (typeof str=="string" && str!=="") ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
 };
 function _to_string(data){
 	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? data.source : String(data))));
@@ -464,7 +497,7 @@ function _normalize_url(url_string, user_options){
 		var keys = Object.keys(user_options);
 		for(var i = 0; i < keys.length; i++) {
 			var key = keys[i];
-			options[key] = (key=="remove_query_parameters" || key=="remove_directory_index") ? _convert_to_arr(user_options[key]) : user_options[key];
+			options[key] = (key=="remove_query_parameters" || key=="remove_directory_index") ? _to_arr(user_options[key]) : user_options[key];
 		};
 	};
 	
@@ -624,7 +657,7 @@ function _normalize_url(url_string, user_options){
 	
 	var old_url_string = url_string;
 
-	url_string = url_obj.to_string();
+	url_string = url_obj.toString();
 
 	if(!options.remove_single_slash && url_obj.pathname === '/' && !_ends_with(old_url_string, '/') && url_obj.hash === ''){
 		url_string = url_string.replace(/\/$/, '');
@@ -869,7 +902,7 @@ function _url(address, user_options){
 		fail(_K=="ru" ? ("Указан недействительный URL | " + original_url) : ("Invalid URL specified | " + original_url));
 	};
 	
-	url.href = url.to_string();
+	url.href = url.toString();
 };
 _url.prototype.set = function(part, value, fn){
 	var url = this;
@@ -945,11 +978,11 @@ _url.prototype.set = function(part, value, fn){
 	
 	url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol +'//'+ url.host : 'null';
 	
-	url.href = url.to_string();
+	url.href = url.toString();
 	
 	return url;
 };
-_url.prototype.to_string = function(stringify){
+_url.prototype.toString = function(stringify){
 	if(_is_nilb(stringify) || 'function' !== typeof stringify){stringify = _query_string_encode};
 	
 	var url = this;
@@ -1193,9 +1226,6 @@ function _ua(uastring, extensions){
 	};
 	mapper.rgx.call(ua_obj.cpu, ua, rgxmap.cpu);
 };
-_ua.prototype.get_ua = function(){
-	return this.ua;
-};
 _ua.prototype.set_ua = function(uastring){
 	var ua_obj = this;
 	var new_ua_obj = new _ua(uastring);
@@ -1208,61 +1238,4 @@ _ua.prototype.set_ua = function(uastring){
 _ua.prototype.change_browser_version = function(version){
 	var ua_obj = this;
 	ua_obj.set_ua(_replace_string(ua_obj.ua, ua_obj.browser.version, _to_string(version)));
-};
-_ua.prototype.get_platform = function(){
-	return this.platform;
-};
-_ua.prototype.get_type = function(){
-	return this.platform.type;
-};
-_ua.prototype.get_browser = function(){
-	return this.browser;
-};
-_ua.prototype.get_engine = function(){
-	return this.engine;
-};
-_ua.prototype.get_os = function(){
-	return this.os;
-};
-_ua.prototype.get_device = function(){
-	return this.device;
-};
-_ua.prototype.get_cpu = function(){
-	return this.cpu;
-};
-_ua.prototype.get_result = function(){
-	return this;
-};
-function _uniq_arr(arr){
-	return arr.filter(function(e,i){return arr.indexOf(e)===i});
-};
-function _is_json_string(str){
-	if(_is_not_empty_string(str) && ((str.indexOf("[") > -1 && str.indexOf("]") > -1) || (str.indexOf("{") > -1 && str.indexOf("}") > -1))){
-		try{
-			JSON.parse(str);
-		}catch(e){
-			return false;
-		};
-		return true;
-	}else{
-		return false;
-	};
-};
-function _convert_to_arr(str){
-	return (str==="" || typeof str=="object") ? str : (_is_json_string(str) ? JSON.parse(str) : str.split(/,\s|,/));
-};
-function _from_string(str){
-    return (typeof str=="string" && str!=="") ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
-};
-function _is_nil(str){
-	return typeof str==="undefined" || str===null;
-};
-function _is_nilb(str){
-	return _is_nil(str) || str==="";
-};
-function _avoid_nil(str, def){
-	return _is_nil(str) ? _avoid_nil(def, "") : str;
-};
-function _avoid_nilb(str, def){
-	return _is_nilb(str) ? _avoid_nil(def, "") : str;
 };

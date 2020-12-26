@@ -162,7 +162,7 @@ function _insert_substring(str, index, sub){
 	return _splice_string(str, index, 0, sub);
 };
 function _concat_strings(list, sep){
-	return list.filter(function(e){return e!==""}).join(_avoid_nil(sep));
+	return _avoid_nilb(list, []).filter(function(e){return e!==""}).join(_avoid_nil(sep));
 };
 function _latinize(str, cyrillic){
 	str = _to_string(str);
@@ -191,6 +191,7 @@ function _declination(num, words){
     return words[2];
 };
 function _csv_generate(list, sep){
+	list = _avoid_nilb(list, []).filter(function(e){return e!==""})
 	sep = _avoid_nilb(sep, ':');
     var res = '';
     var first = true;

@@ -11,6 +11,37 @@ QMAKE_LFLAGS += /LARGEADDRESSAWARE
 
 SOURCES += main.cpp \
     browsercontextmenu.cpp \
+    connector/ActionSaver.cpp \
+    connector/DevToolsActionCloseTab.cpp \
+    connector/DevToolsActionCreateTab.cpp \
+    connector/DevToolsActionGetCurrentUrl.cpp \
+    connector/DevToolsActionNavigateBack.cpp \
+    connector/DevToolsActionRequestDeny.cpp \
+    connector/DevToolsActionSetProxy.cpp \
+    connector/DevToolsActionStartScreenCast.cpp \
+    connector/DevToolsActionStopScreenCast.cpp \
+    connector/DevToolsActionSwitchToTab.cpp \
+    connector/DevToolsGlobalState.cpp \
+    connector/DevToolsMultiAction.cpp \
+    connector/InputEventsEnumerations.cpp \
+    connector/JsonParser.cpp \
+    connector/JsonSerializer.cpp \
+    connector/KeyboardEmulation.cpp \
+    connector/asyncresult.cpp \
+    connector/devtoolsactionexecutejavascript.cpp \
+    connector/devtoolsactionfactory.cpp \
+    connector/devtoolsactiongetbrowsersize.cpp \
+    connector/devtoolsactiongettabs.cpp \
+    connector/devtoolsactionload.cpp \
+    connector/devtoolsactionresizebrowser.cpp \
+    connector/devtoolsactionsetstartupscript.cpp \
+    connector/devtoolsactionwebsocketquery.cpp \
+    connector/devtoolsconnector.cpp \
+    connector/idevtoolsaction.cpp \
+    connector/rawcpphttpclient.cpp \
+    connector/rawcpphttpclientfactory.cpp \
+    connector/rawcppwebsocketclient.cpp \
+    connector/rawcppwebsocketclientfactory.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileutils.cpp \
@@ -117,6 +148,42 @@ QMAKE_CXXFLAGS_DEBUG += /MTd
 
 HEADERS += \
     browsercontextmenu.h \
+    connector/ActionSaver.h \
+    connector/DevToolsActionCloseTab.h \
+    connector/DevToolsActionCreateTab.h \
+    connector/DevToolsActionGetCurrentUrl.h \
+    connector/DevToolsActionNavigateBack.h \
+    connector/DevToolsActionRequestDeny.h \
+    connector/DevToolsActionSetProxy.h \
+    connector/DevToolsActionStartScreenCast.h \
+    connector/DevToolsActionStopScreenCast.h \
+    connector/DevToolsActionSwitchToTab.h \
+    connector/DevToolsGlobalState.h \
+    connector/DevToolsMultiAction.h \
+    connector/ISimpleHttpClient.h \
+    connector/ISimpleHttpClientFactory.h \
+    connector/IWebSocketClient.h \
+    connector/IWebSocketClientFactory.h \
+    connector/InputEventsEnumerations.h \
+    connector/JsonParser.h \
+    connector/JsonSerializer.h \
+    connector/KeyboardEmulation.h \
+    connector/Variant.h \
+    connector/asyncresult.h \
+    connector/devtoolsactionexecutejavascript.h \
+    connector/devtoolsactionfactory.h \
+    connector/devtoolsactiongetbrowsersize.h \
+    connector/devtoolsactiongettabs.h \
+    connector/devtoolsactionload.h \
+    connector/devtoolsactionresizebrowser.h \
+    connector/devtoolsactionsetstartupscript.h \
+    connector/devtoolsactionwebsocketquery.h \
+    connector/devtoolsconnector.h \
+    connector/idevtoolsaction.h \
+    connector/rawcpphttpclient.h \
+    connector/rawcpphttpclientfactory.h \
+    connector/rawcppwebsocketclient.h \
+    connector/rawcppwebsocketclientfactory.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileutils.h \
@@ -217,11 +284,11 @@ HEADERS += \
     browserdirectcontrol.h \
     popup.h
 
-INCLUDEPATH += xml json png snappy tooltip
+INCLUDEPATH += xml json png snappy tooltip connector
 
 win32:RC_FILE = main.rc
 
-win32:LIBS += -lopencv_core320 -lopencv_imgproc320 -lzlib
+win32:LIBS += -lopencv_core320 -lopencv_imgproc320 -lzlib -lixwebsocket
 
 win32:LIBS += -lWs2_32
 

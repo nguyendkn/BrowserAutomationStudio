@@ -27,6 +27,7 @@ SOURCES += main.cpp \
     connector/JsonParser.cpp \
     connector/JsonSerializer.cpp \
     connector/KeyboardEmulation.cpp \
+    connector/PrepareUrl.cpp \
     connector/asyncresult.cpp \
     connector/devtoolsactionexecutejavascript.cpp \
     connector/devtoolsactionfactory.cpp \
@@ -168,6 +169,7 @@ HEADERS += \
     connector/JsonParser.h \
     connector/JsonSerializer.h \
     connector/KeyboardEmulation.h \
+    connector/PrepareUrl.h \
     connector/Variant.h \
     connector/asyncresult.h \
     connector/devtoolsactionexecutejavascript.h \

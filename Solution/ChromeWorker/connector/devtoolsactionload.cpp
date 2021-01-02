@@ -1,7 +1,10 @@
 #include "devtoolsactionload.h"
+#include "PrepareUrl.h"
 
 void DevToolsActionLoad::Run()
 {
+    Params["url"].String = PrepareUrl(Params["url"].String);
+
     if(Params["instant"].Boolean)
     {
         State = Finished;

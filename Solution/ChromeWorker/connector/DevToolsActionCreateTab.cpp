@@ -1,4 +1,5 @@
 #include "DevToolsActionCreateTab.h"
+#include "PrepareUrl.h"
 
 void DevToolsActionCreateTab::Run()
 {
@@ -10,7 +11,7 @@ void DevToolsActionCreateTab::Run()
     Referrer = Params["referrer"].String;
     Params.erase("referrer");
 
-    Url = Params["url"].String;
+    Url = PrepareUrl(Params["url"].String);
     Params["url"].String = "chrome://newtab/";
 
     SubscribbedEvents.push_back("Target.targetActivated");

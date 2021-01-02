@@ -42,7 +42,7 @@ void DevToolsActionStartScreenCast::OnTabSwitching()
     Run();
 }
 
-void DevToolsActionStartScreenCast::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionStartScreenCast::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     if(IsStoppingPreviousScreencast)
     {

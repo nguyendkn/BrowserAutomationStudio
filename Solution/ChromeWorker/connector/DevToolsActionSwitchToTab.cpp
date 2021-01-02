@@ -39,7 +39,7 @@ void DevToolsActionSwitchToTab::Run()
     SendWebSocket("Target.activateTarget", CurrentParams);
 }
 
-void DevToolsActionSwitchToTab::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionSwitchToTab::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     GlobalState->SwitchToTabId = SwitchToTabId;
     GlobalState->SwitchToTabFrameId = SwitchToTabFrameId;

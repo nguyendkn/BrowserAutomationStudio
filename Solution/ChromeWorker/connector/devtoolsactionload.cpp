@@ -14,9 +14,11 @@ void DevToolsActionLoad::Run()
     SendWebSocket("Page.navigate",Params);
 }
 
-void DevToolsActionLoad::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionLoad::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     std::string ErrorText = GetStringFromJson(Message, "errorText", "BAS_NO_VALUE");
+    if(ErrorText == "BAS_NO_VALUE")
+        ErrorText = GetStringFromJson(Error, "message", "BAS_NO_VALUE");
     if(ErrorText == "BAS_NO_VALUE")
     {
         FrameId = GetStringFromJson(Message, "frameId");

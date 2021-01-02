@@ -1,7 +1,7 @@
 #include "idevtoolsaction.h"
 #include <sstream>
 
-void IDevToolsAction::OnWebSocketMessage(const std::string& Message)
+void IDevToolsAction::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
 
 }

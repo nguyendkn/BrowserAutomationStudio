@@ -36,6 +36,8 @@ class AsyncResult
         bool HasCallback = false;
 
     public:
+        
+        void Interrupt();
 
         void Fail(const std::string& ErrorMessage, const std::string& ErrorCode = std::string());
 

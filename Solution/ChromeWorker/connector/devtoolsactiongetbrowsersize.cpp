@@ -6,7 +6,7 @@ void DevToolsActionGetBrowserSize::Run()
     SendWebSocket("Browser.getWindowForTarget",Params);
 }
 
-void DevToolsActionGetBrowserSize::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionGetBrowserSize::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     int Width = GetFloatFromJson(Message, "bounds.width");
     int Height = GetFloatFromJson(Message, "bounds.height");

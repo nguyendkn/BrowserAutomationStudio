@@ -69,7 +69,7 @@ bool DevToolsActionSetStartupScript::IsNeedToRunForAllActiveTabs()
     return true;
 }
 
-void DevToolsActionSetStartupScript::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionSetStartupScript::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     if(!IsWaitingForDisablePreviousScript)
     {

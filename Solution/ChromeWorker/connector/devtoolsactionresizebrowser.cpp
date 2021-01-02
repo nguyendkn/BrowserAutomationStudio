@@ -6,7 +6,7 @@ void DevToolsActionResizeBrowser::Run()
     SendWebSocket("Browser.getWindowForTarget",std::map<std::string,Variant>());
 }
 
-void DevToolsActionResizeBrowser::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionResizeBrowser::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     if(WindowId < 0)
     {

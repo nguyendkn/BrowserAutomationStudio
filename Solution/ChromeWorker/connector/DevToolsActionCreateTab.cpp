@@ -39,7 +39,7 @@ void DevToolsActionCreateTab::StartLoad()
 }
 
 
-void DevToolsActionCreateTab::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionCreateTab::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     if(!IsTargetCreated)
     {
@@ -53,6 +53,8 @@ void DevToolsActionCreateTab::OnWebSocketMessage(const std::string& Message)
     } else
     {
         std::string ErrorText = GetStringFromJson(Message, "errorText", "BAS_NO_VALUE");
+        if(ErrorText == "BAS_NO_VALUE")
+            ErrorText = GetStringFromJson(Error, "message", "BAS_NO_VALUE");
         if(ErrorText == "BAS_NO_VALUE")
         {
             SubscribbedEvents.push_back("Page.frameStoppedLoading");

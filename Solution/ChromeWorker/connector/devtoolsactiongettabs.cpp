@@ -8,7 +8,7 @@ void DevToolsActionGetTabs::Run()
     SendWebSocket("Target.getTargets", Params);
 }
 
-void DevToolsActionGetTabs::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionGetTabs::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     std::vector<std::string> ListValue;
 

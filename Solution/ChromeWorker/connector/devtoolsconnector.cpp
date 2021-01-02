@@ -83,6 +83,7 @@ void DevToolsConnector::StartProcess()
         CommandLine += std::string("--load-extension=") + ExtensionsString;
         CommandLine += std::string(" ");
     }
+
     ShellExecuteA(0, 0, "worker.exe", CommandLine.c_str(), GlobalState.ChromeExecutableLocation.c_str(), SW_SHOW);
 }
 
@@ -327,12 +328,19 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
         {
             if(Action->GetState() == IDevToolsAction::Running && Action->GetId() == Id)
             {
+                std::string Result;
+                std::string Error;
                 if(AllObject["result"].is<picojson::object>())
                 {
                     picojson::object ResultObject = AllObject["result"].get<picojson::object>();
-                    std::string Result = picojson::value(ResultObject).serialize();
-                    Action->OnWebSocketMessage(Result);
+                    Result = picojson::value(ResultObject).serialize();
                 }
+                if(AllObject["error"].is<picojson::object>())
+                {
+                    picojson::object ErrorObject = AllObject["error"].get<picojson::object>();
+                    Error = picojson::value(ErrorObject).serialize();
+                }
+                Action->OnWebSocketMessage(Result, Error);
                 break;
             }
         }
@@ -1284,3 +1292,28 @@ Async DevToolsConnector::Reset(int Timeout)
     return ResetResult;
 }
 
+void DevToolsConnector::InterruptAction(Async Result)
+{
+    std::vector<std::shared_ptr<IDevToolsAction> >::iterator it = Actions.begin();
+    while(it != Actions.end())
+    {
+        std::shared_ptr<IDevToolsAction> Action = *it;
+
+        bool DeleteThisAction = false;
+
+        if(Action->GetResult() == Result && Action->GetState() != IDevToolsAction::Finished)
+        {
+            DeleteThisAction = true;
+            Result->Interrupt();
+        }
+
+        if(DeleteThisAction)
+        {
+            it = Actions.erase(it);
+        } else
+        {
+            ++it;
+        }
+    }
+    
+}

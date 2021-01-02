@@ -9,7 +9,7 @@ class DevToolsActionCloseTab : public IDevToolsAction
 
 public:
     virtual void Run();
-    virtual void OnWebSocketMessage(const std::string& Message);
+    virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
     virtual void OnWebSocketEvent(const std::string& Method, const std::string& Message);
 };
 

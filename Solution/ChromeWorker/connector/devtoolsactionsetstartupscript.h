@@ -15,7 +15,7 @@ class DevToolsActionSetStartupScript : public IDevToolsAction
     virtual void OnTabCreation();
     virtual void OnTabSwitching();
     virtual void OnRunnningForAllRunActiveTab();
-    virtual void OnWebSocketMessage(const std::string& Message);
+    virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
 };
 
 #endif // DEVTOOLSACTIONSETSTARTUPSCRIPT_H

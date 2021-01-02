@@ -8,7 +8,7 @@ class DevToolsActionResizeBrowser : public IDevToolsAction
     int WindowId = -1;
 public:
     virtual void Run();
-    virtual void OnWebSocketMessage(const std::string& Message);
+    virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
 };
 
 #endif // DEVTOOLSACTIONRESIZEBROWSER_H

@@ -42,7 +42,7 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     void ParseFrameCandidatesIteration(picojson::object& Obj, const std::string ParentFrameId);
 public:
     virtual void Run();
-    virtual void OnWebSocketMessage(const std::string& Message);
+    virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
 };
 
 #endif // DEVTOOLSACTIONEXECUTEJAVASCRIPT_H

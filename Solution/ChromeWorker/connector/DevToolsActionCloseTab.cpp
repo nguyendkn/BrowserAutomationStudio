@@ -47,7 +47,7 @@ void DevToolsActionCloseTab::Run()
     SendWebSocket("Target.closeTarget", CurrentParams);
 }
 
-void DevToolsActionCloseTab::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionCloseTab::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     if(!IsCurrentTabClosing)
     {

@@ -12,7 +12,7 @@ void DevToolsActionNavigateBack::Run()
     SendWebSocket("Page.getNavigationHistory", CurrentParams);
 }
 
-void DevToolsActionNavigateBack::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionNavigateBack::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     if(IsGettingHistoryEntries)
     {

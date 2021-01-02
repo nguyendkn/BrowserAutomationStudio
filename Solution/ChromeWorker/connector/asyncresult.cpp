@@ -1,5 +1,13 @@
 #include "asyncresult.h"
 
+void AsyncResult::Interrupt()
+{
+    IsFinished = true;
+    IsSuccess = false;
+    this->ErrorMessage = "Interrupt";
+    this->ErrorCode = "Interrupt";
+}
+
 void AsyncResult::Fail(const std::string& ErrorMessage, const std::string& ErrorCode)
 {
     IsFinished = true;

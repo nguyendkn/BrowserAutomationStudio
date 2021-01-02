@@ -26,7 +26,7 @@ void DevToolsActionWebsocketQuery::Run()
 
 }
 
-void DevToolsActionWebsocketQuery::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionWebsocketQuery::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     if(ReturnType == String)
     {

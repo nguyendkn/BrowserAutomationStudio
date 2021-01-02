@@ -19,7 +19,7 @@ class DevToolsMultiAction : public IDevToolsAction
 
 		virtual void OnActionFinished() = 0;
 
-		virtual void OnWebSocketMessage(const std::string& Message);
+		virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
 		virtual void OnWebSocketEvent(const std::string& Method, const std::string& Message);
 
 };

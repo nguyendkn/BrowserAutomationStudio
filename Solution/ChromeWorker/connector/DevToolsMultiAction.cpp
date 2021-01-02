@@ -52,11 +52,11 @@ void DevToolsMultiAction::SetOverrideDefaultTabId(const std::string& OverrideDef
 
 
 
-void DevToolsMultiAction::OnWebSocketMessage(const std::string& Message)
+void DevToolsMultiAction::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
 	if(!CurrentAction)
 		return;
-	CurrentAction->OnWebSocketMessage(Message);
+	CurrentAction->OnWebSocketMessage(Message, Error);
 	CheckCurrentAction();
 }
 

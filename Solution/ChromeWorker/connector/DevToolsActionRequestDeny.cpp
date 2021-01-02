@@ -36,7 +36,7 @@ void DevToolsActionRequestDeny::OnTabSwitching()
     
 }
 
-void DevToolsActionRequestDeny::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionRequestDeny::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     Result->Success();
     State = Finished;

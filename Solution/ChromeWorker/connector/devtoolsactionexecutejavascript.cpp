@@ -347,7 +347,7 @@ void DevToolsActionExecuteJavascript::Next()
     SendWebSocket("Runtime.evaluate", CurrentParams);
 }
 
-void DevToolsActionExecuteJavascript::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionExecuteJavascript::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     LastMessage = Message;
     Next();

@@ -25,7 +25,7 @@ IDevToolsAction::ActionSaverBehavior DevToolsActionStopScreenCast::GetActionSave
     return IDevToolsAction::DontSaveAndCustomFilterFunction;
 }
 
-void DevToolsActionStopScreenCast::OnWebSocketMessage(const std::string& Message)
+void DevToolsActionStopScreenCast::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
     GlobalState->ScreenCastTabId.clear();
     Result->Success();

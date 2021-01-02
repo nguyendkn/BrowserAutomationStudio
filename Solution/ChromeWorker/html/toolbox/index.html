@@ -1015,7 +1015,7 @@
         </a>
         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="res">
           <i class="fa fa-database"></i>
-            <span class="tr">Load from file, user input, database</span>
+          <span class="tr">Load from file, user input, database</span>
         </a>
       </div>
       <span class="short-description tr">Execute javascript code. This code can work with variables but can't work with elements in web browser.</span>
@@ -5709,13 +5709,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="load_code">
-      /*Browser*/
-      <% if(notinstant){ %>
-        <%= timeout_general()  %>
-        load(<%= url %>)!
-      <% }else{ %>
-        load_instant(<%= url %>)!
-      <% } %>
+      _load(<%= url %>, "", <%= (notinstant) ? "false" : "true" %>)!
   </script>
 
   <script type="text/template" id="mousesettings_code">

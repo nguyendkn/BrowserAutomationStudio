@@ -50,7 +50,6 @@ void DevToolsConnector::SetExtensionList(const std::vector<std::string>& Extensi
 
 void DevToolsConnector::StartProcess()
 {
-    std::string ChromePath = GlobalState.ChromeExecutableLocation + std::string("/chrome.exe");
     std::string CommandLine;
     CommandLine += std::string("--remote-debugging-port=") + std::to_string(GlobalState.Port);
     CommandLine += std::string(" ");
@@ -84,8 +83,7 @@ void DevToolsConnector::StartProcess()
         CommandLine += std::string("--load-extension=") + ExtensionsString;
         CommandLine += std::string(" ");
     }
-
-    ShellExecuteA(0, 0, ChromePath.c_str(), CommandLine.c_str(), 0, SW_SHOW);
+    ShellExecuteA(0, 0, "worker.exe", CommandLine.c_str(), GlobalState.ChromeExecutableLocation.c_str(), SW_SHOW);
 }
 
 void DevToolsConnector::TryToConnect()

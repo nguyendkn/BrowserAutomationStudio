@@ -16,6 +16,7 @@
 #include "sharedmemoryipc.h"
 #include "browsersettingssaver.h"
 #include "browsercontextmenu.h"
+#include "devtoolsconnector.h"
 
 
 class BrowserData
@@ -138,6 +139,7 @@ public:
 
     BrowserContextMenu _BrowserContextMenu;
 
+    DevToolsConnector *Connector = 0;
 };
 
 #endif // BROWSERDATA_H

@@ -32,6 +32,8 @@
 #include <fstream>
 #include "MinHook.h"
 #include "ipcsimple.h"
+#include "rawcpphttpclientfactory.h"
+#include "rawcppwebsocketclientfactory.h"
 
 
 
@@ -1445,6 +1447,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if(app->GetData()->ManualControl == BrowserData::DirectRecord)
                     app->DirectControl()->Timer();
 
+                app->GetData()->Connector->Timer();
+
             }
         break;
         case WM_SYSCHAR:
@@ -1954,6 +1958,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->UrlHandler = 0;
     Data->LastClickIsFromIndirectControl = true;
 
+    Data->Connector = new DevToolsConnector();
+
+    Data->Connector->Initialize(
+                    std::make_shared<RawCppHttpClientFactory>(),
+                    std::make_shared<RawCppWebSocketClientFactory>(),
+                    10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome"
+                    );
+
+    Data->Connector->SetProfilePath(ws2s(Settings.Profile()));
+
+    Data->Connector->StartProcess();
+
     app->SetData(Data);
     app->SetPostManager(_PostManager);
     app->SetCefReqest2Action(_CefReqest2Action);
@@ -2171,7 +2187,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }*/
 
 
-    SetTimer(hwnd, 0, 15, (TIMERPROC) NULL);
+    SetTimer(hwnd, 0, 5, (TIMERPROC) NULL);
 
     ShowWindow(hwnd, SW_HIDE);
     UpdateWindow(hwnd);

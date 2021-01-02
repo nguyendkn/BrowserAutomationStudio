@@ -779,7 +779,7 @@ void MainApp::CreateBrowser(const std::string& Url)
 
 void MainApp::LoadCallback(const std::string& page)
 {
-    IsWaitingForLoad = true;
+    /*IsWaitingForLoad = true;
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = page;
@@ -789,7 +789,19 @@ void MainApp::LoadCallback(const std::string& page)
         WORKER_LOG(std::string("LoadCallback use old ") + page);
         CefRefPtr< CefFrame > Frame = _HandlersManager->GetBrowser()->GetMainFrame();
         Frame->LoadURL(page);
-    }
+    }*/
+
+    Data->Connector->Load(page, false)->Then([this](AsyncResult* Result)
+    {
+        if(Result->GetIsSuccess())
+        {
+            this->SendTextResponce("<Load>1</Load>");
+        }else
+        {
+            this->SendTextResponce("<Load>0</Load>");
+        }
+    });
+
     SendTextResponce("<LoadedInstant></LoadedInstant>");
 
 

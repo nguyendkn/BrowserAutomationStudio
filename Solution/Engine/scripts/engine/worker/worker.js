@@ -1153,6 +1153,14 @@ function load(text, callback)
     })
 }
 
+function _load(text, referrer, is_instant, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.LoadPage2(_ARG[0],_ARG[1],_ARG[2],"if(_result().length > 0){fail(tr('Failed to load page ') + _ARG[0] + ' : ' + _result())};" + _get_function_body(_ARG[3]));
+    })
+}
+
 function navigate_back(callback)
 {
     _create_browser_if_needed(function(){

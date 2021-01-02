@@ -15,6 +15,7 @@ public:
 
     //Events
     std::vector<std::function<void(const std::string&)> > EventLoad;
+    std::vector<std::function<void(const std::string&, const std::string&, bool)> > EventLoad2;
     std::vector<std::function<void(const std::string&)> > EventView;
     std::vector<std::function<void(const std::string&)> > EventGetTabs;
     std::vector<std::function<void(const std::string&)> > EventManualBrowserControl;

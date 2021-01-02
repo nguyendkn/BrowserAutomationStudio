@@ -40,6 +40,7 @@ namespace BrowserAutomationStudioFramework
         void SetRecordId(const QString& RecordId);
         virtual void LoadPage(const QString& url, const QString& callback);
         virtual void LoadPageInstant(const QString& url, const QString& callback);
+        virtual void LoadPage2(const QString& url, const QString& referrer, bool IsInstant, const QString& callback);
         virtual void SetUserAgent(const QString& agent, const QString& callback);
         virtual void GetCookiesForUrl(const QString& url, const QString& callback);
         virtual void SaveCookies(const QString& callback);
@@ -130,6 +131,7 @@ namespace BrowserAutomationStudioFramework
     signals:
         void ProcessCreated(IProcessComunicator *Communicator);
         void Loaded();
+        void Loaded2();
         void LoadedInstant();
         void GetUrl();
         void GetBrowserScreenSettings();

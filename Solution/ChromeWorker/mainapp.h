@@ -254,6 +254,7 @@ public:
     //EventCallbacks
     void DisableBrowserCallback();
     void LoadCallback(const std::string& page);
+    void Load2Callback(const std::string& url,const std::string& referrer, bool instant);
     void SetFocusOnNextLoad();
     bool HasBrowser();
     void CreateBrowser(const std::string& Url);

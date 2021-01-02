@@ -1222,6 +1222,31 @@ void CommandParser::Parse(const std::string& Xml)
                 f(send);
         }
 
+        CommandNode = MessagesNode->first_node("Load2");
+        if(CommandNode)
+        {
+            WORKER_LOG("EventLoad2");
+
+            std::string url,referrer,instant;
+            for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
+            {
+                if(std::string(attr->name()) == std::string("url"))
+                {
+                    url = attr->value();
+                }else if(std::string(attr->name()) == std::string("referrer"))
+                {
+                    referrer = attr->value();
+                }else if(std::string(attr->name()) == std::string("instant"))
+                {
+                    instant = attr->value();
+                }
+            }
+
+
+            for(auto f:EventLoad2)
+                f(url,referrer,instant == "true");
+        }
+
 
 
         CommandNode = MessagesNode->first_node("SetProxy");

@@ -305,6 +305,26 @@ namespace BrowserAutomationStudioFramework
 
     }
 
+    void SubprocessBrowser::LoadPage2(const QString& url, const QString& referrer, bool IsInstant, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeStartElement("Load2");
+            xmlWriter.writeAttribute("url", url);
+            xmlWriter.writeAttribute("referrer", referrer);
+            xmlWriter.writeAttribute("instant", IsInstant ? "true" : "false");
+        xmlWriter.writeEndElement();
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("LoadPage ") + url);
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->SetGeneralTimeout(Worker->GetWaiter()->PeekGeneralWait());
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(Loaded2()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+
+    }
+
     void SubprocessBrowser::LoadPageInstant(const QString& url, const QString& callback)
     {
         QString WriteString;
@@ -799,6 +819,11 @@ namespace BrowserAutomationStudioFramework
                 xmlReader.readNext();
                 Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString().toInt() == 0));
                 emit Loaded();
+            }else if(xmlReader.name() == "Load2" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
+                emit Loaded2();
             }else if(xmlReader.name() == "GetUrl" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();

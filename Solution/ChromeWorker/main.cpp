@@ -2034,6 +2034,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Client->Start(Key,Pid);
     Layout->EventLoadNoDataPage.push_back(std::bind(&MainApp::LoadNoDataCallback,app.get()));
     Parser->EventLoad.push_back(std::bind(&MainApp::LoadCallback,app.get(),_1));
+    Parser->EventLoad2.push_back(std::bind(&MainApp::Load2Callback,app.get(),_1,_2,_3));
     Parser->EventView.push_back(std::bind(&MainApp::ViewCallback,app.get(),_1));
     Parser->EventGetTabs.push_back(std::bind(&MainApp::GetTabsCallback,app.get(),_1));
     Parser->EventManualBrowserControl.push_back(std::bind(&MainApp::ManualBrowserControlCallback,app.get(),_1));

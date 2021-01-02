@@ -779,32 +779,34 @@ void MainApp::CreateBrowser(const std::string& Url)
 
 void MainApp::LoadCallback(const std::string& page)
 {
-    /*IsWaitingForLoad = true;
-    if(!_HandlersManager->GetBrowser())
-    {
-        NextLoadPage = page;
-        AfterReadyToCreateBrowser(true);
-    }else
-    {
-        WORKER_LOG(std::string("LoadCallback use old ") + page);
-        CefRefPtr< CefFrame > Frame = _HandlersManager->GetBrowser()->GetMainFrame();
-        Frame->LoadURL(page);
-    }*/
-
     Data->Connector->Load(page, false)->Then([this](AsyncResult* Result)
     {
         if(Result->GetIsSuccess())
         {
-            this->SendTextResponce("<Load>1</Load>");
+            this->SendTextResponce("<Load>0</Load>");
         }else
         {
-            this->SendTextResponce("<Load>0</Load>");
+            this->SendTextResponce("<Load>1</Load>");
         }
     });
 
     SendTextResponce("<LoadedInstant></LoadedInstant>");
+}
 
-
+void MainApp::Load2Callback(const std::string& url,const std::string& referrer, bool instant)
+{
+    Data->Connector->Load(url, instant, referrer)->Then([this](AsyncResult* Result)
+    {
+        if(Result->GetIsSuccess())
+        {
+            this->SendTextResponce("<Load2></Load2>");
+        }else
+        {
+            std::string error = Result->GetErrorMessage();
+            xml_encode(error);
+            this->SendTextResponce(std::string("<Load2>") + error + std::string("</Load2>"));
+        }
+    });
 }
 
 void MainApp::ViewCallback(const std::string& RequestId)

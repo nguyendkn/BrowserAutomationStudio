@@ -30,8 +30,8 @@ class DevToolsConnector
     std::vector<std::shared_ptr<IDevToolsAction> > Actions;
     int CurrentHttpClientActionId = 0;
 
-    std::string ProfilePath;
-    std::vector<std::string> Extensions;
+    std::wstring ProfilePath;
+    std::vector<std::wstring> Extensions;
 
     //Switch tab after close
     int SwitchTabAfterCloseCurrentActionId = 0;
@@ -100,8 +100,8 @@ class DevToolsConnector
                 std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
                 int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation
         );
-        void SetProfilePath(const std::string& Path);
-        void SetExtensionList(const std::vector<std::string>& Extensions);
+        void SetProfilePath(const std::wstring& Path);
+        void SetExtensionList(const std::vector<std::wstring>& Extensions);
         bool InterruptAction(int ActionUniqueId);
         void StartProcess();
 

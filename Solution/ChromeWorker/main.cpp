@@ -1966,7 +1966,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     std::make_shared<RawCppWebSocketClientFactory>(),
                     10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome"
                     );
-    Data->Connector->SetProfilePath(ws2s(Settings.Profile()));
+    Data->Connector->SetProfilePath(Settings.Profile());
     Data->Connector->StartProcess();
 
     app->SetData(Data);

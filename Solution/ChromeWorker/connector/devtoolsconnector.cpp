@@ -4,6 +4,7 @@
 #include <random>
 #include <chrono>
 #include <windows.h>
+#include "converter.h"
 #include "json/picojson.h"
 #include "devtoolsactionwebsocketquery.h"
 #include "match.h"
@@ -38,53 +39,53 @@ void DevToolsConnector::Initialize
     GlobalState.ChromeExecutableLocation = ChromeExecutableLocation;
 }
 
-void DevToolsConnector::SetProfilePath(const std::string& Path)
+void DevToolsConnector::SetProfilePath(const std::wstring& Path)
 {
     this->ProfilePath = Path;
 }
 
-void DevToolsConnector::SetExtensionList(const std::vector<std::string>& Extensions)
+void DevToolsConnector::SetExtensionList(const std::vector<std::wstring>& Extensions)
 {
     this->Extensions = Extensions;
 }
 
 void DevToolsConnector::StartProcess()
 {
-    std::string CommandLine;
-    CommandLine += std::string("--remote-debugging-port=") + std::to_string(GlobalState.Port);
-    CommandLine += std::string(" ");
+    std::wstring CommandLine;
+    CommandLine += std::wstring(L"--remote-debugging-port=") + std::to_wstring(GlobalState.Port);
+    CommandLine += std::wstring(L" ");
 
-    CommandLine += std::string("--unique-process-id=") + GlobalState.UniqueProcessId;
-    CommandLine += std::string(" ");
+    CommandLine += std::wstring(L"--unique-process-id=") + s2ws(GlobalState.UniqueProcessId);
+    CommandLine += std::wstring(L" ");
 
-    CommandLine += std::string("--parent-process-id=") + GlobalState.ParentProcessId;
-    CommandLine += std::string(" ");
+    CommandLine += std::wstring(L"--parent-process-id=") + s2ws(GlobalState.ParentProcessId);
+    CommandLine += std::wstring(L" ");
 
-    CommandLine += std::string("--no-proxy-server");
-    CommandLine += std::string(" ");
+    CommandLine += std::wstring(L"--no-proxy-server");
+    CommandLine += std::wstring(L" ");
 
     if(!ProfilePath.empty())
     {
-        CommandLine += std::string("--user-data-dir=") + ProfilePath;
-        CommandLine += std::string(" ");
+        CommandLine += std::wstring(L"--user-data-dir=") + ProfilePath;
+        CommandLine += std::wstring(L" ");
     }
 
     if(!Extensions.empty())
     {
-        std::string ExtensionsString;
-        for(const std::string& ExtensionString : Extensions)
+        std::wstring ExtensionsString;
+        for(const std::wstring& ExtensionString : Extensions)
         {
             if(!ExtensionsString.empty())
             {
-                ExtensionsString += std::string(",");
+                ExtensionsString += std::wstring(L",");
             }
             ExtensionsString += ExtensionString;
         }
-        CommandLine += std::string("--load-extension=") + ExtensionsString;
-        CommandLine += std::string(" ");
+        CommandLine += std::wstring(L"--load-extension=") + ExtensionsString;
+        CommandLine += std::wstring(L" ");
     }
 
-    ShellExecuteA(0, 0, "worker.exe", CommandLine.c_str(), GlobalState.ChromeExecutableLocation.c_str(), SW_SHOW);
+    ShellExecute(0, 0, L"worker.exe", CommandLine.c_str(), s2ws(GlobalState.ChromeExecutableLocation).c_str(), SW_SHOW);
 }
 
 void DevToolsConnector::TryToConnect()

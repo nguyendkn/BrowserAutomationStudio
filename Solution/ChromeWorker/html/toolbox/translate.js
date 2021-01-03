@@ -731,6 +731,12 @@ _L =
 	"Wiki link": {"ru": "Ссылка на вики"},
 	"Load google.com": {"ru": "Загрузить google.com"},
 	"Load instagram.com": {"ru": "Загрузить instagram.com"},
+
+	"Referrer. Can be blank": {"ru": "Referrer. Может быть пустым."},
+	"Referrer used for current page load.": {"ru": "Referrer, используемый для загрузки данной страницы."},
+	"Page is loaded by clicking on google search result.": {"ru": "Страница загружается при нажатии на результат поиска Google."},
+	"Page is loaded by typing url in address bar.": {"ru": "Страница загружается путем ввода url в адресной строке."},
+
 	"Url to load. Protocol may be omitted.": {"ru": "Url для загрузки. Протокол может быть опущен."},
 	"Field content will be treated as string. If you input test@gmail.com, result will be \"test@gmail.com\".":{"ru":"Содержимое поля будет рассматриваться как строка. Если вы введете test@gmail.com, результатом будет \"test@gmail.com\"."},
 	"Variables and resuorces will be replaced by values. If you input [[USERNAME]], result will be \"my_username\"": {"ru": "Переменные и ресурсы будут заменены их значениями. Если вы введете [[USERNAME]], результатом будет \"my_username\""},

@@ -70,8 +70,8 @@ _A = {
       "description":"Add Tab",
       "template":"{{Url}}",
       "suggestion":{  
-         "en":"new window",
-         "ru":"новое окно"
+         "en":"new window, Referrer, Referer",
+         "ru":"новое окно, реферрер, реферер"
       },
       "group":""
    },
@@ -101,7 +101,11 @@ _A = {
       "name":"Load",
       "description":"Load specific url",
       "template":"{{LoadUrl}}",
-      "group":"browser"
+      "group":"browser",
+      "suggestion":{  
+         "en":"Referrer, Referer",
+         "ru":"реферрер, реферер"
+      },
    },
    "navigateback":{  
       "name":"Previous Page",
@@ -585,8 +589,8 @@ _A = {
       "description":"Set HTTP Headers, like user agent, accept language, etc",
       "template":"{{Value}} -> {{Name}}",
       "suggestion":{  
-         "en":"User agent, Referrer, Referer, Accept Language",
-         "ru":"юзер агент, реферрер, реферер"
+         "en":"User agent, Accept Language",
+         "ru":"юзер агент"
       },
       "group":"network"
    },

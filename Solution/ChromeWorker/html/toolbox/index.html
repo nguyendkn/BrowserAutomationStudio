@@ -846,6 +846,7 @@
   <script type="text/template" id="load">
     <div class="container-fluid load">
       <%= _.template($('#input_constructor').html())({id:"LoadUrl", description:tr("Url to load"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Referrer", description:tr("Referrer. Can be blank"), default_selector: "string", disable_int:true, help: {description: tr("Referrer used for current page load."), examples:[{code:"https://google.com",description:tr("Page is loaded by clicking on google search result.")},{code:tr("Empty string"),description:tr("Page is loaded by typing url in address bar.")}]}}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Loads specified url into browser. Examples: Load google.com, Load instagram.com.</div>
@@ -1463,7 +1464,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="setheader">
     <div class="container-fluid">
-      <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language","Referer"], size: 3}) %>
+      <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language"], size: 3}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Header Value"), default_selector: "string", disable_int:true, value_string: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0"}) %>
       <%= _.template($('#targetfields').html())({}) %>
     </div>
@@ -5712,7 +5713,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <% if(notinstant){ %>
         <%= timeout_general()  %>
       <% } %>
-      _load(<%= url %>, "", <%= (notinstant) ? "false" : "true" %>)!
+      _load(<%= url %>, <%= referrer %>, <%= (notinstant) ? "false" : "true" %>)!
   </script>
 
   <script type="text/template" id="mousesettings_code">
@@ -7145,21 +7146,22 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           if(State == "load")
           {
             var val = GetInputConstructorValue("LoadUrl",loader)
+            var referrer = GetInputConstructorValue("Referrer",loader)
 
-            if(val["original"].length > 0)
-            {
-               try{
-                var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({url:val["updated"],notinstant:BrowserAutomationStudio_UsesWaitCode()})
-                code = Normalize(code,0)
-
-                BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-              }catch(e)
-              {}
-            }else
+            if(val["original"].length == 0)
             {
               Invalid("Url is empty");
               return;
             }
+
+            try{
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({url:val["updated"],referrer:referrer["updated"],notinstant:BrowserAutomationStudio_UsesWaitCode()})
+              code = Normalize(code,0)
+
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            }catch(e)
+            {}
+        
           }else if(State == "navigateback")
           {
             

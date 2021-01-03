@@ -5709,6 +5709,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="load_code">
+      <% if(notinstant){ %>
+        <%= timeout_general()  %>
+      <% } %>
       _load(<%= url %>, "", <%= (notinstant) ? "false" : "true" %>)!
   </script>
 

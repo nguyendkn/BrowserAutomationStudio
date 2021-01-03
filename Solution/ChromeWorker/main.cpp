@@ -1,4 +1,5 @@
 #include <windows.h>
+#include "fileexists.h"
 #include <thread>
 #include "converter.h"
 #include "mainapp.h"
@@ -1958,6 +1959,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->UrlHandler = 0;
     Data->LastClickIsFromIndirectControl = true;
 
+    //Ensure that profile is not busy
+    {
+        std::wstring LockPath = Settings.Profile() + std::wstring(L"/lockfile");
+        DeleteFile(LockPath.c_str());
+        while(FileExists(LockPath))
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            DeleteFile(LockPath.c_str());
+        }
+    }
+
     Data->Connector = new DevToolsConnector();
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
@@ -1967,6 +1979,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome"
                     );
     Data->Connector->SetProfilePath(Settings.Profile());
+    Data->Connector->SetExtensionList(Settings.Extensions());
     Data->Connector->StartProcess();
 
     app->SetData(Data);

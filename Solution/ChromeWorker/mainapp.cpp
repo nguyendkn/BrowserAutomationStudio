@@ -1747,11 +1747,6 @@ void MainApp::AfterReadyToCreateBrowser(bool Reload)
     {
         WORKER_LOG("!!!CREATENEWBROWSER!!!");
 
-        for(std::wstring& Extension: Settings->Extensions())
-        {
-            CefRequestContext::GetGlobalContext()->LoadExtension(Extension,NULL,NULL);
-        }
-
         _HandlersManager->Init2(CefBrowserHost::CreateBrowserSync(window_info, _HandlersManager->GetHandler(), "about:blank", browser_settings, CefDictionaryValue::Create(), Context));
         Layout->BrowserHandle = _HandlersManager->GetBrowser()->GetHost()->GetWindowHandle();
         _HandlersManager->GetBrowser()->GetMainFrame()->LoadURL(NextLoadPage);

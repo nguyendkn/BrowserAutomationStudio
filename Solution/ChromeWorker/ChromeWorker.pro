@@ -45,6 +45,7 @@ SOURCES += main.cpp \
     connector/rawcppwebsocketclientfactory.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
+    fileexists.cpp \
     fileutils.cpp \
     ipcsimple.cpp \
     mainapp.cpp \
@@ -189,6 +190,7 @@ HEADERS += \
     connector/rawcppwebsocketclientfactory.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
+    fileexists.h \
     fileutils.h \
     ipcsimple.h \
     mainapp.h \

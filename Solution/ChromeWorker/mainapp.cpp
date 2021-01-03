@@ -779,7 +779,9 @@ void MainApp::CreateBrowser(const std::string& Url)
 
 void MainApp::LoadCallback(const std::string& page)
 {
-    Data->Connector->Load(page, false)->Then([this](AsyncResult* Result)
+    Async Result = Data->Connector->Load(page, false);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
         if(Result->GetIsSuccess())
         {
@@ -795,7 +797,9 @@ void MainApp::LoadCallback(const std::string& page)
 
 void MainApp::Load2Callback(const std::string& url,const std::string& referrer, bool instant)
 {
-    Data->Connector->Load(url, instant, referrer)->Then([this](AsyncResult* Result)
+    Async Result = Data->Connector->Load(url, instant, referrer);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
         if(Result->GetIsSuccess())
         {

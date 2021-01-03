@@ -78,7 +78,10 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     if(Result)
     {
         Result->Initialize(Name);
+        int UniqueId = Rand();
         Result->SetId(Rand());
+        Result->SetUniqueId(UniqueId);
+        Result->GetResult()->SetActionUniqueId(UniqueId);
         Result->SetGroupId(Rand());
         Result->SetGlobalState(GlobalState);
     }
@@ -91,6 +94,10 @@ IDevToolsAction* DevToolsActionFactory::CreateWebsocketQuery(const std::string& 
     DevToolsActionWebsocketQuery* Result = new DevToolsActionWebsocketQuery();
 
     Result->Initialize("WebsocketQuery");
+
+    int UniqueId = Rand();
+    Result->SetUniqueId(UniqueId);
+    Result->GetResult()->SetActionUniqueId(UniqueId);
 
     std::map<std::string, Variant> Params;
 

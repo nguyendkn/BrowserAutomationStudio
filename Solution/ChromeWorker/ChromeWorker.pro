@@ -56,6 +56,7 @@ SOURCES += main.cpp \
     commandparser.cpp \
     prepareurladressbar.cpp \
     proxydata.cpp \
+    resultmanager.cpp \
     xml_encoder.cpp \
     devtoolshandler.cpp \
     cookievisitor.cpp \
@@ -200,6 +201,7 @@ HEADERS += \
     prepareurladressbar.h \
     processcheck.h \
     proxydata.h \
+    resultmanager.h \
     xml_encoder.h \
     devtoolshandler.h \
     cookievisitor.h \

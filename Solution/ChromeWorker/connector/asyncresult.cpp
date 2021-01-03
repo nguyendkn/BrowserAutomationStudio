@@ -1,5 +1,15 @@
 #include "asyncresult.h"
 
+int AsyncResult::GetActionUniqueId()
+{
+    return ActionUniqueId;
+}
+
+void AsyncResult::SetActionUniqueId(int ActionUniqueId)
+{
+    this->ActionUniqueId = ActionUniqueId;
+}
+
 void AsyncResult::Interrupt()
 {
     IsFinished = true;

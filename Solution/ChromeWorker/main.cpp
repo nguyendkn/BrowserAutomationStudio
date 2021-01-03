@@ -1959,15 +1959,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->LastClickIsFromIndirectControl = true;
 
     Data->Connector = new DevToolsConnector();
-
+    Data->Results = new ResultManager();
+    Data->Results->Init(Data->Connector);
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     std::make_shared<RawCppWebSocketClientFactory>(),
                     10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome"
                     );
-
     Data->Connector->SetProfilePath(ws2s(Settings.Profile()));
-
     Data->Connector->StartProcess();
 
     app->SetData(Data);

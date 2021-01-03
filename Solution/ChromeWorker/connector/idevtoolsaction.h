@@ -43,6 +43,8 @@ class IDevToolsAction
         std::map<std::string,Variant> Params;
         std::vector<std::string> SubscribbedEvents;
         int Id = 0;
+        //Unique id is used to find/interrupt action by using result
+        int UniqueId = 0;
         std::string OverrideDefaultTabId;
         DevToolsGlobalState* GlobalState;
         bool RunnningForAllRunActiveTab = false;
@@ -70,6 +72,8 @@ class IDevToolsAction
         virtual void SetSubscribbedEvents(const std::vector<std::string>& SubscribbedEvents);
         virtual int GetId();
         virtual void SetId(int Id);
+        virtual int GetUniqueId();
+        virtual void SetUniqueId(int UniqueId);
         virtual std::string GetOverrideDefaultTabId();
         virtual void SetOverrideDefaultTabId(const std::string& OverrideDefaultTabId);
         virtual DevToolsGlobalState* GetGlobalState();

@@ -1292,8 +1292,9 @@ Async DevToolsConnector::Reset(int Timeout)
     return ResetResult;
 }
 
-void DevToolsConnector::InterruptAction(Async Result)
+bool DevToolsConnector::InterruptAction(int ActionUniqueId)
 {
+    bool IsInterrupted = false;
     std::vector<std::shared_ptr<IDevToolsAction> >::iterator it = Actions.begin();
     while(it != Actions.end())
     {
@@ -1301,10 +1302,11 @@ void DevToolsConnector::InterruptAction(Async Result)
 
         bool DeleteThisAction = false;
 
-        if(Action->GetResult() == Result && Action->GetState() != IDevToolsAction::Finished)
+        if(Action->GetUniqueId() == ActionUniqueId && Action->GetState() != IDevToolsAction::Finished)
         {
+            IsInterrupted = true;
             DeleteThisAction = true;
-            Result->Interrupt();
+            Action->GetResult()->Interrupt();
         }
 
         if(DeleteThisAction)
@@ -1315,5 +1317,6 @@ void DevToolsConnector::InterruptAction(Async Result)
             ++it;
         }
     }
+    return IsInterrupted;
     
 }

@@ -62,6 +62,16 @@ void IDevToolsAction::SetId(int Id)
     this->Id = Id;
 }
 
+int IDevToolsAction::GetUniqueId()
+{
+    return UniqueId;
+}
+
+void IDevToolsAction::SetUniqueId(int UniqueId)
+{
+    this->UniqueId = UniqueId;
+}
+
 std::string IDevToolsAction::GetOverrideDefaultTabId()
 {
     return OverrideDefaultTabId;

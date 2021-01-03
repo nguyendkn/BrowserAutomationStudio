@@ -35,6 +35,8 @@ class AsyncResult
         std::function<void(AsyncResult*)> Callback;
         bool HasCallback = false;
 
+        int ActionUniqueId = 0;
+
     public:
         
         void Interrupt();
@@ -59,6 +61,9 @@ class AsyncResult
         void SetResult(const std::string& Result);
         void SetResult(const std::map<std::string, std::string>& Result);
         void SetResult(const std::vector<std::string>& Result);
+
+        int GetActionUniqueId();
+        void SetActionUniqueId(int ActionUniqueId);
 
         bool GetIsFinished();
 

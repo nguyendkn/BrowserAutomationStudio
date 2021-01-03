@@ -17,6 +17,7 @@
 #include "browsersettingssaver.h"
 #include "browsercontextmenu.h"
 #include "devtoolsconnector.h"
+#include "resultmanager.h"
 
 
 class BrowserData
@@ -139,7 +140,10 @@ public:
 
     BrowserContextMenu _BrowserContextMenu;
 
+
     DevToolsConnector *Connector = 0;
+    ResultManager *Results = 0;
+
 };
 
 #endif // BROWSERDATA_H

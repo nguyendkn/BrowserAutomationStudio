@@ -102,7 +102,7 @@ class DevToolsConnector
         );
         void SetProfilePath(const std::string& Path);
         void SetExtensionList(const std::vector<std::string>& Extensions);
-        void InterruptAction(Async Result);
+        bool InterruptAction(int ActionUniqueId);
         void StartProcess();
 
         //Browser life cycle

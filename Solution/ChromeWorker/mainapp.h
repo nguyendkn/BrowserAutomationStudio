@@ -376,7 +376,7 @@ public:
     void ExecuteTypeText();
     void ExecuteMouseMove();
     void FinishedLastCommand(const std::string& data);
-    void Paint(std::vector<char>& data, int width, int height);
+    void Paint(int width, int height);
     void UploadStart();
     void ComboboxOpened();
     void StartRequest(CefRefPtr<CefRequest> Request);

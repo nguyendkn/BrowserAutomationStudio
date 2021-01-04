@@ -81,6 +81,7 @@ MainApp::MainApp()
     HighlightOffsetY = 0;
     _CefReqest2Action = 0;
     IsMainBrowserCreating = true;
+    ImageData.resize(16818223);
 
     ReadDoTour();
 
@@ -505,7 +506,7 @@ void MainApp::ProcessMessage(CefRefPtr<CefBrowser> browser, CefProcessId source_
 }
 
 
-void MainApp::Paint(std::vector<char>& data, int width, int height)
+void MainApp::Paint(int width, int height)
 {
     if(!ViewRequestId.empty())
     {
@@ -518,10 +519,10 @@ void MainApp::Paint(std::vector<char>& data, int width, int height)
         {
             for(int i = 0;i<width;i++)
             {
-                in.push_back((unsigned char)data[i*4+j*width*4 + 2]);
-                in.push_back((unsigned char)data[i*4+j*width*4 + 1]);
-                in.push_back((unsigned char)data[i*4+j*width*4 + 0]);
-                in.push_back((unsigned char)data[i*4+j*width*4 + 3]);
+                in.push_back((unsigned char)ImageData[i*4+j*width*4 + 2]);
+                in.push_back((unsigned char)ImageData[i*4+j*width*4 + 1]);
+                in.push_back((unsigned char)ImageData[i*4+j*width*4 + 0]);
+                in.push_back((unsigned char)ImageData[i*4+j*width*4 + 3]);
             }
         }
 
@@ -575,10 +576,10 @@ void MainApp::Paint(std::vector<char>& data, int width, int height)
                     {
                         if(h==1)
                             w++;
-                        in.push_back((unsigned char)data[i*4+j*width*4 + 2]);
-                        in.push_back((unsigned char)data[i*4+j*width*4 + 1]);
-                        in.push_back((unsigned char)data[i*4+j*width*4 + 0]);
-                        in.push_back((unsigned char)data[i*4+j*width*4 + 3]);
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 2]);
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 1]);
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 0]);
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 3]);
                     }
                 }
 
@@ -609,7 +610,7 @@ void MainApp::Paint(std::vector<char>& data, int width, int height)
         int len = width * height * 4;
         for(int i = 0;i<len;i++)
         {
-            char c = data[i];
+            char c = ImageData[i];
             if(c != -1)
             {
                 Layout->SetIsRenderEmpty(false);
@@ -622,7 +623,6 @@ void MainApp::Paint(std::vector<char>& data, int width, int height)
             Layout->SetIsRenderEmpty(true);
         }
     }
-    ImageData = std::move(data);
     ImageWidth = width;
     ImageHeight = height;
 
@@ -3326,7 +3326,6 @@ void MainApp::DirectControlInspectMouse()
 void MainApp::HandleIPCData()
 {
     bool IsNewImage = false;
-    std::vector<char> ImageData;
     unsigned int Width = 0;
     unsigned int Height = 0;
 
@@ -3350,7 +3349,7 @@ void MainApp::HandleIPCData()
     //Paint screenshot
     if(IsNewImage)
     {
-        Paint(ImageData,Width,Height);
+        Paint(Width,Height);
         if(Width != Data->WidthBrowser || Height != Data->HeightBrowser)
         {
             Data->WidthBrowser = Width;

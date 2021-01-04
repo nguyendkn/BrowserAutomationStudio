@@ -197,7 +197,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     void HandleScenarioBrowserEvents();
     void HandleCentralBrowserEvents();
     void HandleDetectorBrowserEvents();
-    void HandleMultiloginIPCData();
+    void HandleIPCData();
 
     void ReadDoTour();
     std::string Lang;

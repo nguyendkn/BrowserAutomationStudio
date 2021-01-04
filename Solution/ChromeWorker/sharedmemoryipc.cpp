@@ -1,5 +1,4 @@
 #include "sharedmemoryipc.h"
-#include "log.h"
 
 void SharedMemoryIPC::SetError(const std::string& ErrorString)
 {
@@ -250,99 +249,26 @@ bool SharedMemoryIPC::Unlock()
     return true;
 }
 
-int32_t SharedMemoryIPC::GetCursorX()
+std::vector<unsigned char> SharedMemoryIPC::GetImageData()
 {
-    return GetWord(SHARED_MEMORY_OFFSET_CURSOR_X);
+    if(!Data)
+        return std::vector<unsigned char>();
+
+    int32_t ImageSize = GetWord(SHARED_MEMORY_OFFSET_IMAGE_DATA);
+
+    unsigned char * Pointer = Data + SHARED_MEMORY_OFFSET_IMAGE_DATA + 4;
+    return std::vector<unsigned char>(Pointer, Pointer + ImageSize);
 }
 
-void SharedMemoryIPC::SetCursorX(int32_t Value)
+void SharedMemoryIPC::SetImageData(const std::vector<unsigned char>& ImageData)
 {
-    SetWord(SHARED_MEMORY_OFFSET_CURSOR_X, Value);
-}
+    if(!Data)
+        return;
 
-int32_t SharedMemoryIPC::GetCursorY()
-{
-    return GetWord(SHARED_MEMORY_OFFSET_CURSOR_Y);
-}
+    SetWord(SHARED_MEMORY_OFFSET_IMAGE_DATA, ImageData.size());
 
-void SharedMemoryIPC::SetCursorY(int32_t Value)
-{
-    SetWord(SHARED_MEMORY_OFFSET_CURSOR_Y, Value);
-}
-
-unsigned char SharedMemoryIPC::GetInspectState()
-{
-    return GetByte(SHARED_MEMORY_OFFSET_INSPECT_STATE);
-}
-
-void SharedMemoryIPC::SetInspectState(unsigned char Value)
-{
-    SetByte(SHARED_MEMORY_OFFSET_INSPECT_STATE, Value);
-}
-
-int32_t SharedMemoryIPC::GetInspectX()
-{
-    return GetWord(SHARED_MEMORY_OFFSET_INSPECT_X);
-}
-
-void SharedMemoryIPC::SetInspectX(int32_t Value)
-{
-    SetWord(SHARED_MEMORY_OFFSET_INSPECT_X, Value);
-}
-
-int32_t SharedMemoryIPC::GetInspectY()
-{
-    return GetWord(SHARED_MEMORY_OFFSET_INSPECT_Y);
-}
-
-void SharedMemoryIPC::SetInspectY(int32_t Value)
-{
-    SetWord(SHARED_MEMORY_OFFSET_INSPECT_Y, Value);
-}
-
-int32_t SharedMemoryIPC::GetScrollX()
-{
-    int32_t res = GetWord(SHARED_MEMORY_OFFSET_SCROLL_X);
-    SetWord(SHARED_MEMORY_OFFSET_SCROLL_X, 0);
-    return res;
-}
-
-void SharedMemoryIPC::SetScrollX(int32_t Value)
-{
-    SetWord(SHARED_MEMORY_OFFSET_SCROLL_X, Value);
-}
-
-
-int32_t SharedMemoryIPC::GetScrollY()
-{
-    int32_t res = GetWord(SHARED_MEMORY_OFFSET_SCROLL_Y);
-    SetWord(SHARED_MEMORY_OFFSET_SCROLL_Y, 0);
-    return res;
-}
-
-void SharedMemoryIPC::SetScrollY(int32_t Value)
-{
-    SetWord(SHARED_MEMORY_OFFSET_SCROLL_Y, Value);
-}
-
-int32_t SharedMemoryIPC::GetBrowserScrollX()
-{
-    return GetWord(SHARED_MEMORY_OFFSET_BROWSER_SCROLL_X);
-}
-
-void SharedMemoryIPC::SetBrowserScrollX(int32_t Value)
-{
-    SetWord(SHARED_MEMORY_OFFSET_BROWSER_SCROLL_X, Value);
-}
-
-int32_t SharedMemoryIPC::GetBrowserScrollY()
-{
-    return GetWord(SHARED_MEMORY_OFFSET_BROWSER_SCROLL_Y);
-}
-
-void SharedMemoryIPC::SetBrowserScrollY(int32_t Value)
-{
-    SetWord(SHARED_MEMORY_OFFSET_BROWSER_SCROLL_Y, Value);
+    if(!ImageData.empty())
+        memcpy(Data + SHARED_MEMORY_OFFSET_IMAGE_DATA + 4,ImageData.data(),ImageData.size());
 }
 
 int32_t SharedMemoryIPC::GetImageWidth()
@@ -374,129 +300,6 @@ void SharedMemoryIPC::SetImageId(int32_t Value)
 {
     SetWord(SHARED_MEMORY_OFFSET_IMAGE_ID, Value);
 }
-
-std::string SharedMemoryIPC::GetImageData()
-{
-    if(!Data)
-        return std::string();
-    return GetString(SHARED_MEMORY_OFFSET_IMAGE_DATA);
-}
-
-void SharedMemoryIPC::SetImageData(const std::string& Text)
-{
-    if(!Data)
-        return;
-    SetString(SHARED_MEMORY_OFFSET_IMAGE_DATA, Text);
-}
-
-std::string SharedMemoryIPC::GetInspectResult()
-{
-    if(!Data)
-        return std::string();
-    std::string res = GetString(SHARED_MEMORY_OFFSET_INSPECT_RESULT);
-    SetString(SHARED_MEMORY_OFFSET_INSPECT_RESULT, std::string());
-    return res;
-}
-
-void SharedMemoryIPC::SetInspectResult(const std::string Text)
-{
-    if(!Data)
-        return;
-    SetString(SHARED_MEMORY_OFFSET_INSPECT_RESULT, Text);
-}
-
-std::string SharedMemoryIPC::GetHighlightRequest()
-{
-    if(!Data)
-        return std::string();
-    std::string res = GetString(SHARED_MEMORY_OFFSET_HIGHLIGHT_REQUEST);
-    SetString(SHARED_MEMORY_OFFSET_HIGHLIGHT_REQUEST, std::string());
-    return res;
-}
-
-void SharedMemoryIPC::SetHighlightRequest(const std::string Text)
-{
-    if(!Data)
-        return;
-    SetString(SHARED_MEMORY_OFFSET_HIGHLIGHT_REQUEST, Text);
-}
-
-std::string SharedMemoryIPC::GetHighlightResponce()
-{
-    if(!Data)
-        return std::string();
-    std::string res = GetString(SHARED_MEMORY_OFFSET_HIGHLIGHT_RESPONCE);
-    SetString(SHARED_MEMORY_OFFSET_HIGHLIGHT_RESPONCE, std::string());
-    return res;
-}
-
-void SharedMemoryIPC::SetHighlightResponce(const std::string Text)
-{
-    if(!Data)
-        return;
-    SetString(SHARED_MEMORY_OFFSET_HIGHLIGHT_RESPONCE, Text);
-}
-
-void SharedMemoryIPC::AddFromBrowserEvent(const std::string Text)
-{
-    if(!Data)
-        return;
-    unsigned char Length = GetByte(SHARED_MEMORY_OFFSET_EVENTS_FROM_BROWSER_LENGTH);
-    if(Length > 7)
-    {
-        return;
-    }
-    SetString(SHARED_MEMORY_OFFSET_EVENTS_FROM_BROWSER_DATA + Length * 1024,Text);
-    SetByte(SHARED_MEMORY_OFFSET_EVENTS_FROM_BROWSER_LENGTH, Length + 1);
-}
-
-std::vector<std::string> SharedMemoryIPC::GetFromBrowserEvents()
-{
-    std::vector<std::string> Res;
-    if(!Data)
-        return Res;
-    unsigned char Length = GetByte(SHARED_MEMORY_OFFSET_EVENTS_FROM_BROWSER_LENGTH);
-
-    for(int i = 0;i<Length;i++)
-    {
-        std::string Text = GetString(SHARED_MEMORY_OFFSET_EVENTS_FROM_BROWSER_DATA + i * 1024);
-        Res.push_back(Text);
-    }
-    SetByte(SHARED_MEMORY_OFFSET_EVENTS_FROM_BROWSER_LENGTH, 0);
-
-    return Res;
-}
-
-void SharedMemoryIPC::AddToBrowserEvent(const std::string Text)
-{
-    if(!Data)
-        return;
-    unsigned char Length = GetByte(SHARED_MEMORY_OFFSET_EVENTS_TO_BROWSER_LENGTH);
-    if(Length > 7)
-    {
-        return;
-    }
-    SetString(SHARED_MEMORY_OFFSET_EVENTS_TO_BROWSER_DATA + Length * 1024,Text);
-    SetByte(SHARED_MEMORY_OFFSET_EVENTS_TO_BROWSER_LENGTH, Length + 1);
-}
-
-std::vector<std::string> SharedMemoryIPC::GetToBrowserEvents()
-{
-    std::vector<std::string> Res;
-    if(!Data)
-        return Res;
-    unsigned char Length = GetByte(SHARED_MEMORY_OFFSET_EVENTS_TO_BROWSER_LENGTH);
-
-    for(int i = 0;i<Length;i++)
-    {
-        std::string Text = GetString(SHARED_MEMORY_OFFSET_EVENTS_TO_BROWSER_DATA + i * 1024);
-        Res.push_back(Text);
-    }
-    SetByte(SHARED_MEMORY_OFFSET_EVENTS_TO_BROWSER_LENGTH, 0);
-
-    return Res;
-}
-
 
 bool SharedMemoryIPC::GetIsStarted()
 {

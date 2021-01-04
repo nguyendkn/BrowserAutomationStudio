@@ -124,43 +124,6 @@ void TerminateOnCloseMutex(const std::string& Id, bool DoSleep, bool DoFlush)
 
 }
 
-//Used only in network process
-void MainProcessIPC(const std::string& UniqueId, const std::string& ParentId)
-{
-    IPCSimple NetworkProcessIPC;
-    NetworkProcessIPC.Init(std::string("out") + UniqueId);
-
-    while(true)
-    {
-        if(NetworkProcessIPC.Peek())
-        {
-            std::vector<std::string> DataAll = NetworkProcessIPC.Read();
-            if(!DataAll.empty())
-            {
-                ProxyConfigReplace::GetInstance().SetPid(s2ws(ParentId));
-                ProxyConfigReplace::GetInstance().Replace();
-                LoadLibraryW(L"Proxy.dll");
-                ProxyConfigReplace::GetInstance().Disable();
-
-                IPCSimple::Write(std::string("in") + UniqueId,"done");
-                break;
-            }
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-}
-
-void RepositionInterface(int x, int y)
-{
-    if(x>0 && y>0 && !app->GetData()->IsMutiloginEngine)
-    {
-        app->GetData()->WidthBrowser = x;
-        app->GetData()->HeightBrowser = y;
-    }
-    Layout->Update(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
-}
-
 void RestoreOriginalStage()
 {
     Layout->DevToolsRectWidth = 500;
@@ -721,7 +684,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             HCursorTouch = LoadCursor(hInst, MAKEINTRESOURCEW(IDB_TOUCHCURSOR));
 
 
-            RepositionInterface(0,0);
         }
         break;
         case WM_NOTIFY:
@@ -1834,12 +1796,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
 
 
-
-    if(SandboxType == std::string("network"))
-    {
-        new std::thread(MainProcessIPC, UniqueProcessId, ParentProcessId);
-    }
-
     if(ProcessType == "renderer")
     {
         if(!ParentProcessId.empty())
@@ -1945,9 +1901,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->AllowDownloads = true;
     Data->MultiselectMode = false;
     Data->MultiselectIsInsideElementLoop = false;
-    Data->IsMutiloginEngine = false;
-    Data->MultiloginIPC = new SharedMemoryIPC();
-    Data->BASPID = Pid;
+    Data->IPC = new SharedMemoryIPC();
+    Data->IPC->Start(Settings.UniqueProcessId());
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
     Data->_UniqueProcessId = Settings.UniqueProcessId();
     Data->RemoteDebuggingPort = 10000 + rand()%10000;
@@ -1980,6 +1935,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     );
     Data->Connector->SetProfilePath(Settings.Profile());
     Data->Connector->SetExtensionList(Settings.Extensions());
+    Data->Connector->StartScreenCast();
     Data->Connector->StartProcess();
 
     app->SetData(Data);
@@ -2067,7 +2023,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventRecaptchaV3Result.push_back(std::bind(&MainApp::RecaptchaV3ResultCallback,app.get(),_1,_2));
     Parser->EventGetUrl.push_back(std::bind(&MainApp::GetUrlCallback,app.get()));
     Parser->EventGetBrowserScreenSettings.push_back(std::bind(&MainApp::GetBrowserScreenSettingsCallback,app.get()));
-    Parser->EventResize.push_back(RepositionInterface);
     Parser->EventResize.push_back(std::bind(&MainApp::ResizeCallback,app.get(),_1,_2));
     Parser->EventTimezone.push_back(std::bind(&MainApp::TimezoneCallback,app.get(),_1));
     Parser->EventSetWindow.push_back(std::bind(&MainApp::SetWindowCallback,app.get(),_1));

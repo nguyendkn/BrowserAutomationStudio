@@ -1150,25 +1150,7 @@ void MainHandler::OnPopupSize(CefRefPtr<CefBrowser> browser, const CefRect& rect
 
 void MainHandler::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects, const void* buffer, int width, int height)
 {
-    if(type == PET_POPUP)
-    {
-        _Popup.SetPopupData(buffer,width,height);
-    }
-    if(type == PET_VIEW)
-    {
-        _Popup.SetBrowserData(buffer,width,height);
-    }
 
-    if(type == PET_POPUP || type == PET_VIEW)
-    {
-        char * Data = _Popup.PrepareData();
-        if(!Data)
-            return;
-        for(auto f:EventPaint)
-        {
-            f(Data, _Popup.GetBrowserWidth(), _Popup.GetBrowserHeight(), GetBrowserId());
-        }
-    }
 }
 
 bool MainHandler::StartDragging(CefRefPtr<CefBrowser> browser,CefRefPtr<CefDragData> drag_data,DragOperationsMask allowed_ops,int x, int y)

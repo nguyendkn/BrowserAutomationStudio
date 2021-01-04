@@ -1095,20 +1095,6 @@ void MainApp::CheckResultCallback(const std::string& CheckId,bool IsSuccess,cons
 
 void MainApp::SetWorkerSettingsCallback(bool EncodeUtf8, bool RefreshConnections, int SkipFrames, const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target, const std::string& browser, const std::string& record_id)
 {
-
-    bool PreviousMultilogin = Data->IsMutiloginEngine;
-    Data->IsMutiloginEngine = browser == "MLAMimic";
-    if(PreviousMultilogin != Data->IsMutiloginEngine)
-    {
-        if(Data->IsMutiloginEngine && !Data->MultiloginIPC->GetIsStarted())
-        {
-            Data->MultiloginIPC->Start(record_id);
-            Data->LastImageId = -1;
-        }
-    }
-
-    //Settings->SetForceUtf8(EncodeUtf8);
-    //Settings->SetProxiesReconnect(RefreshConnections);
     Settings->SetSkipFrames(SkipFrames);
     SetProxyCallback(server,Port,IsHttp,username,password,target);
 }
@@ -1907,14 +1893,11 @@ void MainApp::MouseMoveAt(int x, int y)
     clock_t CurrentTime = clock();
     float time_spent = float( CurrentTime - LastMouseTrack ) /  CLOCKS_PER_SEC;
 
-    if(!Data->IsMutiloginEngine)
-    {
-        if(InspectFrameSearching && time_spent < 3)
-            return;
+    if(InspectFrameSearching && time_spent < 3)
+        return;
 
-        if(time_spent < 0.1)
-            return;
-    }
+    if(time_spent < 0.1)
+        return;
 
     BrowserDirectControl::InspectTask Task = DirectControl()->GetInspectTask();
 
@@ -1936,20 +1919,10 @@ void MainApp::InspectMouseAt(int x, int y, clock_t CurrentTime)
     InspectY = y;
     LastMouseTrack = CurrentTime;
 
-    if(Data->IsMutiloginEngine)
-    {
-        SharedMemoryIPC * IPC = Data->MultiloginIPC;
-        SharedMemoryIPCLockGuard Lock(IPC);
-        IPC->SetInspectState(1);
-        IPC->SetInspectX(InspectX);
-        IPC->SetInspectY(InspectY);
 
-    }else
+    if(_HandlersManager->GetBrowser())
     {
-        if(_HandlersManager->GetBrowser())
-        {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + std::to_string(InspectPosition) + std::string(")"),"main"),"", 0);
-        }
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + std::to_string(InspectPosition) + std::string(")"),"main"),"", 0);
     }
 }
 
@@ -2784,16 +2757,6 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
     LastCommand = Command;
     IsLastCommandNull = false;
 
-    if(Data->IsMutiloginEngine && Command.CommandName == "highlight")
-    {
-        SharedMemoryIPC * IPC = Data->MultiloginIPC;
-        SharedMemoryIPCLockGuard Lock(IPC);
-        HighlightMultiloginSelector = LastCommand.SerializePathRaw();
-
-        IPC->SetHighlightRequest(HighlightMultiloginSelector);
-        return;
-    }
-
     //Check if need to search for frame
     bool NeedToSearchInFrames = false;
     picojson::array FrameSearchPath;
@@ -3228,10 +3191,7 @@ void MainApp::Timer()
         Notifications.Timer(BrowserToolbox);
     }
 
-    if(Data->IsMutiloginEngine)
-    {
-        HandleMultiloginIPCData();
-    }
+    HandleIPCData();
 
     if(RunElementCommandCallbackOnNextTimer >= 0)
     {
@@ -3364,206 +3324,40 @@ void MainApp::DirectControlInspectMouse()
     InspectMouseAt(Task.X, Task.Y, CurrentTime);
 }
 
-void MainApp::HandleMultiloginIPCData()
+void MainApp::HandleIPCData()
 {
-    int CursorX;
-    int CursorY;
-    int NewImageId;
-    std::string base64_data;
-    int InspectState = 0;
-    std::string InspectResult;
-    std::string HighlightResponce;
-    int ScrollX = 0;
-    int ScrollY = 0;
+    bool IsNewImage = false;
+    std::vector<unsigned char> ImageData;
+    unsigned int Width = 0;
+    unsigned int Height = 0;
 
     //Get data
     {
-        SharedMemoryIPC * IPC = Data->MultiloginIPC;
+        SharedMemoryIPC * IPC = Data->IPC;
 
         SharedMemoryIPCLockGuard Lock(IPC);
 
-        CursorX = IPC->GetCursorX();
-        CursorY = IPC->GetCursorY();
-
-        NewImageId = IPC->GetImageId();
-
-
-        if(NewImageId != Data->LastImageId)
+        if(IPC->GetImageId())
         {
-            base64_data = IPC->GetImageData();
-        }
-
-
-        InspectState = IPC->GetInspectState();
-        if(InspectState == 2 || InspectState == 1)
-        {
-            InspectResult = IPC->GetInspectResult();
-            if(InspectState == 2)
-            {
-                IPC->SetInspectState(0);
-            }
-
-        }
-
-        HighlightResponce = IPC->GetHighlightResponce();
-
-        ScrollX = IPC->GetBrowserScrollX();
-        ScrollY = IPC->GetBrowserScrollY();
-
-    }
-
-    if(Data->ScrollX != ScrollX || Data->ScrollY != ScrollY)
-    {
-        Data->ScrollX = ScrollX;
-        Data->ScrollY = ScrollY;
-    }
-
-
-    //Draw highlight data
-    if(!HighlightResponce.empty())
-    {
-        picojson::value v;
-        std::string err = picojson::parse(v, HighlightResponce);
-        if(err.empty())
-        {
-            std::vector<HighlightResult::rect> Highlights;
-            HighlightResult::rect Rect;
-
-            picojson::value::array a = v.get<picojson::value::array>();
-            int i = 0;
-            for(picojson::value &v:a)
-            {
-                switch(i%4)
-                {
-                    case 0: Rect.x = v.get<double>();Rect.y = 0;Rect.height = -1;Rect.width = -1; break;
-                    case 1: Rect.y = v.get<double>(); break;
-                    case 2: Rect.width = v.get<double>(); break;
-                    case 3: Rect.height = v.get<double>(); Highlights.push_back(Rect);  break;
-                }
-                i++;
-            }
-            {
-                LOCK_BROWSER_DATA
-                Data->_Highlight.highlights = Highlights;
-                for(HighlightResult::rect & r:Data->_Highlight.highlights)
-                {
-                    r.selector = LastHighlightSelector;
-                }
-            }
-            RECT r = Layout->GetBrowserOuterRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-            InvalidateRect(Data->_MainWindowHandle,&r,false);
-            if(!IsLastCommandNull)
-            {
-                IsLastCommandNull = true;
-                FinishedLastCommand(std::string());
-                if(BrowserToolbox)
-                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetPathCount(") + std::to_string((int)(a.size()/4)) + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-            }
-
+            ImageData = IPC->GetImageData();
+            Width = IPC->GetImageWidth();
+            Height = IPC->GetImageHeight();
+            IPC->SetImageId(0);
+            IsNewImage = true;
         }
 
     }
-
-    //Draw inspect data
-    if(InspectState == 2 || InspectState == 1)
-    {
-        InspectFrameSearching = false;
-
-        LOCK_BROWSER_DATA
-        Data->_Inspect.active = false;
-        Data->_Inspect.isimage = false;
-        Data->_Inspect.FrameData.is_frame = false;
-        if(!InspectResult.empty())
-        {
-            picojson::value v;
-            std::string err = picojson::parse(v, InspectResult);
-            if(err.empty())
-            {
-                picojson::value::array a = v.get<picojson::value::array>();
-                if(a.size() >= 13)
-                {
-
-                    Data->_Inspect.x = a.at(0).get<double>();
-                    Data->_Inspect.y = a.at(1).get<double>();
-                    Data->_Inspect.width = a.at(2).get<double>();
-                    Data->_Inspect.height = a.at(3).get<double>();
-                    Data->_Inspect.label = a.at(4).get<std::string>();
-                    Data->_Inspect.css = a.at(5).get<std::string>();
-                    Data->_Inspect.css2 = a.at(6).get<std::string>();
-                    Data->_Inspect.css3 = a.at(7).get<std::string>();
-                    Data->_Inspect.match = a.at(8).get<std::string>();
-                    Data->_Inspect.xpath = a.at(9).get<std::string>();
-                    Data->_Inspect.mousex = a.at(10).get<double>();
-                    Data->_Inspect.mousey = a.at(11).get<double>();
-                    Data->_Inspect.active = a.at(12).get<bool>();
-
-                    RECT r = Layout->GetBrowserOuterRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-                    InvalidateRect(Data->_MainWindowHandle,&r,false);
-                }
-            }
-        }
-    }
-
-    //Update cursor
-    if(CursorX != Data->CursorX || CursorY != Data->CursorY)
-    {
-        Data->CursorX = CursorX;
-        Data->CursorY = CursorY;
-
-        RECT r = Layout->GetBrowserOuterRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-        InvalidateRect(Data->_MainWindowHandle,&r,false);
-    }
-
 
     //Paint screenshot
-    if(NewImageId != Data->LastImageId)
+    if(IsNewImage)
     {
-        Data->LastImageId = NewImageId;
-        unsigned int Width;
-        unsigned int Height;
-        unsigned int WidthInterface;
-        unsigned int HeightInterface;
-        std::vector<unsigned char> image_raw;
-
-        if(base64_data.empty())
+        Paint((char *)ImageData.data(),Width,Height);
+        if(Width != Data->WidthBrowser || Height != Data->HeightBrowser)
         {
-            Width = 0;
-            Height = 0;
-            WidthInterface = 1024;
-            HeightInterface = 600;
-        }else
-        {
-            std::string data_raw = base64_decode(base64_data);
-            std::vector<unsigned char> image_raw_inverted_colors;
-
-            lodepng::decode(image_raw_inverted_colors,Width,Height,(const unsigned char* )(data_raw.data()),data_raw.size(),LCT_RGBA,8);
-            WidthInterface = Width;
-            HeightInterface = Height;
-
-
-            for(int j = 0;j<Height;j++)
-            {
-                for(int i = 0;i<Width;i++)
-                {
-                    image_raw.push_back(image_raw_inverted_colors[i*4+j*Width*4 + 2]);
-                    image_raw.push_back(image_raw_inverted_colors[i*4+j*Width*4 + 1]);
-                    image_raw.push_back(image_raw_inverted_colors[i*4+j*Width*4 + 0]);
-                    image_raw.push_back(image_raw_inverted_colors[i*4+j*Width*4 + 3]);
-                }
-            }
-            image_raw_inverted_colors.clear();
-        }
-
-        if(WidthInterface != Data->WidthBrowser || HeightInterface != Data->HeightBrowser)
-        {
-            Data->WidthBrowser = WidthInterface;
-            Data->HeightBrowser = HeightInterface;
+            Data->WidthBrowser = Width;
+            Data->HeightBrowser = Height;
             Layout->Update(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
         }
-
-
-
-        Paint((char *)image_raw.data(),Width,Height);
     }
 }
 
@@ -3608,56 +3402,37 @@ void MainApp::UpdateMultiSelect()
 
 void MainApp::UpdateHighlight()
 {
-
     clock_t CurrentTime = clock();
     float time_spent = float( CurrentTime - LastHighlight ) /  CLOCKS_PER_SEC;
 
-    if(!Data->IsMutiloginEngine)
-    {
-        if(time_spent < 0.2)
-            return;
-    }else
-    {
-        if(time_spent < 3)
-            return;
-    }
+    if(time_spent < 0.2)
+        return;
 
     LastHighlight = CurrentTime;
 
-    if(Data->IsMutiloginEngine)
+    if(_HandlersManager->GetBrowser())
     {
-        if(!HighlightMultiloginSelector.empty())
+        std::string MultiloginCheckData;
+        if(Data->_MultiSelectData.IsDirty)
         {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-
-            IPC->SetHighlightRequest(HighlightMultiloginSelector);
+            LOCK_BROWSER_DATA
+            MultiloginCheckData = std::string("_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData)(") + Data->_MultiSelectData.Serialize() + std::string("); ");
+            Data->_MultiSelectData.IsDirty = false;
         }
-    }else
-    {
-        if(_HandlersManager->GetBrowser())
+
+        if(HighlightFrameId<0)
         {
-            std::string MultiloginCheckData;
-            if(Data->_MultiSelectData.IsDirty)
-            {
-                LOCK_BROWSER_DATA
-                MultiloginCheckData = std::string("_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData)(") + Data->_MultiSelectData.Serialize() + std::string("); ");
-                Data->_MultiSelectData.IsDirty = false;
-            }
 
-            if(HighlightFrameId<0)
-            {
+            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
+        }else
+        {
 
-                _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
-            }else
-            {
-
-                CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
-                if(Frame.get())
-                    Frame->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
-            }
+            CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
+            if(Frame.get())
+                Frame->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
         }
     }
+
 }
 
 std::pair<std::string, bool> MainApp::GetMenuSelected()
@@ -5482,17 +5257,10 @@ void MainApp::ScrollUp()
             LOCK_BROWSER_DATA
             Data->_Inspect.active = false;
         }
-        if(!Data->IsMutiloginEngine)
-        {
-            KeyState TypeTextState;
-            std::string KeyText = "<MOUSESCROLLUP>";
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollY(100);
-        }
+        KeyState TypeTextState;
+        std::string KeyText = "<MOUSESCROLLUP>";
+        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
+
     }
 }
 void MainApp::ScrollDown()
@@ -5505,18 +5273,11 @@ void MainApp::ScrollDown()
             Data->_Inspect.active = false;
         }
 
-        if(!Data->IsMutiloginEngine)
-        {
-            KeyState TypeTextState;
-            std::string KeyText = "<MOUSESCROLLDOWN>";
+        KeyState TypeTextState;
+        std::string KeyText = "<MOUSESCROLLDOWN>";
 
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollY(-100);
-        }
+        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
+
     }
 }
 
@@ -5530,17 +5291,9 @@ void MainApp::ScrollUpUp()
             Data->_Inspect.active = false;
         }
 
-        if(!Data->IsMutiloginEngine)
-        {
-            KeyState TypeTextState;
-            std::string KeyText = "<HOME>";
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollY(10000);
-        }
+        KeyState TypeTextState;
+        std::string KeyText = "<HOME>";
+        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
     }
 }
 void MainApp::ScrollDownDown()
@@ -5552,18 +5305,12 @@ void MainApp::ScrollDownDown()
             LOCK_BROWSER_DATA
             Data->_Inspect.active = false;
         }
-        if(!Data->IsMutiloginEngine)
-        {
-            KeyState TypeTextState;
-            std::string KeyText = "<END>";
 
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollY(-10000);
-        }
+        KeyState TypeTextState;
+        std::string KeyText = "<END>";
+
+        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
+
     }
 }
 void MainApp::ScrollLeft()
@@ -5575,15 +5322,9 @@ void MainApp::ScrollLeft()
             LOCK_BROWSER_DATA
             Data->_Inspect.active = false;
         }
-        if(!Data->IsMutiloginEngine)
-        {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeft)()","main"),"", 0);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollX(-100);
-        }
+
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeft)()","main"),"", 0);
+
     }
 }
 void MainApp::ScrollRight()
@@ -5595,15 +5336,9 @@ void MainApp::ScrollRight()
             LOCK_BROWSER_DATA
             Data->_Inspect.active = false;
         }
-        if(!Data->IsMutiloginEngine)
-        {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRight)()","main"),"", 0);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollX(100);
-        }
+
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRight)()","main"),"", 0);
+
     }
 }
 
@@ -5616,15 +5351,9 @@ void MainApp::ScrollLeftLeft()
             LOCK_BROWSER_DATA
             Data->_Inspect.active = false;
         }
-        if(!Data->IsMutiloginEngine)
-        {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeftLeft)()","main"),"", 0);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollX(-10000);
-        }
+
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeftLeft)()","main"),"", 0);
+
     }
 
 }
@@ -5637,15 +5366,9 @@ void MainApp::ScrollRightRight()
             LOCK_BROWSER_DATA
             Data->_Inspect.active = false;
         }
-        if(!Data->IsMutiloginEngine)
-        {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRightRight)()","main"),"", 0);
-        }else
-        {
-            SharedMemoryIPC * IPC = Data->MultiloginIPC;
-            SharedMemoryIPCLockGuard Lock(IPC);
-            IPC->SetScrollX(10000);
-        }
+
+        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRightRight)()","main"),"", 0);
+
     }
 }
 

@@ -129,12 +129,6 @@ public:
     //Tesing
     bool IsTesing;
 
-    //Multilogin debug
-    bool IsMutiloginEngine;
-    SharedMemoryIPC* MultiloginIPC;
-    std::string BASPID;
-    int LastImageId;
-
     //Remote debugging port
     int RemoteDebuggingPort;
 
@@ -143,6 +137,7 @@ public:
 
     DevToolsConnector *Connector = 0;
     ResultManager *Results = 0;
+    SharedMemoryIPC* IPC;
 
 };
 

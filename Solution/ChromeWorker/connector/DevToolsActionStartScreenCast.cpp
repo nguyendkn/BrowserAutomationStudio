@@ -13,6 +13,7 @@ void DevToolsActionStartScreenCast::Run()
     } else
     {
         std::map<std::string, Variant> CurrentParams;
+        CurrentParams["format"] = Variant(std::string("ipc"));
         SendWebSocket("Page.startScreencast", CurrentParams);
     }
 }
@@ -49,6 +50,7 @@ void DevToolsActionStartScreenCast::OnWebSocketMessage(const std::string& Messag
         IsStoppingPreviousScreencast = false;
         GlobalState->ScreenCastTabId.clear();
         std::map<std::string, Variant> CurrentParams;
+        CurrentParams["format"] = Variant(std::string("ipc"));
         SendWebSocket("Page.startScreencast", CurrentParams);
     } else
     {

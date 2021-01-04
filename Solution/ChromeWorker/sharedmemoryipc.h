@@ -23,7 +23,7 @@ class SharedMemoryIPC
     HANDLE MutexHandler = 0;
 
     unsigned char *Data = 0;
-    void SetError(const std::string& ErrorString);
+    void SetError(const std::string& CurrentErrorString);
     void ClearError();
     int32_t GetWord(int Offset);
     void SetWord(int Offset, int32_t Number);
@@ -46,8 +46,9 @@ public:
     void SetImageHeight(int32_t Value);
     int32_t GetImageId();
     void SetImageId(int32_t Value);
-    std::vector<unsigned char> GetImageData();
-    void SetImageData(const std::vector<unsigned char>& ImageData);
+    int32_t GetImageSize();
+    void SetImageSize(int32_t Value);
+    unsigned char* GetImagePointer();
 
 
     bool GetIsStarted();

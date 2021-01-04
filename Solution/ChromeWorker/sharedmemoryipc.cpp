@@ -1,9 +1,9 @@
 #include "sharedmemoryipc.h"
 
-void SharedMemoryIPC::SetError(const std::string& ErrorString)
+void SharedMemoryIPC::SetError(const std::string& CurrentErrorString)
 {
     IsError = true;
-    this->ErrorString = ErrorString;
+    this->ErrorString = CurrentErrorString;
 }
 void SharedMemoryIPC::ClearError()
 {
@@ -249,26 +249,12 @@ bool SharedMemoryIPC::Unlock()
     return true;
 }
 
-std::vector<unsigned char> SharedMemoryIPC::GetImageData()
+unsigned char* SharedMemoryIPC::GetImagePointer()
 {
     if(!Data)
-        return std::vector<unsigned char>();
+        return 0;
 
-    int32_t ImageSize = GetWord(SHARED_MEMORY_OFFSET_IMAGE_DATA);
-
-    unsigned char * Pointer = Data + SHARED_MEMORY_OFFSET_IMAGE_DATA + 4;
-    return std::vector<unsigned char>(Pointer, Pointer + ImageSize);
-}
-
-void SharedMemoryIPC::SetImageData(const std::vector<unsigned char>& ImageData)
-{
-    if(!Data)
-        return;
-
-    SetWord(SHARED_MEMORY_OFFSET_IMAGE_DATA, ImageData.size());
-
-    if(!ImageData.empty())
-        memcpy(Data + SHARED_MEMORY_OFFSET_IMAGE_DATA + 4,ImageData.data(),ImageData.size());
+    return Data + SHARED_MEMORY_OFFSET_IMAGE_DATA + 4;
 }
 
 int32_t SharedMemoryIPC::GetImageWidth()
@@ -299,6 +285,16 @@ int32_t SharedMemoryIPC::GetImageId()
 void SharedMemoryIPC::SetImageId(int32_t Value)
 {
     SetWord(SHARED_MEMORY_OFFSET_IMAGE_ID, Value);
+}
+
+int32_t SharedMemoryIPC::GetImageSize()
+{
+    return GetWord(SHARED_MEMORY_OFFSET_IMAGE_DATA);
+}
+
+void SharedMemoryIPC::SetImageSize(int32_t Value)
+{
+    SetWord(SHARED_MEMORY_OFFSET_IMAGE_DATA, Value);
 }
 
 bool SharedMemoryIPC::GetIsStarted()

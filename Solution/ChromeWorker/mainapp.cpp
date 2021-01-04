@@ -217,7 +217,6 @@ void MainApp::OnContextInitialized()
                             std::bind(&MainApp::UrlLoaded,this,_1,_2,_3),
                             std::bind(&MainApp::LoadSuccessCallback,this),
                             std::bind(&MainApp::CursorChanged,this,_1),
-                            std::bind(&MainApp::Paint,this,_1,_2,_3),
                             std::bind(&MainApp::OldestRequestTimeChanged,this,_1),
                             std::bind(&MainApp::DownloadStart,this),
                             std::bind(&MainApp::UploadStart,this),
@@ -506,7 +505,7 @@ void MainApp::ProcessMessage(CefRefPtr<CefBrowser> browser, CefProcessId source_
 }
 
 
-void MainApp::Paint(char * data, int width, int height)
+void MainApp::Paint(std::vector<char>& data, int width, int height)
 {
     if(!ViewRequestId.empty())
     {
@@ -623,7 +622,7 @@ void MainApp::Paint(char * data, int width, int height)
             Layout->SetIsRenderEmpty(true);
         }
     }
-    ImageData.assign(data, data + width * height * 4);
+    ImageData = std::move(data);
     ImageWidth = width;
     ImageHeight = height;
 
@@ -3327,7 +3326,7 @@ void MainApp::DirectControlInspectMouse()
 void MainApp::HandleIPCData()
 {
     bool IsNewImage = false;
-    std::vector<unsigned char> ImageData;
+    std::vector<char> ImageData;
     unsigned int Width = 0;
     unsigned int Height = 0;
 
@@ -3339,7 +3338,7 @@ void MainApp::HandleIPCData()
 
         if(IPC->GetImageId())
         {
-            ImageData = IPC->GetImageData();
+            ImageData.assign(IPC->GetImagePointer(),IPC->GetImagePointer() + IPC->GetImageSize());
             Width = IPC->GetImageWidth();
             Height = IPC->GetImageHeight();
             IPC->SetImageId(0);
@@ -3351,7 +3350,7 @@ void MainApp::HandleIPCData()
     //Paint screenshot
     if(IsNewImage)
     {
-        Paint((char *)ImageData.data(),Width,Height);
+        Paint(ImageData,Width,Height);
         if(Width != Data->WidthBrowser || Height != Data->HeightBrowser)
         {
             Data->WidthBrowser = Width;

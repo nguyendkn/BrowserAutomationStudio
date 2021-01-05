@@ -1,7 +1,4 @@
 _XLSX_DATE_FORMAT = "dd\\.mm\\.yyyy\\ hh:mm:ss";
-var date_base = new Date(1900, 0, 0);
-var incorrect_leap_date = new Date(1900, 1, 28);
-var milliseconds_in_day = 1000 * 60 * 60 * 24;
 _XLSX_LAST_ACTION = {ru:"Модуль Excel еще не использовался",en:"Excel module has not been used yet"};
 
 function Excel_CreateFile(){
@@ -543,6 +540,9 @@ function Excel_CloseFile(){
 };
 function Excel_DateToNumber(date){
 	date = date instanceof Date ? date : new Date(date);
+	var date_base = new Date(1900, 0, 0);
+	var incorrect_leap_date = new Date(1900, 1, 28);
+	var milliseconds_in_day = 1000 * 60 * 60 * 24;
 	
 	var date_only = new Date(date.getTime());
 	date_only.setHours(0, 0, 0, 0);
@@ -554,6 +554,9 @@ function Excel_DateToNumber(date){
 };
 function Excel_NumberToDate(number){
 	number = typeof number=="number" ? number : Number(number);
+	var date_base = new Date(1900, 0, 0);
+	var incorrect_leap_date = new Date(1900, 1, 28);
+	var milliseconds_in_day = 1000 * 60 * 60 * 24;
 	
 	if(number > Excel_DateToNumber(incorrect_leap_date)){number--};
 	var full_days = Math.floor(number);
@@ -564,12 +567,16 @@ function Excel_NumberToDate(number){
 	return date;
 };
 function Excel_IsJsonString(str){
-    try{
-        JSON.parse(str);
-    }catch(e){
-        return false;
-    };
-    return true;
+	if(typeof str==="string" && str.length > 0 && ((str.slice(0, 1)==="[" && str.slice(-1)==="]") || (str.slice(0, 1)==="{" && str.slice(-1)==="}"))){
+		try{
+			JSON.parse(str);
+		}catch(e){
+			return false;
+		};
+		return true;
+	}else{
+		return false;
+	};
 };
 function Excel_ConvertToList(str){
 	return (str==="" || typeof str=="object") ? str : (Excel_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));

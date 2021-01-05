@@ -25,7 +25,6 @@
 #include "chromecommandlineparser.h"
 #include "replaceall.h"
 #include "split.h"
-#include "fontreplace.h"
 #include "extract_labels.h"
 #include "writefile.h"
 #include "preparestartupscript.h"
@@ -971,14 +970,6 @@ void MainApp::ResetCallbackFinalize()
         Data->_RequestMask.clear();
         Data->_LoadedUrls.clear();
         Data->_CacheMask.clear();
-
-        //Proxy
-        if(Settings->ProxyTunneling())
-        {
-            ProxyData NewProxy;
-            NewProxy.Write();
-        }
-            Data->_Proxy.Clear();
 
         //Open file name
         Data->_OpenFileName.clear();
@@ -1937,31 +1928,13 @@ void MainApp::MouseLeave()
 
 void MainApp::SetProxyCallback(const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target)
 {
-    ProxyData NewProxy;
     WORKER_LOG(std::string("SetProxyCallback ") + server + std::string(" ") + std::to_string(Port) + std::string(" ") + target);
-    if(!server.empty())
+    Async Result = Data->Connector->SetProxy(server, Port, IsHttp, username, password);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        NewProxy.Server = server;
-        NewProxy.Port = Port;
-        NewProxy.ProxyType = (IsHttp)?ProxyData::Http:ProxyData::Socks5;
-        NewProxy.UserName = username;
-        NewProxy.Password = password;
-        NewProxy.IsNull = false;
-    }
-
-    if(Settings->ProxyTunneling())
-    {
-
-        NewProxy.Write();
-        CefRequestContext::GetGlobalContext()->CloseAllConnections(this);
-    }else
-    {
-        {
-            LOCK_BROWSER_DATA
-            Data->_Proxy.Set(NewProxy,target);
-        }
-        SendTextResponce("<SendWorkerSettings></SendWorkerSettings>");
-    }
+        this->SendTextResponce("<SendWorkerSettings></SendWorkerSettings>");
+    });
 }
 
 void MainApp::OnComplete()

@@ -527,13 +527,6 @@ bool CurlResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPt
     CurlThreadData.Url = request->GetURL().ToString();
     CurlThreadData.Method = request->GetMethod().ToString();
     CurlThreadData.Referrer = request->GetReferrerURL().ToString();
-    {
-        LOCK_BROWSER_DATA
-        ProxyData p = _BrowserData->_Proxy.Match(request->GetURL().ToString(),TabNumber);
-        CurlThreadData.Proxy = p.ToString();
-        CurlThreadData.ProxyAuth = p.AuthToString();
-        CurlThreadData.HeadersOrder = _BrowserData->_HeadersDefaults;
-    }
 
     {
         LOCK_HTTP_AUTH

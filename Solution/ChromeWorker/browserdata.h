@@ -57,7 +57,6 @@ public:
     std::string _NextReferrer;
     std::string _OpenFileName;
     std::map<std::string,ConfigurableItem<std::string> > _StartupScript;
-    ConfigurableItem<ProxyData> _Proxy;
     CefWindowHandle _MainWindowHandle;
     CefWindowHandle _ParentWindowHandle;
     HWND UrlHandler;

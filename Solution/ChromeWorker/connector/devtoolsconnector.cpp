@@ -174,7 +174,7 @@ void DevToolsConnector::OnWebSocketConnected(bool IsSuccess)
         return;
     }
     ConnectionState = WaitingForAutoconnectEnable;
-    GlobalState.WebSocketClient->Send(std::string("{\"id\": 1,\"method\": \"Target.setAutoAttach\", \"params\": {\"autoAttach\": true, \"waitForDebuggerOnStart\": false, \"flatten\": true}}"));
+    GlobalState.WebSocketClient->Send(std::string("{\"id\": 1,\"method\": \"Target.setDiscoverTargets\", \"params\": {\"discover\": true}}"));
 
 }
 
@@ -214,6 +214,14 @@ void DevToolsConnector::StartFirstSavedAction(std::shared_ptr<TabData> Tab)
 void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
 {
     if(Tab->ConnectionState == TabData::NotStarted)
+    {
+        Tab->ConnectionState = TabData::WaitingForAttachment;
+        std::map<std::string, Variant> Params;
+        Params["targetId"] = Variant(Tab->FrameId);
+        Params["flatten"] = Variant(true);
+        Tab->CurrentWebsocketActionId = -1;
+        SendWebSocket("Target.attachToTarget", Params, std::string());
+    }else if(Tab->ConnectionState == TabData::WaitingForAttachment)
     {
         Tab->ConnectionState = TabData::WaitingForPageEnable;
         std::map<std::string, Variant> Params;
@@ -416,15 +424,14 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 double Status = Parser.GetFloatFromJson(Result, "response.status");
                 CachedUrls[Url] = Status;
             }
-        } else if(Method == "Target.attachedToTarget")
+        } else if(Method == "Target.targetCreated")
         {
-            //New tab has been created, start initialization of new tab
+            //New tab has been created, attach to it
             if(AllObject["params"].is<picojson::object>())
             {
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
 
-                std::string TabId = Parser.GetStringFromJson(Result, "sessionId");
                 std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
                 std::string TypeName = Parser.GetStringFromJson(Result, "targetInfo.type");
 
@@ -433,12 +440,31 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
                     TabInfo->ConnectionState = TabData::NotStarted;
                     TabInfo->FrameId = FrameId;
-                    TabInfo->TabId = TabId;
                     GlobalState.Tabs.push_back(TabInfo);
-                    GlobalState.SwitchToTabId = TabId;
-                    GlobalState.SwitchToTabFrameId = FrameId;
-                    GlobalState.SwitchToTabResetSavedActions = false;
                     ProcessTabConnection(TabInfo);
+                }
+            }
+        } else if(Method == "Target.attachedToTarget")
+        {
+            //New tab has been attached, start initialization of new tab
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+
+                std::string TabId = Parser.GetStringFromJson(Result, "sessionId");
+                std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
+                
+                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                {
+                    if(FrameId == TabInfo->FrameId)
+                    {
+                        TabInfo->TabId = TabId;
+                        GlobalState.SwitchToTabId = TabId;
+                        GlobalState.SwitchToTabFrameId = FrameId;
+                        GlobalState.SwitchToTabResetSavedActions = false;
+                        ProcessTabConnection(TabInfo);
+                    }
                 }
             }
         } else if(Method == "Target.detachedFromTarget")

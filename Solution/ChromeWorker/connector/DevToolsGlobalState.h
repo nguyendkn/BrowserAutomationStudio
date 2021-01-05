@@ -13,6 +13,7 @@ struct TabData
     enum
     {
         NotStarted,
+        WaitingForAttachment,
         WaitingForPageEnable,
         WaitingForRuntimeEnable,
         WaitingForNetworkEnable,

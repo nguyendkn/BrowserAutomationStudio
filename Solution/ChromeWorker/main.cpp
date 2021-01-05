@@ -31,7 +31,6 @@
 #include "proxyconfigreplace.h"
 #include <iostream>
 #include <fstream>
-#include "MinHook.h"
 #include "ipcsimple.h"
 #include "rawcpphttpclientfactory.h"
 #include "rawcppwebsocketclientfactory.h"
@@ -1747,8 +1746,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     std::srand(std::time(0));
 
-    MH_Initialize();
-
     CefMainArgs main_args(hInstance);
 
     std::string ProcessType;
@@ -2182,8 +2179,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     CefShutdown();
 
     WORKER_LOG("Exit");
-
-    MH_Uninitialize();
 
     return Msg.wParam;
 }

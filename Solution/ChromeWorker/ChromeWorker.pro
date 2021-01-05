@@ -102,7 +102,6 @@ SOURCES += main.cpp \
     CrashHandler.cpp \
     localstoragedata.cpp \
     fixpagecontent.cpp \
-    fontreplace.cpp \
     snappy/snappy.cc \
     snappy/snappy-c.cc \
     snappy/snappy-sinksource.cc \
@@ -112,7 +111,6 @@ SOURCES += main.cpp \
     highlightresult.cpp \
     imagefinder.cpp \
     writefile.cpp \
-    proxyconfigreplace.cpp \
     aes.cpp \
     md5.cpp \
     requestlist.cpp \
@@ -141,7 +139,6 @@ INCLUDEPATH += $(BAS_PATH_WORKER)/include
 
 
 LIBS += -L$(BAS_PATH_WORKER)/lib -llibiconv -llibcef -llibcef_dll_wrapper -lAdvapi32 -luser32 -lPsapi -lshell32 -lDbgHelp -lComdlg32 -lgdi32 -llibcurl -llibeay32 -lssleay32 -lnetwork-uri
-win32:LIBS += -lminhook
 win32:LIBS += -lMsimg32
 
 
@@ -253,7 +250,6 @@ HEADERS += \
     configurableitem.h \
     localstoragedata.h \
     fixpagecontent.h \
-    fontreplace.h \
     snappy/snappy.h \
     snappy/snappy-c.h \
     snappy/snappy-internal.h \
@@ -265,7 +261,6 @@ HEADERS += \
     highlightresult.h \
     imagefinder.h \
     writefile.h \
-    proxyconfigreplace.h \
     aes.h \
     md5.h \
     requestlist.h \

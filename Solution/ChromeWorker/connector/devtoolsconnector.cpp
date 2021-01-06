@@ -753,6 +753,16 @@ void DevToolsConnector::Timer()
                     DeleteThisAction = true;
                     Action->GetResult()->Fail("Timeout", "Timeout");
                 }
+
+                //Send timer event
+                if(!DeleteThisAction)
+                {
+                    std::vector<std::string> SubscribbedEvents = Action->GetSubscribbedEvents();
+                    if(std::find(SubscribbedEvents.begin(), SubscribbedEvents.end(), "Timer") != SubscribbedEvents.end())
+                    {
+                        Action->OnWebSocketEvent("Timer", std::string());
+                    }
+                }
             }
 
             if(DeleteThisAction)

@@ -5,6 +5,9 @@
 #include "aes.h"
 #include <windows.h>
 #include <fstream>
+#include <chrono>
+
+using namespace std::chrono;
 
 std::string DevToolsActionSetProxy::GenerateProxyData(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password)
 {
@@ -42,6 +45,7 @@ std::string DevToolsActionSetProxy::GenerateProxyData(const std::string& Server,
 
 void DevToolsActionSetProxy::Run()
 {
+
     //Create folder if needed
     std::string Folder(GlobalState->ChromeExecutableLocation + std::string("/t/"));
     CreateDirectoryA(Folder.c_str(), NULL);
@@ -105,6 +109,24 @@ void DevToolsActionSetProxy::Run()
 
     }
 
-    State = Finished;
-    Result->Success();
+    //Wait 3 seconds and then finish action.
+    //After updating ResetPath file all browser connecitions will be reset in 1 second.
+    //So there can be race condition here. Anyway it is not critical, because it can happen only when changing proxy and in worst case another request will be made with old proxy.
+    FinishActionTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 3000;
+    SubscribbedEvents.push_back("Timer");
+    State = Running;
+}
+
+
+void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const std::string& Message)
+{
+    if(Method == "Timer")
+    {
+        long long Now = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+        if(Now > FinishActionTime)
+        {
+            State = Finished;
+            Result->Success();
+        }
+    }
 }

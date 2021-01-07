@@ -4,7 +4,6 @@
 #include "include/cef_request_context_handler.h"
 #include "mainhandler.h"
 #include "devtoolshandler.h"
-#include "proxydata.h"
 #include "cookievisitor.h"
 #include "browserdata.h"
 #include "v8handler.h"

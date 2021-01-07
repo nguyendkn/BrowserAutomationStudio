@@ -4,7 +4,6 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include "proxydata.h"
 #include "include/cef_base.h"
 #include "inspectresult.h"
 #include "highlightresult.h"

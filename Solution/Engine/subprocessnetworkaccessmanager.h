@@ -37,8 +37,6 @@ namespace BrowserAutomationStudioFramework
         void AddHeader();
         void SetHeaderList();
         void SetAcceptLanguagePattern();
-        void BrowserIp();
-        void BrowserIpHttps();
         void RestrictPopups();
         void AllowPopups();
         void RestrictDownloads();
@@ -67,8 +65,6 @@ namespace BrowserAutomationStudioFramework
         virtual void RestrictDownloads(const QString& callback);
         virtual void AllowDownloads(const QString& callback);
         virtual void FindCacheByMaskBase64(const QString& Mask, const QString& callback);
-        virtual void BrowserIp(const QString& callback);
-        virtual void BrowserIpHttps(const QString& callback);
         virtual void FindStatusByMask(const QString& Mask, const QString& callback);
         virtual void FindUrlByMask(const QString& Mask, const QString& callback);
         virtual void FindCacheByMaskString(const QString& Mask, const QString& callback);

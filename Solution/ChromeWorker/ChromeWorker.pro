@@ -125,7 +125,6 @@ SOURCES += main.cpp \
     renderapp.cpp \
     preparestartupscript.cpp \
     interprocessv8handler.cpp \
-    browserip.cpp \
     languagemanager.cpp \
     browsersettingssaver.cpp \
     detectorhandler.cpp \
@@ -274,7 +273,6 @@ HEADERS += \
     renderapp.h \
     preparestartupscript.h \
     interprocessv8handler.h \
-    browserip.h \
     languagemanager.h \
     browsersettingssaver.h \
     detectorhandler.h \

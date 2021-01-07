@@ -65,8 +65,6 @@ MainApp::MainApp()
     ImageHeight = 0;
     ParentWidth = 0;
     ParentHeight = 0;
-    IpReuestId = -1;
-    IpRequestIsHttps = false;
     App = this;
     IsMouseMoveSimulation = false;
     NeedRenderNextFrame = false;
@@ -1745,42 +1743,6 @@ void MainApp::TimezoneCallback(int offset)
 {
     //For backward compability only
     SendTextResponce("<Timezone></Timezone>");
-}
-
-void MainApp::BrowserIpCallback()
-{
-    if(IpClient)
-        IpClient->Stop();
-    IpClient = new BrowserIp();
-    IpReuestId = rand()%100000;
-    IpClient->Done.push_back(std::bind(&MainApp::SendBrowserIp,this,_1,_2));
-    IpRequestIsHttps = false;
-    IpClient->Start(IpReuestId, IpRequestIsHttps);
-}
-
-void MainApp::BrowserIpHttpsCallback()
-{
-    if(IpClient)
-        IpClient->Stop();
-    IpClient = new BrowserIp();
-    IpReuestId = rand()%100000;
-    IpClient->Done.push_back(std::bind(&MainApp::SendBrowserIp,this,_1,_2));
-    IpRequestIsHttps = true;
-    IpClient->Start(IpReuestId, IpRequestIsHttps);
-}
-
-void MainApp::SendBrowserIp(const std::string& Ip, int IpReuestId)
-{
-    if(this->IpReuestId == IpReuestId)
-    {
-        if(IpRequestIsHttps)
-        {
-            SendTextResponce(std::string("<BrowserIpHttps>") + Ip + std::string("</BrowserIpHttps>"));
-        }else
-        {
-            SendTextResponce(std::string("<BrowserIp>") + Ip + std::string("</BrowserIp>"));
-        }
-    }
 }
 
 void MainApp::VisibleCallback(bool visible)

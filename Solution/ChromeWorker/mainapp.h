@@ -26,7 +26,6 @@
 #include "handlersmanager.h"
 #include "postmanager.h"
 #include "imagefinder.h"
-#include "browserip.h"
 #include "cefrequest2action.h"
 #include "fingerprintdetector.h"
 #include "notificationmanager.h"
@@ -84,11 +83,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     std::string LastUsedSelector;
     std::string LastUsedLabel;
-
-    //IpRequest
-    CefRefPtr<BrowserIp> IpClient;
-    int IpReuestId;
-    bool IpRequestIsHttps;
 
     //MouseMove
     bool IsMouseMoveSimulation;
@@ -284,9 +278,6 @@ public:
     std::string GetUrl();
     void ProcessContextMenu(int MenuId);
     void ProcessFind(LPFINDREPLACE lpfr);
-    void BrowserIpCallback();
-    void BrowserIpHttpsCallback();
-    void SendBrowserIp(const std::string& Ip, int IpReuestId);
     void SetUserAgentCallback(const std::string& value);
     void PrepareFunctionCallback(const std::string& value);
     void RecaptchaV3ResultCallback(const std::string& id, const std::string& result);

@@ -188,22 +188,6 @@ void CommandParser::Parse(const std::string& Xml)
                 f(value);
         }
 
-        CommandNode = MessagesNode->first_node("BrowserIp");
-        if(CommandNode)
-        {
-            WORKER_LOG("EventBrowserIp");
-            for(auto f:EventBrowserIp)
-                f();
-        }
-
-        CommandNode = MessagesNode->first_node("BrowserIpHttps");
-        if(CommandNode)
-        {
-            WORKER_LOG("EventBrowserIpHttps");
-            for(auto f:EventBrowserIpHttps)
-                f();
-        }
-
         CommandNode = MessagesNode->first_node("Reset");
         if(CommandNode)
         {

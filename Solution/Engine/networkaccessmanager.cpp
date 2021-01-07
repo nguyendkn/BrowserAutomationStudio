@@ -241,16 +241,6 @@ namespace BrowserAutomationStudioFramework
         return QByteArray();
     }
 
-    void NetworkAccessManager::BrowserIp(const QString& callback)
-    {
-
-    }
-
-    void NetworkAccessManager::BrowserIpHttps(const QString& callback)
-    {
-
-    }
-
     void NetworkAccessManager::FindStatusByMask(const QString& Mask, const QString& callback)
     {
         QRegExp MaskRegexp;

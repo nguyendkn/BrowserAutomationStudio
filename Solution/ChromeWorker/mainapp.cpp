@@ -2096,14 +2096,15 @@ void MainApp::CleanHeaderCallback()
 
 void MainApp::GetUrlCallback()
 {
-    std::string url;
-
-    if(_HandlersManager->GetBrowser())
+    Async Result = Data->Connector->GetCurrentUrl();
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        url = _HandlersManager->GetBrowser()->GetMainFrame()->GetURL();
-    }
-    xml_encode(url);
-    SendTextResponce(std::string("<GetUrl>") + url + std::string("</GetUrl>"));
+        std::string Url = Result->GetString();
+        xml_encode(Url);
+        SendTextResponce(std::string("<GetUrl>") + Url + std::string("</GetUrl>"));
+    });
+
 }
 
 void MainApp::GetBrowserScreenSettingsCallback()

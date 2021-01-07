@@ -107,7 +107,7 @@ public:
     std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool)> > EventSetCode;
     std::vector<std::function<void(const std::string&)> > EventSetResources;
     std::vector<std::function<void()> > EventReset;
-    std::vector<std::function<void()> > EventNavigateBack;
+    std::vector<std::function<void(bool)> > EventNavigateBack;
     std::vector<std::function<void()> > EventResetNoCookies;
 
     std::vector<std::function<void(const ElementCommand &)> > EventElementCommand;

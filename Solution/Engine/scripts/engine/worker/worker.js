@@ -1161,10 +1161,11 @@ function _load(text, referrer, is_instant, callback)
     })
 }
 
-function navigate_back(callback)
+function navigate_back(is_instant, callback)
 {
+    _ARG = arguments
     _create_browser_if_needed(function(){
-        Browser.NavigateBack(_get_function_body(callback));
+        Browser.NavigateBack(_ARG[0], _get_function_body(_ARG[1]));
     })
 }
 

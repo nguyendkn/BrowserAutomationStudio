@@ -2052,7 +2052,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4));
     Parser->EventSetResources.push_back(std::bind(&MainApp::SetResourceCallback,app.get(),_1));
     Parser->EventReset.push_back(std::bind(&MainApp::ResetCallback,app.get()));
-    Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get()));
+    Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get(), _1));
     Parser->EventResetNoCookies.push_back(std::bind(&MainApp::ResetNoCookiesCallback,app.get()));
     Parser->EventIsChanged.push_back(std::bind(&MainApp::IsChangedCallback,app.get()));
     Parser->EventSetNextAction.push_back(std::bind(&MainApp::SetNextActionCallback,app.get(),_1));

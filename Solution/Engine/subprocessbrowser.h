@@ -68,7 +68,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetOpenFileName(const QString & OpenFileName, const QString& callback);
         virtual void DragFile(const QString & FileName, const QString& callback);
         virtual void SetStartupScript(const QString& script,const QString& script_id,const QString& target, const QString& callback);
-        virtual void NavigateBack(const QString& callback);
+        virtual void NavigateBack(bool IsInstant, const QString& callback);
         virtual void SetFontList(const QString& fonts, const QString& callback);
         virtual void SetPromptResult(const QString & Text, const QString& callback);
         virtual void SetHttpAuthResult(const QString & Login, const QString & Password, const QString& callback);

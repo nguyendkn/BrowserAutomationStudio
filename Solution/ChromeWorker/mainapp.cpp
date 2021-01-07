@@ -867,15 +867,15 @@ void MainApp::ResetCallback()
     ResetInternal();
 }
 
-void MainApp::NavigateBackCallback()
+void MainApp::NavigateBackCallback(bool IsInstant)
 {
     WORKER_LOG("NavigateBackCallback");
-    if(_HandlersManager->GetBrowser())
+    Async Result = Data->Connector->NavigateBack(IsInstant);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        _HandlersManager->GetBrowser()->GoBack();
-    }
-    SendTextResponce("<NavigateBack></NavigateBack>");
-
+        this->SendTextResponce("<NavigateBack></NavigateBack>");
+    });
 }
 
 

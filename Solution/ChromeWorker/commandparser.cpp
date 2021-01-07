@@ -200,8 +200,9 @@ void CommandParser::Parse(const std::string& Xml)
         if(CommandNode)
         {
             WORKER_LOG("EventNavigateBack");
+            std::string value = CommandNode->value();
             for(auto f:EventNavigateBack)
-                f();
+                f(value == "true");
         }
 
         CommandNode = MessagesNode->first_node("ResetNoCookies");

@@ -5644,8 +5644,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="navigateback_code">
-      /*Browser*/
-      navigate_back()!
+      <% if(!is_instant){ %>
+        <%= timeout_general() %>
+      <% } %>
+      navigate_back(<%= is_instant %>)!
   </script>
 
   <script type="text/template" id="move_code">
@@ -7166,7 +7168,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             
             try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({}) + BrowserAutomationStudio_GetWaitCode()
+              var is_instant = true
+              var usewaiter = $("#use-waiter")
+
+              if(usewaiter.length > 0 && usewaiter.attr("data-enabled") == "true")  
+              {
+                is_instant = false
+              }
+
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({is_instant: is_instant})
               code = Normalize(code,0)
 
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

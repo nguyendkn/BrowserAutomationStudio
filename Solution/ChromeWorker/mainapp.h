@@ -256,7 +256,7 @@ public:
     void LoadNoDataCallback();
     void LoadManualSelect();
     void ResetCallback();
-    void NavigateBackCallback();
+    void NavigateBackCallback(bool IsInstant);
     void ResetNoCookiesCallback();
     void ResetInternal();
 

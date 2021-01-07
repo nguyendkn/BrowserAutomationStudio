@@ -489,11 +489,11 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
-    void SubprocessBrowser::NavigateBack(const QString& callback)
+    void SubprocessBrowser::NavigateBack(bool IsInstant, const QString& callback)
     {
         QString WriteString;
         QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("NavigateBack","");
+        xmlWriter.writeTextElement("NavigateBack",IsInstant ? "true" : "false");
 
         Worker->SetScript(callback);
         Worker->SetFailMessage(tr("Timeout during ") + QString("NavigateBack"));

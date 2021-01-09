@@ -152,7 +152,7 @@ void MainApp::SetData(BrowserData *Data)
     this->Data = Data;
 
     _BrowserDirectControl = std::make_shared<BrowserDirectControl>();
-    _BrowserDirectControl->Init(_HandlersManager,Data);
+    _BrowserDirectControl->Init(Data);
     _BrowserDirectControl->EventExecuteScenarioCode.push_back(std::bind(&MainApp::DirectControlAddAction,this,_1));
 
     _HandlersManager->SetUniqueProcessId(Data->_UniqueProcessId);
@@ -1233,14 +1233,14 @@ void MainApp::RestoreCookiesCallback(const std::string& value)
 
 void MainApp::ResizeCallback(int width, int height)
 {
-    if(_HandlersManager->GetBrowser())
+    Async Result = Data->Connector->ResizeBrowser(width, height);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        _HandlersManager->GetBrowser()->GetHost()->WasResized();
-        _HandlersManager->GetBrowser()->GetHost()->Invalidate(PET_VIEW);
-    }
-    SendStartupScriptUpdated();
+        this->SendTextResponce("<Resize></Resize>");
+    });
 
-    SendTextResponce("<Resize></Resize>");
+    SendStartupScriptUpdated();
 }
 
 void MainApp::ForceUpdateWindowPositionWithParent()

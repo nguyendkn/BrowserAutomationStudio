@@ -51,7 +51,6 @@ class BrowserDirectControl
     };
 
     //External Data
-    std::weak_ptr<HandlersManager> _HandlersManager;
     BrowserData *_BrowserData;
 
     //Helpers
@@ -105,7 +104,7 @@ class BrowserDirectControl
 public:
     //Main methods
     BrowserDirectControl();
-    void Init(std::weak_ptr<HandlersManager> _HandlersManager, BrowserData *_BrowserData);
+    void Init(BrowserData *_BrowserData);
     void Timer();
 
     //Mouse clicks

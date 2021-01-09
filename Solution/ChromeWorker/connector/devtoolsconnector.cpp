@@ -1221,6 +1221,9 @@ void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button
     } else if(Button == MouseButtonMiddle)
     {
         ButtonName = "middle";
+    }else if(Button == MouseButtonNone)
+    {
+        ButtonName = "none";
     }
     Params["type"] = Variant(TypeName);
     Params["x"] = Variant(X);
@@ -1250,7 +1253,7 @@ void DevToolsConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePress
     SendWebSocket("Input.dispatchMouseEvent", Params, GlobalState.TabId);
 }
 
-void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, double RadiusX, double RadiusY, double RotationAngle, double Pressure)
+void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure)
 {
     std::map<std::string, Variant> Params;
     std::map<std::string, Variant> Point;
@@ -1272,6 +1275,7 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, double RadiusX, do
     Point["radiusY"] = Variant(RadiusY);
     Point["rotationAngle"] = Variant(RotationAngle);
     Point["force"] = Variant(Pressure);
+    Point["id"] = Variant(Id);
 
     
     std::vector<Variant> Points;
@@ -1286,6 +1290,13 @@ void DevToolsConnector::Key(KeyEvent Event, const std::string& Char, int Keyboar
     std::map<std::string, Variant> Params = EmulateKeyboard.PrepareKeyboardEvent(Event, Char, KeyboardPresses);
     SendWebSocket("Input.dispatchKeyEvent", Params, GlobalState.TabId);
 }
+
+void DevToolsConnector::KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM NativeVirtualKeyCode, int KeyboardPresses)
+{
+    std::map<std::string, Variant> Params = EmulateKeyboard.PrepareRawKeyboardEvent(Event, WindowsVirtualKeyCode, NativeVirtualKeyCode, KeyboardPresses);
+    SendWebSocket("Input.dispatchKeyEvent", Params, GlobalState.TabId);
+}
+
 
 Async DevToolsConnector::Reset(int Timeout)
 {

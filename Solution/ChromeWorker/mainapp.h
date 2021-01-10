@@ -249,7 +249,6 @@ public:
     void LoadCallback(const std::string& page);
     void Load2Callback(const std::string& url,const std::string& referrer, bool instant);
     void SetFocusOnNextLoad();
-    bool HasBrowser();
     void CreateBrowser(const std::string& Url);
     void ViewCallback(const std::string& RequestId);
     void GetTabsCallback(const std::string& RequestId);

@@ -762,11 +762,6 @@ void MainApp::SetFocusOnNextLoad()
     IsWaitingForLoad = true;
 }
 
-bool MainApp::HasBrowser()
-{
-    return _HandlersManager->GetBrowser();
-}
-
 void MainApp::CreateBrowser(const std::string& Url)
 {
     NextLoadPage = Url;

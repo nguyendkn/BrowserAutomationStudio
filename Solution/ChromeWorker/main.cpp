@@ -457,10 +457,7 @@ LRESULT CALLBACK UrlEditProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, 
     {
         app->SetFocusOnNextLoad();
         std::string Url = prepare_url_adressbar(GetUrl());
-        if(!app->HasBrowser())
-            app->CreateBrowser(Url);
-        else
-            app->DirectControl()->Load(Url);
+        app->DirectControl()->Load(Url);
         return true;
     }
     if(msg == WM_LBUTTONDBLCLK)
@@ -1258,10 +1255,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     case IDButtonLoadUrl:
                     {
                         app->SetFocusOnNextLoad();
-                        if(!app->HasBrowser())
-                            app->CreateBrowser(GetUrl());
-                        else
-                            app->DirectControl()->Load(GetUrl());
+                        app->DirectControl()->Load(GetUrl());
                     }
                     break;
                     case IDAddTabManual:

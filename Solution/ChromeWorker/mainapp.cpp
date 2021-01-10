@@ -189,17 +189,18 @@ BrowserData * MainApp::GetData()
     return Data;
 }
 
-std::vector<std::string> MainApp::GetAllPopupsUrls()
+void MainApp::GetAllPopupsUrls(std::function<void(const std::vector<std::string>&)> Callback)
 {
-    return _HandlersManager->GetAllUrls();
+    Data->Connector->GetTabsList()->Then([Callback](AsyncResult* Result)
+    {
+        Callback(Result->GetList());
+    });
 }
 
 int MainApp::GetActivePopupIndex()
 {
-    return _HandlersManager->GetActiveIndex();
+    return Data->Connector->GetCurrentTabIndex();
 }
-
-std::vector<std::string> GetAllUrls();
 
 
 CefRefPtr<CefBrowserProcessHandler> MainApp::GetBrowserProcessHandler()

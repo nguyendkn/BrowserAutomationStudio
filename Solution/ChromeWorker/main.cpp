@@ -911,7 +911,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             MouseMenuPositionX += app->GetData()->ScrollX;
                             MouseMenuPositionY += app->GetData()->ScrollY;
 
-                            app->ShowContextMenu(xPos - r.left,IsImageSelect,GenerateJsonMenu(IsImageSelect, MouseMenuPositionX, MouseMenuPositionY,app->GetAllPopupsUrls(),app->GetData()->_ModulesData));
+                            int MouseMenuPositionXCopy = MouseMenuPositionX;
+                            int MouseMenuPositionYCopy = MouseMenuPositionY;
+                            MainApp * App = app.get();
+
+                            app->GetAllPopupsUrls([xPos, r, IsImageSelect, App, MouseMenuPositionXCopy, MouseMenuPositionYCopy](const std::vector<std::string>& Urls)
+                            {
+                                App->ShowContextMenu(xPos - r.left,IsImageSelect,GenerateJsonMenu(IsImageSelect, MouseMenuPositionXCopy, MouseMenuPositionYCopy,Urls,App->GetData()->_ModulesData));
+                            });
+
+
                         }
 
                     }
@@ -1141,63 +1150,73 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             DestroyMenu(hTabsManualMenu);
                             hTabsManualMenu = 0;
                         }
-                        std::vector<std::string> Urls = app->GetAllPopupsUrls();
+                        HWND TabsButton = Layout->HBrowserTabs;
                         int SelectIndex = app->GetActivePopupIndex();
 
-                        hTabsManualMenu = CreatePopupMenu();
-                        AppendMenu(hTabsManualMenu, MF_BYPOSITION | MF_STRING, IDAddTabManual, Translate::Tr(L" + Add new tab").c_str());
-                        int i = 1;
-                        for(std::string& Url: Urls)
+
+                        HMENU *hTabsManualMenuRef = &hTabsManualMenu;
+
+                        app->GetAllPopupsUrls([SelectIndex,hTabsManualMenuRef,TabsButton,hwnd](const std::vector<std::string>& Urls)
                         {
+                            *hTabsManualMenuRef = CreatePopupMenu();
 
-                            std::wstring UrlCopy = s2ws(Url);
-                            if(UrlCopy.size() > 50)
-                                UrlCopy = UrlCopy.substr(0,50) + L" ...";
-
-                            std::wstring Text1,Text2;
-                            Text1 += Translate::Tr(L"Select tab");
-                            Text2 += Translate::Tr(L"Remove tab");
-                            Text1 += L" #";
-                            Text2 += L" #";
-                            Text1 += std::to_wstring(i);
-                            Text2 += std::to_wstring(i);
-
-                            Text1 += L" (";
-                            Text2 += L" (";
-
-                            Text1 += UrlCopy;
-                            Text2 += UrlCopy;
-
-                            Text1 += L")";
-                            Text2 += L")";
-
-                            AppendMenu(hTabsManualMenu,MF_SEPARATOR,NULL,L"Separator");
-
-                            UINT Flags = MF_BYPOSITION | MF_STRING;
-
-                            if(i - 1 == SelectIndex)
+                            AppendMenu(*hTabsManualMenuRef, MF_BYPOSITION | MF_STRING, IDAddTabManual, Translate::Tr(L" + Add new tab").c_str());
+                            int i = 1;
+                            for(const std::string& Url: Urls)
                             {
-                                Flags |= MFS_GRAYED;
+
+                                std::wstring UrlCopy = s2ws(Url);
+                                if(UrlCopy.size() > 50)
+                                    UrlCopy = UrlCopy.substr(0,50) + L" ...";
+
+                                std::wstring Text1,Text2;
+                                Text1 += Translate::Tr(L"Select tab");
+                                Text2 += Translate::Tr(L"Remove tab");
+                                Text1 += L" #";
+                                Text2 += L" #";
+                                Text1 += std::to_wstring(i);
+                                Text2 += std::to_wstring(i);
+
+                                Text1 += L" (";
+                                Text2 += L" (";
+
+                                Text1 += UrlCopy;
+                                Text2 += UrlCopy;
+
+                                Text1 += L")";
+                                Text2 += L")";
+
+                                AppendMenu(*hTabsManualMenuRef,MF_SEPARATOR,NULL,L"Separator");
+
+                                UINT Flags = MF_BYPOSITION | MF_STRING;
+
+                                if(i - 1 == SelectIndex)
+                                {
+                                    Flags |= MFS_GRAYED;
+                                }
+
+                                AppendMenu(*hTabsManualMenuRef, Flags, IDManualTabSwitch + i - 1, Text1.c_str());
+
+                                if(i > 1)
+                                    AppendMenu(*hTabsManualMenuRef, MF_BYPOSITION | MF_STRING, IDManualTabClose + i - 1, Text2.c_str());
+
+                                i++;
                             }
 
-                            AppendMenu(hTabsManualMenu, Flags, IDManualTabSwitch + i - 1, Text1.c_str());
+                            POINT p;
+                            p.x = 0;
+                            p.y = 21;
+                            ClientToScreen(TabsButton,&p);
+                            TrackPopupMenu(*hTabsManualMenuRef, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
+                            if(*hTabsManualMenuRef)
+                            {
+                                DestroyMenu(*hTabsManualMenuRef);
+                                *hTabsManualMenuRef = 0;
+                            }
+                        });
 
-                            if(i > 1)
-                                AppendMenu(hTabsManualMenu, MF_BYPOSITION | MF_STRING, IDManualTabClose + i - 1, Text2.c_str());
 
-                            i++;
-                        }
 
-                        POINT p;
-                        p.x = 0;
-                        p.y = 21;
-                        ClientToScreen(Layout->HBrowserTabs,&p);
-                        TrackPopupMenu(hTabsManualMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
-                        if(hTabsManualMenu)
-                        {
-                            DestroyMenu(hTabsManualMenu);
-                            hTabsManualMenu = 0;
-                        }
 
                         return 0;
                     }

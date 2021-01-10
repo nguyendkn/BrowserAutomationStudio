@@ -224,7 +224,7 @@ public:
     void SetSettings(settings *Settings);
     void SetLayout(MainLayout *Layout);
     BrowserData * GetData();
-    std::vector<std::string> GetAllPopupsUrls();
+    void GetAllPopupsUrls(std::function<void(const std::vector<std::string>&)> Callback);
     int GetActivePopupIndex();
 
 

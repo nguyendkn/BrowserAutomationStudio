@@ -1066,12 +1066,26 @@ void BrowserDirectControl::DoMouseEvent(MouseClickItem Item)
 
     int PressedKeyboard = KeyboardModifiersNone;
 
+    bool IsOpenNewTab = false;
+
     if(Item.IsCtrlPressed)
+    {
         PressedKeyboard |= KeyboardModifiersCtrl;
+        IsOpenNewTab = true;
+    }
 
     if(Item.IsShiftPressed)
+    {
         PressedKeyboard |= KeyboardModifiersShift;
+        IsOpenNewTab = true;
+    }
 
+    //Replace Ctrl-Click or Shift-Click with Shift-Ctrl-Click in order to always switch to new tab
+    if(IsOpenNewTab)
+    {
+        PressedKeyboard |= KeyboardModifiersShift;
+        PressedKeyboard |= KeyboardModifiersCtrl;
+    }
 
     _BrowserData->Connector->Mouse(Event, Item.X, Item.Y, Button, PressedMouse, PressedKeyboard, Item.IsDoubleClick ? 2 : 1);
 

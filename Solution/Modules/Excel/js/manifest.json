@@ -568,6 +568,74 @@
 		{
             "code": [
                 {
+                    "file": "Excel_GetColumnWidth_code.js",
+                    "name": "Excel_GetColumnWidth_code"
+                }
+            ],
+            "description": {
+                "en": "Get column width",
+                "ru": "Получить ширину столбца"
+            },
+            "interface": "Excel_GetColumnWidth_interface.js",
+            "is_element": false,
+            "name": "Excel_GetColumnWidth",
+            "select": "Excel_GetColumnWidth_select.js",
+            "template": "{{ColumnIndexOrName}} -> {{Save}}"
+        },
+        {
+            "code": [
+                {
+                    "file": "Excel_GetRowHeight_code.js",
+                    "name": "Excel_GetRowHeight_code"
+                }
+            ],
+            "description": {
+                "en": "Get row height",
+                "ru": "Получить высоту строки"
+            },
+            "interface": "Excel_GetRowHeight_interface.js",
+            "is_element": false,
+            "name": "Excel_GetRowHeight",
+            "select": "Excel_GetRowHeight_select.js",
+            "template": "{{RowIndex}} -> {{Save}}"
+        },
+        {
+            "code": [
+                {
+                    "file": "Excel_SetColumnWidth_code.js",
+                    "name": "Excel_SetColumnWidth_code"
+                }
+            ],
+            "description": {
+                "en": "Set column width",
+                "ru": "Установить ширину столбца"
+            },
+            "interface": "Excel_SetColumnWidth_interface.js",
+            "is_element": false,
+            "name": "Excel_SetColumnWidth",
+            "select": "Excel_SetColumnWidth_select.js",
+            "template": "{{Width}} -> {{ColumnIndexOrName}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "Excel_SetRowHeight_code.js",
+                    "name": "Excel_SetRowHeight_code"
+                }
+            ],
+            "description": {
+                "en": "Set row height",
+                "ru": "Установить высоту строки"
+            },
+            "interface": "Excel_SetRowHeight_interface.js",
+            "is_element": false,
+            "name": "Excel_SetRowHeight",
+            "select": "Excel_SetRowHeight_select.js",
+            "template": "{{Height}} -> {{RowIndex}}"
+        },
+		{
+            "code": [
+                {
                     "file": "Excel_CloseFile_code.js",
                     "name": "Excel_CloseFile_code"
                 }
@@ -617,6 +685,10 @@
         "Excel_SetStylesToCell",
         "Excel_SetStyleToCellsRange",
         "Excel_SetStylesToCellsRange",
+        "Excel_GetColumnWidth",
+        "Excel_GetRowHeight",
+        "Excel_SetColumnWidth",
+		"Excel_SetRowHeight",
         "Excel_CloseFile"
     ],
     "browser": [
@@ -843,6 +915,34 @@
             "LanguageVersion": "12.18.3"
         },
         {
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, column_number_or_name] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var width = sheet.column(column_number_or_name).width();\r\n    [[XLSX_NODE_PARAMETERS]] = (typeof width==\"undefined\") ? null : width;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "DataName": "Excel_GetColumnWidth",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, row_number] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var height = sheet.row(row_number).height();\r\n    [[XLSX_NODE_PARAMETERS]] = (typeof height==\"undefined\") ? null : height;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "DataName": "Excel_GetRowHeight",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, column_number_or_name, width, sync] = [[XLSX_NODE_PARAMETERS]];\r\nwidth = util.convert(width);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.column(column_number_or_name).width(width);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "DataName": "Excel_SetColumnWidth",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, row_number, height, sync] = [[XLSX_NODE_PARAMETERS]];\r\nheight = util.convert(height);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.row(row_number).height(height);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
+            "DataName": "Excel_SetRowHeight",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
             "Data": "const xlsx = require('xlsx-populate');\nconst fs = require('fs');\nconst fs_promises = fs.promises;\nconst path = require('path');\nvar date_base = new Date(1900, 0, 0);\nvar incorrect_leap_date = new Date(1900, 1, 28);\nvar milliseconds_in_day = 1000 * 60 * 60 * 24;\nvar self = this;\n\nthis.create_or_open_file = async function(file_path, create, must_exist){\n    var id = require('crypto').createHash('md5').update(file_path).digest('hex');\n    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\" && excel_files[id].lock){\n        return new Promise((resolve, reject) => {\n            try{\n                function lock_check(){\n                    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\" && excel_files[id].lock){\n                        setTimeout(lock_check, 50);\n                    }else{\n                        var file = self.create_or_open_file(file_path, create, must_exist);\n                        file.then(function(res){\n                            return resolve(res);\n                        });\n                        file.catch(function(err){\n                            return reject(err);\n                        });\n                    };\n                };\n                lock_check();\n            }catch(err){\n                reject(err);\n            };\n        });\n    }else{\n        if(typeof excel_files==\"undefined\" || typeof excel_files[id]==\"undefined\" || typeof excel_files[id].workbook==\"undefined\"){\n            if(typeof excel_files==\"undefined\"){\n                excel_files = {};\n            };\n            if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\" && typeof excel_files[id].workbook==\"undefined\"){\n                excel_files[id].delete(id);\n            };\n            excel_files[id] = {\n                path: file_path,\n                id: id,\n                lock: true,\n                written: false,\n                timeout: 0,\n                enableSave: function(){\n                    if(!this.written){\n                        this.written = true;\n                    };\n                },\n                enableSaveError: function(err){\n                    if(err.message && err.message.indexOf(\"EBUSY\") > -1 && !this.written){\n                        this.written = true;\n                    };\n                },\n                save: async function(id){\n                    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\n                        var file = excel_files[id];\n                        file.clearTimeout();\n                        file.lock = true;\n                        if(file.workbook && file.written){\n                            try{\n                                await self.save_file(file.workbook, file.path);\n                                file.delete(id);\n                            }catch(err){\n                                if(typeof file!=\"undefined\"){\n                                    file.lock = false;\n                                    file.setTimeout();\n                                };\n                            };\n                        }else{\n                            file.delete(id);\n                        };\n                    };\n                },\n                delete: function(id){\n                    if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\n                        excel_files[id].clearTimeout();\n                        delete excel_files[id];\n                    }\n                },\n                setTimeout: function(){\n                    this.clearTimeout();\n                    this.timeout = setTimeout(this.save, 5000, this.id);\n                },\n                clearTimeout: function(){\n                    if(!this.timeout[\"_destroyed\"]){\n                        clearTimeout(this.timeout);\n                    };\n                }\n            };\n            try{\n                var exist = fs.existsSync(file_path);\n                var workbook = \"\";\n                if(exist){\n                    try{\n                        await fs_promises.access(file_path, fs.constants.R_OK);\n                    }catch(err){\n                        throw 'The file \"' + file_path + '\" is not readable';\n                    };\n                    if(create){\n                        try{\n                            await fs_promises.access(file_path, fs.constants.W_OK);\n                        }catch(err){\n                            throw 'The file \"' + file_path + '\" is not writable';\n                        };\n                    };\n                    workbook = await xlsx.fromFileAsync(file_path);\n                }else{\n                    if(create){\n                        var file_directory = path.dirname(file_path);\n                        var exist_directory = fs.existsSync(file_directory);\n                        if(exist_directory){\n                            workbook = await xlsx.fromBlankAsync();\n                        }else{\n                            throw 'The directory \"' + file_directory + '\" does not exist';\n                        };\n                    }else{\n                        if(must_exist){\n                            throw 'The file \"' + file_path + '\" does not exist';\n                        }else{\n                            excel_files[id].lock = false;\n                            return [excel_files[id], exist];\n                        };\n                    };\n                };\n                if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\n                    excel_files[id].workbook = workbook;\n                    excel_files[id].lock = false;\n                    return [excel_files[id], exist];\n                }else{\n                    return await self.create_or_open_file(file_path, create, must_exist);\n                };\n            }catch(err){\n                if(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\n                    excel_files[id].lock = false;\n                };\n                throw err;\n            };\n        }else{\n            excel_files[id].clearTimeout();\n            if(typeof excel_files==\"undefined\" || typeof excel_files[id]==\"undefined\" || typeof excel_files[id].workbook==\"undefined\"){\n                return await self.create_or_open_file(file_path, create, must_exist);\n            }else{\n                return [excel_files[id], true];\n            };\n        };\n    };\n};\nthis.get_sheets = function(workbook){\n    return workbook.sheets().map(function(sheet){return sheet.name()});\n}\nthis.get_sheet = function(workbook, sheet_index_or_name){\n    var sheet = workbook.sheet(sheet_index_or_name);\n    if(!sheet){\n        throw 'Sheet ' + JSON.stringify(sheet_index_or_name) + ' does not exist';\n    };\n    return sheet;\n};\nthis.get_or_create_sheet = function(workbook, sheet_index_or_name, exist){\n    var sheet = workbook.sheet(sheet_index_or_name);\n    if(!sheet){\n        var sheet_name = \"\";\n        var sheet_index = \"\";\n        if(typeof sheet_index_or_name==\"number\"){\n            sheet_index = sheet_index_or_name;\n            sheet_name = \"Sheet\" + (sheet_index + 1);\n            var i = 1;\n            while(self.get_sheets(workbook).indexOf(sheet_name) > -1){\n                sheet_name = \"Sheet\" + i;\n                i++;\n            };\n        }else{\n            sheet_name = sheet_index_or_name;\n            sheet_index = null;\n        };\n        sheet = exist ? workbook.addSheet(sheet_name, sheet_index) : (sheet_index ? workbook.addSheet(sheet_name, sheet_index) : workbook.sheet(0).name(sheet_name));\n    };\n    return sheet;\n};\nthis.csv_generate = function(list, separator=\",\"){\n    var res = '';\n    var first = true;\n    list.forEach(function(item=\"\"){\n        item = item.error ? \"\" : item;\n        var add = item;\n        if(typeof item==\"string\" && (item.indexOf(\";\") > -1 || item.indexOf(\":\") > -1 || item.indexOf(\",\") > -1 || item.indexOf(separator) > -1)){\n            add = \"\\\"\" + add.replace(/[\"]/gi, \"\\\"\\\"\") + \"\\\"\";\n        };\n        if(item instanceof Date){\n            add = \"\\\"\" + add.toString() + \"\\\"\";\n        };\n        if(!first){\n            res += separator;\n        }else{\n            first = false;\n        };\n        res += add;\n    });\n    return res;\n};\nthis.csv_parse = function(line){\n    var res = [];\n    var index = 0;\n    var len = line.length;\n    var InsideQuotes = false;\n    var CurrentElement = '';\n    \n    while(index<len){\n        var c = line[index];\n        var n = '';\n        var HasNext = (index + 1) < len;\n        if(HasNext){\n            n = line[index + 1];\n        };\n        index++;\n\n        if(c=='\\\"'){\n            if(InsideQuotes){\n                if(!HasNext || n!='\\\"'){\n                    InsideQuotes = false;\n                    continue;\n                }else{\n                    CurrentElement += \"\\\"\";\n                    index++;\n                    continue;\n                }\n            }else{\n                InsideQuotes = true;\n                continue;\n            }\n        };\n\n        if(c==':' || c==';' || c==','){\n            if(InsideQuotes){\n                CurrentElement += c;\n                continue;\n            }else{\n                res.push(self.convert(CurrentElement));\n                CurrentElement = '';\n                continue;\n            }\n        };\n        CurrentElement += c;\n    };\n    res.push(self.convert(CurrentElement));\n\n    return res;\n};\nthis.isgeneral = function isgeneral(s, i){\n    i = i || 0;\n    return s.length >= 7 + i && (s.charCodeAt(i)|32) === 103 && (s.charCodeAt(i+1)|32) === 101 && (s.charCodeAt(i+2)|32) === 110 && (s.charCodeAt(i+3)|32) === 101 && (s.charCodeAt(i+4)|32) === 114 && (s.charCodeAt(i+5)|32) === 97 && (s.charCodeAt(i+6)|32) === 108;\n};\nthis.fmt_is_date = function(fmt){\n    var abstime = /\\[[HhMmSs\\u0E0A\\u0E19\\u0E17]*\\]/;\n\tvar i = 0, /*cc = 0,*/ c = \"\", o = \"\";\n\twhile(i < fmt.length) {\n\t\tswitch((c = fmt.charAt(i))) {\n\t\t\tcase 'G': if(self.isgeneral(fmt, i)) i+= 6; i++; break;\n\t\t\tcase '\"': for(;(/*cc=*/fmt.charCodeAt(++i)) !== 34 && i < fmt.length;){/*empty*/} ++i; break;\n\t\t\tcase '\\\\': i+=2; break;\n\t\t\tcase '_': i+=2; break;\n\t\t\tcase '@': ++i; break;\n\t\t\tcase 'B': case 'b':\n\t\t\t\tif(fmt.charAt(i+1) === \"1\" || fmt.charAt(i+1) === \"2\") return true;\n\t\t\t\t/* falls through */\n\t\t\tcase 'M': case 'D': case 'Y': case 'H': case 'S': case 'E':\n\t\t\t\t/* falls through */\n\t\t\tcase 'm': case 'd': case 'y': case 'h': case 's': case 'e': case 'g': return true;\n\t\t\tcase 'A': case 'a': case '上':\n\t\t\t\tif(fmt.substr(i, 3).toUpperCase() === \"A/P\") return true;\n\t\t\t\tif(fmt.substr(i, 5).toUpperCase() === \"AM/PM\") return true;\n\t\t\t\tif(fmt.substr(i, 5).toUpperCase() === \"上午/下午\") return true;\n\t\t\t\t++i; break;\n\t\t\tcase '[':\n\t\t\t\to = c;\n\t\t\t\twhile(fmt.charAt(i++) !== ']' && i < fmt.length) o += fmt.charAt(i);\n\t\t\t\tif(o.match(abstime)) return true;\n\t\t\t\tbreak;\n\t\t\tcase '.':\n\t\t\t\t/* falls through */\n\t\t\tcase '0': case '#':\n\t\t\t\twhile(i < fmt.length && (\"0#?.,E+-%\".indexOf(c=fmt.charAt(++i)) > -1 || (c=='\\\\' && fmt.charAt(i+1) == \"-\" && \"0#\".indexOf(fmt.charAt(i+2))>-1))){/* empty */}\n\t\t\t\tbreak;\n\t\t\tcase '?': while(fmt.charAt(++i) === c){/* empty */} break;\n\t\t\tcase '*': ++i; if(fmt.charAt(i) == ' ' || fmt.charAt(i) == '*') ++i; break;\n\t\t\tcase '(': case ')': ++i; break;\n\t\t\tcase '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':\n\t\t\t\twhile(i < fmt.length && \"0123456789\".indexOf(fmt.charAt(++i)) > -1){/* empty */} break;\n\t\t\tcase ' ': ++i; break;\n\t\t\tdefault: ++i; break;\n\t\t}\n\t};\n\treturn false;\n};\nthis.date_to_number = function(date){\n\tdate = date instanceof Date ? date : new Date(date);\n\t\n\tvar date_only = new Date(date.getTime());\n\tdate_only.setHours(0, 0, 0, 0);\n\tvar number = Math.round((date_only - date_base) / milliseconds_in_day);\n\tnumber += (date - date_only) / milliseconds_in_day;\n\tif(date > incorrect_leap_date){number += 1};\n\t\n\treturn number;\n};\nthis.number_to_date = function(number){\n\tnumber = typeof number==\"number\" ? number : Number(number);\n\t\n\tif(number > self.date_to_number(incorrect_leap_date)){number--};\n\tvar full_days = Math.floor(number);\n\tvar partial_milliseconds = Math.round((number - full_days) * milliseconds_in_day);\n\tvar date = new Date(date_base.getTime() + partial_milliseconds);\n\tdate.setDate(date.getDate() + full_days);\n\t\n\treturn date;\n};\nthis.convert = function(data){\n    return (typeof data==\"string\" && data!==\"\") ? (isNaN(data) ? (data==\"true\" || data==\"false\" ? data==\"true\" : data) : Number(data)) : data;\n};\nthis.replace_null = function(rows){\n    return rows.map(function(row){return row.map(function(cell){return (cell==null) ? \"\" : cell})})\n};\nthis.format_data = function(data){\n    if(data.length!=0){\n        if(typeof data==\"string\"){\n            var reg = /\\r?\\n/;\n            if(reg.test(data) || data.indexOf(\":\") > -1){\n                data = data.split(reg);\n            };\n        };\n        if(typeof data==\"object\"){\n            data = data.map(function(row){return (typeof row!=\"object\") ? self.csv_parse(row) : row.map(function(cell){return self.convert(cell)})});\n\t\t    return self.replace_null(data);\n        };\n        if(typeof data==\"string\"){\n            data = self.convert(data);\n        };\n        return data;\n    }else{\n\t\treturn \"\";\n\t};\n};\nthis.format_results = function(results, format, remove=false, trim=false){\n    results = self.replace_null(results);\n    if(remove){\n        results = self.remove_empty_arrays(results);\n    };\n    if(trim){\n        results = self.trim_empty_cells(results);\n    };\n    if(format==\"CSV list\" || format==\"CSV string\"){\n        results = results.map(function(row){return self.csv_generate(row, \":\")});\n        if(format==\"CSV string\"){\n            results = results.join(\"\\n\");\n        };\n    };\n    return results;\n};\nthis.remove_empty_arrays = function(arrays){\n    for(var i = (arrays.length-1); i > -1; i--){\n        if(arrays[i].filter(function(ell){return ell!==\"\"}).length==0){\n            arrays.pop();\n        }else{\n            break;\n        };\n    };\n    return arrays;\n};\nthis.trim_empty_cells = function(arrays){\n    var cells_count = 0;\n    for(var i = 0; i < arrays.length; i++){\n        var row = arrays[i];\n        for(var ic = 0; ic < row.length; ic++){\n            var cell = row[ic];\n            var cell_number = ic + 1;\n            if(cell!==\"\" && cell_number>cells_count){\n                cells_count = cell_number;\n            };\n        };\n    };\n    for(var i = 0; i < arrays.length; i++){\n        arrays[i].splice(cells_count);\n    };\n    return arrays;\n};\nthis.check_writable = function(file_path){\n    try{\n        fs.accessSync(file_path, fs.constants.W_OK);\n    }catch(err){\n        throw 'The file \"' + file_path + '\" is not writable';\n    };\n};\nthis.save_file = async function(workbook, file_path){\n    var data = await workbook.outputAsync();\n    await fs_promises.writeFile(file_path, data);\n};",
             "DataName": "ExcelUtil",
             "DataType": 1,
@@ -887,6 +987,7 @@
 		"Sheet name": {"ru":"Имя листа"},
 		"File path": {"ru":"Путь к файлу"},
 		"First row": {"ru":"Первая строка"},
+		"Row index": {"ru":"Индекс строки"},
 		"Date object": {"ru":"Объект даты"},
 		"JSON string": {"ru":"JSON строка"},
 		"Second row": {"ru":"Вторая строка"},
@@ -913,20 +1014,28 @@
 		"Underline text": {"ru":"Подчеркивание текста"},
 		"Clear all sheets": {"ru":"Очистить все листы"},
 		"Second sheet name": {"ru":"Имя второго листа"},
+		"First row index": {"ru":"Индекс первой строки"},
+		"Second row index": {"ru":"Индекс второй строки"},
 		"Just sample text": {"ru":"Просто пример текста"},
+		"First column name": {"ru":"Имя первого столбца"},
 		"Close excel file.": {"ru":"Закрыть excel файл."},
 		"Resources settings": {"ru":"Настройки ресурсов"},
 		"Style Reference": {"ru":"Справочника по стилям"},
 		"Bold text": {"ru":"Полужирное начертание текста"},
 		"First sheet index": {"ru":"Индекс первого листа"},
 		"Strikethrough text": {"ru":"Зачеркивание текста"},
+		"Second column name": {"ru":"Имя второго столбца"},
 		"Italic text": {"ru":"Курсивное начертание текста"},
 		"Style names list": {"ru":"Список названий стилей"},
 		"Second sheet index": {"ru":"Индекс второго листа"},
 		"Sheet index or name": {"ru":"Индекс или имя листа"},
+		"First column index": {"ru":"Индекс первого столбца"},
+		"Second column index": {"ru":"Индекс второго столбца"},
+		"Column index or name": {"ru":"Индекс или имя столбца"},
 		"List of resource names": {"ru":"Список имен ресурсов"},
 		"Floating point number": {"ru":"Число с плавающей запятой"},
 		"The path to the excel file.": {"ru":"Путь к excel файлу."},
+		"Row index in excel file.": {"ru":"Индекс строки в excel файле."},
 		"Insert at the end of the sheet": {"ru":"Вставить в конец листа"},
 		"First column, first row": {"ru":"Первый столбец, первая строка"},
 		"Second column, second row": {"ru":"Второй столбец, вторая строка"},
@@ -941,6 +1050,8 @@
 		"Add new sheet to excel file.": {"ru":"Добавить новый лист в excel файл."},
 		"Column index of the found cell": {"ru":"Индекс столбца найденной ячейки"},
 		"Search all sheets of excel file": {"ru":"Поиск по всем листам excel файла"},
+		"The width which needs to be set.": {"ru":"Ширина, которое нужно установить."},
+		"The height which needs to be set.": {"ru":"Высота, которое нужно установить."},
 		"Variable to save the result": {"ru":"Переменная, в которую сохранить результат"},
 		"Index or sheet name in excel file.": {"ru":"Индекс или имя листа в excel файле."},
 		"Read entire sheet from an excel file.": {"ru":"Читать весь лист из excel файла."},
@@ -948,6 +1059,7 @@
 		"Convert date to excel date number.": {"ru":"Преобразовать дату в число даты excel."},
 		"Convert excel date number to date.": {"ru":"Преобразовать число даты excel в дату."},
 		"Write data to sheet in excel file.": {"ru":"Записать данные на лист в excel файле."},
+		"Index or column name in excel file.": {"ru":"Индекс или имя столбца в excel файле."},
 		"The sheet will have the specified index": {"ru":"Лист будет иметь указанный индекс"},
 		"The number of rows to be deleted.": {"ru":"Количество строк, которое будет удалено."},
 		"Get list of sheets from excel file.": {"ru":"Получить список листов из excel файла."},
@@ -982,10 +1094,12 @@
 		"Cell address after which cleaning ends.": {"ru":"Адрес ячейки, после которой заканчивается очистка."},
 		"For details on the supported styles, see": {"ru":"Подробнее о поддерживаемых стилях можно узнать из"},
 		"Import data from excel file into resources.": {"ru":"Импортировать данные из excel файла в ресурсы."},
+		"Get row height from specified excel file.": {"ru":"Получить высоту строки из указанного excel файла."},
 		"Read cells range from specified excel file.": {"ru":"Читать область ячеек из указанного excel файла."},
 		"Write data to cell on specified excel file.": {"ru":"Записать данные в ячейку указанного excel файла."},
 		"Each cell from specified sheet will be cleared.": {"ru":"Каждая ячейка указанного листа будет очищена."},
 		"The sheet will be added before the specified sheet": {"ru":"Лист будет добавлен перед указанным листом"},
+		"Get column width from specified excel file.": {"ru":"Получить ширину столбца из указанного excel файла."},
 		"Clear cells range from specified excel file.": {"ru":"Очистить область ячеек из указанного excel файла."},
 		"Convert data from excel file to JSON string.": {"ru":"Преобразовать данные из excel файла в JSON строку."},
 		"Returns the largest value in cells E1 to H1": {"ru":"Возвращает наибольшее значение в ячейках от E1 до H1"},
@@ -993,8 +1107,10 @@
 		"The sheet will be placed in before the specified sheet": {"ru":"Лист будет помещен перед указанным листом"},
 		"Find single cell by its content in excel file.": {"ru":"Найти одну ячейку в excel файле по ее содержимому."},
 		"Get formula from cell in specified excel file.": {"ru":"Получить формулу из ячейки указанного excel файла."},
+		"Set height for row on specified excel file.": {"ru":"Установить высоту для строки на указанном excel файле."},
 		"Returns the smallest number in cells E1 to H1": {"ru":"Возвращает наименьшее значение в ячейках от E1 до H1"},
 		"Calculates the sum of all numbers in cells E1 to H1": {"ru":"Вычисляет сумму всех чисел в ячейках от E1 до H1"},
+		"Set width for column on specified excel file.": {"ru":"Установить ширину для столбца на указанном excel файле."},
 		"Set formula to cell from specified excel file.": {"ru":"Установить формулу в ячейку из указанного excel файла."},
 		"JSON string containing style names and values.": {"ru":"JSON строка, содержащая названия стилей и их значения."},
 		"Get cell style value from specified excel file.": {"ru":"Получить значение стиля ячейки из указанного excel файла."},
@@ -1025,8 +1141,10 @@
 		"The end of the range is determined by the amount of data being written": {"ru":"Конец области определяется по объему записываемых данных"},
 		"Set style value for cells range from specified excel file.": {"ru":"Установить значение стиля для области ячеек из указанного excel файла."},
 		"Set styles values ​​for cells range on specified excel file.": {"ru":"Установить значения стилей для области ячеек на указанном excel файла."},
+		"If width unspecified, then the action will return <code>null</code>.": {"ru":"Если ширина не определена, то действие вернет <code>null</code>."},
 		"Rows that are in the new rows insertion zone will be shifted down.": {"ru":"Строки, находящиеся в зоне вставки новых строк, будут смещены вниз."},
 		"Date can be created using actions from the \"Date and time\" module.": {"ru":"Дату можно создать с помощью действий из модуля \"Дата и время\"."},
+		"If height unspecified, then the action will return <code>null</code>.": {"ru":"Если высота не определена, то действие вернет <code>null</code>."},
 		"The settings that each resource created by this action will have.": {"ru":"Настройки, которые будет иметь каждый ресурс, созданный этим действием."},
 		"If you need to read whole row, use the \"Read rows\" action.": {"ru":"Если вам нужно прочитать строку полностью, используйте действие \"Читать строки\"."},
 		"Old data that doesn't interact with new one will remain unchanged.": {"ru":"Старые данные, которые не взаимодействуют с новыми, останутся без изменений."},
@@ -1055,7 +1173,9 @@
 		"If the \"New sheet index\" parameter is empty, the sheet will be moved to the end of the book.": {"ru":"Если параметр \"Новый индекс листа\" пуст, лист будет перемещен в конец книги."},
 		"CSV lines can be parsed using the \"Parse Line\" action from the \"Tools\" module.": {"ru":"CSV строки можно распарсить с помощью действия \"Парсить строку\" из модуля \"Инструменты\"."},
 		"Variable in which, after successful execution of the action, a JSON string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана JSON строка."},
+		"Variable in which, after successful execution of the action, the row height will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана высота строки."},
 		"If a sheet with the same name already exists, it will be completely overwritten with new data.": {"ru":"Если лист с таким именем уже существует, он будет полностью перезаписан новыми данными."},
+		"Variable in which, after successful execution of the action, the column width will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана ширина столбца."},
 		"Variable in which, after successful execution of the action, the list of sheets will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список листов."},
 		"Variable in which, after successful execution of the action, the number of rows will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество строк."},
 		"The index where the sheet should be placed, or the name of the sheet before which it should be placed.": {"ru":"Индекс, на который нужно поместить лист, или имя листа, перед которым его нужно поместить."},

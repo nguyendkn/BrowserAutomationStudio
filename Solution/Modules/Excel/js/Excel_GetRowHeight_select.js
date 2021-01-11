@@ -8,21 +8,17 @@ if(SheetIndexOrName["original"].length == 0){
     Invalid(tr("Sheet index or name") + " " + tr("is empty"));
     return;
 };
-var FromRow = GetInputConstructorValue("FromRow", loader);
-var ToRow = GetInputConstructorValue("ToRow", loader);
-var DataFormat = GetInputConstructorValue("DataFormat", loader);
-if(DataFormat["original"].length == 0){
-	Invalid(tr("Data format") + " " + tr("is empty"));
+var RowIndex = GetInputConstructorValue("RowIndex", loader);
+if(RowIndex["original"].length == 0){
+	Invalid(tr("Row index") + " " + tr("is empty"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
-    var code = loader.GetAdditionalData() + _.template($("#Excel_ReadRows_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#Excel_GetRowHeight_code").html())({
         "FilePath": FilePath["updated"],
         "SheetIndexOrName": SheetIndexOrName["updated"],
-        "FromRow": FromRow["updated"],
-        "ToRow": ToRow["updated"],
-        "DataFormat": DataFormat["updated"],
+        "RowIndex": RowIndex["updated"],
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

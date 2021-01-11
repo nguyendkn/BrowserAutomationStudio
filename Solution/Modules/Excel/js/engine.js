@@ -528,6 +528,70 @@ function Excel_SetStylesToCellsRange(){
 	
 	_embedded("Excel_SetStylesToCellsRange", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
 };
+function Excel_GetColumnWidth(){
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
+    var sheet_index_or_name = _function_argument("SheetIndexOrName");
+    var column_index_or_name = _function_argument("ColumnIndexOrName");
+	var timeout = _function_argument("Timeout");
+	
+    var column_number_or_name = typeof column_index_or_name=="number" ? column_index_or_name + 1 : column_index_or_name;
+	
+	_XLSX_LAST_ACTION = {ru:"Получить ширину столбца",en:"Get column width"};
+	
+    VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, column_number_or_name];
+	
+	_embedded("Excel_GetColumnWidth", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
+};
+function Excel_GetRowHeight(){
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
+    var sheet_index_or_name = _function_argument("SheetIndexOrName");
+    var row_index = _function_argument("RowIndex");
+	var timeout = _function_argument("Timeout");
+	
+    var row_number = row_index + 1;
+	
+	_XLSX_LAST_ACTION = {ru:"Получить высоту строки",en:"Get row height"};
+	
+    VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, row_number];
+	
+	_embedded("Excel_GetRowHeight", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+	
+	_function_return(VAR_XLSX_NODE_PARAMETERS);
+};
+function Excel_SetColumnWidth(){
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
+    var sheet_index_or_name = _function_argument("SheetIndexOrName");
+    var column_index_or_name = _function_argument("ColumnIndexOrName");
+    var width = _function_argument("Width");
+	var sync = _function_argument("Sync");
+	var timeout = _function_argument("Timeout");
+	
+    var column_number_or_name = typeof column_index_or_name=="number" ? column_index_or_name + 1 : column_index_or_name;
+	
+	_XLSX_LAST_ACTION = {ru:"Установить ширину столбца",en:"Set column width"};
+	
+    VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, column_number_or_name, width, sync];
+	
+	_embedded("Excel_SetColumnWidth", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
+function Excel_SetRowHeight(){
+	var file_path = Excel_FormatPath(_function_argument("FilePath"));
+    var sheet_index_or_name = _function_argument("SheetIndexOrName");
+    var row_index = _function_argument("RowIndex");
+    var height = _function_argument("Height");
+	var sync = _function_argument("Sync");
+	var timeout = _function_argument("Timeout");
+	
+    var row_number = row_index + 1;
+	
+	_XLSX_LAST_ACTION = {ru:"Установить высоту строки",en:"Set row height"};
+	
+    VAR_XLSX_NODE_PARAMETERS = [file_path, sheet_index_or_name, row_number, height, sync];
+	
+	_embedded("Excel_SetRowHeight", "Node", "12.18.3", "XLSX_NODE_PARAMETERS", timeout)!
+};
 function Excel_CloseFile(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var timeout = _function_argument("Timeout");

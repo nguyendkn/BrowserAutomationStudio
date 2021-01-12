@@ -1,1 +1,1 @@
-<%= variable %> = _get_substring(<%= string %>,<%= from %>,<%= to %>);
+<%= variable %> = _get_substring(<%= string %>,<%= from %><%if(to!=='""'){%>,<%= to %><%}%>);

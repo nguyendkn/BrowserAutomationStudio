@@ -9,7 +9,7 @@ if(string1["original"].length==0 && string2["original"].length==0 && string3["or
 var separator = GetInputConstructorValue("separator", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
-    var code = loader.GetAdditionalData() + _.template($("#concat_strings_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#join_strings_code").html())({
         "string1": string1["updated"],
         "string2": string2["updated"],
         "string3": string3["updated"],

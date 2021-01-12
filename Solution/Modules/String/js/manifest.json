@@ -360,18 +360,18 @@
 		{
             "code": [
                 {
-                    "file": "concat_strings_code.js",
-                    "name": "concat_strings_code"
+                    "file": "join_strings_code.js",
+                    "name": "join_strings_code"
                 }
             ],
             "description": {
-                "en": "Concatenate strings",
-                "ru": "Соединить строки"
+                "en": "Join strings",
+                "ru": "Объединить строки"
             },
-            "interface": "concat_strings_interface.js",
+            "interface": "join_strings_interface.js",
             "is_element": false,
-            "name": "concat_strings",
-            "select": "concat_strings_select.js",
+            "name": "join_strings",
+            "select": "join_strings_select.js",
             "template": "{{Save}}"
         },
 		{
@@ -732,11 +732,13 @@
     "localize": {
 		"Data": {"ru":"Данные"},
 		"String": {"ru":"Строка"},
+		"is empty": {"ru":"пуст"},
 		"Not string": {"ru":"Не строка"},
 		"Just sample text": {"ru":"Просто пример текста"},
 		"Optional parameter.": {"ru":"Необязательный параметр."},
 		"The data is a string.": {"ru":"Данные являются строкой."},
 		"The data is not a string.": {"ru":"Данные не являются строкой."},
+		"Variable to save the result": {"ru":"Переменная, в которую сохранить результат"},
 		"Check if the specified data is a string.": {"ru":"Проверить, являются ли указанные данные строкой."},
 		"The data that need to check out whether they is a string.": {"ru":"Данные, которые нужно проверить на то являются ли они строкой."},
 		"This variable will be true or false depending on whether the specified data is a string.":{"ru":"Эта переменная будет равна true или false в зависимости от того, являются ли указанные данные строкой."},
@@ -964,11 +966,11 @@
 		"For example, if the string <code>\"Just string\"</code> is specified, the substring <code>\"example \"</code> and index 5, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"Просто строки\"</code>, подстрока <code>\"пример \"</code> и индекс 7, то действие вернет <code>\"Просто пример строки\"</code>."},
 		
 		"List of strings": {"ru":"Список строк"},
-		"Concatenate strings without separator": {"ru":"Соединять строки без разделителя"},
-		"Concatenate multiple strings into one.": {"ru":"Соединить несколько строк в одну."},
-		"List of strings to be concatenated.": {"ru":"Список строк которые нужно соединить."},
-		"The string to be concatenated with other strings.": {"ru":"Строка, которую нужно соединить с другими строкой."},
-		"Separator to insert between the concatenated strings.": {"ru":"Разделитель, вставляемый между соединяемыми строками."},
+		"Join strings without separator": {"ru":"Объединить строки без разделителя"},
+		"Join multiple strings into one.": {"ru":"Объединить несколько строк в одну."},
+		"List of strings to be joined.": {"ru":"Список строк которые нужно объединить."},
+		"The string to be joined with other strings.": {"ru":"Строка, которую нужно объединить с другими строками."},
+		"Separator to insert between the joined strings.": {"ru":"Разделитель, вставляемый между объединенными строками."},
 		"The list can be created using actions from the \"List\" module.": {"ru":"Список можно создать с помощью действий из модуля \"Список\"."},
 		"The parameters \"String 1\", \"String 2\", \"String 3\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 2\", \"Строка 3\""},
 		"This action will return a string composed of all the specified strings.": {"ru":"Это действие вернет строку, составленную из всех указанных строк."},
@@ -976,11 +978,11 @@
 		"The parameters \"String 1\", \"String 3\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 3\", \"Список строк\""},
 		"The parameters \"String 1\", \"String 2\", \"List of strings\" will be used": {"ru":"Будут использованы параметры \"Строка 1\", \"Строка 2\", \"Список строк\""},
 		"As a list, you can use a string consisting of strings, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из строк, разделенных запятыми."},
-		"Strings from separate fields and a list are added to a general list of strings that will be concatenated.": {"ru":"Строки из отдельных полей и списка складываются в общий список строк которые будут соединены."},
-		"The order of concating the fields is as follows \"String 1\", \"String 2\", \"String 3\", \"List of strings\".": {"ru":"Порядок соединения полей следующий: \"Строка 1\", \"Строка 2\", \"Строка 3\", \"Список строк\"."},
+		"Strings from separate fields and a list are added to a general list of strings that will be joined.": {"ru":"Строки из отдельных полей и списка складываются в общий список строк которые будут объединены."},
+		"The order of joining the fields is as follows \"String 1\", \"String 2\", \"String 3\", \"List of strings\".": {"ru":"Порядок объединения полей следующий: \"Строка 1\", \"Строка 2\", \"Строка 3\", \"Список строк\"."},
+		"For example, if a string is specified in the \"String 1\" field and a list of 4 strings is specified in the \"List of strings\" field, then 5 strings will be joined.": {"ru":"Например, если в поле \"Строка 1\" указана строка и в поле \"Список строк\" указан список из 4 строк, то объединено будет 5 строк."},
 		"If some of the parameters (\"String 1\", \"String 2\", \"String 3\", \"List of strings\") are not specified, all parameters will be used except for them.": {"ru":"Если какие-то из параметров (\"Строка 1\", \"Строка 2\", \"Строка 3\", \"Список строк\") не указаны, будут использованы все параметры кроме них."},
-		"For example, if a string is specified in the \"String 1\" field and a list of 4 strings is specified in the \"List of strings\" field, then 5 strings will be concatenated.": {"ru":"Например, если в поле \"Строка 1\" указана строка и в поле \"Список строк\" указан список из 4 строк, то соеденено будет 5 строк."},
-		"By default, strings are concatenated without a separator, but this can be changed by specifying the \"Separator\" parameter located in the additional settings.": {"ru":"По умолчанию строки соединяются без разделителя, но это можно изменить, указав параметр \"Разделитель\", находящийся в дополнительных настройках."},
+		"By default, strings are joined without a separator, but this can be changed by specifying the \"Separator\" parameter located in the additional settings.": {"ru":"По умолчанию строки соединяются без разделителя, но это можно изменить, указав параметр \"Разделитель\", находящийся в дополнительных настройках."},
 		"For example, if the parameters \"String 1\" and \"String 2\" are specified, the values of which are respectively <code>\"Just example\"</code> and <code>\" string\"</code>, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указаны параметры \"Строка 1\" и \"Строка 2\" значения которых сответственно равны <code>\"Просто пример\"</code> и <code>\" строки\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
 		"For example, if \"List of strings\" is not specified, then the list will be formed from the parameters \"String 1\" and \"String 2\" and \"String 3\". If the parameters \"String 1\", \"String 2\", \"String 3\" are empty, then the \"List of strings\" will be used. If all parameters are specified, then all of them will be used.": {"ru":"Например, если \"Список строк\" не указан, то список будет сформирован из параметров \"Строка 1\" и \"Строка 2\" и \"Строка 3\". Если параметры \"Строка 1\", \"Строка 2\", \"Строка 3\" пусты, то будет использован \"Список строк\". Если указаны все параметры, то все они будут использованы."},
 		
@@ -1030,18 +1032,17 @@
 		"List of items to add to the CSV string.": {"ru":"Список элементов, которые нужно добавить  в CSV строку."},
 		"Separator to insert between elements of CSV string.": {"ru":"Разделитель, вставляемый между элементами CSV строки."},
 		"The parameters \"Item 1\", \"Item 2\", \"Item 3\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 2\", \"Элемент 3\""},
+		"The values of all elements are converted to a string before joining.": {"ru":"Значения всех элементов перед объединением преобразуются в строку."},
 		"If the element contains a separator, then it will be enclosed in quotes.": {"ru":"Если элемент содержит разделитель, то он будет заключен в кавычки."},
-		"The values of all elements are converted to a string before concatenating.": {"ru":"Значения всех элементов перед соединением преобразуются в строку."},
 		"The parameters \"Item 2\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 2\", \"Элемент 3\", \"Список элементов\""},
 		"The parameters \"Item 1\", \"Item 3\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 3\", \"Список элементов\""},
 		"The parameters \"Item 1\", \"Item 2\", \"List of items\" will be used": {"ru":"Будут использованы параметры \"Элемент 1\", \"Элемент 2\", \"Список элементов\""},
 		"Variable in which, after successful execution of the action, the CSV string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана CSV строка."},
-		"Items from separate fields and a list are added to a general list of items that will be concatenated.": {"ru":"Элементы из отдельных полей и списка складываются в общий список элементов которые будут соединены."},
-		"The order of concating the fields is as follows \"Item 1\", \"Item 2\", \"Item 3\", \"List of items\".": {"ru":"Порядок соединения полей следующий: \"Элемент 1\", \"Элемент 2\", \"Элемент 3\", \"Список элементов\"."},
+		"Items from separate fields and a list are added to a general list of items that will be joined.": {"ru":"Элементы из отдельных полей и списка складываются в общий список элементов которые будут объединены."},
+		"The order of joining the fields is as follows \"Item 1\", \"Item 2\", \"Item 3\", \"List of items\".": {"ru":"Порядок объединения полей следующий: \"Элемент 1\", \"Элемент 2\", \"Элемент 3\", \"Список элементов\"."},
 		"This action will return a CSV string composed of all the specified items, separated by the specified character.": {"ru":"Это действие вернет CSV строку, составленную из всех указанных элементов, разделенных указанным символом."},
 		"If some of the parameters (\"Item 1\", \"Item 2\", \"Item 3\", \"List of items\") are not specified, all parameters will be used except for them.": {"ru":"Если какие-то из параметров (\"Элемент 1\", \"Элемент 2\", \"Элемент 3\", \"Список элементов\") не указаны, будут использованы все параметры кроме них."},
-		"For example, if a item is specified in the \"Item 1\" field and a list of 4 items is specified in the \"List of items\" field, then 5 items will be concatenated.": {"ru":"Например, если в поле \"Элемент 1\" указан элемент и в поле \"Список элементов\" указан список из 4 элементов, то соеденено будет 5 элементов."},
-		"By default, strings are concatenated without a separator, but this can be changed by specifying the \"Separator\" parameter located in the additional settings.": {"ru":"По умолчанию строки соединяются без разделителя, но это можно изменить, указав параметр \"Разделитель\", находящийся в дополнительных настройках."},
+		"For example, if a item is specified in the \"Item 1\" field and a list of 4 items is specified in the \"List of items\" field, then 5 items will be joined.": {"ru":"Например, если в поле \"Элемент 1\" указан элемент и в поле \"Список элементов\" указан список из 4 элементов, то объединено будет 5 элементов."},
 		"For example, if the parameters \"Item 1\" and \"Item 2\" are specified, the values of which are respectively <code>\"test\"</code> and <code>\"text\"</code>, and the separator <code>\":\"</code>, then the action will return <code>\"test:text\"</code>.": {"ru":"Например, если указаны параметры \"Элемент 1\" и \"Элемент 2\" значения которых сответственно равны <code>\"тест\"</code> и <code>\"текст\"</code>, а разделитель <code>\":\"</code>, то действие вернет <code>\"тест:текст\"</code>."},
 		"For example, if \"List of items\" is not specified, then the list will be formed from the parameters \"Item 1\" and \"Item 2\" and \"Item 3\". If the parameters \"Item 1\", \"Item 2\", \"Item 3\" are empty, then the \"List of items\" will be used. If all parameters are specified, then all of them will be used.": {"ru":"Например, если \"Список элементов\" не указан, то список будет сформирован из параметров \"Элемент 1\" и \"Элемент 2\" и \"Элемент 3\". Если параметры \"Элемент 1\", \"Элемент 2\", \"Элемент 3\" пусты, то будет использован \"Список элементов\". Если указаны все параметры, то все они будут использованы."},
 		
@@ -1147,7 +1148,7 @@
 		"As a list, you can use a string consisting of the names of the query parameters, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из имен параметров запроса, разделенных запятыми."},
 		"If enabled and the URL contains a relative protocol, then the protocol from the \"Default protocol\" parameter will be added to the URL.": {"ru":"Если активирован и URL содержит относительный протокол, то к URL будет добавлен протокол из параметра \"Протокол по умолчанию\"."},
 		"All parameters except \"Force http\" and \"Force https\" can be used together. If \"Forced http\" and \"Forced https\" are activated, then only the latter will work.": {"ru":"Все параметры кроме \"Принудительно http\" и \"Принудительно https\" можно использовать вместе. Если активированн \"Принудительно http\" и \"Принудительно https\", то работать будет только последний."},
-		"This action will return a string containing the URL, normalized according to the specified parameters. You can learn more about the URL normalization in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false\">Wiki</a>.": {"ru":"Это действие вернет строку, содержащую URL, нормализованный в соответствии с указанными параметрами. Подробнее о нормализации URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/%D0%9D%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F_URL');return false\">Wiki</a>."},
+		"This action will return a string containing the URL, normalized according to the specified parameters. You can learn more about the URL normalization in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false\">Wiki</a>.": {"ru":"Это действие вернет строку, содержащую URL, нормализованную в соответствии с указанными параметрами. Подробнее о нормализации URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/%D0%9D%D0%BE%D1%80%D0%BC%D0%B0%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F_URL');return false\">Wiki</a>."},
 		
 		"Host": {"ru":"Хост"},
 		"Path": {"ru":"Путь"},
@@ -1270,7 +1271,6 @@
 		"If you want to replace with regexp, use \"Replace text with regexp\" action.": {"ru": "Используйте действие \"Заменить строку\" из модуля \"Регулярные выражения\" для замены с помощью регулярного выражения."},
 		"Searches a string defined with \"Original String\" for a specified value defined with \"Replace From\", and returns a new string where the specified values are replaced to value defined with \"Replace To\" parameter.": {"ru": "Это действие ищет в строке, определенной с помощью параметра \"Оригинальная Строка\", значения, определенные с помощью параметра \"Заменить Из\", и заменяет их на значение определенное с помощью параметра \"Заменить На\"."},
 		
-		"Generate a random integer in a given range.": {"ru": "Сгенерировать случайное целое число в заданном диапазоне."},
 		"Generate a random string with a given length and allowed characters.": {"ru": "Сгенерировать случайную строку с заданной длиной и разрешенными символами."}
     },
     "major_version": 1,

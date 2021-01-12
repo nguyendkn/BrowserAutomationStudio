@@ -1,1 +1,1 @@
-<%= variable %> = _starts_with(<%= string %>,<%= substring %>,<%= from %>);
+<%= variable %> = _starts_with(<%= string %>,<%= substring %><%if(from!=='""'){%>,<%= from %><%}%>);

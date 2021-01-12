@@ -83,29 +83,58 @@ function _number_format(num, dec, dsep, tsep){
 	var parts = num.split('.');
 	var fnums = parts[0];
 	var decimals = parts[1] ? dsep + parts[1] : '';
+	
+	if(fnums.length < 4){
+		return fnums + decimals;
+	};
+	
+	var c = '';
+	var n = 0;
+	for(var i = fnums.length - 1; i > -1; i--){
+		n++
+		c = fnums.charAt(i) + c;
+		if(n===3 && i!==0){
+			c = tsep + c;
+			n = 0;
+		};
+	};
 
-	return fnums.replace(/(\d)(?=(?:\d{3})+$)/g, '$1' + tsep) + decimals;
+	return c + decimals;
 };
 function _count_substrings(str, sub){
-	return _avoid_nil(str.match(new RegExp(sub, "g")), []).length;
+	if(sub.length <= 0){
+		return (str.length + 1)
+	};
+	var n = 0;
+	var pos = 0;
+	var step = sub.length;
+	while(pos != -1){
+        pos = str.indexOf(sub, pos);
+        if(pos > -1){
+            ++n;
+            pos += step;
+        };
+    };
+    return n;
 };
 function _get_substring(str, from, to){
-	return str.slice(from, to);
+	return _is_nilb(to) ? str.slice(from) : str.slice(from, to);
 };
 function _get_substring_between(str, left, right){
     left = _avoid_nil(left);
     right = _avoid_nil(right);
 	
-	var start = left==="" ? 0 : str.indexOf(left);
-	var end = right==="" ? -1 : str.indexOf(right, start + left.length);
+	var li = left==="" ? -1 : str.indexOf(left);
+	var from = li===-1 ? 0 : (li + left.length);
+	var to = right==="" ? -1 : str.indexOf(right, from);
 	
-	if(end===-1 && right!==""){
-		return "";
+	if(li===-1 && to===-1){
+		return str;
 	}else{
-		if(end===-1 && right===""){
-			return str.substring(start + left.length);
+		if(to===-1){
+			return str.substring(from);
 		}else{
-			return str.slice(start + left.length, end);
+			return str.slice(from, to);
 		};
 	};
 };
@@ -161,7 +190,7 @@ function _ends_with(str, sub, lenght){
 function _insert_substring(str, index, sub){
 	return _splice_string(str, index, 0, sub);
 };
-function _concat_strings(list, sep){
+function _join_strings(list, sep){
 	return _avoid_nilb(list, []).filter(function(e){return e!==""}).join(_avoid_nil(sep));
 };
 function _latinize(str, cyrillic){
@@ -1227,7 +1256,7 @@ function _ua(uastring, extensions){
 	};
 	mapper.rgx.call(ua_obj.cpu, ua, rgxmap.cpu);
 };
-_ua.prototype.set_ua = function(uastring){
+_ua.prototype.set = function(uastring){
 	var ua_obj = this;
 	var new_ua_obj = new _ua(uastring);
 	var keys = Object.keys(new_ua_obj);
@@ -1236,7 +1265,10 @@ _ua.prototype.set_ua = function(uastring){
 		ua_obj[key] = new_ua_obj[key];
 	};
 };
-_ua.prototype.change_browser_version = function(version){
+_ua.prototype.changeBrowserVersion = function(version){
 	var ua_obj = this;
-	ua_obj.set_ua(_replace_string(ua_obj.ua, ua_obj.browser.version, _to_string(version)));
+	ua_obj.set(_replace_string(ua_obj.ua, ua_obj.browser.version, _to_string(version)));
+};
+_ua.prototype.toString = function(){
+	return this.ua;
 };

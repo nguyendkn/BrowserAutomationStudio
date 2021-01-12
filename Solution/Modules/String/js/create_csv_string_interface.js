@@ -10,13 +10,13 @@
 	<div class="tr tooltip-paragraph-first-fold">Create CSV string from multiple items.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a CSV string composed of all the specified items, separated by the specified character.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if the parameters "Item 1" and "Item 2" are specified, the values of which are respectively <code>"test"</code> and <code>"text"</code>, and the separator <code>":"</code>, then the action will return <code>"test:text"</code>.</div>
-	<div class="tr tooltip-paragraph-fold">Items from separate fields and a list are added to a general list of items that will be concatenated.</div>
-	<div class="tr tooltip-paragraph-fold">For example, if a item is specified in the "Item 1" field and a list of 4 items is specified in the "List of items" field, then 5 items will be concatenated.</div>
+	<div class="tr tooltip-paragraph-fold">Items from separate fields and a list are added to a general list of items that will be joined.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if a item is specified in the "Item 1" field and a list of 4 items is specified in the "List of items" field, then 5 items will be joined.</div>
 	<div class="tr tooltip-paragraph-fold">If some of the parameters ("Item 1", "Item 2", "Item 3", "List of items") are not specified, all parameters will be used except for them.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if "List of items" is not specified, then the list will be formed from the parameters "Item 1" and "Item 2" and "Item 3". If the parameters "Item 1", "Item 2", "Item 3" are empty, then the "List of items" will be used. If all parameters are specified, then all of them will be used.</div>
-	<div class="tr tooltip-paragraph-fold">The values of all elements are converted to a string before concatenating.</div>
+	<div class="tr tooltip-paragraph-fold">The values of all elements are converted to a string before joining.</div>
 	<div class="tr tooltip-paragraph-fold">If the element contains a separator, then it will be enclosed in quotes.</div>
-	<div class="tr tooltip-paragraph-fold">The order of concating the fields is as follows "Item 1", "Item 2", "Item 3", "List of items".</div>
+	<div class="tr tooltip-paragraph-fold">The order of joining the fields is as follows "Item 1", "Item 2", "Item 3", "List of items".</div>
 	<div class="tr tooltip-paragraph-last-fold">The list can be created using actions from the "List" module.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

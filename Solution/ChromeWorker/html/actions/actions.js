@@ -1286,8 +1286,13 @@ _AL =
    "Xpath Get Exists" : {"ru": "Xpath проверить существование"},
    "Function" : {"ru": "Функция"},
    "Get link URL" : {"ru": "Получить адрес ссылки"},
-
+   
+   "Generate a random integer in a given range.": {"ru": "Сгенерировать случайное целое число в заданном диапазоне."},
+   
+   "Back" : {"ru": "Назад"},
+   "Action interface \"" : {"ru": "Интерфейс действия \""},
    "The module containing " : {"ru": "Модуль, содержащий действие "},
+   "\" is missing or damaged." : {"ru": "\" отсутствует или поврежден."},
    " action is not installed, disabled, or damaged" : {"ru": ", не установлен, отключен или поврежден"}
    
 }

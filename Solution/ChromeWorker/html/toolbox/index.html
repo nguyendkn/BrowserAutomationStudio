@@ -10405,7 +10405,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           })
         }
 
-        $("#containerdata").html(this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters}))
+        var interfacedata = this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters});
+        if(interfacedata===""){
+          interfacedata = '<div style="padding-right:15px;padding-left:15px;">' + tr("Action interface \"") + (_GobalModel.GetPageInfo() || this.model.get("state")) + tr("\" is missing or damaged.") + '<hr style="margin-top:5px;margin-bottom:5px"/><a tabindex="-1" class="btn btn-danger standartbutton tr" href="#!/" id="backtomain">Back</a></div>';
+        }
+
+        $("#containerdata").html(interfacedata)
         _Filter.InstallEvents()
         $(".variable-input, .function-input").keypress(function(e){
           var charCode = !e.charCode ? e.which : e.charCode;

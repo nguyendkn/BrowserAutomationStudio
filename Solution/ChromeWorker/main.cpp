@@ -34,7 +34,7 @@
 #include "ipcsimple.h"
 #include "rawcpphttpclientfactory.h"
 #include "rawcppwebsocketclientfactory.h"
-
+#include "preparestartupscript.h"
 
 
 #if defined(BAS_DEBUG)
@@ -1851,6 +1851,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + Pid, true, true);
     }
 
+    std::string Lang = ws2s(Arguments[1]);
+    std::string Key = ws2s(Arguments[2]);
+
 
     std::ofstream *outfile = new std::ofstream();
     outfile->open(std::wstring(L"s/") + s2ws(Settings.UniqueProcessId()) + std::wstring(L".lock"), std::ofstream::out);
@@ -1935,13 +1938,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         }
     }
 
+
+
+    Data->_ModulesData = LoadModulesData(Lang, Settings.ProxyTunneling(), Pid, Data->_UnusedModulesData);
     Data->Connector = new DevToolsConnector();
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     std::make_shared<RawCppWebSocketClientFactory>(),
-                    10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome"
+                    10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome",
+                    PrepareConstantStartupScript(Data)
                     );
     Data->Connector->SetProfilePath(Settings.Profile());
     Data->Connector->SetExtensionList(Settings.Extensions());
@@ -1998,13 +2005,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     Client = new PipesClient();
     Parser = new CommandParser();
-    std::string Lang = ws2s(Arguments[1]);
-
     Translate::SetLanguage(Lang);
-    app->GetData()->_ModulesData = LoadModulesData(Lang, Settings.ProxyTunneling(), Pid, app->GetData()->_UnusedModulesData);
     app->SetInitialStateCallback(Lang);
-
-    std::string Key = ws2s(Arguments[2]);
 
     WORKER_LOG(Key);
     Arguments.clear();
@@ -2064,9 +2066,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventScriptFinished.push_back(std::bind(&MainApp::ScriptFinishedCallback,app.get()));
     Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4));
     Parser->EventSetResources.push_back(std::bind(&MainApp::SetResourceCallback,app.get(),_1));
-    Parser->EventReset.push_back(std::bind(&MainApp::ResetCallback,app.get()));
     Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get(), _1));
-    Parser->EventResetNoCookies.push_back(std::bind(&MainApp::ResetNoCookiesCallback,app.get()));
     Parser->EventIsChanged.push_back(std::bind(&MainApp::IsChangedCallback,app.get()));
     Parser->EventSetNextAction.push_back(std::bind(&MainApp::SetNextActionCallback,app.get(),_1));
     Parser->EventCrush.push_back(std::bind(&MainApp::CrushCallback,app.get()));

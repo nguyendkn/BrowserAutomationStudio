@@ -49,20 +49,6 @@ void MainHandler::SetHandlersManager(HandlersManager *_HandlersManager)
     this->_HandlersManager = _HandlersManager;
 }
 
-void MainHandler::SendStartupScriptUpdated()
-{
-    if(_HandlersManager->GetBrowser())
-    {
-        int TabId = _HandlersManager->FindTabIdByBrowserId(_HandlersManager->GetBrowser()->GetIdentifier());
-        std::string NewScript = PrepareStartupScript(Data, _HandlersManager->GetBrowser()->GetMainFrame()->GetURL(), TabId);
-        CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("StartupScriptUpdated");
-        msg->GetArgumentList()->SetSize(1);
-        msg->GetArgumentList()->SetString(0,NewScript);
-        _HandlersManager->SendToAll(msg);
-    }
-}
-
-
 int MainHandler::GetBrowserId()
 {
     if(!Browser)
@@ -779,10 +765,7 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
             }
         }
     }
-    if(!Accept || Data->IsReset)
-    {
-        return RV_CANCEL;
-    }
+
     {
         LOCK_BROWSER_DATA
         Data->_RequestList.Add(request->GetIdentifier());
@@ -1085,8 +1068,6 @@ void MainHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> f
             LOCK_BROWSER_DATA
             Data->_NextReferrer.clear();
         }
-
-        SendStartupScriptUpdated();
 
     }
     WORKER_LOG("Loaded Data");

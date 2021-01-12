@@ -270,7 +270,7 @@ void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
     if(_HandlersManager->GetBrowser())
         TabId = _HandlersManager->FindTabIdByBrowserId(_HandlersManager->GetBrowser()->GetIdentifier());
 
-    std::string Script = PrepareStartupScript(Data,NextLoadPage,TabId);
+    std::string Script;
     extra_info->SetString(6,Script);
 
     extra_info->SetString(7,Data->_UniqueProcessId);
@@ -850,19 +850,6 @@ void MainApp::IsChangedCallback()
     }
 }
 
-void MainApp::ResetNoCookiesCallback()
-{
-    WORKER_LOG("ResetCallbackNoCookies");
-    NeedToClearCookiesOnNextReset = false;
-    ResetInternal();
-}
-void MainApp::ResetCallback()
-{
-    WORKER_LOG("ResetCallback");
-    NeedToClearCookiesOnNextReset = true;
-    ResetInternal();
-}
-
 void MainApp::NavigateBackCallback(bool IsInstant)
 {
     WORKER_LOG("NavigateBackCallback");
@@ -872,26 +859,6 @@ void MainApp::NavigateBackCallback(bool IsInstant)
     {
         this->SendTextResponce("<NavigateBack></NavigateBack>");
     });
-}
-
-
-void MainApp::ResetInternal()
-{
-    Data->IsReset = true;
-    _HandlersManager->Reset();
-    CefRequestContext::GetGlobalContext()->CloseAllConnections(DoNothing);
-
-
-    if(_HandlersManager->GetBrowser())
-    {
-        Data->IsAboutBlankLoaded = false;
-        CefRefPtr< CefFrame > Frame = _HandlersManager->GetBrowser()->GetMainFrame();
-        Frame->LoadURL("about:blank");
-    }
-    else
-    {
-        Data->IsAboutBlankLoaded = true;
-    }
 }
 
 
@@ -941,66 +908,6 @@ void MainApp::PopupCreateCallback(bool is_silent, const std::string& url)
 }
 
 
-void MainApp::ResetCallbackFinalize()
-{
-    //Delete cookies
-    if(NeedToClearCookiesOnNextReset)
-    {
-        CefRefPtr<CefCookieManager> CookieManager = CefCookieManager::GetGlobalManager(NULL);
-        CookieManager->DeleteCookies("","",0);
-    }
-
-    //Clear fonts
-    //FontReplace::GetInstance().SetFonts("");
-    //FontReplace::GetInstance().UnHook();
-
-    Settings->Init();
-
-    {
-        LOCK_BROWSER_DATA
-
-        //Clear Cache
-        Data->_CachedData.clear();
-        Data->_RequestMask.clear();
-        Data->_LoadedUrls.clear();
-        Data->_CacheMask.clear();
-
-        //Open file name
-        Data->_OpenFileName.clear();
-
-        //Startup script
-        Data->_StartupScript.clear();
-
-        //Headers
-        Data->_Headers.Clear();
-        Data->_HeadersDefaults.clear();
-
-        //Accept language pattern
-        Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
-
-        //Resolution
-        Data->WidthBrowser = 1024;
-        Data->HeightBrowser = 600;
-
-        Data->AllowPopups = true;
-        Data->AllowDownloads = true;
-    }
-
-    SendStartupScriptUpdated();
-
-    if(_HandlersManager->GetBrowser())
-    {
-        _HandlersManager->GetBrowser()->GetHost()->WasResized();
-        _HandlersManager->GetBrowser()->GetHost()->Invalidate(PET_VIEW);
-    }
-
-    Layout->Update(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
-    Data->IsReset = false;
-
-    Layout->SetIsRenderEmpty(true);
-    SendTextResponce("<Reset/>");
-}
-
 void MainApp::SetOpenFileNameCallback(const std::string& value)
 {
     {
@@ -1019,38 +926,26 @@ void MainApp::DragFileCallback(const std::string& value)
     SendTextResponce("<DragFile></DragFile>");
 }
 
-void MainApp::SendStartupScriptUpdated()
-{
-    if(_HandlersManager->GetBrowser())
-    {
-        int TabId = _HandlersManager->FindTabIdByBrowserId(_HandlersManager->GetBrowser()->GetIdentifier());
-        std::string NewScript = PrepareStartupScript(Data, _HandlersManager->GetBrowser()->GetMainFrame()->GetURL(), TabId);
-        CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("StartupScriptUpdated");
-        msg->GetArgumentList()->SetSize(1);
-        msg->GetArgumentList()->SetString(0,NewScript);
-        _HandlersManager->SendToAll(msg);
-    }
-
-}
-
 void MainApp::SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id)
 {
+    auto it = Data->_StartupScript.find(script_id);
+    if(it == Data->_StartupScript.end())
     {
-        LOCK_BROWSER_DATA
-        auto it = Data->_StartupScript.find(script_id);
-        if(it == Data->_StartupScript.end())
-        {
-            ConfigurableItem<std::string> item;
-            item.Set(value, target);
-            Data->_StartupScript[script_id] = item;
-        }else
-        {
-            it->second.Set(value, target);
-        }
-
+        ConfigurableItem<std::string> item;
+        item.Set(value, target);
+        Data->_StartupScript[script_id] = item;
+    }else
+    {
+        it->second.Set(value, target);
     }
-    SendStartupScriptUpdated();
-    SendTextResponce("<SetStartupScript></SetStartupScript>");
+
+    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        this->SendTextResponce("<SetStartupScript></SetStartupScript>");
+    });
+
 }
 
 void MainApp::RunTaskCallback(const std::string& function_name,const std::string& params,const std::string& result_id)
@@ -1235,8 +1130,6 @@ void MainApp::ResizeCallback(int width, int height)
     {
         this->SendTextResponce("<Resize></Resize>");
     });
-
-    SendStartupScriptUpdated();
 }
 
 void MainApp::ForceUpdateWindowPositionWithParent()
@@ -1975,7 +1868,7 @@ void MainApp::AddHeaderCallbackInternal(const std::string& key,const std::string
         }
         Data->_Headers.Set(Headers,target);
     }
-    SendStartupScriptUpdated();
+    UpdateBrowserData(Data);
 }
 
 void MainApp::SetHeaderListCallback(const std::string& json)
@@ -2016,7 +1909,7 @@ void MainApp::SetAcceptLanguagePatternCallback(const std::string& pattern)
         LOCK_BROWSER_DATA
         Data->_AcceptLanguagePattern = pattern;
     }
-    SendStartupScriptUpdated();
+    UpdateBrowserData(Data);
     SendTextResponce("<SetAcceptLanguagePattern></SetAcceptLanguagePattern>");
 }
 
@@ -2043,24 +1936,14 @@ void MainApp::PrepareFunctionCallback(const std::string& value)
 
 void MainApp::RecaptchaV3ListCallback(const std::string& value)
 {
-    {
-        LOCK_BROWSER_DATA
-        Data->_RecaptchaV3List = value;
-    }
-    if(_HandlersManager->GetBrowser())
-    {
-        std::vector<int64> FrameIds;
-        _HandlersManager->GetBrowser()->GetFrameIdentifiers(FrameIds);
-        std::string Js = Javascript(std::string(";_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3ActionList) = ") + picojson::value(Data->_RecaptchaV3List).serialize() + std::string(";"),"main");
-        for(int64 Id: FrameIds)
-        {
-            CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(Id);
-            Frame->ExecuteJavaScript(Js,Frame->GetURL(), 0);
-        }
+    Data->_RecaptchaV3List = value;
 
-    }
-    SendStartupScriptUpdated();
-    SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
+    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        this->SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
+    });
 }
 
 void MainApp::RecaptchaV3ResultCallback(const std::string& id, const std::string& result)
@@ -2086,7 +1969,7 @@ void MainApp::CleanHeaderCallback()
         Data->_Headers.Clear();
         Data->_HeadersDefaults.clear();
     }
-    SendStartupScriptUpdated();
+    UpdateBrowserData(Data);
     SendTextResponce("<CleanHeader></CleanHeader>");
 }
 
@@ -3163,15 +3046,6 @@ void MainApp::Timer()
         dhandler->Timer();
 
     _HandlersManager->Timer();
-
-    if(_HandlersManager->GetHandler())
-    {
-        //CefPostTask(TID_IO, base::Bind(&MainHandler::CleanResourceHandlerList, _HandlersManager->GetHandler()));
-        if(_HandlersManager->GetHandler()->GetResourceListLength() == 0 && Data->IsReset && Data->IsAboutBlankLoaded)
-        {
-            ResetCallbackFinalize();
-        }
-    }
 
     if(_HandlersManager->CheckIsClosed())
     {

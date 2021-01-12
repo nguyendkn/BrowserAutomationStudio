@@ -17,6 +17,7 @@ struct TabData
         WaitingForPageEnable,
         WaitingForRuntimeEnable,
         WaitingForNetworkEnable,
+        WaitingForSettingStartupScript,
         WaitingForExecutingSavedActions,
         Connected
     }ConnectionState = NotStarted;
@@ -52,6 +53,7 @@ struct DevToolsGlobalState
     std::string UniqueProcessId;
     std::string ParentProcessId;
     std::string ChromeExecutableLocation;
+    std::string ConstantStartupScript;
 
     //Tab states
     std::string ScreenCastTabId;

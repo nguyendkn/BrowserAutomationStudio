@@ -195,8 +195,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     void ReadDoTour();
     std::string Lang;
 
-    bool NeedToClearCookiesOnNextReset;
-
     int RunElementCommandCallbackOnNextTimer;
 
 public:
@@ -207,7 +205,6 @@ public:
     FingerprintDetector Detector;
     NotificationManager Notifications;
     std::string Javascript(const std::string& Script, const std::string& BrowserType);
-    void SendStartupScriptUpdated();
     int GetHighlightOffsetX();
     int GetHighlightOffsetY();
     int GetHighlightFrameId();
@@ -254,12 +251,7 @@ public:
     void GetTabsCallback(const std::string& RequestId);
     void LoadNoDataCallback();
     void LoadManualSelect();
-    void ResetCallback();
     void NavigateBackCallback(bool IsInstant);
-    void ResetNoCookiesCallback();
-    void ResetInternal();
-
-    void ResetCallbackFinalize();
 
     void SetNextActionCallback(const std::string& NextActionId);
     void TimezoneCallback(int offset);

@@ -84,8 +84,6 @@ namespace BrowserAutomationStudioFramework
         virtual void Timezone(int offset, const QString& callback);
         virtual void MouseMove(int x, int y,const QString& params, const QString& callback);
         virtual void Resize(int x, int y, const QString& callback);
-        virtual void Reset(const QString& callback);
-        virtual void ResetNoCookies(const QString& callback);
         virtual void StartManualBrowserControl(const QString& message, const QString& callback);
         virtual void Jquery(const QString& callback);
         virtual void OptimizeMemory(const QString& callback);

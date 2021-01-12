@@ -612,18 +612,6 @@ namespace BrowserAutomationStudioFramework
         if(Worker->GetProcessComunicatorActual())
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
-    void SubprocessBrowser::ResetNoCookies(const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("ResetNoCookies","");
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("ResetNoCookies"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(Reset()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()), 60000);
-        if(Worker->GetProcessComunicatorActual())
-            Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
 
     void SubprocessBrowser::StartManualBrowserControl(const QString& message, const QString& callback)
     {
@@ -633,20 +621,6 @@ namespace BrowserAutomationStudioFramework
 
         Worker->SetScript(callback);
         Worker->GetWaiter()->WaitInfinity(this,SIGNAL(StartManualBrowserControl()), Worker,SLOT(RunSubScript()));
-        if(Worker->GetProcessComunicatorActual())
-            Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
-
-
-    void SubprocessBrowser::Reset(const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("Reset","");
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("Reset"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(Reset()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()), 60000);
         if(Worker->GetProcessComunicatorActual())
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }

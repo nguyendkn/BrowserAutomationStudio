@@ -188,14 +188,6 @@ void CommandParser::Parse(const std::string& Xml)
                 f(value);
         }
 
-        CommandNode = MessagesNode->first_node("Reset");
-        if(CommandNode)
-        {
-            WORKER_LOG("Reset");
-            for(auto f:EventReset)
-                f();
-        }
-
         CommandNode = MessagesNode->first_node("NavigateBack");
         if(CommandNode)
         {
@@ -203,14 +195,6 @@ void CommandParser::Parse(const std::string& Xml)
             std::string value = CommandNode->value();
             for(auto f:EventNavigateBack)
                 f(value == "true");
-        }
-
-        CommandNode = MessagesNode->first_node("ResetNoCookies");
-        if(CommandNode)
-        {
-            WORKER_LOG("ResetNoCookies");
-            for(auto f:EventResetNoCookies)
-                f();
         }
 
         CommandNode = MessagesNode->first_node("IsChanged");

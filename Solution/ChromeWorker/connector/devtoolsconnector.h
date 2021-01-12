@@ -99,7 +99,8 @@ class DevToolsConnector
         (
                 std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
                 std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
-                int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation
+                int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
+                const std::string& ConstantStartupScript
         );
         void SetProfilePath(const std::wstring& Path);
         void SetExtensionList(const std::vector<std::wstring>& Extensions);

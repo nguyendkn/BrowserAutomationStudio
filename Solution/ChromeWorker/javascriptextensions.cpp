@@ -13,24 +13,6 @@ JavaScriptExtensions::JavaScriptExtensions()
 
 }
 
-std::string JavaScriptExtensions::GetReferrerExtension(const std::string& Referrer)
-{
-    std::string rescode;
-    //if(!Referrer.empty())
-    {
-        rescode += std::string("Object.defineProperty(window.document, 'referrer', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value(Referrer).serialize() + std::string(";"
-         "    }"
-         "});");
-    }
-    return rescode;
-}
-std::string JavaScriptExtensions::GetReferrerEmptyExtension()
-{
-    return "delete window.document.referrer;";
-}
-
 
 
 std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
@@ -679,11 +661,6 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
     "};");
 }
 
-std::string JavaScriptExtensions::GetJqueryExtension()
-{
-    return "";
-}
-
 std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std::string& UniqueProcessId)
 {
     std::string Res = Script;
@@ -698,14 +675,8 @@ std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std
     return Res;
 }
 
-std::string JavaScriptExtensions::GetHideExtensionLast(const std::string& UniqueProcessId)
-{
-    std::string res;
-    return res;
-}
 
-
-std::string JavaScriptExtensions::GetHideExtensionFirst(const std::string& UniqueProcessId)
+std::string JavaScriptExtensions::GetHideExtension(const std::string& UniqueProcessId)
 {
     std::string res =  std::string(";((function(atob_original) {"
             "var HideFuntions = {};"

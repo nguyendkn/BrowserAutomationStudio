@@ -79,6 +79,16 @@ public:
         return res;
     }
 
+    std::vector<TYPE> All()
+    {
+        std::vector<TYPE> res;
+        for(ConfigurableSingleItem<TYPE> i:data)
+        {
+            res.push_back(i.value);
+        }
+        return res;
+    }
+
     TYPE Match(const std::string& Url,int Tab)
     {
         std::vector<TYPE> ResAll = MatchAll(Url, Tab);
@@ -87,8 +97,17 @@ public:
         {
             Res = ResAll.at(ResAll.size() - 1);
         }
-        //WORKER_LOG(std::string("TARGET ") + Url + std::string(";;;") + std::to_string(Tab) + std::string("===") + std::to_string(ResAll.size()));
+        return Res;
+    }
 
+    TYPE Last()
+    {
+        std::vector<TYPE> ResAll = All();
+        TYPE Res;
+        if(!ResAll.empty())
+        {
+            Res = ResAll.at(ResAll.size() - 1);
+        }
         return Res;
     }
 

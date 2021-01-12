@@ -17,7 +17,8 @@ void DevToolsConnector::Initialize
 (
         std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
         std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
-        int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation
+        int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
+        const std::string& ConstantStartupScript
 )
 {
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
@@ -37,6 +38,7 @@ void DevToolsConnector::Initialize
     GlobalState.UniqueProcessId = UniqueProcessId;
     GlobalState.ParentProcessId = ParentProcessId;
     GlobalState.ChromeExecutableLocation = ChromeExecutableLocation;
+    GlobalState.ConstantStartupScript = ConstantStartupScript;
 }
 
 void DevToolsConnector::SetProfilePath(const std::wstring& Path)
@@ -237,6 +239,12 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Network.enable", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForNetworkEnable)
+    {
+        Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
+        std::map<std::string, Variant> Params;
+        Params["source"] = Variant(GlobalState.ConstantStartupScript);
+        Tab->CurrentWebsocketActionId = SendWebSocket("Page.addScriptToEvaluateOnNewDocument", Params, Tab->TabId);
+    } else if(Tab->ConnectionState == TabData::WaitingForSettingStartupScript)
     {
         Tab->CurrentWebsocketActionId = 0;
 
@@ -630,7 +638,7 @@ void DevToolsConnector::Timer()
         {
             if(GlobalState.SwitchToTabResetSavedActions && Tab->ConnectionState == TabData::Connected)
             {
-                Tab->ConnectionState = TabData::WaitingForNetworkEnable;
+                Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
                 Tab->IsSwitchingToTab = true;
                 GlobalState.SwitchToTabResetSavedActions = false;
                 ProcessTabConnection(Tab);

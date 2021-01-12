@@ -203,7 +203,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         }
 
 
-        if(!Jscode.empty())
+        /*if(!Jscode.empty())
         {
             JavaScriptExtensions extensions;
             std::string extensionCode = extensions.GetBasicExtension(IsRecord);
@@ -215,7 +215,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
             AllScript = extensions.ProcessJs(AllScript,UniqueProcessId);
 
             context->Eval(AllScript,"",0,retval,exc);
-        }
+        }*/
     }
 }
 

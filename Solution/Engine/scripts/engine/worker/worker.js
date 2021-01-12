@@ -48,22 +48,6 @@ function new_browser(callback)
     }
 }
 
-/* Soft reset */
-function reset(callback)
-{
-    if(!_is_bas_browser_real())
-    {
-        new_browser(callback)
-        return
-    }
-    _ARG = arguments
-    _create_browser_if_needed(function(){
-        _DEFAULT_MOVE_PARAMS = {}
-        _reset_proxy();
-        Browser.Reset(_get_function_body(_ARG[0]));
-    })
-}
-
 /* Create browser caus used action which needs browser */
 function browser(callback)
 {
@@ -74,16 +58,13 @@ function browser(callback)
 function _init_browser(callback)
 {
     _DEFAULT_MOVE_PARAMS = {}
-    _INIT_BROWSER_CALLBACK = callback
-    Browser.ResetNoCookies(_get_function_body(function(){
-        var callback = _INIT_BROWSER_CALLBACK
-        delete _INIT_BROWSER_CALLBACK
-        if(Browser.IsBASBrowser())
-            Browser.ResetProxy();
 
-        _settings(_PROXY, callback)
+    if(Browser.IsBASBrowser())
+        Browser.ResetProxy();
 
-    }))
+    _settings(_PROXY, callback)
+
+
 }
 
 /* Check if bas browser is set through settings and it actually used */

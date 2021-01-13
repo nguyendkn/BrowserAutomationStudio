@@ -18,6 +18,7 @@ struct TabData
         WaitingForRuntimeEnable,
         WaitingForNetworkEnable,
         WaitingForSettingStartupScript,
+        WaitingForPageReloadForFirstTab,
         WaitingForExecutingSavedActions,
         Connected
     }ConnectionState = NotStarted;

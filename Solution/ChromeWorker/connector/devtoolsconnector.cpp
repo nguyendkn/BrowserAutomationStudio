@@ -87,6 +87,8 @@ void DevToolsConnector::StartProcess()
         CommandLine += std::wstring(L" ");
     }
 
+    CommandLine += std::wstring(L"about:blank");
+
     ShellExecute(0, 0, L"worker.exe", CommandLine.c_str(), s2ws(GlobalState.ChromeExecutableLocation).c_str(), SW_SHOW);
 }
 
@@ -245,6 +247,18 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         Params["source"] = Variant(GlobalState.ConstantStartupScript);
         Tab->CurrentWebsocketActionId = SendWebSocket("Page.addScriptToEvaluateOnNewDocument", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForSettingStartupScript)
+    {
+        Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
+
+        if(ConnectionState != WaitingFirstTab)
+        {
+            ProcessTabConnection(Tab);
+            return;
+        }
+        std::map<std::string, Variant> Params;
+        Params["expression"] = Variant(GlobalState.ConstantStartupScript + std::string(";0;"));
+        Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.evaluate", Params, Tab->TabId);
+    } else if(Tab->ConnectionState == TabData::WaitingForPageReloadForFirstTab)
     {
         Tab->CurrentWebsocketActionId = 0;
 
@@ -638,7 +652,7 @@ void DevToolsConnector::Timer()
         {
             if(GlobalState.SwitchToTabResetSavedActions && Tab->ConnectionState == TabData::Connected)
             {
-                Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
+                Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
                 Tab->IsSwitchingToTab = true;
                 GlobalState.SwitchToTabResetSavedActions = false;
                 ProcessTabConnection(Tab);

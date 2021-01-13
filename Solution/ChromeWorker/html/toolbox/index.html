@@ -1542,12 +1542,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="reset">
       <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-         <input type="checkbox" id="Check"/> <label for="Check" class="tr">Restart process</label>
       </span>
       <div class="tooltipinternal">
         <div class="tr tooltip-paragraph-first-fold">Clear all browser data: proxy, user agent, headers, BAS cache filters, BAS cache data, cookies.</div>
-        <div class="tr tooltip-paragraph-fold">By default this action doesn't restart browser process and therefore may leave browser cache, local storage and several other object.</div>
-        <div class="tr tooltip-paragraph-fold">It is recommended to set "Restart process" checkbox to purge all data, however, restarting process may affect CPU usage and you may leave "Restart process" unchecked if it is enough to clear only mentioned earlier data.</div> 
         <div class="tr tooltip-paragraph-last-fold">Don't call this action on thread start, BAS will clear data at the beginning of thread automatically.</div>
       </div>
       <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_clear_cookies_and_restart_browser"}) %>
@@ -5440,12 +5437,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="reset_code">
-      /*Browser*/
-      <% if(reset){ %>
-        new_browser()!
-      <% }else{ %>
-        reset()!
-      <% } %>
+      new_browser()!
   </script>
 
   <script type="text/template" id="moveelement_code">
@@ -8383,7 +8375,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
              try{
 
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({reset:$("#Check").is(':checked')})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({})
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)

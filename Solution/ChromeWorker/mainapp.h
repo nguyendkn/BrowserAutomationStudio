@@ -175,9 +175,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     void InitBrowser();
     std::string NextLoadPage;
     ImageFinder _ImageFinder;
-    std::vector<char> ImageData;
-    int ImageWidth;
-    int ImageHeight;
     MainLayout *Layout;
 
     std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData;
@@ -190,7 +187,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     void HandleScenarioBrowserEvents();
     void HandleCentralBrowserEvents();
     void HandleDetectorBrowserEvents();
-    void HandleIPCData();
 
     void ReadDoTour();
     std::string Lang;
@@ -424,6 +420,12 @@ public:
     std::pair<std::string, bool> GetMenuSelected();
 
     void SendTextResponce(const std::string&);
+
+    //Paint
+    void OnPaint();
+    void OnResize();
+    void OnScroll();
+
 
 
 private:

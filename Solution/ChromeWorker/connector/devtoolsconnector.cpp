@@ -39,6 +39,45 @@ void DevToolsConnector::Initialize
     GlobalState.ParentProcessId = ParentProcessId;
     GlobalState.ChromeExecutableLocation = ChromeExecutableLocation;
     GlobalState.ConstantStartupScript = ConstantStartupScript;
+
+    ImageData.resize(16818223);
+    IPC = new SharedMemoryIPC();
+    IPC->Start(UniqueProcessId);
+}
+
+char* DevToolsConnector::GetPaintData()
+{
+    return ImageData.data();
+}
+
+int DevToolsConnector::GetPaintWidth()
+{
+    return PaintWidth;
+}
+
+int DevToolsConnector::GetPaintHeight()
+{
+    return PaintHeight;
+}
+
+int DevToolsConnector::GetWidth()
+{
+    return GlobalState.Width;
+}
+
+int DevToolsConnector::GetHeight()
+{
+    return GlobalState.Height;
+}
+
+int DevToolsConnector::GetScrollX()
+{
+    return GlobalState.ScrollX;
+}
+
+int DevToolsConnector::GetScrollY()
+{
+    return GlobalState.ScrollY;
 }
 
 void DevToolsConnector::SetProfilePath(const std::wstring& Path)
@@ -389,16 +428,15 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
         //Intercept screencast event, replace it with OnPaint event
         if(Method == "Page.screencastFrame")
         {
-            if(AllObject["params"].is<picojson::object>())
-            {
+            int NewScrollX = Parser.GetFloatFromJson(Message,"params.metadata.scrollOffsetX");
+            int NewScrollY = Parser.GetFloatFromJson(Message,"params.metadata.scrollOffsetY");
 
-                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
-                if(ResultObject["data"].is<std::string>())
-                {
-                    std::string Data = ResultObject["data"].get<std::string>();
-                    for(auto f:OnPaint)
-                        f(Data);
-                }
+            if(GlobalState.ScrollX != NewScrollX || GlobalState.ScrollY != NewScrollY)
+            {
+                GlobalState.ScrollX = NewScrollX;
+                GlobalState.ScrollY = NewScrollY;
+                for(auto f:OnScroll)
+                    f();
             }
         }else if(Method == "Fetch.requestPaused") 
         {
@@ -565,6 +603,11 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 for(auto f:OnMessage)
                     f(Method, Result);
 
+                int PreviousScrollX = GlobalState.ScrollX;
+                int PreviousScrollY = GlobalState.ScrollY;
+                int PreviousWidth = GlobalState.Width;
+                int PreviousHeight = GlobalState.Height;
+
 
                 std::vector<std::shared_ptr<IDevToolsAction> > AllActions = GetAllActions();
 
@@ -577,12 +620,59 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         Action->OnWebSocketEvent(Method, Result);
                     }
                 }
+
+                if(GlobalState.ScrollX != PreviousScrollX || GlobalState.ScrollY != PreviousScrollY)
+                {
+                    for(auto f:OnScroll)
+                        f();
+                }
+
+                if(GlobalState.Width != PreviousWidth || GlobalState.Height != PreviousHeight)
+                {
+                    for(auto f:OnResize)
+                        f();
+                }
             }
         }
         return;
     }
 
 
+}
+
+void DevToolsConnector::HandleIPCData()
+{
+    bool IsNewImage = false;
+
+    //Get data
+    {
+        SharedMemoryIPCLockGuard Lock(IPC);
+
+        if(IPC->GetImageId())
+        {
+            ImageData.assign(IPC->GetImagePointer(),IPC->GetImagePointer() + IPC->GetImageSize());
+            PaintWidth = IPC->GetImageWidth();
+            PaintHeight = IPC->GetImageHeight();
+            IPC->SetImageId(0);
+            IsNewImage = true;
+        }
+
+    }
+
+    //Paint screenshot
+    if(IsNewImage)
+    {
+        if(GlobalState.Width != PaintWidth || GlobalState.Height != PaintHeight)
+        {
+            GlobalState.Width = PaintWidth;
+            GlobalState.Height = PaintHeight;
+            for(auto f:OnResize)
+                f();
+        }
+
+        for(auto f:OnPaint)
+            f();
+    }
 }
 
 void DevToolsConnector::Timer()
@@ -668,6 +758,11 @@ void DevToolsConnector::Timer()
                 GlobalState.SwitchToTabId.clear();
                 GlobalState.SwitchToTabFrameId.clear();
 
+                int PreviousScrollX = GlobalState.ScrollX;
+                int PreviousScrollY = GlobalState.ScrollY;
+                int PreviousWidth = GlobalState.Width;
+                int PreviousHeight = GlobalState.Height;
+
                 for(std::shared_ptr<IDevToolsAction> Action : Actions)
                 {
                     std::vector<std::string> SubscribbedEvents = Action->GetSubscribbedEvents();
@@ -679,6 +774,18 @@ void DevToolsConnector::Timer()
                         std::string Result = Serializer.SerializeObjectToString(Params);
                         Action->OnWebSocketEvent(Method, Result);
                     }
+                }
+
+                if(GlobalState.ScrollX != PreviousScrollX || GlobalState.ScrollY != PreviousScrollY)
+                {
+                    for(auto f:OnScroll)
+                        f();
+                }
+
+                if(GlobalState.Width != PreviousWidth || GlobalState.Height != PreviousHeight)
+                {
+                    for(auto f:OnResize)
+                        f();
                 }
             }
         }
@@ -699,6 +806,13 @@ void DevToolsConnector::Timer()
 
     if(ConnectionState == Connected)
     {
+        HandleIPCData();
+
+        int PreviousScrollX = GlobalState.ScrollX;
+        int PreviousScrollY = GlobalState.ScrollY;
+        int PreviousWidth = GlobalState.Width;
+        int PreviousHeight = GlobalState.Height;
+
         std::vector<std::shared_ptr<IDevToolsAction> >::iterator it = Actions.begin();
         while(it != Actions.end())
         {
@@ -827,6 +941,19 @@ void DevToolsConnector::Timer()
                 }
             }
         }
+
+        if(GlobalState.ScrollX != PreviousScrollX || GlobalState.ScrollY != PreviousScrollY)
+        {
+            for(auto f:OnScroll)
+                f();
+        }
+
+        if(GlobalState.Width != PreviousWidth || GlobalState.Height != PreviousHeight)
+        {
+            for(auto f:OnResize)
+                f();
+        }
+
     }
 }
 
@@ -1138,7 +1265,7 @@ Async DevToolsConnector::SetStartupScript(const std::string& Script, int Timeout
     InsertAction(NewAction);
     return NewAction->GetResult();
 }
-Async DevToolsConnector::ExecuteJavascript(const std::string& Script, const std::string& Variables, const std::string& ElementPath, int Timeout)
+Async DevToolsConnector::ExecuteJavascript(const std::string& Script, const std::string& Variables, const std::string& ElementPath, bool ScrollToElement, int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;
     std::map<std::string, Variant> Params;
@@ -1148,6 +1275,7 @@ Async DevToolsConnector::ExecuteJavascript(const std::string& Script, const std:
     Params["expression"] = Variant(Script);
     Params["path"] = Variant(ElementPath);
     Params["variables"] = Variant(Variables);
+    Params["do_scroll"] = Variant(ScrollToElement);
 
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);

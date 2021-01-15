@@ -135,7 +135,6 @@ public:
 
     DevToolsConnector *Connector = 0;
     ResultManager *Results = 0;
-    SharedMemoryIPC* IPC;
 
 };
 

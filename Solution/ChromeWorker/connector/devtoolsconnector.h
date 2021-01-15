@@ -13,6 +13,7 @@
 #include "InputEventsEnumerations.h"
 #include "KeyboardEmulation.h"
 #include <windows.h>
+#include "sharedmemoryipc.h"
 
 class DevToolsConnector
 {
@@ -87,10 +88,27 @@ class DevToolsConnector
     Async ResetResult;
     long long ResetMethodDeadline = 0;
 
+    //Paint data
+    std::vector<char> ImageData;
+    int PaintWidth = 0;
+    int PaintHeight = 0;
+    SharedMemoryIPC* IPC = 0;
+    void HandleIPCData();
 
     public:
 
-        std::vector<std::function<void(std::string&)> > OnPaint;
+        std::vector<std::function<void()> > OnPaint;
+        std::vector<std::function<void()> > OnResize;
+        std::vector<std::function<void()> > OnScroll;
+
+        char* GetPaintData();
+        int GetPaintWidth();
+        int GetPaintHeight();
+        int GetWidth();
+        int GetHeight();
+        int GetScrollX();
+        int GetScrollY();
+
         std::vector<std::function<void(std::string&, std::string&)> > OnMessage;
 
         void Timer();
@@ -138,7 +156,7 @@ class DevToolsConnector
 
         //Javascript
         Async SetStartupScript(const std::string& Script, int Timeout = -1);
-        Async ExecuteJavascript(const std::string& Script, const std::string& Variables = std::string(), const std::string& ElementPath = std::string(), int Timeout = -1);
+        Async ExecuteJavascript(const std::string& Script, const std::string& Variables = std::string(), const std::string& ElementPath = std::string(), bool ScrollToElement = false, int Timeout = -1);
 
         //Inputs
         void Mouse(MouseEvent Event, int X, int Y, MouseButton Button = MouseButtonLeft, int MousePressed = MouseButtonNone, int KeyboardPresses = KeyboardModifiersNone, int ClickCount = 1);

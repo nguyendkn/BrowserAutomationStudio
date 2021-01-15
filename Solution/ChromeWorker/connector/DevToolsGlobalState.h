@@ -50,6 +50,12 @@ struct DevToolsGlobalState
     std::map<std::string, int> FrameIdToContextId;
     std::vector<std::shared_ptr<TabData> > Tabs;
 
+    int ScrollX = -1;
+    int ScrollY = -1;
+
+    int Width = -1;
+    int Height = -1;
+
     //Settings to change proxy
     std::string UniqueProcessId;
     std::string ParentProcessId;

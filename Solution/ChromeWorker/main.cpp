@@ -1914,8 +1914,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->AllowDownloads = true;
     Data->MultiselectMode = false;
     Data->MultiselectIsInsideElementLoop = false;
-    Data->IPC = new SharedMemoryIPC();
-    Data->IPC->Start(Settings.UniqueProcessId());
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
     Data->_UniqueProcessId = Settings.UniqueProcessId();
     Data->RemoteDebuggingPort = 10000 + rand()%10000;
@@ -1944,6 +1942,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector = new DevToolsConnector();
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
+    Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));
+    Data->Connector->OnResize.push_back(std::bind(&MainApp::OnResize,app.get()));
+    Data->Connector->OnScroll.push_back(std::bind(&MainApp::OnScroll,app.get()));
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     std::make_shared<RawCppWebSocketClientFactory>(),

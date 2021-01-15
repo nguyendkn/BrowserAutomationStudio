@@ -122,9 +122,9 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                     "label += '</A> ';"
                 "}"
                 "label += css;"
-                "_BAS_HIDE(browser_automation_studio_inspect_result)(parseInt(rect.left),parseInt(rect.top),parseInt(rect.width),parseInt(rect.height),label,css,css2,css3,match,xpath,x + document.documentElement.scrollLeft,y + document.documentElement.scrollTop,true,is_frame,frame_name,frame_url,frame_tag_html,frame_index,x_with_padding,y_with_padding,position);"
+                "return JSON.stringify([parseInt(rect.left),parseInt(rect.top),parseInt(rect.width),parseInt(rect.height),label,css,css2,css3,match,xpath,x + document.documentElement.scrollLeft,y + document.documentElement.scrollTop,true,is_frame,frame_name,frame_url,frame_tag_html,frame_index,x_with_padding,y_with_padding,position]);"
             "}else{"
-                "_BAS_HIDE(browser_automation_studio_inspect_result)(0,0,0,0,'','','','','','',x,y,false,false,'','','',0,0,0,0);"
+                "return JSON.stringify([0,0,0,0,'','','','','','',x,y,false,false,'','','',0,0,0,0]);"
             "}"
         "};"
         "_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements) = function(elements)"
@@ -300,17 +300,17 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                     "}"
                 "};"
             "}catch(e){}"
-            "_BAS_HIDE(browser_automation_studio_multiselect_result)(JSON.stringify(res));"
+            "return JSON.stringify(res);"
             "if(typeof(_BAS_HIDE(BrowserAutomationStudio_MultiSelectIsDirty)) == 'boolean' && _BAS_HIDE(BrowserAutomationStudio_MultiSelectIsDirty) )"
             "{"
                 "_BAS_HIDE(BrowserAutomationStudio_MultiSelectIsDirty) = false;"
                 "if(include_list.length > 0)"
                 "{"
                     "var multiselector_data = _BAS_HIDE(BrowserAutomationStudio_GenerateMultiSelectors)(include_list,exclude_list,last_prefix);"
-                    "_BAS_HIDE(browser_automation_studio_multiselect_report)(JSON.stringify(JSON.stringify({include_number: include_list.length,exclude_number: exclude_list.length, data: multiselector_data})));"
+                    "return JSON.stringify(JSON.stringify({include_number: include_list.length,exclude_number: exclude_list.length, data: multiselector_data}));"
                 "}else"
                 "{"
-                    "_BAS_HIDE(browser_automation_studio_multiselect_report)(JSON.stringify(JSON.stringify({include_number: 0,exclude_number: 0})));"
+                    "return JSON.stringify(JSON.stringify({include_number: 0,exclude_number: 0}));"
                 "}"
             "}"
             "return multiselect_elements;"
@@ -352,7 +352,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                     "}"
                 "};"
             "}catch(e){}"
-            "_BAS_HIDE(browser_automation_studio_highlight_result)(res);"
+            "return res;"
         "};");
     }
     return
@@ -372,7 +372,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
             "var result = frame_sibling.indexOf(window);"
             "if(result == search_index)"
             "{"
-                "_BAS_HIDE(browser_automation_studio_frame_structure_query_result)(query_id, frame_id);"
+                "return JSON.stringify([query_id, frame_id]);"
             "}"
         "}catch(e){};"
     "};"
@@ -398,7 +398,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
             //"document.documentElement.scrollLeft = xc - window.innerWidth/2;"
             //"document.documentElement.scrollTop = yc - window.innerHeight/2;"
 
-            "setTimeout(function(){"
+            "{"
                 "var rect = el.getBoundingClientRect();"
 
                 "var xc = Math.floor(rect.left + rect.width/2);"
@@ -427,14 +427,14 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
 
                 "res += ',' + x1 + ',' + y1 + ',' + x2 + ',' + y2;"
 
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
+                "return res;"
 
                 //"return;"
                 //"}"
-            "}, 100)"
+            "}"
 
         "}else{"
-            "_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');"
+            "return 'BAS_NOT_EXISTS';"
         "}"
 
     "};"
@@ -448,7 +448,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
             "if(x > document.documentElement.scrollLeft && x < document.documentElement.scrollLeft + window.innerWidth && y > document.documentElement.scrollTop && y < document.documentElement.scrollTop + window.innerHeight)"
             "{"
                 "var res = document.documentElement.scrollLeft + ',' + document.documentElement.scrollTop + ',' + x.toString() + ',' + y.toString();"
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
+                "return res;"
                 "return;"
             "}"
 
@@ -467,11 +467,11 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "}catch(e)"
         "{"
             "var res = '0,0,' + x.toString() + ',' + y.toString();"
-            "_BAS_HIDE(browser_automation_studio_result)(res);"
+            "return res;"
             "return;"
         "}"
 
-        "setTimeout(function(){"
+        "{"
             "try{"
                 "x-=document.documentElement.scrollLeft;"
 
@@ -492,14 +492,14 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "y+=document.documentElement.scrollTop;"
 
                 "var res = document.documentElement.scrollLeft + ',' + document.documentElement.scrollTop + ',' + x.toString() + ',' + y.toString();"
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
+                "return res;"
             "}catch(e)"
             "{"
                 "var res = '0,0,' + x.toString() + ',' + y.toString();"
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
+                "return res;"
                 "return;"
             "}"
-        "}, 100)"
+        "}"
     "}"
 
     ";_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinatesNoResult) = function(x,y)"
@@ -655,9 +655,6 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "return document.body;"
             "return res;"
         "}catch(e){return null}"
-    "};"
-    "_BAS_HIDE(BrowserAutomationStudio_Sleep) = function(milliseconds){"
-      "confirm('BrowserAutomationStudio_Sleep' + milliseconds.toString())"
     "};");
 }
 

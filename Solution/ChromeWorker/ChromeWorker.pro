@@ -43,6 +43,7 @@ SOURCES += main.cpp \
     connector/rawcpphttpclientfactory.cpp \
     connector/rawcppwebsocketclient.cpp \
     connector/rawcppwebsocketclientfactory.cpp \
+    connector/sharedmemoryipc.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
@@ -120,7 +121,6 @@ SOURCES += main.cpp \
     checkvalidutf8.cpp \
     fillalpharectangle.cpp \
     generatejsonmenu.cpp \
-    sharedmemoryipc.cpp \
     emptyapp.cpp \
     renderapp.cpp \
     preparestartupscript.cpp \
@@ -183,6 +183,7 @@ HEADERS += \
     connector/rawcpphttpclientfactory.h \
     connector/rawcppwebsocketclient.h \
     connector/rawcppwebsocketclientfactory.h \
+    connector/sharedmemoryipc.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileexists.h \
@@ -268,7 +269,6 @@ HEADERS += \
     checkvalidutf8.h \
     fillalpharectangle.h \
     generatejsonmenu.h \
-    sharedmemoryipc.h \
     emptyapp.h \
     renderapp.h \
     preparestartupscript.h \

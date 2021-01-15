@@ -4,14 +4,14 @@
 #include "idevtoolsaction.h"
 class DevToolsActionExecuteJavascript :	public IDevToolsAction
 {
-    std::string ElementSelector;
+    std::vector<std::pair<std::string, std::string> > ElementSelector;
     std::string Expression;
     std::string Variables;
     std::string InitialVariables;
     std::string LastMessage;
     std::string RemoteObjectId;
     std::string CurrentLoaderId;
-    std::string CurrentPrefix;
+    std::vector<std::pair<std::string, std::string> > CurrentPrefix;
     int CurrentNodeId = -1;
     int CurrentContextId = -1;
     std::string LocalObjectId;
@@ -22,10 +22,9 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     bool IsDoingScrollRequest = false;
     bool UsesScrollData = false;
     bool UsesPositionData = false;
+    bool DoScroll = false;
     int PositionX = 0;
     int PositionY = 0;
-    int ScrollX = 0;
-    int ScrollY = 0;
     enum {
         NodeSearch,
         FrameSearchEvaluate,
@@ -40,6 +39,9 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     void Next();
     void ParseFrameCandidates(const std::string& FrameMessage, const std::string ParentFrameId);
     void ParseFrameCandidatesIteration(picojson::object& Obj, const std::string ParentFrameId);
+    std::vector<std::pair<std::string, std::string> > ParseSelector(const std::string& SelectorString);
+    std::string SerializeSelector(const std::vector<std::pair<std::string, std::string> >& SelectorData);
+    std::string Javascript(const std::string& Script);
 public:
     virtual void Run();
     virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);

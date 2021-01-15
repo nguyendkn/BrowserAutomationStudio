@@ -5,7 +5,7 @@ void DevToolsActionExecuteJavascript::Run()
 {
     State = Running;
 
-    ElementSelector = Params["path"].String;
+    ElementSelector = ParseSelector(Params["path"].String);
     Params.erase("path");
 
     Expression = Params["expression"].String;
@@ -13,6 +13,9 @@ void DevToolsActionExecuteJavascript::Run()
 
     Variables = Params["variables"].String;
     Params.erase("variables");
+
+    DoScroll = Params["do_scroll"].Boolean;
+    Params.erase("do_scroll");
 
     UsesPositionData = Expression.find("positionx") != std::string::npos || Expression.find("positiony") != std::string::npos;
     UsesScrollData = Expression.find("scrollx") != std::string::npos || Expression.find("scrolly") != std::string::npos;
@@ -55,6 +58,63 @@ void DevToolsActionExecuteJavascript::Run()
 
     LastMessage.clear();
     Next();
+
+}
+
+std::vector<std::pair<std::string, std::string> > DevToolsActionExecuteJavascript::ParseSelector(const std::string& SelectorString)
+{
+    picojson::value AllValue;
+    picojson::parse(AllValue, SelectorString);
+    picojson::array AllList = AllValue.get<picojson::array>();
+
+    std::vector<std::pair<std::string, std::string> > Result;
+
+    std::pair<std::string, std::string> Pair;
+
+    bool IsFirst = true;
+
+    for(picojson::value& Value: AllList)
+    {
+        std::string ValueString = Value.get<std::string>();
+        if(IsFirst)
+        {
+            Pair.first = ValueString;
+            IsFirst = false;
+        }else
+        {
+            Pair.second = ValueString;
+            Result.push_back(Pair);
+            IsFirst = true;
+        }
+    }
+
+    return Result;
+}
+
+std::string DevToolsActionExecuteJavascript::SerializeSelector(const std::vector<std::pair<std::string, std::string> >& SelectorData)
+{
+    picojson::array res;
+    for(std::pair<std::string,std::string> p:SelectorData)
+    {
+        res.push_back(picojson::value(p.first));
+        res.push_back(picojson::value(p.second));
+    }
+
+    return picojson::value(picojson::value(res).serialize()).serialize();
+}
+
+std::string DevToolsActionExecuteJavascript::Javascript(const std::string& Script)
+{
+    std::string Res = Script;
+    try{
+        static std::regex Replacer("_BAS_HIDE\\(([^\\)]+)\\)");
+        return std::regex_replace(Res,Replacer,std::string("(atob(\"") + GlobalState->UniqueProcessId + std::string("\", \"STASH\")[\"$1\"])"));
+    }catch(...)
+    {
+
+    }
+
+    return Res;
 }
 
 void DevToolsActionExecuteJavascript::ParseFrameCandidates(const std::string& FrameMessage, const std::string ParentFrameId)
@@ -191,8 +251,8 @@ void DevToolsActionExecuteJavascript::Next()
             {
                 RequestType = FrameSearchGetPosition;
                 std::map<std::string, Variant> CurrentParams;
-                std::string Script = std::string("{JSON.stringify(BrowserAutomationStudio_GetInternalBoundingRect(BrowserAutomationStudio_FindElement(JSON.stringify(BrowserAutomationStudio_FormatSelector(") + CurrentPrefix + std::string(")))));}");
-                CurrentParams["expression"] = Variant(Script);
+                std::string Script = std::string("{JSON.stringify(_BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(")));}");
+                CurrentParams["expression"] = Variant(Javascript(Script));
                 if(CurrentContextId >= 0)
                     CurrentParams["contextId"] = Variant(CurrentContextId);
 
@@ -241,16 +301,22 @@ void DevToolsActionExecuteJavascript::Next()
             return;
         }
     }
-    std::size_t Index = ElementSelector.find(">FRAME>");
-    if(Index != std::string::npos)
+    int Index = -1;
+    for(int i = 0;i<ElementSelector.size();i++)
     {
-        CurrentPrefix = ElementSelector.substr(0, Index);
-        CurrentPrefix = picojson::value(CurrentPrefix).serialize();
-        ElementSelector.erase(0, Index + 7);
+        if(ElementSelector.at(i).first == "frame_element")
+        {
+            Index = i;
+        }
+    }
+    if(Index >= 0)
+    {
+        CurrentPrefix.assign(ElementSelector.begin(),ElementSelector.begin() + Index + 1);
+        ElementSelector.erase(ElementSelector.begin(), ElementSelector.begin() + Index + 1);
         RequestType = FrameSearchEvaluate;
         std::map<std::string, Variant> CurrentParams;
-        std::string Script = std::string("{BrowserAutomationStudio_FindElement(JSON.stringify(BrowserAutomationStudio_FormatSelector(") + CurrentPrefix + std::string(")));}");
-        CurrentParams["expression"] = Variant(Script);
+        std::string Script = std::string("{_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(");}");
+        CurrentParams["expression"] = Variant(Javascript(Script));
         if(CurrentContextId >= 0)
             CurrentParams["contextId"] = Variant(CurrentContextId);
         
@@ -258,12 +324,25 @@ void DevToolsActionExecuteJavascript::Next()
         return;
     }
 
+    if(DoScroll)
+    {
+        std::map<std::string, Variant> CurrentParams;
+        std::string Script = std::string("{var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(");if(self)self.scrollIntoViewIfNeeded(true);}");
+        CurrentParams["expression"] = Variant(Javascript(Script));
+        if(CurrentContextId >= 0)
+            CurrentParams["contextId"] = Variant(CurrentContextId);
+
+        SendWebSocket("Runtime.evaluate", CurrentParams);
+        return;
+    }
+
+
+
     if(IsDoingScrollRequest)
     {
         ScrollDataWasObtained = true;
-        ScrollX = GetFloatFromJson(LastMessage, "visualViewport.pageX");
-        ScrollY = GetFloatFromJson(LastMessage, "visualViewport.pageY");
-        
+        GlobalState->ScrollX = GetFloatFromJson(LastMessage, "visualViewport.pageX");
+        GlobalState->ScrollY = GetFloatFromJson(LastMessage, "visualViewport.pageY");
     }
 
     if(UsesScrollData && !ScrollDataWasObtained)
@@ -285,12 +364,10 @@ void DevToolsActionExecuteJavascript::Next()
     
     if (!ElementSelector.empty())
     {
-        std::string Prefix = ElementSelector;
-        Prefix = picojson::value(Prefix).serialize();
-        Script += std::string("var self = BrowserAutomationStudio_FindElement(JSON.stringify(BrowserAutomationStudio_FormatSelector(") + Prefix + std::string(")));");
+        Script += Javascript(std::string("var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");"));
     }else
     {
-        Script += std::string("var self = null;");
+        Script += Javascript(std::string("var self = document.body;"));
     }
     
     Script += std::string("var _BAS_VARIABLES = ") + InitialVariables;
@@ -299,9 +376,9 @@ void DevToolsActionExecuteJavascript::Next()
 
     if(UsesScrollData)
     {
-        Script += std::string("var scrollx = ") + std::to_string(ScrollX);
+        Script += std::string("var scrollx = ") + std::to_string(GlobalState->ScrollX);
         Script += ";\n";
-        Script += std::string("var scrolly = ") + std::to_string(ScrollY);
+        Script += std::string("var scrolly = ") + std::to_string(GlobalState->ScrollY);
         Script += ";\n";
     }
 

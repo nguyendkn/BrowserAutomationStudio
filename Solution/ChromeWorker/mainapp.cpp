@@ -61,8 +61,6 @@ MainApp::MainApp()
     ScrollTrackingX = 0;
     ScrollTrackingY = 0;
     LastHighlight = 0;
-    ImageWidth = 0;
-    ImageHeight = 0;
     ParentWidth = 0;
     ParentHeight = 0;
     App = this;
@@ -78,7 +76,6 @@ MainApp::MainApp()
     HighlightOffsetY = 0;
     _CefReqest2Action = 0;
     IsMainBrowserCreating = true;
-    ImageData.resize(16818223);
 
     ReadDoTour();
 
@@ -506,6 +503,8 @@ void MainApp::ProcessMessage(CefRefPtr<CefBrowser> browser, CefProcessId source_
 
 void MainApp::Paint(int width, int height)
 {
+    char *ImageData = Data->Connector->GetPaintData();
+
     if(!ViewRequestId.empty())
     {
         std::string base64;
@@ -621,8 +620,6 @@ void MainApp::Paint(int width, int height)
             Layout->SetIsRenderEmpty(true);
         }
     }
-    ImageWidth = width;
-    ImageHeight = height;
 
     if(_HandlersManager->GetIsVisible() || _HandlersManager->GetHandler()->GetIsPopup())
     {
@@ -644,7 +641,7 @@ void MainApp::SetImageDataCallback(const std::string& base64)
 }
 void MainApp::FindImageCallback()
 {
-    std::string res = _ImageFinder.FindImage(ImageData.data(),ImageWidth,ImageHeight,Data->ScrollX,Data->ScrollY);
+    std::string res = _ImageFinder.FindImage(Data->Connector->GetPaintData(),Data->Connector->GetPaintWidth(),Data->Connector->GetPaintHeight(),Data->ScrollX,Data->ScrollY);
     xml_encode(res);
 
     SendTextResponce(std::string("<FindImage>") + res + std::string("</FindImage>"));
@@ -652,7 +649,7 @@ void MainApp::FindImageCallback()
 
 char* MainApp::GetImageData()
 {
-    return ImageData.data();
+    return Data->Connector->GetPaintData();
 }
 
 std::string MainApp::GetSubImageDataBase64(int x1, int y1, int x2, int y2)
@@ -661,9 +658,9 @@ std::string MainApp::GetSubImageDataBase64(int x1, int y1, int x2, int y2)
     int RenderY;
     int RenderWidth;
     int RenderHeight;
-    int width = ImageWidth;
-    int height = ImageHeight;
-    char * data = ImageData.data();
+    int width = Data->Connector->GetPaintWidth();
+    int height = Data->Connector->GetPaintHeight();
+    char * data = Data->Connector->GetPaintData();
 
     if(x1 < x2)
     {
@@ -722,8 +719,8 @@ std::string MainApp::GetSubImageDataBase64(int x1, int y1, int x2, int y2)
 std::pair<int,int> MainApp::GetImageSize()
 {
     std::pair<int,int> res;
-    res.first = ImageWidth;
-    res.second = ImageHeight;
+    res.first = Data->Connector->GetPaintWidth();
+    res.second = Data->Connector->GetPaintHeight();
     return res;
 }
 
@@ -2559,9 +2556,25 @@ void MainApp::ClearElementCommand()
 }
 void MainApp::ElementCommandCallback(const ElementCommand &Command)
 {
-    ClearElementCommand();
-    LastCommandCopy = Command;
-    ElementCommandInternalCallback(Command);
+    LastCommand = Command;
+    if(LastCommand.CommandName == "script")
+    {
+        std::string Script = Javascript(LastCommand.CommandParam1,"main");
+        std::string Path = LastCommand.SerializePath();
+        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        {
+            std::string Data = Result->GetString();
+            xml_encode(Data);
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+        });
+    }
+
 }
 
 void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
@@ -3005,8 +3018,6 @@ void MainApp::Timer()
         Notifications.Timer(BrowserToolbox);
     }
 
-    HandleIPCData();
-
     if(RunElementCommandCallbackOnNextTimer >= 0)
     {
         if(RunElementCommandCallbackOnNextTimer == 0)
@@ -3129,40 +3140,22 @@ void MainApp::DirectControlInspectMouse()
     InspectMouseAt(Task.X, Task.Y, CurrentTime);
 }
 
-void MainApp::HandleIPCData()
+void MainApp::OnPaint()
 {
-    bool IsNewImage = false;
-    unsigned int Width = 0;
-    unsigned int Height = 0;
+    Paint(Data->Connector->GetWidth(),Data->Connector->GetHeight());
+}
 
-    //Get data
-    {
-        SharedMemoryIPC * IPC = Data->IPC;
+void MainApp::OnResize()
+{
+    Data->WidthBrowser = Data->Connector->GetWidth();
+    Data->HeightBrowser = Data->Connector->GetHeight();
+    Layout->Update(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
+}
 
-        SharedMemoryIPCLockGuard Lock(IPC);
-
-        if(IPC->GetImageId())
-        {
-            ImageData.assign(IPC->GetImagePointer(),IPC->GetImagePointer() + IPC->GetImageSize());
-            Width = IPC->GetImageWidth();
-            Height = IPC->GetImageHeight();
-            IPC->SetImageId(0);
-            IsNewImage = true;
-        }
-
-    }
-
-    //Paint screenshot
-    if(IsNewImage)
-    {
-        Paint(Width,Height);
-        if(Width != Data->WidthBrowser || Height != Data->HeightBrowser)
-        {
-            Data->WidthBrowser = Width;
-            Data->HeightBrowser = Height;
-            Layout->Update(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
-        }
-    }
+void MainApp::OnScroll()
+{
+    Data->ScrollX = Data->Connector->GetScrollX();
+    Data->ScrollY = Data->Connector->GetScrollY();
 }
 
 void MainApp::ClearHighlight()

@@ -767,6 +767,7 @@
 		"This action can convert numbers in a non-standard format for this, you need to specify the \"Decimal separator\" and \"Thousandth separator\" parameters located in the additional settings.": {"ru":"Это действие может преобразовывать числа в нестандартном формате для этого нужно указать параметры \"Разделитель целой и дробной части\" и \"Разделитель тысячных\" находящиеся в дополнительных настройках."},
 		"For example, the string <code>\"1 967 567.3245\"</code> will be converted to the number <code>1967567.3245</code> if a comma is specified in the \"Decimal separator\" parameter, and a space is specified in the \"Thousandth separator\" parameter.": {"ru":"Например, строка <code>\"1 967 567,3245\"</code> будет преобразована в число <code>1967567.3245</code>, если в параметре \"Разделитель целой и дробной части\" указана запятая, а в параметре \"Разделитель тысячных\" указан пробел."},
 		
+		"Don't change the number of characters": {"ru":"Не изменять количество символов"},
 		"Minimum number of characters in the number": {"ru":"Минимальное количество символов в числе"},
 		"The number to format and convert to a string.": {"ru":"Число, которое нужно форматировать и преобразовать в строку."},
 		"Format and convert the specified number to a string.": {"ru":"Форматировать и преобразовать в строку указанное число."},

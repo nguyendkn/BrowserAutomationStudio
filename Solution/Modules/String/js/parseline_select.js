@@ -1,28 +1,29 @@
-var Value = GetInputConstructorValue("Value",loader);
-var List = $("#VariablesList").val().toUpperCase();
-if(Value["original"].length <= 0){
+var Value = GetInputConstructorValue("Value", loader);
+if(Value["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("String") + tr("\" is not specified"));
-	return;
+    return;
 };
-if(List.length <= 0){
+var separators = GetInputConstructorValue("separators", loader);
+var convert_types = $("#Check").is(':checked');
+var list = $("#VariablesList").val().toUpperCase();
+if(list.length <= 0){
 	Invalid(tr("The parameter \"") + tr("Variables list") + tr("\" is not specified"));
 	return;
 };
-List = List.replace(/\s/g,"");
-List = List.split(",");
-List = _.compact(List);
-if(List.length > 0){
-	/*List[0] = List[0].replace(/[\\[\\]]/g,"")
-	List[List.length - 1] = List[List.length - 1].replace(/[\\[\\]]/g,"")*/
-}else{
+list = list.replace(/\s/g,"");
+list = list.split(",");
+list = _.compact(list);
+if(list.length <= 0){
 	Invalid(tr("The parameter \"") + tr("Variables list") + tr("\" is not specified"));
-	return; 
+	return;
 };
 try{
-	var code = loader.GetAdditionalData() + _.template($("#parseline_code").html())({
-		"list":List,
-		"value":Value["updated"]
-	});
-	code = Normalize(code,0);
-	BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+    var code = loader.GetAdditionalData() + _.template($("#parseline_code").html())({
+        "Value": Value["updated"],
+		"separators": separators["updated"],
+        "convert_types": convert_types,
+        "list":list
+    });
+    code = Normalize(code, 0);
+    BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
 }catch(e){}

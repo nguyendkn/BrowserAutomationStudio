@@ -411,19 +411,23 @@
 		{
             "code": [
                 {
-                    "file": "parse_csv_string_code.js",
-                    "name": "parse_csv_string_code"
+                    "file": "parseline_code.js",
+                    "name": "parseline_code"
                 }
             ],
             "description": {
                 "en": "Parse CSV string",
                 "ru": "Парсить CSV строку"
             },
-            "interface": "parse_csv_string_interface.js",
+            "interface": "parseline_interface.js",
             "is_element": false,
-            "name": "parse_csv_string",
-            "select": "parse_csv_string_select.js",
-            "template": "{{string}} -> {{VariablesList}}"
+            "name": "parseline",
+            "select": "parseline_select.js",
+            "template": "{{Value}} -> {{VariablesList}}",
+			"suggestion":{  
+				"en":"split line",
+				"ru":"разбить строку, разделить строку"
+			}
         },
 		{
             "code": [
@@ -632,27 +636,6 @@
 		{
             "code": [
                 {
-                    "file": "parseline_code.js",
-                    "name": "parseline_code"
-                }
-            ],
-            "description": {
-                "en": "Parse line",
-                "ru": "Парсить строку"
-            },
-            "interface": "parseline_interface.js",
-            "is_element": false,
-            "name": "parseline",
-            "select": "parseline_select.js",
-            "template": "{{Value}} -> {{VariablesList}}",
-			"suggestion":{  
-				"en":"split line",
-				"ru":"разбить строку, разделить строку"
-			}
-        },
-		{
-            "code": [
-                {
                     "file": "template_code.js",
                     "name": "template_code"
                 }
@@ -732,7 +715,6 @@
     "localize": {
 		"Data": {"ru":"Данные"},
 		"String": {"ru":"Строка"},
-		"is empty": {"ru":"пуст"},
 		"Not string": {"ru":"Не строка"},
 		"The parameter \"": {"ru":"Параметр \""},
 		"\" is not specified": {"ru":"\" не указан"},
@@ -1023,6 +1005,8 @@
 		"CSV string with want to parse into items.": {"ru":"CSV строка, которую нужно распарсить на элементы."},
 		"The list of delimiters by which the string can be split.": {"ru":"Список разделителей, по которым можно разбить строку."},
 		"As a list, you can use a string consisting only of the separators.": {"ru":"В качестве списка можно использовать строку, состоящую только из разделителей."},
+		"Use \"Parse String\" action if you want to get list as a result.": {"ru": "Используйте действие \"Парсить строку\" из модуля Список если хотите получить результат в виде списка."},
+		"List of variables separated by commas. Results will be written into that variables.": {"ru": "Список переменных разделенных запятыми. В эти переменные будут записаны результаты."},
 		"This action will parse the string by the specified separators and save the parsed data by the specified variables.": {"ru":"Это действие распарсит строку по указанным разделителям и сохранит распарсенные данные по указанным переменным."},
 		"If the number of variables is greater than the number of items in the string, then an empty string will be written to the excess variables.": {"ru":"Если количество переменных больше, чем количество элементов в строке, то в лишние переменные будет записана пустая строка."},
 		"By default, the action returns strings, but this can be changed by enabling the \"Convert types\" parameter located in the additional settings, then strings will automatically be converted to numbers, true or false, objects, null and undefined.": {"ru":"По умолчанию действие возвращает строки, но это можно изменить, включив параметр \"Преобразовывать типы\", находящийся в дополнительных настройках, тогда страки автоматически будут конвертироватся в числа, true или false, обекты, null и undefined."},
@@ -1233,14 +1217,6 @@
 		"BAS stores binary data as base64 strings. It could be binary files, pictures, video, etc. Base64 encoding represent binary data in ascii string.": {"ru": "Кодировка base64 представляет двоичные данные в виде ascii строки. BAS хранит двоичные данные как строки в формате base64. Это могут быть файлы, изображения, видео и т. д."},
 		"This action can work with in two modes: encode and decode. Modes can be switched with \"Encode or decode\" parameter. Depending on mode data parameter is base64 encoded string which needs to be decoded, or ordinary string which needs to be encoded.": {"ru": "Это действие может работать в двух режимах: кодирование и декодирование. Режимы могут переключаться параметром \"Шифровать или расшифровывать\". В зависимости от режима, входным параметром будет либо строка с кодировкой base64, которая должна быть декодирована, либо обычная строка, которая должна быть закодирована."},
 		"Most of the times you don't need to convert base64 data to string, some actions accept base64 data as input parameters, for example: \"Write File\", \"Start working with image\". Moreover, if you try to decode binary data encoded as base64 string, result string may be damaged, so it is better to use base64 data without decoding.": {"ru": "В большинстве случаев вам не нужно декодировать base64 строки, некоторые действия принимают входные данные прямо в формате base64, это такие действия как: \"Запись В Файл\", \"Начать работу с изображением\". Более того, если вы попытаетесь декодировать бинарные данные, закодированные как base64, результат может быть поврежден, поэтому лучше использовать строку в формате base64 без декодирования."},
-		
-		"This action also may parse strings in csv format.": {"ru": "Это действие также может парсить строки в формате csv."},
-		"Line with several elements separated with \":\" or \",\" or \";\"": {"ru": "Строка с несколькими элементами разделенными \":\" или \",\" или \";\""},
-		"Use \"Parse String\" action if you want to get list as a result.": {"ru": "Используйте действие \"Парсить строку\" из модуля Список если хотите получить результат в виде списка."},
-		"List of variables separated by commas. Results will be written into that variables.": {"ru": "Список переменных разделенных запятыми. В эти переменные будут записаны результаты."},
-		"Parses line, which contains several elements. Elements are separated with one of following symbols: \":\", \";\", \",\".": {"ru": "Парсить сторку содержащую несколько элементов. Элементы разделяются одним из следующих символов: \":\", \";\", \",\"."},
-		"If \"Variables To Save Result\" will contain more variables, than number of elements in string, than extra variables will be left unchanged.": {"ru": "Если параметр \"Переменные, в которые сохранять результат\" будет содержать больше переменных, чем количество элементов в строке, то лишние переменные не будут изменены."},
-		"For example, if you apply this action to line email@gmail.com:mypass1 and set \"Variables To Save Result\" param to USERNAME,PASSWORD, than this action will set [[USERNAME]] variable to email@gmail.com and [[PASSWORD]] variable to mypass1.": {"ru": "Например, если вы примените это действие к строке email@gmail.com:mypass1 и установите параметр \"Переменные, в которые сохранять результат\" в USERNAME,PASSWORD, то это действие сохранит email@gmail.com в переменную [[USERNAME]] и mypass1 в переменную [[PASSWORD]]."},
 		
 		"Template": {"ru": "Шаблон"},
 		"Spintax": {"ru": "Спинтакс"},

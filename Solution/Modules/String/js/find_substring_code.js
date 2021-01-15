@@ -1,1 +1,1 @@
-<%= variable %> = _find_substring(<%= string %>,<%= substring %>,<%= from %>);
+<%= variable %> = _find_substring(<%= string %>,<%= substring %><%if(from!=='""'){%>,<%= from %><%}%>);

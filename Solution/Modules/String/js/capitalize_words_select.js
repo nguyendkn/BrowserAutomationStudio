@@ -1,6 +1,6 @@
 var string = GetInputConstructorValue("string", loader);
 if(string["original"].length == 0){
-	Invalid(tr("String") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("String") + tr("\" is not specified"));
     return;
 };
 var all = $("#Check").is(':checked');

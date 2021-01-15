@@ -3,15 +3,15 @@ var ReplaceFrom = GetInputConstructorValue("ReplaceFrom", loader);
 var ReplaceTo = GetInputConstructorValue("ReplaceTo", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
-    Invalid("Variable is empty");
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
     return;
 };
 if(Value["original"].length == 0){
-    Invalid("Value is empty");
+	Invalid(tr("The parameter \"") + tr("String") + tr("\" is not specified"));
     return;
 };
 if(ReplaceFrom["original"].length == 0){
-    Invalid("ReplaceFrom is empty");
+	Invalid(tr("The parameter \"") + tr("Replace From") + tr("\" is not specified"));
     return;
 };
 try{

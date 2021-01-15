@@ -3,12 +3,12 @@ var item2 = GetInputConstructorValue("item2", loader);
 var item3 = GetInputConstructorValue("item3", loader);
 var items_list = GetInputConstructorValue("items_list", loader);
 if(item1["original"].length==0 && item2["original"].length==0 && item3["original"].length==0 && items_list["original"].length==0){
-    Invalid(tr("List of items") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("List of items") + tr("\" is not specified"));
     return;
 };
 var separator = GetInputConstructorValue("separator", loader);
 if(separator["original"].length==0){
-    Invalid(tr("Separator") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Separator") + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();

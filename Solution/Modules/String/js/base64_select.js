@@ -2,11 +2,11 @@ var Save = this.$el.find("#Save").val().toUpperCase();
 var Value = GetInputConstructorValue("Value", loader);
 var encode = $("#Select").val()=="encode"
 if(Save.length == 0){
-	Invalid("Variable is empty");
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
 	return;
 };
 if(Value["original"].length == 0){
-	Invalid("Data is empty");
+	Invalid(tr("The parameter \"") + tr("Data") + tr("\" is not specified"));
 	return;
 };
 try{

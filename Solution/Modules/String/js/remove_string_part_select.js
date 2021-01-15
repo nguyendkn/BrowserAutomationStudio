@@ -1,12 +1,12 @@
 var string = GetInputConstructorValue("string", loader);
 if(string["original"].length == 0){
-	Invalid(tr("String") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("String") + tr("\" is not specified"));
     return;
 };
 var from = GetInputConstructorValue("from", loader);
 var count = GetInputConstructorValue("count", loader);
 if(count["original"].length == 0){
-	Invalid(tr("Count") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Count") + tr("\" is not specified"));
     return;
 };
 var substring = GetInputConstructorValue("substring", loader);

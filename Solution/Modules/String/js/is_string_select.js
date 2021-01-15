@@ -1,6 +1,6 @@
 var data = GetInputConstructorValue("data", loader);
 if(data["original"].length == 0){
-	Invalid(tr("Data") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Data") + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();

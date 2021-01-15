@@ -1,6 +1,6 @@
 var ua = GetInputConstructorValue("ua", loader);
 if(ua["original"].length == 0){
-	Invalid("User-Agent" + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("User-Agent") + tr("\" is not specified"));
     return;
 };
 var platform_type = this.$el.find("#platform_type").val().toUpperCase();

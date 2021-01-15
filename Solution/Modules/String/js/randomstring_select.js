@@ -2,15 +2,15 @@ var AllowedChars = GetInputConstructorValue("AllowedChars", loader);
 var Length = GetInputConstructorValue("Length", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
-    Invalid("Variable is empty");
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
     return;
 };
 if(AllowedChars["original"].length == 0){
-    Invalid("AllowedChars is empty");
+	Invalid(tr("The parameter \"") + tr("Allowed Chars") + tr("\" is not specified"));
     return;
 };
 if(Length["original"].length == 0){
-    Invalid("Length is empty");
+	Invalid(tr("The parameter \"") + tr("Result String Length") + tr("\" is not specified"));
     return;
 };
 try{

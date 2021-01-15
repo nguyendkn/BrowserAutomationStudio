@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", value_string: "", help: {description: tr("The string in which to convert words."),examples:[{code:tr("just sample text")},{code:"test text"},{code:"string"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("The string in which to convert words."),examples:[{code:tr("just sample text")},{code:"test text"},{code:"string"}]} }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<div><input type="checkbox" id="Check"/> <label for="Check" class="tr">Capitalize all words</label></div>
 </span>

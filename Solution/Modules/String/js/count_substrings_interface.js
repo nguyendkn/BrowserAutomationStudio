@@ -1,6 +1,6 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", value_string: "", help: {description: tr("The string from which to get the number of substrings."),examples:[{code:tr("Just sample text")},{code:"Test text"},{code:"string"}]} }) %>
-<%= _.template($('#input_constructor').html())({id:"substring", description: tr("Substring"), default_selector: "string", value_string: "", help: {description: tr("Contiguous sequence of characters within a string."),examples:[{code:tr("sample")},{code:"text"},{code:"str"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("The string from which to get the number of substrings."),examples:[{code:tr("Just sample text")},{code:"Test text"},{code:"string"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"substring", description: tr("Substring"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Contiguous sequence of characters within a string."),examples:[{code:tr("sample")},{code:"text"},{code:"str"}]} }) %>
 <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "SUBSTRINGS_COUNT", help: {description: tr("Variable in which, after successful execution of the action, the number of substrings in the string will be written."), examples:[{code:5},{code:2},{code:0,description:tr("The substring is missing from the string.")}]} }) %>
 </div>
 <div class="tooltipinternal">

@@ -734,6 +734,8 @@
 		"String": {"ru":"Строка"},
 		"is empty": {"ru":"пуст"},
 		"Not string": {"ru":"Не строка"},
+		"The parameter \"": {"ru":"Параметр \""},
+		"\" is not specified": {"ru":"\" не указан"},
 		"Just sample text": {"ru":"Просто пример текста"},
 		"Optional parameter.": {"ru":"Необязательный параметр."},
 		"The data is a string.": {"ru":"Данные являются строкой."},
@@ -745,7 +747,7 @@
 		"This action will return true or false depending on whether the specified data is a string. This result may be used with \"If\" action.": {"ru":"Это действие вернет true или false в зависимости от того, являются ли указанные данные строкой. Результат может быть использован вместе с действием \"If\"."},
 		"For example, if <code>\"Test text\"</code> is specified, then the action will return true, and if <code>123</code> or <code>true</code> is specified, then the action will return false.": {"ru":"Например, если указано <code>\"Тестовый текст\"</code>, то действие вернет true, а если укзано <code>123</code> или <code>true</code>, то действие вернет false."},
 		
-		"Not empty string.": {"ru":"Не пустая строка."},
+		"Not empty string": {"ru":"Не пустая строка"},
 		"Empty string or not string.": {"ru":"Пустая строка или не строка."},
 		"Check if the specified data is not an empty string.": {"ru":"Проверить, являются ли указанные данные не пустой строкой."},
 		"The data that need to check out whether they is not empty string.": {"ru":"Данные, которые нужно проверить на то являются ли они не пустой строкой."},		
@@ -754,7 +756,7 @@
 		"For example, if <code>\"Test text\"</code> is specified, then the action will return true, and if <code>\"\"</code> or <code>123</code> is specified, then the action will return false.": {"ru":"Например, если указано <code>\"Тестовый текст\"</code>, то действие вернет true, а если укзано <code>\"\"</code> или <code>123</code>, то действие вернет false."},
 		
 		"Date": {"ru":"Дата"},
-		"Number": {"ru":"Число"},
+		"Numbеr": {"ru":"Число"},
 		"Object": {"ru":"Объект"},
 		"Boolean": {"ru":"Булевый тип"},
 		"Convert the specified data to a string.": {"ru":"Преобразовать указанные данные в строку."},
@@ -783,12 +785,14 @@
 		"This action can convert numbers in a non-standard format for this, you need to specify the \"Decimal separator\" and \"Thousandth separator\" parameters located in the additional settings.": {"ru":"Это действие может преобразовывать числа в нестандартном формате для этого нужно указать параметры \"Разделитель целой и дробной части\" и \"Разделитель тысячных\" находящиеся в дополнительных настройках."},
 		"For example, the string <code>\"1 967 567.3245\"</code> will be converted to the number <code>1967567.3245</code> if a comma is specified in the \"Decimal separator\" parameter, and a space is specified in the \"Thousandth separator\" parameter.": {"ru":"Например, строка <code>\"1 967 567,3245\"</code> будет преобразована в число <code>1967567.3245</code>, если в параметре \"Разделитель целой и дробной части\" указана запятая, а в параметре \"Разделитель тысячных\" указан пробел."},
 		
+		"Minimum number of characters in the number": {"ru":"Минимальное количество символов в числе"},
 		"The number to format and convert to a string.": {"ru":"Число, которое нужно форматировать и преобразовать в строку."},
 		"Format and convert the specified number to a string.": {"ru":"Форматировать и преобразовать в строку указанное число."},
 		"This action will return the formatted string representation of the specified number.": {"ru":"Это действие вернет форматированное строковое представление указанного числа."},
 		"Before formatting, the number can be rounded by specifying the \"Number of decimal places\" parameter.": {"ru":"Перед форматирование число можно округлить, указав параметр \"Количество знаков в дробной части\"."},
 		"This action can bring the number into a more readable form, for example, for further output to the log.": {"ru":"Данным действием можно привести число в более читабельный вид, например, для дальнейшего вывода в лог."},
 		"Variable in which, after successful execution of the action, the formatted string representation of the specified number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано форматированное строковое представление указанного числа."},
+		"The minimum number of characters in a number. If the number of characters is less than the specified number, then zeros will be added to the place of missing characters before the number.": {"ru":"Минимальное количество символов в числе. Если количество символов меньше указанного числа, то в место недостающих символов перед числом будут добавлены нули."},
 		"For example, the number <code>1967567.3245</code> will be converted to the string <code>\"1 967 567.3245\"</code> if a comma is specified in the \"Decimal separator\" parameter, and a space is specified in the \"Thousandth separator\" parameter.": {"ru":"Например, число <code>1967567.3245</code> будет преобразована в строку <code>\"1 967 567,3245\"</code>, если в параметре \"Разделитель целой и дробной части\" указана запятая, а в параметре \"Разделитель тысячных\" указан пробел."},
 		
 		"sample": {"ru":"пример"},
@@ -989,8 +993,8 @@
 		"Latinize Cyrillic": {"ru":"Латинизировать кириллицу"},
 		"Convert all letters to Latin.": {"ru":"Преобразуйте все буквы в латиницу."},
 		"The string to be latinized.": {"ru":"Строка, которую нужно латинизировать."},
+		"By default, the Cyrillic is also latinized, but this can be changed by disabling the \"Latinize Cyrillic\" parameter.": {"ru":"По умолчанию кириллица тоже латинизируется, но это можно изменить, отключив параметр \"Латинизировать кириллицу\"."},
 		"This action will return a string in which all letters will be latinized, and the rest of the characters will remain unchanged.": {"ru":"Это действие вернет строку, в которой все буквы будут латинизированы, а остальные символы останутся без изменений."},
-		"By default, the Cyrillic is also latinized, but this can be changed by disabling the \"Latinize Cyrillic\" parameter located in the additional settings.": {"ru":"По умолчанию кириллица тоже латинизируется, но это можно изменить, отключив параметр \"Латинизировать кириллицу\", находящийся в дополнительных настройках."},
 		"For example, the string <code>\"ỆᶍǍᶆṔƚÉ áéíóúýčďěňřšťžů\"</code> will be converted to the string <code>\"ExAmPlE aeiouycdenrstzu\"</code>, and the string <code>\"Привет мир!\"</code> will be converted to the string <code>\"Privet mir!\"</code>.": {"ru":"Например строка <code>\"ỆᶍǍᶆṔƚÉ áéíóúýčďěňřšťžů\"</code> будет преобразована в строку <code>\"ExAmPlE aeiouycdenrstzu\"</code>, а строка <code>\"Привет мир!\"</code> будет преобразована в строку <code>\"Privet mir!\"</code>."},
 		
 		"year": {"ru":"год"},

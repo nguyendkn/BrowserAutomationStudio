@@ -1,4 +1,121 @@
 _STR_WHITESPACE = '\\s\\uFEFF\\xA0;';
+function _tr_type_name(name){
+	if(Array.isArray(name)){
+		return name.map(function(t){return _tr_type_name(t)}).join(_K==="ru" ? ' или ' : ' or ');
+	};
+	if(_K!=="ru"){
+		return name;
+	};
+	switch(name){
+		case 'string':
+			return 'строкой';
+		case 'number':
+			return 'числом';
+		case 'boolean':
+			return 'логическим выражением';
+		case 'function':
+			return 'функцией';
+		case 'object':
+			return 'объектом';
+		case 'array':
+			return 'массивом';
+		case 'date':
+			return 'датой';
+		case 'regexp':
+			return 'регулярным выражением';
+		default:
+			return name;
+	};
+};
+function _tr_argument_name(name){
+	if(_K!=="ru"){
+		return name;
+	};
+	switch(name){
+		case 'Index':
+			return 'Индекс';
+		case 'String':
+			return 'Строка';
+		case 'Number':
+			return 'Число';
+		case 'Substring':
+			return 'Подстрока';
+		case 'Lenght':
+			return 'Длина';
+		case 'Array':
+			return 'Масив';
+		case 'Data':
+			return 'Данные';
+		case 'From index':
+			return 'С индекса';
+		case 'To index':
+			return 'До индекса';
+		case 'List of strings':
+			return 'Список строк';
+		case 'List of items':
+			return 'Список элементов';
+		case 'Left substring':
+			return 'Левая подстрока';
+		case 'Right substring':
+			return 'Правая подстрока';
+		case 'Number of decimal places':
+			return 'Количество знаков в дробной части';
+		case 'Decimal separator':
+			return 'Разделитель целой и дробной части';
+		case 'Thousandth separator':
+			return 'Разделитель тысячных';
+		case 'Number of characters to remove':
+			return 'Количество удаляемых символов';
+		case 'Insertable substring':
+			return 'Вставляемая подстрока';
+		case 'Capitalize all words':
+			return 'Сделать все слова заглавными';
+		case 'All other letters in lowercase':
+			return 'Все остальные буквы в нижний регистр';
+		case 'Separator':
+			return 'Разделитель';
+		case 'Latinize Cyrillic':
+			return 'Латинизировать кириллицу';
+		case 'List of separators':
+			return 'Список разделителей';
+		case 'Convert types':
+			return 'Преобразовывать типы';
+		case 'Trim characters':
+			return 'Обрезать символы';
+		case 'Trim left':
+			return 'Обрезать слева';
+		case 'Trim right':
+			return 'Обрезать справа';
+		case 'Minimum number of characters in the number':
+			return 'Минимальное количество символов в числе';
+		case 'Replace multiple spaces with single ones':
+			return 'Заменять многочисленные пробелы на одиночные';
+		case 'Remove characters':
+			return 'Удалять символы';
+		case 'Replace characters with space':
+			return 'Заменять многочисленные пробелы на одиночные';
+		case 'Allowed Chars':
+			return 'Разрешенные Символы';
+		case 'Result String Length':
+			return 'Длина Генерируемой Строки';
+		case 'Replace From':
+			return 'Заменить Из';
+		case 'Replace To':
+			return 'Заменить На';
+		default:
+			return name;
+	};
+};
+function _validate_argument_type(value, type, name, act){
+	var value_type = _get_type(value);
+	if(Array.isArray(type) ? type.filter(function(t){return value_type===t}).length < 1 : value_type!==type){
+		fail(act + ': ' + (_K==="ru" ? ('Аргумент "' + _tr_argument_name(name) + '" должен быть ' + _tr_type_name(type) + ', а не ') : ('The "' + _tr_argument_name(name) + '" argument must be a ' + _tr_type_name(type) + ', not ')) + _tr_type_name(value_type));
+	};
+};
+function _get_type(value){
+	var value_type = typeof value; 
+	return value===null ? 'null' : (value_type==='object' ? (Array.isArray(value) ? 'array' : (value instanceof Date ? 'date' : (value instanceof RegExp ? 'regexp' : value_type))) : value_type);
+};
 function _is_nil(str){
 	return typeof str==="undefined" || str===null;
 };
@@ -12,6 +129,7 @@ function _avoid_nilb(str, def){
 	return _is_nilb(str) ? _avoid_nil(def, "") : str;
 };
 function _uniq_arr(arr){
+	_validate_argument_type(arr, 'array', 'Array', '_uniq_arr');
 	return arr.filter(function(e,i){return arr.indexOf(e)===i});
 };
 function _is_json_string(str){
@@ -26,10 +144,12 @@ function _is_json_string(str){
 		return false;
 	};
 };
-function _to_arr(str){
-	return (str==="" || typeof str=="object") ? str : (_is_json_string(str) ? JSON.parse(str) : str.split(/,\s|,/));
+function _to_arr(data){
+	_validate_argument_type(data, ['string','array'], 'Data', '_to_arr');
+	return (data==="" || typeof data=="object") ? data : (_is_json_string(data) ? JSON.parse(data) : data.split(/,\s|,/));
 };
 function _no_exponents(num){
+	_validate_argument_type(num, ['string','number'], 'Number', '_no_exponents');
 	var data = String(num).split(/[eE]/);
 	if(data.length == 1){return data[0]};
 
@@ -57,34 +177,54 @@ function _from_string(str){
     return (typeof str=="string" && str!=="") ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
 };
 function _to_string(data){
-	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? data.source : String(data))));
+	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp) && !(data instanceof _url) && !(data instanceof _ua)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? data.source : data.toString())));
 };
 function _to_number(str, dec, dsep, tsep){
+	var act = '_to_number';
+	_validate_argument_type(str, ['string','number'], 'String', act);
 	str = _to_string(_avoid_nil(str));
-	dec = _avoid_nil(dec);
+	dec = _avoid_nilb(dec, -1);
+	dsep = _avoid_nil(dsep, '.');
+	tsep = _avoid_nil(tsep, ',');
+	_validate_argument_type(dec, 'number', 'Number of decimal places', act);
+	_validate_argument_type(dsep, 'string', 'Decimal separator', act);
+	_validate_argument_type(tsep, 'string', 'Thousandth separator', act);
 	
 	str = _replace_string(str, _avoid_nil(tsep, ','), '');
 	str = _replace_string(str, _avoid_nil(dsep, '.'), '.');
 	
-	if(dec===-1 || dec===""){return Number(str)};
+	if(dec===-1){return Number(str)};
 	
 	var factor = Math.pow(10, isFinite(dec) ? dec : 0);
 	return Math.round(str * factor)/factor;
 };
-function _number_format(num, dec, dsep, tsep){
+function _number_format(num, dec, digits, dsep, tsep){
+	var act = '_number_format';
+	_validate_argument_type(num, ['string','number'], 'Number', act);
 	if(_is_nil(num) || isNaN(num)){return ''};
 	num = typeof num==="number" ? num : Number(num);
-	dec = _avoid_nil(dec);
+	dec = _avoid_nilb(dec, -1);
+	_validate_argument_type(dec, 'number', 'Number of decimal places', act);
+	digits = _avoid_nilb(digits, 0);
+	_validate_argument_type(digits, 'number', 'Minimum number of characters in the number', act);
 	dsep = _avoid_nil(dsep, '.');
+	_validate_argument_type(dsep, 'string', 'Decimal separator', act);
 	tsep = _avoid_nil(tsep, ',');
+	_validate_argument_type(tsep, 'string', 'Thousandth separator', act);
 
-	num = (dec===-1 || dec==="") ? _no_exponents(num) : num.toFixed(dec);
+	num = dec===-1 ? _no_exponents(num) : num.toFixed(dec);
 
 	var parts = num.split('.');
 	var fnums = parts[0];
 	var decimals = parts[1] ? dsep + parts[1] : '';
 	
-	if(fnums.length < 4){
+	if(digits > 0 && fnums.length < digits){
+		while(fnums.length < digits){
+			fnums = '0' + fnums;
+		};
+	};
+	
+	if(fnums.length < 4 || tsep===''){
 		return fnums + decimals;
 	};
 	
@@ -102,6 +242,13 @@ function _number_format(num, dec, dsep, tsep){
 	return c + decimals;
 };
 function _count_substrings(str, sub){
+	var act = '_count_substrings';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Substring', act);
+	
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
 	if(sub.length <= 0){
 		return (str.length + 1)
 	};
@@ -118,11 +265,31 @@ function _count_substrings(str, sub){
     return n;
 };
 function _get_substring(str, from, to){
-	return _is_nilb(to) ? str.slice(from) : str.slice(from, to);
+	var act = '_get_substring';
+	_validate_argument_type(str, 'string', 'String', act);
+	from = _avoid_nilb(from, 0);
+	_validate_argument_type(from, 'number', 'From index', act);
+	if(_is_nilb(to)){
+		return str.slice(from);
+	}else{
+		_validate_argument_type(to, 'number', 'To index', act);
+		return str.slice(from, to);
+	};
 };
 function _get_substring_between(str, left, right){
+	var act = '_get_substring_between';
+	_validate_argument_type(str, 'string', 'String', '_get_substring_between');
     left = _avoid_nil(left);
     right = _avoid_nil(right);
+	_validate_argument_type(left, ['string','number'], 'Left substring', act);
+	_validate_argument_type(right, ['string','number'], 'Right substring', act);
+	
+	if(typeof left==='number'){
+		left = _no_exponents(left);
+	};
+	if(typeof right==='number'){
+		right = _no_exponents(right);
+	};
 	
 	var li = left==="" ? -1 : str.indexOf(left);
 	var from = li===-1 ? 0 : (li + left.length);
@@ -139,48 +306,110 @@ function _get_substring_between(str, left, right){
 	};
 };
 function _splice_string(str, from, count, add){
+	var act = '_splice_string';
+	_validate_argument_type(str, 'string', 'String', act);
 	from = _avoid_nilb(from, 0);
 	count = _avoid_nilb(count, 0);
+	add = _avoid_nil(add);
+	_validate_argument_type(from, 'number', 'From index', act);
+	_validate_argument_type(count, 'number', 'Number of characters to remove', act);
+	_validate_argument_type(add, ['string','number'], 'Insertable substring', act);
+	if(typeof add==='number'){
+		add = _no_exponents(add);
+	};
+	if(count < 0){
+		count = 0;
+	};
 	if(from < 0){
 		from = str.length + from;
 		if(from < 0){
 			from = 0;
 		};
 	};
-	return str.slice(0, from) + _avoid_nil(add) + str.slice(from + count);
+	return str.slice(0, from) + add + str.slice(from + count);
 };
 function _to_lower_case(str){
+	_validate_argument_type(str, 'string', 'String', '_to_lower_case');
 	return str.toLowerCase();
 };
 function _to_upper_case(str){
+	_validate_argument_type(str, 'string', 'String', '_to_upper_case');
 	return str.toUpperCase();
 };
-function _contains(str, sub){
-	return str.indexOf(sub) > -1;
+function _string_contains(str, sub, from){
+	var act = '_string_contains';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Substring', act);
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
+	if(_is_nilb(from)){
+		return str.indexOf(sub) > -1;
+	}else{
+		_validate_argument_type(from, 'number', 'From index', act);
+		return str.indexOf(sub, from) > -1;
+	};
 };
-function _length(str){
+function _string_length(str){
+	_validate_argument_type(str, 'string', 'String', '_string_length');
 	return str.length;
 };
 function _capitalize(str, all, lower){
+	var act = '_capitalize';
+	_validate_argument_type(str, 'string', 'String', act);
+	all = _avoid_nilb(all, false);
+	lower = _avoid_nilb(lower, false);
+	_validate_argument_type(all, 'boolean', 'Capitalize all words', act);
+	_validate_argument_type(str, 'boolean', 'All other letters in lowercase', act);
 	return (lower ? str.toLowerCase() : str).replace(new RegExp("(?:^|\\s|[\"'([{])+\\S", (all ? "g" : "")), function(match){return match.toUpperCase()});
 };
 function _sentences(str){
+	_validate_argument_type(str, 'string', 'String', '_sentences');
     return _clean(str).replace(/(\.+|\:|\!|\?)(\"*|\'*|\)*|}*|]*)(\s|\n|\r|\r\n)/gm, "$1$2|+|").split("|+|");
 };
 function _words(str){
-    return _avoid_nil(_clean(str).replace(/[\-]{2,}/g, " ").match(/[A-ZА-Я\xC0-\xD6\xD8-\xDE\-]+(?![a-zа-я\xDF-\xF6\xF8-\xFF\-\d])|[A-ZА-Я\xC0-\xD6\xD8-\xDE\-]?[a-zа-я\xDF-\xF6\xF8-\xFF\-\d]+/g), []).filter(function(s){return /([^\-]+)/.test(s)}).map(function(s){return _trim(s, _STR_WHITESPACE + "-")});
+	_validate_argument_type(str, 'string', 'String', '_words');
+    return _avoid_nil(_clean(str).replace(/[\-]{2,}/g, " ").match(/[A-ZА-ЯЁ\xC0-\xD6\xD8-\xDE\-]+(?![a-zа-яё\xDF-\xF6\xF8-\xFF\-\d])|[A-ZА-ЯЁ\xC0-\xD6\xD8-\xDE\-]?[a-zа-яё\xDF-\xF6\xF8-\xFF\-\d]+/g), []).filter(function(s){return /([^\-]+)/.test(s)}).map(function(s){return _trim(s, _STR_WHITESPACE + "-")});
 };
 function _count_words(str){
+	_validate_argument_type(str, 'string', 'String', '_count_words');
     return _words(str).length;
 };
 function _find_substring(str, sub, from){
-	return str.indexOf(sub, from);
+	var act = '_find_substring';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Substring', act);
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
+	if(_is_nilb(from)){
+		return str.indexOf(sub);
+	}else{
+		_validate_argument_type(from, 'number', 'From index', act);
+		return str.indexOf(sub, from);
+	};
 };
 function _starts_with(str, sub, from){
-	return str.indexOf(sub) === _avoid_nilb(from, 0);
+	var act = '_starts_with';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Substring', act);
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
+	from = _avoid_nilb(from, 0);
+	_validate_argument_type(from, 'number', 'From index', act);
+	return str.indexOf(sub) === from;
 };
 function _ends_with(str, sub, lenght){
-	if(_is_nilb(lenght) || lenght > str.length){
+	var act = '_ends_with';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Substring', act);
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
+	lenght = _avoid_nilb(lenght, str.length);
+	_validate_argument_type(lenght, 'number', 'Lenght', act);
+	if(lenght > str.length){
 		lenght = str.length;
 	};
 	lenght -= sub.length;
@@ -188,17 +417,32 @@ function _ends_with(str, sub, lenght){
 	return last_index !== -1 && last_index === lenght;
 };
 function _insert_substring(str, index, sub){
+	var act = '_insert_substring';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Insertable substring', act);
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
+	index = _avoid_nilb(index, 0);
+	_validate_argument_type(index, 'number', 'Index', act);
 	return _splice_string(str, index, 0, sub);
 };
 function _join_strings(list, sep){
-	return _avoid_nilb(list, []).filter(function(e){return e!==""}).join(_avoid_nil(sep));
+	var act = '_join_strings';
+	list = _avoid_nilb(list, []);
+	_validate_argument_type(list, 'array', 'List of strings', act);
+	sep = _avoid_nil(sep);
+	_validate_argument_type(sep, 'string', 'Separator', act);
+	return list.join(sep);
 };
 function _latinize(str, cyrillic){
-	str = _to_string(str);
+	var act = '_latinize';
+	_validate_argument_type(str, 'string', 'String', act);
 	if(str===''){
 		return '';
 	};
 	cyrillic = _avoid_nilb(cyrillic, true);
+	_validate_argument_type(cyrillic, 'boolean', 'Latinize Cyrillic', act);
 	var get_latin_character = function(character){
 		var diacritics_map = {'Á':'A','Ă':'A','Ắ':'A','Ặ':'A','Ằ':'A','Ẳ':'A','Ẵ':'A','Ǎ':'A','Â':'A','Ấ':'A','Ậ':'A','Ầ':'A','Ẩ':'A','Ẫ':'A','Ä':'A','Ǟ':'A','Ȧ':'A','Ǡ':'A','Ạ':'A','Ȁ':'A','À':'A','Ả':'A','Ȃ':'A','Ā':'A','Ą':'A','Å':'A','Ǻ':'A','Ḁ':'A','Ⱥ':'A','Ã':'A','Ꜳ':'AA','Æ':'AE','Ǽ':'AE','Ǣ':'AE','Ꜵ':'AO','Ꜷ':'AU','Ꜹ':'AV','Ꜻ':'AV','Ꜽ':'AY','Ḃ':'B','Ḅ':'B','Ɓ':'B','Ḇ':'B','Ƀ':'B','Ƃ':'B','Ć':'C','Č':'C','Ç':'C','Ḉ':'C','Ĉ':'C','Ċ':'C','Ƈ':'C','Ȼ':'C','Ď':'D','Ḑ':'D','Ḓ':'D','Ḋ':'D','Ḍ':'D','Ɗ':'D','Ḏ':'D','ǲ':'D','ǅ':'D','Đ':'D','Ð':'D','Ƌ':'D','Ǳ':'DZ','Ǆ':'DZ','É':'E','Ĕ':'E','Ě':'E','Ȩ':'E','Ḝ':'E','Ê':'E','Ế':'E','Ệ':'E','Ề':'E','Ể':'E','Ễ':'E','Ḙ':'E','Ë':'E','Ė':'E','Ẹ':'E','Ȅ':'E','È':'E','Ẻ':'E','Ȇ':'E','Ē':'E','Ḗ':'E','Ḕ':'E','Ę':'E','Ɇ':'E','Ẽ':'E','Ḛ':'E','Ꝫ':'ET','Ḟ':'F','Ƒ':'F','Ǵ':'G','Ğ':'G','Ǧ':'G','Ģ':'G','Ĝ':'G','Ġ':'G','Ɠ':'G','Ḡ':'G','Ǥ':'G','Ḫ':'H','Ȟ':'H','Ḩ':'H','Ĥ':'H','Ⱨ':'H','Ḧ':'H','Ḣ':'H','Ḥ':'H','Ħ':'H','Í':'I','Ĭ':'I','Ǐ':'I','Î':'I','Ï':'I','Ḯ':'I','İ':'I','Ị':'I','Ȉ':'I','Ì':'I','Ỉ':'I','Ȋ':'I','Ī':'I','Į':'I','Ɨ':'I','Ĩ':'I','Ḭ':'I','Ꝺ':'D','Ꝼ':'F','Ᵹ':'G','Ꞃ':'R','Ꞅ':'S','Ꞇ':'T','Ꝭ':'IS','Ĵ':'J','Ɉ':'J','Ḱ':'K','Ǩ':'K','Ķ':'K','Ⱪ':'K','Ꝃ':'K','Ḳ':'K','Ƙ':'K','Ḵ':'K','Ꝁ':'K','Ꝅ':'K','Ĺ':'L','Ƚ':'L','Ľ':'L','Ļ':'L','Ḽ':'L','Ḷ':'L','Ḹ':'L','Ⱡ':'L','Ꝉ':'L','Ḻ':'L','Ŀ':'L','Ɫ':'L','ǈ':'L','Ł':'L','Ǉ':'LJ','Ḿ':'M','Ṁ':'M','Ṃ':'M','Ɱ':'M','Ń':'N','Ň':'N','Ņ':'N','Ṋ':'N','Ṅ':'N','Ṇ':'N','Ǹ':'N','Ɲ':'N','Ṉ':'N','Ƞ':'N','ǋ':'N','Ñ':'N','Ǌ':'NJ','Ó':'O','Ŏ':'O','Ǒ':'O','Ô':'O','Ố':'O','Ộ':'O','Ồ':'O','Ổ':'O','Ỗ':'O','Ö':'O','Ȫ':'O','Ȯ':'O','Ȱ':'O','Ọ':'O','Ő':'O','Ȍ':'O','Ò':'O','Ỏ':'O','Ơ':'O','Ớ':'O','Ợ':'O','Ờ':'O','Ở':'O','Ỡ':'O','Ȏ':'O','Ꝋ':'O','Ꝍ':'O','Ō':'O','Ṓ':'O','Ṑ':'O','Ɵ':'O','Ǫ':'O','Ǭ':'O','Ø':'O','Ǿ':'O','Õ':'O','Ṍ':'O','Ṏ':'O','Ȭ':'O','Ƣ':'OI','Ꝏ':'OO','Ɛ':'E','Ɔ':'O','Ȣ':'OU','Ṕ':'P','Ṗ':'P','Ꝓ':'P','Ƥ':'P','Ꝕ':'P','Ᵽ':'P','Ꝑ':'P','Ꝙ':'Q','Ꝗ':'Q','Ŕ':'R','Ř':'R','Ŗ':'R','Ṙ':'R','Ṛ':'R','Ṝ':'R','Ȑ':'R','Ȓ':'R','Ṟ':'R','Ɍ':'R','Ɽ':'R','Ꜿ':'C','Ǝ':'E','Ś':'S','Ṥ':'S','Š':'S','Ṧ':'S','Ş':'S','Ŝ':'S','Ș':'S','Ṡ':'S','Ṣ':'S','Ṩ':'S','ß':'ss','Ť':'T','Ţ':'T','Ṱ':'T','Ț':'T','Ⱦ':'T','Ṫ':'T','Ṭ':'T','Ƭ':'T','Ṯ':'T','Ʈ':'T','Ŧ':'T','Ɐ':'A','Ꞁ':'L','Ɯ':'M','Ʌ':'V','Ꜩ':'TZ','Ú':'U','Ŭ':'U','Ǔ':'U','Û':'U','Ṷ':'U','Ü':'U','Ǘ':'U','Ǚ':'U','Ǜ':'U','Ǖ':'U','Ṳ':'U','Ụ':'U','Ű':'U','Ȕ':'U','Ù':'U','Ủ':'U','Ư':'U','Ứ':'U','Ự':'U','Ừ':'U','Ử':'U','Ữ':'U','Ȗ':'U','Ū':'U','Ṻ':'U','Ų':'U','Ů':'U','Ũ':'U','Ṹ':'U','Ṵ':'U','Ꝟ':'V','Ṿ':'V','Ʋ':'V','Ṽ':'V','Ꝡ':'VY','Ẃ':'W','Ŵ':'W','Ẅ':'W','Ẇ':'W','Ẉ':'W','Ẁ':'W','Ⱳ':'W','Ẍ':'X','Ẋ':'X','Ý':'Y','Ŷ':'Y','Ÿ':'Y','Ẏ':'Y','Ỵ':'Y','Ỳ':'Y','Ƴ':'Y','Ỷ':'Y','Ỿ':'Y','Ȳ':'Y','Ɏ':'Y','Ỹ':'Y','Ź':'Z','Ž':'Z','Ẑ':'Z','Ⱬ':'Z','Ż':'Z','Ẓ':'Z','Ȥ':'Z','Ẕ':'Z','Ƶ':'Z','Þ':'TH','Ĳ':'IJ','Œ':'OE','ᴀ':'A','ᴁ':'AE','ʙ':'B','ᴃ':'B','ᴄ':'C','ᴅ':'D','ᴇ':'E','ꜰ':'F','ɢ':'G','ʛ':'G','ʜ':'H','ɪ':'I','ʁ':'R','ᴊ':'J','ᴋ':'K','ʟ':'L','ᴌ':'L','ᴍ':'M','ɴ':'N','ᴏ':'O','ɶ':'OE','ᴐ':'O','ᴕ':'OU','ᴘ':'P','ʀ':'R','ᴎ':'N','ᴙ':'R','ꜱ':'S','ᴛ':'T','ⱻ':'E','ᴚ':'R','ᴜ':'U','ᴠ':'V','ᴡ':'W','ʏ':'Y','ᴢ':'Z','á':'a','ă':'a','ắ':'a','ặ':'a','ằ':'a','ẳ':'a','ẵ':'a','ǎ':'a','â':'a','ấ':'a','ậ':'a','ầ':'a','ẩ':'a','ẫ':'a','ä':'a','ǟ':'a','ȧ':'a','ǡ':'a','ạ':'a','ȁ':'a','à':'a','ả':'a','ȃ':'a','ā':'a','ą':'a','ᶏ':'a','ẚ':'a','å':'a','ǻ':'a','ḁ':'a','ⱥ':'a','ã':'a','ꜳ':'aa','æ':'ae','ǽ':'ae','ǣ':'ae','ꜵ':'ao','ꜷ':'au','ꜹ':'av','ꜻ':'av','ꜽ':'ay','ḃ':'b','ḅ':'b','ɓ':'b','ḇ':'b','ᵬ':'b','ᶀ':'b','ƀ':'b','ƃ':'b','ɵ':'o','ć':'c','č':'c','ç':'c','ḉ':'c','ĉ':'c','ɕ':'c','ċ':'c','ƈ':'c','ȼ':'c','ď':'d','ḑ':'d','ḓ':'d','ȡ':'d','ḋ':'d','ḍ':'d','ɗ':'d','ᶑ':'d','ḏ':'d','ᵭ':'d','ᶁ':'d','đ':'d','ɖ':'d','ƌ':'d','ð':'d','ı':'i','ȷ':'j','ɟ':'j','ʄ':'j','ǳ':'dz','ǆ':'dz','é':'e','ĕ':'e','ě':'e','ȩ':'e','ḝ':'e','ê':'e','ế':'e','ệ':'e','ề':'e','ể':'e','ễ':'e','ḙ':'e','ë':'e','ė':'e','ẹ':'e','ȅ':'e','è':'e','ẻ':'e','ȇ':'e','ē':'e','ḗ':'e','ḕ':'e','ⱸ':'e','ę':'e','ᶒ':'e','ɇ':'e','ẽ':'e','ḛ':'e','ꝫ':'et','ḟ':'f','ƒ':'f','ᵮ':'f','ᶂ':'f','ǵ':'g','ğ':'g','ǧ':'g','ģ':'g','ĝ':'g','ġ':'g','ɠ':'g','ḡ':'g','ᶃ':'g','ǥ':'g','ḫ':'h','ȟ':'h','ḩ':'h','ĥ':'h','ⱨ':'h','ḧ':'h','ḣ':'h','ḥ':'h','ɦ':'h','ẖ':'h','ħ':'h','ƕ':'hv','í':'i','ĭ':'i','ǐ':'i','î':'i','ï':'i','ḯ':'i','ị':'i','ȉ':'i','ì':'i','ỉ':'i','ȋ':'i','ī':'i','į':'i','ᶖ':'i','ɨ':'i','ĩ':'i','ḭ':'i','ꝺ':'d','ꝼ':'f','ᵹ':'g','ꞃ':'r','ꞅ':'s','ꞇ':'t','ꝭ':'is','ǰ':'j','ĵ':'j','ʝ':'j','ɉ':'j','ḱ':'k','ǩ':'k','ķ':'k','ⱪ':'k','ꝃ':'k','ḳ':'k','ƙ':'k','ḵ':'k','ᶄ':'k','ꝁ':'k','ꝅ':'k','ĺ':'l','ƚ':'l','ɬ':'l','ľ':'l','ļ':'l','ḽ':'l','ȴ':'l','ḷ':'l','ḹ':'l','ⱡ':'l','ꝉ':'l','ḻ':'l','ŀ':'l','ɫ':'l','ᶅ':'l','ɭ':'l','ł':'l','ǉ':'lj','ſ':'s','ẜ':'s','ẛ':'s','ẝ':'s','ḿ':'m','ṁ':'m','ṃ':'m','ɱ':'m','ᵯ':'m','ᶆ':'m','ń':'n','ň':'n','ņ':'n','ṋ':'n','ȵ':'n','ṅ':'n','ṇ':'n','ǹ':'n','ɲ':'n','ṉ':'n','ƞ':'n','ᵰ':'n','ᶇ':'n','ɳ':'n','ñ':'n','ǌ':'nj','ó':'o','ŏ':'o','ǒ':'o','ô':'o','ố':'o','ộ':'o','ồ':'o','ổ':'o','ỗ':'o','ö':'o','ȫ':'o','ȯ':'o','ȱ':'o','ọ':'o','ő':'o','ȍ':'o','ò':'o','ỏ':'o','ơ':'o','ớ':'o','ợ':'o','ờ':'o','ở':'o','ỡ':'o','ȏ':'o','ꝋ':'o','ꝍ':'o','ⱺ':'o','ō':'o','ṓ':'o','ṑ':'o','ǫ':'o','ǭ':'o','ø':'o','ǿ':'o','õ':'o','ṍ':'o','ṏ':'o','ȭ':'o','ƣ':'oi','ꝏ':'oo','ɛ':'e','ᶓ':'e','ɔ':'o','ᶗ':'o','ȣ':'ou','ṕ':'p','ṗ':'p','ꝓ':'p','ƥ':'p','ᵱ':'p','ᶈ':'p','ꝕ':'p','ᵽ':'p','ꝑ':'p','ꝙ':'q','ʠ':'q','ɋ':'q','ꝗ':'q','ŕ':'r','ř':'r','ŗ':'r','ṙ':'r','ṛ':'r','ṝ':'r','ȑ':'r','ɾ':'r','ᵳ':'r','ȓ':'r','ṟ':'r','ɼ':'r','ᵲ':'r','ᶉ':'r','ɍ':'r','ɽ':'r','ↄ':'c','ꜿ':'c','ɘ':'e','ɿ':'r','ś':'s','ṥ':'s','š':'s','ṧ':'s','ş':'s','ŝ':'s','ș':'s','ṡ':'s','ṣ':'s','ṩ':'s','ʂ':'s','ᵴ':'s','ᶊ':'s','ȿ':'s','ɡ':'g','ᴑ':'o','ᴓ':'o','ᴝ':'u','ť':'t','ţ':'t','ṱ':'t','ț':'t','ȶ':'t','ẗ':'t','ⱦ':'t','ṫ':'t','ṭ':'t','ƭ':'t','ṯ':'t','ᵵ':'t','ƫ':'t','ʈ':'t','ŧ':'t','ᵺ':'th','ɐ':'a','ᴂ':'ae','ǝ':'e','ᵷ':'g','ɥ':'h','ʮ':'h','ʯ':'h','ᴉ':'i','ʞ':'k','ꞁ':'l','ɯ':'m','ɰ':'m','ᴔ':'oe','ɹ':'r','ɻ':'r','ɺ':'r','ⱹ':'r','ʇ':'t','ʌ':'v','ʍ':'w','ʎ':'y','ꜩ':'tz','ú':'u','ŭ':'u','ǔ':'u','û':'u','ṷ':'u','ü':'u','ǘ':'u','ǚ':'u','ǜ':'u','ǖ':'u','ṳ':'u','ụ':'u','ű':'u','ȕ':'u','ù':'u','ủ':'u','ư':'u','ứ':'u','ự':'u','ừ':'u','ử':'u','ữ':'u','ȗ':'u','ū':'u','ṻ':'u','ų':'u','ᶙ':'u','ů':'u','ũ':'u','ṹ':'u','ṵ':'u','ᵫ':'ue','ꝸ':'um','ⱴ':'v','ꝟ':'v','ṿ':'v','ʋ':'v','ᶌ':'v','ⱱ':'v','ṽ':'v','ꝡ':'vy','ẃ':'w','ŵ':'w','ẅ':'w','ẇ':'w','ẉ':'w','ẁ':'w','ⱳ':'w','ẘ':'w','ẍ':'x','ẋ':'x','ᶍ':'x','ý':'y','ŷ':'y','ÿ':'y','ẏ':'y','ỵ':'y','ỳ':'y','ƴ':'y','ỷ':'y','ỿ':'y','ȳ':'y','ẙ':'y','ɏ':'y','ỹ':'y','ź':'z','ž':'z','ẑ':'z','ʑ':'z','ⱬ':'z','ż':'z','ẓ':'z','ȥ':'z','ẕ':'z','ᵶ':'z','ᶎ':'z','ʐ':'z','ƶ':'z','ɀ':'z','þ':'th','ﬀ':'ff','ﬃ':'ffi','ﬄ':'ffl','ﬁ':'fi','ﬂ':'fl','ĳ':'ij','œ':'oe','ﬆ':'st','ₐ':'a','ₑ':'e','ᵢ':'i','ⱼ':'j','ₒ':'o','ᵣ':'r','ᵤ':'u','ᵥ':'v','ₓ':'x','Ё':'YO','Й':'I','Ц':'TS','У':'U','К':'K','Е':'E','Н':'N','Г':'G','Ш':'SH','Щ':'SCH','З':'Z','Х':'H','Ъ':"'",'ё':'yo','й':'i','ц':'ts','у':'u','к':'k','е':'e','н':'n','г':'g','ш':'sh','щ':'sch','з':'z','х':'h','ъ':"'",'Ф':'F','Ы':'I','В':'V','А':'a','П':'P','Р':'R','О':'O','Л':'L','Д':'D','Ж':'ZH','Э':'E','ф':'f','ы':'i','в':'v','а':'a','п':'p','р':'r','о':'o','л':'l','д':'d','ж':'zh','э':'e','Я':'Ya','Ч':'CH','С':'S','М':'M','И':'I','Т':'T','Ь':"'",'Б':'B','Ю':'YU','я':'ya','ч':'ch','с':'s','м':'m','и':'i','т':'t','ь':"'",'б':'b','ю':'yu'};
 		var latin_character = diacritics_map[character];
@@ -209,8 +453,9 @@ function _latinize(str, cyrillic){
 	};
 	return str.replace(cyrillic ? /[^A-Za-z0-9]/g : /[^A-ZА-Яa-zа-я0-9]/g, get_latin_character).replace(/([\0-\u02FF\u0370-\u1AAF\u1B00-\u1DBF\u1E00-\u20CF\u2100-\uD7FF\uE000-\uFE1F\uFE30-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])([\u0300-\u036F\u1AB0-\u1AFF\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]+)/g, remove_combining_marks);
 };
-function _declination(num, words){  
-    num = Math.abs(num) % 100;
+function _declination(num, words){
+	_validate_argument_type(num, ['string','number'], 'Number', '_declination');
+	num = Math.abs(Number(num)) % 100;
 	var num1 = num % 10;
 	
     if(num > 10 && num < 20){return words[2]};
@@ -220,8 +465,11 @@ function _declination(num, words){
     return words[2];
 };
 function _csv_generate(list, sep){
-	list = _avoid_nilb(list, []).filter(function(e){return e!==""})
+	var act = '_csv_generate';
+	list = _avoid_nilb(list, []);
+	_validate_argument_type(list, 'array', 'List of items', act);
 	sep = _avoid_nilb(sep, ':');
+	_validate_argument_type(sep, 'string', 'Separator', act);
     var res = '';
     var first = true;
     list.forEach(function(item){
@@ -240,8 +488,12 @@ function _csv_generate(list, sep){
     return res;
 };
 function _csv_parse(str, seps, convert){
+	var act = '_csv_parse';
+	_validate_argument_type(str, 'string', 'String', act);
 	seps = _avoid_nilb(seps, [":", ";", ","]);
+	_validate_argument_type(seps, ['string','array'], 'List of separators', act);
 	convert = _avoid_nilb(convert, false);
+	_validate_argument_type(convert, 'boolean', 'Convert types', act);
     var res = [];
     var index = 0;
     var len = str.length;
@@ -290,37 +542,102 @@ function _csv_parse(str, seps, convert){
     return res;
 };
 function _trim_left(str, chars){
-	return str.replace(new RegExp('^[' + _avoid_nilb(chars, _STR_WHITESPACE) + ']+', 'g'), '');
+	var act = '_trim_left';
+	_validate_argument_type(str, 'string', 'String', act);
+	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	_validate_argument_type(chars, 'string', 'Trim characters', act);
+	return str.replace(new RegExp('^[' + chars + ']+', 'g'), '');
 };
 function _trim_right(str, chars){
-	return str.replace(new RegExp('[' + _avoid_nilb(chars, _STR_WHITESPACE) + ']+$', 'g'), '');
+	var act = '_trim_right';
+	_validate_argument_type(str, 'string', 'String', act);
+	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	_validate_argument_type(chars, 'string', 'Trim characters', act);
+	return str.replace(new RegExp('[' + chars + ']+$', 'g'), '');
 };
 function _trim(str, chars, left, right){
+	var act = '_trim';
+	_validate_argument_type(str, 'string', 'String', act);
 	chars = _avoid_nilb(chars, _STR_WHITESPACE);
-	str = _avoid_nilb(left, true) ? _trim_left(str, chars) : str;
-	str = _avoid_nilb(right, true) ? _trim_right(str, chars) : str;
+	_validate_argument_type(chars, 'string', 'Trim characters', act);
+	left = _avoid_nilb(left, true);
+	_validate_argument_type(left, 'boolean', 'Trim left', act);
+	right = _avoid_nilb(right, true);
+	_validate_argument_type(right, 'boolean', 'Trim right', act);
+	if(left){
+		str = _trim_left(str, chars);
+	};
+	if(right){
+		str = _trim_right(str, chars);
+	};
 	return str;
 };
 function _trim_arr(arr, chars, left, right){
+	var act = '_trim_arr';
+	_validate_argument_type(arr, 'array', 'Array', act);
+	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	_validate_argument_type(chars, 'string', 'Trim characters', act);
+	left = _avoid_nilb(left, true);
+	_validate_argument_type(left, 'boolean', 'Trim left', act);
+	right = _avoid_nilb(right, true);
+	_validate_argument_type(right, 'boolean', 'Trim right', act);
 	return arr.map(function(e){return _trim(e, chars, left, right)});
 };
 function _clean(str, chars_to_delete, chars_to_space, multiple_spaces){
-	str = _is_nilb(chars_to_space) ? str : str.replace(new RegExp('[' + chars_to_space + ']+', 'g'), ' ');
-	str = _is_nilb(chars_to_delete) ? str : str.replace(new RegExp('[' + chars_to_delete + ']+', 'g'), '');
+	var act = '_clean';
+	_validate_argument_type(str, 'string', 'String', act);
+	chars_to_space = _avoid_nil(chars_to_space);
+	_validate_argument_type(chars_to_space, 'string', 'Replace characters with space', act);
+	if(chars_to_space){
+		str = str.replace(new RegExp('[' + chars_to_space + ']+', 'g'), ' ');
+	};
+	chars_to_delete = _avoid_nil(chars_to_delete);
+	_validate_argument_type(chars_to_delete, 'string', 'Remove characters', act);
+	if(chars_to_delete){
+		str = str.replace(new RegExp('[' + chars_to_delete + ']+', 'g'), '');
+	};
 	str = _trim(str);
-	str = _avoid_nilb(multiple_spaces, true) ? str.replace(new RegExp('[' + _STR_WHITESPACE + ']+', 'g'), ' ') : str.replace(new RegExp('[\\uFEFF\\xA0;]', 'g'), ' ');
+	multiple_spaces = _avoid_nilb(multiple_spaces, true);
+	_validate_argument_type(multiple_spaces, 'boolean', 'Replace multiple spaces with single ones', act);
+	if(multiple_spaces){
+		str = str.replace(new RegExp('[' + _STR_WHITESPACE + ']+', 'g'), ' ');
+	}else{
+		str = str.replace(new RegExp('[\\uFEFF\\xA0;]', 'g'), ' ');
+	};
 	return str;
 };
 function _clean_arr(arr, chars_to_delete, chars_to_space, multiple_spaces){
+	var act = '_clean_arr';
+	_validate_argument_type(arr, 'array', 'Array', act);
+	chars_to_space = _avoid_nil(chars_to_space);
+	_validate_argument_type(chars_to_space, 'string', 'Replace characters with space', act);
+	chars_to_delete = _avoid_nil(chars_to_delete);
+	_validate_argument_type(chars_to_delete, 'string', 'Remove characters', act);
+	multiple_spaces = _avoid_nilb(multiple_spaces, true);
+	_validate_argument_type(multiple_spaces, 'boolean', 'Replace multiple spaces with single ones', act);
 	return arr.map(function(e){return _clean(e, chars_to_delete, chars_to_space, multiple_spaces)});
 };
 function _replace_string(str, from, to){
+	var act = '_replace_string';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(from, ['string','number'], 'Replace From', act);
+	if(typeof from==='number'){
+		from = _no_exponents(from);
+	};
+	_validate_argument_type(to, ['string','number'], 'Replace To', act);
+	if(typeof to==='number'){
+		to = _no_exponents(to);
+	};
 	return str.split(from).join(to);
 };
 function _random_string(chars, length){
+	var act = '_random_string';
+	_validate_argument_type(chars, 'string', 'Allowed Chars', act);
+	_validate_argument_type(length, 'number', 'Result String Length', act);
 	return Array(length).join().split(',').map(function(){ return chars.charAt(Math.floor(Math.random() * chars.length)); }).join('');
 };
 function _escape_html(str){
+	_validate_argument_type(str, 'string', 'String', '_escape_html');
 	var chars = {'¢' : 'cent', '£' : 'pound', '¥' : 'yen', '€': 'euro', '©' :'copy', '®' : 'reg', '<' : 'lt', '>' : 'gt', '"' : 'quot', '&' : 'amp', '\'' : '#39'};
 	var regex_string = '[';
 	for(var key in chars){
@@ -333,13 +650,8 @@ function _escape_html(str){
 	};
 	return str.replace(regex, escape_char);
 };
-function _encode_url_component(str){
-	return encodeURIComponent(str);
-};
-function _decode_url_component(str){
-	return decodeURIComponent(str);
-};
 function _unescape_html(str){
+	_validate_argument_type(str, 'string', 'String', '_unescape_html');
 	var entities = {nbsp: ' ', cent: '¢', pound: '£', yen: '¥', euro: '€', copy: '©', reg: '®', lt: '<', gt: '>', quot: '"', amp: '&', apos: '\''};
 	var unescape_char = function(entity, entity_code){
 		var match = "";
@@ -354,6 +666,14 @@ function _unescape_html(str){
 		};
 	};
 	return str.replace(/\&([^;]{1,10});/g, unescape_char);
+};
+function _encode_url_component(str){
+	_validate_argument_type(str, 'string', 'String', '_encode_url_component');
+	return encodeURIComponent(str);
+};
+function _decode_url_component(str){
+	_validate_argument_type(str, 'string', 'String', '_decode_url_component');
+	return decodeURIComponent(str);
 };
 function _regexp_extract_validation(mode, type){
 	if(typeof _STR_REGEXP_EV=="undefined" || _is_nilb(_STR_REGEXP_EV)){
@@ -400,33 +720,43 @@ function _regexp_extract_validation(mode, type){
 	return !_is_nilb(mode) && !_is_nilb(type) ? _STR_REGEXP_EV[mode][type] : (!_is_nilb(mode) && _is_nilb(type) ? _STR_REGEXP_EV[mode] : _STR_REGEXP_EV);
 };
 function _extract_urls(str){
+	_validate_argument_type(str, 'string', 'String', '_extract_urls');
 	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "url")), [])));
 };
 function _extract_emails(str){
+	_validate_argument_type(str, 'string', 'String', '_extract_emails');
 	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "email")), [])));
 };
 function _extract_phone_numbers(str){
+	_validate_argument_type(str, 'string', 'String', '_extract_phone_numbers');
 	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "phone")), [])));
 };
 function _extract_ips(str){
+	_validate_argument_type(str, 'string', 'String', '_extract_ips');
 	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "ip")), [])));
 };
 function _extract_files(str){
+	_validate_argument_type(str, 'string', 'String', '_extract_files');
 	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "file")), [])));
 };
 function _validate_url(str){
+	_validate_argument_type(str, 'string', 'String', '_validate_url');
 	return _regexp_extract_validation("validate", "url").test(str);
 };
 function _validate_email(str){
+	_validate_argument_type(str, 'string', 'String', '_validate_email');
 	return _regexp_extract_validation("validate", "email").test(str);
 };
 function _validate_phone_number(str){
+	_validate_argument_type(str, 'string', 'String', '_validate_phone_number');
 	return _regexp_extract_validation("validate", "phone").test(str);
 };
 function _validate_ip(str){
+	_validate_argument_type(str, 'string', 'String', '_validate_ip');
 	return _regexp_extract_validation("validate", "ip").test(str);
 };
 function _validate_file(str){
+	_validate_argument_type(str, 'string', 'String', '_validate_file');
 	return _regexp_extract_validation("validate", "file").test(str);
 };
 function _query_string_encode(obj, sep, eq, name){
@@ -505,6 +835,7 @@ function _query_string_decode(qs, sep, eq, options){
 	return obj;
 };
 function _normalize_url(url_string, user_options){
+	_validate_argument_type(url_string, 'string', 'URL', '_normalize_url');
 	var options = {
 		base_url: {},
 		default_protocol: 'http:',
@@ -677,8 +1008,14 @@ function _normalize_url(url_string, user_options){
 		url_obj.set('pathname', url_obj.pathname.replace(/\/$/, ''));
 	};
 	
+	if(has_relative_protocol && !options.normalize_protocol){
+		url_obj.set('protocol', '');
+		url_obj.set('slashes', true);
+	};
+	
 	if(options.strip_protocol){
 		url_obj.set('protocol', '');
+		url_obj.set('slashes', false);
 	};
 	
 	if(options.strip_query){
@@ -686,6 +1023,8 @@ function _normalize_url(url_string, user_options){
 	};
 	
 	var old_url_string = url_string;
+	
+	VAR_AAA = url_obj;
 
 	url_string = url_obj.toString();
 
@@ -697,17 +1036,11 @@ function _normalize_url(url_string, user_options){
 		url_string = url_string.replace(/\/$/, '');
 	};
 
-	if(has_relative_protocol && !options.normalize_protocol){
-		url_string = url_string.replace(new RegExp("^https?:\\/\\/"), '//');
-	};
-
-	if(options.strip_protocol){
-		url_string = url_string.replace(new RegExp("^(?:(?:f|ht)tps?:)?\\/\\/"), '');
-	};
-
 	return url_string;
 };
 function _url(address, user_options){
+	_validate_argument_type(address, 'string', 'URL', '_url');
+	
 	if(!(this instanceof _url)){
 		return new _url(address, user_options);
 	};
@@ -1040,6 +1373,8 @@ _url.prototype.toString = function(stringify){
 	return result;
 };
 function _ua(uastring, extensions){
+	_validate_argument_type(uastring, 'string', 'User-Agent', '_ua');
+	
 	if(!(this instanceof _ua)){
         return new _ua(uastring, extensions);
     };

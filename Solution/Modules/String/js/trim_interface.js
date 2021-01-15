@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", value_string: "", help: {description: tr("The string which needs to be trimmed."),examples:[{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + tr("Just sample text") + "&nbsp;&nbsp;&nbsp;&nbsp;\""},{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test text&nbsp;&nbsp;&nbsp;\""},{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\""}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"string", description: tr("String"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("The string which needs to be trimmed."),examples:[{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + tr("Just sample text") + "&nbsp;&nbsp;&nbsp;&nbsp;\""},{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test text&nbsp;&nbsp;&nbsp;\""},{code:"\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\""}]} }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<div><input type="checkbox" id="Check" checked="checked" style="margin-left:25px"/> <label for="Check" class="tr">Trim spaces</label></div>
 </span>
@@ -10,7 +10,7 @@
 	<div><input type="checkbox" id="Check3" checked="checked" style="margin-left:25px"/> <label for="Check3" class="tr">Trim tabs</label></div>
 </span>
 <%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
-<%= _.template($('#input_constructor').html())({id:"characters", description: tr("Trim characters"), default_selector: "string", value_string: "", help: {description: tr("Characters to be trimmed at the edges of the string."),examples:[{code:"_-|,"},{code:"_-"},{code:"%&"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"characters", description: tr("Trim characters"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Characters to be trimmed at the edges of the string."),examples:[{code:"_-|,"},{code:"_-"},{code:"%&"}]} }) %>
 <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check4">
 	<div><input type="radio" id="Check4" name="side" checked="checked" style="margin-left:25px"/> <label for="Check4" class="tr">Trim on both sides</label></div>
 </span>

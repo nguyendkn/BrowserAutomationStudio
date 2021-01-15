@@ -1,6 +1,6 @@
 var url = GetInputConstructorValue("url", loader);
 if(url["original"].length == 0){
-	Invalid("URL" + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("URL") + tr("\" is not specified"));
     return;
 };
 var base_url = GetInputConstructorValue("base_url", loader);

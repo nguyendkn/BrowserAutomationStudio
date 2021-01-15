@@ -9,11 +9,11 @@ if ($("#Check3").is(':checked')){
 };
 var Save = this.$el.find("#Save").val().toUpperCase();
 if (Save.length == 0) {
-	Invalid("Variable is empty");
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
 	return;
 };
 if ($("#Template").val().length == 0) {
-	Invalid("Template is empty");
+	Invalid(tr("The parameter \"") + tr("Template") + tr("\" is not specified"));
 	return;
 };
 try {

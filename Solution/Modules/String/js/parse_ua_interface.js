@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"ua", description: "User-Agent", default_selector: "string", value_string: "", help: {description: tr("String containing the User-Agent with want to parse."),examples:[{code:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"},{code:"</br>Mozilla/5.0 (Android 11; Mobile; rv:68.0) Gecko/68.0 Firefox/82.0"},{code:"</br>Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"ua", description: "User-Agent", default_selector: "string", disable_int:true, value_string: "", help: {description: tr("String containing the User-Agent with want to parse."),examples:[{code:"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36"},{code:"</br>Mozilla/5.0 (Android 11; Mobile; rv:68.0) Gecko/68.0 Firefox/82.0"},{code:"</br>Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1"}]} }) %>
 <div class="container-fluid">
 	<div class="col-xs-12">
 		<form class="form-horizontal">

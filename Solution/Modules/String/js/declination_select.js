@@ -1,21 +1,21 @@
 var number = GetInputConstructorValue("number", loader);
 if(number["original"].length == 0){
-	Invalid(tr("Number") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Number") + tr("\" is not specified"));
     return;
 };
 var word1 = GetInputConstructorValue("word1", loader);
 if(word1["original"].length == 0){
-	Invalid(tr("Word at") + " 1 " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Word at") + " 1" + tr("\" is not specified"));
     return;
 };
 var word2 = GetInputConstructorValue("word2", loader);
 if(word2["original"].length == 0){
-	Invalid(tr("Word at") + " 2 " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Word at") + " 2" + tr("\" is not specified"));
     return;
 };
 var word5 = GetInputConstructorValue("word5", loader);
 if(word5["original"].length == 0){
-	Invalid(tr("Word at") + " 5 " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Word at") + " 5" + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();

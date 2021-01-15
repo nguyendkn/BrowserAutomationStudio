@@ -1,1 +1,1 @@
-<%= variable %> = _length(<%= string %>);
+<%= variable %> = _string_length(<%= string %>);

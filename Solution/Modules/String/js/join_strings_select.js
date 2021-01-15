@@ -3,7 +3,7 @@ var string2 = GetInputConstructorValue("string2", loader);
 var string3 = GetInputConstructorValue("string3", loader);
 var strings_list = GetInputConstructorValue("strings_list", loader);
 if(string1["original"].length==0 && string2["original"].length==0 && string3["original"].length==0 && strings_list["original"].length==0){
-    Invalid(tr("List of strings") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("List of strings") + tr("\" is not specified"));
     return;
 };
 var separator = GetInputConstructorValue("separator", loader);

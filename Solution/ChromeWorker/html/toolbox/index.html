@@ -991,7 +991,7 @@
   <script type="text/template" id="custom">
     <div class="container-fluid">
       <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
-        <div id="Code" data-is-code-editor="true" style="height:calc(100vh - 100px);border: none; overflow: hidden; outline: none;border:1px solid #e0e0e0;" />
+        <div id="Code" class="custom-code-editor" data-is-code-editor="true" />
       </span>
       <%= "<s" + "cript>" %>
         window.Code = {Editor: null, InitialValue: ""}
@@ -999,7 +999,7 @@
         require(['vs/editor/editor.main'], function() {
           if($("#Code").attr("data-installed") == "true")
             return;
-          $("#Code").attr("data-installed", "true")
+          $("#Code").attr("data-installed", "true");
           window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
             value: window.Code.InitialValue,
             language: 'javascript',
@@ -1016,12 +1016,112 @@
         </a>
         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="res">
           <i class="fa fa-database"></i>
-          <span class="tr">Load from file, user input, database</span>
+            <span class="tr">Load from file, user input, database</span>
         </a>
       </div>
       <span class="short-description tr">Execute javascript code. This code can work with variables but can't work with elements in web browser.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, modal_code_id:"custom-help-" + (_K || "en")}) %>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-ru">
+    <div>Выполнить javascript внутри браузера. Это означает, что доступны document, window и другие javascript объекты браузера.</div>
+    <div>Действие работает точно так же, как если бы вы вводили код в консоль браузера.</div>
+    <div>Вы можете использовать переменные BAS в данном действии как для чтения, так и для записи. Кроме того они могут быть любого типа, в том числе объектами и массивами.</div>
+    <div>Переменные используемые в коде автоматически обновляются после выполнения действия.</div>
+    <div>Ресурсы не доступны для использования в данном действии.</div>
+    <br />
+    <div>Во время выполнения скрипта могут возникать разные ошибки. В случае ошибки BAS прекратит выполнение скрипта.</div>
+    <div>Для того чтобы обработать подобные ситуации используйте действие <b>Игнорировать ошибки</b>.</div>
+    <div>В таком случае вы сможете использовать переменные [[WAS_ERROR]] и [[LAST_ERROR]], чтобы узнать, была ли ошибка, и обработать её.</div>
+    <br />
+    <div>Пример #1. Изменение HTML определенного элемента:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Пример #2. Получение HTML определенных элементов:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Пример #3. Установка значений для элементов `input` и `textarea`:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        document.querySelector('textarea').value = [[TEXTAREA_VALUE]].join('\r\n');
+        document.querySelector('input').value = [[INPUT_VALUE]];
+      </pre>
+    </div>
+    <br />
+    <div>В данном действии вы можете писать код с использованием <i>async</i> и <i>await</i>. Действие будет ожидать завершения асинхронных операций.</div>
+    <div>При использовании асинхронного кода всегда дожидайтесь завершения функций с помощью <i>await</i>.</div>
+    <div>В противном случае переменные, значение которых задается в коллбэках либо в функциях then/catch/finally у класса <i>Promise</i>, не будут синхронизированы с BAS.</div>
+    <div>Если в таких участках кода вам не нужно обновлять переменные, вы можете не ждать их завершения.</div>
+    <br />
+    <div>Простой пример. Асинхронное ожидание в течение заданного времени (2 секунды):</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
+    </div>
+    <br />
+    <div>Другой пример. Получение данных со стороннего сайта с помощью функции <i>fetch</i>:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    .then((res) => res.json());
+}
+[[POST]] = await getPost(1);</pre></div>
+    <br />
+    <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-en">
+    <div>Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
+    <div>Action works exactly the same as if you input code into browser console.</div>
+    <div>You can use BAS variables in this action for both reading and writing. Moreover, they can be of any type, including objects and arrays.</div>
+    <div>Variables used in the code are automatically updated after the action is performed.</div>
+    <div>Resources are not available for use in this action.</div>
+    <br />
+    <div>During the execution of the script, various errors may occur. If an error occurs, BAS will stop the script execution.</div>
+    <div>To handle such situations, use the <b>Ignore errors</b> action.</div>
+    <div>In this case, you can use the [[WAS_ERROR]] and [[LAST_ERROR]] variables to find out if there was an error and process it.</div>
+    <br />
+    <div>Example #1. Changing the HTML of the specific element:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Example #2. Getting the HTML of the specific elements:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Example #3. Setting the values for the `input` and `textarea` elements:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        document.querySelector('textarea').value = [[TEXTAREA_VALUE]].join('\r\n');
+        document.querySelector('input').value = [[INPUT_VALUE]];
+      </pre>
+    </div>
+    <br />
+    <div>In this action you can write code using <i>async</i> and <i>await</i>. The action will wait for asynchronous operations to complete.</div>
+    <div>When using asynchronous code, always wait for functions to complete using <i>await</i>.</div>
+    <div>Otherwise, variables whose value is set in callbacks or in the then/catch/finally functions of the <i>Promise</i> class will not be synchronized with the BAS.</div>
+    <div>If you don't need to update variables in these sections of code, you don't have to wait for them to complete.</div>
+    <br />
+    <div>A simple example. Wait asynchronously for a specified time (2 seconds):</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
+    </div>
+    <br />
+    <div>Another example. Getting data from a third-party site using the <i>fetch</i> function:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+    .then((res) => res.json());
+}
+[[POST]] = await getPost(1);</pre></div>
+    <br />
+    <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
   </script>
 
   <script type="text/template" id="custom-help-interface-ru">
@@ -1051,6 +1151,7 @@
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
   </script>
+
   <script type="text/template" id="custom-help-interface-en">
     <div>Run javascript code in web interface context.</div>
     <div>If web interface is not enabled, this action does nothing.</div>
@@ -1077,7 +1178,6 @@
     <div>Example #4. Set input value.</div>
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
-
   </script>
 
   <script type="text/template" id="custom-help-en">
@@ -1505,9 +1605,42 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         <div class="tr tooltip-paragraph-first-fold">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
         <div class="tr tooltip-paragraph-fold">Action works exactly the same as if you input code into browser console and output result into variable.</div>
         <div class="tr tooltip-paragraph-fold">You can also use resources and variables here but only in read mode. Following code will work document.getElementById([[ID]]).innerHTML, but you can't do like this <strike>[[RESULT]] = document.getElementById([[ID]]).innerHTML</strike>.</div> 
+        <div class="tr tooltip-paragraph-fold">This action is deprecated. It is recommended to use the new <a href="#!/browserjavascript">Javascript</a> action.</div>
         <div class="tr tooltip-paragraph-last-fold">Use <a href="#!/custom">Execute Code</a> action if you want to run javascript inside thread.</div>
       </div>
       <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+  </script>
+
+  <script type="text/template" id="browserjavascript">
+    <div class="container-fluid">
+      <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
+        <div id="Code" class="browser-code-editor" data-is-code-editor="true" />
+      </span>
+      <%= "<s" + "cript>" %>
+        window.Code = {Editor: null, InitialValue: ""}
+    
+        require(['vs/editor/editor.main'], function() {
+          if($("#Code").attr("data-installed") == "true")
+            return;
+          $("#Code").attr("data-installed", "true");
+          window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
+            value: window.Code.InitialValue,
+            language: 'javascript',
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            fontSize: 12
+          });
+        });
+      <%= "</" + "script>" %>
+      <div style="text-align: center">
+        <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="var"  disable_globals="true">
+          <i class="fa fa-at"></i>
+          <span class="tr">Insert variable</span>
+        </a>
+      </div>
+      <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
+    </div>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="onloadjavascript">
@@ -5437,7 +5570,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="reset_code">
-      new_browser()!
+        new_browser()!
   </script>
 
   <script type="text/template" id="moveelement_code">
@@ -5531,9 +5664,17 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="javascript_code">
-      /*Browser*/
       page().script(<%= value %>)!
       <%= variable %> = _result()
+  </script>
+
+  <script type="text/template" id="browserjavascript_code">
+      <%= timeout_general()  %>
+      page().script2(<%= JSON.stringify(source) %>,JSON.stringify(_read_variables(<%= variables %>)))!
+      var _parse_result = JSON.parse(_result())
+      _write_variables(JSON.parse(_parse_result.variables))
+      if(!_parse_result.is_success)
+        fail(_parse_result.error)
   </script>
 
   <script type="text/template" id="onloadjavascript_code">
@@ -6129,7 +6270,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="./search/internal/mark.min.js"></script>
   <script src="databasefilter.js"></script>
   <script src="sortable.js"></script>
-  <script src="./utils/cursorPosition.js"></script>
+  <script src="cursorposition.js"></script>
+  <script src="./utils/extractVariables.js"></script>
   <script src="toastr.min.js"></script>
   <script src="embeddedmodel.js"></script>
   <script src="diff_match_patch.js"></script>
@@ -7148,13 +7290,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               return;
             }
 
-            try{
+               try{
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({url:val["updated"],referrer:referrer["updated"],notinstant:BrowserAutomationStudio_UsesWaitCode()})
-              code = Normalize(code,0)
+                code = Normalize(code,0)
 
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-            }catch(e)
-            {}
+                BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+              }catch(e)
+              {}
         
           }else if(State == "navigateback")
           {
@@ -8359,6 +8501,30 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
+          }else if(State == "browserjavascript")
+          {
+            var source = window.Code.Editor.getValue();
+
+            if(source.length === 0) {
+              Invalid("Code is empty");
+              return;
+            }
+
+            if(source.indexOf("GLOBAL:") >= 0) {
+              Invalid("Global variables are not allowed");
+              return;
+            }
+
+            var prepared = ExtractVariables(source);
+
+            try {
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
+                variables: JSON.stringify(prepared),
+                source: source,
+              });
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            } catch(e) { }
           }else if(State == "onloadjavascript")
           {
             var Value = GetInputConstructorValue("Value", loader);
@@ -10326,6 +10492,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "promptresult": _.template($('#promptresult').html()),
           "httpauth": _.template($('#httpauth').html()),
           "solverfailed": _.template($('#solverfailed').html()),
+          "browserjavascript": _.template($('#browserjavascript').html()),
           "onloadjavascript": _.template($('#onloadjavascript').html()),
           "incvariable": _.template($('#incvariable').html()),
           "incglobalvariable": _.template($('#incglobalvariable').html()),
@@ -10378,8 +10545,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         {
           d = d.filter(function(el){
             return !el["show_only_with_database"]
-          })
+          });
         }
+        d = d.filter(function(el) {
+          return !["javascript"].includes(el["ref"]);
+        });
 
         $("#containerdata").html(this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters}))
         _Filter.InstallEvents()
@@ -10567,6 +10737,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/promptresult": "promptresult",
             "!/httpauth": "httpauth",
             "!/solverfailed": "solverfailed",
+            "!/browserjavascript": "browserjavascript",
             "!/onloadjavascript": "onloadjavascript",
             "!/incvariable": "incvariable",
             "!/incglobalvariable": "incglobalvariable",
@@ -10977,6 +11148,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         solverfailed: function(){
           _GobalModel.set({ state: "solverfailed" });
         },
+        browserjavascript: function(){
+          _GobalModel.set({ state: "browserjavascript" });
+        },
         onloadjavascript: function(){
           _GobalModel.set({ state: "onloadjavascript" });
         },
@@ -11096,6 +11270,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["screen"]["name"]), description: tr(_A["screen"]["description"]), ref: "screen" },
                 { name: tr(_A["proxy"]["name"]), description: tr(_A["proxy"]["description"]), ref: "proxy" },
                 { name: tr(_A["javascript"]["name"]), description: tr(_A["javascript"]["description"]), ref: "javascript" },
+                { name: tr(_A["browserjavascript"]["name"]), description: tr(_A["browserjavascript"]["description"]), ref: "browserjavascript" },
                 { name: tr(_A["onloadjavascript"]["name"]), description: tr(_A["onloadjavascript"]["description"]), ref: "onloadjavascript" },
                 { name: tr(_A["reset"]["name"]), description: tr(_A["reset"]["description"]), ref: "reset" },
                 { name: tr(_A["openfile"]["name"]), description: tr(_A["openfile"]["description"]), ref: "openfile" },

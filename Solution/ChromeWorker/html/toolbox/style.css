@@ -779,3 +779,21 @@ textarea {
   height: 8px;
   width: 8px;
 }
+
+/***************
+ * Code editor *
+ ***************/
+
+#Code.browser-code-editor {
+  height: calc(100vh - 100px);
+}
+
+#Code.custom-code-editor {
+  height: calc(100vh - 100px);
+}
+
+#Code {
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  outline: none;
+}

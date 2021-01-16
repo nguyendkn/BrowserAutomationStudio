@@ -196,12 +196,19 @@ void DevToolsActionExecuteJavascript::Next()
         {
             if(GetStringFromJson(LastMessage, "result.subtype") == "error")
             {
-                Result->Fail(GetStringFromJson(LastMessage, "result.description"), "JsError");
+                std::string ErrorString = GetStringFromJson(LastMessage, "result.description");
+                picojson::object Object;
+                Object["is_success"] = picojson::value(false);
+                Object["error"] = picojson::value(ErrorString);
+                Object["variables"] = picojson::value(InitialVariables);
+                Result->SetRawData(picojson::value(Object).serialize());
+                Result->Fail(ErrorString, "JsError");
                 State = Finished;
                 return;
             }else if(GetStringFromJson(LastMessage,"result.value","BAS_NOT_FOUND") != "BAS_NOT_FOUND")
             {
                 LastMessage = GetStringFromJson(LastMessage, "result.value");
+                Result->SetRawData(LastMessage);
                 if(GetStringFromJson(LastMessage, "variables", "BAS_NOT_FOUND") != "BAS_NOT_FOUND")
                 {
                     if(GetBooleanFromJson(LastMessage, "is_success"))

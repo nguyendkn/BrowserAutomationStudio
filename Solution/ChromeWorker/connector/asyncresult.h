@@ -26,6 +26,8 @@ class AsyncResult
         bool IsString = false;
         std::string StringValue;
 
+        std::string RawData;
+
         bool IsMap = false;
         std::map<std::string, std::string> MapValue;
 
@@ -79,6 +81,9 @@ class AsyncResult
 
         bool GetIsString();
         std::string GetString();
+
+        void SetRawData(const std::string& RawData);
+        std::string GetRawData();
 
         bool GetIsList();
         std::vector<std::string> GetList();

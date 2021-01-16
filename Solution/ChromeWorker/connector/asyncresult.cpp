@@ -220,6 +220,16 @@ std::string AsyncResult::GetString()
     return StringValue;
 }
 
+std::string AsyncResult::GetRawData()
+{
+    return RawData;
+}
+
+void AsyncResult::SetRawData(const std::string& RawData)
+{
+    this->RawData = RawData;
+}
+
 bool AsyncResult::GetIsList()
 {
     return IsList;

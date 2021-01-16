@@ -2557,9 +2557,29 @@ void MainApp::ClearElementCommand()
 void MainApp::ElementCommandCallback(const ElementCommand &Command)
 {
     LastCommand = Command;
-    if(LastCommand.CommandName == "script")
+    if(LastCommand.CommandName == "script2")
     {
         std::string Script = Javascript(LastCommand.CommandParam1,"main");
+        std::string Variables = Javascript(LastCommand.CommandParam2,"main");
+        std::string Path = LastCommand.SerializePath();
+        Async Result = Data->Connector->ExecuteJavascript(Script,Variables,Path);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        {
+            std::string Data = Result->GetRawData();
+            xml_encode(Data);
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+        });
+    }
+
+    if(LastCommand.CommandName == "script")
+    {
+        std::string Script = Javascript(std::string("[[RESULT]] = (") + LastCommand.CommandParam1 + std::string(").toString()"),"main");
+
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
         Data->Results->ProcessResult(Result);
@@ -2569,7 +2589,19 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
         Result->Then([this, CommandId, CommandName](AsyncResult* Result)
         {
-            std::string Data = Result->GetString();
+            std::string Data;
+            if(Result->GetIsSuccess())
+            {
+                picojson::value v;
+                picojson::parse(v, Result->GetString());
+                picojson::value Result = v.get<picojson::value::object>()["RESULT"];
+                if(Result.is<std::string>())
+                {
+                    Data = Result.get<std::string>();
+                }
+
+
+            }
             xml_encode(Data);
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
         });

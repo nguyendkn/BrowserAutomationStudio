@@ -1021,6 +1021,13 @@ _A = {
       "group":""
    },
    "script":{  
+      "name":"Execute Javascript On Element (deprecated)",
+      "class":"browser",
+      "description":"Execute Javascript On Element",
+      "template":"{{ScriptValue}} -> {{PATH}}",
+      "group":""
+   },
+   "browserscript":{  
       "name":"Execute Javascript On Element",
       "class":"browser",
       "description":"Execute Javascript On Element",
@@ -1231,6 +1238,7 @@ _AL =
    "Get Element Content" : {"ru": "Получить Код Элемента"},
    "Get Element Text" : {"ru": "Получить Текст"},
    "Execute Javascript On Element" : {"ru": "Выполнить Javascript На Элементе"},
+   "Execute Javascript On Element (deprecated)" : {"ru": "Выполнить Javascript На Элементе (устаревшее)"},
    "Click On Element" : {"ru": "Кликнуть На Элемент"},
    "Move On Element" : {"ru": "Двигать Мышь Над Элементом"},
    "Move And Click On Element" : {"ru": "Двигать Мышь И Кликнуть На Элемент"},

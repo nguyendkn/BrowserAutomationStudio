@@ -76,6 +76,7 @@ class BasSearchEngine extends SearchLib.SearchEngine {
           'httpclientgetcookiesforurl',
           'getcookiesforurl',
           'javascript',
+          'script',
           'check',
         ];
         return !ignored.includes(document.key);

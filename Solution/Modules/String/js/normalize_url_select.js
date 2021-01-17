@@ -16,8 +16,7 @@ var strip_hash = $("#Check6").is(':checked');
 var strip_protocol = $("#Check7").is(':checked');
 var strip_www = $("#Check8").is(':checked');
 var remove_trailing_slash = $("#Check9").is(':checked');
-var remove_single_slash = $("#Check10").is(':checked');
-var sort_query_parameters = $("#Check11").is(':checked');
+var sort_query_parameters = $("#Check10").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
     var code = loader.GetAdditionalData() + _.template($("#normalize_url_code").html())({
@@ -35,7 +34,6 @@ try{
 		"strip_protocol": strip_protocol,
 		"strip_www": strip_www,
 		"remove_trailing_slash": remove_trailing_slash,
-		"remove_single_slash": remove_single_slash,
 		"sort_query_parameters": sort_query_parameters,
         "variable": "VAR_" + Save
     });

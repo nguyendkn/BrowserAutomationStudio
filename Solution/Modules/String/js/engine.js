@@ -106,15 +106,15 @@ function _tr_argument_name(name){
 			return name;
 	};
 };
+function _get_type(value){
+	var value_type = typeof value; 
+	return value===null ? 'null' : (value_type==='object' ? (Array.isArray(value) ? 'array' : (value instanceof Date ? 'date' : (value instanceof RegExp ? 'regexp' : value_type))) : value_type);
+};
 function _validate_argument_type(value, type, name, act){
 	var value_type = _get_type(value);
 	if(Array.isArray(type) ? type.filter(function(t){return value_type===t}).length < 1 : value_type!==type){
 		fail(act + ': ' + (_K==="ru" ? ('Аргумент "' + _tr_argument_name(name) + '" должен быть ' + _tr_type_name(type) + ', а не ') : ('The "' + _tr_argument_name(name) + '" argument must be a ' + _tr_type_name(type) + ', not ')) + _tr_type_name(value_type));
 	};
-};
-function _get_type(value){
-	var value_type = typeof value; 
-	return value===null ? 'null' : (value_type==='object' ? (Array.isArray(value) ? 'array' : (value instanceof Date ? 'date' : (value instanceof RegExp ? 'regexp' : value_type))) : value_type);
 };
 function _is_nil(str){
 	return typeof str==="undefined" || str===null;
@@ -849,7 +849,6 @@ function _normalize_url(url_string, user_options){
 		strip_www: true,
 		remove_query_parameters: [/^utm_\w+/i],
 		remove_trailing_slash: true,
-		remove_single_slash: true,
 		remove_directory_index: [/^index\.[a-z]+$/],
 		sort_query_parameters: true
 	};
@@ -990,22 +989,15 @@ function _normalize_url(url_string, user_options){
 	};
 
 	if(options.sort_query_parameters){
-		var sortable = [];
-		for(var key in url_obj.query){
-			sortable.push([key, url_obj.query[key]]);
-		};
-		sortable.sort(function(a, b){
-			return a[1] - b[1];
-		});
-		var obj_sorted = {}
-		sortable.forEach(function(item){
-			obj_sorted[item[0]]=item[1]
+		var obj_sorted = {};
+		Object.keys(url_obj.query).sort().forEach(function(key){
+			obj_sorted[key] = url_obj.query[key];
 		});
 		url_obj.set('query', obj_sorted);
 	};
 
 	if(options.remove_trailing_slash){
-		url_obj.set('pathname', url_obj.pathname.replace(/\/$/, ''));
+		url_obj.set('pathname', url_obj.pathname.replace(/[\/]+$/, ''));
 	};
 	
 	if(has_relative_protocol && !options.normalize_protocol){
@@ -1023,18 +1015,8 @@ function _normalize_url(url_string, user_options){
 	};
 	
 	var old_url_string = url_string;
-	
-	VAR_AAA = url_obj;
 
 	url_string = url_obj.toString();
-
-	if(!options.remove_single_slash && url_obj.pathname === '/' && !_ends_with(old_url_string, '/') && url_obj.hash === ''){
-		url_string = url_string.replace(/\/$/, '');
-	};
-
-	if((options.remove_trailing_slash || url_obj.pathname === '/') && url_obj.hash === '' && options.remove_single_slash){
-		url_string = url_string.replace(/\/$/, '');
-	};
 
 	return url_string;
 };
@@ -1599,10 +1581,12 @@ _ua.prototype.set = function(uastring){
 		var key = keys[i];
 		ua_obj[key] = new_ua_obj[key];
 	};
+	return ua_obj;
 };
 _ua.prototype.changeBrowserVersion = function(version){
 	var ua_obj = this;
 	ua_obj.set(_replace_string(ua_obj.ua, ua_obj.browser.version, _to_string(version)));
+	return ua_obj;
 };
 _ua.prototype.toString = function(){
 	return this.ua;

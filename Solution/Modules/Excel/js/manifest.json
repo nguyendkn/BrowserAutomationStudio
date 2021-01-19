@@ -866,7 +866,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\n\r\nvar file_path = [[XLSX_NODE_PARAMETERS]];\r\nvar id = require('crypto').createHash('md5').update(file_path).digest('hex');\r\n\r\nif(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\r\n    var file = excel_files[id];\r\n    file.clearTimeout();\r\n    file.lock = true;\r\n    if(file.workbook && file.written){\r\n        try{\r\n            await util.save_file(file.workbook, file.path);\r\n            file.delete(id);\r\n        }catch(err){\r\n            file.lock = false;\r\n            file.setTimeout();\r\n            throw err;\r\n        };\r\n    }else{\r\n        file.delete(id);\r\n    };\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\n\r\nvar file_path = [[XLSX_NODE_PARAMETERS]];\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\nif(exist){\r\n    file.clearTimeout();\r\n    file.lock = true;\r\n    var id = file.id;\r\n    var workbook = file.workbook;\r\n    if(workbook && file.written){\r\n        try{\r\n            await util.save_file(workbook, file_path);\r\n            file.delete(id);\r\n        }catch(err){\r\n            file.lock = false;\r\n            file.setTimeout();\r\n            throw err;\r\n        };\r\n    }else{\r\n        file.delete(id);\r\n    };\r\n};",
             "DataName": "Excel_CloseFile",
             "DataType": 0,
             "LanguageName": "Node",

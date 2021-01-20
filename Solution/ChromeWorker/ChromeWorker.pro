@@ -33,6 +33,7 @@ SOURCES += main.cpp \
     connector/devtoolsactionfactory.cpp \
     connector/devtoolsactiongetbrowsersize.cpp \
     connector/devtoolsactiongettabs.cpp \
+    connector/devtoolsactioninspect.cpp \
     connector/devtoolsactionload.cpp \
     connector/devtoolsactionresizebrowser.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
@@ -173,6 +174,7 @@ HEADERS += \
     connector/devtoolsactionfactory.h \
     connector/devtoolsactiongetbrowsersize.h \
     connector/devtoolsactiongettabs.h \
+    connector/devtoolsactioninspect.h \
     connector/devtoolsactionload.h \
     connector/devtoolsactionresizebrowser.h \
     connector/devtoolsactionsetstartupscript.h \

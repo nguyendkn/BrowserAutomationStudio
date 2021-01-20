@@ -1284,6 +1284,24 @@ Async DevToolsConnector::ExecuteJavascript(const std::string& Script, const std:
     return NewAction->GetResult();
 }
 
+Async DevToolsConnector::Inspect(int X, int Y, int Position, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    std::map<std::string, Variant> Params;
+
+    NewAction.reset(ActionsFactory.Create("Inspect", &GlobalState));
+
+    Params["x"] = Variant(X);
+    Params["y"] = Variant(Y);
+    Params["position"] = Variant(Position);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
 Async DevToolsConnector::RequestDeny(const std::vector<std::string>& Urls, int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;

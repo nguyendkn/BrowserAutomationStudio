@@ -164,6 +164,9 @@ class DevToolsConnector
         void Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX = 11.5, double RadiusY = 11.5, double RotationAngle = 0.0, double Pressure = 1.0);
         void Key(KeyEvent Event, const std::string& Char, int KeyboardPresses = KeyboardModifiersNone);
         void KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM NativeVirtualKeyCode, int KeyboardPresses = KeyboardModifiersNone);
+
+        //Interacting with elements
+        Async Inspect(int X, int Y, int Position = 0, int Timeout = -1);
 };
 
 #endif // DEVTOOLSCONNECTOR_H

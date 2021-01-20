@@ -51,7 +51,6 @@ MainApp::MainApp()
     TypeTextIsFirstLetter = true;
     IsWaitingForLoad = false;
     ResourcesChanged = true;
-    InspectFrameSearching = false;
     InspectPosition = 0;
     TypeTextLastTime = 0;
     LastMouseTrack = 0;
@@ -1731,7 +1730,7 @@ void MainApp::MouseMoveAt(int x, int y)
     clock_t CurrentTime = clock();
     float time_spent = float( CurrentTime - LastMouseTrack ) /  CLOCKS_PER_SEC;
 
-    if(InspectFrameSearching && time_spent < 3)
+    if(InspectTask && time_spent < 3)
         return;
 
     if(time_spent < 0.1)
@@ -1747,8 +1746,6 @@ void MainApp::MouseMoveAt(int x, int y)
 
 void MainApp::InspectMouseAt(int x, int y, clock_t CurrentTime)
 {
-    InspectFrameSearching = true;
-    InspectFrameChain.clear();
     if(InspectX != x || InspectY != y)
     {
         InspectPosition = 0;
@@ -1757,11 +1754,13 @@ void MainApp::InspectMouseAt(int x, int y, clock_t CurrentTime)
     InspectY = y;
     LastMouseTrack = CurrentTime;
 
-
-    if(_HandlersManager->GetBrowser())
+    if(InspectTask)
     {
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + std::to_string(InspectPosition) + std::string(")"),"main"),"", 0);
+        Data->Connector->InterruptAction(InspectTask->GetActionUniqueId());
+        InspectTask.reset();
     }
+
+    InspectTask = Data->Connector->Inspect(x,y,InspectPosition);
 }
 
 void MainApp::MouseLeave()
@@ -3176,19 +3175,20 @@ void MainApp::DirectControlInspectMouse()
 
     clock_t CurrentTime = 0;
 
-    if(InspectFrameSearching)
+    if(InspectTask)
     {
         CurrentTime = clock();
         float time_spent = float( CurrentTime - LastMouseTrack ) /  CLOCKS_PER_SEC;
 
         if(time_spent >= 3)
         {
-            InspectFrameSearching = false;
+            Data->Connector->InterruptAction(InspectTask->GetActionUniqueId());
+            InspectTask.reset();
             DirectControl()->TimeoutLastInspect();
         }
     }
 
-    if(InspectFrameSearching)
+    if(InspectTask)
        return;
 
     BrowserDirectControl::InspectTask Task = DirectControl()->GetInspectTask();
@@ -4770,119 +4770,39 @@ void MainApp::HandleMainBrowserEvents()
         }
     }
 
-    if(v8handler->GetInspectResultReady())
+    if(InspectTask && InspectTask->GetIsFinished())
     {
+        JsonParser Parser;
 
-        std::pair<InspectResult,bool> res2 = v8handler->GetInspectResult();
-        if(res2.second)
+        Data->_Inspect.x = Parser.GetFloatFromJson(InspectTask->GetString(),"x");
+        Data->_Inspect.y = Parser.GetFloatFromJson(InspectTask->GetString(),"y");
+        Data->_Inspect.mousex = Parser.GetFloatFromJson(InspectTask->GetString(),"mousex");
+        Data->_Inspect.mousey = Parser.GetFloatFromJson(InspectTask->GetString(),"mousey");
+        Data->_Inspect.width = Parser.GetFloatFromJson(InspectTask->GetString(),"width");
+        Data->_Inspect.height = Parser.GetFloatFromJson(InspectTask->GetString(),"height");
+        Data->_Inspect.label = Parser.GetStringFromJson(InspectTask->GetString(),"label");
+        Data->_Inspect.css = Parser.GetStringFromJson(InspectTask->GetString(),"css");
+        Data->_Inspect.css2 = Parser.GetStringFromJson(InspectTask->GetString(),"css2");
+        Data->_Inspect.css3 = Parser.GetStringFromJson(InspectTask->GetString(),"css3");
+        Data->_Inspect.xpath = Parser.GetStringFromJson(InspectTask->GetString(),"xpath");
+        Data->_Inspect.match = Parser.GetStringFromJson(InspectTask->GetString(),"match");
+        Data->_Inspect.active = Parser.GetBooleanFromJson(InspectTask->GetString(),"active");
+        Data->_Inspect.position = Parser.GetFloatFromJson(InspectTask->GetString(),"position");
+
+        /*Data->_MultiSelectData.MouseOverInspectData = res2.first;
+        Data->_MultiSelectData.MouseOverType = MouseOverInspect;*/
+
+
+        if(Data->ManualControl == BrowserData::DirectRecord)
         {
-            bool ShowInspectResults = false;
-            if(!res2.first.FrameData.is_frame)
-            {
-                WORKER_LOG(std::string("not a frame"));
-
-                //Not frame set result
-                ShowInspectResults = true;
-            }else
-            {
-                if(_HandlersManager->GetBrowser())
-                {
-                    res2.first.FrameData.frame_depth = InspectFrameChain.size() + 1;
-
-                    WORKER_LOG(std::string("Inspect frame. frame_index<<") + std::to_string(res2.first.FrameData.frame_index) + std::string(" frame_name<<") + std::string(res2.first.FrameData.frame_name)+ std::string(" frame_depth<<") + std::to_string(res2.first.FrameData.frame_depth)+ std::string(" frame_url<<") + std::string(res2.first.FrameData.frame_url) );
-
-                    //It is Frame! Add to chain and inspect next
-                    int x = res2.first.FrameData.x_with_padding;
-                    int y = res2.first.FrameData.y_with_padding;
-                    for(InspectResult chain:InspectFrameChain)
-                    {
-                        x += chain.FrameData.x_with_padding;
-                        y += chain.FrameData.y_with_padding;
-                    }
-
-
-                    res2.first.FrameData.parent_frame_id = -1;
-                    if(!InspectFrameChain.empty())
-                        res2.first.FrameData.parent_frame_id = InspectFrameChain.at(InspectFrameChain.size() - 1).FrameData.frame_id;
-                    int64 ID = _HandlersManager->FindFrameId(res2.first.FrameData);
-                    res2.first.FrameData.frame_id = ID;
-
-
-                    //WORKER_LOG(std::string("IDDDD ") + std::to_string(ID));
-                    if(ID == -2)
-                    {
-                        //Wait more
-                        v8handler->ResetInspectResult();
-                    }else if(ID < 0)
-                    {
-                        //Frame not found
-                        ShowInspectResults = true;
-                    }else
-                    {
-                        InspectFrameChain.push_back(res2.first);
-
-                        //WORKER_LOG(std::string("BrowserAutomationStudio_InspectElement <<") + std::to_string(InspectX - x) + std::string(" <<") + std::to_string(InspectY - y) );
-
-                        _HandlersManager->GetBrowser()->GetFrame(ID)->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(InspectX - x) + std::string(",") + std::to_string(InspectY - y) + std::string(",") + std::to_string(InspectPosition) + std::string(")"),"main"),"", 0);
-                    }
-                }
-
-            }
-
-            if(ShowInspectResults)
-            {
-
-                std::string label;
-                std::string css;
-                std::string css2;
-                std::string css3;
-                std::string match;
-                std::string xpath;
-                WORKER_LOG(std::string("End inspect ") +std::to_string(InspectFrameChain.size()) + " " + std::to_string(res2.first.active));
-
-                if(!res2.first.active && InspectFrameChain.size() > 0)
-                {
-                    res2.first = InspectFrameChain[InspectFrameChain.size() - 1];
-                    InspectFrameChain.pop_back();
-                }
-
-                for(InspectResult chain:InspectFrameChain)
-                {
-                    res2.first.x += chain.FrameData.x_with_padding;
-                    res2.first.y += chain.FrameData.y_with_padding;
-                    label += chain.label + " >FRAME>";
-                    css += chain.css + " >FRAME>";
-                    css2 += chain.css2 + " >FRAME>";
-                    css3 += chain.css3 + " >FRAME>";
-                    match += chain.match + ">FRAME>";
-                    xpath += chain.xpath + " >FRAME>";
-                }
-                res2.first.label = label + res2.first.label;
-                res2.first.css = css + res2.first.css;
-                res2.first.css2 = css2 + res2.first.css2;
-                res2.first.css3 = css3 + res2.first.css3;
-                res2.first.match = match + res2.first.match;
-                res2.first.xpath = xpath + res2.first.xpath;
-
-                {
-                    LOCK_BROWSER_DATA
-                    Data->_Inspect = res2.first;
-                    Data->_MultiSelectData.MouseOverInspectData = res2.first;
-                    Data->_MultiSelectData.MouseOverType = MouseOverInspect;
-                }
-
-                if(Data->ManualControl == BrowserData::DirectRecord)
-                {
-                    DirectControl()->SetInspectResult(Data->_Inspect);
-                }
-
-                InspectFrameSearching = false;
-            }
-
-
-            RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-            InvalidateRect(Data->_MainWindowHandle,&r,false);
+            DirectControl()->SetInspectResult(Data->_Inspect);
         }
+
+        InspectTask.reset();
+
+
+        RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
+        InvalidateRect(Data->_MainWindowHandle,&r,false);
     }
 
 }

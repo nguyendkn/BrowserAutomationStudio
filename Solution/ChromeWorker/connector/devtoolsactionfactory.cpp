@@ -14,6 +14,7 @@
 #include "DevToolsActionGetCurrentUrl.h"
 #include "DevToolsActionNavigateBack.h"
 #include "DevToolsActionSetProxy.h"
+#include "devtoolsactioninspect.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -73,6 +74,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     } else if(Name == "SetProxy")
     {
         Result = new DevToolsActionSetProxy();
+    } else if(Name == "Inspect")
+    {
+        Result = new DevToolsActionInspect();
     }
 
     if(Result)

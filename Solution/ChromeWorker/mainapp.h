@@ -143,11 +143,10 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     int RenderX,RenderY,RenderWidth,RenderHeight;
 
     //Frame Chain Inspect
-    std::vector<InspectResult> InspectFrameChain;
-    bool InspectFrameSearching;
     int InspectX;
     int InspectY;
     int InspectPosition;
+    Async InspectTask;
 
     //Frame Chain Execute Command
     std::vector<InspectResult> ExecuteFrameChain;

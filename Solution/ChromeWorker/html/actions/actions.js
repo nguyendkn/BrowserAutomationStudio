@@ -544,7 +544,7 @@ _A = {
          "en":"split line",
          "ru":"разбить строку, разделить строку"
       },
-      "group":""
+      "group":"tools"
    },
    "randomint":{  
       "name":"Random Number",

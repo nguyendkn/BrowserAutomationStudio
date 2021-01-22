@@ -20,7 +20,7 @@ struct HighlightResult
 
     std::vector<rect> highlights;
 
-    void Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, bool MultiselectMode, MultiSelectData& Multiselect, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop, int FrameOffsetX, int FrameOffsetY, bool IsInsideFrame);
+    void Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, bool MultiselectMode, MultiSelectData& Multiselect, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop);
 
 };
 

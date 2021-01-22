@@ -5,19 +5,15 @@
 
 
 
-void HighlightResult::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, bool MultiselectMode, MultiSelectData& Multiselect, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop, int FrameOffsetX, int FrameOffsetY, bool IsInsideFrame)
+void HighlightResult::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, bool MultiselectMode, MultiSelectData& Multiselect, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop)
 {
 
     for(rect& r: highlights)
     {
         bool is_alternative = r.is_alternative;
-        int x = r.x + FrameOffsetX;
-        int y = r.y + FrameOffsetY;
-        if(IsInsideFrame)
-        {
-            x -= BrowserScrollX;
-            y -= BrowserScrollY;
-        }
+        int x = r.x;
+        int y = r.y;
+
         int x1 = (float)(x) * (float)BrowserDrawWidth / (float)BrowserRealWidth + 1
             ,y1 = (float)(y) * (float)BrowserDrawHeight / (float)BrowserRealHeight + 1
             ,width1 = (float)r.width* (float)BrowserDrawWidth / (float)BrowserRealWidth + 1

@@ -256,7 +256,7 @@ std::string InspectResult::Serialize()
     }
 }
 
-void MultiSelectData::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop, int FrameOffsetX, int FrameOffsetY, bool IsInsideFrame)
+void MultiSelectData::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop)
 {
     for(MultiSelectDataItem &Inspect: Items)
     {
@@ -264,13 +264,8 @@ void MultiSelectData::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect
         if(!Inspect.size_calculated)
             continue;
 
-        int x = Inspect.x + FrameOffsetX;
-        int y = Inspect.y + FrameOffsetY;
-        if(IsInsideFrame)
-        {
-            x -= BrowserScrollX;
-            y -= BrowserScrollY;
-        }
+        int x = Inspect.x;
+        int y = Inspect.y;
 
         int     x1 = (float)x * (float)BrowserDrawWidth / (float)BrowserRealWidth
                 ,y1 = (float)y * (float)BrowserDrawHeight / (float)BrowserRealHeight

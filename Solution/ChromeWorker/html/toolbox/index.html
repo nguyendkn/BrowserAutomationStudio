@@ -6624,32 +6624,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       nextpath: function(event)
       {
-        if(typeof(window.BrowserAutomationStudio_IndexPathHighlight) == "undefined")
-          window.BrowserAutomationStudio_IndexPathHighlight = 0;
-        
         var Total = parseInt($("#PathCount").text())
         if(Total > 0 && $("#selector-input").length > 0 && $("#selector-input").val().length > 0)
         {
-          var loader = new ResourceLoader();
-          var p = GetPath(loader,false,true,window.BrowserAutomationStudio_IndexPathHighlight)
-          var path = p["path"] + 
-          ".script(" + 
-            "\"self.scrollIntoView({block: 'center', inline: 'center'});" + 
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = [].indexOf.call(_BAS_HIDE(BrowserAutomationStudio_HighlightElements),self);" +
-            "clearTimeout(_BAS_HIDE(BrowserAutomationStudio_HighlightElementTimeout));" +
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElementTimeout) = setTimeout(function(){_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = -1},3000);" + 
-          "\")!" + "\n" + "section_start(\"test\",-3)!"
-          var selector = "";
-          if(p["query"])
-          {
-            selector = ";_SELECTOR=" + p["query"] + ";"
-          }
-          path = loader.GetAdditionalData() + selector + path
-
-          BrowserAutomationStudio_Execute(path)
-
-          window.BrowserAutomationStudio_IndexPathHighlight ++
-          window.BrowserAutomationStudio_IndexPathHighlight = window.BrowserAutomationStudio_IndexPathHighlight % Total
+          BrowserAutomationStudio_IncrementHighlightIndex()
         }
       },
 
@@ -11731,7 +11709,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     function BrowserAutomationStudio_SetPathCount(count)
     {
-      window.BrowserAutomationStudio_IndexPathHighlight = 0
       if(count.toString().length > 0)
       {
         $("#PathCount").css("visibility","visible")

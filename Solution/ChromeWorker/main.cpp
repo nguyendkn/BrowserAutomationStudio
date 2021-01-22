@@ -1537,14 +1537,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                                     {
                                         LOCK_BROWSER_DATA
                                         bool IsIndirect = app->GetData()->ManualControl == BrowserData::Indirect;
-                                        app->GetData()->_Highlight.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->MultiselectMode,app->GetData()->_MultiSelectData,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0,app->GetHighlightOffsetX(),app->GetHighlightOffsetY(),app->GetHighlightFrameId() >= 0);
+                                        app->GetData()->_Highlight.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->MultiselectMode,app->GetData()->_MultiSelectData,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
                                     }
 
                                     if(app->GetData()->MultiselectMode)
                                     {
                                         LOCK_BROWSER_DATA
                                         bool IsIndirect = app->GetData()->ManualControl == BrowserData::Indirect;
-                                        app->GetData()->_MultiSelectData.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0,app->GetHighlightOffsetX(),app->GetHighlightOffsetY(),app->GetHighlightFrameId() >= 0);
+                                        app->GetData()->_MultiSelectData.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
                                     }
 
 

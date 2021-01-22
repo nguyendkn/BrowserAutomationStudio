@@ -70,9 +70,6 @@ MainApp::MainApp()
     TypeTextDelayCurrent = 0;
     ClearElementCommand();
     IsInterfaceInitialSent = false;
-    HighlightFrameId = -1;
-    HighlightOffsetX = 0;
-    HighlightOffsetY = 0;
     _CefReqest2Action = 0;
     IsMainBrowserCreating = true;
 
@@ -126,21 +123,6 @@ void MainApp::ReadDoTour()
         DoTour = true;
         WriteStringToFile(filename,"true");
     }
-}
-
-int MainApp::GetHighlightOffsetX()
-{
-    return HighlightOffsetX;
-}
-
-int MainApp::GetHighlightOffsetY()
-{
-    return HighlightOffsetY;
-}
-
-int MainApp::GetHighlightFrameId()
-{
-    return HighlightFrameId;
 }
 
 void MainApp::SetData(BrowserData *Data)
@@ -2636,6 +2618,44 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         });
     }
 
+    if(LastCommand.CommandName == "highlight")
+    {
+
+        std::string Script = Javascript(std::string("[[RESULT]] = self.length.toString()"),"main");
+
+        std::string Path = LastCommand.SerializePath();
+        HighlightSelector = Path;
+        HighlightIndex = -1;
+        HighlightDoScrolling = false;
+        LastHighlightIndexChanged = 0;
+        IsHighlightIndexActive = false;
+
+        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        {
+            std::string Data("0");
+            if(Result->GetIsSuccess())
+            {
+                picojson::value v;
+                picojson::parse(v, Result->GetString());
+                picojson::value Result = v.get<picojson::value::object>()["RESULT"];
+                if(Result.is<std::string>())
+                {
+                    Data = Result.get<std::string>();
+                }
+            }
+            xml_encode(Data);
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+
+            if(this->BrowserToolbox)
+                this->BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetPathCount(") + Data + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+
+        });
+    }
 }
 
 void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
@@ -2901,7 +2921,7 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
         }else if(Command.CommandName == "length")
         {
             script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");if(!el){_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');return;};var res = '';if(el){res = el.length;}_BAS_HIDE(browser_automation_studio_result)(res);}"),"main");
-        }else if(Command.CommandName == "highlight")
+        }/*else if(Command.CommandName == "highlight")
         {
             ClearHighlight();
             if(ExecuteFrameChain.empty())
@@ -2928,7 +2948,7 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
             }
 
             script = Javascript(std::string("{") + MultiloginCheckData + std::string("var p = ") + LastCommand.SerializePath() + std::string(";var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(p);if(JSON.parse(p).length == 0 || !el){el = []}else if(typeof(el.length) != 'number'){el = [el];};_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)(el);_BAS_HIDE(browser_automation_studio_result)(el.length);}"),"main");
-        }else if(Command.CommandName == "render_base64")
+        }*/else if(Command.CommandName == "render_base64")
         {
             script = Javascript(std::string("{var el = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + LastCommand.SerializePath() + std::string(");_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(el);}"),"main");
         }else if(Command.CommandName == "focus")
@@ -3235,7 +3255,7 @@ void MainApp::ClearHighlight()
 
 void MainApp::UpdateMultiSelect()
 {
-    if(Data->MultiselectMode && Data->_MultiSelectData.IsDirty && _HandlersManager->GetBrowser())
+    /*if(Data->MultiselectMode && Data->_MultiSelectData.IsDirty && _HandlersManager->GetBrowser())
     {
         Data->_MultiSelectData.IsDirty = false;
 
@@ -3255,7 +3275,7 @@ void MainApp::UpdateMultiSelect()
             if(Frame.get())
                 Frame->ExecuteJavaScript(Javascript(MultiloginCheckData,"main"),"", 0);
         }
-    }
+    }*/
 }
 
 
@@ -3264,34 +3284,43 @@ void MainApp::UpdateHighlight()
     clock_t CurrentTime = clock();
     float time_spent = float( CurrentTime - LastHighlight ) /  CLOCKS_PER_SEC;
 
-    if(time_spent < 0.2)
+
+
+    if(HighlightTask && time_spent < 3)
         return;
 
     LastHighlight = CurrentTime;
 
-    if(_HandlersManager->GetBrowser())
+
+    if(HighlightTask)
     {
-        std::string MultiloginCheckData;
-        if(Data->_MultiSelectData.IsDirty)
-        {
-            LOCK_BROWSER_DATA
-            MultiloginCheckData = std::string("_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData)(") + Data->_MultiSelectData.Serialize() + std::string("); ");
-            Data->_MultiSelectData.IsDirty = false;
-        }
+        Data->Connector->InterruptAction(HighlightTask->GetActionUniqueId());
+        HighlightTask.reset();
+    }
 
-        if(HighlightFrameId<0)
+    if(LastHighlightIndexChanged > 0)
+    {
+        float time_spent_index = float( CurrentTime - LastHighlightIndexChanged ) /  CLOCKS_PER_SEC;
+        if(time_spent_index > 3)
         {
-
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
-        }else
-        {
-
-            CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
-            if(Frame.get())
-                Frame->ExecuteJavaScript(Javascript(MultiloginCheckData + std::string("_BAS_HIDE(BrowserAutomationStudio_Highlight)();"),"main"),"", 0);
+            IsHighlightIndexActive = false;
+            LastHighlightIndexChanged = 0;
         }
     }
 
+    if(!HighlightSelector.empty())
+    {
+        int CurrentHighlightIndex = -1;
+
+        if(IsHighlightIndexActive)
+            CurrentHighlightIndex = HighlightIndex;
+
+        std::string Script = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_Highlight)(self, ") + std::to_string(CurrentHighlightIndex) + std::string(", ") + std::string(HighlightDoScrolling ? "true" : "false") + std::string(")"),"main");
+
+        HighlightDoScrolling = false;
+
+        HighlightTask = Data->Connector->ExecuteJavascript(Script,std::string(),HighlightSelector);
+    }
 }
 
 std::pair<std::string, bool> MainApp::GetMenuSelected()
@@ -3654,23 +3683,17 @@ void MainApp::HandleToolboxBrowserEvents()
 {
     if(toolboxv8handler->GetClearHighlight())
     {
-        HighlightMultiloginSelector.clear();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Highlight.highlights.clear();
-        }
-        LastHighlightSelector.clear();
+        HighlightSelector.clear();
+        Data->_Highlight.highlights.clear();
+        HighlightIndex = -1;
+        HighlightDoScrolling = false;
+        LastHighlightIndexChanged = 0;
+        IsHighlightIndexActive = false;
 
-        if(HighlightFrameId<0)
+        if(HighlightTask)
         {
-
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([]);"),"main"),"", 0);
-        }else
-        {
-
-            CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
-            if(Frame.get())
-                Frame->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements)([]);"),"main"),"", 0);
+            Data->Connector->InterruptAction(HighlightTask->GetActionUniqueId());
+            HighlightTask.reset();
         }
     }
 
@@ -3778,6 +3801,15 @@ void MainApp::HandleToolboxBrowserEvents()
 
         }
     }
+
+    if(toolboxv8handler->GetIncrementHighlightIndex())
+    {
+        HighlightIndex++;
+        HighlightDoScrolling = true;
+        LastHighlightIndexChanged = clock();
+        IsHighlightIndexActive = true;
+    }
+
     if(Data->IsRecord)
     {
         std::pair<std::string, bool> res = toolboxv8handler->GetEmbeddedData();
@@ -3937,7 +3969,7 @@ void MainApp::HandleToolboxBrowserEvents()
         }
     }
 
-    if(toolboxv8handler->GetMultiselectReset())
+    /*if(toolboxv8handler->GetMultiselectReset())
     {
         {
             LOCK_BROWSER_DATA
@@ -3955,7 +3987,7 @@ void MainApp::HandleToolboxBrowserEvents()
             if(Frame.get())
                 Frame->ExecuteJavaScript(Javascript(Script,"main"),"", 0);
         }
-    }
+    }*/
 
 
 }
@@ -4015,7 +4047,7 @@ void MainApp::HandleFrameFindEvents()
             return;
         }
 
-        if(res.second && !res.first.active && !IsLastCommandNull && ExecuteFrameSearching && LastCommand.CommandName == std::string("highlight"))
+        /*if(res.second && !res.first.active && !IsLastCommandNull && ExecuteFrameSearching && LastCommand.CommandName == std::string("highlight"))
         {
             ClearHighlight();
 
@@ -4034,7 +4066,7 @@ void MainApp::HandleFrameFindEvents()
             std::string data = "";
             FinishedLastCommand(data);
             return;
-        }
+        }*/
 
         if(res.second && !res.first.active && !IsLastCommandNull && ExecuteFrameSearching && LastCommand.CommandName == std::string("script"))
         {
@@ -4691,22 +4723,39 @@ void MainApp::HandleMainBrowserEvents()
         }
     }
 
-    if(Data->IsRecord && v8handler->GetHighlightResultReady())
+    if(Data->IsRecord && HighlightTask && HighlightTask->GetIsFinished())
     {
-        std::pair<HighlightResult,bool> res = v8handler->GetHighlightResult();
-        if(res.second)
+
+        JsonParser Parser;
+        std::string HighlightNow = Parser.GetStringFromJson(HighlightTask->GetString(),"RESULT");
+
+        Data->_Highlight.highlights.clear();
+
+        std::vector<std::string> s = split(HighlightNow,';');
+
+        HighlightResult::rect r;
+
+        for(int i = 0;i<s.size();i++)
         {
+            switch(i%6)
             {
-                LOCK_BROWSER_DATA
-                Data->_Highlight = res.first;
-                for(HighlightResult::rect & r:Data->_Highlight.highlights)
-                {
-                    r.selector = LastHighlightSelector;
-                }
+                case 0: r.x = std::stoi(s[i]);r.y = 0;r.height = -1;r.width = -1; break;
+                case 1: r.y = std::stoi(s[i]); break;
+                case 2: r.width = std::stoi(s[i]); break;
+                case 3: r.height = std::stoi(s[i]);  break;
+                case 4: r.index = std::stoi(s[i]);  break;
+                case 5: r.is_alternative = s[i] == std::string("true"); Data->_Highlight.highlights.push_back(r);  break;
             }
+        }
+        for(HighlightResult::rect & r:Data->_Highlight.highlights)
+        {
+            r.selector = HighlightSelector;
+        }
+        {
             RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
             InvalidateRect(Data->_MainWindowHandle,&r,false);
         }
+        HighlightTask.reset();
     }
 
     if(v8handler->GetRecaptchaV3RequestReady())

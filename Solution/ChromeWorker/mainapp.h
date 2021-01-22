@@ -65,7 +65,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     ElementCommand LastCommandCopy;
 
     std::string BrowserScenarioDelayScript;
-    std::string LastHighlightSelector;
 
     IPCSimple NetworkProcessIPC;
     bool ProxyLibraryLoaded = false;
@@ -109,10 +108,12 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     //Highlight
     clock_t LastHighlight;
-    int64 HighlightFrameId;
-    int HighlightOffsetX;
-    int HighlightOffsetY;
-    std::string HighlightMultiloginSelector;
+    Async HighlightTask;
+    std::string HighlightSelector;
+    int HighlightIndex;
+    bool HighlightDoScrolling = false;
+    bool IsHighlightIndexActive = false;
+    clock_t LastHighlightIndexChanged = 0;
 
     //Delay for click
     //0 - no delay click
@@ -200,9 +201,6 @@ public:
     FingerprintDetector Detector;
     NotificationManager Notifications;
     std::string Javascript(const std::string& Script, const std::string& BrowserType);
-    int GetHighlightOffsetX();
-    int GetHighlightOffsetY();
-    int GetHighlightFrameId();
 
     void IncreaseInspectPosition();
     void DecreaseInspectPosition();

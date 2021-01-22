@@ -75,6 +75,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_ClearHighlight", CefV8Value::CreateFunction("BrowserAutomationStudio_ClearHighlight", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Interrupt", CefV8Value::CreateFunction("BrowserAutomationStudio_Interrupt", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Execute", CefV8Value::CreateFunction("BrowserAutomationStudio_Execute", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_IncrementHighlightIndex", CefV8Value::CreateFunction("BrowserAutomationStudio_IncrementHighlightIndex", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_MultiselectStateChanged", CefV8Value::CreateFunction("BrowserAutomationStudio_MultiselectStateChanged", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_MultiselectReset", CefV8Value::CreateFunction("BrowserAutomationStudio_MultiselectReset", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_EnableModule", CefV8Value::CreateFunction("BrowserAutomationStudio_EnableModule", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);

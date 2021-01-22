@@ -1528,6 +1528,23 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
   </script>
 
+  <script type="text/template" id="parseline">
+    <div class="container-fluid parseline">
+      <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Line"), default_selector: "string", disable_int:true, help: {description: tr("Line with several elements separated with \":\" or \",\" or \";\""), examples:[{code:"login:password"},{code:"id,name,login"}]}
+}) %>
+      <%= _.template($('#variable_constructor').html())({id:"VariablesList", description:tr("Variables To Save Result"), default_variable: "USERNAME,PASSWORD", append_mode:true, help: {description: tr("List of variables separated by commas. Results will be written into that variables.")}}) %>
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Parses line, which contains several elements. Elements are separated with one of following symbols: ":", ";", ",".</div>
+      <div class="tr tooltip-paragraph-fold">For example, if you apply this action to line email@gmail.com:mypass1 and set "Variables To Save Result" param to USERNAME,PASSWORD, than this action will set [[USERNAME]] variable to email@gmail.com and [[PASSWORD]] variable to mypass1.</div>
+      <div class="tr tooltip-paragraph-fold">If "Variables To Save Result" will contain more variables, than number of elements in string, than extra variables will be left unchanged.</div>
+      <div class="tr tooltip-paragraph-fold">Use "Parse String" action if you want to get list as a result.</div>
+      <div class="tr tooltip-paragraph-last-fold">This action also may parse strings in csv format.</div>
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+    
+  </script>
+
   <script type="text/template" id="reset">
       <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
          <input type="checkbox" id="Check"/> <label for="Check" class="tr">Restart process</label>
@@ -4842,6 +4859,17 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <% }%> 
     <% }%>
   </script>
+  <script type="text/template" id="parseline_code">
+    var csv_parse_result = csv_parse(<%= value %>)
+    <% for(var i = 0;i < list.length; i++){ %>
+      VAR_<%= list[i] %> = csv_parse_result[<%= i %>]
+      if(typeof(VAR_<%= list[i] %>) == 'undefined' || !VAR_<%= list[i] %>)
+      {
+        VAR_<%= list[i] %> = ""
+      }
+    <% } %>
+    
+  </script>
 
   
   <script type="text/template" id="httpclienturl_code">
@@ -7814,7 +7842,43 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
           
+          }else if(State == "parseline")
+          {
+            var Value = GetInputConstructorValue("Value",loader)
+            var List = $("#VariablesList").val().toUpperCase()
             
+            if(Value["original"].length <= 0)
+            {
+              Invalid("Value is empty");
+              return;
+            }
+
+            if(List.length <= 0)
+            {
+              Invalid("Variables list is empty");
+              return;
+            }
+
+            List = List.replace(/\s/g,"")
+            List = List.split(",")
+            List = _.compact(List);
+            if(List.length > 0)
+            {
+              /*List[0] = List[0].replace(/[\\[\\]]/g,"")
+              List[List.length - 1] = List[List.length - 1].replace(/[\\[\\]]/g,"")*/
+            }else
+            {
+              Invalid("Variables list is empty");
+              return; 
+            }
+
+             try{
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({list:List,value:Value["updated"]})
+              code = Normalize(code,0)
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            }catch(e)
+            {}
+           
           }else if(State == "httpclientproxy")
           {
               var ProxyText = GetInputConstructorValue("ProxyText",loader)
@@ -10348,6 +10412,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "httpclientxpathtextlist": _.template($('#httpclientxpathtextlist').html()),
           "httpclientxpathcount": _.template($('#httpclientxpathcount').html()),
           "httpclientxpathexists": _.template($('#httpclientxpathexists').html()),
+          "parseline": _.template($('#parseline').html()),
           "waitelement": _.template($('#waitelement').html()),
           "timeout": _.template($('#timeout').html()),
           "promptresult": _.template($('#promptresult').html()),
@@ -10588,6 +10653,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/httpclientxpathtextlist": "httpclientxpathtextlist",
             "!/httpclientxpathcount": "httpclientxpathcount",
             "!/httpclientxpathexists": "httpclientxpathexists",
+            "!/parseline": "parseline",
             "!/waitelement": "waitelement",
             "!/promptresult": "promptresult",
             "!/httpauth": "httpauth",
@@ -10981,6 +11047,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         httpclientxpathexists: function(){
                   _GobalModel.set({ state: "httpclientxpathexists" });
                 },
+        parseline: function(){
+                  _GobalModel.set({ state: "parseline" });
+                },
         waitelement: function(){
                   _GobalModel.set({ state: "waitelement" });
                 },
@@ -11145,6 +11214,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["result"]["name"]), description: tr(_A["result"]["description"]), ref: "result" },
                 { name: tr(_A["custom"]["name"]), description: tr(_A["custom"]["description"]), ref: "custom" },
                 /*{ name: tr(_A["globalget"]["name"]), description: tr(_A["globalget"]["description"]), ref: "globalget" },*/
+                { name: tr(_A["parseline"]["name"]), description: tr(_A["parseline"]["description"]), ref: "parseline" },
                 { name: tr(_A["randomint"]["name"]), description: tr(_A["randomint"]["description"]), ref: "randomint" },
                 { description: tr("Network"), type: "group", name: "network", icon: _G["network"]["icon"], info: tr(_G["network"]["info"]) },
                 { name: tr(_A["setheader"]["name"]), description: tr(_A["setheader"]["description"]), ref: "setheader" },

@@ -219,6 +219,14 @@ _L =
 	"Rendering":{"ru": "Визуализация"},
 	"Extensions":{"ru": "Расширения"},
 	"To start BAS with flash enabled besides changing \"Flash\" setting you also need to install flash on your PC. Instruction is located":{"ru": "Чтобы включить флеш, вам нужно помимо изменения настройки \"Флеш\" в этом действии также установить флеш на ваш ПК. Инстукция расположена "},
+	
+	"Line with several elements separated with \":\" or \",\" or \";\"": {"ru": "Строка с несколькими элементами разделенными \":\" или \",\" или \";\""},
+	"List of variables separated by commas. Results will be written into that variables.": {"ru": "Список переменных разделенных запятыми. В эти переменные будут записаны результаты."},
+		"Parses line, which contains several elements. Elements are separated with one of following symbols: \":\", \";\", \",\".": {"ru": "Парсить сторку содержащую несколько элементов. Элементы разделяются одним из следующих символов: \":\", \";\", \",\"."},
+	"For example, if you apply this action to line email@gmail.com:mypass1 and set \"Variables To Save Result\" param to USERNAME,PASSWORD, than this action will set [[USERNAME]] variable to email@gmail.com and [[PASSWORD]] variable to mypass1.": {"ru": "Например, если вы примените это действие к строке email@gmail.com:mypass1 и установите параметр \"Переменные, в которые сохранять результат\" в USERNAME,PASSWORD, то это действие сохранит email@gmail.com в переменную [[USERNAME]] и mypass1 в переменную [[PASSWORD]]."},
+	"If \"Variables To Save Result\" will contain more variables, than number of elements in string, than extra variables will be left unchanged.": {"ru": "Если параметр \"Переменные, в которые сохранять результат\" будет содержать больше переменных, чем количество элементов в строке, то лишние переменные не будут изменены."},
+	"Use \"Parse String\" action if you want to get list as a result.": {"ru": "Используйте действие \"Парсить строку\" из модуля Список если хотите получить результат в виде списка."},
+	"This action also may parse strings in csv format.": {"ru": "Это действие также может парсить строки в формате csv."},
 
 	"Output avatar": {"ru": "Вывести урл автара"},
 	"Output created account": {"ru": "Вывести созданный аккаунт"},
@@ -904,6 +912,8 @@ _L =
 	"Network": {"ru": "Сеть"},
 
 	/* Tools */
+   "Generate a random integer in a given range.": {"ru": "Сгенерировать случайное целое число в заданном диапазоне."},
+	
 	"Http auth password": {"ru": "HTTP Аутентификация пароль"},
 	"Http auth login": {"ru": "HTTP Аутентификация логин"},
 

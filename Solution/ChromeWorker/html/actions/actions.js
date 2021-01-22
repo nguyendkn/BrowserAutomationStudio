@@ -536,6 +536,16 @@ _A = {
       "template":"{{Value}} -> {{Name}}",
       "group":"logic"
    },
+   "parseline":{  
+      "name":"Parse Line (deprecated)",
+      "description":"Parse line like this 'a1:a2:a3' and save to variables",
+      "template":"{{Value}} -> {{VariablesList}}",
+      "suggestion":{  
+         "en":"split line",
+         "ru":"разбить строку, разделить строку"
+      },
+      "group":""
+   },
    "randomint":{  
       "name":"Random Number",
       "description":"Generate random integer",
@@ -1238,6 +1248,7 @@ _AL =
    "Execute code" : {"ru": "Выполнить код"},
    "Set Global Variable" : {"ru": "Установить глобальную переменную"},
    "Get Global Variable" : {"ru": "Читать глобальную переменную"},
+   "Parse Line (deprecated)" : {"ru": "Парсить строку (устаревшее)"},
    "Random Number": {"ru": "Случайное Число"},
 
    "Set Header" : {"ru": "Установить заголовок"},
@@ -1286,8 +1297,6 @@ _AL =
    "Xpath Get Exists" : {"ru": "Xpath проверить существование"},
    "Function" : {"ru": "Функция"},
    "Get link URL" : {"ru": "Получить адрес ссылки"},
-   
-   "Generate a random integer in a given range.": {"ru": "Сгенерировать случайное целое число в заданном диапазоне."},
    
    "Back" : {"ru": "Назад"},
    "Action interface \"" : {"ru": "Интерфейс действия \""},
@@ -1714,7 +1723,7 @@ function BrowserAutomationStudio_GenerateActionText(action, data, max_len, no_ht
    {
       return max_length(action,max_len)
    }
-
+   
    if(typeof _A[State]==="undefined")
       return tr("The module containing ") + State + tr(" action is not installed, disabled, or damaged")
 

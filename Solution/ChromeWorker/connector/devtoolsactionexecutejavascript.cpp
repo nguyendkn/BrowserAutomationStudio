@@ -314,6 +314,7 @@ void DevToolsActionExecuteJavascript::Next()
         if(ElementSelector.at(i).first == "frame_element")
         {
             Index = i;
+            break;
         }
     }
     if(Index >= 0)

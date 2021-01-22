@@ -3315,7 +3315,7 @@ void MainApp::UpdateHighlight()
         if(IsHighlightIndexActive)
             CurrentHighlightIndex = HighlightIndex;
 
-        std::string Script = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_Highlight)(self, ") + std::to_string(CurrentHighlightIndex) + std::string(", ") + std::string(HighlightDoScrolling ? "true" : "false") + std::string(")"),"main");
+        std::string Script = Javascript(std::string("[[POSITIONY]] = positiony;[[POSITIONX]] = positionx;[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_Highlight)(self, ") + std::to_string(CurrentHighlightIndex) + std::string(", ") + std::string(HighlightDoScrolling ? "true" : "false") + std::string(")"),"main");
 
         HighlightDoScrolling = false;
 
@@ -4728,6 +4728,9 @@ void MainApp::HandleMainBrowserEvents()
 
         JsonParser Parser;
         std::string HighlightNow = Parser.GetStringFromJson(HighlightTask->GetString(),"RESULT");
+        int positionx = Parser.GetFloatFromJson(HighlightTask->GetString(),"POSITIONX");
+        int positiony = Parser.GetFloatFromJson(HighlightTask->GetString(),"POSITIONY");
+
 
         Data->_Highlight.highlights.clear();
 
@@ -4739,8 +4742,8 @@ void MainApp::HandleMainBrowserEvents()
         {
             switch(i%6)
             {
-                case 0: r.x = std::stoi(s[i]);r.y = 0;r.height = -1;r.width = -1; break;
-                case 1: r.y = std::stoi(s[i]); break;
+                case 0: r.x = std::stoi(s[i]) + positionx;r.y = 0;r.height = -1;r.width = -1; break;
+                case 1: r.y = std::stoi(s[i]) + positiony; break;
                 case 2: r.width = std::stoi(s[i]); break;
                 case 3: r.height = std::stoi(s[i]);  break;
                 case 4: r.index = std::stoi(s[i]);  break;

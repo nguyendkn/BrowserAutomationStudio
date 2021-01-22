@@ -9,6 +9,10 @@ var tabs = $("#Check3").is(':checked');
 var characters_to_delete = GetInputConstructorValue("characters_to_delete", loader);
 var characters_to_space = GetInputConstructorValue("characters_to_space", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
+if(Save.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
+    return;
+};
 try{
     var code = loader.GetAdditionalData() + _.template($("#clean_code").html())({
         "string": string["updated"],

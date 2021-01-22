@@ -6,6 +6,8 @@
 	<div class="tr tooltip-paragraph-first-fold">Split a string into words.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a list containing the words obtained from the string.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"Test text"</code> is specified, then the action will return <code>["Test","text"]</code>, and if the string <code>"Just example string."</code> is specified, then the action will return <code>["Just","example","string"]</code>.</div>
+	<div class="tr tooltip-paragraph-fold">This action ignores any characters other than letters and numbers.</div>
+	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"Delicious 100% juice."</code> is specified, then the action will return <code>["Delicious", "100", "juice"]</code>.</div>
 	<div class="tr tooltip-paragraph-last-fold">The list can be processed using actions from the "List" module.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

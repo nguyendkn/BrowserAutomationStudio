@@ -6,6 +6,10 @@ if(string["original"].length == 0){
 var all = $("#Check").is(':checked');
 var lower = $("#Check2").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
+if(Save.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
+    return;
+};
 try{
     var code = loader.GetAdditionalData() + _.template($("#capitalize_words_code").html())({
         "string": string["updated"],

@@ -1,1 +1,1 @@
-<%= variable %> = _random_string(<%= chars %>,<%= length %>);
+<%= variable %> = _random_string(<%= length %>,<%= chars %>);

@@ -18,6 +18,10 @@ var strip_www = $("#Check8").is(':checked');
 var remove_trailing_slash = $("#Check9").is(':checked');
 var sort_query_parameters = $("#Check10").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
+if(Save.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
+    return;
+};
 try{
     var code = loader.GetAdditionalData() + _.template($("#normalize_url_code").html())({
         "url": url["updated"],

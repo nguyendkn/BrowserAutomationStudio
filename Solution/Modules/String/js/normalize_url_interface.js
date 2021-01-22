@@ -7,6 +7,9 @@
 <div><span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 	<input type="checkbox" id="Check" checked="checked"/> <label for="Check" class="tr">Normalize protocol</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:tr("Normalize protocol"),description:tr("If enabled and the URL contains a relative protocol, then the protocol from the \"Default protocol\" parameter will be added to the URL."),examples:[{code:tr("Activated"),description:"URL <code style=\"font-size:85%\">//testsite.com/</code> " + tr("will be normalized to") + " <code style=\"font-size:85%\">http://testsite.com</code>"},{code:"<br/>" + tr("Deactivated"),description:"URL <code style=\"font-size:85%\">//testsite.com/</code> " + tr("will be normalized to") + " <code style=\"font-size:85%\">//testsite.com</code>"}]})) %>"></i>
 </span></div>
+<div><span data-preserve="true" data-preserve-type="check" data-preserve-id="Check11">
+	<input type="radio" checked="checked" name="force" id="Check11" style="margin-left:20px"/> <label for="Check11" class="tr">No forced protocol change</label>
+</span></div>
 <div><span data-preserve="true" data-preserve-type="check" data-preserve-id="Check2">
 	<input type="radio" name="force" id="Check2"/> <label for="Check2" class="tr">Force http</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title:tr("Force http"),description:tr("If enabled, the https protocol will be replaced with http in the URL."),examples:[{code:tr("Activated"),description:"URL <code style=\"font-size:85%\">https://testsite.com/</code> " + tr("will be normalized to") + " <code style=\"font-size:85%\">http://testsite.com</code>"},{code:"<br/>" + tr("Deactivated"),description:"URL <code style=\"font-size:85%\">https://testsite.com/</code> " + tr("will be normalized to") + " <code style=\"font-size:85%\">https://testsite.com</code>"}]})) %>"></i>
 </span></div>
@@ -38,7 +41,9 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Normalize URL.</div>
-	<div class="tooltip-paragraph-fold"><span class="tr">This action will return a string containing the URL, normalized according to the specified parameters. You can learn more about the URL normalization in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false">Wiki</a>.</span></div>
+	<div class="tooltip-paragraph-fold"><span class="tr">This action will return a string containing the URL, normalized according to the specified parameters.</span> <span class="tr">You can learn more about the URL normalization in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false">Wiki</a>.</span></div>
+	<div class="tr tooltip-paragraph-fold">For example, the URL <code>"www.site.com/api.php?b=two&a=one&c=three"</code> will be normalized to <code>"https://site.com/api.php?a=one&b=two&c=three"</code> if "https" is specified in the "Default protocol" parameter and the "Strip WWW", "Sort query parameters" parameters are enabled.</div>
+	<div class="tooltip-paragraph-fold"><span class="tr">The "Normalize Protocol" parameter is responsible for normalizing the relative protocol. You can learn more about the relative protocol in</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/Wikipedia:Protocol-relative_URL');return false">Wiki</a>.</div>
 	<div class="tr tooltip-paragraph-fold">You can get a list of links from a string using the "Extract all links" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">You can parse a link to items using the "Parse URL" action.</div>
 </div>

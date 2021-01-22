@@ -5,6 +5,10 @@ if(string["original"].length == 0){
 };
 var encode = $("#Select").val()=="encode";
 var Save = this.$el.find("#Save").val().toUpperCase();
+if(Save.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
+    return;
+};
 try{
 	var code = loader.GetAdditionalData() + _.template($("#html_special_characters_code").html())({
 		"string": string["updated"],

@@ -1,5 +1,5 @@
-var Value = GetInputConstructorValue("Value", loader);
-if(Value["original"].length == 0){
+var string = GetInputConstructorValue("string", loader);
+if(string["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("String") + tr("\" is not specified"));
     return;
 };
@@ -18,8 +18,8 @@ if(list.length <= 0){
 	return;
 };
 try{
-    var code = loader.GetAdditionalData() + _.template($("#parseline_code").html())({
-        "Value": Value["updated"],
+    var code = loader.GetAdditionalData() + _.template($("#parse_csv_string_code").html())({
+        "string": string["updated"],
 		"separators": separators["updated"],
         "convert_types": convert_types,
         "list":list

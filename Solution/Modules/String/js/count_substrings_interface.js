@@ -6,7 +6,6 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get the number of substrings in the string.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a number equal to the number of substrings in the string.</div>
-	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"test text"</code> is specified and the substring <code>"te"</code> is specified, then the action will return 2, and if the string is <code>"Just example string"</code> and the substring <code>"example"</code>, then the action will return 1.</div>
-	<div class="tr tooltip-paragraph-last-fold">If the parameter "String" or "Substring" is not a string, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
+	<div class="tr tooltip-paragraph-last-fold">For example, if the string <code>"test text"</code> is specified and the substring <code>"te"</code> is specified, then the action will return 2, and if the string is <code>"Just example string"</code> and the substring <code>"example"</code>, then the action will return 1.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

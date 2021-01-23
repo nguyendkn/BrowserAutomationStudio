@@ -43,8 +43,8 @@ function MultiSelectManager()
 		$('#multiselectincludenumber').text('0');
 		$('#multiselectexcludenumber').text('0');
 
-		_SelectorModel.set("css","")
-		_SelectorModel.set("xpath","")
+		_SelectorModel.set("css",">CSS> empty-path")
+		_SelectorModel.set("xpath",">XPATH> .//empty-path")
 
 		_MainView.updatepath();
 	}

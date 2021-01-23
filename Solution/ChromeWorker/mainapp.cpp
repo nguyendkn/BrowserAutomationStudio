@@ -60,6 +60,7 @@ MainApp::MainApp()
     ScrollTrackingX = 0;
     ScrollTrackingY = 0;
     LastHighlight = 0;
+    LastHighlightMultiselect = 0;
     ParentWidth = 0;
     ParentHeight = 0;
     App = this;
@@ -2620,11 +2621,18 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
     if(LastCommand.CommandName == "highlight")
     {
+        std::string MultiselectScript;
+        if(Data->_MultiSelectData.IsDirty)
+        {
+            MultiselectScript = std::string("_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData)(") + Data->_MultiSelectData.Serialize() + std::string("); ");
+            Data->_MultiSelectData.IsDirty = false;
+        }
 
-        std::string Script = Javascript(std::string("[[RESULT]] = self.length.toString()"),"main");
+        std::string Script = Javascript(MultiselectScript + std::string(";[[RESULT]] = self.length.toString()"),"main");
 
         std::string Path = LastCommand.SerializePath();
         HighlightSelector = Path;
+        RawHighlightSelector = LastCommand.CommandParam1;
         HighlightIndex = -1;
         HighlightDoScrolling = false;
         LastHighlightIndexChanged = 0;
@@ -3147,7 +3155,10 @@ void MainApp::Timer()
     UpdateWindowPositionWithParent();
 
     if(Data->IsRecord)
+    {
         UpdateHighlight();
+        UpdateHighlightMultiselect();
+    }
 
     auto now = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
     if(now > Data->LastClearRequest + 5000 || Data->LastClearRequest == 0)
@@ -3255,42 +3266,49 @@ void MainApp::ClearHighlight()
 
 void MainApp::UpdateMultiSelect()
 {
-    /*if(Data->MultiselectMode && Data->_MultiSelectData.IsDirty && _HandlersManager->GetBrowser())
+    if(Data->MultiselectMode && Data->_MultiSelectData.IsDirty && !HighlightSelector.empty())
     {
         Data->_MultiSelectData.IsDirty = false;
 
-        std::string MultiloginCheckData;
-        {
-            LOCK_BROWSER_DATA
-            MultiloginCheckData = std::string("_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData)(") + Data->_MultiSelectData.Serialize() + std::string(");_BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect)();");
-        }
+        std::string MultiselectScript = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData)(") + Data->_MultiSelectData.Serialize() + std::string(");"), "main");
 
-        if(HighlightFrameId<0)
-        {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(MultiloginCheckData,"main"),"", 0);
-        }else
-        {
-
-            CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
-            if(Frame.get())
-                Frame->ExecuteJavaScript(Javascript(MultiloginCheckData,"main"),"", 0);
-        }
-    }*/
+        Data->Connector->ExecuteJavascript(MultiselectScript,std::string(),HighlightSelector);
+    }
 }
 
+void MainApp::UpdateHighlightMultiselect()
+{
+    clock_t CurrentTime = clock();
+    float time_spent = float( CurrentTime - LastHighlightMultiselect ) /  CLOCKS_PER_SEC;
+
+    if(HighlightMultiselectTask && time_spent < 3)
+        return;
+
+    LastHighlightMultiselect = CurrentTime;
+
+    if(HighlightMultiselectTask)
+    {
+        Data->Connector->InterruptAction(HighlightMultiselectTask->GetActionUniqueId());
+        HighlightMultiselectTask.reset();
+    }
+
+    if(!HighlightSelector.empty())
+    {
+        std::string Script = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect)(false); [[RESULT]]['elements'] = null;"),"main");
+
+        HighlightMultiselectTask = Data->Connector->ExecuteJavascript(Script,std::string(),HighlightSelector);
+    }
+}
 
 void MainApp::UpdateHighlight()
 {
     clock_t CurrentTime = clock();
     float time_spent = float( CurrentTime - LastHighlight ) /  CLOCKS_PER_SEC;
 
-
-
     if(HighlightTask && time_spent < 3)
         return;
 
     LastHighlight = CurrentTime;
-
 
     if(HighlightTask)
     {
@@ -3310,12 +3328,20 @@ void MainApp::UpdateHighlight()
 
     if(!HighlightSelector.empty())
     {
+
+        std::string MultiselectScript;
+        if(Data->_MultiSelectData.IsDirty)
+        {
+            MultiselectScript = std::string("_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData)(") + Data->_MultiSelectData.Serialize() + std::string("); ");
+            Data->_MultiSelectData.IsDirty = false;
+        }
+
         int CurrentHighlightIndex = -1;
 
         if(IsHighlightIndexActive)
             CurrentHighlightIndex = HighlightIndex;
 
-        std::string Script = Javascript(std::string("[[POSITIONY]] = positiony;[[POSITIONX]] = positionx;[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_Highlight)(self, ") + std::to_string(CurrentHighlightIndex) + std::string(", ") + std::string(HighlightDoScrolling ? "true" : "false") + std::string(")"),"main");
+        std::string Script = Javascript(MultiselectScript + std::string(";[[POSITIONY]] = positiony;[[POSITIONX]] = positionx;[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_Highlight)(self, ") + std::to_string(CurrentHighlightIndex) + std::string(", ") + std::string(HighlightDoScrolling ? "true" : "false") + std::string(")"),"main");
 
         HighlightDoScrolling = false;
 
@@ -3945,7 +3971,6 @@ void MainApp::HandleToolboxBrowserEvents()
         std::pair<ToolboxV8Handler::MultiSelectStateClass, bool> res = toolboxv8handler->GetMultiselectStateChanged();
         if(res.second)
         {
-            LOCK_BROWSER_DATA
             Data->_MultiSelectData.IsDirty = true;
             Data->_MultiSelectData.Clear();
             Data->MultiselectMode = res.first.IsActive;
@@ -3969,26 +3994,14 @@ void MainApp::HandleToolboxBrowserEvents()
         }
     }
 
-    /*if(toolboxv8handler->GetMultiselectReset())
+    if(toolboxv8handler->GetMultiselectReset())
     {
-        {
-            LOCK_BROWSER_DATA
-            Data->_MultiSelectData.Clear();
-        }
+        Data->_MultiSelectData.IsDirty = true;
+
+        Data->_MultiSelectData.Clear();
+
         UpdateMultiSelect();
-
-        std::string Script = "_BAS_HIDE(BrowserAutomationStudio_MultiSelectData) = []";
-        if(HighlightFrameId<0)
-        {
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(Script,"main"),"", 0);
-        }else
-        {
-            CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(HighlightFrameId);
-            if(Frame.get())
-                Frame->ExecuteJavaScript(Javascript(Script,"main"),"", 0);
-        }
-    }*/
-
+    }
 
 }
 
@@ -4752,7 +4765,7 @@ void MainApp::HandleMainBrowserEvents()
         }
         for(HighlightResult::rect & r:Data->_Highlight.highlights)
         {
-            r.selector = HighlightSelector;
+            r.selector = RawHighlightSelector;
         }
         {
             RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
@@ -4792,25 +4805,17 @@ void MainApp::HandleMainBrowserEvents()
         }
     }
 
-    if(v8handler->IsChangedMultiSelectPositions())
+    if(HighlightMultiselectTask && HighlightMultiselectTask->GetIsFinished())
     {
-        std::pair<std::string,bool> res2 = v8handler->GetMultiSelectPositions();
-        if(res2.second)
+        JsonParser Parser;
+        std::string Result = Parser.GetStringFromJson(HighlightMultiselectTask->GetString(),"RESULT.result");
+        std::string Report = Parser.GetStringFromJson(HighlightMultiselectTask->GetString(),"RESULT.report");
+        Data->_MultiSelectData.UpdatePositions(Result);
+        if(!Report.empty() && BrowserToolbox && Data->MultiselectMode)
         {
-            LOCK_BROWSER_DATA
-            Data->_MultiSelectData.UpdatePositions(res2.first);
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_MultiSelectReport(") + Report + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         }
-        RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-        InvalidateRect(Data->_MainWindowHandle,&r,false);
-    }
-
-    if(v8handler->IsChangedMultiSelectReport())
-    {
-        std::pair<std::string,bool> res2 = v8handler->GetMultiSelectReport();
-        if(res2.second && BrowserToolbox && Data->MultiselectMode)
-        {
-            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_MultiSelectReport(") + res2.first + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-        }
+        HighlightMultiselectTask.reset();
     }
 
     if(v8handler->IsChangedFrameStructure())
@@ -4841,8 +4846,8 @@ void MainApp::HandleMainBrowserEvents()
         Data->_Inspect.active = Parser.GetBooleanFromJson(InspectTask->GetString(),"active");
         Data->_Inspect.position = Parser.GetFloatFromJson(InspectTask->GetString(),"position");
 
-        /*Data->_MultiSelectData.MouseOverInspectData = res2.first;
-        Data->_MultiSelectData.MouseOverType = MouseOverInspect;*/
+        Data->_MultiSelectData.MouseOverInspectData = Data->_Inspect;
+        Data->_MultiSelectData.MouseOverType = MouseOverInspect;
 
 
         if(Data->ManualControl == BrowserData::DirectRecord)

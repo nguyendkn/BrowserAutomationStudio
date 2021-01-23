@@ -108,8 +108,11 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     //Highlight
     clock_t LastHighlight;
+    clock_t LastHighlightMultiselect;
     Async HighlightTask;
+    Async HighlightMultiselectTask;
     std::string HighlightSelector;
+    std::string RawHighlightSelector;
     int HighlightIndex;
     bool HighlightDoScrolling = false;
     bool IsHighlightIndexActive = false;
@@ -344,6 +347,7 @@ public:
     void ShowDevTools();
     void DirectControlInspectMouse();
     void UpdateHighlight();
+    void UpdateHighlightMultiselect();
     void UpdateMultiSelect();
     void ClearHighlight();
     void CefMessageLoop();

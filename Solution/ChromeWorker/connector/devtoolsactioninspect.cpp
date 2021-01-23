@@ -109,14 +109,8 @@ void DevToolsActionInspect::Next()
     if (RequestType == FrameSearchGetFrameIdResult)
     {
         int CandidateNodeId = GetFloatFromJson(LastMessage, "backendNodeId");
-        if(CurrentNodeId == CandidateNodeId)
+        if(CurrentNodeId == CandidateNodeId && GlobalState->FrameIdToContextId.count(CurrentFrameCandidate) > 0)
         {
-            if (GlobalState->FrameIdToContextId.count(CurrentFrameCandidate) == 0)
-            {
-                Result->Fail("Failed to find context", "NoContext");
-                State = Finished;
-                return;
-            }
             CurrentFrame = CurrentFrameCandidate;
             CurrentContextId = GlobalState->FrameIdToContextId[CurrentFrameCandidate];
             RequestType = Initial;

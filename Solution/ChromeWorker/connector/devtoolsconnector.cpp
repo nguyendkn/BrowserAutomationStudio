@@ -105,6 +105,9 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--no-proxy-server");
     CommandLine += std::wstring(L" ");
 
+    CommandLine += std::wstring(L"--disable-site-isolation-trials");
+    CommandLine += std::wstring(L" ");
+
     if(!ProfilePath.empty())
     {
         CommandLine += std::wstring(L"--user-data-dir=") + ProfilePath;

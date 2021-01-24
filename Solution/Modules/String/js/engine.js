@@ -987,11 +987,17 @@ function _normalize_url(url_string, user_options){
 	if(options.sort_query_parameters){
 		var obj_sorted = {};
 		Object.keys(url_obj.query).sort(function(a, b){
-			return a - b;
+			if(a > b){
+				return 1;
+			};
+			if(a < b){
+				return -1;
+			};
+			return 0;
 		}).forEach(function(key){
 			obj_sorted[key] = url_obj.query[key];
 		});
-		url_obj.set('query', obj_sorted);
+		url_obj.query = obj_sorted;
 	};
 
 	if(options.remove_trailing_slash){

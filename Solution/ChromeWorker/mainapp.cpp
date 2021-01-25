@@ -2561,7 +2561,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
     if(LastCommand.CommandName == "script")
     {
-        std::string Script = Javascript(std::string("[[RESULT]] = (") + LastCommand.CommandParam1 + std::string(").toString()"),"main");
+        std::string Script = Javascript(std::string("[[RESULT]] = ") + LastCommand.CommandParam1 + std::string(";[[RESULT]] = [[RESULT]].toString();"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);

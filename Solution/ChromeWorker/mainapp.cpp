@@ -2785,6 +2785,22 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
     }
 
 
+    if(LastCommand.CommandName == "focus")
+    {
+        std::string Path = LastCommand.SerializePath();
+        Async Result = Data->Connector->ExecuteJavascript(std::string(),std::string(),Path,true);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        {
+            std::string Data;
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+        });
+    }
+
 }
 
 void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)

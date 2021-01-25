@@ -328,8 +328,9 @@ void DevToolsActionExecuteJavascript::Next()
 
     if(DoScroll)
     {
+        DoScroll = false;
         std::map<std::string, Variant> CurrentParams;
-        std::string Script = std::string("{var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(");if(self)self.scrollIntoViewIfNeeded(true);}");
+        std::string Script = std::string("{var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");if(self)self.scrollIntoViewIfNeeded(true);}");
         CurrentParams["expression"] = Variant(Javascript(Script));
         if(CurrentContextId >= 0)
             CurrentParams["contextId"] = Variant(CurrentContextId);

@@ -95,7 +95,7 @@ struct MultiSelectData
     std::string OriginalSelector;
     void Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop);
     std::string Serialize();
-    void UpdatePositions(const std::string& Data);
+    void UpdatePositions(const std::string& Data, int FrameOffsetX, int FrameOffsetY);
     void Clear();
 
 

@@ -452,7 +452,7 @@ std::string MultiSelectData::Serialize()
     return picojson::value(ResArray).serialize();
 }
 
-void MultiSelectData::UpdatePositions(const std::string& Data)
+void MultiSelectData::UpdatePositions(const std::string& Data, int FrameOffsetX, int FrameOffsetY)
 {
     picojson::value v;
     std::string err = picojson::parse(v, Data);
@@ -471,8 +471,8 @@ void MultiSelectData::UpdatePositions(const std::string& Data)
     {
         picojson::value::object ItemObject = Item.get<picojson::value::object>();
         std::string Id = ItemObject["id"].get<std::string>();
-        int X = ItemObject["x"].get<double>();
-        int Y = ItemObject["y"].get<double>();
+        int X = ItemObject["x"].get<double>() + FrameOffsetX;
+        int Y = ItemObject["y"].get<double>() + FrameOffsetY;
         int Width = ItemObject["width"].get<double>();
         int Height = ItemObject["height"].get<double>();
 

@@ -3294,7 +3294,7 @@ void MainApp::UpdateHighlightMultiselect()
 
     if(!HighlightSelector.empty())
     {
-        std::string Script = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect)(false); [[RESULT]]['elements'] = null;"),"main");
+        std::string Script = Javascript(std::string(";[[POSITIONY]] = positiony;[[POSITIONX]] = positionx;[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect)(false); [[RESULT]]['elements'] = null;"),"main");
 
         HighlightMultiselectTask = Data->Connector->ExecuteJavascript(Script,std::string(),HighlightSelector);
     }
@@ -4810,7 +4810,9 @@ void MainApp::HandleMainBrowserEvents()
         JsonParser Parser;
         std::string Result = Parser.GetStringFromJson(HighlightMultiselectTask->GetString(),"RESULT.result");
         std::string Report = Parser.GetStringFromJson(HighlightMultiselectTask->GetString(),"RESULT.report");
-        Data->_MultiSelectData.UpdatePositions(Result);
+        int PositionX = Parser.GetFloatFromJson(HighlightMultiselectTask->GetString(),"POSITIONX");
+        int PositionY = Parser.GetFloatFromJson(HighlightMultiselectTask->GetString(),"POSITIONY");
+        Data->_MultiSelectData.UpdatePositions(Result,PositionX,PositionY);
         if(!Report.empty() && BrowserToolbox && Data->MultiselectMode)
         {
             BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_MultiSelectReport(") + Report + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);

@@ -108,6 +108,9 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--disable-site-isolation-trials");
     CommandLine += std::wstring(L" ");
 
+    CommandLine += std::wstring(L"--force-device-scale-factor=1");
+    CommandLine += std::wstring(L" ");
+
     if(!ProfilePath.empty())
     {
         CommandLine += std::wstring(L"--user-data-dir=") + ProfilePath;

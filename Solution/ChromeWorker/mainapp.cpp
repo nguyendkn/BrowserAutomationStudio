@@ -1199,7 +1199,7 @@ void MainApp::MouseClickUpCallback(int x, int y)
         {
             x = Data->ScrollX + Data->CursorX;
             y = Data->ScrollY + Data->CursorY;
-            BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+            BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
             SendTextResponce("<MouseClickUp></MouseClickUp>");
             return;
         }
@@ -1225,7 +1225,7 @@ void MainApp::MouseClickDownCallback(int x, int y)
         {
             x = Data->ScrollX + Data->CursorX;
             y = Data->ScrollY + Data->CursorY;
-            BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+            BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
             SendTextResponce("<MouseClickDown></MouseClickDown>");
             return;
         }
@@ -1308,7 +1308,7 @@ void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, doub
             if(Settings->EmulateMouse())
             {
                 int t1,t2;
-                BrowserEventsEmulator::MouseMove(_HandlersManager->GetBrowser(), IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,Data->IsMousePress,Data->IsDrag, Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                BrowserEventsEmulator::MouseMove(Data->Connector, IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,Data->IsMousePress,Data->IsDrag, Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
             }
         }else
         {
@@ -3205,7 +3205,7 @@ void MainApp::Timer()
         clock_t CurrentTime = clock();
         if(CurrentTime >= DelayNextClick)
         {
-            BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),DelayClickX,DelayClickY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+            BrowserEventsEmulator::MouseClick(Data->Connector,DelayClickX,DelayClickY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
             if(DelayClickType == 1)
             {
                 SendTextResponce("<MouseClick></MouseClick>");
@@ -4375,11 +4375,11 @@ void MainApp::HandleMainBrowserEvents()
                         DelayNextClick = clock() + 80 + (rand()) % 40;
                         DelayClickX = x;
                         DelayClickY = y;
-                        BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                        BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
                     }else
                     {
                         //Signle click, send instantly
-                        BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),type,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                        BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),type,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
                         SendTextResponce(resp);
                     }
 
@@ -4426,7 +4426,7 @@ void MainApp::HandleMainBrowserEvents()
                     if(Settings->EmulateMouse())
                     {
                         int t1,t2;
-                        BrowserEventsEmulator::MouseMove(_HandlersManager->GetBrowser(), IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,Data->IsMousePress,Data->IsDrag, Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                        BrowserEventsEmulator::MouseMove(Data->Connector, IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,Data->IsMousePress,Data->IsDrag, Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
                     }
                 }
             }else if(LastCommand.CommandName == std::string("_scroll"))
@@ -4639,11 +4639,11 @@ void MainApp::HandleMainBrowserEvents()
                         DelayNextClick = clock() + 80 + (rand()) % 40;
                         DelayClickX = x;
                         DelayClickY = y;
-                        BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                        BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
                     }else
                     {
                         //Signle click, send instantly
-                        BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),x,y,GetScrollPosition(),type,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                        BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),type,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
                         FinishedLastCommand("");
                     }
 
@@ -4792,7 +4792,7 @@ void MainApp::HandleMainBrowserEvents()
                     if(Settings->EmulateMouse())
                     {
                         int t1,t2;
-                        BrowserEventsEmulator::MouseMove(_HandlersManager->GetBrowser(), IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true,true,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                        BrowserEventsEmulator::MouseMove(Data->Connector, IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true,true,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation, TypeTextState);
                     }
                 }
 
@@ -5032,11 +5032,11 @@ void MainApp::ExecuteMouseMove()
 
     if(Settings->EmulateMouse())
     {
-        BrowserEventsEmulator::MouseMove(_HandlersManager->GetBrowser(), IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY , CursorX, CursorY, MouseSpeedActual, Data->WidthBrowser, Data->HeightBrowser, MouseGravity, MouseDeviationActual, 0.0f, false, true,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+        BrowserEventsEmulator::MouseMove(Data->Connector, IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY , CursorX, CursorY, MouseSpeedActual, Data->WidthBrowser, Data->HeightBrowser, MouseGravity, MouseDeviationActual, 0.0f, false, true,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation, TypeTextState);
     }
     else
     {
-        BrowserEventsEmulator::MouseMoveLine(_HandlersManager->GetBrowser(), IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY , CursorX, CursorY, MouseSpeedActual, Data->WidthBrowser, Data->HeightBrowser,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+        BrowserEventsEmulator::MouseMoveLine(Data->Connector, IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY , CursorX, CursorY, MouseSpeedActual, Data->WidthBrowser, Data->HeightBrowser,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation, TypeTextState);
     }
     Data->CursorX = CursorX;
     Data->CursorY = CursorY;
@@ -5074,7 +5074,7 @@ void MainApp::ExecuteMouseMove()
             if(DoMouseUpOnFinishMove)
             {
                 Data->LastClickIsFromIndirectControl = true;
-                BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),Data->CursorX,Data->CursorY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+                BrowserEventsEmulator::MouseClick(Data->Connector,Data->CursorX,Data->CursorY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
             }
             if(TrackScroll)
             {
@@ -5127,7 +5127,7 @@ void MainApp::ExecuteTypeText()
     {
         DelayNextClick = clock() + 80 + (rand()) % 40;
         BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-        BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),TypeTextX,TypeTextY,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+        BrowserEventsEmulator::MouseClick(Data->Connector,TypeTextX,TypeTextY,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
         return;
     }
 
@@ -5136,7 +5136,7 @@ void MainApp::ExecuteTypeText()
         if(CurrentTime < DelayNextClick)
             return;
 
-        BrowserEventsEmulator::MouseClick(_HandlersManager->GetBrowser(),TypeTextX,TypeTextY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+        BrowserEventsEmulator::MouseClick(Data->Connector,TypeTextX,TypeTextY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
         DelayClickType = 0;
     }
 

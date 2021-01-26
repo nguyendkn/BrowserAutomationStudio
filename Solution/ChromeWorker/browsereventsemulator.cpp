@@ -76,8 +76,8 @@ BrowserEventsEmulator::BrowserEventsEmulator()
 
 void BrowserEventsEmulator::SetFocus(CefRefPtr<CefBrowser> Browser)
 {
-    if(Browser)
-        Browser->GetHost()->SendFocusEvent(true);
+    /*if(Browser)
+        Browser->GetHost()->SendFocusEvent(true);*/
 }
 
 bool BrowserEventsEmulator::IsPointOnScreen(int PointX, int PointY, int ScrollX, int ScrollY, int BrowserWidth, int BrowserHeight)
@@ -100,10 +100,32 @@ int random(int max)
     return rand() % (max);
 }
 
-void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight, bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation)
+void BrowserEventsEmulator::MouseMoveLine(DevToolsConnector* Connector, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight, bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
 {
     if(!IsMouseMoveSimulation)
         return;
+
+    int CurrentMouseState = MouseButtonNone;
+
+    if(IsMousePress)
+    {
+        CurrentMouseState |= MouseButtonLeft;
+    }
+
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
 
     float DistanceSquareAll = (MouseStartX - MouseEndX) * (MouseStartX - MouseEndX) + (MouseStartY - MouseEndY) * (MouseStartY - MouseEndY);
     float DistanceSquareCurrent = (MouseStartX - MouseCurrentX) * (MouseStartX - MouseCurrentX) + (MouseStartY - MouseCurrentY) * (MouseStartY - MouseCurrentY);
@@ -122,33 +144,15 @@ void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & 
         {
             if(IsTouchPressedAutomation)
             {
-                CefTouchEvent Event;
-                Event.id = TouchId;
-                Event.x = MouseCurrentX;
-                Event.y = MouseCurrentY;
-                Event.radius_x = 11.5;
-                Event.radius_y = 11.5;
-                Event.rotation_angle = 0.0;
-                Event.pressure = 1.0;
-                Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-                Event.modifiers = EVENTFLAG_NONE;
-                Event.type = CEF_TET_MOVED;
-
-                Browser->GetHost()->SendTouchEvent(Event);
+                Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
             }
         }else
         {
-            CefMouseEvent e;
-            if(IsMousePress)
-                e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
+            Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
 
-            e.x = MouseCurrentX;
-            e.y = MouseCurrentY;
-
-            Browser->GetHost()->SendMouseMoveEvent(e,false);
             if(IsDrag)
             {
-                Browser->GetHost()->DragTargetDragOver(e,allowedops);
+                //Browser->GetHost()->DragTargetDragOver(e,allowedops);
             }
 
         }
@@ -165,41 +169,19 @@ void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & 
     {
         if(IsTouchPressedAutomation)
         {
-            CefTouchEvent Event;
-            Event.id = TouchId;
-            Event.x = MouseCurrentX;
-            Event.y = MouseCurrentY;
-            Event.radius_x = 11.5;
-            Event.radius_y = 11.5;
-            Event.rotation_angle = 0.0;
-            Event.pressure = 1.0;
-            Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-            Event.modifiers = EVENTFLAG_NONE;
-            Event.type = CEF_TET_MOVED;
-
-            Browser->GetHost()->SendTouchEvent(Event);
+            Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
         }
     }else
     {
-        CefMouseEvent e;
-        if(IsMousePress)
-            e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
-
-        e.x = MouseCurrentX;
-        e.y = MouseCurrentY;
-
-        Browser->GetHost()->SendMouseMoveEvent(e,false);
+        Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
         if(IsDrag)
         {
-            Browser->GetHost()->DragTargetDragOver(e,allowedops);
+            //Browser->GetHost()->DragTargetDragOver(e,allowedops);
         }
-
     }
-
-
 }
 
-void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
+void BrowserEventsEmulator::MouseMove(DevToolsConnector* Connector,
                                       bool & IsMouseMoveSimulation,
                                       int MouseStartX, int MouseStartY,
                                       int MouseEndX, int MouseEndY,
@@ -208,8 +190,32 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
                                       int BrowserWidth, int BrowserHeight,
                                       float Gravity, float Wind, float TargetArea,
                                       bool IsInit, bool IsDouble, bool IsMousePress, bool IsDrag,
-                                      bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation)
+                                      bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation,
+                                      KeyState& State)
 {
+
+    int CurrentMouseState = MouseButtonNone;
+
+    if(IsMousePress)
+    {
+        CurrentMouseState |= MouseButtonLeft;
+    }
+
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
+
     static float veloX,veloY,windX,windY,veloMag,dist,randomDist,lastDist,D;
     static int lastX,lastY,MSP,W,TDist;
     static int T;
@@ -274,33 +280,15 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
             {
                 if(IsTouchPressedAutomation)
                 {
-                    CefTouchEvent Event;
-                    Event.id = TouchId;
-                    Event.x = MouseCurrentX;
-                    Event.y = MouseCurrentY;
-                    Event.radius_x = 11.5;
-                    Event.radius_y = 11.5;
-                    Event.rotation_angle = 0.0;
-                    Event.pressure = 1.0;
-                    Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-                    Event.modifiers = EVENTFLAG_NONE;
-                    Event.type = CEF_TET_MOVED;
-
-                    Browser->GetHost()->SendTouchEvent(Event);
+                    Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
                 }
             }else
             {
-                CefMouseEvent e;
-                if(IsMousePress)
-                    e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
+                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
 
-                e.x = MouseCurrentX;
-                e.y = MouseCurrentY;
-
-                Browser->GetHost()->SendMouseMoveEvent(e,false);
                 if(IsDrag)
                 {
-                    Browser->GetHost()->DragTargetDragOver(e,allowedops);
+                    //Browser->GetHost()->DragTargetDragOver(e,allowedops);
                 }
 
             }
@@ -408,33 +396,14 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
             {
                 if(IsTouchPressedAutomation)
                 {
-                    CefTouchEvent Event;
-                    Event.id = TouchId;
-                    Event.x = MouseCurrentX;
-                    Event.y = MouseCurrentY;
-                    Event.radius_x = 11.5;
-                    Event.radius_y = 11.5;
-                    Event.rotation_angle = 0.0;
-                    Event.pressure = 1.0;
-                    Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-                    Event.modifiers = EVENTFLAG_NONE;
-                    Event.type = CEF_TET_MOVED;
-
-                    Browser->GetHost()->SendTouchEvent(Event);
+                    Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
                 }
             }else
             {
-                CefMouseEvent e;
-                if(IsMousePress)
-                    e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
-
-                e.x = MouseCurrentX;
-                e.y = MouseCurrentY;
-
-                Browser->GetHost()->SendMouseMoveEvent(e,false);
+                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
                 if(IsDrag)
                 {
-                    Browser->GetHost()->DragTargetDragOver(e,allowedops);
+                    //Browser->GetHost()->DragTargetDragOver(e,allowedops);
                 }
 
             }
@@ -496,30 +465,17 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
 
 }
 
-void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation)
+void BrowserEventsEmulator::MouseClick(DevToolsConnector* Connector, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
 {
-    if(!Browser)
-        return;
+    int X = x - scroll.first;
+    int Y = y - scroll.second;
 
-    CefMouseEvent event;
-    event.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
-    event.x = x - scroll.first;
-    event.y = y - scroll.second;
+    int CurrentMouseState = MouseButtonNone;
 
-
-    CefTouchEvent eventtouch;
-    eventtouch.id = TouchId;
-    eventtouch.x = event.x;
-    eventtouch.y = event.y;
-    eventtouch.radius_x = 11.5;
-    eventtouch.radius_y = 11.5;
-    eventtouch.rotation_angle = 0.0;
-    eventtouch.pressure = 1.0;
-    eventtouch.pointer_type = CEF_POINTER_TYPE_TOUCH;
-    eventtouch.modifiers = EVENTFLAG_NONE;
-    eventtouch.type = CEF_TET_MOVED;
-
-    WORKER_LOG(std::string("BrowserEventsEmulator::MouseClick<<") + std::to_string(x) + std::string("<<") + std::to_string(y) + std::string("<<") + std::to_string(type));
+    if(IsMousePress)
+    {
+        CurrentMouseState |= MouseButtonLeft;
+    }
 
     if(type == 2)
     {
@@ -531,14 +487,30 @@ void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int
         IsMousePress = false;
     }
 
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
+
+
     if(type == 1 && IsDrag)
     {
-        Browser->GetHost()->DragTargetDragOver(event,allowedops);
+        /*Browser->GetHost()->DragTargetDragOver(event,allowedops);
         Browser->GetHost()->DragSourceEndedAt(event.x,event.y,allowedops);
 
 
         Browser->GetHost()->DragTargetDrop(event);
-        Browser->GetHost()->DragSourceSystemDragEnded();
+        Browser->GetHost()->DragSourceSystemDragEnded();*/
         IsDrag = false;
     }
 
@@ -547,29 +519,25 @@ void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int
     {
         if(IsTouch)
         {
-            eventtouch.type = CEF_TET_PRESSED;
             IsTouchPressedAutomation = true;
-            Browser->GetHost()->SendTouchEvent(eventtouch);
+            Connector->Touch(TouchEventDown,X,Y,TouchId);
         }else
         {
-            Browser->GetHost()->SendMouseClickEvent(event,MBT_LEFT,false,1);
+            Connector->Mouse(MouseEventDown,X,Y,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
         }
-        WORKER_LOG(std::string("BrowserEventsEmulator::MouseClickDown<<"));
     }
 
     if(type != 2)
     {
         if(IsTouch)
         {
-            eventtouch.type = CEF_TET_RELEASED;
             IsTouchPressedAutomation = false;
             TouchId++;
-            Browser->GetHost()->SendTouchEvent(eventtouch);
+            Connector->Touch(TouchEventUp,X,Y,TouchId);
         }else
         {
-            Browser->GetHost()->SendMouseClickEvent(event,MBT_LEFT,true,1);
+            Connector->Mouse(MouseEventUp,X,Y,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
         }
-        WORKER_LOG(std::string("BrowserEventsEmulator::MouseClickUp<<"));
     }
 }
 

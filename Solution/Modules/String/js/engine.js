@@ -560,9 +560,9 @@ function _clean(str, chars_to_delete, chars_to_space, multiple_spaces){
 	};
 	str = _trim(str);
 	if(multiple_spaces){
-		str = str.replace(new RegExp('[' + _STR_WHITESPACE + ']+', 'g'), ' ');
+		str = str.replace(new RegExp('\\s{2,}|[\\uFEFF\\xA0]+', 'g'), ' ');
 	}else{
-		str = str.replace(new RegExp('[\\uFEFF\\xA0;]', 'g'), ' ');
+		str = str.replace(new RegExp('[\\uFEFF\\xA0]', 'g'), ' ');
 	};
 	return str;
 };

@@ -504,21 +504,21 @@ function _csv_parse(str, seps, convert){
 function _trim_left(str, chars){
 	var act = '_trim_left';
 	_validate_argument_type(str, 'string', 'String', act);
-	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	chars = _avoid_nilb(chars, _STR_WHITESPACE + '\\r\\n\\t');
 	_validate_argument_type(chars, 'string', 'Trim characters', act);
 	return str.replace(new RegExp('^[' + chars + ']+', 'g'), '');
 };
 function _trim_right(str, chars){
 	var act = '_trim_right';
 	_validate_argument_type(str, 'string', 'String', act);
-	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	chars = _avoid_nilb(chars, _STR_WHITESPACE + '\\r\\n\\t');
 	_validate_argument_type(chars, 'string', 'Trim characters', act);
 	return str.replace(new RegExp('[' + chars + ']+$', 'g'), '');
 };
 function _trim(str, chars, left, right){
 	var act = '_trim';
 	_validate_argument_type(str, 'string', 'String', act);
-	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	chars = _avoid_nilb(chars, _STR_WHITESPACE + '\\r\\n\\t');
 	_validate_argument_type(chars, 'string', 'Trim characters', act);
 	left = _avoid_nilb(left, true);
 	_validate_argument_type(left, 'boolean', 'Trim left', act);
@@ -535,7 +535,7 @@ function _trim(str, chars, left, right){
 function _trim_arr(arr, chars, left, right){
 	var act = '_trim_arr';
 	_validate_argument_type(arr, 'array', 'Array', act);
-	chars = _avoid_nilb(chars, _STR_WHITESPACE);
+	chars = _avoid_nilb(chars, _STR_WHITESPACE + '\\r\\n\\t');
 	_validate_argument_type(chars, 'string', 'Trim characters', act);
 	left = _avoid_nilb(left, true);
 	_validate_argument_type(left, 'boolean', 'Trim left', act);

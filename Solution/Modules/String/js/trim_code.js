@@ -1,1 +1,1 @@
-<%= variable %> = _trim(<%= string %>,"<% if(spaces){ %>\\s\\uFEFF\\xA0<% }%><% if(breaks){ %>\\r\\n<% }%><% if(tabs){ %>\\t<% }%><% if(characters!=='""'){ %><%= characters %><% }%>",<%= all || left %>,<%= all || right %>);
+<%= variable %> = _trim(<%= string %>,"<% if(spaces){ %>\\s\\uFEFF\\xA0<% }%><% if(breaks){ %>\\r\\n<% }%><% if(tabs){ %>\\t<% }%>"<% if(characters!=='""'){ %> + <%= characters %><% }%>,<%= all || left %>,<%= all || right %>);

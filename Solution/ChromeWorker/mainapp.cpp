@@ -1173,19 +1173,19 @@ void MainApp::LoadSuccessCallback()
 
 void MainApp::MouseClickCallback(int x, int y)
 {
-    WORKER_LOG("MouseClickCallback");
-    if(_HandlersManager->GetBrowser())
+    std::string ScrollToScript = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"), "main");
+    
+    Async Result = Data->Connector->ExecuteJavascript(ScrollToScript, std::string(), std::string("[]"));
+    Data->Results->ProcessResult(Result);
+    Result->Then([this,x,y](AsyncResult* Result)
     {
-        BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-        LastCommand.CommandName = "_mouseclick";
-        LastCommand.CommandParam1 = std::to_string(x);
-        LastCommand.CommandParam2 = std::to_string(y);
-        IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
-    }else
-    {
-        SendTextResponce("<MouseClick></MouseClick>");
-    }
+        this->DelayClickType = 1;
+        this->DelayNextClick = clock() + 80 + (rand()) % 40;
+        this->DelayClickX = x;
+        this->DelayClickY = y;
+        BrowserEventsEmulator::MouseClick(this->Data->Connector,x,y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        this->SendTextResponce("<MouseClick></MouseClick>");
+    });
 }
 
 void MainApp::MouseClickUpCallback(int x, int y)

@@ -105,11 +105,11 @@ void BrowserEventsEmulator::MouseMoveLine(DevToolsConnector* Connector, bool & I
     if(!IsMouseMoveSimulation)
         return;
 
-    int CurrentMouseState = MouseButtonNone;
+    MouseButton CurrentMouseState = MouseButtonNone;
 
     if(IsMousePress)
     {
-        CurrentMouseState |= MouseButtonLeft;
+        CurrentMouseState = MouseButtonLeft;
     }
 
     int CurrentKeyState = KeyboardModifiersNone;
@@ -148,7 +148,7 @@ void BrowserEventsEmulator::MouseMoveLine(DevToolsConnector* Connector, bool & I
             }
         }else
         {
-            Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
+            Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
 
             if(IsDrag)
             {
@@ -173,7 +173,7 @@ void BrowserEventsEmulator::MouseMoveLine(DevToolsConnector* Connector, bool & I
         }
     }else
     {
-        Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
+        Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
         if(IsDrag)
         {
             //Browser->GetHost()->DragTargetDragOver(e,allowedops);
@@ -194,11 +194,11 @@ void BrowserEventsEmulator::MouseMove(DevToolsConnector* Connector,
                                       KeyState& State)
 {
 
-    int CurrentMouseState = MouseButtonNone;
+    MouseButton CurrentMouseState = MouseButtonNone;
 
     if(IsMousePress)
     {
-        CurrentMouseState |= MouseButtonLeft;
+        CurrentMouseState = MouseButtonLeft;
     }
 
     int CurrentKeyState = KeyboardModifiersNone;
@@ -284,7 +284,7 @@ void BrowserEventsEmulator::MouseMove(DevToolsConnector* Connector,
                 }
             }else
             {
-                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
+                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
 
                 if(IsDrag)
                 {
@@ -400,7 +400,7 @@ void BrowserEventsEmulator::MouseMove(DevToolsConnector* Connector,
                 }
             }else
             {
-                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
+                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
                 if(IsDrag)
                 {
                     //Browser->GetHost()->DragTargetDragOver(e,allowedops);

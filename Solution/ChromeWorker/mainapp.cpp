@@ -1203,53 +1203,73 @@ void MainApp::MouseClickCallback(int x, int y)
 
 void MainApp::MouseClickUpCallback(int x, int y)
 {
-    WORKER_LOG("MouseClickUpCallback");
-    if(_HandlersManager->GetBrowser())
+    if(Data->IsTouchScreen)
     {
-        BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-        LastCommand.CommandName = "_mouseclickup";
-        if(Data->IsTouchScreen)
-        {
-            x = Data->ScrollX + Data->CursorX;
-            y = Data->ScrollY + Data->CursorY;
-            BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
-            SendTextResponce("<MouseClickUp></MouseClickUp>");
-            return;
-        }
-        LastCommand.CommandParam1 = std::to_string(x);
-        LastCommand.CommandParam2 = std::to_string(y);
-        IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
-    }else
-    {
+        x = Data->ScrollX + Data->CursorX;
+        y = Data->ScrollY + Data->CursorY;
+        BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
         SendTextResponce("<MouseClickUp></MouseClickUp>");
+        return;
     }
+    std::string ScrollToScript = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"), "main");
+    
+    Async Result = Data->Connector->ExecuteJavascript(ScrollToScript, std::string(), std::string("[]"));
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        JsonParser Parser;
+        std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+        this->UpdateScrolls(TextResult);
+        std::size_t pos = TextResult.find(",");
+        int X = -1, Y = -1;
+        if(pos != std::string::npos)
+        {
+            std::string x_string = TextResult.substr(0,pos);
+            std::string y_string = TextResult.substr(pos + 1,TextResult.length() - pos - 1);
+            X = std::stoi(x_string);
+            Y = std::stoi(y_string);
+        }
+
+        BrowserEventsEmulator::MouseClick(Data->Connector,X,Y,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
+
+        this->SendTextResponce("<MouseClickUp></MouseClickUp>");
+    });
 }
 
 
 void MainApp::MouseClickDownCallback(int x, int y)
 {
-    WORKER_LOG("MouseClickDownCallback");
-    if(_HandlersManager->GetBrowser())
+    if(Data->IsTouchScreen)
     {
-        BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-        LastCommand.CommandName = "_mouseclickdown";
-        if(Data->IsTouchScreen)
-        {
-            x = Data->ScrollX + Data->CursorX;
-            y = Data->ScrollY + Data->CursorY;
-            BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
-            SendTextResponce("<MouseClickDown></MouseClickDown>");
-            return;
-        }
-        LastCommand.CommandParam1 = std::to_string(x);
-        LastCommand.CommandParam2 = std::to_string(y);
-        IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
-    }else
-    {
+        x = Data->ScrollX + Data->CursorX;
+        y = Data->ScrollY + Data->CursorY;
+        BrowserEventsEmulator::MouseClick(Data->Connector,x,y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
         SendTextResponce("<MouseClickDown></MouseClickDown>");
+        return;
     }
+    
+    std::string ScrollToScript = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"), "main");
+    
+    Async Result = Data->Connector->ExecuteJavascript(ScrollToScript, std::string(), std::string("[]"));
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        JsonParser Parser;
+        std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+        this->UpdateScrolls(TextResult);
+        std::size_t pos = TextResult.find(",");
+        int X = -1, Y = -1;
+        if(pos != std::string::npos)
+        {
+            std::string x_string = TextResult.substr(0,pos);
+            std::string y_string = TextResult.substr(pos + 1,TextResult.length() - pos - 1);
+            X = std::stoi(x_string);
+            Y = std::stoi(y_string);
+        }
+
+        BrowserEventsEmulator::MouseClick(Data->Connector,X,Y,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
+        this->SendTextResponce("<MouseClickDown></MouseClickDown>");
+    }); 
 }
 
 
@@ -1276,66 +1296,92 @@ void MainApp::PopupInfoCallback()
 
 void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll)
 {
-    WORKER_LOG(std::string("MouseMoveCallback<<") + std::to_string(x) + std::string("<<") + std::to_string(y) + std::string("<<") + std::to_string(speed) + std::string("<<") + std::to_string(gravity) + std::string("<<") + std::to_string(deviation) + std::string("<<") + std::to_string(iscoordinates));
-    if(_HandlersManager->GetBrowser())
+    DoMouseUpOnFinishMove = domouseup;
+    MouseReleaseRadius = release_radius;
+    ScrollTrackingX = 0;
+    ScrollTrackingY = 0;
+    ScrollStopTrackingStart = 0;
+    ScrollStopTracking = 0;
+    DoTrackScroll = track_scroll;
+    MouseStartX = Data->CursorX;
+    MouseStartY = Data->CursorY;
+    if(speed>=-0.01)
     {
-        BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-        LastCommand.CommandName = "_mousemove";
-        LastCommand.CommandParam1 = std::to_string(x);
-        LastCommand.CommandParam2 = std::to_string(y);
-        DoMouseUpOnFinishMove = domouseup;
-        MouseReleaseRadius = release_radius;
-        ScrollTrackingX = 0;
-        ScrollTrackingY = 0;
-        ScrollStopTrackingStart = 0;
-        ScrollStopTracking = 0;
-        DoTrackScroll = track_scroll;
-        MouseStartX = Data->CursorX;
-        MouseStartY = Data->CursorY;
-        if(speed>=-0.01)
-        {
-            MouseSpeed = speed;
-        }else
-        {
-            MouseSpeed = 100.0;
-        }
-        if(gravity>=-0.01)
-        {
-            MouseGravity = gravity;
-        }else
-        {
-            MouseGravity = 6.0;
-        }
-        if(deviation>=-0.01)
-        {
-            MouseDeviation = deviation;
-        }else
-        {
-            MouseDeviation = 2.5;
-        }
-        MouseEndX = x;
-        MouseEndY = y;
-        if(relative_coordinates)
-        {
-            IsMouseMoveSimulation = true;
-            if(Settings->EmulateMouse())
-            {
-                int t1,t2;
-                BrowserEventsEmulator::MouseMove(Data->Connector, IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,Data->IsMousePress,Data->IsDrag, Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
-            }
-        }else
-        {
-            IsLastCommandNull = false;
-            std::string AllowOutOfBounds = iscoordinates ? "true" : "false";
-            _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + AllowOutOfBounds + std::string(")"),"main"),"", 0);
-        }
-
-
+        MouseSpeed = speed;
     }else
     {
-        Data->CursorX = x;
-        Data->CursorY = y;
-        SendTextResponce("<MouseMove></MouseMove>");
+        MouseSpeed = 100.0;
+    }
+    if(gravity>=-0.01)
+    {
+        MouseGravity = gravity;
+    }else
+    {
+        MouseGravity = 6.0;
+    }
+    if(deviation>=-0.01)
+    {
+        MouseDeviation = deviation;
+    }else
+    {
+        MouseDeviation = 2.5;
+    }
+    MouseEndX = x;
+    MouseEndY = y;
+    if(relative_coordinates)
+    {
+        IsMouseMoveSimulation = true;
+        if(Settings->EmulateMouse())
+        {
+            int t1,t2;
+            BrowserEventsEmulator::MouseMove(Data->Connector, IsMouseMoveSimulation, MouseStartX, MouseStartY, MouseEndX, MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,Data->IsMousePress,Data->IsDrag, Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
+        }
+    }else
+    {
+        std::string AllowOutOfBounds = iscoordinates ? "true" : "false";
+
+        std::string ScrollToScript = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(",") + AllowOutOfBounds + std::string(")"), "main");
+    
+        Async Result = Data->Connector->ExecuteJavascript(ScrollToScript, std::string(), std::string("[]"));
+        Data->Results->ProcessResult(Result);
+        Result->Then([this](AsyncResult* Result)
+        {
+            JsonParser Parser;
+            std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+            this->UpdateScrolls(TextResult);
+            std::size_t pos = TextResult.find(",");
+            int X = -1, Y = -1;
+            if(pos != std::string::npos)
+            {
+                std::string x_string = TextResult.substr(0,pos);
+                std::string y_string = TextResult.substr(pos + 1,TextResult.length() - pos - 1);
+                X = std::stoi(x_string);
+                Y = std::stoi(y_string);
+            }
+
+            if(X < 0)
+            {
+                this->MouseEndX = X;
+            }else
+            {
+                this->MouseEndX = X - this->Data->ScrollX;
+            }
+
+            if(Y < 0)
+            {
+                this->MouseEndY = Y;
+            }else
+            {
+                this->MouseEndY = Y - this->Data->ScrollY;
+            }
+
+            this->IsMouseMoveSimulation = true;
+            if(this->Settings->EmulateMouse())
+            {
+                int t1,t2;
+                BrowserEventsEmulator::MouseMove(this->Data->Connector, this->IsMouseMoveSimulation, this->MouseStartX, this->MouseStartY, this->MouseEndX, this->MouseEndY, t1, t2, 0, 0, 0, 0, 0, 0, true, true,this->Data->IsMousePress,this->Data->IsDrag, this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+            }
+        });
     }
 }
 

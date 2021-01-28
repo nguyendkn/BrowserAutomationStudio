@@ -1173,17 +1173,30 @@ void MainApp::LoadSuccessCallback()
 
 void MainApp::MouseClickCallback(int x, int y)
 {
-    std::string ScrollToScript = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"), "main");
+    std::string ScrollToScript = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"), "main");
     
     Async Result = Data->Connector->ExecuteJavascript(ScrollToScript, std::string(), std::string("[]"));
     Data->Results->ProcessResult(Result);
-    Result->Then([this,x,y](AsyncResult* Result)
+    Result->Then([this](AsyncResult* Result)
     {
+        JsonParser Parser;
+        std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+        this->UpdateScrolls(TextResult);
+        std::size_t pos = TextResult.find(",");
+        int X = -1, Y = -1;
+        if(pos != std::string::npos)
+        {
+            std::string x_string = TextResult.substr(0,pos);
+            std::string y_string = TextResult.substr(pos + 1,TextResult.length() - pos - 1);
+            X = std::stoi(x_string);
+            Y = std::stoi(y_string);
+        }
+
         this->DelayClickType = 1;
         this->DelayNextClick = clock() + 80 + (rand()) % 40;
-        this->DelayClickX = x;
-        this->DelayClickY = y;
-        BrowserEventsEmulator::MouseClick(this->Data->Connector,x,y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        this->DelayClickX = X;
+        this->DelayClickY = Y;
+        BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
         this->SendTextResponce("<MouseClick></MouseClick>");
     });
 }

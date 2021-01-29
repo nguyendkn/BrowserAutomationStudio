@@ -999,7 +999,7 @@ function _normalize_url(url_string, user_options){
 		}).forEach(function(key){
 			obj_sorted[key] = url_obj.query[key];
 		});
-		url_obj.query = obj_sorted;
+		url_obj.set('query', obj_sorted);
 	};
 
 	if(options.remove_trailing_slash){
@@ -1080,7 +1080,7 @@ function _url(address, user_options){
 		[NaN, 'hostname', undefined, 1, 1]
 	];
 	var ignore = {hash:1,query:1};
-	var required = function(port, protocol){
+	this.required = function(port, protocol){
 		protocol = protocol.split(':')[0];
 		port = +port;
 
@@ -1236,7 +1236,7 @@ function _url(address, user_options){
 		url.pathname = resolve(url.pathname, base_url.pathname);
 	};
 	
-	if(!required(url.port, url.protocol)){
+	if(!url.required(url.port, url.protocol)){
 		url.host = url.hostname;
 		url.port = '';
 	};
@@ -1282,7 +1282,7 @@ _url.prototype.set = function(part, value, fn){
 			break;
 		case 'port':
 			url[part] = value;
-			if(!required(value, url.protocol)){
+			if(!url.required(value, url.protocol)){
 				url.host = url.hostname;
 				url[part] = '';
 			}else if(value){

@@ -752,6 +752,7 @@ void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text
         {
             character_length = RETURN.length();
             InputString = CharacterEnter;
+            is_special_letter = false;
         }else if(text_whcar.rfind(CAPITAL, 0) == 0)
         {
             character_length = CAPITAL.length();

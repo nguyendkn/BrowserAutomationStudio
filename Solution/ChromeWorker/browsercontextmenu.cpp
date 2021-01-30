@@ -127,13 +127,13 @@ void SourceSaver::Visit(const CefString& string)
     ShellExecute(0, 0, L"source.txt", 0, 0 , SW_SHOW );
 }
 
-void BrowserContextMenu::Input(CefRefPtr<CefBrowser> Browser, const std::string Text)
+void BrowserContextMenu::Input(DevToolsConnector* Connector, const std::string Text)
 {
     std::string TextCurrent = Text;
     KeyState State;
     while(true)
     {
-        BrowserEventsEmulator::Key(Browser, TextCurrent, State, LastClickX, LastClickY, false);
+        BrowserEventsEmulator::Key(Connector, TextCurrent, State, LastClickX, LastClickY, false);
         if(TextCurrent.length() == 0 && State.IsClear() && !State.IsPresingCharacter())
         {
             return;
@@ -207,44 +207,42 @@ void BrowserContextMenu::ShowFindDialog(HWND hwnd)
     find_hwnd_ = FindText(&find_state_);
 }
 
-void BrowserContextMenu::Process(HWND hwnd, int Command, CefRefPtr<CefBrowser> Browser)
+void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Connector)
 {
-    if(!Browser)
-        return;
-
+    
     if(Command == IdBackward)
     {
-        Browser->GoBack();
+        //Browser->GoBack();
     }else if(Command == IdForward)
     {
-        Browser->GoForward();
+        //Browser->GoForward();
     }else if(Command == IdReload)
     {
-        Browser->Reload();
+        //Browser->Reload();
     }else if(Command == IdGetPageSource)
     {
-        if(!_SourceSaver)
+        /*if(!_SourceSaver)
             _SourceSaver = new SourceSaver();
-        Browser->GetMainFrame()->GetSource(_SourceSaver);
+        Browser->GetMainFrame()->GetSource(_SourceSaver);*/
     }else if(Command == IdOpenDeveloperTools)
     {
-        CefWindowInfo window_info;
+        /*CefWindowInfo window_info;
         window_info.SetAsPopup(0, "Developer tools");
         CefBrowserSettings browser_settings;
-        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(0,0));
+        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(0,0));*/
     }else if(Command == IdInspectElement)
     {
-        CefWindowInfo window_info;
+        /*CefWindowInfo window_info;
         window_info.SetAsPopup(0, "Developer tools");
         CefBrowserSettings browser_settings;
-        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(LastClickX,LastClickY));
+        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(LastClickX,LastClickY));*/
     }else if(Command == IdCopyLinkLocation)
     {
         SetClipboard(Url);
 
     }else if(Command == IdOpenLinkInANewTab)
     {
-        Input(Browser, "<CONTROL><MOUSELEFT>");
+        Input(Connector, "<CONTROL><MOUSELEFT>");
 
     }else if(Command == IdCopyUrl)
     {
@@ -252,35 +250,35 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, CefRefPtr<CefBrowser> B
 
     }else if(Command == IdCopyText)
     {
-        Input(Browser, "<CONTROL>c");
+        Input(Connector, "<CONTROL>c");
     }else if(Command == IdFindInGoogle)
     {
-        std::string Text = picojson::value(LastSelectText).serialize();
+        /*std::string Text = picojson::value(LastSelectText).serialize();
         std::string Script = std::string("window.open(\"https://www.google.com/search?q=\" + encodeURIComponent(") + Text + std::string("))");
-        Browser->GetMainFrame()->ExecuteJavaScript(Script,"",0);
+        Browser->GetMainFrame()->ExecuteJavaScript(Script,"",0);*/
     }
     else if(Command == IdCutEditable)
     {
-        Input(Browser, "<CONTROL>x");
+        Input(Connector, "<CONTROL>x");
     }else if(Command == IdCopyEditable)
     {
-        Input(Browser, "<CONTROL>c");
+        Input(Connector, "<CONTROL>c");
     }else if(Command == IdPasteEditable)
     {
-        Input(Browser, "<CONTROL>v");
+        Input(Connector, "<CONTROL>v");
     }else if(Command == IdSelectAllEditable)
     {
-        Input(Browser, "<CONTROL>a");
+        Input(Connector, "<CONTROL>a");
     }else if(Command == IdFind)
     {
         ShowFindDialog(hwnd);
 
     }else if(Command == IdSaveAs)
     {
-        Browser->GetHost()->StartDownload(UrlMedia);
+        //Browser->GetHost()->StartDownload(UrlMedia);
     }else if(Command == IdSavePageAs)
     {
-        Browser->GetHost()->StartDownload(Browser->GetMainFrame()->GetURL());
+        //Browser->GetHost()->StartDownload(Browser->GetMainFrame()->GetURL());
     }
 
 

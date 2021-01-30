@@ -598,36 +598,35 @@ int BrowserEventsEmulator::GetNativeCode(int key)
     return 0;
 }
 
-void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
+void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
 {
-    if(!Browser)
-        return;
+    MouseButton CurrentMouseState = MouseButtonNone;
+
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
 
     if(State.IsPresingKey)
     {
         if(State.IsClickingMouse)
         {
-            CefMouseEvent e;
-            e.x = State.MouseUpX;
-            e.y = State.MouseUpY;
-            e.modifiers = State.MouseUpModifiers;
-
-            Browser->GetHost()->SendMouseClickEvent(e,(State.MouseUpIsRight) ? MBT_RIGHT : MBT_LEFT,true,1);
-
+            CurrentMouseState = (State.MouseUpIsRight) ? MouseButtonRight : MouseButtonLeft;
+            Connector->Mouse(MouseEventUp,State.MouseUpX,State.MouseUpY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
         }else
         {
-            CefKeyEvent event;
-            event.type = KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = State.PresingKey;
-            event.native_key_code = GetNativeCode(State.PresingKey);
-            event.is_system_key = false;
-            event.character = 0;
-            event.unmodified_character = 0;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key(KeyEventUp,State.PresingString,CurrentKeyState);
         }
-
         State.IsPresingKey = false;
         State.IsClickingMouse = false;
         return;
@@ -672,6 +671,7 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
     unsigned char key = 0;
     char state = -1;
     wchar_t letter_wchar;
+    std::string InputString;
     bool ismouse = false;
     bool ismouseup = false;
     bool ismouseleft = false;
@@ -737,88 +737,80 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
         }else if(text_whcar.rfind(CANCEL, 0) == 0)
         {
             character_length = CANCEL.length();
-            letter_wchar = key = VK_CANCEL;
         }else if(text_whcar.rfind(BACK, 0) == 0)
         {
             character_length = BACK.length();
-            letter_wchar = key = VK_BACK;
+            InputString = CharacterBackspace;
         }else if(text_whcar.rfind(TAB, 0) == 0)
         {
             character_length = TAB.length();
-            letter_wchar = key = VK_TAB;
+            InputString = CharacterTab;
         }else if(text_whcar.rfind(CLEAR, 0) == 0)
         {
             character_length = CLEAR.length();
-            letter_wchar = key = VK_CLEAR;
         }else if(text_whcar.rfind(RETURN, 0) == 0)
         {
             character_length = RETURN.length();
-            letter_wchar = key = VK_RETURN;
-            is_special_letter = false;
+            InputString = CharacterEnter;
         }else if(text_whcar.rfind(CAPITAL, 0) == 0)
         {
             character_length = CAPITAL.length();
-            letter_wchar = key = VK_CAPITAL;
         }else if(text_whcar.rfind(ESCAPE, 0) == 0)
         {
             character_length = ESCAPE.length();
-            letter_wchar = key = VK_ESCAPE;
+            InputString = CharacterEscape;
         }else if(text_whcar.rfind(PRIOR, 0) == 0)
         {
             character_length = PRIOR.length();
-            letter_wchar = key = VK_PRIOR;
+            InputString = CharacterPageUp;
         }else if(text_whcar.rfind(NEXT, 0) == 0)
         {
             character_length = NEXT.length();
-            letter_wchar = key = VK_NEXT;
+            InputString = CharacterPageDown;
         }else if(text_whcar.rfind(END, 0) == 0)
         {
             character_length = END.length();
-            letter_wchar = key = VK_END;
+            InputString = CharacterEnd;
         }else if(text_whcar.rfind(HOME, 0) == 0)
         {
             character_length = HOME.length();
-            letter_wchar = key = VK_HOME;
+            InputString = CharacterHome;
         }else if(text_whcar.rfind(LEFT, 0) == 0)
         {
             character_length = LEFT.length();
-            letter_wchar = key = VK_LEFT;
+            InputString = CharacterLeft;
         }else if(text_whcar.rfind(UP, 0) == 0)
         {
             character_length = UP.length();
-            letter_wchar = key = VK_UP;
+            InputString = CharacterUp;
         }else if(text_whcar.rfind(RIGHT, 0) == 0)
         {
             character_length = RIGHT.length();
-            letter_wchar = key = VK_RIGHT;
+            InputString = CharacterRight;
         }else if(text_whcar.rfind(DOWN, 0) == 0)
         {
             character_length = DOWN.length();
-            letter_wchar = key = VK_DOWN;
+            InputString = CharacterDown;
         }else if(text_whcar.rfind(SELECT, 0) == 0)
         {
             character_length = SELECT.length();
-            letter_wchar = key = VK_SELECT;
         }else if(text_whcar.rfind(PRINT, 0) == 0)
         {
             character_length = PRINT.length();
-            letter_wchar = key = VK_PRINT;
         }else if(text_whcar.rfind(EXECUTE, 0) == 0)
         {
             character_length = EXECUTE.length();
-            letter_wchar = key = VK_EXECUTE;
         }else if(text_whcar.rfind(SNAPSHOT, 0) == 0)
         {
             character_length = SNAPSHOT.length();
-            letter_wchar = key = VK_SNAPSHOT;
         }else if(text_whcar.rfind(INSERT, 0) == 0)
         {
             character_length = INSERT.length();
-            letter_wchar = key = VK_INSERT;
+            InputString = CharacterInsert;
         }else if(text_whcar.rfind(_DELETE, 0) == 0)
         {
             character_length = _DELETE.length();
-            letter_wchar = key = VK_DELETE;
+            InputString = CharacterDelete;
         }else
         {
             is_special_letter = false;
@@ -837,6 +829,11 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
                 state = c >> 8;
                 index ++;
             }
+
+
+            std::wstring InputWString;
+            InputWString.push_back(letter_wchar);
+            InputString = ws2s(InputWString);
         }
     }
 
@@ -852,163 +849,125 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
     }
 
     if(AdditionalIsShift)
+    {
         IsShift = true;
+    }
 
     if(AdditionalIsAlt)
+    {
         IsAlt = true;
+    }
 
     if(AdditionalIsCtrl)
+    {
         IsCtrl = true;
+    }
+
+
+    CurrentKeyState = KeyboardModifiersNone;
+
+    if(IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
 
     if(!ismouse)
     {
         if(IsShift != State.IsShift)
         {
             State.IsShift = IsShift;
-            CefKeyEvent event;
-            event.type = (IsShift) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = VK_SHIFT;
-            event.native_key_code = 42;
-            event.is_system_key = false;
-            event.character = VK_SHIFT;
-            event.unmodified_character = VK_SHIFT;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key((IsShift) ? KeyEventDown : KeyEventUp,CharacterShift,CurrentKeyState);
             return;
         }
 
         if(IsAlt != State.IsAlt)
         {
             State.IsAlt = IsAlt;
-            CefKeyEvent event;
-            event.type = (IsAlt) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = VK_MENU;
-            event.native_key_code = 56;
-            event.is_system_key = false;
-            event.character = VK_MENU;
-            event.unmodified_character = VK_MENU;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key((IsAlt) ? KeyEventDown : KeyEventUp,CharacterAlt,CurrentKeyState);
             return;
         }
 
         if(IsCtrl != State.IsCtrl)
         {
             State.IsCtrl = IsCtrl;
-            CefKeyEvent event;
-            event.type = (IsCtrl) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = VK_CONTROL;
-            event.native_key_code = 29;
-            event.is_system_key = false;
-            event.character = VK_CONTROL;
-            event.unmodified_character = VK_CONTROL;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key((IsCtrl) ? KeyEventDown : KeyEventUp,CharacterCtrl,CurrentKeyState);
             return;
         }
 
         if(ismouseleft)
         {
-            CefMouseEvent e;
-            e.x = mousex;
-            e.y = mousey;
-            e.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
+            CurrentMouseState = MouseButtonLeft;
 
-            Browser->GetHost()->SendMouseClickEvent(e,MBT_LEFT,false,MouseClickTimes);
+            Connector->Mouse(MouseEventDown,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
 
             if(MouseClickTimes == 1)
             {
                 //Postpond mouse up
                 State.IsClickingMouse = true;
                 State.MouseUpIsRight = false;
-                State.MouseUpX = e.x;
-                State.MouseUpY = e.y;
-                State.MouseUpModifiers = e.modifiers;
+                State.MouseUpX = mousex;
+                State.MouseUpY = mousey;
                 State.IsPresingKey = true;
 
             }else
             {
-                //Mouse up immediatelly
-                Browser->GetHost()->SendMouseClickEvent(e,MBT_LEFT,true,MouseClickTimes);
+                //Mouse up immediatelly                
+                Connector->Mouse(MouseEventUp,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
             }
 
 
         }
         else if(ismouseright)
         {
-            CefMouseEvent e;
-            e.x = mousex;
-            e.y = mousey;
-            e.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
+            CurrentMouseState = MouseButtonRight;
 
-            Browser->GetHost()->SendMouseClickEvent(e,MBT_RIGHT,false,MouseClickTimes);
+            Connector->Mouse(MouseEventDown,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
 
             if(MouseClickTimes == 1)
             {
                 //Postpond mouse up
                 State.IsClickingMouse = true;
-                State.MouseUpIsRight = true;
-                State.MouseUpX = e.x;
-                State.MouseUpY = e.y;
-                State.MouseUpModifiers = e.modifiers;
+                State.MouseUpIsRight = false;
+                State.MouseUpX = mousex;
+                State.MouseUpY = mousey;
                 State.IsPresingKey = true;
 
             }else
             {
-                //Mouse up immediatelly
-                Browser->GetHost()->SendMouseClickEvent(e,MBT_RIGHT,true,MouseClickTimes);
+                //Mouse up immediatelly                
+                Connector->Mouse(MouseEventUp,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
             }
         }else
         {
 
             //Main key down
             {
-                CefKeyEvent event;
-                event.type = KEYEVENT_KEYDOWN;
-                event.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-                event.windows_key_code = key;
-                event.native_key_code = GetNativeCode(key);
-                event.is_system_key = false;
-                event.character = 0;
-                event.unmodified_character = 0;
-                event.focus_on_editable_field = true;
-                Browser->GetHost()->SendKeyEvent(event);
+                Connector->Key(KeyEventDown,InputString,CurrentKeyState);
             }
             //Main key press
-            if(!is_special_letter)
+            if(!is_special_letter && !IsCtrl && !IsAlt)
             {
-                CefKeyEvent event;
-                event.type = KEYEVENT_CHAR;
-                event.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-                event.windows_key_code = letter_wchar;
-                event.native_key_code = GetNativeCode(key);
-                event.is_system_key = false;
-                event.character = 0;
-                event.unmodified_character = 0;
-                event.focus_on_editable_field = true;
-                Browser->GetHost()->SendKeyEvent(event);
+                Connector->Key(KeyEventCharacter,InputString,CurrentKeyState);
             }
             //Main key up delay
 
 
             State.IsClickingMouse = false;
             State.IsPresingKey = true;
-            State.PresingCharacter = letter_wchar;
-            State.PresingKey = key;
-
-
+            State.PresingString = InputString;
         }
     }
     else
     {
-        CefMouseEvent e;
-        e.x = mousex;
-        e.y = mousey;
-        int deltay = (ismouseup) ? 100 : -100;
-        Browser->GetHost()->SendMouseWheelEvent(e,0,deltay);
+        Connector->Wheel(mousex, mousey, ismouseup);
     }
 
     text_whcar.erase(text_whcar.begin(),text_whcar.begin() + character_length);

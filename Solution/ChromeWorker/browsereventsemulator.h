@@ -13,11 +13,9 @@ struct KeyState
     bool IsCtrl;
 
     bool IsPresingKey;
-    int PresingKey;
-    char16 PresingCharacter;
+    std::string PresingString;
     clock_t PresingKeyNext;
 
-    uint32 MouseUpModifiers;
     int MouseUpX;
     int MouseUpY;
     bool MouseUpIsRight;
@@ -58,7 +56,7 @@ public:
     static void MouseMoveLine(DevToolsConnector* Connector, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight,bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State);
     static bool IsPointOnScreen(int PointX, int PointY, int ScrollX, int ScrollY, int BrowserWidth, int BrowserHeight);
     static int GetNativeCode(int key);
-    static void Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch);
+    static void Key(DevToolsConnector* Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch);
 };
 
 #endif // BROWSEREVENTSEMULATOR_H

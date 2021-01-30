@@ -2055,7 +2055,7 @@ void MainApp::ProcessContextMenu(int MenuId)
 {
     if(_HandlersManager->GetBrowser())
     {
-        Data->_BrowserContextMenu.Process(Data->_MainWindowHandle, MenuId, _HandlersManager->GetBrowser());
+        Data->_BrowserContextMenu.Process(Data->_MainWindowHandle, MenuId, Data->Connector);
     }
 }
 
@@ -2859,6 +2859,26 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
         });
     }
+
+    if(LastCommand.CommandName == "type")
+    {
+        TypeText = ReplaceAll(LastCommand.CommandParam1,"\r\n","<RETURN>");
+        TypeText = ReplaceAll(TypeText,"\n","<RETURN>");
+
+        TypeTextDelay = std::stoi(LastCommand.CommandParam2);
+
+        if(TypeText == "<CONTROL>a<DELETE>")
+        {
+            TypeText = "<CONTROL>a<BACK>";
+            TypeTextDelay = 30;
+        }
+
+        TypeTextTaskIsActive = true;
+        TypeTextIsFirstLetter = false;
+        TypeTextLastTime = 0;
+        TypeTextState.Clear();
+    }
+            
 
 }
 
@@ -5164,7 +5184,7 @@ void MainApp::ExecuteTypeText()
     {
         if(CurrentTime > TypeTextState.PresingKeyNext)
         {
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
+            BrowserEventsEmulator::Key(Data->Connector,TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
             if(TypeText.length() == 0 && TypeTextState.IsClear())
             {
                 //Nothing more to type
@@ -5185,7 +5205,6 @@ void MainApp::ExecuteTypeText()
     if(TypeTextIsFirstLetter && DelayClickType == 3 && DelayNextClick == 0)
     {
         DelayNextClick = clock() + 80 + (rand()) % 40;
-        BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
         BrowserEventsEmulator::MouseClick(Data->Connector,TypeTextX,TypeTextY,GetScrollPosition(),2,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
         return;
     }
@@ -5220,7 +5239,7 @@ void MainApp::ExecuteTypeText()
         {
             for(int i = 0;i<1000;i++)
             {
-                BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
+                BrowserEventsEmulator::Key(Data->Connector,TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
 
                 if(TypeText.length() == 0 && TypeTextState.IsClear() && !TypeTextState.IsPresingCharacter())
                 {
@@ -5247,7 +5266,7 @@ void MainApp::ExecuteTypeText()
         //Print all letters instantly
         for(int i = 0;i<1000;i++)
         {
-            BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
+            BrowserEventsEmulator::Key(Data->Connector,TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
             if(TypeText.length() == 0 && TypeTextState.IsClear() && !TypeTextState.IsPresingCharacter())
             {
                 TypeTextTaskIsActive = false;
@@ -5262,7 +5281,7 @@ void MainApp::ExecuteTypeText()
     }else
     {
         //Print one letter
-        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
+        BrowserEventsEmulator::Key(Data->Connector,TypeText,TypeTextState,Data->CursorX,Data->CursorY,Data->IsTouchScreen);
         TypeTextDelayCurrent = TypeTextDelay + (rand()) % ((int)(TypeTextDelay * 1.6)) - (int)(TypeTextDelay * 0.8);
     }
 
@@ -5284,69 +5303,52 @@ void MainApp::ExecuteTypeText()
 
 void MainApp::ScrollUp()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-        KeyState TypeTextState;
-        std::string KeyText = "<MOUSESCROLLUP>";
-        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
-
+        Data->_Inspect.active = false;
     }
+    KeyState TypeTextState;
+    std::string KeyText = "<MOUSESCROLLUP>";
+    BrowserEventsEmulator::Key(Data->Connector,KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
 }
+
 void MainApp::ScrollDown()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-
-        KeyState TypeTextState;
-        std::string KeyText = "<MOUSESCROLLDOWN>";
-
-        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
-
+        Data->_Inspect.active = false;
     }
+
+    KeyState TypeTextState;
+    std::string KeyText = "<MOUSESCROLLDOWN>";
+
+    BrowserEventsEmulator::Key(Data->Connector,KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
 }
 
 void MainApp::ScrollUpUp()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-
-        KeyState TypeTextState;
-        std::string KeyText = "<HOME>";
-        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
+        Data->_Inspect.active = false;
     }
+
+    KeyState TypeTextState;
+    std::string KeyText = "<HOME>";
+    BrowserEventsEmulator::Key(Data->Connector,KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
 }
 void MainApp::ScrollDownDown()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-
-        KeyState TypeTextState;
-        std::string KeyText = "<END>";
-
-        BrowserEventsEmulator::Key(_HandlersManager->GetBrowser(),KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
-
+        Data->_Inspect.active = false;
     }
+
+    KeyState TypeTextState;
+    std::string KeyText = "<END>";
+
+    BrowserEventsEmulator::Key(Data->Connector,KeyText,TypeTextState,Data->CursorX,Data->CursorY,false);
 }
+
 void MainApp::ScrollLeft()
 {
     if(_HandlersManager->GetBrowser())

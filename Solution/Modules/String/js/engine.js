@@ -74,20 +74,20 @@ function _get_type(value){
 function _validate_argument_type(value, type, name, act){
 	var value_type = _get_type(value);
 	if(Array.isArray(type) ? type.filter(function(t){return value_type===t}).length < 1 : value_type!==type){
-		fail(act + ': ' + (_K==="ru" ? ('Аргумент "' + tr(name) + '" должен быть ' + _tr_type_name(type) + ', а не ') : ('The "' + tr(name) + '" argument must be a ' + _tr_type_name(type) + ', not ')) + _tr_type_name(value_type));
+		fail((_is_nilb(act) ? '' : act + ': ') + (_K==="ru" ? ('Аргумент "' + tr(name) + '" должен быть ' + _tr_type_name(type) + ', а не ') : ('The "' + tr(name) + '" argument must be a ' + _tr_type_name(type) + ', not ')) + _tr_type_name(value_type));
 	};
 };
-function _is_nil(str){
-	return typeof str==="undefined" || str===null;
+function _is_nil(data){
+	return typeof data==="undefined" || data===null;
 };
-function _is_nilb(str){
-	return _is_nil(str) || str==="";
+function _is_nilb(data){
+	return _is_nil(data) || data==="";
 };
-function _avoid_nil(str, def){
-	return _is_nil(str) ? _avoid_nil(def, "") : str;
+function _avoid_nil(data, def){
+	return _is_nil(data) ? _avoid_nil(def, "") : data;
 };
-function _avoid_nilb(str, def){
-	return _is_nilb(str) ? _avoid_nil(def, "") : str;
+function _avoid_nilb(data, def){
+	return _is_nilb(data) ? _avoid_nil(def, "") : data;
 };
 function _uniq_arr(arr){
 	_validate_argument_type(arr, 'array', 'Array', '_uniq_arr');
@@ -135,7 +135,7 @@ function _is_not_empty_string(data){
 	return _is_string(data) && data.length > 0;
 };
 function _from_string(str){
-    return (typeof str=="string" && str!=="") ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
+    return _is_not_empty_string(str) ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
 };
 function _to_string(data){
 	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp) && !(data instanceof _url) && !(data instanceof _ua)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? data.source : data.toString())));
@@ -696,23 +696,23 @@ function _regexp_extract_validation(mode, type){
 };
 function _extract_urls(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_urls');
-	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "url")), [])));
+	return _uniq_arr(_trim_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "url")), [])));
 };
 function _extract_emails(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_emails');
-	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "email")), [])));
+	return _uniq_arr(_trim_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "email")), [])));
 };
 function _extract_phone_numbers(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_phone_numbers');
-	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "phone")), [])));
+	return _uniq_arr(_trim_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "phone")), [])));
 };
 function _extract_ips(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_ips');
-	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "ip")), [])));
+	return _uniq_arr(_trim_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "ip")), [])));
 };
 function _extract_files(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_files');
-	return _trim_arr(_uniq_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "file")), [])));
+	return _uniq_arr(_trim_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "file")), [])));
 };
 function _validate_url(str){
 	_validate_argument_type(str, 'string', 'String', '_validate_url');

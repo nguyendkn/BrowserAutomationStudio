@@ -735,7 +735,7 @@ function _validate_file(str){
 	return _regexp_extract_validation("validate", "file").test(str);
 };
 function _normalize_phone_number(phone_number){
-	_validate_argument_type(str, 'string', 'Phone number', '_normalize_phone_number');
+	_validate_argument_type(phone_number, 'string', 'Phone number', '_normalize_phone_number');
 	var nums = '';
 	for(var i = 0; i < phone_number.length; i++){
 		var e = phone_number.charAt(i);

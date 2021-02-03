@@ -2927,7 +2927,67 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             IsLastCommandNull = true;
         });
     }
-            
+
+    if(LastCommand.CommandName == "clarify")
+    {
+        std::string Path = LastCommand.SerializePath();
+        std::string x = LastCommand.CommandParam1;
+        std::string y = LastCommand.CommandParam2;
+        
+        std::string get_point;
+        if(Settings->EmulateMouse())
+        {
+            get_point = std::string("var x=0;for(var i=0;i<10;i++){x+=Math.random()*((rect.right-2-rect.left+1)/10);};x=Math.floor(x)+rect.left+1;if(x>rect.right-1)x=rect.right-1;if(x<rect.left+1)x=rect.left+1;"
+                                    "var y=0;for(var i=0;i<10;i++){y+=Math.random()*((rect.bottom-2-rect.top+1)/10);};y=Math.floor(y)+rect.top+1;if(y>rect.bottom-1)y=rect.bottom-1;if(y<rect.top+1)y=rect.top+1;");
+        }else
+        {
+            get_point = std::string("var x=Math.floor((rect.right + rect.left)/2);"
+                                    "var y=Math.floor((rect.bottom + rect.top)/2);");
+        }
+        std::string script = std::string("{if(!self)throw 'BAS_NOT_EXISTS';"
+                                "var items=self.getClientRects();if(items.length == 0){throw 'BAS_NOT_EXISTS'};"
+                                "var len = items.length;"
+                                "for(var i = 0;i<len;i++)"
+                                "{"
+                                    "var item = items[i];"
+                                    "var x = ") + x + std::string(" - positionx - scrollx") + std::string(
+                                    ";var y = ") + y + std::string(" - positiony - scrolly") + std::string(
+                                    ";if(y >= item.top && y <= item.bottom && x >= item.left && x <= item.right)"
+                                    "{"
+                                        "[[RESULT]] = '';"
+                                        "return;"
+                                    "}"
+                                "}"
+                                "var rect=items[Math.floor(Math.random()*items.length)];")
+                                + get_point +
+                                std::string("x+=positionx + scrollx;"
+                                "y+=positiony + scrolly;"
+                                "[[RESULT]]=x+','+y;"
+                                "}");
+        
+        script = Javascript(script,"main");
+
+        Async Result = Data->Connector->ExecuteJavascript(script,std::string(),Path,true);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        {
+            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
+            }
+            JsonParser Parser;
+            std::string Data = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+            xml_encode(Data);
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
+        });
+    }
+          
 
 }
 

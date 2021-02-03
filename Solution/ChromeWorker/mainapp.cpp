@@ -2597,12 +2597,15 @@ void MainApp::ClearElementCommand()
 }
 void MainApp::ElementCommandCallback(const ElementCommand &Command)
 {
+    ClearElementCommand();
+    LastCommandCopy = Command;
     LastCommand = Command;
+    IsLastCommandNull = false;
 
     if(LastCommand.CommandName == "script2")
     {
-        std::string Script = Javascript(LastCommand.CommandParam1,"main");
-        std::string Variables = Javascript(LastCommand.CommandParam2,"main");
+        std::string Script = std::string("if(!self)throw 'BAS_NOT_EXISTS';") + Javascript(LastCommand.CommandParam1,"main");
+        std::string Variables = LastCommand.CommandParam2;
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,Variables,Path);
         Data->Results->ProcessResult(Result);
@@ -2612,15 +2615,21 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
         Result->Then([this, CommandId, CommandName](AsyncResult* Result)
         {
+            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
+            }
             std::string Data = Result->GetRawData();
             xml_encode(Data);
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
         });
     }
 
     if(LastCommand.CommandName == "script")
     {
-        std::string Script = Javascript(std::string("[[RESULT]] = ") + LastCommand.CommandParam1 + std::string(";[[RESULT]] = [[RESULT]].toString();"),"main");
+        std::string Script = std::string("if(!self)throw 'BAS_NOT_EXISTS';") + Javascript(std::string("[[RESULT]] = ") + LastCommand.CommandParam1 + std::string(";[[RESULT]] = [[RESULT]].toString();"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
@@ -2641,11 +2650,14 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
                 {
                     Data = Result.get<std::string>();
                 }
-
-
+            }else if(Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
             }
             xml_encode(Data);
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
         });
     }
 
@@ -2675,6 +2687,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             }
             xml_encode(Data);
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
         });
     }
 
@@ -2721,6 +2734,8 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             if(this->BrowserToolbox)
                 this->BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_SetPathCount(") + Data + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
+            IsLastCommandNull = true;
+
         });
     }
 
@@ -2750,12 +2765,13 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             }
             xml_encode(Data);
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
         });
     }
 
     if(LastCommand.CommandName == "xml")
     {
-        std::string Script = Javascript(std::string("[[RESULT]] = self.outerHTML"),"main");
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]] = self.outerHTML"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
@@ -2776,44 +2792,20 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
                 {
                     Data = Result.get<std::string>();
                 }
-            }
-            xml_encode(Data);
-            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
-        });
-    }
-
-    if(LastCommand.CommandName == "xml")
-    {
-        std::string Script = Javascript(std::string("[[RESULT]] = self.outerHTML"),"main");
-
-        std::string Path = LastCommand.SerializePath();
-        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
-        Data->Results->ProcessResult(Result);
-
-        std::string CommandId = LastCommand.CommandId;
-        std::string CommandName = LastCommand.CommandName;
-
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
-        {
-            std::string Data;
-            if(Result->GetIsSuccess())
+            }else if(Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
-                picojson::value v;
-                picojson::parse(v, Result->GetString());
-                picojson::value Result = v.get<picojson::value::object>()["RESULT"];
-                if(Result.is<std::string>())
-                {
-                    Data = Result.get<std::string>();
-                }
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
             }
             xml_encode(Data);
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
         });
     }
 
     if(LastCommand.CommandName == "text")
     {
-        std::string Script = Javascript(std::string("if(self.tagName.toLowerCase()=='input'||self.tagName.toLowerCase()=='textarea')"
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';if(self.tagName.toLowerCase()=='input'||self.tagName.toLowerCase()=='textarea')"
                                                         "[[RESULT]]=self.value;"
                                                     "else "
                                                         "[[RESULT]]=self.textContent;"),"main");
@@ -2837,9 +2829,14 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
                 {
                     Data = Result.get<std::string>();
                 }
+            }else if(Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
             }
             xml_encode(Data);
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
         });
     }
 
@@ -2847,7 +2844,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
     if(LastCommand.CommandName == "focus")
     {
         std::string Path = LastCommand.SerializePath();
-        Async Result = Data->Connector->ExecuteJavascript(std::string(),std::string(),Path,true);
+        Async Result = Data->Connector->ExecuteJavascript(std::string("if(!self)throw 'BAS_NOT_EXISTS'"),std::string(),Path,true);
         Data->Results->ProcessResult(Result);
 
         std::string CommandId = LastCommand.CommandId;
@@ -2855,8 +2852,14 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
         Result->Then([this, CommandId, CommandName](AsyncResult* Result)
         {
+            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
+            }
             std::string Data;
             SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
         });
     }
 
@@ -2877,6 +2880,52 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         TypeTextIsFirstLetter = false;
         TypeTextLastTime = 0;
         TypeTextState.Clear();
+    }
+
+    if(LastCommand.CommandName == "random_point")
+    {
+        std::string Path = LastCommand.SerializePath();
+        
+        std::string get_point;
+        if(Settings->EmulateMouse())
+        {
+            get_point = std::string("var x=0;for(var i=0;i<10;i++){x+=Math.random()*((rect.right-2-rect.left+1)/10);};x=Math.floor(x)+rect.left+1;if(x>rect.right-1)x=rect.right-1;if(x<rect.left+1)x=rect.left+1;"
+                                    "var y=0;for(var i=0;i<10;i++){y+=Math.random()*((rect.bottom-2-rect.top+1)/10);};y=Math.floor(y)+rect.top+1;if(y>rect.bottom-1)y=rect.bottom-1;if(y<rect.top+1)y=rect.top+1;");
+        }else
+        {
+            get_point = std::string("var x=Math.floor((rect.right + rect.left)/2);"
+                                    "var y=Math.floor((rect.bottom + rect.top)/2);");
+        }
+        std::string script = std::string("{if(!self)throw 'BAS_NOT_EXISTS';"
+                                "var items=self.getClientRects();if(items.length == 0){throw 'BAS_NOT_EXISTS'};"
+                                "var rect=items[Math.floor(Math.random()*items.length)];")
+                                + get_point +
+                                std::string("x += positionx + scrollx;"
+                                "y += positiony + scrolly;"
+                                "[[RESULT]]=x+','+y;"
+                                "}");
+        
+        script = Javascript(script,"main");
+
+        Async Result = Data->Connector->ExecuteJavascript(script,std::string(),Path,true);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        {
+            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
+            }
+            JsonParser Parser;
+            std::string Data = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+            xml_encode(Data);
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
+        });
     }
             
 

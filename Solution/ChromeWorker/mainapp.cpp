@@ -2601,6 +2601,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
     LastCommandCopy = Command;
     LastCommand = Command;
     IsLastCommandNull = false;
+    bool IsNoWait = LastCommand.IsNoWait;
 
     if(LastCommand.CommandName == "script2")
     {
@@ -2613,9 +2614,9 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string CommandId = LastCommand.CommandId;
         std::string CommandName = LastCommand.CommandName;
 
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
         {
-            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            if(!IsNoWait && !Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
                 RunElementCommandCallbackOnNextTimer = 100;
                 return;
@@ -2638,7 +2639,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string CommandId = LastCommand.CommandId;
         std::string CommandName = LastCommand.CommandName;
 
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
         {
             std::string Data;
             if(Result->GetIsSuccess())
@@ -2650,7 +2651,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
                 {
                     Data = Result.get<std::string>();
                 }
-            }else if(Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            }else if(!IsNoWait && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
                 RunElementCommandCallbackOnNextTimer = 100;
                 return;
@@ -2780,7 +2781,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string CommandId = LastCommand.CommandId;
         std::string CommandName = LastCommand.CommandName;
 
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
         {
             std::string Data;
             if(Result->GetIsSuccess())
@@ -2792,7 +2793,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
                 {
                     Data = Result.get<std::string>();
                 }
-            }else if(Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            }else if(!IsNoWait && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
                 RunElementCommandCallbackOnNextTimer = 100;
                 return;
@@ -2817,7 +2818,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string CommandId = LastCommand.CommandId;
         std::string CommandName = LastCommand.CommandName;
 
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
         {
             std::string Data;
             if(Result->GetIsSuccess())
@@ -2829,7 +2830,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
                 {
                     Data = Result.get<std::string>();
                 }
-            }else if(Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            }else if(!IsNoWait && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
                 RunElementCommandCallbackOnNextTimer = 100;
                 return;
@@ -2850,9 +2851,9 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string CommandId = LastCommand.CommandId;
         std::string CommandName = LastCommand.CommandName;
 
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
         {
-            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            if(!IsNoWait && !Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
                 RunElementCommandCallbackOnNextTimer = 100;
                 return;
@@ -2913,9 +2914,9 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string CommandId = LastCommand.CommandId;
         std::string CommandName = LastCommand.CommandName;
 
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
         {
-            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            if(!IsNoWait && !Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
                 RunElementCommandCallbackOnNextTimer = 100;
                 return;
@@ -2973,9 +2974,9 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string CommandId = LastCommand.CommandId;
         std::string CommandName = LastCommand.CommandName;
 
-        Result->Then([this, CommandId, CommandName](AsyncResult* Result)
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
         {
-            if(!Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            if(!IsNoWait && !Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
                 RunElementCommandCallbackOnNextTimer = 100;
                 return;

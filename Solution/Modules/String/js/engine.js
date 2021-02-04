@@ -29,6 +29,7 @@ _L["Convert types"] = {"ru":"Преобразовывать типы"};
 _L["List of separators"] = {"ru":"Список разделителей"};
 _L["Thousandth separator"] = {"ru":"Разделитель тысячных"};
 _L["Latinize Cyrillic"] = {"ru":"Латинизировать кириллицу"};
+_L["Phone number mask"] = {"ru":"Маска телефонного номера"};
 _L["Insertable substring"] = {"ru":"Вставляемая подстрока"};
 _L["Result String Length"] = {"ru":"Длина Генерируемой Строки"};
 _L["Capitalize all words"] = {"ru":"Сделать все слова заглавными"};
@@ -758,6 +759,35 @@ function _normalize_phone_number(phone_number){
 	var part3 = nums.slice(-7, -4) + '-' + nums.slice(-4, -2) + '-' + nums.slice(-2);
 	return part1 + part2 + part3;
 };
+function _format_phone_number(phone_number, mask){
+	_validate_argument_type(phone_number, ['string','number'], 'Phone number', '_format_phone_number');
+	phone_number = String(phone_number);
+	_avoid_nilb(mask, '+X (XXX) XXX-XX-XX');
+	_validate_argument_type(phone_number, 'string', 'Phone number mask', '_format_phone_number');
+    var nums = '';
+	for(var i = 0; i < phone_number.length; i++){
+		var e = phone_number.charAt(i);
+		if('0123456789'.indexOf(e) > -1){
+			nums += e;
+		};
+	};
+    var number = '';
+    var ni = nums.length;
+    for(var i = mask.length -1; i > -1; i--){
+        var e = mask.charAt(i);
+        if(e.toLowerCase()==='x'){
+            ni--
+            var ne = nums.charAt(ni);
+            if(!ne){
+                fail('_format_phone_number: ' + (_K==="ru" ? ('Количество чисел в указанном номере "' + nums + '" (' + nums.length + ') меньше количества чисел в указанной маске "') : ('The number of numbers in the specified number "' + nums + '" (' + nums.length + ') is less than the number of numbers in the specified mask "')) + mask + '" (' + _count_substrings(mask.toLowerCase(), 'x') + ').');
+            }
+            number = ne + number;
+        }else{
+            number = e + number;
+        };
+    }
+    return number;
+}
 function _query_string_encode(obj, sep, eq, name){
 	sep = _avoid_nil(sep, '&');
 	eq = _avoid_nil(eq, '=');
@@ -1662,19 +1692,22 @@ _punycode = (function(){
 		};
 		return output;
 	};
-	var ucs2encode = function(array){
+	var ucs2encode = function(args){
+		if(!Array.isArray(args)){
+			args = Array.prototype.slice.call(arguments);
+		};
 		var MAX_SIZE = 0x4000;
 		var codeUnits = [];
 		var highSurrogate;
 		var lowSurrogate;
 		var index = -1;
-		var length = array.length;
+		var length = args.length;
 		if(!length){
 			return '';
 		}
 		var output = '';
 		while(++index < length){
-			var codePoint = Number(array[index]);
+			var codePoint = Number(args[index]);
 			if(!isFinite(codePoint) || codePoint < 0 || codePoint > 0x10FFFF || Math.floor(codePoint) != codePoint){
 				fail('_punycode: Invalid code point: ' + codePoint);
 			};

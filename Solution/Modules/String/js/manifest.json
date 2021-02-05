@@ -1069,8 +1069,8 @@
 		
 		"Remove tabs": {"ru":"Удалять табуляцию"},
 		"Remove characters": {"ru":"Удалять символы"},
-		"Remove line breaks": {"ru":"Удалять переносы строк"},
 		"Replace characters with space": {"ru":"Заменять символы на пробел"},
+		"Replace line breaks with space": {"ru":"Заменить переносы строк пробелом"},
 		"The string which needs to be cleaned.": {"ru":"Строка, которую нужно очистить."},
 		"Characters which needs to be removed.": {"ru":"Символы, которые нужно удалять."},
 		"Clean string from unnecessary characters.": {"ru":"Очистить строку от ненужных символов."},
@@ -1078,8 +1078,8 @@
 		"Characters which needs to be replaced with a space.": {"ru":"Символы, которые нужно заменить на пробел."},
 		"Just&nbsp;&nbsp;&nbsp;&nbsp;sample&nbsp;&nbsp;text": {"ru":"Просто&nbsp;&nbsp;&nbsp;&nbsp;пример&nbsp;&nbsp;текста"},
 		"This action will return a string from which all unnecessary characters will be removed, such as multiple spaces, line breaks, tabs.": {"ru":"Это действие вернет строку, из которой будут удалены все ненужные символы, такие как множественные пробелы, переносы строк, табуляция."},
-		"The characters to be removed are determined by the \"Remove line breaks\", \"Remove tabs\" parameters, but you can also specify your own characters in the \"Remove characters\" parameter located in the additional settings.": {"ru":"Символы, которые будут удалены, определяются параметрами \"Удалять переносы строк\", \"Удалять табуляцию\", но также можно указать свои символы в параметр \"Удалять символы\", находящийся в дополнительных настройках."},
-		"In addition to replacing multiple spaces with single ones, activated by the corresponding parameter, in the \"Replace characters with space\" parameter located in the additional settings, you can specify your own characters that will be replaced by a space.": {"ru":"Кроме замены множественных пробелов на единичные, активируемой соответствующим параметром, можно указать свои символы, которые будут заменены пробелом, в параметр \"Заменять символы на пробел\", находящийся в дополнительных настройках."},
+		"In addition to deleting tabs, activated by the corresponding parameter, you can specify your own characters that will be deleted in the \"Remove characters\" parameter located in the additional settings.": {"ru":"Кроме удаления табуляции, активируемой соответствующим параметром, можно указать свои символы, которые будут удалены, в параметр \"Удалять символы\", находящийся в дополнительных настройках."},
+		"The characters that will be replaced by space are determined by the \"Replace multiple spaces with single ones\", \"Replace line breaks with space\" parameters, but you can also specify your own characters in the \"Replace characters with space\" parameter located in the additional settings.": {"ru":"Символы, которые будут заменены пробелом, определяются параметрами \"Заменять многочисленные пробелы на одиночные\", \"Заменить переносы строк пробелами\", но также можно указать свои символы в параметр \"Заменять символы на пробел\", находящийся в дополнительных настройках."},
 		"For example, if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Test&nbsp;&nbsp;&nbsp;text&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Test text\"</code>, and if the string <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Just&nbsp;&nbsp;example&nbsp;&nbsp;&nbsp;string&nbsp;&nbsp;&nbsp;&nbsp;\"</code> is specified, then the action will return <code>\"Just example string\"</code>.": {"ru":"Например, если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тестовый&nbsp;&nbsp;&nbsp;текст&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Тестовый текст\"</code>, а если указана строка <code>\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Просто&nbsp;&nbsp;пример&nbsp;&nbsp;&nbsp;строки&nbsp;&nbsp;&nbsp;&nbsp;\"</code>, то действие вернет <code>\"Просто пример строки\"</code>."},
 		
 		"Extract all email addresses from string.": {"ru":"Извлечь все адреса электронной почты из строки."},

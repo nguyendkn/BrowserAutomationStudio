@@ -103,27 +103,22 @@ IDevToolsAction* DevToolsActionFactory::CreateWebsocketQuery(const std::string& 
     Result->SetUniqueId(UniqueId);
     Result->GetResult()->SetActionUniqueId(UniqueId);
 
-    std::map<std::string, Variant> Params;
-
-    Params["WebSocketMethod"] = Variant(WebSocketMethod);
-    Params["ReturnPath"] = Variant(ReturnPath);
-    std::string ReturnTypeString;
+    Result->WebSocketMethod = WebSocketMethod;
+    Result->ReturnPath = ReturnPath;
     if(ReturnType == DevToolsActionWebsocketQuery::None)
     {
-        ReturnTypeString = "None";
+        Result->ReturnTypeString = "None";
     }else if(ReturnType == DevToolsActionWebsocketQuery::String)
     {
-        ReturnTypeString = "String";
+        Result->ReturnTypeString = "String";
     }else if(ReturnType == DevToolsActionWebsocketQuery::Bool)
     {
-        ReturnTypeString = "Bool";
+        Result->ReturnTypeString = "Bool";
     }else if(ReturnType == DevToolsActionWebsocketQuery::Number)
     {
-        ReturnTypeString = "Number";
+        Result->ReturnTypeString = "Number";
     }
-    Params["ReturnType"] = Variant(ReturnTypeString);
 
-    Result->SetParams(Params);
     Result->SetGlobalState(GlobalState);
     Result->SetId(Rand());
     Result->SetGroupId(Rand());

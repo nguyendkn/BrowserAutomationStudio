@@ -437,7 +437,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
             "}"
 
         "}else{"
-            "return 'BAS_NOT_EXISTS';"
+            "throw 'BAS_NOT_EXISTS';"
         "}"
 
     "};"

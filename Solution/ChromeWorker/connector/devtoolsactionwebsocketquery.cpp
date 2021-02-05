@@ -4,26 +4,21 @@ void DevToolsActionWebsocketQuery::Run()
 {
     State = Running;
 
-    Variant ReturnTypeVariant = Params["ReturnType"];
-
-    if(ReturnTypeVariant.String == "String")
+    if(ReturnTypeString == "String")
+    {
         ReturnType = String;
+    }
 
-    if(ReturnTypeVariant.String == "Bool")
+    if(ReturnTypeString == "Bool")
         ReturnType = Bool;
 
-    if(ReturnTypeVariant.String == "Number")
+    if(ReturnTypeString == "Number")
         ReturnType = Number;
 
-    if(ReturnTypeVariant.String == "None")
+    if(ReturnTypeString == "None")
         ReturnType = None;
 
-    WebSocketMethod = Params["WebSocketMethod"].String;
-    ReturnPath = Params["ReturnPath"].String;
-
     SendWebSocket(WebSocketMethod,Params);
-
-
 }
 
 void DevToolsActionWebsocketQuery::OnWebSocketMessage(const std::string& Message, const std::string& Error)

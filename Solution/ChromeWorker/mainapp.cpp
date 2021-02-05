@@ -2988,6 +2988,101 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             IsLastCommandNull = true;
         });
     }
+
+    if(LastCommand.CommandName == "render_base64")
+    {
+        std::string Path = LastCommand.SerializePath();
+        std::string Script = Javascript("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]]=_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(self);[[POSITIONY]] = positiony;[[POSITIONX]] = positionx;", "main");
+        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
+        {
+            if(!IsNoWait && !Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
+            }
+
+            JsonParser Parser;
+
+            std::string str = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+            int positionx = Parser.GetFloatFromJson(Result->GetString(),"POSITIONX");
+            int positiony = Parser.GetFloatFromJson(Result->GetString(),"POSITIONY");
+
+            UpdateScrolls(str);
+
+            int left = -1, top = -1, right = -1, bottom = -1, centerx = -1, centery = -1;
+
+            std::size_t pos = str.find(",");
+            if(pos != std::string::npos)
+            {
+                std::string part = str.substr(0,pos);
+                str = str.substr(pos + 1,str.length() - pos - 1);
+                centerx = std::stoi(part);
+            }
+
+            pos = str.find(",");
+            if(pos != std::string::npos)
+            {
+                std::string part = str.substr(0,pos);
+                str = str.substr(pos + 1,str.length() - pos - 1);
+                centery = std::stoi(part);
+            }
+
+            pos = str.find(",");
+            if(pos != std::string::npos)
+            {
+                std::string part = str.substr(0,pos);
+                str = str.substr(pos + 1,str.length() - pos - 1);
+                left = std::stoi(part);
+            }
+
+            pos = str.find(",");
+            if(pos != std::string::npos)
+            {
+                std::string part = str.substr(0,pos);
+                str = str.substr(pos + 1,str.length() - pos - 1);
+                top = std::stoi(part);
+            }
+
+            pos = str.find(",");
+            if(pos != std::string::npos)
+            {
+                std::string part = str.substr(0,pos);
+                str = str.substr(pos + 1,str.length() - pos - 1);
+                right = std::stoi(part);
+            }
+
+            bottom = std::stoi(str);
+
+            left += positionx;
+            top += positiony;
+            right += positionx;
+            bottom += positiony;
+            
+            int X = left;
+            int Y = top;
+            int Width = right - left;
+            int Height = bottom - top;
+
+            Async Result2 = Data->Connector->Screenshot(X, Y, Width, Height);
+            Data->Results->ProcessResult(Result2);
+
+            Result2->Then([this, CommandId, CommandName](AsyncResult* Result2)
+            {
+                std::string Data = Result2->GetString();
+                xml_encode(Data);
+                SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+                IsLastCommandNull = true;
+            });
+        });
+    }
+
+    
           
 
 }

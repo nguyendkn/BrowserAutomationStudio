@@ -14,6 +14,7 @@ class DevToolsActionWebsocketQuery : public IDevToolsAction
     }ReturnType = None;
     std::string WebSocketMethod;
     std::string ReturnPath;
+    std::string ReturnTypeString;
     virtual void Run();
     virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
 };

@@ -2947,8 +2947,8 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
     if(LastCommand.CommandName == "render_base64")
     {
         std::string Path = LastCommand.SerializePath();
-        std::string Script = Javascript("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]]=_BAS_HIDE(BrowserAutomationStudio_ScrollToElement)(self);[[POSITIONY]] = positiony;[[POSITIONX]] = positionx;", "main");
-        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
+        std::string Script = Javascript("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]]= _BAS_HIDE(BrowserAutomationStudio_GetElementCoordinates)(self);[[POSITIONY]] = positiony;[[POSITIONX]] = positionx;", "main");
+        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path,true);
         Data->Results->ProcessResult(Result);
 
         std::string CommandId = LastCommand.CommandId;
@@ -2968,7 +2968,6 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             int positionx = Parser.GetFloatFromJson(Result->GetString(),"POSITIONX");
             int positiony = Parser.GetFloatFromJson(Result->GetString(),"POSITIONY");
 
-            UpdateScrolls(str);
 
             int left = -1, top = -1, right = -1, bottom = -1, centerx = -1, centery = -1;
 

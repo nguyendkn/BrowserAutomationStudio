@@ -20,6 +20,7 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     std::string CurrentFrameCandidate;
     bool ScrollDataWasObtained = false;
     bool IsDoingScrollRequest = false;
+    bool IsDoingScroll = false;
     bool UsesScrollData = false;
     bool UsesPositionData = false;
     bool DoScroll = false;

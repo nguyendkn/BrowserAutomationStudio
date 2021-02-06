@@ -5,17 +5,38 @@ void DevToolsActionExecuteJavascript::Run()
 {
     State = Running;
 
+    ElementSelector.clear();
+    Expression.clear();
+    Variables.clear();
+    InitialVariables.clear();
+    LastMessage.clear();
+    RemoteObjectId.clear();
+    CurrentLoaderId.clear();
+    CurrentPrefix.clear();
+    CurrentNodeId = -1;
+    CurrentContextId = -1;
+    LocalObjectId.clear();
+    CurrentFrame.clear();
+    FrameCandidates.clear();
+    CurrentFrameCandidate.clear();
+    ScrollDataWasObtained = false;
+    IsDoingScrollRequest = false;
+    IsDoingScroll = false;
+    UsesScrollData = false;
+    UsesPositionData = false;
+    DoScroll = false;
+    PositionX = 0;
+    PositionY = 0;
+
     ElementSelector = ParseSelector(Params["path"].String);
-    Params.erase("path");
 
     Expression = Params["expression"].String;
-    Params.erase("expression");
 
     Variables = Params["variables"].String;
-    Params.erase("variables");
 
     DoScroll = Params["do_scroll"].Boolean;
-    Params.erase("do_scroll");
+    //Don't repeat scroll on next try
+    Params["do_scroll"].Boolean = false;
 
     UsesPositionData = Expression.find("positionx") != std::string::npos || Expression.find("positiony") != std::string::npos;
     UsesScrollData = Expression.find("scrollx") != std::string::npos || Expression.find("scrolly") != std::string::npos;
@@ -329,6 +350,7 @@ void DevToolsActionExecuteJavascript::Next()
     if(DoScroll)
     {
         DoScroll = false;
+        IsDoingScroll = true;
         std::map<std::string, Variant> CurrentParams;
         std::string Script = std::string("{var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");if(self)self.scrollIntoViewIfNeeded(true);}");
         CurrentParams["expression"] = Variant(Javascript(Script));
@@ -336,6 +358,13 @@ void DevToolsActionExecuteJavascript::Next()
             CurrentParams["contextId"] = Variant(CurrentContextId);
 
         SendWebSocket("Runtime.evaluate", CurrentParams);
+        return;
+    }
+
+    if(IsDoingScroll && UsesPositionData)
+    {
+        //Restart, need to update positionx and positiony after scroll
+        Run();
         return;
     }
 

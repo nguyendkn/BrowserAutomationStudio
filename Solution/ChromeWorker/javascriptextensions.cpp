@@ -390,17 +390,10 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "rect.height = rect.bottom - rect.top;"
         "return rect;"
     "};"
-    "_BAS_HIDE(BrowserAutomationStudio_ScrollToElement) = function(el)"
+    "_BAS_HIDE(BrowserAutomationStudio_GetElementCoordinates) = function(el)"
     "{"
         "if(el)"
         "{"
-
-            //"console.log('Moving to element');"
-            //"console.log(el);"
-            "el.scrollIntoViewIfNeeded(true);"
-            //"document.documentElement.scrollLeft = xc - window.innerWidth/2;"
-            //"document.documentElement.scrollTop = yc - window.innerHeight/2;"
-
             "{"
                 "var rect = el.getBoundingClientRect();"
 
@@ -411,10 +404,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "var x2 = Math.floor(rect.right);"
                 "var y2 = Math.floor(rect.bottom);"
 
-                //"if(x1 > 0 && x1 < window.innerWidth && y1 > 0 && y1 < window.innerHeight && x2 > 0 && x2 < window.innerWidth && y2 > 0 && y2 < window.innerHeight)"
-                //"{"
-
-                "var res = document.documentElement.scrollLeft + ',' + document.documentElement.scrollTop + ',' + xc + ',' + yc;"
+                "var res = xc + ',' + yc;"
 
                 "if(x1<0)x1=0;"
                 "if(x1>window.innerWidth-2)x1=window.innerWidth-2;"
@@ -431,9 +421,6 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "res += ',' + x1 + ',' + y1 + ',' + x2 + ',' + y2;"
 
                 "return res;"
-
-                //"return;"
-                //"}"
             "}"
 
         "}else{"

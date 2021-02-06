@@ -1361,22 +1361,28 @@ void MainApp::DebugVariablesResultCallback(const std::string & data)
 
 void MainApp::RenderCallback(int x, int y, int width, int height)
 {
-    WORKER_LOG(std::string("RenderCallback<<x<<") + std::to_string(x) + std::string("<<y<<") + std::to_string(y) + std::string("<<width<<") + std::to_string(width) + std::string("<<height<<") + std::to_string(height));
-    if(_HandlersManager->GetBrowser())
-    {
-        BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-        LastCommand.CommandName = "_render";
-        RenderX = x;
-        RenderY = y;
-        RenderWidth = width;
-        RenderHeight = height;
+    RenderX = x;
+    RenderY = y;
+    RenderWidth = width;
+    RenderHeight = height;
 
-        IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x + width/2) + std::string(",") + std::to_string(y + height/2) + std::string(")"),"main"),"", 0);
-    }else
+    std::string ScrollToScript = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x + width/2) + std::string(",") + std::to_string(y + height/2) + std::string(");"), "main");
+    Async Result = Data->Connector->ExecuteJavascript(ScrollToScript, std::string(), std::string("[]"));
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        SendTextResponce("<Render></Render>");
-    }
+        JsonParser Parser;
+        std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+        this->UpdateScrolls(TextResult);
+
+        RenderX = RenderX - Data->ScrollX;
+        RenderY = RenderY - Data->ScrollY;
+        IsElementRender = false;
+        NeedRenderNextFrame = true;
+        RenderNextFrameTime = clock() + CLOCKS_PER_SEC * 2;
+
+    });
+
 }
 
 

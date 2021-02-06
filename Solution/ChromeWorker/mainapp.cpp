@@ -3029,7 +3029,40 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
     }
 
     
-          
+    if(LastCommand.CommandName == "attr")
+    {
+        std::string attr_escaped = picojson::value(LastCommand.CommandParam1).serialize();
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]] = '';var attr=") + attr_escaped + std::string(";if(self.hasAttribute(attr))[[RESULT]]=self.getAttribute(attr);"),"main");
+
+        std::string Path = LastCommand.SerializePath();
+        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
+        {
+            std::string Data;
+            if(Result->GetIsSuccess())
+            {
+                picojson::value v;
+                picojson::parse(v, Result->GetString());
+                picojson::value Result = v.get<picojson::value::object>()["RESULT"];
+                if(Result.is<std::string>())
+                {
+                    Data = Result.get<std::string>();
+                }
+            }else if(!IsNoWait && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
+            }
+            xml_encode(Data);
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
+        });
+    }
 
 }
 

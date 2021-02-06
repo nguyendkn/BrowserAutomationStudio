@@ -576,7 +576,7 @@ function _clean(str, chars_to_delete, chars_to_space, multiple_spaces){
 	}else{
 		str = str.replace(new RegExp('[' + _STR_WHITESPACE + ']', 'g'), ' ');
 	};
-	str = str.replace(new RegExp('(?:[' + _STR_WHITESPACE + ']+)([' + _STR_SPECCHARS + ']+)(?:[' + _STR_WHITESPACE + ']+)', 'g'), '$1');
+	str = str.replace(new RegExp('(?:[' + _STR_WHITESPACE + ']+)?([' + _STR_SPECCHARS + ']+)(?:[' + _STR_WHITESPACE + ']+)?', 'g'), '$1');
 	return str;
 };
 function _clean_arr(arr, chars_to_delete, chars_to_space, multiple_spaces){

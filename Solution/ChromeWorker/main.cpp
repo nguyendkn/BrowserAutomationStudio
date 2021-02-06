@@ -1391,7 +1391,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if(TimerLoop == 0)
                     {
                         CefDoMessageLoopWork();
-                        app->CefMessageLoop();
                     }
                 }else
                 {
@@ -1401,7 +1400,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if(TimerLoop != 0)
                     {
                         CefDoMessageLoopWork();
-                        app->CefMessageLoop();
                     }
                 }
 

@@ -142,7 +142,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     //Render
     bool NeedRenderNextFrame;
-    int SkipBeforeRenderNextFrame;
+    clock_t RenderNextFrameTime;
     bool IsElementRender;
     int RenderX,RenderY,RenderWidth,RenderHeight;
 
@@ -350,7 +350,7 @@ public:
     void UpdateHighlightMultiselect();
     void UpdateMultiSelect();
     void ClearHighlight();
-    void CefMessageLoop();
+    void HandleScreenshotCapture();
     void ExecuteTypeText();
     void ExecuteMouseMove();
     void FinishedLastCommand(const std::string& data);

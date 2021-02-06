@@ -66,7 +66,7 @@ MainApp::MainApp()
     App = this;
     IsMouseMoveSimulation = false;
     NeedRenderNextFrame = false;
-    SkipBeforeRenderNextFrame = 0;
+    RenderNextFrameTime = 0;
     RunElementCommandCallbackOnNextTimer = -1;
     TypeTextDelayCurrent = 0;
     ClearElementCommand();
@@ -530,58 +530,7 @@ void MainApp::Paint(int width, int height)
 
     }
 
-    if(NeedRenderNextFrame && SkipBeforeRenderNextFrame <= 1)
-    {
-        std::string base64;
 
-        if(RenderWidth > 0 && RenderHeight > 0)
-        {
-            NeedRenderNextFrame = false;
-            SkipBeforeRenderNextFrame = 0;
-            std::vector<unsigned char> out;
-            std::vector<unsigned char> in;
-            int w = 0;
-            int h = 0;
-            for(int j = 0;j<height;j++)
-            {
-                if(j>RenderY && j<RenderY + RenderHeight)
-                {
-                    h++;
-                }
-                for(int i = 0;i<width;i++)
-                {
-
-                    if(i>RenderX && i<RenderX + RenderWidth && j>RenderY && j<RenderY + RenderHeight)
-                    {
-                        if(h==1)
-                            w++;
-                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 2]);
-                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 1]);
-                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 0]);
-                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 3]);
-                    }
-                }
-
-            }
-
-
-            lodepng::encode(out,(unsigned const char *)(in.data()),w,h);
-            base64 = base64_encode(out.data(),out.size());
-        }
-
-        if(IsElementRender)
-        {
-            WORKER_LOG(std::string("Render result element <<") + base64);
-            FinishedLastCommand(base64);
-        }
-        else
-        {
-            WORKER_LOG(std::string("Render result screen <<") + base64);
-
-            xml_encode(base64);
-            SendTextResponce(std::string("<Render>") + base64 + std::string("</Render>"));
-        }
-    }
 
     if(/*Layout->GetIsRenderEmpty() && */Data->IsRecord)
     {
@@ -3064,21 +3013,13 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             right += positionx;
             bottom += positiony;
             
-            int X = left;
-            int Y = top;
-            int Width = right - left;
-            int Height = bottom - top;
-
-            Async Result2 = Data->Connector->Screenshot(X, Y, Width, Height);
-            Data->Results->ProcessResult(Result2);
-
-            Result2->Then([this, CommandId, CommandName](AsyncResult* Result2)
-            {
-                std::string Data = Result2->GetString();
-                xml_encode(Data);
-                SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
-                IsLastCommandNull = true;
-            });
+            RenderX = left;
+            RenderY = top;
+            RenderWidth = right - left;
+            RenderHeight = bottom - top;
+            IsElementRender = true;
+            NeedRenderNextFrame = true;
+            RenderNextFrameTime = clock() + CLOCKS_PER_SEC * 2;
         });
     }
 
@@ -3433,16 +3374,62 @@ void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)
     }
 }
 
-void MainApp::CefMessageLoop()
+void MainApp::HandleScreenshotCapture()
 {
-    if(SkipBeforeRenderNextFrame > 1)
+    if(NeedRenderNextFrame && clock() > RenderNextFrameTime)
     {
-        SkipBeforeRenderNextFrame--;
-        if(SkipBeforeRenderNextFrame<=1 && _HandlersManager->GetBrowser())
+        char *ImageData = Data->Connector->GetPaintData();
+        int width = Data->Connector->GetWidth();
+        int height = Data->Connector->GetHeight();
+        std::string base64;
+
+        if(RenderWidth > 0 && RenderHeight > 0)
         {
-            _HandlersManager->GetBrowser()->GetHost()->Invalidate(PET_VIEW);
+            NeedRenderNextFrame = false;
+            RenderNextFrameTime = 0;
+            std::vector<unsigned char> out;
+            std::vector<unsigned char> in;
+            int w = 0;
+            int h = 0;
+            for(int j = 0;j<height;j++)
+            {
+                if(j>RenderY && j<RenderY + RenderHeight)
+                {
+                    h++;
+                }
+                for(int i = 0;i<width;i++)
+                {
+
+                    if(i>RenderX && i<RenderX + RenderWidth && j>RenderY && j<RenderY + RenderHeight)
+                    {
+                        if(h==1)
+                            w++;
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 2]);
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 1]);
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 0]);
+                        in.push_back((unsigned char)ImageData[i*4+j*width*4 + 3]);
+                    }
+                }
+
+            }
+
+
+            lodepng::encode(out,(unsigned const char *)(in.data()),w,h);
+            base64 = base64_encode(out.data(),out.size());
         }
 
+        if(IsElementRender)
+        {
+            WORKER_LOG(std::string("Render result element <<") + base64);
+            FinishedLastCommand(base64);
+        }
+        else
+        {
+            WORKER_LOG(std::string("Render result screen <<") + base64);
+
+            xml_encode(base64);
+            SendTextResponce(std::string("<Render>") + base64 + std::string("</Render>"));
+        }
     }
 }
 
@@ -3599,6 +3586,7 @@ void MainApp::Timer()
     if(!ProxyLibraryLoaded)
         CheckNetworkProcessIPC();
 
+    HandleScreenshotCapture();
 }
 
 void MainApp::InitNetworkProcessIPC()
@@ -4769,7 +4757,7 @@ void MainApp::HandleMainBrowserEvents()
                     RenderY = RenderY - Data->ScrollY;
                     IsElementRender = false;
                     NeedRenderNextFrame = true;
-                    SkipBeforeRenderNextFrame = 10;
+                    //SkipBeforeRenderNextFrame = 10;
                     if(_HandlersManager->GetBrowser())
                         _HandlersManager->GetBrowser()->GetHost()->Invalidate(PET_VIEW);
                 }
@@ -5003,7 +4991,7 @@ void MainApp::HandleMainBrowserEvents()
                     RenderHeight = bottom - top;
                     IsElementRender = true;
                     NeedRenderNextFrame = true;
-                    SkipBeforeRenderNextFrame = 10;
+                    //SkipBeforeRenderNextFrame = 10;
                     if(_HandlersManager->GetBrowser())
                         _HandlersManager->GetBrowser()->GetHost()->Invalidate(PET_VIEW);
                 }

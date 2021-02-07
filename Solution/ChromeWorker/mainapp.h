@@ -317,7 +317,6 @@ public:
     void IsUrlLoadedByMaskCallback(const std::string& value);
     void GetLoadStatsCallback();
     void ElementCommandCallback(const ElementCommand &Command);
-    void ElementCommandInternalCallback(const ElementCommand &Command);
     void ClearElementCommand();
 
     void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing);

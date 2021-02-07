@@ -3064,6 +3064,36 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         });
     }
 
+
+    if(LastCommand.CommandName == "set_attr")
+    {
+
+        std::string attr_escaped = picojson::value(LastCommand.CommandParam1).serialize();
+        std::string val_escaped = picojson::value(LastCommand.CommandParam2).serialize();
+
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';var attr=") + attr_escaped + std::string(";var val=") + val_escaped + std::string(";if(val.length === 0)self.removeAttribute(attr);else self.setAttribute(attr,val);"),"main");
+
+        std::string Path = LastCommand.SerializePath();
+        Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
+        Data->Results->ProcessResult(Result);
+
+        std::string CommandId = LastCommand.CommandId;
+        std::string CommandName = LastCommand.CommandName;
+
+        Result->Then([this, CommandId, CommandName, IsNoWait](AsyncResult* Result)
+        {
+            std::string Data;
+            if(!Result->GetIsSuccess() && !IsNoWait && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
+            {
+                RunElementCommandCallbackOnNextTimer = 100;
+                return;
+            }
+            xml_encode(Data);
+            SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + Data + std::string("</") + CommandName + ("></Element>"));
+            IsLastCommandNull = true;
+        });
+    }
+
 }
 
 void MainApp::ElementCommandInternalCallback(const ElementCommand &Command)

@@ -185,7 +185,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     bool ResourcesChanged;
     void UpdateScrolls(std::string& data);
     void HandleMainBrowserEvents();
-    void HandleFrameFindEvents();
     void HandleToolboxBrowserEvents();
     void HandleScenarioBrowserEvents();
     void HandleCentralBrowserEvents();

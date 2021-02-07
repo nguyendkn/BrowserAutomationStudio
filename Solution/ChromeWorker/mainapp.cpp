@@ -2656,7 +2656,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             Data->_MultiSelectData.IsDirty = false;
         }
 
-        std::string Script = Javascript(MultiselectScript + std::string(";[[RESULT]] = self.length.toString()"),"main");
+        std::string Script = Javascript(MultiselectScript + std::string(";[[RESULT]] = '0';if(typeof(self.length) == 'number')[[RESULT]] = self.length.toString(); else if(self)[[RESULT]] = '1'; else [[RESULT]] = '0';"),"main");
 
         std::string Path = LastCommand.SerializePath();
         HighlightSelector = Path;

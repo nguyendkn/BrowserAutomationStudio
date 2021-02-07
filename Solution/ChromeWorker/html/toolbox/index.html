@@ -5792,11 +5792,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   
   <script type="text/template" id="set_code">
-      /*Browser*/
       <%= waiter %>
-      <%= path %>.move()!
-      <%= timeout_general() %>
-      <%= path %>.set(<%= set %>)!
+      get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<option_list.length;i++){var option = option_list.item(i);if(option.innerHTML === " + JSON.stringify(<%= set %>) + ")break;[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+      _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+      _call(_random_point, {})!
+      _if(_result().length > 0 && _SELECT_TYPE, function(){
+        move({})!
+        <%= path %>.clarify(X,Y)!
+        _call(_clarify,{})!
+        mouse(X,Y)!
+        <%= timeout_general() %>
+        _type(_SELECT_TYPE,30)!
+        delete _SELECT_TYPE
+      })!
+      delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="waitelement_code">
@@ -5811,19 +5820,37 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="set_integer_code">
-      /*Browser*/
-      <%= waiter %>
-      <%= path %>.move()!
+    <%= waiter %>
+    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<" + <%= set %> + ";i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+    _call(_random_point, {})!
+    _if(_result().length > 0 && _SELECT_TYPE, function(){
+      move({})!
+      <%= path %>.clarify(X,Y)!
+      _call(_clarify,{})!
+      mouse(X,Y)!
       <%= timeout_general() %>
-      <%= path %>.set_integer(<%= set %>)!
+      _type(_SELECT_TYPE,30)!
+      delete _SELECT_TYPE
+    })!
+    delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="set_random_code">
-      /*Browser*/
-      <%= waiter %>
-      <%= path %>.move()!
+    <%= waiter %>
+    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';var index = Math.floor((Math.random() * option_list.length));for(var i = 0;i<index;i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+    _call(_random_point, {})!
+    _if(_result().length > 0 && _SELECT_TYPE, function(){
+      move({})!
+      <%= path %>.clarify(X,Y)!
+      _call(_clarify,{})!
+      mouse(X,Y)!
       <%= timeout_general() %>
-      <%= path %>.set_random()!
+      _type(_SELECT_TYPE,30)!
+      delete _SELECT_TYPE
+    })!
+    delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="attr_code">

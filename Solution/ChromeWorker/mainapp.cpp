@@ -4299,8 +4299,6 @@ void MainApp::ExecuteMouseMove()
 {
     if(!IsMouseMoveSimulation)
         return;
-    if(!_HandlersManager->GetBrowser())
-        return;
 
     int CursorX = Data->CursorX;
     int CursorY = Data->CursorY;

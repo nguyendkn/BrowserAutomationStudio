@@ -665,10 +665,10 @@
    _if(_cycle_params().if_else,function(){
    section_insert()
       section_start("", 740247006)!
-      /*Dat:eyJzIjoiU1FMX1NldHVwIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6ImRpYWxlY3QiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6InNxbGl0ZSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6Imhvc3QiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IiIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6InBvcnQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6ImF1dG8iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJ1c2VybmFtZSIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoicGFzc3dvcmQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IiIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6ImRhdGFiYXNlIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIiLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJzdG9yYWdlIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJSSW5mbyhcInN0b3JhZ2VcIixcIkxvY2F0aW9uXCIpIiwiY2xhc3MiOiJleHByZXNzaW9uIn0seyJpZCI6InRpbWVvdXQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6Int7dGltZW91dH19IiwiY2xhc3MiOiJleHByZXNzaW9uIn1dfQ==*/
+      /*Dat:eyJzIjoiU1FMX1NldHVwIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6ImRpYWxlY3QiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6InNxbGl0ZSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6Imhvc3QiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IiIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6InBvcnQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6ImF1dG8iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJ1c2VybmFtZSIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoicGFzc3dvcmQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IiIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6ImRhdGFiYXNlIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIiLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJzdG9yYWdlIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJ7e3N0b3JhZ2V9fSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6ImNvbm5lY3RfdGltZW91dCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoidGltZW91dCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoie3t0aW1lb3V0fX0iLCJjbGFzcyI6ImV4cHJlc3Npb24ifV19*/
       RS("timeout", false, false)!
-      RESOURCE_602803 = _result().get()
-      SQL_Setup("sqlite", "", "auto", "", "", "", RInfo("storage","Location"), RESOURCE_602803)
+      RESOURCE_979143 = _result().get()
+      SQL_Setup("sqlite", "", "auto", "", "", "", RInfo("storage","Location"), "", RESOURCE_979143)
       section_end()!
 
    })!
@@ -679,22 +679,24 @@
    _if(!_cycle_params().if_else,function(){
    section_insert()
       section_start("", 411218411)!
-      /*Dat:eyJzIjoiU1FMX1NldHVwIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6ImRpYWxlY3QiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6Int7ZGlhbGVjdH19IiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiaG9zdCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoie3tob3N0fX0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJwb3J0IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJ7e3BvcnR9fSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6InVzZXJuYW1lIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJ7e3VzZXJuYW1lfX0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJwYXNzd29yZCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoie3twYXNzd29yZH19IiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiZGF0YWJhc2UiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6Int7ZGF0YWJhc2V9fSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6InN0b3JhZ2UiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IiIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6InRpbWVvdXQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6Int7dGltZW91dH19IiwiY2xhc3MiOiJleHByZXNzaW9uIn1dfQ==*/
+      /*Dat:eyJzIjoiU1FMX1NldHVwIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6ImRpYWxlY3QiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6Int7ZGlhbGVjdH19IiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiaG9zdCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoie3tob3N0fX0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJwb3J0IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJ7e3BvcnR9fSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6InVzZXJuYW1lIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJ7e3VzZXJuYW1lfX0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJwYXNzd29yZCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoie3twYXNzd29yZH19IiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiZGF0YWJhc2UiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6Int7ZGF0YWJhc2V9fSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6InN0b3JhZ2UiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IiIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6ImNvbm5lY3RfdGltZW91dCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoie3tjb25uZWN0X3RpbWVvdXR9fSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9LHsiaWQiOiJ0aW1lb3V0IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJ7e3RpbWVvdXR9fSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9XX0=*/
       RS("dialect", false, false)!
-      RESOURCE_802425 = _result().get()
+      RESOURCE_402869 = _result().get()
       RS("host", false, false)!
-      RESOURCE_197191 = _result().get()
+      RESOURCE_838892 = _result().get()
       RS("port", false, false)!
-      RESOURCE_224911 = _result().get()
+      RESOURCE_873208 = _result().get()
       RS("username", false, false)!
-      RESOURCE_704508 = _result().get()
+      RESOURCE_851365 = _result().get()
       RS("password", false, false)!
-      RESOURCE_189861 = _result().get()
+      RESOURCE_743663 = _result().get()
       RS("database", false, false)!
-      RESOURCE_595778 = _result().get()
+      RESOURCE_141546 = _result().get()
+      RS("connect_timeout", false, false)!
+      RESOURCE_519710 = _result().get()
       RS("timeout", false, false)!
-      RESOURCE_515995 = _result().get()
-      SQL_Setup(RESOURCE_802425, RESOURCE_197191, RESOURCE_224911, RESOURCE_704508, RESOURCE_189861, RESOURCE_595778, "", RESOURCE_515995)
+      RESOURCE_107403 = _result().get()
+      SQL_Setup(RESOURCE_402869, RESOURCE_838892, RESOURCE_873208, RESOURCE_851365, RESOURCE_743663, RESOURCE_141546, "", RESOURCE_519710, RESOURCE_107403)
       section_end()!
 
    })!
@@ -706,11 +708,11 @@
    VAR_FUNCTIONS_LIST = RMap("functions").at(0).split(",")
    section_end()!
 
-   section_start("", 427933181)!
+   section_start("\u007b\u0022f\u0022:true\u007d", 722725285)!
    /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIlF1ZXJ5XCIpID4gLTEiLCJjbGFzcyI6ImV4cHJlc3Npb24ifSx7ImlkIjoiSWZFbHNlIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6ZmFsc2V9XX0=*/
    _if(VAR_FUNCTIONS_LIST.indexOf("Query") > -1,function(){
    section_insert()
-      section_start("", 857257920)!
+      section_start("", 436297511)!
       /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
       _call(function()
       {
@@ -722,7 +724,7 @@
       })
       CYCLES.Current().RemoveLabel("function")
       section_insert()
-         section_start("", 649691147)!
+         section_start("", 659857961)!
          /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IlF1ZXJ5In1dfQ==*/
          _call_function(Query,{})!
          _result_function()
@@ -731,7 +733,7 @@
       },null)!
       section_end()!
 
-      section_start("", 430205291)!
+      section_start("", 896928932)!
       /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
       _call_function(DisplayResults,{})!
       _result_function()
@@ -740,11 +742,11 @@
    })!
    section_end()!
 
-   section_start("", 177986261)!
+   section_start("\u007b\u0022f\u0022:true\u007d", 782477581)!
    /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIkNvdW50UmVjb3Jkc1wiKSA+IC0xIiwiY2xhc3MiOiJleHByZXNzaW9uIn0seyJpZCI6IklmRWxzZSIsInR5cGUiOiJjaGVjayIsImRhdGEiOmZhbHNlfV19*/
    _if(VAR_FUNCTIONS_LIST.indexOf("CountRecords") > -1,function(){
    section_insert()
-      section_start("", 914109172)!
+      section_start("", 906370741)!
       /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
       _call(function()
       {
@@ -756,7 +758,7 @@
       })
       CYCLES.Current().RemoveLabel("function")
       section_insert()
-         section_start("", 804420853)!
+         section_start("", 389609906)!
          /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkNvdW50UmVjb3JkcyJ9XX0=*/
          _call_function(CountRecords,{})!
          _result_function()
@@ -765,7 +767,7 @@
       },null)!
       section_end()!
 
-      section_start("", 321460369)!
+      section_start("", 359471724)!
       /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
       _call_function(DisplayResults,{})!
       _result_function()
@@ -774,11 +776,11 @@
    })!
    section_end()!
 
-   section_start("", 100740721)!
+   section_start("\u007b\u0022f\u0022:true\u007d", 915705908)!
    /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIkluc2VydFJlY29yZHNfU2VsZWN0UmVjb3Jkc1wiKSA+IC0xIiwiY2xhc3MiOiJleHByZXNzaW9uIn0seyJpZCI6IklmRWxzZSIsInR5cGUiOiJjaGVjayIsImRhdGEiOmZhbHNlfV19*/
    _if(VAR_FUNCTIONS_LIST.indexOf("InsertRecords_SelectRecords") > -1,function(){
    section_insert()
-      section_start("", 738340591)!
+      section_start("", 48832598)!
       /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
       _call(function()
       {
@@ -790,7 +792,7 @@
       })
       CYCLES.Current().RemoveLabel("function")
       section_insert()
-         section_start("", 961359304)!
+         section_start("", 173185406)!
          /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6Ikluc2VydFJlY29yZHNfU2VsZWN0UmVjb3JkcyJ9XX0=*/
          _call_function(InsertRecords_SelectRecords,{})!
          _result_function()
@@ -799,7 +801,7 @@
       },null)!
       section_end()!
 
-      section_start("", 244589935)!
+      section_start("", 590915687)!
       /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
       _call_function(DisplayResults,{})!
       _result_function()
@@ -808,11 +810,11 @@
    })!
    section_end()!
 
-   section_start("", 847410669)!
+   section_start("\u007b\u0022f\u0022:true\u007d", 771705709)!
    /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIkRlbGV0ZVJlY29yZHNcIikgPiAtMSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9LHsiaWQiOiJJZkVsc2UiLCJ0eXBlIjoiY2hlY2siLCJkYXRhIjpmYWxzZX1dfQ==*/
    _if(VAR_FUNCTIONS_LIST.indexOf("DeleteRecords") > -1,function(){
    section_insert()
-      section_start("", 359868512)!
+      section_start("", 979079446)!
       /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
       _call(function()
       {
@@ -824,7 +826,7 @@
       })
       CYCLES.Current().RemoveLabel("function")
       section_insert()
-         section_start("", 693552430)!
+         section_start("", 847307924)!
          /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRlbGV0ZVJlY29yZHMifV19*/
          _call_function(DeleteRecords,{})!
          _result_function()
@@ -833,7 +835,7 @@
       },null)!
       section_end()!
 
-      section_start("", 306187536)!
+      section_start("", 525023345)!
       /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
       _call_function(DisplayResults,{})!
       _result_function()
@@ -842,11 +844,11 @@
    })!
    section_end()!
 
-   section_start("", 548929111)!
+   section_start("\u007b\u0022f\u0022:true\u007d", 853424983)!
    /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIlVwZGF0ZVJlY29yZHNcIikgPiAtMSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9LHsiaWQiOiJJZkVsc2UiLCJ0eXBlIjoiY2hlY2siLCJkYXRhIjpmYWxzZX1dfQ==*/
    _if(VAR_FUNCTIONS_LIST.indexOf("UpdateRecords") > -1,function(){
    section_insert()
-      section_start("", 258470117)!
+      section_start("", 747189652)!
       /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
       _call(function()
       {
@@ -858,7 +860,7 @@
       })
       CYCLES.Current().RemoveLabel("function")
       section_insert()
-         section_start("", 759183556)!
+         section_start("", 136714220)!
          /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IlVwZGF0ZVJlY29yZHMifV19*/
          _call_function(UpdateRecords,{})!
          _result_function()
@@ -867,7 +869,7 @@
       },null)!
       section_end()!
 
-      section_start("", 3153722)!
+      section_start("", 437500049)!
       /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
       _call_function(DisplayResults,{})!
       _result_function()
@@ -876,11 +878,11 @@
    })!
    section_end()!
 
-   section_start("", 93016839)!
+   section_start("\u007b\u0022f\u0022:true\u007d", 91791524)!
    /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIkNsb3NlXCIpID4gLTEiLCJjbGFzcyI6ImV4cHJlc3Npb24ifSx7ImlkIjoiSWZFbHNlIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6ZmFsc2V9XX0=*/
    _if(VAR_FUNCTIONS_LIST.indexOf("Close") > -1,function(){
    section_insert()
-      section_start("", 773630951)!
+      section_start("", 578594956)!
       /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
       _call(function()
       {
@@ -892,7 +894,7 @@
       })
       CYCLES.Current().RemoveLabel("function")
       section_insert()
-         section_start("", 473781597)!
+         section_start("", 550127677)!
          /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkNsb3NlIn1dfQ==*/
          _call_function(Close,{})!
          _result_function()
@@ -901,7 +903,7 @@
       },null)!
       section_end()!
 
-      section_start("", 991185816)!
+      section_start("", 493663886)!
       /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
       _call_function(DisplayResults,{})!
       _result_function()
@@ -938,7 +940,7 @@
      <CompileType>PrivateScriptUserEnterPass</CompileType>
      <ScriptVersion>1.0.0</ScriptVersion>
      <AvailableLanguages>en,ru</AvailableLanguages>
-     <EngineVersion>23.2.1</EngineVersion>
+     <EngineVersion>23.2.2</EngineVersion>
      <SettingsWorker>EnableFlash=false
 ProxiesReconnect=false
 AutostartDebug=false
@@ -978,8 +980,14 @@ Detector=true
 --enable-blink-features=WebBluetooth,Badging,InstalledApp,WakeLock,Notifications,WebAnimationsAPI,AOMPhase1</ChromeCommandLine>
      <ModulesMetaJson>{
     &quot;Archive&quot;: false,
+    &quot;CaptchaCustom&quot;: true,
+    &quot;Excel&quot;: false,
     &quot;FTP&quot;: false,
-    &quot;Excel&quot;: false
+    &quot;Path&quot;: true,
+    &quot;SQL&quot;: true,
+    &quot;String&quot;: true,
+    &quot;TempMail&quot;: true,
+    &quot;httpClientCustom&quot;: true
 }
 </ModulesMetaJson>
      <OutputTitle1 en="First Results" ru="First Results"/>
@@ -1137,6 +1145,22 @@ mssql</Values>
                <ReloadInterval>0</ReloadInterval>
                <RenewInterval>-1</RenewInterval>
                <Greedy>0</Greedy>
+          </Model>
+          <Defaults/>
+          <Model>
+               <Name>connect_timeout</Name>
+               <Description en="Connection timeout (seconds)" ru="Таймаут подключения (секунд)"/>
+               <SectionName ru=""/>
+               <VisibilityConditionValue>mysql,mariadb,postgres,mssql</VisibilityConditionValue>
+               <VisibilityConditionVariable>dialect</VisibilityConditionVariable>
+               <Type>FixedInteger</Type>
+               <IsAdvanced>0</IsAdvanced>
+               <Visible>1</Visible>
+               <Enabled>1</Enabled>
+               <AllowedTypes>FixedInteger</AllowedTypes>
+               <Value>20</Value>
+               <MinValue>1</MinValue>
+               <MaxValue>99999999</MaxValue>
           </Model>
           <Defaults/>
           <Model>

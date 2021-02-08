@@ -9,6 +9,7 @@ var username = GetInputConstructorValue("username", loader);
 var password = GetInputConstructorValue("password", loader);
 var database = GetInputConstructorValue("database", loader);
 var storage = GetInputConstructorValueFilename("storage", loader);
+var connect_timeout = GetInputConstructorValue("connect_timeout", loader);
 var timeout = GetInputConstructorValue("timeout", loader);
 if(timeout["original"].length == 0){
 	Invalid(tr("Timeout") + " " + tr("is empty"));
@@ -23,6 +24,7 @@ try{
         "password": password["updated"],
         "database": database["updated"],
         "storage": storage["updated"],
+		"connect_timeout": connect_timeout["updated"],
         "timeout": timeout["updated"]
     });
     code = Normalize(code, 0);

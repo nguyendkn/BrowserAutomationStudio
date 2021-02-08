@@ -748,39 +748,20 @@ function _validate_file(str){
 function _normalize_phone_number(phone_number){
 	_validate_argument_type(phone_number, ['string','number'], 'Phone number', '_normalize_phone_number');
 	phone_number = String(phone_number);
-	var nums = '';
+	var number = '';
 	for(var i = 0; i < phone_number.length; i++){
 		var e = phone_number.charAt(i);
 		if('0123456789'.indexOf(e) > -1){
-			nums += e;
+			number += e;
 		};
 	};
-	if(nums==='' || nums.length < 6){
-		return nums;
-	};
-	var part1 = nums.slice(-11, -10);
-	if(part1!==''){
-		part1 = part1==='8' ? '+7 ' : '+' + part1 + ' ';
-	};
-	var part2 = nums.slice(-10, -7);
-	if(part2!==''){
-		part2 = '(' + part2 + ') ';
-	};
-	var part3 = nums.slice(-7, -4) + '-' + nums.slice(-4, -2) + '-' + nums.slice(-2);
-	return part1 + part2 + part3;
+	return number;
 };
 function _format_phone_number(phone_number, mask){
 	_validate_argument_type(phone_number, ['string','number'], 'Phone number', '_format_phone_number');
-	phone_number = String(phone_number);
 	_avoid_nilb(mask, '+X (XXX) XXX-XX-XX');
 	_validate_argument_type(phone_number, 'string', 'Phone number mask', '_format_phone_number');
-    var nums = '';
-	for(var i = 0; i < phone_number.length; i++){
-		var e = phone_number.charAt(i);
-		if('0123456789'.indexOf(e) > -1){
-			nums += e;
-		};
-	};
+	var nums = _normalize_phone_number(phone_number);
     var number = '';
     var ni = nums.length;
     for(var i = mask.length -1; i > -1; i--){
@@ -797,81 +778,6 @@ function _format_phone_number(phone_number, mask){
         };
     }
     return number;
-}
-function _query_string_encode(obj, sep, eq, name){
-	sep = _avoid_nil(sep, '&');
-	eq = _avoid_nil(eq, '=');
-	if(obj === null){
-		obj = undefined;
-	};
-
-	if(typeof obj === 'object'){
-		return Object.keys(obj).map(function(k){
-			var ks = encodeURIComponent(_to_string(k)) + eq;
-			if (Array.isArray(obj[k])) {
-				return obj[k].map(function(v){
-					return ks + encodeURIComponent(_to_string(v));
-				}).join(sep);
-			} else {
-				return ks + encodeURIComponent(_to_string(obj[k]));
-			}
-		}).filter(Boolean).join(sep);
-	};
-
-	if (!name) return '';
-	return encodeURIComponent(_to_string(name)) + eq + encodeURIComponent(_to_string(obj));
-};
-function _query_string_decode(qs, sep, eq, options){
-	sep = _avoid_nil(sep, '&');
-	eq = _avoid_nil(eq, '=');
-	var obj = {};
-
-	if(typeof qs !== 'string' || qs.length === 0){
-		return obj;
-	};
-
-	var regexp = /\+/g;
-	qs = qs.replace(/^\?/, "").split(sep);
-
-	var maxKeys = 1000;
-	if(options && typeof options.maxKeys === 'number'){
-		maxKeys = options.maxKeys;
-	};
-
-	var len = qs.length;
-	if(maxKeys > 0 && len > maxKeys){
-		len = maxKeys;
-	};
-
-	for(var i = 0; i < len; ++i){
-		var x = qs[i].replace(regexp, '%20');
-		var idx = x.indexOf(eq);
-		var kstr = '';
-		var vstr = '';
-		var k = '';
-		var v = '';
-
-		if(idx >= 0){
-			kstr = x.substr(0, idx);
-			vstr = x.substr(idx + 1);
-		}else{
-			kstr = x;
-			vstr = '';
-		};
-
-		k = decodeURIComponent(kstr);
-		v = decodeURIComponent(vstr);
-
-		if (!obj.hasOwnProperty(k)) {
-			obj[k] = v;
-		} else if (Array.isArray(obj[k])) {
-			obj[k].push(v);
-		} else {
-			obj[k] = [obj[k], v];
-		};
-	};
-
-	return obj;
 };
 function _normalize_url(url_string, user_options){
 	_validate_argument_type(url_string, 'string', 'URL', '_normalize_url');
@@ -1089,7 +995,7 @@ function _url(address, user_options){
 		};
 	};
 	
-	var parser = (options.query_parser && typeof options.query_parser !== 'function') ? _query_string_decode : options.query_parser;
+	var parser = (options.query_parser && typeof options.query_parser !== 'function') ? _query_string.decode : options.query_parser;
 	address = _trim_left(address);
 	if(options.normalize){
 		address = _normalize_url(address, {
@@ -1316,7 +1222,7 @@ _url.prototype.set = function(part, value, fn){
 	switch(part){
 		case 'query':
 			if('string' === typeof value && value.length){
-				value = (fn || _query_string_decode)(value);
+				value = (fn || _query_string.decode)(value);
 			};
 			url[part] = value;
 			break;
@@ -1376,7 +1282,7 @@ _url.prototype.set = function(part, value, fn){
 	return url;
 };
 _url.prototype.toString = function(stringify){
-	if(_is_nilb(stringify) || 'function' !== typeof stringify){stringify = _query_string_encode};
+	if(_is_nilb(stringify) || 'function' !== typeof stringify){stringify = _query_string.encode};
 	
 	var url = this;
 	var query = '';
@@ -1639,6 +1545,411 @@ _ua.prototype.changeBrowserVersion = function(version){
 _ua.prototype.toString = function(){
 	return this.ua;
 };
+_query_string = (function(){
+	var hexTable = new Array(256);
+	for(var i = 0; i < 256; ++i){
+		hexTable[i] = '%' + ((i < 16 ? '0' : '') + i.toString(16)).toUpperCase();
+	};
+	
+	var noEscape = [
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+		0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0
+	];
+
+	var isHexTable = [
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+		0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	];
+	
+	function stringifyPrimitive(v){
+		if(typeof v === 'string'){
+			return v;
+		};
+		if(typeof v ==='number' && isFinite(v)){
+			return '' + v;
+		};
+		if(typeof v === 'boolean'){
+			return v ? 'true' : 'false';
+		};
+		return '';
+	};
+
+
+	function encodeStringified(v, encode){
+		if(typeof v === 'string'){
+			return (v.length ? encode(v) : '');
+		};
+		if(typeof v === 'number' && isFinite(v)){
+			return (Math.abs(v) < 1e21 ? '' + v : encode('' + v));
+		};
+		if(typeof v === 'boolean'){
+			return v ? 'true' : 'false';
+		};
+		return '';
+	};
+
+
+	function encodeStringifiedCustom(v, encode){
+		return encode(stringifyPrimitive(v));
+	};
+
+	function charCodes(str){
+		if(str.length === 0){
+			return [];
+		};
+		if(str.length === 1){
+			return [str.charCodeAt(0)];
+		};
+		var ret = new Array(str.length);
+		for(var i = 0; i < str.length; ++i){
+			ret[i] = str.charCodeAt(i);
+		};
+		return ret;
+	};
+	
+	var defSepCodes = [38];
+	var defEqCodes = [61];
+
+	function addKeyVal(obj, key, value, keyEncoded, valEncoded, decode){
+		if(key.length > 0 && keyEncoded){
+			key = decodeStr(key, decode);
+		};
+		if(value.length > 0 && valEncoded){
+			value = decodeStr(value, decode);
+		};
+		
+		if(obj[key] === undefined){
+			obj[key] = value;
+		}else{
+			var curValue = obj[key];
+			if(curValue.pop){
+				curValue[curValue.length] = value;
+			}else{
+				obj[key] = [curValue, value];
+			};
+		};
+	};
+	
+	function encodeStr(str, noEscapeTable, hexTable){
+		var len = str.length;
+		if(len === 0){
+			return '';
+		};
+
+		var out = '';
+		var lastPos = 0;
+		var i = 0;
+
+		outer:
+		for(; i < len; i++){
+			var c = str.charCodeAt(i);
+			
+			while(c < 0x80){
+				if(noEscapeTable[c] !== 1){
+					if(lastPos < i){
+						out += str.slice(lastPos, i);
+					};
+					lastPos = i + 1;
+					out += hexTable[c];
+				};
+
+				if(++i === len){
+					break outer;
+				};
+
+				c = str.charCodeAt(i);
+			};
+
+			if(lastPos < i){
+				out += str.slice(lastPos, i);
+			};
+			
+			if(c < 0x800){
+				lastPos = i + 1;
+				out += hexTable[0xC0 | (c >> 6)] + hexTable[0x80 | (c & 0x3F)];
+				continue;
+			};
+			if (c < 0xD800 || c >= 0xE000) {
+				lastPos = i + 1;
+				out += hexTable[0xE0 | (c >> 12)] + hexTable[0x80 | ((c >> 6) & 0x3F)] + hexTable[0x80 | (c & 0x3F)];
+				continue;
+			};
+			
+			++i;
+			
+			if(i >= len){
+				fail('_query_string.escape: ' + (_K==="ru" ? ('Неверный формат URI.') : ('URI malformed.')))
+			};
+
+			var c2 = str.charCodeAt(i) & 0x3FF;
+			
+			lastPos = i + 1;
+			c = 0x10000 + (((c & 0x3FF) << 10) | c2);
+			out += hexTable[0xF0 | (c >> 18)] + hexTable[0x80 | ((c >> 12) & 0x3F)] + hexTable[0x80 | ((c >> 6) & 0x3F)] + hexTable[0x80 | (c & 0x3F)];
+		};
+		if(lastPos === 0){
+			return str;
+		};
+		if(lastPos < len){
+			return out + str.slice(lastPos);
+		};
+		return out;
+	};
+	
+	function decodeStr(s, decoder){
+		try{
+			return decoder(s);
+		}catch(e){
+			return QueryString.unescape(s);
+		};
+	};
+	
+	function qsEscape(str) {
+		if(typeof str !== 'string'){
+			if(typeof str === 'object'){
+				str = String(str);
+			}else{
+				str += '';
+			};
+		};
+		return encodeStr(str, noEscape, hexTable);
+	};
+
+	function qsUnescape(s){
+		try{
+			return decodeURIComponent(s);
+		}catch(e){
+			return unescape(s);
+		};
+	};
+	
+	function stringify(obj, sep, eq, options){
+		sep = _avoid_nil(sep, '&');
+		eq = _avoid_nil(eq, '=');
+		
+		var encode = QueryString.escape;
+		if(options && typeof options.encodeURIComponent === 'function'){
+			encode = options.encodeURIComponent;
+		};
+		var convert = (encode === qsEscape ? encodeStringified : encodeStringifiedCustom);
+		
+		if(obj !== null && typeof obj === 'object'){
+			var keys = Object.keys(obj);
+			var len = keys.length;
+			var fields = '';
+			for(var i = 0; i < len; ++i){
+				var k = keys[i];
+				var v = obj[k];
+				var ks = convert(k, encode);
+				ks += eq;
+
+				if(Array.isArray(v)){
+					var vlen = v.length;
+					if(vlen === 0){
+						continue;
+					};
+					if(fields){
+						fields += sep;
+					};
+					for(var j = 0; j < vlen; ++j){
+						if(j){
+							fields += sep;
+						};
+						fields += ks;
+						fields += convert(v[j], encode);
+					};
+				}else{
+					if(fields){
+					  fields += sep;
+					};
+					fields += ks;
+					fields += convert(v, encode);
+				};
+			};
+			return fields;
+		};
+		return '';
+	};
+	
+	function parse(qs, sep, eq, options){
+		var obj = Object.create(null);
+		
+		if(typeof qs !== 'string' || qs.length === 0){
+			return obj;
+		};
+		
+		var sepCodes = (!sep ? defSepCodes : charCodes(sep + ''));
+		var eqCodes = (!eq ? defEqCodes : charCodes(eq + ''));
+		var sepLen = sepCodes.length;
+		var eqLen = eqCodes.length;
+		
+		var pairs = 1000;
+		if(options && typeof options.maxKeys === 'number'){
+			pairs = (options.maxKeys > 0 ? options.maxKeys : -1);
+		};
+		
+		var decode = QueryString.unescape;
+		if(options && typeof options.decodeURIComponent === 'function'){
+			decode = options.decodeURIComponent;
+		};
+		var customDecode = (decode !== qsUnescape);
+		
+		var firstChar = qs.charCodeAt(0);
+		if(firstChar === 63 || firstChar === 35){
+			qs = qs.slice(1);
+		};
+		
+		var lastPos = 0;
+		var sepIdx = 0;
+		var eqIdx = 0;
+		var key = '';
+		var value = '';
+		var keyEncoded = customDecode;
+		var valEncoded = customDecode;
+		var plusChar = (customDecode ? '%20' : ' ');
+		var encodeCheck = 0;
+		for(var i = 0; i < qs.length; ++i){
+			var code = qs.charCodeAt(i);
+			
+			if(code === sepCodes[sepIdx]){
+				if(++sepIdx === sepLen){
+					var end = i - sepIdx + 1;
+					if(eqIdx < eqLen){
+						if(lastPos < end){
+							key += qs.slice(lastPos, end);
+						}else if(key.length === 0){
+							if(--pairs === 0){
+								return obj;
+							};
+							lastPos = i + 1;
+							sepIdx = eqIdx = 0;
+							continue;
+						};
+					}else if(lastPos < end){
+						value += qs.slice(lastPos, end);
+					};
+
+					addKeyVal(obj, key, value, keyEncoded, valEncoded, decode);
+
+					if(--pairs === 0){
+						return obj;
+					};
+					keyEncoded = valEncoded = customDecode;
+					key = value = '';
+					encodeCheck = 0;
+					lastPos = i + 1;
+					sepIdx = eqIdx = 0;
+				};
+			}else{
+				sepIdx = 0;
+				if(eqIdx < eqLen){
+					if(code === eqCodes[eqIdx]){
+						if(++eqIdx === eqLen){
+							var end = i - eqIdx + 1;
+							if(lastPos < end){
+								key += qs.slice(lastPos, end);
+							};
+							encodeCheck = 0;
+							lastPos = i + 1;
+						};
+						continue;
+					}else{
+						eqIdx = 0;
+						if(!keyEncoded){
+							if(code === 37){
+								encodeCheck = 1;
+								continue;
+							}else if(encodeCheck > 0){
+								if(isHexTable[code] === 1){
+									if(++encodeCheck === 3){
+										keyEncoded = true;
+									};
+									continue;
+								}else{
+									encodeCheck = 0;
+								};
+							};
+						};
+					};
+					if(code === 43){
+						if (lastPos < i){
+							key += qs.slice(lastPos, i);
+						};
+						key += plusChar;
+						lastPos = i + 1;
+						continue;
+					};
+				};
+				if(code === 43){
+					if(lastPos < i){
+						value += qs.slice(lastPos, i);
+					};
+					value += plusChar;
+					lastPos = i + 1;
+				}else if(!valEncoded){
+					if(code === 37){
+						encodeCheck = 1;
+					}else if(encodeCheck > 0){
+						if(isHexTable[code] === 1){
+							if(++encodeCheck === 3){
+								valEncoded = true;
+							};
+						}else{
+							encodeCheck = 0;
+						};
+					};
+				};
+			};
+		};
+		
+		if(lastPos < qs.length){
+			if(eqIdx < eqLen){
+				key += qs.slice(lastPos);
+			}else if(sepIdx < sepLen){
+				value += qs.slice(lastPos);
+			};
+		}else if(eqIdx === 0 && key.length === 0){
+			return obj;
+		};
+		
+		addKeyVal(obj, key, value, keyEncoded, valEncoded, decode);
+		
+		return obj;
+	};
+	
+	var QueryString = {
+		unescape: qsUnescape,
+		escape: qsEscape,
+
+		stringify: stringify,
+		encode: stringify,
+
+		parse: parse,
+		decode: parse
+	};
+
+	return QueryString;
+}());
 _punycode = (function(){
 	var maxInt = 2147483647;
 	var base = 36;

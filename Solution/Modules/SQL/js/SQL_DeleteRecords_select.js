@@ -1,6 +1,6 @@
 var table = GetInputConstructorValue("table", loader);
 if (table["original"].length == 0) {
-	Invalid(tr("Database table") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Database table") + tr("\" is not specified"));
     return;
 };
 var where;

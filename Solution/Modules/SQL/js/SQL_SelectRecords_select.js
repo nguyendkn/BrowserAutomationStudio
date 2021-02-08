@@ -1,6 +1,6 @@
 var table = GetInputConstructorValue("table", loader);
 if (table["original"].length == 0) {
-	Invalid(tr("Database table") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Database table") + tr("\" is not specified"));
     return;
 };
 var where;
@@ -19,7 +19,7 @@ var limit = GetInputConstructorValue("limit", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 var data_format = GetInputConstructorValue("data_format", loader);
 if(data_format["original"].length == 0){
-	Invalid(tr("Data format") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Data format") + tr("\" is not specified"));
     return;
 };
 try{

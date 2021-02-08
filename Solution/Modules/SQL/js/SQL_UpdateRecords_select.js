@@ -1,6 +1,6 @@
 var table = GetInputConstructorValue("table", loader);
 if(table["original"].length == 0){
-	Invalid(tr("Database table") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Database table") + tr("\" is not specified"));
     return;
 };
 var where;
@@ -12,7 +12,7 @@ if($("#Check").is(':checked')){
 var parameterize = $("#Check").is(':checked');
 var values = "\"" + je($("#values").val()) + "\"";
 if($("#values").val().length == 0){
-	Invalid(tr("Values") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Values") + tr("\" is not specified"));
     return;
 };
 var fields = GetInputConstructorValue("fields", loader);

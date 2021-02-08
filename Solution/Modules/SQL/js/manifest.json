@@ -248,7 +248,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "var {id} = [[SQL_NODE_PARAMETERS]];\r\n\r\nif(typeof sql_connections!=\"undefined\" && typeof sql_connections[id]!=\"undefined\"){\r\n    var dialects = Object.keys(sql_connections[id]);\r\n    for(var dialect of dialects){\r\n        sql_connections[id][dialect].close();\r\n    };\r\n};",
+            "Data": "var id = [[SQL_NODE_PARAMETERS]];\r\n\r\nif(typeof sql_connections!=\"undefined\" && typeof sql_connections[id]!=\"undefined\"){\r\n    var dialects = Object.keys(sql_connections[id]);\r\n    for(var dialect of dialects){\r\n        sql_connections[id][dialect].close();\r\n    };\r\n};",
             "DataName": "SQL_Close",
             "DataType": 0,
             "LanguageName": "Node",
@@ -312,9 +312,11 @@
 		"Timeout": {"ru":"Таймаут"},
 		"Password": {"ru":"Пароль"},
 		"Host name": {"ru":"Имя хоста"},
+		"The parameter \"": {"ru":"Параметр \""},
 		"Database name": {"ru":"Имя базы данных"},
 		"Can be blank": {"ru":"Может быть пустым"},
 		"Database port.": {"ru":"Порт базы данных."},
+		"\" is not specified": {"ru":"\" не указан"},
 		"Timeout (seconds)": {"ru":"Таймаут (секунд)"},
 		"Database dialect": {"ru":"Диалект базы данных"},
 		"Database storage": {"ru":"Хранилище базы данных"},

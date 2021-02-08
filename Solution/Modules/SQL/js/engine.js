@@ -146,7 +146,7 @@ function SQL_Debug(enable){
 	_SQL_CONFIG["debug"] = (enable==true || enable=="true");
 };
 function SQL_Close(){
-	VAR_SQL_NODE_PARAMETERS = _SQL_CONFIG;
+	VAR_SQL_NODE_PARAMETERS = _SQL_CONFIG["id"];
 	
 	_embedded("SQL_Close", "Node", "12.18.3", "SQL_NODE_PARAMETERS", 60000)!
 };

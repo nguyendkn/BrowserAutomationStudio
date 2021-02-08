@@ -1,12 +1,12 @@
 var table = GetInputConstructorValue("table", loader);
 if(table["original"].length == 0){
-	Invalid(tr("Database table") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Database table") + tr("\" is not specified"));
     return;
 };
 var fields = GetInputConstructorValue("fields", loader);
 var data = GetInputConstructorValue("data", loader);
 if(data["original"].length == 0){
-	Invalid(tr("Data") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Data") + tr("\" is not specified"));
     return;
 };
 try{

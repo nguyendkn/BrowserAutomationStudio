@@ -1,6 +1,6 @@
 var enable = GetInputConstructorValue("enable",loader);
 if(enable["original"].length == 0){
-	Invalid(tr("Enable debug") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Enable debug") + tr("\" is not specified"));
 	return;
 };
 try{

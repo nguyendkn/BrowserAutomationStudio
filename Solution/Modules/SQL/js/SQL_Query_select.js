@@ -5,14 +5,14 @@ if($("#Check").is(':checked')){
 	query = GetInputConstructorValue("query", loader)["updated"];
 };
 if($("#query").val().length == 0){
-	Invalid(tr("Query") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Query") + tr("\" is not specified"));
     return;
 };
 var parameterize = $("#Check").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
 var data_format = GetInputConstructorValue("data_format", loader);
 if(data_format["original"].length == 0){
-	Invalid(tr("Data format") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Data format") + tr("\" is not specified"));
     return;
 };
 try{

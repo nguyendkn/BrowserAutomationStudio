@@ -1,6 +1,6 @@
 var dialect = GetInputConstructorValue("dialect", loader);
 if(dialect["original"].length == 0){
-	Invalid(tr("Database dialect") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Database dialect") + tr("\" is not specified"));
     return;
 };
 var host = GetInputConstructorValue("host", loader);
@@ -12,7 +12,7 @@ var storage = GetInputConstructorValueFilename("storage", loader);
 var connect_timeout = GetInputConstructorValue("connect_timeout", loader);
 var timeout = GetInputConstructorValue("timeout", loader);
 if(timeout["original"].length == 0){
-	Invalid(tr("Timeout") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
     return;
 };
 try{

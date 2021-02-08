@@ -11,6 +11,7 @@ class DevToolsActionCreateTab : public IDevToolsAction
     bool IsInstant;
     bool IsTargetCreated = false;
     bool IsTabConnected = false;
+    bool IsDelayed = false;
     
     void StartLoad();
 public:

@@ -11,7 +11,7 @@ void DevToolsActionSwitchToTab::Run()
     std::shared_ptr<TabData> CurrentTab;
     for(std::shared_ptr<TabData> Tab : GlobalState->Tabs)
     {
-        if(Tab->ConnectionState == TabData::Connected)
+        if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
         {
             if(CurrentIndex == Index)
             {

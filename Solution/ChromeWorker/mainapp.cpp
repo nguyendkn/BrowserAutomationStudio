@@ -792,49 +792,32 @@ void MainApp::NavigateBackCallback(bool IsInstant)
 
 void MainApp::PopupCreateCallback(bool is_silent, const std::string& url)
 {
-    if(!is_silent)
+    Async Result = Data->Connector->CreateTab(url, false, is_silent, std::string());
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        //Load about:blank and return result, ignore url.
-        if(_HandlersManager->GetBrowser())
-        {
-            //WORKER_LOG("!!!!!!PopupCreate start is_silent = false");
-            Data->IsCreatingNewPopup = true;
-            Data->IsCreatingNewPopupIsLoaded = false;
-            Data->IsCreatingNewPopupIsContextCreated = false;
-            Data->IsCreatingNewPopupIsSilent = false;
-            Data->IsCreatingNewPopupIsLoadAfterOpen = false;
-            Data->IsCreatingNewPopupIndexBeforeChange = -1;
-            Data->IsCreatingNewPopupUrl.clear();
-            CefRefPtr< CefFrame > Frame = _HandlersManager->GetBrowser()->GetMainFrame();
-            Frame->ExecuteJavaScript("window.open('tab://new/')",Frame->GetURL(),0);
-        }
-        else
-        {
-            SendTextResponce("<PopupCreate></PopupCreate>");
-        }
-    }else
-    {
-        //Load about:blank, add new tab, but not switch to it.
-        if(_HandlersManager->GetBrowser())
-        {
-            //WORKER_LOG("!!!!!!PopupCreate start is_silent = true, url = " + url);
-            Data->IsCreatingNewPopup = true;
-            Data->IsCreatingNewPopupIsLoaded = false;
-            Data->IsCreatingNewPopupIsContextCreated = false;
-            Data->IsCreatingNewPopupIsSilent = true;
-            Data->IsCreatingNewPopupIsLoadAfterOpen = false;
-            Data->IsCreatingNewPopupIndexBeforeChange = _HandlersManager->GetActiveIndex();
-            Data->IsCreatingNewPopupUrl = url;
-            CefRefPtr< CefFrame > Frame = _HandlersManager->GetBrowser()->GetMainFrame();
-            Frame->ExecuteJavaScript("window.open('tab://new/')",Frame->GetURL(),0);
-        }
-        else
-        {
-            SendTextResponce("<PopupCreate></PopupCreate>");
-        }
-    }
+        this->SendTextResponce("<PopupCreate></PopupCreate>");
+    });
 }
 
+void MainApp::PopupCreate2Callback(bool is_silent, const std::string& url, const std::string& referrer, bool is_instant)
+{
+    Async Result = Data->Connector->CreateTab(url, is_instant, is_silent, referrer);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        if(Result->GetIsSuccess())
+        {
+            this->SendTextResponce("<PopupCreate2></PopupCreate2>");
+        }else
+        {
+            std::string error = Result->GetErrorMessage();
+            xml_encode(error);
+            this->SendTextResponce(std::string("<PopupCreate2>") + error + std::string("</PopupCreate2>"));
+        }
+
+    });
+}
 
 void MainApp::SetOpenFileNameCallback(const std::string& value)
 {
@@ -1224,23 +1207,49 @@ void MainApp::MouseClickDownCallback(int x, int y)
 
 void MainApp::PopupCloseCallback(int index)
 {
-    if(!_HandlersManager->CloseByIndex(index))
-        SendTextResponce("<PopupClose></PopupClose>");
-    SetWindowText(GetData()->UrlHandler, s2ws(GetUrl()).c_str());
+    Async Result = Data->Connector->CloseTab(index);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        this->SendTextResponce("<PopupClose></PopupClose>");
+    });
 }
 
 void MainApp::PopupSelectCallback(int index)
 {
-    _HandlersManager->SwitchByIndex(index);
-    SendTextResponce("<PopupSelect></PopupSelect>");
-    SetWindowText(GetData()->UrlHandler, s2ws(GetUrl()).c_str());
+    Async Result = Data->Connector->SwitchToTab(index);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        this->SendTextResponce("<PopupSelect></PopupSelect>");
+    });
 }
 
 void MainApp::PopupInfoCallback()
 {
-    std::string string_res =_HandlersManager->GetTabsJson();
-    xml_encode(string_res);
-    SendTextResponce(std::string("<PopupInfo>") + string_res + std::string("</PopupInfo>"));
+    Async Result = Data->Connector->GetTabsList();
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        std::vector<std::string> urls = Result->GetList();
+        picojson::array urls_json;
+        for(std::string& url:urls)
+        {
+            urls_json.push_back(picojson::value(url));
+        }
+        int index = Data->Connector->GetCurrentTabIndex();
+
+        picojson::object res;
+
+        res["urls"] = picojson::value(urls_json);
+        res["index"] = picojson::value((double)index);
+
+        std::string string_res = picojson::value(res).serialize();
+
+        xml_encode(string_res);
+
+        this->SendTextResponce(std::string("<PopupInfo>") + string_res + std::string("</PopupInfo>"));
+    });
 }
 
 void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll)

@@ -80,6 +80,7 @@ namespace BrowserAutomationStudioFramework
         virtual void PopupClose(int index, const QString& callback);
         virtual void PopupSelect(int index, const QString& callback);
         virtual void PopupCreate(bool is_silent, const QString& url, const QString& callback);
+        virtual void PopupCreate2(bool is_silent, const QString& url, const QString& referrer, bool is_instant, const QString& callback);
         virtual void PopupInfo(const QString& callback);
         virtual void Timezone(int offset, const QString& callback);
         virtual void MouseMove(int x, int y,const QString& params, const QString& callback);
@@ -151,6 +152,7 @@ namespace BrowserAutomationStudioFramework
         void MouseClickDown();
         void PopupSelect();
         void PopupCreate();
+        void PopupCreate2();
         void PopupClose();
         void PopupInfo();
         void MouseMove();

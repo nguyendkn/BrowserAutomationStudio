@@ -12,6 +12,7 @@ struct TabData
 {
     enum
     {
+        Delayed,
         NotStarted,
         WaitingForAttachment,
         WaitingForPageEnable,
@@ -29,6 +30,7 @@ struct TabData
     std::string InterceptId;
     std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
     int CurrentWebsocketActionId = 0;
+    std::string DelayedUrl;
 };
 
 struct StartupScriptItem
@@ -46,6 +48,7 @@ struct DevToolsGlobalState
     std::string SwitchToTabId;
     std::string SwitchToTabFrameId;
     bool SwitchToTabResetSavedActions = false;
+    int SwitchingToDelayedTabIndex = -1;
     int Port = -1;
     std::vector<StartupScriptItem> StartupScriptIds;
     std::map<std::string, int> FrameIdToContextId;

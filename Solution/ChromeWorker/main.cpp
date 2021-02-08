@@ -2046,6 +2046,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventPopupClose.push_back(std::bind(&MainApp::PopupCloseCallback,app.get(),_1));
     Parser->EventPopupSelect.push_back(std::bind(&MainApp::PopupSelectCallback,app.get(),_1));
     Parser->EventPopupCreate.push_back(std::bind(&MainApp::PopupCreateCallback,app.get(),_1,_2));
+    Parser->EventPopupCreate2.push_back(std::bind(&MainApp::PopupCreate2Callback,app.get(),_1,_2,_3,_4));
     Parser->EventPopupInfo.push_back(std::bind(&MainApp::PopupInfoCallback,app.get()));
     Parser->EventMouseMove.push_back(std::bind(&MainApp::MouseMoveCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10));
     Parser->EventScroll.push_back(std::bind(&MainApp::ScrollCallback,app.get(),_1,_2));

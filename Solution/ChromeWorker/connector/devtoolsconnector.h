@@ -135,7 +135,7 @@ class DevToolsConnector
 
         //Tabs
         Async GetTabsList(int Timeout = -1);
-        Async CreateTab(const std::string& Url, bool IsInstant = false, const std::string& Referrer = std::string(), int Timeout = -1);
+        Async CreateTab(const std::string& Url, bool IsInstant = false, bool IsDelayed = false, const std::string& Referrer = std::string(), int Timeout = -1);
         Async SwitchToTab(int Index, int Timeout = -1);
         Async CloseTab(int Index, int Timeout = -1);
         int GetTabNumber();

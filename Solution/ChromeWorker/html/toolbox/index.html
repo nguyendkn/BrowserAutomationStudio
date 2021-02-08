@@ -4771,6 +4771,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Url", description:tr("Url"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
       <%= _.template($('#input_constructor').html())({id:"IsSilent", description:tr("Load silently"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true","false"], help: {description: tr("Adding tab silently means, that new tab will be added and specified url will be loaded only when the tab becomes active for the first time."),examples:[{code:"true",description:tr("Create new tab, load specified url only when tab gets switched to.")},{code:"false",description:tr("Create new tab, switch to it and load it immediately.")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Referrer", description:tr("Referrer. Can be blank"), default_selector: "string", disable_int:true, help: {description: tr("Referrer used for current page load."), examples:[{code:"https://google.com",description:tr("Page is loaded by clicking on google search result.")},{code:tr("Empty string"),description:tr("Page is loaded by typing url in address bar.")}]}}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Add a new tab with the specified Url.</div>
@@ -5924,21 +5925,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="addtab_code">
-      /*Browser*/
-
-      _if_else(<%= is_silent %> == "true",function(){
-        _popupcreate(true,<%= url %>)!
-      },function(){
-        _popupcreate(false,"")!
-        <% if(notinstant){ %>
-          <%= timeout_general()  %>
-          load(<%= url %>)!
-        <% }else{ %>
-          load_instant(<%= url %>)!
-        <% } %>
-      })!
-
-      
+    <% if(notinstant){ %>
+      <%= timeout_general()  %>
+    <% } %>
+    _popupcreate2(<%= is_silent %> == "true", <%= url %>, <%= referrer %>, <%= (notinstant) ? "false" : "true" %>)!
   </script>
 
   <script type="text/template" id="closetab_code">
@@ -10424,6 +10414,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             var Url = GetInputConstructorValue("Url", loader);
             var IsSilent = GetInputConstructorValue("IsSilent", loader);
+            var Referrer = GetInputConstructorValue("Referrer",loader)
+            
             if(Url["original"].length == 0)
             {
               Invalid("Url is empty");
@@ -10434,8 +10426,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               Invalid("IsSilent is empty");
               return;
             }
+            
             try{
-              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({url:Url["updated"], notinstant: BrowserAutomationStudio_UsesWaitCode(), is_silent: IsSilent["updated"]}) /*+ BrowserAutomationStudio_GetWaitCode()*/
+              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({referrer:Referrer["updated"], url:Url["updated"], notinstant: BrowserAutomationStudio_UsesWaitCode(), is_silent: IsSilent["updated"]}) /*+ BrowserAutomationStudio_GetWaitCode()*/
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)

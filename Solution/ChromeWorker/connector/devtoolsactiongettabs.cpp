@@ -18,7 +18,7 @@ void DevToolsActionGetTabs::OnWebSocketMessage(const std::string& Message, const
 
     for(std::shared_ptr<TabData> Tab : this->GlobalState->Tabs)
     {
-        //Only tab in state Connected is visible to client
+        //Tabs in state Connected
         if(Tab->ConnectionState == TabData::Connected)
         {
             std::string CurrentUrl;
@@ -32,6 +32,12 @@ void DevToolsActionGetTabs::OnWebSocketMessage(const std::string& Message, const
                 }
             }
             ListValue.push_back(CurrentUrl);
+        }
+
+        //Tabs in state Delayed
+        if(Tab->ConnectionState == TabData::Delayed)
+        {
+            ListValue.push_back(Tab->DelayedUrl);
         }
     }
 

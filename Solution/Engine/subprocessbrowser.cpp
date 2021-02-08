@@ -160,6 +160,24 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
+    void SubprocessBrowser::PopupCreate2(bool is_silent, const QString& url, const QString& referrer, bool is_instant, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeStartElement("PopupCreate2");
+            xmlWriter.writeAttribute("is_silent", QString::number(is_silent));
+            xmlWriter.writeAttribute("url", url);
+            xmlWriter.writeAttribute("referrer", referrer);
+            xmlWriter.writeAttribute("is_instant", QString::number(is_instant));
+        xmlWriter.writeEndElement();
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("PopupCreate2"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(PopupCreate2()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+    }
+
     void SubprocessBrowser::PopupInfo(const QString& callback)
     {
         QString WriteString;
@@ -935,6 +953,11 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "PopupCreate" && token == QXmlStreamReader::StartElement)
             {
                 emit PopupCreate();
+            }else if(xmlReader.name() == "PopupCreate2" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
+                emit PopupCreate2();
             }else if(xmlReader.name() == "PopupInfo" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();

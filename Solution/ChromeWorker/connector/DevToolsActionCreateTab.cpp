@@ -11,8 +11,23 @@ void DevToolsActionCreateTab::Run()
     Referrer = Params["referrer"].String;
     Params.erase("referrer");
 
+    IsDelayed = Params["delayed"].Boolean;
+    Params.erase("delayed");
+
     Url = PrepareUrl(Params["url"].String);
     Params["url"].String = "chrome://newtab/";
+
+    if(IsDelayed)
+    {
+        std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+        TabInfo->ConnectionState = TabData::Delayed;
+        TabInfo->DelayedUrl = Url;
+        GlobalState->Tabs.push_back(TabInfo);
+
+        State = Finished;
+        Result->Success();
+        return;
+    }
 
     SubscribbedEvents.push_back("Target.targetActivated");
     

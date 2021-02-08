@@ -330,6 +330,7 @@ public:
     void PopupCloseCallback(int index);
     void PopupSelectCallback(int index);
     void PopupCreateCallback(bool is_silent, const std::string& url);
+    void PopupCreate2Callback(bool is_silent, const std::string& url, const std::string& referrer, bool is_instant);
     void PopupInfoCallback();
     void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll);
     void LoadSuccessCallback();

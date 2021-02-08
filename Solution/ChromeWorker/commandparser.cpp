@@ -829,6 +829,40 @@ void CommandParser::Parse(const std::string& Xml)
 
         }
 
+        CommandNode = MessagesNode->first_node("PopupCreate2");
+        if(CommandNode)
+        {
+            WORKER_LOG("PopupCreate2");
+            bool is_silent = false;
+            std::string url;
+            bool is_instant = false;
+            std::string referrer;
+            for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
+            {
+                if(std::string(attr->name()) == std::string("is_silent"))
+                {
+                    is_silent = std::string(attr->value()) == std::string("1");
+                }
+                if(std::string(attr->name()) == std::string("is_instant"))
+                {
+                    is_instant = std::string(attr->value()) == std::string("1");
+                }
+                if(std::string(attr->name()) == std::string("url"))
+                {
+                    url = std::string(attr->value());
+                }
+                if(std::string(attr->name()) == std::string("referrer"))
+                {
+                    referrer = std::string(attr->value());
+                }
+            }
+
+            for(auto f:EventPopupCreate2)
+                f(is_silent,url,referrer,is_instant);
+
+
+        }
+
         CommandNode = MessagesNode->first_node("Scroll");
         if(CommandNode)
         {

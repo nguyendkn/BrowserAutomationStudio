@@ -9,12 +9,23 @@ void DevToolsActionCloseTab::Run()
 
     int CurrentIndex = 0;
     std::shared_ptr<TabData> CurrentTab;
-    for(std::shared_ptr<TabData> Tab : GlobalState->Tabs)
+    for(auto it = GlobalState->Tabs.begin(); it != GlobalState->Tabs.end(); ++it)
     {
-        if(Tab->ConnectionState == TabData::Connected)
+        std::shared_ptr<TabData> Tab = *it;
+        if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
         {
             if(CurrentIndex == Index)
             {
+
+                //Delayed tab is virtual, so it can be erased without any issue.
+                if(Tab->ConnectionState == TabData::Delayed)
+                {
+                    GlobalState->Tabs.erase(it);
+                    Result->Success();
+                    State = Finished;
+                    return;
+                }
+
                 CurrentTab = Tab;
                 break;
             }
@@ -29,7 +40,7 @@ void DevToolsActionCloseTab::Run()
         return;
     }
 
-    if(GlobalState->Tabs.size() <= 1)
+    if(GlobalState->Tabs.size() <= 1 || Index == 0)
     {
         Result->Fail(std::string("Can't close last tab"));
         State = Finished;

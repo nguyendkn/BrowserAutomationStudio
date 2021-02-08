@@ -580,11 +580,23 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 if(TypeName == "page")
                 {
-                    std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                    TabInfo->ConnectionState = TabData::NotStarted;
-                    TabInfo->FrameId = FrameId;
-                    GlobalState.Tabs.push_back(TabInfo);
-                    ProcessTabConnection(TabInfo);
+                    if(GlobalState.SwitchingToDelayedTabIndex >= 0 && GlobalState.SwitchingToDelayedTabIndex < GlobalState.Tabs.size() && GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex]->ConnectionState == TabData::Delayed)
+                    {
+                        //Loading delayed tab
+                        std::shared_ptr<TabData> TabInfo = GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex];
+                        TabInfo->ConnectionState = TabData::NotStarted;
+                        TabInfo->FrameId = FrameId;
+                        ProcessTabConnection(TabInfo);
+                    }else
+                    {
+                        std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                        TabInfo->ConnectionState = TabData::NotStarted;
+                        TabInfo->FrameId = FrameId;
+                        GlobalState.Tabs.push_back(TabInfo);
+                        ProcessTabConnection(TabInfo);
+                    }
+
+                    GlobalState.SwitchingToDelayedTabIndex = -1;
                 }
             }
         }else if(Method == "Target.attachedToTarget")
@@ -1137,7 +1149,7 @@ int DevToolsConnector::GetTabNumber()
     int Result = 0;
     for(auto const& Tab : GlobalState.Tabs)
     {
-        if(Tab->ConnectionState == TabData::Connected)
+        if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
         {
             Result++;
         } 
@@ -1150,7 +1162,7 @@ int DevToolsConnector::GetCurrentTabIndex()
     int Result = 0;
     for(auto const& Tab : GlobalState.Tabs)
     {
-        if(Tab->ConnectionState == TabData::Connected)
+        if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
         {
             if(Tab->TabId == GlobalState.TabId)
             {
@@ -1281,7 +1293,7 @@ Async DevToolsConnector::NavigateBack(bool IsInstant, int Timeout)
 }
 
 
-Async DevToolsConnector::CreateTab(const std::string& Url, bool IsInstant, const std::string& Referrer, int Timeout)
+Async DevToolsConnector::CreateTab(const std::string& Url, bool IsInstant, bool IsDelayed, const std::string& Referrer, int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;
     std::map<std::string, Variant> Params;
@@ -1293,6 +1305,8 @@ Async DevToolsConnector::CreateTab(const std::string& Url, bool IsInstant, const
     Params["url"] = Variant(std::string(Url));
 
     Params["referrer"] = Variant(std::string(Referrer));
+
+    Params["delayed"] = Variant(IsDelayed);
 
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);
@@ -1306,9 +1320,47 @@ Async DevToolsConnector::SwitchToTab(int Index, int Timeout)
     std::shared_ptr<IDevToolsAction> NewAction;
     std::map<std::string, Variant> Params;
 
-    NewAction.reset(ActionsFactory.Create("SwitchToTab", &GlobalState));
+    bool IsDelayed = false;
+    std::string DelayedUrl;
+    int CurrentIndex = 0;
 
-    Params["index"] = Variant(Index);
+    //Check if switching to delayed tab
+    for(std::shared_ptr<TabData> Tab : GlobalState.Tabs)
+    {
+        if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
+        {
+            if(CurrentIndex == Index)
+            {
+                IsDelayed = Tab->ConnectionState == TabData::Delayed;
+                if(IsDelayed)
+                {
+                    DelayedUrl = Tab->DelayedUrl;
+                }
+                break;
+            }
+            CurrentIndex++;
+        }
+    }
+
+    if(IsDelayed)
+    {
+        GlobalState.SwitchingToDelayedTabIndex = CurrentIndex;
+
+        NewAction.reset(ActionsFactory.Create("CreateTab", &GlobalState));
+
+        Params["instant"] = Variant(true);
+
+        Params["url"] = Variant(DelayedUrl);
+
+        Params["referrer"] = Variant(std::string());
+
+        Params["delayed"] = Variant(false);
+    }else
+    {
+        NewAction.reset(ActionsFactory.Create("SwitchToTab", &GlobalState));
+
+        Params["index"] = Variant(Index);
+    }
 
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);

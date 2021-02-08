@@ -100,6 +100,10 @@ class DevToolsConnector
         std::vector<std::function<void()> > OnPaint;
         std::vector<std::function<void()> > OnResize;
         std::vector<std::function<void()> > OnScroll;
+        std::vector<std::function<void(std::string)> > OnRequestStart;
+        std::vector<std::function<void(std::string)> > OnRequestStop;
+        std::vector<std::function<void()> > OnLoadStart;
+        std::vector<std::function<void()> > OnLoadStop;
 
         char* GetPaintData();
         int GetPaintWidth();
@@ -127,6 +131,7 @@ class DevToolsConnector
 
         //Browser life cycle
         Async Reset(int Timeout = -1);
+        bool IsLoading();
 
         //Tabs
         Async GetTabsList(int Timeout = -1);

@@ -435,6 +435,78 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
     if(AllObject.count("method") > 0 && AllObject["method"].is<std::string>())
     {
         std::string Method = AllObject["method"].get<std::string>();
+
+
+        if(Method == "Page.frameStartedLoading")
+        {
+            //Page loading has been started
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+
+                std::string FrameId = Parser.GetStringFromJson(Result, "frameId");
+
+                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                {
+                    if(FrameId == TabInfo->FrameId)
+                    {
+                        for(auto f:OnLoadStart)
+                            f();
+                        TabInfo->IsLoading = true;
+                    }
+                }
+
+            }
+        }
+        if(Method == "Page.frameStoppedLoading")
+        {
+            //Page loading has been started
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+
+                std::string FrameId = Parser.GetStringFromJson(Result, "frameId");
+
+                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                {
+                    if(FrameId == TabInfo->FrameId)
+                    {
+                        for(auto f:OnLoadStop)
+                            f();
+                        TabInfo->IsLoading = false;
+                    }
+                }
+
+            }
+        }
+        if(Method == "Network.requestWillBeSent")
+        {
+            //Request started
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+
+                std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
+                for(auto f:OnRequestStart)
+                    f(RequestId);
+            }
+        }
+        if(Method == "Network.loadingFinished" || Method == "Network.loadingFailed" || Method == "Network.requestServedFromCache" || Method == "Network.responseReceived")
+        {
+            //Request ended
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+
+                std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
+                for(auto f:OnRequestStop)
+                    f(RequestId);
+            }
+        }
         
         //Intercept screencast event, replace it with OnPaint event
         if(Method == "Page.screencastFrame")
@@ -515,7 +587,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     ProcessTabConnection(TabInfo);
                 }
             }
-        } else if(Method == "Target.attachedToTarget")
+        }else if(Method == "Target.attachedToTarget")
         {
             //New tab has been attached, start initialization of new tab
             if(AllObject["params"].is<picojson::object>())
@@ -1476,6 +1548,20 @@ void DevToolsConnector::KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPA
     SendWebSocket("Input.dispatchKeyEvent", Params, GlobalState.TabId);
 }
 
+bool DevToolsConnector::IsLoading()
+{
+    for(auto const& Tab : GlobalState.Tabs)
+    {
+        if(Tab->ConnectionState == TabData::Connected)
+        {
+            if(Tab->TabId == GlobalState.TabId)
+            {
+                return Tab->IsLoading;
+            }
+        }
+    }
+    return false;
+}
 
 Async DevToolsConnector::Reset(int Timeout)
 {

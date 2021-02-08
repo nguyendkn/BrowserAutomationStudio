@@ -1943,6 +1943,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));
     Data->Connector->OnResize.push_back(std::bind(&MainApp::OnResize,app.get()));
     Data->Connector->OnScroll.push_back(std::bind(&MainApp::OnScroll,app.get()));
+    Data->Connector->OnRequestStart.push_back(std::bind(&MainApp::OnRequestStart,app.get(),_1));
+    Data->Connector->OnRequestStop.push_back(std::bind(&MainApp::OnRequestStop,app.get(),_1));
+    Data->Connector->OnLoadStart.push_back(std::bind(&MainApp::OnLoadStart,app.get()));
+    Data->Connector->OnLoadStop.push_back(std::bind(&MainApp::OnLoadStop,app.get()));
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     std::make_shared<RawCppWebSocketClientFactory>(),

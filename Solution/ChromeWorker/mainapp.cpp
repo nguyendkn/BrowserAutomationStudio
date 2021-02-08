@@ -2353,24 +2353,10 @@ void MainApp::FindUrlByMaskCallback(const std::string& value)
 
 void MainApp::GetLoadStatsCallback()
 {
-    int is_loading = 0;
-    if(_HandlersManager->GetBrowser())
-        is_loading = _HandlersManager->GetBrowser()->IsLoading();
+    int is_loading = Data->Connector->IsLoading();
 
-    int64 Oldest;
-    if(Settings->ProxyTunneling())
-    {
-        LOCK_BROWSER_DATA
-        Oldest = Data->_RequestList.Oldest();
-    }
-    else
-        Oldest = Data->OldestRequestTime;
+    int64 Oldest = Data->_RequestList.Oldest();
 
-    if(_HandlersManager->GetBrowser() && _HandlersManager->GetBrowser()->GetMainFrame() && _HandlersManager->GetBrowser()->GetMainFrame()->GetURL() == "about:blank")
-    {
-        is_loading = false;
-        Oldest = 0;
-    }
     SendTextResponce(std::string("<GetLoadStats>") + std::to_string(is_loading) + "," + std::to_string(Oldest) + std::string("</GetLoadStats>"));
     return;
 }
@@ -3289,7 +3275,6 @@ void MainApp::Timer()
     auto now = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
     if(now > Data->LastClearRequest + 5000 || Data->LastClearRequest == 0)
     {
-        LOCK_BROWSER_DATA
         Data->LastClearRequest = now;
         Data->_RequestList.RemoveOld();
     }
@@ -3376,6 +3361,25 @@ void MainApp::OnScroll()
 {
     Data->ScrollX = Data->Connector->GetScrollX();
     Data->ScrollY = Data->Connector->GetScrollY();
+}
+
+void MainApp::OnRequestStart(std::string RequestId)
+{
+    Data->_RequestList.Add(RequestId);
+}
+
+void MainApp::OnRequestStop(std::string RequestId)
+{
+    Data->_RequestList.Remove(RequestId);
+}
+
+void MainApp::OnLoadStart()
+{
+    Data->_RequestList.RemoveAll();
+}
+
+void MainApp::OnLoadStop()
+{
 }
 
 void MainApp::ClearHighlight()

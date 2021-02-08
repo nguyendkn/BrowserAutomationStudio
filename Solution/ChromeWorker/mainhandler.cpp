@@ -766,11 +766,6 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
         }
     }
 
-    {
-        LOCK_BROWSER_DATA
-        Data->_RequestList.Add(request->GetIdentifier());
-    }
-
     if(Settings->ProxyTunneling())
     {
         CefRequest::HeaderMap ReqestHeaderMap;
@@ -870,10 +865,6 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
 void MainHandler::OnResourceLoadComplete(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefResponse> response, CefResourceRequestHandler::URLRequestStatus status, int64 received_content_length)
 {
     //THREAD TID_IO
-    {
-        LOCK_BROWSER_DATA
-        Data->_RequestList.Remove(request->GetIdentifier());
-    }
 
     for(auto f:EventUrlLoaded)
         f(request->GetURL().ToString(),response->GetStatus(),GetBrowserId(),request->GetResourceType());
@@ -947,8 +938,6 @@ bool MainHandler::OnResourceResponse(CefRefPtr<CefBrowser> browser, CefRefPtr<Ce
             try{std::transform(value.begin(), value.end(), value.begin(), ::tolower);}catch(...){}
             if (value.find("event-stream") != std::string::npos)
             {
-                LOCK_BROWSER_DATA
-                Data->_RequestList.Remove(request->GetIdentifier());
                 return false;
             }
         }

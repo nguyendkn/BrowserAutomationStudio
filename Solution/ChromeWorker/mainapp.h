@@ -420,11 +420,14 @@ public:
 
     void SendTextResponce(const std::string&);
 
-    //Paint
+    //Connector events
     void OnPaint();
     void OnResize();
     void OnScroll();
-
+    void OnRequestStart(std::string RequestId);
+    void OnRequestStop(std::string RequestId);
+    void OnLoadStart();
+    void OnLoadStop();
 
 
 private:

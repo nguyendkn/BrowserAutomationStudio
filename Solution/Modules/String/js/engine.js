@@ -332,7 +332,7 @@ function _capitalize(str, all, lower){
 	all = _avoid_nilb(all, false);
 	lower = _avoid_nilb(lower, false);
 	_validate_argument_type(all, 'boolean', 'Capitalize all words', act);
-	_validate_argument_type(str, 'boolean', 'All other letters in lowercase', act);
+	_validate_argument_type(lower, 'boolean', 'All other letters in lowercase', act);
 	return (lower ? str.toLowerCase() : str).replace(new RegExp("(?:^|\\s|[\"'([{])+\\S", (all ? "g" : "")), function(match){return match.toUpperCase()});
 };
 function _sentences(str){

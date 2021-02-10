@@ -181,6 +181,12 @@ int MainApp::GetActivePopupIndex()
     return Data->Connector->GetCurrentTabIndex();
 }
 
+void MainApp::ContextMenu(int X, int Y)
+{
+    WORKER_LOG(std::string("!!!!!!!!!!!!! ContextMenu ") + std::to_string(X) + std::string(", ") + std::to_string(Y));
+
+}
+
 
 CefRefPtr<CefBrowserProcessHandler> MainApp::GetBrowserProcessHandler()
 {
@@ -350,13 +356,7 @@ void MainApp::Reload()
 
 void MainApp::ShowDevTools()
 {
-    if(_HandlersManager->GetBrowser())
-    {
-        CefWindowInfo window_info;
-        window_info.SetAsPopup(0, "Developer tools");
-        CefBrowserSettings browser_settings;
-        _HandlersManager->GetBrowser()->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(0,0));
-    }
+    Data->Connector->OpenDevTools();
 }
 
 
@@ -1694,20 +1694,13 @@ void MainApp::ToggleDevTools()
     }else
     {
         WORKER_LOG("ToggleDevTools");
-        if(!_HandlersManager->GetBrowser())
-            return;
-
-        dhandler->OpenDevTools();
+        Data->Connector->OpenDevTools();
     }
 }
 
 void MainApp::InspectAt(int x, int y)
 {
-    WORKER_LOG(std::string("Inspect At<<") + std::to_string(x) + std::string("<<") + std::to_string(y));
-    if(!_HandlersManager->GetBrowser())
-        return;
-
-    dhandler->OpenDevTools(CefPoint(x,y));
+    Data->Connector->OpenDevTools();
 }
 
 void MainApp::RepeatInspectMouseAt()
@@ -2017,19 +2010,12 @@ std::string MainApp::GetUrl()
 
 void MainApp::ProcessContextMenu(int MenuId)
 {
-    if(_HandlersManager->GetBrowser())
-    {
-        Data->_BrowserContextMenu.Process(Data->_MainWindowHandle, MenuId, Data->Connector);
-    }
+    Data->_BrowserContextMenu.Process(Data->_MainWindowHandle, MenuId, Data->Connector);
 }
 
 void MainApp::ProcessFind(LPFINDREPLACE lpfr)
 {
-    if(_HandlersManager->GetBrowser())
-    {
-        Data->_BrowserContextMenu.OnFind(_HandlersManager->GetBrowser(), lpfr);
-    }
-
+    Data->_BrowserContextMenu.OnFind(Data->Connector, lpfr);
 }
 
 
@@ -4728,10 +4714,12 @@ void MainApp::ShowContextMenu(int X, bool IsImageSelect, const std::string & Jso
 
 void MainApp::MainContextMenu(POINT& p)
 {
-    if(_HandlersManager->GetBrowser())
+    Async Result = Data->Connector->GetHistory();
+    Result->Then([this, p](AsyncResult* Result)
     {
-        Data->_BrowserContextMenu.ShowMenu(Data->_MainWindowHandle, p, Data->IsRecord, _HandlersManager->GetBrowser()->CanGoBack(), _HandlersManager->GetBrowser()->CanGoForward());
-    }
+        POINT pcopy = p;
+        Data->_BrowserContextMenu.ShowMenu(Data->_MainWindowHandle, pcopy, Data->IsRecord, Result->GetInteger() > 0 , Result->GetInteger() < Result->GetList().size() - 1);
+    });
 
 }
 

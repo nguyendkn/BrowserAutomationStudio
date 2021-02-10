@@ -4,6 +4,7 @@
 #include "browsereventsemulator.h"
 #include "log.h"
 #include "picojson.h"
+#include "converter.h"
 
 
 void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward)
@@ -24,10 +25,10 @@ void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGo
     AppendMenu(hMenu, Enabled, IdReload, Translate::Tr(L"Reload").c_str());
     AppendMenu(hMenu, Enabled, IdFind, Translate::Tr(L"Find").c_str());
     AppendMenu(hMenu, Enabled, IdGetPageSource, Translate::Tr(L"Get page source").c_str());
-    if(!IsRecord)
+    /*if(!IsRecord)
     {
         AppendMenu(hMenu, Enabled, IdSavePageAs, Translate::Tr(L"Save page as").c_str());
-    }
+    }*/
     AppendMenu(hMenu, Enabled, IdOpenDeveloperTools, Translate::Tr(L"Open developer tools").c_str());
 
 
@@ -66,7 +67,7 @@ void BrowserContextMenu::Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params,
     AppendMenu(hMenu, Enabled, IdGetPageSource, Translate::Tr(L"Get page source").c_str());
     AppendMenu(hMenu, Enabled, IdSavePageAs, Translate::Tr(L"Save page as").c_str());
     AppendMenu(hMenu, Enabled, IdOpenDeveloperTools, Translate::Tr(L"Open developer tools").c_str());
-    AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
+    //AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
 
 
     if(Params->GetTypeFlags() & CM_TYPEFLAG_LINK)
@@ -159,11 +160,11 @@ void BrowserContextMenu::SetClipboard(const std::string& Text)
     }
 }
 
-void BrowserContextMenu::OnFind(CefRefPtr<CefBrowser> Browser, LPFINDREPLACE Data)
+void BrowserContextMenu::OnFind(DevToolsConnector* Connector, LPFINDREPLACE Data)
 {
     if(Data->Flags & FR_DIALOGTERM)
     {
-        Browser->GetHost()->StopFinding(true);
+        //Browser->GetHost()->StopFinding(true);
         find_what_last_.clear();
         find_next_ = false;
         find_hwnd_ = 0;
@@ -175,13 +176,20 @@ void BrowserContextMenu::OnFind(CefRefPtr<CefBrowser> Browser, LPFINDREPLACE Dat
         {
             if(!find_what.empty())
             {
-                Browser->GetHost()->StopFinding(true);
+                //Browser->GetHost()->StopFinding(true);
                 find_next_ = false;
             }
             find_match_case_last_ = match_case;
             find_what_last_ = find_buff_;
         }
-        Browser->GetHost()->Find(0, find_what, (find_state_.Flags & FR_DOWN) ? true : false, match_case, find_next_);
+        //Browser->GetHost()->Find(0, find_what, (find_state_.Flags & FR_DOWN) ? true : false, match_case, find_next_);
+        std::string Script = std::string("window.find(") + picojson::value(ws2s(find_what)).serialize() + std::string(", ")
+        + ((match_case) ? std::string("true") : std::string("false"))
+        + std::string(", ")
+        + ((find_state_.Flags & FR_DOWN) ? std::string("false") : std::string("true"))
+        + std::string(", true, false, true);");
+
+        Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
         if(!find_next_)
             find_next_ = true;
     }
@@ -212,30 +220,26 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Conn
     
     if(Command == IdBackward)
     {
-        //Browser->GoBack();
+        Connector->NavigateBack(true);
     }else if(Command == IdForward)
     {
-        //Browser->GoForward();
+        Connector->NavigateForward(true);
     }else if(Command == IdReload)
     {
-        //Browser->Reload();
+        Connector->Reload(true);
     }else if(Command == IdGetPageSource)
     {
-        /*if(!_SourceSaver)
-            _SourceSaver = new SourceSaver();
-        Browser->GetMainFrame()->GetSource(_SourceSaver);*/
+        Connector->ExecuteJavascript("[[RESULT]] = document.documentElement.outerHTML;", std::string(), std::string("[]"))->Then([this](AsyncResult* Result)
+        {
+            JsonParser Parser;
+            std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+            WriteStringToFile("source.txt",TextResult);
+            ShellExecute(0, 0, L"source.txt", 0, 0 , SW_SHOW );
+        });
+
     }else if(Command == IdOpenDeveloperTools)
     {
-        /*CefWindowInfo window_info;
-        window_info.SetAsPopup(0, "Developer tools");
-        CefBrowserSettings browser_settings;
-        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(0,0));*/
-    }else if(Command == IdInspectElement)
-    {
-        /*CefWindowInfo window_info;
-        window_info.SetAsPopup(0, "Developer tools");
-        CefBrowserSettings browser_settings;
-        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(LastClickX,LastClickY));*/
+        Connector->OpenDevTools();
     }else if(Command == IdCopyLinkLocation)
     {
         SetClipboard(Url);

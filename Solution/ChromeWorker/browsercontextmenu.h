@@ -57,7 +57,7 @@ public:
     void Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params, bool CanGoBack, bool CanGoForward);
     void ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward);
     void Process(HWND hwnd, int Command, DevToolsConnector* Connector);
-    void OnFind(CefRefPtr<CefBrowser> Browser, LPFINDREPLACE Data);
+    void OnFind(DevToolsConnector* Connector, LPFINDREPLACE Data);
     void ShowFindDialog(HWND hwnd);
 
 private:

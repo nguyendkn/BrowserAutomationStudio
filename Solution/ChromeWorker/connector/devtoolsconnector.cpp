@@ -90,6 +90,35 @@ void DevToolsConnector::SetExtensionList(const std::vector<std::wstring>& Extens
     this->Extensions = Extensions;
 }
 
+void DevToolsConnector::OpenDevTools()
+{
+    std::wstring PageId;
+
+    for(auto const& Tab : GlobalState.Tabs)
+    {
+        if(Tab->ConnectionState == TabData::Connected)
+        {
+            if(Tab->TabId == GlobalState.TabId)
+            {
+                PageId = s2ws(Tab->FrameId);
+                break;
+            }
+        }
+    }
+
+    if(!PageId.empty())
+    {
+        std::wstring Url =
+                std::wstring(L"http://127.0.0.1:")
+                + std::to_wstring(GlobalState.Port)
+                + std::wstring(L"/devtools/inspector.html?ws=127.0.0.1:")
+                + std::to_wstring(GlobalState.Port)
+                + std::wstring(L"/devtools/page/")
+                + PageId;
+        ShellExecute(0, 0, Url.c_str(), 0, 0 , SW_SHOW );
+    }
+}
+
 void DevToolsConnector::StartProcess()
 {
     std::wstring CommandLine;
@@ -1255,6 +1284,22 @@ Async DevToolsConnector::Load(const std::string& Url, bool IsInstant, const std:
     return NewAction->GetResult();
 }
 
+Async DevToolsConnector::Reload(bool IsInstant, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    std::map<std::string, Variant> Params;
+
+    NewAction.reset(ActionsFactory.Create("Reload", &GlobalState));
+
+    Params["instant"] = Variant(IsInstant);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
 Async DevToolsConnector::SetProxy(const std::string Server, int Port, bool IsHttp, const std::string Login, const std::string Password, int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;
@@ -1267,6 +1312,20 @@ Async DevToolsConnector::SetProxy(const std::string Server, int Port, bool IsHtt
     Params["is_http"] = Variant(IsHttp);
     Params["login"] = Variant(Login);
     Params["password"] = Variant(Password);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+Async DevToolsConnector::GetHistory(int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    std::map<std::string, Variant> Params;
+
+    NewAction.reset(ActionsFactory.Create("GetHistory", &GlobalState));
 
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);
@@ -1292,6 +1351,22 @@ Async DevToolsConnector::NavigateBack(bool IsInstant, int Timeout)
     return NewAction->GetResult();
 }
 
+
+Async DevToolsConnector::NavigateForward(bool IsInstant, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    std::map<std::string, Variant> Params;
+
+    NewAction.reset(ActionsFactory.Create("NavigateForward", &GlobalState));
+
+    Params["instant"] = Variant(IsInstant);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
 
 Async DevToolsConnector::CreateTab(const std::string& Url, bool IsInstant, bool IsDelayed, const std::string& Referrer, int Timeout)
 {

@@ -16,6 +16,7 @@ SOURCES += main.cpp \
     connector/DevToolsActionCreateTab.cpp \
     connector/DevToolsActionGetCurrentUrl.cpp \
     connector/DevToolsActionNavigateBack.cpp \
+    connector/DevToolsActionNavigateForward.cpp \
     connector/DevToolsActionRequestDeny.cpp \
     connector/DevToolsActionSetProxy.cpp \
     connector/DevToolsActionStartScreenCast.cpp \
@@ -35,6 +36,7 @@ SOURCES += main.cpp \
     connector/devtoolsactiongettabs.cpp \
     connector/devtoolsactioninspect.cpp \
     connector/devtoolsactionload.cpp \
+    connector/devtoolsactionreload.cpp \
     connector/devtoolsactionresizebrowser.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
@@ -45,6 +47,7 @@ SOURCES += main.cpp \
     connector/rawcppwebsocketclient.cpp \
     connector/rawcppwebsocketclientfactory.cpp \
     connector/sharedmemoryipc.cpp \
+    devtoolsactiongetnavigationhistory.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
@@ -152,6 +155,7 @@ HEADERS += \
     connector/DevToolsActionCreateTab.h \
     connector/DevToolsActionGetCurrentUrl.h \
     connector/DevToolsActionNavigateBack.h \
+    connector/DevToolsActionNavigateForward.h \
     connector/DevToolsActionRequestDeny.h \
     connector/DevToolsActionSetProxy.h \
     connector/DevToolsActionStartScreenCast.h \
@@ -176,6 +180,7 @@ HEADERS += \
     connector/devtoolsactiongettabs.h \
     connector/devtoolsactioninspect.h \
     connector/devtoolsactionload.h \
+    connector/devtoolsactionreload.h \
     connector/devtoolsactionresizebrowser.h \
     connector/devtoolsactionsetstartupscript.h \
     connector/devtoolsactionwebsocketquery.h \
@@ -186,6 +191,7 @@ HEADERS += \
     connector/rawcppwebsocketclient.h \
     connector/rawcppwebsocketclientfactory.h \
     connector/sharedmemoryipc.h \
+    devtoolsactiongetnavigationhistory.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileexists.h \

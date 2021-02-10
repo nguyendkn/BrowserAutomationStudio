@@ -128,6 +128,7 @@ class DevToolsConnector
         void SetExtensionList(const std::vector<std::wstring>& Extensions);
         bool InterruptAction(int ActionUniqueId);
         void StartProcess();
+        void OpenDevTools();
 
         //Browser life cycle
         Async Reset(int Timeout = -1);
@@ -148,12 +149,15 @@ class DevToolsConnector
 
         //Network
         Async Load(const std::string& Url, bool IsInstant = false, const std::string& Referrer = std::string(), int Timeout = -1);
+        Async Reload(bool IsInstant = false, int Timeout = -1);
         Async NavigateBack(bool IsInstant = false, int Timeout = -1);
+        Async NavigateForward(bool IsInstant = false, int Timeout = -1);
         Async GetCurrentUrl(int Timeout = -1);
         Async RequestDeny(const std::vector<std::string>& Urls, int Timeout = -1);
         int GetStatusForURL(const std::string& UrlPattern);
         bool IsURLLoaded(const std::string& UrlPattern);
         Async SetProxy(const std::string Server, int Port, bool IsHttp = true, const std::string Login = std::string(), const std::string Password = std::string(), int Timeout = -1);
+        Async GetHistory(int Timeout = -1);
 
         //Size
         Async GetBrowserSize(int Timeout = -1);

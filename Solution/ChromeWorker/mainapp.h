@@ -218,6 +218,7 @@ public:
     BrowserData * GetData();
     void GetAllPopupsUrls(std::function<void(const std::vector<std::string>&)> Callback);
     int GetActivePopupIndex();
+    void ContextMenu(int X, int Y);
 
 
     virtual CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() OVERRIDE;

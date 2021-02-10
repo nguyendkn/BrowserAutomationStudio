@@ -257,8 +257,6 @@ void ProcessMenu(const std::string& Command)
     }
 
     if(Command == "IDInspect"){
-        Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
-        Layout->UpdateTabs(MainLayout::Devtools);
         if(InspectLastX >= 0 && InspectLastY >= 0)
         {
             app->InspectAt(MouseMenuPositionX - app->GetData()->ScrollX,MouseMenuPositionY - app->GetData()->ScrollY);
@@ -810,6 +808,20 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;*/
         case WM_RBUTTONUP:
+            if(app->GetData()->ManualControl != BrowserData::Indirect && !app->GetData()->IsRecord)
+            {
+                //Show context menu for run mode
+
+                int xPos = LOWORD(lParam);
+                int yPos = HIWORD(lParam);
+
+                RECT r = Layout->GetBrowserRectangle(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
+
+                int MousePositionX = (float)(xPos - r.left) * (float)(app->GetData()->WidthBrowser) / (float)(r.right - r.left),MousePositionY = (float)(yPos - r.top) * (float)(app->GetData()->HeightBrowser) / (float)(r.bottom - r.top);
+
+                app->ContextMenu(MousePositionX, MousePositionY);
+                break;
+            }
             IsControlButton = 1;
             IsLeftMouseButton = false;
         case WM_LBUTTONUP:
@@ -1110,8 +1122,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if(Command == BrowserContextMenu::IdOpenDeveloperTools && app->GetData()->IsRecord)
                 {
                     //In record mode open developer tools in old window
-                    Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
-                    Layout->UpdateTabs(MainLayout::Devtools);
+                    if(Settings.DebugScenario() || Settings.DebugToolbox())
+                    {
+                        Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
+                        Layout->UpdateTabs(MainLayout::Devtools);
+                    }
                     app->ToggleDevTools();
                 }else
                     app->ProcessContextMenu(Command);
@@ -1321,18 +1336,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
                     case IDRecordHttpRequests:
                     {
-                        app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
+                        /*app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
                         if(app->GetCefReqest2Action())
                             app->GetCefReqest2Action()->Reset();
                         if(app->GetData()->IsRecordHttp)
-                        {
+                        {*/
                             MessageBox(
                                         hwnd,
-                                        (TCHAR *)Translate::Tr(L"Http request recorder is activated.\nAll requests which browser does will be converted to actions with http client and added to script editor.\nStart interacting with browser to see result.").data(),
+                                        (TCHAR *)Translate::Tr(L"Http request recorder is temporary disabled. It will be available in one of the following versions.").data(),
                                         (TCHAR *)Translate::Tr(L"Request recorder").data(),
                                         MB_OK | MB_ICONINFORMATION
                             );
-                        }
+                        //}
 
                     }
                     break;
@@ -1345,9 +1360,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     }
                     break;
                     case IDShowDevtools:
-                        Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
+                        /*Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
                         Layout->UpdateTabs(MainLayout::Devtools);
-                        app->ToggleDevTools();
+                        app->ToggleDevTools();*/
+                        {
+                            app->GetData()->Connector->OpenDevTools();
+                        }
                     break;
                     case IDShowScenario:
                         Layout->SetLabelTop(Translate::Tr(L"Script editor"));

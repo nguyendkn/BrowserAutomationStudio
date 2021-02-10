@@ -2,6 +2,7 @@
 #include "devtoolsactiongettabs.h"
 #include "DevToolsActionSwitchToTab.h"
 #include "devtoolsactionload.h"
+#include "devtoolsactionreload.h"
 #include "devtoolsactiongetbrowsersize.h"
 #include "devtoolsactionresizebrowser.h"
 #include "devtoolsactionsetstartupscript.h"
@@ -13,8 +14,10 @@
 #include "DevToolsActionRequestDeny.h"
 #include "DevToolsActionGetCurrentUrl.h"
 #include "DevToolsActionNavigateBack.h"
+#include "DevToolsActionNavigateForward.h"
 #include "DevToolsActionSetProxy.h"
 #include "devtoolsactioninspect.h"
+#include "devtoolsactiongetnavigationhistory.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -35,6 +38,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "Load")
     {
         Result = new DevToolsActionLoad();
+    }else if(Name == "Reload")
+    {
+        Result = new DevToolsActionReload();
     }else if(Name == "GetBrowserSize")
     {
         Result = new DevToolsActionGetBrowserSize();
@@ -71,12 +77,18 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     } else if(Name == "NavigateBack")
     {
         Result = new DevToolsActionNavigateBack();
+    } else if(Name == "NavigateForward")
+    {
+        Result = new DevToolsActionNavigateForward();
     } else if(Name == "SetProxy")
     {
         Result = new DevToolsActionSetProxy();
     } else if(Name == "Inspect")
     {
         Result = new DevToolsActionInspect();
+    } else if(Name == "GetHistory")
+    {
+        Result = new DevToolsActionGetNavigationHistory();
     }
 
     if(Result)

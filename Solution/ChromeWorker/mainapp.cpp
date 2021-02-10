@@ -183,8 +183,20 @@ int MainApp::GetActivePopupIndex()
 
 void MainApp::ContextMenu(int X, int Y)
 {
-    WORKER_LOG(std::string("!!!!!!!!!!!!! ContextMenu ") + std::to_string(X) + std::string(", ") + std::to_string(Y));
-
+    
+    std::string Script = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_GenerateMenu)(") + std::to_string(X) + std::string(",") + std::to_string(Y) + std::string(");"), "main");
+    Async Result = Data->Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
+    WORKER_LOG(std::string("!!!!!!!!!!!!! ContextMenu ") + Script);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        JsonParser Parser;
+        std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+        
+        WORKER_LOG(std::string("!!!!!!!!!!!!! ContextMenu ") + Result->GetString());
+    
+        
+    });
 }
 
 

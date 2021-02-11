@@ -31,6 +31,7 @@ struct TabData
     std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
     int CurrentWebsocketActionId = 0;
     std::string DelayedUrl;
+    std::string CurrentUrl;
 };
 
 struct StartupScriptItem

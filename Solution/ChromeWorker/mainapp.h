@@ -430,6 +430,8 @@ public:
     void OnRequestStop(std::string RequestId);
     void OnLoadStart();
     void OnLoadStop();
+    void OnAddressChanged(std::string Url);
+
 
 
 private:

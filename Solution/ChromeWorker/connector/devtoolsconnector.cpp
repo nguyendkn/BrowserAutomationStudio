@@ -465,6 +465,39 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
     {
         std::string Method = AllObject["method"].get<std::string>();
 
+        if(Method == "Target.targetInfoChanged")
+        {
+            //Check if tab url has been changed
+
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+                std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
+                std::string NewUrl = Parser.GetStringFromJson(Result, "targetInfo.url");
+
+                bool IsChanged = false;
+
+
+                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                {
+                    if(FrameId == TabInfo->FrameId)
+                    {
+                        if(TabInfo->CurrentUrl != NewUrl && GlobalState.TabId == TabInfo->TabId)
+                            IsChanged = true;
+                        TabInfo->CurrentUrl = NewUrl;
+                    }
+                }
+
+                if(IsChanged)
+                {
+                    for(auto f:OnAddressChanged)
+                        f(NewUrl);
+                }
+
+            }
+
+        }
 
         if(Method == "Page.frameStartedLoading")
         {
@@ -874,6 +907,9 @@ void DevToolsConnector::Timer()
             if(Tab->ConnectionState == TabData::Connected)
             {
                 GlobalState.TabId = Tab->TabId;
+
+                for(auto f:OnAddressChanged)
+                    f(Tab->CurrentUrl);
 
                 //Generate Target.targetActivated event. This event doesn't exist in Chrome Developer tools protocol.
                 std::string TabId = GlobalState.SwitchToTabId;

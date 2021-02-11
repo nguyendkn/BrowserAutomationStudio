@@ -104,6 +104,7 @@ class DevToolsConnector
         std::vector<std::function<void(std::string)> > OnRequestStop;
         std::vector<std::function<void()> > OnLoadStart;
         std::vector<std::function<void()> > OnLoadStop;
+        std::vector<std::function<void(std::string)> > OnAddressChanged;
 
         char* GetPaintData();
         int GetPaintWidth();

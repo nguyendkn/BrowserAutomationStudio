@@ -3394,6 +3394,11 @@ void MainApp::OnLoadStop()
 {
 }
 
+void MainApp::OnAddressChanged(std::string Url)
+{
+    SetWindowText(Data->UrlHandler, s2ws(Url).c_str());
+}
+
 void MainApp::ClearHighlight()
 {
     if(v8handler.get())

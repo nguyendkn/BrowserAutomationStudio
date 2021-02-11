@@ -186,16 +186,21 @@ void MainApp::ContextMenu(int X, int Y)
     
     std::string Script = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_GenerateMenu)(") + std::to_string(X) + std::string(",") + std::to_string(Y) + std::string(");"), "main");
     Async Result = Data->Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
-    WORKER_LOG(std::string("!!!!!!!!!!!!! ContextMenu ") + Script);
     Data->Results->ProcessResult(Result);
-    Result->Then([this](AsyncResult* Result)
+    Result->Then([this, X, Y](AsyncResult* Result)
     {
         JsonParser Parser;
         std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
-        
-        WORKER_LOG(std::string("!!!!!!!!!!!!! ContextMenu ") + Result->GetString());
-    
-        
+
+        std::string CurrentUrl = Parser.GetStringFromJson(TextResult,"current_url");
+        std::string MediaUrl = Parser.GetStringFromJson(TextResult,"media_url");
+        std::string LinkUrl = Parser.GetStringFromJson(TextResult,"link_url");
+        std::string SelectedText = Parser.GetStringFromJson(TextResult,"selected_text");
+        bool IsLink = Parser.GetBooleanFromJson(TextResult,"is_link");
+        bool IsMedia = Parser.GetBooleanFromJson(TextResult,"is_media");
+        bool IsEdit = Parser.GetBooleanFromJson(TextResult,"is_edit");
+
+        Data->_BrowserContextMenu.Show(Data->_MainWindowHandle,X,Y,IsLink,IsMedia,IsEdit,LinkUrl,MediaUrl,CurrentUrl,SelectedText,true,true);
     });
 }
 
@@ -2022,7 +2027,7 @@ std::string MainApp::GetUrl()
 
 void MainApp::ProcessContextMenu(int MenuId)
 {
-    Data->_BrowserContextMenu.Process(Data->_MainWindowHandle, MenuId, Data->Connector);
+    Data->_BrowserContextMenu.Process(Data->_MainWindowHandle, MenuId, Data->Connector, Data->_UniqueProcessId);
 }
 
 void MainApp::ProcessFind(LPFINDREPLACE lpfr)

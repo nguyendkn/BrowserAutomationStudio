@@ -145,14 +145,6 @@ CefRefPtr<CefResourceRequestHandler> MainHandler::GetResourceRequestHandler(CefR
 
 bool MainHandler::RunContextMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefContextMenuParams> params, CefRefPtr<CefMenuModel> model, CefRefPtr<CefRunContextMenuCallback> callback)
 {
-    if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
-    {
-        //Show menu
-        if(params->GetXCoord() >= 0 && params->GetXCoord() < Data->WidthBrowser
-           && params->GetYCoord() >= 0 && params->GetYCoord() < Data->HeightBrowser)
-        Data->_BrowserContextMenu.Show(Data->_MainWindowHandle,params,browser->CanGoBack(),browser->CanGoForward());
-        return true;
-    }
     return true;
 }
 

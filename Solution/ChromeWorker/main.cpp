@@ -808,6 +808,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;*/
         case WM_RBUTTONUP:
+
             if(app->GetData()->ManualControl != BrowserData::Indirect && !app->GetData()->IsRecord)
             {
                 //Show context menu for run mode
@@ -824,6 +825,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             }
             IsControlButton = 1;
             IsLeftMouseButton = false;
+
         case WM_LBUTTONUP:
         {
             if(IsControlButton == -1)
@@ -1043,6 +1045,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;*/
         case WM_RBUTTONDOWN:
+            if(app->GetData()->ManualControl != BrowserData::Indirect && !app->GetData()->IsRecord)
+            {
+                //Show context menu for run mode
+                break;
+            }
             IsControlButton = 1;
             IsLeftMouseButton = false;
         case WM_LBUTTONDOWN:

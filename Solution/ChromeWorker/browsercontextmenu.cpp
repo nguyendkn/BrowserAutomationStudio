@@ -5,7 +5,7 @@
 #include "log.h"
 #include "picojson.h"
 #include "converter.h"
-
+#include "javascriptextensions.h"
 
 void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward)
 {
@@ -40,14 +40,15 @@ void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGo
     }
 }
 
-void BrowserContextMenu::Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params, bool CanGoBack, bool CanGoForward)
+void BrowserContextMenu::Show(HWND hwnd, int X, int Y, bool IsLink, bool IsMedia, bool IsEdit, const std::string& LinkUrl, const std::string& MediaUrl, const std::string& CurrentUrl, const std::string& SelectedText, bool CanGoBack, bool CanGoForward)
 {
 
-    LastClickX = Params->GetXCoord();
-    LastClickY = Params->GetYCoord();
-    Url = Params->GetUnfilteredLinkUrl().ToString();
-    UrlMedia = Params->GetSourceUrl().ToString();
-    LastSelectText = Params->GetSelectionText();
+    LastClickX = X;
+    LastClickY = Y;
+    Url = LinkUrl;
+    UrlMedia = MediaUrl;
+    LastSelectText = SelectedText;
+    LastCurrentUrl = CurrentUrl;
 
     if(hMenu)
     {
@@ -70,24 +71,24 @@ void BrowserContextMenu::Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params,
     //AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
 
 
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_LINK)
+    if(IsLink)
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCopyLinkLocation, Translate::Tr(L"Copy link location").c_str());
         AppendMenu(hMenu, Enabled, IdOpenLinkInANewTab, Translate::Tr(L"Open link in a new tab").c_str());
     }
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_MEDIA)
+    if(IsMedia)
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCopyUrl, Translate::Tr(L"Copy media url").c_str());
         AppendMenu(hMenu, Enabled, IdSaveAs, Translate::Tr(L"Save media as").c_str());
     }
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_SELECTION)
+    if(!SelectedText.empty())
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCopyText, Translate::Tr(L"Copy selected text").c_str());
         std::wstring Text = Translate::Tr(L"Find ");
-        std::wstring TextAdd = Params->GetSelectionText().ToWString();
+        std::wstring TextAdd = s2ws(SelectedText);
         if(TextAdd.length() > 20)
             TextAdd = TextAdd.substr(0,20) + std::wstring(L" ... ");
         Text += std::wstring(L"\"");
@@ -96,7 +97,7 @@ void BrowserContextMenu::Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params,
         Text += Translate::Tr(L" in Google");
         AppendMenu(hMenu, Enabled, IdFindInGoogle, Text .c_str());
     }
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_EDITABLE)
+    if(IsEdit)
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCutEditable, Translate::Tr(L"Cut").c_str());
@@ -215,7 +216,7 @@ void BrowserContextMenu::ShowFindDialog(HWND hwnd)
     find_hwnd_ = FindText(&find_state_);
 }
 
-void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Connector)
+void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Connector, const std::string& UniqueProcessId)
 {
     
     if(Command == IdBackward)
@@ -246,7 +247,7 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Conn
 
     }else if(Command == IdOpenLinkInANewTab)
     {
-        Input(Connector, "<CONTROL><MOUSELEFT>");
+        Input(Connector, "<CONTROL><SHIFT><MOUSELEFT>");
 
     }else if(Command == IdCopyUrl)
     {
@@ -257,9 +258,7 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Conn
         Input(Connector, "<CONTROL>c");
     }else if(Command == IdFindInGoogle)
     {
-        /*std::string Text = picojson::value(LastSelectText).serialize();
-        std::string Script = std::string("window.open(\"https://www.google.com/search?q=\" + encodeURIComponent(") + Text + std::string("))");
-        Browser->GetMainFrame()->ExecuteJavaScript(Script,"",0);*/
+        Connector->CreateTab(std::string("https://www.google.com/search?q=") + LastSelectText,true);
     }
     else if(Command == IdCutEditable)
     {
@@ -279,13 +278,19 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Conn
 
     }else if(Command == IdSaveAs)
     {
-        //Browser->GetHost()->StartDownload(UrlMedia);
+        std::string UrlEscaped = picojson::value(UrlMedia).serialize();
+        std::string Script = std::string("_BAS_HIDE(BrowserAutomationStudio_DownloadUrl)(") + UrlEscaped + std::string(");");
+        JavaScriptExtensions Extensions;
+        Script = Extensions.ProcessJs(Script,UniqueProcessId);
+        Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
     }else if(Command == IdSavePageAs)
     {
-        //Browser->GetHost()->StartDownload(Browser->GetMainFrame()->GetURL());
+        std::string UrlEscaped = picojson::value(LastCurrentUrl).serialize();
+        std::string Script = std::string("_BAS_HIDE(BrowserAutomationStudio_DownloadUrl)(") + UrlEscaped + std::string(");");
+        JavaScriptExtensions Extensions;
+        Script = Extensions.ProcessJs(Script,UniqueProcessId);
+        Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
     }
-
-
 
 
 }

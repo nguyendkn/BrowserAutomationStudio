@@ -34,6 +34,7 @@ class DevToolsConnector
 
     std::wstring ProfilePath;
     std::vector<std::wstring> Extensions;
+    std::vector<std::pair<std::string,std::string> > CommandLineAdditional;
 
     //Switch tab after close
     int SwitchTabAfterCloseCurrentActionId = 0;
@@ -123,7 +124,8 @@ class DevToolsConnector
                 std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
                 std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
                 int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
-                const std::string& ConstantStartupScript
+                const std::string& ConstantStartupScript,
+                const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
         );
         void SetProfilePath(const std::wstring& Path);
         void SetExtensionList(const std::vector<std::wstring>& Extensions);

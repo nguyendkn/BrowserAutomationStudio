@@ -18,9 +18,11 @@ void DevToolsConnector::Initialize
         std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
         std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
         int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
-        const std::string& ConstantStartupScript
+        const std::string& ConstantStartupScript,
+        const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
 )
 {
+    this->CommandLineAdditional = CommandLineAdditional;
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
     this->WebSocketClientFactory = WebSocketClientFactory;
 
@@ -142,6 +144,17 @@ void DevToolsConnector::StartProcess()
 
     CommandLine += std::wstring(L"--disable-smooth-scrolling");
     CommandLine += std::wstring(L" ");
+
+    for(auto p:CommandLineAdditional)
+    {
+        CommandLine += std::wstring(s2ws(p.first));
+        if(p.second.length()>0)
+        {
+            CommandLine += std::wstring(L"=");
+            CommandLine += std::wstring(s2ws(p.second));
+        }
+        CommandLine += std::wstring(L" ");
+    }
 
     int BrowserWidth = 1024 + GlobalState.WidthDifference;
     int BrowserHeight = 600 + GlobalState.HeightDifference;

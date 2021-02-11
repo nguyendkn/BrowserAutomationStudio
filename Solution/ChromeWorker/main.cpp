@@ -35,6 +35,7 @@
 #include "rawcpphttpclientfactory.h"
 #include "rawcppwebsocketclientfactory.h"
 #include "preparestartupscript.h"
+#include "chromecommandlineparser.h"
 
 
 #if defined(BAS_DEBUG)
@@ -1977,7 +1978,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     std::make_shared<RawCppHttpClientFactory>(),
                     std::make_shared<RawCppWebSocketClientFactory>(),
                     10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome",
-                    PrepareConstantStartupScript(Data)
+                    PrepareConstantStartupScript(Data),
+                    ParseChromeCommandLine()
                     );
     Data->Connector->SetProfilePath(Settings.Profile());
     Data->Connector->SetExtensionList(Settings.Extensions());

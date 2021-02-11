@@ -61,6 +61,9 @@ struct DevToolsGlobalState
     int Width = -1;
     int Height = -1;
 
+    int WidthDifference = 16;
+    int HeightDifference = 88;
+
     //Settings to change proxy
     std::string UniqueProcessId;
     std::string ParentProcessId;

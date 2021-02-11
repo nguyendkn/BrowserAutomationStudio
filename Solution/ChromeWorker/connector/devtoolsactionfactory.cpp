@@ -18,6 +18,7 @@
 #include "DevToolsActionSetProxy.h"
 #include "devtoolsactioninspect.h"
 #include "devtoolsactiongetnavigationhistory.h"
+#include "devtoolsactionresizewithcorrection.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -89,7 +90,11 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     } else if(Name == "GetHistory")
     {
         Result = new DevToolsActionGetNavigationHistory();
+    }else if(Name == "ResizeBrowserWithCorrection")
+    {
+        Result = new DevToolsActionResizeWithCorrection();
     }
+
 
     if(Result)
     {

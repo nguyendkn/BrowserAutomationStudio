@@ -48,6 +48,7 @@ SOURCES += main.cpp \
     connector/rawcppwebsocketclientfactory.cpp \
     connector/sharedmemoryipc.cpp \
     devtoolsactiongetnavigationhistory.cpp \
+    devtoolsactionresizewithcorrection.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
@@ -192,6 +193,7 @@ HEADERS += \
     connector/rawcppwebsocketclientfactory.h \
     connector/sharedmemoryipc.h \
     devtoolsactiongetnavigationhistory.h \
+    devtoolsactionresizewithcorrection.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileexists.h \

@@ -40,7 +40,7 @@ void DevToolsConnector::Initialize
     GlobalState.ChromeExecutableLocation = ChromeExecutableLocation;
     GlobalState.ConstantStartupScript = ConstantStartupScript;
 
-    ImageData.resize(16818223);
+    ImageData.resize(67272892);
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
 }
@@ -143,7 +143,10 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--disable-smooth-scrolling");
     CommandLine += std::wstring(L" ");
 
-
+    int BrowserWidth = 1024 + GlobalState.WidthDifference;
+    int BrowserHeight = 600 + GlobalState.HeightDifference;
+    CommandLine += std::wstring(std::wstring(L"--window-size=") + std::to_wstring(BrowserWidth) + std::wstring(L",") + std::to_wstring(BrowserHeight));
+    CommandLine += std::wstring(L" ");
 
     if(!ProfilePath.empty())
     {
@@ -1249,7 +1252,7 @@ Async DevToolsConnector::GetBrowserSize(int Timeout)
 
 Async DevToolsConnector::ResizeBrowser(int Width, int Height, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("ResizeBrowser", &GlobalState));
+    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("ResizeBrowserWithCorrection", &GlobalState));
     std::map<std::string, Variant> Params;
     Params["bounds.width"] = Variant(Width);
     Params["bounds.height"] = Variant(Height);

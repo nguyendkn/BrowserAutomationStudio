@@ -112,10 +112,10 @@ function _sort_arr(arr, asc){
 	return arr.sort(function(a, b){
 		a = _is_string(a) ? (isNaN(a) ? a.toLowerCase() : Number(a)) : a;
 		b = _is_string(b) ? (isNaN(b) ? b.toLowerCase() : Number(b)) : b;
-		if(a > b){
+		if(asc ? (a > b) : (a < b)){
 			return 1;
 		};
-		if(a < b){
+		if(asc ? (a < b) : (a > b)){
 			return -1;
 		};
 		return 0;

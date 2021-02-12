@@ -29,6 +29,7 @@ struct KeyState
 
 class BrowserEventsEmulator
 {
+
 public:
     BrowserEventsEmulator();
     static void SetFocus(CefRefPtr<CefBrowser> Browser);
@@ -55,7 +56,6 @@ public:
                           );
     static void MouseMoveLine(DevToolsConnector* Connector, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight,bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State);
     static bool IsPointOnScreen(int PointX, int PointY, int ScrollX, int ScrollY, int BrowserWidth, int BrowserHeight);
-    static int GetNativeCode(int key);
     static void Key(DevToolsConnector* Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch);
 };
 

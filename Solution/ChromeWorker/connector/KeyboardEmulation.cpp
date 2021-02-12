@@ -1,6 +1,7 @@
 #include "KeyboardEmulation.h"
 #include "converter.h"
 #include <windows.h>
+#include "emoji.h"
 
 int KeyboardEmulation::GetNativeCode(int key)
 {
@@ -58,6 +59,30 @@ int KeyboardEmulation::GetNativeCode(int key)
     if(key == 32) return 57;
     return 0;
 }
+
+
+std::map<std::string, Variant> KeyboardEmulation::PrepareSpecialCharacterEvent(const std::string& Char)
+{
+    std::map<std::string, Variant> Params;
+    Params["text"] = Variant(Char);
+    return Params;
+}
+
+bool KeyboardEmulation::IsKeyboardCharacter(const std::string& Char)
+{
+    unsigned int Code = 0;
+    if(Char.size() <= 4)
+    {
+        for (int i = 0; i < Char.size(); ++i)
+        {
+            Code += (unsigned char)Char[i] << (i * 8);
+        }
+    }
+    bool Res = !IsEmoji(Code);
+
+    return Res;
+}
+
 
 bool KeyboardEmulation::IsKeyDown(WPARAM wparam)
 {

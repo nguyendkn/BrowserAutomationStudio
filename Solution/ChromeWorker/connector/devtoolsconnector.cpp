@@ -1717,8 +1717,18 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
 
 void DevToolsConnector::Key(KeyEvent Event, const std::string& Char, int KeyboardPresses)
 {
-    std::map<std::string, Variant> Params = EmulateKeyboard.PrepareKeyboardEvent(Event, Char, KeyboardPresses);
-    SendWebSocket("Input.dispatchKeyEvent", Params, GlobalState.TabId);
+    if(EmulateKeyboard.IsKeyboardCharacter(Char))
+    {
+        std::map<std::string, Variant> Params = EmulateKeyboard.PrepareKeyboardEvent(Event, Char, KeyboardPresses);
+        SendWebSocket("Input.dispatchKeyEvent", Params, GlobalState.TabId);
+    } else
+    {
+        if(Event == KeyEventCharacter)
+        {
+            std::map<std::string, Variant> Params = EmulateKeyboard.PrepareSpecialCharacterEvent(Char);
+            SendWebSocket("Input.insertText", Params, GlobalState.TabId);
+        }
+    }
 }
 
 void DevToolsConnector::KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM NativeVirtualKeyCode, int KeyboardPresses)

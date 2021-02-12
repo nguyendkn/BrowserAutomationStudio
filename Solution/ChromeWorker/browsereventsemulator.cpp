@@ -541,63 +541,6 @@ void BrowserEventsEmulator::MouseClick(DevToolsConnector* Connector, int x, int 
     }
 }
 
-int BrowserEventsEmulator::GetNativeCode(int key)
-{
-    if(key == 27) return 1;
-    if(key == 49) return 2;
-    if(key == 50) return 3;
-    if(key == 51) return 4;
-    if(key == 52) return 5;
-    if(key == 53) return 6;
-    if(key == 54) return 7;
-    if(key == 55) return 8;
-    if(key == 56) return 9;
-    if(key == 57) return 10;
-    if(key == 48) return 11;
-    if(key == 189) return 12;
-    if(key == 187) return 13;
-    if(key == 8) return 14;
-    if(key == 9) return 15;
-    if(key == 81) return 16;
-    if(key == 87) return 17;
-    if(key == 69) return 18;
-    if(key == 82) return 19;
-    if(key == 84) return 20;
-    if(key == 89) return 21;
-    if(key == 85) return 22;
-    if(key == 73) return 23;
-    if(key == 79) return 24;
-    if(key == 80) return 25;
-    if(key == 219) return 26;
-    if(key == 221) return 27;
-    if(key == 13) return 28;
-    if(key == 65) return 30;
-    if(key == 83) return 31;
-    if(key == 68) return 32;
-    if(key == 70) return 33;
-    if(key == 71) return 34;
-    if(key == 72) return 35;
-    if(key == 74) return 36;
-    if(key == 75) return 37;
-    if(key == 76) return 38;
-    if(key == 186) return 39;
-    if(key == 222) return 40;
-    if(key == 192) return 41;
-    if(key == 220) return 43;
-    if(key == 90) return 44;
-    if(key == 88) return 45;
-    if(key == 67) return 46;
-    if(key == 86) return 47;
-    if(key == 66) return 48;
-    if(key == 78) return 49;
-    if(key == 77) return 50;
-    if(key == 188) return 51;
-    if(key == 190) return 52;
-    if(key == 191) return 53;
-    if(key == 32) return 57;
-    return 0;
-}
-
 void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
 {
     MouseButton CurrentMouseState = MouseButtonNone;
@@ -670,7 +613,7 @@ void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text
     bool IsKeyParsed = false;
     unsigned char key = 0;
     char state = -1;
-    wchar_t letter_wchar;
+    wchar_t letter_wchar = 0;
     std::string InputString;
     bool ismouse = false;
     bool ismouseup = false;
@@ -682,140 +625,169 @@ void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text
     int MouseClickTimes = 1;
 
 
-    if(!text_whcar.empty())
+    if(!text_copy.empty())
     {
-        std::wstring CANCEL = L"<CANCEL>";
-        std::wstring BACK = L"<BACK>";
-        std::wstring TAB = L"<TAB>";
-        std::wstring CLEAR = L"<CLEAR>";
-        std::wstring RETURN = L"<RETURN>";
-        std::wstring CAPITAL = L"<CAPITAL>";
-        std::wstring ESCAPE = L"<ESCAPE>";
-        std::wstring PRIOR = L"<PRIOR>";
-        std::wstring NEXT = L"<NEXT>";
-        std::wstring END = L"<END>";
-        std::wstring HOME = L"<HOME>";
-        std::wstring LEFT = L"<LEFT>";
-        std::wstring UP = L"<UP>";
-        std::wstring RIGHT = L"<RIGHT>";
-        std::wstring DOWN = L"<DOWN>";
-        std::wstring SELECT = L"<SELECT>";
-        std::wstring PRINT = L"<PRINT>";
-        std::wstring EXECUTE = L"<EXECUTE>";
-        std::wstring SNAPSHOT = L"<SNAPSHOT>";
-        std::wstring INSERT = L"<INSERT>";
-        std::wstring _DELETE = L"<DELETE>";
-        std::wstring MOUSESCROLLUP = L"<MOUSESCROLLUP>";
-        std::wstring MOUSESCROLLDOWN = L"<MOUSESCROLLDOWN>";
-        std::wstring MOUSELEFT = L"<MOUSELEFT>";
-        std::wstring MOUSERIGHT = L"<MOUSERIGHT>";
-        std::wstring MOUSEDOUBLE = L"<MOUSEDOUBLE>";
+        std::string CANCEL = "<CANCEL>";
+        std::string BACK = "<BACK>";
+        std::string TAB = "<TAB>";
+        std::string CLEAR = "<CLEAR>";
+        std::string RETURN = "<RETURN>";
+        std::string CAPITAL = "<CAPITAL>";
+        std::string ESCAPE = "<ESCAPE>";
+        std::string PRIOR = "<PRIOR>";
+        std::string NEXT = "<NEXT>";
+        std::string END = "<END>";
+        std::string HOME = "<HOME>";
+        std::string LEFT = "<LEFT>";
+        std::string UP = "<UP>";
+        std::string RIGHT = "<RIGHT>";
+        std::string DOWN = "<DOWN>";
+        std::string SELECT = "<SELECT>";
+        std::string PRINT = "<PRINT>";
+        std::string EXECUTE = "<EXECUTE>";
+        std::string SNAPSHOT = "<SNAPSHOT>";
+        std::string INSERT = "<INSERT>";
+        std::string _DELETE = "<DELETE>";
+        std::string MOUSESCROLLUP = "<MOUSESCROLLUP>";
+        std::string MOUSESCROLLDOWN = "<MOUSESCROLLDOWN>";
+        std::string MOUSELEFT = "<MOUSELEFT>";
+        std::string MOUSERIGHT = "<MOUSERIGHT>";
+        std::string MOUSEDOUBLE = "<MOUSEDOUBLE>";
 
-        if(text_whcar.rfind(MOUSESCROLLUP, 0) == 0)
+        if(text_copy.rfind(MOUSESCROLLUP, 0) == 0)
         {
             character_length = MOUSESCROLLUP.length();
             ismouse = true;
             ismouseup = true;
-        }else if(text_whcar.rfind(MOUSESCROLLDOWN, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSESCROLLDOWN, 0) == 0)
         {
             character_length = MOUSESCROLLDOWN.length();
             ismouse = true;
             ismouseup = false;
-        }else if(text_whcar.rfind(MOUSELEFT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSELEFT, 0) == 0)
         {
             character_length = MOUSELEFT.length();
             ismouseleft = true;
-        }else if(text_whcar.rfind(MOUSERIGHT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSERIGHT, 0) == 0)
         {
             character_length = MOUSERIGHT.length();
             ismouseright = true;
-        }else if(text_whcar.rfind(MOUSEDOUBLE, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSEDOUBLE, 0) == 0)
         {
             character_length = MOUSEDOUBLE.length();
             ismouseleft = true;
             MouseClickTimes = 2;
-        }else if(text_whcar.rfind(CANCEL, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(CANCEL, 0) == 0)
         {
             character_length = CANCEL.length();
-        }else if(text_whcar.rfind(BACK, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(BACK, 0) == 0)
         {
             character_length = BACK.length();
             InputString = CharacterBackspace;
-        }else if(text_whcar.rfind(TAB, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(TAB, 0) == 0)
         {
             character_length = TAB.length();
             InputString = CharacterTab;
-        }else if(text_whcar.rfind(CLEAR, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(CLEAR, 0) == 0)
         {
             character_length = CLEAR.length();
-        }else if(text_whcar.rfind(RETURN, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(RETURN, 0) == 0)
         {
             character_length = RETURN.length();
             InputString = CharacterEnter;
             is_special_letter = false;
-        }else if(text_whcar.rfind(CAPITAL, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(CAPITAL, 0) == 0)
         {
             character_length = CAPITAL.length();
-        }else if(text_whcar.rfind(ESCAPE, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(ESCAPE, 0) == 0)
         {
             character_length = ESCAPE.length();
             InputString = CharacterEscape;
-        }else if(text_whcar.rfind(PRIOR, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(PRIOR, 0) == 0)
         {
             character_length = PRIOR.length();
             InputString = CharacterPageUp;
-        }else if(text_whcar.rfind(NEXT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(NEXT, 0) == 0)
         {
             character_length = NEXT.length();
             InputString = CharacterPageDown;
-        }else if(text_whcar.rfind(END, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(END, 0) == 0)
         {
             character_length = END.length();
             InputString = CharacterEnd;
-        }else if(text_whcar.rfind(HOME, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(HOME, 0) == 0)
         {
             character_length = HOME.length();
             InputString = CharacterHome;
-        }else if(text_whcar.rfind(LEFT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(LEFT, 0) == 0)
         {
             character_length = LEFT.length();
             InputString = CharacterLeft;
-        }else if(text_whcar.rfind(UP, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(UP, 0) == 0)
         {
             character_length = UP.length();
             InputString = CharacterUp;
-        }else if(text_whcar.rfind(RIGHT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(RIGHT, 0) == 0)
         {
             character_length = RIGHT.length();
             InputString = CharacterRight;
-        }else if(text_whcar.rfind(DOWN, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(DOWN, 0) == 0)
         {
             character_length = DOWN.length();
             InputString = CharacterDown;
-        }else if(text_whcar.rfind(SELECT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(SELECT, 0) == 0)
         {
             character_length = SELECT.length();
-        }else if(text_whcar.rfind(PRINT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(PRINT, 0) == 0)
         {
             character_length = PRINT.length();
-        }else if(text_whcar.rfind(EXECUTE, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(EXECUTE, 0) == 0)
         {
             character_length = EXECUTE.length();
-        }else if(text_whcar.rfind(SNAPSHOT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(SNAPSHOT, 0) == 0)
         {
             character_length = SNAPSHOT.length();
-        }else if(text_whcar.rfind(INSERT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(INSERT, 0) == 0)
         {
             character_length = INSERT.length();
             InputString = CharacterInsert;
-        }else if(text_whcar.rfind(_DELETE, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(_DELETE, 0) == 0)
         {
             character_length = _DELETE.length();
             InputString = CharacterDelete;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
         }else
         {
             is_special_letter = false;
-            letter_wchar = text_whcar.at(0);
+            if(!text_whcar.empty())
+                letter_wchar = text_whcar.at(0);
+
+            InputString = GetFirstUtf8Char(text_copy);
             std::vector<HKL> Locales;
             int max_locales = 300;
             Locales.resize(max_locales);
@@ -832,9 +804,7 @@ void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text
             }
 
 
-            std::wstring InputWString;
-            InputWString.push_back(letter_wchar);
-            InputString = ws2s(InputWString);
+
         }
     }
 
@@ -971,7 +941,6 @@ void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text
         Connector->Wheel(mousex, mousey, ismouseup);
     }
 
-    text_whcar.erase(text_whcar.begin(),text_whcar.begin() + character_length);
-    text = ws2s(text_whcar);
+    text = text_copy;
 }
 

@@ -845,10 +845,10 @@ void MainApp::SetOpenFileNameCallback(const std::string& value)
 
 void MainApp::DragFileCallback(const std::string& value)
 {
-    Data->IsDrag = true;
+    /*Data->IsDrag = true;
     CefRefPtr<CefDragData> drag_data = CefDragData::Create();
     drag_data->AddFile(value,"");
-    BrowserEventsEmulator::StartDrag(_HandlersManager->GetBrowser(),drag_data,DRAG_OPERATION_EVERY,Data->CursorX,Data->CursorY,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);
+    BrowserEventsEmulator::StartDrag(_HandlersManager->GetBrowser(),drag_data,DRAG_OPERATION_EVERY,Data->CursorX,Data->CursorY,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);*/
     SendTextResponce("<DragFile></DragFile>");
 }
 
@@ -945,11 +945,11 @@ void MainApp::SetPromptResultCallback(const std::string& value)
 
 void MainApp::SetHttpAuthResultCallback(const std::string& login,const std::string& password)
 {
-    {
+    /*{
         LOCK_HTTP_AUTH
         Data->_HttpAuthLogin = login;
         Data->_HttpAuthPassword = password;
-    }
+    }*/
     SendTextResponce("<SetHttpAuthResult>1</SetHttpAuthResult>");
 }
 

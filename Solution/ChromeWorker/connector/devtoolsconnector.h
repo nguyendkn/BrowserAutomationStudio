@@ -106,6 +106,8 @@ class DevToolsConnector
         std::vector<std::function<void()> > OnLoadStart;
         std::vector<std::function<void()> > OnLoadStop;
         std::vector<std::function<void(std::string)> > OnAddressChanged;
+        std::vector<std::function<void(std::string)> > OnNativeDialog;
+
 
         char* GetPaintData();
         int GetPaintWidth();
@@ -179,6 +181,10 @@ class DevToolsConnector
 
         //Interacting with elements
         Async Inspect(int X, int Y, int Position = 0, int Timeout = -1);
+
+        //Dialogs
+        void SetOpenFileDialogResult(const std::string& Result);
+        void SetOpenFileDialogManualMode(bool IsManual);
 };
 
 #endif // DEVTOOLSCONNECTOR_H

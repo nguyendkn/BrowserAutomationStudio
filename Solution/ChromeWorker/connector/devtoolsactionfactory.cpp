@@ -19,6 +19,7 @@
 #include "devtoolsactioninspect.h"
 #include "devtoolsactiongetnavigationhistory.h"
 #include "devtoolsactionresizewithcorrection.h"
+#include "devtoolsactionopenfile.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -93,6 +94,12 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "ResizeBrowserWithCorrection")
     {
         Result = new DevToolsActionResizeWithCorrection();
+    }else if(Name == "ResizeBrowserWithCorrection")
+    {
+        Result = new DevToolsActionResizeWithCorrection();
+    }else if(Name == "OpenFile")
+    {
+        Result = new DevToolsActionOpenFile();
     }
 
 

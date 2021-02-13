@@ -10,4 +10,6 @@ void DevToolsGlobalState::Reset()
     FrameIdToContextId.clear();
     Tabs.clear();
     ScreenCastTabId.clear();
+    OpenFileDialogResult.clear();
+    OpenFileDialogIsManual = false;
 }

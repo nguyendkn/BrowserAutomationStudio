@@ -538,45 +538,7 @@ bool MainHandler::OnCertificateError(CefRefPtr<CefBrowser> browser,cef_errorcode
 
 bool MainHandler::OnFileDialog(CefRefPtr<CefBrowser> browser, FileDialogMode mode, const CefString& title, const CefString& default_file_path, const std::vector<CefString>& accept_filters, int selected_accept_filter, CefRefPtr<CefFileDialogCallback> callback)
 {
-    if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
-    {
-        return false;
-    }
-    OpenFileResult.clear();
-    OpenFileWait = clock() + CLOCKS_PER_SEC * 3;
-    OpenFilePostpond = false;
-    {
-        LOCK_BROWSER_DATA
-        if(Data->_OpenFileName.length() > 0)
-        {
-            if(Data->_OpenFileName[0] == '[')
-            {
-                try
-                {
-                    picojson::value v;
-
-                    std::string err = picojson::parse(v, Data->_OpenFileName);
-                    if(err.empty())
-                    {
-                        for(picojson::value c: v.get<picojson::value::array>())
-                        {
-                            OpenFileResult.push_back(c.get<std::string>());
-                        }
-                    }
-                }catch(...){}
-            }else
-                OpenFileResult.push_back(Data->_OpenFileName);
-        }
-    }
-    if(Data->IsRecord && OpenFileResult.empty())
-    {
-        for(auto f:EventUploadStart)
-            f();
-    }
-
-    OpenFilePostpond = true;
-    OpenFileCallback = callback;
-    return true;
+    return false;
 }
 
 void MainHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)

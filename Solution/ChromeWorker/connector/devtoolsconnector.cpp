@@ -481,6 +481,44 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
     {
         std::string Method = AllObject["method"].get<std::string>();
 
+        if(Method == "Page.fileChooserOpened")
+        {
+            if (AllObject["params"].is<picojson::object>())
+            {
+                if(AllObject["params"].contains("backendNodeId") && AllObject["params"].get("backendNodeId").is<double>())
+                {
+                    double BackendNodeId = AllObject["params"].get("backendNodeId").get<double>();
+
+                    bool IsMultiple = false;
+
+                    if(AllObject["params"].contains("mode") && AllObject["params"].get("mode").is<std::string>())
+                    {
+                        std::string Mode = AllObject["params"].get("mode").get<std::string>();
+                        if(Mode == "selectMultiple")
+                        {
+                            IsMultiple = true;
+                        }
+                    }
+
+                    std::shared_ptr<IDevToolsAction> NewAction;
+                    std::map<std::string, Variant> Params;
+
+                    NewAction.reset(ActionsFactory.Create("OpenFile", &GlobalState));
+
+                    Params["node_id"] = Variant(BackendNodeId);
+                    Params["is_multiple"] = Variant(IsMultiple);
+
+                    NewAction->SetTimeout(-1);
+                    NewAction->SetParams(Params);
+
+                    InsertAction(NewAction);
+
+                    for (auto f : OnNativeDialog)
+                        f("file");
+                }
+            }
+        }
+
         if(Method == "Target.targetInfoChanged")
         {
             //Check if tab url has been changed
@@ -1821,4 +1859,14 @@ bool DevToolsConnector::InterruptAction(int ActionUniqueId)
     }
     return IsInterrupted;
     
+}
+
+void DevToolsConnector::SetOpenFileDialogResult(const std::string& Result)
+{
+    this->GlobalState.OpenFileDialogResult = Result;
+}
+
+void DevToolsConnector::SetOpenFileDialogManualMode(bool IsManual)
+{
+    this->GlobalState.OpenFileDialogIsManual = IsManual;
 }

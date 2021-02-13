@@ -102,6 +102,7 @@ void MainApp::UpdateManualControl(bool NoFocus)
     Layout->ChangeManualBrowserControlType(Data->ManualControl, NoFocus);
     RECT r = Layout->GetBrowserOuterRectangle(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,true);
+    Data->Connector->SetOpenFileDialogManualMode(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect);
 }
 
 std::string MainApp::Javascript(const std::string& Script, const std::string& BrowserType)
@@ -838,10 +839,7 @@ void MainApp::PopupCreate2Callback(bool is_silent, const std::string& url, const
 
 void MainApp::SetOpenFileNameCallback(const std::string& value)
 {
-    {
-        LOCK_BROWSER_DATA
-        Data->_OpenFileName = value;
-    }
+    Data->Connector->SetOpenFileDialogResult(value);
     SendTextResponce("<SetOpenFileName>1</SetOpenFileName>");
 }
 

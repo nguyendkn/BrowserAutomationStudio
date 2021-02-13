@@ -36,11 +36,13 @@ SOURCES += main.cpp \
     connector/devtoolsactiongettabs.cpp \
     connector/devtoolsactioninspect.cpp \
     connector/devtoolsactionload.cpp \
+    connector/devtoolsactionopenfile.cpp \
     connector/devtoolsactionreload.cpp \
     connector/devtoolsactionresizebrowser.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
     connector/devtoolsconnector.cpp \
+    connector/emoji.cpp \
     connector/idevtoolsaction.cpp \
     connector/rawcpphttpclient.cpp \
     connector/rawcpphttpclientfactory.cpp \
@@ -181,11 +183,13 @@ HEADERS += \
     connector/devtoolsactiongettabs.h \
     connector/devtoolsactioninspect.h \
     connector/devtoolsactionload.h \
+    connector/devtoolsactionopenfile.h \
     connector/devtoolsactionreload.h \
     connector/devtoolsactionresizebrowser.h \
     connector/devtoolsactionsetstartupscript.h \
     connector/devtoolsactionwebsocketquery.h \
     connector/devtoolsconnector.h \
+    connector/emoji.h \
     connector/idevtoolsaction.h \
     connector/rawcpphttpclient.h \
     connector/rawcpphttpclientfactory.h \

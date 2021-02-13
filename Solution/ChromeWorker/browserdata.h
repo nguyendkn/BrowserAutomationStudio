@@ -54,7 +54,6 @@ public:
     std::string _AcceptLanguagePattern;
     std::string _UniqueProcessId;
     std::string _NextReferrer;
-    std::string _OpenFileName;
     std::map<std::string,ConfigurableItem<std::string> > _StartupScript;
     CefWindowHandle _MainWindowHandle;
     CefWindowHandle _ParentWindowHandle;

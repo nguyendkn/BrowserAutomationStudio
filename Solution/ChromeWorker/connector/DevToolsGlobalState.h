@@ -73,6 +73,10 @@ struct DevToolsGlobalState
     //Tab states
     std::string ScreenCastTabId;
 
+    //Dialogs data
+    std::string OpenFileDialogResult;
+    bool OpenFileDialogIsManual = false;
+
     //This method is called when restarting browser
     void Reset();
 };

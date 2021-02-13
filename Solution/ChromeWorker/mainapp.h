@@ -431,6 +431,7 @@ public:
     void OnLoadStart();
     void OnLoadStop();
     void OnAddressChanged(std::string Url);
+    void OnNativeDialog(std::string DialogType);
 
 
 

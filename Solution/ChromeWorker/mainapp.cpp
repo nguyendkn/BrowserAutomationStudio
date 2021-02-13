@@ -3397,6 +3397,14 @@ void MainApp::OnAddressChanged(std::string Url)
     SetWindowText(Data->UrlHandler, s2ws(Url).c_str());
 }
 
+void MainApp::OnNativeDialog(std::string DialogType)
+{
+    if(Data->IsRecord && BrowserToolbox)
+    {
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Notify('") + DialogType + std::string("')"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+    }
+}
+
 void MainApp::ClearHighlight()
 {
     if(v8handler.get())

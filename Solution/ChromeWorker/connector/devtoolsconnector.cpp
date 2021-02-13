@@ -514,7 +514,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     InsertAction(NewAction);
 
                     for (auto f : OnNativeDialog)
-                        f("file");
+                        f("upload");
                 }
             }
         }

@@ -1360,19 +1360,14 @@ void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, doub
 
 void MainApp::ScrollCallback(int x, int y)
 {
-    WORKER_LOG(std::string("ScrollCallback<<x<<") + std::to_string(x) + std::string("<<y<<") + std::to_string(y));
-    if(_HandlersManager->GetBrowser())
+    std::string ScrollToScript = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"), "main");
+
+    Async Result = Data->Connector->ExecuteJavascript(ScrollToScript, std::string(), std::string("[]"));
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        BrowserEventsEmulator::SetFocus(_HandlersManager->GetBrowser());
-        LastCommand.CommandName = "_scroll";
-        LastCommand.CommandParam1 = std::to_string(x);
-        LastCommand.CommandParam2 = std::to_string(y);
-        IsLastCommandNull = false;
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates)(") + std::to_string(x) + std::string(",") + std::to_string(y) + std::string(")"),"main"),"", 0);
-    }else
-    {
-        SendTextResponce("<Scroll></Scroll>");
-    }
+        this->SendTextResponce("<Scroll></Scroll>");
+    });
 }
 
 void MainApp::DebugVariablesResultCallback(const std::string & data)

@@ -185,6 +185,8 @@ class DevToolsConnector
         //Dialogs
         void SetOpenFileDialogResult(const std::string& Result);
         void SetOpenFileDialogManualMode(bool IsManual);
+        void SetPromptResult(const std::string& PromptResult);
+
 };
 
 #endif // DEVTOOLSCONNECTOR_H

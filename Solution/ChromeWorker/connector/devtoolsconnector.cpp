@@ -481,6 +481,34 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
     {
         std::string Method = AllObject["method"].get<std::string>();
 
+        if(Method == "Page.javascriptDialogOpening")
+        {
+            if (AllObject["params"].is<picojson::object>())
+            {
+                std::string DialogType;
+
+                if(AllObject["params"].contains("type") && AllObject["params"].get("type").is<std::string>())
+                {
+                    DialogType = AllObject["params"].get("type").get<std::string>();
+                }
+
+                std::shared_ptr<IDevToolsAction> NewAction;
+                std::map<std::string, Variant> Params;
+
+                NewAction.reset(ActionsFactory.Create("DialogResult", &GlobalState));
+
+                Params["type"] = Variant(DialogType);
+
+                NewAction->SetTimeout(-1);
+                NewAction->SetParams(Params);
+
+                InsertAction(NewAction);
+
+                for (auto f : OnNativeDialog)
+                    f(DialogType);
+            }
+        }
+
         if(Method == "Page.fileChooserOpened")
         {
             if (AllObject["params"].is<picojson::object>())
@@ -1870,3 +1898,9 @@ void DevToolsConnector::SetOpenFileDialogManualMode(bool IsManual)
 {
     this->GlobalState.OpenFileDialogIsManual = IsManual;
 }
+
+void DevToolsConnector::SetPromptResult(const std::string& PromptResult)
+{
+    this->GlobalState.PromptResult = PromptResult;
+}
+

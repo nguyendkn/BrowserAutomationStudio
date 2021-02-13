@@ -939,7 +939,7 @@ void MainApp::SetFontListCallback(const std::string& fonts)
 
 void MainApp::SetPromptResultCallback(const std::string& value)
 {
-    Data->_PromptResult = value;
+    Data->Connector->SetPromptResult(value);
     SendTextResponce("<SetPromptResult>1</SetPromptResult>");
 }
 

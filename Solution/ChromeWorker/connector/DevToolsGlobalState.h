@@ -76,6 +76,7 @@ struct DevToolsGlobalState
     //Dialogs data
     std::string OpenFileDialogResult;
     bool OpenFileDialogIsManual = false;
+    std::string PromptResult;
 
     //This method is called when restarting browser
     void Reset();

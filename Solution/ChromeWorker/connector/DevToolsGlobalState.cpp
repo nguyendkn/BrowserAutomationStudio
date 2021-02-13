@@ -12,4 +12,5 @@ void DevToolsGlobalState::Reset()
     ScreenCastTabId.clear();
     OpenFileDialogResult.clear();
     OpenFileDialogIsManual = false;
+    PromptResult.clear();
 }

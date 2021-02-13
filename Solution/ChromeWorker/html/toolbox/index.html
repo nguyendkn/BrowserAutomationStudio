@@ -11606,6 +11606,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       }else if(subject == "upload")
       {
         BrowserAutomationStudio_NotifyInternal(tr("Open file dialog."), tr("BrowserAutomationStudio needs file input. Use \"Open File Result\" action to set upload file. This action must be used <strong>before</strong> dialog appear."), "#!/openfile")  
+      }else if(subject == "prompt")
+      {
+        BrowserAutomationStudio_NotifyInternal(tr("Prompt dialog."), tr("Site has used prompt javascript function. Use \"Prompt Result\" in order to set result."), "#!/promptresult")  
       }else if(subject == "notification")
       {
         BrowserAutomationStudio_NotifyInternal(tr("Notifications."), tr("Site requests permission to show notifications. You can allow or deny it. This action must be used <strong>before</strong> notification is requested."), "#!/notification")  

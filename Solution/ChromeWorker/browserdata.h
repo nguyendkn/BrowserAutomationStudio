@@ -94,7 +94,6 @@ public:
     std::string _RecaptchaV3List;
 
     //Dialogs
-    std::string _PromptResult;
     std::string _HttpAuthLogin;
     std::string _HttpAuthPassword;
 

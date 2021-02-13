@@ -20,6 +20,7 @@
 #include "devtoolsactiongetnavigationhistory.h"
 #include "devtoolsactionresizewithcorrection.h"
 #include "devtoolsactionopenfile.h"
+#include "devtoolsactiondialogresult.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -100,6 +101,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "OpenFile")
     {
         Result = new DevToolsActionOpenFile();
+    }else if(Name == "DialogResult")
+    {
+        Result = new DevToolsActionDialogResult();
     }
 
 

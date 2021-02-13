@@ -269,57 +269,7 @@ void MainHandler::OnDownloadUpdated(CefRefPtr<CefBrowser> browser, CefRefPtr<Cef
 
 bool MainHandler::OnJSDialog(CefRefPtr<CefBrowser> browser, const CefString& origin_url, JSDialogType dialog_type, const CefString& message_text, const CefString& default_prompt_text, CefRefPtr<CefJSDialogCallback> callback, bool& suppress_message)
 {
-    switch(dialog_type)
-    {
-        case JSDIALOGTYPE_PROMPT:
-        {
-            std::string res;
-            res = Data->_PromptResult;
-            WORKER_LOG(std::string("Prompt<<") + res);
-            suppress_message = false;
-            callback->Continue(true,res);
-            return true;
-
-        }break;
-        case JSDIALOGTYPE_CONFIRM:
-        {
-            std::string message = message_text.ToString();
-            bool NeedToWait = false;
-            if(starts_with(message,std::string("BrowserAutomationStudio_Sleep")) && !ConfirmResult.get() && !ConfirmResultWait)
-            {
-                ReplaceAllInPlace(message,std::string("BrowserAutomationStudio_Sleep"),std::string());
-
-                try{
-                    int inc = std::stoi(message);
-                    ConfirmResultTime = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count() + inc;
-                    ConfirmResultWait = true;
-                    NeedToWait = true;
-                }catch(...)
-                {
-
-                }
-            }
-
-            if(NeedToWait)
-            {
-                WORKER_LOG("SLEEP_START");
-                ConfirmResult = callback;
-                return true;
-            }else
-            {
-                suppress_message = false;
-                callback->Continue(true,"");
-                return true;
-            }
-
-        }break;
-        case JSDIALOGTYPE_ALERT:
-        {
-            suppress_message = true;
-            return false;
-
-        }break;
-    }
+    return false;
 }
 
 void MainHandler::Timer()

@@ -30,6 +30,7 @@ SOURCES += main.cpp \
     connector/KeyboardEmulation.cpp \
     connector/PrepareUrl.cpp \
     connector/asyncresult.cpp \
+    connector/devtoolsactiondialogresult.cpp \
     connector/devtoolsactionexecutejavascript.cpp \
     connector/devtoolsactionfactory.cpp \
     connector/devtoolsactiongetbrowsersize.cpp \
@@ -177,6 +178,7 @@ HEADERS += \
     connector/PrepareUrl.h \
     connector/Variant.h \
     connector/asyncresult.h \
+    connector/devtoolsactiondialogresult.h \
     connector/devtoolsactionexecutejavascript.h \
     connector/devtoolsactionfactory.h \
     connector/devtoolsactiongetbrowsersize.h \

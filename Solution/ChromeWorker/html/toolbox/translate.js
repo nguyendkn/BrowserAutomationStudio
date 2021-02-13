@@ -10,6 +10,9 @@ _L =
 	"Please select any element inside browser and click on the '": {"ru": "Пожалуйста, выберите любой элемент в браузере и нажмите на действие '"},
 	"' action inside the menu that will appear.": {"ru": "' в появившемся меню."},
 
+	"Site has used prompt javascript function. Use \"Prompt Result\" in order to set result.": {"ru": "На сайте использована javascript функция prompt. Используйте действие \"Окно prompt\" для задания результата работы функции."},
+	"Prompt dialog.": {"ru": "Диалог 'prompt'."},
+
 	"Stop intercepting recaptcha v3 requests. Site will get your real score. You can enable intercepting later again.": {"ru": "Перестать перехватывать запросы. Сайт получит ваш реальный рейтинг. Вы можете снова включить перехват позже."},
 	"Rucaptcha/2captcha Key. Can be blank": {"ru": "Ключ Антигейт/Рукапча. Может быть пустым"},
 	"This is a key from service selected in 'Solve Method' field.": {"ru": "Это ключ от сервиса, выбранного в поле 'Метод решения'."},

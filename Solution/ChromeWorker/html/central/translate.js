@@ -30,6 +30,9 @@ _L =
 	"Add" :{"ru": "Добавить"},
 	"module" :{"ru": "модуль"},
 
+	"Browser extensions" :{"ru": "Расширения браузера"},
+	"Use 'Browser Settings' action in order to set browser extensions." :{"ru": "Используйте действие 'Настройки браузера' чтобы задать список расширений."},
+
 	"WebRTC ip list" :{"ru": "WebRTC список ip"},
 	"Replace ips exposed by WebRTC with values from the field above. Each line of that field must contain single ip. This setting is for debugging purposes only, the proper way to set is using 'Proxy' action." :{"ru": "Заменить ip, возвращаемые WebRTC значениями из поля выше. Каждая строка этого поля должна содержать один ip. Этот параметр предназначен только для целей отладки, правильный способ изменения WebRTC ip - использовать действие 'Прокси'."},
 	"Replace Ip" :{"ru": "Изменить Ip"},
@@ -62,7 +65,7 @@ _L =
 	"Network settings" :{"ru": "Сетевые настройки"},
 	"Rendering settings" :{"ru": "Настройки отображения"},
 	"Browsers smooth start" :{"ru": "Плавный запуск браузеров"},
-	"You can set proxy through \"Proxy\" action." :{"ru": "Вы можете изменить прокси через действие \"Прокси\""},
+	"You can set proxy through \"Proxy\" action." :{"ru": "Вы можете изменить прокси через действие \"Прокси\"."},
 
 
 	"Started without embedded languages.":{"ru": "Запущено без встроенных языков"},

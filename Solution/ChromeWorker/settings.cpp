@@ -34,7 +34,6 @@ void settings::Init()
     maximized = false;
     restart = true;
     emulate_mouse = true;
-    proxies_reconnect = false;
     autostart_debug = false;
     debug_toolbox = false;
     debug_scenario = false;
@@ -52,10 +51,6 @@ void settings::Init()
             if(line.find("DebugScenario=true") != std::string::npos)
             {
                 debug_scenario = true;
-            }
-            if(line.find("ForceUtf8=false") != std::string::npos)
-            {
-                force_utf8 = false;
             }
             if(line.find("IsSafe=false") != std::string::npos)
             {
@@ -124,10 +119,6 @@ void settings::Init()
             if(line.find("EnableFlash=true") != std::string::npos)
             {
                 use_flash = true;
-            }
-            if(line.find("ProxiesReconnect=true") != std::string::npos)
-            {
-                proxies_reconnect = true;
             }
             if(line.find("AutostartDebug=true") != std::string::npos)
             {
@@ -230,8 +221,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
 
     bool NextExtensions = false;
     bool NextUseFlash = false;
-    bool NextRefreshConnections = false;
-    bool NextEncodeUtf8 = false;
     bool NextProfile = false;
     bool NextNoEmbeddedLanguages = false;
     for(std::wstring& param: Params)
@@ -240,28 +229,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             use_flash = param == L"1";
             NextUseFlash = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
-            NextProfile = false;
-            NextNoEmbeddedLanguages = false;
-            NextExtensions = false;
-            continue;
-        }else if(NextRefreshConnections)
-        {
-            proxies_reconnect = param == L"1";
-            NextUseFlash = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
-            NextProfile = false;
-            NextNoEmbeddedLanguages = false;
-            NextExtensions = false;
-            continue;
-        }else if(NextEncodeUtf8)
-        {
-            force_utf8 = param == L"1";
-            NextUseFlash = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -270,8 +237,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             SetProfile(param);
             NextUseFlash = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -280,8 +245,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             no_embedded = param == L"true";
             NextUseFlash = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -290,8 +253,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             extensions = split(param,L';');
             NextUseFlash = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -301,14 +262,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         if(param == L"--UseFlash")
         {
             NextUseFlash = true;
-            continue;
-        }else if(param == L"--RefreshConnections")
-        {
-            NextRefreshConnections = true;
-            continue;
-        }else if(param == L"--EncodeUtf8")
-        {
-            NextEncodeUtf8 = true;
             continue;
         }else if(param == L"--Profile")
         {
@@ -385,30 +338,11 @@ bool settings::UseFlash()
     return use_flash;
 }
 
-bool settings::ProxiesReconnect()
-{
-    return proxies_reconnect;
-}
-
 bool settings::AutostartDebug()
 {
     return autostart_debug;
 }
 
-
-bool settings::ForceUtf8()
-{
-    return force_utf8;
-}
-
-void settings::SetProxiesReconnect(bool proxies_reconnect)
-{
-    this->proxies_reconnect = proxies_reconnect;
-}
-void settings::SetForceUtf8(bool force_utf8)
-{
-    this->force_utf8 = force_utf8;
-}
 int settings::ToolboxHeight()
 {
     return toolbox_height;
@@ -463,9 +397,7 @@ void settings::SaveToFile()
         if(outfile.is_open())
         {
             outfile<<"EnableFlash="<<((use_flash) ? "true" : "false")<<std::endl;
-            outfile<<"ProxiesReconnect="<<((proxies_reconnect) ? "true" : "false")<<std::endl;
             outfile<<"AutostartDebug="<<((autostart_debug) ? "true" : "false")<<std::endl;
-            outfile<<"ForceUtf8="<<((force_utf8) ? "true" : "false")<<std::endl;
             outfile<<"ToolboxHeight="<<toolbox_height<<std::endl;
             outfile<<"MaxBrowserStartSimultaneously="<<max_browser_start_simultaneously<<std::endl;
             outfile<<"MinFreeMemoryToStartBrowser="<<min_free_memory_to_start_browser<<std::endl;
@@ -503,9 +435,7 @@ std::string settings::Serialize()
 
     picojson::value::object res;
     res["use_flash"] = picojson::value(use_flash);
-    res["proxies_reconnect"] = picojson::value(proxies_reconnect);
     res["autostart_debug"] = picojson::value(autostart_debug);
-    res["force_utf8"] = picojson::value(force_utf8);
     res["canvas"] = picojson::value(canvas);
     res["canvas_noise"] = picojson::value(canvas_noise);
     res["audio"] = picojson::value(audio);
@@ -542,9 +472,7 @@ void settings::Deserialize(const std::string & Data)
         picojson::value::object o = val.get<picojson::value::object>();
 
         use_flash = o["use_flash"].get<bool>();
-        proxies_reconnect = o["proxies_reconnect"].get<bool>();
         autostart_debug = o["autostart_debug"].get<bool>();
-        force_utf8 = o["force_utf8"].get<bool>();
 
         canvas = o["canvas"].get<std::string>();
         canvas_noise = o["canvas_noise"].get<std::string>();

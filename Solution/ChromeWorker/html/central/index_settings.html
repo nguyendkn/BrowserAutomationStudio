@@ -96,9 +96,6 @@
 				$("#WebglVendorPanel").show()
 				$("#WebglRendererPanel").show()
 			}
-
-			$("#ForceUTF8EncodingPanel").show()
-			$("#ProxiesReconnectPanel").show()
 		}
 
 		$( document ).ready(function() {
@@ -208,11 +205,9 @@
 			$("#WebglRenderer").val(json["webgl_renderer"])
 			$("#WebglVendor").val(json["webgl_vendor"])
 			
-			$("#ForceUTF8Encoding").prop("checked",json["force_utf8"])
 			$("#RestartBrowserProcessOnThreadStart").prop("checked",json["restart"])
 			$("#AutostartDebug").prop("checked",json["autostart_debug"])
 			$("#UseHumanLikeMouseMoves").prop("checked",json["emulatemouse"])
-			$("#ProxiesReconnect").prop("checked",json["proxies_reconnect"])
 			$('.language-switch[data-lang="Node"][data-version="8.6.0"]').prop("checked",json["languages"].indexOf("Node,8.6.0")>=0)
 			$('.language-switch[data-lang="Node"][data-version="12.18.3"]').prop("checked",json["languages"].indexOf("Node,12.18.3")>=0)
 
@@ -247,7 +242,6 @@
 				$("#MinUnusedCpu").val("20")
 				$("#Zoom").val("100")
 				$("#Flash").val("disable")
-				$("#ForceUTF8Encoding").prop("checked",true)
 
 				$("#Canvas").val("disable")
 				$("#Audio").val("disable")
@@ -263,7 +257,6 @@
 				$("#RestartBrowserProcessOnThreadStart").prop("checked",true)
 				$("#AutostartDebug").prop("checked",false)
 				$("#UseHumanLikeMouseMoves").prop("checked",true)
-				$("#ProxiesReconnect").prop("checked",false)
 				$('.language-switch').prop("checked", false)
 				$('.language-panel').hide()
 				$('[data-lang="Node"][data-version="8.6.0"][data-is-modules="true"]').html("")
@@ -309,11 +302,9 @@
 						"webgl_renderer": $("#WebglRenderer").val(),
 						"webgl_vendor": $("#WebglVendor").val(),
 
-		    			"force_utf8": $("#ForceUTF8Encoding").prop("checked"),
 		    			"restart": $("#RestartBrowserProcessOnThreadStart").prop("checked"),
 						"autostart_debug": $("#AutostartDebug").prop("checked"),
 		    			"emulatemouse": $("#UseHumanLikeMouseMoves").prop("checked"),
-		    			"proxies_reconnect": $("#ProxiesReconnect").prop("checked"),
 		    			"languages": languages,
 		    			"modules": modules,
 		    			"detector": $("#FingerprintDetectorEnabled").prop("checked")
@@ -581,35 +572,6 @@
 
 	<div class="container">
 		<div class="text-center tr">You can set proxy through "Proxy" action.</div>
-
-		<div class="form-horizontal" style="margin-top:20px">
-
-
-		 <span id="ForceUTF8EncodingPanel">
-			 <div class="form-group" style="margin-top:20px">
-			    <div class="col-sm-offset-5 col-sm-7">
-			      <div class="checkbox">
-			        <label>
-			          <input type="checkbox" id="ForceUTF8Encoding"> <span class="tr">Force UTF-8 Encoding</span>
-			        </label>
-			      </div>
-			    </div>
-			  </div>
-		 </span>
-
-		<span id="ProxiesReconnectPanel">
-		  <div class="form-group" style="margin-top:20px">
-		    <div class="col-sm-offset-5 col-sm-7">
-		      <div class="checkbox">
-		        <label>
-		          <input type="checkbox" id="ProxiesReconnect"> <span class="tr">Proxies reconnect</span>
-		        </label>
-		      </div>
-		    </div>
-		  </div>
-		 </span>
-
-		  </div>
 	</div>
 
 	<h4><p class="text-center tr"  style="padding-top:40px">Browsers smooth start</p></h4>

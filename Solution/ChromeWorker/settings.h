@@ -28,7 +28,6 @@ class settings
     bool maximized;
     bool restart;
     bool emulate_mouse;
-    bool proxies_reconnect;
     bool autostart_debug;
     bool debug_toolbox;
     bool debug_scenario;
@@ -43,9 +42,7 @@ class settings
 public:
     settings();
     bool UseFlash();
-    bool ProxiesReconnect();
     bool AutostartDebug();
-    bool ForceUtf8();
     bool Maximized();
     bool DebugToolbox();
     bool DebugScenario();
@@ -64,10 +61,6 @@ public:
 
     void SetToolboxHeight(int height);
     void SetScenarioWidth(int width);
-
-    void SetProxiesReconnect(bool proxies_reconnect);
-    void SetForceUtf8(bool force_utf8);
-
 
     void SaveToFile();
     std::string Serialize();

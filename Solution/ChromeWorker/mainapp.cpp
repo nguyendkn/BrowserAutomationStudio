@@ -2822,6 +2822,13 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             TypeTextDelay = 30;
         }
 
+        if(TypeText == "<CONTROL><MOUSELEFT>")
+        {
+            TypeText = "<CONTROL><SHIFT><MOUSELEFT>";
+        }
+
+
+
         TypeTextTaskIsActive = true;
         TypeTextIsFirstLetter = false;
         TypeTextLastTime = 0;

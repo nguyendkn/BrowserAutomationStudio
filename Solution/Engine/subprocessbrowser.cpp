@@ -464,7 +464,6 @@ namespace BrowserAutomationStudioFramework
                 xmlWriter.writeStartElement("SendWorkerSettings");
                     xmlWriter.writeAttribute("BrowserEngine", WorkerSettings->GetBrowserEngineVirtual());
                     xmlWriter.writeAttribute("RecordId", RecordId);
-                    xmlWriter.writeAttribute("SkipFrames", QString::number(WorkerSettings->GetSkipFrames()));
 
                     xmlWriter.writeAttribute("ProxyServer", WorkerSettings->GetProxyServer());
                     xmlWriter.writeAttribute("ProxyPort", QString::number(WorkerSettings->GetProxyPort()));
@@ -1225,12 +1224,6 @@ namespace BrowserAutomationStudioFramework
         }
 
         ClearLastTunnelFolder();
-
-        if(!WorkerSettings->GetProxyTunneling())
-        {
-            Worker->RunSubScript();
-            return;
-        }
 
         LastPID = Worker->GetProcessComunicator()->GetPID();
 

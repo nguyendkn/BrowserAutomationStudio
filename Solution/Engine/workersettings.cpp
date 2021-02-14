@@ -30,8 +30,6 @@ namespace BrowserAutomationStudioFramework
         Audio = "disable";
         UseFlash = false;
         Webgl = "disable";
-        ProxyTunneling = true;
-        SkipFrames = 1;
         ProxyPort = 0;
         ProxyIsHttp = true;
         ProxyServer.clear();
@@ -181,14 +179,6 @@ namespace BrowserAutomationStudioFramework
     {
         this->UseFlash = UseFlash;
     }
-    void WorkerSettings::SetProxyTunneling(bool ProxyTunneling)
-    {
-        this->ProxyTunneling = ProxyTunneling;
-    }
-    void WorkerSettings::SetSkipFrames(int SkipFrames)
-    {
-        this->SkipFrames = SkipFrames;
-    }
 
     QString WorkerSettings::GetWebrtc()
     {
@@ -280,14 +270,7 @@ namespace BrowserAutomationStudioFramework
     {
         return UseFlash;
     }
-    bool WorkerSettings::GetProxyTunneling()
-    {
-        return ProxyTunneling;
-    }
-    int WorkerSettings::GetSkipFrames()
-    {
-        return SkipFrames;
-    }
+
 
     IWorkerSettings* WorkerSettings::Clone()
     {
@@ -295,10 +278,8 @@ namespace BrowserAutomationStudioFramework
         res->SetWorkerPathSafe(PathSafe);
         res->SetWorkerPathNotSafe(PathNotSafe);
         res->SetUseFlash(UseFlash);
-        res->SetProxyTunneling(ProxyTunneling);
         res->SetProfile(Profile);
         res->SetExtensions(Extensions);
-        res->SetSkipFrames(SkipFrames);
         res->SetBrowserEngine(BrowserEngine);
         res->SetProxyServer(ProxyServer);
         res->SetProxyPort(ProxyPort);
@@ -394,9 +375,6 @@ namespace BrowserAutomationStudioFramework
             SetUseFlash(Settings.value("EnableFlash",false).toBool());
 
         SetUseFlash(Settings.value("EnableFlash",false).toBool());
-
-        SetProxyTunneling(Settings.value("ProxyTunneling",true).toBool());
-        SetSkipFrames(Settings.value("SkipFrames",1).toInt());
     }
 
     void WorkerSettings::SetSettingWhichRestartsBrowser(const QString& Key, QJsonObject& Object, bool& NeedRestart, bool& NeedSend)
@@ -752,18 +730,6 @@ namespace BrowserAutomationStudioFramework
             UpdateFingerprintsSettings();
          }
 
-         if(!IsMLA && object.contains("ProxyTunneling"))
-         {
-            bool prev = GetProxyTunneling();
-            bool next = object["ProxyTunneling"].toBool();
-            if(prev != next)
-            {
-                NeedRestart = true;
-                SetProxyTunneling(next);
-            }
-         }
-
-
          if(object.contains("ProfilePath"))
          {
             QString prev = GetProfile();
@@ -802,19 +768,6 @@ namespace BrowserAutomationStudioFramework
             }
 
          }
-
-
-         if(!IsMLA && object.contains("SkipFrames"))
-         {
-            int prev = GetSkipFrames();
-            int next = object["SkipFrames"].toInt();
-            if(prev != next)
-            {
-                NeedSend = true;
-                SetSkipFrames(next);
-            }
-         }
-
 
          if(IsMLA && object.contains("LoadFingerprintFromProfileFolder"))
          {
@@ -1142,12 +1095,6 @@ namespace BrowserAutomationStudioFramework
 
             res.append("--UseFlash");
             res.append(QString::number(GetUseFlash()));
-
-            res.append("--ProxyTunneling");
-            res.append(QString::number(GetProxyTunneling()));
-
-            res.append("--SkipFrames");
-            res.append(QString::number(GetSkipFrames()));
 
             UniqueProcessId = GetRandomString();
             UpdateFingerprintsSettings();

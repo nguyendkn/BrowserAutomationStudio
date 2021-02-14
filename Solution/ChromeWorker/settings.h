@@ -7,7 +7,6 @@
 class settings
 {
     bool use_flash;
-    int skip_frames;
     bool force_utf8;
     int toolbox_height;
     int scenario_width;
@@ -40,7 +39,6 @@ class settings
     std::vector<std::wstring> extensions;
     std::string languages;
     std::string modules;
-    bool tunneling;
     void SetProfile(std::wstring profile);
 public:
     settings();
@@ -52,7 +50,6 @@ public:
     bool DebugToolbox();
     bool DebugScenario();
     bool EmulateMouse();
-    bool ProxyTunneling();
     bool Detector();
     std::wstring Profile();
     std::vector<std::wstring> Extensions();
@@ -61,7 +58,6 @@ public:
     std::string Modules();
     std::string Webgl();
     void SetMaximized(bool Maximized);
-    int SkipFrames();
     int ToolboxHeight();
     int ScenarioWidth();
     int Zoom();
@@ -71,7 +67,6 @@ public:
 
     void SetProxiesReconnect(bool proxies_reconnect);
     void SetForceUtf8(bool force_utf8);
-    void SetSkipFrames(int skip_frames);
 
 
     void SaveToFile();

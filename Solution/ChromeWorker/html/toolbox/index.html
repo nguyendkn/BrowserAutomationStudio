@@ -4271,32 +4271,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"AudioNoise", description:tr("Audio noise pattern"), default_selector: "string", disable_int:true, value_string: "", help: { description: tr("This setting is for debugging purposes only, the proper way to set is using FingerprintSwitcher")}}) %>
       
       
-      
-      <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Network</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
-
-      <%= _.template($('#input_constructor').html())({id:"ProxyTunneling", description:tr("Process tunneling"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: {description: tr("This option determines how proxies will be applied to browser process: through tunnel or with routing all requests to curl library. First option is default and if proxy is set it will replace all direct network requests with requests through proxy. Second option replaces all chrome network stack with curl. The difference between them is that first option acts more like real browser, while second gives extra features like ipv6 proxy support and setting proxy for individual network requests."), examples:[{code:"enable",description:tr("Use tunneling")},{code:"disable",description:tr("Use curl")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
-      
-      <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Rendering</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
-
-      <%= _.template($('#input_constructor').html())({id:"SkipFrames", description:tr("Number of frames to skip in run mode"), default_selector: "int", disable_string:true, value_number: 0, help: {description: tr("Frame skip tells BAS to postpond rendering page, executing javascript and do other browser work. The more you set this value, the lazier browser becomes. This parameter helps to save cpu time. On other hand setting it too high can cause your script will become unstable, you may encounter javascript errors and other unpredictable results."), examples:[{code:"0",description:tr("Don't change this setting")},{code:"1",description:tr("Default value, no frame skip")},{code:"75",description:tr("CPU saving mode")}]}}) %>
-      
-
       <div class="col-xs-12">
        <form class="form-horizontal">
           <div class="form-group">
@@ -4314,7 +4288,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
-      <div class="tr tooltip-paragraph-fold">"Flash", "Extensions", "Number of frames to skip in run mode" and "Process tunneling" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
+      <div class="tr tooltip-paragraph-fold">"Flash" and "Extensions" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. Find extension</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">here</a>, <span class="tr">and download it from</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome-extension-downloader.com');return false" class="tr">here</a>. <span class="tr">Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.</span></div>
 
       <div class="tooltip-paragraph-fold"><span class="tr">Chrome extension API support is still very limited, some extensions may not work. See extension example</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://bablosoft.com/uploads/background-green.zip');return false" class="tr">here</a></div>
@@ -5989,9 +5963,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="browsersettings_code">
       /*Browser*/
       var Params = {};
-      var ProxyTunneling = (<%= ProxyTunneling %>);
       var Flash = (<%= Flash %>);
-      var SkipFrames = (<%= SkipFrames %>);
       var Extensions = (<%= Extensions %>);
 
       var Webrtc = (<%= Webrtc %>);
@@ -6035,12 +6007,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(WebglRenderer.length > 0)
         Params["Webgl.unmaskedRenderer"] = WebglRenderer
-
-      if(ProxyTunneling.length > 0)
-        Params["ProxyTunneling"] = ProxyTunneling == "enable"
-
-      if(SkipFrames !== 0)
-        Params["SkipFrames"] = SkipFrames
 
       if(Extensions.length > 0)
         Params["Extensions"] = Extensions

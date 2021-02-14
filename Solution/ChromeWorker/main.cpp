@@ -1410,15 +1410,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if(MenuRequest.second)
                        ProcessMenu(MenuRequest.first) ;
                 }
-                if(!app->GetData()->IsRecord)
-                {
-                    TimerLoop++;
-                    TimerLoop %= Settings.SkipFrames();
-                    if(TimerLoop == 0)
-                    {
-                        CefDoMessageLoopWork();
-                    }
-                }else
+                if(app->GetData()->IsRecord)
                 {
                     TimerLoop++;
                     TimerLoop %= 10;
@@ -1907,9 +1899,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         app->Notifications.Init(Settings.UniqueProcessId());
     }
 
-    WORKER_LOG("Proxy tunneling");
-    WORKER_LOG(std::to_string(Settings.ProxyTunneling()));
-
 
     WORKER_LOG(std::string("IsRecord<<") + std::to_string(Data->IsRecord));
 
@@ -1962,7 +1951,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-    Data->_ModulesData = LoadModulesData(Lang, Settings.ProxyTunneling(), Pid, Data->_UnusedModulesData);
+    Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
     Data->Connector = new DevToolsConnector();
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
@@ -2085,7 +2074,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventSetStartupScript.push_back(std::bind(&MainApp::SetStartupScriptCallback,app.get(),_1,_2,_3));
     Parser->EventRunTask.push_back(std::bind(&MainApp::RunTaskCallback,app.get(),_1,_2,_3));
     Parser->EventCheckResult.push_back(std::bind(&MainApp::CheckResultCallback,app.get(),_1,_2,_3));
-    Parser->EventSendWorkerSettings.push_back(std::bind(&MainApp::SetWorkerSettingsCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11));
+    Parser->EventSendWorkerSettings.push_back(std::bind(&MainApp::SetWorkerSettingsCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10));
 
     Parser->EventSetPromptResult.push_back(std::bind(&MainApp::SetPromptResultCallback,app.get(),_1));
     Parser->EventSetHttpAuthResult.push_back(std::bind(&MainApp::SetHttpAuthResultCallback,app.get(),_1,_2));

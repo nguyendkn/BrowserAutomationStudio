@@ -898,9 +898,8 @@ void MainApp::CheckResultCallback(const std::string& CheckId,bool IsSuccess,cons
 
 }
 
-void MainApp::SetWorkerSettingsCallback(bool EncodeUtf8, bool RefreshConnections, int SkipFrames, const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target, const std::string& browser, const std::string& record_id)
+void MainApp::SetWorkerSettingsCallback(bool EncodeUtf8, bool RefreshConnections, const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target, const std::string& browser, const std::string& record_id)
 {
-    Settings->SetSkipFrames(SkipFrames);
     SetProxyCallback(server,Port,IsHttp,username,password,target);
 }
 

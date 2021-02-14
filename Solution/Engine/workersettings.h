@@ -31,9 +31,6 @@ namespace BrowserAutomationStudioFramework
         QString WebrtcIps;
 
 
-        bool ProxyTunneling;
-        int SkipFrames;
-
         QString UniqueProcessId;
 
         QString ProxyServer;
@@ -60,8 +57,6 @@ namespace BrowserAutomationStudioFramework
         virtual void SetProfile(const QString& Profile);
         virtual void SetExtensions(const QString& Extensions);
         virtual void SetUseFlash(bool UseFlash);
-        virtual void SetProxyTunneling(bool ProxyTunneling);
-        virtual void SetSkipFrames(int SkipFrames);
 
         virtual QString Get(const QString& Key);
         virtual void Set(const QString& Key,const QString& Value);
@@ -99,8 +94,6 @@ namespace BrowserAutomationStudioFramework
 
         virtual QString GetProfile();
         virtual bool GetUseFlash();
-        virtual bool GetProxyTunneling();
-        virtual int GetSkipFrames();
 
         virtual QString GetProxyServer();
         virtual void SetProxyServer(const QString& ProxyServer);

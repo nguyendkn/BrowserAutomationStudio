@@ -97,16 +97,8 @@
 				$("#WebglRendererPanel").show()
 			}
 
-			if($("#ProxyTunneling").is(":checked"))
-			{
-				$("#ForceUTF8EncodingPanel").show()
-				$("#ProxiesReconnectPanel").show()
-			}else
-			{
-				$("#ForceUTF8EncodingPanel").hide()
-				$("#ProxiesReconnectPanel").hide()
-			}
-
+			$("#ForceUTF8EncodingPanel").show()
+			$("#ProxiesReconnectPanel").show()
 		}
 
 		$( document ).ready(function() {
@@ -118,7 +110,6 @@
 			$("#Audio").change(UpdateInterfaceVisibility);
 			$("#Webrtc").change(UpdateInterfaceVisibility);
 			$("#Webgl").change(UpdateInterfaceVisibility);
-			$("#ProxyTunneling").change(UpdateInterfaceVisibility);
 
 			$('[data-is-add-modules="true"]').click(function(){
 				lang = $(this).attr("data-lang");
@@ -203,7 +194,6 @@
 			$("#MaxBrowserStartSimultaneously").val(json["max_browser_start_simultaneously"])
 			$("#MinUnusedCpu").val(json["min_unused_cpu"])
 			$("#Zoom").val(json["zoom"])
-			$("#ProxyTunneling").prop("checked",json["tunneling"])
 			$("#FingerprintDetectorEnabled").prop("checked",json["detector"])
 			$("#Flash").val((json["use_flash"]) ? "enable" : "disable")
 
@@ -218,7 +208,6 @@
 			$("#WebglRenderer").val(json["webgl_renderer"])
 			$("#WebglVendor").val(json["webgl_vendor"])
 			
-			$("#SkipFrames").val(json["skip_frames"])
 			$("#ForceUTF8Encoding").prop("checked",json["force_utf8"])
 			$("#RestartBrowserProcessOnThreadStart").prop("checked",json["restart"])
 			$("#AutostartDebug").prop("checked",json["autostart_debug"])
@@ -250,7 +239,6 @@
 
 			$("#defaults").click(function(event){
 	    		event.preventDefault();
-				$("#ProxyTunneling").prop("checked",true)
 				$("#FingerprintDetectorEnabled").prop("checked",true)
 	    		$("#TopPanelHeight").val("300")
 				$("#LeftPanelWidth").val("500")
@@ -259,7 +247,6 @@
 				$("#MinUnusedCpu").val("20")
 				$("#Zoom").val("100")
 				$("#Flash").val("disable")
-				$("#SkipFrames").val("1")
 				$("#ForceUTF8Encoding").prop("checked",true)
 
 				$("#Canvas").val("disable")
@@ -322,7 +309,6 @@
 						"webgl_renderer": $("#WebglRenderer").val(),
 						"webgl_vendor": $("#WebglVendor").val(),
 
-		    			"skip_frames": parseInt($("#SkipFrames").val()),
 		    			"force_utf8": $("#ForceUTF8Encoding").prop("checked"),
 		    			"restart": $("#RestartBrowserProcessOnThreadStart").prop("checked"),
 						"autostart_debug": $("#AutostartDebug").prop("checked"),
@@ -330,7 +316,6 @@
 		    			"proxies_reconnect": $("#ProxiesReconnect").prop("checked"),
 		    			"languages": languages,
 		    			"modules": modules,
-		    			"tunneling": $("#ProxyTunneling").prop("checked"),
 		    			"detector": $("#FingerprintDetectorEnabled").prop("checked")
 		    		}
 	    		));
@@ -600,17 +585,6 @@
 		<div class="form-horizontal" style="margin-top:20px">
 
 
-		  <div class="form-group">
-		    <div class="col-sm-offset-5 col-sm-7">
-		      <div class="checkbox">
-		        <label>
-		          <input type="checkbox" id="ProxyTunneling"> <span class="tr">Use process tunneling to enable proxy</span>
-		        </label>
-		      </div>
-		    </div>
-		  </div>
-		 <div class="text-center text-muted tr">This option determines how proxies will be applied to browser process: through tunnel or with routing all requests to curl library. First option is default and if proxy is set it will replace all direct network requests with requests through proxy. Second option replaces all chrome network stack with curl. The difference between them is that first option acts more like real browser, while second gives extra features like ipv6 proxy support and setting proxy for individual network requests.</div>
-
 		 <span id="ForceUTF8EncodingPanel">
 			 <div class="form-group" style="margin-top:20px">
 			    <div class="col-sm-offset-5 col-sm-7">
@@ -636,25 +610,6 @@
 		 </span>
 
 		  </div>
-	</div>
-
-	<h4><p class="text-center tr"  style="padding-top:40px">Rendering settings</p></h4>
-	<hr>
-
-	<div class="container">
-
-		<div class="form-horizontal">
-
-		  <div class="form-group form-item">
-		    <label for="SkipFrames" class="col-sm-5 control-label tr">Skip Frames</label>
-		    <div class="col-sm-4">
-		    	<input type="number" class="form-control" id="SkipFrames" placeholder="SkipFrames" min="1">
-		    </div>
-		  </div>
-		  <div class="text-center text-muted tr">Frame skip tells BAS to postpond rendering page, executing javascript and do other browser work. The more you set this value, the lazier browser becomes. This parameter helps to save cpu time. On other hand setting it too high can cause your script will become unstable, you may encounter javascript errors and other unpredictable results. 1 - default value, no frame skip, 75 - CPU saving mode</div>
-
-		  
-		</div>
 	</div>
 
 	<h4><p class="text-center tr"  style="padding-top:40px">Browsers smooth start</p></h4>

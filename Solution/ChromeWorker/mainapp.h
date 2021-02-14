@@ -274,7 +274,7 @@ public:
     void SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id);
     void RunTaskCallback(const std::string& function_name,const std::string& params,const std::string& result_id);
     void CheckResultCallback(const std::string& CheckId,bool IsSuccess,const std::string& ErrorString);
-    void SetWorkerSettingsCallback(bool EncodeUtf8, bool RefreshConnections, int SkipFrames, const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target, const std::string& browser, const std::string& record_id);
+    void SetWorkerSettingsCallback(bool EncodeUtf8, bool RefreshConnections, const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target, const std::string& browser, const std::string& record_id);
     void ManualBrowserControlCallback(const std::string& message);
     void SetFontListCallback(const std::string& fonts);
     void SetPromptResultCallback(const std::string& value);

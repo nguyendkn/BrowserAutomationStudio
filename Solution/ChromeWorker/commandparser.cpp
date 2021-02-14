@@ -372,7 +372,6 @@ void CommandParser::Parse(const std::string& Xml)
             WORKER_LOG("EventSendWorkerSettings");
             bool EncodeUtf8 = true;
             bool RefreshConnections = false;
-            int SkipFrames = 1;
             std::string ProxyServer;
             int ProxyPort;
             bool ProxyIsHttp;
@@ -434,15 +433,11 @@ void CommandParser::Parse(const std::string& Xml)
                     RefreshConnections = std::stoi(attr->value());
                 }
 
-                if(std::string(attr->name()) == std::string("SkipFrames"))
-                {
-                    SkipFrames = std::stoi(attr->value());
-                }
             }
 
             for(auto f:EventSendWorkerSettings)
             {
-                f(EncodeUtf8, RefreshConnections, SkipFrames, ProxyServer, ProxyPort, ProxyIsHttp, ProxyName, ProxyPassword, ProxyTarget, BrowserEngine, RecordId);
+                f(EncodeUtf8, RefreshConnections, ProxyServer, ProxyPort, ProxyIsHttp, ProxyName, ProxyPassword, ProxyTarget, BrowserEngine, RecordId);
             }
 
         }

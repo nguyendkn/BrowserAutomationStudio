@@ -39,7 +39,7 @@ public:
     std::vector<std::function<void(const std::string&,const std::string&, const std::string&)> > EventRunTask;
     std::vector<std::function<void(const std::string&,bool, const std::string&)> > EventCheckResult;
 
-    std::vector<std::function<void(bool,bool,int,const std::string&,int,bool, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&)> > EventSendWorkerSettings;
+    std::vector<std::function<void(bool,bool,const std::string&,int,bool, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&)> > EventSendWorkerSettings;
 
     std::vector<std::function<void(const std::string&)> > EventSetPromptResult;
     std::vector<std::function<void(const std::string&,const std::string&)> > EventSetHttpAuthResult;

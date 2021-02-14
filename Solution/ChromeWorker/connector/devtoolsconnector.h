@@ -58,6 +58,7 @@ class DevToolsConnector
         WaitingForBrowserEndpoint,
         WaitingForWebsocket,
         WaitingForAutoconnectEnable,
+        WaitingForDownloadsEnable,
         WaitingFirstTab,
         Connected
     }ConnectionState = NotStarted;
@@ -107,6 +108,7 @@ class DevToolsConnector
         std::vector<std::function<void()> > OnLoadStop;
         std::vector<std::function<void(std::string)> > OnAddressChanged;
         std::vector<std::function<void(std::string)> > OnNativeDialog;
+        std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
 
 
         char* GetPaintData();
@@ -186,6 +188,14 @@ class DevToolsConnector
         void SetOpenFileDialogResult(const std::string& Result);
         void SetOpenFileDialogManualMode(bool IsManual);
         void SetPromptResult(const std::string& PromptResult);
+
+        //Downloads
+        Async AllowDownloads(int Timeout = -1);
+        Async RestrictDownloads(int Timeout = -1);
+        bool IsFileDownloadReady();
+        std::string GetDownloadedFilePath();
+
+
 
 };
 

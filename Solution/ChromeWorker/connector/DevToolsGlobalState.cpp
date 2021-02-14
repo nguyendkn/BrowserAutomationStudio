@@ -13,4 +13,7 @@ void DevToolsGlobalState::Reset()
     OpenFileDialogResult.clear();
     OpenFileDialogIsManual = false;
     PromptResult.clear();
+    CurrentDownloadFileName.clear();
+    IsDownloading = false;
+    IsDownloadsAllowed = true;
 }

@@ -432,6 +432,7 @@ public:
     void OnLoadStop();
     void OnAddressChanged(std::string Url);
     void OnNativeDialog(std::string DialogType);
+    void OnDownloadStarted(std::wstring FileName);
 
 
 

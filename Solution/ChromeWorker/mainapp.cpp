@@ -2170,14 +2170,23 @@ void MainApp::RestrictPopups()
 
 void MainApp::AllowDownloads()
 {
-    Data->AllowDownloads = true;
-    SendTextResponce("<AllowDownloads/>");
+    Async Result = Data->Connector->AllowDownloads();
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<AllowDownloads/>");
+    });
+
 }
 
 void MainApp::RestrictDownloads()
 {
-    Data->AllowDownloads = false;
-    SendTextResponce("<RestrictDownloads/>");
+    Async Result = Data->Connector->RestrictDownloads();
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<RestrictDownloads/>");
+    });
 }
 
 void MainApp::ClearRequestMaskCallback()
@@ -2286,7 +2295,18 @@ void MainApp::ScriptFinishedCallback()
 
 void MainApp::FindCacheByMaskBase64Callback(const std::string& value)
 {
-    WORKER_LOG(std::string("FindCacheByMaskBase64Callback<<") + value);
+    std::string res = "";
+
+    if(value == "download://*")
+    {
+        res = Data->Connector->GetDownloadedFilePath();
+        res = base64_encode((unsigned char const *)res.data(),res.size());
+    }
+
+    xml_encode(res);
+    SendTextResponce(std::string("<FindCacheByMaskBase64>") + res + ("</FindCacheByMaskBase64>"));
+
+    /*WORKER_LOG(std::string("FindCacheByMaskBase64Callback<<") + value);
     std::string res = "";
     {
         LOCK_BROWSER_DATA
@@ -2316,7 +2336,7 @@ void MainApp::FindCacheByMaskBase64Callback(const std::string& value)
         }
     }
     xml_encode(res);
-    SendTextResponce(std::string("<FindCacheByMaskBase64>") + res + ("</FindCacheByMaskBase64>"));
+    SendTextResponce(std::string("<FindCacheByMaskBase64>") + res + ("</FindCacheByMaskBase64>"));*/
 }
 void MainApp::FindStatusByMaskCallback(const std::string& value)
 {
@@ -2368,8 +2388,17 @@ void MainApp::GetLoadStatsCallback()
 
 void MainApp::FindCacheByMaskStringCallback(const std::string& value)
 {
+    std::string res = "";
 
-    WORKER_LOG(std::string("FindCacheByMaskStringCallback<<") + value);
+    if(value == "download://*")
+    {
+        res = Data->Connector->GetDownloadedFilePath();
+    }
+
+    xml_encode(res);
+    SendTextResponce(std::string("<FindCacheByMaskString>") + res + ("</FindCacheByMaskString>"));
+
+    /*WORKER_LOG(std::string("FindCacheByMaskStringCallback<<") + value);
     std::string res = "";
     {
         LOCK_BROWSER_DATA
@@ -2399,7 +2428,7 @@ void MainApp::FindCacheByMaskStringCallback(const std::string& value)
         }
     }
     xml_encode(res);
-    SendTextResponce(std::string("<FindCacheByMaskString>") + res + std::string("</FindCacheByMaskString>"));
+    SendTextResponce(std::string("<FindCacheByMaskString>") + res + std::string("</FindCacheByMaskString>"));*/
 }
 
 
@@ -2463,7 +2492,16 @@ void MainApp::FindAllCacheCallback(const std::string& value)
 
 void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("IsUrlLoadedByMaskCallback<<") + value);
+    std::string res = "0";
+
+    if(value == "download://*" && Data->Connector->IsFileDownloadReady())
+    {
+        res = "1";
+    }
+
+    SendTextResponce(std::string("<IsUrlLoadedByMask>") + res + ("</IsUrlLoadedByMask>"));
+
+    /*WORKER_LOG(std::string("IsUrlLoadedByMaskCallback<<") + value);
     std::string res = "0";
     {
         LOCK_BROWSER_DATA
@@ -2476,7 +2514,7 @@ void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
             }
         }
     }
-    SendTextResponce(std::string("<IsUrlLoadedByMask>") + res + ("</IsUrlLoadedByMask>"));
+    SendTextResponce(std::string("<IsUrlLoadedByMask>") + res + ("</IsUrlLoadedByMask>"));*/
 
 }
 
@@ -3403,6 +3441,37 @@ void MainApp::OnNativeDialog(std::string DialogType)
     if(Data->IsRecord && BrowserToolbox)
     {
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Notify('") + DialogType + std::string("')"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+    }
+}
+
+void MainApp::OnDownloadStarted(std::wstring FileName)
+{
+    if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
+    {
+        std::string data = ws2s(FileName);
+        if (OpenClipboard(0))
+        {
+            HGLOBAL clipbuffer;
+            char * buffer;
+            EmptyClipboard();
+            clipbuffer = GlobalAlloc(GMEM_DDESHARE, data.length() + 1);
+            buffer = (char*)GlobalLock(clipbuffer);
+            memcpy(buffer, data.data(),data.size());
+            buffer[data.length()] = 0;
+            GlobalUnlock(clipbuffer);
+            SetClipboardData(CF_TEXT,clipbuffer);
+            CloseClipboard();
+        }
+
+        std::wstring Message = Translate::Tr(std::wstring(L"File downloading has been started to ")) + FileName + Translate::Tr(std::wstring(L". Path has been saved to clipboard."));
+        MessageBox(
+                NULL,
+                Message.data(),
+                Translate::Tr(L"File download").data(),
+                MB_ICONWARNING | MB_OK
+            );
+
+
     }
 }
 

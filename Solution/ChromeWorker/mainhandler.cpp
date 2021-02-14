@@ -152,79 +152,7 @@ bool MainHandler::RunContextMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
 
 void MainHandler::OnBeforeDownload(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDownloadItem> download_item, const CefString& suggested_name, CefRefPtr<CefBeforeDownloadCallback> callback)
 {
-    if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
-    {
-        //Execute dialog in manual control and non record mode.
-        callback->Continue(CefString(), true);
-        return;
-    }
 
-    bool Accept = true;
-    if(!Data->AllowDownloads)
-    {
-        Accept = false;
-    }else
-    {
-        std::string url = download_item->GetOriginalUrl();
-        {
-            //Check if can download
-            LOCK_BROWSER_DATA
-            for(std::pair<bool, std::string> p:Data->_RequestMask)
-            {
-                if(match(p.second,url))
-                {
-                    Accept = p.first;
-                }
-            }
-            if(Accept)
-            {
-                //Notify, that file is been downloaded
-                if(Data->IsRecord)
-                {
-                    for(auto f:EventDownloadStart)
-                        f();
-                }
-
-                //errase all info about previous download
-                {
-                    auto i = Data->_LoadedUrls.begin();
-                    while (i != Data->_LoadedUrls.end())
-                    {
-                        if(starts_with(i->first,"download://"))
-                        {
-                            i = Data->_LoadedUrls.erase(i);
-                        }else
-                        {
-                            ++i;
-                        }
-                    }
-                }
-                {
-                    auto i = Data->_CachedData.begin();
-                    while (i != Data->_CachedData.end())
-                    {
-                        if(starts_with(i->first,"download://"))
-                        {
-                            i = Data->_CachedData.erase(i);
-                        }else
-                        {
-                            ++i;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if(Accept)
-    {
-        std::string FileName = RandomId() + ".file";
-        std::wstring FilePath = GetRelativePathToParentFolder(s2ws(FileName));
-        WORKER_LOG(std::string("OnBeforeDownload<<") + FileName);
-        callback->Continue(FilePath,false);
-    }else
-    {
-        //WORKER_LOG(std::string("OnBeforeDownloadFiltered<<") + url);
-    }
 
 
 }

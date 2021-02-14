@@ -74,7 +74,6 @@ public:
     std::atomic_bool IsRecord;
     std::atomic_bool IsRecordHttp;
     std::atomic_bool AllowPopups;
-    std::atomic_bool AllowDownloads;
     std::atomic_bool MultiselectMode;
     std::atomic_bool MultiselectIsInsideElementLoop;
     InspectResult _Inspect;

@@ -78,6 +78,11 @@ struct DevToolsGlobalState
     bool OpenFileDialogIsManual = false;
     std::string PromptResult;
 
+    //Download data
+    std::string CurrentDownloadFileName;
+    bool IsDownloading = false;
+    bool IsDownloadsAllowed = true;
+
     //This method is called when restarting browser
     void Reset();
 };

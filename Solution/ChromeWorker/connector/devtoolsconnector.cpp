@@ -8,6 +8,7 @@
 #include "json/picojson.h"
 #include "devtoolsactionwebsocketquery.h"
 #include "match.h"
+#include "fileutils.h"
 
 using namespace std::placeholders;
 using namespace std::chrono;
@@ -422,6 +423,18 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
         //Autocunnect responce has been obtained, waiting to connect for at least one tab
         if (ConnectionState == WaitingForAutoconnectEnable && Id == 1)
         {
+            std::map<std::string, Variant> CurrentParams;
+
+            CurrentParams["downloadPath"] = Variant(ws2s(GetRelativePathToParentFolder(L"")));
+            CurrentParams["behavior"] = Variant(std::string("allowAndName"));
+
+            SendWebSocket("Browser.setDownloadBehavior",  CurrentParams, std::string());
+            ConnectionState = WaitingForDownloadsEnable;
+            return;
+        }
+
+        if (ConnectionState == WaitingForDownloadsEnable)
+        {
             ConnectionState = WaitingFirstTab;
             return;
         }
@@ -480,6 +493,50 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
     if(AllObject.count("method") > 0 && AllObject["method"].is<std::string>())
     {
         std::string Method = AllObject["method"].get<std::string>();
+
+        if (Method == "Page.downloadWillBegin")
+        {
+            for (auto f : OnNativeDialog)
+                f("download");
+
+            if(GlobalState.IsDownloadsAllowed)
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+                std::string FileName = Parser.GetStringFromJson(Result, "guid");
+
+
+                for (auto f : OnDownloadStarted)
+                    f(GetRelativePathToParentFolder(s2ws(FileName)));
+            }
+        }
+
+
+        if (Method == "Page.downloadProgress")
+        {
+            picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+            std::string Result = picojson::value(ResultObject).serialize();
+
+            if (AllObject["params"].is<picojson::object>())
+            {
+                std::string State = Parser.GetStringFromJson(Result, "state");
+                if(State == "inProgress")
+                {
+                    GlobalState.IsDownloading = true;
+                    GlobalState.CurrentDownloadFileName = Parser.GetStringFromJson(Result, "guid");
+                }else if(State == "completed")
+                {
+                    GlobalState.IsDownloading = false;
+                    GlobalState.CurrentDownloadFileName = Parser.GetStringFromJson(Result, "guid");
+                }else if(State == "canceled")
+                {
+                    GlobalState.IsDownloading = false;
+                    GlobalState.CurrentDownloadFileName.clear();
+                }
+            }
+        }
+
+
 
         if(Method == "Page.javascriptDialogOpening")
         {
@@ -1903,4 +1960,57 @@ void DevToolsConnector::SetPromptResult(const std::string& PromptResult)
 {
     this->GlobalState.PromptResult = PromptResult;
 }
+
+Async DevToolsConnector::AllowDownloads(int Timeout)
+{
+    GlobalState.IsDownloadsAllowed = true;
+    std::shared_ptr<IDevToolsAction> NewAction;
+    NewAction.reset(ActionsFactory.CreateWebsocketQuery("Browser.setDownloadBehavior",&GlobalState,std::string(),DevToolsActionWebsocketQuery::None));
+    std::map<std::string, Variant> Params;
+
+    Params["downloadPath"] = Variant(ws2s(GetRelativePathToParentFolder(L"")));
+    Params["behavior"] = Variant(std::string("allowAndName"));
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+
+Async DevToolsConnector::RestrictDownloads(int Timeout)
+{
+    GlobalState.IsDownloadsAllowed = false;
+    std::shared_ptr<IDevToolsAction> NewAction;
+    NewAction.reset(ActionsFactory.CreateWebsocketQuery("Browser.setDownloadBehavior",&GlobalState,std::string(),DevToolsActionWebsocketQuery::None));
+    std::map<std::string, Variant> Params = NewAction->GetParams();
+
+    Params["behavior"] = Variant(std::string("deny"));
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+bool DevToolsConnector::IsFileDownloadReady()
+{
+    return !GlobalState.IsDownloading && !GlobalState.CurrentDownloadFileName.empty();
+}
+
+std::string DevToolsConnector::GetDownloadedFilePath()
+{
+    std::string Res;
+    if(IsFileDownloadReady())
+    {
+        Res = GlobalState.CurrentDownloadFileName;
+        GlobalState.CurrentDownloadFileName.clear();
+        GlobalState.IsDownloading = false;
+    }
+    return Res;
+}
+
+
 

@@ -32,6 +32,9 @@ void DevToolsActionWebsocketQuery::OnWebSocketMessage(const std::string& Message
     }else if(ReturnType == Number)
     {
         Result->Success((int)GetFloatFromJson(Message, ReturnPath));
+    }else if(ReturnType == None)
+    {
+        Result->Success();
     }
 
     State = Finished;

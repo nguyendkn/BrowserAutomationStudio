@@ -1924,7 +1924,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->IsTesing = false;
     Data->IsMousePress = false;
     Data->AllowPopups = true;
-    Data->AllowDownloads = true;
     Data->MultiselectMode = false;
     Data->MultiselectIsInsideElementLoop = false;
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
@@ -1964,6 +1963,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->OnLoadStop.push_back(std::bind(&MainApp::OnLoadStop,app.get()));
     Data->Connector->OnAddressChanged.push_back(std::bind(&MainApp::OnAddressChanged,app.get(),_1));
     Data->Connector->OnNativeDialog.push_back(std::bind(&MainApp::OnNativeDialog,app.get(),_1));
+    Data->Connector->OnDownloadStarted.push_back(std::bind(&MainApp::OnDownloadStarted,app.get(),_1));
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     std::make_shared<RawCppWebSocketClientFactory>(),

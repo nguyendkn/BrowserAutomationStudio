@@ -352,7 +352,7 @@ void DevToolsActionExecuteJavascript::Next()
         DoScroll = false;
         IsDoingScroll = true;
         std::map<std::string, Variant> CurrentParams;
-        std::string Script = std::string("{var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");if(self)self.scrollIntoViewIfNeeded(true);}");
+        std::string Script = std::string("(function(){var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");if(self)self.scrollIntoViewIfNeeded(true);})();");
         CurrentParams["expression"] = Variant(Javascript(Script));
         if(CurrentContextId >= 0)
             CurrentParams["contextId"] = Variant(CurrentContextId);
@@ -392,7 +392,7 @@ void DevToolsActionExecuteJavascript::Next()
     RequestType = JavascriptExecution;
     std::string Script;
 
-    Script += std::string("{\n");
+    Script += std::string("await (async function(){\n");
     
     if (!ElementSelector.empty())
     {
@@ -426,7 +426,7 @@ void DevToolsActionExecuteJavascript::Next()
 
     Script += ";\n";
 
-    Script += "await (async function(){";
+    Script += "return await (async function(){";
 
     Script += "\n";
 
@@ -448,7 +448,7 @@ void DevToolsActionExecuteJavascript::Next()
 
     Script += "\n";
 
-    Script += std::string("}");
+    Script += std::string("})();");
 
     CurrentParams["expression"] = Variant(Script);
     CurrentParams["replMode"] = Variant(true);

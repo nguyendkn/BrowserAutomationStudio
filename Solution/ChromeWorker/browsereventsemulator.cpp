@@ -532,8 +532,8 @@ void BrowserEventsEmulator::MouseClick(DevToolsConnector* Connector, int x, int 
         if(IsTouch)
         {
             IsTouchPressedAutomation = false;
-            TouchId++;
             Connector->Touch(TouchEventUp,X,Y,TouchId);
+            TouchId++;
         }else
         {
             Connector->Mouse(MouseEventUp,X,Y,MouseButtonLeft,CurrentMouseState,CurrentKeyState);

@@ -1113,6 +1113,7 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
     {
         TouchEvent EventType;
         bool SendEvent = false;
+        int CurrentTouchId = _BrowserData->TouchEventId;
         if(_BrowserData->IsTouchPressedDirectControl && !IsDownOrUp)
         {
             EventType = TouchEventUp;
@@ -1187,7 +1188,7 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
 
         if(SendEvent)
         {
-            _BrowserData->Connector->Touch(EventType, X, Y, _BrowserData->TouchEventId);
+            _BrowserData->Connector->Touch(EventType, X, Y, CurrentTouchId);
         }
         return;
     }

@@ -469,44 +469,7 @@ bool MainHandler::OnOpenURLFromTab(CefRefPtr<CefBrowser> browser, CefRefPtr<CefF
 
 bool MainHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& target_url, const CefString& target_frame_name, CefLifeSpanHandler::WindowOpenDisposition target_disposition, bool user_gesture, const CefPopupFeatures& popupFeatures, CefWindowInfo& windowInfo, CefRefPtr<CefClient>& client, CefBrowserSettings& settings, CefRefPtr<CefDictionaryValue>& extra_info, bool* no_javascript_access)
 {
-    WORKER_LOG(std::string("OnBeforePopup<<") + target_url.ToString());
-
-
-    bool Accept = true;
-    if(!Data->AllowPopups)
-    {
-        Accept = false;
-    }else
-    {
-        std::string url = target_url.ToString();
-        {
-            LOCK_BROWSER_DATA
-            for(std::pair<bool, std::string> p:Data->_RequestMask)
-            {
-                if(match(p.second,url))
-                {
-                    Accept = p.first;
-                }
-            }
-        }
-    }
-
-    if(Accept)
-    {
-        windowInfo.SetAsWindowless(0);
-        settings.windowless_frame_rate = 30;
-        MainHandler * h = new MainHandler();
-        h->SetHandlersManager(_HandlersManager);
-        h->SetSettings(Settings);
-        h->SetData(Data);
-        h->SetDirectControl(DirectControl);
-        h->SetPostManager(_PostManager);
-        h->SetIsPopup();
-        h->EventPopupCreated = EventPopupCreated;
-        client = h;
-    }
-
-    return !Accept;
+    return false;
 }
 
 CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)

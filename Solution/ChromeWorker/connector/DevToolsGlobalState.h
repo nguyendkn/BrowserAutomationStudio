@@ -83,6 +83,9 @@ struct DevToolsGlobalState
     bool IsDownloading = false;
     bool IsDownloadsAllowed = true;
 
+    //Popups
+    bool IsPopupsAllowed = true;
+
     //This method is called when restarting browser
     void Reset();
 };

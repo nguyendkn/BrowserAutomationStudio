@@ -2158,13 +2158,13 @@ void MainApp::ClearCacheMaskCallback()
 
 void MainApp::AllowPopups()
 {
-    Data->AllowPopups = true;
+    Data->Connector->AllowPopups();
     SendTextResponce("<AllowPopups/>");
 }
 
 void MainApp::RestrictPopups()
 {
-    Data->AllowPopups = false;
+    Data->Connector->RestrictPopups();
     SendTextResponce("<RestrictPopups/>");
 }
 

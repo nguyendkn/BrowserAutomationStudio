@@ -3,6 +3,12 @@
 
 void DevToolsActionCreateTab::Run()
 {
+    if(!GlobalState->IsPopupsAllowed)
+    {
+        Result->Fail("Creating new tabs is prohibited");
+        State = Finished;
+        return;
+    }
     State = Running;
 
     IsInstant = Params["instant"].Boolean;

@@ -1923,7 +1923,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->IsDrag = false;
     Data->IsTesing = false;
     Data->IsMousePress = false;
-    Data->AllowPopups = true;
     Data->MultiselectMode = false;
     Data->MultiselectIsInsideElementLoop = false;
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";

@@ -16,4 +16,5 @@ void DevToolsGlobalState::Reset()
     CurrentDownloadFileName.clear();
     IsDownloading = false;
     IsDownloadsAllowed = true;
+    IsPopupsAllowed = true;
 }

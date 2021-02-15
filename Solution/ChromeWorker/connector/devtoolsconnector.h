@@ -195,7 +195,9 @@ class DevToolsConnector
         bool IsFileDownloadReady();
         std::string GetDownloadedFilePath();
 
-
+        //Popups
+        void AllowPopups();
+        void RestrictPopups();
 
 };
 

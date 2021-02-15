@@ -781,23 +781,32 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 if(TypeName == "page")
                 {
-                    if(GlobalState.SwitchingToDelayedTabIndex >= 0 && GlobalState.SwitchingToDelayedTabIndex < GlobalState.Tabs.size() && GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex]->ConnectionState == TabData::Delayed)
+                    if(!GlobalState.IsPopupsAllowed)
                     {
-                        //Loading delayed tab
-                        std::shared_ptr<TabData> TabInfo = GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex];
-                        TabInfo->ConnectionState = TabData::NotStarted;
-                        TabInfo->FrameId = FrameId;
-                        ProcessTabConnection(TabInfo);
+                        //Tab creation is not allowed, close it instantly
+                        std::map<std::string, Variant> CurrentParams;
+                        CurrentParams["targetId"] = Variant(FrameId);
+                        SendWebSocket("Target.closeTarget", CurrentParams, std::string());
                     }else
                     {
-                        std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                        TabInfo->ConnectionState = TabData::NotStarted;
-                        TabInfo->FrameId = FrameId;
-                        GlobalState.Tabs.push_back(TabInfo);
-                        ProcessTabConnection(TabInfo);
-                    }
+                        if(GlobalState.SwitchingToDelayedTabIndex >= 0 && GlobalState.SwitchingToDelayedTabIndex < GlobalState.Tabs.size() && GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex]->ConnectionState == TabData::Delayed)
+                        {
+                            //Loading delayed tab
+                            std::shared_ptr<TabData> TabInfo = GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex];
+                            TabInfo->ConnectionState = TabData::NotStarted;
+                            TabInfo->FrameId = FrameId;
+                            ProcessTabConnection(TabInfo);
+                        }else
+                        {
+                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                            TabInfo->ConnectionState = TabData::NotStarted;
+                            TabInfo->FrameId = FrameId;
+                            GlobalState.Tabs.push_back(TabInfo);
+                            ProcessTabConnection(TabInfo);
+                        }
 
-                    GlobalState.SwitchingToDelayedTabIndex = -1;
+                        GlobalState.SwitchingToDelayedTabIndex = -1;
+                    }
                 }
             }
         }else if(Method == "Target.attachedToTarget")
@@ -2013,4 +2022,13 @@ std::string DevToolsConnector::GetDownloadedFilePath()
 }
 
 
+void DevToolsConnector::RestrictPopups()
+{
+    GlobalState.IsPopupsAllowed = false;
+}
+
+void DevToolsConnector::AllowPopups()
+{
+    GlobalState.IsPopupsAllowed = true;
+}
 

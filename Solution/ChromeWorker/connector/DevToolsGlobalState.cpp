@@ -17,4 +17,5 @@ void DevToolsGlobalState::Reset()
     IsDownloading = false;
     IsDownloadsAllowed = true;
     IsPopupsAllowed = true;
+    NewTabReferrer.clear();
 }

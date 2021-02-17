@@ -21,7 +21,7 @@ void DevToolsActionCreateTab::Run()
     Params.erase("delayed");
 
     Url = PrepareUrl(Params["url"].String);
-    Params["url"].String = "chrome://newtab/";
+    Params["url"].String = "about:blank";
 
     if(IsDelayed)
     {

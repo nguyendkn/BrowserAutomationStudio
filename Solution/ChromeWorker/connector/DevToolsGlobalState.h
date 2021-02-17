@@ -27,7 +27,6 @@ struct TabData
     std::string TabId;
     std::string FrameId;
     bool IsLoading = false;
-    std::string InterceptId;
     std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
     int CurrentWebsocketActionId = 0;
     std::string DelayedUrl;
@@ -50,6 +49,7 @@ struct DevToolsGlobalState
     std::string SwitchToTabFrameId;
     bool SwitchToTabResetSavedActions = false;
     int SwitchingToDelayedTabIndex = -1;
+    std::string WindowOpenNewTabUrl;
     int Port = -1;
     std::vector<StartupScriptItem> StartupScriptIds;
     std::map<std::string, int> FrameIdToContextId;
@@ -85,6 +85,9 @@ struct DevToolsGlobalState
 
     //Popups
     bool IsPopupsAllowed = true;
+
+    //Referrer when open new tab
+    std::string NewTabReferrer;
 
     //This method is called when restarting browser
     void Reset();

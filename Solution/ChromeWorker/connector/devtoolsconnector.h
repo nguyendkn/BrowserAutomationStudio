@@ -96,6 +96,7 @@ class DevToolsConnector
     int PaintHeight = 0;
     SharedMemoryIPC* IPC = 0;
     void HandleIPCData();
+    void ParseNewTabReferrer(const std::string& NewTabReferrer);
 
     public:
 

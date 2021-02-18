@@ -944,107 +944,42 @@ void MainApp::SetPromptResultCallback(const std::string& value)
 
 void MainApp::SetHttpAuthResultCallback(const std::string& login,const std::string& password)
 {
-    /*{
-        LOCK_HTTP_AUTH
-        Data->_HttpAuthLogin = login;
-        Data->_HttpAuthPassword = password;
-    }*/
     SendTextResponce("<SetHttpAuthResult>1</SetHttpAuthResult>");
 }
 
 void MainApp::GetCookiesForUrlCallback(const std::string& value)
 {
-    WORKER_LOG("GetCookiesForUrlCallback");
     std::string cookies;
-    //if(_HandlersManager->GetBrowser())
-    {
-        CefRefPtr<CefCookieManager> CookieManager = CefCookieManager::GetGlobalManager(NULL);
-        CefCookie cookie = CookieVisitor::GetEmptyCookie();
-        bool CookieSet = CookieManager->SetCookie("http://basnotcorrecturl.com",cookie,0);
-        WORKER_LOG(std::string("Empty cookie set<<") + std::to_string(CookieSet));
-        cookievisitor->ClearBuffer();
-        cookievisitor->SetUrlToVisit(value);
-        cookievisitor->EventCookiesLoaded.clear();
-        cookievisitor->EventCookiesLoaded.push_back(std::bind(&MainApp::GetCookiesForUrlCompleteCallback,this));
-        if(!CookieManager->VisitAllCookies(cookievisitor))
-        {
-            SendTextResponce(std::string("<GetCookiesForUrl>") + cookies + std::string("</GetCookiesForUrl>"));
-            return;
-        }
-        return;
-    }
-    SendTextResponce(std::string("<GetCookiesForUrl>") + cookies + std::string("</GetCookiesForUrl>"));
-}
-
-void MainApp::GetCookiesForUrlCompleteCallback()
-{
-    WORKER_LOG("GetCookiesForUrlCompleteCallback");
-    std::string cookies = cookievisitor->GetBuffer();
     xml_encode(cookies);
     SendTextResponce(std::string("<GetCookiesForUrl>") + cookies + std::string("</GetCookiesForUrl>"));
 }
 
 void MainApp::SaveCookiesCallback()
 {
-    WORKER_LOG("SaveCookiesCallback");
-    std::string cookies;
-    if(_HandlersManager->GetBrowser())
+    Async Result = Data->Connector->SaveCookies();
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        CefRefPtr<CefCookieManager> CookieManager = CefCookieManager::GetGlobalManager(NULL);
-        CefCookie cookie = CookieVisitor::GetEmptyCookie();
-        bool CookieSet = CookieManager->SetCookie("http://basnotcorrecturl.com",cookie,0);
-        WORKER_LOG(std::string("Empty cookie set<<") + std::to_string(CookieSet));
-        cookievisitor->ClearBuffer();
-        cookievisitor->SetUrlToVisit("");
-        cookievisitor->EventCookiesLoaded.clear();
-        cookievisitor->EventCookiesLoaded.push_back(std::bind(&MainApp::SaveCookiesCompleteCallback,this));
-        if(!CookieManager->VisitAllCookies(cookievisitor))
-        {
-            SendTextResponce(std::string("<SaveCookies>") + cookies + std::string("</SaveCookies>"));
-        }
-        return;
-    }
-    SendTextResponce(std::string("<SaveCookies>") + cookies + std::string("</SaveCookies>"));
-}
-
-void MainApp::SaveCookiesCompleteCallback()
-{
-    WORKER_LOG("SaveCookiesCompleteCallback");
-    std::string cookies = cookievisitor->GetBuffer();
-    xml_encode(cookies);
-    SendTextResponce(std::string("<SaveCookies>") + cookies + std::string("</SaveCookies>"));
+        std::string cookies = Result->GetString();
+        xml_encode(cookies);
+        SendTextResponce(std::string("<SaveCookies>") + cookies + std::string("</SaveCookies>"));
+    });
 }
 
 void MainApp::RestoreLocalStorageCallback(const std::string& value)
 {
+    //Not used
     SendTextResponce(std::string("<RestoreLocalStorage></RestoreLocalStorage>"));
 }
 
 void MainApp::RestoreCookiesCallback(const std::string& value)
 {
-    CefRefPtr<CefCookieManager> CookieManager = CefCookieManager::GetGlobalManager(NULL);
-    CookieManager->DeleteCookies("","",0);
-    picojson::value v;
-    std::string err = picojson::parse(v, value);
-    if(err.empty())
+    Async Result = Data->Connector->RestoreCookies(value);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        for(picojson::value c: v.get<picojson::value::array>())
-        {
-            picojson::value::object o = c.get<picojson::value::object>();
-            std::string url = o["domain"].get<std::string>();
-            CefCookie cookie;
-            CookieVisitor::DeserializeCookie(o, cookie);
-            cookie.secure = 0;
-            if(starts_with(url,"."))
-            {
-                url.erase(0,1);
-            }
-            std::string res = std::to_string(CookieManager->SetCookie(std::string("http://") + url,cookie,NULL));
-            WORKER_LOG(res);
-        }
-    }
-
-    SendTextResponce(std::string("<RestoreCookies></RestoreCookies>"));
+        SendTextResponce(std::string("<RestoreCookies></RestoreCookies>"));
+    });
 }
 
 void MainApp::ResizeCallback(int width, int height)

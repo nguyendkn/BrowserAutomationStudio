@@ -2086,3 +2086,29 @@ void DevToolsConnector::ParseNewTabReferrer(const std::string& NewTabReferrer)
     }
 }
 
+Async DevToolsConnector::RestoreCookies(const std::string& Cookies, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    NewAction.reset(ActionsFactory.Create("RestoreCookies", &GlobalState));
+
+    std::map<std::string, Variant> Params;
+    Params["cookies"] = Variant(Cookies);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+Async DevToolsConnector::SaveCookies(int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    NewAction.reset(ActionsFactory.Create("SaveCookies", &GlobalState));
+
+    NewAction->SetTimeout(Timeout);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+

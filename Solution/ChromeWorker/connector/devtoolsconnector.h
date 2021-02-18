@@ -201,6 +201,11 @@ class DevToolsConnector
         void AllowPopups();
         void RestrictPopups();
 
+        //Cookies
+        Async RestoreCookies(const std::string& Cookies, int Timeout = -1);
+        Async SaveCookies(int Timeout = -1);
+
+
 };
 
 #endif // DEVTOOLSCONNECTOR_H

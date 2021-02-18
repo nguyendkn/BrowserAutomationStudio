@@ -435,10 +435,6 @@ public:
 
 
 
-private:
-
-    void GetCookiesForUrlCompleteCallback();
-    void SaveCookiesCompleteCallback();
 
 private:
     IMPLEMENT_REFCOUNTING(MainApp);

@@ -22,6 +22,8 @@
 #include "devtoolsactionopenfile.h"
 #include "devtoolsactiondialogresult.h"
 #include "DevToolsActionSetHeaders.h"
+#include "devtoolsactionsavecookies.h"
+#include "devtoolsactionrestorecookies.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -108,6 +110,12 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "SetHeaders")
     {
         Result = new DevToolsActionSetHeaders();
+    }else if(Name == "SaveCookies")
+    {
+        Result = new DevToolsActionSaveCookies();
+    }else if(Name == "RestoreCookies")
+    {
+        Result = new DevToolsActionRestoreCookies();
     }
 
 

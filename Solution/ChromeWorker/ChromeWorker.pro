@@ -41,6 +41,8 @@ SOURCES += main.cpp \
     connector/devtoolsactionopenfile.cpp \
     connector/devtoolsactionreload.cpp \
     connector/devtoolsactionresizebrowser.cpp \
+    connector/devtoolsactionrestorecookies.cpp \
+    connector/devtoolsactionsavecookies.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
     connector/devtoolsconnector.cpp \
@@ -190,6 +192,8 @@ HEADERS += \
     connector/devtoolsactionopenfile.h \
     connector/devtoolsactionreload.h \
     connector/devtoolsactionresizebrowser.h \
+    connector/devtoolsactionrestorecookies.h \
+    connector/devtoolsactionsavecookies.h \
     connector/devtoolsactionsetstartupscript.h \
     connector/devtoolsactionwebsocketquery.h \
     connector/devtoolsconnector.h \

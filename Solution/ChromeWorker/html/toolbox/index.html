@@ -10526,7 +10526,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "reset": _.template($('#reset').html()),
           "openfile": _.template($('#openfile').html()),
           "dragfile": _.template($('#dragfile').html()),
-          "getcookiesforurl": _.template($('#getcookiesforurl').html()),
+          //"getcookiesforurl": _.template($('#getcookiesforurl').html()),
           "savecookies": _.template($('#savecookies').html()),
           "restorecookies": _.template($('#restorecookies').html()),
           "scroll": _.template($('#scroll').html()),
@@ -10773,7 +10773,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/reset": "reset",
             "!/openfile": "openfile",
             "!/dragfile": "dragfile",
-            "!/getcookiesforurl": "getcookiesforurl",
+            //"!/getcookiesforurl": "getcookiesforurl",
             "!/savecookies": "savecookies",
             "!/restorecookies": "restorecookies",
             "!/scroll": "scroll",
@@ -11071,9 +11071,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         dragfile: function(){
                   _GobalModel.set({ state: "dragfile" });
                 },
-        getcookiesforurl: function(){
+        /*getcookiesforurl: function(){
                   _GobalModel.set({ state: "getcookiesforurl" });
-                },
+                },*/
         savecookies: function(){
                   _GobalModel.set({ state: "savecookies" });
                 },
@@ -11419,7 +11419,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["randomint"]["name"]), description: tr(_A["randomint"]["description"]), ref: "randomint" },
                 { description: tr("Network"), type: "group", name: "network", icon: _G["network"]["icon"], info: tr(_G["network"]["info"]) },
                 { name: tr(_A["setheader"]["name"]), description: tr(_A["setheader"]["description"]), ref: "setheader" },
-                { name: tr(_A["getcookiesforurl"]["name"]), description: tr(_A["getcookiesforurl"]["description"]), ref: "getcookiesforurl" },
+                //{ name: tr(_A["getcookiesforurl"]["name"]), description: tr(_A["getcookiesforurl"]["description"]), ref: "getcookiesforurl" },
                 { name: tr(_A["savecookies"]["name"]), description: tr(_A["savecookies"]["description"]), ref: "savecookies" },
                 { name: tr(_A["restorecookies"]["name"]), description: tr(_A["restorecookies"]["description"]), ref: "restorecookies" },
                 { name: tr(_A["loadcookiesfromhttpclient"]["name"]), description: tr(_A["loadcookiesfromhttpclient"]["description"]), ref: "loadcookiesfromhttpclient" },

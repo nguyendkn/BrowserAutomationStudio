@@ -1637,7 +1637,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Set request header for subsequent browser requests.</div>
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="solvecaptcha">
@@ -4911,14 +4911,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Use resources if you want to take them from file, url or database.</div>
       <div class="tr tooltip-paragraph-fold">You can change proxy before or after browser created or page is loaded.</div> 
       <div class="tr tooltip-paragraph-fold">Proxy with empty parameter will reset it to default value(direct connection).</div>
-      <div class="tr tooltip-paragraph-fold">BAS can apply proxy in 2 ways: tunneling and passing all connections through curl. By default first option is used, you can change it in settings.</div>
-      <div class="tr tooltip-paragraph-fold">'Security settings' will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. This will make your application less detectable, check information for each individual setting to understand what are they needed for. Default settings will work fine.</div>
-
-      
-      <div class="tr tooltip-paragraph-last-fold">Setting individual proxy for urls or tabs works only if tunneling is disabled.</div>
+      <div class="tr tooltip-paragraph-last-fold">'Security settings' will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. This will make your application less detectable, check information for each individual setting to understand what are they needed for. Default settings will work fine.</div>
     </div>
 
-    <%= _.template($('#back').html())({action:"executeandadd",use_target:true, visible:true, wiki: "how_to_set_proxy"}) %>
+    <%= _.template($('#back').html())({action:"executeandadd",visible:true, wiki: "how_to_set_proxy"}) %>
   </script>
 
   _MACRO_INSERT_INTERFACE_
@@ -5481,7 +5477,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="setheader_code">
-    /*Browser*/
     header(<%= name %>, <%= value %>)!
   </script>
 

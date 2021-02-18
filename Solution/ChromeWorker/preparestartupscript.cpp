@@ -51,24 +51,20 @@ void UpdateBrowserData(BrowserData* Data)
     std::string UserAgent;
     std::string AcceptLanguage;
 
-    for(std::shared_ptr<std::map<std::string,std::string> > HeadersMap: Data->_Headers.All())
+    for(const auto& Header: Data->_Headers)
     {
-        for(const auto& Header: *HeadersMap)
+        if(Header.first == "User-Agent")
         {
-            if(Header.first == "User-Agent")
-            {
-                UserAgent = Header.second;
-            }else if(Header.first == "Accept-Language")
-            {
-                AcceptLanguage = Header.second;
-            }
+            UserAgent = Header.second;
+        }else if(Header.first == "Accept-Language")
+        {
+            AcceptLanguage = Header.second;
         }
     }
+
     Data->Saver.UserAgent = UserAgent;
 
     Data->Saver.Languages = CombineAcceptLanguageWithPattern(AcceptLanguage,Data->_AcceptLanguagePattern).NavigatorLanguages;
-
-    //WORKER_LOG(std::string("Data->_NextReferrer") + Data->_NextReferrer + "; " + frame->GetURL().ToString());
 
     Data->Saver.Save();
 }

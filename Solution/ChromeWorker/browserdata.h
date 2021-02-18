@@ -49,11 +49,9 @@ public:
     RequestList _RequestList;
     std::atomic<int64> LastClearRequest;
 
-    ConfigurableItem<std::shared_ptr<std::map<std::string,std::string> > > _Headers;
-    std::vector<std::string> _HeadersDefaults;
+    std::vector<std::pair<std::string,std::string> > _Headers;
     std::string _AcceptLanguagePattern;
     std::string _UniqueProcessId;
-    std::string _NextReferrer;
     std::map<std::string,ConfigurableItem<std::string> > _StartupScript;
     CefWindowHandle _MainWindowHandle;
     CefWindowHandle _ParentWindowHandle;

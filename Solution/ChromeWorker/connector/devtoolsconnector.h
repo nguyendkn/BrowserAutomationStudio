@@ -166,6 +166,7 @@ class DevToolsConnector
         bool IsURLLoaded(const std::string& UrlPattern);
         Async SetProxy(const std::string Server, int Port, bool IsHttp = true, const std::string Login = std::string(), const std::string Password = std::string(), int Timeout = -1);
         Async GetHistory(int Timeout = -1);
+        Async SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout = -1);
 
         //Size
         Async GetBrowserSize(int Timeout = -1);

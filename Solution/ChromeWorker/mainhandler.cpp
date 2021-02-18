@@ -476,7 +476,7 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
 {
     //THREAD TID_IO
     bool Accept = true;
-    std::string url = request->GetURL().ToString();
+    /*std::string url = request->GetURL().ToString();
 
     try
     {
@@ -572,7 +572,7 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
 
     }
 
-    request->SetHeaderMap(ReqestHeaderMap);
+    request->SetHeaderMap(ReqestHeaderMap);*/
 
     /*if(request->GetMethod().ToString() == std::string("POST"))
     {
@@ -772,7 +772,7 @@ void MainHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> f
     }
 
 
-    if(frame->IsMain())
+    /*if(frame->IsMain())
     {
         NETWORK_LOG(std::to_string(httpStatusCode));
         if(httpStatusCode >= 200 && httpStatusCode < 300)
@@ -791,7 +791,7 @@ void MainHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> f
             Data->_NextReferrer.clear();
         }
 
-    }
+    }*/
     WORKER_LOG("Loaded Data");
 }
 

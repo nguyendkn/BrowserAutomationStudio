@@ -347,7 +347,7 @@ void MainApp::NewMainBrowserContextCreated(int BrowserId, bool IsMain)
 
 void MainApp::LinkCtrlClick(const std::string& current_url, const std::string& target_url)
 {
-    if(_HandlersManager->GetBrowser())
+    /*if(_HandlersManager->GetBrowser())
     {
         AddHeaderCallbackInternal("Referer",current_url,"");
 
@@ -361,7 +361,7 @@ void MainApp::LinkCtrlClick(const std::string& current_url, const std::string& t
 
         std::string Script = std::string("window.open('tab://new/')");
         _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Script,"", 0);
-    }
+    }*/
 }
 
 void MainApp::Reload()
@@ -1826,93 +1826,39 @@ CefRefPtr<CefResourceRequestHandler> MainApp::GetResourceRequestHandler(CefRefPt
 
 void MainApp::AddHeaderCallback(const std::string& key,const std::string& value, const std::string& target)
 {
-    AddHeaderCallbackInternal(key, value, target);
-    SendTextResponce("<AddHeader></AddHeader>");
-}
-
-void MainApp::AddHeaderCallbackInternal(const std::string& key,const std::string& value, const std::string& target)
-{
+    auto i = Data->_Headers.begin();
+    while (i != Data->_Headers.end())
     {
-        LOCK_BROWSER_DATA
-        std::shared_ptr<std::map<std::string,std::string> > Headers = Data->_Headers.Get(target);
-        if(!Headers.get())
+        if(i->first == key)
         {
-            Headers = std::make_shared<std::map<std::string,std::string> >();
-        }
-        if(value.empty())
+            i = Data->_Headers.erase(i);
+        }else
         {
-            if((key == "Referer" || key == "referer"))
-            {
-                if(Headers->count(key) == 0 || Headers->at(key) == "")
-                {
-                    Headers->erase(key);
-                    Headers->insert(std::pair<std::string,std::string>(key, "_BAS_NO_REFERRER"));
-                    Data->_NextReferrer = "_BAS_NO_REFERRER";
-                }else
-                {
-                    Headers->erase(key);
-                    Data->_NextReferrer.clear();
-                }
-
-
-            }else
-            {
-                Headers->erase(key);
-                Headers->insert(std::pair<std::string,std::string>(key, ""));
-            }
+            ++i;
         }
-        else
-        {
-            Headers->erase(key);
-            Headers->insert(std::pair<std::string,std::string>(key, value));
-            if((key == "Referer" || key == "referer"))
-            {
-                Data->_NextReferrer = value;
-            }
-        }
-        Data->_Headers.Set(Headers,target);
     }
+
+    if(!value.empty())
+        Data->_Headers.push_back(std::pair<std::string,std::string>(key, value));
     UpdateBrowserData(Data);
+    Async Result = Data->Connector->SetHeaders(Data->_Headers);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<AddHeader></AddHeader>");
+    });
+
 }
 
 void MainApp::SetHeaderListCallback(const std::string& json)
 {
-    bool success = true;
-    std::vector<std::string> HeadersDefaults;
-    try
-    {
-        picojson::value v;
-        picojson::parse(v, json);
-        picojson::value::array a = v.get<picojson::value::array>();
-
-        for(picojson::value p: a)
-        {
-            std::string ps = p.get<std::string>();
-            if(ps != "Host")
-            {
-                HeadersDefaults.push_back(ps);
-            }
-        }
-
-    }catch(...)
-    {
-        success = false;
-    }
-
-    if(success)
-    {
-        LOCK_BROWSER_DATA
-        Data->_HeadersDefaults = HeadersDefaults;
-    }
+    //Headers order, this function is not supported, _settings is used to headers order
     SendTextResponce("<SetHeaderList></SetHeaderList>");
 }
 
 void MainApp::SetAcceptLanguagePatternCallback(const std::string& pattern)
 {
-    {
-        LOCK_BROWSER_DATA
-        Data->_AcceptLanguagePattern = pattern;
-    }
+    Data->_AcceptLanguagePattern = pattern;
     UpdateBrowserData(Data);
     SendTextResponce("<SetAcceptLanguagePattern></SetAcceptLanguagePattern>");
 }
@@ -1968,13 +1914,14 @@ void MainApp::RecaptchaV3ResultCallback(const std::string& id, const std::string
 
 void MainApp::CleanHeaderCallback()
 {
-    {
-        LOCK_BROWSER_DATA
-        Data->_Headers.Clear();
-        Data->_HeadersDefaults.clear();
-    }
+    Data->_Headers.clear();
     UpdateBrowserData(Data);
-    SendTextResponce("<CleanHeader></CleanHeader>");
+    Async Result = Data->Connector->SetHeaders(Data->_Headers);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<CleanHeader></CleanHeader>");
+    });
 }
 
 void MainApp::GetUrlCallback()

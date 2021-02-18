@@ -256,7 +256,6 @@ public:
     void FlushCallback();
     void SetProxyCallback(const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target);
     void AddHeaderCallback(const std::string& key,const std::string& value, const std::string& target);
-    void AddHeaderCallbackInternal(const std::string& key,const std::string& value, const std::string& target);
     void SetHeaderListCallback(const std::string& json);
     void SetAcceptLanguagePatternCallback(const std::string& pattern);
     void CleanHeaderCallback();

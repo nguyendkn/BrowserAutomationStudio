@@ -547,7 +547,7 @@ bool CurlResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPt
             RequestHeadersNew[Header.first] = Header.second;
         }
 
-        for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
+        /*for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
         {
             for(const auto& Header: *Map)
             {
@@ -570,7 +570,7 @@ bool CurlResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPt
                 }
 
             }
-        }
+        }*/
     }
 
     CefRefPtr<CefPostData> PostData = request->GetPostData();
@@ -755,11 +755,11 @@ void CurlResourceHandler::GetResponseHeaders(CefRefPtr<CefResponse> response, in
     {
         LOCK_BROWSER_DATA
 
-        for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(CurlThreadData.Url,TabNumber))
+        /*for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(CurlThreadData.Url,TabNumber))
         {
             if(Map->count("Referer") > 0 && Map->at("Referer") != "_BAS_NO_REFERRER")
                 Map->erase("Referer");
-        }
+        }*/
 
     }
 

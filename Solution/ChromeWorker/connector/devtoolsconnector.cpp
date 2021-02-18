@@ -1536,6 +1536,29 @@ Async DevToolsConnector::GetHistory(int Timeout)
     return NewAction->GetResult();
 }
 
+Async DevToolsConnector::SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+
+    NewAction.reset(ActionsFactory.Create("SetHeaders", &GlobalState));
+
+    std::map<std::string, Variant> Params;
+    std::map<std::string, Variant> Object;
+
+    for (const auto& Header : Headers)
+    {
+        Object[Header.first] = Variant(Header.second);
+    }
+
+    Params["headers"] = Variant(Object);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
 
 Async DevToolsConnector::NavigateBack(bool IsInstant, int Timeout)
 {

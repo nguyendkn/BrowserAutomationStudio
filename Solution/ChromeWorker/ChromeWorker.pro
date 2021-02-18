@@ -18,6 +18,7 @@ SOURCES += main.cpp \
     connector/DevToolsActionNavigateBack.cpp \
     connector/DevToolsActionNavigateForward.cpp \
     connector/DevToolsActionRequestDeny.cpp \
+    connector/DevToolsActionSetHeaders.cpp \
     connector/DevToolsActionSetProxy.cpp \
     connector/DevToolsActionStartScreenCast.cpp \
     connector/DevToolsActionStopScreenCast.cpp \
@@ -161,6 +162,7 @@ HEADERS += \
     connector/DevToolsActionNavigateBack.h \
     connector/DevToolsActionNavigateForward.h \
     connector/DevToolsActionRequestDeny.h \
+    connector/DevToolsActionSetHeaders.h \
     connector/DevToolsActionSetProxy.h \
     connector/DevToolsActionStartScreenCast.h \
     connector/DevToolsActionStopScreenCast.h \

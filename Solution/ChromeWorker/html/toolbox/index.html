@@ -3354,9 +3354,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <div class="tr tooltip-paragraph-fold">If you want to change cookies or extract them, you need to use javascript. Javascript code can be used in any field if you set field type to expression, or with 'Execute code' action.</div>
       
-      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, creation, expires, has_expires, httponly, last_access, secure.</div>
-      <div class="tr tooltip-paragraph-fold">has_expires, secure and httponly are boolean values and serialized as string with values '1' or '0'.</div>
-      <div class="tr tooltip-paragraph-fold">last_access, expires, creation is datetime and serialized as map with values: day_of_week, hour, millisecond, minute,month, second, year. These values are self explanatory.</div>
+      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, expires, httpOnly, secure.</div>
+      <div class="tr tooltip-paragraph-fold">secure and httpOnly are boolean values.</div>
+      <div class="tr tooltip-paragraph-fold">expires is datetime and serialized as the number of seconds since the UNIX epoch.</div>
       <div class="tr tooltip-paragraph-fold">Here are some javascript snipsets to work with cookies. All of them may be placed into 'Execute code' action. Before using it, you must parse cookies from string like this [[COOKIES]] = JSON.parse([[SAVED_COOKIES]])["cookies"]</div>
       <div class="tr tooltip-paragraph-fold">Find cookie by name: [[COOKIE]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"})[0]</div>
       <div class="tr tooltip-paragraph-fold">Check if cookie exists: [[COOKIE_EXISTS]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"}).length > 0</div>
@@ -3395,9 +3395,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <div class="tr tooltip-paragraph-fold">If you want to change cookies or extract them, you need to use javascript. Javascript code can be used in any field if you set field type to expression, or with 'Execute code' action.</div>
       
-      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, creation, expires, has_expires, httponly, last_access, secure.</div>
-      <div class="tr tooltip-paragraph-fold">has_expires, secure and httponly are boolean values and serialized as string with values '1' or '0'.</div>
-      <div class="tr tooltip-paragraph-fold">last_access, expires, creation is datetime and serialized as map with values: day_of_week, hour, millisecond, minute,month, second, year. These values are self explanatory.</div>
+      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, expires, httpOnly, secure.</div>
+      <div class="tr tooltip-paragraph-fold">secure and httpOnly are boolean values.</div>
+      <div class="tr tooltip-paragraph-fold">expires is datetime and serialized as the number of seconds since the UNIX epoch.</div>
       <div class="tr tooltip-paragraph-fold">Here are some javascript snipsets to work with cookies. All of them may be placed into 'Execute code' action. Before using it, you must parse cookies from string like this [[COOKIES]] = JSON.parse([[SAVED_COOKIES]])["cookies"]</div>
       <div class="tr tooltip-paragraph-fold">Find cookie by name: [[COOKIE]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"})[0]</div>
       <div class="tr tooltip-paragraph-fold">Check if cookie exists: [[COOKIE_EXISTS]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"}).length > 0</div>

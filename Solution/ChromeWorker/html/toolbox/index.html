@@ -10566,7 +10566,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "httpclientgetheader": _.template($('#httpclientgetheader').html()),
           "httpclientsetheader": _.template($('#httpclientsetheader').html()),
           "httpclientclearheader": _.template($('#httpclientclearheader').html()),
-          "httpclientgetcookiesforurl": _.template($('#httpclientgetcookiesforurl').html()),
+          //"httpclientgetcookiesforurl": _.template($('#httpclientgetcookiesforurl').html()),
           "httpclientsavecookies": _.template($('#httpclientsavecookies').html()),
           "httpclientrestorecookies": _.template($('#httpclientrestorecookies').html()),
           "httpclientfailonerror": _.template($('#httpclientfailonerror').html()),
@@ -10813,7 +10813,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/httpclientgetheader": "httpclientgetheader",
             "!/httpclientsetheader": "httpclientsetheader",
             "!/httpclientclearheader": "httpclientclearheader",
-            "!/httpclientgetcookiesforurl": "httpclientgetcookiesforurl",
+            //"!/httpclientgetcookiesforurl": "httpclientgetcookiesforurl",
             "!/httpclientsavecookies": "httpclientsavecookies",
             "!/httpclientrestorecookies": "httpclientrestorecookies",
             "!/httpclientfailonerror": "httpclientfailonerror",
@@ -11191,9 +11191,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         httpclientclearheader: function(){
                   _GobalModel.set({ state: "httpclientclearheader" });
                 },
-        httpclientgetcookiesforurl: function(){
+        /*httpclientgetcookiesforurl: function(){
                   _GobalModel.set({ state: "httpclientgetcookiesforurl" });
-                },
+                },*/
         httpclientsavecookies: function(){
                   _GobalModel.set({ state: "httpclientsavecookies" });
                 },
@@ -11465,7 +11465,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["httpclientgetheader"]["name"]), description: tr(_A["httpclientgetheader"]["description"]), ref: "httpclientgetheader" },
                 { name: tr(_A["httpclientsetheader"]["name"]), description: tr(_A["httpclientsetheader"]["description"]), ref: "httpclientsetheader" },
                 { name: tr(_A["httpclientclearheader"]["name"]), description: tr(_A["httpclientclearheader"]["description"]), ref: "httpclientclearheader" },
-                { name: tr(_A["httpclientgetcookiesforurl"]["name"]), description: tr(_A["httpclientgetcookiesforurl"]["description"]), ref: "httpclientgetcookiesforurl" },
+                //{ name: tr(_A["httpclientgetcookiesforurl"]["name"]), description: tr(_A["httpclientgetcookiesforurl"]["description"]), ref: "httpclientgetcookiesforurl" },
                 { name: tr(_A["httpclientsavecookies"]["name"]), description: tr(_A["httpclientsavecookies"]["description"]), ref: "httpclientsavecookies" },
                 { name: tr(_A["httpclientrestorecookies"]["name"]), description: tr(_A["httpclientrestorecookies"]["description"]), ref: "httpclientrestorecookies" },
                 { name: tr(_A["loadcookiesfrombrowser"]["name"]), description: tr(_A["loadcookiesfrombrowser"]["description"]), ref: "loadcookiesfrombrowser" },

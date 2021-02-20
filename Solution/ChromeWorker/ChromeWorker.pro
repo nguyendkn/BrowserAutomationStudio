@@ -17,9 +17,9 @@ SOURCES += main.cpp \
     connector/DevToolsActionGetCurrentUrl.cpp \
     connector/DevToolsActionNavigateBack.cpp \
     connector/DevToolsActionNavigateForward.cpp \
-    connector/DevToolsActionRequestDeny.cpp \
     connector/DevToolsActionSetHeaders.cpp \
     connector/DevToolsActionSetProxy.cpp \
+    connector/DevToolsActionSetRequestsRestrictions.cpp \
     connector/DevToolsActionStartScreenCast.cpp \
     connector/DevToolsActionStopScreenCast.cpp \
     connector/DevToolsActionSwitchToTab.cpp \
@@ -163,9 +163,9 @@ HEADERS += \
     connector/DevToolsActionGetCurrentUrl.h \
     connector/DevToolsActionNavigateBack.h \
     connector/DevToolsActionNavigateForward.h \
-    connector/DevToolsActionRequestDeny.h \
     connector/DevToolsActionSetHeaders.h \
     connector/DevToolsActionSetProxy.h \
+    connector/DevToolsActionSetRequestsRestrictions.h \
     connector/DevToolsActionStartScreenCast.h \
     connector/DevToolsActionStopScreenCast.h \
     connector/DevToolsActionSwitchToTab.h \
@@ -180,6 +180,7 @@ HEADERS += \
     connector/JsonSerializer.h \
     connector/KeyboardEmulation.h \
     connector/PrepareUrl.h \
+    connector/RequestRestriction.h \
     connector/Variant.h \
     connector/asyncresult.h \
     connector/devtoolsactiondialogresult.h \

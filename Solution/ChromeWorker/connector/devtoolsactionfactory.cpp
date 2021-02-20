@@ -11,7 +11,6 @@
 #include "DevToolsActionCloseTab.h"
 #include "DevToolsActionStartScreenCast.h"
 #include "DevToolsActionStopScreenCast.h"
-#include "DevToolsActionRequestDeny.h"
 #include "DevToolsActionGetCurrentUrl.h"
 #include "DevToolsActionNavigateBack.h"
 #include "DevToolsActionNavigateForward.h"
@@ -24,6 +23,7 @@
 #include "DevToolsActionSetHeaders.h"
 #include "devtoolsactionsavecookies.h"
 #include "devtoolsactionrestorecookies.h"
+#include "DevToolsActionSetRequestsRestrictions.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -74,9 +74,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     } else if(Name == "StopScreencast")
     {
         Result = new DevToolsActionStopScreenCast();
-    } else if(Name == "RequestDeny")
+    } else if(Name == "SetRequestsRestrictions")
     {
-        Result = new DevToolsActionRequestDeny();
+        Result = new DevToolsActionSetRequestsRestrictions();
     } else if(Name == "GetCurrentUrl")
     {
         Result = new DevToolsActionGetCurrentUrl();

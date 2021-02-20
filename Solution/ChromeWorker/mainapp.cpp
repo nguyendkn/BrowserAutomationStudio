@@ -2006,27 +2006,32 @@ void MainApp::AddCacheMaskDenyCallback(const std::string& value)
 }
 void MainApp::AddRequestMaskAllowCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("AddRequestMaskAllowCallback<<") + value);
     std::pair<bool, std::string> data;
     data.first = true;
     data.second = value;
+    Data->_RequestMask.push_back(data);
+
+    Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        LOCK_BROWSER_DATA
-        Data->_RequestMask.push_back(data);
-    }
-    SendTextResponce("<AddRequestMaskAllow/>");
+        SendTextResponce("<AddRequestMaskAllow/>");
+    });
 }
+
 void MainApp::AddRequestMaskDenyCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("AddRequestMaskDenyCallback<<") + value);
     std::pair<bool, std::string> data;
     data.first = false;
     data.second = value;
+    Data->_RequestMask.push_back(data);
+
+    Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        LOCK_BROWSER_DATA
-        Data->_RequestMask.push_back(data);
-    }
-    SendTextResponce("<AddRequestMaskDeny/>");
+        SendTextResponce("<AddRequestMaskDeny/>");
+    });
 }
 void MainApp::ClearCacheMaskCallback()
 {
@@ -2073,12 +2078,15 @@ void MainApp::RestrictDownloads()
 
 void MainApp::ClearRequestMaskCallback()
 {
-    WORKER_LOG(std::string("ClearRequestMaskCallback<<"));
+    Data->_RequestMask.clear();
+
+    Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        LOCK_BROWSER_DATA
-        Data->_RequestMask.clear();
-    }
-    SendTextResponce("<ClearRequestMask/>");
+        SendTextResponce("<ClearRequestMask/>");
+    });
+
 }
 void MainApp::ClearLoadedUrlCallback()
 {
@@ -2100,25 +2108,31 @@ void MainApp::ClearCachedDataCallback()
 }
 void MainApp::ClearAllCallback()
 {
-    WORKER_LOG(std::string("ClearAllCallback<<"));
+    Data->_CacheMask.clear();
+    Data->_RequestMask.clear();
+    Data->_LoadedUrls.clear();
+    Data->_CachedData.clear();
+
+    Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        LOCK_BROWSER_DATA
-        Data->_CacheMask.clear();
-        Data->_RequestMask.clear();
-        Data->_LoadedUrls.clear();
-        Data->_CachedData.clear();
-    }
-    SendTextResponce("<ClearAll/>");
+        SendTextResponce("<ClearAll/>");
+    });
+
 }
 void MainApp::ClearMasksCallback()
 {
-    WORKER_LOG(std::string("ClearMasksCallback<<"));
+    Data->_CacheMask.clear();
+    Data->_RequestMask.clear();
+
+    Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
     {
-        LOCK_BROWSER_DATA
-        Data->_CacheMask.clear();
-        Data->_RequestMask.clear();
-    }
-    SendTextResponce("<ClearMasks/>");
+        SendTextResponce("<ClearMasks/>");
+    });
+
 }
 void MainApp::ClearDataCallback()
 {

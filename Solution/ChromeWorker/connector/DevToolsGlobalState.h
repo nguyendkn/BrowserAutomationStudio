@@ -3,6 +3,7 @@
 
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
+#include "RequestRestriction.h"
 #include <memory>
 #include <map>
 
@@ -82,6 +83,10 @@ struct DevToolsGlobalState
     std::string CurrentDownloadFileName;
     bool IsDownloading = false;
     bool IsDownloadsAllowed = true;
+
+    //Requests restrictions
+    std::vector<RequestRestriction> BlockRequests;
+    std::vector<RequestRestriction> CacheCapture;
 
     //Popups
     bool IsPopupsAllowed = true;

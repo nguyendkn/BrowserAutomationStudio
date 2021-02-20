@@ -1737,46 +1737,55 @@ Async DevToolsConnector::Inspect(int X, int Y, int Position, int Timeout)
     return NewAction->GetResult();
 }
 
-Async DevToolsConnector::RequestDeny(const std::vector<std::string>& Urls, int Timeout)
+Async DevToolsConnector::SetRequestsRestrictions(const std::vector<std::pair<bool, std::string> >& Rules, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction;
-    std::map<std::string, Variant> Params;
-
-    NewAction.reset(ActionsFactory.Create("RequestDeny", &GlobalState));
-    
-    std::set<std::string> BlockingRequestsUrls;
-    std::copy(Urls.begin(), Urls.end(), std::inserter(BlockingRequestsUrls, BlockingRequestsUrls.end()));
-    std::vector<Variant> Patterns;
-
-    for(const auto& i : BlockingRequestsUrls)
+    GlobalState.BlockRequests.clear();
+    for(const std::pair<bool, std::string>& Rule:Rules)
     {
-        std::map<std::string, Variant> Map;
-        Map["urlPattern"] = Variant(i);
-        Patterns.push_back(Map);
+        RequestRestriction RuleNative;
+        RuleNative.IsAllow = Rule.first;
+        RuleNative.Mask = Rule.second;
+        GlobalState.BlockRequests.push_back(RuleNative);
     }
 
-    Params["patterns"] = Variant(Patterns);
-    Params["handleAuthRequests"] = Variant(false);
+    std::shared_ptr<IDevToolsAction> NewAction;
+
+    NewAction.reset(ActionsFactory.Create("SetRequestsRestrictions", &GlobalState));
 
     NewAction->SetTimeout(Timeout);
-    NewAction->SetParams(Params);
 
     InsertAction(NewAction);
     return NewAction->GetResult();
 }
 
+
 void DevToolsConnector::OnFetchRequestPaused(std::string& Result)
 {
-    picojson::value Request;
-    picojson::parse(Request, Result);
-    picojson::object Object = Request.get<picojson::object>();
-    std::string RequestId = Object["requestId"].get<std::string>();
-    std::string RequestUrl = Object["request"].get("url").get<std::string>();
+    std::string RequestUrl = Parser.GetStringFromJson(Result, "request.url");
+    std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
 
-    std::map<std::string, Variant> Params;
-    Params["errorReason"] = Variant(std::string("Aborted"));
-    Params["requestId"] = Variant(RequestId);
-    SendWebSocket("Fetch.failRequest", Params, GlobalState.TabId);
+    bool Allow = true;
+
+    for (const auto& Rule : GlobalState.BlockRequests)
+    {
+        if (match(Rule.Mask, RequestUrl))
+        {
+            Allow = Rule.IsAllow;
+        }
+    }
+
+    std::map<std::string, Variant> Params = { {"requestId", Variant(RequestId)} };
+
+    if (Allow)
+    {
+        SendWebSocket("Fetch.continueRequest", Params, GlobalState.TabId);
+    }
+    else
+    {
+        Params["errorReason"] = Variant(std::string("Failed"));
+        SendWebSocket("Fetch.failRequest", Params, GlobalState.TabId);
+    }
+
 }
 
 int DevToolsConnector::GetStatusForURL(const std::string& UrlPattern)

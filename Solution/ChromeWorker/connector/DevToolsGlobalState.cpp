@@ -18,4 +18,6 @@ void DevToolsGlobalState::Reset()
     IsDownloadsAllowed = true;
     IsPopupsAllowed = true;
     NewTabReferrer.clear();
+    BlockRequests.clear();
+    CacheCapture.clear();
 }

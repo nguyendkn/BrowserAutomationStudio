@@ -161,7 +161,8 @@ class DevToolsConnector
         Async NavigateBack(bool IsInstant = false, int Timeout = -1);
         Async NavigateForward(bool IsInstant = false, int Timeout = -1);
         Async GetCurrentUrl(int Timeout = -1);
-        Async RequestDeny(const std::vector<std::string>& Urls, int Timeout = -1);
+        Async SetRequestsRestrictions(const std::vector<std::pair<bool, std::string> >& Rules, int Timeout = -1);
+
         int GetStatusForURL(const std::string& UrlPattern);
         bool IsURLLoaded(const std::string& UrlPattern);
         Async SetProxy(const std::string Server, int Port, bool IsHttp = true, const std::string Login = std::string(), const std::string Password = std::string(), int Timeout = -1);

@@ -20,4 +20,7 @@ void DevToolsGlobalState::Reset()
     NewTabReferrer.clear();
     BlockRequests.clear();
     CacheCapture.clear();
+    CachedData.clear();
+    CachedRequests.clear();
+    LoadedUrls.clear();
 }

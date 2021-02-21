@@ -676,27 +676,7 @@ std::pair<int,int> MainApp::GetImageSize()
 
 void MainApp::UrlLoaded(const std::string& url, int status, int RequestResourceType)
 {
-    //THREAD TID_IO
-    WORKER_LOG(std::string("UrlLoaded<<") + url + std::string("<<") + std::to_string(status));
-    if(status == 0)
-        return;
 
-    if(RequestResourceType == RT_MAIN_FRAME || RequestResourceType == RT_SUB_FRAME)
-    {
-        DirectControl()->PageLoaded();
-    }
-
-    LOCK_BROWSER_DATA
-
-    auto new_end = std::remove_if(Data->_LoadedUrls.begin(), Data->_LoadedUrls.end(),
-                                  [&url](const std::pair<std::string, int>& pair)
-                                  { return url == pair.first; });
-
-    Data->_LoadedUrls.erase(new_end, Data->_LoadedUrls.end());
-    std::pair<std::string, int> pair;
-    pair.first = url;
-    pair.second = status;
-    Data->_LoadedUrls.push_back(pair);
 }
 
 void MainApp::DisableBrowserCallback()
@@ -1982,26 +1962,20 @@ void MainApp::SendTextResponce(const std::string& text)
 
 void MainApp::AddCacheMaskAllowCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("AddCacheMaskAllowCallback<<") + value);
     std::pair<bool, std::string> data;
     data.first = true;
     data.second = value;
-    {
-        LOCK_BROWSER_DATA
-        Data->_CacheMask.push_back(data);
-    }
+    Data->_CacheMask.push_back(data);
+    Data->Connector->SetCacheMasks(Data->_CacheMask);
     SendTextResponce("<AddCacheMaskAllow/>");
 }
 void MainApp::AddCacheMaskDenyCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("AddCacheMaskDenyCallback<<") + value);
     std::pair<bool, std::string> data;
     data.first = false;
     data.second = value;
-    {
-        LOCK_BROWSER_DATA
-        Data->_CacheMask.push_back(data);
-    }
+    Data->_CacheMask.push_back(data);
+    Data->Connector->SetCacheMasks(Data->_CacheMask);
     SendTextResponce("<AddCacheMaskDeny/>");
 }
 void MainApp::AddRequestMaskAllowCallback(const std::string& value)
@@ -2035,11 +2009,8 @@ void MainApp::AddRequestMaskDenyCallback(const std::string& value)
 }
 void MainApp::ClearCacheMaskCallback()
 {
-    WORKER_LOG(std::string("ClearCacheMaskCallback<<"));
-    {
-        LOCK_BROWSER_DATA
-        Data->_CacheMask.clear();
-    }
+    Data->_CacheMask.clear();
+    Data->Connector->SetCacheMasks(Data->_CacheMask);
     SendTextResponce("<ClearCacheMask/>");
 }
 
@@ -2090,29 +2061,22 @@ void MainApp::ClearRequestMaskCallback()
 }
 void MainApp::ClearLoadedUrlCallback()
 {
-    WORKER_LOG(std::string("ClearLoadedUrlCallback<<"));
-    {
-        LOCK_BROWSER_DATA
-        Data->_LoadedUrls.clear();
-    }
+    Data->Connector->ClearNetworkData();
     SendTextResponce("<ClearLoadedUrl/>");
 }
 void MainApp::ClearCachedDataCallback()
 {
-    WORKER_LOG(std::string("ClearCachedDataCallback<<"));
-    {
-        LOCK_BROWSER_DATA
-        Data->_CachedData.clear();
-    }
+    Data->Connector->ClearNetworkData();
     SendTextResponce("<ClearCachedData/>");
 }
 void MainApp::ClearAllCallback()
 {
     Data->_CacheMask.clear();
-    Data->_RequestMask.clear();
-    Data->_LoadedUrls.clear();
-    Data->_CachedData.clear();
+    Data->Connector->SetCacheMasks(Data->_CacheMask);
 
+    Data->Connector->ClearNetworkData();
+
+    Data->_RequestMask.clear();
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2124,8 +2088,8 @@ void MainApp::ClearAllCallback()
 void MainApp::ClearMasksCallback()
 {
     Data->_CacheMask.clear();
+    Data->Connector->SetCacheMasks(Data->_CacheMask);
     Data->_RequestMask.clear();
-
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2136,12 +2100,7 @@ void MainApp::ClearMasksCallback()
 }
 void MainApp::ClearDataCallback()
 {
-    WORKER_LOG(std::string("ClearDataCallback<<"));
-    {
-        LOCK_BROWSER_DATA
-        Data->_LoadedUrls.clear();
-        Data->_CachedData.clear();
-    }
+    Data->Connector->ClearNetworkData();
     SendTextResponce("<ClearData/>");
 }
 void MainApp::WaitCodeCallback()
@@ -2191,82 +2150,32 @@ void MainApp::ScriptFinishedCallback()
 
 void MainApp::FindCacheByMaskBase64Callback(const std::string& value)
 {
-    std::string res = "";
+    std::string res;
 
     if(value == "download://*")
     {
         res = Data->Connector->GetDownloadedFilePath();
         res = base64_encode((unsigned char const *)res.data(),res.size());
+    }else
+    {
+        res = Data->Connector->GetSingleCacheData(value, true);
     }
 
     xml_encode(res);
     SendTextResponce(std::string("<FindCacheByMaskBase64>") + res + ("</FindCacheByMaskBase64>"));
-
-    /*WORKER_LOG(std::string("FindCacheByMaskBase64Callback<<") + value);
-    std::string res = "";
-    {
-        LOCK_BROWSER_DATA
-        //Search backward
-        for(vector<std::pair<std::string, std::shared_ptr<BrowserData::CachedItem> > >::reverse_iterator i = Data->_CachedData.rbegin(); i != Data->_CachedData.rend(); ++i )
-        {
-            if(match(value,i->first) || match(urlnormalize(value),urlnormalize(i->first)))
-            {
-                res = base64_encode((unsigned char const *)i->second->body.data(),i->second->body.size());
-                break;
-            }
-        }
-        if(value == "download://*")
-        {
-            //errase all info about previous download
-            auto i = Data->_LoadedUrls.begin();
-            while (i != Data->_LoadedUrls.end())
-            {
-                if(starts_with(i->first,"download://"))
-                {
-                    i = Data->_LoadedUrls.erase(i);
-                }else
-                {
-                    ++i;
-                }
-            }
-        }
-    }
-    xml_encode(res);
-    SendTextResponce(std::string("<FindCacheByMaskBase64>") + res + ("</FindCacheByMaskBase64>"));*/
 }
+
 void MainApp::FindStatusByMaskCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("FindStatusByMaskCallback<<") + value);
     std::string res = "0";
-    {
-        LOCK_BROWSER_DATA
-        for(std::pair<std::string, int> url:Data->_LoadedUrls)
-        {
-            if(match(value,url.first) || match(urlnormalize(value),urlnormalize(url.first)))
-            {
-                res = std::to_string(url.second);
-                break;
-            }
-        }
-    }
+    res = std::to_string(Data->Connector->GetStatusForURL(value));
     SendTextResponce(std::string("<FindStatusByMask>") + res + ("</FindStatusByMask>"));
 }
 
 void MainApp::FindUrlByMaskCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("FindUrlByMaskCallback<<") + value);
     std::string res;
-    {
-        LOCK_BROWSER_DATA
-        for(std::pair<std::string, int> url:Data->_LoadedUrls)
-        {
-            if(match(value,url.first) || match(urlnormalize(value),urlnormalize(url.first)))
-            {
-                res = url.first;
-                break;
-            }
-        }
-    }
+    res = Data->Connector->FindLoadedURL(value);
     xml_encode(res);
     SendTextResponce(std::string("<FindUrlByMask>") + res + ("</FindUrlByMask>"));
 }
@@ -2289,6 +2198,9 @@ void MainApp::FindCacheByMaskStringCallback(const std::string& value)
     if(value == "download://*")
     {
         res = Data->Connector->GetDownloadedFilePath();
+    }else
+    {
+        res = Data->Connector->GetSingleCacheData(value, false);
     }
 
     xml_encode(res);
@@ -2330,57 +2242,7 @@ void MainApp::FindCacheByMaskStringCallback(const std::string& value)
 
 void MainApp::FindAllCacheCallback(const std::string& value)
 {
-    WORKER_LOG(std::string("FindAllCacheByMaskCallback<<") + value);
-
-
-    picojson::array res;
-    {
-        LOCK_BROWSER_DATA
-        //Search backward
-        for(vector<std::pair<std::string, std::shared_ptr<BrowserData::CachedItem> > >::iterator i = Data->_CachedData.begin(); i != Data->_CachedData.end(); ++i )
-        {
-            if(match(value,i->first) || match(urlnormalize(value),urlnormalize(i->first)))
-            {
-                picojson::object item;
-                item["status"] = picojson::value((double)i->second->status);
-                picojson::array item_request_headers;
-                for(std::pair<std::string, std::string>& RequestHeader: i->second->request_headers)
-                {
-                    picojson::array item_request_header;
-                    item_request_header.push_back(picojson::value(RequestHeader.first));
-                    item_request_header.push_back(picojson::value(RequestHeader.second));
-                    item_request_headers.push_back(picojson::value(item_request_header));
-                }
-                item["request_headers"] = picojson::value(item_request_headers);
-
-                picojson::array item_response_headers;
-                for(std::pair<std::string, std::string>& ResponseHeader: i->second->response_headers)
-                {
-                    picojson::array item_response_header;
-                    item_response_header.push_back(picojson::value(ResponseHeader.first));
-                    item_response_header.push_back(picojson::value(ResponseHeader.second));
-                    item_response_headers.push_back(picojson::value(item_response_header));
-                }
-                item["response_headers"] = picojson::value(item_response_headers);
-
-                item["body"] = picojson::value(base64_encode((unsigned char const *)i->second->body.data(),i->second->body.size()));
-
-                item["url"] = picojson::value(i->second->url);
-
-                item["post_data"] = picojson::value(base64_encode((unsigned char const *)i->second->post_data.data(),i->second->post_data.size()));
-
-                item["is_error"] = picojson::value((double)i->second->is_error);
-
-                item["is_finished"] = picojson::value((double)i->second->is_finished);
-
-                item["error"] = picojson::value(i->second->error);
-
-                res.push_back(picojson::value(item));
-
-            }
-        }
-    }
-    std::string result_string = picojson::value(res).serialize();
+    std::string result_string = Data->Connector->GetAllCacheData(value);
     xml_encode(result_string);
     SendTextResponce(std::string("<FindAllCache>") + result_string + std::string("</FindAllCache>"));
 }
@@ -2390,27 +2252,16 @@ void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
 {
     std::string res = "0";
 
-    if(value == "download://*" && Data->Connector->IsFileDownloadReady())
+
+    if(value == "download://*")
     {
-        res = "1";
+        res = Data->Connector->IsFileDownloadReady() ? "1" : "0";
+    }else
+    {
+        res = Data->Connector->IsURLLoaded(value) ? "1" : "0";
     }
 
     SendTextResponce(std::string("<IsUrlLoadedByMask>") + res + ("</IsUrlLoadedByMask>"));
-
-    /*WORKER_LOG(std::string("IsUrlLoadedByMaskCallback<<") + value);
-    std::string res = "0";
-    {
-        LOCK_BROWSER_DATA
-        for(std::pair<std::string, int> url:Data->_LoadedUrls)
-        {
-            if(match(value,url.first) || match(urlnormalize(value),urlnormalize(url.first)))
-            {
-                res = "1";
-                break;
-            }
-        }
-    }
-    SendTextResponce(std::string("<IsUrlLoadedByMask>") + res + ("</IsUrlLoadedByMask>"));*/
 
 }
 

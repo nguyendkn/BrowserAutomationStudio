@@ -59,8 +59,6 @@ public:
     std::atomic<int64> OldestRequestTime;
     std::vector<std::pair<bool, std::string> > _CacheMask;
     std::vector<std::pair<bool, std::string> > _RequestMask;
-    std::vector<std::pair<std::string, int> > _LoadedUrls;
-    std::vector<std::pair<std::string, std::shared_ptr<CachedItem> > > _CachedData;
     std::atomic_int WidthBrowser;
     std::atomic_int HeightBrowser;
     std::atomic_int WidthAll;

@@ -10,6 +10,7 @@
 #include "match.h"
 #include "fileutils.h"
 #include "startwith.h"
+#include "base64.h"
 
 using namespace std::placeholders;
 using namespace std::chrono;
@@ -415,6 +416,37 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
     if(Id > 0)
     {
+        //Process cache requests
+        if(GlobalState.CachedRequests.count(Id))
+        {
+            std::string RequestId = GlobalState.CachedRequests[Id];
+            if(GlobalState.CachedData.count(RequestId))
+            {
+                std::shared_ptr<CachedItem> Item = GlobalState.CachedData[RequestId];
+
+                if(AllObject["result"].is<picojson::object>())
+                {
+                    picojson::object Result = AllObject["result"].get<picojson::object>();
+
+                    if(Result["base64Encoded"].is<bool>() && Result["body"].is<std::string>())
+                    {
+                        std::string Body = Result["body"].get<std::string>();
+
+                        if(!Result["base64Encoded"].get<bool>())
+                        {
+                            Item->Body = base64_encode((unsigned char*)Body.data(), Body.size());
+                        } else
+                        {
+                            Item->Body = Body;
+                        }
+                    }
+                }
+                Item->IsFinished = true;
+                GlobalState.LoadedUrls[Item->Url] = Item->Status;
+            }
+            GlobalState.CachedRequests.erase(Id);
+        }
+
         //Autocunnect responce has been obtained, waiting to connect for at least one tab
         if (ConnectionState == WaitingForAutoconnectEnable && Id == 1)
         {
@@ -719,6 +751,8 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
 
+                OnNetworkRequestWillBeSent(Result);
+
                 std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
                 for(auto f:OnRequestStart)
                     f(RequestId);
@@ -731,8 +765,31 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             {
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
-
                 std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
+
+                if(Method == "Network.responseReceived")
+                {
+                    OnNetworkResponseReceived(Result);
+                }
+
+                if(Method == "Network.loadingFinished")
+                {
+                    OnNetworkLoadingCompleted(Result, false);
+                }
+
+                if(Method == "Network.loadingFailed")
+                {
+                    OnNetworkLoadingCompleted(Result, true);
+                }
+
+                if(Method == "Network.responseReceived")
+                {
+                    std::string Url = Parser.GetStringFromJson(Result, "response.url");
+                    double Status = Parser.GetFloatFromJson(Result, "response.status");
+                    if(GlobalState.CachedData.count(RequestId) == 0 || GlobalState.CachedData[RequestId]->IsFinished)
+                        GlobalState.LoadedUrls[Url] = Status;
+                }
+
                 for(auto f:OnRequestStop)
                     f(RequestId);
             }
@@ -759,18 +816,6 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
                 OnFetchRequestPaused(Result);
-            }
-        }else if(Method == "Network.responseReceived")
-        {
-            //Capture all urls which has been loaded
-            if(AllObject["params"].is<picojson::object>())
-            {
-                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
-                std::string Result = picojson::value(ResultObject).serialize();
-
-                std::string Url = Parser.GetStringFromJson(Result, "response.url");
-                double Status = Parser.GetFloatFromJson(Result, "response.status");
-                CachedUrls[Url] = Status;
             }
         } else if(Method == "Target.targetCreated")
         {
@@ -1758,6 +1803,56 @@ Async DevToolsConnector::SetRequestsRestrictions(const std::vector<std::pair<boo
     return NewAction->GetResult();
 }
 
+void DevToolsConnector::SetCacheMasks(const std::vector<std::pair<bool, std::string> >& Rules)
+{
+    GlobalState.CacheCapture.clear();
+
+    for (const auto& Rule : Rules)
+    {
+        RequestRestriction RuleNative;
+        RuleNative.IsAllow = Rule.first;
+        RuleNative.Mask = Rule.second;
+        GlobalState.CacheCapture.push_back(RuleNative);
+    }
+}
+
+std::string DevToolsConnector::GetAllCacheData(const std::string& Mask)
+{
+    picojson::array Items;
+
+    for (const auto& data : GlobalState.CachedData)
+    {
+        if (match(Mask, data.second->Url))
+        {
+            Items.push_back(data.second->Serialize());
+        }
+    }
+
+    return picojson::value(Items).serialize();
+}
+
+std::string DevToolsConnector::GetSingleCacheData(const std::string& Mask, bool IsBase64)
+{
+    for (const auto& data : GlobalState.CachedData)
+    {
+        if (match(Mask, data.second->Url))
+        {
+            if(IsBase64)
+                return data.second->Body;
+            else
+                return base64_decode(data.second->Body);
+        }
+    }
+
+    return std::string();
+}
+
+void DevToolsConnector::ClearNetworkData()
+{
+    GlobalState.CachedData.clear();
+    GlobalState.CachedRequests.clear();
+    GlobalState.LoadedUrls.clear();
+}
 
 void DevToolsConnector::OnFetchRequestPaused(std::string& Result)
 {
@@ -1788,9 +1883,89 @@ void DevToolsConnector::OnFetchRequestPaused(std::string& Result)
 
 }
 
+void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result)
+{
+    std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
+    std::string Url = Parser.GetStringFromJson(Result, "request.url");
+
+    if (Url.find("data:") == std::string::npos)
+    {
+        bool Allow = false;
+
+        for (const auto& CacheMask : GlobalState.CacheCapture)
+        {
+            if (match(CacheMask.Mask, Url))
+            {
+                Allow = CacheMask.IsAllow;
+            }
+        }
+
+        if (Allow)
+        {
+            std::shared_ptr<CachedItem> Item = GlobalState.CachedData.count(RequestId) ? GlobalState.CachedData[RequestId] : std::make_shared<CachedItem>();
+            Item->UpdateRequestHeaders(Result, "request", "headers");
+            Item->IsFinished = false;
+            Item->IsError = false;
+            Item->Url = Url;
+
+            std::string PostData = Parser.GetStringFromJson(Result, "request.postData");
+            Item->PostData = base64_encode((unsigned char *)PostData.data(), PostData.size());
+
+            GlobalState.CachedData[RequestId] = Item;
+        }
+    }
+}
+
+void DevToolsConnector::OnNetworkResponseReceived(std::string& Result)
+{
+    std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
+    double Status = Parser.GetFloatFromJson(Result, "response.status");
+
+    if (GlobalState.CachedData.count(RequestId))
+    {
+        std::shared_ptr<CachedItem> Item = GlobalState.CachedData[RequestId];
+
+        Item->UpdateRequestHeaders(Result, "response", "requestHeaders");
+
+        Item->UpdateResponseHeaders(Result, "response", "headers");
+
+        //We can't retrieve content for redirected requests
+        if (Status >= 300 && Status <= 399)
+        {
+            Item->IsFinished = true;
+        }
+
+        Item->Status = Status;
+    }
+
+}
+
+void DevToolsConnector::OnNetworkLoadingCompleted(std::string& Result, bool HasError)
+{
+    std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
+
+    if (GlobalState.CachedData.count(RequestId))
+    {
+        std::shared_ptr<CachedItem> Item = GlobalState.CachedData[RequestId];
+        Item->IsFinished = HasError;
+        Item->IsError = HasError;
+
+        if (!HasError)
+        {
+            //Need to get the response body using a separate method.
+            std::map<std::string, Variant> Params = { {"requestId", Variant(RequestId)} };
+            int Id = SendWebSocket("Network.getResponseBody", Params, GlobalState.TabId);
+            GlobalState.CachedRequests[Id] = RequestId;
+        }
+
+        Item->Error = HasError ? Parser.GetStringFromJson(Result, "errorText") : std::string();
+    }
+}
+
+
 int DevToolsConnector::GetStatusForURL(const std::string& UrlPattern)
 {
-    for (const auto& urlPair : CachedUrls)
+    for (const auto& urlPair : GlobalState.LoadedUrls)
     {
         if (match(UrlPattern, urlPair.first))
         {
@@ -1801,9 +1976,21 @@ int DevToolsConnector::GetStatusForURL(const std::string& UrlPattern)
     return 0;
 }
 
+std::string DevToolsConnector::FindLoadedURL(const std::string& UrlPattern)
+{
+    for (const auto& urlPair : GlobalState.LoadedUrls)
+    {
+        if (match(UrlPattern, urlPair.first))
+        {
+            return urlPair.first;
+        }
+    }
+    return std::string();
+}
+
 bool DevToolsConnector::IsURLLoaded(const std::string& UrlPattern)
 {
-    for (const auto& urlPair : CachedUrls)
+    for (const auto& urlPair : GlobalState.LoadedUrls)
     {
         if (match(UrlPattern, urlPair.first))
         {

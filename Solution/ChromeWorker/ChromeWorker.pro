@@ -12,6 +12,7 @@ QMAKE_LFLAGS += /LARGEADDRESSAWARE
 SOURCES += main.cpp \
     browsercontextmenu.cpp \
     connector/ActionSaver.cpp \
+    connector/CachedItem.cpp \
     connector/DevToolsActionCloseTab.cpp \
     connector/DevToolsActionCreateTab.cpp \
     connector/DevToolsActionGetCurrentUrl.cpp \
@@ -53,8 +54,8 @@ SOURCES += main.cpp \
     connector/rawcppwebsocketclient.cpp \
     connector/rawcppwebsocketclientfactory.cpp \
     connector/sharedmemoryipc.cpp \
-    devtoolsactiongetnavigationhistory.cpp \
-    devtoolsactionresizewithcorrection.cpp \
+    connector/devtoolsactiongetnavigationhistory.cpp \
+    connector/devtoolsactionresizewithcorrection.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
@@ -158,6 +159,7 @@ QMAKE_CXXFLAGS_DEBUG += /MTd
 HEADERS += \
     browsercontextmenu.h \
     connector/ActionSaver.h \
+    connector/CachedItem.h \
     connector/DevToolsActionCloseTab.h \
     connector/DevToolsActionCreateTab.h \
     connector/DevToolsActionGetCurrentUrl.h \
@@ -205,8 +207,8 @@ HEADERS += \
     connector/rawcppwebsocketclient.h \
     connector/rawcppwebsocketclientfactory.h \
     connector/sharedmemoryipc.h \
-    devtoolsactiongetnavigationhistory.h \
-    devtoolsactionresizewithcorrection.h \
+    connector/devtoolsactiongetnavigationhistory.h \
+    connector/devtoolsactionresizewithcorrection.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileexists.h \

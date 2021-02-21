@@ -6,6 +6,7 @@
 #include "RequestRestriction.h"
 #include <memory>
 #include <map>
+#include "CachedItem.h"
 
 class IDevToolsAction;
 
@@ -84,7 +85,7 @@ struct DevToolsGlobalState
     bool IsDownloading = false;
     bool IsDownloadsAllowed = true;
 
-    //Requests restrictions
+    //Data for fetch.enable
     std::vector<RequestRestriction> BlockRequests;
     std::vector<RequestRestriction> CacheCapture;
 
@@ -93,6 +94,14 @@ struct DevToolsGlobalState
 
     //Referrer when open new tab
     std::string NewTabReferrer;
+
+    //Cache data
+    std::map<std::string, std::shared_ptr<CachedItem>> CachedData;
+    std::map<int, std::string> CachedRequests;
+
+    //URL - status
+    std::map<std::string, int> LoadedUrls;
+
 
     //This method is called when restarting browser
     void Reset();

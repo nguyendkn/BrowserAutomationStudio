@@ -159,7 +159,7 @@ void MainHandler::OnBeforeDownload(CefRefPtr<CefBrowser> browser, CefRefPtr<CefD
 
 void MainHandler::OnDownloadUpdated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDownloadItem> download_item, CefRefPtr<CefDownloadItemCallback> callback)
 {
-    if(download_item->IsComplete())
+    /*if(download_item->IsComplete())
     {
         WORKER_LOG(std::string("OnBeforeDownloadFinished<<") + download_item->GetFullPath().ToString());
         if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
@@ -191,7 +191,7 @@ void MainHandler::OnDownloadUpdated(CefRefPtr<CefBrowser> browser, CefRefPtr<Cef
                 Data->_CachedData.push_back(p);
             }
         }
-    }
+    }*/
 
 }
 

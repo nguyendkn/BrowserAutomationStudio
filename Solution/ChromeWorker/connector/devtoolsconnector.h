@@ -41,10 +41,6 @@ class DevToolsConnector
     std::string SwitchTabAfterCloseCurrentTabId;
     std::string SwitchTabAfterCloseCurrentFrameId;
 
-    
-    //Network data
-    std::map<std::string, int> CachedUrls;
-
     //Connection settings
 
     bool IsConnectionOrLaunch = true;
@@ -85,6 +81,11 @@ class DevToolsConnector
     //Callbacks
 
     void OnFetchRequestPaused(std::string& Result);
+    void OnNetworkRequestWillBeSent(std::string& Result);
+    void OnNetworkResponseReceived(std::string& Result);
+    void OnNetworkLoadingCompleted(std::string& Result, bool HasError);
+
+
 
     //Reset method
     Async ResetResult;
@@ -163,7 +164,14 @@ class DevToolsConnector
         Async GetCurrentUrl(int Timeout = -1);
         Async SetRequestsRestrictions(const std::vector<std::pair<bool, std::string> >& Rules, int Timeout = -1);
 
+        //Cache
+        void SetCacheMasks(const std::vector<std::pair<bool, std::string> >& Rules);
+        std::string GetSingleCacheData(const std::string& Mask, bool IsBase64);
+        std::string GetAllCacheData(const std::string& Mask);
+        void ClearNetworkData();
+
         int GetStatusForURL(const std::string& UrlPattern);
+        std::string FindLoadedURL(const std::string& UrlPattern);
         bool IsURLLoaded(const std::string& UrlPattern);
         Async SetProxy(const std::string Server, int Port, bool IsHttp = true, const std::string Login = std::string(), const std::string Password = std::string(), int Timeout = -1);
         Async GetHistory(int Timeout = -1);

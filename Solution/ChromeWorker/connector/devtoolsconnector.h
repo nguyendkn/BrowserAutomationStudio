@@ -98,6 +98,8 @@ class DevToolsConnector
     SharedMemoryIPC* IPC = 0;
     void HandleIPCData();
     void ParseNewTabReferrer(const std::string& NewTabReferrer);
+    void ResetProxy(const std::string& ParentProcessId);
+
 
     public:
 

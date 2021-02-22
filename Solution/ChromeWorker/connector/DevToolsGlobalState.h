@@ -71,6 +71,7 @@ struct DevToolsGlobalState
     std::string ParentProcessId;
     std::string ChromeExecutableLocation;
     std::string ConstantStartupScript;
+    bool IsProxySet = false;
 
     //Tab states
     std::string ScreenCastTabId;

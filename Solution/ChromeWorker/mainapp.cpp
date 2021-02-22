@@ -61,6 +61,7 @@ MainApp::MainApp()
     ScrollTrackingY = 0;
     LastHighlight = 0;
     LastHighlightMultiselect = 0;
+    LastRecaptchaV3Check = 0;
     ParentWidth = 0;
     ParentHeight = 0;
     App = this;
@@ -1813,18 +1814,10 @@ void MainApp::RecaptchaV3ListCallback(const std::string& value)
 
 void MainApp::RecaptchaV3ResultCallback(const std::string& id, const std::string& result)
 {
-    if(_HandlersManager->GetBrowser())
-    {
-        std::vector<int64> FrameIds;
-        _HandlersManager->GetBrowser()->GetFrameIdentifiers(FrameIds);
-        std::string Js = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Solved)(") + picojson::value(id).serialize() + std::string(", ") + picojson::value(result).serialize() + std::string(");"),"main");
-        for(int64 Id: FrameIds)
-        {
-            CefRefPtr<CefFrame> Frame = _HandlersManager->GetBrowser()->GetFrame(Id);
-            Frame->ExecuteJavaScript(Js,Frame->GetURL(), 0);
-        }
+    std::string Js = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Solved)(") + picojson::value(id).serialize() + std::string(", ") + picojson::value(result).serialize() + std::string(");"),"main");
 
-    }
+    Async Result = Data->Connector->ExecuteJavascript(Js,std::string(),std::string("[]"));
+    Data->Results->ProcessResult(Result);
 }
 
 void MainApp::CleanHeaderCallback()
@@ -3068,6 +3061,9 @@ void MainApp::Timer()
         UpdateHighlightMultiselect();
     }
 
+    UpdateRecaptchaV3Check();
+
+
     auto now = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
     if(now > Data->LastClearRequest + 5000 || Data->LastClearRequest == 0)
     {
@@ -3269,6 +3265,27 @@ void MainApp::UpdateHighlightMultiselect()
 
         HighlightMultiselectTask = Data->Connector->ExecuteJavascript(Script,std::string(),HighlightSelector);
     }
+}
+
+void MainApp::UpdateRecaptchaV3Check()
+{
+    clock_t CurrentTime = clock();
+    float time_spent = float( CurrentTime - LastRecaptchaV3Check ) /  CLOCKS_PER_SEC;
+
+    if(time_spent < 12)
+        return;
+
+    LastRecaptchaV3Check = CurrentTime;
+
+    if(RecaptchaV3Task)
+    {
+        Data->Connector->InterruptAction(RecaptchaV3Task->GetActionUniqueId());
+        RecaptchaV3Task.reset();
+    }
+
+    std::string Script = Javascript(std::string(";[[RESULT]] = (typeof(_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Call)) == 'string') ? _BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Call) : '';_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Call) = '';"),"main");
+
+    RecaptchaV3Task = Data->Connector->ExecuteJavascript(Script,std::string(),std::string("[]"));
 }
 
 void MainApp::UpdateHighlight()
@@ -4042,36 +4059,43 @@ void MainApp::HandleMainBrowserEvents()
         HighlightTask.reset();
     }
 
-    /*if(v8handler->GetRecaptchaV3RequestReady())
+    if(RecaptchaV3Task && RecaptchaV3Task->GetIsFinished())
     {
-        std::pair<V8Handler::RecaptchaV3Request,bool> res = v8handler->GetRecaptchaV3Request();
-        if(res.second)
+        JsonParser Parser;
+        std::string Result = Parser.GetStringFromJson(RecaptchaV3Task->GetString(),"RESULT");
+
+        std::string InspectId = Parser.GetStringFromJson(Result,"InspectId");
+        std::string ActionName = Parser.GetStringFromJson(Result,"ActionName");
+        std::string SiteKey = Parser.GetStringFromJson(Result,"SiteKey");
+        std::string Url = Parser.GetStringFromJson(Result,"Url");
+
+        if(!ActionName.empty() && Data->IsRecord)
         {
-            if(Data->IsRecord)
+            if(BrowserToolbox)
             {
-                if(BrowserToolbox)
-                {
-                    std::string ActionName = res.first.ActionName;
-                    BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Notify('recaptchav3',") + picojson::value(ActionName).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-                }
-            }
-
-            if(!res.first.InspectId.empty())
-            {
-                xml_encode(res.first.ActionName);
-                xml_encode(res.first.SiteKey);
-                xml_encode(res.first.Url);
-                xml_encode(res.first.ActionName);
-                SendTextResponce(
-                            std::string("<SolveRecaptchaV3 Id=\"") + res.first.InspectId + std::string("\"") +
-                            std::string(" Action=\"") + res.first.ActionName + std::string("\"") +
-                            std::string(" SiteKey=\"") + res.first.SiteKey + std::string("\"") +
-                            std::string(" Url=\"") + res.first.Url + std::string("\"") +
-                            std::string(" ></SolveRecaptchaV3>"));
-
+                BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Notify('recaptchav3',") + picojson::value(ActionName).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
             }
         }
-    }*/
+
+        if(!InspectId.empty())
+        {
+
+
+            xml_encode(ActionName);
+            xml_encode(SiteKey);
+            xml_encode(Url);
+            xml_encode(InspectId);
+            SendTextResponce(
+                        std::string("<SolveRecaptchaV3 Id=\"") + InspectId + std::string("\"") +
+                        std::string(" Action=\"") + ActionName + std::string("\"") +
+                        std::string(" SiteKey=\"") + SiteKey + std::string("\"") +
+                        std::string(" Url=\"") + Url + std::string("\"") +
+                        std::string(" ></SolveRecaptchaV3>"));
+
+        }
+
+        RecaptchaV3Task.reset();
+    }
 
     if(HighlightMultiselectTask && HighlightMultiselectTask->GetIsFinished())
     {

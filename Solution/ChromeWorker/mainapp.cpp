@@ -3163,6 +3163,7 @@ void MainApp::OnScroll()
 
 void MainApp::OnRequestStart(std::string RequestId)
 {
+    DirectControl()->PageLoaded();
     Data->_RequestList.Add(RequestId);
 }
 

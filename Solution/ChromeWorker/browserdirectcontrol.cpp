@@ -361,7 +361,7 @@ void BrowserDirectControl::SendSequenceItem(const SequenceItem& Item)
     Meta = Item.Meta;
     Code = Item.Code;
     IsWaitFullPageLoaded = Item.Type == WaitFullPageLoadType;
-    DontSendNextWaitFullPageLoaded = Item.Type == LoadType || Item.Type == WaitFullPageLoadType || Item.Type == GoBackType;
+    DontSendNextWaitFullPageLoaded = Item.Type == PopupSelect || Item.Type == PopupClose || Item.Type == LoadType || Item.Type == WaitFullPageLoadType || Item.Type == GoBackType;
 
     SendCode(Meta, Code, DontSendNextWaitFullPageLoaded, IsWaitFullPageLoaded);
 }
@@ -635,14 +635,6 @@ void BrowserDirectControl::Load(const std::string& Url)
     //Load url
     if(LastAddTab)
     {
-        _BrowserData->IsCreatingNewPopup = true;
-        _BrowserData->IsCreatingNewPopupIsLoaded = false;
-        _BrowserData->IsCreatingNewPopupIsContextCreated = false;
-        _BrowserData->IsCreatingNewPopupIsSilent = false;
-        _BrowserData->IsCreatingNewPopupIsLoadAfterOpen = true;
-        _BrowserData->IsCreatingNewPopupIndexBeforeChange = -1;
-        _BrowserData->IsCreatingNewPopupUrl = UrlCopy;
-
         _BrowserData->Connector->CreateTab(Url, true);
     }else
         _BrowserData->Connector->Load(Url, true);
@@ -657,21 +649,15 @@ void BrowserDirectControl::Load(const std::string& Url)
     if(LastAddTab)
     {
         //Add action to scenario
+        std::string code = std::string("_popupcreate2(false, ") + JsonEscape(UrlCopy) + std::string(", \"\", false)!");
 
-        std::string code = std::string("_if_else(\"false\" == \"true\",function(){\n"
-           "_popupcreate(true,") + JsonEscape(UrlCopy) + std::string(")!\n"
-           "},function(){\n"
-           "_popupcreate(false,\"\")!\n"
-           "load(") + JsonEscape(UrlCopy) + std::string(")!\n"
-           "})!");
-
-        std::string json = std::string("{\"s\":\"addtab\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"Url\",\"type\":\"constr\",\"data\":") + JsonEscape(UrlCopy) + std::string(",\"class\":\"string\"},{\"id\":\"IsSilent\",\"type\":\"constr\",\"data\":\"false\",\"class\":\"string\"}]}");
+        std::string json = std::string("{\"s\":\"addtab\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"Url\",\"type\":\"constr\",\"data\":") + JsonEscape(UrlCopy) + std::string(",\"class\":\"string\"},{\"id\":\"IsSilent\",\"type\":\"constr\",\"data\":\"false\",\"class\":\"string\"},{\"id\":\"Referrer\",\"type\":\"constr\",\"data\":\"\",\"class\":\"string\"}]}");
         AddItem(json, code, std::string(), LoadType);
     }else
     {
         //Add action to scenario
-        std::string code = std::string("load(") + JsonEscape(Url) + std::string(")!");
-        std::string json = std::string("{\"s\":\"load\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"LoadUrl\",\"type\":\"constr\",\"data\":") + JsonEscape(Url) + std::string(",\"class\":\"string\"}]}");
+        std::string code = std::string("_load(") + JsonEscape(Url) + std::string(", \"\", false)!");
+        std::string json = std::string("{\"s\":\"load\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"LoadUrl\",\"type\":\"constr\",\"data\":") + JsonEscape(Url) + std::string(",\"class\":\"string\"},{\"id\":\"Referrer\",\"type\":\"constr\",\"data\":\"\",\"class\":\"string\"}]}");
 
         AddItem(json, code, std::string(), LoadType);
     }
@@ -798,7 +784,7 @@ void BrowserDirectControl::GoBack()
         return;
 
     //Add action to scenario
-    std::string code = std::string("navigate_back()!\nwait_async_load()!");
+    std::string code = std::string("navigate_back(false)!\nwait_async_load()!");
     std::string json = std::string("{\"s\":\"navigateback\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[]}");
 
     AddItem(json, code, std::string(), GoBackType);

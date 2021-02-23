@@ -2046,6 +2046,12 @@ bool DevToolsConnector::IsURLLoaded(const std::string& UrlPattern)
     return false;
 }
 
+void DevToolsConnector::Focus()
+{
+    std::map<std::string, Variant> Params;
+    SendWebSocket("Page.bringToFront", Params, GlobalState.TabId);
+}
+
 void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button, int MousePressed, int KeyboardPresses, int ClickCount)
 {
     std::map<std::string, Variant> Params;

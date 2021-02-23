@@ -702,6 +702,7 @@ void MainApp::LoadCallback(const std::string& page)
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        this->Data->Connector->Focus();
         if(Result->GetIsSuccess())
         {
             this->SendTextResponce("<Load>0</Load>");
@@ -720,6 +721,7 @@ void MainApp::Load2Callback(const std::string& url,const std::string& referrer, 
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        this->Data->Connector->Focus();
         if(Result->GetIsSuccess())
         {
             this->SendTextResponce("<Load2></Load2>");
@@ -795,6 +797,7 @@ void MainApp::PopupCreateCallback(bool is_silent, const std::string& url)
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        this->Data->Connector->Focus();
         this->SendTextResponce("<PopupCreate></PopupCreate>");
     });
 }
@@ -805,6 +808,7 @@ void MainApp::PopupCreate2Callback(bool is_silent, const std::string& url, const
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        this->Data->Connector->Focus();
         if(Result->GetIsSuccess())
         {
             this->SendTextResponce("<PopupCreate2></PopupCreate2>");
@@ -1141,6 +1145,7 @@ void MainApp::PopupCloseCallback(int index)
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        this->Data->Connector->Focus();
         this->SendTextResponce("<PopupClose></PopupClose>");
     });
 }
@@ -1151,6 +1156,7 @@ void MainApp::PopupSelectCallback(int index)
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        this->Data->Connector->Focus();
         this->SendTextResponce("<PopupSelect></PopupSelect>");
     });
 }

@@ -1690,6 +1690,9 @@ Async DevToolsConnector::CreateTab(const std::string& Url, bool IsInstant, bool 
 
     NewAction.reset(ActionsFactory.Create("CreateTab", &GlobalState));
 
+    //Group id is set in order to avoid running several tab action simultaneously
+    NewAction->SetGroupId(1);
+
     Params["instant"] = Variant(IsInstant);
 
     Params["url"] = Variant(std::string(Url));
@@ -1738,6 +1741,9 @@ Async DevToolsConnector::SwitchToTab(int Index, int Timeout)
 
         NewAction.reset(ActionsFactory.Create("CreateTab", &GlobalState));
 
+        //Group id is set in order to avoid running several tab action simultaneously
+        NewAction->SetGroupId(1);
+
         Params["instant"] = Variant(true);
 
         Params["url"] = Variant(DelayedUrl);
@@ -1748,6 +1754,9 @@ Async DevToolsConnector::SwitchToTab(int Index, int Timeout)
     }else
     {
         NewAction.reset(ActionsFactory.Create("SwitchToTab", &GlobalState));
+
+        //Group id is set in order to avoid running several tab action simultaneously
+        NewAction->SetGroupId(1);
 
         Params["index"] = Variant(Index);
     }
@@ -1765,6 +1774,9 @@ Async DevToolsConnector::CloseTab(int Index, int Timeout)
     std::map<std::string, Variant> Params;
 
     NewAction.reset(ActionsFactory.Create("CloseTab", &GlobalState));
+
+    //Group id is set in order to avoid running several tab action simultaneously
+    NewAction->SetGroupId(1);
 
     Params["index"] = Variant(Index);
 

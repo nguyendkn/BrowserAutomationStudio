@@ -571,12 +571,9 @@ void MainApp::Paint(int width, int height)
         }
     }
 
-    if(_HandlersManager->GetIsVisible() || _HandlersManager->GetHandler()->GetIsPopup())
-    {
-        RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-        InvalidateRect(Data->_MainWindowHandle,&r,false);
-        //InvalidateRect(Data->_MainWindowHandle,NULL,false);
-    }
+    RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
+    InvalidateRect(Data->_MainWindowHandle,&r,false);
+    //InvalidateRect(Data->_MainWindowHandle,NULL,false);
 }
 
 void MainApp::ClearImageDataCallback()
@@ -1547,9 +1544,9 @@ void MainApp::AfterReadyToCreateBrowser(bool Reload)
         Layout->BrowserHandle = _HandlersManager->GetBrowser()->GetHost()->GetWindowHandle();
         _HandlersManager->GetBrowser()->GetMainFrame()->LoadURL(NextLoadPage);
 
-        CreateTooboxBrowser();
-        CreateScenarioBrowser();
-        CreateCentralBrowser();
+    CreateTooboxBrowser();
+    CreateScenarioBrowser();
+    CreateCentralBrowser();
         if(Settings->DebugScenario() || Settings->DebugToolbox())
         {
             ToggleDevTools();
@@ -1572,14 +1569,16 @@ void MainApp::VisibleCallback(bool visible)
     WORKER_LOG(std::string("VisibleCallback ") + std::to_string(visible));
     if(visible)
     {
-        _HandlersManager->GetHandler()->Show();
-        _HandlersManager->Show();
+        if(!Data->IsRecord)
+            MoveWindow(Data->_MainWindowHandle, rand() % 100, rand() % 100, Data->WidthBrowser + 100, Data->HeightBrowser + 140, false);
+
+        ShowWindow(Data->_MainWindowHandle, SW_SHOW);
+        //MoveWindow(Data->MainWindowHandle,0,0,rect.right-rect.left,rect.bottom-rect.top,true);
+        SetForegroundWindow(Data->_MainWindowHandle);
         Layout->Focus();
-    }
-    else
+    }else
     {
-        _HandlersManager->GetHandler()->Hide();
-        _HandlersManager->Hide();
+        ShowWindow(Data->_MainWindowHandle, SW_HIDE);
     }
 }
 
@@ -1591,8 +1590,7 @@ void MainApp::FlushCallback()
 
 void MainApp::Hide()
 {
-    _HandlersManager->GetHandler()->Hide();
-    _HandlersManager->Hide();
+    ShowWindow(Data->_MainWindowHandle, SW_HIDE);
 }
 
 void MainApp::ToggleDevTools()
@@ -1730,7 +1728,7 @@ CefRefPtr<CefResourceRequestHandler> MainApp::GetResourceRequestHandler(CefRefPt
 {
     //Never use default request handler for dev tools
     if(starts_with(request->GetURL().ToString(),"devtools:") || (browser && browser->GetMainFrame() && starts_with(browser->GetMainFrame()->GetURL().ToString(),"devtools:")))
-        return NULL;
+    return NULL;
 
     int BrowserId = -1;
     if(!browser && _HandlersManager->GetBrowser())
@@ -1948,7 +1946,7 @@ bool MainApp::IsNeedQuit()
 {
     if(!_HandlersManager->GetHandler())
         return false;
-
+    
     return _HandlersManager->GetHandler()->IsNeedQuit();
 }
 
@@ -2107,7 +2105,7 @@ void MainApp::WaitCodeCallback()
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = "about:blank";
-        AfterReadyToCreateBrowser(true);
+    AfterReadyToCreateBrowser(true);
     }
     CreateTooboxBrowser();
     CreateScenarioBrowser();
@@ -2124,7 +2122,7 @@ void MainApp::StartSectionCallback(int Id)
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = "about:blank";
-        AfterReadyToCreateBrowser(true);
+    AfterReadyToCreateBrowser(true);
     }
     CreateTooboxBrowser();
     CreateScenarioBrowser();
@@ -3049,7 +3047,7 @@ void MainApp::Timer()
     if(detector8handler)
         HandleDetectorBrowserEvents();
 
-    if(dhandler)
+    /*if(dhandler)
         dhandler->Timer();
 
     _HandlersManager->Timer();
@@ -3057,7 +3055,7 @@ void MainApp::Timer()
     if(_HandlersManager->CheckIsClosed())
     {
         SendTextResponce("<PopupClose></PopupClose>");
-    }
+    }*/
 
     UpdateWindowPositionWithParent();
 
@@ -4423,61 +4421,42 @@ void MainApp::ScrollDownDown()
 
 void MainApp::ScrollLeft()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeft)()","main"),"", 0);
-
+        Data->_Inspect.active = false;
     }
+
+    Data->Connector->ExecuteJavascript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeft)()","main"),std::string(),std::string("[]"));
 }
 void MainApp::ScrollRight()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRight)()","main"),"", 0);
-
+        Data->_Inspect.active = false;
     }
+
+    Data->Connector->ExecuteJavascript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRight)()","main"),std::string(),std::string("[]"));
 }
 
 void MainApp::ScrollLeftLeft()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeftLeft)()","main"),"", 0);
-
+        Data->_Inspect.active = false;
     }
+
+    Data->Connector->ExecuteJavascript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollLeftLeft)()","main"),std::string(),std::string("[]"));
 
 }
 void MainApp::ScrollRightRight()
 {
-    if(_HandlersManager->GetBrowser())
+    Layout->HideCentralBrowser();
     {
-        Layout->HideCentralBrowser();
-        {
-            LOCK_BROWSER_DATA
-            Data->_Inspect.active = false;
-        }
-
-        _HandlersManager->GetBrowser()->GetMainFrame()->ExecuteJavaScript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRightRight)()","main"),"", 0);
-
+        Data->_Inspect.active = false;
     }
+
+    Data->Connector->ExecuteJavascript(Javascript("_BAS_HIDE(BrowserAutomationStudio_ScrollRightRight)()","main"),std::string(),std::string("[]"));
+
 }
 
 void MainApp::EmulateClick(int x, int y)

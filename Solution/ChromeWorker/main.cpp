@@ -4,7 +4,6 @@
 #include "converter.h"
 #include "mainapp.h"
 #include "include/cef_app.h"
-#include "include/cef_web_plugin.h"
 #include "pipesclient.h"
 #include "commandparser.h"
 #include "log.h"
@@ -1144,14 +1143,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 {
                     int i = Command - IDManualTabClose;
                     app->DirectControl()->CloseTab(i);
-                    SetWindowText(app->GetData()->UrlHandler, s2ws(app->GetUrl()).c_str());
                 }
 
                 if(Command >= IDManualTabSwitch && Command < IDManualTabClose)
                 {
                     int i = Command - IDManualTabSwitch;
                     app->DirectControl()->SelectTab(i);
-                    SetWindowText(app->GetData()->UrlHandler, s2ws(app->GetUrl()).c_str());
                 }
 
                 switch(Command)
@@ -1421,8 +1418,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     }
                 }
 
-                if(app->IsNeedQuit())
-                    PostQuitMessage(0);
                 std::string Xml = Client->Read();
                 if(!Xml.empty())
                 {
@@ -2189,9 +2184,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     ShowWindow(hwnd, SW_HIDE);
     UpdateWindow(hwnd);
 
-
-    CefRegisterWidevineCdm(GetRelativePathToExe(L"widevine"),0);
-    CefInitialize(main_args, settings, app.get(), NULL);
+    if(app->GetData()->IsRecord)
+        CefInitialize(main_args, settings, app.get(), NULL);
 
     thread_setup();
 
@@ -2208,7 +2202,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     WORKER_LOG("End Main Loop");
 
-    CefShutdown();
+    if(app->GetData()->IsRecord)
+        CefShutdown();
 
     WORKER_LOG("Exit");
 

@@ -266,8 +266,8 @@ _path = {
 			return '.';
 		};
 		
-		var joined = '';
-		var firstPart = '';
+		var joined = undefined;
+		var firstPart = undefined;
 		
 		for(var i = 0; i < args.length; ++i){
 			const arg = args[i];

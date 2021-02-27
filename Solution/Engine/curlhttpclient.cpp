@@ -567,12 +567,9 @@ namespace BrowserAutomationStudioFramework
             res.insert("name",QString::fromUtf8(cookie.name()));
             res.insert("domain",cookie.domain());
             res.insert("path",cookie.path());
-            res.insert("creation",SerializeTime(QDateTime(QDate(2010,1,1))));
-            res.insert("expires",SerializeTime(cookie.expirationDate()));
-            res.insert("has_expires",(!cookie.isSessionCookie()) ? "1" : "0");
-            res.insert("httponly",(cookie.isHttpOnly()) ? "1" : "0");
-            res.insert("last_access",SerializeTime(QDateTime(QDate(2010,1,1))));
-            res.insert("secure",(cookie.isSecure()) ? "1" : "0");
+            res.insert("expires",cookie.expirationDate().toMSecsSinceEpoch() / 1000.0);
+            res.insert("httpOnly",cookie.isHttpOnly());
+            res.insert("secure",cookie.isSecure());
 
             CookiesJson.append(res);
 
@@ -608,11 +605,10 @@ namespace BrowserAutomationStudioFramework
                 c.setName(val.toObject()["name"].toString().toUtf8());
                 c.setDomain(val.toObject()["domain"].toString());
                 c.setPath(val.toObject()["path"].toString());
-                c.setExpirationDate(DeserializeTime(val.toObject()["expires"].toObject()));
-                c.setHttpOnly(val.toObject()["httponly"].toString() == "1");
-                c.setSecure(val.toObject()["secure"].toString() == "1");
+                c.setExpirationDate(QDateTime::fromMSecsSinceEpoch(val.toObject()["expires"].toDouble() * 1000));
+                c.setHttpOnly(val.toObject()["httpOnly"].toBool());
+                c.setSecure(val.toObject()["secure"].toBool());
                 Cookies.insertCookie(c);
-
             }
         }
     }

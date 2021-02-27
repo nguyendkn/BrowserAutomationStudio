@@ -5,6 +5,8 @@
 #include "browserdata.h"
 
 
-std::string PrepareStartupScript(BrowserData* Data, const std::string Url, int TabId);
+std::string PrepareConstantStartupScript(BrowserData* Data);
+std::string PrepareMutableStartupScript(BrowserData* Data);
+void UpdateBrowserData(BrowserData* Data);
 
 #endif // PREPARESTARTUPSCRIPT_H

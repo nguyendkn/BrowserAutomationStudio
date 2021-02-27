@@ -97,6 +97,11 @@ namespace BrowserAutomationStudioFramework
                 xmlReader.readNext();
                 Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
                 emit script();
+            }else if(xmlReader.name() == "script2" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
+                emit script2();
             }else if(xmlReader.name() == "click" && token == QXmlStreamReader::StartElement)
             {
                 emit click();
@@ -280,6 +285,15 @@ namespace BrowserAutomationStudioFramework
         Worker->GetWaiter()->WaitForSignal(this,SIGNAL(script()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
         Worker->GetProcessComunicatorActual()->Send(CreateXmlElement("script",javascript));
     }
+
+    void SubprocessWebElement::script2(const QString& javascript, const QString& variables, const QString& callback)
+    {
+        Worker->SetScript(PrepareCallback(callback));
+        Worker->SetFailMessage(tr("Timeout during ") + QString("script2 for") + GetSelectorString());
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(script2()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        Worker->GetProcessComunicatorActual()->Send(CreateXmlElement("script2",javascript,variables));
+    }
+
     void SubprocessWebElement::RunScriptAsync(const QString& javascript, const QObject *object_success,const char * slot_success)
     {
         Worker->SetFailMessage(tr("Timeout during ") + QString("RunScriptAsync for") + GetSelectorString());

@@ -59,6 +59,40 @@ function debug_variables(list, callback)
     Browser.DebugVariablesResult(JSON.stringify([res,JSON.parse(ScriptWorker.PickResources())]),_get_function_body(callback));
 }
 
+function _read_variables(list)
+{
+    var res = {}
+
+    for(var i = 0;i<list.length;i++)
+    {
+        var v = list[i]
+
+        try
+        {
+            res[v.slice(4)] = eval(v);
+        }catch(e)
+        {
+            res[v.slice(4)] = null
+        }
+
+    }
+    return res;
+}
+
+
+function _write_variables(variables)
+{
+    var keys = Object.keys(variables)
+
+    for(var i = 0;i<keys.length;i++)
+    {
+        var key = keys[i]
+        var value = variables[key]
+        GLOBAL["VAR_" + key] = value;
+    }
+}
+
+
 function truncate_variable(item, limit) {
     if (item instanceof Object) {
         if (!(item instanceof Date)) {

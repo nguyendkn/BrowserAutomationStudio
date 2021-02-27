@@ -51,7 +51,7 @@ Object.defineProperty(window, 'grecaptcha', {set: function(value){
 						InterceptId = "v3_" + (Math.floor(Math.random() * 1000000) + 100).toString()
 					}
 				}
-				_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3)(ActionName, document.location.href, arguments[0], InterceptId)
+				_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Call) = JSON.stringify({"ActionName": ActionName, "Url": document.location.href, "SiteKey": arguments[0], "InspectId": InterceptId})
 			}catch(e)
 			{
 

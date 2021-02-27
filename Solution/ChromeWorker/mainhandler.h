@@ -56,8 +56,6 @@ public:
     void SetIsPopup();
     bool GetIsPopup();
     void SetHandlersManager(HandlersManager *_HandlersManager);
-    void SendStartupScriptUpdated();
-
 
     virtual CefRefPtr<CefDisplayHandler> GetDisplayHandler() OVERRIDE;
     virtual CefRefPtr<CefLifeSpanHandler> GetLifeSpanHandler() OVERRIDE;

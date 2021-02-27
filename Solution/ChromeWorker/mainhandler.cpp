@@ -49,20 +49,6 @@ void MainHandler::SetHandlersManager(HandlersManager *_HandlersManager)
     this->_HandlersManager = _HandlersManager;
 }
 
-void MainHandler::SendStartupScriptUpdated()
-{
-    if(_HandlersManager->GetBrowser())
-    {
-        int TabId = _HandlersManager->FindTabIdByBrowserId(_HandlersManager->GetBrowser()->GetIdentifier());
-        std::string NewScript = PrepareStartupScript(Data, _HandlersManager->GetBrowser()->GetMainFrame()->GetURL(), TabId);
-        CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("StartupScriptUpdated");
-        msg->GetArgumentList()->SetSize(1);
-        msg->GetArgumentList()->SetString(0,NewScript);
-        _HandlersManager->SendToAll(msg);
-    }
-}
-
-
 int MainHandler::GetBrowserId()
 {
     if(!Browser)
@@ -159,14 +145,6 @@ CefRefPtr<CefResourceRequestHandler> MainHandler::GetResourceRequestHandler(CefR
 
 bool MainHandler::RunContextMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefContextMenuParams> params, CefRefPtr<CefMenuModel> model, CefRefPtr<CefRunContextMenuCallback> callback)
 {
-    if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
-    {
-        //Show menu
-        if(params->GetXCoord() >= 0 && params->GetXCoord() < Data->WidthBrowser
-           && params->GetYCoord() >= 0 && params->GetYCoord() < Data->HeightBrowser)
-        Data->_BrowserContextMenu.Show(Data->_MainWindowHandle,params,browser->CanGoBack(),browser->CanGoForward());
-        return true;
-    }
     return true;
 }
 
@@ -174,86 +152,14 @@ bool MainHandler::RunContextMenu(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
 
 void MainHandler::OnBeforeDownload(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDownloadItem> download_item, const CefString& suggested_name, CefRefPtr<CefBeforeDownloadCallback> callback)
 {
-    if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
-    {
-        //Execute dialog in manual control and non record mode.
-        callback->Continue(CefString(), true);
-        return;
-    }
 
-    bool Accept = true;
-    if(!Data->AllowDownloads)
-    {
-        Accept = false;
-    }else
-    {
-        std::string url = download_item->GetOriginalUrl();
-        {
-            //Check if can download
-            LOCK_BROWSER_DATA
-            for(std::pair<bool, std::string> p:Data->_RequestMask)
-            {
-                if(match(p.second,url))
-                {
-                    Accept = p.first;
-                }
-            }
-            if(Accept)
-            {
-                //Notify, that file is been downloaded
-                if(Data->IsRecord)
-                {
-                    for(auto f:EventDownloadStart)
-                        f();
-                }
-
-                //errase all info about previous download
-                {
-                    auto i = Data->_LoadedUrls.begin();
-                    while (i != Data->_LoadedUrls.end())
-                    {
-                        if(starts_with(i->first,"download://"))
-                        {
-                            i = Data->_LoadedUrls.erase(i);
-                        }else
-                        {
-                            ++i;
-                        }
-                    }
-                }
-                {
-                    auto i = Data->_CachedData.begin();
-                    while (i != Data->_CachedData.end())
-                    {
-                        if(starts_with(i->first,"download://"))
-                        {
-                            i = Data->_CachedData.erase(i);
-                        }else
-                        {
-                            ++i;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if(Accept)
-    {
-        std::string FileName = RandomId() + ".file";
-        std::wstring FilePath = GetRelativePathToParentFolder(s2ws(FileName));
-        WORKER_LOG(std::string("OnBeforeDownload<<") + FileName);
-        callback->Continue(FilePath,false);
-    }else
-    {
-        //WORKER_LOG(std::string("OnBeforeDownloadFiltered<<") + url);
-    }
 
 
 }
 
 void MainHandler::OnDownloadUpdated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDownloadItem> download_item, CefRefPtr<CefDownloadItemCallback> callback)
 {
-    if(download_item->IsComplete())
+    /*if(download_item->IsComplete())
     {
         WORKER_LOG(std::string("OnBeforeDownloadFinished<<") + download_item->GetFullPath().ToString());
         if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
@@ -285,63 +191,13 @@ void MainHandler::OnDownloadUpdated(CefRefPtr<CefBrowser> browser, CefRefPtr<Cef
                 Data->_CachedData.push_back(p);
             }
         }
-    }
+    }*/
 
 }
 
 bool MainHandler::OnJSDialog(CefRefPtr<CefBrowser> browser, const CefString& origin_url, JSDialogType dialog_type, const CefString& message_text, const CefString& default_prompt_text, CefRefPtr<CefJSDialogCallback> callback, bool& suppress_message)
 {
-    switch(dialog_type)
-    {
-        case JSDIALOGTYPE_PROMPT:
-        {
-            std::string res;
-            res = Data->_PromptResult;
-            WORKER_LOG(std::string("Prompt<<") + res);
-            suppress_message = false;
-            callback->Continue(true,res);
-            return true;
-
-        }break;
-        case JSDIALOGTYPE_CONFIRM:
-        {
-            std::string message = message_text.ToString();
-            bool NeedToWait = false;
-            if(starts_with(message,std::string("BrowserAutomationStudio_Sleep")) && !ConfirmResult.get() && !ConfirmResultWait)
-            {
-                ReplaceAllInPlace(message,std::string("BrowserAutomationStudio_Sleep"),std::string());
-
-                try{
-                    int inc = std::stoi(message);
-                    ConfirmResultTime = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count() + inc;
-                    ConfirmResultWait = true;
-                    NeedToWait = true;
-                }catch(...)
-                {
-
-                }
-            }
-
-            if(NeedToWait)
-            {
-                WORKER_LOG("SLEEP_START");
-                ConfirmResult = callback;
-                return true;
-            }else
-            {
-                suppress_message = false;
-                callback->Continue(true,"");
-                return true;
-            }
-
-        }break;
-        case JSDIALOGTYPE_ALERT:
-        {
-            suppress_message = true;
-            return false;
-
-        }break;
-    }
+    return false;
 }
 
 void MainHandler::Timer()
@@ -395,132 +251,71 @@ CefRefPtr<CefResourceHandler> MainHandler::GetResourceHandler(CefRefPtr<CefBrows
 {
     //THREAD TID_IO
 
-    if(Settings->ProxyTunneling())
+
+    //tunneling
+    std::string method = request->GetMethod().ToString();
+    std::string url = request->GetURL().ToString();
+
+    bool UseHandler = method == std::string("GET") || method == std::string("HEAD") || method == std::string("DELETE") || method == std::string("PUT");
+    if(method == std::string("POST"))
     {
-        //tunneling
-        std::string method = request->GetMethod().ToString();
-        std::string url = request->GetURL().ToString();
-
-        bool UseHandler = method == std::string("GET") || method == std::string("HEAD") || method == std::string("DELETE") || method == std::string("PUT");
-        if(method == std::string("POST"))
+        UseHandler = true;
+        CefRefPtr<CefPostData> post = request->GetPostData();
+        if(post)
         {
-            UseHandler = true;
-            CefRefPtr<CefPostData> post = request->GetPostData();
-            if(post)
-            {
-                CefPostData::ElementVector elements;
-                post->GetElements(elements);
+            CefPostData::ElementVector elements;
+            post->GetElements(elements);
 
-                for(CefRefPtr<CefPostDataElement> el:elements)
+            for(CefRefPtr<CefPostDataElement> el:elements)
+            {
+                if(el->GetType() == PDE_TYPE_FILE)
                 {
-                    if(el->GetType() == PDE_TYPE_FILE)
-                    {
-                        UseHandler = false;
-                        break;
-                    }
+                    UseHandler = false;
+                    break;
                 }
             }
         }
-
-        //Don't add to cache if there is no browser which originated request
-        if(!browser)
-        {
-            UseHandler = false;
-        }
-
-        if(UseHandler)
-        {
-            LOCK_BROWSER_DATA
-            UseHandler = false;
-            for(std::pair<bool, std::string> p:Data->_CacheMask)
-            {
-                if(match(p.second,url))
-                {
-                    UseHandler = p.first;
-                }
-            }
-        }
-
-        if(UseHandler)
-        {
-            ResourceHandler* h = new ResourceHandler(Data);
-            CefRefPtr<CefResourceHandler> new_handler(h);
-            WORKER_LOG(std::string("use cache>>") + url);
-            return new_handler;
-        }
-        return 0;
-    }else
-    {
-        //No tunneling
-        std::string url = request->GetURL().ToString();
-        if(starts_with(url,"blob:"))
-        {
-            return 0;
-        }
-
-        if(starts_with(url,"chrome-extension:"))
-        {
-            return 0;
-        }
-
-        if(starts_with(url,"filesystem:"))
-        {
-            return 0;
-        }
-
-
-        CurlResourceHandler* h = new CurlResourceHandler(Data,_PostManager);
-        h->SetTabNumber(_HandlersManager->FindTabIdByBrowserId(browser->GetIdentifier()));
-        h->SetForceUtf8(Settings->ForceUtf8());
-        h->SetProxiesReconnect(Settings->ProxiesReconnect());
-
-        EventOnTimerCurlResources.push_back(h);
-        CurlResourcesLength = EventOnTimerCurlResources.size();
-        return EventOnTimerCurlResources.at(EventOnTimerCurlResources.size() - 1);
     }
+
+    //Don't add to cache if there is no browser which originated request
+    if(!browser)
+    {
+        UseHandler = false;
+    }
+
+    if(UseHandler)
+    {
+        LOCK_BROWSER_DATA
+        UseHandler = false;
+        for(std::pair<bool, std::string> p:Data->_CacheMask)
+        {
+            if(match(p.second,url))
+            {
+                UseHandler = p.first;
+            }
+        }
+    }
+
+    if(UseHandler)
+    {
+        ResourceHandler* h = new ResourceHandler(Data);
+        CefRefPtr<CefResourceHandler> new_handler(h);
+        WORKER_LOG(std::string("use cache>>") + url);
+        return new_handler;
+    }
+    return 0;
+
 }
 
 int MainHandler::GetResourceListLength()
 {
-    if(Settings->ProxyTunneling())
-    {
-        LOCK_BROWSER_DATA
-        return Data->_RequestList.Size();
-    }
-    else
-        return CurlResourcesLength;
+    LOCK_BROWSER_DATA
+    return Data->_RequestList.Size();
 }
 
 void MainHandler::CleanResourceHandlerList()
 {
-    if(Settings->ProxyTunneling())
-        return;
 
-    //Delete expired handlers and run timer on existing
-    int64 OldestRequest = 0;
-    int i = 0;
-    for (std::vector<CefRefPtr<CurlResourceHandler> >::iterator it=EventOnTimerCurlResources.begin();it!=EventOnTimerCurlResources.end();)
-    {
-        bool CanDelete = it->get()->GetCanDelete();
-        if(CanDelete)
-        {
-            it = EventOnTimerCurlResources.erase(it);
-        }
-        else
-        {
-            if(it->get()->GetStartTime() < OldestRequest || OldestRequest == 0)
-                OldestRequest = it->get()->GetStartTime();
-            it->get()->Timer();
-            ++it;
-        }
-        i++;
-     }
-    CurlResourcesLength = EventOnTimerCurlResources.size();
-
-    for(auto f:EventOldestRequestTimeChanged)
-    {
-        f(OldestRequest,GetBrowserId());
-    }
 }
 
 
@@ -560,45 +355,7 @@ bool MainHandler::OnCertificateError(CefRefPtr<CefBrowser> browser,cef_errorcode
 
 bool MainHandler::OnFileDialog(CefRefPtr<CefBrowser> browser, FileDialogMode mode, const CefString& title, const CefString& default_file_path, const std::vector<CefString>& accept_filters, int selected_accept_filter, CefRefPtr<CefFileDialogCallback> callback)
 {
-    if(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect)
-    {
-        return false;
-    }
-    OpenFileResult.clear();
-    OpenFileWait = clock() + CLOCKS_PER_SEC * 3;
-    OpenFilePostpond = false;
-    {
-        LOCK_BROWSER_DATA
-        if(Data->_OpenFileName.length() > 0)
-        {
-            if(Data->_OpenFileName[0] == '[')
-            {
-                try
-                {
-                    picojson::value v;
-
-                    std::string err = picojson::parse(v, Data->_OpenFileName);
-                    if(err.empty())
-                    {
-                        for(picojson::value c: v.get<picojson::value::array>())
-                        {
-                            OpenFileResult.push_back(c.get<std::string>());
-                        }
-                    }
-                }catch(...){}
-            }else
-                OpenFileResult.push_back(Data->_OpenFileName);
-        }
-    }
-    if(Data->IsRecord && OpenFileResult.empty())
-    {
-        for(auto f:EventUploadStart)
-            f();
-    }
-
-    OpenFilePostpond = true;
-    OpenFileCallback = callback;
-    return true;
+    return false;
 }
 
 void MainHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& title)
@@ -712,51 +469,14 @@ bool MainHandler::OnOpenURLFromTab(CefRefPtr<CefBrowser> browser, CefRefPtr<CefF
 
 bool MainHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& target_url, const CefString& target_frame_name, CefLifeSpanHandler::WindowOpenDisposition target_disposition, bool user_gesture, const CefPopupFeatures& popupFeatures, CefWindowInfo& windowInfo, CefRefPtr<CefClient>& client, CefBrowserSettings& settings, CefRefPtr<CefDictionaryValue>& extra_info, bool* no_javascript_access)
 {
-    WORKER_LOG(std::string("OnBeforePopup<<") + target_url.ToString());
-
-
-    bool Accept = true;
-    if(!Data->AllowPopups)
-    {
-        Accept = false;
-    }else
-    {
-        std::string url = target_url.ToString();
-        {
-            LOCK_BROWSER_DATA
-            for(std::pair<bool, std::string> p:Data->_RequestMask)
-            {
-                if(match(p.second,url))
-                {
-                    Accept = p.first;
-                }
-            }
-        }
-    }
-
-    if(Accept)
-    {
-        windowInfo.SetAsWindowless(0);
-        settings.windowless_frame_rate = 30;
-        MainHandler * h = new MainHandler();
-        h->SetHandlersManager(_HandlersManager);
-        h->SetSettings(Settings);
-        h->SetData(Data);
-        h->SetDirectControl(DirectControl);
-        h->SetPostManager(_PostManager);
-        h->SetIsPopup();
-        h->EventPopupCreated = EventPopupCreated;
-        client = h;
-    }
-
-    return !Accept;
+    return false;
 }
 
 CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
 {
     //THREAD TID_IO
     bool Accept = true;
-    std::string url = request->GetURL().ToString();
+    /*std::string url = request->GetURL().ToString();
 
     try
     {
@@ -779,107 +499,98 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
             }
         }
     }
-    if(!Accept || Data->IsReset)
-    {
-        return RV_CANCEL;
-    }
+
+
+    CefRequest::HeaderMap ReqestHeaderMap;
+    request->GetHeaderMap(ReqestHeaderMap);
+    int TabNumber = 0;
+    if(browser)
+        TabNumber = _HandlersManager->FindTabIdByBrowserId(browser->GetIdentifier());
     {
         LOCK_BROWSER_DATA
-        Data->_RequestList.Add(request->GetIdentifier());
-    }
 
-    if(Settings->ProxyTunneling())
-    {
-        CefRequest::HeaderMap ReqestHeaderMap;
-        request->GetHeaderMap(ReqestHeaderMap);
-        int TabNumber = 0;
-        if(browser)
-            TabNumber = _HandlersManager->FindTabIdByBrowserId(browser->GetIdentifier());
+        bool WasContentEncoding = false;
+
+        for(std::shared_ptr<std::map<std::string,std::string> > Map: Data->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
         {
-            LOCK_BROWSER_DATA
 
-            bool WasContentEncoding = false;
-
-            for(std::shared_ptr<std::map<std::string,std::string> > Map: Data->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
+            for(const auto& Header: *Map)
             {
-
-                for(const auto& Header: *Map)
+                if(Header.first == "Referer")
                 {
-                    if(Header.first == "Referer")
+                    if(Header.second == "_BAS_NO_REFERRER")
                     {
-                        if(Header.second == "_BAS_NO_REFERRER")
-                        {
-                            ReqestHeaderMap.erase("Referer");
+                        ReqestHeaderMap.erase("Referer");
 
-                            //Disable set referer if we are creating new tab
-                            if(url != "tab://new/" && !Data->IsCreatingNewPopup)
-                                request->SetReferrer("", REFERRER_POLICY_DEFAULT);
-                        }else
-                        {
-                            ReqestHeaderMap.erase("Referer");
-
-                            //Disable set referer if we are creating new tab
-                            if(url != "tab://new/" && !Data->IsCreatingNewPopup)
-                            {
-                                ReqestHeaderMap.insert(std::make_pair(Header.first, Header.second));
-                                request->SetReferrer(Header.second, REFERRER_POLICY_NEVER_CLEAR_REFERRER);
-                            }
-                        }
-                    }else if(Header.first == "Accept-Language")
-                    {
-                        AcceptLanguageCombineResult CombineAcceptLanguage = CombineAcceptLanguageWithPattern(Header.second,Data->_AcceptLanguagePattern);
-                        ReqestHeaderMap.erase(Header.first);
-                        ReqestHeaderMap.insert(std::make_pair(Header.first, CombineAcceptLanguage.Header));
+                        //Disable set referer if we are creating new tab
+                        if(url != "tab://new/" && !Data->IsCreatingNewPopup)
+                            request->SetReferrer("", REFERRER_POLICY_DEFAULT);
                     }else
                     {
-                        ReqestHeaderMap.erase(Header.first);
-                        ReqestHeaderMap.insert(std::make_pair(Header.first, Header.second));
+                        ReqestHeaderMap.erase("Referer");
+
+                        //Disable set referer if we are creating new tab
+                        if(url != "tab://new/" && !Data->IsCreatingNewPopup)
+                        {
+                            ReqestHeaderMap.insert(std::make_pair(Header.first, Header.second));
+                            request->SetReferrer(Header.second, REFERRER_POLICY_NEVER_CLEAR_REFERRER);
+                        }
                     }
-
-                    if(Header.first == "Accept-Encoding")
-                        WasContentEncoding = true;
-
-                }
-            }
-
-            //Disable delete referer if we are creating new tab
-            if(url != "tab://new/" && !Data->IsCreatingNewPopup)
-            {
-                for(std::shared_ptr<std::map<std::string,std::string> > Map: Data->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
+                }else if(Header.first == "Accept-Language")
                 {
-                    if(Map->count("Referer") > 0 && Map->at("Referer") != "_BAS_NO_REFERRER")
-                        Map->erase("Referer");
+                    AcceptLanguageCombineResult CombineAcceptLanguage = CombineAcceptLanguageWithPattern(Header.second,Data->_AcceptLanguagePattern);
+                    ReqestHeaderMap.erase(Header.first);
+                    ReqestHeaderMap.insert(std::make_pair(Header.first, CombineAcceptLanguage.Header));
+                }else
+                {
+                    ReqestHeaderMap.erase(Header.first);
+                    ReqestHeaderMap.insert(std::make_pair(Header.first, Header.second));
                 }
+
+                if(Header.first == "Accept-Encoding")
+                    WasContentEncoding = true;
+
             }
-
-            if(!WasContentEncoding)
-            {
-                ReqestHeaderMap.erase("Accept-Encoding");
-                ReqestHeaderMap.insert(std::make_pair("Accept-Encoding", "gzip, deflate, br"));
-            }
-
-
         }
 
-        request->SetHeaderMap(ReqestHeaderMap);
-
-        /*if(request->GetMethod().ToString() == std::string("POST"))
+        //Disable delete referer if we are creating new tab
+        if(url != "tab://new/" && !Data->IsCreatingNewPopup)
         {
-            CefRefPtr<CefPostData> post = request->GetPostData();
-            if(!post.get())
+            for(std::shared_ptr<std::map<std::string,std::string> > Map: Data->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
             {
-                post = CefPostData::Create();
-                request->SetPostData(post);
+                if(Map->count("Referer") > 0 && Map->at("Referer") != "_BAS_NO_REFERRER")
+                    Map->erase("Referer");
             }
-            if(post->GetElementCount() == 0)
-            {
-                CefRefPtr<CefPostDataElement> el = CefPostDataElement::Create();
-                std::string d("none=");
-                el->SetToBytes(d.size(),d.c_str());
-                post->AddElement(el);
-            }
-        }*/
+        }
+
+        if(!WasContentEncoding)
+        {
+            ReqestHeaderMap.erase("Accept-Encoding");
+            ReqestHeaderMap.insert(std::make_pair("Accept-Encoding", "gzip, deflate, br"));
+        }
+
+
     }
+
+    request->SetHeaderMap(ReqestHeaderMap);*/
+
+    /*if(request->GetMethod().ToString() == std::string("POST"))
+    {
+        CefRefPtr<CefPostData> post = request->GetPostData();
+        if(!post.get())
+        {
+            post = CefPostData::Create();
+            request->SetPostData(post);
+        }
+        if(post->GetElementCount() == 0)
+        {
+            CefRefPtr<CefPostDataElement> el = CefPostDataElement::Create();
+            std::string d("none=");
+            el->SetToBytes(d.size(),d.c_str());
+            post->AddElement(el);
+        }
+    }*/
+
 
     return RV_CONTINUE;
 }
@@ -887,10 +598,6 @@ CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefP
 void MainHandler::OnResourceLoadComplete(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefResponse> response, CefResourceRequestHandler::URLRequestStatus status, int64 received_content_length)
 {
     //THREAD TID_IO
-    {
-        LOCK_BROWSER_DATA
-        Data->_RequestList.Remove(request->GetIdentifier());
-    }
 
     for(auto f:EventUrlLoaded)
         f(request->GetURL().ToString(),response->GetStatus(),GetBrowserId(),request->GetResourceType());
@@ -964,8 +671,6 @@ bool MainHandler::OnResourceResponse(CefRefPtr<CefBrowser> browser, CefRefPtr<Ce
             try{std::transform(value.begin(), value.end(), value.begin(), ::tolower);}catch(...){}
             if (value.find("event-stream") != std::string::npos)
             {
-                LOCK_BROWSER_DATA
-                Data->_RequestList.Remove(request->GetIdentifier());
                 return false;
             }
         }
@@ -979,7 +684,7 @@ bool MainHandler::OnResourceResponse(CefRefPtr<CefBrowser> browser, CefRefPtr<Ce
 
 void MainHandler::OnLoadError(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, ErrorCode errorCode, const CefString& errorText, const CefString& failedUrl)
 {
-    if(Settings->ProxyTunneling() && frame->IsMain())
+    if(frame->IsMain())
     {
         WORKER_LOG(std::string("OnLoadError<<") + errorText.ToString() + std::string("<<") + failedUrl.ToString());
         LastLoadIsError = true;
@@ -1067,7 +772,7 @@ void MainHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> f
     }
 
 
-    if(frame->IsMain())
+    /*if(frame->IsMain())
     {
         NETWORK_LOG(std::to_string(httpStatusCode));
         if(httpStatusCode >= 200 && httpStatusCode < 300)
@@ -1086,9 +791,7 @@ void MainHandler::OnLoadEnd(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> f
             Data->_NextReferrer.clear();
         }
 
-        SendStartupScriptUpdated();
-
-    }
+    }*/
     WORKER_LOG("Loaded Data");
 }
 
@@ -1150,25 +853,7 @@ void MainHandler::OnPopupSize(CefRefPtr<CefBrowser> browser, const CefRect& rect
 
 void MainHandler::OnPaint(CefRefPtr<CefBrowser> browser, PaintElementType type, const RectList& dirtyRects, const void* buffer, int width, int height)
 {
-    if(type == PET_POPUP)
-    {
-        _Popup.SetPopupData(buffer,width,height);
-    }
-    if(type == PET_VIEW)
-    {
-        _Popup.SetBrowserData(buffer,width,height);
-    }
 
-    if(type == PET_POPUP || type == PET_VIEW)
-    {
-        char * Data = _Popup.PrepareData();
-        if(!Data)
-            return;
-        for(auto f:EventPaint)
-        {
-            f(Data, _Popup.GetBrowserWidth(), _Popup.GetBrowserHeight(), GetBrowserId());
-        }
-    }
 }
 
 bool MainHandler::StartDragging(CefRefPtr<CefBrowser> browser,CefRefPtr<CefDragData> drag_data,DragOperationsMask allowed_ops,int x, int y)

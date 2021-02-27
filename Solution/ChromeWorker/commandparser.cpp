@@ -188,44 +188,13 @@ void CommandParser::Parse(const std::string& Xml)
                 f(value);
         }
 
-        CommandNode = MessagesNode->first_node("BrowserIp");
-        if(CommandNode)
-        {
-            WORKER_LOG("EventBrowserIp");
-            for(auto f:EventBrowserIp)
-                f();
-        }
-
-        CommandNode = MessagesNode->first_node("BrowserIpHttps");
-        if(CommandNode)
-        {
-            WORKER_LOG("EventBrowserIpHttps");
-            for(auto f:EventBrowserIpHttps)
-                f();
-        }
-
-        CommandNode = MessagesNode->first_node("Reset");
-        if(CommandNode)
-        {
-            WORKER_LOG("Reset");
-            for(auto f:EventReset)
-                f();
-        }
-
         CommandNode = MessagesNode->first_node("NavigateBack");
         if(CommandNode)
         {
             WORKER_LOG("EventNavigateBack");
+            std::string value = CommandNode->value();
             for(auto f:EventNavigateBack)
-                f();
-        }
-
-        CommandNode = MessagesNode->first_node("ResetNoCookies");
-        if(CommandNode)
-        {
-            WORKER_LOG("ResetNoCookies");
-            for(auto f:EventResetNoCookies)
-                f();
+                f(value == "true");
         }
 
         CommandNode = MessagesNode->first_node("IsChanged");
@@ -403,7 +372,6 @@ void CommandParser::Parse(const std::string& Xml)
             WORKER_LOG("EventSendWorkerSettings");
             bool EncodeUtf8 = true;
             bool RefreshConnections = false;
-            int SkipFrames = 1;
             std::string ProxyServer;
             int ProxyPort;
             bool ProxyIsHttp;
@@ -465,15 +433,11 @@ void CommandParser::Parse(const std::string& Xml)
                     RefreshConnections = std::stoi(attr->value());
                 }
 
-                if(std::string(attr->name()) == std::string("SkipFrames"))
-                {
-                    SkipFrames = std::stoi(attr->value());
-                }
             }
 
             for(auto f:EventSendWorkerSettings)
             {
-                f(EncodeUtf8, RefreshConnections, SkipFrames, ProxyServer, ProxyPort, ProxyIsHttp, ProxyName, ProxyPassword, ProxyTarget, BrowserEngine, RecordId);
+                f(EncodeUtf8, RefreshConnections, ProxyServer, ProxyPort, ProxyIsHttp, ProxyName, ProxyPassword, ProxyTarget, BrowserEngine, RecordId);
             }
 
         }
@@ -860,6 +824,40 @@ void CommandParser::Parse(const std::string& Xml)
 
         }
 
+        CommandNode = MessagesNode->first_node("PopupCreate2");
+        if(CommandNode)
+        {
+            WORKER_LOG("PopupCreate2");
+            bool is_silent = false;
+            std::string url;
+            bool is_instant = false;
+            std::string referrer;
+            for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
+            {
+                if(std::string(attr->name()) == std::string("is_silent"))
+                {
+                    is_silent = std::string(attr->value()) == std::string("1");
+                }
+                if(std::string(attr->name()) == std::string("is_instant"))
+                {
+                    is_instant = std::string(attr->value()) == std::string("1");
+                }
+                if(std::string(attr->name()) == std::string("url"))
+                {
+                    url = std::string(attr->value());
+                }
+                if(std::string(attr->name()) == std::string("referrer"))
+                {
+                    referrer = std::string(attr->value());
+                }
+            }
+
+            for(auto f:EventPopupCreate2)
+                f(is_silent,url,referrer,is_instant);
+
+
+        }
+
         CommandNode = MessagesNode->first_node("Scroll");
         if(CommandNode)
         {
@@ -1220,6 +1218,31 @@ void CommandParser::Parse(const std::string& Xml)
             }
             for(auto f:EventElementCommand)
                 f(send);
+        }
+
+        CommandNode = MessagesNode->first_node("Load2");
+        if(CommandNode)
+        {
+            WORKER_LOG("EventLoad2");
+
+            std::string url,referrer,instant;
+            for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
+            {
+                if(std::string(attr->name()) == std::string("url"))
+                {
+                    url = attr->value();
+                }else if(std::string(attr->name()) == std::string("referrer"))
+                {
+                    referrer = attr->value();
+                }else if(std::string(attr->name()) == std::string("instant"))
+                {
+                    instant = attr->value();
+                }
+            }
+
+
+            for(auto f:EventLoad2)
+                f(url,referrer,instant == "true");
         }
 
 

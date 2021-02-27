@@ -1,9 +1,9 @@
 #include <windows.h>
+#include "fileexists.h"
 #include <thread>
 #include "converter.h"
 #include "mainapp.h"
 #include "include/cef_app.h"
-#include "include/cef_web_plugin.h"
 #include "pipesclient.h"
 #include "commandparser.h"
 #include "log.h"
@@ -30,9 +30,11 @@
 #include "proxyconfigreplace.h"
 #include <iostream>
 #include <fstream>
-#include "MinHook.h"
 #include "ipcsimple.h"
-
+#include "rawcpphttpclientfactory.h"
+#include "rawcppwebsocketclientfactory.h"
+#include "preparestartupscript.h"
+#include "chromecommandlineparser.h"
 
 
 #if defined(BAS_DEBUG)
@@ -119,43 +121,6 @@ void TerminateOnCloseMutex(const std::string& Id, bool DoSleep, bool DoFlush)
     );*/
     exit(0);
 
-}
-
-//Used only in network process
-void MainProcessIPC(const std::string& UniqueId, const std::string& ParentId)
-{
-    IPCSimple NetworkProcessIPC;
-    NetworkProcessIPC.Init(std::string("out") + UniqueId);
-
-    while(true)
-    {
-        if(NetworkProcessIPC.Peek())
-        {
-            std::vector<std::string> DataAll = NetworkProcessIPC.Read();
-            if(!DataAll.empty())
-            {
-                ProxyConfigReplace::GetInstance().SetPid(s2ws(ParentId));
-                ProxyConfigReplace::GetInstance().Replace();
-                LoadLibraryW(L"Proxy.dll");
-                ProxyConfigReplace::GetInstance().Disable();
-
-                IPCSimple::Write(std::string("in") + UniqueId,"done");
-                break;
-            }
-        }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-}
-
-void RepositionInterface(int x, int y)
-{
-    if(x>0 && y>0 && !app->GetData()->IsMutiloginEngine)
-    {
-        app->GetData()->WidthBrowser = x;
-        app->GetData()->HeightBrowser = y;
-    }
-    Layout->Update(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
 }
 
 void RestoreOriginalStage()
@@ -292,8 +257,6 @@ void ProcessMenu(const std::string& Command)
     }
 
     if(Command == "IDInspect"){
-        Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
-        Layout->UpdateTabs(MainLayout::Devtools);
         if(InspectLastX >= 0 && InspectLastY >= 0)
         {
             app->InspectAt(MouseMenuPositionX - app->GetData()->ScrollX,MouseMenuPositionY - app->GetData()->ScrollY);
@@ -492,10 +455,7 @@ LRESULT CALLBACK UrlEditProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam, 
     {
         app->SetFocusOnNextLoad();
         std::string Url = prepare_url_adressbar(GetUrl());
-        if(!app->HasBrowser())
-            app->CreateBrowser(Url);
-        else
-            app->DirectControl()->Load(Url);
+        app->DirectControl()->Load(Url);
         return true;
     }
     if(msg == WM_LBUTTONDBLCLK)
@@ -718,7 +678,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             HCursorTouch = LoadCursor(hInst, MAKEINTRESOURCEW(IDB_TOUCHCURSOR));
 
 
-            RepositionInterface(0,0);
         }
         break;
         case WM_NOTIFY:
@@ -849,8 +808,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;*/
         case WM_RBUTTONUP:
+
+            if(app->GetData()->ManualControl != BrowserData::Indirect && !app->GetData()->IsRecord)
+            {
+                //Show context menu for run mode
+
+                int xPos = LOWORD(lParam);
+                int yPos = HIWORD(lParam);
+
+                RECT r = Layout->GetBrowserRectangle(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
+
+                int MousePositionX = (float)(xPos - r.left) * (float)(app->GetData()->WidthBrowser) / (float)(r.right - r.left),MousePositionY = (float)(yPos - r.top) * (float)(app->GetData()->HeightBrowser) / (float)(r.bottom - r.top);
+
+                app->ContextMenu(MousePositionX, MousePositionY);
+                break;
+            }
             IsControlButton = 1;
             IsLeftMouseButton = false;
+
         case WM_LBUTTONUP:
         {
             if(IsControlButton == -1)
@@ -950,7 +925,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             MouseMenuPositionX += app->GetData()->ScrollX;
                             MouseMenuPositionY += app->GetData()->ScrollY;
 
-                            app->ShowContextMenu(xPos - r.left,IsImageSelect,GenerateJsonMenu(IsImageSelect, MouseMenuPositionX, MouseMenuPositionY,app->GetAllPopupsUrls(),app->GetData()->_ModulesData));
+                            int MouseMenuPositionXCopy = MouseMenuPositionX;
+                            int MouseMenuPositionYCopy = MouseMenuPositionY;
+                            MainApp * App = app.get();
+
+                            app->GetAllPopupsUrls([xPos, r, IsImageSelect, App, MouseMenuPositionXCopy, MouseMenuPositionYCopy](const std::vector<std::string>& Urls)
+                            {
+                                App->ShowContextMenu(xPos - r.left,IsImageSelect,GenerateJsonMenu(IsImageSelect, MouseMenuPositionXCopy, MouseMenuPositionYCopy,Urls,App->GetData()->_ModulesData));
+                            });
+
+
                         }
 
                     }
@@ -1061,6 +1045,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;*/
         case WM_RBUTTONDOWN:
+            if(app->GetData()->ManualControl != BrowserData::Indirect && !app->GetData()->IsRecord)
+            {
+                //Show context menu for run mode
+                break;
+            }
             IsControlButton = 1;
             IsLeftMouseButton = false;
         case WM_LBUTTONDOWN:
@@ -1140,8 +1129,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if(Command == BrowserContextMenu::IdOpenDeveloperTools && app->GetData()->IsRecord)
                 {
                     //In record mode open developer tools in old window
-                    Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
-                    Layout->UpdateTabs(MainLayout::Devtools);
+                    if(Settings.DebugScenario() || Settings.DebugToolbox())
+                    {
+                        Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
+                        Layout->UpdateTabs(MainLayout::Devtools);
+                    }
                     app->ToggleDevTools();
                 }else
                     app->ProcessContextMenu(Command);
@@ -1151,14 +1143,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 {
                     int i = Command - IDManualTabClose;
                     app->DirectControl()->CloseTab(i);
-                    SetWindowText(app->GetData()->UrlHandler, s2ws(app->GetUrl()).c_str());
                 }
 
                 if(Command >= IDManualTabSwitch && Command < IDManualTabClose)
                 {
                     int i = Command - IDManualTabSwitch;
                     app->DirectControl()->SelectTab(i);
-                    SetWindowText(app->GetData()->UrlHandler, s2ws(app->GetUrl()).c_str());
                 }
 
                 switch(Command)
@@ -1180,63 +1170,73 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                             DestroyMenu(hTabsManualMenu);
                             hTabsManualMenu = 0;
                         }
-                        std::vector<std::string> Urls = app->GetAllPopupsUrls();
+                        HWND TabsButton = Layout->HBrowserTabs;
                         int SelectIndex = app->GetActivePopupIndex();
 
-                        hTabsManualMenu = CreatePopupMenu();
-                        AppendMenu(hTabsManualMenu, MF_BYPOSITION | MF_STRING, IDAddTabManual, Translate::Tr(L" + Add new tab").c_str());
-                        int i = 1;
-                        for(std::string& Url: Urls)
+
+                        HMENU *hTabsManualMenuRef = &hTabsManualMenu;
+
+                        app->GetAllPopupsUrls([SelectIndex,hTabsManualMenuRef,TabsButton,hwnd](const std::vector<std::string>& Urls)
                         {
+                            *hTabsManualMenuRef = CreatePopupMenu();
 
-                            std::wstring UrlCopy = s2ws(Url);
-                            if(UrlCopy.size() > 50)
-                                UrlCopy = UrlCopy.substr(0,50) + L" ...";
-
-                            std::wstring Text1,Text2;
-                            Text1 += Translate::Tr(L"Select tab");
-                            Text2 += Translate::Tr(L"Remove tab");
-                            Text1 += L" #";
-                            Text2 += L" #";
-                            Text1 += std::to_wstring(i);
-                            Text2 += std::to_wstring(i);
-
-                            Text1 += L" (";
-                            Text2 += L" (";
-
-                            Text1 += UrlCopy;
-                            Text2 += UrlCopy;
-
-                            Text1 += L")";
-                            Text2 += L")";
-
-                            AppendMenu(hTabsManualMenu,MF_SEPARATOR,NULL,L"Separator");
-
-                            UINT Flags = MF_BYPOSITION | MF_STRING;
-
-                            if(i - 1 == SelectIndex)
+                            AppendMenu(*hTabsManualMenuRef, MF_BYPOSITION | MF_STRING, IDAddTabManual, Translate::Tr(L" + Add new tab").c_str());
+                            int i = 1;
+                            for(const std::string& Url: Urls)
                             {
-                                Flags |= MFS_GRAYED;
+
+                                std::wstring UrlCopy = s2ws(Url);
+                                if(UrlCopy.size() > 50)
+                                    UrlCopy = UrlCopy.substr(0,50) + L" ...";
+
+                                std::wstring Text1,Text2;
+                                Text1 += Translate::Tr(L"Select tab");
+                                Text2 += Translate::Tr(L"Remove tab");
+                                Text1 += L" #";
+                                Text2 += L" #";
+                                Text1 += std::to_wstring(i);
+                                Text2 += std::to_wstring(i);
+
+                                Text1 += L" (";
+                                Text2 += L" (";
+
+                                Text1 += UrlCopy;
+                                Text2 += UrlCopy;
+
+                                Text1 += L")";
+                                Text2 += L")";
+
+                                AppendMenu(*hTabsManualMenuRef,MF_SEPARATOR,NULL,L"Separator");
+
+                                UINT Flags = MF_BYPOSITION | MF_STRING;
+
+                                if(i - 1 == SelectIndex)
+                                {
+                                    Flags |= MFS_GRAYED;
+                                }
+
+                                AppendMenu(*hTabsManualMenuRef, Flags, IDManualTabSwitch + i - 1, Text1.c_str());
+
+                                if(i > 1)
+                                    AppendMenu(*hTabsManualMenuRef, MF_BYPOSITION | MF_STRING, IDManualTabClose + i - 1, Text2.c_str());
+
+                                i++;
                             }
 
-                            AppendMenu(hTabsManualMenu, Flags, IDManualTabSwitch + i - 1, Text1.c_str());
+                            POINT p;
+                            p.x = 0;
+                            p.y = 21;
+                            ClientToScreen(TabsButton,&p);
+                            TrackPopupMenu(*hTabsManualMenuRef, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
+                            if(*hTabsManualMenuRef)
+                            {
+                                DestroyMenu(*hTabsManualMenuRef);
+                                *hTabsManualMenuRef = 0;
+                            }
+                        });
 
-                            if(i > 1)
-                                AppendMenu(hTabsManualMenu, MF_BYPOSITION | MF_STRING, IDManualTabClose + i - 1, Text2.c_str());
 
-                            i++;
-                        }
 
-                        POINT p;
-                        p.x = 0;
-                        p.y = 21;
-                        ClientToScreen(Layout->HBrowserTabs,&p);
-                        TrackPopupMenu(hTabsManualMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
-                        if(hTabsManualMenu)
-                        {
-                            DestroyMenu(hTabsManualMenu);
-                            hTabsManualMenu = 0;
-                        }
 
                         return 0;
                     }
@@ -1294,10 +1294,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     case IDButtonLoadUrl:
                     {
                         app->SetFocusOnNextLoad();
-                        if(!app->HasBrowser())
-                            app->CreateBrowser(GetUrl());
-                        else
-                            app->DirectControl()->Load(GetUrl());
+                        app->DirectControl()->Load(GetUrl());
                     }
                     break;
                     case IDAddTabManual:
@@ -1344,18 +1341,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
                     case IDRecordHttpRequests:
                     {
-                        app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
+                        /*app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
                         if(app->GetCefReqest2Action())
                             app->GetCefReqest2Action()->Reset();
                         if(app->GetData()->IsRecordHttp)
-                        {
+                        {*/
                             MessageBox(
                                         hwnd,
-                                        (TCHAR *)Translate::Tr(L"Http request recorder is activated.\nAll requests which browser does will be converted to actions with http client and added to script editor.\nStart interacting with browser to see result.").data(),
+                                        (TCHAR *)Translate::Tr(L"Http request recorder is temporary disabled. It will be available in one of the following versions.").data(),
                                         (TCHAR *)Translate::Tr(L"Request recorder").data(),
                                         MB_OK | MB_ICONINFORMATION
                             );
-                        }
+                        //}
 
                     }
                     break;
@@ -1368,9 +1365,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     }
                     break;
                     case IDShowDevtools:
-                        Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
+                        /*Layout->SetLabelTop(Translate::Tr(L"Chrome developer tools"));
                         Layout->UpdateTabs(MainLayout::Devtools);
-                        app->ToggleDevTools();
+                        app->ToggleDevTools();*/
+                        {
+                            app->GetData()->Connector->OpenDevTools();
+                        }
                     break;
                     case IDShowScenario:
                         Layout->SetLabelTop(Translate::Tr(L"Script editor"));
@@ -1407,16 +1407,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if(MenuRequest.second)
                        ProcessMenu(MenuRequest.first) ;
                 }
-                if(!app->GetData()->IsRecord)
-                {
-                    TimerLoop++;
-                    TimerLoop %= Settings.SkipFrames();
-                    if(TimerLoop == 0)
-                    {
-                        CefDoMessageLoopWork();
-                        app->CefMessageLoop();
-                    }
-                }else
+                if(app->GetData()->IsRecord)
                 {
                     TimerLoop++;
                     TimerLoop %= 10;
@@ -1424,12 +1415,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     if(TimerLoop != 0)
                     {
                         CefDoMessageLoopWork();
-                        app->CefMessageLoop();
                     }
                 }
 
-                if(app->IsNeedQuit())
-                    PostQuitMessage(0);
                 std::string Xml = Client->Read();
                 if(!Xml.empty())
                 {
@@ -1444,6 +1432,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                 if(app->GetData()->ManualControl == BrowserData::DirectRecord)
                     app->DirectControl()->Timer();
+
+                app->GetData()->Connector->Timer();
 
             }
         break;
@@ -1558,14 +1548,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                                     {
                                         LOCK_BROWSER_DATA
                                         bool IsIndirect = app->GetData()->ManualControl == BrowserData::Indirect;
-                                        app->GetData()->_Highlight.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->MultiselectMode,app->GetData()->_MultiSelectData,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0,app->GetHighlightOffsetX(),app->GetHighlightOffsetY(),app->GetHighlightFrameId() >= 0);
+                                        app->GetData()->_Highlight.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->MultiselectMode,app->GetData()->_MultiSelectData,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
                                     }
 
                                     if(app->GetData()->MultiselectMode)
                                     {
                                         LOCK_BROWSER_DATA
                                         bool IsIndirect = app->GetData()->ManualControl == BrowserData::Indirect;
-                                        app->GetData()->_MultiSelectData.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0,app->GetHighlightOffsetX(),app->GetHighlightOffsetY(),app->GetHighlightFrameId() >= 0);
+                                        app->GetData()->_MultiSelectData.Paint(hdcTemp,_MouseOverMultiSelect,IsIndirect,LastMousePositionX,LastMousePositionY,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
                                     }
 
 
@@ -1780,8 +1770,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     std::srand(std::time(0));
 
-    MH_Initialize();
-
     CefMainArgs main_args(hInstance);
 
     std::string ProcessType;
@@ -1829,12 +1817,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
 
 
-
-    if(SandboxType == std::string("network"))
-    {
-        new std::thread(MainProcessIPC, UniqueProcessId, ParentProcessId);
-    }
-
     if(ProcessType == "renderer")
     {
         if(!ParentProcessId.empty())
@@ -1880,6 +1862,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         new std::thread(TerminateOnCloseMutex, std::string("BASProcess") + Pid, true, true);
     }
 
+    std::string Lang = ws2s(Arguments[1]);
+    std::string Key = ws2s(Arguments[2]);
+
 
     std::ofstream *outfile = new std::ofstream();
     outfile->open(std::wstring(L"s/") + s2ws(Settings.UniqueProcessId()) + std::wstring(L".lock"), std::ofstream::out);
@@ -1909,9 +1894,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         app->Notifications.Init(Settings.UniqueProcessId());
     }
 
-    WORKER_LOG("Proxy tunneling");
-    WORKER_LOG(std::to_string(Settings.ProxyTunneling()));
-
 
     WORKER_LOG(std::string("IsRecord<<") + std::to_string(Data->IsRecord));
 
@@ -1936,13 +1918,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->IsDrag = false;
     Data->IsTesing = false;
     Data->IsMousePress = false;
-    Data->AllowPopups = true;
-    Data->AllowDownloads = true;
     Data->MultiselectMode = false;
     Data->MultiselectIsInsideElementLoop = false;
-    Data->IsMutiloginEngine = false;
-    Data->MultiloginIPC = new SharedMemoryIPC();
-    Data->BASPID = Pid;
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
     Data->_UniqueProcessId = Settings.UniqueProcessId();
     Data->RemoteDebuggingPort = 10000 + rand()%10000;
@@ -1953,6 +1930,45 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Saver.TemporaryDisableDetector = false;
     Data->UrlHandler = 0;
     Data->LastClickIsFromIndirectControl = true;
+
+    //Ensure that profile is not busy
+    {
+        std::wstring LockPath = Settings.Profile() + std::wstring(L"/lockfile");
+        DeleteFile(LockPath.c_str());
+        while(FileExists(LockPath))
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            DeleteFile(LockPath.c_str());
+        }
+    }
+
+
+
+    Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
+    Data->Connector = new DevToolsConnector();
+    Data->Results = new ResultManager();
+    Data->Results->Init(Data->Connector);
+    Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));
+    Data->Connector->OnResize.push_back(std::bind(&MainApp::OnResize,app.get()));
+    Data->Connector->OnScroll.push_back(std::bind(&MainApp::OnScroll,app.get()));
+    Data->Connector->OnRequestStart.push_back(std::bind(&MainApp::OnRequestStart,app.get(),_1));
+    Data->Connector->OnRequestStop.push_back(std::bind(&MainApp::OnRequestStop,app.get(),_1));
+    Data->Connector->OnLoadStart.push_back(std::bind(&MainApp::OnLoadStart,app.get()));
+    Data->Connector->OnLoadStop.push_back(std::bind(&MainApp::OnLoadStop,app.get()));
+    Data->Connector->OnAddressChanged.push_back(std::bind(&MainApp::OnAddressChanged,app.get(),_1));
+    Data->Connector->OnNativeDialog.push_back(std::bind(&MainApp::OnNativeDialog,app.get(),_1));
+    Data->Connector->OnDownloadStarted.push_back(std::bind(&MainApp::OnDownloadStarted,app.get(),_1));
+    Data->Connector->Initialize(
+                    std::make_shared<RawCppHttpClientFactory>(),
+                    std::make_shared<RawCppWebSocketClientFactory>(),
+                    10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome",
+                    PrepareConstantStartupScript(Data),
+                    ParseChromeCommandLine()
+                    );
+    Data->Connector->SetProfilePath(Settings.Profile());
+    Data->Connector->SetExtensionList(Settings.Extensions());
+    Data->Connector->StartScreenCast();
+    Data->Connector->StartProcess();
 
     app->SetData(Data);
     app->SetPostManager(_PostManager);
@@ -2004,13 +2020,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     Client = new PipesClient();
     Parser = new CommandParser();
-    std::string Lang = ws2s(Arguments[1]);
-
     Translate::SetLanguage(Lang);
-    app->GetData()->_ModulesData = LoadModulesData(Lang, Settings.ProxyTunneling(), Pid, app->GetData()->_UnusedModulesData);
     app->SetInitialStateCallback(Lang);
-
-    std::string Key = ws2s(Arguments[2]);
 
     WORKER_LOG(Key);
     Arguments.clear();
@@ -2018,6 +2029,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Client->Start(Key,Pid);
     Layout->EventLoadNoDataPage.push_back(std::bind(&MainApp::LoadNoDataCallback,app.get()));
     Parser->EventLoad.push_back(std::bind(&MainApp::LoadCallback,app.get(),_1));
+    Parser->EventLoad2.push_back(std::bind(&MainApp::Load2Callback,app.get(),_1,_2,_3));
     Parser->EventView.push_back(std::bind(&MainApp::ViewCallback,app.get(),_1));
     Parser->EventGetTabs.push_back(std::bind(&MainApp::GetTabsCallback,app.get(),_1));
     Parser->EventManualBrowserControl.push_back(std::bind(&MainApp::ManualBrowserControlCallback,app.get(),_1));
@@ -2025,8 +2037,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventDisableBorwser.push_back(std::bind(&MainApp::DisableBrowserCallback,app.get()));
     Parser->EventVisible.push_back(std::bind(&MainApp::VisibleCallback,app.get(),_1));
     Parser->EventFlush.push_back(std::bind(&MainApp::FlushCallback,app.get()));
-    Parser->EventBrowserIp.push_back(std::bind(&MainApp::BrowserIpCallback,app.get()));
-    Parser->EventBrowserIpHttps.push_back(std::bind(&MainApp::BrowserIpHttpsCallback,app.get()));
     Parser->EventSetProxy.push_back(std::bind(&MainApp::SetProxyCallback,app.get(),_1,_2,_3,_4,_5,_6));
     Parser->EventAddHeader.push_back(std::bind(&MainApp::AddHeaderCallback,app.get(),_1,_2,_3));
     Parser->EventSetHeaderList.push_back(std::bind(&MainApp::SetHeaderListCallback,app.get(),_1));
@@ -2038,7 +2048,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventRecaptchaV3Result.push_back(std::bind(&MainApp::RecaptchaV3ResultCallback,app.get(),_1,_2));
     Parser->EventGetUrl.push_back(std::bind(&MainApp::GetUrlCallback,app.get()));
     Parser->EventGetBrowserScreenSettings.push_back(std::bind(&MainApp::GetBrowserScreenSettingsCallback,app.get()));
-    Parser->EventResize.push_back(RepositionInterface);
     Parser->EventResize.push_back(std::bind(&MainApp::ResizeCallback,app.get(),_1,_2));
     Parser->EventTimezone.push_back(std::bind(&MainApp::TimezoneCallback,app.get(),_1));
     Parser->EventSetWindow.push_back(std::bind(&MainApp::SetWindowCallback,app.get(),_1));
@@ -2049,6 +2058,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventPopupClose.push_back(std::bind(&MainApp::PopupCloseCallback,app.get(),_1));
     Parser->EventPopupSelect.push_back(std::bind(&MainApp::PopupSelectCallback,app.get(),_1));
     Parser->EventPopupCreate.push_back(std::bind(&MainApp::PopupCreateCallback,app.get(),_1,_2));
+    Parser->EventPopupCreate2.push_back(std::bind(&MainApp::PopupCreate2Callback,app.get(),_1,_2,_3,_4));
     Parser->EventPopupInfo.push_back(std::bind(&MainApp::PopupInfoCallback,app.get()));
     Parser->EventMouseMove.push_back(std::bind(&MainApp::MouseMoveCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10));
     Parser->EventScroll.push_back(std::bind(&MainApp::ScrollCallback,app.get(),_1,_2));
@@ -2058,7 +2068,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventSetStartupScript.push_back(std::bind(&MainApp::SetStartupScriptCallback,app.get(),_1,_2,_3));
     Parser->EventRunTask.push_back(std::bind(&MainApp::RunTaskCallback,app.get(),_1,_2,_3));
     Parser->EventCheckResult.push_back(std::bind(&MainApp::CheckResultCallback,app.get(),_1,_2,_3));
-    Parser->EventSendWorkerSettings.push_back(std::bind(&MainApp::SetWorkerSettingsCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11));
+    Parser->EventSendWorkerSettings.push_back(std::bind(&MainApp::SetWorkerSettingsCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10));
 
     Parser->EventSetPromptResult.push_back(std::bind(&MainApp::SetPromptResultCallback,app.get(),_1));
     Parser->EventSetHttpAuthResult.push_back(std::bind(&MainApp::SetHttpAuthResultCallback,app.get(),_1,_2));
@@ -2072,9 +2082,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventScriptFinished.push_back(std::bind(&MainApp::ScriptFinishedCallback,app.get()));
     Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4));
     Parser->EventSetResources.push_back(std::bind(&MainApp::SetResourceCallback,app.get(),_1));
-    Parser->EventReset.push_back(std::bind(&MainApp::ResetCallback,app.get()));
-    Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get()));
-    Parser->EventResetNoCookies.push_back(std::bind(&MainApp::ResetNoCookiesCallback,app.get()));
+    Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get(), _1));
     Parser->EventIsChanged.push_back(std::bind(&MainApp::IsChangedCallback,app.get()));
     Parser->EventSetNextAction.push_back(std::bind(&MainApp::SetNextActionCallback,app.get(),_1));
     Parser->EventCrush.push_back(std::bind(&MainApp::CrushCallback,app.get()));
@@ -2171,14 +2179,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }*/
 
 
-    SetTimer(hwnd, 0, 15, (TIMERPROC) NULL);
+    SetTimer(hwnd, 0, 5, (TIMERPROC) NULL);
 
     ShowWindow(hwnd, SW_HIDE);
     UpdateWindow(hwnd);
 
-
-    CefRegisterWidevineCdm(GetRelativePathToExe(L"widevine"),0);
-    CefInitialize(main_args, settings, app.get(), NULL);
+    if(app->GetData()->IsRecord)
+        CefInitialize(main_args, settings, app.get(), NULL);
 
     thread_setup();
 
@@ -2195,11 +2202,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     WORKER_LOG("End Main Loop");
 
-    CefShutdown();
+    if(app->GetData()->IsRecord)
+        CefShutdown();
 
     WORKER_LOG("Exit");
-
-    MH_Uninitialize();
 
     return Msg.wParam;
 }

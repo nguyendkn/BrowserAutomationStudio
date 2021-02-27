@@ -160,6 +160,24 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
+    void SubprocessBrowser::PopupCreate2(bool is_silent, const QString& url, const QString& referrer, bool is_instant, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeStartElement("PopupCreate2");
+            xmlWriter.writeAttribute("is_silent", QString::number(is_silent));
+            xmlWriter.writeAttribute("url", url);
+            xmlWriter.writeAttribute("referrer", referrer);
+            xmlWriter.writeAttribute("is_instant", QString::number(is_instant));
+        xmlWriter.writeEndElement();
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("PopupCreate2"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(PopupCreate2()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+    }
+
     void SubprocessBrowser::PopupInfo(const QString& callback)
     {
         QString WriteString;
@@ -305,6 +323,26 @@ namespace BrowserAutomationStudioFramework
 
     }
 
+    void SubprocessBrowser::LoadPage2(const QString& url, const QString& referrer, bool IsInstant, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeStartElement("Load2");
+            xmlWriter.writeAttribute("url", url);
+            xmlWriter.writeAttribute("referrer", referrer);
+            xmlWriter.writeAttribute("instant", IsInstant ? "true" : "false");
+        xmlWriter.writeEndElement();
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("LoadPage ") + url);
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->SetGeneralTimeout(Worker->GetWaiter()->PeekGeneralWait());
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(Loaded2()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+
+    }
+
     void SubprocessBrowser::LoadPageInstant(const QString& url, const QString& callback)
     {
         QString WriteString;
@@ -426,7 +464,6 @@ namespace BrowserAutomationStudioFramework
                 xmlWriter.writeStartElement("SendWorkerSettings");
                     xmlWriter.writeAttribute("BrowserEngine", WorkerSettings->GetBrowserEngineVirtual());
                     xmlWriter.writeAttribute("RecordId", RecordId);
-                    xmlWriter.writeAttribute("SkipFrames", QString::number(WorkerSettings->GetSkipFrames()));
 
                     xmlWriter.writeAttribute("ProxyServer", WorkerSettings->GetProxyServer());
                     xmlWriter.writeAttribute("ProxyPort", QString::number(WorkerSettings->GetProxyPort()));
@@ -469,11 +506,11 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
-    void SubprocessBrowser::NavigateBack(const QString& callback)
+    void SubprocessBrowser::NavigateBack(bool IsInstant, const QString& callback)
     {
         QString WriteString;
         QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("NavigateBack","");
+        xmlWriter.writeTextElement("NavigateBack",IsInstant ? "true" : "false");
 
         Worker->SetScript(callback);
         Worker->SetFailMessage(tr("Timeout during ") + QString("NavigateBack"));
@@ -592,18 +629,6 @@ namespace BrowserAutomationStudioFramework
         if(Worker->GetProcessComunicatorActual())
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
-    void SubprocessBrowser::ResetNoCookies(const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("ResetNoCookies","");
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("ResetNoCookies"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(Reset()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()), 60000);
-        if(Worker->GetProcessComunicatorActual())
-            Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
 
     void SubprocessBrowser::StartManualBrowserControl(const QString& message, const QString& callback)
     {
@@ -613,20 +638,6 @@ namespace BrowserAutomationStudioFramework
 
         Worker->SetScript(callback);
         Worker->GetWaiter()->WaitInfinity(this,SIGNAL(StartManualBrowserControl()), Worker,SLOT(RunSubScript()));
-        if(Worker->GetProcessComunicatorActual())
-            Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
-
-
-    void SubprocessBrowser::Reset(const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("Reset","");
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("Reset"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(Reset()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()), 60000);
         if(Worker->GetProcessComunicatorActual())
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
@@ -799,6 +810,11 @@ namespace BrowserAutomationStudioFramework
                 xmlReader.readNext();
                 Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString().toInt() == 0));
                 emit Loaded();
+            }else if(xmlReader.name() == "Load2" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
+                emit Loaded2();
             }else if(xmlReader.name() == "GetUrl" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -936,6 +952,11 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "PopupCreate" && token == QXmlStreamReader::StartElement)
             {
                 emit PopupCreate();
+            }else if(xmlReader.name() == "PopupCreate2" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
+                emit PopupCreate2();
             }else if(xmlReader.name() == "PopupInfo" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -1163,7 +1184,7 @@ namespace BrowserAutomationStudioFramework
     {
         if(LastPID>0)
         {
-            QString OldConfigDir = QDir(QString("t") + QDir::separator() + QString::number(LastPID)).absolutePath();
+            QString OldConfigDir = QDir(QString("worker/chrome/t") + QDir::separator() + QString::number(LastPID)).absolutePath();
             QDir(OldConfigDir).removeRecursively();
             LastPID = -1;
         }
@@ -1204,44 +1225,7 @@ namespace BrowserAutomationStudioFramework
 
         ClearLastTunnelFolder();
 
-        if(!WorkerSettings->GetProxyTunneling())
-        {
-            Worker->RunSubScript();
-            return;
-        }
-        QString pid = QString::number(Worker->GetProcessComunicator()->GetPID());
-
-        /*QProcess * Tunnel = new QProcess(this);
-        connect(Tunnel,SIGNAL(finished(int)),Tunnel,SLOT(deleteLater()));
-        connect(Tunnel,SIGNAL(finished(int)),Worker,SLOT(RunSubScript()));
-        QDir Current(".");
-        QString SetProxyExe = Current.absoluteFilePath("SetProxy.exe");
-        QStringList Params;
-        Params.append(QString::number(0));
-        Params.append(pid);
-        Params.append(Current.absoluteFilePath("Proxy.dll"));
-        QString WorkingDir = Current.absolutePath();*/
-        QString ConfigDir = QDir(QString("t") + QDir::separator() + pid).absolutePath();
-        QDir Config(ConfigDir);
-
-        QDirIterator it(ConfigDir, QStringList() << "*.*", QDir::Files, QDirIterator::Subdirectories);
-        while (it.hasNext())
-            QFile(it.next()).remove();
-
-        Config.mkpath(".");
-
-        {
-            QFile file(Config.absoluteFilePath("s"));
-            file.open(QIODevice::WriteOnly);
-            file.write("\x4d\x43\x23\x23\x01\x01\x01\x01\x73\x6f\x63\x6b\x73\x63\x61\x70\x36\x34\x2e\x63\x6f\x6d\x23\xa5\x68\xe4\xb4\x0d\xb4\x06\xfd\x29\xdb\x14\x9b\xe3\x56\x3b\xb1\x29\x00\x00\x00\x9f\x1d\x56\x48\xcf\x61\x27\xd7\xfc\x8d\x18\x4e\x89\xfd\x2e\x59\x72\x11\x95\xa4\x89\xcb\x7f\xe6\xc4\x44\x06\xd8\xf8\xc2\xd1\x8a\xd6\x18\xb7\x8f\xdb\xda\x48\x41\xd7\x23\x4d\x43\x00",88);
-            file.close();
-        }
-
-        /*Tunnel->setProgram(SetProxyExe);
-        Tunnel->setArguments(Params);
-        Tunnel->setWorkingDirectory(WorkingDir);*/
         LastPID = Worker->GetProcessComunicator()->GetPID();
-        //Tunnel->start();
 
         Worker->RunSubScript();
 

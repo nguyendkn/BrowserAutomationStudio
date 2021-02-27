@@ -85,16 +85,6 @@ namespace BrowserAutomationStudioFramework
                 xmlReader.readNext();
                 Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
                 emit FindCacheByMaskBase64();
-            }else if(xmlReader.name() == "BrowserIp" && token == QXmlStreamReader::StartElement)
-            {
-                xmlReader.readNext();
-                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
-                emit BrowserIp();
-            }else if(xmlReader.name() == "BrowserIpHttps" && token == QXmlStreamReader::StartElement)
-            {
-                xmlReader.readNext();
-                Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
-                emit BrowserIpHttps();
             }else if(xmlReader.name() == "FindCacheByMaskString" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -402,31 +392,6 @@ namespace BrowserAutomationStudioFramework
         Worker->SetScript(callback);
         Worker->SetFailMessage(tr("Timeout during ") + QString("FindCacheByMaskBase64"));
         Worker->GetWaiter()->WaitForSignal(this,SIGNAL(FindCacheByMaskBase64()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
-        Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
-
-
-    void SubprocessNetworkAccessManager::BrowserIp(const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("BrowserIp","");
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("BrowserIp"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(BrowserIp()), Worker,SLOT(RunSubScript()), Worker,SLOT(RunSubScript()));
-        Worker->GetProcessComunicatorActual()->Send(WriteString);
-    }
-
-    void SubprocessNetworkAccessManager::BrowserIpHttps(const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("BrowserIpHttps","");
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("BrowserIpHttps"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(BrowserIpHttps()), Worker,SLOT(RunSubScript()), Worker,SLOT(RunSubScript()));
         Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 

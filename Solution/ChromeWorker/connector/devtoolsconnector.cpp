@@ -218,7 +218,7 @@ void DevToolsConnector::StartProcess()
 
     CommandLine += std::wstring(L"about:blank");
 
-    ShellExecute(0, 0, L"worker.exe", CommandLine.c_str(), s2ws(GlobalState.ChromeExecutableLocation).c_str(), SW_SHOW);
+    ShellExecute(0, 0, L"worker.exe", CommandLine.c_str(), GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation)).c_str(), SW_SHOW);
 }
 
 void DevToolsConnector::TryToConnect()

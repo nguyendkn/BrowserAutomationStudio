@@ -1961,7 +1961,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     std::make_shared<RawCppWebSocketClientFactory>(),
-                    10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker/chrome",
+                    10000 + rand()%10000, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker\\chrome\\",
                     PrepareConstantStartupScript(Data),
                     ParseChromeCommandLine()
                     );

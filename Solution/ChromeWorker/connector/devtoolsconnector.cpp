@@ -197,8 +197,8 @@ void DevToolsConnector::StartProcess()
 
     if(!ProfilePath.empty())
     {
-        CommandLine += std::wstring(L"--user-data-dir=") + ProfilePath;
-        CommandLine += std::wstring(L" ");
+        CommandLine += std::wstring(L"--user-data-dir=\"") + ProfilePath;
+        CommandLine += std::wstring(L"\" ");
     }
 
     if(!Extensions.empty())

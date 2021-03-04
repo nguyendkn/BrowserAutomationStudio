@@ -170,6 +170,10 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--disable-site-isolation-trials");
     CommandLine += std::wstring(L" ");
 
+    //Temporary disable sandboxing, otherwise render process can't access filesystem and therefore obtain fingerprint data.
+    CommandLine += std::wstring(L"--no-sandbox");
+    CommandLine += std::wstring(L" ");
+
     CommandLine += std::wstring(L"--force-device-scale-factor=1");
     CommandLine += std::wstring(L" ");
 

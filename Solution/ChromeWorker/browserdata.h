@@ -119,8 +119,10 @@ public:
     //Tesing
     bool IsTesing;
 
-    //Remote debugging port
+    //Remote debugging port for CEF browsers
     int RemoteDebuggingPort;
+    //Remote debugging port for Chromium browsers
+    int MainRemoteDebuggingPort;
 
     BrowserContextMenu _BrowserContextMenu;
 

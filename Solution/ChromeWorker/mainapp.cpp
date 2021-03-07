@@ -1419,7 +1419,7 @@ void MainApp::CreateDetectorBrowser()
         std::string FingerprintKey = ReadAllString("fingerprint-detector.txt");
         ReplaceAllInPlace(ScenarioScript,"_RestoreFingerprintKey",picojson::value(FingerprintKey).serialize());
         ReplaceAllInPlace(ScenarioScript,"_CurrentLocale",picojson::value(Lang).serialize());
-        ReplaceAllInPlace(ScenarioScript,"_RemoteDebuggingPort",std::to_string(Data->RemoteDebuggingPort));
+        ReplaceAllInPlace(ScenarioScript,"_RemoteDebuggingPort",std::to_string(Data->MainRemoteDebuggingPort));
         WriteStringToFile("html/detector/index_prepared.html", ScenarioScript);
         BrowserDetector->GetMainFrame()->LoadURL("file:///html/detector/index_prepared.html");
     }else

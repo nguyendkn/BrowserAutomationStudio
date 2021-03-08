@@ -216,8 +216,8 @@ void DevToolsConnector::StartProcess()
             }
             ExtensionsString += ExtensionString;
         }
-        CommandLine += std::wstring(L"--load-extension=") + ExtensionsString;
-        CommandLine += std::wstring(L" ");
+        CommandLine += std::wstring(L"--load-extension=\"") + ExtensionsString;
+        CommandLine += std::wstring(L"\" ");
     }
 
     CommandLine += std::wstring(L"about:blank");

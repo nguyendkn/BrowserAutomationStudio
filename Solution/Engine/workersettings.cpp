@@ -817,23 +817,6 @@ namespace BrowserAutomationStudioFramework
        return randomString;
     }
 
-    void WorkerSettings::RemoveOldTempProfiles()
-    {
-        QDirIterator it("prof", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
-        while (it.hasNext())
-        {
-            QString dir = it.next();
-            QString FilePath = dir + "/LOCK";
-
-            QFile(FilePath).remove();
-
-            if(!QFileInfo(FilePath).exists())
-            {
-                QDir(dir).removeRecursively();
-            }
-        }
-    }
-
     void WorkerSettings::UpdateFingerprintsSettings()
     {
         RemoveOldFingerprintSettings();
@@ -1089,8 +1072,6 @@ namespace BrowserAutomationStudioFramework
         QStringList res;
         if(Engine == QString("BASChrome"))
         {
-            RemoveOldTempProfiles();
-
             res.append(Language);
 
             res.append("--UseFlash");

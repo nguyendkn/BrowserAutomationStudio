@@ -129,7 +129,6 @@ namespace BrowserAutomationStudioFramework
 
     private:
         QString GetRandomString();
-        void RemoveOldTempProfiles();
         void RemoveOldFingerprintSettings();
         void UpdateFingerprintsSettings();
 

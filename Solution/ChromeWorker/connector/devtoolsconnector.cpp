@@ -180,6 +180,11 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--lang=en");
     CommandLine += std::wstring(L" ");
 
+    CommandLine += std::wstring(L"--noerrdialogs");
+    CommandLine += std::wstring(L" ");
+
+
+
     CommandLine += std::wstring(L"--disable-smooth-scrolling");
     CommandLine += std::wstring(L" ");
 

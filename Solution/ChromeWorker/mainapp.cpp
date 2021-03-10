@@ -1585,7 +1585,7 @@ void MainApp::VisibleCallback(bool visible)
 void MainApp::FlushCallback()
 {
     WORKER_LOG(std::string("FlushCallback "));
-    CefCookieManager::GetGlobalManager(NULL)->FlushStore(NULL);
+    Data->Connector->CloseBrowser();
 }
 
 void MainApp::Hide()

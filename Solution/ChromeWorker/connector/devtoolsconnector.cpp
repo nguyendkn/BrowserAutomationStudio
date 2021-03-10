@@ -1791,6 +1791,12 @@ Async DevToolsConnector::CloseTab(int Index, int Timeout)
     return NewAction->GetResult();
 }
 
+void DevToolsConnector::CloseBrowser()
+{
+    std::map<std::string, Variant> Params;
+    SendWebSocket("Browser.close",Params,std::string());
+}
+
 Async DevToolsConnector::SetStartupScript(const std::string& Script, int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;

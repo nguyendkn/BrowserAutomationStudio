@@ -144,6 +144,7 @@ class DevToolsConnector
         //Browser life cycle
         Async Reset(int Timeout = -1);
         bool IsLoading();
+        void CloseBrowser();
 
         //Tabs
         Async GetTabsList(int Timeout = -1);

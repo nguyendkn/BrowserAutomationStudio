@@ -258,6 +258,12 @@ namespace BrowserAutomationStudioFramework
     {
         return Profile;
     }
+    QString WorkerSettings::GetRealProfile()
+    {
+        if(!Profile.isEmpty())
+            return Profile;
+        return QFileInfo(TempProfile).absoluteFilePath();
+    }
     QString WorkerSettings::GetWorkerPath()
     {
         return PathSafe;

@@ -34,6 +34,7 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetWorkerPath() = 0;
         virtual bool GetUseFlash() = 0;
         virtual QString GetProfile() = 0;
+        virtual QString GetRealProfile() = 0;
         virtual QString GetExtensions() = 0;
         virtual QString GetBrowserEngine() = 0;
         virtual QString GetBrowserEngineVirtual() = 0;

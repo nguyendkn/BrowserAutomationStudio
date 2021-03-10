@@ -93,6 +93,8 @@ namespace BrowserAutomationStudioFramework
         virtual void SetBrowserEngineVirtual(const QString& BrowserEngine);
 
         virtual QString GetProfile();
+        virtual QString GetRealProfile();
+
         virtual bool GetUseFlash();
 
         virtual QString GetProxyServer();

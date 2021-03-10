@@ -1177,7 +1177,7 @@ namespace BrowserAutomationStudioFramework
         {
             return res;
         }
-        return WorkerSettings->GetProfile();
+        return WorkerSettings->GetRealProfile();
     }
 
     void SubprocessBrowser::ClearLastTunnelFolder()

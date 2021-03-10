@@ -1,5 +1,8 @@
 #include "rawcppwebsocketclient.h"
 #include "ixwebsocket/IXNetSystem.h"
+#include <fstream>
+#include "converter.h"
+
 
 using namespace std::placeholders;
 using namespace std::chrono;
@@ -8,6 +11,11 @@ using namespace std::chrono;
 RawCppWebSocketClient::~RawCppWebSocketClient()
 {
     Disconnect();
+}
+
+void RawCppWebSocketClient::SetLogPath(const std::wstring& LogPath)
+{
+    this->LogPath = LogPath;
 }
 
 long long RawCppWebSocketClient::Now()
@@ -46,6 +54,17 @@ void RawCppWebSocketClient::Timer()
     {
         if(_Message.Type == ReceivedMessage)
         {
+            if(!LogPath.empty())
+            {
+                std::wofstream outfile(LogPath, std::ios::binary | std::ios::app);
+                if(outfile.is_open())
+                {
+                    outfile << L" --- " << s2ws(_Message.Data) << std::endl;;
+                }
+                outfile.flush();
+                outfile.close();
+            }
+
             for(auto f:OnMessage)
                 f(_Message.Data);
         }else if(_Message.Type == Connection)
@@ -116,6 +135,18 @@ void RawCppWebSocketClient::Disconnect()
 
 void RawCppWebSocketClient::Send(const std::string& Data)
 {
+
+    if(!LogPath.empty())
+    {
+        std::wofstream outfile(LogPath, std::ios::binary | std::ios::app);
+        if(outfile.is_open())
+        {
+            outfile << L" +++ " << s2ws(Data) << std::endl;;
+        }
+        outfile.flush();
+        outfile.close();
+    }
+
     if(!WebSocket)
         return;
 

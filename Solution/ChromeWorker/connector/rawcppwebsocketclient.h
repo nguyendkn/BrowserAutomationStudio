@@ -26,6 +26,8 @@ class RawCppWebSocketClient : public IWebSocketClient
     std::mutex DataMutex;
     std::vector<MessageClass> Messages;
 
+    std::wstring LogPath;
+
     long long ConnectionStart = 0;
 
 public:
@@ -38,6 +40,8 @@ public:
 
     virtual void GlobalActivate();
     virtual void GlobalDeactivate();
+
+    void SetLogPath(const std::wstring& LogPath);
 
 private:
     void OnMessageFunction(const ix::WebSocketMessagePtr& Message);

@@ -1959,13 +1959,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->OnNativeDialog.push_back(std::bind(&MainApp::OnNativeDialog,app.get(),_1));
     Data->Connector->OnDownloadStarted.push_back(std::bind(&MainApp::OnDownloadStarted,app.get(),_1));
     Data->MainRemoteDebuggingPort = 10000 + rand()%10000;
+    std::shared_ptr<IWebSocketClientFactory> WebScoketFactory = std::make_shared<RawCppWebSocketClientFactory>();
+    //WebScoketFactory->SetLogPath(Settings.Profile() + std::wstring(L"/cdp.txt"));
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
-                    std::make_shared<RawCppWebSocketClientFactory>(),
+                    WebScoketFactory,
                     Data->MainRemoteDebuggingPort, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker\\chrome\\",
                     PrepareConstantStartupScript(Data),
                     ParseChromeCommandLine()
                     );
+    WebScoketFactory.reset();
     Data->Connector->SetProfilePath(Settings.Profile());
     Data->Connector->SetExtensionList(Settings.Extensions());
     Data->Connector->StartScreenCast();

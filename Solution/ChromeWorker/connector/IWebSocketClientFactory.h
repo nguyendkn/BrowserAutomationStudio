@@ -3,10 +3,10 @@
 
 #include "IWebSocketClient.h"
 
-
 class IWebSocketClientFactory
 {
     public:
+    virtual void SetLogPath(const std::wstring& LogPath) = 0;
     virtual IWebSocketClient* Create() = 0;
 };
 

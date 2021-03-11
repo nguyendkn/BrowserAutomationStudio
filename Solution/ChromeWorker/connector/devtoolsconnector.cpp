@@ -1250,6 +1250,16 @@ void DevToolsConnector::Timer()
                 }else
                 {
                     bool HasRunningActionWithSameGroupId = false;
+                    bool HasRunningScreenCastAction = false;
+
+                    for(std::shared_ptr<IDevToolsAction> CurrentAction : Actions)
+                    {
+                        if(CurrentAction->GetTypeName() == "StartScreencast" && CurrentAction->GetState() == IDevToolsAction::Running)
+                        {
+                            HasRunningScreenCastAction = true;
+                            break;
+                        }
+                    }
 
                     for(std::shared_ptr<IDevToolsAction> CurrentAction : Actions)
                     {
@@ -1260,7 +1270,7 @@ void DevToolsConnector::Timer()
                         }
                     }
 
-                    CanRun = !HasRunningActionWithSameGroupId;
+                    CanRun = !HasRunningActionWithSameGroupId && !HasRunningScreenCastAction;
                 }
 
                 if(CanRun)

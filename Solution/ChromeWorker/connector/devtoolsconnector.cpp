@@ -315,9 +315,14 @@ void DevToolsConnector::OnWebSocketConnected(bool IsSuccess)
         }
         return;
     }
-    ConnectionState = WaitingForAutoconnectEnable;
-    GlobalState.WebSocketClient->Send(std::string("{\"id\": 1,\"method\": \"Target.setDiscoverTargets\", \"params\": {\"discover\": true}}"));
 
+    std::map<std::string, Variant> CurrentParams;
+
+    CurrentParams["downloadPath"] = Variant(ws2s(GetRelativePathToParentFolder(L"")));
+    CurrentParams["behavior"] = Variant(std::string("allowAndName"));
+
+    SendWebSocket("Browser.setDownloadBehavior",  CurrentParams, std::string());
+    ConnectionState = WaitingForDownloadsEnable;
 }
 
 void DevToolsConnector::OnWebSocketDisconnected()
@@ -487,20 +492,15 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             GlobalState.CachedRequests.erase(Id);
         }
 
-        //Autocunnect responce has been obtained, waiting to connect for at least one tab
-        if (ConnectionState == WaitingForAutoconnectEnable && Id == 1)
+        if (ConnectionState == WaitingForDownloadsEnable)
         {
-            std::map<std::string, Variant> CurrentParams;
-
-            CurrentParams["downloadPath"] = Variant(ws2s(GetRelativePathToParentFolder(L"")));
-            CurrentParams["behavior"] = Variant(std::string("allowAndName"));
-
-            SendWebSocket("Browser.setDownloadBehavior",  CurrentParams, std::string());
-            ConnectionState = WaitingForDownloadsEnable;
+            ConnectionState = WaitingForAutoconnectEnable;
+            GlobalState.WebSocketClient->Send(std::string("{\"id\": 1,\"method\": \"Target.setDiscoverTargets\", \"params\": {\"discover\": true}}"));
             return;
         }
 
-        if (ConnectionState == WaitingForDownloadsEnable)
+        //Autocunnect responce has been obtained, waiting to connect for at least one tab
+        if (ConnectionState == WaitingForAutoconnectEnable && Id == 1)
         {
             ConnectionState = WaitingFirstTab;
             return;

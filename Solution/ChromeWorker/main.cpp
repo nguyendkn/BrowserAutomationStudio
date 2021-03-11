@@ -35,6 +35,7 @@
 #include "rawcppwebsocketclientfactory.h"
 #include "preparestartupscript.h"
 #include "chromecommandlineparser.h"
+#include "mixnumbers.h"
 
 
 #if defined(BAS_DEBUG)
@@ -1768,7 +1769,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
 
 
-    std::srand(std::time(0));
+    std::srand(MixNumbers(clock(), time(NULL), GetCurrentProcessId()));
 
     CefMainArgs main_args(hInstance);
 

@@ -63,6 +63,7 @@ SOURCES += main.cpp \
     ipcsimple.cpp \
     mainapp.cpp \
     mainhandler.cpp \
+    mixnumbers.cpp \
     newtabschemehandlerfactory.cpp \
     notificationmanager.cpp \
     pipesclient.cpp \
@@ -216,6 +217,7 @@ HEADERS += \
     ipcsimple.h \
     mainapp.h \
     mainhandler.h \
+    mixnumbers.h \
     newtabschemehandlerfactory.h \
     notificationmanager.h \
     pipesclient.h \

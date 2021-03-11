@@ -81,6 +81,9 @@ namespace BrowserAutomationStudioFramework
 
     ScriptWorker::~ScriptWorker()
     {
+        if(Browser)
+            Browser->SetWorker(0);
+
         EmbeddedTaskKill();
 
         for(FunctionRunData* func:FunctionDataList)

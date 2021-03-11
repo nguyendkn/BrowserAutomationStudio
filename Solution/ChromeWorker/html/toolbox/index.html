@@ -5402,20 +5402,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= variable %> = _result() == 1
       <% if(isvisible){ %>
         _if(<%= variable %>, function(){
-          <%= path %>.style("display")!
-          STYLE_DISPLAY = _result()
-
-          <%= path %>.style("visibility")!
-          STYLE2_DISPLAY = _result()
-
-          <%= path %>.script("self.getBoundingClientRect().height")!
-          STYLE_HEIGHT = _result()
-
-          <%= path %>.script("self.getBoundingClientRect().width")!
-          STYLE_WIDTH = _result()
-          
-          <%= variable %> = STYLE_DISPLAY != "none" && STYLE2_DISPLAY != "hidden" && STYLE_HEIGHT != "0"  && STYLE_WIDTH != "0"
-          
+          <%= path %>.script("document.readyState!='loading' && self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'")!
+          <%= variable %> = _result().indexOf("true")>=0
         })!
       <% } %>
 

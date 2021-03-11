@@ -5541,7 +5541,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="style_code">
       /*Browser*/
       <%= waiter %>
-      <%= path %>.style(<%= style %>)!
+      <%= path %>.script('window.getComputedStyle(self)[' + JSON.stringify(<%= style %>) + ']')!
       <%= variable %> = _result()
   </script>
 

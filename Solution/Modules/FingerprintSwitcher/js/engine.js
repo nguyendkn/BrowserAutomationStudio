@@ -637,22 +637,6 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	_settings(FINGEPRINT_SETTINGS)!
 
-	PAYLOAD = ""
-
-	if(typeof(FINGERPRINT_JSON["payload2"]) == "string")
-	{
-		PAYLOAD = FINGERPRINT_JSON["payload2"];
-	}else if(typeof(FINGERPRINT_JSON["payload"]) == "string")
-	{
-		PAYLOAD = FINGERPRINT_JSON["payload"];
-	}
-
-	_if(PAYLOAD.length > 0, function(){
-		onloadjavascriptinternal(PAYLOAD, "_fingerprint")!
-	})!
-
-	delete PAYLOAD
-
 }
 
 

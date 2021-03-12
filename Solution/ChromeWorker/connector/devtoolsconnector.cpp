@@ -1537,6 +1537,43 @@ Async DevToolsConnector::Screenshot(int X, int Y, int Width, int Height, int Tim
     return NewAction->GetResult();
 }
 
+void DevToolsConnector::EnableBackgroundMode()
+{
+    SetMinCapturePeriod(90);
+}
+
+void DevToolsConnector::DisableBackgroundMode()
+{
+    SetMinCapturePeriod(35);
+}
+
+void DevToolsConnector::SetMinCapturePeriod(int MinCapturePeriod)
+{
+    //Create folder if needed
+    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
+    CreateDirectoryA(Folder.c_str(), NULL);
+    Folder += GlobalState.ParentProcessId;
+    CreateDirectoryA(Folder.c_str(), NULL);
+
+    //Path of file to write
+    std::string FrameRatePath = Folder + std::string("/f");
+
+    //This will create file, which tells browser to change framerate
+    try
+    {
+        std::ofstream outfile(FrameRatePath, std::ios::binary);
+        if(outfile.is_open())
+        {
+            outfile << std::to_string(MinCapturePeriod);
+        }
+        outfile.flush();
+        outfile.close();
+    } catch(...)
+    {
+
+    }
+}
+
 Async DevToolsConnector::StartScreenCast(int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;

@@ -1576,9 +1576,11 @@ void MainApp::VisibleCallback(bool visible)
         //MoveWindow(Data->MainWindowHandle,0,0,rect.right-rect.left,rect.bottom-rect.top,true);
         SetForegroundWindow(Data->_MainWindowHandle);
         Layout->Focus();
+        Data->Connector->DisableBackgroundMode();
     }else
     {
         ShowWindow(Data->_MainWindowHandle, SW_HIDE);
+        Data->Connector->EnableBackgroundMode();
     }
 }
 
@@ -1591,6 +1593,7 @@ void MainApp::FlushCallback()
 void MainApp::Hide()
 {
     ShowWindow(Data->_MainWindowHandle, SW_HIDE);
+    Data->Connector->EnableBackgroundMode();
 }
 
 void MainApp::ToggleDevTools()

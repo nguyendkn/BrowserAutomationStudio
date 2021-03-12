@@ -1970,6 +1970,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     ParseChromeCommandLine()
                     );
     WebScoketFactory.reset();
+    if(Data->IsRecord)
+    {
+        Data->Connector->DisableBackgroundMode();
+    }else
+    {
+        Data->Connector->EnableBackgroundMode();
+    }
     Data->Connector->SetProfilePath(Settings.Profile());
     Data->Connector->SetExtensionList(Settings.Extensions());
     Data->Connector->StartScreenCast();

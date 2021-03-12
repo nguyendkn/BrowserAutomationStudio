@@ -99,7 +99,8 @@ class DevToolsConnector
     void HandleIPCData();
     void ParseNewTabReferrer(const std::string& NewTabReferrer);
     void ResetProxy(const std::string& ParentProcessId);
-
+    //https://source.chromium.org/chromium/chromium/src/+/master:content/browser/devtools/devtools_video_consumer.cc;drc=267e9d603200302cd937cc5b788f044186a1b8c6;l=25
+    void SetMinCapturePeriod(int MinCapturePeriod);
 
     public:
 
@@ -158,6 +159,8 @@ class DevToolsConnector
         Async Screenshot(int X, int Y, int Width, int Height, int Timeout = -1);
         Async StartScreenCast(int Timeout = -1);
         Async StopScreenCast(int Timeout = -1);
+        void EnableBackgroundMode();
+        void DisableBackgroundMode();
 
         //Network
         Async Load(const std::string& Url, bool IsInstant = false, const std::string& Referrer = std::string(), int Timeout = -1);

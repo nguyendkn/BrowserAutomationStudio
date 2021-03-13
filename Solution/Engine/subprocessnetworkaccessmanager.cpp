@@ -35,6 +35,9 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "SetAcceptLanguagePattern" && token == QXmlStreamReader::StartElement)
             {
                 emit SetAcceptLanguagePattern();
+            }else if(xmlReader.name() == "SetUserAgentData" && token == QXmlStreamReader::StartElement)
+            {
+                emit SetUserAgentData();
             }else if(xmlReader.name() == "CleanHeader" && token == QXmlStreamReader::StartElement)
             {
                 emit CleanHeader();
@@ -169,6 +172,21 @@ namespace BrowserAutomationStudioFramework
         Worker->SetScript(callback);
         Worker->SetFailMessage(tr("Timeout during ") + QString("SetAcceptLanguagePattern"));
         Worker->GetWaiter()->WaitForSignal(this,SIGNAL(SetAcceptLanguagePattern()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        Worker->GetProcessComunicatorActual()->Send(WriteString);
+    }
+
+    void SubprocessNetworkAccessManager::SetUserAgentData(const QString& data,const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeStartElement("SetUserAgentData");
+            xmlWriter.writeAttribute("data", data);
+        xmlWriter.writeEndElement();
+
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("SetUserAgentData"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(SetUserAgentData()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
         Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 

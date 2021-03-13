@@ -37,6 +37,7 @@ namespace BrowserAutomationStudioFramework
         void AddHeader();
         void SetHeaderList();
         void SetAcceptLanguagePattern();
+        void SetUserAgentData();
         void RestrictPopups();
         void AllowPopups();
         void RestrictDownloads();
@@ -48,6 +49,7 @@ namespace BrowserAutomationStudioFramework
         void SetHeaderList(const QString& json,const QString& callback);
         void CleanHeader(const QString& callback);
         virtual void SetAcceptLanguagePattern(const QString& pattern,const QString& callback);
+        virtual void SetUserAgentData(const QString& data,const QString& callback);
         virtual void SetProxy(const QString& server, int Port, bool IsHttp, const QString& name, const QString& password,const QString& target, const QString& callback);
         virtual void AddCacheMaskAllow(const QString& Mask, const QString& callback);
         virtual void AddCacheMaskDeny(const QString& Mask, const QString& callback);

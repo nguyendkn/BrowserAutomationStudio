@@ -361,6 +361,11 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	})!
 	
 	//User agent
+
+	_if(typeof(FINGERPRINT_JSON["useragentdata"]) == "string", function(){
+		_set_user_agent_data(FINGERPRINT_JSON["useragentdata"])!
+	})!
+
 	try
 	{
 		FINGERPRINT_USERAGENT = FINGERPRINT_JSON["ua"] || ""

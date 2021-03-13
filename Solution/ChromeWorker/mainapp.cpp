@@ -1796,6 +1796,20 @@ void MainApp::SetAcceptLanguagePatternCallback(const std::string& pattern)
     });
 }
 
+
+void MainApp::SetUserAgentDataCallback(const std::string& data)
+{
+
+    std::vector<std::pair<std::string,std::string> > HeadersCopy = PrepareHeaders(Data);
+
+    Async Result = Data->Connector->SetUserAgentData(data, HeadersCopy);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<SetUserAgentData></SetUserAgentData>");
+    });
+}
+
 void MainApp::SetUserAgentCallback(const std::string& value)
 {
     /*{

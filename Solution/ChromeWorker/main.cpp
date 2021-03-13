@@ -2053,6 +2053,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventAddHeader.push_back(std::bind(&MainApp::AddHeaderCallback,app.get(),_1,_2,_3));
     Parser->EventSetHeaderList.push_back(std::bind(&MainApp::SetHeaderListCallback,app.get(),_1));
     Parser->EventSetAcceptLanguagePattern.push_back(std::bind(&MainApp::SetAcceptLanguagePatternCallback,app.get(),_1));
+    Parser->EventSetUserAgentData.push_back(std::bind(&MainApp::SetUserAgentDataCallback,app.get(),_1));
     Parser->EventCleanHeader.push_back(std::bind(&MainApp::CleanHeaderCallback,app.get()));
     Parser->EventSetUserAgent.push_back(std::bind(&MainApp::SetUserAgentCallback,app.get(),_1));
     Parser->EventPrepareFunction.push_back(std::bind(&MainApp::PrepareFunctionCallback,app.get(),_1));

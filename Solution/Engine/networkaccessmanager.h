@@ -45,6 +45,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetHeaderList(const QString& json,const QString& callback);
         virtual void CleanHeader(const QString& callback);
         virtual void SetAcceptLanguagePattern(const QString& pattern,const QString& callback);
+        virtual void SetUserAgentData(const QString& data,const QString& callback);
 
         virtual void AddCacheMaskAllow(const QString& Mask, const QString& callback);
         virtual void AddCacheMaskDeny(const QString& Mask, const QString& callback);

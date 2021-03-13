@@ -24,4 +24,6 @@ void DevToolsGlobalState::Reset()
     CachedRequests.clear();
     LoadedUrls.clear();
     IsProxySet = false;
+    IsUserAgentChanged = false;
+    UserAgentData.clear();
 }

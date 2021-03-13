@@ -1699,6 +1699,21 @@ Async DevToolsConnector::SetHeaders(const std::vector<std::pair<std::string, std
     return NewAction->GetResult();
 }
 
+Async DevToolsConnector::SetUserAgentData(const std::string& Data, const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
+{
+    GlobalState.UserAgentData = Data;
+
+    if(GlobalState.IsUserAgentChanged)
+    {
+        return SetHeaders(Headers, Timeout);
+    }
+
+    Async Result = std::make_shared<AsyncResult>();
+    Result->Success();
+    return Result;
+}
+
+
 
 Async DevToolsConnector::NavigateBack(bool IsInstant, int Timeout)
 {

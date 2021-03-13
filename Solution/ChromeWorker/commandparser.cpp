@@ -975,6 +975,24 @@ void CommandParser::Parse(const std::string& Xml)
                 f(pattern);
         }
 
+        CommandNode = MessagesNode->first_node("SetUserAgentData");
+        if(CommandNode)
+        {
+            WORKER_LOG("SetUserAgentData");
+
+            std::string data;
+            for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
+            {
+                if(std::string(attr->name()) == std::string("data"))
+                {
+                    data = attr->value();
+                }
+            }
+
+            for(auto f:EventSetUserAgentData)
+                f(data);
+        }
+
 
         CommandNode = MessagesNode->first_node("CleanHeader");
         if(CommandNode)

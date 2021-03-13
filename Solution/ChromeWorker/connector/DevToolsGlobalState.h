@@ -103,6 +103,9 @@ struct DevToolsGlobalState
     //URL - status
     std::map<std::string, int> LoadedUrls;
 
+    //User agent data
+    bool IsUserAgentChanged = false;
+    std::string UserAgentData;
 
     //This method is called when restarting browser
     void Reset();

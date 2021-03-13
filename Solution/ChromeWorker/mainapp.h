@@ -260,6 +260,7 @@ public:
     void AddHeaderCallback(const std::string& key,const std::string& value, const std::string& target);
     void SetHeaderListCallback(const std::string& json);
     void SetAcceptLanguagePatternCallback(const std::string& pattern);
+    void SetUserAgentDataCallback(const std::string& data);
     void CleanHeaderCallback();
     void GetUrlCallback();
     void GetBrowserScreenSettingsCallback();

@@ -43,6 +43,13 @@ namespace BrowserAutomationStudioFramework
         Worker->RunSubScript();
     }
 
+    void NetworkAccessManager::SetUserAgentData(const QString& data,const QString& callback)
+    {
+        Worker->SetScript(callback);
+        Worker->RunSubScript();
+    }
+
+
     void NetworkAccessManager::CleanHeader(const QString& callback)
     {
         CaptureManager->CleanHeader();

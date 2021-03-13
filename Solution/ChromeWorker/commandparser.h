@@ -29,6 +29,7 @@ public:
     std::vector<std::function<void(const std::string&, const std::string&, const std::string&)> > EventAddHeader;
     std::vector<std::function<void(const std::string&)> > EventSetHeaderList;
     std::vector<std::function<void(const std::string&)> > EventSetAcceptLanguagePattern;
+    std::vector<std::function<void(const std::string&)> > EventSetUserAgentData;
     std::vector<std::function<void(const std::string&)> > EventSetUserAgent;
     std::vector<std::function<void(const std::string&)> > EventPrepareFunction;
     std::vector<std::function<void(const std::string&)> > EventRecaptchaV3List;

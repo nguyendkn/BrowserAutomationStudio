@@ -63,6 +63,14 @@ function _set_accept_language_pattern(pattern, callback)
     })
 }
 
+function _set_user_agent_data(data, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        _get_network_access_manager().SetUserAgentData(_ARG[0], _get_function_body(_ARG[1]));
+    })
+}
+
 function header_order(json, callback)
 {
     _ARG = arguments

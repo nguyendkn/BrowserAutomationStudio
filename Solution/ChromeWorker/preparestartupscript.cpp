@@ -46,6 +46,26 @@ std::string PrepareMutableStartupScript(BrowserData* Data)
     return jscode;
 }
 
+std::vector<std::pair<std::string,std::string> > PrepareHeaders(BrowserData* Data)
+{
+    std::vector<std::pair<std::string,std::string> >HeadersCopy;
+    for(std::pair<std::string, std::string>& Header:Data->_Headers)
+    {
+        if(Header.first == "Accept-Language")
+        {
+            AcceptLanguageCombineResult CombineAcceptLanguage = CombineAcceptLanguageWithPattern(Header.second,Data->_AcceptLanguagePattern);
+            std::pair<std::string, std::string> AcceptLanguage;
+            AcceptLanguage.first = Header.first;
+            AcceptLanguage.second = CombineAcceptLanguage.Header;
+            HeadersCopy.push_back(AcceptLanguage);
+        }else
+        {
+            HeadersCopy.push_back(Header);
+        }
+    }
+    return HeadersCopy;
+}
+
 void UpdateBrowserData(BrowserData* Data)
 {
     std::string UserAgent;

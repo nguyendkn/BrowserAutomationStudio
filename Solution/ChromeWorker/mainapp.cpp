@@ -1764,7 +1764,10 @@ void MainApp::AddHeaderCallback(const std::string& key,const std::string& value,
     if(!value.empty())
         Data->_Headers.push_back(std::pair<std::string,std::string>(key, value));
     UpdateBrowserData(Data);
-    Async Result = Data->Connector->SetHeaders(Data->_Headers);
+
+    std::vector<std::pair<std::string,std::string> > HeadersCopy = PrepareHeaders(Data);
+
+    Async Result = Data->Connector->SetHeaders(HeadersCopy);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
@@ -1783,7 +1786,14 @@ void MainApp::SetAcceptLanguagePatternCallback(const std::string& pattern)
 {
     Data->_AcceptLanguagePattern = pattern;
     UpdateBrowserData(Data);
-    SendTextResponce("<SetAcceptLanguagePattern></SetAcceptLanguagePattern>");
+    std::vector<std::pair<std::string,std::string> > HeadersCopy = PrepareHeaders(Data);
+
+    Async Result = Data->Connector->SetHeaders(HeadersCopy);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<SetAcceptLanguagePattern></SetAcceptLanguagePattern>");
+    });
 }
 
 void MainApp::SetUserAgentCallback(const std::string& value)

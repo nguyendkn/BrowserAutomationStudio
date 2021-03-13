@@ -380,7 +380,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	
 	_if(FINGERPRINT_WIDTH > 0, function(){
-		resize(FINGERPRINT_WIDTH, FINGERPRINT_HEIGHT - 32)!
+		resize(FINGERPRINT_WIDTH, FINGERPRINT_HEIGHT)!
 	})!
 
 	

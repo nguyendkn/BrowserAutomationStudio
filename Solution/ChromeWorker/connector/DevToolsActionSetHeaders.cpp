@@ -3,6 +3,8 @@
 void DevToolsActionSetHeaders::Run()
 {
     State = Running;
+    IsSettingHeaders = true;
+    IsSettingUA = false;
     SendWebSocket("Network.setExtraHTTPHeaders", Params);
 }
 
@@ -28,6 +30,42 @@ void DevToolsActionSetHeaders::OnTabCreation()
 
 void DevToolsActionSetHeaders::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
-    Result->Success();
-    State = Finished;
+    if(IsSettingHeaders)
+    {
+        bool HasUAHeader = false;
+        std::string UAString;
+
+        std::map<std::string, Variant> AllHeaders = Params["headers"].Map;
+
+        for(auto& Header: AllHeaders)
+        {
+            if(Header.first == "User-Agent")
+            {
+                HasUAHeader = true;
+                UAString = Header.second.String;
+            }
+        }
+
+        if(!HasUAHeader)
+        {
+            Result->Success();
+            State = Finished;
+        }else
+        {
+            std::map<std::string, Variant> CurrentParams;
+            CurrentParams["userAgent"] = Variant(UAString);
+            IsSettingHeaders = false;
+            IsSettingUA = true;
+            SendWebSocket("Network.setUserAgentOverride", CurrentParams);
+
+        }
+
+    }
+
+    if(IsSettingUA)
+    {
+        Result->Success();
+        State = Finished;
+    }
+
 }

@@ -436,7 +436,7 @@ function _type()
     _ARG3 = arguments
     _if_else(_IS_MOBILE,function(){
         var Result = []
-        var CurrentString = _ARG3[0]
+        var CurrentString = _ARG3[0].toString()
 
         while(true)
         {

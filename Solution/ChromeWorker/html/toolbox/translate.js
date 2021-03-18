@@ -13,6 +13,10 @@ _L =
 	"Site has used prompt javascript function. Use \"Prompt Result\" in order to set result.": {"ru": "На сайте использована javascript функция prompt. Используйте действие \"Окно prompt\" для задания результата работы функции."},
 	"Prompt dialog.": {"ru": "Диалог 'prompt'."},
 
+	"Don't use Widevine": {"ru": "Не использовать Widevine"},
+	"Use Widevine": {"ru": "Использовать Widevine"},
+	"Enable or disable Widevine plugin.": {"ru": "Включить или отключить плагин Widevine."},
+
 	"Stop intercepting recaptcha v3 requests. Site will get your real score. You can enable intercepting later again.": {"ru": "Перестать перехватывать запросы. Сайт получит ваш реальный рейтинг. Вы можете снова включить перехват позже."},
 	"Rucaptcha/2captcha Key. Can be blank": {"ru": "Ключ Антигейт/Рукапча. Может быть пустым"},
 	"This is a key from service selected in 'Solve Method' field.": {"ru": "Это ключ от сервиса, выбранного в поле 'Метод решения'."},
@@ -502,7 +506,7 @@ _L =
 	"If you want to click on element, select it inside browser and choose \"Move And Click On Element\".": {"ru": "Если вы хотите кликнуть по элементу, выберите его в браузере и нажмите на \"Двигать Мышь И Кликнуть На Элемент\"."},
 	"Move mouse and click on given coordinates.": {"ru": "Переместить мышь и кликнуть по заданным координатам."},
 	"If you want to change settings for every thread, it is better to use settings tab.": {"ru": "Если вы хотите поменять настройки для всех потоков, то лучше воспользоваться вкладкой настройки."},
-	"\"Flash\" and \"Extensions\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "\"Флеш\" и \"Расширения\" перезапустят браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
+	"\"Flash\", \"Extensions\" and \"Widevine\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "\"Флеш\", \"Расширения\" и \"Widevine\" перезапустят браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
 	"Empty string or 0 means, that value wont be changed.": {"ru": "Пустая строка или 0 означает, что значение изменяться не будут."},
 	"Changes browser settings: network, canvas, webgl, etc. Use \"Get Fingerprint\" action to change browser fingerprint.": {"ru": "Изменяет настройки браузера: работа с сетью, canvas, webgl и другое. Используйте действие \"Получить отпечаток\" чтобы поменять отпечаток браузера."},
 	"BAS allows to set timeout for every action individually, to do that click on hourglass icon near cancel button inside action interface.": {"ru": "BAS позволяет установить таймаут для каждого действия индивидуально, для этого щелкните на значок песочных часов возле кнопки отмены внутри интерфейса конкретного действия."},

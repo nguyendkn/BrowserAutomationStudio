@@ -193,6 +193,7 @@
 			$("#Zoom").val(json["zoom"])
 			$("#FingerprintDetectorEnabled").prop("checked",json["detector"])
 			$("#Flash").val((json["use_flash"]) ? "enable" : "disable")
+			$("#Widevine").val((json["use_widevine"]) ? "enable" : "disable")
 
 			$("#Canvas").val(json["canvas"])
 			$("#Audio").val(json["audio"])
@@ -242,6 +243,7 @@
 				$("#MinUnusedCpu").val("20")
 				$("#Zoom").val("100")
 				$("#Flash").val("disable")
+				$("#Widevine").val("disable")
 
 				$("#Canvas").val("disable")
 				$("#Audio").val("disable")
@@ -290,6 +292,7 @@
 		    			"min_unused_cpu": parseInt($("#MinUnusedCpu").val()),
 		    			"zoom": parseInt($("#Zoom").val()),
 		    			"use_flash": $("#Flash").val() == "enable",
+						"use_widevine": $("#Widevine").val() == "enable",
 
 						"canvas": $("#Canvas").val(),
 						"audio": $("#Audio").val(),
@@ -411,6 +414,22 @@
 		  </div>
 
 		  <div class="text-center text-muted"><span class="tr">Flash may expose your identity and generally is not safe for usage. If you want to enable it, change setting above and install flash on your PC, like described</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash')">here</a>.</div>
+
+
+		  <div class="form-horizontal" style="padding-top:20px">
+			<div class="form-group form-item">
+			  <label for="Widevine" class="col-sm-5 control-label tr">Widevine</label>
+			  <div class="col-sm-4">
+				   <select class="form-control" id="Widevine">
+					  <option value="enable" class="tr">Turn on</option>
+					  <option value="disable" class="tr">Turn off</option>
+					</select>
+			  </div>
+			</div>
+
+			<div class="text-center text-muted"><span class="tr">Enable Widevine plugin.</span></div>
+
+  
 
 		  <div class="form-group form-item"  style="padding-top:20px">
 		    <label for="Webrtc" class="col-sm-5 control-label tr">WebRTC</label>

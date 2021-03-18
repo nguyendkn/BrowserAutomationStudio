@@ -47,6 +47,8 @@ _L =
 	"Turn on" :{"ru": "Включить"},
 	"Turn off" :{"ru": "Отключить"},
 	"Flash may expose your identity and generally is not safe for usage. If you want to enable it, change setting above and install flash on your PC, like described" :{"ru": "Использование флеш может раскрыть ваш ip, включать эту настройку не рекомендуется. Если вы все же хотите включить ее, измените настройку выше и установите флеш на вашем ПК, как описано"},
+	"Enable Widevine plugin." :{"ru": "Включить плагин Widevine."},
+
 	"here" :{"ru": "здесь"},
 	"WebRTC may show your real ip even if you are using proxy." :{"ru": "Использование WebRTC также может раскрыть ваш ip даже если вы используете прокси."},
 	"Add noise" :{"ru": "Добавить шум"},

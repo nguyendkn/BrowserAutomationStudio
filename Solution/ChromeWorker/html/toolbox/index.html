@@ -4196,6 +4196,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
      
       <%= _.template($('#input_constructor').html())({id:"Flash", description:tr("Flash"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Flash may expose your identity and generally is not safe for usage. If you want to enable it, change this setting and install flash on your PC. Instruction may be found in a help section below."), examples:[{code:"enable",description:tr("Use flash")},{code:"disable",description:tr("Don't use flash")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
 
+
+      <div class="col-xs-12">
+        <form class="form-horizontal">
+           <div class="form-group">
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Widevine</span></span>:
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+           </div>
+         </form>
+       </div>
+ 
+      
+       <%= _.template($('#input_constructor').html())({id:"Widevine", description:tr("Widevine"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable or disable Widevine plugin."), examples:[{code:"enable",description:tr("Use Widevine")},{code:"disable",description:tr("Don't use Widevine")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
+
       <div class="col-xs-12">
        <form class="form-horizontal">
           <div class="form-group">
@@ -4288,7 +4302,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
-      <div class="tr tooltip-paragraph-fold">"Flash" and "Extensions" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
+      <div class="tr tooltip-paragraph-fold">"Flash", "Extensions" and "Widevine" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. Find extension</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">here</a>, <span class="tr">and download it from</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome-extension-downloader.com');return false" class="tr">here</a>. <span class="tr">Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.</span></div>
 
       <div class="tooltip-paragraph-fold"><span class="tr">To start BAS with flash enabled besides changing "Flash" setting you also need to install flash on your PC. Instruction is located</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash');return false" class="tr">here</a>. </div>
@@ -5945,6 +5959,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       /*Browser*/
       var Params = {};
       var Flash = (<%= Flash %>);
+      var Widevine = (<%= Widevine %>);
       var Extensions = (<%= Extensions %>);
 
       var Webrtc = (<%= Webrtc %>);
@@ -5961,6 +5976,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(Flash.length > 0)
         Params["UseFlash"] = Flash == "enable"
+      
+      if(Widevine.length > 0)
+        Params["UseWidevine"] = Widevine == "enable"
 
       if(Webrtc.length > 0)
         Params["Webrtc"] = Webrtc
@@ -10277,6 +10295,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             
             var Flash = GetInputConstructorValue("Flash", loader);
+            var Widevine = GetInputConstructorValue("Widevine", loader);
             var Webrtc = GetInputConstructorValue("Webrtc", loader);
             var Canvas = GetInputConstructorValue("Canvas", loader);
             var CanvasNoise = GetInputConstructorValue("CanvasNoise", loader);
@@ -10296,6 +10315,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())(
                 {
                   Flash:Flash["updated"],
+                  Widevine:Widevine["updated"],
                   ProxyTunneling:ProxyTunneling["updated"],
                   SkipFrames:SkipFrames["updated"],
                   Extensions:Extensions["updated"],

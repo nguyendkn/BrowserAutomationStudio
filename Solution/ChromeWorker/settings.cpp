@@ -20,6 +20,7 @@ settings::settings()
 void settings::Init()
 {
     use_flash = false;
+    use_widevine = false;
     force_utf8 = true;
     canvas = "disable";
     audio = "disable";
@@ -119,6 +120,10 @@ void settings::Init()
             if(line.find("EnableFlash=true") != std::string::npos)
             {
                 use_flash = true;
+            }
+            if(line.find("EnableWidevine=true") != std::string::npos)
+            {
+                use_widevine = true;
             }
             if(line.find("AutostartDebug=true") != std::string::npos)
             {
@@ -221,6 +226,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
 
     bool NextExtensions = false;
     bool NextUseFlash = false;
+    bool NextUseWidevine = false;
     bool NextProfile = false;
     bool NextNoEmbeddedLanguages = false;
     for(std::wstring& param: Params)
@@ -229,6 +235,16 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             use_flash = param == L"1";
             NextUseFlash = false;
+            NextUseWidevine = false;
+            NextProfile = false;
+            NextNoEmbeddedLanguages = false;
+            NextExtensions = false;
+            continue;
+        }else if(NextUseWidevine)
+        {
+            use_widevine = param == L"1";
+            NextUseFlash = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -237,6 +253,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             SetProfile(param);
             NextUseFlash = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -245,6 +262,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             no_embedded = param == L"true";
             NextUseFlash = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -253,6 +271,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             extensions = split(param,L';');
             NextUseFlash = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
@@ -262,6 +281,10 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         if(param == L"--UseFlash")
         {
             NextUseFlash = true;
+            continue;
+        }else if(param == L"--UseWidevine")
+        {
+            NextUseWidevine = true;
             continue;
         }else if(param == L"--Profile")
         {
@@ -338,6 +361,11 @@ bool settings::UseFlash()
     return use_flash;
 }
 
+bool settings::UseWidevine()
+{
+    return use_widevine;
+}
+
 bool settings::AutostartDebug()
 {
     return autostart_debug;
@@ -397,6 +425,7 @@ void settings::SaveToFile()
         if(outfile.is_open())
         {
             outfile<<"EnableFlash="<<((use_flash) ? "true" : "false")<<std::endl;
+            outfile<<"EnableWidevine="<<((use_widevine) ? "true" : "false")<<std::endl;
             outfile<<"AutostartDebug="<<((autostart_debug) ? "true" : "false")<<std::endl;
             outfile<<"ToolboxHeight="<<toolbox_height<<std::endl;
             outfile<<"MaxBrowserStartSimultaneously="<<max_browser_start_simultaneously<<std::endl;
@@ -435,6 +464,7 @@ std::string settings::Serialize()
 
     picojson::value::object res;
     res["use_flash"] = picojson::value(use_flash);
+    res["use_widevine"] = picojson::value(use_widevine);
     res["autostart_debug"] = picojson::value(autostart_debug);
     res["canvas"] = picojson::value(canvas);
     res["canvas_noise"] = picojson::value(canvas_noise);
@@ -472,6 +502,7 @@ void settings::Deserialize(const std::string & Data)
         picojson::value::object o = val.get<picojson::value::object>();
 
         use_flash = o["use_flash"].get<bool>();
+        use_widevine = o["use_widevine"].get<bool>();
         autostart_debug = o["autostart_debug"].get<bool>();
 
         canvas = o["canvas"].get<std::string>();

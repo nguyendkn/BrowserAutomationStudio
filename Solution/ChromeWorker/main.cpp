@@ -36,6 +36,7 @@
 #include "preparestartupscript.h"
 #include "chromecommandlineparser.h"
 #include "mixnumbers.h"
+#include "installwidevine.h"
 
 
 #if defined(BAS_DEBUG)
@@ -1943,9 +1944,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         }
     }
 
-
-
     Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
+
+    if(Settings.UseWidevine())
+    {
+        InstallWidevine(Settings.Profile());
+    }else
+    {
+        DeinstallWidevine(Settings.Profile());
+    }
     Data->Connector = new DevToolsConnector();
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);

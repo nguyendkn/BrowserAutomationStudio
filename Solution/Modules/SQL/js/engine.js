@@ -261,15 +261,16 @@ function SQL_CheckDialect(){
 	};
 };
 function SQL_IsJsonString(str){
-	if(str.indexOf("[") < 0 && str.indexOf("]") < 0 && str.indexOf("{") < 0 && str.indexOf("}") < 0){
+	if((typeof str==="string" && str.length > 0) && ((str.slice(0,1)=="[" && str.slice(-1)=="]") || (str.slice(0,1)=="{" && str.slice(-1)=="}"))){
+		try{
+			JSON.parse(str);
+		}catch(e){
+			return false;
+		};
+		return true;
+	}else{
 		return false;
 	};
-    try{
-        JSON.parse(str);
-    }catch(e){
-        return false;
-    };
-    return true;
 };
 function SQL_ConvertToList(str){
 	return (str==="" || typeof str=="object") ? str : (SQL_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));

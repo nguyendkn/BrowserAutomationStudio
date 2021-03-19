@@ -81,9 +81,6 @@ namespace BrowserAutomationStudioFramework
 
     ScriptWorker::~ScriptWorker()
     {
-        if(Browser)
-            Browser->SetWorker(0);
-
         EmbeddedTaskKill();
 
         for(FunctionRunData* func:FunctionDataList)
@@ -731,11 +728,14 @@ namespace BrowserAutomationStudioFramework
         }
     }
 
-
     void ScriptWorker::RunSubScript()
     {
         Browser->SetWorker(this);
+        RunSubScriptNoWorkerUpdate();
+    }
 
+    void ScriptWorker::RunSubScriptNoWorkerUpdate()
+    {
         QDateTime Now = QDateTime::currentDateTime();
         if(!GarbrageCollectorWasRun)
         {
@@ -1014,7 +1014,7 @@ namespace BrowserAutomationStudioFramework
             {
                 SetScript("_kill_call_stack();_call(_BAS_WEBINTERFACE_WAIT, null, function(){success(\"\")})");
                 AbortSubscript();
-                RunSubScript();
+                RunSubScriptNoWorkerUpdate();
                 return;
             }
 
@@ -1096,7 +1096,7 @@ namespace BrowserAutomationStudioFramework
             {
                 SetScript("_kill_call_stack();_call(_BAS_WEBINTERFACE_WAIT, null, function(){success(\"\")})");
                 AbortSubscript();
-                RunSubScript();
+                RunSubScriptNoWorkerUpdate();
                 return;
             }
 

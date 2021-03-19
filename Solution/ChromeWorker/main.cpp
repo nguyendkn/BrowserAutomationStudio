@@ -2019,20 +2019,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
     settings.windowless_rendering_enabled = true;
     settings.multi_threaded_message_loop = false;
-    if(Settings.Profile().empty())
-    {
-        settings.persist_user_preferences = 0;
-        settings.persist_session_cookies = 0;
-        std::wstring cache = L"cache";
-        cef_string_utf16_set(cache.data(),cache.size(),&settings.user_data_path,true);
-    }else
-    {
-        settings.persist_user_preferences = 1;
-        settings.persist_session_cookies = 1;
-        std::wstring wencoding = Settings.Profile();
-        cef_string_utf16_set(wencoding.data(),wencoding.size(),&settings.cache_path,true);
-        cef_string_utf16_set(wencoding.data(),wencoding.size(),&settings.user_data_path,true);
-    }
+    settings.persist_user_preferences = 0;
+    settings.persist_session_cookies = 0;
+    std::wstring cache = L"cache";
+    cef_string_utf16_set(cache.data(),cache.size(),&settings.user_data_path,true);
 
 
 

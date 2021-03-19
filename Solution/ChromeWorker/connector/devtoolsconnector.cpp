@@ -1539,7 +1539,7 @@ Async DevToolsConnector::Screenshot(int X, int Y, int Width, int Height, int Tim
 
 void DevToolsConnector::EnableBackgroundMode()
 {
-    SetMinCapturePeriod(90);
+    SetMinCapturePeriod(400);
 }
 
 void DevToolsConnector::DisableBackgroundMode()

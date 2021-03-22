@@ -15,7 +15,8 @@ _L["Replace multiple spaces with single ones"] = {"ru":"Заменять мно�
 function _tr_type_name(name){
 	if(Array.isArray(name)){
 		if(name.length > 1){
-			return name.map(function(t){return _tr_type_name(t)}).join(_K==="ru" ? ' или ' : ' or ');
+			arr = name.map(function(t){return _tr_type_name(t)});
+			return arr.slice(0, arr.length - 1).join(', ') + (_K==="ru" ? ' или ' : ' or ') + arr.slice(-1);
 		}else{
 			name = name[0];
 		};
@@ -116,7 +117,6 @@ function _natural_compare(a, b){
 			: code < 123 ? code + 5        // a-z
 			: code - 63
 	};
-
 
 	if((a+="") != (b+="")){
 		for(;codeB;){

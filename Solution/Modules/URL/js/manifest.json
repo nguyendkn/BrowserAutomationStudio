@@ -149,6 +149,7 @@
 		"Directory indexes that match any of the specified list items will be removed.": {"ru":"Индексы каталога, которые соответствуют любому из указанных элементов списка, будут удалены."},
 		"Query parameters whose names match any of the specified list items will be removed.": {"ru":"Параметры запроса, имена которых соответствуют любому из указанных элементов списка, будут удалены."},
 		"As a list, you can use a string consisting of directory indexes, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из индексов каталога, разделенных запятыми."},
+		"Variable in which, after successful execution of the action, the final string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана итоговая строка."},
 		"This action will return a string containing the URL, normalized according to the specified parameters.": {"ru":"Это действие вернет строку, содержащую URL, нормализованную в соответствии с указанными параметрами."},
 		"As a list, you can use a string consisting of the names of the query parameters, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из имен параметров запроса, разделенных запятыми."},
 		"You can get a list of links from a string using the \"Extract all links\" action from the \"String\" module.": {"ru":"Получить из строки список ссылок можно с помощью действия \"Извлечь все ссылки\" из модуля \"Строка\"."},

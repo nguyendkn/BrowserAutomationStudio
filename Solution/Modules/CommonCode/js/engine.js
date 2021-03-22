@@ -8,6 +8,7 @@ _L["Trim left"] = {"ru":"Обрезать слева"};
 _L["Trim right"] = {"ru":"Обрезать справа"};
 _L["Trim characters"] = {"ru":"Обрезать символы"};
 _L["Remove characters"] = {"ru":"Удалять символы"};
+_L["Sort ascending"] = {"ru":"Сортировать по возрастанию"};
 _L["Replace characters with space"] = {"ru":"Заменять многочисленные пробелы на одиночные"};
 _L["Replace multiple spaces with single ones"] = {"ru":"Заменять многочисленные пробелы на одиночные"};
 
@@ -84,6 +85,26 @@ function _is_json_string(str){
 function _to_arr(data){
 	_validate_argument_type(data, ['string','array'], 'Data', '_to_arr');
 	return (data==="" || typeof data=="object") ? data : (_is_json_string(data) ? JSON.parse(data) : data.split(/,\s|,/));
+};
+function _uniq_arr(arr){
+	_validate_argument_type(arr, 'array', 'Array', '_uniq_arr');
+	return arr.filter(function(e,i){return arr.indexOf(e)===i});
+};
+function _sort_arr(arr, asc){
+	_validate_argument_type(arr, 'array', 'Array', '_sort_arr');
+	asc = _avoid_nilb(asc, true);
+	_validate_argument_type(asc, ['boolean','number'], 'Sort ascending', '_sort_arr');
+	return arr.sort(function(a, b){
+		a = _is_string(a) ? (isNaN(a) ? a.toLowerCase() : Number(a)) : a;
+		b = _is_string(b) ? (isNaN(b) ? b.toLowerCase() : Number(b)) : b;
+		if(asc ? (a > b) : (a < b)){
+			return 1;
+		};
+		if(asc ? (a < b) : (a > b)){
+			return -1;
+		};
+		return 0;
+	});
 };
 function _trim_left(str, chars){
 	var act = '_trim_left';

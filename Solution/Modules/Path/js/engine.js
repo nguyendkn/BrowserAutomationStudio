@@ -1,3 +1,4 @@
+_L["Path"] = {"ru":"Путь"};
 _L["To path"] = {"ru":"До пути"};
 _L["From path"] = {"ru":"От пути"};
 _L["Path object"] = {"ru":"Объект пути"};
@@ -11,11 +12,7 @@ _path = {
 		return code===47 || code===92;
 	},
 	
-	isPosixPathSeparator: function(code){
-		return code===47;
-	},
-	
-	isWindowsDeviceRoot: function(code){
+	isDeviceRoot: function(code){
 		return code >= 65 && code <= 90 || code >= 97 && code <= 122;
 	},
 	
@@ -138,7 +135,7 @@ _path = {
 				}else{
 					rootEnd = 1;
 				};
-			}else if(this.isWindowsDeviceRoot(code) && path.charCodeAt(1)===58){
+			}else if(this.isDeviceRoot(code) && path.charCodeAt(1)===58){
 				device = path.slice(0, 2);
 				rootEnd = 2;
 				if(len > 2 && this.isPathSeparator(path.charCodeAt(2))){
@@ -189,7 +186,7 @@ _path = {
 		const code = path.charCodeAt(0);
 		
 		if(len===1){
-			return this.isPosixPathSeparator(code) ? this.sep : path;
+			return this.isPathSeparator(code) ? this.sep : path;
 		};
 		if(this.isPathSeparator(code)){
 			isAbsolute = true;
@@ -223,7 +220,7 @@ _path = {
 			}else{
 				rootEnd = 1;
 			};
-		}else if(this.isWindowsDeviceRoot(code) && path.charCodeAt(1)===58){
+		}else if(this.isDeviceRoot(code) && path.charCodeAt(1)===58){
 			device = path.slice(0, 2);
 			rootEnd = 2;
 			if(len > 2 && this.isPathSeparator(path.charCodeAt(2))){
@@ -255,7 +252,7 @@ _path = {
 		
 		const code = path.charCodeAt(0);
 		
-		return this.isPathSeparator(code) || len > 2 && this.isWindowsDeviceRoot(code) && path.charCodeAt(1) === 58 && this.isPathSeparator(path.charCodeAt(2));
+		return this.isPathSeparator(code) || len > 2 && this.isDeviceRoot(code) && path.charCodeAt(1) === 58 && this.isPathSeparator(path.charCodeAt(2));
 	},
 	
 	join: function(args){
@@ -437,7 +434,7 @@ _path = {
 					return (this.sep + this.sep + '?' + this.sep + 'UNC' + this.sep + resolvedPath.slice(2));
 				};
 			};
-		}else if(this.isWindowsDeviceRoot(resolvedPath.charCodeAt(0)) && resolvedPath.charCodeAt(1)===58 && resolvedPath.charCodeAt(2)===this.sep.charCodeAt(0)){
+		}else if(this.isDeviceRoot(resolvedPath.charCodeAt(0)) && resolvedPath.charCodeAt(1)===58 && resolvedPath.charCodeAt(2)===this.sep.charCodeAt(0)){
 			return (this.sep + this.sep + '?' + this.sep + resolvedPath);
 		};
 		
@@ -488,7 +485,7 @@ _path = {
 					};
 				};
 			};
-		}else if(this.isWindowsDeviceRoot(code) && path.charCodeAt(1)===58){
+		}else if(this.isDeviceRoot(code) && path.charCodeAt(1)===58){
 			rootEnd = len > 2 && this.isPathSeparator(path.charCodeAt(2)) ? 3 : 2;
 			offset = rootEnd;
 		};
@@ -517,20 +514,18 @@ _path = {
 	},
 	
 	basename: function(path, ext){
-		if(!(ext===undefined)){
-			_validate_argument_type(ext, 'string', 'File extension to remove', '_path.basename');
-		};
 		_validate_argument_type(path, 'string', 'Path', '_path.basename');
+		_validate_argument_type(ext, ['string','undefined','null'], 'File extension to remove', '_path.basename');
 		var start = 0;
 		var end = -1;
 		var matchedSlash = true;
 		var i = 0;
 		
-		if(path.length >= 2 && this.isWindowsDeviceRoot(path.charCodeAt(0)) && path.charCodeAt(1)===58){
+		if(path.length >= 2 && this.isDeviceRoot(path.charCodeAt(0)) && path.charCodeAt(1)===58){
 			start = 2;
 		};
 		
-		if(!(ext===undefined) && ext.length > 0 && ext.length <= path.length){
+		if(!(_is_nilb(ext)) && ext.length > 0 && ext.length <= path.length){
 			if(ext===path){
 				return '';
 			};
@@ -596,7 +591,7 @@ _path = {
 		
 		var preDotState = 0;
 		
-		if(path.length >= 2 && path.charCodeAt(1)===58 && this.isWindowsDeviceRoot(path.charCodeAt(0))){
+		if(path.length >= 2 && path.charCodeAt(1)===58 && this.isDeviceRoot(path.charCodeAt(0))){
 			start = startPart = 2;
 		};
 		
@@ -687,7 +682,7 @@ _path = {
 					};
 				};
 			};
-		}else if(this.isWindowsDeviceRoot(code) && path.charCodeAt(1)===58){
+		}else if(this.isDeviceRoot(code) && path.charCodeAt(1)===58){
 			if(len <= 2){
 				ret.root = ret.dir = path;
 				return ret;

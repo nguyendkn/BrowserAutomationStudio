@@ -44,7 +44,7 @@
 	<div class="tooltip-paragraph-fold"><span class="tr">This action will return a string containing the URL, normalized according to the specified parameters.</span> <span class="tr">You can learn more about the URL normalization in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false">Wiki</a>.</span></div>
 	<div class="tr tooltip-paragraph-fold">For example, the URL <code>"www.site.com/api.php?b=two&a=one&c=three"</code> will be normalized to <code>"https://site.com/api.php?a=one&b=two&c=three"</code> if "https" is specified in the "Default protocol" parameter and the "Strip WWW", "Sort query parameters" parameters are enabled.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">The "Normalize Protocol" parameter is responsible for normalizing the relative protocol. You can learn more about the relative protocol in</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/Wikipedia:Protocol-relative_URL');return false">Wiki</a>.</div>
-	<div class="tr tooltip-paragraph-fold">You can get a list of links from a string using the "Extract all links" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can get a list of links from a string using the "Extract all links" action from the "String" module.</div>
 	<div class="tr tooltip-paragraph-last-fold">You can parse a link to items using the "Parse URL" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

@@ -24,7 +24,7 @@
 	<div class="tr tooltip-paragraph-fold">The query is saved as an object, where the key is the parameter name and the value is the parameter value.</div>
 	<div class="tr tooltip-paragraph-fold">To get the value of the query parameter, use the JPath query <span style="color:black">$.key</span>, where key is the name of the parameter, in the "Get value" action from the "JSON" module.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">Before parsing, you can normalize the URL by activating the corresponding parameter in the additional settings, or use the "Normalize URL" action for flexible normalization.</span> <span class="tr">You can learn more about the URL normalization in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URI_normalization');return false">Wiki</a>.</span></div>
-	<div class="tr tooltip-paragraph-fold">You can get a list of links from a string using the "Extract all links" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can get a list of links from a string using the "Extract all links" action from the "String" module.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an invalid URL is specified, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action, or deactivate the corresponding parameter in the additional settings.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

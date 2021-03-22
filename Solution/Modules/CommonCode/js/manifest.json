@@ -23,7 +23,17 @@
         "ru": "Модуль, содержащий функции, используемые другими модулями."
     },
     "languages": [],
-    "localize": {},
+    "localize": {
+		"Data": {"ru":"Данные"},
+		"String": {"ru":"Строка"},
+		"Variable": {"ru":"Переменная"},
+		"The parameter \"": {"ru":"Параметр \""},
+		"Can be blank": {"ru":"Может быть пустым"},
+		"\" is not specified": {"ru":"\" не указан"},
+		"Optional parameter.": {"ru":"Необязательный параметр."},
+		"Additional settings": {"ru":"Дополнительные настройки"},
+		"Variable to save the result": {"ru":"Переменная, в которую сохранить результат"}
+    },
     "major_version": 1,
     "minor_version": 0,
     "modules": [],

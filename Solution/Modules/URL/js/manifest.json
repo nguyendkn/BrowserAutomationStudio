@@ -91,7 +91,7 @@
     ],
     "depends": [
     ],
-    "description": "Module for working with URL",
+    "description": "Module for working with URLs and more",
     "description_small": {
         "en": "URL",
         "ru": "URL"
@@ -105,8 +105,8 @@
     ],
     "icon": "URL.png",
     "info": {
-        "en": "Module for working with URL.",
-        "ru": "Модуль для работы с URL."
+        "en": "Module for working with URLs and more.",
+        "ru": "Модуль для работы с URL и не только."
     },
     "languages": [],
     "localize": {

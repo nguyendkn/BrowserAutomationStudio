@@ -1,19 +1,21 @@
 /**
+ * Check if the object has 'object' type or not.
+ * @param {Boolean} plain Check if plain object.
+ * @param {Object} obj Object to check.
+ * @returns Object has object type.
+ */
+var isObject = function (obj, plain) {
+    var isObject = Object.prototype.toString.call(obj) === '[object Object]';
+    return (plain || false) ? isObject : (isObject || isArray(obj));
+};
+
+/**
  * Check if the object has 'string' type or not.
  * @param {Object} obj Object to check.
  * @returns Object has string type.
  */
 var isString = function (obj) {
     return Object.prototype.toString.call(obj) === '[object String]';
-};
-
-/**
- * Check if the object has 'object' type or not.
- * @param {Object} obj Object to check.
- * @returns Object has object type.
- */
-var isObject = function (obj) {
-    return Object.prototype.toString.call(obj) === '[object Object]';
 };
 
 /**
@@ -194,7 +196,7 @@ var convertToString = function (obj) {
  */
 var convertToObject = function (obj) {
     return isString(obj) ? JSON.parse(obj) : obj;
-}
+};
 
 /**
  * Check that string has a valid JSON format.
@@ -204,8 +206,7 @@ var convertToObject = function (obj) {
 JSONPath.prototype.checkFormat = function (obj) {
     try {
         var json = JSON.parse(obj);
-        return isObject(json)
-            || isArray(json);
+        return isObject(json);
     } catch (e) {
         return false;
     }
@@ -233,7 +234,7 @@ JSONPath.prototype.change = function (obj, path, val) {
  * @returns {Object|String} Modified object or string.
  */
 var baseChange = function (obj, path, value) {
-    if (!isObject(obj)) return obj;
+    if (!isObject(obj, true)) return obj;
     if (!isArray(path)) path = path.toString().match(/[^.[\]]+/g) || [];
 
     var last = path.slice(0, -1).reduce(function (a, c, i) {
@@ -270,7 +271,7 @@ JSONPath.prototype.remove = function (obj, path) {
  * @returns {Object|String} Modified object or string.
  */
 var baseRemove = function (obj, path) {
-    if (!isObject(obj)) return obj;
+    if (!isObject(obj, true)) return obj;
     if (!isArray(path)) path = path.toString().match(/[^.[\]]+/g) || [];
 
     var last = path.slice(0, -1).reduce(function (a, c, i) {

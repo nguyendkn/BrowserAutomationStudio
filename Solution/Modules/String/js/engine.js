@@ -16,7 +16,6 @@ _L["Right substring"] = {"ru":"Правая подстрока"};
 _L["Allowed Chars"] = {"ru":"Разрешенные Символы"};
 _L["Convert types"] = {"ru":"Преобразовывать типы"};
 _L["List of separators"] = {"ru":"Список разделителей"};
-_L["Sort ascending"] = {"ru":"Сортировать по возрастанию"};
 _L["Thousandth separator"] = {"ru":"Разделитель тысячных"};
 _L["Latinize Cyrillic"] = {"ru":"Латинизировать кириллицу"};
 _L["Phone number mask"] = {"ru":"Маска телефонного номера"};
@@ -29,26 +28,6 @@ _L["Number of characters to remove"] = {"ru":"Количество удаляе�
 _L["All other letters in lowercase"] = {"ru":"Все остальные буквы в нижний регистр"};
 _L["Minimum number of characters in the number"] = {"ru":"Минимальное количество символов в числе"};
 
-function _uniq_arr(arr){
-	_validate_argument_type(arr, 'array', 'Array', '_uniq_arr');
-	return arr.filter(function(e,i){return arr.indexOf(e)===i});
-};
-function _sort_arr(arr, asc){
-	_validate_argument_type(arr, 'array', 'Array', '_sort_arr');
-	asc = _avoid_nilb(asc, true);
-	_validate_argument_type(asc, ['boolean','number'], 'Sort ascending', '_sort_arr');
-	return arr.sort(function(a, b){
-		a = _is_string(a) ? (isNaN(a) ? a.toLowerCase() : Number(a)) : a;
-		b = _is_string(b) ? (isNaN(b) ? b.toLowerCase() : Number(b)) : b;
-		if(asc ? (a > b) : (a < b)){
-			return 1;
-		};
-		if(asc ? (a < b) : (a > b)){
-			return -1;
-		};
-		return 0;
-	});
-};
 function _no_exponents(num){
 	_validate_argument_type(num, ['string','number'], 'Number', '_no_exponents');
 	var data = String(num).split(/[eE]/);

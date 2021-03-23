@@ -1,14 +1,16 @@
 (function (window) {
-  const ActionsUpdater = Backbone.View.extend({
+  window.Scenario.ActionsUpdater = new Backbone.View.extend({
     template: _.template(/*html*/`
       <div class="">
         <h1>Updater</h1>
       </div>
+      <div class="actions-updater-footer">
+        <button type="button" id="actionsUpdaterCancel" class="btn btn-default standartbutton tr">Cancel</button>
+        <button type="button" id="actionsUpdaterAccept" class="btn btn-primary standartbutton tr">Ok</button>
+      </div>
     `),
 
     className: 'actions-updater',
-
-    id: 'actionsUpdater',
 
     initialize: function () {
       this.render();
@@ -29,7 +31,5 @@
     hide: function () {
       this.$el.hide();
     }
-  });
-
-  window.Scenario.ActionsUpdater = new ActionsUpdater();
+  })();
 })(window);

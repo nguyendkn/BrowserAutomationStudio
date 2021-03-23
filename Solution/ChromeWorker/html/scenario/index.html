@@ -6007,12 +6007,15 @@
         
     }
 
+    function BrowserAutomationStudio_ToggleActionsUpdater()
+    {
+      Scenario.ActionsUpdater.toggle();
+    }
+
     function BrowserAutomationStudio_RunningTask()
     {
       _GobalModel.set("istaskexecuting",true)
     }
-
-
 
     function BrowserAutomationStudio_Parse(Code)
     {

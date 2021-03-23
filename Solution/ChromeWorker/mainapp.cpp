@@ -4608,6 +4608,6 @@ void MainApp::ToggleActionsUpdater()
 {
     if(BrowserScenario)
     {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript("Scenario.toggleActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ToggleActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
 }

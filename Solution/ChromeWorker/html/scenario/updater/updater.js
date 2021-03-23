@@ -27,6 +27,7 @@
 
     render: function () {
       this.$el.html(this.template()).appendTo('body');
+      this.hide();
     },
 
     toggle: function () {

@@ -50,7 +50,7 @@ CommandParser *Parser;
 HWND MousePositionMouseHandle,hwnd,HButtonUp,HButtonDown,HButtonLeft,HButtonRight,HButtonMenu;
 HWND HButtonUpUp,HButtonDownDown,HButtonLeftLeft,HButtonRightRight;
 enum{IDButtonTerminate = 1000,IDButtonQuit,IDButtonUp,IDButtonBackUrl,IDBrowserTabs,IDBrowserMenu,IDButtonLoadUrl,IDButtonDown,IDButtonLeft,IDButtonRight,IDButtonUpUp,IDButtonDownDown,IDButtonLeftLeft,IDButtonRightRight,IDButtonMinimizeMaximize,IDButtonMenu,IDButtonSettings,IDButtonDirectRecord,IDButtonDirectNoRecord,IDButtonIndirect,IDTextHold,IDBrowserLabel,IDLabelTop,IDTextFinished,IDClick,IDMove,IDNone,IDMoveAndClick,IDDrag,IDDrop,IDDragElement,IDDropElement,IDInspect,IDXml,IDText,IDScript,IDClickElement,IDMoveElement,IDMoveAndClickElement,IDClear,IDType,IDExists,IDStyle,IDCheck,IDScreenshot,IDCoordinates,IDFocus,IDSet,IDSetInteger,IDSetRandom,IDGetAttr,IDSetAttr,IDCaptcha,IDLength,IDWaitElement,
-    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000};
+    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowUpdater,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000};
 HCURSOR HCursor = 0;
 HCURSOR HCursorTouch = 0;
 using namespace std::placeholders;
@@ -1262,6 +1262,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                         AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowFingerprintDetector, DetectorText.c_str());
                         AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
                         AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDRecordHttpRequests, Translate::Tr(L"Http request recorder").c_str());
+                        AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
+                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowUpdater, Translate::Tr(L"Update project actions").c_str());
 
                         if(app->GetData()->IsRecordHttp)
                             CheckMenuItem(hMenu, IDRecordHttpRequests, MF_CHECKED);
@@ -1377,6 +1379,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     case IDShowScenario:
                         Layout->SetLabelTop(Translate::Tr(L"Script editor"));
                         Layout->UpdateTabs(MainLayout::Scenario);
+                    break;
+                    case IDShowUpdater:
+                        Layout->SetLabelTop(Translate::Tr(L"Update project actions"));
+                        Layout->UpdateTabs(MainLayout::Updater);
                     break;
                     case IDButtonSettings:
                         app->LoadSettingsPage();

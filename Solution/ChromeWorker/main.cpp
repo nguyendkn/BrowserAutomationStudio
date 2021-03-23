@@ -1382,7 +1382,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
                     case IDShowUpdater:
                         Layout->SetLabelTop(Translate::Tr(L"Update project actions"));
-                        Layout->UpdateTabs(MainLayout::Updater);
+                        app->ToggleActionsUpdater();
                     break;
                     case IDButtonSettings:
                         app->LoadSettingsPage();

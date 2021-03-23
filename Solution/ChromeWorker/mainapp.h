@@ -397,6 +397,7 @@ public:
     void Terminate();
     void Restart();
     void ToggleDevTools();
+    void ToggleActionsUpdater();
     std::pair<int,int> GetScrollPosition();
     void ScrollUp();
     void ScrollDown();

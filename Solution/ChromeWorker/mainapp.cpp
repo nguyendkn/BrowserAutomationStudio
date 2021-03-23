@@ -4604,3 +4604,10 @@ void MainApp::MainContextMenu(POINT& p)
 
 }
 
+void MainApp::ToggleActionsUpdater()
+{
+    if(BrowserScenario)
+    {
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript("Scenario.toggleActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }
+}

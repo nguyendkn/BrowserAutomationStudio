@@ -3974,15 +3974,15 @@
         context.attach('html', [
           {header: tr('Actions')},
 
-          {text: '<img draggable="false" src="copy.png" style="width:14px" /> ' + tr('Copy selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/copy.png" style="width:14px" /> ' + tr('Copy selected'), action: function(e){
                 e.preventDefault();
                 self.Copy()
           }},
-          {text: '<img draggable="false" src="paste.png" style="width:14px" /> ' + tr('Paste selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/paste.png" style="width:14px" /> ' + tr('Paste selected'), action: function(e){
                 e.preventDefault();
                 self.Paste()
           }},
-          {text: '<img draggable="false" src="cut.png" style="width:14px" /> ' + tr('Cut selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/cut.png" style="width:14px" /> ' + tr('Cut selected'), action: function(e){
                 e.preventDefault();
                 self.Cut()
           }},
@@ -4028,12 +4028,12 @@
               self.SetSelectedColor("")
           }},
           {divider:true},
-          {text: '<img draggable="false" src="checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
+          {text: '<img draggable="false" src="icons/checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
                 e.preventDefault();
                 self.CheckAll()
 
           }},
-          {text: '<img draggable="false" src="uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
+          {text: '<img draggable="false" src="icons/uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
                 e.preventDefault();
                 self.ClearSelection()
 

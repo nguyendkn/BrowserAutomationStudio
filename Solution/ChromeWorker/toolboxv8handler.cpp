@@ -233,7 +233,7 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
         {
             ClearHighlight = true;
         }
-    }else if(name == std::string("BrowserAutomationStudio_EditSaveFail"))
+    }else if(name == std::string("BrowserAutomationStudio_EditFail"))
     {
         if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
         {

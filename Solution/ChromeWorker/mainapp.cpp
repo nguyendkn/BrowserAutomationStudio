@@ -4027,7 +4027,7 @@ void MainApp::HandleToolboxBrowserEvents()
         if(BrowserScenario)
         {
             std::string Message = picojson::value(toolboxv8handler->GetEditFailMessage()).serialize();
-            std::string Script = Javascript(std::string("BrowserAutomationStudio_EditSaveFail(") + Message + std::string(")"), "scenario");
+            std::string Script = Javascript(std::string("BrowserAutomationStudio_EditFail(") + Message + std::string(")"), "scenario");
             BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script, BrowserScenario->GetMainFrame()->GetURL(), 0);
         }
     }

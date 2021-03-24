@@ -6006,9 +6006,16 @@
         
     }
 
-    function BrowserAutomationStudio_ToggleActionsUpdater()
-    {
-      _ActionsUpdater.toggle();
+    function BrowserAutomationStudio_EditSaveFail(message) {
+      console.log('EditSaveFail:', message);
+    }
+
+    function BrowserAutomationStudio_ShowActionsUpdater() {
+      _ActionsUpdater.hide();
+    }
+
+    function BrowserAutomationStudio_HideActionsUpdater() {
+      _ActionsUpdater.hide();
     }
 
     function BrowserAutomationStudio_RunningTask()

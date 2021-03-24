@@ -4161,6 +4161,7 @@
 
     var _VisualizeLabels = new VisualizeLabels()
 
+    var _ActionsUpdater = new Scenario.ActionsUpdater();
 
     _MultiSelect.Init()
 
@@ -6007,7 +6008,7 @@
 
     function BrowserAutomationStudio_ToggleActionsUpdater()
     {
-      Scenario.ActionsUpdater.toggle();
+      _ActionsUpdater.toggle();
     }
 
     function BrowserAutomationStudio_RunningTask()

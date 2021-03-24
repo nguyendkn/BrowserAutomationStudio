@@ -4,6 +4,28 @@
       isStarted: false,
       successCount: 0,
       errorsCount: 0,
+      actions: []
+    },
+    updateTasks(type = 'all') {
+      if (this.get('isStarted')) return;
+
+      this.set('actions', _.filter(_TaskCollection.toJSON(), (task) => {
+        const id = Number(task['id']);
+
+        if (id !== 0 && !IsFunctionNode(id)) {
+          if (type === 'selected') return task['is_selected'];
+          if (type === 'current') return GetFunctionData(id)['name'] === _GobalModel.get('function_name');
+          return true;
+        }
+
+        return false;
+      }));
+    },
+    startUpdate() {
+      this.set('isStarted', !false);
+    },
+    stopUpdate() {
+      this.set('isStarted', false);
     }
   });
 
@@ -41,6 +63,18 @@
         this.$('#actionsUpdaterErrorsCount').text(errorsCount);
       });
 
+      this.model.on('change:isStarted', (_, isStarted) => {
+        this.$('#actionsUpdaterSelect').prop('disabled', isStarted);
+      });
+
+      this.model.on('change:actions', (_, actions) => {
+        this.$('#actionsUpdaterCounter').text(`${actions.length} ${tr('actions')}`);
+      });
+
+      _TaskCollection.bind('all', () => {
+        this.model.updateTasks();
+      });
+
       this.render();
     },
 
@@ -63,30 +97,22 @@
 
     events: {
       'change #actionsUpdaterSelect': function () {
-        const target = this.$('#actionsUpdaterSelect').val();
-
-        const tasks = _.filter(_TaskCollection.toJSON(), (task, index) => {
-          const id = Number(task['id']);
-
-          if (id !== 0 && !IsFunctionNode(id)) {
-            if (target === 'selected') return task['is_selected'];
-            if (target === 'current') return GetFunctionData(id)['name'] === _GobalModel.get('function_name');
-            return true;
-          }
-
-          return false;
-        });
-
-        this.$('#actionsUpdaterCounter').text(`${tasks.length} ${tr('actions')}`);
+        this.model.updateTasks(this.$('#actionsUpdaterSelect').val());
       },
       'click #actionsUpdaterAccept': function () {
+        if (!this.model.get('isStarted')) {
+          return this.model.startUpdate();
+        }
         this.hide();
       },
       'click #actionsUpdaterCancel': function () {
+        if (this.model.get('isStarted')) {
+          return this.model.stopUpdate();
+        }
         this.hide();
       }
     }
   });
 
-  window.Scenario.ActionsUpdater = new ActionsUpdaterView();
+  window.Scenario.ActionsUpdater = ActionsUpdaterView;
 })(window);

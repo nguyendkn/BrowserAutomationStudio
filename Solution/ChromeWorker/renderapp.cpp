@@ -68,6 +68,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_Append", CefV8Value::CreateFunction("BrowserAutomationStudio_Append", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Initialized", CefV8Value::CreateFunction("BrowserAutomationStudio_Initialized", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_EditCancel", CefV8Value::CreateFunction("BrowserAutomationStudio_EditCancel", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_EditFail", CefV8Value::CreateFunction("BrowserAutomationStudio_EditFail", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Maximize", CefV8Value::CreateFunction("BrowserAutomationStudio_Maximize", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Minimize", CefV8Value::CreateFunction("BrowserAutomationStudio_Minimize", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_OpenUrl", CefV8Value::CreateFunction("BrowserAutomationStudio_OpenUrl", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
@@ -103,6 +104,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_Restart", CefV8Value::CreateFunction("BrowserAutomationStudio_Restart", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_EditStart", CefV8Value::CreateFunction("BrowserAutomationStudio_EditStart", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_EditSaveStart", CefV8Value::CreateFunction("BrowserAutomationStudio_EditSaveStart", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_EditFail", CefV8Value::CreateFunction("BrowserAutomationStudio_EditFail", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_EditEnd", CefV8Value::CreateFunction("BrowserAutomationStudio_EditEnd", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_OpenUrl", CefV8Value::CreateFunction("BrowserAutomationStudio_OpenUrl", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_ThreadNumberEdit", CefV8Value::CreateFunction("BrowserAutomationStudio_ThreadNumberEdit", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);

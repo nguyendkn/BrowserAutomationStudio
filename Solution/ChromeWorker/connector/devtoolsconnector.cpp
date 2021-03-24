@@ -873,7 +873,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 if(TypeName == "page")
                 {
-                    if(!GlobalState.IsPopupsAllowed)
+                    if(!GlobalState.IsPopupsAllowed && ConnectionState == Connected)
                     {
                         //Tab creation is not allowed, close it instantly
                         std::map<std::string, Variant> CurrentParams;

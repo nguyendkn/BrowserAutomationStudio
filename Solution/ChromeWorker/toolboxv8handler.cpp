@@ -78,6 +78,11 @@ std::pair<ToolboxV8Handler::ResultClass, bool> ToolboxV8Handler::GetResult()
     return r;
 }
 
+std::string ToolboxV8Handler::GetEditFailMessage()
+{
+    return EditFailMessage;
+}
+
 bool ToolboxV8Handler::GetIsInitialized()
 {
     return IsInitialized;
@@ -101,7 +106,13 @@ bool ToolboxV8Handler::GetIsEditCancel()
 {
     bool res = IsEditCancel;
     IsEditCancel = false;
+    return res;
+}
 
+bool ToolboxV8Handler::GetIsEditFail()
+{
+    bool res = IsEditFail;
+    IsEditFail = false;
     return res;
 }
 
@@ -221,6 +232,13 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
         if (arguments->GetSize() == 0)
         {
             ClearHighlight = true;
+        }
+    }else if(name == std::string("BrowserAutomationStudio_EditSaveFail"))
+    {
+        if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
+        {
+            EditFailMessage = arguments->GetString(0);
+            IsEditFail = true;
         }
     }
 

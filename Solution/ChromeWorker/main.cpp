@@ -1379,11 +1379,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     case IDShowScenario:
                         Layout->SetLabelTop(Translate::Tr(L"Script editor"));
                         Layout->UpdateTabs(MainLayout::Scenario);
+                        app->HideActionsUpdater();
                     break;
                     case IDShowUpdater:
                         Layout->SetLabelTop(Translate::Tr(L"Script editor"));
                         Layout->UpdateTabs(MainLayout::Scenario);
-                        app->ToggleActionsUpdater();
+                        app->ShowActionsUpdater();
                     break;
                     case IDButtonSettings:
                         app->LoadSettingsPage();

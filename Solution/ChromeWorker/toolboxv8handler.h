@@ -30,8 +30,11 @@ public:
 private:
     std::vector<ResultClass> LastResult;
 
+    std::string EditFailMessage;
+
     bool IsInitialized;
     bool IsEditCancel;
+    bool IsEditFail;
     bool ChangedExecute;
     bool ChangedIncrementHighlightIndex;
 
@@ -62,10 +65,12 @@ public:
     ToolboxV8Handler();
     bool GetIsInitialized();
     bool GetIsEditCancel();
+    bool GetIsEditFail();
     bool GetIsMaximize();
     bool GetIsMinimize();
     bool GetIsInterrupt();
     bool GetClearHighlight();
+    std::string GetEditFailMessage();
     std::pair<std::string, bool> GetInterfaceState();
 
     std::pair<std::string, bool> GetLoadUrl();

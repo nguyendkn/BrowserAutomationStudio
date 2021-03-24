@@ -4022,6 +4022,15 @@ void MainApp::HandleToolboxBrowserEvents()
         UpdateMultiSelect();
     }
 
+    if(toolboxv8handler->GetIsEditFail())
+    {
+        if(BrowserScenario)
+        {
+            std::string Message = picojson::value(toolboxv8handler->GetEditFailMessage()).serialize();
+            std::string Script = Javascript(std::string("BrowserAutomationStudio_EditSaveFail(") +  + std::string(")"), "scenario");
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script, BrowserScenario->GetMainFrame()->GetURL(), 0);
+        }
+    }
 }
 
 void MainApp::UpdateScrolls(std::string& data)
@@ -4604,10 +4613,18 @@ void MainApp::MainContextMenu(POINT& p)
 
 }
 
-void MainApp::ToggleActionsUpdater()
+void MainApp::ShowActionsUpdater()
 {
     if(BrowserScenario)
     {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ToggleActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ShowActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }
+}
+
+void MainApp::HideActionsUpdater()
+{
+    if(BrowserScenario)
+    {
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_HideActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
 }

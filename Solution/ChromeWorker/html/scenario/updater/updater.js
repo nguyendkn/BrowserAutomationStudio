@@ -73,18 +73,30 @@
 
   const ActionsUpdaterView = Backbone.View.extend({
     template: _.template(/*html*/`
-      <div class="">
-        <select id="actionsUpdaterSelect" class="form-control">
+      <div class="actions-updater-header">
+        <h1><%= tr('Auto-update actions') %></h1>
+        <h2><%= tr('Brief description of the section') %></h2>
+      </div>
+      <div class="actions-updater-panel">
+        <div class="actions-updater-progressbar"></div>
+        <select class="form-control" id="actionsUpdaterSelect">
           <option value="all"><%= tr('All actions in the project') %></option>
           <option value="current"><%= tr('All actions in the current function') %></option>
           <option value="selected"><%= tr('Only the selected actions') %></option>
         </select>
-        <label for="actionsUpdaterSelect" id="actionsUpdaterCounter">0 <%= tr('actions') %></label>
-      </div>
-      <div class="">
-        <span><%= tr('successful') %>: <span id="actionsUpdaterSuccessCount">0</span></span>
-        <span><%= tr('unsuccessful') %>: <span id="actionsUpdaterErrorsCount">0</span></span>
-        <div class="actions-updater-progressbar"></div>
+        <div class="actions-updater-log"></div>
+        <div class="actions-updater-stats">
+          <span class="actions-updater-stats-item">
+            <%= tr('Total actions:') %> <span id="actionsUpdaterCounter">0</span>
+          </span>
+          <span class="actions-updater-stats-item">
+            <span id="actionsUpdaterSuccessCount">0</span> <%= tr('Completed') %>
+          </span>
+          <span class="actions-updater-stats-item">
+            <span id="actionsUpdaterErrorsCount">0</span> <%= tr('Errors') %>
+          </span>
+        </div>
+        <button class="actions-updater-copy"><%= tr('Copy log to clipboard') %></button>
       </div>
       <div class="actions-updater-footer">
         <button type="button" id="actionsUpdaterCancel" class="btn btn-default standartbutton tr">Cancel</button>
@@ -110,7 +122,7 @@
       });
 
       this.model.on('change:actions', (_, actions) => {
-        this.$('#actionsUpdaterCounter').text(`${actions.length} ${tr('actions')}`);
+        this.$('#actionsUpdaterCounter').text(actions.length);
       });
 
       _TaskCollection.bind('all', () => {

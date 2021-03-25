@@ -35,15 +35,24 @@
             BrowserAutomationStudio_EditStart(match[1]);
 
             await new Promise((resolve) => {
-              this.once('toolbox.editStarted', () => resolve());
+              this.on('toolbox.editStarted', () => {
+                this.off('toolbox.editStarted');
+                resolve();
+              });
             });
 
             const successPromise = new Promise((resolve) => {
-              this.once('toolbox.editSuccess', () => resolve());
+              this.on('toolbox.editSuccess', () => {
+                this.off('toolbox.editSuccess');
+                resolve();
+              });
             });
 
             const failPromise = new Promise((resolve) => {
-              this.once('toolbox.editFail', (e) => resolve(e));
+              this.on('toolbox.editFail', (e) => {
+                this.off('toolbox.editFail');
+                resolve(e);
+              });
             });
 
             BrowserAutomationStudio_EditEnd();

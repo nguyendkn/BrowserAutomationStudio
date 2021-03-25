@@ -4,7 +4,8 @@
       isStarted: false,
       successCount: 0,
       errorsCount: 0,
-      actions: []
+      actions: [],
+      log: []
     },
     updateTasks(type = 'all') {
       if (this.get('isStarted')) return;
@@ -21,8 +22,40 @@
         return false;
       }));
     },
-    startUpdate() {
-      this.set('isStarted', !false);
+    async startUpdate() {
+      this.set('isStarted', true);
+
+      for (const action of this.get('actions')) {
+        const task = _TaskCollection.get(action.id), dat = task.dat();
+
+        if (!(dat && dat['role'] && dat['role'] === 'slave')) {
+          const match = task.get('code').match(/\/\*Dat\:([^\*]+)\*\//);
+
+          if (match) {
+            BrowserAutomationStudio_EditStart(match[1]);
+
+            await new Promise((resolve) => {
+              this.once('toolbox.editStarted', () => resolve());
+            });
+
+            const successPromise = new Promise((resolve) => {
+              this.once('toolbox.editSuccess', () => resolve());
+            });
+
+            const failPromise = new Promise((resolve) => {
+              this.once('toolbox.editFail', (e) => resolve(e));
+            });
+
+            BrowserAutomationStudio_EditEnd();
+
+            await Promise.race([successPromise, failPromise]);
+          }
+        }
+
+        if (!this.get('isStarted')) break;
+      }
+
+      this.set('isStarted', false);
     },
     stopUpdate() {
       this.set('isStarted', false);

@@ -6006,16 +6006,16 @@
         
     }
 
+    function BrowserAutomationStudio_HandleEvent(name, data) {
+      _ActionsUpdater.model.trigger(name, JSON.parse(data));
+    }
+
     function BrowserAutomationStudio_ShowActionsUpdater() {
-      _ActionsUpdater.hide();
+      _ActionsUpdater.show();
     }
 
     function BrowserAutomationStudio_HideActionsUpdater() {
       _ActionsUpdater.hide();
-    }
-
-    function BrowserAutomationStudio_EditFail(message) {
-      console.log('EditSaveFail:', message);
     }
 
     function BrowserAutomationStudio_RunningTask()

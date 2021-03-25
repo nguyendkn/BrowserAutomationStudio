@@ -32,32 +32,32 @@
           const match = task.get('code').match(/\/\*Dat\:([^\*]+)\*\//);
 
           if (match) {
-            BrowserAutomationStudio_EditStart(match[1]);
-
             await new Promise((resolve) => {
               this.on('toolbox.editStarted', () => {
                 this.off('toolbox.editStarted');
                 resolve();
               });
+              BrowserAutomationStudio_EditStart(match[1]);
             });
-
-            const successPromise = new Promise((resolve) => {
+            const result = await new Promise((resolve) => {
               this.on('toolbox.editSuccess', () => {
                 this.off('toolbox.editSuccess');
-                resolve();
+                resolve('');
               });
-            });
 
-            const failPromise = new Promise((resolve) => {
               this.on('toolbox.editFail', (e) => {
                 this.off('toolbox.editFail');
                 resolve(e);
               });
+
+              BrowserAutomationStudio_EditSaveStart();
             });
 
-            BrowserAutomationStudio_EditEnd();
-
-            await Promise.race([successPromise, failPromise]);
+            if (!result) {
+              this.set('successCount', this.get('successCount') + 1);
+            } else {
+              this.set('errorsCount', this.get('errorsCount') + 1);
+            }
           }
         }
 

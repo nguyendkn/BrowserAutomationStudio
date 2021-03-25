@@ -6007,7 +6007,12 @@
     }
 
     function BrowserAutomationStudio_HandleEvent(name, data) {
-      _ActionsUpdater.model.trigger(name, JSON.parse(data));
+      try {
+        _ActionsUpdater.model.trigger(name, JSON.parse(data));
+      } catch (e) {
+        _ActionsUpdater.model.trigger(name);
+      }
+      console.log('Handle event', name);
     }
 
     function BrowserAutomationStudio_ShowActionsUpdater() {

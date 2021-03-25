@@ -78,9 +78,16 @@ std::pair<ToolboxV8Handler::ResultClass, bool> ToolboxV8Handler::GetResult()
     return r;
 }
 
-std::string ToolboxV8Handler::GetEditFailMessage()
+std::string ToolboxV8Handler::GetEventTriggerData()
 {
-    return EditFailMessage;
+    return EventTriggerData;
+}
+
+bool ToolboxV8Handler::GetIsEventTrigger()
+{
+    bool res = IsEventTrigger;
+    IsEventTrigger = false;
+    return res;
 }
 
 bool ToolboxV8Handler::GetIsInitialized()
@@ -106,13 +113,6 @@ bool ToolboxV8Handler::GetIsEditCancel()
 {
     bool res = IsEditCancel;
     IsEditCancel = false;
-    return res;
-}
-
-bool ToolboxV8Handler::GetIsEditFail()
-{
-    bool res = IsEditFail;
-    IsEditFail = false;
     return res;
 }
 
@@ -233,16 +233,21 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
         {
             ClearHighlight = true;
         }
-    }else if(name == std::string("BrowserAutomationStudio_EditFail"))
+    }else if(name == std::string("BrowserAutomationStudio_TriggerEvent"))
     {
-        if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
+        if (arguments->GetSize() == 2) 
         {
-            EditFailMessage = arguments->GetString(0);
-            IsEditFail = true;
+            if (arguments->GetType(0) == VTYPE_STRING)
+            {
+                EventTriggerName = arguments->GetString(0);
+            }
+            if (arguments->GetType(1) == VTYPE_STRING)
+            {
+                EventTriggerData = arguments->GetString(1);
+            }
+            IsEventTrigger = true;
         }
     }
-
-
 
     return true;
 }

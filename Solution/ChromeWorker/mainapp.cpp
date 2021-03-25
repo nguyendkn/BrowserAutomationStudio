@@ -4022,12 +4022,13 @@ void MainApp::HandleToolboxBrowserEvents()
         UpdateMultiSelect();
     }
 
-    if(toolboxv8handler->GetIsEditFail())
+    if(toolboxv8handler->GetIsEventTrigger())
     {
         if(BrowserScenario)
         {
-            std::string Message = picojson::value(toolboxv8handler->GetEditFailMessage()).serialize();
-            std::string Script = Javascript(std::string("BrowserAutomationStudio_EditFail(") + Message + std::string(")"), "scenario");
+            std::string Name = picojson::value(toolboxv8handler->GetEventTriggerName()).serialize();
+            std::string Data = picojson::value(toolboxv8handler->GetEventTriggerData()).serialize();
+            std::string Script = Javascript(std::string("BrowserAutomationStudio_HandleEvent(") + Name + "," + Data + std::string(")"), "scenario");
             BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script, BrowserScenario->GetMainFrame()->GetURL(), 0);
         }
     }

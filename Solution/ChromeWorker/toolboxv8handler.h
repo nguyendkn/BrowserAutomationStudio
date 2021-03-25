@@ -30,11 +30,12 @@ public:
 private:
     std::vector<ResultClass> LastResult;
 
-    std::string EditFailMessage;
+    std::string EventTriggerData;
+    std::string EventTriggerName;
 
+    bool IsEventTrigger;
     bool IsInitialized;
     bool IsEditCancel;
-    bool IsEditFail;
     bool ChangedExecute;
     bool ChangedIncrementHighlightIndex;
 
@@ -63,14 +64,15 @@ private:
 
 public:
     ToolboxV8Handler();
+    bool GetIsEventTrigger();
     bool GetIsInitialized();
     bool GetIsEditCancel();
-    bool GetIsEditFail();
     bool GetIsMaximize();
     bool GetIsMinimize();
     bool GetIsInterrupt();
     bool GetClearHighlight();
-    std::string GetEditFailMessage();
+    std::string GetEventTriggerData();
+    std::string GetEventTriggerName();
     std::pair<std::string, bool> GetInterfaceState();
 
     std::pair<std::string, bool> GetLoadUrl();

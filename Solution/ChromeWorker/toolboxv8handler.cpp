@@ -240,13 +240,13 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
         }
     }else if(name == std::string("BrowserAutomationStudio_TriggerEvent"))
     {
-        if (arguments->GetSize() == 2) 
+        if (arguments->GetSize() > 0) 
         {
-            if (arguments->GetType(0) == VTYPE_STRING)
+            if (arguments->GetSize() >= 1 && arguments->GetType(0) == VTYPE_STRING)
             {
                 EventTriggerName = arguments->GetString(0);
             }
-            if (arguments->GetType(1) == VTYPE_STRING)
+            if (arguments->GetSize() >= 2 && arguments->GetType(1) == VTYPE_STRING)
             {
                 EventTriggerData = arguments->GetString(1);
             }

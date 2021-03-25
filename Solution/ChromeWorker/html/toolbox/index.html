@@ -10197,7 +10197,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             try{BrowserAutomationStudio_Append("_failnumber_", FailNumber.toString(), action);}catch(e){}
           }
 
-          BrowserAutomationStudio_TriggerEvent('toolbox.editSuccess', '');
+          BrowserAutomationStudio_TriggerEvent('toolbox.editSuccess');
           _Router.navigate("", true);
           
       },
@@ -12520,7 +12520,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         BrowserAutomationStudio_FillGotoLabels()
       }
 
-      BrowserAutomationStudio_TriggerEvent('toolbox.editStarted', '');
+      BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');
     }
 
     function BrowserAutomationStudio_EditEnd()

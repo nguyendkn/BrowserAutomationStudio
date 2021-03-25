@@ -78,6 +78,11 @@ std::pair<ToolboxV8Handler::ResultClass, bool> ToolboxV8Handler::GetResult()
     return r;
 }
 
+std::string ToolboxV8Handler::GetEventTriggerName()
+{
+    return EventTriggerName;
+}
+
 std::string ToolboxV8Handler::GetEventTriggerData()
 {
     return EventTriggerData;

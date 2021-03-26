@@ -13,7 +13,6 @@ void HandlersManager::Init1(
         std::function<void(const std::string&, int, int)> UrlLoadedCallback,
         std::function<void()> LoadSuccessCallback,
         std::function<void(int)> CursorChangedCallback,
-        std::function<void(char*,int,int)> PaintCallback,
         std::function<void(int64)> OldestRequestTimeChangedCallback,
         std::function<void()> DownloadStart,
         std::function<void()> UploadStart,
@@ -31,7 +30,6 @@ void HandlersManager::Init1(
     this->LoadSuccessCallback = LoadSuccessCallback;
     this->CursorChangedCallback = CursorChangedCallback;
     this->StartRequestCallback = StartRequestCallback;
-    this->PaintCallback = PaintCallback;
     this->OldestRequestTimeChangedCallback = OldestRequestTimeChangedCallback;
     this->DownloadStartCallback = DownloadStart;
     this->ComboboxCallback = Combobox;
@@ -43,7 +41,6 @@ void HandlersManager::Init1(
     this->Handler->EventLoadSuccess.push_back(std::bind(&HandlersManager::LoadSuccess,this,_1));
     this->Handler->EventCursorChanged.push_back(std::bind(&HandlersManager::CursorChanged,this,_1));
     this->Handler->EventStartRequest.push_back(std::bind(&HandlersManager::StartRequest,this,_1,_2));
-    this->Handler->EventPaint.push_back(std::bind(&HandlersManager::Paint,this,_1,_2,_3,_4));
     this->Handler->EventProcessMessage.push_back(std::bind(&HandlersManager::ProcessMessage,this,_1,_2,_3,_4));
     this->Handler->EventSendTextResponce.push_back(std::bind(&HandlersManager::SendTextResponce,this,_1,_2));
     this->Handler->EventUrlLoaded.push_back(std::bind(&HandlersManager::UrlLoaded,this,_1,_2,_3,_4));
@@ -346,7 +343,6 @@ void HandlersManager::PopupCreated(CefRefPtr<MainHandler> new_handler,CefRefPtr<
 
     p->Handler->EventLoadSuccess.clear();
     p->Handler->EventCursorChanged.clear();
-    p->Handler->EventPaint.clear();
     p->Handler->EventSendTextResponce.clear();
     p->Handler->EventUrlLoaded.clear();
     p->Handler->EventPopupClosed.clear();
@@ -363,7 +359,6 @@ void HandlersManager::PopupCreated(CefRefPtr<MainHandler> new_handler,CefRefPtr<
     p->Handler->EventLoadSuccess.push_back(std::bind(&HandlersManager::LoadSuccess,this,_1));
     p->Handler->EventCursorChanged.push_back(std::bind(&HandlersManager::CursorChanged,this,_1));
     p->Handler->EventStartRequest.push_back(std::bind(&HandlersManager::StartRequest,this,_1,_2));
-    p->Handler->EventPaint.push_back(std::bind(&HandlersManager::Paint,this,_1,_2,_3,_4));
     p->Handler->EventSendTextResponce.push_back(std::bind(&HandlersManager::SendTextResponce,this,_1,_2));
     p->Handler->EventUrlLoaded.push_back(std::bind(&HandlersManager::UrlLoaded,this,_1,_2,_3,_4));
     p->Handler->EventOldestRequestTimeChanged.push_back(std::bind(&HandlersManager::OldestRequestTimeChanged,this,_1,_2));
@@ -461,12 +456,6 @@ void HandlersManager::StartRequest(CefRefPtr<CefRequest> Request, int BrowserId)
     //if(CurrentBrowserId == BrowserId)
     StartRequestCallback(Request);
 
-}
-
-void HandlersManager::Paint(char * data, int width, int height, int BrowserId)
-{
-    if(CurrentBrowserId == BrowserId)
-        PaintCallback(data,width,height);
 }
 
 void HandlersManager::OldestRequestTimeChanged(int64 OldestTime, int BrowserId)

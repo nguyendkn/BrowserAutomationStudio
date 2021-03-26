@@ -527,13 +527,6 @@ bool CurlResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPt
     CurlThreadData.Url = request->GetURL().ToString();
     CurlThreadData.Method = request->GetMethod().ToString();
     CurlThreadData.Referrer = request->GetReferrerURL().ToString();
-    {
-        LOCK_BROWSER_DATA
-        ProxyData p = _BrowserData->_Proxy.Match(request->GetURL().ToString(),TabNumber);
-        CurlThreadData.Proxy = p.ToString();
-        CurlThreadData.ProxyAuth = p.AuthToString();
-        CurlThreadData.HeadersOrder = _BrowserData->_HeadersDefaults;
-    }
 
     {
         LOCK_HTTP_AUTH
@@ -554,7 +547,7 @@ bool CurlResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPt
             RequestHeadersNew[Header.first] = Header.second;
         }
 
-        for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
+        /*for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(request->GetURL().ToString(),TabNumber))
         {
             for(const auto& Header: *Map)
             {
@@ -577,7 +570,7 @@ bool CurlResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPt
                 }
 
             }
-        }
+        }*/
     }
 
     CefRefPtr<CefPostData> PostData = request->GetPostData();
@@ -762,11 +755,11 @@ void CurlResourceHandler::GetResponseHeaders(CefRefPtr<CefResponse> response, in
     {
         LOCK_BROWSER_DATA
 
-        for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(CurlThreadData.Url,TabNumber))
+        /*for(std::shared_ptr<std::map<std::string,std::string> > Map: _BrowserData->_Headers.MatchAll(CurlThreadData.Url,TabNumber))
         {
             if(Map->count("Referer") > 0 && Map->at("Referer") != "_BAS_NO_REFERRER")
                 Map->erase("Referer");
-        }
+        }*/
 
     }
 
@@ -790,115 +783,6 @@ void CurlResourceHandler::GetResponseHeaders(CefRefPtr<CefResponse> response, in
 bool CurlResourceHandler::ReadResponse(void* data_out, int bytes_to_read, int& bytes_read, CefRefPtr<CefCallback> callback)
 {
 
-    //WORKER_LOG("CurlResourceHandler::ReadResponse");
-
-    CurlThreadDataClass::StatusClass Status = CurlThreadData.GetStatus();
-    bool DoEnd = false;
-
-    {
-        std::lock_guard<std::mutex> lock(CurlThreadData.ResponseDataMutex);
-        if(Status == CurlThreadDataClass::Done && !CurlThread.get() && CurlThreadData.ResponseDataReadLength >= CurlThreadData.ResponseData.size())
-        {
-            DoEnd = true;
-        }
-    }
-
-    //No need to lock because status is done
-    if(DoEnd)
-    {
-        LOCK_BROWSER_DATA
-        //WORKER_LOG("End request because it is done. Start.");
-
-        //If need to save
-        bool SaveData = false;
-        for(std::pair<bool, std::string> p:_BrowserData->_CacheMask)
-        {
-            if(match(p.second,CurlThreadData.Url))
-            {
-                SaveData = p.first;
-            }
-        }
-        if(SaveData)
-        {
-            bool found = false;
-            for(auto p: _BrowserData->_CachedData)
-            {
-                if(p.first == CurlThreadData.Url)
-                {
-                    p.second->body.insert(p.second->body.end(),CurlThreadData.ResponseData.begin(),CurlThreadData.ResponseData.end());
-                    found = true;
-                    break;
-                }
-            }
-            if(!found)
-            {
-                std::pair<std::string, std::shared_ptr<BrowserData::CachedItem> > p;
-                p.first = CurlThreadData.Url;
-                p.second = std::make_shared<BrowserData::CachedItem>();
-                p.second->body.insert(p.second->body.end(),CurlThreadData.ResponseData.begin(),CurlThreadData.ResponseData.end());
-                _BrowserData->_CachedData.push_back(p);
-            }
-        }
-        return false;
-    }
-
-    {
-        std::lock_guard<std::mutex> lock(CurlThreadData.ResponseDataMutex);
-
-
-        /* Curl is still working */
-        if(
-                //Do not write anything if need to decode and status is not done yet.
-                (CurlThreadData.NeedToReadWholeResponceAndThanFixEncoding && Status != CurlThreadDataClass::Done)
-
-                || CurlThreadData.ResponseDataReadLength >= CurlThreadData.ResponseData.size())
-        {
-            ReadResponseCallback = callback;
-            CanUseReadResponseCallback = true;
-            bytes_read = 0;
-            //WORKER_LOG("No data read next.");
-            return true;
-        }
-
-        //Fix encoding one time
-        bool IsChanged = false;
-        FixPageContent Fix;
-        if(Fix.NeedToFix(CurlThreadData.ContentType,CurlThreadData.Url))
-        {
-            std::string TempContent(CurlThreadData.ResponseData.data(),CurlThreadData.ResponseData.size());
-
-            if(CurlThreadData.NeedToReadWholeResponceAndThanFixEncoding && !CurlThreadData.FixEncodingDone)
-            {
-                CurlThreadData.FixEncodingDone = true;
-                if(Fix.FixCharset(CurlThreadData.ContentType,TempContent,CurlThreadData.Url))
-                {
-                    IsChanged = true;
-                }
-            }
-
-            if(Fix.FixManifest(CurlThreadData.ContentType,TempContent,CurlThreadData.Url))
-            {
-                IsChanged = true;
-            }
-
-            if(IsChanged)
-            {
-                CurlThreadData.ResponseData.clear();
-                std::copy( TempContent.begin(), TempContent.end(), std::back_inserter(CurlThreadData.ResponseData));
-            }
-        }
-
-        int BytesWritten = CurlThreadData.ResponseData.size() - CurlThreadData.ResponseDataReadLength;
-        if(BytesWritten > bytes_to_read)
-            BytesWritten = bytes_to_read;
-
-        memcpy(data_out,CurlThreadData.ResponseData.data() + CurlThreadData.ResponseDataReadLength,BytesWritten);
-        CurlThreadData.ResponseDataReadLength += BytesWritten;
-        bytes_read = BytesWritten;
-        //WORKER_LOG(std::string("Write output, length ") + std::to_string(BytesWritten) + std::string(", "));
-    }
-
-    //WORKER_LOG("Proceed request.");
     return true;
 }
 

@@ -329,6 +329,7 @@ namespace BrowserAutomationStudioFramework
         virtual void FailDelayed();
         virtual void FailProcessFinished();
         virtual void RunSubScript();
+        virtual void RunSubScriptNoWorkerUpdate();
 
 
         virtual void SetScript(const QString& Script);

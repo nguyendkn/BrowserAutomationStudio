@@ -51,14 +51,9 @@ QString ResumeDownloader::GetErrorString()
     return _LastError;
 }
 
-QByteArray ResumeDownloader::GetPageData()
+QList<QByteArray>* ResumeDownloader::GetPageData()
 {
-    QByteArray Result;
-    for(QByteArray& Chunk:ResultChunks)
-    {
-        Result.append(Chunk);
-    }
-    return Result;
+    return &ResultChunks;
 }
 
 void ResumeDownloader::Get(const QString &Url)
@@ -192,7 +187,18 @@ void ResumeDownloader::StartDownloadNextChunk()
 
         if(IsMeta)
         {
-            QString CurrentSha1 = QString(QCryptographicHash::hash(GetPageData(),QCryptographicHash::Sha1).toHex());
+            QList<QByteArray>* AllData = GetPageData();
+            int Length = AllData->size();
+
+            QCryptographicHash Hash(QCryptographicHash::Sha1);
+
+            for(int i = 0;i<Length;i++)
+            {
+                Hash.addData(AllData->at(i));
+            }
+
+            QString CurrentSha1 = QString(Hash.result().toHex());
+
             QString CorrectSha1 = Checksum;
 
             if(CurrentSha1 != CorrectSha1)

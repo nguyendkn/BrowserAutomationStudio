@@ -70,8 +70,8 @@ _A = {
       "description":"Add Tab",
       "template":"{{Url}}",
       "suggestion":{  
-         "en":"new window",
-         "ru":"новое окно"
+         "en":"new window, Referrer, Referer",
+         "ru":"новое окно, реферрер, реферер"
       },
       "group":""
    },
@@ -101,7 +101,11 @@ _A = {
       "name":"Load",
       "description":"Load specific url",
       "template":"{{LoadUrl}}",
-      "group":"browser"
+      "group":"browser",
+      "suggestion":{  
+         "en":"Referrer, Referer",
+         "ru":"реферрер, реферер"
+      },
    },
    "navigateback":{  
       "name":"Previous Page",
@@ -179,15 +183,25 @@ _A = {
       },
       "group":"browser"
    },
-   "javascript":{  
-      "name":"Javascript",
-      "description":"Execute javascript",
-      "template":"{{Value}} -> {{Save}}",
-      "suggestion":{  
-         "en":"Execute on page, Access page",
-         "ru":"Яваскрипт, Выполнить на странице, Доступ к странице"
+   "javascript": {  
+      "name": "Javascript (deprecated)",
+      "description": "Execute javascript",
+      "template": "{{Value}} -> {{Save}}",
+      "suggestion": {  
+         "en": "Execute on page, Access page",
+         "ru": "Яваскрипт, Выполнить на странице, Доступ к странице"
       },
-      "group":"browser"
+      "group": "browser"
+   },
+   "browserjavascript": {  
+      "name": "Javascript",
+      "description": "Execute javascript",
+      "template":" {{Code}}",
+      "suggestion": {  
+         "en": "Execute on page, Access page",
+         "ru": "Яваскрипт, Выполнить на странице, Доступ к странице"
+      },
+      "group": "browser"
    },
    "onloadjavascript":{  
       "name":"Execute On Every Page Load In Browser",
@@ -530,12 +544,6 @@ _A = {
       },
       "group":"tools"
    },
-   "base64":{  
-      "name":"Base64 Encode/Decode",
-      "description":"Base64 encode or decode",
-      "template":"{{Value}} -> {{Save}}",
-      "group":"tools"
-   },
    "globalset":{  
       "name":"Set Global Variable",
       "description":"Set global variable",
@@ -543,35 +551,13 @@ _A = {
       "group":"logic"
    },
    "parseline":{  
-      "name":"Parse Line",
+      "name":"Parse Line (deprecated)",
       "description":"Parse line like this 'a1:a2:a3' and save to variables",
       "template":"{{Value}} -> {{VariablesList}}",
       "suggestion":{  
          "en":"split line",
          "ru":"разбить строку, разделить строку"
       },
-      "group":"tools"
-   },
-   "template":{  
-      "name":"Template",
-      "description":"Use Template",
-      "template":"{{Template}} -> {{Save}}",
-      "suggestion":{  
-         "en":"randomize string, random string, spintax, multiline string",
-         "ru":"рандомизировать, случайная строка, спинтакс, многострочная переменная"
-      },
-      "group":"tools"
-   },
-   "replacestring":{  
-      "name":"Replace String",
-      "description":"Replace all occurrences of one string to another",
-      "template":"{{Value}} -> {{Save}}",
-      "group":"tools"
-   },
-   "randomstring":{  
-      "name":"Random String",
-      "description":"Generate random string",
-      "template":"{{Save}}",
       "group":"tools"
    },
    "randomint":{  
@@ -585,8 +571,8 @@ _A = {
       "description":"Set HTTP Headers, like user agent, accept language, etc",
       "template":"{{Value}} -> {{Name}}",
       "suggestion":{  
-         "en":"User agent, Referrer, Referer, Accept Language",
-         "ru":"юзер агент, реферрер, реферер"
+         "en":"User agent, Accept Language",
+         "ru":"юзер агент"
       },
       "group":"network"
    },
@@ -1007,6 +993,13 @@ _A = {
       "group":""
    },
    "script":{  
+      "name":"Execute Javascript On Element (deprecated)",
+      "class":"browser",
+      "description":"Execute Javascript On Element",
+      "template":"{{ScriptValue}} -> {{PATH}}",
+      "group":""
+   },
+   "browserscript":{  
       "name":"Execute Javascript On Element",
       "class":"browser",
       "description":"Execute Javascript On Element",
@@ -1217,6 +1210,7 @@ _AL =
    "Get Element Content" : {"ru": "Получить Код Элемента"},
    "Get Element Text" : {"ru": "Получить Текст"},
    "Execute Javascript On Element" : {"ru": "Выполнить Javascript На Элементе"},
+   "Execute Javascript On Element (deprecated)" : {"ru": "Выполнить Javascript На Элементе (устаревшее)"},
    "Click On Element" : {"ru": "Кликнуть На Элемент"},
    "Move On Element" : {"ru": "Двигать Мышь Над Элементом"},
    "Move And Click On Element" : {"ru": "Двигать Мышь И Кликнуть На Элемент"},
@@ -1245,6 +1239,7 @@ _AL =
    "Resize" : {"ru": "Разрешение"},
    "Proxy" : {"ru": "Прокси"},
    "Javascript" : {"ru": "Яваскрипт"},
+   "Javascript (deprecated)" : {"ru": "Яваскрипт (устаревшее)"},
    "Execute On Every Page Load In Browser" :{"ru": "Выполнять при каждой загрузке страницы в браузере"},
    "Reset" : {"ru": "Сброс"},
    "Open File Result" : {"ru": "Диалог Открыть Файл"},
@@ -1274,13 +1269,9 @@ _AL =
    "Log" : {"ru": "Лог"},
    "Result" : {"ru": "Результат"},
    "Execute code" : {"ru": "Выполнить код"},
-   "Base64 Encode/Decode" : {"ru": "Base64"},
    "Set Global Variable" : {"ru": "Установить глобальную переменную"},
    "Get Global Variable" : {"ru": "Читать глобальную переменную"},
-   "Parse Line" : {"ru": "Парсить строку"},
-   "Template": {"ru": "Шаблон"},
-   "Replace String": {"ru": "Заменить Строку"},
-   "Random String": {"ru": "Случайная строка"},
+   "Parse Line (deprecated)" : {"ru": "Парсить строку (устаревшее)"},
    "Random Number": {"ru": "Случайное Число"},
 
    "Set Header" : {"ru": "Установить заголовок"},
@@ -1329,6 +1320,12 @@ _AL =
    "Xpath Get Exists" : {"ru": "Xpath проверить существование"},
    "Function" : {"ru": "Функция"},
    "Get link URL" : {"ru": "Получить адрес ссылки"},
+   
+   "Back" : {"ru": "Назад"},
+   "Action interface \"" : {"ru": "Интерфейс действия \""},
+   "The module containing " : {"ru": "Модуль, содержащий действие "},
+   "\" is missing or damaged." : {"ru": "\" отсутствует или поврежден."},
+   " action is not installed, disabled, or damaged" : {"ru": ", не установлен, отключен или поврежден"}
    
 }
 
@@ -1749,6 +1746,9 @@ function BrowserAutomationStudio_GenerateActionText(action, data, max_len, no_ht
    {
       return max_length(action,max_len)
    }
+   
+   if(typeof _A[State]==="undefined")
+      return tr("The module containing ") + State + tr(" action is not installed, disabled, or damaged")
 
    var Data = data["d"]
    var Template = _A[State]["template"]

@@ -15,6 +15,7 @@ struct FileEntry
     bool IsDirectory;
 };
 std::vector<FileEntry> GetFilesInDirectory(const std::string &Directory);
+std::vector<FileEntry> GetFilesInDirectory(const std::wstring &Directory);
 
 
 #endif // READALLFILE_H

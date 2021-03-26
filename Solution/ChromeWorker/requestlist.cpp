@@ -1,19 +1,26 @@
 #include "requestlist.h"
 #include <chrono>
-#include "log.h"
 #include "multithreading.h"
 
 
 using namespace std::chrono;
 
-void RequestList::Add(unsigned long long id)
+void RequestList::Add(const std::string& id)
 {
     Requests[id] = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
+    //WORKER_LOG("!!!!!!!!!!! + " + std::to_string(Size()) + " " + Report());
 }
 
-void RequestList::Remove(unsigned long long id)
+void RequestList::Remove(const std::string& id)
 {
     Requests.erase(id);
+    //WORKER_LOG("!!!!!!!!!!! - " + std::to_string(Size()) + " " + Report());
+}
+
+void RequestList::RemoveAll()
+{
+    Requests.clear();
+    //WORKER_LOG("!!!!!!!!!!! x " + std::to_string(Size()) + " " + Report());
 }
 
 void RequestList::RemoveOld()
@@ -27,15 +34,29 @@ void RequestList::RemoveOld()
         else
             i++;
     }
+
+    //WORKER_LOG("!!!!!!!!!!! * " + std::to_string(Size()) + " " + Report());
 }
 
-unsigned long long RequestList::Oldest()
+long long RequestList::Oldest()
 {
-    unsigned long long res = 0;
-    for(std::map<unsigned long long,long long>::iterator it = Requests.begin(); it != Requests.end(); ++it)
+    long long res = 0;
+    for(std::map<std::string,long long>::iterator it = Requests.begin(); it != Requests.end(); ++it)
     {
         if(it->second < res || res == 0)
             res = it->second;
+    }
+    return res;
+}
+
+std::string RequestList::Report()
+{
+    std::string res;
+    for(std::map<std::string,long long>::iterator it = Requests.begin(); it != Requests.end(); ++it)
+    {
+        if(!res.empty())
+            res += ",";
+        res += it->first;
     }
     return res;
 }
@@ -45,43 +66,4 @@ int RequestList::Size()
     return Requests.size();
 }
 
-/*void RequestList::Wait()
-{
-    _IsWaiting = true;
-    _WaitRequests.clear();
-    for(std::map<unsigned long long,long long>::iterator it = Requests.begin(); it != Requests.end(); ++it)
-    {
-        _WaitRequests.push_back(it->first);
-    }
-    _WaitStarted = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
-}
-
-bool RequestList::IsWaiting()
-{
-    return _IsWaiting;
-}
-
-bool RequestList::IsFinished()
-{
-    if(!_IsWaiting)
-    {
-        return true;
-    }
-    long long now = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
-    if(now - _WaitStarted > 5000)
-    {
-        _IsWaiting = false;
-        return true;
-    }
-
-    for(unsigned long long Id: _WaitRequests)
-    {
-        auto it = Requests.find(Id);
-        if(it != Requests.end())
-           return false;
-    }
-
-
-    return false;
-}*/
 

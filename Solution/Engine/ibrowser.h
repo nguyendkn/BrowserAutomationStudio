@@ -49,7 +49,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetPCResourcesSmoothUsage(IPCResourcesSmoothUsage *PCResourcesSmoothUsage) = 0;
         virtual IWorkerSettings * GetWorkerSettings() = 0;
         virtual void SetOpenFileName(const QString & OpenFileName, const QString& callback) = 0;
-        virtual void NavigateBack(const QString& callback) = 0;
+        virtual void NavigateBack(bool IsInstant, const QString& callback) = 0;
         virtual void SetStartupScript(const QString& script,const QString& script_id, const QString& target, const QString& callback) = 0;
         virtual void SetFontList(const QString& fonts, const QString& callback) = 0;
         virtual void SetPromptResult(const QString & Text, const QString& callback) = 0;
@@ -81,8 +81,6 @@ namespace BrowserAutomationStudioFramework
         virtual void FindImage(const QString& callback) = 0;
 
         virtual void Resize(int x, int y, const QString& callback) = 0;
-        virtual void Reset(const QString& callback) = 0;
-        virtual void ResetNoCookies(const QString& callback) = 0;
         virtual void Jquery(const QString& callback) = 0;
         virtual void OptimizeMemory(const QString& callback) = 0;
         virtual void WaitCode(const QString& callback) = 0;

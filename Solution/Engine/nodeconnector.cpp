@@ -15,6 +15,54 @@
 namespace BrowserAutomationStudioFramework
 {
     /*Helpers*/
+
+    static bool recurseCopyAddDir(QDir d, QDir t, const QStringList& e)
+    {
+        QStringList qsl = d.entryList(QStringList()<<"*",QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
+
+        foreach (QString file, qsl)
+        {
+            QFileInfo finfo(d.absoluteFilePath(file));
+
+            if (finfo.isSymLink())
+                return true;
+
+            if (finfo.isDir())
+            {
+                if(!t.mkpath(file))
+                {
+                    return false;
+                }
+
+                QDir sd(finfo.filePath());
+                if(!recurseCopyAddDir(sd, QDir(t.absoluteFilePath(file)),e))
+                {
+                    return false;
+                }
+            } else
+            {
+                bool Exclude = false;
+                for(const QString& f:e)
+                {
+                    if(finfo.absoluteFilePath().contains(f))
+                    {
+                        Exclude = true;
+                        break;
+                    }
+                }
+                if(!Exclude)
+                {
+                    if(!QFile::copy(finfo.absoluteFilePath(),t.absoluteFilePath(file)))
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
     QString NodeConnector::GetRandomString()
     {
        const QString possibleCharacters("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
@@ -90,7 +138,10 @@ namespace BrowserAutomationStudioFramework
     bool RenameDir(QString From, QString To)
     {
         QDir dir;
-        return dir.rename(From,To);
+        if(dir.rename(From,To))
+            return true;
+
+        return recurseCopyAddDir(QDir(From), QDir(To), QStringList());
     }
 
     void RemoveData(QStringList Folders, QStringList Files)

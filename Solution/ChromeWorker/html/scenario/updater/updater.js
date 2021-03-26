@@ -4,8 +4,7 @@
       isStarted: false,
       successCount: 0,
       errorsCount: 0,
-      actions: [],
-      log: []
+      actions: []
     },
     updateTasks(type = 'all') {
       if (this.get('isStarted')) return;
@@ -24,6 +23,8 @@
     },
     async startUpdate() {
       this.set('isStarted', true);
+      this.set('successCount', 0);
+      this.set('errorsCount', 0);
 
       for (const action of this.get('actions')) {
         const task = _TaskCollection.get(action.id), dat = task.dat();
@@ -32,32 +33,33 @@
           const match = task.get('code').match(/\/\*Dat\:([^\*]+)\*\//);
 
           if (match) {
-            await new Promise((resolve) => {
+            const error = await new Promise((resolve) => {
               this.on('toolbox.editStarted', () => {
                 this.off('toolbox.editStarted');
-                resolve();
+
+                this.on('toolbox.editSuccess', () => {
+                  this.off('toolbox.editSuccess');
+                  resolve(null);
+                });
+
+                this.on('toolbox.editFail', (err) => {
+                  this.off('toolbox.editFail');
+                  resolve(err);
+                });
+
+                BrowserAutomationStudio_EditSaveStart();
               });
+
               BrowserAutomationStudio_EditStart(match[1]);
             });
-            const result = await new Promise((resolve) => {
-              this.on('toolbox.editSuccess', () => {
-                this.off('toolbox.editSuccess');
-                resolve('');
-              });
 
-              this.on('toolbox.editFail', (e) => {
-                this.off('toolbox.editFail');
-                resolve(e);
-              });
-
-              BrowserAutomationStudio_EditSaveStart();
-            });
-
-            if (!result) {
+            if (!error) {
               this.set('successCount', this.get('successCount') + 1);
             } else {
               this.set('errorsCount', this.get('errorsCount') + 1);
             }
+
+            if (error) this.trigger('log', error);
           }
         }
 

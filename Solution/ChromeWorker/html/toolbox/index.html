@@ -708,8 +708,8 @@
                     <% if(typeof(variants) != "undefined") { %>
                       <% for(var i = 0;i<variants.length;i++) { %>
                         <li>
-                          <a tabindex="-1" href="#" data-toggle="modal"  data-variant="<%= variants[i].split('<br/>')[0] %>" data-result="<%= id %>" class="variant" >
-                            <span><%= variants[i] %></span>
+                          <a tabindex="-1" href="#" data-toggle="modal"  data-variant="<%= variants[i].split('<br/>')[0].split('<type>')[0] %>" data-variant-type="<%= variants[i].split('<type>')[1] || "" %>" data-result="<%= id %>" class="variant" >
+                            <span><%= variants[i].split('<type>')[0] %></span>
                           </a>
                         </li>
                       <% } %>
@@ -6826,22 +6826,36 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       selectvariant: function(event)
       {
-          var target = $(event.target).closest("a")
-          var variant = target.attr("data-variant")
-          var result = $("#" + target.attr("data-result"))
-          if(result.closest(".input-group").find(".string").length > 0)
-          {
-            result.closest(".input-group").find(".selector").html("string")
-            result.closest(".input-group").find(".input_selector_number").hide()
-            result.closest(".input-group").find(".input_selector_string").show()
-            result.closest(".input-group").find(".input_selector_string").val(variant)
-          }else
-          {
-            result.closest(".input-group").find(".selector").html("int")
-            result.closest(".input-group").find(".input_selector_number").show()
-            result.closest(".input-group").find(".input_selector_string").hide()
-            result.closest(".input-group").find(".input_selector_number").val(variant)
-          }
+        var target = $(event.target).closest("a");
+        var variant = target.attr("data-variant");
+		var variant_type = target.attr("data-variant-type");
+        var result = $("#" + target.attr("data-result"));
+		function _set_variant(value, type){
+		  if(type=="string" || type=="expression"){
+		    result.closest(".input-group").find(".selector").html(type);
+			result.closest(".input-group").find(".input_selector_number").hide();
+			result.closest(".input-group").find(".input_selector_string").show();
+			result.closest(".input-group").find(".input_selector_string").val(value);
+		  }else{
+			result.closest(".input-group").find(".selector").html("int");
+			result.closest(".input-group").find(".input_selector_number").show();
+			result.closest(".input-group").find(".input_selector_string").hide();
+			result.closest(".input-group").find(".input_selector_number").val(value);
+		  };
+		};
+		if(variant_type && result.closest(".input-group").find("." + variant_type).length > 0){
+		  _set_variant(variant, variant_type);
+		}else{
+		  if(result.closest(".input-group").find(".string").length > 0){
+			_set_variant(variant, "string");
+		  }else{
+			if(result.closest(".input-group").find(".int").length > 0){
+			  _set_variant(variant, "int");
+			}else{
+			  _set_variant(variant, "expression");
+			};
+		  };
+		};
       },
 
       groupselector: function(event)

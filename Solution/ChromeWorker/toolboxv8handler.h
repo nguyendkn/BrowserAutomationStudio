@@ -33,6 +33,7 @@ private:
     bool IsInitialized;
     bool IsEditCancel;
     bool ChangedExecute;
+    bool ChangedIncrementHighlightIndex;
 
     bool IsMaximize;
     bool IsMinimize;
@@ -70,6 +71,7 @@ public:
     std::pair<std::string, bool> GetLoadUrl();
     std::pair<std::string, bool> GetEnableModule();
     std::pair<ExecuteClass, bool> GetExecuteCode();
+    bool GetIncrementHighlightIndex();
     std::pair<std::string, bool> GetEmbeddedData();
     std::pair<MultiSelectStateClass, bool> GetMultiselectStateChanged();
     bool GetMultiselectReset();

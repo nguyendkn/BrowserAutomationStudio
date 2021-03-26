@@ -611,3 +611,22 @@ body
     filter: grayscale(35%);
     color:#c4c4c4;
 }
+
+/********************
+ * Scrollbar styles *
+ ********************/
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b7b7b7;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}

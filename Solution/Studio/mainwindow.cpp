@@ -2075,7 +2075,7 @@ bool MainWindow::IsProcessRunning(int pid)
 
 void MainWindow::RemoveOldTunnels()
 {
-    QDirIterator it("t", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
+    QDirIterator it("worker/chrome/t", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
     while (it.hasNext())
     {
         QString dir = it.next();

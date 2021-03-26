@@ -215,12 +215,18 @@ namespace BrowserAutomationStudioFramework
         return true;
     }
 
+    bool WebInterface::GetFailedToGetLoginInterface()
+    {
+        return FailedToGetLoginInterface;
+    }
+
 
     bool WebInterface::Init(bool IsSilent)
     {
         this->IsSilent = IsSilent;
         Close();
         HasInterface = false;
+        FailedToGetLoginInterface = false;
 
         if(WebInterfaceIsRememberChoice)
         {
@@ -291,6 +297,7 @@ namespace BrowserAutomationStudioFramework
                 WebInterfaceIsRememberChoice = true;
                 WebInterfaceRememberChoiceUseCustom = false;
             }
+            FailedToGetLoginInterface = true;
             emit Initialized();
             return;
         }
@@ -304,6 +311,7 @@ namespace BrowserAutomationStudioFramework
                 WebInterfaceIsRememberChoice = true;
                 WebInterfaceRememberChoiceUseCustom = false;
             }
+            FailedToGetLoginInterface = true;
             emit Initialized();
             return;
         }

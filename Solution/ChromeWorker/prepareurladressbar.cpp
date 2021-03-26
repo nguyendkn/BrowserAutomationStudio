@@ -1,6 +1,36 @@
 #include "prepareurladressbar.h"
-#include "include/cef_parser.h"
+#include <network/uri.hpp>
+#include <network/uri/uri_builder.hpp>
+#include <cctype>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
+using namespace std;
+
+string url_encode(const string &value)
+{
+    ostringstream escaped;
+    escaped.fill('0');
+    escaped << hex;
+
+    for (string::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
+        string::value_type c = (*i);
+
+        // Keep alphanumeric and other accepted characters intact
+        if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+            escaped << c;
+            continue;
+        }
+
+        // Any other characters are percent-encoded
+        escaped << uppercase;
+        escaped << '%' << setw(2) << int((unsigned char) c);
+        escaped << nouppercase;
+    }
+
+    return escaped.str();
+}
 
 std::string prepare_url_adressbar(const std::string& UrlOriginal)
 {
@@ -31,16 +61,19 @@ std::string prepare_url_adressbar(const std::string& UrlOriginal)
         UrlToCheck = std::string("http://") + UrlOriginal;
     }
 
-    CefURLParts ParsedUrl;
-    if(!CefParseURL(UrlToCheck,ParsedUrl))
+    std::string SchemeString;
+    std::string HostString;
+
+    try
+    {
+        network::uri ParsedUrl(UrlToCheck);
+        SchemeString = ParsedUrl.scheme().to_string();
+        HostString = ParsedUrl.host().to_string();
+    } catch (...)
     {
         DoGoogleSearch = true;
     }
-    CefString SchemeCefString(&ParsedUrl.scheme);
-    CefString HostCefString(&ParsedUrl.host);
 
-    std::string SchemeString = SchemeCefString.ToString();
-    std::string HostString = HostCefString.ToString();
 
     std::transform(SchemeString.begin(), SchemeString.end(), SchemeString.begin(), ::tolower);
     std::transform(HostString.begin(), HostString.end(), HostString.begin(), ::tolower);
@@ -60,7 +93,7 @@ std::string prepare_url_adressbar(const std::string& UrlOriginal)
 
     if(DoGoogleSearch)
     {
-        Url = std::string("https://www.google.com/search?q=") + CefURIEncode(UrlOriginal,true).ToString();
+        Url = std::string("https://www.google.com/search?q=") + url_encode(UrlOriginal);
     }else
     {
         Url = UrlToCheck;

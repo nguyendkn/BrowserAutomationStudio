@@ -17,89 +17,6 @@
     </div>
    <div id="containerdata" ></div>
 
-
-   
-   <div class="modal" id="RecourseModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr step-1" data-step="1" id="myModalLabel">Select Resource</h4>
-            <h4 class="modal-title tr step-2" data-step="2" id="myModalLabel">Select Resource</h4>
-          </div>
-          
-          <div class="modal-body step step-1">
-            <span id="RecourseControls">
-              <select class="form-control" id="RecourseName" placeholder="Recourse Name">
-              </select>
-            </span>
-            <span id="NoResources">
-              <span class="tr">No resources found.</span>
-              <div class="tr" style="color:gray;font-size:small;margin-top:10px">You can create resource with "+ Create New Resource" button which is located in the panel to the right.</div>
-            </span>
-          </div>
-
-          <div class="modal-body step step-2" style="padding-top:5px">
-            <span id="RecourseControls">
-              <input type="checkbox" id="ResourceReuse" checked /> <label style="margin-bottom:0px" for="ResourceReuse" class="tr res-margin">Reuse Resource</label>
-              <div class="tr" style="color:gray;font-size:small">If this setting is enabled, then every time you use resource, it will be replaced with same value. For example, if you are reading from file with 'Reuse Resource' enabled, then same line will be used during all thread lifetime. You need to disable this setting to take new line.</div>
-              <input type="checkbox" id="ResourceDontDie" style="margin-top:15px"/> <label for="ResourceDontDie" class="tr res-margin" style="margin-bottom:0px">Don't end application if not exists</label>
-              <div class="tr" style="color:gray;font-size:small">By default script will stop after resource is finished. You can use this option to complete not the entire script, but only the thread.</div>
-            </span>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary rescontinue standartbutton tr step step-1" data-step="1">Next</button>
-            <button type="button" class="btn btn-primary resok standartbutton tr step step-2" data-step="2" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal " id="VariableModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr" id="myModalLabel">Select Variable</h4>
-          </div>
-          <div class="modal-body">
-            <select class="form-control" id="VariableName" placeholder="Variable Name">
-            </select>
-            <span id="NoVariable" class="tr">No variables found.</span>
-            <div class="tr" style="color:gray;font-size:small;margin-top:10px">Use "Set Variable" action to create variable.</div>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary varok standartbutton tr" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal" id="FunctionModal" role="dialog" aria-labelledby="myModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title tr" id="myModalLabel">Select Function</h4>
-          </div>
-          <div class="modal-body">
-            <select class="form-control" id="FunctionNameInput" placeholder="Function Name">
-            </select>
-            <span id="NoFunctionFound" class="tr">No functions found.</span>
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary funcok standartbutton tr" data-dismiss="modal">Ok</button>
-            <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="modal" id="LabelModal" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -305,7 +222,7 @@
             
             <span data-preserve="true" data-preserve-type="text" data-preserve-id="FunctionName">
               <input class="form-control function-input" type="text" id="FunctionName" placeholder="Custom IP information function">
-              <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+              <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                 <li>
                   <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                     <span class="tr">Select function</span>
@@ -491,7 +408,11 @@
           <% } %>  
 
           <% if(typeof(modal_code_id) != "undefined"){ %>
-            <a onclick="bootbox.alert({message: $('#<%= modal_code_id %>').html(), size: 'large'});return false;" href="#"><i class="fa fa-question-circle help-input"></i>  </a>
+            <% if(typeof(use_modal_template) != "undefined"){ %>
+              <a onclick="bootbox.alert({message: _.template($('#<%= modal_code_id %>').html())({}), size: 'large'});return false;" href="#"><i class="fa fa-question-circle help-input"></i>  </a>
+            <% }else{ %>      
+              <a onclick="bootbox.alert({message: $('#<%= modal_code_id %>').html(), size: 'large'});return false;" href="#"><i class="fa fa-question-circle help-input"></i>  </a>
+            <% } %>  
           <% } %>  
         </div>
         <hr style="margin-top:5px;margin-bottom:5px"/>
@@ -542,7 +463,7 @@
               <div class="input-group">
                 <input class="form-control variable-input" style='text-transform: uppercase;color:#529653;'  type="text" id="<%= id %>" placeholder="<%= description %>" value="<%= default_variable %>" data-variable-constructor="true" <%= (typeof(append_mode) != "undefined") ? "data-append-array=\"true\"" : "" %> >
                 
-                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                   <li>
                     <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="var" data-toggle="modal" data-target="#VariableModal" data-result-target="#<%= id %>" <%= (typeof(disable_locals) != "undefined") ? "disable_locals=\"true\"" : "" %> <%= (typeof(enable_globals) != "undefined") ? "":"disable_globals=true" %> >
                       <i class="fa fa-at"/>
@@ -591,7 +512,7 @@
               <div class="input-group">
                 <input class="form-control resource-input" type="text" id="<%= id %>" placeholder="<%= description %>" value="" data-resource-constructor="true" />
 
-                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
                   <li>
                     <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="res" data-toggle="modal" data-target="#RecourseModal" data-result-target="#<%= id %>">
                       <i class="fa fa-database"/>
@@ -783,7 +704,7 @@
                 <% } %>
 
                 <% if((typeof(variants) != "undefined" && variants != null) || typeof(disable_editor) == "undefined" || typeof(disable_resource) == "undefined" || typeof(disable_variable) == "undefined") { %>
-                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+                  <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown" data-use-hotkeys="true">
                     <% if(typeof(variants) != "undefined") { %>
                       <% for(var i = 0;i<variants.length;i++) { %>
                         <li>
@@ -802,6 +723,7 @@
                         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="edit" >
                           <i class="fa fa-circle" style="color:darkred" />
                             <span class="tr">Create value in visual constructor</span>
+                            <span>(F6)</span>
                         </a>
                       </li>
                     <% } %>
@@ -810,6 +732,7 @@
                         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="res" >
                           <i class="fa fa-database" />
                             <span class="tr">Load from file, user input, database</span>
+                            <span>(F7)</span>
                         </a>
                       </li>
                     <% } %>
@@ -818,6 +741,7 @@
                         <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#<%= id %>" class="var" >
                           <i class="fa fa-at" />
                             <span class="tr">Insert variable</span>
+                            <span>(F8)</span>
                         </a>
                       </li>
                     <% } %>
@@ -926,6 +850,7 @@
   <script type="text/template" id="load">
     <div class="container-fluid load">
       <%= _.template($('#input_constructor').html())({id:"LoadUrl", description:tr("Url to load"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Referrer", description:tr("Referrer. Can be blank"), default_selector: "string", disable_int:true, help: {description: tr("Referrer used for current page load."), examples:[{code:"https://google.com",description:tr("Page is loaded by clicking on google search result.")},{code:tr("Empty string"),description:tr("Page is loaded by typing url in address bar.")}]}}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Loads specified url into browser. Examples: Load google.com, Load instagram.com.</div>
@@ -1070,7 +995,7 @@
   <script type="text/template" id="custom">
     <div class="container-fluid">
       <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
-        <div id="Code" data-is-code-editor="true" style="height:calc(100vh - 100px);border: none; overflow: hidden; outline: none;border:1px solid #e0e0e0;" />
+        <div id="Code" class="custom-code-editor" data-is-code-editor="true" />
       </span>
       <%= "<s" + "cript>" %>
         window.Code = {Editor: null, InitialValue: ""}
@@ -1078,7 +1003,7 @@
         require(['vs/editor/editor.main'], function() {
           if($("#Code").attr("data-installed") == "true")
             return;
-          $("#Code").attr("data-installed", "true")
+          $("#Code").attr("data-installed", "true");
           window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
             value: window.Code.InitialValue,
             language: 'javascript',
@@ -1101,6 +1026,168 @@
       <span class="short-description tr">Execute javascript code. This code can work with variables but can't work with elements in web browser.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, modal_code_id:"custom-help-" + (_K || "en")}) %>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-common-ru">
+    <div>Выполнить javascript внутри браузера. Это означает, что доступны document, window и другие javascript объекты браузера.</div>
+    <div>Действие работает точно так же, как если бы вы вводили код в консоль браузера.</div>
+    <div>Вы можете использовать переменные BAS в данном действии как для чтения, так и для записи. Кроме того они могут быть любого типа, в том числе объектами и массивами.</div>
+    <div>Переменные используемые в коде автоматически обновляются после выполнения действия.</div>
+    <div>Ресурсы не доступны для использования в данном действии.</div>
+    <br />
+    <div>Во время выполнения скрипта могут возникать разные ошибки. В случае ошибки BAS прекратит выполнение скрипта.</div>
+    <div>Для того чтобы обработать подобные ситуации используйте действие <b>Игнорировать ошибки</b>.</div>
+    <div>В таком случае вы сможете использовать переменные [[WAS_ERROR]] и [[LAST_ERROR]], чтобы узнать, была ли ошибка, и обработать её.</div>
+    <br />
+    <div>Пример #1. Изменение HTML определенного элемента:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Пример #2. Получение HTML определенных элементов:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Пример #3. Установка значений для элементов `input` и `textarea`:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        document.querySelector('textarea').value = [[TEXTAREA_VALUE]].join('\r\n');
+        document.querySelector('input').value = [[INPUT_VALUE]];
+      </pre>
+    </div>
+    <br />
+    <div>В данном действии вы можете писать код с использованием <i>async</i> и <i>await</i>. Действие будет ожидать завершения асинхронных операций.</div>
+    <div>При использовании асинхронного кода всегда дожидайтесь завершения функций с помощью <i>await</i>.</div>
+    <div>В противном случае переменные, значение которых задается в коллбэках либо в функциях then/catch/finally у класса <i>Promise</i>, не будут синхронизированы с BAS.</div>
+    <div>Если в таких участках кода вам не нужно обновлять переменные, вы можете не ждать их завершения.</div>
+    <br />
+    <div>Простой пример. Асинхронное ожидание в течение заданного времени (2 секунды):</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
+    </div>
+    <br />
+    <div>Другой пример. Получение данных со стороннего сайта с помощью функции <i>fetch</i>:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/` + id)
+    .then((res) => res.json());
+}
+[[POST]] = await getPost(1);</pre></div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-common-en">
+    <div>Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
+    <div>Action works exactly the same as if you input code into browser console.</div>
+    <div>You can use BAS variables in this action for both reading and writing. Moreover, they can be of any type, including objects and arrays.</div>
+    <div>Variables used in the code are automatically updated after the action is performed.</div>
+    <div>Resources are not available for use in this action.</div>
+    <br />
+    <div>During the execution of the script, various errors may occur. If an error occurs, BAS will stop the script execution.</div>
+    <div>To handle such situations, use the <b>Ignore errors</b> action.</div>
+    <div>In this case, you can use the [[WAS_ERROR]] and [[LAST_ERROR]] variables to find out if there was an error and process it.</div>
+    <br />
+    <div>Example #1. Changing the HTML of the specific element:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Example #2. Getting the HTML of the specific elements:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Example #3. Setting the values for the `input` and `textarea` elements:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        document.querySelector('textarea').value = [[TEXTAREA_VALUE]].join('\r\n');
+        document.querySelector('input').value = [[INPUT_VALUE]];
+      </pre>
+    </div>
+    <br />
+    <div>In this action you can write code using <i>async</i> and <i>await</i>. The action will wait for asynchronous operations to complete.</div>
+    <div>When using asynchronous code, always wait for functions to complete using <i>await</i>.</div>
+    <div>Otherwise, variables whose value is set in callbacks or in the then/catch/finally functions of the <i>Promise</i> class will not be synchronized with the BAS.</div>
+    <div>If you don't need to update variables in these sections of code, you don't have to wait for them to complete.</div>
+    <br />
+    <div>A simple example. Wait asynchronously for a specified time (2 seconds):</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
+    </div>
+    <br />
+    <div>Another example. Getting data from a third-party site using the <i>fetch</i> function:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/` + id)
+    .then((res) => res.json());
+}
+[[POST]] = await getPost(1);</pre></div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-ru">
+    <%= _.template($('#custom-help-browser-common-ru').html())({}) %>
+    <br />
+    <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-en">
+    <%= _.template($('#custom-help-browser-common-en').html())({}) %>
+    <br />
+    <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browserscriptelement-ru">
+    <%= _.template($('#custom-help-browser-common-ru').html())({}) %>
+    <br />
+    Используйте переменную <strong>self</strong>, которая указывает на выбранный элемент.
+    <br />
+    <br />
+    <div>Получить код элемента, который был выбран при создании этого действия:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[FOUND_ELEMENT_HTML]] = self.innerHTML;
+      </pre>
+    </div>
+    <br />
+    <div>Получить атрибут, имя которого находится в переменной [[ATTRIBUTE]], и сохранить его в переменную [[RESULT]].</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[RESULT]] = self.getAttribute([[ATTRIBUTE]])
+      </pre>
+    </div>
+    <br />
+    <div>
+      Если элемент не будет найден после первой попытки, BAS продолжит ожидать его на протяжении минуты. Если на протяжении 10 секунд элемент не будет найден, в лог будет добавлено сообщение, если элемент не появится на протяжении минуты, поток завершится с ошибкой. Вы можете обработать эту ошибку если уберете настройку "Остановить поток, если элемент не найден" (вверху страницы) или если обернете данное действие в блок игнорирования ошибок. Вы также можете настроить максимальное время ожидания если нажмете на иконку песочных часов.
+    </div>
+    <br />
+    <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browserscriptelement-en">
+    <%= _.template($('#custom-help-browser-common-en').html())({}) %>
+    <br />
+    Use <strong>self</strong> variable, which points to selected element.
+    <br />
+    <br />
+    <div>Get code of element that was selected when creating this action:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[FOUND_ELEMENT_HTML]] = self.innerHTML;
+      </pre>
+    </div>
+    <br />
+    <div>Get attribute which name is located in [[ATTRIBUTE]] variable and save it to [[RESULT]] variable.</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[RESULT]] = self.getAttribute([[ATTRIBUTE]])
+      </pre>
+    </div>
+    <br />
+    <div>
+      If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.
+    </div>
+    <br />
+    <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
   </script>
 
   <script type="text/template" id="custom-help-interface-ru">
@@ -1130,6 +1217,7 @@
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
   </script>
+
   <script type="text/template" id="custom-help-interface-en">
     <div>Run javascript code in web interface context.</div>
     <div>If web interface is not enabled, this action does nothing.</div>
@@ -1156,7 +1244,6 @@
     <div>Example #4. Set input value.</div>
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
-
   </script>
 
   <script type="text/template" id="custom-help-en">
@@ -1323,7 +1410,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           
           <span data-preserve="true" data-preserve-type="text" data-preserve-id="FunctionName">
             <input class="form-control function-input" type="text" id="FunctionName" placeholder="Function name">
-            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
               <li>
                 <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                   <span class="tr">Select function</span>
@@ -1433,7 +1520,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
             <input class="form-control function-input" type="text" id="FunctionName" placeholder="Function name">
             
-            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black">
+            <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown">
               <li>
                 <a tabindex="-1" href="#" class="func" data-result-target="#FunctionName">
                   <span class="tr">Select function</span>
@@ -1469,14 +1556,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="setheader">
     <div class="container-fluid">
-      <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language","Referer"], size: 3}) %>
+      <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language"], size: 3}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Header Value"), default_selector: "string", disable_int:true, value_string: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0"}) %>
       <%= _.template($('#targetfields').html())({}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Set request header for subsequent browser requests.</div>
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="solvecaptcha">
@@ -1510,9 +1597,42 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         <div class="tr tooltip-paragraph-first-fold">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
         <div class="tr tooltip-paragraph-fold">Action works exactly the same as if you input code into browser console and output result into variable.</div>
         <div class="tr tooltip-paragraph-fold">You can also use resources and variables here but only in read mode. Following code will work document.getElementById([[ID]]).innerHTML, but you can't do like this <strike>[[RESULT]] = document.getElementById([[ID]]).innerHTML</strike>.</div> 
+        <div class="tr tooltip-paragraph-fold">This action is deprecated. It is recommended to use the new <a href="#!/browserjavascript">Javascript</a> action.</div>
         <div class="tr tooltip-paragraph-last-fold">Use <a href="#!/custom">Execute Code</a> action if you want to run javascript inside thread.</div>
       </div>
       <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+  </script>
+
+  <script type="text/template" id="browserjavascript">
+    <div class="container-fluid">
+      <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
+        <div id="Code" class="browser-code-editor" data-is-code-editor="true" />
+      </span>
+      <%= "<s" + "cript>" %>
+        window.Code = {Editor: null, InitialValue: ""}
+    
+        require(['vs/editor/editor.main'], function() {
+          if($("#Code").attr("data-installed") == "true")
+            return;
+          $("#Code").attr("data-installed", "true");
+          window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
+            value: window.Code.InitialValue,
+            language: 'javascript',
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            fontSize: 12
+          });
+        });
+      <%= "</" + "script>" %>
+      <div style="text-align: center">
+        <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="var"  disable_globals="true">
+          <i class="fa fa-at"></i>
+          <span class="tr">Insert variable</span>
+        </a>
+      </div>
+      <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
+    </div>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, use_modal_template:true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="onloadjavascript">
@@ -1548,12 +1668,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="reset">
       <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-         <input type="checkbox" id="Check"/> <label for="Check" class="tr">Restart process</label>
       </span>
       <div class="tooltipinternal">
         <div class="tr tooltip-paragraph-first-fold">Clear all browser data: proxy, user agent, headers, BAS cache filters, BAS cache data, cookies.</div>
-        <div class="tr tooltip-paragraph-fold">By default this action doesn't restart browser process and therefore may leave browser cache, local storage and several other object.</div>
-        <div class="tr tooltip-paragraph-fold">It is recommended to set "Restart process" checkbox to purge all data, however, restarting process may affect CPU usage and you may leave "Restart process" unchecked if it is enough to clear only mentioned earlier data.</div> 
         <div class="tr tooltip-paragraph-last-fold">Don't call this action on thread start, BAS will clear data at the beginning of thread automatically.</div>
       </div>
       <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_clear_cookies_and_restart_browser"}) %>
@@ -3133,9 +3250,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <div class="tr tooltip-paragraph-fold">If you want to change cookies or extract them, you need to use javascript. Javascript code can be used in any field if you set field type to expression, or with 'Execute code' action.</div>
       
-      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, creation, expires, has_expires, httponly, last_access, secure.</div>
-      <div class="tr tooltip-paragraph-fold">has_expires, secure and httponly are boolean values and serialized as string with values '1' or '0'.</div>
-      <div class="tr tooltip-paragraph-fold">last_access, expires, creation is datetime and serialized as map with values: day_of_week, hour, millisecond, minute,month, second, year. These values are self explanatory.</div>
+      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, expires, httpOnly, secure.</div>
+      <div class="tr tooltip-paragraph-fold">secure and httpOnly are boolean values.</div>
+      <div class="tr tooltip-paragraph-fold">expires is datetime and serialized as the number of seconds since the UNIX epoch.</div>
       <div class="tr tooltip-paragraph-fold">Here are some javascript snipsets to work with cookies. All of them may be placed into 'Execute code' action. Before using it, you must parse cookies from string like this [[COOKIES]] = JSON.parse([[SAVED_COOKIES]])["cookies"]</div>
       <div class="tr tooltip-paragraph-fold">Find cookie by name: [[COOKIE]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"})[0]</div>
       <div class="tr tooltip-paragraph-fold">Check if cookie exists: [[COOKIE_EXISTS]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"}).length > 0</div>
@@ -3174,9 +3291,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <div class="tr tooltip-paragraph-fold">If you want to change cookies or extract them, you need to use javascript. Javascript code can be used in any field if you set field type to expression, or with 'Execute code' action.</div>
       
-      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, creation, expires, has_expires, httponly, last_access, secure.</div>
-      <div class="tr tooltip-paragraph-fold">has_expires, secure and httponly are boolean values and serialized as string with values '1' or '0'.</div>
-      <div class="tr tooltip-paragraph-fold">last_access, expires, creation is datetime and serialized as map with values: day_of_week, hour, millisecond, minute,month, second, year. These values are self explanatory.</div>
+      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, expires, httpOnly, secure.</div>
+      <div class="tr tooltip-paragraph-fold">secure and httpOnly are boolean values.</div>
+      <div class="tr tooltip-paragraph-fold">expires is datetime and serialized as the number of seconds since the UNIX epoch.</div>
       <div class="tr tooltip-paragraph-fold">Here are some javascript snipsets to work with cookies. All of them may be placed into 'Execute code' action. Before using it, you must parse cookies from string like this [[COOKIES]] = JSON.parse([[SAVED_COOKIES]])["cookies"]</div>
       <div class="tr tooltip-paragraph-fold">Find cookie by name: [[COOKIE]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"})[0]</div>
       <div class="tr tooltip-paragraph-fold">Check if cookie exists: [[COOKIE_EXISTS]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"}).length > 0</div>
@@ -3788,7 +3905,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-last-fold">This action looks for "href" attribute on link element. Sometimes it may not be present, and sites processes link clicking by using javascript. In that case following action won't give any meaningful result.</div>
     </div>
 
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Get Element Content")}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Get link URL")}) %>
   </script>
 
   <script type="text/template" id="coordinates">
@@ -3815,13 +3932,47 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Find element and execute javascript on it.</div>
+      <div class="tr tooltip-paragraph-fold">This action is deprecated. It is recommended to use the new "Execute Javascript On Element" action. Click on any element and select "Execute Javascript On Element" in order to use it.</div>
       <div class="tr tooltip-paragraph-fold">Use self variable, which points to selected element.</div>
       <div class="tr tooltip-paragraph-fold">document, window and other browser javascript objects are available.</div> 
       <div class="tr tooltip-paragraph-fold">Action works exactly the same as if you input code into browser console and output result into variable.</div>
       <div class="tr tooltip-paragraph-fold">You can also use resources and variables here but only in read mode. Following code will work self.getAttribute([[ATTRIBUTE]]), but you can't do like this <strike>[[RESULT]] = self.getAttribute([[ATTRIBUTE]])</strike>.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Execute Javascript On Element"), wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Execute Javascript On Element (deprecated)"), wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+  </script>
+
+  <script type="text/template" id="browserscript">
+    <div class="container-fluid">
+      <%= _.template($('#path').html())({selector:selector}) %>
+      <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
+        <div id="Code" class="browser-code-editor" data-is-code-editor="true" style="height: calc(100vh - 170px);margin-left: 16px;margin-right: 15px;" />
+      </span>
+      <%= "<s" + "cript>" %>
+        window.Code = {Editor: null, InitialValue: ""}
+    
+        require(['vs/editor/editor.main'], function() {
+          if($("#Code").attr("data-installed") == "true")
+            return;
+          $("#Code").attr("data-installed", "true");
+          window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
+            value: window.Code.InitialValue,
+            language: 'javascript',
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            fontSize: 12
+          });
+        });
+      <%= "</" + "script>" %>
+      <div style="text-align: center">
+        <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="var"  disable_globals="true">
+          <i class="fa fa-at"></i>
+          <span class="tr">Insert variable</span>
+        </a>
+      </div>
+      <span class="short-description tr">Find element and execute javascript on it.</span>
+    </div>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, use_modal_template:true, modal_code_id: "custom-help-browserscriptelement-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="text">
@@ -3941,6 +4092,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
      
       <%= _.template($('#input_constructor').html())({id:"Flash", description:tr("Flash"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Flash may expose your identity and generally is not safe for usage. If you want to enable it, change this setting and install flash on your PC. Instruction may be found in a help section below."), examples:[{code:"enable",description:tr("Use flash")},{code:"disable",description:tr("Don't use flash")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
 
+
+      <div class="col-xs-12">
+        <form class="form-horizontal">
+           <div class="form-group">
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Widevine</span></span>:
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+           </div>
+         </form>
+       </div>
+ 
+      
+       <%= _.template($('#input_constructor').html())({id:"Widevine", description:tr("Widevine"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable or disable Widevine plugin."), examples:[{code:"enable",description:tr("Use Widevine")},{code:"disable",description:tr("Don't use Widevine")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
+
       <div class="col-xs-12">
        <form class="form-horizontal">
           <div class="form-group">
@@ -4016,32 +4181,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= _.template($('#input_constructor').html())({id:"AudioNoise", description:tr("Audio noise pattern"), default_selector: "string", disable_int:true, value_string: "", help: { description: tr("This setting is for debugging purposes only, the proper way to set is using FingerprintSwitcher")}}) %>
       
       
-      
-      <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Network</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
-
-      <%= _.template($('#input_constructor').html())({id:"ProxyTunneling", description:tr("Process tunneling"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: {description: tr("This option determines how proxies will be applied to browser process: through tunnel or with routing all requests to curl library. First option is default and if proxy is set it will replace all direct network requests with requests through proxy. Second option replaces all chrome network stack with curl. The difference between them is that first option acts more like real browser, while second gives extra features like ipv6 proxy support and setting proxy for individual network requests."), examples:[{code:"enable",description:tr("Use tunneling")},{code:"disable",description:tr("Use curl")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
-      
-      <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Rendering</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
-
-      <%= _.template($('#input_constructor').html())({id:"SkipFrames", description:tr("Number of frames to skip in run mode"), default_selector: "int", disable_string:true, value_number: 0, help: {description: tr("Frame skip tells BAS to postpond rendering page, executing javascript and do other browser work. The more you set this value, the lazier browser becomes. This parameter helps to save cpu time. On other hand setting it too high can cause your script will become unstable, you may encounter javascript errors and other unpredictable results."), examples:[{code:"0",description:tr("Don't change this setting")},{code:"1",description:tr("Default value, no frame skip")},{code:"75",description:tr("CPU saving mode")}]}}) %>
-      
-
       <div class="col-xs-12">
        <form class="form-horizontal">
           <div class="form-group">
@@ -4051,7 +4190,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           </div>
         </form>
       </div>
-      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files."), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("To use extension, you must download it and specify full path. Find extension https://chrome.google.com/webstore/category/extensions, and download it from https://chrome-extension-downloader.com. Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip. Chrome extension API support is still very limited, some extensions may not work. See link below for example."), examples:[{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files."), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("To use extension, you must download it and specify full path. Find extension https://chrome.google.com/webstore/category/extensions, and download it from https://chrome-extension-downloader.com. Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip."), examples:[{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
 
     </div>
 
@@ -4059,10 +4198,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
-      <div class="tr tooltip-paragraph-fold">"Flash", "Extensions", "Number of frames to skip in run mode" and "Process tunneling" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
+      <div class="tr tooltip-paragraph-fold">"Flash", "Extensions" and "Widevine" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. Find extension</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">here</a>, <span class="tr">and download it from</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome-extension-downloader.com');return false" class="tr">here</a>. <span class="tr">Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.</span></div>
-
-      <div class="tooltip-paragraph-fold"><span class="tr">Chrome extension API support is still very limited, some extensions may not work. See extension example</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://bablosoft.com/uploads/background-green.zip');return false" class="tr">here</a></div>
 
       <div class="tooltip-paragraph-fold"><span class="tr">To start BAS with flash enabled besides changing "Flash" setting you also need to install flash on your PC. Instruction is located</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash');return false" class="tr">here</a>. </div>
 
@@ -4516,6 +4653,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Url", description:tr("Url"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
       <%= _.template($('#input_constructor').html())({id:"IsSilent", description:tr("Load silently"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true","false"], help: {description: tr("Adding tab silently means, that new tab will be added and specified url will be loaded only when the tab becomes active for the first time."),examples:[{code:"true",description:tr("Create new tab, load specified url only when tab gets switched to.")},{code:"false",description:tr("Create new tab, switch to it and load it immediately.")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Referrer", description:tr("Referrer. Can be blank"), default_selector: "string", disable_int:true, help: {description: tr("Referrer used for current page load."), examples:[{code:"https://google.com",description:tr("Page is loaded by clicking on google search result.")},{code:tr("Empty string"),description:tr("Page is loaded by typing url in address bar.")}]}}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Add a new tab with the specified Url.</div>
@@ -4683,14 +4821,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Use resources if you want to take them from file, url or database.</div>
       <div class="tr tooltip-paragraph-fold">You can change proxy before or after browser created or page is loaded.</div> 
       <div class="tr tooltip-paragraph-fold">Proxy with empty parameter will reset it to default value(direct connection).</div>
-      <div class="tr tooltip-paragraph-fold">BAS can apply proxy in 2 ways: tunneling and passing all connections through curl. By default first option is used, you can change it in settings.</div>
-      <div class="tr tooltip-paragraph-fold">'Security settings' will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. This will make your application less detectable, check information for each individual setting to understand what are they needed for. Default settings will work fine.</div>
-
-      
-      <div class="tr tooltip-paragraph-last-fold">Setting individual proxy for urls or tabs works only if tunneling is disabled.</div>
+      <div class="tr tooltip-paragraph-last-fold">'Security settings' will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. This will make your application less detectable, check information for each individual setting to understand what are they needed for. Default settings will work fine.</div>
     </div>
 
-    <%= _.template($('#back').html())({action:"executeandadd",use_target:true, visible:true, wiki: "how_to_set_proxy"}) %>
+    <%= _.template($('#back').html())({action:"executeandadd",visible:true, wiki: "how_to_set_proxy"}) %>
   </script>
 
   _MACRO_INSERT_INTERFACE_
@@ -5149,20 +5283,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= variable %> = _result() == 1
       <% if(isvisible){ %>
         _if(<%= variable %>, function(){
-          <%= path %>.style("display")!
-          STYLE_DISPLAY = _result()
-
-          <%= path %>.style("visibility")!
-          STYLE2_DISPLAY = _result()
-
-          <%= path %>.script("self.getBoundingClientRect().height")!
-          STYLE_HEIGHT = _result()
-
-          <%= path %>.script("self.getBoundingClientRect().width")!
-          STYLE_WIDTH = _result()
-          
-          <%= variable %> = STYLE_DISPLAY != "none" && STYLE2_DISPLAY != "hidden" && STYLE_HEIGHT != "0"  && STYLE_WIDTH != "0"
-          
+          <%= path %>.script("document.readyState!='loading' && self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'")!
+          <%= variable %> = _result().indexOf("true")>=0
         })!
       <% } %>
 
@@ -5224,7 +5346,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="setheader_code">
-    /*Browser*/
     header(<%= name %>, <%= value %>)!
   </script>
 
@@ -5301,7 +5422,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="style_code">
       /*Browser*/
       <%= waiter %>
-      <%= path %>.style(<%= style %>)!
+      <%= path %>.script('window.getComputedStyle(self)[' + JSON.stringify(<%= style %>) + ']')!
       <%= variable %> = _result()
   </script>
 
@@ -5386,12 +5507,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="reset_code">
-      /*Browser*/
-      <% if(reset){ %>
         new_browser()!
-      <% }else{ %>
-        reset()!
-      <% } %>
   </script>
 
   <script type="text/template" id="moveelement_code">
@@ -5478,16 +5594,32 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="script_code">
-      /*Browser*/
       <%= waiter %>
       <%= path %>.script(<%= script %>)!
       <%= variable %> = _result()
   </script>
 
+  <script type="text/template" id="browserscript_code">
+    <%= waiter %>
+    <%= path %>.script2(<%= JSON.stringify(source) %>,JSON.stringify(_read_variables(<%= variables %>)))!
+    var _parse_result = JSON.parse(_result())
+    _write_variables(JSON.parse(_parse_result.variables))
+    if(!_parse_result.is_success)
+      fail(_parse_result.error)
+  </script>
+
   <script type="text/template" id="javascript_code">
-      /*Browser*/
       page().script(<%= value %>)!
       <%= variable %> = _result()
+  </script>
+
+  <script type="text/template" id="browserjavascript_code">
+      <%= timeout_general()  %>
+      page().script2(<%= JSON.stringify(source) %>,JSON.stringify(_read_variables(<%= variables %>)))!
+      var _parse_result = JSON.parse(_result())
+      _write_variables(JSON.parse(_parse_result.variables))
+      if(!_parse_result.is_success)
+        fail(_parse_result.error)
   </script>
 
   <script type="text/template" id="onloadjavascript_code">
@@ -5497,11 +5629,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   
   <script type="text/template" id="set_code">
-      /*Browser*/
       <%= waiter %>
-      <%= path %>.move()!
-      <%= timeout_general() %>
-      <%= path %>.set(<%= set %>)!
+      get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<option_list.length;i++){var option = option_list.item(i);if(option.innerHTML === " + JSON.stringify(<%= set %>) + ")break;[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+      _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+      _call(_random_point, {})!
+      _if(_result().length > 0 && _SELECT_TYPE, function(){
+        move({})!
+        <%= path %>.clarify(X,Y)!
+        _call(_clarify,{})!
+        mouse(X,Y)!
+        <%= timeout_general() %>
+        _type(_SELECT_TYPE,30)!
+        delete _SELECT_TYPE
+      })!
+      delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="waitelement_code">
@@ -5516,19 +5657,37 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="set_integer_code">
-      /*Browser*/
-      <%= waiter %>
-      <%= path %>.move()!
+    <%= waiter %>
+    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<" + <%= set %> + ";i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+    _call(_random_point, {})!
+    _if(_result().length > 0 && _SELECT_TYPE, function(){
+      move({})!
+      <%= path %>.clarify(X,Y)!
+      _call(_clarify,{})!
+      mouse(X,Y)!
       <%= timeout_general() %>
-      <%= path %>.set_integer(<%= set %>)!
+      _type(_SELECT_TYPE,30)!
+      delete _SELECT_TYPE
+    })!
+    delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="set_random_code">
-      /*Browser*/
-      <%= waiter %>
-      <%= path %>.move()!
+    <%= waiter %>
+    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';var index = Math.floor((Math.random() * option_list.length));for(var i = 0;i<index;i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+    _call(_random_point, {})!
+    _if(_result().length > 0 && _SELECT_TYPE, function(){
+      move({})!
+      <%= path %>.clarify(X,Y)!
+      _call(_clarify,{})!
+      mouse(X,Y)!
       <%= timeout_general() %>
-      <%= path %>.set_random()!
+      _type(_SELECT_TYPE,30)!
+      delete _SELECT_TYPE
+    })!
+    delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="attr_code">
@@ -5590,8 +5749,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="navigateback_code">
-      /*Browser*/
-      navigate_back()!
+      <% if(!is_instant){ %>
+        <%= timeout_general() %>
+      <% } %>
+      navigate_back(<%= is_instant %>)!
   </script>
 
   <script type="text/template" id="move_code">
@@ -5600,21 +5761,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="addtab_code">
-      /*Browser*/
-
-      _if_else(<%= is_silent %> == "true",function(){
-        _popupcreate(true,<%= url %>)!
-      },function(){
-        _popupcreate(false,"")!
-        <% if(notinstant){ %>
-          <%= timeout_general()  %>
-          load(<%= url %>)!
-        <% }else{ %>
-          load_instant(<%= url %>)!
-        <% } %>
-      })!
-
-      
+    <% if(notinstant){ %>
+      <%= timeout_general()  %>
+    <% } %>
+    _popupcreate2(<%= is_silent %> == "true", <%= url %>, <%= referrer %>, <%= (notinstant) ? "false" : "true" %>)!
   </script>
 
   <script type="text/template" id="closetab_code">
@@ -5656,13 +5806,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="load_code">
-      /*Browser*/
       <% if(notinstant){ %>
         <%= timeout_general()  %>
-        load(<%= url %>)!
-      <% }else{ %>
-        load_instant(<%= url %>)!
       <% } %>
+      _load(<%= url %>, <%= referrer %>, <%= (notinstant) ? "false" : "true" %>)!
   </script>
 
   <script type="text/template" id="mousesettings_code">
@@ -5678,9 +5825,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="browsersettings_code">
       /*Browser*/
       var Params = {};
-      var ProxyTunneling = (<%= ProxyTunneling %>);
       var Flash = (<%= Flash %>);
-      var SkipFrames = (<%= SkipFrames %>);
+      var Widevine = (<%= Widevine %>);
       var Extensions = (<%= Extensions %>);
 
       var Webrtc = (<%= Webrtc %>);
@@ -5697,6 +5843,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(Flash.length > 0)
         Params["UseFlash"] = Flash == "enable"
+      
+      if(Widevine.length > 0)
+        Params["UseWidevine"] = Widevine == "enable"
 
       if(Webrtc.length > 0)
         Params["Webrtc"] = Webrtc
@@ -5724,12 +5873,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(WebglRenderer.length > 0)
         Params["Webgl.unmaskedRenderer"] = WebglRenderer
-
-      if(ProxyTunneling.length > 0)
-        Params["ProxyTunneling"] = ProxyTunneling == "enable"
-
-      if(SkipFrames !== 0)
-        Params["SkipFrames"] = SkipFrames
 
       if(Extensions.length > 0)
         Params["Extensions"] = Extensions
@@ -6076,7 +6219,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="./search/internal/mark.min.js"></script>
   <script src="databasefilter.js"></script>
   <script src="sortable.js"></script>
-  <script src="cursorposition.js"></script>
+  <script src="./utils/cursorposition.js"></script>
+  <script src="./utils/extractVariables.js"></script>
   <script src="toastr.min.js"></script>
   <script src="embeddedmodel.js"></script>
   <script src="diff_match_patch.js"></script>
@@ -6093,7 +6237,21 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="./search/internal/engine.js"></script>
   <script src="./search/internal/helper.js"></script>
   <script src="./search/search.js"></script>
-  
+
+  <!-- Modal Dialogs (scripts) -->
+  <script src="./dialogs/internal/index.js"></script>
+  <script src="./dialogs/internal/translate.js"></script>
+  <script src="./dialogs/internal/options.js"></script>
+  <script src="./dialogs/internal/insert.js"></script>
+  <script src="./dialogs/internal/menus.js"></script>
+  <script src="./dialogs/internal/utils.js"></script>
+  <script src="./dialogs/internal/store.js"></script>
+  <script src="./dialogs/template/index.js"></script>
+  <script src="./dialogs/dialogs.js"></script>
+  <script src="./dialogs/functionsDialog.js"></script>
+  <script src="./dialogs/resourcesDialog.js"></script>
+  <script src="./dialogs/variablesDialog.js"></script>
+
   <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
   <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
   <script type="text/javascript"> _MACRO_INSERT_ACTIONS_ </script>
@@ -6108,6 +6266,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <link rel="stylesheet" href="rappid.css">
   <link rel="stylesheet" href="bootstrap-checkbox.css">
   <link rel="stylesheet" href="toastr.min.css">
+
+  <!-- Modal Dialogs (styles) -->
+  <link rel="stylesheet" href="./dialogs/dialogs.css">
 
   <!-- Actions Search (styles) -->
   <link rel="stylesheet" href="./search/search.css">
@@ -6136,7 +6297,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     });
     var VariableModel = Backbone.Model.extend({
         defaults: {
-            name: ""
+            name: "",
+            global: false
         }
     });
     var FunctionModel = Backbone.Model.extend({
@@ -6219,8 +6381,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     var MainView = Backbone.View.extend({
       el: '#container',
 
-      currentInputResource: "none",
-      currentInputVariable: "none",
       currentInputLabel: "none",
 
       events: {
@@ -6228,18 +6388,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #WaitingDisable": "interrupt",
         //"mouseover .toolbutton": "showtooltip",
         "click #backtomain": "backtomain",
-        "show.bs.modal #VariableModal": "varaddstart",
+        "show.bs.modal #LabelModal": "labeladdstart",
         "mousedown .var": "varaddstarttrigger",
+        "mousedown .res": "resaddstarttrigger",
         "mousedown .func": "funcaddstarttrigger",
         "click #PathCount": "nextpath",
 
-        "click .varok": "varadd",
-        "show.bs.modal #FunctionModal": "funcaddstart",
-        "show.bs.modal #LabelModal": "labeladdstart",
-
-        "click .funcok": "funcadd",
         "click .labelok": "labeladd",
-
         "click .timeoutok": "timeoutadd",
         "click .timeoutdefault": "timeoutdefault",
         "click .groupshow": "groupshow",
@@ -6248,12 +6403,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         "click #showbookmarks": "showbookmarks",
         "mouseup #showhistory": "showhistorymouseup",
         "mouseup #showbookmarks": "showbookmarksmouseup",
-        
 
-        "show.bs.modal #RecourseModal": "resaddstart",
-        "mousedown .res": "resaddstarttrigger",
-        "click .resok": "resadd",
-        "click .rescontinue": "rescontinue",
         "mousedown .edit": "editstart",
         "click .specialletter": "specialletter",
         "click #executetype button":"clickexecutetype",
@@ -6294,14 +6444,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
         "focus .input_selector_string": "input_selector_focus",
         "blur .input_selector_string": "input_selector_blur",
+
         "focus .input_selector_number": "input_selector_focus",
         "blur .input_selector_number": "input_selector_blur",
+
         "focus .variable-input": "input_selector_focus",
         "blur .variable-input": "input_selector_blur",
+
         "focus .function-input": "input_selector_focus",
         "blur .function-input": "input_selector_blur",
+
         "focus .resource-input": "input_selector_focus",
         "blur .resource-input": "input_selector_blur",
+
         "change #checkbox-image-show-data": "toggleimageshowdata",
         "change #ImageBase64": "imagebase64changed",
         "click #ImageDataRef": "showimage",
@@ -6310,32 +6465,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       nextpath: function(event)
       {
-        if(typeof(window.BrowserAutomationStudio_IndexPathHighlight) == "undefined")
-          window.BrowserAutomationStudio_IndexPathHighlight = 0;
-        
         var Total = parseInt($("#PathCount").text())
         if(Total > 0 && $("#selector-input").length > 0 && $("#selector-input").val().length > 0)
         {
-          var loader = new ResourceLoader();
-          var p = GetPath(loader,false,true,window.BrowserAutomationStudio_IndexPathHighlight)
-          var path = p["path"] + 
-          ".script(" + 
-            "\"self.scrollIntoView({block: 'center', inline: 'center'});" + 
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = [].indexOf.call(_BAS_HIDE(BrowserAutomationStudio_HighlightElements),self);" +
-            "clearTimeout(_BAS_HIDE(BrowserAutomationStudio_HighlightElementTimeout));" +
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElementTimeout) = setTimeout(function(){_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = -1},3000);" + 
-          "\")!" + "\n" + "section_start(\"test\",-3)!"
-          var selector = "";
-          if(p["query"])
-          {
-            selector = ";_SELECTOR=" + p["query"] + ";"
-          }
-          path = loader.GetAdditionalData() + selector + path
-
-          BrowserAutomationStudio_Execute(path)
-
-          window.BrowserAutomationStudio_IndexPathHighlight ++
-          window.BrowserAutomationStudio_IndexPathHighlight = window.BrowserAutomationStudio_IndexPathHighlight % Total
+          BrowserAutomationStudio_IncrementHighlightIndex()
         }
       },
 
@@ -6376,11 +6509,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       input_selector_focus:function(event)
       {
         $(event.target).siblings(".input-field-dropdown").show();
+        $(event.target).trigger('show.bs.dropdown');
       },
 
       input_selector_blur:function(event)
       {
-        $(event.target).siblings(".input-field-dropdown").hide();  
+        $(event.target).siblings(".input-field-dropdown").hide();
+        $(event.target).trigger('hide.bs.dropdown');
       },
 
 
@@ -6407,6 +6542,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         event.stopPropagation();
         BrowserAutomationStudio_ShowHideBookmarks();
       },
+
       showhistorymouseup:function(event)
       {
         $("#showhistory").blur();
@@ -6837,348 +6973,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         InsertAtCaret("TypeData","<" + $(event.target).attr("data-key") + ">");
       },
 
-      resaddstarttrigger: function(event)
+      funcaddstarttrigger: function({ target })
       {
-        this.currentInputResource = $(event.target).closest("a").attr("data-result-target")
-
-        $('#RecourseModal').modal('show')   
-
+        BasFunctionsDialog.create($(target).closest('a'));
       },
 
-      rescontinue: function(event)
+      resaddstarttrigger: function({ target })
       {
-        $('#RecourseModal').find(".step-2").show()
-        $('#RecourseModal').find(".step-1").hide()
-
+        BasResourcesDialog.create($(target).closest('a'));
       },
 
-      resaddstart: function(event)
+      varaddstarttrigger: function({ target })
       {
-
-        $('#RecourseModal').find(".step-1").show()
-        $('#RecourseModal').find(".step-2").hide()
-
-
-        var json = _ResourceCollection.toJSON();
-        $('#RecourseName').html("")
-        if(json.length == 0)
-        {
-          $("#NoResources").show()
-          $("#RecourseControls").hide()
-          $(".rescontinue").hide()
-        }else
-        {
-          $("#NoResources").hide()
-          $("#RecourseControls").show()
-          $("#ResourceReuse").prop('checked', true);
-          $("#ResourceDontDie").prop('checked', false);
-          $(".rescontinue").show()
-          json = jsort(json);
-          for(var i = 0;i<json.length;i+=1)
-          {
-            $('#RecourseName')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"] + ": " + json[i]["description"]));
-           }
-         }
-
-        $('#RecourseName').focus()
-      },
-
-      varaddstarttrigger: function(event)
-      {
-        this.currentInputVariable = $(event.target).closest("a").attr("data-result-target")
-        this.disable_locals = $(event.target).closest("a").attr("disable_locals") == "true"
-        this.disable_globals = $(event.target).closest("a").attr("disable_globals") == "true"
-
-
-        $('#VariableModal').modal('show');
-      },
-
-      funcaddstarttrigger: function(event)
-      {
-        event.preventDefault();
-        this.currentInputVariable = $(event.target).closest("a").attr("data-result-target")
-        $('#FunctionModal').modal('show');
-      },
-
-      varaddstart: function(event)
-      {
-        //console.log("varaddstart")
-
-        var json = _VariableCollection.toJSON();
-        var json2 = _GlobalVariableCollection.toJSON();
-        var total = 0
-
-
-        
-        if(!this.disable_locals)
-        {
-          total += json.length  
-        }        
-
-        if(!this.disable_globals)
-        {
-          total += json2.length
-        }
-
-        $('#VariableName').html("")
-        if(total == 0)
-        {
-          $("#NoVariable").show()
-          $("#VariableName").hide()
-          $(".varok").hide()
-
-        }else
-        {
-          $("#NoVariable").hide()
-          $("#VariableName").show()
-          $(".varok").show()
-          if(!this.disable_locals)
-          {
-            json = jsort(json);
-            for(var i = 0;i<json.length;i+=1)
-            {
-              $('#VariableName')
-               .append($("<option></option>")
-               .attr("value",json[i]["name"])
-               .text(json[i]["name"]));
-            }
-          }
-          if(!this.disable_globals)
-          {
-            json2 = jsort(json2);
-            for(var i = 0;i<json2.length;i+=1)
-            {
-              $('#VariableName')
-               .append($("<option></option>")
-               .attr("value",json2[i]["name"])
-               .attr("isglobal","true")
-               .text(tr("Global: ") + json2[i]["name"]));
-            }
-          }
-         }
-
-
-
-        $('#VariableName').focus()
-      },
-
-      funcaddstart: function(event)
-      {
-        var json = _FunctionCollection.toJSON();
-
-        $('#FunctionNameInput').html("")
-        if(json.length == 0)
-        {
-          $("#NoFunctionFound").show()
-          $("#FunctionNameInput").hide()
-          $(".funcok").hide()
-
-        }else
-        {
-          $("#NoFunctionFound").hide()
-          $("#FunctionNameInput").show()
-          $(".funcok").show()
-          for(var i = 0;i<json.length;i+=1)
-          {
-            json = jsort(json);
-            $('#FunctionNameInput')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"]));
-           }
-         }
-
-        $('#FunctionNameInput').focus()
-
-
-
-      },
-
-      labeladdstart: function(event)
-      {
-        var json = _LabelCollection.toJSON();
-
-        $('#LabelNameInput').html("")
-        if(json.length == 0)
-        {
-          $("#NoLabelFound").show()
-          $("#LabelNameInput").hide()
-          $(".labelok").hide()
-
-        }else
-        {
-          $("#NoLabelFound").hide()
-          $("#LabelNameInput").show()
-          $(".labelok").show()
-          json = jsort(json);
-          for(var i = 0;i<json.length;i+=1)
-          {
-            $('#LabelNameInput')
-             .append($("<option></option>")
-             .attr("value",json[i]["name"])
-             .text(json[i]["name"]));
-           }
-         }
-
-        $('#LabelNameInput').focus()
-        this.currentInputLabel = $(event.relatedTarget).attr("data-result-target")
-
-      },
-
-
-
-      resadd: function(event)
-      {
-        var el = $(this.currentInputResource)
-        var isnumber = $(this.currentInputResource + "_number:visible").length > 0
-
-        var res = $("#RecourseName").val();
-        if(!$("#ResourceReuse").is(':checked'))
-          res+="|notreuse";
-        if($("#ResourceDontDie").is(':checked'))
-          res+="|onlyfail";
-
-        if(isnumber)
-        {
-          el.closest(".input-group").find(".selector").html("expression")
-          el.closest(".input-group").find(".input_selector_number").hide()
-          el.closest(".input-group").find(".input_selector_string").show()
-          
-          el.val("{{" + res + "}}")
-        }else
-        {
-          var name = $("#RecourseName").val();
-          if(name.length > 0)
-          {
-            if(el.is("[data-resource-constructor]"))
-            {
-              el.val(res)
-            }else
-            {
-              if(!el.is("[data-is-code-editor]"))
-              {
-                var start = 0
-                try{
-                  start = el.val().length
-                  start = cursorposition(el[0]).start
-                }catch(e){}
-                var val = el.val()
-                val = val.slice(0, start) + "{{" + res + "}}" + val.slice(start)
-                el.val(val)
-              }else
-              {
-                var line = window[el.attr("id")].Editor.getPosition();
-                var range = new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column);
-                var id = { major: 1, minor: 1 };             
-                var op = {identifier: id, range: range, text: "{{" + res + "}}", forceMoveMarkers: true};
-                window[el.attr("id")].Editor.executeEdits("my-source", [op]);
-              }
-              
-            }
-          }
-        }
-        if(this.currentInputResource == "#selector-input")
-        {
-          _MultiSelectManager.PathManualyEdited()
-          BrowserAutomationStudio_TestPathInternal();
-        }
-
-      },
-
-      varadd: function(event)
-      {
-        var el = $(this.currentInputVariable)
-        var isnumber = $(this.currentInputVariable + "_number:visible").length > 0
-        var isglobal = $("#VariableName option:selected").attr("isglobal") == "true"
-
-        if(isnumber)
-        {
-          el.closest(".input-group").find(".selector").html("expression")
-          el.closest(".input-group").find(".input_selector_number").hide()
-          el.closest(".input-group").find(".input_selector_string").show()
-          if(isglobal)
-          {
-            el.val("[[GLOBAL:" + $("#VariableName").val() + "]]")
-          }else
-          {
-            el.val("[[" + $("#VariableName").val() + "]]")  
-          }
-          
-        }else
-        {
-
-          var name = $("#VariableName").val();
-          if(name.length > 0)
-          {
-            if(!el.is("[data-variable-constructor]"))
-            {
-
-              var insert = ""
-              if(isglobal)
-              {
-                insert = "[[GLOBAL:" + $("#VariableName").val() + "]]"
-              }else
-              {
-                insert = "[[" + $("#VariableName").val() + "]]"
-              }
-
-              if(!el.is("[data-is-code-editor]"))
-              {
-                var start = 0
-                try{
-                  start = el.val().length
-                  start = cursorposition(el[0]).start
-                }catch(e){}
-                var val = el.val()
-                val = val.slice(0, start) + insert + val.slice(start)
-
-                el.val(val).trigger("change")
-              }else
-              {
-                var line = window[el.attr("id")].Editor.getPosition();
-                var range = new monaco.Range(line.lineNumber, line.column, line.lineNumber, line.column);
-                var id = { major: 1, minor: 1 };             
-                var op = {identifier: id, range: range, text: insert, forceMoveMarkers: true};
-                window[el.attr("id")].Editor.executeEdits("my-source", [op]);
-              }
-            }else
-            {
-              if(el.is("[data-append-array]"))
-              {
-                if(el.val().length == 0)
-                  el.val($("#VariableName").val())
-                else
-                  el.val(el.val() + "," + $("#VariableName").val())
-              }else
-              {
-                el.val($("#VariableName").val())
-              }
-            }
-          }
-        }
-        if(this.currentInputVariable == "#selector-input")
-        {
-          _MultiSelectManager.PathManualyEdited()
-          BrowserAutomationStudio_TestPathInternal();
-        }
-
-      },
-
-      funcadd: function(event)
-      {
-        var el = $(this.currentInputVariable)
-
-        var name = $("#FunctionNameInput").val();
-        if(name.length > 0)
-        {
-          var Value = $("#FunctionNameInput").val()
-          el.val(Value)
-          this.funcchange(Value)
-        }
-        
+        BasVariablesDialog.create($(target).closest('a'));
       },
 
       funcchange: function(FuncName)
@@ -7295,6 +7102,37 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         SetupTooltips();
       },
 
+      labeladdstart: function(event)
+      {
+        var json = _LabelCollection.toJSON();
+
+        $('#LabelNameInput').html("")
+        if(json.length == 0)
+        {
+          $("#NoLabelFound").show()
+          $("#LabelNameInput").hide()
+          $(".labelok").hide()
+
+        }else
+        {
+          $("#NoLabelFound").hide()
+          $("#LabelNameInput").show()
+          $(".labelok").show()
+          json = jsort(json);
+          for(var i = 0;i<json.length;i+=1)
+          {
+            $('#LabelNameInput')
+             .append($("<option></option>")
+             .attr("value",json[i]["name"])
+             .text(json[i]["name"]));
+           }
+         }
+
+        $('#LabelNameInput').focus()
+        this.currentInputLabel = $(event.relatedTarget).attr("data-result-target")
+
+      },
+      
       labeladd: function(event)
       {
         var el = $(this.currentInputLabel)
@@ -7371,26 +7209,35 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           if(State == "load")
           {
             var val = GetInputConstructorValue("LoadUrl",loader)
+            var referrer = GetInputConstructorValue("Referrer",loader)
 
-            if(val["original"].length > 0)
+            if(val["original"].length == 0)
             {
+              Invalid("Url is empty");
+              return;
+            }
+
                try{
-                var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({url:val["updated"],notinstant:BrowserAutomationStudio_UsesWaitCode()})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({url:val["updated"],referrer:referrer["updated"],notinstant:BrowserAutomationStudio_UsesWaitCode()})
                 code = Normalize(code,0)
 
                 BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
               }catch(e)
               {}
-            }else
-            {
-              Invalid("Url is empty");
-              return;
-            }
+        
           }else if(State == "navigateback")
           {
             
             try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({}) + BrowserAutomationStudio_GetWaitCode()
+              var is_instant = true
+              var usewaiter = $("#use-waiter")
+
+              if(usewaiter.length > 0 && usewaiter.attr("data-enabled") == "true")  
+              {
+                is_instant = false
+              }
+
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({is_instant: is_instant})
               code = Normalize(code,0)
 
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
@@ -8556,6 +8403,30 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
+          }else if(State == "browserjavascript")
+          {
+            var source = window.Code.Editor.getValue();
+
+            if(source.length === 0) {
+              Invalid("Code is empty");
+              return;
+            }
+
+            if(source.indexOf("GLOBAL:") >= 0) {
+              Invalid("Global variables are not allowed");
+              return;
+            }
+
+            var prepared = ExtractVariables(source);
+
+            try {
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
+                variables: JSON.stringify(prepared),
+                source: source,
+              });
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            } catch(e) { }
           }else if(State == "onloadjavascript")
           {
             var Value = GetInputConstructorValue("Value", loader);
@@ -8572,7 +8443,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
              try{
 
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({reset:$("#Check").is(':checked')})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({})
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)
@@ -8949,13 +8820,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             var val = GetInputConstructorValue("IfExpression",loader)
             var ElseEnabled = $("#IfElse").is(":checked")
+
             if(val["original"].length > 0)
             {
+               var UpdatedVal = val["updated"];
+
+               if ((/^VAR_\w+$/).test(UpdatedVal.trim())) {
+                 UpdatedVal = `typeof(${UpdatedVal}) !== "undefined" ? (${UpdatedVal}) : undefined`;
+               }
 
                try{
                 if(!ElseEnabled)
                 {
-                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:val["updated"], do_delete: ""})
+                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
                   code = Normalize(code,0)
                   BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, 1, false);
                 }else
@@ -8977,8 +8854,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   }
 
 
-                  var code = loader.GetAdditionalData() + "\n" +  v + " = " + val["updated"] + ";\n"
-
+                  var code = loader.GetAdditionalData() + "\n" +  v + " = " + UpdatedVal + ";\n"
  
 
                   code += _.template($('#' + State + "_code").html())({expression:v, do_delete: ""})
@@ -9471,7 +9347,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               return;
             }
 
-            if(VariableValue["original"].length == 0)
+            if(!VariableValue["isString"] && VariableValue["original"].length == 0)
             {
               Invalid("Variable value is empty");
               return;
@@ -9778,6 +9654,33 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
+          }else if(State == "browserscript")
+          {
+            var source = window.Code.Editor.getValue();
+
+            if(source.length === 0) {
+              Invalid("Code is empty");
+              return;
+            }
+
+            if(source.indexOf("GLOBAL:") >= 0) {
+              Invalid("Global variables are not allowed");
+              return;
+            }
+
+            var prepared = ExtractVariables(source);
+
+            try {
+              var path = GetPath(loader)
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
+                variables: JSON.stringify(prepared),
+                source: source,
+                path: path["path"],
+                waiter: path["waiter"]
+              });
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            } catch(e) { }
           }else if(State == "captcha")
           {
             var Variable = this.$el.find("#Save").val().toUpperCase();
@@ -10128,6 +10031,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             
             var Flash = GetInputConstructorValue("Flash", loader);
+            var Widevine = GetInputConstructorValue("Widevine", loader);
             var Webrtc = GetInputConstructorValue("Webrtc", loader);
             var Canvas = GetInputConstructorValue("Canvas", loader);
             var CanvasNoise = GetInputConstructorValue("CanvasNoise", loader);
@@ -10147,6 +10051,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())(
                 {
                   Flash:Flash["updated"],
+                  Widevine:Widevine["updated"],
                   ProxyTunneling:ProxyTunneling["updated"],
                   SkipFrames:SkipFrames["updated"],
                   Extensions:Extensions["updated"],
@@ -10212,6 +10117,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             var Url = GetInputConstructorValue("Url", loader);
             var IsSilent = GetInputConstructorValue("IsSilent", loader);
+            var Referrer = GetInputConstructorValue("Referrer",loader)
+            
             if(Url["original"].length == 0)
             {
               Invalid("Url is empty");
@@ -10222,8 +10129,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               Invalid("IsSilent is empty");
               return;
             }
+            
             try{
-              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({url:Url["updated"], notinstant: BrowserAutomationStudio_UsesWaitCode(), is_silent: IsSilent["updated"]}) /*+ BrowserAutomationStudio_GetWaitCode()*/
+              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({referrer:Referrer["updated"], url:Url["updated"], notinstant: BrowserAutomationStudio_UsesWaitCode(), is_silent: IsSilent["updated"]}) /*+ BrowserAutomationStudio_GetWaitCode()*/
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)
@@ -10362,7 +10270,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "reset": _.template($('#reset').html()),
           "openfile": _.template($('#openfile').html()),
           "dragfile": _.template($('#dragfile').html()),
-          "getcookiesforurl": _.template($('#getcookiesforurl').html()),
+          //"getcookiesforurl": _.template($('#getcookiesforurl').html()),
           "savecookies": _.template($('#savecookies').html()),
           "restorecookies": _.template($('#restorecookies').html()),
           "scroll": _.template($('#scroll').html()),
@@ -10401,7 +10309,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "httpclientgetheader": _.template($('#httpclientgetheader').html()),
           "httpclientsetheader": _.template($('#httpclientsetheader').html()),
           "httpclientclearheader": _.template($('#httpclientclearheader').html()),
-          "httpclientgetcookiesforurl": _.template($('#httpclientgetcookiesforurl').html()),
+          //"httpclientgetcookiesforurl": _.template($('#httpclientgetcookiesforurl').html()),
           "httpclientsavecookies": _.template($('#httpclientsavecookies').html()),
           "httpclientrestorecookies": _.template($('#httpclientrestorecookies').html()),
           "httpclientfailonerror": _.template($('#httpclientfailonerror').html()),
@@ -10419,6 +10327,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "promptresult": _.template($('#promptresult').html()),
           "httpauth": _.template($('#httpauth').html()),
           "solverfailed": _.template($('#solverfailed').html()),
+          "browserjavascript": _.template($('#browserjavascript').html()),
+          "browserscript": _.template($('#browserscript').html()),
           "onloadjavascript": _.template($('#onloadjavascript').html()),
           "incvariable": _.template($('#incvariable').html()),
           "incglobalvariable": _.template($('#incglobalvariable').html()),
@@ -10468,11 +10378,22 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         {
           d = d.filter(function(el){
             return !el["show_only_with_database"]
-          })
+          });
         }
+        d = d.filter(function(el) {
+          return !["javascript"].includes(el["ref"]);
+        });
 
-        var interfacedata = this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters});
-        if(interfacedata===""){
+        var interfacedata = ""
+        try
+        {
+          interfacedata = this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters});
+        }catch(e)
+        {
+
+        }
+        if(interfacedata==="")
+        {
           interfacedata = '<div style="padding-right:15px;padding-left:15px;">' + tr("Action interface \"") + (_GobalModel.GetPageInfo() || this.model.get("state")) + tr("\" is missing or damaged.") + '<hr style="margin-top:5px;margin-bottom:5px"/><a tabindex="-1" class="btn btn-danger standartbutton tr" href="#!/" id="backtomain">Back</a></div>';
         }
 
@@ -10515,6 +10436,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         BrowserAutomationStudio_TestPathInternal();
 
         BrowserAutomationStudio_SetExecuteType();
+
+        BasDialogsLib.dropdowns.initialize();
 
         _SearchManager.initialize();
         
@@ -10603,7 +10526,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/reset": "reset",
             "!/openfile": "openfile",
             "!/dragfile": "dragfile",
-            "!/getcookiesforurl": "getcookiesforurl",
+            //"!/getcookiesforurl": "getcookiesforurl",
             "!/savecookies": "savecookies",
             "!/restorecookies": "restorecookies",
             "!/scroll": "scroll",
@@ -10642,7 +10565,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/httpclientgetheader": "httpclientgetheader",
             "!/httpclientsetheader": "httpclientsetheader",
             "!/httpclientclearheader": "httpclientclearheader",
-            "!/httpclientgetcookiesforurl": "httpclientgetcookiesforurl",
+            //"!/httpclientgetcookiesforurl": "httpclientgetcookiesforurl",
             "!/httpclientsavecookies": "httpclientsavecookies",
             "!/httpclientrestorecookies": "httpclientrestorecookies",
             "!/httpclientfailonerror": "httpclientfailonerror",
@@ -10659,6 +10582,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/promptresult": "promptresult",
             "!/httpauth": "httpauth",
             "!/solverfailed": "solverfailed",
+            "!/browserjavascript": "browserjavascript",
+            "!/browserscript": "browserscript",
             "!/onloadjavascript": "onloadjavascript",
             "!/incvariable": "incvariable",
             "!/incglobalvariable": "incglobalvariable",
@@ -10895,9 +10820,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         dragfile: function(){
                   _GobalModel.set({ state: "dragfile" });
                 },
-        getcookiesforurl: function(){
+        /*getcookiesforurl: function(){
                   _GobalModel.set({ state: "getcookiesforurl" });
-                },
+                },*/
         savecookies: function(){
                   _GobalModel.set({ state: "savecookies" });
                 },
@@ -11012,9 +10937,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         httpclientclearheader: function(){
                   _GobalModel.set({ state: "httpclientclearheader" });
                 },
-        httpclientgetcookiesforurl: function(){
+        /*httpclientgetcookiesforurl: function(){
                   _GobalModel.set({ state: "httpclientgetcookiesforurl" });
-                },
+                },*/
         httpclientsavecookies: function(){
                   _GobalModel.set({ state: "httpclientsavecookies" });
                 },
@@ -11062,6 +10987,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 },
         solverfailed: function(){
           _GobalModel.set({ state: "solverfailed" });
+        },
+        browserjavascript: function(){
+          _GobalModel.set({ state: "browserjavascript" });
+        },
+        browserscript: function(){
+          _GobalModel.set({ state: "browserscript" });
         },
         onloadjavascript: function(){
           _GobalModel.set({ state: "onloadjavascript" });
@@ -11172,12 +11103,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["screen"]["name"]), description: tr(_A["screen"]["description"]), ref: "screen" },
                 { name: tr(_A["proxy"]["name"]), description: tr(_A["proxy"]["description"]), ref: "proxy" },
                 { name: tr(_A["javascript"]["name"]), description: tr(_A["javascript"]["description"]), ref: "javascript" },
+                { name: tr(_A["browserjavascript"]["name"]), description: tr(_A["browserjavascript"]["description"]), ref: "browserjavascript" },
                 { name: tr(_A["onloadjavascript"]["name"]), description: tr(_A["onloadjavascript"]["description"]), ref: "onloadjavascript" },
                 { name: tr(_A["reset"]["name"]), description: tr(_A["reset"]["description"]), ref: "reset" },
                 { name: tr(_A["openfile"]["name"]), description: tr(_A["openfile"]["description"]), ref: "openfile" },
-                { name: tr(_A["dragfile"]["name"]), description: tr(_A["dragfile"]["description"]), ref: "dragfile" },
+                //{ name: tr(_A["dragfile"]["name"]), description: tr(_A["dragfile"]["description"]), ref: "dragfile" },
                 { name: tr(_A["promptresult"]["name"]), description: tr(_A["promptresult"]["description"]), ref: "promptresult" },
-                { name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
+                //{ name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
                 { name: tr(_A["scroll"]["name"]), description: tr(_A["scroll"]["description"]), ref: "scroll" },
                 { name: tr(_A["renderscreen"]["name"]), description: tr(_A["renderscreen"]["description"]), ref: "renderscreen" },
                 { name: tr(_A["solvecaptcha"]["name"]), description: tr(_A["solvecaptcha"]["description"]), ref: "solvecaptcha" },
@@ -11219,7 +11151,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["randomint"]["name"]), description: tr(_A["randomint"]["description"]), ref: "randomint" },
                 { description: tr("Network"), type: "group", name: "network", icon: _G["network"]["icon"], info: tr(_G["network"]["info"]) },
                 { name: tr(_A["setheader"]["name"]), description: tr(_A["setheader"]["description"]), ref: "setheader" },
-                { name: tr(_A["getcookiesforurl"]["name"]), description: tr(_A["getcookiesforurl"]["description"]), ref: "getcookiesforurl" },
+                //{ name: tr(_A["getcookiesforurl"]["name"]), description: tr(_A["getcookiesforurl"]["description"]), ref: "getcookiesforurl" },
                 { name: tr(_A["savecookies"]["name"]), description: tr(_A["savecookies"]["description"]), ref: "savecookies" },
                 { name: tr(_A["restorecookies"]["name"]), description: tr(_A["restorecookies"]["description"]), ref: "restorecookies" },
                 { name: tr(_A["loadcookiesfromhttpclient"]["name"]), description: tr(_A["loadcookiesfromhttpclient"]["description"]), ref: "loadcookiesfromhttpclient" },
@@ -11265,7 +11197,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["httpclientgetheader"]["name"]), description: tr(_A["httpclientgetheader"]["description"]), ref: "httpclientgetheader" },
                 { name: tr(_A["httpclientsetheader"]["name"]), description: tr(_A["httpclientsetheader"]["description"]), ref: "httpclientsetheader" },
                 { name: tr(_A["httpclientclearheader"]["name"]), description: tr(_A["httpclientclearheader"]["description"]), ref: "httpclientclearheader" },
-                { name: tr(_A["httpclientgetcookiesforurl"]["name"]), description: tr(_A["httpclientgetcookiesforurl"]["description"]), ref: "httpclientgetcookiesforurl" },
+                //{ name: tr(_A["httpclientgetcookiesforurl"]["name"]), description: tr(_A["httpclientgetcookiesforurl"]["description"]), ref: "httpclientgetcookiesforurl" },
                 { name: tr(_A["httpclientsavecookies"]["name"]), description: tr(_A["httpclientsavecookies"]["description"]), ref: "httpclientsavecookies" },
                 { name: tr(_A["httpclientrestorecookies"]["name"]), description: tr(_A["httpclientrestorecookies"]["description"]), ref: "httpclientrestorecookies" },
                 { name: tr(_A["loadcookiesfrombrowser"]["name"]), description: tr(_A["loadcookiesfrombrowser"]["description"]), ref: "loadcookiesfrombrowser" },
@@ -11365,6 +11297,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       }else if(subject == "upload")
       {
         BrowserAutomationStudio_NotifyInternal(tr("Open file dialog."), tr("BrowserAutomationStudio needs file input. Use \"Open File Result\" action to set upload file. This action must be used <strong>before</strong> dialog appear."), "#!/openfile")  
+      }else if(subject == "prompt")
+      {
+        BrowserAutomationStudio_NotifyInternal(tr("Prompt dialog."), tr("Site has used prompt javascript function. Use \"Prompt Result\" in order to set result."), "#!/promptresult")  
       }else if(subject == "notification")
       {
         BrowserAutomationStudio_NotifyInternal(tr("Notifications."), tr("Site requests permission to show notifications. You can allow or deny it. This action must be used <strong>before</strong> notification is requested."), "#!/notification")  
@@ -11487,7 +11422,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     function BrowserAutomationStudio_SetPathCount(count)
     {
-      window.BrowserAutomationStudio_IndexPathHighlight = 0
       if(count.toString().length > 0)
       {
         $("#PathCount").css("visibility","visible")
@@ -11817,7 +11751,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         var el = $(`.mainscreen [data-ref="${name}"]`)
         el.addClass("toolbookmark")          
       })
-      BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({history: ActionHistory,tab: CurrentTab, bookmarks: BookmarkList}));
+      BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
+        recent: BasDialogsLib.store.save(), 
+        bookmarks: BookmarkList,
+        history: ActionHistory,
+        tab: CurrentTab
+      }));
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(interface_json)
@@ -11825,6 +11764,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       try
       {
         var interface_obj = JSON.parse(interface_json)
+        BasDialogsLib.store.load(interface_obj["recent"])
         ActionHistory = interface_obj["history"]
         BookmarkList = interface_obj["bookmarks"]
         var tab = interface_obj["tab"] || ""
@@ -11841,7 +11781,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         })
 
       }catch(e){}
-
     }
 
 
@@ -11913,6 +11852,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             if( e.target.nodeName == "TEXTAREA" ) return
 
             if($('.modal.in').length > 0)
+            {
+              return;
+            }
+
+            if($('#modalDialogContainer').length > 0) 
             {
               return;
             }
@@ -12197,6 +12141,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     function BrowserAutomationStudio_OpenAction(Name)
     {
+        if ($("#expressioneditor-container").is(":visible")) {
+          $("#expressioneditor-cancel").click();
+        }
+
         _Router.navigate("#!/" + Name, true);
     }
     
@@ -12356,8 +12304,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         ControlsText["p"] = all
       }
 
-      ControlsText = "/*Dat:" + utf8_to_b64(JSON.stringify(ControlsText)) +  "*/\n"
-      return ControlsText
+      ControlsText = "/*Dat:" + utf8_to_b64(JSON.stringify(ControlsText)) +  "*/\n";
+      BasDialogsLib.store.addElements(Elements);
+      return ControlsText;
     }
 
     function BrowserAutomationStudio_EditStart(dataraw)
@@ -12588,56 +12537,78 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     }
 
 
-    function BrowserAutomationStudio_SetResources(resources, additional_resources)
+    function BrowserAutomationStudio_SetResources(resources, additionalResources)
     {
-      _ResourceCollection.reset()
+      const additionalSource = JSON.parse(additionalResources);
+      const source = JSON.parse(resources);
+      _ResourceCollection.reset();
 
-      var res = JSON.parse(resources)
-      var additional_res = JSON.parse(additional_resources) 
-
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _ResourceCollection.add({name:res[i]["name"],description:res[i]["description"],type:res[i]["type"]})
+      for (let i = 0; i < source.length; i++) {
+        _ResourceCollection.add({ name: source[i]["name"], description: source[i]["description"], type: source[i]["type"] });
       }
 
-      for(var i = 0;i < additional_res.length;i+=1)
-      {
-        _ResourceCollection.add({name:additional_res[i]["name"],description:additional_res[i]["name"]})
+      for (let i = 0; i < additionalSource.length; i++) {
+        _ResourceCollection.add({ name: additionalSource[i]["name"], description: additionalSource[i]["name"] });
       }
+
+      BasDialogsLib.store.addResource([...additionalSource, ...source]);
+    }
+
+    function BrowserAutomationStudio_SetGlobalVariables(globalVariables)
+    {
+      const source = JSON.parse(globalVariables);
+      _GlobalVariableCollection.reset();
+
+      source.sort((a, b) => a["name"] >= b["name"]);
+      for (let i = 0; i < source.length; i++) {
+        _GlobalVariableCollection.add({ name: source[i]["name"], global: true });
+      }
+
+      BasDialogsLib.store.addVariable(source, true);
     }
 
     function BrowserAutomationStudio_SetVariables(variables)
     {
-      _VariableCollection.reset()
-      var res = JSON.parse(variables);
-      var added_cycle_index = false
-      for(var i = 0;i < res.length;i+=1)
-      {
-        if(res[i]["name"] == "CYCLE_INDEX")
-          added_cycle_index = true
-      }
-      if(!added_cycle_index)
-        res.push({name:"CYCLE_INDEX"})
-      
-      res.sort(function(a,b){return a["name"] >= b["name"]})
+      const source = JSON.parse(variables);
+      _VariableCollection.reset();
 
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _VariableCollection.add({name:res[i]["name"]})
+      let addedCycleIndex = false;
+
+      for (let i = 0; i < source.length; i++) {
+        if (source[i]["name"] === "CYCLE_INDEX") {
+          addedCycleIndex = true;
+        }
       }
+
+      if (!addedCycleIndex) {
+        source.push({ name: "CYCLE_INDEX" });
+      }
+
+      source.sort((a, b) => a["name"] >= b["name"]);
+      for (let i = 0; i < source.length; i++) {
+        _VariableCollection.add({ name: source[i]["name"], global: false });
+      }
+
+      BasDialogsLib.store.addVariable(source, false);
     }
 
-    function BrowserAutomationStudio_SetGlobalVariables(global_variables)
+    function BrowserAutomationStudio_SetFunctions(functions)
     {
+      const source = JSON.parse(functions);
+      _FunctionCollection.reset();
 
-      _GlobalVariableCollection.reset()
-      var res = JSON.parse(global_variables)
-      res.sort(function(a,b){return a["name"] >= b["name"]})
-      var added_cycle_index = false
-      for(var i = 0;i < res.length;i+=1)
-      {
-        _GlobalVariableCollection.add({name:res[i]["name"]})
+      for (let i = 0; i < source.length; i++) {
+        try {
+          const dat = JSON.parse(JSON.parse(source[i]["name"]));
+          const prop = { name: dat["n"] };
+          if (dat["fd"]) {
+            prop["properties"] = JSON.parse(dat["fd"]);
+          }
+          _FunctionCollection.add(prop);
+        } catch (e) { }
       }
+
+      BasDialogsLib.store.addFunction(source);
     }
 
     function BrowserAutomationStudio_SetSchema(schema)
@@ -12650,29 +12621,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     function BrowserAutomationStudio_SetEmbeddedData(data, languages)
     {
       _EmbeddedModel.ParseData(data, languages)
-    }
-
-    function BrowserAutomationStudio_SetFunctions(functions)
-    {
-      _FunctionCollection.reset()
-      var res = JSON.parse(functions)
-
-      for(var i = 0;i < res.length;i+=1)
-      {
-        try
-        {
-          var dat = JSON.parse(JSON.parse(res[i]["name"]))
-          var prop = {name:dat["n"]}
-          if(dat["fd"])
-          {
-            prop["properties"] = JSON.parse(dat["fd"])
-          }
-          _FunctionCollection.add(prop)
-        }catch(e)
-        {
-
-        }
-      }
     }
 
     function BrowserAutomationStudio_SetCurrentFunction(FunctionData)
@@ -12745,7 +12693,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         var ResTextUpdated = loader.Resolve(ResText+"");
         if(ResTextUpdated.length == 0)
           ResTextUpdated = "\"\""
-        return {"updated" : ResTextUpdated, "original" : ResText}
+        return {"updated" : ResTextUpdated, "original" : ResText, "isString": ResTextTypeIsString};
     }
 
     function GetPath(loader, need_all, need_visible, selector_index)
@@ -13388,7 +13336,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     function BrowserAutomationStudio_ExecuteScript(selector, is_loop)
     {
-      BrowserAutomationStudio_ElementFunction(selector, "script", is_loop)
+      BrowserAutomationStudio_ElementFunction(selector, "browserscript", is_loop)
     }
 
 

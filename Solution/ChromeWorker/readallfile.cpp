@@ -66,18 +66,18 @@ void ReadAllBytes(const std::string& filename,std::vector<char>& result)
     //return result;
 }
 
-std::vector<FileEntry> GetFilesInDirectory(const std::string &Directory)
+std::vector<FileEntry> GetFilesInDirectory(const std::wstring &Directory)
 {
     std::vector<FileEntry> out;
     HANDLE dir;
     WIN32_FIND_DATA file_data;
 
-    if ((dir = FindFirstFile(s2ws(Directory + "/*").c_str(), &file_data)) == INVALID_HANDLE_VALUE)
+    if ((dir = FindFirstFile((Directory + std::wstring(L"/*")).c_str(), &file_data)) == INVALID_HANDLE_VALUE)
         return out;
 
     do {
         const std::string file_name = ws2s(file_data.cFileName);
-        const std::string full_file_name = Directory + "/" + file_name;
+        const std::string full_file_name = ws2s(Directory) + "/" + file_name;
         const bool is_directory = (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
         if (file_name[0] == '.')
@@ -97,5 +97,9 @@ std::vector<FileEntry> GetFilesInDirectory(const std::string &Directory)
     FindClose(dir);
 
     return out;
+}
 
+std::vector<FileEntry> GetFilesInDirectory(const std::string &Directory)
+{
+    return GetFilesInDirectory(s2ws(Directory));
 }

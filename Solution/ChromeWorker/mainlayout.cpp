@@ -1238,8 +1238,9 @@ bool MainLayout::IsTouchCursor()
     return false;
 }
 
-HCURSOR MainLayout::GetCursor()
+HCURSOR MainLayout::GetCursor(bool& NeedUpdate)
 {
+    NeedUpdate = true;
     if(IsMoveScrollVertical || IsInsideScrollVertical)
     {
         return hcSizeNS;
@@ -1271,9 +1272,11 @@ HCURSOR MainLayout::GetCursor()
             }
         }else
         {
+            NeedUpdate = false;
             return hcArrow;
         }
     }
+    NeedUpdate = false;
     return hcArrow;
 }
 
@@ -1363,6 +1366,9 @@ bool MainLayout::OnMouseMove(int x, int y, int BrowserWidth,int BrowserHeight,in
 
 bool MainLayout::OnMouseLeave()
 {
+    IsInsideScrollVertical = false;
+    IsInsideScrollHorizontal = false;
+
     if(!IsRecord)
         return false;
 

@@ -16,6 +16,7 @@ namespace BrowserAutomationStudioFramework
         explicit IWebInterface(QObject *parent = nullptr);
         virtual bool HasWebInterface() = 0;
         virtual bool Init(bool IsSilent) = 0;
+        virtual bool GetFailedToGetLoginInterface() = 0;
         virtual void Send(const QString& MessageType,
                           bool IsAsync = false,
                           int Id = 0,

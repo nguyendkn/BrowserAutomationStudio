@@ -332,13 +332,24 @@ function BAS_SolveRecaptcha()
 		_break()
 
 	_if_else(BAS_SolveRecaptcha_Method == "2captcha-newapi" || BAS_SolveRecaptcha_Method == "rucaptcha-newapi" || BAS_SolveRecaptcha_Method == "antigate-newapi" || BAS_SolveRecaptcha_Method == "komilfo-newapi" || BAS_SolveRecaptcha_Method == "captchaguru-newapi", function(){
-	    get_element_selector(RECAPTCHA_PREFIX_FIRST_FRAME).attr("src")!
+		get_element_selector(RECAPTCHA_PREFIX_FIRST_FRAME).attr("src")!
+		
+		NEWAPI_DATA_S = _result().split(new RegExp("[\?\&]s="))
+		if(NEWAPI_DATA_S.length > 1)
+		{
+	    	NEWAPI_DATA_S = NEWAPI_DATA_S[NEWAPI_DATA_S.length - 1]
+	    	NEWAPI_DATA_S = NEWAPI_DATA_S.split("&")[0]
+			NEWAPI_DATA_S = NEWAPI_DATA_S.split("#")[0]
+		}else
+		{
+			NEWAPI_DATA_S = null
+		}
 
 	    NEWAPI_DATA_SITEKEY = _result().split(new RegExp("[\?\&]k="))
 	    NEWAPI_DATA_SITEKEY = NEWAPI_DATA_SITEKEY[NEWAPI_DATA_SITEKEY.length - 1]
 	    NEWAPI_DATA_SITEKEY = NEWAPI_DATA_SITEKEY.split("&")[0]
-	    NEWAPI_DATA_SITEKEY = NEWAPI_DATA_SITEKEY.split("#")[0]
-
+		NEWAPI_DATA_SITEKEY = NEWAPI_DATA_SITEKEY.split("#")[0]
+		
 	    if(NEWAPI_DATA_SITEKEY.length == 0)
 	    {
 	      fail("data-sitekey is empty")
@@ -429,7 +440,9 @@ function BAS_SolveRecaptcha()
 
 			
 			solver_property(NEWAPI_METHOD,"method","userrecaptcha")
-		    solver_property(NEWAPI_METHOD,"googlekey",NEWAPI_DATA_SITEKEY)
+			solver_property(NEWAPI_METHOD,"googlekey",NEWAPI_DATA_SITEKEY)
+			if(NEWAPI_DATA_S)
+				solver_property(NEWAPI_METHOD,"data-s",NEWAPI_DATA_S)
 		    solver_property(NEWAPI_METHOD,"pageurl",NEWAPI_URL)
 
 		    if(typeof(BAS_SolveRecaptcha_SendProxy) == "boolean" && BAS_SolveRecaptcha_SendProxy && _PROXY["server"].length > 0)

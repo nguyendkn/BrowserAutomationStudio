@@ -48,22 +48,6 @@ function new_browser(callback)
     }
 }
 
-/* Soft reset */
-function reset(callback)
-{
-    if(!_is_bas_browser_real())
-    {
-        new_browser(callback)
-        return
-    }
-    _ARG = arguments
-    _create_browser_if_needed(function(){
-        _DEFAULT_MOVE_PARAMS = {}
-        _reset_proxy();
-        Browser.Reset(_get_function_body(_ARG[0]));
-    })
-}
-
 /* Create browser caus used action which needs browser */
 function browser(callback)
 {
@@ -74,16 +58,13 @@ function browser(callback)
 function _init_browser(callback)
 {
     _DEFAULT_MOVE_PARAMS = {}
-    _INIT_BROWSER_CALLBACK = callback
-    Browser.ResetNoCookies(_get_function_body(function(){
-        var callback = _INIT_BROWSER_CALLBACK
-        delete _INIT_BROWSER_CALLBACK
-        if(Browser.IsBASBrowser())
-            Browser.ResetProxy();
 
-        _settings(_PROXY, callback)
+    if(Browser.IsBASBrowser())
+        Browser.ResetProxy();
 
-    }))
+    _settings(_PROXY, callback)
+
+
 }
 
 /* Check if bas browser is set through settings and it actually used */
@@ -232,7 +213,8 @@ function _browser_mode(mode, callback)
                 "Fingerprints.Setting.availableHoverTypes":"1",
                 "Fingerprints.Setting.primaryPointerType":"2",
                 "Fingerprints.Setting.primaryHoverType":"1",
-                "Fingerprints.BrowserMode":"Mobile"
+                "Fingerprints.BrowserMode":"Mobile",
+                "Fingerprints.Feature.TouchEventFeatureDetection":"Enable"
 
             }
         }
@@ -249,7 +231,8 @@ function _browser_mode(mode, callback)
                 "Fingerprints.Setting.availableHoverTypes":"2",
                 "Fingerprints.Setting.primaryPointerType":"4",
                 "Fingerprints.Setting.primaryHoverType":"2",
-                "Fingerprints.BrowserMode":"Desktop"
+                "Fingerprints.BrowserMode":"Desktop",
+                "Fingerprints.Feature.TouchEventFeatureDetection":"Disable"
             }
         }
 
@@ -1151,10 +1134,27 @@ function load(text, callback)
     })
 }
 
-function navigate_back(callback)
+function _load(text, referrer, is_instant, callback)
 {
+    _ARG = arguments
     _create_browser_if_needed(function(){
-        Browser.NavigateBack(_get_function_body(callback));
+        Browser.LoadPage2(_ARG[0],_ARG[1],_ARG[2],"if(_result().length > 0){fail(tr('Failed to load page ') + _ARG[0] + ' : ' + _result())};" + _get_function_body(_ARG[3]));
+    })
+}
+
+function _popupcreate2(is_silent, url, referrer, is_instant, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.PopupCreate2(_ARG[0],_ARG[1],_ARG[2],_ARG[3],"if(_result().length > 0){fail(tr('Failed to load page ') + _ARG[1] + ' : ' + _result())};" + _get_function_body(_ARG[4]));
+    })
+}
+
+function navigate_back(is_instant, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.NavigateBack(_ARG[0], _get_function_body(_ARG[1]));
     })
 }
 

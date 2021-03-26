@@ -1,12 +1,10 @@
 <% if(isspintax && istemplate){ %>
 	_template(<%= template %>)!
-	var templateResult = _result() != null ? _result().toString() : "";
-	<%= variable %> = _spintax(templateResult).replace("BASASYNC","\)\!")
+	<%= variable %> = _spintax(_result()).replace("BASASYNC","\)\!")
 <% } %>
 <% if(!isspintax && istemplate){ %>
 	_template(<%= template %>)!
-	var templateResult = _result() != null ? _result().toString() : "";
-	<%= variable %> = templateResult.replace("BASASYNC","\)\!")
+	<%= variable %> = _result().replace("BASASYNC","\)\!")
 <% } %>
 
 <% if(isspintax && !istemplate){ %>

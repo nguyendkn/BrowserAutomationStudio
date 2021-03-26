@@ -1156,7 +1156,7 @@ window.TaskList = {
 
         if(data["type"] == "summary")
         {
-          this.tasks = data["params"].tasks
+          this.tasks = data["params"].tasks.filter(function(t){return typeof(t.name) == "string"})
           this.manual = data["params"].manual_actions
           this.scheduler_log = data["params"].scheduler_log
           setTimeout(function(){

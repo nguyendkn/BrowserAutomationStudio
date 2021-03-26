@@ -30,6 +30,9 @@ _L =
 	"Add" :{"ru": "Добавить"},
 	"module" :{"ru": "модуль"},
 
+	"Browser extensions" :{"ru": "Расширения браузера"},
+	"Use 'Browser Settings' action in order to set browser extensions." :{"ru": "Используйте действие 'Настройки браузера' чтобы задать список расширений."},
+
 	"WebRTC ip list" :{"ru": "WebRTC список ip"},
 	"Replace ips exposed by WebRTC with values from the field above. Each line of that field must contain single ip. This setting is for debugging purposes only, the proper way to set is using 'Proxy' action." :{"ru": "Заменить ip, возвращаемые WebRTC значениями из поля выше. Каждая строка этого поля должна содержать один ip. Этот параметр предназначен только для целей отладки, правильный способ изменения WebRTC ip - использовать действие 'Прокси'."},
 	"Replace Ip" :{"ru": "Изменить Ip"},
@@ -44,6 +47,8 @@ _L =
 	"Turn on" :{"ru": "Включить"},
 	"Turn off" :{"ru": "Отключить"},
 	"Flash may expose your identity and generally is not safe for usage. If you want to enable it, change setting above and install flash on your PC, like described" :{"ru": "Использование флеш может раскрыть ваш ip, включать эту настройку не рекомендуется. Если вы все же хотите включить ее, измените настройку выше и установите флеш на вашем ПК, как описано"},
+	"Enable Widevine plugin." :{"ru": "Включить плагин Widevine."},
+
 	"here" :{"ru": "здесь"},
 	"WebRTC may show your real ip even if you are using proxy." :{"ru": "Использование WebRTC также может раскрыть ваш ip даже если вы используете прокси."},
 	"Add noise" :{"ru": "Добавить шум"},
@@ -62,7 +67,7 @@ _L =
 	"Network settings" :{"ru": "Сетевые настройки"},
 	"Rendering settings" :{"ru": "Настройки отображения"},
 	"Browsers smooth start" :{"ru": "Плавный запуск браузеров"},
-	"You can set proxy through \"Proxy\" action." :{"ru": "Вы можете изменить прокси через действие \"Прокси\""},
+	"You can set proxy through \"Proxy\" action." :{"ru": "Вы можете изменить прокси через действие \"Прокси\"."},
 
 
 	"Started without embedded languages.":{"ru": "Запущено без встроенных языков"},

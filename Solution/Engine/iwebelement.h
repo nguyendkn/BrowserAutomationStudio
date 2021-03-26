@@ -23,6 +23,7 @@ namespace BrowserAutomationStudioFramework
         virtual void xml(const QString& callback) = 0;
         virtual void text(const QString& callback) = 0;
         virtual void script(const QString& javascript, const QString& callback) = 0;
+        virtual void script2(const QString& javascript, const QString& variables, const QString& callback) = 0;
         virtual void RunScriptAsync(const QString& javascript, const QObject *object_success,const char * slot_success) = 0;
         virtual void click(const QString& callback) = 0;
         virtual void move(const QString& callback) = 0;

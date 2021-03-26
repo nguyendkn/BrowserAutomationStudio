@@ -47,7 +47,7 @@ public:
 
     bool WasError();
     QString GetErrorString();
-    QByteArray GetPageData();
+    QList<QByteArray>* GetPageData();
 
 private slots:
     void DownloadMetaResult();

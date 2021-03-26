@@ -756,3 +756,44 @@ label
 {
   display: none;
 }
+
+textarea {
+  cursor: auto;
+}
+
+/********************
+ * Scrollbar styles *
+ ********************/
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b7b7b7;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+/***************
+ * Code editor *
+ ***************/
+
+#Code.browser-code-editor {
+  height: calc(100vh - 100px);
+}
+
+#Code.custom-code-editor {
+  height: calc(100vh - 100px);
+}
+
+#Code {
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  outline: none;
+}

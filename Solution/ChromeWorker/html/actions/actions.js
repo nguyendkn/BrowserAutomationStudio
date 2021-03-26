@@ -70,8 +70,8 @@ _A = {
       "description":"Add Tab",
       "template":"{{Url}}",
       "suggestion":{  
-         "en":"new window",
-         "ru":"новое окно"
+         "en":"new window, Referrer, Referer",
+         "ru":"новое окно, реферрер, реферер"
       },
       "group":""
    },
@@ -101,7 +101,11 @@ _A = {
       "name":"Load",
       "description":"Load specific url",
       "template":"{{LoadUrl}}",
-      "group":"browser"
+      "group":"browser",
+      "suggestion":{  
+         "en":"Referrer, Referer",
+         "ru":"реферрер, реферер"
+      },
    },
    "navigateback":{  
       "name":"Previous Page",
@@ -179,15 +183,25 @@ _A = {
       },
       "group":"browser"
    },
-   "javascript":{  
-      "name":"Javascript",
-      "description":"Execute javascript",
-      "template":"{{Value}} -> {{Save}}",
-      "suggestion":{  
-         "en":"Execute on page, Access page",
-         "ru":"Яваскрипт, Выполнить на странице, Доступ к странице"
+   "javascript": {  
+      "name": "Javascript (deprecated)",
+      "description": "Execute javascript",
+      "template": "{{Value}} -> {{Save}}",
+      "suggestion": {  
+         "en": "Execute on page, Access page",
+         "ru": "Яваскрипт, Выполнить на странице, Доступ к странице"
       },
-      "group":"browser"
+      "group": "browser"
+   },
+   "browserjavascript": {  
+      "name": "Javascript",
+      "description": "Execute javascript",
+      "template":" {{Code}}",
+      "suggestion": {  
+         "en": "Execute on page, Access page",
+         "ru": "Яваскрипт, Выполнить на странице, Доступ к странице"
+      },
+      "group": "browser"
    },
    "onloadjavascript":{  
       "name":"Execute On Every Page Load In Browser",
@@ -557,8 +571,8 @@ _A = {
       "description":"Set HTTP Headers, like user agent, accept language, etc",
       "template":"{{Value}} -> {{Name}}",
       "suggestion":{  
-         "en":"User agent, Referrer, Referer, Accept Language",
-         "ru":"юзер агент, реферрер, реферер"
+         "en":"User agent, Accept Language",
+         "ru":"юзер агент"
       },
       "group":"network"
    },
@@ -979,6 +993,13 @@ _A = {
       "group":""
    },
    "script":{  
+      "name":"Execute Javascript On Element (deprecated)",
+      "class":"browser",
+      "description":"Execute Javascript On Element",
+      "template":"{{ScriptValue}} -> {{PATH}}",
+      "group":""
+   },
+   "browserscript":{  
       "name":"Execute Javascript On Element",
       "class":"browser",
       "description":"Execute Javascript On Element",
@@ -1189,6 +1210,7 @@ _AL =
    "Get Element Content" : {"ru": "Получить Код Элемента"},
    "Get Element Text" : {"ru": "Получить Текст"},
    "Execute Javascript On Element" : {"ru": "Выполнить Javascript На Элементе"},
+   "Execute Javascript On Element (deprecated)" : {"ru": "Выполнить Javascript На Элементе (устаревшее)"},
    "Click On Element" : {"ru": "Кликнуть На Элемент"},
    "Move On Element" : {"ru": "Двигать Мышь Над Элементом"},
    "Move And Click On Element" : {"ru": "Двигать Мышь И Кликнуть На Элемент"},
@@ -1217,6 +1239,7 @@ _AL =
    "Resize" : {"ru": "Разрешение"},
    "Proxy" : {"ru": "Прокси"},
    "Javascript" : {"ru": "Яваскрипт"},
+   "Javascript (deprecated)" : {"ru": "Яваскрипт (устаревшее)"},
    "Execute On Every Page Load In Browser" :{"ru": "Выполнять при каждой загрузке страницы в браузере"},
    "Reset" : {"ru": "Сброс"},
    "Open File Result" : {"ru": "Диалог Открыть Файл"},

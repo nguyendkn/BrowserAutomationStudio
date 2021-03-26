@@ -803,7 +803,12 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "EmbeddedData" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
-                EmbeddedData = xmlReader.text().toString();
+                EmbeddedData.clear();
+                while(xmlReader.tokenType() == QXmlStreamReader::Characters)
+                {
+                    EmbeddedData.push_back(xmlReader.text().toString());
+                    xmlReader.readNext();
+                }
             }else if(xmlReader.name() == "Schema" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();

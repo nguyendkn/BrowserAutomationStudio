@@ -42,19 +42,26 @@
 }
 
 .actions-updater-stats-item:nth-child(2) {
-  color: #d8695f;
-}
-
-.actions-updater-stats-item:nth-child(3) {
   color: #669fc2;
 }
 
+.actions-updater-stats-item:nth-child(3) {
+  color: #d8695f;
+}
+
+.actions-updater-stats-item > span {
+  margin-left: 8px;
+}
+
 .actions-updater-stats-item {
+  -webkit-user-drag: none;
   letter-spacing: -0.2px;
   padding: 13px 16px;
+  user-select: none;
   line-height: 15px;
   font-weight: 500;
   font-size: 12px;
+  display: flex;
   flex: 1 1 0;
   opacity: 1;
 }
@@ -66,13 +73,16 @@
 }
 
 .actions-updater-copy {
+  justify-content: center;
   letter-spacing: -0.2px;
   background: #3d3f42;
+  align-items: center;
   line-height: 15px;
   font-weight: 500;
   font-size: 12px;
   padding: 12px 0;
   color: #ffffff;
+  display: flex;
   width: 100%;
   border: 0;
 }

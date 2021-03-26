@@ -5,6 +5,158 @@
 
    section_end()!
 
+   section_start("\u007b\u0022n\u0022:\u0022SetRowHeight_GetRowHeight\u0022,\u0022fd\u0022:\u0022\u007b\u005c\u0022fd\u005c\u0022:\u005c\u0022\u005c\u0022,\u005c\u0022hr\u005c\u0022:false,\u005c\u0022rd\u005c\u0022:\u005c\u0022\u005c\u0022,\u005c\u0022rv\u005c\u0022:\u005c\u0022FUNCTION_RESULT\u005c\u0022,\u005c\u0022p\u005c\u0022:[]\u007d\u0022\u007d", 185310527)!
+   function SetRowHeight_GetRowHeight()
+   {
+   section_insert()
+      section_start("", 263889478)!
+      /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IlByZXBhcmF0aW9uIn0seyJpZCI6IlBhcmFtSWRfNDY3NTZlNjM3NDY5NmY2ZTIwNmU2MTZkNjUiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IlNldFJvd0hlaWdodF9HZXRSb3dIZWlnaHQiLCJjbGFzcyI6InN0cmluZyJ9XX0=*/
+      _call_function(Preparation,{ "Function name" : ("SetRowHeight_GetRowHeight")  })!
+      _result_function()
+      section_end()!
+
+      section_start("", 788073226)!
+      /*Dat:eyJzIjoiRXhjZWxfV3JpdGVUb0NlbGwiLCJ2IjoxLCJmIjpbXSwidXciOiIxIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiRmlsZVBhdGgiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IltbRklMRV9QQVRIXV0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJTaGVldEluZGV4T3JOYW1lIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiQ2VsbEFkZHJlc3MiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IkExIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiRGF0YSIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoidGVzdCB0ZXh0IiwiY2xhc3MiOiJzdHJpbmcifV19*/
+      _call_function(Excel_WriteToCell,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"CellAddress": ("A1"),"Data": ("test text"),"Sync": (true),"Timeout": (60000) })!
+      section_end()!
+
+      section_start("", 915055587)!
+      /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJyb2xlIjoibWFzdGVyIiwic2xhdmUiOjgxMjQ4NjM0NCwibWFzdGVyIjo5MTUwNTU1ODcsImlmX3ZhciI6Il9jeWNsZV9wYXJhbXMoKS5pZl9lbHNlIiwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IklmRXhwcmVzc2lvbiIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiW1tTWU5DXV0iLCJjbGFzcyI6ImV4cHJlc3Npb24ifSx7ImlkIjoiSWZFbHNlIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6dHJ1ZX1dfQ==*/
+      _cycle_params().if_else = VAR_SYNC;
+      _if(_cycle_params().if_else,function(){
+      section_insert()
+         section_start("", 142370105)!
+         /*Dat:eyJzIjoiRXhjZWxfU2V0Um93SGVpZ2h0IiwidiI6MSwiZiI6W10sInV3IjoiMSIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZpbGVQYXRoIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZJTEVfUEFUSF1dIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiU2hlZXRJbmRleE9yTmFtZSIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiMCIsImNsYXNzIjoiaW50In0seyJpZCI6IlJvd0luZGV4IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiSGVpZ2h0IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIyNSIsImNsYXNzIjoiaW50In1dfQ==*/
+         _call_function(Excel_SetRowHeight,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"RowIndex": (0),"Height": (25),"Sync": (true),"Timeout": (60000) })!
+         section_end()!
+
+      })!
+      section_end()!
+
+      section_start("\u007b\u0022n\u0022:\u0022Else\u0022\u007d", 812486344)!
+      /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJyb2xlIjoic2xhdmUiLCJzbGF2ZSI6ODEyNDg2MzQ0LCJtYXN0ZXIiOjkxNTA1NTU4NywiaWZfdmFyIjoiX2N5Y2xlX3BhcmFtcygpLmlmX2Vsc2UiLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1NZTkNdXSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9LHsiaWQiOiJJZkVsc2UiLCJ0eXBlIjoiY2hlY2siLCJkYXRhIjp0cnVlfV19*/
+      _if(!_cycle_params().if_else,function(){
+      section_insert()
+         section_start("", 881270578)!
+         /*Dat:eyJzIjoiRXhjZWxfU2V0Um93SGVpZ2h0IiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZpbGVQYXRoIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZJTEVfUEFUSF1dIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiU2hlZXRJbmRleE9yTmFtZSIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiMCIsImNsYXNzIjoiaW50In0seyJpZCI6IlJvd0luZGV4IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiSGVpZ2h0IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIyNSIsImNsYXNzIjoiaW50In1dfQ==*/
+         _call_function(Excel_SetRowHeight,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"RowIndex": (0),"Height": (25),"Sync": (false),"Timeout": (60000) })!
+         section_end()!
+
+      })!
+      delete _cycle_params().if_else;
+      section_end()!
+
+      section_start("", 367022806)!
+      /*Dat:eyJzIjoiRXhjZWxfQ2xvc2VGaWxlIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZpbGVQYXRoIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZJTEVfUEFUSF1dIiwiY2xhc3MiOiJzdHJpbmcifV19*/
+      _call_function(Excel_CloseFile,{ "FilePath": (VAR_FILE_PATH),"Timeout": (60000) })!
+      section_end()!
+
+      section_start("", 689020971)!
+      /*Dat:eyJzIjoiRXhjZWxfR2V0Um93SGVpZ2h0IiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZpbGVQYXRoIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZJTEVfUEFUSF1dIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiU2hlZXRJbmRleE9yTmFtZSIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiMCIsImNsYXNzIjoiaW50In0seyJpZCI6IlJvd0luZGV4IiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiU2F2ZSIsInR5cGUiOiJ2YXIiLCJkYXRhIjoiWExTWF9ST1dfSEVJR0hUIn1dfQ==*/
+      _call_function(Excel_GetRowHeight,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"RowIndex": (0),"Timeout": (60000) })!
+      VAR_XLSX_ROW_HEIGHT = _result_function()
+      section_end()!
+
+      section_start("", 239268884)!
+      /*Dat:eyJzIjoiRXhjZWxfQ2xvc2VGaWxlIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZpbGVQYXRoIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZJTEVfUEFUSF1dIiwiY2xhc3MiOiJzdHJpbmcifV19*/
+      _call_function(Excel_CloseFile,{ "FilePath": (VAR_FILE_PATH),"Timeout": (60000) })!
+      section_end()!
+
+      section_start("", 141363619)!
+      /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1hMU1hfUk9XX0hFSUdIVF1dIT09MjUiLCJjbGFzcyI6ImV4cHJlc3Npb24ifSx7ImlkIjoiSWZFbHNlIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6ZmFsc2V9XX0=*/
+      _if(VAR_XLSX_ROW_HEIGHT!==25,function(){
+      section_insert()
+         section_start("", 78411305)!
+         /*Dat:eyJzIjoibG9nZ2VyX2ZhaWwiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoicnUiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6ItCf0L7Qu9GD0YfQtdC90L3QsNGPINCy0YvRgdC+0YLQsCAoW1tYTFNYX1JPV19IRUlHSFRdXSkg0L7RgtC70LjRh9Cw0LXRgtGB0Y8g0L7RgiDQt9Cw0L/QuNGB0LDQvdC90L7QuSAoMjUpIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiZW4iLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IlRoZSByZXN1bHRpbmcgaGVpZ2h0IChbW1hMU1hfUk9XX0hFSUdIVF1dKSBkaWZmZXJzIGZyb20gdGhlIHdyaXR0ZW4gKDI1KSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6IkNoZWNrIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6ZmFsc2V9XX0=*/
+         logger_fail({
+         "ru": ("Полученная высота (" + VAR_XLSX_ROW_HEIGHT + ") отличается от записанной (25)"),
+         "en": ("The resulting height (" + VAR_XLSX_ROW_HEIGHT + ") differs from the written (25)"),
+         "stop": (false)
+         })
+         section_end()!
+
+      })!
+      section_end()!
+
+   }
+   section_end()!
+
+   section_start("\u007b\u0022n\u0022:\u0022SetColumnWidth_GetColumnWidth\u0022,\u0022fd\u0022:\u0022\u007b\u005c\u0022fd\u005c\u0022:\u005c\u0022\u005c\u0022,\u005c\u0022hr\u005c\u0022:false,\u005c\u0022rd\u005c\u0022:\u005c\u0022\u005c\u0022,\u005c\u0022rv\u005c\u0022:\u005c\u0022FUNCTION_RESULT\u005c\u0022,\u005c\u0022p\u005c\u0022:[]\u007d\u0022\u007d", 999042554)!
+   function SetColumnWidth_GetColumnWidth()
+   {
+   section_insert()
+      section_start("", 633176305)!
+      /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IlByZXBhcmF0aW9uIn0seyJpZCI6IlBhcmFtSWRfNDY3NTZlNjM3NDY5NmY2ZTIwNmU2MTZkNjUiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IlNldENvbHVtbldpZHRoX0dldENvbHVtbldpZHRoIiwiY2xhc3MiOiJzdHJpbmcifV19*/
+      _call_function(Preparation,{ "Function name" : ("SetColumnWidth_GetColumnWidth")  })!
+      _result_function()
+      section_end()!
+
+      section_start("", 270020515)!
+      /*Dat:eyJzIjoiRXhjZWxfV3JpdGVUb0NlbGwiLCJ2IjoxLCJmIjpbXSwidXciOiIxIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiRmlsZVBhdGgiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IltbRklMRV9QQVRIXV0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJTaGVldEluZGV4T3JOYW1lIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiQ2VsbEFkZHJlc3MiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IkExIiwiY2xhc3MiOiJzdHJpbmcifSx7ImlkIjoiRGF0YSIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoidGVzdCB0ZXh0IiwiY2xhc3MiOiJzdHJpbmcifV19*/
+      _call_function(Excel_WriteToCell,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"CellAddress": ("A1"),"Data": ("test text"),"Sync": (true),"Timeout": (60000) })!
+      section_end()!
+
+      section_start("", 556512204)!
+      /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJyb2xlIjoibWFzdGVyIiwic2xhdmUiOjgxODgxNjIyOCwibWFzdGVyIjo1NTY1MTIyMDQsImlmX3ZhciI6Il9jeWNsZV9wYXJhbXMoKS5pZl9lbHNlIiwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IklmRXhwcmVzc2lvbiIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiW1tTWU5DXV0iLCJjbGFzcyI6ImV4cHJlc3Npb24ifSx7ImlkIjoiSWZFbHNlIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6dHJ1ZX1dfQ==*/
+      _cycle_params().if_else = VAR_SYNC;
+      _if(_cycle_params().if_else,function(){
+      section_insert()
+         section_start("", 997035936)!
+         /*Dat:eyJzIjoiRXhjZWxfU2V0Q29sdW1uV2lkdGgiLCJ2IjoxLCJmIjpbXSwidXciOiIxIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiRmlsZVBhdGgiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IltbRklMRV9QQVRIXV0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJTaGVldEluZGV4T3JOYW1lIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiQ29sdW1uSW5kZXhPck5hbWUiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IjAiLCJjbGFzcyI6ImludCJ9LHsiaWQiOiJXaWR0aCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiMjUiLCJjbGFzcyI6ImludCJ9XX0=*/
+         _call_function(Excel_SetColumnWidth,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"ColumnIndexOrName": (0),"Width": (25),"Sync": (true),"Timeout": (60000) })!
+         section_end()!
+
+      })!
+      section_end()!
+
+      section_start("\u007b\u0022n\u0022:\u0022Else\u0022\u007d", 818816228)!
+      /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJyb2xlIjoic2xhdmUiLCJzbGF2ZSI6ODE4ODE2MjI4LCJtYXN0ZXIiOjU1NjUxMjIwNCwiaWZfdmFyIjoiX2N5Y2xlX3BhcmFtcygpLmlmX2Vsc2UiLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1NZTkNdXSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9LHsiaWQiOiJJZkVsc2UiLCJ0eXBlIjoiY2hlY2siLCJkYXRhIjp0cnVlfV19*/
+      _if(!_cycle_params().if_else,function(){
+      section_insert()
+         section_start("", 842478365)!
+         /*Dat:eyJzIjoiRXhjZWxfU2V0Q29sdW1uV2lkdGgiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiRmlsZVBhdGgiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IltbRklMRV9QQVRIXV0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJTaGVldEluZGV4T3JOYW1lIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiQ29sdW1uSW5kZXhPck5hbWUiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IjAiLCJjbGFzcyI6ImludCJ9LHsiaWQiOiJXaWR0aCIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiMjUiLCJjbGFzcyI6ImludCJ9XX0=*/
+         _call_function(Excel_SetColumnWidth,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"ColumnIndexOrName": (0),"Width": (25),"Sync": (false),"Timeout": (60000) })!
+         section_end()!
+
+      })!
+      delete _cycle_params().if_else;
+      section_end()!
+
+      section_start("", 691460385)!
+      /*Dat:eyJzIjoiRXhjZWxfQ2xvc2VGaWxlIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZpbGVQYXRoIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZJTEVfUEFUSF1dIiwiY2xhc3MiOiJzdHJpbmcifV19*/
+      _call_function(Excel_CloseFile,{ "FilePath": (VAR_FILE_PATH),"Timeout": (60000) })!
+      section_end()!
+
+      section_start("", 685679852)!
+      /*Dat:eyJzIjoiRXhjZWxfR2V0Q29sdW1uV2lkdGgiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiRmlsZVBhdGgiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IltbRklMRV9QQVRIXV0iLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJTaGVldEluZGV4T3JOYW1lIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiIwIiwiY2xhc3MiOiJpbnQifSx7ImlkIjoiQ29sdW1uSW5kZXhPck5hbWUiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IjAiLCJjbGFzcyI6ImludCJ9LHsiaWQiOiJTYXZlIiwidHlwZSI6InZhciIsImRhdGEiOiJYTFNYX0NPTFVNTl9XSURUSCJ9XX0=*/
+      _call_function(Excel_GetColumnWidth,{ "FilePath": (VAR_FILE_PATH),"SheetIndexOrName": (0),"ColumnIndexOrName": (0),"Timeout": (60000) })!
+      VAR_XLSX_COLUMN_WIDTH = _result_function()
+      section_end()!
+
+      section_start("", 918435365)!
+      /*Dat:eyJzIjoiRXhjZWxfQ2xvc2VGaWxlIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZpbGVQYXRoIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZJTEVfUEFUSF1dIiwiY2xhc3MiOiJzdHJpbmcifV19*/
+      _call_function(Excel_CloseFile,{ "FilePath": (VAR_FILE_PATH),"Timeout": (60000) })!
+      section_end()!
+
+      section_start("", 398822006)!
+      /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1hMU1hfQ09MVU1OX1dJRFRIXV0hPT0yNSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9LHsiaWQiOiJJZkVsc2UiLCJ0eXBlIjoiY2hlY2siLCJkYXRhIjpmYWxzZX1dfQ==*/
+      _if(VAR_XLSX_COLUMN_WIDTH!==25,function(){
+      section_insert()
+         section_start("", 189275791)!
+         /*Dat:eyJzIjoibG9nZ2VyX2ZhaWwiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoicnUiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6ItCf0L7Qu9GD0YfQtdC90L3QsNGPINGI0LjRgNC40L3QsCAoW1tYTFNYX0NPTFVNTl9XSURUSF1dKSDQvtGC0LvQuNGH0LDQtdGC0YHRjyDQvtGCINC30LDQv9C40YHQsNC90L3QvtC5ICgyNSkiLCJjbGFzcyI6InN0cmluZyJ9LHsiaWQiOiJlbiIsInR5cGUiOiJjb25zdHIiLCJkYXRhIjoiVGhlIHJlc3VsdGluZyB3aWR0aCAoW1tYTFNYX0NPTFVNTl9XSURUSF1dKSBkaWZmZXJzIGZyb20gdGhlIHdyaXR0ZW4gKDI1KSIsImNsYXNzIjoic3RyaW5nIn0seyJpZCI6IkNoZWNrIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6ZmFsc2V9XX0=*/
+         logger_fail({
+         "ru": ("Полученная ширина (" + VAR_XLSX_COLUMN_WIDTH + ") отличается от записанной (25)"),
+         "en": ("The resulting width (" + VAR_XLSX_COLUMN_WIDTH + ") differs from the written (25)"),
+         "stop": (false)
+         })
+         section_end()!
+
+      })!
+      section_end()!
+
+   }
+   section_end()!
+
    section_start("\u007b\u0022n\u0022:\u0022SetStylesToCellsRange\u0022,\u0022fd\u0022:\u0022\u007b\u005c\u0022fd\u005c\u0022:\u005c\u0022\u005c\u0022,\u005c\u0022hr\u005c\u0022:false,\u005c\u0022rd\u005c\u0022:\u005c\u0022\u005c\u0022,\u005c\u0022rv\u005c\u0022:\u005c\u0022FUNCTION_RESULT\u005c\u0022,\u005c\u0022p\u005c\u0022:[]\u007d\u0022\u007d", 34361275)!
    function SetStylesToCellsRange()
    {
@@ -3809,6 +3961,74 @@
    })!
    section_end()!
 
+   section_start("", 394356694)!
+   /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIlNldENvbHVtbldpZHRoX0dldENvbHVtbldpZHRoXCIpID4gLTEiLCJjbGFzcyI6ImV4cHJlc3Npb24ifSx7ImlkIjoiSWZFbHNlIiwidHlwZSI6ImNoZWNrIiwiZGF0YSI6ZmFsc2V9XX0=*/
+   _if(VAR_FUNCTIONS_LIST.indexOf("SetColumnWidth_GetColumnWidth") > -1,function(){
+   section_insert()
+      section_start("", 613284129)!
+      /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
+      _call(function()
+      {
+      _on_fail(function(){
+      VAR_LAST_ERROR = _result()
+      VAR_ERROR_ID = ScriptWorker.GetCurrentAction()
+      VAR_WAS_ERROR = false
+      _break(1,true)
+      })
+      CYCLES.Current().RemoveLabel("function")
+      section_insert()
+         section_start("", 919825093)!
+         /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IlNldENvbHVtbldpZHRoX0dldENvbHVtbldpZHRoIn1dfQ==*/
+         _call_function(SetColumnWidth_GetColumnWidth,{})!
+         _result_function()
+         section_end()!
+
+      },null)!
+      section_end()!
+
+      section_start("", 903792339)!
+      /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
+      _call_function(DisplayResults,{})!
+      _result_function()
+      section_end()!
+
+   })!
+   section_end()!
+
+   section_start("", 861748293)!
+   /*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW0ZVTkNUSU9OU19MSVNUXV0uaW5kZXhPZihcIlNldFJvd0hlaWdodF9HZXRSb3dIZWlnaHRcIikgPiAtMSIsImNsYXNzIjoiZXhwcmVzc2lvbiJ9LHsiaWQiOiJJZkVsc2UiLCJ0eXBlIjoiY2hlY2siLCJkYXRhIjpmYWxzZX1dfQ==*/
+   _if(VAR_FUNCTIONS_LIST.indexOf("SetRowHeight_GetRowHeight") > -1,function(){
+   section_insert()
+      section_start("", 801076416)!
+      /*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/
+      _call(function()
+      {
+      _on_fail(function(){
+      VAR_LAST_ERROR = _result()
+      VAR_ERROR_ID = ScriptWorker.GetCurrentAction()
+      VAR_WAS_ERROR = false
+      _break(1,true)
+      })
+      CYCLES.Current().RemoveLabel("function")
+      section_insert()
+         section_start("", 500558732)!
+         /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IlNldFJvd0hlaWdodF9HZXRSb3dIZWlnaHQifV19*/
+         _call_function(SetRowHeight_GetRowHeight,{})!
+         _result_function()
+         section_end()!
+
+      },null)!
+      section_end()!
+
+      section_start("", 859484396)!
+      /*Dat:eyJzIjoiZXhlY3V0ZWZ1bmN0aW9uIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkZ1bmN0aW9uTmFtZSIsInR5cGUiOiJ0ZXh0IiwiZGF0YSI6IkRpc3BsYXlSZXN1bHRzIn1dfQ==*/
+      _call_function(DisplayResults,{})!
+      _result_function()
+      section_end()!
+
+   })!
+   section_end()!
+
 })!]]></Script>
      <ModuleInfo><![CDATA[{
 }
@@ -3826,7 +4046,7 @@
      <ConnectionPassword></ConnectionPassword>
      <ScriptName>ScriptName</ScriptName>
      <ProtectionStrength>4</ProtectionStrength>
-     <UnusedModules>FTP</UnusedModules>
+     <UnusedModules></UnusedModules>
      <ScriptIcon>iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4gUYCTcMXHU3uQAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAANRElEQVR42u2dbWwU5drHfzM7O7sLbc5SWmlrJBxaIB00ES0QDr6kp4Km+qgt0aZ+sIQvT63HkKrED2z0QashIQHjMasfDAfxJWdzDpzHNxBINSCJVkvSWBg1WgIRTmtog6WlnZ3dnXk+0J2npXDY0naZ3b3/X9ptuy8z1+++ruu+e93XLXENaZqGruvJ7/8ArAKWAnkIuUUWcAb4Vtf1E5N5onQtw2uaVgKEgP8GPOJeZ4SOAn/TdX3ndQGgaRqAAvwTeASw/xMsQq7VRWC9ruv/HOvJx0q+yhP/DJjAw9fyFEKu1mzgH5qmtY1682t7AE3TaoG94t5llWzgtK7rf7zcE0iXuf0/A23ifmUtBN26ri8a+0PPZTH/Z+Hus1YSUFBUVOQ9d+7cF1fyAP87GvMFANmvUqBH13Wk0dFfAvxb3JecCQX/0nV9HYA8mhCERn8hlBuhoE7TNCkZ9+HSIs+kXL9lWRiGgWVZ7sTctsnPz5/y65imiWmarrWmLMv4/X5kWZ7sU/8C/FUZXd71TObGFhcXU19fT3V1NYWFhdi2+5xHXl4eZWVlU4agqamJDRs2uBaAgYEBDhw4QCQSobe3F0lKeRwvS3qAVZMx/sqVK9mxYweDg4NIksTQ0JB7fZ0kTYsHuHjxomuvUVEUampqqK+vp6Wlhfb29lSv+09waSVwaapvVlxczI4dOxgaGpqWmys0faAPDQ2xY8cOiouLU33akqQHSOm/epZlUV9f74z8yz2Doiioqno9sWjGQsB0hCZVVZk9e7ZrjG1ZFqZpEo/HJ9hhcHCQ+vp6Xn/99ZTtIGma9hLwP9f6w+HhYQ4dOoTf759AX09PD+FwmI6ODgYGBkQSOIPXFAwGqayspLm5mZKSkgmQG4bBmjVrmDVr1jVfT9d1SZkMeYWFheNiviRJHDx4kNbWVgeMvLzsKhNQVRVVVV3zeRKJBO3t7Rw+fJhQKMTatWvHQVBYWDipmZk8WQLHft/T0zPO+ELpk9/vp7W1lZ6engl2mdQ0cirZZzgcFsa/wRCEw2EURbnu17huAFRVpaOjQ1jhBqujo2NKIeq6AZBl2TUJXy5rYGBgSjMvWdzC3JYAQAAgJAAQEgAICQCEBABCAgAhAYCQAEAoR6S4+cNdqfgkXZIkCVmWkWUZj8eDx+PJyiooxc3G7+7uviE1h7FYDNM0GRwcpL+/nzNnznDq1CmOHz9OZ2cnhmGgqmpWAOFaAJJ1bjeyIDM/P5/8/HwWLFjAXXfdhaIoeL1eOjs7OXDgAJ9++im2bbumDC7rQkBStm3j9XrTNuK8Xq/zvolEgng87nyNx+MsXryYiooKnn32WSKRCO+88w6JRCIjPUJGAODz+XjyySf58ccf0wacqqoEg0FKSkqYP38+FRUVrFixgoULFzobYizLYt26ddTW1rJ161YOHTrkqvKxrAEALlW/pLs6d3h4mO7ubrq7u2lrayMajXLTTTfx0EMP0dDQQCAQcEb+Sy+9xMqVK2ltbc0oCMQ0MNUbJcsEAgEGBwf58MMPuf/++wmHw3g8HidxvO+++9i+fburt5IJAKYpQfX5fOzdu5dHH32UM2fOOKHjjjvuYNOmTcRiMQFALoBw8eJFGhsbnbYrtm1TW1vL8uXLBQC5Iq/XyzPPPMO5c+ewbRvDMAiFQhiGIQDIFSmKwgsvvEAgEECSJILBINXV1QKAXNKpU6c4cuQItm0Tj8d55JFHXJ8QCgCmORR89NFHzqJVJuQBAoBp1tdffz1uHWDx4sUCgFxSPB53poWJRIIFCxYIAHJJsixz/vx54NKO6mAwKADItbWB5CKQbdsEAgEBQC7JsqxxPRLi8bgAIJeUSCSYP38+AB6Ph76+PgFALqm8vNypJ1AUhe7ubgFArsi2bdasWUM0GgVgZGQkbTUMAgCXTAEbGhqcx/v378fn8wkAckGxWIznnnvOqQ/0+/3s2rXLqRdwq1KuCLJte1x2O119+LIl8Vu7di21tbWYpokkSezevZvz58/POABTtUvKAOTn51NWVuYUPk5XH75Ml2EYrFu3jueff96J/SdPniQcDqfF/U/VLspk30zo/+f7qqqybds2Vq9eTTQaRZIkzp49y1NPPZXW2D8Vu4gc4DpivcfjYf369Xz++eesWLEC0zRRVZVvvvmGxsbGjLoeRZj06rHVsiwSiQSxWIyioiJWrlxJVVUV99xzD9Fo1KkIjsVivPbaaxw6dMj1WX9GApBIJFizZg3Lli1Ly/t5vV78fj9z5syhtLSUhQsXUlBQ4BjdMAwURcE0Td577z3ef/99ZFnOOONnDADJ6pobqZGRkUsxU5Y5duwYH3/8MV9++SU+n8/1U72MB8BNW64sy+LOO+9k1qxZlJaWcvDgQfr7+zNuR1BGAeDxePjkk0/o7+9PC2xerxefz0cwGKSoqIibb76Z0tJSYrEYsVgM27ZZsmQJFRUVbNy4ke+++46dO3dy7NixjOudnDEA7Nu3j59//jktyd/YJDCZCPp8Pmd/YFVVFeXl5YyMjDAyMsLSpUt588036ezsZMuWLZw/fz5jNoqKaeAVPECyOUTyFJRAIIAsy/z000/s3r2bhoYG6urq2Ldvn+P6TdOkoqKCPXv2cO+994qdQdkMSCAQoK+vj+3bt/Pggw+O69gdi8XYsmULTzzxREZAIACYYmgaHh5m06ZNhEIhpw7ANE2efvrpCad5CACyVD6fj6NHj9LY2Igsy872sBdffJGCggIBQK6Ehl9//ZWNGzfi9/uRJIloNMrmzZudfxIJAHIAgq6uLiKRiPN4+fLlLFq0SACQK0qepZQsDDEMg7q6OhKJhAAgV2TbNnv37nUeV1VVuXareMoLQaZp0tTU5Ox2VVWVt99+O2OXQGd0VMkyX3zxBY899hixWIxgMEhpaemMnLE0VbtMCoANGzY4fftmz57NG2+8IQC4ir7//nsURSEWixGPx1m0aNGMnLI2VbuIEDBDsixr3CbRefPmiRwg18LAhQsXnJzATQdQCwDSNCUcO/93a82AAGAGQ0DyBO9kNzEBQA5pbNyXZZnff/9dAJBLCgaDzJkz59JUS1H45ZdfBAC5pLvvvttZ/EkkEpw8edKVn1OUhc+ADMPg4YcfdpZ/v/rqqykd8S48QIZJ0zRuv/12p77ws88+EwDkiqLRKK2trRiGgW3b9Pb2cvjwYdd+XhECplEjIyNs27aNuXPnApcKRV555RVnOig8QJaP/K1bt7Jq1Spn6rdnzx66urpc/bkFANMw3y8oKOCDDz5g9erVWJaFJEl0dnaybds2p05QhIAsUzwex+fz0dTUxOOPP45pmti2jcfj4ejRo2zevDkjNokIAFJUsgN4PB5nxYoV1NTU8MADD2CaplP+raoqb731Frt3786YHUIZA4BhGGlbT0+O5GAwyNy5c7nlllsoLy/n1ltvpbKyEo/Hg2mazqj3+XwcP36cl19+md9++y2jtodlBADRaJRdu3albbuVoijIsjxua1iy42fysSzL+P1+2tvbeffdd+no6MDv92fcIZIZszs4nS1XL9/RkzwdVFEUPB4PXV1dHDlyhP379zs7gzNtU6jrAbi8+1U6k7tYLMbQ0BADAwOcO3eOs2fPcvr0aX744QdOnDhBPB53zg7O9JI41wJweferdHucK50eDoz7Phvk6hAgupLNvMRCkABASAAgJAAQEgAICQCEBABCAgAhAYCQAEBIACAkABASAFxV4tCoG6+p2uC6AciEk7FzQcFgEMuy0g+AaZpUVlYKC9xgVVZWOg2i0gpAPB6nubnZte3PckGGYdDc3DylcrlJATC2OkeSJEpKSgiFQgKCG2T8UChESUnJBLtMRilXBMmyTF9f37jiR9u2Wbt2LbfddhvhcJiOjo4Z6YV3vcnRdFQUJcu/3XJNwWCQyspKmpubKSkpmZAE9vX1TaoyWQFSyiD8fj9tbW3U1NSMo8y2bebNm8err76KqqquKYvOy8ujrKxsyhA0NTWxYcMG14x8y7IwTZN4PD7B+LZt09bWNqkKZQU4k6oHiEQi1NfXMzQ0NCE0JBIJ52Qtt2g6CkpN03Rlg6crXVt+fj6RSCTVQXghmQN8m+qb9vb20tLSIg6OduFaQF5eHi0tLfT29qb6tG8BFF3XT2ialjJ17e3t1NXVUV9fT3V1NYWFha6EYbogVVXVtU0eAQYGBjhw4ACRSITe3t5UvZ4NdAJIAJqmfQXcNdlYZBjGlBYhRBI4dSW3qF1H7lUJHEvOAv42WQBkWXZ154vpkqqq2dgQ+4Ku68ecdQBd13cCFxHKFb1wpYWg9eK+ZH++CPxb1/W3nbxu7G81TWsDqi7/uVBWqQw4qev6eA+gaRq6rlcDp0dJEco+/Zeu647xxwGg63oSgj8C3eJeZZXbTxr/0wnJ/NgHYyBYBLx62QsIZaZ6gLIrGX8CAEkIRr+GgFLgX+IeZuSIvwA8pev6zcBVO1X/x2Rv1BugaZoE/AVYBvwJWCLus/vm9lxa3u0E/p6c5wvloFJd2gf4P8Hwf+/uucowAAAAAElFTkSuQmCC</ScriptIcon>
      <IsCustomIcon>false</IsCustomIcon>
      <HideBrowsers>false</HideBrowsers>
@@ -3837,7 +4057,7 @@
      <CompileType>PrivateScriptUserEnterPass</CompileType>
      <ScriptVersion>1.0.0</ScriptVersion>
      <AvailableLanguages>en,ru</AvailableLanguages>
-     <EngineVersion>23.1.1</EngineVersion>
+     <EngineVersion>23.2.2</EngineVersion>
      <SettingsWorker>EnableFlash=false
 ProxiesReconnect=false
 AutostartDebug=false
@@ -3878,8 +4098,10 @@ Detector=true
      <ModulesMetaJson>{
     &quot;Archive&quot;: false,
     &quot;Excel&quot;: true,
-    &quot;FTP&quot;: true,
-    &quot;SQL&quot;: true
+    &quot;FTP&quot;: false,
+    &quot;Path&quot;: true,
+    &quot;SQL&quot;: false,
+    &quot;String&quot;: true
 }
 </ModulesMetaJson>
      <OutputTitle1 en="First Results" ru="First Results"/>
@@ -3976,8 +4198,10 @@ SetFormulaToCell_GetFormulaFromCell
 SetStyleToCell_GetCellStyle
 SetStylesToCell_GetCellStyles
 SetStyleToCellsRange
-SetStylesToCellsRange</Values>
-               <Selected>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23</Selected>
+SetStylesToCellsRange
+SetColumnWidth_GetColumnWidth
+SetRowHeight_GetRowHeight</Values>
+               <Selected>0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25</Selected>
                <SelectType>2</SelectType>
           </Model>
           <Defaults/>

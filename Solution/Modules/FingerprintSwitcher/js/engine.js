@@ -393,12 +393,8 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		header("DNT","1")!
 	})!
 
-	//Headers 
-	header_order(FINGERPRINT_JSON["headers"])!
-	
-	//Headers order and native code
-	
-	FINGEPRINT_SETTINGS = {"Fingerprints.HeadersOrder": FINGERPRINT_JSON["headers"].join(",")}
+	//Native code
+	FINGEPRINT_SETTINGS = {}
 	if(FINGERPRINT_JSON["native_code"])
 	{
 		var split = FINGERPRINT_JSON["native_code"].split("Object")

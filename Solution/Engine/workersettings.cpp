@@ -29,6 +29,7 @@ namespace BrowserAutomationStudioFramework
         Canvas = "disable";
         Audio = "disable";
         UseFlash = false;
+        UseWidevine = false;
         Webgl = "disable";
         ProxyPort = 0;
         ProxyIsHttp = true;
@@ -179,6 +180,10 @@ namespace BrowserAutomationStudioFramework
     {
         this->UseFlash = UseFlash;
     }
+    void WorkerSettings::SetUseWidevine(bool UseWidevine)
+    {
+        this->UseWidevine = UseWidevine;
+    }
 
     QString WorkerSettings::GetWebrtc()
     {
@@ -276,7 +281,10 @@ namespace BrowserAutomationStudioFramework
     {
         return UseFlash;
     }
-
+    bool WorkerSettings::GetUseWidevine()
+    {
+        return UseWidevine;
+    }
 
     IWorkerSettings* WorkerSettings::Clone()
     {
@@ -284,6 +292,7 @@ namespace BrowserAutomationStudioFramework
         res->SetWorkerPathSafe(PathSafe);
         res->SetWorkerPathNotSafe(PathNotSafe);
         res->SetUseFlash(UseFlash);
+        res->SetUseWidevine(UseWidevine);
         res->SetProfile(Profile);
         res->SetExtensions(Extensions);
         res->SetBrowserEngine(BrowserEngine);
@@ -380,7 +389,8 @@ namespace BrowserAutomationStudioFramework
         if(Settings.contains("EnableFlash"))
             SetUseFlash(Settings.value("EnableFlash",false).toBool());
 
-        SetUseFlash(Settings.value("EnableFlash",false).toBool());
+        if(Settings.contains("EnableWidevine"))
+            SetUseWidevine(Settings.value("EnableWidevine",false).toBool());
     }
 
     void WorkerSettings::SetSettingWhichRestartsBrowser(const QString& Key, QJsonObject& Object, bool& NeedRestart, bool& NeedSend)
@@ -633,6 +643,17 @@ namespace BrowserAutomationStudioFramework
             {
                 NeedRestart = true;
                 SetUseFlash(next);
+            }
+         }
+
+         if(!IsMLA && object.contains("UseWidevine"))
+         {
+            bool prev = GetUseWidevine();
+            bool next = object["UseWidevine"].toBool();
+            if(prev != next)
+            {
+                NeedRestart = true;
+                SetUseWidevine(next);
             }
          }
 
@@ -1082,6 +1103,9 @@ namespace BrowserAutomationStudioFramework
 
             res.append("--UseFlash");
             res.append(QString::number(GetUseFlash()));
+
+            res.append("--UseWidevine");
+            res.append(QString::number(GetUseWidevine()));
 
             UniqueProcessId = GetRandomString();
             UpdateFingerprintsSettings();

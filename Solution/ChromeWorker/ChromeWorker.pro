@@ -56,10 +56,13 @@ SOURCES += main.cpp \
     connector/sharedmemoryipc.cpp \
     connector/devtoolsactiongetnavigationhistory.cpp \
     connector/devtoolsactionresizewithcorrection.cpp \
+    copyfolder.cpp \
+    deletefolder.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
     fileutils.cpp \
+    installwidevine.cpp \
     ipcsimple.cpp \
     mainapp.cpp \
     mainhandler.cpp \
@@ -210,10 +213,13 @@ HEADERS += \
     connector/sharedmemoryipc.h \
     connector/devtoolsactiongetnavigationhistory.h \
     connector/devtoolsactionresizewithcorrection.h \
+    copyfolder.h \
+    deletefolder.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileexists.h \
     fileutils.h \
+    installwidevine.h \
     ipcsimple.h \
     mainapp.h \
     mainhandler.h \

@@ -7,6 +7,7 @@
 class settings
 {
     bool use_flash;
+    bool use_widevine;
     bool force_utf8;
     int toolbox_height;
     int scenario_width;
@@ -42,6 +43,7 @@ class settings
 public:
     settings();
     bool UseFlash();
+    bool UseWidevine();
     bool AutostartDebug();
     bool Maximized();
     bool DebugToolbox();

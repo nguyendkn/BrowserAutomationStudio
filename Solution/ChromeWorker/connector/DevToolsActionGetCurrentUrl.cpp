@@ -13,7 +13,7 @@ void DevToolsActionGetCurrentUrl::OnActionFinished()
         int Index = 0;
         for(auto const& Tab : GlobalState->Tabs)
         {
-            if(Tab->ConnectionState == TabData::Connected)
+            if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
             {
                 if(Tab->TabId == GlobalState->TabId)
                 {

@@ -36,6 +36,7 @@
 #include "preparestartupscript.h"
 #include "chromecommandlineparser.h"
 #include "mixnumbers.h"
+#include "installwidevine.h"
 
 
 #if defined(BAS_DEBUG)
@@ -1943,9 +1944,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         }
     }
 
-
-
     Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
+
+    if(Settings.UseWidevine())
+    {
+        InstallWidevine(Settings.Profile());
+    }else
+    {
+        DeinstallWidevine(Settings.Profile());
+    }
     Data->Connector = new DevToolsConnector();
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
@@ -2012,20 +2019,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     }
     settings.windowless_rendering_enabled = true;
     settings.multi_threaded_message_loop = false;
-    if(Settings.Profile().empty())
-    {
-        settings.persist_user_preferences = 0;
-        settings.persist_session_cookies = 0;
-        std::wstring cache = L"cache";
-        cef_string_utf16_set(cache.data(),cache.size(),&settings.user_data_path,true);
-    }else
-    {
-        settings.persist_user_preferences = 1;
-        settings.persist_session_cookies = 1;
-        std::wstring wencoding = Settings.Profile();
-        cef_string_utf16_set(wencoding.data(),wencoding.size(),&settings.cache_path,true);
-        cef_string_utf16_set(wencoding.data(),wencoding.size(),&settings.user_data_path,true);
-    }
+    settings.persist_user_preferences = 0;
+    settings.persist_session_cookies = 0;
+    std::wstring cache = L"cache";
+    cef_string_utf16_set(cache.data(),cache.size(),&settings.user_data_path,true);
 
 
 

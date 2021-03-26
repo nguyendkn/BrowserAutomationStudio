@@ -1060,7 +1060,6 @@ void MainApp::MouseClickCallback(int x, int y)
         this->DelayClickX = X;
         this->DelayClickY = Y;
         BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
-        this->SendTextResponce("<MouseClick></MouseClick>");
     });
 }
 

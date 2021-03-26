@@ -360,78 +360,6 @@
 		{
             "code": [
                 {
-                    "file": "base64_code.js",
-                    "name": "base64_code"
-                }
-            ],
-            "description": {
-                "en": "Base64 encode/decode",
-                "ru": "Base64 кодировать/декодировать"
-            },
-            "interface": "base64_interface.js",
-            "is_element": false,
-            "name": "base64",
-            "select": "base64_select.js",
-            "template": "{{Value}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "template_code.js",
-                    "name": "template_code"
-                }
-            ],
-            "description": {
-                "en": "Template",
-                "ru": "Шаблон"
-            },
-            "interface": "template_interface.js",
-            "is_element": false,
-            "name": "template",
-            "select": "template_select.js",
-            "template": "{{Template}} -> {{Save}}",
-			"suggestion":{  
-				"en":"randomize string, random string, spintax, multiline string",
-				"ru":"рандомизировать, случайная строка, спинтакс, многострочная переменная"
-			}
-        },
-		{
-            "code": [
-                {
-                    "file": "replacestring_code.js",
-                    "name": "replacestring_code"
-                }
-            ],
-            "description": {
-                "en": "Replace string",
-                "ru": "Заменить строку"
-            },
-            "interface": "replacestring_interface.js",
-            "is_element": false,
-            "name": "replacestring",
-            "select": "replacestring_select.js",
-            "template": "{{Value}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "randomstring_code.js",
-                    "name": "randomstring_code"
-                }
-            ],
-            "description": {
-                "en": "Random string",
-                "ru": "Случайная строка"
-            },
-            "interface": "randomstring_interface.js",
-            "is_element": false,
-            "name": "randomstring",
-            "select": "randomstring_select.js",
-            "template": "{{Save}}"
-        },
-		{
-            "code": [
-                {
                     "file": "join_strings_code.js",
                     "name": "join_strings_code"
                 }
@@ -615,6 +543,78 @@
             "name": "html_special_characters",
             "select": "html_special_characters_select.js",
             "template": "{{string}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "base64_code.js",
+                    "name": "base64_code"
+                }
+            ],
+            "description": {
+                "en": "Base64 encode/decode",
+                "ru": "Base64 кодировать/декодировать"
+            },
+            "interface": "base64_interface.js",
+            "is_element": false,
+            "name": "base64",
+            "select": "base64_select.js",
+            "template": "{{Value}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "template_code.js",
+                    "name": "template_code"
+                }
+            ],
+            "description": {
+                "en": "Template",
+                "ru": "Шаблон"
+            },
+            "interface": "template_interface.js",
+            "is_element": false,
+            "name": "template",
+            "select": "template_select.js",
+            "template": "{{Template}} -> {{Save}}",
+			"suggestion":{  
+				"en":"randomize string, random string, spintax, multiline string",
+				"ru":"рандомизировать, случайная строка, спинтакс, многострочная переменная"
+			}
+        },
+		{
+            "code": [
+                {
+                    "file": "replacestring_code.js",
+                    "name": "replacestring_code"
+                }
+            ],
+            "description": {
+                "en": "Replace string",
+                "ru": "Заменить строку"
+            },
+            "interface": "replacestring_interface.js",
+            "is_element": false,
+            "name": "replacestring",
+            "select": "replacestring_select.js",
+            "template": "{{Value}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "randomstring_code.js",
+                    "name": "randomstring_code"
+                }
+            ],
+            "description": {
+                "en": "Random string",
+                "ru": "Случайная строка"
+            },
+            "interface": "randomstring_interface.js",
+            "is_element": false,
+            "name": "randomstring",
+            "select": "randomstring_select.js",
+            "template": "{{Save}}"
         }
     ],
     "api_version": 1,

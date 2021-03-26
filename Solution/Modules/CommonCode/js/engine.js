@@ -67,12 +67,14 @@ function _avoid_nil(data, def){
 function _avoid_nilb(data, def){
 	return _is_nilb(data) ? _avoid_nil(def, "") : data;
 };
-function _escape_regexp(str){
-	_validate_argument_type(str, 'string', 'String', '_escape_regexp');
-	return (str && /[\\^$.*+?()[\]{}|]/.test(str)) ? str.replace(new RegExp('([\\][^' + _STR_WHITESPACE + _STR_SPECCHARS + ']|[().^$*+?[\\]{}|])', 'g'), '\\$&') : (str || '');
+function _is_string(data){
+	return typeof data==="string";
+};
+function _is_not_empty_string(data){
+	return _is_string(data) && data.length > 0;
 };
 function _is_json_string(str){
-	if((typeof str==="string" && str.length > 0) && ((str.slice(0,1)=="[" && str.slice(-1)=="]") || (str.slice(0,1)=="{" && str.slice(-1)=="}"))){
+	if(_is_not_empty_string(str) && ((str.slice(0,1)=="[" && str.slice(-1)=="]") || (str.slice(0,1)=="{" && str.slice(-1)=="}"))){
 		try{
 			JSON.parse(str);
 		}catch(e){
@@ -82,6 +84,10 @@ function _is_json_string(str){
 	}else{
 		return false;
 	};
+};
+function _escape_regexp(str){
+	_validate_argument_type(str, 'string', 'String', '_escape_regexp');
+	return (str && /[\\^$.*+?()[\]{}|]/.test(str)) ? str.replace(new RegExp('([\\][^' + _STR_WHITESPACE + _STR_SPECCHARS + ']|[().^$*+?[\\]{}|])', 'g'), '\\$&') : (str || '');
 };
 function _to_arr(data){
 	_validate_argument_type(data, ['string','array'], 'Data', '_to_arr');

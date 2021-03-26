@@ -1,0 +1,29 @@
+#include "DevToolsGlobalState.h"
+
+void DevToolsGlobalState::Reset()
+{
+    TabId.clear();
+    SwitchToTabId.clear();
+    SwitchToTabFrameId.clear();
+    SwitchToTabResetSavedActions = false;
+    StartupScriptIds.clear();
+    FrameIdToContextId.clear();
+    Tabs.clear();
+    ScreenCastTabId.clear();
+    OpenFileDialogResult.clear();
+    OpenFileDialogIsManual = false;
+    PromptResult.clear();
+    CurrentDownloadFileName.clear();
+    IsDownloading = false;
+    IsDownloadsAllowed = true;
+    IsPopupsAllowed = true;
+    NewTabReferrer.clear();
+    BlockRequests.clear();
+    CacheCapture.clear();
+    CachedData.clear();
+    CachedRequests.clear();
+    LoadedUrls.clear();
+    IsProxySet = false;
+    IsUserAgentChanged = false;
+    UserAgentData.clear();
+}

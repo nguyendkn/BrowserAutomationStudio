@@ -43,6 +43,13 @@ namespace BrowserAutomationStudioFramework
         Worker->RunSubScript();
     }
 
+    void NetworkAccessManager::SetUserAgentData(const QString& data,const QString& callback)
+    {
+        Worker->SetScript(callback);
+        Worker->RunSubScript();
+    }
+
+
     void NetworkAccessManager::CleanHeader(const QString& callback)
     {
         CaptureManager->CleanHeader();
@@ -239,16 +246,6 @@ namespace BrowserAutomationStudioFramework
             }
         }
         return QByteArray();
-    }
-
-    void NetworkAccessManager::BrowserIp(const QString& callback)
-    {
-
-    }
-
-    void NetworkAccessManager::BrowserIpHttps(const QString& callback)
-    {
-
     }
 
     void NetworkAccessManager::FindStatusByMask(const QString& Mask, const QString& callback)

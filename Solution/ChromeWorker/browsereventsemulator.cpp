@@ -76,8 +76,8 @@ BrowserEventsEmulator::BrowserEventsEmulator()
 
 void BrowserEventsEmulator::SetFocus(CefRefPtr<CefBrowser> Browser)
 {
-    if(Browser)
-        Browser->GetHost()->SendFocusEvent(true);
+    /*if(Browser)
+        Browser->GetHost()->SendFocusEvent(true);*/
 }
 
 bool BrowserEventsEmulator::IsPointOnScreen(int PointX, int PointY, int ScrollX, int ScrollY, int BrowserWidth, int BrowserHeight)
@@ -100,10 +100,32 @@ int random(int max)
     return rand() % (max);
 }
 
-void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight, bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation)
+void BrowserEventsEmulator::MouseMoveLine(DevToolsConnector* Connector, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight, bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
 {
     if(!IsMouseMoveSimulation)
         return;
+
+    MouseButton CurrentMouseState = MouseButtonNone;
+
+    if(IsMousePress)
+    {
+        CurrentMouseState = MouseButtonLeft;
+    }
+
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
 
     float DistanceSquareAll = (MouseStartX - MouseEndX) * (MouseStartX - MouseEndX) + (MouseStartY - MouseEndY) * (MouseStartY - MouseEndY);
     float DistanceSquareCurrent = (MouseStartX - MouseCurrentX) * (MouseStartX - MouseCurrentX) + (MouseStartY - MouseCurrentY) * (MouseStartY - MouseCurrentY);
@@ -122,33 +144,15 @@ void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & 
         {
             if(IsTouchPressedAutomation)
             {
-                CefTouchEvent Event;
-                Event.id = TouchId;
-                Event.x = MouseCurrentX;
-                Event.y = MouseCurrentY;
-                Event.radius_x = 11.5;
-                Event.radius_y = 11.5;
-                Event.rotation_angle = 0.0;
-                Event.pressure = 1.0;
-                Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-                Event.modifiers = EVENTFLAG_NONE;
-                Event.type = CEF_TET_MOVED;
-
-                Browser->GetHost()->SendTouchEvent(Event);
+                Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
             }
         }else
         {
-            CefMouseEvent e;
-            if(IsMousePress)
-                e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
+            Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
 
-            e.x = MouseCurrentX;
-            e.y = MouseCurrentY;
-
-            Browser->GetHost()->SendMouseMoveEvent(e,false);
             if(IsDrag)
             {
-                Browser->GetHost()->DragTargetDragOver(e,allowedops);
+                //Browser->GetHost()->DragTargetDragOver(e,allowedops);
             }
 
         }
@@ -165,41 +169,19 @@ void BrowserEventsEmulator::MouseMoveLine(CefRefPtr<CefBrowser> Browser, bool & 
     {
         if(IsTouchPressedAutomation)
         {
-            CefTouchEvent Event;
-            Event.id = TouchId;
-            Event.x = MouseCurrentX;
-            Event.y = MouseCurrentY;
-            Event.radius_x = 11.5;
-            Event.radius_y = 11.5;
-            Event.rotation_angle = 0.0;
-            Event.pressure = 1.0;
-            Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-            Event.modifiers = EVENTFLAG_NONE;
-            Event.type = CEF_TET_MOVED;
-
-            Browser->GetHost()->SendTouchEvent(Event);
+            Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
         }
     }else
     {
-        CefMouseEvent e;
-        if(IsMousePress)
-            e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
-
-        e.x = MouseCurrentX;
-        e.y = MouseCurrentY;
-
-        Browser->GetHost()->SendMouseMoveEvent(e,false);
+        Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
         if(IsDrag)
         {
-            Browser->GetHost()->DragTargetDragOver(e,allowedops);
+            //Browser->GetHost()->DragTargetDragOver(e,allowedops);
         }
-
     }
-
-
 }
 
-void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
+void BrowserEventsEmulator::MouseMove(DevToolsConnector* Connector,
                                       bool & IsMouseMoveSimulation,
                                       int MouseStartX, int MouseStartY,
                                       int MouseEndX, int MouseEndY,
@@ -208,8 +190,32 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
                                       int BrowserWidth, int BrowserHeight,
                                       float Gravity, float Wind, float TargetArea,
                                       bool IsInit, bool IsDouble, bool IsMousePress, bool IsDrag,
-                                      bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation)
+                                      bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation,
+                                      KeyState& State)
 {
+
+    MouseButton CurrentMouseState = MouseButtonNone;
+
+    if(IsMousePress)
+    {
+        CurrentMouseState = MouseButtonLeft;
+    }
+
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
+
     static float veloX,veloY,windX,windY,veloMag,dist,randomDist,lastDist,D;
     static int lastX,lastY,MSP,W,TDist;
     static int T;
@@ -274,33 +280,15 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
             {
                 if(IsTouchPressedAutomation)
                 {
-                    CefTouchEvent Event;
-                    Event.id = TouchId;
-                    Event.x = MouseCurrentX;
-                    Event.y = MouseCurrentY;
-                    Event.radius_x = 11.5;
-                    Event.radius_y = 11.5;
-                    Event.rotation_angle = 0.0;
-                    Event.pressure = 1.0;
-                    Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-                    Event.modifiers = EVENTFLAG_NONE;
-                    Event.type = CEF_TET_MOVED;
-
-                    Browser->GetHost()->SendTouchEvent(Event);
+                    Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
                 }
             }else
             {
-                CefMouseEvent e;
-                if(IsMousePress)
-                    e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
+                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
 
-                e.x = MouseCurrentX;
-                e.y = MouseCurrentY;
-
-                Browser->GetHost()->SendMouseMoveEvent(e,false);
                 if(IsDrag)
                 {
-                    Browser->GetHost()->DragTargetDragOver(e,allowedops);
+                    //Browser->GetHost()->DragTargetDragOver(e,allowedops);
                 }
 
             }
@@ -408,33 +396,14 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
             {
                 if(IsTouchPressedAutomation)
                 {
-                    CefTouchEvent Event;
-                    Event.id = TouchId;
-                    Event.x = MouseCurrentX;
-                    Event.y = MouseCurrentY;
-                    Event.radius_x = 11.5;
-                    Event.radius_y = 11.5;
-                    Event.rotation_angle = 0.0;
-                    Event.pressure = 1.0;
-                    Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-                    Event.modifiers = EVENTFLAG_NONE;
-                    Event.type = CEF_TET_MOVED;
-
-                    Browser->GetHost()->SendTouchEvent(Event);
+                    Connector->Touch(TouchEventMove,MouseCurrentX,MouseCurrentY,TouchId);
                 }
             }else
             {
-                CefMouseEvent e;
-                if(IsMousePress)
-                    e.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
-
-                e.x = MouseCurrentX;
-                e.y = MouseCurrentY;
-
-                Browser->GetHost()->SendMouseMoveEvent(e,false);
+                Connector->Mouse(MouseEventMove,MouseCurrentX,MouseCurrentY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
                 if(IsDrag)
                 {
-                    Browser->GetHost()->DragTargetDragOver(e,allowedops);
+                    //Browser->GetHost()->DragTargetDragOver(e,allowedops);
                 }
 
             }
@@ -496,30 +465,17 @@ void BrowserEventsEmulator::MouseMove(CefRefPtr<CefBrowser> Browser,
 
 }
 
-void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation)
+void BrowserEventsEmulator::MouseClick(DevToolsConnector* Connector, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
 {
-    if(!Browser)
-        return;
+    int X = x - scroll.first;
+    int Y = y - scroll.second;
 
-    CefMouseEvent event;
-    event.modifiers = EVENTFLAG_LEFT_MOUSE_BUTTON;
-    event.x = x - scroll.first;
-    event.y = y - scroll.second;
+    int CurrentMouseState = MouseButtonNone;
 
-
-    CefTouchEvent eventtouch;
-    eventtouch.id = TouchId;
-    eventtouch.x = event.x;
-    eventtouch.y = event.y;
-    eventtouch.radius_x = 11.5;
-    eventtouch.radius_y = 11.5;
-    eventtouch.rotation_angle = 0.0;
-    eventtouch.pressure = 1.0;
-    eventtouch.pointer_type = CEF_POINTER_TYPE_TOUCH;
-    eventtouch.modifiers = EVENTFLAG_NONE;
-    eventtouch.type = CEF_TET_MOVED;
-
-    WORKER_LOG(std::string("BrowserEventsEmulator::MouseClick<<") + std::to_string(x) + std::string("<<") + std::to_string(y) + std::string("<<") + std::to_string(type));
+    if(IsMousePress)
+    {
+        CurrentMouseState |= MouseButtonLeft;
+    }
 
     if(type == 2)
     {
@@ -531,14 +487,30 @@ void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int
         IsMousePress = false;
     }
 
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
+
+
     if(type == 1 && IsDrag)
     {
-        Browser->GetHost()->DragTargetDragOver(event,allowedops);
+        /*Browser->GetHost()->DragTargetDragOver(event,allowedops);
         Browser->GetHost()->DragSourceEndedAt(event.x,event.y,allowedops);
 
 
         Browser->GetHost()->DragTargetDrop(event);
-        Browser->GetHost()->DragSourceSystemDragEnded();
+        Browser->GetHost()->DragSourceSystemDragEnded();*/
         IsDrag = false;
     }
 
@@ -547,119 +519,57 @@ void BrowserEventsEmulator::MouseClick(CefRefPtr<CefBrowser> Browser, int x, int
     {
         if(IsTouch)
         {
-            eventtouch.type = CEF_TET_PRESSED;
             IsTouchPressedAutomation = true;
-            Browser->GetHost()->SendTouchEvent(eventtouch);
+            Connector->Touch(TouchEventDown,X,Y,TouchId);
         }else
         {
-            Browser->GetHost()->SendMouseClickEvent(event,MBT_LEFT,false,1);
+            Connector->Mouse(MouseEventDown,X,Y,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
         }
-        WORKER_LOG(std::string("BrowserEventsEmulator::MouseClickDown<<"));
     }
 
     if(type != 2)
     {
         if(IsTouch)
         {
-            eventtouch.type = CEF_TET_RELEASED;
             IsTouchPressedAutomation = false;
+            Connector->Touch(TouchEventUp,X,Y,TouchId);
             TouchId++;
-            Browser->GetHost()->SendTouchEvent(eventtouch);
         }else
         {
-            Browser->GetHost()->SendMouseClickEvent(event,MBT_LEFT,true,1);
+            Connector->Mouse(MouseEventUp,X,Y,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
         }
-        WORKER_LOG(std::string("BrowserEventsEmulator::MouseClickUp<<"));
     }
 }
 
-int BrowserEventsEmulator::GetNativeCode(int key)
+void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
 {
-    if(key == 27) return 1;
-    if(key == 49) return 2;
-    if(key == 50) return 3;
-    if(key == 51) return 4;
-    if(key == 52) return 5;
-    if(key == 53) return 6;
-    if(key == 54) return 7;
-    if(key == 55) return 8;
-    if(key == 56) return 9;
-    if(key == 57) return 10;
-    if(key == 48) return 11;
-    if(key == 189) return 12;
-    if(key == 187) return 13;
-    if(key == 8) return 14;
-    if(key == 9) return 15;
-    if(key == 81) return 16;
-    if(key == 87) return 17;
-    if(key == 69) return 18;
-    if(key == 82) return 19;
-    if(key == 84) return 20;
-    if(key == 89) return 21;
-    if(key == 85) return 22;
-    if(key == 73) return 23;
-    if(key == 79) return 24;
-    if(key == 80) return 25;
-    if(key == 219) return 26;
-    if(key == 221) return 27;
-    if(key == 13) return 28;
-    if(key == 65) return 30;
-    if(key == 83) return 31;
-    if(key == 68) return 32;
-    if(key == 70) return 33;
-    if(key == 71) return 34;
-    if(key == 72) return 35;
-    if(key == 74) return 36;
-    if(key == 75) return 37;
-    if(key == 76) return 38;
-    if(key == 186) return 39;
-    if(key == 222) return 40;
-    if(key == 192) return 41;
-    if(key == 220) return 43;
-    if(key == 90) return 44;
-    if(key == 88) return 45;
-    if(key == 67) return 46;
-    if(key == 86) return 47;
-    if(key == 66) return 48;
-    if(key == 78) return 49;
-    if(key == 77) return 50;
-    if(key == 188) return 51;
-    if(key == 190) return 52;
-    if(key == 191) return 53;
-    if(key == 32) return 57;
-    return 0;
-}
+    MouseButton CurrentMouseState = MouseButtonNone;
 
-void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
-{
-    if(!Browser)
-        return;
+    int CurrentKeyState = KeyboardModifiersNone;
+
+    if(State.IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(State.IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(State.IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
 
     if(State.IsPresingKey)
     {
         if(State.IsClickingMouse)
         {
-            CefMouseEvent e;
-            e.x = State.MouseUpX;
-            e.y = State.MouseUpY;
-            e.modifiers = State.MouseUpModifiers;
-
-            Browser->GetHost()->SendMouseClickEvent(e,(State.MouseUpIsRight) ? MBT_RIGHT : MBT_LEFT,true,1);
-
+            CurrentMouseState = (State.MouseUpIsRight) ? MouseButtonRight : MouseButtonLeft;
+            Connector->Mouse(MouseEventUp,State.MouseUpX,State.MouseUpY,CurrentMouseState,CurrentMouseState,CurrentKeyState);
         }else
         {
-            CefKeyEvent event;
-            event.type = KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = State.PresingKey;
-            event.native_key_code = GetNativeCode(State.PresingKey);
-            event.is_system_key = false;
-            event.character = 0;
-            event.unmodified_character = 0;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key(KeyEventUp,State.PresingString,CurrentKeyState);
         }
-
         State.IsPresingKey = false;
         State.IsClickingMouse = false;
         return;
@@ -703,7 +613,8 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
     bool IsKeyParsed = false;
     unsigned char key = 0;
     char state = -1;
-    wchar_t letter_wchar;
+    wchar_t letter_wchar = 0;
+    std::string InputString;
     bool ismouse = false;
     bool ismouseup = false;
     bool ismouseleft = false;
@@ -714,147 +625,169 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
     int MouseClickTimes = 1;
 
 
-    if(!text_whcar.empty())
+    if(!text_copy.empty())
     {
-        std::wstring CANCEL = L"<CANCEL>";
-        std::wstring BACK = L"<BACK>";
-        std::wstring TAB = L"<TAB>";
-        std::wstring CLEAR = L"<CLEAR>";
-        std::wstring RETURN = L"<RETURN>";
-        std::wstring CAPITAL = L"<CAPITAL>";
-        std::wstring ESCAPE = L"<ESCAPE>";
-        std::wstring PRIOR = L"<PRIOR>";
-        std::wstring NEXT = L"<NEXT>";
-        std::wstring END = L"<END>";
-        std::wstring HOME = L"<HOME>";
-        std::wstring LEFT = L"<LEFT>";
-        std::wstring UP = L"<UP>";
-        std::wstring RIGHT = L"<RIGHT>";
-        std::wstring DOWN = L"<DOWN>";
-        std::wstring SELECT = L"<SELECT>";
-        std::wstring PRINT = L"<PRINT>";
-        std::wstring EXECUTE = L"<EXECUTE>";
-        std::wstring SNAPSHOT = L"<SNAPSHOT>";
-        std::wstring INSERT = L"<INSERT>";
-        std::wstring _DELETE = L"<DELETE>";
-        std::wstring MOUSESCROLLUP = L"<MOUSESCROLLUP>";
-        std::wstring MOUSESCROLLDOWN = L"<MOUSESCROLLDOWN>";
-        std::wstring MOUSELEFT = L"<MOUSELEFT>";
-        std::wstring MOUSERIGHT = L"<MOUSERIGHT>";
-        std::wstring MOUSEDOUBLE = L"<MOUSEDOUBLE>";
+        std::string CANCEL = "<CANCEL>";
+        std::string BACK = "<BACK>";
+        std::string TAB = "<TAB>";
+        std::string CLEAR = "<CLEAR>";
+        std::string RETURN = "<RETURN>";
+        std::string CAPITAL = "<CAPITAL>";
+        std::string ESCAPE = "<ESCAPE>";
+        std::string PRIOR = "<PRIOR>";
+        std::string NEXT = "<NEXT>";
+        std::string END = "<END>";
+        std::string HOME = "<HOME>";
+        std::string LEFT = "<LEFT>";
+        std::string UP = "<UP>";
+        std::string RIGHT = "<RIGHT>";
+        std::string DOWN = "<DOWN>";
+        std::string SELECT = "<SELECT>";
+        std::string PRINT = "<PRINT>";
+        std::string EXECUTE = "<EXECUTE>";
+        std::string SNAPSHOT = "<SNAPSHOT>";
+        std::string INSERT = "<INSERT>";
+        std::string _DELETE = "<DELETE>";
+        std::string MOUSESCROLLUP = "<MOUSESCROLLUP>";
+        std::string MOUSESCROLLDOWN = "<MOUSESCROLLDOWN>";
+        std::string MOUSELEFT = "<MOUSELEFT>";
+        std::string MOUSERIGHT = "<MOUSERIGHT>";
+        std::string MOUSEDOUBLE = "<MOUSEDOUBLE>";
 
-        if(text_whcar.rfind(MOUSESCROLLUP, 0) == 0)
+        if(text_copy.rfind(MOUSESCROLLUP, 0) == 0)
         {
             character_length = MOUSESCROLLUP.length();
             ismouse = true;
             ismouseup = true;
-        }else if(text_whcar.rfind(MOUSESCROLLDOWN, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSESCROLLDOWN, 0) == 0)
         {
             character_length = MOUSESCROLLDOWN.length();
             ismouse = true;
             ismouseup = false;
-        }else if(text_whcar.rfind(MOUSELEFT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSELEFT, 0) == 0)
         {
             character_length = MOUSELEFT.length();
             ismouseleft = true;
-        }else if(text_whcar.rfind(MOUSERIGHT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSERIGHT, 0) == 0)
         {
             character_length = MOUSERIGHT.length();
             ismouseright = true;
-        }else if(text_whcar.rfind(MOUSEDOUBLE, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(MOUSEDOUBLE, 0) == 0)
         {
             character_length = MOUSEDOUBLE.length();
             ismouseleft = true;
             MouseClickTimes = 2;
-        }else if(text_whcar.rfind(CANCEL, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(CANCEL, 0) == 0)
         {
             character_length = CANCEL.length();
-            letter_wchar = key = VK_CANCEL;
-        }else if(text_whcar.rfind(BACK, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(BACK, 0) == 0)
         {
             character_length = BACK.length();
-            letter_wchar = key = VK_BACK;
-        }else if(text_whcar.rfind(TAB, 0) == 0)
+            InputString = CharacterBackspace;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(TAB, 0) == 0)
         {
             character_length = TAB.length();
-            letter_wchar = key = VK_TAB;
-        }else if(text_whcar.rfind(CLEAR, 0) == 0)
+            InputString = CharacterTab;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(CLEAR, 0) == 0)
         {
             character_length = CLEAR.length();
-            letter_wchar = key = VK_CLEAR;
-        }else if(text_whcar.rfind(RETURN, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(RETURN, 0) == 0)
         {
             character_length = RETURN.length();
-            letter_wchar = key = VK_RETURN;
+            InputString = CharacterEnter;
             is_special_letter = false;
-        }else if(text_whcar.rfind(CAPITAL, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(CAPITAL, 0) == 0)
         {
             character_length = CAPITAL.length();
-            letter_wchar = key = VK_CAPITAL;
-        }else if(text_whcar.rfind(ESCAPE, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(ESCAPE, 0) == 0)
         {
             character_length = ESCAPE.length();
-            letter_wchar = key = VK_ESCAPE;
-        }else if(text_whcar.rfind(PRIOR, 0) == 0)
+            InputString = CharacterEscape;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(PRIOR, 0) == 0)
         {
             character_length = PRIOR.length();
-            letter_wchar = key = VK_PRIOR;
-        }else if(text_whcar.rfind(NEXT, 0) == 0)
+            InputString = CharacterPageUp;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(NEXT, 0) == 0)
         {
             character_length = NEXT.length();
-            letter_wchar = key = VK_NEXT;
-        }else if(text_whcar.rfind(END, 0) == 0)
+            InputString = CharacterPageDown;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(END, 0) == 0)
         {
             character_length = END.length();
-            letter_wchar = key = VK_END;
-        }else if(text_whcar.rfind(HOME, 0) == 0)
+            InputString = CharacterEnd;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(HOME, 0) == 0)
         {
             character_length = HOME.length();
-            letter_wchar = key = VK_HOME;
-        }else if(text_whcar.rfind(LEFT, 0) == 0)
+            InputString = CharacterHome;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(LEFT, 0) == 0)
         {
             character_length = LEFT.length();
-            letter_wchar = key = VK_LEFT;
-        }else if(text_whcar.rfind(UP, 0) == 0)
+            InputString = CharacterLeft;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(UP, 0) == 0)
         {
             character_length = UP.length();
-            letter_wchar = key = VK_UP;
-        }else if(text_whcar.rfind(RIGHT, 0) == 0)
+            InputString = CharacterUp;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(RIGHT, 0) == 0)
         {
             character_length = RIGHT.length();
-            letter_wchar = key = VK_RIGHT;
-        }else if(text_whcar.rfind(DOWN, 0) == 0)
+            InputString = CharacterRight;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(DOWN, 0) == 0)
         {
             character_length = DOWN.length();
-            letter_wchar = key = VK_DOWN;
-        }else if(text_whcar.rfind(SELECT, 0) == 0)
+            InputString = CharacterDown;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(SELECT, 0) == 0)
         {
             character_length = SELECT.length();
-            letter_wchar = key = VK_SELECT;
-        }else if(text_whcar.rfind(PRINT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(PRINT, 0) == 0)
         {
             character_length = PRINT.length();
-            letter_wchar = key = VK_PRINT;
-        }else if(text_whcar.rfind(EXECUTE, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(EXECUTE, 0) == 0)
         {
             character_length = EXECUTE.length();
-            letter_wchar = key = VK_EXECUTE;
-        }else if(text_whcar.rfind(SNAPSHOT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(SNAPSHOT, 0) == 0)
         {
             character_length = SNAPSHOT.length();
-            letter_wchar = key = VK_SNAPSHOT;
-        }else if(text_whcar.rfind(INSERT, 0) == 0)
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(INSERT, 0) == 0)
         {
             character_length = INSERT.length();
-            letter_wchar = key = VK_INSERT;
-        }else if(text_whcar.rfind(_DELETE, 0) == 0)
+            InputString = CharacterInsert;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
+        }else if(text_copy.rfind(_DELETE, 0) == 0)
         {
             character_length = _DELETE.length();
-            letter_wchar = key = VK_DELETE;
+            InputString = CharacterDelete;
+            text_copy.erase(text_copy.begin(),text_copy.begin() + character_length);
         }else
         {
             is_special_letter = false;
-            letter_wchar = text_whcar.at(0);
+            if(!text_whcar.empty())
+                letter_wchar = text_whcar.at(0);
+
+            InputString = GetFirstUtf8Char(text_copy);
             std::vector<HKL> Locales;
             int max_locales = 300;
             Locales.resize(max_locales);
@@ -869,6 +802,9 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
                 state = c >> 8;
                 index ++;
             }
+
+
+
         }
     }
 
@@ -884,166 +820,127 @@ void BrowserEventsEmulator::Key(CefRefPtr<CefBrowser> Browser, std::string & tex
     }
 
     if(AdditionalIsShift)
+    {
         IsShift = true;
+    }
 
     if(AdditionalIsAlt)
+    {
         IsAlt = true;
+    }
 
     if(AdditionalIsCtrl)
+    {
         IsCtrl = true;
+    }
+
+
+    CurrentKeyState = KeyboardModifiersNone;
+
+    if(IsShift)
+    {
+        CurrentKeyState |= KeyboardModifiersShift;
+    }
+    if(IsAlt)
+    {
+        CurrentKeyState |= KeyboardModifiersAlt;
+    }
+    if(IsCtrl)
+    {
+        CurrentKeyState |= KeyboardModifiersCtrl;
+    }
 
     if(!ismouse)
     {
         if(IsShift != State.IsShift)
         {
             State.IsShift = IsShift;
-            CefKeyEvent event;
-            event.type = (IsShift) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = VK_SHIFT;
-            event.native_key_code = 42;
-            event.is_system_key = false;
-            event.character = VK_SHIFT;
-            event.unmodified_character = VK_SHIFT;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key((IsShift) ? KeyEventDown : KeyEventUp,CharacterShift,CurrentKeyState);
             return;
         }
 
         if(IsAlt != State.IsAlt)
         {
             State.IsAlt = IsAlt;
-            CefKeyEvent event;
-            event.type = (IsAlt) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = VK_MENU;
-            event.native_key_code = 56;
-            event.is_system_key = false;
-            event.character = VK_MENU;
-            event.unmodified_character = VK_MENU;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key((IsAlt) ? KeyEventDown : KeyEventUp,CharacterAlt,CurrentKeyState);
             return;
         }
 
         if(IsCtrl != State.IsCtrl)
         {
             State.IsCtrl = IsCtrl;
-            CefKeyEvent event;
-            event.type = (IsCtrl) ? KEYEVENT_KEYDOWN : KEYEVENT_KEYUP;
-            event.modifiers = ((State.IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((State.IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((State.IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-            event.windows_key_code = VK_CONTROL;
-            event.native_key_code = 29;
-            event.is_system_key = false;
-            event.character = VK_CONTROL;
-            event.unmodified_character = VK_CONTROL;
-            event.focus_on_editable_field = true;
-            Browser->GetHost()->SendKeyEvent(event);
+            Connector->Key((IsCtrl) ? KeyEventDown : KeyEventUp,CharacterCtrl,CurrentKeyState);
             return;
         }
 
         if(ismouseleft)
         {
-            CefMouseEvent e;
-            e.x = mousex;
-            e.y = mousey;
-            e.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
+            CurrentMouseState = MouseButtonLeft;
 
-            Browser->GetHost()->SendMouseClickEvent(e,MBT_LEFT,false,MouseClickTimes);
+            Connector->Mouse(MouseEventDown,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
 
             if(MouseClickTimes == 1)
             {
                 //Postpond mouse up
                 State.IsClickingMouse = true;
                 State.MouseUpIsRight = false;
-                State.MouseUpX = e.x;
-                State.MouseUpY = e.y;
-                State.MouseUpModifiers = e.modifiers;
+                State.MouseUpX = mousex;
+                State.MouseUpY = mousey;
                 State.IsPresingKey = true;
 
             }else
             {
-                //Mouse up immediatelly
-                Browser->GetHost()->SendMouseClickEvent(e,MBT_LEFT,true,MouseClickTimes);
+                //Mouse up immediatelly                
+                Connector->Mouse(MouseEventUp,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
             }
 
 
         }
         else if(ismouseright)
         {
-            CefMouseEvent e;
-            e.x = mousex;
-            e.y = mousey;
-            e.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
+            CurrentMouseState = MouseButtonRight;
 
-            Browser->GetHost()->SendMouseClickEvent(e,MBT_RIGHT,false,MouseClickTimes);
+            Connector->Mouse(MouseEventDown,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
 
             if(MouseClickTimes == 1)
             {
                 //Postpond mouse up
                 State.IsClickingMouse = true;
-                State.MouseUpIsRight = true;
-                State.MouseUpX = e.x;
-                State.MouseUpY = e.y;
-                State.MouseUpModifiers = e.modifiers;
+                State.MouseUpIsRight = false;
+                State.MouseUpX = mousex;
+                State.MouseUpY = mousey;
                 State.IsPresingKey = true;
 
             }else
             {
-                //Mouse up immediatelly
-                Browser->GetHost()->SendMouseClickEvent(e,MBT_RIGHT,true,MouseClickTimes);
+                //Mouse up immediatelly                
+                Connector->Mouse(MouseEventUp,mousex,mousey,CurrentMouseState,CurrentMouseState,CurrentKeyState,MouseClickTimes);
             }
         }else
         {
 
             //Main key down
             {
-                CefKeyEvent event;
-                event.type = KEYEVENT_KEYDOWN;
-                event.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-                event.windows_key_code = key;
-                event.native_key_code = GetNativeCode(key);
-                event.is_system_key = false;
-                event.character = 0;
-                event.unmodified_character = 0;
-                event.focus_on_editable_field = true;
-                Browser->GetHost()->SendKeyEvent(event);
+                Connector->Key(KeyEventDown,InputString,CurrentKeyState);
             }
             //Main key press
-            if(!is_special_letter)
+            if(!is_special_letter && !IsCtrl && !IsAlt)
             {
-                CefKeyEvent event;
-                event.type = KEYEVENT_CHAR;
-                event.modifiers = ((IsShift) ? EVENTFLAG_SHIFT_DOWN : EVENTFLAG_NONE)  | ((IsAlt) ? EVENTFLAG_ALT_DOWN : EVENTFLAG_NONE) | ((IsCtrl) ? EVENTFLAG_CONTROL_DOWN : EVENTFLAG_NONE);
-                event.windows_key_code = letter_wchar;
-                event.native_key_code = GetNativeCode(key);
-                event.is_system_key = false;
-                event.character = 0;
-                event.unmodified_character = 0;
-                event.focus_on_editable_field = true;
-                Browser->GetHost()->SendKeyEvent(event);
+                Connector->Key(KeyEventCharacter,InputString,CurrentKeyState);
             }
             //Main key up delay
 
 
             State.IsClickingMouse = false;
             State.IsPresingKey = true;
-            State.PresingCharacter = letter_wchar;
-            State.PresingKey = key;
-
-
+            State.PresingString = InputString;
         }
     }
     else
     {
-        CefMouseEvent e;
-        e.x = mousex;
-        e.y = mousey;
-        int deltay = (ismouseup) ? 100 : -100;
-        Browser->GetHost()->SendMouseWheelEvent(e,0,deltay);
+        Connector->Wheel(mousex, mousey, ismouseup);
     }
 
-    text_whcar.erase(text_whcar.begin(),text_whcar.begin() + character_length);
-    text = ws2s(text_whcar);
+    text = text_copy;
 }
 

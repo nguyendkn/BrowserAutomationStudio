@@ -18,6 +18,7 @@ namespace BrowserAutomationStudioFramework
         QString BrowserEngine;
         QString BrowserEngineVirtual;
         bool UseFlash;
+        bool UseWidevine;
         int Timezone;
         QString TimezoneName;
 
@@ -30,9 +31,6 @@ namespace BrowserAutomationStudioFramework
         QString WebglNoise;
         QString WebrtcIps;
 
-
-        bool ProxyTunneling;
-        int SkipFrames;
 
         QString UniqueProcessId;
 
@@ -60,8 +58,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetProfile(const QString& Profile);
         virtual void SetExtensions(const QString& Extensions);
         virtual void SetUseFlash(bool UseFlash);
-        virtual void SetProxyTunneling(bool ProxyTunneling);
-        virtual void SetSkipFrames(int SkipFrames);
+        virtual void SetUseWidevine(bool UseWidevine);
 
         virtual QString Get(const QString& Key);
         virtual void Set(const QString& Key,const QString& Value);
@@ -98,9 +95,10 @@ namespace BrowserAutomationStudioFramework
         virtual void SetBrowserEngineVirtual(const QString& BrowserEngine);
 
         virtual QString GetProfile();
+        virtual QString GetRealProfile();
+
         virtual bool GetUseFlash();
-        virtual bool GetProxyTunneling();
-        virtual int GetSkipFrames();
+        virtual bool GetUseWidevine();
 
         virtual QString GetProxyServer();
         virtual void SetProxyServer(const QString& ProxyServer);
@@ -136,7 +134,6 @@ namespace BrowserAutomationStudioFramework
 
     private:
         QString GetRandomString();
-        void RemoveOldTempProfiles();
         void RemoveOldFingerprintSettings();
         void UpdateFingerprintsSettings();
 

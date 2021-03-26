@@ -34,6 +34,7 @@ SOURCES += engine.cpp \
     modulecreatewizard.cpp \
     modulecreator.cpp \
     moduleinfodialog.cpp \
+    profilebackgroundremover.cpp \
     xmlresourcecontroller.cpp \
     vocabularytest.cpp \
     userresourcewrapper.cpp \
@@ -390,6 +391,7 @@ HEADERS += engine.h\
     modulecreatewizard.h \
     modulecreator.h \
     moduleinfodialog.h \
+    profilebackgroundremover.h \
     xmlresourcecontroller.h \
     vocabularytest.h \
     userresourcewrapper.h \

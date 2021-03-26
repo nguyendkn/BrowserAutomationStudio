@@ -29,9 +29,8 @@ namespace BrowserAutomationStudioFramework
         Canvas = "disable";
         Audio = "disable";
         UseFlash = false;
+        UseWidevine = false;
         Webgl = "disable";
-        ProxyTunneling = true;
-        SkipFrames = 1;
         ProxyPort = 0;
         ProxyIsHttp = true;
         ProxyServer.clear();
@@ -181,13 +180,9 @@ namespace BrowserAutomationStudioFramework
     {
         this->UseFlash = UseFlash;
     }
-    void WorkerSettings::SetProxyTunneling(bool ProxyTunneling)
+    void WorkerSettings::SetUseWidevine(bool UseWidevine)
     {
-        this->ProxyTunneling = ProxyTunneling;
-    }
-    void WorkerSettings::SetSkipFrames(int SkipFrames)
-    {
-        this->SkipFrames = SkipFrames;
+        this->UseWidevine = UseWidevine;
     }
 
     QString WorkerSettings::GetWebrtc()
@@ -268,6 +263,12 @@ namespace BrowserAutomationStudioFramework
     {
         return Profile;
     }
+    QString WorkerSettings::GetRealProfile()
+    {
+        if(!Profile.isEmpty())
+            return Profile;
+        return QFileInfo(TempProfile).absoluteFilePath();
+    }
     QString WorkerSettings::GetWorkerPath()
     {
         return PathSafe;
@@ -280,13 +281,9 @@ namespace BrowserAutomationStudioFramework
     {
         return UseFlash;
     }
-    bool WorkerSettings::GetProxyTunneling()
+    bool WorkerSettings::GetUseWidevine()
     {
-        return ProxyTunneling;
-    }
-    int WorkerSettings::GetSkipFrames()
-    {
-        return SkipFrames;
+        return UseWidevine;
     }
 
     IWorkerSettings* WorkerSettings::Clone()
@@ -295,10 +292,9 @@ namespace BrowserAutomationStudioFramework
         res->SetWorkerPathSafe(PathSafe);
         res->SetWorkerPathNotSafe(PathNotSafe);
         res->SetUseFlash(UseFlash);
-        res->SetProxyTunneling(ProxyTunneling);
+        res->SetUseWidevine(UseWidevine);
         res->SetProfile(Profile);
         res->SetExtensions(Extensions);
-        res->SetSkipFrames(SkipFrames);
         res->SetBrowserEngine(BrowserEngine);
         res->SetProxyServer(ProxyServer);
         res->SetProxyPort(ProxyPort);
@@ -393,10 +389,8 @@ namespace BrowserAutomationStudioFramework
         if(Settings.contains("EnableFlash"))
             SetUseFlash(Settings.value("EnableFlash",false).toBool());
 
-        SetUseFlash(Settings.value("EnableFlash",false).toBool());
-
-        SetProxyTunneling(Settings.value("ProxyTunneling",true).toBool());
-        SetSkipFrames(Settings.value("SkipFrames",1).toInt());
+        if(Settings.contains("EnableWidevine"))
+            SetUseWidevine(Settings.value("EnableWidevine",false).toBool());
     }
 
     void WorkerSettings::SetSettingWhichRestartsBrowser(const QString& Key, QJsonObject& Object, bool& NeedRestart, bool& NeedSend)
@@ -652,6 +646,17 @@ namespace BrowserAutomationStudioFramework
             }
          }
 
+         if(!IsMLA && object.contains("UseWidevine"))
+         {
+            bool prev = GetUseWidevine();
+            bool next = object["UseWidevine"].toBool();
+            if(prev != next)
+            {
+                NeedRestart = true;
+                SetUseWidevine(next);
+            }
+         }
+
          if(!IsMLA && object.contains("Webrtc"))
          {
             SetWebrtc(object["Webrtc"].toString());
@@ -752,18 +757,6 @@ namespace BrowserAutomationStudioFramework
             UpdateFingerprintsSettings();
          }
 
-         if(!IsMLA && object.contains("ProxyTunneling"))
-         {
-            bool prev = GetProxyTunneling();
-            bool next = object["ProxyTunneling"].toBool();
-            if(prev != next)
-            {
-                NeedRestart = true;
-                SetProxyTunneling(next);
-            }
-         }
-
-
          if(object.contains("ProfilePath"))
          {
             QString prev = GetProfile();
@@ -802,19 +795,6 @@ namespace BrowserAutomationStudioFramework
             }
 
          }
-
-
-         if(!IsMLA && object.contains("SkipFrames"))
-         {
-            int prev = GetSkipFrames();
-            int next = object["SkipFrames"].toInt();
-            if(prev != next)
-            {
-                NeedSend = true;
-                SetSkipFrames(next);
-            }
-         }
-
 
          if(IsMLA && object.contains("LoadFingerprintFromProfileFolder"))
          {
@@ -862,23 +842,6 @@ namespace BrowserAutomationStudioFramework
            randomString.append(nextChar);
        }
        return randomString;
-    }
-
-    void WorkerSettings::RemoveOldTempProfiles()
-    {
-        QDirIterator it("prof", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
-        while (it.hasNext())
-        {
-            QString dir = it.next();
-            QString FilePath = dir + "/LOCK";
-
-            QFile(FilePath).remove();
-
-            if(!QFileInfo(FilePath).exists())
-            {
-                QDir(dir).removeRecursively();
-            }
-        }
     }
 
     void WorkerSettings::UpdateFingerprintsSettings()
@@ -1136,18 +1099,13 @@ namespace BrowserAutomationStudioFramework
         QStringList res;
         if(Engine == QString("BASChrome"))
         {
-            RemoveOldTempProfiles();
-
             res.append(Language);
 
             res.append("--UseFlash");
             res.append(QString::number(GetUseFlash()));
 
-            res.append("--ProxyTunneling");
-            res.append(QString::number(GetProxyTunneling()));
-
-            res.append("--SkipFrames");
-            res.append(QString::number(GetSkipFrames()));
+            res.append("--UseWidevine");
+            res.append(QString::number(GetUseWidevine()));
 
             UniqueProcessId = GetRandomString();
             UpdateFingerprintsSettings();

@@ -256,7 +256,7 @@ std::string InspectResult::Serialize()
     }
 }
 
-void MultiSelectData::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop, int FrameOffsetX, int FrameOffsetY, bool IsInsideFrame)
+void MultiSelectData::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect, bool IsIndirect, int MouseX, int MouseY, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop)
 {
     for(MultiSelectDataItem &Inspect: Items)
     {
@@ -264,13 +264,8 @@ void MultiSelectData::Paint(HDC hdc, MouseOverMultiSelect& _MouseOverMultiSelect
         if(!Inspect.size_calculated)
             continue;
 
-        int x = Inspect.x + FrameOffsetX;
-        int y = Inspect.y + FrameOffsetY;
-        if(IsInsideFrame)
-        {
-            x -= BrowserScrollX;
-            y -= BrowserScrollY;
-        }
+        int x = Inspect.x;
+        int y = Inspect.y;
 
         int     x1 = (float)x * (float)BrowserDrawWidth / (float)BrowserRealWidth
                 ,y1 = (float)y * (float)BrowserDrawHeight / (float)BrowserRealHeight
@@ -457,7 +452,7 @@ std::string MultiSelectData::Serialize()
     return picojson::value(ResArray).serialize();
 }
 
-void MultiSelectData::UpdatePositions(const std::string& Data)
+void MultiSelectData::UpdatePositions(const std::string& Data, int FrameOffsetX, int FrameOffsetY)
 {
     picojson::value v;
     std::string err = picojson::parse(v, Data);
@@ -476,8 +471,8 @@ void MultiSelectData::UpdatePositions(const std::string& Data)
     {
         picojson::value::object ItemObject = Item.get<picojson::value::object>();
         std::string Id = ItemObject["id"].get<std::string>();
-        int X = ItemObject["x"].get<double>();
-        int Y = ItemObject["y"].get<double>();
+        int X = ItemObject["x"].get<double>() + FrameOffsetX;
+        int Y = ItemObject["y"].get<double>() + FrameOffsetY;
         int Width = ItemObject["width"].get<double>();
         int Height = ItemObject["height"].get<double>();
 

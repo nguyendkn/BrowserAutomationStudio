@@ -1,0 +1,1 @@
+_call_function(SQL_UpdateRecords,{ "table": (<%= table %>),"where": (<%= where %>),"where_parameterize": (<%= parameterize %>),"values": (<%= values %>),"fields": (<%= fields %>),"limit": (<%= limit %>),"timeout": (<%= timeout_value() || 60000 %>) })!

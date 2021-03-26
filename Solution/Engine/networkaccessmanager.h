@@ -45,6 +45,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetHeaderList(const QString& json,const QString& callback);
         virtual void CleanHeader(const QString& callback);
         virtual void SetAcceptLanguagePattern(const QString& pattern,const QString& callback);
+        virtual void SetUserAgentData(const QString& data,const QString& callback);
 
         virtual void AddCacheMaskAllow(const QString& Mask, const QString& callback);
         virtual void AddCacheMaskDeny(const QString& Mask, const QString& callback);
@@ -63,8 +64,6 @@ namespace BrowserAutomationStudioFramework
         virtual void AllowDownloads(const QString& callback);
         QByteArray FindCacheByMask(const QString& Mask);
         virtual void FindCacheByMaskBase64(const QString& Mask, const QString& callback);
-        virtual void BrowserIp(const QString& callback);
-        virtual void BrowserIpHttps(const QString& callback);
         virtual void FindStatusByMask(const QString& Mask, const QString& callback);
         virtual void FindUrlByMask(const QString& Mask, const QString& callback);
         virtual void FindCacheByMaskString(const QString& Mask, const QString& callback);

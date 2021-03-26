@@ -5,6 +5,8 @@
 #include "converter.h"
 #include "startwith.h"
 #include "multithreading.h"
+#include "KeyboardEmulation.h"
+
 
 using namespace std::chrono;
 
@@ -359,7 +361,7 @@ void BrowserDirectControl::SendSequenceItem(const SequenceItem& Item)
     Meta = Item.Meta;
     Code = Item.Code;
     IsWaitFullPageLoaded = Item.Type == WaitFullPageLoadType;
-    DontSendNextWaitFullPageLoaded = Item.Type == LoadType || Item.Type == WaitFullPageLoadType || Item.Type == GoBackType;
+    DontSendNextWaitFullPageLoaded = Item.Type == PopupSelect || Item.Type == PopupClose || Item.Type == LoadType || Item.Type == WaitFullPageLoadType || Item.Type == GoBackType;
 
     SendCode(Meta, Code, DontSendNextWaitFullPageLoaded, IsWaitFullPageLoaded);
 }
@@ -569,9 +571,8 @@ BrowserDirectControl::BrowserDirectControl()
 
 }
 
-void BrowserDirectControl::Init(std::weak_ptr<HandlersManager> _HandlersManager, BrowserData *_BrowserData)
+void BrowserDirectControl::Init(BrowserData *_BrowserData)
 {
-    this->_HandlersManager = _HandlersManager;
     this->_BrowserData = _BrowserData;
     IsDrag = false;
     LastClickTime = -1;
@@ -627,41 +628,17 @@ void BrowserDirectControl::Load(const std::string& Url)
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
     std::string UrlCopy = Url;
 
     IsDrag = false;
 
     //Load url
-    if(Pointer->GetBrowser())
+    if(LastAddTab)
     {
-        CefRefPtr< CefFrame > Frame = Pointer->GetBrowser()->GetMainFrame();
-        if(LastAddTab)
-        {
-            std::string UrlCopyLower = Url;
-            std::transform(UrlCopyLower.begin(), UrlCopyLower.end(), UrlCopyLower.begin(), ::tolower);
-            if(!starts_with(UrlCopyLower,"http://") && !starts_with(UrlCopyLower,"https://"))
-            {
-                UrlCopy = std::string("http://") + UrlCopy;
-            }
+        _BrowserData->Connector->CreateTab(Url, true);
+    }else
+        _BrowserData->Connector->Load(Url, true);
 
-            _BrowserData->IsCreatingNewPopup = true;
-            _BrowserData->IsCreatingNewPopupIsLoaded = false;
-            _BrowserData->IsCreatingNewPopupIsContextCreated = false;
-            _BrowserData->IsCreatingNewPopupIsSilent = false;
-            _BrowserData->IsCreatingNewPopupIsLoadAfterOpen = true;
-            _BrowserData->IsCreatingNewPopupIndexBeforeChange = -1;
-            _BrowserData->IsCreatingNewPopupUrl = UrlCopy;
-
-            std::string Script = std::string("window.open('tab://new/')");
-            Frame->ExecuteJavaScript(Script,"",1);
-        }else
-            Frame->LoadURL(Url);
-    }
 
     SendDetector("Load",Url);
 
@@ -672,21 +649,15 @@ void BrowserDirectControl::Load(const std::string& Url)
     if(LastAddTab)
     {
         //Add action to scenario
+        std::string code = std::string("_popupcreate2(false, ") + JsonEscape(UrlCopy) + std::string(", \"\", false)!");
 
-        std::string code = std::string("_if_else(\"false\" == \"true\",function(){\n"
-           "_popupcreate(true,") + JsonEscape(UrlCopy) + std::string(")!\n"
-           "},function(){\n"
-           "_popupcreate(false,\"\")!\n"
-           "load(") + JsonEscape(UrlCopy) + std::string(")!\n"
-           "})!");
-
-        std::string json = std::string("{\"s\":\"addtab\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"Url\",\"type\":\"constr\",\"data\":") + JsonEscape(UrlCopy) + std::string(",\"class\":\"string\"},{\"id\":\"IsSilent\",\"type\":\"constr\",\"data\":\"false\",\"class\":\"string\"}]}");
+        std::string json = std::string("{\"s\":\"addtab\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"Url\",\"type\":\"constr\",\"data\":") + JsonEscape(UrlCopy) + std::string(",\"class\":\"string\"},{\"id\":\"IsSilent\",\"type\":\"constr\",\"data\":\"false\",\"class\":\"string\"},{\"id\":\"Referrer\",\"type\":\"constr\",\"data\":\"\",\"class\":\"string\"}]}");
         AddItem(json, code, std::string(), LoadType);
     }else
     {
         //Add action to scenario
-        std::string code = std::string("load(") + JsonEscape(Url) + std::string(")!");
-        std::string json = std::string("{\"s\":\"load\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"LoadUrl\",\"type\":\"constr\",\"data\":") + JsonEscape(Url) + std::string(",\"class\":\"string\"}]}");
+        std::string code = std::string("_load(") + JsonEscape(Url) + std::string(", \"\", false)!");
+        std::string json = std::string("{\"s\":\"load\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[{\"id\":\"LoadUrl\",\"type\":\"constr\",\"data\":") + JsonEscape(Url) + std::string(",\"class\":\"string\"},{\"id\":\"Referrer\",\"type\":\"constr\",\"data\":\"\",\"class\":\"string\"}]}");
 
         AddItem(json, code, std::string(), LoadType);
     }
@@ -724,22 +695,11 @@ void BrowserDirectControl::SelectTab(int i)
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
-
-    Pointer->SwitchByIndex(i);
+    _BrowserData->Connector->SwitchToTab(i);
 
     //Check if recording mode is on
     if(_BrowserData->ManualControl != BrowserData::DirectRecord)
         return;
-
 
     //Add action to scenario
     std::string code = std::string("popupselect(") + std::to_string(i) + std::string(")!");
@@ -758,17 +718,7 @@ void BrowserDirectControl::CloseTab(int i)
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
-
-    Pointer->CloseByIndex(i);
+    _BrowserData->Connector->CloseTab(i);
 
     //Check if recording mode is on
     if(_BrowserData->ManualControl != BrowserData::DirectRecord)
@@ -827,31 +777,14 @@ void BrowserDirectControl::GoBack()
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
-
-    IsDrag = false;
-
-    //Go back
-    if(Pointer->GetBrowser())
-    {
-        Pointer->GetBrowser()->GoBack();
-    }
-
+    _BrowserData->Connector->NavigateBack(true);
 
     //Check if recording mode is on
     if(_BrowserData->ManualControl != BrowserData::DirectRecord)
         return;
 
     //Add action to scenario
-    std::string code = std::string("navigate_back()!\nwait_async_load()!");
+    std::string code = std::string("navigate_back(false)!\nwait_async_load()!");
     std::string json = std::string("{\"s\":\"navigateback\",\"v\":1,\"f\":[],\"uw\":\"1\",\"ut\":\"0\",\"uto\":\"0\",\"um\":\"0\",\"d\":[]}");
 
     AddItem(json, code, std::string(), GoBackType);
@@ -867,25 +800,11 @@ void BrowserDirectControl::ScrollUp()
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
     //No mouse wheele in touch mode
     if(_BrowserData->IsTouchScreen)
         return;
 
-
-    CefMouseEvent e;
-    e.x = LastMoveX;
-    e.y = LastMoveY;
-    int deltay = 100;
-    Pointer->GetBrowser()->GetHost()->SendMouseWheelEvent(e,0,deltay);
+    _BrowserData->Connector->Wheel(LastMoveX, LastMoveY, true);
 }
 
 void BrowserDirectControl::ScrollDown()
@@ -896,25 +815,11 @@ void BrowserDirectControl::ScrollDown()
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
     //No mouse wheele in touch mode
     if(_BrowserData->IsTouchScreen)
         return;
 
-
-    CefMouseEvent e;
-    e.x = LastMoveX;
-    e.y = LastMoveY;
-    int deltay = -100;
-    Pointer->GetBrowser()->GetHost()->SendMouseWheelEvent(e,0,deltay);
+    _BrowserData->Connector->Wheel(LastMoveX, LastMoveY, false);
 }
 
 
@@ -927,67 +832,42 @@ void BrowserDirectControl::MouseMove(int X, int Y, bool IsMousePressed, bool IsC
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
-
 
     if(_BrowserData->IsTouchScreen)
     {
         if(_BrowserData->IsTouchPressedDirectControl)
         {
-            CefTouchEvent Event;
-            Event.id = _BrowserData->TouchEventId;
-            Event.x = X;
-            Event.y = Y;
-            Event.radius_x = 11.5;
-            Event.radius_y = 11.5;
-            Event.rotation_angle = 0.0;
-            Event.pressure = 1.0;
-            Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-            Event.modifiers = EVENTFLAG_NONE;
-            Event.type = CEF_TET_MOVED;
-
-            Pointer->GetBrowser()->GetHost()->SendTouchEvent(Event);
+            _BrowserData->Connector->Touch(TouchEventMove, X, Y, _BrowserData->TouchEventId);
         }
 
         return;
     }
 
+    LastMoveX = X;
+    LastMoveY = Y;
 
-    if(Pointer->GetBrowser())
+    MouseButton PressedMouse = MouseButtonNone;
+
+    int PressedKey = KeyboardModifiersNone;
+
+    if(IsMousePressed)
     {
-        CefMouseEvent e;
-
-        e.modifiers = EVENTFLAG_NONE;
-
-        if(IsMousePressed)
-            e.modifiers |= EVENTFLAG_LEFT_MOUSE_BUTTON;
-
-        if(IsCtrlPressed)
-            e.modifiers |= EVENTFLAG_CONTROL_DOWN;
-
-        if(IsShiftPressed)
-            e.modifiers |= EVENTFLAG_SHIFT_DOWN;
-
-        e.x = X;
-        e.y = Y;
-
-        LastMoveX = X;
-        LastMoveY = Y;
-
-        Pointer->GetBrowser()->GetHost()->SendMouseMoveEvent(e,false);
-        if(IsDrag)
-        {
-            Pointer->GetBrowser()->GetHost()->DragTargetDragOver(e,allowedops);
-        }
+        PressedMouse = MouseButtonLeft;
     }
+
+    if(IsCtrlPressed)
+        PressedKey |= KeyboardModifiersCtrl;
+
+    if(IsShiftPressed)
+        PressedKey |= KeyboardModifiersShift;
+
+
+    _BrowserData->Connector->Mouse(MouseEventMove, X, Y, PressedMouse, PressedMouse, PressedKey);
+
+    /*if(IsDrag)
+    {
+        Pointer->GetBrowser()->GetHost()->DragTargetDragOver(e,allowedops);
+    }*/
 
 }
 
@@ -1001,116 +881,34 @@ void BrowserDirectControl::Key(UINT msg, WPARAM wParam, LPARAM lParam)
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
     IsDrag = false;
 
-    CefKeyEvent event;
-    event.windows_key_code = wParam;
-    event.native_key_code = lParam;
-    event.is_system_key = msg == WM_SYSCHAR || msg == WM_SYSKEYDOWN || msg == WM_SYSKEYUP;
+    KeyEvent Event;
 
     if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN)
-        event.type = KEYEVENT_RAWKEYDOWN;
+        Event = KeyEventDown;
     else if(msg == WM_KEYUP || msg == WM_SYSKEYUP)
-        event.type = KEYEVENT_KEYUP;
+        Event = KeyEventUp;
     else
-        event.type = KEYEVENT_CHAR;
+        Event = KeyEventCharacter;
 
+    int Modifiers = KeyboardModifiersNone;
 
-    int modifiers = 0;
     if (IsKeyDown(VK_SHIFT))
-      modifiers |= EVENTFLAG_SHIFT_DOWN;
+      Modifiers |= KeyboardModifiersShift;
     if (IsKeyDown(VK_CONTROL))
-      modifiers |= EVENTFLAG_CONTROL_DOWN;
+      Modifiers |= KeyboardModifiersCtrl;
     if (IsKeyDown(VK_MENU))
-      modifiers |= EVENTFLAG_ALT_DOWN;
+      Modifiers |= KeyboardModifiersAlt;
 
-    // Low bit set from GetKeyState indicates "toggled".
-    if (::GetKeyState(VK_NUMLOCK) & 1)
-      modifiers |= EVENTFLAG_NUM_LOCK_ON;
-    if (::GetKeyState(VK_CAPITAL) & 1)
-      modifiers |= EVENTFLAG_CAPS_LOCK_ON;
+    if(!((IsKeyDown(VK_CONTROL) | IsKeyDown(VK_MENU)) && Event == KeyEventCharacter))
+        _BrowserData->Connector->KeyRaw(Event, wParam, lParam, Modifiers);
 
-    switch (wParam) {
-      case VK_RETURN:
-        if ((lParam >> 16) & KF_EXTENDED)
-          modifiers |= EVENTFLAG_IS_KEY_PAD;
-        break;
-      case VK_INSERT:
-      case VK_DELETE:
-      case VK_HOME:
-      case VK_END:
-      case VK_PRIOR:
-      case VK_NEXT:
-      case VK_UP:
-      case VK_DOWN:
-      case VK_LEFT:
-      case VK_RIGHT:
-        if (!((lParam >> 16) & KF_EXTENDED))
-          modifiers |= EVENTFLAG_IS_KEY_PAD;
-        break;
-      case VK_NUMLOCK:
-      case VK_NUMPAD0:
-      case VK_NUMPAD1:
-      case VK_NUMPAD2:
-      case VK_NUMPAD3:
-      case VK_NUMPAD4:
-      case VK_NUMPAD5:
-      case VK_NUMPAD6:
-      case VK_NUMPAD7:
-      case VK_NUMPAD8:
-      case VK_NUMPAD9:
-      case VK_DIVIDE:
-      case VK_MULTIPLY:
-      case VK_SUBTRACT:
-      case VK_ADD:
-      case VK_DECIMAL:
-      case VK_CLEAR:
-        modifiers |= EVENTFLAG_IS_KEY_PAD;
-        break;
-      case VK_SHIFT:
-        if (IsKeyDown(VK_LSHIFT))
-          modifiers |= EVENTFLAG_IS_LEFT;
-        else if (IsKeyDown(VK_RSHIFT))
-          modifiers |= EVENTFLAG_IS_RIGHT;
-        break;
-      case VK_CONTROL:
-        if (IsKeyDown(VK_LCONTROL))
-          modifiers |= EVENTFLAG_IS_LEFT;
-        else if (IsKeyDown(VK_RCONTROL))
-          modifiers |= EVENTFLAG_IS_RIGHT;
-        break;
-      case VK_MENU:
-        if (IsKeyDown(VK_LMENU))
-          modifiers |= EVENTFLAG_IS_LEFT;
-        else if (IsKeyDown(VK_RMENU))
-          modifiers |= EVENTFLAG_IS_RIGHT;
-        break;
-      case VK_LWIN:
-        modifiers |= EVENTFLAG_IS_LEFT;
-        break;
-      case VK_RWIN:
-        modifiers |= EVENTFLAG_IS_RIGHT;
-        break;
-    }
-
-    event.modifiers = modifiers;
-
-    Pointer->GetBrowser()->GetHost()->SendKeyEvent(event);
-
+    //event.is_system_key = msg == WM_SYSCHAR || msg == WM_SYSKEYDOWN || msg == WM_SYSKEYUP;
 
     //Check if recording mode is on
     if(_BrowserData->ManualControl != BrowserData::DirectRecord)
         return;
-
 
     if(msg == WM_CHAR)
     {
@@ -1226,48 +1024,66 @@ void BrowserDirectControl::Key(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void BrowserDirectControl::DoMouseEvent(MouseClickItem Item)
 {
-
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    if(Pointer->GetBrowser())
+    MouseEvent Event;
+    if(Item.IsDownOrUp)
     {
-        CefMouseEvent e;
-
-        e.modifiers = EVENTFLAG_NONE;
-
-        if(Item.IsLeftMousePressed)
-            e.modifiers |= EVENTFLAG_LEFT_MOUSE_BUTTON;
-
-        if(Item.IsRightMousePressed)
-            e.modifiers |= EVENTFLAG_RIGHT_MOUSE_BUTTON;
-
-        if(Item.IsCtrlPressed)
-            e.modifiers |= EVENTFLAG_CONTROL_DOWN;
-
-        if(Item.IsShiftPressed)
-            e.modifiers |= EVENTFLAG_SHIFT_DOWN;
-
-        e.x = Item.X;
-        e.y = Item.Y;
-
-        //WORKER_LOG("!!!!!! Do mouse event IsDownOrUp=" + std::to_string(Item.IsDownOrUp) + ", IsDoubleClick=" + std::to_string(Item.IsDoubleClick));
-        CefBrowserHost::MouseButtonType ButtonType = Item.IsLeftMouseButton ? MBT_LEFT : MBT_RIGHT;
-        Pointer->GetBrowser()->GetHost()->SendMouseClickEvent(e,ButtonType,!Item.IsDownOrUp,Item.IsDoubleClick ? 2 : 1);
-
-        if(Item.IsDrop)
-        {
-            Pointer->GetBrowser()->GetHost()->DragTargetDragOver(e,allowedops);
-            Pointer->GetBrowser()->GetHost()->DragSourceEndedAt(e.x,e.y,allowedops);
-
-            Pointer->GetBrowser()->GetHost()->DragTargetDrop(e);
-            Pointer->GetBrowser()->GetHost()->DragSourceSystemDragEnded();
-        }
-
+        Event = MouseEventDown;
+    }else
+    {
+        Event = MouseEventUp;
     }
 
+    MouseButton Button;
+    if(Item.IsLeftMouseButton)
+    {
+        Button = MouseButtonLeft;
+    }else
+    {
+        Button = MouseButtonRight;
+    }
+
+    int PressedMouse = MouseButtonNone;
+
+    if(Item.IsLeftMousePressed)
+        PressedMouse |= MouseButtonLeft;
+
+    if(Item.IsRightMousePressed)
+        PressedMouse |= MouseButtonRight;
+
+    int PressedKeyboard = KeyboardModifiersNone;
+
+    bool IsOpenNewTab = false;
+
+    if(Item.IsCtrlPressed)
+    {
+        PressedKeyboard |= KeyboardModifiersCtrl;
+        IsOpenNewTab = true;
+    }
+
+    if(Item.IsShiftPressed)
+    {
+        PressedKeyboard |= KeyboardModifiersShift;
+        IsOpenNewTab = true;
+    }
+
+    //Replace Ctrl-Click or Shift-Click with Shift-Ctrl-Click in order to always switch to new tab
+    if(IsOpenNewTab)
+    {
+        PressedKeyboard |= KeyboardModifiersShift;
+        PressedKeyboard |= KeyboardModifiersCtrl;
+    }
+
+    _BrowserData->Connector->Mouse(Event, Item.X, Item.Y, Button, PressedMouse, PressedKeyboard, Item.IsDoubleClick ? 2 : 1);
+
+
+    /*if(Item.IsDrop)
+    {
+        Pointer->GetBrowser()->GetHost()->DragTargetDragOver(e,allowedops);
+        Pointer->GetBrowser()->GetHost()->DragSourceEndedAt(e.x,e.y,allowedops);
+
+        Pointer->GetBrowser()->GetHost()->DragTargetDrop(e);
+        Pointer->GetBrowser()->GetHost()->DragSourceSystemDragEnded();
+    }*/
 
 }
 
@@ -1279,34 +1095,14 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
 
-    //Lock handler manager to access browser
-    std::shared_ptr<HandlersManager> Pointer = _HandlersManager.lock();
-    if(!Pointer)
-        return;
-
-    //Check if browser created
-    if(!Pointer->GetBrowser())
-        return;
-
-
     if(_BrowserData->IsTouchScreen)
     {
-
-        CefTouchEvent Event;
-        Event.id = _BrowserData->TouchEventId;
-        Event.x = X;
-        Event.y = Y;
-        Event.radius_x = 11.5;
-        Event.radius_y = 11.5;
-        Event.rotation_angle = 0.0;
-        Event.pressure = 1.0;
-        Event.pointer_type = CEF_POINTER_TYPE_TOUCH;
-        Event.modifiers = EVENTFLAG_NONE;
-
+        TouchEvent EventType;
         bool SendEvent = false;
+        int CurrentTouchId = _BrowserData->TouchEventId;
         if(_BrowserData->IsTouchPressedDirectControl && !IsDownOrUp)
         {
-            Event.type = CEF_TET_RELEASED;
+            EventType = TouchEventUp;
             SendEvent = true;
             _BrowserData->TouchEventId++;
             _BrowserData->IsTouchPressedDirectControl = false;
@@ -1346,7 +1142,7 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
 
         }else if(!_BrowserData->IsTouchPressedDirectControl && IsDownOrUp)
         {
-            Event.type = CEF_TET_PRESSED;
+            EventType = TouchEventDown;
             SendEvent = true;
             _BrowserData->IsTouchPressedDirectControl = true;
 
@@ -1377,7 +1173,9 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
         }
 
         if(SendEvent)
-            Pointer->GetBrowser()->GetHost()->SendTouchEvent(Event);
+        {
+            _BrowserData->Connector->Touch(EventType, X, Y, CurrentTouchId);
+        }
         return;
     }
 

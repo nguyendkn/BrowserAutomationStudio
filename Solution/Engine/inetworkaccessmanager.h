@@ -26,6 +26,7 @@ namespace BrowserAutomationStudioFramework
         virtual void CleanHeader(const QString& callback) = 0;
         virtual void SetHeaderList(const QString& json,const QString& callback) = 0;
         virtual void SetAcceptLanguagePattern(const QString& pattern,const QString& callback) = 0;
+        virtual void SetUserAgentData(const QString& data,const QString& callback) = 0;
 
         virtual void AddCacheMaskAllow(const QString& Mask, const QString& callback) = 0;
         virtual void AddCacheMaskDeny(const QString& Mask, const QString& callback) = 0;
@@ -44,8 +45,6 @@ namespace BrowserAutomationStudioFramework
         virtual void AllowDownloads(const QString& callback) = 0;
         virtual void SetProxy(const QString& server, int Port, bool IsHttp, const QString& name, const QString& password,const QString& target, const QString& callback) = 0;
 
-        virtual void BrowserIp(const QString& callback) = 0;
-        virtual void BrowserIpHttps(const QString& callback) = 0;
         virtual void FindCacheByMaskBase64(const QString& Mask, const QString& callback) = 0;
         virtual void FindStatusByMask(const QString& Mask, const QString& callback) = 0;
         virtual void FindUrlByMask(const QString& Mask, const QString& callback) = 0;

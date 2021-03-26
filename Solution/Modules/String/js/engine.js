@@ -28,6 +28,12 @@ _L["Number of characters to remove"] = {"ru":"Количество удаляе�
 _L["All other letters in lowercase"] = {"ru":"Все остальные буквы в нижний регистр"};
 _L["Minimum number of characters in the number"] = {"ru":"Минимальное количество символов в числе"};
 
+function _from_string(str){
+    return _is_not_empty_string(str) ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
+};
+function _to_string(data){
+	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp) && !(data instanceof _url) && !(data instanceof _ua)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? _escape_regexp(data.source) : data.toString())));
+};
 function _no_exponents(num){
 	_validate_argument_type(num, ['string','number'], 'Number', '_no_exponents');
 	var data = String(num).split(/[eE]/);
@@ -46,18 +52,6 @@ function _no_exponents(num){
 	mag -= str.length;
 	while (mag--) z += '0';
 	return str + z;
-};
-function _is_string(data){
-	return typeof data==="string";
-};
-function _is_not_empty_string(data){
-	return _is_string(data) && data.length > 0;
-};
-function _from_string(str){
-    return _is_not_empty_string(str) ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
-};
-function _to_string(data){
-	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp) && !(data instanceof _url) && !(data instanceof _ua)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? _escape_regexp(data.source) : data.toString())));
 };
 function _to_number(str, dec, dsep, tsep){
 	var act = '_to_number';

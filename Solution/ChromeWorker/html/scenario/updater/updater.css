@@ -101,21 +101,22 @@
 /*********************************
  * Actions updater select styles *
  *********************************/
+
+.dropdown-menu > li > a.actions-updater-select-option.active:hover,
+.dropdown-menu > li > a.actions-updater-select-option.active,
+.dropdown-menu > li > a.actions-updater-select-option:hover {
+  background-color: #606060;
+  background-image: none;
+  color: #fff;
+}
  
- .dropdown-menu > li > a.actions-updater-select-option.active:focus,
- .dropdown-menu > li > a.actions-updater-select-option.active:hover,
- .dropdown-menu > li > a.actions-updater-select-option.active,
- .dropdown-menu > li > a.actions-updater-select-option:focus,
- .dropdown-menu > li > a.actions-updater-select-option:hover {
-   background-color: #606060;
- }
- 
-.actions-updater-select-option {
+.dropdown-menu > li > a.actions-updater-select-option {
   transition: background-color 0.3s ease-in-out;
   border: thin solid transparent;
   justify-content: space-between;
   background-color: #787878;
-  padding: 11px 12px;
+  background-image: none;
+  padding: 15px 16px;
   line-height: 18px;
   font-weight: 500;
   color: #fff;
@@ -123,11 +124,26 @@
   outline: 0;
 }
 
+.bootstrap-select > .actions-updater-select:focus,
+.bootstrap-select > .actions-updater-select:hover,
+.bootstrap-select.open > .actions-updater-select {
+  background-color: #787878;
+}
+
+.actions-updater-select:focus {
+  color: #fff;
+}
+
+.actions-updater-select:hover {
+  color: #fff;
+}
+
 .actions-updater-select {
   transition: all 0.3s ease-in-out;
   border: thin solid #606060;
   background-color: #606060;
   letter-spacing: -0.2px;
+  border-bottom: none;
   padding: 15px 16px;
   line-height: 18px;
   border-radius: 0;
@@ -146,7 +162,7 @@
 }
 
 .bootstrap-select .dropdown-menu > li > a::after {
-  background: url(icons/check.svg) no-repeat;
+  background: url(../icons/check.svg) no-repeat;
   visibility: hidden;
   cursor: pointer;
   display: block;
@@ -185,6 +201,9 @@
 
 .bootstrap-select .dropdown-menu {
   min-width: 100% !important;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
   border: 0;
   margin: 0;
 }

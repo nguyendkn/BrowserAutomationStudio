@@ -1880,15 +1880,13 @@ mark
   z-index: 2;
 }
 
-.selected
-{
+.tooltitle .selected {
   width: 16px;
   height: 16px;
-  float:right;
-  margin-top:3px;
-  margin-left:5px;
+  float: right;
+  margin-top: 3px;
+  margin-left: 5px;
 }
-
 
 #draganddrop
 {

@@ -1911,29 +1911,24 @@ mark
   min-width:50px;
 }
 
-.action-color-1
-{
-  background-color: #dff0d8
+.action-color-1 {
+  background-color: #dff0d8;
 }
 
-.action-color-2
-{
-  background-color: #f0eed8
+.action-color-2 {
+  background-color: #f0eed8;
 }
 
-.action-color-3
-{
-  background-color: #d8f0ef
+.action-color-3 {
+  background-color: #d8f0ef;
 }
 
-.action-color-4
-{
-  background-color: #d8e3f0
+.action-color-4 {
+  background-color: #d8e3f0;
 }
 
-.action-color-5
-{
-  background-color: #ffe2e2
+.action-color-5 {
+  background-color: #ffe2e2;
 }
 
 .color-select

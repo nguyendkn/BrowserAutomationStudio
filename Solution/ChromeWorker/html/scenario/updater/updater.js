@@ -81,10 +81,10 @@
       </div>
       <div class="actions-updater-panel">
         <div class="actions-updater-progressbar"></div>
-        <select class="form-control" id="actionsUpdaterSelect">
-          <option value="all"><%= tr('All actions in the project') %></option>
-          <option value="current"><%= tr('All actions in the current function') %></option>
-          <option value="selected"><%= tr('Only the selected actions') %></option>
+        <select id="actionsUpdaterSelect">
+          <option class="actions-updater-select-option" value="all"><%= tr('All actions in the project') %></option>
+          <option class="actions-updater-select-option" value="current"><%= tr('All actions in the current function') %></option>
+          <option class="actions-updater-select-option" value="selected"><%= tr('Only the selected actions') %></option>
         </select>
         <div class="actions-updater-log"></div>
         <div class="actions-updater-stats">
@@ -144,24 +144,27 @@
       _TaskCollection.bind('all', () => {
         this.model.updateTasks();
       });
-
-      this.render();
     },
 
     render: function () {
+      if (this.rendered) return this;
       this.$el.html(this.template()).appendTo('body');
-      this.hide();
-    },
-
-    toggle: function () {
-      this.$el.toggle();
+      this.$('#actionsUpdaterSelect').selectpicker({
+        style: 'actions-updater-select',
+        template: { caret: '' },
+        container: false,
+        width: false
+      });
+      return this;
     },
 
     show: function () {
+      this.render();
       this.$el.show();
     },
 
     hide: function () {
+      this.render();
       this.$el.hide();
     },
 

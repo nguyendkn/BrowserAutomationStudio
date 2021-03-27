@@ -107,7 +107,7 @@
             <span><span id="actionsUpdaterErrorsCount">0</span> <%= tr('Errors') %></span>
           </span>
         </div>
-        <button class="actions-updater-copy">
+        <button class="actions-updater-copy-btn">
           <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
             <path d="M10 3V0H0V12H4V15H13V3H10ZM4 11H1V1H9V3H4V11ZM12 14H5V4H12V14Z" fill="white"/>
           </svg>
@@ -115,8 +115,8 @@
         </button>
       </div>
       <div class="actions-updater-footer">
-        <button type="button" id="actionsUpdaterCancel" class="btn btn-default standartbutton tr">Cancel</button>
-        <button type="button" id="actionsUpdaterAccept" class="btn btn-primary standartbutton tr">Ok</button>
+        <button type="button" id="actionsUpdaterCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
+        <button type="button" id="actionsUpdaterAccept" class="btn-base btn-accept"><%= tr('OK') %></button>
       </div>
     `),
 

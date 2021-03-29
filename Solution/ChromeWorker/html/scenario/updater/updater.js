@@ -19,7 +19,7 @@
         }
 
         return false;
-      }).map((task) => task.index));
+      }).map(({ index }) => index));
     },
 
     async startUpdate() {
@@ -149,14 +149,12 @@
     },
 
     show: function () {
-      this.render();
-      this.$el.show();
+      this.render().$el.show();
       return this;
     },
 
     hide: function () {
-      this.render();
-      this.$el.hide();
+      this.render().$el.hide();
       return this;
     },
 

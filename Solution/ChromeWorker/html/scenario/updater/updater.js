@@ -4,35 +4,39 @@
       isStarted: false,
       successCount: 0,
       errorsCount: 0,
-      actions: []
+      tasks: []
     },
+
     updateTasks(type = 'all') {
       if (this.get('isStarted')) return;
 
-      this.set('actions', _.filter(_TaskCollection.toJSON(), (task) => {
+      this.set('tasks', _.filter(_TaskCollection.toJSON().map((task, index) => ({ ...task, index })), (task) => {
         const id = Number(task['id']);
 
         if (id !== 0 && !IsFunctionNode(id)) {
-          if (type === 'selected') return task['is_selected'];
           if (type === 'current') return GetFunctionData(id)['name'] === _GobalModel.get('function_name');
-          return true;
+          return type === 'selected' ? task['is_selected'] : true;
         }
 
         return false;
-      }));
+      }).map((task) => task.index));
     },
+
     async startUpdate() {
       this.set('isStarted', true);
       this.set('successCount', 0);
       this.set('errorsCount', 0);
 
-      for (const action of this.get('actions')) {
-        const task = _TaskCollection.get(action.id), dat = task.dat();
+      for (const id of this.get('tasks')) {
+        const task = _TaskCollection.at(id), dat = task.dat();
 
         if (!(dat && dat['role'] && dat['role'] === 'slave')) {
           const match = task.get('code').match(/\/\*Dat\:([^\*]+)\*\//);
 
           if (match) {
+            _MainView.currentTargetId = id;
+            _MainView.isEdit = true;
+
             const error = await new Promise((resolve) => {
               this.on('toolbox.editStarted', () => {
                 this.off('toolbox.editStarted');
@@ -68,6 +72,7 @@
 
       this.set('isStarted', false);
     },
+
     stopUpdate() {
       this.set('isStarted', false);
     }
@@ -82,7 +87,7 @@
       <div class="actions-updater-panel">
         <div class="actions-updater-progressbar"></div>
         <select id="actionsUpdaterSelect">
-          <option class="actions-updater-select-option" value="all"><%= tr('All actions in the project') %></option>
+          <option class="actions-updater-select-option" value="all" selected="selected"><%= tr('All actions in the project') %></option>
           <option class="actions-updater-select-option" value="current"><%= tr('All actions in the current function') %></option>
           <option class="actions-updater-select-option" value="selected"><%= tr('Only the selected actions') %></option>
         </select>
@@ -115,35 +120,20 @@
         </button>
       </div>
       <div class="actions-updater-footer">
-        <button type="button" id="actionsUpdaterCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
         <button type="button" id="actionsUpdaterAccept" class="btn-base btn-accept"><%= tr('OK') %></button>
+        <button type="button" id="actionsUpdaterCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
       </div>
     `),
 
     className: 'actions-updater',
 
     initialize: function () {
-      this.model = new ActionsUpdaterModel();
-
-      this.model.on('change:successCount', (_, successCount) => {
-        this.$('#actionsUpdaterSuccessCount').text(successCount);
-      });
-
-      this.model.on('change:errorsCount', (_, errorsCount) => {
-        this.$('#actionsUpdaterErrorsCount').text(errorsCount);
-      });
-
-      this.model.on('change:isStarted', (_, isStarted) => {
-        this.$('#actionsUpdaterSelect').prop('disabled', isStarted);
-      });
-
-      this.model.on('change:actions', (_, actions) => {
-        this.$('#actionsUpdaterCounter').text(actions.length);
-      });
-
-      _TaskCollection.bind('all', () => {
-        this.model.updateTasks();
-      });
+      this.model = new ActionsUpdaterModel()
+        .on('change:isStarted', (_, isStarted) => this.$('#actionsUpdaterSelect').prop('disabled', isStarted))
+        .on('change:successCount', (_, success) => this.$('#actionsUpdaterSuccessCount').text(success))
+        .on('change:errorsCount', (_, errors) => this.$('#actionsUpdaterErrorsCount').text(errors))
+        .on('change:tasks', (_, { length }) => this.$('#actionsUpdaterCounter').text(length));
+      _TaskCollection.bind('all', () => this.$('#actionsUpdaterSelect').trigger('change'));
     },
 
     render: function () {
@@ -161,11 +151,13 @@
     show: function () {
       this.render();
       this.$el.show();
+      return this;
     },
 
     hide: function () {
       this.render();
       this.$el.hide();
+      return this;
     },
 
     events: {

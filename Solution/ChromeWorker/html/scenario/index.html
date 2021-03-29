@@ -1625,8 +1625,6 @@
         BrowserAutomationStudio_SaveToUndoManager();
         this.send()
         event.preventDefault();
-
-
       },
 
       unfold: function(event)
@@ -1644,7 +1642,6 @@
         BrowserAutomationStudio_SaveToUndoManager();
         this.send()
         event.preventDefault();
-
       },
 
       selectcolor: function(event)
@@ -1653,7 +1650,6 @@
         var el = $(event.target)
         el.addClass("color-select-active")
         event.preventDefault();
-
       },
 
       moveexecutionpointfast: function(event)
@@ -2267,6 +2263,35 @@
           this.isEdit = false
           BrowserAutomationStudio_EditEnd()
         }
+      },
+
+      taskeditupdate: function(name,code,dontexecute)
+      {
+        this.model.set('dontsend', true);
+        _CacheLoader.SetDontUpdate(true);
+        
+        const task = this.collection.at(this.currentTargetId);
+        const dat = task.dat();
+
+        if (dat.role) {
+          let task = null;
+          if (dat.role === 'master') {
+            task = FindTaskById(dat.slave);
+          }
+          if (dat.role === 'slave') {
+            task = FindTaskById(dat.master);
+          }
+          if (task) task.attributes["code_precomputed"] = null;
+        }
+        
+        UpdateIfMasterSlave(task.set('code', code), code); 
+        _CacheLoader.SetDontUpdate(false);
+        _CacheLoader.Start();
+        
+        this.model.set('dontsend', false);
+        this.render();
+        this.send();
+        this.isEdit = false;
       },
 
       taskeditcustom: function(name,code,dontexecute)
@@ -5791,13 +5816,16 @@
           }
         }
 
-        if(typeof(DontInterrupt) == "undefined")
-        {
-          if(_MainView.isEdit)
-          {
-            _MainView.taskeditcustom(Name,Code,donotexecuteduringrecord)
+        if (typeof(DontInterrupt) === 'undefined') {
+          if (_MainView.isEdit) {
+            if (_ActionsUpdater.model.get('isStarted')) {
+              _MainView.taskeditupdate(Name, Code, donotexecuteduringrecord);
+            } else {
+              _MainView.taskeditcustom(Name, Code, donotexecuteduringrecord);
+            }
+            _ActionsUpdater.model.trigger('toolbox.editSuccess');
             $('#editmodal').modal('hide');
-            return
+            return;
           }
         }
 

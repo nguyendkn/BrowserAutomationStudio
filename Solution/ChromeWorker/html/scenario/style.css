@@ -1893,3 +1893,15 @@ mark
   height: 8px;
   width: 8px;
 }
+
+/******************
+ * Utility styles *
+ ******************/
+ 
+.overflow-visible {
+  overflow: visible !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}

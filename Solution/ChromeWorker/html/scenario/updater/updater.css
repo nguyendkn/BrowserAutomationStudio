@@ -28,8 +28,11 @@
 }
 
 .actions-updater-panel {
+  flex-direction: column;
   margin-bottom: 36px;
   margin-top: 28px;
+  display: flex;
+  flex: 1;
 }
 
 .actions-updater-stats-item + .actions-updater-stats-item {
@@ -72,11 +75,21 @@
   display: flex;
 }
 
+.actions-updater-log {
+  background: #3d3f42;
+  overflow-y: visible;
+  overflow-x: hidden;
+  padding: 24px 16px;
+  flex: 1;
+}
+
 .actions-updater {
+  flex-direction: column;
   background: #ffffff;
   padding: 25px 20px;
   position: fixed;
   z-index: 100000;
+  display: flex;
   height: 100%;
   width: 100%;
   left: 0;

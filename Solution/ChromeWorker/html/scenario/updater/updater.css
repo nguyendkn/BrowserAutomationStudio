@@ -144,7 +144,6 @@
 
 .actions-updater-select {
   transition: all 0.3s ease-in-out;
-  border: thin solid #606060;
   background-color: #606060;
   letter-spacing: -0.2px;
   border-bottom: none;

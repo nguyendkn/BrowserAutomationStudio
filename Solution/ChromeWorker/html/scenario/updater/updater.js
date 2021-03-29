@@ -70,6 +70,7 @@
         if (!this.get('isStarted')) break;
       }
 
+      BrowserAutomationStudio_EditEnd();
       this.set('isStarted', false);
     },
 
@@ -149,11 +150,15 @@
     },
 
     show: function () {
+      if (this.$el.is(':visible')) return;
+      $('body').toggleClass('overflow-hidden');
       this.render().$el.show();
       return this;
     },
 
     hide: function () {
+      if (this.$el.is(':hidden')) return;
+      $('body').toggleClass('overflow-hidden');
       this.render().$el.hide();
       return this;
     },

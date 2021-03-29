@@ -2281,18 +2281,14 @@
         //this.collection.at(this.currentTargetId).set("code",$("#TaskData").val() + "\n" + $("#TaskCode").val())
         var dat = Task.dat()
 
-        if(dat["role"])
-        {
+        if (dat["role"]) {
           var task = null
-          if(dat["role"] == "master") 
-          {
+          if (dat["role"] == "master") {
             task = FindTaskById(dat["slave"])
-          }else if(dat["role"] == "slave") 
-          {
+          } else if(dat["role"] == "slave") {
             task = FindTaskById(dat["master"])
           }
-          if(task)
-          {
+          if (task) {
             task.set("donotexecuteduringrecord",true == $("#TaskDontRunWhenRecording").prop('checked'))   
 
             task.attributes["color"] = color

@@ -28,43 +28,36 @@
       this.set('errorsCount', 0);
 
       for (const id of this.get('tasks')) {
-        const task = _TaskCollection.at(id), dat = task.dat();
+        _MainView.currentTargetId = id;
 
-        if (!(dat && dat['role'] && dat['role'] === 'slave')) {
-          const match = task.get('code').match(/\/\*Dat\:([^\*]+)\*\//);
+        const result = await new Promise((resolve) => {
+          this.on('toolbox.editStarted', () => {
+            this.off('toolbox.editStarted');
 
-          if (match) {
-            _MainView.currentTargetId = id;
-            _MainView.isEdit = true;
-
-            const error = await new Promise((resolve) => {
-              this.on('toolbox.editStarted', () => {
-                this.off('toolbox.editStarted');
-
-                this.on('toolbox.editSuccess', () => {
-                  this.off('toolbox.editSuccess');
-                  resolve(null);
-                });
-
-                this.on('toolbox.editFail', (err) => {
-                  this.off('toolbox.editFail');
-                  resolve(err);
-                });
-
-                BrowserAutomationStudio_EditSaveStart();
-              });
-
-              BrowserAutomationStudio_EditStart(match[1]);
+            this.on('toolbox.editSuccess', () => {
+              this.off('toolbox.editSuccess');
+              resolve({ error: false, message: null });
             });
 
-            if (!error) {
-              this.set('successCount', this.get('successCount') + 1);
-            } else {
-              this.set('errorsCount', this.get('errorsCount') + 1);
-            }
+            this.on('toolbox.editFail', (err) => {
+              this.off('toolbox.editFail');
+              resolve({ error: true, message: err });
+            });
 
-            if (error) this.trigger('log', error);
+            BrowserAutomationStudio_EditSaveStart();
+          });
+
+          if (!_MainView.Edit()) resolve({ skip: true });
+        });
+
+        if (!result.skip) {
+          if (!result.error) {
+            this.set('successCount', this.get('successCount') + 1);
+          } else {
+            this.set('errorsCount', this.get('errorsCount') + 1);
           }
+
+          if (result.error) this.trigger('log', result.message);
         }
 
         if (!this.get('isStarted')) break;

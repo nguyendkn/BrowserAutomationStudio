@@ -3570,23 +3570,20 @@
           }
       },
 
-      Edit: function() {
+      Edit: function(options = {}) {
         const task = this.collection.at(this.currentTargetId), dat = task.dat();
-
-        if (dat && dat["role"] && dat["role"] == "slave") {
-          return;
-        }
+        if (dat && dat["role"] && dat["role"] == "slave") return;
 
         this.isEdit = true;
-        
+
         const code = task.get("code");
         $("#TaskName").val(prepare_edit_body(dat, task.get("name")));
         $("#TaskId").html(task.get("id"));
         $(".color-select").removeClass("color-select-active");
         $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active");
-
         $("#TaskDontRunWhenRecording").prop('checked', task.get("donotexecuteduringrecord"));
-        //$("#editmodal").modal({});
+        if (!options.disableModal) $("#editmodal").modal({});
+
         const match = code.match(/\/\*Dat\:([^\*]+)\*\//);
         if (match) {
           BrowserAutomationStudio_EditStart(match[1]);

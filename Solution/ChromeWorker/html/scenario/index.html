@@ -3586,10 +3586,11 @@
         $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active");
 
         $("#TaskDontRunWhenRecording").prop('checked', task.get("donotexecuteduringrecord"));
-        $("#editmodal").modal({});
+        //$("#editmodal").modal({});
         const match = code.match(/\/\*Dat\:([^\*]+)\*\//);
         if (match) {
           BrowserAutomationStudio_EditStart(match[1]);
+          return true;
         }
       },
 

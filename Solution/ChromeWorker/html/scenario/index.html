@@ -976,7 +976,6 @@
                 <span class="color-select action-color-4" color-id="4">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="color-select action-color-5" color-id="5">&nbsp;&nbsp;&nbsp;&nbsp;</span>
               </span>
-              
             </div>
             <div class="form-group">
               <input type="checkbox" id="TaskDontRunWhenRecording"/> <label for="TaskDontRunWhenRecording" class="tr">Don't run when recording</label>
@@ -1007,7 +1006,6 @@
           </div>
           <div class="modal-footer">
             <span id="validation"></span>
-            
             <button type="button" class="btn btn-default standartbutton tr" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary funcok standartbutton tr" data-dismiss="modal">Ok</button>
           </div>
@@ -1093,7 +1091,6 @@
         <span class="small"><%= tr("Selected") %></span>: <strong><%= TotalSelected() %></strong>
       </div>
     </div>
-    
   </script>
 
   <script type="text/template" id="main">
@@ -1164,12 +1161,8 @@
         </div>
       </div>
       <div class="maintoolbox">
-
-        <span id="selectiontemplatecontainer">
-        
-        </span>
+        <span id="selectiontemplatecontainer"></span>
       </div>
-      
     </div>
     <div class="bottompannel" >
       <div class="container-fluid" id="variableinspector" style="<%= (global["show_variable_inspector"]) ? "" : "display:none" %>">
@@ -1193,8 +1186,6 @@
             
       </div>
     </div>
-
-
 
     <div class="container-fluid main" style="padding-bottom:<%= (global["show_variable_inspector"]) ? "250px" : "50px" %>" >
       
@@ -1325,9 +1316,7 @@
           <marker id="Arrow4" markerWidth="10" markerHeight="10" refX="6" refY="2" orient="auto" markerUnits="strokeWidth">
             <path d="M0,1 L5,2 L0,3" stroke="#e6bbbb" fill="none"></path>
           </marker>
-          
         </defs>
-
       </svg>
     </div>
   </script>
@@ -1347,8 +1336,6 @@
         section_insert()
       }
   </script>
-
-
 
   <!-- ========= -->
   <!-- Libraries -->
@@ -2265,35 +2252,6 @@
         }
       },
 
-      taskeditupdate: function(name,code,dontexecute)
-      {
-        this.model.set('dontsend', true);
-        _CacheLoader.SetDontUpdate(true);
-        
-        const task = this.collection.at(this.currentTargetId);
-        const dat = task.dat();
-
-        if (dat.role) {
-          let task = null;
-          if (dat.role === 'master') {
-            task = FindTaskById(dat.slave);
-          }
-          if (dat.role === 'slave') {
-            task = FindTaskById(dat.master);
-          }
-          if (task) task.attributes["code_precomputed"] = null;
-        }
-        
-        UpdateIfMasterSlave(task.set('code', code), code); 
-        _CacheLoader.SetDontUpdate(false);
-        _CacheLoader.Start();
-        
-        this.model.set('dontsend', false);
-        this.render();
-        this.send();
-        this.isEdit = false;
-      },
-
       taskeditcustom: function(name,code,dontexecute)
       {
         this.model.set("dontsend",true)
@@ -2336,13 +2294,9 @@
           el.addClass("action-color-" + color)
         }
 
-
-        //this.collection.at(this.currentTargetId).set("name",name)
         var task = this.collection.at(this.currentTargetId)
-        //var id = parseInt(this.collection.at(this.currentTargetId).get("id"))
         UpdateIfMasterSlave(task, code)
         task.set("code",code)
-        //this.collection.at(this.currentTargetId).set("donotexecuteduringrecord",dontexecute)
 
         _CacheLoader.SetDontUpdate(false)
         _CacheLoader.Start()
@@ -3616,34 +3570,26 @@
           }
       },
 
+      Edit: function() {
+        const task = this.collection.at(this.currentTargetId), dat = task.dat();
 
-      Edit: function(){
-
-        var dat = this.collection.at(this.currentTargetId).dat()
-
-        if(dat && dat["role"] && dat["role"] == "slave")
-        {
+        if (dat && dat["role"] && dat["role"] == "slave") {
           return;
         }
 
-        this.isEdit = true
+        this.isEdit = true;
+        
+        const code = task.get("code");
+        $("#TaskName").val(prepare_edit_body(dat, task.get("name")));
+        $("#TaskId").html(task.get("id"));
+        $(".color-select").removeClass("color-select-active");
+        $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active");
 
-        var task = this.collection.at(this.currentTargetId)
-
-        var code = task.get("code")
-        $("#TaskName").val(prepare_edit_body(dat, task.get("name")))
-        $("#TaskId").html(task.get("id"))
-        $(".color-select").removeClass("color-select-active")
-        $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active")
-
-        $("#TaskDontRunWhenRecording").prop('checked', this.collection.at(this.currentTargetId).get("donotexecuteduringrecord"))
-        $("#editmodal").modal({})
-        var match = code.match(/\/\*Dat\:([^\*]+)\*\//)
-        if(match)
-        {
-          //$("#TaskCode").val(code.replace(/\s*\/\*Dat\:[^\*]+\*\/\s*/g,""))
-          //$("#TaskData").val("/*Dat:" + match[1] + "*/")
-          BrowserAutomationStudio_EditStart(match[1])
+        $("#TaskDontRunWhenRecording").prop('checked', task.get("donotexecuteduringrecord"));
+        $("#editmodal").modal({});
+        const match = code.match(/\/\*Dat\:([^\*]+)\*\//);
+        if (match) {
+          BrowserAutomationStudio_EditStart(match[1]);
         }
       },
 
@@ -5818,11 +5764,7 @@
 
         if (typeof(DontInterrupt) === 'undefined') {
           if (_MainView.isEdit) {
-            if (_ActionsUpdater.model.get('isStarted')) {
-              _MainView.taskeditupdate(Name, Code, donotexecuteduringrecord);
-            } else {
-              _MainView.taskeditcustom(Name, Code, donotexecuteduringrecord);
-            }
+            _MainView.taskeditcustom(Name, Code, donotexecuteduringrecord);
             _ActionsUpdater.model.trigger('toolbox.editSuccess');
             $('#editmodal').modal('hide');
             return;
@@ -6038,7 +5980,6 @@
       } catch (e) {
         _ActionsUpdater.model.trigger(name);
       }
-      console.log('Handle event', name);
     }
 
     function BrowserAutomationStudio_ShowActionsUpdater() {
@@ -6049,9 +5990,8 @@
       _ActionsUpdater.hide();
     }
 
-    function BrowserAutomationStudio_RunningTask()
-    {
-      _GobalModel.set("istaskexecuting",true)
+    function BrowserAutomationStudio_RunningTask() {
+      _GobalModel.set('istaskexecuting', true);
     }
 
     function BrowserAutomationStudio_Parse(Code)
@@ -7016,13 +6956,6 @@
         res += "\n"
         return {index:index,res:res};
     }
-
-
-
-    
-
-    
   </script>
-
 </body>
 </html>

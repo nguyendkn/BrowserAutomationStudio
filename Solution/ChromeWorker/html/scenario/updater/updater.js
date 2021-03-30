@@ -47,7 +47,7 @@
             BrowserAutomationStudio_EditSaveStart();
           });
 
-          if (!_MainView.Edit()) resolve({ skip: true });
+          if (!_MainView.Edit({ disableModal: true })) resolve({ skip: true });
         });
 
         if (!result.skip) {

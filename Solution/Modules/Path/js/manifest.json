@@ -152,6 +152,23 @@
             "name": "project_directory",
             "select": "project_directory_select.js",
             "template": "{{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "get_system_path_code.js",
+                    "name": "get_system_path_code"
+                }
+            ],
+            "description": {
+                "en": "Get system path",
+                "ru": "Получить системный путь"
+            },
+            "interface": "get_system_path_interface.js",
+            "is_element": false,
+            "name": "get_system_path",
+            "select": "get_system_path_select.js",
+            "template": "{{name}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -274,7 +291,30 @@
 		
 		"Get the full path to the project directory.": {"ru": "Получить полный путь к директории проекта."},
 		"Variable in which, after successful execution of the action, the path to the project directory will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан путь к директории проекта."},
-		"This action will return the full path to the project directory. If the script is not compiled, then this action will return the path to the directory in which the open project file is located. And if the script is compiled, then this action will return the path to the root directory of the script.": {"ru":"Это действие вернет полный путь к директории проекта. Если скрипт не скомпилирован, то это действие вернет путь к директории в которой находится открытый файл проекта. А если скрипт скомпилирован, то это действие вернет путь к корневой директории скрипта."}
+		"This action will return the full path to the project directory. If the script is not compiled, then this action will return the path to the directory in which the open project file is located. And if the script is compiled, then this action will return the path to the root directory of the script.": {"ru":"Это действие вернет полный путь к директории проекта. Если скрипт не скомпилирован, то это действие вернет путь к директории в которой находится открытый файл проекта. А если скрипт скомпилирован, то это действие вернет путь к корневой директории скрипта."},
+		
+		"Path name": {"ru": "Имя пути"},
+		"The name of the path that you want to receive.": {"ru": "Имя пути, который вы хотите получить."},
+		"Get the system path with the specified name.": {"ru": "Получить системный путь с указанным именем."},
+		"<b>Computer Name</b> - Computer name. Example: <code>\"ADMIN\"</code>.": {"ru": "<b>Computer Name</b> - Имя компьютера. Пример: <code>\"ADMIN\"</code>."},
+		"<b>User Name</b> - The name of the current user. Example: <code>\"Admin\"</code>.": {"ru": "<b>User Name</b> - Имя текущего пользователя. Пример: <code>\"Admin\"</code>."},
+		"Variable in which, after successful execution of the action, the resulting path will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан полученный путь."},
+		"<b>Music</b> - Path to the \"Music\" directory. Example: <code>\"C:/Users/Admin/Music\"</code>.": {"ru": "<b>Music</b> - Путь к директории \"Музыка\". Пример: <code>\"C:/Users/Admin/Music\"</code>."},
+		"<b>Videos</b> - Path to the \"Videos\" directory. Example: <code>\"C:/Users/Admin/Videos\"</code>.": {"ru": "<b>Videos</b> - Путь к директории \"Видео\". Пример: <code>\"C:/Users/Admin/Videos\"</code>."},
+		"<b>System Root</b> - The path to the Windows root directory. Example: <code>\"C:/Windows\"</code>.": {"ru": "<b>System Root</b> - Путь к корневой директории Windows. Пример: <code>\"C:/Windows\"</code>."},
+		"<b>Desktop</b> - Path to the \"Desktop\" directory. Example: <code>\"C:/Users/Admin/Desktop\"</code>.": {"ru": "<b>Desktop</b> - Путь к директории \"Рабочий стол\". Пример: <code>\"C:/Users/Admin/Desktop\"</code>."},
+		"<b>Pictures</b> - Path to the \"Pictures\" directory. Example: <code>\"C:/Users/Admin/Pictures\"</code>.": {"ru": "<b>Pictures</b> - Путь к директории \"Изображения\". Пример: <code>\"C:/Users/Admin/Pictures\"</code>."},
+		"<b>Downloads</b> - Path to the \"Downloads\" directory. Example: <code>\"C:/Users/Admin/Downloads\"</code>.": {"ru": "<b>Downloads</b> - Путь к директории \"Загрузки\". Пример: <code>\"C:/Users/Admin/Downloads\"</code>."},
+		"<b>User Profile</b> - The path to the profile of the current user. Example: <code>\"C:/Users/Admin\"</code>.": {"ru": "<b>User Profile</b> - Путь к профилю текущего пользователя. Пример: <code>\"C:/Users/Admin\"</code>."},
+		"<b>Program Files</b> - Path to the \"Program Files\" directory. Example: <code>\"C:/Program Files\"</code>.": {"ru": "<b>Program Files</b> - Путь к директории \"Program Files\". Пример: <code>\"C:/Program Files\"</code>."},
+		"<b>Temp</b> - Path to the temporary directory. Example: <code>\"C:/Users/Admin/AppData/Local/Temp\"</code>.": {"ru": "<b>Temp</b> - Путь к временной директории. Пример: <code>\"C:/Users/Admin/AppData/Local/Temp\"</code>."},
+		"<b>Documents</b> - Path to the \"Documents\" directory. Example: <code>\"C:/Users/Admin/Documents\"</code>.": {"ru": "<b>Documents</b> - Путь к директории \"Документы\". Пример: <code>\"C:/Users/Admin/Documents\"</code>."},
+		"<b>Favorites</b> - Path to the \"Favorites\" directory. Example: <code>\"C:/Users/Admin/Favorites\"</code>.": {"ru": "<b>Favorites</b> - Путь к директории \"Избранное\". Пример: <code>\"C:/Users/Admin/Favorites\"</code>."},
+		"<b>Windows Directory</b> - The directory where Windows is installed. Example: <code>\"C:/Windows\"</code>.": {"ru": "<b>Windows Directory</b> - Директория, в которую установлена Windows. Пример: <code>\"C:/Windows\"</code>."},
+		"<b>System Drive</b> - The drive where the Windows root directory is located. Example: <code>\"C:\"</code>.": {"ru": "<b>System Drive</b> - Диск, на котором расположен корневая директория Windows. Пример: <code>\"C:\"</code>."},
+		"<b>App Data</b> - The default location for app data. Example: <code>\"C:/Users/Admin/AppData/Roaming\"</code>.": {"ru": "<b>App Data</b> - Используемое по умолчанию размещение данных приложений. Пример: <code>\"C:/Users/Admin/AppData/Roaming\"</code>."},
+		"<b>Local App Data</b> - The default local location for application data. Example: <code>\"C:/Users/Admin/AppData/Local\"</code>.": {"ru": "<b>Local App Data</b> - Используемое по умолчанию локальное размещение данных приложений. Пример: <code>\"C:/Users/Admin/AppData/Local\"</code>."},
+		"<b>Program Files (x86)</b> - The path to the \"Program Files (x86)\" directory on 64-bit systems for x86 architecture applications. Example: <code>\"C:/Program Files (x86)\"</code>.": {"ru": "<b>Program Files (x86)</b> - Путь к директории \"Program Files (x86)\" в 64-разрядных системах для приложений архитектуры x86. Пример: <code>\"C:/Program Files (x86)\"</code>."}
     },
     "major_version": 1,
     "minor_version": 0,

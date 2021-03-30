@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<%= _.template($('#input_constructor').html())({id:"path", description: tr("Path"), default_selector: "string", value_string: "", help: {description: tr("The path that need to normalize."),examples:[{code:"C:\\temp\\\\foo\\bar\\..\\"},{code:"C:////temp\\\\/\\/\\/foo/bar"},{code:"/foo/bar//baz/asdf/quux/.."}]} }) %>
+<%= _.template($('#input_constructor').html())({id:"path", description: tr("Path"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("The path that need to normalize."),examples:[{code:"C:\\temp\\\\foo\\bar\\..\\"},{code:"C:////temp\\\\/\\/\\/foo/bar"},{code:"/foo/bar//baz/asdf/quux/.."}]} }) %>
 <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "NORMALIZED_PATH", help: {description: tr("Variable in which, after successful execution of the action, the normalized path will be written."), examples:[{code:"C:/temp/foo/",description:tr("Path") + ": <code style=\"font-size:85%\">C:\\temp\\\\foo\\bar\\..\\</code>"},{code:"C:/temp/foo/bar",description:tr("Path") + ": <code style=\"font-size:85%\">C:////temp\\\\/\\/\\/foo/bar</code>"},{code:"/foo/bar/baz/asdf",description:tr("Path") + ": <code style=\"font-size:85%\">/foo/bar//baz/asdf/quux/..</code>"}]} }) %>
 </div>
 <div class="tooltipinternal">

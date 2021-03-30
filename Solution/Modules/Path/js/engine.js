@@ -781,3 +781,65 @@ function project_directory(){
 	};
 	return end===-1 ? _path.dirname(path) : path.slice(0, end);
 };
+
+function _get_system_data(){
+	RANDOM_FILE = "temp_" + rand() + ".bat";
+
+	native("filesystem","writefile",JSON.stringify({path:RANDOM_FILE,value:"SET",base64:false,append:false}));
+
+	native_async("processmanager","start",JSON.stringify({location:RANDOM_FILE,working_folder:"",waitfinish:true,arguments:"",version:2}))!
+
+	var data_list = base64_decode(_result().split(",")[0]).split('\r\n').slice(2,-1);
+
+	sleep(1000)!
+
+	native("filesystem","removefile",RANDOM_FILE);
+	
+	SYSTEM_ENV_DATA = {};
+	
+	for(var i = 0; i < data_list.length; i++){
+		if(data_list[i].indexOf('=') > -1){
+			var data = data_list[i].split('=');
+			var name = data[0];
+			var value = data[1];
+			SYSTEM_ENV_DATA[name] = value.indexOf("\\") > -1 ? _path.normalize(value) : value;
+		};
+	};
+	
+	if(SYSTEM_ENV_DATA["USERPROFILE"]){
+		["Desktop","Downloads","Documents","Pictures","Videos","Music","Favorites"].forEach(function(e){SYSTEM_ENV_DATA[e] = _path.join(SYSTEM_ENV_DATA["USERPROFILE"], e)});
+	};
+};
+
+function _get_system_path(){
+	var name = _function_argument("name");
+	
+	_if(typeof SYSTEM_ENV_DATA=="undefined",function(){
+		_call_function(_get_system_data,{})!
+		_result_function();
+	})!
+	
+	var labels = {
+		"App Data":"APPDATA",
+		"Local App Data": "LOCALAPPDATA",
+		"Program Files":"ProgramFiles",
+		"Program Files (x86)":"ProgramFiles(x86)",
+		"Program Data":"ProgramData",
+		"Public":"PUBLIC",
+		"System Drive":"SystemDrive",
+		"System Root":"SystemRoot",
+		"Windows Directory":"windir",
+		"Temp":"TEMP",
+		"User Name":"USERNAME",
+		"User Profile":"USERPROFILE",
+		"Computer Name":"COMPUTERNAME"
+	};
+	
+	var label = labels[name] || name;
+	
+	if(SYSTEM_ENV_DATA[label]){
+		_function_return(SYSTEM_ENV_DATA[label]);
+	}else{
+		fail(_K=="ru" ? 'Не удалось найти путь "' + name + '" в системных данных.' : 'Could not find path "' + name + '" in system data.');
+	};
+};

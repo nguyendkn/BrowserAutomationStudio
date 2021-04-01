@@ -77,6 +77,8 @@ int LastMousePositionRawY = 0;
 int ElementTweakUpOrDownUsed = 0;
 bool ElementTweakReturnUsed = false;
 UINT uFindReplaceMsg = 0;
+std::string PidGlobal;
+std::string KeyGlobal;
 
 
 void TerminateOnCloseMutex(const std::string& Id, bool DoSleep, bool DoFlush)
@@ -1747,6 +1749,11 @@ LRESULT __stdcall KeyHookCallback(int nCode, WPARAM wParam, LPARAM lParam)
     return CallNextHookEx(KeyHook, nCode, wParam, lParam);
 }
 
+void OnBrowserCreated()
+{
+    Client->Start(KeyGlobal,PidGlobal);
+}
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     LPSTR lpCmdLine, int nCmdShow)
@@ -1966,6 +1973,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->OnAddressChanged.push_back(std::bind(&MainApp::OnAddressChanged,app.get(),_1));
     Data->Connector->OnNativeDialog.push_back(std::bind(&MainApp::OnNativeDialog,app.get(),_1));
     Data->Connector->OnDownloadStarted.push_back(std::bind(&MainApp::OnDownloadStarted,app.get(),_1));
+    Data->Connector->OnBrowserCreated.push_back(OnBrowserCreated);
     Data->MainRemoteDebuggingPort = 10000 + rand()%10000;
     std::shared_ptr<IWebSocketClientFactory> WebScoketFactory = std::make_shared<RawCppWebSocketClientFactory>();
     //WebScoketFactory->SetLogPath(Settings.Profile() + std::wstring(L"/cdp.txt"));
@@ -2035,7 +2043,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     WORKER_LOG(Key);
     Arguments.clear();
 
-    Client->Start(Key,Pid);
+    KeyGlobal = Key;
+    PidGlobal = Pid;
     Layout->EventLoadNoDataPage.push_back(std::bind(&MainApp::LoadNoDataCallback,app.get()));
     Parser->EventLoad.push_back(std::bind(&MainApp::LoadCallback,app.get(),_1));
     Parser->EventLoad2.push_back(std::bind(&MainApp::Load2Callback,app.get(),_1,_2,_3));

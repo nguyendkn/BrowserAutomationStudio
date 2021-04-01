@@ -29,7 +29,7 @@ void settings::Init()
     toolbox_height = 300;
     scenario_width = 500;
     zoom = 100;
-    max_browser_start_simultaneously = 1;
+    max_browser_start_simultaneously = 3;
     min_free_memory_to_start_browser = 500;
     min_unused_cpu = 20;
     maximized = false;

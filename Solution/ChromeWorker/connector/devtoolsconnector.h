@@ -60,6 +60,8 @@ class DevToolsConnector
     }ConnectionState = NotStarted;
     std::string Endpoint;
 
+    bool WasBrowserCreationEvent = false;
+
     //Connection methods
 
     void TryToConnect();
@@ -114,6 +116,7 @@ class DevToolsConnector
         std::vector<std::function<void(std::string)> > OnAddressChanged;
         std::vector<std::function<void(std::string)> > OnNativeDialog;
         std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
+        std::vector<std::function<void()> > OnBrowserCreated;
 
 
         char* GetPaintData();

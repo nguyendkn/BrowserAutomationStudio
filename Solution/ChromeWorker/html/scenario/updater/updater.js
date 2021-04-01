@@ -57,7 +57,7 @@
             this.set('errorsCount', this.get('errorsCount') + 1);
           }
 
-          if (result.error) this.trigger('log', result.message);
+          if (result.error) this.trigger('log', { message: result.message, id });
         }
 
         if (!this.get('isStarted')) break;

@@ -707,10 +707,10 @@
                   <ul class="dropdown-menu input-field-dropdown dropdown-align dropdown-black" data-toggle="dropdown" data-use-hotkeys="true">
                     <% if(typeof(variants) != "undefined") { %>
                       <% for(var i = 0;i<variants.length;i++) { %>
-					    <% var variant = variants[i] %>
-						<% var variant_value = typeof(variant) != "string" ? variant.value : variant.split('<br/>')[0] %>
-						<% var variant_type = (typeof(variant) != "string" ? variant.type : "") || "" %>
-						<% var variant_description = (typeof(variant) != "string" ? variant.description : variant.split('<br/>').slice(1).join('<br/>')) || "" %>
+					    <% var variant = typeof(variants[i]) == "object" ? variants[i] : variants[i].toString() %>
+						<% var variant_value = typeof(variant) == "object" ? variant.value : variant.split('<br/>')[0] %>
+						<% var variant_type = (typeof(variant) == "object" ? variant.type : "") || "" %>
+						<% var variant_description = (typeof(variant) == "object" ? variant.description : variant.split('<br/>').slice(1).join('<br/>')) || "" %>
                         <li>
                           <a tabindex="-1" href="#" data-toggle="modal"  data-variant="<%= variant_value %>" data-variant-type="<%= variant_type %>" data-result="<%= id %>" class="variant" >
                             <span><%= variant_value %><% if (variant_description!=="") { %><br/><% if (variant_description.indexOf("color:gray;font-size:small") < 0) { %><span style='color:gray;font-size:small'><% } %><%= variant_description %><% if (variant_description.indexOf("color:gray;font-size:small") < 0) { %></span><% } %><% } %></span>

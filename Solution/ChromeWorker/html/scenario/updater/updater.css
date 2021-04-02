@@ -1,3 +1,7 @@
+/*********************************
+ * Actions updater header styles *
+ *********************************/
+
 .actions-updater-header > h1 + h2 {
   margin-top: 3px;
 }
@@ -75,14 +79,6 @@
   display: flex;
 }
 
-.actions-updater-log {
-  background: #3d3f42;
-  overflow-y: visible;
-  overflow-x: hidden;
-  padding: 24px 16px;
-  flex: 1;
-}
-
 .actions-updater {
   flex-direction: column;
   background: #ffffff;
@@ -94,6 +90,44 @@
   width: 100%;
   left: 0;
   top: 0;
+}
+
+/******************************
+ * Actions updater log styles *
+ ******************************/
+
+.actions-updater-log-message > span:first-child {
+  opacity: 1.0;
+}
+
+.actions-updater-log-message > span:last-child {
+  opacity: 0.5;
+}
+
+.actions-updater-log-message > span + span {
+  margin-left: 9px;
+}
+
+.actions-updater-log > div + div {
+  margin-top: 8px;
+}
+
+.actions-updater-log-message {
+  letter-spacing: -0.2px;
+  font-weight: normal;
+  margin-bottom: 8px;
+  line-height: 17px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.actions-updater-log {
+  max-height: -webkit-fill-available;
+  background: #3d3f42;
+  overflow-y: visible;
+  overflow-x: hidden;
+  padding: 24px 16px;
+  flex: 1;
 }
 
 /*********************************

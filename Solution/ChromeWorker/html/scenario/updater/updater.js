@@ -19,7 +19,7 @@
         }
 
         return false;
-      }).map(({ index }) => ({ id: index, dat: _TaskCollection.at(index).dat() })));
+      }).map(({ index, id }) => ({ id, index, dat: _TaskCollection.at(index).dat() })));
     },
 
     async startUpdate() {
@@ -27,8 +27,8 @@
       this.set('successCount', 0);
       this.set('errorsCount', 0);
 
-      for (const { dat, id } of this.get('tasks')) {
-        _MainView.currentTargetId = id;
+      for (const { index, dat, id } of this.get('tasks')) {
+        _MainView.currentTargetId = index;
 
         if (_A[dat['s']]) {
           const result = await new Promise((resolve) => {

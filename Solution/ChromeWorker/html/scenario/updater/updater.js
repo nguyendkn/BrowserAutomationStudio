@@ -90,7 +90,7 @@
           <option class="actions-updater-select-option" value="current"><%= tr('All actions in the current function') %></option>
           <option class="actions-updater-select-option" value="selected"><%= tr('Only the selected actions') %></option>
         </select>
-        <div class="actions-updater-log"></div>
+        <div id="actionsUpdaterLog" class="actions-updater-log"></div>
         <div class="actions-updater-stats">
           <span class="actions-updater-stats-item">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -131,8 +131,21 @@
         .on('change:isStarted', (_, isStarted) => this.$('#actionsUpdaterSelect').prop('disabled', isStarted))
         .on('change:successCount', (_, success) => this.$('#actionsUpdaterSuccessCount').text(success))
         .on('change:errorsCount', (_, errors) => this.$('#actionsUpdaterErrorsCount').text(errors))
-        .on('change:tasks', (_, { length }) => this.$('#actionsUpdaterCounter').text(length));
+        .on('change:tasks', (_, { length }) => this.$('#actionsUpdaterCounter').text(length))
+        .on('log', (data) => this.log(data));
       _TaskCollection.bind('all', () => this.$('#actionsUpdaterSelect').trigger('change'));
+    },
+
+    log: function (data) {
+      if (data.message) {
+        this.$('#actionsUpdaterLog').append(
+          $('<div>', { 'class': 'actions-updater-log-message' }).append($('<span>', {
+            text: `[${data.id}]:`
+          })).append($('<span>', {
+            text: data.message
+          }))
+        );
+      }
     },
 
     render: function () {

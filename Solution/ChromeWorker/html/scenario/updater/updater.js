@@ -77,6 +77,61 @@
     }
   });
 
+  const ActionsUpdaterModal = Backbone.View.extend({
+    template: _.template(/*html*/`
+      <div class="modal-dialog" role="document">
+        <div class="">
+          <div class="">
+            <h4 class=""><%= tr('The BAS version of the project is different from the current BAS version, update the project actions?') %></h4>
+          </div>
+          <div class="">
+            <div><%= tr('The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to open and save the action.') %></div>
+            <div><%= tr('Actions that are not updated may not work correctly or even cause an error.') %></div>
+            <div><%= tr('This tool allows you to automatically update all the actions in the project.') %></div>
+            <div><%= tr('You can always open it in the context menu.') %></div>
+          </div>
+          <div class="">
+            <button type="button" id="actionsUpdaterModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('OK') %></button>
+            <button type="button" id="actionsUpdaterModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
+          </div>
+        </div>
+      </div>
+    `),
+
+    id: 'actionsUpdaterModal',
+
+    className: 'modal',
+
+    tagName: 'div',
+
+    events: {
+      'click #actionsUpdaterModalAccept': function () {
+
+      },
+      'click #actionsUpdaterModalCancel': function () {
+
+      }
+    },
+
+    render: function () {
+      if (this.rendered) return this;
+      this.$el.html(this.template()).modal({ show: false });
+      return this;
+    },
+
+    show: function () {
+      if (this.$el.is(':visible')) return;
+      this.render().$el.modal('show');
+      return this;
+    },
+
+    hide: function () {
+      if (this.$el.is(':hidden')) return;
+      this.render().$el.modal('hide');
+      return this;
+    }
+  });
+
   const ActionsUpdaterView = Backbone.View.extend({
     template: _.template(/*html*/`
       <div class="actions-updater-header">
@@ -127,6 +182,7 @@
     className: 'actions-updater',
 
     initialize: function () {
+      this.modal = new ActionsUpdaterModal();
       this.model = new ActionsUpdaterModel()
         .on('change:isStarted', (_, isStarted) => this.$('#actionsUpdaterSelect').prop('disabled', isStarted))
         .on('change:successCount', (_, success) => this.$('#actionsUpdaterSuccessCount').text(success))

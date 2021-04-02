@@ -1116,6 +1116,7 @@ QString MainWindow::OpenFromFile(const QString& fileName)
     ConnectionPort = loader.GetConnectionPort();
     ConnectionLogin = loader.GetConnectionLogin();
     ConnectionPassword = loader.GetConnectionPassword();
+    ScriptEngineVersion = loader.GetEngineVersion();
 
     SetIsDirty(!loader.GetSchema().isEmpty() || _DataBaseConnector->HasDatabase());
 
@@ -1658,14 +1659,13 @@ void MainWindow::StopAction()
 void MainWindow::SendCode()
 {
     QString Code = TextEditor->GetText();
+    VersionInfo info;
     if(Code.isEmpty())
         Code = " ";
 
-    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun);
+    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun, ScriptEngineVersion, info.VersionString());
     _RecordProcessCommunication->SendResources(LastResourceList);
     _RecordProcessCommunication->SetWindow(QString::number(ui->centralWidget->winId()));
-
-
 }
 
 void MainWindow::RecordWindowAttached()

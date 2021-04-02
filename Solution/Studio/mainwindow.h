@@ -113,6 +113,7 @@ protected:
     QString ConnectionPort;
     QString ConnectionLogin;
     QString ConnectionPassword;
+    QString ScriptEngineVersion;
     bool IsDatabaseDirty;
     HttpSniffer *_HttpSniffer = 0;
 

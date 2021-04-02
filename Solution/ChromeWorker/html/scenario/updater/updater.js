@@ -19,7 +19,7 @@
         }
 
         return false;
-      }).map(({ index }) => index));
+      }).map(({ index }) => ({ id: index, dat: _TaskCollection.at(index).dat() })));
     },
 
     async startUpdate() {
@@ -27,37 +27,42 @@
       this.set('successCount', 0);
       this.set('errorsCount', 0);
 
-      for (const id of this.get('tasks')) {
+      for (const { dat, id } of this.get('tasks')) {
         _MainView.currentTargetId = id;
 
-        const result = await new Promise((resolve) => {
-          this.on('toolbox.editStarted', () => {
-            this.off('toolbox.editStarted');
+        if (_A[dat['s']]) {
+          const result = await new Promise((resolve) => {
+            this.on('toolbox.editStarted', () => {
+              this.off('toolbox.editStarted');
 
-            this.on('toolbox.editSuccess', () => {
-              this.off('toolbox.editSuccess');
-              resolve({ error: false, message: null });
+              this.on('toolbox.editSuccess', () => {
+                this.off('toolbox.editSuccess');
+                resolve({ error: false, message: null });
+              });
+
+              this.on('toolbox.editFail', (err) => {
+                this.off('toolbox.editFail');
+                resolve({ error: true, message: err });
+              });
+
+              BrowserAutomationStudio_EditSaveStart();
             });
 
-            this.on('toolbox.editFail', (err) => {
-              this.off('toolbox.editFail');
-              resolve({ error: true, message: err });
-            });
-
-            BrowserAutomationStudio_EditSaveStart();
+            if (!_MainView.Edit({ disableModal: true })) resolve({ skip: true });
           });
 
-          if (!_MainView.Edit({ disableModal: true })) resolve({ skip: true });
-        });
+          if (!result.skip) {
+            if (!result.error) {
+              this.set('successCount', this.get('successCount') + 1);
+            } else {
+              this.set('errorsCount', this.get('errorsCount') + 1);
+            }
 
-        if (!result.skip) {
-          if (!result.error) {
-            this.set('successCount', this.get('successCount') + 1);
-          } else {
-            this.set('errorsCount', this.get('errorsCount') + 1);
+            this.trigger('log', { message: result.message, id });
           }
-
-          if (result.error) this.trigger('log', { message: result.message, id });
+        } else {
+          this.trigger('log', { message: tr('The module containing this action is damaged or disabled.'), id });
+          this.set('errorsCount', this.get('errorsCount') + 1);
         }
 
         if (!this.get('isStarted')) break;

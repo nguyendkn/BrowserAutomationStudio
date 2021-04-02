@@ -106,28 +106,51 @@
 
     events: {
       'click #actionsUpdaterModalAccept': function () {
-
+        this.trigger('accept');
+        this.hide();
       },
       'click #actionsUpdaterModalCancel': function () {
-
+        this.trigger('cancel');
+        this.hide();
       }
     },
 
-    render: function () {
+    initialize() {
+      $(document).ready(() => {
+        function compareVersion(v1, v2) {
+          v1 = v1.split('.');
+          v2 = v2.split('.');
+          for (let i = 0; i < Math.min(v1.length, v2.length); ++i) {
+            v1[i] = parseInt(v1[i], 10);
+            v2[i] = parseInt(v2[i], 10);
+            if (v1[i] > v2[i]) return 1;
+            if (v1[i] < v2[i]) return -1;
+          }
+          return v1.length === v2.length ? 0 : (v1.length < v2.length ? -1 : 1);
+        }
+
+        if (compareVersion(_ApplicationEngineVersion, _ScriptEngineVersion) > 0) this.show();
+      });
+    },
+
+    render() {
       if (this.rendered) return this;
       this.$el.html(this.template()).modal({ show: false });
+      this.rendered = true;
       return this;
     },
 
-    show: function () {
-      if (this.$el.is(':visible')) return;
-      this.render().$el.modal('show');
+    show() {
+      if (!this.$el.is(':visible')) {
+        this.render().$el.modal('show');
+      }
       return this;
     },
 
-    hide: function () {
-      if (this.$el.is(':hidden')) return;
-      this.render().$el.modal('hide');
+    hide() {
+      if (!this.$el.is(':hidden')) {
+        this.render().$el.modal('hide');
+      }
       return this;
     }
   });
@@ -182,13 +205,15 @@
     className: 'actions-updater',
 
     initialize: function () {
-      this.modal = new ActionsUpdaterModal();
       this.model = new ActionsUpdaterModel()
         .on('change:isStarted', (_, isStarted) => this.$('#actionsUpdaterSelect').prop('disabled', isStarted))
         .on('change:successCount', (_, success) => this.$('#actionsUpdaterSuccessCount').text(success))
         .on('change:errorsCount', (_, errors) => this.$('#actionsUpdaterErrorsCount').text(errors))
         .on('change:tasks', (_, { length }) => this.$('#actionsUpdaterCounter').text(length))
         .on('log', (data) => this.log(data));
+      this.modal = new ActionsUpdaterModal()
+        .on('accept', () => this.show())
+        .on('cancel', () => this.hide());
       _TaskCollection.bind('all', () => this.$('#actionsUpdaterSelect').trigger('change'));
     },
 
@@ -213,20 +238,23 @@
         container: false,
         width: false
       });
+      this.rendered = true;
       return this;
     },
 
     show: function () {
-      if (this.$el.is(':visible')) return;
-      $('body').toggleClass('overflow-hidden');
-      this.render().$el.show();
+      if (!this.$el.is(':visible')) {
+        $('body').toggleClass('overflow-hidden');
+        this.render().$el.show();
+      }
       return this;
     },
 
     hide: function () {
-      if (this.$el.is(':hidden')) return;
-      $('body').toggleClass('overflow-hidden');
-      this.render().$el.hide();
+      if (!this.$el.is(':hidden')) {
+        $('body').toggleClass('overflow-hidden');
+        this.render().$el.hide();
+      }
       return this;
     },
 

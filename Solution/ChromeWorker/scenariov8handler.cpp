@@ -344,6 +344,13 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         {
             IsClipboardGetRequest = true;
         }
+    }else if(name == std::string("BrowserAutomationStudio_HighlightMenuItem"))
+    {
+        if (arguments->GetSize() == 1)
+        {
+            HighlightMenuItem = arguments->GetString(0);
+            IsHightlightMenuItem = true;
+        }
     }
 
     return true;
@@ -475,7 +482,6 @@ bool ScenarioV8Handler::GetIsSuccessNumberEditStart()
     bool res = IsSuccessNumberEditStart;
     IsSuccessNumberEditStart = false;
     return res;
-
 }
 
 bool ScenarioV8Handler::GetIsFailNumberEditStart()
@@ -483,5 +489,14 @@ bool ScenarioV8Handler::GetIsFailNumberEditStart()
     bool res = IsFailNumberEditStart;
     IsFailNumberEditStart = false;
     return res;
+}
 
+std::pair<std::string, bool> ScenarioV8Handler::GetIsHighlightMenuItem()
+{
+    std::pair<std::string, bool> r;
+    r.second = IsHightlightMenuItem;
+    IsHightlightMenuItem = false;
+    r.first = HighlightMenuItem;
+    HighlightMenuItem.clear();
+    return r;
 }

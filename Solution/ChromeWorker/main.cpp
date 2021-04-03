@@ -157,6 +157,60 @@ std::string GetUrl()
     return ws2s(Url);
 }
 
+void CreateHMenu()
+{
+    if(hMenu)
+    {
+        DestroyMenu(hMenu);
+        hMenu = 0;
+    }
+
+    hMenu = CreatePopupMenu();
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowScenario, Translate::Tr(L"Script editor").c_str());
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowDevtools, Translate::Tr(L"Chrome developer tools").c_str());
+    std::wstring DetectorText = Translate::Tr(L"Detect site fingerprinting activities");
+    DetectorText += std::wstring(L" (");
+    DetectorText += std::to_wstring(Layout->GetFingerprintDetectorNumber());
+    DetectorText += std::wstring(L")");
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowFingerprintDetector, DetectorText.c_str());
+    AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDRecordHttpRequests, Translate::Tr(L"Http request recorder").c_str());
+    AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowUpdater, Translate::Tr(L"Update project actions").c_str());
+
+    if(app->GetData()->IsRecordHttp)
+        CheckMenuItem(hMenu, IDRecordHttpRequests, MF_CHECKED);
+    else
+        CheckMenuItem(hMenu, IDRecordHttpRequests, MF_UNCHECKED);
+
+    //SetMenuItemBitmaps(hMenu, 1, MF_BITMAP|MF_BYPOSITION, Layout->ButtonDevToolsBitmap, Layout->ButtonDevToolsBitmapGray );
+
+    POINT p;
+    p.x = -4;
+    p.y = 26;
+    ClientToScreen(Layout->HButtonMenu,&p);
+    TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
+    HiliteMenuItem(NULL, hMenu, 1, MF_BYPOSITION | MF_HILITE);
+    if(hMenu)
+    {
+        DestroyMenu(hMenu);
+        hMenu = 0;
+    }
+}
+
+void HighlightHMenu(const std::string& Item)
+{
+    CreateHMenu();
+    if (Item == std::string("ShowScenario"))
+    {
+        HiliteMenuItem(NULL, hMenu, IDShowScenario, MF_BYCOMMAND | MF_HILITE);
+    }
+    if (Item == std::string("ShowUpdater"))
+    {
+        HiliteMenuItem(NULL, hMenu, IDShowUpdater, MF_BYCOMMAND | MF_HILITE);
+    }
+}
+
 void ProcessMenu(const std::string& Command)
 {
     Layout->HideCentralBrowser();
@@ -1247,44 +1301,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
                     case IDButtonMenu:
                     {
-
-                        if(hMenu)
-                        {
-                            DestroyMenu(hMenu);
-                            hMenu = 0;
-                        }
-
-                        hMenu = CreatePopupMenu();
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowScenario, Translate::Tr(L"Script editor").c_str());
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowDevtools, Translate::Tr(L"Chrome developer tools").c_str());
-                        std::wstring DetectorText = Translate::Tr(L"Detect site fingerprinting activities");
-                        DetectorText += std::wstring(L" (");
-                        DetectorText += std::to_wstring(Layout->GetFingerprintDetectorNumber());
-                        DetectorText += std::wstring(L")");
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowFingerprintDetector, DetectorText.c_str());
-                        AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDRecordHttpRequests, Translate::Tr(L"Http request recorder").c_str());
-                        AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowUpdater, Translate::Tr(L"Update project actions").c_str());
-
-                        if(app->GetData()->IsRecordHttp)
-                            CheckMenuItem(hMenu, IDRecordHttpRequests, MF_CHECKED);
-                        else
-                            CheckMenuItem(hMenu, IDRecordHttpRequests, MF_UNCHECKED);
-
-                        //SetMenuItemBitmaps(hMenu, 1, MF_BITMAP|MF_BYPOSITION, Layout->ButtonDevToolsBitmap, Layout->ButtonDevToolsBitmapGray );
-
-                        POINT p;
-                        p.x = -4;
-                        p.y = 26;
-                        ClientToScreen(Layout->HButtonMenu,&p);
-                        TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
-                        if(hMenu)
-                        {
-                            DestroyMenu(hMenu);
-                            hMenu = 0;
-                        }
-
+                        CreateHMenu();
                         return 0;
                     }
                     break;
@@ -2147,7 +2164,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventFindUrlByMask.push_back(std::bind(&MainApp::FindUrlByMaskCallback,app.get(),_1));
 
     app->EventSendTextResponce.push_back(std::bind(&PipesClient::Write,Client,_1));
-
+    app->EventHighlightMenu.push_back(HighlightHMenu);
 
     WORKER_LOG("Start Main Loop");
 

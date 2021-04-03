@@ -3717,6 +3717,9 @@ void MainApp::HandleScenarioBrowserEvents()
     if(res10.second && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
+    std::pair<std::string, bool> res11 = scenariov8handler->GetIsHighlightMenuItem();
+    if(res11.second) for (auto f : EventHighlightMenu) f(res11.first);
+
     ScenarioV8Handler::RestartType res3 = scenariov8handler->GetNeedRestart();
 
     if(res3 == ScenarioV8Handler::Restart)

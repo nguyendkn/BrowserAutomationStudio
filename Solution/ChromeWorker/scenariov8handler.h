@@ -73,6 +73,8 @@ private:
     std::string DetectorData;
     bool ChangedDetectorData;
 
+    std::string HighlightMenuItem;
+    bool IsHightlightMenuItem;
 
     std::mutex mut_threadnumbereditstart;
     std::mutex mut_successnumbereditstart;
@@ -124,6 +126,7 @@ public:
     std::pair<std::string, bool> GetLoadUrl();
     std::pair<bool, bool> GetIsInsideElementLoop();
 
+    std::pair<std::string, bool> GetIsHighlightMenuItem();
 
     bool GetClipboardGetRequest();
 

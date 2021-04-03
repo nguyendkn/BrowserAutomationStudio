@@ -392,6 +392,7 @@ public:
 
     //Events
     std::vector<std::function<void(const std::string&)> > EventSendTextResponce;
+    std::vector<std::function<void(const std::string&)> > EventHighlightMenu;
 
     void Hide();
     void Terminate();

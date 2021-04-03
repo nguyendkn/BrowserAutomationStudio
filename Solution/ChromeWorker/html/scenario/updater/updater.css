@@ -270,3 +270,16 @@
   font-size: 14px;
   color: #606060;
 }
+
+.actions-updater-modal-link {
+  text-decoration: underline;
+  color: #9d996c;
+}
+
+.actions-updater-modal-link:hover {
+  color: rgba(157, 153, 108, 0.8);
+}
+
+.actions-updater-modal-link:focus {
+  color: rgba(157, 153, 108, 0.8);
+}

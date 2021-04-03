@@ -218,3 +218,55 @@
   left: 0;
   top: 0;
 }
+
+/****************
+ * Modal styles *
+ ****************/
+
+.actions-updater-modal-text + .actions-updater-modal-text {
+  margin-left: 0px;
+}
+
+.actions-updater-modal-text + .actions-updater-modal-text {
+  margin-top: 12px;
+}
+
+.actions-updater-modal-content {
+  background-color: #ffffff;
+  border: 1px solid #f7f7f8;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  position: relative;
+  padding: 32px 24px;
+  user-select: none;
+}
+
+.actions-updater-modal-header {
+  line-height: 18px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #606060;
+}
+
+.actions-updater-modal-footer {
+  justify-content: space-between;
+  flex-direction: row;
+  display: flex;
+}
+
+.actions-updater-modal-body {
+  border: 1px dashed #606060;
+  background: #f7f7f8;
+  margin: 27px 0 36px;
+  padding: 16px 20px;
+}
+
+.actions-updater-modal-text {
+  background: url(../icons/angle.svg) no-repeat;
+  letter-spacing: -0.2px;
+  padding: 0 0 0 30px;
+  line-height: 18px;
+  font-weight: 400;
+  font-size: 14px;
+  color: #606060;
+}

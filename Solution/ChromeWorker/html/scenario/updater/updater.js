@@ -80,17 +80,17 @@
   const ActionsUpdaterModal = Backbone.View.extend({
     template: _.template(/*html*/`
       <div class="modal-dialog" role="document">
-        <div class="">
-          <div class="">
+        <div class="actions-updater-modal-content">
+          <div class="actions-updater-modal-header">
             <h4 class=""><%= tr('The BAS version of the project is different from the current BAS version, update the project actions?') %></h4>
           </div>
-          <div class="">
-            <div><%= tr('The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to open and save the action.') %></div>
-            <div><%= tr('Actions that are not updated may not work correctly or even cause an error.') %></div>
-            <div><%= tr('This tool allows you to automatically update all the actions in the project.') %></div>
-            <div><%= tr('You can always open it in the context menu.') %></div>
+          <div class="actions-updater-modal-body">
+            <div class="actions-updater-modal-text"><%= tr('The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to open and save the action.') %></div>
+            <div class="actions-updater-modal-text"><%= tr('Actions that are not updated may not work correctly or even cause an error.') %></div>
+            <div class="actions-updater-modal-text"><%= tr('This tool allows you to automatically update all the actions in the project.') %></div>
+            <div class="actions-updater-modal-text"><%= tr('You can always open it in the context menu.') %></div>
           </div>
-          <div class="">
+          <div class="actions-updater-modal-footer">
             <button type="button" id="actionsUpdaterModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('OK') %></button>
             <button type="button" id="actionsUpdaterModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
           </div>

@@ -1816,6 +1816,61 @@ mark
 }
 
 /************************
+ * Global select styles *
+ ************************/
+
+.bootstrap-select .dropdown-menu > li.selected > a::after {
+  visibility: visible;
+}
+
+.bootstrap-select .dropdown-menu > li > a::after {
+  background: url(../icons/check.svg) no-repeat;
+  visibility: hidden;
+  cursor: pointer;
+  display: block;
+  content: " ";
+  height: 16px;
+  width: 16px;
+}
+
+.bootstrap-select .dropdown-menu li a span.text {
+  padding-right: inherit;
+  display: inline-block;
+}
+
+.bootstrap-select.open > .dropdown-toggle:after {
+  content: "\f106";
+}
+
+.bootstrap-select > .dropdown-toggle::after {
+  font-family: FontAwesome;
+  text-align: center;
+  line-height: 16px;
+  content: "\f107";
+  font-size: 16px;
+  min-width: 16px;
+  height: 16px;
+  width: 16px;
+}
+
+.bootstrap-select .dropdown-toggle:focus {
+  outline: 0 !important;
+}
+
+.bootstrap-select .dropdown-toggle:hover {
+  outline: 0 !important;
+}
+
+.bootstrap-select .dropdown-menu {
+  min-width: 100% !important;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+/************************
  * Custom button styles *
  ************************/
 

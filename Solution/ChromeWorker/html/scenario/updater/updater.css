@@ -1,6 +1,6 @@
-/*********************************
- * Actions updater header styles *
- *********************************/
+/*****************
+ * Header styles *
+ *****************/
 
 .actions-updater-header > h1 + h2 {
   margin-top: 3px;
@@ -38,6 +38,48 @@
   display: flex;
   flex: 1;
 }
+
+/*****************
+ * Logger styles *
+ *****************/
+
+.actions-updater-log-message > span:first-child {
+  opacity: 1.0;
+}
+
+.actions-updater-log-message > span:last-child {
+  opacity: 0.5;
+}
+
+.actions-updater-log-message > span + span {
+  margin-left: 9px;
+}
+
+.actions-updater-log > div + div {
+  margin-top: 8px;
+}
+
+.actions-updater-log-message {
+  letter-spacing: -0.2px;
+  font-weight: normal;
+  margin-bottom: 8px;
+  line-height: 17px;
+  font-size: 14px;
+  color: #fff;
+}
+
+.actions-updater-log {
+  max-height: -webkit-fill-available;
+  background: #3d3f42;
+  overflow-y: visible;
+  overflow-x: hidden;
+  padding: 24px 16px;
+  flex: 1;
+}
+
+/****************
+ * Stats styles *
+ ****************/
 
 .actions-updater-stats-item + .actions-updater-stats-item {
   border-left: 1px solid #606060;
@@ -79,60 +121,17 @@
   display: flex;
 }
 
-.actions-updater {
-  flex-direction: column;
-  background: #ffffff;
-  padding: 25px 20px;
-  position: fixed;
-  z-index: 100000;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
+/*****************
+ * Button styles *
+ *****************/
+
+.actions-updater-copy-btn:hover {
+  background: rgba(61, 63, 66, 0.8);
 }
 
-/******************************
- * Actions updater log styles *
- ******************************/
-
-.actions-updater-log-message > span:first-child {
-  opacity: 1.0;
+.actions-updater-copy-btn:focus {
+  background: rgba(61, 63, 66, 0.8);
 }
-
-.actions-updater-log-message > span:last-child {
-  opacity: 0.5;
-}
-
-.actions-updater-log-message > span + span {
-  margin-left: 9px;
-}
-
-.actions-updater-log > div + div {
-  margin-top: 8px;
-}
-
-.actions-updater-log-message {
-  letter-spacing: -0.2px;
-  font-weight: normal;
-  margin-bottom: 8px;
-  line-height: 17px;
-  font-size: 14px;
-  color: #fff;
-}
-
-.actions-updater-log {
-  max-height: -webkit-fill-available;
-  background: #3d3f42;
-  overflow-y: visible;
-  overflow-x: hidden;
-  padding: 24px 16px;
-  flex: 1;
-}
-
-/*********************************
- * Actions updater button styles *
- *********************************/
 
 .actions-updater-copy-btn {
   justify-content: center;
@@ -149,9 +148,9 @@
   border: 0;
 }
 
-/*********************************
- * Actions updater select styles *
- *********************************/
+/*****************
+ * Select styles *
+ *****************/
 
 .dropdown-menu > li > a.actions-updater-select-option.active:hover,
 .dropdown-menu > li > a.actions-updater-select-option.active,
@@ -203,57 +202,19 @@
   outline: 0;
 }
 
-/************************
- * Global select styles *
- ************************/
+/*****************
+ * Global styles *
+ *****************/
 
-.bootstrap-select .dropdown-menu > li.selected > a::after {
-  visibility: visible;
-}
-
-.bootstrap-select .dropdown-menu > li > a::after {
-  background: url(../icons/check.svg) no-repeat;
-  visibility: hidden;
-  cursor: pointer;
-  display: block;
-  content: " ";
-  height: 16px;
-  width: 16px;
-}
-
-.bootstrap-select .dropdown-menu li a span.text {
-  padding-right: inherit;
-  display: inline-block;
-}
-
-.bootstrap-select.open > .dropdown-toggle:after {
-  content: "\f106";
-}
-
-.bootstrap-select > .dropdown-toggle::after {
-  font-family: FontAwesome;
-  text-align: center;
-  line-height: 16px;
-  content: "\f107";
-  font-size: 16px;
-  min-width: 16px;
-  height: 16px;
-  width: 16px;
-}
-
-.bootstrap-select .dropdown-toggle:focus {
-  outline: 0 !important;
-}
-
-.bootstrap-select .dropdown-toggle:hover {
-  outline: 0 !important;
-}
-
-.bootstrap-select .dropdown-menu {
-  min-width: 100% !important;
-  box-shadow: none;
-  border-radius: 0;
-  padding: 0;
-  border: 0;
-  margin: 0;
+.actions-updater {
+  flex-direction: column;
+  background: #ffffff;
+  padding: 25px 20px;
+  position: fixed;
+  z-index: 100000;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
 }

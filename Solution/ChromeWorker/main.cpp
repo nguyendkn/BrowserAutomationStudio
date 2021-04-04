@@ -157,7 +157,7 @@ std::string GetUrl()
     return ws2s(Url);
 }
 
-void CreateHMenu()
+void CreateHMenu(int HighlightedMenuItem = -1)
 {
     if(hMenu)
     {
@@ -189,8 +189,8 @@ void CreateHMenu()
     p.x = -4;
     p.y = 26;
     ClientToScreen(Layout->HButtonMenu,&p);
+    if (HighlightedMenuItem > -1) HiliteMenuItem(hwnd, hMenu, HighlightedMenuItem, MF_BYCOMMAND | MF_HILITE);
     TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
-    HiliteMenuItem(NULL, hMenu, 1, MF_BYPOSITION | MF_HILITE);
     if(hMenu)
     {
         DestroyMenu(hMenu);
@@ -200,14 +200,13 @@ void CreateHMenu()
 
 void HighlightHMenu(const std::string& Item)
 {
-    CreateHMenu();
     if (Item == std::string("ShowScenario"))
     {
-        HiliteMenuItem(NULL, hMenu, IDShowScenario, MF_BYCOMMAND | MF_HILITE);
+        CreateHMenu(IDShowScenario);
     }
     if (Item == std::string("ShowUpdater"))
     {
-        HiliteMenuItem(NULL, hMenu, IDShowUpdater, MF_BYCOMMAND | MF_HILITE);
+        CreateHMenu(IDShowUpdater);
     }
 }
 

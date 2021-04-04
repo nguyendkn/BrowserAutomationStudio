@@ -231,6 +231,20 @@
   margin-top: 12px;
 }
 
+@media only screen and (max-width: 355px) {
+  .actions-updater-modal-footer {
+    flex-direction: column;
+    min-height: 85px;
+  }
+}
+
+@media only screen and (min-width: 355px) {
+  .actions-updater-modal-footer {
+    flex-direction: row;
+    min-height: 0px;
+  }
+}
+
 .actions-updater-modal-content {
   background-color: #ffffff;
   border: 1px solid #f7f7f8;
@@ -250,7 +264,7 @@
 
 .actions-updater-modal-footer {
   justify-content: space-between;
-  flex-direction: row;
+  align-items: normal;
   display: flex;
 }
 

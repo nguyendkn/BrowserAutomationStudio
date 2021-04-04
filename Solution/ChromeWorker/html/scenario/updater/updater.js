@@ -88,7 +88,7 @@
             <div class="actions-updater-modal-text"><%= tr('The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to open and save the action.') %></div>
             <div class="actions-updater-modal-text"><%= tr('Actions that are not updated may not work correctly or even cause an error.') %></div>
             <div class="actions-updater-modal-text"><%= tr('This tool allows you to automatically update all the actions in the project.') %></div>
-            <div class="actions-updater-modal-text"><%= tr('You can always open it in the') %><a class="actions-updater-modal-link" id="actionsUpdaterModalMenu"><%= tr('context menu') %></a>.</div>
+            <div class="actions-updater-modal-text"><%= tr('You can always open it in the ') %><a class="actions-updater-modal-link" id="actionsUpdaterModalMenu"><%= tr('context menu') %></a>.</div>
           </div>
           <div class="actions-updater-modal-footer">
             <button type="button" id="actionsUpdaterModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('OK') %></button>
@@ -114,7 +114,7 @@
         this.hide();
       },
       'click #actionsUpdaterModalMenu': function () {
-        BrowserAutomationStudio_HighlightMenu(0);
+        BrowserAutomationStudio_HighlightMenuItem("ShowUpdater");
       }
     },
 

@@ -200,6 +200,10 @@ void CreateHMenu(int HighlightedMenuItem = -1)
 
 void HighlightHMenu(const std::string& Item)
 {
+    if (Item == std::string("ShowDevtools"))
+    {
+        CreateHMenu(IDShowDevtools);
+    }
     if (Item == std::string("ShowScenario"))
     {
         CreateHMenu(IDShowScenario);

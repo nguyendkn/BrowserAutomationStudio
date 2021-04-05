@@ -120,7 +120,8 @@
 }
 
 .actions-updater-stats-item:nth-child(1) {
-  color: #ffffff;
+  flex-basis: 40%;
+  color: #fff;
   opacity: 0.5;
 }
 
@@ -145,7 +146,7 @@
   font-weight: 500;
   font-size: 12px;
   display: flex;
-  flex: 1 1 0;
+  flex: 1 1 30%;
   opacity: 1;
 }
 

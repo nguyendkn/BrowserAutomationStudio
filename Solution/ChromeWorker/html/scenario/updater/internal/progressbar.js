@@ -3,9 +3,8 @@
     this.$element = $(element);
 
     this.options = _.extend({
-      maxValue: this.$element.data('maxValue') || 100,
-      minValue: this.$element.data('minValue') || 0,
-      step: this.$element.data('step') || 1,
+      max: this.$element.data('max') || 100,
+      min: this.$element.data('min') || 0,
       labelClass: 'progress-label',
       innerClass: 'progress-inner'
     }, options);
@@ -21,10 +20,18 @@
     this.reset();
   };
 
+  ProgressBar.prototype.setMax = function (value) {
+    this.options.max = value;
+  };
+
+  ProgressBar.prototype.setMin = function (value) {
+    this.options.min = value;
+  };
+
   ProgressBar.prototype.step = function (val) {
-    if (!val) val = this.current + this.options.step;
-    const min = this.options.minValue;
-    const max = this.options.maxValue;
+    if (!val) val = this.current + 1;
+    const min = this.options.min;
+    const max = this.options.max;
 
     if (val >= min && val <= max) {
       this.$label.text(`${this.current} / ${max}`);
@@ -36,21 +43,9 @@
     }
   };
 
-  ProgressBar.prototype.setMaxValue = function (value) {
-    this.options.maxValue = value;
-  };
-
-  ProgressBar.prototype.setMinValue = function (value) {
-    this.options.minValue = value;
-  };
-
-  ProgressBar.prototype.setStep = function (value) {
-    this.options.step = value;
-  };
-
   ProgressBar.prototype.reset = function () {
-    this.$inner.css('width', 0);
-    this.$label.text('');
+    this.$label.text(`0 / ${this.options.max}`);
+    this.$inner.width('0%');
     this.current = 0;
   };
 

@@ -209,10 +209,22 @@
 
     initialize: function () {
       this.model = new ActionsUpdaterModel()
-        .on('change:isStarted', (_, isStarted) => this.$('#actionsUpdaterSelect').prop('disabled', isStarted))
-        .on('change:successCount', (_, success) => this.$('#actionsUpdaterSuccessCount').text(success))
-        .on('change:errorsCount', (_, errors) => this.$('#actionsUpdaterErrorsCount').text(errors))
-        .on('change:tasks', (_, { length }) => this.$('#actionsUpdaterCounter').text(length))
+        .on('change:isStarted', (_, isStarted) => {
+          this.$('#actionsUpdaterSelect').prop('disabled', isStarted);
+          this.$('#actionsUpdaterSelect').selectpicker('refresh');
+        })
+        .on('change:successCount', (_, count) => {
+          this.$('#actionsUpdaterProgress').progressBar('step');
+          this.$('#actionsUpdaterSuccessCount').text(count);
+        })
+        .on('change:errorsCount', (_, count) => {
+          this.$('#actionsUpdaterProgress').progressBar('step');
+          this.$('#actionsUpdaterErrorsCount').text(count);
+        })
+        .on('change:tasks', (_, { length }) => {
+          this.$('#actionsUpdaterProgress').progressBar('setMax', length);
+          this.$('#actionsUpdaterCounter').text(length);
+        })
         .on('log', (data) => this.log(data));
       this.modal = new ActionsUpdaterModal()
         .on('accept', () => this.show())
@@ -276,6 +288,7 @@
       },
       'change #actionsUpdaterSelect': function () {
         const val = this.$('#actionsUpdaterSelect').val();
+        this.$('.actions-updater-select').trigger('blur');
         this.model.updateTasks(val);
       },
       'click #actionsUpdaterAccept': function () {

@@ -1870,6 +1870,11 @@ mark
   margin: 0;
 }
 
+.bootstrap-select.disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 /************************
  * Custom button styles *
  ************************/

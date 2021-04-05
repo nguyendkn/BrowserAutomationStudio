@@ -165,7 +165,7 @@
         <h2><%= tr('Brief description of the section') %></h2>
       </div>
       <div class="actions-updater-panel">
-        <div class="actions-updater-progressbar"></div>
+        <div id="actionsUpdaterProgress" class="actions-updater-progress"></div>
         <select id="actionsUpdaterSelect">
           <option class="actions-updater-select-option" value="all" selected="selected"><%= tr('All actions in the project') %></option>
           <option class="actions-updater-select-option" value="current"><%= tr('All actions in the current function') %></option>
@@ -235,6 +235,9 @@
     render: function () {
       if (this.rendered) return this;
       this.$el.html(this.template()).appendTo('body');
+      this.$('#actionsUpdaterProgress').progressBar({
+
+      });
       this.$('#actionsUpdaterSelect').selectpicker({
         style: 'actions-updater-select',
         template: { caret: '' },

@@ -1,14 +1,34 @@
-/***********************
- * Progress bar styles *
- ***********************/
+/*******************
+ * Progress styles *
+ *******************/
 
-.actions-updater-progressbar {
+.actions-updater-progress > .progress-inner {
+  background: #538fb5;
+  position: absolute;
+  height: 100%;
+}
+
+.actions-updater-progress > .progress-label {
+  letter-spacing: -0.2px;
+  text-align: center;
+  line-height: 18px;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 5px 0;
+  color: #fff;
+  z-index: 1;
+  flex: 1;
+}
+
+.actions-updater-progress {
   background: rgba(83, 143, 181, 0.3);
-  border: 1px solid #538FB5;
+  border: 1px solid #538fb5;
   -webkit-user-select: none;
   -webkit-user-drag: none;
+  position: relative;
   user-select: none;
   margin: 0 0 20px;
+  display: flex;
   height: 30px;
 }
 

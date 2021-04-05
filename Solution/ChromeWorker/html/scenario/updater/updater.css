@@ -1,3 +1,17 @@
+/***********************
+ * Progress bar styles *
+ ***********************/
+
+.actions-updater-progressbar {
+  background: rgba(83, 143, 181, 0.3);
+  border: 1px solid #538FB5;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  margin: 0 0 20px;
+  height: 30px;
+}
+
 /*****************
  * Header styles *
  *****************/
@@ -126,14 +140,15 @@
  *****************/
 
 .actions-updater-copy-btn:hover {
-  background: rgba(61, 63, 66, 0.8);
+  opacity: 0.8;
 }
 
 .actions-updater-copy-btn:focus {
-  background: rgba(61, 63, 66, 0.8);
+  opacity: 0.8;
 }
 
 .actions-updater-copy-btn {
+  transition: opacity 0.25s ease-in-out;
   justify-content: center;
   letter-spacing: -0.2px;
   background: #3d3f42;

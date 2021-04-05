@@ -16,5 +16,30 @@ _.extend(_L, {
   },
   'context menu': {
     ru: 'контекстном меню'
+  },
+
+  'All actions in the current function': {
+    ru: 'Все действия в текущей фунцкии'
+  },
+  'All actions in the project': {
+    ru: 'Все действия в проекте'
+  },
+  'Only the selected actions': {
+    ru: 'Только выбранные действия'
+  },
+  'Copy log to clipboard': {
+    ru: 'Копировать лог в буфер обмена'
+  },
+  'Auto-update actions': {
+    ru: 'Авто-обновление действий'
+  },
+  'Total actions:': {
+    ru: 'Всего действий:'
+  },
+  'Completed': {
+    ru: 'Выполнено'
+  },
+  'Errors': {
+    ru: 'Ошибок'
   }
 });

@@ -57,11 +57,11 @@
  * Logger styles *
  *****************/
 
-.actions-updater-log-message > span:first-child {
+.actions-updater-log-message > span:first-of-type {
   opacity: 1.0;
 }
 
-.actions-updater-log-message > span:last-child {
+.actions-updater-log-message > span:last-of-type {
   opacity: 0.5;
 }
 
@@ -139,12 +139,14 @@
  * Button styles *
  *****************/
 
-.actions-updater-copy-btn:hover {
-  opacity: 0.8;
+.actions-updater-copy-btn:focus {
+  opacity: 1.0;
+  outline: 0;
 }
 
-.actions-updater-copy-btn:focus {
+.actions-updater-copy-btn:hover {
   opacity: 0.8;
+  outline: 0;
 }
 
 .actions-updater-copy-btn {
@@ -160,6 +162,7 @@
   color: #ffffff;
   display: flex;
   width: 100%;
+  opacity: 1;
   border: 0;
 }
 
@@ -193,6 +196,7 @@
 .bootstrap-select > .actions-updater-select:hover,
 .bootstrap-select.open > .actions-updater-select {
   background-color: #787878;
+  outline: none !important;
 }
 
 .actions-updater-select:focus {

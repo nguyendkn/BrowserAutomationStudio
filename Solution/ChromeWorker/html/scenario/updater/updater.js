@@ -192,7 +192,7 @@
             <span><span id="actionsUpdaterErrorsCount">0</span> <%= tr('Errors') %></span>
           </span>
         </div>
-        <button class="actions-updater-copy-btn">
+        <button id="actionsUpdaterCopyLog" class="actions-updater-copy-btn">
           <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
             <path d="M10 3V0H0V12H4V15H13V3H10ZM4 11H1V1H9V3H4V11ZM12 14H5V4H12V14Z" fill="white"/>
           </svg>
@@ -262,8 +262,18 @@
     },
 
     events: {
+      'click #actionsUpdaterCopyLog': function () {
+        if (!window.getSelection().toString().length) {
+          const data = $.map(this.$('#actionsUpdaterLog div'), $.text);
+          const $input = $('<textarea>').appendTo('body');
+          $input.val(data.join('\r\n')).select();
+          document.execCommand('copy');
+          $input.remove();
+        }
+      },
       'change #actionsUpdaterSelect': function () {
-        this.model.updateTasks(this.$('#actionsUpdaterSelect').val());
+        const val = this.$('#actionsUpdaterSelect').val();
+        this.model.updateTasks(val);
       },
       'click #actionsUpdaterAccept': function () {
         if (!this.model.get('isStarted')) {

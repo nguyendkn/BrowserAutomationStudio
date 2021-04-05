@@ -55,6 +55,8 @@
 }
 
 .actions-updater-header {
+  -webkit-user-select: none;
+  user-select: none;
   line-height: 18px;
   color: #606060;
 }
@@ -213,11 +215,16 @@
   outline: 0;
 }
 
-.bootstrap-select > .actions-updater-select:focus,
-.bootstrap-select > .actions-updater-select:hover,
-.bootstrap-select.open > .actions-updater-select {
+.bootstrap-select > .actions-updater-select:not(.disabled):focus,
+.bootstrap-select > .actions-updater-select:not(.disabled):hover,
+.bootstrap-select.open > .actions-updater-select:not(.disabled) {
   background-color: #787878;
   outline: none !important;
+}
+
+.actions-updater-select.disabled {
+  background-color: #606060 !important;
+  opacity: 0.8;
 }
 
 .actions-updater-select:focus {

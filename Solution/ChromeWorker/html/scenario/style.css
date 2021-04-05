@@ -1824,7 +1824,7 @@ mark
 }
 
 .bootstrap-select .dropdown-menu > li > a::after {
-  background: url(../icons/check.svg) no-repeat;
+  background: url(icons/check.svg) no-repeat;
   visibility: hidden;
   cursor: pointer;
   display: block;

@@ -273,6 +273,7 @@
       if (!this.$el.is(':hidden')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.hide();
+        this.trigger('hide');
       }
       return this;
     },

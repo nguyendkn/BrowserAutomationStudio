@@ -29,7 +29,8 @@ void settings::Init()
     toolbox_height = 300;
     scenario_width = 500;
     zoom = 100;
-    max_browser_start_simultaneously = 1;
+    max_fps = 30;
+    max_browser_start_simultaneously = 3;
     min_free_memory_to_start_browser = 500;
     min_unused_cpu = 20;
     maximized = false;
@@ -84,6 +85,13 @@ void settings::Init()
             {
                 audio_noise = ReplaceAll(line,"AudioNoise=","");
                 audio_noise = ReplaceAll(audio_noise,"\"","");
+            }
+            if(line.find("MaxFPS=") != std::string::npos)
+            {
+                std::vector<std::string> s = split(line,'=');
+                max_fps = std::stoi(s[1]);
+                if(max_fps < 10)
+                    max_fps = 10;
             }
             if(line.find("Webrtc=") != std::string::npos)
             {
@@ -445,6 +453,7 @@ void settings::SaveToFile()
             outfile<<"CanvasNoise=\""<<canvas_noise<<"\""<<std::endl;
             outfile<<"Audio=\""<<audio<<"\""<<std::endl;
             outfile<<"AudioNoise=\""<<audio_noise<<"\""<<std::endl;
+            outfile<<"MaxFPS="<<max_fps<<std::endl;
             outfile<<"Webrtc=\""<<webrtc<<"\""<<std::endl;
             outfile<<"WebrtcIps=\""<<webrtc_ips<<"\""<<std::endl;
             outfile<<"Webgl=\""<<webgl<<"\""<<std::endl;
@@ -470,6 +479,7 @@ std::string settings::Serialize()
     res["canvas_noise"] = picojson::value(canvas_noise);
     res["audio"] = picojson::value(audio);
     res["audio_noise"] = picojson::value(audio_noise);
+    res["max_fps"] = picojson::value((double)max_fps);
     res["webrtc"] = picojson::value(webrtc);
     res["webgl"] = picojson::value(webgl);
     res["webgl_noise"] = picojson::value(webgl_noise);
@@ -509,6 +519,7 @@ void settings::Deserialize(const std::string & Data)
         canvas_noise = o["canvas_noise"].get<std::string>();
         audio = o["audio"].get<std::string>();
         audio_noise = o["audio_noise"].get<std::string>();
+        max_fps = o["max_fps"].get<double>();
         webrtc = o["webrtc"].get<std::string>();
         webgl = o["webgl"].get<std::string>();
         webgl_noise = o["webgl_noise"].get<std::string>();
@@ -530,6 +541,9 @@ void settings::Deserialize(const std::string & Data)
 
         /*debug_scenario = o["debug_scenario"].get<bool>();
         debug_toolbox = o["debug_toolbox"].get<bool>();*/
+
+        if(max_fps < 10)
+            max_fps = 10;
 
         if(toolbox_height < 100)
             toolbox_height = 100;

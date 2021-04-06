@@ -137,9 +137,12 @@
     },
 
     render() {
-      if (this.rendered) return this;
-      this.$el.html(this.template()).modal({ show: false });
-      this.rendered = true;
+      if (!this.$el.is(':empty')) return this;
+      this.$el.html(this.template()).modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: false,
+      });
       return this;
     },
 
@@ -227,10 +230,9 @@
           this.$('#actionsUpdaterTotalCount').text(length);
         })
         .on('log', (data) => this.log(data));
-      this.modal = new ActionsUpdaterModal()
-        .on('accept', () => this.show())
-        .on('cancel', () => this.hide());
-      _TaskCollection.bind('all', () => this.$('#actionsUpdaterSelect').trigger('change'));
+      this.modal = new ActionsUpdaterModal({});
+      this.modal.on('accept', this.show, this);
+      this.modal.on('cancel', this.hide, this);
     },
 
     log: function (data) {
@@ -246,18 +248,15 @@
     },
 
     render: function () {
-      if (this.rendered) return this;
+      if (!this.$el.is(':empty')) return this;
       this.$el.html(this.template()).appendTo('body');
-      this.$('#actionsUpdaterProgress').progressBar({
-
-      });
+      this.$('#actionsUpdaterProgress').progressBar({});
       this.$('#actionsUpdaterSelect').selectpicker({
         style: 'actions-updater-select',
         template: { caret: '' },
         container: false,
         width: false
       });
-      this.rendered = true;
       return this;
     },
 

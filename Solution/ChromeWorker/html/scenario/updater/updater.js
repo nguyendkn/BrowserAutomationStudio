@@ -264,6 +264,7 @@
       if (!this.$el.is(':visible')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.show();
+        this.trigger('show');
       }
       return this;
     },

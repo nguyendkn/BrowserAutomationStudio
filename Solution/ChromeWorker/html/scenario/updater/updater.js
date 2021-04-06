@@ -231,7 +231,6 @@
         })
         .on('log', (data) => this.log(data));
 
-      _TaskCollection.on('all', this.update, this);
       this.modal = new ActionsUpdaterModal({});
       this.modal.on('accept', this.show, this);
       this.modal.on('cancel', this.hide, this);
@@ -252,6 +251,7 @@
 
     render: function () {
       if (!this.$el.is(':empty')) return this;
+      _TaskCollection.on('all', this.update, this);
       this.$el.html(this.template()).appendTo('body');
       this.$('#actionsUpdaterProgress').progressBar({});
       this.$('#actionsUpdaterSelect').selectpicker({

@@ -24,7 +24,7 @@
         this.$label.text(`${value} / ${max}`);
         this.$inner.animate({
           width: `${Math.round((value * 100) / max)}%`
-        }, 100);
+        }, 250);
 
         this.current = value;
       }

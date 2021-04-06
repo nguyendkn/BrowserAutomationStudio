@@ -14,6 +14,7 @@ class settings
     int max_browser_start_simultaneously;
     int min_free_memory_to_start_browser;
     int min_unused_cpu;
+    int max_fps;
     std::string canvas;
     std::string canvas_noise;
     std::string audio;

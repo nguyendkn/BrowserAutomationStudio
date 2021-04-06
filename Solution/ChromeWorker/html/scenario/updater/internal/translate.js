@@ -36,10 +36,10 @@ _.extend(_L, {
   'Total actions:': {
     ru: 'Всего действий:'
   },
-  'Completed': {
-    ru: 'Выполнено'
+  'Completed:': {
+    ru: 'Выполнено:'
   },
-  'Errors': {
-    ru: 'Ошибок'
+  'Errors:': {
+    ru: 'Ошибки:'
   }
 });

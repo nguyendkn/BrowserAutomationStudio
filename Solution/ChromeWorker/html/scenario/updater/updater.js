@@ -177,19 +177,19 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd" d="M0 7C0 3.13401 3.13401 0 7 0C10.866 0 14 3.13401 14 7C14 10.866 10.866 14 7 14C3.13401 14 0 10.866 0 7ZM7.5215 4.9525L7.2275 8.897H6.48025L6.223 4.9525V2.625H7.5215V4.9525ZM7.60725 9.88925V11.347H6.125V9.88925H7.60725Z" fill="white" />
             </svg>          
-            <span><%= tr('Total actions:') %> <span id="actionsUpdaterCounter">0</span></span>
+            <span><%= tr('Total actions:') %> <span id="actionsUpdaterTotalCount">0</span></span>
           </span>
           <span class="actions-updater-stats-item">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 0C3.13473 0 0 3.13473 0 7C0 10.8653 3.13473 14 7 14C10.8653 14 14 10.8653 14 7C14 3.13473 10.8653 0 7 0ZM6.04545 9.86364L3.18182 7L4.13636 6.04545L6.04545 7.95455L9.83564 4.16436L10.7902 5.06355L6.04545 9.86364Z" fill="#669FC2"/>
             </svg>          
-            <span><span id="actionsUpdaterSuccessCount">0</span> <%= tr('Completed') %></span>
+            <span><%= tr('Completed:') %> <span id="actionsUpdaterSuccessCount">0</span></span>
           </span>
           <span class="actions-updater-stats-item">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M2.05004 2.05004C4.78365 -0.683571 9.21637 -0.683121 11.9495 2.05004C13.3148 3.41533 13.9982 5.2047 13.9996 6.99454C14.0008 8.56382 13.4776 10.1334 12.43 11.4179C12.2806 11.6012 12.1204 11.7787 11.9495 11.9495C9.21592 14.6831 4.7832 14.6827 2.05004 11.9495C-0.683572 9.21592 -0.683121 4.7832 2.05004 2.05004ZM6.99979 7.89974L8.79969 9.69965L9.69965 8.79969L7.89974 6.99979L9.69965 5.19988L8.7997 4.29992L6.99979 6.09983L5.19988 4.29992L4.29992 5.19988L6.09983 6.99979L4.29992 8.79969L5.19988 9.69965L6.99979 7.89974Z" fill="#D8695F"/>
             </svg>          
-            <span><span id="actionsUpdaterErrorsCount">0</span> <%= tr('Errors') %></span>
+            <span><%= tr('Errors:') %> <span id="actionsUpdaterErrorsCount">0</span></span>
           </span>
         </div>
         <button id="actionsUpdaterCopyLog" class="actions-updater-copy-btn">
@@ -223,7 +223,7 @@
         })
         .on('change:tasks', (_, { length }) => {
           this.$('#actionsUpdaterProgress').progressBar('setMax', length);
-          this.$('#actionsUpdaterCounter').text(length);
+          this.$('#actionsUpdaterTotalCount').text(length);
         })
         .on('log', (data) => this.log(data));
       this.modal = new ActionsUpdaterModal()

@@ -277,32 +277,40 @@
     },
 
     events: {
-      'click #actionsUpdaterCopyLog': function () {
-        if (!window.getSelection().toString().length) {
-          const data = $.map(this.$('#actionsUpdaterLog div'), $.text);
-          const $input = $('<textarea>').appendTo('body');
-          $input.val(data.join('\r\n')).select();
-          document.execCommand('copy');
-          $input.remove();
-        }
-      },
-      'change #actionsUpdaterSelect': function () {
-        const val = this.$('#actionsUpdaterSelect').val();
-        this.$('.actions-updater-select').trigger('blur');
-        this.model.updateTasks(val);
-      },
-      'click #actionsUpdaterAccept': function () {
-        if (!this.model.get('isStarted')) {
-          return this.model.startUpdate();
-        }
-        this.hide();
-      },
-      'click #actionsUpdaterCancel': function () {
-        if (this.model.get('isStarted')) {
-          return this.model.stopUpdate();
-        }
-        this.hide();
+      'click #actionsUpdaterCopyLog': 'copyLog',
+      'change #actionsUpdaterSelect': 'update',
+      'click #actionsUpdaterAccept': 'accept',
+      'click #actionsUpdaterCancel': 'cancel',
+    },
+
+    copyLog: function () {
+      if (!window.getSelection().toString().length) {
+        const data = $.map(this.$('#actionsUpdaterLog div'), $.text);
+        const $input = $('<textarea>').appendTo('body');
+        $input.val(data.join('\r\n')).select();
+        document.execCommand('copy');
+        $input.remove();
       }
+    },
+
+    update: function () {
+      const val = this.$('#actionsUpdaterSelect').val();
+      this.$('.actions-updater-select').trigger('blur');
+      this.model.updateTasks(val);
+    },
+
+    accept: function () {
+      if (!this.model.get('isStarted')) {
+        return this.model.startUpdate();
+      }
+      this.hide();
+    },
+
+    cancel: function () {
+      if (this.model.get('isStarted')) {
+        return this.model.stopUpdate();
+      }
+      this.hide();
     }
   });
 

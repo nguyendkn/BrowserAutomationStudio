@@ -5,7 +5,8 @@
 .actions-updater-progress > .progress-inner {
   background: #538fb5;
   position: absolute;
-  height: 100%;
+  min-height: 100%;
+  height: inherit;
 }
 
 .actions-updater-progress > .progress-label {

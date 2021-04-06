@@ -222,7 +222,8 @@
           this.$('#actionsUpdaterErrorsCount').text(count);
         })
         .on('change:tasks', (_, { length }) => {
-          this.$('#actionsUpdaterProgress').progressBar('setMax', length);
+          this.$('#actionsUpdaterProgress').data('max', length);
+          this.$('#actionsUpdaterProgress').progressBar('reset');
           this.$('#actionsUpdaterTotalCount').text(length);
         })
         .on('log', (data) => this.log(data));

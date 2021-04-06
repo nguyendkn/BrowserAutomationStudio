@@ -2012,36 +2012,27 @@
         BrowserAutomationStudio_SaveToUndoManager()
       },
 
-      key: function(e)
-      {
-        if($('.modal.in').length == 0)
-        {
-          if (e.keyCode == 70 && e.ctrlKey)
-          {
+      key: function(e) {
+        if ($('.modal.in').length == 0 && _ActionsUpdater.$el.is(':hidden')) {
+          if (e.keyCode == 70 && e.ctrlKey) {
             _ActionFinder.Show()
           }
-          if (e.keyCode == 90 && e.ctrlKey)
-          {
+          if (e.keyCode == 90 && e.ctrlKey) {
             this.Undo();
           }
-          if (e.keyCode == 89 && e.ctrlKey)
-          {
+          if (e.keyCode == 89 && e.ctrlKey) {
             this.Redo();
           }
-          if (e.keyCode == 67 && e.ctrlKey && window.getSelection().toString().length == 0)
-          {
+          if (e.keyCode == 67 && e.ctrlKey && window.getSelection().toString().length == 0) {
             this.Copy();
           }
-          if (e.keyCode == 86 && e.ctrlKey)
-          {
+          if (e.keyCode == 86 && e.ctrlKey) {
             this.Paste();
           }
-          if (e.keyCode == 88 && e.ctrlKey)
-          {
+          if (e.keyCode == 88 && e.ctrlKey) {
             this.Cut();
           }
-          if (e.keyCode == 46)
-          {
+          if (e.keyCode == 46) {
             this.DeleteSelected();
           }
         }

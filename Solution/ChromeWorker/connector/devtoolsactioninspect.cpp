@@ -249,7 +249,7 @@ void DevToolsActionInspect::Next()
 
             std::string Script;
 
-            Script += Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(X - x_with_padding) + std::string(",") + std::to_string(Y - y_with_padding) + std::string(",") + std::to_string(Position) + std::string(")[14]"));
+            Script += Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(X - x_with_padding) + std::string(",") + std::to_string(Y - y_with_padding) + std::string(",") + std::to_string(Position) + std::string(", true)[14]"));
 
             x_with_padding += current_x_with_padding;
             y_with_padding += current_y_with_padding;
@@ -270,7 +270,7 @@ void DevToolsActionInspect::Next()
 
         std::string Script;
 
-        Script += Javascript(std::string("JSON.stringify(_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(X - x_with_padding) + std::string(",") + std::to_string(Y - y_with_padding) + std::string(",") + std::to_string(Position) + std::string("))"));
+        Script += Javascript(std::string("JSON.stringify(_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(X - x_with_padding) + std::string(",") + std::to_string(Y - y_with_padding) + std::string(",") + std::to_string(Position) + std::string(", false))"));
 
         CurrentParams["expression"] = Variant(Script);
         CurrentParams["replMode"] = Variant(true);

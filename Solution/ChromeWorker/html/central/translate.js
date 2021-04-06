@@ -30,6 +30,10 @@ _L =
 	"Add" :{"ru": "Добавить"},
 	"module" :{"ru": "модуль"},
 
+	"Rendering": {"ru": "Рендеринг"},
+	"Max FPS": {"ru": "Ограничения частоты кадров"},
+	"Maximum times browser content can be rendered per one second. The lower this value, the lower the CPU usage will be. Setting it too low may affect site operability. Reducing it below 30 may lead to unpredictable consequences. Minimum value is 10.": {"ru": "Максимальное количество раз за одну секунду, которое содержимого браузера может быт отрисовано. Чем ниже это значение, тем меньше будет загрузка процессор. Установка слишком низкого значения может повлиять на работоспособность сайта. Снижение его ниже 30 может привести к непредсказуемым последствиям. Минимальное значение 10."},
+
 	"Browser extensions" :{"ru": "Расширения браузера"},
 	"Use 'Browser Settings' action in order to set browser extensions." :{"ru": "Используйте действие 'Настройки браузера' чтобы задать список расширений."},
 

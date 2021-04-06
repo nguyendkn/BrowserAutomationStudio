@@ -4172,6 +4172,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         </form>
       </div>
 
+
       <div class="tr" style='margin-left:20px;margin-bottom:5px;font-size:small'>Use <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;">FingerprintSwitcher</a> service and <a href="#!/FingerprintSwitcher_Get">Get Fingerprint</a> action to add noise to audio.</div>
 
 
@@ -4180,6 +4181,18 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <%= _.template($('#input_constructor').html())({id:"AudioNoise", description:tr("Audio noise pattern"), default_selector: "string", disable_int:true, value_string: "", help: { description: tr("This setting is for debugging purposes only, the proper way to set is using FingerprintSwitcher")}}) %>
       
+      <div class="col-xs-12">
+        <form class="form-horizontal">
+           <div class="form-group">
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Rendering</span></span>:
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+           </div>
+         </form>
+       </div>
+
+      <%= _.template($('#input_constructor').html())({id:"MaxFPS", description:tr("Maximum FPS"), default_selector: "int", disable_string:true, value_number: 0, variants: ["0<br/><span style='color:gray;font-size:small'>" + tr("Don't change") + "</span>", "30", "60"], help: { description: tr("Maximum times browser content can be rendered per one second. The lower this value, the lower the CPU usage will be. Setting it too low may affect site operability. Reducing it below 30 may lead to unpredictable consequences. Minimum value is 10."), examples:[{code:"30",description:tr("Limit FPS to 30")},{code:"0",description:tr("Don't change FPS")}]}}) %>
+
       
       <div class="col-xs-12">
        <form class="form-horizontal">
@@ -5835,6 +5848,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       var CanvasNoise = (<%= CanvasNoise %>);
       var Audio = (<%= Audio %>);
       var AudioNoise = (<%= AudioNoise %>);
+      var MaxFPS = (<%= MaxFPS %>);
       var Webgl = (<%= Webgl %>);
       var WebglNoise = (<%= WebglNoise %>);
 
@@ -5861,6 +5875,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(AudioNoise.length > 0)
         Params["AudioNoise"] = AudioNoise
+
+      if(MaxFPS > 0)
+        Params["MaxFPS"] = MaxFPS
 
       if(Webgl.length > 0)
         Params["Webgl"] = Webgl
@@ -10040,6 +10057,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             var WebglNoise = GetInputConstructorValue("WebglNoise", loader);
             var Audio = GetInputConstructorValue("Audio", loader);
             var AudioNoise = GetInputConstructorValue("AudioNoise", loader);
+            var MaxFPS = GetInputConstructorValue("MaxFPS", loader);
             var WebglVendor = GetInputConstructorValue("WebglVendor", loader);
             var WebglRenderer = GetInputConstructorValue("WebglRenderer", loader);
             var ProxyTunneling = GetInputConstructorValue("ProxyTunneling", loader);
@@ -10062,6 +10080,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   CanvasNoise:CanvasNoise["updated"],
                   Audio:Audio["updated"],
                   AudioNoise:AudioNoise["updated"],
+                  MaxFPS:MaxFPS["updated"],
                   Webgl:Webgl["updated"],
                   WebglNoise:WebglNoise["updated"],
                   WebglVendor:WebglVendor["updated"],

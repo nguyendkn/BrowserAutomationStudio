@@ -316,6 +316,13 @@ void DevToolsConnector::OnWebSocketConnected(bool IsSuccess)
         return;
     }
 
+    if(!WasBrowserCreationEvent)
+    {
+        WasBrowserCreationEvent = true;
+        for(auto f:OnBrowserCreated)
+            f();
+    }
+
     std::map<std::string, Variant> CurrentParams;
 
     CurrentParams["downloadPath"] = Variant(ws2s(GetRelativePathToParentFolder(L"")));
@@ -686,6 +693,68 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         }
                     }
 
+                    for (auto f : OnNativeDialog)
+                        f("upload");
+
+                    if(GlobalState.OpenFileDialogIsManual)
+                    {
+                        OPENFILENAME ofn = {0};
+                        TCHAR szFile[4096]={0};
+                        ofn.lStructSize = sizeof(ofn);
+                        ofn.hwndOwner = NULL;
+                        ofn.lpstrFile = szFile;
+                        ofn.nMaxFile = sizeof(szFile);
+                        ofn.lpstrFilter = L"All\0*.*\0";
+                        ofn.nFilterIndex = 1;
+                        ofn.lpstrFileTitle = NULL;
+                        ofn.nMaxFileTitle = 0;
+                        ofn.lpstrInitialDir = NULL;
+                        ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_EXPLORER;
+
+                        if(IsMultiple)
+                            ofn.Flags |= OFN_ALLOWMULTISELECT;
+
+                        if(GetOpenFileName(&ofn) == TRUE)
+                        {
+                            std::vector<Variant> Files;
+
+                            if(IsMultiple)
+                            {
+                                wchar_t* Pointer = ofn.lpstrFile;
+                                std::wstring Folder = Pointer;
+                                Pointer += ( Folder.length() + 1 );
+                                int FileNumber = 0;
+                                while ( *Pointer )
+                                {
+                                  std::wstring Filename = Pointer;
+                                  Pointer += ( Filename.length() + 1 );
+                                  Filename = Folder + L"/" + Filename;
+
+                                  Files.push_back(ws2s(Filename));
+                                  FileNumber++;
+                                }
+                                if(!FileNumber)
+                                {
+                                    Files.push_back(ws2s(Folder));
+                                }
+                            }else
+                            {
+                                std::wstring ResultFileWstring(ofn.lpstrFile);
+                                std::string ResultFile = ws2s(ResultFileWstring);
+                                Files.push_back(Variant(ResultFile));
+                            }
+
+                            std::map<std::string, Variant> CurrentParams;
+
+                            CurrentParams["backendNodeId"] = Variant(BackendNodeId);
+                            CurrentParams["files"] = Variant(Files);
+
+                            SendWebSocket("DOM.setFileInputFiles", CurrentParams, GlobalState.TabId);
+
+                        }
+                        return;
+                    }
+
                     std::shared_ptr<IDevToolsAction> NewAction;
                     std::map<std::string, Variant> Params;
 
@@ -699,8 +768,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                     InsertAction(NewAction);
 
-                    for (auto f : OnNativeDialog)
-                        f("upload");
+
                 }
             }
         }
@@ -873,7 +941,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 if(TypeName == "page")
                 {
-                    if(!GlobalState.IsPopupsAllowed)
+                    if(!GlobalState.IsPopupsAllowed && ConnectionState == Connected)
                     {
                         //Tab creation is not allowed, close it instantly
                         std::map<std::string, Variant> CurrentParams;
@@ -1120,7 +1188,7 @@ void DevToolsConnector::Timer()
             if(Tab->ConnectionState == TabData::Connected)
             {
                 ConnectionState = Connected;
-                
+
                 //If reset action waits for connected status, notify about result
                 if(ResetResult)
                 {

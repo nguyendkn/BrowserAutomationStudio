@@ -1,52 +1,52 @@
 (function ($) {
-  function ProgressBar(element, options) {
-    this.$element = $(element);
+  class ProgressBar {
+    constructor (element) {
+      this.$element = $(element);
 
-    this.options = _.extend({
-      max: this.$element.data('max') || 100,
-      min: this.$element.data('min') || 0,
-      labelClass: 'progress-label',
-      innerClass: 'progress-inner'
-    }, options);
+      this.$inner = $('<div>', {
+        'class': 'progress-inner'
+      }).appendTo(this.$element);
 
-    this.$inner = $('<div>', {
-      'class': this.options.innerClass
-    }).appendTo(this.$element);
+      this.$label = $('<div>', {
+        'class': 'progress-label'
+      }).appendTo(this.$element);
 
-    this.$label = $('<div>', {
-      'class': this.options.labelClass
-    }).appendTo(this.$element);
-
-    this.reset();
-  };
-
-  ProgressBar.prototype.setMax = function (value) {
-    this.options.max = value;
-  };
-
-  ProgressBar.prototype.setMin = function (value) {
-    this.options.min = value;
-  };
-
-  ProgressBar.prototype.step = function (val) {
-    if (!val) val = this.current + 1;
-    const min = this.options.min;
-    const max = this.options.max;
-
-    if (val >= min && val <= max) {
-      this.$label.text(`${this.current} / ${max}`);
-      this.$inner.animate({
-        width: `${Math.round((max / 100) * this.current)}%`
-      }, 100);
-
-      this.current = val;
+      this.reset();
     }
-  };
 
-  ProgressBar.prototype.reset = function () {
-    this.$label.text(`0 / ${this.options.max}`);
-    this.$inner.width('0%');
-    this.current = 0;
+    step(value) {
+      const max = this.max;
+      const min = this.min;
+      if (!this.current) this.current = min;
+      if (value == null) value = this.current + 1;
+
+      if (value >= min && value <= max) {
+        this.$label.text(`${value} / ${max}`);
+        this.$inner.animate({
+          width: `${Math.round((value * 100) / max)}%`
+        }, 100);
+
+        this.current = value;
+      }
+    }
+
+    get max() {
+      const max = this.$element.data('max');
+      return max != null ? max : 100;
+    }
+
+    get min() {
+      const min = this.$element.data('min');
+      return min != null ? min : 0;
+    }
+
+    finish() {
+      this.step(this.max);
+    }
+
+    reset() {
+      this.step(this.min);
+    }
   };
 
   $.fn.progressBar = function (option, ...args) {
@@ -57,7 +57,7 @@
         $element.data('bs.progress', (data = new ProgressBar(this, option)));
       }
 
-      if (typeof (option) === 'string') data[option].call(data, args);
+      if (typeof (option) === 'string') data[option](args[0]);
     })
   };
 

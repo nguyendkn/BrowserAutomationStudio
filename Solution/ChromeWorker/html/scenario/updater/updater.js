@@ -230,9 +230,12 @@
           this.$('#actionsUpdaterTotalCount').text(length);
         })
         .on('log', (data) => this.log(data));
+
+      _TaskCollection.on('all', this.update, this);
       this.modal = new ActionsUpdaterModal({});
       this.modal.on('accept', this.show, this);
       this.modal.on('cancel', this.hide, this);
+      this.on('show', this.update, this);
     },
 
     log: function (data) {

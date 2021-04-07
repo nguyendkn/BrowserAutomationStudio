@@ -1,5 +1,5 @@
 function createCodeEditor(element, options) {
-  if (!$(element).attr('data-installed') === 'true') {
+  if ($(element).attr('data-installed') !== 'true') {
     monaco.editor.create(element, {
       scrollBeyondLastLine: false,
       language: 'javascript',
@@ -8,13 +8,13 @@ function createCodeEditor(element, options) {
       fontSize: 12
     });
 
-    const createEditorHandler = monaco.onDidCreateEditor(() => {
-      _MainView.trigger('monacoEditorCreated');
+    const createEditorHandler = monaco.editor.onDidCreateEditor((editor) => {
+      _MainView.trigger('monacoEditorCreated', editor);
       createEditorHandler.dispose();
     });
 
-    const createModelHandler = monaco.onDidCreateModel(() => {
-      _MainView.trigger('monacoModelCreated');
+    const createModelHandler = monaco.editor.onDidCreateModel((model) => {
+      _MainView.trigger('monacoModelCreated', model);
       createModelHandler.dispose();
     });
 

@@ -10,7 +10,7 @@ function createCodeEditor(element, options) {
       createModelHandler.dispose();
     });
 
-    monaco.editor.create(element, _.extend({
+    const editor = monaco.editor.create(element, _.extend({
       scrollBeyondLastLine: false,
       language: 'javascript',
       automaticLayout: true,
@@ -18,5 +18,6 @@ function createCodeEditor(element, options) {
     }, options));
 
     $(element).attr('data-installed', 'true');
+    return editor;
   }
 }

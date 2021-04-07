@@ -398,8 +398,8 @@ public:
     void Terminate();
     void Restart();
     void ToggleDevTools();
-    void ShowActionsUpdater();
-    void HideActionsUpdater();
+    void ShowActionUpdater();
+    void HideActionUpdater();
     std::pair<int,int> GetScrollPosition();
     void ScrollUp();
     void ScrollDown();

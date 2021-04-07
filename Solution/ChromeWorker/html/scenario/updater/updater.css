@@ -2,14 +2,14 @@
  * Progress styles *
  *******************/
 
-.actions-updater-progress > .progress-inner {
+.action-updater-progress > .progress-inner {
   background: #538fb5;
   position: absolute;
   min-height: 100%;
   height: inherit;
 }
 
-.actions-updater-progress > .progress-label {
+.action-updater-progress > .progress-label {
   letter-spacing: -0.2px;
   text-align: center;
   line-height: 18px;
@@ -21,7 +21,7 @@
   flex: 1;
 }
 
-.actions-updater-progress {
+.action-updater-progress {
   background: rgba(83, 143, 181, 0.3);
   border: 1px solid #538fb5;
   -webkit-user-select: none;
@@ -37,38 +37,38 @@
  * Header styles *
  *****************/
 
-.actions-updater-header > h1 + h2 {
+.action-updater-header > h1 + h2 {
   margin-top: 3px;
 }
 
-.actions-updater-header > h1 {
+.action-updater-header > h1 {
   font-weight: bold;
   font-size: 16px;
   opacity: 1;
   margin: 0;
 }
 
-.actions-updater-header > h2 {
+.action-updater-header > h2 {
   font-weight: normal;
   font-size: 12px;
   opacity: 0.5;
   margin: 0;
 }
 
-.actions-updater-header {
+.action-updater-header {
   -webkit-user-select: none;
   user-select: none;
   line-height: 18px;
   color: #606060;
 }
 
-.actions-updater-footer {
+.action-updater-footer {
   justify-content: space-between;
   align-items: center;
   display: flex;
 }
 
-.actions-updater-panel {
+.action-updater-panel {
   flex-direction: column;
   margin-bottom: 36px;
   margin-top: 28px;
@@ -80,23 +80,23 @@
  * Logger styles *
  *****************/
 
-.actions-updater-log-message > span:first-of-type {
+.action-updater-log-message > span:first-of-type {
   opacity: 1.0;
 }
 
-.actions-updater-log-message > span:last-of-type {
+.action-updater-log-message > span:last-of-type {
   opacity: 0.5;
 }
 
-.actions-updater-log-message > span + span {
+.action-updater-log-message > span + span {
   margin-left: 9px;
 }
 
-.actions-updater-log > div + div {
+.action-updater-log > div + div {
   margin-top: 8px;
 }
 
-.actions-updater-log-message {
+.action-updater-log-message {
   letter-spacing: -0.2px;
   font-weight: normal;
   margin-bottom: 8px;
@@ -105,7 +105,7 @@
   color: #fff;
 }
 
-.actions-updater-log {
+.action-updater-log {
   max-height: -webkit-fill-available;
   background: #3d3f42;
   overflow-y: visible;
@@ -118,29 +118,29 @@
  * Stats styles *
  ****************/
 
-.actions-updater-stats-item + .actions-updater-stats-item {
+.action-updater-stats-item + .action-updater-stats-item {
   border-left: 1px solid #606060;
 }
 
-.actions-updater-stats-item:nth-child(1) {
+.action-updater-stats-item:nth-child(1) {
   flex-basis: 40%;
   color: #fff;
   opacity: 0.5;
 }
 
-.actions-updater-stats-item:nth-child(2) {
+.action-updater-stats-item:nth-child(2) {
   color: #669fc2;
 }
 
-.actions-updater-stats-item:nth-child(3) {
+.action-updater-stats-item:nth-child(3) {
   color: #d8695f;
 }
 
-.actions-updater-stats-item > span {
+.action-updater-stats-item > span {
   margin-left: 8px;
 }
 
-.actions-updater-stats-item {
+.action-updater-stats-item {
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
   padding: 13px 16px;
@@ -153,7 +153,7 @@
   opacity: 1;
 }
 
-.actions-updater-stats {
+.action-updater-stats {
   border: 1px solid #606060;
   background: #3d3f42;
   display: flex;
@@ -163,17 +163,17 @@
  * Button styles *
  *****************/
 
-.actions-updater-copy-btn:focus {
+.action-updater-copy-btn:focus {
   opacity: 1.0;
   outline: 0;
 }
 
-.actions-updater-copy-btn:hover {
+.action-updater-copy-btn:hover {
   opacity: 0.8;
   outline: 0;
 }
 
-.actions-updater-copy-btn {
+.action-updater-copy-btn {
   transition: opacity 0.25s ease-in-out;
   justify-content: center;
   letter-spacing: -0.2px;
@@ -194,15 +194,15 @@
  * Select styles *
  *****************/
 
-.dropdown-menu > li > a.actions-updater-select-option.active:hover,
-.dropdown-menu > li > a.actions-updater-select-option.active,
-.dropdown-menu > li > a.actions-updater-select-option:hover {
+.dropdown-menu > li > a.action-updater-select-option.active:hover,
+.dropdown-menu > li > a.action-updater-select-option.active,
+.dropdown-menu > li > a.action-updater-select-option:hover {
   background-color: #606060;
   background-image: none;
   color: #fff;
 }
 
-.dropdown-menu > li > a.actions-updater-select-option {
+.dropdown-menu > li > a.action-updater-select-option {
   transition: background-color 0.3s ease-in-out;
   border: thin solid transparent;
   justify-content: space-between;
@@ -216,27 +216,27 @@
   outline: 0;
 }
 
-.bootstrap-select > .actions-updater-select:focus,
-.bootstrap-select > .actions-updater-select:hover,
-.bootstrap-select.open > .actions-updater-select {
+.bootstrap-select > .action-updater-select:focus,
+.bootstrap-select > .action-updater-select:hover,
+.bootstrap-select.open > .action-updater-select {
   background-color: #787878;
   outline: 0 !important;
 }
 
-.actions-updater-select.disabled {
+.action-updater-select.disabled {
   background-color: #606060 !important;
   opacity: 0.8;
 }
 
-.actions-updater-select:focus {
+.action-updater-select:focus {
   color: #fff;
 }
 
-.actions-updater-select:hover {
+.action-updater-select:hover {
   color: #fff;
 }
 
-.actions-updater-select {
+.action-updater-select {
   transition: all 0.3s ease-in-out;
   background-color: #606060;
   letter-spacing: -0.2px;
@@ -254,7 +254,7 @@
  * Global styles *
  *****************/
 
-.actions-updater {
+.action-updater {
   flex-direction: column;
   background: #ffffff;
   padding: 25px 20px;
@@ -271,29 +271,29 @@
  * Modal styles *
  ****************/
 
-.actions-updater-modal-text + .actions-updater-modal-text {
+.action-updater-modal-text + .action-updater-modal-text {
   margin-left: 0px;
 }
 
-.actions-updater-modal-text + .actions-updater-modal-text {
+.action-updater-modal-text + .action-updater-modal-text {
   margin-top: 12px;
 }
 
 @media only screen and (max-width: 355px) {
-  .actions-updater-modal-footer {
+  .action-updater-modal-footer {
     flex-direction: column;
     min-height: 85px;
   }
 }
 
 @media only screen and (min-width: 355px) {
-  .actions-updater-modal-footer {
+  .action-updater-modal-footer {
     flex-direction: row;
     min-height: 0px;
   }
 }
 
-.actions-updater-modal-content {
+.action-updater-modal-content {
   background-color: #ffffff;
   border: 1px solid #f7f7f8;
   -webkit-user-select: none;
@@ -303,27 +303,27 @@
   user-select: none;
 }
 
-.actions-updater-modal-header {
+.action-updater-modal-header {
   line-height: 18px;
   font-weight: bold;
   font-size: 16px;
   color: #606060;
 }
 
-.actions-updater-modal-footer {
+.action-updater-modal-footer {
   justify-content: space-between;
   align-items: normal;
   display: flex;
 }
 
-.actions-updater-modal-body {
+.action-updater-modal-body {
   border: 1px dashed #606060;
   background: #f7f7f8;
   margin: 27px 0 36px;
   padding: 16px 20px;
 }
 
-.actions-updater-modal-text {
+.action-updater-modal-text {
   background: url(../icons/angle.svg) no-repeat;
   letter-spacing: -0.2px;
   padding: 0 0 0 30px;
@@ -333,15 +333,15 @@
   color: #606060;
 }
 
-.actions-updater-modal-link {
+.action-updater-modal-link {
   text-decoration: underline;
   color: #9d996c;
 }
 
-.actions-updater-modal-link:hover {
+.action-updater-modal-link:hover {
   color: rgba(157, 153, 108, 0.8);
 }
 
-.actions-updater-modal-link:focus {
+.action-updater-modal-link:focus {
   color: rgba(157, 153, 108, 0.8);
 }

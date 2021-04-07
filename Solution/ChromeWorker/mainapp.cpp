@@ -4619,18 +4619,18 @@ void MainApp::MainContextMenu(POINT& p)
 
 }
 
-void MainApp::ShowActionsUpdater()
+void MainApp::ShowActionUpdater()
 {
     if(BrowserScenario)
     {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ShowActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ShowActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
 }
 
-void MainApp::HideActionsUpdater()
+void MainApp::HideActionUpdater()
 {
     if(BrowserScenario)
     {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_HideActionsUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_HideActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
 }

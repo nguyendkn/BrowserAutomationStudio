@@ -2013,7 +2013,7 @@
       },
 
       key: function(e) {
-        if ($('.modal.in').length == 0 && _ActionsUpdater.$el.is(':hidden')) {
+        if ($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden')) {
           if (e.keyCode == 70 && e.ctrlKey) {
             _ActionFinder.Show()
           }
@@ -4121,7 +4121,7 @@
 
     var _VisualizeLabels = new VisualizeLabels()
 
-    var _ActionsUpdater = new Scenario.ActionsUpdater();
+    var _ActionUpdater = new Scenario.ActionUpdater();
 
     _MultiSelect.Init()
 
@@ -5756,7 +5756,7 @@
         if (typeof(DontInterrupt) === 'undefined') {
           if (_MainView.isEdit) {
             _MainView.taskeditcustom(Name, Code, donotexecuteduringrecord);
-            _ActionsUpdater.model.trigger('toolbox.editSuccess');
+            _ActionUpdater.model.trigger('toolbox.editSuccess');
             $('#editmodal').modal('hide');
             return;
           }
@@ -5967,18 +5967,18 @@
 
     function BrowserAutomationStudio_HandleEvent(name, data) {
       try {
-        _ActionsUpdater.model.trigger(name, JSON.parse(data));
+        _ActionUpdater.model.trigger(name, JSON.parse(data));
       } catch (e) {
-        _ActionsUpdater.model.trigger(name);
+        _ActionUpdater.model.trigger(name);
       }
     }
 
-    function BrowserAutomationStudio_ShowActionsUpdater() {
-      _ActionsUpdater.show();
+    function BrowserAutomationStudio_ShowActionUpdater() {
+      _ActionUpdater.show();
     }
 
-    function BrowserAutomationStudio_HideActionsUpdater() {
-      _ActionsUpdater.hide();
+    function BrowserAutomationStudio_HideActionUpdater() {
+      _ActionUpdater.hide();
     }
 
     function BrowserAutomationStudio_RunningTask() {

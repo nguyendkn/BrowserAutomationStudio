@@ -12517,7 +12517,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         BrowserAutomationStudio_FillGotoLabels()
       }
 
-      BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');
+      if (data['d'].some((el) => $(`#${el.id}`).data('is-code-editor'))) {
+        _MainView.once('monacoEditorCreated', () => {
+          BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');
+        });
+      } else {
+        BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');
+      }
     }
 
     function BrowserAutomationStudio_EditEnd()
@@ -12687,7 +12693,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         else
           ResText = $("#" + id).val();
 
-        console.log(ResTextTypeIsEditor)
+        // console.log(ResTextTypeIsEditor)
 
         loader.SetIsString((ResTextTypeIsString && !ResTextTypeIsEditor) || ForceString)
         var ResTextUpdated = loader.Resolve(ResText+"");

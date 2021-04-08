@@ -25,5 +25,7 @@
     $(element).attr('data-installed', 'true');
     editors = [editor];
     return editor;
-  }
+  };
+
+  global.isEditorInstalled = () => editors.length > 0;
 })(window);

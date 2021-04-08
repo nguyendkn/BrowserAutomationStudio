@@ -264,7 +264,7 @@
     },
 
     show: function () {
-      if (!this.$el.is(':visible')) {
+      if (!this.$el.is(':visible') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.show();
         this.trigger('show');
@@ -273,7 +273,7 @@
     },
 
     hide: function () {
-      if (!this.$el.is(':hidden')) {
+      if (!this.$el.is(':hidden') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.hide();
         this.trigger('hide');

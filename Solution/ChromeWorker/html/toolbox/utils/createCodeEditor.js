@@ -1,29 +1,29 @@
 (function (global) {
-  const editors = [];
+  let editors = [];
 
   global.createCodeEditor = function (element, options) {
-    if ($(element).attr('data-installed') !== 'true') {
-      const createEditorHandler = monaco.editor.onDidCreateEditor((editor) => {
-        _MainView.trigger('monacoEditorCreated', editor);
-        createEditorHandler.dispose();
-      });
+    if ($(element).attr('data-installed') == 'true') return _.last(editors);
 
-      const createModelHandler = monaco.editor.onDidCreateModel((model) => {
-        _MainView.trigger('monacoModelCreated', model);
-        createModelHandler.dispose();
-      });
+    const createEditorHandler = monaco.editor.onDidCreateEditor((editor) => {
+      _MainView.trigger('monacoEditorCreated', editor);
+      createEditorHandler.dispose();
+    });
 
-      const editor = monaco.editor.create(element, _.extend({
-        scrollBeyondLastLine: false,
-        language: 'javascript',
-        automaticLayout: true,
-        fontSize: 12
-      }, options));
+    const createModelHandler = monaco.editor.onDidCreateModel((model) => {
+      _MainView.trigger('monacoModelCreated', model);
+      createModelHandler.dispose();
+    });
 
-      editors.forEach((editor) => editor.dispose());
-      $(element).attr('data-installed', 'true');
-      editors.push(editor);
-      return editor;
-    }
+    const editor = monaco.editor.create(element, _.extend({
+      scrollBeyondLastLine: false,
+      language: 'javascript',
+      automaticLayout: true,
+      fontSize: 12
+    }, options));
+
+    editors.forEach((editor) => editor.dispose());
+    $(element).attr('data-installed', 'true');
+    editors = [editor];
+    return editor;
   }
 })(window);

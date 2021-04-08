@@ -3,27 +3,27 @@
  *******************/
 
 .action-updater-progress > .progress-inner {
+  -webkit-transition: width 0.6s ease;
+  transition: width 0.6s ease;
   background: #538fb5;
-  position: absolute;
-  min-height: 100%;
-  height: inherit;
+  height: 100%;
 }
 
 .action-updater-progress > .progress-label {
   letter-spacing: -0.2px;
+  position: absolute;
   text-align: center;
   line-height: 18px;
   font-weight: 500;
   font-size: 14px;
   padding: 5px 0;
   color: #fff;
-  z-index: 1;
-  flex: 1;
+  width: 100%;
 }
 
 .action-updater-progress {
   background: rgba(83, 143, 181, 0.3);
-  border: 1px solid #538fb5;
+  border: thin solid #538fb5;
   -webkit-user-select: none;
   -webkit-user-drag: none;
   position: relative;

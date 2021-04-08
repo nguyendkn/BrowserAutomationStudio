@@ -22,10 +22,7 @@
 
       if (value >= min && value <= max) {
         this.$label.text(`${value} / ${max}`);
-        this.$inner.animate({
-          width: `${Math.round((value * 100) / max)}%`
-        }, 250);
-
+        this.$inner.width(`${Math.round((value * 100) / max)}%`);
         this.current = value;
       }
     }

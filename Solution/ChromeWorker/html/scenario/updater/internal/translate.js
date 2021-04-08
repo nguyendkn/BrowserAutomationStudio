@@ -18,6 +18,9 @@ _.extend(_L, {
     ru: 'контекстном меню'
   },
 
+  'The module containing this action is damaged or disabled.': {
+    ru: 'Модуль, содержащий данное действие поврежден или отключен'
+  },
   'All actions in the current function': {
     ru: 'Все действия в текущей фунцкии'
   },

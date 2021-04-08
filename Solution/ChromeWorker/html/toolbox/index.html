@@ -12518,9 +12518,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       }
 
       if (data['d'].some((el) => $(`#${el.id}`).data('is-code-editor'))) {
-        _MainView.once('monacoEditorCreated', () => {
+        if (!isEditorInstalled()) {
+          _MainView.once('monacoEditorCreated', () => {
+            BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');
+          });
+        } else {
           BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');
-        });
+        }
       } else {
         BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');
       }

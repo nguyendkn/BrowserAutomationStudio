@@ -251,7 +251,6 @@
 
     render: function () {
       if (!this.$el.is(':empty')) return this;
-      _TaskCollection.on('all', this.update, this);
       this.$el.html(this.template()).appendTo('body');
       this.$('#actionUpdaterProgress').progressBar({});
       this.$('#actionUpdaterSelect').selectpicker({

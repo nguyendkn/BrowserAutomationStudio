@@ -207,29 +207,33 @@
     className: 'action-updater',
 
     initialize: function () {
-      this.model = new ActionUpdaterModel()
-        .on('change:isStarted', (_, isStarted) => {
-          this.$('#actionUpdaterSelect').prop('disabled', isStarted);
-          this.$('#actionUpdaterSelect').selectpicker('refresh');
-        })
-        .on('change:successCount', (_, count) => {
-          this.$('#actionUpdaterProgress').progressBar('step');
-          this.$('#actionUpdaterSuccessCount').text(count);
-        })
-        .on('change:errorsCount', (_, count) => {
-          this.$('#actionUpdaterProgress').progressBar('step');
-          this.$('#actionUpdaterErrorsCount').text(count);
-        })
-        .on('change:tasks', (_, { length }) => {
-          this.$('#actionUpdaterProgress').data('max', length);
-          this.$('#actionUpdaterProgress').progressBar('reset');
-          this.$('#actionUpdaterTotalCount').text(length);
-        })
-        .on('log', (data) => this.log(data));
+      this.model = new ActionUpdaterModel();
+      this.modal = new ActionUpdaterModal();
 
-      this.modal = new ActionUpdaterModal({});
-      this.modal.on('accept', this.show, this);
-      this.modal.on('cancel', this.hide, this);
+      this.listenTo(this.model, 'change:isStarted', (_, isStarted) => {
+        this.$('#actionUpdaterSelect').prop('disabled', isStarted);
+        this.$('#actionUpdaterSelect').selectpicker('refresh');
+      });
+
+      this.listenTo(this.model, 'change:successCount', (_, count) => {
+        this.$('#actionUpdaterProgress').progressBar('step');
+        this.$('#actionUpdaterSuccessCount').text(count);
+      });
+
+      this.listenTo(this.model, 'change:errorsCount', (_, count) => {
+        this.$('#actionUpdaterProgress').progressBar('step');
+        this.$('#actionUpdaterErrorsCount').text(count);
+      });
+
+      this.listenTo(this.model, 'change:tasks', (_, { length }) => {
+        this.$('#actionUpdaterProgress').data('max', length);
+        this.$('#actionUpdaterProgress').progressBar('reset');
+        this.$('#actionUpdaterTotalCount').text(length);
+      });
+
+      this.listenTo(this.modal, 'accept', this.show);
+      this.listenTo(this.modal, 'cancel', this.hide);
+      this.listenTo(this.model, 'log', this.log);
       this.on('show', this.update, this);
     },
 

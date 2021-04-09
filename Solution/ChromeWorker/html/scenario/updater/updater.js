@@ -32,16 +32,12 @@
 
         if (_A[dat['s']]) {
           const result = await new Promise((resolve) => {
-            this.on('toolbox.editStarted', () => {
-              this.off('toolbox.editStarted');
-
-              this.on('toolbox.editSuccess', () => {
-                this.off('toolbox.editSuccess');
+            this.once('toolbox.editStarted', () => {
+              this.once('toolbox.editSuccess', () => {
                 resolve({ error: false, message: null });
               });
 
-              this.on('toolbox.editFail', (err) => {
-                this.off('toolbox.editFail');
+              this.once('toolbox.editFail', (err) => {
                 resolve({ error: true, message: err });
               });
 

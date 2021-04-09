@@ -21,8 +21,7 @@ public:
     {
         Scenario,
         Devtools,
-        Detector,
-        Updater
+        Detector
     };
     enum StateClass{Ready,Hold,Finished}State;
 

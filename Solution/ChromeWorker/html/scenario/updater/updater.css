@@ -257,6 +257,7 @@
   flex-direction: column;
   background: #ffffff;
   padding: 25px 20px;
+  min-width: 405px;
   position: fixed;
   z-index: 100000;
   display: flex;

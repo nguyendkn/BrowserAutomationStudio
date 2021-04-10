@@ -14,17 +14,30 @@
       this.reset();
     }
 
-    step(value) {
+    step(value, animate = true) {
       const max = this.max;
       const min = this.min;
       if (!this.current) this.current = min;
       if (value == null) value = this.current + 1;
 
       if (value >= min && value <= max) {
+        const percent = Math.round((value / max) * this.$element.outerWidth());
+        this.$inner.animate({ width: `${percent}px` }, {
+          duration: animate ? 200 : 0,
+          easing: 'swing',
+          queue: false
+        });
         this.$label.text(`${value} / ${max}`);
-        this.$inner.width(`${Math.round((value * 100) / max)}%`);
         this.current = value;
       }
+    }
+
+    finish(animate = false) {
+      this.step(this.max, animate);
+    }
+
+    reset(animate = false) {
+      this.step(this.min, animate);
     }
 
     get max() {
@@ -36,25 +49,23 @@
       const min = this.$element.data('min');
       return min != null ? min : 0;
     }
-
-    finish() {
-      this.step(this.max);
-    }
-
-    reset() {
-      this.step(this.min);
-    }
   };
 
   $.fn.progressBar = function (option, ...args) {
     return this.each(function () {
-      const $element = $(this); let data = $element.data('bs.progress');
+      const $element = $(this); let data = $element.data('progress');
 
-      if (!data && typeof (option) === 'object') {
-        $element.data('bs.progress', (data = new ProgressBar(this, option)));
+      if (!data) {
+        $element.data('progress', (data = new ProgressBar(this, _.extend({}, option))));
       }
 
-      if (typeof (option) === 'string') data[option](args[0]);
+      if (typeof (option) === 'string' && data[option]) {
+        if (args.length) {
+          data[option].apply(data, args);
+        } else {
+          data[option].apply(data, []);
+        }
+      }
     })
   };
 

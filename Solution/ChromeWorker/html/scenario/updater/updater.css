@@ -3,8 +3,6 @@
  *******************/
 
 .action-updater-progress > .progress-inner {
-  -webkit-transition: width 0.6s ease;
-  transition: width 0.6s ease;
   background: #538fb5;
   height: 100%;
 }

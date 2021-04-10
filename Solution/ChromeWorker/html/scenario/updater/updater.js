@@ -211,6 +211,7 @@
       this.modal = new ActionUpdaterModal();
 
       this.listenTo(this.model, 'change:isStarted', (_, isStarted) => {
+        if (isStarted) this.$('#actionUpdaterProgress').progressBar('reset');
         this.$('#actionUpdaterSelect').prop('disabled', isStarted);
         this.$('#actionUpdaterSelect').selectpicker('refresh');
       });
@@ -252,7 +253,7 @@
     render: function () {
       if (!this.$el.is(':empty')) return this;
       this.$el.html(this.template()).appendTo('body');
-      this.$('#actionUpdaterProgress').progressBar({});
+      this.$('#actionUpdaterProgress').progressBar();
       this.$('#actionUpdaterSelect').selectpicker({
         style: 'action-updater-select',
         template: { caret: '' },

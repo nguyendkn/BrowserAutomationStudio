@@ -178,11 +178,12 @@
   letter-spacing: -0.2px;
   background: #3d3f42;
   align-items: center;
+  user-select: none;
   line-height: 15px;
   font-weight: 500;
   font-size: 12px;
   padding: 12px 0;
-  color: #ffffff;
+  color: #fff;
   display: flex;
   width: 100%;
   opacity: 1;

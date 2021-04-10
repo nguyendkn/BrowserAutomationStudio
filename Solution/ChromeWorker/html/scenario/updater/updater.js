@@ -10,16 +10,20 @@
     updateTasks(type = 'all') {
       if (this.get('isStarted')) return;
 
-      this.set('tasks', _.filter(_TaskCollection.toJSON().map((task, index) => ({ ...task, index })), (task) => {
-        const id = Number(task['id']);
+      this.set('tasks', _.filter(_TaskCollection.map((task, index) => ({
+        id: Number(task.get('id')),
+        dat: task.dat(),
+        index
+      })), ({ id, dat }) => {
+        if (dat && dat.role && dat.role === 'slave') return false;
 
         if (id !== 0 && !IsFunctionNode(id)) {
-          if (type === 'current') return GetFunctionData(id)['name'] === _GobalModel.get('function_name');
+          if (type === 'current') return GetFunctionData(id).name === _GobalModel.get('function_name');
           return type === 'selected' ? task['is_selected'] : true;
         }
 
         return false;
-      }).map(({ index, id }) => ({ id, index, dat: _TaskCollection.at(index).dat() })));
+      }));
     },
 
     async startUpdate() {

@@ -54,10 +54,7 @@
   $.fn.progressBar = function (option, ...args) {
     return this.each(function () {
       const $element = $(this); let data = $element.data('progress');
-
-      if (!data) {
-        $element.data('progress', (data = new ProgressBar(this, _.extend({}, option))));
-      }
+      if (!data) $element.data('progress', (data = new ProgressBar(this)));
 
       if (typeof (option) === 'string' && data[option]) {
         if (args.length) {

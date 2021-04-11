@@ -7,27 +7,6 @@
       tasks: []
     },
 
-    updateTasks(type = 'all') {
-      if (this.get('isStarted')) return;
-
-      this.set('tasks', _.filter(_TaskCollection.map((task, index) => ({
-        isSelected: task.get('is_selected'),
-        isFold: task.get('is_fold'),
-        id: Number(task.get('id')),
-        dat: task.dat(),
-        index
-      })), ({ id, dat, isFold, isSelected }) => {
-        if (dat && dat.role && dat.role === 'slave') return false;
-
-        if (id !== 0 && !IsFunctionNode(id)) {
-          if (type === 'current') return GetFunctionData(id).name === _GobalModel.get('function_name');
-          return type === 'selected' ? isSelected : true;
-        }
-
-        return false;
-      }));
-    },
-
     async startUpdate() {
       this.set('isStarted', true);
       this.set('successCount', 0);
@@ -308,8 +287,9 @@
 
     update: function () {
       const val = this.$('#actionUpdaterSelect').val();
-      this.$('.action-updater-select').trigger('blur');
-      this.model.updateTasks(val);
+      this.$('#actionUpdaterSelect').trigger('blur');
+      const tasks = window.Scenario.filterTasks(val);
+      this.model.set('tasks', tasks);
     },
 
     accept: function () {

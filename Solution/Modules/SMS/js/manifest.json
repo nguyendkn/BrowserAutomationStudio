@@ -16,6 +16,23 @@
             "name": "SMS_GetBalance",
             "select": "SMS_GetBalance_select.js",
             "template": "{{service}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "SMS_GetNumber_code.js",
+                    "name": "SMS_GetNumber_code"
+                }
+            ],
+            "description": {
+                "en": "Get phone number",
+                "ru": "Получить номер телефона"
+            },
+            "interface": "SMS_GetNumber_interface.js",
+            "is_element": false,
+            "name": "SMS_GetNumber",
+            "select": "SMS_GetNumber_select.js",
+            "template": "{{service}} ({{site}}) -> {{Save}}"
         }
 	],
     "api_version": 1,
@@ -45,10 +62,15 @@
     "languages": [],
     "localize": {
 		"API key": {"ru":"API ключ"},
+		"Server url": {"ru":"Url сервера"},
 		"SMS receiving service.": {"ru":"Сервис приема СМС."},
 		"API key of the SMS receiving service.": {"ru":"API ключ сервиса приема СМС."},
 		"Get the balance of the SMS receiving service.": {"ru":"Получите баланс сервиса приема СМС."},
-		"Variable in which, after successful execution of the action, the balance will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан баланс."}
+		"Variable in which, after successful execution of the action, the balance will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан баланс."},
+		
+		"Custom site": {"ru":"Пользовательский сайт"},
+		"Custom country": {"ru":"Пользовательская страна"},
+		"Get phone number from the SMS receiving service.": {"ru":"Получить номер телефона от сервиса приема СМС."}
     },
     "major_version": 1,
     "minor_version": 0,

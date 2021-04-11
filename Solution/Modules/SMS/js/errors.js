@@ -1,5 +1,6 @@
-function _SMS_ErrorHandler(config, error){
+function _SMS_ErrorHandler(config, error, errorText){
 	error = error.toString();
+	errorText = _avoid_nilb(errorText, "").toString();
 	var errors = {
 		"FAILED_REQUEST": {
 			"ru": "Не удалось успешно выполнить запрос к сервису за 10 попыток.",
@@ -16,6 +17,9 @@ function _SMS_ErrorHandler(config, error){
 			"en": "Timed out for execution of an action getState.",
 			"action": "fail"
 		},
+		
+		/* sms-activate */
+		
 		"BAD_KEY": {
 			"ru": "Неверный API-ключ.",
 			"en": "Invalid API key.",
@@ -41,20 +45,17 @@ function _SMS_ErrorHandler(config, error){
 		"BAD_ACTION": {
 			"ru": "Некорректное действие.",
 			"en": "Incorrect action.",
-			"action": "die",
-			"instantly": true
+			"action": "fail"
 		},
 		"BAD_SERVICE": {
-			"ru": "Некорректное наименование сервиса.",
-			"en": "Incorrect service name.",
-			"action": "die",
-			"instantly": true
+			"ru": "Некорректное наименование сайта.",
+			"en": "Incorrect site name.",
+			"action": "fail"
 		},
 		"WRONG_EXCEPTION_PHONE": {
 			"ru": "Некорректные исключающие префиксы.",
 			"en": "Invalid exclusion prefixes.",
-			"action": "die",
-			"instantly": true
+			"action": "fail"
 		},
 		"NO_BALANCE_FORWARD": {
 			"ru": "Недостаточно средств для покупки переадресации.",
@@ -65,14 +66,12 @@ function _SMS_ErrorHandler(config, error){
 		"BAD_FORWARD": {
 			"ru": "Некорректно указана переадресация.",
 			"en": "Redirection specified incorrectly.",
-			"action": "die",
-			"instantly": true
+			"action": "fail"
 		},
 		"NOT_AVAILABLE": {
 			"ru": "Для страны, которую вы используете, недоступна покупка мультисервисов.",
 			"en": "Multiservice purchase is not available for the country you are using.",
-			"action": "die",
-			"instantly": true
+			"action": "fail"
 		},
 		"NO_ACTIVATION": {
 			"ru": "id активации не существует.",
@@ -107,8 +106,7 @@ function _SMS_ErrorHandler(config, error){
 		"NO_ID_RENT": {
 			"ru": "Не указан id Аренды.",
 			"en": "Rent id not specified.",
-			"action": "die",
-			"instantly": true
+			"action": "fail"
 		},
 		"INVALID_PHONE": {
 			"ru": "Номер арендован не вами (неправильный id аренды).",
@@ -164,17 +162,288 @@ function _SMS_ErrorHandler(config, error){
 			"ru": "Неверное время. Доступное количество часов от 4 до 1344.",
 			"en": "Wrong time. Available number of hours from 4 to 1344.",
 			"action": "fail"
+		},
+		"BANNED": {
+			"ru": "Аккаунт заблокирован до " + errorText,
+			"en": "Account blocked until " + errorText,
+			"action": "fail"
+		},
+		
+		/* sms-reg */
+		
+		"ERROR_WRONG_KEY": {
+			"ru": "Неверный API-ключ.",
+			"en": "Invalid API key.",
+			"action": "die",
+			"instantly": true
+		},
+		"ERROR_KEY_NEED_CHANGE": {
+			"ru": "API-ключ требует замены.",
+			"en": "API key needs to be replaced.",
+			"action": "die",
+			"instantly": true
+		},
+		"ERROR_NO_KEY": {
+			"ru": "API-ключ не указан.",
+			"en": "API key not specified.",
+			"action": "die",
+			"instantly": true
+		},
+		"WARNING_LOW_BALANCE": {
+			"ru": "Недостаточно денег на счету.",
+			"en": "Not enough money in the account.",
+			"action": "die",
+			"instantly": false
+		},
+		"Service not define": {
+			"ru": "Сайт не определен.",
+			"en": "Site not defined.",
+			"action": "fail"
+		},
+		"TZID must be number": {
+			"ru": "Значение TZID должно быть числом.",
+			"en": "The TZID value must be a number.",
+			"action": "fail"
+		},
+		"There is no TZID value": {
+			"ru": "TZID не указано.",
+			"en": "TZID not specified.",
+			"action": "fail"
+		},
+		"Wrong characters in parameters": {
+			"ru": "Недопустимые символы в передаваемых данных.",
+			"en": "Invalid characters in the transmitted data.",
+			"action": "fail"
+		},
+		"Rate change can be made when all current operations finished": {
+			"ru": "Изменение ставки возможно после завершения всех операций.",
+			"en": "Changing the rate is possible after the completion of all operations.",
+			"action": "fail"
+		},
+		"WARNING_WAIT15MIN": {
+			"ru": "Вы не использовали много из выданных номеров и поэтому выдача новых номеров заморожена на 15 минут.",
+			"en": "You have not used many of the issued numbers and therefore the issuance of new numbers is frozen for 15 minutes.",
+			"action": "fail"
+		},
+		"WARNING_NO_NUMS": {
+			"ru": "Нет подходящих номеров.",
+			"en": "No matching numbers.",
+			"action": "fail"
+		},
+		"TZ_OVER_OK": {
+			"ru": "Операция завершена.",
+			"en": "Operation completed.",
+			"action": "fail"
+		},
+		"TZ_OVER_EMPTY": {
+			"ru": "Ответ не поступил за отведенное время.",
+			"en": "The answer was not received within the allotted time.",
+			"action": "fail"
+		},
+		"TZ_OVER_NR": {
+			"ru": "Вы не отправили запрос методом setReady.",
+			"en": "You did not send the request with the setReady method.",
+			"action": "fail"
+		},
+		"TZ_DELETED": {
+			"ru": "Операция удалена, средства возвращены.",
+			"en": "Operation deleted, funds returned.",
+			"action": "fail"
+		},
+		
+		/* smspva */
+		
+		"API KEY NOT FOUND!": {
+			"ru": "Неверный API-ключ.",
+			"en": "Invalid API key.",
+			"action": "die",
+			"instantly": true
+		},
+		"Service NOT FOUND!": {
+			"ru": "Сайт не найден.",
+			"en": "Site not found.",
+			"action": "fail"
+		},
+		
+		/* onlinesim */
+		
+		"ACCOUNT_BLOCKED": {
+			"ru": "Аккаунт заблокирован.",
+			"en": "Account is blocked.",
+			"action": "fail"
+		},
+		"ERROR_NO_SERVICE": {
+			"ru": "Сайт не указан.",
+			"en": "Site not specified.",
+			"action": "fail"
+		},
+		"REQUEST_NOT_FOUND": {
+			"ru": "Метод API не указан.",
+			"en": "API method not specified.",
+			"action": "fail"
+		},
+		"API_ACCESS_DISABLED": {
+			"ru": "API выключено.",
+			"en": "API disabled.",
+			"action": "fail"
+		},
+		"API_ACCESS_IP": {
+			"ru": "Доступ с данного ip выключен в профиле.",
+			"en": "Access from this ip is disabled in the profile.",
+			"action": "fail"
+		},
+		"EXCEEDED_CONCURRENT_OPERATIONS": {
+			"ru": "Превышено количество одновременно заказанных номеров для Вашего аккаунта.",
+			"en": "Maximum quantity of numbers booked concurrently is exceeded for your account.",
+			"action": "fail"
+		},
+		"NO_NUMBER": {
+			"ru": "Для выбранного сайта свободные номера временно отсутствуют.",
+			"en": "Temporarily no numbers available for the selected site.",
+			"action": "fail"
+		},
+		"TIME_INTERVAL_ERROR": {
+			"ru": "Отложенный прием СМС не возможен в данный интервал времени.",
+			"en": "Delayed SMS reception is not possible at this interval of time.",
+			"action": "fail"
+		},
+		"INTERVAL_CONCURRENT_REQUESTS_ERROR": {
+			"ru": "Превышено количество одновременных запросов на выдачу номера, повторите запрос позднее.",
+			"en": "Maximum quantity of concurrent requests for number issue is exceeded, try again later.",
+			"action": "fail"
+		},
+		"TRY_AGAIN_LATER": {
+			"ru": "Запрос временно не может быть выполнен.",
+			"en": "Temporarily unable to perform the request.",
+			"action": "fail"
+		},
+		"NO_FORWARD_FOR_DEFFER": {
+			"ru": "Активация переадресации возможна только на онлайн приеме.",
+			"en": "Forwarding can be activated only for online reception.",
+			"action": "fail"
+		},
+		"NO_NUMBER_FOR_FORWARD": {
+			"ru": "Нет номеров для переадресации.",
+			"en": "There are no numbers for forwarding.",
+			"action": "fail"
+		},
+		"ERROR_LENGTH_NUMBER_FOR_FORWARD": {
+			"ru": "Номер для переадресации имеет не верную длину.",
+			"en": "Wrong length of the number for forwarding.",
+			"action": "fail"
+		},
+		"DUPLICATE_OPERATION": {
+			"ru": "Добавление операций с одинаковыми параметрами.",
+			"en": "Adding operations with identical parameters.",
+			"action": "fail"
+		},
+		"ERROR_NO_TZID": {
+			"ru": "TZID не указано.",
+			"en": "TZID not specified.",
+			"action": "fail"
+		},
+		"ERROR_NO_OPERATIONS": {
+			"ru": "Нет операций.",
+			"en": "No operations.",
+			"action": "fail"
+		},
+		"ACCOUNT_IDENTIFICATION_REQUIRED": {
+			"ru": "Необходимо пройти идентификацию: для заказа мессенджера - любым способом, для переадресации - по паспорту.",
+			"en": "You have to go through an identification process: to order a messenger - in any way, for forward - on the passport.",
+			"action": "fail"
+		},
+		"ERROR_WRONG_TZID": {
+			"ru": "Неверный номер операции.",
+			"en": "Wrong operation number.",
+			"action": "fail"
+		},
+		"NO_COMPLETE_TZID": {
+			"ru": "Невозможно завершить операцию.",
+			"en": "Unable to complete the operation.",
+			"action": "fail"
+		},
+		"UNDEFINED_COUNTRY": {
+			"ru": "Не верно указана страна.",
+			"en": "Country specified incorrectly.",
+			"action": "fail"
+		},
+		"UNDEFINED_DAYS": {
+			"ru": "Не верно указано количество дней.",
+			"en": "The number of days is incorrect.",
+			"action": "fail"
+		},
+		
+		/* sms-acktiwator */
+		
+		101: {
+			"ru": "Сайт не найден.",
+			"en": "Site not found.",
+			"action": "fail"
+		},
+		102: {
+			"ru": "Недостаточно денег на счету.",
+			"en": "Not enough money in the account.",
+			"action": "die",
+			"instantly": false
+		},
+		103: {
+			"ru": "Нет доступных номеров.",
+			"en": "No numbers available.",
+			"action": "fail"
+		},
+		201: {
+			"ru": "API-ключ не указан.",
+			"en": "API key not specified.",
+			"action": "die",
+			"instantly": true
+		},
+		202: {
+			"ru": "Неверный API-ключ.",
+			"en": "Invalid API key.",
+			"action": "die",
+			"instantly": true
+		},
+		203: {
+			"ru": "Аккаунт заблокирован | " + errorText,
+			"en": "Account blocked | " + errorText,
+			"action": "fail"
 		}
 	};
 	var message = config.serviceName + ": " + error;
-	if(errors[error]){
-		message += " - " + errors[error][_K]
-		if(errors[error]["action"]=="fail"){
+	var errorObj = errors[error];
+	if(_is_nilb(errorObj)){
+		/* sms-reg */
+		var reg1 = /(\S+) to this TZID not applicable/;
+		var reg2 = /There is no (\S+) value/;
+		if(reg1.test(error)){
+			var method = error.match(reg1)[1];
+			errorObj = {
+				"ru": "Метод " + method + " не применим к указанному TZID.",
+				"en": "The " + method + " method is not applicable to the specified TZID.",
+				"action": "fail"
+			};
+		};
+		if(reg2.test(error)){
+			var parameter = error.match(reg2)[1];
+			errorObj = {
+				"ru": "Параметр " + parameter + " не указан.",
+				"en": "Parameter " + parameter + " not specified.",
+				"action": "fail"
+			};
+		};
+	};
+	if(errorObj){
+		message += " - " + errorObj[_K]
+		if(errorObj["action"]=="fail"){
 			fail(message);
 		}else{
-			die(message, errors[error]["instantly"]);
+			die(message, errorObj["instantly"]);
 		};
 	}else{
-		fail(message);
+		if(error==errorText || !errorText){
+			fail(message);
+		}else{
+			fail(message + ", " + errorText);
+		};
 	};
 };

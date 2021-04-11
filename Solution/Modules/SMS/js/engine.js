@@ -1,6 +1,6 @@
 _BAS_SMSCONFIRMDATA = {};
 
-function _SMS_SetServiceConfig(service, apiKey){
+function _SMS_SetServiceConfig(service, apiKey, serverUrl){
 	var services = {
 		"sms-activate.ru":{
 			api: _SMS_Activate_Api,
@@ -120,7 +120,12 @@ function _SMS_SetServiceConfig(service, apiKey){
 	};
 	var config = {service:service,apiKey:apiKey};
 	var settings = services[service];
-	Object.keys(settings).forEach(function(key){config[key] = settings[key]})
+	Object.keys(settings).forEach(function(key){config[key] = settings[key]});
+	if(!_is_nilb(serverUrl)){
+		config.apiUrl = serverUrl.slice(-1)=="/" ? serverUrl.slice(0, -1) : serverUrl;
+		config.serviceName = config.apiUrl.replace(new RegExp('https?://'),"").replace(/^(?:\d+)?api(?:\d+)?./,"");
+		config.serviceName = config.serviceName.slice(0, 1).toLocaleUpperCase() + config.serviceName.slice(1);
+	};
 	return config;
 };
 function _SMS_CombineParams(params, options, labels){
@@ -254,7 +259,7 @@ function _SMS_Pva_Api(){
 	
 	var resp = _SMS_ParseJSON(config, content);
 	
-	if(checkErrors && resp.response!=1){
+	if(checkErrors && resp.response!=="1"){
 		_SMS_ErrorHandler(config, resp.error_msg ? resp.error_msg : resp.response);
 	};
 
@@ -295,8 +300,8 @@ function _SMS_Acktiwator_Api(){
 	
 	var resp = _SMS_ParseJSON(config, content);
 	
-	if(checkErrors && resp.name=="error"){
-		_SMS_ErrorHandler(config, resp.message);
+	if(checkErrors && (resp.name=="error" || resp.error)){
+		_SMS_ErrorHandler(config, resp.name=="error" ? resp.code : resp.error, resp.message);
 	};
 
 	_function_return(resp);
@@ -304,8 +309,9 @@ function _SMS_Acktiwator_Api(){
 function _SMS_GetBalance(){
 	var service = _function_argument("service");
 	var apiKey = _function_argument("apiKey");
+	var serverUrl = _function_argument("serverUrl");
 	
-	var config = _SMS_SetServiceConfig(service, apiKey);
+	var config = _SMS_SetServiceConfig(service, apiKey, serverUrl);
 	
 	var balance = null;
 	
@@ -316,7 +322,7 @@ function _SMS_GetBalance(){
 		if(resp[0]=="ACCESS_BALANCE"){
 			balance = resp[1];
 		}else{
-			_SMS_ErrorHandler(config, resp[0]);
+			_SMS_ErrorHandler(config, resp[0], resp[1]);
 		};
 	})!
 	
@@ -341,16 +347,17 @@ function _SMS_GetNumber(){
 	var apiKey = _function_argument("apiKey");
 	var site = _function_argument("site");
 	var country = _function_argument("country");
-	var isRawSite = _function_argument("isRawSite");
-	var isRawCountry = _function_argument("isRawCountry");
+	var customSite = _function_argument("customSite");
+	var customCountry = _function_argument("customCountry");
+	var serverUrl = _function_argument("serverUrl");
 	var operator = _function_argument("operator");
 	var phoneException = _function_argument("phoneException");
 	
-	var config = _SMS_SetServiceConfig(service, apiKey);
+	var config = _SMS_SetServiceConfig(service, apiKey, serverUrl);
 	
-	var options = {service:site, country:country};
+	var options = {service: (customSite ? customSite : site), country: (customCountry ? customCountry : country)};
 	
-	var confirm_data = {config: config, id: null, origId: null, number: null};
+	var confirmData = {config: config, id: null, origId: null, number: null};
 	
 	if(_is_nilb(_BAS_SMSCONFIRMDATA)){
 		_BAS_SMSCONFIRMDATA = {};
@@ -370,12 +377,12 @@ function _SMS_GetNumber(){
 		var resp = _result_function();
 		
 		if(resp[0]=="ACCESS_NUMBER"){
-			confirm_data.id = resp[1];
-			confirm_data.origId = resp[1];
-			confirm_data.number = resp[2];
-			_BAS_SMSCONFIRMDATA[ resp[2] ] = confirm_data;
+			confirmData.id = resp[1];
+			confirmData.origId = resp[1];
+			confirmData.number = resp[2];
+			_BAS_SMSCONFIRMDATA[ resp[2] ] = confirmData;
 		}else{
-			_SMS_ErrorHandler(config, resp[0]);
+			_SMS_ErrorHandler(config, resp[0], resp[1]);
 		};
 	})!
 	
@@ -383,14 +390,14 @@ function _SMS_GetNumber(){
 		_call_function(config.api,{config:config,action:"getNum",options:options})!
 		var resp = _result_function();
 		
-		confirm_data.id = resp.tzid;
-		confirm_data.origId = resp.tzid;
+		confirmData.id = resp.tzid;
+		confirmData.origId = resp.tzid;
 		
 		var opts = {tzid: resp.tzid};
 		
-		var max_number_wait = Date.now() + 600000;
+		var maxNumberWait = Date.now() + 600000;
 		_do(function(){
-			if(Date.now() > max_number_wait){
+			if(Date.now() > maxNumberWait){
 				_SMS_ErrorHandler(config, "TIMEOUT_GET_STATE");
 			};
 			
@@ -401,8 +408,8 @@ function _SMS_GetNumber(){
 			};
 
 			if(["TZ_NUM_PREPARE","TZ_NUM_WAIT","TZ_NUM_ANSWER"].indexOf(resp.response) > -1){
-				confirm_data.number = resp.number;
-				_BAS_SMSCONFIRMDATA[resp.number] = confirm_data;
+				confirmData.number = resp.number;
+				_BAS_SMSCONFIRMDATA[resp.number] = confirmData;
 				_break()
 			};
 
@@ -414,15 +421,29 @@ function _SMS_GetNumber(){
 		})!
 	})!
 	
-	_if(config.apiType=="smspva" || config.apiType=="sms-acktiwator",function(){
-		_call_function(config.api,{config:config,action:(config.apiType=="smspva" ? "get_number" : "getnumber"),options:options})!
+	_if(config.apiType=="smspva",function(){
+		_call_function(_SMS_Pva_Api,{config:config,action:"get_number",options:options})!
 		var resp = _result_function();
 		
-		confirm_data.id = resp.id;
-		confirm_data.origId = resp.id;
-		confirm_data.number = resp.number;
-		_BAS_SMSCONFIRMDATA[resp.number] = confirm_data;
+		var countryCode = resp.CountryCode;
+		var prefix = countryCode.slice(0,1)=="+" ? countryCode.slice(1) : countryCode;
+		var number = prefix + resp.number;
+		
+		confirmData.id = resp.id;
+		confirmData.origId = resp.id;
+		confirmData.number = number;
+		_BAS_SMSCONFIRMDATA[number] = confirmData;
 	})!
 	
-	_function_return(_is_nilb(confirm_data.number) ? null : confirm_data.number);
+	_if(config.apiType=="sms-acktiwator",function(){
+		_call_function(_SMS_Acktiwator_Api,{config:config,action:"getnumber",options:options})!
+		var resp = _result_function();
+		
+		confirmData.id = resp.id;
+		confirmData.origId = resp.id;
+		confirmData.number = resp.number;
+		_BAS_SMSCONFIRMDATA[resp.number] = confirmData;
+	})!
+	
+	_function_return(_is_nilb(confirmData.number) ? null : confirmData.number);
 };

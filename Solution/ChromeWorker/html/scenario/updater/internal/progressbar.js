@@ -1,7 +1,7 @@
 (function ($) {
   class ProgressBar {
     constructor (element) {
-      this.$element = $(element);
+      this.$element = $(element).data('progress', this);
 
       this.$inner = $('<div>', {
         'class': 'progress-inner'
@@ -40,6 +40,12 @@
       this.step(this.min, animate);
     }
 
+    destroy() {
+      this.$element.removeData('progress');
+      this.$inner.unbind().remove();
+      this.$label.unbind().remove();
+    }
+
     get max() {
       const max = this.$element.data('max');
       return max != null ? max : 100;
@@ -53,8 +59,7 @@
 
   $.fn.progressBar = function (option, ...args) {
     return this.each(function () {
-      const $element = $(this); let data = $element.data('progress');
-      if (!data) $element.data('progress', (data = new ProgressBar(this)));
+      let data = $(this).data('progress') || new ProgressBar(this);
 
       if (typeof (option) === 'string' && data[option]) {
         if (args.length) {

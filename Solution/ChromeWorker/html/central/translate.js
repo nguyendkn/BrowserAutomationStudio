@@ -30,6 +30,9 @@ _L =
 	"Add" :{"ru": "Добавить"},
 	"module" :{"ru": "модуль"},
 
+	"Profiles caching":{"ru": "Кеширование профилей"},
+	"Creating profile is hard drive intensive operation. In order to do that browser needs to initialize each file located in profile folder. This option allows to copy common files rather than creating them every time. Note that profiles are created implicitly each time new thread is started.":{"ru": "Создание профиля - операция с интенсивным использованием жесткого диска. Для того чтобы создать профиль, браузеру необходимо инициализировать каждый файл расположенный в папке профиля. Эта настройка позволяет копировать файлы профиля, а не создавать их каждый раз заново. Обратите внимание, что профили создаются каждый раз при запуске нового потока."},
+
 	"Rendering": {"ru": "Рендеринг"},
 	"Max FPS": {"ru": "Ограничения частоты кадров"},
 	"Maximum times browser content can be rendered per one second. The lower this value, the lower the CPU usage will be. Setting it too low may affect site operability. Reducing it below 30 may lead to unpredictable consequences. Minimum value is 10.": {"ru": "Максимальное количество раз за одну секунду, которое содержимого браузера может быт отрисовано. Чем ниже это значение, тем меньше будет загрузка процессор. Установка слишком низкого значения может повлиять на работоспособность сайта. Снижение его ниже 30 может привести к непредсказуемым последствиям. Минимальное значение 10."},

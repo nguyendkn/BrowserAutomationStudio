@@ -37,6 +37,7 @@
 #include "chromecommandlineparser.h"
 #include "mixnumbers.h"
 #include "installwidevine.h"
+#include "createemptyprofile.h"
 
 
 #if defined(BAS_DEBUG)
@@ -1967,6 +1968,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Saver.TemporaryDisableDetector = false;
     Data->UrlHandler = 0;
     Data->LastClickIsFromIndirectControl = true;
+
+    //Create profile fast if it is empty
+    if(Settings.ProfilesCaching())
+        CreateEmptyProfile(Settings.Profile());
 
     //Ensure that profile is not busy
     {

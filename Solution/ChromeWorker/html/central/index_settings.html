@@ -208,6 +208,7 @@
 			$("#WebglVendor").val(json["webgl_vendor"])
 			
 			$("#RestartBrowserProcessOnThreadStart").prop("checked",json["restart"])
+			$("#ProfilesCaching").prop("checked",json["profiles_caching"])
 			$("#AutostartDebug").prop("checked",json["autostart_debug"])
 			$("#UseHumanLikeMouseMoves").prop("checked",json["emulatemouse"])
 			$('.language-switch[data-lang="Node"][data-version="8.6.0"]').prop("checked",json["languages"].indexOf("Node,8.6.0")>=0)
@@ -259,6 +260,7 @@
 				$("#WebglVendor").val("")
 
 				$("#RestartBrowserProcessOnThreadStart").prop("checked",true)
+				$("#ProfilesCaching").prop("checked",true)
 				$("#AutostartDebug").prop("checked",false)
 				$("#UseHumanLikeMouseMoves").prop("checked",true)
 				$('.language-switch').prop("checked", false)
@@ -309,6 +311,7 @@
 						"webgl_vendor": $("#WebglVendor").val(),
 
 		    			"restart": $("#RestartBrowserProcessOnThreadStart").prop("checked"),
+						"profiles_caching": $("#ProfilesCaching").prop("checked"),
 						"autostart_debug": $("#AutostartDebug").prop("checked"),
 		    			"emulatemouse": $("#UseHumanLikeMouseMoves").prop("checked"),
 		    			"languages": languages,
@@ -637,6 +640,18 @@
 		    	<input type="number" class="form-control" id="MinUnusedCpu" placeholder="Min unused cpu to start browser(%)" min="0"> 
 		    </div>
 		  </div>
+
+		  <div class="form-group" style="margin-top:20px">
+		    <div class="col-sm-offset-5 col-sm-7">
+		      <div class="checkbox">
+		        <label>
+		          <input type="checkbox" id="ProfilesCaching"> <span class="tr">Profiles caching</span>
+		        </label>
+		      </div>
+		    </div>
+		  </div>
+
+		  <div class="text-center text-muted tr">Creating profile is hard drive intensive operation. In order to do that browser needs to initialize each file located in profile folder. This option allows to copy common files rather than creating them every time. Note that profiles are created implicitly each time new thread is started.</div>
 
 		  <div class="form-group" style="margin-top:20px">
 		    <div class="col-sm-offset-5 col-sm-7">

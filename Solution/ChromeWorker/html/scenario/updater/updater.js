@@ -273,6 +273,7 @@
         this.render().$el.show();
         this.trigger('show');
       }
+      this.modal.hide();
       return this;
     },
 
@@ -282,6 +283,7 @@
         this.render().$el.hide();
         this.trigger('hide');
       }
+      this.modal.hide();
       return this;
     },
 

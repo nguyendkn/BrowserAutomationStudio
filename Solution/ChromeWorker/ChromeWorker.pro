@@ -57,6 +57,7 @@ SOURCES += main.cpp \
     connector/devtoolsactiongetnavigationhistory.cpp \
     connector/devtoolsactionresizewithcorrection.cpp \
     copyfolder.cpp \
+    createemptyprofile.cpp \
     deletefolder.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
@@ -214,6 +215,7 @@ HEADERS += \
     connector/devtoolsactiongetnavigationhistory.h \
     connector/devtoolsactionresizewithcorrection.h \
     copyfolder.h \
+    createemptyprofile.h \
     deletefolder.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \

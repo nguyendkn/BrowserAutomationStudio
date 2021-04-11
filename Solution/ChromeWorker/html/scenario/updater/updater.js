@@ -11,15 +11,17 @@
       if (this.get('isStarted')) return;
 
       this.set('tasks', _.filter(_TaskCollection.map((task, index) => ({
+        isSelected: task.get('is_selected'),
+        isFold: task.get('is_fold'),
         id: Number(task.get('id')),
         dat: task.dat(),
         index
-      })), ({ id, dat }) => {
+      })), ({ id, dat, isFold, isSelected }) => {
         if (dat && dat.role && dat.role === 'slave') return false;
 
         if (id !== 0 && !IsFunctionNode(id)) {
           if (type === 'current') return GetFunctionData(id).name === _GobalModel.get('function_name');
-          return type === 'selected' ? task['is_selected'] : true;
+          return type === 'selected' ? isSelected : true;
         }
 
         return false;

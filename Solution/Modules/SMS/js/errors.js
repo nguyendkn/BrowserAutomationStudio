@@ -1,4 +1,5 @@
 function _SMS_ErrorHandler(config, error){
+	error = error.toString();
 	var errors = {
 		"FAILED_REQUEST": {
 			"ru": "Не удалось успешно выполнить запрос к сервису за 10 попыток.",
@@ -8,6 +9,11 @@ function _SMS_ErrorHandler(config, error){
 		"RESPONSE_IS_NOT_JSON": {
 			"ru": "Не удалось распарсить ответ от сервиса.",
 			"en": "Failed to parse the response from the service.",
+			"action": "fail"
+		},
+		"TIMEOUT_GET_STATE": {
+			"ru": "Превышено время ожидания выполнения действия getState.",
+			"en": "Timed out for execution of an action getState.",
 			"action": "fail"
 		},
 		"BAD_KEY": {

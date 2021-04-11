@@ -1,6 +1,9 @@
+_BAS_SMSCONFIRMDATA = {};
+
 function _SMS_SetServiceConfig(service, apiKey){
 	var services = {
 		"sms-activate.ru":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'https://sms-activate.ru',
 			apiType: 'sms-activate',
 			serviceName: 'Sms-activate',
@@ -8,6 +11,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"smshub.org":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'https://smshub.org',
 			apiType: 'sms-activate',
 			serviceName: 'SMSHUB',
@@ -15,6 +19,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"5sim.net":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'http://api1.5sim.net',
 			apiType: 'sms-activate',
 			serviceName: '5SIM',
@@ -22,6 +27,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"getsms.online":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'https://smsactivateapi.getsms.online',
 			apiType: 'sms-activate',
 			serviceName: 'GetSMS',
@@ -29,6 +35,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"smsvk.net":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'http://smsvk.net',
 			apiType: 'sms-activate',
 			serviceName: 'SmsVK',
@@ -36,6 +43,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"vak-sms.com":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'https://vak-sms.com',
 			apiType: 'sms-activate',
 			serviceName: 'VAK-SMS',
@@ -43,6 +51,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"cheapsms.ru":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'https://cheapsms.pro',
 			apiType: 'sms-activate',
 			serviceName: 'CheapSMS',
@@ -50,6 +59,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"give-sms.com":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'https://give-sms.com',
 			apiType: 'sms-activate',
 			serviceName: 'Give-SMS',
@@ -57,6 +67,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"sms.kopeechka.store":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'https://sms.kopeechka.store',
 			apiType: 'sms-activate',
 			serviceName: 'Sms.Kopeechka.Store',
@@ -64,6 +75,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"simsms.org":{
+			api: _SMS_Activate_Api,
 			apiUrl: 'http://simsms2.org',
 			apiType: 'sms-activate',
 			serviceName: 'SIMsms',
@@ -71,6 +83,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"sms-reg.com":{
+			api: _SMS_Reg_Api,
 			apiUrl: 'https://api.sms-reg.com',
 			apiType: 'sms-reg',
 			serviceName: 'SMS-REG',
@@ -78,6 +91,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'appid'
 		},
 		"smspva.com":{
+			api: _SMS_Pva_Api,
 			apiUrl: 'http://smspva.com',
 			apiType: 'smspva',
 			serviceName: 'SMSpva',
@@ -85,6 +99,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"onlinesim.ru":{
+			api: _SMS_OnlineSim_Api,
 			apiUrl: 'https://onlinesim.ru',
 			apiType: 'onlinesim',
 			serviceName: 'OnlineSIM',
@@ -92,6 +107,7 @@ function _SMS_SetServiceConfig(service, apiKey){
 			refTitle: 'ref'
 		},
 		"sms-acktiwator.ru":{
+			api: _SMS_Acktiwator_Api,
 			apiUrl: 'https://sms-acktiwator.ru',
 			apiType: 'sms-acktiwator',
 			serviceName: 'SmsAcktiwator',
@@ -128,6 +144,10 @@ function _SMS_Request(){
 	var url = _function_argument("url");
 	var method = _function_argument("method");
 	var params = _function_argument("params");
+	
+	if(!_is_nilb(config.refId)){
+		params[config.refTitle] = config.refId;
+	};
 	
 	var data = [];
 	var keys = Object.keys(params);
@@ -181,9 +201,9 @@ function _SMS_Request(){
 function _SMS_Activate_Api(){
 	var config = _function_argument("config");
 	var action = _function_argument("action");
-	var isJSON = _function_argument("isJSON");
 	var options = _avoid_nilb(_function_argument("options"), {});
 	var method = _avoid_nilb(_function_argument("method"), "GET");
+	var isJSON = _function_argument("isJSON");
 	
 	var url = config.apiUrl + '/stubs/handler_api.php';
 	var params = _SMS_CombineParams({api_key:config.apiKey,action:action}, options);
@@ -200,6 +220,7 @@ function _SMS_Reg_Api(){
 	var action = _function_argument("action");
 	var options = _avoid_nilb(_function_argument("options"), {});
 	var method = _avoid_nilb(_function_argument("method"), "GET");
+	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
 	var url = config.apiUrl + '/' + action + '.php';
 	var params = _SMS_CombineParams({apikey:config.apiKey}, options);
@@ -208,6 +229,10 @@ function _SMS_Reg_Api(){
 	var content = _result_function();
 	
 	var resp = _SMS_ParseJSON(config, content);
+	
+	if(checkErrors && resp.response!=1){
+		_SMS_ErrorHandler(config, resp.error_msg ? resp.error_msg : resp.response);
+	};
 
 	_function_return(resp);
 };
@@ -215,6 +240,7 @@ function _SMS_Pva_Api(){
 	var config = _function_argument("config");
 	var action = _function_argument("action");
 	var options = _avoid_nilb(_function_argument("options"), {});
+	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
 	var url = config.apiUrl + '/priemnik.php';
 	var params = _SMS_CombineParams({metod:action,apikey:config.apiKey}, options);
@@ -227,6 +253,10 @@ function _SMS_Pva_Api(){
 	};
 	
 	var resp = _SMS_ParseJSON(config, content);
+	
+	if(checkErrors && resp.response!=1){
+		_SMS_ErrorHandler(config, resp.error_msg ? resp.error_msg : resp.response);
+	};
 
 	_function_return(resp);
 };
@@ -235,14 +265,19 @@ function _SMS_OnlineSim_Api(){
 	var action = _function_argument("action");
 	var options = _avoid_nilb(_function_argument("options"), {});
 	var method = _avoid_nilb(_function_argument("method"), "GET");
+	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
 	var url = config.apiUrl + '/api/' + action + '.php';
-	var params = _SMS_CombineParams({apikey:config.apiKey}, options);
+	var params = _SMS_CombineParams({apikey:config.apiKey}, options, {operator:"simoperator",phoneException:"reject"});
 	
 	_call_function(_SMS_Request,{"config":config,"url":url,"method":method,"params":params})!
 	var content = _result_function();
 	
 	var resp = _SMS_ParseJSON(config, content);
+	
+	if(checkErrors && resp.response!=1){
+		_SMS_ErrorHandler(config, resp.response);
+	};
 
 	_function_return(resp);
 };
@@ -250,14 +285,19 @@ function _SMS_Acktiwator_Api(){
 	var config = _function_argument("config");
 	var action = _function_argument("action");
 	var options = _avoid_nilb(_function_argument("options"), {});
+	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
 	var url = config.apiUrl + '/api/' + action + '/' + config.apiKey;
-	var params = _SMS_CombineParams({}, options);
+	var params = _SMS_CombineParams({}, options, {country:"code"});
 	
 	_call_function(_SMS_Request,{"config":config,"url":url,"method":"GET","params":params})!
 	var content = _result_function();
 	
 	var resp = _SMS_ParseJSON(config, content);
+	
+	if(checkErrors && resp.name=="error"){
+		_SMS_ErrorHandler(config, resp.message);
+	};
 
 	_function_return(resp);
 };
@@ -273,56 +313,116 @@ function _SMS_GetBalance(){
 		_call_function(_SMS_Activate_Api,{config:config,action:"getBalance",isJSON:false})!
 		var resp = _result_function();
 		
-		if(resp[0]=="ACCESS_BALANCE" && resp[1]){
+		if(resp[0]=="ACCESS_BALANCE"){
 			balance = resp[1];
 		}else{
 			_SMS_ErrorHandler(config, resp[0]);
 		};
 	})!
 	
-	_if(config.apiType=="sms-reg",function(){
-		_call_function(_SMS_Reg_Api,{config:config,action:"getBalance"})!
+	_if(config.apiType=="sms-reg" || config.apiType=="smspva" || config.apiType=="onlinesim",function(){
+		_call_function(config.api,{config:config,action:(config.apiType=="smspva" ? "get_balance" : "getBalance")})!
 		var resp = _result_function();
 		
-		if(resp.response==1 && resp.balance){
-			balance = resp.balance;
-		}else{
-			_SMS_ErrorHandler(config, resp.error_msg ? resp.error_msg : resp.response);
-		};
-	})!
-	
-	_if(config.apiType=="smspva",function(){
-		_call_function(_SMS_Pva_Api,{config:config,action:"get_balance"})!
-		var resp = _result_function();
-		
-		if(resp.response==1 && resp.balance){
-			balance = resp.balance;
-		}else{
-			_SMS_ErrorHandler(config, resp.error_msg ? resp.error_msg : resp.response);
-		};
-	})!
-	
-	_if(config.apiType=="onlinesim",function(){
-		_call_function(_SMS_OnlineSim_Api,{config:config,action:"getBalance"})!
-		var resp = _result_function();
-		
-		if(resp.response==1 && resp.balance){
-			balance = resp.balance;
-		}else{
-			_SMS_ErrorHandler(config, resp.response);
-		};
+		balance = resp.balance;
 	})!
 	
 	_if(config.apiType=="sms-acktiwator",function(){
 		_call_function(_SMS_Acktiwator_Api,{config:config,action:"getbalance"})!
 		var resp = _result_function();
 		
-		if(typeof resp=="number"){
-			balance = resp;
-		}else{
-			_SMS_ErrorHandler(config, resp.message);
-		};
+		balance = resp;
 	})!
 	
 	_function_return(_is_nilb(balance) ? null : parseFloat(balance));
+};
+function _SMS_GetNumber(){
+	var service = _function_argument("service");
+	var apiKey = _function_argument("apiKey");
+	var site = _function_argument("site");
+	var country = _function_argument("country");
+	var isRawSite = _function_argument("isRawSite");
+	var isRawCountry = _function_argument("isRawCountry");
+	var operator = _function_argument("operator");
+	var phoneException = _function_argument("phoneException");
+	
+	var config = _SMS_SetServiceConfig(service, apiKey);
+	
+	var options = {service:site, country:country};
+	
+	var confirm_data = {config: config, id: null, origId: null, number: null};
+	
+	if(_is_nilb(_BAS_SMSCONFIRMDATA)){
+		_BAS_SMSCONFIRMDATA = {};
+	};
+	
+	if(service=="sms-activate.ru" || service=="onlinesim.ru"){
+		if(!_is_nilb(operator)){
+			options.operator = operator;
+		};
+		if(!_is_nilb(phoneException)){
+			options.phoneException = phoneException;
+		};
+	};
+	
+	_if(config.apiType=="sms-activate",function(){
+		_call_function(_SMS_Activate_Api,{config:config,action:"getNumber",options:options,isJSON:false})!
+		var resp = _result_function();
+		
+		if(resp[0]=="ACCESS_NUMBER"){
+			confirm_data.id = resp[1];
+			confirm_data.origId = resp[1];
+			confirm_data.number = resp[2];
+			_BAS_SMSCONFIRMDATA[ resp[2] ] = confirm_data;
+		}else{
+			_SMS_ErrorHandler(config, resp[0]);
+		};
+	})!
+	
+	_if(config.apiType=="sms-reg" || config.apiType=="onlinesim",function(){		
+		_call_function(config.api,{config:config,action:"getNum",options:options})!
+		var resp = _result_function();
+		
+		confirm_data.id = resp.tzid;
+		confirm_data.origId = resp.tzid;
+		
+		var opts = {tzid: resp.tzid};
+		
+		var max_number_wait = Date.now() + 600000;
+		_do(function(){
+			if(Date.now() > max_number_wait){
+				_SMS_ErrorHandler(config, "TIMEOUT_GET_STATE");
+			};
+			
+			_call_function(config.api,{config:config,action:"getState",options:opts,checkErrors:false})!
+			var resp = _result_function();
+			if(Array.isArray(resp)){
+				resp = resp[0];
+			};
+
+			if(["TZ_NUM_PREPARE","TZ_NUM_WAIT","TZ_NUM_ANSWER"].indexOf(resp.response) > -1){
+				confirm_data.number = resp.number;
+				_BAS_SMSCONFIRMDATA[resp.number] = confirm_data;
+				_break()
+			};
+
+			if(resp.response!="TZ_INPOOL"){
+				_SMS_ErrorHandler(config, resp.error_msg ? resp.error_msg : resp.response);
+			};
+			
+			sleep(1000)!
+		})!
+	})!
+	
+	_if(config.apiType=="smspva" || config.apiType=="sms-acktiwator",function(){
+		_call_function(config.api,{config:config,action:(config.apiType=="smspva" ? "get_number" : "getnumber"),options:options})!
+		var resp = _result_function();
+		
+		confirm_data.id = resp.id;
+		confirm_data.origId = resp.id;
+		confirm_data.number = resp.number;
+		_BAS_SMSCONFIRMDATA[resp.number] = confirm_data;
+	})!
+	
+	_function_return(_is_nilb(confirm_data.number) ? null : confirm_data.number);
 };

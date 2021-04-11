@@ -286,9 +286,9 @@
     },
 
     update: function () {
-      const val = this.$('#actionUpdaterSelect').val();
-      this.$('#actionUpdaterSelect').trigger('blur');
-      const tasks = window.Scenario.filterTasks(val);
+      const type = this.$('#actionUpdaterSelect').val();
+      this.$('.action-updater-select').trigger('blur');
+      const tasks = window.Scenario.filterTasks(type);
       this.model.set('tasks', tasks);
     },
 

@@ -29,13 +29,15 @@ void settings::Init()
     toolbox_height = 300;
     scenario_width = 500;
     zoom = 100;
-    max_browser_start_simultaneously = 1;
+    max_fps = 30;
+    max_browser_start_simultaneously = 3;
     min_free_memory_to_start_browser = 500;
     min_unused_cpu = 20;
     maximized = false;
     restart = true;
     emulate_mouse = true;
     autostart_debug = false;
+    profiles_caching = true;
     debug_toolbox = false;
     debug_scenario = false;
     detector = true;
@@ -85,6 +87,13 @@ void settings::Init()
                 audio_noise = ReplaceAll(line,"AudioNoise=","");
                 audio_noise = ReplaceAll(audio_noise,"\"","");
             }
+            if(line.find("MaxFPS=") != std::string::npos)
+            {
+                std::vector<std::string> s = split(line,'=');
+                max_fps = std::stoi(s[1]);
+                if(max_fps < 10)
+                    max_fps = 10;
+            }
             if(line.find("Webrtc=") != std::string::npos)
             {
                 webrtc = ReplaceAll(line,"Webrtc=","");
@@ -128,6 +137,10 @@ void settings::Init()
             if(line.find("AutostartDebug=true") != std::string::npos)
             {
                 autostart_debug = true;
+            }
+            if(line.find("ProfilesCaching=false") != std::string::npos)
+            {
+                profiles_caching = false;
             }
             if(line.find("ToolboxHeight=") != std::string::npos)
             {
@@ -371,6 +384,11 @@ bool settings::AutostartDebug()
     return autostart_debug;
 }
 
+bool settings::ProfilesCaching()
+{
+    return profiles_caching;
+}
+
 int settings::ToolboxHeight()
 {
     return toolbox_height;
@@ -427,6 +445,7 @@ void settings::SaveToFile()
             outfile<<"EnableFlash="<<((use_flash) ? "true" : "false")<<std::endl;
             outfile<<"EnableWidevine="<<((use_widevine) ? "true" : "false")<<std::endl;
             outfile<<"AutostartDebug="<<((autostart_debug) ? "true" : "false")<<std::endl;
+            outfile<<"ProfilesCaching="<<((profiles_caching) ? "true" : "false")<<std::endl;
             outfile<<"ToolboxHeight="<<toolbox_height<<std::endl;
             outfile<<"MaxBrowserStartSimultaneously="<<max_browser_start_simultaneously<<std::endl;
             outfile<<"MinFreeMemoryToStartBrowser="<<min_free_memory_to_start_browser<<std::endl;
@@ -445,6 +464,7 @@ void settings::SaveToFile()
             outfile<<"CanvasNoise=\""<<canvas_noise<<"\""<<std::endl;
             outfile<<"Audio=\""<<audio<<"\""<<std::endl;
             outfile<<"AudioNoise=\""<<audio_noise<<"\""<<std::endl;
+            outfile<<"MaxFPS="<<max_fps<<std::endl;
             outfile<<"Webrtc=\""<<webrtc<<"\""<<std::endl;
             outfile<<"WebrtcIps=\""<<webrtc_ips<<"\""<<std::endl;
             outfile<<"Webgl=\""<<webgl<<"\""<<std::endl;
@@ -466,10 +486,12 @@ std::string settings::Serialize()
     res["use_flash"] = picojson::value(use_flash);
     res["use_widevine"] = picojson::value(use_widevine);
     res["autostart_debug"] = picojson::value(autostart_debug);
+    res["profiles_caching"] = picojson::value(profiles_caching);
     res["canvas"] = picojson::value(canvas);
     res["canvas_noise"] = picojson::value(canvas_noise);
     res["audio"] = picojson::value(audio);
     res["audio_noise"] = picojson::value(audio_noise);
+    res["max_fps"] = picojson::value((double)max_fps);
     res["webrtc"] = picojson::value(webrtc);
     res["webgl"] = picojson::value(webgl);
     res["webgl_noise"] = picojson::value(webgl_noise);
@@ -504,11 +526,13 @@ void settings::Deserialize(const std::string & Data)
         use_flash = o["use_flash"].get<bool>();
         use_widevine = o["use_widevine"].get<bool>();
         autostart_debug = o["autostart_debug"].get<bool>();
+        profiles_caching = o["profiles_caching"].get<bool>();
 
         canvas = o["canvas"].get<std::string>();
         canvas_noise = o["canvas_noise"].get<std::string>();
         audio = o["audio"].get<std::string>();
         audio_noise = o["audio_noise"].get<std::string>();
+        max_fps = o["max_fps"].get<double>();
         webrtc = o["webrtc"].get<std::string>();
         webgl = o["webgl"].get<std::string>();
         webgl_noise = o["webgl_noise"].get<std::string>();
@@ -530,6 +554,9 @@ void settings::Deserialize(const std::string & Data)
 
         /*debug_scenario = o["debug_scenario"].get<bool>();
         debug_toolbox = o["debug_toolbox"].get<bool>();*/
+
+        if(max_fps < 10)
+            max_fps = 10;
 
         if(toolbox_height < 100)
             toolbox_height = 100;

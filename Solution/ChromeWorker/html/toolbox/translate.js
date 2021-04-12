@@ -6,6 +6,14 @@ _L =
 	"Load silently": {"ru": "Отложенная загрузка"},
 	"Label can contain only letters, digits, underscore and spaces" :{"ru": "Название метки может содержать только цифры, буквы, нижнее подчеркивание и пробел"},
 
+	"Rendering": {"ru": "Рендеринг"},
+	"Maximum times browser content can be rendered per one second. The lower this value, the lower the CPU usage will be. Setting it too low may affect site operability. Reducing it below 30 may lead to unpredictable consequences. Minimum value is 10.": {"ru": "Максимальное количество раз за одну секунду, которое содержимого браузера может быт отрисовано. Чем ниже это значение, тем меньше будет загрузка процессор. Установка слишком низкого значения может повлиять на работоспособность сайта. Снижение его ниже 30 может привести к непредсказуемым последствиям. Минимальное значение 10."},
+	"Maximum FPS": {"ru": "Ограничения частоты кадров"},
+	"Don't change": {"ru": "Не менять"},
+	"Limit FPS to 30": {"ru": "Ограничить частоту кадров 30"},
+	"Don't change FPS": {"ru": "Не менять частоту кадров"},
+	
+
 	/* Toolbox notifications */
 	"Please select any element inside browser and click on the '": {"ru": "Пожалуйста, выберите любой элемент в браузере и нажмите на действие '"},
 	"' action inside the menu that will appear.": {"ru": "' в появившемся меню."},

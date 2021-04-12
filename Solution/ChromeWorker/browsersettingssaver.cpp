@@ -1,6 +1,7 @@
 #include "browsersettingssaver.h"
 #include <fstream>
 #include "picojson.h"
+#include "base64.h"
 #include "replaceall.h"
 
 void BrowserSettingsSaver::Save()
@@ -36,6 +37,20 @@ void BrowserSettingsSaver::Save()
 
             outfile<<"FingerprintDetectorEnabled="<<((IsRecord && Detector && !TemporaryDisableDetector) ? "true" : "false")<<std::endl;
             outfile<<"NotificationsInfo="<<((IsRecord) ? "Enable" : "Disable")<<std::endl;
+
+            std::string AdditionalHeaders;
+            picojson::value::array AdditionalHeadersArray;
+
+            for(std::pair<std::string, std::string>& Header:Headers)
+            {
+                AdditionalHeadersArray.push_back(picojson::value(Header.first));
+                AdditionalHeadersArray.push_back(picojson::value(Header.second));
+            }
+
+            AdditionalHeaders = picojson::value(AdditionalHeadersArray).serialize();
+
+
+            outfile<<"AdditionalHeaders="<<base64_encode((unsigned char const *)AdditionalHeaders.data(),AdditionalHeaders.size())<<std::endl;
 
             outfile<<"LocaleName="<<Language<<std::endl;
 

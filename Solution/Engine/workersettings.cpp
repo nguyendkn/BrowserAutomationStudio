@@ -209,6 +209,10 @@ namespace BrowserAutomationStudioFramework
     {
         return AudioNoise;
     }
+    int WorkerSettings::GetMaxFPS()
+    {
+        return MaxFPS;
+    }
     void WorkerSettings::SetAudio(const QString& Audio)
     {
         this->Audio = Audio;
@@ -216,6 +220,12 @@ namespace BrowserAutomationStudioFramework
     void WorkerSettings::SetAudioNoise(const QString& AudioNoise)
     {
         this->AudioNoise = AudioNoise;
+    }
+    void WorkerSettings::SetMaxFPS(int MaxFPS)
+    {
+        if(MaxFPS < 10)
+            MaxFPS = 10;
+        this->MaxFPS = MaxFPS;
     }
 
     QString WorkerSettings::GetWebgl()
@@ -310,6 +320,7 @@ namespace BrowserAutomationStudioFramework
         res->SetCanvasNoise(CanvasNoise);
         res->SetAudio(Audio);
         res->SetAudioNoise(AudioNoise);
+        res->SetMaxFPS(MaxFPS);
         res->SetWebgl(Webgl);
         res->SetWebglNoise(WebglNoise);
 
@@ -362,6 +373,11 @@ namespace BrowserAutomationStudioFramework
 
         if(Settings.contains("AudioNoise"))
             SetAudioNoise(Settings.value("AudioNoise","").toString());
+
+        if(Settings.contains("MaxFPS"))
+        {
+            SetMaxFPS(Settings.value("MaxFPS","30").toInt());
+        }
 
         if(Settings.contains("WebrtcIps"))
             SetWebrtcIps(Settings.value("WebrtcIps","").toString());
@@ -687,6 +703,12 @@ namespace BrowserAutomationStudioFramework
             UpdateFingerprintsSettings();
          }
 
+         if(!IsMLA && object.contains("MaxFPS"))
+         {
+            SetMaxFPS(object["MaxFPS"].toInt());
+            UpdateFingerprintsSettings();
+         }
+
          if(!IsMLA && object.contains("WebrtcIps"))
          {
             SetWebrtcIps(object["WebrtcIps"].toString());
@@ -987,6 +1009,13 @@ namespace BrowserAutomationStudioFramework
             if(!Text.isEmpty())
                 Text += "\r\n";
             Text += QString("AudioFingerprint=") + AudioNoise;
+        }
+
+        if(MaxFPS > 0)
+        {
+            if(!Text.isEmpty())
+                Text += "\r\n";
+            Text += QString("MaxFPS=") + QString::number(MaxFPS);
         }
 
         if(!WebglNoise.isEmpty())

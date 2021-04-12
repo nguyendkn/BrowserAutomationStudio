@@ -19,6 +19,9 @@ struct BrowserSettingsSaver
     //Record mode
     bool IsRecord;
 
+    //Headers
+    std::vector<std::pair<std::string, std::string> > Headers;
+
     void Save();
 };
 

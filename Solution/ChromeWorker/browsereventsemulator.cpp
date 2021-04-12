@@ -924,7 +924,7 @@ void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text
                 Connector->Key(KeyEventDown,InputString,CurrentKeyState);
             }
             //Main key press
-            if(!is_special_letter && !IsCtrl && !IsAlt)
+            if(!is_special_letter && ((!IsCtrl && !IsAlt) || (IsAlt && IsCtrl)))
             {
                 Connector->Key(KeyEventCharacter,InputString,CurrentKeyState);
             }

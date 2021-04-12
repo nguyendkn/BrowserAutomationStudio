@@ -189,6 +189,7 @@
 			$("#LeftPanelWidth").val(json["scenario_width"])
 			$("#MinFreeMemoryToStartBrowser").val(json["min_free_memory_to_start_browser"])
 			$("#MaxBrowserStartSimultaneously").val(json["max_browser_start_simultaneously"])
+			$("#MaxFPS").val(json["max_fps"])
 			$("#MinUnusedCpu").val(json["min_unused_cpu"])
 			$("#Zoom").val(json["zoom"])
 			$("#FingerprintDetectorEnabled").prop("checked",json["detector"])
@@ -207,6 +208,7 @@
 			$("#WebglVendor").val(json["webgl_vendor"])
 			
 			$("#RestartBrowserProcessOnThreadStart").prop("checked",json["restart"])
+			$("#ProfilesCaching").prop("checked",json["profiles_caching"])
 			$("#AutostartDebug").prop("checked",json["autostart_debug"])
 			$("#UseHumanLikeMouseMoves").prop("checked",json["emulatemouse"])
 			$('.language-switch[data-lang="Node"][data-version="8.6.0"]').prop("checked",json["languages"].indexOf("Node,8.6.0")>=0)
@@ -239,7 +241,8 @@
 	    		$("#TopPanelHeight").val("300")
 				$("#LeftPanelWidth").val("500")
 				$("#MinFreeMemoryToStartBrowser").val("500")
-				$("#MaxBrowserStartSimultaneously").val("1")
+				$("#MaxBrowserStartSimultaneously").val("3")
+				$("#MaxFPS").val("30")
 				$("#MinUnusedCpu").val("20")
 				$("#Zoom").val("100")
 				$("#Flash").val("disable")
@@ -257,6 +260,7 @@
 				$("#WebglVendor").val("")
 
 				$("#RestartBrowserProcessOnThreadStart").prop("checked",true)
+				$("#ProfilesCaching").prop("checked",true)
 				$("#AutostartDebug").prop("checked",false)
 				$("#UseHumanLikeMouseMoves").prop("checked",true)
 				$('.language-switch').prop("checked", false)
@@ -289,6 +293,7 @@
 		    			"scenario_width": parseInt($("#LeftPanelWidth").val()),
 		    			"min_free_memory_to_start_browser": parseInt($("#MinFreeMemoryToStartBrowser").val()),
 		    			"max_browser_start_simultaneously": parseInt($("#MaxBrowserStartSimultaneously").val()),
+						"max_fps": parseInt($("#MaxFPS").val()),
 		    			"min_unused_cpu": parseInt($("#MinUnusedCpu").val()),
 		    			"zoom": parseInt($("#Zoom").val()),
 		    			"use_flash": $("#Flash").val() == "enable",
@@ -306,6 +311,7 @@
 						"webgl_vendor": $("#WebglVendor").val(),
 
 		    			"restart": $("#RestartBrowserProcessOnThreadStart").prop("checked"),
+						"profiles_caching": $("#ProfilesCaching").prop("checked"),
 						"autostart_debug": $("#AutostartDebug").prop("checked"),
 		    			"emulatemouse": $("#UseHumanLikeMouseMoves").prop("checked"),
 		    			"languages": languages,
@@ -639,9 +645,49 @@
 		    <div class="col-sm-offset-5 col-sm-7">
 		      <div class="checkbox">
 		        <label>
+		          <input type="checkbox" id="ProfilesCaching"> <span class="tr">Profiles caching</span>
+		        </label>
+		      </div>
+		    </div>
+		  </div>
+
+		  <div class="text-center text-muted tr">Creating profile is hard drive intensive operation. In order to do that browser needs to initialize each file located in profile folder. This option allows to copy common files rather than creating them every time. Note that profiles are created implicitly each time new thread is started.</div>
+
+		  <div class="form-group" style="margin-top:20px">
+		    <div class="col-sm-offset-5 col-sm-7">
+		      <div class="checkbox">
+		        <label>
 		          <input type="checkbox" id="RestartBrowserProcessOnThreadStart"> <span class="tr">Restart browser process on thread start</span>
 		        </label>
 		      </div>
+		    </div>
+		  </div>
+
+		</div>
+	</div>
+
+	<h4><p class="text-center tr"  style="padding-top:40px">Rendering</p></h4>
+	<hr>
+
+	<div class="container">
+		<div class="form-horizontal">
+		  <div class="form-group form-item">
+		    <div class="text-center text-muted "><span class="tr">Maximum times browser content can be rendered per one second. The lower this value, the lower the CPU usage will be. Setting it too low may affect site operability. Reducing it below 30 may lead to unpredictable consequences. Minimum value is 10.</span></div>
+		  </div>
+		</div>
+
+
+	</div>
+
+	<div class="container">
+
+		<div class="form-horizontal">
+
+		  
+		  <div class="form-group form-item">
+		    <label for="MaxFPS" class="col-sm-5 control-label tr">Max FPS</label>
+		    <div class="col-sm-4">
+		    	<input type="number" class="form-control" id="MaxFPS" placeholder="Max FPS" min="10"> 
 		    </div>
 		  </div>
 

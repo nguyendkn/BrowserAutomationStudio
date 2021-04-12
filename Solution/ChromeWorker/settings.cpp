@@ -32,7 +32,7 @@ void settings::Init()
     max_fps = 30;
     max_browser_start_simultaneously = 3;
     min_free_memory_to_start_browser = 500;
-    min_unused_cpu = 20;
+    min_unused_cpu = 35;
     maximized = false;
     restart = true;
     emulate_mouse = true;

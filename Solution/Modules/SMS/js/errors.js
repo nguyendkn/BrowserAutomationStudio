@@ -32,6 +32,12 @@ function _SMS_ErrorHandler(config, error, errorText){
 			"action": "die",
 			"instantly": false
 		},
+		"NO_MEANS": {
+			"ru": "Закончился баланс.",
+			"en": "Balance ended.",
+			"action": "die",
+			"instantly": false
+		},
 		"NO_NUMBERS": {
 			"ru": "Нет номеров.",
 			"en": "No numbers.",

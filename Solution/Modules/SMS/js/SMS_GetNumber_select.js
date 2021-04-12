@@ -8,7 +8,7 @@ if(apiKey["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("API key") + tr("\" is not specified"));
     return;
 };
-var site = $("#Select").val();
+var site = $("#site").val();
 var country = GetInputConstructorValue("country", loader);
 if(country["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Country") + tr("\" is not specified"));

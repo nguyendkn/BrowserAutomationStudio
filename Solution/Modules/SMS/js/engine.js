@@ -1,4 +1,5 @@
 _BAS_SMSCONFIRMDATA = {};
+_SMS_DEBUG = false;
 
 function _SMS_SetServiceConfig(service, apiKey, serverUrl){
 	var services = {
@@ -76,7 +77,7 @@ function _SMS_SetServiceConfig(service, apiKey, serverUrl){
 		},
 		"simsms.org":{
 			api: _SMS_Activate_Api,
-			apiUrl: 'http://simsms2.org',
+			apiUrl: 'http://simsms.org',
 			apiType: 'sms-activate',
 			serviceName: 'SIMsms',
 			refId: '',
@@ -136,6 +137,19 @@ function _SMS_CombineParams(params, options, labels){
 	};
 	return params;
 };
+function _SMS_ParamsToString(params){
+	return Object.keys(params).map(function(key){
+		return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+	}).join('&');
+};
+function _SMS_ParamsToArray(params){
+	var data = [];
+	Object.keys(params).forEach(function(key){
+		data.push(key);
+		data.push(params[key]);
+	});
+	return data;
+};
 function _SMS_ParseJSON(config, content){
 	try{
 		var resp = JSON.parse(content);
@@ -154,18 +168,11 @@ function _SMS_Request(){
 		params[config.refTitle] = config.refId;
 	};
 	
-	var data = [];
-	var keys = Object.keys(params);
-	if(keys.length>0){
+	if(Object.keys(params).length>0){
 		if(method=="GET"){
-			url += '?' + keys.map(function(key){
-				return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-			}).join('&');
+			url += '?' + _SMS_ParamsToString(params);
 		}else{
-			keys.forEach(function(key){
-				data.push(key);
-				data.push(params[key]);
-			});
+			var data = _SMS_ParamsToArray(params);
 		};
 	};
 	
@@ -183,8 +190,14 @@ function _SMS_Request(){
 		};
 		
 		_if_else(method=="GET", function(){
+			if(_SMS_DEBUG){
+				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + config.serviceName + ': ' + url);
+			};
 			http_client_get2(url,{"method":"GET"})!
 		}, function(){
+			if(_SMS_DEBUG){
+				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + config.serviceName + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + _SMS_ParamsToString(params));
+			};
 			http_client_post(url, data, {"content-type":"urlencode","encoding":"UTF-8","method":"POST"})!
 		})!
 		
@@ -198,6 +211,10 @@ function _SMS_Request(){
 	FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;
 
 	var content = http_client_content();
+	
+	if(_SMS_DEBUG){
+		log((_K=="ru" ? 'Ответ от API' : 'API response') + ' ' + config.serviceName + ': ' + content);
+	};
 
 	_switch_http_client_main();
 	
@@ -446,4 +463,7 @@ function _SMS_GetNumber(){
 	})!
 	
 	_function_return(_is_nilb(confirmData.number) ? null : confirmData.number);
+};
+function _SMS_DebugSwitch(enable){
+	_SMS_DEBUG = (enable==true || enable=="true");
 };

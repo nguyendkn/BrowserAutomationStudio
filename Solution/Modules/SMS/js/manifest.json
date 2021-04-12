@@ -33,6 +33,23 @@
             "name": "SMS_GetNumber",
             "select": "SMS_GetNumber_select.js",
             "template": "{{service}} ({{site}}) -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "SMS_Debug_code.js",
+                    "name": "SMS_Debug_code"
+                }
+            ],
+            "description": {
+                "en": "Debug",
+                "ru": "Отладка"
+            },
+            "interface": "SMS_Debug_interface.js",
+            "is_element": false,
+            "name": "SMS_Debug",
+            "select": "SMS_Debug_select.js",
+            "template": "{{enable}}"
         }
 	],
     "api_version": 1,
@@ -70,7 +87,13 @@
 		
 		"Custom site": {"ru":"Пользовательский сайт"},
 		"Custom country": {"ru":"Пользовательская страна"},
-		"Get phone number from the SMS receiving service.": {"ru":"Получить номер телефона от сервиса приема СМС."}
+		"Get phone number from the SMS receiving service.": {"ru":"Получить номер телефона от сервиса приема СМС."},
+		
+		"Enable debug": {"ru":"Включить отладку"},
+		"Disable debug": {"ru":"Отключить отладку"},
+		"Enable SMS module debug.": {"ru":"Включить отладку СМС модуля."},
+		"Enable or disable SMS module debug.": {"ru":"Включить или отключить отладку СМС модуля."},
+		"If debug is enabled, all queries and their results will be displayed in the log.": {"ru":"Если отладка включена, все запросы и их результаты будут выводится в лог."}
     },
     "major_version": 1,
     "minor_version": 0,

@@ -30,6 +30,7 @@ namespace BrowserAutomationStudioFramework
         QString Webgl;
         QString WebglNoise;
         QString WebrtcIps;
+        int MaxFPS = 30;
 
 
         QString UniqueProcessId;
@@ -74,6 +75,7 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetCanvasNoise();
         virtual QString GetAudio();
         virtual QString GetAudioNoise();
+        virtual int GetMaxFPS();
         virtual void SetAudio(const QString& Audio);
         virtual void SetAudioNoise(const QString& AudioNoise);
         virtual QString GetWebgl();
@@ -84,6 +86,8 @@ namespace BrowserAutomationStudioFramework
         virtual void SetCanvasNoise(const QString& CanvasNoise);
         virtual void SetWebgl(const QString& Webgl);
         virtual void SetWebglNoise(const QString& WebglNoise);
+        virtual void SetMaxFPS(int MaxFPS);
+
 
         virtual QString GetWorkerPathSafe();
         virtual QString GetWorkerPathNotSafe();

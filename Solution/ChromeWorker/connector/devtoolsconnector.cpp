@@ -316,6 +316,13 @@ void DevToolsConnector::OnWebSocketConnected(bool IsSuccess)
         return;
     }
 
+    if(!WasBrowserCreationEvent)
+    {
+        WasBrowserCreationEvent = true;
+        for(auto f:OnBrowserCreated)
+            f();
+    }
+
     std::map<std::string, Variant> CurrentParams;
 
     CurrentParams["downloadPath"] = Variant(ws2s(GetRelativePathToParentFolder(L"")));
@@ -1181,7 +1188,7 @@ void DevToolsConnector::Timer()
             if(Tab->ConnectionState == TabData::Connected)
             {
                 ConnectionState = Connected;
-                
+
                 //If reset action waits for connected status, notify about result
                 if(ResetResult)
                 {

@@ -289,19 +289,41 @@ std::map<std::string, Variant> KeyboardEmulation::PrepareRawKeyboardEvent(KeyEve
     } else
     {
         Code = GetDOMCode(VirtualCode);
-        std::vector<BYTE> KeyboardState(256,0);
-        GetKeyboardState(KeyboardState.data());
-        if(Event != KeyEventCharacter)
+        
+        if(Event == KeyEventCharacter)
         {
+            wchar_t CodeWChar = (wchar_t)WindowsVirtualKeyCode;
+            std::wstring CodeWstring;
+            CodeWstring.push_back(CodeWChar);
+            Text = ws2s(CodeWstring);
+            Key = Text;
+        }else
+        {
+            std::vector<BYTE> KeyboardState(256,0);
+            GetKeyboardState(KeyboardState.data());
+
             KeyboardState[VK_LCONTROL] = 0;
             KeyboardState[VK_RCONTROL] = 0;
             KeyboardState[VK_CONTROL] = 0;
+
+            std::vector<wchar_t> ResultData(16,0);
+            int Size = ToUnicode(VirtualCode, ScanCode, KeyboardState.data(), ResultData.data(), ResultData.size(), 0);
+
+
+
+            if(Size ==1)
+            {
+                std::wstring ResultString(ResultData.begin(),ResultData.begin() + Size);
+                Text = ws2s(ResultString);
+                Key = Text;
+            }else
+            {
+                Text.clear();
+                Key = "Dead";
+            }
+
         }
-        std::vector<wchar_t> ResultData(16,0);
-        int Size = ToUnicode(VirtualCode, ScanCode, KeyboardState.data(), ResultData.data(), ResultData.size(), 0);
-        std::wstring ResultString(ResultData.begin(),ResultData.begin() + Size);
-        Text = ws2s(ResultString);
-        Key = Text;
+
     }
 
     /*bool NeedToSetText = true;

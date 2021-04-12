@@ -79,6 +79,8 @@ namespace BrowserAutomationStudioFramework
 
         virtual QString GetAudio() = 0;
         virtual QString GetAudioNoise() = 0;
+        virtual int GetMaxFPS() = 0;
+        virtual void SetMaxFPS(int MaxFPS) = 0;
         virtual void SetAudio(const QString& Audio) = 0;
         virtual void SetAudioNoise(const QString& AudioNoise) = 0;
         virtual void SetWebgl(const QString& Webgl) = 0;

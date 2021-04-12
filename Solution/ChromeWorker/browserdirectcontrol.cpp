@@ -901,7 +901,7 @@ void BrowserDirectControl::Key(UINT msg, WPARAM wParam, LPARAM lParam)
     if (IsKeyDown(VK_MENU))
       Modifiers |= KeyboardModifiersAlt;
 
-    if(!((IsKeyDown(VK_CONTROL) | IsKeyDown(VK_MENU)) && Event == KeyEventCharacter))
+    if(IsKeyDown(VK_RMENU) || !((IsKeyDown(VK_CONTROL) | IsKeyDown(VK_MENU)) && Event == KeyEventCharacter))
         _BrowserData->Connector->KeyRaw(Event, wParam, lParam, Modifiers);
 
     //event.is_system_key = msg == WM_SYSCHAR || msg == WM_SYSKEYDOWN || msg == WM_SYSKEYUP;

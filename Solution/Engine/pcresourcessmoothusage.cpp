@@ -13,11 +13,11 @@ namespace BrowserAutomationStudioFramework
         PdhCollectQueryData(cpuQuery);
         MaxBrowserStartSimultaneously = 3;
         MinFreeMemoryToStartBrowser = 500;
-        MinUnusedCpu = 20;
+        MinUnusedCpu = 35;
         Timer = new QTimer(this);
         connect(Timer,SIGNAL(timeout()),this,SLOT(TimerSlot()));
         Timer->setSingleShot(false);
-        Timer->setInterval(5000);
+        Timer->setInterval(300);
         Timer->start();
         {
             QSettings SettingsWorker("settings_worker.ini",QSettings::IniFormat);
@@ -30,6 +30,11 @@ namespace BrowserAutomationStudioFramework
 
     bool PCResourcesSmoothUsage::CheckCanStartBrowser()
     {
+        QDateTime now = QDateTime::currentDateTime();
+
+        if(StartedBrowserAtLeastOnce && LastTimeStartedBrowser.addMSecs(MinimumIntervalBetweenBrowserStart) > now)
+            return false;
+
         int UsedCpu = GetUsedCpu();
         int FreeMem = GetFreeMemory();
 
@@ -39,7 +44,6 @@ namespace BrowserAutomationStudioFramework
             LastSystemLoad = QDateTime();
         }else
         {
-            QDateTime now = QDateTime::currentDateTime();
             if(!LastSystemLoad.isNull())
             {
                 int sec = LastSystemLoad.secsTo(now);
@@ -62,6 +66,28 @@ namespace BrowserAutomationStudioFramework
 
     int PCResourcesSmoothUsage::GetUsedCpu()
     {
+        QDateTime now = QDateTime::currentDateTime();
+
+        int MaxCPU = 0;
+
+        //Remove CPU measurements older than 10 seconds
+        QMutableListIterator<QPair<int, QDateTime> > i(CPUMeasurements);
+        while (i.hasNext())
+        {
+            i.next();
+            int diff = i.value().second.msecsTo(now);
+            if(diff > CpuMeasurmentInterval)
+            {
+                i.remove();
+            }else
+            {
+                //Calculate max CPU
+                if(i.value().first > MaxCPU)
+                    MaxCPU = i.value().first;
+            }
+        }
+
+        //Get actual CPU usage
         PDH_FMT_COUNTERVALUE counterVal;
         PdhCollectQueryData(cpuQuery);
         PdhGetFormattedCounterValue(cpuTotal, PDH_FMT_DOUBLE, NULL, &counterVal);
@@ -70,7 +96,18 @@ namespace BrowserAutomationStudioFramework
             res = 100;
         if(res<0)
             res = 0;
-        return res;
+
+        //Add actual CPU to list
+        QPair<int, QDateTime> ResPair;
+        ResPair.first = res;
+        ResPair.second = now;
+        CPUMeasurements.push_back(ResPair);
+
+        //Update MaxCPU with actual value
+        if(res > MaxCPU)
+            MaxCPU = res;
+
+        return MaxCPU;
     }
 
     int PCResourcesSmoothUsage::GetFreeMemory()
@@ -83,9 +120,8 @@ namespace BrowserAutomationStudioFramework
 
     void PCResourcesSmoothUsage::TimerSlot()
     {
-
         RemoveOldStartingBrowsers();
-        if(!BrowsersPending.empty() && CheckCanStartBrowser())
+        if(CheckCanStartBrowser() && !BrowsersPending.empty())
             StartPendingBrowsers();
     }
 
@@ -107,7 +143,7 @@ namespace BrowserAutomationStudioFramework
     void PCResourcesSmoothUsage::StartPendingBrowsers()
     {
         int pending = CalculateNumberOfStartingBrowsers();
-        for(int i = 0;i<MaxBrowserStartSimultaneously - pending;i++)
+        if(MaxBrowserStartSimultaneously > pending)
         {
             if(BrowsersPending.empty())
                 return;
@@ -115,8 +151,9 @@ namespace BrowserAutomationStudioFramework
             BrowsersPending.removeFirst();
             QDateTime now = QDateTime::currentDateTime();
             BrowsersStarting[BrowserId] = now;
+            StartedBrowserAtLeastOnce = true;
+            LastTimeStartedBrowser = QDateTime::currentDateTime();
             emit CanStartBrowser(BrowserId);
-
         }
     }
 
@@ -132,6 +169,8 @@ namespace BrowserAutomationStudioFramework
         {
             QDateTime now = QDateTime::currentDateTime();
             BrowsersStarting[BrowserId] = now;
+            StartedBrowserAtLeastOnce = true;
+            LastTimeStartedBrowser = QDateTime::currentDateTime();
             emit CanStartBrowser(BrowserId);
         }else
         {

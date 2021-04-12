@@ -24,6 +24,12 @@ namespace BrowserAutomationStudioFramework
         int MaxBrowserStartSimultaneously;
         int MinFreeMemoryToStartBrowser;
         int MinUnusedCpu;
+        int CpuMeasurmentInterval = 2000;
+        int MinimumIntervalBetweenBrowserStart = 1000;
+        bool StartedBrowserAtLeastOnce = false;
+        QDateTime LastTimeStartedBrowser;
+
+        QList<QPair<int, QDateTime> > CPUMeasurements;
 
         void RemoveOldStartingBrowsers();
         void StartPendingBrowsers();

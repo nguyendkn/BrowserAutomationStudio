@@ -5,11 +5,11 @@ _.extend(_L, {
   'The BAS version of the project is different from the current BAS version, update the project actions?': {
     ru: 'Версия BAS проекта отличается от текущей версии BAS, обновить действия проекта?'
   },
-  'This tool allows you to automatically update all the actions in the project.': {
-    ru: 'Этот инструмент позволяет автоматически обновить все действия в проекте.'
-  },
   'Actions that are not updated may not work correctly or even cause an error.': {
     ru: 'Не обновленные действия могут работать некорректно или даже вызвать ошибку.'
+  },
+  'This tool allows you to automatically update all actions in the project.': {
+    ru: 'Этот инструмент позволяет автоматически обновить все действия в проекте.'
   },
   'You can always open it in the ': {
     ru: 'Вы всегда можете открыть его в '

@@ -80,7 +80,7 @@
           <div class="action-updater-modal-body">
             <div class="action-updater-modal-text"><%= tr('The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to open and save the action.') %></div>
             <div class="action-updater-modal-text"><%= tr('Actions that are not updated may not work correctly or even cause an error.') %></div>
-            <div class="action-updater-modal-text"><%= tr('This tool allows you to automatically update all the actions in the project.') %></div>
+            <div class="action-updater-modal-text"><%= tr('This tool allows you to automatically update all actions in the project.') %></div>
             <div class="action-updater-modal-text"><%= tr('You can always open it in the ') %><a class="action-updater-modal-link" id="actionUpdaterModalMenu"><%= tr('context menu') %></a>.</div>
           </div>
           <div class="action-updater-modal-footer">
@@ -156,7 +156,7 @@
     template: _.template(/*html*/`
       <div class="action-updater-header">
         <h1><%= tr('Auto-update actions') %></h1>
-        <h2><%= tr('Brief description of the section') %></h2>
+        <h2><%= tr('This tool allows you to automatically update all actions in the project.') %></h2>
       </div>
       <div class="action-updater-panel">
         <div id="actionUpdaterProgress" class="action-updater-progress"></div>

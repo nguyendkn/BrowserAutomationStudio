@@ -66,6 +66,7 @@ namespace BrowserAutomationStudioFramework
             QString DeveloperSite;
             QString IconPath;
             QList<QString> EngineCode;
+            QList<QString> BrowserCode;
             QList<ModuleDll> Dlls;
             int ApiVersion;
             int MajorVersion;
@@ -110,6 +111,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetModuleEnabled(const QString& ModuleName, bool IsEnabled) = 0;
         virtual int GetModuleSystemVersion() = 0;
         virtual QList<QString> GetModuleEngineCode(const QStringList& Exclude) = 0;
+        virtual void CacheBrowserCode() = 0;
         virtual void StartAllDlls() = 0;
         virtual void StopAllDlls() = 0;
         virtual void StartThread(unsigned int ThreadId) = 0;

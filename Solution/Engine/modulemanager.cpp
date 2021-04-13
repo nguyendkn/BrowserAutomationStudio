@@ -360,6 +360,30 @@ namespace BrowserAutomationStudioFramework
         return res;
     }
 
+    void ModuleManager::CacheBrowserCode()
+    {
+        QString res;
+        for(IModuleManager::ModuleInfo Info: GetModuleInfo(false))
+        {
+            if(Info->IsEnabled && Info->Name != "FormDataFake")
+            {
+                for(QString& Code: Info->BrowserCode)
+                {
+                    res.append(Code);
+                    res.append("\n");
+                }
+            }
+        }
+
+        QFile BrowserCode("browser_code.txt");
+        if(BrowserCode.open(QIODevice::WriteOnly))
+        {
+            BrowserCode.write(res.toUtf8().toBase64());
+        }
+        BrowserCode.close();
+
+    }
+
     QList<QString> ModuleManager::GetModuleEngineCode(const QList<ModulePreserve>& Filter, const QStringList& Exclude)
     {
         QSet<QString> UsedModules;
@@ -593,6 +617,18 @@ namespace BrowserAutomationStudioFramework
 
                         if(Info->IsEnabled)
                         {
+                            if(doc.object().contains("browser"))
+                            {
+                                foreach(QJsonValue val, doc.object()["browser"].toArray())
+                                {
+                                    QFile browser_module(Folder + QString("/") + dir + QString("/") + val.toString());
+                                    if(browser_module.open(QIODevice::ReadOnly))
+                                    {
+                                        Info->BrowserCode.append(QString("\n") + QString::fromUtf8(browser_module.readAll()) + QString("\n"));
+                                        browser_module.close();
+                                    }
+                                }
+                            }
                             foreach(QJsonValue val, doc.object()["engine"].toArray())
                             {
                                 QFile engine_module(Folder + QString("/") + dir + QString("/") + val.toString());

@@ -38,6 +38,8 @@
 #include "mixnumbers.h"
 #include "installwidevine.h"
 #include "createemptyprofile.h"
+#include "readallfile.h"
+#include "base64.h"
 
 
 #if defined(BAS_DEBUG)
@@ -1956,7 +1958,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         }
     }
 
-    Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
+    if(Data->IsRecord)
+        Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
+
+    Data->BrowserCode = ReadAllString("browser_code.txt");
+    if(!Data->BrowserCode.empty())
+        Data->BrowserCode = base64_decode(Data->BrowserCode);
 
     if(Settings.UseWidevine())
     {

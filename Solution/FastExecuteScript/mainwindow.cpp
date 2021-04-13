@@ -669,6 +669,7 @@ void MainWindow::Start()
     worker->SetStringBuilder(StringBuild);
     worker->SetEmbeddedLanguageManager(_EmbeddedLanguageManager);
     worker->SetAdditionEngineScripts(_ModuleManager->GetModuleEngineCode(loader.GetUnusedModules()));
+    _ModuleManager->CacheBrowserCode();
     worker->SetPreprocessor(_Preprocessor);
 
     worker->SetBrowserFactory(BrowserFactory);

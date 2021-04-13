@@ -52,6 +52,7 @@ namespace BrowserAutomationStudioFramework
         virtual int GetModuleSystemVersion();
         virtual QList<QString> GetModuleEngineCode(const QStringList& Exclude);
         virtual QList<QString> GetModuleEngineCode(const QList<ModulePreserve>& Filter, const QStringList& Exclude);
+        virtual void CacheBrowserCode();
         virtual void StartAllDlls();
         virtual void StopAllDlls();
         virtual void StartThread(unsigned int ThreadId);

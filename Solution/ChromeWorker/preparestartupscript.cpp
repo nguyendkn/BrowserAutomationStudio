@@ -11,7 +11,7 @@ std::string PrepareConstantStartupScript(BrowserData* Data)
     std::string extension = Extensions.GetBasicExtension(Data->IsRecord);
 
     std::string modules;
-    modules += GetAllBrowserDataCode(Data->_ModulesData);
+    modules += Data->BrowserCode;
 
     std::string hide;
     hide = Extensions.GetHideExtension(Data->_UniqueProcessId);

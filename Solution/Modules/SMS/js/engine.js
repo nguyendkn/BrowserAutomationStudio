@@ -43,14 +43,6 @@ function _SMS_SetServiceConfig(service, apiKey, serverUrl){
 			refId: '',
 			refTitle: 'ref'
 		},
-		"vak-sms.com":{
-			api: _SMS_Activate_Api,
-			apiUrl: 'https://vak-sms.com',
-			apiType: 'sms-activate',
-			serviceName: 'VAK-SMS',
-			refId: '',
-			refTitle: 'ref'
-		},
 		"cheapsms.ru":{
 			api: _SMS_Activate_Api,
 			apiUrl: 'https://cheapsms.pro',
@@ -114,6 +106,14 @@ function _SMS_SetServiceConfig(service, apiKey, serverUrl){
 			serviceName: 'SmsAcktiwator',
 			refId: '',
 			refTitle: 'ref'
+		},
+		"vak-sms.com":{
+			api: _SMS_Vak_Api,
+			apiUrl: 'https://vak-sms.com',
+			apiType: 'vak-sms',
+			serviceName: 'VAK-SMS',
+			refId: '',
+			refTitle: 'softId'
 		}
 	};
 	if(Object.keys(services).indexOf(service) < 0){
@@ -323,6 +323,26 @@ function _SMS_Acktiwator_Api(){
 
 	_function_return(resp);
 };
+function _SMS_Vak_Api(){
+	var config = _function_argument("config");
+	var action = _function_argument("action");
+	var options = _avoid_nilb(_function_argument("options"), {});
+	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
+	
+	var url = config.apiUrl + '/api/' + action;
+	var params = _SMS_CombineParams({apiKey:config.apiKey}, options);
+	
+	_call_function(_SMS_Request,{"config":config,"url":url,"method":"GET","params":params})!
+	var content = _result_function();
+	
+	var resp = _SMS_ParseJSON(config, content);
+	
+	if(checkErrors && resp.error){
+		_SMS_ErrorHandler(config, resp.error);
+	};
+
+	_function_return(resp);
+};
 function _SMS_GetBalance(){
 	var service = _function_argument("service");
 	var apiKey = _function_argument("apiKey");
@@ -343,7 +363,7 @@ function _SMS_GetBalance(){
 		};
 	})!
 	
-	_if(config.apiType=="sms-reg" || config.apiType=="smspva" || config.apiType=="onlinesim",function(){
+	_if(config.apiType=="sms-reg" || config.apiType=="smspva" || config.apiType=="onlinesim" || config.apiType=="vak-sms",function(){
 		_call_function(config.api,{config:config,action:(config.apiType=="smspva" ? "get_balance" : "getBalance")})!
 		var resp = _result_function();
 		
@@ -460,6 +480,16 @@ function _SMS_GetNumber(){
 		confirmData.origId = resp.id;
 		confirmData.number = resp.number;
 		_BAS_SMSCONFIRMDATA[resp.number] = confirmData;
+	})!
+	
+	_if(config.apiType=="vak-sms",function(){
+		_call_function(_SMS_Vak_Api,{config:config,action:"getNumber",options:options})!
+		var resp = _result_function();
+		
+		confirmData.id = resp.idNum;
+		confirmData.origId = resp.idNum;
+		confirmData.number = resp.tel;
+		_BAS_SMSCONFIRMDATA[resp.tel] = confirmData;
 	})!
 	
 	_function_return(_is_nilb(confirmData.number) ? null : confirmData.number);

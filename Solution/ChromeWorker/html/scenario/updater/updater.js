@@ -7,6 +7,12 @@
       tasks: []
     },
 
+    isUnsuccessfulUpdate() {
+      if (this.get('isStarted')) return;
+      const success = this.get('successCount');
+      return success !== _.size(this.get('tasks'));
+    },
+
     async startUpdate() {
       this.set('isStarted', true);
       this.set('successCount', 0);

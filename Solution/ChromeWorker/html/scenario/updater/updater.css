@@ -231,6 +231,7 @@
 
 .action-updater-select.disabled {
   background-color: #606060 !important;
+  cursor: not-allowed !important;
   opacity: 0.8;
 }
 

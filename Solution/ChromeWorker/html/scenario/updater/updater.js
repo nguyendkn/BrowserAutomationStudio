@@ -217,19 +217,13 @@
         }
 
         this.$('#actionUpdaterSelect').selectpicker('refresh');
-      });
-
-      this.listenTo(this.model, 'change:successCount', (_, count) => {
+      }).listenTo(this.model, 'change:successCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterSuccessCount').text(count);
-      });
-
-      this.listenTo(this.model, 'change:errorsCount', (_, count) => {
+      }).listenTo(this.model, 'change:errorsCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterErrorsCount').text(count);
-      });
-
-      this.listenTo(this.model, 'change:tasks', (_, { length }) => {
+      }).listenTo(this.model, 'change:tasks', (_, { length }) => {
         this.$('#actionUpdaterProgress').data('max', length);
         this.$('#actionUpdaterProgress').progressBar('reset');
         this.$('#actionUpdaterTotalCount').text(length);
@@ -238,7 +232,7 @@
       this.listenTo(this.modal, 'accept', this.show);
       this.listenTo(this.modal, 'cancel', this.hide);
       this.listenTo(this.model, 'log', this.log);
-      this.on('show', this.update, this);
+      this.listenTo(this, 'show', this.update);
     },
 
     log: function (data) {
@@ -315,6 +309,7 @@
       const type = this.$('#actionUpdaterSelect').val();
       this.$('.action-updater-select').trigger('blur');
       const tasks = window.Scenario.filterTasks(type);
+      this.model.unset('tasks', { silent: true });
       this.model.set('tasks', tasks);
     },
 

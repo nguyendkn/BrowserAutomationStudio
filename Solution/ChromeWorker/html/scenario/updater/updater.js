@@ -197,6 +197,7 @@
 
       this.listenTo(this.model, 'change:isStarted', (_, isStarted) => {
         if (isStarted) this.$('#actionUpdaterProgress').progressBar('reset');
+        this.$('#actionUpdaterAccept').prop('disabled', isStarted);
         this.$('#actionUpdaterSelect').prop('disabled', isStarted);
         this.$('#actionUpdaterSelect').selectpicker('refresh');
       });

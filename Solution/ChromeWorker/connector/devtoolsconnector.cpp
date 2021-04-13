@@ -73,7 +73,7 @@ void DevToolsConnector::Initialize
     GlobalState.ChromeExecutableLocation = ChromeExecutableLocation;
     GlobalState.ConstantStartupScript = ConstantStartupScript;
 
-    ImageData.clear();
+    ImageData.resize(67272892);
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
 }
@@ -1121,7 +1121,6 @@ void DevToolsConnector::HandleIPCData()
     bool IsNewImage = false;
 
     //Get data
-    if(IPC->GetImageId())
     {
         SharedMemoryIPCLockGuard Lock(IPC);
 

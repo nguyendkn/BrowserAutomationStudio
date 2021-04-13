@@ -83,7 +83,7 @@ bool SharedMemoryIPC::Start(const std::string& Id)
         this->MemoryName = std::string("BASMLAMEMORY") + Id;
         this->MutexName = std::string("BASMLAMUTEX") + Id;
 
-        MappingHandler = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE | SEC_RESERVE, 0, SHARED_MEMORY_MAXIMUM_SIZE,  MemoryName.c_str());
+        MappingHandler = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, SHARED_MEMORY_IPC_BUF_SIZE,  MemoryName.c_str());
 
         if(MappingHandler == NULL)
         {
@@ -92,7 +92,7 @@ bool SharedMemoryIPC::Start(const std::string& Id)
             return false;
         }
 
-        Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,SHARED_MEMORY_MAXIMUM_SIZE);
+        Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,SHARED_MEMORY_IPC_BUF_SIZE);
 
         if(Data == NULL)
         {
@@ -101,21 +101,10 @@ bool SharedMemoryIPC::Start(const std::string& Id)
             return false;
         }
 
-        //Allocate first portion of memory
-        if(VirtualAlloc(Data, SHARED_MEMORY_INITIAL_SIZE, MEM_COMMIT, PAGE_READWRITE) == NULL)
-        {
-            Stop();
-            SetError(std::string("Error during allocating memory: ") + std::to_string(GetLastError()));
-            return false;
-        }
+        memset(Data,0,SHARED_MEMORY_IPC_BUF_SIZE);
 
-        //Initialize
+        //Set version
         Data[0] = 1;
-        SetWord(SHARED_MEMORY_OFFSET_IMAGE_WIDTH, 0);
-        SetWord(SHARED_MEMORY_OFFSET_IMAGE_HEIGHT, 0);
-        SetWord(SHARED_MEMORY_OFFSET_IMAGE_ID, 0);
-        SetWord(SHARED_MEMORY_OFFSET_ACTUAL_SIZE, SHARED_MEMORY_INITIAL_SIZE);
-
 
         MutexHandler = CreateMutexA(0,false,MutexName.c_str());
 
@@ -153,7 +142,7 @@ bool SharedMemoryIPC::Connect(const std::string& Id)
             return false;
         }
 
-        Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,SHARED_MEMORY_MAXIMUM_SIZE);
+        Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,SHARED_MEMORY_IPC_BUF_SIZE);
 
         if(Data == NULL)
         {
@@ -306,48 +295,6 @@ int32_t SharedMemoryIPC::GetImageSize()
 void SharedMemoryIPC::SetImageSize(int32_t Value)
 {
     SetWord(SHARED_MEMORY_OFFSET_IMAGE_DATA, Value);
-}
-
-int32_t SharedMemoryIPC::GetSize()
-{
-    return GetWord(SHARED_MEMORY_OFFSET_ACTUAL_SIZE) - SHARED_MEMORY_OFFSET_IMAGE_DATA - 4;
-}
-
-bool SharedMemoryIPC::Resize(int32_t Value)
-{
-    //Add space for information about image
-    Value += SHARED_MEMORY_OFFSET_IMAGE_DATA + 4;
-
-    if(!Data)
-    {
-        Stop();
-        SetError(std::string("Error during growing memory: data not yet initilized."));
-        return false;
-    }
-
-    if(Value > SHARED_MEMORY_MAXIMUM_SIZE)
-    {
-        Stop();
-        SetError(std::string("Error during growing memory: size is too big."));
-        return false;
-    }
-
-    int32_t ActualSize = GetWord(SHARED_MEMORY_OFFSET_ACTUAL_SIZE);
-    if(Value <= ActualSize)
-        return true;
-    int32_t NewBlocksNumber = (Value - ActualSize) / SHARED_MEMORY_CHUNK_SIZE;
-    if((Value - ActualSize) % SHARED_MEMORY_CHUNK_SIZE != 0)
-        NewBlocksNumber += 1;
-
-    if(VirtualAlloc(Data + ActualSize, NewBlocksNumber * SHARED_MEMORY_CHUNK_SIZE, MEM_COMMIT, PAGE_READWRITE) == NULL)
-    {
-        Stop();
-        SetError(std::string("Error during growing memory: ") + std::to_string(GetLastError()));
-        return false;
-    }
-
-    SetWord(SHARED_MEMORY_OFFSET_ACTUAL_SIZE, ActualSize + NewBlocksNumber * SHARED_MEMORY_CHUNK_SIZE);
-    return true;
 }
 
 bool SharedMemoryIPC::GetIsStarted()

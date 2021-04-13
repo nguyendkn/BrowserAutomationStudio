@@ -5,15 +5,11 @@
 #include <vector>
 #include <windows.h>
 
-
-#define SHARED_MEMORY_CHUNK_SIZE 1048576
-#define SHARED_MEMORY_INITIAL_SIZE 3145728
-#define SHARED_MEMORY_MAXIMUM_SIZE 104857600
+#define SHARED_MEMORY_IPC_BUF_SIZE 67272892
 #define SHARED_MEMORY_OFFSET_IMAGE_WIDTH 1
 #define SHARED_MEMORY_OFFSET_IMAGE_HEIGHT 5
 #define SHARED_MEMORY_OFFSET_IMAGE_ID 9
-#define SHARED_MEMORY_OFFSET_ACTUAL_SIZE 13
-#define SHARED_MEMORY_OFFSET_IMAGE_DATA 17
+#define SHARED_MEMORY_OFFSET_IMAGE_DATA 13
 
 class SharedMemoryIPC
 {
@@ -52,8 +48,6 @@ public:
     void SetImageId(int32_t Value);
     int32_t GetImageSize();
     void SetImageSize(int32_t Value);
-    int32_t GetSize();
-    bool Resize(int32_t Value);
     unsigned char* GetImagePointer();
 
 

@@ -122,9 +122,8 @@
 }
 
 .action-updater-stats-item:nth-child(1) {
+  color: rgba(255, 255, 255, 0.5);
   flex-basis: 40%;
-  color: #fff;
-  opacity: 0.5;
 }
 
 .action-updater-stats-item:nth-child(2) {
@@ -140,8 +139,11 @@
 }
 
 .action-updater-stats-item {
+  border-top: 1px solid #606060;
+  justify-content: center;
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
+  white-space: nowrap;
   padding: 13px 16px;
   user-select: none;
   line-height: 15px;
@@ -155,7 +157,21 @@
 .action-updater-stats {
   border: 1px solid #606060;
   background: #3d3f42;
+  flex-flow: row wrap;
+  border-top: none;
   display: flex;
+}
+
+@media only screen and (max-width: 372px) {
+  .action-updater-stats-item {
+    flex-basis: 100%;
+  }
+}
+
+@media only screen and (min-width: 372px) {
+  .action-updater-stats-item {
+    flex-basis: 30%;
+  }
 }
 
 /*****************
@@ -265,7 +281,7 @@
   flex-direction: column;
   background: #ffffff;
   padding: 25px 20px;
-  min-width: 405px;
+  min-width: 325px;
   position: fixed;
   z-index: 100000;
   display: flex;

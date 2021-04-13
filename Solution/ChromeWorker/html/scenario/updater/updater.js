@@ -128,16 +128,14 @@
     },
 
     show() {
-      if (!this.$el.is(':visible')) {
-        this.render().$el.modal('show');
-      }
+      if (!this.$el.is(':visible')) return this;
+      this.render().$el.modal('show');
       return this;
     },
 
     hide() {
-      if (!this.$el.is(':hidden')) {
-        this.render().$el.modal('hide');
-      }
+      if (!this.$el.is(':hidden')) return this;
+      this.render().$el.modal('hide');
       return this;
     }
   });

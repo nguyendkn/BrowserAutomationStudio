@@ -259,6 +259,14 @@
       return this;
     },
 
+    reset: function () {
+      if (this.$el.is(':empty')) return this;
+      this.$('#actionUpdaterProgress').progressBar('destroy');
+      this.$('#actionUpdaterSelect').selectpicker('destroy');
+      this.$el.empty();
+      return this;
+    },
+
     show: function () {
       if (!this.$el.is(':visible') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
@@ -272,7 +280,7 @@
     hide: function () {
       if (!this.$el.is(':hidden') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
-        this.render().$el.hide();
+        this.reset().$el.hide();
         this.trigger('hide');
       }
       this.modal.hide();

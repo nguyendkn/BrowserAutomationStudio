@@ -11884,7 +11884,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       console.log("Invalid");
       $("#validation").html(data)
       $("#validation").removeClass("text-muted").removeClass("text-danger").addClass("text-danger")
-      BrowserAutomationStudio_TriggerEvent('toolbox.editFail', JSON.strinfigy(data));
+      BrowserAutomationStudio_TriggerEvent('toolbox.editFail', JSON.stringify(data));
     }
 
     function je(data)

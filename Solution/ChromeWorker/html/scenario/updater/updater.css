@@ -179,7 +179,6 @@
  *****************/
 
 .action-updater-footer > .btn-base:disabled {
-  cursor: not-allowed;
   opacity: 0.8;
   outline: 0;
 }
@@ -247,7 +246,6 @@
 
 .action-updater-select.disabled {
   background-color: #606060 !important;
-  cursor: not-allowed !important;
   opacity: 0.8;
 }
 

@@ -230,6 +230,8 @@
 
       this.listenTo(this.model, 'change:tasks', (_, { length }) => {
         this.$('#actionUpdaterAccept').prop('disabled', false);
+        this.$('#actionUpdaterSelect').prop('disabled', false);
+        this.$('#actionUpdaterSelect').selectpicker('refresh');
         this.$('#actionUpdaterProgress').data('max', length);
         this.$('#actionUpdaterProgress').progressBar('reset');
 

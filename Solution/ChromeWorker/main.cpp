@@ -88,14 +88,6 @@ void TerminateOnCloseMutex(const std::string& Id, bool DoSleep, bool DoFlush)
 {
     HANDLE HandleMutex = OpenMutexA(MUTEX_ALL_ACCESS,false,Id.c_str());
 
-    /*if(HandleMutex)
-    {
-        std::cout<<"Found existing mutex"<<std::endl;
-    }else
-    {
-        std::cout<<"Mutex missing"<<std::endl;
-    }*/
-
     if(HandleMutex)
         WaitForSingleObject(HandleMutex,INFINITE);
 
@@ -105,29 +97,15 @@ void TerminateOnCloseMutex(const std::string& Id, bool DoSleep, bool DoFlush)
 
     if(DoFlush)
     {
-        WORKER_LOG(std::string("FlushCallback TerminateOnCloseMutex "));
         app->FlushCallback();
     }
 
     if(DoSleep)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000 + rand()%5000));
     }
 
-    //std::cout<<"Done waiting for mutex"<<std::endl;
-
-    /*std::wstring arg = L"/F /PID ";
-    arg  += std::to_wstring(GetCurrentProcessId());
-
-    ShellExecute(
-      NULL,
-      NULL,
-      L"taskkill",
-      (wchar_t *)arg.data(),
-      NULL,SW_HIDE
-    );*/
     exit(0);
-
 }
 
 void RestoreOriginalStage()

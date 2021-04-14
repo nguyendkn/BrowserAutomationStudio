@@ -96,7 +96,7 @@ namespace BrowserAutomationStudioFramework
 
         virtual void SetLocation(const QString& Location);
         virtual void SetRecord(bool IsRecord);
-        virtual void CreateProcess(const QStringList& arguments);
+        virtual void CreateProcess(const QStringList& arguments, bool IsTemporaryProfile);
         virtual void ConnectToProcess(const QString& key_in, const QString& key_out);
         virtual void Send(const QString& value);
         virtual void Abort();

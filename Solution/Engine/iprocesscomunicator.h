@@ -14,7 +14,7 @@ namespace BrowserAutomationStudioFramework
         explicit IProcessComunicator(QObject *parent = 0);
         virtual void SetLocation(const QString& Location) = 0;
         virtual void SetRecord(bool IsRecord) = 0;
-        virtual void CreateProcess(const QStringList& arguments) = 0;
+        virtual void CreateProcess(const QStringList& arguments, bool IsTemporaryProfile) = 0;
         virtual void ConnectToProcess(const QString& key_in, const QString& key_out) = 0;
         virtual void Send(const QString& value) = 0;
         virtual void Abort() = 0;

@@ -1180,6 +1180,11 @@ namespace BrowserAutomationStudioFramework
         return WorkerSettings->GetRealProfile();
     }
 
+    bool SubprocessBrowser::IsTemporaryProfile()
+    {
+        return WorkerSettings->IsTemporaryProfile();
+    }
+
     void SubprocessBrowser::ClearLastTunnelFolder()
     {
         if(LastPID>0)
@@ -1262,7 +1267,7 @@ namespace BrowserAutomationStudioFramework
         QStringList arg;
         arg += WorkerSettings->GetCommandLineParameters(Language, false);
         Worker->GetProcessComunicator()->SetRecord(Worker->GetIsRecord());
-        Worker->GetProcessComunicator()->CreateProcess(arg);
+        Worker->GetProcessComunicator()->CreateProcess(arg, IsTemporaryProfile());
         if(!NextAction.isEmpty())
         {
             Worker->GetProcessComunicator()->Send(QString("<SetNextAction>") + NextAction + QString("</SetNextAction>"));
@@ -1305,7 +1310,7 @@ namespace BrowserAutomationStudioFramework
 
             arg += WorkerSettings->GetCommandLineParameters(Language, true);
             ProcessComunicatorVirtual->SetRecord(Worker->GetIsRecord());
-            ProcessComunicatorVirtual->CreateProcess(arg);
+            ProcessComunicatorVirtual->CreateProcess(arg, IsTemporaryProfile());
         }else
         {
             Worker->SetScript(callback);

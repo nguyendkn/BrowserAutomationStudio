@@ -1585,8 +1585,8 @@ void MainApp::VisibleCallback(bool visible)
 
 void MainApp::FlushCallback()
 {
-    WORKER_LOG(std::string("FlushCallback "));
-    Data->Connector->CloseBrowser();
+    long long now = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
+    BrowserCloseTime = now + rand()%3000;
 }
 
 void MainApp::Hide()
@@ -3112,6 +3112,12 @@ void MainApp::Timer()
         CheckNetworkProcessIPC();
 
     HandleScreenshotCapture();
+
+    if(BrowserCloseTime > 0 && now >= BrowserCloseTime)
+    {
+        BrowserCloseTime = 0;
+        Data->Connector->CloseBrowser();
+    }
 }
 
 void MainApp::InitNetworkProcessIPC()

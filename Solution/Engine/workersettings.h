@@ -100,6 +100,7 @@ namespace BrowserAutomationStudioFramework
 
         virtual QString GetProfile();
         virtual QString GetRealProfile();
+        virtual bool IsTemporaryProfile();
 
         virtual bool GetUseFlash();
         virtual bool GetUseWidevine();

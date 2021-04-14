@@ -1,16 +1,20 @@
 #include "processdeleter.h"
 #include <windows.h>
 
-ProcessDeleter::ProcessDeleter(QObject *parent) : QObject(parent)
+ProcessDeleter::ProcessDeleter(bool IsTemporaryProfile)
 {
     Process = 0;
+    this->IsTemporaryProfile = IsTemporaryProfile;
 }
 
 void ProcessDeleter::Start(QProcess * Process)
 {
     Process->setParent(0);
     this->Process = Process;
-    QTimer::singleShot(5000, this, SLOT(Timer()));
+    int DelayTime = qrand() % 5000;
+    if(!IsTemporaryProfile)
+        DelayTime += 10000;
+    QTimer::singleShot(DelayTime, this, SLOT(Timer()));
 }
 
 void ProcessDeleter::Timer()

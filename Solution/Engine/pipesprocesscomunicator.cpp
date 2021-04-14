@@ -13,6 +13,7 @@ namespace BrowserAutomationStudioFramework
         Process = 0;
         isError = false;
         IsRecord = false;
+        IsTemporaryProfile = true;
     }
 
     bool PipesProcessComunicator::GetIsOnlineProfile()
@@ -56,9 +57,10 @@ namespace BrowserAutomationStudioFramework
         this->Params = Params;
     }
 
-    void PipesProcessComunicator::CreateProcess(const QStringList& arguments)
+    void PipesProcessComunicator::CreateProcess(const QStringList& arguments, bool IsTemporaryProfile)
     {
         Arguments = arguments;
+        this->IsTemporaryProfile = IsTemporaryProfile;
         Abort();
 
         const char alphanum[] = "abcdefghijklmnopqrstuvwxyz";
@@ -147,9 +149,10 @@ namespace BrowserAutomationStudioFramework
         if(Process)
         {
             Send("<Visible>0</Visible>");
-            Send("<Flush></Flush>");
+            if(!IsTemporaryProfile)
+                Send("<Flush></Flush>");
             Suspend();
-            ProcessDeleter *Deleter = new ProcessDeleter();
+            ProcessDeleter *Deleter = new ProcessDeleter(IsTemporaryProfile);
             Deleter->Start(Process);
 
             Process = 0;
@@ -162,9 +165,10 @@ namespace BrowserAutomationStudioFramework
         if(Process)
         {
             Send("<Visible>0</Visible>");
-            Send("<Flush></Flush>");
+            if(!IsTemporaryProfile)
+                Send("<Flush></Flush>");
             Suspend();
-            ProcessDeleter *Deleter = new ProcessDeleter();
+            ProcessDeleter *Deleter = new ProcessDeleter(IsTemporaryProfile);
             Deleter->Start(Process);
 
             Process = 0;
@@ -177,7 +181,7 @@ namespace BrowserAutomationStudioFramework
         {
             if(!IsRecord)
             {
-                CreateProcess(Arguments);
+                CreateProcess(Arguments, IsTemporaryProfile);
                 emit ProcessRestored(this);
             }
         }else

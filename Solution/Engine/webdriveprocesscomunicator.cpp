@@ -698,7 +698,7 @@ namespace BrowserAutomationStudioFramework
 
     }
 
-    void WebDriveProcessComunicator::CreateProcess(const QStringList& arguments)
+    void WebDriveProcessComunicator::CreateProcess(const QStringList& arguments, bool IsTemporaryProfile)
     {
         //Log(QString("CreateProcess ") + arguments.join(","));
         for(const QString& arg:arguments)

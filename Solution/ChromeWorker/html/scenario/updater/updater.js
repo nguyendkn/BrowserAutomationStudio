@@ -210,23 +210,32 @@
 
         if (this.model.isSuccessfulUpdate() && !isStarted) {
           this.$('#actionUpdaterAccept').prop('disabled', !isStarted);
-          this.$('#actionUpdaterSelect').prop('disabled', !isStarted);
         } else {
-          this.$('#actionUpdaterSelect').prop('disabled', isStarted);
           this.$('#actionUpdaterAccept').prop('disabled', isStarted);
         }
 
+        this.$('#actionUpdaterSelect').prop('disabled', isStarted);
         this.$('#actionUpdaterSelect').selectpicker('refresh');
-      }).listenTo(this.model, 'change:successCount', (_, count) => {
+      });
+
+      this.listenTo(this.model, 'change:successCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterSuccessCount').text(count);
-      }).listenTo(this.model, 'change:errorsCount', (_, count) => {
+      });
+
+      this.listenTo(this.model, 'change:errorsCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterErrorsCount').text(count);
-      }).listenTo(this.model, 'change:tasks', (_, { length }) => {
+      });
+
+      this.listenTo(this.model, 'change:tasks', (_, { length }) => {
+        this.$('#actionUpdaterAccept').prop('disabled', false);
         this.$('#actionUpdaterProgress').data('max', length);
         this.$('#actionUpdaterProgress').progressBar('reset');
+
         this.$('#actionUpdaterTotalCount').text(length);
+        this.$('#actionUpdaterSuccessCount').text(0);
+        this.$('#actionUpdaterErrorsCount').text(0);
       });
 
       this.listenTo(this.modal, 'accept', this.show);

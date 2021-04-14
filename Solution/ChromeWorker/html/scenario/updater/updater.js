@@ -216,6 +216,7 @@
 
         this.$('#actionUpdaterSelect').prop('disabled', isStarted);
         this.$('#actionUpdaterSelect').selectpicker('refresh');
+        if (isStarted) this.$('#actionUpdaterLog').empty();
       });
 
       this.listenTo(this.model, 'change:successCount', (_, count) => {

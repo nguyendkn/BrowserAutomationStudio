@@ -741,9 +741,30 @@ void MainApp::ViewCallback(const std::string& RequestId)
 
 void MainApp::GetTabsCallback(const std::string& RequestId)
 {
-    std::string string_res =_HandlersManager->GetTabsJson();
-    xml_encode(string_res);
-    SendTextResponce(std::string("<GetTabs id=\"") + RequestId + std::string("\" >") + string_res + std::string("</GetTabs>"));
+    Async Result = Data->Connector->GetTabsList();
+    Data->Results->ProcessResult(Result);
+    Result->Then([this, RequestId](AsyncResult* Result)
+    {
+        std::vector<std::string> urls = Result->GetList();
+        picojson::array urls_json;
+        for(std::string& url:urls)
+        {
+            urls_json.push_back(picojson::value(url));
+        }
+        int index = Data->Connector->GetCurrentTabIndex();
+
+        picojson::object res;
+
+        res["urls"] = picojson::value(urls_json);
+        res["index"] = picojson::value((double)index);
+
+        std::string string_res = picojson::value(res).serialize();
+
+        xml_encode(string_res);
+
+        this->SendTextResponce(std::string("<GetTabs id=\"") + RequestId + std::string("\" >") + string_res + std::string("</GetTabs>"));
+    });
+
 }
 
 void MainApp::LoadNoDataCallback()

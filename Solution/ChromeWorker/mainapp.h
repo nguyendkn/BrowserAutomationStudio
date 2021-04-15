@@ -83,6 +83,9 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     std::string LastUsedSelector;
     std::string LastUsedLabel;
 
+    //Browser close delayed
+    long long BrowserCloseTime = 0;
+
     //MouseMove
     bool IsMouseMoveSimulation;
     int MouseStartX;

@@ -37,6 +37,7 @@ namespace BrowserAutomationStudioFramework
         virtual bool GetUseWidevine() = 0;
         virtual QString GetProfile() = 0;
         virtual QString GetRealProfile() = 0;
+        virtual bool IsTemporaryProfile() = 0;
         virtual QString GetExtensions() = 0;
         virtual QString GetBrowserEngine() = 0;
         virtual QString GetBrowserEngineVirtual() = 0;

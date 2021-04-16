@@ -1,4 +1,4 @@
-function _SMS_ErrorHandler(config, error, errorText){
+_SMS.base.prototype.errorHandler = function(error, errorText){
 	error = error.toString();
 	errorText = _avoid_nilb(errorText, "").toString();
 	var errors = {
@@ -413,9 +413,114 @@ function _SMS_ErrorHandler(config, error, errorText){
 			"ru": "Аккаунт заблокирован | " + errorText,
 			"en": "Account blocked | " + errorText,
 			"action": "fail"
+		},
+		
+		/* vak-sms */
+		
+		"apiKeyNotFound": {
+			"ru": "Неверный API-ключ.",
+			"en": "Invalid API key.",
+			"action": "die",
+			"instantly": true
+		},
+		"noMoney": {
+			"ru": "Недостаточно денег на счету.",
+			"en": "Not enough money in the account.",
+			"action": "die",
+			"instantly": false
+		},
+		"noService": {
+			"ru": "Данный сервис не поддерживается, свяжитесь с администрацией сайта.",
+			"en": "This service is not supported, please contact the site administration.",
+			"action": "fail"
+		},
+		"noCountry": {
+			"ru": "Запрашиваемая страна отсутствует.",
+			"en": "The requested country is missing.",
+			"action": "fail"
+		},
+		"noOperator": {
+			"ru": "Оператор не найдет для запрашиваемой страны.",
+			"en": "The operator will not find for the requested country.",
+			"action": "fail"
+		},
+		"noNumber": {
+			"ru": "Нет номеров, попробуйте позже.",
+			"en": "No numbers, please try later.",
+			"action": "fail"
+		},
+		"badStatus": {
+			"ru": "Неверный статус.",
+			"en": "Invalid status.",
+			"action": "fail"
+		},
+		"idNumNotFound": {
+			"ru": "Неверный ID операции.",
+			"en": "Invalid operation ID.",
+			"action": "fail"
+		},
+		"badService": {
+			"ru": "Неверный код сайта, сервиса, соц.сети.",
+			"en": "Invalid website, service, social network code.",
+			"action": "fail"
+		},
+		"badData": {
+			"ru": "Отправлены неверные данные.",
+			"en": "Invalid data sent.",
+			"action": "fail"
+		},
+		
+		/* give-sms */
+		
+		401: {
+			"ru": "Неверный API-ключ.",
+			"en": "Invalid API key.",
+			"action": "die",
+			"instantly": true
+		},
+		404: {
+			"ru": "Неправильно задан параметр method.",
+			"en": "The method parameter is set incorrectly.",
+			"action": "fail"
+		},
+		500: {
+			"ru": "Ошибка при обработке запроса / Нет доступных номеров.",
+			"en": "Error processing request / No numbers available.",
+			"action": "fail"
+		},
+		502: {
+			"ru": "Сервис не существует.",
+			"en": "Service does not exist.",
+			"action": "fail"
+		},
+		503: {
+			"ru": "Оператора не существует.",
+			"en": "Operator does not exist.",
+			"action": "fail"
+		},
+		504: {
+			"ru": "Недостаточно денег на счету.",
+			"en": "Not enough money in the account.",
+			"action": "die",
+			"instantly": false
+		},
+		505: {
+			"ru": "Страна не существует.",
+			"en": "Country does not exist.",
+			"action": "fail"
+		},
+		506: {
+			"ru": "Не указан параметр order_id.",
+			"en": "order_id parameter not specified.",
+			"action": "fail"
+		},
+		666: {
+			"ru": "Многократный бан номеров.",
+			"en": "Multiple ban of numbers.",
+			"action": "fail"
 		}
 	};
-	var message = config.serviceName + ": " + error;
+	var message = this.serviceName + ": " + error;
 	var errorObj = errors[error];
 	if(_is_nilb(errorObj)){
 		/* sms-reg */

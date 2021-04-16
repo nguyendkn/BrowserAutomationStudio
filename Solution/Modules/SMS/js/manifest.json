@@ -53,10 +53,8 @@
         }
 	],
     "api_version": 1,
-    "browser": [
-    ],
-    "depends": [
-    ],
+    "browser": [],
+    "depends": [],
     "description": "SMS",
     "description_small": {
         "en": "SMS",
@@ -68,7 +66,16 @@
     "embeddeddata": [],
     "engine": [
         "engine.js",
-		"errors.js"
+		"internal/Base.js",
+		"internal/Errors.js",
+		"internal/Sites.js",
+		"internal/SmsActivateApi.js",
+		"internal/SmsRegApi.js",
+		"internal/SmsPvaApi.js",
+		"internal/OnlineSimApi.js",
+		"internal/SmsAcktiwatorApi.js",
+		"internal/VakSmsApi.js",
+		"internal/GiveSmsApi.js"
     ],
     "icon": "SMS.png",
     "info": {

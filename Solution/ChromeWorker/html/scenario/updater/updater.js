@@ -8,7 +8,7 @@
     },
 
     isUnsuccessfulUpdate() {
-      if (this.get('isStarted')) return;
+      if (this.get('isStarted')) return false;
       const success = this.get('successCount');
       return success !== _.size(this.get('tasks'));
     },

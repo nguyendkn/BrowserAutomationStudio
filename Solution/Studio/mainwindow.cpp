@@ -1369,6 +1369,11 @@ void MainWindow::New()
             _ModuleManager->UnpackModules(Modules);
         }
 
+        {
+            VersionInfo info;
+            ScriptEngineVersion = info.VersionString();
+        }
+
         SavePrevious();
     }
 }

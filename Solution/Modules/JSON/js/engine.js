@@ -94,11 +94,6 @@ function JSONPath() {
                         typeof v[m] === "object" && trace("..;" + x, v[m], p + ";" + m);
                     });
                 }
-                else if (/,/.test(loc)) {
-                    // For sequence like [name1,name2,...]
-                    for (var s = loc.split(/'?,'?/), i = 0, n = s.length; i < n; i++)
-                        trace(s[i] + ";" + x, val, path);
-                }
                 else if (/^\(.*?\)$/.test(loc)) {
                     // For script expressions like [(expression)]
                     trace(evaluate(loc, val, path.substr(path.lastIndexOf(";") + 1)) + ";" + x, val, path);
@@ -113,6 +108,12 @@ function JSONPath() {
                 else if (/^(-?[0-9]*):(-?[0-9]*):?([0-9]*)$/.test(loc)) {
                     // For python-style slice like [start:end:step]
                     slice(loc, x, val, path);
+                }
+                else if (/,/.test(loc)) {
+                    // For sequence like [name1,name2,...]
+                    for (var s = loc.split(/'?,'?/), i = 0, n = s.length; i < n; i++) {
+                        trace(s[i] + ";" + x, val, path);
+                    }
                 }
             }
             else store(path, val);

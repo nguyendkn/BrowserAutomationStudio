@@ -113,6 +113,8 @@
 
     initialize() {
       $(document).ready(() => {
+        if (!_TaskCollection.length) return;
+
         function compareVersion(v1, v2) {
           v1 = v1.split('.');
           v2 = v2.split('.');

@@ -21,7 +21,7 @@
       if (value == null) value = this.current + 1;
 
       if (value >= min && value <= max) {
-        const percent = Math.round((value / max) * this.$element.outerWidth());
+        const percent = max > 0 ? Math.round((value / max) * this.$element.outerWidth()) : 0;
         this.$inner.animate({ width: `${percent}px` }, {
           duration: animate ? 200 : 0,
           easing: 'swing',

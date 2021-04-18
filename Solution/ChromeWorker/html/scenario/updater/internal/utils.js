@@ -1,7 +1,7 @@
 (function (global) {
   global.Scenario.filterTasks = function (type) {
     const tasks = _TaskCollection.map((task, index) => {
-      let dat = _.attempt(() => task.dat());
+      const dat = _.attempt(() => task.dat());
       const isDamaged = _.isError(dat);
       const isEmpty = _.isNull(dat);
 
@@ -31,7 +31,7 @@
       try {
         return func(...args);
       } catch (e) {
-        return isError(e) ? e : new Error(e);
+        return _.isError(e) ? e : new Error(e);
       }
     },
 

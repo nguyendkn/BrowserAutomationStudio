@@ -21,6 +21,12 @@ _.extend(_L, {
   'The module containing this action is damaged or disabled.': {
     ru: 'Модуль, содержащий данное действие поврежден или отключен'
   },
+  'The technical description of this action is damaged.': {
+    ru: 'Техническое описание данного действия повреждено.'
+  },
+  'The technical description of this action is empty.': {
+    ru: 'Техническое описание данного действия отсутствует.'
+  },
   'All actions in the current function': {
     ru: 'Все действия в текущей фунцкии'
   },

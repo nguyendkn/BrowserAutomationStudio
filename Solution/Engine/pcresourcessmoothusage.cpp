@@ -47,7 +47,7 @@ namespace BrowserAutomationStudioFramework
             if(!LastSystemLoad.isNull())
             {
                 int sec = LastSystemLoad.secsTo(now);
-                if(sec > 30)
+                if(sec > 30 && CalculateNumberOfStartingBrowsers())
                 {
                     QString log = tr("Failed to start browser, not enough system resources. Free memory %1 mb, processor usage %2 %").arg(QString::number(FreeMem)).arg(QString::number(UsedCpu));
                     emit Log(log);

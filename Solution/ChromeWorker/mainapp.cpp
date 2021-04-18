@@ -4656,10 +4656,8 @@ void MainApp::MainContextMenu(POINT& p)
 
 void MainApp::ShowActionUpdater()
 {
-    if(BrowserScenario)
-    {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ShowActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
-    }
+    if(!BrowserScenario) return;
+    BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ShowActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
 }
 
 void MainApp::HideActionUpdater()

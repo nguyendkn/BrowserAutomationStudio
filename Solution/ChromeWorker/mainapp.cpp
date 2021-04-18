@@ -3703,6 +3703,14 @@ void MainApp::HandleScenarioBrowserEvents()
     if(scenariov8handler->GetIsFailNumberEditStart() && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_FailNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
+    if(scenariov8handler->GetIsEventTrigger() && BrowserToolbox)
+    {
+        std::string Name = picojson::value(scenariov8handler->GetEventTriggerName()).serialize();
+        std::string Data = picojson::value(scenariov8handler->GetEventTriggerData()).serialize();
+        std::string Script = Javascript(std::string("BrowserAutomationStudio_HandleEvent(") + Name + "," + Data + std::string(")"), "toolbox");
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Script, BrowserToolbox->GetMainFrame()->GetURL(), 0);
+    }
+
     std::pair<std::string, bool> res8 = scenariov8handler->GetIsRunFunctionStart();
 
     if(res8.second && BrowserToolbox)

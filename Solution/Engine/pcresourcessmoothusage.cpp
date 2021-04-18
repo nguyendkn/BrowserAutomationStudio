@@ -44,7 +44,10 @@ namespace BrowserAutomationStudioFramework
             LastSystemLoad = QDateTime();
         }else
         {
-            if(!LastSystemLoad.isNull())
+            if(BrowsersPending.empty())
+            {
+                LastSystemLoad = QDateTime();
+            }else if(!LastSystemLoad.isNull())
             {
                 int sec = LastSystemLoad.secsTo(now);
                 if(sec > 30)

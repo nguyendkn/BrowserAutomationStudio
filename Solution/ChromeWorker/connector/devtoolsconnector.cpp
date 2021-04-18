@@ -12,6 +12,7 @@
 #include "fileutils.h"
 #include "startwith.h"
 #include "base64.h"
+#include "replaceall.h"
 
 using namespace std::placeholders;
 using namespace std::chrono;
@@ -206,7 +207,10 @@ void DevToolsConnector::StartProcess()
 
     if(!ProfilePath.empty())
     {
-        CommandLine += std::wstring(L"--user-data-dir=\"") + ProfilePath;
+        std::wstring ProfilePathActual = ProfilePath;
+        ReplaceAllInPlace(ProfilePathActual, L"\\", L"\\\\");
+
+        CommandLine += std::wstring(L"--user-data-dir=\"") + ProfilePathActual;
         CommandLine += std::wstring(L"\" ");
     }
 
@@ -221,6 +225,8 @@ void DevToolsConnector::StartProcess()
             }
             ExtensionsString += ExtensionString;
         }
+        ReplaceAllInPlace(ExtensionsString, L"\\", L"\\\\");
+
         CommandLine += std::wstring(L"--load-extension=\"") + ExtensionsString;
         CommandLine += std::wstring(L"\" ");
     }

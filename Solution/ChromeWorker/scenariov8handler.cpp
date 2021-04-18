@@ -351,6 +351,20 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             HighlightMenuItem = arguments->GetString(0);
             IsHightlightMenuItem = true;
         }
+    }else if(name == std::string("BrowserAutomationStudio_TriggerEvent"))
+    {
+        if (arguments->GetSize() > 0) 
+        {
+            if (arguments->GetSize() >= 1 && arguments->GetType(0) == VTYPE_STRING)
+            {
+                EventTriggerName = arguments->GetString(0);
+            }
+            if (arguments->GetSize() >= 2 && arguments->GetType(1) == VTYPE_STRING)
+            {
+                EventTriggerData = arguments->GetString(1);
+            }
+            IsEventTrigger = true;
+        }
     }
 
     return true;
@@ -499,4 +513,21 @@ std::pair<std::string, bool> ScenarioV8Handler::GetIsHighlightMenuItem()
     r.first = HighlightMenuItem;
     HighlightMenuItem.clear();
     return r;
+}
+
+std::string ScenarioV8Handler::GetEventTriggerName()
+{
+    return EventTriggerName;
+}
+
+std::string ScenarioV8Handler::GetEventTriggerData()
+{
+    return EventTriggerData;
+}
+
+bool ScenarioV8Handler::GetIsEventTrigger()
+{
+    bool res = IsEventTrigger;
+    IsEventTrigger = false;
+    return res;
 }

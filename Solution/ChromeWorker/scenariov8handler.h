@@ -70,6 +70,10 @@ private:
     bool IsRunFunctionAsync;
     bool IsOpenAction;
 
+    std::string EventTriggerData;
+    std::string EventTriggerName;
+    bool IsEventTrigger;
+
     std::string DetectorData;
     bool ChangedDetectorData;
 
@@ -104,6 +108,7 @@ public:
 
     std::pair<std::string, bool> GetExecuteCode();
     RestartType GetNeedRestart();
+    bool GetIsEventTrigger();
     bool GetIsInitialized();
     bool GetIsEditEnd();
     bool GetIsThreadNumberEditStart();
@@ -125,6 +130,8 @@ public:
     std::pair<std::string, bool> GetCurrentFunction();
     std::pair<std::string, bool> GetLoadUrl();
     std::pair<bool, bool> GetIsInsideElementLoop();
+    std::string GetEventTriggerData();
+    std::string GetEventTriggerName();
 
     std::pair<std::string, bool> GetIsHighlightMenuItem();
 

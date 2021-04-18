@@ -47,12 +47,12 @@
 
         const result = await new Promise((resolve) => {
           this.once('toolbox.editStarted', () => {
-            this.once('toolbox.editSuccess', () => {
-              resolve({ error: false, message: null });
+            this.once('toolbox.editSuccess', (data) => {
+              resolve({ error: false, message: data });
             });
 
-            this.once('toolbox.editFail', (err) => {
-              resolve({ error: true, message: err });
+            this.once('toolbox.editFail', (data) => {
+              resolve({ error: true, message: data });
             });
 
             BrowserAutomationStudio_EditSaveStart();

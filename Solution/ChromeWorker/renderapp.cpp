@@ -82,6 +82,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_MultiselectReset", CefV8Value::CreateFunction("BrowserAutomationStudio_MultiselectReset", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_EnableModule", CefV8Value::CreateFunction("BrowserAutomationStudio_EnableModule", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_TriggerEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_TriggerEvent", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_HandleEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_HandleEvent", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
 
         object->SetValue("_K", CefV8Value::CreateString(Lang), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_Z", CefV8Value::CreateInt(Zoom), V8_PROPERTY_ATTRIBUTE_NONE);
@@ -123,6 +124,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_PrepareFunctionResult", CefV8Value::CreateFunction("BrowserAutomationStudio_PrepareFunctionResult", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_IsInsideElementLoopChanged", CefV8Value::CreateFunction("BrowserAutomationStudio_IsInsideElementLoopChanged", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_HighlightMenuItem", CefV8Value::CreateFunction("BrowserAutomationStudio_HighlightMenuItem", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_TriggerEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_TriggerEvent", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_HandleEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_HandleEvent", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
 
         object->SetValue("_ApplicationEngineVersion", CefV8Value::CreateString(ApplicationEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);

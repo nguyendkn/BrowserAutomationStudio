@@ -27,7 +27,7 @@
       for (const task of this.get('tasks')) {
         _MainView.currentTargetId = task.index;
 
-        if (!_A[task.dat['s']]) {
+        if (task.dat && !_A[task.dat['s']]) {
           this.trigger('log', { message: tr('The module containing this action is damaged or disabled.'), id: task.id });
           this.set('errorsCount', this.get('errorsCount') + 1);
           continue;

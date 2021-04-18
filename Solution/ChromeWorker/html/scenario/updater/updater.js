@@ -19,6 +19,16 @@
       return success === _.size(this.get('tasks'));
     },
 
+    initialize() {
+      this.listenTo(this, 'change:isStarted', (_, isStarted) => {
+        if (!isStarted) {
+          BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
+        } else {
+          BrowserAutomationStudio_TriggerEvent('scenario.updateStart');
+        }
+      });
+    },
+
     async startUpdate() {
       this.set('isStarted', true);
       this.set('successCount', 0);

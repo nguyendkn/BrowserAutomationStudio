@@ -13435,6 +13435,16 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       BrowserAutomationStudio_ElementFunction(selector, "coordinates", is_loop)
     }
 
+    function BrowserAutomationStudio_HandleEvent(name, data) {
+      if (name === 'scenario.updateFinish') {
+        $('html').css({ 'pointer-events': 'auto', 'opacity': '1.0' });
+      }
+
+      if (name === 'scenario.updateStart') {
+        $('html').css({ 'pointer-events': 'none', 'opacity': '0.5' });
+      }
+    }
+
     function BrowserAutomationStudio_ShowWaiting(code)
     {
       OnHold = true

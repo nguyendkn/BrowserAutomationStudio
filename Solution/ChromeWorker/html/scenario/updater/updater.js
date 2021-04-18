@@ -24,38 +24,51 @@
       this.set('successCount', 0);
       this.set('errorsCount', 0);
 
-      for (const { index, dat, id } of this.get('tasks')) {
-        _MainView.currentTargetId = index;
+      for (const task of this.get('tasks')) {
+        _MainView.currentTargetId = task.index;
 
-        if (_A[dat['s']]) {
-          const result = await new Promise((resolve) => {
-            this.once('toolbox.editStarted', () => {
-              this.once('toolbox.editSuccess', () => {
-                resolve({ error: false, message: null });
-              });
+        if (!_A[task.dat['s']]) {
+          this.trigger('log', { message: tr('The module containing this action is damaged or disabled.'), id: task.id });
+          this.set('errorsCount', this.get('errorsCount') + 1);
+          continue;
+        }
 
-              this.once('toolbox.editFail', (err) => {
-                resolve({ error: true, message: err });
-              });
+        if (task.isDatDamaged) {
+          this.trigger('log', { message: tr('The technical description of this action is damaged.'), id: task.id });
+          this.set('errorsCount', this.get('errorsCount') + 1);
+          continue;
+        }
 
-              BrowserAutomationStudio_EditSaveStart();
+        if (task.isDatEmpty) {
+          this.trigger('log', { message: tr('The technical description of this action is empty.'), id: task.id });
+          this.set('errorsCount', this.get('errorsCount') + 1);
+          continue;
+        }
+
+        const result = await new Promise((resolve) => {
+          this.once('toolbox.editStarted', () => {
+            this.once('toolbox.editSuccess', () => {
+              resolve({ error: false, message: null });
             });
 
-            if (!_MainView.Edit({ disableModal: true })) resolve({ skip: true });
+            this.once('toolbox.editFail', (err) => {
+              resolve({ error: true, message: err });
+            });
+
+            BrowserAutomationStudio_EditSaveStart();
           });
 
-          if (!result.skip) {
-            if (!result.error) {
-              this.set('successCount', this.get('successCount') + 1);
-            } else {
-              this.set('errorsCount', this.get('errorsCount') + 1);
-            }
+          if (!_MainView.Edit({ disableModal: true })) resolve({ skip: true });
+        });
 
-            this.trigger('log', { message: result.message, id });
+        if (!result.skip) {
+          if (!result.error) {
+            this.set('successCount', this.get('successCount') + 1);
+          } else {
+            this.set('errorsCount', this.get('errorsCount') + 1);
           }
-        } else {
-          this.trigger('log', { message: tr('The module containing this action is damaged or disabled.'), id });
-          this.set('errorsCount', this.get('errorsCount') + 1);
+
+          this.trigger('log', { message: result.message, id: task.id });
         }
 
         if (!this.get('isStarted')) break;

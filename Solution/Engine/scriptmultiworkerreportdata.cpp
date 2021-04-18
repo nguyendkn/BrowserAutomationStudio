@@ -37,6 +37,7 @@ namespace BrowserAutomationStudioFramework
         SuccessAndRescuedCount++;
         QString Message = message;
         Message = Message.replace("openfile:///","");
+        Message = Message.replace("bablosoft.com","server.com");
         if(SuccessAndRescuedMessages.contains(Message))
         {
             SuccessAndRescuedMessages[Message]++;
@@ -69,6 +70,7 @@ namespace BrowserAutomationStudioFramework
         FailAndRescuedCount++;
         QString Message = message;
         Message = Message.replace("openfile:///","");
+        Message = Message.replace("bablosoft.com","server.com");
         if(FailAndRescuedMessages.contains(Message))
         {
             FailAndRescuedMessages[Message]++;
@@ -84,6 +86,7 @@ namespace BrowserAutomationStudioFramework
             return;
         QString Message = message;
         Message = Message.replace("openfile:///","");
+        Message = Message.replace("bablosoft.com","server.com");
         FinalMessage = Message;
     }
     void ScriptMultiWorkerReportData::Start()

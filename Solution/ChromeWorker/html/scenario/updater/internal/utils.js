@@ -1,12 +1,19 @@
 (function (global) {
   global.Scenario.filterTasks = function (type) {
-    const tasks = _TaskCollection.map((task, index) => ({
-      isSelected: task.get('is_selected'),
-      isFold: task.get('is_fold'),
-      id: Number(task.get('id')),
-      dat: task.dat(),
-      index
-    }));
+    const tasks = _TaskCollection.map((task, index) => {
+      let dat = _.attempt(() => task.dat());
+      const isDamaged = _.isError(dat);
+      const isEmpty = _.isNull(dat);
+
+      return {
+        isSelected: task.get('is_selected'),
+        dat: isDamaged ? null : dat,
+        id: Number(task.get('id')),
+        isDatDamaged: isDamaged,
+        isDatEmpty: isEmpty,
+        index
+      };
+    });
 
     return _.filter(tasks, ({ id, dat, isFold, isSelected }) => {
       if (dat && dat.role && dat.role === 'slave') return false;
@@ -17,5 +24,5 @@
 
       return type === 'current' ? name === _GobalModel.get('function_name') : true;
     });
-  }
+  };
 })(window);

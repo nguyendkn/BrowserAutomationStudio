@@ -4664,8 +4664,6 @@ void MainApp::ShowActionUpdater()
 
 void MainApp::HideActionUpdater()
 {
-    if(BrowserScenario)
-    {
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_HideActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
-    }
+    if(!BrowserScenario) return;
+    BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_HideActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
 }

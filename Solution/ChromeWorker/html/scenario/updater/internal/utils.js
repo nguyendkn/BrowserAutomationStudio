@@ -25,4 +25,30 @@
       return type === 'current' ? name === _GobalModel.get('function_name') : true;
     });
   };
+
+  _.mixin({
+    attempt: function (func, ...args) {
+      try {
+        return func(...args);
+      } catch (e) {
+        return isError(e) ? e : new Error(e);
+      }
+    },
+
+    gt: function (value, other) {
+      if (!(typeof value === 'string' && typeof other === 'string')) {
+        value = +value;
+        other = +other;
+      }
+      return value > other;
+    },
+
+    lt: function (value, other) {
+      if (!(typeof value === 'string' && typeof other === 'string')) {
+        value = +value;
+        other = +other;
+      }
+      return value < other;
+    }
+  });
 })(window);

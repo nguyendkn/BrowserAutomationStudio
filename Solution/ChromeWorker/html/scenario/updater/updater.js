@@ -20,17 +20,17 @@
     },
 
     initialize() {
-      this.listenTo(this, 'change:isStarted', (_, isStarted) => {
+      this.listenTo(this, 'change:isStarted', async (_, isStarted) => {
         if (!isStarted) {
           BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
         } else {
           BrowserAutomationStudio_TriggerEvent('scenario.updateStart');
         }
+        if (isStarted) await this.run();
       });
     },
 
-    async startUpdate() {
-      this.set('isStarted', true);
+    async run() {
       this.set('successCount', 0);
       this.set('errorsCount', 0);
 

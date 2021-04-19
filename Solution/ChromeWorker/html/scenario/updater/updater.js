@@ -177,7 +177,7 @@
     template: _.template(/*html*/`
       <div class="action-updater-header">
         <h1><%= tr('Auto-update actions') %></h1>
-        <h2><%= tr('This tool allows you to automatically update all actions in the project.') %></h2>
+        <h2><%= tr('This tool allows you to automatically update actions in the project.') %></h2>
       </div>
       <div class="action-updater-panel">
         <div id="actionUpdaterProgress" class="action-updater-progress"></div>

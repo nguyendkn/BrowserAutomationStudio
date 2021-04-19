@@ -11,6 +11,9 @@ _.extend(_L, {
   'This tool allows you to automatically update all actions in the project.': {
     ru: 'Этот инструмент позволяет автоматически обновить все действия в проекте.'
   },
+  'This tool allows you to automatically update actions in the project.': {
+    ru: 'Этот инструмент позволяет автоматически обновить действия в проекте.'
+  },
   'You can always open it in the ': {
     ru: 'Вы всегда можете открыть его в '
   },

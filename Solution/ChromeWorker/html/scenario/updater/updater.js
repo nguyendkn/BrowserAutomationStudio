@@ -55,7 +55,9 @@
           continue;
         }
 
-        const result = await new Promise((resolve) => {
+        let timeout; const result = await new Promise((resolve) => {
+          timeout = setTimeout(() => resolve({ error: true: message: tr('Timeout during the action update.') }), 10000);
+
           this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
             this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {
               resolve({ error: false, message: data });
@@ -69,7 +71,7 @@
           });
 
           if (!_MainView.Edit({ disableModal: true })) resolve({ skip: true });
-        });
+        }).finally(() => clearTimeout(timeout));
 
         if (!result.skip) {
           if (!result.error) {

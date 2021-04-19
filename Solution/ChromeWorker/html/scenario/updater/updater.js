@@ -352,7 +352,8 @@
 
     cancel: function () {
       if (this.model.get('isStarted')) {
-        return this.model.stopUpdate();
+        this.model.set('isStarted', false);
+        return;
       }
       this.hide();
     }

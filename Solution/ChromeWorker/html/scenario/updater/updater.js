@@ -56,7 +56,7 @@
         }
 
         let timeout; const result = await new Promise((resolve) => {
-          timeout = setTimeout(() => resolve({ error: true: message: tr('Timeout during the action update.') }), 10000);
+          timeout = setTimeout(() => resolve({ error: true, message: tr('Timeout during the action update.') }), 10000);
 
           this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
             this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {

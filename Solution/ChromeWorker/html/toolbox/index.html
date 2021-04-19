@@ -12519,7 +12519,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         BrowserAutomationStudio_FillGotoLabels()
       }
 
-      if (data['d'].some((el) => $(`#${el.id}`).data('is-code-editor'))) {
+      if (data['d'].some((el) => $(`#${el.id}`).data('is-code-editor') || el.id === 'NodeVersionList')) {
         if (!isEditorInstalled()) {
           _MainView.once('monacoEditorCreated', () => {
             BrowserAutomationStudio_TriggerEvent('toolbox.editStarted');

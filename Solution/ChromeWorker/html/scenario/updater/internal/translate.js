@@ -30,6 +30,9 @@ _.extend(_L, {
   'The technical description of this action is empty.': {
     ru: 'Техническое описание данного действия отсутствует.'
   },
+  'Timeout during the action update.': {
+    ru: 'Таймаут во время обновления действия.'
+  },
   'All actions in the current function': {
     ru: 'Все действия в текущей фунцкии'
   },

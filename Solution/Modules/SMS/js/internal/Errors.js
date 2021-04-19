@@ -8,8 +8,8 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 			"action": "fail"
 		},
 		"RESPONSE_IS_NOT_JSON": {
-			"ru": "Не удалось распарсить ответ от сервиса.",
-			"en": "Failed to parse the response from the service.",
+			"ru": "Не удалось распарсить ответ от сервиса. Содержание ответа: " + errorText,
+			"en": "Failed to parse the response from the service. Response content: " + errorText,
 			"action": "fail"
 		},
 		"TIMEOUT_GET_STATE": {
@@ -54,8 +54,13 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 			"action": "fail"
 		},
 		"BAD_SERVICE": {
-			"ru": "Некорректное наименование сайта.",
-			"en": "Incorrect site name.",
+			"ru": "Некорректное наименование сервиса.",
+			"en": "Incorrect service name.",
+			"action": "fail"
+		},
+		"WRONG_SERVICE": {
+			"ru": "Неверный идентификатор сервиса.",
+			"en": "Invalid service identifier.",
 			"action": "fail"
 		},
 		"WRONG_EXCEPTION_PHONE": {
@@ -202,8 +207,8 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 			"instantly": false
 		},
 		"Service not define": {
-			"ru": "Сайт не определен.",
-			"en": "Site not defined.",
+			"ru": "Сервис не определен.",
+			"en": "Service not defined.",
 			"action": "fail"
 		},
 		"TZID must be number": {
@@ -266,8 +271,8 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 			"instantly": true
 		},
 		"Service NOT FOUND!": {
-			"ru": "Сайт не найден.",
-			"en": "Site not found.",
+			"ru": "Сервис не найден.",
+			"en": "Service not found.",
 			"action": "fail"
 		},
 		
@@ -279,8 +284,8 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 			"action": "fail"
 		},
 		"ERROR_NO_SERVICE": {
-			"ru": "Сайт не указан.",
-			"en": "Site not specified.",
+			"ru": "Сервис не указан.",
+			"en": "Service not specified.",
 			"action": "fail"
 		},
 		"REQUEST_NOT_FOUND": {
@@ -304,8 +309,8 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 			"action": "fail"
 		},
 		"NO_NUMBER": {
-			"ru": "Для выбранного сайта свободные номера временно отсутствуют.",
-			"en": "Temporarily no numbers available for the selected site.",
+			"ru": "Для выбранного сервиса свободные номера временно отсутствуют.",
+			"en": "Temporarily no numbers available for the selected service.",
 			"action": "fail"
 		},
 		"TIME_INTERVAL_ERROR": {
@@ -382,8 +387,8 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 		/* sms-acktiwator */
 		
 		101: {
-			"ru": "Сайт не найден.",
-			"en": "Site not found.",
+			"ru": "Cервис не найден.",
+			"en": "Service not found.",
 			"action": "fail"
 		},
 		102: {
@@ -520,7 +525,7 @@ _SMS.base.prototype.errorHandler = function(error, errorText){
 			"action": "fail"
 		}
 	};
-	var message = this.serviceName + ": " + error;
+	var message = this.name + ": " + error;
 	var errorObj = errors[error];
 	if(_is_nilb(errorObj)){
 		/* sms-reg */

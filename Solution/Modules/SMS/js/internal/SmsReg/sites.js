@@ -1,0 +1,35 @@
+_SMS.SmsRegApi.prototype.getRawSite = function(site){
+	var sites = {
+		"Other": "other",
+		"Aol": "aol",
+		"Google": "gmail",
+		"Facebook": "facebook",
+		"Mail.ru": "mailru",
+		"VK": "vk",
+		"Ok.ru": "classmates",
+		"Twitter": "twitter",
+		"Mamba": "mamba",
+		"Uber": "uber",
+		"Telegram": "telegram",
+		"Badoo": "badoo",
+		"DrugVokrug": "drugvokrug",
+		"Avito": "avito",
+		"OLX": "olx",
+		"Steam": "steam",
+		"Fotostrana": "fotostrana",
+		"Microsoft": "microsoft",
+		"Viber": "viber",
+		"WhatsApp": "whatsapp",
+		"WeChat": "wechat",
+		"SEOsprint": "seosprint",
+		"Instagram": "instagram",
+		"Yahoo": "yahoo",
+		"LINE Messenger": "lineme",
+		"KakaoTalk": "kakaotalk",
+		"MeetMe": "meetme",
+		"Tinder": "tinder",
+		"Nimses": "nimses",
+		"Youla": "youla"
+	};
+	return _is_nilb(sites[site]) ? sites["Other"] : sites[site]);
+};

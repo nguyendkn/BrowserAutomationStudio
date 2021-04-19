@@ -20,6 +20,23 @@
 		{
             "code": [
                 {
+                    "file": "SMS_GetNumbersCount_code.js",
+                    "name": "SMS_GetNumbersCount_code"
+                }
+            ],
+            "description": {
+                "en": "Get the count of available numbers",
+                "ru": "Получить количество доступных номеров"
+            },
+            "interface": "SMS_GetNumbersCount_interface.js",
+            "is_element": false,
+            "name": "SMS_GetNumbersCount",
+            "select": "SMS_GetNumbersCount_select.js",
+            "template": "{{service}} ({{site}}) -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "SMS_GetNumber_code.js",
                     "name": "SMS_GetNumber_code"
                 }
@@ -66,16 +83,36 @@
     "embeddeddata": [],
     "engine": [
         "engine.js",
-		"internal/Base.js",
-		"internal/Errors.js",
-		"internal/Sites.js",
-		"internal/SmsActivateApi.js",
-		"internal/SmsRegApi.js",
-		"internal/SmsPvaApi.js",
-		"internal/OnlineSimApi.js",
-		"internal/SmsAcktiwatorApi.js",
-		"internal/VakSmsApi.js",
-		"internal/GiveSmsApi.js"
+		"internal/base.js",
+		"internal/errors.js",
+		
+		"internal/SmsActivate/api.js",
+		"internal/SmsActivate/sites.js",
+		"internal/SmsActivate/countries.js",
+		
+		"internal/SmsReg/api.js",
+		"internal/SmsReg/sites.js",
+		"internal/SmsReg/countries.js",
+		
+		"internal/SmsPva/api.js",
+		"internal/SmsPva/sites.js",
+		"internal/SmsPva/countries.js",
+		
+		"internal/OnlineSim/api.js",
+		"internal/OnlineSim/sites.js",
+		"internal/OnlineSim/countries.js",
+		
+		"internal/SmsAcktiwator/api.js",
+		"internal/SmsAcktiwator/sites.js",
+		"internal/SmsAcktiwator/countries.js",
+		
+		"internal/VakSms/api.js",
+		"internal/VakSms/sites.js",
+		"internal/VakSms/countries.js",
+		
+		"internal/GiveSms/api.js",
+		"internal/GiveSms/sites.js",
+		"internal/GiveSms/countries.js"
     ],
     "icon": "SMS.png",
     "info": {
@@ -91,6 +128,9 @@
 		"API key of the SMS receiving service.": {"ru":"API ключ сервиса приема СМС."},
 		"Get the balance of the SMS receiving service.": {"ru":"Получите баланс сервиса приема СМС."},
 		"Variable in which, after successful execution of the action, the balance will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан баланс."},
+		
+		
+		"Get the number of available numbers on the SMS receiving service.": {"ru":"Получить количество доступных номеров на сервисе приема СМС."},
 		
 		"Custom site": {"ru":"Пользовательский сайт"},
 		"Custom country": {"ru":"Пользовательская страна"},

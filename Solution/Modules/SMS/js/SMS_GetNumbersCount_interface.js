@@ -8,7 +8,8 @@
 			  <div class="input-group">
 				<span data-preserve="true" data-preserve-type="select" data-preserve-id="site">
 				  <select class="form-control input-sm" id="site" placeholder="Site">
-					<option value="Other" selected="selected">Other</option>
+					<option value="All" selected="selected">All</option>
+					<option value="Other">Other</option>
 					<option value="VK">VK</option>
 					<option value="WhatsApp">WhatsApp</option>
 					<option value="Viber">Viber</option>
@@ -1322,9 +1323,9 @@
 	<%= _.template($('#input_constructor').html())({id:"customCountry", description:tr("Custom country"), default_selector: "string", disable_int: true, value_string: "" }) %>
 	<%= _.template($('#input_constructor').html())({id:"serverUrl", description:tr("Server url"), default_selector: "string", disable_int: true, value_string: "" }) %>
 	<%= _.template($('#block_end').html())() %>
-	<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "PHONE_NUMBER"}) %>
+	<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "NUMBERS_COUNT"}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Get phone number from the SMS receiving service.</div>
+	<div class="tr tooltip-paragraph-first-fold">Get the number of available numbers on the SMS receiving service.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

@@ -1,6 +1,6 @@
 _SMS.SmsRegApi = function(config){
 	_SMS.base.call(this, config);
-	this.apiType = 'sms-reg';
+	this.type = 'sms-reg';
 };
 _SMS.SmsRegApi.prototype = Object.create(_SMS.base.prototype);
 _SMS.SmsRegApi.prototype.constructor = _SMS.SmsRegApi;
@@ -12,8 +12,8 @@ _SMS.SmsRegApi.prototype.apiRequest = function(){
 	var method = _avoid_nilb(_function_argument("method"), "GET");
 	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
-	var url = api.apiUrl + '/' + action + '.php';
-	var params = api.combineParams({apikey:api.apiKey}, options);
+	var url = api.url + '/' + action + '.php';
+	var params = api.combineParams({apikey:api.key}, options);
 	
 	_call_function(api.request,{api:api,url:url,method:method,params:params})!
 	var content = _result_function();

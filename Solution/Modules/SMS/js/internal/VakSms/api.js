@@ -1,39 +1,39 @@
-_SMS.GiveSmsApi = function(config){
+_SMS.VakSmsApi = function(config){
 	_SMS.base.call(this, config);
-	this.apiType = 'give-sms';
+	this.type = 'vak-sms';
 };
-_SMS.GiveSmsApi.prototype = Object.create(_SMS.base.prototype);
-_SMS.GiveSmsApi.prototype.constructor = _SMS.GiveSmsApi;
+_SMS.VakSmsApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.VakSmsApi.prototype.constructor = _SMS.VakSmsApi;
 
-_SMS.GiveSmsApi.prototype.apiRequest = function(){
+_SMS.VakSmsApi.prototype.apiRequest = function(){
 	var api = _function_argument("api");
 	var action = _function_argument("action");
 	var options = _avoid_nilb(_function_argument("options"), {});
 	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
-	var url = api.apiUrl + '/api/v1/';
-	var params = api.combineParams({method:action,userkey:api.apiKey}, options);
+	var url = api.url + '/api/' + action + '/';
+	var params = api.combineParams({apiKey:api.key}, options);
 	
 	_call_function(api.request,{api:api,url:url,method:"GET",params:params})!
 	var content = _result_function();
 	
 	var resp = api.parseJSON(content);
 	
-	if(checkErrors && resp.status!=200){
-		api.errorHandler(resp.status, resp.data.msg);
+	if(checkErrors && resp.error){
+		api.errorHandler(resp.error);
 	};
 
-	_function_return(resp.data);
+	_function_return(resp);
 };
-_SMS.GiveSmsApi.prototype.getBalance = function(){
+_SMS.VakSmsApi.prototype.getBalance = function(){
 	var api = _function_argument("api");
 	
-	_call_function(api.apiRequest,{api:api,action:"getbalance"})!
+	_call_function(api.apiRequest,{api:api,action:"getBalance"})!
 	var resp = _result_function();
 	
 	_function_return(resp.balance);
 };
-_SMS.GiveSmsApi.prototype.getNumber = function(){
+_SMS.VakSmsApi.prototype.getNumber = function(){
 	var api = _function_argument("api");
 	var site = _function_argument("site");
 	var country = _function_argument("country");
@@ -46,8 +46,8 @@ _SMS.GiveSmsApi.prototype.getNumber = function(){
 		options.operator = operator;
 	};
 	
-	_call_function(api.apiRequest,{api:api,action:"getnumber",options:options})!
+	_call_function(api.apiRequest,{api:api,action:"getNumber",options:{service:site,country:country}})!
 	var resp = _result_function();
 	
-	_function_return({api: api, id: resp.order_id, origId: resp.order_id, number: ('7' + resp.phone)});
+	_function_return({api: api, id: resp.idNum, origId: resp.idNum, number: resp.tel});
 };

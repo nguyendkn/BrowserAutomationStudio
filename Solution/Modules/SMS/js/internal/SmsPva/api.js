@@ -1,6 +1,6 @@
 _SMS.SmsPvaApi = function(config){
 	_SMS.base.call(this, config);
-	this.apiType = 'smspva';
+	this.type = 'smspva';
 };
 _SMS.SmsPvaApi.prototype = Object.create(_SMS.base.prototype);
 _SMS.SmsPvaApi.prototype.constructor = _SMS.SmsPvaApi;
@@ -11,8 +11,8 @@ _SMS.SmsPvaApi.prototype.apiRequest = function(){
 	var options = _avoid_nilb(_function_argument("options"), {});
 	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
-	var url = api.apiUrl + '/priemnik.php';
-	var params = api.combineParams({metod:action,apikey:api.apiKey}, options);
+	var url = api.url + '/priemnik.php';
+	var params = api.combineParams({metod:action,apikey:api.key}, options);
 	
 	_call_function(api.request,{api:api,url:url,method:"GET",params:params})!
 	var content = _result_function();

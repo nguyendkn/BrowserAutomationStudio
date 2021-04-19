@@ -7,101 +7,77 @@ _SMS = {
 		var services = {
 			"sms-activate.ru": new _SMS.SmsActivateApi({
 				data: data,
-				apiUrl: 'https://sms-activate.ru',
-				serviceName: 'Sms-activate',
-				refId: 'browserAutomationStudio',
-				refTitle: 'ref'
+				url: 'https://sms-activate.ru',
+				name: 'Sms-activate',
+				ref: 'browserAutomationStudio'
 			}),
 			"smshub.org": new _SMS.SmsActivateApi({
 				data: data,
-				apiUrl: 'https://smshub.org',
-				serviceName: 'SMSHUB',
-				refId: '',
-				refTitle: 'ref'
+				url: 'https://smshub.org',
+				name: 'SMSHUB'
 			}),
 			"5sim.net": new _SMS.SmsActivateApi({
 				data: data,
-				apiUrl: 'http://api1.5sim.net',
-				serviceName: '5SIM',
-				refId: '',
-				refTitle: 'ref'
+				url: 'http://api1.5sim.net',
+				name: '5SIM'
 			}),
 			"getsms.online": new _SMS.SmsActivateApi({
 				data: data,
-				apiUrl: 'https://smsactivateapi.getsms.online',
-				serviceName: 'GetSMS',
-				refId: '20111',
-				refTitle: 'ref'
+				url: 'https://smsactivateapi.getsms.online',
+				name: 'GetSMS',
+				ref: '20111'
 			}),
 			"smsvk.net": new _SMS.SmsActivateApi({
 				data: data,
-				apiUrl: 'http://smsvk.net',
-				serviceName: 'SmsVK',
-				refId: '',
-				refTitle: 'ref'
+				url: 'http://smsvk.net',
+				name: 'SmsVK'
 			}),
 			"cheapsms.ru": new _SMS.SmsActivateApi({
 				data: data,
-				apiUrl: 'https://cheapsms.pro',
-				serviceName: 'CheapSMS',
-				refId: '',
-				refTitle: 'ref'
+				url: 'https://cheapsms.pro',
+				name: 'CheapSMS'
 			}),
 			"sms.kopeechka.store": new _SMS.SmsActivateApi({
 				data: data,
-				apiUrl: 'https://sms.kopeechka.store',
-				serviceName: 'Sms.Kopeechka.Store',
-				refId: '',
-				refTitle: 'ref'
+				url: 'https://sms.kopeechka.store',
+				name: 'Sms.Kopeechka.Store'
 			}),
 			"sms-reg.com": new _SMS.SmsRegApi({
 				data: data,
-				apiUrl: 'https://api.sms-reg.com',
-				serviceName: 'SMS-REG',
-				refId: 'RUBMC9BX6OIRJG3S',
+				url: 'https://api.sms-reg.com',
+				name: 'SMS-REG',
+				ref: 'RUBMC9BX6OIRJG3S',
 				refTitle: 'appid'
 			}),
 			"smspva.com": new _SMS.SmsPvaApi({
 				data: data,
-				apiUrl: 'http://smspva.com',
-				serviceName: 'SMSpva',
-				refId: '',
-				refTitle: 'ref'
+				url: 'http://smspva.com',
+				name: 'SMSpva'
 			}),
 			"simsms.org": new _SMS.SmsPvaApi({
 				data: data,
-				apiUrl: 'http://simsms.org',
-				serviceName: 'SIMsms',
-				refId: '',
-				refTitle: 'ref'
+				url: 'http://simsms.org',
+				name: 'SIMsms'
 			}),
 			"onlinesim.ru": new _SMS.OnlineSimApi({
 				data: data,
-				apiUrl: 'https://onlinesim.ru',
-				serviceName: 'OnlineSIM',
-				refId: '',
-				refTitle: 'ref'
+				url: 'https://onlinesim.ru',
+				name: 'OnlineSIM'
 			}),
 			"sms-acktiwator.ru": new _SMS.SmsAcktiwatorApi({
 				data: data,
-				apiUrl: 'https://sms-acktiwator.ru',
-				serviceName: 'SmsAcktiwator',
-				refId: '',
-				refTitle: 'ref'
+				url: 'https://sms-acktiwator.ru',
+				name: 'SmsAcktiwator'
 			}),
 			"vak-sms.com": new _SMS.VakSmsApi({
 				data: data,
-				apiUrl: 'https://vak-sms.com',
-				serviceName: 'VAK-SMS',
-				refId: '',
-				refTitle: 'softId'
+				url: 'https://vak-sms.com',
+				name: 'VAK-SMS'
 			}),
 			"give-sms.com": new _SMS.GiveSmsApi({
 				data: data,
-				apiUrl: 'https://give-sms.com',
-				serviceName: 'Give-SMS',
-				refId: '',
-				refTitle: 'ref'
+				url: 'https://give-sms.com',
+				name: 'Give-SMS'
 			})
 		};
 		if(Object.keys(services).indexOf(service) < 0){
@@ -121,6 +97,26 @@ _SMS = {
 		
 		_function_return(_is_nilb(balance) ? null : parseFloat(balance));
 	},
+	getNumbersCount: function(){
+		var service = _function_argument("service");
+		var apiKey = _function_argument("apiKey");
+		var serverUrl = _function_argument("serverUrl");
+		var site = _function_argument("site");
+		var country = _function_argument("country");
+		var customSite = _function_argument("customSite");
+		var customCountry = _function_argument("customCountry");
+		var operator = _function_argument("operator");
+		
+		var api = _SMS.init(service, apiKey, serverUrl);
+		
+		site = _is_nilb(customSite) ? (site=="All" ? "All" : api.getRawSite(site)) : customSite;
+		country = _is_nilb(customCountry) ? (country=="" ? "" : api.getRawCountry(country)) : customCountry;
+		
+		_call_function(api.getNumbersCount,{api:api,site:site,country:country,operator:operator})!
+		var count = _result_function();
+		
+		_function_return(site=="All" ? (_is_nilb(count) ? {} : count) : (_is_nilb(count) ? 0 : parseInt(count)));
+	},
 	getNumber: function(){
 		var service = _function_argument("service");
 		var apiKey = _function_argument("apiKey");
@@ -139,7 +135,7 @@ _SMS = {
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
 		site = _is_nilb(customSite) ? api.getRawSite(site) : customSite;
-		country = _is_nilb(customCountry) ? country : customCountry;
+		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
 		
 		_call_function(api.getNumber,{api:api,site:site,country:country,operator:operator,phoneException:phoneException})!
 		var confirmData = _result_function();

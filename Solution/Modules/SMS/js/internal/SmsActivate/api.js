@@ -1,6 +1,6 @@
 _SMS.SmsActivateApi = function(config){
 	_SMS.base.call(this, config);
-	this.apiType = 'sms-activate';
+	this.type = 'sms-activate';
 };
 _SMS.SmsActivateApi.prototype = Object.create(_SMS.base.prototype);
 _SMS.SmsActivateApi.prototype.constructor = _SMS.SmsActivateApi;
@@ -12,8 +12,8 @@ _SMS.SmsActivateApi.prototype.apiRequest = function(){
 	var method = _avoid_nilb(_function_argument("method"), "GET");
 	var isJSON = _function_argument("isJSON");
 	
-	var url = api.apiUrl + '/stubs/handler_api.php';
-	var params = api.combineParams({api_key:api.apiKey,action:action}, options);
+	var url = api.url + '/stubs/handler_api.php';
+	var params = api.combineParams({api_key:api.key,action:action}, options);
 	
 	_call_function(api.request,{api:api,url:url,method:method,params:params})!
 	var content = _result_function();
@@ -32,6 +32,36 @@ _SMS.SmsActivateApi.prototype.getBalance = function(){
 		_function_return(resp[1]);
 	}else{
 		api.errorHandler(resp[0], resp[1]);
+	};
+};
+_SMS.SmsActivateApi.prototype.getNumbersCount = function(){
+	var api = _function_argument("api");
+	var site = _function_argument("site");
+	var country = _function_argument("country");
+	var operator = _function_argument("operator");
+	
+	var options = {};
+	
+	if(!_is_nilb(country)){
+		options.country = country;
+	};
+	if(!_is_nilb(operator)){
+		options.operator = operator;
+	};
+	
+	_call_function(api.apiRequest,{api:api,action:"getNumbersStatus",options:options,isJSON:true})!
+	var resp = _result_function();
+	
+	if(site=="All"){
+		var sites = {};
+		Object.keys(resp).filter(function(key){
+			return key.slice(-2) != '_1';
+		}).forEach(function(key){
+			sites[key.slice(-2)=='_0' ? key.slice(0,-2) : key] = parseInt(resp[key]);
+		});
+		_function_return(sites);
+	}else{
+		_function_return(_is_nilb(resp[site + '_0']) ? resp[site] : resp[site + '_0']);
 	};
 };
 _SMS.SmsActivateApi.prototype.getNumber = function(){

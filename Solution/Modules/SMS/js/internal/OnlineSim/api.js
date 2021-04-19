@@ -1,6 +1,6 @@
 _SMS.OnlineSimApi = function(config){
 	_SMS.base.call(this, config);
-	this.apiType = 'onlinesim';
+	this.type = 'onlinesim';
 };
 _SMS.OnlineSimApi.prototype = Object.create(_SMS.base.prototype);
 _SMS.OnlineSimApi.prototype.constructor = _SMS.OnlineSimApi;
@@ -12,8 +12,8 @@ _SMS.OnlineSimApi.prototype.apiRequest = function(){
 	var method = _avoid_nilb(_function_argument("method"), "GET");
 	var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 	
-	var url = api.apiUrl + '/api/' + action + '.php';
-	var params = api.combineParams({apikey:api.apiKey}, options);
+	var url = api.url + '/api/' + action + '.php';
+	var params = api.combineParams({apikey:api.key}, options);
 	
 	_call_function(api.request,{api:api,url:url,method:method,params:params})!
 	var content = _result_function();

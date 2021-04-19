@@ -1,17 +1,26 @@
 _SMS.base = function(config){
 	var data = config.data;
 	var serverUrl = data.serverUrl;
-	this.apiKey = data.apiKey;
-	this.apiUrl = config.apiUrl;
+	this.key = data.apiKey;
 	this.service = data.service;
-	this.serviceName = config.serviceName;
-	this.refId = config.refId;
-	this.refTitle = config.refTitle;
-	if(!_is_nilb(serverUrl)){
+	
+	if(_is_nilb(serverUrl)){
+		this.url = config.url;
+		this.name = config.name;
+	}else{
 		var url = serverUrl.slice(-1)=="/" ? serverUrl.slice(0, -1) : serverUrl;
 		var name = url.replace(new RegExp('https?://'),"").replace(/^(?:\d+)?api(?:\d+)?./,"");
-		this.apiUrl = url;
-		this.serviceName = name.slice(0, 1).toLocaleUpperCase() + name.slice(1);
+		this.url = url;
+		this.name = name.slice(0, 1).toLocaleUpperCase() + name.slice(1);
+	};
+	
+	if(!_is_nilb(config.ref)){
+		this.ref = config.ref;
+		if(_is_nilb(config.refTitle)){
+			this.refTitle = 'ref';
+		}else{
+			this.refTitle = config.refTitle;
+		};
 	};
 };
 _SMS.base.prototype.combineParams = function(params, options, labels){
@@ -21,7 +30,16 @@ _SMS.base.prototype.combineParams = function(params, options, labels){
 		keys.forEach(function(key){params[labels[key] ? labels[key] : key] = options[key]});
 	};
 	return params;
-};	
+};
+_SMS.base.prototype.paramsFilter = function(params){
+	var filteredParams = [];
+	Object.keys(params).filter(function(key){
+		return !_is_nilb(params[key]);
+	}).forEach(function(key){
+		filteredParams[key] = params[key];
+	});
+	return filteredParams;
+};
 _SMS.base.prototype.paramsToString = function(params){
 	return Object.keys(params).map(function(key){
 		return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
@@ -35,11 +53,15 @@ _SMS.base.prototype.paramsToArray = function(params){
 	});
 	return data;
 };
+_SMS.base.prototype.reduceString = function(str, length){
+	length = _avoid_nilb(length, 100);
+	return str.length > length ? str.slice(0, length) + '...' : str;
+};
 _SMS.base.prototype.parseJSON = function(data){
 	try{
 		var json = JSON.parse(data);
 	}catch(e){
-		this.errorHandler("RESPONSE_IS_NOT_JSON");
+		this.errorHandler("RESPONSE_IS_NOT_JSON", this.reduceString(data));
 	};
 	return json;
 };
@@ -49,9 +71,11 @@ _SMS.base.prototype.request = function(){
 	var method = _function_argument("method");
 	var params = _function_argument("params");
 	
-	if(!_is_nilb(api.refId)){
-		params[api.refTitle] = api.refId;
+	if(!_is_nilb(api.ref)){
+		params[api.refTitle] = api.ref;
 	};
+	
+	params = api.paramsFilter(params);
 	
 	if(Object.keys(params).length>0){
 		if(method=="GET"){
@@ -76,12 +100,12 @@ _SMS.base.prototype.request = function(){
 		
 		_if_else(method=="GET", function(){
 			if(_SMS_DEBUG){
-				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + api.serviceName + ': ' + url);
+				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + api.name + ': ' + url);
 			};
 			http_client_get2(url,{"method":"GET"})!
 		}, function(){
 			if(_SMS_DEBUG){
-				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + api.serviceName + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
+				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
 			};
 			http_client_post(url, data, {"content-type":"urlencode","encoding":"UTF-8","method":"POST"})!
 		})!
@@ -98,7 +122,7 @@ _SMS.base.prototype.request = function(){
 	var content = http_client_content();
 	
 	if(_SMS_DEBUG){
-		log((_K=="ru" ? 'Ответ от API' : 'API response') + ' ' + api.serviceName + ': ' + content);
+		log((_K=="ru" ? 'Ответ от API' : 'API response') + ' ' + api.name + ': ' + content);
 	};
 
 	_switch_http_client_main();

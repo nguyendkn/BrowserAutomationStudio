@@ -344,7 +344,8 @@
 
     accept: function () {
       if (!this.model.get('isStarted')) {
-        return this.model.startUpdate();
+        this.model.set('isStarted', !false);
+        return;
       }
       this.hide();
     },

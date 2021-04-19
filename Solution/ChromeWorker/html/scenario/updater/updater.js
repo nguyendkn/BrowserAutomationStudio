@@ -146,7 +146,7 @@
           return v1.length === v2.length ? 0 : (v1.length < v2.length ? -1 : 1);
         }
 
-        if (compareVersion(_ApplicationEngineVersion, _ScriptEngineVersion) > 0) this.show();
+        if (compareVersion(_ApplicationEngineVersion, _ScriptEngineVersion) !== 0) this.show();
       });
     },
 

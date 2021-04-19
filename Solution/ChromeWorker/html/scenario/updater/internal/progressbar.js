@@ -21,10 +21,9 @@
       if (value == null) value = this.current + 1;
 
       if (value >= min && value <= max) {
-        const percent = Math.round((value / max) * this.$element.outerWidth());
-        this.$inner.animate({ width: `${percent || 0}px` }, {
+        this.$inner.velocity({ width: `${Math.round((value * 100 / max)) || 0}%` }, {
           duration: animate ? 200 : 0,
-          easing: 'swing',
+          easing: 'ease-in',
           queue: false
         });
         this.$label.text(`${value} / ${max}`);

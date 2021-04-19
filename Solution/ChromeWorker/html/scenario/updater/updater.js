@@ -86,10 +86,6 @@
 
       BrowserAutomationStudio_EditEnd();
       this.set('isStarted', false);
-    },
-
-    stopUpdate() {
-      this.set('isStarted', false);
     }
   });
 

@@ -797,3 +797,17 @@ textarea {
   overflow: hidden;
   outline: none;
 }
+
+/******************
+ * Utility styles *
+ ******************/
+
+.document-overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999999999;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}

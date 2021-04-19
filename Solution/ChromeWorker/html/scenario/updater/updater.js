@@ -56,12 +56,12 @@
         }
 
         const result = await new Promise((resolve) => {
-          this.once('toolbox.editStarted', () => {
-            this.once('toolbox.editSuccess', (data) => {
+          this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
+            this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {
               resolve({ error: false, message: data });
             });
 
-            this.once('toolbox.editFail', (data) => {
+            this.off('toolbox.editFail').once('toolbox.editFail', (data) => {
               resolve({ error: true, message: data });
             });
 

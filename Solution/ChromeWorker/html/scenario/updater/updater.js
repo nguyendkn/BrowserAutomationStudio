@@ -222,7 +222,7 @@
 
     className: 'action-updater',
 
-    initialize: function () {
+    initialize() {
       this.model = new ActionUpdaterModel();
       this.modal = new ActionUpdaterModal();
 
@@ -268,7 +268,7 @@
       this.listenTo(this, 'show', this.update);
     },
 
-    log: function (data) {
+    log(data) {
       if (data.message) {
         this.$('#actionUpdaterLog').append(
           $('<div>', { 'class': 'action-updater-log-message' }).append($('<span>', {
@@ -280,7 +280,7 @@
       }
     },
 
-    render: function () {
+    render() {
       if (!this.$el.is(':empty')) return this;
       this.$el.html(this.template()).appendTo('body');
       this.$('#actionUpdaterProgress').progressBar();
@@ -293,7 +293,15 @@
       return this;
     },
 
-    show: function () {
+    update() {
+      const type = this.$('#actionUpdaterSelect').val();
+      this.$('.action-updater-select').trigger('blur');
+      const tasks = window.Scenario.filterTasks(type);
+      this.model.unset('tasks', { silent: true });
+      this.model.set('tasks', tasks);
+    },
+
+    show() {
       if (!this.$el.is(':visible') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.show();
@@ -303,7 +311,7 @@
       return this;
     },
 
-    hide: function () {
+    hide() {
       if (!this.$el.is(':hidden') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.hide();
@@ -314,44 +322,33 @@
     },
 
     events: {
-      'click #actionUpdaterCopyLog': 'copyLog',
+      'click #actionUpdaterCopyLog': function () {
+        if (!window.getSelection().toString().length) {
+          const data = $.map(this.$('#actionUpdaterLog div'), $.text);
+          const $input = $('<textarea>').appendTo('body');
+          $input.val(data.join('\r\n')).select();
+          document.execCommand('copy');
+          $input.remove();
+        }
+      },
+
+      'click #actionUpdaterAccept': function () {
+        if (!this.model.get('isStarted')) {
+          this.model.set('isStarted', !false);
+          return;
+        }
+        this.hide();
+      },
+
+      'click #actionUpdaterCancel': function () {
+        if (this.model.get('isStarted')) {
+          this.model.set('isStarted', false);
+          return;
+        }
+        this.hide();
+      },
+
       'change #actionUpdaterSelect': 'update',
-      'click #actionUpdaterAccept': 'accept',
-      'click #actionUpdaterCancel': 'cancel',
-    },
-
-    copyLog: function () {
-      if (!window.getSelection().toString().length) {
-        const data = $.map(this.$('#actionUpdaterLog div'), $.text);
-        const $input = $('<textarea>').appendTo('body');
-        $input.val(data.join('\r\n')).select();
-        document.execCommand('copy');
-        $input.remove();
-      }
-    },
-
-    update: function () {
-      const type = this.$('#actionUpdaterSelect').val();
-      this.$('.action-updater-select').trigger('blur');
-      const tasks = window.Scenario.filterTasks(type);
-      this.model.unset('tasks', { silent: true });
-      this.model.set('tasks', tasks);
-    },
-
-    accept: function () {
-      if (!this.model.get('isStarted')) {
-        this.model.set('isStarted', !false);
-        return;
-      }
-      this.hide();
-    },
-
-    cancel: function () {
-      if (this.model.get('isStarted')) {
-        this.model.set('isStarted', false);
-        return;
-      }
-      this.hide();
     }
   });
 

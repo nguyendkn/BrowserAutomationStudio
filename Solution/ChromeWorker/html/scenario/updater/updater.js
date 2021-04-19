@@ -26,7 +26,7 @@
         } else {
           BrowserAutomationStudio_TriggerEvent('scenario.updateStart');
         }
-        if (isStarted) await this.run();
+        if (isStarted) return await this.run();
       });
     },
 

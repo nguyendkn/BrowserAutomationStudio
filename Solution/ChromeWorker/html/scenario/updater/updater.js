@@ -131,8 +131,8 @@
     },
 
     initialize() {
-      $(document).ready(() => {
-        if (!_TaskCollection.length) return;
+      _MainView.once('render', () => {
+        if (_TaskCollection.length === 1) return;
 
         function compareVersion(v1, v2) {
           v1 = v1.split('.');

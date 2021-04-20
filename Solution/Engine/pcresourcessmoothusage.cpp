@@ -118,7 +118,7 @@ namespace BrowserAutomationStudioFramework
         MEMORYSTATUSEX status;
         status.dwLength = sizeof(status);
         GlobalMemoryStatusEx(&status);
-        return status.ullAvailPageFile / (1024 * 1024);
+        return status.ullAvailPhys / (1024 * 1024);
     }
 
     void PCResourcesSmoothUsage::TimerSlot()

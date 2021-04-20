@@ -1671,6 +1671,7 @@ void MainWindow::SendCode()
     _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun, ScriptEngineVersion, info.VersionString());
     _RecordProcessCommunication->SendResources(LastResourceList);
     _RecordProcessCommunication->SetWindow(QString::number(ui->centralWidget->winId()));
+    ScriptEngineVersion = info.VersionString();
 }
 
 void MainWindow::RecordWindowAttached()

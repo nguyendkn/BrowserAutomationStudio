@@ -37,12 +37,24 @@ _SMS.SmsPvaApi.prototype.getBalance = function(){
 	
 	_function_return(resp.balance);
 };
+_SMS.SmsPvaApi.prototype.getNumbersCount = function(){
+	var api = _function_argument("api");
+	var site = _function_argument("site");
+	var country = _function_argument("country");
+	
+	if(site=="All"){
+		fail(api.name + ': ' + (_K=="ru" ? 'Данный сервис не поддерживает получение количества номеров для всех сайтов, возможно получить количество номеров для одного сайта за раз.' : 'This service does not support getting the count of numbers for all sites, it is possible to get the count of numbers for one site at a time.'));
+	};
+	
+	_call_function(api.apiRequest,{api:api,action:"get_count_new",options:{service:site,country:country},checkErrors:false})!
+	var resp = _result_function();
+	
+	_function_return(resp.online);
+};
 _SMS.SmsPvaApi.prototype.getNumber = function(){
 	var api = _function_argument("api");
 	var site = _function_argument("site");
 	var country = _function_argument("country");
-	var operator = _function_argument("operator");
-	var phoneException = _function_argument("phoneException");
 	
 	_call_function(api.apiRequest,{api:api,action:"get_number",options:{service:site,country:country}})!
 	var resp = _result_function();

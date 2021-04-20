@@ -31,5 +31,5 @@ _SMS.SmsRegApi.prototype.getRawSite = function(site){
 		"Nimses": "nimses",
 		"Youla": "youla"
 	};
-	return _is_nilb(sites[site]) ? sites["Other"] : sites[site]);
+	return _is_nilb(sites[site]) ? sites["Other"] : sites[site];
 };

@@ -33,20 +33,34 @@ _SMS.VakSmsApi.prototype.getBalance = function(){
 	
 	_function_return(resp.balance);
 };
+_SMS.VakSmsApi.prototype.getNumbersCount = function(){
+	var api = _function_argument("api");
+	var site = _function_argument("site");
+	var country = _function_argument("country");
+	var operator = _function_argument("operator");
+	
+	_if_else(site=="All", function(){
+		_call_function(api.apiRequest,{api:api,action:"getCountNumberList",options:{country:country,operator:operator}})!
+		var resp = _result_function();
+		
+		Object.keys(resp).map(function(key){
+			resp[key] = parseInt(resp[key].count);
+		});
+		_function_return(resp);
+	}, function(){
+		_call_function(api.apiRequest,{api:api,action:"getCountNumber",options:{service:site,country:country,operator:operator}})!
+		var resp = _result_function();
+		
+		_function_return(resp[Object.keys(resp)[0]]);
+	})!
+};
 _SMS.VakSmsApi.prototype.getNumber = function(){
 	var api = _function_argument("api");
 	var site = _function_argument("site");
 	var country = _function_argument("country");
 	var operator = _function_argument("operator");
-	var phoneException = _function_argument("phoneException");
 	
-	var options = {service:site,country:country};
-	
-	if(!_is_nilb(operator)){
-		options.operator = operator;
-	};
-	
-	_call_function(api.apiRequest,{api:api,action:"getNumber",options:{service:site,country:country}})!
+	_call_function(api.apiRequest,{api:api,action:"getNumber",options:{service:site,country:country,operator:operator}})!
 	var resp = _result_function();
 	
 	_function_return({api: api, id: resp.idNum, origId: resp.idNum, number: resp.tel});

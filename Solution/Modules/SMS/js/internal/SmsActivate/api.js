@@ -40,16 +40,7 @@ _SMS.SmsActivateApi.prototype.getNumbersCount = function(){
 	var country = _function_argument("country");
 	var operator = _function_argument("operator");
 	
-	var options = {};
-	
-	if(!_is_nilb(country)){
-		options.country = country;
-	};
-	if(!_is_nilb(operator)){
-		options.operator = operator;
-	};
-	
-	_call_function(api.apiRequest,{api:api,action:"getNumbersStatus",options:options,isJSON:true})!
+	_call_function(api.apiRequest,{api:api,action:"getNumbersStatus",options:{country:country,operator:operator},isJSON:true})!
 	var resp = _result_function();
 	
 	if(site=="All"){
@@ -71,16 +62,7 @@ _SMS.SmsActivateApi.prototype.getNumber = function(){
 	var operator = _function_argument("operator");
 	var phoneException = _function_argument("phoneException");
 	
-	var options = {service:site,country:country};
-	
-	if(!_is_nilb(operator)){
-		options.operator = operator;
-	};
-	if(!_is_nilb(phoneException)){
-		options.phoneException = phoneException;
-	};
-	
-	_call_function(api.apiRequest,{api:api,action:"getNumber",options:options,isJSON:false})!
+	_call_function(api.apiRequest,{api:api,action:"getNumber",options:{service:site,country:country,operator:operator,phoneException:phoneException},isJSON:false})!
 	var resp = _result_function();
 	
 	if(resp[0]=="ACCESS_NUMBER"){

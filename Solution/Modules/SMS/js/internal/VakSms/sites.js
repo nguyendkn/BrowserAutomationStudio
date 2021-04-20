@@ -104,5 +104,5 @@ _SMS.VakSmsApi.prototype.getRawSite = function(site){
 		"Perekrestok": "pk",
 		"5ka": "pt"
 	};
-	return _is_nilb(sites[site]) ? sites["Other"] : sites[site]);
+	return _is_nilb(sites[site]) ? sites["Other"] : sites[site];
 };

@@ -129,7 +129,6 @@
 		"Get the balance of the SMS receiving service.": {"ru":"Получите баланс сервиса приема СМС."},
 		"Variable in which, after successful execution of the action, the balance will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан баланс."},
 		
-		
 		"Get the number of available numbers on the SMS receiving service.": {"ru":"Получить количество доступных номеров на сервисе приема СМС."},
 		
 		"Custom site": {"ru":"Пользовательский сайт"},

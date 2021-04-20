@@ -126,5 +126,5 @@ _SMS.SmsPvaApi.prototype.getRawSite = function(site){
 		"Zoho": "opt93",
 		"Qiwi": "opt18"
 	};
-	return _is_nilb(sites[site]) ? sites["Other"] : sites[site]);
+	return _is_nilb(sites[site]) ? sites["Other"] : sites[site];
 };

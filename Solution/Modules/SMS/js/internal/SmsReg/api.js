@@ -34,6 +34,11 @@ _SMS.SmsRegApi.prototype.getBalance = function(){
 	
 	_function_return(resp.balance);
 };
+_SMS.SmsRegApi.prototype.getNumbersCount = function(){
+	var api = _function_argument("api");
+	
+	fail(api.name + ': ' + (_K=="ru" ? 'Данный сервис не поддерживает получение количества доступных номеров.' : 'This service does not support getting the count of available numbers.'));
+};
 _SMS.SmsRegApi.prototype.getNumber = function(){
 	var api = _function_argument("api");
 	var site = _function_argument("site");

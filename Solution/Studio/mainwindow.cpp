@@ -1259,7 +1259,6 @@ QPair<bool,QString> MainWindow::SaveToFileSilent(const QString& file)
     {
         VersionInfo info;
         saver.SetEngineVersion(info.VersionString());
-        ScriptEngineVersion = info.VersionString();
     }
     {
         QFile f("chrome_command_line.txt");

@@ -31,7 +31,7 @@ void settings::Init()
     zoom = 100;
     max_fps = 30;
     max_browser_start_simultaneously = 3;
-    min_free_memory_to_start_browser = 500;
+    min_free_memory_to_start_browser = 1500;
     min_unused_cpu = 35;
     maximized = false;
     restart = true;

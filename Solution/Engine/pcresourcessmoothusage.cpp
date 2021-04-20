@@ -12,7 +12,7 @@ namespace BrowserAutomationStudioFramework
         PdhAddEnglishCounter(cpuQuery, L"\\Processor(_Total)\\% Processor Time", NULL, &cpuTotal);
         PdhCollectQueryData(cpuQuery);
         MaxBrowserStartSimultaneously = 3;
-        MinFreeMemoryToStartBrowser = 500;
+        MinFreeMemoryToStartBrowser = 1500;
         MinUnusedCpu = 35;
         Timer = new QTimer(this);
         connect(Timer,SIGNAL(timeout()),this,SLOT(TimerSlot()));

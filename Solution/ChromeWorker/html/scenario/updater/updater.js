@@ -7,6 +7,16 @@
       tasks: []
     },
 
+    handle(id, message, error = true) {
+      if (!error) {
+        this.set('successCount', this.get('successCount') + 1);
+      } else {
+        this.set('errorsCount', this.get('errorsCount') + 1);
+      }
+
+      this.trigger('log', { message, id });
+    },
+
     isUnsuccessfulUpdate() {
       if (this.get('isStarted')) return false;
       const success = this.get('successCount');
@@ -34,53 +44,35 @@
       this.set('successCount', 0);
       this.set('errorsCount', 0);
 
-      for (const task of this.get('tasks')) {
-        _MainView.currentTargetId = task.index;
+      for (const { id, dat, index, isDatEmpty, isDatDamaged } of this.get('tasks')) {
+        _MainView.currentTargetId = index;
 
-        if (task.dat && !_A[task.dat['s']]) {
-          this.trigger('log', { message: tr('The module containing this action is damaged or disabled.'), id: task.id });
-          this.set('errorsCount', this.get('errorsCount') + 1);
-          continue;
-        }
+        if (dat && !_A[dat['s']]) {
+          this.handle(id, tr('The module containing this action is damaged or disabled.'));
+        } else if (isDatDamaged) {
+          this.handle(id, tr('The technical description of this action is damaged.'));
+        } else if (isDatEmpty) {
+          this.handle(id, tr('The technical description of this action is empty.'));
+        } else {
+          let timeout; const { error, message } = await new Promise((resolve) => {
+            timeout = setTimeout(() => resolve({ error: true, message: tr('Timeout during the action update.') }), 10000);
 
-        if (task.isDatDamaged) {
-          this.trigger('log', { message: tr('The technical description of this action is damaged.'), id: task.id });
-          this.set('errorsCount', this.get('errorsCount') + 1);
-          continue;
-        }
+            this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
+              this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {
+                resolve({ error: false, message: data });
+              });
 
-        if (task.isDatEmpty) {
-          this.trigger('log', { message: tr('The technical description of this action is empty.'), id: task.id });
-          this.set('errorsCount', this.get('errorsCount') + 1);
-          continue;
-        }
+              this.off('toolbox.editFail').once('toolbox.editFail', (data) => {
+                resolve({ error: true, message: data });
+              });
 
-        let timeout; const result = await new Promise((resolve) => {
-          timeout = setTimeout(() => resolve({ error: true, message: tr('Timeout during the action update.') }), 10000);
-
-          this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
-            this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {
-              resolve({ error: false, message: data });
+              BrowserAutomationStudio_EditSaveStart();
             });
 
-            this.off('toolbox.editFail').once('toolbox.editFail', (data) => {
-              resolve({ error: true, message: data });
-            });
+            _MainView.Edit({ disableModal: true });
+          }).finally(() => clearTimeout(timeout));
 
-            BrowserAutomationStudio_EditSaveStart();
-          });
-
-          if (!_MainView.Edit({ disableModal: true })) resolve({ skip: true });
-        }).finally(() => clearTimeout(timeout));
-
-        if (!result.skip) {
-          if (!result.error) {
-            this.set('successCount', this.get('successCount') + 1);
-          } else {
-            this.set('errorsCount', this.get('errorsCount') + 1);
-          }
-
-          this.trigger('log', { message: result.message, id: task.id });
+          this.handle(id, message, error);
         }
 
         if (!this.get('isStarted')) break;

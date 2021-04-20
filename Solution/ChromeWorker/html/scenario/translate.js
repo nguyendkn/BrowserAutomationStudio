@@ -769,7 +769,7 @@ _L =
 	"Task Name" :{"ru": "Имя задания"},
 	"Don't run when recording" :{"ru": "Не выполнять в режиме записи"},
    "Cancel": {"ru": "Отмена"},
-	"Ok": {"ru": "Ok"},
+   "Ok": {"ru": "Ok"},
    "OK": {"ru": "OK"},
 	"Add/Edit Function" :{"ru": "Добавить/Редактировать Функцию"},
 	"OnApplicationStart" :{"ru": "OnApplicationStart"},

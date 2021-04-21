@@ -30,7 +30,7 @@
     },
 
     initialize() {
-      this.on('change:isStarted', async (_, isStarted) => {
+      this.listenTo(this, 'change:isStarted', async (_, isStarted) => {
         if (!isStarted) {
           BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
         } else {
@@ -57,16 +57,12 @@
           let timeout; const { error, message } = await new Promise((resolve) => {
             timeout = setTimeout(() => resolve({ error: true, message: tr('Timeout during the action update.') }), 10000);
 
-            this.off('toolbox.editStarted').on('toolbox.editStarted', () => {
-              this.off('toolbox.editStarted');
-
-              this.off('toolbox.editSuccess').on('toolbox.editSuccess', (data) => {
-                this.off('toolbox.editSuccess');
+            this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
+              this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {
                 resolve({ error: false, message: data });
               });
 
-              this.off('toolbox.editFail').on('toolbox.editFail', (data) => {
-                this.off('toolbox.editFail');
+              this.off('toolbox.editFail').once('toolbox.editFail', (data) => {
                 resolve({ error: true, message: data });
               });
 
@@ -129,8 +125,7 @@
     },
 
     initialize() {
-      const callback = () => {
-        _MainView.off('render', callback);
+      _MainView.once('render', () => {
         if (_TaskCollection.length === 1) return;
 
         function compareVersion(v1, v2) {
@@ -146,9 +141,7 @@
         }
 
         if (compareVersion(_ApplicationEngineVersion, _ScriptEngineVersion) !== 0) this.show();
-      };
-
-      _MainView.on('render', callback);
+      });
     },
 
     render() {
@@ -227,7 +220,7 @@
       this.model = new ActionUpdaterModel();
       this.modal = new ActionUpdaterModal();
 
-      this.model.on('change:isStarted', (_, isStarted) => {
+      this.listenTo(this.model, 'change:isStarted', (_, isStarted) => {
         if (isStarted) this.$('#actionUpdaterProgress').progressBar('reset');
 
         if (this.model.isSuccessfulUpdate() && !isStarted) {
@@ -241,17 +234,17 @@
         if (isStarted) this.$('#actionUpdaterLog').empty();
       });
 
-      this.model.on('change:successCount', (_, count) => {
+      this.listenTo(this.model, 'change:successCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterSuccessCount').text(count);
       });
 
-      this.model.on('change:errorsCount', (_, count) => {
+      this.listenTo(this.model, 'change:errorsCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterErrorsCount').text(count);
       });
 
-      this.model.on('change:tasks', (_, { length }) => {
+      this.listenTo(this.model, 'change:tasks', (_, { length }) => {
         this.$('#actionUpdaterAccept').prop('disabled', length === 0);
         this.$('#actionUpdaterSelect').prop('disabled', false);
         this.$('#actionUpdaterSelect').selectpicker('refresh');
@@ -263,10 +256,10 @@
         this.$('#actionUpdaterErrorsCount').text(0);
       });
 
-      this.modal.on('accept', this.show);
-      this.modal.on('cancel', this.hide);
-      this.model.on('log', this.log);
-      this.on('show', this.update);
+      this.listenTo(this.modal, 'accept', this.show);
+      this.listenTo(this.modal, 'cancel', this.hide);
+      this.listenTo(this.model, 'log', this.log);
+      this.listenTo(this, 'show', this.update);
     },
 
     log(data) {

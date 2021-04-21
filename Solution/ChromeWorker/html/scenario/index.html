@@ -3724,6 +3724,10 @@
       },
 
       render: function() {
+        if(_GobalModel.hasChanged("dontsend")) {
+          return;
+        }
+
         if(_GobalModel.hasChanged("isstepnextactivated") || _GobalModel.hasChanged("run_only_one_enabled") || _GobalModel.hasChanged("istaskexecuting"))
         {
           return;

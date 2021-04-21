@@ -3724,7 +3724,9 @@
       },
 
       render: function() {
-        if(_GobalModel.hasChanged("dontsend")) {
+        if (_GobalModel.hasChanged("dontsend")) {
+          // Since backbone version > 0.9.2 hasChanged works differently.
+          delete _GobalModel.changed['dontsend'];
           return;
         }
 

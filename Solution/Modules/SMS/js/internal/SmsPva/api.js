@@ -1,8 +1,8 @@
 _SMS.SmsPvaApi = function(config){
-	_SMS.base.call(this, config);
+	_SMS.BaseApi.call(this, config);
 	this.type = 'smspva';
 };
-_SMS.SmsPvaApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.SmsPvaApi.prototype = Object.create(_SMS.BaseApi.prototype);
 _SMS.SmsPvaApi.prototype.constructor = _SMS.SmsPvaApi;
 
 _SMS.SmsPvaApi.prototype.apiRequest = function(){

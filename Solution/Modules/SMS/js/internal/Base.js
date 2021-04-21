@@ -1,4 +1,4 @@
-_SMS.base = function(config){
+_SMS.BaseApi = function(config){
 	var data = config.data;
 	var serverUrl = data.serverUrl;
 	this.key = data.apiKey;
@@ -23,29 +23,24 @@ _SMS.base = function(config){
 		};
 	};
 };
-_SMS.base.prototype.combineParams = function(params, options, labels){
+_SMS.BaseApi.prototype.combineParams = function(params, options, labels){
 	labels = _avoid_nilb(labels, {});
 	var keys = Object.keys(options);
 	if(keys.length > 0){
-		keys.forEach(function(key){params[labels[key] ? labels[key] : key] = options[key]});
+		keys.forEach(function(key){
+			if(!_is_nilb(options[key])){
+				params[labels[key] ? labels[key] : key] = options[key];
+			};
+		});
 	};
 	return params;
 };
-_SMS.base.prototype.paramsFilter = function(params){
-	var filteredParams = [];
-	Object.keys(params).filter(function(key){
-		return !_is_nilb(params[key]);
-	}).forEach(function(key){
-		filteredParams[key] = params[key];
-	});
-	return filteredParams;
-};
-_SMS.base.prototype.paramsToString = function(params){
+_SMS.BaseApi.prototype.paramsToString = function(params){
 	return Object.keys(params).map(function(key){
 		return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
 	}).join('&');
 };
-_SMS.base.prototype.paramsToArray = function(params){
+_SMS.BaseApi.prototype.paramsToArray = function(params){
 	var data = [];
 	Object.keys(params).forEach(function(key){
 		data.push(key);
@@ -53,11 +48,11 @@ _SMS.base.prototype.paramsToArray = function(params){
 	});
 	return data;
 };
-_SMS.base.prototype.reduceString = function(str, length){
+_SMS.BaseApi.prototype.reduceString = function(str, length){
 	length = _avoid_nilb(length, 100);
 	return str.length > length ? str.slice(0, length) + '...' : str;
 };
-_SMS.base.prototype.parseJSON = function(data){
+_SMS.BaseApi.prototype.parseJSON = function(data){
 	try{
 		var json = JSON.parse(data);
 	}catch(e){
@@ -65,7 +60,7 @@ _SMS.base.prototype.parseJSON = function(data){
 	};
 	return json;
 };
-_SMS.base.prototype.request = function(){
+_SMS.BaseApi.prototype.request = function(){
 	var api = _function_argument("api");
 	var url = _function_argument("url");
 	var method = _function_argument("method");
@@ -74,8 +69,6 @@ _SMS.base.prototype.request = function(){
 	if(!_is_nilb(api.ref)){
 		params[api.refTitle] = api.ref;
 	};
-	
-	params = api.paramsFilter(params);
 	
 	if(Object.keys(params).length>0){
 		if(method=="GET"){

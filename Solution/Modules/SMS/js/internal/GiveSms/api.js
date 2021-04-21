@@ -1,8 +1,8 @@
 _SMS.GiveSmsApi = function(config){
-	_SMS.base.call(this, config);
+	_SMS.BaseApi.call(this, config);
 	this.type = 'give-sms';
 };
-_SMS.GiveSmsApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.GiveSmsApi.prototype = Object.create(_SMS.BaseApi.prototype);
 _SMS.GiveSmsApi.prototype.constructor = _SMS.GiveSmsApi;
 
 _SMS.GiveSmsApi.prototype.apiRequest = function(){

@@ -1,8 +1,8 @@
 _SMS.SmsRegApi = function(config){
-	_SMS.base.call(this, config);
+	_SMS.BaseApi.call(this, config);
 	this.type = 'sms-reg';
 };
-_SMS.SmsRegApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.SmsRegApi.prototype = Object.create(_SMS.BaseApi.prototype);
 _SMS.SmsRegApi.prototype.constructor = _SMS.SmsRegApi;
 
 _SMS.SmsRegApi.prototype.apiRequest = function(){

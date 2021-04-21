@@ -1,4 +1,4 @@
-_SMS.base.prototype.errorHandler = function(error, errorText){
+_SMS.BaseApi.prototype.errorHandler = function(error, errorText){
 	error = error.toString();
 	errorText = _avoid_nilb(errorText, "").toString();
 	var errors = {

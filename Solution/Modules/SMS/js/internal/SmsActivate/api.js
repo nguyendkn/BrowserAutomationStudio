@@ -1,8 +1,8 @@
 _SMS.SmsActivateApi = function(config){
-	_SMS.base.call(this, config);
+	_SMS.BaseApi.call(this, config);
 	this.type = 'sms-activate';
 };
-_SMS.SmsActivateApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.SmsActivateApi.prototype = Object.create(_SMS.BaseApi.prototype);
 _SMS.SmsActivateApi.prototype.constructor = _SMS.SmsActivateApi;
 
 _SMS.SmsActivateApi.prototype.apiRequest = function(){

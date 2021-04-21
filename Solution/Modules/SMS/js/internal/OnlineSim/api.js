@@ -1,8 +1,8 @@
 _SMS.OnlineSimApi = function(config){
-	_SMS.base.call(this, config);
+	_SMS.BaseApi.call(this, config);
 	this.type = 'onlinesim';
 };
-_SMS.OnlineSimApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.OnlineSimApi.prototype = Object.create(_SMS.BaseApi.prototype);
 _SMS.OnlineSimApi.prototype.constructor = _SMS.OnlineSimApi;
 
 _SMS.OnlineSimApi.prototype.apiRequest = function(){

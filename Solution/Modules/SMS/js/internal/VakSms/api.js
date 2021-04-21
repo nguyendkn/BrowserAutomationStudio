@@ -1,8 +1,8 @@
 _SMS.VakSmsApi = function(config){
-	_SMS.base.call(this, config);
+	_SMS.BaseApi.call(this, config);
 	this.type = 'vak-sms';
 };
-_SMS.VakSmsApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.VakSmsApi.prototype = Object.create(_SMS.BaseApi.prototype);
 _SMS.VakSmsApi.prototype.constructor = _SMS.VakSmsApi;
 
 _SMS.VakSmsApi.prototype.apiRequest = function(){

@@ -1,8 +1,8 @@
 _SMS.SmsAcktiwatorApi = function(config){
-	_SMS.base.call(this, config);
+	_SMS.BaseApi.call(this, config);
 	this.type = 'sms-acktiwator';
 };
-_SMS.SmsAcktiwatorApi.prototype = Object.create(_SMS.base.prototype);
+_SMS.SmsAcktiwatorApi.prototype = Object.create(_SMS.BaseApi.prototype);
 _SMS.SmsAcktiwatorApi.prototype.constructor = _SMS.SmsAcktiwatorApi;
 
 _SMS.SmsAcktiwatorApi.prototype.apiRequest = function(){

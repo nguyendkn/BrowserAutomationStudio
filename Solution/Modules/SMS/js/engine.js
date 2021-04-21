@@ -1,89 +1,135 @@
+_BAS_SMSAPISDATA = {};
 _BAS_SMSCONFIRMDATA = {};
 _SMS_DEBUG = false;
 
 _SMS = {
 	init: function(service, apiKey, serverUrl){
-		var data = {service:service, apiKey:apiKey, serverUrl:serverUrl};
-		var services = {
-			"sms-activate.ru": new _SMS.SmsActivateApi({
-				data: data,
-				url: 'https://sms-activate.ru',
-				name: 'Sms-activate',
-				ref: 'browserAutomationStudio'
-			}),
-			"smshub.org": new _SMS.SmsActivateApi({
-				data: data,
-				url: 'https://smshub.org',
-				name: 'SMSHUB'
-			}),
-			"5sim.net": new _SMS.SmsActivateApi({
-				data: data,
-				url: 'http://api1.5sim.net',
-				name: '5SIM'
-			}),
-			"getsms.online": new _SMS.SmsActivateApi({
-				data: data,
-				url: 'https://smsactivateapi.getsms.online',
-				name: 'GetSMS',
-				ref: '20111'
-			}),
-			"smsvk.net": new _SMS.SmsActivateApi({
-				data: data,
-				url: 'http://smsvk.net',
-				name: 'SmsVK'
-			}),
-			"cheapsms.ru": new _SMS.SmsActivateApi({
-				data: data,
-				url: 'https://cheapsms.pro',
-				name: 'CheapSMS'
-			}),
-			"sms.kopeechka.store": new _SMS.SmsActivateApi({
-				data: data,
-				url: 'https://sms.kopeechka.store',
-				name: 'Sms.Kopeechka.Store'
-			}),
-			"sms-reg.com": new _SMS.SmsRegApi({
-				data: data,
-				url: 'https://api.sms-reg.com',
-				name: 'SMS-REG',
-				ref: 'RUBMC9BX6OIRJG3S',
-				refTitle: 'appid'
-			}),
-			"smspva.com": new _SMS.SmsPvaApi({
-				data: data,
-				url: 'http://smspva.com',
-				name: 'SMSpva'
-			}),
-			"simsms.org": new _SMS.SmsPvaApi({
-				data: data,
-				url: 'http://simsms.org',
-				name: 'SIMsms'
-			}),
-			"onlinesim.ru": new _SMS.OnlineSimApi({
-				data: data,
-				url: 'https://onlinesim.ru',
-				name: 'OnlineSIM'
-			}),
-			"sms-acktiwator.ru": new _SMS.SmsAcktiwatorApi({
-				data: data,
-				url: 'https://sms-acktiwator.ru',
-				name: 'SmsAcktiwator'
-			}),
-			"vak-sms.com": new _SMS.VakSmsApi({
-				data: data,
-				url: 'https://vak-sms.com',
-				name: 'VAK-SMS'
-			}),
-			"give-sms.com": new _SMS.GiveSmsApi({
-				data: data,
-				url: 'https://give-sms.com',
-				name: 'Give-SMS'
-			})
+		var data = {service:service, apiKey:apiKey};
+		if(!_is_nilb(serverUrl)){
+			data.serverUrl = serverUrl;
 		};
-		if(Object.keys(services).indexOf(service) < 0){
-			die(_K=="ru" ? ('Сервиса ' + service + ' нет в списке доступных') : (service + ' service is not in the list of available'), true);
+		
+		var id = md5(JSON.stringify(data));
+		if(_is_nilb(_BAS_SMSAPISDATA)){
+			_BAS_SMSAPISDATA = {};
 		};
-		return services[service];
+		
+		if(_is_nilb(_BAS_SMSAPISDATA[id])){
+			var services = {
+				"sms-activate.ru": {
+					api: _SMS.SmsActivateApi,
+					config: {
+						url: 'https://sms-activate.ru',
+						name: 'Sms-activate',
+						ref: 'browserAutomationStudio'
+					}
+				},
+				"smshub.org": {
+					api: _SMS.SmsActivateApi,
+					config: {
+						url: 'https://smshub.org',
+						name: 'SMSHUB'
+					}
+				},
+				"5sim.net": {
+					api: _SMS.SmsActivateApi,
+					config: {
+						url: 'http://api1.5sim.net',
+						name: '5SIM'
+					}
+				},
+				"getsms.online": {
+					api: _SMS.SmsActivateApi,
+					config: {
+						url: 'https://smsactivateapi.getsms.online',
+						name: 'GetSMS',
+						ref: '20111'
+					}
+				},
+				"smsvk.net": {
+					api: _SMS.SmsActivateApi,
+					config: {
+						url: 'http://smsvk.net',
+						name: 'SmsVK'
+					}
+				},
+				"cheapsms.ru": {
+					api: _SMS.SmsActivateApi,
+					config: {
+						url: 'https://cheapsms.pro',
+						name: 'CheapSMS'
+					}
+				},
+				"sms.kopeechka.store": {
+					api: _SMS.SmsActivateApi,
+					config: {
+						url: 'https://sms.kopeechka.store',
+						name: 'Sms.Kopeechka.Store'
+					}
+				},
+				"sms-reg.com": {
+					api: _SMS.SmsRegApi,
+					config: {
+						url: 'https://api.sms-reg.com',
+						name: 'SMS-REG',
+						ref: 'RUBMC9BX6OIRJG3S',
+						refTitle: 'appid'
+					}
+				},
+				"smspva.com": {
+					api: _SMS.SmsPvaApi,
+					config: {
+						url: 'http://smspva.com',
+						name: 'SMSpva'
+					}
+				},
+				"simsms.org": {
+					api: _SMS.SmsPvaApi,
+					config: {
+						url: 'http://simsms.org',
+						name: 'SIMsms'
+					}
+				},
+				"onlinesim.ru": {
+					api: _SMS.OnlineSimApi,
+					config: {
+						url: 'https://onlinesim.ru',
+						name: 'OnlineSIM'
+					}
+				},
+				"sms-acktiwator.ru": {
+					api: _SMS.SmsAcktiwatorApi,
+					config: {
+						url: 'https://sms-acktiwator.ru',
+						name: 'SmsAcktiwator'
+					}
+				},
+				"vak-sms.com": {
+					api: _SMS.VakSmsApi,
+					config: {
+						url: 'https://vak-sms.com',
+						name: 'VAK-SMS'
+					}
+				},
+				"give-sms.com": {
+					api: _SMS.GiveSmsApi,
+					config: {
+						url: 'https://give-sms.com',
+						name: 'Give-SMS'
+					}
+				}
+			};
+			if(Object.keys(services).indexOf(service) < 0){
+				die(_K=="ru" ? ('Сервиса ' + service + ' нет в списке доступных') : (service + ' service is not in the list of available'), true);
+			};
+			var config = services[service].config;
+			config.data = data;
+			var api = new services[service].api(config);
+			_BAS_SMSAPISDATA[id] = api;
+			return api;
+		}else{
+			return _BAS_SMSAPISDATA[id];
+		};
 	},
 	getBalance: function(){
 		var service = _function_argument("service");

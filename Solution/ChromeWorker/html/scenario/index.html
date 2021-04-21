@@ -3757,20 +3757,24 @@
 
         BrowserAutomationStudio_PreserveVariableInspectorScroll()
 
-        const function_name = _GobalModel.get("function_name");
-        const models = _TaskCollection.models;
-        let index_start = -1;
-        let index_end = -1;
-        
-        for(let i = 0, len = models.length; i < len; i++)
+        var index_start = -1;
+        var index_end = -1;
+
+
+        var models = _TaskCollection.models
+        var len = models.length
+        var function_name = _GobalModel.get("function_name")
+        for(var i = 0;i<len;i++)
         {
-          const task = models[i];
-          const CanDisplay = function_name == GetFunctionData( parseInt(task.get("id")) )["name"] && !IsFunctionNode(parseInt(task.get("id")))
-          if (CanDisplay || IsEmptyFunctionNode(parseInt(task.get("id"))) && GetFunctionDataOfThisNode(parseInt(task.get("id")))["name"] == function_name) {
-            if (index_start <= 0) {
-              index_start = i;
+          var task = models[i]
+          var CanDisplay = function_name == GetFunctionData( parseInt(task.get("id")) )["name"] && !IsFunctionNode(parseInt(task.get("id")))
+          if(CanDisplay || IsEmptyFunctionNode(parseInt(task.get("id"))) && GetFunctionDataOfThisNode(parseInt(task.get("id")))["name"] == function_name)
+          {
+            if(index_start <= 0)
+            {
+              index_start = i
             }
-            index_end = i;
+            index_end = i
           }
         }
 

@@ -79,11 +79,11 @@
  *****************/
 
 .action-updater-log-message > span:first-of-type {
-  opacity: 1.0;
+  color: rgba(255, 255, 255, 1.0);
 }
 
 .action-updater-log-message > span:last-of-type {
-  opacity: 0.5;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .action-updater-log-message > span + span {

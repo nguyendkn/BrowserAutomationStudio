@@ -60,11 +60,19 @@
   color: #606060;
 }
 
+/*****************
+ * Footer styles *
+ *****************/
+
 .action-updater-footer {
   justify-content: space-between;
   align-items: center;
   display: flex;
 }
+
+/****************
+ * Panels styles *
+ ****************/
 
 .action-updater-panel {
   flex-direction: column;

@@ -97,10 +97,10 @@ void URLRequestClient::OnRequestComplete(CefRefPtr<CefURLRequest> request)
 
         p.second->error = std::to_string((int)request->GetRequestError());
 
-        {
+        /*{
             LOCK_BROWSER_DATA
             _BrowserData->_CachedData.push_back(p);
-        }
+        }*/
     }
 
     if(request->GetRequestStatus() == UR_SUCCESS)

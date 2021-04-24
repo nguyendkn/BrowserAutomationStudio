@@ -2075,7 +2075,7 @@ bool MainWindow::IsProcessRunning(int pid)
 
 void MainWindow::RemoveOldTunnels()
 {
-    QDirIterator it("t", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
+    QDirIterator it("worker/chrome/t", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
     while (it.hasNext())
     {
         QString dir = it.next();
@@ -2651,6 +2651,7 @@ void MainWindow::RunInternal()
         //Use all modules in record mode
         QStringList Exclude;
         QList<QString> List = _ModuleManager->GetModuleEngineCode(Exclude);
+        _ModuleManager->CacheBrowserCode();
         worker->SetAdditionEngineScripts(List);
     }
     else
@@ -2658,6 +2659,7 @@ void MainWindow::RunInternal()
         QStringList Exclude = _ModuleManager->GetStandartModulesNotUsedInProject(TextEditor->GetText());
         QList<IModuleManager::ModulePreserve> ActiveModules = _ModuleManager->GetModulesUsedInProject(TextEditor->GetText());
         QList<QString> List = _ModuleManager->GetModuleEngineCode(ActiveModules, Exclude);
+        _ModuleManager->CacheBrowserCode();
         worker->SetAdditionEngineScripts(List);
     }
 

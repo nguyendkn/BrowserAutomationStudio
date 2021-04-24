@@ -9,8 +9,9 @@ class ProcessDeleter : public QObject
 {
     Q_OBJECT
     QProcess * Process;
+    bool IsTemporaryProfile;
 public:
-    explicit ProcessDeleter(QObject *parent = 0);
+    ProcessDeleter(bool IsTemporaryProfile);
     void Start(QProcess * Process);
 public slots:
     void Timer();

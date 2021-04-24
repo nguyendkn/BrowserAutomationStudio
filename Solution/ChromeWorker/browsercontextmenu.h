@@ -4,6 +4,8 @@
 #include <windows.h>
 #include "include/cef_app.h"
 #include "include/cef_client.h"
+#include "devtoolsconnector.h"
+
 
 class SourceSaver: public CefStringVisitor
 {
@@ -44,6 +46,7 @@ public:
     std::string Url;
     std::string UrlMedia;
     std::string LastSelectText;
+    std::string LastCurrentUrl;
 
     FINDREPLACE find_state_;
     WCHAR find_buff_[3000] = { 0 };
@@ -52,14 +55,14 @@ public:
     bool find_match_case_last_;
     HWND find_hwnd_ = 0;
 
-    void Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params, bool CanGoBack, bool CanGoForward);
+    void Show(HWND hwnd, int X, int Y, bool IsLink, bool IsMedia, bool IsEdit, const std::string& LinkUrl, const std::string& MediaUrl, const std::string& CurrentUrl, const std::string& SelectedText, bool CanGoBack, bool CanGoForward);
     void ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward);
-    void Process(HWND hwnd, int Command, CefRefPtr<CefBrowser> Browser);
-    void OnFind(CefRefPtr<CefBrowser> Browser, LPFINDREPLACE Data);
+    void Process(HWND hwnd, int Command, DevToolsConnector* Connector, const std::string& UniqueProcessId);
+    void OnFind(DevToolsConnector* Connector, LPFINDREPLACE Data);
     void ShowFindDialog(HWND hwnd);
 
 private:
-    void Input(CefRefPtr<CefBrowser> Browser, const std::string Text);
+    void Input(DevToolsConnector* Connector, const std::string Text);
     void SetClipboard(const std::string& Text);
 
 

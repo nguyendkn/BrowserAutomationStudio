@@ -361,6 +361,11 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	})!
 	
 	//User agent
+
+	_if(typeof(FINGERPRINT_JSON["useragentdata"]) == "string", function(){
+		_set_user_agent_data(FINGERPRINT_JSON["useragentdata"])!
+	})!
+
 	try
 	{
 		FINGERPRINT_USERAGENT = FINGERPRINT_JSON["ua"] || ""
@@ -380,7 +385,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	
 	_if(FINGERPRINT_WIDTH > 0, function(){
-		resize(FINGERPRINT_WIDTH, FINGERPRINT_HEIGHT - 32)!
+		resize(FINGERPRINT_WIDTH, FINGERPRINT_HEIGHT)!
 	})!
 
 	
@@ -388,12 +393,8 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		header("DNT","1")!
 	})!
 
-	//Headers 
-	header_order(FINGERPRINT_JSON["headers"])!
-	
-	//Headers order and native code
-	
-	FINGEPRINT_SETTINGS = {"Fingerprints.HeadersOrder": FINGERPRINT_JSON["headers"].join(",")}
+	//Native code
+	FINGEPRINT_SETTINGS = {}
 	if(FINGERPRINT_JSON["native_code"])
 	{
 		var split = FINGERPRINT_JSON["native_code"].split("Object")
@@ -636,22 +637,6 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	}
 
 	_settings(FINGEPRINT_SETTINGS)!
-
-	PAYLOAD = ""
-
-	if(typeof(FINGERPRINT_JSON["payload2"]) == "string")
-	{
-		PAYLOAD = FINGERPRINT_JSON["payload2"];
-	}else if(typeof(FINGERPRINT_JSON["payload"]) == "string")
-	{
-		PAYLOAD = FINGERPRINT_JSON["payload"];
-	}
-
-	_if(PAYLOAD.length > 0, function(){
-		onloadjavascriptinternal(PAYLOAD, "_fingerprint")!
-	})!
-
-	delete PAYLOAD
 
 }
 

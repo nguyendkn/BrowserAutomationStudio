@@ -44,7 +44,6 @@ class HandlersManager
     void UrlLoaded(const std::string& url, int status, int BrowserId, int RequestResourceType);
     void LoadSuccess(int BrowserId);
     void CursorChanged(int CursorId);
-    void Paint(char * data, int width, int height, int BrowserId);
     void OldestRequestTimeChanged(int64 OldestTime, int BrowserId);
 
 
@@ -102,7 +101,6 @@ public:
                std::function<void(const std::string&, int, int)> UrlLoadedCallback,
                std::function<void()> LoadSuccessCallback,
                std::function<void(int)> CursorChangedCallback,
-               std::function<void(char*,int,int)> PaintCallback,
                std::function<void(int64)> OldestRequestTimeChangedCallback,
                std::function<void()> DownloadStart,
                std::function<void()> UploadStart,

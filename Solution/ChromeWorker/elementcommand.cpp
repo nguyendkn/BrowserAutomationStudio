@@ -17,6 +17,6 @@ std::string ElementCommand::SerializePathRaw()
 
 std::string ElementCommand::SerializePath()
 {
-    return picojson::value(SerializePathRaw()).serialize();
+    return SerializePathRaw();
 }
 

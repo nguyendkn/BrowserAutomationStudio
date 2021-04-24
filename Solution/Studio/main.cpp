@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include "mongodatabaseconnector.h"
 #include "addavexclusion.h"
+#include "profilebackgroundremover.h"
 #if defined(BAS_DEBUG)
     #include "CrashHandler.h"
 #endif
@@ -194,6 +195,7 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.showMaximized();
+    (new ProfileBackgroundRemover())->Run();
     int res = a.exec();
     curl_global_cleanup();
     CRYPTO_set_locking_callback(0);

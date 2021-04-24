@@ -13,24 +13,6 @@ JavaScriptExtensions::JavaScriptExtensions()
 
 }
 
-std::string JavaScriptExtensions::GetReferrerExtension(const std::string& Referrer)
-{
-    std::string rescode;
-    //if(!Referrer.empty())
-    {
-        rescode += std::string("Object.defineProperty(window.document, 'referrer', {"
-        "    configurable: true, get: function() {"
-         "        return ") + picojson::value(Referrer).serialize() + std::string(";"
-         "    }"
-         "});");
-    }
-    return rescode;
-}
-std::string JavaScriptExtensions::GetReferrerEmptyExtension()
-{
-    return "delete window.document.referrer;";
-}
-
 
 
 std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
@@ -65,8 +47,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         ";_BAS_HIDE(BrowserAutomationStudio_CssSelectorGenerator2) = new _BAS_HIDE(CssSelectorGenerator)({selectors: ['tag', 'nthchild']});"
         ";_BAS_HIDE(BrowserAutomationStudio_CssSelectorGenerator) = new _BAS_HIDE(CssSelectorGenerator)({selectors: ['id', 'tag', 'nthchild']});"
         ";_BAS_HIDE(BrowserAutomationStudio_CssSelectorGenerator3) = new _BAS_HIDE(CssSelectorGenerator)({selectors: ['id', 'class', 'tag', 'nthchild']});"
-
-        ";_BAS_HIDE(BrowserAutomationStudio_InspectElement) = function(x,y,position)"
+        ";_BAS_HIDE(BrowserAutomationStudio_InspectElement) = function(x,y,position,capture_frame)"
         "{"
             "var elements = document.elementsFromPoint(x,y);"
             "var el = null;"
@@ -90,20 +71,17 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                     "xpath = ' >XPATH> ' + _BAS_HIDE(BrowserAutomationStudio_CreateXPathFromElement)(el);"
                 "}catch(e){};"
                 "var is_frame=false;"
-                "var frame_name='';"
-                "var frame_url='';"
-                "var frame_tag_html='';"
-                "var frame_index=0;"
+                "var frame_element=null;"
                 "var r = _BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(el);"
                 "var x_with_padding=r.left;"
                 "var y_with_padding=r.top;"
                 "if(el.tagName.toLowerCase()=='iframe' || el.tagName.toLowerCase()=='frame')"
                 "{"
                     "is_frame=true;"
-                    "frame_name=el.getAttribute('name') || '';"
-                    "frame_url=el.getAttribute('src') || '';"
-                    "frame_tag_html=el.outerHTML || '';"
-                    "frame_index=_BAS_HIDE(BrowserAutomationStudio_GetFrameIndex)(el);"
+                    "if(capture_frame)"
+                    "{"
+                        "frame_element=el;"
+                    "}"
                 "};"
                 "var label = '';"
                 "if(!is_frame)"
@@ -140,15 +118,10 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                     "label += '</A> ';"
                 "}"
                 "label += css;"
-                "_BAS_HIDE(browser_automation_studio_inspect_result)(parseInt(rect.left),parseInt(rect.top),parseInt(rect.width),parseInt(rect.height),label,css,css2,css3,match,xpath,x + document.documentElement.scrollLeft,y + document.documentElement.scrollTop,true,is_frame,frame_name,frame_url,frame_tag_html,frame_index,x_with_padding,y_with_padding,position);"
+                "return [parseInt(rect.left),parseInt(rect.top),parseInt(rect.width),parseInt(rect.height),label,css,css2,css3,match,xpath,x + document.documentElement.scrollLeft,y + document.documentElement.scrollTop,true,is_frame,frame_element,x_with_padding,y_with_padding,position];"
             "}else{"
-                "_BAS_HIDE(browser_automation_studio_inspect_result)(0,0,0,0,'','','','','','',x,y,false,false,'','','',0,0,0,0);"
+                "return [0,0,0,0,'','','','','','',x,y,false,false,null,0,0,0];"
             "}"
-        "};"
-        "_BAS_HIDE(BrowserAutomationStudio_SetHighlightElements) = function(elements)"
-        "{"
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElements) = elements;"
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = -1;"
         "};"
         "_BAS_HIDE(BrowserAutomationStudio_SetMultiSelectData) = function(data)"
         "{"
@@ -261,7 +234,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
             "}"
             "return res;"
         "};"
-        "_BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect) = function()"
+        "_BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect) = function(need_to_get_elements)"
         "{"
             "var last_prefix = '';"
             "var res = [];var data=_BAS_HIDE(BrowserAutomationStudio_MultiSelectData);var include_list=[];var exclude_list=[];var multiselect_elements=[];"
@@ -318,35 +291,53 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                     "}"
                 "};"
             "}catch(e){}"
-            "_BAS_HIDE(browser_automation_studio_multiselect_result)(JSON.stringify(res));"
+            "var result_combined = {};"
+            "if(need_to_get_elements)"
+            "{"
+                "result_combined['elements'] = multiselect_elements;"
+                "return result_combined;"
+            "}"
+            "result_combined['result'] = JSON.stringify(res);"
             "if(typeof(_BAS_HIDE(BrowserAutomationStudio_MultiSelectIsDirty)) == 'boolean' && _BAS_HIDE(BrowserAutomationStudio_MultiSelectIsDirty) )"
             "{"
                 "_BAS_HIDE(BrowserAutomationStudio_MultiSelectIsDirty) = false;"
                 "if(include_list.length > 0)"
                 "{"
                     "var multiselector_data = _BAS_HIDE(BrowserAutomationStudio_GenerateMultiSelectors)(include_list,exclude_list,last_prefix);"
-                    "_BAS_HIDE(browser_automation_studio_multiselect_report)(JSON.stringify(JSON.stringify({include_number: include_list.length,exclude_number: exclude_list.length, data: multiselector_data})));"
+                    "result_combined['report'] = JSON.stringify(JSON.stringify({include_number: include_list.length,exclude_number: exclude_list.length, data: multiselector_data}));"
                 "}else"
                 "{"
-                    "_BAS_HIDE(browser_automation_studio_multiselect_report)(JSON.stringify(JSON.stringify({include_number: 0,exclude_number: 0})));"
+                    "result_combined['report'] = JSON.stringify(JSON.stringify({include_number: 0,exclude_number: 0}));"
                 "}"
             "}"
-            "return multiselect_elements;"
+            "return result_combined;"
         "};"
 
-        "_BAS_HIDE(BrowserAutomationStudio_Highlight) = function()"
+        "_BAS_HIDE(BrowserAutomationStudio_Highlight) = function(elements, index, do_scroll)"
         "{"
-            "if(typeof(_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex)) == 'undefined')"
+            "if(typeof(index) == 'undefined')"
             "{"
-                "_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = -1;"
+                "index = -1;"
             "}"
-            "var multiselect_elements = _BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect)();"
-            "var res = '';var elements=_BAS_HIDE(BrowserAutomationStudio_HighlightElements);"
+            "if(typeof(do_scroll) == 'undefined')"
+            "{"
+                "do_scroll = false;"
+            "}"
+            "if(elements && typeof(elements.length) != 'number')"
+            "{"
+                "elements = [elements];"
+            "}"
+            "var multiselect_elements = _BAS_HIDE(BrowserAutomationStudio_HighlightMultiselect)(true)['elements'];"
+            "var res = '';"
             "try{"
                 "for(var i = 0;i<elements.length;i++){"
                     "var el = elements[i];"
-                    "var is_alternative = _BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) == i;"
+                    "var is_alternative = false;"
+                    "if(index >= 0)"
+                        "is_alternative = (index % elements.length) == i;"
 
+                    "if(is_alternative && do_scroll)"
+                        "el.scrollIntoView({block: 'center', inline: 'center'});"
 
                     "if((multiselect_elements.indexOf(el) < 0 || is_alternative) && window.getComputedStyle(el)['display'] != 'none' && window.getComputedStyle(el)['visibility'] != 'hidden')"
                     "{"
@@ -370,7 +361,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                     "}"
                 "};"
             "}catch(e){}"
-            "_BAS_HIDE(browser_automation_studio_highlight_result)(res);"
+            "return res;"
         "};");
     }
     return
@@ -390,7 +381,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
             "var result = frame_sibling.indexOf(window);"
             "if(result == search_index)"
             "{"
-                "_BAS_HIDE(browser_automation_studio_frame_structure_query_result)(query_id, frame_id);"
+                "return JSON.stringify([query_id, frame_id]);"
             "}"
         "}catch(e){};"
     "};"
@@ -405,18 +396,11 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "rect.height = rect.bottom - rect.top;"
         "return rect;"
     "};"
-    "_BAS_HIDE(BrowserAutomationStudio_ScrollToElement) = function(el)"
+    "_BAS_HIDE(BrowserAutomationStudio_GetElementCoordinates) = function(el)"
     "{"
         "if(el)"
         "{"
-
-            //"console.log('Moving to element');"
-            //"console.log(el);"
-            "el.scrollIntoViewIfNeeded(true);"
-            //"document.documentElement.scrollLeft = xc - window.innerWidth/2;"
-            //"document.documentElement.scrollTop = yc - window.innerHeight/2;"
-
-            "setTimeout(function(){"
+            "{"
                 "var rect = el.getBoundingClientRect();"
 
                 "var xc = Math.floor(rect.left + rect.width/2);"
@@ -426,10 +410,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "var x2 = Math.floor(rect.right);"
                 "var y2 = Math.floor(rect.bottom);"
 
-                //"if(x1 > 0 && x1 < window.innerWidth && y1 > 0 && y1 < window.innerHeight && x2 > 0 && x2 < window.innerWidth && y2 > 0 && y2 < window.innerHeight)"
-                //"{"
-
-                "var res = document.documentElement.scrollLeft + ',' + document.documentElement.scrollTop + ',' + xc + ',' + yc;"
+                "var res = xc + ',' + yc;"
 
                 "if(x1<0)x1=0;"
                 "if(x1>window.innerWidth-2)x1=window.innerWidth-2;"
@@ -445,18 +426,54 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
 
                 "res += ',' + x1 + ',' + y1 + ',' + x2 + ',' + y2;"
 
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
-
-                //"return;"
-                //"}"
-            "}, 100)"
+                "return res;"
+            "}"
 
         "}else{"
-            "_BAS_HIDE(browser_automation_studio_result)('BAS_NOT_EXISTS');"
+            "throw 'BAS_NOT_EXISTS';"
         "}"
 
     "};"
+    ";_BAS_HIDE(BrowserAutomationStudio_GenerateMenu) = function(x,y)"
+    "{"
+        "var media_url = '';"
+        "var link_url = '';"
+        "var is_link = false;"
+        "var is_edit = false;"
+        "var is_media = false;"
 
+        "var elements = document.elementsFromPoint(x,y);"
+        "var el = null;"
+        "if(elements && elements.length > 0)"
+        "{"
+            "el = elements[0];"
+        "}"
+        "if(el)"
+        "{"
+            "if(el.tagName.toLowerCase()=='input'){is_edit = true;}"
+            "if(el.tagName.toLowerCase()=='img'){var element_url = el.getAttribute('src'); if(!element_url)element_url=''; else element_url = new URL(element_url, document.baseURI).href;is_media = true;media_url = element_url;}"
+            "try{var element_url = (function(){while(el && typeof(el) != 'undefined' && typeof(el.tagName) == 'string' && el.tagName.toLowerCase() != 'a'){el = el.parentNode};if(el && typeof(el) != 'undefined' && el.hasAttribute('href')){return el.getAttribute('href')} else {return ''};}()); if(!element_url) element_url=''; else element_url = new URL(element_url, document.baseURI).href;is_link = true;link_url = element_url;}catch(e){};"
+        "}"
+        "element_selection = window.getSelection().toString();"
+        "return JSON.stringify({'media_url': media_url,'link_url': link_url,'is_link': is_link,'is_edit': is_edit,'is_media': is_media,'selected_text': element_selection,'curent_url':window.location.href});"
+    "};"
+    ";_BAS_HIDE(BrowserAutomationStudio_DownloadUrl) = function(url)"
+    "{"
+        "var xhr = new XMLHttpRequest();"
+        "xhr.open('GET', url, true);"
+        "xhr.responseType = 'blob';"
+        "xhr.onload = function(){"
+            "var urlCreator = window.URL || window.webkitURL;"
+            "var imageUrl = urlCreator.createObjectURL(this.response);"
+            "var tag = document.createElement('a');"
+            "tag.href = imageUrl;"
+            "tag.download = 'download';"
+            "document.body.appendChild(tag);"
+            "tag.click();"
+            "document.body.removeChild(tag);"
+        "};"
+        "xhr.send();"
+    "};"
     "_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinates) = function(x,y,allowoutofbounds)"
     "{"
         "try{"
@@ -466,7 +483,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
             "if(x > document.documentElement.scrollLeft && x < document.documentElement.scrollLeft + window.innerWidth && y > document.documentElement.scrollTop && y < document.documentElement.scrollTop + window.innerHeight)"
             "{"
                 "var res = document.documentElement.scrollLeft + ',' + document.documentElement.scrollTop + ',' + x.toString() + ',' + y.toString();"
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
+                "return res;"
                 "return;"
             "}"
 
@@ -485,11 +502,11 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "}catch(e)"
         "{"
             "var res = '0,0,' + x.toString() + ',' + y.toString();"
-            "_BAS_HIDE(browser_automation_studio_result)(res);"
+            "return res;"
             "return;"
         "}"
 
-        "setTimeout(function(){"
+        "{"
             "try{"
                 "x-=document.documentElement.scrollLeft;"
 
@@ -510,14 +527,14 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "y+=document.documentElement.scrollTop;"
 
                 "var res = document.documentElement.scrollLeft + ',' + document.documentElement.scrollTop + ',' + x.toString() + ',' + y.toString();"
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
+                "return res;"
             "}catch(e)"
             "{"
                 "var res = '0,0,' + x.toString() + ',' + y.toString();"
-                "_BAS_HIDE(browser_automation_studio_result)(res);"
+                "return res;"
                 "return;"
             "}"
-        "}, 100)"
+        "}"
     "}"
 
     ";_BAS_HIDE(BrowserAutomationStudio_ScrollToCoordinatesNoResult) = function(x,y)"
@@ -673,15 +690,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "return document.body;"
             "return res;"
         "}catch(e){return null}"
-    "};"
-    "_BAS_HIDE(BrowserAutomationStudio_Sleep) = function(milliseconds){"
-      "confirm('BrowserAutomationStudio_Sleep' + milliseconds.toString())"
     "};");
-}
-
-std::string JavaScriptExtensions::GetJqueryExtension()
-{
-    return "";
 }
 
 std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std::string& UniqueProcessId)
@@ -698,14 +707,8 @@ std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std
     return Res;
 }
 
-std::string JavaScriptExtensions::GetHideExtensionLast(const std::string& UniqueProcessId)
-{
-    std::string res;
-    return res;
-}
 
-
-std::string JavaScriptExtensions::GetHideExtensionFirst(const std::string& UniqueProcessId)
+std::string JavaScriptExtensions::GetHideExtension(const std::string& UniqueProcessId)
 {
     std::string res =  std::string(";((function(atob_original) {"
             "var HideFuntions = {};"

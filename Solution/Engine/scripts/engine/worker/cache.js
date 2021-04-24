@@ -63,6 +63,14 @@ function _set_accept_language_pattern(pattern, callback)
     })
 }
 
+function _set_user_agent_data(data, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        _get_network_access_manager().SetUserAgentData(_ARG[0], _get_function_body(_ARG[1]));
+    })
+}
+
 function header_order(json, callback)
 {
     _ARG = arguments
@@ -263,23 +271,44 @@ function set_proxy_extended()
 
 }
 
-
 function browser_ip(callback)
 {
     _ARG = arguments
     _set_result("")
-    _create_browser_if_needed(function(){
-        _get_network_access_manager().BrowserIp(_get_function_body(_ARG[0]))
+    _switch_http_client_internal()
+    http_client_set_fail_on_error(false)
+    http_client_set_proxy(_PROXY["server"], _PROXY["Port"], _PROXY["IsHttp"], _PROXY["name"], _PROXY["password"])
+    http_client_get2("http://ip.bablosoft.com/?requestid=" + rand(0,100000),{method:("GET"),headers:("")}, function(){
+        if(http_client_was_error())
+            _set_result("")
+        else
+            _set_result(http_client_encoded_content("auto"))
+
+        new_http_client()
+        _switch_http_client_main()
+        _ARG[0]()
     })
+
 }
 
 function browser_ip_https(callback)
 {
     _ARG = arguments
     _set_result("")
-    _create_browser_if_needed(function(){
-        _get_network_access_manager().BrowserIpHttps(_get_function_body(_ARG[0]))
+    _switch_http_client_internal()
+    http_client_set_fail_on_error(false)
+    http_client_set_proxy(_PROXY["server"], _PROXY["Port"], _PROXY["IsHttp"], _PROXY["name"], _PROXY["password"])
+    http_client_get2("https://ip" + rand(1,3) + ".bablosoft.com?requestid=" + rand(0,100000),{method:("GET"),headers:("")}, function(){
+        if(http_client_was_error())
+            _set_result("")
+        else
+            _set_result(http_client_encoded_content("auto"))
+
+        new_http_client()
+        _switch_http_client_main()
+        _ARG[0]()
     })
+
 }
 
 function cache_allow(match, callback)

@@ -17,11 +17,10 @@ namespace BrowserAutomationStudioFramework
         virtual void SetWorkerPathSafe(const QString& PathSafe) = 0;
         virtual void SetWorkerPathNotSafe(const QString& PathNotSafe) = 0;
         virtual void SetUseFlash(bool UseFlash) = 0;
-        virtual void SetSkipFrames(int SkipFrames) = 0;
+        virtual void SetUseWidevine(bool UseWidevine) = 0;
         virtual void SetProfile(const QString& Profile) = 0;
         virtual void SetExtensions(const QString& Extensions) = 0;
         virtual void SetBrowserEngine(const QString& BrowserEngine) = 0;
-        virtual void SetProxyTunneling(bool ProxyTunneling) = 0;
         virtual void SetTimezone(int Timezone) = 0;
         virtual int GetTimezone() = 0;
         virtual void SetTimezoneName(const QString& TimezoneName) = 0;
@@ -35,10 +34,11 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetWorkerPathNotSafe() = 0;
         virtual QString GetWorkerPath() = 0;
         virtual bool GetUseFlash() = 0;
+        virtual bool GetUseWidevine() = 0;
         virtual QString GetProfile() = 0;
+        virtual QString GetRealProfile() = 0;
+        virtual bool IsTemporaryProfile() = 0;
         virtual QString GetExtensions() = 0;
-        virtual int GetSkipFrames() = 0;
-        virtual bool GetProxyTunneling() = 0;
         virtual QString GetBrowserEngine() = 0;
         virtual QString GetBrowserEngineVirtual() = 0;
         virtual void SetBrowserEngineVirtual(const QString& BrowserEngine) = 0;
@@ -80,6 +80,8 @@ namespace BrowserAutomationStudioFramework
 
         virtual QString GetAudio() = 0;
         virtual QString GetAudioNoise() = 0;
+        virtual int GetMaxFPS() = 0;
+        virtual void SetMaxFPS(int MaxFPS) = 0;
         virtual void SetAudio(const QString& Audio) = 0;
         virtual void SetAudioNoise(const QString& AudioNoise) = 0;
         virtual void SetWebgl(const QString& Webgl) = 0;

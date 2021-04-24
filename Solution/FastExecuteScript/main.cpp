@@ -10,6 +10,7 @@
 #include <QtGlobal>
 #include "mongodatabaseconnector.h"
 #include "addavexclusion.h"
+#include "profilebackgroundremover.h"
 #if defined(BAS_DEBUG)
     #include "CrashHandler.h"
 #endif
@@ -196,6 +197,8 @@ int main(int argc, char *argv[])
     qDebug()<<"Start 100";
     w->Start();
     qDebug()<<"Start 200";
+    (new ProfileBackgroundRemover())->Run();
+    qDebug()<<"Start 201";
     int res = a.exec();
     qDebug()<<"Start 300";
     curl_global_cleanup();

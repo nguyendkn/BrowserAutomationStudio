@@ -18,6 +18,7 @@ namespace BrowserAutomationStudioFramework
         QString BrowserEngine;
         QString BrowserEngineVirtual;
         bool UseFlash;
+        bool UseWidevine;
         int Timezone;
         QString TimezoneName;
 
@@ -29,10 +30,8 @@ namespace BrowserAutomationStudioFramework
         QString Webgl;
         QString WebglNoise;
         QString WebrtcIps;
+        int MaxFPS = 30;
 
-
-        bool ProxyTunneling;
-        int SkipFrames;
 
         QString UniqueProcessId;
 
@@ -60,8 +59,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetProfile(const QString& Profile);
         virtual void SetExtensions(const QString& Extensions);
         virtual void SetUseFlash(bool UseFlash);
-        virtual void SetProxyTunneling(bool ProxyTunneling);
-        virtual void SetSkipFrames(int SkipFrames);
+        virtual void SetUseWidevine(bool UseWidevine);
 
         virtual QString Get(const QString& Key);
         virtual void Set(const QString& Key,const QString& Value);
@@ -77,6 +75,7 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetCanvasNoise();
         virtual QString GetAudio();
         virtual QString GetAudioNoise();
+        virtual int GetMaxFPS();
         virtual void SetAudio(const QString& Audio);
         virtual void SetAudioNoise(const QString& AudioNoise);
         virtual QString GetWebgl();
@@ -87,6 +86,8 @@ namespace BrowserAutomationStudioFramework
         virtual void SetCanvasNoise(const QString& CanvasNoise);
         virtual void SetWebgl(const QString& Webgl);
         virtual void SetWebglNoise(const QString& WebglNoise);
+        virtual void SetMaxFPS(int MaxFPS);
+
 
         virtual QString GetWorkerPathSafe();
         virtual QString GetWorkerPathNotSafe();
@@ -98,9 +99,11 @@ namespace BrowserAutomationStudioFramework
         virtual void SetBrowserEngineVirtual(const QString& BrowserEngine);
 
         virtual QString GetProfile();
+        virtual QString GetRealProfile();
+        virtual bool IsTemporaryProfile();
+
         virtual bool GetUseFlash();
-        virtual bool GetProxyTunneling();
-        virtual int GetSkipFrames();
+        virtual bool GetUseWidevine();
 
         virtual QString GetProxyServer();
         virtual void SetProxyServer(const QString& ProxyServer);
@@ -136,7 +139,6 @@ namespace BrowserAutomationStudioFramework
 
     private:
         QString GetRandomString();
-        void RemoveOldTempProfiles();
         void RemoveOldFingerprintSettings();
         void UpdateFingerprintsSettings();
 

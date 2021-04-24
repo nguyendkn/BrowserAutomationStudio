@@ -4,7 +4,8 @@
 #include "browsereventsemulator.h"
 #include "log.h"
 #include "picojson.h"
-
+#include "converter.h"
+#include "javascriptextensions.h"
 
 void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward)
 {
@@ -24,10 +25,10 @@ void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGo
     AppendMenu(hMenu, Enabled, IdReload, Translate::Tr(L"Reload").c_str());
     AppendMenu(hMenu, Enabled, IdFind, Translate::Tr(L"Find").c_str());
     AppendMenu(hMenu, Enabled, IdGetPageSource, Translate::Tr(L"Get page source").c_str());
-    if(!IsRecord)
+    /*if(!IsRecord)
     {
         AppendMenu(hMenu, Enabled, IdSavePageAs, Translate::Tr(L"Save page as").c_str());
-    }
+    }*/
     AppendMenu(hMenu, Enabled, IdOpenDeveloperTools, Translate::Tr(L"Open developer tools").c_str());
 
 
@@ -39,14 +40,15 @@ void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGo
     }
 }
 
-void BrowserContextMenu::Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params, bool CanGoBack, bool CanGoForward)
+void BrowserContextMenu::Show(HWND hwnd, int X, int Y, bool IsLink, bool IsMedia, bool IsEdit, const std::string& LinkUrl, const std::string& MediaUrl, const std::string& CurrentUrl, const std::string& SelectedText, bool CanGoBack, bool CanGoForward)
 {
 
-    LastClickX = Params->GetXCoord();
-    LastClickY = Params->GetYCoord();
-    Url = Params->GetUnfilteredLinkUrl().ToString();
-    UrlMedia = Params->GetSourceUrl().ToString();
-    LastSelectText = Params->GetSelectionText();
+    LastClickX = X;
+    LastClickY = Y;
+    Url = LinkUrl;
+    UrlMedia = MediaUrl;
+    LastSelectText = SelectedText;
+    LastCurrentUrl = CurrentUrl;
 
     if(hMenu)
     {
@@ -66,27 +68,27 @@ void BrowserContextMenu::Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params,
     AppendMenu(hMenu, Enabled, IdGetPageSource, Translate::Tr(L"Get page source").c_str());
     AppendMenu(hMenu, Enabled, IdSavePageAs, Translate::Tr(L"Save page as").c_str());
     AppendMenu(hMenu, Enabled, IdOpenDeveloperTools, Translate::Tr(L"Open developer tools").c_str());
-    AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
+    //AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
 
 
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_LINK)
+    if(IsLink)
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCopyLinkLocation, Translate::Tr(L"Copy link location").c_str());
         AppendMenu(hMenu, Enabled, IdOpenLinkInANewTab, Translate::Tr(L"Open link in a new tab").c_str());
     }
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_MEDIA)
+    if(IsMedia)
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCopyUrl, Translate::Tr(L"Copy media url").c_str());
         AppendMenu(hMenu, Enabled, IdSaveAs, Translate::Tr(L"Save media as").c_str());
     }
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_SELECTION)
+    if(!SelectedText.empty())
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCopyText, Translate::Tr(L"Copy selected text").c_str());
         std::wstring Text = Translate::Tr(L"Find ");
-        std::wstring TextAdd = Params->GetSelectionText().ToWString();
+        std::wstring TextAdd = s2ws(SelectedText);
         if(TextAdd.length() > 20)
             TextAdd = TextAdd.substr(0,20) + std::wstring(L" ... ");
         Text += std::wstring(L"\"");
@@ -95,7 +97,7 @@ void BrowserContextMenu::Show(HWND hwnd, CefRefPtr<CefContextMenuParams> Params,
         Text += Translate::Tr(L" in Google");
         AppendMenu(hMenu, Enabled, IdFindInGoogle, Text .c_str());
     }
-    if(Params->GetTypeFlags() & CM_TYPEFLAG_EDITABLE)
+    if(IsEdit)
     {
         AppendMenu(hMenu,MF_SEPARATOR,NULL,L"Separator");
         AppendMenu(hMenu, Enabled, IdCutEditable, Translate::Tr(L"Cut").c_str());
@@ -127,13 +129,13 @@ void SourceSaver::Visit(const CefString& string)
     ShellExecute(0, 0, L"source.txt", 0, 0 , SW_SHOW );
 }
 
-void BrowserContextMenu::Input(CefRefPtr<CefBrowser> Browser, const std::string Text)
+void BrowserContextMenu::Input(DevToolsConnector* Connector, const std::string Text)
 {
     std::string TextCurrent = Text;
     KeyState State;
     while(true)
     {
-        BrowserEventsEmulator::Key(Browser, TextCurrent, State, LastClickX, LastClickY, false);
+        BrowserEventsEmulator::Key(Connector, TextCurrent, State, LastClickX, LastClickY, false);
         if(TextCurrent.length() == 0 && State.IsClear() && !State.IsPresingCharacter())
         {
             return;
@@ -159,11 +161,11 @@ void BrowserContextMenu::SetClipboard(const std::string& Text)
     }
 }
 
-void BrowserContextMenu::OnFind(CefRefPtr<CefBrowser> Browser, LPFINDREPLACE Data)
+void BrowserContextMenu::OnFind(DevToolsConnector* Connector, LPFINDREPLACE Data)
 {
     if(Data->Flags & FR_DIALOGTERM)
     {
-        Browser->GetHost()->StopFinding(true);
+        //Browser->GetHost()->StopFinding(true);
         find_what_last_.clear();
         find_next_ = false;
         find_hwnd_ = 0;
@@ -175,13 +177,20 @@ void BrowserContextMenu::OnFind(CefRefPtr<CefBrowser> Browser, LPFINDREPLACE Dat
         {
             if(!find_what.empty())
             {
-                Browser->GetHost()->StopFinding(true);
+                //Browser->GetHost()->StopFinding(true);
                 find_next_ = false;
             }
             find_match_case_last_ = match_case;
             find_what_last_ = find_buff_;
         }
-        Browser->GetHost()->Find(0, find_what, (find_state_.Flags & FR_DOWN) ? true : false, match_case, find_next_);
+        //Browser->GetHost()->Find(0, find_what, (find_state_.Flags & FR_DOWN) ? true : false, match_case, find_next_);
+        std::string Script = std::string("window.find(") + picojson::value(ws2s(find_what)).serialize() + std::string(", ")
+        + ((match_case) ? std::string("true") : std::string("false"))
+        + std::string(", ")
+        + ((find_state_.Flags & FR_DOWN) ? std::string("false") : std::string("true"))
+        + std::string(", true, false, true);");
+
+        Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
         if(!find_next_)
             find_next_ = true;
     }
@@ -207,44 +216,38 @@ void BrowserContextMenu::ShowFindDialog(HWND hwnd)
     find_hwnd_ = FindText(&find_state_);
 }
 
-void BrowserContextMenu::Process(HWND hwnd, int Command, CefRefPtr<CefBrowser> Browser)
+void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Connector, const std::string& UniqueProcessId)
 {
-    if(!Browser)
-        return;
-
+    
     if(Command == IdBackward)
     {
-        Browser->GoBack();
+        Connector->NavigateBack(true);
     }else if(Command == IdForward)
     {
-        Browser->GoForward();
+        Connector->NavigateForward(true);
     }else if(Command == IdReload)
     {
-        Browser->Reload();
+        Connector->Reload(true);
     }else if(Command == IdGetPageSource)
     {
-        if(!_SourceSaver)
-            _SourceSaver = new SourceSaver();
-        Browser->GetMainFrame()->GetSource(_SourceSaver);
+        Connector->ExecuteJavascript("[[RESULT]] = document.documentElement.outerHTML;", std::string(), std::string("[]"))->Then([this](AsyncResult* Result)
+        {
+            JsonParser Parser;
+            std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");
+            WriteStringToFile("source.txt",TextResult);
+            ShellExecute(0, 0, L"source.txt", 0, 0 , SW_SHOW );
+        });
+
     }else if(Command == IdOpenDeveloperTools)
     {
-        CefWindowInfo window_info;
-        window_info.SetAsPopup(0, "Developer tools");
-        CefBrowserSettings browser_settings;
-        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(0,0));
-    }else if(Command == IdInspectElement)
-    {
-        CefWindowInfo window_info;
-        window_info.SetAsPopup(0, "Developer tools");
-        CefBrowserSettings browser_settings;
-        Browser->GetHost()->ShowDevTools(window_info, NULL, browser_settings, CefPoint(LastClickX,LastClickY));
+        Connector->OpenDevTools();
     }else if(Command == IdCopyLinkLocation)
     {
         SetClipboard(Url);
 
     }else if(Command == IdOpenLinkInANewTab)
     {
-        Input(Browser, "<CONTROL><MOUSELEFT>");
+        Input(Connector, "<CONTROL><SHIFT><MOUSELEFT>");
 
     }else if(Command == IdCopyUrl)
     {
@@ -252,38 +255,42 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, CefRefPtr<CefBrowser> B
 
     }else if(Command == IdCopyText)
     {
-        Input(Browser, "<CONTROL>c");
+        Input(Connector, "<CONTROL>c");
     }else if(Command == IdFindInGoogle)
     {
-        std::string Text = picojson::value(LastSelectText).serialize();
-        std::string Script = std::string("window.open(\"https://www.google.com/search?q=\" + encodeURIComponent(") + Text + std::string("))");
-        Browser->GetMainFrame()->ExecuteJavaScript(Script,"",0);
+        Connector->CreateTab(std::string("https://www.google.com/search?q=") + LastSelectText,true);
     }
     else if(Command == IdCutEditable)
     {
-        Input(Browser, "<CONTROL>x");
+        Input(Connector, "<CONTROL>x");
     }else if(Command == IdCopyEditable)
     {
-        Input(Browser, "<CONTROL>c");
+        Input(Connector, "<CONTROL>c");
     }else if(Command == IdPasteEditable)
     {
-        Input(Browser, "<CONTROL>v");
+        Input(Connector, "<CONTROL>v");
     }else if(Command == IdSelectAllEditable)
     {
-        Input(Browser, "<CONTROL>a");
+        Input(Connector, "<CONTROL>a");
     }else if(Command == IdFind)
     {
         ShowFindDialog(hwnd);
 
     }else if(Command == IdSaveAs)
     {
-        Browser->GetHost()->StartDownload(UrlMedia);
+        std::string UrlEscaped = picojson::value(UrlMedia).serialize();
+        std::string Script = std::string("_BAS_HIDE(BrowserAutomationStudio_DownloadUrl)(") + UrlEscaped + std::string(");");
+        JavaScriptExtensions Extensions;
+        Script = Extensions.ProcessJs(Script,UniqueProcessId);
+        Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
     }else if(Command == IdSavePageAs)
     {
-        Browser->GetHost()->StartDownload(Browser->GetMainFrame()->GetURL());
+        std::string UrlEscaped = picojson::value(LastCurrentUrl).serialize();
+        std::string Script = std::string("_BAS_HIDE(BrowserAutomationStudio_DownloadUrl)(") + UrlEscaped + std::string(");");
+        JavaScriptExtensions Extensions;
+        Script = Extensions.ProcessJs(Script,UniqueProcessId);
+        Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
     }
-
-
 
 
 }

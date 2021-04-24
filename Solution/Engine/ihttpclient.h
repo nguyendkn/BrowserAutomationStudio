@@ -99,9 +99,6 @@ namespace BrowserAutomationStudioFramework
             virtual QString SaveCookies() = 0;
             virtual void RestoreCookies(const QString& cookies) = 0;
 
-            QVariantMap SerializeTime(const QDateTime& time);
-            QDateTime DeserializeTime(const QJsonObject& object);
-
         signals:
             void Finished();
             void DownloadProgress(qint64 BytesReceived, qint64 BytesTotal);

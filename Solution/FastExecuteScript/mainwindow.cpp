@@ -669,6 +669,7 @@ void MainWindow::Start()
     worker->SetStringBuilder(StringBuild);
     worker->SetEmbeddedLanguageManager(_EmbeddedLanguageManager);
     worker->SetAdditionEngineScripts(_ModuleManager->GetModuleEngineCode(loader.GetUnusedModules()));
+    _ModuleManager->CacheBrowserCode();
     worker->SetPreprocessor(_Preprocessor);
 
     worker->SetBrowserFactory(BrowserFactory);
@@ -1082,7 +1083,7 @@ bool MainWindow::IsProcessRunning(int pid)
 
 void MainWindow::RemoveOldTunnels()
 {
-    QDirIterator it("t", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
+    QDirIterator it("worker/chrome/t", QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::NoIteratorFlags);
     while (it.hasNext())
     {
         QString dir = it.next();

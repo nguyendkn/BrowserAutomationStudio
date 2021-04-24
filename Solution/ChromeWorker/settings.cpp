@@ -20,8 +20,8 @@ settings::settings()
 void settings::Init()
 {
     use_flash = false;
+    use_widevine = false;
     force_utf8 = true;
-    skip_frames = 1;
     canvas = "disable";
     audio = "disable";
     webrtc = "disable";
@@ -29,17 +29,17 @@ void settings::Init()
     toolbox_height = 300;
     scenario_width = 500;
     zoom = 100;
-    max_browser_start_simultaneously = 1;
-    min_free_memory_to_start_browser = 500;
-    min_unused_cpu = 20;
+    max_fps = 30;
+    max_browser_start_simultaneously = 3;
+    min_free_memory_to_start_browser = 1500;
+    min_unused_cpu = 35;
     maximized = false;
     restart = true;
     emulate_mouse = true;
-    proxies_reconnect = false;
     autostart_debug = false;
+    profiles_caching = true;
     debug_toolbox = false;
     debug_scenario = false;
-    tunneling = true;
     detector = true;
     std::ifstream fin("settings_worker.ini");
     if(fin.is_open())
@@ -54,10 +54,6 @@ void settings::Init()
             if(line.find("DebugScenario=true") != std::string::npos)
             {
                 debug_scenario = true;
-            }
-            if(line.find("ForceUtf8=false") != std::string::npos)
-            {
-                force_utf8 = false;
             }
             if(line.find("IsSafe=false") != std::string::npos)
             {
@@ -90,6 +86,13 @@ void settings::Init()
             {
                 audio_noise = ReplaceAll(line,"AudioNoise=","");
                 audio_noise = ReplaceAll(audio_noise,"\"","");
+            }
+            if(line.find("MaxFPS=") != std::string::npos)
+            {
+                std::vector<std::string> s = split(line,'=');
+                max_fps = std::stoi(s[1]);
+                if(max_fps < 10)
+                    max_fps = 10;
             }
             if(line.find("Webrtc=") != std::string::npos)
             {
@@ -127,20 +130,17 @@ void settings::Init()
             {
                 use_flash = true;
             }
-            if(line.find("ProxiesReconnect=true") != std::string::npos)
+            if(line.find("EnableWidevine=true") != std::string::npos)
             {
-                proxies_reconnect = true;
+                use_widevine = true;
             }
             if(line.find("AutostartDebug=true") != std::string::npos)
             {
                 autostart_debug = true;
             }
-            if(line.find("SkipFrames=") != std::string::npos)
+            if(line.find("ProfilesCaching=false") != std::string::npos)
             {
-                std::vector<std::string> s = split(line,'=');
-                skip_frames = std::stoi(s[1]);
-                if(skip_frames < 1)
-                    skip_frames = 1;
+                profiles_caching = false;
             }
             if(line.find("ToolboxHeight=") != std::string::npos)
             {
@@ -191,10 +191,6 @@ void settings::Init()
             {
                 restart = false;
             }
-            if(line.find("ProxyTunneling=false") != std::string::npos)
-            {
-                tunneling = false;
-            }
             if(line.find("Detector=false") != std::string::npos)
             {
                 detector = false;
@@ -243,108 +239,54 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
 
     bool NextExtensions = false;
     bool NextUseFlash = false;
-    bool NextSkipFrames = false;
-    bool NextRefreshConnections = false;
-    bool NextEncodeUtf8 = false;
+    bool NextUseWidevine = false;
     bool NextProfile = false;
     bool NextNoEmbeddedLanguages = false;
-    bool NextProxyTunneling = false;
     for(std::wstring& param: Params)
     {
         if(NextUseFlash)
         {
             use_flash = param == L"1";
             NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
             NextExtensions = false;
             continue;
-        }else if(NextSkipFrames)
+        }else if(NextUseWidevine)
         {
-            skip_frames = std::stoi(param);
+            use_widevine = param == L"1";
             NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
-            NextExtensions = false;
-            continue;
-        }else if(NextRefreshConnections)
-        {
-            proxies_reconnect = param == L"1";
-            NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
-            NextProfile = false;
-            NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
-            NextExtensions = false;
-            continue;
-        }else if(NextEncodeUtf8)
-        {
-            force_utf8 = param == L"1";
-            NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
-            NextProfile = false;
-            NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
             NextExtensions = false;
             continue;
         }else if(NextProfile)
         {
             SetProfile(param);
             NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
             NextExtensions = false;
             continue;
         }else if(NextNoEmbeddedLanguages)
         {
             no_embedded = param == L"true";
             NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
-            NextExtensions = false;
-            continue;
-        }else if(NextProxyTunneling)
-        {
-            tunneling = param == L"1";
-            NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
-            NextProfile = false;
-            NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
             NextExtensions = false;
             continue;
         }else if(NextExtensions)
         {
             extensions = split(param,L';');
             NextUseFlash = false;
-            NextSkipFrames = false;
-            NextRefreshConnections = false;
-            NextEncodeUtf8 = false;
+            NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
-            NextProxyTunneling = false;
             NextExtensions = false;
             continue;
         }
@@ -353,17 +295,9 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         {
             NextUseFlash = true;
             continue;
-        }else if(param == L"--SkipFrames")
+        }else if(param == L"--UseWidevine")
         {
-            NextSkipFrames = true;
-            continue;
-        }else if(param == L"--RefreshConnections")
-        {
-            NextRefreshConnections = true;
-            continue;
-        }else if(param == L"--EncodeUtf8")
-        {
-            NextEncodeUtf8 = true;
+            NextUseWidevine = true;
             continue;
         }else if(param == L"--Profile")
         {
@@ -372,10 +306,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         }else if(param == L"--NoEmbeddedLanguages")
         {
             NextNoEmbeddedLanguages = true;
-            continue;
-        }else if(param == L"--ProxyTunneling")
-        {
-            NextProxyTunneling = true;
             continue;
         }else if(param == L"--Extensions")
         {
@@ -393,11 +323,6 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
     }
 
     Params = res;
-}
-
-bool settings::ProxyTunneling()
-{
-    return tunneling;
 }
 
 bool settings::Detector()
@@ -449,9 +374,9 @@ bool settings::UseFlash()
     return use_flash;
 }
 
-bool settings::ProxiesReconnect()
+bool settings::UseWidevine()
 {
-    return proxies_reconnect;
+    return use_widevine;
 }
 
 bool settings::AutostartDebug()
@@ -459,30 +384,9 @@ bool settings::AutostartDebug()
     return autostart_debug;
 }
 
-
-bool settings::ForceUtf8()
+bool settings::ProfilesCaching()
 {
-    return force_utf8;
-}
-
-int settings::SkipFrames()
-{
-    return skip_frames + 1;
-}
-
-void settings::SetProxiesReconnect(bool proxies_reconnect)
-{
-    this->proxies_reconnect = proxies_reconnect;
-}
-void settings::SetForceUtf8(bool force_utf8)
-{
-    this->force_utf8 = force_utf8;
-}
-void settings::SetSkipFrames(int skip_frames)
-{
-    if(skip_frames < 1)
-        skip_frames = 1;
-    this->skip_frames = skip_frames;
+    return profiles_caching;
 }
 
 int settings::ToolboxHeight()
@@ -539,10 +443,9 @@ void settings::SaveToFile()
         if(outfile.is_open())
         {
             outfile<<"EnableFlash="<<((use_flash) ? "true" : "false")<<std::endl;
-            outfile<<"ProxiesReconnect="<<((proxies_reconnect) ? "true" : "false")<<std::endl;
+            outfile<<"EnableWidevine="<<((use_widevine) ? "true" : "false")<<std::endl;
             outfile<<"AutostartDebug="<<((autostart_debug) ? "true" : "false")<<std::endl;
-            outfile<<"ForceUtf8="<<((force_utf8) ? "true" : "false")<<std::endl;
-            outfile<<"SkipFrames="<<skip_frames<<std::endl;
+            outfile<<"ProfilesCaching="<<((profiles_caching) ? "true" : "false")<<std::endl;
             outfile<<"ToolboxHeight="<<toolbox_height<<std::endl;
             outfile<<"MaxBrowserStartSimultaneously="<<max_browser_start_simultaneously<<std::endl;
             outfile<<"MinFreeMemoryToStartBrowser="<<min_free_memory_to_start_browser<<std::endl;
@@ -561,14 +464,13 @@ void settings::SaveToFile()
             outfile<<"CanvasNoise=\""<<canvas_noise<<"\""<<std::endl;
             outfile<<"Audio=\""<<audio<<"\""<<std::endl;
             outfile<<"AudioNoise=\""<<audio_noise<<"\""<<std::endl;
+            outfile<<"MaxFPS="<<max_fps<<std::endl;
             outfile<<"Webrtc=\""<<webrtc<<"\""<<std::endl;
             outfile<<"WebrtcIps=\""<<webrtc_ips<<"\""<<std::endl;
             outfile<<"Webgl=\""<<webgl<<"\""<<std::endl;
             outfile<<"WebglNoise=\""<<webgl_noise<<"\""<<std::endl;
             outfile<<"WebglRenderer=\""<<webgl_renderer<<"\""<<std::endl;
             outfile<<"WebglVendor=\""<<webgl_vendor<<"\""<<std::endl;
-
-            outfile<<"ProxyTunneling="<<((tunneling) ? "true" : "false")<<std::endl;
             outfile<<"Detector="<<((detector) ? "true" : "false")<<std::endl;
         }
     }catch(...)
@@ -582,20 +484,20 @@ std::string settings::Serialize()
 
     picojson::value::object res;
     res["use_flash"] = picojson::value(use_flash);
-    res["proxies_reconnect"] = picojson::value(proxies_reconnect);
+    res["use_widevine"] = picojson::value(use_widevine);
     res["autostart_debug"] = picojson::value(autostart_debug);
-    res["force_utf8"] = picojson::value(force_utf8);
+    res["profiles_caching"] = picojson::value(profiles_caching);
     res["canvas"] = picojson::value(canvas);
     res["canvas_noise"] = picojson::value(canvas_noise);
     res["audio"] = picojson::value(audio);
     res["audio_noise"] = picojson::value(audio_noise);
+    res["max_fps"] = picojson::value((double)max_fps);
     res["webrtc"] = picojson::value(webrtc);
     res["webgl"] = picojson::value(webgl);
     res["webgl_noise"] = picojson::value(webgl_noise);
     res["webrtc_ips"] = picojson::value(webrtc_ips);
     res["webgl_renderer"] = picojson::value(webgl_renderer);
     res["webgl_vendor"] = picojson::value(webgl_vendor);
-    res["skip_frames"] = picojson::value((double)skip_frames);
     res["toolbox_height"] = picojson::value((double)toolbox_height);
     res["max_browser_start_simultaneously"] = picojson::value((double)max_browser_start_simultaneously);
     res["min_free_memory_to_start_browser"] = picojson::value((double)min_free_memory_to_start_browser);
@@ -607,7 +509,6 @@ std::string settings::Serialize()
     res["languages"] = picojson::value(languages);
     res["modules"] = picojson::value(modules);
     res["no_embedded"] = picojson::value((double)no_embedded);
-    res["tunneling"] = picojson::value((double)tunneling);
     res["detector"] = picojson::value((double)detector);
     /*res["debug_toolbox"] = picojson::value(debug_toolbox);
     res["debug_scenario"] = picojson::value(debug_scenario);*/
@@ -623,14 +524,15 @@ void settings::Deserialize(const std::string & Data)
         picojson::value::object o = val.get<picojson::value::object>();
 
         use_flash = o["use_flash"].get<bool>();
-        proxies_reconnect = o["proxies_reconnect"].get<bool>();
+        use_widevine = o["use_widevine"].get<bool>();
         autostart_debug = o["autostart_debug"].get<bool>();
-        force_utf8 = o["force_utf8"].get<bool>();
+        profiles_caching = o["profiles_caching"].get<bool>();
 
         canvas = o["canvas"].get<std::string>();
         canvas_noise = o["canvas_noise"].get<std::string>();
         audio = o["audio"].get<std::string>();
         audio_noise = o["audio_noise"].get<std::string>();
+        max_fps = o["max_fps"].get<double>();
         webrtc = o["webrtc"].get<std::string>();
         webgl = o["webgl"].get<std::string>();
         webgl_noise = o["webgl_noise"].get<std::string>();
@@ -638,7 +540,6 @@ void settings::Deserialize(const std::string & Data)
         webgl_renderer = o["webgl_renderer"].get<std::string>();
         webgl_vendor = o["webgl_vendor"].get<std::string>();
 
-        skip_frames = o["skip_frames"].get<double>();
         toolbox_height = o["toolbox_height"].get<double>();
         max_browser_start_simultaneously = o["max_browser_start_simultaneously"].get<double>();
         min_free_memory_to_start_browser = o["min_free_memory_to_start_browser"].get<double>();
@@ -649,21 +550,19 @@ void settings::Deserialize(const std::string & Data)
         emulate_mouse = o["emulatemouse"].get<bool>();
         languages = o["languages"].get<std::string>();
         modules = o["modules"].get<std::string>();
-        tunneling = o["tunneling"].get<bool>();
         detector = o["detector"].get<bool>();
 
         /*debug_scenario = o["debug_scenario"].get<bool>();
         debug_toolbox = o["debug_toolbox"].get<bool>();*/
+
+        if(max_fps < 10)
+            max_fps = 10;
 
         if(toolbox_height < 100)
             toolbox_height = 100;
 
         if(scenario_width < 100)
             scenario_width = 100;
-
-        if(skip_frames < 1)
-            skip_frames = 1;
-
 
 
         SaveToFile();

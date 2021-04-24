@@ -40,6 +40,7 @@ namespace BrowserAutomationStudioFramework
         void SetRecordId(const QString& RecordId);
         virtual void LoadPage(const QString& url, const QString& callback);
         virtual void LoadPageInstant(const QString& url, const QString& callback);
+        virtual void LoadPage2(const QString& url, const QString& referrer, bool IsInstant, const QString& callback);
         virtual void SetUserAgent(const QString& agent, const QString& callback);
         virtual void GetCookiesForUrl(const QString& url, const QString& callback);
         virtual void SaveCookies(const QString& callback);
@@ -67,7 +68,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetOpenFileName(const QString & OpenFileName, const QString& callback);
         virtual void DragFile(const QString & FileName, const QString& callback);
         virtual void SetStartupScript(const QString& script,const QString& script_id,const QString& target, const QString& callback);
-        virtual void NavigateBack(const QString& callback);
+        virtual void NavigateBack(bool IsInstant, const QString& callback);
         virtual void SetFontList(const QString& fonts, const QString& callback);
         virtual void SetPromptResult(const QString & Text, const QString& callback);
         virtual void SetHttpAuthResult(const QString & Login, const QString & Password, const QString& callback);
@@ -79,12 +80,11 @@ namespace BrowserAutomationStudioFramework
         virtual void PopupClose(int index, const QString& callback);
         virtual void PopupSelect(int index, const QString& callback);
         virtual void PopupCreate(bool is_silent, const QString& url, const QString& callback);
+        virtual void PopupCreate2(bool is_silent, const QString& url, const QString& referrer, bool is_instant, const QString& callback);
         virtual void PopupInfo(const QString& callback);
         virtual void Timezone(int offset, const QString& callback);
         virtual void MouseMove(int x, int y,const QString& params, const QString& callback);
         virtual void Resize(int x, int y, const QString& callback);
-        virtual void Reset(const QString& callback);
-        virtual void ResetNoCookies(const QString& callback);
         virtual void StartManualBrowserControl(const QString& message, const QString& callback);
         virtual void Jquery(const QString& callback);
         virtual void OptimizeMemory(const QString& callback);
@@ -118,6 +118,7 @@ namespace BrowserAutomationStudioFramework
         bool IsBASBrowserVirtual();
         bool NeedToCreateVirtualProcessCommunicator();
         QString GetProfilePath();
+        bool IsTemporaryProfile();
 
         virtual void OnSupend();
         virtual void OnSuspendVirtual();
@@ -130,6 +131,7 @@ namespace BrowserAutomationStudioFramework
     signals:
         void ProcessCreated(IProcessComunicator *Communicator);
         void Loaded();
+        void Loaded2();
         void LoadedInstant();
         void GetUrl();
         void GetBrowserScreenSettings();
@@ -151,6 +153,7 @@ namespace BrowserAutomationStudioFramework
         void MouseClickDown();
         void PopupSelect();
         void PopupCreate();
+        void PopupCreate2();
         void PopupClose();
         void PopupInfo();
         void MouseMove();

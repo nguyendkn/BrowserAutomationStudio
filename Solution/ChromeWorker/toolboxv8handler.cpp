@@ -11,9 +11,17 @@ ToolboxV8Handler::ToolboxV8Handler()
     url_changed = false;
     enable_module_changed = false;
     ChangedExecute = false;
+    ChangedIncrementHighlightIndex = false;
     IsEmbeddedData = false;
     ChangedMultiselectState = false;
     ChangedMultiselectReset = false;
+}
+
+bool ToolboxV8Handler::GetIncrementHighlightIndex()
+{
+    bool Result = ChangedIncrementHighlightIndex;
+    ChangedIncrementHighlightIndex = false;
+    return Result;
 }
 
 std::pair<ToolboxV8Handler::ExecuteClass, bool> ToolboxV8Handler::GetExecuteCode()
@@ -145,6 +153,9 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
             LastExecute.Execute = arguments->GetString(0);
             ChangedExecute = true;
         }
+    }else if(name == std::string("BrowserAutomationStudio_IncrementHighlightIndex"))
+    {
+        ChangedIncrementHighlightIndex = true;
     }else if(name == std::string("BrowserAutomationStudio_Initialized"))
     {
         IsInitialized = true;

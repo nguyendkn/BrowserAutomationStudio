@@ -4,7 +4,6 @@
 #include "include/cef_request_context_handler.h"
 #include "mainhandler.h"
 #include "devtoolshandler.h"
-#include "proxydata.h"
 #include "cookievisitor.h"
 #include "browserdata.h"
 #include "v8handler.h"
@@ -27,7 +26,6 @@
 #include "handlersmanager.h"
 #include "postmanager.h"
 #include "imagefinder.h"
-#include "browserip.h"
 #include "cefrequest2action.h"
 #include "fingerprintdetector.h"
 #include "notificationmanager.h"
@@ -67,7 +65,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     ElementCommand LastCommandCopy;
 
     std::string BrowserScenarioDelayScript;
-    std::string LastHighlightSelector;
 
     IPCSimple NetworkProcessIPC;
     bool ProxyLibraryLoaded = false;
@@ -86,10 +83,8 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     std::string LastUsedSelector;
     std::string LastUsedLabel;
 
-    //IpRequest
-    CefRefPtr<BrowserIp> IpClient;
-    int IpReuestId;
-    bool IpRequestIsHttps;
+    //Browser close delayed
+    long long BrowserCloseTime = 0;
 
     //MouseMove
     bool IsMouseMoveSimulation;
@@ -116,10 +111,17 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     //Highlight
     clock_t LastHighlight;
-    int64 HighlightFrameId;
-    int HighlightOffsetX;
-    int HighlightOffsetY;
-    std::string HighlightMultiloginSelector;
+    clock_t LastHighlightMultiselect;
+    clock_t LastRecaptchaV3Check;
+    Async HighlightTask;
+    Async HighlightMultiselectTask;
+    Async RecaptchaV3Task;
+    std::string HighlightSelector;
+    std::string RawHighlightSelector;
+    int HighlightIndex;
+    bool HighlightDoScrolling = false;
+    bool IsHighlightIndexActive = false;
+    clock_t LastHighlightIndexChanged = 0;
 
     //Delay for click
     //0 - no delay click
@@ -145,16 +147,15 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     //Render
     bool NeedRenderNextFrame;
-    int SkipBeforeRenderNextFrame;
+    clock_t RenderNextFrameTime;
     bool IsElementRender;
     int RenderX,RenderY,RenderWidth,RenderHeight;
 
     //Frame Chain Inspect
-    std::vector<InspectResult> InspectFrameChain;
-    bool InspectFrameSearching;
     int InspectX;
     int InspectY;
     int InspectPosition;
+    Async InspectTask;
 
     //Frame Chain Execute Command
     std::vector<InspectResult> ExecuteFrameChain;
@@ -182,9 +183,6 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     void InitBrowser();
     std::string NextLoadPage;
     ImageFinder _ImageFinder;
-    std::vector<char> ImageData;
-    int ImageWidth;
-    int ImageHeight;
     MainLayout *Layout;
 
     std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData;
@@ -192,17 +190,13 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     bool ResourcesChanged;
     void UpdateScrolls(std::string& data);
     void HandleMainBrowserEvents();
-    void HandleFrameFindEvents();
     void HandleToolboxBrowserEvents();
     void HandleScenarioBrowserEvents();
     void HandleCentralBrowserEvents();
     void HandleDetectorBrowserEvents();
-    void HandleMultiloginIPCData();
 
     void ReadDoTour();
     std::string Lang;
-
-    bool NeedToClearCookiesOnNextReset;
 
     int RunElementCommandCallbackOnNextTimer;
 
@@ -214,10 +208,6 @@ public:
     FingerprintDetector Detector;
     NotificationManager Notifications;
     std::string Javascript(const std::string& Script, const std::string& BrowserType);
-    void SendStartupScriptUpdated();
-    int GetHighlightOffsetX();
-    int GetHighlightOffsetY();
-    int GetHighlightFrameId();
 
     void IncreaseInspectPosition();
     void DecreaseInspectPosition();
@@ -231,8 +221,9 @@ public:
     void SetSettings(settings *Settings);
     void SetLayout(MainLayout *Layout);
     BrowserData * GetData();
-    std::vector<std::string> GetAllPopupsUrls();
+    void GetAllPopupsUrls(std::function<void(const std::vector<std::string>&)> Callback);
     int GetActivePopupIndex();
+    void ContextMenu(int X, int Y);
 
 
     virtual CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() OVERRIDE;
@@ -254,19 +245,14 @@ public:
     //EventCallbacks
     void DisableBrowserCallback();
     void LoadCallback(const std::string& page);
+    void Load2Callback(const std::string& url,const std::string& referrer, bool instant);
     void SetFocusOnNextLoad();
-    bool HasBrowser();
     void CreateBrowser(const std::string& Url);
     void ViewCallback(const std::string& RequestId);
     void GetTabsCallback(const std::string& RequestId);
     void LoadNoDataCallback();
     void LoadManualSelect();
-    void ResetCallback();
-    void NavigateBackCallback();
-    void ResetNoCookiesCallback();
-    void ResetInternal();
-
-    void ResetCallbackFinalize();
+    void NavigateBackCallback(bool IsInstant);
 
     void SetNextActionCallback(const std::string& NextActionId);
     void TimezoneCallback(int offset);
@@ -275,18 +261,15 @@ public:
     void FlushCallback();
     void SetProxyCallback(const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target);
     void AddHeaderCallback(const std::string& key,const std::string& value, const std::string& target);
-    void AddHeaderCallbackInternal(const std::string& key,const std::string& value, const std::string& target);
     void SetHeaderListCallback(const std::string& json);
     void SetAcceptLanguagePatternCallback(const std::string& pattern);
+    void SetUserAgentDataCallback(const std::string& data);
     void CleanHeaderCallback();
     void GetUrlCallback();
     void GetBrowserScreenSettingsCallback();
     std::string GetUrl();
     void ProcessContextMenu(int MenuId);
     void ProcessFind(LPFINDREPLACE lpfr);
-    void BrowserIpCallback();
-    void BrowserIpHttpsCallback();
-    void SendBrowserIp(const std::string& Ip, int IpReuestId);
     void SetUserAgentCallback(const std::string& value);
     void PrepareFunctionCallback(const std::string& value);
     void RecaptchaV3ResultCallback(const std::string& id, const std::string& result);
@@ -296,7 +279,7 @@ public:
     void SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id);
     void RunTaskCallback(const std::string& function_name,const std::string& params,const std::string& result_id);
     void CheckResultCallback(const std::string& CheckId,bool IsSuccess,const std::string& ErrorString);
-    void SetWorkerSettingsCallback(bool EncodeUtf8, bool RefreshConnections, int SkipFrames, const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target, const std::string& browser, const std::string& record_id);
+    void SetWorkerSettingsCallback(bool EncodeUtf8, bool RefreshConnections, const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target, const std::string& browser, const std::string& record_id);
     void ManualBrowserControlCallback(const std::string& message);
     void SetFontListCallback(const std::string& fonts);
     void SetPromptResultCallback(const std::string& value);
@@ -340,7 +323,6 @@ public:
     void IsUrlLoadedByMaskCallback(const std::string& value);
     void GetLoadStatsCallback();
     void ElementCommandCallback(const ElementCommand &Command);
-    void ElementCommandInternalCallback(const ElementCommand &Command);
     void ClearElementCommand();
 
     void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing);
@@ -354,6 +336,7 @@ public:
     void PopupCloseCallback(int index);
     void PopupSelectCallback(int index);
     void PopupCreateCallback(bool is_silent, const std::string& url);
+    void PopupCreate2Callback(bool is_silent, const std::string& url, const std::string& referrer, bool is_instant);
     void PopupInfoCallback();
     void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll);
     void LoadSuccessCallback();
@@ -369,13 +352,15 @@ public:
     void ShowDevTools();
     void DirectControlInspectMouse();
     void UpdateHighlight();
+    void UpdateHighlightMultiselect();
+    void UpdateRecaptchaV3Check();
     void UpdateMultiSelect();
     void ClearHighlight();
-    void CefMessageLoop();
+    void HandleScreenshotCapture();
     void ExecuteTypeText();
     void ExecuteMouseMove();
     void FinishedLastCommand(const std::string& data);
-    void Paint(char * data, int width, int height);
+    void Paint(int width, int height);
     void UploadStart();
     void ComboboxOpened();
     void StartRequest(CefRefPtr<CefRequest> Request);
@@ -443,11 +428,20 @@ public:
 
     void SendTextResponce(const std::string&);
 
+    //Connector events
+    void OnPaint();
+    void OnResize();
+    void OnScroll();
+    void OnRequestStart(std::string RequestId);
+    void OnRequestStop(std::string RequestId);
+    void OnLoadStart();
+    void OnLoadStop();
+    void OnAddressChanged(std::string Url);
+    void OnNativeDialog(std::string DialogType);
+    void OnDownloadStarted(std::wstring FileName);
 
-private:
 
-    void GetCookiesForUrlCompleteCallback();
-    void SaveCookiesCompleteCallback();
+
 
 private:
     IMPLEMENT_REFCOUNTING(MainApp);

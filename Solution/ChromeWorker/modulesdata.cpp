@@ -38,7 +38,7 @@ void EnableModule(const std::string& ModuleName)
     }
 }
 
-ModulesDataList LoadModulesData(const std::string& Locale, bool IsTunneling, const std::string& BASPid, ModulesDataList& UnusedModules)
+ModulesDataList LoadModulesData(const std::string& Locale, const std::string& BASPid, ModulesDataList& UnusedModules)
 {
     WORKER_LOG("Start Loading Modules");
     ModulesDataList Result;
@@ -152,7 +152,7 @@ ModulesDataList LoadModulesData(const std::string& Locale, bool IsTunneling, con
                             continue;
                         }
 
-                        if(IsTunneling && (DataItem->Name == "FormDataFake"))
+                        if(DataItem->Name == "FormDataFake")
                         {
                             WORKER_LOG(std::string("Skip because module is disabled"));
                             continue;

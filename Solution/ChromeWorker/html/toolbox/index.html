@@ -408,7 +408,11 @@
           <% } %>  
 
           <% if(typeof(modal_code_id) != "undefined"){ %>
-            <a onclick="bootbox.alert({message: $('#<%= modal_code_id %>').html(), size: 'large'});return false;" href="#"><i class="fa fa-question-circle help-input"></i>  </a>
+            <% if(typeof(use_modal_template) != "undefined"){ %>
+              <a onclick="bootbox.alert({message: _.template($('#<%= modal_code_id %>').html())({}), size: 'large'});return false;" href="#"><i class="fa fa-question-circle help-input"></i>  </a>
+            <% }else{ %>      
+              <a onclick="bootbox.alert({message: $('#<%= modal_code_id %>').html(), size: 'large'});return false;" href="#"><i class="fa fa-question-circle help-input"></i>  </a>
+            <% } %>  
           <% } %>  
         </div>
         <hr style="margin-top:5px;margin-bottom:5px"/>
@@ -846,6 +850,7 @@
   <script type="text/template" id="load">
     <div class="container-fluid load">
       <%= _.template($('#input_constructor').html())({id:"LoadUrl", description:tr("Url to load"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Referrer", description:tr("Referrer. Can be blank"), default_selector: "string", disable_int:true, help: {description: tr("Referrer used for current page load."), examples:[{code:"https://google.com",description:tr("Page is loaded by clicking on google search result.")},{code:tr("Empty string"),description:tr("Page is loaded by typing url in address bar.")}]}}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Loads specified url into browser. Examples: Load google.com, Load instagram.com.</div>
@@ -990,7 +995,7 @@
   <script type="text/template" id="custom">
     <div class="container-fluid">
       <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
-        <div id="Code" data-is-code-editor="true" style="height:calc(100vh - 100px);border: none; overflow: hidden; outline: none;border:1px solid #e0e0e0;" />
+        <div id="Code" class="custom-code-editor" data-is-code-editor="true" />
       </span>
       <%= "<s" + "cript>" %>
         window.Code = {Editor: null, InitialValue: ""}
@@ -998,7 +1003,7 @@
         require(['vs/editor/editor.main'], function() {
           if($("#Code").attr("data-installed") == "true")
             return;
-          $("#Code").attr("data-installed", "true")
+          $("#Code").attr("data-installed", "true");
           window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
             value: window.Code.InitialValue,
             language: 'javascript',
@@ -1021,6 +1026,168 @@
       <span class="short-description tr">Execute javascript code. This code can work with variables but can't work with elements in web browser.</span>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true, modal_code_id:"custom-help-" + (_K || "en")}) %>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-common-ru">
+    <div>Выполнить javascript внутри браузера. Это означает, что доступны document, window и другие javascript объекты браузера.</div>
+    <div>Действие работает точно так же, как если бы вы вводили код в консоль браузера.</div>
+    <div>Вы можете использовать переменные BAS в данном действии как для чтения, так и для записи. Кроме того они могут быть любого типа, в том числе объектами и массивами.</div>
+    <div>Переменные используемые в коде автоматически обновляются после выполнения действия.</div>
+    <div>Ресурсы не доступны для использования в данном действии.</div>
+    <br />
+    <div>Во время выполнения скрипта могут возникать разные ошибки. В случае ошибки BAS прекратит выполнение скрипта.</div>
+    <div>Для того чтобы обработать подобные ситуации используйте действие <b>Игнорировать ошибки</b>.</div>
+    <div>В таком случае вы сможете использовать переменные [[WAS_ERROR]] и [[LAST_ERROR]], чтобы узнать, была ли ошибка, и обработать её.</div>
+    <br />
+    <div>Пример #1. Изменение HTML определенного элемента:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Пример #2. Получение HTML определенных элементов:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Пример #3. Установка значений для элементов `input` и `textarea`:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        document.querySelector('textarea').value = [[TEXTAREA_VALUE]].join('\r\n');
+        document.querySelector('input').value = [[INPUT_VALUE]];
+      </pre>
+    </div>
+    <br />
+    <div>В данном действии вы можете писать код с использованием <i>async</i> и <i>await</i>. Действие будет ожидать завершения асинхронных операций.</div>
+    <div>При использовании асинхронного кода всегда дожидайтесь завершения функций с помощью <i>await</i>.</div>
+    <div>В противном случае переменные, значение которых задается в коллбэках либо в функциях then/catch/finally у класса <i>Promise</i>, не будут синхронизированы с BAS.</div>
+    <div>Если в таких участках кода вам не нужно обновлять переменные, вы можете не ждать их завершения.</div>
+    <br />
+    <div>Простой пример. Асинхронное ожидание в течение заданного времени (2 секунды):</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
+    </div>
+    <br />
+    <div>Другой пример. Получение данных со стороннего сайта с помощью функции <i>fetch</i>:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/` + id)
+    .then((res) => res.json());
+}
+[[POST]] = await getPost(1);</pre></div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-common-en">
+    <div>Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
+    <div>Action works exactly the same as if you input code into browser console.</div>
+    <div>You can use BAS variables in this action for both reading and writing. Moreover, they can be of any type, including objects and arrays.</div>
+    <div>Variables used in the code are automatically updated after the action is performed.</div>
+    <div>Resources are not available for use in this action.</div>
+    <br />
+    <div>During the execution of the script, various errors may occur. If an error occurs, BAS will stop the script execution.</div>
+    <div>To handle such situations, use the <b>Ignore errors</b> action.</div>
+    <div>In this case, you can use the [[WAS_ERROR]] and [[LAST_ERROR]] variables to find out if there was an error and process it.</div>
+    <br />
+    <div>Example #1. Changing the HTML of the specific element:</div>
+    <div><pre>document.getElementById("id").innerHTML = [[ELEMENT_HTML]];</pre></div>
+    <br />
+    <div>Example #2. Getting the HTML of the specific elements:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[ELEMENT1_HTML]] = document.getElementById("id1").innerHTML;
+        [[ELEMENT2_HTML]] = document.getElementById("id2").innerHTML;        
+      </pre>
+    </div>
+    <br />
+    <div>Example #3. Setting the values for the `input` and `textarea` elements:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        document.querySelector('textarea').value = [[TEXTAREA_VALUE]].join('\r\n');
+        document.querySelector('input').value = [[INPUT_VALUE]];
+      </pre>
+    </div>
+    <br />
+    <div>In this action you can write code using <i>async</i> and <i>await</i>. The action will wait for asynchronous operations to complete.</div>
+    <div>When using asynchronous code, always wait for functions to complete using <i>await</i>.</div>
+    <div>Otherwise, variables whose value is set in callbacks or in the then/catch/finally functions of the <i>Promise</i> class will not be synchronized with the BAS.</div>
+    <div>If you don't need to update variables in these sections of code, you don't have to wait for them to complete.</div>
+    <br />
+    <div>A simple example. Wait asynchronously for a specified time (2 seconds):</div>
+    <div>
+      <pre>await new Promise((resolve) => { setTimeout(() => resolve(), 2000); });</pre>
+    </div>
+    <br />
+    <div>Another example. Getting data from a third-party site using the <i>fetch</i> function:</div>
+    <div><pre>async function getPost(id) {
+  return await fetch(`https://jsonplaceholder.typicode.com/posts/` + id)
+    .then((res) => res.json());
+}
+[[POST]] = await getPost(1);</pre></div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-ru">
+    <%= _.template($('#custom-help-browser-common-ru').html())({}) %>
+    <br />
+    <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browser-en">
+    <%= _.template($('#custom-help-browser-common-en').html())({}) %>
+    <br />
+    <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browserscriptelement-ru">
+    <%= _.template($('#custom-help-browser-common-ru').html())({}) %>
+    <br />
+    Используйте переменную <strong>self</strong>, которая указывает на выбранный элемент.
+    <br />
+    <br />
+    <div>Получить код элемента, который был выбран при создании этого действия:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[FOUND_ELEMENT_HTML]] = self.innerHTML;
+      </pre>
+    </div>
+    <br />
+    <div>Получить атрибут, имя которого находится в переменной [[ATTRIBUTE]], и сохранить его в переменную [[RESULT]].</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[RESULT]] = self.getAttribute([[ATTRIBUTE]])
+      </pre>
+    </div>
+    <br />
+    <div>
+      Если элемент не будет найден после первой попытки, BAS продолжит ожидать его на протяжении минуты. Если на протяжении 10 секунд элемент не будет найден, в лог будет добавлено сообщение, если элемент не появится на протяжении минуты, поток завершится с ошибкой. Вы можете обработать эту ошибку если уберете настройку "Остановить поток, если элемент не найден" (вверху страницы) или если обернете данное действие в блок игнорирования ошибок. Вы также можете настроить максимальное время ожидания если нажмете на иконку песочных часов.
+    </div>
+    <br />
+    <div>Используйте действие <b>Выполнить код</b>, если вы хотите выполнить javascript внутри потока.</div>
+  </script>
+
+  <script type="text/template" id="custom-help-browserscriptelement-en">
+    <%= _.template($('#custom-help-browser-common-en').html())({}) %>
+    <br />
+    Use <strong>self</strong> variable, which points to selected element.
+    <br />
+    <br />
+    <div>Get code of element that was selected when creating this action:</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[FOUND_ELEMENT_HTML]] = self.innerHTML;
+      </pre>
+    </div>
+    <br />
+    <div>Get attribute which name is located in [[ATTRIBUTE]] variable and save it to [[RESULT]] variable.</div>
+    <div>
+      <pre style="white-space: pre-line">
+        [[RESULT]] = self.getAttribute([[ATTRIBUTE]])
+      </pre>
+    </div>
+    <br />
+    <div>
+      If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.
+    </div>
+    <br />
+    <div>Use <b>Execute Code</b> action if you want to run javascript inside thread.</div>
   </script>
 
   <script type="text/template" id="custom-help-interface-ru">
@@ -1050,6 +1217,7 @@
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
   </script>
+
   <script type="text/template" id="custom-help-interface-en">
     <div>Run javascript code in web interface context.</div>
     <div>If web interface is not enabled, this action does nothing.</div>
@@ -1076,7 +1244,6 @@
     <div>Example #4. Set input value.</div>
     <pre>$("#control-id").val("Input value");</pre>
       <br/>
-
   </script>
 
   <script type="text/template" id="custom-help-en">
@@ -1144,80 +1311,6 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   </script>
 
    <!-- Tools templates -->
-
-  <script type="text/template" id="template">
-    <div class="container-fluid template">
-      <%= _.template($('#input_constructor').html())({id:"Template", description:tr("Template"), default_selector: "expression", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("Variable value"), examples:[{code:"any string",description:tr("Any string will work")},{code:"[[LOGIN]]:[[PASSWORD]]",description:tr("Concat 2 variables")},{code:"{Hi|Hello}, John!",description:tr("Spintax")},{code:"&lt;EMaleName&gt;",description:tr("Will be replaced with male name")},{code:"{a{1|2|3}|}",description:tr("a1, a2, a3 or nothing")}]}}) %>
-      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "TEMPLATE_RESULT", help: {description: tr("The name of the variable to be created or modified.")}}) %>
-      <div>
-        <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check2">
-           <input type="checkbox" id="Check2" checked="checked"/> <label for="Check2" class="tr">Expand spintax.</label>
-        </span>
-      </div>
-      <div>
-        <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check3">
-           <input type="checkbox" id="Check3" checked="checked"/> <label for="Check3" class="tr">Expand variables and resources.</label>
-        </span>
-      </div>
-      <div> 
-        <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-           <input type="checkbox" id="Check"/> <label for="Check" class="tr">Additional processing. Use this option if you want to load template from file or variable.</label>
-        </span>
-      </div>
-    </div>
-    <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Create new variable or update existing with multiline text. Can expand resources, variables, spintax, may be used to load template from file or dynamically generate it. This action suites best if you want to generate post text.</div>
-      <div class="tr tooltip-paragraph-fold">This action gets text from "Template" multiline textbox and saves it to variable defined in "Variable To Save Result". Thats it, unless text doesn't contain special values. Here are list of them:</div>
-      <div class="tr tooltip-paragraph-fold">Variables [[VARIABLE]] will be expanded to variable value.</div>
-      <div class="tr tooltip-paragraph-fold">Resources {{resource}} also will be expanded to resource value.</div>
-      <div class="tr tooltip-paragraph-fold">Spintax {value1|value2} will be expanded to value1 or value2.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;AnyLetter&gt; - will be converted to any letter.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;AnyDigit&gt; - will be converted to any digit.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;ELowVow&gt; - same as {a|e|i|o|u}</div>
-      <div class="tr tooltip-paragraph-fold">&lt;EUpVow&gt; - same as {a|e|i|o|u}</div>
-      <div class="tr tooltip-paragraph-fold">&lt;ELowCons&gt; - same as {b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z}</div>
-      <div class="tr tooltip-paragraph-fold">&lt;EUpCons&gt; - same as {B|C|D|F|G|H|J|K|L|M|N|P|Q|R|S|T|V|W|X|Y|Z}</div>
-      <div class="tr tooltip-paragraph-fold">&lt;EUp&gt; - same as {&lt;EUpVow&gt;|&lt;EUpCons&gt;}</div>
-      <div class="tr tooltip-paragraph-fold">&lt;ELow&gt; - same as {&lt;ELowVow&gt;|&lt;ELowCons&gt;}</div>
-      <div class="tr tooltip-paragraph-fold">&lt;EFemName&gt; - english female names starting from capital letter.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;EFemNameLow&gt; - english female names.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;EMaleName&gt; - english male names starting from capital letter.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;EMaleNameLow&gt; - english male names.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;ESurname&gt; - english surnames starting from capital letter.</div>
-      <div class="tr tooltip-paragraph-fold">&lt;ESurnameLow&gt; - english surnames.</div>
-      <div class="tr tooltip-paragraph-last-fold">If "Additional processing" is checked, than this action will process dynamic templates, i.e template will be taken from variable. Consider following example: you have file with content "{Hello|Hi}, &lt;EMaleName&gt;{!|}" and want to expand it with BAS. At first you have to load file to variable [[FILE_CONTENT]]. If you put [[FILE_CONTENT]] to template action and don't set "Additional processing" flag, that result will be the same as original file content. But if you set this flag, BAS will expand [[FILE_CONTENT]] first and then expend result again, finally you will get something like this "Hello, John!".</div>
-    </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
-
-  <script type="text/template" id="replacestring">
-    <div class="container-fluid replacestring">
-      <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Original String"), default_selector: "string", disable_int:true, help: {description: tr("The string in which the replacement will be made")}}) %>
-      <%= _.template($('#input_constructor').html())({id:"ReplaceFrom", description:tr("Replace From"), default_selector: "string", disable_int:true, help: {description: tr("The string to be searched for")}}) %>
-      <%= _.template($('#input_constructor').html())({id:"ReplaceTo", description:tr("Replace To"), default_selector: "string", disable_int:true, help: {description: tr("New value")}}) %>
-      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "REPLACE_RESULT", help: {description: tr("Variable, which will hold copy of the original string with the replacement")}}) %>
-    </div>
-    <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Searches a string defined with "Original String" for a specified value defined with "Replace From", and returns a new string where the specified values are replaced to value defined with "Replace To" parameter.</div>
-      <div class="tr tooltip-paragraph-fold">This action replaces all occurrences.</div>
-      <div class="tr tooltip-paragraph-last-fold">If you want to replace with regexp, use "Replace text with regexp" action.</div>
-    </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
-
-  <script type="text/template" id="randomstring">
-    <div class="container-fluid randomstring">
-      <%= _.template($('#input_constructor').html())({id:"AllowedChars", description:tr("Allowed Chars"), default_selector: "string", disable_int:true, value_string: "abcdefghijklmnopqrstuvwxyz0123456789"}) %>
-      <%= _.template($('#input_constructor').html())({id:"Length", description:tr("Result String Length"), default_selector: "int", disable_string:true, value_number:10, min_number:1, max_number:999999}) %>
-      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save Result"), default_variable: "RANDOM_STRING"}) %>
-    </div>
-    <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Generate a random string with a given length and allowed characters.</div>
-    </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
 
   <script type="text/template" id="randomint">
     <div class="container-fluid randomint">
@@ -1463,14 +1556,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="setheader">
     <div class="container-fluid">
-      <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language","Referer"], size: 3}) %>
+      <%= _.template($('#input_constructor').html())({id:"Name", description:tr("Header Name"), default_selector: "string", disable_int:true, value_string: "User-Agent", variants: ["User-Agent","Accept-Language"], size: 3}) %>
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Header Value"), default_selector: "string", disable_int:true, value_string: "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:44.0) Gecko/20100101 Firefox/44.0"}) %>
       <%= _.template($('#targetfields').html())({}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Set request header for subsequent browser requests.</div>
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="solvecaptcha">
@@ -1504,9 +1597,42 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         <div class="tr tooltip-paragraph-first-fold">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</div>
         <div class="tr tooltip-paragraph-fold">Action works exactly the same as if you input code into browser console and output result into variable.</div>
         <div class="tr tooltip-paragraph-fold">You can also use resources and variables here but only in read mode. Following code will work document.getElementById([[ID]]).innerHTML, but you can't do like this <strike>[[RESULT]] = document.getElementById([[ID]]).innerHTML</strike>.</div> 
+        <div class="tr tooltip-paragraph-fold">This action is deprecated. It is recommended to use the new <a href="#!/browserjavascript">Javascript</a> action.</div>
         <div class="tr tooltip-paragraph-last-fold">Use <a href="#!/custom">Execute Code</a> action if you want to run javascript inside thread.</div>
       </div>
       <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+  </script>
+
+  <script type="text/template" id="browserjavascript">
+    <div class="container-fluid">
+      <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
+        <div id="Code" class="browser-code-editor" data-is-code-editor="true" />
+      </span>
+      <%= "<s" + "cript>" %>
+        window.Code = {Editor: null, InitialValue: ""}
+    
+        require(['vs/editor/editor.main'], function() {
+          if($("#Code").attr("data-installed") == "true")
+            return;
+          $("#Code").attr("data-installed", "true");
+          window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
+            value: window.Code.InitialValue,
+            language: 'javascript',
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            fontSize: 12
+          });
+        });
+      <%= "</" + "script>" %>
+      <div style="text-align: center">
+        <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="var"  disable_globals="true">
+          <i class="fa fa-at"></i>
+          <span class="tr">Insert variable</span>
+        </a>
+      </div>
+      <span class="short-description tr">Execute javascript inside browser. This means that document, window and other browser javascript objects are available.</span>
+    </div>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, use_modal_template:true, modal_code_id: "custom-help-browser-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="onloadjavascript">
@@ -1530,6 +1656,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Parses line, which contains several elements. Elements are separated with one of following symbols: ":", ";", ",".</div>
+      <div class="tr tooltip-paragraph-fold">This action is deprecated. It is recommended to use the new <a href="#!/parse_csv_string">Parse CSV string</a> action.</div>
       <div class="tr tooltip-paragraph-fold">For example, if you apply this action to line email@gmail.com:mypass1 and set "Variables To Save Result" param to USERNAME,PASSWORD, than this action will set [[USERNAME]] variable to email@gmail.com and [[PASSWORD]] variable to mypass1.</div>
       <div class="tr tooltip-paragraph-fold">If "Variables To Save Result" will contain more variables, than number of elements in string, than extra variables will be left unchanged.</div>
       <div class="tr tooltip-paragraph-fold">Use "Parse String" action if you want to get list as a result.</div>
@@ -1541,12 +1668,9 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="reset">
       <span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-         <input type="checkbox" id="Check"/> <label for="Check" class="tr">Restart process</label>
       </span>
       <div class="tooltipinternal">
         <div class="tr tooltip-paragraph-first-fold">Clear all browser data: proxy, user agent, headers, BAS cache filters, BAS cache data, cookies.</div>
-        <div class="tr tooltip-paragraph-fold">By default this action doesn't restart browser process and therefore may leave browser cache, local storage and several other object.</div>
-        <div class="tr tooltip-paragraph-fold">It is recommended to set "Restart process" checkbox to purge all data, however, restarting process may affect CPU usage and you may leave "Restart process" unchecked if it is enough to clear only mentioned earlier data.</div> 
         <div class="tr tooltip-paragraph-last-fold">Don't call this action on thread start, BAS will clear data at the beginning of thread automatically.</div>
       </div>
       <%= _.template($('#back').html())({action:"executeandadd", visible:true, wiki: "how_to_clear_cookies_and_restart_browser"}) %>
@@ -1966,37 +2090,6 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     </div>
 
 
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
-  </script>
-
-  <script type="text/template" id="base64">
-    <div class="container-fluid base64">
-      <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Data"), default_selector: "string", disable_int:true, help: {description: tr("Depending on mode data parameter is base64 encoded string which needs to be decoded, or ordinary string which needs to be encoded."), examples:[{code:"any text",description:tr("Arbitrary string. Works with encode mode")},{code:"YW55IHN0cmluZw==",description:tr("Base64 string. Works with decode mode")},{code:"[[FILE_CONTENT]]",description:tr("Variable which holds file read result. Works with decode mode")}]}}) %>
-      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "BASE64_ENCODING_RESULT", help: {description: tr("Variable name with result. It will be base64 encoded string in encode mode and decode result as string in decode mode.")}}) %>
-      <div class="col-xs-12">
-        <form class="form-horizontal">
-          <div class="form-group">
-            <div class="col-xs-2">
-              <div class="input-group">
-              <span data-preserve="true" data-preserve-type="select" data-preserve-id="Select">
-                <select class="form-control input-sm" id="Select" placeholder="Is Encode">
-                    <option value="encode" selected="selected" >encode</option>
-                    <option value="decode" >decode</option>
-                </select>
-              </span>
-              </div>
-            </div>
-            <label class="control-label text-right tr" style="padding-top:5px !important;">Encode or decode</label>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="tooltipinternal">
-      <div class="tr tooltip-paragraph-first-fold">Encodes or decodes base64 string.</div>
-      <div class="tr tooltip-paragraph-fold">BAS stores binary data as base64 strings. It could be binary files, pictures, video, etc. Base64 encoding represent binary data in ascii string.</div>
-      <div class="tr tooltip-paragraph-fold">Most of the times you don't need to convert base64 data to string, some actions accept base64 data as input parameters, for example: "Write File", "Start working with image". Moreover, if you try to decode binary data encoded as base64 string, result string may be damaged, so it is better to use base64 data without decoding.</div>
-      <div class="tr tooltip-paragraph-last-fold">This action can work with in two modes: encode and decode. Modes can be switched with "Encode or decode" parameter. Depending on mode data parameter is base64 encoded string which needs to be decoded, or ordinary string which needs to be encoded.</div>
-    </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -3157,9 +3250,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <div class="tr tooltip-paragraph-fold">If you want to change cookies or extract them, you need to use javascript. Javascript code can be used in any field if you set field type to expression, or with 'Execute code' action.</div>
       
-      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, creation, expires, has_expires, httponly, last_access, secure.</div>
-      <div class="tr tooltip-paragraph-fold">has_expires, secure and httponly are boolean values and serialized as string with values '1' or '0'.</div>
-      <div class="tr tooltip-paragraph-fold">last_access, expires, creation is datetime and serialized as map with values: day_of_week, hour, millisecond, minute,month, second, year. These values are self explanatory.</div>
+      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, expires, httpOnly, secure.</div>
+      <div class="tr tooltip-paragraph-fold">secure and httpOnly are boolean values.</div>
+      <div class="tr tooltip-paragraph-fold">expires is datetime and serialized as the number of seconds since the UNIX epoch.</div>
       <div class="tr tooltip-paragraph-fold">Here are some javascript snipsets to work with cookies. All of them may be placed into 'Execute code' action. Before using it, you must parse cookies from string like this [[COOKIES]] = JSON.parse([[SAVED_COOKIES]])["cookies"]</div>
       <div class="tr tooltip-paragraph-fold">Find cookie by name: [[COOKIE]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"})[0]</div>
       <div class="tr tooltip-paragraph-fold">Check if cookie exists: [[COOKIE_EXISTS]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"}).length > 0</div>
@@ -3198,9 +3291,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <div class="tr tooltip-paragraph-fold">If you want to change cookies or extract them, you need to use javascript. Javascript code can be used in any field if you set field type to expression, or with 'Execute code' action.</div>
       
-      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, creation, expires, has_expires, httponly, last_access, secure.</div>
-      <div class="tr tooltip-paragraph-fold">has_expires, secure and httponly are boolean values and serialized as string with values '1' or '0'.</div>
-      <div class="tr tooltip-paragraph-fold">last_access, expires, creation is datetime and serialized as map with values: day_of_week, hour, millisecond, minute,month, second, year. These values are self explanatory.</div>
+      <div class="tr tooltip-paragraph-fold">Each cookie is a map with following keys: value, name, domain, path, expires, httpOnly, secure.</div>
+      <div class="tr tooltip-paragraph-fold">secure and httpOnly are boolean values.</div>
+      <div class="tr tooltip-paragraph-fold">expires is datetime and serialized as the number of seconds since the UNIX epoch.</div>
       <div class="tr tooltip-paragraph-fold">Here are some javascript snipsets to work with cookies. All of them may be placed into 'Execute code' action. Before using it, you must parse cookies from string like this [[COOKIES]] = JSON.parse([[SAVED_COOKIES]])["cookies"]</div>
       <div class="tr tooltip-paragraph-fold">Find cookie by name: [[COOKIE]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"})[0]</div>
       <div class="tr tooltip-paragraph-fold">Check if cookie exists: [[COOKIE_EXISTS]] = [[COOKIES]].filter(function(el){return el["name"] == "REPLACE WITH COOKIE NAME"}).length > 0</div>
@@ -3839,13 +3932,47 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Find element and execute javascript on it.</div>
+      <div class="tr tooltip-paragraph-fold">This action is deprecated. It is recommended to use the new "Execute Javascript On Element" action. Click on any element and select "Execute Javascript On Element" in order to use it.</div>
       <div class="tr tooltip-paragraph-fold">Use self variable, which points to selected element.</div>
       <div class="tr tooltip-paragraph-fold">document, window and other browser javascript objects are available.</div> 
       <div class="tr tooltip-paragraph-fold">Action works exactly the same as if you input code into browser console and output result into variable.</div>
       <div class="tr tooltip-paragraph-fold">You can also use resources and variables here but only in read mode. Following code will work self.getAttribute([[ATTRIBUTE]]), but you can't do like this <strike>[[RESULT]] = self.getAttribute([[ATTRIBUTE]])</strike>.</div>
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Execute Javascript On Element"), wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Execute Javascript On Element (deprecated)"), wiki: "how_to_execute_javascript_on_page_and_save_result"}) %>
+  </script>
+
+  <script type="text/template" id="browserscript">
+    <div class="container-fluid">
+      <%= _.template($('#path').html())({selector:selector}) %>
+      <span data-preserve="true" data-preserve-type="constr" data-preserve-id="Code">
+        <div id="Code" class="browser-code-editor" data-is-code-editor="true" style="height: calc(100vh - 170px);margin-left: 16px;margin-right: 15px;" />
+      </span>
+      <%= "<s" + "cript>" %>
+        window.Code = {Editor: null, InitialValue: ""}
+    
+        require(['vs/editor/editor.main'], function() {
+          if($("#Code").attr("data-installed") == "true")
+            return;
+          $("#Code").attr("data-installed", "true");
+          window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
+            value: window.Code.InitialValue,
+            language: 'javascript',
+            scrollBeyondLastLine: false,
+            automaticLayout: true,
+            fontSize: 12
+          });
+        });
+      <%= "</" + "script>" %>
+      <div style="text-align: center">
+        <a tabindex="-1" href="#" data-toggle="modal" data-result-target="#Code" class="var"  disable_globals="true">
+          <i class="fa fa-at"></i>
+          <span class="tr">Insert variable</span>
+        </a>
+      </div>
+      <span class="short-description tr">Find element and execute javascript on it.</span>
+    </div>
+    <%= _.template($('#back').html())({ action: "executeandadd", visible: true, use_timeout: true, use_modal_template:true, modal_code_id: "custom-help-browserscriptelement-" + (_K || "en") }) %>
   </script>
 
   <script type="text/template" id="text">
@@ -3965,6 +4092,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
      
       <%= _.template($('#input_constructor').html())({id:"Flash", description:tr("Flash"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Flash may expose your identity and generally is not safe for usage. If you want to enable it, change this setting and install flash on your PC. Instruction may be found in a help section below."), examples:[{code:"enable",description:tr("Use flash")},{code:"disable",description:tr("Don't use flash")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
 
+
+      <div class="col-xs-12">
+        <form class="form-horizontal">
+           <div class="form-group">
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Widevine</span></span>:
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+           </div>
+         </form>
+       </div>
+ 
+      
+       <%= _.template($('#input_constructor').html())({id:"Widevine", description:tr("Widevine"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable or disable Widevine plugin."), examples:[{code:"enable",description:tr("Use Widevine")},{code:"disable",description:tr("Don't use Widevine")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
+
       <div class="col-xs-12">
        <form class="form-horizontal">
           <div class="form-group">
@@ -4031,6 +4172,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         </form>
       </div>
 
+
       <div class="tr" style='margin-left:20px;margin-bottom:5px;font-size:small'>Use <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;">FingerprintSwitcher</a> service and <a href="#!/FingerprintSwitcher_Get">Get Fingerprint</a> action to add noise to audio.</div>
 
 
@@ -4039,33 +4181,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <%= _.template($('#input_constructor').html())({id:"AudioNoise", description:tr("Audio noise pattern"), default_selector: "string", disable_int:true, value_string: "", help: { description: tr("This setting is for debugging purposes only, the proper way to set is using FingerprintSwitcher")}}) %>
       
-      
-      
       <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Network</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
+        <form class="form-horizontal">
+           <div class="form-group">
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Rendering</span></span>:
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+           </div>
+         </form>
+       </div>
 
-      <%= _.template($('#input_constructor').html())({id:"ProxyTunneling", description:tr("Process tunneling"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: {description: tr("This option determines how proxies will be applied to browser process: through tunnel or with routing all requests to curl library. First option is default and if proxy is set it will replace all direct network requests with requests through proxy. Second option replaces all chrome network stack with curl. The difference between them is that first option acts more like real browser, while second gives extra features like ipv6 proxy support and setting proxy for individual network requests."), examples:[{code:"enable",description:tr("Use tunneling")},{code:"disable",description:tr("Use curl")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"MaxFPS", description:tr("Maximum FPS"), default_selector: "int", disable_string:true, value_number: 0, variants: ["0<br/><span style='color:gray;font-size:small'>" + tr("Don't change") + "</span>", "30", "60"], help: { description: tr("Maximum times browser content can be rendered per one second. The lower this value, the lower the CPU usage will be. Setting it too low may affect site operability. Reducing it below 30 may lead to unpredictable consequences. Minimum value is 10."), examples:[{code:"30",description:tr("Limit FPS to 30")},{code:"0",description:tr("Don't change FPS")}]}}) %>
+
       
-      <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Rendering</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
-
-      <%= _.template($('#input_constructor').html())({id:"SkipFrames", description:tr("Number of frames to skip in run mode"), default_selector: "int", disable_string:true, value_number: 0, help: {description: tr("Frame skip tells BAS to postpond rendering page, executing javascript and do other browser work. The more you set this value, the lazier browser becomes. This parameter helps to save cpu time. On other hand setting it too high can cause your script will become unstable, you may encounter javascript errors and other unpredictable results."), examples:[{code:"0",description:tr("Don't change this setting")},{code:"1",description:tr("Default value, no frame skip")},{code:"75",description:tr("CPU saving mode")}]}}) %>
-      
-
       <div class="col-xs-12">
        <form class="form-horizontal">
           <div class="form-group">
@@ -4075,7 +4203,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           </div>
         </form>
       </div>
-      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files."), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("To use extension, you must download it and specify full path. Find extension https://chrome.google.com/webstore/category/extensions, and download it from https://chrome-extension-downloader.com. Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip. Chrome extension API support is still very limited, some extensions may not work. See link below for example."), examples:[{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files."), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("To use extension, you must download it and specify full path. Find extension https://chrome.google.com/webstore/category/extensions, and download it from https://chrome-extension-downloader.com. Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip."), examples:[{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
 
     </div>
 
@@ -4083,10 +4211,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
-      <div class="tr tooltip-paragraph-fold">"Flash", "Extensions", "Number of frames to skip in run mode" and "Process tunneling" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
+      <div class="tr tooltip-paragraph-fold">"Flash", "Extensions" and "Widevine" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. Find extension</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">here</a>, <span class="tr">and download it from</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome-extension-downloader.com');return false" class="tr">here</a>. <span class="tr">Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.</span></div>
-
-      <div class="tooltip-paragraph-fold"><span class="tr">Chrome extension API support is still very limited, some extensions may not work. See extension example</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://bablosoft.com/uploads/background-green.zip');return false" class="tr">here</a></div>
 
       <div class="tooltip-paragraph-fold"><span class="tr">To start BAS with flash enabled besides changing "Flash" setting you also need to install flash on your PC. Instruction is located</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash');return false" class="tr">here</a>. </div>
 
@@ -4540,6 +4666,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({id:"Url", description:tr("Url"), default_selector: "string", disable_int:true, help: {description: tr("Url to load. Protocol may be omitted."), examples:[{code:"google.com",description:tr("Load google.com")},{code:"instagram.com",description:tr("Load instagram.com")}]}}) %>
       <%= _.template($('#input_constructor').html())({id:"IsSilent", description:tr("Load silently"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true","false"], help: {description: tr("Adding tab silently means, that new tab will be added and specified url will be loaded only when the tab becomes active for the first time."),examples:[{code:"true",description:tr("Create new tab, load specified url only when tab gets switched to.")},{code:"false",description:tr("Create new tab, switch to it and load it immediately.")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Referrer", description:tr("Referrer. Can be blank"), default_selector: "string", disable_int:true, help: {description: tr("Referrer used for current page load."), examples:[{code:"https://google.com",description:tr("Page is loaded by clicking on google search result.")},{code:tr("Empty string"),description:tr("Page is loaded by typing url in address bar.")}]}}) %>
     </div>
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Add a new tab with the specified Url.</div>
@@ -4707,14 +4834,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Use resources if you want to take them from file, url or database.</div>
       <div class="tr tooltip-paragraph-fold">You can change proxy before or after browser created or page is loaded.</div> 
       <div class="tr tooltip-paragraph-fold">Proxy with empty parameter will reset it to default value(direct connection).</div>
-      <div class="tr tooltip-paragraph-fold">BAS can apply proxy in 2 ways: tunneling and passing all connections through curl. By default first option is used, you can change it in settings.</div>
-      <div class="tr tooltip-paragraph-fold">'Security settings' will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. This will make your application less detectable, check information for each individual setting to understand what are they needed for. Default settings will work fine.</div>
-
-      
-      <div class="tr tooltip-paragraph-last-fold">Setting individual proxy for urls or tabs works only if tunneling is disabled.</div>
+      <div class="tr tooltip-paragraph-last-fold">'Security settings' will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. This will make your application less detectable, check information for each individual setting to understand what are they needed for. Default settings will work fine.</div>
     </div>
 
-    <%= _.template($('#back').html())({action:"executeandadd",use_target:true, visible:true, wiki: "how_to_set_proxy"}) %>
+    <%= _.template($('#back').html())({action:"executeandadd",visible:true, wiki: "how_to_set_proxy"}) %>
   </script>
 
   _MACRO_INSERT_INTERFACE_
@@ -5150,35 +5273,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       })!
   </script>
 
-  <script type="text/template" id="replacestring_code">
-      <%= variable %> = (<%= value %>).split(<%= from %>).join(<%= to %>)
-  </script>
-
-  <script type="text/template" id="template_code">
-      <% if(isspintax && istemplate){ %>
-        _template(<%= template %>)!
-        <%= variable %> = _spintax(_result()).replace("BASASYNC","\)\!")
-      <% } %>
-      <% if(!isspintax && istemplate){ %>
-        _template(<%= template %>)!
-        <%= variable %> = _result().replace("BASASYNC","\)\!")
-      <% } %>
-
-      <% if(isspintax && !istemplate){ %>
-        <%= variable %> = _spintax(<%= template %>)
-      <% } %>
-
-      <% if(!isspintax && !istemplate){ %>
-        <%= variable %> = <%= template %>
-      <% } %>
-
-  </script>
-
-
-  <script type="text/template" id="randomstring_code">
-      <%= variable %> = Array(<%= length %>).join().split(',').map(function() { return (<%= chars %>).charAt(Math.floor(Math.random() * <%= chars %>.length)); }).join('')
-  </script>
-
 
   <script type="text/template" id="randomint_code">
       <%= variable %> = Math.floor(Math.random() * (parseInt(<%= max %>) - parseInt(<%= min %>) + 1)) + parseInt(<%= min %>)
@@ -5202,20 +5296,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= variable %> = _result() == 1
       <% if(isvisible){ %>
         _if(<%= variable %>, function(){
-          <%= path %>.style("display")!
-          STYLE_DISPLAY = _result()
-
-          <%= path %>.style("visibility")!
-          STYLE2_DISPLAY = _result()
-
-          <%= path %>.script("self.getBoundingClientRect().height")!
-          STYLE_HEIGHT = _result()
-
-          <%= path %>.script("self.getBoundingClientRect().width")!
-          STYLE_WIDTH = _result()
-          
-          <%= variable %> = STYLE_DISPLAY != "none" && STYLE2_DISPLAY != "hidden" && STYLE_HEIGHT != "0"  && STYLE_WIDTH != "0"
-          
+          <%= path %>.script("document.readyState!='loading' && self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'")!
+          <%= variable %> = _result().indexOf("true")>=0
         })!
       <% } %>
 
@@ -5277,7 +5359,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="setheader_code">
-    /*Browser*/
     header(<%= name %>, <%= value %>)!
   </script>
 
@@ -5354,7 +5435,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="style_code">
       /*Browser*/
       <%= waiter %>
-      <%= path %>.style(<%= style %>)!
+      <%= path %>.script('window.getComputedStyle(self)[' + JSON.stringify(<%= style %>) + ']')!
       <%= variable %> = _result()
   </script>
 
@@ -5439,12 +5520,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="reset_code">
-      /*Browser*/
-      <% if(reset){ %>
         new_browser()!
-      <% }else{ %>
-        reset()!
-      <% } %>
   </script>
 
   <script type="text/template" id="moveelement_code">
@@ -5531,16 +5607,32 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="script_code">
-      /*Browser*/
       <%= waiter %>
       <%= path %>.script(<%= script %>)!
       <%= variable %> = _result()
   </script>
 
+  <script type="text/template" id="browserscript_code">
+    <%= waiter %>
+    <%= path %>.script2(<%= JSON.stringify(source) %>,JSON.stringify(_read_variables(<%= variables %>)))!
+    var _parse_result = JSON.parse(_result())
+    _write_variables(JSON.parse(_parse_result.variables))
+    if(!_parse_result.is_success)
+      fail(_parse_result.error)
+  </script>
+
   <script type="text/template" id="javascript_code">
-      /*Browser*/
       page().script(<%= value %>)!
       <%= variable %> = _result()
+  </script>
+
+  <script type="text/template" id="browserjavascript_code">
+      <%= timeout_general()  %>
+      page().script2(<%= JSON.stringify(source) %>,JSON.stringify(_read_variables(<%= variables %>)))!
+      var _parse_result = JSON.parse(_result())
+      _write_variables(JSON.parse(_parse_result.variables))
+      if(!_parse_result.is_success)
+        fail(_parse_result.error)
   </script>
 
   <script type="text/template" id="onloadjavascript_code">
@@ -5550,11 +5642,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   
   <script type="text/template" id="set_code">
-      /*Browser*/
       <%= waiter %>
-      <%= path %>.move()!
-      <%= timeout_general() %>
-      <%= path %>.set(<%= set %>)!
+      get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<option_list.length;i++){var option = option_list.item(i);if(option.innerHTML === " + JSON.stringify(<%= set %>) + ")break;[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+      _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+      _call(_random_point, {})!
+      _if(_result().length > 0 && _SELECT_TYPE, function(){
+        move({})!
+        <%= path %>.clarify(X,Y)!
+        _call(_clarify,{})!
+        mouse(X,Y)!
+        <%= timeout_general() %>
+        _type(_SELECT_TYPE,30)!
+        delete _SELECT_TYPE
+      })!
+      delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="waitelement_code">
@@ -5569,19 +5670,37 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="set_integer_code">
-      /*Browser*/
-      <%= waiter %>
-      <%= path %>.move()!
+    <%= waiter %>
+    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<" + <%= set %> + ";i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+    _call(_random_point, {})!
+    _if(_result().length > 0 && _SELECT_TYPE, function(){
+      move({})!
+      <%= path %>.clarify(X,Y)!
+      _call(_clarify,{})!
+      mouse(X,Y)!
       <%= timeout_general() %>
-      <%= path %>.set_integer(<%= set %>)!
+      _type(_SELECT_TYPE,30)!
+      delete _SELECT_TYPE
+    })!
+    delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="set_random_code">
-      /*Browser*/
-      <%= waiter %>
-      <%= path %>.move()!
+    <%= waiter %>
+    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';var index = Math.floor((Math.random() * option_list.length));for(var i = 0;i<index;i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
+    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+    _call(_random_point, {})!
+    _if(_result().length > 0 && _SELECT_TYPE, function(){
+      move({})!
+      <%= path %>.clarify(X,Y)!
+      _call(_clarify,{})!
+      mouse(X,Y)!
       <%= timeout_general() %>
-      <%= path %>.set_random()!
+      _type(_SELECT_TYPE,30)!
+      delete _SELECT_TYPE
+    })!
+    delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="attr_code">
@@ -5643,8 +5762,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="navigateback_code">
-      /*Browser*/
-      navigate_back()!
+      <% if(!is_instant){ %>
+        <%= timeout_general() %>
+      <% } %>
+      navigate_back(<%= is_instant %>)!
   </script>
 
   <script type="text/template" id="move_code">
@@ -5653,21 +5774,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="addtab_code">
-      /*Browser*/
-
-      _if_else(<%= is_silent %> == "true",function(){
-        _popupcreate(true,<%= url %>)!
-      },function(){
-        _popupcreate(false,"")!
-        <% if(notinstant){ %>
-          <%= timeout_general()  %>
-          load(<%= url %>)!
-        <% }else{ %>
-          load_instant(<%= url %>)!
-        <% } %>
-      })!
-
-      
+    <% if(notinstant){ %>
+      <%= timeout_general()  %>
+    <% } %>
+    _popupcreate2(<%= is_silent %> == "true", <%= url %>, <%= referrer %>, <%= (notinstant) ? "false" : "true" %>)!
   </script>
 
   <script type="text/template" id="closetab_code">
@@ -5709,13 +5819,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="load_code">
-      /*Browser*/
       <% if(notinstant){ %>
         <%= timeout_general()  %>
-        load(<%= url %>)!
-      <% }else{ %>
-        load_instant(<%= url %>)!
       <% } %>
+      _load(<%= url %>, <%= referrer %>, <%= (notinstant) ? "false" : "true" %>)!
   </script>
 
   <script type="text/template" id="mousesettings_code">
@@ -5731,9 +5838,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="browsersettings_code">
       /*Browser*/
       var Params = {};
-      var ProxyTunneling = (<%= ProxyTunneling %>);
       var Flash = (<%= Flash %>);
-      var SkipFrames = (<%= SkipFrames %>);
+      var Widevine = (<%= Widevine %>);
       var Extensions = (<%= Extensions %>);
 
       var Webrtc = (<%= Webrtc %>);
@@ -5742,6 +5848,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       var CanvasNoise = (<%= CanvasNoise %>);
       var Audio = (<%= Audio %>);
       var AudioNoise = (<%= AudioNoise %>);
+      var MaxFPS = (<%= MaxFPS %>);
       var Webgl = (<%= Webgl %>);
       var WebglNoise = (<%= WebglNoise %>);
 
@@ -5750,6 +5857,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(Flash.length > 0)
         Params["UseFlash"] = Flash == "enable"
+      
+      if(Widevine.length > 0)
+        Params["UseWidevine"] = Widevine == "enable"
 
       if(Webrtc.length > 0)
         Params["Webrtc"] = Webrtc
@@ -5766,6 +5876,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       if(AudioNoise.length > 0)
         Params["AudioNoise"] = AudioNoise
 
+      if(MaxFPS > 0)
+        Params["MaxFPS"] = MaxFPS
+
       if(Webgl.length > 0)
         Params["Webgl"] = Webgl
 
@@ -5777,12 +5890,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(WebglRenderer.length > 0)
         Params["Webgl.unmaskedRenderer"] = WebglRenderer
-
-      if(ProxyTunneling.length > 0)
-        Params["ProxyTunneling"] = ProxyTunneling == "enable"
-
-      if(SkipFrames !== 0)
-        Params["SkipFrames"] = SkipFrames
 
       if(Extensions.length > 0)
         Params["Extensions"] = Extensions
@@ -5816,14 +5923,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script type="text/template" id="result_code">
     result(<%= value %>, <%= number %>)
   </script>
-  
-  
-  <script type="text/template" id="base64_code">
-    <% if(encode) { %>
-      <%= variable %> = base64_encode(<%= value %>)
-    <% }else{ %>
-      <%= variable %> = base64_decode(<%= value %>)
-    <% } %>  </script>
 
   <script type="text/template" id="globalset_code">
     var val = JSON.stringify(<%= value %>);
@@ -6137,7 +6236,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   <script src="./search/internal/mark.min.js"></script>
   <script src="databasefilter.js"></script>
   <script src="sortable.js"></script>
-  <script src="./utils/cursorPosition.js"></script>
+  <script src="./utils/cursorposition.js"></script>
+  <script src="./utils/extractVariables.js"></script>
   <script src="toastr.min.js"></script>
   <script src="embeddedmodel.js"></script>
   <script src="diff_match_patch.js"></script>
@@ -6382,32 +6482,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       nextpath: function(event)
       {
-        if(typeof(window.BrowserAutomationStudio_IndexPathHighlight) == "undefined")
-          window.BrowserAutomationStudio_IndexPathHighlight = 0;
-        
         var Total = parseInt($("#PathCount").text())
         if(Total > 0 && $("#selector-input").length > 0 && $("#selector-input").val().length > 0)
         {
-          var loader = new ResourceLoader();
-          var p = GetPath(loader,false,true,window.BrowserAutomationStudio_IndexPathHighlight)
-          var path = p["path"] + 
-          ".script(" + 
-            "\"self.scrollIntoView({block: 'center', inline: 'center'});" + 
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = [].indexOf.call(_BAS_HIDE(BrowserAutomationStudio_HighlightElements),self);" +
-            "clearTimeout(_BAS_HIDE(BrowserAutomationStudio_HighlightElementTimeout));" +
-            "_BAS_HIDE(BrowserAutomationStudio_HighlightElementTimeout) = setTimeout(function(){_BAS_HIDE(BrowserAutomationStudio_HighlightElementIndex) = -1},3000);" + 
-          "\")!" + "\n" + "section_start(\"test\",-3)!"
-          var selector = "";
-          if(p["query"])
-          {
-            selector = ";_SELECTOR=" + p["query"] + ";"
-          }
-          path = loader.GetAdditionalData() + selector + path
-
-          BrowserAutomationStudio_Execute(path)
-
-          window.BrowserAutomationStudio_IndexPathHighlight ++
-          window.BrowserAutomationStudio_IndexPathHighlight = window.BrowserAutomationStudio_IndexPathHighlight % Total
+          BrowserAutomationStudio_IncrementHighlightIndex()
         }
       },
 
@@ -7148,26 +7226,35 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           if(State == "load")
           {
             var val = GetInputConstructorValue("LoadUrl",loader)
+            var referrer = GetInputConstructorValue("Referrer",loader)
 
-            if(val["original"].length > 0)
+            if(val["original"].length == 0)
             {
+              Invalid("Url is empty");
+              return;
+            }
+
                try{
-                var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({url:val["updated"],notinstant:BrowserAutomationStudio_UsesWaitCode()})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({url:val["updated"],referrer:referrer["updated"],notinstant:BrowserAutomationStudio_UsesWaitCode()})
                 code = Normalize(code,0)
 
                 BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
               }catch(e)
               {}
-            }else
-            {
-              Invalid("Url is empty");
-              return;
-            }
+        
           }else if(State == "navigateback")
           {
             
             try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({}) + BrowserAutomationStudio_GetWaitCode()
+              var is_instant = true
+              var usewaiter = $("#use-waiter")
+
+              if(usewaiter.length > 0 && usewaiter.attr("data-enabled") == "true")  
+              {
+                is_instant = false
+              }
+
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({is_instant: is_instant})
               code = Normalize(code,0)
 
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
@@ -7620,7 +7707,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
           
-            
           }else if(State == "parseline")
           {
             var Value = GetInputConstructorValue("Value",loader)
@@ -7657,8 +7743,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)
             {}
-          
-            
+           
           }else if(State == "httpclientproxy")
           {
               var ProxyText = GetInputConstructorValue("ProxyText",loader)
@@ -7940,29 +8025,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }
              try{
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({variable:"VAR_" + Save,key: Name["updated"]})
-              code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-            }catch(e)
-            {}
-
-          }else if(State == "base64")
-          {
-            var Save = this.$el.find("#Save").val().toUpperCase();
-            var Value = GetInputConstructorValue("Value", loader);
-            var encode = $("#Select").val() == "encode"
-
-            if(Save.length == 0)
-            {
-              Invalid("Variable is empty");
-              return;
-            }
-            if(Value["original"].length == 0)
-            {
-              Invalid("Data is empty");
-              return;
-            }
-             try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({variable:"VAR_" + Save,value: Value["updated"], encode: encode})
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)
@@ -8358,6 +8420,30 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
+          }else if(State == "browserjavascript")
+          {
+            var source = window.Code.Editor.getValue();
+
+            if(source.length === 0) {
+              Invalid("Code is empty");
+              return;
+            }
+
+            if(source.indexOf("GLOBAL:") >= 0) {
+              Invalid("Global variables are not allowed");
+              return;
+            }
+
+            var prepared = ExtractVariables(source);
+
+            try {
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
+                variables: JSON.stringify(prepared),
+                source: source,
+              });
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            } catch(e) { }
           }else if(State == "onloadjavascript")
           {
             var Value = GetInputConstructorValue("Value", loader);
@@ -8374,7 +8460,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
              try{
 
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({reset:$("#Check").is(':checked')})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({})
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)
@@ -8412,67 +8498,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
-          }else if(State == "replacestring")
-          {
-            
-            var Value = GetInputConstructorValue("Value", loader);
-            var ReplaceFrom = GetInputConstructorValue("ReplaceFrom", loader);
-            var ReplaceTo = GetInputConstructorValue("ReplaceTo", loader);
-            var Save = this.$el.find("#Save").val().toUpperCase();
-            
-            if(Save.length == 0)
-            {
-              Invalid("Variable is empty");
-              return;
-            }
-            if(Value["original"].length == 0)
-            {
-              Invalid("Value is empty");
-              return;
-            }
-            if(ReplaceFrom["original"].length == 0)
-            {
-              Invalid("ReplaceFrom is empty");
-              return;
-            }
-
-             try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({variable:"VAR_" + Save,value: Value["updated"],from: ReplaceFrom["updated"], to: ReplaceTo["updated"]})
-              code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-            }catch(e)
-            {}
-
-          }else if(State == "randomstring")
-          {
-            
-            var AllowedChars = GetInputConstructorValue("AllowedChars", loader);
-            var Length = GetInputConstructorValue("Length", loader);
-            var Save = this.$el.find("#Save").val().toUpperCase();
-            
-            if(Save.length == 0)
-            {
-              Invalid("Variable is empty");
-              return;
-            }
-            if(AllowedChars["original"].length == 0)
-            {
-              Invalid("AllowedChars is empty");
-              return;
-            }
-            if(Length["original"].length == 0)
-            {
-              Invalid("Length is empty");
-              return;
-            }
-
-             try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({variable:"VAR_" + Save,chars: AllowedChars["updated"],length: Length["updated"]})
-              code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-            }catch(e)
-            {}
-
           }else if(State == "randomint")
           {
             
@@ -8498,43 +8523,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
              try{
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({variable:"VAR_" + Save,min: MinValue["updated"],max: MaxValue["updated"]})
-              code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-            }catch(e)
-            {}
-
-          }else if(State == "template")
-          {
-            
-            var Template;
-            if($("#Check").is(':checked'))
-            {
-              Template = GetInputConstructorValue("Template", loader)["updated"];
-            }else
-            {
-              Template = "\"" + je($("#Template").val()) + "\"";
-            }
-            
-            if($("#Check3").is(':checked'))
-              Template = Template.replace("\\)\\!","BASASYNC")
-
-
-            var Save = this.$el.find("#Save").val().toUpperCase();
-            
-            if(Save.length == 0)
-            {
-              Invalid("Variable is empty");
-              return;
-            }
-            
-            if($("#Template").val().length == 0)
-            {
-              Invalid("Template is empty");
-              return;
-            }
-
-             try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({variable:"VAR_" + Save,template: Template, isspintax: $("#Check2").is(':checked'), istemplate: $("#Check3").is(':checked')})
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)
@@ -9683,6 +9671,33 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
+          }else if(State == "browserscript")
+          {
+            var source = window.Code.Editor.getValue();
+
+            if(source.length === 0) {
+              Invalid("Code is empty");
+              return;
+            }
+
+            if(source.indexOf("GLOBAL:") >= 0) {
+              Invalid("Global variables are not allowed");
+              return;
+            }
+
+            var prepared = ExtractVariables(source);
+
+            try {
+              var path = GetPath(loader)
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({
+                variables: JSON.stringify(prepared),
+                source: source,
+                path: path["path"],
+                waiter: path["waiter"]
+              });
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            } catch(e) { }
           }else if(State == "captcha")
           {
             var Variable = this.$el.find("#Save").val().toUpperCase();
@@ -10033,6 +10048,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             
             var Flash = GetInputConstructorValue("Flash", loader);
+            var Widevine = GetInputConstructorValue("Widevine", loader);
             var Webrtc = GetInputConstructorValue("Webrtc", loader);
             var Canvas = GetInputConstructorValue("Canvas", loader);
             var CanvasNoise = GetInputConstructorValue("CanvasNoise", loader);
@@ -10041,6 +10057,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             var WebglNoise = GetInputConstructorValue("WebglNoise", loader);
             var Audio = GetInputConstructorValue("Audio", loader);
             var AudioNoise = GetInputConstructorValue("AudioNoise", loader);
+            var MaxFPS = GetInputConstructorValue("MaxFPS", loader);
             var WebglVendor = GetInputConstructorValue("WebglVendor", loader);
             var WebglRenderer = GetInputConstructorValue("WebglRenderer", loader);
             var ProxyTunneling = GetInputConstructorValue("ProxyTunneling", loader);
@@ -10052,6 +10069,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())(
                 {
                   Flash:Flash["updated"],
+                  Widevine:Widevine["updated"],
                   ProxyTunneling:ProxyTunneling["updated"],
                   SkipFrames:SkipFrames["updated"],
                   Extensions:Extensions["updated"],
@@ -10062,6 +10080,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   CanvasNoise:CanvasNoise["updated"],
                   Audio:Audio["updated"],
                   AudioNoise:AudioNoise["updated"],
+                  MaxFPS:MaxFPS["updated"],
                   Webgl:Webgl["updated"],
                   WebglNoise:WebglNoise["updated"],
                   WebglVendor:WebglVendor["updated"],
@@ -10117,6 +10136,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           {
             var Url = GetInputConstructorValue("Url", loader);
             var IsSilent = GetInputConstructorValue("IsSilent", loader);
+            var Referrer = GetInputConstructorValue("Referrer",loader)
+            
             if(Url["original"].length == 0)
             {
               Invalid("Url is empty");
@@ -10127,8 +10148,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               Invalid("IsSilent is empty");
               return;
             }
+            
             try{
-              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({url:Url["updated"], notinstant: BrowserAutomationStudio_UsesWaitCode(), is_silent: IsSilent["updated"]}) /*+ BrowserAutomationStudio_GetWaitCode()*/
+              var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())({referrer:Referrer["updated"], url:Url["updated"], notinstant: BrowserAutomationStudio_UsesWaitCode(), is_silent: IsSilent["updated"]}) /*+ BrowserAutomationStudio_GetWaitCode()*/
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)
@@ -10267,7 +10289,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "reset": _.template($('#reset').html()),
           "openfile": _.template($('#openfile').html()),
           "dragfile": _.template($('#dragfile').html()),
-          "getcookiesforurl": _.template($('#getcookiesforurl').html()),
+          //"getcookiesforurl": _.template($('#getcookiesforurl').html()),
           "savecookies": _.template($('#savecookies').html()),
           "restorecookies": _.template($('#restorecookies').html()),
           "scroll": _.template($('#scroll').html()),
@@ -10286,7 +10308,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "getfromcache": _.template($('#getfromcache').html()),
           "getallcache": _.template($('#getallcache').html()),
           "result": _.template($('#result').html()),
-          "base64": _.template($('#base64').html()),
           "globalset": _.template($('#globalset').html()),
           "globalget": _.template($('#globalget').html()),
           "emailsettings": _.template($('#emailsettings').html()),
@@ -10307,7 +10328,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "httpclientgetheader": _.template($('#httpclientgetheader').html()),
           "httpclientsetheader": _.template($('#httpclientsetheader').html()),
           "httpclientclearheader": _.template($('#httpclientclearheader').html()),
-          "httpclientgetcookiesforurl": _.template($('#httpclientgetcookiesforurl').html()),
+          //"httpclientgetcookiesforurl": _.template($('#httpclientgetcookiesforurl').html()),
           "httpclientsavecookies": _.template($('#httpclientsavecookies').html()),
           "httpclientrestorecookies": _.template($('#httpclientrestorecookies').html()),
           "httpclientfailonerror": _.template($('#httpclientfailonerror').html()),
@@ -10325,15 +10346,14 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "promptresult": _.template($('#promptresult').html()),
           "httpauth": _.template($('#httpauth').html()),
           "solverfailed": _.template($('#solverfailed').html()),
+          "browserjavascript": _.template($('#browserjavascript').html()),
+          "browserscript": _.template($('#browserscript').html()),
           "onloadjavascript": _.template($('#onloadjavascript').html()),
           "incvariable": _.template($('#incvariable').html()),
           "incglobalvariable": _.template($('#incglobalvariable').html()),
           "ignoreerrors": _.template($('#ignoreerrors').html()),
           "die": _.template($('#die').html()),
-          "template": _.template($('#template').html()),
-          "replacestring": _.template($('#replacestring').html()),
           "randomint": _.template($('#randomint').html()),
-          "randomstring": _.template($('#randomstring').html()),
           "addtab": _.template($('#addtab').html()),
           "selecttab": _.template($('#selecttab').html()),
           "tabinfo": _.template($('#tabinfo').html()),
@@ -10377,10 +10397,26 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         {
           d = d.filter(function(el){
             return !el["show_only_with_database"]
-          })
+          });
+        }
+        d = d.filter(function(el) {
+          return !["javascript"].includes(el["ref"]);
+        });
+
+        var interfacedata = ""
+        try
+        {
+          interfacedata = this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters});
+        }catch(e)
+        {
+
+        }
+        if(interfacedata==="")
+        {
+          interfacedata = '<div style="padding-right:15px;padding-left:15px;">' + tr("Action interface \"") + (_GobalModel.GetPageInfo() || this.model.get("state")) + tr("\" is missing or damaged.") + '<hr style="margin-top:5px;margin-bottom:5px"/><a tabindex="-1" class="btn btn-danger standartbutton tr" href="#!/" id="backtomain">Back</a></div>';
         }
 
-        $("#containerdata").html(this.templates[this.model.get("state")]({data:d,unused:_U,model:this.model.toJSON(),selector:_SelectorModel.toJSON(),function_params:CurrentParameters}))
+        $("#containerdata").html(interfacedata)
         _Filter.InstallEvents()
         $(".variable-input, .function-input").keypress(function(e){
           var charCode = !e.charCode ? e.which : e.charCode;
@@ -10509,7 +10545,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/reset": "reset",
             "!/openfile": "openfile",
             "!/dragfile": "dragfile",
-            "!/getcookiesforurl": "getcookiesforurl",
+            //"!/getcookiesforurl": "getcookiesforurl",
             "!/savecookies": "savecookies",
             "!/restorecookies": "restorecookies",
             "!/scroll": "scroll",
@@ -10528,7 +10564,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/getfromcache": "getfromcache",
             "!/getallcache": "getallcache",
             "!/result": "result",
-            "!/base64": "base64",
             "!/globalset": "globalset",
             "!/globalget": "globalget",
             "!/emailsettings": "emailsettings",
@@ -10549,7 +10584,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/httpclientgetheader": "httpclientgetheader",
             "!/httpclientsetheader": "httpclientsetheader",
             "!/httpclientclearheader": "httpclientclearheader",
-            "!/httpclientgetcookiesforurl": "httpclientgetcookiesforurl",
+            //"!/httpclientgetcookiesforurl": "httpclientgetcookiesforurl",
             "!/httpclientsavecookies": "httpclientsavecookies",
             "!/httpclientrestorecookies": "httpclientrestorecookies",
             "!/httpclientfailonerror": "httpclientfailonerror",
@@ -10566,14 +10601,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/promptresult": "promptresult",
             "!/httpauth": "httpauth",
             "!/solverfailed": "solverfailed",
+            "!/browserjavascript": "browserjavascript",
+            "!/browserscript": "browserscript",
             "!/onloadjavascript": "onloadjavascript",
             "!/incvariable": "incvariable",
             "!/incglobalvariable": "incglobalvariable",
             "!/ignoreerrors": "ignoreerrors",
             "!/die": "die",
-            "!/template": "template",
-            "!/replacestring": "replacestring",
-            "!/randomstring": "randomstring",
             "!/addtab": "addtab",
             "!/selecttab": "selecttab",
             "!/tabinfo": "tabinfo",
@@ -10805,9 +10839,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         dragfile: function(){
                   _GobalModel.set({ state: "dragfile" });
                 },
-        getcookiesforurl: function(){
+        /*getcookiesforurl: function(){
                   _GobalModel.set({ state: "getcookiesforurl" });
-                },
+                },*/
         savecookies: function(){
                   _GobalModel.set({ state: "savecookies" });
                 },
@@ -10861,9 +10895,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 },
         result: function(){
                   _GobalModel.set({ state: "result" });
-                },
-        base64: function(){
-                  _GobalModel.set({ state: "base64" });
                 },
         globalset: function(){
                   _GobalModel.set({ state: "globalset" });
@@ -10925,9 +10956,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         httpclientclearheader: function(){
                   _GobalModel.set({ state: "httpclientclearheader" });
                 },
-        httpclientgetcookiesforurl: function(){
+        /*httpclientgetcookiesforurl: function(){
                   _GobalModel.set({ state: "httpclientgetcookiesforurl" });
-                },
+                },*/
         httpclientsavecookies: function(){
                   _GobalModel.set({ state: "httpclientsavecookies" });
                 },
@@ -10976,6 +11007,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         solverfailed: function(){
           _GobalModel.set({ state: "solverfailed" });
         },
+        browserjavascript: function(){
+          _GobalModel.set({ state: "browserjavascript" });
+        },
+        browserscript: function(){
+          _GobalModel.set({ state: "browserscript" });
+        },
         onloadjavascript: function(){
           _GobalModel.set({ state: "onloadjavascript" });
         },
@@ -10991,16 +11028,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         die: function(){
           _GobalModel.set({ state: "die" });
         },
-        template: function(){
-          _GobalModel.set({ state: "template" });
-        },
-        replacestring: function(){
-          _GobalModel.set({ state: "replacestring" });
-        },
-        randomstring: function(){
-          _GobalModel.set({ state: "randomstring" });
-        }
-        ,
         randomint: function(){
           _GobalModel.set({ state: "randomint" });
         }
@@ -11095,12 +11122,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["screen"]["name"]), description: tr(_A["screen"]["description"]), ref: "screen" },
                 { name: tr(_A["proxy"]["name"]), description: tr(_A["proxy"]["description"]), ref: "proxy" },
                 { name: tr(_A["javascript"]["name"]), description: tr(_A["javascript"]["description"]), ref: "javascript" },
+                { name: tr(_A["browserjavascript"]["name"]), description: tr(_A["browserjavascript"]["description"]), ref: "browserjavascript" },
                 { name: tr(_A["onloadjavascript"]["name"]), description: tr(_A["onloadjavascript"]["description"]), ref: "onloadjavascript" },
                 { name: tr(_A["reset"]["name"]), description: tr(_A["reset"]["description"]), ref: "reset" },
                 { name: tr(_A["openfile"]["name"]), description: tr(_A["openfile"]["description"]), ref: "openfile" },
-                { name: tr(_A["dragfile"]["name"]), description: tr(_A["dragfile"]["description"]), ref: "dragfile" },
+                //{ name: tr(_A["dragfile"]["name"]), description: tr(_A["dragfile"]["description"]), ref: "dragfile" },
                 { name: tr(_A["promptresult"]["name"]), description: tr(_A["promptresult"]["description"]), ref: "promptresult" },
-                { name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
+                //{ name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
                 { name: tr(_A["scroll"]["name"]), description: tr(_A["scroll"]["description"]), ref: "scroll" },
                 { name: tr(_A["renderscreen"]["name"]), description: tr(_A["renderscreen"]["description"]), ref: "renderscreen" },
                 { name: tr(_A["solvecaptcha"]["name"]), description: tr(_A["solvecaptcha"]["description"]), ref: "solvecaptcha" },
@@ -11137,16 +11165,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["clearlog"]["name"]), description: tr(_A["clearlog"]["description"]), ref: "clearlog" },
                 { name: tr(_A["result"]["name"]), description: tr(_A["result"]["description"]), ref: "result" },
                 { name: tr(_A["custom"]["name"]), description: tr(_A["custom"]["description"]), ref: "custom" },
-                { name: tr(_A["base64"]["name"]), description: tr(_A["base64"]["description"]), ref: "base64" },
                 /*{ name: tr(_A["globalget"]["name"]), description: tr(_A["globalget"]["description"]), ref: "globalget" },*/
                 { name: tr(_A["parseline"]["name"]), description: tr(_A["parseline"]["description"]), ref: "parseline" },
-                { name: tr(_A["template"]["name"]), description: tr(_A["template"]["description"]), ref: "template" },
-                { name: tr(_A["replacestring"]["name"]), description: tr(_A["replacestring"]["description"]), ref: "replacestring" },
-                { name: tr(_A["randomstring"]["name"]), description: tr(_A["randomstring"]["description"]), ref: "randomstring" },
                 { name: tr(_A["randomint"]["name"]), description: tr(_A["randomint"]["description"]), ref: "randomint" },
                 { description: tr("Network"), type: "group", name: "network", icon: _G["network"]["icon"], info: tr(_G["network"]["info"]) },
                 { name: tr(_A["setheader"]["name"]), description: tr(_A["setheader"]["description"]), ref: "setheader" },
-                { name: tr(_A["getcookiesforurl"]["name"]), description: tr(_A["getcookiesforurl"]["description"]), ref: "getcookiesforurl" },
+                //{ name: tr(_A["getcookiesforurl"]["name"]), description: tr(_A["getcookiesforurl"]["description"]), ref: "getcookiesforurl" },
                 { name: tr(_A["savecookies"]["name"]), description: tr(_A["savecookies"]["description"]), ref: "savecookies" },
                 { name: tr(_A["restorecookies"]["name"]), description: tr(_A["restorecookies"]["description"]), ref: "restorecookies" },
                 { name: tr(_A["loadcookiesfromhttpclient"]["name"]), description: tr(_A["loadcookiesfromhttpclient"]["description"]), ref: "loadcookiesfromhttpclient" },
@@ -11192,7 +11216,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["httpclientgetheader"]["name"]), description: tr(_A["httpclientgetheader"]["description"]), ref: "httpclientgetheader" },
                 { name: tr(_A["httpclientsetheader"]["name"]), description: tr(_A["httpclientsetheader"]["description"]), ref: "httpclientsetheader" },
                 { name: tr(_A["httpclientclearheader"]["name"]), description: tr(_A["httpclientclearheader"]["description"]), ref: "httpclientclearheader" },
-                { name: tr(_A["httpclientgetcookiesforurl"]["name"]), description: tr(_A["httpclientgetcookiesforurl"]["description"]), ref: "httpclientgetcookiesforurl" },
+                //{ name: tr(_A["httpclientgetcookiesforurl"]["name"]), description: tr(_A["httpclientgetcookiesforurl"]["description"]), ref: "httpclientgetcookiesforurl" },
                 { name: tr(_A["httpclientsavecookies"]["name"]), description: tr(_A["httpclientsavecookies"]["description"]), ref: "httpclientsavecookies" },
                 { name: tr(_A["httpclientrestorecookies"]["name"]), description: tr(_A["httpclientrestorecookies"]["description"]), ref: "httpclientrestorecookies" },
                 { name: tr(_A["loadcookiesfrombrowser"]["name"]), description: tr(_A["loadcookiesfrombrowser"]["description"]), ref: "loadcookiesfrombrowser" },
@@ -11292,6 +11316,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       }else if(subject == "upload")
       {
         BrowserAutomationStudio_NotifyInternal(tr("Open file dialog."), tr("BrowserAutomationStudio needs file input. Use \"Open File Result\" action to set upload file. This action must be used <strong>before</strong> dialog appear."), "#!/openfile")  
+      }else if(subject == "prompt")
+      {
+        BrowserAutomationStudio_NotifyInternal(tr("Prompt dialog."), tr("Site has used prompt javascript function. Use \"Prompt Result\" in order to set result."), "#!/promptresult")  
       }else if(subject == "notification")
       {
         BrowserAutomationStudio_NotifyInternal(tr("Notifications."), tr("Site requests permission to show notifications. You can allow or deny it. This action must be used <strong>before</strong> notification is requested."), "#!/notification")  
@@ -11414,7 +11441,6 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     function BrowserAutomationStudio_SetPathCount(count)
     {
-      window.BrowserAutomationStudio_IndexPathHighlight = 0
       if(count.toString().length > 0)
       {
         $("#PathCount").css("visibility","visible")
@@ -13329,7 +13355,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
     function BrowserAutomationStudio_ExecuteScript(selector, is_loop)
     {
-      BrowserAutomationStudio_ElementFunction(selector, "script", is_loop)
+      BrowserAutomationStudio_ElementFunction(selector, "browserscript", is_loop)
     }
 
 

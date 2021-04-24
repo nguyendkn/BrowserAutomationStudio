@@ -15,6 +15,7 @@ public:
 
     //Events
     std::vector<std::function<void(const std::string&)> > EventLoad;
+    std::vector<std::function<void(const std::string&, const std::string&, bool)> > EventLoad2;
     std::vector<std::function<void(const std::string&)> > EventView;
     std::vector<std::function<void(const std::string&)> > EventGetTabs;
     std::vector<std::function<void(const std::string&)> > EventManualBrowserControl;
@@ -23,13 +24,12 @@ public:
 
     std::vector<std::function<void(bool)> > EventVisible;
     std::vector<std::function<void()> > EventFlush;
-    std::vector<std::function<void()> > EventBrowserIp;
-    std::vector<std::function<void()> > EventBrowserIpHttps;
     std::vector<std::function<void(const std::string&)> > EventSetNextAction;
     std::vector<std::function<void(const std::string&, int, bool, const std::string&, const std::string&, const std::string&)> > EventSetProxy;
     std::vector<std::function<void(const std::string&, const std::string&, const std::string&)> > EventAddHeader;
     std::vector<std::function<void(const std::string&)> > EventSetHeaderList;
     std::vector<std::function<void(const std::string&)> > EventSetAcceptLanguagePattern;
+    std::vector<std::function<void(const std::string&)> > EventSetUserAgentData;
     std::vector<std::function<void(const std::string&)> > EventSetUserAgent;
     std::vector<std::function<void(const std::string&)> > EventPrepareFunction;
     std::vector<std::function<void(const std::string&)> > EventRecaptchaV3List;
@@ -40,7 +40,7 @@ public:
     std::vector<std::function<void(const std::string&,const std::string&, const std::string&)> > EventRunTask;
     std::vector<std::function<void(const std::string&,bool, const std::string&)> > EventCheckResult;
 
-    std::vector<std::function<void(bool,bool,int,const std::string&,int,bool, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&)> > EventSendWorkerSettings;
+    std::vector<std::function<void(bool,bool,const std::string&,int,bool, const std::string&, const std::string&, const std::string&, const std::string&, const std::string&)> > EventSendWorkerSettings;
 
     std::vector<std::function<void(const std::string&)> > EventSetPromptResult;
     std::vector<std::function<void(const std::string&,const std::string&)> > EventSetHttpAuthResult;
@@ -59,6 +59,7 @@ public:
     std::vector<std::function<void(int)> > EventPopupClose;
     std::vector<std::function<void(int)> > EventPopupSelect;
     std::vector<std::function<void(bool, std::string)> > EventPopupCreate;
+    std::vector<std::function<void(bool, std::string, std::string, bool)> > EventPopupCreate2;
     std::vector<std::function<void()> > EventPopupInfo;
     std::vector<std::function<void(int)> > EventTimezone;
     std::vector<std::function<void()> > EventCleanHeader;
@@ -108,7 +109,7 @@ public:
     std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool)> > EventSetCode;
     std::vector<std::function<void(const std::string&)> > EventSetResources;
     std::vector<std::function<void()> > EventReset;
-    std::vector<std::function<void()> > EventNavigateBack;
+    std::vector<std::function<void(bool)> > EventNavigateBack;
     std::vector<std::function<void()> > EventResetNoCookies;
 
     std::vector<std::function<void(const ElementCommand &)> > EventElementCommand;

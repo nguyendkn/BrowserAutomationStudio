@@ -56,7 +56,7 @@ using ModulesData = std::shared_ptr<ModulesDataClass>;
 using ModulesDataList = std::vector<ModulesData>;
 
 void EnableModule(const std::string& ModuleName);
-ModulesDataList LoadModulesData(const std::string& Locale, bool IsTunneling, const std::string& BASPid, ModulesDataList& UnusedModules);
+ModulesDataList LoadModulesData(const std::string& Locale, const std::string& BASPid, ModulesDataList& UnusedModules);
 std::string GetAllBrowserDataCode(const ModulesDataList& Modules);
 
 #endif // MODULESDATA_H

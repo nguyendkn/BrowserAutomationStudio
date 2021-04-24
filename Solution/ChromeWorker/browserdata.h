@@ -4,7 +4,6 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include "proxydata.h"
 #include "include/cef_base.h"
 #include "inspectresult.h"
 #include "highlightresult.h"
@@ -16,6 +15,8 @@
 #include "sharedmemoryipc.h"
 #include "browsersettingssaver.h"
 #include "browsercontextmenu.h"
+#include "devtoolsconnector.h"
+#include "resultmanager.h"
 
 
 class BrowserData
@@ -48,22 +49,16 @@ public:
     RequestList _RequestList;
     std::atomic<int64> LastClearRequest;
 
-    ConfigurableItem<std::shared_ptr<std::map<std::string,std::string> > > _Headers;
-    std::vector<std::string> _HeadersDefaults;
+    std::vector<std::pair<std::string,std::string> > _Headers;
     std::string _AcceptLanguagePattern;
     std::string _UniqueProcessId;
-    std::string _NextReferrer;
-    std::string _OpenFileName;
     std::map<std::string,ConfigurableItem<std::string> > _StartupScript;
-    ConfigurableItem<ProxyData> _Proxy;
     CefWindowHandle _MainWindowHandle;
     CefWindowHandle _ParentWindowHandle;
     HWND UrlHandler;
     std::atomic<int64> OldestRequestTime;
     std::vector<std::pair<bool, std::string> > _CacheMask;
     std::vector<std::pair<bool, std::string> > _RequestMask;
-    std::vector<std::pair<std::string, int> > _LoadedUrls;
-    std::vector<std::pair<std::string, std::shared_ptr<CachedItem> > > _CachedData;
     std::atomic_int WidthBrowser;
     std::atomic_int HeightBrowser;
     std::atomic_int WidthAll;
@@ -74,13 +69,12 @@ public:
     std::atomic_int CursorY;
     std::atomic_bool IsRecord;
     std::atomic_bool IsRecordHttp;
-    std::atomic_bool AllowPopups;
-    std::atomic_bool AllowDownloads;
     std::atomic_bool MultiselectMode;
     std::atomic_bool MultiselectIsInsideElementLoop;
     InspectResult _Inspect;
     HighlightResult _Highlight;
     ModulesDataList _ModulesData;
+    std::string BrowserCode;
     ModulesDataList _UnusedModulesData;
     MultiSelectData _MultiSelectData;
 
@@ -95,7 +89,6 @@ public:
     std::string _RecaptchaV3List;
 
     //Dialogs
-    std::string _PromptResult;
     std::string _HttpAuthLogin;
     std::string _HttpAuthPassword;
 
@@ -127,16 +120,16 @@ public:
     //Tesing
     bool IsTesing;
 
-    //Multilogin debug
-    bool IsMutiloginEngine;
-    SharedMemoryIPC* MultiloginIPC;
-    std::string BASPID;
-    int LastImageId;
-
-    //Remote debugging port
+    //Remote debugging port for CEF browsers
     int RemoteDebuggingPort;
+    //Remote debugging port for Chromium browsers
+    int MainRemoteDebuggingPort;
 
     BrowserContextMenu _BrowserContextMenu;
+
+
+    DevToolsConnector *Connector = 0;
+    ResultManager *Results = 0;
 
 };
 

@@ -10,10 +10,11 @@
     const wait = _function_argument('wait');
     const task = _function_argument('task');
     this.validateTask(task.name);
+    const data = task.serialize();
 
-    _call_function(this.makeRequest, { method: 'createTask', data: task })!
+    _call_function(this.makeRequest, { method: 'createTask', data: data })!
 
-    _do_with_params({ taskId: _result_function().taskId, task: task, wait: wait }, function () {
+    _do_with_params({ taskId: _result_function().taskId, task: data, wait: wait }, function () {
       const taskId = _cycle_param('taskId');
       const task = _cycle_param('task');
       const wait = _cycle_param('wait');

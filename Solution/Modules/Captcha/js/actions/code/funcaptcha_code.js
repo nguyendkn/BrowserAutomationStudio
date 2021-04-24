@@ -13,9 +13,9 @@ url()!
 
 _call_function(BAS_SolveFunCaptcha, {
   sendProxy: (<%= sendProxy %>) === 'true',
-  serverUrl: <%= serverUrl %>,
+  service: <%= service %>,
+  apiUrl: <%= apiUrl %>,
   apiKey: <%= apiKey %>,
-  method: <%= method %>,
   query: <%= query %>,
   pageUrl : _result()
 })!

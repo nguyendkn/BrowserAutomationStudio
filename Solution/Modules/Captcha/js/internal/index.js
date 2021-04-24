@@ -3,10 +3,6 @@ BASCaptchaSolver = {
 
   tasks: {},
 
-  initialize: function (serverUrl, apiKey, service) {
-    this.api = this.getServiceApi(service, apiKey, serverUrl);
-  },
-
   solve: function () {
     _call_function(api.solve, {
       task: _function_argument('task'),
@@ -23,10 +19,10 @@ BASCaptchaSolver = {
   },
 
   solveFunCaptcha: function () {
-    this.initialize(
+    this.api = this.getServiceApi(
+      _function_argument('service'),
       _function_argument('apiUrl'),
       _function_argument('apiKey'),
-      _function_argument('method')
     );
     _call_function(this.ensureSelector, {})!
 
@@ -37,7 +33,7 @@ BASCaptchaSolver = {
     });
 
     _call_function(this.solve, {
-      task: new this.api.tasks['FunCaptcha']({
+      task: new this.api.FunCaptcha({
         surl: data.filter(function (el) { return el[0] === 'surl'; })[0][1],
         pk: data.filter(function (el) { return el[0] === 'pk'; })[0][1],
         pageUrl: _function_argument('pageUrl')

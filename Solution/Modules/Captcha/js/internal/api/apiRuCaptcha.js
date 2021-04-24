@@ -10,10 +10,11 @@
     const wait = _function_argument('wait');
     const task = _function_argument('task');
     this.validateTask(task.name);
+    const data = task.serialize();
 
-    _call_function(api.request, { method: 'in.php', data: task })!
+    _call_function(api.request, { method: 'in.php', data: data })!
 
-    _do_with_params({ taskId: api.response.request, task: task, wait: wait }, function () {
+    _do_with_params({ taskId: api.response.request, task: data, wait: wait }, function () {
       const taskId = _cycle_param('taskId');
       const task = _cycle_param('task');
       const wait = _cycle_param('wait');

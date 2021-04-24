@@ -6,7 +6,7 @@
     value_string: "anticaptcha",
     default_selector: "string",
     disable_int: true,
-    id: "Method",
+    id: "Service",
     size: 3,
     help: {
       description: tr(""),

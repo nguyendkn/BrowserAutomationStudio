@@ -12,11 +12,11 @@
     const params = this.params;
 
     this.configuration.forEach(function (param) {
-      const path = param.name || param.path;
-      if (!params[path]) {
-        return param.optional && fail('No param specified');
+      const value = params[param.name || param.path];
+      if (!value && !param.optional) {
+        fail('No param specified');
       }
-      this.data[param] = params[path];
+      this.data[param] = value;
     });
 
     this.applyProxy(this, params.proxy, params.cookies, params.ua);

@@ -11,7 +11,7 @@ BASCaptchaSolver.path = function () {
 
 url()!
 
-_call(BAS_SolveFunCaptcha, {
+_call_function(BAS_SolveFunCaptcha, {
   sendProxy: (<%= sendProxy %>) === 'true',
   serverUrl: <%= serverUrl %>,
   apiKey: <%= apiKey %>,

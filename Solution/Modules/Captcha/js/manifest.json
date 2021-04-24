@@ -22,11 +22,11 @@
       },
       "template": "{{PATH}}",
       "is_element": true,
-      "interface": "funcaptcha_interface.js",
-      "select": "funcaptcha_select.js",
+      "interface": "actions/interface/funcaptcha_interface.js",
+      "select": "actions/select/funcaptcha_select.js",
       "code": [
         {
-          "file": "funcaptcha_code.js",
+          "file": "actions/code/funcaptcha_code.js",
           "name": "FunCaptcha_code"
         }
       ]
@@ -39,11 +39,18 @@
   "depends": [],
   "localize": {},
   "engine": [
-    "engine.js",
-    "internal/tasks.js",
-    "internal/errors.js",
-    "internal/apiService.js",
-    "internal/apiRuCaptcha.js",
-    "internal/apiAntiCaptcha.js"
+    "internal/index.js",
+    "internal/utils.js",
+    "internal/api/services.js",
+    "internal/api/apiService.js",
+    "internal/api/apiRuCaptcha.js",
+    "internal/api/apiAntiCaptcha.js",
+    "internal/tasks/base/baseTask.js",
+    "internal/tasks/base/baseTaskRuCaptcha.js",
+    "internal/tasks/base/baseTaskAntiCaptcha.js",
+    "internal/tasks/hCaptchaTask.js",
+    "internal/tasks/funCaptchaTask.js",
+    "internal/tasks/recaptchaV2CaptchaTask.js",
+    "internal/tasks/recaptchaV3CaptchaTask.js"
   ]
 }

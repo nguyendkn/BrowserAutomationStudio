@@ -1,7 +1,7 @@
 (function (solver, _) {
   const AntiCaptchaTask = solver.tasks.AntiCaptchaTask;
 
-  solver.AntiCaptchaApi.RecaptchaV3 = _.inherit(AntiCaptchaTask, function (params) {
+  solver.AntiCaptchaApi.RecaptchaV3Task = _.inherit(AntiCaptchaTask, function (params) {
     AntiCaptchaTask.call(this, 'antiCaptcha', {
       name: 'RecaptchaV3Task' + (params.proxy ? '' : 'Proxyless'),
       configuration: [

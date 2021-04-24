@@ -1,10 +1,12 @@
 (function (solver) {
   function CaptchaApi(type, config) {
     this.supportedTasks = config.supportedTasks;
-    this.tasks = solver[config.name].tasks;
     this.apiUrl = config.apiUrl;
     this.name = config.name;
     this.type = type;
+
+    this.pollingInterval = 2000;
+    this.pollingDelay = 5000;
   };
   CaptchaApi.tasks = {};
 
@@ -18,26 +20,31 @@
     }
   };
 
-  CaptchaApi.prototype.setApiUrl = function (value) {
-    return updateApiConfiguration(this, { apiUrl: value });
+  CaptchaApi.prototype.setPollingInterval = function (value) {
+    if (value) this.pollingInterval = value;
+    return this;
+  };
+
+  CaptchaApi.prototype.setPollingDelay = function (value) {
+    if (value) this.pollingDelay = value;
+    return this;
   };
 
   CaptchaApi.prototype.setApiKey = function (value) {
-    return updateApiConfiguration(this, { apiKey: value });
+    if (value) this.apiKey = value;
+    return this;
   };
 
-  function updateApiConfiguration(api, data) {
-    if (data.apiUrl && api.name !== 'CapMonster' && api.name !== 'XEvil') {
-      const url = data.apiUrl;
-
-      if (url.slice(-1) === '/') {
-        api.apiUrl = url.slice(0, url.length - 1);
+  CaptchaApi.prototype.setApiUrl = function (value) {
+    if (value && this.name !== 'CapMonster' && this.name !== 'XEvil') {
+      if (value.slice(-1) === '/') {
+        this.apiUrl = value.slice(0, value.length - 1);
       } else {
-        api.apiUrl = url.slice(0, url.length - 0);
+        this.apiUrl = value.slice(0, value.length - 0);
       }
     }
-    return api;
-  }
+    return this;
+  };
 
   solver.CaptchaApi = CaptchaApi;
 })(BASCaptchaSolver);

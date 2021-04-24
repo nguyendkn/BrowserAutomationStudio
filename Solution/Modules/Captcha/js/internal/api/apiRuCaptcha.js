@@ -1,39 +1,42 @@
 (function (solver, _) {
   solver.RuCaptchaApi = _.inherit(solver.CaptchaApi, function (config) {
     solver.CaptchaApi.call(this, 'RuCaptchaApi', config);
+    this.waitSolution = _.bind(waitSolution, this);
     this.makeRequest = _.bind(makeRequest, this);
     this.getBalance = _.bind(getBalance, this);
     this.solveTask = _.bind(solveTask, this);
   });
 
   function solveTask() {
-    const wait = _function_argument('wait');
     const task = _function_argument('task');
     this.validateTask(task.name);
     const data = task.serialize();
 
-    _call_function(api.request, { method: 'in.php', data: data })!
+    _call_function(this.makeRequest, { method: 'in.php', data: data })!
+    sleep(this.pollingDelay)!
 
-    _do_with_params({ taskId: api.response.request, task: data, wait: wait }, function () {
-      const taskId = _cycle_param('taskId');
-      const task = _cycle_param('task');
-      const wait = _cycle_param('wait');
+    _do_with_params({ taskId: _result_function().request, task: data }, this.waitSolution)!
+  }
 
-      _call_function(this.makeRequest, { method: 'res.php', data: { action: 'get', id: taskId } })!
+  function waitSolution() {
+    const taskId = _cycle_param('taskId');
+    const task = _cycle_param('task');
 
-      if (api.response.status === 1) {
-        _set_result(api.response.request);
-        _break();
-      }
+    _call_function(this.makeRequest, { method: 'res.php', data: { action: 'get', id: taskId } })!
+    const response = _result_function();
 
-      sleep(wait)!
-    })!
-  };
+    if (response.status === 1) {
+      _set_result(response.request);
+      _break();
+    }
+
+    sleep(this.pollingInterval)!
+  }
 
   function getBalance() {
     _call_function(this.makeRequest, { method: 'getBalance' })!
     _function_return(_result_function());
-  };
+  }
 
   function makeRequest() {
     const method = _function_argument('method') || '';
@@ -51,5 +54,5 @@
     })!
 
     _function_return(JSON.parse(_result_function()));
-  };
+  }
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

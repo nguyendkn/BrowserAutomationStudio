@@ -17,8 +17,10 @@
     })
   };
 
-  solver.getServiceApi = function (name, apiKey, apiUrl) {
-    if (!services[name]) {
+  solver.getServiceApi = function (options) {
+    const service = services[options.name];
+
+    if (!service) {
       if (_K === 'en') {
         die('Service "' + service + '" is unavailable', true);
       } else {
@@ -26,6 +28,14 @@
       }
     }
 
-    return services[name].setApiUrl(apiUrl).setApiKey(apiKey);
+    if (options.pollingInterval) {
+      service.setPollingInterval(options.pollingInterval);
+    }
+
+    if (options.pollingDelay) {
+      service.setPollingDelay(options.pollingDelay);
+    }
+
+    return service.setApiUrl(options.apiUrl).setApiKey(options.apiKey);
   };
 })(BASCaptchaSolver);

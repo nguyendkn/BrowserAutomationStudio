@@ -15,19 +15,36 @@
   "api_version": 1,
   "actions": [
     {
-      "name": "FunCaptcha",
+      "name": "FunCaptchaBrowser",
       "description": {
         "ru": "Решить FunCaptcha",
         "en": "Solve FunCaptcha"
       },
       "template": "{{PATH}}",
       "is_element": true,
-      "interface": "actions/interface/funcaptcha_interface.js",
-      "select": "actions/select/funcaptcha_select.js",
+      "interface": "actions/interface/funCaptchaBrowser.js",
+      "select": "actions/select/funCaptchaBrowser.js",
       "code": [
         {
-          "file": "actions/code/funcaptcha_code.js",
-          "name": "FunCaptcha_code"
+          "file": "actions/code/funCaptchaBrowser.js",
+          "name": "funCaptcha_browser_code"
+        }
+      ]
+    },
+    {
+      "name": "FunCaptcha",
+      "description": {
+        "ru": "Решить FunCaptcha",
+        "en": "Solve FunCaptcha"
+      },
+      "template": "{{PATH}}",
+      "is_element": false,
+      "interface": "actions/interface/funCaptcha.js",
+      "select": "actions/select/funCaptcha.js",
+      "code": [
+        {
+          "file": "actions/code/funCaptcha.js",
+          "name": "funCaptcha_code"
         }
       ]
     }
@@ -41,10 +58,10 @@
   "engine": [
     "internal/index.js",
     "internal/utils.js",
-    "internal/api/services.js",
     "internal/api/apiService.js",
     "internal/api/apiRuCaptcha.js",
     "internal/api/apiAntiCaptcha.js",
+    "internal/api/services.js",
     "internal/tasks/base/baseTask.js",
     "internal/tasks/base/baseTaskRuCaptcha.js",
     "internal/tasks/base/baseTaskAntiCaptcha.js",

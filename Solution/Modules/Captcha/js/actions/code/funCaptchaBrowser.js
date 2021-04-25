@@ -1,5 +1,5 @@
 /*Browser*/
-_SELECTOR = <%= query %>; 
+_SELECTOR = <%= query %>;
 
 BASCaptchaSolver.waiter = function () {
   <%= waiter %>
@@ -11,8 +11,7 @@ BASCaptchaSolver.path = function () {
 
 url()!
 
-_call_function(BAS_SolveFunCaptcha, {
-  sendProxy: (<%= sendProxy %>) === 'true',
+_call_function(BASCaptchaSolver.solveFunCaptcha, {
   service: <%= service %>,
   apiUrl: <%= apiUrl %>,
   apiKey: <%= apiKey %>,

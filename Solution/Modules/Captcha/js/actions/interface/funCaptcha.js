@@ -1,5 +1,4 @@
 <div class="container-fluid">
-  <%= _.template($('#path').html())({ selector }) %>
   <%= _.template($('#input_constructor').html())({
     variants: [ "anticaptcha", "rucaptcha", "2captcha" ],
     description: tr("Solve Method"),
@@ -7,21 +6,17 @@
     default_selector: "string",
     disable_int: true,
     id: "Service",
-    size: 3,
     help: {
       description: tr(""),
       examples: [
         {
-          code: "anticaptcha",
-          description: tr("Solve with http://anti-captcha.com/ service")
+          code: "anticaptcha", description: tr("Solve with http://anti-captcha.com/ service")
         },
         {
-          code: "rucaptcha",
-          description: tr("Solve with http://rucaptcha.com/ service")
+          code: "rucaptcha", description: tr("Solve with http://rucaptcha.com/ service")
         },
         {
-          code: "2captcha",
-          description: tr("Solve with http://2captcha.com/ service")
+          code: "2captcha", description: tr("Solve with http://2captcha.com/ service")
         }
       ]
     }
@@ -41,21 +36,10 @@
   </div>
   <span id="Advanced" style="display: none;">
     <%= _.template($('#input_constructor').html())({
-      description: tr("How many times try to solve"),
-      default_selector: "int",
-      disable_string: true,
-      id: "TimesToSolve",
-      value_number: 10,
-      size: 3,
-      help: {
-        description: tr("")
-      }
-    }) %>
-    <%= _.template($('#input_constructor').html())({
       description: tr("Server url. Can be blank"),
       default_selector: "string",
       disable_int: true,
-      id: "ServerUrl",
+      id: "ApiUrl",
       help: {
         description: tr("String which contains server url."), 
         examples: [
@@ -82,9 +66,4 @@
     }) %>
   </span>
 </div>
-
-<div class="tooltipinternal">
-
-</div>
-
 <%= _.template($('#back').html())({ action: "executeandadd", visible: true }) %>

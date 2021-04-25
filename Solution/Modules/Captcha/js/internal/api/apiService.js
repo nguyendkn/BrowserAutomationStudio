@@ -8,7 +8,6 @@
     this.pollingInterval = 2000;
     this.pollingDelay = 5000;
   };
-  CaptchaApi.tasks = {};
 
   CaptchaApi.prototype.validateTask = function (name) {
     if (this.supportedTasks.indexOf(name) < 0) {

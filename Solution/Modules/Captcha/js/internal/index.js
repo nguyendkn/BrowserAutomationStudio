@@ -13,14 +13,13 @@
         return e.split('=');
       });
 
-      _call_function(BASCaptchaSolver.api.solve, {
+      _call_function(BASCaptchaSolver.api.solveTask, {
         task: new BASCaptchaSolver.api.FunCaptchaTask({
-          surl: data.filter(function (el) { return el[0] === 'surl'; })[0][1],
-          pk: data.filter(function (el) { return el[0] === 'pk'; })[0][1],
+          surl: data.filter(function (el) { return el[0] === 'surl' })[0][1],
+          pk: data.filter(function (el) { return el[0] === 'pk' })[0][1],
           pageurl: _function_argument('pageUrl')
         })
       })!
-
       _call_function(submitFunCaptcha, { token: _result_function() })!
     };
 

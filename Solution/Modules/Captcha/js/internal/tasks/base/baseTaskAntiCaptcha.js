@@ -1,9 +1,12 @@
 (function (tasks, _) {
   const AntiCaptchaTask = _.inherit(tasks.BaseTask, function (config) {
     tasks.BaseTask.call(this, 'AntiCaptchaApi', config);
+    this.data['type'] = this.name;
   });
 
-  AntiCaptchaTask.prototype.applyProxy = function (proxy, cookies, ua) {
+  AntiCaptchaTask.prototype.applyProxy = function () {
+    tasks.BaseTask.prototype.applyProxy.call(this);
+
     if (proxy['password'] && proxy['name']) {
       this.data['proxyPassword'] = proxy.password;
       this.data['proxyLogin'] = proxy.name;
@@ -12,8 +15,7 @@
     this.data['proxyType'] = proxy['IsHttp'] ? 'http' : 'socks5';
     this.data['proxyAddress'] = proxy['server'];
     this.data['proxyPort'] = proxy['Port'];
-    if (cookies) this.data['cookies'] = cookies;
-    if (ua) this.data['userAgent'] = ua;
+    return this.data;
   };
 
   tasks.AntiCaptchaTask = AntiCaptchaTask;

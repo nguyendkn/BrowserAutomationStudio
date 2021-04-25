@@ -44,7 +44,7 @@
     data.key = this.apiKey;
     data.json = 1;
 
-    _call_function(_.request, {
+    _call_function(this.request, {
       content: 'urlencode',
       method: 'POST',
       payload: {

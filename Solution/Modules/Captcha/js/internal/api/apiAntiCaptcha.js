@@ -43,7 +43,7 @@
     const data = _function_argument('data') || {};
     data.clientKey = this.apiKey;
 
-    _call_function(_.request, {
+    _call_function(this.request, {
       content: 'application/json',
       method: 'POST',
       payload: {

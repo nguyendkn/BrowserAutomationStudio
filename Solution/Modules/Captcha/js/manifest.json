@@ -66,8 +66,6 @@
     "internal/tasks/base/baseTaskRuCaptcha.js",
     "internal/tasks/base/baseTaskAntiCaptcha.js",
     "internal/tasks/hCaptchaTask.js",
-    "internal/tasks/funCaptchaTask.js",
-    "internal/tasks/recaptchaV2CaptchaTask.js",
-    "internal/tasks/recaptchaV3CaptchaTask.js"
+    "internal/tasks/funCaptchaTask.js"
   ]
 }

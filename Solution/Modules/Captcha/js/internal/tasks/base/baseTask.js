@@ -1,26 +1,32 @@
 (function (solver) {
-  const BaseTask = function (type, options) {
-    this.configuration = options.configuration;
+  const BaseTask = function (options) {
     this.params = options.params;
+    this.rules = options.rules;
     this.name = options.name;
-
-    this.type = type;
     this.data = {};
   };
 
   BaseTask.prototype.serialize = function () {
-    const params = this.params;
+    const self = this;
 
-    this.configuration.forEach(function (param) {
-      const value = params[param.name || param.path];
-      if (!value && !param.optional) {
+    Object.keys(rules).forEach(function (key) {
+      const param = self.params[key];
+      const rule = self.rules[key];
+
+      if (!param && !rule.optional) {
         fail('No param specified');
       }
-      this.data[param] = value;
+
+      self.data[rule.name || key] = param;
     });
 
-    this.applyProxy(this, params.proxy, params.cookies, params.ua);
-    return this.data;
+    return this.applyProxy();
+  };
+
+  BaseTask.prototype.applyProxy = function () {
+    if (this.params.cookies) this.data['cookies'] = this.params.cookies;
+    if (this.params.ua) this.data['userAgent'] = this.params.ua;
+    return this;
   };
 
   solver.tasks.BaseTask = BaseTask;

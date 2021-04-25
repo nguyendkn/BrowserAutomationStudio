@@ -1,9 +1,11 @@
 (function (tasks, _) {
   const RuCaptchaTask = _.inherit(tasks.BaseTask, function (config) {
     tasks.BaseTask.call(this, 'RuCaptchaApi', config);
+    this.data['method'] = this.name;
   });
 
-  RuCaptchaTask.prototype.applyProxy = function (proxy, cookies, ua) {
+  RuCaptchaTask.prototype.applyProxy = function () {
+    tasks.BaseTask.prototype.applyProxy.call(this);
     this.data['proxy'] = proxy['server'] + ':' + proxy['Port'];
 
     if (proxy['password'] && proxy['name']) {
@@ -12,8 +14,7 @@
     }
 
     this.data['proxytype'] = proxy['IsHttp'] ? 'HTTP' : 'SOCKS5';
-    if (cookies) this.data['cookies'] = cookies;
-    if (ua) this.data['userAgent'] = ua;
+    return this.data;
   };
 
   tasks.RuCaptchaTask = RuCaptchaTask;

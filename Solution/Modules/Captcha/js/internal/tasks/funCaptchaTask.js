@@ -1,16 +1,29 @@
 (function (solver, _) {
   const AntiCaptchaTask = solver.tasks.AntiCaptchaTask;
-
-  solver.AntiCaptchaApi.FunCaptchaTask = _.inherit(AntiCaptchaTask, function (params) {
-    AntiCaptchaTask.call(this, 'antiCaptcha', {
+  solver.AntiCaptchaApi.prototype.FunCaptchaTask = _.inherit(AntiCaptchaTask, function (params) {
+    AntiCaptchaTask.call(this, {
       name: 'FunCaptchaTask' + (params.proxy ? '' : 'Proxyless'),
-      configuration: [
-        { name: 'funcaptchaApiJSSubdomain', optional: true },
-        { name: 'data', optional: true },
-        { name: 'websitePublicKey' },
-        { name: 'websiteURL' },
-      ],
-      params: params
+      params: params,
+      rules: {
+        'surl': { optional: true, name: 'funcaptchaApiJSSubdomain' },
+        'data': { optional: true },
+        'pageurl': { name: 'websiteURL' },
+        'pk': { name: 'websitePublicKey' },
+      }
+    });
+  });
+
+  const RuCaptchaTask = solver.tasks.RuCaptchaTask;
+  solver.RuCaptchaApi.prototype.FunCaptchaTask = _.inherit(RuCaptchaTask, function (params) {
+    RuCaptchaTask.call(this, {
+      name: 'funcaptcha',
+      params: params,
+      rules: {
+        'surl': { optional: true },
+        'data': { optional: true },
+        'pageurl': {},
+        'pk': {},
+      }
     });
   });
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

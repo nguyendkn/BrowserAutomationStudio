@@ -10,15 +10,9 @@
     help: {
       description: tr(""),
       examples: [
-        {
-          code: "anticaptcha", description: tr("Solve with http://anti-captcha.com/ service")
-        },
-        {
-          code: "rucaptcha", description: tr("Solve with http://rucaptcha.com/ service")
-        },
-        {
-          code: "2captcha", description: tr("Solve with http://2captcha.com/ service")
-        }
+        { code: "anticaptcha", description: tr("Solve with http://anti-captcha.com/ service") },
+        { code: "rucaptcha", description: tr("Solve with http://rucaptcha.com/ service") },
+        { code: "2captcha", description: tr("Solve with http://2captcha.com/ service") }
       ]
     }
   }) %>

@@ -1,31 +1,38 @@
 (function (global) {
   function CaptchaSolver() {
-    const self = this;
-    this.utils = {};
     this.tasks = {};
 
     this.solveFunCaptcha = function () {
-      self.api = self.getServiceApi(_function_arguments());
-      _call_function(self.ensureSelector, {})!
-      self.path().css('*[name="fc-token"]').attr('value')!
+      BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
+      _call_function(BASCaptchaSolver.ensureSelector, {})!
+      BASCaptchaSolver.path().css('*[name="fc-token"]').attr('value')!
 
       const data = _result().split('|').map(function (e) {
         return e.split('=');
       });
 
+      const surl = data.filter(function (el) {
+        return el[0] === 'surl'
+      })[0][1];
+
+      const pk = data.filter(function (el) {
+        return el[0] === 'pk'
+      })[0][1];
+
       _call_function(BASCaptchaSolver.api.solveTask, {
         task: new BASCaptchaSolver.api.FunCaptchaTask({
-          surl: data.filter(function (el) { return el[0] === 'surl' })[0][1],
-          pk: data.filter(function (el) { return el[0] === 'pk' })[0][1],
-          pageurl: _function_argument('pageUrl')
+          pageurl: _function_argument('pageUrl'),
+          surl: surl,
+          pk: pk,
         })
       })!
+
       _call_function(submitFunCaptcha, { token: _result_function() })!
     };
 
     this.ensureSelector = function () {
-      _call(self.waiter, null)!
-      self.path().exist()!
+      _call(BASCaptchaSolver.waiter, null)!
+      BASCaptchaSolver.path().exist()!
       if (_result() !== 1) {
         log('selector not exists');
         _break();

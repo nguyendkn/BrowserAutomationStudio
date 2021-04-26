@@ -12,9 +12,9 @@ _SMS.BaseApi.prototype.errorHandler = function(error, errorText){
 			"en": "Failed to parse the response from the service. Response content: " + errorText,
 			"action": "fail"
 		},
-		"TIMEOUT_GET_STATE": {
-			"ru": "Превышено время ожидания выполнения действия getState.",
-			"en": "Timed out for execution of an action getState.",
+		"ACTION_TIMEOUT": {
+			"ru": "Превышено время ожидания выполнения действия \"" + errorText + "\".",
+			"en": "Timed out for execution of an action \"" + errorText + "\".",
 			"action": "fail"
 		},
 		
@@ -489,8 +489,8 @@ _SMS.BaseApi.prototype.errorHandler = function(error, errorText){
 			"action": "fail"
 		},
 		500: {
-			"ru": "Ошибка при обработке запроса / Нет доступных номеров.",
-			"en": "Error processing request / No numbers available.",
+			"ru": "Ошибка при обработке запроса / Нет доступных номеров / Истекло время заказа.",
+			"en": "Error processing request / No numbers available / Time of order expired.",
 			"action": "fail"
 		},
 		502: {

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-	<%= _.template($('#input_constructor').html())({id:"service", description:tr("Service"), default_selector: "string", variants: ["sms-activate.ru","smshub.org","5sim.net","getsms.online","smsvk.net","vak-sms.com","cheapsms.ru","give-sms.com","sms.kopeechka.store","simsms.org","sms-reg.com","smspva.com","onlinesim.ru","sms-acktiwator.ru"], disable_int: true, value_string: "sms-activate.ru", help: {description: tr("SMS receiving service.")} }) %>
+	<%= _.template($('#input_constructor').html())({id:"service", description:tr("Service"), default_selector: "string", variants: ["sms-activate.ru","smshub.org","5sim.net","getsms.online","smsvk.net","vak-sms.com","cheapsms.ru","give-sms.com","sms.kopeechka.store","simsms.org","smspva.com","onlinesim.ru","sms-acktiwator.ru"], disable_int: true, value_string: "sms-activate.ru", help: {description: tr("SMS receiving service.")} }) %>
 	<%= _.template($('#input_constructor').html())({id:"apiKey", description:tr("API key"), default_selector: "string", disable_int: true, value_string: "", help: {description: tr("API key of the SMS receiving service.")} }) %>
 	<div class="col-xs-12">
 		<form class="form-horizontal">

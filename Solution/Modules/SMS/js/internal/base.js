@@ -1,8 +1,10 @@
-_SMS.BaseApi = function(config){
+_SMS.BaseApi = function(config, type){
+	const api = this;
 	var data = config.data;
 	var serverUrl = data.serverUrl;
 	this.key = data.apiKey;
 	this.service = data.service;
+	this.type = type;
 	
 	if(_is_nilb(serverUrl)){
 		this.url = config.url;
@@ -22,103 +24,113 @@ _SMS.BaseApi = function(config){
 			this.refTitle = config.refTitle;
 		};
 	};
-};
-_SMS.BaseApi.prototype.combineParams = function(params, options, labels){
-	labels = _avoid_nilb(labels, {});
-	var keys = Object.keys(options);
-	if(keys.length > 0){
-		keys.forEach(function(key){
-			if(!_is_nilb(options[key])){
-				params[labels[key] ? labels[key] : key] = options[key];
-			};
-		});
-	};
-	return params;
-};
-_SMS.BaseApi.prototype.paramsToString = function(params){
-	return Object.keys(params).map(function(key){
-		return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-	}).join('&');
-};
-_SMS.BaseApi.prototype.paramsToArray = function(params){
-	var data = [];
-	Object.keys(params).forEach(function(key){
-		data.push(key);
-		data.push(params[key]);
-	});
-	return data;
-};
-_SMS.BaseApi.prototype.reduceString = function(str, length){
-	length = _avoid_nilb(length, 100);
-	return str.length > length ? str.slice(0, length) + '...' : str;
-};
-_SMS.BaseApi.prototype.parseJSON = function(data){
-	try{
-		var json = JSON.parse(data);
-	}catch(e){
-		this.errorHandler("RESPONSE_IS_NOT_JSON", this.reduceString(data));
-	};
-	return json;
-};
-_SMS.BaseApi.prototype.request = function(){
-	var api = _function_argument("api");
-	var url = _function_argument("url");
-	var method = _function_argument("method");
-	var params = _function_argument("params");
 	
-	if(!_is_nilb(api.ref)){
-		params[api.refTitle] = api.ref;
-	};
-	
-	if(Object.keys(params).length>0){
-		if(method=="GET"){
-			url += '?' + api.paramsToString(params);
-		}else{
-			var data = api.paramsToArray(params);
+	this.combineParams = function(params, options, labels){
+		labels = _avoid_nilb(labels, {});
+		var keys = Object.keys(options);
+		if(keys.length > 0){
+			keys.forEach(function(key){
+				if(!_is_nilb(options[key])){
+					params[labels[key] ? labels[key] : key] = options[key];
+				};
+			});
 		};
+		return params;
 	};
 	
-	_switch_http_client_internal();
+	this.paramsToString = function(params){
+		return Object.keys(params).map(function(key){
+			return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+		}).join('&');
+	};
 	
-	_ensure_http_client();
-	_BAS_FAIL_ON_ERROR = FAIL_ON_ERROR;
-	http_client_set_fail_on_error(false);
+	this.paramsToArray = function(params){
+		var data = [];
+		Object.keys(params).forEach(function(key){
+			data.push(key);
+			data.push(params[key]);
+		});
+		return data;
+	};
 	
-	_do(function(){
-		if(_iterator() > 10){
-			_switch_http_client_main();
-			FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;
-			api.errorHandler("FAILED_REQUEST");
+	this.reduceString = function(str, length){
+		length = _avoid_nilb(length, 100);
+		return str.length > length ? str.slice(0, length) + '...' : str;
+	};
+	
+	this.parseJSON = function(data){
+		try{
+			var json = JSON.parse(data);
+		}catch(e){
+			this.errorHandler("RESPONSE_IS_NOT_JSON", this.reduceString(data));
+		};
+		return json;
+	};
+	
+	this.request = function(){
+		var url = _function_argument("url");
+		var method = _function_argument("method");
+		var params = _function_argument("params");
+		
+		if(!_is_nilb(api.ref)){
+			params[api.refTitle] = api.ref;
 		};
 		
-		_if_else(method=="GET", function(){
-			if(_SMS_DEBUG){
-				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + api.name + ': ' + url);
+		if(Object.keys(params).length>0){
+			if(method=="GET"){
+				url += '?' + api.paramsToString(params);
+			}else{
+				var data = api.paramsToArray(params);
 			};
-			http_client_get2(url,{"method":"GET"})!
-		}, function(){
-			if(_SMS_DEBUG){
-				log((_K=="ru" ? 'Запрос к API' : 'API request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
+		};
+		
+		_switch_http_client_internal();
+		
+		_ensure_http_client();
+		_BAS_FAIL_ON_ERROR = FAIL_ON_ERROR;
+		http_client_set_fail_on_error(false);
+		
+		_do(function(){
+			if(_iterator() > 10){
+				_switch_http_client_main();
+				FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;
+				api.errorHandler("FAILED_REQUEST");
 			};
-			http_client_post(url, data, {"content-type":"urlencode","encoding":"UTF-8","method":"POST"})!
+			
+			_if_else(method=="GET", function(){
+				if(_SMS_DEBUG){
+					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
+				};
+				http_client_get2(url, {"method":"GET"})!
+			}, function(){
+				if(_SMS_DEBUG){
+					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + self.paramsToString(params));
+				};
+				http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":"POST"})!
+			})!
+			
+			if(!http_client_was_error()){
+				_break();
+			};
+			
+			sleep(1000)!
 		})!
 		
-		if(!http_client_was_error()){
-			_break();
-		};
+		FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;
+
+		var content = http_client_content('auto');
 		
-		sleep(1000)!
-	})!
-	
-	FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;
+		if(_SMS_DEBUG){
+			log((_K=="ru" ? 'Ответ от' : 'Response') + ' ' + api.name + ': ' + content);
+		};
 
-	var content = http_client_content();
-	
-	if(_SMS_DEBUG){
-		log((_K=="ru" ? 'Ответ от API' : 'API response') + ' ' + api.name + ': ' + content);
+		_switch_http_client_main();
+		
+		_function_return(content);
 	};
-
-	_switch_http_client_main();
-	
-	_function_return(content);
+};
+_SMS.assignApi = function(fn){
+	fn.prototype = Object.create(_SMS.BaseApi.prototype);
+	fn.prototype.constructor = fn;
+	return fn;
 };

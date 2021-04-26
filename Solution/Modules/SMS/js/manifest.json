@@ -54,6 +54,23 @@
 		{
             "code": [
                 {
+                    "file": "SMS_GetActivationCode_code.js",
+                    "name": "SMS_GetActivationCode_code"
+                }
+            ],
+            "description": {
+                "en": "Get activation code",
+                "ru": "Получить код активации"
+            },
+            "interface": "SMS_GetActivationCode_interface.js",
+            "is_element": false,
+            "name": "SMS_GetActivationCode",
+            "select": "SMS_GetActivationCode_select.js",
+            "template": "{{number}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "SMS_Debug_code.js",
                     "name": "SMS_Debug_code"
                 }
@@ -83,6 +100,7 @@
     "embeddeddata": [],
     "engine": [
         "engine.js",
+		"internal/services.js",
 		"internal/base.js",
 		"internal/errors.js",
 		
@@ -139,7 +157,10 @@
 		"Disable debug": {"ru":"Отключить отладку"},
 		"Enable SMS module debug.": {"ru":"Включить отладку СМС модуля."},
 		"Enable or disable SMS module debug.": {"ru":"Включить или отключить отладку СМС модуля."},
-		"If debug is enabled, all queries and their results will be displayed in the log.": {"ru":"Если отладка включена, все запросы и их результаты будут выводится в лог."}
+		"If debug is enabled, all queries and their results will be displayed in the log.": {"ru":"Если отладка включена, все запросы и их результаты будут выводится в лог."},
+		
+		"Timeout (minutes)": {"ru":"Таймаут (минут)"},
+		"Delay (seconds)": {"ru":"Задержка (секунд)"}
     },
     "major_version": 1,
     "minor_version": 0,

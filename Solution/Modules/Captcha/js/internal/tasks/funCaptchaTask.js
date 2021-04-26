@@ -1,9 +1,8 @@
 (function (solver, _) {
   const AntiCaptchaTask = solver.tasks.AntiCaptchaTask;
   solver.AntiCaptchaApi.prototype.FunCaptchaTask = _.inherit(AntiCaptchaTask, function (params) {
-    AntiCaptchaTask.call(this, {
+    AntiCaptchaTask.call(this, 'FunCaptcha', params, {
       name: 'FunCaptchaTask' + (params.proxy ? '' : 'Proxyless'),
-      params: params,
       rules: {
         'surl': { optional: true, name: 'funcaptchaApiJSSubdomain' },
         'data': { optional: true },
@@ -15,9 +14,8 @@
 
   const RuCaptchaTask = solver.tasks.RuCaptchaTask;
   solver.RuCaptchaApi.prototype.FunCaptchaTask = _.inherit(RuCaptchaTask, function (params) {
-    RuCaptchaTask.call(this, {
+    RuCaptchaTask.call(this, 'FunCaptcha', params, {
       name: 'funcaptcha',
-      params: params,
       rules: {
         'surl': { optional: true },
         'data': { optional: true },

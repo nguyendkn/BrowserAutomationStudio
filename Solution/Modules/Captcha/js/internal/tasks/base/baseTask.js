@@ -1,15 +1,18 @@
 (function (solver) {
-  const BaseTask = function (options) {
-    this.params = options.params;
+  const BaseTask = function (api, type, params, options) {
     this.rules = options.rules;
     this.name = options.name;
+
+    this.params = params;
+    this.type = type;
+    this.api = api;
     this.data = {};
   };
 
   BaseTask.prototype.serialize = function () {
-    const self = this;
+    const self = this; this.data = {};
 
-    Object.keys(rules).forEach(function (key) {
+    Object.keys(self.rules).forEach(function (key) {
       const param = self.params[key];
       const rule = self.rules[key];
 

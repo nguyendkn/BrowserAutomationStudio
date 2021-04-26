@@ -955,14 +955,27 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         SendWebSocket("Target.closeTarget", CurrentParams, std::string());
                     }else
                     {
-                        if(Url != "chrome://newtab/" && Url != "about:blank")
+                        if(Url == "about:blank#newtab")
                         {
-                            //Tab is opened by using ctrl-click or window.open
+                            //New tab is opened by using ctrl-click or window.open
+
+                            //Initialize new tab first
+                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                            TabInfo->ConnectionState = TabData::NotStarted;
+                            TabInfo->FrameId = FrameId;
+                            GlobalState.Tabs.push_back(TabInfo);
+                            ProcessTabConnection(TabInfo);
+
+                            //After this will be done, original url will be loaded
+                            GlobalState.LoadNextTargetId = FrameId;
+                            GlobalState.LoadNext = true;
+
+                        }else if(Url != "chrome://newtab/" && Url != "about:blank")
+                        {
+                            //New tab is opened without non-empty tab, could be bug
                             std::map<std::string, Variant> CurrentParams;
                             CurrentParams["targetId"] = Variant(FrameId);
                             SendWebSocket("Target.closeTarget", CurrentParams, std::string());
-                            CreateTab(Url, true, false, GlobalState.NewTabReferrer);
-                            GlobalState.NewTabReferrer.clear();
                         }else
                         {
                             if(GlobalState.SwitchingToDelayedTabIndex >= 0 && GlobalState.SwitchingToDelayedTabIndex < GlobalState.Tabs.size() && GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex]->ConnectionState == TabData::Delayed)
@@ -1236,6 +1249,22 @@ void DevToolsConnector::Timer()
 
                 for(auto f:OnAddressChanged)
                     f(Tab->CurrentUrl);
+
+                //Load first url if tab was open by using ctrl-click or window.open
+                if(GlobalState.LoadNext)
+                {
+                    if(GlobalState.SwitchToTabFrameId == GlobalState.LoadNextTargetId)
+                    {
+                        std::map<std::string, Variant> CurrentParams;
+
+                        CurrentParams["url"] = Variant(GlobalState.LoadNextUrl);
+                        if(!GlobalState.LoadNextData.empty())
+                            CurrentParams["referrer"] = Variant(GlobalState.LoadNextData);
+
+                        SendWebSocket("Page.navigate", CurrentParams, GlobalState.SwitchToTabId);
+                    }
+                    GlobalState.LoadNext = false;
+                }
 
                 //Generate Target.targetActivated event. This event doesn't exist in Chrome Developer tools protocol.
                 std::string TabId = GlobalState.SwitchToTabId;
@@ -2486,14 +2515,18 @@ void DevToolsConnector::AllowPopups()
 
 void DevToolsConnector::ParseNewTabReferrer(const std::string& NewTabReferrer)
 {
-    std::string Prefix("http://referrer.bablosoft.com/#");
+    std::string Prefix("https://request.bablosoft.com/#");
     if(starts_with(NewTabReferrer,Prefix))
     {
-        GlobalState.NewTabReferrer = NewTabReferrer;
-        GlobalState.NewTabReferrer.erase(0,Prefix.size());
+        GlobalState.LoadNextData = NewTabReferrer;
+        std::string DataString = NewTabReferrer;
+        DataString = DataString.erase(0,Prefix.size());
+        DataString = base64_decode(DataString);
+        GlobalState.LoadNextUrl = Parser.GetStringFromJson(DataString,"url");
     }else
     {
-        GlobalState.NewTabReferrer.clear();
+        GlobalState.LoadNextData.clear();
+        GlobalState.LoadNextUrl.clear();
     }
 }
 

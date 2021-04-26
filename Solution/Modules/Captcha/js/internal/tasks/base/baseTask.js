@@ -1,23 +1,26 @@
 (function (solver) {
-  const BaseTask = function (api, type, params, options) {
+  const BaseTask = function (api, type, options) {
+    this.params = options.params;
     this.rules = options.rules;
     this.name = options.name;
-
-    this.params = params;
     this.type = type;
     this.api = api;
     this.data = {};
   };
 
   BaseTask.prototype.serialize = function () {
-    const self = this; this.data = {};
+    const self = this;
 
     Object.keys(self.rules).forEach(function (key) {
       const param = self.params[key];
       const rule = self.rules[key];
 
       if (!param && !rule.optional) {
-        fail('No param specified');
+        if (_K === 'en') {
+          fail('Parameter "' + key + '" is not specified');
+        } else {
+          fail('Параметр "' + key + '" не указан');
+        }
       }
 
       self.data[rule.name || key] = param;

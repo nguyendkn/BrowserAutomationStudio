@@ -1,17 +1,17 @@
 (function (solver) {
   const services = {
     'anticaptcha': new solver.AntiCaptchaApi({
-      supportedTasks: ['HCaptcha', 'FunCaptcha'],
+      supportedTasks: ['FunCaptcha'],
       apiUrl: 'https://api.anti-captcha.com',
       name: 'AntiCaptcha',
     }),
     'rucaptcha': new solver.RuCaptchaApi({
-      supportedTasks: ['HCaptcha', 'FunCaptcha'],
+      supportedTasks: ['FunCaptcha'],
       apiUrl: 'https://rucaptcha.com',
       name: 'RuCaptcha',
     }),
     '2captcha': new solver.RuCaptchaApi({
-      supportedTasks: ['HCaptcha', 'FunCaptcha'],
+      supportedTasks: ['FunCaptcha'],
       apiUrl: 'https://2captcha.com',
       name: '2Captcha',
     }),
@@ -28,14 +28,6 @@
       }
     }
 
-    if (options.pollingInterval) {
-      service.setPollingInterval(options.pollingInterval);
-    }
-
-    if (options.pollingDelay) {
-      service.setPollingDelay(options.pollingDelay);
-    }
-
-    return service.setApiUrl(options.apiUrl).setApiKey(options.apiKey);
+    return service.update(options);
   };
 })(BASCaptchaSolver);

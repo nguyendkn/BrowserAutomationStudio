@@ -1,48 +1,42 @@
 (function (solver) {
-  function CaptchaApi(type, config) {
-    this.supportedTasks = config.supportedTasks;
-    this.apiUrl = config.apiUrl;
-    this.name = config.name;
+  function CaptchaApi(type, options) {
+    this.options = options;
     this.type = type;
-
-    this.pollingInterval = 2000;
-    this.pollingDelay = 5000;
+    this.options.taskWaitInterval = 2000;
+    this.options.taskWaitDelay = 5000;
   };
 
   CaptchaApi.prototype.validateTask = function (task) {
-    if (this.supportedTasks.indexOf(task.type) < 0) {
+    if (this.options.supportedTasks.indexOf(task.type) < 0) {
       if (_K === 'en') {
-        die('Service `' + this.name + '` does not support `' + task.type + '`', true);
+        die('Service `' + this.options.name + '` does not support `' + task.type + '`', true);
       } else {
-        die('Сервис `' + this.name + '` не поддерживает `' + task.type + '`', true);
+        die('Сервис `' + this.options.name + '` не поддерживает `' + task.type + '`', true);
       }
     }
     return task;
   };
 
-  CaptchaApi.prototype.setPollingInterval = function (value) {
-    if (value) this.pollingInterval = value;
-    return this;
-  };
+  CaptchaApi.prototype.update = function (options) {
+    const current = this.options;
 
-  CaptchaApi.prototype.setPollingDelay = function (value) {
-    if (value) this.pollingDelay = value;
-    return this;
-  };
+    Object.keys(options).forEach(function (key) {
+      if (Object.prototype.hasOwnProperty.call(current, key)) {
+        const value = options[key];
+        if (!value) return;
 
-  CaptchaApi.prototype.setApiKey = function (value) {
-    if (value) this.apiKey = value;
-    return this;
-  };
-
-  CaptchaApi.prototype.setApiUrl = function (value) {
-    if (value && this.name !== 'CapMonster' && this.name !== 'XEvil') {
-      if (value.slice(-1) === '/') {
-        this.apiUrl = value.slice(0, value.length - 1);
-      } else {
-        this.apiUrl = value.slice(0, value.length - 0);
+        if (key === 'apiUrl' && current.name !== 'CapMonster' && current.name !== 'XEvil') {
+          if (value.slice(-1) === '/') {
+            current.apiUrl = value.slice(0, value.length - 1);
+          } else {
+            current.apiUrl = value.slice(0, value.length - 0);
+          }
+        } else {
+          current[key] = value;
+        }
       }
-    }
+    });
+
     return this;
   };
 

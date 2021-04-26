@@ -1,9 +1,7 @@
 (function (solver, _) {
   solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (config) {
     solver.CaptchaApi.call(this, 'AntiCaptchaApi', config);
-    this.waitSolution = _.bind(waitSolution, this);
     this.makeRequest = _.bind(makeRequest, this);
-    this.getBalance = _.bind(getBalance, this);
     this.solveTask = _.bind(solveTask, this);
   });
 
@@ -11,30 +9,23 @@
     const task = _function_argument('task');
     const data = this.validateTask(task).serialize();
 
-    _call_function(this.makeRequest, { method: 'createTask', data: data })!
-    sleep(this.pollingDelay)!
+    _call_function(this.makeRequest, { method: 'createTask', data: { task: data } })!
+    sleep(this.taskWaitDelay)!
 
-    _do_with_params({ taskId: _result_function().taskId, task: data }, this.waitSolution)!
-  }
+    _do_with_params({ taskId: _result_function().taskId, task: data, self: this }, function () {
+      const taskId = _cycle_param('taskId');
+      const task = _cycle_param('task');
+      const self = _cycle_param('self');
 
-  function waitSolution() {
-    const taskId = _cycle_param('taskId');
-    const task = _cycle_param('task');
+      _call_function(self.makeRequest, { method: 'getTaskResult', data: { taskId: taskId } })!
+      const response = _result_function();
 
-    _call_function(this.makeRequest, { method: 'getTaskResult', data: { taskId: taskId } })!
-    const response = _result_function();
-
-    if (response.status === 'ready') {
-      _set_result(response.solution[task.response]);
-      _break();
-    }
-
-    sleep(this.pollingInterval)!
-  };
-
-  function getBalance() {
-    _call_function(this.makeRequest, { method: 'getBalance' })!
-    _function_return(_result_function());
+      if (response.status === 'ready') {
+        _set_result(task.getSolution(response));
+        _break();
+      }
+      sleep(self.taskWaitInterval)!
+    })!
   }
 
   function makeRequest() {

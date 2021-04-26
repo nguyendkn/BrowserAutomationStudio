@@ -34,7 +34,6 @@
       _call(BASCaptchaSolver.waiter, null)!
       BASCaptchaSolver.path().exist()!
       if (_result() !== 1) {
-        log('selector not exists');
         _break();
       }
     };

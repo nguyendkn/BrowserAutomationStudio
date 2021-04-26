@@ -1,4 +1,6 @@
 (function (global) {
+  var debug = false;
+
   global.BASCaptchaSolver.utils = {
     inherit: function (proto, fn) {
       fn.prototype = Object.create(proto.prototype);
@@ -6,15 +8,17 @@
       return fn;
     },
 
-    json: function (data) {
-      try {
-        return JSON.parse(data);
-      } catch (e) {
-        if (_K === 'ru') {
-          fail('Невалидная JSON строка.');
-        } else {
-          fail('Invalid JSON string.');
-        }
+    disableDebug: function () {
+      debug = false;
+    },
+
+    enableDebug: function () {
+      debug = true;
+    },
+
+    log: function (message) {
+      if (debug) {
+        log('[CaptchaSolver]: ' + message);
       }
     },
 

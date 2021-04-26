@@ -43,7 +43,7 @@
       }
     })!
 
-    const response = _.json(_result_function());
+    const response = _result_function();
     _function_return(response);
   }
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

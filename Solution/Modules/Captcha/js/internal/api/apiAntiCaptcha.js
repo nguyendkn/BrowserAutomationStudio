@@ -42,7 +42,7 @@
       }
     })!
 
-    const response = _.json(_result_function());
+    const response = _result_function();
     if (response && response.errorId) {
       const description = response.errorDescription;
       const code = response.errorCode;

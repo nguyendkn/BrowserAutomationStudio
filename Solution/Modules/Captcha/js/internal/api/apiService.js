@@ -51,7 +51,16 @@
     })!
     const response = http_client_encoded_content('auto');
     _switch_http_client_main();
-    _function_return(response);
+
+    try {
+      _function_return(JSON.parse(response));
+    } catch (e) {
+      if (_K === 'ru') {
+        fail('Невалидная JSON строка.');
+      } else {
+        fail('Invalid JSON string.');
+      }
+    }
   };
 
   solver.CaptchaApi = CaptchaApi;

@@ -21,19 +21,16 @@
     const current = this.options;
 
     Object.keys(options).forEach(function (key) {
-      if (Object.prototype.hasOwnProperty.call(current, key)) {
-        const value = options[key];
-        if (!value) return;
+      const value = options[key]; if (!value) return;
 
-        if (key === 'apiUrl' && current.name !== 'CapMonster' && current.name !== 'XEvil') {
-          if (value.slice(-1) === '/') {
-            current.apiUrl = value.slice(0, value.length - 1);
-          } else {
-            current.apiUrl = value.slice(0, value.length - 0);
-          }
+      if (key === 'apiUrl' && current.name !== 'CapMonster' && current.name !== 'XEvil') {
+        if (value.slice(-1) === '/') {
+          current.apiUrl = value.slice(0, value.length - 1);
         } else {
-          current[key] = value;
+          current.apiUrl = value.slice(0, value.length - 0);
         }
+      } else {
+        current[key] = value;
       }
     });
 
@@ -53,7 +50,6 @@
       'method': method,
     })!
     const response = http_client_encoded_content('auto');
-
     _switch_http_client_main();
     _function_return(response);
   };

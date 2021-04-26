@@ -1,6 +1,6 @@
 (function (solver, _) {
-  solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (config) {
-    solver.CaptchaApi.call(this, 'AntiCaptchaApi', config);
+  solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
+    solver.CaptchaApi.call(this, 'AntiCaptchaApi', options);
     this.makeRequest = _.bind(makeRequest, this);
     this.solveTask = _.bind(solveTask, this);
   });
@@ -31,14 +31,14 @@
   function makeRequest() {
     const method = _function_argument('method') || '';
     const data = _function_argument('data') || {};
-    data.clientKey = this.apiKey;
+    data.clientKey = this.options.apiKey;
 
     _call_function(this.request, {
       content: 'application/json',
       method: 'POST',
       payload: {
         data: ['data', JSON.stringify(data)],
-        url: this.apiUrl + '/' + method,
+        url: this.options.apiUrl + '/' + method,
       }
     })!
 

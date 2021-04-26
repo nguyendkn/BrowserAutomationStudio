@@ -1,6 +1,6 @@
 (function (solver, _) {
-  solver.RuCaptchaApi = _.inherit(solver.CaptchaApi, function (config) {
-    solver.CaptchaApi.call(this, 'RuCaptchaApi', config);
+  solver.RuCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
+    solver.CaptchaApi.call(this, 'RuCaptchaApi', options);
     this.makeRequest = _.bind(makeRequest, this);
     this.solveTask = _.bind(solveTask, this);
   });
@@ -31,14 +31,14 @@
   function makeRequest() {
     const method = _function_argument('method') || '';
     const data = _function_argument('data') || {};
-    data.key = this.apiKey;
+    data.key = this.options.apiKey;
     data.json = 1;
 
     _call_function(this.request, {
       content: 'urlencode',
       method: 'POST',
       payload: {
-        url: this.apiUrl + '/' + method + '?' + _.urlEncode(data),
+        url: this.options.apiUrl + '/' + method + '?' + _.urlEncode(data),
         data: [],
       }
     })!

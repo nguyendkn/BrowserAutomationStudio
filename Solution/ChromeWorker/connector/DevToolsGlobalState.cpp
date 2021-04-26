@@ -17,7 +17,10 @@ void DevToolsGlobalState::Reset()
     IsDownloading = false;
     IsDownloadsAllowed = true;
     IsPopupsAllowed = true;
-    NewTabReferrer.clear();
+    LoadNextTargetId.clear();
+    LoadNextUrl.clear();
+    LoadNext = false;
+    LoadNextData.clear();
     BlockRequests.clear();
     CacheCapture.clear();
     CachedData.clear();

@@ -93,8 +93,11 @@ struct DevToolsGlobalState
     //Popups
     bool IsPopupsAllowed = true;
 
-    //Referrer when open new tab
-    std::string NewTabReferrer;
+    //Load next URL after new tab was created
+    std::string LoadNextTargetId;
+    std::string LoadNextUrl;
+    bool LoadNext = false;
+    std::string LoadNextData;
 
     //Cache data
     std::map<std::string, std::shared_ptr<CachedItem>> CachedData;

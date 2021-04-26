@@ -71,6 +71,7 @@ _SMS.BaseApi = function(config, type){
 		var url = _function_argument("url");
 		var method = _function_argument("method");
 		var params = _function_argument("params");
+		var data = [];
 		
 		if(!_is_nilb(api.ref)){
 			params[api.refTitle] = api.ref;
@@ -80,7 +81,7 @@ _SMS.BaseApi = function(config, type){
 			if(method=="GET"){
 				url += '?' + api.paramsToString(params);
 			}else{
-				var data = api.paramsToArray(params);
+				data = api.paramsToArray(params);
 			};
 		};
 		
@@ -104,7 +105,7 @@ _SMS.BaseApi = function(config, type){
 				http_client_get2(url, {"method":"GET"})!
 			}, function(){
 				if(_SMS_DEBUG){
-					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + self.paramsToString(params));
+					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
 				};
 				http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":"POST"})!
 			})!

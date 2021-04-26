@@ -18,5 +18,9 @@
     return this.data;
   };
 
+  AntiCaptchaTask.prototype.getSolution = function (response) {
+    return response.solution;
+  };
+
   tasks.AntiCaptchaTask = AntiCaptchaTask;
 })(BASCaptchaSolver.tasks, BASCaptchaSolver.utils);

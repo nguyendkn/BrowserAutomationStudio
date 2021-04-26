@@ -17,5 +17,9 @@
     return this.data;
   };
 
+  RuCaptchaTask.prototype.getSolution = function (response) {
+    return response.request;
+  };
+
   tasks.RuCaptchaTask = RuCaptchaTask;
 })(BASCaptchaSolver.tasks, BASCaptchaSolver.utils);

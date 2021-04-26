@@ -14,7 +14,7 @@
     });
   });
   FunCaptchaTaskAntiCaptcha.prototype.getSolution = function (response) {
-    return response.solution[token];
+    return response.solution['token'];
   };
   solver.AntiCaptchaApi.prototype.FunCaptchaTask = FunCaptchaTaskAntiCaptcha;
 
@@ -30,9 +30,6 @@
       params: params
     });
   });
-  FunCaptchaTaskRuCaptcha.prototype.getSolution = function (response) {
-    return response.request;
-  };
   solver.RuCaptchaApi.prototype.FunCaptchaTask = FunCaptchaTaskRuCaptcha;
 
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

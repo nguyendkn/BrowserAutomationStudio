@@ -9,8 +9,7 @@
 
   function solveTask() {
     const task = _function_argument('task');
-    this.validateTask(task.name);
-    const data = task.serialize();
+    const data = this.validateTask(task).serialize();
 
     _call_function(this.makeRequest, { method: 'createTask', data: data })!
     sleep(this.pollingDelay)!

@@ -9,14 +9,15 @@
     this.pollingDelay = 5000;
   };
 
-  CaptchaApi.prototype.validateTask = function (name) {
-    if (this.supportedTasks.indexOf(name) < 0) {
+  CaptchaApi.prototype.validateTask = function (task) {
+    if (this.supportedTasks.indexOf(task.type) < 0) {
       if (_K === 'en') {
-        die('Service `' + this.name + '` does not support `' + name + '`', true);
+        die('Service `' + this.name + '` does not support `' + task.type + '`', true);
       } else {
-        die('Сервис `' + this.name + '` не поддерживает `' + name + '`', true);
+        die('Сервис `' + this.name + '` не поддерживает `' + task.type + '`', true);
       }
     }
+    return task;
   };
 
   CaptchaApi.prototype.setPollingInterval = function (value) {

@@ -56,9 +56,9 @@
       _function_return(JSON.parse(response));
     } catch (e) {
       if (_K === 'ru') {
-        fail('Невалидная JSON строка.');
+        fail('Невозможно обработать ответ от сервиса - невалидная JSON строка.');
       } else {
-        fail('Invalid JSON string.');
+        fail('Unable to process service response - invalid JSON string.');
       }
     }
   };

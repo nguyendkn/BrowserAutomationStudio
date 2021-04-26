@@ -75,7 +75,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		var resp = _result_function();
 		
 		if(resp.status=="ACCESS_NUMBER"){
-			_function_return({api:api, id:resp.id, origId:resp.id, number:resp.number});
+			_function_return({api:api, id:resp.id, origId:resp.id, number:api.removePlus(resp.number)});
 		}else{
 			api.errorHandler(resp.status, resp.data);
 		};
@@ -92,8 +92,12 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 	
 	this.setStatus = function(){
 		var confirmData = _function_argument("confirmData");
-		var status = _function_argument("status");
+		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
+		
+		if(status=="8" && api.service=="getsms.online"){
+			status = "10";
+		};
 		
 		_call_function(api.apiRequest,{action:"setStatus", options:{id:taskId, status:status}, isJSON:false})!
 		var resp = _result_function();

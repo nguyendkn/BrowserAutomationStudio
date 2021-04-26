@@ -58,6 +58,10 @@ _SMS.BaseApi = function(config, type){
 		return str.length > length ? str.slice(0, length) + '...' : str;
 	};
 	
+	this.removePlus = function(number){
+		return number.slice(0,1)=='+' ? number.slice(1) : number;
+	};
+	
 	this.parseJSON = function(data){
 		try{
 			var json = JSON.parse(data);

@@ -13,10 +13,12 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config){
 		_call_function(api.request,{url:url, method:"GET", params:params})!
 		var content = _result_function();
 		
-		var resp = api.parseJSON(content);
-		
-		if(checkErrors && (resp.name=="error" || resp.error)){
-			api.errorHandler(resp.name=="error" ? resp.code : resp.error, resp.message);
+		if(_is_json_string(content)){
+			var resp = api.parseJSON(content);
+			
+			if(checkErrors && (resp.name=="error" || resp.error)){
+				api.errorHandler(resp.name=="error" ? resp.code : resp.error, resp.message);
+			};	
 		};
 
 		_function_return(resp);
@@ -55,6 +57,46 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config){
 		_call_function(api.apiRequest,{action:"getnumber", options:{service:site, code:country}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.id, origId:resp.id, number:resp.number});
+		_function_return({api:api, id:resp.id, origId:resp.id, number:api.removePlus(resp.number)});
+	};
+	
+	this.getStatus = function(){
+		var confirmData = _function_argument("confirmData");
+		var taskId = confirmData.id;
+		
+		_call_function(api.apiRequest,{action:"getstatus", options:{id:taskId}})!
+		
+		_function_return(_result_function());
+	};
+	
+	this.setStatus = function(){
+		var confirmData = _function_argument("confirmData");
+		var status = _function_argument("status").toString();
+		var taskId = confirmData.id;
+		
+		if(["1","6"].indexOf(status) > -1){
+			_function_return();
+		};
+		
+		if(["-1","3","8"].indexOf(status) < 0){
+			api.errorHandler('UNSUPPORTED_STATUS', status);
+		};
+		
+		_if(status=="-1" || status=="8", function(){
+			_call_function(api.apiRequest,{action:"setstatus", options:{id:taskId, status:"1"}})!
+		})!
+		
+		_if(status=="3", function(){
+			_call_function(api.apiRequest,{action:"play", options:{id:taskId}})!
+		})!
+	};
+	
+	this.getCode = function(){
+		var confirmData = _function_argument("confirmData");
+		var taskId = confirmData.id;
+		
+		_call_function(api.apiRequest,{action:"getlatestcode", options:{id:taskId}})!
+			
+		_function_return(_result_function());
 	};
 });

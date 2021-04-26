@@ -55,7 +55,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config){
 			var resp = _result_function();
 
 			if(["TZ_NUM_PREPARE","TZ_NUM_WAIT","TZ_NUM_ANSWER"].indexOf(resp.response) > -1){
-				confirmData.number = resp.number;
+				confirmData.number = api.removePlus(resp.number);
 				_function_return(confirmData);
 			};
 
@@ -77,14 +77,24 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config){
 	};
 	
 	this.setStatus = function(){
-		fail(api.name + ': ' + (_K=="ru" ? 'Данный сервис не поддерживает установку статуса.' : 'This service does not support setting the status.'));
-	};
-	
-	this.setReady = function(){
 		var confirmData = _function_argument("confirmData");
+		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
-		_call_function(api.apiRequest,{action:"setReady", options:{tzid:taskId}, checkErrors:true})!
+		var actions = {
+			"-1":"setOperationUsed",
+			"1":"setReady",
+			"3":"getNumRepeat",
+			"6":"setOperationOk",
+			"8":"setOperationUsed"
+		};
+		
+		var action = actions[status];
+		if(_is_nilb(action)){
+			api.errorHandler('UNSUPPORTED_STATUS', status);
+		};
+		
+		_call_function(api.apiRequest,{action:action, options:{tzid:taskId}})!
 	};
 	
 	this.getCode = function(){

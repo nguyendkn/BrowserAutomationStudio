@@ -55,8 +55,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config){
 		var resp = _result_function();
 		
 		var id = resp.id;
-		var countryCode = resp.CountryCode;
-		var prefix = countryCode.slice(0,1)=="+" ? countryCode.slice(1) : countryCode;
+		var prefix = api.removePlus(resp.CountryCode);
 		var numberWithoutPrefix = resp.number;
 		var number = prefix + resp.number;
 		

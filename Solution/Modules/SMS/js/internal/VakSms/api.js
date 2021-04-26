@@ -58,6 +58,6 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config){
 		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.idNum, origId:resp.idNum, number:resp.tel});
+		_function_return({api:api, id:resp.idNum, origId:resp.idNum, number:api.removePlus(resp.tel)});
 	};
 });

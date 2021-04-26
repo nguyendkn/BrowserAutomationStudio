@@ -17,6 +17,11 @@ _SMS.BaseApi.prototype.errorHandler = function(error, errorText){
 			"en": "Timed out for execution of an action \"" + errorText + "\".",
 			"action": "fail"
 		},
+		"UNSUPPORTED_STATUS": {
+			"ru": "Установка статуса \"" + errorText + "\" не поддерживается.",
+			"en": "Setting status \"" + errorText + "\" is not supported.",
+			"action": "fail"
+		},
 		
 		/* sms-activate */
 		

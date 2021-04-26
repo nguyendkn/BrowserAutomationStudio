@@ -26,7 +26,7 @@ _SMS = {
 		var apiKey = _function_argument("apiKey");
 		var serverUrl = _function_argument("serverUrl");
 		
-		api = _SMS.init(service, apiKey, serverUrl);
+		var api = _SMS.init(service, apiKey, serverUrl);
 		
 		_call_function(api.getBalance,{})!
 		var balance = _result_function();
@@ -44,7 +44,7 @@ _SMS = {
 		var customCountry = _function_argument("customCountry");
 		var operator = _function_argument("operator");
 		
-		api = _SMS.init(service, apiKey, serverUrl);
+		var api = _SMS.init(service, apiKey, serverUrl);
 		
 		site = _is_nilb(customSite) ? (site=="All" ? "All" : api.getRawSite(site)) : customSite;
 		country = _is_nilb(customCountry) ? (country=="" ? "" : api.getRawCountry(country)) : customCountry;
@@ -70,7 +70,7 @@ _SMS = {
 			_BAS_SMSCONFIRMDATA = {};
 		};
 		
-		api = _SMS.init(service, apiKey, serverUrl);
+		var api = _SMS.init(service, apiKey, serverUrl);
 		
 		site = _is_nilb(customSite) ? api.getRawSite(site) : customSite;
 		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
@@ -98,7 +98,7 @@ _SMS = {
 		var code = null;
 		
 		_if(!confirmData.ready, function(){
-			_call_function(api.setReady,{confirmData:confirmData})!
+			_call_function(api.setStatus,{confirmData:confirmData, status:1})!
 			confirmData.ready = true;
 		})!
 		

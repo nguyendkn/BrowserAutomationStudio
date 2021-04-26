@@ -2169,15 +2169,20 @@ void MainApp::StartSectionCallback(int Id)
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = "about:blank";
-    AfterReadyToCreateBrowser(true);
+        AfterReadyToCreateBrowser(true);
     }
     CreateTooboxBrowser();
     CreateScenarioBrowser();
     Layout->UpdateState(MainLayout::Ready);
     if(BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-    if(BrowserScenario)
+    if(BrowserScenario && scenariov8handler && scenariov8handler->GetIsInitialized())
+    {
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + std::to_string(Id) + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }else
+    {
+        SetNextActionId = std::to_string(Id);
+    }
     Layout->UpdateTabs();
 }
 

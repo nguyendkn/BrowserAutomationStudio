@@ -97,9 +97,9 @@ _SMS = {
 		var api = confirmData.api;
 		var code = null;
 		
-		_if(!api.ready, function(){
+		_if(!confirmData.ready, function(){
 			_call_function(api.setReady,{confirmData:confirmData})!
-			api.ready = true;
+			confirmData.ready = true;
 		})!
 		
 		_do(function(){

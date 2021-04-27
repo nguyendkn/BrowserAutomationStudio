@@ -56,6 +56,62 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config){
 		_call_function(api.apiRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.order_id, origId:resp.order_id, number:('7' + resp.phone)});
+		_function_return({api:api, id:resp.order_id, lastId:resp.order_id, number:('7' + resp.phone)});
+	};
+	
+	this.getStatus = function(){
+		var confirmData = _function_argument("confirmData");
+		var taskId = confirmData.id;
+		var lastId = confirmData.lastId;
+		
+		var action = "getcode";
+		var options = {order_id:taskId};
+		if(confirmData.repeat){
+			action = "wrongcode";
+			options.last_id = lastId;
+		};
+		
+		_call_function(api.apiRequest,{action:action, options:options, checkErrors:false})!
+		var resp = _result_function();
+			
+		if(!_is_nilb(resp.data.id)){
+			confirmData.lastId = resp.data.id;
+		};
+		
+		_function_return(resp);
+	};
+	
+	this.setStatus = function(){
+		var confirmData = _function_argument("confirmData");
+		var status = _function_argument("status").toString();
+		var taskId = confirmData.id;
+		
+		api.validateStatus(["-1","1","3","6","8"], status);
+		
+		_if(status=="-1" || status=="8", function(){
+			_call_function(api.apiRequest,{action:(status=="-1" ? "refusenumber" : "bannumber"), options:{order_id:taskId}})!
+		})!
+		
+		_if(status=="3", function(){
+			confirmData.repeat = true;
+		})!
+	};
+	
+	this.getCode = function(){
+		var confirmData = _function_argument("confirmData");
+		var code = null;
+		
+		_call_function(api.getStatus,{confirmData:confirmData})!
+		var resp = _result_function();
+		
+		if(resp.status==200){
+			code = _is_nilb(resp.data.code) ? resp.data.fullSms : resp.data.code;
+		}else{
+			if(resp.status !== 400){
+				api.errorHandler(resp.status, resp.data.msg);
+			};
+		};
+			
+		_function_return(code);
 	};
 });

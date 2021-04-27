@@ -57,7 +57,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config){
 		_call_function(api.apiRequest,{action:"getnumber", options:{service:site, code:country}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.id, origId:resp.id, number:api.removePlus(resp.number)});
+		_function_return({api:api, id:resp.id, lastId:resp.id, number:api.removePlus(resp.number)});
 	};
 	
 	this.getStatus = function(){
@@ -74,13 +74,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config){
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
-		if(["1","6"].indexOf(status) > -1){
-			_function_return();
-		};
-		
-		if(["-1","3","8"].indexOf(status) < 0){
-			api.errorHandler('UNSUPPORTED_STATUS', status);
-		};
+		api.validateStatus(["-1","1","3","6","8"], status);
 		
 		_if(status=="-1" || status=="8", function(){
 			_call_function(api.apiRequest,{action:"setstatus", options:{id:taskId, status:"1"}})!
@@ -93,10 +87,15 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config){
 	
 	this.getCode = function(){
 		var confirmData = _function_argument("confirmData");
-		var taskId = confirmData.id;
+		var code = null;
 		
-		_call_function(api.apiRequest,{action:"getlatestcode", options:{id:taskId}})!
+		_call_function(api.getStatus,{confirmData:confirmData})!
+		var resp = _result_function();
+		
+		if([resp.small,resp.text].filter(function(e){return !_is_nilb(e) && e !== '-'}).length > 0){
+			code = (_is_nilb(resp.small) || resp.small=='-') ? resp.text : resp.small;
+		};
 			
-		_function_return(_result_function());
+		_function_return(code);
 	};
 });

@@ -60,4 +60,48 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config){
 		
 		_function_return({api:api, id:resp.idNum, origId:resp.idNum, number:api.removePlus(resp.tel)});
 	};
+	
+	this.getStatus = function(){
+		var confirmData = _function_argument("confirmData");
+		var taskId = confirmData.id;
+		
+		_call_function(api.apiRequest,{action:"getSmsCode", options:{idNum:taskId}})!
+		
+		_function_return(_result_function());
+	};
+	
+	this.setStatus = function(){
+		var confirmData = _function_argument("confirmData");
+		var status = _function_argument("status").toString();
+		var taskId = confirmData.id;
+		
+		var actions = {
+			"-1":"end",
+			"1":"1",
+			"3":"send",
+			"6":"6",
+			"8":"bad"
+		};
+		
+		api.validateStatus(Object.keys(actions), status);
+		
+		_if(status !== "1" && status !== "6", function(){
+			_call_function(api.apiRequest,{action:"setStatus", options:{idNum:taskId, status:actions[status]}})!
+			var resp = _result_function();
+			
+			if(["ready","update"].indexOf(resp.status) < 0){
+				api.errorHandler(resp.status);
+			};
+		})!
+	};
+	
+	this.getCode = function(){
+		var confirmData = _function_argument("confirmData");
+		var code = null;
+		
+		_call_function(api.getStatus,{confirmData:confirmData})!
+		var resp = _result_function();
+			
+		_function_return(resp.smsCode);
+	};
 });

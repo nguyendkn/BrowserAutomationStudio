@@ -43,7 +43,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config){
 		_call_function(api.apiRequest,{action:"getNum", options:{service:site, country:country}})!
 		var resp = _result_function();
 		
-		var confirmData = {api:api, id:resp.tzid, origId:resp.tzid, number:null};
+		var confirmData = {api:api, id:resp.tzid, lastId:resp.tzid, number:null};
 		
 		var maxNumberWait = Date.now() + 600000;
 		_do(function(){
@@ -89,10 +89,9 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config){
 			"8":"setOperationUsed"
 		};
 		
+		api.validateStatus(Object.keys(actions), status);
+		
 		var action = actions[status];
-		if(_is_nilb(action)){
-			api.errorHandler('UNSUPPORTED_STATUS', status);
-		};
 		
 		_call_function(api.apiRequest,{action:action, options:{tzid:taskId}})!
 	};
@@ -105,7 +104,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config){
 		var resp = _result_function();
 		
 		if(resp.response=='TZ_NUM_ANSWER'){
-			code = resp.msg;
+			code = _is_nilb(resp.msg) ? resp.full_msg : resp.msg;
 		}else{
 			if(resp.response != 'TZ_NUM_WAIT'){
 				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);

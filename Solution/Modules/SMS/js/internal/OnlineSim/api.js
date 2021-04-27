@@ -78,7 +78,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config){
 		_call_function(api.apiRequest,{action:"getNum", options:{service:site, country:country, number:true, simoperator:operator, reject:phoneException}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.tzid, origId:resp.tzid, number:api.removePlus(resp.number)});
+		_function_return({api:api, id:resp.tzid, lastId:resp.tzid, number:api.removePlus(resp.number)});
 	};
 	
 	this.getStatus = function(){
@@ -99,21 +99,17 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config){
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
-		if(status=="1"){
-			_function_return();
-		};
-		
 		var actions = {
+			"1":"1",
 			"3":"setOperationRevise",
 			"6":"setOperationOk"
 		};
 		
-		var action = actions[status];
-		if(_is_nilb(action)){
-			api.errorHandler('UNSUPPORTED_STATUS', status);
-		};
+		api.validateStatus(Object.keys(actions), status);
 		
-		_call_function(api.apiRequest,{action:action, options:{tzid:taskId}})!
+		_if(status !== "1", function(){
+			_call_function(api.apiRequest,{action:actions[status], options:{tzid:taskId}})!
+		})!
 	};
 	
 	this.getCode = function(){

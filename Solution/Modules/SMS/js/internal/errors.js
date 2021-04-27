@@ -479,6 +479,16 @@ _SMS.BaseApi.prototype.errorHandler = function(error, errorText){
 			"en": "Invalid data sent.",
 			"action": "fail"
 		},
+		"smsReceived": {
+			"ru": "На этот номер уже получен код подтверждения, отмена невозможна.",
+			"en": "This number has already received a confirmation code, cancellation is not possible.",
+			"action": "fail"
+		},
+		"waitSMS": {
+			"ru": "На этот номер уже отправлено смс, отмена невозможна.",
+			"en": "This number has already been sent sms, cancellation is not possible.",
+			"action": "fail"
+		},
 		
 		/* give-sms */
 		

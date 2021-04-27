@@ -75,7 +75,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		var resp = _result_function();
 		
 		if(resp.status=="ACCESS_NUMBER"){
-			_function_return({api:api, id:resp.id, origId:resp.id, number:api.removePlus(resp.number)});
+			_function_return({api:api, id:resp.id, lastId:resp.id, number:api.removePlus(resp.number)});
 		}else{
 			api.errorHandler(resp.status, resp.data);
 		};
@@ -105,12 +105,6 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		if(resp.status.indexOf('ACCESS_') != 0){
 			api.errorHandler(resp.status, resp.data);
 		};
-	};
-	
-	this.setReady = function(){
-		var confirmData = _function_argument("confirmData");
-		
-		_call_function(api.setStatus,{confirmData:confirmData, status:1})!
 	};
 	
 	this.getCode = function(){

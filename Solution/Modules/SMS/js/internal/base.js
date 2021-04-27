@@ -71,6 +71,12 @@ _SMS.BaseApi = function(config, type){
 		return json;
 	};
 	
+	this.validateStatus = function(supported, status){
+		if(supported.indexOf(status) < 0){
+			api.errorHandler('UNSUPPORTED_STATUS', status);
+		};
+	};
+	
 	this.request = function(){
 		var url = _function_argument("url");
 		var method = _function_argument("method");

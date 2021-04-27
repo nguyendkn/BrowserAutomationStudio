@@ -36,6 +36,10 @@
         const encodedKey = encodeURIComponent(key);
         return encodedKey + '=' + encodedValue;
       }).join('&')
-    }
+    },
+
+    sleep: function () {
+      sleep(_function_argument('time'))!
+    },
   };
 })(this);

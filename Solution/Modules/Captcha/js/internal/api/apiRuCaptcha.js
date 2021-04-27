@@ -2,31 +2,15 @@
   solver.RuCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
     solver.CaptchaApi.call(this, 'RuCaptchaApi', options);
     this.makeRequest = _.bind(makeRequest, this);
-    this.solveTask = _.bind(solveTask, this);
   });
 
-  function solveTask() {
-    const task = _function_argument('task');
-    const data = this.validateTask(task).serialize();
+  solver.RuCaptchaApi.prototype.getCreateTaskPayload = function (data) {
+    return { method: 'in.php', data: data };
+  };
 
-    _call_function(this.makeRequest, { method: 'in.php', data: data })!
-    sleep(this.taskWaitDelay)!
-
-    _do_with_params({ taskId: _result_function().request, task: data, self: this }, function () {
-      const taskId = _cycle_param('taskId');
-      const task = _cycle_param('task');
-      const self = _cycle_param('self');
-
-      _call_function(self.makeRequest, { method: 'res.php', data: { action: 'get', id: taskId } })!
-      const response = _result_function();
-
-      if (response.status === 1) {
-        _set_result(task.getSolution(response));
-        _break();
-      }
-      sleep(self.taskWaitInterval)!
-    })!
-  }
+  solver.RuCaptchaApi.prototype.getTaskSolutionPayload = function (id) {
+    return { method: 'res.php', data: { action: 'get', id: task.id } };
+  };
 
   function makeRequest() {
     const method = _function_argument('method') || '';

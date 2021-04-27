@@ -1,42 +1,44 @@
 (function (global) {
   function CaptchaSolver() {
     this.tasks = {};
+    this.utils = {};
+  }
 
-    this.solveFunCaptcha = function () {
-      BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
-      _call_function(BASCaptchaSolver.ensureSelector, {})!
-      BASCaptchaSolver.path().css('*[name="fc-token"]').attr('value')!
+  CaptchaSolver.prototype.solveFunCaptcha = function () {
+    BASCaptchaSolver.utils.enableDebug();
+    BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
+    _call_function(BASCaptchaSolver.ensureSelector, {})!
+    BASCaptchaSolver.path().css('*[name="fc-token"]').attr('value')!
 
-      const data = _result().split('|').map(function (e) {
-        return e.split('=');
-      });
+    const data = _result().split('|').map(function (e) {
+      return e.split('=');
+    });
 
-      const surl = data.filter(function (el) {
-        return el[0] === 'surl'
-      })[0][1];
+    const surl = data.filter(function (el) {
+      return el[0] === 'surl'
+    })[0][1];
 
-      const pk = data.filter(function (el) {
-        return el[0] === 'pk'
-      })[0][1];
+    const pk = data.filter(function (el) {
+      return el[0] === 'pk'
+    })[0][1];
 
-      _call_function(BASCaptchaSolver.api.solveTask, {
-        task: new BASCaptchaSolver.api.FunCaptchaTask({
-          pageurl: _function_argument('pageUrl'),
-          surl: surl,
-          pk: pk,
-        })
-      })!
+    _call_function(BASCaptchaSolver.api.solveTask, {
+      task: new BASCaptchaSolver.api.FunCaptchaTask({
+        pageurl: _function_argument('pageUrl'),
+        surl: surl,
+        pk: pk,
+      })
+    })!
 
-      _call_function(submitFunCaptcha, { token: _result_function() })!
-    };
+    _call_function(submitFunCaptcha, { token: _result_function() })!
+  };
 
-    this.ensureSelector = function () {
-      _call(BASCaptchaSolver.waiter, null)!
-      BASCaptchaSolver.path().exist()!
-      if (_result() !== 1) {
-        _break();
-      }
-    };
+  CaptchaSolver.prototype.ensureSelector = function () {
+    _call(BASCaptchaSolver.waiter, null)!
+    BASCaptchaSolver.path().exist()!
+    if (_result() !== 1) {
+      _break();
+    }
   };
 
   function submitFunCaptcha() {

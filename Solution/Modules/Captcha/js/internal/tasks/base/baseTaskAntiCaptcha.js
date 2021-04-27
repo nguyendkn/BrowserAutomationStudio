@@ -22,5 +22,10 @@
     return response.solution;
   };
 
+  AntiCaptchaTask.prototype.setId = function (response) {
+    this.id = response['taskId'];
+    return this;
+  };
+
   tasks.AntiCaptchaTask = AntiCaptchaTask;
 })(BASCaptchaSolver.tasks, BASCaptchaSolver.utils);

@@ -1,5 +1,6 @@
-(function (solver) {
+(function (solver, _) {
   function CaptchaApi(type, options) {
+    this.solveTask = _.bind(solveTask, this);
     this.options = options;
     this.type = type;
     this.options.taskWaitInterval = 2000;
@@ -63,5 +64,31 @@
     }
   };
 
+  function solveTask() {
+    const task = this.validateTask(_function_argument('task'));
+
+    _call_function(this.makeRequest, this.getCreateTaskPayload(task.serialize()))!
+    _call_function(_.sleep, { time: this.taskWaitDelay })!
+    _.log('Task created, wait for response');
+
+    _do_with_params({ task: task.setId(_result_function()), self: this }, function () {
+      const task = _cycle_param('task');
+      const self = _cycle_param('self');
+      const _ = BASCaptchaSolver.utils;
+
+      _.log('Waiting for response - "' + VAR_CYCLE_INDEX + '" iteration');
+      _call_function(self.makeRequest, self.getTaskSolutionPayload(task))!
+      _.log('Response from server: ' + JSON.stringify(_result_function()));
+      const response = _result_function();
+
+      if (response.status === 'ready' || response.status === 1) {
+        _.log('Solution is ready - ' + task.getSolution(response));
+        _set_result(task.getSolution(response));
+        _break();
+      }
+      _call_function(_.sleep, { time: self.taskWaitInterval })!
+    })!
+  };
+
   solver.CaptchaApi = CaptchaApi;
-})(BASCaptchaSolver);
+})(BASCaptchaSolver, BASCaptchaSolver.utils);

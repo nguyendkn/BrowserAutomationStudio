@@ -48,7 +48,7 @@ public:
     std::vector<std::function<void()> > EventGetUrl;
     std::vector<std::function<void()> > EventGetBrowserScreenSettings;
     std::vector<std::function<void(int, int)> > EventResize;
-    std::vector<std::function<void(const std::string&)> > EventSetWindow;
+    std::vector<std::function<void(const std::string&, bool)> > EventSetWindow;
     std::vector<std::function<void(const std::string&)> > EventHighlightAction;
     std::vector<std::function<void(int, int)> > EventMouseClick;
     std::vector<std::function<void(int, int)> > EventMouseClickUp;

@@ -1032,7 +1032,7 @@ void MainApp::HighlightActionCallback(const std::string& ActionId)
 
 }
 
-void MainApp::SetWindowCallback(const std::string& Window)
+void MainApp::SetWindowCallback(const std::string& Window, bool IsPlayingScript)
 {
     WORKER_LOG(std::string("SetWindowCallback<<") + Window);
     Data->_ParentWindowHandle = (HWND)std::stoi(Window);
@@ -1040,6 +1040,9 @@ void MainApp::SetWindowCallback(const std::string& Window)
     if(Settings->Maximized())
         Layout->MinimizeOrMaximize(Data->_MainWindowHandle,Data->_ParentWindowHandle);
     ForceUpdateWindowPositionWithParent();
+
+    if(IsPlayingScript)
+        StartPlayScriptOnStart = true;
 
     SendTextResponce("<WindowAttached></WindowAttached>");
 }
@@ -2169,15 +2172,20 @@ void MainApp::StartSectionCallback(int Id)
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = "about:blank";
-    AfterReadyToCreateBrowser(true);
+        AfterReadyToCreateBrowser(true);
     }
     CreateTooboxBrowser();
     CreateScenarioBrowser();
     Layout->UpdateState(MainLayout::Ready);
     if(BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-    if(BrowserScenario)
+    if(BrowserScenario && scenariov8handler && scenariov8handler->GetIsInitialized())
+    {
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + std::to_string(Id) + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }else
+    {
+        SetNextActionId = std::to_string(Id);
+    }
     Layout->UpdateTabs();
 }
 
@@ -3541,6 +3549,13 @@ void MainApp::HandleScenarioBrowserEvents()
         SetNextActionId.clear();
     }
 
+    if(scenariov8handler->GetIsInitialized() && StartPlayScriptOnStart)
+    {
+        if(BrowserScenario)
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Play()"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        StartPlayScriptOnStart = false;
+    }
+
     {
         std::pair<bool, bool> res = scenariov8handler->GetIsInsideElementLoop();
         if(res.second)
@@ -3607,16 +3622,16 @@ void MainApp::HandleScenarioBrowserEvents()
     }
 
 
-    std::pair<std::string, bool> res2 = scenariov8handler->GetExecuteCode();
+    std::pair< std::pair<std::string,bool>, bool> res2 = scenariov8handler->GetExecuteCode();
     if(res2.second)
     {
         Layout->UpdateState(MainLayout::Hold);
         if(BrowserToolbox)
-            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-        std::string CodeSend = res2.first;
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        std::string CodeSend = res2.first.first;
         WORKER_LOG(std::string("GetExecuteCode<<") + CodeSend);
         xml_encode(CodeSend);
-        SendTextResponce(std::string("<WaitCode>") + CodeSend + std::string("</WaitCode>"));
+        SendTextResponce(std::string("<WaitCode is_play='") + std::to_string(res2.first.second) + std::string("' >") + CodeSend + std::string("</WaitCode>"));
     }
 
     if(Data->IsRecord)
@@ -3823,7 +3838,7 @@ void MainApp::HandleToolboxBrowserEvents()
                     if(BrowserToolbox)
                         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(CodeSend).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
                     xml_encode(CodeSend);
-                    std::string DelayedSendCode = std::string("<WaitCode>") + CodeSend + std::string("</WaitCode>");
+                    std::string DelayedSendCode = std::string("<WaitCode is_play='0' >") + CodeSend + std::string("</WaitCode>");
                     if(res.first.HowToExecute == ToolboxV8Handler::OnlyExecute)
                     {
                         SendTextResponce(DelayedSendCode);
@@ -3869,7 +3884,7 @@ void MainApp::HandleToolboxBrowserEvents()
             std::string CodeSend = res2.first.Execute;
             WORKER_LOG(std::string("GetExecuteCode<<") + CodeSend);
             xml_encode(CodeSend);
-            SendTextResponce(std::string("<WaitCode>") + CodeSend + std::string("</WaitCode>"));
+            SendTextResponce(std::string("<WaitCode is_play='0' >") + CodeSend + std::string("</WaitCode>"));
 
         }
     }

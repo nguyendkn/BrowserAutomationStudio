@@ -2013,6 +2013,7 @@ void MainWindow::LoadActual(const QString& filename)
 
 void MainWindow::Record()
 {
+    _RecordProcessCommunication->OnRecord();
     {
         CheckScript Check;
         if(!Check.Check(TextEditor->GetText()))
@@ -2030,6 +2031,7 @@ void MainWindow::Record()
 
 void MainWindow::Run()
 {
+    _RecordProcessCommunication->OnRun();
     {
         CheckScript Check;
         if(!Check.Check(TextEditor->GetText()))

@@ -34,6 +34,7 @@ private:
     PrepareFunctionResultStruct PrepareFunctionResult;
 
     std::string LastResultExecute;
+    bool LastResultIsPlay;
     std::string LastCurrentFunction;
     std::string OpenActionName;
     bool Changed;
@@ -100,7 +101,7 @@ public:
     std::pair<WebInterfaceTaskResultStruct, bool> GetWebInterfaceTaskResult();
     std::pair<PrepareFunctionResultStruct, bool> GetPrepareFunctionResult();
 
-    std::pair<std::string, bool> GetExecuteCode();
+    std::pair< std::pair<std::string,bool>, bool> GetExecuteCode();
     RestartType GetNeedRestart();
     bool GetIsInitialized();
     bool GetIsEditEnd();

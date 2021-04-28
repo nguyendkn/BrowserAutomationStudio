@@ -1,13 +1,13 @@
 <div class="container-fluid">
   <%= _.template($('#input_constructor').html())({
     variants: [ "anticaptcha", "rucaptcha", "2captcha" ],
-    description: tr("Solve Method"),
+    description: tr("Solve Serivce"),
     value_string: "anticaptcha",
     default_selector: "string",
     disable_int: true,
     id: "Service",
     help: {
-      description: tr(""),
+      description: tr("Captcha solving service"),
       examples: [
         { code: "anticaptcha", description: tr("Solve with http://anti-captcha.com/ service") },
         { code: "rucaptcha", description: tr("Solve with http://rucaptcha.com/ service") },
@@ -16,33 +16,17 @@
     }
   }) %>
   <%= _.template($('#input_constructor').html())({
+    help: { description: tr("Captcha solving service API key") },
     description: tr("Service Api Key"),
     default_selector: "string",
     disable_int: true,
-    id: "ApiKey",
-    help: {
-      description: tr("")
-    }
+    id: "ApiKey"
   }) %>
   <div style="margin-left: 20px;">
     <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
     <label for="AdvancedCheck" class="tr">Advanced settings.</label>
   </div>
   <span id="Advanced" style="display: none;">
-    <%= _.template($('#input_constructor').html())({
-      description: tr("Server url. Can be blank"),
-      default_selector: "string",
-      disable_int: true,
-      id: "ApiUrl",
-      help: {
-        description: tr("String which contains server url."), 
-        examples: [
-          { code: tr("Empty string"), description: tr("Use default server url, http://rucaptcha.com for rucaptcha, etc") },
-          { code: "http://127.0.0.3:8083/" },
-          { code: "http://127.0.0.1:8888/" },
-        ]
-      }
-    }) %>
     <%= _.template($('#input_constructor').html())({
       description: tr("Send current proxy to solver service"),
       variants: [ "true", "false" ],

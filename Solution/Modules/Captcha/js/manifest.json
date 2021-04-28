@@ -62,6 +62,7 @@
     "internal/api/apiRuCaptcha.js",
     "internal/api/apiAntiCaptcha.js",
     "internal/api/services.js",
+    "internal/api/utils.js",
     "internal/tasks/base/baseTask.js",
     "internal/tasks/base/baseTaskRuCaptcha.js",
     "internal/tasks/base/baseTaskAntiCaptcha.js",

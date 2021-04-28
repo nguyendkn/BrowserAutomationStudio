@@ -27,11 +27,8 @@
     })!
 
     const response = _result_function();
-    if (response && response.errorId) {
-      const description = response.errorDescription;
-      const code = response.errorCode;
-      fail(code + ':' + description);
-    }
+    const error = solver.CaptchaApi.getError(response);
+    if (error) fail(error.errorCode);
     _function_return(response);
   }
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

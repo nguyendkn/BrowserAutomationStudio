@@ -28,6 +28,8 @@
     })!
 
     const response = _result_function();
+    const error = solver.CaptchaApi.getError(response);
+    if (error) fail(error.errorCode);
     _function_return(response);
   }
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

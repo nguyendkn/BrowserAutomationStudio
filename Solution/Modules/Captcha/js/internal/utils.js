@@ -1,5 +1,5 @@
 (function (global) {
-  var isDebug = false;
+  var debug = false;
 
   global.BASCaptchaSolver.utils = {
     inherit: function (proto, fn) {
@@ -9,15 +9,15 @@
     },
 
     disableDebug: function () {
-      isDebug = false;
+      debug = false;
     },
 
     enableDebug: function () {
-      isDebug = true;
+      debug = true;
     },
 
     log: function (message) {
-      if (isDebug) {
+      if (debug) {
         log('[CaptchaSolver]: ' + message);
       }
     },

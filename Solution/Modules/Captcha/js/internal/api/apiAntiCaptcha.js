@@ -22,7 +22,7 @@
       method: 'POST',
       payload: {
         data: ['data', JSON.stringify(data)],
-        url: this.options.apiUrl + '/' + method,
+        query: method,
       }
     })!
 

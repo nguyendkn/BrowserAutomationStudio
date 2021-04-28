@@ -22,7 +22,7 @@
       content: 'urlencode',
       method: 'POST',
       payload: {
-        url: this.options.apiUrl + '/' + method + '?' + _.urlEncode(data),
+        query: method + '?' + _.urlEncode(data),
         data: [],
       }
     })!

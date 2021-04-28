@@ -45,7 +45,7 @@
     const method = _function_argument('method');
 
     _switch_http_client_internal();
-    http_client_post(payload.url, payload.data, {
+    http_client_post(this.options.apiUrl + '/' + payload.query, payload.data, {
       'content-type': content,
       'encoding': encoding,
       'method': method,

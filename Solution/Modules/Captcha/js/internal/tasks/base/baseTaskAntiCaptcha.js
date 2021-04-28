@@ -1,6 +1,6 @@
 (function (tasks, _) {
-  const AntiCaptchaTask = _.inherit(tasks.BaseTask, function (type, params, config) {
-    tasks.BaseTask.call(this, 'AntiCaptchaApi', type, params, config);
+  const AntiCaptchaTask = _.inherit(tasks.BaseTask, function (type, params) {
+    tasks.BaseTask.call(this, type, params);
     this.data['type'] = this.name;
   });
 

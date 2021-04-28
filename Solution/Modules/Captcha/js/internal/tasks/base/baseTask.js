@@ -1,10 +1,9 @@
 (function (solver) {
-  const BaseTask = function (api, type, options) {
+  const BaseTask = function (type, options) {
     this.params = options.params;
     this.rules = options.rules;
     this.name = options.name;
     this.type = type;
-    this.api = api;
     this.data = {};
   };
 

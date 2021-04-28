@@ -65,21 +65,21 @@
   };
 
   function solveTask() {
-    const task = this.validateTask(_function_argument('task'));
+    const self = this, task = self.validateTask(_function_argument('task'));
 
-    _call_function(this.makeRequest, this.getCreateTaskPayload(task.serialize()))!
+    _call_function(self.makeRequest, self.getCreateTaskPayload(task.serialize()))!
     _call_function(_.sleep, { time: self.options.taskWaitDelay })!
     _.log('Task created, wait for response');
 
-    _do_with_params({ task: task.setId(_result_function()), self: this }, function () {
+    _do_with_params({ task: task.setId(_result_function()), self: self }, function () {
       const task = _cycle_param('task');
       const self = _cycle_param('self');
       const _ = BASCaptchaSolver.utils;
 
       _.log('Waiting for response - "' + VAR_CYCLE_INDEX + '" iteration');
       _call_function(self.makeRequest, self.getTaskSolutionPayload(task))!
-      _.log('Response from server: ' + JSON.stringify(_result_function()));
       const response = _result_function();
+      _.log('Response from server: ' + JSON.stringify(response));
 
       if (response.status === 'ready' || response.status === 1) {
         _.log('Solution is ready - ' + task.getSolution(response));

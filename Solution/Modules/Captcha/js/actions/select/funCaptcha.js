@@ -3,8 +3,8 @@ const service = GetInputConstructorValue('Service', loader);
 const apiUrl = GetInputConstructorValue('ApiUrl', loader);
 const apiKey = GetInputConstructorValue('ApiKey', loader);
 
-if (service['original'].length === 0) {
-  return Invalid('Method is empty');
+if (service.original.length === 0) {
+  return Invalid('Service is empty');
 }
 
 try {
@@ -14,6 +14,5 @@ try {
     apiUrl: apiUrl.updated,
     apiKey: apiKey.updated
   }), 0);
-
   BrowserAutomationStudio_Append('', BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
 } catch (e) { }

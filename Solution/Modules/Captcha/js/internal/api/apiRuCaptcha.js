@@ -8,7 +8,7 @@
     return { method: 'in.php', data: data };
   };
 
-  solver.RuCaptchaApi.prototype.getTaskSolutionPayload = function (id) {
+  solver.RuCaptchaApi.prototype.getTaskSolutionPayload = function (task) {
     return { method: 'res.php', data: { action: 'get', id: task.id } };
   };
 

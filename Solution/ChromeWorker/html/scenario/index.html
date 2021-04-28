@@ -3697,7 +3697,7 @@
 
               console.log("Patch length " + patch.length)
 
-              BrowserAutomationStudio_SendCode(patch, extract_functions(code), extract_resources(code), extract_variables(code), extract_global_variables(code), extract_labels(code));
+              BrowserAutomationStudio_SendCode(patch, extract_functions(code), extract_resources(code), extract_variables(code), extract_global_variables(code), extract_labels(code), _GobalModel.get("execute_next_id"));
               console.log("Send in " + (Date.now() - time).toString())
             }catch(e)
             {}

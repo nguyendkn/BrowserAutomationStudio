@@ -181,7 +181,7 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
 {
     if(name == std::string("BrowserAutomationStudio_SendCode"))
     {
-        if (arguments->GetSize() == 6 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_STRING && arguments->GetType(2) == VTYPE_STRING && arguments->GetType(3) == VTYPE_STRING&& arguments->GetType(4) == VTYPE_STRING&& arguments->GetType(5) == VTYPE_STRING)
+        if (arguments->GetSize() == 7 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_STRING && arguments->GetType(2) == VTYPE_STRING && arguments->GetType(3) == VTYPE_STRING&& arguments->GetType(4) == VTYPE_STRING&& arguments->GetType(5) == VTYPE_STRING)
         {
             LastResultStruct NewElement;
             NewElement.LastResultCodeDiff = arguments->GetString(0);
@@ -190,6 +190,8 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             NewElement.LastResultVariables = arguments->GetString(3);
             NewElement.LastResultGlobalVariables = arguments->GetString(4);
             NewElement.LastResultLabels = arguments->GetString(5);
+            if(arguments->GetType(6) == VTYPE_INT)
+                NewElement.ExecuteNextId = arguments->GetInt(6);
             LastResult.push_back(NewElement);
             Changed = true;
         }

@@ -17,6 +17,7 @@ public:
         std::string LastResultFunctions;
         std::string LastResultResources;
         std::string LastResultLabels;
+        int ExecuteNextId = -1;
     };
     struct WebInterfaceTaskResultStruct
     {

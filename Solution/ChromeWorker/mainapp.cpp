@@ -3580,7 +3580,7 @@ void MainApp::HandleScenarioBrowserEvents()
             if(AdditionalResourcesPrev != AdditionalResources)
                 ResourcesChanged = true;
             xml_encode(new_code);
-            SendTextResponce(std::string("<ReceivedCode>") + new_code + std::string("</ReceivedCode>"));
+            SendTextResponce(std::string("<ReceivedCode execution_point=\"") + std::to_string(Result.ExecuteNextId) + std::string("\" >") + new_code + std::string("</ReceivedCode>"));
         }
         if(!DelayedSend.empty())
         {
@@ -3834,7 +3834,16 @@ void MainApp::HandleToolboxBrowserEvents()
                     {
                         CodeSend += std::string("_sa(") + id + std::string(");") + res.first.Code;
                     }
-                    CodeSend += std::string(" \n section_end()!");
+
+                    if(res.first.CanRestartBrowser)
+                    {
+                        //Set current action after possible browser restart
+                        CodeSend += std::string(" \n section_start(\"_execution_point\", 0)!");
+                    }else
+                    {
+                        //Do nothing with execution point
+                        CodeSend += std::string(" \n section_end()!");
+                    }
                     if(BrowserToolbox)
                         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(CodeSend).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
                     xml_encode(CodeSend);

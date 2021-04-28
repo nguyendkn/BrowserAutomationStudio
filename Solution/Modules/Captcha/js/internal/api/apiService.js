@@ -68,7 +68,7 @@
     const task = this.validateTask(_function_argument('task'));
 
     _call_function(this.makeRequest, this.getCreateTaskPayload(task.serialize()))!
-    _call_function(_.sleep, { time: this.taskWaitDelay })!
+    _call_function(_.sleep, { time: self.options.taskWaitDelay })!
     _.log('Task created, wait for response');
 
     _do_with_params({ task: task.setId(_result_function()), self: this }, function () {
@@ -86,7 +86,7 @@
         _set_result(task.getSolution(response));
         _break();
       }
-      _call_function(_.sleep, { time: self.taskWaitInterval })!
+      _call_function(_.sleep, { time: self.options.taskWaitInterval })!
     })!
   };
 

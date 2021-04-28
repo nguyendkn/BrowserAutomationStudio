@@ -12,23 +12,19 @@
     return { method: 'getTaskResult', data: { taskId: task.id } };
   };
 
-  function makeRequest() {
-    const method = _function_argument('method') || '';
-    const data = _function_argument('data') || {};
+  solver.AntiCaptchaApi.prototype.setDefaultRequestParams = function (data) {
     data.clientKey = this.options.apiKey;
+    data.json = 1;
+  };
 
-    _call_function(this.request, {
+  solver.AntiCaptchaApi.prototype.getDefaultRequestOptions = function (data, method) {
+    return {
       content: 'application/json',
       method: 'POST',
       payload: {
         data: ['data', JSON.stringify(data)],
         query: method,
       }
-    })!
-
-    const response = _result_function();
-    const error = solver.CaptchaApi.getError(response);
-    if (error) fail(error.errorCode);
-    _function_return(response);
-  }
+    };
+  };
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

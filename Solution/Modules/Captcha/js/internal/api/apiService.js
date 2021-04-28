@@ -1,5 +1,6 @@
 (function (solver, _) {
   function CaptchaApi(type, options) {
+    this.makeRequest = _.bind(makeRequest, this);
     this.solveTask = _.bind(solveTask, this);
     this.options = options;
     this.type = type;
@@ -88,6 +89,18 @@
       }
       _call_function(_.sleep, { time: self.options.taskWaitInterval })!
     })!
+  };
+
+  function makeRequest() {
+    const method = _function_argument('method');
+    const data = _function_argument('data');
+    this.setDefaultRequestParams(data);
+
+    _call_function(this.request, this.getDefaultRequestOptions(data, method))!
+    const response = _result_function();
+    const error = solver.CaptchaApi.getError(response);
+    if (error) fail(error.errorDescription);
+    _function_return(response);
   };
 
   solver.CaptchaApi = CaptchaApi;

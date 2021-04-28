@@ -12,24 +12,19 @@
     return { method: 'res.php', data: { action: 'get', id: task.id } };
   };
 
-  function makeRequest() {
-    const method = _function_argument('method') || '';
-    const data = _function_argument('data') || {};
+  solver.RuCaptchaApi.prototype.setDefaultRequestParams = function (data) {
     data.key = this.options.apiKey;
     data.json = 1;
+  };
 
-    _call_function(this.request, {
+  solver.RuCaptchaApi.prototype.getDefaultRequestOptions = function (data, method) {
+    return {
       content: 'urlencode',
       method: 'POST',
       payload: {
         query: method + '?' + _.urlEncode(data),
         data: [],
       }
-    })!
-
-    const response = _result_function();
-    const error = solver.CaptchaApi.getError(response);
-    if (error) fail(error.errorCode);
-    _function_return(response);
-  }
+    }
+  };
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

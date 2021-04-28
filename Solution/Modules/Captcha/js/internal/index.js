@@ -47,7 +47,7 @@
     BASCaptchaSolver.path().css('*[name="fc-token"]').script(CAPTCHA_TOKEN_SCRIPT)!
     page().script("_BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved)()")!
     delete CAPTCHA_TOKEN_SCRIPT;
-  }
+  };
 
   global.BASCaptchaSolver = new CaptchaSolver();
 })(this);

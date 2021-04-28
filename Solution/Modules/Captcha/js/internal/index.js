@@ -30,7 +30,7 @@
       })
     })!
 
-    _call_function(submitFunCaptcha, { token: _result_function() })!
+    _call_function(BASCaptchaSolver.submitFunCaptcha, { token: _result_function() })!
   };
 
   CaptchaSolver.prototype.ensureSelector = function () {
@@ -41,11 +41,12 @@
     }
   };
 
-  function submitFunCaptcha() {
-    const script = 'self.value = ' + JSON.stringify(_function_argument('token'));
-    get_element_selector(_SELECTOR).css('*[name="verification-token"]').script(script)!
-    get_element_selector(_SELECTOR).css('*[name="fc-token"]').script(script)!
+  CaptchaSolver.prototype.submitFunCaptcha = function () {
+    CAPTCHA_TOKEN_SCRIPT = 'self.value = ' + JSON.stringify(_function_argument('token'));
+    BASCaptchaSolver.path().css('*[name="verification-token"]').script(CAPTCHA_TOKEN_SCRIPT)!
+    BASCaptchaSolver.path().css('*[name="fc-token"]').script(CAPTCHA_TOKEN_SCRIPT)!
     page().script("_BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved)()")!
+    delete CAPTCHA_TOKEN_SCRIPT;
   }
 
   global.BASCaptchaSolver = new CaptchaSolver();

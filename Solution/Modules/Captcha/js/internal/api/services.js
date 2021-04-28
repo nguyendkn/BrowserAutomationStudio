@@ -22,9 +22,9 @@
 
     if (!service) {
       if (_K === 'en') {
-        die('Service "' + service + '" is unavailable', true);
+        die('Service "' + options.service + '" is unavailable', true);
       } else {
-        die('Сервис "' + service + '" недоступен', true);
+        die('Сервис "' + options.service + '" недоступен', true);
       }
     }
 

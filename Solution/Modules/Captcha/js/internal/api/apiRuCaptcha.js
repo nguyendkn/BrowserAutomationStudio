@@ -1,7 +1,6 @@
 (function (solver, _) {
   solver.RuCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
     solver.CaptchaApi.call(this, 'RuCaptchaApi', options);
-    this.makeRequest = _.bind(makeRequest, this);
   });
 
   solver.RuCaptchaApi.prototype.getCreateTaskPayload = function (data) {
@@ -19,12 +18,9 @@
 
   solver.RuCaptchaApi.prototype.getDefaultRequestOptions = function (data, method) {
     return {
+      payload: { query: method + '?' + _.urlEncode(data), data: [] },
       content: 'urlencode',
-      method: 'POST',
-      payload: {
-        query: method + '?' + _.urlEncode(data),
-        data: [],
-      }
+      method: 'POST'
     }
   };
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

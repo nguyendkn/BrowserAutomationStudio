@@ -1,6 +1,7 @@
 (function (solver, _) {
   function CaptchaApi(type, options) {
     this.makeRequest = _.bind(makeRequest, this);
+    this.httpRequest = _.bind(httpRequest, this);
     this.solveTask = _.bind(solveTask, this);
     this.options = options;
     this.type = type;
@@ -39,32 +40,6 @@
     return this;
   };
 
-  CaptchaApi.prototype.request = function () {
-    const encoding = _function_argument('encoding') || 'UTF-8';
-    const payload = _function_argument('payload');
-    const content = _function_argument('content');
-    const method = _function_argument('method');
-
-    _switch_http_client_internal();
-    http_client_post(this.options.apiUrl + '/' + payload.query, payload.data, {
-      'content-type': content,
-      'encoding': encoding,
-      'method': method,
-    })!
-    const response = http_client_encoded_content('auto');
-    _switch_http_client_main();
-
-    try {
-      _function_return(JSON.parse(response));
-    } catch (e) {
-      if (_K === 'ru') {
-        fail('Невозможно обработать ответ от сервиса - невалидная JSON строка.');
-      } else {
-        fail('Unable to process service response - invalid JSON string.');
-      }
-    }
-  };
-
   function solveTask() {
     const self = this, task = self.validateTask(_function_argument('task'));
 
@@ -96,11 +71,36 @@
     const data = _function_argument('data');
     this.setDefaultRequestParams(data);
 
-    _call_function(this.request, this.getDefaultRequestOptions(data, method))!
+    _call_function(this.httpRequest, this.getDefaultRequestOptions(data, method))!
     const response = _result_function();
     const error = solver.CaptchaApi.getError(response);
     if (error) fail(error.errorDescription);
     _function_return(response);
+  };
+
+  function httpRequest() {
+    const payload = _function_argument('payload');
+    const content = _function_argument('content');
+    const method = _function_argument('method');
+
+    _switch_http_client_internal();
+    http_client_post(this.options.apiUrl + '/' + payload.query, payload.data, {
+      'content-type': content,
+      'encoding': 'UTF-8',
+      'method': method,
+    })!
+    const response = http_client_encoded_content('auto');
+    _switch_http_client_main();
+
+    try {
+      _function_return(JSON.parse(response));
+    } catch (e) {
+      if (_K === 'ru') {
+        fail('Невозможно обработать ответ от сервиса - невалидная JSON строка.');
+      } else {
+        fail('Unable to process service response - invalid JSON string.');
+      }
+    }
   };
 
   solver.CaptchaApi = CaptchaApi;

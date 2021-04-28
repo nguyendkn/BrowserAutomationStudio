@@ -1,7 +1,6 @@
 (function (solver, _) {
   solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
     solver.CaptchaApi.call(this, 'AntiCaptchaApi', options);
-    this.makeRequest = _.bind(makeRequest, this);
   });
 
   solver.AntiCaptchaApi.prototype.getCreateTaskPayload = function (data) {
@@ -19,12 +18,9 @@
 
   solver.AntiCaptchaApi.prototype.getDefaultRequestOptions = function (data, method) {
     return {
+      payload: { data: ['data', JSON.stringify(data)], query: method },
       content: 'application/json',
       method: 'POST',
-      payload: {
-        data: ['data', JSON.stringify(data)],
-        query: method,
-      }
     };
   };
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

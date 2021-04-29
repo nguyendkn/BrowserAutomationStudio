@@ -5,9 +5,6 @@
     this.solveTask = _.bind(solveTask, this);
     this.options = options;
     this.type = type;
-    this.options.taskWaitInterval = 2000;
-    this.options.taskWaitDelay = 5000;
-  };
   };
 
   CaptchaApi.prototype.update = function (options) {
@@ -31,10 +28,12 @@
   };
 
   function solveTask() {
-    const self = this, task = self.validateTask(_function_argument('task'));
+    const self = this, task = _function_argument('task').validate(self);
+    task.waitInterval = _function_argument('taskWaitInterval') || 2000;
+    task.waitDelay = _function_argument('taskWaitDelay') || 5000;
 
     _call_function(self.makeRequest, self.getCreateTaskPayload(task.serialize()))!
-    _call_function(_.sleep, { time: self.options.taskWaitDelay })!
+    _call_function(_.sleep, { time: task.waitDelay })!
     _.log('Task created, wait for response');
 
     _do_with_params({ task: task.setId(_result_function()), self: self }, function () {
@@ -49,10 +48,9 @@
 
       if (response.status === 'ready' || response.status === 1) {
         _.log('Solution is ready - ' + task.getSolution(response));
-        _set_result(task.getSolution(response));
-        _break();
+        _function_return(task.getSolution(response));
       }
-      _call_function(_.sleep, { time: self.options.taskWaitInterval })!
+      _call_function(_.sleep, { time: task.waitInterval })!
     })!
   };
 

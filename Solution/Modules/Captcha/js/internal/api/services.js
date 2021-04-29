@@ -28,6 +28,9 @@
       }
     }
 
-    return service.update(options);
+    return service.update({
+      apiKey: options.apiKey,
+      apiUrl: options.apiUrl,
+    });
   };
 })(BASCaptchaSolver);

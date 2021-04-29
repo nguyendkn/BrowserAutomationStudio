@@ -15,11 +15,13 @@
     const pk = data.filter(function (el) { return el[0] === 'pk' })[0][1];
 
     _call_function(BASCaptchaSolver.api.solveTask, {
+      taskWaitInterval: _function_argument('taskWaitInterval'),
+      taskWaitDelay: _function_argument('taskWaitDelay'),
       task: new BASCaptchaSolver.api.FunCaptchaTask({
-        pageurl: _function_argument('pageUrl'),
+        pageUrl: _function_argument('pageUrl'),
         proxy: _function_argument('proxy'),
-        surl: surl,
-        pk: pk,
+        subdomainUrl: surl,
+        publicKey: pk,
       })
     })!
 

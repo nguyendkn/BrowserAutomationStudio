@@ -7,6 +7,20 @@
     this.data = {};
   };
 
+  BaseTask.prototype.validate = function (api) {
+    const options = api.options;
+
+    if (options.supportedTasks.indexOf(this.type) < 0) {
+      if (_K === 'en') {
+        die('Service `' + options.name + '` does not support `' + this.type + '`', true);
+      } else {
+        die('Сервис `' + options.name + '` не поддерживает `' + this.type + '`', true);
+      }
+    }
+
+    return this;
+  };
+
   BaseTask.prototype.serialize = function () {
     const self = this;
 

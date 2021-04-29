@@ -8,16 +8,6 @@
     this.options.taskWaitInterval = 2000;
     this.options.taskWaitDelay = 5000;
   };
-
-  CaptchaApi.prototype.validateTask = function (task) {
-    if (this.options.supportedTasks.indexOf(task.type) < 0) {
-      if (_K === 'en') {
-        die('Service `' + this.options.name + '` does not support `' + task.type + '`', true);
-      } else {
-        die('Сервис `' + this.options.name + '` не поддерживает `' + task.type + '`', true);
-      }
-    }
-    return task;
   };
 
   CaptchaApi.prototype.update = function (options) {

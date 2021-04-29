@@ -26,6 +26,6 @@ if(LoadProxyFromFolder["original"].length == 0)
 try{
   var code = loader.GetAdditionalData() + _.template($("#use_profile_code").html())({profile:Path["updated"], load_fp: LoadFPFromFolder["updated"], load_proxy: LoadProxyFromFolder["updated"]});
   code = Normalize(code,0);
-  BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+  BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
 }catch(e)
 {}

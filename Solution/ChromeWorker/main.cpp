@@ -2059,7 +2059,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventGetBrowserScreenSettings.push_back(std::bind(&MainApp::GetBrowserScreenSettingsCallback,app.get()));
     Parser->EventResize.push_back(std::bind(&MainApp::ResizeCallback,app.get(),_1,_2));
     Parser->EventTimezone.push_back(std::bind(&MainApp::TimezoneCallback,app.get(),_1));
-    Parser->EventSetWindow.push_back(std::bind(&MainApp::SetWindowCallback,app.get(),_1));
+    Parser->EventSetWindow.push_back(std::bind(&MainApp::SetWindowCallback,app.get(),_1,_2));
     Parser->EventHighlightAction.push_back(std::bind(&MainApp::HighlightActionCallback,app.get(),_1));
     Parser->EventMouseClick.push_back(std::bind(&MainApp::MouseClickCallback,app.get(),_1,_2));
     Parser->EventMouseClickUp.push_back(std::bind(&MainApp::MouseClickUpCallback,app.get(),_1,_2));

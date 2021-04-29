@@ -1667,7 +1667,7 @@
 
           var second_line = "section_start(\"test\", " + task.get("id") + ")!"
           var code = "_kill_call_stack_silent()" + "\n" + second_line
-          BrowserAutomationStudio_Execute(code)
+          BrowserAutomationStudio_Execute(code, false)
         }
 
         
@@ -3518,7 +3518,7 @@
             _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
             var second_line = "section_start(\"test\", " + task.get("id") + ")!"
             var code = "_kill_call_stack_silent()" + "\n" + second_line
-            BrowserAutomationStudio_Execute(code)
+            BrowserAutomationStudio_Execute(code, false)
 
           }
       },
@@ -3589,7 +3589,7 @@
               code = second_line
             }
             BrowserAutomationStudio_DetectorBrowserData(task)
-            BrowserAutomationStudio_Execute(code)
+            BrowserAutomationStudio_Execute(code, false)
           }
       },
 
@@ -3697,7 +3697,7 @@
 
               console.log("Patch length " + patch.length)
 
-              BrowserAutomationStudio_SendCode(patch, extract_functions(code), extract_resources(code), extract_variables(code), extract_global_variables(code), extract_labels(code));
+              BrowserAutomationStudio_SendCode(patch, extract_functions(code), extract_resources(code), extract_variables(code), extract_global_variables(code), extract_labels(code), _GobalModel.get("execute_next_id"));
               console.log("Send in " + (Date.now() - time).toString())
             }catch(e)
             {}
@@ -5274,7 +5274,7 @@
         if(IsFunctionExists("OnApplicationStart"))
         {
           var code = GetFunctionBody("OnApplicationStart") + "\n_call(OnApplicationStart,null)!\nsection_start(\"test\", " + execute_next_id + ")!"
-          BrowserAutomationStudio_Execute(code)
+          BrowserAutomationStudio_Execute(code, BrowserAutomationStudio_IsPlayingScript())
           return
         }
 
@@ -5428,7 +5428,7 @@
         
 
         BrowserAutomationStudio_DetectorBrowserData(task)
-        BrowserAutomationStudio_Execute("_sa(" + parseInt(task.get("id")) + ");" + code)
+        BrowserAutomationStudio_Execute("_sa(" + parseInt(task.get("id")) + ");" + code, BrowserAutomationStudio_IsPlayingScript())
       }
 
     }
@@ -5680,7 +5680,7 @@
       VariablesListPrev = BrowserAutomationStudio_GetVariablesList()
       variables = JSON.stringify(VariablesListPrev)
       VariablesNeedRefresh = false
-      BrowserAutomationStudio_Execute("debug_variables(" + variables + ")!" + "\n" + "section_start(\"test\",-3)!")
+      BrowserAutomationStudio_Execute("debug_variables(" + variables + ")!" + "\n" + "section_start(\"test\",-3)!", false)
     }
 
 
@@ -6009,6 +6009,12 @@
     {
       _GobalModel.set("istaskexecuting",true)
     }
+
+    function BrowserAutomationStudio_IsPlayingScript()
+    {
+      return !_GobalModel.get("isstepnextactivated")
+    }
+
 
 
 

@@ -23,6 +23,7 @@ ScenarioV8Handler::ScenarioV8Handler()
     IsUpdateEmbeddedData = false;
     IsRunFunctionStart = false;
     IsSetLabel = false;
+    LastResultIsPlay = false;
     IsMoveLabel = false;
     IsIf = false;
     IsSetVariable = false;
@@ -108,15 +109,17 @@ bool ScenarioV8Handler::GetIsEditEnd()
 
 
 
-std::pair<std::string, bool> ScenarioV8Handler::GetExecuteCode()
+std::pair< std::pair<std::string,bool>, bool> ScenarioV8Handler::GetExecuteCode()
 {
-    std::pair<std::string, bool> r;
-    r.first = LastResultExecute;
+    std::pair< std::pair<std::string,bool>, bool> r;
+    r.first.first = LastResultExecute;
+    r.first.second = LastResultIsPlay;
     r.second = ChangedExecute;
 
     ChangedExecute = false;
 
     LastResultExecute.clear();
+    LastResultIsPlay = false;
 
     return r;
 }
@@ -178,7 +181,7 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
 {
     if(name == std::string("BrowserAutomationStudio_SendCode"))
     {
-        if (arguments->GetSize() == 6 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_STRING && arguments->GetType(2) == VTYPE_STRING && arguments->GetType(3) == VTYPE_STRING&& arguments->GetType(4) == VTYPE_STRING&& arguments->GetType(5) == VTYPE_STRING)
+        if (arguments->GetSize() == 7 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_STRING && arguments->GetType(2) == VTYPE_STRING && arguments->GetType(3) == VTYPE_STRING&& arguments->GetType(4) == VTYPE_STRING&& arguments->GetType(5) == VTYPE_STRING)
         {
             LastResultStruct NewElement;
             NewElement.LastResultCodeDiff = arguments->GetString(0);
@@ -187,6 +190,8 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             NewElement.LastResultVariables = arguments->GetString(3);
             NewElement.LastResultGlobalVariables = arguments->GetString(4);
             NewElement.LastResultLabels = arguments->GetString(5);
+            if(arguments->GetType(6) == VTYPE_INT)
+                NewElement.ExecuteNextId = arguments->GetInt(6);
             LastResult.push_back(NewElement);
             Changed = true;
         }
@@ -207,6 +212,13 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
         {
             LastResultExecute = arguments->GetString(0);
+            LastResultIsPlay = false;
+            ChangedExecute = true;
+        }
+        if (arguments->GetSize() == 2 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_BOOL)
+        {
+            LastResultExecute = arguments->GetString(0);
+            LastResultIsPlay = arguments->GetBool(1);
             ChangedExecute = true;
         }
     }else if(name == std::string("BrowserAutomationStudio_SetCurrentFunction"))

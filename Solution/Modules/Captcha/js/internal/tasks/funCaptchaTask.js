@@ -5,10 +5,10 @@
     tasks.AntiCaptchaTask.call(this, 'FunCaptcha', {
       name: 'FunCaptchaTask' + (params.proxy ? '' : 'Proxyless'),
       rules: {
-        'surl': { optional: true, name: 'funcaptchaApiJSSubdomain' },
+        'subdomainUrl': { optional: true, name: 'funcaptchaApiJSSubdomain' },
+        'publicKey': { name: 'websitePublicKey' },
+        'pageUrl': { name: 'websiteURL' },
         'data': { optional: true },
-        'pageurl': { name: 'websiteURL' },
-        'pk': { name: 'websitePublicKey' },
       },
       params: params
     });
@@ -22,10 +22,10 @@
     tasks.RuCaptchaTask.call(this, 'FunCaptcha', {
       name: 'funcaptcha',
       rules: {
-        'surl': { optional: true },
+        'subdomainUrl': { optional: true, name: 'surl' },
+        'publicKey': { name: 'publickey' },
+        'pageUrl': { name: 'pageurl' },
         'data': { optional: true },
-        'pageurl': {},
-        'pk': {},
       },
       params: params
     });

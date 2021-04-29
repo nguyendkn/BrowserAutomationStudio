@@ -20,7 +20,7 @@
     return response.request;
   };
 
-  AntiCaptchaTask.prototype.setId = function (response) {
+  RuCaptchaTask.prototype.setId = function (response) {
     this.id = response['request'];
     return this;
   };

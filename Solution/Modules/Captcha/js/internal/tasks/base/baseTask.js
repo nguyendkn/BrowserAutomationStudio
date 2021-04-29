@@ -28,18 +28,21 @@
       const param = self.params[key];
       const rule = self.rules[key];
 
-      if (!param && !rule.optional) {
-        if (_K === 'en') {
-          fail('Parameter "' + key + '" is not specified');
-        } else {
-          fail('Параметр "' + key + '" не указан');
+      if (typeof (param) === 'undefined') {
+        if (!rule.optional) {
+          if (_K === 'en') {
+            fail('Parameter "' + key + '" is not specified');
+          } else {
+            fail('Параметр "' + key + '" не указан');
+          }
         }
+        return;
       }
 
       self.data[rule.name || key] = param;
     });
 
-    return this.applyProxy(self.params.proxy);
+    return this.applyProxy(self.params.proxy || {});
   };
 
   solver.tasks.BaseTask = BaseTask;

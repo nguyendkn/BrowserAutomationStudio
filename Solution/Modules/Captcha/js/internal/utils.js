@@ -32,10 +32,8 @@
 
     urlEncode: function (data) {
       return Object.keys(data).map(function (key) {
-        const encodedValue = encodeURIComponent(data[key]);
-        const encodedKey = encodeURIComponent(key);
-        return encodedKey + '=' + encodedValue;
-      }).join('&')
+        return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
+      }).join('&');
     },
 
     sleep: function () {

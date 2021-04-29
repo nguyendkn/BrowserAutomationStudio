@@ -19,6 +19,7 @@ namespace BrowserAutomationStudioFramework
         QString SendEmbeddedData;
         QString SendScriptEngineVersion;
         QString SendApplicationEngineVersion;
+        bool IsPlayingScript;
 
         QString SendResourcesString;
         QString Window;
@@ -51,6 +52,8 @@ namespace BrowserAutomationStudioFramework
         virtual void CheckResult(QString CheckId,bool IsSuccess,QString ErrorString);
         void RunTaskInRecordMode(int ResultId, QString Function, QString Parameters);
         virtual void PrepareFunction(QString FunctionName);
+        virtual void OnRecord();
+        virtual void OnRun();
     };
 }
 

@@ -15,6 +15,7 @@ namespace BrowserAutomationStudioFramework
         CanSend = false;
         IsTesting = false;
         CanSendIsChanged = false;
+        IsPlayingScript = false;
     }
 
     void RecordProcessCommunication::SendIsChanged()
@@ -140,7 +141,10 @@ namespace BrowserAutomationStudioFramework
         {
             QString WriteString;
             QXmlStreamWriter xmlWriter(&WriteString);
-            xmlWriter.writeTextElement("SetWindow",Window);
+            xmlWriter.writeStartElement("SetWindow");
+            xmlWriter.writeAttribute("is_play", QString::number(IsPlayingScript));
+            xmlWriter.writeCharacters(Window);
+            xmlWriter.writeEndElement();
             Comunicator->Send(WriteString);
             this->Window.clear();
         }else
@@ -202,6 +206,17 @@ namespace BrowserAutomationStudioFramework
         {
             QXmlStreamReader::TokenType token = xmlReader.readNext();
 
+            if(xmlReader.name() == "WaitCode" && token == QXmlStreamReader::StartElement)
+            {
+                foreach(QXmlStreamAttribute attr, xmlReader.attributes())
+                {
+                    if(attr.name() == "is_play")
+                    {
+                        IsPlayingScript = (bool)attr.value().toString().toInt();
+                    }
+                }
+                xmlReader.readNext();
+            }
             if(xmlReader.name() == "ReceivedCode" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -368,6 +383,16 @@ namespace BrowserAutomationStudioFramework
     {
         CanSendIsChanged = false;
         SetCanSendDataFalse();
+    }
+
+    void RecordProcessCommunication::OnRecord()
+    {
+        this->IsPlayingScript = false;
+    }
+
+    void RecordProcessCommunication::OnRun()
+    {
+        this->IsPlayingScript = false;
     }
 
     void RecordProcessCommunication::InstallProcessComunicator(IProcessComunicator *Comunicator)

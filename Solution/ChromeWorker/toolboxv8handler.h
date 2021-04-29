@@ -15,6 +15,7 @@ public:
         std::string Code;
         ExecuteType HowToExecute;
         bool DisableIfAdd;
+        bool CanRestartBrowser;
         std::string Id;
     };
     struct ExecuteClass

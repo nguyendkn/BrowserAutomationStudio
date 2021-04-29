@@ -625,11 +625,19 @@ void CommandParser::Parse(const std::string& Xml)
         CommandNode = MessagesNode->first_node("SetWindow");
         if(CommandNode)
         {
+            bool is_play = false;
+            for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
+            {
+                if(std::string(attr->name()) == std::string("is_play"))
+                {
+                    is_play = std::string(attr->value()) == std::string("1");
+                }
+            }
+
             std::string value = CommandNode->value();
-            WORKER_LOG("SetWindow");
             
             for(auto f:EventSetWindow)
-                f(value);
+                f(value, is_play);
         }
 
         CommandNode = MessagesNode->first_node("HighlightAction");

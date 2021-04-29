@@ -160,6 +160,10 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
             if(arguments->GetSize() > 4)
                 res.Id = arguments->GetString(4);
 
+            res.CanRestartBrowser = false;
+            if(arguments->GetSize() > 5)
+                res.CanRestartBrowser = arguments->GetBool(5);
+
             LastResult.push_back(res);
         }
     }else if(name == std::string("BrowserAutomationStudio_Execute"))

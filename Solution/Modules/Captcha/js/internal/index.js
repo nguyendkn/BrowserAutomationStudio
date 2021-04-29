@@ -17,6 +17,7 @@
     _call_function(BASCaptchaSolver.api.solveTask, {
       task: new BASCaptchaSolver.api.FunCaptchaTask({
         pageurl: _function_argument('pageUrl'),
+        proxy: _function_argument('proxy'),
         surl: surl,
         pk: pk,
       })

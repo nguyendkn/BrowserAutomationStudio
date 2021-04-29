@@ -12,9 +12,9 @@ BASCaptchaSolver.path = function () {
 url()!
 
 _call_function(BASCaptchaSolver.solveFunCaptcha, {
+  proxy: <%= sendProxy %> ? _PROXY : {},
   service: <%= service %>,
   apiUrl: <%= apiUrl %>,
   apiKey: <%= apiKey %>,
-  query: <%= query %>,
   pageUrl : _result()
 })!

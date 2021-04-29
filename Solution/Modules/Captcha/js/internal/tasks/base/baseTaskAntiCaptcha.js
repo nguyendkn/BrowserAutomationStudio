@@ -4,17 +4,16 @@
     this.data['type'] = this.name;
   });
 
-  AntiCaptchaTask.prototype.applyProxy = function () {
-    tasks.BaseTask.prototype.applyProxy.call(this);
-
-    // if (proxy['password'] && proxy['name']) {
-    //   this.data['proxyPassword'] = proxy.password;
-    //   this.data['proxyLogin'] = proxy.name;
-    // }
-
-    // this.data['proxyType'] = proxy['IsHttp'] ? 'http' : 'socks5';
-    // this.data['proxyAddress'] = proxy['server'];
-    // this.data['proxyPort'] = proxy['Port'];
+  AntiCaptchaTask.prototype.applyProxy = function (proxy) {
+    if (proxy.server && proxy.Port) {
+      if (proxy.password && proxy.name) {
+        this.data['proxyPassword'] = proxy.password;
+        this.data['proxyLogin'] = proxy.name;
+      }
+      this.data['proxyType'] = proxy['IsHttp'] ? 'http' : 'socks5';
+      this.data['proxyAddress'] = proxy.server;
+      this.data['proxyPort'] = proxy.Port;
+    }
     return this.data;
   };
 

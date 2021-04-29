@@ -25,13 +25,7 @@
       self.data[rule.name || key] = param;
     });
 
-    return this.applyProxy();
-  };
-
-  BaseTask.prototype.applyProxy = function () {
-    if (this.params.cookies) this.data['cookies'] = this.params.cookies;
-    if (this.params.ua) this.data['userAgent'] = this.params.ua;
-    return this;
+    return this.applyProxy(self.params.proxy);
   };
 
   solver.tasks.BaseTask = BaseTask;

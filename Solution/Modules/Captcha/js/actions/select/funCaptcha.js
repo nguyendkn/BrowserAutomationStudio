@@ -1,3 +1,5 @@
+const taskWaitInterval = GetInputConstructorValue('TaskWaitInterval', loader);
+const taskWaitDelay = GetInputConstructorValue('TaskWaitDelay', loader);
 const sendProxy = GetInputConstructorValue('SendProxy', loader);
 const service = GetInputConstructorValue('Service', loader);
 const apiUrl = GetInputConstructorValue('ApiUrl', loader);
@@ -9,6 +11,8 @@ if (service.original.length === 0) {
 
 try {
   const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptcha_code').html())({
+    taskWaitInterval: taskWaitInterval.updated,
+    taskWaitDelay: taskWaitDelay.updated,
     sendProxy: sendProxy.updated,
     service: service.updated,
     apiUrl: apiUrl.updated,

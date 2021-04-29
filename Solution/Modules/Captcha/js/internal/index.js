@@ -2,7 +2,7 @@
   function CaptchaSolver() {
     this.tasks = {};
     this.utils = {};
-  }
+  };
 
   CaptchaSolver.prototype.solveFunCaptcha = function () {
     BASCaptchaSolver.utils.enableDebug();
@@ -31,9 +31,7 @@
   CaptchaSolver.prototype.ensureSelector = function () {
     _call(BASCaptchaSolver.waiter, null)!
     BASCaptchaSolver.path().exist()!
-    if (_result() !== 1) {
-      _break();
-    }
+    if (_result() !== 1) _break();
   };
 
   CaptchaSolver.prototype.submitFunCaptcha = function () {

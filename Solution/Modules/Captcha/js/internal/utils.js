@@ -2,18 +2,14 @@
   var debug = false;
 
   global.BASCaptchaSolver.utils = {
-    inherit: function (proto, fn) {
-      fn.prototype = Object.create(proto.prototype);
+    disableDebug: function () { debug = false },
+
+    enableDebug: function () { debug = true },
+
+    inherit: function (parent, fn) {
+      fn.prototype = Object.create(parent.prototype);
       fn.prototype.constructor = fn;
       return fn;
-    },
-
-    disableDebug: function () {
-      debug = false;
-    },
-
-    enableDebug: function () {
-      debug = true;
     },
 
     log: function (message) {

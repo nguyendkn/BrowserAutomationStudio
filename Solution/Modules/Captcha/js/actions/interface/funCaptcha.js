@@ -42,6 +42,22 @@
         ]
       }
     }) %>
+    <%= _.template($('#input_constructor').html())({
+      description: tr('Task solution check interval'),
+      default_selector: 'int',
+      disable_string: true,
+      value_number: 2000,
+      id: 'TaskWaitInterval',
+      help: { description: tr('') }
+    }) %>
+    <%= _.template($('#input_constructor').html())({
+      description: tr('Task solution check delay'),
+      default_selector: 'int',
+      disable_string: true,
+      value_number: 5000,
+      id: 'TaskWaitDelay',
+      help: { description: tr('') }
+    }) %>
   </span>
 </div>
 <%= _.template($('#back').html())({ action: "executeandadd", visible: true }) %>

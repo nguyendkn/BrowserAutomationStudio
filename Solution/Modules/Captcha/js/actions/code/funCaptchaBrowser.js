@@ -12,6 +12,8 @@ BASCaptchaSolver.path = function () {
 url()!
 
 _call_function(BASCaptchaSolver.solveFunCaptcha, {
+  taskWaitInterval: <%= taskWaitInterval %>,
+  taskWaitDelay: <%= taskWaitDelay %>,
   proxy: <%= sendProxy %> ? _PROXY : {},
   service: <%= service %>,
   apiUrl: <%= apiUrl %>,

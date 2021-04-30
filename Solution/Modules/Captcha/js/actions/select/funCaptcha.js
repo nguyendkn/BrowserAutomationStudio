@@ -1,9 +1,9 @@
-const taskWaitInterval = GetInputConstructorValue('TaskWaitInterval', loader);
-const taskWaitDelay = GetInputConstructorValue('TaskWaitDelay', loader);
-const sendProxy = GetInputConstructorValue('SendProxy', loader);
-const service = GetInputConstructorValue('Service', loader);
-const apiUrl = GetInputConstructorValue('ApiUrl', loader);
-const apiKey = GetInputConstructorValue('ApiKey', loader);
+const taskWaitInterval = GetInputConstructorValue('taskWaitInterval', loader);
+const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
+const sendProxy = GetInputConstructorValue('sendProxy', loader);
+const service = GetInputConstructorValue('service', loader);
+const apiUrl = GetInputConstructorValue('apiUrl', loader);
+const apiKey = GetInputConstructorValue('apiKey', loader);
 
 if (service.original.length === 0) {
   return Invalid('Service is empty');

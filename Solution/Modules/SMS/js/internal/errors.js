@@ -22,6 +22,11 @@ _SMS.BaseApi.prototype.errorHandler = function(error, errorText){
 			"en": "Setting status \"" + errorText + "\" is not supported.",
 			"action": "fail"
 		},
+		"UNSUPPORTED_METHOD": {
+			"ru": "Метод \"" + errorText + "\" не поддерживается.",
+			"en": "Method \"" + errorText + "\" is not supported.",
+			"action": "fail"
+		},
 		
 		/* sms-activate */
 		

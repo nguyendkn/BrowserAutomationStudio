@@ -29,6 +29,8 @@ _SMS = {
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
+		api.validateMethod('getBalance');
+		
 		_call_function(api.getBalance,{})!
 		var balance = _result_function();
 		
@@ -47,6 +49,8 @@ _SMS = {
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
+		api.validateMethod('getNumbersCount');
+		
 		site = _is_nilb(customSite) ? (site=="All" ? "All" : api.getRawSite(site)) : customSite;
 		country = _is_nilb(customCountry) ? (country=="" ? "" : api.getRawCountry(country)) : customCountry;
 		
@@ -54,6 +58,20 @@ _SMS = {
 		var count = _result_function();
 		
 		_function_return(site=="All" ? (_is_nilb(count) ? {} : count) : (_is_nilb(count) ? 0 : parseInt(count)));
+	},
+	
+	getCountries: function(){
+		var service = _function_argument("service");
+		var apiKey = _function_argument("apiKey");
+		var serverUrl = _function_argument("serverUrl");
+		
+		var api = _SMS.init(service, apiKey, serverUrl);
+		
+		api.validateMethod('getCountries');
+		
+		_call_function(api.getCountries,{})!
+		
+		_function_return(_result_function());
 	},
 	
 	getNumber: function(){
@@ -73,6 +91,8 @@ _SMS = {
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
+		api.validateMethod('getNumber');
+		
 		site = _is_nilb(customSite) ? api.getRawSite(site) : customSite;
 		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
 		
@@ -91,6 +111,8 @@ _SMS = {
 		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var api = confirmData.api;
 		
+		api.validateMethod('getStatus');
+		
 		_call_function(api.getStatus,{number:number})!
 		_function_return(_result_function());
 	},
@@ -108,7 +130,10 @@ _SMS = {
 		var api = confirmData.api;
 		var code = null;
 		
+		api.validateMethod('getCode');
+		
 		_if(!confirmData.ready, function(){
+			api.validateMethod('setStatus');
 			_call_function(api.setStatus,{number:number, status:1})!
 			confirmData.ready = true;
 		})!
@@ -137,6 +162,8 @@ _SMS = {
 		
 		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var api = confirmData.api;
+		
+		api.validateMethod('setStatus');
 		
 		_call_function(api.setStatus,{number:number, status:status})!
 		

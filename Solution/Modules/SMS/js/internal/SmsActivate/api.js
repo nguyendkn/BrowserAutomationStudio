@@ -6,7 +6,6 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
-		var isJSON = _function_argument("isJSON");
 		
 		var url = api.url + '/stubs/handler_api.php';
 		var params = api.combineParams({api_key:api.key, action:action}, options);
@@ -14,7 +13,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		_call_function(api.request,{url:url, method:method, params:params})!
 		var content = _result_function();
 		
-		if(isJSON || (_is_nilb(isJSON) && _is_json_string(content))){
+		if(_is_json_string(content)){
 			var resp = api.parseJSON(content);
 		}else{
 			content = content.split(':');
@@ -33,7 +32,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"getBalance", isJSON:false})!
+		_call_function(api.apiRequest,{action:"getBalance"})!
 		var resp = _result_function();
 		
 		if(resp.status=="ACCESS_BALANCE"){
@@ -48,7 +47,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getNumbersStatus", options:{country:country, operator:operator}, isJSON:true})!
+		_call_function(api.apiRequest,{action:"getNumbersStatus", options:{country:country, operator:operator}})!
 		var resp = _result_function();
 		
 		if(site=="All"){
@@ -71,7 +70,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		var operator = _function_argument("operator");
 		var phoneException = _function_argument("phoneException");
 		
-		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator, phoneException:phoneException}, isJSON:false})!
+		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator, phoneException:phoneException}})!
 		var resp = _result_function();
 		
 		if(resp.status=="ACCESS_NUMBER"){
@@ -86,7 +85,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var taskId = confirmData.id;
 		
-		_call_function(api.apiRequest,{action:"getStatus", options:{id:taskId}, isJSON:false})!
+		_call_function(api.apiRequest,{action:"getStatus", options:{id:taskId}})!
 		
 		_function_return(_result_function());
 	};
@@ -101,7 +100,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 			status = "10";
 		};
 		
-		_call_function(api.apiRequest,{action:"setStatus", options:{id:taskId, status:status}, isJSON:false})!
+		_call_function(api.apiRequest,{action:"setStatus", options:{id:taskId, status:status}})!
 		var resp = _result_function();
 		
 		if(resp.status.indexOf('ACCESS_') != 0){
@@ -126,5 +125,17 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		};
 			
 		_function_return(code);
+	};
+	
+	this.getCountries = function(){
+		
+		_call_function(api.apiRequest,{action:"getCountries"})!
+		var resp = _result_function();
+		
+		if(resp.status){
+			api.errorHandler(resp.status, resp.data);
+		};
+		
+		_function_return(Object.keys(resp).map(function(key){return resp[key]}));
 	};
 });

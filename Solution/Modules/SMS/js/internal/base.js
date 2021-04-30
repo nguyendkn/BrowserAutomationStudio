@@ -77,15 +77,21 @@ _SMS.BaseApi = function(config, type){
 		};
 	};
 	
-	this.banThread(seconds){
+	this.validateMethod = function(method){
+		if(_is_nilb(api) || Object.keys(api).indexOf(method) < 0){
+			api.errorHandler('UNSUPPORTED_METHOD', method);
+		};
+	};
+	
+	this.banThread = function(seconds){
 		_SMS_BAN_THREAD = Date.now() + seconds * 1000;
 	};
 	
-	this.banService(seconds){
+	this.banService = function(seconds){
 		PSet("sms", "_SMS_BAN_THREAD", (Date.now() + seconds * 1000).toString());
 	};
 	
-	this.beforeRequest(){
+	this.beforeRequest = function(){
 		_do(function(){
 			var sleepTime = 0;
 			
@@ -101,7 +107,7 @@ _SMS.BaseApi = function(config, type){
 			};
 
 			_if_else(sleepTime==0, function(){
-				_break();
+				_break("function");
 			}, function(){
 				if(_SMS_DEBUG){
 					log((_K=="ru" ? 'Ждем ' : 'Wait ') + (sleepTime/1000) + (_K=="ru" ? ' секунд перед запросом к ' : ' seconds before requesting ') + api.name);
@@ -129,7 +135,7 @@ _SMS.BaseApi = function(config, type){
 			};
 		};
 		
-		_call(api.beforeRequest, null)!
+		_call_function(api.beforeRequest,{})!
 		
 		_switch_http_client_internal();
 		

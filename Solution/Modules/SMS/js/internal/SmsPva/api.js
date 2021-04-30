@@ -21,11 +21,11 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config){
 		
 		var resp = api.parseJSON(content);
 		
-		if(res.response=="5"){
+		if(resp.response=="5"){
 			api.banService(60);
 		};
 		
-		if(res.response=="6"){
+		if(resp.response=="6"){
 			api.banService(600);
 		};
 		

@@ -37,6 +37,23 @@
 		{
             "code": [
                 {
+                    "file": "SMS_GetCountries_code.js",
+                    "name": "SMS_GetCountries_code"
+                }
+            ],
+            "description": {
+                "en": "Get list of countries",
+                "ru": "Получить список стран"
+            },
+            "interface": "SMS_GetCountries_interface.js",
+            "is_element": false,
+            "name": "SMS_GetCountries",
+            "select": "SMS_GetCountries_select.js",
+            "template": "{{service}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "SMS_GetNumber_code.js",
                     "name": "SMS_GetNumber_code"
                 }
@@ -161,10 +178,12 @@
 		"Server url": {"ru":"Url сервера"},
 		"SMS receiving service.": {"ru":"Сервис приема СМС."},
 		"API key of the SMS receiving service.": {"ru":"API ключ сервиса приема СМС."},
-		"Get the balance of the SMS receiving service.": {"ru":"Получите баланс сервиса приема СМС."},
+		"Get the balance of the SMS receiving service.": {"ru":"Получить баланс сервиса приема СМС."},
 		"Variable in which, after successful execution of the action, the balance will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан баланс."},
 		
 		"Get the number of available numbers on the SMS receiving service.": {"ru":"Получить количество доступных номеров на сервисе приема СМС."},
+		
+		"Get list of countries of the SMS receiving service.": {"ru":"Получить список стран сервиса приема СМС."},
 		
 		"Custom site": {"ru":"Пользовательский сайт"},
 		"Custom country": {"ru":"Пользовательская страна"},

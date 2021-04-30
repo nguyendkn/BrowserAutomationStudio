@@ -8140,7 +8140,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
              try{
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({})
               code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
             }catch(e)
             {}
           }else if(State == "openbrowser")
@@ -8148,7 +8148,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
              try{
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({})
               code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
             }catch(e)
             {}
           }else if(State == "clearmasks")
@@ -8462,7 +8462,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
               var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({})
               code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
             }catch(e)
             {}
 
@@ -10087,7 +10087,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   WebglRenderer:WebglRenderer["updated"],
                 })
               code = Normalize(code,0)
-              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
             }catch(e)
             {}
           }

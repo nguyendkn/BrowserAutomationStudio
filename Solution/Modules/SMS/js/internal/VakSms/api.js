@@ -58,11 +58,12 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config){
 		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.idNum, origId:resp.idNum, number:api.removePlus(resp.tel)});
+		_function_return({api:api, id:resp.idNum, lastId:resp.idNum, number:api.removePlus(resp.tel)});
 	};
 	
 	this.getStatus = function(){
-		var confirmData = _function_argument("confirmData");
+		var number = _function_argument("number");
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var taskId = confirmData.id;
 		
 		_call_function(api.apiRequest,{action:"getSmsCode", options:{idNum:taskId}})!
@@ -71,7 +72,8 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config){
 	};
 	
 	this.setStatus = function(){
-		var confirmData = _function_argument("confirmData");
+		var number = _function_argument("number");
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
@@ -96,10 +98,10 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config){
 	};
 	
 	this.getCode = function(){
-		var confirmData = _function_argument("confirmData");
-		var code = null;
+		var number = _function_argument("number");
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		
-		_call_function(api.getStatus,{confirmData:confirmData})!
+		_call_function(api.getStatus,{number:number})!
 		var resp = _result_function();
 			
 		_function_return(resp.smsCode);

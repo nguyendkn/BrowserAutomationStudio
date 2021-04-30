@@ -82,7 +82,8 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config){
 	};
 	
 	this.getStatus = function(){
-		var confirmData = _function_argument("confirmData");
+		var number = _function_argument("number");
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var taskId = confirmData.id;
 		
 		_call_function(api.apiRequest,{action:"getState", options:{tzid:taskId, msg_list:0, clean:1}, checkErrors:false})!
@@ -95,7 +96,8 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config){
 	};
 	
 	this.setStatus = function(){
-		var confirmData = _function_argument("confirmData");
+		var number = _function_argument("number");
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
@@ -113,10 +115,11 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config){
 	};
 	
 	this.getCode = function(){
-		var confirmData = _function_argument("confirmData");
+		var number = _function_argument("number");
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var code = null;
 		
-		_call_function(api.getStatus,{confirmData:confirmData})!
+		_call_function(api.getStatus,{number:number})!
 		var resp = _result_function();
 		
 		if(resp.response=='TZ_NUM_ANSWER'){

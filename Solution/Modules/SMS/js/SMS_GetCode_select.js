@@ -8,17 +8,17 @@ if(timeout["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
     return;
 };
-var delay = GetInputConstructorValue("delay", loader);
-if(delay["original"].length == 0){
-	Invalid(tr("The parameter \"") + tr("Delay") + tr("\" is not specified"));
+var interval = GetInputConstructorValue("interval", loader);
+if(interval["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Interval") + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();
 try{
-    var code = loader.GetAdditionalData() + _.template($("#SMS_GetActivationCode_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#SMS_GetCode_code").html())({
         "number": number["updated"],
         "timeout": timeout["updated"],
-        "delay": delay["updated"],
+        "interval": interval["updated"],
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

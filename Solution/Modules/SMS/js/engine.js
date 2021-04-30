@@ -1,5 +1,6 @@
 _BAS_SMSAPISDATA = {};
 _BAS_SMSCONFIRMDATA = {};
+_SMS_BAN_THREAD = 0;
 _SMS_DEBUG = false;
 
 _SMS = {
@@ -84,10 +85,20 @@ _SMS = {
 		_function_return(number);
 	},
 	
+	getStatus: function(){
+		var number = _function_argument("number");
+		
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var api = confirmData.api;
+		
+		_call_function(api.getStatus,{number:number})!
+		_function_return(_result_function());
+	},
+	
 	waitCode: function(){
 		var number = _function_argument("number");
 		var maxTime = Date.now() + 60000 * _function_argument("timeout");
-		var delay = 1000 * _function_argument("delay");
+		var interval = 1000 * _function_argument("interval");
 		
 		if(_is_nilb(_BAS_SMSCONFIRMDATA) || _is_nilb(_BAS_SMSCONFIRMDATA[number])){
 			fail((_K=="ru" ? 'Нет информации об номере' : 'No information about the number') + ' "' + number + '"');
@@ -98,7 +109,7 @@ _SMS = {
 		var code = null;
 		
 		_if(!confirmData.ready, function(){
-			_call_function(api.setStatus,{confirmData:confirmData, status:1})!
+			_call_function(api.setStatus,{number:number, status:1})!
 			confirmData.ready = true;
 		})!
 		
@@ -107,17 +118,31 @@ _SMS = {
 				api.errorHandler("ACTION_TIMEOUT", _K=="ru" ? "Получить код активации" : "Get activation code");
 			};
 			
-			_call_function(api.getCode,{confirmData:confirmData})!
+			_call_function(api.getCode,{number:number})!
 			code = _result_function();
 			
 			if(!_is_nilb(code)){
 				_break();
 			};
 			
-			sleep(delay)!
+			sleep(interval)!
 		})!
 		
 		_function_return(code);
+	},
+	
+	setStatus: function(){
+		var number = _function_argument("number");
+		var status = _function_argument("status");
+		
+		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var api = confirmData.api;
+		
+		_call_function(api.setStatus,{number:number, status:status})!
+		
+		if([-1,6,8].indexOf(status) > -1){
+			delete _BAS_SMSCONFIRMDATA[number];
+		};
 	},
 	
 	debug: function(enable){

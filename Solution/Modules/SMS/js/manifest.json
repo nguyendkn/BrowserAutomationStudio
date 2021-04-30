@@ -54,19 +54,36 @@
 		{
             "code": [
                 {
-                    "file": "SMS_GetActivationCode_code.js",
-                    "name": "SMS_GetActivationCode_code"
+                    "file": "SMS_GetCode_code.js",
+                    "name": "SMS_GetCode_code"
                 }
             ],
             "description": {
                 "en": "Get activation code",
                 "ru": "Получить код активации"
             },
-            "interface": "SMS_GetActivationCode_interface.js",
+            "interface": "SMS_GetCode_interface.js",
             "is_element": false,
-            "name": "SMS_GetActivationCode",
-            "select": "SMS_GetActivationCode_select.js",
+            "name": "SMS_GetCode",
+            "select": "SMS_GetCode_select.js",
             "template": "{{number}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "SMS_SetStatus_code.js",
+                    "name": "SMS_SetStatus_code"
+                }
+            ],
+            "description": {
+                "en": "Change activation status",
+                "ru": "Изменение статуса активации"
+            },
+            "interface": "SMS_SetStatus_interface.js",
+            "is_element": false,
+            "name": "SMS_SetStatus",
+            "select": "SMS_SetStatus_select.js",
+            "template": "{{status}} -> {{number}}"
         },
 		{
             "code": [
@@ -159,8 +176,11 @@
 		"Enable or disable SMS module debug.": {"ru":"Включить или отключить отладку СМС модуля."},
 		"If debug is enabled, all queries and their results will be displayed in the log.": {"ru":"Если отладка включена, все запросы и их результаты будут выводится в лог."},
 		
+		"Interval": {"ru":"Интервал"},
 		"Timeout (minutes)": {"ru":"Таймаут (минут)"},
-		"Delay (seconds)": {"ru":"Задержка (секунд)"}
+		"Interval (seconds)": {"ru":"Интервал (секунд)"},
+		
+		"Change the activation status for the specified number.": {"ru":"Изменение статуса активации для указанного номера."}
     },
     "major_version": 1,
     "minor_version": 0,

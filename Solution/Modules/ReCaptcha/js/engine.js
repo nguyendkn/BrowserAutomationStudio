@@ -350,6 +350,8 @@ function BAS_SolveRecaptcha()
 	    NEWAPI_DATA_SITEKEY = NEWAPI_DATA_SITEKEY.split("&")[0]
 		NEWAPI_DATA_SITEKEY = NEWAPI_DATA_SITEKEY.split("#")[0]
 		
+		
+
 	    if(NEWAPI_DATA_SITEKEY.length == 0)
 	    {
 	      fail("data-sitekey is empty")

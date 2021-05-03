@@ -52,9 +52,11 @@
   "embeddeddata": [],
   "languages": [],
   "modules": [],
-  "browser": [],
   "depends": [],
   "localize": {},
+  "browser": [
+    "browser/funCaptchaVerify.js"
+  ],
   "engine": [
     "internal/index.js",
     "internal/utils.js",

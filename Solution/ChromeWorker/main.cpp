@@ -162,6 +162,25 @@ void ProcessMenu(const std::string& Command)
             }
         }
     }
+    for(ModulesData Module:app->GetData()->_UnusedModulesData)
+    {
+        for(ActionData Action:Module->Actions)
+        {
+            if(Action->IsElement)
+            {
+
+                 if(Command == std::string("IDModules") + std::to_string(IdIterator))
+                 {
+                     if(Layout->State == MainLayout::Ready)
+                     {
+                        app->ExecuteElementFunction(Action->Name,app->GetData()->MultiselectIsInsideElementLoop, true, Module->Name, Module->Description);
+                     }
+                 }
+                 IdIterator ++;
+                 IdIteratorForeach ++;
+            }
+        }
+    }
 
     if(starts_with(Command,"IDTab"))
     {
@@ -916,7 +935,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                             app->GetAllPopupsUrls([xPos, r, IsImageSelect, App, MouseMenuPositionXCopy, MouseMenuPositionYCopy](const std::vector<std::string>& Urls)
                             {
-                                App->ShowContextMenu(xPos - r.left,IsImageSelect,GenerateJsonMenu(IsImageSelect, MouseMenuPositionXCopy, MouseMenuPositionYCopy,Urls,App->GetData()->_ModulesData));
+                                App->ShowContextMenu(xPos - r.left,IsImageSelect,GenerateJsonMenu(IsImageSelect, MouseMenuPositionXCopy, MouseMenuPositionYCopy,Urls,App->GetData()->_ModulesData,App->GetData()->_UnusedModulesData));
                             });
 
 
@@ -1889,6 +1908,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     Data->IsRecordHttp = false;
     Data->IsTouchScreen = false;
+    Data->HasRecaptchaModule = true;
     Data->IsTouchPressedDirectControl = false;
     Data->IsTouchPressedAutomation = false;
     Data->TouchEventId = 1;
@@ -1938,6 +1958,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     if(Data->IsRecord)
         Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
+
+    Data->HasRecaptchaModule = IsRecaptchaEnabled();
 
     Data->BrowserCode = ReadAllString("browser_code.txt");
     if(!Data->BrowserCode.empty())
@@ -2059,7 +2081,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventGetBrowserScreenSettings.push_back(std::bind(&MainApp::GetBrowserScreenSettingsCallback,app.get()));
     Parser->EventResize.push_back(std::bind(&MainApp::ResizeCallback,app.get(),_1,_2));
     Parser->EventTimezone.push_back(std::bind(&MainApp::TimezoneCallback,app.get(),_1));
-    Parser->EventSetWindow.push_back(std::bind(&MainApp::SetWindowCallback,app.get(),_1));
+    Parser->EventSetWindow.push_back(std::bind(&MainApp::SetWindowCallback,app.get(),_1,_2));
     Parser->EventHighlightAction.push_back(std::bind(&MainApp::HighlightActionCallback,app.get(),_1));
     Parser->EventMouseClick.push_back(std::bind(&MainApp::MouseClickCallback,app.get(),_1,_2));
     Parser->EventMouseClickUp.push_back(std::bind(&MainApp::MouseClickUpCallback,app.get(),_1,_2));

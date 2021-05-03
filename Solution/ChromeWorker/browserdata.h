@@ -74,6 +74,7 @@ public:
     InspectResult _Inspect;
     HighlightResult _Highlight;
     ModulesDataList _ModulesData;
+    std::atomic_bool HasRecaptchaModule;
     std::string BrowserCode;
     ModulesDataList _UnusedModulesData;
     MultiSelectData _MultiSelectData;

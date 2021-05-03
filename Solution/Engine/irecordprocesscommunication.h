@@ -44,7 +44,8 @@ namespace BrowserAutomationStudioFramework
         virtual void RestoreOriginalStage() = 0;
         virtual void CheckResult(QString CheckId,bool IsSuccess,QString ErrorString) = 0;
         virtual void PrepareFunction(QString FunctionName) = 0;
-
+        virtual void OnRecord() = 0;
+        virtual void OnRun() = 0;
 
     };
 }

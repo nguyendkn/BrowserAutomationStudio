@@ -173,6 +173,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     std::string DelayedSend;
 
     std::string SetNextActionId;
+    bool StartPlayScriptOnStart = false;
 
     bool IsMainBrowserCreating;
 
@@ -341,7 +342,7 @@ public:
     void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll);
     void LoadSuccessCallback();
     void ResizeCallback(int width, int height);
-    void SetWindowCallback(const std::string& Window);
+    void SetWindowCallback(const std::string& Window, bool IsPlayingScript);
     void HighlightActionCallback(const std::string& ActionId);
 
 
@@ -419,7 +420,7 @@ public:
     void MouseLeave();
 
     //Element Subtasks
-    void ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction);
+    void ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction, bool IsDisabled = false, const std::string& ModuleName = std::string(), const std::string& ModuleDescription = std::string());
 
     void LoadSettingsPage();
     void ShowContextMenu(int X, bool IsImageSelect, const std::string & Json);

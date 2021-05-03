@@ -12,7 +12,7 @@
 namespace BrowserAutomationStudioFramework
 {
     SubprocessBrowser::SubprocessBrowser(QObject *parent) :
-        IBrowser(parent), Worker(0), NetworkAccessManager(0), NetworkAccessManagerVirtual(0), ProcessComunicator(0), ProcessComunicatorVirtual(0), LastInjectedWorker(0), ManualBrowserControl(false), LastPID(-1), BrowserId(-1), WorkerSettings(0)
+        IBrowser(parent), Worker(0), NetworkAccessManager(0), NetworkAccessManagerVirtual(0), ProcessComunicator(0), ProcessComunicatorVirtual(0), LastInjectedWorker(0), ManualBrowserControl(false), LastPID(-1), BrowserId(-1), ExecutionPointWhenAddingAction(1), WorkerSettings(0)
 
     {
     }
@@ -999,17 +999,31 @@ namespace BrowserAutomationStudioFramework
                     }
                 }
                 Worker->SolveRecaptchaV3(Id,Action,SiteKey,Url);
+            }else if(xmlReader.name() == "ReceivedCode" && token == QXmlStreamReader::StartElement)
+            {
+                for(QXmlStreamAttribute attr: xmlReader.attributes())
+                {
+                    if(attr.name() == "execution_point")
+                    {
+                        ExecutionPointWhenAddingAction = attr.value().toString().toLongLong();
+                    }
+                }
             }
             else if(xmlReader.name() == "WaitCode" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
                 QString code = xmlReader.text().toString();
-                NextAction.clear();
-                QRegExp Regexp("section\\_start\\(\\s*\\\"[^\\\"]*\\\"\\s*\\,\\s*(\\-?\\d*)\\)\\!");
-                if(Regexp.indexIn(code, 0)>=0)
-                    NextAction = Regexp.cap(1);
+                if(!code.contains("section_start(\"_execution_point"))
+                {
+                    NextAction.clear();
+                    QRegExp Regexp("section\\_start\\(\\s*\\\"[^\\\"]*\\\"\\s*\\,\\s*(\\-?\\d*)\\)\\!");
+                    if(Regexp.indexIn(code, 0)>=0)
+                        NextAction = Regexp.cap(1);
+                }
+
                 QString Script = Worker->GetPreprocessor()->Preprocess(QString(" { ") + code + QString(" } "),0,false);
                 Worker->SetScript(Script);
+
                 emit WaitCode();
             }
         }
@@ -1183,6 +1197,11 @@ namespace BrowserAutomationStudioFramework
     bool SubprocessBrowser::IsTemporaryProfile()
     {
         return WorkerSettings->IsTemporaryProfile();
+    }
+
+    qint64 SubprocessBrowser::GetCurrentExecutionPointWhenAddingAction()
+    {
+        return ExecutionPointWhenAddingAction;
     }
 
     void SubprocessBrowser::ClearLastTunnelFolder()

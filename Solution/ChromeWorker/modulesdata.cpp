@@ -38,6 +38,26 @@ void EnableModule(const std::string& ModuleName)
     }
 }
 
+bool IsRecaptchaEnabled()
+{
+    try
+    {
+        std::string Meta = ReadAllString("modules/meta.json");
+        picojson::value MetaJson;
+        picojson::parse(MetaJson, Meta);
+        picojson::value::object MetaObject = MetaJson.get<picojson::value::object>();
+        if(MetaObject.find("ReCaptcha") == MetaObject.end())
+        {
+            return true;
+        }
+        return MetaObject["ReCaptcha"].get<bool>();
+    }catch(...)
+    {
+
+    }
+    return true;
+}
+
 ModulesDataList LoadModulesData(const std::string& Locale, const std::string& BASPid, ModulesDataList& UnusedModules)
 {
     WORKER_LOG("Start Loading Modules");
@@ -74,6 +94,7 @@ ModulesDataList LoadModulesData(const std::string& Locale, const std::string& BA
         std::vector<FileEntry> Dirs = GetFilesInDirectory(Folder);
         for(FileEntry Entry:Dirs)
         {
+            bool IsDisabled = false;
             if(Entry.IsDirectory)
             {
                 try
@@ -148,8 +169,7 @@ ModulesDataList LoadModulesData(const std::string& Locale, const std::string& BA
                         if(std::find(std::begin(DisabledModules), std::end(DisabledModules), DataItem->Name) != std::end(DisabledModules))
                         {
                             WORKER_LOG(std::string("Skip because module is disabled"));
-                            UnusedModules.push_back(DataItem);
-                            continue;
+                            IsDisabled = true;
                         }
 
                         if(DataItem->Name == "FormDataFake")
@@ -323,19 +343,24 @@ ModulesDataList LoadModulesData(const std::string& Locale, const std::string& BA
 
                             DataItem->Actions.push_back(ActionItem);
                         }
-
-                        std::vector<ModulesData>::iterator it = Result.begin();
-                        for( ; it != Result.end(); )
+                        if(IsDisabled)
                         {
-                            if(DataItem->Name == (*it)->Name)
+                            UnusedModules.push_back(DataItem);
+                        }else
+                        {
+                            std::vector<ModulesData>::iterator it = Result.begin();
+                            for( ; it != Result.end(); )
                             {
-                                it = Result.erase(it);
-                            } else
-                            {
-                                ++it;
+                                if(DataItem->Name == (*it)->Name)
+                                {
+                                    it = Result.erase(it);
+                                } else
+                                {
+                                    ++it;
+                                }
                             }
+                            Result.push_back(DataItem);
                         }
-                        Result.push_back(DataItem);
                     }
                 }catch(...)
                 {

@@ -2013,6 +2013,7 @@ void MainWindow::LoadActual(const QString& filename)
 
 void MainWindow::Record()
 {
+    _RecordProcessCommunication->OnRecord();
     {
         CheckScript Check;
         if(!Check.Check(TextEditor->GetText()))
@@ -2030,6 +2031,7 @@ void MainWindow::Record()
 
 void MainWindow::Run()
 {
+    _RecordProcessCommunication->OnRun();
     {
         CheckScript Check;
         if(!Check.Check(TextEditor->GetText()))
@@ -2057,6 +2059,18 @@ void MainWindow::HighlightAction(QUrl url)
     {
         QFileInfo info(url.toString().replace("file:///",""));
         QDesktopServices::openUrl(QUrl::fromLocalFile(info.absoluteFilePath()));
+        return;
+    }
+    if(url.scheme() == "disablerecaptcha")
+    {
+        if(Worker)
+            Worker->Abort();
+        if(ComplexLoggerLog)
+            ComplexLoggerLog->Clear();
+        _ModuleManager->SetModuleEnabled("ReCaptcha", false);
+
+        QMessageBox::information(0, tr(""), QString(tr("ReCaptcha module has been disabled")));
+
         return;
     }
     if(!IsRecordLast)

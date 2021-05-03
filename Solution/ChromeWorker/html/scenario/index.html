@@ -1373,6 +1373,7 @@
   <script src="updater/internal/translate.js"></script>
   <script src="updater/internal/utils.js"></script>
   <script src="updater/updater.js"></script>
+  <script src="moveexecutionpoint.js"></script>
   
   <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
   <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
@@ -1652,10 +1653,11 @@
 
         if(task && task.get("id") != this.model.get("execute_next_id"))
         {
-          _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
+          var execute_point_code = GenerateCodeForMovingExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
 
+          _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
           var second_line = "section_start(\"test\", " + task.get("id") + ")!"
-          var code = "_kill_call_stack_silent()" + "\n" + second_line
+          var code = execute_point_code + "\n" + second_line
           BrowserAutomationStudio_Execute(code, false)
         }
 
@@ -3486,9 +3488,11 @@
           var task = this.collection.at(this.currentTargetId);
           if(task)
           {
+            var execute_point_code = GenerateCodeForMovingExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
+
             _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
             var second_line = "section_start(\"test\", " + task.get("id") + ")!"
-            var code = "_kill_call_stack_silent()" + "\n" + second_line
+            var code = execute_point_code + "\n" + second_line
             BrowserAutomationStudio_Execute(code, false)
 
           }

@@ -6568,31 +6568,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           var ModuleName = $(event.target).closest(".panelgrid").attr("data-task-name")
           var ModuleDescription = $(event.target).closest(".panelgrid").find(".panelgridtitleinner").text()
           //Clicked on unused module
-          bootbox.confirm(
-          {
-            title: tr("Enable module ") + ModuleDescription + "?",
-            message: tr("In order to use this module, you need to enable it first. It will restart script.") + "<br><br><span style='color:gray;font-size:small'>" + tr("You can disable it later by using Menu -> Module manager.")  + "</span>",
-            buttons:
-            {
-              confirm:
-              {
-                label: tr('Enable'),
-                className: 'btn-success'
-              },
-              cancel:
-              {
-                label: tr('Cancel'),
-                className: 'btn-primary'
-              }
-            },
-            callback: function (result)
-            {
-              if(result == 1)
-              {
-                BrowserAutomationStudio_EnableModule(ModuleName)
-              }
-            }
-          });
+          BrowserAutomationStudio_AskEnableModule(ModuleName, ModuleDescription)
           return
         }
         if(CurrentGroup == "")
@@ -11346,6 +11322,35 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           }
       })
 
+    }
+
+    function BrowserAutomationStudio_AskEnableModule(ModuleName, ModuleDescription)
+    {
+      bootbox.confirm(
+      {
+        title: tr("Enable module ") + ModuleDescription + "?",
+        message: tr("In order to use this module, you need to enable it first. It will restart script.") + "<br><br><span style='color:gray;font-size:small'>" + tr("You can disable it later by using Menu -> Module manager.")  + "</span>",
+        buttons:
+        {
+          confirm:
+          {
+            label: tr('Enable'),
+            className: 'btn-success'
+          },
+          cancel:
+          {
+            label: tr('Cancel'),
+            className: 'btn-primary'
+          }
+        },
+        callback: function (result)
+        {
+          if(result == 1)
+          {
+            BrowserAutomationStudio_EnableModule(ModuleName)
+          }
+        }
+      });
     }
 
     /* Preserve execute type */

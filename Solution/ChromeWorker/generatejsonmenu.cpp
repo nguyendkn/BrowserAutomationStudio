@@ -21,7 +21,7 @@ picojson::value GenerateItem(const std::string& Name, const std::string& Icon, c
     return picojson::value(MenuItem);
 }
 
-std::string GenerateJsonMenu(bool IsImageSelect, int MousePositionX, int MousePositionY, const std::vector<std::string>& Tabs, const ModulesDataList& Modules)
+std::string GenerateJsonMenu(bool IsImageSelect, int MousePositionX, int MousePositionY, const std::vector<std::string>& Tabs, const ModulesDataList& Modules, const ModulesDataList& UnusedModules)
 {
     std::string Position = std::string("(") + std::to_string(MousePositionX) + std::string(",") + std::to_string(MousePositionY) + std::string(")");
 
@@ -88,6 +88,16 @@ std::string GenerateJsonMenu(bool IsImageSelect, int MousePositionX, int MousePo
                 if(Action->IsElement)
                 {
                     AllItems.push_back(GenerateItem(Action->DescriptionNoTranslation, std::string("IDModules") + std::to_string(Iterator++), "cube"));
+                }
+            }
+        }
+        for(const ModulesData& Module:UnusedModules)
+        {
+            for(const ActionData& Action:Module->Actions)
+            {
+                if(Action->IsElement)
+                {
+                    AllItems.push_back(GenerateItem(Action->DescriptionNoTranslation, std::string("IDModules") + std::to_string(Iterator++), "ban"));
                 }
             }
         }

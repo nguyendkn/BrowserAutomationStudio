@@ -3337,6 +3337,9 @@ void MainApp::UpdateHighlightMultiselect()
 
 void MainApp::UpdateRecaptchaV3Check()
 {
+    if(!Data->HasRecaptchaModule)
+        return;
+
     clock_t CurrentTime = clock();
     float time_spent = float( CurrentTime - LastRecaptchaV3Check ) /  CLOCKS_PER_SEC;
 
@@ -4625,17 +4628,26 @@ void MainApp::Restart()
 }
 
 //Element Subtasks
-void MainApp::ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction)
+void MainApp::ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction, bool IsDisabled, const std::string& ModuleName, const std::string& ModuleDescription)
 {
     if(BrowserToolbox)
     {
-        std::string serialize;
+        if(IsDisabled)
         {
-            LOCK_BROWSER_DATA
-            serialize = Data->_Inspect.Serialize();
+            std::string ModuleNameSerialized = picojson::value(ModuleName).serialize();
+            std::string ModuleDescriptionSerialized = picojson::value(ModuleDescription).serialize();
+
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_AskEnableModule(") + ModuleNameSerialized + std::string(",") + ModuleDescriptionSerialized + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        }else
+        {
+            std::string serialize;
+            {
+                LOCK_BROWSER_DATA
+                serialize = Data->_Inspect.Serialize();
+            }
+            std::string AskIfUseLoopFunctionString = (AskIfUseLoopFunction ? std::string("1") : std::string("0"));
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_") + FuncName + std::string("(") + serialize + std::string(",") + AskIfUseLoopFunctionString + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         }
-        std::string AskIfUseLoopFunctionString = (AskIfUseLoopFunction ? std::string("1") : std::string("0"));
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_") + FuncName + std::string("(") + serialize + std::string(",") + AskIfUseLoopFunctionString + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 }
 

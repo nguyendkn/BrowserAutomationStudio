@@ -18,7 +18,7 @@ _BAS_HIDE(BrowserAutomationStudio_CreateXPathFromElement) = function(elm) {
             segs.unshift(elm.localName.toLowerCase() + '[@class="' + elm.getAttribute('class') + '"]'); 
         } else { 
             var sib;
-            for (i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) { 
+            for (var i = 1, sib = elm.previousSibling; sib; sib = sib.previousSibling) { 
                 if (sib.localName == elm.localName)  i++; }; 
                 segs.unshift(elm.localName.toLowerCase() + '[' + i + ']'); 
         }; 

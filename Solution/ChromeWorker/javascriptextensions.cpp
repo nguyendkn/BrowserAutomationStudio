@@ -698,7 +698,7 @@ std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std
     std::string Res = Script;
     try{
         static std::regex Replacer("_BAS_HIDE\\(([^\\)]+)\\)");
-        return std::regex_replace(Res,Replacer,std::string("(atob(\"") + UniqueProcessId + std::string("\", \"STASH\")[\"$1\"])"));
+        return std::regex_replace(Res,Replacer,std::string("((atob[Symbol.for('_bas_hide_") + UniqueProcessId + std::string("')])[\"$1\"])"));
     }catch(...)
     {
 
@@ -710,31 +710,7 @@ std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std
 
 std::string JavaScriptExtensions::GetHideExtension(const std::string& UniqueProcessId)
 {
-    std::string res =  std::string(";((function(atob_original) {"
-            "var HideFuntions = {};"
-            "for(var Func in window)"
-            "{"
-                "if(Func.indexOf(\"browser_automation_studio_\") == 0 || Func.indexOf(\"BrowserAutomationStudio_\") == 0)"
-                "{"
-                    "HideFuntions[Func] = window[Func];"
-                    "delete window[Func]"
-                "}"
-            "}"
-           "var res = function()"
-           "{"
-              "if(arguments.length == 2 && arguments[0] == \"") + UniqueProcessId + std::string("\" && arguments[1] == 'STASH'){"
-                  "return HideFuntions;"
-              "}else{"
-                  "return atob_original.apply(window, arguments);"
-              "}"
-           "};"
-           "res.toString = function(){return window.btoa.toString().replace('btoa','atob')};"
-            "Object.defineProperty(window, 'atob',{"
-                "configurable: true, "
-                "value: res"
-            "});"
-        "})(window.atob));");
-
+    std::string res = std::string("(function(){atob[Symbol.for('_bas_hide_") + UniqueProcessId + std::string("')] = {};})();");
     return res;
 }
 

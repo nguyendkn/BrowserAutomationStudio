@@ -781,14 +781,29 @@ namespace BrowserAutomationStudioFramework
             MaxRunTime = 0;
         }
         emit StageStatistic(MaximumSuccess, MaximumFailure);
+        bool HasLog = false;
         if(IsStudio && !IsRecord)
         {
             QString msg1 = tr("Script started with %1 threads and will finish after %2 success execution or %3 fail execution or when resource will finish.").arg(QString::number(ThreadsNumber)).arg(QString::number(MaximumSuccess)).arg(QString::number(MaximumFailure));
             QString msg2 = tr("You can change these params in record mode.");
             Logger->WriteInfo(msg1, LogInfo);
             Logger->WriteInfo(msg2, LogInfo);
+            HasLog = true;
+        }
+        if(IsStudio && ModuleManager->IsModuleEnabled("ReCaptcha"))
+        {
+            QString msg1 = tr("ReCaptcha module is enabled, it can reduce browser authenticity.");
+            QString msg2 = tr("So it is recommended to <a href='disablerecaptcha://disablerecaptcha' style='color:red'>turn it off</a>, unless you are working with recaptcha.");
+            Logger->WriteHtml(QString("<font color='red'>") + msg1 + QString("</font>"), msg1, LogFail);
+            Logger->WriteHtml(QString("<font color='red'>") + msg2 + QString("</font>"), msg2, LogFail);
+            HasLog = true;
+        }
+
+        if(HasLog)
+        {
             Logger->WriteInfo("", LogInfo);
         }
+
         Substages.Clear();
 
         if(IsRecord)

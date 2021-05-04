@@ -2,6 +2,8 @@
   var debug = false;
 
   global.BASCaptchaSolver.utils = {
+    setDebug: function (value) { debug = value },
+
     disableDebug: function () { debug = false },
 
     enableDebug: function () { debug = true },

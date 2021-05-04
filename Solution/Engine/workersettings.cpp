@@ -28,6 +28,7 @@ namespace BrowserAutomationStudioFramework
         Webrtc = "disable";
         Canvas = "disable";
         Audio = "disable";
+        QUIC = "disable";
         UseFlash = false;
         UseWidevine = false;
         Webgl = "disable";
@@ -209,6 +210,10 @@ namespace BrowserAutomationStudioFramework
     {
         return AudioNoise;
     }
+    QString WorkerSettings::GetQUIC()
+    {
+        return QUIC;
+    }
     int WorkerSettings::GetMaxFPS()
     {
         return MaxFPS;
@@ -216,6 +221,10 @@ namespace BrowserAutomationStudioFramework
     void WorkerSettings::SetAudio(const QString& Audio)
     {
         this->Audio = Audio;
+    }
+    void WorkerSettings::SetQUIC(const QString& QUIC)
+    {
+        this->QUIC = QUIC;
     }
     void WorkerSettings::SetAudioNoise(const QString& AudioNoise)
     {
@@ -323,6 +332,7 @@ namespace BrowserAutomationStudioFramework
         res->SetCanvas(Canvas);
         res->SetCanvasNoise(CanvasNoise);
         res->SetAudio(Audio);
+        res->SetQUIC(QUIC);
         res->SetAudioNoise(AudioNoise);
         res->SetMaxFPS(MaxFPS);
         res->SetWebgl(Webgl);
@@ -377,6 +387,9 @@ namespace BrowserAutomationStudioFramework
 
         if(Settings.contains("AudioNoise"))
             SetAudioNoise(Settings.value("AudioNoise","").toString());
+
+        if(Settings.contains("QUIC"))
+            SetQUIC(Settings.value("QUIC","disable").toString());
 
         if(Settings.contains("MaxFPS"))
         {
@@ -695,6 +708,12 @@ namespace BrowserAutomationStudioFramework
             UpdateFingerprintsSettings();
          }
 
+         if(!IsMLA && object.contains("QUIC"))
+         {
+            SetQUIC(object["QUIC"].toString());
+            UpdateFingerprintsSettings();
+         }
+
          if(!IsMLA && object.contains("CanvasNoise"))
          {
             SetCanvasNoise(object["CanvasNoise"].toString());
@@ -978,6 +997,20 @@ namespace BrowserAutomationStudioFramework
             if(!Text.isEmpty())
                 Text += "\r\n";
             Text += "AudioType=Noise";
+        }
+
+        if(QUIC == "enable")
+        {
+            if(!Text.isEmpty())
+                Text += "\r\n";
+            Text += "QUIC=Enable";
+        }
+
+        if(QUIC == "disable")
+        {
+            if(!Text.isEmpty())
+                Text += "\r\n";
+            Text += "QUIC=Disable";
         }
 
         if(Webgl == "enable")

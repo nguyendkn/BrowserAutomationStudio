@@ -31,7 +31,7 @@
       const self = _cycle_param('self');
       const _ = BASCaptchaSolver.utils;
 
-      _.log('Waiting for response');
+      _.log('Waiting for response, iteration №' + _iterator());
       _call_function(self.makeRequest, self.getTaskSolutionPayload(task))!
       const response = _result_function();
       _.log('Response from server: ' + JSON.stringify(response));

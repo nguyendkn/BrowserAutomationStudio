@@ -22,7 +22,6 @@
         ArkoseEnforcement = extendFunCaptcha(ArkoseEnforcement)
       );
     },
-
     get: function () {
       if (typeof (_BAS_HIDE(BrowserAutomationStudio_FunCaptcha)) !== 'undefined') {
         return _BAS_HIDE(BrowserAutomationStudio_FunCaptcha);
@@ -33,10 +32,8 @@
   _BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved) = function () {
     try {
       if (typeof (_BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback)) === 'object') {
-        _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback).forEach(function (callback) {
-          try {
-            callback();
-          } catch (e) { }
+        _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback).forEach((callback) => {
+          try { callback(); } catch (e) { }
         });
       }
     } catch (e) { }

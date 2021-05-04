@@ -8,7 +8,7 @@
   };
 
   CaptchaApi.prototype.setApiUrl = function (url) {
-    if (url || url.length) this.apiUrl = url.replace(/[\/\\\s]+$/g, '');
+    if (url && url.length) this.options.apiUrl = url.replace(/[\/\\\s]+$/g, '');
     return this;
   };
 

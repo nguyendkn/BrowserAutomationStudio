@@ -10,7 +10,7 @@ if (service.original.length === 0) {
 }
 
 try {
-  const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptcha_code').html())({
+  const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptchaDefault_code').html())({
     taskWaitInterval: taskWaitInterval.updated,
     taskWaitDelay: taskWaitDelay.updated,
     sendProxy: sendProxy.updated,

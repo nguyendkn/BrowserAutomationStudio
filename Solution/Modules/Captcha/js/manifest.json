@@ -6,7 +6,7 @@
     "ru": "Решение Капчи"
   },
   "major_version": 1,
-  "minor_version": 0,
+  "minor_version": 1,
   "developer_name": "Oyasumi Punpun",
   "developer_email": "likangt2012@gmail.com",
   "developer_site": "https://github.com/CheshireCaat",
@@ -27,24 +27,24 @@
       "code": [
         {
           "file": "actions/code/funCaptchaBrowser.js",
-          "name": "funCaptcha_browser_code"
+          "name": "funCaptchaBrowser_code"
         }
       ]
     },
     {
-      "name": "FunCaptcha",
+      "name": "FunCaptchaDefault",
       "description": {
         "ru": "Решить FunCaptcha",
         "en": "Solve FunCaptcha"
       },
       "template": "{{PATH}}",
       "is_element": false,
-      "interface": "actions/interface/funCaptcha.js",
-      "select": "actions/select/funCaptcha.js",
+      "interface": "actions/interface/funCaptchaDefault.js",
+      "select": "actions/select/funCaptchaDefault.js",
       "code": [
         {
-          "file": "actions/code/funCaptcha.js",
-          "name": "funCaptcha_code"
+          "file": "actions/code/funCaptchaDefault.js",
+          "name": "funCaptchaDefault_code"
         }
       ]
     },

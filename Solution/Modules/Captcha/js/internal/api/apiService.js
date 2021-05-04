@@ -7,23 +7,13 @@
     this.type = type;
   };
 
-  CaptchaApi.prototype.update = function (options) {
-    const current = this.options;
+  CaptchaApi.prototype.setApiUrl = function (url) {
+    if (url || url.length) this.apiUrl = url.replace(/[\/\\\s]+$/g, '');
+    return this;
+  };
 
-    Object.keys(options).forEach(function (key) {
-      const value = options[key]; if (!value) return;
-
-      if (key === 'apiUrl' && current.name !== 'CapMonster' && current.name !== 'XEvil') {
-        if (value.slice(-1) === '/') {
-          current.apiUrl = value.slice(0, value.length - 1);
-        } else {
-          current.apiUrl = value.slice(0, value.length - 0);
-        }
-      } else {
-        current[key] = value;
-      }
-    });
-
+  CaptchaApi.prototype.setApiKey = function (key) {
+    if (key || key.length) this.apiKey = key.replace(/[\/\\\s]+$/g, '');
     return this;
   };
 

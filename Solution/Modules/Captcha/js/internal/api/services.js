@@ -28,9 +28,6 @@
       }
     }
 
-    return service.update({
-      apiKey: options.apiKey,
-      apiUrl: options.apiUrl,
-    });
+    return service.setApiKey(options.apiKey).setApiUrl(options.apiUrl);
   };
 })(BASCaptchaSolver);

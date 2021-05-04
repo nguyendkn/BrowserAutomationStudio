@@ -1,13 +1,5 @@
-(function (global) {
-  var debug = false;
-
-  global.BASCaptchaSolver.utils = {
-    setDebug: function (value) { debug = value },
-
-    disableDebug: function () { debug = false },
-
-    enableDebug: function () { debug = true },
-
+(function (solver) {
+  solver.utils = {
     inherit: function (parent, fn) {
       fn.prototype = Object.create(parent.prototype);
       fn.prototype.constructor = fn;
@@ -15,7 +7,7 @@
     },
 
     log: function (message) {
-      if (debug) {
+      if (solver.debug) {
         log('[CaptchaSolver]: ' + message);
       }
     },
@@ -38,4 +30,4 @@
       sleep(_function_argument('time'))!
     },
   };
-})(this);
+})(BASCaptchaSolver);

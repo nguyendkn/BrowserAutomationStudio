@@ -4,8 +4,19 @@
     this.utils = {};
   };
 
+  CaptchaSolver.prototype.setDebug = function (debug) {
+    this.debug = debug;
+  };
+
+  CaptchaSolver.prototype.disableDebug = function () {
+    this.debug = false;
+  };
+
+  CaptchaSolver.prototype.enableDebug = function () {
+    this.debug = true;
+  };
+
   CaptchaSolver.prototype.solveFunCaptcha = function () {
-    BASCaptchaSolver.utils.enableDebug();
     BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
     _call_function(BASCaptchaSolver.ensureSelector, {})!
     BASCaptchaSolver.path().css('*[name="fc-token"]').attr('value')!

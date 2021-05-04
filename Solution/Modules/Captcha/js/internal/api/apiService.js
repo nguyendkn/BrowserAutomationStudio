@@ -13,7 +13,7 @@
   };
 
   CaptchaApi.prototype.setApiKey = function (key) {
-    if (key || key.length) this.apiKey = key.replace(/[\/\\\s]+$/g, '');
+    if (key && key.length) this.options.apiKey = key.replace(/[\/\\\s]+$/g, '');
     return this;
   };
 

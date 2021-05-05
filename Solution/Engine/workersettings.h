@@ -27,6 +27,7 @@ namespace BrowserAutomationStudioFramework
         QString CanvasNoise;
         QString Audio;
         QString AudioNoise;
+        QString QUIC;
         QString Webgl;
         QString WebglNoise;
         QString WebrtcIps;
@@ -75,9 +76,11 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetCanvasNoise();
         virtual QString GetAudio();
         virtual QString GetAudioNoise();
+        virtual QString GetQUIC();
         virtual int GetMaxFPS();
         virtual void SetAudio(const QString& Audio);
         virtual void SetAudioNoise(const QString& AudioNoise);
+        virtual void SetQUIC(const QString& QUIC);
         virtual QString GetWebgl();
         virtual QString GetWebglNoise();
         virtual void SetWebrtc(const QString& Webrtc);

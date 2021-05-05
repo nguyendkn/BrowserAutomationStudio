@@ -65,7 +65,13 @@
       disable_string: true,
       value_number: 2000,
       id: 'taskWaitInterval',
-      help: { description: tr('') }
+      help: {
+        description: tr('Task solution check interval in milliseconds'),
+        examples: [
+          { code: '5000', description: tr('Wait for 5 seconds.') },
+          { code: '0', description: tr('Disable interval') },
+        ]
+      }
     }) %>
     <%= _.template($('#input_constructor').html())({
       description: tr('Task solution check delay'),
@@ -73,11 +79,18 @@
       disable_string: true,
       value_number: 5000,
       id: 'taskWaitDelay',
-      help: { description: tr('') }
+      help: {
+        description: tr('Task solution check delay in milliseconds'),
+        examples: [
+          { code: '5000', description: tr('Wait for 5 seconds.') },
+          { code: '0', description: tr('Disable delay') },
+        ]
+      }
     }) %>
   </span>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Solve FunCaptcha using any available service.</div>
+  <div class="tr tooltip-paragraph-fold">This action solves captcha using the browser.</div>
 </div>
 <%= _.template($('#back').html())({ action: 'executeandadd', visible: true }) %>

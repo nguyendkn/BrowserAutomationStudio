@@ -8,14 +8,12 @@ const apiKey = GetInputConstructorValue('apiKey', loader);
 
 if (!taskWaitInterval.original.length) {
   return Invalid('The "Task wait interval" param is empty');
-}
-
-if (!taskWaitDelay.original.length) {
+} else if (!taskWaitDelay.original.length) {
   return Invalid('The "Task wait delay" param is empty');
-}
-
-if (!service.original.length) {
+} else if (!service.original.length) {
   return Invalid('The "Service" param is empty');
+} else if (!apiKey.original.length) {
+  return Invalid('The "Api Key" param is empty');
 }
 
 try {

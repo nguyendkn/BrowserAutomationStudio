@@ -27,21 +27,10 @@
     <label for="AdvancedCheck" class="tr">Advanced settings.</label>
   </div>
   <span id="Advanced" style="display: none;">
-    <%= _.template($('#input_constructor').html())({
-      description: tr('Send current proxy to solver service'),
-      variants: [ 'true', 'false' ],
-      default_selector: 'string',
-      value_string: 'false',
-      disable_int: true,
-      id: 'sendProxy',
-      help: {
-        description: tr('Forces person who solves recaptcha use proxy that you setted up with \"Proxy\" action.'),
-        examples: [
-          { code: 'false', description: tr('Don\'t send proxy to service. Default value.') },
-          { code: 'true', description: tr('Send proxy to service') },
-        ]
-      }
-    }) %>
+    <%= _.template($('#input_constructor').html())({id:"proxyText", description:tr("Proxy String"), default_selector: "string", disable_int:true, help: {description: tr("String with information about proxy. It may contain ip, port, proxy type in different formats. This string may also contain login and password, if it doesn't, auth can be set with \"Proxy Login\" and \"Proxy Password\" parameters."), examples:[{code:"210.10.10.10:1085"},{code:"username:password@210.10.10.10:1085"},{code:"socks5://210.10.10.10:1085"},{code:"socks:210.10.10.10:1085:username:password"},{code:"http:username:password:210.10.10.10:1085"},{code:"{{proxy}}", description: tr("Get from resource")},{code:tr("Empty string"),description:tr("Without proxy")}]}}) %>
+		<%= _.template($('#input_constructor').html())({id:"proxyType", description:tr("Proxy Type"), default_selector: "string", disable_int:true, value_string: "http", variants: ["http","socks5","auto"], help: {description: tr("socks5 and http proxy types are supported."), examples:[{code:"socks"},{code:"socks5",description:tr("Same as socks")},{code:"http"},{code:"https",description:tr("Same as http")}]}}) %>
+		<%= _.template($('#input_constructor').html())({id:"proxyLogin", description:tr("Proxy Login. Can be blank."), default_selector: "string", disable_int:true, help: {description: tr("Proxy login, overrides login set in proxy string. Useful if you have many proxy with same login and password.")}}) %>
+		<%= _.template($('#input_constructor').html())({id:"proxyPassword", description:tr("Proxy password. Can be blank."), default_selector: "string", disable_int:true, help: {description: tr("Proxy password, overrides password set in proxy string. Useful if you have many proxy with same login and password.")}}) %>
     <%= _.template($('#input_constructor').html())({
       description: tr('User Agent'),
       default_selector: 'string',

@@ -1,6 +1,9 @@
 const taskWaitInterval = GetInputConstructorValue('taskWaitInterval', loader);
 const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
-const sendProxy = GetInputConstructorValue('sendProxy', loader);
+const proxyPassword = GetInputConstructorValue('proxyPassword', loader);
+const proxyLogin = GetInputConstructorValue('proxyLogin', loader);
+const proxyType = GetInputConstructorValue('proxyType', loader);
+const proxyText = GetInputConstructorValue('proxyText', loader);
 const userAgent = GetInputConstructorValue('userAgent', loader);
 const service = GetInputConstructorValue('service', loader);
 const apiUrl = GetInputConstructorValue('apiUrl', loader);
@@ -20,8 +23,11 @@ try {
   const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptchaDefault_code').html())({
     taskWaitInterval: taskWaitInterval.updated,
     taskWaitDelay: taskWaitDelay.updated,
+    proxyPassword: proxyPassword.updated,
+    proxyLogin: proxyLogin.updated,
+    proxyText: proxyText.updated,
+    proxyType: proxyType.updated,
     userAgent: userAgent.updated,
-    sendProxy: sendProxy.updated,
     service: service.updated,
     apiUrl: apiUrl.updated,
     apiKey: apiKey.updated

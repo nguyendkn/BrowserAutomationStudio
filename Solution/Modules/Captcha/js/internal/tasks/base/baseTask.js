@@ -1,5 +1,5 @@
-(function (solver) {
-  const BaseTask = function (type, options) {
+(function (solver, _) {
+  function BaseTask(type, options) {
     this.params = options.params;
     this.rules = options.rules;
     this.name = options.name;
@@ -22,11 +22,9 @@
   };
 
   BaseTask.prototype.serialize = function () {
-    const self = this;
-
-    Object.keys(self.rules).forEach(function (key) {
-      const param = self.params[key];
-      const rule = self.rules[key];
+    Object.keys(this.rules).forEach(_.bind(function (key) {
+      const param = this.params[key];
+      const rule = this.rules[key];
 
       if (typeof (param) === 'undefined') {
         if (!rule.optional) {
@@ -39,11 +37,11 @@
         return;
       }
 
-      self.data[rule.name || key] = param;
-    });
+      this.data[rule.name || key] = param;
+    }, this));
 
-    return this.applyProxy(self.params.proxy || {});
+    return this.applyProxy(this.params.proxy);
   };
 
   solver.tasks.BaseTask = BaseTask;
-})(BASCaptchaSolver);
+})(BASCaptchaSolver, BASCaptchaSolver.utils);

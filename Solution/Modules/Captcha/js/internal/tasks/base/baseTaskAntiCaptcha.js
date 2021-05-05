@@ -5,7 +5,7 @@
   });
 
   AntiCaptchaTask.prototype.applyProxy = function (proxy) {
-    if (proxy.server && proxy.Port) {
+    if (proxy != null && proxy.server && proxy.Port) {
       if (proxy.password && proxy.name) {
         this.data['proxyPassword'] = proxy.password;
         this.data['proxyLogin'] = proxy.name;

@@ -1,4 +1,4 @@
-(function (solver, _) {
+(function (solver) {
   function BaseTask(type, options) {
     this.params = options.params;
     this.rules = options.rules;
@@ -22,9 +22,11 @@
   };
 
   BaseTask.prototype.serialize = function () {
-    Object.keys(this.rules).forEach(_.bind(function (key) {
-      const param = this.params[key];
-      const rule = this.rules[key];
+    const self = this;
+
+    Object.keys(self.rules).forEach(function (key) {
+      const param = self.params[key];
+      const rule = self.rules[key];
 
       if (typeof (param) === 'undefined') {
         if (!rule.optional) {
@@ -37,11 +39,11 @@
         return;
       }
 
-      this.data[rule.name || key] = param;
-    }, this));
+      self.data[rule.name || key] = param;
+    });
 
-    return this.applyProxy(this.params.proxy);
+    return self.applyProxy(self.params.proxy);
   };
 
   solver.tasks.BaseTask = BaseTask;
-})(BASCaptchaSolver, BASCaptchaSolver.utils);
+})(BASCaptchaSolver);

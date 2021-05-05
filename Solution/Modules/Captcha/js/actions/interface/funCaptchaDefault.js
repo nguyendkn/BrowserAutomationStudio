@@ -43,6 +43,14 @@
       }
     }) %>
     <%= _.template($('#input_constructor').html())({
+      description: tr('User Agent'),
+      default_selector: 'string',
+      disable_int: true,
+      value_string: '',
+      id: 'userAgent',
+      help: { description: tr('') }
+    }) %>
+    <%= _.template($('#input_constructor').html())({
       description: tr('Custom service api url'),
       default_selector: 'string',
       disable_int: true,

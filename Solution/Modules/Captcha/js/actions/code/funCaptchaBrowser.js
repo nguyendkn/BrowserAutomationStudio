@@ -15,6 +15,7 @@ _call_function(BASCaptchaSolver.solveFunCaptcha, {
   taskWaitInterval: <%= taskWaitInterval %>,
   taskWaitDelay: <%= taskWaitDelay %>,
   proxy: <%= sendProxy %> ? _PROXY : {},
+  userAgent: <%= userAgent %>,
   service: <%= service %>,
   apiUrl: <%= apiUrl %>,
   apiKey: <%= apiKey %>,

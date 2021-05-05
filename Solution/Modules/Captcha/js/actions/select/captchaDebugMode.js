@@ -9,4 +9,4 @@ try {
     enable: enable.updated
   }), 0);
   BrowserAutomationStudio_Append('', BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-} catch (e) { }
+} catch (e) { console.log('Error while adding action:', e) }

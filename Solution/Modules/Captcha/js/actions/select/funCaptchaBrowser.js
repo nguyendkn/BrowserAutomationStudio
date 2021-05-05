@@ -1,18 +1,28 @@
 const taskWaitInterval = GetInputConstructorValue('taskWaitInterval', loader);
 const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
 const sendProxy = GetInputConstructorValue('sendProxy', loader);
+const userAgent = GetInputConstructorValue('userAgent', loader);
 const service = GetInputConstructorValue('service', loader);
 const apiUrl = GetInputConstructorValue('apiUrl', loader);
 const apiKey = GetInputConstructorValue('apiKey', loader);
 
-if (service.original.length === 0) {
-  return Invalid('Service is empty');
+if (!taskWaitInterval.original.length) {
+  return Invalid('The "Task wait interval" param is empty');
+}
+
+if (!taskWaitDelay.original.length) {
+  return Invalid('The "Task wait delay" param is empty');
+}
+
+if (!service.original.length) {
+  return Invalid('The "Service" param is empty');
 }
 
 try {
-  const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptcha_browser_code').html())({
+  const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptchaBrowser_code').html())({
     taskWaitInterval: taskWaitInterval.updated,
     taskWaitDelay: taskWaitDelay.updated,
+    userAgent: userAgent.updated,
     sendProxy: sendProxy.updated,
     service: service.updated,
     apiUrl: apiUrl.updated,
@@ -20,4 +30,4 @@ try {
     ...GetPath(loader)
   }), 0);
   BrowserAutomationStudio_Append('', BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
-} catch (e) { }
+} catch (e) { console.log('Error while adding action:', e) }

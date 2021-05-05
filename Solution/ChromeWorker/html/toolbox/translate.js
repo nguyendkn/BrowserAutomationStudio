@@ -397,6 +397,11 @@ _L =
 
 	"Always false.": {"ru": "Всегда ложь."},
 
+	"Enable QUIC protocol": {"ru": "Включить протокол QUIC"},
+	"Unlike HTTP, QUIC protocol is build on top of UDP. Not all proxies supports UDP. It means that enabling QUIC can cause problems when working with certain proxies. It is recommended to enable this option only if sure, that your proxy supports it. Disabled by default.": {"ru": "В отличие от HTTP, протокол QUIC построен поверх UDP. Не все прокси поддерживают UDP. Это означает, что включение QUIC может вызвать проблемы при работе с определенными прокси. Рекомендуется включать эту опцию только в том случае, если вы уверены, что прокси ее поддерживает. По умолчанию отключено."},
+	"Enable QUIC": {"ru": "Включить QUIC"},
+	"Disable QUIC": {"ru": "Отключить QUIC"},
+	
 	"Enable module ": {"ru": "Включить модуль "},
 	"In order to use this module, you need to enable it first. It will restart script.": {"ru": "Чтобы использовать этот модуль, вам необходимо сначала включить его. Это перезапустит скрипт."},
 	"You can disable it later by using Menu -> Module manager.": {"ru": "Вы можете отключить его позже, используя Меню -> Менеджер модулей."},

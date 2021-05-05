@@ -198,6 +198,7 @@
 
 			$("#Canvas").val(json["canvas"])
 			$("#Audio").val(json["audio"])
+			$("#QUIC").val(json["quic"])
 			$("#CanvasNoise").val(json["canvas_noise"])
 			$("#AudioNoise").val(json["audio_noise"])
 			$("#WebrtcIps").val(json["webrtc_ips"].split(";").join("\r\n"));
@@ -250,6 +251,7 @@
 
 				$("#Canvas").val("disable")
 				$("#Audio").val("disable")
+				$("#QUIC").val("disable")
 				$("#CanvasNoise").val("")
 				$("#AudioNoise").val("")
 				$("#WebrtcIps").val("")
@@ -301,6 +303,7 @@
 
 						"canvas": $("#Canvas").val(),
 						"audio": $("#Audio").val(),
+						"quic": $("#QUIC").val(),
 						"canvas_noise": $("#CanvasNoise").val(),
 						"audio_noise": $("#AudioNoise").val(),
 						"webrtc_ips": $("#WebrtcIps").val().split(/\r?\n/).filter(x => x && x.length > 0).map(x=>x.replace(/\s/g, '')).join(";"),
@@ -560,6 +563,30 @@
 
 		  </div>
 
+		  	<h4><p class="text-center tr"  style="padding-top:40px">Network settings</p></h4>
+			<hr>
+
+
+
+			<div class="container">
+				<div class="text-center tr">You can set proxy through "Proxy" action.</div>
+			</div>
+
+
+			<div class="form-group form-item"  style="padding-top:20px">
+				<label for="QUIC" class="col-sm-5 control-label tr">QUIC</label>
+				<div class="col-sm-4">
+					<select class="form-control" id="QUIC">
+						<option value="enable" class="tr">Turn on</option>
+						<option value="disable" class="tr">Turn off</option>
+					</select>
+				</div>
+			</div>
+			<div class="text-center text-muted tr">Unlike HTTP, QUIC protocol is build on top of UDP. Not all proxies supports UDP. It means that enabling QUIC can cause problems when working with certain proxies. It is recommended to enable this option only if sure, that your proxy supports it. Disabled by default.</div>
+
+			<h4><p class="text-center tr"  style="padding-top:40px">Mouse emulation</p></h4>
+			<hr>
+
 		  <div class="form-group" style="margin-top:20px">
 		    <div class="col-sm-offset-5 col-sm-7">
 		      <div class="checkbox">
@@ -590,14 +617,7 @@
 
 	</div>
 
-	<h4><p class="text-center tr"  style="padding-top:40px">Network settings</p></h4>
-	<hr>
-
-
-
-	<div class="container">
-		<div class="text-center tr">You can set proxy through "Proxy" action.</div>
-	</div>
+	
 
 
 	<h4><p class="text-center tr"  style="padding-top:40px">Browser extensions</p></h4>

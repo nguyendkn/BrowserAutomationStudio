@@ -29,7 +29,9 @@ _L =
 	"Close" :{"ru": "Закрыть"},
 	"Add" :{"ru": "Добавить"},
 	"module" :{"ru": "модуль"},
-
+	"Unlike HTTP, QUIC protocol is build on top of UDP. Not all proxies supports UDP. It means that enabling QUIC can cause problems when working with certain proxies. It is recommended to enable this option only if sure, that your proxy supports it. Disabled by default.": {"ru": "В отличие от HTTP, протокол QUIC построен поверх UDP. Не все прокси поддерживают UDP. Это означает, что включение QUIC может вызвать проблемы при работе с определенными прокси. Рекомендуется включать эту опцию только в том случае, если вы уверены, что прокси ее поддерживает. По умолчанию отключено."},
+	"Mouse emulation" :{"ru": "Эмуляция мыши"},
+	 
 	"Profiles caching":{"ru": "Кеширование профилей"},
 	"Creating profile is hard drive intensive operation. In order to do that browser needs to initialize each file located in profile folder. This option allows to copy common files rather than creating them every time. Note that profiles are created implicitly each time new thread is started.":{"ru": "Создание профиля - операция с интенсивным использованием жесткого диска. Для того чтобы создать профиль, браузеру необходимо инициализировать каждый файл расположенный в папке профиля. Эта настройка позволяет копировать файлы профиля, а не создавать их каждый раз заново. Обратите внимание, что профили создаются каждый раз при запуске нового потока."},
 

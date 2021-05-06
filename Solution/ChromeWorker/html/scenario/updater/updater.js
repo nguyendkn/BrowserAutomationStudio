@@ -299,6 +299,7 @@
       if (!this.$el.is(':visible') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.show();
+        this.$('#actionUpdaterProgress').hide();
         this.trigger('show');
       }
       this.modal.hide();
@@ -309,6 +310,7 @@
       if (!this.$el.is(':hidden') && !this.model.get('isStarted')) {
         $('body').toggleClass('overflow-hidden');
         this.render().$el.hide();
+        this.$('#actionUpdaterProgress').hide();
         this.trigger('hide');
       }
       this.modal.hide();
@@ -326,18 +328,18 @@
         }
       },
 
-      'click #actionUpdaterAccept': function () {
-        if (!this.model.get('isStarted')) {
-          this.model.set('isStarted', !false);
-          return;
+      'click #actionUpdaterCancel': function () {
+        if (this.model.get('isStarted')) {
+          this.$('#actionUpdaterProgress').slideDown(250);
+          return this.model.set('isStarted', false);
         }
         this.hide();
       },
 
-      'click #actionUpdaterCancel': function () {
-        if (this.model.get('isStarted')) {
-          this.model.set('isStarted', false);
-          return;
+      'click #actionUpdaterAccept': function () {
+        if (!this.model.get('isStarted')) {
+          this.$('#actionUpdaterProgress').slideDown(250);
+          return this.model.set('isStarted', true);
         }
         this.hide();
       },

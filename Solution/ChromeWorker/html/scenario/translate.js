@@ -768,9 +768,8 @@ _L =
 	"Edit Task" :{"ru": "Редактировать задание"},
 	"Task Name" :{"ru": "Имя задания"},
 	"Don't run when recording" :{"ru": "Не выполнять в режиме записи"},
-	"Cancel": {"ru": "Отмена"},
-	"Ok": {"ru": "Ok"},
-	"OK": {"ru": "OK"},
+	"Ok" :{"ru": "Ok"},
+	"Cancel" :{"ru": "Отмена"},
 	"Add/Edit Function" :{"ru": "Добавить/Редактировать Функцию"},
 	"OnApplicationStart" :{"ru": "OnApplicationStart"},
 	"function will be run at first place." :{"ru": "функция будет выполнена первой."},
@@ -815,33 +814,42 @@ _L =
 }
 
 
-function tr(key) {
-	if (typeof(key) === 'undefined') {
+function tr(key)
+{
+	if(typeof(key) == "undefined")
+	{
       {
-         const all = $('*[data-placeholder]');
-         // console.log("Placeholder number " + all.length)
-         for (let i = 0; i < all.length; i++) {
-            const el = $(all[i]);
-            el.attr('placeholder', tr(el.attr('data-placeholder')));
-            el.removeAttr('data-placeholder');
+         var all = $("*[data-placeholder]")
+         //console.log("Placeholder number " + all.length)
+         for(var i = 0;i< all.length;i++)
+         {
+            var el = $(all[i])
+            el.attr("placeholder",tr(el.attr("data-placeholder")))
+            el.removeAttr("data-placeholder")
          }
       }
+
       {
-         const all = $('*[data-title]');
-         // console.log("Title number " + all.length)
-         for(let i = 0; i < all.length; i++) {
-            const el = $(all[i]);
-            el.attr('title', tr(el.attr('data-title')));
-            el.removeAttr('data-title');
+         var all = $("*[data-title]")
+         //console.log("Title number " + all.length)
+         for(var i = 0;i< all.length;i++)
+         {
+            var el = $(all[i])
+            el.attr("title",tr(el.attr("data-title")))
+            el.removeAttr("data-title")
          }
       }
+
       {
-         const all = $('.tr');
-         // console.log("Translate number " + all.length)
-         for (let i = 0; i < all.length; i++) {
-            const el = $(all[i])
-            el.html(tr(el.html()));
-            el.removeClass('tr');
+         var all = $(".tr")
+         //console.log("Translate number " + all.length)
+
+         for(var i = 0;i< all.length;i++)
+         {
+            var el = $(all[i])
+            var key = el.html()
+            el.html(tr(key))
+            el.removeClass("tr")
          }
       }
 
@@ -849,10 +857,14 @@ function tr(key) {
    }
    
 	
-	if (typeof(_K) === 'undefined' || _K === 'en') return key;
-	if (key in _L) {
-		if (_K in _L[key]) {
-			return _L[key][_K];
+	if(typeof(_K) == "undefined" || _K == "en")
+		return key;
+	if(key in _L)
+	{
+
+		if(_K in _L[key])
+		{
+			return _L[key][_K]
 		}
 	}
 	return key;

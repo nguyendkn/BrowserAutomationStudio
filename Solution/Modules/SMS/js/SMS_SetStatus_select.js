@@ -5,7 +5,7 @@ if(number["original"].length == 0){
 };
 var status = GetInputConstructorValue("status", loader);
 if(status["original"].length == 0){
-	Invalid(tr("The parameter \"") + tr("Status") + tr("\" is not specified"));
+	Invalid(tr("The parameter \"") + tr("Stаtus") + tr("\" is not specified"));
     return;
 };
 try{

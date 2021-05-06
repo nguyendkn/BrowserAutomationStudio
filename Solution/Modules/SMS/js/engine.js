@@ -29,8 +29,6 @@ _SMS = {
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
-		api.validateMethod('getBalance');
-		
 		_call_function(api.getBalance,{})!
 		var balance = _result_function();
 		
@@ -49,10 +47,10 @@ _SMS = {
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
-		api.validateMethod('getNumbersCount');
+		api.validateMethod('getNumbersCount', _K=="ru" ? "Получить количество доступных номеров" : "Get the count of available numbers");
 		
 		site = _is_nilb(customSite) ? (site=="All" ? "All" : api.getRawSite(site)) : customSite;
-		country = _is_nilb(customCountry) ? (country=="" ? "" : api.getRawCountry(country)) : customCountry;
+		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
 		
 		_call_function(api.getNumbersCount,{site:site, country:country, operator:operator})!
 		var count = _result_function();
@@ -67,7 +65,7 @@ _SMS = {
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
-		api.validateMethod('getCountries');
+		api.validateMethod('getCountries', _K=="ru" ? "Получить список стран" : "Get list of countries");
 		
 		_call_function(api.getCountries,{})!
 		
@@ -91,8 +89,6 @@ _SMS = {
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
-		api.validateMethod('getNumber');
-		
 		site = _is_nilb(customSite) ? api.getRawSite(site) : customSite;
 		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
 		
@@ -111,8 +107,6 @@ _SMS = {
 		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var api = confirmData.api;
 		
-		api.validateMethod('getStatus');
-		
 		_call_function(api.getStatus,{number:number})!
 		_function_return(_result_function());
 	},
@@ -130,12 +124,8 @@ _SMS = {
 		var api = confirmData.api;
 		var code = null;
 		
-		api.validateMethod('getCode');
-		
 		_if(!confirmData.ready, function(){
-			api.validateMethod('setStatus');
-			_call_function(api.setStatus,{number:number, status:1})!
-			confirmData.ready = true;
+			_call_function(_SMS.setStatus,{number:number, status:"1"})!
 		})!
 		
 		_do(function(){
@@ -158,16 +148,18 @@ _SMS = {
 	
 	setStatus: function(){
 		var number = _function_argument("number");
-		var status = _function_argument("status");
+		var status = _function_argument("status").toString();
 		
 		var confirmData = _BAS_SMSCONFIRMDATA[number];
 		var api = confirmData.api;
 		
-		api.validateMethod('setStatus');
+		if(status=="1"){
+			confirmData.ready = true;
+		};
 		
 		_call_function(api.setStatus,{number:number, status:status})!
 		
-		if([-1,6,8].indexOf(status) > -1){
+		if(["-1","6","8"].indexOf(status) > -1){
 			delete _BAS_SMSCONFIRMDATA[number];
 		};
 	},

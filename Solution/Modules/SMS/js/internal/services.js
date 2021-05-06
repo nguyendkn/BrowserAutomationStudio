@@ -3,59 +3,102 @@ _SMS.getServiceApi = function(data){
 		"sms-activate.ru": {
 			api: _SMS.SmsActivateApi,
 			config: {
-				url: 'https://sms-activate.ru',
 				name: 'Sms-activate',
+				url: 'https://sms-activate.ru',
+				supportedMethods: [
+					'getNumbersCount',
+					'getCountries'
+				],
 				ref: 'browserAutomationStudio'
 			}
 		},
 		"smshub.org": {
 			api: _SMS.SmsActivateApi,
 			config: {
+				name: 'SMSHUB',
 				url: 'https://smshub.org',
-				name: 'SMSHUB'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"5sim.net": {
 			api: _SMS.SmsActivateApi,
 			config: {
+				name: '5SIM',
 				url: 'http://api1.5sim.net',
-				name: '5SIM'
+				supportedMethods: [
+					'getNumbersCount'
+				]
+			}
+		},
+		"365sms.ru": {
+			api: _SMS.SmsActivateApi,
+			config: {
+				name: '365SMS',
+				url: 'https://365sms.ru',
+				supportedMethods: [
+					'getNumbersCount'
+				]
+			}
+		},
+		"sms-man.ru": {
+			api: _SMS.SmsActivateApi,
+			config: {
+				name: 'SMS@MAN',
+				url: 'https://api.sms-man.ru',
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"getsms.online": {
 			api: _SMS.SmsActivateApi,
 			config: {
-				url: 'https://smsactivateapi.getsms.online',
 				name: 'GetSMS',
+				url: 'https://smsactivateapi.getsms.online',
+				supportedMethods: [
+					'getNumbersCount'
+				],
 				ref: '20111'
-			}
-		},
-		"smsvk.net": {
-			api: _SMS.SmsActivateApi,
-			config: {
-				url: 'http://smsvk.net',
-				name: 'SmsVK'
 			}
 		},
 		"cheapsms.ru": {
 			api: _SMS.SmsActivateApi,
 			config: {
+				name: 'CheapSMS',
 				url: 'https://cheapsms.pro',
-				name: 'CheapSMS'
+				supportedMethods: [
+					'getNumbersCount'
+				]
+			}
+		},
+		"smsvk.net": {
+			api: _SMS.SmsActivateApi,
+			config: {
+				name: 'SmsVK',
+				url: 'http://smsvk.net',
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"sms.kopeechka.store": {
 			api: _SMS.SmsActivateApi,
 			config: {
+				name: 'Sms.Kopeechka.Store',
 				url: 'https://sms.kopeechka.store',
-				name: 'Sms.Kopeechka.Store'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"sms-reg.com": {
 			api: _SMS.SmsRegApi,
 			config: {
-				url: 'https://api.sms-reg.com',
 				name: 'SMS-REG',
+				url: 'https://api.sms-reg.com',
+				supportedMethods: [],
 				ref: 'RUBMC9BX6OIRJG3S',
 				refTitle: 'appid'
 			}
@@ -63,43 +106,61 @@ _SMS.getServiceApi = function(data){
 		"smspva.com": {
 			api: _SMS.SmsPvaApi,
 			config: {
+				name: 'SMSpva',
 				url: 'http://smspva.com',
-				name: 'SMSpva'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"simsms.org": {
 			api: _SMS.SmsPvaApi,
 			config: {
+				name: 'SIMsms',
 				url: 'http://simsms.org',
-				name: 'SIMsms'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"onlinesim.ru": {
 			api: _SMS.OnlineSimApi,
 			config: {
+				name: 'OnlineSIM',
 				url: 'https://onlinesim.ru',
-				name: 'OnlineSIM'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"sms-acktiwator.ru": {
 			api: _SMS.SmsAcktiwatorApi,
 			config: {
+				name: 'SmsAcktiwator',
 				url: 'https://sms-acktiwator.ru',
-				name: 'SmsAcktiwator'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"vak-sms.com": {
 			api: _SMS.VakSmsApi,
 			config: {
+				name: 'VAK-SMS',
 				url: 'https://vak-sms.com',
-				name: 'VAK-SMS'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		},
 		"give-sms.com": {
 			api: _SMS.GiveSmsApi,
 			config: {
+				name: 'Give-SMS',
 				url: 'https://give-sms.com',
-				name: 'Give-SMS'
+				supportedMethods: [
+					'getNumbersCount'
+				]
 			}
 		}
 	};
@@ -109,6 +170,5 @@ _SMS.getServiceApi = function(data){
 	};
 	var api = services[service].api;
 	var config = services[service].config;
-	config.data = data;
-	return new api(config);
+	return new api(config, data);
 };

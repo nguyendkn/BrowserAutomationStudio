@@ -1,6 +1,51 @@
 <div class="container-fluid">
-	<%= _.template($('#input_constructor').html())({id:"service", description:tr("Service"), default_selector: "string", variants: ["sms-activate.ru","smshub.org","5sim.net","getsms.online","smsvk.net","vak-sms.com","cheapsms.ru","give-sms.com","sms.kopeechka.store","simsms.org","smspva.com","onlinesim.ru","sms-acktiwator.ru"], disable_int: true, value_string: "sms-activate.ru", help: {description: tr("SMS receiving service.")} }) %>
-	<%= _.template($('#input_constructor').html())({id:"apiKey", description:tr("API key"), default_selector: "string", disable_int: true, value_string: "", help: {description: tr("API key of the SMS receiving service.")} }) %>
+	<%= _.template($('#input_constructor').html())({
+		id: "service",
+		description: tr("Service"),
+		default_selector: "string",
+		variants: [
+			"sms-activate.ru",
+			"smshub.org",
+			"5sim.net",
+			"365sms.ru",
+			"sms-man.ru",
+			"getsms.online",
+			"cheapsms.ru",
+			"smsvk.net",
+			"sms.kopeechka.store",
+			"smspva.com",
+			"simsms.org",
+			"onlinesim.ru",
+			"sms-acktiwator.ru",
+			"vak-sms.com",
+			"give-sms.com"
+		],
+		disable_int: true,
+		value_string: "sms-activate.ru",
+		help: {
+			description: tr("SMS receiving service for which need to get the count of available numbers."),
+			examples: [
+				{code: "sms-activate.ru", description: "https://sms-activate.ru"},
+				{code: "smshub.org", description: "https://smshub.org"},
+				{code: "5sim.net", description: "https://5sim.net"}
+			]
+		}
+	}) %>
+	<%= _.template($('#input_constructor').html())({
+		id: "apiKey",
+		description: tr("API key"),
+		default_selector: "string",
+		disable_int: true,
+		value_string: "",
+		help: {
+			description: tr("API key of the SMS receiving service. The key for the service selected in the \"Service\" parameter. Depending on the service, you can get it in your personal account or in the service settings."),
+			examples: [
+				{code: "8b1a9953c4611296a827abf8c47804d7"},
+				{code: "79916U5718g2266a7bff7fad356c6cb280b3ea"},
+				{code: "f4d559ba78aa6c4701c1995ae9977c03"}
+			]
+		}
+	}) %>
 	<div class="col-xs-12">
 		<form class="form-horizontal">
 		  <div class="form-group">
@@ -8,8 +53,7 @@
 			  <div class="input-group">
 				<span data-preserve="true" data-preserve-type="select" data-preserve-id="site">
 				  <select class="form-control input-sm" id="site" placeholder="Site">
-					<option value="All" selected="selected">All</option>
-					<option value="Other">Other</option>
+					<option value="Other" selected="selected">Other</option>
 					<option value="VK">VK</option>
 					<option value="WhatsApp">WhatsApp</option>
 					<option value="Viber">Viber</option>
@@ -1317,15 +1361,291 @@
 		  </div>
 		</form>
 	</div>
-	<%= _.template($('#input_constructor').html())({id:"country", description:tr("Country"), default_selector: "string", disable_int:true, value_string: "", variants:["Any","RU","UA","KZ","US","US (Virtual)","CN","PH","MM","ID","MY","KE","VN","KG","IL","HK","PL","GB","CD","NG","MO","EG","IN","KH","LA","HT","CI","GM","RS","YE","ZA","RO","CO","EE","AZ","CA","MA","GH","AR","UZ","CM","DE","LT","SE","IQ","NL","LV","AT","BY","TH","SA","MX","TW","ES","IR","DZ","SI","BD","SN","TR","CZ","LK","PE","PK","GN","ML","VE","ET","MN","BR","AF","UG","AO","CY","FR","PG","MZ","NP","BE","BG","HU","MD","IT","PY","HN","TN","NI","TL","BO","CR","GT","AE","ZW","PR","SD","TG","KW","SV","LY","JM","TT","EC","SZ","OM","BA","DO","SY","QA","PA","CU","MR","SL","JO","PT","BB","BI","BJ","BS","BW","DM","GE","GR","GW","GY","KM","KN","LR","LS","MW","NA","NE","RW","SK","SR","TJ","BH","RE","ZM","AM","SO","CG","BF","LB","GA","AL","MU","BT","MV","TM","LU","GQ","AG","ME","CH","ER","SS","ST","AW","AI","MK","SC","NC","CV","BM","TD","HR","BN","PS","AU","BZ","KY","CL","DJ","FI","GF","GD","GP","IE","JP","MG","MS","NZ","NO","LC","VC","WS","SG","SB","TZ","TO","TC","UY","VG","CM (Virtual)","CA (Virtual)","EG (Virtual)","GH (Virtual)","IN (Virtual)","IQ (Virtual)","PK (Virtual)"]}) %>
+	<%= _.template($('#input_constructor').html())({
+		id:"country",
+		description:tr("Country"),
+		default_selector: "string",
+		disable_int:true,
+		value_string:"RU",
+		variants: [
+			"RU<br/><span style='color:gray'>" + tr("Russian Federation") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-reg.com, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
+			"KZ<br/><span style='color:gray'>" + tr("Kazakhstan") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-reg.com, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
+			"UA<br/><span style='color:gray'>" + tr("Ukraine") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-reg.com, smspva.com, onlinesim.ru, sms-acktiwator.ru)</span>",
+			"GB<br/><span style='color:gray'>" + tr("United Kingdom") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
+			"PL<br/><span style='color:gray'>" + tr("Poland") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, vak-sms.com)</span>",
+			"EE<br/><span style='color:gray'>" + tr("Estonia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
+			"DE<br/><span style='color:gray'>" + tr("Germany") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, vak-sms.com)</span>",
+			"SE<br/><span style='color:gray'>" + tr("Sweden") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
+			"ID<br/><span style='color:gray'>" + tr("Indonesia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, sms-acktiwator.ru)</span>",
+			"LT<br/><span style='color:gray'>" + tr("Lithuania") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, vak-sms.com)</span>",
+			"NL<br/><span style='color:gray'>" + tr("Netherlands") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, vak-sms.com)</span>",
+			"LV<br/><span style='color:gray'>" + tr("Latvia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, vak-sms.com)</span>",
+			"ES<br/><span style='color:gray'>" + tr("Spain") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, vak-sms.com)</span>",
+			"FR<br/><span style='color:gray'>" + tr("France") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, vak-sms.com)</span>",
+			"MD<br/><span style='color:gray'>" + tr("Moldova") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru, sms-acktiwator.ru)</span>",
+			"PH<br/><span style='color:gray'>" + tr("Philippines") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"VN<br/><span style='color:gray'>" + tr("Vietnam") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"KG<br/><span style='color:gray'>" + tr("Kyrgyzstan") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"NG<br/><span style='color:gray'>" + tr("Nigeria") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"HT<br/><span style='color:gray'>" + tr("Haiti") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"RO<br/><span style='color:gray'>" + tr("Romania") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"AR<br/><span style='color:gray'>" + tr("Argentina") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"BY<br/><span style='color:gray'>" + tr("Belarus") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-acktiwator.ru)</span>",
+			"MX<br/><span style='color:gray'>" + tr("Mexico") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"BR<br/><span style='color:gray'>" + tr("Brazil") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"CY<br/><span style='color:gray'>" + tr("Cyprus") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"PT<br/><span style='color:gray'>" + tr("Portugal") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, vak-sms.com)</span>",
+			"US<br/><span style='color:gray'>" + tr("United States") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"CN<br/><span style='color:gray'>" + tr("China") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, sms-reg.com)</span>",
+			"MY<br/><span style='color:gray'>" + tr("Malaysia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com)</span>",
+			"KE<br/><span style='color:gray'>" + tr("Kenya") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com)</span>",
+			"EG<br/><span style='color:gray'>" + tr("Egypt") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"EG (Virtual)<br/><span style='color:gray'>" + tr("Egypt") + " (smspva.com)</span>",
+			"IN<br/><span style='color:gray'>" + tr("India") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"IN (Virtual)<br/><span style='color:gray'>" + tr("India") + " (smspva.com)</span>",
+			"KH<br/><span style='color:gray'>" + tr("Cambodia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com)</span>",
+			"LA<br/><span style='color:gray'>" + tr("Lao People's Democratic Republic") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com)</span>",
+			"CI<br/><span style='color:gray'>" + tr("Cote d'Ivoire") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"YE<br/><span style='color:gray'>" + tr("Yemen") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"ZA<br/><span style='color:gray'>" + tr("South Africa") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com)</span>",
+			"CO<br/><span style='color:gray'>" + tr("Colombia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"CA<br/><span style='color:gray'>" + tr("Canada") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"CA (Virtual)<br/><span style='color:gray'>" + tr("Canada") + " (smspva.com)</span>",
+			"MA<br/><span style='color:gray'>" + tr("Morocco") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com)</span>",
+			"GH<br/><span style='color:gray'>" + tr("Ghana") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"GH (Virtual)<br/><span style='color:gray'>" + tr("Ghana") + " (smspva.com)</span>",
+			"UZ<br/><span style='color:gray'>" + tr("Uzbekistan") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, sms-acktiwator.ru)</span>",
+			"IQ<br/><span style='color:gray'>" + tr("Iraq") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"IQ (Virtual)<br/><span style='color:gray'>" + tr("Iraq") + " (smspva.com)</span>",
+			"AT<br/><span style='color:gray'>" + tr("Austria") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"IR<br/><span style='color:gray'>" + tr("Iran, Islamic Republic of") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"CZ<br/><span style='color:gray'>" + tr("Czech Republic") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"PK<br/><span style='color:gray'>" + tr("Pakistan") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"PK (Virtual)<br/><span style='color:gray'>" + tr("Pakistan") + " (smspva.com)</span>",
+			"MN<br/><span style='color:gray'>" + tr("Mongolia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"NP<br/><span style='color:gray'>" + tr("Nepal") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"HN<br/><span style='color:gray'>" + tr("Honduras") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"BO<br/><span style='color:gray'>" + tr("Bolivia, plurinational state of") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"DO<br/><span style='color:gray'>" + tr("Dominican Republic") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, smspva.com)</span>",
+			"BF<br/><span style='color:gray'>" + tr("Burkina Faso") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"MM<br/><span style='color:gray'>" + tr("Myanmar") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"IL<br/><span style='color:gray'>" + tr("Israel") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"CD<br/><span style='color:gray'>" + tr("Congo, Democratic Republic of the") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"GM<br/><span style='color:gray'>" + tr("Gambia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"RS<br/><span style='color:gray'>" + tr("Serbia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"CM<br/><span style='color:gray'>" + tr("Cameroon") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"CM (Virtual)<br/><span style='color:gray'>" + tr("Cameroon") + " (smspva.com)</span>",
+			"TH<br/><span style='color:gray'>" + tr("Thailand") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"SA<br/><span style='color:gray'>" + tr("Saudi Arabia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"TW<br/><span style='color:gray'>" + tr("Taiwan, Province of China") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"DZ<br/><span style='color:gray'>" + tr("Algeria") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"BD<br/><span style='color:gray'>" + tr("Bangladesh") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"SN<br/><span style='color:gray'>" + tr("Senegal") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"PE<br/><span style='color:gray'>" + tr("Peru") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"GN<br/><span style='color:gray'>" + tr("Guinea") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"ML<br/><span style='color:gray'>" + tr("Mali") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"VE<br/><span style='color:gray'>" + tr("Venezuela") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"AF<br/><span style='color:gray'>" + tr("Afghanistan") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"UG<br/><span style='color:gray'>" + tr("Uganda") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"AO<br/><span style='color:gray'>" + tr("Angola") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"PG<br/><span style='color:gray'>" + tr("Papua New Guinea") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"MZ<br/><span style='color:gray'>" + tr("Mozambique") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"PY<br/><span style='color:gray'>" + tr("Paraguay") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"TN<br/><span style='color:gray'>" + tr("Tunisia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"NI<br/><span style='color:gray'>" + tr("Nicaragua") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"GT<br/><span style='color:gray'>" + tr("Guatemala") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"AE<br/><span style='color:gray'>" + tr("United Arab Emirates") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"ZW<br/><span style='color:gray'>" + tr("Zimbabwe") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"SV<br/><span style='color:gray'>" + tr("El Salvador") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"LY<br/><span style='color:gray'>" + tr("Libyan Arab Jamahiriya") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"JM<br/><span style='color:gray'>" + tr("Jamaica") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"TT<br/><span style='color:gray'>" + tr("Trinidad and Tobago") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"EC<br/><span style='color:gray'>" + tr("Ecuador") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"MR<br/><span style='color:gray'>" + tr("Mauritania") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"SL<br/><span style='color:gray'>" + tr("Sierra Leone") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"BJ<br/><span style='color:gray'>" + tr("Benin") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"BW<br/><span style='color:gray'>" + tr("Botswana") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"GR<br/><span style='color:gray'>" + tr("Greece") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"GY<br/><span style='color:gray'>" + tr("Guyana") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"LR<br/><span style='color:gray'>" + tr("Liberia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"SR<br/><span style='color:gray'>" + tr("Suriname") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"TJ<br/><span style='color:gray'>" + tr("Tajikistan") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"RE<br/><span style='color:gray'>" + tr("Reunion") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"AM<br/><span style='color:gray'>" + tr("Armenia") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"CG<br/><span style='color:gray'>" + tr("Congo") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"GA<br/><span style='color:gray'>" + tr("Gabon") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"BT<br/><span style='color:gray'>" + tr("Bhutan") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"MV<br/><span style='color:gray'>" + tr("Maldives") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"TM<br/><span style='color:gray'>" + tr("Turkmenistan") + " (sms-activate.ru, smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"IE<br/><span style='color:gray'>" + tr("Ireland") + " (5sim.net, 365sms.ru, sms-man.ru, smspva.com, onlinesim.ru)</span>",
+			"TR<br/><span style='color:gray'>" + tr("Turkey") + " (sms-activate.ru, 5sim.net, sms-man.ru, onlinesim.ru)</span>",
+			"LK<br/><span style='color:gray'>" + tr("Sri Lanka") + " (sms-activate.ru, 5sim.net, sms-man.ru, onlinesim.ru)</span>",
+			"IT<br/><span style='color:gray'>" + tr("Italy") + " (sms-activate.ru, 5sim.net, sms-man.ru, smspva.com)</span>",
+			"BA<br/><span style='color:gray'>" + tr("Bosnia and Herzegovina") + " (sms-activate.ru, 5sim.net, sms-man.ru, smspva.com)</span>",
+			"LB<br/><span style='color:gray'>" + tr("Lebanon") + " (sms-activate.ru, smshub.org, 365sms.ru, sms-man.ru)</span>",
+			"HR<br/><span style='color:gray'>" + tr("Croatia") + " (smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"TD<br/><span style='color:gray'>" + tr("Chad") + " (smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"DM<br/><span style='color:gray'>" + tr("Dominica") + " (smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"AW<br/><span style='color:gray'>" + tr("Aruba") + " (smshub.org, 5sim.net, 365sms.ru, sms-man.ru)</span>",
+			"AZ<br/><span style='color:gray'>" + tr("Azerbaijan") + " (5sim.net, 365sms.ru, sms-man.ru, onlinesim.ru)</span>",
+			"FI<br/><span style='color:gray'>" + tr("Finland") + " (5sim.net, sms-man.ru, smspva.com, vak-sms.com)</span>",
+			"US (Virtual)<br/><span style='color:gray'>" + tr("United States") + " (sms-activate.ru, smshub.org, 365sms.ru)</span>",
+			"HK<br/><span style='color:gray'>" + tr("Hong Kong") + " (sms-activate.ru, smshub.org, sms-man.ru)</span>",
+			"SI<br/><span style='color:gray'>" + tr("Slovenia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"ET<br/><span style='color:gray'>" + tr("Ethiopia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"BE<br/><span style='color:gray'>" + tr("Belgium") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"BG<br/><span style='color:gray'>" + tr("Bulgaria") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"HU<br/><span style='color:gray'>" + tr("Hungary") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"TL<br/><span style='color:gray'>" + tr("Timor-Leste") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"CR<br/><span style='color:gray'>" + tr("Costa Rica") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"PR<br/><span style='color:gray'>" + tr("Puerto Rico") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"SD<br/><span style='color:gray'>" + tr("Sudan") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"TG<br/><span style='color:gray'>" + tr("Togo") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"KW<br/><span style='color:gray'>" + tr("Kuwait") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"SZ<br/><span style='color:gray'>" + tr("Eswatini") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"OM<br/><span style='color:gray'>" + tr("Oman") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"SY<br/><span style='color:gray'>" + tr("Syrian Arab Republic") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"QA<br/><span style='color:gray'>" + tr("Qatar") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"PA<br/><span style='color:gray'>" + tr("Panama") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"CU<br/><span style='color:gray'>" + tr("Cuba") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"JO<br/><span style='color:gray'>" + tr("Jordan") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"BB<br/><span style='color:gray'>" + tr("Barbados") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"BI<br/><span style='color:gray'>" + tr("Burundi") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"BS<br/><span style='color:gray'>" + tr("Bahamas") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"GE<br/><span style='color:gray'>" + tr("Georgia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"GW<br/><span style='color:gray'>" + tr("Guinea-Bissau") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"KM<br/><span style='color:gray'>" + tr("Comoros") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"KN<br/><span style='color:gray'>" + tr("Saint Kitts and Nevis") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"LS<br/><span style='color:gray'>" + tr("Lesotho") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"MW<br/><span style='color:gray'>" + tr("Malawi") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"NA<br/><span style='color:gray'>" + tr("Namibia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"NE<br/><span style='color:gray'>" + tr("Niger") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"RW<br/><span style='color:gray'>" + tr("Rwanda") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"SK<br/><span style='color:gray'>" + tr("Slovakia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"BH<br/><span style='color:gray'>" + tr("Bahrain") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"ZM<br/><span style='color:gray'>" + tr("Zambia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"SO<br/><span style='color:gray'>" + tr("Somalia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"AL<br/><span style='color:gray'>" + tr("Albania") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"MU<br/><span style='color:gray'>" + tr("Mauritius") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"LU<br/><span style='color:gray'>" + tr("Luxembourg") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"GQ<br/><span style='color:gray'>" + tr("Equatorial Guinea") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"AG<br/><span style='color:gray'>" + tr("Antigua and Barbuda") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"ME<br/><span style='color:gray'>" + tr("Montenegro") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"CH<br/><span style='color:gray'>" + tr("Switzerland") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"ER<br/><span style='color:gray'>" + tr("Eritrea") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"SS<br/><span style='color:gray'>" + tr("South Sudan") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"ST<br/><span style='color:gray'>" + tr("Sao Tome and Principe") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"AI<br/><span style='color:gray'>" + tr("Anguilla") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"MK<br/><span style='color:gray'>" + tr("Macedonia, The Former Yugoslav Republic Of") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"SC<br/><span style='color:gray'>" + tr("Seychelles") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"NC<br/><span style='color:gray'>" + tr("New Caledonia") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"CV<br/><span style='color:gray'>" + tr("Cape Verde") + " (sms-activate.ru, 5sim.net, sms-man.ru)</span>",
+			"BM<br/><span style='color:gray'>" + tr("Bermuda") + " (sms-activate.ru, smshub.org, 365sms.ru)</span>",
+			"BN<br/><span style='color:gray'>" + tr("Brunei Darussalam") + " (smshub.org, 365sms.ru, sms-man.ru)</span>",
+			"CL<br/><span style='color:gray'>" + tr("Chile") + " (5sim.net, sms-man.ru, smspva.com)</span>",
+			"NZ<br/><span style='color:gray'>" + tr("New Zealand") + " (5sim.net, sms-man.ru, smspva.com)</span>",
+			"PS<br/><span style='color:gray'>" + tr("Palestinian Territory, Occupied") + " (smshub.org, 365sms.ru)</span>",
+			"AU<br/><span style='color:gray'>" + tr("Australia") + " (5sim.net, sms-man.ru)</span>",
+			"BZ<br/><span style='color:gray'>" + tr("Belize") + " (5sim.net, sms-man.ru)</span>",
+			"KY<br/><span style='color:gray'>" + tr("Cayman Islands") + " (5sim.net, sms-man.ru)</span>",
+			"DJ<br/><span style='color:gray'>" + tr("Djibouti") + " (5sim.net, sms-man.ru)</span>",
+			"GF<br/><span style='color:gray'>" + tr("French Guiana") + " (5sim.net, sms-man.ru)</span>",
+			"GD<br/><span style='color:gray'>" + tr("Grenada") + " (5sim.net, sms-man.ru)</span>",
+			"GP<br/><span style='color:gray'>" + tr("Guadeloupe") + " (5sim.net, sms-man.ru)</span>",
+			"JP<br/><span style='color:gray'>" + tr("Japan") + " (5sim.net, sms-man.ru)</span>",
+			"MO<br/><span style='color:gray'>" + tr("Macao") + " (5sim.net, sms-man.ru)</span>",
+			"MG<br/><span style='color:gray'>" + tr("Madagascar") + " (5sim.net, sms-man.ru)</span>",
+			"MS<br/><span style='color:gray'>" + tr("Montserrat") + " (5sim.net, sms-man.ru)</span>",
+			"NO<br/><span style='color:gray'>" + tr("Norway") + " (5sim.net, sms-man.ru)</span>",
+			"LC<br/><span style='color:gray'>" + tr("Saint Lucia") + " (5sim.net, sms-man.ru)</span>",
+			"VC<br/><span style='color:gray'>" + tr("Saint Vincent and the Grenadines") + " (5sim.net, sms-man.ru)</span>",
+			"TZ<br/><span style='color:gray'>" + tr("Tanzania, United Republic Of") + " (5sim.net, sms-man.ru)</span>",
+			"UY<br/><span style='color:gray'>" + tr("Uruguay") + " (5sim.net, sms-man.ru)</span>",
+			"WS<br/><span style='color:gray'>" + tr("Samoa") + " (5sim.net)</span>",
+			"SG<br/><span style='color:gray'>" + tr("Singapore") + " (5sim.net)</span>",
+			"SB<br/><span style='color:gray'>" + tr("Solomon Islands") + " (5sim.net)</span>",
+			"TO<br/><span style='color:gray'>" + tr("Tonga") + " (5sim.net)</span>",
+			"TC<br/><span style='color:gray'>" + tr("Turks and Caicos Islands") + " (5sim.net)</span>",
+			"VG<br/><span style='color:gray'>" + tr("Virgin Islands, British") + " (5sim.net)</span>",
+			"CF<br/><span style='color:gray'>" + tr("Central African Republic") + " (sms-man.ru)</span>",
+			"IS<br/><span style='color:gray'>" + tr("Iceland") + " (sms-man.ru)</span>",
+			"MC<br/><span style='color:gray'>" + tr("Monaco") + " (sms-man.ru)</span>"
+		],
+		help: {
+			description: tr("Optional parameter.") + " " + tr("Country of the number."),
+			examples: [
+				{code: "RU", description: tr("Russian Federation")},
+				{code: "UA", description: tr("Ukraine")},
+				{code: "US", description: tr("United States")},
+				{code: tr("Empty string"), description: tr("Depends on the service used, maybe the last used country or some specific country, you can find out more in the description of the api of the service.")}
+			]
+		}
+	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
-	<%= _.template($('#input_constructor').html())({id:"customSite", description:tr("Custom site"), default_selector: "string", disable_int: true, value_string: "" }) %>
-	<%= _.template($('#input_constructor').html())({id:"customCountry", description:tr("Custom country"), default_selector: "string", disable_int: true, value_string: "" }) %>
-	<%= _.template($('#input_constructor').html())({id:"serverUrl", description:tr("Server url"), default_selector: "string", disable_int: true, value_string: "" }) %>
+		<%= _.template($('#input_constructor').html())({
+			id: "customSite",
+			description: tr("Custom site"),
+			default_selector: "string",
+			disable_int: true,
+			value_string: "",
+			help: {
+				description: tr("Optional parameter.") + " " + tr("Custom value of the site, in the form in which it is perceived by the SMS receiving service. If this parameter is specified, then it will be used instead of the \"Site\" parameter and sent to the service without preliminary processing."),
+				examples: [
+					{code: "wa", description: "WhatsApp"},
+					{code: "tg", description: "Telegram"},
+					{code: "go", description: "Google"},
+					{code: tr("Empty string"), description: tr("Use value from \"") + tr("Site") + tr("\" parameter.")}
+				]
+			}
+		}) %>
+		<%= _.template($('#input_constructor').html())({
+			id: "customCountry",
+			description: tr("Custom country"),
+			default_selector: "string",
+			disable_int: true,
+			value_string: "",
+			help: {
+				description: tr("Optional parameter.") + " " + tr("Custom value of the country, in the form in which it is perceived by the SMS receiving service. If this parameter is specified, then it will be used instead of the \"Country\" parameter and sent to the service without preliminary processing."),
+				examples: [
+					{code: "0", description: tr("Russian Federation")},
+					{code: "1", description: tr("Ukraine")},
+					{code: "187", description: tr("United States")},
+					{code: tr("Empty string"), description: tr("Use value from \"") + tr("Country") + tr("\" parameter.")}
+				]
+			}
+		}) %>
+		<%= _.template($('#input_constructor').html())({
+			id: "serverUrl",
+			description: tr("Server url"),
+			default_selector: "string",
+			disable_int: true,
+			value_string: "",
+			help: {
+				description: tr("Optional parameter.") + " " + tr("Url of the SMS receiving service server. Use this parameter to specify the url of the server, if the required service is not in the list of available ones, but it works through an api similar to the selected service."),
+				examples: [
+					{code: "https://sms.org"},
+					{code: "http://receive-sms.com"},
+					{code: "http://127.0.0.1:8888"},
+					{code: tr("Empty string"), description: tr("Use default server url, https://sms-activate.ru for sms-activate.ru, etc")}
+				]
+			}
+		}) %>
 	<%= _.template($('#block_end').html())() %>
-	<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "NUMBERS_COUNT"}) %>
+	<%= _.template($('#variable_constructor').html())({
+		id: "Save",
+		description: tr("Variable to save the result"),
+		default_variable: "SMS_NUMBERS_COUNT",
+		help: {
+			description:tr("Variable in which, after successful execution of the action, the count of available numbers will be written."),
+			examples: [
+				{code: 137},
+				{code: 549},
+				{code: 1596}
+			]
+		}
+	}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Get the number of available numbers on the SMS receiving service.</div>
+	<div class="tr tooltip-paragraph-first-fold">Get the count of available numbers on the SMS receiving service.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

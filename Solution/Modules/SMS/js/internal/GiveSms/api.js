@@ -1,6 +1,6 @@
-_SMS.GiveSmsApi = _SMS.assignApi(function(config){
+_SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
     const api = this;
-	_SMS.BaseApi.call(this, config, 'give-sms');
+	_SMS.BaseApi.call(this, config, data);
 	
 	this.apiRequest = function(){
 		var action = _function_argument("action");

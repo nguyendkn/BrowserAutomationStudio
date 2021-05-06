@@ -1,28 +1,24 @@
-_SMS.BaseApi = function(config, type){
+_SMS.BaseApi = function(config, data){
 	const api = this;
-	var data = config.data;
-	var serverUrl = data.serverUrl;
+	
 	this.key = data.apiKey;
 	this.service = data.service;
-	this.type = type;
 	
-	if(_is_nilb(serverUrl)){
+	if(_is_nilb(data.serverUrl)){
 		this.url = config.url;
 		this.name = config.name;
 	}else{
-		var url = serverUrl.slice(-1)=="/" ? serverUrl.slice(0, -1) : serverUrl;
+		var url = data.serverUrl.slice(-1)=="/" ? data.serverUrl.slice(0, -1) : data.serverUrl;
 		var name = url.replace(new RegExp('https?://'),"").replace(/^(?:\d+)?api(?:\d+)?./,"");
 		this.url = url;
 		this.name = name.slice(0, 1).toLocaleUpperCase() + name.slice(1);
 	};
 	
+	this.supportedMethods = config.supportedMethods;
+	
 	if(!_is_nilb(config.ref)){
 		this.ref = config.ref;
-		if(_is_nilb(config.refTitle)){
-			this.refTitle = 'ref';
-		}else{
-			this.refTitle = config.refTitle;
-		};
+		this.refTitle = _is_nilb(config.refTitle) ? 'ref' : config.refTitle;
 	};
 	
 	this.combineParams = function(params, options, labels){
@@ -45,12 +41,12 @@ _SMS.BaseApi = function(config, type){
 	};
 	
 	this.paramsToArray = function(params){
-		var data = [];
+		var arr = [];
 		Object.keys(params).forEach(function(key){
-			data.push(key);
-			data.push(params[key]);
+			arr.push(key);
+			arr.push(params[key]);
 		});
-		return data;
+		return arr;
 	};
 	
 	this.reduceString = function(str, length){
@@ -62,11 +58,11 @@ _SMS.BaseApi = function(config, type){
 		return number.slice(0,1)=='+' ? number.slice(1) : number;
 	};
 	
-	this.parseJSON = function(data){
+	this.parseJSON = function(str){
 		try{
-			var json = JSON.parse(data);
+			var json = JSON.parse(str);
 		}catch(e){
-			this.errorHandler("RESPONSE_IS_NOT_JSON", this.reduceString(data));
+			this.errorHandler("RESPONSE_IS_NOT_JSON", this.reduceString(str));
 		};
 		return json;
 	};
@@ -77,9 +73,9 @@ _SMS.BaseApi = function(config, type){
 		};
 	};
 	
-	this.validateMethod = function(method){
-		if(_is_nilb(api) || Object.keys(api).indexOf(method) < 0){
-			api.errorHandler('UNSUPPORTED_METHOD', method);
+	this.validateMethod = function(method, name){
+		if(api.supportedMethods.indexOf(method) < 0){
+			api.errorHandler('UNSUPPORTED_METHOD', name);
 		};
 	};
 	

@@ -1,6 +1,6 @@
-_SMS.SmsRegApi = _SMS.assignApi(function(config){
+_SMS.SmsRegApi = _SMS.assignApi(function(config, data){
     const api = this;
-	_SMS.BaseApi.call(this, config, 'sms-reg');
+	_SMS.BaseApi.call(this, config, data);
 	
 	this.apiRequest = function(){
 		var action = _function_argument("action");
@@ -28,10 +28,6 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config){
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
-	};
-	
-	this.getNumbersCount = function(){
-		fail(api.name + ': ' + (_K=="ru" ? 'Данный сервис не поддерживает получение количества доступных номеров.' : 'This service does not support getting the count of available numbers.'));
 	};
 	
 	this.getNumber = function(){

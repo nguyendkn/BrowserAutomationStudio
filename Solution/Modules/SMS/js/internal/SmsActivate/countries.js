@@ -1,867 +1,796 @@
 _SMS.SmsActivateApi.prototype.getRawCountry = function(country){
 	var countries = {
-		"Any": {
-			"sms-activate.ru": "",
-			"smshub.org": "",
-			"5sim.net": "",
-			"getsms.online": "or",
-			"smsvk.net": "",
-			"cheapsms.ru": "",
-			"sms.kopeechka.store": ""
-		},
-		"RU": {
-			"sms-activate.ru": "0",
-			"smshub.org": "0",
-			"5sim.net": "russia",
-			"getsms.online": "ru"
-		},
-		"UA": {
-			"sms-activate.ru": "1",
-			"smshub.org": "1",
-			"5sim.net": "ukraine",
-			"getsms.online": "ua"
-		},
-		"KZ": {
-			"sms-activate.ru": "2",
-			"smshub.org": "2",
-			"5sim.net": "kazakhstan",
-			"getsms.online": "kz"
-		},
-		"CN": {
-			"sms-activate.ru": "3",
-			"smshub.org": "3",
-			"5sim.net": "china"
-		},
-		"PH": {
-			"sms-activate.ru": "4",
-			"smshub.org": "4",
-			"5sim.net": "philippines"
-		},
-		"MM": {
-			"sms-activate.ru": "5",
-			"smshub.org": "5",
-			"5sim.net": "myanmar"
-		},
-		"ID": {
-			"sms-activate.ru": "6",
-			"smshub.org": "6",
-			"5sim.net": "indonesia"
-		},
-		"MY": {
-			"sms-activate.ru": "7",
-			"smshub.org": "7",
-			"5sim.net": "malaysia"
-		},
-		"KE": {
-			"sms-activate.ru": "8",
-			"smshub.org": "8",
-			"5sim.net": "kenya"
-		},
-		"VN": {
-			"sms-activate.ru": "10",
-			"smshub.org": "10",
-			"5sim.net": "vietnam"
-		},
-		"KG": {
-			"sms-activate.ru": "11",
-			"smshub.org": "11",
-			"5sim.net": "kyrgyzstan"
-		},
-		"US (Virtual)": {
-			"sms-activate.ru": "12",
-			"smshub.org": "12"
-		},
-		"IL": {
-			"sms-activate.ru": "13",
-			"smshub.org": "13",
-			"5sim.net": "israel"
-		},
-		"HK": {
-			"sms-activate.ru": "14",
-			"smshub.org": "14"
-		},
-		"PL": {
-			"sms-activate.ru": "15",
-			"smshub.org": "15",
-			"5sim.net": "poland",
-			"getsms.online": "pl"
-		},
-		"GB": {
-			"sms-activate.ru": "16",
-			"smshub.org": "16",
-			"5sim.net": "england",
-			"getsms.online": "uk"
-		},
-		"CD": {
-			"sms-activate.ru": "18",
-			"smshub.org": "18",
-			"5sim.net": "drcongo"
-		},
-		"NG": {
-			"sms-activate.ru": "19",
-			"smshub.org": "19",
-			"5sim.net": "nigeria"
-		},
-		"MO": {
-			"sms-activate.ru": "20",
-			"5sim.net": "macau"
-		},
-		"EG": {
-			"sms-activate.ru": "21",
-			"smshub.org": "21",
-			"5sim.net": "egypt"
-		},
-		"IN": {
-			"sms-activate.ru": "22",
-			"smshub.org": "22",
-			"5sim.net": "india"
-		},
-		"KH": {
-			"sms-activate.ru": "24",
-			"smshub.org": "24",
-			"5sim.net": "cambodia"
-		},
-		"LA": {
-			"sms-activate.ru": "25",
-			"smshub.org": "25",
-			"5sim.net": "laos"
-		},
-		"HT": {
-			"sms-activate.ru": "26",
-			"smshub.org": "26",
-			"5sim.net": "haiti"
-		},
-		"CI": {
-			"sms-activate.ru": "27",
-			"smshub.org": "27",
-			"5sim.net": "ivorycoast"
-		},
-		"GM": {
-			"sms-activate.ru": "28",
-			"smshub.org": "28",
-			"5sim.net": "gambia"
-		},
-		"RS": {
-			"sms-activate.ru": "29",
-			"smshub.org": "29",
-			"5sim.net": "serbia"
-		},
-		"YE": {
-			"sms-activate.ru": "30",
-			"smshub.org": "30",
-			"5sim.net": "yemen"
-		},
-		"ZA": {
-			"sms-activate.ru": "31",
-			"smshub.org": "31",
-			"5sim.net": "southafrica"
-		},
-		"RO": {
-			"sms-activate.ru": "32",
-			"smshub.org": "32",
-			"5sim.net": "romania"
-		},
-		"CO": {
-			"sms-activate.ru": "33",
-			"smshub.org": "33",
-			"5sim.net": "colombia"
-		},
-		"EE": {
-			"sms-activate.ru": "34",
-			"smshub.org": "34",
-			"5sim.net": "estonia"
-		},
-		"AZ": {
-			"sms-activate.ru": "35",
-			"smshub.org": "35",
-			"5sim.net": "azerbaijan"
-		},
-		"CA": {
-			"sms-activate.ru": "36",
-			"smshub.org": "36",
-			"5sim.net": "canada"
-		},
-		"MA": {
-			"sms-activate.ru": "37",
-			"smshub.org": "37",
-			"5sim.net": "morocco"
-		},
-		"GH": {
-			"sms-activate.ru": "38",
-			"smshub.org": "38",
-			"5sim.net": "ghana"
-		},
-		"AR": {
-			"sms-activate.ru": "39",
-			"smshub.org": "39",
-			"5sim.net": "argentina"
-		},
-		"UZ": {
-			"sms-activate.ru": "40",
-			"smshub.org": "40",
-			"5sim.net": "uzbekistan"
-		},
-		"CM": {
-			"sms-activate.ru": "41",
-			"smshub.org": "41",
-			"5sim.net": "cameroon"
-		},
-		"DE": {
-			"sms-activate.ru": "43",
-			"smshub.org": "43",
-			"5sim.net": "germany",
-			"getsms.online": "de"
-		},
-		"LT": {
-			"sms-activate.ru": "44",
-			"smshub.org": "44",
-			"5sim.net": "lithuania"
-		},
-		"SE": {
-			"sms-activate.ru": "46",
-			"smshub.org": "46",
-			"5sim.net": "sweden"
-		},
-		"IQ": {
-			"sms-activate.ru": "47",
-			"smshub.org": "47",
-			"5sim.net": "iraq"
-		},
-		"NL": {
-			"sms-activate.ru": "48",
-			"smshub.org": "48",
-			"5sim.net": "netherlands"
-		},
-		"LV": {
-			"sms-activate.ru": "49",
-			"smshub.org": "49",
-			"5sim.net": "latvia"
-		},
-		"AT": {
-			"sms-activate.ru": "50",
-			"smshub.org": "50",
-			"5sim.net": "austria"
-		},
-		"BY": {
-			"sms-activate.ru": "51",
-			"smshub.org": "51",
-			"5sim.net": "belarus",
-			"getsms.online": "by"
-		},
-		"TH": {
-			"sms-activate.ru": "52",
-			"smshub.org": "52",
-			"5sim.net": "thailand"
-		},
-		"SA": {
-			"sms-activate.ru": "53",
-			"smshub.org": "53",
-			"5sim.net": "saudiarabia"
-		},
-		"MX": {
-			"sms-activate.ru": "54",
-			"smshub.org": "54",
-			"5sim.net": "mexico"
-		},
-		"TW": {
-			"sms-activate.ru": "55",
-			"smshub.org": "55",
-			"5sim.net": "taiwan"
-		},
-		"ES": {
-			"sms-activate.ru": "56",
-			"smshub.org": "56",
-			"5sim.net": "spain"
-		},
-		"IR": {
-			"sms-activate.ru": "57",
-			"smshub.org": "57",
-			"5sim.net": "iran"
-		},
-		"DZ": {
-			"sms-activate.ru": "58",
-			"smshub.org": "58",
-			"5sim.net": "algeria"
-		},
-		"SI": {
-			"sms-activate.ru": "59",
-			"5sim.net": "slovenia"
-		},
-		"BD": {
-			"sms-activate.ru": "60",
-			"smshub.org": "60",
-			"5sim.net": "bangladesh"
-		},
-		"SN": {
-			"sms-activate.ru": "61",
-			"smshub.org": "61",
-			"5sim.net": "senegal"
-		},
-		"TR": {
-			"sms-activate.ru": "62",
-			"5sim.net": "turkey"
-		},
-		"CZ": {
-			"sms-activate.ru": "63",
-			"smshub.org": "63",
-			"5sim.net": "czech"
-		},
-		"LK": {
-			"sms-activate.ru": "64",
-			"5sim.net": "srilanka"
-		},
-		"PE": {
-			"sms-activate.ru": "65",
-			"smshub.org": "65",
-			"5sim.net": "peru"
-		},
-		"PK": {
-			"sms-activate.ru": "66",
-			"smshub.org": "66",
-			"5sim.net": "pakistan"
-		},
-		"GN": {
-			"sms-activate.ru": "68",
-			"smshub.org": "68",
-			"5sim.net": "guinea"
-		},
-		"ML": {
-			"sms-activate.ru": "69",
-			"smshub.org": "69",
-			"5sim.net": "mali"
-		},
-		"VE": {
-			"sms-activate.ru": "70",
-			"smshub.org": "70",
-			"5sim.net": "venezuela"
-		},
-		"ET": {
-			"sms-activate.ru": "71",
-			"5sim.net": "ethiopia"
-		},
-		"MN": {
-			"sms-activate.ru": "72",
-			"smshub.org": "72",
-			"5sim.net": "mongolia"
-		},
-		"BR": {
-			"sms-activate.ru": "73",
-			"smshub.org": "73",
-			"5sim.net": "brazil"
-		},
-		"AF": {
-			"sms-activate.ru": "74",
-			"smshub.org": "74",
-			"5sim.net": "afghanistan"
-		},
-		"UG": {
-			"sms-activate.ru": "75",
-			"smshub.org": "75",
-			"5sim.net": "uganda"
-		},
-		"AO": {
-			"sms-activate.ru": "76",
-			"smshub.org": "76",
-			"5sim.net": "angola"
-		},
-		"CY": {
-			"sms-activate.ru": "77",
-			"smshub.org": "77",
-			"5sim.net": "cyprus"
-		},
-		"FR": {
-			"sms-activate.ru": "78",
-			"smshub.org": "78",
-			"5sim.net": "france"
-		},
-		"PG": {
-			"sms-activate.ru": "79",
-			"smshub.org": "79",
-			"5sim.net": "papuanewguinea"
-		},
-		"MZ": {
-			"sms-activate.ru": "80",
-			"smshub.org": "80",
-			"5sim.net": "mozambique"
-		},
-		"NP": {
-			"sms-activate.ru": "81",
-			"smshub.org": "81",
-			"5sim.net": "nepal"
-		},
-		"BE": {
-			"sms-activate.ru": "82",
-			"5sim.net": "belgium"
-		},
-		"BG": {
-			"sms-activate.ru": "83",
-			"5sim.net": "bulgaria"
-		},
-		"HU": {
-			"sms-activate.ru": "84",
-			"5sim.net": "hungary"
-		},
-		"MD": {
-			"sms-activate.ru": "85",
-			"smshub.org": "85",
-			"5sim.net": "moldova"
-		},
-		"IT": {
-			"sms-activate.ru": "86",
-			"5sim.net": "italy"
-		},
-		"PY": {
-			"sms-activate.ru": "87",
-			"smshub.org": "87",
-			"5sim.net": "paraguay"
-		},
-		"HN": {
-			"sms-activate.ru": "88",
-			"smshub.org": "88",
-			"5sim.net": "honduras"
-		},
-		"TN": {
-			"sms-activate.ru": "89",
-			"smshub.org": "89",
-			"5sim.net": "tunisia"
-		},
-		"NI": {
-			"sms-activate.ru": "90",
-			"smshub.org": "90",
-			"5sim.net": "nicaragua"
-		},
-		"TL": {
-			"sms-activate.ru": "91",
-			"5sim.net": "easttimor"
-		},
-		"BO": {
-			"sms-activate.ru": "92",
-			"smshub.org": "92",
-			"5sim.net": "bolivia"
-		},
-		"CR": {
-			"sms-activate.ru": "93",
-			"5sim.net": "costarica"
-		},
-		"GT": {
-			"sms-activate.ru": "94",
-			"smshub.org": "94",
-			"5sim.net": "guatemala"
-		},
-		"AE": {
-			"sms-activate.ru": "95",
-			"smshub.org": "95",
-			"5sim.net": "uae"
-		},
-		"ZW": {
-			"sms-activate.ru": "96",
-			"smshub.org": "96",
-			"5sim.net": "zimbabwe"
-		},
-		"PR": {
-			"sms-activate.ru": "97",
-			"5sim.net": "puertorico"
-		},
-		"SD": {
-			"sms-activate.ru": "98",
-			"5sim.net": "sudan"
-		},
-		"TG": {
-			"sms-activate.ru": "99",
-			"5sim.net": "togo"
-		},
-		"KW": {
-			"sms-activate.ru": "100",
-			"5sim.net": "kuwait"
-		},
-		"SV": {
-			"sms-activate.ru": "101",
-			"smshub.org": "101",
-			"5sim.net": "salvador"
-		},
-		"LY": {
-			"sms-activate.ru": "102",
-			"smshub.org": "102",
-			"5sim.net": "libya"
-		},
-		"JM": {
-			"sms-activate.ru": "103",
-			"smshub.org": "103",
-			"5sim.net": "jamaica"
-		},
-		"TT": {
-			"sms-activate.ru": "104",
-			"smshub.org": "104",
-			"5sim.net": "tit"
-		},
-		"EC": {
-			"sms-activate.ru": "105",
-			"smshub.org": "105",
-			"5sim.net": "ecuador"
-		},
-		"SZ": {
-			"sms-activate.ru": "106",
-			"5sim.net": "swaziland"
-		},
-		"OM": {
-			"sms-activate.ru": "107",
-			"5sim.net": "oman"
-		},
-		"BA": {
-			"sms-activate.ru": "108",
-			"5sim.net": "bih"
-		},
-		"DO": {
-			"sms-activate.ru": "109",
-			"smshub.org": "109",
-			"5sim.net": "dominicana"
-		},
-		"SY": {
-			"sms-activate.ru": "110",
-			"5sim.net": "syria"
-		},
-		"QA": {
-			"sms-activate.ru": "111",
-			"5sim.net": "qatar"
-		},
-		"PA": {
-			"sms-activate.ru": "112",
-			"5sim.net": "panama"
-		},
-		"CU": {
-			"sms-activate.ru": "113",
-			"5sim.net": "cuba"
-		},
-		"MR": {
-			"sms-activate.ru": "114",
-			"smshub.org": "114",
-			"5sim.net": "mauritania"
-		},
-		"SL": {
-			"sms-activate.ru": "115",
-			"smshub.org": "115",
-			"5sim.net": "sierraleone"
-		},
-		"JO": {
-			"sms-activate.ru": "116",
-			"5sim.net": "jordan"
-		},
-		"PT": {
-			"sms-activate.ru": "117",
-			"smshub.org": "117",
-			"5sim.net": "portugal"
-		},
-		"BB": {
-			"sms-activate.ru": "118",
-			"5sim.net": "barbados"
-		},
-		"BI": {
-			"sms-activate.ru": "119",
-			"5sim.net": "burundi"
-		},
-		"BJ": {
-			"sms-activate.ru": "120",
-			"smshub.org": "120",
-			"5sim.net": "benin"
-		},
-		"BS": {
-			"sms-activate.ru": "122",
-			"5sim.net": "bahamas"
-		},
-		"BW": {
-			"sms-activate.ru": "123",
-			"smshub.org": "123",
-			"5sim.net": "botswana"
-		},
-		"DM": {
-			"sms-activate.ru": "126",
-			"smshub.org": "126",
-			"5sim.net": "dominica"
-		},
-		"GE": {
-			"sms-activate.ru": "128",
-			"5sim.net": "georgia"
-		},
-		"GR": {
-			"sms-activate.ru": "129",
-			"smshub.org": "129",
-			"5sim.net": "greece"
-		},
-		"GW": {
-			"sms-activate.ru": "130",
-			"5sim.net": "guineabissau"
-		},
-		"GY": {
-			"sms-activate.ru": "131",
-			"smshub.org": "131",
-			"5sim.net": "guyana"
-		},
-		"KM": {
-			"sms-activate.ru": "133",
-			"5sim.net": "comoros"
-		},
-		"KN": {
-			"sms-activate.ru": "134",
-			"5sim.net": "saintkittsandnevis"
-		},
-		"LR": {
-			"sms-activate.ru": "135",
-			"smshub.org": "135",
-			"5sim.net": "liberia"
-		},
-		"LS": {
-			"sms-activate.ru": "136",
-			"5sim.net": "lesotho"
-		},
-		"MW": {
-			"sms-activate.ru": "137",
-			"5sim.net": "malawi"
-		},
-		"NA": {
-			"sms-activate.ru": "138",
-			"5sim.net": "namibia"
-		},
-		"NE": {
-			"sms-activate.ru": "139",
-			"5sim.net": "niger"
-		},
-		"RW": {
-			"sms-activate.ru": "140",
-			"5sim.net": "rwanda"
-		},
-		"SK": {
-			"sms-activate.ru": "141",
-			"5sim.net": "slovakia"
-		},
-		"SR": {
-			"sms-activate.ru": "142",
-			"smshub.org": "142",
-			"5sim.net": "suriname"
-		},
-		"TJ": {
-			"sms-activate.ru": "143",
-			"smshub.org": "143",
-			"5sim.net": "tajikistan"
-		},
-		"BH": {
-			"sms-activate.ru": "145",
-			"5sim.net": "bahrain"
-		},
-		"RE": {
-			"sms-activate.ru": "146",
-			"smshub.org": "146",
-			"5sim.net": "reunion"
-		},
-		"ZM": {
-			"sms-activate.ru": "147",
-			"5sim.net": "zambia"
-		},
-		"AM": {
-			"sms-activate.ru": "148",
-			"smshub.org": "148",
-			"5sim.net": "armenia"
-		},
-		"SO": {
-			"sms-activate.ru": "149",
-			"5sim.net": "somalia"
-		},
-		"CG": {
-			"sms-activate.ru": "150",
-			"smshub.org": "150",
-			"5sim.net": "congo"
-		},
-		"BF": {
-			"sms-activate.ru": "152",
-			"smshub.org": "152",
-			"5sim.net": "burkinafaso"
-		},
-		"LB": {
-			"sms-activate.ru": "153",
-			"smshub.org": "153"
-		},
-		"GA": {
-			"sms-activate.ru": "154",
-			"smshub.org": "154",
-			"5sim.net": "gabon"
-		},
-		"AL": {
-			"sms-activate.ru": "155",
-			"5sim.net": "albania"
-		},
-		"MU": {
-			"sms-activate.ru": "157",
-			"5sim.net": "mauritius"
-		},
-		"BT": {
-			"sms-activate.ru": "158",
-			"smshub.org": "158",
-			"5sim.net": "bhutane"
-		},
-		"MV": {
-			"sms-activate.ru": "159",
-			"smshub.org": "159",
-			"5sim.net": "maldives"
-		},
-		"TM": {
-			"sms-activate.ru": "161",
-			"smshub.org": "161",
-			"5sim.net": "turkmenistan"
-		},
-		"LU": {
-			"sms-activate.ru": "165",
-			"5sim.net": "luxembourg"
-		},
-		"GQ": {
-			"sms-activate.ru": "167",
-			"5sim.net": "equatorialguinea"
-		},
-		"AG": {
-			"sms-activate.ru": "169",
-			"5sim.net": "antiguaandbarbuda"
-		},
-		"ME": {
-			"sms-activate.ru": "171",
-			"5sim.net": "montenegro"
-		},
-		"CH": {
-			"sms-activate.ru": "173",
-			"5sim.net": "switzerland"
-		},
-		"ER": {
-			"sms-activate.ru": "176",
-			"5sim.net": "eritrea"
-		},
-		"SS": {
-			"sms-activate.ru": "177",
-			"5sim.net": "southsudan"
-		},
-		"ST": {
-			"sms-activate.ru": "178",
-			"5sim.net": "saotomeandprincipe"
-		},
-		"AW": {
-			"sms-activate.ru": "179",
-			"smshub.org": "179",
-			"5sim.net": "aruba"
-		},
-		"AI": {
-			"sms-activate.ru": "181",
-			"5sim.net": "anguilla"
-		},
-		"MK": {
-			"sms-activate.ru": "183",
-			"5sim.net": "northmacedonia"
-		},
-		"SC": {
-			"sms-activate.ru": "184",
-			"5sim.net": "seychelles"
-		},
-		"NC": {
-			"sms-activate.ru": "185",
-			"5sim.net": "newcaledonia"
-		},
-		"CV": {
-			"sms-activate.ru": "186",
-			"5sim.net": "capeverde"
-		},
-		"US": {
-			"sms-activate.ru": "187",
-			"smshub.org": "187",
-			"5sim.net": "usa"
-		},
-		"BM": {
-			"sms-activate.ru": "195",
-			"smshub.org": "195"
-		},
-		"TD": {
-			"smshub.org": "42",
-			"5sim.net": "chad"
-		},
-		"BN": {
-			"smshub.org": "121"
-		},
-		"PS": {
-			"smshub.org": "188"
-		},
-		"HR": {
-			"smshub.org": "45",
-			"5sim.net": "croatia"
-		},
-		"AU": {
-			"5sim.net": "australia"
-		},
-		"BZ": {
-			"5sim.net": "belize"
-		},
-		"KY": {
-			"5sim.net": "caymanislands"
-		},
-		"CL": {
-			"5sim.net": "chile"
-		},
-		"DJ": {
-			"5sim.net": "djibouti"
-		},
-		"FI": {
-			"5sim.net": "finland"
-		},
-		"GF": {
-			"5sim.net": "frenchguiana"
-		},
-		"GD": {
-			"5sim.net": "grenada"
-		},
-		"GP": {
-			"5sim.net": "guadeloupe"
-		},
-		"IE": {
-			"5sim.net": "ireland"
-		},
-		"JP": {
-			"5sim.net": "japan"
-		},
-		"MG": {
-			"5sim.net": "madagascar"
-		},
-		"MS": {
-			"5sim.net": "montserrat"
-		},
-		"NZ": {
-			"5sim.net": "newzealand"
-		},
-		"NO": {
-			"5sim.net": "norway"
-		},
-		"LC": {
-			"5sim.net": "saintlucia"
-		},
-		"VC": {
-			"5sim.net": "saintvincentandgrenadines"
-		},
-		"WS": {
-			"5sim.net": "samoa"
-		},
-		"SG": {
-			"5sim.net": "singapore"
-		},
-		"SB": {
-			"5sim.net": "solomonislands"
-		},
-		"TZ": {
-			"5sim.net": "tanzania"
-		},
-		"TO": {
-			"5sim.net": "tonga"
-		},
-		"TC": {
-			"5sim.net": "turksandcaicos"
-		},
-		"UY": {
-			"5sim.net": "uruguay"
-		},
-		"VG": {
-			"5sim.net": "virginislands"
+		"sms-activate.ru": {
+			"Any": "",
+			"RU": "0",
+			"UA": "1",
+			"KZ": "2",
+			"CN": "3",
+			"PH": "4",
+			"MM": "5",
+			"ID": "6",
+			"MY": "7",
+			"KE": "8",
+			"VN": "10",
+			"KG": "11",
+			"US (Virtual)": "12",
+			"IL": "13",
+			"HK": "14",
+			"PL": "15",
+			"GB": "16",
+			"CD": "18",
+			"NG": "19",
+			"EG": "21",
+			"IN": "22",
+			"KH": "24",
+			"LA": "25",
+			"HT": "26",
+			"CI": "27",
+			"GM": "28",
+			"RS": "29",
+			"YE": "30",
+			"ZA": "31",
+			"RO": "32",
+			"CO": "33",
+			"EE": "34",
+			"CA": "36",
+			"MA": "37",
+			"GH": "38",
+			"AR": "39",
+			"UZ": "40",
+			"CM": "41",
+			"DE": "43",
+			"LT": "44",
+			"SE": "46",
+			"IQ": "47",
+			"NL": "48",
+			"LV": "49",
+			"AT": "50",
+			"BY": "51",
+			"TH": "52",
+			"SA": "53",
+			"MX": "54",
+			"TW": "55",
+			"ES": "56",
+			"IR": "57",
+			"DZ": "58",
+			"SI": "59",
+			"BD": "60",
+			"SN": "61",
+			"TR": "62",
+			"CZ": "63",
+			"LK": "64",
+			"PE": "65",
+			"PK": "66",
+			"GN": "68",
+			"ML": "69",
+			"VE": "70",
+			"ET": "71",
+			"MN": "72",
+			"BR": "73",
+			"AF": "74",
+			"UG": "75",
+			"AO": "76",
+			"CY": "77",
+			"FR": "78",
+			"PG": "79",
+			"MZ": "80",
+			"NP": "81",
+			"BE": "82",
+			"BG": "83",
+			"HU": "84",
+			"MD": "85",
+			"IT": "86",
+			"PY": "87",
+			"HN": "88",
+			"TN": "89",
+			"NI": "90",
+			"TL": "91",
+			"BO": "92",
+			"CR": "93",
+			"GT": "94",
+			"AE": "95",
+			"ZW": "96",
+			"PR": "97",
+			"SD": "98",
+			"TG": "99",
+			"KW": "100",
+			"SV": "101",
+			"LY": "102",
+			"JM": "103",
+			"TT": "104",
+			"EC": "105",
+			"SZ": "106",
+			"OM": "107",
+			"BA": "108",
+			"DO": "109",
+			"SY": "110",
+			"QA": "111",
+			"PA": "112",
+			"CU": "113",
+			"MR": "114",
+			"SL": "115",
+			"JO": "116",
+			"PT": "117",
+			"BB": "118",
+			"BI": "119",
+			"BJ": "120",
+			"BS": "122",
+			"BW": "123",
+			"GE": "128",
+			"GR": "129",
+			"GW": "130",
+			"GY": "131",
+			"KM": "133",
+			"KN": "134",
+			"LR": "135",
+			"LS": "136",
+			"MW": "137",
+			"NA": "138",
+			"NE": "139",
+			"RW": "140",
+			"SK": "141",
+			"SR": "142",
+			"TJ": "143",
+			"BH": "145",
+			"RE": "146",
+			"ZM": "147",
+			"AM": "148",
+			"SO": "149",
+			"CG": "150",
+			"BF": "152",
+			"LB": "153",
+			"GA": "154",
+			"AL": "155",
+			"MU": "157",
+			"BT": "158",
+			"MV": "159",
+			"TM": "161",
+			"LU": "165",
+			"GQ": "167",
+			"AG": "169",
+			"ME": "171",
+			"CH": "173",
+			"ER": "176",
+			"SS": "177",
+			"ST": "178",
+			"AI": "181",
+			"MK": "183",
+			"SC": "184",
+			"NC": "185",
+			"CV": "186",
+			"US": "187",
+			"BM": "195"
+		},
+		"smshub.org": {
+			"Any": "",
+			"RU": "0",
+			"ID": "6",
+			"GB": "16",
+			"UA": "1",
+			"KZ": "2",
+			"US (Virtual)": "12",
+			"KG": "11",
+			"EE": "34",
+			"BR": "73",
+			"IN": "22",
+			"VN": "10",
+			"NL": "48",
+			"DE": "43",
+			"RO": "32",
+			"LA": "25",
+			"PL": "15",
+			"CA": "36",
+			"PH": "4",
+			"MY": "7",
+			"FR": "78",
+			"LT": "44",
+			"SE": "46",
+			"ES": "56",
+			"EG": "21",
+			"LV": "49",
+			"CZ": "63",
+			"MD": "85",
+			"PK": "66",
+			"AT": "50",
+			"MX": "54",
+			"BO": "92",
+			"NI": "90",
+			"PE": "65",
+			"LY": "102",
+			"CY": "77",
+			"GT": "94",
+			"HT": "26",
+			"NG": "19",
+			"GR": "129",
+			"IL": "13",
+			"HK": "14",
+			"NP": "81",
+			"RS": "29",
+			"PT": "117",
+			"DZ": "58",
+			"TN": "89",
+			"BD": "60",
+			"LB": "153",
+			"YE": "30",
+			"DO": "109",
+			"CN": "3",
+			"IR": "57",
+			"SV": "101",
+			"BF": "152",
+			"CO": "33",
+			"MN": "72",
+			"UZ": "40",
+			"JM": "103",
+			"BN": "121",
+			"AR": "39",
+			"HN": "88",
+			"VE": "70",
+			"KH": "24",
+			"TW": "55",
+			"TJ": "143",
+			"PY": "87",
+			"LR": "135",
+			"BY": "51",
+			"EC": "105",
+			"ML": "69",
+			"MV": "159",
+			"GN": "68",
+			"CD": "18",
+			"IQ": "47",
+			"TH": "52",
+			"ZA": "31",
+			"SA": "53",
+			"AF": "74",
+			"PG": "79",
+			"CG": "150",
+			"BW": "123",
+			"GH": "38",
+			"SR": "142",
+			"GM": "28",
+			"SL": "115",
+			"GA": "154",
+			"AE": "95",
+			"GY": "131",
+			"BM": "195",
+			"MZ": "80",
+			"CM": "41",
+			"BT": "158",
+			"MA": "37",
+			"ZW": "96",
+			"CI": "27",
+			"SN": "61",
+			"MR": "114",
+			"PS": "188",
+			"MM": "5",
+			"TD": "42",
+			"RE": "146",
+			"BJ": "120",
+			"KE": "8",
+			"HR": "45",
+			"DM": "126",
+			"US": "187",
+			"TT": "104",
+			"AM": "148",
+			"TM": "161",
+			"AO": "76",
+			"AW": "179",
+			"UG": "75"
+		},
+		"5sim.net": {
+			"Any": "",
+			"AF": "afghanistan",
+			"AL": "albania",
+			"DZ": "algeria",
+			"AO": "angola",
+			"AI": "anguilla",
+			"AG": "antiguaandbarbuda",
+			"AR": "argentina",
+			"AM": "armenia",
+			"AW": "aruba",
+			"AU": "australia",
+			"AT": "austria",
+			"AZ": "azerbaijan",
+			"BS": "bahamas",
+			"BH": "bahrain",
+			"BD": "bangladesh",
+			"BB": "barbados",
+			"BY": "belarus",
+			"BE": "belgium",
+			"BZ": "belize",
+			"BJ": "benin",
+			"BT": "bhutane",
+			"BA": "bih",
+			"BO": "bolivia",
+			"BW": "botswana",
+			"BR": "brazil",
+			"BG": "bulgaria",
+			"BF": "burkinafaso",
+			"BI": "burundi",
+			"KH": "cambodia",
+			"CM": "cameroon",
+			"CA": "canada",
+			"CV": "capeverde",
+			"KY": "caymanislands",
+			"TD": "chad",
+			"CL": "chile",
+			"CN": "china",
+			"CO": "colombia",
+			"KM": "comoros",
+			"CG": "congo",
+			"CR": "costarica",
+			"HR": "croatia",
+			"CU": "cuba",
+			"CY": "cyprus",
+			"CZ": "czech",
+			"DJ": "djibouti",
+			"DM": "dominica",
+			"DO": "dominicana",
+			"CD": "drcongo",
+			"TL": "easttimor",
+			"EC": "ecuador",
+			"EG": "egypt",
+			"GB": "england",
+			"GQ": "equatorialguinea",
+			"ER": "eritrea",
+			"EE": "estonia",
+			"ET": "ethiopia",
+			"FI": "finland",
+			"FR": "france",
+			"GF": "frenchguiana",
+			"GA": "gabon",
+			"GM": "gambia",
+			"GE": "georgia",
+			"DE": "germany",
+			"GH": "ghana",
+			"GR": "greece",
+			"GD": "grenada",
+			"GP": "guadeloupe",
+			"GT": "guatemala",
+			"GN": "guinea",
+			"GW": "guineabissau",
+			"GY": "guyana",
+			"HT": "haiti",
+			"HN": "honduras",
+			"HU": "hungary",
+			"IN": "india",
+			"ID": "indonesia",
+			"IR": "iran",
+			"IQ": "iraq",
+			"IE": "ireland",
+			"IL": "israel",
+			"IT": "italy",
+			"CI": "ivorycoast",
+			"JM": "jamaica",
+			"JP": "japan",
+			"JO": "jordan",
+			"KZ": "kazakhstan",
+			"KE": "kenya",
+			"KW": "kuwait",
+			"KG": "kyrgyzstan",
+			"LA": "laos",
+			"LV": "latvia",
+			"LS": "lesotho",
+			"LR": "liberia",
+			"LY": "libya",
+			"LT": "lithuania",
+			"LU": "luxembourg",
+			"MO": "macau",
+			"MG": "madagascar",
+			"MW": "malawi",
+			"MY": "malaysia",
+			"MV": "maldives",
+			"ML": "mali",
+			"MR": "mauritania",
+			"MU": "mauritius",
+			"MX": "mexico",
+			"MD": "moldova",
+			"MN": "mongolia",
+			"ME": "montenegro",
+			"MS": "montserrat",
+			"MA": "morocco",
+			"MZ": "mozambique",
+			"MM": "myanmar",
+			"NA": "namibia",
+			"NP": "nepal",
+			"NL": "netherlands",
+			"NC": "newcaledonia",
+			"NZ": "newzealand",
+			"NI": "nicaragua",
+			"NE": "niger",
+			"NG": "nigeria",
+			"MK": "northmacedonia",
+			"NO": "norway",
+			"OM": "oman",
+			"PK": "pakistan",
+			"PA": "panama",
+			"PG": "papuanewguinea",
+			"PY": "paraguay",
+			"PE": "peru",
+			"PH": "philippines",
+			"PL": "poland",
+			"PT": "portugal",
+			"PR": "puertorico",
+			"QA": "qatar",
+			"RE": "reunion",
+			"RO": "romania",
+			"RU": "russia",
+			"RW": "rwanda",
+			"KN": "saintkittsandnevis",
+			"LC": "saintlucia",
+			"VC": "saintvincentandgrenadines",
+			"SV": "salvador",
+			"WS": "samoa",
+			"ST": "saotomeandprincipe",
+			"SA": "saudiarabia",
+			"SN": "senegal",
+			"RS": "serbia",
+			"SC": "seychelles",
+			"SL": "sierraleone",
+			"SG": "singapore",
+			"SK": "slovakia",
+			"SI": "slovenia",
+			"SB": "solomonislands",
+			"SO": "somalia",
+			"ZA": "southafrica",
+			"SS": "southsudan",
+			"ES": "spain",
+			"LK": "srilanka",
+			"SD": "sudan",
+			"SR": "suriname",
+			"SZ": "swaziland",
+			"SE": "sweden",
+			"CH": "switzerland",
+			"SY": "syria",
+			"TW": "taiwan",
+			"TJ": "tajikistan",
+			"TZ": "tanzania",
+			"TH": "thailand",
+			"TT": "tit",
+			"TG": "togo",
+			"TO": "tonga",
+			"TN": "tunisia",
+			"TR": "turkey",
+			"TM": "turkmenistan",
+			"TC": "turksandcaicos",
+			"AE": "uae",
+			"UG": "uganda",
+			"UA": "ukraine",
+			"UY": "uruguay",
+			"US": "usa",
+			"UZ": "uzbekistan",
+			"VE": "venezuela",
+			"VN": "vietnam",
+			"VG": "virginislands",
+			"YE": "yemen",
+			"ZM": "zambia",
+			"ZW": "zimbabwe"
+		},
+		"365sms.ru": {
+			"Any": "all",
+			"RU": "0",
+			"UA": "1",
+			"KZ": "2",
+			"CN": "3",
+			"PH": "4",
+			"MM": "5",
+			"ID": "6",
+			"MY": "7",
+			"KE": "8",
+			"VN": "10",
+			"KG": "11",
+			"US (Virtual)": "12",
+			"IL": "13",
+			"PL": "15",
+			"GB": "16",
+			"CD": "18",
+			"NG": "19",
+			"EG": "21",
+			"IN": "22",
+			"IE": "23",
+			"KH": "24",
+			"LA": "25",
+			"HT": "26",
+			"CI": "27",
+			"GM": "28",
+			"RS": "29",
+			"YE": "30",
+			"ZA": "31",
+			"RO": "32",
+			"CO": "33",
+			"EE": "34",
+			"AZ": "35",
+			"CA": "36",
+			"MA": "37",
+			"GH": "38",
+			"AR": "39",
+			"UZ": "40",
+			"CM": "41",
+			"TD": "42",
+			"DE": "43",
+			"LT": "44",
+			"HR": "45",
+			"SE": "46",
+			"IQ": "47",
+			"NL": "48",
+			"LV": "49",
+			"AT": "50",
+			"BY": "51",
+			"TH": "52",
+			"SA": "53",
+			"MX": "54",
+			"TW": "55",
+			"ES": "56",
+			"IR": "57",
+			"DZ": "58",
+			"BD": "60",
+			"SN": "61",
+			"CZ": "63",
+			"PE": "65",
+			"PK": "66",
+			"GN": "68",
+			"ML": "69",
+			"VE": "70",
+			"MN": "72",
+			"BR": "73",
+			"AF": "74",
+			"UG": "75",
+			"AO": "76",
+			"CY": "77",
+			"FR": "78",
+			"PG": "79",
+			"MZ": "80",
+			"NP": "81",
+			"MD": "85",
+			"PY": "87",
+			"HN": "88",
+			"TN": "89",
+			"NI": "90",
+			"BO": "92",
+			"GT": "94",
+			"AE": "95",
+			"ZW": "96",
+			"SV": "101",
+			"LY": "102",
+			"JM": "103",
+			"TT": "104",
+			"EC": "105",
+			"DO": "109",
+			"MR": "114",
+			"SL": "115",
+			"PT": "117",
+			"BJ": "120",
+			"BN": "121",
+			"BW": "123",
+			"DM": "126",
+			"GR": "129",
+			"GY": "131",
+			"LR": "135",
+			"SR": "142",
+			"TJ": "143",
+			"RE": "146",
+			"AM": "148",
+			"CG": "150",
+			"BF": "152",
+			"LB": "153",
+			"GA": "154",
+			"BT": "158",
+			"MV": "159",
+			"TM": "161",
+			"AW": "179",
+			"US": "187",
+			"PS": "188",
+			"BM": "195"
+		},
+		"sms-man.ru": {
+			"Any": "",
+			"RU": "0",
+			"KZ": "2",
+			"CN": "3",
+			"UA": "1",
+			"US": "187",
+			"MY": "7",
+			"ID": "6",
+			"PH": "4",
+			"MM": "5",
+			"VN": "10",
+			"RO": "32",
+			"PL": "15",
+			"CA": "36",
+			"IN": "22",
+			"ZM": "147",
+			"PK": "66",
+			"BD": "60",
+			"MX": "54",
+			"KH": "24",
+			"NI": "90",
+			"KE": "8",
+			"KG": "11",
+			"IL": "13",
+			"HK": "14",
+			"GB": "16",
+			"MG": "17",
+			"CG": "150",
+			"NG": "19",
+			"MO": "20",
+			"EG": "21",
+			"IE": "23",
+			"LA": "25",
+			"HT": "26",
+			"CI": "27",
+			"GM": "28",
+			"RS": "29",
+			"YE": "30",
+			"ZA": "31",
+			"CO": "33",
+			"EE": "34",
+			"AZ": "35",
+			"MA": "37",
+			"GH": "38",
+			"AR": "39",
+			"UZ": "40",
+			"CM": "41",
+			"TD": "42",
+			"DE": "43",
+			"LT": "44",
+			"HR": "45",
+			"SE": "46",
+			"IQ": "47",
+			"NL": "48",
+			"LV": "49",
+			"AT": "50",
+			"BY": "51",
+			"TH": "52",
+			"SA": "53",
+			"TW": "55",
+			"ES": "56",
+			"IR": "57",
+			"DZ": "58",
+			"SI": "59",
+			"SN": "61",
+			"TR": "62",
+			"CZ": "63",
+			"LK": "64",
+			"PE": "65",
+			"NZ": "67",
+			"GN": "68",
+			"ML": "69",
+			"VE": "70",
+			"ET": "71",
+			"MN": "72",
+			"BR": "73",
+			"AF": "74",
+			"UG": "75",
+			"AO": "76",
+			"CY": "77",
+			"FR": "78",
+			"PG": "79",
+			"MZ": "80",
+			"NP": "81",
+			"BE": "82",
+			"BG": "83",
+			"HU": "84",
+			"MD": "85",
+			"IT": "86",
+			"PY": "87",
+			"HN": "88",
+			"TN": "89",
+			"SO": "149",
+			"TL": "91",
+			"BO": "92",
+			"CR": "93",
+			"GT": "94",
+			"AE": "95",
+			"ZW": "96",
+			"PR": "97",
+			"SD": "98",
+			"TG": "99",
+			"CD": "18",
+			"AL": "155",
+			"SJ": "null",
+			"AI": "181",
+			"AG": "169",
+			"AM": "148",
+			"AW": "179",
+			"AU": "175",
+			"BS": "122",
+			"BH": "145",
+			"BB": "118",
+			"BZ": "124",
+			"BJ": "120",
+			"BT": "158",
+			"BA": "108",
+			"BW": "123",
+			"BF": "152",
+			"BI": "119",
+			"CV": "186",
+			"KY": "170",
+			"CF": "125",
+			"CL": "151",
+			"KM": "133",
+			"CU": "113",
+			"DJ": "168",
+			"DM": "126",
+			"DO": "109",
+			"EC": "105",
+			"SV": "101",
+			"GQ": "167",
+			"ER": "176",
+			"FI": "163",
+			"GF": "162",
+			"GA": "154",
+			"GE": "128",
+			"GR": "129",
+			"GD": "127",
+			"GP": "160",
+			"GW": "130",
+			"GY": "131",
+			"IS": "132",
+			"JM": "103",
+			"JP": "182",
+			"JO": "116",
+			"KW": "100",
+			"LB": "153",
+			"LS": "136",
+			"LR": "135",
+			"LU": "165",
+			"MW": "137",
+			"MV": "159",
+			"MR": "114",
+			"MU": "157",
+			"MC": "144",
+			"ME": "171",
+			"MS": "180",
+			"NA": "138",
+			"NC": "185",
+			"NE": "139",
+			"NO": "174",
+			"OM": "107",
+			"PT": "117",
+			"QA": "111",
+			"RW": "140",
+			"SC": "184",
+			"SK": "141",
+			"SR": "142",
+			"CH": "173",
+			"TJ": "143",
+			"TT": "104",
+			"TM": "161",
+			"UY": "156",
+			"BN": "121",
+			"LY": "102",
+			"MK": "183",
+			"KN": "134",
+			"LC": "164",
+			"VC": "166",
+			"ST": "178",
+			"SY": "110",
+			"TZ": "9",
+			"SZ": "106",
+			"PA": "112",
+			"SL": "115",
+			"RE": "146",
+			"SS": "177"
+		},
+		"getsms.online": {
+			"Any": "or",
+			"RU": "ru",
+			"UA": "ua",
+			"KZ": "kz",
+			"BY": "by",
+			"PL": "pl",
+			"GB": "uk",
+			"DE": "de"
+		},
+		"cheapsms.ru": {
+			"Any": ""
+		},
+		"smsvk.net": {
+			"Any": ""
+		},
+		"sms.kopeechka.store": {
+			"Any": ""
 		}
 	};
-	return _is_nilb(countries[country]) ? countries["Any"][this.service] : (_is_nilb(countries[country][this.service]) ? countries["Any"][this.service] : countries[country][this.service]);
+	return _is_nilb(countries[this.service][country]) ? countries[this.service]["Any"] : countries[this.service][country];
 };

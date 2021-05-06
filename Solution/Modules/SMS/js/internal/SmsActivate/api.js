@@ -1,6 +1,6 @@
-_SMS.SmsActivateApi = _SMS.assignApi(function(config){
+_SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
     const api = this;
-	_SMS.BaseApi.call(this, config, 'sms-activate');
+	_SMS.BaseApi.call(this, config, data);
 	
 	this.apiRequest = function(){
 		var action = _function_argument("action");
@@ -64,6 +64,18 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		};
 	};
 	
+	this.getCountries = function(){
+		
+		_call_function(api.apiRequest,{action:"getCountries"})!
+		var resp = _result_function();
+		
+		if(resp.status){
+			api.errorHandler(resp.status, resp.data);
+		};
+		
+		_function_return(Object.keys(resp).map(function(key){return resp[key]}));
+	};
+	
 	this.getNumber = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
@@ -125,17 +137,5 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config){
 		};
 			
 		_function_return(code);
-	};
-	
-	this.getCountries = function(){
-		
-		_call_function(api.apiRequest,{action:"getCountries"})!
-		var resp = _result_function();
-		
-		if(resp.status){
-			api.errorHandler(resp.status, resp.data);
-		};
-		
-		_function_return(Object.keys(resp).map(function(key){return resp[key]}));
 	};
 });

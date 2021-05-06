@@ -1093,7 +1093,7 @@
         <span class="small"><%= tr("Selected") %></span>: <strong><%= TotalSelected() %></strong>
       </div>
     </div>
-
+    
   </script>
 
   <script type="text/template" id="main">
@@ -1169,6 +1169,7 @@
         
         </span>
       </div>
+      
     </div>
     <div class="bottompannel" >
       <div class="container-fluid" id="variableinspector" style="<%= (global["show_variable_inspector"]) ? "" : "display:none" %>">
@@ -1192,6 +1193,8 @@
             
       </div>
     </div>
+
+
 
     <div class="container-fluid main" style="padding-bottom:<%= (global["show_variable_inspector"]) ? "250px" : "50px" %>" >
       
@@ -1322,7 +1325,9 @@
           <marker id="Arrow4" markerWidth="10" markerHeight="10" refX="6" refY="2" orient="auto" markerUnits="strokeWidth">
             <path d="M0,1 L5,2 L0,3" stroke="#e6bbbb" fill="none"></path>
           </marker>
+          
         </defs>
+
       </svg>
     </div>
   </script>
@@ -1345,7 +1350,7 @@
 
 
 
-  <!-- ========= -->  
+  <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
   <script type="text/javascript"> window.Scenario = {}; </script>
@@ -3619,11 +3624,12 @@
         $("#TaskId").html(task.get("id"))
         $(".color-select").removeClass("color-select-active")
         $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active")
+
         $("#TaskDontRunWhenRecording").prop('checked', this.collection.at(this.currentTargetId).get("donotexecuteduringrecord"))
         if (!options.disableModal) $("#editmodal").modal({});
 
         var match = code.match(/\/\*Dat\:([^\*]+)\*\//)
-        if (match) 
+        if(match)
         {
           //$("#TaskCode").val(code.replace(/\s*\/\*Dat\:[^\*]+\*\/\s*/g,""))
           //$("#TaskData").val("/*Dat:" + match[1] + "*/")
@@ -3796,6 +3802,7 @@
           BrowserAutomationStudio_RestoreVariableInspectorScroll()
           return; 
         }
+
 
         if(_GobalModel.hasChanged("isscriptexecuting"))
         {

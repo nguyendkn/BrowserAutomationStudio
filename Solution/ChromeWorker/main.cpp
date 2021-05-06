@@ -2179,6 +2179,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventFindUrlByMask.push_back(std::bind(&MainApp::FindUrlByMaskCallback,app.get(),_1));
 
     app->EventSendTextResponce.push_back(std::bind(&PipesClient::Write,Client,_1));
+
     app->EventHighlightMenu.push_back(HighlightHMenu);
 
     WORKER_LOG("Start Main Loop");

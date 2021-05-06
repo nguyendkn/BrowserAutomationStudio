@@ -5760,12 +5760,14 @@
           }
         }
 
-        if (typeof(DontInterrupt) === 'undefined') {
-          if (_MainView.isEdit) {
-            _MainView.taskeditcustom(Name, Code, donotexecuteduringrecord);
+        if(typeof(DontInterrupt) === 'undefined')
+        {
+          if(_MainView.isEdit)
+          {
+            _MainView.taskeditcustom(Name, Code, donotexecuteduringrecord)
             _ActionUpdater.model.trigger('toolbox.editSuccess');
             $('#editmodal').modal('hide');
-            return;
+            return
           }
         }
 
@@ -5996,7 +5998,8 @@
       _GobalModel.set('istaskexecuting', true);
     }
 
-    function BrowserAutomationStudio_Parse(Code) {
+    function BrowserAutomationStudio_Parse(Code)
+    {
       BrowserAutomationStudio_LastCode = Code
       Code = Code.replace(/_set_goto_label\(\"_internal_\d+\"\)!/g,"")
 
@@ -6957,6 +6960,13 @@
         res += "\n"
         return {index:index,res:res};
     }
+
+
+
+    
+
+    
   </script>
+
 </body>
 </html>

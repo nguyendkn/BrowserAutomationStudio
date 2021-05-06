@@ -43,7 +43,7 @@ std::string DevToolsActionInspect::Javascript(const std::string& Script)
     std::string Res = Script;
     try{
         static std::regex Replacer("_BAS_HIDE\\(([^\\)]+)\\)");
-        return std::regex_replace(Res,Replacer,std::string("(atob(\"") + GlobalState->UniqueProcessId + std::string("\", \"STASH\")[\"$1\"])"));
+        return std::regex_replace(Res,Replacer,std::string("((atob[Symbol.for('_bas_hide_") + GlobalState->UniqueProcessId + std::string("')])[\"$1\"])"));
     }catch(...)
     {
 

@@ -420,7 +420,7 @@ public:
     void MouseLeave();
 
     //Element Subtasks
-    void ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction);
+    void ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction, bool IsDisabled = false, const std::string& ModuleName = std::string(), const std::string& ModuleDescription = std::string());
 
     void LoadSettingsPage();
     void ShowContextMenu(int X, bool IsImageSelect, const std::string & Json);

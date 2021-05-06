@@ -49,7 +49,7 @@
     <message>
         <location filename="../compileresults.ui" line="370"/>
         <location filename="../compileresults.cpp" line="120"/>
-        <location filename="../compileresults.cpp" line="259"/>
+        <location filename="../compileresults.cpp" line="254"/>
         <source>Start</source>
         <translation>Начать</translation>
     </message>
@@ -104,22 +104,22 @@
         <translation>Загружаю проект ...</translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="248"/>
+        <location filename="../compileresults.cpp" line="243"/>
         <source>&lt;div&gt;Project &apos;%1&apos; was uploaded. Here are some links that may help you tweak it:&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/scripts&apos;&gt;List of your scripts&lt;/a&gt;&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/users&apos;&gt;List of your users&lt;/a&gt;&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/interface&apos;&gt;Customize script interface&lt;/a&gt;&lt;/div&gt;</source>
         <translation>&lt;div&gt;Проект &apos;%1&apos; был загружен. Вот несколько ссылок, которые помогут вам настроить его:&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/scripts&apos;&gt;Список ваших скриптов&lt;/a&gt;&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/users&apos;&gt;Список пользователей&lt;/a&gt;&lt;/div&gt;&lt;div&gt;&lt;a style=&apos;color:white&apos; href=&apos;https://bablosoft.com/bas/interface&apos;&gt;Настройка интерфейса скрипта&lt;/a&gt;&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="263"/>
+        <location filename="../compileresults.cpp" line="258"/>
         <source>Failed to upload with error: &apos;%1&apos;</source>
         <translation>Ошибка загрузки: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="292"/>
+        <location filename="../compileresults.cpp" line="287"/>
         <source>Local project located in %1 file was updated.</source>
         <translation>Обновлен локальный проект, расположенный в %1.</translation>
     </message>
     <message>
-        <location filename="../compileresults.cpp" line="302"/>
+        <location filename="../compileresults.cpp" line="297"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Standalone application created, it is located in &lt;a style=&apos;color:white&apos; href=&apos;http://opencompiled.com&apos;&gt;%1&lt;/a&gt; folder.&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;Создано автономное приложение, оно находится в папке &lt;a style=&apos;color:white&apos; href=&apos;http://opencompiled.com&apos;&gt;%1&lt;/a&gt;.&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1081,7 +1081,7 @@ Saves space if user will use several scripts.</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1068"/>
-        <location filename="../mainwindow.cpp" line="2879"/>
+        <location filename="../mainwindow.cpp" line="2895"/>
         <source>Show Database</source>
         <translation>База</translation>
     </message>
@@ -1162,8 +1162,8 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Весь лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2823"/>
-        <location filename="../mainwindow.cpp" line="2848"/>
+        <location filename="../mainwindow.cpp" line="2839"/>
+        <location filename="../mainwindow.cpp" line="2864"/>
         <source>All log</source>
         <translation>Весь лог</translation>
     </message>
@@ -1288,13 +1288,18 @@ Saves space if user will use several scripts.</source>
         <translation type="unfinished">Лог Multilogin</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2824"/>
-        <location filename="../mainwindow.cpp" line="2849"/>
+        <location filename="../mainwindow.cpp" line="2072"/>
+        <source>ReCaptcha module has been disabled</source>
+        <translation>Модуль ReCaptcha отключен</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2840"/>
+        <location filename="../mainwindow.cpp" line="2865"/>
         <source>Clear log</source>
         <translation type="unfinished">Очистить лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2881"/>
+        <location filename="../mainwindow.cpp" line="2897"/>
         <source> (Need Restart)</source>
         <translation> (Нужен Перезапуск)</translation>
     </message>
@@ -1336,7 +1341,7 @@ Saves space if user will use several scripts.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../main.cpp" line="172"/>
+        <location filename="../main.cpp" line="173"/>
         <source>BrowserAutomationStudio is already running, do you want to start another instance?</source>
         <translation>BrowserAutomationStudio уже запущена, вы хотите запустить второй экземпляр?</translation>
     </message>

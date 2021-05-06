@@ -4180,6 +4180,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       
 
       <%= _.template($('#input_constructor').html())({id:"AudioNoise", description:tr("Audio noise pattern"), default_selector: "string", disable_int:true, value_string: "", help: { description: tr("This setting is for debugging purposes only, the proper way to set is using FingerprintSwitcher")}}) %>
+
+
+      <div class="col-xs-12">
+        <form class="form-horizontal">
+           <div class="form-group">
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Network</span></span>:
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+           </div>
+         </form>
+       </div>
+ 
+       <%= _.template($('#input_constructor').html())({id:"QUIC", description:tr("Enable QUIC protocol"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Unlike HTTP, QUIC protocol is build on top of UDP. Not all proxies supports UDP. It means that enabling QUIC can cause problems when working with certain proxies. It is recommended to enable this option only if sure, that your proxy supports it. Disabled by default."), examples:[{code:"enable",description:tr("Enable QUIC")},{code:"disable",description:tr("Disable QUIC")},{code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
+
       
       <div class="col-xs-12">
         <form class="form-horizontal">
@@ -4193,7 +4207,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       <%= _.template($('#input_constructor').html())({id:"MaxFPS", description:tr("Maximum FPS"), default_selector: "int", disable_string:true, value_number: 0, variants: ["0<br/><span style='color:gray;font-size:small'>" + tr("Don't change") + "</span>", "30", "60"], help: { description: tr("Maximum times browser content can be rendered per one second. The lower this value, the lower the CPU usage will be. Setting it too low may affect site operability. Reducing it below 30 may lead to unpredictable consequences. Minimum value is 10."), examples:[{code:"30",description:tr("Limit FPS to 30")},{code:"0",description:tr("Don't change FPS")}]}}) %>
 
-      
+ 
       <div class="col-xs-12">
        <form class="form-horizontal">
           <div class="form-group">
@@ -5848,6 +5862,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       var CanvasNoise = (<%= CanvasNoise %>);
       var Audio = (<%= Audio %>);
       var AudioNoise = (<%= AudioNoise %>);
+      var QUIC = (<%= QUIC %>);
       var MaxFPS = (<%= MaxFPS %>);
       var Webgl = (<%= Webgl %>);
       var WebglNoise = (<%= WebglNoise %>);
@@ -5875,6 +5890,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       if(AudioNoise.length > 0)
         Params["AudioNoise"] = AudioNoise
+
+      if(QUIC.length > 0)
+        Params["QUIC"] = QUIC
 
       if(MaxFPS > 0)
         Params["MaxFPS"] = MaxFPS
@@ -6586,31 +6604,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           var ModuleName = $(event.target).closest(".panelgrid").attr("data-task-name")
           var ModuleDescription = $(event.target).closest(".panelgrid").find(".panelgridtitleinner").text()
           //Clicked on unused module
-          bootbox.confirm(
-          {
-            title: tr("Enable module ") + ModuleDescription + "?",
-            message: tr("In order to use this module, you need to enable it first. It will restart script.") + "<br><br><span style='color:gray;font-size:small'>" + tr("You can disable it later by using Menu -> Module manager.")  + "</span>",
-            buttons:
-            {
-              confirm:
-              {
-                label: tr('Enable'),
-                className: 'btn-success'
-              },
-              cancel:
-              {
-                label: tr('Cancel'),
-                className: 'btn-primary'
-              }
-            },
-            callback: function (result)
-            {
-              if(result == 1)
-              {
-                BrowserAutomationStudio_EnableModule(ModuleName)
-              }
-            }
-          });
+          BrowserAutomationStudio_AskEnableModule(ModuleName, ModuleDescription)
           return
         }
         if(CurrentGroup == "")
@@ -10057,6 +10051,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             var WebglNoise = GetInputConstructorValue("WebglNoise", loader);
             var Audio = GetInputConstructorValue("Audio", loader);
             var AudioNoise = GetInputConstructorValue("AudioNoise", loader);
+            var QUIC = GetInputConstructorValue("QUIC", loader);
             var MaxFPS = GetInputConstructorValue("MaxFPS", loader);
             var WebglVendor = GetInputConstructorValue("WebglVendor", loader);
             var WebglRenderer = GetInputConstructorValue("WebglRenderer", loader);
@@ -10080,6 +10075,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   CanvasNoise:CanvasNoise["updated"],
                   Audio:Audio["updated"],
                   AudioNoise:AudioNoise["updated"],
+                  QUIC:QUIC["updated"],
                   MaxFPS:MaxFPS["updated"],
                   Webgl:Webgl["updated"],
                   WebglNoise:WebglNoise["updated"],
@@ -11365,6 +11361,35 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           }
       })
 
+    }
+
+    function BrowserAutomationStudio_AskEnableModule(ModuleName, ModuleDescription)
+    {
+      bootbox.confirm(
+      {
+        title: tr("Enable module ") + ModuleDescription + "?",
+        message: tr("In order to use this module, you need to enable it first. It will restart script.") + "<br><br><span style='color:gray;font-size:small'>" + tr("You can disable it later by using Menu -> Module manager.")  + "</span>",
+        buttons:
+        {
+          confirm:
+          {
+            label: tr('Enable'),
+            className: 'btn-success'
+          },
+          cancel:
+          {
+            label: tr('Cancel'),
+            className: 'btn-primary'
+          }
+        },
+        callback: function (result)
+        {
+          if(result == 1)
+          {
+            BrowserAutomationStudio_EnableModule(ModuleName)
+          }
+        }
+      });
     }
 
     /* Preserve execute type */

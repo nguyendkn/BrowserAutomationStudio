@@ -10195,6 +10195,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           }
 
           _Router.navigate("", true);
+          
       },
 
       initialize: function(){
@@ -12724,7 +12725,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         else
           ResText = $("#" + id).val();
 
-        // console.log(ResTextTypeIsEditor)
+        console.log(ResTextTypeIsEditor)
 
         loader.SetIsString((ResTextTypeIsString && !ResTextTypeIsEditor) || ForceString)
         var ResTextUpdated = loader.Resolve(ResText+"");

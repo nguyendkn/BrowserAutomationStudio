@@ -10,7 +10,7 @@ function FunctionManager()
 
 	var Template = `
 		<div id="FunctionManagerMainLabel">
-			<img src="icons/functionmanager.png" style="float:left" />
+			<img src="functionmanager.png" style="float:left" />
 			<span>${tr('Function list')}</span> (<strong><%= GetFunctionList().length %></strong>)
 			<a href="#" id="FunctionManagerMainCloseLink">
 				<i class="fa fa-times-circle-o FunctionManagerMainClose text-danger" aria-hidden="true" ></i>
@@ -157,7 +157,7 @@ function FunctionManager()
 
 	var TemplateFunction = `
 		<div id="FunctionManagerMainLabel">
-			<img src="icons/functionmanager.png" style="float:left" />
+			<img src="functionmanager.png" style="float:left" />
 			<% if(functionname == ''){ %>
 				<span>${tr('Adding new function')}</span>
 			<% }else{ %>

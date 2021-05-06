@@ -3606,6 +3606,7 @@
           }
       },
 
+
       Edit: function(options = {}){
 
         var dat = this.collection.at(this.currentTargetId).dat()
@@ -3626,7 +3627,7 @@
         $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active")
 
         $("#TaskDontRunWhenRecording").prop('checked', this.collection.at(this.currentTargetId).get("donotexecuteduringrecord"))
-        if (!options.disableModal) $("#editmodal").modal({});
+        if (!options.disableModal) $("#editmodal").modal({})
         var match = code.match(/\/\*Dat\:([^\*]+)\*\//)
         if(match)
         {

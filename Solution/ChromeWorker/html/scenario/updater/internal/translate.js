@@ -1,6 +1,6 @@
 _.extend(_L, {
-  'The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to open and save the action.': {
-    ru: 'В разных версиях BAS одни и те же действия могут отличаться. Чтобы обновить действие на текущую версию BAS необходимо это действие открыть и сохранить.'
+  'The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to use this tool or recreate each action manually.': {
+    ru: 'В разных версиях BAS одни и те же действия могут отличаться. Чтобы обновить действие на текущую версию BAS необходимо использовать данный инструмент или пересоздать каждое действие вручную.'
   },
   'The BAS version of the project is different from the current BAS version, update the project actions?': {
     ru: 'Версия BAS проекта отличается от текущей версии BAS, обновить действия проекта?'
@@ -56,5 +56,11 @@ _.extend(_L, {
   },
   'Errors:': {
     ru: 'Ошибки:'
+  },
+  'Close': {
+    ru: 'Закрыть'
+  },
+  'Run': {
+    ru: 'Запустить'
   }
 });

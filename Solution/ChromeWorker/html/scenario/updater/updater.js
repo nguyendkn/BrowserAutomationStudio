@@ -91,7 +91,7 @@
             <h4 class=""><%= tr('The BAS version of the project is different from the current BAS version, update the project actions?') %></h4>
           </div>
           <div class="action-updater-modal-body">
-            <div class="action-updater-modal-text"><%= tr('The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to open and save the action.') %></div>
+            <div class="action-updater-modal-text"><%= tr('The same actions may differ in different BAS versions. To update an action to the current BAS version, you need to use this tool or recreate each action manually.') %></div>
             <div class="action-updater-modal-text"><%= tr('Actions that are not updated may not work correctly or even cause an error.') %></div>
             <div class="action-updater-modal-text"><%= tr('This tool allows you to automatically update all actions in the project.') %></div>
             <div class="action-updater-modal-text"><%= tr('You can always open it in the ') %><a class="action-updater-modal-link" id="actionUpdaterModalMenu"><%= tr('context menu') %></a>.</div>
@@ -209,8 +209,8 @@
         </button>
       </div>
       <div class="action-updater-footer">
-        <button type="button" id="actionUpdaterAccept" class="btn-base btn-accept"><%= tr('OK') %></button>
-        <button type="button" id="actionUpdaterCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
+        <button type="button" id="actionUpdaterAccept" class="btn-base btn-accept"><%= tr('Run') %></button>
+        <button type="button" id="actionUpdaterCancel" class="btn-base btn-cancel"><%= tr('Close') %></button>
       </div>
     `),
 

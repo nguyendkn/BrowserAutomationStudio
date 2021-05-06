@@ -278,6 +278,8 @@ void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
     extra_info->SetString(6,Script);
 
     extra_info->SetString(7,Data->_UniqueProcessId);
+
+
     extra_info->SetString(8,ApplicationEngineVersion);
     extra_info->SetString(9,ScriptEngineVersion);
 }

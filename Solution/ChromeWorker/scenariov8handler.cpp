@@ -508,6 +508,7 @@ bool ScenarioV8Handler::GetIsSuccessNumberEditStart()
     bool res = IsSuccessNumberEditStart;
     IsSuccessNumberEditStart = false;
     return res;
+
 }
 
 bool ScenarioV8Handler::GetIsFailNumberEditStart()

@@ -119,6 +119,7 @@ void CommandParser::Parse(const std::string& Xml)
         if(CommandNode)
         {
             bool is_testing = false;
+
             std::string schema;
             for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
             {

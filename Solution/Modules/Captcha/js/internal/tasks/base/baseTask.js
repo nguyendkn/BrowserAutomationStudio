@@ -28,18 +28,15 @@
       const param = self.params[key];
       const rule = self.rules[key];
 
-      if (typeof (param) === 'undefined') {
-        if (!rule.optional) {
-          if (_K === 'en') {
-            fail('Parameter "' + key + '" is not specified');
-          } else {
-            fail('Параметр "' + key + '" не указан');
-          }
+      if (typeof (param) === 'undefined' && !rule.optional) {
+        if (_K === 'en') {
+          fail('Parameter "' + key + '" is not specified');
+        } else {
+          fail('Параметр "' + key + '" не указан');
         }
-        return;
+      } else {
+        self.data[rule.name || key] = param;
       }
-
-      self.data[rule.name || key] = param;
     });
 
     return self.applyProxy(self.params.proxy);

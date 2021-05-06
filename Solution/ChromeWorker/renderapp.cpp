@@ -66,7 +66,6 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("NewToolboxBrowserContextCreated");
         frame->SendProcessMessage(PID_BROWSER, msg);
         CefRefPtr<CefV8Value> object = context->GetGlobal();
-
         object->SetValue("BrowserAutomationStudio_SendEmbeddedData", CefV8Value::CreateFunction("BrowserAutomationStudio_SendEmbeddedData", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Append", CefV8Value::CreateFunction("BrowserAutomationStudio_Append", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Initialized", CefV8Value::CreateFunction("BrowserAutomationStudio_Initialized", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
@@ -94,14 +93,12 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
     if(starts_with(frame->GetURL().ToString(), "file:///html/scenario"))
     {
         WORKER_LOG("OnContextCreated<<BrowserScenario");
+        CefRefPtr<CefV8Value> object = context->GetGlobal();
         if(frame->IsMain())
-        {
             scenariov8handler = new InterprocessV8Handler("Scenario");
-        }
 
         CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("NewScenarioBrowserContextCreated");
         frame->SendProcessMessage(PID_BROWSER, msg);
-        CefRefPtr<CefV8Value> object = context->GetGlobal();
 
         object->SetValue("BrowserAutomationStudio_UpdateEmbeddedData", CefV8Value::CreateFunction("BrowserAutomationStudio_UpdateEmbeddedData", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_SendCode", CefV8Value::CreateFunction("BrowserAutomationStudio_SendCode", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);

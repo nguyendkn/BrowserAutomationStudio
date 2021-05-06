@@ -1343,7 +1343,9 @@
       }
   </script>
 
-  <!-- ========= -->
+
+
+  <!-- ========= -->  
   <!-- Libraries -->
   <!-- ========= -->
   <script type="text/javascript"> window.Scenario = {}; </script>
@@ -1386,11 +1388,12 @@
   <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
   <script type="text/javascript"> _MACRO_INSERT_ACTIONS_ </script>
 
-  
+
   <!-- ========= -->
   <!--   Styles  -->
   <!-- ========= -->
   <link rel="stylesheet" href="bootstrap.min.css">
+  <!--<link rel="stylesheet" href="bootstrap-theme.min.css">-->
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="context.standalone.css">
   <link rel="stylesheet" href="font-awesome.min.css">
@@ -1625,6 +1628,8 @@
         BrowserAutomationStudio_SaveToUndoManager();
         this.send()
         event.preventDefault();
+
+
       },
 
       unfold: function(event)
@@ -1642,6 +1647,7 @@
         BrowserAutomationStudio_SaveToUndoManager();
         this.send()
         event.preventDefault();
+
       },
 
       selectcolor: function(event)
@@ -1650,6 +1656,7 @@
         var el = $(event.target)
         el.addClass("color-select-active")
         event.preventDefault();
+
       },
 
       moveexecutionpointfast: function(event)

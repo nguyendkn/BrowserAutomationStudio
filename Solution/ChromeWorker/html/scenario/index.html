@@ -3829,28 +3829,39 @@
         console.timeEnd("Create html");
 
         console.time("Apply html");
-        var cached_actions = 0;
+        //$("#containerdata").html(html)
+        //document.getElementById("containerdata").innerHTML = html
         var total_actions = 0;
-        var total_removed = 0;
+        var cached_actions = 0;
         var total_added = 0;
+        var total_removed = 0;
+        
+
+
         
         morphdom(document.getElementById("containerdata"), '<div id="containerdata" >' + html + '</div>', {
           onBeforeElUpdated: function(fromEl, toEl) {
-              if (fromEl.hasAttribute("noupdate")) {
+              if(fromEl.hasAttribute("noupdate"))
+              {
                 return false
               }
               
-              if (fromEl.id !== undefined && fromEl.id.startsWith("id1-")) {
+              if(fromEl.id !== undefined && fromEl.id.startsWith("id1-"))
+              {
                 total_actions ++;
-                if (fromEl.isEqualNode(toEl)) {
+                if (fromEl.isEqualNode(toEl))
+                {
                   cached_actions ++;
                   return false
                 }
+
               }
               return true;
           },
-          onNodeAdded: function(node) {
-            if (node && node.nodeType == Node.ELEMENT_NODE) {
+          onNodeAdded: function(node)
+          {
+            if(node && node.nodeType == Node.ELEMENT_NODE)
+            {
               _DragAndDrop.AddElement(node)
             }
           }
@@ -3858,9 +3869,13 @@
         console.timeEnd("Apply html");
         console.log("Cached actions: " + cached_actions + " / " + total_actions + ". Total added: " + total_added + ", total removed: " + total_removed)
 
+
         BrowserAutomationStudio_RestoreVariableInspectorScroll()
 
+
         _MainView.SetDefaultInsert()
+
+
 
         console.trace("Render time" + (new Date() - t) )
         if(window.startTime)
@@ -4069,6 +4084,7 @@
     
           })
 
+        //_Tour.Start();
         this.trigger('render');
       }
 
@@ -4080,6 +4096,7 @@
             "!/": "main"
         }
     });
+
 
     var _Router = new Router();
 

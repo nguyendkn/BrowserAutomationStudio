@@ -118,6 +118,7 @@ bool ToolboxV8Handler::GetIsEditCancel()
 {
     bool res = IsEditCancel;
     IsEditCancel = false;
+
     return res;
 }
 

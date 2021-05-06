@@ -2033,7 +2033,7 @@
 
       key: function(e)
       {
-        if ($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden'))
+        if($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden'))
         {
           if (e.keyCode == 70 && e.ctrlKey)
           {
@@ -2288,10 +2288,10 @@
         if(dat["role"])
         {
           var task = null
-          if(dat["role"] == "master")
+          if(dat["role"] == "master") 
           {
             task = FindTaskById(dat["slave"])
-          }else if(dat["role"] == "slave")
+          }else if(dat["role"] == "slave") 
           {
             task = FindTaskById(dat["master"])
           }
@@ -3601,25 +3601,33 @@
           }
       },
 
-      Edit: function(options = {}) {
-        const task = this.collection.at(this.currentTargetId), dat = task.dat();
-        if (dat && dat["role"] && dat["role"] == "slave") return;
+      Edit: function(options = {}){
 
-        this.isEdit = true;
+        var dat = this.collection.at(this.currentTargetId).dat()
+
+        if(dat && dat["role"] && dat["role"] == "slave")
+        {
+          return;
+        }
+
+        this.isEdit = true
+
+        var task = this.collection.at(this.currentTargetId)
 
         var code = task.get("code")
         $("#TaskName").val(prepare_edit_body(dat, task.get("name")))
         $("#TaskId").html(task.get("id"))
         $(".color-select").removeClass("color-select-active")
         $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active")
-        $("#TaskDontRunWhenRecording").prop('checked', task.get("donotexecuteduringrecord"))
+        $("#TaskDontRunWhenRecording").prop('checked', this.collection.at(this.currentTargetId).get("donotexecuteduringrecord"))
         if (!options.disableModal) $("#editmodal").modal({});
 
-        var match = code.match(/\/\*Dat\:([^\*]+)\*\//);
-        if (match) {
+        var match = code.match(/\/\*Dat\:([^\*]+)\*\//)
+        if (match) 
+        {
           //$("#TaskCode").val(code.replace(/\s*\/\*Dat\:[^\*]+\*\/\s*/g,""))
           //$("#TaskData").val("/*Dat:" + match[1] + "*/")
-          BrowserAutomationStudio_EditStart(match[1]);
+          BrowserAutomationStudio_EditStart(match[1])
         }
       },
 
@@ -3768,6 +3776,7 @@
 
 
         if(_GobalModel.hasChanged("dontsend"))
+        {
           // Since backbone version > 0.9.2 hasChanged works differently.
           delete _GobalModel.changed['dontsend'];
           return;
@@ -3798,6 +3807,7 @@
 
         if(this.model.get("dontsend"))
           return
+
 
         var t = new Date()
 

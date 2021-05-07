@@ -35,20 +35,12 @@
       }
     },
 
-    gt: function (value, other) {
-      if (!(typeof value === 'string' && typeof other === 'string')) {
-        value = +value;
-        other = +other;
-      }
-      return value > other;
+    isString: function (obj) {
+      return Object.prototype.toString.call(obj) === '[object String]';
     },
 
-    lt: function (value, other) {
-      if (!(typeof value === 'string' && typeof other === 'string')) {
-        value = +value;
-        other = +other;
-      }
-      return value < other;
+    isError: function (obj) {
+      return Object.prototype.toString.call(obj) === '[object Error]';
     }
   });
 })(window);

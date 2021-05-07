@@ -30,7 +30,7 @@
     },
 
     initialize() {
-      this.listenTo(this, 'change:isStarted', async (_, isStarted) => {
+      this.on('change:isStarted', async (_, isStarted) => {
         if (!isStarted) {
           BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
         } else {
@@ -39,7 +39,7 @@
         if (isStarted) return await this.run();
       });
 
-      this.listenTo(this, 'finish', () => {
+      this.on('finish', () => {
         BrowserAutomationStudio_EditEnd();
 
         if (!this.isUnsuccessfulUpdate()) this.trigger('log', {
@@ -241,7 +241,7 @@
       this.model = new ActionUpdaterModel();
       this.modal = new ActionUpdaterModal();
 
-      this.listenTo(this.model, 'change:isStarted', (_, isStarted) => {
+      this.model.on('change:isStarted', (_, isStarted) => {
         if (isStarted) this.$('#actionUpdaterProgress').progressBar('reset');
 
         if (this.model.isSuccessfulUpdate() && !isStarted) {
@@ -255,17 +255,17 @@
         if (isStarted) this.$('#actionUpdaterLog').empty();
       });
 
-      this.listenTo(this.model, 'change:successCount', (_, count) => {
+      this.model.on('change:successCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterSuccessCount').text(count);
       });
 
-      this.listenTo(this.model, 'change:errorsCount', (_, count) => {
+      this.model.on('change:errorsCount', (_, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterErrorsCount').text(count);
       });
 
-      this.listenTo(this.model, 'change:tasks', (_, { length }) => {
+      this.model.on('change:tasks', (_, { length }) => {
         this.$('#actionUpdaterAccept').prop('disabled', length === 0);
         this.$('#actionUpdaterSelect').prop('disabled', false);
         this.$('#actionUpdaterSelect').selectpicker('refresh');
@@ -277,10 +277,10 @@
         this.$('#actionUpdaterErrorsCount').text(0);
       });
 
-      this.listenTo(this.modal, 'accept', this.show);
-      this.listenTo(this.modal, 'cancel', this.hide);
-      this.listenTo(this.model, 'log', this.log);
-      this.listenTo(this, 'show', this.update);
+      this.modal.on('accept', this.show, this);
+      this.modal.on('cancel', this.hide, this);
+      this.model.on('log', this.log, this);
+      this.on('show', this.update, this);
     },
 
     log({ message, color, id }) {

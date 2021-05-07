@@ -94,6 +94,10 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
+.action-updater-log-message > span:empty + span {
+  margin-left: 0px;
+}
+
 .action-updater-log-message > span + span {
   margin-left: 9px;
 }

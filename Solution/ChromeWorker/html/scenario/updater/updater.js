@@ -38,6 +38,28 @@
         }
         if (isStarted) return await this.run();
       });
+
+      this.listenTo(this, 'finish', () => {
+        BrowserAutomationStudio_EditEnd();
+
+        if (!this.isUnsuccessfulUpdate()) this.trigger('log', {
+          message: [
+            `${tr(`Done without errors`)}.`,
+            `${tr('Completed:')} ${this.get('successCount')}.`,
+            `${tr('Errors:')} ${this.get('errorsCount')}.`
+          ].join(' '),
+          color: '#669fc2'
+        });
+
+        if (!this.isSuccessfulUpdate()) this.trigger('log', {
+          message: [
+            `${tr(`Done with errors`)}.`,
+            `${tr('Completed:')} ${this.get('successCount')}.`,
+            `${tr('Errors:')} ${this.get('errorsCount')}.`
+          ].join(' '),
+          color: '#d8695f'
+        });
+      });
     },
 
     async run() {
@@ -78,8 +100,7 @@
         if (!this.get('isStarted')) break;
       }
 
-      BrowserAutomationStudio_EditEnd();
-      this.set('isStarted', false);
+      this.set('isStarted', false).trigger('finish');
     }
   });
 
@@ -265,11 +286,11 @@
     log(data) {
       if (data.message) {
         this.$('#actionUpdaterLog').append(
-          $('<div>', { 'class': 'action-updater-log-message' }).append($('<span>', {
-            text: `[${data.id}]:`
-          })).append($('<span>', {
-            text: data.message
-          }))
+          $('<div>', { 'class': 'action-updater-log-message' })
+            .append($('<span>', { text: data.id ? `[${data.id}]:` : '' })
+              .css('color', data.color || ''))
+            .append($('<span>', { text: data.message })
+              .css('color', data.color || ''))
         );
       }
     },

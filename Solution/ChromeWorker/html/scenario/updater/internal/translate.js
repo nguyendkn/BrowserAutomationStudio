@@ -48,6 +48,12 @@ _.extend(_L, {
   'Auto-update actions': {
     ru: 'Авто-обновление действий'
   },
+  'Done without errors': {
+    ru: 'Завершено без ошибок'
+  },
+  'Done with errors': {
+    ru: 'Завершено с ошибками'
+  },
   'Total actions:': {
     ru: 'Всего действий:'
   },

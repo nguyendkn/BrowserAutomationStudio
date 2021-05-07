@@ -288,7 +288,7 @@
         const identifier = id ? `[${id}]:` : '';
 
         this.$('#actionUpdaterLog').append(
-          $('<div>', { 'class': 'action-updater-log-message' })
+          $('<div>', { class: 'action-updater-log-message' })
             .append($('<span>', { text: identifier })
               .css('color', color))
             .append($('<span>', { text: message })

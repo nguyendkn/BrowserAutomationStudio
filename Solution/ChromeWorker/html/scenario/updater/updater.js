@@ -283,14 +283,16 @@
       this.listenTo(this, 'show', this.update);
     },
 
-    log(data) {
-      if (data.message) {
+    log({ message, color, id }) {
+      if (message) {
+        const identifier = id ? `[${id}]:` : '';
+
         this.$('#actionUpdaterLog').append(
           $('<div>', { 'class': 'action-updater-log-message' })
-            .append($('<span>', { text: data.id ? `[${data.id}]:` : '' })
-              .css('color', data.color || ''))
-            .append($('<span>', { text: data.message })
-              .css('color', data.color || ''))
+            .append($('<span>', { text: identifier })
+              .css('color', color || ''))
+            .append($('<span>', { text: message })
+              .css('color', color || ''))
         );
       }
     },

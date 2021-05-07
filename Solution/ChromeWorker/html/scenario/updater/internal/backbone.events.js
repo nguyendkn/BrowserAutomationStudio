@@ -6,7 +6,6 @@
         boundOff(events, oneOffCallback);
         callback.apply(context, arguments);
       });
-
       return this.on(events, oneOffCallback, context);
     },
 

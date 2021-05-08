@@ -37,6 +37,7 @@
     }
 
     reset(animate = false) {
+      this.$inner.velocity('stop');
       this.step(this.min, animate);
     }
 

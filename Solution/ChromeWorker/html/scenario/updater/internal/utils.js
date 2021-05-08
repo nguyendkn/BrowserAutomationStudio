@@ -26,6 +26,15 @@
     });
   };
 
+  $.fn.slideDownEx = function () {
+    const args = Array.prototype.slice.call(arguments, 0);
+    return this.each(function () {
+      if (!$(this).is(':visible')) {
+        $.fn.slideDown.apply($(this), args);
+      }
+    });
+  };
+
   $.fn.slideUpEx = function () {
     const args = Array.prototype.slice.call(arguments, 0);
     return this.each(function () {

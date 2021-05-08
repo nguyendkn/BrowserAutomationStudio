@@ -352,7 +352,9 @@
 
       'click #actionUpdaterCancel': function () {
         if (this.model.get('isStarted')) {
-          this.$('#actionUpdaterProgress').slideDown(250);
+          if (this.$('#actionUpdaterProgress').is(':hidden')) {
+            this.$('#actionUpdaterProgress').slideDown(250);
+          }
           return this.model.set('isStarted', false);
         }
         this.hide();
@@ -360,7 +362,9 @@
 
       'click #actionUpdaterAccept': function () {
         if (!this.model.get('isStarted')) {
-          this.$('#actionUpdaterProgress').slideDown(250);
+          if (this.$('#actionUpdaterProgress').is(':hidden')) {
+            this.$('#actionUpdaterProgress').slideDown(250);
+          }
           return this.model.set('isStarted', true);
         }
         this.hide();

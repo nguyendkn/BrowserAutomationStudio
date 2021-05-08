@@ -319,7 +319,7 @@
 
     show() {
       if (!this.$el.is(':visible') && !this.model.get('isStarted')) {
-        $('body').toggleClass('overflow-hidden');
+        $('body,html').toggleClass('overflow-hidden');
         this.render().$el.show();
         this.$('#actionUpdaterProgress').hide();
         this.trigger('show');
@@ -330,7 +330,7 @@
 
     hide() {
       if (!this.$el.is(':hidden') && !this.model.get('isStarted')) {
-        $('body').toggleClass('overflow-hidden');
+        $('body,html').toggleClass('overflow-hidden');
         this.render().$el.hide();
         this.$('#actionUpdaterProgress').hide();
         this.trigger('hide');

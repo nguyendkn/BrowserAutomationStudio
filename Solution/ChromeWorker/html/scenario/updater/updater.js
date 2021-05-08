@@ -222,7 +222,7 @@
             <span><%= tr('Errors:') %> <span id="actionUpdaterErrorsCount">0</span></span>
           </span>
         </div>
-        <button id="actionUpdaterCopyLog" class="action-updater-copy-btn">
+        <button id="actionUpdaterCopyLog" class="action-updater-copy-btn" style="display: none">
           <svg width="13" height="15" viewBox="0 0 13 15" fill="none">
             <path d="M10 3V0H0V12H4V15H13V3H10ZM4 11H1V1H9V3H4V11ZM12 14H5V4H12V14Z" fill="white"/>
           </svg>
@@ -352,17 +352,15 @@
 
       'click #actionUpdaterCancel': function () {
         if (!this.model.get('isStarted')) return this.hide();
-        if (this.$('#actionUpdaterProgress').is(':hidden')) {
-          this.$('#actionUpdaterProgress').slideDown(250);
-        }
+        this.$('#actionUpdaterProgress').slideDownEx(250);
+        this.$('#actionUpdaterCopyLog').slideDownEx(250);
         this.model.set('isStarted', false);
       },
 
       'click #actionUpdaterAccept': function () {
         if (this.model.get('isStarted')) return this.hide();
-        if (this.$('#actionUpdaterProgress').is(':hidden')) {
-          this.$('#actionUpdaterProgress').slideDown(250);
-        }
+        this.$('#actionUpdaterProgress').slideDownEx(250);
+        this.$('#actionUpdaterCopyLog').slideDownEx(250);
         this.model.set('isStarted', true);
       },
 

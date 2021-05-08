@@ -42,7 +42,7 @@
       this.on('finish', () => {
         BrowserAutomationStudio_EditEnd();
 
-        if (!this.isUnsuccessfulUpdate()) this.trigger('log', {
+        if (!this.get('errorsCount')) this.trigger('log', {
           message: [
             `${tr(`Done without errors`)}.`,
             `${tr('Completed:')} ${this.get('successCount')}.`,
@@ -51,7 +51,7 @@
           color: '#669fc2'
         });
 
-        if (!this.isSuccessfulUpdate()) this.trigger('log', {
+        if (this.get('errorsCount')) this.trigger('log', {
           message: [
             `${tr(`Done with errors`)}.`,
             `${tr('Completed:')} ${this.get('successCount')}.`,

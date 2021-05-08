@@ -287,13 +287,12 @@
       if (message) {
         const identifier = id ? `[${id}]:` : '';
 
-        this.$('#actionUpdaterLog').append(
-          $('<div>', { class: 'action-updater-log-message' })
-            .append($('<span>', { text: identifier })
-              .css('color', color))
-            .append($('<span>', { text: message })
-              .css('color', color))
-        );
+        $('<div>', { class: 'action-updater-log-message' })
+          .append($('<span>', { text: identifier })
+            .css('color', color))
+          .append($('<span>', { text: message })
+            .css('color', color))
+          .appendTo(this.$('#actionUpdaterLog'))
       }
     },
 

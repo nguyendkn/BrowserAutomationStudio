@@ -1,4 +1,4 @@
-(function (global) {
+(function (global, $) {
   global.Scenario.filterTasks = function (type) {
     const tasks = _TaskCollection.map((task, index) => {
       const dat = _.attempt(() => task.dat());
@@ -43,4 +43,4 @@
       return Object.prototype.toString.call(obj) === '[object Error]';
     }
   });
-})(window);
+})(window, jQuery);

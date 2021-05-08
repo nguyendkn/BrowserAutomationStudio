@@ -32,6 +32,7 @@
     }
 
     finish(animate = false) {
+      this.$inner.velocity('stop');
       this.step(this.max, animate);
     }
 

@@ -13,7 +13,7 @@
   text-align: center;
   line-height: 18px;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   padding: 5px 0;
   color: #fff;
   width: 100%;
@@ -41,7 +41,7 @@
 
 .action-updater-header > h1 {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 15px;
   opacity: 1;
   margin: 0;
 }
@@ -77,7 +77,7 @@
 .action-updater-panel {
   flex-direction: column;
   margin-bottom: 36px;
-  margin-top: 28px;
+  margin-top: 20px;
   display: flex;
   flex: 1;
 }
@@ -111,7 +111,7 @@
   font-weight: normal;
   margin-bottom: 8px;
   line-height: 17px;
-  font-size: 14px;
+  font-size: 13px;
   color: #fff;
 }
 
@@ -195,6 +195,14 @@
   outline: 0;
 }
 
+.action-updater-footer > .btn-accept {
+  font-size: 13px;
+}
+
+.action-updater-footer > .btn-cancel {
+  font-size: 13px;
+}
+
 .action-updater-copy-btn:focus {
   opacity: 1.0;
   outline: 0;
@@ -244,6 +252,7 @@
   padding: 15px 16px;
   line-height: 18px;
   font-weight: 500;
+  font-size: 13px;
   color: #fff;
   display: flex;
   outline: 0;
@@ -278,7 +287,7 @@
   line-height: 18px;
   border-radius: 0;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 13px;
   color: #fff;
   outline: 0;
 }

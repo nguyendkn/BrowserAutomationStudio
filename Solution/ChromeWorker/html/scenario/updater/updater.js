@@ -351,23 +351,19 @@
       },
 
       'click #actionUpdaterCancel': function () {
-        if (this.model.get('isStarted')) {
-          if (this.$('#actionUpdaterProgress').is(':hidden')) {
-            this.$('#actionUpdaterProgress').slideDown(250);
-          }
-          return this.model.set('isStarted', false);
+        if (!this.model.get('isStarted')) return this.hide();
+        if (this.$('#actionUpdaterProgress').is(':hidden')) {
+          this.$('#actionUpdaterProgress').slideDown(250);
         }
-        this.hide();
+        this.model.set('isStarted', false);
       },
 
       'click #actionUpdaterAccept': function () {
-        if (!this.model.get('isStarted')) {
-          if (this.$('#actionUpdaterProgress').is(':hidden')) {
-            this.$('#actionUpdaterProgress').slideDown(250);
-          }
-          return this.model.set('isStarted', true);
+        if (this.model.get('isStarted')) return this.hide();
+        if (this.$('#actionUpdaterProgress').is(':hidden')) {
+          this.$('#actionUpdaterProgress').slideDown(250);
         }
-        this.hide();
+        this.model.set('isStarted', true);
       },
 
       'change #actionUpdaterSelect': 'update',

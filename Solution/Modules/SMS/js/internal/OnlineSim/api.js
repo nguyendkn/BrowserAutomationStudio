@@ -1,6 +1,6 @@
 _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
     const api = this;
-	_SMS.BaseApi.call(this, config, data);
+	_SMS.BaseApi.call(this, config, data, '/api');
 	
 	this.apiRequest = function(){
 		var action = _function_argument("action");
@@ -8,7 +8,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var method = _avoid_nilb(_function_argument("method"), "GET");
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 		
-		var url = api.url + '/api/' + action + '.php';
+		var url = api.url + '/' + action + '.php';
 		var params = api.combineParams({apikey:api.key}, options);
 		
 		_call_function(api.request,{url:url, method:method, params:params})!
@@ -73,9 +73,8 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
-		var phoneException = _function_argument("phoneException");
 		
-		_call_function(api.apiRequest,{action:"getNum", options:{service:site, country:country, number:true, simoperator:operator, reject:phoneException}})!
+		_call_function(api.apiRequest,{action:"getNum", options:{service:site, country:country, simoperator:operator, number:true}})!
 		var resp = _result_function();
 		
 		_function_return({api:api, id:resp.tzid, lastId:resp.tzid, number:api.removePlus(resp.number)});

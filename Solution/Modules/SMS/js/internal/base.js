@@ -1,4 +1,4 @@
-_SMS.BaseApi = function(config, data){
+_SMS.BaseApi = function(config, data, path){
 	const api = this;
 	
 	this.key = data.apiKey;
@@ -13,6 +13,7 @@ _SMS.BaseApi = function(config, data){
 		this.url = url;
 		this.name = name.slice(0, 1).toLocaleUpperCase() + name.slice(1);
 	};
+	this.url += _is_nilb(config.path) ? path : config.path;
 	
 	this.supportedMethods = config.supportedMethods;
 	

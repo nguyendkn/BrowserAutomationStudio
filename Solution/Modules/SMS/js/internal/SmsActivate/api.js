@@ -1,16 +1,15 @@
 _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
     const api = this;
-	_SMS.BaseApi.call(this, config, data);
+	_SMS.BaseApi.call(this, config, data, '/stubs/handler_api.php');
 	
 	this.apiRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
 		
-		var url = api.url + '/stubs/handler_api.php';
 		var params = api.combineParams({api_key:api.key, action:action}, options);
 		
-		_call_function(api.request,{url:url, method:method, params:params})!
+		_call_function(api.request,{url:api.url, method:method, params:params})!
 		var content = _result_function();
 		
 		if(_is_json_string(content)){
@@ -64,6 +63,18 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		};
 	};
 	
+	this.getSites = function(){
+		
+		_call_function(api.apiRequest,{action:"getServices"})!
+		var resp = _result_function();
+		
+		if(resp.status){
+			api.errorHandler(resp.status, resp.data);
+		};
+		
+		_function_return(resp);
+	};
+	
 	this.getCountries = function(){
 		
 		_call_function(api.apiRequest,{action:"getCountries"})!
@@ -73,16 +84,24 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 			api.errorHandler(resp.status, resp.data);
 		};
 		
-		_function_return(Object.keys(resp).map(function(key){return resp[key]}));
+		_function_return(Array.isArray(resp) ? resp : Object.keys(resp).map(function(key){
+			resp[key].name = resp[key].rus;
+			resp[key].name_en = resp[key].eng;
+			resp[key].name_ch = resp[key].chn;
+			resp[key].id = String(resp[key].id);
+			delete resp[key].rus;
+			delete resp[key].eng;
+			delete resp[key].chn;
+			return resp[key];
+		}));
 	};
 	
 	this.getNumber = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
-		var phoneException = _function_argument("phoneException");
 		
-		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator, phoneException:phoneException}})!
+		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
 		if(resp.status=="ACCESS_NUMBER"){

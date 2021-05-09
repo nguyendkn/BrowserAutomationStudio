@@ -58,6 +58,20 @@ _SMS = {
 		_function_return(site=="All" ? (_is_nilb(count) ? {} : count) : (_is_nilb(count) ? 0 : parseInt(count)));
 	},
 	
+	getSites: function(){
+		var service = _function_argument("service");
+		var apiKey = _function_argument("apiKey");
+		var serverUrl = _function_argument("serverUrl");
+		
+		var api = _SMS.init(service, apiKey, serverUrl);
+		
+		api.validateMethod('getSites', _K=="ru" ? "Получить список сайтов" : "Get list of sites");
+		
+		_call_function(api.getSites,{})!
+		
+		_function_return(_result_function());
+	},
+	
 	getCountries: function(){
 		var service = _function_argument("service");
 		var apiKey = _function_argument("apiKey");
@@ -78,10 +92,9 @@ _SMS = {
 		var serverUrl = _function_argument("serverUrl");
 		var site = _function_argument("site");
 		var country = _function_argument("country");
+		var operator = _function_argument("operator");
 		var customSite = _function_argument("customSite");
 		var customCountry = _function_argument("customCountry");
-		var operator = _function_argument("operator");
-		var phoneException = _function_argument("phoneException");
 		
 		if(_is_nilb(_BAS_SMSCONFIRMDATA)){
 			_BAS_SMSCONFIRMDATA = {};
@@ -92,7 +105,7 @@ _SMS = {
 		site = _is_nilb(customSite) ? api.getRawSite(site) : customSite;
 		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
 		
-		_call_function(api.getNumber,{site:site, country:country, operator:operator, phoneException:phoneException})!
+		_call_function(api.getNumber,{site:site, country:country, operator:operator})!
 		var confirmData = _result_function();
 		var number = confirmData.number;
 		

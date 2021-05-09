@@ -1,6 +1,6 @@
 _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
     const api = this;
-	_SMS.BaseApi.call(this, config, data);
+	_SMS.BaseApi.call(this, config, data, '');
 	
 	this.apiRequest = function(){
 		var action = _function_argument("action");
@@ -28,6 +28,14 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
+	};
+	
+	this.getSites = function(){
+		
+		_call_function(api.apiRequest,{action:"getList", options:{extended:1}, checkErrors:false})!
+		var resp = _result_function();
+		
+		_function_return(resp.services.map(function(el){return {id:el.service,name:el.description}}));
 	};
 	
 	this.getNumber = function(){

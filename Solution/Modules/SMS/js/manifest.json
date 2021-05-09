@@ -37,6 +37,23 @@
 		{
             "code": [
                 {
+                    "file": "SMS_GetSites_code.js",
+                    "name": "SMS_GetSites_code"
+                }
+            ],
+            "description": {
+                "en": "Get list of sites",
+                "ru": "Получить список сайтов"
+            },
+            "interface": "SMS_GetSites_interface.js",
+            "is_element": false,
+            "name": "SMS_GetSites",
+            "select": "SMS_GetSites_select.js",
+            "template": "{{service}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "SMS_GetCountries_code.js",
                     "name": "SMS_GetCountries_code"
                 }
@@ -195,12 +212,22 @@
 		"Custom value of the site, in the form in which it is perceived by the SMS receiving service. If this parameter is specified, then it will be used instead of the \"Site\" parameter and sent to the service without preliminary processing.": {"ru":"Пользовательское значение сайта, в том виде в котором его воспринимает сервис приема СМС. Если этот параметр указан, то он будет использован вместо параметра \"Сайт\" и отправлен на сервис без предварительбной обработки."},
 		"Custom value of the country, in the form in which it is perceived by the SMS receiving service. If this parameter is specified, then it will be used instead of the \"Country\" parameter and sent to the service without preliminary processing.": {"ru":"Пользовательское значение страны, в том виде в котором его воспринимает сервис приема СМС. Если этот параметр указан, то он будет использован вместо параметра \"Страна\" и отправлен на сервис без предварительбной обработки."},
 		
+		"Get list of sites of the SMS receiving service.": {"ru":"Получить список сайтов сервиса приема СМС."},
+		"SMS receiving service for which need to get a list of sites.": {"ru":"Сервис приема СМС, для которого нужно получить список сайтов."},
+		"Variable in which, after successful execution of the action, the list of sites will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список сайтов."},
+		
 		"Get list of countries of the SMS receiving service.": {"ru":"Получить список стран сервиса приема СМС."},
 		"SMS receiving service for which need to get a list of countries.": {"ru":"Сервис приема СМС, для которого нужно получить список стран."},
 		"Variable in which, after successful execution of the action, the list of countries will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список стран."},
 		
+		"MegaFon": {"ru":"МегаФон"},
+		"Kyivstar": {"ru":"Киевстар"},
+		"Operator": {"ru":"Оператор"},
+		"Exceptions": {"ru":"Исключения"},
+		"Use any operator.": {"ru":"Использовать любого оператора."},
 		"Get phone number from the SMS receiving service.": {"ru":"Получить номер телефона от сервиса приема СМС."},
 		"Service for receiving SMS, from which need to get a phone number.": {"ru":"Сервис приема СМС, от которого нужно получить номер телефона."},
+		"Cellular operator of the number, in the form in which it is perceived by the SMS receiving service.": {"ru":"Сотовый оператор номера, в том виде в котором его воспринимает сервис приема СМС."},
 		"Variable in which, after successful execution of the action, the phone number will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан номер телефона."},
 		
 		"5 second": {"ru":"5 секунд"},

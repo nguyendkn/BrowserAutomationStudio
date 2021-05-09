@@ -1362,11 +1362,11 @@
 		</form>
 	</div>
 	<%= _.template($('#input_constructor').html())({
-		id:"country",
-		description:tr("Country"),
+		id: "country",
+		description: tr("Country"),
 		default_selector: "string",
-		disable_int:true,
-		value_string:"RU",
+		disable_int: true,
+		value_string: "RU",
 		variants: [
 			"RU<br/><span style='color:gray'>" + tr("Russian Federation") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-reg.com, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
 			"KZ<br/><span style='color:gray'>" + tr("Kazakhstan") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-reg.com, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",

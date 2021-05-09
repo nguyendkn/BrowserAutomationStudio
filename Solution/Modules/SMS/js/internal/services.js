@@ -48,7 +48,9 @@ _SMS.getServiceApi = function(data){
 				name: 'SMS@MAN',
 				url: 'https://api.sms-man.ru',
 				supportedMethods: [
-					'getNumbersCount'
+					'getNumbersCount',
+					'getSites',
+					'getCountries'
 				]
 			}
 		},
@@ -68,6 +70,7 @@ _SMS.getServiceApi = function(data){
 			config: {
 				name: 'CheapSMS',
 				url: 'https://cheapsms.pro',
+				path: '/handler/index',
 				supportedMethods: [
 					'getNumbersCount'
 				]
@@ -98,7 +101,9 @@ _SMS.getServiceApi = function(data){
 			config: {
 				name: 'SMS-REG',
 				url: 'https://api.sms-reg.com',
-				supportedMethods: [],
+				supportedMethods: [
+					'getSites'
+				],
 				ref: 'RUBMC9BX6OIRJG3S',
 				refTitle: 'appid'
 			}

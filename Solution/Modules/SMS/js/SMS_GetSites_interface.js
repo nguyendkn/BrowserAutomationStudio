@@ -4,15 +4,15 @@
 		description: tr("Service"),
 		default_selector: "string",
 		variants: [
-			"sms-activate.ru",
+			"sms-reg.com",
 			"sms-man.ru"
 		],
 		disable_int: true,
-		value_string: "sms-activate.ru",
+		value_string: "sms-reg.com",
 		help: {
-			description: tr("SMS receiving service for which need to get a list of countries."),
+			description: tr("SMS receiving service for which need to get a list of sites."),
 			examples: [
-				{code: "sms-activate.ru", description: "https://sms-activate.ru"},
+				{code: "sms-reg.com", description: "https://sms-reg.com"},
 				{code: "sms-man.ru", description: "https://sms-man.ru"}
 			]
 		}
@@ -53,13 +53,13 @@
 	<%= _.template($('#variable_constructor').html())({
 		id: "Save",
 		description: tr("Variable to save the result"),
-		default_variable: "SMS_COUNTRIES_LIST",
+		default_variable: "SMS_SITES_LIST",
 		help: {
-			description:tr("Variable in which, after successful execution of the action, the list of countries will be written.")
+			description:tr("Variable in which, after successful execution of the action, the list of sites will be written.")
 		}
 	}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Get list of countries of the SMS receiving service.</div>
+	<div class="tr tooltip-paragraph-first-fold">Get list of sites of the SMS receiving service.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

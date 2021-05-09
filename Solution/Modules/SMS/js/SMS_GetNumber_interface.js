@@ -1363,11 +1363,11 @@
 		</form>
 	</div>
 	<%= _.template($('#input_constructor').html())({
-		id:"country",
-		description:tr("Country"),
+		id: "country",
+		description: tr("Country"),
 		default_selector: "string",
-		disable_int:true,
-		value_string:"RU",
+		disable_int: true,
+		value_string: "RU",
 		variants: [
 			"RU<br/><span style='color:gray'>" + tr("Russian Federation") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-reg.com, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
 			"KZ<br/><span style='color:gray'>" + tr("Kazakhstan") + " (sms-activate.ru, smshub.org, 5sim.net, getsms.online, 365sms.ru, sms-man.ru, sms-reg.com, smspva.com, onlinesim.ru, sms-acktiwator.ru, vak-sms.com)</span>",
@@ -1582,6 +1582,22 @@
 		}
 	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
+		<%= _.template($('#input_constructor').html())({
+			id: "operator",
+			description: tr("Operator"),
+			default_selector: "string",
+			disable_int: true,
+			value_string: "",
+			help: {
+				description: tr("Optional parameter.") + " " + tr("Cellular operator of the number, in the form in which it is perceived by the SMS receiving service."),
+				examples: [
+					{code: "megafon", description: tr("MegaFon")},
+					{code: "kyivstar", description: tr("Kyivstar")},
+					{code: "tele2", description: "Tele2"},
+					{code: tr("Empty string"), description: tr("Use any operator.")}
+				]
+			}
+		}) %>
 		<%= _.template($('#input_constructor').html())({
 			id: "customSite",
 			description: tr("Custom site"),

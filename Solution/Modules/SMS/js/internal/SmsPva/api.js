@@ -1,16 +1,15 @@
 _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
     const api = this;
-	_SMS.BaseApi.call(this, config, data);
+	_SMS.BaseApi.call(this, config, data, '/priemnik.php');
 	
 	this.apiRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 		
-		var url = api.url + '/priemnik.php';
 		var params = api.combineParams({metod:action, apikey:api.key}, options);
 		
-		_call_function(api.request,{url:url, method:"GET", params:params})!
+		_call_function(api.request,{url:api.url, method:"GET", params:params})!
 		var content = _result_function();
 		
 		api.banThread(20);

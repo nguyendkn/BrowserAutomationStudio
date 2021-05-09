@@ -121,4 +121,21 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			
 		_function_return(code);
 	};
+	
+	this.getErrorObject = function(error, data){
+		var errors = {
+			"API KEY NOT FOUND!": {
+				"ru": "Неверный API-ключ.",
+				"en": "Invalid API key.",
+				"action": "die",
+				"instantly": true
+			},
+			"Service NOT FOUND!": {
+				"ru": "Сервис не найден.",
+				"en": "Service not found.",
+				"action": "fail"
+			}
+		};
+		return errors[error];
+	};
 });

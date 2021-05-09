@@ -117,4 +117,57 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 			
 		_function_return(code);
 	};
+	
+	this.getErrorObject = function(error, data){
+		var errors = {
+			"401": {
+				"ru": "Неверный API-ключ.",
+				"en": "Invalid API key.",
+				"action": "die",
+				"instantly": true
+			},
+			"404": {
+				"ru": "Неправильно задан параметр method.",
+				"en": "The method parameter is set incorrectly.",
+				"action": "fail"
+			},
+			"500": {
+				"ru": "Ошибка при обработке запроса / Нет доступных номеров / Истекло время заказа.",
+				"en": "Error processing request / No numbers available / Time of order expired.",
+				"action": "fail"
+			},
+			"502": {
+				"ru": "Сервис не существует.",
+				"en": "Service does not exist.",
+				"action": "fail"
+			},
+			"503": {
+				"ru": "Оператора не существует.",
+				"en": "Operator does not exist.",
+				"action": "fail"
+			},
+			"504": {
+				"ru": "Недостаточно денег на счету.",
+				"en": "Not enough money in the account.",
+				"action": "die",
+				"instantly": false
+			},
+			"505": {
+				"ru": "Страна не существует.",
+				"en": "Country does not exist.",
+				"action": "fail"
+			},
+			"506": {
+				"ru": "Не указан параметр order_id.",
+				"en": "order_id parameter not specified.",
+				"action": "fail"
+			},
+			"666": {
+				"ru": "Многократный бан номеров.",
+				"en": "Multiple ban of numbers.",
+				"action": "fail"
+			}
+		};
+		return errors[error];
+	};
 });

@@ -106,4 +106,72 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 			
 		_function_return(resp.smsCode);
 	};
+	
+	this.getErrorObject = function(error, data){
+		var errors = {
+			"apiKeyNotFound": {
+				"ru": "Неверный API-ключ.",
+				"en": "Invalid API key.",
+				"action": "die",
+				"instantly": true
+			},
+			"noMoney": {
+				"ru": "Недостаточно денег на счету.",
+				"en": "Not enough money in the account.",
+				"action": "die",
+				"instantly": false
+			},
+			"noService": {
+				"ru": "Данный сервис не поддерживается, свяжитесь с администрацией сайта.",
+				"en": "This service is not supported, please contact the site administration.",
+				"action": "fail"
+			},
+			"noCountry": {
+				"ru": "Запрашиваемая страна отсутствует.",
+				"en": "The requested country is missing.",
+				"action": "fail"
+			},
+			"noOperator": {
+				"ru": "Оператор не найдет для запрашиваемой страны.",
+				"en": "The operator will not find for the requested country.",
+				"action": "fail"
+			},
+			"noNumber": {
+				"ru": "Нет номеров, попробуйте позже.",
+				"en": "No numbers, please try later.",
+				"action": "fail"
+			},
+			"badStatus": {
+				"ru": "Неверный статус.",
+				"en": "Invalid status.",
+				"action": "fail"
+			},
+			"idNumNotFound": {
+				"ru": "Неверный ID операции.",
+				"en": "Invalid operation ID.",
+				"action": "fail"
+			},
+			"badService": {
+				"ru": "Неверный код сайта, сервиса, соц.сети.",
+				"en": "Invalid website, service, social network code.",
+				"action": "fail"
+			},
+			"badData": {
+				"ru": "Отправлены неверные данные.",
+				"en": "Invalid data sent.",
+				"action": "fail"
+			},
+			"smsReceived": {
+				"ru": "На этот номер уже получен код подтверждения, отмена невозможна.",
+				"en": "This number has already received a confirmation code, cancellation is not possible.",
+				"action": "fail"
+			},
+			"waitSMS": {
+				"ru": "На этот номер уже отправлено смс, отмена невозможна.",
+				"en": "This number has already been sent sms, cancellation is not possible.",
+				"action": "fail"
+			}
+		};
+		return errors[error];
+	};
 });

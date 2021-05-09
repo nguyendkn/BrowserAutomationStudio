@@ -177,6 +177,56 @@ _SMS.BaseApi = function(config, data){
 		
 		_function_return(content);
 	};
+	
+	this.errorHandler = function(error, data){
+		error = error.toString();
+		data = _avoid_nilb(data, "").toString();
+		
+		var baseErrors = {
+			"FAILED_REQUEST": {
+				"ru": "Не удалось успешно выполнить запрос к сервису за 10 попыток.",
+				"en": "Failed to successfully complete the request to the service in 10 attempts.",
+				"action": "fail"
+			},
+			"RESPONSE_IS_NOT_JSON": {
+				"ru": "Не удалось распарсить ответ от сервиса. Содержание ответа: " + data,
+				"en": "Failed to parse the response from the service. Response content: " + data,
+				"action": "fail"
+			},
+			"ACTION_TIMEOUT": {
+				"ru": "Превышено время ожидания выполнения действия \"" + data + "\".",
+				"en": "Timed out for execution of an action \"" + data + "\".",
+				"action": "fail"
+			},
+			"UNSUPPORTED_STATUS": {
+				"ru": "Установка статуса \"" + data + "\" не поддерживается.",
+				"en": "Setting status \"" + data + "\" is not supported.",
+				"action": "fail"
+			},
+			"UNSUPPORTED_METHOD": {
+				"ru": "Метод \"" + data + "\" не поддерживается.",
+				"en": "Method \"" + data + "\" is not supported.",
+				"action": "fail"
+			}
+		};
+		var errorObj = Object.keys(baseErrors).indexOf(error) > -1 ? baseErrors[error] : this.getErrorObject(error, data);
+		
+		var message = this.name + ": " + error;
+		if(_is_nilb(errorObj)){
+			if(error==data || _is_nilb(data)){
+				fail(message);
+			}else{
+				fail(message + ", " + data);
+			};
+		}else{
+			message += " - " + errorObj[_K]
+			if(errorObj.action=="fail"){
+				fail(message);
+			}else{
+				die(message, errorObj.instantly);
+			};
+		};
+	};
 };
 _SMS.assignApi = function(fn){
 	fn.prototype = Object.create(_SMS.BaseApi.prototype);

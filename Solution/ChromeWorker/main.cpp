@@ -53,7 +53,7 @@ CommandParser *Parser;
 HWND MousePositionMouseHandle,hwnd,HButtonUp,HButtonDown,HButtonLeft,HButtonRight,HButtonMenu;
 HWND HButtonUpUp,HButtonDownDown,HButtonLeftLeft,HButtonRightRight;
 enum{IDButtonTerminate = 1000,IDButtonQuit,IDButtonUp,IDButtonBackUrl,IDBrowserTabs,IDBrowserMenu,IDButtonLoadUrl,IDButtonDown,IDButtonLeft,IDButtonRight,IDButtonUpUp,IDButtonDownDown,IDButtonLeftLeft,IDButtonRightRight,IDButtonMinimizeMaximize,IDButtonMenu,IDButtonSettings,IDButtonDirectRecord,IDButtonDirectNoRecord,IDButtonIndirect,IDTextHold,IDBrowserLabel,IDLabelTop,IDTextFinished,IDClick,IDMove,IDNone,IDMoveAndClick,IDDrag,IDDrop,IDDragElement,IDDropElement,IDInspect,IDXml,IDText,IDScript,IDClickElement,IDMoveElement,IDMoveAndClickElement,IDClear,IDType,IDExists,IDStyle,IDCheck,IDScreenshot,IDCoordinates,IDFocus,IDSet,IDSetInteger,IDSetRandom,IDGetAttr,IDSetAttr,IDCaptcha,IDLength,IDWaitElement,
-    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000};
+    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowUpdater,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000};
 HCURSOR HCursor = 0;
 HCURSOR HCursorTouch = 0;
 using namespace std::placeholders;
@@ -136,6 +136,63 @@ std::string GetUrl()
     GetWindowText(Layout->HEditUrl, UrlData.data(), Size + 1);
     std::wstring Url(UrlData.begin(),UrlData.begin() + Size);
     return ws2s(Url);
+}
+
+void CreateHMenu(int HighlightedMenuItem = -1)
+{
+    if(hMenu)
+    {
+        DestroyMenu(hMenu);
+        hMenu = 0;
+    }
+
+    hMenu = CreatePopupMenu();
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowScenario, Translate::Tr(L"Script editor").c_str());
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowDevtools, Translate::Tr(L"Chrome developer tools").c_str());
+    std::wstring DetectorText = Translate::Tr(L"Detect site fingerprinting activities");
+    DetectorText += std::wstring(L" (");
+    DetectorText += std::to_wstring(Layout->GetFingerprintDetectorNumber());
+    DetectorText += std::wstring(L")");
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowFingerprintDetector, DetectorText.c_str());
+    AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDRecordHttpRequests, Translate::Tr(L"Http request recorder").c_str());
+    AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
+    AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowUpdater, Translate::Tr(L"Update project actions").c_str());
+
+    if(app->GetData()->IsRecordHttp)
+        CheckMenuItem(hMenu, IDRecordHttpRequests, MF_CHECKED);
+    else
+        CheckMenuItem(hMenu, IDRecordHttpRequests, MF_UNCHECKED);
+
+    //SetMenuItemBitmaps(hMenu, 1, MF_BITMAP|MF_BYPOSITION, Layout->ButtonDevToolsBitmap, Layout->ButtonDevToolsBitmapGray );
+
+    POINT p;
+    p.x = -4;
+    p.y = 26;
+    ClientToScreen(Layout->HButtonMenu,&p);
+    if (HighlightedMenuItem > -1) HiliteMenuItem(hwnd, hMenu, HighlightedMenuItem, MF_BYCOMMAND | MF_HILITE);
+    TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
+    if(hMenu)
+    {
+        DestroyMenu(hMenu);
+        hMenu = 0;
+    }
+}
+
+void HighlightHMenu(const std::string& Item)
+{
+    if (Item == std::string("ShowDevtools"))
+    {
+        CreateHMenu(IDShowDevtools);
+    }
+    if (Item == std::string("ShowScenario"))
+    {
+        CreateHMenu(IDShowScenario);
+    }
+    if (Item == std::string("ShowUpdater"))
+    {
+        CreateHMenu(IDShowUpdater);
+    }
 }
 
 void ProcessMenu(const std::string& Command)
@@ -1247,42 +1304,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
                     case IDButtonMenu:
                     {
-
-                        if(hMenu)
-                        {
-                            DestroyMenu(hMenu);
-                            hMenu = 0;
-                        }
-
-                        hMenu = CreatePopupMenu();
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowScenario, Translate::Tr(L"Script editor").c_str());
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowDevtools, Translate::Tr(L"Chrome developer tools").c_str());
-                        std::wstring DetectorText = Translate::Tr(L"Detect site fingerprinting activities");
-                        DetectorText += std::wstring(L" (");
-                        DetectorText += std::to_wstring(Layout->GetFingerprintDetectorNumber());
-                        DetectorText += std::wstring(L")");
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDShowFingerprintDetector, DetectorText.c_str());
-                        AppendMenu(hMenu, MF_SEPARATOR,NULL,L"Separator");
-                        AppendMenu(hMenu, MF_BYPOSITION | MF_STRING, IDRecordHttpRequests, Translate::Tr(L"Http request recorder").c_str());
-
-                        if(app->GetData()->IsRecordHttp)
-                            CheckMenuItem(hMenu, IDRecordHttpRequests, MF_CHECKED);
-                        else
-                            CheckMenuItem(hMenu, IDRecordHttpRequests, MF_UNCHECKED);
-
-                        //SetMenuItemBitmaps(hMenu, 1, MF_BITMAP|MF_BYPOSITION, Layout->ButtonDevToolsBitmap, Layout->ButtonDevToolsBitmapGray );
-
-                        POINT p;
-                        p.x = -4;
-                        p.y = 26;
-                        ClientToScreen(Layout->HButtonMenu,&p);
-                        TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
-                        if(hMenu)
-                        {
-                            DestroyMenu(hMenu);
-                            hMenu = 0;
-                        }
-
+                        CreateHMenu();
                         return 0;
                     }
                     break;
@@ -1379,6 +1401,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     case IDShowScenario:
                         Layout->SetLabelTop(Translate::Tr(L"Script editor"));
                         Layout->UpdateTabs(MainLayout::Scenario);
+                        app->HideActionUpdater();
+                    break;
+                    case IDShowUpdater:
+                        Layout->SetLabelTop(Translate::Tr(L"Script editor"));
+                        Layout->UpdateTabs(MainLayout::Scenario);
+                        app->ShowActionUpdater();
                     break;
                     case IDButtonSettings:
                         app->LoadSettingsPage();
@@ -2111,7 +2139,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventStartSection.push_back(std::bind(&MainApp::StartSectionCallback,app.get(),_1));
     Parser->EventSetFontList.push_back(std::bind(&MainApp::SetFontListCallback,app.get(),_1));
     Parser->EventScriptFinished.push_back(std::bind(&MainApp::ScriptFinishedCallback,app.get()));
-    Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4));
+    Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4,_5,_6));
     Parser->EventSetResources.push_back(std::bind(&MainApp::SetResourceCallback,app.get(),_1));
     Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get(), _1));
     Parser->EventIsChanged.push_back(std::bind(&MainApp::IsChangedCallback,app.get()));
@@ -2152,6 +2180,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     app->EventSendTextResponce.push_back(std::bind(&PipesClient::Write,Client,_1));
 
+    app->EventHighlightMenu.push_back(HighlightHMenu);
 
     WORKER_LOG("Start Main Loop");
 

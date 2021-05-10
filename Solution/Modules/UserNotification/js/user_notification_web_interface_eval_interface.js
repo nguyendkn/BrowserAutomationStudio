@@ -8,15 +8,8 @@
         window.Code = {Editor: null, InitialValue: ""}
 
         require(['vs/editor/editor.main'], function() {
-          if($("#Code").attr("data-installed") == "true")
-            return;
-          $("#Code").attr("data-installed", "true")
-          window.Code.Editor = monaco.editor.create(document.getElementById('Code'), {
-            value: window.Code.InitialValue,
-            language: 'javascript',
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-            fontSize: 12
+          window.Code.Editor = createCodeEditor(document.getElementById('Code'), {
+            value: window.Code.InitialValue
           });
         });
       <%= "</" + "script>" %>

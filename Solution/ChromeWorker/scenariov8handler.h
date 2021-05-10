@@ -72,9 +72,15 @@ private:
     bool IsRunFunctionAsync;
     bool IsOpenAction;
 
+    std::string EventTriggerData;
+    std::string EventTriggerName;
+    bool IsEventTrigger;
+
     std::string DetectorData;
     bool ChangedDetectorData;
 
+    std::string HighlightMenuItem;
+    bool IsHightlightMenuItem;
 
     std::mutex mut_threadnumbereditstart;
     std::mutex mut_successnumbereditstart;
@@ -104,6 +110,7 @@ public:
 
     std::pair< std::pair<std::string,bool>, bool> GetExecuteCode();
     RestartType GetNeedRestart();
+    bool GetIsEventTrigger();
     bool GetIsInitialized();
     bool GetIsEditEnd();
     bool GetIsThreadNumberEditStart();
@@ -125,7 +132,10 @@ public:
     std::pair<std::string, bool> GetCurrentFunction();
     std::pair<std::string, bool> GetLoadUrl();
     std::pair<bool, bool> GetIsInsideElementLoop();
+    std::string GetEventTriggerData();
+    std::string GetEventTriggerName();
 
+    std::pair<std::string, bool> GetIsHighlightMenuItem();
 
     bool GetClipboardGetRequest();
 

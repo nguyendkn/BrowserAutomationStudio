@@ -13,7 +13,7 @@
 	<div class="tr tooltip-paragraph-fold">For example, if the path is <code>"/test/archive/engine.js"</code> and the extension to be removed is <code>".js"</code>, then the action will return <code>"engine"</code>.</div>
 	<div class="tr tooltip-paragraph-fold">The "File extension to remove" parameter is case sensitive.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if the path is <code>"C:/foo.HTML"</code> and the extension to be removed is <code>".html"</code>, then the action will return <code>"foo.HTML"</code>, not <code>"foo"</code>.</div>
-	<div class="tr tooltip-paragraph-fold">You can get the path directory using the "Get path directory" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can get the path directory using the "Get folder from path" action.</div>
 	<div class="tr tooltip-paragraph-fold">You can get file extension using the "Get file extension" action.</div>
 	<div class="tr tooltip-paragraph-fold">You can parse a path into items using the "Parse path" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If the parameter "Path" or "File extension to remove" is not a string, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

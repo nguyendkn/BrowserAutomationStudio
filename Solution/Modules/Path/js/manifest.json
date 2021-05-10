@@ -8,8 +8,8 @@
                 }
             ],
             "description": {
-                "en": "Get the last part of path",
-                "ru": "Получить последнюю часть пути"
+                "en": "Get filename from path",
+                "ru": "Получить имя файла из пути"
             },
             "interface": "path_base_name_interface.js",
             "is_element": false,
@@ -25,8 +25,8 @@
                 }
             ],
             "description": {
-                "en": "Get path directory",
-                "ru": "Получить директорию пути"
+                "en": "Get folder from path",
+                "ru": "Получить папку из пути"
             },
             "interface": "path_directory_name_interface.js",
             "is_element": false,
@@ -202,7 +202,7 @@
 		"The \"File extension to remove\" parameter is case sensitive.": {"ru":"Параметр \"Удаляемое расширение файла\" чувствителен к регистру."},
 		"You can parse a path into items using the \"Parse path\" action.": {"ru":"Распарсить путь на элементы можно с помощью действия \"Парсить путь\"."},
 		"You can get file extension using the \"Get file extension\" action.": {"ru":"Получить расширение файла можно с помощью действия \"Получить расширение файла\"."},
-		"You can get the path directory using the \"Get path directory\" action.": {"ru":"Получить директорию пути можно с помощью действия \"Получить директорию пути\"."},
+		"You can get the path directory using the \"Get folder from path\" action.": {"ru":"Получить директорию пути можно с помощью действия \"Получить папку из пути\"."},
 		"Variable in which, after successful execution of the action, the last part of the path will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана последняя часть пути."},
 		"For example, if the path <code>\"C:/foo/bar/baz/asdf/quux.html/\"</code> is specified, then the action will return <code>\"quux.html\"</code>.": {"ru":"Например, если указан путь <code>\"С:/foo/bar/baz/asdf/quux.html/\"</code>, то действие вернет <code>\"quux.html\"</code>."},
 		"The file extension can be removed from the final result by specifying the removed extension in the corresponding parameter in the additional settings.": {"ru":"Расширение файла можно удалить из итогового результата, указав удаляемое раширение в сответствующий параметр находящийся в дополнительных настройках."},

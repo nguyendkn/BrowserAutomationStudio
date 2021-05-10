@@ -331,7 +331,7 @@ function _url(address, user_options){
 		var up = 0;
 
 		while (i--) {
-			if(path[i] === '.'){
+			if(path[i] === '.' || (path[i] === '' && i !== 0)){
 				path.splice(i, 1);
 			}else if(path[i] === '..'){
 				path.splice(i, 1);
@@ -398,7 +398,7 @@ function _url(address, user_options){
 	
 	if(parser){url.query = parser(url.query)};
 	
-	if((relative && base_url.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || base_url.pathname !== '')) || new RegExp("\\/..?\\/").test(url.pathname)){
+	if((relative && base_url.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || base_url.pathname !== '')) || new RegExp("\\/(\\.{1,2}|)\\/").test(url.pathname)){
 		url.pathname = resolve(url.pathname, base_url.pathname);
 	};
 	
@@ -417,7 +417,7 @@ function _url(address, user_options){
 	
 	url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol +'//'+ url.host : 'null';
 	
-	if(options.rfail && url.protocol==="" && url.host==="" && url.origin==="null" && !_validate_url(original_url)){
+	if(options.rfail && url.protocol==="" && url.host==="" && url.origin==="null"){
 		fail(_K=="ru" ? ("Указан недействительный URL | " + original_url) : ("Invalid URL specified | " + original_url));
 	};
 	

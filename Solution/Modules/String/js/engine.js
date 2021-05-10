@@ -3,7 +3,6 @@ _L["Number"] = {"ru":"Число"};
 _L["Lenght"] = {"ru":"Длина"};
 _L["Template"] = {"ru":"Шаблон"};
 _L["To index"] = {"ru":"До индекса"};
-_L["Substring"] = {"ru":"Подстрока"};
 _L["From index"] = {"ru":"С индекса"};
 _L["Separator"] = {"ru":"Разделитель"};
 _L["Replace To"] = {"ru":"Заменить На"};
@@ -266,33 +265,6 @@ function _find_substring(str, sub, from){
 		_validate_argument_type(from, 'number', 'From index', act);
 		return str.indexOf(sub, from);
 	};
-};
-function _starts_with(str, sub, from){
-	var act = '_starts_with';
-	_validate_argument_type(str, 'string', 'String', act);
-	_validate_argument_type(sub, ['string','number'], 'Substring', act);
-	if(typeof sub==='number'){
-		sub = _no_exponents(sub);
-	};
-	from = _avoid_nilb(from, 0);
-	_validate_argument_type(from, 'number', 'From index', act);
-	return str.indexOf(sub) === from;
-};
-function _ends_with(str, sub, lenght){
-	var act = '_ends_with';
-	_validate_argument_type(str, 'string', 'String', act);
-	_validate_argument_type(sub, ['string','number'], 'Substring', act);
-	if(typeof sub==='number'){
-		sub = _no_exponents(sub);
-	};
-	lenght = _avoid_nilb(lenght, str.length);
-	_validate_argument_type(lenght, 'number', 'Lenght', act);
-	if(lenght > str.length){
-		lenght = str.length;
-	};
-	lenght -= sub.length;
-	var last_index = str.indexOf(sub, lenght);
-	return last_index !== -1 && last_index === lenght;
 };
 function _insert_substring(str, index, sub){
 	var act = '_insert_substring';

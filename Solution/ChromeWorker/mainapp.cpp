@@ -280,6 +280,8 @@ void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
     extra_info->SetString(7,Data->_UniqueProcessId);
 
 
+    extra_info->SetString(8,ApplicationEngineVersion);
+    extra_info->SetString(9,ScriptEngineVersion);
 }
 
 
@@ -2317,8 +2319,10 @@ void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
 
 }
 
-void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing)
+void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version)
 {
+    ApplicationEngineVersion = application_engine_version;
+    ScriptEngineVersion = script_engine_version;
     Data->IsTesing = is_testing;
     Schema = schema;
     Code = code;
@@ -3719,6 +3723,14 @@ void MainApp::HandleScenarioBrowserEvents()
     if(scenariov8handler->GetIsFailNumberEditStart() && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_FailNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
+    if(scenariov8handler->GetIsEventTrigger() && BrowserToolbox)
+    {
+        std::string Name = picojson::value(scenariov8handler->GetEventTriggerName()).serialize();
+        std::string Data = picojson::value(scenariov8handler->GetEventTriggerData()).serialize();
+        std::string Script = Javascript(std::string("BrowserAutomationStudio_HandleEvent(") + Name + "," + Data + std::string(")"), "toolbox");
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Script, BrowserToolbox->GetMainFrame()->GetURL(), 0);
+    }
+
     std::pair<std::string, bool> res8 = scenariov8handler->GetIsRunFunctionStart();
 
     if(res8.second && BrowserToolbox)
@@ -3759,6 +3771,9 @@ void MainApp::HandleScenarioBrowserEvents()
 
     if(res10.second && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+
+    std::pair<std::string, bool> res11 = scenariov8handler->GetIsHighlightMenuItem();
+    if(res11.second) for (auto f : EventHighlightMenu) f(res11.first);
 
     ScenarioV8Handler::RestartType res3 = scenariov8handler->GetNeedRestart();
 
@@ -4076,6 +4091,16 @@ void MainApp::HandleToolboxBrowserEvents()
         UpdateMultiSelect();
     }
 
+    if(toolboxv8handler->GetIsEventTrigger())
+    {
+        if(BrowserScenario)
+        {
+            std::string Name = picojson::value(toolboxv8handler->GetEventTriggerName()).serialize();
+            std::string Data = picojson::value(toolboxv8handler->GetEventTriggerData()).serialize();
+            std::string Script = Javascript(std::string("BrowserAutomationStudio_HandleEvent(") + Name + "," + Data + std::string(")"), "scenario");
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script, BrowserScenario->GetMainFrame()->GetURL(), 0);
+        }
+    }
 }
 
 void MainApp::UpdateScrolls(std::string& data)
@@ -4667,3 +4692,14 @@ void MainApp::MainContextMenu(POINT& p)
 
 }
 
+void MainApp::ShowActionUpdater()
+{
+    if(!BrowserScenario) return;
+    BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ShowActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+}
+
+void MainApp::HideActionUpdater()
+{
+    if(!BrowserScenario) return;
+    BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_HideActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+}

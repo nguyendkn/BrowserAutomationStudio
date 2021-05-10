@@ -14,6 +14,8 @@ class RenderApp: public CefApp, public CefRenderProcessHandler
     int BrowserCentralId = -1;
     int BrowserDetectorId = -1;
     int Zoom;
+    std::string ApplicationEngineVersion;
+    std::string ScriptEngineVersion;
     std::string Lang;
     std::string Jscode;
     std::string UniqueProcessId;

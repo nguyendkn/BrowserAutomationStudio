@@ -147,10 +147,23 @@ void CommandParser::Parse(const std::string& Xml)
                 embedded = CommandNodeInternal->value();
             }
 
+            std::string application_engine_version;
+            CommandNodeInternal = CommandNode->first_node("ApplicationEngineVersion");
+            if(CommandNodeInternal)
+            {
+                application_engine_version = CommandNodeInternal->value();
+            }
+
+            std::string script_engine_version;
+            CommandNodeInternal = CommandNode->first_node("ScriptEngineVersion");
+            if(CommandNodeInternal)
+            {
+                script_engine_version = CommandNodeInternal->value();
+            }
 
             WORKER_LOG("SetCode");
             for(auto f:EventSetCode)
-                f(code,embedded,schema,is_testing);
+                f(code,embedded,schema,is_testing, script_engine_version, application_engine_version);
         }
 
         CommandNode = MessagesNode->first_node("SetResources");

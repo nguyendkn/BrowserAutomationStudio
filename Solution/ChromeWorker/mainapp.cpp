@@ -280,6 +280,8 @@ void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
     extra_info->SetString(7,Data->_UniqueProcessId);
 
 
+    extra_info->SetString(8,ApplicationEngineVersion);
+    extra_info->SetString(9,ScriptEngineVersion);
 }
 
 
@@ -741,9 +743,30 @@ void MainApp::ViewCallback(const std::string& RequestId)
 
 void MainApp::GetTabsCallback(const std::string& RequestId)
 {
-    std::string string_res =_HandlersManager->GetTabsJson();
-    xml_encode(string_res);
-    SendTextResponce(std::string("<GetTabs id=\"") + RequestId + std::string("\" >") + string_res + std::string("</GetTabs>"));
+    Async Result = Data->Connector->GetTabsList();
+    Data->Results->ProcessResult(Result);
+    Result->Then([this, RequestId](AsyncResult* Result)
+    {
+        std::vector<std::string> urls = Result->GetList();
+        picojson::array urls_json;
+        for(std::string& url:urls)
+        {
+            urls_json.push_back(picojson::value(url));
+        }
+        int index = Data->Connector->GetCurrentTabIndex();
+
+        picojson::object res;
+
+        res["urls"] = picojson::value(urls_json);
+        res["index"] = picojson::value((double)index);
+
+        std::string string_res = picojson::value(res).serialize();
+
+        xml_encode(string_res);
+
+        this->SendTextResponce(std::string("<GetTabs id=\"") + RequestId + std::string("\" >") + string_res + std::string("</GetTabs>"));
+    });
+
 }
 
 void MainApp::LoadNoDataCallback()
@@ -1011,7 +1034,7 @@ void MainApp::HighlightActionCallback(const std::string& ActionId)
 
 }
 
-void MainApp::SetWindowCallback(const std::string& Window)
+void MainApp::SetWindowCallback(const std::string& Window, bool IsPlayingScript)
 {
     WORKER_LOG(std::string("SetWindowCallback<<") + Window);
     Data->_ParentWindowHandle = (HWND)std::stoi(Window);
@@ -1019,6 +1042,9 @@ void MainApp::SetWindowCallback(const std::string& Window)
     if(Settings->Maximized())
         Layout->MinimizeOrMaximize(Data->_MainWindowHandle,Data->_ParentWindowHandle);
     ForceUpdateWindowPositionWithParent();
+
+    if(IsPlayingScript)
+        StartPlayScriptOnStart = true;
 
     SendTextResponce("<WindowAttached></WindowAttached>");
 }
@@ -1585,8 +1611,8 @@ void MainApp::VisibleCallback(bool visible)
 
 void MainApp::FlushCallback()
 {
-    WORKER_LOG(std::string("FlushCallback "));
-    Data->Connector->CloseBrowser();
+    long long now = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
+    BrowserCloseTime = now + rand()%3000;
 }
 
 void MainApp::Hide()
@@ -2148,15 +2174,20 @@ void MainApp::StartSectionCallback(int Id)
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = "about:blank";
-    AfterReadyToCreateBrowser(true);
+        AfterReadyToCreateBrowser(true);
     }
     CreateTooboxBrowser();
     CreateScenarioBrowser();
     Layout->UpdateState(MainLayout::Ready);
     if(BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_HideWaiting()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-    if(BrowserScenario)
+    if(BrowserScenario && scenariov8handler && scenariov8handler->GetIsInitialized())
+    {
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_NotRunningTask(") + std::to_string(Id) + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }else
+    {
+        SetNextActionId = std::to_string(Id);
+    }
     Layout->UpdateTabs();
 }
 
@@ -2288,8 +2319,10 @@ void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
 
 }
 
-void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing)
+void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version)
 {
+    ApplicationEngineVersion = application_engine_version;
+    ScriptEngineVersion = script_engine_version;
     Data->IsTesing = is_testing;
     Schema = schema;
     Code = code;
@@ -3112,6 +3145,12 @@ void MainApp::Timer()
         CheckNetworkProcessIPC();
 
     HandleScreenshotCapture();
+
+    if(BrowserCloseTime > 0 && now >= BrowserCloseTime)
+    {
+        BrowserCloseTime = 0;
+        Data->Connector->CloseBrowser();
+    }
 }
 
 void MainApp::InitNetworkProcessIPC()
@@ -3300,6 +3339,9 @@ void MainApp::UpdateHighlightMultiselect()
 
 void MainApp::UpdateRecaptchaV3Check()
 {
+    if(!Data->HasRecaptchaModule)
+        return;
+
     clock_t CurrentTime = clock();
     float time_spent = float( CurrentTime - LastRecaptchaV3Check ) /  CLOCKS_PER_SEC;
 
@@ -3514,6 +3556,13 @@ void MainApp::HandleScenarioBrowserEvents()
         SetNextActionId.clear();
     }
 
+    if(scenariov8handler->GetIsInitialized() && StartPlayScriptOnStart)
+    {
+        if(BrowserScenario)
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_Play()"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+        StartPlayScriptOnStart = false;
+    }
+
     {
         std::pair<bool, bool> res = scenariov8handler->GetIsInsideElementLoop();
         if(res.second)
@@ -3538,7 +3587,7 @@ void MainApp::HandleScenarioBrowserEvents()
             if(AdditionalResourcesPrev != AdditionalResources)
                 ResourcesChanged = true;
             xml_encode(new_code);
-            SendTextResponce(std::string("<ReceivedCode>") + new_code + std::string("</ReceivedCode>"));
+            SendTextResponce(std::string("<ReceivedCode execution_point=\"") + std::to_string(Result.ExecuteNextId) + std::string("\" >") + new_code + std::string("</ReceivedCode>"));
         }
         if(!DelayedSend.empty())
         {
@@ -3580,16 +3629,16 @@ void MainApp::HandleScenarioBrowserEvents()
     }
 
 
-    std::pair<std::string, bool> res2 = scenariov8handler->GetExecuteCode();
+    std::pair< std::pair<std::string,bool>, bool> res2 = scenariov8handler->GetExecuteCode();
     if(res2.second)
     {
         Layout->UpdateState(MainLayout::Hold);
         if(BrowserToolbox)
-            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
-        std::string CodeSend = res2.first;
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        std::string CodeSend = res2.first.first;
         WORKER_LOG(std::string("GetExecuteCode<<") + CodeSend);
         xml_encode(CodeSend);
-        SendTextResponce(std::string("<WaitCode>") + CodeSend + std::string("</WaitCode>"));
+        SendTextResponce(std::string("<WaitCode is_play='") + std::to_string(res2.first.second) + std::string("' >") + CodeSend + std::string("</WaitCode>"));
     }
 
     if(Data->IsRecord)
@@ -3674,6 +3723,14 @@ void MainApp::HandleScenarioBrowserEvents()
     if(scenariov8handler->GetIsFailNumberEditStart() && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_FailNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
+    if(scenariov8handler->GetIsEventTrigger() && BrowserToolbox)
+    {
+        std::string Name = picojson::value(scenariov8handler->GetEventTriggerName()).serialize();
+        std::string Data = picojson::value(scenariov8handler->GetEventTriggerData()).serialize();
+        std::string Script = Javascript(std::string("BrowserAutomationStudio_HandleEvent(") + Name + "," + Data + std::string(")"), "toolbox");
+        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Script, BrowserToolbox->GetMainFrame()->GetURL(), 0);
+    }
+
     std::pair<std::string, bool> res8 = scenariov8handler->GetIsRunFunctionStart();
 
     if(res8.second && BrowserToolbox)
@@ -3714,6 +3771,9 @@ void MainApp::HandleScenarioBrowserEvents()
 
     if(res10.second && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+
+    std::pair<std::string, bool> res11 = scenariov8handler->GetIsHighlightMenuItem();
+    if(res11.second) for (auto f : EventHighlightMenu) f(res11.first);
 
     ScenarioV8Handler::RestartType res3 = scenariov8handler->GetNeedRestart();
 
@@ -3792,11 +3852,20 @@ void MainApp::HandleToolboxBrowserEvents()
                     {
                         CodeSend += std::string("_sa(") + id + std::string(");") + res.first.Code;
                     }
-                    CodeSend += std::string(" \n section_end()!");
+
+                    if(res.first.CanRestartBrowser)
+                    {
+                        //Set current action after possible browser restart
+                        CodeSend += std::string(" \n section_start(\"_execution_point\", 0)!");
+                    }else
+                    {
+                        //Do nothing with execution point
+                        CodeSend += std::string(" \n section_end()!");
+                    }
                     if(BrowserToolbox)
                         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(CodeSend).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
                     xml_encode(CodeSend);
-                    std::string DelayedSendCode = std::string("<WaitCode>") + CodeSend + std::string("</WaitCode>");
+                    std::string DelayedSendCode = std::string("<WaitCode is_play='0' >") + CodeSend + std::string("</WaitCode>");
                     if(res.first.HowToExecute == ToolboxV8Handler::OnlyExecute)
                     {
                         SendTextResponce(DelayedSendCode);
@@ -3842,7 +3911,7 @@ void MainApp::HandleToolboxBrowserEvents()
             std::string CodeSend = res2.first.Execute;
             WORKER_LOG(std::string("GetExecuteCode<<") + CodeSend);
             xml_encode(CodeSend);
-            SendTextResponce(std::string("<WaitCode>") + CodeSend + std::string("</WaitCode>"));
+            SendTextResponce(std::string("<WaitCode is_play='0' >") + CodeSend + std::string("</WaitCode>"));
 
         }
     }
@@ -4022,6 +4091,16 @@ void MainApp::HandleToolboxBrowserEvents()
         UpdateMultiSelect();
     }
 
+    if(toolboxv8handler->GetIsEventTrigger())
+    {
+        if(BrowserScenario)
+        {
+            std::string Name = picojson::value(toolboxv8handler->GetEventTriggerName()).serialize();
+            std::string Data = picojson::value(toolboxv8handler->GetEventTriggerData()).serialize();
+            std::string Script = Javascript(std::string("BrowserAutomationStudio_HandleEvent(") + Name + "," + Data + std::string(")"), "scenario");
+            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script, BrowserScenario->GetMainFrame()->GetURL(), 0);
+        }
+    }
 }
 
 void MainApp::UpdateScrolls(std::string& data)
@@ -4551,17 +4630,26 @@ void MainApp::Restart()
 }
 
 //Element Subtasks
-void MainApp::ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction)
+void MainApp::ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction, bool IsDisabled, const std::string& ModuleName, const std::string& ModuleDescription)
 {
     if(BrowserToolbox)
     {
-        std::string serialize;
+        if(IsDisabled)
         {
-            LOCK_BROWSER_DATA
-            serialize = Data->_Inspect.Serialize();
+            std::string ModuleNameSerialized = picojson::value(ModuleName).serialize();
+            std::string ModuleDescriptionSerialized = picojson::value(ModuleDescription).serialize();
+
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_AskEnableModule(") + ModuleNameSerialized + std::string(",") + ModuleDescriptionSerialized + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
+        }else
+        {
+            std::string serialize;
+            {
+                LOCK_BROWSER_DATA
+                serialize = Data->_Inspect.Serialize();
+            }
+            std::string AskIfUseLoopFunctionString = (AskIfUseLoopFunction ? std::string("1") : std::string("0"));
+            BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_") + FuncName + std::string("(") + serialize + std::string(",") + AskIfUseLoopFunctionString + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         }
-        std::string AskIfUseLoopFunctionString = (AskIfUseLoopFunction ? std::string("1") : std::string("0"));
-        BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_") + FuncName + std::string("(") + serialize + std::string(",") + AskIfUseLoopFunctionString + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
     }
 }
 
@@ -4604,3 +4692,14 @@ void MainApp::MainContextMenu(POINT& p)
 
 }
 
+void MainApp::ShowActionUpdater()
+{
+    if(!BrowserScenario) return;
+    BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_ShowActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+}
+
+void MainApp::HideActionUpdater()
+{
+    if(!BrowserScenario) return;
+    BrowserScenario->GetMainFrame()->ExecuteJavaScript("BrowserAutomationStudio_HideActionUpdater()",BrowserScenario->GetMainFrame()->GetURL(), 0);
+}

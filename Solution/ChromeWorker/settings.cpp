@@ -24,6 +24,7 @@ void settings::Init()
     force_utf8 = true;
     canvas = "disable";
     audio = "disable";
+    quic = "disable";
     webrtc = "disable";
     webgl = "disable";
     toolbox_height = 300;
@@ -31,8 +32,8 @@ void settings::Init()
     zoom = 100;
     max_fps = 30;
     max_browser_start_simultaneously = 3;
-    min_free_memory_to_start_browser = 500;
-    min_unused_cpu = 20;
+    min_free_memory_to_start_browser = 1500;
+    min_unused_cpu = 35;
     maximized = false;
     restart = true;
     emulate_mouse = true;
@@ -81,6 +82,11 @@ void settings::Init()
             {
                 audio = ReplaceAll(line,"Audio=","");
                 audio = ReplaceAll(audio,"\"","");
+            }
+            if(line.find("QUIC=") != std::string::npos)
+            {
+                quic = ReplaceAll(line,"QUIC=","");
+                quic = ReplaceAll(quic,"\"","");
             }
             if(line.find("AudioNoise=") != std::string::npos)
             {
@@ -463,6 +469,7 @@ void settings::SaveToFile()
             outfile<<"Canvas=\""<<canvas<<"\""<<std::endl;
             outfile<<"CanvasNoise=\""<<canvas_noise<<"\""<<std::endl;
             outfile<<"Audio=\""<<audio<<"\""<<std::endl;
+            outfile<<"QUIC=\""<<quic<<"\""<<std::endl;
             outfile<<"AudioNoise=\""<<audio_noise<<"\""<<std::endl;
             outfile<<"MaxFPS="<<max_fps<<std::endl;
             outfile<<"Webrtc=\""<<webrtc<<"\""<<std::endl;
@@ -490,6 +497,7 @@ std::string settings::Serialize()
     res["canvas"] = picojson::value(canvas);
     res["canvas_noise"] = picojson::value(canvas_noise);
     res["audio"] = picojson::value(audio);
+    res["quic"] = picojson::value(quic);
     res["audio_noise"] = picojson::value(audio_noise);
     res["max_fps"] = picojson::value((double)max_fps);
     res["webrtc"] = picojson::value(webrtc);
@@ -532,6 +540,7 @@ void settings::Deserialize(const std::string & Data)
         canvas_noise = o["canvas_noise"].get<std::string>();
         audio = o["audio"].get<std::string>();
         audio_noise = o["audio_noise"].get<std::string>();
+        quic = o["quic"].get<std::string>();
         max_fps = o["max_fps"].get<double>();
         webrtc = o["webrtc"].get<std::string>();
         webgl = o["webgl"].get<std::string>();

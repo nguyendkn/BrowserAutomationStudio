@@ -27,6 +27,7 @@ namespace BrowserAutomationStudioFramework
         bool ManualBrowserControl;
         qint64 LastPID;
         int BrowserId;
+        qint64 ExecutionPointWhenAddingAction;
 
     public:
 
@@ -118,6 +119,7 @@ namespace BrowserAutomationStudioFramework
         bool IsBASBrowserVirtual();
         bool NeedToCreateVirtualProcessCommunicator();
         QString GetProfilePath();
+        bool IsTemporaryProfile();
 
         virtual void OnSupend();
         virtual void OnSuspendVirtual();
@@ -127,6 +129,8 @@ namespace BrowserAutomationStudioFramework
         void RemoveOnlineProfile(const QString& ProfileId, const QString& callback);
         void RemoveLocalProfile(const QString& ProfileId, const QString& callback);
         void FindAllOnlineProfiles(const QString& SearchPattern, const QString& callback);
+
+        qint64 GetCurrentExecutionPointWhenAddingAction();
     signals:
         void ProcessCreated(IProcessComunicator *Communicator);
         void Loaded();

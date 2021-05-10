@@ -15,6 +15,7 @@ public:
         std::string Code;
         ExecuteType HowToExecute;
         bool DisableIfAdd;
+        bool CanRestartBrowser;
         std::string Id;
     };
     struct ExecuteClass
@@ -30,6 +31,10 @@ public:
 private:
     std::vector<ResultClass> LastResult;
 
+    std::string EventTriggerData;
+    std::string EventTriggerName;
+
+    bool IsEventTrigger;
     bool IsInitialized;
     bool IsEditCancel;
     bool ChangedExecute;
@@ -60,12 +65,15 @@ private:
 
 public:
     ToolboxV8Handler();
+    bool GetIsEventTrigger();
     bool GetIsInitialized();
     bool GetIsEditCancel();
     bool GetIsMaximize();
     bool GetIsMinimize();
     bool GetIsInterrupt();
     bool GetClearHighlight();
+    std::string GetEventTriggerData();
+    std::string GetEventTriggerName();
     std::pair<std::string, bool> GetInterfaceState();
 
     std::pair<std::string, bool> GetLoadUrl();

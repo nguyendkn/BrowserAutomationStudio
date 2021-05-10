@@ -1116,6 +1116,7 @@ QString MainWindow::OpenFromFile(const QString& fileName)
     ConnectionPort = loader.GetConnectionPort();
     ConnectionLogin = loader.GetConnectionLogin();
     ConnectionPassword = loader.GetConnectionPassword();
+    ScriptEngineVersion = loader.GetEngineVersion();
 
     SetIsDirty(!loader.GetSchema().isEmpty() || _DataBaseConnector->HasDatabase());
 
@@ -1366,6 +1367,11 @@ void MainWindow::New()
         {
             QList<IModuleManager::ModulePreserve> Modules;
             _ModuleManager->UnpackModules(Modules);
+        }
+
+        {
+            VersionInfo info;
+            ScriptEngineVersion = info.VersionString();
         }
 
         SavePrevious();
@@ -1658,14 +1664,16 @@ void MainWindow::StopAction()
 void MainWindow::SendCode()
 {
     QString Code = TextEditor->GetText();
+    VersionInfo info;
     if(Code.isEmpty())
         Code = " ";
 
-    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun);
+    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun, ScriptEngineVersion, info.VersionString());
     _RecordProcessCommunication->SendResources(LastResourceList);
     _RecordProcessCommunication->SetWindow(QString::number(ui->centralWidget->winId()));
 
 
+    ScriptEngineVersion = info.VersionString();
 }
 
 void MainWindow::RecordWindowAttached()
@@ -2013,6 +2021,7 @@ void MainWindow::LoadActual(const QString& filename)
 
 void MainWindow::Record()
 {
+    _RecordProcessCommunication->OnRecord();
     {
         CheckScript Check;
         if(!Check.Check(TextEditor->GetText()))
@@ -2030,6 +2039,7 @@ void MainWindow::Record()
 
 void MainWindow::Run()
 {
+    _RecordProcessCommunication->OnRun();
     {
         CheckScript Check;
         if(!Check.Check(TextEditor->GetText()))
@@ -2057,6 +2067,18 @@ void MainWindow::HighlightAction(QUrl url)
     {
         QFileInfo info(url.toString().replace("file:///",""));
         QDesktopServices::openUrl(QUrl::fromLocalFile(info.absoluteFilePath()));
+        return;
+    }
+    if(url.scheme() == "disablerecaptcha")
+    {
+        if(Worker)
+            Worker->Abort();
+        if(ComplexLoggerLog)
+            ComplexLoggerLog->Clear();
+        _ModuleManager->SetModuleEnabled("ReCaptcha", false);
+
+        QMessageBox::information(0, tr(""), QString(tr("ReCaptcha module has been disabled")));
+
         return;
     }
     if(!IsRecordLast)
@@ -2651,6 +2673,7 @@ void MainWindow::RunInternal()
         //Use all modules in record mode
         QStringList Exclude;
         QList<QString> List = _ModuleManager->GetModuleEngineCode(Exclude);
+        _ModuleManager->CacheBrowserCode();
         worker->SetAdditionEngineScripts(List);
     }
     else
@@ -2658,6 +2681,7 @@ void MainWindow::RunInternal()
         QStringList Exclude = _ModuleManager->GetStandartModulesNotUsedInProject(TextEditor->GetText());
         QList<IModuleManager::ModulePreserve> ActiveModules = _ModuleManager->GetModulesUsedInProject(TextEditor->GetText());
         QList<QString> List = _ModuleManager->GetModuleEngineCode(ActiveModules, Exclude);
+        _ModuleManager->CacheBrowserCode();
         worker->SetAdditionEngineScripts(List);
     }
 

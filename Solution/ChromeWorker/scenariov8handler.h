@@ -17,6 +17,7 @@ public:
         std::string LastResultFunctions;
         std::string LastResultResources;
         std::string LastResultLabels;
+        int ExecuteNextId = -1;
     };
     struct WebInterfaceTaskResultStruct
     {
@@ -34,6 +35,7 @@ private:
     PrepareFunctionResultStruct PrepareFunctionResult;
 
     std::string LastResultExecute;
+    bool LastResultIsPlay;
     std::string LastCurrentFunction;
     std::string OpenActionName;
     bool Changed;
@@ -70,9 +72,15 @@ private:
     bool IsRunFunctionAsync;
     bool IsOpenAction;
 
+    std::string EventTriggerData;
+    std::string EventTriggerName;
+    bool IsEventTrigger;
+
     std::string DetectorData;
     bool ChangedDetectorData;
 
+    std::string HighlightMenuItem;
+    bool IsHightlightMenuItem;
 
     std::mutex mut_threadnumbereditstart;
     std::mutex mut_successnumbereditstart;
@@ -100,8 +108,9 @@ public:
     std::pair<WebInterfaceTaskResultStruct, bool> GetWebInterfaceTaskResult();
     std::pair<PrepareFunctionResultStruct, bool> GetPrepareFunctionResult();
 
-    std::pair<std::string, bool> GetExecuteCode();
+    std::pair< std::pair<std::string,bool>, bool> GetExecuteCode();
     RestartType GetNeedRestart();
+    bool GetIsEventTrigger();
     bool GetIsInitialized();
     bool GetIsEditEnd();
     bool GetIsThreadNumberEditStart();
@@ -123,7 +132,10 @@ public:
     std::pair<std::string, bool> GetCurrentFunction();
     std::pair<std::string, bool> GetLoadUrl();
     std::pair<bool, bool> GetIsInsideElementLoop();
+    std::string GetEventTriggerData();
+    std::string GetEventTriggerName();
 
+    std::pair<std::string, bool> GetIsHighlightMenuItem();
 
     bool GetClipboardGetRequest();
 

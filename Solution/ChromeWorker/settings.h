@@ -19,6 +19,7 @@ class settings
     std::string canvas_noise;
     std::string audio;
     std::string audio_noise;
+    std::string quic;
     std::string webrtc;
     std::string webrtc_ips;
     std::string webgl;

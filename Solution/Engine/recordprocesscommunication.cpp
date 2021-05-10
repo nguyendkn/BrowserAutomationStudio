@@ -15,6 +15,7 @@ namespace BrowserAutomationStudioFramework
         CanSend = false;
         IsTesting = false;
         CanSendIsChanged = false;
+        IsPlayingScript = false;
     }
 
     void RecordProcessCommunication::SendIsChanged()
@@ -48,7 +49,7 @@ namespace BrowserAutomationStudioFramework
         return res;
     }
 
-    void RecordProcessCommunication::SendCode(const QString& Code,const QString& Schema, const QString& EmbeddedLanguageData, bool IsTesting)
+    void RecordProcessCommunication::SendCode(const QString& Code,const QString& Schema, const QString& EmbeddedLanguageData, bool IsTesting, const QString& ScriptEngineVersion, const QString& ApplicationEngineVersion)
     {
         this->IsTesting = IsTesting;
 
@@ -67,18 +68,28 @@ namespace BrowserAutomationStudioFramework
                 xmlWriter.writeStartElement("EmbeddedLanguageData");
                 xmlWriter.writeCharacters(EmbeddedLanguageData);
                 xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ApplicationEngineVersion");
+                xmlWriter.writeCharacters(ApplicationEngineVersion);
+                xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ScriptEngineVersion");
+                xmlWriter.writeCharacters(ScriptEngineVersion);
+                xmlWriter.writeEndElement();
 
             xmlWriter.writeEndElement();
             Comunicator->Send(WriteString);
             SendData.clear();
             SendDataSchema.clear();
             SendEmbeddedData.clear();
+            SendScriptEngineVersion.clear();
+            SendApplicationEngineVersion.clear();
 
         }else
         {
             SendData = Code;
             SendDataSchema = Schema;
             SendEmbeddedData = EmbeddedLanguageData;
+            SendScriptEngineVersion = ScriptEngineVersion;
+            SendApplicationEngineVersion = ApplicationEngineVersion;
         }
     }
 
@@ -130,7 +141,10 @@ namespace BrowserAutomationStudioFramework
         {
             QString WriteString;
             QXmlStreamWriter xmlWriter(&WriteString);
-            xmlWriter.writeTextElement("SetWindow",Window);
+            xmlWriter.writeStartElement("SetWindow");
+            xmlWriter.writeAttribute("is_play", QString::number(IsPlayingScript));
+            xmlWriter.writeCharacters(Window);
+            xmlWriter.writeEndElement();
             Comunicator->Send(WriteString);
             this->Window.clear();
         }else
@@ -192,6 +206,17 @@ namespace BrowserAutomationStudioFramework
         {
             QXmlStreamReader::TokenType token = xmlReader.readNext();
 
+            if(xmlReader.name() == "WaitCode" && token == QXmlStreamReader::StartElement)
+            {
+                foreach(QXmlStreamAttribute attr, xmlReader.attributes())
+                {
+                    if(attr.name() == "is_play")
+                    {
+                        IsPlayingScript = (bool)attr.value().toString().toInt();
+                    }
+                }
+                xmlReader.readNext();
+            }
             if(xmlReader.name() == "ReceivedCode" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -296,12 +321,20 @@ namespace BrowserAutomationStudioFramework
                 xmlWriter.writeStartElement("EmbeddedLanguageData");
                 xmlWriter.writeCharacters(SendEmbeddedData);
                 xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ApplicationEngineVersion");
+                xmlWriter.writeCharacters(SendApplicationEngineVersion);
+                xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ScriptEngineVersion");
+                xmlWriter.writeCharacters(SendScriptEngineVersion);
+                xmlWriter.writeEndElement();
 
             xmlWriter.writeEndElement();
             Comunicator->Send(WriteString);
             SendData.clear();
             SendDataSchema.clear();
             SendEmbeddedData.clear();
+            SendScriptEngineVersion.clear();
+            SendApplicationEngineVersion.clear();
         }
 
         if(!SendResourcesString.isEmpty() && Comunicator)
@@ -350,6 +383,16 @@ namespace BrowserAutomationStudioFramework
     {
         CanSendIsChanged = false;
         SetCanSendDataFalse();
+    }
+
+    void RecordProcessCommunication::OnRecord()
+    {
+        this->IsPlayingScript = false;
+    }
+
+    void RecordProcessCommunication::OnRun()
+    {
+        this->IsPlayingScript = false;
     }
 
     void RecordProcessCommunication::InstallProcessComunicator(IProcessComunicator *Comunicator)

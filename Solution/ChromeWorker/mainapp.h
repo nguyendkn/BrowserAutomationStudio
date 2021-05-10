@@ -83,6 +83,9 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     std::string LastUsedSelector;
     std::string LastUsedLabel;
 
+    //Browser close delayed
+    long long BrowserCloseTime = 0;
+
     //MouseMove
     bool IsMouseMoveSimulation;
     int MouseStartX;
@@ -170,6 +173,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     std::string DelayedSend;
 
     std::string SetNextActionId;
+    bool StartPlayScriptOnStart = false;
 
     bool IsMainBrowserCreating;
 
@@ -182,7 +186,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     ImageFinder _ImageFinder;
     MainLayout *Layout;
 
-    std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData;
+    std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData, ApplicationEngineVersion, ScriptEngineVersion;
     bool IsInterfaceInitialSent;
     bool ResourcesChanged;
     void UpdateScrolls(std::string& data);
@@ -322,7 +326,7 @@ public:
     void ElementCommandCallback(const ElementCommand &Command);
     void ClearElementCommand();
 
-    void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing);
+    void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version);
     void SetResourceCallback(const std::string & resources);
     void SetInitialStateCallback(const std::string & lang);
     void DebugVariablesResultCallback(const std::string & data);
@@ -338,7 +342,7 @@ public:
     void MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll);
     void LoadSuccessCallback();
     void ResizeCallback(int width, int height);
-    void SetWindowCallback(const std::string& Window);
+    void SetWindowCallback(const std::string& Window, bool IsPlayingScript);
     void HighlightActionCallback(const std::string& ActionId);
 
 
@@ -392,11 +396,14 @@ public:
 
     //Events
     std::vector<std::function<void(const std::string&)> > EventSendTextResponce;
+    std::vector<std::function<void(const std::string&)> > EventHighlightMenu;
 
     void Hide();
     void Terminate();
     void Restart();
     void ToggleDevTools();
+    void ShowActionUpdater();
+    void HideActionUpdater();
     std::pair<int,int> GetScrollPosition();
     void ScrollUp();
     void ScrollDown();
@@ -416,7 +423,7 @@ public:
     void MouseLeave();
 
     //Element Subtasks
-    void ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction);
+    void ExecuteElementFunction(const std::string& FuncName, bool AskIfUseLoopFunction, bool IsDisabled = false, const std::string& ModuleName = std::string(), const std::string& ModuleDescription = std::string());
 
     void LoadSettingsPage();
     void ShowContextMenu(int X, bool IsImageSelect, const std::string & Json);

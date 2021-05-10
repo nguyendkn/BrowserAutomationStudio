@@ -17,6 +17,9 @@ namespace BrowserAutomationStudioFramework
         QString SendData;
         QString SendDataSchema;
         QString SendEmbeddedData;
+        QString SendScriptEngineVersion;
+        QString SendApplicationEngineVersion;
+        bool IsPlayingScript;
 
         QString SendResourcesString;
         QString Window;
@@ -39,7 +42,7 @@ namespace BrowserAutomationStudioFramework
     public slots:
         virtual void SendIsChanged();
         virtual void StopRecorder();
-        virtual void SendCode(const QString& Code,const QString& Schema, const QString& EmbeddedLanguageData, bool IsTesting);
+        virtual void SendCode(const QString& Code,const QString& Schema, const QString& EmbeddedLanguageData, bool IsTesting, const QString& ScriptEngineVersion, const QString& ApplicationEngineVersion);
         virtual void HighlightAction(const QString& ActionId);
         virtual void SetWindow(const QString& Window);
         virtual void SendResources(const QList<ResourceDescription>& Resources);
@@ -49,6 +52,8 @@ namespace BrowserAutomationStudioFramework
         virtual void CheckResult(QString CheckId,bool IsSuccess,QString ErrorString);
         void RunTaskInRecordMode(int ResultId, QString Function, QString Parameters);
         virtual void PrepareFunction(QString FunctionName);
+        virtual void OnRecord();
+        virtual void OnRun();
     };
 }
 

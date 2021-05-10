@@ -397,6 +397,11 @@ _L =
 
 	"Always false.": {"ru": "Всегда ложь."},
 
+	"Enable QUIC protocol": {"ru": "Включить протокол QUIC"},
+	"Unlike HTTP, QUIC protocol is build on top of UDP. Not all proxies supports UDP. It means that enabling QUIC can cause problems when working with certain proxies. It is recommended to enable this option only if sure, that your proxy supports it. Disabled by default.": {"ru": "В отличие от HTTP, протокол QUIC построен поверх UDP. Не все прокси поддерживают UDP. Это означает, что включение QUIC может вызвать проблемы при работе с определенными прокси. Рекомендуется включать эту опцию только в том случае, если вы уверены, что прокси ее поддерживает. По умолчанию отключено."},
+	"Enable QUIC": {"ru": "Включить QUIC"},
+	"Disable QUIC": {"ru": "Отключить QUIC"},
+	
 	"Enable module ": {"ru": "Включить модуль "},
 	"In order to use this module, you need to enable it first. It will restart script.": {"ru": "Чтобы использовать этот модуль, вам необходимо сначала включить его. Это перезапустит скрипт."},
 	"You can disable it later by using Menu -> Module manager.": {"ru": "Вы можете отключить его позже, используя Меню -> Менеджер модулей."},
@@ -1590,6 +1595,9 @@ _L =
 "You can always tweak selection by using up and down keys. This is useful if several elements holds same coordinates.": {"ru": "Вы всегда можете изменить выбранный элемент с помощью клавиш вверх и вниз. Это полезно, если несколько элементов перекрывают друг друга и имеют одинаковые координаты."},
 "In case if link nearest to selected element can't be found, empty string will be returned.": {"ru": "В случае, если ссылка, ближайшая к выбранному элементу, не может быть найдена, будет возвращена пустая строка."},
 "This action looks for \"href\" attribute on link element. Sometimes it may not be present, and sites processes link clicking by using javascript. In that case following action won't give any meaningful result.": {"ru": "Это действие получает атрибут \"href\" из ссылки. Иногда данный атрибут может отсутствовать, а сайты обрабатывают клики по ссылкам с помощью javascript. В этом случае данное действие не будет иметь пользы."},
+
+"Line break, join into multiline text": {"ru": "Перенос строки, объединение в многострочный текст"},
+"Carriage return and line break, join into multiline text": {"ru": "Возврат каретки и перенос строки, объединение в многострочный текст"},
 	
 	/* Actions search */
 	"No recent actions found": {"ru": "Недавние действия не найдены"},

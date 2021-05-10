@@ -132,7 +132,7 @@
             },
             "interface": "project_path_interface.js",
             "is_element": false,
-            "name": "project_path",
+            "name": "script_stats_project_path",
             "select": "project_path_select.js",
             "template": "{{Save}}"
         },

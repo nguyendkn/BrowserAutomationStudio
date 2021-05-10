@@ -1595,6 +1595,9 @@ _L =
 "You can always tweak selection by using up and down keys. This is useful if several elements holds same coordinates.": {"ru": "Вы всегда можете изменить выбранный элемент с помощью клавиш вверх и вниз. Это полезно, если несколько элементов перекрывают друг друга и имеют одинаковые координаты."},
 "In case if link nearest to selected element can't be found, empty string will be returned.": {"ru": "В случае, если ссылка, ближайшая к выбранному элементу, не может быть найдена, будет возвращена пустая строка."},
 "This action looks for \"href\" attribute on link element. Sometimes it may not be present, and sites processes link clicking by using javascript. In that case following action won't give any meaningful result.": {"ru": "Это действие получает атрибут \"href\" из ссылки. Иногда данный атрибут может отсутствовать, а сайты обрабатывают клики по ссылкам с помощью javascript. В этом случае данное действие не будет иметь пользы."},
+
+"Line break, join into multiline text": {"ru": "Перенос строки, объединение в многострочный текст"},
+"Carriage return and line break, join into multiline text": {"ru": "Возврат каретки и перенос строки, объединение в многострочный текст"},
 	
 	/* Actions search */
 	"No recent actions found": {"ru": "Недавние действия не найдены"},

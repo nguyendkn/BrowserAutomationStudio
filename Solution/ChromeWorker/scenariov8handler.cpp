@@ -12,9 +12,11 @@ ScenarioV8Handler::ScenarioV8Handler()
     ChangedPrepareFunctionResult = false;
     IsInitialized = false;
     NeedRestart = None;
+    IsEventTrigger = false;
     IsEditStart = false;
     IsEditEnd = false;
     url_changed = false;
+    IsHightlightMenuItem = false;
     IsThreadNumberEditStart = false;
     IsSuccessNumberEditStart = false;
     IsFailNumberEditStart = false;

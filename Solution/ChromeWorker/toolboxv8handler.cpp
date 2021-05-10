@@ -2,6 +2,7 @@
 
 ToolboxV8Handler::ToolboxV8Handler()
 {
+    IsEventTrigger = false;
     IsInitialized = false;
     IsInterrupt = false;
     IsEditCancel = false;

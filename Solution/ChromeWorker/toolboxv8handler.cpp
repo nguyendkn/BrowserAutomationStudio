@@ -2,6 +2,7 @@
 
 ToolboxV8Handler::ToolboxV8Handler()
 {
+    IsEventTrigger = false;
     IsInitialized = false;
     IsInterrupt = false;
     IsEditCancel = false;
@@ -76,6 +77,23 @@ std::pair<ToolboxV8Handler::ResultClass, bool> ToolboxV8Handler::GetResult()
         LastResult.erase(LastResult.begin());
     }
     return r;
+}
+
+std::string ToolboxV8Handler::GetEventTriggerName()
+{
+    return EventTriggerName;
+}
+
+std::string ToolboxV8Handler::GetEventTriggerData()
+{
+    return EventTriggerData;
+}
+
+bool ToolboxV8Handler::GetIsEventTrigger()
+{
+    bool res = IsEventTrigger;
+    IsEventTrigger = false;
+    return res;
 }
 
 bool ToolboxV8Handler::GetIsInitialized()
@@ -225,6 +243,20 @@ bool ToolboxV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> ar
         if (arguments->GetSize() == 0)
         {
             ClearHighlight = true;
+        }
+    }else if(name == std::string("BrowserAutomationStudio_TriggerEvent"))
+    {
+        if (arguments->GetSize() > 0) 
+        {
+            if (arguments->GetSize() >= 1 && arguments->GetType(0) == VTYPE_STRING)
+            {
+                EventTriggerName = arguments->GetString(0);
+            }
+            if (arguments->GetSize() >= 2 && arguments->GetType(1) == VTYPE_STRING)
+            {
+                EventTriggerData = arguments->GetString(1);
+            }
+            IsEventTrigger = true;
         }
     }
 

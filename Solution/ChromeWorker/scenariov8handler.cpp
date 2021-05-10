@@ -12,9 +12,11 @@ ScenarioV8Handler::ScenarioV8Handler()
     ChangedPrepareFunctionResult = false;
     IsInitialized = false;
     NeedRestart = None;
+    IsEventTrigger = false;
     IsEditStart = false;
     IsEditEnd = false;
     url_changed = false;
+    IsHightlightMenuItem = false;
     IsThreadNumberEditStart = false;
     IsSuccessNumberEditStart = false;
     IsFailNumberEditStart = false;
@@ -356,6 +358,27 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         {
             IsClipboardGetRequest = true;
         }
+    }else if(name == std::string("BrowserAutomationStudio_HighlightMenuItem"))
+    {
+        if (arguments->GetSize() == 1)
+        {
+            HighlightMenuItem = arguments->GetString(0);
+            IsHightlightMenuItem = true;
+        }
+    }else if(name == std::string("BrowserAutomationStudio_TriggerEvent"))
+    {
+        if (arguments->GetSize() > 0) 
+        {
+            if (arguments->GetSize() >= 1 && arguments->GetType(0) == VTYPE_STRING)
+            {
+                EventTriggerName = arguments->GetString(0);
+            }
+            if (arguments->GetSize() >= 2 && arguments->GetType(1) == VTYPE_STRING)
+            {
+                EventTriggerData = arguments->GetString(1);
+            }
+            IsEventTrigger = true;
+        }
     }
 
     return true;
@@ -495,5 +518,31 @@ bool ScenarioV8Handler::GetIsFailNumberEditStart()
     bool res = IsFailNumberEditStart;
     IsFailNumberEditStart = false;
     return res;
+}
 
+std::pair<std::string, bool> ScenarioV8Handler::GetIsHighlightMenuItem()
+{
+    std::pair<std::string, bool> r;
+    r.second = IsHightlightMenuItem;
+    IsHightlightMenuItem = false;
+    r.first = HighlightMenuItem;
+    HighlightMenuItem.clear();
+    return r;
+}
+
+std::string ScenarioV8Handler::GetEventTriggerName()
+{
+    return EventTriggerName;
+}
+
+std::string ScenarioV8Handler::GetEventTriggerData()
+{
+    return EventTriggerData;
+}
+
+bool ScenarioV8Handler::GetIsEventTrigger()
+{
+    bool res = IsEventTrigger;
+    IsEventTrigger = false;
+    return res;
 }

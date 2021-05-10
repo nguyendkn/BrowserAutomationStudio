@@ -224,17 +224,9 @@
 
 		/* Load code editor */
 		require(['vs/editor/editor.main'], function() {
-			if($("#NodeJsCode").attr("data-installed") == "true")
-				return;
-			$("#NodeJsCode").attr("data-installed", "true")
-			window.NodeJsGlobal.Editor = monaco.editor.create(document.getElementById('NodeJsCode'), {
-				value: window.NodeJsGlobal.InitialValue,
-				language: 'javascript',
-				scrollBeyondLastLine: false,
-				automaticLayout: true,
-				fontSize: 12
+			window.NodeJsGlobal.Editor = createCodeEditor(document.getElementById('NodeJsCode'), {
+				value: window.NodeJsGlobal.InitialValue
 			});
-
 		});
 
 		/* Save results */

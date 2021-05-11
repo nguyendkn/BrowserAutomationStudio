@@ -1,0 +1,1 @@
+<%= variable %> = executable_directory();

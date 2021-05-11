@@ -65,18 +65,19 @@
     async run() {
       this.set('successCount', 0);
       this.set('errorsCount', 0);
+      let timeout = undefined;
 
       for (const { id, dat, index, isDatEmpty, isDatDamaged } of this.get('tasks')) {
-        _MainView.currentTargetId = index;
+        const { error, message } = await new Promise((resolve) => {
+          _MainView.currentTargetId = index;
 
-        if (dat && !_A[dat['s']]) {
-          this.handle(id, tr('The module containing this action is damaged or disabled.'));
-        } else if (isDatDamaged) {
-          this.handle(id, tr('The technical description of this action is damaged.'));
-        } else if (isDatEmpty) {
-          this.handle(id, tr('The technical description of this action is empty.'));
-        } else {
-          let timeout; const { error, message } = await new Promise((resolve) => {
+          if (dat && !_A[dat['s']]) {
+            resolve({ error: true, message: tr('The module containing this action is damaged or disabled.') });
+          } else if (isDatDamaged) {
+            resolve({ error: true, message: tr('The technical description of this action is damaged.') });
+          } else if (isDatEmpty) {
+            resolve({ error: true, message: tr('The technical description of this action is empty.') });
+          } else {
             timeout = setTimeout(() => resolve({ error: true, message: tr('Timeout during the action update.') }), 10000);
 
             this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
@@ -92,11 +93,10 @@
             });
 
             _MainView.Edit({ disableModal: true });
-          }).finally(() => clearTimeout(timeout));
+          }
+        }).finally(() => clearTimeout(timeout));
 
-          this.handle(id, message, error);
-        }
-
+        this.handle(id, message, !!error);
         if (!this.get('isStarted')) break;
       }
 

@@ -156,18 +156,18 @@
 		{
             "code": [
                 {
-                    "file": "executable_directory_code.js",
-                    "name": "executable_directory_code"
+                    "file": "installation_path_code.js",
+                    "name": "installation_path_code"
                 }
             ],
             "description": {
-                "en": "Path to executable directory",
-                "ru": "Путь к исполняемой директории"
+                "en": "Get installation path",
+                "ru": "Получить путь установки"
             },
-            "interface": "executable_directory_interface.js",
+            "interface": "installation_path_interface.js",
             "is_element": false,
-            "name": "executable_directory",
-            "select": "executable_directory_select.js",
+            "name": "installation_path",
+            "select": "installation_path_select.js",
             "template": "{{Save}}"
         },
 		{
@@ -310,8 +310,9 @@
 		"Variable in which, after successful execution of the action, the path to the project directory will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан путь к директории проекта."},
 		"This action will return the full path to the project directory. If the script is not compiled, then this action will return the path to the directory in which the open project file is located. And if the script is compiled, then this action will return the path to the root directory of the script.": {"ru":"Это действие вернет полный путь к директории проекта. Если скрипт не скомпилирован, то это действие вернет путь к директории в которой находится открытый файл проекта. А если скрипт скомпилирован, то это действие вернет путь к корневой директории скрипта."},
 		
-		"Get the full path to the executable directory.": {"ru": "Получить полный путь к исполняемой директории."},
+		"Get the full installation path.": {"ru": "Получить полный путь установки."},
 		"This action will return the full path to the directory where the executable file is located.": {"ru": "Это действие вернет полный путь к директории, в которой находится исполняемый файл."},
+		"Variable in which, after successful execution of the action, the installation path will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан путь установки."},
 		"For example, if the script is not compiled and is running BAS version <code>24.0.8</code> installed in the <code>\"C:/BrowserAutomationStudio\"</code> folder, then the action will return": {"ru":"Например, если скрипт не скомпилирован и запущен BAS версии <code>24.0.8</code> установленный в папку <code>\"C:/BrowserAutomationStudio\"</code>, то действие вернет"},
 		
 		"Path name": {"ru": "Имя пути"},

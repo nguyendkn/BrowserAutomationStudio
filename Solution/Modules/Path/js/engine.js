@@ -782,7 +782,7 @@ function project_directory(){
 	return end===-1 ? _path.dirname(path) : path.slice(0, end);
 };
 
-function executable_directory(){
+function installation_path(){
 	return JSON.parse(native("filesystem", "fileinfo", "settings.ini")).directory;
 };
 

@@ -4,7 +4,7 @@ if(Save.length == 0){
     return;
 };
 try{
-	var code = loader.GetAdditionalData() + _.template($("#executable_directory_code").html())({
+	var code = loader.GetAdditionalData() + _.template($("#installation_path_code").html())({
 		variable: "VAR_" + Save
 	});
 	code = Normalize(code, 0);

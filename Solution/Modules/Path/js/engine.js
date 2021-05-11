@@ -543,14 +543,20 @@ _path = {
 						matchedSlash = false;
 						firstNonSlashEnd = i + 1;
 					};
-					if(extIdx >= 0){
-						if(code===ext.charCodeAt(extIdx)){
-							if(--extIdx===-1){
-								end = i;
+					if(ext==='*'){
+						if(code===46 && end===-1){
+							end = i;
+						};
+					}else{
+						if(extIdx >= 0){
+							if(code===ext.charCodeAt(extIdx)){
+								if(--extIdx===-1){
+									end = i;
+								};
+							}else{
+								extIdx = -1;
+								end = firstNonSlashEnd;
 							};
-						}else{
-							extIdx = -1;
-							end = firstNonSlashEnd;
 						};
 					};
 				};

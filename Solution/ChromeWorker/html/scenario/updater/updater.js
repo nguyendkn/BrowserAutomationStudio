@@ -30,7 +30,7 @@
     },
 
     initialize() {
-      this.on('change:isStarted', async (_, isStarted) => {
+      this.on('change:isStarted', async (__, isStarted) => {
         if (!isStarted) {
           BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
         } else {
@@ -241,7 +241,7 @@
       this.model = new ActionUpdaterModel();
       this.modal = new ActionUpdaterModal();
 
-      this.model.on('change:isStarted', (_, isStarted) => {
+      this.model.on('change:isStarted', (__, isStarted) => {
         if (isStarted) this.$('#actionUpdaterProgress').progressBar('reset');
 
         if (this.model.isSuccessfulUpdate() && !isStarted) {
@@ -255,17 +255,17 @@
         if (isStarted) this.$('#actionUpdaterLog').empty();
       });
 
-      this.model.on('change:successCount', (_, count) => {
+      this.model.on('change:successCount', (__, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterSuccessCount').text(count);
       });
 
-      this.model.on('change:errorsCount', (_, count) => {
+      this.model.on('change:errorsCount', (__, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterErrorsCount').text(count);
       });
 
-      this.model.on('change:tasks', (_, { length }) => {
+      this.model.on('change:tasks', (__, { length }) => {
         this.$('#actionUpdaterAccept').prop('disabled', length === 0);
         this.$('#actionUpdaterSelect').prop('disabled', false);
         this.$('#actionUpdaterSelect').selectpicker('refresh');

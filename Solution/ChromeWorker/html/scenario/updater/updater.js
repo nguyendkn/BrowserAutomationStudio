@@ -36,7 +36,7 @@
         } else {
           BrowserAutomationStudio_TriggerEvent('scenario.updateStart');
         }
-        if (isStarted) return await this.run();
+        if (isStarted) await _.sleep(200).then(() => this.run());
       });
 
       this.on('finish', () => {

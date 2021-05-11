@@ -1,6 +1,6 @@
-var data = GetInputConstructorValue("data", loader);
-if(data["original"].length == 0){
-	Invalid(tr("The parameter \"") + tr("Data") + tr("\" is not specified"));
+var name = GetInputConstructorValue("name", loader);
+if(name["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Path name") + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();
@@ -9,8 +9,8 @@ if(Save.length == 0){
     return;
 };
 try{
-    var code = loader.GetAdditionalData() + _.template($("#to_string_code").html())({
-        "data": data["updated"],
+    var code = loader.GetAdditionalData() + _.template($("#get_system_path_code").html())({
+        "name": name["updated"],
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

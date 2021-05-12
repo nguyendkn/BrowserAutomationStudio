@@ -6,6 +6,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
+		var isJSON = _function_argument("isJSON");
 		
 		var params = api.combineParams({api_key:api.key, action:action}, options);
 		
@@ -24,6 +25,9 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 				resp.number = data[1];
 			}else{
 				resp.data = data[0];
+			};
+			if(isJSON){
+				api.errorHandler(resp.status, resp.data);
 			};
 		};
 
@@ -46,7 +50,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getNumbersStatus", options:{country:country, operator:operator}})!
+		_call_function(api.apiRequest,{action:"getNumbersStatus", options:{country:country, operator:operator}, isJSON:true})!
 		var resp = _result_function();
 		
 		if(site=="All"){
@@ -65,24 +69,16 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	
 	this.getSites = function(){
 		
-		_call_function(api.apiRequest,{action:"getServices"})!
+		_call_function(api.apiRequest,{action:"getServices", isJSON:true})!
 		var resp = _result_function();
-		
-		if(resp.status){
-			api.errorHandler(resp.status, resp.data);
-		};
 		
 		_function_return(resp);
 	};
 	
 	this.getCountries = function(){
 		
-		_call_function(api.apiRequest,{action:"getCountries"})!
+		_call_function(api.apiRequest,{action:"getCountries", isJSON:true})!
 		var resp = _result_function();
-		
-		if(resp.status){
-			api.errorHandler(resp.status, resp.data);
-		};
 		
 		_function_return(Array.isArray(resp) ? resp : Object.keys(resp).map(function(key){
 			resp[key].name = resp[key].rus;
@@ -163,6 +159,12 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 			"BAD_KEY": {
 				"ru": "Неверный API-ключ.",
 				"en": "Invalid API key.",
+				"action": "die",
+				"instantly": true
+			},
+			"NO_KEY": {
+				"ru": "API-ключ не указан.",
+				"en": "API key not specified.",
 				"action": "die",
 				"instantly": true
 			},

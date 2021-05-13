@@ -88,7 +88,7 @@ _SMS.BaseApi = function(config, data, path){
 	};
 	
 	this.banService = function(seconds){
-		PSet("sms", "_SMS_BAN_THREAD", (Date.now() + seconds * 1000).toString());
+		PSet("sms", api.id, (Date.now() + seconds * 1000).toString());
 	};
 	
 	this.beforeRequest = function(){
@@ -99,8 +99,8 @@ _SMS.BaseApi = function(config, data, path){
 				sleepTime = api.ban - Date.now();
 			};
 			
-			if(P("sms", "_SMS_BAN_THREAD").length > 0 && parseInt(P("sms", "_SMS_BAN_THREAD")) - Date.now() > 0){
-				var time = parseInt(P("sms", "_SMS_BAN_THREAD")) - Date.now() + rand(0,30) * 1000;
+			if(P("sms", api.id).length > 0 && parseInt(P("sms", api.id)) - Date.now() > 0){
+				var time = parseInt(P("sms", api.id)) - Date.now() + rand(0,30) * 1000;
 				if(time > sleepTime){
 					sleepTime = time;
 				};

@@ -12,9 +12,10 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		
 		_call_function(api.request,{url:url, method:"GET", params:params})!
 		var content = _result_function();
+		var resp = content;
 		
 		if(_is_json_string(content)){
-			var resp = api.parseJSON(content);
+			resp = api.parseJSON(content);
 			
 			if(checkErrors && (resp.name=="error" || resp.error)){
 				api.errorHandler(resp.name=="error" ? resp.code : resp.error, resp.message);

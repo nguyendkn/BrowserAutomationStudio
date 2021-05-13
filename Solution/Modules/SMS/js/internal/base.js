@@ -208,6 +208,11 @@ _SMS.BaseApi = function(config, data, path){
 				"ru": "Метод \"" + data + "\" не поддерживается.",
 				"en": "Method \"" + data + "\" is not supported.",
 				"action": "fail"
+			},
+			"UNSUPPORTED_SITE": {
+				"ru": "Сайт \"" + data + "\" не поддерживается.",
+				"en": "Site \"" + data + "\" is not supported.",
+				"action": "fail"
 			}
 		};
 		var errorObj = Object.keys(baseErrors).indexOf(error) > -1 ? baseErrors[error] : this.getErrorObject(error, data);

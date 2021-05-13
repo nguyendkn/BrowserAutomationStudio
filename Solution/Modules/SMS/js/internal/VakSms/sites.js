@@ -1,6 +1,5 @@
 _SMS.VakSmsApi.prototype.getRawSite = function(site){
 	var sites = {
-		"Other": "ot",
 		"VK": "mr",
 		"Mail.ru Group": "mr",
 		"Qiwi": "qw",
@@ -104,5 +103,8 @@ _SMS.VakSmsApi.prototype.getRawSite = function(site){
 		"Perekrestok": "pk",
 		"5ka": "pt"
 	};
-	return _is_nilb(sites[site]) ? sites["Other"] : sites[site];
+	if(Object.keys(sites).indexOf(site) < 0){
+		this.errorHandler('UNSUPPORTED_SITE', site);
+	};
+	return sites[site];
 };

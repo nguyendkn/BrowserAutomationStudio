@@ -29,7 +29,8 @@ _SMS.getServiceApi = function(data){
 				url: 'http://api1.5sim.net',
 				supportedMethods: [
 					'getNumbersCount'
-				]
+				],
+				ref: '62ab2e4d'
 			}
 		},
 		"365sms.ru": {
@@ -51,7 +52,8 @@ _SMS.getServiceApi = function(data){
 					'getNumbersCount',
 					'getSites',
 					'getCountries'
-				]
+				],
+				ref: 'lyevZ418dni4'
 			}
 		},
 		"getsms.online": {
@@ -83,7 +85,8 @@ _SMS.getServiceApi = function(data){
 				url: 'http://smsvk.net',
 				supportedMethods: [
 					'getNumbersCount'
-				]
+				],
+				ref: 'bablosoft'
 			}
 		},
 		"sms.kopeechka.store": {
@@ -93,7 +96,8 @@ _SMS.getServiceApi = function(data){
 				url: 'https://sms.kopeechka.store',
 				supportedMethods: [
 					'getNumbersCount'
-				]
+				],
+				ref: 'bablosoft'
 			}
 		},
 		"sms-reg.com": {
@@ -135,7 +139,9 @@ _SMS.getServiceApi = function(data){
 				url: 'https://onlinesim.ru',
 				supportedMethods: [
 					'getNumbersCount'
-				]
+				],
+				ref: '2451761',
+				refTitle: 'dev_id'
 			}
 		},
 		"sms-acktiwator.ru": {
@@ -155,7 +161,9 @@ _SMS.getServiceApi = function(data){
 				url: 'https://vak-sms.com',
 				supportedMethods: [
 					'getNumbersCount'
-				]
+				],
+				ref: '1007',
+				refTitle: 'softId'
 			}
 		},
 		"give-sms.com": {
@@ -173,7 +181,6 @@ _SMS.getServiceApi = function(data){
 	if(Object.keys(services).indexOf(service) < 0){
 		die(_K=="ru" ? ('Сервиса ' + service + ' нет в списке доступных') : (service + ' service is not in the list of available'), true);
 	};
-	var api = services[service].api;
-	var config = services[service].config;
-	return new api(config, data);
+	var obj = services[service];
+	return new obj.api(obj.config, data);
 };

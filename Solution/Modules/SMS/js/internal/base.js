@@ -1,6 +1,7 @@
 _SMS.BaseApi = function(config, data, path){
 	const api = this;
 	
+	this.id = md5(JSON.stringify(data));
 	this.key = data.apiKey;
 	this.service = data.service;
 	
@@ -80,8 +81,10 @@ _SMS.BaseApi = function(config, data, path){
 		};
 	};
 	
+	this.ban = 0;
+	
 	this.banThread = function(seconds){
-		_SMS_BAN_THREAD = Date.now() + seconds * 1000;
+		this.ban = Date.now() + seconds * 1000;
 	};
 	
 	this.banService = function(seconds){
@@ -92,8 +95,8 @@ _SMS.BaseApi = function(config, data, path){
 		_do(function(){
 			var sleepTime = 0;
 			
-			if(_SMS_BAN_THREAD > 0 && _SMS_BAN_THREAD - Date.now() > 0){
-				sleepTime = _SMS_BAN_THREAD - Date.now();
+			if(api.ban > 0 && api.ban - Date.now() > 0){
+				sleepTime = api.ban - Date.now();
 			};
 			
 			if(P("sms", "_SMS_BAN_THREAD").length > 0 && parseInt(P("sms", "_SMS_BAN_THREAD")) - Date.now() > 0){

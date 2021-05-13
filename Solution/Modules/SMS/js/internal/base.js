@@ -2,14 +2,14 @@ _SMS.BaseApi = function(config, data, path){
 	const api = this;
 	
 	this.id = md5(JSON.stringify(data));
-	this.key = data.apiKey;
+	this.key = data.key;
 	this.service = data.service;
 	
-	if(_is_nilb(data.serverUrl)){
+	if(_is_nilb(data.url)){
 		this.url = config.url;
 		this.name = config.name;
 	}else{
-		var url = data.serverUrl.slice(-1)=="/" ? data.serverUrl.slice(0, -1) : data.serverUrl;
+		var url = data.url.slice(-1)=="/" ? data.url.slice(0, -1) : data.url;
 		var name = url.replace(new RegExp('https?://'),"").replace(/^(?:\d+)?api(?:\d+)?./,"");
 		this.url = url;
 		this.name = name.slice(0, 1).toLocaleUpperCase() + name.slice(1);
@@ -23,13 +23,12 @@ _SMS.BaseApi = function(config, data, path){
 		this.refTitle = _is_nilb(config.refTitle) ? 'ref' : config.refTitle;
 	};
 	
-	this.combineParams = function(params, options, labels){
-		labels = _avoid_nilb(labels, {});
+	this.combineParams = function(params, options){
 		var keys = Object.keys(options);
 		if(keys.length > 0){
 			keys.forEach(function(key){
 				if(!_is_nilb(options[key])){
-					params[labels[key] ? labels[key] : key] = options[key];
+					params[key] = options[key];
 				};
 			});
 		};
@@ -109,7 +108,7 @@ _SMS.BaseApi = function(config, data, path){
 			_if_else(sleepTime==0, function(){
 				_break("function");
 			}, function(){
-				if(_SMS_DEBUG){
+				if(_SMS.debug){
 					log((_K=="ru" ? 'Ждем ' : 'Wait ') + (sleepTime/1000) + (_K=="ru" ? ' секунд перед запросом к ' : ' seconds before requesting ') + api.name);
 				};
 				sleep(sleepTime)!
@@ -151,12 +150,12 @@ _SMS.BaseApi = function(config, data, path){
 			};
 			
 			_if_else(method=="GET", function(){
-				if(_SMS_DEBUG){
+				if(_SMS.debug){
 					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
 				};
 				http_client_get2(url, {"method":"GET"})!
 			}, function(){
-				if(_SMS_DEBUG){
+				if(_SMS.debug){
 					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
 				};
 				http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":"POST"})!
@@ -173,7 +172,7 @@ _SMS.BaseApi = function(config, data, path){
 
 		var content = http_client_content('auto');
 		
-		if(_SMS_DEBUG){
+		if(_SMS.debug){
 			log((_K=="ru" ? 'Ответ от' : 'Response') + ' ' + api.name + ': ' + content);
 		};
 

@@ -1583,6 +1583,22 @@
 	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<%= _.template($('#input_constructor').html())({
+			id: "operator",
+			description: tr("Operator"),
+			default_selector: "string",
+			disable_int: true,
+			value_string: "",
+			help: {
+				description: tr("Optional parameter.") + " " + tr("Cellular operator of the number, in the form in which it is perceived by the SMS receiving service."),
+				examples: [
+					{code: "megafon", description: tr("MegaFon")},
+					{code: "kyivstar", description: tr("Kyivstar")},
+					{code: "tele2", description: "Tele2"},
+					{code: tr("Empty string"), description: tr("Use any operator.")}
+				]
+			}
+		}) %>
+		<%= _.template($('#input_constructor').html())({
 			id: "customSite",
 			description: tr("Custom site"),
 			default_selector: "string",

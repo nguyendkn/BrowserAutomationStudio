@@ -41,8 +41,6 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	this.getNumber = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
-		var operator = _function_argument("operator");
-		var phoneException = _function_argument("phoneException");
 		
 		_call_function(api.apiRequest,{action:"getNum", options:{service:site, country:country}})!
 		var resp = _result_function();
@@ -73,7 +71,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	
 	this.getStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var lastId = confirmData.lastId;
 		
 		_call_function(api.apiRequest,{action:"getState", options:{tzid:lastId}, checkErrors:false})!
@@ -83,7 +81,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
@@ -109,7 +107,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
 		_call_function(api.getStatus,{number:number})!

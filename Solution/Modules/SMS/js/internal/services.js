@@ -150,7 +150,9 @@ _SMS.getServiceApi = function(data){
 				name: 'SmsAcktiwator',
 				url: 'https://sms-acktiwator.ru',
 				supportedMethods: [
-					'getNumbersCount'
+					'getNumbersCount',
+					'getSites',
+					'getCountries'
 				]
 			}
 		},

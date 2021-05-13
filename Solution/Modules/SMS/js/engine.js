@@ -1,25 +1,24 @@
-_BAS_SMSAPISDATA = {};
-_BAS_SMSCONFIRMDATA = {};
-_SMS_BAN_THREAD = 0;
-_SMS_DEBUG = false;
-
 _SMS = {
+	apiData: {},
+	confirmData: {},
+	debug: false,
+	
 	init: function(service, apiKey, serverUrl){
-		var data = {service:service, apiKey:apiKey};
+		var data = {service:service, key:apiKey};
 		if(!_is_nilb(serverUrl)){
-			data.serverUrl = serverUrl;
+			data.url = serverUrl;
 		};
 		
 		var id = md5(JSON.stringify(data));
-		if(_is_nilb(_BAS_SMSAPISDATA)){
-			_BAS_SMSAPISDATA = {};
+		if(_is_nilb(_SMS.apiData)){
+			_SMS.apiData = {};
 		};
 		
-		if(_is_nilb(_BAS_SMSAPISDATA[id])){
-			_BAS_SMSAPISDATA[id] = _SMS.getServiceApi(data);
+		if(Object.keys(_SMS.apiData).indexOf(id) < 0){
+			_SMS.apiData[id] = _SMS.getServiceApi(data);
 		};
 		
-		return _BAS_SMSAPISDATA[id];
+		return _SMS.apiData[id];
 	},
 	
 	getBalance: function(){
@@ -41,9 +40,9 @@ _SMS = {
 		var serverUrl = _function_argument("serverUrl");
 		var site = _function_argument("site");
 		var country = _function_argument("country");
+		var operator = _function_argument("operator");
 		var customSite = _function_argument("customSite");
 		var customCountry = _function_argument("customCountry");
-		var operator = _function_argument("operator");
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
@@ -96,8 +95,8 @@ _SMS = {
 		var customSite = _function_argument("customSite");
 		var customCountry = _function_argument("customCountry");
 		
-		if(_is_nilb(_BAS_SMSCONFIRMDATA)){
-			_BAS_SMSCONFIRMDATA = {};
+		if(_is_nilb(_SMS.confirmData)){
+			_SMS.confirmData = {};
 		};
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
@@ -109,7 +108,7 @@ _SMS = {
 		var confirmData = _result_function();
 		var number = confirmData.number;
 		
-		_BAS_SMSCONFIRMDATA[number] = confirmData;
+		_SMS.confirmData[number] = confirmData;
 		
 		_function_return(number);
 	},
@@ -117,7 +116,7 @@ _SMS = {
 	getStatus: function(){
 		var number = _function_argument("number");
 		
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var api = confirmData.api;
 		
 		_call_function(api.getStatus,{number:number})!
@@ -129,11 +128,11 @@ _SMS = {
 		var maxTime = Date.now() + 60000 * _function_argument("timeout");
 		var interval = 1000 * _function_argument("interval");
 		
-		if(_is_nilb(_BAS_SMSCONFIRMDATA) || _is_nilb(_BAS_SMSCONFIRMDATA[number])){
+		if(_is_nilb(_SMS.confirmData) || _is_nilb(_SMS.confirmData[number])){
 			fail((_K=="ru" ? 'Нет информации об номере' : 'No information about the number') + ' "' + number + '"');
 		};
 		
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var api = confirmData.api;
 		var code = null;
 		
@@ -163,21 +162,25 @@ _SMS = {
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
 		
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var api = confirmData.api;
+		
+		_call_function(api.setStatus,{number:number, status:status})!
 		
 		if(status=="1"){
 			confirmData.ready = true;
 		};
 		
-		_call_function(api.setStatus,{number:number, status:status})!
+		if(status=="3"){
+			confirmData.repeat = true;
+		};
 		
 		if(["-1","6","8"].indexOf(status) > -1){
-			delete _BAS_SMSCONFIRMDATA[number];
+			delete _SMS.confirmData[number];
 		};
 	},
 	
-	debug: function(enable){
-		_SMS_DEBUG = (enable==true || enable=="true" || enable==1);
+	setDebug: function(enable){
+		_SMS.debug = (enable==true || enable=="true" || enable==1);
 	}
 };

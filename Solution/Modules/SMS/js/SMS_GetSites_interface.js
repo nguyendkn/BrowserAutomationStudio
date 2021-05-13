@@ -5,7 +5,8 @@
 		default_selector: "string",
 		variants: [
 			"sms-reg.com",
-			"sms-man.ru"
+			"sms-man.ru",
+			"sms-acktiwator.ru"
 		],
 		disable_int: true,
 		value_string: "sms-reg.com",
@@ -13,7 +14,8 @@
 			description: tr("SMS receiving service for which need to get a list of sites."),
 			examples: [
 				{code: "sms-reg.com", description: "https://sms-reg.com"},
-				{code: "sms-man.ru", description: "https://sms-man.ru"}
+				{code: "sms-man.ru", description: "https://sms-man.ru"},
+				{code: "sms-acktiwator.ru", description: "https://sms-acktiwator.ru"}
 			]
 		}
 	}) %>

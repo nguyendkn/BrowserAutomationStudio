@@ -73,7 +73,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	
 	this.getStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var taskId = confirmData.id;
 		
 		_call_function(api.apiRequest,{action:"get_sms", options:{id:taskId}, checkErrors:false})!
@@ -83,28 +83,28 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
+		if(status=="1" || status=="6"){
+			_function_return();
+		};
+		
 		var actions = {
 			"-1":"denial",
-			"1":"1",
 			"3":"get_clearsms",
-			"6":"6",
 			"8":"ban"
 		};
 		
 		api.validateStatus(Object.keys(actions), status);
 		
-		_if(status !== "1" && status !== "6", function(){
-			_call_function(api.apiRequest,{action:actions[status], options:{id:taskId}})!
-		})!
+		_call_function(api.apiRequest,{action:actions[status], options:{id:taskId}})!
 	};
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
 		_call_function(api.getStatus,{number:number})!

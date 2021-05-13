@@ -1,1 +1,1 @@
-_SMS.debug(<%= enable %>);
+_SMS.setDebug(<%= enable %>);

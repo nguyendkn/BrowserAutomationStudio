@@ -51,6 +51,26 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		};
 	};
 	
+	this.getSites = function(){
+		
+		_call_function(api.apiRequest,{action:"getservices"})!
+		var resp = _result_function();
+		
+		_function_return(resp);
+	};
+	
+	this.getCountries = function(){
+		
+		_call_function(api.apiRequest,{action:"countries"})!
+		var resp = _result_function();
+		
+		_function_return(resp.map(function(el){
+			el.id = el.code;
+			delete el.code;
+			return el;
+		}));
+	};
+	
 	this.getNumber = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
@@ -63,7 +83,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 	
 	this.getStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var taskId = confirmData.id;
 		
 		_call_function(api.apiRequest,{action:"getstatus", options:{id:taskId}})!
@@ -73,7 +93,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
 		
@@ -90,7 +110,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _BAS_SMSCONFIRMDATA[number];
+		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
 		_call_function(api.getStatus,{number:number})!

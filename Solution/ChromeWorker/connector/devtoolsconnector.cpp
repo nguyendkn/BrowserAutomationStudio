@@ -406,7 +406,7 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
     {
         Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
 
-        if(ConnectionState != WaitingFirstTab)
+        if(ConnectionState != WaitingFirstTab && !Tab->IsPopupExtension)
         {
             ProcessTabConnection(Tab);
             return;
@@ -955,7 +955,16 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         SendWebSocket("Target.closeTarget", CurrentParams, std::string());
                     }else
                     {
-                        if(Url == "about:blank#newtab")
+                        if(starts_with(Url, "chrome-extension://"))
+                        {
+                            //New tab for extension has been created
+                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                            TabInfo->ConnectionState = TabData::NotStarted;
+                            TabInfo->FrameId = FrameId;
+                            TabInfo->IsPopupExtension = true;
+                            GlobalState.Tabs.push_back(TabInfo);
+                            ProcessTabConnection(TabInfo);
+                        }else if(Url == "about:blank#newtab")
                         {
                             //New tab is opened by using ctrl-click or window.open
 
@@ -997,6 +1006,48 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             GlobalState.SwitchingToDelayedTabIndex = -1;
                         }
                     }
+                }else if(TypeName == "other" && Url.empty())
+                {
+                    //Extension popup is created
+                    std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                    TabInfo->ConnectionState = TabData::NotStarted;
+                    TabInfo->FrameId = FrameId;
+                    TabInfo->IsPopupExtension = true;
+                    GlobalState.Tabs.push_back(TabInfo);
+                    ProcessTabConnection(TabInfo);
+                }else if(TypeName == "background_page")
+                {
+                    //Background page for extension has been created, collect info
+                    std::shared_ptr<ExtensionInfo> ExtInfo;
+                    std::string Id = Parser.GetStringFromJson(Result, "targetInfo.url");
+                    ReplaceAllInPlace(Id,"chrome-extension://","");
+                    if(Id.length() >= 32)
+                    {
+                        Id = Id.substr(0,32);
+
+                        for(std::shared_ptr<ExtensionInfo> ExtInfoCurrent: GlobalState.ExtensionList)
+                        {
+                            if(Id == ExtInfoCurrent->Id)
+                            {
+                                ExtInfo = ExtInfoCurrent;
+                                break;
+                            }
+                        }
+
+                        bool NeedToAdd = false;
+                        if(!ExtInfo)
+                        {
+                            ExtInfo = std::make_shared<ExtensionInfo>();
+                            NeedToAdd = true;
+                        }
+
+                        ExtInfo->Id = Id;
+                        ExtInfo->FrameId = FrameId;
+                        ExtInfo->Name = Parser.GetStringFromJson(Result, "targetInfo.title");
+
+                        if(NeedToAdd)
+                            GlobalState.ExtensionList.push_back(ExtInfo);
+                    }
                 }
             }
         }else if(Method == "Target.attachedToTarget")
@@ -1034,6 +1085,8 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 bool IsCurrentTabClosing = TabId == GlobalState.TabId;
                 std::string FirstTabId;
                 std::string FirstFrameId;
+                //Don't start to switch tab if already switching
+                bool EveryTabIsConnected = true;
 
                 for(auto it = GlobalState.Tabs.begin(); it != GlobalState.Tabs.end(); )
                 {
@@ -1042,6 +1095,10 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         it = GlobalState.Tabs.erase(it);
                     } else
                     {
+                        if((*it)->ConnectionState != TabData::Connected)
+                        {
+                            EveryTabIsConnected = false;
+                        }
                         if(FirstTabId.empty())
                         {
                             FirstTabId = (*it)->TabId;
@@ -1051,7 +1108,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     }
                 }
 
-                if(IsCurrentTabClosing && !FirstTabId.empty() && !FirstFrameId.empty())
+                if(EveryTabIsConnected && IsCurrentTabClosing && !FirstTabId.empty() && !FirstFrameId.empty())
                 {
                     std::map<std::string, Variant> CurrentParams;
                     CurrentParams["targetId"] = Variant(FirstFrameId);
@@ -2243,6 +2300,48 @@ void DevToolsConnector::Focus()
 {
     std::map<std::string, Variant> Params;
     SendWebSocket("Page.bringToFront", Params, GlobalState.TabId);
+}
+
+void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNamePart)
+{
+    std::string Id;
+    for(std::shared_ptr<ExtensionInfo> ExtInfo : GlobalState.ExtensionList)
+    {
+        if(
+            ExtInfo->Id.find(ExtensionIdOrNamePart) != std::string::npos ||
+            ExtInfo->Name.find(ExtensionIdOrNamePart) != std::string::npos
+         )
+        {
+            Id = ExtInfo->Id;
+        }
+    }
+
+    if(!Id.empty())
+    {
+        //Create folder if needed
+        std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
+        CreateDirectoryA(Folder.c_str(), NULL);
+        Folder += GlobalState.ParentProcessId;
+        CreateDirectoryA(Folder.c_str(), NULL);
+
+        //Path of file to write
+        std::string ExtensionPath = Folder + std::string("/") + Id;
+
+        //This will create file, which tells browser to trigger extension
+        try
+        {
+            std::ofstream outfile(ExtensionPath, std::ios::binary);
+            if(outfile.is_open())
+            {
+                outfile << "-";
+            }
+            outfile.flush();
+            outfile.close();
+        } catch(...)
+        {
+
+        }
+    }
 }
 
 void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button, int MousePressed, int KeyboardPresses, int ClickCount)

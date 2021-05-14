@@ -29,4 +29,5 @@ void DevToolsGlobalState::Reset()
     IsProxySet = false;
     IsUserAgentChanged = false;
     UserAgentData.clear();
+    ExtensionList.clear();
 }

@@ -28,6 +28,7 @@ struct TabData
     bool IsSwitchingToTab = false;
     std::string TabId;
     std::string FrameId;
+    bool IsPopupExtension = false;
     bool IsLoading = false;
     std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
     int CurrentWebsocketActionId = 0;
@@ -40,6 +41,13 @@ struct StartupScriptItem
     std::string ScriptId;
     std::string TabId;
     int GroupId;
+};
+
+struct ExtensionInfo
+{
+    std::string Id;
+    std::string Name;
+    std::string FrameId;
 };
 
 struct DevToolsGlobalState
@@ -109,6 +117,9 @@ struct DevToolsGlobalState
     //User agent data
     bool IsUserAgentChanged = false;
     std::string UserAgentData;
+
+    //List of currently active extensions
+    std::vector<std::shared_ptr<ExtensionInfo> > ExtensionList;
 
     //This method is called when restarting browser
     void Reset();

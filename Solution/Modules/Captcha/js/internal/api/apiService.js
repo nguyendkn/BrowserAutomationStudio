@@ -50,10 +50,7 @@
     this.setDefaultRequestParams(data);
 
     _call_function(this.httpRequest, this.getDefaultRequestOptions(data, method))!
-    const response = _result_function();
-    const error = solver.CaptchaApi.getError(response);
-    if (error) fail(error.errorDescription);
-    _function_return(response);
+    _function_return(solver.CaptchaApi.checkForError(_result_function()));
   };
 
   function httpRequest() {

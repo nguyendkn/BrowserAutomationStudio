@@ -1,12 +1,8 @@
 (function (solver) {
-  solver.CaptchaApi.getError = function (response) {
-    if (response && (response['errorCode'] || response['error_text'])) {
-      return {
-        errorId: response['errorId'] || null,
-        errorCode: response['errorCode'] || response['request'],
-        errorDescription: response['errorDescription'] || response['error_text']
-      }
+  solver.CaptchaApi.checkForError = function (response) {
+    if (response && (response['errorCode'] || (response['status'] === 0 && response['request'] !== 'CAPCHA_NOT_READY'))) {
+      return fail('Captcha solving error: ' + (response['errorCode'] || response['request']));
     }
-    return null;
+    return response;
   };
 })(BASCaptchaSolver);

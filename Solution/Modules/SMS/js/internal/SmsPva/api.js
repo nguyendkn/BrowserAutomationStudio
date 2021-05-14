@@ -148,7 +148,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				api.errorHandler((resp.error_msg || resp.not_number) ? (resp.error_msg ? resp.error_msg : resp.not_number) : resp.response);
 			};
 			
-			_if_else((resp.number=="" || resp.number=="null") && (resp.id=="-1" || resp.id=="0"), function(){
+			_if((resp.number=="" || resp.number=="null") && (resp.id=="-1" || resp.id=="0"), function(){
 				_call_function(api.getNumber,{site:site, country:country, number:number})!
 				resp = _result_function();
 			})!

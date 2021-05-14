@@ -20,16 +20,27 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		var resp = api.parseJSON(content);
 		
-		if(resp.response=="5"){
-			api.banService(60);
-		};
+		if(checkErrors){
+			if(resp.response=="2"){
+				if(resp.number=="" && resp.id=="-1"){
+					api.errorHandler('NUMBERS_BUSY');
+				};
+				if(resp.balance=="0.0000"){
+					api.errorHandler('NO_BALANCE');
+				};
+			};
 		
-		if(resp.response=="6"){
-			api.banService(600);
-		};
-		
-		if(checkErrors && resp.response!=="1"){
-			api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
+			if(resp.response=="5"){
+				api.banService(60);
+			};
+			
+			if(resp.response=="6"){
+				api.banService(600);
+			};
+			
+			if(resp.response !== "1"){
+				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
+			};
 		};
 
 		_function_return(resp);
@@ -145,9 +156,30 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				"action": "die",
 				"instantly": false
 			},
+			"NO_BALANCE": {
+				"ru": "Закончился баланс.",
+				"en": "Balance ended.",
+				"action": "die",
+				"instantly": false
+			},
 			"Service NOT FOUND!": {
 				"ru": "Сервис не найден.",
 				"en": "Service not found.",
+				"action": "fail"
+			},
+			"NUMBERS_BUSY": {
+				"ru": "Номера заняты, пробуйте получить номер заново через 30 секунд.",
+				"en": "Numbers are already taken, try to get a number again in 60 seconds.",
+				"action": "fail"
+			},
+			"2": {
+				"ru": "Не удалось изменить статус активации.",
+				"en": "Failed to change activation status.",
+				"action": "fail"
+			},
+			"3": {
+				"ru": "id неверный или уже истек его срок.",
+				"en": "id is invalid or has already expired.",
 				"action": "fail"
 			},
 			"5": {

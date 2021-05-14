@@ -32,23 +32,6 @@
       ]
     },
     {
-      "name": "FunCaptchaDefault",
-      "description": {
-        "ru": "Решить FunCaptcha",
-        "en": "Solve FunCaptcha"
-      },
-      "template": "{{PATH}}",
-      "is_element": false,
-      "interface": "actions/interface/funCaptchaDefault.js",
-      "select": "actions/select/funCaptchaDefault.js",
-      "code": [
-        {
-          "file": "actions/code/funCaptchaDefault.js",
-          "name": "funCaptchaDefault_code"
-        }
-      ]
-    },
-    {
       "name": "CaptchaDebugMode",
       "description": {
         "ru": "Режим отладки",

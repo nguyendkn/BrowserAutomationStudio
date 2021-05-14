@@ -2,18 +2,25 @@ const taskWaitInterval = GetInputConstructorValue('taskWaitInterval', loader);
 const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
 const sendProxy = GetInputConstructorValue('sendProxy', loader);
 const userAgent = GetInputConstructorValue('userAgent', loader);
+const pageUrl = GetInputConstructorValue('pageUrl', loader);
 const service = GetInputConstructorValue('service', loader);
 const apiUrl = GetInputConstructorValue('apiUrl', loader);
 const apiKey = GetInputConstructorValue('apiKey', loader);
 
 if (!taskWaitInterval.original.length) {
-  return Invalid('The "Task wait interval" param is empty');
-} else if (!taskWaitDelay.original.length) {
-  return Invalid('The "Task wait delay" param is empty');
-} else if (!service.original.length) {
-  return Invalid('The "Service" param is empty');
-} else if (!apiKey.original.length) {
-  return Invalid('The "Api Key" param is empty');
+  return Invalid(tr('The "Task wait interval" parameter is empty'));
+}
+if (!taskWaitDelay.original.length) {
+  return Invalid(tr('The "Task wait delay" parameter is empty'));
+}
+if (!pageUrl.original.length) {
+  return Invalid(tr('The "Page url" parameter is empty'));
+}
+if (!service.original.length) {
+  return Invalid(tr('The "Service" parameter is empty'));
+}
+if (!apiKey.original.length) {
+  return Invalid(tr('The "Api Key" parameter is empty'));
 }
 
 try {

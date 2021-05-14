@@ -23,6 +23,13 @@
     disable_int: true,
     id: 'apiKey'
   }) %>
+  <%= _.template($('#input_constructor').html())({
+    help: { description: tr('Address of the page where the captcha is being solved') },
+    description: tr('Page url'),
+    default_selector: 'string',
+    disable_int: true,
+    id: 'pageUrl'
+  }) %>
   <div style="margin-left: 20px;">
     <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
     <label for="AdvancedCheck" class="tr">Advanced settings.</label>

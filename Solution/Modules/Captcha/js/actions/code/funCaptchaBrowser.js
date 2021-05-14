@@ -9,15 +9,13 @@ BASCaptchaSolver.path = function () {
   return (<%= path %>);
 };
 
-url()!
-
 _call_function(BASCaptchaSolver.solveFunCaptcha, {
+  proxy: BASCaptchaSolver.utils.getProxy(<%= sendProxy %>, null, null, null, null),
   taskWaitInterval: <%= taskWaitInterval %>,
   taskWaitDelay: <%= taskWaitDelay %>,
-  proxy: <%= sendProxy %> ? _PROXY : {},
   userAgent: <%= userAgent %>,
+  pageUrl : <%= pageUrl %>,
   service: <%= service %>,
   apiUrl: <%= apiUrl %>,
   apiKey: <%= apiKey %>,
-  pageUrl : _result()
 })!

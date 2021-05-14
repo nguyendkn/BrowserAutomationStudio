@@ -29,6 +29,7 @@
       taskWaitInterval: _function_argument('taskWaitInterval'),
       taskWaitDelay: _function_argument('taskWaitDelay'),
       task: new BASCaptchaSolver.api.FunCaptchaTask({
+        userAgent: _function_argument('userAgent'),
         pageUrl: _function_argument('pageUrl'),
         proxy: _function_argument('proxy'),
         subdomainUrl: surl,

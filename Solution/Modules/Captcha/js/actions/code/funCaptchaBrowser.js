@@ -10,7 +10,7 @@ BASCaptchaSolver.path = function () {
 };
 
 _call_function(BASCaptchaSolver.solveFunCaptcha, {
-  proxy: BASCaptchaSolver.utils.getProxy(<%= sendProxy %>, null, null, null, null),
+  proxy: String(<%= sendProxy %>).toLowerCase() == 'true' ? _PROXY : {},
   taskWaitInterval: <%= taskWaitInterval %>,
   taskWaitDelay: <%= taskWaitDelay %>,
   userAgent: <%= userAgent %>,

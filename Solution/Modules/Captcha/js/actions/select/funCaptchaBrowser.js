@@ -27,8 +27,9 @@ try {
   const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptchaBrowser_code').html())({
     taskWaitInterval: taskWaitInterval.updated,
     taskWaitDelay: taskWaitDelay.updated,
-    userAgent: userAgent.updated,
     sendProxy: sendProxy.updated,
+    userAgent: userAgent.updated,
+    pageUrl: pageUrl.updated,
     service: service.updated,
     apiUrl: apiUrl.updated,
     apiKey: apiKey.updated,

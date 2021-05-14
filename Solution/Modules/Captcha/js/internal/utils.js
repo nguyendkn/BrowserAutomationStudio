@@ -1,21 +1,5 @@
 (function (solver) {
   solver.utils = {
-    getProxy: function (sendProxy, source, login, password, type) {
-      if (typeof (sendProxy) === 'boolean') return sendProxy ? _PROXY : {};
-      const hash = proxy_parse(source);
-
-      if (password.length && login.length) {
-        hash["password"] = password;
-        hash["name"] = login;
-      }
-
-      if (type !== 'auto') {
-        hash['IsHttp'] = type === 'http';
-      }
-
-      return hash;
-    },
-
     inherit: function (parent, fn) {
       fn.prototype = Object.create(parent.prototype);
       fn.prototype.constructor = fn;

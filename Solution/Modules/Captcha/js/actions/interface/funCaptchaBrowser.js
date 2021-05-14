@@ -2,7 +2,7 @@
   <%= _.template($('#path').html())({ selector }) %>
   <%= _.template($('#input_constructor').html())({
     variants: [ 'anticaptcha', 'rucaptcha', '2captcha' ],
-    description: tr('Solve Serivce'),
+    description: tr('Service Name'),
     value_string: 'anticaptcha',
     default_selector: 'string',
     disable_int: true,
@@ -18,7 +18,7 @@
   }) %>
   <%= _.template($('#input_constructor').html())({
     help: { description: tr('Captcha solving service API key') },
-    description: tr('Service Api Key'),
+    description: tr('Service API key'),
     default_selector: 'string',
     disable_int: true,
     id: 'apiKey'

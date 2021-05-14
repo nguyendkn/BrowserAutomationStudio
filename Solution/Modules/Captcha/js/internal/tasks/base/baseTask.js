@@ -34,7 +34,7 @@
         } else {
           fail('Параметр "' + key + '" не указан');
         }
-      } else {
+      } else if (typeof(param) !== 'undefined') {
         self.data[rule.name || key] = param;
       }
     });

@@ -14,7 +14,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		api.banThread(20);
 		
-		if(!_is_json_string(content)){
+		if(!_is_json_string(content) && content.indexOf('<!DOCTYPE html>') < 0 && content.indexOf('<html>') < 0){
 			api.errorHandler(content);
 		};
 		
@@ -68,15 +68,17 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var numberWithoutPrefix = resp.number;
 		var number = prefix + resp.number;
 		
-		_function_return({api:api, id:id, lastId:id, number:number, numberWithoutPrefix:numberWithoutPrefix, prefix:prefix});
+		_function_return({api:api, id:id, lastId:id, number:number, numberWithoutPrefix:numberWithoutPrefix, prefix:prefix, site:site, country:country});
 	};
 	
 	this.getStatus = function(){
 		var number = _function_argument("number");
 		var confirmData = _SMS.confirmData[number];
 		var taskId = confirmData.id;
+		var site = confirmData.site;
+		var country = confirmData.country;
 		
-		_call_function(api.apiRequest,{action:"get_sms", options:{id:taskId}, checkErrors:false})!
+		_call_function(api.apiRequest,{action:"get_sms", options:{service:site, country:country, id:taskId}, checkErrors:false})!
 		
 		_function_return(_result_function());
 	};
@@ -86,6 +88,8 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
 		var taskId = confirmData.id;
+		var site = confirmData.site;
+		var country = confirmData.country;
 		
 		if(status=="1" || status=="6"){
 			_function_return();
@@ -99,7 +103,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		api.validateStatus(Object.keys(actions), status);
 		
-		_call_function(api.apiRequest,{action:actions[status], options:{id:taskId}})!
+		_call_function(api.apiRequest,{action:actions[status], options:{service:site, country:country, id:taskId}})!
 	};
 	
 	this.getCode = function(){
@@ -110,10 +114,10 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		_call_function(api.getStatus,{number:number})!
 		var resp = _result_function();
 		
-		if(resp.response==1){
+		if(resp.response=="1"){
 			code = resp.sms;
 		}else{
-			if(resp.response !== 2){
+			if(resp.response !== "2"){
 				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
 			};
 		};
@@ -129,9 +133,56 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				"action": "die",
 				"instantly": true
 			},
+			"API KEY не получен!": {
+				"ru": "Неверный API-ключ.",
+				"en": "Invalid API key.",
+				"action": "die",
+				"instantly": true
+			},
+			"Недостаточно средств!": {
+				"ru": "Закончился баланс.",
+				"en": "Balance ended.",
+				"action": "die",
+				"instantly": false
+			},
 			"Service NOT FOUND!": {
 				"ru": "Сервис не найден.",
 				"en": "Service not found.",
+				"action": "fail"
+			},
+			"5": {
+				"ru": "Превышено количество запросов в минуту.",
+				"en": "You have exceeded the number of requests per minute.",
+				"action": "fail"
+			},
+			"6": {
+				"ru": "Вы забанены на 10 минут, т.к. набрали отрицательную карму.",
+				"en": "You will be banned for 10 minutes, because scored negative karma.",
+				"action": "fail"
+			},
+			"6": {
+				"ru": "Превышено количество одновременных потоков. Дождитесь смс от предыдущих заказов.",
+				"en": "You have exceeded the number of concurrent streams. SMS Wait from previous orders.",
+				"action": "fail"
+			},
+			"Превышено количество попыток!": {
+				"ru": "Задайте больший интервал между вызовами к серверу API.",
+				"en": "Set a longer interval between calls to API server.",
+				"action": "fail"
+			},
+			"Произошла неизвестная ошибка.": {
+				"ru": "Попробуйте повторить запрос позже.",
+				"en": "Try to repeat your request later.",
+				"action": "fail"
+			},
+			"Неверный запрос.": {
+				"ru": "Проверьте синтаксис запроса и список используемых параметров (его можно найти на странице с описанием метода).",
+				"en": "Check the request syntax and the list of parameters used (can be found on the page with method description).",
+				"action": "fail"
+			},
+			"Произошла внутренняя ошибка сервера.": {
+				"ru": "Попробуйте повторить запрос позже.",
+				"en": "Try to repeat your request later.",
 				"action": "fail"
 			}
 		};

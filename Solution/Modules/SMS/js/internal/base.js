@@ -116,6 +116,12 @@ _SMS.BaseApi = function(config, data, path){
 		})!
 	};
 	
+	this.sleep = function(){
+		var time = _function_argument("time");
+		
+		sleep(time)!
+	};
+	
 	this.request = function(){
 		var url = _function_argument("url");
 		var method = _function_argument("method");
@@ -165,7 +171,7 @@ _SMS.BaseApi = function(config, data, path){
 				_break();
 			};
 			
-			sleep(1000)!
+			_call_function(api.sleep,{time:2000})!
 		})!
 		
 		FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;

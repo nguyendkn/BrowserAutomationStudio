@@ -16,7 +16,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		
 		var resp = api.parseJSON(content);
 		
-		if(checkErrors && resp.response!=1){
+		if(checkErrors && resp.response !== "1"){
 			api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
 		};
 
@@ -65,16 +65,19 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
 			};
 			
-			sleep(1000)!
+			_call_function(api.sleep,{time:5000})!
 		})!
 	};
 	
 	this.getStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
-		var lastId = confirmData.lastId;
+		var confirmData = _function_argument("confirmData");
+		if(_is_nilb(confirmData)){
+			confirmData = _SMS.confirmData[number];
+		};
+		var taskId = confirmData.id;
 		
-		_call_function(api.apiRequest,{action:"getState", options:{tzid:lastId}, checkErrors:false})!
+		_call_function(api.apiRequest,{action:"getState", options:{tzid:taskId}, checkErrors:false})!
 		
 		_function_return(_result_function());
 	};
@@ -95,14 +98,12 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		
 		api.validateStatus(Object.keys(actions), status);
 		
-		var action = actions[status];
-		
-		_call_function(api.apiRequest,{action:action, options:{tzid:taskId}})!
-		var resp = _result_function();
-		
-		if(status=="3"){
-			confirmData.lastId = resp.tzid;
-		};
+		_if_else(status=="3", function(){
+			_function_return();
+		}, function(){
+			_call_function(api.apiRequest,{action:actions[status], options:{tzid:taskId}, checkErrors:("1" !== status)})!
+			var resp = _result_function();
+		})!
 	};
 	
 	this.getCode = function(){
@@ -113,10 +114,14 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		_call_function(api.getStatus,{number:number})!
 		var resp = _result_function();
 		
-		if(resp.response=='TZ_NUM_ANSWER'){
-			code = _is_nilb(resp.msg) ? resp.full_msg : resp.msg;
+		if(['TZ_NUM_ANSWER','TZ_OVER_OK'].indexOf(resp.response) > -1){
+			var new_code = _is_nilb(resp.msg) ? resp.full_msg : resp.msg;
+			if(_is_nilb(confirmData.code) || new_code !== confirmData.code){
+				code = new_code;
+				confirmData.code = new_code;
+			};
 		}else{
-			if(resp.response != 'TZ_NUM_WAIT'){
+			if(['TZ_NUM_WAIT','TZ_NUM_PREPARE'].indexOf(resp.response) < 0){
 				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
 			};
 		};

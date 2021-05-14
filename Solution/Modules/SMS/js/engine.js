@@ -148,7 +148,7 @@ _SMS = {
 			_call_function(api.getCode,{number:number})!
 			code = _result_function();
 			
-			if(!_is_nilb(code)){
+			if(!_is_nilb(code) && code !== false){
 				_break();
 			};
 			

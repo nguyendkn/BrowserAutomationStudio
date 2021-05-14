@@ -83,9 +83,9 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	this.getStatus = function(){
 		var number = _function_argument("number");
 		var confirmData = _SMS.confirmData[number];
-		var taskId = confirmData.id;
+		var lastId = confirmData.lastId;
 		
-		_call_function(api.apiRequest,{action:"getState", options:{tzid:taskId, msg_list:0, clean:1}, checkErrors:false})!
+		_call_function(api.apiRequest,{action:"getState", options:{tzid:lastId, msg_list:0, clean:1}, checkErrors:false})!
 		var resp = _result_function();
 		if(Array.isArray(resp)){
 			resp = resp[0];
@@ -112,6 +112,11 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		api.validateStatus(Object.keys(actions), status);
 		
 		_call_function(api.apiRequest,{action:actions[status], options:{tzid:taskId}})!
+		var resp = _result_function();
+		
+		if(status=="3"){
+			confirmData.lastId = resp.tzid;
+		};
 	};
 	
 	this.getCode = function(){

@@ -33,7 +33,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		};
 		
 		if(checkErrors && resp.response !== "1"){
-			if(!(resp.response=="2" && (resp.number=="" || resp.number=="null") && (resp.id=="-1" || resp.id=="0"))){
+			if(!(resp.response=="2" && ["","null"].indexOf(resp.number) > -1 && [-1,0,"-1","0"].indexOf(resp.id) > -1)){
 				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
 			};
 		};
@@ -99,7 +99,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				};
 			};
 			
-			sleep(1000)!
+			_call_function(api.sleep,{time:5000})!
 		})!
 	};
 	
@@ -148,7 +148,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				api.errorHandler((resp.error_msg || resp.not_number) ? (resp.error_msg ? resp.error_msg : resp.not_number) : resp.response);
 			};
 			
-			_if((resp.number=="" || resp.number=="null") && (resp.id=="-1" || resp.id=="0"), function(){
+			_if(["","null"].indexOf(resp.number) > -1 && [-1,0,"-1","0"].indexOf(resp.id) > -1, function(){
 				_call_function(api.getNumber,{site:site, country:country, number:number})!
 				resp = _result_function();
 			})!

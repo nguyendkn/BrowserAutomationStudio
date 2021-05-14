@@ -39,7 +39,7 @@
       }
     });
 
-    return self.applyProxy(self.params.proxy);
+    return self.applyProxy(self.params.proxy, self.params.cookies, self.params.userAgent);
   };
 
   solver.tasks.BaseTask = BaseTask;

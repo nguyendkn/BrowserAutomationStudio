@@ -32,12 +32,12 @@
 		<%= _.template($('#input_constructor').html())({id:"proxyLogin", description:tr("Proxy Login. Can be blank."), default_selector: "string", disable_int:true, help: {description: tr("Proxy login, overrides login set in proxy string. Useful if you have many proxy with same login and password.")}}) %>
 		<%= _.template($('#input_constructor').html())({id:"proxyPassword", description:tr("Proxy password. Can be blank."), default_selector: "string", disable_int:true, help: {description: tr("Proxy password, overrides password set in proxy string. Useful if you have many proxy with same login and password.")}}) %>
     <%= _.template($('#input_constructor').html())({
+      value_string: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
       description: tr('User Agent'),
       default_selector: 'string',
       disable_int: true,
-      value_string: '',
       id: 'userAgent',
-      help: { description: tr('') }
+      help: { description: tr('User-Agent that will be used by the service for solving captchas.') }
     }) %>
     <%= _.template($('#input_constructor').html())({
       description: tr('Custom service api url'),

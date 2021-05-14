@@ -4,13 +4,14 @@
     this.data['method'] = this.name;
   });
 
-  RuCaptchaTask.prototype.applyProxy = function (proxy) {
+  RuCaptchaTask.prototype.applyProxy = function (proxy, _, userAgent) {
     if (proxy != null && proxy.server && proxy.Port) {
       this.data['proxy'] = proxy.server + ':' + proxy.Port;
       if (proxy.password && proxy.name) {
         this.data['proxy'] = proxy.name + ':' + proxy.password + '@' + this.data['proxy'];
       }
       this.data['proxytype'] = proxy['IsHttp'] ? 'HTTP' : 'SOCKS5';
+      this.data['userAgent'] = userAgent;
     }
     return this.data;
   };

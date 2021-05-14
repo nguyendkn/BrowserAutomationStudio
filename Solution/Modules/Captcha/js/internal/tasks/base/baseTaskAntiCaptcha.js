@@ -4,7 +4,7 @@
     this.data['type'] = this.name;
   });
 
-  AntiCaptchaTask.prototype.applyProxy = function (proxy) {
+  AntiCaptchaTask.prototype.applyProxy = function (proxy, _, userAgent) {
     if (proxy != null && proxy.server && proxy.Port) {
       if (proxy.password && proxy.name) {
         this.data['proxyPassword'] = proxy.password;
@@ -13,6 +13,7 @@
       this.data['proxyType'] = proxy['IsHttp'] ? 'http' : 'socks5';
       this.data['proxyAddress'] = proxy.server;
       this.data['proxyPort'] = proxy.Port;
+      this.data['userAgent'] = userAgent;
     }
     return this.data;
   };

@@ -20,25 +20,20 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		var resp = api.parseJSON(content);
 		
-		if(checkErrors){
-			if(resp.response=="2"){
-				if(resp.number=="" && resp.id=="-1"){
-					api.errorHandler('NUMBERS_BUSY');
-				};
-				if(resp.balance=="0.0000"){
-					api.errorHandler('NO_BALANCE');
-				};
-			};
+		if(resp.response=="2" && resp.balance=="0.0000"){
+			api.errorHandler('NO_BALANCE');
+		};
+	
+		if(resp.response=="5"){
+			api.banService(60);
+		};
 		
-			if(resp.response=="5"){
-				api.banService(60);
-			};
-			
-			if(resp.response=="6"){
-				api.banService(600);
-			};
-			
-			if(resp.response !== "1"){
+		if(resp.response=="6"){
+			api.banService(600);
+		};
+		
+		if(checkErrors && resp.response !== "1"){
+			if(!(resp.response=="2" && (resp.number=="" || resp.number=="null") && (resp.id=="-1" || resp.id=="0"))){
 				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
 			};
 		};
@@ -70,16 +65,42 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	this.getNumber = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
+		var number = _function_argument("number");
+		var numberWithoutPrefix = "";
+		var confirmData = {};
+		if(!_is_nilb(number)){
+			confirmData = _SMS.confirmData[number];
+			site = confirmData.site;
+			country = confirmData.country;
+			numberWithoutPrefix = confirmData.numberWithoutPrefix;
+		};
 		
-		_call_function(api.apiRequest,{action:"get_number", options:{service:site, country:country}})!
-		var resp = _result_function();
-		
-		var id = resp.id;
-		var prefix = api.removePlus(resp.CountryCode);
-		var numberWithoutPrefix = resp.number;
-		var number = prefix + resp.number;
-		
-		_function_return({api:api, id:id, lastId:id, number:number, numberWithoutPrefix:numberWithoutPrefix, prefix:prefix, site:site, country:country});
+		var maxNumberWait = Date.now() + 600000;
+		_do(function(){
+			if(Date.now() > maxNumberWait){
+				api.errorHandler("ACTION_TIMEOUT", "getNumber");
+			};
+			
+			_call_function(api.apiRequest,{action:"get_number", options:{service:site, country:country, number:numberWithoutPrefix}})!
+			var resp = _result_function();
+			
+			if(resp.response=="1"){
+				if(_is_nilb(resp.CountryCode)){
+					confirmData.id = resp.id;
+					
+					_function_return(confirmData);
+				}else{
+					var id = resp.id;
+					var prefix = api.removePlus(resp.CountryCode);
+					var numberWithoutPrefix = resp.number;
+					var number = prefix + resp.number;
+					
+					_function_return({api:api, id:id, number:number, numberWithoutPrefix:numberWithoutPrefix, prefix:prefix, site:site, country:country});
+				};
+			};
+			
+			sleep(1000)!
+		})!
 	};
 	
 	this.getStatus = function(){
@@ -101,6 +122,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var taskId = confirmData.id;
 		var site = confirmData.site;
 		var country = confirmData.country;
+		var numberWithoutPrefix = confirmData.numberWithoutPrefix;
 		
 		if(status=="1" || status=="6"){
 			_function_return();
@@ -108,13 +130,30 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		var actions = {
 			"-1":"denial",
-			"3":"get_clearsms",
+			"3":"get_proverka",
 			"8":"ban"
 		};
 		
 		api.validateStatus(Object.keys(actions), status);
 		
-		_call_function(api.apiRequest,{action:actions[status], options:{service:site, country:country, id:taskId}})!
+		_if(status=="-1" || status=="8", function(){
+			_call_function(api.apiRequest,{action:actions[status], options:{service:site, country:country, id:taskId}})!
+		})!
+		
+		_if(status=="3", function(){
+			_call_function(api.apiRequest,{action:actions[status], options:{service:site, country:country, number:numberWithoutPrefix}, checkErrors:false})!
+			var resp = _result_function();
+			
+			if(resp.response !== "ok"){
+				api.errorHandler((resp.error_msg || resp.not_number) ? (resp.error_msg ? resp.error_msg : resp.not_number) : resp.response);
+			};
+			
+			_if_else((resp.number=="" || resp.number=="null") && (resp.id=="-1" || resp.id=="0"), function(){
+				_call_function(api.getNumber,{site:site, country:country, number:number})!
+				resp = _result_function();
+			})!
+			_SMS.confirmData[number].id = resp.id;
+		})!
 	};
 	
 	this.getCode = function(){
@@ -126,7 +165,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var resp = _result_function();
 		
 		if(resp.response=="1"){
-			code = resp.sms;
+			code = _is_nilb(resp.sms) ? resp.text : resp.sms;
 		}else{
 			if(resp.response !== "2"){
 				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
@@ -165,11 +204,6 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			"Service NOT FOUND!": {
 				"ru": "Сервис не найден.",
 				"en": "Service not found.",
-				"action": "fail"
-			},
-			"NUMBERS_BUSY": {
-				"ru": "Номера заняты, пробуйте получить номер заново через 30 секунд.",
-				"en": "Numbers are already taken, try to get a number again in 60 seconds.",
 				"action": "fail"
 			},
 			"2": {

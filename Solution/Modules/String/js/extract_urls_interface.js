@@ -7,6 +7,6 @@
 	<div class="tr tooltip-paragraph-fold">This action will return a list containing the links obtained from the string.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"Test text http://test.com, string test example.org"</code> is specified, then the action will return <code>["http://test.com", "example.org"]</code>.</div>
 	<div class="tr tooltip-paragraph-fold">The list can be processed using actions from the "List" module.</div>
-	<div class="tr tooltip-paragraph-last-fold">You can parse a link to items using the "Parse URL" action.</div>
+	<div class="tr tooltip-paragraph-last-fold">You can parse a link to items using the "Parse URL" action from the "URL" module.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

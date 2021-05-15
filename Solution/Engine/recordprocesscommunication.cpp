@@ -49,7 +49,7 @@ namespace BrowserAutomationStudioFramework
         return res;
     }
 
-    void RecordProcessCommunication::SendCode(const QString& Code,const QString& Schema, const QString& EmbeddedLanguageData, bool IsTesting)
+    void RecordProcessCommunication::SendCode(const QString& Code,const QString& Schema, const QString& EmbeddedLanguageData, bool IsTesting, const QString& ScriptEngineVersion, const QString& ApplicationEngineVersion)
     {
         this->IsTesting = IsTesting;
 
@@ -68,18 +68,28 @@ namespace BrowserAutomationStudioFramework
                 xmlWriter.writeStartElement("EmbeddedLanguageData");
                 xmlWriter.writeCharacters(EmbeddedLanguageData);
                 xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ApplicationEngineVersion");
+                xmlWriter.writeCharacters(ApplicationEngineVersion);
+                xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ScriptEngineVersion");
+                xmlWriter.writeCharacters(ScriptEngineVersion);
+                xmlWriter.writeEndElement();
 
             xmlWriter.writeEndElement();
             Comunicator->Send(WriteString);
             SendData.clear();
             SendDataSchema.clear();
             SendEmbeddedData.clear();
+            SendScriptEngineVersion.clear();
+            SendApplicationEngineVersion.clear();
 
         }else
         {
             SendData = Code;
             SendDataSchema = Schema;
             SendEmbeddedData = EmbeddedLanguageData;
+            SendScriptEngineVersion = ScriptEngineVersion;
+            SendApplicationEngineVersion = ApplicationEngineVersion;
         }
     }
 
@@ -311,12 +321,20 @@ namespace BrowserAutomationStudioFramework
                 xmlWriter.writeStartElement("EmbeddedLanguageData");
                 xmlWriter.writeCharacters(SendEmbeddedData);
                 xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ApplicationEngineVersion");
+                xmlWriter.writeCharacters(SendApplicationEngineVersion);
+                xmlWriter.writeEndElement();
+                xmlWriter.writeStartElement("ScriptEngineVersion");
+                xmlWriter.writeCharacters(SendScriptEngineVersion);
+                xmlWriter.writeEndElement();
 
             xmlWriter.writeEndElement();
             Comunicator->Send(WriteString);
             SendData.clear();
             SendDataSchema.clear();
             SendEmbeddedData.clear();
+            SendScriptEngineVersion.clear();
+            SendApplicationEngineVersion.clear();
         }
 
         if(!SendResourcesString.isEmpty() && Comunicator)

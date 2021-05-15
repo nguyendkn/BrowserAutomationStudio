@@ -1880,7 +1880,7 @@ mark
   z-index: 2;
 }
 
-.selected
+.tooltitle .selected
 {
   width: 16px;
   height: 16px;
@@ -1958,6 +1958,126 @@ mark
   opacity: 0.3 !important;
 }
 
+/************************
+ * Global select styles *
+ ************************/
+
+.bootstrap-select .dropdown-menu > li.selected > a::after {
+  visibility: visible;
+}
+
+.bootstrap-select .dropdown-menu > li > a::after {
+  background: url(icons/check.svg) no-repeat;
+  visibility: hidden;
+  cursor: pointer;
+  display: block;
+  content: " ";
+  height: 16px;
+  width: 16px;
+}
+
+.bootstrap-select .dropdown-menu li a span.text {
+  padding-right: inherit;
+  display: inline-block;
+}
+
+.bootstrap-select.open > .dropdown-toggle:after {
+  content: "\f106";
+}
+
+.bootstrap-select > .dropdown-toggle::after {
+  font-family: FontAwesome;
+  text-align: center;
+  line-height: 16px;
+  content: "\f107";
+  font-size: 16px;
+  min-width: 16px;
+  height: 16px;
+  width: 16px;
+}
+
+.bootstrap-select .dropdown-toggle:focus {
+  outline: 0 !important;
+}
+
+.bootstrap-select .dropdown-toggle:hover {
+  outline: 0 !important;
+}
+
+.bootstrap-select .dropdown-menu {
+  min-width: 100% !important;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.bootstrap-select.disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/************************
+ * Custom button styles *
+ ************************/
+
+.btn-base.btn-cancel:focus,
+.btn-base.btn-cancel:hover,
+.btn-base.btn-accept:focus,
+.btn-base.btn-accept:hover {
+  color: #ffffff;
+}
+
+.btn-base.btn-cancel:hover {
+  opacity: 0.7;
+}
+
+.btn-base.btn-accept:hover {
+  opacity: 0.8;
+}
+
+.btn-base.btn-cancel {
+  border: 1px solid #d8695f;
+  background: #d8695f;
+  border-radius: 2px;
+  color: #ffffff;
+}
+
+.btn-base.btn-accept {
+  border: 1px solid #9d996c;
+  background: #9d996c;
+  border-radius: 2px;
+  color: #ffffff;
+}
+
+.btn-base:active,
+.btn-base:hover,
+.btn-base:focus {
+  outline: none !important;
+  text-decoration: none;
+}
+
+.btn-base {
+  transition: all 0.3s ease-in-out;
+  border: 1px solid transparent;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  letter-spacing: -0.2px;
+  vertical-align: middle;
+  display: inline-block;
+  text-align: center;
+  padding: 10px 12px;
+  user-select: none;
+  line-height: 18px;
+  min-width: 140px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  color: #fff;
+  outline: 0;
+}
+
 /********************
  * Scrollbar styles *
  ********************/
@@ -1975,4 +2095,16 @@ mark
 ::-webkit-scrollbar {
   height: 8px;
   width: 8px;
+}
+
+/******************
+ * Utility styles *
+ ******************/
+
+.overflow-visible {
+  overflow: visible !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
 }

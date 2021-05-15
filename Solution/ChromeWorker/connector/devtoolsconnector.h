@@ -225,6 +225,8 @@ class DevToolsConnector
         Async RestoreCookies(const std::string& Cookies, int Timeout = -1);
         Async SaveCookies(int Timeout = -1);
 
+        //Extensions
+        void TriggerExtensionButton(const std::string ExtensionIdOrNamePart);
 
 };
 

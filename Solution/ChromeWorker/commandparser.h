@@ -33,6 +33,7 @@ public:
     std::vector<std::function<void(const std::string&)> > EventSetUserAgent;
     std::vector<std::function<void(const std::string&)> > EventPrepareFunction;
     std::vector<std::function<void(const std::string&)> > EventRecaptchaV3List;
+    std::vector<std::function<void(const std::string&)> > EventClickExtensionButton;
     std::vector<std::function<void(const std::string&,const std::string&)> > EventRecaptchaV3Result;
     std::vector<std::function<void(const std::string&)> > EventSetOpenFileName;
     std::vector<std::function<void(const std::string&)> > EventDragFile;

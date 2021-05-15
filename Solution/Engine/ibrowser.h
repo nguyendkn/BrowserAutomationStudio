@@ -72,6 +72,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SendRecaptchaV3List(const QString& action, const QString& callback) = 0;
         virtual void SendRecaptchaV3Result(const QString& id,const QString& result) = 0;
         virtual void SendWorkerSettings(const QString& json, const QString& callback) = 0;
+        virtual void ClickExtensionButton(const QString& id, const QString& callback) = 0;
         virtual bool HasBrowserProcess() = 0;
         virtual QString GetBrowserEngine() = 0;
 

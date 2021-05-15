@@ -2,7 +2,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
     const api = this;
 	_SMS.BaseApi.call(this, config, data, '/priemnik.php');
 	
-	this.apiRequest = function(){
+	this.makeRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
@@ -32,9 +32,9 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			api.banService(600);
 		};
 		
-		if(checkErrors && resp.response !== "1"){
+		if(checkErrors && !_is_nilb(resp.response) && resp.response !== "1" && resp.response !== "ok"){
 			if(!(resp.response=="2" && ["","null"].indexOf(resp.number) > -1 && [-1,0,"-1","0"].indexOf(resp.id) > -1)){
-				api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
+				api.errorHandler((resp.error_msg || resp.not_number) ? (resp.error_msg ? resp.error_msg : resp.not_number) : resp.response);
 			};
 		};
 
@@ -42,7 +42,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"get_balance"})!
+		_call_function(api.makeRequest,{action:"get_balance"})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -56,7 +56,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			fail(api.name + ': ' + (_K=="ru" ? 'Данный сервис не поддерживает получение количества номеров для всех сайтов, возможно получить количество номеров для одного сайта за раз.' : 'This service does not support getting the count of numbers for all sites, it is possible to get the count of numbers for one site at a time.'));
 		};
 		
-		_call_function(api.apiRequest,{action:"get_count_new", options:{service:site, country:country}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"get_count_new", options:{service:site, country:country}})!
 		var resp = _result_function();
 		
 		_function_return(resp.online);
@@ -81,7 +81,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				api.errorHandler("ACTION_TIMEOUT", "getNumber");
 			};
 			
-			_call_function(api.apiRequest,{action:"get_number", options:{service:site, country:country, number:numberWithoutPrefix}})!
+			_call_function(api.makeRequest,{action:"get_number", options:{service:site, country:country, number:numberWithoutPrefix}})!
 			var resp = _result_function();
 			
 			if(resp.response=="1"){
@@ -103,30 +103,18 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		})!
 	};
 	
-	this.getStatus = function(){
+	this.getState = function(){
 		var number = _function_argument("number");
 		var confirmData = _SMS.confirmData[number];
-		var taskId = confirmData.id;
-		var site = confirmData.site;
-		var country = confirmData.country;
 		
-		_call_function(api.apiRequest,{action:"get_sms", options:{service:site, country:country, id:taskId}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"get_sms", options:{service:confirmData.site, country:confirmData.country, id:confirmData.id}, checkErrors:false})!
 		
 		_function_return(_result_function());
 	};
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
-		var taskId = confirmData.id;
-		var site = confirmData.site;
-		var country = confirmData.country;
-		var numberWithoutPrefix = confirmData.numberWithoutPrefix;
-		
-		if(status=="1" || status=="6"){
-			_function_return();
-		};
 		
 		var actions = {
 			"-1":"denial",
@@ -134,34 +122,36 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			"8":"ban"
 		};
 		
-		api.validateStatus(Object.keys(actions), status);
+		if(Object.keys(actions).indexOf(status) < 0){
+			_function_return();
+		};
 		
-		_if(status=="-1" || status=="8", function(){
-			_call_function(api.apiRequest,{action:actions[status], options:{service:site, country:country, id:taskId}})!
-		})!
+		var confirmData = _SMS.confirmData[number];
+		var options = {service:confirmData.site, country:confirmData.country};
+		if(status=="3"){
+			options.number = confirmData.numberWithoutPrefix;
+		}else{
+			options.id = confirmData.id;
+		};
+		
+		_call_function(api.makeRequest,{action:actions[status], options:options})!
+		var resp = _result_function();
 		
 		_if(status=="3", function(){
-			_call_function(api.apiRequest,{action:actions[status], options:{service:site, country:country, number:numberWithoutPrefix}, checkErrors:false})!
-			var resp = _result_function();
-			
-			if(resp.response !== "ok"){
-				api.errorHandler((resp.error_msg || resp.not_number) ? (resp.error_msg ? resp.error_msg : resp.not_number) : resp.response);
-			};
-			
 			_if(["","null"].indexOf(resp.number) > -1 && [-1,0,"-1","0"].indexOf(resp.id) > -1, function(){
 				_call_function(api.getNumber,{site:site, country:country, number:number})!
 				resp = _result_function();
 			})!
-			_SMS.confirmData[number].id = resp.id;
+			
+			confirmData.id = resp.id;
 		})!
 	};
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 		
 		if(resp.response=="1"){

@@ -68,12 +68,6 @@ _SMS.BaseApi = function(config, data, path){
 		return json;
 	};
 	
-	this.validateStatus = function(supported, status){
-		if(supported.indexOf(status) < 0){
-			api.errorHandler('UNSUPPORTED_STATUS', status);
-		};
-	};
-	
 	this.validateMethod = function(method, name){
 		if(api.supportedMethods.indexOf(method) < 0){
 			api.errorHandler('UNSUPPORTED_METHOD', name);
@@ -108,10 +102,9 @@ _SMS.BaseApi = function(config, data, path){
 			_if_else(sleepTime==0, function(){
 				_break("function");
 			}, function(){
-				if(_SMS.debug){
-					log((_K=="ru" ? 'Ждем ' : 'Wait ') + (sleepTime/1000) + (_K=="ru" ? ' секунд перед запросом к ' : ' seconds before requesting ') + api.name);
-				};
-				sleep(sleepTime)!
+				api.log((_K=="ru" ? 'Ждем ' : 'Wait ') + (sleepTime/1000) + (_K=="ru" ? ' секунд перед запросом к ' : ' seconds before requesting ') + api.name);
+				
+				_call_function(api.sleep,{time:sleepTime})!
 			})!
 		})!
 	};
@@ -120,6 +113,31 @@ _SMS.BaseApi = function(config, data, path){
 		var time = _function_argument("time");
 		
 		sleep(time)!
+	};
+	
+	this.log = function(ruText, enText){
+		if(_SMS.debug){
+			enText = _avoid_nilb(enText, ruText);
+			
+			var date = new Date();
+			var h = date.getHours();
+			var m = date.getMinutes();
+			var s = date.getSeconds();
+			if (h < 10) h = "0" + h;
+			if (m < 10) m = "0" + m;
+			if (s < 10) s = "0" + s;
+			var time = "[" + h + ":" + m + ":" + s + "]";
+			
+			var actionId = '[' + ScriptWorker.GetCurrentAction() + '] ';
+			
+			var threadNumber = (_K=="ru" ? ' Поток №' : ' Thread #') + thread_number() + ' : ';
+		
+			var msg = '[SmsReceive debug] ' + (_K=="ru" ? ruText : enText);
+			var fullMsg = actionId + time + threadNumber + msg.split("<b>").join("").split("</b>").join("");
+			var html = '<div><a style="color:#808080;white-space:pre;">' + actionId + '</a><span>' + time + '</span>' + threadNumber + '<span style="color:grey">' + msg + '</span></div>';
+			
+			log_html(html, fullMsg)
+		};
 	};
 	
 	this.request = function(){
@@ -156,14 +174,12 @@ _SMS.BaseApi = function(config, data, path){
 			};
 			
 			_if_else(method=="GET", function(){
-				if(_SMS.debug){
-					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
-				};
+				api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
+				
 				http_client_get2(url, {"method":"GET"})!
 			}, function(){
-				if(_SMS.debug){
-					log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
-				};
+				api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
+				
 				http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":"POST"})!
 			})!
 			
@@ -178,9 +194,7 @@ _SMS.BaseApi = function(config, data, path){
 
 		var content = http_client_content('auto');
 		
-		if(_SMS.debug){
-			log((_K=="ru" ? 'Ответ от' : 'Response') + ' ' + api.name + ': ' + content);
-		};
+		api.log((_K=="ru" ? 'Ответ от' : 'Response') + ' ' + api.name + ': ' + content);
 
 		_switch_http_client_main();
 		
@@ -205,11 +219,6 @@ _SMS.BaseApi = function(config, data, path){
 			"ACTION_TIMEOUT": {
 				"ru": "Превышено время ожидания выполнения действия \"" + data + "\".",
 				"en": "Timed out for execution of an action \"" + data + "\".",
-				"action": "fail"
-			},
-			"UNSUPPORTED_STATUS": {
-				"ru": "Установка статуса \"" + data + "\" не поддерживается.",
-				"en": "Setting status \"" + data + "\" is not supported.",
 				"action": "fail"
 			},
 			"UNSUPPORTED_METHOD": {

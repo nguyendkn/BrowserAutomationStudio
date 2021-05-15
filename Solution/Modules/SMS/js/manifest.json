@@ -252,6 +252,7 @@
 		"The status to be set for the specified number.": {"ru":"Статус который нужно установить для указанного номера."},
 		"Change the activation status for the specified number.": {"ru":"Изменение статуса активации для указанного номера."},
 		"Notify that the number is used and cancel the activation.": {"ru":"Сообщить о том, что номер использован и отменить активацию."},
+		"Delete information about the number when the status is -1, 6 or 8.": {"ru":"Удалять информацию о номере при статусе -1, 6 или 8."},
 		"The number obtained from the \"Get phone number\" action, for which need to change the activation status.": {"ru":"Номер полученный из действия \"Получить номер телефона\", для которого нужно изменить статус активации."},
 		
 		"Enable debug": {"ru":"Включить отладку"},

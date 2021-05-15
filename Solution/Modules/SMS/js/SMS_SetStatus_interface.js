@@ -33,6 +33,9 @@
 			]
 		}
 	}) %>
+	<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
+		<input type="checkbox" id="Check" checked="checked"/> <label for="Check" class="tr">Delete information about the number when the status is -1, 6 or 8.</label>
+	</span>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Change the activation status for the specified number.</div>

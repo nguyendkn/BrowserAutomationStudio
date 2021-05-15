@@ -2,7 +2,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
     const api = this;
 	_SMS.BaseApi.call(this, config, data, '/api/v1/');
 	
-	this.apiRequest = function(){
+	this.makeRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
@@ -22,7 +22,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"getbalance"})!
+		_call_function(api.makeRequest,{action:"getbalance"})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -32,7 +32,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getcount"})!
+		_call_function(api.makeRequest,{action:"getcount"})!
 		var resp = _result_function();
 		
 		var sites = resp[_is_nilb(operator) ? "ANY" : operator.toLocaleUpperCase()];
@@ -52,26 +52,22 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}})!
+		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
 		_function_return({api:api, id:resp.order_id, lastId:resp.order_id, number:('7' + resp.phone)});
 	};
 	
-	this.getStatus = function(){
+	this.getState = function(){
 		var number = _function_argument("number");
 		var confirmData = _SMS.confirmData[number];
-		var taskId = confirmData.id;
-		var lastId = confirmData.lastId;
 		
-		var action = "getcode";
-		var options = {order_id:taskId};
+		var options = {order_id:confirmData.id};
 		if(confirmData.repeat){
-			action = "wrongcode";
-			options.last_id = lastId;
+			options.last_id = confirmData.lastId;
 		};
 		
-		_call_function(api.apiRequest,{action:action, options:options, checkErrors:false})!
+		_call_function(api.makeRequest,{action:(confirmData.repeat ? "wrongcode" : "getcode"), options:options, checkErrors:false})!
 		var resp = _result_function();
 			
 		if(!_is_nilb(resp.data.id)){
@@ -83,23 +79,19 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
-		var taskId = confirmData.id;
-		
-		api.validateStatus(["-1","1","3","6","8"], status);
 		
 		_if(status=="-1" || status=="8", function(){
-			_call_function(api.apiRequest,{action:(status=="-1" ? "refusenumber" : "bannumber"), options:{order_id:taskId}})!
+			var taskId = _SMS.confirmData[number].id;
+			_call_function(api.makeRequest,{action:(status=="-1" ? "refusenumber" : "bannumber"), options:{order_id:taskId}})!
 		})!
 	};
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 		
 		if(resp.status==200){

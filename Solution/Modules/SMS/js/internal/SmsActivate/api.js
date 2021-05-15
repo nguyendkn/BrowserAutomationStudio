@@ -2,7 +2,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
     const api = this;
 	_SMS.BaseApi.call(this, config, data, '/stubs/handler_api.php');
 	
-	this.apiRequest = function(){
+	this.makeRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
@@ -35,7 +35,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"getBalance"})!
+		_call_function(api.makeRequest,{action:"getBalance"})!
 		var resp = _result_function();
 		
 		if(resp.status=="ACCESS_BALANCE"){
@@ -50,7 +50,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getNumbersStatus", options:{country:country, operator:operator}, isJSON:true})!
+		_call_function(api.makeRequest,{action:"getNumbersStatus", options:{country:country, operator:operator}, isJSON:true})!
 		var resp = _result_function();
 		
 		if(site=="All"){
@@ -69,7 +69,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	
 	this.getSites = function(){
 		
-		_call_function(api.apiRequest,{action:"getServices", isJSON:true})!
+		_call_function(api.makeRequest,{action:"getServices", isJSON:true})!
 		var resp = _result_function();
 		
 		_function_return(resp);
@@ -77,7 +77,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	
 	this.getCountries = function(){
 		
-		_call_function(api.apiRequest,{action:"getCountries", isJSON:true})!
+		_call_function(api.makeRequest,{action:"getCountries", isJSON:true})!
 		var resp = _result_function();
 		
 		_function_return(Array.isArray(resp) ? resp : Object.keys(resp).map(function(key){
@@ -97,37 +97,35 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
+		_call_function(api.makeRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
 		if(resp.status=="ACCESS_NUMBER"){
-			_function_return({api:api, id:resp.id, lastId:resp.id, number:api.removePlus(resp.number)});
+			_function_return({api:api, id:resp.id, number:api.removePlus(resp.number)});
 		}else{
 			api.errorHandler(resp.status, resp.data);
 		};
 	};
 	
-	this.getStatus = function(){
+	this.getState = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
-		var taskId = confirmData.id;
+		var taskId = _SMS.confirmData[number].id;
 		
-		_call_function(api.apiRequest,{action:"getStatus", options:{id:taskId}})!
+		_call_function(api.makeRequest,{action:"getStatus", options:{id:taskId}})!
 		
 		_function_return(_result_function());
 	};
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
-		var taskId = confirmData.id;
+		var taskId = _SMS.confirmData[number].id;
 		
 		if(status=="8" && api.service=="getsms.online"){
 			status = "10";
 		};
 		
-		_call_function(api.apiRequest,{action:"setStatus", options:{id:taskId, status:status}})!
+		_call_function(api.makeRequest,{action:"setStatus", options:{id:taskId, status:status}})!
 		var resp = _result_function();
 		
 		if(resp.status.indexOf('ACCESS_') != 0){
@@ -137,10 +135,9 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 		
 		if(resp.status=='STATUS_OK'){

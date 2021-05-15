@@ -2,7 +2,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
     const api = this;
 	_SMS.BaseApi.call(this, config, data, '/api');
 	
-	this.apiRequest = function(){
+	this.makeRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
@@ -16,7 +16,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		
 		var resp = api.parseJSON(content);
 		
-		if(checkErrors && resp.response!=1){
+		if(checkErrors && !_is_nilb(resp.response) && resp.response!=1){
 			api.errorHandler(resp.response);
 		};
 
@@ -24,7 +24,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"getBalance"})!
+		_call_function(api.makeRequest,{action:"getBalance"})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -34,7 +34,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		
-		_call_function(api.apiRequest,{action:"getNumbersStats", options:{country:country}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"getNumbersStats", options:{country:country}})!
 		var resp = _result_function();
 		
 		var sites = {};
@@ -74,19 +74,19 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getNum", options:{service:site, country:country, simoperator:operator, number:true}})!
+		_call_function(api.makeRequest,{action:"getNum", options:{service:site, country:country, simoperator:operator, number:true}})!
 		var resp = _result_function();
 		
 		_function_return({api:api, id:resp.tzid, lastId:resp.tzid, number:api.removePlus(resp.number)});
 	};
 	
-	this.getStatus = function(){
+	this.getState = function(){
 		var number = _function_argument("number");
 		var confirmData = _SMS.confirmData[number];
-		var lastId = confirmData.lastId;
 		
-		_call_function(api.apiRequest,{action:"getState", options:{tzid:lastId, msg_list:0, clean:1}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.lastId, msg_list:0, clean:1}})!
 		var resp = _result_function();
+		
 		if(Array.isArray(resp)){
 			resp = resp[0];
 		};
@@ -96,22 +96,20 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
-		var taskId = confirmData.id;
-		
-		if(status=="1"){
-			_function_return();
-		};
 		
 		var actions = {
 			"3":"setOperationRevise",
 			"6":"setOperationOk"
 		};
 		
-		api.validateStatus(Object.keys(actions), status);
+		if(Object.keys(actions).indexOf(status) < 0){
+			_function_return();
+		};
 		
-		_call_function(api.apiRequest,{action:actions[status], options:{tzid:taskId}})!
+		var confirmData = _SMS.confirmData[number];
+		
+		_call_function(api.makeRequest,{action:actions[status], options:{tzid:confirmData.id}})!
 		var resp = _result_function();
 		
 		if(status=="3"){
@@ -124,17 +122,17 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 		
-		if(resp.response=='TZ_NUM_ANSWER'){
+		if(['TZ_NUM_ANSWER','TZ_OVER_OK'].indexOf(resp.response) > -1){
 			code = resp.msg;
 		}else{
-			if(resp.response != 'TZ_NUM_WAIT'){
+			if(['TZ_NUM_WAIT','TZ_NUM_PREPARE'].indexOf(resp.response) < 0){
 				api.errorHandler(resp.response);
 			};
 		};
-			
+		
 		_function_return(code);
 	};
 	

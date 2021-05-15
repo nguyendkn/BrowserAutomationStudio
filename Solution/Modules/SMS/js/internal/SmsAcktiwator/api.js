@@ -2,7 +2,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
     const api = this;
 	_SMS.BaseApi.call(this, config, data, '/api');
 	
-	this.apiRequest = function(){
+	this.makeRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
@@ -26,7 +26,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"getbalance"})!
+		_call_function(api.makeRequest,{action:"getbalance"})!
 		var resp = _result_function();
 		
 		_function_return(resp);
@@ -36,7 +36,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		
-		_call_function(api.apiRequest,{action:"numbersstatus", options:{code:country}})!
+		_call_function(api.makeRequest,{action:"numbersstatus", options:{code:country}})!
 		var resp = _result_function();
 		
 		if(site=="All"){
@@ -53,7 +53,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 	
 	this.getSites = function(){
 		
-		_call_function(api.apiRequest,{action:"getservices"})!
+		_call_function(api.makeRequest,{action:"getservices"})!
 		var resp = _result_function();
 		
 		_function_return(resp);
@@ -61,7 +61,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 	
 	this.getCountries = function(){
 		
-		_call_function(api.apiRequest,{action:"countries"})!
+		_call_function(api.makeRequest,{action:"countries"})!
 		var resp = _result_function();
 		
 		_function_return(resp.map(function(el){
@@ -75,45 +75,41 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		
-		_call_function(api.apiRequest,{action:"getnumber", options:{service:site, code:country}})!
+		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, code:country}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.id, lastId:resp.id, number:api.removePlus(resp.number)});
+		_function_return({api:api, id:resp.id, number:api.removePlus(resp.number)});
 	};
 	
-	this.getStatus = function(){
+	this.getState = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
-		var taskId = confirmData.id;
+		var taskId = _SMS.confirmData[number].id;
 		
-		_call_function(api.apiRequest,{action:"getstatus", options:{id:taskId}})!
+		_call_function(api.makeRequest,{action:"getstatus", options:{id:taskId}})!
 		
 		_function_return(_result_function());
 	};
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
-		var taskId = confirmData.id;
 		
-		api.validateStatus(["-1","1","3","6","8"], status);
-		
-		_if(status=="-1" || status=="8", function(){
-			_call_function(api.apiRequest,{action:"setstatus", options:{id:taskId, status:"1"}})!
-		})!
-		
-		_if(status=="3", function(){
-			_call_function(api.apiRequest,{action:"play", options:{id:taskId}})!
+		_if(status=="-1" || status=="8" || status=="3", function(){
+			var taskId = _SMS.confirmData[number].id;
+			var options = {id:taskId};
+			if(status !== "3"){
+				options.status = "1";
+			};
+			
+			_call_function(api.makeRequest,{action:(status=="3" ? "play" : "setstatus"), options:options})!
 		})!
 	};
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 		
 		if([resp.small,resp.text].filter(function(e){return !_is_nilb(e) && e !== '-'}).length > 0){

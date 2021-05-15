@@ -2,7 +2,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
     const api = this;
 	_SMS.BaseApi.call(this, config, data, '/api');
 	
-	this.apiRequest = function(){
+	this.makeRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
@@ -23,7 +23,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"getBalance"})!
+		_call_function(api.makeRequest,{action:"getBalance"})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -34,20 +34,18 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_if_else(site=="All", function(){
-			_call_function(api.apiRequest,{action:"getCountNumberList", options:{country:country, operator:operator}})!
-			var resp = _result_function();
-			
+		_call_function(api.makeRequest,{action:(site=="All" ? "getCountNumberList" : "getCountNumber"), options:{service:(site=="All" ? "" : site), country:country, operator:operator}})!
+		var resp = _result_function();
+		
+		if(site=="All"){
 			Object.keys(resp).map(function(key){
 				resp[key] = parseInt(resp[key].count);
 			});
-			_function_return(resp);
-		}, function(){
-			_call_function(api.apiRequest,{action:"getCountNumber", options:{service:site, country:country, operator:operator}})!
-			var resp = _result_function();
-			
-			_function_return(resp[Object.keys(resp)[0]]);
-		})!
+		}else{
+			resp = resp[Object.keys(resp)[0]];
+		};
+		
+		_function_return(resp);
 	};
 	
 	this.getNumber = function(){
@@ -55,31 +53,24 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.apiRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
+		_call_function(api.makeRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.idNum, lastId:resp.idNum, number:api.removePlus(resp.tel)});
+		_function_return({api:api, id:resp.idNum, number:api.removePlus(resp.tel)});
 	};
 	
-	this.getStatus = function(){
+	this.getState = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
-		var taskId = confirmData.id;
+		var taskId = _SMS.confirmData[number].id;
 		
-		_call_function(api.apiRequest,{action:"getSmsCode", options:{idNum:taskId}})!
+		_call_function(api.makeRequest,{action:"getSmsCode", options:{idNum:taskId}})!
 		
 		_function_return(_result_function());
 	};
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
-		var taskId = confirmData.id;
-		
-		if(status=="1" || status=="6"){
-			_function_return();
-		};
 		
 		var actions = {
 			"-1":"end",
@@ -87,9 +78,13 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 			"8":"bad"
 		};
 		
-		api.validateStatus(Object.keys(actions), status);
+		if(Object.keys(actions).indexOf(status) < 0){
+			_function_return();
+		};
 		
-		_call_function(api.apiRequest,{action:"setStatus", options:{idNum:taskId, status:actions[status]}})!
+		var taskId = _SMS.confirmData[number].id;
+		
+		_call_function(api.makeRequest,{action:"setStatus", options:{idNum:taskId, status:actions[status]}})!
 		var resp = _result_function();
 		
 		if(["ready","update"].indexOf(resp.status) < 0){
@@ -99,9 +94,8 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 			
 		_function_return(resp.smsCode);

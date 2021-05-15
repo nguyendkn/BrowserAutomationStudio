@@ -113,20 +113,20 @@ _SMS = {
 		_function_return(number);
 	},
 	
-	getStatus: function(){
+	getState: function(){
 		var number = _function_argument("number");
 		
 		var confirmData = _SMS.confirmData[number];
 		var api = confirmData.api;
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		_function_return(_result_function());
 	},
 	
 	waitCode: function(){
 		var number = _function_argument("number");
-		var maxTime = Date.now() + 60000 * _function_argument("timeout");
-		var interval = 1000 * _function_argument("interval");
+		var maxTime = Date.now() + 60000 * _avoid_nilb(_function_argument("timeout"), 10);
+		var interval = 1000 * _avoid_nilb(_function_argument("interval"), 5);
 		
 		if(_is_nilb(_SMS.confirmData) || _is_nilb(_SMS.confirmData[number])){
 			fail((_K=="ru" ? 'Нет информации об номере' : 'No information about the number') + ' "' + number + '"');
@@ -161,6 +161,7 @@ _SMS = {
 	setStatus: function(){
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
+		var deleteInfo = _avoid_nilb(_function_argument("deleteInfo"), true);
 		
 		var confirmData = _SMS.confirmData[number];
 		var api = confirmData.api;
@@ -175,7 +176,7 @@ _SMS = {
 			confirmData.repeat = true;
 		};
 		
-		if(["-1","6","8"].indexOf(status) > -1){
+		if(deleteInfo && ["-1","6","8"].indexOf(status) > -1){
 			delete _SMS.confirmData[number];
 		};
 	},

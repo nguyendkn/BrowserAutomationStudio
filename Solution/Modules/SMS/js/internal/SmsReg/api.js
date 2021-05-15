@@ -2,7 +2,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
     const api = this;
 	_SMS.BaseApi.call(this, config, data, '');
 	
-	this.apiRequest = function(){
+	this.makeRequest = function(){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
@@ -16,7 +16,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		
 		var resp = api.parseJSON(content);
 		
-		if(checkErrors && resp.response !== "1"){
+		if(checkErrors && !_is_nilb(resp.response) && resp.response !== "1"){
 			api.errorHandler(resp.error_msg ? resp.error_msg : resp.response);
 		};
 
@@ -24,7 +24,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.apiRequest,{action:"getBalance"})!
+		_call_function(api.makeRequest,{action:"getBalance"})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -32,7 +32,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	
 	this.getSites = function(){
 		
-		_call_function(api.apiRequest,{action:"getList", options:{extended:1}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"getList", options:{extended:1}})!
 		var resp = _result_function();
 		
 		_function_return(resp.services.map(function(el){return {id:el.service,name:el.description}}));
@@ -42,10 +42,10 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		
-		_call_function(api.apiRequest,{action:"getNum", options:{service:site, country:country}})!
+		_call_function(api.makeRequest,{action:"getNum", options:{service:site, country:country}})!
 		var resp = _result_function();
 		
-		var confirmData = {api:api, id:resp.tzid, lastId:resp.tzid, number:null};
+		var confirmData = {api:api, id:resp.tzid, number:null};
 		
 		var maxNumberWait = Date.now() + 600000;
 		_do(function(){
@@ -53,7 +53,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 				api.errorHandler("ACTION_TIMEOUT", "getState");
 			};
 			
-			_call_function(api.getStatus,{confirmData:confirmData})!
+			_call_function(api.getState,{confirmData:confirmData})!
 			var resp = _result_function();
 
 			if(["TZ_NUM_PREPARE","TZ_NUM_WAIT","TZ_NUM_ANSWER"].indexOf(resp.response) > -1){
@@ -69,41 +69,38 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		})!
 	};
 	
-	this.getStatus = function(){
+	this.getState = function(){
 		var number = _function_argument("number");
 		var confirmData = _function_argument("confirmData");
 		if(_is_nilb(confirmData)){
 			confirmData = _SMS.confirmData[number];
 		};
-		var taskId = confirmData.id;
 		
-		_call_function(api.apiRequest,{action:"getState", options:{tzid:taskId}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.id}, checkErrors:false})!
 		
 		_function_return(_result_function());
 	};
 	
 	this.setStatus = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
 		var status = _function_argument("status").toString();
-		var taskId = confirmData.id;
 		
 		var actions = {
 			"-1":"setOperationUsed",
 			"1":"setReady",
-			"3":"getNumRepeat",
+			//"3":"getNumRepeat",
 			"6":"setOperationOk",
 			"8":"setOperationUsed"
 		};
 		
-		api.validateStatus(Object.keys(actions), status);
-		
-		_if_else(status=="3", function(){
+		if(Object.keys(actions).indexOf(status) < 0){
 			_function_return();
-		}, function(){
-			_call_function(api.apiRequest,{action:actions[status], options:{tzid:taskId}, checkErrors:("1" !== status)})!
-			var resp = _result_function();
-		})!
+		};
+		
+		var taskId = _SMS.confirmData[number].id;
+		
+		_call_function(api.makeRequest,{action:actions[status], options:{tzid:taskId}, checkErrors:("1" !== status)})!
+		var resp = _result_function();
 	};
 	
 	this.getCode = function(){
@@ -111,12 +108,12 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
-		_call_function(api.getStatus,{number:number})!
+		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 		
 		if(['TZ_NUM_ANSWER','TZ_OVER_OK'].indexOf(resp.response) > -1){
 			var new_code = _is_nilb(resp.msg) ? resp.full_msg : resp.msg;
-			if(_is_nilb(confirmData.code) || new_code !== confirmData.code){
+			if(!confirmData.repeat || _is_nilb(confirmData.code) || new_code !== confirmData.code){
 				code = new_code;
 				confirmData.code = new_code;
 			};

@@ -38,9 +38,9 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		var resp = _result_function();
 		
 		if(site=="All"){
-			Object.keys(resp).map(function(key){
+			for(var key in resp){
 				resp[key] = parseInt(resp[key].count);
-			});
+			};
 		}else{
 			resp = resp[Object.keys(resp)[0]];
 		};
@@ -56,7 +56,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		_call_function(api.makeRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.idNum, number:api.removePlus(resp.tel)});
+		_function_return({api:api, id:resp.idNum, number:api.removePlus(resp.tel.toString())});
 	};
 	
 	this.getState = function(){
@@ -78,7 +78,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 			"8":"bad"
 		};
 		
-		if(Object.keys(actions).indexOf(status) < 0){
+		if(!actions.hasOwnProperty(status)){
 			_function_return();
 		};
 		
@@ -101,7 +101,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		_function_return(resp.smsCode);
 	};
 	
-	this.getErrorObject = function(error, data){
+	this.getError = function(error, data){
 		var errors = {
 			"apiKeyNotFound": {
 				"ru": "Неверный API-ключ.",

@@ -103,7 +103,7 @@ _SMS.VakSmsApi.prototype.getRawSite = function(site){
 		"Perekrestok": "pk",
 		"5ka": "pt"
 	};
-	if(Object.keys(sites).indexOf(site) < 0){
+	if(!sites.hasOwnProperty(site)){
 		this.errorHandler('UNSUPPORTED_SITE', site);
 	};
 	return sites[site];

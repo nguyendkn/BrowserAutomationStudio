@@ -73,5 +73,5 @@ _SMS.GiveSmsApi.prototype.getRawSite = function(site){
 		"Samokat": "jr",
 		"Vernyi": "nb"
 	};
-	return _is_nilb(sites[site]) ? sites["Other"] : sites[site];
+	return sites.hasOwnProperty(site) ? sites[site] : sites["Other"];
 };

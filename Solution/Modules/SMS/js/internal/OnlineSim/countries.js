@@ -49,5 +49,5 @@ _SMS.OnlineSimApi.prototype.getRawCountry = function(country){
 		"LK": "94",
 		"MN": "976"
 	};
-	return _is_nilb(countries[country]) ? countries["Any"] : countries[country];
+	return countries.hasOwnProperty(country) ? countries[country] : countries["Any"];
 };

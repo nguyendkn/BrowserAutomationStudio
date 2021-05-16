@@ -995,5 +995,5 @@ _SMS.OnlineSimApi.prototype.getRawSite = function(site){
 		"777Origin": "777origin",
 		"9138": "9138"
 	};
-	return _is_nilb(sites[site]) ? sites["Other"] : sites[site];
+	return sites.hasOwnProperty(site) ? sites[site] : sites["Other"];
 };

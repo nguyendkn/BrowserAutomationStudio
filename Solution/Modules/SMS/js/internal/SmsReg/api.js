@@ -93,7 +93,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 			"8":"setOperationUsed"
 		};
 		
-		if(Object.keys(actions).indexOf(status) < 0){
+		if(!actions.hasOwnProperty(status)){
 			_function_return();
 		};
 		
@@ -126,7 +126,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		_function_return(code);
 	};
 	
-	this.getErrorObject = function(error, data){
+	this.getError = function(error, data){
 		var errors = {
 			"ERROR_WRONG_KEY": {
 				"ru": "Неверный API-ключ.",

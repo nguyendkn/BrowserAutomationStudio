@@ -24,13 +24,10 @@ _SMS.BaseApi = function(config, data, path){
 	};
 	
 	this.combineParams = function(params, options){
-		var keys = Object.keys(options);
-		if(keys.length > 0){
-			keys.forEach(function(key){
-				if(!_is_nilb(options[key])){
-					params[key] = options[key];
-				};
-			});
+		for(var key in options){
+			if(!_is_nilb(options[key])){
+				params[key] = options[key];
+			};
 		};
 		return params;
 	};
@@ -43,10 +40,12 @@ _SMS.BaseApi = function(config, data, path){
 	
 	this.paramsToArray = function(params){
 		var arr = [];
-		Object.keys(params).forEach(function(key){
-			arr.push(key);
-			arr.push(params[key]);
-		});
+		for(var key in params){
+			if(!_is_nilb(params[key])){
+				arr.push(key);
+				arr.push(params[key]);
+			};
+		};
 		return arr;
 	};
 	
@@ -63,7 +62,7 @@ _SMS.BaseApi = function(config, data, path){
 		try{
 			var json = JSON.parse(str);
 		}catch(e){
-			this.errorHandler("RESPONSE_IS_NOT_JSON", this.reduceString(str));
+			api.errorHandler("RESPONSE_IS_NOT_JSON", api.reduceString(str));
 		};
 		return json;
 	};
@@ -77,7 +76,7 @@ _SMS.BaseApi = function(config, data, path){
 	this.ban = 0;
 	
 	this.banThread = function(seconds){
-		this.ban = Date.now() + seconds * 1000;
+		api.ban = Date.now() + seconds * 1000;
 	};
 	
 	this.banService = function(seconds){
@@ -119,24 +118,7 @@ _SMS.BaseApi = function(config, data, path){
 		if(_SMS.debug){
 			enText = _avoid_nilb(enText, ruText);
 			
-			var date = new Date();
-			var h = date.getHours();
-			var m = date.getMinutes();
-			var s = date.getSeconds();
-			if (h < 10) h = "0" + h;
-			if (m < 10) m = "0" + m;
-			if (s < 10) s = "0" + s;
-			var time = "[" + h + ":" + m + ":" + s + "]";
-			
-			var actionId = '[' + ScriptWorker.GetCurrentAction() + '] ';
-			
-			var threadNumber = (_K=="ru" ? ' Поток №' : ' Thread #') + thread_number() + ' : ';
-		
-			var msg = '[SmsReceive debug] ' + (_K=="ru" ? ruText : enText);
-			var fullMsg = actionId + time + threadNumber + msg.split("<b>").join("").split("</b>").join("");
-			var html = '<div><a style="color:#808080;white-space:pre;">' + actionId + '</a><span>' + time + '</span>' + threadNumber + '<span style="color:grey">' + msg + '</span></div>';
-			
-			log_html(html, fullMsg)
+			_info('[SmsReceive debug] ' + (_K=="ru" ? ruText : enText));
 		};
 	};
 	
@@ -150,7 +132,7 @@ _SMS.BaseApi = function(config, data, path){
 			params[api.refTitle] = api.ref;
 		};
 		
-		if(Object.keys(params).length>0){
+		if(Object.keys(params).length > 0){
 			if(method=="GET"){
 				url += '?' + api.paramsToString(params);
 			}else{
@@ -194,7 +176,7 @@ _SMS.BaseApi = function(config, data, path){
 
 		var content = http_client_content('auto');
 		
-		api.log((_K=="ru" ? 'Ответ от' : 'Response') + ' ' + api.name + ': ' + content);
+		api.log((_K=="ru" ? 'Ответ от' : 'Response') + ' ' + api.name + ': ' + _clean(content));
 
 		_switch_http_client_main();
 		
@@ -232,9 +214,9 @@ _SMS.BaseApi = function(config, data, path){
 				"action": "fail"
 			}
 		};
-		var errorObj = Object.keys(baseErrors).indexOf(error) > -1 ? baseErrors[error] : this.getErrorObject(error, data);
+		var errorObj = baseErrors.hasOwnProperty(error) ? baseErrors[error] : api.getError(error, data);
 		
-		var message = this.name + ": " + error;
+		var message = api.name + ": " + error;
 		if(_is_nilb(errorObj)){
 			if(error==data || _is_nilb(data)){
 				fail(message);
@@ -252,7 +234,7 @@ _SMS.BaseApi = function(config, data, path){
 	};
 };
 _SMS.assignApi = function(fn){
-	fn.prototype = Object.create(_SMS.BaseApi.prototype);
+	fn.prototype = Object.create(this.BaseApi.prototype);
 	fn.prototype.constructor = fn;
 	return fn;
 };

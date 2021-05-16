@@ -12,13 +12,15 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		_call_function(api.request,{url:api.url, method:"GET", params:params})!
 		var content = _result_function();
 		
+		api.banThread(10);
+		
 		var resp = api.parseJSON(content);
 		
 		if(checkErrors && resp.status!=200){
-			api.errorHandler(resp.status, resp.data.msg);
+			api.errorHandler(resp.status, resp.data.advice ? resp.data.advice : resp.data.msg);
 		};
 
-		_function_return(resp.data);
+		_function_return(checkErrors ? resp.data : resp);
 	};
 	
 	this.getBalance = function(){
@@ -38,9 +40,9 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		var sites = resp[_is_nilb(operator) ? "ANY" : operator.toLocaleUpperCase()];
 		
 		if(site=="All"){
-			Object.keys(sites).map(function(key){
+			for(var key in sites){
 				sites[key] = parseInt(sites[key].count);
-			});
+			};
 			_function_return(sites);
 		}else{
 			_function_return(sites[site].count);
@@ -55,7 +57,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.order_id, lastId:resp.order_id, number:('7' + resp.phone)});
+		_function_return({api:api, id:resp.order_id, lastId:resp.order_id, number:resp.phone});
 	};
 	
 	this.getState = function(){
@@ -89,6 +91,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
+		var confirmData = _SMS.confirmData[number];
 		var code = null;
 		
 		_call_function(api.getState,{number:number})!
@@ -97,7 +100,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		if(resp.status==200){
 			code = _is_nilb(resp.data.code) ? resp.data.fullSms : resp.data.code;
 		}else{
-			if(resp.status !== 400){
+			if((!confirmData.repeat && resp.status !== 400) || (confirmData.repeat && resp.status !== 400 && resp.status !== 502)){
 				api.errorHandler(resp.status, resp.data.msg);
 			};
 		};
@@ -105,7 +108,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		_function_return(code);
 	};
 	
-	this.getErrorObject = function(error, data){
+	this.getError = function(error, data){
 		var errors = {
 			"401": {
 				"ru": "Неверный API-ключ.",

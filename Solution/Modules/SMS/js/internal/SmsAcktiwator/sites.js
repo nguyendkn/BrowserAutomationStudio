@@ -231,5 +231,5 @@ _SMS.SmsAcktiwatorApi.prototype.getRawSite = function(site){
 		"Keybase": "479",
 		"Foody": "480"
 	};
-	return _is_nilb(sites[site]) ? sites["Other"] : sites[site];
+	return sites.hasOwnProperty(site) ? sites[site] : sites["Other"];
 };

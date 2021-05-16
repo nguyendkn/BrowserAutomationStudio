@@ -16,5 +16,5 @@ _SMS.VakSmsApi.prototype.getRawCountry = function(country){
 		"SE": "se",
 		"GB": "gb"
 	};
-	return _is_nilb(countries[country]) ? countries["Any"] : countries[country];
+	return countries.hasOwnProperty(country) ? countries[country] : countries["Any"];
 };

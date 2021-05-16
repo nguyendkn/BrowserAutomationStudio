@@ -10,15 +10,15 @@ _SMS = {
 		};
 		
 		var id = md5(JSON.stringify(data));
-		if(_is_nilb(_SMS.apiData)){
-			_SMS.apiData = {};
+		if(_is_nilb(this.apiData)){
+			this.apiData = {};
 		};
 		
-		if(Object.keys(_SMS.apiData).indexOf(id) < 0){
-			_SMS.apiData[id] = _SMS.getServiceApi(data);
+		if(!this.apiData.hasOwnProperty(id)){
+			this.apiData[id] = this.getServiceApi(data);
 		};
 		
-		return _SMS.apiData[id];
+		return this.apiData[id];
 	},
 	
 	getBalance: function(){
@@ -182,6 +182,6 @@ _SMS = {
 	},
 	
 	setDebug: function(enable){
-		_SMS.debug = (enable==true || enable=="true" || enable==1);
+		this.debug = (enable==true || enable=="true" || enable==1);
 	}
 };

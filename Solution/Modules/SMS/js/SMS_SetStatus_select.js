@@ -13,7 +13,7 @@ try{
     var code = loader.GetAdditionalData() + _.template($("#SMS_SetStatus_code").html())({
         "number": number["updated"],
         "status": status["updated"],
-		"deleteInfo": parameterize
+		"deleteInfo": deleteInfo
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

@@ -122,7 +122,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			"8":"ban"
 		};
 		
-		if(Object.keys(actions).indexOf(status) < 0){
+		if(!actions.hasOwnProperty(status)){
 			_function_return();
 		};
 		
@@ -165,7 +165,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		_function_return(code);
 	};
 	
-	this.getErrorObject = function(error, data){
+	this.getError = function(error, data){
 		var errors = {
 			"API KEY NOT FOUND!": {
 				"ru": "Неверный API-ключ.",

@@ -20,11 +20,11 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 			var resp = {status:content[0]};
 			var data = content.slice(1);
 			var len = data.length;
-			if(len==2){
+			if(resp.status=="ACCESS_NUMBER"){
 				resp.id = data[0];
 				resp.number = data[1];
 			}else{
-				resp.data = data[0];
+				resp.data = data.join(':');
 			};
 			if(isJSON){
 				api.errorHandler(resp.status, resp.data);
@@ -55,12 +55,12 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		
 		if(site=="All"){
 			var sites = {};
-			Object.keys(resp).forEach(function(key){
+			for(var key in resp){
 				var end = key.slice(-2);
 				if(end != '_1'){
 					sites[end=='_0' ? key.slice(0,-2) : key] = parseInt(resp[key]);
 				};
-			});
+			};
 			_function_return(sites);
 		}else{
 			_function_return(_is_nilb(resp[site + '_0']) ? resp[site] : resp[site + '_0']);
@@ -151,7 +151,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		_function_return(code);
 	};
 	
-	this.getErrorObject = function(error, data){
+	this.getError = function(error, data){
 		var errors = {
 			"BAD_KEY": {
 				"ru": "Неверный API-ключ.",

@@ -1,7 +1,7 @@
 _SMS.getServiceApi = function(data){
 	var services = {
 		"sms-activate.ru": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: 'Sms-activate',
 				url: 'https://sms-activate.ru',
@@ -13,7 +13,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"smshub.org": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: 'SMSHUB',
 				url: 'https://smshub.org',
@@ -23,7 +23,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"5sim.net": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: '5SIM',
 				url: 'http://api1.5sim.net',
@@ -34,7 +34,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"365sms.ru": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: '365SMS',
 				url: 'https://365sms.ru',
@@ -44,7 +44,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"sms-man.ru": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: 'SMS@MAN',
 				url: 'https://api.sms-man.ru',
@@ -57,7 +57,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"getsms.online": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: 'GetSMS',
 				url: 'https://smsactivateapi.getsms.online',
@@ -68,7 +68,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"cheapsms.ru": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: 'CheapSMS',
 				url: 'https://cheapsms.pro',
@@ -79,7 +79,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"smsvk.net": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: 'SmsVK',
 				url: 'http://smsvk.net',
@@ -90,7 +90,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"sms.kopeechka.store": {
-			api: _SMS.SmsActivateApi,
+			api: this.SmsActivateApi,
 			config: {
 				name: 'Sms.Kopeechka.Store',
 				url: 'https://sms.kopeechka.store',
@@ -101,7 +101,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"sms-reg.com": {
-			api: _SMS.SmsRegApi,
+			api: this.SmsRegApi,
 			config: {
 				name: 'SMS-REG',
 				url: 'https://api.sms-reg.com',
@@ -113,7 +113,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"smspva.com": {
-			api: _SMS.SmsPvaApi,
+			api: this.SmsPvaApi,
 			config: {
 				name: 'SMSpva',
 				url: 'http://smspva.com',
@@ -123,7 +123,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"simsms.org": {
-			api: _SMS.SmsPvaApi,
+			api: this.SmsPvaApi,
 			config: {
 				name: 'SIMsms',
 				url: 'http://simsms.org',
@@ -133,7 +133,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"onlinesim.ru": {
-			api: _SMS.OnlineSimApi,
+			api: this.OnlineSimApi,
 			config: {
 				name: 'OnlineSIM',
 				url: 'https://onlinesim.ru',
@@ -145,7 +145,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"sms-acktiwator.ru": {
-			api: _SMS.SmsAcktiwatorApi,
+			api: this.SmsAcktiwatorApi,
 			config: {
 				name: 'SmsAcktiwator',
 				url: 'https://sms-acktiwator.ru',
@@ -157,7 +157,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"vak-sms.com": {
-			api: _SMS.VakSmsApi,
+			api: this.VakSmsApi,
 			config: {
 				name: 'VAK-SMS',
 				url: 'https://vak-sms.com',
@@ -169,7 +169,7 @@ _SMS.getServiceApi = function(data){
 			}
 		},
 		"give-sms.com": {
-			api: _SMS.GiveSmsApi,
+			api: this.GiveSmsApi,
 			config: {
 				name: 'Give-SMS',
 				url: 'https://give-sms.com',
@@ -180,7 +180,7 @@ _SMS.getServiceApi = function(data){
 		}
 	};
 	var service = data.service;
-	if(Object.keys(services).indexOf(service) < 0){
+	if(!services.hasOwnProperty(service)){
 		die(_K=="ru" ? ('Сервиса ' + service + ' нет в списке доступных') : (service + ' service is not in the list of available'), true);
 	};
 	var obj = services[service];

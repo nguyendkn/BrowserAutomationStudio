@@ -792,5 +792,5 @@ _SMS.SmsActivateApi.prototype.getRawCountry = function(country){
 			"Any": ""
 		}
 	};
-	return _is_nilb(countries[this.service][country]) ? countries[this.service]["Any"] : countries[this.service][country];
+	return countries[this.service].hasOwnProperty(country) ? countries[this.service][country] : countries[this.service]["Any"];
 };

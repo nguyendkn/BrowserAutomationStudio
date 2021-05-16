@@ -17,8 +17,8 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		if(_is_json_string(content)){
 			resp = api.parseJSON(content);
 			
-			if(checkErrors && (resp.name=="error" || resp.error)){
-				api.errorHandler(resp.name=="error" ? resp.code : resp.error, resp.message);
+			if(checkErrors && (resp.code=="error" || !_is_nilb(resp.code) || resp.error)){
+				api.errorHandler(!_is_nilb(resp.code) ? resp.code : resp.error, resp.message);
 			};	
 		};
 
@@ -75,7 +75,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		
-		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, code:country}})!
+		_call_function(api.makeRequest,{action:"getnumber", options:{id:site, code:country}})!
 		var resp = _result_function();
 		
 		_function_return({api:api, id:resp.id, number:api.removePlus(resp.number)});
@@ -112,14 +112,14 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		_call_function(api.getState,{number:number})!
 		var resp = _result_function();
 		
-		if([resp.small,resp.text].filter(function(e){return !_is_nilb(e) && e !== '-'}).length > 0){
+		if(resp !== "null" && [resp.small,resp.text].filter(function(e){return !_is_nilb(e) && e !== '-'}).length > 0){
 			code = (_is_nilb(resp.small) || resp.small=='-') ? resp.text : resp.small;
 		};
 			
 		_function_return(code);
 	};
 	
-	this.getErrorObject = function(error, data){
+	this.getError = function(error, data){
 		var errors = {
 			"101": {
 				"ru": "Cервис не найден.",

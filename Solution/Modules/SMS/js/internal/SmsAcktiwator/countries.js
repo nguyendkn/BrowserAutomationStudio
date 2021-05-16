@@ -12,5 +12,5 @@ _SMS.SmsAcktiwatorApi.prototype.getRawCountry = function(country){
 		"ID": "ID",
 		"EE": "EE"
 	};
-	return _is_nilb(countries[country]) ? countries["Any"] : countries[country];
+	return countries.hasOwnProperty(country) ? countries[country] : countries["Any"];
 };

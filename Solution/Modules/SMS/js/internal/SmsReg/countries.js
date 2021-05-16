@@ -6,5 +6,5 @@ _SMS.SmsRegApi.prototype.getRawCountry = function(country){
 		"KZ": "kz",
 		"CN": "cn"
 	};
-	return _is_nilb(countries[country]) ? countries["Any"] : countries[country];
+	return countries.hasOwnProperty(country) ? countries[country] : countries["Any"];
 };

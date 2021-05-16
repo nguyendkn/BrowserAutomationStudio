@@ -1513,5 +1513,5 @@ _SMS.SmsActivateApi.prototype.getRawSite = function(site){
 			"SpinDe": "si"
 		}
 	};
-	return _is_nilb(sites[this.service][site]) ? sites[this.service]["Other"] : sites[this.service][site];
+	return sites[this.service].hasOwnProperty(site) ? sites[this.service][site] : sites[this.service]["Other"];
 };

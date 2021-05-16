@@ -97,6 +97,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SendRecaptchaV3List(const QString& action, const QString& callback);
         virtual void SendRecaptchaV3Result(const QString& id,const QString& result);
         virtual void SendWorkerSettings(const QString& json, const QString& callback);
+        virtual void ClickExtensionButton(const QString& id, const QString& callback);
         virtual void SetPCResourcesSmoothUsage(IPCResourcesSmoothUsage *PCResourcesSmoothUsage);
         virtual bool HasBrowserProcess();
         virtual QString GetBrowserEngine();
@@ -175,6 +176,7 @@ namespace BrowserAutomationStudioFramework
         void SetImageData();
         void FindImage();
         void SendWorkerSettings();
+        void ClickExtensionButton();
         void DragFile();
         void StartManualBrowserControl();
         void CheckSystemResourcesBeforeBrowserCreate(int BrowserId);

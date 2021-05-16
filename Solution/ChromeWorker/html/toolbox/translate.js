@@ -12,6 +12,19 @@ _L =
 	"Don't change": {"ru": "Не менять"},
 	"Limit FPS to 30": {"ru": "Ограничить частоту кадров 30"},
 	"Don't change FPS": {"ru": "Не менять частоту кадров"},
+
+	"Extension id or name": {"ru": "Id или имя расширения"},
+	"Extension id or name. It is not necessary to input whole id or whole name, only its part is allowed.": {"ru": "Идентификатор или имя расширения. Нет необходимости вводить id целиком или полное имя, допускается использование только его части."},
+	"Trigger extension with id padekgcemlokbadohgkifijomclgjgif.": {"ru": "Открыть интерфейс расширения padekgcemlokbadohgkifijomclgjgif."},
+	"Trigger extension, which id contains padekgcem.": {"ru": "Открыть интерфейс расширения id которого содержит padekgcem."},
+	"Trigger extension by name.": {"ru": "Открыть интерфейс расширения найденного по имени."},
+	"Trigger extension by name part.": {"ru": "Открыть интерфейс расширения найденного по части имени."},
+	"Click on extension button.": {"ru": "Нажать на кнопку расширения."},
+	"Executing this action is same as clicking on following": {"ru": "Выполнение этого действия аналогично клику по данной"},
+	"button": {"ru": "кнопке"},
+	"Extension must be installed first before this action can be used. Use \"Browser settings\" action to install extension.": {"ru": "Перед использованием этого действия необходимо сначала установить расширение. Для этого используйте действие \"Настройки браузера\"."},
+	"More information about using extensions can be found on this this": {"ru": "Более подробную информацию об использовании расширений можно найти на этой"},
+
 	
 
 	/* Toolbox notifications */
@@ -131,13 +144,11 @@ _L =
 	"Current loop repetition": {"ru": "Текущее повторение цикла"},
 	"Current data": {"ru": "Текущие данные"},
 	"Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files.": {"ru": "Путь к расширениям chrome.\nКаждая строка должна содержать только один путь.\nКаждый путь должен содержать разархивированное расширение, то есть папку с файлом manifest.json и другими файлами."},
-	"To use extension, you must download it and specify full path. Find extension https://chrome.google.com/webstore/category/extensions, and download it from https://chrome-extension-downloader.com. Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.": {"ru": "Чтобы использовать расширение, вы должны загрузить его и указать полный путь к файлу. Найти нужное расширение можно по адресу https://chrome.google.com/webstore/category/extensions, а скачать здесь https://chrome-extension-downloader.com/. Перед использованием *.crx файлы должны быть разархивированы, это можно сделать с помощью любого архиватора, например 7-zip."},
+	"To use extension, you must download it and specify full path. See https://wiki.bablosoft.com/doku.php?id=using_extensions for more info.": {"ru": "Чтобы использовать расширение, вы должны загрузить его и указать полный путь к файлу. Смотрите https://wiki.bablosoft.com/doku.php?id=ru:using_extensions, чтобы узнать больше."},
 
 	"Load extension from specified folder. File c:/extensions/background/manifest.json must exists": {"ru": "Загрузить расширение из заданной папки. Файл c:/extensions/background/manifest.json обязательно должен существовать"},
-	"To use extension, you must download it and specify full path. Find extension": {"ru": "Чтобы использовать расширение, вы должны загрузить его и указать полный путь к файлу. Найти нужное расширение можно"},
-	"and download it from": {"ru": " и загрузить его "},
-	"Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.": {"ru": "Перед использованием *.crx файлы должны быть разархивированы, это можно сделать с помощью любого архиватора, например 7-zip."},
-	"here": {"ru": "здесь"},
+	"To use extension, you must download it and specify full path. See": {"ru": "Чтобы использовать расширение, вы должны загрузить его и указать полный путь к файлу. Смотрите"},
+	"for more info": {"ru": "чтобы узнать больше"},
 	
 	"Options below will help you to adjust different browser settings to match new proxy, for example: timezone and geolocation. Default settings will work fine.": {"ru": "Параметры ниже помогут вам задать различные настройки браузера в соответствии с новым прокси, например: часовой пояс и месторасположение. Настройки по умолчанию обеспечат оптимальную работу."},
 	"Change timezone": {"ru": "Изменить часовой пояс"},

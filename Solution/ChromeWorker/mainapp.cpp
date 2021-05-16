@@ -1868,6 +1868,12 @@ void MainApp::RecaptchaV3ListCallback(const std::string& value)
     });
 }
 
+void MainApp::ClickExtensionButton(const std::string& id)
+{
+    Data->Connector->TriggerExtensionButton(id);
+    this->SendTextResponce(std::string("<ClickExtensionButton></ClickExtensionButton>"));
+}
+
 void MainApp::RecaptchaV3ResultCallback(const std::string& id, const std::string& result)
 {
     std::string Js = Javascript(std::string("_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3Solved)(") + picojson::value(id).serialize() + std::string(", ") + picojson::value(result).serialize() + std::string(");"),"main");

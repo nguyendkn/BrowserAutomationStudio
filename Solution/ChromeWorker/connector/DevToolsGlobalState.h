@@ -28,7 +28,7 @@ struct TabData
     bool IsSwitchingToTab = false;
     std::string TabId;
     std::string FrameId;
-    bool IsPopupExtension = false;
+    bool InjectJavascriptOnStart = false;
     bool IsLoading = false;
     std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
     int CurrentWebsocketActionId = 0;

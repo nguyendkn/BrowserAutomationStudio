@@ -383,6 +383,24 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         SendWebSocket("Target.attachToTarget", Params, std::string());
     }else if(Tab->ConnectionState == TabData::WaitingForAttachment)
     {
+        Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
+        std::map<std::string, Variant> Params;
+        Params["source"] = Variant(GlobalState.ConstantStartupScript);
+        Tab->CurrentWebsocketActionId = SendWebSocket("Page.addScriptToEvaluateOnNewDocument", Params, Tab->TabId);
+    } else if(Tab->ConnectionState == TabData::WaitingForSettingStartupScript)
+    {
+        Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
+
+        if(ConnectionState != WaitingFirstTab && !Tab->InjectJavascriptOnStart)
+        {
+            ProcessTabConnection(Tab);
+            return;
+        }
+        std::map<std::string, Variant> Params;
+        Params["expression"] = Variant(GlobalState.ConstantStartupScript + std::string(";0;"));
+        Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.evaluate", Params, Tab->TabId);
+    }else if(Tab->ConnectionState == TabData::WaitingForPageReloadForFirstTab)
+    {
         Tab->ConnectionState = TabData::WaitingForPageEnable;
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Page.enable", Params, Tab->TabId);
@@ -397,24 +415,6 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Network.enable", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForNetworkEnable)
-    {
-        Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
-        std::map<std::string, Variant> Params;
-        Params["source"] = Variant(GlobalState.ConstantStartupScript);
-        Tab->CurrentWebsocketActionId = SendWebSocket("Page.addScriptToEvaluateOnNewDocument", Params, Tab->TabId);
-    } else if(Tab->ConnectionState == TabData::WaitingForSettingStartupScript)
-    {
-        Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
-
-        if(ConnectionState != WaitingFirstTab && !Tab->IsPopupExtension)
-        {
-            ProcessTabConnection(Tab);
-            return;
-        }
-        std::map<std::string, Variant> Params;
-        Params["expression"] = Variant(GlobalState.ConstantStartupScript + std::string(";0;"));
-        Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.evaluate", Params, Tab->TabId);
-    } else if(Tab->ConnectionState == TabData::WaitingForPageReloadForFirstTab)
     {
         Tab->CurrentWebsocketActionId = 0;
 
@@ -530,7 +530,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
         }
 
         //Switching tab after closing current
-        if(SwitchTabAfterCloseCurrentActionId == Id)
+        if(SwitchTabAfterCloseCurrentActionId == Id && GlobalState.SwitchToTabId.empty() && GlobalState.SwitchToTabFrameId.empty())
         {
             GlobalState.SwitchToTabId = SwitchTabAfterCloseCurrentTabId;
             GlobalState.SwitchToTabFrameId = SwitchTabAfterCloseCurrentFrameId;
@@ -955,16 +955,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         SendWebSocket("Target.closeTarget", CurrentParams, std::string());
                     }else
                     {
-                        if(starts_with(Url, "chrome-extension://"))
-                        {
-                            //New tab for extension has been created
-                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                            TabInfo->ConnectionState = TabData::NotStarted;
-                            TabInfo->FrameId = FrameId;
-                            TabInfo->IsPopupExtension = true;
-                            GlobalState.Tabs.push_back(TabInfo);
-                            ProcessTabConnection(TabInfo);
-                        }else if(Url == "about:blank#newtab")
+                        if(Url == "about:blank#newtab")
                         {
                             //New tab is opened by using ctrl-click or window.open
 
@@ -981,10 +972,20 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                         }else if(Url != "chrome://newtab/" && Url != "about:blank")
                         {
-                            //New tab is opened without non-empty tab, could be bug
-                            std::map<std::string, Variant> CurrentParams;
+                            //New tab is opened without non-empty URL, could be bug, or tab opened with extension
+
+                            /*std::map<std::string, Variant> CurrentParams;
                             CurrentParams["targetId"] = Variant(FrameId);
                             SendWebSocket("Target.closeTarget", CurrentParams, std::string());
+                            CreateTab(Url, true, false);*/
+
+                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                            TabInfo->ConnectionState = TabData::NotStarted;
+                            TabInfo->FrameId = FrameId;
+                            TabInfo->InjectJavascriptOnStart = true;
+                            GlobalState.Tabs.push_back(TabInfo);
+                            ProcessTabConnection(TabInfo);
+
                         }else
                         {
                             if(GlobalState.SwitchingToDelayedTabIndex >= 0 && GlobalState.SwitchingToDelayedTabIndex < GlobalState.Tabs.size() && GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex]->ConnectionState == TabData::Delayed)
@@ -1012,7 +1013,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
                     TabInfo->ConnectionState = TabData::NotStarted;
                     TabInfo->FrameId = FrameId;
-                    TabInfo->IsPopupExtension = true;
+                    TabInfo->InjectJavascriptOnStart = true;
                     GlobalState.Tabs.push_back(TabInfo);
                     ProcessTabConnection(TabInfo);
                 }else if(TypeName == "background_page")
@@ -1060,19 +1061,19 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 std::string TabId = Parser.GetStringFromJson(Result, "sessionId");
                 std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
-                
-                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
-                {
-                    if(FrameId == TabInfo->FrameId)
+
+                    for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
                     {
-                        TabInfo->TabId = TabId;
-                        GlobalState.SwitchToTabId = TabId;
-                        GlobalState.SwitchToTabFrameId = FrameId;
-                        GlobalState.SwitchToTabResetSavedActions = false;
-                        ProcessTabConnection(TabInfo);
+                        if(FrameId == TabInfo->FrameId)
+                        {
+                            TabInfo->TabId = TabId;
+                            GlobalState.SwitchToTabId = TabId;
+                            GlobalState.SwitchToTabFrameId = FrameId;
+                            GlobalState.SwitchToTabResetSavedActions = false;
+                            ProcessTabConnection(TabInfo);
+                        }
                     }
                 }
-            }
         } else if(Method == "Target.detachedFromTarget")
         {
             //Tab removed, need to update list and switch tab if current tab is closed

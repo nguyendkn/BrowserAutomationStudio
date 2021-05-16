@@ -2303,6 +2303,24 @@ void DevToolsConnector::Focus()
     SendWebSocket("Page.bringToFront", Params, GlobalState.TabId);
 }
 
+std::vector<std::pair<std::string, std::string> > DevToolsConnector::GetExtensionList()
+{
+    std::vector<std::pair<std::string, std::string> > Res;
+    for(std::shared_ptr<ExtensionInfo> ExtInfo : GlobalState.ExtensionList)
+    {
+        //Disable CryptoTokenExtension
+        if(ExtInfo->Id != "kmendfapggjehodndflmmgagdbamhnfd")
+        {
+            std::pair<std::string, std::string> ExtensionPair;
+            ExtensionPair.first = ExtInfo->Id;
+            ExtensionPair.second = ExtInfo->Name;
+            Res.push_back(ExtensionPair);
+        }
+    }
+    return Res;
+}
+
+
 void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNamePart)
 {
     std::string Id;

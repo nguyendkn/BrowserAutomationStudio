@@ -227,6 +227,7 @@ class DevToolsConnector
 
         //Extensions
         void TriggerExtensionButton(const std::string ExtensionIdOrNamePart);
+        std::vector<std::pair<std::string, std::string> > GetExtensionList();
 
 };
 

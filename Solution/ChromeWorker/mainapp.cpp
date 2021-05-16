@@ -4690,10 +4690,11 @@ void MainApp::ShowContextMenu(int X, bool IsImageSelect, const std::string & Jso
 void MainApp::MainContextMenu(POINT& p)
 {
     Async Result = Data->Connector->GetHistory();
-    Result->Then([this, p](AsyncResult* Result)
+    std::vector<std::pair<std::string, std::string> > Extensions = Data->Connector->GetExtensionList();
+    Result->Then([this, p, Extensions](AsyncResult* Result)
     {
         POINT pcopy = p;
-        Data->_BrowserContextMenu.ShowMenu(Data->_MainWindowHandle, pcopy, Data->IsRecord, Result->GetInteger() > 0 , Result->GetInteger() < Result->GetList().size() - 1);
+        Data->_BrowserContextMenu.ShowMenu(Data->_MainWindowHandle, pcopy, Data->IsRecord, Result->GetInteger() > 0 , Result->GetInteger() < Result->GetList().size() - 1, Extensions);
     });
 
 }

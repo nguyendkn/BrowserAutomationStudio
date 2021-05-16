@@ -7,7 +7,7 @@
 #include "converter.h"
 #include "javascriptextensions.h"
 
-void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward)
+void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward, const std::vector<std::pair<std::string, std::string> >& Extensions)
 {
     if(hMenu)
     {
@@ -24,6 +24,17 @@ void BrowserContextMenu::ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGo
     AppendMenu(hMenu, ( CanGoForward ) ? Enabled : Disabled, IdForward, Translate::Tr(L"Forward").c_str());
     AppendMenu(hMenu, Enabled, IdReload, Translate::Tr(L"Reload").c_str());
     AppendMenu(hMenu, Enabled, IdFind, Translate::Tr(L"Find").c_str());
+    if(!Extensions.empty())
+    {
+        HMENU hSubMenu = CreatePopupMenu();
+        int Id = IdExtensions;
+        for(const std::pair<std::string, std::string>& Extension: Extensions)
+        {
+            AppendMenu(hSubMenu, Enabled, Id, (s2ws(Extension.second) + std::wstring(L"(") + s2ws(Extension.first) + std::wstring(L")")).c_str());
+            Id++;
+        }
+        AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, Translate::Tr(L"Extensions").c_str());
+    }
     AppendMenu(hMenu, Enabled, IdGetPageSource, Translate::Tr(L"Get page source").c_str());
     /*if(!IsRecord)
     {
@@ -290,7 +301,16 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Conn
         JavaScriptExtensions Extensions;
         Script = Extensions.ProcessJs(Script,UniqueProcessId);
         Connector->ExecuteJavascript(Script, std::string(), std::string("[]"));
+    }else if(Command >= IdExtensions)
+    {
+        std::vector<std::pair<std::string, std::string> > Extensions = Connector->GetExtensionList();
+        int Index = Command - IdExtensions;
+        if(Index < Extensions.size())
+        {
+            Connector->TriggerExtensionButton(Extensions[Index].first);
+        }
     }
+
 
 
 }

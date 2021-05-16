@@ -406,6 +406,19 @@ namespace BrowserAutomationStudioFramework
         return WorkerSettings->GetBrowserEngine();
     }
 
+    void SubprocessBrowser::ClickExtensionButton(const QString& id, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeTextElement("ClickExtensionButton",id);
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("ClickExtensionButton"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(ClickExtensionButton()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicator())
+            Worker->GetProcessComunicator()->Send(WriteString);
+    }
+
     void SubprocessBrowser::SendWorkerSettings(const QString& json, const QString& callback)
     {
         bool NeedRestart;
@@ -920,6 +933,9 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "RecaptchaV3List" && token == QXmlStreamReader::StartElement)
             {
                 emit RecaptchaV3List();
+            }else if(xmlReader.name() == "ClickExtensionButton" && token == QXmlStreamReader::StartElement)
+            {
+                emit ClickExtensionButton();
             }else if(xmlReader.name() == "SendWorkerSettings" && token == QXmlStreamReader::StartElement)
             {
                 emit SendWorkerSettings();

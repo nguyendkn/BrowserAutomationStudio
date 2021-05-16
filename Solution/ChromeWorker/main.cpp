@@ -2104,6 +2104,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventSetUserAgent.push_back(std::bind(&MainApp::SetUserAgentCallback,app.get(),_1));
     Parser->EventPrepareFunction.push_back(std::bind(&MainApp::PrepareFunctionCallback,app.get(),_1));
     Parser->EventRecaptchaV3List.push_back(std::bind(&MainApp::RecaptchaV3ListCallback,app.get(),_1));
+    Parser->EventClickExtensionButton.push_back(std::bind(&MainApp::ClickExtensionButton,app.get(),_1));
     Parser->EventRecaptchaV3Result.push_back(std::bind(&MainApp::RecaptchaV3ResultCallback,app.get(),_1,_2));
     Parser->EventGetUrl.push_back(std::bind(&MainApp::GetUrlCallback,app.get()));
     Parser->EventGetBrowserScreenSettings.push_back(std::bind(&MainApp::GetBrowserScreenSettingsCallback,app.get()));

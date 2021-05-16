@@ -245,6 +245,16 @@ void CommandParser::Parse(const std::string& Xml)
                 f(value);
         }
 
+        CommandNode = MessagesNode->first_node("ClickExtensionButton");
+        if(CommandNode)
+        {
+            std::string value = CommandNode->value();
+            WORKER_LOG("ClickExtensionButton");
+            for(auto f:EventClickExtensionButton)
+                f(value);
+        }
+
+
         CommandNode = MessagesNode->first_node("RecaptchaV3Result");
         if(CommandNode)
         {

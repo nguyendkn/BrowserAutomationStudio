@@ -974,17 +974,26 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         {
                             //New tab is opened without non-empty URL, could be bug, or tab opened with extension
 
+                            if(ConnectionState != Connected)
+                            {
+                                //Disable popups from extensions on start
+                                std::map<std::string, Variant> CurrentParams;
+                                CurrentParams["targetId"] = Variant(FrameId);
+                                SendWebSocket("Target.closeTarget", CurrentParams, std::string());
+                            }else
+                            {
+                                std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                                TabInfo->ConnectionState = TabData::NotStarted;
+                                TabInfo->FrameId = FrameId;
+                                TabInfo->InjectJavascriptOnStart = true;
+                                GlobalState.Tabs.push_back(TabInfo);
+                                ProcessTabConnection(TabInfo);
+                            }
+
                             /*std::map<std::string, Variant> CurrentParams;
                             CurrentParams["targetId"] = Variant(FrameId);
                             SendWebSocket("Target.closeTarget", CurrentParams, std::string());
                             CreateTab(Url, true, false);*/
-
-                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                            TabInfo->ConnectionState = TabData::NotStarted;
-                            TabInfo->FrameId = FrameId;
-                            TabInfo->InjectJavascriptOnStart = true;
-                            GlobalState.Tabs.push_back(TabInfo);
-                            ProcessTabConnection(TabInfo);
 
                         }else
                         {

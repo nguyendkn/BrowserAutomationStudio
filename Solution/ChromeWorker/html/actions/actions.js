@@ -327,6 +327,16 @@ _A = {
       },
       "group":"browser"
    },
+   "clickextensionbutton":{  
+      "name":"Click extension button",
+      "description":"Click extension button",
+      "template":"{{ExtensionId}}",
+      "suggestion":{  
+         "en":"extension",
+         "ru":"расширение"
+      },
+      "group":"browser"
+   },
    "if":{  
       "name":"If",
       "description":"Execute conditional actions",
@@ -1154,6 +1164,7 @@ _AL =
    "Previous Page": {"ru": "Предыдущая Страница"},
    "Clear Log": {"ru": "Очистить лог"},
    "Browser Settings": {"ru": "Настройки Браузера"},
+   "Click extension button": {"ru": "Нажать кнопку расширения"},
    "All actions to work with browser, which do not require a specific element for use. For example, load the url, set proxy, make a screenshot, etc. To click on an element or enter text in a specific field, click on this item and select an action from the menu.": {"ru": "Все действия по работе с браузером, которые не требуют конкретного элемента для применения. Например, загрузить урл, установить прокси, сделать скриншот, и т. д. Чтобы кликнуть по элементу или ввести текст в конкретное поле, кликните по этому элементу и выберите действие из меню."},
    "Actions, which defines script logic: loops, conditions, variable declarations.": {"ru": "Действия, которые определяют логику скрипта: циклы, условия, объявления переменных."},
    "Useful tools to work with strings and execute code.": {"ru": "Полезные инструменты для работы со строками и выполнения кода."},

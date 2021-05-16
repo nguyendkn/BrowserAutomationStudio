@@ -275,6 +275,7 @@ public:
     void PrepareFunctionCallback(const std::string& value);
     void RecaptchaV3ResultCallback(const std::string& id, const std::string& result);
     void RecaptchaV3ListCallback(const std::string& value);
+    void ClickExtensionButton(const std::string& id);
     void SetOpenFileNameCallback(const std::string& value);
     void DragFileCallback(const std::string& value);
     void SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id);

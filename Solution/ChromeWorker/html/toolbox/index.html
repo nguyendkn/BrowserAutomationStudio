@@ -4200,7 +4200,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           </div>
         </form>
       </div>
-      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files."), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("To use extension, you must download it and specify full path. Find extension https://chrome.google.com/webstore/category/extensions, and download it from https://chrome-extension-downloader.com. Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip."), examples:[{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files."), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("To use extension, you must download it and specify full path. See https://wiki.bablosoft.com/doku.php?id=using_extensions for more info."), examples:[{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
 
     </div>
 
@@ -4209,7 +4209,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
       <div class="tr tooltip-paragraph-fold">"Flash", "Extensions" and "Widevine" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
-      <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. Find extension</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">here</a>, <span class="tr">and download it from</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome-extension-downloader.com');return false" class="tr">here</a>. <span class="tr">Before using, *.crx file must be extracted, it can be done with any archive tool like 7-zip.</span></div>
+      <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. See</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">this link</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">эту ссылку</a>, <span class="tr">for more info</span>.</div>
 
       <div class="tooltip-paragraph-fold"><span class="tr">To start BAS with flash enabled besides changing "Flash" setting you also need to install flash on your PC. Instruction is located</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash');return false" class="tr">here</a>. </div>
 
@@ -4506,6 +4506,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-last-fold">If element won't be found instantly, BAS will wait while it will appear for one minute. If element won't be found for 10 seconds, notice will be written to log and if it won't be found for a minute, BAS will stop thread with error. You can handle this error if you uncheck "Fail thread if element not found" checkbox(at page top) or if you wrap this action in ignore error. You can also set max wait time by clicking on hourglass icon near cancel button.</div>
     </div>
     <%= _.template($('#back').html())({action:"executeandadd", visible:true,use_timeout: true, name: tr("Solve Captcha"),wiki: "how_to_solve_captcha"}) %>
+  </script>
+  
+  <script type="text/template" id="clickextensionbutton">
+    <div class="container-fluid">
+      <%= _.template($('#input_constructor').html())({id:"ExtensionId", description:tr("Extension id or name"), default_selector: "string", disable_int:true, help: {description: tr("Extension id or name. It is not necessary to input whole id or whole name, only its part is allowed."), examples:[{code:"padekgcemlokbadohgkifijomclgjgif",description:tr("Trigger extension with id padekgcemlokbadohgkifijomclgjgif.")},{code:"padekgcem",description:tr("Trigger extension, which id contains padekgcem.")},{code:"Proxy SwitchyOmega",description:tr("Trigger extension by name.")},{code:"Proxy",description:tr("Trigger extension by name part.")}]}}) %>
+
+    </div>
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Click on extension button.</div>
+      <div class="tooltip-paragraph-fold"><span class="tr">Executing this action is same as clicking on following</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=chrome_2021-05-15_12-50-15.png');return false" class="tr">button</a>.</div>
+      <div class="tr tooltip-paragraph-fold">Extension must be installed first before this action can be used. Use "Browser settings" action to install extension.</div>
+      <div class="tooltip-paragraph-last-fold"><span class='tr'>More information about using extensions can be found on this this</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">page</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">странице</a>.</div> 
+    </div>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="touch">
@@ -5711,6 +5725,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       /*Browser*/
       <%= waiter %>
       <%= path %>.set_attr(<%= name %>, <%= value %>)!
+  </script>
+
+  <script type="text/template" id="clickextensionbutton_code">
+    _click_extension_button(<%= extension_id %>)!
   </script>
 
   <script type="text/template" id="url_code">
@@ -9888,6 +9906,22 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
+          }else if(State == "clickextensionbutton")
+          {
+            var ExtensionId = GetInputConstructorValue("ExtensionId", loader);
+
+            if(ExtensionId["original"].length == 0)
+            {
+              Invalid("ExtensionId is empty");
+              return;
+            }
+             try{
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({extension_id: ExtensionId["updated"]})
+              code = Normalize(code,0)
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
+            }catch(e)
+            {}
+
           }else if(State == "style")
           {
             var Variable = this.$el.find("#Save").val().toUpperCase();
@@ -10275,6 +10309,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "set_random": _.template($('#set_random').html()),
           "attr": _.template($('#attr').html()),
           "set_attr": _.template($('#set_attr').html()),
+          "clickextensionbutton": _.template($('#clickextensionbutton').html()),
           "captcha": _.template($('#captcha').html()),
           "screenshot": _.template($('#screenshot').html()),
           "length": _.template($('#length').html()),
@@ -10531,6 +10566,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/set_random": "set_random",
             "!/attr": "attr",
             "!/set_attr": "set_attr",
+            "!/clickextensionbutton": "clickextensionbutton",
             "!/captcha": "captcha",
             "!/screenshot": "screenshot",
             "!/length": "length",
@@ -10804,6 +10840,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         },
         set_attr: function(){
           _GobalModel.set({ state: "set_attr" });
+        },
+        clickextensionbutton: function(){
+          _GobalModel.set({ state: "clickextensionbutton" });
         },
         captcha: function(){
           _GobalModel.set({ state: "captcha" });
@@ -11132,6 +11171,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },
                 { name: tr(_A["timeout"]["name"]), description: tr(_A["timeout"]["description"]), ref: "timeout" },
                 { name: tr(_A["browsersettings"]["name"]), description: tr(_A["browsersettings"]["description"]), ref: "browsersettings" },
+                { name: tr(_A["clickextensionbutton"]["name"]), description: tr(_A["clickextensionbutton"]["description"]), ref: "clickextensionbutton" },
                 { name: tr(_A["touch"]["name"]), description: tr(_A["touch"]["description"]), ref: "touch" },
                 { name: tr(_A["mousesettings"]["name"]), description: tr(_A["mousesettings"]["description"]), ref: "mousesettings" },
                 { name: tr(_A["notification"]["name"]), description: tr(_A["notification"]["description"]), ref: "notification" },

@@ -181,6 +181,11 @@ function _settings(json, callback)
     Browser.SendWorkerSettings(JSON.stringify(json), "if(_result() == 2)NetworkAccessManager=null;if(_result() == 1)ScriptWorker.AttachNetworkAccessManager();" + _get_function_body(callback))
 }
 
+function _click_extension_button(id, callback)
+{
+    Browser.ClickExtensionButton(id, _get_function_body(callback))
+}
+
 
 
 function _mbr()

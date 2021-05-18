@@ -538,6 +538,9 @@ namespace BrowserAutomationStudioFramework
             return false;
         }
 
+        if(!((int)(Info[0]) == 67 && (int)(Info[1]) == 114 && (int)(Info[3]) == 50 && (int)(Info[4]) == 52))
+            return false;
+
         int HeaderLength = (int)(Info[8]) + (int)(Info[9]) * 256 + (int)(Info[10]) * 65536 + (int)(Info[11]) * 16777216;
 
         Header = f.read(HeaderLength);

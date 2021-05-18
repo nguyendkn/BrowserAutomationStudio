@@ -299,6 +299,7 @@ namespace BrowserAutomationStudioFramework
         QRegularExpression RegexpPath("^[a-zA-Z]:");
 
         QStringList ExtensionDataList = AllExtensionData.split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
+        QStringList ExtensionsIds;
         for(QString &ExtensionData: ExtensionDataList)
         {
             ExtensionData = ExtensionData.trimmed();
@@ -315,18 +316,28 @@ namespace BrowserAutomationStudioFramework
                 if(Match.hasMatch())
                 {
                     Result.Type = ExtensionId;
-                    Result.ExtensionId = Match.captured();
+                    Result.ExtensionId = Match.captured(1);
                 }
             }else if(ExtensionData.size() == 32 && RegexpId.match(ExtensionData).hasMatch())
             {
                 Result.Type = ExtensionId;
                 Result.ExtensionId = ExtensionData;
+
             }else if(RegexpPath.match(ExtensionData).hasMatch())
             {
                 Result.Type = FileName;
                 Result.ExtensionPath = ExtensionData;
             }
-            All.append(Result);
+
+            if(Result.Type != ExtensionId || !ExtensionsIds.contains(Result.ExtensionId))
+            {
+                All.append(Result);
+
+                if(Result.Type == ExtensionId)
+                {
+                    ExtensionsIds.append(Result.ExtensionId);
+                }
+            }
         }
         return All;
     }

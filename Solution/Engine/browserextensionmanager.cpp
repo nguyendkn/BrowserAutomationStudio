@@ -598,6 +598,7 @@ namespace BrowserAutomationStudioFramework
 
     void BrowserExtensionManager::FailExtensionById(const QString &ExtensionId, const QString &Error)
     {
+        QList<QPair<QString,QString> > Items;
 
         QMutableListIterator<Request> i(Requests);
         while (i.hasNext())
@@ -614,14 +615,20 @@ namespace BrowserAutomationStudioFramework
             }
             if(HasItem)
             {
-                emit RequireRequestDone(Req.Id, Error, true);
+                QPair<QString,QString> Item;
+                Item.first = Req.Id;
+                Item.second = Error;
+                Items.append(Item);
                 i.remove();
             }
         }
+        for(QPair<QString,QString>& Item: Items)
+            emit RequireRequestDone(Item.first, Item.second, true);
     }
 
     void BrowserExtensionManager::SuccessExtensionById(const QString &ExtensionId, const QString &Path)
     {
+        QList<QPair<QString,QString> > Items;
         QMutableListIterator<Request> i(Requests);
         while (i.hasNext())
         {
@@ -647,10 +654,15 @@ namespace BrowserAutomationStudioFramework
                 {
                     ResultList.append(Res.ExtensionPath);
                 }
-                emit RequireRequestDone(Req.Id, ResultList.join("\r\n"), false);
+                QPair<QString,QString> Item;
+                Item.first = Req.Id;
+                Item.second = ResultList.join("\r\n");
+                Items.append(Item);
                 i.remove();
             }
         }
+        for(QPair<QString,QString>& Item: Items)
+            emit RequireRequestDone(Item.first, Item.second, false);
     }
 
 }

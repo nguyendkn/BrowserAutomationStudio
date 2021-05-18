@@ -8,6 +8,7 @@
 #include "ihttpclient.h"
 #include "ihtmlparser.h"
 #include "ihelper.h"
+#include "ibrowserextensionmanager.h"
 #include <QDnsLookup>
 
 
@@ -63,6 +64,7 @@ namespace BrowserAutomationStudioFramework
         IHtmlParser* HtmlParser;
         IProperties* Properties;
         IModuleManager *ModuleManager;
+        IBrowserExtensionManager *BrowserExtensionManager;
         IStringBuilder *StringBuilder;
         IProfilerData *ProfilerData;
         IEmbeddedLanguageManager *EmbeddedLanguageManager;
@@ -85,6 +87,8 @@ namespace BrowserAutomationStudioFramework
         bool IsFailExceedRunning;
         bool IsSuccessExceedRunning;
         QString AbortFunction;
+
+        QString CurrentRequireRequestId;
 
         QString FailMessage;
         QHash<QString,QObject*> Modules;
@@ -173,6 +177,9 @@ namespace BrowserAutomationStudioFramework
 
         virtual void SetEmbeddedLanguageManager(IEmbeddedLanguageManager *EmbeddedLanguageManager);
         virtual IEmbeddedLanguageManager * GetEmbeddedLanguageManager();
+
+        virtual void SetBrowserExtensionManager(IBrowserExtensionManager *BrowserExtensionManager);
+        virtual IBrowserExtensionManager * GetBrowserExtensionManager();
 
         virtual void SetStringBuilder(IStringBuilder *StringBuilder);
         virtual IStringBuilder * GetStringBuilder();
@@ -291,11 +298,14 @@ namespace BrowserAutomationStudioFramework
         void TaskReceivedSignal();
         void EmbeddedCallFinished();
         void PrepareFunctionResultSignal();
+        void BrowserExtensioRequireFinishedSignal();
     public slots:
         QString PickResources();
         QString GetEmbeddedApiErrorString();
         QString GetEmbeddedVariablesList();
         bool GetEmbeddedExecutingApiCode();
+        void RequireRequestDone(QString Id, QString Filename, bool IsFailure);
+
 
         void WebInterfaceEval(const QString& Script);
         void OnWaiterStarted();
@@ -401,6 +411,7 @@ namespace BrowserAutomationStudioFramework
         void ImapClientPullMessage(const QString& Uid,const QString& callback);
         void ImapClientCustomQuery(const QString& Url,const QString& Command,const QString& Filter,const QString& callback);
 
+        void RequireExtensions(const QString& extensions, const QString& callback);
 
         void NewHttpClient();
         void FollowRedirect();

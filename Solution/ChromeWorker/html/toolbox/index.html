@@ -5852,10 +5852,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browsersettings_code">
       /*Browser*/
+      _require_extensions(<%= Extensions %>)!
       var Params = {};
       var Flash = (<%= Flash %>);
       var Widevine = (<%= Widevine %>);
-      var Extensions = (<%= Extensions %>);
+      var Extensions = (_result());
 
       var Webrtc = (<%= Webrtc %>);
       var WebrtcIps = (<%= WebrtcIps %>).split(/\r?\n/).filter(function(x){return x && x.length > 0}).map(function(x){return x.replace(/\s/g, '')}).join(";");

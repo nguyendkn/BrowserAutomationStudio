@@ -10,6 +10,7 @@
 #include <QHash>
 #include "substagemanager.h"
 #include "pcapdnslistenserver.h"
+#include "ibrowserextensionmanager.h"
 
 
 namespace BrowserAutomationStudioFramework
@@ -53,6 +54,7 @@ namespace BrowserAutomationStudioFramework
         IWorkerSettings *WorkerSettings;
         IProfilerData *ProfilerData;
         IEmbeddedLanguageManager *EmbeddedLanguageManager;
+        IBrowserExtensionManager *_BrowserExtensionManager;
 
         IHtmlParserFactory* HtmlParserFactory;
         IProperties* Properties;

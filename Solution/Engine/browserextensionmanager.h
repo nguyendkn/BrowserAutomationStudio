@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QMap>
+#include <QDataStream>
 
 namespace BrowserAutomationStudioFramework
 {
@@ -78,7 +79,6 @@ namespace BrowserAutomationStudioFramework
         void WriteFile(const QString& Path,const QString& Data);
         QString RandomString(int size);
 
-
         void ClearCache();
         QString InitCacheFolder(const QString &ExtensionId);
         void SaveCachedFolderTime(const QString& Folder);
@@ -90,9 +90,15 @@ namespace BrowserAutomationStudioFramework
         void FailExtensionById(const QString &ExtensionId, const QString &Error);
         void SuccessExtensionById(const QString &ExtensionId, const QString &Path);
 
-        QString ExtractPublicKeyFromCRX(const QByteArray& Header);
+        //Parse crx3.proto https://github.com/chromium/chromium/blob/e15cfb65a092b26224d6bdc685ed2aa9f41f7eb6/components/crx_file/crx3.proto
+        QString ExtractPublicKeyFromCRX(QByteArray& Header);
         bool RemoveHeaderFromCRX(QByteArray& Header);
         bool ExtractZip();
+
+        //Protobuf very simple, based on https://developers.google.com/protocol-buffers/docs/encoding#packed
+        unsigned int CRXReadFieldId(QDataStream& Header, bool& IsError);
+        unsigned int CRXReadVarint(QDataStream& Header, bool& IsError);
+        QByteArray CRXReadData(QDataStream& Header, bool& IsError);
     };
 }
 

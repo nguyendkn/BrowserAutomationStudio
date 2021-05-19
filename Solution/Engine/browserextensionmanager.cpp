@@ -6,6 +6,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "JlCompress.h"
+#include <bitset>
+#include <QCryptographicHash>
 #include "every_cpp.h"
 
 namespace BrowserAutomationStudioFramework
@@ -498,19 +500,185 @@ namespace BrowserAutomationStudioFramework
         }
 
         QJsonObject Obj = InputObject.object();
-        Obj["key"] = PublicKey;
-        InputObject.setObject(Obj);
-        ManifestFileContent = QString::fromUtf8(InputObject.toJson(QJsonDocument::Indented));
+        if(!Obj.contains("key"))
+        {
+            Obj["key"] = PublicKey;
+            InputObject.setObject(Obj);
+            ManifestFileContent = QString::fromUtf8(InputObject.toJson(QJsonDocument::Indented));
 
-        WriteFile(ManifestFilePath, ManifestFileContent);
+            WriteFile(ManifestFilePath, ManifestFileContent);
+        }
 
         SuccessExtensionById(Request.ExtensionId, QFileInfo(Request.ExtensionPath).absoluteFilePath());
         StartNextExtensionDownload();
     }
 
-    QString BrowserExtensionManager::ExtractPublicKeyFromCRX(const QByteArray& Header)
+    QString BrowserExtensionManager::ExtractPublicKeyFromCRX(QByteArray& Header)
     {
-        return QString("test");
+        QDataStream Stream(&Header, QIODevice::ReadOnly);
+        bool IsError = false;
+        QList<QByteArray> Keys;
+        QByteArray ExtensionId;
+        while(true)
+        {
+            if(Stream.atEnd())
+                break;
+
+            unsigned int FieldId = CRXReadFieldId(Stream, IsError);
+            if(IsError)
+                return QString();
+
+            if(FieldId == 2)
+            {
+                QByteArray KeyMessage = CRXReadData(Stream,IsError);
+                if(IsError)
+                    return QString();
+
+                QDataStream KeyStream(&KeyMessage, QIODevice::ReadOnly);
+                QByteArray Key;
+
+                while(true)
+                {
+                    if(KeyStream.atEnd())
+                        break;
+
+                    unsigned int KeyFieldId = CRXReadFieldId(KeyStream, IsError);
+                    if(IsError)
+                        return QString();
+
+                    if(KeyFieldId == 1)
+                    {
+                        Key = CRXReadData(KeyStream,IsError);
+                        if(IsError)
+                            return QString();
+                    }else
+                    {
+                        CRXReadData(KeyStream,IsError);
+                        if(IsError)
+                            return QString();
+                    }
+                }
+
+                if(Key.isEmpty())
+                    return QString();
+
+                Keys.append(Key);
+            }else if(FieldId == 3)
+            {
+                CRXReadData(Stream,IsError);
+                if(IsError)
+                    return QString();
+            }else if(FieldId == 10000)
+            {
+
+                QByteArray ExtensionIdMessage = CRXReadData(Stream,IsError);
+                if(IsError)
+                    return QString();
+                QDataStream ExtensionIdStream(&ExtensionIdMessage, QIODevice::ReadOnly);
+                unsigned int ExtensionIdFieldId = CRXReadFieldId(ExtensionIdStream, IsError);
+                if(IsError)
+                    return QString();
+                if(ExtensionIdFieldId == 1)
+                {
+                    ExtensionId = CRXReadData(ExtensionIdStream,IsError);
+                    if(IsError)
+                        return QString();
+                }else
+                {
+                    return QString();
+                }
+
+
+            }else
+            {
+                return QString();
+            }
+
+        }
+
+        for(QByteArray& Key: Keys)
+        {
+            QCryptographicHash Hash(QCryptographicHash::Sha256);
+            Hash.addData(Key);
+            QByteArray CandidateSignature = Hash.result().mid(0,16);
+            if(CandidateSignature == ExtensionId && !ExtensionId.isEmpty())
+                return QString::fromUtf8(Key.toBase64());
+        }
+
+        return QString();
+    }
+
+    unsigned int BrowserExtensionManager::CRXReadFieldId(QDataStream& Header, bool& IsError)
+    {
+        IsError = false;
+        unsigned int FieldData = CRXReadVarint(Header, IsError);
+        if(IsError)
+            return 0;
+
+        std::bitset<32> FieldDataBits(FieldData);
+        std::bitset<32> ResultBits(0);
+        for(int i = 3;i<32;i++)
+        {
+            ResultBits[i-3] = FieldDataBits[i];
+        }
+        return ResultBits.to_ulong();
+    }
+
+    unsigned int BrowserExtensionManager::CRXReadVarint(QDataStream& Header, bool& IsError)
+    {
+        IsError = false;
+        std::bitset<32> Res(0);
+        int ResIndex = 0;
+
+        while(true)
+        {
+            if(Header.atEnd())
+            {
+                IsError = true;
+                return 0;
+            }
+            unsigned char FirstByte = 0;
+            Header>>FirstByte;
+            std::bitset<8> Bits(FirstByte);
+            bool MSB = Bits[7];
+            for(int i = 0;i<7;i++)
+            {
+                Res[ResIndex] = Bits[i];
+                ResIndex++;
+                if(ResIndex >= 32)
+                {
+                    IsError = true;
+                    return 0;
+                }
+            }
+            if(!MSB)
+                break;
+
+        }
+
+        return Res.to_ulong();
+    }
+
+    QByteArray BrowserExtensionManager::CRXReadData(QDataStream& Header, bool& IsError)
+    {
+        IsError = false;
+        unsigned int Length = CRXReadVarint(Header, IsError);
+        if(IsError)
+            return QByteArray();
+
+        QByteArray Data;
+
+        Data.resize(Length);
+
+        int ActualLength = Header.readRawData(Data.data(),Length);
+
+        if(ActualLength != Length)
+        {
+            IsError = true;
+            return QByteArray();
+        }
+
+        return Data;
     }
 
     bool BrowserExtensionManager::RemoveHeaderFromCRX(QByteArray& Header)
@@ -538,10 +706,12 @@ namespace BrowserAutomationStudioFramework
             return false;
         }
 
-        if(!((int)(Info[0]) == 67 && (int)(Info[1]) == 114 && (int)(Info[2]) == 50 && (int)(Info[3]) == 52))
+        unsigned char * InfoUnsigned = (unsigned char *)Info.data();
+
+        if(!(InfoUnsigned[0] == 67 && InfoUnsigned[1] == 114 && InfoUnsigned[2] == 50 && InfoUnsigned[3] == 52))
             return false;
 
-        int HeaderLength = (int)(Info[8]) + (int)(Info[9]) * 256 + (int)(Info[10]) * 65536 + (int)(Info[11]) * 16777216;
+        int HeaderLength = InfoUnsigned[8] + InfoUnsigned[9] * 256 + InfoUnsigned[10] * 65536 + InfoUnsigned[11] * 16777216;
 
         Header = f.read(HeaderLength);
 

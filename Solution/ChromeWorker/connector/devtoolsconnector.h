@@ -100,6 +100,7 @@ class DevToolsConnector
     SharedMemoryIPC* IPC = 0;
     void HandleIPCData();
     void ParseNewTabReferrer(const std::string& NewTabReferrer);
+    void CheckIfTabsNeedsToLoadFirstUrl(std::shared_ptr<TabData> Tab);
     void ResetProxy(const std::string& ParentProcessId);
     //https://source.chromium.org/chromium/chromium/src/+/master:content/browser/devtools/devtools_video_consumer.cc;drc=267e9d603200302cd937cc5b788f044186a1b8c6;l=25
     void SetMinCapturePeriod(int MinCapturePeriod);

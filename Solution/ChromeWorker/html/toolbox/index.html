@@ -4519,7 +4519,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Extension must be installed first before this action can be used. Use "Browser settings" action to install extension.</div>
       <div class="tooltip-paragraph-last-fold"><span class='tr'>More information about using extensions can be found on this this</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">page</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">странице</a>.</div> 
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true, waiter_enabled: true, use_waiter: true, use_timeout:true}) %>
   </script>
 
   <script type="text/template" id="touch">
@@ -9917,7 +9917,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               return;
             }
              try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({extension_id: ExtensionId["updated"]})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({extension_id: ExtensionId["updated"]}) + BrowserAutomationStudio_GetWaitCode()
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)

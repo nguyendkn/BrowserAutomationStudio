@@ -989,16 +989,25 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         {
                             //If tab created with tabs.create from extension, real url will be replaced with about:blank#replaceurlreal_url. Real url will be loaded after initialization.
 
-                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                            TabInfo->ConnectionState = TabData::NotStarted;
-                            TabInfo->FrameId = FrameId;
+                            if(ConnectionState != Connected)
+                            {
+                                //Not connected yet, don't open a new tab
+                                std::map<std::string, Variant> CurrentParams;
+                                CurrentParams["targetId"] = Variant(FrameId);
+                                SendWebSocket("Target.closeTarget", CurrentParams, std::string());
+                            }else
+                            {
+                                std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                                TabInfo->ConnectionState = TabData::NotStarted;
+                                TabInfo->FrameId = FrameId;
 
-                            //After initialization will be done, original url will be loaded
-                            TabInfo->FirstUrl = ReplaceAll(Url, "about:blank#replaceurl", std::string());
-                            TabInfo->IsWaitingForFirstUrl = true;
+                                //After initialization will be done, original url will be loaded
+                                TabInfo->FirstUrl = ReplaceAll(Url, "about:blank#replaceurl", std::string());
+                                TabInfo->IsWaitingForFirstUrl = true;
 
-                            GlobalState.Tabs.push_back(TabInfo);
-                            ProcessTabConnection(TabInfo);
+                                GlobalState.Tabs.push_back(TabInfo);
+                                ProcessTabConnection(TabInfo);
+                            }
                         }else if(Url != "chrome://newtab/" && Url != "about:blank")
                         {
                             //New tab is opened without non-empty URL, could be bug

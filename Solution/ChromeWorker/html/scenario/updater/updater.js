@@ -30,13 +30,13 @@
     },
 
     initialize() {
-      this.on('change:isStarted', async (_, isStarted) => {
+      this.on('change:isStarted', async (__, isStarted) => {
         if (!isStarted) {
           BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
         } else {
           BrowserAutomationStudio_TriggerEvent('scenario.updateStart');
         }
-        if (isStarted) return await this.run();
+        if (isStarted) await _.sleep(200).then(() => this.run());
       });
 
       this.on('finish', () => {
@@ -65,18 +65,19 @@
     async run() {
       this.set('successCount', 0);
       this.set('errorsCount', 0);
+      let timeout = undefined;
 
       for (const { id, dat, index, isDatEmpty, isDatDamaged } of this.get('tasks')) {
-        _MainView.currentTargetId = index;
+        const { error, message } = await new Promise((resolve) => {
+          _MainView.currentTargetId = index;
 
-        if (dat && !_A[dat['s']]) {
-          this.handle(id, tr('The module containing this action is damaged or disabled.'));
-        } else if (isDatDamaged) {
-          this.handle(id, tr('The technical description of this action is damaged.'));
-        } else if (isDatEmpty) {
-          this.handle(id, tr('The technical description of this action is empty.'));
-        } else {
-          let timeout; const { error, message } = await new Promise((resolve) => {
+          if (dat && !_A[dat['s']]) {
+            resolve({ error: true, message: tr('The module containing this action is damaged or disabled.') });
+          } else if (isDatDamaged) {
+            resolve({ error: true, message: tr('The technical description of this action is damaged.') });
+          } else if (isDatEmpty) {
+            resolve({ error: true, message: tr('The technical description of this action is empty.') });
+          } else {
             timeout = setTimeout(() => resolve({ error: true, message: tr('Timeout during the action update.') }), 10000);
 
             this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
@@ -92,11 +93,10 @@
             });
 
             _MainView.Edit({ disableModal: true });
-          }).finally(() => clearTimeout(timeout));
+          }
+        }).finally(() => clearTimeout(timeout));
 
-          this.handle(id, message, error);
-        }
-
+        this.handle(id, message, !!error);
         if (!this.get('isStarted')) break;
       }
 
@@ -241,7 +241,7 @@
       this.model = new ActionUpdaterModel();
       this.modal = new ActionUpdaterModal();
 
-      this.model.on('change:isStarted', (_, isStarted) => {
+      this.model.on('change:isStarted', (__, isStarted) => {
         if (isStarted) this.$('#actionUpdaterProgress').progressBar('reset');
 
         if (this.model.isSuccessfulUpdate() && !isStarted) {
@@ -255,17 +255,17 @@
         if (isStarted) this.$('#actionUpdaterLog').empty();
       });
 
-      this.model.on('change:successCount', (_, count) => {
+      this.model.on('change:successCount', (__, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterSuccessCount').text(count);
       });
 
-      this.model.on('change:errorsCount', (_, count) => {
+      this.model.on('change:errorsCount', (__, count) => {
         this.$('#actionUpdaterProgress').progressBar('step');
         this.$('#actionUpdaterErrorsCount').text(count);
       });
 
-      this.model.on('change:tasks', (_, { length }) => {
+      this.model.on('change:tasks', (__, { length }) => {
         this.$('#actionUpdaterAccept').prop('disabled', length === 0);
         this.$('#actionUpdaterSelect').prop('disabled', false);
         this.$('#actionUpdaterSelect').selectpicker('refresh');

@@ -28,6 +28,7 @@
 #include "iworkersettings.h"
 #include "iprofilerdata.h"
 #include "iembeddedlanguagemanager.h"
+#include "ibrowserextensionmanager.h"
 #include "substagemanager.h"
 
 class SubstageManager;
@@ -52,6 +53,9 @@ namespace BrowserAutomationStudioFramework
 
         virtual void SetEmbeddedLanguageManager(IEmbeddedLanguageManager *EmbeddedLanguageManager) = 0;
         virtual IEmbeddedLanguageManager * GetEmbeddedLanguageManager() = 0;
+
+        virtual void SetBrowserExtensionManager(IBrowserExtensionManager *BrowserExtensionManager) = 0;
+        virtual IBrowserExtensionManager * GetBrowserExtensionManager() = 0;
 
         virtual void SetProcessComunicator(IProcessComunicator *ProcessComunicator) = 0;
         virtual IProcessComunicator * GetProcessComunicator() = 0;

@@ -37,6 +37,8 @@ public:
     const static int IdSelectAllEditable = IdBackward + 16;
     const static int IdSavePageAs = IdBackward + 17;
 
+    const static int IdExtensions = IdBackward + 99;
+
     CefRefPtr<SourceSaver> _SourceSaver;
 
 
@@ -56,7 +58,7 @@ public:
     HWND find_hwnd_ = 0;
 
     void Show(HWND hwnd, int X, int Y, bool IsLink, bool IsMedia, bool IsEdit, const std::string& LinkUrl, const std::string& MediaUrl, const std::string& CurrentUrl, const std::string& SelectedText, bool CanGoBack, bool CanGoForward);
-    void ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward);
+    void ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward, const std::vector<std::pair<std::string, std::string> >& Extensions);
     void Process(HWND hwnd, int Command, DevToolsConnector* Connector, const std::string& UniqueProcessId);
     void OnFind(DevToolsConnector* Connector, LPFINDREPLACE Data);
     void ShowFindDialog(HWND hwnd);

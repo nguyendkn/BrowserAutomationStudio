@@ -383,6 +383,24 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         SendWebSocket("Target.attachToTarget", Params, std::string());
     }else if(Tab->ConnectionState == TabData::WaitingForAttachment)
     {
+        Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
+        std::map<std::string, Variant> Params;
+        Params["source"] = Variant(GlobalState.ConstantStartupScript);
+        Tab->CurrentWebsocketActionId = SendWebSocket("Page.addScriptToEvaluateOnNewDocument", Params, Tab->TabId);
+    } else if(Tab->ConnectionState == TabData::WaitingForSettingStartupScript)
+    {
+        Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
+
+        if(ConnectionState != WaitingFirstTab)
+        {
+            ProcessTabConnection(Tab);
+            return;
+        }
+        std::map<std::string, Variant> Params;
+        Params["expression"] = Variant(GlobalState.ConstantStartupScript + std::string(";0;"));
+        Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.evaluate", Params, Tab->TabId);
+    }else if(Tab->ConnectionState == TabData::WaitingForPageReloadForFirstTab)
+    {
         Tab->ConnectionState = TabData::WaitingForPageEnable;
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Page.enable", Params, Tab->TabId);
@@ -397,24 +415,6 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Network.enable", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForNetworkEnable)
-    {
-        Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
-        std::map<std::string, Variant> Params;
-        Params["source"] = Variant(GlobalState.ConstantStartupScript);
-        Tab->CurrentWebsocketActionId = SendWebSocket("Page.addScriptToEvaluateOnNewDocument", Params, Tab->TabId);
-    } else if(Tab->ConnectionState == TabData::WaitingForSettingStartupScript)
-    {
-        Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
-
-        if(ConnectionState != WaitingFirstTab && !Tab->IsPopupExtension)
-        {
-            ProcessTabConnection(Tab);
-            return;
-        }
-        std::map<std::string, Variant> Params;
-        Params["expression"] = Variant(GlobalState.ConstantStartupScript + std::string(";0;"));
-        Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.evaluate", Params, Tab->TabId);
-    } else if(Tab->ConnectionState == TabData::WaitingForPageReloadForFirstTab)
     {
         Tab->CurrentWebsocketActionId = 0;
 
@@ -530,7 +530,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
         }
 
         //Switching tab after closing current
-        if(SwitchTabAfterCloseCurrentActionId == Id)
+        if(SwitchTabAfterCloseCurrentActionId == Id && GlobalState.SwitchToTabId.empty() && GlobalState.SwitchToTabFrameId.empty())
         {
             GlobalState.SwitchToTabId = SwitchTabAfterCloseCurrentTabId;
             GlobalState.SwitchToTabFrameId = SwitchTabAfterCloseCurrentFrameId;
@@ -797,6 +797,21 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 {
                     if(FrameId == TabInfo->FrameId)
                     {
+                        //During chrome extensions initial load real url is replaced with not_exists_url.html#real_url. Real url will be loaded after initialization.
+                        if(TabInfo->IsWaitingForFirstUrl && TabInfo->FirstUrl.empty() && NewUrl.find("chrome-extension://") != std::string::npos && NewUrl.find("not_exists_url.html#") != std::string::npos)
+                        {
+                            //Obtain real url
+                            TabInfo->FirstUrl = ReplaceAll(NewUrl, "not_exists_url.html#", std::string());
+                            CheckIfTabsNeedsToLoadFirstUrl(TabInfo);
+                        }
+                        //If using tabs.create from extension, real url will be replaced with about:blank#replaceurlreal_url. Real url will be loaded after initialization.
+                        if(TabInfo->IsWaitingForFirstUrl && TabInfo->FirstUrl.empty() && NewUrl.find("about:blank#replaceurl") != std::string::npos)
+                        {
+                            //Obtain real url
+                            TabInfo->FirstUrl = ReplaceAll(NewUrl, "about:blank#replaceurl", std::string());
+                            CheckIfTabsNeedsToLoadFirstUrl(TabInfo);
+                        }
+
                         if(TabInfo->CurrentUrl != NewUrl && GlobalState.TabId == TabInfo->TabId)
                             IsChanged = true;
                         TabInfo->CurrentUrl = NewUrl;
@@ -955,16 +970,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         SendWebSocket("Target.closeTarget", CurrentParams, std::string());
                     }else
                     {
-                        if(starts_with(Url, "chrome-extension://"))
-                        {
-                            //New tab for extension has been created
-                            std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                            TabInfo->ConnectionState = TabData::NotStarted;
-                            TabInfo->FrameId = FrameId;
-                            TabInfo->IsPopupExtension = true;
-                            GlobalState.Tabs.push_back(TabInfo);
-                            ProcessTabConnection(TabInfo);
-                        }else if(Url == "about:blank#newtab")
+                        if(Url == "about:blank#newtab")
                         {
                             //New tab is opened by using ctrl-click or window.open
 
@@ -979,12 +985,37 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             GlobalState.LoadNextTargetId = FrameId;
                             GlobalState.LoadNext = true;
 
+                        }else if(starts_with(Url, "about:blank#replaceurl"))
+                        {
+                            //If tab created with tabs.create from extension, real url will be replaced with about:blank#replaceurlreal_url. Real url will be loaded after initialization.
+
+                            if(ConnectionState != Connected)
+                            {
+                                //Not connected yet, don't open a new tab
+                                std::map<std::string, Variant> CurrentParams;
+                                CurrentParams["targetId"] = Variant(FrameId);
+                                SendWebSocket("Target.closeTarget", CurrentParams, std::string());
+                            }else
+                            {
+                                std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                                TabInfo->ConnectionState = TabData::NotStarted;
+                                TabInfo->FrameId = FrameId;
+
+                                //After initialization will be done, original url will be loaded
+                                TabInfo->FirstUrl = ReplaceAll(Url, "about:blank#replaceurl", std::string());
+                                TabInfo->IsWaitingForFirstUrl = true;
+
+                                GlobalState.Tabs.push_back(TabInfo);
+                                ProcessTabConnection(TabInfo);
+                            }
                         }else if(Url != "chrome://newtab/" && Url != "about:blank")
                         {
-                            //New tab is opened without non-empty tab, could be bug
+                            //New tab is opened without non-empty URL, could be bug
+
                             std::map<std::string, Variant> CurrentParams;
                             CurrentParams["targetId"] = Variant(FrameId);
                             SendWebSocket("Target.closeTarget", CurrentParams, std::string());
+
                         }else
                         {
                             if(GlobalState.SwitchingToDelayedTabIndex >= 0 && GlobalState.SwitchingToDelayedTabIndex < GlobalState.Tabs.size() && GlobalState.Tabs[GlobalState.SwitchingToDelayedTabIndex]->ConnectionState == TabData::Delayed)
@@ -1012,7 +1043,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
                     TabInfo->ConnectionState = TabData::NotStarted;
                     TabInfo->FrameId = FrameId;
-                    TabInfo->IsPopupExtension = true;
+                    TabInfo->IsWaitingForFirstUrl = true;
                     GlobalState.Tabs.push_back(TabInfo);
                     ProcessTabConnection(TabInfo);
                 }else if(TypeName == "background_page")
@@ -1060,19 +1091,19 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 std::string TabId = Parser.GetStringFromJson(Result, "sessionId");
                 std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
-                
-                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
-                {
-                    if(FrameId == TabInfo->FrameId)
+
+                    for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
                     {
-                        TabInfo->TabId = TabId;
-                        GlobalState.SwitchToTabId = TabId;
-                        GlobalState.SwitchToTabFrameId = FrameId;
-                        GlobalState.SwitchToTabResetSavedActions = false;
-                        ProcessTabConnection(TabInfo);
+                        if(FrameId == TabInfo->FrameId)
+                        {
+                            TabInfo->TabId = TabId;
+                            GlobalState.SwitchToTabId = TabId;
+                            GlobalState.SwitchToTabFrameId = FrameId;
+                            GlobalState.SwitchToTabResetSavedActions = false;
+                            ProcessTabConnection(TabInfo);
+                        }
                     }
                 }
-            }
         } else if(Method == "Target.detachedFromTarget")
         {
             //Tab removed, need to update list and switch tab if current tab is closed
@@ -1322,6 +1353,8 @@ void DevToolsConnector::Timer()
                     }
                     GlobalState.LoadNext = false;
                 }
+
+                CheckIfTabsNeedsToLoadFirstUrl(Tab);
 
                 //Generate Target.targetActivated event. This event doesn't exist in Chrome Developer tools protocol.
                 std::string TabId = GlobalState.SwitchToTabId;
@@ -2302,6 +2335,24 @@ void DevToolsConnector::Focus()
     SendWebSocket("Page.bringToFront", Params, GlobalState.TabId);
 }
 
+std::vector<std::pair<std::string, std::string> > DevToolsConnector::GetExtensionList()
+{
+    std::vector<std::pair<std::string, std::string> > Res;
+    for(std::shared_ptr<ExtensionInfo> ExtInfo : GlobalState.ExtensionList)
+    {
+        //Disable CryptoTokenExtension
+        if(ExtInfo->Id != "kmendfapggjehodndflmmgagdbamhnfd")
+        {
+            std::pair<std::string, std::string> ExtensionPair;
+            ExtensionPair.first = ExtInfo->Id;
+            ExtensionPair.second = ExtInfo->Name;
+            Res.push_back(ExtensionPair);
+        }
+    }
+    return Res;
+}
+
+
 void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNamePart)
 {
     std::string Id;
@@ -2611,6 +2662,20 @@ void DevToolsConnector::AllowPopups()
 {
     GlobalState.IsPopupsAllowed = true;
 }
+
+void DevToolsConnector::CheckIfTabsNeedsToLoadFirstUrl(std::shared_ptr<TabData> Tab)
+{
+    if(Tab->IsWaitingForFirstUrl && !Tab->FirstUrl.empty() && Tab->ConnectionState == TabData::Connected)
+    {
+        std::map<std::string, Variant> CurrentParams;
+        CurrentParams["url"] = Variant(Tab->FirstUrl);
+        SendWebSocket("Page.navigate", CurrentParams, GlobalState.SwitchToTabId);
+
+        Tab->IsWaitingForFirstUrl = false;
+        Tab->FirstUrl.clear();
+    }
+}
+
 
 void DevToolsConnector::ParseNewTabReferrer(const std::string& NewTabReferrer)
 {

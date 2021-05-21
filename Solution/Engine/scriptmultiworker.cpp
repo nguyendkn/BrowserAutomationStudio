@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QCoreApplication>
 #include "csvhelperwrapper.h"
+#include "browserextensionmanager.h"
 #include <limits>
 #include "every_cpp.h"
 
@@ -15,6 +16,7 @@ namespace BrowserAutomationStudioFramework
         IMultiWorker(parent), engine(0), Waiter(0), ResourceHandlers(0), IsAborted(false), StageTimeoutTimer(0), DoTrace(false), Helper(0), IsRecord(false), DieInstant(false), SuccessNumber(0), FailNumber(0), CurrentThreadNumber(-1), ProfilerData(0), EmbeddedLanguageManager(0), IsStudio(false)
     {
         _PcapDNSListenServer = new PcapDNSListenServer(this);
+        _BrowserExtensionManager = new BrowserExtensionManager(this);
     }
 
 
@@ -140,6 +142,7 @@ namespace BrowserAutomationStudioFramework
     void ScriptMultiWorker::SetHttpClientFactory(IHttpClientFactory* HttpClientFactory)
     {
         this->HttpClientFactory = HttpClientFactory;
+        this->_BrowserExtensionManager->SetHttpClientFactory(HttpClientFactory);
     }
 
     IHttpClientFactory* ScriptMultiWorker::GetHttpClientFactory()
@@ -1489,6 +1492,7 @@ namespace BrowserAutomationStudioFramework
         worker->SetProfilerData(ProfilerData);
         worker->SetStringBuilder(StringBuilder);
         worker->SetEmbeddedLanguageManager(EmbeddedLanguageManager);
+        worker->SetBrowserExtensionManager(_BrowserExtensionManager);
         worker->SetAdditionEngineScripts(&AdditionalScripts);
         worker->SetIsRecord(IsRecord);
         worker->SetSubstageManager(&Substages);

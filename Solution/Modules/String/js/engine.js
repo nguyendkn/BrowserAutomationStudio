@@ -3,13 +3,11 @@ _L["Number"] = {"ru":"Число"};
 _L["Lenght"] = {"ru":"Длина"};
 _L["Template"] = {"ru":"Шаблон"};
 _L["To index"] = {"ru":"До индекса"};
-_L["Substring"] = {"ru":"Подстрока"};
 _L["From index"] = {"ru":"С индекса"};
 _L["Separator"] = {"ru":"Разделитель"};
 _L["Replace To"] = {"ru":"Заменить На"};
 _L["Replace From"] = {"ru":"Заменить Из"};
 _L["List of strings"] = {"ru":"Список строк"};
-_L["Phone number"] = {"ru":"Телефонный номер"};
 _L["List of items"] = {"ru":"Список элементов"};
 _L["Left substring"] = {"ru":"Левая подстрока"};
 _L["Right substring"] = {"ru":"Правая подстрока"};
@@ -18,7 +16,6 @@ _L["Convert types"] = {"ru":"Преобразовывать типы"};
 _L["List of separators"] = {"ru":"Список разделителей"};
 _L["Thousandth separator"] = {"ru":"Разделитель тысячных"};
 _L["Latinize Cyrillic"] = {"ru":"Латинизировать кириллицу"};
-_L["Phone number mask"] = {"ru":"Маска телефонного номера"};
 _L["Insertable substring"] = {"ru":"Вставляемая подстрока"};
 _L["Result String Length"] = {"ru":"Длина Генерируемой Строки"};
 _L["Capitalize all words"] = {"ru":"Сделать все слова заглавными"};
@@ -32,7 +29,7 @@ function _from_string(str){
     return _is_not_empty_string(str) ? (isNaN(str) ? (str=="true" || str=="false" ? str=="true" : (_is_json_string(str) ? JSON.parse(str) : (str=="null" ? null : (str=="undefined" ? undefined : str)))) : Number(str)) : str;
 };
 function _to_string(data){
-	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp) && !(data instanceof _url) && !(data instanceof _ua)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? _escape_regexp(data.source) : data.toString())));
+	return _is_string(data) ? data : ((typeof data=="object" && !(data instanceof Date) && !(data instanceof RegExp)) ? JSON.stringify(data) : (typeof data=="number" ? _no_exponents(data) : ((data instanceof RegExp) ? _escape_regexp(data.source) : data.toString())));
 };
 function _no_exponents(num){
 	_validate_argument_type(num, ['string','number'], 'Number', '_no_exponents');
@@ -266,33 +263,6 @@ function _find_substring(str, sub, from){
 		_validate_argument_type(from, 'number', 'From index', act);
 		return str.indexOf(sub, from);
 	};
-};
-function _starts_with(str, sub, from){
-	var act = '_starts_with';
-	_validate_argument_type(str, 'string', 'String', act);
-	_validate_argument_type(sub, ['string','number'], 'Substring', act);
-	if(typeof sub==='number'){
-		sub = _no_exponents(sub);
-	};
-	from = _avoid_nilb(from, 0);
-	_validate_argument_type(from, 'number', 'From index', act);
-	return str.indexOf(sub) === from;
-};
-function _ends_with(str, sub, lenght){
-	var act = '_ends_with';
-	_validate_argument_type(str, 'string', 'String', act);
-	_validate_argument_type(sub, ['string','number'], 'Substring', act);
-	if(typeof sub==='number'){
-		sub = _no_exponents(sub);
-	};
-	lenght = _avoid_nilb(lenght, str.length);
-	_validate_argument_type(lenght, 'number', 'Lenght', act);
-	if(lenght > str.length){
-		lenght = str.length;
-	};
-	lenght -= sub.length;
-	var last_index = str.indexOf(sub, lenght);
-	return last_index !== -1 && last_index === lenght;
 };
 function _insert_substring(str, index, sub){
 	var act = '_insert_substring';
@@ -537,58 +507,4 @@ function _extract_ips(str){
 function _extract_files(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_files');
 	return _uniq_arr(_trim_arr(_avoid_nil(str.match(_regexp_extract_validation("extract", "file")), [])));
-};
-function _validate_url(str){
-	_validate_argument_type(str, 'string', 'String', '_validate_url');
-	return _regexp_extract_validation("validate", "url").test(str);
-};
-function _validate_email(str){
-	_validate_argument_type(str, 'string', 'String', '_validate_email');
-	return _regexp_extract_validation("validate", "email").test(str);
-};
-function _validate_phone_number(str){
-	_validate_argument_type(str, 'string', 'String', '_validate_phone_number');
-	return _regexp_extract_validation("validate", "phone").test(str);
-};
-function _validate_ip(str){
-	_validate_argument_type(str, 'string', 'String', '_validate_ip');
-	return _regexp_extract_validation("validate", "ip").test(str);
-};
-function _validate_file(str){
-	_validate_argument_type(str, 'string', 'String', '_validate_file');
-	return _regexp_extract_validation("validate", "file").test(str);
-};
-function _normalize_phone_number(phone_number){
-	_validate_argument_type(phone_number, ['string','number'], 'Phone number', '_normalize_phone_number');
-	phone_number = String(phone_number);
-	var number = '';
-	for(var i = 0; i < phone_number.length; i++){
-		var e = phone_number.charAt(i);
-		if('0123456789'.indexOf(e) > -1){
-			number += e;
-		};
-	};
-	return number;
-};
-function _format_phone_number(phone_number, mask){
-	_validate_argument_type(phone_number, ['string','number'], 'Phone number', '_format_phone_number');
-	_avoid_nilb(mask, '+X (XXX) XXX-XX-XX');
-	_validate_argument_type(phone_number, 'string', 'Phone number mask', '_format_phone_number');
-	var nums = _normalize_phone_number(phone_number);
-    var number = '';
-    var ni = nums.length;
-    for(var i = mask.length -1; i > -1; i--){
-        var e = mask.charAt(i);
-        if(e.toLowerCase()==='x'){
-            ni--
-            var ne = nums.charAt(ni);
-            if(!ne){
-                fail('_format_phone_number: ' + (_K==="ru" ? ('Количество чисел в указанном номере "' + nums + '" (' + nums.length + ') меньше количества чисел в указанной маске "') : ('The number of numbers in the specified number "' + nums + '" (' + nums.length + ') is less than the number of numbers in the specified mask "')) + mask + '" (' + _count_substrings(mask.toLowerCase(), 'x') + ').');
-            }
-            number = ne + number;
-        }else{
-            number = e + number;
-        };
-    }
-    return number;
 };

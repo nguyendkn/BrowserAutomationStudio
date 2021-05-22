@@ -4,6 +4,7 @@ _STR_SPECCHARS = '\\f\\n\\r\\t\\v';
 _L["Data"] = {"ru":"Данные"};
 _L["Array"] = {"ru":"Масив"};
 _L["String"] = {"ru":"Строка"};
+_L["Substring"] = {"ru":"Подстрока"};
 _L["Trim left"] = {"ru":"Обрезать слева"};
 _L["Trim right"] = {"ru":"Обрезать справа"};
 _L["Trim characters"] = {"ru":"Обрезать символы"};
@@ -238,4 +239,31 @@ function _clean_arr(arr, chars_to_delete, chars_to_space, multiple_spaces){
 	multiple_spaces = _avoid_nilb(multiple_spaces, true);
 	_validate_argument_type(multiple_spaces, ['boolean','number'], 'Replace multiple spaces with single ones', act);
 	return arr.map(function(e){return _clean(e, chars_to_delete, chars_to_space, multiple_spaces)});
+};
+function _starts_with(str, sub, from){
+	var act = '_starts_with';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Substring', act);
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
+	from = _avoid_nilb(from, 0);
+	_validate_argument_type(from, 'number', 'From index', act);
+	return str.indexOf(sub) === from;
+};
+function _ends_with(str, sub, lenght){
+	var act = '_ends_with';
+	_validate_argument_type(str, 'string', 'String', act);
+	_validate_argument_type(sub, ['string','number'], 'Substring', act);
+	if(typeof sub==='number'){
+		sub = _no_exponents(sub);
+	};
+	lenght = _avoid_nilb(lenght, str.length);
+	_validate_argument_type(lenght, 'number', 'Lenght', act);
+	if(lenght > str.length){
+		lenght = str.length;
+	};
+	lenght -= sub.length;
+	var last_index = str.indexOf(sub, lenght);
+	return last_index !== -1 && last_index === lenght;
 };

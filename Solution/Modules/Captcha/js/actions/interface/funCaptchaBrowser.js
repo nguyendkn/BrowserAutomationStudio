@@ -2,7 +2,7 @@
   <%= _.template($('#path').html())({ selector }) %>
   <%= _.template($('#input_constructor').html())({
     variants: [ 'anticaptcha', 'rucaptcha', '2captcha' ],
-    description: tr('Service Name'),
+    description: tr('Service name'),
     value_string: 'anticaptcha',
     default_selector: 'string',
     disable_int: true,

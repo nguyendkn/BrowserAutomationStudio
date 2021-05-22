@@ -53,7 +53,35 @@
   "languages": [],
   "modules": [],
   "depends": [],
-  "localize": {},
+  "localize": {
+    "Page url": {
+      "ru": "Url страницы"
+    },
+    "User Agent": {
+      "ru": "User Agent"
+    },
+    "Service name": {
+      "ru": "Название сервиса"
+    },
+    "Service API key": {
+      "ru": "API ключ сервиса"
+    },
+    "Task solution check delay": {
+      "ru": "Задержка проверки решения задачи"
+    },
+    "Task solution check interval": {
+      "ru": "Интервал проверки решения задачи"
+    },
+    "Task solution check delay in milliseconds": {
+      "ru": "Задержка проверки решения задачи в миллисекундах"
+    },
+    "Task solution check interval in milliseconds": {
+      "ru": "Интервал проверки решения задачи в миллисекундах"
+    },
+    "Solve FunCaptcha using any available service.": {
+      "ru": "Решить FunCaptcha используя любой доступный сервис."
+    }
+  },
   "browser": [
     "browser/funCaptcha.js"
   ],

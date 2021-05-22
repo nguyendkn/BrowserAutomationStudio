@@ -56,7 +56,7 @@
       default_selector: 'string',
       disable_int: true,
       id: 'userAgent',
-      help: { description: tr('User-Agent that will be used by the service for solving captchas.') }
+      help: { description: tr('User-Agent that will be used by the service for solving captcha.') }
     }) %>
     <%= _.template($('#input_constructor').html())({
       description: tr('Custom service api url'),
@@ -69,28 +69,30 @@
     <%= _.template($('#input_constructor').html())({
       description: tr('Task solution check interval'),
       default_selector: 'int',
+      value_number: 2 * 1000,
       disable_string: true,
-      value_number: 2000,
       id: 'taskWaitInterval',
       help: {
         description: tr('Task solution check interval in milliseconds'),
         examples: [
-          { code: '5000', description: tr('Wait for 5 seconds.') },
-          { code: '0', description: tr('Disable interval') },
+          { code: '600', description: tr('Wait for 600 milliseconds') },
+          { code: '10000', description: tr('Wait for 10 seconds') },
+          { code: '5000', description: tr('Wait for 5 seconds') },
         ]
       }
     }) %>
     <%= _.template($('#input_constructor').html())({
       description: tr('Task solution check delay'),
       default_selector: 'int',
+      value_number: 5 * 1000,
       disable_string: true,
-      value_number: 5000,
       id: 'taskWaitDelay',
       help: {
         description: tr('Task solution check delay in milliseconds'),
         examples: [
-          { code: '5000', description: tr('Wait for 5 seconds.') },
-          { code: '0', description: tr('Disable delay') },
+          { code: '600', description: tr('Wait for 600 milliseconds') },
+          { code: '5000', description: tr('Wait for 5 seconds') },
+          { code: '10000', description: tr('Wait for 10 seconds') },
         ]
       }
     }) %>

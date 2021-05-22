@@ -66,6 +66,15 @@
     "Service API key": {
       "ru": "API ключ сервиса"
     },
+    "Wait for 5 seconds": {
+      "ru": "Ждать 5 секунд"
+    },
+    "Wait for 10 seconds": {
+      "ru": "Ждать 10 секунд"
+    },
+    "Wait for 600 milliseconds": {
+      "ru": "Ждать 600 миллисекунд"
+    },
     "Task solution check delay": {
       "ru": "Задержка проверки решения задачи"
     },
@@ -80,6 +89,9 @@
     },
     "Solve FunCaptcha using any available service.": {
       "ru": "Решить FunCaptcha используя любой доступный сервис."
+    },
+    "User-Agent that will be used by the service for solving captcha.": {
+      "ru": "User-Agent который будет использоваться сервисом для решения капчи."
     }
   },
   "browser": [

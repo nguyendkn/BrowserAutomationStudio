@@ -1,9 +1,15 @@
+_L["URL object"] = {"ru":"Объект URL"};
+_L["New URL items"] = {"ru":"Новые элементы URL"};
+
 function _encode_url_component(str){
 	_validate_argument_type(str, 'string', 'String', '_encode_url_component');
 	return encodeURIComponent(str);
 };
 function _decode_url_component(str){
 	_validate_argument_type(str, 'string', 'String', '_decode_url_component');
+	if(str.indexOf('+') > -1){
+		str = str.replace(/\+/g, " ");
+	};
 	return decodeURIComponent(str);
 };
 function _normalize_url(url_string, user_options){
@@ -26,9 +32,7 @@ function _normalize_url(url_string, user_options){
 	};
 	
 	if(!_is_nilb(user_options) && typeof user_options==='object'){
-		var keys = Object.keys(user_options);
-		for(var i = 0; i < keys.length; i++) {
-			var key = keys[i];
+		for(key in user_options){
 			options[key] = (key=="remove_query_parameters" || key=="remove_directory_index") ? _to_arr(user_options[key]) : user_options[key];
 		};
 	};
@@ -106,12 +110,12 @@ function _normalize_url(url_string, user_options){
 
 	var url_obj = new _url(url_string, {normalize: false, base_url: options.base_url, rfail: false});
 
-	if(options.force_http && url_obj.protocol === 'https:'){
-		url_obj.set('protocol', 'http:');
+	if(options.force_http && url_obj.protocol === 'https'){
+		url_obj.set('protocol', 'http');
 	};
 
-	if(options.force_https && url_obj.protocol === 'http:'){
-		url_obj.set('protocol', 'https:');
+	if(options.force_https && url_obj.protocol === 'http'){
+		url_obj.set('protocol', 'https');
 	};
 
 	if(options.strip_authentication){
@@ -152,9 +156,7 @@ function _normalize_url(url_string, user_options){
 	};
 	
 	if(Array.isArray(options.remove_query_parameters) && options.remove_query_parameters.length > 0){
-		var keys = Object.keys(url_obj.query);
-		for(var i = 0; i < keys.length; i++) {
-			var key = keys[i];
+		for(key in url_obj.query){
 			if(test_parameter(key, options.remove_query_parameters)){
 				delete url_obj.query[key];
 			};
@@ -208,9 +210,7 @@ function _url(address, user_options){
 	};
 	
 	if(!_is_nilb(user_options) && typeof user_options==='object'){
-		var keys = Object.keys(user_options);
-		for(var i = 0; i < keys.length; i++) {
-			var key = keys[i];
+		for(key in user_options){
 			options[key] = user_options[key];
 		};
 	};
@@ -247,7 +247,7 @@ function _url(address, user_options){
 	];
 	var ignore = {hash:1,query:1};
 	this.required = function(port, protocol){
-		protocol = protocol.split(':')[0];
+		protocol = _ends_with(protocol, ':') ? protocol.slice(0, -1) : protocol;
 		port = +port;
 
 		if(!port){return false};
@@ -398,7 +398,7 @@ function _url(address, user_options){
 	
 	if(parser){url.query = parser(url.query)};
 	
-	if((relative && base_url.slashes && url.pathname.charAt(0) !== '/' && (url.pathname !== '' || base_url.pathname !== '')) || new RegExp("\\/(\\.{1,2}|)\\/").test(url.pathname)){
+	if((relative && base_url.slashes && !_starts_with(url.pathname, '/') && (url.pathname !== '' || base_url.pathname !== '')) || new RegExp("\\/(\\.{1,2}|)\\/").test(url.pathname)){
 		url.pathname = resolve(url.pathname, base_url.pathname);
 	};
 	
@@ -415,10 +415,18 @@ function _url(address, user_options){
 		url.password = instruction[1] || '';
 	};
 	
-	url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol +'//'+ url.host : 'null';
+	url.origin = url.protocol && url.host && url.protocol !== 'file' ? url.protocol + '://' + url.host : 'null';
 	
 	if(options.rfail && url.protocol==="" && url.host==="" && url.origin==="null"){
 		fail(_K=="ru" ? ("Указан недействительный URL | " + original_url) : ("Invalid URL specified | " + original_url));
+	};
+	
+	if(url.protocol && _ends_with(url.protocol, ':')){
+		url.protocol = url.protocol.slice(0, -1);
+	};
+	
+	if(url.hash && _starts_with(url.hash, '#')){
+		url.hash = url.hash.slice(1);
 	};
 	
 	url.href = url.toString();
@@ -475,13 +483,19 @@ _url.prototype.set = function(part, value, fn){
 			break;
 		case 'protocol':
 			url.protocol = value.toLowerCase();
-			url.slashes = !fn;
+			if(url.protocol && _ends_with(url.protocol, ':')){
+				url.protocol = url.protocol.slice(0, -1);
+			};
+			url.slashes = (value !== "");
 			break;
 		case 'pathname':
 		case 'hash':
 			if(value){
-				var char = part === 'pathname' ? '/' : '#';
-				url[part] = value.charAt(0) !== char ? char + value : value;
+				if(part === 'pathname'){
+					url[part] = _starts_with(value, '/') ? value : '/' + value;
+				}else{
+					url[part] = _starts_with(value, '#') ? value.slice(1) : value;
+				};
 			}else{
 				url[part] = value;
 			};
@@ -495,7 +509,7 @@ _url.prototype.set = function(part, value, fn){
 		if(ins[4]){url[ins[1]] = url[ins[1]].toLowerCase()};
 	};
 	
-	url.origin = url.protocol && url.host && url.protocol !== 'file:' ? url.protocol +'//'+ url.host : 'null';
+	url.origin = url.protocol && url.host && url.protocol !== 'file' ? url.protocol + '://' + url.host : 'null';
 	
 	url.href = url.toString();
 	
@@ -507,7 +521,7 @@ _url.prototype.toString = function(stringify){
 	var url = this;
 	var query = '';
 	var protocol = url.protocol;
-	if(protocol && protocol.charAt(protocol.length - 1) !== ':'){protocol += ':'};
+	if(protocol && !_ends_with(protocol, ':')){protocol += ':'};
 	
 	var result = protocol + (url.slashes ? '//' : '');
 	
@@ -520,13 +534,38 @@ _url.prototype.toString = function(stringify){
 	result += url.host + url.pathname;
 	
 	if(url.query && !(JSON.stringify(url.query)==="{\"\":\"\"}")){
-		query = 'object' === typeof url.query ? stringify(url.query) : url.query;
-		if(query){result += '?' !== query.charAt(0) ? '?' + query : query};
+		query = ('object' === typeof url.query) ? stringify(url.query) : url.query;
+		if(query){result += _starts_with(query, '?') ? query : ('?' + query)};
 	};
 	
-	if(url.hash){result += url.hash};
+	if(url.hash){result += (_starts_with(url.hash, '#') ? '' : '#') + url.hash};
 	
 	return result;
+};
+function _generate_url(url_obj){
+	_validate_argument_type(url_obj, 'object', 'URL object', '_generate_url');
+	
+	if(url_obj instanceof _url){
+		return url_obj.toString();
+	};
+	
+    var new_url = new _url("", {normalize: false, rfail: false});
+    for(key in url_obj){
+        new_url.set(key, url_obj[key]);
+    };
+	
+    return new_url.toString();
+};
+function _change_url(url, params, options){
+	_validate_argument_type(url, 'string', 'URL', '_change_url');
+	_validate_argument_type(params, 'object', 'New URL items', '_change_url');
+	
+    var url_obj = new _url(url, options);
+    for(key in params){
+		url_obj.set(key, params[key] === "*" ? "" : params[key]);
+    };
+	
+    return url_obj.toString();
 };
 function _ua(uastring, extensions){
 	_validate_argument_type(uastring, 'string', 'User-Agent', '_ua');
@@ -1367,9 +1406,7 @@ function _ua(uastring, extensions){
 _ua.prototype.set = function(uastring){
 	var ua_obj = this;
 	var new_ua_obj = new _ua(uastring);
-	var keys = Object.keys(new_ua_obj);
-	for(var i = 0; i < keys.length; i++){
-		var key = keys[i];
+	for(key in new_ua_obj){
 		ua_obj[key] = new_ua_obj[key];
 	};
 	return ua_obj;

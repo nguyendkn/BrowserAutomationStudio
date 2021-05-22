@@ -37,6 +37,40 @@
 		{
             "code": [
                 {
+                    "file": "generate_url_code.js",
+                    "name": "generate_url_code"
+                }
+            ],
+            "description": {
+                "en": "Generate URL",
+                "ru": "Создать URL"
+            },
+            "interface": "generate_url_interface.js",
+            "is_element": false,
+            "name": "generate_url",
+            "select": "generate_url_select.js",
+            "template": "{{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "change_url_code.js",
+                    "name": "change_url_code"
+                }
+            ],
+            "description": {
+                "en": "Change URL",
+                "ru": "Изменить URL"
+            },
+            "interface": "change_url_interface.js",
+            "is_element": false,
+            "name": "change_url",
+            "select": "change_url_select.js",
+            "template": "{{url}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "parse_ua_code.js",
                     "name": "parse_ua_code"
                 }
@@ -140,16 +174,18 @@
 		"If enabled, the fragment will be stripped from the URL.": {"ru":"Если активирован, то из URL будут вырезан фрагмент/якорь."},
 		"The protocol to be added if the URL does not contain one.": {"ru":"Протокол, который будет добавлен, если URL его не содержит."},
 		"If enabled, the trailing slash will be removed from the URL.": {"ru":"Если активирован, то из URL будет удален завершающий слэш."},
+		"You can change link items using the \"Change URL\" action.": {"ru":"Изменить элементы ссылки можно с помощью действия \"Изменить URL\"."},
 		"If enabled, authentication data will be stripped from the URL.": {"ru":"Если активирован, то из URL будут вырезаны данные аутентификации."},
 		"You can parse a link to items using the \"Parse URL\" action.": {"ru":"Распарсить ссылку на элементы можно с помощью действия \"Парсить URL\"."},
 		"If enabled, the https protocol will be replaced with http in the URL.": {"ru":"Если активирован, то в URL протокол https будут заменен на http."},
 		"If enabled, the http protocol will be replaced with https in the URL.": {"ru":"Если активирован, то в URL протокол http будут заменен на https."},
+		"You can generate a link from items using the \"Generate URL\" action.": {"ru":"Создать ссылку из элементов можно с помощью действия \"Создать URL\"."},
 		"This action will return the string resulting from all the manipulations.": {"ru":"Это действие вернет строку, полученную в итоге выполнения всех манипуляций."},
 		"If enabled, the query parameters will be sorted alphabetically by name.": {"ru":"Если активирован, то параметры запроса будут отсортированы по имени в алфавитном порядке."},
 		"Directory indexes that match any of the specified list items will be removed.": {"ru":"Индексы каталога, которые соответствуют любому из указанных элементов списка, будут удалены."},
+		"Variable in which, after successful execution of the action, the final URL will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан итоговый URL."},
 		"Query parameters whose names match any of the specified list items will be removed.": {"ru":"Параметры запроса, имена которых соответствуют любому из указанных элементов списка, будут удалены."},
 		"As a list, you can use a string consisting of directory indexes, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из индексов каталога, разделенных запятыми."},
-		"Variable in which, after successful execution of the action, the final string will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана итоговая строка."},
 		"This action will return a string containing the URL, normalized according to the specified parameters.": {"ru":"Это действие вернет строку, содержащую URL, нормализованную в соответствии с указанными параметрами."},
 		"As a list, you can use a string consisting of the names of the query parameters, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из имен параметров запроса, разделенных запятыми."},
 		"You can get a list of links from a string using the \"Extract all links\" action from the \"String\" module.": {"ru":"Получить из строки список ссылок можно с помощью действия \"Извлечь все ссылки\" из модуля \"Строка\"."},
@@ -171,23 +207,49 @@
 		"The specified URL does not contain a username": {"ru":"Указанный URL не содержит логина"},
 		"The specified URL does not contain a password": {"ru":"Указанный URL не содержит пароля"},
 		"The specified URL does not contain the fragment": {"ru":"Указанный URL не содержит фрагмент/якорь"},
+		"The username used to access the resource.": {"ru":"Имя пользователя, используемое для доступа к ресурсу."},
 		"String containing the URL with want to parse.": {"ru":"Строка, содержащая URL, который нужно распарсить."},
 		"The specified URL does not contain query parameters": {"ru":"Указанный URL не содержит параметров запроса"},
 		"The specified URL does not contain the protocol/scheme": {"ru":"Указанный URL не содержит протокола/схемы"},
+		"This variable will contain the path of the specified URL.": {"ru":"Эта переменная будет содержать путь указанного URL."},
 		"This variable will contain the port of the specified URL.": {"ru":"Эта переменная будет содержать порт указанного URL."},
 		"Complete action with fail if an invalid URL is specified": {"ru":"Завершить действие ошибкой, если указан недействительный URL"},
+		"The path specifies information about the location of the resource.": {"ru":"Путь уточняет информацию о месте нахождения ресурса."},
+		"This action will save each item of the URL to its own variable.": {"ru":"Это действие сохранит каждый элемент URL в свою переменную."},
+		"The path specifying information about the location of the resource.": {"ru":"Путь, уточняющий информацию о месте нахождения ресурса."},
+		"This variable will contain the fragment of the specified URL.": {"ru":"Эта переменная будет содержать фрагмент/якорь указанного URL."},
+		"This variable will contain the username of the specified URL.": {"ru":"Эта переменная будет содержать имя пользователя указанного URL."},
 		"This variable will contain the password for the specified user.": {"ru":"Эта переменная будет содержать пароль указанного пользователя."},
+		"This variable will contain the protocol/scheme of the specified URL.": {"ru":"Эта переменная будет содержать протокол/схему указанного URL."},
+		"The scheme of accessing a resource, in most cases, means a network protocol.": {"ru":"Схема обращения к ресурсу, в большинстве случаев, имеется в виду сетевой протокол."},
 		"This variable will contain the hostname or ip (IPv4 or IPv6) of the specified URL.": {"ru":"Эта переменная будет содержать имя хоста или ip (IPv4 или IPv6) указанного URL."},
 		"The query is saved as an object, where the key is the parameter name and the value is the parameter value.": {"ru":"Запрос сохраняется в виде объекта, в котором ключ - это имя параметра, а значение - это значение параметра."},
-		"This variable will contain the username of the specified URL. The username used to access the resource.": {"ru":"Эта переменная будет содержать имя пользователя указанного URL. Имя пользователя, используемое для доступа к ресурсу."},
-		"This variable will contain the path of the specified URL. The path specifies information about the location of the resource.": {"ru":"Эта переменная будет содержать путь указанного URL. Путь уточняет информацию о месте нахождения ресурса."},
-		"This variable will contain the protocol/scheme of the specified URL. The scheme of accessing a resource, in most cases, means a network protocol.": {"ru":"Эта переменная будет содержать протокол/схему указанного URL. Схема обращения к ресурсу, в большинстве случаев, имеется в виду сетевой протокол."},
+		"This variable will contain an object consisting of query parameters and their values obtained from the specified URL.": {"ru":"Эта переменная будет содержать объект, состоящий из параметров запроса и полученных их значений из указанного URL."},
+		"You can learn more about URL in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URL');return false\">Wiki</a>.": {"ru":"Подробнее о URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/URL');return false\">Wiki</a>."},
+		"The query is the part of the URL that starts with the \"?\" character, parameters are separated by \"&\", and parameter name and value are separated by \"=\".": {"ru":"Запрос - это часть URL-адреса, начинающаяся с символа \"?\", параметры разделяются знаком \"&\", а имя параметра и его значение разделяются знаком \"=\"."},
 		"Before parsing, you can normalize the URL by activating the corresponding parameter in the additional settings, or use the \"Normalize URL\" action for flexible normalization.": {"ru":"Перед парсингом URL можно нормализовать, активировав соответствующий параметр в дополнительных настройках, или использовать действие \"Нормализовать URL\" для гибкой нормализации."},
 		"To get the value of the query parameter, use the JPath query <span style=\"color:black\">$.key</span>, where key is the name of the parameter, in the \"Get value\" action from the \"JSON\" module.": {"ru":"Чтобы получить значение параметра запроса, используйте JPath запрос <span style=\"color:black\">$.key</span>, где key - это имя параметра, в действии \"Получить значение\" из модуля \"JSON\"."},
-		"This action will save each item of the URL to its own variable. You can learn more about URL in <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URL');return false\">Wiki</a>.": {"ru":"Это действие сохранит каждый элемент URL в свою переменную. Подробнее о URL можно узнать в <a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://ru.wikipedia.org/wiki/URL');return false\">Wiki</a>."},
 		"If an invalid URL is specified, the thread will stop with fail message. If you want to continue thread, use \"Ignore errors\" action, or deactivate the corresponding parameter in the additional settings.":{"ru":"Если указан недействительный URL, поток остановится с сообщением об ошибке. Если вы хотите продолжить работу, используйте действие \"Игнорировать ошибки\", или деактивируйте соответствующий параметр в дополнительных настройках."},
-		"This variable will contain an object consisting of query parameters and their values obtained from the specified URL. The query is the part of the URL that starts with the \"?\" character, parameters are separated by \"&\", and parameter name and value are separated by \"=\".": {"ru":"Эта переменная будет содержать объект, состоящий из параметров запроса и полученных их значений из указанного URL. Запрос - это часть URL-адреса, начинающаяся с символа \"?\", параметры разделяются знаком \"&\", а имя параметра и его значение разделяются знаком \"=\"."},
-		"This variable will contain the fragment of the specified URL. Fragment is the part of the URL that starts with the \"#\" character and can indicate a title within a document or the id attribute of an element. Following the link with the fragment, the browser will open the page and move the window to the specified element.": {"ru":"Эта переменная будет содержать фрагмент/якорь указанного URL. Фрагмент/Якорь - это часть URL-адреса, начинающаяся с символа \"#\", он может указывать заголовок внутри документа или id атрибут элемента. По ссылке с фрагментом/якорем браузер откроет страницу и переместит окно к указанному элементу."},
+		"Fragment is the part of the URL that starts with the \"#\" character and can indicate a title within a document or the id attribute of an element. Following the link with the fragment, the browser will open the page and move the window to the specified element.": {"ru":"Фрагмент/Якорь - это часть URL-адреса, начинающаяся с символа \"#\", он может указывать заголовок внутри документа или id атрибут элемента. По ссылке с фрагментом/якорем браузер откроет страницу и переместит окно к указанному элементу."},
+		
+		"Resource port.": {"ru":"Порт ресурса."},
+		"Object or query string.": {"ru":"Объект или строка запроса."},
+		"Hostname or ip (IPv4 or IPv6).": {"ru":"Имя хоста или ip (IPv4 или IPv6)."},
+		"The password for the specified user.": {"ru":"Пароль указанного пользователя."},
+		"Generate URL from specified items.": {"ru":"Создать URL из указанных элементов."},
+		"Don't add this item to the final URL": {"ru":"Не добавлять этот элемент в итоговый URL"},
+		"This action will return a string containing the final URL.": {"ru":"Это действие вернет строку, содержащую итоговый URL."},
+		"Specify values for the items need to be added to the URL, leave empty items that do not need to be added.": {"ru":"Укажите значения для элементов которые нужно добавить в URL, оставьте пустыми элементы которые не нужно добавлять."},
+		"The query must be specified as an object, where the key is the name of the parameter and the value is the value of the parameter. Or as a string, in which parameters are separated by \"&amp;\", and the parameter name and its value are separated by \"=\".": {"ru":"Запрос нужно указывать в виде объекта, в котором ключ - это имя параметра, а значение - это значение параметра. Или в виде строки, в которой параметры разделяются знаком \"&\", а имя параметра и его значение разделяются знаком \"=\"."},
+		
+		"Normalize URL before changing": {"ru":"Нормализовать URL перед изменением"},
+		"Change the items of the specified URL.": {"ru":"Изменить элементы указанной URL."},
+		"Remove this item from the specified URL": {"ru":"Удалить этот элемент из указанного URL"},
+		"Do not change this item in the specified URL": {"ru":"Не изменять этот элемент в указанном URL"},
+		"String containing the URL with want to change.": {"ru":"Строка, содержащая URL, который нужно изменить."},
+		"This action will return a string containing the changed URL.": {"ru":"Это действие вернет строку, содержащую изменный URL."},
+		"Specify new values for the items to be changed in the URL, specify <code>\"*\"</code> if the item needs to be removed, leave the field blank if the item does not need to be changed.": {"ru":"Укажите новые значения для элементов, которые нужно изменить в URL, укажите <code>\"*\"</code> если элемент нужно удалить, оставьте поле пустым если элемент не нужно менять."},
+		"Before changing, you can normalize the URL by activating the corresponding parameter in the additional settings, or use the \"Normalize URL\" action for flexible normalization.": {"ru":"Перед изменением URL можно нормализовать, активировав соответствующий параметр в дополнительных настройках, или использовать действие \"Нормализовать URL\" для гибкой нормализации."},
 		
 		"OS name": {"ru":"Название ОС"},
 		"OS version": {"ru":"Версия ОС"},

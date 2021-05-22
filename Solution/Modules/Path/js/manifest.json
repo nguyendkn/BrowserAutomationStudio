@@ -156,6 +156,23 @@
 		{
             "code": [
                 {
+                    "file": "installation_path_code.js",
+                    "name": "installation_path_code"
+                }
+            ],
+            "description": {
+                "en": "Get installation path",
+                "ru": "Получить путь установки"
+            },
+            "interface": "installation_path_interface.js",
+            "is_element": false,
+            "name": "installation_path",
+            "select": "installation_path_select.js",
+            "template": "{{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "get_system_path_code.js",
                     "name": "get_system_path_code"
                 }
@@ -287,15 +304,20 @@
 		"Unprotected compiled script": {"ru": "Незащищенный скомпилированный скрипт"},
 		"Get the full path to the project file.": {"ru": "Получить полный путь к файлу проекта."},
 		"Variable in which, after successful execution of the action, the path to the project file will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан путь к файлу проекта."},
+		"For example, if the script is compiled with protection and is located in the <code>\"D:/Gparser\"</code> folder, then the action will return": {"ru":"Например, если скрипт скомпилирован с защитой и находится в папке <code>\"D:/Gparser\"</code>, то действие вернет"},
+		"For example, if the script is compiled without protection and is located in the <code>\"D:/Gparser\"</code> folder, then the action will return": {"ru":"Например, если скрипт скомпилирован без защиты и находится в папке <code>\"D:/Gparser\"</code>, то действие вернет"},
+		"For example, if the script is not compiled and the <code>\"Gparser\"</code> project located in the <code>\"D:/projects\"</code> folder is open, then the action will return": {"ru":"Например, если скрипт не скомпилирован и открыт проект <code>\"Gparser\"</code> находящийся в папке <code>\"D:/projects\"</code>, то действие вернет"},
 		"For compiled unprotected and protected scripts, the paths are slightly different, since the unprotected script saves the engine to the appslocal folder, and the protected one to the appsremote folder.": {"ru":"У скомпилированных незащищенных и защищенных скриптов пути немного отличаются, так как незащищенный скрипт сохраняет движок в папку appslocal, а защищенный в папку appsremote."},
-		"For example, if the script is not compiled and the <code>\"Gparser\"</code> project located in the <code>\"D:/projects\"</code> folder is open, then the action will return <code>\"D:/projects/Gparser.xml\"</code>.": {"ru":"Например, если скрипт не скомпилирован и открыт проект <code>\"Gparser\"</code> находящийся в папке <code>\"D:/projects\"</code>, то действие вернет <code>\"D:/projects/Gparser.xml\"</code>."},
-		"For example, if the script is compiled with protection and is located in the <code>\"D:/Gparser\"</code> folder, then the action will return <code>\"D:/Gparser/appsremote/Gparser/SIDic9cmk8n/engine/project.xml\"</code>.": {"ru":"Например, если скрипт скомпилирован с защитой и находится в папке <code>\"D:/Gparser\"</code>, то действие вернет <code>\"D:/Gparser/appsremote/Gparser/SIDic9cmk8n/engine/project.xml\"</code>."},
-		"For example, if the script is compiled without protection and is located in the <code>\"D:/Gparser\"</code> folder, then the action will return <code>\"D:/Gparser/appslocal/ibq8y9qo/SIDbfzc5bdv/engine/project.xml\"</code>.": {"ru":"Например, если скрипт скомпилирован без защиты и находится в папке <code>\"D:/Gparser\"</code>, то действие вернет <code>\"D:/Gparser/appslocal/ibq8y9qo/SIDbfzc5bdv/engine/project.xml\"</code>."},
 		"This action will return the full path to the project file. If the script is not compiled, then this action will return the path to the open project file. And if the script is compiled, then this action will return the path to the project.xml file located in the root folder of the engine.": {"ru":"Это действие вернет полный путь к файлу проекта. Если скрипт не скомпилирован, то это действие вернет путь к открытому файлу проекта. А если скрипт скомпилирован, то это действие вернет путь к файлу project.xml находящемуся в корневой папке движка."},
 		
 		"Get the full path to the project directory.": {"ru": "Получить полный путь к директории проекта."},
 		"Variable in which, after successful execution of the action, the path to the project directory will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан путь к директории проекта."},
 		"This action will return the full path to the project directory. If the script is not compiled, then this action will return the path to the directory in which the open project file is located. And if the script is compiled, then this action will return the path to the root directory of the script.": {"ru":"Это действие вернет полный путь к директории проекта. Если скрипт не скомпилирован, то это действие вернет путь к директории в которой находится открытый файл проекта. А если скрипт скомпилирован, то это действие вернет путь к корневой директории скрипта."},
+		
+		"Get the full installation path.": {"ru": "Получить полный путь установки."},
+		"This action will return the full path to the directory where the executable file is located.": {"ru": "Это действие вернет полный путь к директории, в которой находится исполняемый файл."},
+		"Variable in which, after successful execution of the action, the installation path will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан путь установки."},
+		"For example, if the script is not compiled and is running BAS version <code>24.0.8</code> installed in the <code>\"C:/BrowserAutomationStudio\"</code> folder, then the action will return": {"ru":"Например, если скрипт не скомпилирован и запущен BAS версии <code>24.0.8</code> установленный в папку <code>\"C:/BrowserAutomationStudio\"</code>, то действие вернет"},
 		
 		"Path name": {"ru": "Имя пути"},
 		"The name of the path that you want to receive.": {"ru": "Имя пути, который вы хотите получить."},

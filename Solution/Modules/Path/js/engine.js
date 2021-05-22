@@ -788,6 +788,10 @@ function project_directory(){
 	return end===-1 ? _path.dirname(path) : path.slice(0, end);
 };
 
+function installation_path(){
+	return JSON.parse(native("filesystem", "fileinfo", "settings.ini")).directory;
+};
+
 function _get_system_data(){
 	RANDOM_FILE = "temp_" + rand() + ".bat";
 
@@ -841,11 +845,11 @@ function _get_system_path(){
 		"Computer Name":"COMPUTERNAME"
 	};
 	
-	var label = labels[name] || name;
+	var label = _avoid_nilb(labels[name], name);
 	
-	if(SYSTEM_ENV_DATA[label]){
-		_function_return(SYSTEM_ENV_DATA[label]);
-	}else{
+	if(_is_nilb(SYSTEM_ENV_DATA[label])){
 		fail(_K=="ru" ? 'Не удалось найти путь "' + name + '" в системных данных.' : 'Could not find path "' + name + '" in system data.');
 	};
+	
+	_function_return(SYSTEM_ENV_DATA[label]);
 };

@@ -1629,7 +1629,7 @@ _query_string = (function(){
 	};
 	
 	function parse(qs, sep, eq, options){
-		var obj = Object.create(null);
+		var obj = {};
 		
 		if(typeof qs !== 'string' || qs.length === 0){
 			return obj;

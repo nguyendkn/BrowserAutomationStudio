@@ -5,9 +5,7 @@ BASCaptchaSolver.waiter = function () {
   <%= waiter %>
 };
 
-BASCaptchaSolver.path = function () {
-  return (<%= path %>);
-};
+BASCaptchaSolver.path = function () { return (<%= path %>) };
 
 _call_function(BASCaptchaSolver.solveFunCaptcha, {
   proxy: String(<%= sendProxy %>).toLowerCase() == 'true' ? _PROXY : {},

@@ -41,9 +41,9 @@
   };
 
   CaptchaSolver.prototype.ensureSelector = function () {
-    _call(BASCaptchaSolver.waiter, null)!
+    _call_function(BASCaptchaSolver.waiter, {})!
     BASCaptchaSolver.path().exist()!
-    if (_result() !== 1) _break();
+    if (_result_function() !== 1) _break();
   };
 
   CaptchaSolver.prototype.submitFunCaptcha = function () {

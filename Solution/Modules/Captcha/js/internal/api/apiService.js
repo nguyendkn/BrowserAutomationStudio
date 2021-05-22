@@ -8,12 +8,12 @@
   };
 
   CaptchaApi.prototype.setApiUrl = function (url) {
-    if (url && url.length) this.options.apiUrl = url.replace(/[\/\\\s]+$/g, '');
+    if (url && url.length) this.options.apiUrl = _trim_right('/\\ ');
     return this;
   };
 
   CaptchaApi.prototype.setApiKey = function (key) {
-    if (key && key.length) this.options.apiKey = key.replace(/[\/\\\s]+$/g, '');
+    if (key && key.length) this.options.apiKey = _trim_right('/\\ ');
     return this;
   };
 

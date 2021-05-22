@@ -55,7 +55,7 @@
   "depends": [],
   "localize": {},
   "browser": [
-    "browser/funCaptchaVerify.js"
+    "browser/funCaptcha.js"
   ],
   "engine": [
     "internal/index.js",

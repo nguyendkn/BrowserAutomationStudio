@@ -161,8 +161,8 @@
                 }
             ],
             "description": {
-                "en": "Get installation path",
-                "ru": "Получить путь установки"
+                "en": "Installation path",
+                "ru": "Путь установки"
             },
             "interface": "installation_path_interface.js",
             "is_element": false,

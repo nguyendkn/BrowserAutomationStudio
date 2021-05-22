@@ -10,9 +10,9 @@
     help: {
       description: tr('Captcha solving service'),
       examples: [
-        { code: 'anticaptcha', description: tr('Solve with http://anti-captcha.com/ service') },
-        { code: 'rucaptcha', description: tr('Solve with http://rucaptcha.com/ service') },
-        { code: '2captcha', description: tr('Solve with http://2captcha.com/ service') }
+        { code: 'anticaptcha', description: tr('Solve captcha using http://anti-captcha.com/ service') },
+        { code: 'rucaptcha', description: tr('Solve captcha using http://rucaptcha.com/ service') },
+        { code: '2captcha', description: tr('Solve captcha using http://2captcha.com/ service') }
       ]
     }
   }) %>
@@ -52,7 +52,7 @@
     }) %>
     <%= _.template($('#input_constructor').html())({
       value_string: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
-      description: tr('User Agent'),
+      description: tr('User-Agent'),
       default_selector: 'string',
       disable_int: true,
       id: 'userAgent',
@@ -64,7 +64,14 @@
       disable_int: true,
       value_string: '',
       id: 'apiUrl',
-      help: { description: tr('') }
+      help: {
+        description: tr('Custom service api url. Can be blank'),
+        examples: [
+          { code: 'Empty string', description: tr('Use default service url, http://rucaptcha.com for RuCaptcha, etc') },
+          { code: 'http://127.0.0.3:8083', description: tr('Use custom service url with port 8083') },
+          { code: 'http://127.0.0.3:8080', description: tr('Use custom service url with port 8080') },
+        ]
+      }
     }) %>
     <%= _.template($('#input_constructor').html())({
       description: tr('Task solution check interval'),

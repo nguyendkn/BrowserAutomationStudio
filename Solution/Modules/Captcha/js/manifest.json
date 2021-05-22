@@ -57,9 +57,6 @@
     "Page url": {
       "ru": "Url страницы"
     },
-    "User Agent": {
-      "ru": "User Agent"
-    },
     "Service name": {
       "ru": "Название сервиса"
     },
@@ -81,6 +78,12 @@
     "Task solution check interval": {
       "ru": "Интервал проверки решения задачи"
     },
+    "Use custom service url with port 8080": {
+      "ru": "Использовать кастомный URL сервиса с портом 8080"
+    },
+    "Use custom service url with port 8083": {
+      "ru": "Использовать кастомный URL сервиса с портом 8083"
+    },
     "Task solution check delay in milliseconds": {
       "ru": "Задержка проверки решения задачи в миллисекундах"
     },
@@ -90,8 +93,20 @@
     "Solve FunCaptcha using any available service.": {
       "ru": "Решить FunCaptcha используя любой доступный сервис."
     },
+    "Solve captcha using http://2captcha.com/ service": {
+      "ru": "Решить капчу используя сервис http://2captcha.com/"
+    },
+    "Solve captcha using http://rucaptcha.com/ service": {
+      "ru": "Решить капчу используя сервис http://rucaptcha.com/"
+    },
+    "Solve captcha using http://anti-captcha.com/ service": {
+      "ru": "Решить капчу используя сервис http://anti-captcha.com/"
+    },
     "User-Agent that will be used by the service for solving captcha.": {
       "ru": "User-Agent который будет использоваться сервисом для решения капчи."
+    },
+    "Use default service url, http://rucaptcha.com for RuCaptcha, etc": {
+      "ru": "Использовать стандартный URL сервиса, http://rucaptcha.com для RuCaptcha и так далее"
     }
   },
   "browser": [

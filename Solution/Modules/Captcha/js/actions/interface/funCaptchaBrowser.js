@@ -8,7 +8,7 @@
     disable_int: true,
     id: 'service',
     help: {
-      description: tr('Captcha solving service'),
+      description: tr('Captcha solving service name'),
       examples: [
         { code: 'anticaptcha', description: tr('Solve captcha using http://anti-captcha.com/ service') },
         { code: 'rucaptcha', description: tr('Solve captcha using http://rucaptcha.com/ service') },
@@ -17,15 +17,15 @@
     }
   }) %>
   <%= _.template($('#input_constructor').html())({
-    help: { description: tr('Captcha solving service API key') },
-    description: tr('Service API key'),
+    help: { description: tr('Captcha solving service key') },
+    description: tr('Service key'),
     default_selector: 'string',
     disable_int: true,
     id: 'apiKey'
   }) %>
   <%= _.template($('#input_constructor').html())({
     help: { description: tr('Address of the page where the captcha is being solved') },
-    description: tr('Page url'),
+    description: tr('Page URL'),
     default_selector: 'string',
     disable_int: true,
     id: 'pageUrl'
@@ -45,31 +45,8 @@
       help: {
         description: tr('Forces person who solves recaptcha use proxy that you setted up with \"Proxy\" action.'),
         examples: [
-          { code: 'false', description: tr('Don\'t send proxy to service. Default value.') },
-          { code: 'true', description: tr('Send proxy to service') },
-        ]
-      }
-    }) %>
-    <%= _.template($('#input_constructor').html())({
-      value_string: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
-      description: tr('User-Agent'),
-      default_selector: 'string',
-      disable_int: true,
-      id: 'userAgent',
-      help: { description: tr('User-Agent that will be used by the service for solving captcha.') }
-    }) %>
-    <%= _.template($('#input_constructor').html())({
-      description: tr('Custom service api url'),
-      default_selector: 'string',
-      disable_int: true,
-      value_string: '',
-      id: 'apiUrl',
-      help: {
-        description: tr('Custom service api url. Can be blank'),
-        examples: [
-          { code: 'Empty string', description: tr('Use default service url, http://rucaptcha.com for RuCaptcha, etc') },
-          { code: 'http://127.0.0.3:8083', description: tr('Use custom service url with port 8083') },
-          { code: 'http://127.0.0.3:8080', description: tr('Use custom service url with port 8080') },
+          { code: 'true', description: tr('Send current proxy to solver service') },
+          { code: 'false', description: tr(`Don't send proxy. Default value.`) },
         ]
       }
     }) %>
@@ -84,7 +61,7 @@
         examples: [
           { code: '600', description: tr('Wait for 600 milliseconds') },
           { code: '10000', description: tr('Wait for 10 seconds') },
-          { code: '5000', description: tr('Wait for 5 seconds') },
+          { code: '5000', description: tr('Wait for 5 seconds') }
         ]
       }
     }) %>
@@ -98,10 +75,33 @@
         description: tr('Task solution check delay in milliseconds'),
         examples: [
           { code: '600', description: tr('Wait for 600 milliseconds') },
-          { code: '5000', description: tr('Wait for 5 seconds') },
           { code: '10000', description: tr('Wait for 10 seconds') },
+          { code: '5000', description: tr('Wait for 5 seconds') }
         ]
       }
+    }) %>
+    <%= _.template($('#input_constructor').html())({
+      description: tr('Custom service URL'),
+      default_selector: 'string',
+      disable_int: true,
+      value_string: '',
+      id: 'apiUrl',
+      help: {
+        description: tr('Custom service URL. Can be blank'),
+        examples: [
+          { code: 'Empty string', description: tr('Use default service URL, http://rucaptcha.com for RuCaptcha, etc') },
+          { code: 'http://127.0.0.1:8083', description: tr('Use custom service URL with port 8083') },
+          { code: 'http://127.0.0.3:8080', description: tr('Use custom service URL with port 8080') },
+        ]
+      }
+    }) %>
+    <%= _.template($('#input_constructor').html())({
+      value_string: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
+      description: tr('User-Agent'),
+      default_selector: 'string',
+      disable_int: true,
+      id: 'userAgent',
+      help: { description: tr('User-Agent that will be used by the service for solving captcha.') }
     }) %>
   </span>
 </div>

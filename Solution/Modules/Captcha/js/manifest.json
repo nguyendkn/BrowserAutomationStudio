@@ -54,23 +54,26 @@
   "modules": [],
   "depends": [],
   "localize": {
-    "Page url": {
-      "ru": "Url страницы"
+    "Page URL": {
+      "ru": "URL страницы"
+    },
+    "Service key": {
+      "ru": "Ключ сервиса"
     },
     "Service name": {
       "ru": "Название сервиса"
     },
-    "Service API key": {
-      "ru": "API ключ сервиса"
+    "Custom service URL": {
+      "ru": "Кастомный URL сервиса"
     },
     "Wait for 5 seconds": {
-      "ru": "Ждать 5 секунд"
+      "ru": "Ждать в течение 5 секунд"
     },
     "Wait for 10 seconds": {
-      "ru": "Ждать 10 секунд"
+      "ru": "Ждать в течение 10 секунд"
     },
     "Wait for 600 milliseconds": {
-      "ru": "Ждать 600 миллисекунд"
+      "ru": "Ждать в течение 600 миллисекунд"
     },
     "Task solution check delay": {
       "ru": "Задержка проверки решения задачи"
@@ -78,10 +81,16 @@
     "Task solution check interval": {
       "ru": "Интервал проверки решения задачи"
     },
-    "Use custom service url with port 8080": {
+    "Captcha solving service name": {
+      "ru": "Название сервиса для решения капчи"
+    },
+    "Custom service URL. Can be blank": {
+      "ru": "Кастомный URL сервиса. Может быть пустым"
+    },
+    "Use custom service URL with port 8080": {
       "ru": "Использовать кастомный URL сервиса с портом 8080"
     },
-    "Use custom service url with port 8083": {
+    "Use custom service URL with port 8083": {
       "ru": "Использовать кастомный URL сервиса с портом 8083"
     },
     "Task solution check delay in milliseconds": {
@@ -102,10 +111,13 @@
     "Solve captcha using http://anti-captcha.com/ service": {
       "ru": "Решить капчу используя сервис http://anti-captcha.com/"
     },
+    "Address of the page where the captcha is being solved": {
+      "ru": "Адрес страницы, на которой будет решаться данная капча"
+    },
     "User-Agent that will be used by the service for solving captcha.": {
       "ru": "User-Agent который будет использоваться сервисом для решения капчи."
     },
-    "Use default service url, http://rucaptcha.com for RuCaptcha, etc": {
+    "Use default service URL, http://rucaptcha.com for RuCaptcha, etc": {
       "ru": "Использовать стандартный URL сервиса, http://rucaptcha.com для RuCaptcha и так далее"
     }
   },

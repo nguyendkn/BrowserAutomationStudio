@@ -123,7 +123,7 @@
     "internal/tasks/base/baseTask.js",
     "internal/tasks/base/baseTaskRuCaptcha.js",
     "internal/tasks/base/baseTaskAntiCaptcha.js",
-    "internal/tasks/hCaptchaTask.js",
-    "internal/tasks/funCaptchaTask.js"
+    "internal/tasks/funCaptchaTask.ruCaptcha.js",
+    "internal/tasks/funCaptchaTask.antiCaptcha.js"
   ]
 }

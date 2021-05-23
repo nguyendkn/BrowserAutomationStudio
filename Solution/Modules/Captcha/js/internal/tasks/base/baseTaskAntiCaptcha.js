@@ -19,7 +19,7 @@
   };
 
   AntiCaptchaTask.prototype.getSolution = function (response) {
-    return response.solution;
+    return response['solution'];
   };
 
   AntiCaptchaTask.prototype.setId = function (response) {

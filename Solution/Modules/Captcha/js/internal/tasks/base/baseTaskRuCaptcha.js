@@ -17,7 +17,7 @@
   };
 
   RuCaptchaTask.prototype.getSolution = function (response) {
-    return response.request;
+    return response['request'];
   };
 
   RuCaptchaTask.prototype.setId = function (response) {

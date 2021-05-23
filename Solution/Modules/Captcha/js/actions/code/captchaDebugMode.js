@@ -1,1 +1,0 @@
-BASCaptchaSolver.setDebug(<%= enable === 'enable' %>);

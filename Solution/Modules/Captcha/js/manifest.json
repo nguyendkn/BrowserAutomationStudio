@@ -30,23 +30,6 @@
           "name": "funCaptchaBrowser_code"
         }
       ]
-    },
-    {
-      "name": "CaptchaDebugMode",
-      "description": {
-        "ru": "Режим отладки",
-        "en": "Debug mode"
-      },
-      "template": "{{enable}}",
-      "is_element": false,
-      "interface": "actions/interface/captchaDebugMode.js",
-      "select": "actions/select/captchaDebugMode.js",
-      "code": [
-        {
-          "file": "actions/code/captchaDebugMode.js",
-          "name": "captchaDebugMode_code"
-        }
-      ]
     }
   ],
   "embeddeddata": [],

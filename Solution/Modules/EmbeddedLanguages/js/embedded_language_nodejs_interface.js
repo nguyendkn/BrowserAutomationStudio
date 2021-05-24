@@ -105,8 +105,11 @@
 					})
 
 					setTimeout(function(){
-						window.NodeJsGlobal.Editor.trigger('', 'undo') 
-						InsertText("await BAS_API(" + JSON.stringify(all) + ");")
+						window.NodeJsGlobal.Editor.trigger('', 'undo');
+						var HexRes = Array.from(new TextEncoder("UTF-8").encode(all));
+						HexRes = HexRes.map(x => x < 16 ? "0" + x.toString(16) : x.toString(16));
+						HexRes = JSON.stringify("_HEX:" + HexRes.join(""));
+						InsertText("await BAS_API(" + HexRes + ");");
 					},100)
 
 				

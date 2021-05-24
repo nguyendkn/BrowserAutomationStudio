@@ -28,7 +28,7 @@
 
     _call_function(self.makeRequest, self.getCreateTaskPayload(task.serialize()))!
     _call_function(_.sleep, { time: task.waitDelay })!
-    _.log('Task created, wait for response');
+    _.log('Task created, waiting for response');
 
     _do_with_params({ task: task.setId(_result_function()), self: self }, function () {
       const task = _cycle_param('task');

@@ -12,9 +12,9 @@
 
     if (options.supportedTasks.indexOf(this.type) < 0) {
       if (_K === 'en') {
-        die('Service `' + options.name + '` does not support `' + this.type + '`', true);
+        fail('Service `' + options.name + '` does not support `' + this.type + '`');
       } else {
-        die('Сервис `' + options.name + '` не поддерживает `' + this.type + '`', true);
+        fail('Сервис `' + options.name + '` не поддерживает `' + this.type + '`');
       }
     }
 
@@ -34,7 +34,7 @@
         } else {
           fail('Параметр "' + key + '" не указан');
         }
-      } else if (typeof(param) !== 'undefined') {
+      } else if (typeof (param) !== 'undefined') {
         self.data[rule.name || key] = param;
       }
     });

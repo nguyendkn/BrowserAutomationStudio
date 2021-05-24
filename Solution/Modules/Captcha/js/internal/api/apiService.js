@@ -54,7 +54,7 @@
     this.setDefaultRequestParams(data);
 
     _call_function(this.httpRequest, this.getDefaultRequestOptions(data, method))!
-    _function_return(this.errorHandler(_result_function()));
+    _function_return(solver.api.errorHandler(_result_function()));
   };
 
   function httpRequest() {

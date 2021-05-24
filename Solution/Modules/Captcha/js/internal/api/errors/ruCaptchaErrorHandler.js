@@ -120,9 +120,10 @@
 
   api.prototype.errorHandler = function (response) {
     if (response && (response['status'] === 0 && response['request'] !== 'CAPCHA_NOT_READY')) {
+      var message = this.name + ': ';
       const errorCode = response['request'];
-      if (errors[errorCode]) return fail(errors[errorCode][_K]);
-      return fail('Captcha solving error: ' + errorCode);
+      if (errors[errorCode]) return fail(message + errors[errorCode][_K]);
+      return fail(message + 'service error - ' + errorCode);
     }
     return response;
   };

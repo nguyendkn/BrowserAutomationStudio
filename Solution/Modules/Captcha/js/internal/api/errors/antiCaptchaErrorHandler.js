@@ -188,9 +188,10 @@
 
   api.prototype.errorHandler = function (response) {
     if (response && response['errorCode']) {
+      var message = this.name + ': ';
       const errorCode = response['errorCode'];
-      if (errors[errorCode]) return fail(errors[errorCode][_K]);
-      return fail('Captcha solving error: ' + errorCode);
+      if (errors[errorCode]) return fail(message + errors[errorCode][_K]);
+      return fail(message + 'service error - ' + errorCode);
     }
     return response;
   };

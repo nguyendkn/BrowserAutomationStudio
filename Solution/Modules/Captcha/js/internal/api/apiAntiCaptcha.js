@@ -1,6 +1,6 @@
 (function (solver, _) {
   solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
-    solver.CaptchaApi.call(this, 'AntiCaptchaApi', options);
+    solver.CaptchaApi.call(this, 'AntiCaptcha', options);
   });
 
   solver.AntiCaptchaApi.prototype.getCreateTaskPayload = function (data) {

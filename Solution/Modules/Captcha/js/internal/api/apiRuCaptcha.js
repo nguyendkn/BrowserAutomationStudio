@@ -1,6 +1,6 @@
 (function (solver, _) {
   solver.RuCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
-    solver.CaptchaApi.call(this, 'RuCaptchaApi', options);
+    solver.CaptchaApi.call(this, 'RuCaptcha', options);
   });
 
   solver.RuCaptchaApi.prototype.getCreateTaskPayload = function (data) {

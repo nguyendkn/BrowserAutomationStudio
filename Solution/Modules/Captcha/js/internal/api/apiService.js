@@ -1,10 +1,10 @@
 (function (solver, _) {
-  function CaptchaApi(type, options) {
+  function CaptchaApi(name, options) {
     this.makeRequest = _.bind(makeRequest, this);
     this.httpRequest = _.bind(httpRequest, this);
     this.solveTask = _.bind(solveTask, this);
     this.options = options;
-    this.type = type;
+    this.name = name;
   };
 
   CaptchaApi.prototype.setApiUrl = function (url) {

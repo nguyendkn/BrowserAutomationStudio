@@ -144,9 +144,8 @@ namespace BrowserAutomationStudioFramework
         QDir Target = QDir::current();
         Target.cd("..");
         Target.cd(PreviousVersion);
-        Target.cd("custom");
-
-        recurseCopyAddDir(Target,Current,QStringList());
+        if(Target.cd("custom"))
+            recurseCopyAddDir(Target,Current,QStringList());
     }
 
 

@@ -24,6 +24,8 @@
     const data = _result().split('|').map(function (el) { return el.split('=') });
     const surl = data.filter(function (el) { return el[0] === 'surl' })[0][1];
     const pk = data.filter(function (el) { return el[0] === 'pk' })[0][1];
+    BASCaptchaSolver.path().script('location.href')!
+    _function_arguments()['pageUrl'] = _result();
 
     _call_function(BASCaptchaSolver.api.solveTask, {
       taskWaitInterval: _function_argument('taskWaitInterval'),
@@ -32,6 +34,7 @@
         userAgent: _function_argument('userAgent'),
         pageUrl: _function_argument('pageUrl'),
         proxy: _function_argument('proxy'),
+        data: _function_argument('data'),
         subdomainUrl: surl,
         publicKey: pk,
       })

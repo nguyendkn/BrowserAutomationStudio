@@ -37,9 +37,6 @@
   "modules": [],
   "depends": [],
   "localize": {
-    "Page URL": {
-      "ru": "URL страницы"
-    },
     "Service key": {
       "ru": "Ключ сервиса"
     },
@@ -93,9 +90,6 @@
     },
     "Solve captcha using http://anti-captcha.com/ service": {
       "ru": "Решить капчу используя сервис http://anti-captcha.com/"
-    },
-    "Address of the page where the captcha is being solved": {
-      "ru": "Адрес страницы, на которой будет решаться данная капча"
     },
     "User-Agent that will be used by the service for solving captcha.": {
       "ru": "User-Agent который будет использоваться сервисом для решения капчи."

@@ -8,19 +8,19 @@ const apiUrl = GetInputConstructorValue('apiUrl', loader);
 const apiKey = GetInputConstructorValue('apiKey', loader);
 
 if (!taskWaitInterval.original.length) {
-  return Invalid(tr('The "Task wait interval" parameter is empty'));
+  return Invalid(tr('The "Task solution check interval" parameter is empty'));
 }
 if (!taskWaitDelay.original.length) {
-  return Invalid(tr('The "Task wait delay" parameter is empty'));
-}
-if (!pageUrl.original.length) {
-  return Invalid(tr('The "Page url" parameter is empty'));
+  return Invalid(tr('The "Task solution check delay" parameter is empty'));
 }
 if (!service.original.length) {
-  return Invalid(tr('The "Service" parameter is empty'));
+  return Invalid(tr('The "Service name" parameter is empty'));
 }
 if (!apiKey.original.length) {
-  return Invalid(tr('The "Api Key" parameter is empty'));
+  return Invalid(tr('The "Service key" parameter is empty'));
+}
+if (!pageUrl.original.length) {
+  return Invalid(tr('The "Page URL" parameter is empty'));
 }
 
 try {

@@ -1029,7 +1029,7 @@ namespace BrowserAutomationStudioFramework
                 }
                 QString ScriptStart = QString(
                 "module.exports = async function(BAS_VARS,BAS_API_INTERNAL,BAS_CONSOLE_LOG){\n"
-                    "\tvar BAS_API = async (API_STRING) => {let res = await BAS_API_INTERNAL(API_STRING); if(res[1]) throw \"-BAS-SILENT-STOP-\"; Object.assign(BAS_VARS, res[0]); BAS_VARS[\"-BAS-NEED-STOP-\"] = false; if(BAS_VARS[\"-BAS-API-ERROR-\"]){var ex = BAS_VARS[\"-BAS-API-ERROR-\"];delete BAS_VARS[\"-BAS-API-ERROR-\"];throw ex;}}\n"
+                    "\tvar BAS_API = async (API_STRING) => {if(API_STRING.startsWith('_HEX:')){API_STRING = (new Buffer(API_STRING.substring(5), 'hex').toString('utf8'));}let res = await BAS_API_INTERNAL(API_STRING); if(res[1]) throw \"-BAS-SILENT-STOP-\"; Object.assign(BAS_VARS, res[0]); BAS_VARS[\"-BAS-NEED-STOP-\"] = false; if(BAS_VARS[\"-BAS-API-ERROR-\"]){var ex = BAS_VARS[\"-BAS-API-ERROR-\"];delete BAS_VARS[\"-BAS-API-ERROR-\"];throw ex;}}\n"
                     "\tvar BAS_FUNCTION = async (FUNCTION_NAME,FUNCTION_PARAMS) => {"
                         "await BAS_API(\"_prepare_function_and_call(\" + JSON.stringify(FUNCTION_NAME) + \",\" + JSON.stringify(JSON.stringify(FUNCTION_PARAMS)) + \")!\" );"
                         "if(BAS_VARS[\"_BAS_FUNCTION_RESULT_\"]){var res = BAS_VARS[\"_BAS_FUNCTION_RESULT_\"];delete BAS_VARS[\"_BAS_FUNCTION_RESULT_\"];return res;}"

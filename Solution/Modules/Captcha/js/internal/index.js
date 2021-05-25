@@ -17,8 +17,8 @@
   };
 
   CaptchaSolver.prototype.solveFunCaptcha = function () {
-    BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
     _call_function(BASCaptchaSolver.ensureSelector, {})!
+    BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
     BASCaptchaSolver.path().xpath('parent::*//input[@name="fc-token"]').attr('value')!
 
     const data = _result().split('|').map(function (el) { return el.split('=') });
@@ -34,7 +34,6 @@
         userAgent: _function_argument('userAgent'),
         pageUrl: _function_argument('pageUrl'),
         proxy: _function_argument('proxy'),
-        data: _function_argument('data'),
         subdomainUrl: surl,
         publicKey: pk,
       })

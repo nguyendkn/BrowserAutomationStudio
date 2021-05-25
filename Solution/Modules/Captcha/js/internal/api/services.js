@@ -1,16 +1,16 @@
 (function (solver) {
   const services = {
-    'anticaptcha': new solver.AntiCaptchaApi({
+    'AntiCaptcha': new solver.AntiCaptchaApi({
       supportedTasks: ['FunCaptcha'],
       apiUrl: 'https://api.anti-captcha.com',
       name: 'AntiCaptcha',
     }),
-    'rucaptcha': new solver.RuCaptchaApi({
+    'RuCaptcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha'],
       apiUrl: 'https://rucaptcha.com',
       name: 'RuCaptcha',
     }),
-    '2captcha': new solver.RuCaptchaApi({
+    '2Captcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha'],
       apiUrl: 'https://2captcha.com',
       name: '2Captcha',

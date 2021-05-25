@@ -10,9 +10,9 @@
     help: {
       description: tr('Captcha solving service name'),
       examples: [
-        { code: 'anticaptcha', description: tr('Solve captcha using http://anti-captcha.com/ service') },
-        { code: 'rucaptcha', description: tr('Solve captcha using http://rucaptcha.com/ service') },
-        { code: '2captcha', description: tr('Solve captcha using http://2captcha.com/ service') }
+        { code: 'AntiCaptcha', description: tr('Solve captcha using http://anti-captcha.com/ service') },
+        { code: 'RuCaptcha', description: tr('Solve captcha using http://rucaptcha.com/ service') },
+        { code: '2Captcha', description: tr('Solve captcha using http://2captcha.com/ service') }
       ]
     }
   }) %>
@@ -100,6 +100,8 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Solve FunCaptcha using any available service.</div>
-  <div class="tr tooltip-paragraph-fold">This action solves captcha using the browser.</div>
+  <div class="tr tooltip-paragraph-fold">All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.</div>
+  <div class="tr tooltip-paragraph-fold">All necessary data for the <code>FunCaptcha</code> solution is obtained automatically from the page source.</div>
+  <div class="tr tooltip-paragraph-last-fold">You can use the current browser proxy by filling in the appropriate field. This is an optional parameter, but some sites may require matching IP addresses. When using a proxy always fill in the <code>User-Agent</code> field, otherwise the service may return an error.</div>
 </div>
 <%= _.template($('#back').html())({ action: 'executeandadd', visible: true }) %>

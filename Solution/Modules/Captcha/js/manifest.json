@@ -99,6 +99,15 @@
     },
     "Captcha solving service key. You can get it in your personal account of your service": {
       "ru": "Ключ от сервиса решения капчи. Вы можете получить его в личном кабинете вашего сервиса"
+    },
+    "All necessary data for the <code>FunCaptcha</code> solution is obtained automatically from the page source.": {
+      "ru": "Все необходимые данные для решения <code>FunCaptcha</code> получаются автоматически из кода страницы."
+    },
+    "All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.": {
+      "ru": "Для всех сервисов требуется сервисный ключ, который должен быть получен на сайте сервиса и введён в поле <code>Ключ сервиса</code>."
+    },
+    "You can use the current browser proxy by filling in the appropriate field. This is an optional parameter, but some sites may require matching IP addresses. When using a proxy always fill in the <code>User-Agent</code> field, otherwise the service may return an error.": {
+      "ru": "Вы можете использовать текущий прокси-сервер браузера, заполнив соответствующее поле. Это необязательный параметр, но некоторые сайты требуют совпадения IP адресов. При использовании прокси всегда заполняйте поле <code>User-Agent</code>, иначе сервис может вернуть ошибку."
     }
   },
   "browser": [

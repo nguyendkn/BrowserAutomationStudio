@@ -52,25 +52,25 @@
   CaptchaSolver.prototype.submitFunCaptcha = function () {
     _VERIFICATION_TOKEN = BASCaptchaSolver.path().css('*[name="verification-token"]');
     _VERIFICATION_TOKEN.exist()!
-    _if_else(_result() !== 1, function () {
-      delete _VERIFICATION_TOKEN;
-      fail("Can't find FunCaptcha 'verification-token' input element");
-    }, function () {
+    _if_else(_result() === 1, function () {
       _VERIFICATION_TOKEN.script('self.value = ' + JSON.stringify(_function_argument('token')))!
       delete _VERIFICATION_TOKEN;
+    }, function () {
+      delete _VERIFICATION_TOKEN;
+      fail("Can't find FunCaptcha 'verification-token' input element");
     })!
 
     _FC_TOKEN = BASCaptchaSolver.path().css('*[name="fc-token"]');
     _FC_TOKEN.exist()!
-    _if_else(_result() !== 1, function () {
-      delete _FC_TOKEN;
-      fail("Can't find FunCaptcha 'fc-token' input element");
-    }, function () {
+    _if_else(_result() === 1, function () {
       _FC_TOKEN.script('self.value = ' + JSON.stringify(_function_argument('token')))!
       delete _FC_TOKEN;
+    }, function () {
+      delete _FC_TOKEN;
+      fail("Can't find FunCaptcha 'fc-token' input element");
     })!
 
-    page().script("_BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved)()")!
+    page().script('_BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved)()')!
   };
 
   global.BASCaptchaSolver = new CaptchaSolver();

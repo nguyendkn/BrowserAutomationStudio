@@ -20,7 +20,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		var resp = api.parseJSON(content);
 		
-		if(resp.response=="2" && !_is_nilb(resp.balance)=="0.0000"){
+		if(resp.response=="2" && !_is_nilb(resp.balance)){
 			if(resp.balance=="0.0000"){
 				api.errorHandler('NO_BALANCE');
 			}else{

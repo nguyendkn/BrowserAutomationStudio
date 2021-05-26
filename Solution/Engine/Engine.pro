@@ -28,7 +28,9 @@ DEFINES += IS_X64
 
 SOURCES += engine.cpp \
     avoidendlessloop.cpp \
+    browserextensionmanager.cpp \
     checkscript.cpp \
+    ibrowserextensionmanager.cpp \
     icheckscript.cpp \
     imodulecreator.cpp \
     modulecreatewizard.cpp \
@@ -384,8 +386,10 @@ win32:SOURCES += CrashHandler.cpp
 HEADERS += engine.h\
     EmbeddedDefinitions.h \
     avoidendlessloop.h \
+    browserextensionmanager.h \
     checkscript.h \
         engine_global.h \
+    ibrowserextensionmanager.h \
     icheckscript.h \
     imodulecreator.h \
     modulecreatewizard.h \

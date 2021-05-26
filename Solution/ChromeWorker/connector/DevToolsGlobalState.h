@@ -28,12 +28,14 @@ struct TabData
     bool IsSwitchingToTab = false;
     std::string TabId;
     std::string FrameId;
-    bool IsPopupExtension = false;
     bool IsLoading = false;
     std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
     int CurrentWebsocketActionId = 0;
     std::string DelayedUrl;
     std::string CurrentUrl;
+
+    bool IsWaitingForFirstUrl = false;
+    std::string FirstUrl;
 };
 
 struct StartupScriptItem

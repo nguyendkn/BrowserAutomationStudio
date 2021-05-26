@@ -13,7 +13,7 @@ namespace BrowserAutomationStudioFramework
 
 
     ScriptWorker::ScriptWorker(QObject *parent) :
-        IWorker(parent), Browser(0), Logger(0), Results1(0),Results2(0), Results3(0),Results4(0),Results5(0),Results6(0),Results7(0),Results8(0),Results9(0), Waiter(0),engine(0),ThreadNumber(0),IsAborted(false),ProcessComunicator(0),ProcessComunicatorVirtual(0), HttpClient1(0), HttpClient2(0), Pop3Client(0), ImapClient(0), DoTrace(false), MaxFail(999999), MaxSuccess(100), IsFailExceedRunning(false), IsSuccessExceedRunning(false), FunctionData(0), CurrentWebElement(0), HttpClientIndex(1),DieInstant(false), DontCreateMore(false), SuccessNumber(0), FailNumber(0), HttpClientNextTimeout(-1), SolverNotFailNextTime(false), SubstageId(0), SubstageParentId(0), CurrentAction(-1), ProfilerData(0), EmbeddedLanguageManager(0), EmbeddedActionId(0), GarbrageCollectorWasRun(false), _DNSLookup(0), EmbeddedExecutingApiCode(false), TaskRunning(false), WaitForNextTaskRunning(false), EmbeddedIsFunctionCall(false), _SubstageManager(0)
+        IWorker(parent), Browser(0), Logger(0), Results1(0),Results2(0), Results3(0),Results4(0),Results5(0),Results6(0),Results7(0),Results8(0),Results9(0), Waiter(0),engine(0),ThreadNumber(0),IsAborted(false),ProcessComunicator(0),ProcessComunicatorVirtual(0), HttpClient1(0), HttpClient2(0), Pop3Client(0), ImapClient(0), DoTrace(false), MaxFail(999999), MaxSuccess(100), IsFailExceedRunning(false), IsSuccessExceedRunning(false), FunctionData(0), CurrentWebElement(0), HttpClientIndex(1),DieInstant(false), DontCreateMore(false), SuccessNumber(0), FailNumber(0), HttpClientNextTimeout(-1), SolverNotFailNextTime(false), SubstageId(0), SubstageParentId(0), CurrentAction(-1), ProfilerData(0), EmbeddedLanguageManager(0), EmbeddedActionId(0), GarbrageCollectorWasRun(false), _DNSLookup(0), EmbeddedExecutingApiCode(false), TaskRunning(false), WaitForNextTaskRunning(false), EmbeddedIsFunctionCall(false), _SubstageManager(0), BrowserExtensionManager(0)
     {
         AvoidEndlessLoopForUnhandledExceptions.Init(1000,10);
     }
@@ -219,6 +219,18 @@ namespace BrowserAutomationStudioFramework
     IEmbeddedLanguageManager * ScriptWorker::GetEmbeddedLanguageManager()
     {
         return EmbeddedLanguageManager;
+    }
+
+    void ScriptWorker::SetBrowserExtensionManager(IBrowserExtensionManager *BrowserExtensionManager)
+    {
+        this->BrowserExtensionManager = BrowserExtensionManager;
+        connect(BrowserExtensionManager, SIGNAL(RequireRequestDone(QString,QString,bool)),this,SLOT(RequireRequestDone(QString,QString,bool)));
+
+    }
+
+    IBrowserExtensionManager * ScriptWorker::GetBrowserExtensionManager()
+    {
+        return BrowserExtensionManager;
     }
 
     IStringBuilder * ScriptWorker::GetStringBuilder()
@@ -600,6 +612,22 @@ namespace BrowserAutomationStudioFramework
                 Waiter->Stop();
 
             Fail(tr("Aborted By User"),false);
+        }
+    }
+
+    void ScriptWorker::RequireRequestDone(QString Id, QString Filename, bool IsFailure)
+    {
+        if(Id == CurrentRequireRequestId)
+        {
+            CurrentRequireRequestId.clear();
+            QString Result;
+            QJsonObject Obj;
+            Obj["success"] = !IsFailure;
+            Obj["data"] = Filename;
+            QJsonDocument doc(Obj);
+            Result = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+            SetAsyncResult(QScriptValue(Result));
+            emit BrowserExtensioRequireFinishedSignal();
         }
     }
 
@@ -2371,6 +2399,30 @@ namespace BrowserAutomationStudioFramework
         }
         Options.Headers = p1["headers"].split(QRegExp("[\r\n]"),QString::SkipEmptyParts);
         GetActualHttpClient()->Post(url,p,Options);
+    }
+
+    void ScriptWorker::RequireExtensions(const QString& extensions, const QString& callback)
+    {
+        SetScript(callback);
+
+        bool IsInstant = false;
+        bool IsInstantFailure = false;
+
+        QString IdOrResult = BrowserExtensionManager->Require(extensions,IsInstant,IsInstantFailure);
+        if(IsInstant)
+        {
+            QJsonObject Obj;
+            Obj["success"] = !IsInstantFailure;
+            Obj["data"] = IdOrResult;
+            QJsonDocument doc(Obj);
+            QString Result = QString::fromUtf8(doc.toJson(QJsonDocument::Compact));
+            SetAsyncResult(QScriptValue(Result));
+            RunSubScript();
+        }else
+        {
+            CurrentRequireRequestId = IdOrResult;
+            Waiter->WaitInfinity(this,SIGNAL(BrowserExtensioRequireFinishedSignal()),this,SLOT(RunSubScript()));
+        }
     }
 
     void ScriptWorker::HttpClientGetNoRedirect(const QString& url, const QString& callback)

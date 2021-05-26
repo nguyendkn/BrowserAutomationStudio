@@ -59,6 +59,12 @@
 
     isError: function (obj) {
       return Object.prototype.toString.call(obj) === '[object Error]';
+    },
+
+    sleep: function (time) {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(), time);
+      });
     }
   });
 })(window, jQuery);

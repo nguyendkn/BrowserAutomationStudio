@@ -4200,7 +4200,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           </div>
         </form>
       </div>
-      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Filepath to custom chrome extensions.\nEach line must contain one path.\nEach path must contain extracted extension, a folder with manifest.json and other files."), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("To use extension, you must download it and specify full path. See https://wiki.bablosoft.com/doku.php?id=using_extensions for more info."), examples:[{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
+      <%= _.template($('#input_constructor').html())({id:"Extensions", description:tr("Each line must contain either file path or extension id or extension url, examples:\nc:/path/to/extension/\nhttps://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif\npadekgcemlokbadohgkifijomclgjgif"), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true,textarea_height:80, help: {description: tr("Chrome extension can be used in BAS by inputting either extension id or extension url or extension path into this field. The easiest way to start using extension is to copy paste url from chrome web store."), examples:[{code:"https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif",description:tr("Load extension by url")},{code:"padekgcemlokbadohgkifijomclgjgif",description:tr("Load extension by id")},{code:"c:/extensions/background",description:tr("Load extension from specified folder. File c:/extensions/background/manifest.json must exists")},{code:"Clear",description:tr("Remove all extensions")},{code:tr("Empty string"),description:tr("Don't change")}]}}) %>
 
     </div>
 
@@ -4209,7 +4209,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
       <div class="tr tooltip-paragraph-fold">"Flash", "Extensions" and "Widevine" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
-      <div class="tooltip-paragraph-fold"><span class="tr">To use extension, you must download it and specify full path. See</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">this link</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">эту ссылку</a>, <span class="tr">for more info</span>.</div>
+      <div class="tooltip-paragraph-fold"><span class="tr">Chrome extension can be used in BAS by inputting either extension id or extension url or extension path into "Extensions" field. Extension id is a unique string with 32 length, for example, padekgcemlokbadohgkifijomclgjgif. Extension url is the main url of extension in</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">chrome web store</a>. <span class="tr">It has chrome.google.com domain, for example: https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif. Extension path is path to unpacked extension. Each path must contain extracted extension, a folder with manifest.json and other files. See</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">this link</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">эту ссылку</a>, <span class="tr">for information about unpacking extensions and other info about using them</span>.</div>
 
       <div class="tooltip-paragraph-fold"><span class="tr">To start BAS with flash enabled besides changing "Flash" setting you also need to install flash on your PC. Instruction is located</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash');return false" class="tr">here</a>. </div>
 
@@ -4519,7 +4519,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <div class="tr tooltip-paragraph-fold">Extension must be installed first before this action can be used. Use "Browser settings" action to install extension.</div>
       <div class="tooltip-paragraph-last-fold"><span class='tr'>More information about using extensions can be found on this this</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">page</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">странице</a>.</div> 
     </div>
-    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true, waiter_enabled: true, use_waiter: true, use_timeout:true}) %>
   </script>
 
   <script type="text/template" id="touch">
@@ -5777,10 +5777,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="navigateback_code">
-      <% if(!is_instant){ %>
-        <%= timeout_general() %>
-      <% } %>
-      navigate_back(<%= is_instant %>)!
+      navigate_back(true)!
+
   </script>
 
   <script type="text/template" id="move_code">
@@ -5852,10 +5850,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="browsersettings_code">
       /*Browser*/
+      _require_extensions(<%= Extensions %>)!
       var Params = {};
       var Flash = (<%= Flash %>);
       var Widevine = (<%= Widevine %>);
-      var Extensions = (<%= Extensions %>);
+      var Extensions = (_result());
 
       var Webrtc = (<%= Webrtc %>);
       var WebrtcIps = (<%= WebrtcIps %>).split(/\r?\n/).filter(function(x){return x && x.length > 0}).map(function(x){return x.replace(/\s/g, '')}).join(";");
@@ -7266,7 +7265,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 is_instant = false
               }
 
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({is_instant: is_instant})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({is_instant: is_instant}) + BrowserAutomationStudio_GetWaitCode()
               code = Normalize(code,0)
 
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
@@ -9916,7 +9915,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               return;
             }
              try{
-              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({extension_id: ExtensionId["updated"]})
+              var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({extension_id: ExtensionId["updated"]}) + BrowserAutomationStudio_GetWaitCode()
               code = Normalize(code,0)
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             }catch(e)

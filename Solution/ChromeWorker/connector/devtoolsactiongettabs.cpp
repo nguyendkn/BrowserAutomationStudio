@@ -25,7 +25,7 @@ void DevToolsActionGetTabs::OnWebSocketMessage(const std::string& Message, const
             for(picojson::value& Value : AllList)
             {
                 picojson::object ValueObject = Value.get<picojson::object>();
-                if(ValueObject["attached"].get<bool>() && ValueObject["type"].get<std::string>() == "page" && ValueObject["targetId"].get<std::string>() == Tab->FrameId)
+                if(ValueObject["attached"].get<bool>() && (ValueObject["type"].get<std::string>() == "page" || ValueObject["type"].get<std::string>() == "other") && ValueObject["targetId"].get<std::string>() == Tab->FrameId)
                 {
                     std::string Url = ValueObject["url"].get<std::string>();
                     CurrentUrl = Url;

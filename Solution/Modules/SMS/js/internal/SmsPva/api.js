@@ -14,14 +14,18 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		api.banThread(20);
 		
-		if(!_is_json_string(content) && content.indexOf('<!DOCTYPE html>') < 0 && content.indexOf('<html>') < 0){
+		if(!_is_json_string(content) && !_starts_with(content, '<!DOCTYPE html>') && !_starts_with(content, '<html>')){
 			api.errorHandler(content);
 		};
 		
 		var resp = api.parseJSON(content);
 		
-		if(resp.response=="2" && resp.balance=="0.0000"){
-			api.errorHandler('NO_BALANCE');
+		if(resp.response=="2" && !_is_nilb(resp.balance)=="0.0000"){
+			if(resp.balance=="0.0000"){
+				api.errorHandler('NO_BALANCE');
+			}else{
+				api.errorHandler('LOW_BALANCE');
+			};
 		};
 	
 		if(resp.response=="5"){
@@ -191,6 +195,12 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				"action": "die",
 				"instantly": false
 			},
+			"LOW_BALANCE": {
+				"ru": "Недостаточно денег на счету.",
+				"en": "Not enough money in the account.",
+				"action": "die",
+				"instantly": false
+			},
 			"Service NOT FOUND!": {
 				"ru": "Сервис не найден.",
 				"en": "Service not found.",
@@ -217,7 +227,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"6": {
-				"ru": "Превышено количество одновременных потоков. Дождитесь смс от предыдущих заказов.",
+				"ru": "Превышено количество одновременных потоков. Дождитесь СМС от предыдущих заказов.",
 				"en": "You have exceeded the number of concurrent streams. SMS Wait from previous orders.",
 				"action": "fail"
 			},

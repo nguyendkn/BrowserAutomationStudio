@@ -14,7 +14,7 @@ _SMS.BaseApi = function(config, data, path){
 		this.url = url;
 		this.name = name.slice(0, 1).toLocaleUpperCase() + name.slice(1);
 	};
-	this.url += _is_nilb(config.path) ? path : config.path;
+	this.url += _is_nilb(config.path) ? _avoid_nil(path) : config.path;
 	
 	this.supportedMethods = config.supportedMethods;
 	
@@ -92,7 +92,7 @@ _SMS.BaseApi = function(config, data, path){
 			};
 			
 			if(P("sms", api.id).length > 0 && parseInt(P("sms", api.id)) - Date.now() > 0){
-				var time = parseInt(P("sms", api.id)) - Date.now() + rand(0,30) * 1000;
+				var time = parseInt(P("sms", api.id)) - Date.now() + rand(0,30);
 				if(time > sleepTime){
 					sleepTime = time;
 				};

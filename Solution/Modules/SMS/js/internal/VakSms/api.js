@@ -126,8 +126,8 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"noOperator": {
-				"ru": "Оператор не найдет для запрашиваемой страны.",
-				"en": "The operator will not find for the requested country.",
+				"ru": "Оператор не найден для запрашиваемой страны.",
+				"en": "Operator not found for the requested country.",
 				"action": "fail"
 			},
 			"noNumber": {
@@ -161,8 +161,8 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"waitSMS": {
-				"ru": "На этот номер уже отправлено смс, отмена невозможна.",
-				"en": "This number has already been sent sms, cancellation is not possible.",
+				"ru": "На этот номер уже отправлено СМС, отмена невозможна.",
+				"en": "This number has already been sent SMS, cancellation is not possible.",
 				"action": "fail"
 			}
 		};

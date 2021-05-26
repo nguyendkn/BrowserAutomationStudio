@@ -99,8 +99,11 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		
 		if(resp.status==200){
 			code = _is_nilb(resp.data.code) ? resp.data.fullSms : resp.data.code;
+			if(!confirmData.repeat){
+				confirmData.repeat = true;
+			};
 		}else{
-			if((!confirmData.repeat && resp.status !== 400) || (confirmData.repeat && resp.status !== 400 && resp.status !== 502)){
+			if(!(resp.status === 400 || (confirmData.repeat && resp.status === 502))){
 				api.errorHandler(resp.status, resp.data.msg);
 			};
 		};

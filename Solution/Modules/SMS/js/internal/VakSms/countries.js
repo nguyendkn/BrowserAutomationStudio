@@ -14,6 +14,7 @@ _SMS.VakSmsApi.prototype.getRawCountry = function(country){
 		"RU": "ru",
 		"ES": "es",
 		"SE": "se",
+		"UA": "ua",
 		"GB": "gb"
 	};
 	return countries.hasOwnProperty(country) ? countries[country] : countries["Any"];

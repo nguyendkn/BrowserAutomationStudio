@@ -7,6 +7,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
 		var isJSON = _function_argument("isJSON");
+		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
 		
 		var params = api.combineParams({api_key:api.key, action:action}, options);
 		
@@ -19,14 +20,13 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 			content = content.split(':');
 			var resp = {status:content[0]};
 			var data = content.slice(1);
-			var len = data.length;
 			if(resp.status=="ACCESS_NUMBER"){
 				resp.id = data[0];
 				resp.number = data[1];
 			}else{
 				resp.data = data.join(':');
 			};
-			if(isJSON){
+			if(isJSON || (checkErrors && !_starts_with(resp.status, 'ACCESS_'))){
 				api.errorHandler(resp.status, resp.data);
 			};
 		};
@@ -38,11 +38,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		_call_function(api.makeRequest,{action:"getBalance"})!
 		var resp = _result_function();
 		
-		if(resp.status=="ACCESS_BALANCE"){
-			_function_return(resp.data);
-		}else{
-			api.errorHandler(resp.status, resp.data);
-		};
+		_function_return(resp.data);
 	};
 	
 	this.getNumbersCount = function(){
@@ -100,18 +96,14 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		_call_function(api.makeRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
 		var resp = _result_function();
 		
-		if(resp.status=="ACCESS_NUMBER"){
-			_function_return({api:api, id:resp.id, number:api.removePlus(resp.number)});
-		}else{
-			api.errorHandler(resp.status, resp.data);
-		};
+		_function_return({api:api, id:resp.id, number:api.removePlus(resp.number)});
 	};
 	
 	this.getState = function(){
 		var number = _function_argument("number");
 		var taskId = _SMS.confirmData[number].id;
 		
-		_call_function(api.makeRequest,{action:"getStatus", options:{id:taskId}})!
+		_call_function(api.makeRequest,{action:"getStatus", options:{id:taskId}, checkErrors:false})!
 		
 		_function_return(_result_function());
 	};
@@ -125,10 +117,10 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 			status = "10";
 		};
 		
-		_call_function(api.makeRequest,{action:"setStatus", options:{id:taskId, status:status}})!
+		_call_function(api.makeRequest,{action:"setStatus", options:{id:taskId, status:status}, checkErrors:false})!
 		var resp = _result_function();
 		
-		if(resp.status.indexOf('ACCESS_') != 0){
+		if(!_starts_with(resp.status, 'ACCESS_') && resp.status !== "BAD_STATUS"){
 			api.errorHandler(resp.status, resp.data);
 		};
 	};
@@ -264,7 +256,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"STATUS_FINISH": {
-				"ru": "Аренда оплачна и завершена.",
+				"ru": "Аренда оплачена и завершена.",
 				"en": "Rent paid and completed.",
 				"action": "fail"
 			},

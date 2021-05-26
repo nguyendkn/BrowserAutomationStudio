@@ -160,7 +160,7 @@ _SMS = {
 	
 	setStatus: function(){
 		var number = _function_argument("number");
-		var status = _function_argument("status").toString();
+		var status = _function_argument("status").toString().trim();
 		var deleteInfo = _avoid_nilb(_function_argument("deleteInfo"), true);
 		
 		var confirmData = _SMS.confirmData[number];

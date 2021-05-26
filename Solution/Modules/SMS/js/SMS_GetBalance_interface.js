@@ -74,12 +74,16 @@
 			examples: [
 				{code: 1.32},
 				{code: 120},
-				{code: 1596}
+				{code: 1596},
+				{code: "null", description: tr("Failed to get balance")}
 			]
 		}
 	}) %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get the balance of the SMS receiving service.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a number equal to the balance of the specified SMS receiving service. If failed to get the balance, then the action will return <code>null</code>.</div>
+	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an api similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

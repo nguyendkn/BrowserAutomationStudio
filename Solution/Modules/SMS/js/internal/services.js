@@ -30,7 +30,7 @@ _SMS.getServiceApi = function(data){
 				supportedMethods: [
 					'getNumbersCount'
 				],
-				ref: '62ab2e4d'
+				ref: '598fdb60'
 			}
 		},
 		"365sms.ru": {

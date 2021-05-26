@@ -10,10 +10,6 @@ if(apiKey["original"].length == 0){
 };
 var site = $("#site").val();
 var country = GetInputConstructorValue("country", loader);
-if(country["original"].length == 0){
-	Invalid(tr("The parameter \"") + tr("Country") + tr("\" is not specified"));
-    return;
-};
 var operator = GetInputConstructorValue("operator", loader);
 var customSite = GetInputConstructorValue("customSite", loader);
 var customCountry = GetInputConstructorValue("customCountry", loader);

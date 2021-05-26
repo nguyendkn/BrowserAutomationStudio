@@ -88,7 +88,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		var actions = {
 			"-1":"setOperationUsed",
 			"1":"setReady",
-			//"3":"getNumRepeat",
+			//"3":"getNumRepeat", //https://sms-reg.com/news.html#!020718
 			"6":"setOperationOk",
 			"8":"setOperationUsed"
 		};
@@ -178,7 +178,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"WARNING_WAIT15MIN": {
-				"ru": "Вы не использовали много из выданных номеров и поэтому выдача новых номеров заморожена на 15 минут.",
+				"ru": "Вы не использовали многие из выданных номеров, поэтому выдача новых номеров заморожена на 15 минут.",
 				"en": "You have not used many of the issued numbers and therefore the issuance of new numbers is frozen for 15 minutes.",
 				"action": "fail"
 			},

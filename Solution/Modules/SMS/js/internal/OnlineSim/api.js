@@ -182,7 +182,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"EXCEEDED_CONCURRENT_OPERATIONS": {
-				"ru": "Превышено количество одновременно заказанных номеров для Вашего аккаунта.",
+				"ru": "Превышено количество одновременно заказанных номеров для вашего аккаунта.",
 				"en": "Maximum quantity of numbers booked concurrently is exceeded for your account.",
 				"action": "fail"
 			},
@@ -217,7 +217,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"ERROR_LENGTH_NUMBER_FOR_FORWARD": {
-				"ru": "Номер для переадресации имеет не верную длину.",
+				"ru": "Номер для переадресации имеет неверную длину.",
 				"en": "Wrong length of the number for forwarding.",
 				"action": "fail"
 			},
@@ -252,13 +252,13 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"UNDEFINED_COUNTRY": {
-				"ru": "Не верно указана страна.",
+				"ru": "Страна указана неверно.",
 				"en": "Country specified incorrectly.",
 				"action": "fail"
 			},
 			"UNDEFINED_DAYS": {
-				"ru": "Не верно указано количество дней.",
-				"en": "The number of days is incorrect.",
+				"ru": "Количество дней указано неверно.",
+				"en": "The number of days specified incorrectly.",
 				"action": "fail"
 			}
 		};

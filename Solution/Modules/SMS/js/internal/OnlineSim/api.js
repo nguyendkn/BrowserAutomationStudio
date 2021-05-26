@@ -192,7 +192,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"TIME_INTERVAL_ERROR": {
-				"ru": "Отложенный прием СМС не возможен в данный интервал времени.",
+				"ru": "Отложенный прием SMS не возможен в данный интервал времени.",
 				"en": "Delayed SMS reception is not possible at this interval of time.",
 				"action": "fail"
 			},

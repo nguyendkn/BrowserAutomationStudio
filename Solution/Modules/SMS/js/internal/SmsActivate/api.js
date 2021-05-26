@@ -266,8 +266,8 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"STATUS_WAIT_CODE": {
-				"ru": "Ожидание первой смс.",
-				"en": "Waiting for the first sms.",
+				"ru": "Ожидание первой SMS.",
+				"en": "Waiting for the first SMS.",
 				"action": "fail"
 			},
 			"INCORECT_STATUS": {

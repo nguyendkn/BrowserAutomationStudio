@@ -161,7 +161,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"waitSMS": {
-				"ru": "На этот номер уже отправлено СМС, отмена невозможна.",
+				"ru": "На этот номер уже отправлено SMS, отмена невозможна.",
 				"en": "This number has already been sent SMS, cancellation is not possible.",
 				"action": "fail"
 			}

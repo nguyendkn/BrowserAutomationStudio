@@ -227,7 +227,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 				"action": "fail"
 			},
 			"6": {
-				"ru": "Превышено количество одновременных потоков. Дождитесь СМС от предыдущих заказов.",
+				"ru": "Превышено количество одновременных потоков. Дождитесь SMS от предыдущих заказов.",
 				"en": "You have exceeded the number of concurrent streams. SMS Wait from previous orders.",
 				"action": "fail"
 			},

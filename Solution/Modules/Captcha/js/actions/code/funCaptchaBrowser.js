@@ -1,12 +1,5 @@
 /*Browser*/
-_SELECTOR = <%= query %>;
-
-BASCaptchaSolver.waiter = function () {
-  <%= waiter %>
-};
-
-BASCaptchaSolver.path = function () { return (<%= path %>) };
-
+BASCaptchaSolver.setQuery(<%= query %>);
 _call_function(BASCaptchaSolver.solveFunCaptcha, {
   proxy: String(<%= sendProxy %>).toLowerCase() == 'true' ? _PROXY : {},
   taskWaitInterval: <%= taskWaitInterval %>,

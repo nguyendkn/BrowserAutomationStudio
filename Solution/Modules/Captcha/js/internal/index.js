@@ -4,16 +4,16 @@
     this.utils = {};
   };
 
-  CaptchaSolver.prototype.setDebug = function (debug) {
-    this.debug = debug;
+  CaptchaSolver.prototype.setQuery = function (value) {
+    this.query = value;
   };
 
-  CaptchaSolver.prototype.disableDebug = function () {
-    this.debug = false;
+  CaptchaSolver.prototype.setDebug = function (value) {
+    this.debug = value;
   };
 
-  CaptchaSolver.prototype.enableDebug = function () {
-    this.debug = true;
+  CaptchaSolver.prototype.path = function () {
+    return get_element_selector(this.query, false);
   };
 
   CaptchaSolver.prototype.solveFunCaptcha = function () {
@@ -43,7 +43,7 @@
   };
 
   CaptchaSolver.prototype.ensureSelector = function () {
-    _call_function(BASCaptchaSolver.waiter, {})!
+    wait_element(BASCaptchaSolver.query)!
     BASCaptchaSolver.path().exist()!
     if (_result() !== 1) _break();
   };

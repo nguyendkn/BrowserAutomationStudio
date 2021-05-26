@@ -1,1 +1,1 @@
-<%= variable %> = native("clipboard", "getclipboard", JSON.stringify({base64: <%= base64 %>,mime:<%= mime %>}))
+<%= variable %> = _get_clipboard(<%= base64 %>, <%= mime %>)

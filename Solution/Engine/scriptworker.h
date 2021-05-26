@@ -401,6 +401,10 @@ namespace BrowserAutomationStudioFramework
         void ProgressValueSlot(int);
         void ProgressMaximumSlot(int);
 
+        /* Clipboard */
+        void SetClipboard(bool IsBase64, const QString& Mime, const QString& DataStr);
+        QString GetClipboard(bool IsBase64, const QString& Mime);
+
         void NewPop3Client();
         void Pop3ClientLoadMessageNumber(const QString& callback);
         void Pop3ClientLoadMessage(int index, const QString& callback);

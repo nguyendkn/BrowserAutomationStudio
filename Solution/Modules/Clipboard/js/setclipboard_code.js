@@ -1,1 +1,1 @@
-native("clipboard", "setclipboard", JSON.stringify({base64: <%= base64 %>,mime:<%= mime %>,data:<%= data %>}))
+_set_clipboard(<%= base64 %>, <%= mime %>, <%= data %>)

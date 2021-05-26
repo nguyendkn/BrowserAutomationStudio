@@ -6,7 +6,7 @@
 	"icon":"clipboard.png",
 	"description_small":{"en": "Clipboard", "ru": "Буфер обмена"},
 	"major_version": 1,
-	"minor_version": 0,
+	"minor_version": 1,
 	"developer_name": "bablosoft", 
 	"developer_email": "mail.to.twaego@gmail.com", 
 	"developer_site": "https://bablosoft.com",
@@ -40,30 +40,5 @@
 	},
 	"engine": [],
 	"browser": [],
-	"depends": [],
-	"dll": [
-			{
-				"name": "clipboard", 
-				"filename32": "clipboard32.dll", 
-				"filename64": "clipboard64.dll", 
-				"startdllfunction": "StartDll", 
-				"enddllfunction": "EndDll", 
-				"startthreadfunction": "StartThread", 
-				"endthreadfunction": "EndThread", 
-				"exportlist":[
-					{
-						"name": "setclipboard",
-						"isasync": false,
-						"waitinfinite": false,
-						"workfunction": "ClipboardSetClipboard"
-					},{
-						"name": "getclipboard",
-						"isasync": false,
-						"waitinfinite": false,
-						"workfunction": "ClipboardGetClipboard"
-					}
-
-				]
-			}
-		  ]
+	"depends": []
 }

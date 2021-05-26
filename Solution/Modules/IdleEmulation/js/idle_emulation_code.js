@@ -1,16 +1,14 @@
 /*Browser*/
 IDDLE_EMULATION_END = Date.now() + 1000 * (<%= iddle %>)
 IDDLE_EMULATION_DISTRIBUTION = <%= distribution %>
-IDDLE_CURSOR_POSITION_X = -1
-IDDLE_CURSOR_POSITION_Y = -1
 
+_get_browser_screen_settings()!
+IDDLE_EMULATION_RESULT = JSON.parse(_result())
+IDDLE_CURSOR_POSITION_X = IDDLE_EMULATION_RESULT["CursorX"]
+IDDLE_CURSOR_POSITION_Y = IDDLE_EMULATION_RESULT["CursorY"]
+IDDLE_CURSOR_POSITION_WIDTH = IDDLE_EMULATION_RESULT["Width"]
+IDDLE_CURSOR_POSITION_HEIGHT = IDDLE_EMULATION_RESULT["Height"]
 IDDLE_CURSOR_POSITION_WAS_SCROLL = false
-
-page().script("window.innerWidth")!
-IDDLE_CURSOR_POSITION_WIDTH = parseInt(_result())
-
-page().script("window.innerHeight")!
-IDDLE_CURSOR_POSITION_HEIGHT = parseInt(_result())
 
 
 _do(function(){

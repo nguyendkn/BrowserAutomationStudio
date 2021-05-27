@@ -18,8 +18,9 @@
 
   CaptchaSolver.prototype.solveFunCaptcha = function () {
     _call_function(BASCaptchaSolver.ensureSelector, {})!
+    _call_function(BASCaptchaSolver.findFunCaptchaContainer, {})!
     BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
-    BASCaptchaSolver.path().xpath('parent::*//input[@name="fc-token"]').attr('value')!
+    BASCaptchaSolver.path().xpath('//input[@name="fc-token"]').attr('value')!
 
     const data = _result().split('|').map(function (el) { return el.split('=') });
     const surl = data.filter(function (el) { return el[0] === 'surl' })[0][1];
@@ -49,7 +50,7 @@
   };
 
   CaptchaSolver.prototype.submitFunCaptcha = function () {
-    _VERIFICATION_TOKEN = BASCaptchaSolver.path().xpath('parent::*//input[@name="verification-token"]');
+    _VERIFICATION_TOKEN = BASCaptchaSolver.path().xpath('//input[@name="verification-token"]');
     _VERIFICATION_TOKEN.exist()!
     _if_else(_result() === 1, function () {
       _VERIFICATION_TOKEN.script('self.value = ' + JSON.stringify(_function_argument('token')))!
@@ -59,7 +60,7 @@
       fail("Can't find FunCaptcha 'verification-token' input element");
     })!
 
-    _FC_TOKEN = BASCaptchaSolver.path().xpath('parent::*//input[@name="fc-token"]');
+    _FC_TOKEN = BASCaptchaSolver.path().xpath('//input[@name="fc-token"]');
     _FC_TOKEN.exist()!
     _if_else(_result() === 1, function () {
       _FC_TOKEN.script('self.value = ' + JSON.stringify(_function_argument('token')))!
@@ -70,6 +71,22 @@
     })!
 
     page().script('_BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved)()')!
+  };
+
+  CaptchaSolver.prototype.findFunCaptchaContainer = function () {
+    var target = BASCaptchaSolver.query.toString();
+
+    _do(function () {
+      const index = target.lastIndexOf('>FRAME>');
+      target = index < 0 ? target : target.slice(0, index);
+
+      get_element_selector(target, false).css('#fc-iframe-wrap').exist(function () {
+        if (_iterator() === 2) _break();
+        if (_result() === 1) _break();
+      });
+    })!
+
+    BASCaptchaSolver.query = target;
   };
 
   global.BASCaptchaSolver = new CaptchaSolver();

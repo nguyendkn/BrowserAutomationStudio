@@ -80,10 +80,10 @@
       const index = target.lastIndexOf('>FRAME>');
       target = index < 0 ? target : target.slice(0, index);
 
-      get_element_selector(target, false).css('#fc-iframe-wrap').exist(function () {
-        if (_iterator() === 2) _break();
-        if (_result() === 1) _break();
-      });
+      const $element = get_element_selector(target, false);
+      $element.css('#fc-iframe-wrap').exist()!
+      if (_iterator() === 2) _break();
+      if (_result() === 1) _break();
     })!
 
     BASCaptchaSolver.query = target;

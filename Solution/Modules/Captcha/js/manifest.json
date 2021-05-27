@@ -136,6 +136,8 @@
     "internal/tasks/funCaptchaTask.ruCaptcha.js",
     "internal/tasks/funCaptchaTask.antiCaptcha.js",
     "internal/api/errors/ruCaptchaErrorHandler.js",
-    "internal/api/errors/antiCaptchaErrorHandler.js"
+    "internal/api/errors/antiCaptchaErrorHandler.js",
+    "internal/helpers/baseHelper.js",
+    "internal/helpers/funCaptchaHelper.js"
   ]
 }

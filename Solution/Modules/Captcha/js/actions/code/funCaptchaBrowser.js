@@ -1,5 +1,4 @@
 /*Browser*/
-BASCaptchaSolver.setQuery(<%= query %>);
 _call_function(BASCaptchaSolver.solveFunCaptcha, {
   proxy: String(<%= sendProxy %>).toLowerCase() == 'true' ? _PROXY : {},
   taskWaitInterval: <%= taskWaitInterval %>,
@@ -8,4 +7,5 @@ _call_function(BASCaptchaSolver.solveFunCaptcha, {
   service: <%= service %>,
   apiUrl: <%= apiUrl %>,
   apiKey: <%= apiKey %>,
+  query: <%= query %>,
 })!

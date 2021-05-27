@@ -26,6 +26,22 @@
       }).join('&');
     },
 
+    script: function () {
+      const script = _function_argument('script');
+      _function_argument('element').script(script)!
+      _function_return(_result());
+    },
+
+    length: function () {
+      _function_argument('element').length()!
+      _function_return(_result());
+    },
+
+    exist: function () {
+      _function_argument('element').exist()!
+      _function_return(_result());
+    },
+
     sleep: function () {
       sleep(_function_argument('time'))!
     },

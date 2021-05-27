@@ -105,65 +105,51 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		var errors = {
 			"apiKeyNotFound": {
 				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key.",
-				"action": "die",
-				"instantly": true
+				"en": "Invalid API key."
 			},
 			"noMoney": {
 				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account.",
-				"action": "die",
-				"instantly": false
+				"en": "Not enough money in the account."
 			},
 			"noService": {
 				"ru": "Данный сервис не поддерживается, свяжитесь с администрацией сайта.",
-				"en": "This service is not supported, please contact the site administration.",
-				"action": "fail"
+				"en": "This service is not supported, please contact the site administration."
 			},
 			"noCountry": {
 				"ru": "Запрашиваемая страна отсутствует.",
-				"en": "The requested country is missing.",
-				"action": "fail"
+				"en": "The requested country is missing."
 			},
 			"noOperator": {
 				"ru": "Оператор не найден для запрашиваемой страны.",
-				"en": "Operator not found for the requested country.",
-				"action": "fail"
+				"en": "Operator not found for the requested country."
 			},
 			"noNumber": {
 				"ru": "Нет номеров, попробуйте позже.",
-				"en": "No numbers, please try later.",
-				"action": "fail"
+				"en": "No numbers, please try later."
 			},
 			"badStatus": {
 				"ru": "Неверный статус.",
-				"en": "Invalid status.",
-				"action": "fail"
+				"en": "Invalid status."
 			},
 			"idNumNotFound": {
 				"ru": "Неверный ID операции.",
-				"en": "Invalid operation ID.",
-				"action": "fail"
+				"en": "Invalid operation ID."
 			},
 			"badService": {
 				"ru": "Неверный код сайта, сервиса, соц.сети.",
-				"en": "Invalid website, service, social network code.",
-				"action": "fail"
+				"en": "Invalid website, service, social network code."
 			},
 			"badData": {
 				"ru": "Отправлены неверные данные.",
-				"en": "Invalid data sent.",
-				"action": "fail"
+				"en": "Invalid data sent."
 			},
 			"smsReceived": {
 				"ru": "На этот номер уже получен код подтверждения, отмена невозможна.",
-				"en": "This number has already received a confirmation code, cancellation is not possible.",
-				"action": "fail"
+				"en": "This number has already received a confirmation code, cancellation is not possible."
 			},
 			"waitSMS": {
 				"ru": "На этот номер уже отправлено SMS, отмена невозможна.",
-				"en": "This number has already been sent SMS, cancellation is not possible.",
-				"action": "fail"
+				"en": "This number has already been sent SMS, cancellation is not possible."
 			}
 		};
 		return errors[error];

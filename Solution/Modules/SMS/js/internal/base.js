@@ -190,30 +190,26 @@ _SMS.BaseApi = function(config, data, path){
 		var baseErrors = {
 			"FAILED_REQUEST": {
 				"ru": "Не удалось успешно выполнить запрос к сервису за 10 попыток.",
-				"en": "Failed to successfully complete the request to the service in 10 attempts.",
-				"action": "fail"
+				"en": "Failed to successfully complete the request to the service in 10 attempts."
 			},
 			"RESPONSE_IS_NOT_JSON": {
 				"ru": "Не удалось распарсить ответ от сервиса. Содержание ответа: " + data,
-				"en": "Failed to parse the response from the service. Response content: " + data,
-				"action": "fail"
+				"en": "Failed to parse the response from the service. Response content: " + data
 			},
 			"ACTION_TIMEOUT": {
 				"ru": "Превышено время ожидания выполнения действия \"" + data + "\".",
-				"en": "Timed out for execution of an action \"" + data + "\".",
-				"action": "fail"
+				"en": "Timed out for execution of an action \"" + data + "\"."
 			},
 			"UNSUPPORTED_METHOD": {
 				"ru": "Метод \"" + data + "\" не поддерживается.",
-				"en": "Method \"" + data + "\" is not supported.",
-				"action": "fail"
+				"en": "Method \"" + data + "\" is not supported."
 			},
 			"UNSUPPORTED_SITE": {
 				"ru": "Сайт \"" + data + "\" не поддерживается.",
-				"en": "Site \"" + data + "\" is not supported.",
-				"action": "fail"
+				"en": "Site \"" + data + "\" is not supported."
 			}
 		};
+		
 		var errorObj = baseErrors.hasOwnProperty(error) ? baseErrors[error] : api.getError(error, data);
 		
 		var message = api.name + ": " + error;
@@ -224,12 +220,7 @@ _SMS.BaseApi = function(config, data, path){
 				fail(message + ", " + data);
 			};
 		}else{
-			message += " - " + errorObj[_K]
-			if(errorObj.action=="fail"){
-				fail(message);
-			}else{
-				die(message, errorObj.instantly);
-			};
+			fail(message + " - " + errorObj[_K]);
 		};
 	};
 };

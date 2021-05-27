@@ -147,168 +147,131 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		var errors = {
 			"BAD_KEY": {
 				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key.",
-				"action": "die",
-				"instantly": true
+				"en": "Invalid API key."
 			},
 			"NO_KEY": {
 				"ru": "API-ключ не указан.",
-				"en": "API key not specified.",
-				"action": "die",
-				"instantly": true
+				"en": "API key not specified."
 			},
 			"NO_BALANCE": {
 				"ru": "Закончился баланс.",
-				"en": "Balance ended.",
-				"action": "die",
-				"instantly": false
+				"en": "Balance ended."
 			},
 			"NO_MEANS": {
 				"ru": "Закончился баланс.",
-				"en": "Balance ended.",
-				"action": "die",
-				"instantly": false
+				"en": "Balance ended."
 			},
 			"NO_NUMBERS": {
 				"ru": "Нет номеров.",
-				"en": "No numbers.",
-				"action": "fail"
+				"en": "No numbers."
 			},
 			"ERROR_SQL": {
 				"ru": "Ошибка SQL-сервера.",
-				"en": "SQL Server Error.",
-				"action": "fail"
+				"en": "SQL Server Error."
 			},
 			"BAD_ACTION": {
 				"ru": "Некорректное действие.",
-				"en": "Incorrect action.",
-				"action": "fail"
+				"en": "Incorrect action."
 			},
 			"BAD_SERVICE": {
 				"ru": "Некорректное наименование сервиса.",
-				"en": "Incorrect service name.",
-				"action": "fail"
+				"en": "Incorrect service name."
 			},
 			"WRONG_SERVICE": {
 				"ru": "Неверный идентификатор сервиса.",
-				"en": "Invalid service identifier.",
-				"action": "fail"
+				"en": "Invalid service identifier."
 			},
 			"WRONG_EXCEPTION_PHONE": {
 				"ru": "Некорректные исключающие префиксы.",
-				"en": "Invalid exclusion prefixes.",
-				"action": "fail"
+				"en": "Invalid exclusion prefixes."
 			},
 			"NO_BALANCE_FORWARD": {
 				"ru": "Недостаточно средств для покупки переадресации.",
-				"en": "Iinsufficient funds to buy call forwarding.",
-				"action": "die",
-				"instantly": false
+				"en": "Iinsufficient funds to buy call forwarding."
 			},
 			"BAD_FORWARD": {
 				"ru": "Некорректно указана переадресация.",
-				"en": "Redirection specified incorrectly.",
-				"action": "fail"
+				"en": "Redirection specified incorrectly."
 			},
 			"NOT_AVAILABLE": {
 				"ru": "Для страны, которую вы используете, недоступна покупка мультисервисов.",
-				"en": "Multiservice purchase is not available for the country you are using.",
-				"action": "fail"
+				"en": "Multiservice purchase is not available for the country you are using."
 			},
 			"NO_ACTIVATION": {
 				"ru": "id активации не существует.",
-				"en": "Activation id does not exist.",
-				"action": "fail"
+				"en": "Activation id does not exist."
 			},
 			"WRONG_ADDITIONAL_SERVICE": {
 				"ru": "Неверный дополнительный сервис (допустимы только сервисы для переадресации).",
-				"en": "Invalid additional service (only services for redirection are allowed).",
-				"action": "fail"
+				"en": "Invalid additional service (only services for redirection are allowed)."
 			},
 			"WRONG_ACTIVATION_ID": {
 				"ru": "Неверный ID родительской активации.",
-				"en": "Invalid Parent Activation ID.",
-				"action": "fail"
+				"en": "Invalid Parent Activation ID."
 			},
 			"WRONG_SECURITY": {
 				"ru": "Ошибка при попытке передать ID активации без переадресации, или же завершенной/не активной активации.",
-				"en": "An error occurred while trying to transfer an activation ID without forwarding, or a completed/inactive activation.",
-				"action": "fail"
+				"en": "An error occurred while trying to transfer an activation ID without forwarding, or a completed/inactive activation."
 			},
 			"REPEAT_ADDITIONAL_SERVICE": {
 				"ru": "Ошибка возникает при попытке заказать купленный сервис еще раз.",
-				"en": "An error occurs when trying to order a purchased service again.",
-				"action": "fail"
+				"en": "An error occurs when trying to order a purchased service again."
 			},
 			"ACCOUNT_INACTIVE": {
 				"ru": "Свободных номеров нет.",
-				"en": "No numbers.",
-				"action": "fail"
+				"en": "No numbers."
 			},
 			"NO_ID_RENT": {
 				"ru": "Не указан id Аренды.",
-				"en": "Rent id not specified.",
-				"action": "fail"
+				"en": "Rent id not specified."
 			},
 			"INVALID_PHONE": {
 				"ru": "Номер арендован не вами (неправильный id аренды).",
-				"en": "Number is not rented by you (wrong rental id).",
-				"action": "fail"
+				"en": "Number is not rented by you (wrong rental id)."
 			},
 			"STATUS_FINISH": {
 				"ru": "Аренда оплачена и завершена.",
-				"en": "Rent paid and completed.",
-				"action": "fail"
+				"en": "Rent paid and completed."
 			},
 			"STATUS_CANCEL": {
 				"ru": "Аренда отменена с возвратом денег.",
-				"en": "Rent canceled with refund.",
-				"action": "fail"
+				"en": "Rent canceled with refund."
 			},
 			"STATUS_WAIT_CODE": {
 				"ru": "Ожидание первой SMS.",
-				"en": "Waiting for the first SMS.",
-				"action": "fail"
+				"en": "Waiting for the first SMS."
 			},
 			"INCORECT_STATUS": {
 				"ru": "Отсутствует или неправильно указан статус.",
-				"en": "Missing or incorrect status.",
-				"action": "fail"
+				"en": "Missing or incorrect status."
 			},
 			"CANT_CANCEL": {
 				"ru": "Невозможно отменить аренду (более 20 мин.).",
-				"en": "It is impossible to cancel the rental (more than 20 minutes).",
-				"action": "fail"
+				"en": "It is impossible to cancel the rental (more than 20 minutes)."
 			},
 			"ALREADY_FINISH": {
 				"ru": "Аренда уже завершена.",
-				"en": "Rental is already completed.",
-				"action": "fail"
+				"en": "Rental is already completed."
 			},
 			"ALREADY_CANCEL": {
 				"ru": "Аренда уже отменена.",
-				"en": "Rent already canceled.",
-				"action": "fail"
+				"en": "Rent already canceled."
 			},
 			"RENT_DIE": {
 				"ru": "Аренду невозможно продлить, так как срок жизни номера истёк.",
-				"en": "Rent cannot be extended because the number has expired.",
-				"action": "fail"
+				"en": "Rent cannot be extended because the number has expired."
 			},
 			"WRONG_OPERATOR": {
 				"ru": "Оператор переданной аренды не MTT.",
-				"en": "Rent transferred operator not MTT.",
-				"action": "fail"
+				"en": "Rent transferred operator not MTT."
 			},
 			"INVALID_TIME": {
 				"ru": "Неверное время. Доступное количество часов от 4 до 1344.",
-				"en": "Wrong time. Available number of hours from 4 to 1344.",
-				"action": "fail"
+				"en": "Wrong time. Available number of hours from 4 to 1344."
 			},
 			"BANNED": {
 				"ru": "Аккаунт заблокирован до " + data,
-				"en": "Account blocked until " + data,
-				"action": "fail"
+				"en": "Account blocked until " + data
 			}
 		};
 		return errors[error];

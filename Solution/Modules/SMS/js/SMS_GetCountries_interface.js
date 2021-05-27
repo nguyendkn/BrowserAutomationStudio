@@ -42,7 +42,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("Url of the SMS receiving service server. Use this parameter to specify the url of the server, if the required service is not in the list of available ones, but it works through an api similar to the selected service."),
+				description: tr("Optional parameter.") + " " + tr("Url of the SMS receiving service server. Use this parameter to specify the url of the server, if the required service is not in the list of available ones, but it works through an API similar to the selected service."),
 				examples: [
 					{code: "https://sms.org"},
 					{code: "http://receive-sms.com"},
@@ -68,7 +68,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Get list of countries of the SMS receiving service.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a list consisting of objects containing identifiers and names of countries supported by the specified SMS receiving service. The country identifier is contained in the <code>id</code> property of the object, the country name in Russian is in the <code>name</code> property, and the country name in English is in the <code>name_en</code> property.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">Example</span>: <code>[{"id":"0","name":"Россия","name_en":"Russia"},{"id":"1","name":"Украина","name_en":"Ukraine"}]</code></div>
-	<div class="tr tooltip-paragraph-fold">Some services may not have a country name in English or the <code>name</code> property will have a name in English, and the name in Russian will be absent.</div>
+	<div class="tr tooltip-paragraph-fold">Some services may not have a country name in English or have a name in English in the <code>name</code> property and have no name in Russian at all.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting list can be processed using actions from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">To get the Russian name of the first country, use the JPath query <span style="color:black">$.[0].name</span> in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">To get the English name of the first country, use the JPath query <span style="color:black">$.[0].name_en</span> in the "Get value" action from the "JSON" module.</div>
@@ -78,7 +78,7 @@
 	<div class="tr tooltip-paragraph-fold">To get the id of the country with the Russian name from the [[NAME]] variable, use the JPath query <span style="color:black">$.[?(@.name=="[[NAME]]")].id</span> in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">To get the id of the country with the English name from the [[NAME]] variable, use the JPath query <span style="color:black">$.[?(@.name_en=="[[NAME]]")].id</span> in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting country id can be used in the "Custom country" parameter of the "Get the count of available numbers" and "Get phone number" actions.</div>
-	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an api similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
+	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

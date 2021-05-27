@@ -140,126 +140,99 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var errors = {
 			"ERROR_WRONG_KEY": {
 				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key.",
-				"action": "die",
-				"instantly": true
+				"en": "Invalid API key."
 			},
 			"ERROR_NO_KEY": {
 				"ru": "API-ключ не указан.",
-				"en": "API key not specified.",
-				"action": "die",
-				"instantly": true
+				"en": "API key not specified."
 			},
 			"WARNING_LOW_BALANCE": {
 				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account.",
-				"action": "die",
-				"instantly": false
+				"en": "Not enough money in the account."
 			},
 			"ACCOUNT_BLOCKED": {
 				"ru": "Аккаунт заблокирован.",
-				"en": "Account is blocked.",
-				"action": "fail"
+				"en": "Account is blocked."
 			},
 			"ERROR_NO_SERVICE": {
 				"ru": "Сервис не указан.",
-				"en": "Service not specified.",
-				"action": "fail"
+				"en": "Service not specified."
 			},
 			"REQUEST_NOT_FOUND": {
 				"ru": "Метод API не указан.",
-				"en": "API method not specified.",
-				"action": "fail"
+				"en": "API method not specified."
 			},
 			"API_ACCESS_DISABLED": {
 				"ru": "API выключено.",
-				"en": "API disabled.",
-				"action": "fail"
+				"en": "API disabled."
 			},
 			"API_ACCESS_IP": {
 				"ru": "Доступ с данного ip выключен в профиле.",
-				"en": "Access from this ip is disabled in the profile.",
-				"action": "fail"
+				"en": "Access from this ip is disabled in the profile."
 			},
 			"EXCEEDED_CONCURRENT_OPERATIONS": {
 				"ru": "Превышено количество одновременно заказанных номеров для вашего аккаунта.",
-				"en": "Maximum quantity of numbers booked concurrently is exceeded for your account.",
-				"action": "fail"
+				"en": "Maximum quantity of numbers booked concurrently is exceeded for your account."
 			},
 			"NO_NUMBER": {
 				"ru": "Для выбранного сервиса свободные номера временно отсутствуют.",
-				"en": "Temporarily no numbers available for the selected service.",
-				"action": "fail"
+				"en": "Temporarily no numbers available for the selected service."
 			},
 			"TIME_INTERVAL_ERROR": {
 				"ru": "Отложенный прием SMS не возможен в данный интервал времени.",
-				"en": "Delayed SMS reception is not possible at this interval of time.",
-				"action": "fail"
+				"en": "Delayed SMS reception is not possible at this interval of time."
 			},
 			"INTERVAL_CONCURRENT_REQUESTS_ERROR": {
 				"ru": "Превышено количество одновременных запросов на выдачу номера, повторите запрос позднее.",
-				"en": "Maximum quantity of concurrent requests for number issue is exceeded, try again later.",
-				"action": "fail"
+				"en": "Maximum quantity of concurrent requests for number issue is exceeded, try again later."
 			},
 			"TRY_AGAIN_LATER": {
 				"ru": "Запрос временно не может быть выполнен.",
-				"en": "Temporarily unable to perform the request.",
-				"action": "fail"
+				"en": "Temporarily unable to perform the request."
 			},
 			"NO_FORWARD_FOR_DEFFER": {
 				"ru": "Активация переадресации возможна только на онлайн приеме.",
-				"en": "Forwarding can be activated only for online reception.",
-				"action": "fail"
+				"en": "Forwarding can be activated only for online reception."
 			},
 			"NO_NUMBER_FOR_FORWARD": {
 				"ru": "Нет номеров для переадресации.",
-				"en": "There are no numbers for forwarding.",
-				"action": "fail"
+				"en": "There are no numbers for forwarding."
 			},
 			"ERROR_LENGTH_NUMBER_FOR_FORWARD": {
 				"ru": "Номер для переадресации имеет неверную длину.",
-				"en": "Wrong length of the number for forwarding.",
-				"action": "fail"
+				"en": "Wrong length of the number for forwarding."
 			},
 			"DUPLICATE_OPERATION": {
 				"ru": "Добавление операций с одинаковыми параметрами.",
-				"en": "Adding operations with identical parameters.",
-				"action": "fail"
+				"en": "Adding operations with identical parameters."
 			},
 			"ERROR_NO_TZID": {
 				"ru": "TZID не указано.",
-				"en": "TZID not specified.",
-				"action": "fail"
+				"en": "TZID not specified."
 			},
 			"ERROR_NO_OPERATIONS": {
 				"ru": "Нет операций.",
-				"en": "No operations.",
-				"action": "fail"
+				"en": "No operations."
 			},
 			"ACCOUNT_IDENTIFICATION_REQUIRED": {
 				"ru": "Необходимо пройти идентификацию: для заказа мессенджера - любым способом, для переадресации - по паспорту.",
-				"en": "You have to go through an identification process: to order a messenger - in any way, for forward - on the passport.",
-				"action": "fail"
+				"en": "You have to go through an identification process: to order a messenger - in any way, for forward - on the passport."
 			},
 			"ERROR_WRONG_TZID": {
 				"ru": "Неверный номер операции.",
-				"en": "Wrong operation number.",
-				"action": "fail"
+				"en": "Wrong operation number."
 			},
 			"NO_COMPLETE_TZID": {
 				"ru": "Невозможно завершить операцию.",
-				"en": "Unable to complete the operation.",
-				"action": "fail"
+				"en": "Unable to complete the operation."
 			},
 			"UNDEFINED_COUNTRY": {
 				"ru": "Страна указана неверно.",
-				"en": "Country specified incorrectly.",
-				"action": "fail"
+				"en": "Country specified incorrectly."
 			},
 			"UNDEFINED_DAYS": {
 				"ru": "Количество дней указано неверно.",
-				"en": "The number of days specified incorrectly.",
-				"action": "fail"
+				"en": "The number of days specified incorrectly."
 			}
 		};
 		return errors[error];

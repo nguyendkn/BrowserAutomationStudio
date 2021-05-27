@@ -42,7 +42,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("Url of the SMS receiving service server. Use this parameter to specify the url of the server, if the required service is not in the list of available ones, but it works through an api similar to the selected service."),
+				description: tr("Optional parameter.") + " " + tr("Url of the SMS receiving service server. Use this parameter to specify the url of the server, if the required service is not in the list of available ones, but it works through an API similar to the selected service."),
 				examples: [
 					{code: "https://sms.org"},
 					{code: "http://receive-sms.com"},
@@ -74,7 +74,7 @@
 	<div class="tr tooltip-paragraph-fold">To get the id of the first site, use the JPath query <span style="color:black">$.[0].id</span> in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">To get the id of a site with a name from the [[NAME]] variable, use the JPath query <span style="color:black">$.[?(@.name=="[[NAME]]")].id</span> in the "Get value" action from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting site id can be used in the "Custom site" parameter of the "Get the count of available numbers" and "Get phone number" actions.</div>
-	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an api similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
+	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

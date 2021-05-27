@@ -173,83 +173,63 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var errors = {
 			"API KEY NOT FOUND!": {
 				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key.",
-				"action": "die",
-				"instantly": true
+				"en": "Invalid API key."
 			},
 			"API KEY не получен!": {
 				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key.",
-				"action": "die",
-				"instantly": true
+				"en": "Invalid API key."
 			},
 			"Недостаточно средств!": {
 				"ru": "Закончился баланс.",
-				"en": "Balance ended.",
-				"action": "die",
-				"instantly": false
+				"en": "Balance ended."
 			},
 			"NO_BALANCE": {
 				"ru": "Закончился баланс.",
-				"en": "Balance ended.",
-				"action": "die",
-				"instantly": false
+				"en": "Balance ended."
 			},
 			"LOW_BALANCE": {
 				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account.",
-				"action": "die",
-				"instantly": false
+				"en": "Not enough money in the account."
 			},
 			"Service NOT FOUND!": {
 				"ru": "Сервис не найден.",
-				"en": "Service not found.",
-				"action": "fail"
+				"en": "Service not found."
 			},
 			"2": {
 				"ru": "Не удалось изменить статус активации.",
-				"en": "Failed to change activation status.",
-				"action": "fail"
+				"en": "Failed to change activation status."
 			},
 			"3": {
 				"ru": "id неверный или уже истек его срок.",
-				"en": "id is invalid or has already expired.",
-				"action": "fail"
+				"en": "id is invalid or has already expired."
 			},
 			"5": {
 				"ru": "Превышено количество запросов в минуту.",
-				"en": "You have exceeded the number of requests per minute.",
-				"action": "fail"
+				"en": "You have exceeded the number of requests per minute."
 			},
 			"6": {
 				"ru": "Вы забанены на 10 минут, т.к. набрали отрицательную карму.",
-				"en": "You will be banned for 10 minutes, because scored negative karma.",
-				"action": "fail"
+				"en": "You will be banned for 10 minutes, because scored negative karma."
 			},
 			"6": {
 				"ru": "Превышено количество одновременных потоков. Дождитесь SMS от предыдущих заказов.",
-				"en": "You have exceeded the number of concurrent streams. SMS Wait from previous orders.",
-				"action": "fail"
+				"en": "You have exceeded the number of concurrent streams. SMS Wait from previous orders."
 			},
 			"Превышено количество попыток!": {
 				"ru": "Задайте больший интервал между вызовами к серверу API.",
-				"en": "Set a longer interval between calls to API server.",
-				"action": "fail"
+				"en": "Set a longer interval between calls to API server."
 			},
 			"Произошла неизвестная ошибка.": {
 				"ru": "Попробуйте повторить запрос позже.",
-				"en": "Try to repeat your request later.",
-				"action": "fail"
+				"en": "Try to repeat your request later."
 			},
 			"Неверный запрос.": {
 				"ru": "Проверьте синтаксис запроса и список используемых параметров (его можно найти на странице с описанием метода).",
-				"en": "Check the request syntax and the list of parameters used (can be found on the page with method description).",
-				"action": "fail"
+				"en": "Check the request syntax and the list of parameters used (can be found on the page with method description)."
 			},
 			"Произошла внутренняя ошибка сервера.": {
 				"ru": "Попробуйте повторить запрос позже.",
-				"en": "Try to repeat your request later.",
-				"action": "fail"
+				"en": "Try to repeat your request later."
 			}
 		};
 		return errors[error];

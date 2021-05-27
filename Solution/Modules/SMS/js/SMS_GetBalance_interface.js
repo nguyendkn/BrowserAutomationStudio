@@ -55,7 +55,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("Url of the SMS receiving service server. Use this parameter to specify the url of the server, if the required service is not in the list of available ones, but it works through an api similar to the selected service."),
+				description: tr("Optional parameter.") + " " + tr("Url of the SMS receiving service server. Use this parameter to specify the url of the server, if the required service is not in the list of available ones, but it works through an API similar to the selected service."),
 				examples: [
 					{code: "https://sms.org"},
 					{code: "http://receive-sms.com"},
@@ -83,7 +83,7 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get the balance of the SMS receiving service.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a number equal to the balance of the specified SMS receiving service. If failed to get the balance, then the action will return <code>null</code>.</div>
-	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an api similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
+	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

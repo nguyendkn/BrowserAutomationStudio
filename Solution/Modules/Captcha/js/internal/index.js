@@ -17,7 +17,6 @@
   };
 
   CaptchaSolver.prototype.solveFunCaptcha = function () {
-    _call_function(BASCaptchaSolver.ensureSelector, {})!
     _call_function(BASCaptchaSolver.findFunCaptchaContainer, {})!
     BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
     BASCaptchaSolver.path().xpath('//input[@name="fc-token"]').attr('value')!
@@ -74,6 +73,7 @@
   };
 
   CaptchaSolver.prototype.findFunCaptchaContainer = function () {
+    _call_function(BASCaptchaSolver.ensureSelector, {})!
     var target = BASCaptchaSolver.query.toString();
 
     _do(function () {

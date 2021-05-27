@@ -12,19 +12,19 @@
     this.debug = value;
   };
 
-  CaptchaSolver.prototype.path = function () {
+  CaptchaSolver.prototype.$element = function () {
     return get_element_selector(this.query, false);
   };
 
   CaptchaSolver.prototype.solveFunCaptcha = function () {
     _call_function(BASCaptchaSolver.findFunCaptchaContainer, {})!
     BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
-    BASCaptchaSolver.path().xpath('//input[@name="fc-token"]').attr('value')!
+    BASCaptchaSolver.$element().xpath('//input[@name="fc-token"]').attr('value')!
 
     const data = _result().split('|').map(function (el) { return el.split('=') });
     const surl = data.filter(function (el) { return el[0] === 'surl' })[0][1];
     const pk = data.filter(function (el) { return el[0] === 'pk' })[0][1];
-    BASCaptchaSolver.path().script('location.href')!
+    BASCaptchaSolver.$element().script('location.href')!
     _function_arguments()['pageUrl'] = _result();
 
     _call_function(BASCaptchaSolver.api.solveTask, {
@@ -44,12 +44,12 @@
 
   CaptchaSolver.prototype.ensureSelector = function () {
     wait_element(BASCaptchaSolver.query)!
-    BASCaptchaSolver.path().exist()!
+    BASCaptchaSolver.$element().exist()!
     if (_result() !== 1) _break();
   };
 
   CaptchaSolver.prototype.submitFunCaptcha = function () {
-    _VERIFICATION_TOKEN = BASCaptchaSolver.path().xpath('//input[@name="verification-token"]');
+    _VERIFICATION_TOKEN = BASCaptchaSolver.$element().xpath('//input[@name="verification-token"]');
     _VERIFICATION_TOKEN.exist()!
     _if_else(_result() === 1, function () {
       _VERIFICATION_TOKEN.script('self.value = ' + JSON.stringify(_function_argument('token')))!
@@ -59,7 +59,7 @@
       fail("Can't find FunCaptcha 'verification-token' input element");
     })!
 
-    _FC_TOKEN = BASCaptchaSolver.path().xpath('//input[@name="fc-token"]');
+    _FC_TOKEN = BASCaptchaSolver.$element().xpath('//input[@name="fc-token"]');
     _FC_TOKEN.exist()!
     _if_else(_result() === 1, function () {
       _FC_TOKEN.script('self.value = ' + JSON.stringify(_function_argument('token')))!

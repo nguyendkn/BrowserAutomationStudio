@@ -15,8 +15,12 @@
     },
 
     solveFunCaptcha: function () {
-      BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.FunCaptchaHelper());
-      _call_function(BASCaptchaSolver.helper.initialize, _function_arguments())!
+      BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.FunCaptchaHelper({
+        waiter: _function_argument('waiter'),
+        query: _function_argument('query'),
+        path: _function_argument('path')
+      }));
+      _call_function(BASCaptchaSolver.helper.initialize, {})!
       BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
       const data = _result_function(); _function_arguments()['pageUrl'] = data.pageUrl;
 

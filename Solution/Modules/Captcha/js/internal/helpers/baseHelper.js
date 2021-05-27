@@ -1,10 +1,14 @@
-(function (solver) {
-  function BaseHelper() { }
+(function (solver, _) {
+  function BaseHelper(options) {
+    this.waiter = options.waiter;
+    this.query = options.query;
+    this.path = options.path;
+  };
 
   BaseHelper.prototype.ensureSelector = function () {
-    wait_element(BASCaptchaSolver.helper.query)!
-    BASCaptchaSolver.helper.$element().exist()!
-    if (_result() !== 1) _break();
+    _call_function(BASCaptchaSolver.helper.waiter, {})!
+    BASCaptchaSolver.helper.path().exist()!
+    _function_return(_result() === 1);
   };
 
   BaseHelper.prototype.submitCaptcha = function () {
@@ -20,4 +24,4 @@
   };
 
   solver.helpers.BaseHelper = BaseHelper;
-})(BASCaptchaSolver);
+})(BASCaptchaSolver, BASCaptchaSolver.utils);

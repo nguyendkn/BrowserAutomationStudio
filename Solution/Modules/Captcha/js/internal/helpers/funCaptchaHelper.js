@@ -1,5 +1,6 @@
-(function (helpers, _) {
-  const FunCaptchaHelper = _.inherit(helpers.BaseHelper, function () {
+(function (solver, _) {
+  const FunCaptchaHelper = _.inherit(solver.helpers.BaseHelper, function (options) {
+    solver.helpers.BaseHelper.call(this, options, {});
     this.submitCaptcha = _.bind(submitCaptcha, this);
     this.extractData = _.bind(extractData, this);
     this.initialize = _.bind(initialize, this);
@@ -40,34 +41,36 @@
   };
 
   function initialize() {
-    const self = this; self.query = _function_argument('query');
-    _call_function(self.ensureSelector, {})!
-    var target = self.query.toString();
+    const self = this; _call_function(self.ensureSelector, {})!
 
-    _do(function () {
-      const index = target.lastIndexOf('>FRAME>');
-      target = index < 0 ? target : target.slice(0, index);
+    _if_else(_result_function(), function (params) {
+      var target = self.query.toString();
 
-      const $element = get_element_selector(target, false);
-      $element.css('#fc-iframe-wrap').exist()!
-      if (_iterator() === 2) _break();
-      if (_result() === 1) _break();
-    })!
+      _do(function () {
+        const index = target.lastIndexOf('>FRAME>');
+        target = index < 0 ? target : target.slice(0, index);
 
-    self.query = target;
+        const $element = get_element_selector(target, false);
+        $element.css('#fc-iframe-wrap').exist()!
+        if (_iterator() === 2) _break();
+        if (_result() === 1) _break();
+      })!
 
-    _call_function(_.exist, { element: self.verificationToken() })!
-    if (_result_function() !== 1) {
-      fail("Can't find FunCaptcha 'verification-token' input element");
-    }
+      self.query = target;
 
-    _call_function(_.exist, { element: self.fcToken() })!
-    if (_result_function() !== 1) {
-      fail("Can't find FunCaptcha 'fc-token' input element");
-    }
+      _call_function(_.exist, { element: self.verificationToken() })!
+      if (_result_function() !== 1) {
+        fail("Can't find FunCaptcha 'verification-token' input element");
+      }
 
-    _call_function(self.extractData, {})!
+      _call_function(_.exist, { element: self.fcToken() })!
+      if (_result_function() !== 1) {
+        fail("Can't find FunCaptcha 'fc-token' input element");
+      }
+
+      _call_function(self.extractData, {})!
+    }, function () { fail("Failed to find an element with the specified selector") })!
   };
 
-  helpers.FunCaptchaHelper = FunCaptchaHelper;
-})(BASCaptchaSolver.helpers, BASCaptchaSolver.utils);
+  solver.helpers.FunCaptchaHelper = FunCaptchaHelper;
+})(BASCaptchaSolver, BASCaptchaSolver.utils);

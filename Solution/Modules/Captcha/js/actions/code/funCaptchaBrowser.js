@@ -8,4 +8,10 @@ _call_function(BASCaptchaSolver.solveFunCaptcha, {
   apiUrl: <%= apiUrl %>,
   apiKey: <%= apiKey %>,
   query: <%= query %>,
+  waiter: function () {
+    <%= waiter %>
+  },
+  path: function () {
+    return (<%= path %>);
+  },
 })!

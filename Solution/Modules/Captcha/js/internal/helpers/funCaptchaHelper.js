@@ -44,19 +44,14 @@
     const self = this; _call_function(self.ensureSelector, {})!
 
     _if_else(_result_function(), function (params) {
-      var target = self.query.toString();
-
       _do(function () {
-        const index = target.lastIndexOf('>FRAME>');
-        target = index < 0 ? target : target.slice(0, index);
-        const $element = get_element_selector(target, false);
+        const index = self.query.lastIndexOf('>FRAME>');
+        if (index >= 0) self.query = self.query.slice(0, index);
 
-        $element.script('((self.children.length && self.children[0].id === "fc-iframe-wrap") || self.id === "fc-iframe-wrap") ? 1 : 0')!
+        self.$element().script('((self.children.length && self.children[0].id === "fc-iframe-wrap") || self.id === "fc-iframe-wrap") ? 1 : 0')!
         if (_iterator() == 2) _break();
         if (_result() == 1) _break();
       })!
-
-      self.query = target;
 
       _call_function(_.exist, { element: self.verificationToken() })!
       if (_result_function() !== 1) {

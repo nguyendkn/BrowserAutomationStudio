@@ -44,13 +44,12 @@
     const self = this; _call_function(self.ensureSelector, {})!
 
     _if_else(_result_function(), function (params) {
-      _do(function () {
-        const index = self.query.lastIndexOf('>FRAME>');
-        if (index >= 0) self.query = self.query.slice(0, index);
-
+      _do_with_params({ self: self }, function () {
         self.$element().script('((self.children.length && self.children[0].id === "fc-iframe-wrap") || self.id === "fc-iframe-wrap") ? 1 : 0')!
-        if (_iterator() == 2) _break();
+        const self = _cycle_param('self');
+        if (_iterator() == 3) _break();
         if (_result() == 1) _break();
+        self.removeFramePrefix();
       })!
 
       _call_function(_.exist, { element: self.verificationToken() })!

@@ -1,33 +1,15 @@
 <%= variable %> = _csv_generate(<%
-	var u1 = item1!=='""'
-	var u2 = item2!=='""'
-	var u3 = item3!=='""'
-	var u4 = items_list!=='""'
-	if(u1 || u2 || u3){
-		%>[<%
-			if(u1){
-				%>_avoid_nil(<%= item1 %>)<%
-			}
-			if(u1 && u2){
-				%>, <%
-			}
-			if(u2){
-				%>_avoid_nil(<%= item2 %>)<%
-			}
-			if(u3 && (u1 || u2)){
-				%>, <%
-			}
-			if(u3){
-				%>_avoid_nil(<%= item3 %>)<% 
-			}
-		%>]<%
-		if(u4){
+	var u1 = item1!=='""' || item2!=='""' || item2!=='""'
+	var u2 = items_list!=='""'
+	if(u1){
+		%>[<%= [item1, item2, item3].filter(function(el){return el !== '""'}).map(function(el){return '_avoid_nil(' + el + ')'}).join(', ') %>]<%
+		if(u2){
 			%>.concat(<%
 		}
 	}
-	if(u4){
+	if(u2){
 		%>_to_arr(_avoid_nilb(<%= items_list %>, []))<%
-		if(u1 || u2 || u3){
+		if(u1){
 			%>)<%
 		}
 	}

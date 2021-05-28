@@ -49,11 +49,11 @@
       _do(function () {
         const index = target.lastIndexOf('>FRAME>');
         target = index < 0 ? target : target.slice(0, index);
-
         const $element = get_element_selector(target, false);
-        $element.css('#fc-iframe-wrap').exist()!
-        if (_iterator() === 2) _break();
-        if (_result() === 1) _break();
+
+        $element.script('((self.children.length && self.children[0].id === "fc-iframe-wrap") || self.id === "fc-iframe-wrap") ? 1 : 0')!
+        if (_iterator() == 2) _break();
+        if (_result() == 1) _break();
       })!
 
       self.query = target;

@@ -5,12 +5,12 @@
     this.path = options.path;
   };
 
-  BaseHelper.prototype.removeFramePrefix = function () {
+  BaseHelper.prototype.removeFrameFromQuery = function () {
     const index = this.query.lastIndexOf('>FRAME>');
     if (index >= 0) this.query = this.query.slice(0, index);
   };
 
-  BaseHelper.prototype.removeXpathPrefix = function () {
+  BaseHelper.prototype.removeXpathFromQuery = function () {
     const index = this.query.lastIndexOf('>XPATH>');
     if (index >= 0) this.query = this.query.slice(0, index);
   };

@@ -172,8 +172,10 @@ _path = {
 		return resolvedAbsolute ? resolvedDevice + this.sep + resolvedTail : (resolvedDevice + resolvedTail) || '.';
 	},
 	
-	normalize: function(path){
+	normalize: function(path, removeTrailingSlash){
 		_validate_argument_type(path, 'string', 'Path', '_path.normalize');
+		removeTrailingSlash = _avoid_nilb(removeTrailingSlash, true);
+		_validate_argument_type(removeTrailingSlash, ['boolean', 'number'], 'Remove trailing slashes', '_path.normalize');
 		
 		const len = path.length;
 		if(len===0){
@@ -186,7 +188,7 @@ _path = {
 		const code = path.charCodeAt(0);
 		
 		if(len===1){
-			return this.isPathSeparator(code) ? this.sep : path;
+			return this.isPathSeparator(code) ? (removeTrailingSlash ? '' : this.sep) : path;
 		};
 		if(this.isPathSeparator(code)){
 			isAbsolute = true;
@@ -209,7 +211,7 @@ _path = {
 							j++;
 						};
 						if(j===len){
-							return (this.sep + this.sep + firstPart + this.sep + path.slice(last) + this.sep);
+							return (this.sep + this.sep + firstPart + this.sep + path.slice(last) + (removeTrailingSlash ? '' : this.sep));
 						};
 						if(!(j===last)){
 							device = this.sep + this.sep + firstPart + this.sep + path.slice(last, j);
@@ -234,13 +236,16 @@ _path = {
 		if(tail.length===0 && !isAbsolute){
 			tail = '.';
 		};
-		if(tail.length > 0 && this.isPathSeparator(path.charCodeAt(len - 1))){
+		if(tail.length > 0 && this.isPathSeparator(path.charCodeAt(len - 1)) && !removeTrailingSlash){
 			tail += this.sep;
 		};
 		if(device===undefined){
 			return isAbsolute ? (this.sep + tail) : tail;
 		};
-		return isAbsolute ? device + this.sep + tail : device + tail;
+		if(device==='' && tail===''){
+			return (removeTrailingSlash ? '' : this.sep);
+		};
+		return isAbsolute ? (device + this.sep + tail) : (device + tail);
 	},
 	
 	isAbsolute: function(path){

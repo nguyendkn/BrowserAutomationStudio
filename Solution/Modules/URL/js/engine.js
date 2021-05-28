@@ -571,7 +571,7 @@ function _change_url(url, params, options){
 	
     var url_obj = new _url(url, options);
     for(key in params){
-		url_obj.set(key, params[key] === "*" ? "" : params[key]);
+		url_obj.set(key, params[key] === "-BAS-CLEAR-" ? "" : params[key]);
     };
 	
     return url_obj.toString();

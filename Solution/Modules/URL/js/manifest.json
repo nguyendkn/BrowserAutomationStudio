@@ -248,7 +248,7 @@
 		"Do not change this item in the specified URL": {"ru":"Не изменять этот элемент в указанном URL"},
 		"String containing the URL with want to change.": {"ru":"Строка, содержащая URL, который нужно изменить."},
 		"This action will return a string containing the changed URL.": {"ru":"Это действие вернет строку, содержащую изменный URL."},
-		"Specify new values for the items to be changed in the URL, specify <code>\"*\"</code> if the item needs to be removed, leave the field blank if the item does not need to be changed.": {"ru":"Укажите новые значения для элементов, которые нужно изменить в URL, укажите <code>\"*\"</code> если элемент нужно удалить, оставьте поле пустым если элемент не нужно менять."},
+		"Specify new values for the items to be changed in the URL, specify <code>\"-BAS-CLEAR-\"</code> if the item needs to be removed, leave the field blank if the item does not need to be changed.": {"ru":"Укажите новые значения для элементов, которые нужно изменить в URL, укажите <code>\"-BAS-CLEAR-\"</code> если элемент нужно удалить, оставьте поле пустым если элемент не нужно менять."},
 		"Before changing, you can normalize the URL by activating the corresponding parameter in the additional settings, or use the \"Normalize URL\" action for flexible normalization.": {"ru":"Перед изменением URL можно нормализовать, активировав соответствующий параметр в дополнительных настройках, или использовать действие \"Нормализовать URL\" для гибкой нормализации."},
 		
 		"OS name": {"ru":"Название ОС"},

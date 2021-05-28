@@ -2,19 +2,22 @@ ProfilePath = (<%= profile %>);
 if(ProfilePath == "")
 	ProfilePath = _get_profile()
 
-if(ProfilePath.length == 0)
-	fail(tr("Profile is empty"))
-
-if(ProfilePath.indexOf("mla_id:") == 0)
-	fail(tr("This action removes only local profiles, you are using online profile, please use \"Remove online profile\" action instead"))
-
-_remove_local_profile(ProfilePath)!
-
 _if(ProfilePath == _get_profile(), function(){
-	_disable_browser()!
 	var Params = {};
 	Params["ProfilePath"] = "<Incognito>"
 	_settings(Params)!
+})!
+
+_do(function(){
+	if(_iterator() > 30)
+		fail(tr("Timeout during deleting profile ") + ProfilePath);
+	
+	native("filesystem", "removefile", ProfilePath + "/lockfile");
+
+	if(!JSON.parse(native("filesystem", "fileinfo", ProfilePath + "/lockfile"))["exists"])
+		_break();
+
+	sleep(1000)!
 })!
 
 native("filesystem", "removefile", ProfilePath)	

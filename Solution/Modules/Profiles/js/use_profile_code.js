@@ -1,5 +1,18 @@
+ProfilePath = (<%= profile %>);
+
+_do(function(){
+	if(_iterator() > 30)
+		fail(tr("Timeout during switching to profile ") + ProfilePath);
+	
+	native("filesystem", "removefile", ProfilePath + "/lockfile");
+
+	if(!JSON.parse(native("filesystem", "fileinfo", ProfilePath + "/lockfile"))["exists"])
+		_break();
+
+	sleep(1000)!
+})!
+
 var Params = {};
-var ProfilePath = (<%= profile %>);
 Params["ProfilePath"] = ProfilePath
 Params["LoadFingerprintFromProfileFolder"] = (<%= load_fp %>)
 _settings(Params)!

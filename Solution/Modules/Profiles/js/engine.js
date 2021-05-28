@@ -1,6 +1,2 @@
-_L["This action can be used only with Multilogin browser"] = {"ru": "Это действие может быть использовано только с браузером Multilogin."}
-_L["Profile is empty, create it with \"Create or switch to local profile\" action."] = {"ru": "Профиль не создан, вы можете создать его действием \"Создать или переключиться на локальный профиль\""}
-_L["You are using online profile, in current version it is impossible to make it local."] = {"ru": "Вы используете онлайн профиль, в текущей версии онлайн профиль невозможно превратить в локальный."}
-_L["This action removes only local profiles, you are using online profile, please use \"Remove online profile\" action instead"] = {"ru": "Это действие удаляет только локальные профили, используйте действие \"Удалить онлайн профиль\""}
-_L["This action removes only online profiles, you are using local profile, please use \"Remove local profile\" action instead"] = {"ru": "Это действие удаляет только онлайн профили, используйте действие \"Удалить локальный профиль\""}
-_L["Profile is empty"] = {"ru": "Профиль пустой"}
+_L["Timeout during deleting profile "] = {"ru": "Не удалось удалить профиль "}
+_L["Timeout during switching to profile "] = {"ru": "Не удалось переключиться на профиль "}

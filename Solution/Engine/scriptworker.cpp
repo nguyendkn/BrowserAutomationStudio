@@ -7,6 +7,8 @@
 #define NOMINMAX
 #include <windows.h>
 #include "every_cpp.h"
+#include <QClipboard>
+#include <QApplication>
 
 namespace BrowserAutomationStudioFramework
 {
@@ -3657,6 +3659,37 @@ namespace BrowserAutomationStudioFramework
         SetGeneralWaitTimeoutNext(Timeout);
 
         Waiter->WaitForSignal(this,SIGNAL(EmbeddedCallFinished()),this,SLOT(EmbeddedCallFinal()),this, SLOT(EmbeddedCallTimeout()));
+    }
+
+
+    void ScriptWorker::SetClipboard(bool IsBase64, const QString& Mime, const QString& DataStr)
+    {
+        QClipboard *clipboard = QApplication::clipboard();
+        QMimeData *mimeData = new QMimeData();
+
+        QByteArray Data;
+        if(IsBase64)
+        {
+            Data = QByteArray::fromBase64(DataStr.toUtf8());
+        }else
+        {
+            Data = DataStr.toUtf8();
+        }
+
+        mimeData->setData(Mime,Data);
+        clipboard->setMimeData(mimeData);
+    }
+
+    QString ScriptWorker::GetClipboard(bool IsBase64, const QString& Mime)
+    {
+        QClipboard *clipboard = QApplication::clipboard();
+        const QMimeData *mimeData = clipboard->mimeData();
+
+        QByteArray ResArray = mimeData->data(Mime);
+        if(IsBase64)
+            ResArray = ResArray.toBase64();
+        
+        return QString::fromUtf8(ResArray);
     }
 
 }

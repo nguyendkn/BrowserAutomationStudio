@@ -337,8 +337,8 @@ _L =
    "Control browser directly.":{
       "ru":"Управление браузером напрямую."
    },
-   "Create or switch to local profile":{
-      "ru":"Создать или переключиться на локальный профиль"
+   "Create or switch to regular profile":{
+      "ru":"Создать или переключиться на постоянный профиль"
    },
    "Set folder, which will contain browser cookie, localStorage and other objects. Can be used to autologin.":{
       "ru":"Установить папку, в которой будут храниться cookie браузера, localStorage и другие объекты. Может быть использовано для автоматического входа на сайт."

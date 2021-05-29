@@ -542,6 +542,10 @@ _url.prototype.toString = function(stringify){
 	
 	result += url.host + url.pathname;
 	
+	if(url.pathname==='' && ((url.query && !(JSON.stringify(url.query)==="{\"\":\"\"}")) || url.hash)){
+		result += '/';
+	};
+	
 	if(url.query && !(JSON.stringify(url.query)==="{\"\":\"\"}")){
 		query = ('object' === typeof url.query) ? stringify(url.query) : url.query;
 		if(query){result += _starts_with(query, '?') ? query : ('?' + query)};
@@ -568,10 +572,26 @@ function _generate_url(url_obj){
 function _change_url(url, params, options){
 	_validate_argument_type(url, 'string', 'URL', '_change_url');
 	_validate_argument_type(params, 'object', 'New URL items', '_change_url');
+	options = _avoid_nilb(options, {});
 	
     var url_obj = new _url(url, options);
     for(key in params){
-		url_obj.set(key, params[key] === "-BAS-CLEAR-" ? "" : params[key]);
+		var value = params[key]==='-BAS-CLEAR-' ? '' : params[key];
+		if(key==='query' && value !== ''){
+			var query = 'string'===typeof value ? _query_string.decode(value) : value;
+			value = options.clear_query ? {} : url_obj.query;
+			for(query_key in query){
+				var query_value = query[query_key];
+				if(query_value==='-BAS-CLEAR-'){
+					if(value[query_key]){
+						delete value[query_key];
+					};
+				}else{
+					value[query_key] = query_value;
+				};
+			};
+		};
+		url_obj.set(key, value);
     };
 	
     return url_obj.toString();

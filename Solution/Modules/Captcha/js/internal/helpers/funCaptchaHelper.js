@@ -49,7 +49,7 @@
         const self = _cycle_param('self');
         if (_iterator() == 3) _break();
         if (_result() == 1) _break();
-        self.removeFrameFromQuery();
+        self.removeFrameFromRight();
       })!
 
       _call_function(_.exist, { element: self.verificationToken() })!

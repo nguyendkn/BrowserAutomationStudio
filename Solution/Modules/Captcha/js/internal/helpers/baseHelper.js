@@ -5,14 +5,12 @@
     this.path = options.path;
   };
 
-  BaseHelper.prototype.removeFrameFromQuery = function () {
-    const index = this.query.lastIndexOf('>FRAME>');
-    if (index >= 0) this.query = this.query.slice(0, index);
+  BaseHelper.prototype.removeFrameFromRight = function () {
+    this.query = removePart(this.query, '>FRAME>', false);
   };
 
-  BaseHelper.prototype.removeXpathFromQuery = function () {
-    const index = this.query.lastIndexOf('>XPATH>');
-    if (index >= 0) this.query = this.query.slice(0, index);
+  BaseHelper.prototype.removeFrameFromLeft = function () {
+    this.query = removePart(this.query, '>FRAME>', true);
   };
 
   BaseHelper.prototype.ensureSelector = function () {
@@ -31,6 +29,11 @@
 
   BaseHelper.prototype.$element = function () {
     return get_element_selector(BASCaptchaSolver.helper.query, false);
+  };
+
+  function removePart(target, match, left) {
+    const index = target[left ? 'indexOf' : 'lastIndexOf'](match);
+    return target.slice(0, index >= 0 ? index : target.length);
   };
 
   solver.helpers.BaseHelper = BaseHelper;

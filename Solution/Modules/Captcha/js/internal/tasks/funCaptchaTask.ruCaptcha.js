@@ -12,5 +12,4 @@
     });
   });
   api.prototype.FunCaptchaTask = FunCaptchaTask;
-
 })(BASCaptchaSolver.tasks, BASCaptchaSolver.RuCaptchaApi, BASCaptchaSolver.utils);

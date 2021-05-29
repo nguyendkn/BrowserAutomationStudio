@@ -3,10 +3,10 @@ _call_function(BASCaptchaSolver.solveFunCaptcha, {
   proxy: String(<%= sendProxy %>).toLowerCase() == 'true' ? _PROXY : {},
   taskWaitInterval: <%= taskWaitInterval %>,
   taskWaitDelay: <%= taskWaitDelay %>,
+  serviceName: <%= serviceName %>,
+  serviceUrl: <%= serviceUrl %>,
+  serviceKey: <%= serviceKey %>,
   userAgent: <%= userAgent %>,
-  service: <%= service %>,
-  apiUrl: <%= apiUrl %>,
-  apiKey: <%= apiKey %>,
   query: <%= query %>,
   waiter: function () {
     <%= waiter %>

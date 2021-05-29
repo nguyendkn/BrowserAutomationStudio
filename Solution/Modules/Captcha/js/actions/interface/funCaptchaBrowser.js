@@ -6,7 +6,7 @@
     value_string: 'AntiCaptcha',
     default_selector: 'string',
     disable_int: true,
-    id: 'service',
+    id: 'serviceName',
     help: {
       description: tr('Captcha solving service name'),
       examples: [
@@ -21,7 +21,7 @@
     description: tr('Service key'),
     default_selector: 'string',
     disable_int: true,
-    id: 'apiKey'
+    id: 'serviceKey'
   }) %>
   <div style="margin-left: 20px;">
     <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
@@ -78,7 +78,7 @@
       default_selector: 'string',
       disable_int: true,
       value_string: '',
-      id: 'apiUrl',
+      id: 'serviceUrl',
       help: {
         description: tr('Custom service URL. Can be blank'),
         examples: [

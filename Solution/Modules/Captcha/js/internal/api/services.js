@@ -18,16 +18,16 @@
   };
 
   solver.getServiceApi = function (options) {
-    const service = services[options.service];
+    const service = services[options.serviceName];
 
     if (!service) {
       if (_K === 'en') {
-        fail('Service "' + options.service + '" is unavailable');
+        fail('Service "' + options.serviceName + '" is unavailable');
       } else {
-        fail('Сервис "' + options.service + '" недоступен');
+        fail('Сервис "' + options.serviceName + '" недоступен');
       }
     }
 
-    return service.setApiKey(options.apiKey).setApiUrl(options.apiUrl);
+    return service.setApiKey(options.serviceKey).setApiUrl(options.serviceUrl);
   };
 })(BASCaptchaSolver);

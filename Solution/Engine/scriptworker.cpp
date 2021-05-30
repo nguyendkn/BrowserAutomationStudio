@@ -1482,6 +1482,20 @@ namespace BrowserAutomationStudioFramework
         return prepare(engine,web->match_all(ctx->argument(0).toString()));
     }
 
+    static QScriptValue prototype_shadow(QScriptContext *ctx, QScriptEngine *engine)
+    {
+        IWebElement *web = qobject_cast<IWebElement*>(ctx->thisObject().toQObject());
+        if(!web)
+        {
+            return engine->undefinedValue();
+        }
+        if(ctx->argumentCount()!=0)
+        {
+            return engine->undefinedValue();
+        }
+        return prepare(engine,web->shadow());
+    }
+
 
     static QScriptValue prepare(QScriptEngine *engine, IWebElement* web)
     {
@@ -1508,6 +1522,7 @@ namespace BrowserAutomationStudioFramework
         res.setProperty("xpath_all", engine->newFunction(prototype_xpath_all));
         res.setProperty("match", engine->newFunction(prototype_match));
         res.setProperty("match_all", engine->newFunction(prototype_match_all));
+        res.setProperty("shadow", engine->newFunction(prototype_shadow));
         res.setProperty("at", engine->newFunction(prototype_at));
 
         return res;

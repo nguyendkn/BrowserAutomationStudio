@@ -569,8 +569,9 @@ function get_element_selector(selector, need_all)
       var indexxpath = selector.indexOf(">XPATH>")
       var indexat = selector.indexOf(">AT>")
       var indexframe = selector.indexOf(">FRAME>")
+      var indexshadow = selector.indexOf(">SHADOW>")
 
-      if(indexcss < 0 && indexmatch < 0 && indexxpath < 0 && indexat < 0 && indexframe < 0)
+      if(indexcss < 0 && indexmatch < 0 && indexxpath < 0 && indexat < 0 && indexframe < 0 && indexshadow < 0)
         break;
 
       var allmatch = []
@@ -584,6 +585,8 @@ function get_element_selector(selector, need_all)
           allmatch.push(indexat)
       if(indexframe>=0)
           allmatch.push(indexframe)
+      if(indexshadow>=0)
+          allmatch.push(indexshadow)
       var minindex = Math.min.apply(null,allmatch)
 
       if(indexcss >= 0 && minindex === indexcss)
@@ -635,6 +638,16 @@ function get_element_selector(selector, need_all)
         selector = selector.substring(indexframe,selector.length)
         continue;
       }
+
+      if(indexshadow >= 0 && minindex === indexshadow)
+      {
+        var item = selector.substring(0,indexshadow)
+        res.push(item)
+        res.push("shadow")
+        indexshadow += ">SHADOW>".length
+        selector = selector.substring(indexshadow,selector.length)
+        continue;
+      }
     }
     res.shift()
     res.push(selector)
@@ -660,6 +673,9 @@ function get_element_selector(selector, need_all)
         }else if(el["s"] === "match" && next_at)
         {
             r = r.match_all(el["i"])
+        }else if(el["s"] === "shadow")
+        {
+            r = r.shadow()
         }else if(el["s"] === "match" && !next_at)
         {
             r = r.match(el["i"])

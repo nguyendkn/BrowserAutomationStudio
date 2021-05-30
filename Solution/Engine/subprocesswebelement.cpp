@@ -520,6 +520,16 @@ namespace BrowserAutomationStudioFramework
         return element;
     }
 
+    IWebElement* SubprocessWebElement::shadow()
+    {
+        SubprocessWebElement *element = new SubprocessWebElement();
+        element->Selector = this->Selector;
+        element->AddSelector("shadow","");
+        element->Worker = Worker;
+        ConnectElement(Worker, element);
+        return element;
+    }
+
     IWebElement* SubprocessWebElement::xpath_all(const QString& name)
     {
         SubprocessWebElement *element = new SubprocessWebElement();

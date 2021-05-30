@@ -888,7 +888,7 @@ function _random_point()
         }else
         {
             Selector = "";
-            Code = "(function(){var height = window.innerHeight;var current_position = document.documentElement.scrollTop;var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return Math.floor(target_position - (current_position + height * 0.5)).toString();})()";
+            Code = "(function(){var height = window.innerHeight;var current_position = document.scrollingElement.scrollTop;var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return Math.floor(target_position - (current_position + height * 0.5)).toString();})()";
         }
         get_element_selector(Selector, false).script(Code,function(){
             if(_result() == "")

@@ -12,7 +12,7 @@
     });
   });
   FunCaptchaTask.prototype.getSolution = function (response) {
-    return response.solution['token']
+    return response.solution['token'];
   };
   api.prototype.FunCaptchaTask = FunCaptchaTask;
 })(BASCaptchaSolver.tasks, BASCaptchaSolver.AntiCaptchaApi, BASCaptchaSolver.utils);

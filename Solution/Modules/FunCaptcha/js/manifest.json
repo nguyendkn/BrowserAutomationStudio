@@ -35,7 +35,9 @@
   "embeddeddata": [],
   "languages": [],
   "modules": [],
-  "depends": [],
+  "depends": [
+    "CaptchaCommon"
+  ],
   "localize": {
     "Solve <code>FunCaptcha</code> using any available service.": {
       "ru": "Решить <code>FunCaptcha</code> используя любой доступный сервис."

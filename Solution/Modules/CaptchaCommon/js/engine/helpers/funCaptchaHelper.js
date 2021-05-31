@@ -43,7 +43,7 @@
   function initialize() {
     const self = this; _call_function(self.ensureSelector, {})!
 
-    _if_else(_result_function(), function (params) {
+    _if_else(_result_function(), function () {
       _do_with_params({ self: self }, function () {
         self.$element().script('((self.children.length && self.children[0].id === "fc-iframe-wrap") || self.id === "fc-iframe-wrap") ? 1 : 0')!
         const self = _cycle_param('self');

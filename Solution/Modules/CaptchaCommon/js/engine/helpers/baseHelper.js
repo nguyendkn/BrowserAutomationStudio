@@ -20,11 +20,11 @@
   };
 
   BaseHelper.prototype.submitCaptcha = function () {
-    fail('Method "BaseHelper#submitCaptcha" is not implemented');
+    fail(tr('Method "BaseHelper#submitCaptcha" is not implemented'));
   };
 
   BaseHelper.prototype.extractData = function () {
-    fail('Method "BaseHelper#extractData" is not implemented');
+    fail(tr('Method "BaseHelper#extractData" is not implemented'));
   };
 
   BaseHelper.prototype.$element = function () {

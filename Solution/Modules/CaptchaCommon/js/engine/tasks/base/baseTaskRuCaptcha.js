@@ -1,6 +1,6 @@
 (function (tasks, _) {
-  const RuCaptchaTask = _.inherit(tasks.BaseTask, function (type, params) {
-    tasks.BaseTask.call(this, type, params);
+  const RuCaptchaTask = _.inherit(tasks.BaseTask, function (type, options) {
+    tasks.BaseTask.call(this, type, options);
     this.data['method'] = this.name;
   });
 

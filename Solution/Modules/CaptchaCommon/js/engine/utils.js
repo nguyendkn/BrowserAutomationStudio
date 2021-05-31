@@ -32,6 +32,12 @@
       _function_return(_result());
     },
 
+    attr: function () {
+      const attr = _function_argument('attr');
+      _function_argument('element').attr(attr)!
+      _function_argument(_result());
+    },
+
     length: function () {
       _function_argument('element').length()!
       _function_return(_result());
@@ -45,5 +51,10 @@
     sleep: function () {
       sleep(_function_argument('time'))!
     },
+
+    url: function () {
+      url()!
+      _function_return(_result());
+    }
   };
 })(BASCaptchaSolver);

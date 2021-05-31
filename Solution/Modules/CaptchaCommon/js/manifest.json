@@ -112,6 +112,7 @@
     "engine/api/errors/ruCaptchaErrorHandler.js",
     "engine/api/errors/antiCaptchaErrorHandler.js",
     "engine/helpers/baseHelper.js",
+    "engine/helpers/hCaptchaHelper.js",
     "engine/helpers/funCaptchaHelper.js"
   ]
 }

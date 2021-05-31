@@ -54,16 +54,16 @@
 
       _call_function(_.exist, { element: self.verificationToken() })!
       if (_result_function() !== 1) {
-        fail("Can't find FunCaptcha 'verification-token' input element");
+        fail(tr("Can't find FunCaptcha 'verification-token' input element"));
       }
 
       _call_function(_.exist, { element: self.fcToken() })!
       if (_result_function() !== 1) {
-        fail("Can't find FunCaptcha 'fc-token' input element");
+        fail(tr("Can't find FunCaptcha 'fc-token' input element"));
       }
 
       _call_function(self.extractData, {})!
-    }, function () { fail("Failed to find an element with the specified selector") })!
+    }, function () { fail(tr("Failed to find an element with the specified selector for FunCaptcha solving")) })!
   };
 
   solver.helpers.FunCaptchaHelper = FunCaptchaHelper;

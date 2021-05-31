@@ -68,16 +68,16 @@
 
       _call_function(_.exist, { element: self.gRecaptchaResponse() })!
       if (_result_function() !== 1) {
-        fail("Can't find HCaptcha 'g-recaptcha-response' textarea element");
+        fail(tr("Can't find HCaptcha 'g-recaptcha-response' textarea element"));
       }
 
       _call_function(_.exist, { element: self.hCaptchaResponse() })!
       if (_result_function() !== 1) {
-        fail("Can't find HCaptcha 'h-captcha-response' textarea element");
+        fail(tr("Can't find HCaptcha 'h-captcha-response' textarea element"));
       }
 
       _call_function(self.extractData, {})!
-    }, function () { fail("Failed to find an element with the specified selector") })!
+    }, function () { fail(tr("Failed to find an element with the specified selector for HCaptcha solving")) })!
   };
 
   solver.helpers.HCaptchaHelper = HCaptchaHelper;

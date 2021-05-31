@@ -21,7 +21,7 @@
         path: _function_argument('path')
       }));
       _call_function(BASCaptchaSolver.helper.initialize, {})!
-      BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
+      BASCaptchaSolver.api = BASCaptchaSolver.getService(_function_arguments());
       const data = _result_function(); _function_arguments()['pageUrl'] = data.pageUrl;
 
       _call_function(BASCaptchaSolver.api.solveTask, {
@@ -46,7 +46,7 @@
         path: _function_argument('path')
       }));
       _call_function(BASCaptchaSolver.helper.initialize, {})!
-      BASCaptchaSolver.api = BASCaptchaSolver.getServiceApi(_function_arguments());
+      BASCaptchaSolver.api = BASCaptchaSolver.getService(_function_arguments());
       const data = _result_function(); _function_arguments()['pageUrl'] = data.pageUrl;
 
       _call_function(BASCaptchaSolver.api.solveTask, {

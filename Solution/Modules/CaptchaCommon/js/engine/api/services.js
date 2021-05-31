@@ -1,23 +1,23 @@
 (function (solver) {
   const services = {
     'AntiCaptcha': new solver.AntiCaptchaApi({
-      supportedTasks: ['FunCaptcha'],
+      supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://api.anti-captcha.com',
       name: 'AntiCaptcha',
     }),
     'RuCaptcha': new solver.RuCaptchaApi({
-      supportedTasks: ['FunCaptcha'],
+      supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://rucaptcha.com',
       name: 'RuCaptcha',
     }),
     '2Captcha': new solver.RuCaptchaApi({
-      supportedTasks: ['FunCaptcha'],
+      supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://2captcha.com',
       name: '2Captcha',
     }),
   };
 
-  solver.getServiceApi = function (options) {
+  solver.getService = function (options) {
     const service = services[options.serviceName];
 
     if (!service) {

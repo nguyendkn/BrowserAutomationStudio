@@ -35,9 +35,7 @@
   "embeddeddata": [],
   "languages": [],
   "modules": [],
-  "depends": [
-    "CaptchaCommon"
-  ],
+  "depends": ["CaptchaCommon"],
   "localize": {
     "Solve <code>FunCaptcha</code> using any available service.": {
       "ru": "Решить <code>FunCaptcha</code> используя любой доступный сервис."
@@ -46,8 +44,6 @@
       "ru": "Все необходимые данные для решения <code>FunCaptcha</code> получаются автоматически из кода страницы."
     }
   },
-  "browser": [
-    "browser/funCaptcha.js"
-  ],
+  "browser": ["browser/browser.js"],
   "engine": []
 }

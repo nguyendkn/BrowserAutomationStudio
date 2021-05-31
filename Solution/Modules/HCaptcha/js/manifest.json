@@ -35,9 +35,7 @@
   "embeddeddata": [],
   "languages": [],
   "modules": [],
-  "depends": [
-    "CaptchaCommon"
-  ],
+  "depends": ["CaptchaCommon"],
   "localize": {
     "Solve <code>HCaptcha</code> using any available service.": {
       "ru": "Решить <code>HCaptcha</code> используя любой доступный сервис."
@@ -46,8 +44,6 @@
       "ru": "Все необходимые данные для решения <code>HCaptcha</code> получаются автоматически из кода страницы."
     }
   },
-  "browser": [
-    "browser/hCaptcha.js"
-  ],
+  "browser": ["browser/browser.js"],
   "engine": []
 }

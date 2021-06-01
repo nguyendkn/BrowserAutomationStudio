@@ -446,47 +446,50 @@ function _unescape_html(str){
 	};
 	return str.replace(/\&([^;]{1,10});/g, unescape_char);
 };
-_regexp_extract_string = (function(){
-	var tlds = "COM|RU|ORG|NET|IR|IN|UK|CN|AU|UA|DE|BY|IO|ICU|INFO|SITE|ONLINE|TOP|XYZ|TK|NL|LY|YT";
-	var non_latin_alphabet_ranges = _non_latin_chars.letters.upper + _non_latin_chars.letters.lower + _non_latin_chars.numbers;
-	var email_address = "([a-z0-9!#$%&'*+=?^_`{|}~-]+(\\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*)";
-	var domain_with_tld = "([a-z0-9]+(-+[a-z0-9]+)*\\.)+(" + tlds + ")";
-	var domain_with_any_tld = "([a-z0-9]+(-+[a-z0-9]+)*\\.)+([a-z0-9][a-z0-9-]{0,22}[a-z0-9])";
-	var allowed_in_path = "a-zA-Zа-яёА-ЯЁ\\d\\-._~\\!$&*+,;=:@%\\[\\]()";
-	var path = "(((\\/(([" + allowed_in_path + "]+(\\/[" + allowed_in_path + "]*)*))?)?)((\\?([" + allowed_in_path + "\\/?]*))?)((\\#([" + allowed_in_path + "\\/?]*))?))?";
-	var ipv4 = "((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
-	var ipv6 = "\\[(([a-f0-9:]+:+)+[a-f0-9]+)\\]";
-	var port = "(:(\\d{1,5}))?";
-	var protocol = "((?:ftp|http|ws)s?:)\\/\\/";
-	var username = "[a-zA-Z\\d\\-._~\\!$&*+,;=:%\\[\\]()]+";
-	var password = ":[a-zA-Z\\d\\-._~\\!$&*+,;=:%\\[\\]()]+";
-	var confirmed_by_protocol = "(" + protocol + ")\\S+";
-	var additional_slashes = "(([\\/]?))+";
-	var protocol_and_auth = protocol + "(" + username + "(" + password + ")?@)?"
-	var fqdn = "(((" + protocol_and_auth + ")?(" + domain_with_tld + "|" + ipv4 + "|(" + protocol_and_auth + ")(" + ipv6 + "|" + domain_with_any_tld + "))(?!@\\w)" + port + ")|(" + confirmed_by_protocol + "))";
-	var non_latin_matches = fqdn + "((((\\/(([" + allowed_in_path + "]+(\\/[" + allowed_in_path + non_latin_alphabet_ranges + "]*)*))?)?)((\\?([" + allowed_in_path + "\\/?]*))?)((\\#([" + allowed_in_path + "\\/?]*))?))?\\b((([" + allowed_in_path + "\\/" + non_latin_alphabet_ranges + "][a-zA-Z\\d\\-_~+=\\/" + non_latin_alphabet_ranges + "]+)?))+)";
-	var email = "\\b" + email_address + "@(" + domain_with_tld + "|" + ipv4 + ")\\b";
-	var url = "(" + non_latin_matches + ")|(\\b" + fqdn + path + "\\b" + additional_slashes + ")";
-	
-	return {
-		url: new RegExp("(" + url + ")", "gi"),
-		email: new RegExp("(" + email + ")", "gi"),
-		phone: /(?:(?:(?:(\+)?\d{1,3}[-\040.]?)?\s?\(?\d{3}\)?\s?[-\040.]?\d{3}[-\040.]?(\d{4}|\d{2}[-\040.]?\d{2}))|(?:(\+)(?:9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)[-\040.]?(?:\d[-\040.]?){6,12}\d+))([,;]+[0-9]+#?)*/g
+function _regexp_extract_string(){
+	if(typeof _regexp_extract_string_temp=="undefined" || _is_nilb(_regexp_extract_string_temp)){
+		var tlds = "COM|RU|ORG|NET|IR|IN|UK|CN|AU|UA|DE|BY|IO|ICU|INFO|SITE|ONLINE|TOP|XYZ|TK|NL|LY|YT";
+		var non_latin_alphabet_ranges = _non_latin_chars.letters.upper + _non_latin_chars.letters.lower + _non_latin_chars.numbers;
+		var email_address = "([a-z0-9!#$%&'*+=?^_`{|}~-]+(\\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*)";
+		var domain_with_tld = "([a-z0-9]+(-+[a-z0-9]+)*\\.)+(" + tlds + ")";
+		var domain_with_any_tld = "([a-z0-9]+(-+[a-z0-9]+)*\\.)+([a-z0-9][a-z0-9-]{0,22}[a-z0-9])";
+		var allowed_in_path = "a-zA-Zа-яёА-ЯЁ\\d\\-._~\\!$&*+,;=:@%\\[\\]()";
+		var path = "(((\\/(([" + allowed_in_path + "]+(\\/[" + allowed_in_path + "]*)*))?)?)((\\?([" + allowed_in_path + "\\/?]*))?)((\\#([" + allowed_in_path + "\\/?]*))?))?";
+		var ipv4 = "((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)";
+		var ipv6 = "\\[(([a-f0-9:]+:+)+[a-f0-9]+)\\]";
+		var port = "(:(\\d{1,5}))?";
+		var protocol = "((?:ftp|http|ws)s?:)\\/\\/";
+		var username = "[a-zA-Z\\d\\-._~\\!$&*+,;=:%\\[\\]()]+";
+		var password = ":[a-zA-Z\\d\\-._~\\!$&*+,;=:%\\[\\]()]+";
+		var confirmed_by_protocol = "(" + protocol + ")\\S+";
+		var additional_slashes = "(([\\/]?))+";
+		var protocol_and_auth = protocol + "(" + username + "(" + password + ")?@)?"
+		var fqdn = "(((" + protocol_and_auth + ")?(" + domain_with_tld + "|" + ipv4 + "|(" + protocol_and_auth + ")(" + ipv6 + "|" + domain_with_any_tld + "))(?!@\\w)" + port + ")|(" + confirmed_by_protocol + "))";
+		var non_latin_matches = fqdn + "((((\\/(([" + allowed_in_path + "]+(\\/[" + allowed_in_path + non_latin_alphabet_ranges + "]*)*))?)?)((\\?([" + allowed_in_path + "\\/?]*))?)((\\#([" + allowed_in_path + "\\/?]*))?))?\\b((([" + allowed_in_path + "\\/" + non_latin_alphabet_ranges + "][a-zA-Z\\d\\-_~+=\\/" + non_latin_alphabet_ranges + "]+)?))+)";
+		var email = "\\b" + email_address + "@(" + domain_with_tld + "|" + ipv4 + ")\\b";
+		var url = "(" + non_latin_matches + ")|(\\b" + fqdn + path + "\\b" + additional_slashes + ")";
+		
+		_regexp_extract_string_temp = {
+			url: new RegExp("(" + url + ")", "gi"),
+			email: new RegExp("(" + email + ")", "gi"),
+			phone: /(?:(?:(?:(\+)?\d{1,3}[-\040.]?)?\s?\(?\d{3}\)?\s?[-\040.]?\d{3}[-\040.]?(\d{4}|\d{2}[-\040.]?\d{2}))|(?:(\+)(?:9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)[-\040.]?(?:\d[-\040.]?){6,12}\d+))([,;]+[0-9]+#?)*/g
+		};
 	};
-}());
+	return _regexp_extract_string_temp;
+};
 function _extract_list_by_regexp(str, regexp){
 	_validate_argument_type(regexp, 'regexp', 'Regular expression', '_extract_string');
 	return _uniq_arr(_trim_arr(_avoid_nil(str.match(regexp), [])));
 };
 function _extract_urls(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_urls');
-	return _extract_list_by_regexp(str, _regexp_extract_string.url);
+	return _extract_list_by_regexp(str, _regexp_extract_string().url);
 };
 function _extract_emails(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_emails');
-	return _extract_list_by_regexp(str, _regexp_extract_string.email);
+	return _extract_list_by_regexp(str, _regexp_extract_string().email);
 };
 function _extract_phone_numbers(str){
 	_validate_argument_type(str, 'string', 'String', '_extract_phone_numbers');
-	return _extract_list_by_regexp(str, _regexp_extract_string.phone);
+	return _extract_list_by_regexp(str, _regexp_extract_string().phone);
 };

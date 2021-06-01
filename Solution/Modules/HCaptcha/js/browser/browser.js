@@ -5,15 +5,19 @@
       const originalRenderFn = value.render;
 
       _BAS_HIDE(BrowserAutomationStudio_HCaptcha).render = function (container, params) {
-        _BAS_HIDE(BrowserAutomationStudio_HCaptchaCallback) = params.callback;
-        _BAS_HIDE(BrowserAutomationStudio_HCaptchaSitekey) = params.sitekey;
+        if (params && params.callback) {
+          _BAS_HIDE(BrowserAutomationStudio_HCaptchaCallback) = params.callback;
+        }
+
+        if (params && params.callback) {
+          _BAS_HIDE(BrowserAutomationStudio_HCaptchaSitekey) = params.sitekey;
+        }
+
         return originalRenderFn(container, params);
       };
     },
     get: function () {
-      if (typeof (_BAS_HIDE(BrowserAutomationStudio_HCaptcha)) !== 'undefined') {
-        return _BAS_HIDE(BrowserAutomationStudio_HCaptcha);
-      }
+      return _BAS_HIDE(BrowserAutomationStudio_HCaptcha);
     }
   });
 

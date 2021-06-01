@@ -27,7 +27,7 @@
       element: self.fcToken()
     })!
 
-    page().script('_BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved)()')!
+    page().script('_BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved)(' + JSON.stringify(_function_argument('token')) + ')')!
   };
 
   function extractData() {

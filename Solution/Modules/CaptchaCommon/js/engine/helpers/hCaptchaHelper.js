@@ -27,7 +27,7 @@
       element: self.hCaptchaResponse()
     })!
 
-    page().script('_BAS_HIDE(BrowserAutomationStudio_HCaptchaSolved)()')!
+    page().script('_BAS_HIDE(BrowserAutomationStudio_HCaptchaSolved)(' + JSON.stringify(_function_argument('token')) + ')')!
   };
 
   function extractData() {
@@ -67,12 +67,12 @@
       })!
 
       _call_function(_.exist, { element: self.gRecaptchaResponse() })!
-      if (_result_function() !== 1) {
+      if (_result_function() !== 1 && false) { // not required
         fail(tr("Can't find HCaptcha 'g-recaptcha-response' textarea element"));
       }
 
       _call_function(_.exist, { element: self.hCaptchaResponse() })!
-      if (_result_function() !== 1) {
+      if (_result_function() !== 1 && true) { // is required
         fail(tr("Can't find HCaptcha 'h-captcha-response' textarea element"));
       }
 

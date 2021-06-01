@@ -22,11 +22,11 @@
     }
   });
 
-  _BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved) = function () {
+  _BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved) = function (token) {
     let callback = _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback);
     if (typeof (callback) !== 'undefined') {
       if (typeof (callback) === 'string') callback = eval(callback);
-      try { callback(); } catch (e) { }
+      try { callback(token); } catch (e) { }
     }
   };
 })();

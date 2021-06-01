@@ -2,13 +2,8 @@
   function extendFunCaptcha(fn) {
     const extended = function () {
       if (arguments[0] && arguments[0].callback) {
-        if (typeof (_BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback)) === 'undefined') {
-          _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback) = [];
-        }
-
-        _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback).push(arguments[0].callback);
+        _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback) = arguments[0].callback;
       }
-
       fn.apply(this, arguments);
     };
 
@@ -23,17 +18,15 @@
       );
     },
     get: function () {
-      if (typeof (_BAS_HIDE(BrowserAutomationStudio_FunCaptcha)) !== 'undefined') {
-        return _BAS_HIDE(BrowserAutomationStudio_FunCaptcha);
-      }
+      return _BAS_HIDE(BrowserAutomationStudio_FunCaptcha);
     }
   });
 
   _BAS_HIDE(BrowserAutomationStudio_FunCaptchaSolved) = function () {
-    if (typeof (_BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback)) === 'object') {
-      _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback).forEach((callback) => {
-        try { callback(); } catch (e) { }
-      });
+    let callback = _BAS_HIDE(BrowserAutomationStudio_FunCaptchaCallback);
+    if (typeof (callback) !== 'undefined') {
+      if (typeof (callback) === 'string') callback = eval(callback);
+      try { callback(); } catch (e) { }
     }
   };
 })();

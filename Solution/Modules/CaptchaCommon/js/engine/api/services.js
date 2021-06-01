@@ -3,17 +3,17 @@
     'AntiCaptcha': new solver.AntiCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://api.anti-captcha.com',
-      name: 'AntiCaptcha',
+      name: 'AntiCaptcha'
     }),
     'RuCaptcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://rucaptcha.com',
-      name: 'RuCaptcha',
+      name: 'RuCaptcha'
     }),
     '2Captcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://2captcha.com',
-      name: '2Captcha',
+      name: '2Captcha'
     }),
   };
 

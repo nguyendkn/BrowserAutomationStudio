@@ -11,12 +11,12 @@
     return { method: 'getTaskResult', data: { taskId: task.id } };
   };
 
-  solver.AntiCaptchaApi.prototype.setDefaultRequestParams = function (data) {
+  solver.AntiCaptchaApi.prototype.setApiRequestParams = function (data) {
     data.clientKey = this.options.apiKey;
     data.json = 1;
   };
 
-  solver.AntiCaptchaApi.prototype.getDefaultRequestOptions = function (data, method) {
+  solver.AntiCaptchaApi.prototype.getApiRequestOptions = function (data, method) {
     return {
       payload: { data: ['data', JSON.stringify(data)], query: method },
       content: 'application/json',

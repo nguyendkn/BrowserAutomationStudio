@@ -51,9 +51,9 @@
   function makeRequest() {
     const method = _function_argument('method');
     const data = _function_argument('data');
-    this.setDefaultRequestParams(data);
+    this.setApiRequestParams(data, method);
 
-    _call_function(this.httpRequest, this.getDefaultRequestOptions(data, method))!
+    _call_function(this.httpRequest, this.getApiRequestOptions(data, method))!
     _function_return(solver.api.errorHandler(_result_function()));
   };
 

@@ -61,14 +61,17 @@
     "Task solution check interval in milliseconds": {
       "ru": "Интервал проверки решения задачи в миллисекундах"
     },
-    "Solve captcha using http://2captcha.com/ service": {
-      "ru": "Решить капчу используя сервис http://2captcha.com/"
+    "Solve captcha using https://2captcha.com/ service": {
+      "ru": "Решить капчу используя сервис https://2captcha.com/"
     },
-    "Solve captcha using http://rucaptcha.com/ service": {
-      "ru": "Решить капчу используя сервис http://rucaptcha.com/"
+    "Solve captcha using https://rucaptcha.com/ service": {
+      "ru": "Решить капчу используя сервис https://rucaptcha.com/"
     },
-    "Solve captcha using http://anti-captcha.com/ service": {
-      "ru": "Решить капчу используя сервис http://anti-captcha.com/"
+    "Solve captcha using https://anti-captcha.com/ service": {
+      "ru": "Решить капчу используя сервис https://anti-captcha.com/"
+    },
+    "Solve captcha using https://capmonster.cloud/ service": {
+      "ru": "Решить капчу используя сервис https://capmonster.cloud/"
     },
     "User-Agent that will be used by the service for solving captcha.": {
       "ru": "User-Agent который будет использоваться сервисом для решения капчи."

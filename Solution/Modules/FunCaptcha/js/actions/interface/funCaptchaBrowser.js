@@ -10,9 +10,10 @@
     help: {
       description: tr('Captcha solving service name'),
       examples: [
-        { code: 'AntiCaptcha', description: tr('Solve captcha using http://anti-captcha.com/ service') },
-        { code: 'RuCaptcha', description: tr('Solve captcha using http://rucaptcha.com/ service') },
-        { code: '2Captcha', description: tr('Solve captcha using http://2captcha.com/ service') }
+        { code: 'AntiCaptcha', description: tr('Solve captcha using https://anti-captcha.com/ service') },
+        { code: 'RuCaptcha', description: tr('Solve captcha using https://rucaptcha.com/ service') },
+        { code: '2Captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
+        { code: 'CapmonsterCloud', description: tr('Solve captcha using https://capmonster.cloud/ service') },
       ]
     }
   }) %>

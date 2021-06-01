@@ -1,5 +1,10 @@
 (function (solver) {
   const services = {
+    'CapmonsterCloud': new solver.AntiCaptchaApi({
+      supportedTasks: ['FunCaptcha', 'HCaptcha'],
+      apiUrl: 'https://api.capmonster.cloud',
+      name: 'CapmonsterCloud'
+    }),
     'AntiCaptcha': new solver.AntiCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://api.anti-captcha.com',

@@ -649,7 +649,7 @@ _path = {
 	parse: function(path){
 		_validate_argument_type(path, 'string', 'Path', '_path.parse');
 		
-		const ret = { root: '', dir: '', base: '', ext: '', name: '' };
+		const ret = { root: '', dir: '', base: '', ext: '', name: '', items: [] };
 		if(path.length===0){
 			return ret;
 		};
@@ -663,9 +663,11 @@ _path = {
 				ret.root = ret.dir = path;
 				return ret;
 			};
-			ret.base = ret.name = path;
+			ret.base = ret.name = ret.items[0] = path;
 			return ret;
 		};
+		
+		ret.items = path.split(/[\\/]+/).filter(function(el){return el.length > 0});
 		
 		if(this.isPathSeparator(code)){
 			rootEnd = 1;

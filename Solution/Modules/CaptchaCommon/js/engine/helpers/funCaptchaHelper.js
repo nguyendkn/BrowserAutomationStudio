@@ -36,7 +36,7 @@
       const surl = data.filter(function (v) { return v[0] === 'surl' })[0][1];
       const pk = data.filter(function (v) { return v[0] === 'pk' })[0][1];
 
-      url(function () { _function_return({ pageUrl: _result(), surl: surl, pk: pk }) });
+      url(function () { _function_return({ subdomainUrl: surl, publicKey: pk, pageUrl: _result() }) });
     });
   };
 

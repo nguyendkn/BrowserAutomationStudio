@@ -233,7 +233,7 @@ void DevToolsConnector::StartProcess()
 
     CommandLine += std::wstring(L"about:blank");
 
-    ShellExecute(0, 0, L"worker.exe", CommandLine.c_str(), GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation)).c_str(), SW_SHOW);
+    ProcessLauncher.Start(L"worker.exe", CommandLine, GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation)));
 }
 
 void DevToolsConnector::TryToConnect()
@@ -321,6 +321,8 @@ void DevToolsConnector::OnWebSocketConnected(bool IsSuccess)
         }
         return;
     }
+
+    ProcessLauncher.Stop();
 
     if(!WasBrowserCreationEvent)
     {
@@ -1261,6 +1263,8 @@ void DevToolsConnector::HandleIPCData()
 
 void DevToolsConnector::Timer()
 {
+    ProcessLauncher.Timer();
+
     TryToConnect();
 
     //Delete http client if needed

@@ -32,6 +32,7 @@ SOURCES += main.cpp \
     connector/KeyboardEmulation.cpp \
     connector/PrepareUrl.cpp \
     connector/asyncresult.cpp \
+    connector/chromeprocesslauncher.cpp \
     connector/devtoolsactiondialogresult.cpp \
     connector/devtoolsactionexecutejavascript.cpp \
     connector/devtoolsactionfactory.cpp \
@@ -190,6 +191,7 @@ HEADERS += \
     connector/RequestRestriction.h \
     connector/Variant.h \
     connector/asyncresult.h \
+    connector/chromeprocesslauncher.h \
     connector/devtoolsactiondialogresult.h \
     connector/devtoolsactionexecutejavascript.h \
     connector/devtoolsactionfactory.h \

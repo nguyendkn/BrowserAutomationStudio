@@ -14,6 +14,7 @@
 #include "KeyboardEmulation.h"
 #include <windows.h>
 #include "sharedmemoryipc.h"
+#include "chromeprocesslauncher.h"
 
 class DevToolsConnector
 {
@@ -35,6 +36,7 @@ class DevToolsConnector
     std::wstring ProfilePath;
     std::vector<std::wstring> Extensions;
     std::vector<std::pair<std::string,std::string> > CommandLineAdditional;
+    ChromeProcessLauncher ProcessLauncher;
 
     //Switch tab after close
     int SwitchTabAfterCloseCurrentActionId = 0;

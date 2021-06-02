@@ -11,6 +11,7 @@ var port = GetInputConstructorValue("port", loader);
 var path = GetInputConstructorValue("path", loader);
 var query = GetInputConstructorValue("query", loader);
 var hash = GetInputConstructorValue("hash", loader);
+var clear_query = $("#Check3").is(':checked');
 var normalize = $("#Check").is(':checked');
 var rfail = $("#Check2").is(':checked');
 var base_url = GetInputConstructorValue("base_url", loader);
@@ -30,6 +31,7 @@ try{
         "path": path["updated"],
         "query": query["updated"],
         "hash": hash["updated"],
+		"clear_query": clear_query,
 		"normalize": normalize,
 		"rfail": rfail,		
         "base_url": base_url["updated"],

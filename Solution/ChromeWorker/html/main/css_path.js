@@ -36,7 +36,7 @@
             return res;
         }, t.prototype.getIdSelector = function(t) {
             var e, n;
-            return e = t.getAttribute("id"), null == e || "" === e || /\s/.exec(e) || (n = "#" + this.sanitizeItem(e), 1 !== document.querySelectorAll(n).length) ? null : n
+            return e = t.getAttribute("id"), null == e || "" === e || /\s/.exec(e) || (n = "#" + this.sanitizeItem(e), 1 !== _BAS_HIDE(BrowserAutomationStudio_GetQuerySelectorHost)(t).querySelectorAll(n).length) ? null : n
         }, t.prototype.getClassSelectors = function(t) {
             var e, n, r;
             return r = [], e = t.getAttribute("class"), null != e && (e = e.replace(/\s+/g, " "), e = e.replace(/^\s|\s$/g, ""), "" !== e && (r = function() {
@@ -56,7 +56,7 @@
             return null
         }, t.prototype.testSelector = function(t, e) {
             var n, r;
-            return n = !1, null != e && "" !== e && (r = t.ownerDocument.querySelectorAll(e), 1 === r.length && r[0] === t && (n = !0)), n
+            return n = !1, null != e && "" !== e && (r = _BAS_HIDE(BrowserAutomationStudio_GetQuerySelectorHost)(t, t.ownerDocument).querySelectorAll(e), 1 === r.length && r[0] === t && (n = !0)), n
         }, t.prototype.getAllSelectors = function(t) {
             var e;
             return e = {

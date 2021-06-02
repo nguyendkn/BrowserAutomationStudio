@@ -1,6 +1,7 @@
 var parse_res = _path.parse(<%= path %>);
-<%= root %> = _avoid_nil(parse_res["root"]);
-<%= dir %> = _avoid_nil(parse_res["dir"]);
-<%= base %> = _avoid_nil(parse_res["base"]);
-<%= ext %> = _avoid_nil(parse_res["ext"]);
-<%= name %> = _avoid_nil(parse_res["name"]);
+<%= root %> = parse_res["root"];
+<%= dir %> = parse_res["dir"];
+<%= base %> = parse_res["base"];
+<%= ext %> = parse_res["ext"];
+<%= name %> = parse_res["name"];
+<%= items %> = parse_res["items"];

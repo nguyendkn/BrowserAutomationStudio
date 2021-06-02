@@ -9,7 +9,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Normalize path.</div>
 	<div class="tr tooltip-paragraph-fold">This will return the normalized path, multiple slashes will be replaced with single ones, backslashes "&#92;" will be replaced with regular "/", segments ".." and "." will be resolved.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if the path <code>"C:////temp&#92;&#92;/&#92;/&#92;/foo/bar/.."</code> is specified, then the action will return <code>"C:/temp/foo"</code>.</div>
-	<div class="tr tooltip-paragraph-fold">If the "Remove trailing slashes" parameter is enabled, trailing slashes will be removed from the path.</div>
+	<div class="tr tooltip-paragraph-fold">If the "Remove trailing slashes" parameter is enabled, trailing slashes will be removed from the path, for example, path <code>"С:&#92;path&#92;"</code> will be normalized to <code>"С:/path"</code>.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if the path <code>"C:&#92;path/&#92;"</code> is specified, then the action will return <code>"C:/path"</code>.</div>
 	<div class="tr tooltip-paragraph-fold">If you need to compare paths, then first normalize them with this action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If the "Path" parameter is not a string, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

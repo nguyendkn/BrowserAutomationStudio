@@ -1,4 +1,5 @@
-var carriage_return = $("#Check").is(':checked');
+var carriage_return = $("#Select").val()=="CarriageReturn"
+
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));

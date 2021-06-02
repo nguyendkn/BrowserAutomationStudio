@@ -437,14 +437,15 @@
                 }
             ],
             "description": {
-                "en": "New line",
-                "ru": "Новая строка"
+                "en": "Line ending symbol",
+                "ru": "Символ перевода строки"
             },
             "interface": "new_line_interface.js",
             "is_element": false,
             "name": "new_line",
             "select": "new_line_select.js",
-            "template": "{{Save}}"
+            "template": "{{Save}}",
+            "suggestion":{"en": "end of line, eol, line feed, line break, carriage return","ru": "разрыв строки, разделитель строк, переход на новую строку, возврат каретки"}
         },
 		{
             "code": [
@@ -895,7 +896,9 @@
 		"Line break": {"ru":"Перенос строки"},
 		"Carriage return": {"ru":"Возврат каретки"},
 		"Carriage return and line break": {"ru":"Возврат каретки и перенос строки"},
-		"Create a string containing a line break.": {"ru":"Создать строку, содержащую перенос строки."},
+		"Create a string containing a line break symbol.": {"ru":"Создать строку, содержащую символ переноса строки."},
+        "Carriage return and line break (\\r\\n)": {"ru":"Возврат каретки и перенос строки (\\r\\n)"},
+        "Only line break (\\n)": {"ru":"Только перенос строки (\\n)"},
 		"The result of this action can be used to split the text into multiple lines.": {"ru":"Результат этого действия можно использовать для разделения текста на несколько строк."},
 		"If the parameter \"Carriage return\" is activated, then a carriage return will be added before the line break.": {"ru":"Если активирован параметр \"Возврат каретки\", то перед переносом строки будет добавлен возврат каретки."},
 		"Variable in which, after successful execution of the action, a string containing a line break will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана строка содержащая перенос строки."},

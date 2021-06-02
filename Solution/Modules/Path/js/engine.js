@@ -179,11 +179,11 @@ _path = {
 		
 		const len = path.length;
 		if(len===0){
-			return '.';
+			return '';
 		};
 		
 		var rootEnd = 0;
-		var device = '';
+		var device = undefined;
 		var isAbsolute = false;
 		const code = path.charCodeAt(0);
 		
@@ -233,19 +233,13 @@ _path = {
 		
 		var tail = rootEnd < len ? this.normalizeString(path.slice(rootEnd), !isAbsolute) : '';
 		
-		if(tail.length===0 && !isAbsolute){
-			tail = '.';
-		};
 		if(tail.length > 0 && this.isPathSeparator(path.charCodeAt(len - 1)) && !removeTrailingSlash){
 			tail += this.sep;
 		};
 		if(device===undefined){
-			return isAbsolute ? (this.sep + tail) : tail;
+			return isAbsolute ? ((tail.length===0 && removeTrailingSlash ? '' : this.sep) + tail) : tail;
 		};
-		if(device==='' && tail===''){
-			return (removeTrailingSlash ? '' : this.sep);
-		};
-		return isAbsolute ? (device + this.sep + tail) : (device + tail);
+		return isAbsolute ? (device + (tail.length===0 && removeTrailingSlash ? '' : this.sep) + tail) : (device + tail);
 	},
 	
 	isAbsolute: function(path){

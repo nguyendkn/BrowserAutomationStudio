@@ -48,7 +48,7 @@ function _tr_type_name(name){
 };
 function _get_type(value){
 	var value_type = typeof value; 
-	return value===null ? 'null' : (value_type==='object' ? (Array.isArray(value) ? 'array' : (value instanceof Date ? 'date' : (value instanceof RegExp ? 'regexp' : value_type))) : value_type);
+	return value===null ? 'null' : (value_type==='object' || value_type==='function' ? (Array.isArray(value) ? 'array' : (value instanceof Date ? 'date' : (value instanceof RegExp ? 'regexp' : value_type))) : value_type);
 };
 function _validate_argument_type(value, type, name, act){
 	var value_type = _get_type(value);

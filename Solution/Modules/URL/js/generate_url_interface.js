@@ -13,7 +13,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Generate URL from specified items.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">This action will return a string containing the final URL.</span> <span class="tr">You can learn more about URL in <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://en.wikipedia.org/wiki/URL');return false">Wiki</a>.</span></div>
 	<div class="tr tooltip-paragraph-fold">Specify values for the items need to be added to the URL, leave empty items that do not need to be added.</div>
-	<div class="tr tooltip-paragraph-fold">The query must be specified as an object, where the key is the name of the parameter and the value is the value of the parameter. Or as a string, in which parameters are separated by "&", and the parameter name and its value are separated by "=".</div>
+	<div class="tr tooltip-paragraph-fold">The query must be specified as an object, where the key is the name of the parameter and the value is the value of the parameter, example: <code>{"foo":"bar"}</code>. Or as a string, in which parameters are separated by "&amp;", and the parameter name and its value are separated by "=", example: <code>"foo=bar"</code>.</div>
 	<div class="tr tooltip-paragraph-fold">You can parse a link to items using the "Parse URL" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">You can change link items using the "Change URL" action.</div>
 </div>

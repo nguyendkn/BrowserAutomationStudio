@@ -106,10 +106,9 @@
     "engine/api/apiRuCaptcha.js",
     "engine/api/apiAntiCaptcha.js",
     "engine/api/services.js",
-    "engine/api/utils.js",
-    "engine/tasks/base/baseTask.js",
-    "engine/tasks/base/baseTaskRuCaptcha.js",
-    "engine/tasks/base/baseTaskAntiCaptcha.js",
+    "engine/tasks/baseTask.js",
+    "engine/tasks/baseTaskRuCaptcha.js",
+    "engine/tasks/baseTaskAntiCaptcha.js",
     "engine/api/errors/ruCaptchaErrorHandler.js",
     "engine/api/errors/antiCaptchaErrorHandler.js",
     "engine/helpers/baseHelper.js"

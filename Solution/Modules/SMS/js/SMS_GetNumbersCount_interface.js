@@ -10,7 +10,7 @@
 			"onlinesim.ru",
 			"sms-acktiwator.ru",
 			"vak-sms.com",
-			"give-sms.com"
+			"give-sms.com",
 			"getsms.online",
 			"sms-man.ru",
 			"cheapsms.ru",

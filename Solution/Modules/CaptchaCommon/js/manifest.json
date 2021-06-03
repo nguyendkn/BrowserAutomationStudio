@@ -110,14 +110,8 @@
     "engine/tasks/base/baseTask.js",
     "engine/tasks/base/baseTaskRuCaptcha.js",
     "engine/tasks/base/baseTaskAntiCaptcha.js",
-    "engine/tasks/hCaptchaTask.ruCaptcha.js",
-    "engine/tasks/funCaptchaTask.ruCaptcha.js",
-    "engine/tasks/hCaptchaTask.antiCaptcha.js",
-    "engine/tasks/funCaptchaTask.antiCaptcha.js",
     "engine/api/errors/ruCaptchaErrorHandler.js",
     "engine/api/errors/antiCaptchaErrorHandler.js",
-    "engine/helpers/baseHelper.js",
-    "engine/helpers/hCaptchaHelper.js",
-    "engine/helpers/funCaptchaHelper.js"
+    "engine/helpers/baseHelper.js"
   ]
 }

@@ -24,7 +24,10 @@
     disable_int: true,
     id: 'serviceKey'
   }) %>
-  <div style="margin-left: 20px;">
+  <div style="margin-left: 15px">
+    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://i.imgur.com/YMdTIqj.gif'); return false;"><%= tr('How FunCaptcha looks like?') %></a>
+  </div>
+  <div style="margin-left: 15px">
     <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
     <label for="AdvancedCheck" class="tr">Advanced settings.</label>
   </div>
@@ -100,12 +103,14 @@
   </span>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Solve <code>FunCaptcha</code> using any available service.</div>
+	<div class="tr tooltip-paragraph-first-fold">Solve <code>FunCaptcha</code>.</div>
+  <div class="tr tooltip-paragraph-fold">The <code>FunCaptcha</code> is a captcha from ArkoseLabs. The most popular type of this captcha is the rotation of images with the arrows. To pass such a captcha, you need to put all the pictures in the correct position.</div>
   <div class="tr tooltip-paragraph-fold">All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.</div>
   <div class="tr tooltip-paragraph-fold">All necessary data for the <code>FunCaptcha</code> solution is obtained automatically from the page source.</div>
   <div class="tr tooltip-paragraph-fold">You can set the delay and interval for checking the task solution by filling in the appropriate fields. We recommend using the values that are described in the service documentation.</div>
   <div class="tr tooltip-paragraph-fold">You can use the current browser proxy by filling in the appropriate field. This is an optional parameter, but some sites may require matching IP addresses. When using a proxy always fill in the <code>User-Agent</code> field, otherwise the service may return an error.</div>
   <div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Custom service URL</code> field located in the additional settings.</div>
-  <div class="tr tooltip-paragraph-last-fold">Also if you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar programs, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.</div>
+  <div class="tr tooltip-paragraph-fold">Also if you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar programs, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.</div>
+  <div class="tr tooltip-paragraph-last-fold">Detailed documentation for solving <code>FunCaptcha</code> can be found <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#solving_funcaptcha_new');return false">here</a>.</div>
 </div>
-<%= _.template($('#back').html())({ action: 'executeandadd', visible: true }) %>
+<%= _.template($('#back').html())({ action: 'executeandadd', visible: true, name: tr('Solve FunCaptcha') }) %>

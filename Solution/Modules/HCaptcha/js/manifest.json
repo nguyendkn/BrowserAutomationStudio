@@ -37,11 +37,23 @@
   "modules": [],
   "depends": ["CaptchaCommon"],
   "localize": {
-    "Solve <code>HCaptcha</code> using any available service.": {
-      "ru": "Решить <code>HCaptcha</code> используя любой доступный сервис."
+    "Solve HCaptcha": {
+      "ru": "Решить HCaptcha"
+    },
+    "How HCaptcha looks like?": {
+      "ru": "Как выглядит HCaptcha?"
+    },
+    "Solve <code>HCaptcha</code>.": {
+      "ru": "Решить <code>HCaptcha</code>."
     },
     "All necessary data for the <code>HCaptcha</code> solution is obtained automatically from the page source.": {
       "ru": "Все необходимые данные для решения <code>HCaptcha</code> получаются автоматически из кода страницы."
+    },
+    "Detailed documentation for solving <code>HCaptcha</code> can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#solving_hcaptcha');return false\">here</a>.": {
+      "ru": "Подробную документацию по решению <code>HCaptcha</code> можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_hcaptcha');return false\">здесь</a>."
+    },
+    "The <code>HCaptcha</code> is a captcha from Intuition Machines. This type of captcha is very similar to ReCaptchaV2 from Google. To pass this captcha, you need to select all the pictures that match the given condition.": {
+      "ru": "<code>HCaptcha</code> - это капча от компании Intuition Machines. Данный тип капчи очень сильно похож на ReCaptchaV2 от компании Google. Для прохождения данной капчи необходимо выбрать все картинки, которые соответствуют заданному условию."
     }
   },
   "browser": ["browser/browser.js"],

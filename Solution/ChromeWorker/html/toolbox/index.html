@@ -13530,6 +13530,16 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       }
     }
 
+    function BrowserAutomationStudio_ClearWindowModalTimeout()
+    {
+      if(typeof(window.WindowModalTimeout) != "undefined")
+      {
+        clearTimeout(window.WindowModalTimeout);
+        delete window.WindowModalTimeout
+      }
+    }
+
+
     function BrowserAutomationStudio_ShowWaiting(code)
     {
       OnHold = true
@@ -13540,6 +13550,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         $("#WaitingActionName").html(text)
         $("#InterruptMessage").hide()
         $("#WaitingDisable").show()
+        BrowserAutomationStudio_ClearWindowModalTimeout();
         $('#WaitingModal').modal({keyboard: false,backdrop: 'static'})
       }
           
@@ -13547,7 +13558,13 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     function BrowserAutomationStudio_HideWaiting()
     {
       OnHold = false
-      $('#WaitingModal').modal('hide')
+      
+      BrowserAutomationStudio_ClearWindowModalTimeout()
+
+      window.WindowModalTimeout = setTimeout(function(){
+        $('#WaitingModal').modal('hide')
+        BrowserAutomationStudio_ClearWindowModalTimeout()
+      }, 200)
     }
 
     function Normalize(code, tab)

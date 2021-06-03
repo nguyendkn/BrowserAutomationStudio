@@ -5,12 +5,18 @@
       const originalRenderFn = value.render;
 
       _BAS_HIDE(BrowserAutomationStudio_HCaptcha).render = function (container, params) {
-        if (params && params.callback) {
-          _BAS_HIDE(BrowserAutomationStudio_HCaptchaCallback) = params.callback;
-        }
+        if (params) {
+          if (params.callback) {
+            _BAS_HIDE(BrowserAutomationStudio_HCaptchaCallback) = params.callback;
+          }
 
-        if (params && params.callback) {
-          _BAS_HIDE(BrowserAutomationStudio_HCaptchaSitekey) = params.sitekey;
+          if (params.sitekey) {
+            _BAS_HIDE(BrowserAutomationStudio_HCaptchaSitekey) = params.sitekey;
+          }
+
+          if (params.size) {
+            _BAS_HIDE(BrowserAutomationStudio_HCaptchaSize) = params.size;
+          }
         }
 
         return originalRenderFn(container, params);

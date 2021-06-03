@@ -9,7 +9,7 @@ _SMS.BaseApi = function(config, data, path){
 		this.url = config.url;
 		this.name = config.name;
 	}else{
-		var url = data.url.slice(-1)=="/" ? data.url.slice(0, -1) : data.url;
+		var url = _trim_right(data.url, '/\\ ');
 		var name = url.replace(new RegExp('https?://'),"").replace(/^(?:\d+)?api(?:\d+)?./,"");
 		this.url = url;
 		this.name = name.slice(0, 1).toLocaleUpperCase() + name.slice(1);
@@ -197,16 +197,16 @@ _SMS.BaseApi = function(config, data, path){
 				"en": "Failed to parse the response from the service. Response content: " + data
 			},
 			"ACTION_TIMEOUT": {
-				"ru": "Превышено время ожидания выполнения действия \"" + data + "\".",
-				"en": "Timed out for execution of an action \"" + data + "\"."
+				"ru": 'Превышено время ожидания выполнения действия "' + data + '".',
+				"en": 'Timed out for execution of an action "' + data + '".'
 			},
 			"UNSUPPORTED_METHOD": {
-				"ru": "Метод \"" + data + "\" не поддерживается.",
-				"en": "Method \"" + data + "\" is not supported."
+				"ru": 'Метод "' + data + '" не поддерживается.',
+				"en": 'Method "' + data + '" is not supported.'
 			},
 			"UNSUPPORTED_SITE": {
-				"ru": "Сайт \"" + data + "\" не поддерживается.",
-				"en": "Site \"" + data + "\" is not supported."
+				"ru": 'Сайт "' + data + '" не поддерживается.',
+				"en": 'Site "' + data + '" is not supported.'
 			}
 		};
 		

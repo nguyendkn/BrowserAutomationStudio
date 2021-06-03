@@ -1,5 +1,5 @@
 _BAS_HIDE(BrowserAutomationStudio_CreateXPathFromElement) = function(elm) { 
-    var allNodes = document.getElementsByTagName('*'); 
+    var allNodes = _BAS_HIDE(BrowserAutomationStudio_GetQuerySelectorHost)(elm).querySelectorAll('*'); 
     for (var segs = []; elm && elm.nodeType == 1; elm = elm.parentNode) 
     { 
         if (elm.hasAttribute('id')) { 

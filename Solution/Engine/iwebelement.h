@@ -65,6 +65,7 @@ namespace BrowserAutomationStudioFramework
         virtual IWebElement* match_all(const QString& text) = 0;
         virtual IWebElement* xpath(const QString& text) = 0;
         virtual IWebElement* xpath_all(const QString& text) = 0;
+        virtual IWebElement* shadow() = 0;
         virtual QRect GetGeometry() = 0;
 
     };

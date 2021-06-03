@@ -103,6 +103,7 @@ namespace BrowserAutomationStudioFramework
         virtual IWebElement* match_all(const QString& text);
         virtual IWebElement* xpath(const QString& text);
         virtual IWebElement* xpath_all(const QString& text);
+        virtual IWebElement* shadow();
         void Received(const QString& value);
         QString PrepareCallback(const QString& callback);
         virtual QRect GetGeometry();

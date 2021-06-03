@@ -1,5 +1,5 @@
 var parse_res = new _url(<%= url %>, {normalize: <%= normalize %>, base_url: <%= base_url %>, rfail: <%= rfail %>});
-<%= protocol %> = _avoid_nil(parse_res["protocol"]).split(':')[0];
+<%= protocol %> = _avoid_nil(parse_res["protocol"]);
 <%= username %> = _avoid_nil(parse_res["username"]);
 <%= password %> = _avoid_nil(parse_res["password"]);
 <%= host %> = _avoid_nil(parse_res["host"]);

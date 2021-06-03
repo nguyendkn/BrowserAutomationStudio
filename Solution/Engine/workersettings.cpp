@@ -806,12 +806,15 @@ namespace BrowserAutomationStudioFramework
          {
             QString prev = GetProfile();
             QString next = object["ProfilePath"].toString();
+            bool IsNewTempProfile = false;
             if(next == QString("<Incognito>"))
             {
                 next.clear();
+                TempProfile = QString("prof/") + GetRandomString();
+                IsNewTempProfile = true;
             }
 
-            if(prev != next || (prev.isEmpty() && next.isEmpty() && IsMLA))
+            if(prev != next || IsNewTempProfile || (prev.isEmpty() && next.isEmpty() && IsMLA))
             {
                 if(IsMLAReal)
                 {

@@ -73,66 +73,11 @@ function _is_bas_browser_real()
     return Browser.IsBASBrowser() && Browser.IsBASBrowserVirtual();
 }
 
-function _is_bas_browser_virtual()
-{
-    return Browser.IsBASBrowser() && Browser.IsBASBrowserVirtual();
-}
-
 /* Check if in record mode */
 function _is_record()
 {
     return ScriptWorker.GetIsRecord();
 }
-
-/* Close current browser and save profile, it will be created again after using browser action */
-function _disable_browser(callback)
-{
-    if(_is_record())
-    {
-        ScriptWorker.SetScript(_get_function_body(callback))
-        ScriptWorker.RunSubScript()
-        return
-    }
-    NetworkAccessManager = null;
-    Browser.DisableBrowser(_get_function_body(callback));
-}
-
-
-/* Online profiles */
-function _remove_local_profile(profile_id, callback)
-{
-    if(_is_bas_browser_real())
-    {
-        ScriptWorker.SetScript(_get_function_body(callback))
-        ScriptWorker.RunSubScript()
-        return
-    }
-    _ARG = arguments
-    _create_browser_if_needed(function(){
-        Browser.RemoveLocalProfile(_ARG[0],_get_function_body(_ARG[1]));
-    })
-}
-function _remove_online_profile(profile_id, callback)
-{
-    _ARG = arguments
-    _create_browser_if_needed(function(){
-        Browser.RemoveOnlineProfile(_ARG[0],_get_function_body(_ARG[1]));
-    })
-}
-
-function _find_all_online_profiles(search_pattern, callback)
-{
-    _ARG = arguments
-    _create_browser_if_needed(function(){
-        Browser.FindAllOnlineProfiles(_ARG[0],_get_function_body(_ARG[1]));
-    })
-}
-
-function _get_browser_unique_id()
-{
-    return Browser.GetBrowserUniqueId();
-}
-
 
 /* Manual control */
 function open_browser(callback)
@@ -943,7 +888,7 @@ function _random_point()
         }else
         {
             Selector = "";
-            Code = "(function(){var height = window.innerHeight;var current_position = document.documentElement.scrollTop;var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return Math.floor(target_position - (current_position + height * 0.5)).toString();})()";
+            Code = "(function(){var height = window.innerHeight;var current_position = document.scrollingElement.scrollTop;var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return Math.floor(target_position - (current_position + height * 0.5)).toString();})()";
         }
         get_element_selector(Selector, false).script(Code,function(){
             if(_result() == "")

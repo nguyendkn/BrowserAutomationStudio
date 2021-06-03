@@ -21,7 +21,7 @@
   };
 
   function findService(serviceName) {
-    var name = serviceName.replace('-newapi', '').toLowerCase();
+    var name = serviceName.toLowerCase().replace('-newapi', '');
 
     for (var key in services) {
       if (key.toLowerCase() === name || services[key].options.aliases.indexOf(name) >= 0) {

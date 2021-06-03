@@ -47,7 +47,7 @@
   "browser": ["browser/browser.js"],
   "engine": [
     "engine/index.js",
-    "engine/helpers/funCaptchaHelper.js",
+    "engine/helpers/hCaptchaHelper.js",
     "engine/tasks/hCaptchaTask.ruCaptcha.js",
     "engine/tasks/hCaptchaTask.antiCaptcha.js"
   ]

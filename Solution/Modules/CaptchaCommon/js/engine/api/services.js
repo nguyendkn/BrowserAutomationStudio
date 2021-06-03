@@ -1,29 +1,37 @@
 (function (solver) {
   const services = {
-    'CapmonsterCloud': new solver.AntiCaptchaApi({
-      supportedTasks: ['FunCaptcha', 'HCaptcha'],
-      apiUrl: 'https://api.capmonster.cloud',
-      name: 'CapmonsterCloud'
-    }),
     'AntiCaptcha': new solver.AntiCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://api.anti-captcha.com',
-      name: 'AntiCaptcha'
+      name: 'AntiCaptcha',
+      aliases: ['antigate'],
     }),
     'RuCaptcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://rucaptcha.com',
-      name: 'RuCaptcha'
+      name: 'RuCaptcha',
+      aliases: [],
     }),
     '2Captcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://2captcha.com',
-      name: '2Captcha'
+      name: '2Captcha',
+      aliases: [],
     }),
   };
 
+  function findService(serviceName) {
+    var name = serviceName.replace('-newapi', '').toLowerCase();
+
+    for (var key in services) {
+      if (key.toLowerCase() === name || services[key].options.aliases.indexOf(name) >= 0) {
+        return services[key];
+      }
+    }
+  };
+
   solver.getService = function (options) {
-    const service = services[options.serviceName];
+    const service = findService(options.serviceName);
 
     if (!service) {
       if (_K === 'en') {

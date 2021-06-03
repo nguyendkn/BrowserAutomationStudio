@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <%= _.template($('#path').html())({ selector }) %>
   <%= _.template($('#input_constructor').html())({
-    variants: [ 'AntiCaptcha', 'RuCaptcha', '2Captcha' ],
+    variants: [ 'antigate-newapi', 'rucaptcha-newapi', '2captcha-newapi' ],
     description: tr('Service name'),
     value_string: 'AntiCaptcha',
     default_selector: 'string',
@@ -10,10 +10,9 @@
     help: {
       description: tr('Captcha solving service name'),
       examples: [
-        { code: 'AntiCaptcha', description: tr('Solve captcha using https://anti-captcha.com/ service') },
-        { code: 'RuCaptcha', description: tr('Solve captcha using https://rucaptcha.com/ service') },
-        { code: '2Captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
-        { code: 'CapmonsterCloud', description: tr('Solve captcha using https://capmonster.cloud/ service') },
+        { code: 'antigate-newapi', description: tr('Solve captcha using https://anti-captcha.com/ service') },
+        { code: 'rucaptcha-newapi', description: tr('Solve captcha using https://rucaptcha.com/ service') },
+        { code: '2captcha-newapi', description: tr('Solve captcha using https://2captcha.com/ service') },
       ]
     }
   }) %>

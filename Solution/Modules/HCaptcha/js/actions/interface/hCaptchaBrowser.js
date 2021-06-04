@@ -24,7 +24,7 @@
     id: 'serviceKey'
   }) %>
   <div style="margin-left: 15px">
-    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://i.imgur.com/vJptCoA.gif'); return false;"><%= tr('How HCaptcha looks like?') %></a>
+    <a href="#" onclick="BrowserAutomationStudio_OpenUrl(tr('https://i.imgur.com/8ygWWWD.gif')); return false;"><%= tr('How HCaptcha looks like?') %></a>
   </div>
   <div style="margin-left: 15px">
     <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />

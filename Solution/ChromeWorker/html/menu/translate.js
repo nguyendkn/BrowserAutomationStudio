@@ -43,6 +43,8 @@ _L =
 	"Start loop":{"ru": "Начать цикл"},
 	"For each element":{"ru": "Для каждого элемента"},
 	"Solve Recaptcha 2.0":{"ru": "Решить Recaptcha 2.0"},
+	"Solve FunCaptcha": {"ru": "Решить FunCaptcha"},
+	"Solve HCaptcha": {"ru": "Решить HCaptcha"},
 	"Get link URL" : {"ru": "Получить адрес ссылки"},
 
 }

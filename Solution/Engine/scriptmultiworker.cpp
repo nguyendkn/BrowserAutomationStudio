@@ -793,10 +793,26 @@ namespace BrowserAutomationStudioFramework
             Logger->WriteInfo(msg2, LogInfo);
             HasLog = true;
         }
+        if(IsStudio && ModuleManager->IsModuleEnabled("FunCaptcha"))
+        {
+            QString msg1 = tr("FunCaptcha module is enabled, it can reduce browser authenticity.");
+            QString msg2 = tr("So it is recommended to <a href='disablefuncaptcha://disablefuncaptcha' style='color:red'>turn it off</a>, unless you are working with funcaptcha.");
+            Logger->WriteHtml(QString("<font color='red'>") + msg1 + QString("</font>"), msg1, LogFail);
+            Logger->WriteHtml(QString("<font color='red'>") + msg2 + QString("</font>"), msg2, LogFail);
+            HasLog = true;
+        }
         if(IsStudio && ModuleManager->IsModuleEnabled("ReCaptcha"))
         {
             QString msg1 = tr("ReCaptcha module is enabled, it can reduce browser authenticity.");
             QString msg2 = tr("So it is recommended to <a href='disablerecaptcha://disablerecaptcha' style='color:red'>turn it off</a>, unless you are working with recaptcha.");
+            Logger->WriteHtml(QString("<font color='red'>") + msg1 + QString("</font>"), msg1, LogFail);
+            Logger->WriteHtml(QString("<font color='red'>") + msg2 + QString("</font>"), msg2, LogFail);
+            HasLog = true;
+        }
+        if(IsStudio && ModuleManager->IsModuleEnabled("HCaptcha"))
+        {
+            QString msg1 = tr("HCaptcha module is enabled, it can reduce browser authenticity.");
+            QString msg2 = tr("So it is recommended to <a href='disablehcaptcha://disablehcaptcha' style='color:red'>turn it off</a>, unless you are working with hcaptcha.");
             Logger->WriteHtml(QString("<font color='red'>") + msg1 + QString("</font>"), msg1, LogFail);
             Logger->WriteHtml(QString("<font color='red'>") + msg2 + QString("</font>"), msg2, LogFail);
             HasLog = true;

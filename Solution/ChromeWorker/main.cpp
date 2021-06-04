@@ -1936,7 +1936,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     Data->IsRecordHttp = false;
     Data->IsTouchScreen = false;
+    Data->HasHcaptchaModule = true;
     Data->HasRecaptchaModule = true;
+    Data->HasFuncaptchaModule = true;
     Data->IsTouchPressedDirectControl = false;
     Data->IsTouchPressedAutomation = false;
     Data->TouchEventId = 1;
@@ -1987,7 +1989,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if(Data->IsRecord)
         Data->_ModulesData = LoadModulesData(Lang, Pid, Data->_UnusedModulesData);
 
-    Data->HasRecaptchaModule = IsRecaptchaEnabled();
+    Data->HasHcaptchaModule = IsModuleEnabled("HCaptcha");
+    Data->HasRecaptchaModule = IsModuleEnabled("ReCaptcha");
+    Data->HasFuncaptchaModule = IsModuleEnabled("FunCaptcha");
 
     Data->BrowserCode = ReadAllString("browser_code.txt");
     if(!Data->BrowserCode.empty())

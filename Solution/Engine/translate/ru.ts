@@ -191,6 +191,44 @@
     </message>
 </context>
 <context>
+    <name>BrowserAutomationStudioFramework::BrowserExtensionManager</name>
+    <message>
+        <location filename="../browserextensionmanager.cpp" line="177"/>
+        <source>Failed to parse extension data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browserextensionmanager.cpp" line="257"/>
+        <source>Request timeout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browserextensionmanager.cpp" line="457"/>
+        <source>Failed to remove header from crx file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browserextensionmanager.cpp" line="466"/>
+        <source>Failed to extract public key from crx file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browserextensionmanager.cpp" line="475"/>
+        <source>Failed to extract zip file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browserextensionmanager.cpp" line="484"/>
+        <source>Manifest file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../browserextensionmanager.cpp" line="497"/>
+        <source>Failed to parse manifest file</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>BrowserAutomationStudioFramework::BrowserListWidget</name>
     <message>
         <source>Browser #%1</source>
@@ -933,7 +971,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::ScriptMultiWorker</name>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="577"/>
+        <location filename="../scriptmultiworker.cpp" line="580"/>
         <source>Script finished with error :</source>
         <translation>Скрипт выполнен с ошибкой :</translation>
     </message>
@@ -946,71 +984,91 @@ Do you want to override it with version %3?
         <translation type="vanished"> Во время выполнения скрипта </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="603"/>
+        <location filename="../scriptmultiworker.cpp" line="606"/>
         <source> during execution of action </source>
         <translation> во время выполнения действия </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="605"/>
+        <location filename="../scriptmultiworker.cpp" line="608"/>
         <source>[%1] Script finished with error : </source>
         <translation>[%1] Скрипт выполнен с ошибкой : </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="649"/>
-        <location filename="../scriptmultiworker.cpp" line="1088"/>
-        <location filename="../scriptmultiworker.cpp" line="1089"/>
+        <location filename="../scriptmultiworker.cpp" line="652"/>
+        <location filename="../scriptmultiworker.cpp" line="1107"/>
+        <location filename="../scriptmultiworker.cpp" line="1108"/>
         <source>Ended with message: </source>
         <translation>Закончен с сообщением: </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="665"/>
-        <location filename="../scriptmultiworker.cpp" line="678"/>
+        <location filename="../scriptmultiworker.cpp" line="668"/>
+        <location filename="../scriptmultiworker.cpp" line="681"/>
         <source>Aborted By User</source>
         <translation>Прервано Пользователем</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="694"/>
+        <location filename="../scriptmultiworker.cpp" line="697"/>
         <source>[%1] Script finished correctly</source>
         <translation>[%1] Скрипт завершен корректно</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="787"/>
+        <location filename="../scriptmultiworker.cpp" line="790"/>
         <source>Script started with %1 threads and will finish after %2 success execution or %3 fail execution or when resource will finish.</source>
         <translation>Скрипт запущен в %1 потоков и будет остановлен после %2 успешных выполнений или %3 неудачных выполнений или после использования всех ресурсов.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="788"/>
+        <location filename="../scriptmultiworker.cpp" line="791"/>
         <source>You can change these params in record mode.</source>
         <translation>Вы можете изменить эти параметры в режиме записи.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="795"/>
+        <location filename="../scriptmultiworker.cpp" line="798"/>
+        <source>FunCaptcha module is enabled, it can reduce browser authenticity.</source>
+        <translation>Модуль FunCaptcha включен, он может снизить аутентичность браузера.</translation>
+    </message>
+    <message>
+        <location filename="../scriptmultiworker.cpp" line="799"/>
+        <source>So it is recommended to &lt;a href=&apos;disablefuncaptcha://disablefuncaptcha&apos; style=&apos;color:red&apos;&gt;turn it off&lt;/a&gt;, unless you are working with funcaptcha.</source>
+        <translation>Поэтому рекомендуется &lt;a href=&apos;disablefuncaptcha://disablefuncaptcha&apos; style=&apos;color:red&apos;&gt;отключить его&lt;/a&gt;, если только вы не работаете с funcaptcha.</translation>
+    </message>
+    <message>
+        <location filename="../scriptmultiworker.cpp" line="806"/>
         <source>ReCaptcha module is enabled, it can reduce browser authenticity.</source>
         <translation>Модуль ReCaptcha включен, он может снизить аутентичность браузера.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="796"/>
+        <location filename="../scriptmultiworker.cpp" line="807"/>
         <source>So it is recommended to &lt;a href=&apos;disablerecaptcha://disablerecaptcha&apos; style=&apos;color:red&apos;&gt;turn it off&lt;/a&gt;, unless you are working with recaptcha.</source>
-        <translation type="unfinished">Поэтому рекомендуется &lt;a href=&apos;disablerecaptcha://disablerecaptcha&apos; style=&apos;color:red&apos;&gt;отключить его&lt;/a&gt;, если только вы не работаете с recaptcha.</translation>
+        <translation>Поэтому рекомендуется &lt;a href=&apos;disablerecaptcha://disablerecaptcha&apos; style=&apos;color:red&apos;&gt;отключить его&lt;/a&gt;, если только вы не работаете с recaptcha.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="822"/>
+        <location filename="../scriptmultiworker.cpp" line="814"/>
+        <source>HCaptcha module is enabled, it can reduce browser authenticity.</source>
+        <translation>Модуль HCaptcha включен, он может снизить аутентичность браузера.</translation>
+    </message>
+    <message>
+        <location filename="../scriptmultiworker.cpp" line="815"/>
+        <source>So it is recommended to &lt;a href=&apos;disablehcaptcha://disablehcaptcha&apos; style=&apos;color:red&apos;&gt;turn it off&lt;/a&gt;, unless you are working with hcaptcha.</source>
+        <translation>Поэтому рекомендуется &lt;a href=&apos;disablehcaptcha://disablehcaptcha&apos; style=&apos;color:red&apos;&gt;отключить его&lt;/a&gt;, если только вы не работаете с hcaptcha.</translation>
+    </message>
+    <message>
+        <location filename="../scriptmultiworker.cpp" line="841"/>
         <source>Success</source>
         <translation>Удачно</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="856"/>
+        <location filename="../scriptmultiworker.cpp" line="875"/>
         <source>Stage Timeout</source>
         <translation>Время На Выполнение Этапа Истекло</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="1078"/>
+        <location filename="../scriptmultiworker.cpp" line="1097"/>
         <source>Too Much Fails</source>
         <translation>Слишком Много Ошибок</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="1709"/>
-        <location filename="../scriptmultiworker.cpp" line="1710"/>
+        <location filename="../scriptmultiworker.cpp" line="1729"/>
+        <location filename="../scriptmultiworker.cpp" line="1730"/>
         <source>All data have been processed</source>
         <translation>Все данные были обработаны</translation>
     </message>
@@ -1026,7 +1084,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::ScriptWorker</name>
     <message>
-        <location filename="../scriptworker.cpp" line="602"/>
+        <location filename="../scriptworker.cpp" line="616"/>
         <source>Aborted By User</source>
         <translation>Прервано Пользователем</translation>
     </message>
@@ -1039,19 +1097,19 @@ Do you want to override it with version %3?
         <translation type="vanished"> Во время выполнения скрипта </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="864"/>
-        <location filename="../scriptworker.cpp" line="1007"/>
+        <location filename="../scriptworker.cpp" line="894"/>
+        <location filename="../scriptworker.cpp" line="1037"/>
         <source>Fail number exceed</source>
         <translation>Превышено количество ошибок</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="871"/>
-        <location filename="../scriptworker.cpp" line="1108"/>
+        <location filename="../scriptworker.cpp" line="901"/>
+        <location filename="../scriptworker.cpp" line="1138"/>
         <source>Success number exceed</source>
         <translation>Превышено количество успехов</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1179"/>
+        <location filename="../scriptworker.cpp" line="1209"/>
         <source>Failed because process is stopped</source>
         <translation>Процесс остановлен</translation>
     </message>
@@ -1060,7 +1118,7 @@ Do you want to override it with version %3?
         <translation type="vanished">не удалось получить ресурс </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1613"/>
+        <location filename="../scriptworker.cpp" line="1658"/>
         <source>Thread suspended</source>
         <translation>Поток приостановлен</translation>
     </message>
@@ -1073,160 +1131,160 @@ Do you want to override it with version %3?
         <translation type="vanished">Поток аварийно завершился</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="830"/>
+        <location filename="../scriptworker.cpp" line="860"/>
         <source> during execution of action </source>
         <translation> во время выполнения действия </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1563"/>
+        <location filename="../scriptworker.cpp" line="1608"/>
         <source>Waiting for resource %1</source>
         <translation type="unfinished">Ожидаю ресурс %1</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1594"/>
+        <location filename="../scriptworker.cpp" line="1639"/>
         <source>All data have been processed for </source>
         <translation>Все данные были обработаны для </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1620"/>
-        <location filename="../scriptworker.cpp" line="1621"/>
+        <location filename="../scriptworker.cpp" line="1665"/>
+        <location filename="../scriptworker.cpp" line="1666"/>
         <source>Thread ended</source>
         <translation>Поток завершился</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1622"/>
+        <location filename="../scriptworker.cpp" line="1667"/>
         <source>Thread succeeded</source>
         <translation>Поток выполнен успешно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1624"/>
+        <location filename="../scriptworker.cpp" line="1669"/>
         <source> with message &quot;</source>
         <translation> с сообщением &quot;</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1687"/>
-        <location filename="../scriptworker.cpp" line="1698"/>
+        <location filename="../scriptworker.cpp" line="1732"/>
+        <location filename="../scriptworker.cpp" line="1743"/>
         <source>Thread #</source>
         <translation>Поток №</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1727"/>
-        <location filename="../scriptworker.cpp" line="1845"/>
-        <location filename="../scriptworker.cpp" line="1875"/>
+        <location filename="../scriptworker.cpp" line="1772"/>
+        <location filename="../scriptworker.cpp" line="1890"/>
+        <location filename="../scriptworker.cpp" line="1920"/>
         <source>CAPTCHA_FAIL</source>
         <translation>Ошибка решения капчи</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1727"/>
-        <location filename="../scriptworker.cpp" line="1845"/>
+        <location filename="../scriptworker.cpp" line="1772"/>
+        <location filename="../scriptworker.cpp" line="1890"/>
         <source>Failed to get solver</source>
         <translation>Неизвестный метод решения капчи</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1888"/>
+        <location filename="../scriptworker.cpp" line="1933"/>
         <source>Captcha wait timeout</source>
         <translation>Время ожидания решения капчи истекло</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1901"/>
+        <location filename="../scriptworker.cpp" line="1946"/>
         <source>Async function is called in sync mode</source>
         <translation>Асинхронная функция вызвана синхронно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1909"/>
-        <location filename="../scriptworker.cpp" line="1973"/>
+        <location filename="../scriptworker.cpp" line="1954"/>
+        <location filename="../scriptworker.cpp" line="2018"/>
         <source>Failed to run function </source>
         <translation>Ошибка при запуске функции </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1928"/>
+        <location filename="../scriptworker.cpp" line="1973"/>
         <source>Sync function is called in async mode</source>
         <translation>Синхронная функция вызвана асинхронно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1938"/>
+        <location filename="../scriptworker.cpp" line="1983"/>
         <source>Failed to execute module function </source>
         <translation>Не удалось выполнить функцию </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1998"/>
+        <location filename="../scriptworker.cpp" line="2043"/>
         <source>Failed to get mail number with Pop3CLient</source>
         <translation>Не удалось получить количество писем с помощью Pop3 клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2006"/>
+        <location filename="../scriptworker.cpp" line="2051"/>
         <source>Failed to get message with Pop3CLient</source>
         <translation>Не удалось получить письмо с помощью Pop3 клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2069"/>
+        <location filename="../scriptworker.cpp" line="2114"/>
         <source>Failed to get mail number with ImapCLient</source>
         <translation>Не удалось получить количество писем с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2077"/>
+        <location filename="../scriptworker.cpp" line="2122"/>
         <source>Failed to search mail with ImapCLient</source>
         <translation>Не удалось выполнить поиск с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2085"/>
+        <location filename="../scriptworker.cpp" line="2130"/>
         <source>Failed to custom search mail with ImapCLient</source>
         <translation>Не удалось выполнить специальный поиск с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2093"/>
+        <location filename="../scriptworker.cpp" line="2138"/>
         <source>Failed to fetch mail with ImapCLient</source>
         <translation>Не удалось получить письмо с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2101"/>
+        <location filename="../scriptworker.cpp" line="2146"/>
         <source>Failed to execute custom query with ImapCLient</source>
         <translation>Не удалось выполнить специальный запрос с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2185"/>
-        <location filename="../scriptworker.cpp" line="2379"/>
-        <location filename="../scriptworker.cpp" line="2387"/>
-        <location filename="../scriptworker.cpp" line="2397"/>
-        <location filename="../scriptworker.cpp" line="2426"/>
+        <location filename="../scriptworker.cpp" line="2230"/>
+        <location filename="../scriptworker.cpp" line="2448"/>
+        <location filename="../scriptworker.cpp" line="2456"/>
+        <location filename="../scriptworker.cpp" line="2466"/>
+        <location filename="../scriptworker.cpp" line="2495"/>
         <source>Failed to get page </source>
         <translation>Не удалось получить страницу </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2185"/>
-        <location filename="../scriptworker.cpp" line="2270"/>
-        <location filename="../scriptworker.cpp" line="2328"/>
-        <location filename="../scriptworker.cpp" line="2379"/>
-        <location filename="../scriptworker.cpp" line="2387"/>
-        <location filename="../scriptworker.cpp" line="2397"/>
-        <location filename="../scriptworker.cpp" line="2426"/>
-        <location filename="../scriptworker.cpp" line="2457"/>
+        <location filename="../scriptworker.cpp" line="2230"/>
+        <location filename="../scriptworker.cpp" line="2315"/>
+        <location filename="../scriptworker.cpp" line="2373"/>
+        <location filename="../scriptworker.cpp" line="2448"/>
+        <location filename="../scriptworker.cpp" line="2456"/>
+        <location filename="../scriptworker.cpp" line="2466"/>
+        <location filename="../scriptworker.cpp" line="2495"/>
+        <location filename="../scriptworker.cpp" line="2526"/>
         <source> with HttpClient</source>
         <translation> с помощью ХТТП клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2226"/>
+        <location filename="../scriptworker.cpp" line="2271"/>
         <source>Failed to resolve domain </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2270"/>
-        <location filename="../scriptworker.cpp" line="2328"/>
+        <location filename="../scriptworker.cpp" line="2315"/>
+        <location filename="../scriptworker.cpp" line="2373"/>
         <source>Failed to post page </source>
         <translation>Не удалось выполнить пост запрос </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2457"/>
+        <location filename="../scriptworker.cpp" line="2526"/>
         <source>Failed to download page </source>
         <translation>Не удалось скачать страницу </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3576"/>
+        <location filename="../scriptworker.cpp" line="3645"/>
         <source>Embedded language execution timeout</source>
         <translation>Таймаут во время выполнения функции на встроенном языке</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3583"/>
+        <location filename="../scriptworker.cpp" line="3652"/>
         <source>Embedded call already running</source>
         <translation>Другая функция на встроенном языке уже выполняется</translation>
     </message>
@@ -1280,29 +1338,30 @@ Do you want to override it with version %3?
         <location filename="../subprocessbrowser.cpp" line="353"/>
         <location filename="../subprocessbrowser.cpp" line="367"/>
         <location filename="../subprocessbrowser.cpp" line="380"/>
-        <location filename="../subprocessbrowser.cpp" line="477"/>
-        <location filename="../subprocessbrowser.cpp" line="503"/>
+        <location filename="../subprocessbrowser.cpp" line="416"/>
+        <location filename="../subprocessbrowser.cpp" line="490"/>
         <location filename="../subprocessbrowser.cpp" line="516"/>
-        <location filename="../subprocessbrowser.cpp" line="530"/>
-        <location filename="../subprocessbrowser.cpp" line="544"/>
-        <location filename="../subprocessbrowser.cpp" line="561"/>
+        <location filename="../subprocessbrowser.cpp" line="529"/>
+        <location filename="../subprocessbrowser.cpp" line="543"/>
+        <location filename="../subprocessbrowser.cpp" line="557"/>
         <location filename="../subprocessbrowser.cpp" line="574"/>
-        <location filename="../subprocessbrowser.cpp" line="588"/>
+        <location filename="../subprocessbrowser.cpp" line="587"/>
         <location filename="../subprocessbrowser.cpp" line="601"/>
         <location filename="../subprocessbrowser.cpp" line="614"/>
         <location filename="../subprocessbrowser.cpp" line="627"/>
-        <location filename="../subprocessbrowser.cpp" line="652"/>
+        <location filename="../subprocessbrowser.cpp" line="640"/>
         <location filename="../subprocessbrowser.cpp" line="665"/>
         <location filename="../subprocessbrowser.cpp" line="678"/>
         <location filename="../subprocessbrowser.cpp" line="691"/>
         <location filename="../subprocessbrowser.cpp" line="704"/>
         <location filename="../subprocessbrowser.cpp" line="717"/>
-        <location filename="../subprocessbrowser.cpp" line="737"/>
+        <location filename="../subprocessbrowser.cpp" line="730"/>
         <location filename="../subprocessbrowser.cpp" line="750"/>
         <location filename="../subprocessbrowser.cpp" line="763"/>
-        <location filename="../subprocessbrowser.cpp" line="775"/>
-        <location filename="../subprocessbrowser.cpp" line="791"/>
-        <location filename="../subprocessbrowser.cpp" line="1473"/>
+        <location filename="../subprocessbrowser.cpp" line="776"/>
+        <location filename="../subprocessbrowser.cpp" line="788"/>
+        <location filename="../subprocessbrowser.cpp" line="804"/>
+        <location filename="../subprocessbrowser.cpp" line="1489"/>
         <source>Timeout during </source>
         <translation>Таймаут во время выполнения </translation>
     </message>
@@ -1388,10 +1447,10 @@ Do you want to override it with version %3?
         <location filename="../subprocesswebelement.cpp" line="434"/>
         <location filename="../subprocesswebelement.cpp" line="441"/>
         <location filename="../subprocesswebelement.cpp" line="448"/>
-        <location filename="../subprocesswebelement.cpp" line="546"/>
-        <location filename="../subprocesswebelement.cpp" line="554"/>
-        <location filename="../subprocesswebelement.cpp" line="581"/>
-        <location filename="../subprocesswebelement.cpp" line="588"/>
+        <location filename="../subprocesswebelement.cpp" line="556"/>
+        <location filename="../subprocesswebelement.cpp" line="564"/>
+        <location filename="../subprocesswebelement.cpp" line="591"/>
+        <location filename="../subprocesswebelement.cpp" line="598"/>
         <source>Timeout during </source>
         <translation>Таймаут во время выполнения </translation>
     </message>

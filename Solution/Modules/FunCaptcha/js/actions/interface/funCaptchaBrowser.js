@@ -3,7 +3,7 @@
   <%= _.template($('#input_constructor').html())({
     variants: [ 'antigate-newapi', 'rucaptcha-newapi', '2captcha-newapi' ],
     description: tr('Service name'),
-    value_string: 'AntiCaptcha',
+    value_string: 'rucaptcha-newapi',
     default_selector: 'string',
     disable_int: true,
     id: 'serviceName',

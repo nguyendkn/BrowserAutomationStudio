@@ -185,7 +185,7 @@ _SMS.BaseApi = function(config, data, path){
 	
 	this.errorHandler = function(error, data){
 		error = error.toString();
-		data = _avoid_nilb(data, "").toString();
+		data = _avoid_nil(data).toString();
 		
 		var baseErrors = {
 			"FAILED_REQUEST": {
@@ -207,10 +207,34 @@ _SMS.BaseApi = function(config, data, path){
 			"UNSUPPORTED_SITE": {
 				"ru": 'Сайт "' + data + '" не поддерживается.',
 				"en": 'Site "' + data + '" is not supported.'
+			},
+			"BAD_KEY": {
+				"ru": "Неверный API-ключ.",
+				"en": "Invalid API key."
+			},
+			"NO_KEY": {
+				"ru": "API-ключ не указан.",
+				"en": "API key not specified."
+			},
+			"NO_BALANCE": {
+				"ru": "Закончился баланс.",
+				"en": "Balance ended."
+			},
+			"LOW_BALANCE": {
+				"ru": "Недостаточно денег на счету.",
+				"en": "Not enough money in the account."
+			},
+			"NO_NUMBERS": {
+				"ru": "Нет номеров.",
+				"en": "No numbers."
 			}
 		};
 		
 		var errorObj = baseErrors.hasOwnProperty(error) ? baseErrors[error] : api.getError(error, data);
+		
+		if(!_is_nilb(errorObj) && !_is_nilb(errorObj.base)){
+			api.errorHandler(errorObj.base);
+		};
 		
 		var message = api.name + ": " + error;
 		if(_is_nilb(errorObj)){

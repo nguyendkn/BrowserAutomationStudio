@@ -54,10 +54,17 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
 		
-		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}})!
+		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}, checkErrors:false})!
 		var resp = _result_function();
 		
-		_function_return({api:api, id:resp.order_id, lastId:resp.order_id, number:resp.phone});
+		if(resp.status==200){
+			_function_return({api:api, id:resp.order_id, lastId:resp.order_id, number:resp.phone});
+		}else{
+			if(resp.status==500){
+				resp.status = "NO_NUMBERS";
+			};
+			api.errorHandler(resp.status, resp.data.msg);
+		};
 	};
 	
 	this.getState = function(){
@@ -107,23 +114,22 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 				api.errorHandler(resp.status, resp.data.msg);
 			};
 		};
-			
+		
 		_function_return(code);
 	};
 	
 	this.getError = function(error, data){
 		var errors = {
 			"401": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"404": {
 				"ru": "Неправильно задан параметр method.",
 				"en": "The method parameter is set incorrectly."
 			},
 			"500": {
-				"ru": "Ошибка при обработке запроса / Нет доступных номеров / Истекло время заказа.",
-				"en": "Error processing request / No numbers available / Time of order expired."
+				"ru": "Ошибка при обработке запроса / Истекло время заказа.",
+				"en": "Error processing request / Time of order expired."
 			},
 			"502": {
 				"ru": "Сервис не существует.",
@@ -134,8 +140,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 				"en": "Operator does not exist."
 			},
 			"504": {
-				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account."
+				"base": "LOW_BALANCE"
 			},
 			"505": {
 				"ru": "Страна не существует.",

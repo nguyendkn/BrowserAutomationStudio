@@ -139,16 +139,13 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	this.getError = function(error, data){
 		var errors = {
 			"ERROR_WRONG_KEY": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"ERROR_NO_KEY": {
-				"ru": "API-ключ не указан.",
-				"en": "API key not specified."
+				"base": "NO_KEY"
 			},
 			"WARNING_LOW_BALANCE": {
-				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account."
+				"base": "LOW_BALANCE"
 			},
 			"ACCOUNT_BLOCKED": {
 				"ru": "Аккаунт заблокирован.",
@@ -175,8 +172,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 				"en": "Maximum quantity of numbers booked concurrently is exceeded for your account."
 			},
 			"NO_NUMBER": {
-				"ru": "Для выбранного сервиса свободные номера временно отсутствуют.",
-				"en": "Temporarily no numbers available for the selected service."
+				"base": "NO_NUMBERS"
 			},
 			"TIME_INTERVAL_ERROR": {
 				"ru": "Отложенный прием SMS не возможен в данный интервал времени.",

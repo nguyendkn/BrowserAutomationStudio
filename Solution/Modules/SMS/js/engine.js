@@ -3,7 +3,15 @@ _SMS = {
 	confirmData: {},
 	debug: false,
 	
+	paramClean: function(str){
+		return _avoid_nil(str).toString().trim();
+	},
+	
 	init: function(service, apiKey, serverUrl){
+		service = this.paramClean(service);
+		apiKey = this.paramClean(apiKey);
+		serverUrl = this.paramClean(serverUrl);
+		
 		var data = {service:service, key:apiKey};
 		if(!_is_nilb(serverUrl)){
 			data.url = serverUrl;
@@ -39,10 +47,10 @@ _SMS = {
 		var apiKey = _function_argument("apiKey");
 		var serverUrl = _function_argument("serverUrl");
 		var site = _function_argument("site");
-		var country = _function_argument("country");
-		var operator = _function_argument("operator");
-		var customSite = _function_argument("customSite");
-		var customCountry = _function_argument("customCountry");
+		var country = _SMS.paramClean(_function_argument("country"));
+		var operator = _SMS.paramClean(_function_argument("operator"));
+		var customSite = _SMS.paramClean(_function_argument("customSite"));
+		var customCountry = _SMS.paramClean(_function_argument("customCountry"));
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
@@ -90,10 +98,10 @@ _SMS = {
 		var apiKey = _function_argument("apiKey");
 		var serverUrl = _function_argument("serverUrl");
 		var site = _function_argument("site");
-		var country = _function_argument("country");
-		var operator = _function_argument("operator");
-		var customSite = _function_argument("customSite");
-		var customCountry = _function_argument("customCountry");
+		var country = _SMS.paramClean(_function_argument("country"));
+		var operator = _SMS.paramClean(_function_argument("operator"));
+		var customSite = _SMS.paramClean(_function_argument("customSite"));
+		var customCountry = _SMS.paramClean(_function_argument("customCountry"));
 		
 		if(_is_nilb(_SMS.confirmData)){
 			_SMS.confirmData = {};
@@ -114,7 +122,7 @@ _SMS = {
 	},
 	
 	getState: function(){
-		var number = _function_argument("number");
+		var number = _SMS.paramClean(_function_argument("number"));
 		
 		var confirmData = _SMS.confirmData[number];
 		var api = confirmData.api;
@@ -124,7 +132,7 @@ _SMS = {
 	},
 	
 	waitCode: function(){
-		var number = _function_argument("number");
+		var number = _SMS.paramClean(_function_argument("number"));
 		var maxTime = Date.now() + 60000 * _avoid_nilb(_function_argument("timeout"), 10);
 		var interval = 1000 * _avoid_nilb(_function_argument("interval"), 5);
 		
@@ -159,8 +167,8 @@ _SMS = {
 	},
 	
 	setStatus: function(){
-		var number = _function_argument("number");
-		var status = _function_argument("status").toString().trim();
+		var number = _SMS.paramClean(_function_argument("number"));
+		var status = _SMS.paramClean(_function_argument("status"));
 		var deleteInfo = _avoid_nilb(_function_argument("deleteInfo"), true);
 		
 		var confirmData = _SMS.confirmData[number];

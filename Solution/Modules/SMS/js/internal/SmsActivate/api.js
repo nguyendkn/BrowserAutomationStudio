@@ -146,24 +146,19 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	this.getError = function(error, data){
 		var errors = {
 			"BAD_KEY": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"NO_KEY": {
-				"ru": "API-ключ не указан.",
-				"en": "API key not specified."
+				"base": "NO_KEY"
 			},
 			"NO_BALANCE": {
-				"ru": "Закончился баланс.",
-				"en": "Balance ended."
+				"base": "NO_BALANCE"
 			},
 			"NO_MEANS": {
-				"ru": "Закончился баланс.",
-				"en": "Balance ended."
+				"base": "NO_BALANCE"
 			},
 			"NO_NUMBERS": {
-				"ru": "Нет номеров.",
-				"en": "No numbers."
+				"base": "NO_NUMBERS"
 			},
 			"ERROR_SQL": {
 				"ru": "Ошибка SQL-сервера.",

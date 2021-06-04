@@ -129,20 +129,17 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	this.getError = function(error, data){
 		var errors = {
 			"ERROR_WRONG_KEY": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"ERROR_KEY_NEED_CHANGE": {
-				"ru": "API-ключ требует замены.",
-				"en": "API key needs to be replaced."
+				"ru": "API-ключ требует замены. (BAD_KEY)",
+				"en": "API key needs to be replaced. (BAD_KEY)"
 			},
 			"ERROR_NO_KEY": {
-				"ru": "API-ключ не указан.",
-				"en": "API key not specified."
+				"base": "NO_KEY"
 			},
 			"WARNING_LOW_BALANCE": {
-				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account."
+				"base": "LOW_BALANCE"
 			},
 			"Service not define": {
 				"ru": "Сервис не определен.",
@@ -169,8 +166,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 				"en": "You have not used many of the issued numbers and therefore the issuance of new numbers is frozen for 15 minutes."
 			},
 			"WARNING_NO_NUMS": {
-				"ru": "Нет подходящих номеров.",
-				"en": "No matching numbers."
+				"base": "NO_NUMBERS"
 			},
 			"TZ_OVER_OK": {
 				"ru": "Операция завершена.",

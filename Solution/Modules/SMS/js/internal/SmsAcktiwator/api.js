@@ -126,20 +126,16 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 				"en": "Service not found."
 			},
 			"102": {
-				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account."
+				"base": "LOW_BALANCE"
 			},
 			"103": {
-				"ru": "Нет доступных номеров.",
-				"en": "No numbers available."
+				"base": "NO_NUMBERS"
 			},
 			"201": {
-				"ru": "API-ключ не указан.",
-				"en": "API key not specified."
+				"base": "NO_KEY"
 			},
 			"202": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"203": {
 				"ru": "Аккаунт заблокирован | " + data,

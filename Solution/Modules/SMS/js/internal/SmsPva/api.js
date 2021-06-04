@@ -21,10 +21,10 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var resp = api.parseJSON(content);
 		
 		if(resp.response=="2" && !_is_nilb(resp.balance)){
-			if(resp.balance=="0.0000"){
-				api.errorHandler('NO_BALANCE');
-			}else{
+			if(Number(resp.balance) > 0){
 				api.errorHandler('LOW_BALANCE');
+			}else{
+				api.errorHandler('NO_BALANCE');
 			};
 		};
 	
@@ -172,24 +172,19 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	this.getError = function(error, data){
 		var errors = {
 			"API KEY NOT FOUND!": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"API KEY не получен!": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"Недостаточно средств!": {
-				"ru": "Закончился баланс.",
-				"en": "Balance ended."
+				"base": "NO_BALANCE"
 			},
 			"NO_BALANCE": {
-				"ru": "Закончился баланс.",
-				"en": "Balance ended."
+				"base": "NO_BALANCE"
 			},
 			"LOW_BALANCE": {
-				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account."
+				"base": "LOW_BALANCE"
 			},
 			"Service NOT FOUND!": {
 				"ru": "Сервис не найден.",

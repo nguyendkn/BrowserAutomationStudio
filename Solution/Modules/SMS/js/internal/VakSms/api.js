@@ -104,12 +104,10 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	this.getError = function(error, data){
 		var errors = {
 			"apiKeyNotFound": {
-				"ru": "Неверный API-ключ.",
-				"en": "Invalid API key."
+				"base": "BAD_KEY"
 			},
 			"noMoney": {
-				"ru": "Недостаточно денег на счету.",
-				"en": "Not enough money in the account."
+				"base": "LOW_BALANCE"
 			},
 			"noService": {
 				"ru": "Данный сервис не поддерживается, свяжитесь с администрацией сайта.",
@@ -124,8 +122,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 				"en": "Operator not found for the requested country."
 			},
 			"noNumber": {
-				"ru": "Нет номеров, попробуйте позже.",
-				"en": "No numbers, please try later."
+				"base": "NO_NUMBERS"
 			},
 			"badStatus": {
 				"ru": "Неверный статус.",

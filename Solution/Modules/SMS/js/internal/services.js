@@ -184,5 +184,9 @@ _SMS.getServiceApi = function(data){
 		die(_K=="ru" ? ('Сервиса ' + service + ' нет в списке доступных') : (service + ' service is not in the list of available'), true);
 	};
 	var obj = services[service];
-	return new obj.api(obj.config, data);
+	try{
+		return new obj.api(obj.config, data);
+	}catch(e){
+		die(_K=="ru" ? ('Класс сервиса ' + service + ' поврежден или отсутствует') : ('Class of service ' + service + ' is corrupted or missing'), true);
+	};
 };

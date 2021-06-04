@@ -123,6 +123,10 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		if(!_starts_with(resp.status, 'ACCESS_') && resp.status !== "BAD_STATUS"){
 			api.errorHandler(resp.status, resp.data);
 		};
+		
+		if(resp.status=="BAD_STATUS" && status=="8"){
+			_call_function(api.setStatus,{number:number, status:"6"})!
+		};
 	};
 	
 	this.getCode = function(){
@@ -158,6 +162,9 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 				"base": "NO_BALANCE"
 			},
 			"NO_NUMBERS": {
+				"base": "NO_NUMBERS"
+			},
+			"NO_NUMBER": {
 				"base": "NO_NUMBERS"
 			},
 			"ERROR_SQL": {

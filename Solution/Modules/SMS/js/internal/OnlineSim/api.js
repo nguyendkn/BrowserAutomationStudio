@@ -100,7 +100,8 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		
 		var actions = {
 			"3":"setOperationRevise",
-			"6":"setOperationOk"
+			"6":"setOperationOk",
+			"8":"setOperationOk"
 		};
 		
 		if(!actions.hasOwnProperty(status)){

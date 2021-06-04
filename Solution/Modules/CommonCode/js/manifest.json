@@ -17,7 +17,7 @@
     "engine": [
         "engine.js"
     ],
-    "icon": "CommonCode.png",
+    "icon": "",
     "info": {
         "en": "Module containing functions used by other modules.",
         "ru": "Модуль, содержащий функции, используемые другими модулями."

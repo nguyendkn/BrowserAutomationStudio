@@ -203,6 +203,18 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 				"ru": "id активации не существует.",
 				"en": "Activation id does not exist."
 			},
+			"NUMBER_OFFLINE": {
+				"ru": "Сим-карта не онлайн.",
+				"en": "The SIM card is not online."
+			},
+			"IMPOSSIBLE_AGAIN": {
+				"ru": "Невозможно повторить этот заказ.",
+				"en": "It is impossible to repeat the order."
+			},
+			"ORDER_NOT_FOUND": {
+				"ru": "Номер старой операции не найден.",
+				"en": "The old operation number was not found."
+			},
 			"WRONG_ADDITIONAL_SERVICE": {
 				"ru": "Неверный дополнительный сервис (допустимы только сервисы для переадресации).",
 				"en": "Invalid additional service (only services for redirection are allowed)."

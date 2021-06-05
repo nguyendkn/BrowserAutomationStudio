@@ -1581,6 +1581,10 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           ]
         }
       }) %>
+      <%= _.template($('#input_constructor').html())({ description: tr('Text with instructions'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
+        description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),
+        examples: [ { code: tr('Select all images where there is a plane') }, { code: tr('Select all images where there is a bus') } ]
+      }}) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
       <div style="margin-left: 15px">
         <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
@@ -1626,6 +1630,10 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         }
       }) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
+      <%= _.template($('#input_constructor').html())({ description: tr('Text with instructions'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
+        description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),
+        examples: [ { code: tr('Select all images where there is a plane') }, { code: tr('Select all images where there is a bus') } ]
+      }}) %>
       <div style="margin-left: 15px">
         <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
         <label for="AdvancedCheck" class="tr">Advanced settings.</label>

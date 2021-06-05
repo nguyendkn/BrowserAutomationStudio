@@ -131,6 +131,18 @@ _SMS = {
 		_function_return(_result_function());
 	},
 	
+	getCode: function(){
+		var number = _SMS.paramClean(_function_argument("number"));
+		
+		if(_is_nilb(_SMS.confirmData) || _is_nilb(_SMS.confirmData[number])){
+			fail((_K=="ru" ? 'Нет информации об номере' : 'No information about the number') + ' "' + number + '"');
+		};
+		
+		_call_function(_SMS.confirmData[number].api.getCode,{number:number})!
+		
+		_function_return(_result_function());
+	},
+	
 	waitCode: function(){
 		var number = _SMS.paramClean(_function_argument("number"));
 		var maxTime = Date.now() + 60000 * _avoid_nilb(_function_argument("timeout"), 10);

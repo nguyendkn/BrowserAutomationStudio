@@ -23,6 +23,16 @@ namespace BrowserAutomationStudioFramework
         void Backup(QString);
     private slots:
         void DoBackups();
+        QString DoBackupsInternal();
+
+
+    public slots:
+        //Start backup manually and report in BackupDone signal
+        void StartBackup();
+
+    signals:
+        //BackupDone is called only if backup was initiated by StartBackup slot
+        void BackupDone(QString);
     };
 }
 

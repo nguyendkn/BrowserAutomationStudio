@@ -273,6 +273,7 @@ public:
     void ProcessFind(LPFINDREPLACE lpfr);
     void SetUserAgentCallback(const std::string& value);
     void PrepareFunctionCallback(const std::string& value);
+    void BackupDoneCallback(const std::string& full_path);
     void RecaptchaV3ResultCallback(const std::string& id, const std::string& result);
     void RecaptchaV3ListCallback(const std::string& value);
     void ClickExtensionButton(const std::string& id);

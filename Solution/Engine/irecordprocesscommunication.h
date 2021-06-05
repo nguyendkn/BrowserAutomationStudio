@@ -29,6 +29,7 @@ namespace BrowserAutomationStudioFramework
         void Stop();
         void MaximizeWindow();
         void WindowAttached();
+        void StartBackup();
         void RunTaskResult(int ResultId,QString Result);
         void PrepareFunctionResult(const QString& FunctionName, const QString& FunctionData);
 
@@ -46,6 +47,7 @@ namespace BrowserAutomationStudioFramework
         virtual void PrepareFunction(QString FunctionName) = 0;
         virtual void OnRecord() = 0;
         virtual void OnRun() = 0;
+        virtual void BackupDone(QString FullPath) = 0;
 
     };
 }

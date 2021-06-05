@@ -1853,7 +1853,14 @@ void MainApp::PrepareFunctionCallback(const std::string& value)
     {
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_PrepareFunction(") + picojson::value(value).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
+}
 
+void MainApp::BackupDoneCallback(const std::string& full_path)
+{
+    if(BrowserScenario)
+    {
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_FinishedBackup(") + picojson::value(full_path).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }
 }
 
 void MainApp::RecaptchaV3ListCallback(const std::string& value)
@@ -3686,6 +3693,11 @@ void MainApp::HandleScenarioBrowserEvents()
         std::string script = Javascript(std::string("BrowserAutomationStudio_GetClipboardResult(") + picojson::value(res).serialize() + std::string(")"),"scenario");
         if(BrowserScenario)
             BrowserScenario->GetMainFrame()->ExecuteJavaScript(script,BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }
+
+    if(scenariov8handler->GetStartBackup())
+    {
+        SendTextResponce("<StartBackup></StartBackup>");
     }
 
     std::pair<std::string, bool> res5 = scenariov8handler->GetIsEditStart();

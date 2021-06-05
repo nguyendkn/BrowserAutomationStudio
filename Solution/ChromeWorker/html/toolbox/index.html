@@ -1608,6 +1608,50 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <%= _.template($('#back').html())({ action: 'executeandadd', visible: true, name: tr('Solve CoordinatesCaptcha') }) %>
   </script>
 
+  <script type="text/template" id="coordinatesCaptchaBrowser">
+    <div class="container-fluid">
+      <%= _.template($('#input_constructor').html())({
+        variants: [ 'rucaptcha', '2captcha' ],
+        description: tr('Service name'),
+        value_string: 'rucaptcha',
+        default_selector: 'string',
+        disable_int: true,
+        id: 'serviceName',
+        help: {
+          description: tr('Captcha solving service name'),
+          examples: [
+            { code: 'rucaptcha', description: tr('Solve captcha using https://rucaptcha.com/ service') },
+            { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
+          ]
+        }
+      }) %>
+      <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
+      <div style="margin-left: 15px">
+        <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
+        <label for="AdvancedCheck" class="tr">Advanced settings.</label>
+      </div>
+      <div id="Advanced" style="display: none;">
+        <%= _.template($('#input_constructor').html())({ description: tr('Task solution check interval'), default_selector: 'int', value_number: 2000, disable_string: true, id: 'taskWaitInterval', help: {
+          description: tr('Task solution check interval in milliseconds'),
+          examples: [ { code: '600', description: tr('Wait for 600 milliseconds') }, { code: '10000', description: tr('Wait for 10 seconds') }, { code: '5000', description: tr('Wait for 5 seconds') } ]
+        }}) %>
+        <%= _.template($('#input_constructor').html())({ description: tr('Task solution check delay'), default_selector: 'int', value_number: 5000, disable_string: true, id: 'taskWaitDelay', help: {
+          description: tr('Task solution check delay in milliseconds'),
+          examples: [ { code: '600', description: tr('Wait for 600 milliseconds') }, { code: '10000', description: tr('Wait for 10 seconds') }, { code: '5000', description: tr('Wait for 5 seconds') } ]
+        }}) %>
+        <%= _.template($('#input_constructor').html())({ description: tr('Custom service URL'), default_selector: 'string', disable_int: true, value_string: '', id: 'serviceUrl', help: {
+          description: tr('Custom service URL. Can be blank'),
+          examples: [
+            { code: 'Empty string', description: tr('Use default service URL, http://rucaptcha.com for RuCaptcha, etc') },
+            { code: 'http://127.0.0.1:8083', description: tr('Use custom service URL with port 8083') },
+            { code: 'http://127.0.0.3:8080', description: tr('Use custom service URL with port 8080') },
+          ]
+        }}) %>
+      </div>
+    </div>
+    <%= _.template($('#back').html())({ action: 'executeandadd', visible: true, name: tr('Solve CoordinatesCaptcha') }) %>
+  </script>
+
   <script type="text/template" id="solvecaptcha">
     <div class="container-fluid solvecaptcha">
       <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Captcha picture data encoded in base64"), default_selector: "expression", disable_int:true, disable_string:true, help: {description: tr("Data in base64 format can be obtained from screenshot action or from read file action.")}}) %>

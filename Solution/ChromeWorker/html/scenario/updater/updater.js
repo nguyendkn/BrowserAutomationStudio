@@ -30,13 +30,17 @@
     },
 
     initialize() {
-      this.on('change:isStarted', async (__, isStarted) => {
+      this.on('change:isStarted', (__, isStarted) => {
         if (!isStarted) {
           BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
         } else {
           BrowserAutomationStudio_TriggerEvent('scenario.updateStart');
         }
-        if (isStarted) await _.sleep(200).then(() => this.run());
+        if (isStarted) BrowserAutomationStudio_StartBackup();
+
+        this.once('backup', async () => {
+          await _.sleep(200).then(() => this.run());
+        });
       });
 
       this.on('finish', () => {
@@ -232,6 +236,9 @@
           </svg>
           <span style="margin-left: 13px"><%= tr('Copy log to clipboard') %></span>
         </button>
+        <button id="actionUpdaterCopyBackup" class="action-updater-copy-btn" style="display: none">
+          <span><%= tr('Copy path to project backup') %></span> (<span id="actionUpdaterBackupName"></span>)
+        </button>
       </div>
       <div class="action-updater-footer">
         <button type="button" id="actionUpdaterAccept" class="btn-base btn-accept"><%= tr('Run') %></button>
@@ -279,6 +286,15 @@
         this.$('#actionUpdaterTotalCount').text(length);
         this.$('#actionUpdaterSuccessCount').text(0);
         this.$('#actionUpdaterErrorsCount').text(0);
+      });
+
+      this.model.on('backup', (path) => {
+        this.$('#actionUpdaterBackupName').text(path.slice(1 + Math.max(
+          path.lastIndexOf('\\'),
+          path.lastIndexOf('\/'),
+        )));
+        this.$('#actionUpdaterCopyBackup').data('path', path);
+        this.$('#actionUpdaterCopyBackup').slideDownEx(250);
       });
 
       this.modal.on('accept', this.show, this);
@@ -344,6 +360,16 @@
     },
 
     events: {
+      'click #actionUpdaterCopyBackup': function () {
+        if (!window.getSelection().toString().length) {
+          const $button = this.$('#actionUpdaterCopyBackup');
+          const $input = $('<textarea>').appendTo('body');
+          $input.val($button.data('path')).select();
+          document.execCommand('copy');
+          $input.remove();
+        }
+      },
+
       'click #actionUpdaterCopyLog': function () {
         if (!window.getSelection().toString().length) {
           const data = $.map(this.$('#actionUpdaterLog div'), $.text);

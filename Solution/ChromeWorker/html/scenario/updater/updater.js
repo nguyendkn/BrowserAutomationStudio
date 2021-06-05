@@ -40,8 +40,6 @@
       });
 
       this.on('finish', () => {
-        BrowserAutomationStudio_EditEnd();
-
         if (!this.get('errorsCount')) this.trigger('log', {
           message: [
             `${tr(`Done without errors`)}.`,
@@ -82,11 +80,17 @@
 
             this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
               this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {
-                resolve({ error: false, message: data });
+                this.off('toolbox.editEnd').once('toolbox.editEnd', () => {
+                  resolve({ error: false, message: data });
+                });
+                BrowserAutomationStudio_EditEnd();
               });
 
               this.off('toolbox.editFail').once('toolbox.editFail', (data) => {
-                resolve({ error: true, message: data });
+                this.off('toolbox.editEnd').once('toolbox.editEnd', () => {
+                  resolve({ error: true, message: data });
+                });
+                BrowserAutomationStudio_EditEnd();
               });
 
               BrowserAutomationStudio_EditSaveStart();

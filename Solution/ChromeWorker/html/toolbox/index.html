@@ -1566,21 +1566,13 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   <script type="text/template" id="coordinatesCaptchaElement">
     <div class="container-fluid">
       <%= _.template($('#path').html())({ selector }) %>
-      <%= _.template($('#input_constructor').html())({
-        variants: [ 'rucaptcha', '2captcha' ],
-        description: tr('Service name'),
-        value_string: 'rucaptcha',
-        default_selector: 'string',
-        disable_int: true,
-        id: 'serviceName',
-        help: {
-          description: tr('Captcha solving service name'),
-          examples: [
-            { code: 'rucaptcha', description: tr('Solve captcha using https://rucaptcha.com/ service') },
-            { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
-          ]
-        }
-      }) %>
+      <%= _.template($('#input_constructor').html())({ id: 'serviceName', description: tr('Service name'), variants: [ 'rucaptcha', '2captcha' ], value_string: 'rucaptcha', default_selector: 'string', disable_int: true, help: {
+        description: tr('Captcha solving service name'),
+        examples: [
+          { code: 'rucaptcha', description: tr('Solve captcha using https://rucaptcha.com/ service') },
+          { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
+        ]
+      }}) %>
       <%= _.template($('#input_constructor').html())({ description: tr('Text with instructions'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
         description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),
         examples: [ { code: tr('Select all images where there is a plane') }, { code: tr('Select all images where there is a bus') } ]
@@ -1614,21 +1606,13 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="coordinatesCaptchaBrowser">
     <div class="container-fluid">
-      <%= _.template($('#input_constructor').html())({
-        variants: [ 'rucaptcha', '2captcha' ],
-        description: tr('Service name'),
-        value_string: 'rucaptcha',
-        default_selector: 'string',
-        disable_int: true,
-        id: 'serviceName',
-        help: {
-          description: tr('Captcha solving service name'),
-          examples: [
-            { code: 'rucaptcha', description: tr('Solve captcha using https://rucaptcha.com/ service') },
-            { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
-          ]
-        }
-      }) %>
+      <%= _.template($('#input_constructor').html())({ id: 'serviceName', description: tr('Service name'), variants: [ 'rucaptcha', '2captcha' ], value_string: 'rucaptcha', default_selector: 'string', disable_int: true, help: {
+        description: tr('Captcha solving service name'),
+        examples: [
+          { code: 'rucaptcha', description: tr('Solve captcha using https://rucaptcha.com/ service') },
+          { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
+        ]
+      }}) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
       <%= _.template($('#input_constructor').html())({ description: tr('Text with instructions'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
         description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),

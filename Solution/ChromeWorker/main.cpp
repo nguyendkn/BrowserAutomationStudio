@@ -1959,6 +1959,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->IsTesing = false;
     Data->IsMousePress = false;
     Data->MultiselectMode = false;
+    Data->SetIndirectControlOnNext = false;
     Data->MultiselectIsInsideElementLoop = false;
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
     Data->_UniqueProcessId = Settings.UniqueProcessId();

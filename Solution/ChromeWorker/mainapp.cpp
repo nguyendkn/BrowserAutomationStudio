@@ -2177,6 +2177,13 @@ void MainApp::WaitCodeCallback()
 
 void MainApp::StartSectionCallback(int Id)
 {
+    if(Data->SetIndirectControlOnNext)
+    {
+        Data->SetIndirectControlOnNext = false;
+        Data->ManualControl = BrowserData::Indirect;
+        UpdateManualControl();
+    }
+
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = "about:blank";
@@ -3955,8 +3962,7 @@ void MainApp::HandleToolboxBrowserEvents()
         WORKER_LOG("BrowserAutomationStudio_Interrupt<<");
         if(Layout->IsManualControlAction)
         {
-            Data->ManualControl = BrowserData::Indirect;
-            UpdateManualControl();
+            Data->SetIndirectControlOnNext = true;
         }
         SendTextResponce("<Interrupt></Interrupt>");
     }

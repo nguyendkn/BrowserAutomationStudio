@@ -38,7 +38,7 @@ void EnableModule(const std::string& ModuleName)
     }
 }
 
-bool IsRecaptchaEnabled()
+bool IsModuleEnabled(const std::string& ModuleName)
 {
     try
     {
@@ -46,11 +46,11 @@ bool IsRecaptchaEnabled()
         picojson::value MetaJson;
         picojson::parse(MetaJson, Meta);
         picojson::value::object MetaObject = MetaJson.get<picojson::value::object>();
-        if(MetaObject.find("ReCaptcha") == MetaObject.end())
+        if(MetaObject.find(ModuleName) == MetaObject.end())
         {
             return true;
         }
-        return MetaObject["ReCaptcha"].get<bool>();
+        return MetaObject[ModuleName].get<bool>();
     }catch(...)
     {
 

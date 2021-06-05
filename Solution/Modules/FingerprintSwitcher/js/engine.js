@@ -32,14 +32,14 @@ function BrowserAutomationStudio_GetFingerprint()
 	var q = (FINGERPRINT_JSON.tags).split(",").map(function(el){return el.trim()})
 	if(q.length == 0 || q.length == 1 && q[0] == "*")
 	{
-		q = ((FINGERPRINT_JSON.key).length > 0) ? ("?version=4&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "?version=4"
+		q = ((FINGERPRINT_JSON.key).length > 0) ? ("?version=5&&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "?version=5"
 		if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
 		{
 			q += "&tags=*"
 		}
 	}else
 	{
-    	q = "?version=4&tags=" + encodeURIComponent(q.join(",")) + (((FINGERPRINT_JSON.key).length > 0) ? ("&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "")
+    	q = "?version=5&tags=" + encodeURIComponent(q.join(",")) + (((FINGERPRINT_JSON.key).length > 0) ? ("&key=" + encodeURIComponent(FINGERPRINT_JSON.key)) : "")
 	}
 
 	if(FINGERPRINT_JSON.min_browser_version != "*")

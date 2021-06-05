@@ -58,6 +58,6 @@ using ModulesDataList = std::vector<ModulesData>;
 void EnableModule(const std::string& ModuleName);
 ModulesDataList LoadModulesData(const std::string& Locale, const std::string& BASPid, ModulesDataList& UnusedModules);
 std::string GetAllBrowserDataCode(const ModulesDataList& Modules);
-bool IsRecaptchaEnabled();
+bool IsModuleEnabled(const std::string& ModuleName);
 
 #endif // MODULESDATA_H

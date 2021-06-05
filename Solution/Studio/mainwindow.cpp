@@ -2069,6 +2069,18 @@ void MainWindow::HighlightAction(QUrl url)
         QDesktopServices::openUrl(QUrl::fromLocalFile(info.absoluteFilePath()));
         return;
     }
+    if(url.scheme() == "disablehcaptcha")
+    {
+        if(Worker)
+            Worker->Abort();
+        if(ComplexLoggerLog)
+            ComplexLoggerLog->Clear();
+        _ModuleManager->SetModuleEnabled("HCaptcha", false);
+
+        QMessageBox::information(0, tr(""), QString(tr("HCaptcha module has been disabled")));
+
+        return;
+    }
     if(url.scheme() == "disablerecaptcha")
     {
         if(Worker)
@@ -2078,6 +2090,18 @@ void MainWindow::HighlightAction(QUrl url)
         _ModuleManager->SetModuleEnabled("ReCaptcha", false);
 
         QMessageBox::information(0, tr(""), QString(tr("ReCaptcha module has been disabled")));
+
+        return;
+    }
+    if(url.scheme() == "disablefuncaptcha")
+    {
+        if(Worker)
+            Worker->Abort();
+        if(ComplexLoggerLog)
+            ComplexLoggerLog->Clear();
+        _ModuleManager->SetModuleEnabled("FunCaptcha", false);
+
+        QMessageBox::information(0, tr(""), QString(tr("FunCaptcha module has been disabled")));
 
         return;
     }

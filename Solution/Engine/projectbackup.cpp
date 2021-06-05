@@ -31,7 +31,7 @@ namespace BrowserAutomationStudioFramework
         Timer->start();
     }
 
-    void ProjectBackup::DoBackups()
+    QString ProjectBackup::DoBackupsInternal()
     {
         QDateTime CurrentDateTime = QDateTime::currentDateTime();
         QDir dir(DestFolder + QDir::separator() + CurrentDateTime.toString("yyyy.MM.dd"));
@@ -39,7 +39,20 @@ namespace BrowserAutomationStudioFramework
             dir.mkpath(".");
         QString path = dir.absoluteFilePath(QString("%1.xml").arg(CurrentDateTime.toString("hh.mm.ss")));
         emit Backup(path);
+        return path;
     }
+
+    void ProjectBackup::DoBackups()
+    {
+        DoBackupsInternal();
+    }
+
+    void ProjectBackup::StartBackup()
+    {
+        QString Res = DoBackupsInternal();
+        emit BackupDone(Res);
+    }
+
 
 
 }

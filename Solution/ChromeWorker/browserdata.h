@@ -30,6 +30,7 @@ public:
         DirectNoRecord,
         DirectRecord
     }ManualControl;
+    bool SetIndirectControlOnNext;
 
     struct CachedItem
     {

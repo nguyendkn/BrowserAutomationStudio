@@ -342,7 +342,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(Close()));
     connect(ui->actionOpenUrl,SIGNAL(triggered()),this,SLOT(OpenUrl()));
     connect(ui->actionDebug_Version,SIGNAL(triggered()),this,SLOT(ShowDebugVersion()));
-    connect(ui->actionUploadToGoogleDrive,SIGNAL(triggered()),this,SLOT(UploadToGoogleDrive()));
+    //connect(ui->actionUploadToGoogleDrive,SIGNAL(triggered()),this,SLOT(UploadToGoogleDrive()));
+    connect(ui->actionBackup_Path,SIGNAL(triggered()),this,SLOT(ShowBackupPath()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),this,SLOT(ClearState()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),this,SLOT(RestoreState()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),_RecordProcessCommunication,SLOT(RestoreOriginalStage()));
@@ -402,12 +403,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->Recents->Reload(CurrentFileName);
     ui->Recents->setVisible(true);
-    if(Settings->value("ProjectBackup",true).toBool())
+
     {
         ProjectBackup *backup = new ProjectBackup(this);
         backup->SetPeriod(Settings->value("ProjectBackupPeriod",5 * 60000).toInt());
         backup->SetDestFolder(Settings->value("ProjectBackupDestFolder","../../projectbackups").toString());
         connect(backup,SIGNAL(Backup(QString)),this,SLOT(SaveToFileSilent(QString)));
+        connect(_RecordProcessCommunication,SIGNAL(StartBackup()),backup,SLOT(StartBackup()));
+        connect(backup,SIGNAL(BackupDone(QString)),_RecordProcessCommunication,SLOT(BackupDone(QString)));
+        connect(this,SIGNAL(CurrentFileNameHasChanged(QString)),backup,SLOT(CurrentFileNameHasChanged(QString)));
+        backup->CurrentFileNameHasChanged(CurrentFileName);
         backup->Start();
     }
 
@@ -466,6 +471,13 @@ void MainWindow::UploadToGoogleDrive()
 
 }
 
+void MainWindow::ShowBackupPath()
+{
+    QString Folder("../../projectbackups");
+    QDir(Folder).mkpath(".");
+    QDesktopServices::openUrl(QUrl::fromLocalFile(Folder));
+}
+
 void MainWindow::OpenUrl()
 {
     if(!SavePrevious())
@@ -513,6 +525,7 @@ void MainWindow::SetCurrentFileName(const QString& CurrentFileName)
         ui->Recents->Reload(CurrentFileName);
     }
     this->CurrentFileName = CurrentFileName;
+    emit CurrentFileNameHasChanged(CurrentFileName);
     UpdateTitle();
 }
 
@@ -2430,6 +2443,7 @@ void MainWindow::RunInternal()
     connect(_RecordProcessCommunication,SIGNAL(Interrupt()),worker,SLOT(InterruptAction()));
     connect(_RecordProcessCommunication,SIGNAL(MaximizeWindow()),this,SLOT(Show()));
     connect(_RecordProcessCommunication,SIGNAL(WindowAttached()),this,SLOT(RecordWindowAttached()));
+    connect(_RecordProcessCommunication,SIGNAL(StartBackup()),this,SLOT(RecordWindowAttached()));
     if(IsRecord)
     {
         connect(worker,SIGNAL(RunTaskInRecordMode(int,QString,QString)),_RecordProcessCommunication,SLOT(RunTaskInRecordMode(int,QString,QString)));

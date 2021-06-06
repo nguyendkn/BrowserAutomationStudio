@@ -13,7 +13,6 @@
       } else {
         this.set('errorsCount', this.get('errorsCount') + 1);
       }
-
       this.trigger('log', { message, id });
     },
 
@@ -29,6 +28,13 @@
       return success === _.size(this.get('tasks'));
     },
 
+    waitForBackup() {
+      return new Promise((resolve) => {
+        this.once('backup', (path) => resolve());
+        BrowserAutomationStudio_StartBackup();
+      });
+    },
+
     initialize() {
       this.on('change:isStarted', async (__, isStarted) => {
         if (!isStarted) {
@@ -40,8 +46,6 @@
       });
 
       this.on('finish', () => {
-        BrowserAutomationStudio_EditEnd();
-
         if (!this.get('errorsCount')) this.trigger('log', {
           message: [
             `${tr(`Done without errors`)}.`,
@@ -63,6 +67,7 @@
     },
 
     async run() {
+      await this.waitForBackup({});
       this.set('successCount', 0);
       this.set('errorsCount', 0);
       let timeout = undefined;
@@ -82,11 +87,17 @@
 
             this.off('toolbox.editStarted').once('toolbox.editStarted', () => {
               this.off('toolbox.editSuccess').once('toolbox.editSuccess', (data) => {
-                resolve({ error: false, message: data });
+                this.off('toolbox.editEnd').once('toolbox.editEnd', () => {
+                  resolve({ error: false, message: data });
+                });
+                BrowserAutomationStudio_EditEnd();
               });
 
               this.off('toolbox.editFail').once('toolbox.editFail', (data) => {
-                resolve({ error: true, message: data });
+                this.off('toolbox.editEnd').once('toolbox.editEnd', () => {
+                  resolve({ error: true, message: data });
+                });
+                BrowserAutomationStudio_EditEnd();
               });
 
               BrowserAutomationStudio_EditSaveStart();
@@ -228,6 +239,9 @@
           </svg>
           <span style="margin-left: 13px"><%= tr('Copy log to clipboard') %></span>
         </button>
+        <button id="actionUpdaterCopyBackup" class="action-updater-copy-btn" style="display: none">
+          <span><%= tr('Copy the path to a project backup') %> (<span id="actionUpdaterBackupName"></span>)</span>
+        </button>
       </div>
       <div class="action-updater-footer">
         <button type="button" id="actionUpdaterAccept" class="btn-base btn-accept"><%= tr('Run') %></button>
@@ -275,6 +289,15 @@
         this.$('#actionUpdaterTotalCount').text(length);
         this.$('#actionUpdaterSuccessCount').text(0);
         this.$('#actionUpdaterErrorsCount').text(0);
+      });
+
+      this.model.on('backup', (path) => {
+        this.$('#actionUpdaterBackupName').text(path.slice(1 + Math.max(
+          path.lastIndexOf('\\'),
+          path.lastIndexOf('\/'),
+        )));
+        this.$('#actionUpdaterCopyBackup').data('path', path);
+        this.$('#actionUpdaterCopyBackup').slideDownEx(250);
       });
 
       this.modal.on('accept', this.show, this);
@@ -340,6 +363,16 @@
     },
 
     events: {
+      'click #actionUpdaterCopyBackup': function () {
+        if (!window.getSelection().toString().length) {
+          const $button = this.$('#actionUpdaterCopyBackup');
+          const $input = $('<textarea>').appendTo('body');
+          $input.val($button.data('path')).select();
+          document.execCommand('copy');
+          $input.remove();
+        }
+      },
+
       'click #actionUpdaterCopyLog': function () {
         if (!window.getSelection().toString().length) {
           const data = $.map(this.$('#actionUpdaterLog div'), $.text);

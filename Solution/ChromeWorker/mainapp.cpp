@@ -1853,7 +1853,14 @@ void MainApp::PrepareFunctionCallback(const std::string& value)
     {
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_PrepareFunction(") + picojson::value(value).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
+}
 
+void MainApp::BackupDoneCallback(const std::string& full_path)
+{
+    if(BrowserScenario)
+    {
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_FinishedBackup(") + picojson::value(full_path).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }
 }
 
 void MainApp::RecaptchaV3ListCallback(const std::string& value)
@@ -2177,6 +2184,13 @@ void MainApp::WaitCodeCallback()
 
 void MainApp::StartSectionCallback(int Id)
 {
+    if(Data->SetIndirectControlOnNext)
+    {
+        Data->SetIndirectControlOnNext = false;
+        Data->ManualControl = BrowserData::Indirect;
+        UpdateManualControl();
+    }
+
     if(!_HandlersManager->GetBrowser())
     {
         NextLoadPage = "about:blank";
@@ -3681,6 +3695,11 @@ void MainApp::HandleScenarioBrowserEvents()
             BrowserScenario->GetMainFrame()->ExecuteJavaScript(script,BrowserScenario->GetMainFrame()->GetURL(), 0);
     }
 
+    if(scenariov8handler->GetStartBackup())
+    {
+        SendTextResponce("<StartBackup></StartBackup>");
+    }
+
     std::pair<std::string, bool> res5 = scenariov8handler->GetIsEditStart();
     if(res5.second)
     {
@@ -3955,8 +3974,7 @@ void MainApp::HandleToolboxBrowserEvents()
         WORKER_LOG("BrowserAutomationStudio_Interrupt<<");
         if(Layout->IsManualControlAction)
         {
-            Data->ManualControl = BrowserData::Indirect;
-            UpdateManualControl();
+            Data->SetIndirectControlOnNext = true;
         }
         SendTextResponce("<Interrupt></Interrupt>");
     }

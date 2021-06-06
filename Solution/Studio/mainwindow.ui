@@ -460,11 +460,11 @@
     <addaction name="actionOpenUrl"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
-    <addaction name="actionUploadToGoogleDrive"/>
     <addaction name="separator"/>
     <addaction name="actionShow_Database"/>
     <addaction name="separator"/>
     <addaction name="menuSettings"/>
+    <addaction name="actionBackup_Path"/>
     <addaction name="separator"/>
     <addaction name="actionLocalization"/>
     <addaction name="separator"/>
@@ -559,7 +559,7 @@
    <addaction name="actionShow_Report"/>
    <addaction name="actionResourcesReport"/>
    <addaction name="actionShow_Database"/>
-   <addaction name="actionUploadToGoogleDrive"/>
+   <addaction name="actionBackup_Path"/>
   </widget>
   <widget class="QDockWidget" name="dockWidgetData">
    <property name="minimumSize">
@@ -1145,15 +1145,6 @@
     <string>Open From Url</string>
    </property>
   </action>
-  <action name="actionUploadToGoogleDrive">
-   <property name="icon">
-    <iconset resource="studio.qrc">
-     <normaloff>:/studio/images/drive.png</normaloff>:/studio/images/drive.png</iconset>
-   </property>
-   <property name="text">
-    <string>GoogleDrive Upload</string>
-   </property>
-  </action>
   <action name="actionScheduler">
    <property name="icon">
     <iconset resource="../Engine/engine.qrc">
@@ -1170,6 +1161,18 @@
    </property>
    <property name="text">
     <string>Debug Version</string>
+   </property>
+  </action>
+  <action name="actionBackup_Path">
+   <property name="icon">
+    <iconset resource="../Engine/engine.qrc">
+     <normaloff>:/engine/images/backup.png</normaloff>:/engine/images/backup.png</iconset>
+   </property>
+   <property name="text">
+    <string>Backup Path</string>
+   </property>
+   <property name="toolTip">
+    <string>Backup Path</string>
    </property>
   </action>
  </widget>

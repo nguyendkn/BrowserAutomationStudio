@@ -34,6 +34,7 @@ ScenarioV8Handler::ScenarioV8Handler()
     IsOpenAction = false;
     IsEditSaveStart = false;
     ChangedIsInsideElementLoop = false;
+    IsStartBackup = false;
 }
 
 std::pair<bool, bool> ScenarioV8Handler::GetIsInsideElementLoop()
@@ -365,6 +366,12 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             HighlightMenuItem = arguments->GetString(0);
             IsHightlightMenuItem = true;
         }
+    }else if(name == std::string("BrowserAutomationStudio_StartBackup"))
+    {
+        if (arguments->GetSize() == 0)
+        {
+            IsStartBackup = true;
+        }
     }else if(name == std::string("BrowserAutomationStudio_TriggerEvent"))
     {
         if (arguments->GetSize() > 0) 
@@ -417,6 +424,14 @@ bool ScenarioV8Handler::GetClipboardGetRequest()
     IsClipboardGetRequest = false;
     return res;
 }
+
+bool ScenarioV8Handler::GetStartBackup()
+{
+    bool res = IsStartBackup;
+    IsStartBackup = false;
+    return res;
+}
+
 
 bool ScenarioV8Handler::GetIsThreadNumberEditStart()
 {

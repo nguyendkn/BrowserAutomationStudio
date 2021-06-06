@@ -200,6 +200,7 @@ private slots:
     void ResourcesReport();
     void OpenUrl();
     void UploadToGoogleDrive();
+    void ShowBackupPath();
     QString OpenFromFile(const QString& fileName);
     void OpenFromFileOrDisplayMessageBox(const QString& fileName);
     void ResourcesNotEmpty();
@@ -271,6 +272,7 @@ private slots:
     QString GetRandomString();
 signals:
     void SyncResources();
+    void CurrentFileNameHasChanged(QString);
 };
 
 #endif // MAINWINDOW_H

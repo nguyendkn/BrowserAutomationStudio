@@ -4,6 +4,7 @@
   });
 
   solver.RuCaptchaApi.prototype.getCreateTaskPayload = function (data) {
+    data['soft_id'] = this.options.softId;
     return { method: 'in.php', data: data };
   };
 

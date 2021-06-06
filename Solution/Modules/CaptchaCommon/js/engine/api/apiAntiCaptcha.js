@@ -4,7 +4,7 @@
   });
 
   solver.AntiCaptchaApi.prototype.getCreateTaskPayload = function (data) {
-    return { method: 'createTask', data: { task: data } };
+    return { method: 'createTask', data: { task: data, softId: this.options.softId } };
   };
 
   solver.AntiCaptchaApi.prototype.getTaskSolutionPayload = function (task) {

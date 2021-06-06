@@ -24,9 +24,6 @@ _.extend(_L, {
   'The module containing this action is damaged or disabled.': {
     ru: 'Модуль, содержащий данное действие поврежден или отключен'
   },
-  'Path to a project backup has been successfully copied': {
-    ru: 'Путь к бэкапу данного проекта был успешно скопирован'
-  },
   'The technical description of this action is damaged.': {
     ru: 'Техническое описание данного действия повреждено.'
   },

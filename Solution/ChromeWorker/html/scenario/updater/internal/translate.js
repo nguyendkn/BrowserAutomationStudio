@@ -36,6 +36,9 @@ _.extend(_L, {
   'All actions in the current function': {
     ru: 'Все действия в текущей фунцкии'
   },
+  'Copy the path to a project backup': {
+    ru: 'Копировать путь к бэкапу проекта'
+  },
   'All actions in the project': {
     ru: 'Все действия в проекте'
   },

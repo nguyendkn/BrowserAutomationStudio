@@ -12,6 +12,7 @@ namespace BrowserAutomationStudioFramework
         int milliseconds;
         QString DestFolder;
         QTimer* Timer;
+        QString CurrentFileName;
     public:
         explicit ProjectBackup(QObject *parent = 0);
 
@@ -29,6 +30,7 @@ namespace BrowserAutomationStudioFramework
     public slots:
         //Start backup manually and report in BackupDone signal
         void StartBackup();
+        void CurrentFileNameHasChanged(QString Filename);
 
     signals:
         //BackupDone is called only if backup was initiated by StartBackup slot

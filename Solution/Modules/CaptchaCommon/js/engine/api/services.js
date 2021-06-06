@@ -5,18 +5,21 @@
       apiUrl: 'https://api.anti-captcha.com',
       name: 'AntiCaptcha',
       aliases: ['antigate'],
+      softId: '784',
     }),
     'RuCaptcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://rucaptcha.com',
       name: 'RuCaptcha',
       aliases: [],
+      softId: '1345',
     }),
     '2Captcha': new solver.RuCaptchaApi({
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://2captcha.com',
       name: '2Captcha',
       aliases: [],
+      softId: '1346',
     }),
   };
 

@@ -92,6 +92,8 @@ private:
     bool IsClipboardGetRequest;
     bool IsClipboardSetRequest;
 
+    bool IsStartBackup;
+
     std::string clipboard_set;
 
     bool ChangedWebInterfaceResult;
@@ -138,7 +140,7 @@ public:
     std::pair<std::string, bool> GetIsHighlightMenuItem();
 
     bool GetClipboardGetRequest();
-
+    bool GetStartBackup();
 
 private:
     IMPLEMENT_REFCOUNTING(ScenarioV8Handler);

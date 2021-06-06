@@ -1959,6 +1959,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->IsTesing = false;
     Data->IsMousePress = false;
     Data->MultiselectMode = false;
+    Data->SetIndirectControlOnNext = false;
     Data->MultiselectIsInsideElementLoop = false;
     Data->_AcceptLanguagePattern = "de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7";
     Data->_UniqueProcessId = Settings.UniqueProcessId();
@@ -2107,6 +2108,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventCleanHeader.push_back(std::bind(&MainApp::CleanHeaderCallback,app.get()));
     Parser->EventSetUserAgent.push_back(std::bind(&MainApp::SetUserAgentCallback,app.get(),_1));
     Parser->EventPrepareFunction.push_back(std::bind(&MainApp::PrepareFunctionCallback,app.get(),_1));
+    Parser->EventBackupDone.push_back(std::bind(&MainApp::BackupDoneCallback,app.get(),_1));
     Parser->EventRecaptchaV3List.push_back(std::bind(&MainApp::RecaptchaV3ListCallback,app.get(),_1));
     Parser->EventClickExtensionButton.push_back(std::bind(&MainApp::ClickExtensionButton,app.get(),_1));
     Parser->EventRecaptchaV3Result.push_back(std::bind(&MainApp::RecaptchaV3ResultCallback,app.get(),_1,_2));

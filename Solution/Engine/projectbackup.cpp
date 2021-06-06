@@ -31,15 +31,36 @@ namespace BrowserAutomationStudioFramework
         Timer->start();
     }
 
-    void ProjectBackup::DoBackups()
+    QString ProjectBackup::DoBackupsInternal()
     {
         QDateTime CurrentDateTime = QDateTime::currentDateTime();
         QDir dir(DestFolder + QDir::separator() + CurrentDateTime.toString("yyyy.MM.dd"));
         if(!dir.exists())
             dir.mkpath(".");
-        QString path = dir.absoluteFilePath(QString("%1.xml").arg(CurrentDateTime.toString("hh.mm.ss")));
+        QString FilePart;
+        if(!CurrentFileName.isEmpty())
+            FilePart = QFileInfo(CurrentFileName).baseName() + QString(".");
+        QString path = dir.absoluteFilePath(FilePart + QString("%1.xml").arg(CurrentDateTime.toString("hh.mm.ss")));
         emit Backup(path);
+        return path;
     }
+
+    void ProjectBackup::CurrentFileNameHasChanged(QString Filename)
+    {
+        CurrentFileName = Filename;
+    }
+
+    void ProjectBackup::DoBackups()
+    {
+        DoBackupsInternal();
+    }
+
+    void ProjectBackup::StartBackup()
+    {
+        QString Res = DoBackupsInternal();
+        emit BackupDone(Res);
+    }
+
 
 
 }

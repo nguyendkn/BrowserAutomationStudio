@@ -54,6 +54,7 @@ namespace BrowserAutomationStudioFramework
         virtual void PrepareFunction(QString FunctionName);
         virtual void OnRecord();
         virtual void OnRun();
+        virtual void BackupDone(QString FullPath);
     };
 }
 

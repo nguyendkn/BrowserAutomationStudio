@@ -126,6 +126,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_HighlightMenuItem", CefV8Value::CreateFunction("BrowserAutomationStudio_HighlightMenuItem", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_TriggerEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_TriggerEvent", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_HandleEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_HandleEvent", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_StartBackup", CefV8Value::CreateFunction("BrowserAutomationStudio_StartBackup", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
 
         object->SetValue("_ApplicationEngineVersion", CefV8Value::CreateString(ApplicationEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_ScriptEngineVersion", CefV8Value::CreateString(ScriptEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);

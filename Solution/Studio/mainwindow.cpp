@@ -411,6 +411,7 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(_RecordProcessCommunication,SIGNAL(StartBackup()),backup,SLOT(StartBackup()));
         connect(backup,SIGNAL(BackupDone(QString)),_RecordProcessCommunication,SLOT(BackupDone(QString)));
         connect(this,SIGNAL(CurrentFileNameHasChanged(QString)),backup,SLOT(CurrentFileNameHasChanged(QString)));
+        backup->CurrentFileNameHasChanged(CurrentFileName);
         backup->Start();
     }
 

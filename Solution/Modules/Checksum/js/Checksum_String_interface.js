@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<%= _.template($('#input_constructor').html())({id:"input", description:tr("String"), default_selector: "string", disable_int:true, value_string: "", help: {description: ""} }) %>
-	<%= _.template($('#input_constructor').html())({id:"algorithm", description:tr("Algorithm"), default_selector: "string", variants:["crc16","crc32","md4","md5","mdc2","ripemd160","whirlpool","sha1","sha224","sha256","sha384","sha512","sha3-224","sha3-256","sha3-384","sha3-512","shake128","shake256"], disable_int:true, value_string: "sha512", help: {description: ""} }) %>
+	<%= _.template($('#input_constructor').html())({id:"algorithm", description:tr("Algorithm"), default_selector: "string", variants:["crc16","crc32","md4","md5","mdc2","ripemd160","whirlpool","sha1","sha224","sha256","sha384","sha512","sha3-224","sha3-256","sha3-384","sha3-512","shake128","shake256","keccak224","keccak256","keccak384","keccak512"], disable_int:true, value_string: "sha512", help: {description: ""} }) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 			<input type="checkbox" id="Check" style="margin-left:25px" onclick="set_encoding_visible();"/> <label for="Check" class="tr">Is base64 encoded</label>

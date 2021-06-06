@@ -13,7 +13,6 @@
       } else {
         this.set('errorsCount', this.get('errorsCount') + 1);
       }
-
       this.trigger('log', { message, id });
     },
 

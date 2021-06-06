@@ -49,7 +49,7 @@
     <%= _.template($('#input_constructor').html())({
       description: tr('Task solution check interval'),
       default_selector: 'int',
-      value_number: 2 * 1000,
+      value_number: 5 * 1000,
       disable_string: true,
       id: 'taskWaitInterval',
       help: {

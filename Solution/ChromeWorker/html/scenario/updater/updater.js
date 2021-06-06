@@ -240,7 +240,7 @@
           <span style="margin-left: 13px"><%= tr('Copy log to clipboard') %></span>
         </button>
         <button id="actionUpdaterCopyBackup" class="action-updater-copy-btn" style="display: none">
-          <%= tr('Copy the path to a project backup') %> (<span id="actionUpdaterBackupName"></span>)
+          <span><%= tr('Copy the path to a project backup') %> (<span id="actionUpdaterBackupName"></span>)</span>
         </button>
       </div>
       <div class="action-updater-footer">

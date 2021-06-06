@@ -402,12 +402,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->Recents->Reload(CurrentFileName);
     ui->Recents->setVisible(true);
-    if(Settings->value("ProjectBackup",true).toBool())
+
     {
         ProjectBackup *backup = new ProjectBackup(this);
         backup->SetPeriod(Settings->value("ProjectBackupPeriod",5 * 60000).toInt());
         backup->SetDestFolder(Settings->value("ProjectBackupDestFolder","../../projectbackups").toString());
         connect(backup,SIGNAL(Backup(QString)),this,SLOT(SaveToFileSilent(QString)));
+        connect(_RecordProcessCommunication,SIGNAL(StartBackup()),backup,SLOT(StartBackup()));
+        connect(backup,SIGNAL(BackupDone(QString)),_RecordProcessCommunication,SLOT(BackupDone(QString)));
+        connect(this,SIGNAL(CurrentFileNameHasChanged(QString)),backup,SLOT(CurrentFileNameHasChanged(QString)));
         backup->Start();
     }
 
@@ -513,6 +516,7 @@ void MainWindow::SetCurrentFileName(const QString& CurrentFileName)
         ui->Recents->Reload(CurrentFileName);
     }
     this->CurrentFileName = CurrentFileName;
+    emit CurrentFileNameHasChanged(CurrentFileName);
     UpdateTitle();
 }
 
@@ -2430,6 +2434,7 @@ void MainWindow::RunInternal()
     connect(_RecordProcessCommunication,SIGNAL(Interrupt()),worker,SLOT(InterruptAction()));
     connect(_RecordProcessCommunication,SIGNAL(MaximizeWindow()),this,SLOT(Show()));
     connect(_RecordProcessCommunication,SIGNAL(WindowAttached()),this,SLOT(RecordWindowAttached()));
+    connect(_RecordProcessCommunication,SIGNAL(StartBackup()),this,SLOT(RecordWindowAttached()));
     if(IsRecord)
     {
         connect(worker,SIGNAL(RunTaskInRecordMode(int,QString,QString)),_RecordProcessCommunication,SLOT(RunTaskInRecordMode(int,QString,QString)));

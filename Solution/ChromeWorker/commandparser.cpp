@@ -236,6 +236,15 @@ void CommandParser::Parse(const std::string& Xml)
                 f(value);
         }
 
+        CommandNode = MessagesNode->first_node("BackupDone");
+        if(CommandNode)
+        {
+            std::string value = CommandNode->value();
+            WORKER_LOG("EventBackupDone");
+            for(auto f:EventBackupDone)
+                f(value);
+        }
+
         CommandNode = MessagesNode->first_node("RecaptchaV3List");
         if(CommandNode)
         {

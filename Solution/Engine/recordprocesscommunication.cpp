@@ -264,6 +264,11 @@ namespace BrowserAutomationStudioFramework
                 xmlReader.readNext();
                 emit WindowAttached();
             }
+            if(xmlReader.name() == "StartBackup" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                emit StartBackup();
+            }
             if(xmlReader.name() == "Interrupt" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -393,6 +398,17 @@ namespace BrowserAutomationStudioFramework
     void RecordProcessCommunication::OnRun()
     {
         this->IsPlayingScript = false;
+    }
+
+    void RecordProcessCommunication::BackupDone(QString FullPath)
+    {
+        if(Comunicator && CanSend)
+        {
+            QString WriteString;
+            QXmlStreamWriter xmlWriter(&WriteString);
+            xmlWriter.writeTextElement("BackupDone",FullPath);
+            Comunicator->Send(WriteString);
+        }
     }
 
     void RecordProcessCommunication::InstallProcessComunicator(IProcessComunicator *Comunicator)

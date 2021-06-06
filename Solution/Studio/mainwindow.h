@@ -271,6 +271,7 @@ private slots:
     QString GetRandomString();
 signals:
     void SyncResources();
+    void CurrentFileNameHasChanged(QString);
 };
 
 #endif // MAINWINDOW_H

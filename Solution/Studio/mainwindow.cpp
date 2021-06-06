@@ -410,6 +410,7 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(backup,SIGNAL(Backup(QString)),this,SLOT(SaveToFileSilent(QString)));
         connect(_RecordProcessCommunication,SIGNAL(StartBackup()),backup,SLOT(StartBackup()));
         connect(backup,SIGNAL(BackupDone(QString)),_RecordProcessCommunication,SLOT(BackupDone(QString)));
+        connect(this,SIGNAL(CurrentFileNameHasChanged(QString)),backup,SLOT(CurrentFileNameHasChanged(QString)));
         backup->Start();
     }
 
@@ -515,6 +516,7 @@ void MainWindow::SetCurrentFileName(const QString& CurrentFileName)
         ui->Recents->Reload(CurrentFileName);
     }
     this->CurrentFileName = CurrentFileName;
+    emit CurrentFileNameHasChanged(CurrentFileName);
     UpdateTitle();
 }
 

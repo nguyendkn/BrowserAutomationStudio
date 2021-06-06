@@ -1024,7 +1024,7 @@ Saves space if user will use several scripts.</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="966"/>
-        <location filename="../mainwindow.cpp" line="1170"/>
+        <location filename="../mainwindow.cpp" line="1181"/>
         <source>Stop</source>
         <translation>Остановить</translation>
     </message>
@@ -1081,7 +1081,7 @@ Saves space if user will use several scripts.</source>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1068"/>
-        <location filename="../mainwindow.cpp" line="2927"/>
+        <location filename="../mainwindow.cpp" line="2939"/>
         <source>Show Database</source>
         <translation>База</translation>
     </message>
@@ -1132,19 +1132,24 @@ Saves space if user will use several scripts.</source>
         <translation>Открыть из url</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1154"/>
-        <source>GoogleDrive Upload</source>
-        <translation type="unfinished">Загрузить на Google диск</translation>
+        <location filename="../mainwindow.ui" line="1172"/>
+        <location filename="../mainwindow.ui" line="1175"/>
+        <source>Backup Path</source>
+        <translation>Путь к бэкапам</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1163"/>
-        <location filename="../mainwindow.cpp" line="440"/>
-        <location filename="../mainwindow.cpp" line="453"/>
+        <source>GoogleDrive Upload</source>
+        <translation type="obsolete">Загрузить на Google диск</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1154"/>
+        <location filename="../mainwindow.cpp" line="445"/>
+        <location filename="../mainwindow.cpp" line="458"/>
         <source>Scheduler</source>
         <translation>Планировщик</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1172"/>
+        <location filename="../mainwindow.ui" line="1163"/>
         <source>Debug Version</source>
         <translation type="unfinished">Отладочная версия</translation>
     </message>
@@ -1162,14 +1167,14 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Весь лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2871"/>
-        <location filename="../mainwindow.cpp" line="2896"/>
+        <location filename="../mainwindow.cpp" line="2883"/>
+        <location filename="../mainwindow.cpp" line="2908"/>
         <source>All log</source>
         <translation>Весь лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="889"/>
-        <location filename="../mainwindow.cpp" line="1305"/>
+        <location filename="../mainwindow.cpp" line="900"/>
+        <location filename="../mainwindow.cpp" line="1316"/>
         <source>Error saving file</source>
         <translation>Ошибка сохранения файла</translation>
     </message>
@@ -1186,23 +1191,23 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Нужно перезапустить приложение</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="487"/>
+        <location filename="../mainwindow.cpp" line="497"/>
         <source>premium</source>
         <translation>премиум версия</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="489"/>
+        <location filename="../mainwindow.cpp" line="499"/>
         <source>free</source>
         <translation>бесплатная версия</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="493"/>
+        <location filename="../mainwindow.cpp" line="503"/>
         <source>&lt;span style=&apos;color:gray&apos;&gt;You are using BrowserAutomationStudio version &lt;span style=&apos;color:white&apos;&gt;%1&lt;/span&gt; (&lt;span style=&apos;color:white&apos;&gt;%2&lt;/span&gt;).&lt;br&gt;Installation dir : &lt;span style=&apos;color:white&apos;&gt;%3&lt;/span&gt;.&lt;br&gt;This panel contains information about script execution, use &apos;Log&apos; action to write data here.&lt;/span&gt;</source>
         <translation type="unfinished">&lt;span style=&apos;color:gray&apos;&gt;Вы используете BrowserAutomationStudio &lt;span style=&apos;color:white&apos;&gt;v %1&lt;/span&gt; (&lt;span style=&apos;color:white&apos;&gt;%2&lt;/span&gt;).&lt;br&gt;Каталог установки : &lt;span style=&apos;color:white&apos;&gt;%3&lt;/span&gt;.&lt;br&gt;Эта панель содержит информацию о выполнении скрипта, чтобы добавить данные сюда используйте действие &apos;Лог&apos;.&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="889"/>
-        <location filename="../mainwindow.cpp" line="1305"/>
+        <location filename="../mainwindow.cpp" line="900"/>
+        <location filename="../mainwindow.cpp" line="1316"/>
         <source>Error saving file : %1</source>
         <translation>Ошибка сохранения файла : %1</translation>
     </message>
@@ -1215,101 +1220,101 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Проект изменен. Нужно загрузить его на сервер.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="434"/>
-        <location filename="../mainwindow.cpp" line="447"/>
+        <location filename="../mainwindow.cpp" line="439"/>
+        <location filename="../mainwindow.cpp" line="452"/>
         <source>Scheduler ...</source>
         <translation type="unfinished">Планировщик ...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="930"/>
+        <location filename="../mainwindow.cpp" line="941"/>
         <source>Application is still running</source>
         <translation>Приложение еще работает</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="930"/>
+        <location filename="../mainwindow.cpp" line="941"/>
         <source>Use exit menu item to shut it down</source>
         <translation>Используйте кнопку выход, чтобы закрыть его</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="983"/>
+        <location filename="../mainwindow.cpp" line="994"/>
         <source>Open Project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="983"/>
-        <location filename="../mainwindow.cpp" line="1316"/>
-        <location filename="../mainwindow.cpp" line="1335"/>
+        <location filename="../mainwindow.cpp" line="994"/>
+        <location filename="../mainwindow.cpp" line="1327"/>
+        <location filename="../mainwindow.cpp" line="1346"/>
         <source>Project Files (*.xml);;All Files (*.*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1028"/>
+        <location filename="../mainwindow.cpp" line="1039"/>
         <source>Error loading file</source>
         <translation>Ошибка загрузки файла</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1028"/>
+        <location filename="../mainwindow.cpp" line="1039"/>
         <source>Error loading file : %1</source>
         <translation>Ошибка загрузки файла : %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1167"/>
+        <location filename="../mainwindow.cpp" line="1178"/>
         <source>Stop instant</source>
         <translation>Остановить мгновенно</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1167"/>
+        <location filename="../mainwindow.cpp" line="1178"/>
         <source>Wait each thread</source>
         <translation>Ждать каждый поток</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1170"/>
+        <location filename="../mainwindow.cpp" line="1181"/>
         <source>Stop type</source>
         <translation>Тип остановки</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1316"/>
+        <location filename="../mainwindow.cpp" line="1327"/>
         <source>Save Project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1564"/>
+        <location filename="../mainwindow.cpp" line="1575"/>
         <source>Running project ...</source>
         <translation>Проект выполняется ...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1683"/>
+        <location filename="../mainwindow.cpp" line="1694"/>
         <source>Project recorder has started. It should be visible in a second. Try to search in task bar if you don&apos;t see it.</source>
         <translation>Запись проекта началась. Интерфейс должен появится через секунду. Попробуйте посмотреть в панели задач, если этого не произойдет.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1838"/>
+        <location filename="../mainwindow.cpp" line="1849"/>
         <source>Multilogin log</source>
         <translation type="unfinished">Лог Multilogin</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2080"/>
+        <location filename="../mainwindow.cpp" line="2091"/>
         <source>HCaptcha module has been disabled</source>
         <translation>Модуль HCaptcha отключен</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2092"/>
+        <location filename="../mainwindow.cpp" line="2103"/>
         <source>ReCaptcha module has been disabled</source>
         <translation>Модуль ReCaptcha отключен</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2104"/>
+        <location filename="../mainwindow.cpp" line="2115"/>
         <source>FunCaptcha module has been disabled</source>
         <translation>Модуль FunCaptcha отключен</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2872"/>
-        <location filename="../mainwindow.cpp" line="2897"/>
+        <location filename="../mainwindow.cpp" line="2884"/>
+        <location filename="../mainwindow.cpp" line="2909"/>
         <source>Clear log</source>
         <translation type="unfinished">Очистить лог</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2929"/>
+        <location filename="../mainwindow.cpp" line="2941"/>
         <source> (Need Restart)</source>
         <translation> (Нужен Перезапуск)</translation>
     </message>
@@ -1318,7 +1323,7 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Вы хотите сохранить предыдущий проект?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1335"/>
+        <location filename="../mainwindow.cpp" line="1346"/>
         <source>Create Project</source>
         <translation>Создать проект</translation>
     </message>
@@ -1339,7 +1344,7 @@ Saves space if user will use several scripts.</source>
         <translation type="vanished">Отмена</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1513"/>
+        <location filename="../mainwindow.cpp" line="1524"/>
         <source>Captcha (%1)</source>
         <translation>Капча (%1)</translation>
     </message>

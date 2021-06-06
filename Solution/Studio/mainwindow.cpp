@@ -342,7 +342,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(Close()));
     connect(ui->actionOpenUrl,SIGNAL(triggered()),this,SLOT(OpenUrl()));
     connect(ui->actionDebug_Version,SIGNAL(triggered()),this,SLOT(ShowDebugVersion()));
-    connect(ui->actionUploadToGoogleDrive,SIGNAL(triggered()),this,SLOT(UploadToGoogleDrive()));
+    //connect(ui->actionUploadToGoogleDrive,SIGNAL(triggered()),this,SLOT(UploadToGoogleDrive()));
+    connect(ui->actionBackup_Path,SIGNAL(triggered()),this,SLOT(ShowBackupPath()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),this,SLOT(ClearState()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),this,SLOT(RestoreState()));
     connect(ui->actionRestoreOriginal,SIGNAL(triggered()),_RecordProcessCommunication,SLOT(RestoreOriginalStage()));
@@ -468,6 +469,11 @@ void MainWindow::UploadToGoogleDrive()
     Dialog.Start();
     Dialog.exec();
 
+}
+
+void MainWindow::ShowBackupPath()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile("../../projectbackups"));
 }
 
 void MainWindow::OpenUrl()

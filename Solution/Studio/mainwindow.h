@@ -200,6 +200,7 @@ private slots:
     void ResourcesReport();
     void OpenUrl();
     void UploadToGoogleDrive();
+    void ShowBackupPath();
     QString OpenFromFile(const QString& fileName);
     void OpenFromFileOrDisplayMessageBox(const QString& fileName);
     void ResourcesNotEmpty();

@@ -29,18 +29,21 @@
       return success === _.size(this.get('tasks'));
     },
 
+    waitForBackup() {
+      return new Promise((resolve) => {
+        this.once('backup', (path) => resolve());
+        BrowserAutomationStudio_StartBackup();
+      });
+    },
+
     initialize() {
-      this.on('change:isStarted', (__, isStarted) => {
+      this.on('change:isStarted', async (__, isStarted) => {
         if (!isStarted) {
           BrowserAutomationStudio_TriggerEvent('scenario.updateFinish');
         } else {
           BrowserAutomationStudio_TriggerEvent('scenario.updateStart');
         }
-        if (isStarted) BrowserAutomationStudio_StartBackup();
-
-        this.once('backup', async () => {
-          await _.sleep(200).then(() => this.run());
-        });
+        if (isStarted) await _.sleep(200).then(() => this.run());
       });
 
       this.on('finish', () => {
@@ -65,6 +68,7 @@
     },
 
     async run() {
+      await this.waitForBackup({});
       this.set('successCount', 0);
       this.set('errorsCount', 0);
       let timeout = undefined;

@@ -473,7 +473,9 @@ void MainWindow::UploadToGoogleDrive()
 
 void MainWindow::ShowBackupPath()
 {
-    QDesktopServices::openUrl(QUrl::fromLocalFile("../../projectbackups"));
+    QString Folder("../../projectbackups");
+    QDir(Folder).mkpath(".");
+    QDesktopServices::openUrl(QUrl::fromLocalFile(Folder));
 }
 
 void MainWindow::OpenUrl()

@@ -1906,7 +1906,7 @@ namespace BrowserAutomationStudioFramework
         SolverNotFailNextTime = true;
         SolveInternal(method, base64,params, callback);
     }
-    void ScriptWorker::SolveCaptcha(const QString& method, const QStringList& solve_params, const QStringList& task_params, const bool fail_on_error, const QString& callback)
+    void ScriptWorker::SolveCaptcha(const QString& method, const QString& base64, const QStringList & params, const bool fail_on_error, const QString& callback)
     {
         if(!fail_on_error)
         {

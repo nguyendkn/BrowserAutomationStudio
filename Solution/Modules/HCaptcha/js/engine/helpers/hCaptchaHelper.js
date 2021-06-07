@@ -51,7 +51,9 @@
       siteKey = _result_function();
     })!
 
-    _call_function(_.url, {}, function () { _function_return({ callBack: callBack, siteKey: siteKey, pageUrl: _result_function() }) });
+    _call_function(_.script, { element: self.$element(), script: 'location.href' }, function () {
+      _function_return({ callBack: callBack, siteKey: siteKey, pageUrl: _result_function() });
+    });
   };
 
   function initialize() {

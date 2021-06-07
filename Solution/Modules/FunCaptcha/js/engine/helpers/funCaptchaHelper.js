@@ -31,12 +31,16 @@
   };
 
   function extractData() {
-    this.fcToken().attr('value', function () {
-      const data = _result().split('|').map(function (v) { return v.split('=') });
+    const self = this;
+
+    _call_function(_.attr, { element: self.fcToken(), attr: 'value' }, function () {
+      const data = _result_function().split('|').map(function (v) { return v.split('=') });
       const surl = data.filter(function (v) { return v[0] === 'surl' })[0][1];
       const pk = data.filter(function (v) { return v[0] === 'pk' })[0][1];
 
-      url(function () { _function_return({ subdomainUrl: surl, publicKey: pk, pageUrl: _result() }) });
+      _call_function(_.script, { element: self.$element(), script: 'location.href' }, function () {
+        _function_return({ subdomainUrl: surl, publicKey: pk, pageUrl: _result_function() });
+      });
     });
   };
 

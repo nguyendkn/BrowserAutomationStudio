@@ -20,12 +20,6 @@
       };
     },
 
-    urlEncode: function (data) {
-      return Object.keys(data).map(function (key) {
-        return encodeURIComponent(key) + '=' + encodeURIComponent(data[key]);
-      }).join('&');
-    },
-
     script: function () {
       const script = _function_argument('script');
       _function_argument('element').script(script)!

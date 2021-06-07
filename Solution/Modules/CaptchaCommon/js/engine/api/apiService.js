@@ -19,9 +19,13 @@
     return this;
   };
 
-  function solveTask() {
-    const self = this, task = _function_argument('task').validate(self);
-    task.waitInterval = _function_argument('taskWaitInterval') || 2000;
-    task.waitDelay = _function_argument('taskWaitDelay') || 5000;
+  CaptchaApi.prototype.solve = function () {
+    const self = this, task = _function_argument('task').validate(this);
+    const interval = _function_argument('taskWaitInterval') || 2000;
+    const delay = _function_argument('taskWaitDelay') || 5000;
+
+    Object.keys(task).forEach(function (key) {
+      solver_property(self.name, key, task[key]);
+    });
   };
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

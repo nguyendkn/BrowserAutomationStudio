@@ -36,7 +36,6 @@ namespace BrowserAutomationStudioFramework
                 post["key"] = DataKey;
             }
 
-            if (!base64.isEmpty())
             {
                 ContentData DataFile;
 

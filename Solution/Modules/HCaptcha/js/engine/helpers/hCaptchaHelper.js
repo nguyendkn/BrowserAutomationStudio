@@ -27,13 +27,13 @@
       element: self.hCaptchaResponse()
     })!
 
-    page().script('_BAS_HIDE(BrowserAutomationStudio_HCaptchaSolved)(' + JSON.stringify(_function_argument('token')) + ')')!
+    self.$element().script('_BAS_HIDE(BrowserAutomationStudio_HCaptchaSolved)(' + JSON.stringify(_function_argument('token')) + ')')!
   };
 
   function extractData() {
     const self = this;
 
-    _call_function(_.script, { element: page(), script: '_BAS_HIDE(BrowserAutomationStudio_HCaptchaCallback)' })!
+    _call_function(_.script, { element: self.$element(), script: '_BAS_HIDE(BrowserAutomationStudio_HCaptchaCallback)' })!
     var callBack = _result_function();
     _if(!callBack.length, function () {
       _call_function(_.script, {
@@ -42,7 +42,7 @@
       callBack = _result_function();
     })!
 
-    _call_function(_.script, { element: page(), script: '_BAS_HIDE(BrowserAutomationStudio_HCaptchaSitekey)' })!
+    _call_function(_.script, { element: self.$element(), script: '_BAS_HIDE(BrowserAutomationStudio_HCaptchaSitekey)' })!
     var siteKey = _result_function();
     _if(!siteKey.length, function () {
       _call_function(_.script, {

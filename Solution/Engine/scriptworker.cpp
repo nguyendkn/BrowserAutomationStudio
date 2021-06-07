@@ -1910,11 +1910,11 @@ namespace BrowserAutomationStudioFramework
     {
         if(!fail_on_error)
         {
-            SolveNoFail(method, '', solve_params, callback);
+            SolveNoFail(method, base64, params, callback);
         }
         else
         {
-            Solve(method, '', solve_params, callback);
+            Solve(method, base64, params, callback);
         }
     }
 

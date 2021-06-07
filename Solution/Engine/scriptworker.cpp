@@ -1906,20 +1906,16 @@ namespace BrowserAutomationStudioFramework
         SolverNotFailNextTime = true;
         SolveInternal(method, base64,params, callback);
     }
-    void ScriptWorker:SolveCaptcha(const QString& method, const QStringList& params, const bool fail_on_error, const QString& callback)
+    void ScriptWorker::SolveCaptcha(const QString& method, const QStringList& solve_params, const QStringList& task_params, const bool fail_on_error, const QString& callback)
     {
-        SolverNotFailNextTime = !fail_on_error;
-
-        engine->globalObject().setProperty("LAST_CAPTCHA_ID", "");
-        ISolver* solver = GetSolverFactory()->GetSolver(method);
-        if(!solver)
+        if(!fail_on_error)
         {
-            Fail(tr("CAPTCHA_FAIL") + " : " + tr("Failed to get solver"), false);
-            return;
+            SolveNoFail(method, '', solve_params, callback);
         }
-        SetScript(callback);
-        // QString id = solver->Solve(base64,params);
-        // GetWaiter()->WaitForSolver(solver,id,this,SLOT(SolverSuccess()),this,SLOT(SolverFailed()));
+        else
+        {
+            Solve(method, '', solve_params, callback);
+        }
     }
 
     void ScriptWorker::SolverSuccess()

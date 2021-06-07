@@ -9,11 +9,9 @@ function Checksum_File(){
 	_function_return(VAR_CHECKSUM_NODE_PARAMETERS);
 };
 function Checksum_PrepareArguments(args){
-	var timeout = args.timeout;
-	if(!_is_nilb(timeout)){
+	var timeout = _avoid_nilb(args.timeout, 60000);
+	if(args.hasOwnProperty('timeout')){
 		delete args.timeout;
-	}else{
-		timeout = 60000;
 	};
 	for(var key in args){
 		var arg = args[key];

@@ -1,16 +1,20 @@
 function Checksum_String(){
-	_embedded("Checksum_String", "Node", "12.18.3", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareParameters(_function_arguments()))!
+	_embedded("Checksum_String", "Node", "12.18.3", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareArguments(_function_arguments()))!
 	
 	_function_return(VAR_CHECKSUM_NODE_PARAMETERS);
 };
 function Checksum_File(){
-	_embedded("Checksum_File", "Node", "12.18.3", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareParameters(_function_arguments()))!
+	_embedded("Checksum_File", "Node", "12.18.3", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareArguments(_function_arguments()))!
 	
 	_function_return(VAR_CHECKSUM_NODE_PARAMETERS);
 };
-function Checksum_PrepareParameters(args){
+function Checksum_PrepareArguments(args){
 	var timeout = args.timeout;
-	delete args.timeout;
+	if(!_is_nilb(timeout)){
+		delete args.timeout;
+	}else{
+		timeout = 60000;
+	};
 	for(var key in args){
 		var arg = args[key];
 		if(key !== 'input'){

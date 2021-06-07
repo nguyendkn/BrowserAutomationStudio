@@ -15,7 +15,7 @@
             "is_element": false,
             "name": "Checksum_String",
             "select": "Checksum_String_select.js",
-            "template": "{{input}} -> {{Save}}"
+            "template": "{{input}} -> {{algorithm}} -> {{Save}}"
         },
         {
             "code": [
@@ -32,7 +32,7 @@
             "is_element": false,
             "name": "Checksum_File",
             "select": "Checksum_File_select.js",
-            "template": "{{filePath}} -> {{Save}}"
+            "template": "{{filePath}} -> {{algorithm}} -> {{Save}}"
         }
     ],
     "api_version": 1,
@@ -61,14 +61,14 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../UtilChecksum\");\r\nlet {input, algorithm, base64, encoding, outputFormat, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    let hash = util.createHash(algorithm);\r\n    hash.update(input, base64 ? 'base64' : encoding);\r\n    [[CHECKSUM_NODE_PARAMETERS]] = hash.digest(outputFormat);\r\n}catch(err){\r\n    util.error(err, lang);\r\n};",
+            "Data": "const util = require(\"../UtilChecksum\");\r\nlet {input, inputEncoding, algorithm, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    let hash = util.createHash(algorithm);\r\n    hash.update(input, inputEncoding);\r\n    [[CHECKSUM_NODE_PARAMETERS]] = hash.digest(outputEncoding);\r\n}catch(err){\r\n    util.error(err);\r\n};",
             "DataName": "Checksum_String",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const { createReadStream } = require('fs');\r\nconst util = require(\"../UtilChecksum\");\r\nlet {filePath, algorithm, outputFormat, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    [[CHECKSUM_NODE_PARAMETERS]] = await (new Promise((resolve, reject) => {\r\n        let hash = util.createHash(algorithm);\r\n        let stream = createReadStream(filePath);\r\n        stream.on('error', function(err){\r\n            if(err.message.includes(\"no such file or directory\")){\r\n                reject(global.lang==\"ru\" ? (`файл \"${filePath}\" не существует`) : (`file \"${filePath}\" does not exist`));\r\n            }else{\r\n                reject(err);\r\n            };\r\n        });\r\n        stream.on('data', function(data){\r\n            hash.update(data);\r\n        });\r\n        stream.on('end', function(){\r\n            resolve(hash.digest(outputFormat));\r\n        });\r\n    }));\r\n}catch(err){\r\n     util.error(err);\r\n};",
+            "Data": "const { createReadStream } = require('fs');\r\nconst util = require(\"../UtilChecksum\");\r\nlet {filePath, algorithm, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    [[CHECKSUM_NODE_PARAMETERS]] = await (new Promise((resolve, reject) => {\r\n        let hash = util.createHash(algorithm);\r\n        let stream = createReadStream(filePath);\r\n        stream.on('error', function(err){\r\n            if(err.message.includes(\"no such file or directory\")){\r\n                reject(global.lang==\"ru\" ? (`файл \"${filePath}\" не существует`) : (`file \"${filePath}\" does not exist`));\r\n            }else{\r\n                reject(err);\r\n            };\r\n        });\r\n        stream.on('data', function(data){\r\n            hash.update(data);\r\n        });\r\n        stream.on('end', function(){\r\n            resolve(hash.digest(outputEncoding));\r\n        });\r\n    }));\r\n}catch(err){\r\n     util.error(err);\r\n};",
             "DataName": "Checksum_File",
             "DataType": 0,
             "LanguageName": "Node",

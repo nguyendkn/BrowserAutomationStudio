@@ -15,10 +15,8 @@ function Checksum_PrepareParameters(args){
 		var arg = args[key];
 		if(['input','base64'].indexOf(key) < 0){
 			arg = _avoid_nil(arg).toString().trim();
-			if(['algorithm','outputFormat'].indexOf(key) > -1 && _is_nilb(arg)){
-				arg = key=='algorithm' ? 'sha512' : 'hex';
-			}else if(key=='outputFormat'){
-				arg = arg.split(' ')[0];
+			if(['algorithm','inputEncoding','outputEncoding'].indexOf(key) > -1 && _is_nilb(arg)){
+				arg = key=='algorithm' ? 'sha512' : (key=='inputEncoding' ? 'utf-8' : 'hex');
 			};
 			args[key] = arg;
 		};

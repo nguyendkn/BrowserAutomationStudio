@@ -5,9 +5,9 @@
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
 			<input type="checkbox" id="Check" style="margin-left:25px" onclick="set_encoding_visible();"/> <label for="Check" class="tr">Is base64 encoded</label>
 		</span>
-		<%= _.template($('#input_constructor').html())({id:"encoding", description:tr("Encoding"), default_selector: "string", variants:["utf-8","ascii","hex","base64","utf-16le","latin1","base64url"], disable_int:true, value_string: "utf-8", help: {description: ""} }) %>
+		<%= _.template($('#input_constructor').html())({id:"inputEncoding", description:tr("Encoding"), default_selector: "string", variants:["utf-8","ascii","hex","base64","utf-16le","latin1","base64url"], disable_int:true, value_string: "utf-8", help: {description: ""} }) %>
 	<%= _.template($('#block_end').html())() %>
-	<%= _.template($('#input_constructor').html())({id:"outputFormat", description:tr("Output format"), default_selector: "string", variants:["hex encoded","base64 encoded"], disable_int:true, value_string: "hex encoded", help: {description: ""} }) %>
+	<%= _.template($('#input_constructor').html())({id:"outputEncoding", description:tr("Output format"), default_selector: "string", variants:["hex encoded","base64 encoded"], disable_int:true, value_string: "hex encoded", help: {description: ""} }) %>
 	<%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "STRING_CHECKSUM", help: {description: ""}}) %>
 </div>
 <div class="tooltipinternal">
@@ -17,7 +17,7 @@
 <%= "<s" + "cript>" %>
 
 	function set_encoding_visible(){
-		document.querySelectorAll("[data-preserve-id=encoding]")[0].style = 'display:' + ($("#Check").is(':checked') ? 'none' : 'block');
+		document.querySelectorAll("[data-preserve-id=inputEncoding]")[0].style = 'display:' + ($("#Check").is(':checked') ? 'none' : 'block');
 	};
 	
 	set_encoding_visible();

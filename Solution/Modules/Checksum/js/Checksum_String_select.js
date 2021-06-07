@@ -9,13 +9,13 @@ if(algorithm["original"].length == 0){
     return;
 };
 var base64 = $("#Check").is(':checked');
-var encoding = GetInputConstructorValue("encoding", loader);
-if(encoding["original"].length == 0){
+var inputEncoding = GetInputConstructorValue("inputEncoding", loader);
+if(inputEncoding["original"].length == 0){
     Invalid(tr("The parameter \"") + tr("Encoding") + tr("\" is not specified"));
     return;
 };
-var outputFormat = GetInputConstructorValue("outputFormat", loader);
-if(outputFormat["original"].length == 0){
+var outputEncoding = GetInputConstructorValue("outputEncoding", loader);
+if(outputEncoding["original"].length == 0){
     Invalid(tr("The parameter \"") + tr("Output format") + tr("\" is not specified"));
     return;
 };
@@ -25,8 +25,8 @@ try{
         "input": input["updated"],
         "algorithm": algorithm["updated"],
         "base64": base64,
-        "encoding": encoding["updated"],
-        "outputFormat": outputFormat["updated"],
+        "inputEncoding": inputEncoding["updated"],
+        "outputEncoding": outputEncoding["updated"],
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

@@ -13,7 +13,7 @@ function Checksum_PrepareParameters(args){
 	delete args.timeout;
 	for(var key in args){
 		var arg = args[key];
-		if(['input','base64'].indexOf(key) < 0){
+		if(key !== 'input'){
 			arg = _avoid_nil(arg).toString().trim();
 			if(['algorithm','inputEncoding','outputEncoding'].indexOf(key) > -1 && _is_nilb(arg)){
 				arg = key=='algorithm' ? 'sha512' : (key=='inputEncoding' ? 'utf-8' : 'hex');

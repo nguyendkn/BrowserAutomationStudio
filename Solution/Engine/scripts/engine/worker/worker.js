@@ -1556,9 +1556,9 @@ function _recaptchav3(action, method, rucaptcha, serverurl, score, use_proxy, ca
     })
 }
 
-function _solve_captcha(method, params, fail_on_error, callback) {
+function _solve_captcha(method, data_base64, params, fail_on_error, callback) {
     LAST_CAPTCHA_METHOD = method;
-    ScriptWorker.SolveCaptcha(method, params, fail_on_error, _get_function_body(callback));
+    ScriptWorker.SolveCaptcha(method, data_base64, params, fail_on_error, _get_function_body(callback));
 }
 
 function solve_base64(match, data_base64, callback)

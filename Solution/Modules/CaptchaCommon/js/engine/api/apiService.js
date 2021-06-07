@@ -1,7 +1,8 @@
 (function (solver, _) {
-  function CaptchaApi(name, options) {
-    this.solveTask = _.bind(solveTask, this);
+  function CaptchaApi(name, method, options) {
+    this.solve = _.bind(solve, this);
     this.options = options;
+    this.method = method;
     this.name = name;
   };
 
@@ -19,13 +20,14 @@
     return this;
   };
 
-  CaptchaApi.prototype.solve = function () {
+  function solve() {
     const self = this, task = _function_argument('task').validate(this);
     const interval = _function_argument('taskWaitInterval') || 2000;
     const delay = _function_argument('taskWaitDelay') || 5000;
 
-    Object.keys(task).forEach(function (key) {
-      solver_property(self.name, key, task[key]);
-    });
+    _solve_captcha(this.method, '', [
+      'apiKey', this.options.apiKey,
+      'apiUrl', this.options.apiUrl,
+    ], false)!
   };
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

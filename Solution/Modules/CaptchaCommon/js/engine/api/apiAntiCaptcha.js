@@ -1,6 +1,5 @@
 (function (solver, _) {
-  solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
-    solver.CaptchaApi.call(this, 'AntiCaptcha', options);
-    this.disableJsonInterface = false;
+  solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (method, options) {
+    solver.CaptchaApi.call(this, 'AntiCaptcha', method, options);
   });
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

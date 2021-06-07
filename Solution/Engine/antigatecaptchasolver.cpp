@@ -189,23 +189,20 @@ namespace BrowserAutomationStudioFramework
             }
 
 
-            if(
-                    Object.contains("solution")
-                    && Object.value("solution").isObject()
-                    && Object.value("solution").toObject().contains("gRecaptchaResponse")
-                    && Object.value("solution").toObject().value("gRecaptchaResponse").isString()
-               )
+            if(Object.contains("solution") && Object.value("solution").isObject())
             {
-
-                //Has solution
-
-                QString Solution = Object.value("solution").toObject().value("gRecaptchaResponse").toString();
+                QJsonObject SolutionObject = Object.value("solution").toObject();
 
                 if(Worker->is_recaptcha_v3)
                 {
-                    emit DoneRecatpchaV3(Solution,Worker->id,true,Worker->antigate_id);
+                    if(SolutionObject.contains("gRecaptchaResponse")) 
+                    {
+                        QString Solution = SolutionObject.value("gRecaptchaResponse").toString();
+                        emit DoneRecatpchaV3(Solution, Worker->id, true, Worker->antigate_id);
+                    }
                 }else
                 {
+                    QString Solution = QJsonDocument(SolutionObject).toJson(QJsonDocument::Compact);
                     emit Done(Solution,Worker->id,true,Worker->antigate_id);
                 }
             }else

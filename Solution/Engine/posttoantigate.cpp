@@ -144,9 +144,6 @@ namespace BrowserAutomationStudioFramework
             HttpClient->Connect(this,SLOT(submitRequestFinished()));
             HttpClient->Post(Server + "createTask",p,Options);
         }
-
-
-
     }
 
     void PostToAntigate::SetServer(const QString& Server)

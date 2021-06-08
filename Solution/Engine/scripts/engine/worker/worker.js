@@ -79,6 +79,11 @@ function _is_record()
     return ScriptWorker.GetIsRecord();
 }
 
+function _get_browser_unique_id()
+{
+    return Browser.GetBrowserUniqueId();
+}
+
 /* Manual control */
 function open_browser(callback)
 {

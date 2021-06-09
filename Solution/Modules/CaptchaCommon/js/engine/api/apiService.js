@@ -27,8 +27,7 @@
     const data = task.serialize();
 
     const properties = Object.keys(data).reduce(function (acc, key) {
-      acc.push(key, data[key]);
-      return acc;
+      return acc.concat([key, data[key]]);
     }, []);
     properties.push('is_json_interface', self.options.isJsonInterface);
     properties.push('serverurl', self.options.apiUrl + '/');

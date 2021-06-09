@@ -193,7 +193,7 @@ namespace BrowserAutomationStudioFramework
             {
                 QJsonObject SolutionObject = Object.value("solution").toObject(); 
 
-                if (SolutionObject.contains("gRecaptchaResponse") && SolutionObject.value("gRecaptchaResponse").isString())
+                if(SolutionObject.contains("gRecaptchaResponse") && SolutionObject.value("gRecaptchaResponse").isString())
                 {
                     QString Solution = Object.value("solution").toObject().value("gRecaptchaResponse").toString();
 
@@ -204,8 +204,7 @@ namespace BrowserAutomationStudioFramework
                     {
                         emit Done(Solution,Worker->id,true,Worker->antigate_id);
                     }
-                }
-                else
+                }else
                 {
                     QString Solution = QJsonDocument(SolutionObject).toJson(QJsonDocument::Compact);
                     emit Done(Solution, Worker->id, true, Worker->antigate_id);
@@ -380,7 +379,6 @@ namespace BrowserAutomationStudioFramework
                 Worker->timer->start(timeout);
                 connect(Worker->timer, SIGNAL(timeout()), this, SLOT(StartSingleIteration()));
                 Workers.append(Worker);
-
             }
         }
         else

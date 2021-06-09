@@ -7,22 +7,18 @@
   };
 
   CaptchaApi.prototype.setApiUrl = function (url) {
-    if (url && url.length) {
-      this.options.apiUrl = _trim_right(url, '/\\ ');
-    }
+    if (url && url.length) this.options.apiUrl = _trim_right(url, '/\\ ');
     return this;
   };
 
   CaptchaApi.prototype.setApiKey = function (key) {
-    if (key && key.length) {
-      this.options.apiKey = _trim_right(key, '/\\ ');
-    }
+    if (key && key.length) this.options.apiKey = _trim_right(key, '/\\ ');
     return this;
   };
 
   function solve() {
     const self = this, task = _function_argument('task').validate(this);
-    const interval = _function_argument('taskWaitInterval') || 2000;
+    const interval = _function_argument('taskWaitInterval') || 5000;
     const delay = _function_argument('taskWaitDelay') || 5000;
     const data = task.serialize();
 
@@ -35,4 +31,6 @@
     properties.push('key', this.options.apiKey);
     _solve_captcha(this.method, '', properties, false)!
   };
+
+  solver.CaptchaApi = CaptchaApi;
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

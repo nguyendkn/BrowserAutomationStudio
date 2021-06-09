@@ -30,7 +30,8 @@
       acc.push(key, data[key]);
       return acc;
     }, []);
-    properties.push('serverurl', this.options.apiUrl);
+    properties.push('is_json_interface', this.options.isJsonInterface);
+    properties.push('serverurl', this.options.apiUrl + '/');
     properties.push('key', this.options.apiKey);
     _solve_captcha(this.method, '', properties, false)!
   };

@@ -29,7 +29,10 @@
     properties.push('is_json_interface', self.options.isJsonInterface);
     properties.push('serverurl', self.options.apiUrl + '/');
     properties.push('key', self.options.apiKey);
-    _solve_captcha(self.method, '', properties, false)!
+
+    _solve_captcha(self.method, '', properties, false, function () {
+      _function_return(task.getSolution(_result()));
+    });
   };
 
   solver.CaptchaApi = CaptchaApi;

@@ -12,7 +12,8 @@
     });
   });
   FunCaptchaTask.prototype.getSolution = function (response) {
-    return response.solution['token'];
+    const solution = JSON.parse(response);
+    return solution['token'];
   };
   api.prototype.FunCaptchaTask = FunCaptchaTask;
 })(BASCaptchaSolver.tasks, BASCaptchaSolver.AntiCaptchaApi, BASCaptchaSolver.utils);

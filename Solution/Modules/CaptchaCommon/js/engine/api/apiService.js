@@ -17,19 +17,19 @@
   };
 
   function solve() {
-    const self = this, task = _function_argument('task').validate(this);
+    const self = this, task = _function_argument('task').validate(self);
     const interval = _function_argument('taskWaitInterval') || 5000;
     const delay = _function_argument('taskWaitDelay') || 5000;
     const data = task.serialize();
 
-    const properties = Object.keys(data).reduce(function (acc, val) {
+    const properties = Object.keys(data).reduce(function (acc, key) {
       acc.push(key, data[key]);
       return acc;
     }, []);
-    properties.push('is_json_interface', this.options.isJsonInterface);
-    properties.push('serverurl', this.options.apiUrl + '/');
-    properties.push('key', this.options.apiKey);
-    _solve_captcha(this.method, '', properties, false)!
+    properties.push('is_json_interface', self.options.isJsonInterface);
+    properties.push('serverurl', self.options.apiUrl + '/');
+    properties.push('key', self.options.apiKey);
+    _solve_captcha(self.method, '', properties, false)!
   };
 
   solver.CaptchaApi = CaptchaApi;

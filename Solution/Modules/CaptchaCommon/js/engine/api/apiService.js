@@ -24,10 +24,14 @@
     const self = this, task = _function_argument('task').validate(this);
     const interval = _function_argument('taskWaitInterval') || 2000;
     const delay = _function_argument('taskWaitDelay') || 5000;
+    const data = task.serialize();
 
-    _solve_captcha(this.method, '', [
-      'apiKey', this.options.apiKey,
-      'apiUrl', this.options.apiUrl,
-    ], false)!
+    const properties = Object.keys(data).reduce(function (acc, val) {
+      acc.push(key, data[key]);
+      return acc;
+    }, []);
+    properties.push('serverurl', this.options.apiUrl);
+    properties.push('key', this.options.apiKey);
+    _solve_captcha(this.method, '', properties, false)!
   };
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

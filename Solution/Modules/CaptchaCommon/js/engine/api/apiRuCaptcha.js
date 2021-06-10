@@ -1,6 +1,7 @@
 (function (solver, _) {
-  solver.RuCaptchaApi = _.inherit(solver.CaptchaApi, function (method, options) {
+  const RuCaptchaApi = _.inherit(solver.CaptchaApi, function (method, options) {
     solver.CaptchaApi.call(this, method, options);
-    this.options.isJsonInterface = '0';
+    this.options.isJsonApi = '0';
   });
+  solver.RuCaptchaApi = RuCaptchaApi;
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

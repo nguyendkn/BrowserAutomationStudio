@@ -6,12 +6,6 @@
       return fn;
     },
 
-    log: function (message) {
-      if (solver.debug) {
-        log('[CaptchaSolver]: ' + message);
-      }
-    },
-
     bind: function (fn, context) {
       const args = Array.prototype.slice.call(arguments, 1);
 

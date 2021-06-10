@@ -13,7 +13,7 @@
         siteKey: data.siteKey,
         proxy: args.proxy
       }),
-      taskWaitInterval: args.taskWaitInterval,
+      taskWaitTimeout: args.taskWaitTimeout,
       taskWaitDelay: args.taskWaitDelay
     })!
 

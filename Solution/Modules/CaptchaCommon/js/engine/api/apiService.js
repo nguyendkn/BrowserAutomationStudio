@@ -21,7 +21,7 @@
 
   function solve() {
     const self = this, task = _function_argument('task').validate(self);
-    const interval = _function_argument('taskWaitInterval') || 5000;
+    const timeout = _function_argument('taskWaitTimeout') || 5000;
     const delay = _function_argument('taskWaitDelay') || 5000;
     const data = task.serialize();
 
@@ -31,6 +31,8 @@
     params.push('is_json_interface', self.options.isJsonInterface);
     params.push('serverurl', self.options.apiUrl + '/');
     params.push('key', self.options.apiKey);
+    params.push('timeout', timeout);
+    params.push('delay', delay);
 
     _solve_captcha(self.method, '', params, false, function () {
       _function_return(_function_argument('task').getSolution(_result()));

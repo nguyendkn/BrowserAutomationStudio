@@ -316,6 +316,8 @@ namespace BrowserAutomationStudioFramework
                     Server = str;
                 }else if(name == "timeout")
                 {
+                }else if(name == "delay")
+                {
                 }else if(name == "recatpchav3")
                 {
                     IsRecaptchaV3 = true;

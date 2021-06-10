@@ -14,7 +14,7 @@
         pageUrl: data.pageUrl,
         proxy: args.proxy
       }),
-      taskWaitInterval: args.taskWaitInterval,
+      taskWaitTimeout: args.taskWaitTimeout,
       taskWaitDelay: args.taskWaitDelay
     })!
 

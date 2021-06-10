@@ -2,17 +2,17 @@
   const services = {
     'AntiCaptcha': new solver.AntiCaptchaApi('antigate', {
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
-      apiUrl: 'https://api.anti-captcha.com',
+      apiUrl: 'https://api.anti-captcha.com/',
       name: 'AntiCaptcha',
     }),
     'RuCaptcha': new solver.RuCaptchaApi('rucaptcha', {
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
-      apiUrl: 'https://rucaptcha.com',
+      apiUrl: 'https://rucaptcha.com/',
       name: 'RuCaptcha',
     }),
     '2Captcha': new solver.RuCaptchaApi('2captcha', {
       supportedTasks: ['FunCaptcha', 'HCaptcha'],
-      apiUrl: 'https://2captcha.com',
+      apiUrl: 'https://2captcha.com/',
       name: '2Captcha',
     }),
   };

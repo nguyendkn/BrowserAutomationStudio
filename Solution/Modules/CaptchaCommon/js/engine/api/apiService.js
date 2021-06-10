@@ -7,14 +7,14 @@
 
   CaptchaApi.prototype.setApiUrl = function (url) {
     if (url && url.length) {
-      this.options.apiUrl = _trim_right(url, '/\\ ');
+      this.options.apiUrl = url.trim();
     }
     return this;
   };
 
   CaptchaApi.prototype.setApiKey = function (key) {
     if (key && key.length) {
-      this.options.apiKey = _trim_right(key, '/\\ ');
+      this.options.apiKey = key.trim();
     }
     return this;
   };

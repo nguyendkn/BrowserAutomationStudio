@@ -29,8 +29,8 @@
       return acc.concat([key, data[key]]);
     }, []);
     params.push('is_json_interface', self.options.isJsonInterface);
-    params.push('serverurl', self.options.apiUrl + '/');
-    params.push('key', self.options.apiKey);
+    params.push('service_url', self.options.apiUrl);
+    params.push('service_key', self.options.apiKey);
     params.push('timeout', timeout);
     params.push('delay', delay);
 

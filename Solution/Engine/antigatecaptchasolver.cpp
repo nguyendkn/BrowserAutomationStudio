@@ -305,15 +305,15 @@ namespace BrowserAutomationStudioFramework
                 name = str;
             }else
             {
-                if(name == "key")
+                if(name == "key" || name == "service_key")
                 {
                     key = str;
                 }else if(name == "bas_disable_image_convert")
                 {
                     DisableImageConvert = str.toInt();
-                }else if(name == "serverurl")
+                }else if(name == "serverurl" || name == "service_url")
                 {
-                    Server = str;
+                    Server = !str.endsWith("/") ? str.append("/") : str;
                 }else if(name == "timeout")
                 {
                 }else if(name == "delay")

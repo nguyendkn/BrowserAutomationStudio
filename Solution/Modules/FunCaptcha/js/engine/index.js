@@ -14,8 +14,9 @@
         pageUrl: data.pageUrl,
         proxy: args.proxy
       }),
-      taskWaitTimeout: args.taskWaitTimeout,
-      taskWaitDelay: args.taskWaitDelay
+      waitTimeout: args.taskWaitTimeout,
+      waitDelay: args.taskWaitDelay,
+      noFail: args.noFail
     })!
 
     _call_function(BASCaptchaSolver.helper.submitCaptcha, { token: _result_function() })!

@@ -21,8 +21,9 @@
 
   function solve() {
     const self = this, task = _function_argument('task').validate(self);
-    const waitTimeout = _function_argument('taskWaitTimeout') || 5000;
-    const waitDelay = _function_argument('taskWaitDelay') || 5000;
+    const waitTimeout = _function_argument('waitTimeout') || 5000;
+    const waitDelay = _function_argument('waitDelay') || 5000;
+    const noFail = _function_argument('noFail') || false;
     const data = task.serialize();
 
     const params = Object.keys(data).reduce(function (acc, key) {
@@ -34,7 +35,7 @@
     params.push('timeout', waitTimeout);
     params.push('delay', waitDelay);
 
-    _solve_captcha(self.method, '', params, false, function () {
+    _solve_captcha(self.method, '', params, !noFail, function () {
       _function_return(_function_argument('task').getSolution(_result()));
     });
   };

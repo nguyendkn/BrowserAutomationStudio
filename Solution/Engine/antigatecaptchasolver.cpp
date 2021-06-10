@@ -8,7 +8,7 @@
 namespace BrowserAutomationStudioFramework
 {
     AntigateCaptchaSolver::AntigateCaptchaSolver(QObject *parent) :
-        ISolver(parent),Iterator(0),StartedMonitor(false),timeout(8000), MultipleIds(true), StartImmediate(false)
+        ISolver(parent),Iterator(0),StartedMonitor(false),timeout(8000), delay(1000), MultipleIds(true), StartImmediate(false)
     {
         Server = "http://antigate.com/";
     }

@@ -23,6 +23,11 @@ namespace BrowserAutomationStudioFramework
         this->timeout = timeout;
     }
 
+    void AntigateCaptchaSolver::SetDelay(int delay)
+    {
+        this->delay = delay;
+    }
+
     void AntigateCaptchaSolver::SetSoftId(const QString& SoftId)
     {
         this->SoftId = SoftId;
@@ -316,8 +321,10 @@ namespace BrowserAutomationStudioFramework
                     Server = !str.endsWith("/") ? str.append("/") : str;
                 }else if(name == "timeout")
                 {
+                    SetTimeout(str.toInt());
                 }else if(name == "delay")
                 {
+                    SetDelay(str.toInt());
                 }else if(name == "recatpchav3")
                 {
                     IsRecaptchaV3 = true;

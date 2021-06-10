@@ -14,8 +14,7 @@
         proxy: args.proxy
       }),
       waitTimeout: args.taskWaitTimeout,
-      waitDelay: args.taskWaitDelay,
-      noFail: args.noFail
+      waitDelay: args.taskWaitDelay
     })!
 
     _call_function(BASCaptchaSolver.helper.submitCaptcha, { token: _result_function() })!

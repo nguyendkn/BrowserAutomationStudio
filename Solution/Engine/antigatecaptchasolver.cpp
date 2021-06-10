@@ -48,7 +48,7 @@ namespace BrowserAutomationStudioFramework
             if(StartImmediate)
                 timer.start(10);
             else
-                timer.start(timeout);
+                timer.start(delay);
             connect(&timer, SIGNAL(timeout()), this, SLOT(StartIteration()));
             StartedMonitor = true;
         }
@@ -385,7 +385,7 @@ namespace BrowserAutomationStudioFramework
                 Worker->client = HttpClientFactory->GetHttpClient();
                 Worker->client->setParent(Worker);
                 Worker->timer->setSingleShot(true);
-                Worker->timer->start(timeout);
+                Worker->timer->start(delay);
                 connect(Worker->timer, SIGNAL(timeout()), this, SLOT(StartSingleIteration()));
                 Workers.append(Worker);
             }

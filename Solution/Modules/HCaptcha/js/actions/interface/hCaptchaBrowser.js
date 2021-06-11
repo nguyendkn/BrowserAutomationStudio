@@ -51,7 +51,7 @@
       default_selector: 'int',
       value_number: 5 * 1000,
       disable_string: true,
-      id: 'taskWaitInterval',
+      id: 'taskWaitTimeout',
       help: {
         description: tr('Task solution check interval in milliseconds'),
         examples: [

@@ -38,6 +38,7 @@ namespace BrowserAutomationStudioFramework
         QTimer timer;
         bool StartImmediate;
         int timeout;
+        int delay;
         QString Server;
         QString SoftId;
         void StartMonitor();
@@ -50,6 +51,7 @@ namespace BrowserAutomationStudioFramework
         void SetServer(const QString& Server);
         void SetSoftId(const QString& SoftId);
         void SetTimeout(int timeout);
+        void SetDelay(int delay);
         void SetStartImmediate(bool StartImmediate);
         virtual QString Solve(const QString& base64,const QStringList& props);
         virtual void ReportBad(const QString& id);

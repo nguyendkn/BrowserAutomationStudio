@@ -8,7 +8,7 @@
 namespace BrowserAutomationStudioFramework
 {
     AntigateCaptchaSolver::AntigateCaptchaSolver(QObject *parent) :
-        ISolver(parent),Iterator(0),StartedMonitor(false),timeout(8000), MultipleIds(true), StartImmediate(false)
+        ISolver(parent),Iterator(0),StartedMonitor(false), timeout(8000), delay(1000), MultipleIds(true), StartImmediate(false)
     {
         Server = "http://antigate.com/";
     }
@@ -21,6 +21,11 @@ namespace BrowserAutomationStudioFramework
     void AntigateCaptchaSolver::SetTimeout(int timeout)
     {
         this->timeout = timeout;
+    }
+
+    void AntigateCaptchaSolver::SetDelay(int delay)
+    {
+        this->delay = delay;
     }
 
     void AntigateCaptchaSolver::SetSoftId(const QString& SoftId)
@@ -43,7 +48,7 @@ namespace BrowserAutomationStudioFramework
             if(StartImmediate)
                 timer.start(10);
             else
-                timer.start(timeout);
+                timer.start(delay);
             connect(&timer, SIGNAL(timeout()), this, SLOT(StartIteration()));
             StartedMonitor = true;
         }
@@ -189,24 +194,25 @@ namespace BrowserAutomationStudioFramework
             }
 
 
-            if(
-                    Object.contains("solution")
-                    && Object.value("solution").isObject()
-                    && Object.value("solution").toObject().contains("gRecaptchaResponse")
-                    && Object.value("solution").toObject().value("gRecaptchaResponse").isString()
-               )
+            if(Object.contains("solution") && Object.value("solution").isObject())
             {
+                QJsonObject SolutionObject = Object.value("solution").toObject(); 
 
-                //Has solution
-
-                QString Solution = Object.value("solution").toObject().value("gRecaptchaResponse").toString();
-
-                if(Worker->is_recaptcha_v3)
+                if(SolutionObject.contains("gRecaptchaResponse") && SolutionObject.value("gRecaptchaResponse").isString())
                 {
-                    emit DoneRecatpchaV3(Solution,Worker->id,true,Worker->antigate_id);
+                    QString Solution = Object.value("solution").toObject().value("gRecaptchaResponse").toString();
+
+                    if(Worker->is_recaptcha_v3)
+                    {
+                        emit DoneRecatpchaV3(Solution,Worker->id,true,Worker->antigate_id);
+                    }else
+                    {
+                        emit Done(Solution,Worker->id,true,Worker->antigate_id);
+                    }
                 }else
                 {
-                    emit Done(Solution,Worker->id,true,Worker->antigate_id);
+                    QString Solution = QJsonDocument(SolutionObject).toJson(QJsonDocument::Compact);
+                    emit Done(Solution, Worker->id, true, Worker->antigate_id);
                 }
             }else
             {
@@ -304,17 +310,21 @@ namespace BrowserAutomationStudioFramework
                 name = str;
             }else
             {
-                if(name == "key")
+                if(name == "key" || name == "service_key")
                 {
                     key = str;
                 }else if(name == "bas_disable_image_convert")
                 {
                     DisableImageConvert = str.toInt();
-                }else if(name == "serverurl")
+                }else if(name == "serverurl" || name == "service_url")
                 {
-                    Server = str;
+                    Server = !str.endsWith("/") ? str.append("/") : str;
                 }else if(name == "timeout")
                 {
+                    SetTimeout(str.toInt());
+                }else if(name == "delay")
+                {
+                    SetDelay(str.toInt());
                 }else if(name == "recatpchav3")
                 {
                     IsRecaptchaV3 = true;
@@ -375,7 +385,7 @@ namespace BrowserAutomationStudioFramework
                 Worker->client = HttpClientFactory->GetHttpClient();
                 Worker->client->setParent(Worker);
                 Worker->timer->setSingleShot(true);
-                Worker->timer->start(timeout);
+                Worker->timer->start(delay);
                 connect(Worker->timer, SIGNAL(timeout()), this, SLOT(StartSingleIteration()));
                 Workers.append(Worker);
 
@@ -425,4 +435,3 @@ namespace BrowserAutomationStudioFramework
         return true;
     }
 }
-

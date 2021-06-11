@@ -370,6 +370,7 @@ namespace BrowserAutomationStudioFramework
 
         void Solve(const QString& method, const QString& base64, const QStringList & params,const QString& callback);
         void SolveNoFail(const QString& method, const QString& base64, const QStringList & params,const QString& callback);
+        void SolveCaptcha(const QString& method, const QString& base64, const QStringList & params,  const bool fail_on_error, const QString& callback);
 
         QScriptValue GetRootElement();
         QScriptValue GetSolver(const QString& name);

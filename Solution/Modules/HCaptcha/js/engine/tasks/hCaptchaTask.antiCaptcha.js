@@ -10,7 +10,7 @@
     });
   });
   HCaptchaTask.prototype.getSolution = function (response) {
-    return response.solution['gRecaptchaResponse'];
+    return response;
   };
   api.prototype.HCaptchaTask = HCaptchaTask;
 })(BASCaptchaSolver.tasks, BASCaptchaSolver.AntiCaptchaApi, BASCaptchaSolver.utils);

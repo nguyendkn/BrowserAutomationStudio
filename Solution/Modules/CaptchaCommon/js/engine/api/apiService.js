@@ -23,18 +23,17 @@
     const self = this, task = _function_argument('task').validate(self);
     const waitTimeout = _function_argument('waitTimeout') || 5000;
     const waitDelay = _function_argument('waitDelay') || 5000;
+    const options = self.options, params = task.serialize();
 
-    const params = task.serialize();
-    params['is_json_interface'] = self.options.isJsonApi;
-    params['service_url'] = self.options.apiUrl;
-    params['service_key'] = self.options.apiKey;
+    params['is_json_interface'] = options.isJsonApi;
+    params['service_url'] = options.apiUrl;
+    params['service_key'] = options.apiKey;
     params['timeout'] = waitTimeout;
     params['delay'] = waitDelay;
 
     _solve_captcha(self.method, '', params, false, function () {
-      const result = _result();
-      if (result.indexOf('CAPTCHA_FAIL') >= 0) fail(result);
-      _function_return(_function_argument('task').getSolution(result));
+      if (_result().indexOf('CAPTCHA_FAIL') >= 0) fail(_result());
+      _function_return(_function_argument('task').getSolution(_result()));
     });
   };
 

@@ -388,6 +388,7 @@ namespace BrowserAutomationStudioFramework
                 Worker->timer->start(delay);
                 connect(Worker->timer, SIGNAL(timeout()), this, SLOT(StartSingleIteration()));
                 Workers.append(Worker);
+
             }
         }
         else

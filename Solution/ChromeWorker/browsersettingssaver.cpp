@@ -29,8 +29,8 @@ void BrowserSettingsSaver::Save()
             if(!UserAgent.empty())
             {
                 outfile<<"Attribute.userAgent="<<UserAgent<<std::endl;
-                outfile<<"Attribute.vendor="<<""<<std::endl;
-                outfile<<"Attribute.platform="<<""<<std::endl;
+                outfile<<"Attribute.vendor="<<"Google Inc."<<std::endl;
+                outfile<<"Attribute.platform="<<"Win32"<<std::endl;
                 outfile<<"Attribute.appVersion="<<ReplaceAll(UserAgent, "Mozilla/", "")<<std::endl;
             }
 

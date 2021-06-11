@@ -10431,6 +10431,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "length": _.template($('#length').html()),
           "loopelement": _.template($('#loopelement').html()),
           "setheader": _.template($('#setheader').html()),
+          "coordinatesCaptchaBrowser": _.template($('#coordinatesCaptchaBrowser').html()),
           "solvecaptcha": _.template($('#solvecaptcha').html()),
           "javascript": _.template($('#javascript').html()),
           "reset": _.template($('#reset').html()),
@@ -10688,6 +10689,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/length": "length",
             "!/loopelement": "loopelement",
             "!/setheader": "setheader",
+            "!/coordinatesCaptchaBrowser": "coordinatesCaptchaBrowser",
             "!/solvecaptcha": "solvecaptcha",
             "!/javascript": "javascript",
             "!/reset": "reset",
@@ -10974,6 +10976,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         },
         setheader: function(){
           _GobalModel.set({ state: "setheader" });
+        },
+        coordinatesCaptchaBrowser: function () {
+          _GobalModel.set({ state: "coordinatesCaptchaBrowser" });
         },
         solvecaptcha: function(){
                   _GobalModel.set({ state: "solvecaptcha" });
@@ -11282,6 +11287,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 //{ name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
                 { name: tr(_A["scroll"]["name"]), description: tr(_A["scroll"]["description"]), ref: "scroll" },
                 { name: tr(_A["renderscreen"]["name"]), description: tr(_A["renderscreen"]["description"]), ref: "renderscreen" },
+                { name: tr(_A["coordinatesCaptchaBrowser"]["name"]), description: tr(_A["coordinatesCaptchaBrowser"]["description"]), ref: "coordinatesCaptchaBrowser" },
                 { name: tr(_A["solvecaptcha"]["name"]), description: tr(_A["solvecaptcha"]["description"]), ref: "solvecaptcha" },
                 { name: tr(_A["recaptchav3"]["name"]), description: tr(_A["recaptchav3"]["description"]), ref: "recaptchav3" },
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },

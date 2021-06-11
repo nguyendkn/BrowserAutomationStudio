@@ -1,6 +1,9 @@
 ProfilePath = (<%= profile %>);
 
 _do(function(){
+	if(ProfilePath == _get_profile())
+		_break();
+		
 	if(_iterator() > 30)
 		fail(tr("Timeout during switching to profile ") + ProfilePath);
 	

@@ -11,7 +11,7 @@
     description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),
     examples: [
       { code: tr('Select all images where there is a plane') },
-      { code: tr('Select all images where there is a bus') }
+      { code: tr('Select all images where there is a boat') }
     ]
   }}) %>
   <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>

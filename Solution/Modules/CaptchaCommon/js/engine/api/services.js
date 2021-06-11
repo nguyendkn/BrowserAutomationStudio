@@ -6,12 +6,12 @@
       name: 'AntiCaptcha',
     }),
     'RuCaptcha': new solver.RuCaptchaApi('rucaptcha', {
-      supportedTasks: ['FunCaptcha', 'HCaptcha'],
+      supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://rucaptcha.com/',
       name: 'RuCaptcha',
     }),
     '2Captcha': new solver.RuCaptchaApi('2captcha', {
-      supportedTasks: ['FunCaptcha', 'HCaptcha'],
+      supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
       apiUrl: 'https://2captcha.com/',
       name: '2Captcha',
     }),

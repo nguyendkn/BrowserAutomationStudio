@@ -1579,7 +1579,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),
         examples: [
           { code: tr('Select all images where there is a plane') },
-          { code: tr('Select all images where there is a bus') }
+          { code: tr('Select all images where there is a boat') }
         ]
       }}) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
@@ -11287,7 +11287,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 //{ name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
                 { name: tr(_A["scroll"]["name"]), description: tr(_A["scroll"]["description"]), ref: "scroll" },
                 { name: tr(_A["renderscreen"]["name"]), description: tr(_A["renderscreen"]["description"]), ref: "renderscreen" },
-                { name: tr(_A["coordinatesCaptchaBrowser"]["name"]), description: tr(_A["coordinatesCaptchaBrowser"]["description"]), ref: "coordinatesCaptchaBrowser" },
+                //{ name: tr(_A["coordinatesCaptchaBrowser"]["name"]), description: tr(_A["coordinatesCaptchaBrowser"]["description"]), ref: "coordinatesCaptchaBrowser" },
                 { name: tr(_A["solvecaptcha"]["name"]), description: tr(_A["solvecaptcha"]["description"]), ref: "solvecaptcha" },
                 { name: tr(_A["recaptchav3"]["name"]), description: tr(_A["recaptchav3"]["description"]), ref: "recaptchav3" },
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },

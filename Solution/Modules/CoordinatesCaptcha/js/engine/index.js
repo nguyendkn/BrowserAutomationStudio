@@ -8,7 +8,9 @@
 
     _call_function(BASCaptchaSolver.api.solve, {
       task: new BASCaptchaSolver.api.CoordinatesCaptchaTask({
-
+        textInstructions: args.textInstructions,
+        imgInstructions: args.imgInstructions,
+        coordinatesCaptcha: '1'
       }),
       waitTimeout: args.taskWaitTimeout,
       waitDelay: args.taskWaitDelay

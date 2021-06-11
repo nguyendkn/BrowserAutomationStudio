@@ -14,19 +14,19 @@
   "api_version": 1,
   "actions": [
     {
-      "name": "CoordinatesCaptchaBrowser",
+      "name": "CoordinatesCaptchaElement",
       "description": {
         "ru": "Решить CoordinatesCaptcha",
         "en": "Solve CoordinatesCaptcha"
       },
       "template": "{{PATH}}",
       "is_element": true,
-      "interface": "actions/interface/coordinatesCaptchaBrowser.js",
-      "select": "actions/select/coordinatesCaptchaBrowser.js",
+      "interface": "actions/interface/coordinatesCaptchaElement.js",
+      "select": "actions/select/coordinatesCaptchaElement.js",
       "code": [
         {
-          "file": "actions/code/coordinatesCaptchaBrowser.js",
-          "name": "coordinatesCaptchaBrowser_code"
+          "file": "actions/code/coordinatesCaptchaElement.js",
+          "name": "coordinatesCaptchaElement_code"
         }
       ]
     }

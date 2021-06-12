@@ -1,15 +1,15 @@
 (function (tasks, api, _) {
-  const CoordinatesCaptchaTask = _.inherit(tasks.RuCaptchaTask, function (params) {
+  const CoordinatesCaptchaTask = _.inherit(tasks.RuCaptchaTask, function (image, params) {
     tasks.RuCaptchaTask.call(this, 'CoordinatesCaptcha', {
       name: 'post',
       rules: {
-        coordinatesCaptcha: { name: 'coordinatescaptcha', optional: false },
         textInstructions: { name: 'textinstructions', optional: false },
         imgInstructions: { name: 'imginstructions', optional: true },
-        imageData: { name: 'body' },
       },
-      params: params
+      params: params,
+      image: image,
     });
+    this.data['coordinatescaptcha'] = 1;
   });
 
   CoordinatesCaptchaTask.prototype.getSolution = function (response) {

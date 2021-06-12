@@ -10,13 +10,14 @@
     })!
 
     _call_function(BASCaptchaSolver.api.solve, {
-      task: new BASCaptchaSolver.api.CoordinatesCaptchaTask({
+      task: new BASCaptchaSolver.api.CoordinatesCaptchaTask(args.imageData, {
         textInstructions: args.textInstructions,
         imgInstructions: args.imgInstructions,
-        imageData: args.imageData,
       }),
       waitTimeout: args.taskWaitTimeout,
       waitDelay: args.taskWaitDelay
     })!
+
+    _call_function(BASCaptchaSolver.helper.submitCaptcha, { points: _result_function() })!
   };
 })(this);

@@ -1,7 +1,7 @@
 (function (tasks, _) {
   const AntiCaptchaTask = _.inherit(tasks.BaseTask, function (type, options) {
     tasks.BaseTask.call(this, type, options);
-    this.data['type'] = this.name;
+    this.data['type'] = options.name;
   });
 
   AntiCaptchaTask.prototype.applyProxy = function (proxy, _, userAgent) {

@@ -35,9 +35,33 @@
   "languages": [],
   "modules": [],
   "depends": ["CaptchaCommon"],
-  "localize": {},
+  "localize": {
+    "Image data": {
+      "ru": "Данные изображения"
+    },
+    "Text with instructions": {
+      "ru": "Текст с инструкциями"
+    },
+    "Image with instructions": {
+      "ru": "Изображение с инструкциями"
+    },
+    "Captcha image data in base64 format": {
+      "ru": "Данные изображения капчи в формате base64"
+    },
+    "Select all images where there is a boat": {
+      "ru": "Выберите все изображения, на которых есть лодка"
+    },
+    "Select all images where there is a plane": {
+      "ru": "Выберите все изображения, на которых есть самолёт"
+    },
+    "Text with instructions for solving captcha. Optional if the image already has instructions.": {
+      "ru": "Текст с инструкциями по решению капчи. Необязателен, если на изображении уже есть инструкции."
+    }
+  },
   "browser": [],
   "engine": [
-    "engine/index.js"
+    "engine/index.js",
+    "engine/tasks/coordinatesCaptchaTask.js",
+    "engine/helpers/coordinatesCaptchaHelper.js"
   ]
 }

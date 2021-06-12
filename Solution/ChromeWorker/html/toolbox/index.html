@@ -1565,8 +1565,8 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="coordinatesCaptchaBrowser">
     <div class="container-fluid">
-      <%= _.template($('#input_constructor').html())({ id: 'pictureData', description: tr('Captcha picture data'), value_string: '', default_selector: 'string', disable_int: true, help: {
-        description: tr('Captcha picture data encoded in base64')
+      <%= _.template($('#input_constructor').html())({ id: 'imageData', description: tr('Image data'), value_string: '', default_selector: 'string', disable_int: true, help: {
+        description: tr('Captcha image data in base64 format')
       }}) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceName', description: tr('Service name'), variants: [ 'rucaptcha', '2captcha' ], value_string: 'rucaptcha', default_selector: 'string', disable_int: true, help: {
         description: tr('Captcha solving service name'),
@@ -5444,10 +5444,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       textInstructions: <%= textInstructions %>,
       taskWaitTimeout: <%= taskWaitTimeout %>,
       taskWaitDelay: <%= taskWaitDelay %>,
-      pictureData: <%= pictureData %>,
       serviceName: <%= serviceName %>,
       serviceUrl: <%= serviceUrl %>,
       serviceKey: <%= serviceKey %>,
+      imageData: <%= imageData %>,
     })!
     <%= clickCoordinatesList %> = _result_function();
   </script>
@@ -8562,10 +8562,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             const textInstructions = GetInputConstructorValue('textInstructions', loader);
             const taskWaitTimeout = GetInputConstructorValue('taskWaitInterval', loader);
             const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
-            const pictureData = GetInputConstructorValue('pictureData', loader);
             const serviceName = GetInputConstructorValue('serviceName', loader);
             const serviceKey = GetInputConstructorValue('serviceKey', loader);
             const serviceUrl = GetInputConstructorValue('serviceUrl', loader);
+            const imageData = GetInputConstructorValue('imageData', loader);
 
             if (!clickCoorinatesList.length) {
               return Invalid(tr('The "Click coordinates list" variable must not be empty'));
@@ -8573,12 +8573,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               return Invalid(tr('The "Task solution check interval" parameter is empty'));
             } else if (!taskWaitDelay.original.length) {
               return Invalid(tr('The "Task solution check delay" parameter is empty'));
-            } else if (!pictureData.original.length) {
-              return Invalid(tr('The "Captcha picture data" parameter is empty'));
             } else if (!serviceName.original.length) {
               return Invalid(tr('The "Service name" parameter is empty'));
             } else if (!serviceKey.original.length) {
               return Invalid(tr('The "Service key" parameter is empty'));
+            } else if (!imageData.original.length) {
+              return Invalid(tr('The "Image data" parameter is empty'));
             }
 
             try {
@@ -8587,10 +8587,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 textInstructions: textInstructions.updated,
                 taskWaitTimeout: taskWaitTimeout.updated,
                 taskWaitDelay: taskWaitDelay.updated,
-                pictureData: pictureData.updated,
                 serviceName: serviceName.updated,
                 serviceKey: serviceKey.updated,
                 serviceUrl: serviceUrl.updated,
+                imageData: imageData.updated,
               }), 0);
               BrowserAutomationStudio_Append('', BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);
             } catch (e) { console.log('Error while adding action:', e) }

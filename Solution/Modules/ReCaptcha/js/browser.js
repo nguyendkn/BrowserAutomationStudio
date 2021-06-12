@@ -1,4 +1,6 @@
 Object.defineProperty(window, 'grecaptcha', {set: function(value){
+	if(typeof(value) == "undefined")
+		return;
 	_BAS_HIDE(BrowserAutomationStudio_GRecaptchaOriginal) = value;
 	Object.defineProperty(_BAS_HIDE(BrowserAutomationStudio_GRecaptchaOriginal), 'render', {set: function(value1){
 		 _BAS_HIDE(BrowserAutomationStudio_GRecaptchaRenderOriginal) = value1;

@@ -10,6 +10,7 @@
       task: new BASCaptchaSolver.api.CoordinatesCaptchaTask({
         textInstructions: args.textInstructions,
         imgInstructions: args.imgInstructions,
+        pictureData: args.pictureData,
         coordinatesCaptcha: '1'
       }),
       waitTimeout: args.taskWaitTimeout,

@@ -6,7 +6,7 @@
         coordinatesCaptcha: { name: 'coordinatescaptcha', optional: false },
         textInstructions: { name: 'textinstructions', optional: false },
         imgInstructions: { name: 'imginstructions', optional: true },
-        pictureBase64: { name: 'body' },
+        pictureData: { name: 'body' },
       },
       params: params
     });

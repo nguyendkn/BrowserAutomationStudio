@@ -6,7 +6,9 @@
   });
 
   function extractData() {
-
+    this.$element.render_base64(function () {
+      _function_return({ imageData: _result() });
+    });
   };
 
   function initialize() {

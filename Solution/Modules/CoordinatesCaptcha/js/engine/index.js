@@ -1,17 +1,19 @@
 (function (global) {
   global.BASCaptchaSolver.solveCoordinatesCaptcha = function () {
     const args = _function_arguments();
-    BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.CoordinatesCaptchaHelper(args));
     BASCaptchaSolver.api = BASCaptchaSolver.getService(args);
-    _call_function(BASCaptchaSolver.helper.initialize, {})!
-    const data = _result_function();
+
+    _if(!args.imageData, function () {
+      BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.CoordinatesCaptchaHelper(args));
+      _call_function(BASCaptchaSolver.helper.initialize, {})!
+      args.imageData = _result_function().imageData;
+    })!
 
     _call_function(BASCaptchaSolver.api.solve, {
       task: new BASCaptchaSolver.api.CoordinatesCaptchaTask({
         textInstructions: args.textInstructions,
         imgInstructions: args.imgInstructions,
-        pictureData: args.pictureData,
-        coordinatesCaptcha: '1'
+        imageData: args.imageData,
       }),
       waitTimeout: args.taskWaitTimeout,
       waitDelay: args.taskWaitDelay

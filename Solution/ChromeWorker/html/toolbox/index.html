@@ -8558,16 +8558,16 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
           }else if(State == "coordinatesCaptchaBrowser")
           {
-            const clickCoorinatesList = this.$el.find('#clickCoordinatesList').val().toUpperCase();
+            const clickCoordinatesList = this.$el.find('#clickCoordinatesList').val().toUpperCase();
             const textInstructions = GetInputConstructorValue('textInstructions', loader);
-            const taskWaitTimeout = GetInputConstructorValue('taskWaitInterval', loader);
+            const taskWaitTimeout = GetInputConstructorValue('taskWaitTimeout', loader);
             const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
             const serviceName = GetInputConstructorValue('serviceName', loader);
             const serviceKey = GetInputConstructorValue('serviceKey', loader);
             const serviceUrl = GetInputConstructorValue('serviceUrl', loader);
             const imageData = GetInputConstructorValue('imageData', loader);
 
-            if (!clickCoorinatesList.length) {
+            if (!clickCoordinatesList.length) {
               return Invalid(tr('The "Click coordinates list" variable must not be empty'));
             } else if (!taskWaitTimeout.original.length) {
               return Invalid(tr('The "Task solution check interval" parameter is empty'));
@@ -11287,7 +11287,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 //{ name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
                 { name: tr(_A["scroll"]["name"]), description: tr(_A["scroll"]["description"]), ref: "scroll" },
                 { name: tr(_A["renderscreen"]["name"]), description: tr(_A["renderscreen"]["description"]), ref: "renderscreen" },
-                //{ name: tr(_A["coordinatesCaptchaBrowser"]["name"]), description: tr(_A["coordinatesCaptchaBrowser"]["description"]), ref: "coordinatesCaptchaBrowser" },
+                { name: tr(_A["coordinatesCaptchaBrowser"]["name"]), description: tr(_A["coordinatesCaptchaBrowser"]["description"]), ref: "coordinatesCaptchaBrowser" },
                 { name: tr(_A["solvecaptcha"]["name"]), description: tr(_A["solvecaptcha"]["description"]), ref: "solvecaptcha" },
                 { name: tr(_A["recaptchav3"]["name"]), description: tr(_A["recaptchav3"]["description"]), ref: "recaptchav3" },
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },

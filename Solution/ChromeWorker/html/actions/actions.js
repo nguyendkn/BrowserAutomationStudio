@@ -275,6 +275,16 @@ _A = {
       },
       "group":"browser"
    },
+   "coordinatesCaptchaBrowser":{
+      "name":"Solve CoordinatesCaptcha",
+      "description":"Solve CoordinatesCaptcha",
+      "template":"{{imageData}} -> {{clickCoordinatesList}}",
+      "suggestion":{  
+         "en":"solve captcha, solve image",
+         "ru":"решить капчу, решить картинку"
+      },
+      "group":"browser"
+   },
    "solvecaptcha":{  
       "name":"Solve Captcha",
       "description":"Solve captcha",
@@ -1261,6 +1271,7 @@ _AL =
    "Render" : {"ru": "Скриншот"},
    "Solve Captcha" : {"ru": "Решить Капчу"},
    "Captcha Failed": {"ru": "Решено Неверно"},
+   "Solve CoordinatesCaptcha": {"ru": "Решить CoordinatesCaptcha"},
    "Timeout": {"ru": "Таймаут"},
 
    "If" : {"ru": "If"},

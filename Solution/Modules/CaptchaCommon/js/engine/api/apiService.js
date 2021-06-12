@@ -31,7 +31,7 @@
     params['timeout'] = waitTimeout;
     params['delay'] = waitDelay;
 
-    _solve_captcha(self.method, '', params, false, function () {
+    _solve_captcha(self.method, task.image, params, false, function () {
       if (_result().indexOf('CAPTCHA_FAIL') >= 0) fail(_result());
       _function_return(_function_argument('task').getSolution(_result()));
     });

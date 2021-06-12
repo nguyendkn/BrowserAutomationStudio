@@ -39,20 +39,26 @@
     "Image data": {
       "ru": "Данные изображения"
     },
+    "Text with instruction": {
+      "ru": "Текст с инструкцией"
+    },
     "Text with instructions": {
       "ru": "Текст с инструкциями"
     },
-    "Image with instructions": {
-      "ru": "Изображение с инструкциями"
+    "Solve CoordinatesCaptcha": {
+      "ru": "Решить CoordinatesCaptcha"
     },
-    "Captcha image data in base64 format": {
-      "ru": "Данные изображения капчи в формате base64"
+    "Solve <code>CoordinatesCaptcha</code>.": {
+      "ru": "Решить <code>CoordinatesCaptcha</code>."
     },
     "Select all images where there is a boat": {
       "ru": "Выберите все изображения, на которых есть лодка"
     },
     "Select all images where there is a plane": {
       "ru": "Выберите все изображения, на которых есть самолёт"
+    },
+    "Captcha image data encoded in base64 format": {
+      "ru": "Данные изображения капчи, закодированные в формате base64"
     },
     "Text with instructions for solving captcha. Optional if the image already has instructions.": {
       "ru": "Текст с инструкциями по решению капчи. Необязателен, если на изображении уже есть инструкции."

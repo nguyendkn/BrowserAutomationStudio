@@ -1566,7 +1566,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
   <script type="text/template" id="coordinatesCaptchaBrowser">
     <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({ id: 'imageData', description: tr('Image data'), value_string: '', default_selector: 'string', disable_int: true, help: {
-        description: tr('Captcha image data in base64 format')
+        description: tr('Captcha image data encoded in base64 format')
       }}) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceName', description: tr('Service name'), variants: [ 'rucaptcha', '2captcha' ], value_string: 'rucaptcha', default_selector: 'string', disable_int: true, help: {
         description: tr('Captcha solving service name'),
@@ -1583,7 +1583,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
         ]
       }}) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
-      <%= _.template($('#variable_constructor').html())({ id: 'clickCoordinatesList', description: tr('Click coordinates list'), default_variable: 'CLICK_COORDINATES', help: { description: tr('Array of coordinates of points for selecting images') } }) %>
+      <%= _.template($('#variable_constructor').html())({ id: 'clickCoordinatesList', description: tr('Click coordinates list'), default_variable: 'CLICK_COORDINATES', help: { description: tr('List of coordinates of points for selecting images') } }) %>
       <div style="margin-left: 15px">
         <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
         <label for="AdvancedCheck" class="tr">Advanced settings.</label>

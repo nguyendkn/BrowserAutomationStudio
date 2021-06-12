@@ -1,8 +1,9 @@
 (function (global) {
   global.BASCaptchaSolver.solveFunCaptcha = function () {
     const args = _function_arguments();
-    BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.FunCaptchaHelper(args));
     BASCaptchaSolver.api = BASCaptchaSolver.getService(args);
+
+    BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.FunCaptchaHelper(args));
     _call_function(BASCaptchaSolver.helper.initialize, {})!
     const data = _result_function();
 

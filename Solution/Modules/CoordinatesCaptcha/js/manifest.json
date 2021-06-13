@@ -39,6 +39,9 @@
     "Image data": {
       "ru": "Данные изображения"
     },
+    "List of coordinates": {
+      "ru": "Список координат"
+    },
     "Text with instruction": {
       "ru": "Текст с инструкцией"
     },
@@ -60,8 +63,14 @@
     "Captcha image data encoded in base64 format": {
       "ru": "Данные изображения капчи, закодированные в формате base64"
     },
+    "List of coordinates of points for selecting images": {
+      "ru": "Список координат точек для выбора изображений"
+    },
     "Text with instructions for solving captcha. Optional if the image already has instructions.": {
       "ru": "Текст с инструкциями по решению капчи. Необязателен, если на изображении уже есть инструкции."
+    },
+    "Detailed documentation for solving <code>CoordinatesCaptcha</code> can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#coordinates');return false\">here</a>.": {
+      "ru": "Подробную документацию по решению <code>CoordinatesCaptcha</code> можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_clickcaptcha');return false\">здесь</a>."
     }
   },
   "browser": [],

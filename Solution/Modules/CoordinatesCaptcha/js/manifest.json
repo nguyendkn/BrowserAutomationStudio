@@ -69,14 +69,17 @@
     "Text with instructions for solving captcha. Optional if the image already has instructions.": {
       "ru": "Текст с инструкциями по решению капчи. Необязателен, если на изображении уже есть инструкции."
     },
+    "For <code>ReCaptcha</code> and <code>HCaptcha</code> solving, it is recommended to use the new API if possible. It is easier to use, and the captcha can be solved faster.": {
+      "ru": "Для решения <code>ReCaptcha</code> и <code>HCaptcha</code> рекомендуется использовать новое API, если это возможно. Его проще использовать, и капча может решиться быстрее."
+    },
     "Detailed documentation for solving <code>CoordinatesCaptcha</code> can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#coordinates');return false\">here</a>.": {
       "ru": "Подробную документацию по решению <code>CoordinatesCaptcha</code> можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_clickcaptcha');return false\">здесь</a>."
     },
     "This action, unlike the similar one from the <code>Browser</code> module, performs clicks automatically, and you do not need to manually calculate the coordinates for clicks relative to the position of the element on the page. It is recommended to use this action.": {
       "ru": "Данное действие, в отличие от аналогичного из модуля Браузер, выполняет клики автоматически, и вам не нужно вручную расчитывать координаты для кликов относительно положения элемента на странице. Рекомендуется использовать именно это действие."
     },
-    "This action allows you to solve any captcha that requires you to click on the images according to certain instructions. This can be ReCaptcha, HCaptcha, and other types. To solve such captcha, you must alternately click on the coordinates obtained after the solution.": {
-      "ru": "Это действие позволяет вам решить любую капчу, которая требует, чтобы вы нажимали на изображения в соответствии с определенными инструкциями. Это может быть reCAPTCHA, HCaptcha и другие типы. Чтобы решить такую капчу, необходимо поочередно кликать по координатам, полученным после решения."
+    "This action allows you to solve any captcha that requires you to click on the images according to certain instructions. This can be <code>ReCaptcha</code>, <code>HCaptcha</code>, and other types. To solve such captcha, you must alternately click on the coordinates obtained after the solution.": {
+      "ru": "Это действие позволяет вам решить любую капчу, которая требует, чтобы вы нажимали на изображения в соответствии с определенными инструкциями. Это может быть <code>ReCaptcha</code>, <code>HCaptcha</code> и другие типы. Чтобы решить такую капчу, необходимо поочередно кликать по координатам, полученным после решения."
     },
     "To perform clicks on the received coordinates, you need to take into account the position of the element whose screenshot you are sending relative to the browser window. Therefore, the simplest option would be to use a similar action for a specific element from the browser's context menu, where clicks will be performed automatically.": {
       "ru": "Для выполнения кликов по полученным координатам вам нужно учитывать позицию элемента, скриншот которого вы отправляете, относительно окна браузера. Поэтому самым простым вариантом будет использование аналогичного действия для конкретного элемента из контекстного меню браузера, где клики будут выполняться автоматически."

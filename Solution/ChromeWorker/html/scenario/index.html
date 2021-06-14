@@ -5658,15 +5658,12 @@
         if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
         {
           BrowserAutomationStudio_AskForVariablesUpdate()
-        }else
+        }else if(_GobalModel.get("show_variable_inspector"))
         {
-          if(_GobalModel.get("show_variable_inspector"))
-          {
-            BrowserAutomationStudio_PreserveVariableInspectorScroll();
-            _GobalModel.attributes['show_variable_inspector_pending'] = true
-            $("#pendingnotice").show()
-            $("#variablelistpending").hide()
-          }
+          BrowserAutomationStudio_PreserveVariableInspectorScroll();
+          _GobalModel.attributes['show_variable_inspector_pending'] = true
+          $("#pendingnotice").show()
+          $("#variablelistpending").hide()
         }
     }
 
@@ -5697,14 +5694,7 @@
       var ParsedData = JSON.parse(data)
 
       BrowserAutomationStudio_PreserveVariableInspectorScroll()      
-
-      $("#variablelistpending").html(
-        "<div class='variableslabelcontainer'><span class='variableslabel tr'>" + tr("Variables:") + "</span></div>"
-        + JSONTree.create(ParsedData[0])
-        + "<div class='variableslabelcontainer'><span class='variableslabel tr'>" + tr("Resources:") + "</span></div>"
-        + JSONTree.create(ParsedData[1])
-      )
-
+      _Inspector.model.update(JSON.parse(data));
       BrowserAutomationStudio_RestoreVariableInspectorScroll()
     }
 

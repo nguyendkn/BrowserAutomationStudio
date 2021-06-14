@@ -1,6 +1,14 @@
 (function (global) {
   const InspectorModel = Backbone.Model.extend({
+    defaults: {
+      resources: {},
+      variables: {},
+    },
 
+    update(data) {
+      this.set('resources', data[1]);
+      this.set('variables', data[0]);
+    }
   });
 
   const InspectorView = Backbone.View.extend({
@@ -12,34 +20,48 @@
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
       <div id="variablelistpending" style="<%= (global['show_variable_inspector_pending']) ? 'display:none' : '' %>">
-        <% var PData = JSON.parse(global["variable_inspector_data"]) %>
+        <% const data = JSON.parse(global['variable_inspector_data']) %>
         <div class='variableslabelcontainer'>
-          <span class='variableslabel'><%= tr("Variables:") %></span>
+          <span class='variableslabel'><%= tr('Variables:') %></span>
         </div>
-        <%= JSONTree.create(PData[0]) %>
+        <div id="inspectorVariablesData"><%= JSONTree.create(data[0]) %></div>
+
         <div class='variableslabelcontainer'>
-          <span class='variableslabel'><%= tr("Resources:") %></span>
+          <span class='variableslabel'><%= tr('Resources:') %></span>
         </div>
-        <%= JSONTree.create(PData[1]) %>
+        <div id="inspectorResourcesData"><%= JSONTree.create(data[1]) %></div>
       </div>
     `),
 
     initialize() {
       this.model = new InspectorModel();
+
+      this.model.on('change:resources', (__, resources) => {
+        this.$('#inspectorResourcesData').html(
+          JSONTree.create(resources)
+        );
+      });
+
+      this.model.on('change:variables', (__, variables) => {
+        this.$('#inspectorVariablesData').html(
+          JSONTree.create(variables)
+        );
+      });
     },
 
     render() {
-      $('#variableInspector').html(this.template({
+      this.setElement('#variableInspector');
+
+      this.$el.html(this.template({
         global: _MainView.model.toJSON()
       }));
-      console.log($('#variableInspector').length);
       if (_MainView.model.get('show_variable_inspector')) {
-        $('#variableInspector').show();
+        this.$el.show();
       } else {
-        $('#variableInspector').hide();
+        this.$el.hide();
       }
       return this;
-    }
+    },
   });
 
   global.Scenario.Inspector = InspectorView;

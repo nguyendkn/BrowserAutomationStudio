@@ -222,12 +222,6 @@ _L =
    "No data":{
       "ru":"Нет данных"
    },
-   "Variables:":{
-      "ru":"Переменные:"
-   },
-   "Resources:":{
-      "ru":"Ресурсы:"
-   },
 
 
 
@@ -788,7 +782,6 @@ _L =
 	"Execute only this action" :{"ru": "Выполнить только это действие"},
 	"Move Execution Point Here" :{"ru": "Переместить точку выполнения"},
 	"Variable Inspector" :{"ru": "Инспектор Переменных"},
-	"Variables will be loaded on next script pause" :{"ru": "Переменные будут загружены при следующей паузе сценария"},
 	"Previous" :{"ru": "Предыдущий"},
 	"Next" :{"ru": "Следующий"},
 	"Search" :{"ru": "Поиск"},

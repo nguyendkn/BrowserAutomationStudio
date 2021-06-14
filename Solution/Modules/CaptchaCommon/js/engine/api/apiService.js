@@ -6,14 +6,14 @@
   };
 
   CaptchaApi.prototype.setApiUrl = function (url) {
-    if (url && url.length) {
+    if (typeof (url) === 'string') {
       this.options.apiUrl = url.trim();
     }
     return this;
   };
 
   CaptchaApi.prototype.setApiKey = function (key) {
-    if (key && key.length) {
+    if (typeof (key) === 'string') {
       this.options.apiKey = key.trim();
     }
     return this;

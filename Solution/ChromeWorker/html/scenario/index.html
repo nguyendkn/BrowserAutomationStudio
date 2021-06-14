@@ -1171,20 +1171,8 @@
       </div>
       
     </div>
-    <div class="bottompannel" >
-      <div class="container-fluid" id="variableinspector" style="<%= (global["show_variable_inspector"]) ? "" : "display:none" %>">
-        <div style="position:absolute;top:9px;right:30px">
-          <a href="#" id="closevariableinspector" class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%;background-color: #fafafa;padding: 5px;"></i></a>
-        </div>
-        <div id="pendingnotice" style="<%= (global["show_variable_inspector_pending"]) ? "" : "display:none" %>"><%= tr("Variables will be loaded on next script pause") %></div>
-        <div id="variablelistpending" style="<%= (global["show_variable_inspector_pending"]) ? "display:none" : "" %>">
-          <% var PData = JSON.parse(global["variable_inspector_data"]) %>
-          <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Variables:") %></span></div>
-          <%= JSONTree.create(PData[0]) %>
-          <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Resources:") %></span></div>
-          <%= JSONTree.create(PData[1]) %>
-        </div>
-      </div>
+    <div class="bottompannel">
+      <div class="container-fluid" id="variableInspector" style="display: none"></div>
       <div style="width:100%" id="functions">
         <a id="FunctionName" data-toggle="tooltip" data-placement="auto" title="<%= tr("Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.") %>">
             <%= global.function_name %>
@@ -1385,6 +1373,7 @@
   <script src="updater/internal/translate.js"></script>
   <script src="updater/internal/utils.js"></script>
   <script src="updater/updater.js"></script>
+  <script src="inspector/inspector.js"></script>
   <script src="moveexecutionpoint.js"></script>
   
 
@@ -1405,6 +1394,7 @@
   <link rel="stylesheet" href="vendor/bootstrap-select/bootstrap-select.min.css">
   <link rel="stylesheet" href="bootstrap-tour.min.css">
   <link rel="stylesheet" href="checkbox.min.css">
+  <link rel="stylesheet" href="inspector/inspector.css">
   <link rel="stylesheet" href="updater/updater.css">
 
   <!-- =============== -->
@@ -1548,6 +1538,8 @@
     var TaskCollection = Backbone.Collection.extend({
         model: TaskModel
     });
+
+    var _Inspector = new Scenario.Inspector();
 
     var _ActionFinder = new ActionFinder()
     _ActionFinder.Initialize();
@@ -3021,14 +3013,14 @@
         
         if(show_variable_inspector)
         {
-          $("#variableinspector").show()
+          $("#variableInspector").show()
           $(".main").css("padding-bottom",(50 + this.model.attributes["variableinspectorheight"]).toString() + "px")
           
           BrowserAutomationStudio_AskForVariablesUpdateOrWait()
         }else
         {
           $(".main").css("padding-bottom","50px")
-          $("#variableinspector").hide()
+          $("#variableInspector").hide()
         }
       },
 
@@ -3037,7 +3029,7 @@
 
         event.preventDefault();
         this.model.attributes["show_variable_inspector"] = false
-        $("#variableinspector").hide()
+        $("#variableInspector").hide()
         $(".main").css("padding-bottom","50px")
       },
 
@@ -3912,6 +3904,7 @@
           }
 
       });
+      _Inspector.render();
         console.timeEnd("Apply html");
         console.log("Cached actions: " + cached_actions + " / " + total_actions + ". Total added: " + total_added + ", total removed: " + total_removed)
 
@@ -4097,12 +4090,12 @@
           H = TotalHeight -FunctionManagerHeight - 300
         if(H<100)
           H = 100
-        $("#variableinspector").css("height",H + "px")
+        $("#variableInspector").css("height",H + "px")
         if(_GobalModel.attributes["show_variable_inspector"])
           $(".main").css("padding-bottom",(50 + H).toString() + "px")
 
 
-        interact('#variableinspector')
+        interact('#variableInspector')
           .resizable({
             // resize from all edges and corners
             edges: { top: true },
@@ -4124,7 +4117,7 @@
               H = TotalHeight - FunctionManagerHeight - 300
             if(H<100)
               H = 100
-            $("#variableinspector").css("height",H + "px")
+            $("#variableInspector").css("height",H + "px")
             $(".main").css("padding-bottom",(50 + H).toString() + "px")
             _GobalModel.attributes["variableinspectorheight"] = H
     
@@ -4210,7 +4203,7 @@
     {
       if(!$("#pendingnotice").is(":visible"))
       {
-        window.SaveVariablesInspectorScroll = $("#variableinspector").scrollTop()
+        window.SaveVariablesInspectorScroll = $("#variableInspector").scrollTop()
       }
     }
 
@@ -4219,7 +4212,7 @@
       if(typeof(window.SaveVariablesInspectorScroll) != "number" || window.SaveVariablesInspectorScroll < 0)
           window.SaveVariablesInspectorScroll = 0
           
-      $("#variableinspector").scrollTop(window.SaveVariablesInspectorScroll)
+      $("#variableInspector").scrollTop(window.SaveVariablesInspectorScroll)
     }
 
     /*

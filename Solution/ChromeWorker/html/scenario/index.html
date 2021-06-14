@@ -1176,21 +1176,19 @@
         <div style="position:absolute;top:9px;right:30px">
           <a href="#" id="closevariableinspector" class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%;background-color: #fafafa;padding: 5px;"></i></a>
         </div>
-          <div id="pendingnotice" style="<%= (global["show_variable_inspector_pending"]) ? "" : "display:none" %>"><%= tr("Variables will be loaded on next script pause") %></div>
-          <div id="variablelistpending" style="<%= (global["show_variable_inspector_pending"]) ? "display:none" : "" %>">
-            <% var PData = JSON.parse(global["variable_inspector_data"]) %>
-            <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Variables:") %></span></div>
-            <%= JSONTree.create(PData[0]) %>
-            <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Resources:") %></span></div>
-            <%= JSONTree.create(PData[1]) %>
-          </div>
+        <div id="pendingnotice" style="<%= (global["show_variable_inspector_pending"]) ? "" : "display:none" %>"><%= tr("Variables will be loaded on next script pause") %></div>
+        <div id="variablelistpending" style="<%= (global["show_variable_inspector_pending"]) ? "display:none" : "" %>">
+          <% var PData = JSON.parse(global["variable_inspector_data"]) %>
+          <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Variables:") %></span></div>
+          <%= JSONTree.create(PData[0]) %>
+          <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Resources:") %></span></div>
+          <%= JSONTree.create(PData[1]) %>
+        </div>
       </div>
       <div style="width:100%" id="functions">
         <a id="FunctionName" data-toggle="tooltip" data-placement="auto" title="<%= tr("Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.") %>">
             <%= global.function_name %>
-
         </a>
-            
       </div>
     </div>
 

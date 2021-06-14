@@ -1,27 +1,33 @@
 (function (solver) {
   const services = {
-    'AntiCaptcha': new solver.AntiCaptchaApi('antigate', {
-      supportedTasks: ['FunCaptcha', 'HCaptcha'],
-      apiUrl: 'https://api.anti-captcha.com/',
-      name: 'AntiCaptcha',
-    }),
-    'RuCaptcha': new solver.RuCaptchaApi('rucaptcha', {
-      supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
-      apiUrl: 'https://rucaptcha.com/',
-      name: 'RuCaptcha',
-    }),
-    '2Captcha': new solver.RuCaptchaApi('2captcha', {
-      supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
-      apiUrl: 'https://2captcha.com/',
-      name: '2Captcha',
-    }),
+    'AntiCaptcha': {
+      api: new solver.AntiCaptchaApi('antigate', {
+        supportedTasks: ['FunCaptcha', 'HCaptcha'],
+        name: 'AntiCaptcha'
+      }),
+      url: 'https://api.anti-captcha.com/'
+    },
+    'RuCaptcha': {
+      api: new solver.RuCaptchaApi('rucaptcha', {
+        supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
+        name: 'RuCaptcha'
+      }),
+      url: 'https://rucaptcha.com/'
+    },
+    '2Captcha': {
+      api: new solver.RuCaptchaApi('2captcha', {
+        supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
+        name: '2Captcha'
+      }),
+      url: 'https://2captcha.com/'
+    },
   };
 
   function findService(serviceName) {
     var name = serviceName.toLowerCase().replace('-newapi', '');
 
     for (var key in services) {
-      if (key.toLowerCase() === name || services[key].method === name) {
+      if (key.toLowerCase() === name || services[key].api.method === name) {
         return services[key];
       }
     }
@@ -38,6 +44,6 @@
       }
     }
 
-    return service.setApiKey(options.serviceKey).setApiUrl(options.serviceUrl);
+    return service.api.setApiKey(options.serviceKey).setApiUrl(options.serviceUrl || service.url);
   };
 })(BASCaptchaSolver);

@@ -15,15 +15,15 @@ var JSONTree = (function() {
   };
 
   var id = 0;
+  var path = [];
   var instances = 0;
-  var 
 
   this.create = function(data, settings) {
     if(jQuery.isEmptyObject(data))
       return "<div style='font-size: smaller;margin-top: 10px;'>" + tr("No data") + "</div>"
     instances += 1;
     id = 0;
-    return _span(_jsVal(data, 0, false), {class: 'jstValue'})
+    return _span(_jsVal('', data, 0, false), {class: 'jstValue'})
     + "<script>$('*[dataopen]').each(function(t,el){var id = $(el).attr('id');if(id.split('_')[2]!='0')JSONTree.toggle($(el).attr('id'));$(el).removeAttr('dataopen')})</script>"
   };
 
@@ -33,40 +33,44 @@ var JSONTree = (function() {
     });
   };
 
+  var _path = function(name) {
+    return path.concat(name || '').filter((v) => v.length).join('/');
+  };
+
   var _id = function() {
     return "jsontree_" + instances + '_' + id++;
   };
 
-  var _jsVal = function(value, depth, indent) {
+  var _jsVal = function(name, value, depth, indent) {
     if (value !== null) {
       var type = typeof value;
       switch (type) {
         case 'boolean':
-          return _jsBool(value, indent ? depth : 0);
+          return _jsBool(name, value, indent ? depth : 0);
         case 'number':
-          return _jsNum(value, indent ? depth : 0);
+          return _jsNum(name, value, indent ? depth : 0);
         case 'string':
           if(value.indexOf("__DATE__") == 0)
           {
             value = value.slice(8)
-            return _jsDate(value, indent ? depth : 0);
+            return _jsDate(name, value, indent ? depth : 0);
           }
-          return _jsStr(value, indent ? depth : 0);
+          return _jsStr(name, value, indent ? depth : 0);
         default:
           if (value instanceof Array) {
-            return _jsArr(value, depth, indent);
+            return _jsArr(name, value, depth, indent);
           } else {
-            return _jsObj(value, depth, indent);
+            return _jsObj(name, value, depth, indent);
           }
       }
     } else {
-      return _jsNull(indent ? depth : 0);
+      return _jsNull(name, indent ? depth : 0);
     }
   };
 
-  var _jsObj = function(object, depth, indent) {
-    var id = _id();
-    var content = Object.keys(object).sort((a,b) => {
+  var _jsObj = function(name, object, depth, indent) {
+    var id = _id(); path.push(name);
+    var content = Object.keys(object).sort((a, b) => {
       var a = a.toUpperCase();
       var b = b.toUpperCase();
 
@@ -85,13 +89,9 @@ var JSONTree = (function() {
       }
 
       return true;
-    })
-
-    content = content.map(function(property) {
+    }).map((property) => {
       return _property(property, object[property], depth + 1, true);
     }).join(_comma());
-
-    
 
     var body = [];
 
@@ -107,14 +107,15 @@ var JSONTree = (function() {
       body.push(_closeBracket('}', depth));
     
     body = body.join('\n')
-
-    return _span(body, {'data-path': ''})
+    var obj = _span(body, {'data-path': _path()});
+    path.pop();
+    return obj;
   };
 
-  var _jsArr = function(array, depth, indent) {
-    var id = _id();
-    var body = array.map(function(element) {
-      return _jsVal(element, depth + 1, true);
+  var _jsArr = function(name, array, depth, indent) {
+    var id = _id(); path.push(name);
+    var body = array.map(function(element, index) {
+      return _jsVal(index.toString(), element, depth + 1, true);
     }).join(_comma());
 
     
@@ -122,47 +123,47 @@ var JSONTree = (function() {
     var arr = [];
     arr.push(_openBracket('[', indent ? depth : 0, id))
 
-    var attrs = {id: id, 'data-path': ''}
+    var attrs = {id: id, 'data-path': _path()}
     if(depth > 1)
       attrs.dataopen = "true"
 
     arr.push(_span(body, attrs))
     arr.push(_closeBracket(']', depth))
     arr = arr.join('\n')
+    path.pop();
     return arr;
   };
 
-  var _jsStr = function(value, depth) {
+  var _jsStr = function(name, value, depth) {
     var cut = _cut(value)
     var id = _id()
     var clip = ""
     if(cut["cut"])
     {
       clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$(\"#" + id + "\").text(b64_to_utf8(" + _quote(utf8_to_b64(_quote(value))) + "));$(this).hide()'></i>"
-      //clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='alert(\"" + id + "\");document.getElementById(" + id + ").innerHTML=\"jgjg\"'></i>"
     }
-    return _span(_indent(_quote(_escape(cut["data"])), depth), {class: 'jstStr',id: id, 'data-path': ''}) + clip;
+    return _span(_indent(_quote(_escape(cut["data"])), depth), {class: 'jstStr',id: id, 'data-path': _path(name)}) + clip;
   };
 
-  var _jsNum = function(value, depth) {
-    return _span(_indent(value, depth), {class: 'jstNum', 'data-path': ''});
+  var _jsNum = function(name, value, depth) {
+    return _span(_indent(value, depth), {class: 'jstNum', 'data-path': _path(name)});
   };
 
-  var _jsDate = function(value, depth) {
-    return _span(_indent(value, depth), {class: 'jstDate', 'data-path': ''});
+  var _jsDate = function(name, value, depth) {
+    return _span(_indent(value, depth), {class: 'jstDate', 'data-path': _path(name)});
   };
 
-  var _jsBool = function(value, depth) {
-    return _span(_indent(value, depth), {class: 'jstBool', 'data-path': ''});
+  var _jsBool = function(name, value, depth) {
+    return _span(_indent(value, depth), {class: 'jstBool', 'data-path': _path(name)});
   };
 
-  var _jsNull = function(depth) {
-    return _span(_indent('null', depth), {class: 'jstNull', 'data-path': ''});
+  var _jsNull = function(name, depth) {
+    return _span(_indent('null', depth), {class: 'jstNull', 'data-path': _path(name)});
   };
 
   var _property = function(name, value, depth) {
     var property = _indent(_escape(name) + ': ', depth);
-    var propertyValue = _span(_jsVal(value, depth, false), {});
+    var propertyValue = _span(_jsVal(name, value, depth, false), {});
     return _span(property + propertyValue, {class: 'jstProperty'});
   }
 

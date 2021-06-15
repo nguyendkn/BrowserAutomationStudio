@@ -5,14 +5,30 @@
       variables: {},
     },
 
-    update([variables, resources]) {
-      const resourcesDiff = jsonpatch.compare(this.get('resources'), resources);
-      this.set('resources', resources);
-      console.log('resources diff:', resourcesDiff);
+    resourcesHash: {},
 
-      const variablesDiff = jsonpatch.compare(this.get('variables'), variables);
+    variablesHash: {},
+
+    update([variables, resources]) {
+      jsonpatch.compare(resources, this.get('resources')).forEach(({ path, value }) => {
+        if (_.has(this.resourcesHash, path)) {
+          const { usages } = this.resourcesHash[path];
+          this.resourcesHash[path] = { usages: usages + 1, value };
+        } else {
+          this.resourcesHash[path] = { usages: 0, value };
+        }
+      });
+      this.set('resources', resources);
+
+      jsonpatch.compare(variables, this.get('variables')).forEach(({ path, value }) => {
+        if (_.has(this.variablesHash, path)) {
+          const { usages } = this.variablesHash[path];
+          this.variablesHash[path] = { usages: usages + 1, value };
+        } else {
+          this.variablesHash[path] = { usages: 0, value };
+        }
+      });
       this.set('variables', variables);
-      console.log('variables diff:', variablesDiff);
     }
   });
 

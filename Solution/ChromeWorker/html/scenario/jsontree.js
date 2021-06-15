@@ -65,32 +65,25 @@ var JSONTree = (function() {
 
   var _jsObj = function(object, depth, indent) {
     var id = _id();
-    var content = Object.keys(object).sort(function(a,b){
-      var a = a.toUpperCase()
-      var b = b.toUpperCase()
-      if(a.indexOf("GLOBAL:") == 0 && b.indexOf("GLOBAL:") == 0 || a.indexOf("GLOBAL:") < 0 && b.indexOf("GLOBAL:") < 0)
-      {
-        if (a > b) {
-          return 1;
-        }
-        if (a < b) {
-          return -1;
-        }
+    var content = Object.keys(object).sort((a,b) => {
+      var a = a.toUpperCase();
+      var b = b.toUpperCase();
+
+      if (a.indexOf("GLOBAL:") == 0 && b.indexOf("GLOBAL:") == 0 || a.indexOf("GLOBAL:") < 0 && b.indexOf("GLOBAL:") < 0) {
+        if (a < b) return -1;
+        if (a > b) return 1;
         return 0
       }
 
-      if(a.indexOf("GLOBAL:") == 0 && b.indexOf("GLOBAL:") < 0)
-      {
+      if (a.indexOf("GLOBAL:") == 0 && b.indexOf("GLOBAL:") < 0) {
         return true
       }
 
-      if(a.indexOf("GLOBAL:") < 0 && b.indexOf("GLOBAL:") == 0)
-      {
+      if (a.indexOf("GLOBAL:") < 0 && b.indexOf("GLOBAL:") == 0) {
         return false
       }
 
       return true;
-
     })
 
     content = content.map(function(property) {

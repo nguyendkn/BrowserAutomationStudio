@@ -22,6 +22,7 @@ var JSONTree = (function() {
     if(jQuery.isEmptyObject(data))
       return "<div style='font-size: smaller;margin-top: 10px;'>" + tr("No data") + "</div>"
     instances += 1;
+    path = [];
     id = 0;
     return _span(_jsVal('', data, 0, false), {class: 'jstValue'})
     + "<script>$('*[dataopen]').each(function(t,el){var id = $(el).attr('id');if(id.split('_')[2]!='0')JSONTree.toggle($(el).attr('id'));$(el).removeAttr('dataopen')})</script>"
@@ -146,19 +147,19 @@ var JSONTree = (function() {
   };
 
   var _jsNum = function(name, value, depth) {
-    return _span(_indent(value, depth), {class: 'jstNum', 'data-path': _path(name)});
+    return _span(_indent(value, depth), { class: 'jstNum', 'data-path': _path(name) });
   };
 
   var _jsDate = function(name, value, depth) {
-    return _span(_indent(value, depth), {class: 'jstDate', 'data-path': _path(name)});
+    return _span(_indent(value, depth), { class: 'jstDate', 'data-path': _path(name) });
   };
 
   var _jsBool = function(name, value, depth) {
-    return _span(_indent(value, depth), {class: 'jstBool', 'data-path': _path(name)});
+    return _span(_indent(value, depth), { class: 'jstBool', 'data-path': _path(name) });
   };
 
   var _jsNull = function(name, depth) {
-    return _span(_indent('null', depth), {class: 'jstNull', 'data-path': _path(name)});
+    return _span(_indent('null', depth), { class: 'jstNull', 'data-path': _path(name) });
   };
 
   var _property = function(name, value, depth) {

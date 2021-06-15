@@ -5,9 +5,14 @@
       variables: {},
     },
 
-    update(data) {
-      this.set('resources', data[1]);
-      this.set('variables', data[0]);
+    update([variables, resources]) {
+      const resourcesDiff = DeepDiff(this.get('resources'), resources);
+      this.set('resources', resources);
+      console.log('resources diff:', resourcesDiff);
+
+      const variablesDiff = DeepDiff(this.get('variables'), variables);
+      this.set('variables', variables);
+      console.log('variables diff:', variablesDiff);
     }
   });
 

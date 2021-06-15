@@ -35,7 +35,7 @@
     attr: function () {
       const attr = _function_argument('attr');
       _function_argument('element').attr(attr)!
-      _function_argument(_result());
+      _function_return(_result());
     },
 
     length: function () {
@@ -51,10 +51,5 @@
     sleep: function () {
       sleep(_function_argument('time'))!
     },
-
-    url: function () {
-      url()!
-      _function_return(_result());
-    }
   };
 })(BASCaptchaSolver);

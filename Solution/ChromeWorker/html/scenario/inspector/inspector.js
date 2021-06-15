@@ -6,11 +6,11 @@
     },
 
     update([variables, resources]) {
-      const resourcesDiff = DeepDiff(this.get('resources'), resources);
+      const resourcesDiff = jsonpatch.compare(this.get('resources'), resources);
       this.set('resources', resources);
       console.log('resources diff:', resourcesDiff);
 
-      const variablesDiff = DeepDiff(this.get('variables'), variables);
+      const variablesDiff = jsonpatch.compare(this.get('variables'), variables);
       this.set('variables', variables);
       console.log('variables diff:', variablesDiff);
     }

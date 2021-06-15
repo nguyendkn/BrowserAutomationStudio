@@ -19,7 +19,7 @@ var JSONTree = (function() {
 
   this.create = function(data, settings) {
     if(jQuery.isEmptyObject(data))
-      return "<div style='    font-size: smaller;margin-top: 10px;'>" + tr("No data") + "</div>"
+      return "<div style='font-size: smaller;margin-top: 10px;'>" + tr("No data") + "</div>"
     instances += 1;
     id = 0;
     return _span(_jsVal(data, 0, false), {class: 'jstValue'})

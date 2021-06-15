@@ -44,15 +44,13 @@
       this.model = new InspectorModel();
 
       this.model.on('change:resources', (__, resources) => {
-        this.$('#inspectorResourcesData').html(
-          JSONTree.create(resources)
-        );
+        const tree = JSONTree.create(resources);
+        this.$('#inspectorResourcesData').html(tree);
       });
 
       this.model.on('change:variables', (__, variables) => {
-        this.$('#inspectorVariablesData').html(
-          JSONTree.create(variables)
-        );
+        const tree = JSONTree.create(variables);
+        this.$('#inspectorVariablesData').html(tree);
       });
     },
 

@@ -1,4 +1,12 @@
 (function (global) {
+  const colorMap = {
+    1: '#ED2938',
+    2: '#B25F4A',
+    3: '#77945C',
+    4: '#3BCA6D',
+    5: '#2DB669',
+  };
+
   const InspectorModel = Backbone.Model.extend({
     defaults: {
       resources: {},
@@ -29,6 +37,14 @@
         }
       });
       this.set('variables', variables);
+
+      for (const [path, data] of Object.entries(this.variablesHash)) {
+        this.trigger('diff:variables', {
+          usages: data.usages,
+          value: data.value,
+          path: path,
+        });
+      }
     }
   });
 
@@ -58,6 +74,11 @@
 
     initialize() {
       this.model = new InspectorModel();
+
+      this.model.on('diff:variables', ({ usages, path }) => {
+        const color = colorMap[Math.min(usages, 5)];
+        this.$(`[data-path="${path}"]`).css('color', color);
+      });
 
       this.model.on('change:resources', (__, resources) => {
         const tree = JSONTree.create(resources);

@@ -35,7 +35,7 @@ var JSONTree = (function() {
   };
 
   var _path = function(name) {
-    return path.concat(name || '').filter((v) => v.length).join('/');
+    return '/' + path.concat(name || '').filter((v) => v.length).join('/');
   };
 
   var _id = function() {

@@ -16,6 +16,7 @@ var JSONTree = (function() {
 
   var id = 0;
   var instances = 0;
+  var 
 
   this.create = function(data, settings) {
     if(jQuery.isEmptyObject(data))
@@ -107,7 +108,7 @@ var JSONTree = (function() {
     
     body = body.join('\n')
 
-    return _span(body, {})
+    return _span(body, {'data-path': ''})
   };
 
   var _jsArr = function(array, depth, indent) {
@@ -121,7 +122,7 @@ var JSONTree = (function() {
     var arr = [];
     arr.push(_openBracket('[', indent ? depth : 0, id))
 
-    var attrs = {id: id}
+    var attrs = {id: id, 'data-path': ''}
     if(depth > 1)
       attrs.dataopen = "true"
 
@@ -140,23 +141,23 @@ var JSONTree = (function() {
       clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$(\"#" + id + "\").text(b64_to_utf8(" + _quote(utf8_to_b64(_quote(value))) + "));$(this).hide()'></i>"
       //clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='alert(\"" + id + "\");document.getElementById(" + id + ").innerHTML=\"jgjg\"'></i>"
     }
-    return _span(_indent(_quote(_escape(cut["data"])), depth), {class: 'jstStr',id: id}) + clip;
+    return _span(_indent(_quote(_escape(cut["data"])), depth), {class: 'jstStr',id: id, 'data-path': ''}) + clip;
   };
 
   var _jsNum = function(value, depth) {
-    return _span(_indent(value, depth), {class: 'jstNum'});
+    return _span(_indent(value, depth), {class: 'jstNum', 'data-path': ''});
   };
 
   var _jsDate = function(value, depth) {
-    return _span(_indent(value, depth), {class: 'jstDate'});
+    return _span(_indent(value, depth), {class: 'jstDate', 'data-path': ''});
   };
 
   var _jsBool = function(value, depth) {
-    return _span(_indent(value, depth), {class: 'jstBool'});
+    return _span(_indent(value, depth), {class: 'jstBool', 'data-path': ''});
   };
 
   var _jsNull = function(depth) {
-    return _span(_indent('null', depth), {class: 'jstNull'});
+    return _span(_indent('null', depth), {class: 'jstNull', 'data-path': ''});
   };
 
   var _property = function(name, value, depth) {

@@ -1594,7 +1594,6 @@
         "click #success-number-edit": "successnumberedit",
         "click #fail-number-edit": "failnumberedit",
         "click #runmode-edit": "runmodeedit",
-        "click #closevariableinspector": "closevariableinspector",
         "click .color-select": "selectcolor"
       },
 
@@ -3007,12 +3006,10 @@
 
       ToggleVariableInspector: function()
       {
-        var show_variable_inspector = this.model.get("show_variable_inspector")
-        show_variable_inspector = !show_variable_inspector
-
-        this.model.attributes["show_variable_inspector"] = show_variable_inspector
+        const showVariableInspector = !this.model.get('show_variable_inspector');
+        this.model.set("show_variable_inspector", showVariableInspector);
         
-        if(show_variable_inspector)
+        if(showVariableInspector)
         {
           $("#variableInspector").show()
           $(".main").css("padding-bottom",(50 + this.model.attributes["variableinspectorheight"]).toString() + "px")
@@ -3023,15 +3020,6 @@
           $(".main").css("padding-bottom","50px")
           $("#variableInspector").hide()
         }
-      },
-
-      closevariableinspector: function(event)
-      {
-
-        event.preventDefault();
-        this.model.attributes["show_variable_inspector"] = false
-        $("#variableInspector").hide()
-        $(".main").css("padding-bottom","50px")
       },
 
       Delete: function(is_single){
@@ -4202,7 +4190,7 @@
 
     function BrowserAutomationStudio_PreserveVariableInspectorScroll()
     {
-      if(!$("#pendingnotice").is(":visible"))
+      if(!$("#pendingNotice").is(":visible"))
       {
         window.SaveVariablesInspectorScroll = $("#variableInspector").scrollTop()
       }
@@ -5663,8 +5651,8 @@
         {
           BrowserAutomationStudio_PreserveVariableInspectorScroll();
           _GobalModel.attributes['show_variable_inspector_pending'] = true
-          $("#pendingnotice").show()
-          $("#variablelistpending").hide()
+          $("#pendingNotice").show()
+          $("#variableListPending").hide()
         }
     }
 
@@ -5979,8 +5967,8 @@
         if(_GobalModel.get("show_variable_inspector"))
         {
           _GobalModel.attributes['show_variable_inspector_pending'] = false
-          $("#pendingnotice").hide()
-          $("#variablelistpending").show()
+          $("#pendingNotice").hide()
+          $("#variableListPending").show()
           BrowserAutomationStudio_RestoreVariableInspectorScroll()
         }
         BrowserAutomationStudio_AskForVariablesUpdate()

@@ -219,10 +219,6 @@ _L =
       "ru":"Назад"
    },
 
-   "No data":{
-      "ru":"Нет данных"
-   },
-
 
 
    "Variables are used to store data between action execution. Each variable has a name and a data, which it points to. For example, variable EMAIL may point to string aaa@gmail.com and variable PASS may point string pass123. You can reference this data by filling variable name with double square brackets into any action and any parameters. For example, to input your email on site use following notation [[EMAIL]]":{

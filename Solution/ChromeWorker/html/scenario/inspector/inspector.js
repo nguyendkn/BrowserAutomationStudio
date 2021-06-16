@@ -23,9 +23,9 @@
         this.set('resources', resources);
 
         if (diff.length) {
-          diff.forEach(({ path, value }) => {
+          diff.forEach(({ path, value, op }) => {
             if (!_.has(this.resourcesHash, path)) {
-              this.resourcesHash[path] = { usage: 0, value };
+              this.resourcesHash[path] = { usage: 0, value, operation: op };
             }
           });
           Object.entries(this.resourcesHash).forEach(([path, entry]) => {
@@ -40,9 +40,9 @@
         this.set('variables', variables);
 
         if (diff.length) {
-          diff.forEach(({ path, value }) => {
+          diff.forEach(({ path, value, op }) => {
             if (!_.has(this.variablesHash, path)) {
-              this.variablesHash[path] = { usage: 0, value };
+              this.variablesHash[path] = { usage: 0, value, operation: op };
             }
           });
           Object.entries(this.variablesHash).forEach(([path, entry]) => {

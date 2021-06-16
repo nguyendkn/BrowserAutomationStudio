@@ -73,7 +73,10 @@
       this.model = new InspectorModel();
 
       this.model.on('diff:variables', ({ usage, path }) => {
-        const $element = this.$(`[data-path=${path}]`);
+        const $element = this.$(`[data-path="${path}"]`);
+        if ($element.data('type') === 'object') return;
+        if ($element.data('type') === 'array') return;
+
         const colors = _.rgbGradientToRed($element.css('color'));
         $element.css('color', colors[Math.min(usage, 5)]);
       });

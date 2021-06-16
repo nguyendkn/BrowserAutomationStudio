@@ -108,29 +108,32 @@ var JSONTree = (function() {
       body.push(_closeBracket('}', depth));
     
     body = body.join('\n')
-    var obj = _span(body, {'data-path': _path()});
+    var obj = _span(body, {'data-path': _path(), 'data-type': 'object'});
     path.pop();
     return obj;
   };
 
   var _jsArr = function(name, array, depth, indent) {
     var id = _id(); path.push(name);
-    var body = array.map(function(element, index) {
+    var content = array.map((element, index) => {
       return _jsVal(index.toString(), element, depth + 1, true);
     }).join(_comma());
 
-    
+    var body = [];
 
-    var arr = [];
-    arr.push(_openBracket('[', indent ? depth : 0, id))
+    if(depth > 0)
+      body.push(_openBracket('[', indent ? depth : 0, id))
 
-    var attrs = {id: id, 'data-path': _path()}
+    var attrs = {id: id}
     if(depth > 1)
       attrs.dataopen = "true"
+    body.push(_span(content, attrs))
 
-    arr.push(_span(body, attrs))
-    arr.push(_closeBracket(']', depth))
-    arr = arr.join('\n')
+    if(depth > 0)
+      body.push(_closeBracket(']', depth))
+
+    body = body.join('\n')
+    var arr = _span(body, {'data-path': _path(), 'data-type': 'array'})
     path.pop();
     return arr;
   };

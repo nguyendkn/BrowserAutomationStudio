@@ -79,13 +79,15 @@
       });
 
       this.model.on('change:resources', (__, resources) => {
-        const tree = JSONTree.create(resources);
-        this.$('#inspectorResourcesData').html(tree);
+        this.$('#inspectorResourcesData').html(
+          JSONTree.create(resources)
+        );
       });
 
       this.model.on('change:variables', (__, variables) => {
-        const tree = JSONTree.create(variables);
-        this.$('#inspectorVariablesData').html(tree);
+        this.$('#inspectorVariablesData').html(
+          JSONTree.create(variables)
+        );
       });
     },
 

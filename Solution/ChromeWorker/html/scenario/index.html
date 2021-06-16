@@ -5650,10 +5650,7 @@
           BrowserAutomationStudio_AskForVariablesUpdate()
         }else if(_GobalModel.get("show_variable_inspector"))
         {
-          BrowserAutomationStudio_PreserveVariableInspectorScroll();
-          _GobalModel.attributes['show_variable_inspector_pending'] = true
-          $("#inspectorDataPending").show()
-          $("#inspectorDataConainer").hide()
+          _Inspector.showPendingNotice();
         }
     }
 
@@ -5680,8 +5677,7 @@
 
     function BrowserAutomationStudio_UpdateVariablesResult(data)
     {
-      _GobalModel.attributes["variable_inspector_data"] = data
-      var ParsedData = JSON.parse(data)
+      _GobalModel.attributes["variable_inspector_data"] = data;
 
       BrowserAutomationStudio_PreserveVariableInspectorScroll()      
       _Inspector.model.update(JSON.parse(data));
@@ -5967,10 +5963,7 @@
       {
         if(_GobalModel.get("show_variable_inspector"))
         {
-          _GobalModel.attributes['show_variable_inspector_pending'] = false
-          $("#inspectorDataPending").hide()
-          $("#inspectorDataConainer").show()
-          BrowserAutomationStudio_RestoreVariableInspectorScroll()
+          _Inspector.hidePendingNotice();
         }
         BrowserAutomationStudio_AskForVariablesUpdate()
       }

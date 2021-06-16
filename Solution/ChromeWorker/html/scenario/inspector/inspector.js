@@ -109,6 +109,20 @@
       return this;
     },
 
+    hidePendingNotice() {
+      _GobalModel.set('show_variable_inspector_pending', false, { silent: true });
+      this.$('#inspectorDataPending').hide();
+      this.$('#inspectorDataConainer').show();
+      BrowserAutomationStudio_RestoreVariableInspectorScroll();
+    },
+
+    showPendingNotice() {
+      _GobalModel.set('show_variable_inspector_pending', true, { silent: true });
+      BrowserAutomationStudio_PreserveVariableInspectorScroll();
+      this.$('#inspectorDataPending').show();
+      this.$('#inspectorDataConainer').hide();
+    },
+
     events: {
       'click #variableInspectorClose': function (event) {
         event.preventDefault();

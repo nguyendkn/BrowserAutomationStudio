@@ -1,12 +1,4 @@
 (function (global) {
-  const colorMap = {
-    1: '#ED2938',
-    2: '#B25F4A',
-    3: '#77945C',
-    4: '#3BCA6D',
-    5: '#2DB669',
-  };
-
   const InspectorModel = Backbone.Model.extend({
     defaults: {
       resources: {},
@@ -22,10 +14,10 @@
         const diff = jsonpatch.compare(resources, this.get('resources'));
         this.set('resources', resources);
 
-        if (diff.length) {
+        if (diff.length && !diff.every((v) => v.op === 'remove')) {
           diff.forEach(({ path, value, op }) => {
             if (!_.has(this.resourcesHash, path)) {
-              this.resourcesHash[path] = { usage: 0, value, operation: op };
+              this.resourcesHash[path] = { usage: 0, value, op };
             }
           });
           Object.entries(this.resourcesHash).forEach(([path, entry]) => {
@@ -39,10 +31,10 @@
         const diff = jsonpatch.compare(variables, this.get('variables'));
         this.set('variables', variables);
 
-        if (diff.length) {
+        if (diff.length && !diff.every((v) => v.op === 'remove')) {
           diff.forEach(({ path, value, op }) => {
             if (!_.has(this.variablesHash, path)) {
-              this.variablesHash[path] = { usage: 0, value, operation: op };
+              this.variablesHash[path] = { usage: 0, value, op };
             }
           });
           Object.entries(this.variablesHash).forEach(([path, entry]) => {
@@ -81,7 +73,7 @@
       this.model = new InspectorModel();
 
       this.model.on('diff:variables', ({ usage, path }) => {
-        const color = colorMap[Math.min(usage, 5)];
+        // const color = colorMap[Math.min(usage, 5)];
         this.$(`[data-path="${path}"]`).css('color', color);
       });
 
@@ -100,7 +92,7 @@
       this.setElement('#variableInspector');
 
       this.$el.html(this.template({ global: _MainView.model.toJSON() }));
-      this.model.update(_MainView.model.get('variable_inspector_data'));
+      this.model.update(JSON.parse(_MainView.model.get('variable_inspector_data')));
       if (_MainView.model.get('show_variable_inspector')) {
         this.$el.show();
       } else {

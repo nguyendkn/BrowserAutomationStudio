@@ -1527,8 +1527,8 @@
             function_name: "Main",
             show_variable_inspector: false,
             show_variable_inspector_pending: false,
-            variable_inspector_data: "{}",
-            variableinspectorheight: 300
+            variable_inspector_data: "[]",
+            variable_inspector_height: 300
         },
         initialize: function () {  
           this.bind("change:execute_next_id", function(model) {  
@@ -3013,7 +3013,7 @@
         if(showVariableInspector)
         {
           $("#variableInspector").show()
-          $(".main").css("padding-bottom",(50 + this.model.attributes["variableinspectorheight"]).toString() + "px")
+          $(".main").css("padding-bottom",(50 + this.model.attributes["variable_inspector_height"]).toString() + "px")
           
           BrowserAutomationStudio_AskForVariablesUpdateOrWait()
         }else
@@ -4075,7 +4075,7 @@
         var TotalHeight = $(window).height();
         var FunctionManagerHeight = $("#functions").outerHeight()
 
-        var H =  _GobalModel.attributes["variableinspectorheight"]
+        var H =  _GobalModel.attributes["variable_inspector_height"]
         if(H > TotalHeight -FunctionManagerHeight - 300)
           H = TotalHeight -FunctionManagerHeight - 300
         if(H<100)
@@ -4109,7 +4109,7 @@
               H = 100
             $("#variableInspector").css("height",H + "px")
             $(".main").css("padding-bottom",(50 + H).toString() + "px")
-            _GobalModel.attributes["variableinspectorheight"] = H
+            _GobalModel.attributes["variable_inspector_height"] = H
     
           })
 
@@ -5679,7 +5679,7 @@
     {
       _GobalModel.attributes["variable_inspector_data"] = data;
 
-      BrowserAutomationStudio_PreserveVariableInspectorScroll()      
+      BrowserAutomationStudio_PreserveVariableInspectorScroll()
       _Inspector.model.update(JSON.parse(data));
       BrowserAutomationStudio_RestoreVariableInspectorScroll()
     }

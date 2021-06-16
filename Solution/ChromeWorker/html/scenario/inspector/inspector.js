@@ -73,9 +73,9 @@
       this.model = new InspectorModel();
 
       this.model.on('diff:variables', ({ usage, path }) => {
-        let color = this.$(`[data-path="${path}"]`).css('color');
-        color = _.rgbGradientToRed(color)[Math.min(usage, 5)];
-        this.$(`[data-path="${path}"]`).css('color', color);
+        const $element = this.$(`[data-path=${path}]`);
+        const colors = _.rgbGradientToRed($element.css('color'));
+        $element.css('color', colors[Math.min(usage, 5)]);
       });
 
       this.model.on('change:resources', (__, resources) => {

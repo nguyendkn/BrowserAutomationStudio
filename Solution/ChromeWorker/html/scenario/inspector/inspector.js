@@ -18,65 +18,70 @@
     variablesHash: {},
 
     update([variables, resources]) {
-      jsonpatch.compare(resources, this.get('resources')).forEach(({ path, value }) => {
-        if (_.has(this.resourcesHash, path)) {
-          const { usages } = this.resourcesHash[path];
-          this.resourcesHash[path] = { usages: usages + 1, value };
-        } else {
-          this.resourcesHash[path] = { usages: 0, value };
-        }
-      });
-      this.set('resources', resources);
+      if (resources != null) {
+        const diff = jsonpatch.compare(resources, this.get('resources'));
+        this.set('resources', resources);
 
-      jsonpatch.compare(variables, this.get('variables')).forEach(({ path, value }) => {
-        if (_.has(this.variablesHash, path)) {
-          const { usages } = this.variablesHash[path];
-          this.variablesHash[path] = { usages: usages + 1, value };
-        } else {
-          this.variablesHash[path] = { usages: 0, value };
+        if (diff.length) {
+          diff.forEach(({ path, value }) => {
+            if (!_.has(this.resourcesHash, path)) {
+              this.resourcesHash[path] = { usage: 0, value };
+            }
+          });
+          Object.entries(this.resourcesHash).forEach(([path, entry]) => {
+            entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
+            this.trigger('diff:resources', { ...entry, path });
+          });
         }
-      });
-      this.set('variables', variables);
+      }
 
-      for (const [path, data] of Object.entries(this.variablesHash)) {
-        this.trigger('diff:variables', {
-          usages: data.usages,
-          value: data.value,
-          path: path,
-        });
+      if (variables != null) {
+        const diff = jsonpatch.compare(variables, this.get('variables'));
+        this.set('variables', variables);
+
+        if (diff.length) {
+          diff.forEach(({ path, value }) => {
+            if (!_.has(this.variablesHash, path)) {
+              this.variablesHash[path] = { usage: 0, value };
+            }
+          });
+          Object.entries(this.variablesHash).forEach(([path, entry]) => {
+            entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
+            this.trigger('diff:variables', { ...entry, path });
+          });
+        }
       }
     }
   });
 
   const InspectorView = Backbone.View.extend({
     template: _.template(/*html*/`
-      <div style="position:absolute;top:9px;right:30px">
-        <a href="#" id="closeVariableInspector" class="text-danger">
+      <div style="position:absolute; top:9px; right:30px">
+        <a href="#" id="variableInspectorClose" class="text-danger">
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%;background-color: #fafafa;padding: 5px;"></i>
         </a>
       </div>
-      <div id="pendingNotice" style="<%= (global['show_variable_inspector_pending']) ? '' : 'display:none' %>">
+      <div id="inspectorDataPending" style="<%= global['show_variable_inspector_pending'] ? '' : 'display: none' %>">
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
-      <div id="variableListPending" style="<%= (global['show_variable_inspector_pending']) ? 'display:none' : '' %>">
-        <% const data = JSON.parse(global['variable_inspector_data']) %>
-        <div class="variables-label-container">
-          <span class="variables-label"><%= tr('Variables:') %></span>
+      <div id="inspectorDataConainer" style="<%= global['show_variable_inspector_pending'] ? 'display: none' : '' %>">
+        <div class="inspector-label-container">
+          <span class="inspector-label"><%= tr('Variables:') %></span>
         </div>
-        <div id="inspectorVariablesData"><%= JSONTree.create(data[0]) %></div>
+        <div id="inspectorVariablesData"></div>
 
-        <div class="variables-label-container">
-          <span class="variables-label"><%= tr('Resources:') %></span>
+        <div class="inspector-label-container">
+          <span class="inspector-label"><%= tr('Resources:') %></span>
         </div>
-        <div id="inspectorResourcesData"><%= JSONTree.create(data[1]) %></div>
+        <div id="inspectorResourcesData"></div>
       </div>
     `),
 
     initialize() {
       this.model = new InspectorModel();
 
-      this.model.on('diff:variables', ({ usages, path }) => {
-        const color = colorMap[Math.min(usages, 5)];
+      this.model.on('diff:variables', ({ usage, path }) => {
+        const color = colorMap[Math.min(usage, 5)];
         this.$(`[data-path="${path}"]`).css('color', color);
       });
 
@@ -94,9 +99,8 @@
     render() {
       this.setElement('#variableInspector');
 
-      this.$el.html(this.template({
-        global: _MainView.model.toJSON()
-      }));
+      this.$el.html(this.template({ global: _MainView.model.toJSON() }));
+      this.model.update(_MainView.model.get('variable_inspector_data'));
       if (_MainView.model.get('show_variable_inspector')) {
         this.$el.show();
       } else {
@@ -106,7 +110,7 @@
     },
 
     events: {
-      'click #closeVariableInspector': function (event) {
+      'click #variableInspectorClose': function (event) {
         event.preventDefault();
         _MainView.model.set('show_variable_inspector', false);
         $('#variableInspector').hide();

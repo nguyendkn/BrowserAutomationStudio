@@ -1,4 +1,4 @@
-.variables-label-container {
+.inspector-label-container {
   text-align: center;
   border-bottom: 1px solid #e0e0e0;
   height: 10px;
@@ -6,7 +6,7 @@
   margin-top: 7px;
 }
 
-.variables-label {
+.inspector-label {
   background-color: #fefad7;
   margin-top: 5px;
   font-size: small;

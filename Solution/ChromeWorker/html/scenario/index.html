@@ -4190,7 +4190,7 @@
 
     function BrowserAutomationStudio_PreserveVariableInspectorScroll()
     {
-      if(!$("#pendingNotice").is(":visible"))
+      if(!$("#inspectorDataPending").is(":visible"))
       {
         window.SaveVariablesInspectorScroll = $("#variableInspector").scrollTop()
       }
@@ -5651,8 +5651,8 @@
         {
           BrowserAutomationStudio_PreserveVariableInspectorScroll();
           _GobalModel.attributes['show_variable_inspector_pending'] = true
-          $("#pendingNotice").show()
-          $("#variableListPending").hide()
+          $("#inspectorDataPending").show()
+          $("#inspectorDataConainer").hide()
         }
     }
 
@@ -5967,8 +5967,8 @@
         if(_GobalModel.get("show_variable_inspector"))
         {
           _GobalModel.attributes['show_variable_inspector_pending'] = false
-          $("#pendingNotice").hide()
-          $("#variableListPending").show()
+          $("#inspectorDataPending").hide()
+          $("#inspectorDataConainer").show()
           BrowserAutomationStudio_RestoreVariableInspectorScroll()
         }
         BrowserAutomationStudio_AskForVariablesUpdate()

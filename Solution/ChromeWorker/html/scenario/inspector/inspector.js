@@ -5,9 +5,9 @@
       variables: {},
     },
 
-    resourcesHash: {},
+    resourcesData: {},
 
-    variablesHash: {},
+    variablesData: {},
 
     update([variables, resources]) {
       if (resources != null) {
@@ -16,11 +16,11 @@
 
         if (diff.length && !diff.every((v) => v.op === 'remove')) {
           diff.forEach(({ path, value, op }) => {
-            if (!_.has(this.resourcesHash, path)) {
-              this.resourcesHash[path] = { usage: 0, value, op };
+            if (!_.has(this.resourcesData, path)) {
+              this.resourcesData[path] = { usage: 0, value, op };
             }
           });
-          Object.entries(this.resourcesHash).forEach(([path, entry]) => {
+          Object.entries(this.resourcesData).forEach(([path, entry]) => {
             entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
             this.trigger('diff:resources', { ...entry, path });
           });
@@ -33,11 +33,11 @@
 
         if (diff.length && !diff.every((v) => v.op === 'remove')) {
           diff.forEach(({ path, value, op }) => {
-            if (!_.has(this.variablesHash, path)) {
-              this.variablesHash[path] = { usage: 0, value, op };
+            if (!_.has(this.variablesData, path)) {
+              this.variablesData[path] = { usage: 0, value, op };
             }
           });
-          Object.entries(this.variablesHash).forEach(([path, entry]) => {
+          Object.entries(this.variablesData).forEach(([path, entry]) => {
             entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
             this.trigger('diff:variables', { ...entry, path });
           });
@@ -73,7 +73,8 @@
       this.model = new InspectorModel();
 
       this.model.on('diff:variables', ({ usage, path }) => {
-        // const color = colorMap[Math.min(usage, 5)];
+        let color = this.$(`[data-path="${path}"]`).css('color');
+        color = _.rgbGradientToRed(color)[Math.min(usage, 5)];
         this.$(`[data-path="${path}"]`).css('color', color);
       });
 

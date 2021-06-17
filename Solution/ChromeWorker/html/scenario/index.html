@@ -30,7 +30,7 @@
   </div>
 
   <div id="debugbuttoncontainer">
-    <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_MainView.ToggleVariableInspector()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action."><i class="fa fa-bug" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_Inspector.toggle()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action."><i class="fa fa-bug" aria-hidden="true"></i></button>
   </div>
 
 
@@ -3006,24 +3006,6 @@
          this.RecalculateMargins($(".tool-margin"),"clear")
       },
 
-      ToggleVariableInspector: function()
-      {
-        const showVariableInspector = !this.model.get('show_variable_inspector');
-        this.model.set("show_variable_inspector", showVariableInspector);
-        
-        if(showVariableInspector)
-        {
-          $("#variableInspector").show()
-          $(".main").css("padding-bottom",(50 + this.model.attributes["variable_inspector_height"]).toString() + "px")
-          
-          BrowserAutomationStudio_AskForVariablesUpdateOrWait()
-        }else
-        {
-          $(".main").css("padding-bottom","50px")
-          $("#variableInspector").hide()
-        }
-      },
-
       Delete: function(is_single){
         if(typeof(is_single) == "undefined")
           is_single = false
@@ -4052,7 +4034,7 @@
           }},
           {text: '<i class="fa fa-bug" aria-hidden="true"></i> ' + tr('Variable Inspector'), action: function(e){
                 e.preventDefault();
-                self.ToggleVariableInspector()
+                _Inspector.toggle()
 
           }},
         ]);

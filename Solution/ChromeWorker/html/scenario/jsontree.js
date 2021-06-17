@@ -215,6 +215,7 @@ var JSONTree = (function() {
       parent.className = '';
       toggleButton.className = 'jstFold';
     }
+    BrowserAutomationStudio_PreserveInterfaceState();
   }
 
   var _closeBracket = function(symbol, depth) {

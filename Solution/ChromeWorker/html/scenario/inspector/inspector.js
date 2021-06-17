@@ -107,6 +107,21 @@
       return this;
     },
 
+    toggle() {
+      const showVariableInspector = !_MainView.model.get('show_variable_inspector');
+      _MainView.model.set("show_variable_inspector", showVariableInspector);
+
+      if (showVariableInspector) {
+        $("#variableInspector").show()
+        $(".main").css("padding-bottom", (50 + _MainView.model.attributes["variable_inspector_height"]).toString() + "px")
+
+        BrowserAutomationStudio_AskForVariablesUpdateOrWait();
+      } else {
+        $(".main").css("padding-bottom", "50px")
+        $("#variableInspector").hide()
+      }
+    },
+
     hidePendingNotice() {
       _GobalModel.set('show_variable_inspector_pending', false, { silent: true });
       this.$('#inspectorDataPending').hide();

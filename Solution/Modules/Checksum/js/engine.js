@@ -25,6 +25,9 @@ function Checksum_PrepareArguments(args){
 			if(['algorithm','inputEncoding','outputEncoding'].indexOf(key) > -1 && _is_nilb(arg)){
 				arg = key=='algorithm' ? 'sha512' : (key=='inputEncoding' ? 'utf-8' : 'hex');
 			};
+			if(key === 'outputEncoding' && _ends_with(arg, ' encoded')){
+				arg = arg=='hex encoded' ? 'hex' : 'base64';
+			};
 			args[key] = arg;
 		};
 	};

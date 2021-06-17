@@ -1182,7 +1182,7 @@
 
 
 
-    <div class="container-fluid main" style="padding-bottom:<%= (global["show_variable_inspector"]) ? "250px" : "50px" %>" >
+    <div class="container-fluid main" style="padding-bottom:<%= (global["showInpectorContent"]) ? "250px" : "50px" %>" >
       
       <div id="paddinfind"> </div>
       <% for(var indexraw = 0;indexraw<data.length;indexraw++){ %>
@@ -1526,10 +1526,11 @@
             successnumber: 1,
             failnumber: 1,
             function_name: "Main",
-            show_variable_inspector: false,
-            show_variable_inspector_pending: false,
-            variable_inspector_data: "[]",
-            variable_inspector_height: 300
+            /* Inspector properties */
+            showInpectorContent: false,
+            showInpectorNotice: false,
+            inspectorHeight: 300,
+            inspectorData: '[]',
         },
         initialize: function () {  
           this.bind("change:execute_next_id", function(model) {  
@@ -4058,13 +4059,13 @@
         var TotalHeight = $(window).height();
         var FunctionManagerHeight = $("#functions").outerHeight()
 
-        var H =  _GobalModel.attributes["variable_inspector_height"]
+        var H =  _GobalModel.attributes["inspectorHeight"]
         if(H > TotalHeight -FunctionManagerHeight - 300)
           H = TotalHeight -FunctionManagerHeight - 300
         if(H<100)
           H = 100
         $("#variableInspector").css("height",H + "px")
-        if(_GobalModel.attributes["show_variable_inspector"])
+        if(_GobalModel.attributes["showInpectorContent"])
           $(".main").css("padding-bottom",(50 + H).toString() + "px")
 
 
@@ -4092,7 +4093,7 @@
               H = 100
             $("#variableInspector").css("height",H + "px")
             $(".main").css("padding-bottom",(50 + H).toString() + "px")
-            _GobalModel.attributes["variable_inspector_height"] = H
+            _GobalModel.attributes["inspectorHeight"] = H
     
           })
 
@@ -5631,7 +5632,7 @@
         if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
         {
           BrowserAutomationStudio_AskForVariablesUpdate()
-        }else if(_GobalModel.get("show_variable_inspector"))
+        }else if(_GobalModel.get("showInpectorContent"))
         {
           _Inspector.showPendingNotice();
         }
@@ -5640,7 +5641,7 @@
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
 
-      if(!_GobalModel.get("show_variable_inspector"))
+      if(!_GobalModel.get("showInpectorContent"))
         return
 
       if(VariablesUpdateTakesPlace)
@@ -5660,7 +5661,7 @@
 
     function BrowserAutomationStudio_UpdateVariablesResult(data)
     {
-      _GobalModel.attributes["variable_inspector_data"] = data;
+      _GobalModel.attributes["inspectorData"] = data;
 
       BrowserAutomationStudio_PreserveVariableInspectorScroll()
       _Inspector.model.update(JSON.parse(data));
@@ -5944,7 +5945,7 @@
 
       if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
       {
-        if(_GobalModel.get("show_variable_inspector"))
+        if(_GobalModel.get("showInpectorContent"))
         {
           _Inspector.hidePendingNotice();
         }

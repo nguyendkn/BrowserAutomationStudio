@@ -53,10 +53,10 @@
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%;background-color: #fafafa;padding: 5px;"></i>
         </a>
       </div>
-      <div id="inspectorDataPending" style="<%= global['show_variable_inspector_pending'] ? '' : 'display: none' %>">
+      <div id="inspectorDataPending" style="<%= global['showInpectorNotice'] ? '' : 'display: none' %>">
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
-      <div id="inspectorDataConainer" style="<%= global['show_variable_inspector_pending'] ? 'display: none' : '' %>">
+      <div id="inspectorDataConainer" style="<%= global['showInpectorNotice'] ? 'display: none' : '' %>">
         <div class="inspector-label-container">
           <span class="inspector-label"><%= tr('Variables:') %></span>
         </div>
@@ -98,8 +98,8 @@
       this.setElement('#variableInspector');
 
       this.$el.html(this.template({ global: _MainView.model.toJSON() }));
-      this.model.update(JSON.parse(_MainView.model.get('variable_inspector_data')));
-      if (_MainView.model.get('show_variable_inspector')) {
+      this.model.update(JSON.parse(_MainView.model.get('inspectorData')));
+      if (_MainView.model.get('showInpectorContent')) {
         this.$el.show();
       } else {
         this.$el.hide();
@@ -108,12 +108,12 @@
     },
 
     toggle() {
-      const showVariableInspector = !_MainView.model.get('show_variable_inspector');
-      _MainView.model.set("show_variable_inspector", showVariableInspector);
+      const showVariableInspector = !_MainView.model.get('showInpectorContent');
+      _MainView.model.set("showInpectorContent", showVariableInspector);
 
       if (showVariableInspector) {
         $("#variableInspector").show()
-        $(".main").css("padding-bottom", (50 + _MainView.model.attributes["variable_inspector_height"]).toString() + "px")
+        $(".main").css("padding-bottom", (50 + _MainView.model.attributes["inspectorHeight"]).toString() + "px")
 
         BrowserAutomationStudio_AskForVariablesUpdateOrWait();
       } else {
@@ -123,14 +123,14 @@
     },
 
     hidePendingNotice() {
-      _GobalModel.set('show_variable_inspector_pending', false, { silent: true });
+      _GobalModel.set('showInpectorNotice', false, { silent: true });
       this.$('#inspectorDataPending').hide();
       this.$('#inspectorDataConainer').show();
       BrowserAutomationStudio_RestoreVariableInspectorScroll();
     },
 
     showPendingNotice() {
-      _GobalModel.set('show_variable_inspector_pending', true, { silent: true });
+      _GobalModel.set('showInpectorNotice', true, { silent: true });
       BrowserAutomationStudio_PreserveVariableInspectorScroll();
       this.$('#inspectorDataPending').show();
       this.$('#inspectorDataConainer').hide();
@@ -169,7 +169,7 @@
     events: {
       'click #variableInspectorClose': function (event) {
         event.preventDefault();
-        _MainView.model.set('show_variable_inspector', false);
+        _MainView.model.set('showInpectorContent', false);
         $('#variableInspector').hide();
         $('.main').css('padding-bottom', '50px');
       },

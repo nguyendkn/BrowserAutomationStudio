@@ -109,6 +109,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_EditSaveStart", CefV8Value::CreateFunction("BrowserAutomationStudio_EditSaveStart", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_EditEnd", CefV8Value::CreateFunction("BrowserAutomationStudio_EditEnd", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_OpenUrl", CefV8Value::CreateFunction("BrowserAutomationStudio_OpenUrl", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_SaveInterfaceState", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveInterfaceState", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_ThreadNumberEdit", CefV8Value::CreateFunction("BrowserAutomationStudio_ThreadNumberEdit", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_RunFunction", CefV8Value::CreateFunction("BrowserAutomationStudio_RunFunction", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_OpenAction", CefV8Value::CreateFunction("BrowserAutomationStudio_OpenAction", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);

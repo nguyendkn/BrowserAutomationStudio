@@ -187,7 +187,8 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     MainLayout *Layout;
 
     std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData, ApplicationEngineVersion, ScriptEngineVersion;
-    bool IsInterfaceInitialSent;
+    bool IsScenarioInterfaceInitialSent;
+    bool IsToolboxInterfaceInitialSent;
     bool ResourcesChanged;
     void UpdateScrolls(std::string& data);
     void HandleMainBrowserEvents();

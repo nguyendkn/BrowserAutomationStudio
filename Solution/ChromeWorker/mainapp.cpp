@@ -71,7 +71,8 @@ MainApp::MainApp()
     RunElementCommandCallbackOnNextTimer = -1;
     TypeTextDelayCurrent = 0;
     ClearElementCommand();
-    IsInterfaceInitialSent = false;
+    IsScenarioInterfaceInitialSent = false;
+    IsToolboxInterfaceInitialSent = false;
     _CefReqest2Action = 0;
     IsMainBrowserCreating = true;
 
@@ -3739,6 +3740,14 @@ void MainApp::HandleScenarioBrowserEvents()
         }
     }
 
+    if(!IsScenarioInterfaceInitialSent && scenariov8handler->GetIsInitialized())
+    {
+        std::string InterfaceInitial = ReadAllString("scenario.json");
+        std::string Script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"scenario");
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script,BrowserScenario->GetMainFrame()->GetURL(), 0);
+        IsScenarioInterfaceInitialSent = true;
+    }
+
     if(scenariov8handler->GetIsThreadNumberEditStart() && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_ThreadNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
@@ -3797,6 +3806,9 @@ void MainApp::HandleScenarioBrowserEvents()
     if(res10.second && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
+    std::pair<std::string,bool> res12 = scenariov8handler->GetIsInterfaceState();
+    if(res12.second) WriteStringToFile("scenario.json", res12.first);
+
     std::pair<std::string, bool> res11 = scenariov8handler->GetIsHighlightMenuItem();
     if(res11.second) for (auto f : EventHighlightMenu) f(res11.first);
 
@@ -3829,19 +3841,7 @@ void MainApp::HandleToolboxBrowserEvents()
 
 
     std::pair<std::string,bool> InterfaceJson = toolboxv8handler->GetInterfaceState();
-    if(InterfaceJson.second)
-    {
-        try
-        {
-            std::ofstream outfile("interface.json");
-            if(outfile.is_open())
-            {
-                outfile<<InterfaceJson.first<<std::endl;
-                }
-        }catch(...)
-        {
-        }
-    }
+    if(InterfaceJson.second) WriteStringToFile("interface.json", InterfaceJson.first);
 
 
     std::pair<ToolboxV8Handler::ResultClass,bool> res = toolboxv8handler->GetResult();
@@ -4000,12 +4000,12 @@ void MainApp::HandleToolboxBrowserEvents()
         GlobalVariables.clear();
     }
 
-    if(!IsInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
+    if(!IsToolboxInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
     {
         std::string InterfaceInitial = ReadAllString("interface.json");
         std::string script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
-        IsInterfaceInitialSent = true;
+        IsToolboxInterfaceInitialSent = true;
     }
 
     if(toolboxv8handler->GetIsInitialized() && !Schema.empty())

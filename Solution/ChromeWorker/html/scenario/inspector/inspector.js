@@ -3,6 +3,8 @@
     defaults: {
       showInpectorContent: false,
       showInpectorNotice: false,
+      variablesPanelScroll: 0,
+      resourcesPanelScroll: 0,
       inspectorHeight: 300,
       inspectorData: '[]',
       resources: {},
@@ -126,16 +128,30 @@
       }
     },
 
+    preserveScrollState() {
+      if (!this.$('#inspectorDataPending').is(':visible')) {
+        this.model.set('variablesPanelScroll', this.$el.scrollTop());
+        // this.model.set('resourcesPanelScroll', this.$el.scrollTop());
+      }
+    },
+
+    restoreScrollState() {
+      if (!this.$('#inspectorDataPending').is(':visible')) {
+        this.$el.scrollTop(this.model.get('variablesPanelScroll'));
+        // this.$el.scrollTop(this.model.get('resourcesPanelScroll'));
+      }
+    },
+
     hidePendingNotice() {
       this.model.set('showInpectorNotice', false);
       this.$('#inspectorDataPending').hide();
       this.$('#inspectorDataConainer').show();
-      BrowserAutomationStudio_RestoreVariableInspectorScroll();
+      this.restoreScrollState();
     },
 
     showPendingNotice() {
       this.model.set('showInpectorNotice', true);
-      BrowserAutomationStudio_PreserveVariableInspectorScroll();
+      this.preserveScrollState();
       this.$('#inspectorDataPending').show();
       this.$('#inspectorDataConainer').hide();
     },

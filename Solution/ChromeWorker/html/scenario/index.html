@@ -3754,19 +3754,19 @@
 
         if(_GobalModel.hasChanged("execute_next_id"))
         {
-          BrowserAutomationStudio_PreserveVariableInspectorScroll()
+          _Inspector.preserveScrollState()
             this.rendertaksid();
             this.renderisscriptexecutingcontainer();
-          BrowserAutomationStudio_RestoreVariableInspectorScroll()
+          _Inspector.restoreScrollState()
           return; 
         }
 
 
         if(_GobalModel.hasChanged("isscriptexecuting"))
         {
-          BrowserAutomationStudio_PreserveVariableInspectorScroll()
+          _Inspector.preserveScrollState()
           this.renderisscriptexecutingcontainer();
-          BrowserAutomationStudio_RestoreVariableInspectorScroll()
+          _Inspector.restoreScrollState()
           return;
         }
 
@@ -3785,7 +3785,7 @@
 
 
 
-        BrowserAutomationStudio_PreserveVariableInspectorScroll()
+        _Inspector.preserveScrollState()
 
 
         var index_start = -1;
@@ -3878,7 +3878,7 @@
         console.log("Cached actions: " + cached_actions + " / " + total_actions + ". Total added: " + total_added + ", total removed: " + total_removed)
 
 
-        BrowserAutomationStudio_RestoreVariableInspectorScroll()
+        _Inspector.restoreScrollState()
 
 
         _MainView.SetDefaultInsert()
@@ -4168,21 +4168,6 @@
     var BrowserAutomationStudio_DoubleClickTime = 0
 
 
-    function BrowserAutomationStudio_PreserveVariableInspectorScroll()
-    {
-      if(!$("#inspectorDataPending").is(":visible"))
-      {
-        window.SaveVariablesInspectorScroll = $("#variableInspector").scrollTop()
-      }
-    }
-
-    function BrowserAutomationStudio_RestoreVariableInspectorScroll()
-    {
-      if(typeof(window.SaveVariablesInspectorScroll) != "number" || window.SaveVariablesInspectorScroll < 0)
-          window.SaveVariablesInspectorScroll = 0
-          
-      $("#variableInspector").scrollTop(window.SaveVariablesInspectorScroll)
-    }
 
     /*
          =========
@@ -5658,9 +5643,9 @@
     {
       _Inspector.model.set("inspectorData", data);
 
-      BrowserAutomationStudio_PreserveVariableInspectorScroll()
+      _Inspector.preserveScrollState()
       _Inspector.model.update(JSON.parse(data));
-      BrowserAutomationStudio_RestoreVariableInspectorScroll()
+      _Inspector.restoreScrollState()
     }
 
     var IsChangedUsed = false

@@ -121,6 +121,38 @@
       this.$('#inspectorDataConainer').hide();
     },
 
+    loadState({ objects, arrays }) {
+      const $container = this.$('#inspectorDataConainer');
+
+      objects.forEach(({ path, collapsed }) => {
+        const $el = $container.find(`[data-path="${path}"]`);
+        if ($el.hasClass('jstFolded') && collapsed) return;
+        $el.children('.jstExpand').click();
+      });
+
+      arrays.forEach(({ path, collapsed }) => {
+        const $el = $container.find(`[data-path="${path}"]`);
+        if ($el.hasClass('jstFolded') && collapsed) return;
+        $el.children('.jstExpand').click();
+      });
+    },
+
+    saveState() {
+      const $container = this.$('#inspectorDataConainer');
+
+      const objects = $container.find('[data-type="object"]').map(function () {
+        const $el = $(this);
+        return { path: $el.data('path'), collapsed: $el.hasClass('jstFolded') };
+      }).get();
+
+      const arrays = $container.find('[data-type="array"]').map(function () {
+        const $el = $(this);
+        return { path: $el.data('path'), collapsed: $el.hasClass('jstFolded') };
+      }).get();
+
+      return { objects, arrays };
+    },
+
     events: {
       'click #variableInspectorClose': function (event) {
         event.preventDefault();

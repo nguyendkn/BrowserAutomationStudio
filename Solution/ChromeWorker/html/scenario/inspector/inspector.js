@@ -1,6 +1,10 @@
 (function (global) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
+      showInpectorContent: false,
+      showInpectorNotice: false,
+      inspectorHeight: 300,
+      inspectorData: '[]',
       resources: {},
       variables: {},
     },
@@ -53,10 +57,10 @@
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%;background-color: #fafafa;padding: 5px;"></i>
         </a>
       </div>
-      <div id="inspectorDataPending" style="<%= global['showInpectorNotice'] ? '' : 'display: none' %>">
+      <div id="inspectorDataPending" style="<%= model.showInpectorNotice ? '' : 'display: none' %>">
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
-      <div id="inspectorDataConainer" style="<%= global['showInpectorNotice'] ? 'display: none' : '' %>">
+      <div id="inspectorDataConainer" style="<%= model.showInpectorNotice ? 'display: none' : '' %>">
         <div class="inspector-label-container">
           <span class="inspector-label"><%= tr('Variables:') %></span>
         </div>
@@ -97,9 +101,9 @@
     render() {
       this.setElement('#variableInspector');
 
-      this.$el.html(this.template({ global: _MainView.model.toJSON() }));
-      this.model.update(JSON.parse(_MainView.model.get('inspectorData')));
-      if (_MainView.model.get('showInpectorContent')) {
+      this.$el.html(this.template({ model: this.model.toJSON() }));
+      this.model.update(JSON.parse(this.model.get('inspectorData')));
+      if (this.model.get('showInpectorContent')) {
         this.$el.show();
       } else {
         this.$el.hide();
@@ -108,12 +112,12 @@
     },
 
     toggle() {
-      const showVariableInspector = !_MainView.model.get('showInpectorContent');
-      _MainView.model.set("showInpectorContent", showVariableInspector);
+      const showVariableInspector = !this.model.get('showInpectorContent');
+      this.model.set("showInpectorContent", showVariableInspector);
 
       if (showVariableInspector) {
         $("#variableInspector").show()
-        $(".main").css("padding-bottom", (50 + _MainView.model.attributes["inspectorHeight"]).toString() + "px")
+        $(".main").css("padding-bottom", (50 + this.model.get("inspectorHeight")).toString() + "px")
 
         BrowserAutomationStudio_AskForVariablesUpdateOrWait();
       } else {
@@ -123,14 +127,14 @@
     },
 
     hidePendingNotice() {
-      _GobalModel.set('showInpectorNotice', false, { silent: true });
+      this.model.set('showInpectorNotice', false);
       this.$('#inspectorDataPending').hide();
       this.$('#inspectorDataConainer').show();
       BrowserAutomationStudio_RestoreVariableInspectorScroll();
     },
 
     showPendingNotice() {
-      _GobalModel.set('showInpectorNotice', true, { silent: true });
+      this.model.set('showInpectorNotice', true);
       BrowserAutomationStudio_PreserveVariableInspectorScroll();
       this.$('#inspectorDataPending').show();
       this.$('#inspectorDataConainer').hide();
@@ -169,7 +173,7 @@
     events: {
       'click #variableInspectorClose': function (event) {
         event.preventDefault();
-        _MainView.model.set('showInpectorContent', false);
+        this.model.set('showInpectorContent', false);
         $('#variableInspector').hide();
         $('.main').css('padding-bottom', '50px');
       },

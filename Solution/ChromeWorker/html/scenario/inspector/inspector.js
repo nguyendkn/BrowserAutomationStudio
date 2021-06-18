@@ -1,8 +1,8 @@
 (function (global) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
-      showInpectorContent: false,
-      showInpectorNotice: false,
+      showInspectorContent: false,
+      showInspectorNotice: false,
       variablesPanelScroll: 0,
       resourcesPanelScroll: 0,
       inspectorHeight: 300,
@@ -54,38 +54,32 @@
 
   const InspectorView = Backbone.View.extend({
     template: _.template(/*html*/`
-      <div style="position:absolute; top:9px; right:30px">
+      <div style="position: absolute; top: 9px; right: 30px;">
         <a href="#" id="variableInspectorClose" class="text-danger">
-          <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%;background-color: #fafafa;padding: 5px;"></i>
+          <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%; background-color: #fafafa; padding: 5px;"></i>
         </a>
       </div>
-      <div id="inspectorDataPending" style="<%= model.showInpectorNotice ? '' : 'display: none' %>">
+      <div id="inspectorDataNotice" style="<%= model.showInspectorNotice ? '' : 'display: none' %>">
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
-      <div id="inspectorDataConainer" style="<%= model.showInpectorNotice ? 'display: none' : '' %>">
-        <div class="inspector-label-container">
-          <span class="inspector-label"><%= tr('Variables:') %></span>
+      <div id="inspectorDataConainer" style="<%= model.showInspectorNotice ? 'display: none' : '' %>">
+        <div class="inspector-data-tab">
+          <div class="inspector-label-container">
+            <span class="inspector-label"><%= tr('Variables:') %></span>
+          </div>
+          <div id="inspectorVariablesData"></div>
         </div>
-        <div id="inspectorVariablesData"></div>
-
-        <div class="inspector-label-container">
-          <span class="inspector-label"><%= tr('Resources:') %></span>
+        <div class="inspector-data-tab">
+          <div class="inspector-label-container">
+            <span class="inspector-label"><%= tr('Resources:') %></span>
+          </div>
+          <div id="inspectorResourcesData"></div>
         </div>
-        <div id="inspectorResourcesData"></div>
       </div>
     `),
 
     initialize() {
       this.model = new InspectorModel();
-
-      this.model.on('diff:variables', ({ usage, path }) => {
-        const $element = this.$(`[data-path="${path}"]`);
-        if ($element.data('type') === 'object') return;
-        if ($element.data('type') === 'array') return;
-
-        const colors = _.rgbGradientToRed($element.css('color'));
-        $element.css('color', colors[Math.min(usage, 5)]);
-      });
 
       this.model.on('change:resources', (__, resources) => {
         this.$('#inspectorResourcesData').html(
@@ -98,6 +92,15 @@
           JSONTree.create(variables)
         );
       });
+
+      this.model.on('diff:variables', ({ usage, path }) => {
+        const $element = this.$(`[data-path="${path}"]`);
+        if ($element.data('type') === 'object') return;
+        if ($element.data('type') === 'array') return;
+
+        const colors = _.rgbGradientToRed($element.css('color'));
+        $element.css('color', colors[Math.min(usage, 5)]);
+      });
     },
 
     render() {
@@ -105,7 +108,7 @@
 
       this.$el.html(this.template({ model: this.model.toJSON() }));
       this.model.update(JSON.parse(this.model.get('inspectorData')));
-      if (this.model.get('showInpectorContent')) {
+      if (this.model.get('showInspectorContent')) {
         this.$el.show();
       } else {
         this.$el.hide();
@@ -114,60 +117,60 @@
     },
 
     toggle() {
-      const showVariableInspector = !this.model.get('showInpectorContent');
-      this.model.set("showInpectorContent", showVariableInspector);
+      const showInspectorContent = !this.model.get('showInspectorContent');
+      this.model.set("showInspectorContent", showInspectorContent);
 
-      if (showVariableInspector) {
-        $("#variableInspector").show()
-        $(".main").css("padding-bottom", (50 + this.model.get("inspectorHeight")).toString() + "px")
+      if (showInspectorContent) {
+        this.$el.show();
+        $('.main').css('padding-bottom', (50 + this.model.get('inspectorHeight')).toString() + 'px')
 
         BrowserAutomationStudio_AskForVariablesUpdateOrWait();
       } else {
-        $(".main").css("padding-bottom", "50px")
-        $("#variableInspector").hide()
+        $('.main').css('padding-bottom', '50px');
+        this.$el.hide();
       }
     },
 
     preserveScrollState() {
-      if (!this.$('#inspectorDataPending').is(':visible')) {
+      if (!this.$('#inspectorDataNotice').is(':visible')) {
         this.model.set('variablesPanelScroll', this.$el.scrollTop());
         // this.model.set('resourcesPanelScroll', this.$el.scrollTop());
       }
     },
 
     restoreScrollState() {
-      if (!this.$('#inspectorDataPending').is(':visible')) {
+      if (!this.$('#inspectorDataNotice').is(':visible')) {
         this.$el.scrollTop(this.model.get('variablesPanelScroll'));
         // this.$el.scrollTop(this.model.get('resourcesPanelScroll'));
       }
     },
 
     hidePendingNotice() {
-      this.model.set('showInpectorNotice', false);
-      this.$('#inspectorDataPending').hide();
+      this.model.set('showInspectorNotice', false);
+      this.$('#inspectorDataNotice').hide();
       this.$('#inspectorDataConainer').show();
       this.restoreScrollState();
     },
 
     showPendingNotice() {
-      this.model.set('showInpectorNotice', true);
+      this.model.set('showInspectorNotice', true);
       this.preserveScrollState();
-      this.$('#inspectorDataPending').show();
+      this.$('#inspectorDataNotice').show();
       this.$('#inspectorDataConainer').hide();
     },
 
     loadState(state) {
       const $container = this.$('#inspectorDataConainer');
 
-      state.objects.forEach(({ path, collapsed }) => {
+      state.objects.forEach(({ path, folded }) => {
         const $el = $container.find(`[data-path="${path}"]`);
-        if ($el.hasClass('jstFolded') && collapsed) return;
+        if ($el.hasClass('jstFolded') && folded) return;
         $el.children('.jstExpand').click();
       });
 
-      state.arrays.forEach(({ path, collapsed }) => {
+      state.arrays.forEach(({ path, folded }) => {
         const $el = $container.find(`[data-path="${path}"]`);
-        if ($el.hasClass('jstFolded') && collapsed) return;
+        if ($el.hasClass('jstFolded') && folded) return;
         $el.children('.jstExpand').click();
       });
     },
@@ -176,11 +179,11 @@
       const $container = this.$('#inspectorDataConainer');
 
       const objects = _.map($container.find('[data-type="object"]'), (el) => {
-        return { path: $(el).data('path'), collapsed: $(el).hasClass('jstFolded') };
+        return { path: $(el).data('path'), folded: $(el).hasClass('jstFolded') };
       });
 
       const arrays = _.map($container.find('[data-type="array"]'), (el) => {
-        return { path: $(el).data('path'), collapsed: $(el).hasClass('jstFolded') };
+        return { path: $(el).data('path'), folded: $(el).hasClass('jstFolded') };
       });
 
       return { objects, arrays };
@@ -189,9 +192,9 @@
     events: {
       'click #variableInspectorClose': function (event) {
         event.preventDefault();
-        this.model.set('showInpectorContent', false);
-        $('#variableInspector').hide();
+        this.model.set('showInspectorContent', false);
         $('.main').css('padding-bottom', '50px');
+        this.$el.hide();
       },
     }
   });

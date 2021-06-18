@@ -1182,7 +1182,7 @@
 
 
 
-    <div class="container-fluid main" style="padding-bottom:<%= _Inspector.model.get('showInpectorContent') ? "250px" : "50px" %>" >
+    <div class="container-fluid main" style="padding-bottom:<%= _Inspector.model.get('showInspectorContent') ? "250px" : "50px" %>" >
       
       <div id="paddinfind"> </div>
       <% for(var indexraw = 0;indexraw<data.length;indexraw++){ %>
@@ -4060,7 +4060,7 @@
         if(H<100)
           H = 100
         $("#variableInspector").css("height",H + "px")
-        if(_Inspector.model.get("showInpectorContent"))
+        if(_Inspector.model.get("showInspectorContent"))
           $(".main").css("padding-bottom",(50 + H).toString() + "px")
 
 
@@ -5612,7 +5612,7 @@
         if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
         {
           BrowserAutomationStudio_AskForVariablesUpdate()
-        }else if(_Inspector.model.get("showInpectorContent"))
+        }else if(_Inspector.model.get("showInspectorContent"))
         {
           _Inspector.showPendingNotice();
         }
@@ -5621,7 +5621,7 @@
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
 
-      if(!_Inspector.model.get("showInpectorContent"))
+      if(!_Inspector.model.get("showInspectorContent"))
         return
 
       if(VariablesUpdateTakesPlace)
@@ -5925,7 +5925,7 @@
 
       if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
       {
-        if(_Inspector.model.get("showInpectorContent"))
+        if(_Inspector.model.get("showInspectorContent"))
         {
           _Inspector.hidePendingNotice();
         }

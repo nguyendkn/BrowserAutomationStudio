@@ -5641,10 +5641,10 @@
 
     function BrowserAutomationStudio_UpdateVariablesResult(data)
     {
-      _Inspector.model.set("inspectorData", data);
+      _Inspector.model.set('inspectorData', data);
 
       _Inspector.preserveScrollState()
-      _Inspector.model.update(JSON.parse(data));
+      _Inspector.model.update();
       _Inspector.restoreScrollState()
     }
 

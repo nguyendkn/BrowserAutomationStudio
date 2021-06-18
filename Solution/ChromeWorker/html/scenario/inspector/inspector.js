@@ -15,7 +15,9 @@
 
     variablesData: {},
 
-    update([variables, resources]) {
+    update() {
+      const [variables, resources] = JSON.parse(this.get('inspectorData'));
+
       if (resources != null) {
         const diff = jsonpatch.compare(resources, this.get('resources'));
         this.set('resources', resources);
@@ -107,7 +109,7 @@
       this.setElement('#variableInspector');
 
       this.$el.html(this.template({ model: this.model.toJSON() }));
-      this.model.update(JSON.parse(this.model.get('inspectorData')));
+      this.model.update();
       if (this.model.get('showInspectorContent')) {
         this.$el.show();
       } else {

@@ -136,9 +136,8 @@
             const windowHeight = $(window).height();
             const functionsHeight = $('#functions').outerHeight();
 
-            const height = windowHeight - event.client.y - functionsHeight;
-            if (height > windowHeight - functionsHeight - 300)
-              height = windowHeight - functionsHeight - 300
+            let height = windowHeight - event.client.y - functionsHeight;
+            height = Math.max(height, windowHeight - functionsHeight - 300);
             height = Math.min(height, 100);
             this.$el.css('height', height + 'px');
 

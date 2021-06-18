@@ -6,7 +6,7 @@
       variablesPanelScroll: 0,
       resourcesPanelScroll: 0,
       inspectorHeight: 300,
-      inspectorData: '[]',
+      inspectorData: [],
       resources: {},
       variables: {},
     },
@@ -16,7 +16,7 @@
     variablesData: {},
 
     update() {
-      const [variables, resources] = JSON.parse(this.get('inspectorData'));
+      const [variables, resources] = this.get('inspectorData');
 
       if (resources != null) {
         const diff = jsonpatch.compare(resources, this.get('resources'));

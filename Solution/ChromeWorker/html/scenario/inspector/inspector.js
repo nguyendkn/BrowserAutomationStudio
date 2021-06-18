@@ -64,7 +64,7 @@
       <div id="inspectorDataNotice" style="<%= model.showInspectorNotice ? '' : 'display: none' %>">
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
-      <div id="inspectorDataConainer" style="<%= model.showInspectorNotice ? 'display: none' : '' %>">
+      <div id="inspectorDataContainer" style="<%= model.showInspectorNotice ? 'display: none' : '' %>">
         <div class="inspector-data-tab">
           <div class="inspector-label-container">
             <span class="inspector-label"><%= tr('Variables:') %></span>
@@ -158,7 +158,7 @@
     hidePendingNotice() {
       this.model.set('showInspectorNotice', false);
       this.$('#inspectorDataNotice').hide();
-      this.$('#inspectorDataConainer').show();
+      this.$('#inspectorDataContainer').show();
       this.restoreScrollState();
     },
 
@@ -166,11 +166,11 @@
       this.model.set('showInspectorNotice', true);
       this.preserveScrollState();
       this.$('#inspectorDataNotice').show();
-      this.$('#inspectorDataConainer').hide();
+      this.$('#inspectorDataContainer').hide();
     },
 
     loadState(state) {
-      const $container = this.$('#inspectorDataConainer');
+      const $container = this.$('#inspectorDataContainer');
 
       state.objects.forEach(({ path, folded }) => {
         const $el = $container.find(`[data-path="${path}"]`);
@@ -186,7 +186,7 @@
     },
 
     saveState() {
-      const $container = this.$('#inspectorDataConainer');
+      const $container = this.$('#inspectorDataContainer');
 
       const objects = _.map($container.find('[data-type="object"]'), (el) => {
         return { path: $(el).data('path'), folded: $(el).hasClass('jstFolded') };

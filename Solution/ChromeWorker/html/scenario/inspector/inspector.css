@@ -1,29 +1,27 @@
 .inspector-label-container {
-  text-align: center;
   border-bottom: 1px solid #e0e0e0;
-  height: 10px;
+  text-align: center;
   margin-bottom: 9px;
   margin-top: 7px;
+  height: 10px;
 }
 
 .inspector-label {
   background-color: #fefad7;
-  margin-top: 5px;
-  font-size: small;
-  font-style: italic;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
-  color: #3e3e3e;
+  padding: 4px 10px 4px;
   border-radius: 2px;
+  font-style: italic;
+  font-size: small;
+  color: #3e3e3e;
+  margin-top: 5px;
 }
 
 #variableInspector {
   border-bottom: 1px solid #dbdbdb;
-  padding-bottom: 5px;
-  height: 200px;
-  overflow: auto;
   border-top: 7px solid #e1e1e1;
   background-color: #fafafa;
+  padding-bottom: 5px;
+  min-height: 100px;
+  height: 200px;
+  overflow: auto;
 }

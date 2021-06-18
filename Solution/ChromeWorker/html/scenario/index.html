@@ -4057,8 +4057,6 @@
         var H =  _Inspector.model.get("inspectorHeight")
         if(H > TotalHeight -FunctionManagerHeight - 300)
           H = TotalHeight -FunctionManagerHeight - 300
-        if(H<100)
-          H = 100
         $("#variableInspector").css("height",H + "px")
         if(_Inspector.model.get("showInspectorContent"))
           $(".main").css("padding-bottom",(50 + H).toString() + "px")
@@ -4084,8 +4082,6 @@
             var H = TotalHeight - Y - FunctionManagerHeight
             if(H > TotalHeight - FunctionManagerHeight - 300)
               H = TotalHeight - FunctionManagerHeight - 300
-            if(H<100)
-              H = 100
             $("#variableInspector").css("height",H + "px")
             $(".main").css("padding-bottom",(50 + H).toString() + "px")
             _Inspector.model.set("inspectorHeight", H);

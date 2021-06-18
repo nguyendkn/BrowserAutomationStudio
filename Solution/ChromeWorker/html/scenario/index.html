@@ -4055,38 +4055,13 @@
         var FunctionManagerHeight = $("#functions").outerHeight()
 
         var H =  _Inspector.model.get("inspectorHeight")
-        if(H > TotalHeight -FunctionManagerHeight - 300)
-          H = TotalHeight -FunctionManagerHeight - 300
+        if(H > TotalHeight - FunctionManagerHeight - 300)
+          H = TotalHeight - FunctionManagerHeight - 300
+        if(H<100)
+          H = 100
         $("#variableInspector").css("height",H + "px")
         if(_Inspector.model.get("showInspectorContent"))
           $(".main").css("padding-bottom",(50 + H).toString() + "px")
-
-
-        interact('#variableInspector')
-          .resizable({
-            // resize from all edges and corners
-            edges: { top: true },
-
-            modifiers: [
-              
-            ],
-
-            inertia: false
-          })
-          .off('resizemove')
-          .on('resizemove', function (event) {
-            var TotalHeight = $(window).height();
-            var FunctionManagerHeight = $("#functions").outerHeight()
-
-            var Y = event.client.y
-            var H = TotalHeight - Y - FunctionManagerHeight
-            if(H > TotalHeight - FunctionManagerHeight - 300)
-              H = TotalHeight - FunctionManagerHeight - 300
-            $("#variableInspector").css("height",H + "px")
-            $(".main").css("padding-bottom",(50 + H).toString() + "px")
-            _Inspector.model.set("inspectorHeight", H);
-    
-          })
 
         //_Tour.Start();
         this.trigger('render');

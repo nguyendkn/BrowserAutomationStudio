@@ -123,6 +123,30 @@
       } else {
         this.$el.hide();
       }
+
+      if (!this.interact) {
+        this.interact = interact(this.el)
+          .resizable({
+            edges: { top: true },
+            inertia: false,
+            modifiers: [],
+          })
+          .off('resizemove')
+          .on('resizemove', (event) => {
+            const windowHeight = $(window).height();
+            const functionsHeight = $('#functions').outerHeight();
+
+            const height = windowHeight - event.client.y - functionsHeight;
+            if (height > windowHeight - functionsHeight - 300)
+              height = windowHeight - functionsHeight - 300
+            height = Math.min(height, 100);
+            this.$el.css('height', height + 'px');
+
+            $('.main').css('padding-bottom', (50 + height).toString() + 'px');
+            this.model.set('inspectorHeight', height);
+          });
+      }
+
       return this;
     },
 

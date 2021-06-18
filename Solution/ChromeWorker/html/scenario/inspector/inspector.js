@@ -70,12 +70,14 @@
             <span class="inspector-label"><%= tr('Variables:') %></span>
           </div>
           <div id="inspectorVariablesData"></div>
+          <div id="inspectorNoVariables" style='font-size: smaller; margin-top: 10px; display: none;'><%= tr('No variables') %></div>
         </div>
         <div class="inspector-data-tab">
           <div class="inspector-label-container">
             <span class="inspector-label"><%= tr('Resources:') %></span>
           </div>
           <div id="inspectorResourcesData"></div>
+          <div id="inspectorNoResources" style='font-size: smaller; margin-top: 10px; display: none;'><%= tr('No resources') %></div>
         </div>
       </div>
     `),
@@ -84,15 +86,21 @@
       this.model = new InspectorModel();
 
       this.model.on('change:resources', (__, resources) => {
-        this.$('#inspectorResourcesData').html(
-          JSONTree.create(resources)
-        );
+        const $resources = this.$('#inspectorResourcesData'),
+          isEmpty = _.isEmpty(resources);
+
+        if (!isEmpty) $resources.html(JSONTree.create(resources));
+        this.$('#inspectorNoResources').toggle(isEmpty);
+        $resources.toggle(!isEmpty);
       });
 
       this.model.on('change:variables', (__, variables) => {
-        this.$('#inspectorVariablesData').html(
-          JSONTree.create(variables)
-        );
+        const $variables = this.$('#inspectorVariablesData'),
+          isEmpty = _.isEmpty(variables);
+
+        if (!isEmpty) $variables.html(JSONTree.create(variables));
+        this.$('#inspectorNoVariables').toggle(isEmpty);
+        $variables.toggle(!isEmpty);
       });
 
       this.model.on('diff:variables', ({ usage, path }) => {

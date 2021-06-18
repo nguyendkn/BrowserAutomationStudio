@@ -1342,15 +1342,12 @@ label
 .bottompannel
 {
   border-top: 1px solid #DBDBDB;
-  width:100%;
-  background-color:white;
-  position:fixed;
-  bottom:0px;
-  right:0px;
-  /*padding-top:5px;*/
-  /*padding-bottom:5px;*/
+  background-color: white;
+  position: fixed;
+  width: 100%;
+  bottom: 0px;
+  right: 0px;
   z-index: 9;
-  /*box-shadow: 0px -1px 3px 1px #efefef;*/
 }
 
 .action-button

@@ -1171,18 +1171,7 @@
       </div>
       
     </div>
-    <div class="bottompannel">
-      <div id="variableInspector" style="display: none"></div>
-      <div style="width:100%" id="functions">
-        <a id="FunctionName" data-toggle="tooltip" data-placement="auto" title="<%= tr("Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.") %>">
-            <%= global.function_name %>
-        </a>
-      </div>
-    </div>
-
-
-
-    <div class="container-fluid main" style="padding-bottom:<%= _Inspector.model.get('showInspectorContent') ? "250px" : "50px" %>" >
+    <div class="container-fluid main" style="padding-bottom: 50px">
       
       <div id="paddinfind"> </div>
       <% for(var indexraw = 0;indexraw<data.length;indexraw++){ %>
@@ -1315,6 +1304,14 @@
         </defs>
 
       </svg>
+    </div>
+    <div class="bottompannel">
+      <div id="variableInspector" style="display: none"></div>
+      <div style="width:100%" id="functions">
+        <a id="FunctionName" data-toggle="tooltip" data-placement="auto" title="<%= tr("Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.") %>">
+            <%= global.function_name %>
+        </a>
+      </div>
     </div>
   </script>
 
@@ -4058,8 +4055,6 @@
         H = Math.min(H, TotalHeight - FunctionManagerHeight - 300);
         H = Math.max(H, 100);
         $("#variableInspector").css("height",H + "px")
-        if(_Inspector.model.get("showInspectorContent"))
-          $(".main").css("padding-bottom",(50 + H).toString() + "px")
 
         //_Tour.Start();
         this.trigger('render');

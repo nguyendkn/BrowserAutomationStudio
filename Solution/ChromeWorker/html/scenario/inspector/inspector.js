@@ -140,8 +140,6 @@
             height = Math.min(height, windowHeight - functionsHeight - 300);
             height = Math.max(height, 100);
             this.$el.css('height', height + 'px');
-
-            $('.main').css('padding-bottom', (50 + height).toString() + 'px');
             this.model.set('inspectorHeight', height);
           });
       }
@@ -155,11 +153,8 @@
 
       if (showInspectorContent) {
         this.$el.show();
-        $('.main').css('padding-bottom', (50 + this.model.get('inspectorHeight')).toString() + 'px')
-
         BrowserAutomationStudio_AskForVariablesUpdateOrWait();
       } else {
-        $('.main').css('padding-bottom', '50px');
         this.$el.hide();
       }
     },
@@ -226,7 +221,6 @@
       'click #variableInspectorClose': function (event) {
         event.preventDefault();
         this.model.set('showInspectorContent', false);
-        $('.main').css('padding-bottom', '50px');
         this.$el.hide();
       },
     }

@@ -4055,10 +4055,8 @@
         var FunctionManagerHeight = $("#functions").outerHeight()
 
         var H =  _Inspector.model.get("inspectorHeight")
-        if(H > TotalHeight - FunctionManagerHeight - 300)
-          H = TotalHeight - FunctionManagerHeight - 300
-        if(H<100)
-          H = 100
+        H = Math.min(H, TotalHeight - FunctionManagerHeight - 300);
+        H = Math.max(H, 100);
         $("#variableInspector").css("height",H + "px")
         if(_Inspector.model.get("showInspectorContent"))
           $(".main").css("padding-bottom",(50 + H).toString() + "px")

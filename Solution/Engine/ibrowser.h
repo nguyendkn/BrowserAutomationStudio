@@ -82,6 +82,7 @@ namespace BrowserAutomationStudioFramework
         virtual void FindImage(const QString& callback) = 0;
 
         virtual void Resize(int x, int y, const QString& callback) = 0;
+        virtual void SetDeviceScaleFactor(double scale,const QString& callback) = 0;
         virtual void Jquery(const QString& callback) = 0;
         virtual void OptimizeMemory(const QString& callback) = 0;
         virtual void WaitCode(const QString& callback) = 0;

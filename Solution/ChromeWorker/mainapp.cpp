@@ -1211,6 +1211,18 @@ void MainApp::PopupInfoCallback()
     });
 }
 
+void MainApp::SetDeviceScaleFactorCallback(double scale)
+{
+    Data->DeviceScaleFactor = scale;
+    UpdateBrowserData(Data);
+    Async Result = Data->Connector->ResetDeviceScaleFactor(scale);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        this->SendTextResponce("<SetDeviceScaleFactor></SetDeviceScaleFactor>");
+    });
+}
+
 void MainApp::MouseMoveCallback(int x, int y, double speed, double gravity, double deviation, bool iscoordinates, bool domouseup, double release_radius, bool relative_coordinates, bool track_scroll)
 {
     DoMouseUpOnFinishMove = domouseup;

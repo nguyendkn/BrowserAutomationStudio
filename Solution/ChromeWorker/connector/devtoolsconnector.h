@@ -99,8 +99,13 @@ class DevToolsConnector
     std::vector<char> ImageData;
     int PaintWidth = 0;
     int PaintHeight = 0;
+    int LastMetadataPaintWidth = 0;
+    int LastMetadataPaintHeight = 0;
     SharedMemoryIPC* IPC = 0;
     void HandleIPCData();
+    void HandleIPCDataNoDeviceScale();
+    void HandleIPCDataWithDeviceScale();
+    void PaintNotify();
     void ParseNewTabReferrer(const std::string& NewTabReferrer);
     void CheckIfTabsNeedsToLoadFirstUrl(std::shared_ptr<TabData> Tab);
     void ResetProxy(const std::string& ParentProcessId);
@@ -167,6 +172,7 @@ class DevToolsConnector
         Async StopScreenCast(int Timeout = -1);
         void EnableBackgroundMode();
         void DisableBackgroundMode();
+        Async ResetDeviceScaleFactor(float DeviceScaleFactor, int Timeout = -1);
 
         //Network
         Async Load(const std::string& Url, bool IsInstant = false, const std::string& Referrer = std::string(), int Timeout = -1);

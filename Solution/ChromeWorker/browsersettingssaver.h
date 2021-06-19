@@ -19,6 +19,8 @@ struct BrowserSettingsSaver
     //Record mode
     bool IsRecord;
 
+    double DeviceScaleFactor = 1.0;
+
     //Headers
     std::vector<std::pair<std::string, std::string> > Headers;
 

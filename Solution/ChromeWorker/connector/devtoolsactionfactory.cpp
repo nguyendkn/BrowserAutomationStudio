@@ -24,6 +24,7 @@
 #include "devtoolsactionsavecookies.h"
 #include "devtoolsactionrestorecookies.h"
 #include "DevToolsActionSetRequestsRestrictions.h"
+#include "devtoolsactionresetdevicescalefactor.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -116,6 +117,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "RestoreCookies")
     {
         Result = new DevToolsActionRestoreCookies();
+    }else if(Name == "ResetDeviceScaleFactor")
+    {
+        Result = new DevToolsActionResetDeviceScaleFactor();
     }
 
 

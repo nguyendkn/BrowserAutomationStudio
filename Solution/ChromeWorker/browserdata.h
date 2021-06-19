@@ -68,6 +68,7 @@ public:
     std::atomic_int ScrollY;
     std::atomic_int CursorX;
     std::atomic_int CursorY;
+    double DeviceScaleFactor = 1.0;
     std::atomic_bool IsRecord;
     std::atomic_bool IsRecordHttp;
     std::atomic_bool MultiselectMode;

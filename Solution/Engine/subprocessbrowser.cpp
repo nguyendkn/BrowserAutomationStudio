@@ -643,6 +643,19 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
+    void SubprocessBrowser::SetDeviceScaleFactor(double scale,const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeTextElement("SetDeviceScaleFactor",QString::number(scale));
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("SetDeviceScaleFactor"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(SetDeviceScaleFactor()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+    }
+
     void SubprocessBrowser::StartManualBrowserControl(const QString& message, const QString& callback)
     {
         QString WriteString;
@@ -913,6 +926,9 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "Resize" && token == QXmlStreamReader::StartElement)
             {
                 emit Resize();
+            }else if(xmlReader.name() == "SetDeviceScaleFactor" && token == QXmlStreamReader::StartElement)
+            {
+                emit SetDeviceScaleFactor();
             }else if(xmlReader.name() == "Reset" && token == QXmlStreamReader::StartElement)
             {
                 emit Reset();

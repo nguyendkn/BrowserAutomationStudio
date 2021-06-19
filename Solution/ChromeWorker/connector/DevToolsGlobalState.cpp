@@ -30,4 +30,5 @@ void DevToolsGlobalState::Reset()
     IsUserAgentChanged = false;
     UserAgentData.clear();
     ExtensionList.clear();
+    IsDeviceScaleFactorModified = false;
 }

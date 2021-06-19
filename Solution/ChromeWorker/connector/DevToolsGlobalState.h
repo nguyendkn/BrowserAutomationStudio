@@ -123,6 +123,8 @@ struct DevToolsGlobalState
     //List of currently active extensions
     std::vector<std::shared_ptr<ExtensionInfo> > ExtensionList;
 
+    bool IsDeviceScaleFactorModified = false;
+
     //This method is called when restarting browser
     void Reset();
 };

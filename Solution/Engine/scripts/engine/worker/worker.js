@@ -1199,6 +1199,24 @@ function resize(x, y, callback)
     })
 }
 
+function _set_device_scale_factor(scale, callback)
+{
+    _ARG_SCALE = []
+    _ARG_SCALE.push(arguments[0])
+    _ARG_SCALE.push(arguments[1])
+
+    _create_browser_if_needed(function(){
+        _get_browser_screen_settings(function(){
+            var result = JSON.parse(_result())
+            _ARG_SCALE.push(result["Width"])
+            _ARG_SCALE.push(result["Height"])
+            Browser.SetDeviceScaleFactor(_ARG_SCALE[0],_get_function_body(function(){
+                resize(_ARG_SCALE[2],_ARG_SCALE[3], _ARG_SCALE[1])
+            }));
+        })
+    })
+}
+
 function save_cookies(callback)
 {
     _ARG = arguments

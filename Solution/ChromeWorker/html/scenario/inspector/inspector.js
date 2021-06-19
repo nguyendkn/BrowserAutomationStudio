@@ -24,9 +24,8 @@
 
         if (diff.length && !diff.every((v) => v.op === 'remove')) {
           diff.forEach(({ path, value, op }) => {
-            if (!_.has(this.resourcesData, path)) {
-              this.resourcesData[path] = { usage: 0, value, op };
-            }
+            if (_.has(this.resourcesData, path)) return;
+            this.resourcesData[path] = { usage: 0, value, op };
           });
           Object.entries(this.resourcesData).forEach(([path, entry]) => {
             entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
@@ -41,9 +40,8 @@
 
         if (diff.length && !diff.every((v) => v.op === 'remove')) {
           diff.forEach(({ path, value, op }) => {
-            if (!_.has(this.variablesData, path)) {
-              this.variablesData[path] = { usage: 0, value, op };
-            }
+            if (_.has(this.variablesData, path)) return;
+            this.variablesData[path] = { usage: 0, value, op };
           });
           Object.entries(this.variablesData).forEach(([path, entry]) => {
             entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
@@ -57,7 +55,7 @@
   const InspectorView = Backbone.View.extend({
     template: _.template(/*html*/`
       <div style="position: absolute; top: 9px; right: 30px;">
-        <a href="#" id="variableInspectorClose" class="text-danger">
+        <a href="#" id="inspectorClose" class="text-danger">
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%; background-color: #fafafa; padding: 5px;"></i>
         </a>
       </div>
@@ -218,11 +216,11 @@
     },
 
     events: {
-      'click #variableInspectorClose': function (event) {
+      'click #inspectorClose': function (event) {
         event.preventDefault();
         this.model.set('showInspectorContent', false);
         this.$el.hide();
-      },
+      }
     }
   });
 

@@ -1339,7 +1339,7 @@ label
   font-style: italic;
 }
 
-.bottompannel {
+.bottom-panel {
   border-top: 1px solid #DBDBDB;
   max-height: calc(100vh - 300px);
   background-color: #fff;

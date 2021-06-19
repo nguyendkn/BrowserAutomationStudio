@@ -51,7 +51,7 @@ function InitEdgeScroll()
 	document.addEventListener("mousedown", function(e){
 	    e = e || window.event;
 
-	    if(event.clientY > $(".threads").height() && Y < window.innerHeight - $(".bottompannel").height())
+	    if(event.clientY > $(".threads").height() && Y < window.innerHeight - $(".bottom-panel").height())
 	    {
 		    MousePressed = true
 		    IsDrag = false
@@ -62,7 +62,7 @@ function InitEdgeScroll()
 	document.addEventListener("dragstart", function(e){
 	    e = e || window.event;
 
-	    if(event.clientY > $(".threads").height() && Y < window.innerHeight - $(".bottompannel").height())
+	    if(event.clientY > $(".threads").height() && Y < window.innerHeight - $(".bottom-panel").height())
 	    {
 		    MousePressed = true
 		    IsDrag = true
@@ -99,13 +99,13 @@ function InitEdgeScroll()
 			}else if(Y - $(".threads").height() < Margin1)
 			{
 				Scroll = -Value1
-			}else if(Y > window.innerHeight - $(".bottompannel").height() - Margin3)
+			}else if(Y > window.innerHeight - $(".bottom-panel").height() - Margin3)
 			{
 				Scroll = Value3
-			}else if(Y > window.innerHeight - $(".bottompannel").height() - Margin2)
+			}else if(Y > window.innerHeight - $(".bottom-panel").height() - Margin2)
 			{
 				Scroll = Value2
-			}else if(Y > window.innerHeight - $(".bottompannel").height() - Margin1)
+			}else if(Y > window.innerHeight - $(".bottom-panel").height() - Margin1)
 			{
 				Scroll = Value1
 			}

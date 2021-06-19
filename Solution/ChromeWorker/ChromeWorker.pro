@@ -42,6 +42,7 @@ SOURCES += main.cpp \
     connector/devtoolsactionload.cpp \
     connector/devtoolsactionopenfile.cpp \
     connector/devtoolsactionreload.cpp \
+    connector/devtoolsactionresetdevicescalefactor.cpp \
     connector/devtoolsactionresizebrowser.cpp \
     connector/devtoolsactionrestorecookies.cpp \
     connector/devtoolsactionsavecookies.cpp \
@@ -201,6 +202,7 @@ HEADERS += \
     connector/devtoolsactionload.h \
     connector/devtoolsactionopenfile.h \
     connector/devtoolsactionreload.h \
+    connector/devtoolsactionresetdevicescalefactor.h \
     connector/devtoolsactionresizebrowser.h \
     connector/devtoolsactionrestorecookies.h \
     connector/devtoolsactionsavecookies.h \

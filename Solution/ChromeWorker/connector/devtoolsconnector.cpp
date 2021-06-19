@@ -932,6 +932,9 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             int NewScrollX = Parser.GetFloatFromJson(Message,"params.metadata.scrollOffsetX");
             int NewScrollY = Parser.GetFloatFromJson(Message,"params.metadata.scrollOffsetY");
 
+            LastMetadataPaintWidth = Parser.GetFloatFromJson(Message,"params.metadata.deviceWidth");
+            LastMetadataPaintHeight = Parser.GetFloatFromJson(Message,"params.metadata.deviceHeight");
+
             if(GlobalState.ScrollX != NewScrollX || GlobalState.ScrollY != NewScrollY)
             {
                 GlobalState.ScrollX = NewScrollX;
@@ -1225,7 +1228,22 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
 }
 
-void DevToolsConnector::HandleIPCData()
+void DevToolsConnector::PaintNotify()
+{
+    if(GlobalState.Width != PaintWidth || GlobalState.Height != PaintHeight)
+    {
+        GlobalState.Width = PaintWidth;
+        GlobalState.Height = PaintHeight;
+        for(auto f:OnResize)
+            f();
+    }
+
+    for(auto f:OnPaint)
+        f();
+}
+
+
+void DevToolsConnector::HandleIPCDataNoDeviceScale()
 {
     bool IsNewImage = false;
 
@@ -1245,19 +1263,89 @@ void DevToolsConnector::HandleIPCData()
 
     }
 
-    //Paint screenshot
     if(IsNewImage)
     {
-        if(GlobalState.Width != PaintWidth || GlobalState.Height != PaintHeight)
+        PaintNotify();
+    }
+}
+
+void DevToolsConnector::HandleIPCDataWithDeviceScale()
+{
+    //More complicated version of HandleIPCDataNoDeviceScale, which includes image scaling.
+    //Target image size is LastMetadataPaintWidth * LastMetadataPaintHeight.
+    //These values are obtained from Page.screencastFrame message.
+    bool IsNewImage = false;
+
+    int CurrentPaintWidth = 0;
+    int CurrentPaintHeight = 0;
+
+    std::vector<char> CurrentImageData;
+
+    //Get data
+    if(IPC->GetImageId())
+    {
+        SharedMemoryIPCLockGuard Lock(IPC);
+
+        if(IPC->GetImageId())
         {
-            GlobalState.Width = PaintWidth;
-            GlobalState.Height = PaintHeight;
-            for(auto f:OnResize)
-                f();
+            CurrentImageData.assign(IPC->GetImagePointer(),IPC->GetImagePointer() + IPC->GetImageSize());
+            CurrentPaintWidth = IPC->GetImageWidth();
+            CurrentPaintHeight = IPC->GetImageHeight();
+            IPC->SetImageId(0);
+            IsNewImage = true;
+        }
+    }
+
+
+    if(IsNewImage)
+    {
+        //Prepare data for scaled image
+        ImageData.clear();
+        PaintWidth = LastMetadataPaintWidth;
+        PaintHeight = LastMetadataPaintHeight;
+        ImageData.resize(PaintWidth * PaintHeight * 4, 255);
+
+        //Scale image
+        for(int j = 0;j<PaintHeight;j++)
+        {
+            for(int i = 0;i<PaintWidth;i++)
+            {
+                int ic = i;
+                int jc = j;
+                ic = ((float)i * (float)CurrentPaintWidth) / ((float)PaintWidth);
+                jc = ((float)j * (float)CurrentPaintHeight) / ((float)PaintHeight);
+                if(ic < 0)
+                    ic = 0;
+                if(ic >= CurrentPaintWidth)
+                    ic = CurrentPaintWidth - 1;
+                if(jc < 0)
+                    jc = 0;
+                if(jc >= CurrentPaintHeight)
+                    jc = CurrentPaintHeight - 1;
+                if(ic >= 0 && ic < CurrentPaintWidth && jc >= 0 && jc < CurrentPaintHeight)
+                {
+                    ImageData[i*4+j*PaintWidth*4 + 0] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 0];
+                    ImageData[i*4+j*PaintWidth*4 + 1] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 1];
+                    ImageData[i*4+j*PaintWidth*4 + 2] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 2];
+                    ImageData[i*4+j*PaintWidth*4 + 3] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 3];
+                }
+
+            }
         }
 
-        for(auto f:OnPaint)
-            f();
+        PaintNotify();
+    }
+}
+
+
+void DevToolsConnector::HandleIPCData()
+{
+    if(GlobalState.IsDeviceScaleFactorModified)
+    {
+        HandleIPCDataWithDeviceScale();
+    }else
+    {
+        HandleIPCDataNoDeviceScale();
     }
 }
 
@@ -1715,6 +1803,17 @@ Async DevToolsConnector::ResizeBrowser(int Width, int Height, int Timeout)
     NewAction->SetParams(Params);
     InsertAction(NewAction);
     NewAction->SetTimeout(Timeout);
+    return NewAction->GetResult();
+}
+
+Async DevToolsConnector::ResetDeviceScaleFactor(float DeviceScaleFactor, int Timeout)
+{
+    GlobalState.IsDeviceScaleFactorModified = DeviceScaleFactor >= 1.01 || DeviceScaleFactor <= 0.99;
+
+    std::shared_ptr<IDevToolsAction> NewAction;
+    NewAction.reset(ActionsFactory.Create("ResetDeviceScaleFactor", &GlobalState));
+    NewAction->SetTimeout(Timeout);
+    InsertAction(NewAction);
     return NewAction->GetResult();
 }
 

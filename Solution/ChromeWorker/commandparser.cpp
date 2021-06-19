@@ -840,6 +840,16 @@ void CommandParser::Parse(const std::string& Xml)
             }
         }
 
+        CommandNode = MessagesNode->first_node("SetDeviceScaleFactor");
+        if(CommandNode)
+        {
+            std::string value = CommandNode->value();
+            WORKER_LOG("SetDeviceScaleFactor");
+
+            for(auto f:EventSetDeviceScaleFactor)
+                f(std::stod(value));
+        }
+
         CommandNode = MessagesNode->first_node("PopupCreate");
         if(CommandNode)
         {

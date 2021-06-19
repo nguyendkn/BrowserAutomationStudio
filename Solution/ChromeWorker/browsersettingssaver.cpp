@@ -54,6 +54,11 @@ void BrowserSettingsSaver::Save()
 
             outfile<<"LocaleName="<<Language<<std::endl;
 
+            if(DeviceScaleFactor >= 1.01 || DeviceScaleFactor <= 0.99)
+            {
+                outfile<<"ForceDeviceScaleFactor="<<DeviceScaleFactor<<std::endl;
+            }
+
         }
         outfile.close();
     }catch(...)

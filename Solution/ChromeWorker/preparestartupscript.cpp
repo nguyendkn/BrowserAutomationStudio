@@ -86,6 +86,8 @@ void UpdateBrowserData(BrowserData* Data)
 
     Data->Saver.UserAgent = UserAgent;
 
+    Data->Saver.DeviceScaleFactor = Data->DeviceScaleFactor;
+
     Data->Saver.Languages = CombineAcceptLanguageWithPattern(AcceptLanguage,Data->_AcceptLanguagePattern).NavigatorLanguages;
 
     Data->Saver.Save();

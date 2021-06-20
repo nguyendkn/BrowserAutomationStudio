@@ -190,13 +190,13 @@
 
       state.objects.forEach(({ path, folded }) => {
         const $el = $container.find(`[data-path="${path}"]`);
-        if ($el.hasClass('jstFolded') && folded) return;
+        if (folded && $el.hasClass('jstFolded')) return;
         $el.children('.jstExpand').click();
       });
 
       state.arrays.forEach(({ path, folded }) => {
         const $el = $container.find(`[data-path="${path}"]`);
-        if ($el.hasClass('jstFolded') && folded) return;
+        if (folded && $el.hasClass('jstFolded')) return;
         $el.children('.jstExpand').click();
       });
     },

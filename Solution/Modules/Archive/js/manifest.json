@@ -95,71 +95,36 @@
     "developer_site": "https://t.me/GhostZed",
     "embeddeddata": [
         {
-            "Data": "const fs = require('fs');\r\nconst path = require('path');\r\nconst unzipper = require(\"unzipper\");\r\nconst il = require('iconv-lite');\r\n\r\nvar archive_path = [[ARCHIVE_UNPACK_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_UNPACK_PARAMETERS]][1];\r\nvar list_of_files = [[ARCHIVE_UNPACK_PARAMETERS]][2];\r\nvar unpack_all = list_of_files.length<=0;\r\n\r\nfunction ensureDirectoryExistence(filePath) {\r\n    var dirname = path.dirname(filePath);\r\n    if(fs.existsSync(dirname)){\r\n        return true;\r\n    };\r\n    ensureDirectoryExistence(dirname);\r\n    fs.mkdirSync(dirname);\r\n};\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var readStream = fs.createReadStream(archive_path);\r\n    readStream.on(\"error\", function error(e){\r\n        reject(e);\r\n    });\r\n    var parse = readStream.pipe(unzipper.Parse());\r\n    parse.on('entry', function (entry){\r\n        var isUnicode = entry.props.flags.isUnicode;\r\n        var filePath = isUnicode ? entry.path : il.decode(entry.props.pathBuffer, 'cp866');\r\n        var fullPath = destination_path + '/' + filePath;\r\n        var fileType = entry.type;\r\n        if(unpack_all || list_of_files.indexOf(filePath) > -1){\r\n            if(fileType===\"File\"){\r\n                ensureDirectoryExistence(fullPath);\r\n                var writeStream = entry.pipe(fs.createWriteStream(fullPath));\r\n                writeStream.on(\"error\", function error(e) {\r\n                    reject(e);\r\n                });\r\n            }else{\r\n                if(!fs.existsSync(fullPath)){\r\n                    ensureDirectoryExistence(fullPath);\r\n                    fs.mkdirSync(fullPath);\r\n                };\r\n                var autodrain = entry.autodrain();\r\n                autodrain.on(\"error\", function error(e) {\r\n                    reject(e);\r\n                });\r\n            };\r\n        }else{\r\n            var autodrain = entry.autodrain();\r\n            autodrain.on(\"error\", function error(e) {\r\n                reject(e);\r\n            });\r\n        };\r\n    });\r\n    parse.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    parse.on(\"close\", function close() {\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "UnpackZIP",
+            "Data": "const self = this;\nconst fs = require('fs');\nconst path = require('path');\nthis.lang = \"en\";\n\nthis.setLang = function(lang){\n    if(lang && (!self.lang || self.lang !== lang)){\n        self.lang = lang;\n    };\n};\n\nthis.normalizePath = function(filePath, backSlash = false){\n    filePath = path.normalize(filePath);\n    return backSlash ? filePath : filePath.split(\"\\\\\").join(\"/\");\n};\n\nthis.getPathInfo = function(filePath, isFolder, shouldExist){\n    let info = path.parse(filePath);\n    if(shouldExist && !fs.existsSync(filePath)){\n        throw self.lang==\"ru\" ? `не удалось найти ${isFolder ? 'папку' : 'файл'} \"${info.base}\" в директории \"${info.dir}\"` : `could not find ${isFolder ? 'folder' : 'file'} \"${info.base}\" in directory \"${info.dir}\"`;\n    };\n    return info;\n};\n\nthis.getArchiveType = function(supportedTypes, archiveType, archivePath){\n    if(archiveType==\"auto\"){\n        let extension = path.extname(archivePath);\n        if(extension.startsWith(extension, '.')){\n            extension = extension.slice(1);\n        };\n\t\tif(!supportedTypes.includes(extension) || extension.length < 1){\n            throw self.lang==\"ru\" ? `не удалось определить тип архива` : `could not determine archive type`;\n\t\t};\n\t\treturn extension;\n\t}else{\n\t\tif(!supportedTypes.includes(archiveType) || archiveType.length < 1){\n            throw self.lang==\"ru\" ? `${archiveType} архивы не поддерживаются` : `${archiveType} archives are not supported`;\n\t\t};\n\t\treturn archiveType;\n\t};\n};",
+            "DataName": "UtilArchive",
+            "DataType": 1,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const util = require(\"../UtilArchive\");\r\nlet {folderPath, destinationPath, archiveType, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    folderPath = util.normalizePath(folderPath);\r\n    let folderInfo = util.getPathInfo(folderPath, true, true);\r\n    archiveType = util.getArchiveType(['zip','7z'], archiveType, destinationPath);\r\n    destinationPath = destinationPath ? destinationPath : `${folderPath}.${archiveType}`;\r\n    destinationPath = util.normalizePath(destinationPath);\r\n\r\n    await (new Promise((resolve, reject) => {\r\n        if(archiveType === 'zip'){\r\n            const archiver = require('archiver');\r\n            const {createWriteStream} = require('fs');\r\n\r\n            let archive = archiver('zip').directory(folderPath, folderInfo.base);\r\n            archive.on('error', reject);\r\n            let writeStream = archive.pipe(createWriteStream(destinationPath));\r\n            writeStream.on('error', reject);\r\n            writeStream.on('close', resolve);\r\n            archive.finalize();\r\n        };\r\n\r\n        if(archiveType === '7z'){\r\n            const seven = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let deleteOld = seven.delete(destinationPath, '*', {$bin: sevenBin});\r\n            deleteOld.on(\"error\", reject);\r\n            let addStream = seven.add(destinationPath, folderPath, {$bin: sevenBin, overwrite: 'a', charset: 'UTF-8'});\r\n            addStream.on(\"error\", reject);\r\n            addStream.on('end', resolve);\r\n        };\r\n    }));\r\n}catch(err){\r\n    let message = err.message || err;\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось заархивировать папку\" : \"Failed to archive folder\"}, ${message}`;\r\n};",
+            "DataName": "Archive_ArchiveFolder",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const unrarp = require('unrar-promise');\r\n\r\nvar archive_path = [[ARCHIVE_UNPACK_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_UNPACK_PARAMETERS]][1];\r\nvar list_of_files = [[ARCHIVE_UNPACK_PARAMETERS]][2];\r\nvar unpack_all = list_of_files.length<=0;\r\nvar list_of_files = unpack_all ? [] : list_of_files.map(function(f){return f.split(\"/\").join(\"\\\\\")});\r\n\r\nawait (new Promise((resolve, reject) => {\r\n\tvar unrar = unrarp.unrar(archive_path, destination_path, {filter({path, type}){return unpack_all || list_of_files.indexOf(path) > -1},overwrite: true});\r\n    unrar.then(function(result){\r\n        resolve();\r\n    })\r\n    unrar.catch(function(err){\r\n        reject(err);\r\n    });\r\n}));",
-            "DataName": "UnpackRAR",
+            "Data": "const util = require(\"../UtilArchive\");\r\nlet {archivePath, archiveType, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    archivePath = util.normalizePath(archivePath);\r\n    let archiveInfo = util.getPathInfo(archivePath, false, true);\r\n    archiveType = util.getArchiveType(['zip','rar','7z'], archiveType, archivePath);\r\n    let filesList = [];\r\n\r\n    if(['zip','7z'].includes(archiveType)){\r\n        await (new Promise((resolve, reject) => {\r\n            const {list} = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let listStream = list(archivePath, {$bin: sevenBin, charset: 'UTF-8'});\r\n            listStream.on(\"error\", reject);\r\n            listStream.on('data', function(data){\r\n                filesList.push(data.file);\r\n            });\r\n            listStream.on('end', resolve);\r\n        }));\r\n    };\r\n\r\n    if(archiveType === 'rar'){\r\n        const {list} = require('unrar-promise');\r\n\r\n        filesList = (await list(archivePath)).map(function(f){return f.split(\"\\\\\").join(\"/\")});\r\n    };\r\n\r\n    [[ARCHIVE_NODE_PARAMETERS]] = filesList.sort();\r\n}catch(err){\r\n    let message = err.message || err;\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось получить список файлов из архива\" : \"Failed to get the list of files from the archive\"}, ${message}`;\r\n};",
+            "DataName": "Archive_GetFileList",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar archive_path = [[ARCHIVE_UNPACK_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_UNPACK_PARAMETERS]][1];\r\nvar list_of_files = [[ARCHIVE_UNPACK_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var extract = Seven.extractFull(archive_path, destination_path, {\r\n        $bin: pathTo7zip,\r\n        charset: 'UTF-8',\r\n        overwrite: 'a',\r\n        $cherryPick: list_of_files\r\n    })\r\n    extract.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    extract.on('end', function(){\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "Unpack7Z",
+            "Data": "const util = require(\"../UtilArchive\");\r\nlet {filesList, destinationPath, archiveType, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    destinationPath = util.normalizePath(destinationPath);\r\n    archiveType = util.getArchiveType(['zip','7z'], archiveType, destinationPath);\r\n    filesList = filesList.map(function(path){return util.normalizePath(path)});\r\n\r\n    await (new Promise((resolve, reject) => {\r\n        if(archiveType === 'zip'){\r\n            const archiver = require('archiver');\r\n            const {statSync, createWriteStream} = require('fs');\r\n            \r\n            let archive = archiver('zip');\r\n            archive.on('error', reject);\r\n            filesList.forEach(function(path){\r\n                let pathInfo = util.getPathInfo(path, false, true);\r\n                if(statSync(path).isDirectory()){\r\n                    archive.directory(path, pathInfo.base);\r\n                }else{\r\n                    archive.file(path, {name: pathInfo.base});\r\n                };\r\n            });\r\n            let writeStream = archive.pipe(createWriteStream(destinationPath));\r\n            writeStream.on('error', reject);\r\n            writeStream.on('close', resolve);\r\n            archive.finalize();\r\n        };\r\n\r\n        if(archiveType === '7z'){\r\n            const seven = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let deleteOld = seven.delete(destinationPath, '*', {$bin: sevenBin});\r\n            deleteOld.on(\"error\", reject);\r\n            let addStream = seven.add(destinationPath, filesList, {$bin: sevenBin, overwrite: 'a', charset: 'UTF-8'});\r\n            addStream.on(\"error\", reject);\r\n            addStream.on('end', resolve);\r\n        };\r\n    }));\r\n}catch(err){\r\n    let message = err.message || err;\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось заархивировать файлы\" : \"Failed to archive files\"}, ${message}`;\r\n};",
+            "DataName": "Archive_ArchiveFiles",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const fs = require('fs');\r\nconst archiver = require('archiver');\r\n\r\nvar folder_path = [[ARCHIVE_FOLDER_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FOLDER_PARAMETERS]][1];\r\nvar folder_name = [[ARCHIVE_FOLDER_PARAMETERS]][2];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var archive = archiver('zip').directory(folder_path, folder_name);\r\n    var writeStream = archive.pipe(fs.createWriteStream(destination_path));\r\n    archive.finalize();\r\n    archive.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('close', function close(){\r\n        resolve();\r\n    });\r\n}));\r\n",
-            "DataName": "ArchiveFolderZIP",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar folder_path = [[ARCHIVE_FOLDER_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FOLDER_PARAMETERS]][1];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var delete_old = Seven.delete(destination_path, '*', {$bin: pathTo7zip});\r\n    delete_old.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    var extract = Seven.add(destination_path, folder_path, {\r\n        $bin: pathTo7zip,\r\n        overwrite: 'a',\r\n        charset: 'UTF-8'\r\n    })\r\n    extract.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    extract.on('end', function(){\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "ArchiveFolder7Z",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-		{
-            "Data": "const fs = require('fs');\r\nconst archiver = require('archiver');\r\n\r\nvar list_of_files = [[ARCHIVE_FILES_PARAMETERS]][0];\r\nvar destination_path = [[ARCHIVE_FILES_PARAMETERS]][1];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var archive = archiver('zip');\r\n    list_of_files.forEach(function(e){\r\n        if(e.isFolder){\r\n            archive.directory(e.path, e.name);\r\n        }else{\r\n            archive.file(e.path, {name: e.name});\r\n        }\r\n    });\r\n    var writeStream = archive.pipe(fs.createWriteStream(destination_path));\r\n    archive.finalize();\r\n    archive.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('error', function(e){\r\n        reject(e);\r\n    });\r\n    writeStream.on('close', function close(){\r\n        resolve();\r\n    });\r\n}));\r\n",
-            "DataName": "ArchiveFilesZIP",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar list_of_files = [[ARCHIVE_FILES_PARAMETERS]][0].map(function(f){return f.path});\r\nvar destination_path = [[ARCHIVE_FILES_PARAMETERS]][1];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var delete_old = Seven.delete(destination_path, '*', {$bin: pathTo7zip});\r\n    delete_old.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    var extract = Seven.add(destination_path, list_of_files, {\r\n        $bin: pathTo7zip,\r\n        overwrite: 'a',\r\n        charset: 'UTF-8'\r\n    });\r\n    extract.on(\"error\", function error(err){\r\n        reject(err);\r\n    }); \r\n    extract.on('end', function(){\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "ArchiveFiles7Z",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-		{
-            "Data": "const unzipper = require(\"unzipper\");\r\nconst fs = require('fs');\r\nconst il = require('iconv-lite');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\nvar list_of_files = [];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var readStream = fs.createReadStream(archive_path);\r\n    readStream.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    var parse = readStream.pipe(unzipper.Parse());\r\n    parse.on('entry', function (entry){\r\n        var isUnicode = entry.props.flags.isUnicode;\r\n        var filePath = isUnicode ? entry.path : il.decode(entry.props.pathBuffer, 'cp866');\r\n        list_of_files.push(filePath);\r\n        var autodrain = entry.autodrain();\r\n        autodrain.on(\"error\", function error(e) {\r\n            reject(e);\r\n        });\r\n    });\r\n    parse.on(\"error\", function error(e) {\r\n        reject(e);\r\n    });\r\n    parse.on(\"close\", function close() {\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = list_of_files;\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "GetFileListZIP",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const unrarp = require('unrar-promise');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n\tvar list = unrarp.list(archive_path);\r\n    list.then(function(result){\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = result.sort().map(function(f){return f.split(\"\\\\\").join(\"/\")});\r\n        resolve();\r\n    })\r\n    list.catch(function(err){\r\n        reject(err);\r\n    });\r\n}));",
-            "DataName": "GetFileListRAR",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const pathTo7zip = require('7zip-bin').path7za;\r\nconst Seven = require('node-7z');\r\n\r\nvar archive_path = [[ARCHIVE_GETFILELIST_PARAMETERS]];\r\nvar list_of_files = [];\r\n\r\nawait (new Promise((resolve, reject) => {\r\n    var list = Seven.list(archive_path, {\r\n        $bin: pathTo7zip,\r\n        charset: 'UTF-8'\r\n    })\r\n    list.on(\"error\", function error(err){\r\n        reject(err);\r\n    });\r\n    list.on('data', function(data){\r\n        list_of_files.push(data.file);\r\n    });\r\n    list.on('end', function(){\r\n        [[ARCHIVE_GETFILELIST_PARAMETERS]] = list_of_files.sort();\r\n        resolve();\r\n    });\r\n}));",
-            "DataName": "GetFileList7Z",
+            "Data": "const util = require(\"../UtilArchive\");\r\nlet {archivePath, destinationPath, archiveType, filesList, password, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    archivePath = util.normalizePath(archivePath);\r\n    let archiveInfo = util.getPathInfo(archivePath, false, true);\r\n    archiveType = util.getArchiveType(['zip','rar','7z'], archiveType, archivePath);\r\n    destinationPath = destinationPath ? destinationPath : archiveInfo.dir;\r\n    destinationPath = util.normalizePath(destinationPath);\r\n    let unpackAll = filesList.length < 1;\r\n    filesList = unpackAll ? [] : filesList.map(function(file){return util.normalizePath(file, archiveType === 'rar')});\r\n    password = password ? password : undefined;\r\n\r\n    if(['zip','7z'].includes(archiveType)){\r\n        await (new Promise((resolve, reject) => {\r\n            const {extractFull} = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let extractStream = extractFull(archivePath, destinationPath, {$bin: sevenBin, charset: 'UTF-8', overwrite: 'a', password: password, $cherryPick: filesList});\r\n            extractStream.on(\"error\", reject);\r\n            extractStream.on('end', resolve);\r\n        }));\r\n    };\r\n\r\n    if(archiveType === 'rar'){\r\n        const {unrar} = require('unrar-promise');\r\n\r\n        await unrar(archivePath, destinationPath, {filter({path, type}){return unpackAll || filesList.includes(path)}, overwrite: true, password: password});\r\n    };\r\n}catch(err){\r\n    let message = err.message || err;\r\n    if(message.includes('Wrong password') || message.includes('unrar: parse failed')){\r\n        message = `${util.lang==\"ru\" ? \"не удалось расшифровать файлы\" : \"failed to decrypt files\"}, `;\r\n        if(password){\r\n            message += util.lang==\"ru\" ? \"указан неверный пароль\" : \"specified incorrect password\";\r\n        }else{\r\n            message += util.lang==\"ru\" ? \"требуется пароль\" : \"password required\";\r\n        };\r\n    };\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось распаковать архив\" : \"Failed to unpack archive\"}, ${message}`;\r\n};",
+            "DataName": "Archive_Unpack",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
@@ -189,6 +154,7 @@
 		"List of files": {"ru":"Список файлов"},
 		"Can be blank": {"ru":"Может быть пустым"},
 		"Destination path": {"ru":"Путь назначения"},
+		"Don't use password": {"ru":"Не использовать пароль"},
 		"in the destination path": {"ru":"в пути назначения"},
 		"The archive will be completely unpacked": {"ru":"Архив будет распакован полностью"},
 		"Place archive next to the original folder": {"ru":"Поместите архив рядом с исходной папкой"},
@@ -201,6 +167,7 @@
 		"The path to the location where the archive will be saved.": {"ru":"Путь к месту в которое будет сохранен архив."},
 		"This action works with both files and folders.": {"ru":"Данное действие работает как с файлами, так и с папками."},
 		"The archive type will be determined by the file extension": {"ru":"Тип архива будет определен по расширению файла"},
+		"Password for access to files contained in the archive.": {"ru":"Пароль для доступа к файлам, содержащимся в архиве."},
 		"Unpack the contents of the archive to the specified location.": {"ru":"Распаковать содержимое архива в указанное место."},
 		"Archive files and save the archive to the specified location.": {"ru":"Заархивировать файлы, и сохранить архив в указанное место."},
 		"Archive folder and save the archive to the specified location.": {"ru":"Заархивировать папку, и сохранить архив в указанное место."},
@@ -215,12 +182,14 @@
 		"The parameters \"File 1\", \"File 2\", \"List of files\" will be used": {"ru":"Будут использованы параметры \"Файл 1\", \"Файл 2\", \"Список файлов\""},
 		"The resulting list can be processed using actions from the \"List\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"Список\"."},
 		"The list of files should contain not only their names but their path in the archive.": {"ru":"Список файлов должен содержать не только их названия, но и их путь в архиве."},
+		"As a list, you can use a string consisting of file paths, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из путей к файлам, разделенных запятыми."},
 		"If with same name archive already exists along the destination path, it will be overwritten.": {"ru":"Если архив с таким именем уже существует по пути назначения, то он будет перезаписан."},
 		"The resulting list will contain not only the names of the files, but their path in the archive.": {"ru":"Полученный список будет содержать не только названия файлов, но их путь в архиве."},
 		"Files from separate fields and the list are added to a general list of files that will be archived.": {"ru":"Файлы из отдельных полей и списка складываются в общий список файлов которые будут заархивированы."},
 		"If the destination path is not specified, the archive will be unpacked to the location where it is located.": {"ru":"Если путь назначения не указан, архив будет распакован в то место, в котором он находится."},
 		"If the files contained in the archive already exist along the destination path, they will be overwritten.": {"ru":"Если по пути назначения уже существуют файлы содержащиеся в архиве, то они будут перезаписаны."},
 		"List of paths to the files which needs be added to archive. The list can be created using actions from the \"List\" module.": {"ru":"Список путей к файлам, которые нужно добавить в архив. Список можно создать с помощью действий из модуля \"Список\"."},
+		"If the archive is password protected, then you can specify it in the corresponding parameter located in the additional settings.": {"ru":"Если архив защищен паролем, то вы можете указать его в соответствующий параметр, находящийся в дополнительных настройках."},
 		"The list of files can be obtained using the \"Get file list from archive\" action or create using actions from the \"List\" module.": {"ru":"Список файлов можно получить с помощью действия \"Получить список файлов из архива\" или создать с помощью действий из модуля \"Список\"."},
 		"This action can unpack not the entire archive, but only a part of it, for this you need to specify a list of files that need to be unpacked.": {"ru":"Данное действие может распаковывать не весь архив, а только его часть, для этого нужно указать список файлов которые нужно распаковать."},
 		"If some of the parameters (\"File 1\", \"File 2\", \"File 3\", \"List of files\") are not specified, all parameters will be used except for them.": {"ru":"Если какие-то из параметров (\"Файл 1\", \"Файл 2\", \"Файл 3\", \"Список файлов\") не указаны, будут использованы все параметры кроме них."},
@@ -234,20 +203,8 @@
 		"For example, if \"List of files\" is not specified, then the list will be formed from the parameters \"File 1\" and \"File 2\" and \"File 3\". If the parameters \"File 1\", \"File 2\", \"File 3\" are empty, then the \"List of files\" will be used. If all parameters are specified, then all of them will be used.": {"ru":"Например, если \"Список файлов\" не указан, то список будет сформирован из параметров \"Файл 1\" и \"Файл 2\" и \"Файл 3\". Если параметры \"Файл 1\", \"Файл 2\", \"Файл 3\" пусты, то будет использован \"Список файлов\". Если указаны все параметры, то все они будут использованы."}
     },
     "major_version": 1,
-    "minor_version": 0,
+    "minor_version": 1,
     "modules": [
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "unzipper",
-            "ModuleVersion": "*"
-        },
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "iconv-lite",
-            "ModuleVersion": "*"
-        },
         {
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3",

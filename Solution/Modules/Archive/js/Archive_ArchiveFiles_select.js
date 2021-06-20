@@ -3,17 +3,17 @@ var File2 = GetInputConstructorValue("File2", loader);
 var File3 = GetInputConstructorValue("File3", loader);
 var ListOfFiles = GetInputConstructorValue("ListOfFiles", loader);
 if(File1["original"].length==0 && File2["original"].length==0 && File3["original"].length==0 && ListOfFiles["original"].length==0){
-    Invalid(tr("List of files") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("List of files") + tr("\" is not specified"));
     return;
 };
 var ArchiveType = GetInputConstructorValue("ArchiveType", loader);
 if(ArchiveType["original"].length == 0){
-    Invalid(tr("Archive type") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Archive type") + tr("\" is not specified"));
     return;
 };
 var DestinationPath = GetInputConstructorValue("DestinationPath", loader);
 if (DestinationPath["original"].length == 0) {
-	Invalid(tr("Destination path") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Destination path") + tr("\" is not specified"));
     return;
 };
 try{

@@ -81,34 +81,33 @@
     `),
 
     initialize() {
-      this.model = new InspectorModel();
+      const model = new InspectorModel()
+        .on('change:resources', (__, resources) => {
+          const $resources = this.$('#inspectorResourcesData'),
+            isEmpty = _.isEmpty(resources);
 
-      this.model.on('change:resources', (__, resources) => {
-        const $resources = this.$('#inspectorResourcesData'),
-          isEmpty = _.isEmpty(resources);
+          if (!isEmpty) $resources.html(JSONTree.create(resources));
+          this.$('#inspectorNoResources').toggle(isEmpty);
+          $resources.toggle(!isEmpty);
+        })
+        .on('change:variables', (__, variables) => {
+          const $variables = this.$('#inspectorVariablesData'),
+            isEmpty = _.isEmpty(variables);
 
-        if (!isEmpty) $resources.html(JSONTree.create(resources));
-        this.$('#inspectorNoResources').toggle(isEmpty);
-        $resources.toggle(!isEmpty);
-      });
+          if (!isEmpty) $variables.html(JSONTree.create(variables));
+          this.$('#inspectorNoVariables').toggle(isEmpty);
+          $variables.toggle(!isEmpty);
+        })
+        .on('diff:variables', ({ usage, path }) => {
+          const $element = this.$(`[data-path="${path}"]`);
+          if ($element.data('type') === 'object') return;
+          if ($element.data('type') === 'array') return;
 
-      this.model.on('change:variables', (__, variables) => {
-        const $variables = this.$('#inspectorVariablesData'),
-          isEmpty = _.isEmpty(variables);
+          const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
+          $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
+        });
 
-        if (!isEmpty) $variables.html(JSONTree.create(variables));
-        this.$('#inspectorNoVariables').toggle(isEmpty);
-        $variables.toggle(!isEmpty);
-      });
-
-      this.model.on('diff:variables', ({ usage, path }) => {
-        const $element = this.$(`[data-path="${path}"]`);
-        if ($element.data('type') === 'object') return;
-        if ($element.data('type') === 'array') return;
-
-        const colors = _.rgbGradientToRed($element.css('color'));
-        $element.css('color', colors[Math.min(usage, 5)]);
-      });
+      this.model = model;
     },
 
     render() {

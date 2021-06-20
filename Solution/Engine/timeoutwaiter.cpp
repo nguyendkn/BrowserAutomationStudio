@@ -342,14 +342,35 @@ namespace BrowserAutomationStudioFramework
         ResourceHandler = EngineResources->GetHandler(Text, Refuse);
         if(!ResourceHandler)
         {
-            ConnectorFail->slot(); return;
+            if(ConnectorFail)
+                ConnectorFail->slot();
+            return;
         }
         switch(ResourceHandler->GetHandlerStatus())
         {
-            case IResourceHandler::Ready: ConnectorSuccess->slot(); return;
-            case IResourceHandler::Refused: ResourceRefused = true; ResourceHandler->deleteLater(); ConnectorFail->slot(); return;
-            case IResourceHandler::Wait: ResourceHandler->deleteLater(); if(SkipWaitHandlerMode){ConnectorFail->slot(); return;} break;
-            case IResourceHandler::NotAvailable: ResourceHandler->deleteLater(); ConnectorFail->slot(); return;
+            case IResourceHandler::Ready:
+                if(ConnectorSuccess)
+                    ConnectorSuccess->slot();
+            return;
+            case IResourceHandler::Refused:
+                ResourceRefused = true;
+                ResourceHandler->deleteLater();
+                if(ConnectorFail)
+                    ConnectorFail->slot();
+            return;
+            case IResourceHandler::Wait:
+                ResourceHandler->deleteLater();
+                if(SkipWaitHandlerMode)
+                {
+                    if(ConnectorFail)
+                        ConnectorFail->slot();
+                    return;
+                } break;
+            case IResourceHandler::NotAvailable:
+                ResourceHandler->deleteLater();
+                if(ConnectorFail)
+                    ConnectorFail->slot();
+            return;
         }
 
         if(WaitingForResourceIteration == 1)

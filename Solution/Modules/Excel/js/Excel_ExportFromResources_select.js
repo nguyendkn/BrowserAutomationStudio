@@ -1,11 +1,11 @@
 var FilePath = GetInputConstructorValueFilename("FilePath", loader);
 if(FilePath["original"].length == 0){
-    Invalid(tr("File path") + " " + tr("is empty"));
+    Invalid(tr("The parameter \"") + tr("File path") + tr("\" is not specified"));
     return;
 };
 var ResourceList = GetInputConstructorValue("ResourceList", loader);
 if(ResourceList["original"].length == 0){
-	Invalid(tr("List of resource names") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("List of resource names") + tr("\" is not specified"));
     return;
 };
 try{

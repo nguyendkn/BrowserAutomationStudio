@@ -2,6 +2,14 @@
 <%= _.template($('#input_constructor').html())({id:"FilePath", description: tr("File path"), default_selector: "string", disable_int:true, value_string: "", help: {description:tr("The path to the excel file."),examples:[{code:"{{excel_file}}"},{code:"C:/test.xlsx"},{code:"C:/Program Files/test1.xlsx"},{code:"C:/Program Files/test2.xlsx"}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"SheetIndexOrName", description: tr("Sheet index or name"), default_selector: "int", value_number: 0, min_number:0, max_number:999999, help: {description: tr("Index or sheet name in excel file."),examples:[{code:0, description: tr("First sheet index")}, {code:1, description: tr("Second sheet index")}, {code:tr("Sheet1"), description: tr("First sheet name")}, {code:tr("Sheet2"), description: tr("Second sheet name")}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"Data", description: tr("Data"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("The data which needs to be written to the specified sheet.") + " " + tr("You can write strings, numbers, booleans and dates to a cell.") + " " + tr("Numbers and booleans can be specified as a string and they will be automatically converted to the correct type, and dates are perceived only as a javascript date object."),examples:[{code:"[\"A1:B1:C1\",\"A2:B2:C2\",\"A3:B3:C3\"]", description:"CSV list"},{code:"A1:B1:C1\nA2:B2:C2\nA3:B3:C3", description:"CSV string"},{code:"[[\"A1\",\"B1\",\"C1\"],[\"A2\",\"B2\",\"C2\"],[\"A3\",\"B3\",\"C3\"]]", description:"2D list"},{code:tr("Just sample text"), description: tr("String")}, {code:289, description: tr("Integer")}, {code:0.4494634651211913, description: tr("Floating point number")}, {code:true, description: tr("Boolean")}, {code:new Date(), description: tr("Date object")}]} }) %>
+<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
+<div><span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
+	<input type="checkbox" id="Check" checked="checked" style="margin-left:25px"/> <label for="Check" class="tr">Convert data</label>
+</span></div>
+<div><span data-preserve="true" data-preserve-type="check" data-preserve-id="Check2">
+	<input type="checkbox" id="Check2" checked="checked" style="margin-left:25px"/> <label for="Check2" class="tr">Set cell format</label>
+</span></div>
+<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Write data to sheet in excel file.</div>
@@ -16,6 +24,9 @@
 	<div class="tr tooltip-paragraph-fold">The cell value can be string, number, boolean or date.</div>
 	<div class="tr tooltip-paragraph-fold">Numbers and booleans can be specified as a string and they will be automatically converted to the correct type, and dates are perceived only as a javascript date object.</div>
 	<div class="tr tooltip-paragraph-fold">For example, the string <code>"text:123:true"</code> will be automatically converted to values for three cells, the string <code>"text"</code>, the number <code>123</code>, and the boolean <code>true</code>.</div>
+	<div class="tr tooltip-paragraph-fold">To disable automatic data conversion, you need to deactivate the "Convert data" parameter located in the additional settings.</div>
+	<div class="tr tooltip-paragraph-fold">This action automatically sets the cell format, the format <code>"dd.mm.yyyy hh:mm:ss"</code> is set for the cells with the date, and <code>"General"</code> for the rest.</div>
+	<div class="tr tooltip-paragraph-fold">To disable automatic format set, you need to deactivate the "Set cell format" parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-fold">If a resource is specified in the "File path" parameter, resource location will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

@@ -21,7 +21,7 @@ function SQL_Setup(dialect, host, port, username, password, database, storage, c
 	_SQL_CONFIG["data"]["username"] = username;
 	_SQL_CONFIG["data"]["password"] = password;
 	_SQL_CONFIG["data"]["database"] = database;
-	_SQL_CONFIG["data"]["storage"] = SQL_FormatPath(storage);
+	_SQL_CONFIG["data"]["storage"] = storage.split("\\").join("/");
 	_SQL_CONFIG["connect_timeout"] = connect_timeout!=="" ? connect_timeout*1000 : "";
 	_SQL_CONFIG["timeout"] = timeout*1000;
 };
@@ -69,8 +69,8 @@ function SQL_SelectRecords(){
 	var table = _function_argument("table");
 	var where = _function_argument("where");
 	var where_parameterize = _function_argument("where_parameterize");
-	var included_columns = SQL_ConvertToList(_function_argument("included_columns"));
-	var excluded_columns = SQL_ConvertToList(_function_argument("excluded_columns"));
+	var included_columns = _to_arr(_function_argument("included_columns"));
+	var excluded_columns = _to_arr(_function_argument("excluded_columns"));
 	var order_column = _function_argument("order_column");
 	var order_direction = _function_argument("order_direction");
 	var offset = _function_argument("offset");
@@ -96,9 +96,10 @@ function SQL_SelectRecords(){
 function SQL_UpdateRecords(){
 	var table = _function_argument("table");
 	var values = _function_argument("values");
+	var convert = _avoid_nilb(_function_argument("convert"), true);
 	var where = _function_argument("where");
 	var where_parameterize = _function_argument("where_parameterize");
-	var fields = SQL_ConvertToList(_function_argument("fields"));
+	var fields = _to_arr(_function_argument("fields"));
 	var limit = _function_argument("limit");
 	var timeout = _function_argument("timeout");
 	
@@ -107,7 +108,7 @@ function SQL_UpdateRecords(){
 	_call_function(SQL_PreParameterization,{"query":where,"parameterize":where_parameterize})!
 	where = _result_function();
 	
-	_call_function(SQL_ConvertValuesToObject,{"values":values})!
+	_call_function(SQL_ConvertValuesToObject,{"values":values,"convert":convert})!
 	values = _result_function();
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, values, where, fields, limit];
@@ -132,13 +133,14 @@ function SQL_DeleteRecords(){
 };
 function SQL_Insert(){
 	var table = _function_argument("table");
-	var fields = SQL_ConvertToList(_function_argument("fields"));
+	var fields = _to_arr(_function_argument("fields"));
 	var data = SQL_DataPreparation(_function_argument("data"));
+	var convert = _avoid_nilb(_function_argument("convert"), true);
 	var timeout = _function_argument("timeout");
 	
 	SQL_CheckDialect();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, fields, data];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, fields, data, convert];
 	
 	_embedded("SQL_Insert", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
@@ -189,7 +191,7 @@ function SQL_PreParameterization(){
 				
 				_call_function(SQL_Template,{"e":ell})!
 				var res = _result_function();
-				replacements[cycle_index] = SQL_ConvertValue(res);
+				replacements[cycle_index] = value;
 			})!
 			
 			query = query.replace(reg, "?");
@@ -202,6 +204,7 @@ function SQL_PreParameterization(){
 };
 function SQL_ConvertValuesToObject(){
 	var values = _function_argument("values");
+	var convert = _avoid_nilb(_function_argument("convert"), true);
 	
 	_if(values.indexOf("=") < 0,function(){
 		_call_function(SQL_Template,{"e":values})!
@@ -234,13 +237,13 @@ function SQL_ConvertValuesToObject(){
 		_call_function(SQL_Template,{"e":value})!
 		var value = _result_function();
 		
-		values_object[key] = SQL_ConvertValue(value);
+		values_object[key] = convert ? SQL_ConvertValue(value) : value;
 	})!
 	
 	_function_return(values_object);
 };
-function SQL_DataPreparation(data){
-	if(typeof data=="string" && SQL_IsJsonString(data)){
+function SQL_DataPreparation(data, convert){
+	if(typeof data=="string" && _is_json_string(data)){
 		data = JSON.parse(data);
 	};
 	if((typeof data=="object" && !Array.isArray(data)) || (typeof data=="object" && Array.isArray(data) && typeof data[0]!="object" && csv_parse(data[0]).length==1)){
@@ -259,22 +262,4 @@ function SQL_CheckDialect(){
 	if(["mysql","mariadb","postgres","sqlite","mssql"].indexOf(dialect) < 0){
 		fail(_K=="ru" ? ("Настройка доступа к базе данных не выполнена или выполнена неправильно") : ("Database access configuration failed or incorrect"));
 	};
-};
-function SQL_IsJsonString(str){
-	if((typeof str==="string" && str.length > 0) && ((str.slice(0,1)=="[" && str.slice(-1)=="]") || (str.slice(0,1)=="{" && str.slice(-1)=="}"))){
-		try{
-			JSON.parse(str);
-		}catch(e){
-			return false;
-		};
-		return true;
-	}else{
-		return false;
-	};
-};
-function SQL_ConvertToList(str){
-	return (str==="" || typeof str=="object") ? str : (SQL_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
-};
-function SQL_FormatPath(path){
-	return path.split("\\").join("/");
 };

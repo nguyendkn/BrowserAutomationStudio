@@ -2,6 +2,11 @@
 <%= _.template($('#input_constructor').html())({id:"table", description:tr("Database table"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("Table name, for which operation will be applied"), examples:[{code:"table"},{code:"users"},{code:"accounts"},{code:"materials"}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"fields", description:tr("List of fields") + ". " + tr("Can be blank"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("List of field names to be inserted. Can be used as a constraint to avoid accidentally inserting unnecessary fields.") + " " + tr("Also, this parameter must be specified if the data format is not \"Object list\" and the order of the fields does not match the table.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),examples:[{code:"id,title,url,amount"},{code:"id, title, url, amount"},{code:"[\"id\", \"title\", \"url\", \"amount\"]"},{code:tr("Empty string"), description:tr("Insert all fields, the order of the fields matches the database")}]} }) %>
 <%= _.template($('#input_constructor').html())({id:"data", description:tr("Data"), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true, textarea_height:80, help: {description: tr("The data to be inserted into the database.") + " " + tr("You can write strings, numbers, booleans and dates to field.") + " " + tr("Numbers and booleans can be specified as a string and they will be automatically converted to the correct type, and dates are perceived only as a javascript date object."),examples:[{code:"1:test1:true", description:"CSV"},{code:"<br/>[\"1:test1:true\",\"2:test2:false\",\"3:test3:false\"]", description:"CSV list"},{code:"<br/>1:tes1:true<br/>2:test2:false<br/>3:test3:false", description:"CSV string"},{code:"<br/>[1,\"test1\",true]", description:"List"},{code:"<br/>[[1,\"test1\",true],[2,\"test2\",false],[3,\"test3\",false]]", description:"2D list"},{code:"<br/>{\"id\":1,\"name\":\"test1\",\"active\":true}", description:"Object"},{code:"<br/>[{\"id\":1,\"name\":\"test1\",\"active\":true},{\"id\":2,\"name\":\"test2\",\"active\":false},{\"id\":3,\"name\":\"test3\",\"active\":false}]", description:"Object list"}]} }) %>
+<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
+<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
+	<input type="checkbox" id="Check" checked="checked" style="margin-left:25px"/> <label for="Check" class="tr">Convert data</label>
+</span>
+<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Insert records into SQL database.</div>
@@ -21,6 +26,7 @@
 	<div class="tr tooltip-paragraph-fold">The field value can be string, number, boolean or date.</div>
 	<div class="tr tooltip-paragraph-fold">Numbers and booleans can be specified as a string and they will be automatically converted to the correct type, and dates are perceived only as a javascript date object.</div>
 	<div class="tr tooltip-paragraph-fold">For example, the string <code>"text:123:true"</code> will be automatically converted to values for three cells, the string <code>"text"</code>, the number <code>123</code>, and the boolean <code>true</code>.</div>
+	<div class="tr tooltip-paragraph-fold">To disable automatic data conversion, you need to deactivate the "Convert data" parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

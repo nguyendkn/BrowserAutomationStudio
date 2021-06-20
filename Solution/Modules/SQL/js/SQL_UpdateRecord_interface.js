@@ -6,6 +6,9 @@
 </span>
 <%= _.template($('#input_constructor').html())({id:"values", description:tr("Values"), default_selector: "string", disable_int:true, disable_editor:true, disable_string:true, use_textarea:true, size: 8, disable_type_chooser:true, textarea_height:80, help: {description: tr("Field names and values separated by \"=\", each field on a new line."), examples:[{code:"balance = [[BALANCE]]"},{code:"active = true"},{code:"time = [[DATE_NOW]]"}]} }) %>
 <%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
+<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check2">
+	<input type="checkbox" id="Check2" checked="checked" style="margin-left:25px"/> <label for="Check2" class="tr">Convert data</label>
+</span>
 <%= _.template($('#input_constructor').html())({id:"fields", description:tr("List of fields"), default_selector: "string", disable_int:true, value_string: "", help: {description: tr("List of field names that can be updated. Can be used as a constraint to avoid accidentally updating unnecessary fields.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),examples:[{code:"id,title,url,amount"},{code:"id, title, url, amount"},{code:"[\"id\", \"title\", \"url\", \"amount\"]"},{code:tr("Empty string"), description:tr("Update all fields")}]} }) %>
 <%= _.template($('#block_end').html())() %>
 </div>
@@ -20,6 +23,7 @@
 	<div class="tr tooltip-paragraph-fold">The field value can be string, number, boolean or date.</div>
 	<div class="tr tooltip-paragraph-fold">Numbers and booleans can be specified as a string and they will be automatically converted to the correct type, and dates are perceived only as a javascript date object.</div>
 	<div class="tr tooltip-paragraph-fold">For example, the string <code>"123"</code> will be automatically converted to the number <code>123</code>, and the string <code>"true"</code> will be converted to the boolean type <code>true</code>.</div>
+	<div class="tr tooltip-paragraph-fold">To disable automatic data conversion, you need to deactivate the "Convert data" parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd",use_timeout: true, visible:true}) %>

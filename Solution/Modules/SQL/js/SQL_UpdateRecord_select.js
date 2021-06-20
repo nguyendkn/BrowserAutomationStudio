@@ -15,6 +15,7 @@ if($("#values").val().length == 0){
 	Invalid(tr("The parameter \"") + tr("Values") + tr("\" is not specified"));
     return;
 };
+var convert = $("#Check2").is(':checked');
 var fields = GetInputConstructorValue("fields", loader);
 try {
     var code = loader.GetAdditionalData() + _.template($("#SQL_UpdateRecord_code").html())({
@@ -22,6 +23,7 @@ try {
         "where": where,
         "parameterize": parameterize,
         "values": values,
+        "convert": convert,
         "fields": fields["updated"]
     });
     code = Normalize(code, 0);

@@ -5,18 +5,17 @@
       showInspectorNotice: false,
       variablesPanelScroll: 0,
       resourcesPanelScroll: 0,
-      inspectorHeight: 300,
-      inspectorData: [],
       resources: {},
       variables: {},
+      height: 300,
     },
 
     resourcesData: {},
 
     variablesData: {},
 
-    update() {
-      const [variables, resources] = this.get('inspectorData');
+    update(data = []) {
+      const [variables, resources] = data;
 
       if (resources != null) {
         const diff = jsonpatch.compare(resources, this.get('resources'));
@@ -112,7 +111,6 @@
 
     render() {
       this.setElement('#variableInspector');
-
       this.$el.html(this.template({ model: this.model.toJSON() }));
       this.model.update();
       if (this.model.get('showInspectorContent')) {
@@ -137,7 +135,7 @@
             height = Math.min(height, windowHeight - functionsHeight - 300);
             height = Math.max(height, 100);
             this.$el.css('height', height + 'px');
-            this.model.set('inspectorHeight', height);
+            this.model.set('height', height);
           });
       }
 

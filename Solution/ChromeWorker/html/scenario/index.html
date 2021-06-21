@@ -4052,7 +4052,7 @@
         var TotalHeight = $(window).height();
         var FunctionManagerHeight = $("#functions").outerHeight()
 
-        var H =  _Inspector.model.get("inspectorHeight");
+        var H =  _Inspector.model.get("height");
         H = Math.min(H, TotalHeight - FunctionManagerHeight - 300);
         H = Math.max(H, 100);
         $("#variableInspector").css("height" ,H + "px");
@@ -5606,10 +5606,8 @@
 
     function BrowserAutomationStudio_UpdateVariablesResult(data)
     {
-      _Inspector.model.set('inspectorData', JSON.parse(data));
-
       _Inspector.preserveScrollState()
-      _Inspector.model.update();
+      _Inspector.model.update(JSON.parse(data));
       _Inspector.restoreScrollState()
     }
 

@@ -566,12 +566,12 @@ function _type()
                 _ARG3[0].shift()
             })
 
-        }, _ARG3[2])
+        }, function(){
+        })
     }, function(){
-        page().type(_ARG3[0],_ARG3[1],_ARG3[2])
-    }, function(){
-
-    })
+        page().type(_ARG3[0],_ARG3[1], function(){
+        })
+    }, _ARG3[2])
 }
 
 function _scroll_to(target, callback)

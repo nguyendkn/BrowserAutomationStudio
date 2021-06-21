@@ -3,6 +3,7 @@
     defaults: {
       showInspectorContent: false,
       showInspectorNotice: false,
+      callStackPanelScroll: 0,
       variablesPanelScroll: 0,
       resourcesPanelScroll: 0,
       resources: {},
@@ -158,6 +159,7 @@
       if (!this.$('#inspectorDataNotice').is(':visible')) {
         this.model.set('variablesPanelScroll', this.$el.scrollTop());
         // this.model.set('resourcesPanelScroll', this.$el.scrollTop());
+        // this.model.set('callStackPanelScroll', this.$el.scrollTop());
       }
     },
 
@@ -165,6 +167,7 @@
       if (!this.$('#inspectorDataNotice').is(':visible')) {
         this.$el.scrollTop(this.model.get('variablesPanelScroll'));
         // this.$el.scrollTop(this.model.get('resourcesPanelScroll'));
+        // this.$el.scrollTop(this.model.get('callStackPanelScroll'));
       }
     },
 

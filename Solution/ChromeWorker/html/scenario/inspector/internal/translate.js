@@ -8,10 +8,19 @@ _.extend(_L, {
   'No resources': {
     ru: 'Нет ресурсов'
   },
+  'Call stack': {
+    ru: 'Стэк вызовов'
+  },
   'Variables:': {
     ru: 'Переменные:'
   },
   'Resources:': {
     ru: 'Ресурсы:'
   },
+  'Variables': {
+    ru: 'Переменные'
+  },
+  'Resources': {
+    ru: 'Ресурсы'
+  }
 });

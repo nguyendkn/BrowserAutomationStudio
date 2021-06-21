@@ -63,6 +63,11 @@
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
       <div id="inspectorDataContainer" style="<%= model.showInspectorNotice ? 'display: none' : '' %>">
+        <ul class="nav nav-tabs" style="display: none">
+          <li class="" id=""><%= tr('Variables') %></li>
+          <li class="" id=""><%= tr('Resources') %></li>
+          <li class="" id=""><%= tr('Call stack') %></li>
+        </ul>
         <div class="inspector-data-tab">
           <div class="inspector-label-container">
             <span class="inspector-label"><%= tr('Variables:') %></span>

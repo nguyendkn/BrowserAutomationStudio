@@ -205,17 +205,21 @@
     loadState(state) {
       const $container = this.$('#inspectorDataContainer');
 
-      state.objects.forEach(({ path, folded }) => {
-        const $el = $container.find(`[data-path="${path}"]`);
-        if (folded && $el.hasClass('jstFolded')) return;
-        $el.children('.jstExpand').click();
-      });
+      if (Array.isArray(state.objects)) {
+        state.objects.forEach(({ path, folded }) => {
+          const $el = $container.find(`[data-path="${path}"]`);
+          if (folded && $el.hasClass('jstFolded')) return;
+          $el.children('.jstExpand').click();
+        });
+      }
 
-      state.arrays.forEach(({ path, folded }) => {
-        const $el = $container.find(`[data-path="${path}"]`);
-        if (folded && $el.hasClass('jstFolded')) return;
-        $el.children('.jstExpand').click();
-      });
+      if (Array.isArray(state.arrays)) {
+        state.arrays.forEach(({ path, folded }) => {
+          const $el = $container.find(`[data-path="${path}"]`);
+          if (folded && $el.hasClass('jstFolded')) return;
+          $el.children('.jstExpand').click();
+        });
+      }
     },
 
     saveState() {

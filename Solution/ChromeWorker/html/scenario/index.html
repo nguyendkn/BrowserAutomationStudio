@@ -5920,10 +5920,12 @@
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(json) {
-      try {
-        const interface = JSON.parse(json);
-        _Inspector.loadState(interface['inspector']);
-      } catch(e) { console.log('Failed to load interface state:', e) }
+      const result = _.attempt(() => JSON.parse(json));
+      if (!_.isError(result)) {
+        _Inspector.loadState(result.inspector);
+      } else {
+        console.log('Failed to load interface state:', result);
+      }
     }
 
     function BrowserAutomationStudio_FinishedBackup(fullPath) {

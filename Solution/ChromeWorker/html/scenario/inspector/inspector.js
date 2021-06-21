@@ -91,7 +91,12 @@
           const $resources = this.$('#inspectorResourcesData'),
             isEmpty = _.isEmpty(resources);
 
-          if (!isEmpty) $resources.html(JSONTree.create(resources));
+          if (!isEmpty) {
+            morphdom($resources[0], `<div id="inspectorResourcesData">${JSONTree.create(resources)}</div>`, {
+              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
+              childrenOnly: true
+            });
+          }
           this.$('#inspectorNoResources').toggle(isEmpty);
           $resources.toggle(!isEmpty);
         })
@@ -99,7 +104,13 @@
           const $variables = this.$('#inspectorVariablesData'),
             isEmpty = _.isEmpty(variables);
 
-          if (!isEmpty) $variables.html(JSONTree.create(variables));
+          if (!isEmpty) {
+            morphdom($variables[0], `<div id="inspectorVariablesData">${JSONTree.create(variables)}</div>`, {
+              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
+              childrenOnly: true
+            });
+            $variables.html(JSONTree.create(variables));
+          }
           this.$('#inspectorNoVariables').toggle(isEmpty);
           $variables.toggle(!isEmpty);
         })
@@ -118,6 +129,7 @@
     render() {
       this.setElement('#variableInspector');
       this.$el.html(this.template({ model: this.model.toJSON() }));
+
       this.model.update();
       if (this.model.get('showInspectorContent')) {
         this.$el.show();

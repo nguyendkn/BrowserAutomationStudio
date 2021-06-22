@@ -3,6 +3,57 @@
 		{
             "code": [
                 {
+                    "file": "SMS_GetNumber_code.js",
+                    "name": "SMS_GetNumber_code"
+                }
+            ],
+            "description": {
+                "en": "Get phone number",
+                "ru": "Получить номер телефона"
+            },
+            "interface": "SMS_GetNumber_interface.js",
+            "is_element": false,
+            "name": "SMS_GetNumber",
+            "select": "SMS_GetNumber_select.js",
+            "template": "{{service}} ({{site}}) -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "SMS_GetCode_code.js",
+                    "name": "SMS_GetCode_code"
+                }
+            ],
+            "description": {
+                "en": "Get activation code",
+                "ru": "Получить код активации"
+            },
+            "interface": "SMS_GetCode_interface.js",
+            "is_element": false,
+            "name": "SMS_GetCode",
+            "select": "SMS_GetCode_select.js",
+            "template": "{{number}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "SMS_SetStatus_code.js",
+                    "name": "SMS_SetStatus_code"
+                }
+            ],
+            "description": {
+                "en": "Change activation status",
+                "ru": "Изменение статуса активации"
+            },
+            "interface": "SMS_SetStatus_interface.js",
+            "is_element": false,
+            "name": "SMS_SetStatus",
+            "select": "SMS_SetStatus_select.js",
+            "template": "{{status}} -> {{number}}"
+        },
+		{
+            "code": [
+                {
                     "file": "SMS_GetBalance_code.js",
                     "name": "SMS_GetBalance_code"
                 }
@@ -67,57 +118,6 @@
             "name": "SMS_GetCountries",
             "select": "SMS_GetCountries_select.js",
             "template": "{{service}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "SMS_GetNumber_code.js",
-                    "name": "SMS_GetNumber_code"
-                }
-            ],
-            "description": {
-                "en": "Get phone number",
-                "ru": "Получить номер телефона"
-            },
-            "interface": "SMS_GetNumber_interface.js",
-            "is_element": false,
-            "name": "SMS_GetNumber",
-            "select": "SMS_GetNumber_select.js",
-            "template": "{{service}} ({{site}}) -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "SMS_GetCode_code.js",
-                    "name": "SMS_GetCode_code"
-                }
-            ],
-            "description": {
-                "en": "Get activation code",
-                "ru": "Получить код активации"
-            },
-            "interface": "SMS_GetCode_interface.js",
-            "is_element": false,
-            "name": "SMS_GetCode",
-            "select": "SMS_GetCode_select.js",
-            "template": "{{number}} -> {{Save}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "SMS_SetStatus_code.js",
-                    "name": "SMS_SetStatus_code"
-                }
-            ],
-            "description": {
-                "en": "Change activation status",
-                "ru": "Изменение статуса активации"
-            },
-            "interface": "SMS_SetStatus_interface.js",
-            "is_element": false,
-            "name": "SMS_SetStatus",
-            "select": "SMS_SetStatus_select.js",
-            "template": "{{status}} -> {{number}}"
         },
 		{
             "code": [

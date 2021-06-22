@@ -5604,11 +5604,10 @@
     }
 
 
-    function BrowserAutomationStudio_UpdateVariablesResult(data)
-    {
-      _Inspector.preserveScrollState()
+    function BrowserAutomationStudio_UpdateVariablesResult(data) {
+      _Inspector.preserveScrollState();
       _Inspector.model.update(JSON.parse(data));
-      _Inspector.restoreScrollState()
+      _Inspector.restoreScrollState();
     }
 
     var IsChangedUsed = false

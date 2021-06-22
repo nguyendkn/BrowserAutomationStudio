@@ -129,10 +129,14 @@
 
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
         // handle content-editable `focus` event.
+        const $el = $(this), text = $el.text();
+        $el.data('value', text);
       });
 
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
         // handle content-editable `blur` event.
+        const $el = $(this), text = $el.text();
+        $el.data('value', text);
       });
 
       this.model = model;

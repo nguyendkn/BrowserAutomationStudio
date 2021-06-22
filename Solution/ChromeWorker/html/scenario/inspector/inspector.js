@@ -63,10 +63,10 @@
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
       <div id="inspectorDataContainer" style="<%= model.showInspectorNotice ? 'display: none' : '' %>">
-        <ul class="nav nav-tabs" style="display: none">
-          <li class="" id=""><%= tr('Variables') %></li>
-          <li class="" id=""><%= tr('Resources') %></li>
-          <li class="" id=""><%= tr('Call stack') %></li>
+        <ul class="inspector-navigation" style="display: none">
+          <li id="inspectorOpenVariables"><%= tr('Variables') %></li>
+          <li id="inspectorOpenResources"><%= tr('Resources') %></li>
+          <li id="inspectorOpenCallStack"><%= tr('Call stack') %></li>
         </ul>
         <div class="inspector-data-tab">
           <div class="inspector-label-container">
@@ -239,8 +239,20 @@
     },
 
     events: {
-      'click #inspectorClose': function (event) {
-        event.preventDefault();
+      'click #inspectorOpenCallStack': function (e) {
+
+      },
+
+      'click #inspectorOpenResources': function (e) {
+
+      },
+
+      'click #inspectorOpenVariables': function (e) {
+
+      },
+
+      'click #inspectorClose': function (e) {
+        e.preventDefault();
         this.model.set('showInspectorContent', false);
         this.$el.hide();
       }

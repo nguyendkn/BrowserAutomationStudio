@@ -126,7 +126,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		
 		_if(resp.status=="BAD_STATUS" && status=="8", function(){
 			_call_function(api.setStatus,{number:number, status:"6"})!
-		})!;
+		})!
 	};
 	
 	this.getCode = function(){

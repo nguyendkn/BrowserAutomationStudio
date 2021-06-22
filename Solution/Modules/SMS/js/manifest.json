@@ -142,8 +142,8 @@
     "depends": [],
     "description": "Working with SMS receiving services",
     "description_small": {
-        "en": "Receive SMS",
-        "ru": "Прием SMS"
+        "en": "Phone verification",
+        "ru": "Подтверждение телефона"
     },
     "developer_email": "sasha9817@mail.ru",
     "developer_name": "GhostZ",
@@ -303,8 +303,8 @@
 		
 		"Enable debug": {"ru":"Включить отладку"},
 		"Disable debug": {"ru":"Отключить отладку"},
-		"Enable SMS module debug.": {"ru":"Включить отладку SMS модуля."},
-		"Enable or disable SMS module debug.": {"ru":"Включить или отключить отладку SMS модуля."},
+		"Enable phone verification module debug.": {"ru":"Включить отладку модуля подтверждения телефона."},
+		"Enable or disable phone verification module debug.": {"ru":"Включить или отключить отладку модуля подтверждения телефона."},
 		"If debug is enabled, all queries and their results will be displayed in the log.": {"ru":"Если отладка включена, все запросы и их результаты будут выводится в лог."},
 		
 		"Russian Federation":{"ru":"Россия"},
@@ -508,5 +508,5 @@
     "major_version": 1,
     "minor_version": 0,
     "modules": [],
-    "name": "SMS"
+    "name": "PhoneVerification"
 }

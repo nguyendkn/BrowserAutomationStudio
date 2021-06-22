@@ -123,21 +123,53 @@
           $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
         });
 
-      $(document).on('input', '[data-path][contenteditable]', function (e) {
-        // handle content-editable `input` event.
-      });
-
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
         // handle content-editable `focus` event.
         const $el = $(this), text = $el.text();
-        $el.data('value', text);
+
+        $(/*html*/`<i class="fa fa-ellipsis-v" aria-hidden="true"></i>`).appendTo($el.parent());
+
+        context.attach('.fa-ellipsis-v', [
+          {
+            text: tr('Date object'), action: (e) => {
+              e.preventDefault();
+              updateVariable(text, $el.text(), 'DateObject');
+            }
+          },
+          {
+            text: tr('Boolean'), action: (e) => {
+              e.preventDefault();
+              updateVariable(text, $el.text(), 'Boolean');
+            }
+          },
+          {
+            text: tr('String'), action: (e) => {
+              e.preventDefault();
+              updateVariable(text, $el.text(), 'String');
+            }
+          },
+          {
+            text: tr('Number'), action: (e) => {
+              e.preventDefault();
+              updateVariable(text, $el.text(), 'Number');
+            }
+          },
+        ]);
       });
 
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
         // handle content-editable `blur` event.
         const $el = $(this), text = $el.text();
-        $el.data('value', text);
+        $el.find('.fa-ellipsis-v').remove();
       });
+
+      function updateVariable(oldValue, newValue, type) {
+        console.log('update variable:', {
+          oldValue,
+          newValue,
+          type
+        });
+      }
 
       this.model = model;
     },

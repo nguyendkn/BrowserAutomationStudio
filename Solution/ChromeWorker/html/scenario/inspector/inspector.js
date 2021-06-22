@@ -126,42 +126,39 @@
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
         // handle content-editable `focus` event.
         const $el = $(this), text = $el.text();
-
-        $(/*html*/`<i class="fa fa-ellipsis-v" aria-hidden="true"></i>`).appendTo($el.parent());
-
-        context.attach('.fa-ellipsis-v', [
-          {
-            text: tr('Date object'), action: (e) => {
-              e.preventDefault();
-              updateVariable(text, $el.text(), 'DateObject');
-            }
-          },
-          {
-            text: tr('Boolean'), action: (e) => {
-              e.preventDefault();
-              updateVariable(text, $el.text(), 'Boolean');
-            }
-          },
-          {
-            text: tr('String'), action: (e) => {
-              e.preventDefault();
-              updateVariable(text, $el.text(), 'String');
-            }
-          },
-          {
-            text: tr('Number'), action: (e) => {
-              e.preventDefault();
-              updateVariable(text, $el.text(), 'Number');
-            }
-          },
-        ]);
       });
 
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
         // handle content-editable `blur` event.
         const $el = $(this), text = $el.text();
-        $el.find('.fa-ellipsis-v').remove();
       });
+
+      // context.attach('[data-path][contenteditable]', [
+      //   {
+      //     text: tr('Date object'), action: (e) => {
+      //       e.preventDefault();
+      //       updateVariable(text, $el.text(), 'DateObject');
+      //     }
+      //   },
+      //   {
+      //     text: tr('Boolean'), action: (e) => {
+      //       e.preventDefault();
+      //       updateVariable(text, $el.text(), 'Boolean');
+      //     }
+      //   },
+      //   {
+      //     text: tr('String'), action: (e) => {
+      //       e.preventDefault();
+      //       updateVariable(text, $el.text(), 'String');
+      //     }
+      //   },
+      //   {
+      //     text: tr('Number'), action: (e) => {
+      //       e.preventDefault();
+      //       updateVariable(text, $el.text(), 'Number');
+      //     }
+      //   },
+      // ]);
 
       function updateVariable(oldValue, newValue, type) {
         console.log('update variable:', {

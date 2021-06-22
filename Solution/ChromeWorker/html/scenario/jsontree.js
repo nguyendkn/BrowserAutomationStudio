@@ -9,6 +9,11 @@ var JSONTree = (function() {
     '\'': '&#x27;',
     '/': '&#x2F;'
   };
+  
+  var defaultAttributes = {
+    contenteditable: true,
+    spellcheck: false,
+  };
 
   var defaultSettings = {
     indent: 2
@@ -22,7 +27,7 @@ var JSONTree = (function() {
     instances += 1;
     path = [];
     id = 0;
-    return _span(_jsVal('', data, 0, false), {class: 'jstValue'})
+    return _element(_jsVal('', data, 0, false), {class: 'jstValue'})
     + "<script>$('*[dataopen]').each(function(t,el){var id = $(el).attr('id');if(id.split('_')[2]!='0')JSONTree.toggle($(el).attr('id'));$(el).removeAttr('dataopen')})</script>"
   };
 
@@ -100,13 +105,13 @@ var JSONTree = (function() {
     var attrs = {id: id}
     if(depth > 1)
       attrs.dataopen = "true"
-    body.push(_span(content, attrs))
+    body.push(_element(content, attrs))
 
     if(depth > 0)
       body.push(_closeBracket('}', depth));
     
     body = body.join('\n')
-    var obj = _span(body, {'data-path': _path(), 'data-type': 'object'});
+    var obj = _element(body, {'data-path': _path(), 'data-type': 'object'});
     path.pop();
     return obj;
   };
@@ -125,13 +130,13 @@ var JSONTree = (function() {
     var attrs = {id: id}
     if(depth > 1)
       attrs.dataopen = "true"
-    body.push(_span(content, attrs))
+    body.push(_element(content, attrs))
 
     if(depth > 0)
       body.push(_closeBracket(']', depth))
 
     body = body.join('\n')
-    var arr = _span(body, {'data-path': _path(), 'data-type': 'array'})
+    var arr = _element(body, {'data-path': _path(), 'data-type': 'array'})
     path.pop();
     return arr;
   };
@@ -144,29 +149,29 @@ var JSONTree = (function() {
     {
       clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$(\"#" + id + "\").text(b64_to_utf8(" + _quote(utf8_to_b64(_quote(value))) + "));$(this).hide()'></i>"
     }
-    return _span(_indent(_quote(_escape(cut["data"])), depth), {class: 'jstStr',id: id, 'data-path': _path(name)}) + clip;
+    return _element(_indent(_quote(_escape(cut["data"])), depth), { class: 'jstStr', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
   };
 
   var _jsNum = function(name, value, depth) {
-    return _span(_indent(value, depth), { class: 'jstNum', 'data-path': _path(name) });
+    return _element(_indent(value, depth), { class: 'jstNum', 'data-path': _path(name), ...defaultAttributes });
   };
 
   var _jsDate = function(name, value, depth) {
-    return _span(_indent(value, depth), { class: 'jstDate', 'data-path': _path(name) });
+    return _element(_indent(value, depth), { class: 'jstDate', 'data-path': _path(name), ...defaultAttributes });
   };
 
   var _jsBool = function(name, value, depth) {
-    return _span(_indent(value, depth), { class: 'jstBool', 'data-path': _path(name) });
+    return _element(_indent(value, depth), { class: 'jstBool', 'data-path': _path(name), ...defaultAttributes });
   };
 
   var _jsNull = function(name, depth) {
-    return _span(_indent('null', depth), { class: 'jstNull', 'data-path': _path(name) });
+    return _element(_indent('null', depth), { class: 'jstNull', 'data-path': _path(name), ...defaultAttributes });
   };
 
   var _property = function(name, value, depth) {
     var property = _indent(_escape(name) + ': ', depth);
-    var propertyValue = _span(_jsVal(name, value, depth, false), {});
-    return _span(property + propertyValue, {class: 'jstProperty'});
+    var propertyValue = _element(_jsVal(name, value, depth, false), {});
+    return _element(property + propertyValue, {class: 'jstProperty'});
   }
 
   var _quote = function(value) {
@@ -178,25 +183,20 @@ var JSONTree = (function() {
   }
 
   var _comma = function() {
-    return _span('\n', {class: 'jstComma'});
+    return _element('\n', {class: 'jstComma'});
   }
 
-  var _span = function(value, attrs) {
-    return _tag('span', attrs, value);
-  }
-
-  var _tag = function(tag, attrs, content) {
-    return '<' + tag + Object.keys(attrs).map(function(attr) {
-          return ' ' + attr + '="' + attrs[attr] + '"';
-        }).join('') + '>' +
-        content +
-        '</' + tag + '>';
+  var _element = function(content, attrs) {
+    var attributes = Object.keys(attrs).map((key) => {
+      return `${key}="${attrs[key]}"`;
+    }).join(' ');
+    return `<span ${attributes}>${content}</span>`;
   }
 
   var _openBracket = function(symbol, depth, id) {
     return (
-    _span(_indent(symbol, depth), {class: 'jstBracket'}) +
-    _span('', {class: 'jstFold', onclick: 'JSONTree.toggle(\'' + id + '\')'})
+    _element(_indent(symbol, depth), {class: 'jstBracket'}) +
+    _element('', {class: 'jstFold', onclick: 'JSONTree.toggle(\'' + id + '\')'})
     );
   }
 
@@ -217,7 +217,7 @@ var JSONTree = (function() {
   }
 
   var _closeBracket = function(symbol, depth) {
-    return _span(_indent(symbol, depth), {});
+    return _element(_indent(symbol, depth), {});
   }
 
   var _indent = function(value, depth) {

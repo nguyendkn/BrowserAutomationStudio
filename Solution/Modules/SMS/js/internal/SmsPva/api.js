@@ -128,6 +128,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		
 		if(!actions.hasOwnProperty(status)){
 			_function_return();
+			return;
 		};
 		
 		var confirmData = _SMS.confirmData[number];

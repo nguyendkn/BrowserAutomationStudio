@@ -77,10 +77,10 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 		var resp = _result_function();
 		
 		_function_return(Array.isArray(resp) ? resp : Object.keys(resp).map(function(key){
+			resp[key].id = String(resp[key].id);
 			resp[key].name = resp[key].rus;
 			resp[key].name_en = resp[key].eng;
 			resp[key].name_ch = resp[key].chn;
-			resp[key].id = String(resp[key].id);
 			delete resp[key].rus;
 			delete resp[key].eng;
 			delete resp[key].chn;
@@ -124,9 +124,9 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 			api.errorHandler(resp.status, resp.data);
 		};
 		
-		if(resp.status=="BAD_STATUS" && status=="8"){
+		_if(resp.status=="BAD_STATUS" && status=="8", function(){
 			_call_function(api.setStatus,{number:number, status:"6"})!
-		};
+		})!;
 	};
 	
 	this.getCode = function(){

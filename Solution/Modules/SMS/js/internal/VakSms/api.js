@@ -80,6 +80,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		
 		if(!actions.hasOwnProperty(status)){
 			_function_return();
+			return;
 		};
 		
 		var taskId = _SMS.confirmData[number].id;

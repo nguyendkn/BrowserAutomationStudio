@@ -232,7 +232,7 @@ _SMS.BaseApi = function(config, data, path){
 		
 		var errorObj = baseErrors.hasOwnProperty(error) ? baseErrors[error] : api.getError(error, data);
 		
-		if(!_is_nilb(errorObj) && !_is_nilb(errorObj.base)){
+		if(!_is_nilb(errorObj) && errorObj.hasOwnProperty('base')){
 			api.errorHandler(errorObj.base);
 		};
 		

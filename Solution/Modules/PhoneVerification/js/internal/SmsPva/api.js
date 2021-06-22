@@ -73,7 +73,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var numberWithoutPrefix = "";
 		var confirmData = {};
 		if(!_is_nilb(number)){
-			confirmData = _SMS.confirmData[number];
+			confirmData = _SMS.getConfirmData(number);
 			site = confirmData.site;
 			country = confirmData.country;
 			numberWithoutPrefix = confirmData.numberWithoutPrefix;
@@ -109,7 +109,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		
 		_call_function(api.makeRequest,{action:"get_sms", options:{service:confirmData.site, country:confirmData.country, id:confirmData.id}, checkErrors:false})!
 		
@@ -131,7 +131,7 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			return;
 		};
 		
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		var options = {service:confirmData.site, country:confirmData.country};
 		if(status=="3"){
 			options.number = confirmData.numberWithoutPrefix;

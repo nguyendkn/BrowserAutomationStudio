@@ -101,7 +101,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
-		var taskId = _SMS.confirmData[number].id;
+		var taskId = _SMS.getConfirmData(number).id;
 		
 		_call_function(api.makeRequest,{action:"getStatus", options:{id:taskId}, checkErrors:false})!
 		
@@ -111,7 +111,7 @@ _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
 	this.setStatus = function(){
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
-		var taskId = _SMS.confirmData[number].id;
+		var taskId = _SMS.getConfirmData(number).id;
 		
 		if(status=="8" && api.service=="getsms.online"){
 			status = "10";

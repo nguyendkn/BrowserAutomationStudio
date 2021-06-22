@@ -61,7 +61,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
-		var taskId = _SMS.confirmData[number].id;
+		var taskId = _SMS.getConfirmData(number).id;
 		
 		_call_function(api.makeRequest,{action:"getSmsCode", options:{idNum:taskId}})!
 		
@@ -83,7 +83,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 			return;
 		};
 		
-		var taskId = _SMS.confirmData[number].id;
+		var taskId = _SMS.getConfirmData(number).id;
 		
 		_call_function(api.makeRequest,{action:"setStatus", options:{idNum:taskId, status:actions[status]}})!
 		var resp = _result_function();

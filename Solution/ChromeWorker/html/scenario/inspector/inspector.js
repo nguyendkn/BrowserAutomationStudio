@@ -123,6 +123,18 @@
           $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
         });
 
+      $(document).on('input', '[data-path][contenteditable]', function (e) {
+        // handle content-editable `input` event.
+      });
+
+      $(document).on('focus', '[data-path][contenteditable]', function (e) {
+        // handle content-editable `focus` event.
+      });
+
+      $(document).on('blur', '[data-path][contenteditable]', function (e) {
+        // handle content-editable `blur` event.
+      });
+
       this.model = model;
     },
 

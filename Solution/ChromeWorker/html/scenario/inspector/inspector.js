@@ -226,11 +226,13 @@
       const $container = this.$('#inspectorDataContainer');
 
       const objects = _.map($container.find('[data-type="object"]'), (el) => {
-        return { path: $(el).data('path'), folded: $(el).hasClass('jstFolded') };
+        const $el = $(el), path = $el.data('path');
+        return { path, folded: $el.hasClass('jstFolded') };
       });
 
       const arrays = _.map($container.find('[data-type="array"]'), (el) => {
-        return { path: $(el).data('path'), folded: $(el).hasClass('jstFolded') };
+        const $el = $(el), path = $el.data('path');
+        return { path, folded: $el.hasClass('jstFolded') };
       });
 
       return { objects, arrays };

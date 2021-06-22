@@ -126,39 +126,36 @@
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
         // handle content-editable `focus` event.
         const $el = $(this), text = $el.text();
+        $el.data('oldValue', text);
       });
 
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
         // handle content-editable `blur` event.
         const $el = $(this), text = $el.text();
+        $el.data('newValue', text);
       });
 
-      // context.attach('[data-path][contenteditable]', [
-      //   {
-      //     text: tr('Date object'), action: (e) => {
-      //       e.preventDefault();
-      //       updateVariable(text, $el.text(), 'DateObject');
-      //     }
-      //   },
-      //   {
-      //     text: tr('Boolean'), action: (e) => {
-      //       e.preventDefault();
-      //       updateVariable(text, $el.text(), 'Boolean');
-      //     }
-      //   },
-      //   {
-      //     text: tr('String'), action: (e) => {
-      //       e.preventDefault();
-      //       updateVariable(text, $el.text(), 'String');
-      //     }
-      //   },
-      //   {
-      //     text: tr('Number'), action: (e) => {
-      //       e.preventDefault();
-      //       updateVariable(text, $el.text(), 'Number');
-      //     }
-      //   },
-      // ]);
+      $.contextMenu({
+        selector: '[data-path][contenteditable]',
+        items: {
+          dateObject: {
+            name: tr('Date object'),
+            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
+          },
+          boolean: {
+            name: tr('Boolean'),
+            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
+          },
+          string: {
+            name: tr('String'),
+            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
+          },
+          number: {
+            name: tr('Number'),
+            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
+          }
+        }
+      });
 
       function updateVariable(oldValue, newValue, type) {
         console.log('update variable:', {

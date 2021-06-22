@@ -5,7 +5,7 @@
 
 	"icon":"SmsReceive.png",
 	"description":"Receive sms",
-	"description_small":{"en": "Receive sms", "ru": "Получить смс"},
+	"description_small":{"en": "Receive sms (deprecated)", "ru": "Получить смс (устаревшее)"},
 	"major_version": 2,
 	"minor_version": 0,
 	"developer_name": "bablosoft", 
@@ -17,7 +17,7 @@
 
 		{
 			"name":"SmsReceive_GetPhoneNumber",
-			"description":{"en": "Get phone number","ru": "Получить номер телефона"},
+			"description":{"en": "Get phone number (deprecated)","ru": "Получить номер телефона (устаревшее)"},
 			"template": "{{Variable}}",
 			"is_element": false,
 			"interface": "get_phone_number_interface.js",
@@ -26,7 +26,7 @@
 		},
 		{
 			"name":"SmsReceive_NumberAlreadyInUse",
-			"description":{"en": "Number already in use","ru": "Номер уже используется"},
+			"description":{"en": "Number already in use (deprecated)","ru": "Номер уже используется (устаревшее)"},
 			"template": "{{Number}}",
 			"is_element": false,
 			"interface": "number_already_in_use_interface.js",
@@ -35,7 +35,7 @@
 		},
 		{
 			"name":"SmsReceive_GetActivationCode",
-			"description":{"en": "Get activation code","ru": "Получить код активации"},
+			"description":{"en": "Get activation code (deprecated)","ru": "Получить код активации (устаревшее)"},
 			"template": "{{Number}} -> {{Save}}",
 			"is_element": false,
 			"interface": "get_activation_code_interface.js",
@@ -44,7 +44,7 @@
 		},
 		{
 			"name":"SmsReceive_ActivationSuccess",
-			"description":{"en": "Activation success","ru": "Активация успешна"},
+			"description":{"en": "Activation success (deprecated)","ru": "Активация успешна (устаревшее)"},
 			"template": "{{Number}}",
 			"is_element": false,
 			"interface": "activation_successful_interface.js",
@@ -53,7 +53,7 @@
 		},
 		{
 			"name":"SmsReceive_ActivationFailure",
-			"description":{"en": "Activation fail","ru": "Активация неудачная"},
+			"description":{"en": "Activation fail (deprecated)","ru": "Активация неудачная (устаревшее)"},
 			"template": "{{Number}}",
 			"is_element": false,
 			"interface": "activation_fail_interface.js",
@@ -62,7 +62,7 @@
 		},
 		{
 			"name":"SmsReceive_FinishUsingNumber",
-			"description":{"en": "Finish using number","ru": "Завершить работу с номером"},
+			"description":{"en": "Finish using number (deprecated)","ru": "Завершить работу с номером (устаревшее)"},
 			"template": "{{Number}}",
 			"is_element": false,
 			"interface": "finish_using_number_interface.js",
@@ -71,7 +71,7 @@
 		},
 		{
 			"name":"SmsReceive_Debug",
-			"description":{"en": "Enable debug","ru": "Включить отладку"},
+			"description":{"en": "Enable debug (deprecated)","ru": "Включить отладку (устаревшее)"},
 			"template": "{{Number}}",
 			"is_element": false,
 			"interface": "sms_enable_debug_interface.js",

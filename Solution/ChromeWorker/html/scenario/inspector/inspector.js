@@ -148,14 +148,28 @@
       function updateVariable(type, { $trigger }) {
         const oldValue = $trigger.data('oldValue');
         const newValue = $trigger.text();
-        const path = $trigger.data('path');
+        if (oldValue === newValue) return;
 
-        console.log('update variable:', {
-          oldValue,
-          newValue,
-          type
-        });
-        // BrowserAutomationStudio_Execute('VAR_OBJECT = 3;' + "\n" + "section_start(\"test\",-2)!", false)
+        const variables = jsonpatch.applyOperation(model.get('variables'), {
+          op: 'replace',
+          path: $trigger.data('path'),
+          value: processVariable(type, newValue)
+        }).newDocument;
+
+        BrowserAutomationStudio_Execute(`_write_variables(${JSON.stringify(variables)})\nsection_start('test', -2)!`, false);
+      }
+
+      function processVariable(type, value) {
+        if (type === 'boolean') {
+          if (value === 'false') return false;
+          if (value === 'true') return true;
+        } else if (type === 'number') {
+          const number = parseFloat(value);
+          return isNaN(number) ? value : number;
+        } else if (type === 'dateObject') {
+          return new Date(value);
+        }
+        return value;
       }
 
       this.model = model;

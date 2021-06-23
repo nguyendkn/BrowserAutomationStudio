@@ -149,9 +149,9 @@
         const oldValue = $trigger.data('oldValue');
         const newValue = $trigger.text();
         const path = $trigger.data('path');
-        if (oldValue === newValue) return;
 
-        Scenario.utils.updateVariable(path, type, newValue);
+        if (oldValue === newValue) return;
+        Scenario.utils.updateVariable(path, newValue, type);
       }
 
       this.model = model;

@@ -1,10 +1,10 @@
 (function (global, $) {
   global.Scenario.utils = {
-    updateVariable: function (path, type, value) {
-      const obj = path.slice(1).split('/').reduce((acc, val, idx) => {
+    updateVariable: function (pointer, value, type) {
+      const path = pointer.slice(1).split('/').reduce((acc, val, idx) => {
         if (idx === 0) return acc + val;
         return acc + (/^\d+$/.test(val) ? `[${val}]` : `["${val}"]`);
-      }, 'VAR_');
+      }, '');
 
       if (type === 'number') {
         const number = parseFloat(value);
@@ -18,8 +18,8 @@
       } else {
         value = `"${value}"`;
       }
-      console.log(`${obj} = ${value};`);
-      BrowserAutomationStudio_Execute(`${obj} = ${value};\nsection_start('test', -2)!`, false);
+
+      BrowserAutomationStudio_Execute(`VAR_${path} = ${value};\nsection_start('test', -2)!`, false);
     }
   };
 })(window, jQuery);

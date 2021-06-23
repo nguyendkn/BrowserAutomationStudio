@@ -4058,7 +4058,7 @@
         var H =  _Inspector.model.get("height");
         H = Math.min(H, TotalHeight - FunctionManagerHeight - 300);
         H = Math.max(H, 100);
-        $("#variableInspector").css("height" ,H + "px");
+        $("#variableInspector").css("height", H + "px");
 
         //_Tour.Start();
         this.trigger('render');
@@ -5580,7 +5580,7 @@
         if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
         {
           BrowserAutomationStudio_AskForVariablesUpdate()
-        }else if(_Inspector.model.get("showInspectorContent"))
+        }else if(_Inspector.model.get("showContent"))
         {
           _Inspector.showPendingNotice();
         }
@@ -5589,7 +5589,7 @@
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
 
-      if(!_Inspector.model.get("showInspectorContent"))
+      if(!_Inspector.model.get("showContent"))
         return
 
       if(VariablesUpdateTakesPlace)
@@ -5890,7 +5890,7 @@
 
       if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
       {
-        if(_Inspector.model.get("showInspectorContent"))
+        if(_Inspector.model.get("showContent"))
         {
           _Inspector.hidePendingNotice();
         }

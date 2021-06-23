@@ -1,11 +1,11 @@
 (function (global) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
-      showInspectorContent: false,
-      showInspectorNotice: false,
       callStackPanelScroll: 0,
       variablesPanelScroll: 0,
       resourcesPanelScroll: 0,
+      showContent: false,
+      showNotice: false,
       resources: {},
       variables: {},
       height: 300,
@@ -59,14 +59,14 @@
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%; background-color: #fafafa; padding: 5px;"></i>
         </a>
       </div>
-      <div id="inspectorDataNotice" style="<%= model.showInspectorNotice ? '' : 'display: none' %>">
+      <div id="inspectorNotice" style="<%= model.showNotice ? '' : 'display: none' %>">
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
-      <div id="inspectorDataContainer" style="<%= model.showInspectorNotice ? 'display: none' : '' %>">
+      <div id="inspectorContent" style="<%= model.showNotice ? 'display: none' : '' %>">
         <ul class="inspector-navigation" style="display: none">
-          <li id="inspectorOpenVariables"><%= tr('Variables') %></li>
-          <li id="inspectorOpenResources"><%= tr('Resources') %></li>
-          <li id="inspectorOpenCallStack"><%= tr('Call stack') %></li>
+          <li id="inspectorShowVariables"><%= tr('Variables') %></li>
+          <li id="inspectorShowResources"><%= tr('Resources') %></li>
+          <li id="inspectorShowCallStack"><%= tr('Call stack') %></li>
         </ul>
         <div class="inspector-data-tab">
           <div class="inspector-label-container">
@@ -132,12 +132,12 @@
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
         // handle content-editable `blur` event.
         const $el = $(this);
-        const oldValue = $el.data('oldValue');
-        const newValue = $el.text();
-        const path = $el.data('path');
+        // const oldValue = $el.data('oldValue');
+        // const newValue = $el.text();
+        // const path = $el.data('path');
 
-        if (oldValue === newValue) return;
-        Scenario.utils.updateVariable(path, newValue, type);
+        // if (oldValue === newValue) return;
+        // Scenario.utils.updateVariable(path, newValue, type);
       });
 
       $.contextMenu({
@@ -167,7 +167,7 @@
       this.$el.html(this.template({ model: this.model.toJSON() }));
 
       this.model.update();
-      if (this.model.get('showInspectorContent')) {
+      if (this.model.get('showContent')) {
         this.$el.show();
       } else {
         this.$el.hide();
@@ -194,10 +194,10 @@
     },
 
     toggle() {
-      const showInspectorContent = !this.model.get('showInspectorContent');
-      this.model.set("showInspectorContent", showInspectorContent);
+      const showContent = !this.model.get('showContent');
+      this.model.set("showContent", showContent);
 
-      if (showInspectorContent) {
+      if (showContent) {
         this.$el.show();
         BrowserAutomationStudio_AskForVariablesUpdateOrWait();
       } else {
@@ -206,7 +206,7 @@
     },
 
     preserveScrollState() {
-      if (!this.$('#inspectorDataNotice').is(':visible')) {
+      if (!this.$('#inspectorNotice').is(':visible')) {
         this.model.set('variablesPanelScroll', this.$el.scrollTop());
         // this.model.set('resourcesPanelScroll', this.$el.scrollTop());
         // this.model.set('callStackPanelScroll', this.$el.scrollTop());
@@ -214,7 +214,7 @@
     },
 
     restoreScrollState() {
-      if (!this.$('#inspectorDataNotice').is(':visible')) {
+      if (!this.$('#inspectorNotice').is(':visible')) {
         this.$el.scrollTop(this.model.get('variablesPanelScroll'));
         // this.$el.scrollTop(this.model.get('resourcesPanelScroll'));
         // this.$el.scrollTop(this.model.get('callStackPanelScroll'));
@@ -222,21 +222,21 @@
     },
 
     hidePendingNotice() {
-      this.model.set('showInspectorNotice', false);
-      this.$('#inspectorDataNotice').hide();
-      this.$('#inspectorDataContainer').show();
+      this.model.set('showNotice', false);
+      this.$('#inspectorNotice').hide();
+      this.$('#inspectorContent').show();
       this.restoreScrollState();
     },
 
     showPendingNotice() {
-      this.model.set('showInspectorNotice', true);
+      this.model.set('showNotice', true);
       this.preserveScrollState();
-      this.$('#inspectorDataNotice').show();
-      this.$('#inspectorDataContainer').hide();
+      this.$('#inspectorNotice').show();
+      this.$('#inspectorContent').hide();
     },
 
     loadState(state) {
-      const $container = this.$('#inspectorDataContainer');
+      const $container = this.$('#inspectorContent');
 
       if (Array.isArray(state.objects)) {
         state.objects.forEach(({ path, folded }) => {
@@ -256,7 +256,7 @@
     },
 
     saveState() {
-      const $container = this.$('#inspectorDataContainer');
+      const $container = this.$('#inspectorContent');
 
       const objects = _.map($container.find('[data-type="object"]'), (el) => {
         const $el = $(el), path = $el.data('path');
@@ -272,21 +272,21 @@
     },
 
     events: {
-      'click #inspectorOpenCallStack': function (e) {
-
+      'click #inspectorShowCallStack': function (e) {
+        e.preventDefault();
       },
 
-      'click #inspectorOpenResources': function (e) {
-
+      'click #inspectorShowResources': function (e) {
+        e.preventDefault();
       },
 
-      'click #inspectorOpenVariables': function (e) {
-
+      'click #inspectorShowVariables': function (e) {
+        e.preventDefault();
       },
 
       'click #inspectorClose': function (e) {
         e.preventDefault();
-        this.model.set('showInspectorContent', false);
+        this.model.set('showContent', false);
         this.$el.hide();
       }
     }

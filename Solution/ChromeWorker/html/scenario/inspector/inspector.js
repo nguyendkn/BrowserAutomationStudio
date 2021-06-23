@@ -125,14 +125,19 @@
 
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
         // handle content-editable `focus` event.
-        const $el = $(this), text = $el.text();
-        $el.data('oldValue', text);
+        const $el = $(this);
+        $el.data('oldValue', $el.text());
       });
 
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
         // handle content-editable `blur` event.
-        const $el = $(this), text = $el.text();
-        $el.data('newValue', text);
+        const $el = $(this);
+        const oldValue = $el.data('oldValue');
+        const newValue = $el.text();
+        const path = $el.data('path');
+
+        if (oldValue === newValue) return;
+        Scenario.utils.updateVariable(path, newValue, type);
       });
 
       $.contextMenu({

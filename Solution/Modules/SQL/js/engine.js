@@ -111,7 +111,7 @@ function SQL_UpdateRecords(){
 	_call_function(SQL_ConvertValuesToObject,{"values":values,"convert":convert})!
 	values = _result_function();
 	
-	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, values, where, fields, limit];
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, values, convert, where, fields, limit];
 	
 	_embedded("SQL_UpdateRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
@@ -204,7 +204,6 @@ function SQL_PreParameterization(){
 };
 function SQL_ConvertValuesToObject(){
 	var values = _function_argument("values");
-	var convert = _avoid_nilb(_function_argument("convert"), true);
 	
 	_if(values.indexOf("=") < 0,function(){
 		_call_function(SQL_Template,{"e":values})!
@@ -237,23 +236,29 @@ function SQL_ConvertValuesToObject(){
 		_call_function(SQL_Template,{"e":value})!
 		var value = _result_function();
 		
-		values_object[key] = convert ? SQL_ConvertValue(value) : value;
+		values_object[key] = SQL_ConvertDates(value);
 	})!
 	
 	_function_return(values_object);
 };
-function SQL_DataPreparation(data, convert){
+function SQL_DataPreparation(data){
 	if(typeof data=="string" && _is_json_string(data)){
 		data = JSON.parse(data);
 	};
-	if((typeof data=="object" && !Array.isArray(data)) || (typeof data=="object" && Array.isArray(data) && typeof data[0]!="object" && csv_parse(data[0]).length==1)){
+	if(typeof data=="object" && (!Array.isArray(data) || (Array.isArray(data) && typeof data[0]!="object" && csv_parse(data[0]).length==1))){
 		data = [data];
 	};
-	if(typeof data=="object" && (typeof data[0]=="object" && Array.isArray(data[0]))){
-		data = data.map(function(row){return row.map(function(cell){return SQL_ConvertDates(cell)})});
-	};
-	if(typeof data=="object" && (typeof data[0]=="object" && !Array.isArray(data[0]))){
-		data = data.map(function(row){return Object.keys(row).map(function(key){return SQL_ConvertDates(row[key])})});
+	if(Array.isArray(data) && typeof data[0]=="object"){
+		if(Array.isArray(data[0])){
+			data = data.map(function(row){return row.map(function(cell){return SQL_ConvertDates(cell)})});
+		}else{
+			data = data.map(function(row){
+				for(var key in row){
+					row[key] = SQL_ConvertDates(row[key]);
+				};
+				return row;
+			});
+		};
 	};
 	return data;
 };

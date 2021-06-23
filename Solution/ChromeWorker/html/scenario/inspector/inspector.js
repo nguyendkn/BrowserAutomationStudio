@@ -148,28 +148,31 @@
       function updateVariable(type, { $trigger }) {
         const oldValue = $trigger.data('oldValue');
         const newValue = $trigger.text();
+        const path = $trigger.data('path');
         if (oldValue === newValue) return;
-
-        const variables = jsonpatch.applyOperation(model.get('variables'), {
-          op: 'replace',
-          path: $trigger.data('path'),
-          value: processVariable(type, newValue)
-        }).newDocument;
-
-        BrowserAutomationStudio_Execute(`_write_variables(${JSON.stringify(variables)})\nsection_start('test', -2)!`, false);
+        _updateVariable(path, type, newValue);
       }
 
-      function processVariable(type, value) {
-        if (type === 'boolean') {
-          if (value === 'false') return false;
-          if (value === 'true') return true;
-        } else if (type === 'number') {
+      function _updateVariable(path, type, value) {
+        const obj = path.slice(1).split('/').reduce((acc, val, idx) => {
+          if (idx === 0) return acc + val;
+          return acc + (/^\d+$/.test(val) ? `[${val}]` : `["${val}"]`); 
+        }, 'VAR_');
+
+        if (type === 'number') {
           const number = parseFloat(value);
-          return isNaN(number) ? value : number;
+          value = isNaN(number) ? `"${value}"` : number;
         } else if (type === 'dateObject') {
-          return new Date(value);
+          value = `new Date("${value}")`;
+        } else if (type === 'boolean') {
+          if (!['false', 'true'].includes(value)) {
+            value = `"${value}"`;
+          }
+        } else {
+          value = `"${value}"`;
         }
-        return value;
+        console.log(`${obj} = ${value};`);
+        BrowserAutomationStudio_Execute(`${obj} = ${value};\nsection_start('test', -2)!`, false);
       }
 
       this.model = model;

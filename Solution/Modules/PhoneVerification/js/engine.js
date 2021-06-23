@@ -29,6 +29,14 @@ _SMS = {
 		return this.apiData[id];
 	},
 	
+	getConfirmData: function(number){
+		if(_is_nilb(_SMS.confirmData) || !_SMS.confirmData.hasOwnProperty(number)){
+			fail((_K=="ru" ? 'Нет информации о номере' : 'No information about the number') + ' "' + number + '"');
+		};
+		
+		return _SMS.confirmData[number];
+	},
+	
 	getBalance: function(){
 		var service = _function_argument("service");
 		var apiKey = _function_argument("apiKey");
@@ -124,7 +132,7 @@ _SMS = {
 	getState: function(){
 		var number = _SMS.paramClean(_function_argument("number"));
 		
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		var api = confirmData.api;
 		
 		_call_function(api.getState,{number:number})!
@@ -134,11 +142,10 @@ _SMS = {
 	getCode: function(){
 		var number = _SMS.paramClean(_function_argument("number"));
 		
-		if(_is_nilb(_SMS.confirmData) || _is_nilb(_SMS.confirmData[number])){
-			fail((_K=="ru" ? 'Нет информации об номере' : 'No information about the number') + ' "' + number + '"');
-		};
+		var confirmData = _SMS.getConfirmData(number);
+		var api = confirmData.api;
 		
-		_call_function(_SMS.confirmData[number].api.getCode,{number:number})!
+		_call_function(api.getCode,{number:number})!
 		
 		_function_return(_result_function());
 	},
@@ -148,11 +155,7 @@ _SMS = {
 		var maxTime = Date.now() + 60000 * _avoid_nilb(_function_argument("timeout"), 10);
 		var interval = 1000 * _avoid_nilb(_function_argument("interval"), 5);
 		
-		if(_is_nilb(_SMS.confirmData) || _is_nilb(_SMS.confirmData[number])){
-			fail((_K=="ru" ? 'Нет информации об номере' : 'No information about the number') + ' "' + number + '"');
-		};
-		
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		var api = confirmData.api;
 		var code = null;
 		
@@ -183,7 +186,7 @@ _SMS = {
 		var status = _SMS.paramClean(_function_argument("status"));
 		var deleteInfo = _avoid_nilb(_function_argument("deleteInfo"), true);
 		
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		var api = confirmData.api;
 		
 		_call_function(api.setStatus,{number:number, status:status})!

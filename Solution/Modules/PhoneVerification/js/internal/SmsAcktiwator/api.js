@@ -83,7 +83,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
-		var taskId = _SMS.confirmData[number].id;
+		var taskId = _SMS.getConfirmData(number).id;
 		
 		_call_function(api.makeRequest,{action:"getstatus", options:{id:taskId}})!
 		
@@ -95,7 +95,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		var status = _function_argument("status").toString();
 		
 		_if(status=="-1" || status=="8" || status=="3", function(){
-			var taskId = _SMS.confirmData[number].id;
+			var taskId = _SMS.getConfirmData(number).id;
 			var options = {id:taskId};
 			if(status !== "3"){
 				options.status = "1";

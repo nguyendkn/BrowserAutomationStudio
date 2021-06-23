@@ -143,7 +143,7 @@
       $.contextMenu({
         selector: '[data-path][contenteditable]',
         items: {
-          dateObject: { name: tr('Date object'), callback: updateVariable },
+          date: { name: tr('Date object'), callback: updateVariable },
           boolean: { name: tr('Boolean'), callback: updateVariable },
           string: { name: tr('String'), callback: updateVariable },
           number: { name: tr('Number'), callback: updateVariable },

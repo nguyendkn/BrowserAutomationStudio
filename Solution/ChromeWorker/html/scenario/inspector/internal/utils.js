@@ -12,7 +12,7 @@
           value = `"${value}"`;
         }
       } else if (type === 'date') {
-        value = `new Date("${value}")`;
+        value = `_parse_date('${value}', 'auto')`;
       } else {
         value = `"${value}"`;
       }

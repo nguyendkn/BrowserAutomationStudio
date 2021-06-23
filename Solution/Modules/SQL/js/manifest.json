@@ -417,10 +417,13 @@
 		"Values": {"ru":"Значения"},
 		"List of fields": {"ru":"Список полей"},
 		"Convert data": {"ru":"Преобразовывать данные"},
+		"will be converted to": {"ru":"будет преобразовано в"},
+		"Don't convert strings to another type": {"ru":"Не преобразовывать строки в другой тип"},
 		"Update single record from SQL database.": {"ru":"Обновить одну запись из SQL базы данных."},
 		"Field names and values separated by \"=\", each field on a new line.": {"ru":"Названия полей и их значения разделенные символом \"=\", каждое поле с новой строки."},
 		"This action replaces the field values of an existing record with the specified ones.": {"ru":"Данное действие заменяет значения полей, уже существующей записи, на указанные."},
 		"List of field names that can be updated. Can be used as a constraint to avoid accidentally updating unnecessary fields.": {"ru":"Список имен полей, которые можно обновить. Может использоваться как ограничение, чтобы избежать случайного обновления ненужных полей."},
+		"If enabled, then numbers and booleans can be specified as a string and they will be automatically converted to the correct type.": {"ru":"Если активирован, то числа и булевый тип можно будет указывать в виде строки и они будут автоматически конвертированы в нужный тип."},
 		"To disable automatic data conversion, you need to deactivate the \"Convert data\" parameter located in the additional settings.": {"ru":"Чтобы отключить автоматическое преобразование данных, нужно деактивировать параметр \"Преобразовывать данные\", находящийся в дополнительных настройках."},
 		"For example, the string <code>\"123\"</code> will be automatically converted to the number <code>123</code>, and the string <code>\"true\"</code> will be converted to the boolean type <code>true</code>.": {"ru":"Например, строка <code>\"123\"</code> будет автоматически преобразована в число <code>123</code>, а строка <code>\"true\"</code> будет преобразована в булевый тип <code>true</code>."},
 		

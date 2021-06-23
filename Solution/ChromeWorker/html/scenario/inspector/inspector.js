@@ -138,31 +138,24 @@
       $.contextMenu({
         selector: '[data-path][contenteditable]',
         items: {
-          dateObject: {
-            name: tr('Date object'),
-            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
-          },
-          boolean: {
-            name: tr('Boolean'),
-            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
-          },
-          string: {
-            name: tr('String'),
-            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
-          },
-          number: {
-            name: tr('Number'),
-            callback: (key, item) => updateVariable(item.$trigger.data('oldValue'), item.$trigger.text(), key)
-          }
+          dateObject: { name: tr('Date object'), callback: updateVariable },
+          boolean: { name: tr('Boolean'), callback: updateVariable },
+          string: { name: tr('String'), callback: updateVariable },
+          number: { name: tr('Number'), callback: updateVariable },
         }
       });
 
-      function updateVariable(oldValue, newValue, type) {
+      function updateVariable(type, { $trigger }) {
+        const oldValue = $trigger.data('oldValue');
+        const newValue = $trigger.text();
+        const path = $trigger.data('path');
+
         console.log('update variable:', {
           oldValue,
           newValue,
           type
         });
+        // BrowserAutomationStudio_Execute('VAR_OBJECT = 3;' + "\n" + "section_start(\"test\",-2)!", false)
       }
 
       this.model = model;
@@ -180,23 +173,20 @@
       }
 
       if (!this.interact) {
-        this.interact = interact(this.el)
-          .resizable({
-            edges: { top: true },
-            inertia: false,
-            modifiers: [],
-          })
-          .off('resizemove')
-          .on('resizemove', (event) => {
-            const windowHeight = $(window).height();
-            const functionsHeight = $('#functions').outerHeight();
+        this.interact = interact(this.el).resizable({
+          edges: { top: true },
+          inertia: false,
+          modifiers: [],
+        }).on('resizemove', (event) => {
+          const windowHeight = $(window).height();
+          const functionsHeight = $('#functions').outerHeight();
 
-            let height = windowHeight - event.client.y - functionsHeight;
-            height = Math.min(height, windowHeight - functionsHeight - 300);
-            height = Math.max(height, 100);
-            this.$el.css('height', height + 'px');
-            this.model.set('height', height);
-          });
+          let height = windowHeight - event.client.y - functionsHeight;
+          height = Math.min(height, windowHeight - functionsHeight - 300);
+          height = Math.max(height, 100);
+          this.$el.css('height', height + 'px');
+          this.model.set('height', height);
+        });
       }
 
       return this;

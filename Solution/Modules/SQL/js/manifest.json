@@ -416,6 +416,7 @@
 		
 		"Values": {"ru":"Значения"},
 		"List of fields": {"ru":"Список полей"},
+		"Convert data": {"ru":"Преобразовывать данные"},
 		"Update single record from SQL database.": {"ru":"Обновить одну запись из SQL базы данных."},
 		"Field names and values separated by \"=\", each field on a new line.": {"ru":"Названия полей и их значения разделенные символом \"=\", каждое поле с новой строки."},
 		"This action replaces the field values of an existing record with the specified ones.": {"ru":"Данное действие заменяет значения полей, уже существующей записи, на указанные."},

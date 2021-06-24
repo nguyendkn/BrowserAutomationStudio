@@ -175,15 +175,9 @@
           edges: { top: true },
           inertia: false,
           modifiers: [
-            interact.modifiers.restrictSize({
-              min: { height: 100 }
-            }),
-            interact.modifiers.restrictSize({
-              max: { height: 290 }
-            }),
-            interact.modifiers.restrictSize({
-              max: 'parent'
-            })
+            interact.modifiers.restrictSize({ min: { height: 100 } }),
+            interact.modifiers.restrictSize({ max: { height: 290 } }),
+            interact.modifiers.restrictSize({ max: 'parent' })
           ],
           listeners: {
             move: ({ rect }) => {

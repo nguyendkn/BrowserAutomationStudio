@@ -103,15 +103,13 @@ var JSONTree = (function() {
       body.push(_openBracket('{', indent ? depth : 0, id));
 
     var attrs = {id: id}
-    if(depth > 1)
-      attrs.dataopen = "true"
+    if (depth > 1) attrs.dataopen = "true"
     body.push(_element(content, attrs))
 
-    if(depth > 0)
-      body.push(_closeBracket('}', depth));
+    if (depth > 0) body.push(_closeBracket('}', depth));
     
-    body = body.join('\n')
-    var obj = _element(body, {'data-path': _path(), 'data-type': 'object'});
+    body = body.join('\n');
+    var obj = _element(body, { 'data-type': 'object', 'data-path': _path() });
     path.pop();
     return obj;
   };
@@ -128,15 +126,13 @@ var JSONTree = (function() {
       body.push(_openBracket('[', indent ? depth : 0, id))
 
     var attrs = {id: id}
-    if(depth > 1)
-      attrs.dataopen = "true"
+    if (depth > 1) attrs.dataopen = "true"
     body.push(_element(content, attrs))
 
-    if(depth > 0)
-      body.push(_closeBracket(']', depth))
+    if (depth > 0) body.push(_closeBracket(']', depth))
 
-    body = body.join('\n')
-    var arr = _element(body, {'data-path': _path(), 'data-type': 'array'})
+    body = body.join('\n');
+    var arr = _element(body, { 'data-type': 'array', 'data-path': _path() })
     path.pop();
     return arr;
   };

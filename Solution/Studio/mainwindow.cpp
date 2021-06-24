@@ -427,6 +427,11 @@ MainWindow::MainWindow(QWidget *parent) :
         Record();
     }
 
+    if(qApp->arguments().indexOf("--autostart-record") >= 0)
+    {
+        Record();
+    }
+
     WriteInfoOnStart();
 
     ui->dockWidgetResult->widget()->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
@@ -1011,6 +1016,11 @@ void MainWindow::Show()
 
 void MainWindow::ShowInternal()
 {
+    if(qApp->arguments().indexOf("--silent") >= 0)
+    {
+        hide();
+        return;
+    }
     if(!isVisible())
         show();
 
@@ -1670,7 +1680,10 @@ void MainWindow::StopAction()
         _ModuleManager->PackModules(ModulesPreserve);
         _ModuleManager->UnpackModules(ModulesPreserve);
     }
-    this->show();
+    if(qApp->arguments().indexOf("--silent") < 0)
+    {
+        this->show();
+    }
 
 }
 

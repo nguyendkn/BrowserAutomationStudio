@@ -19,7 +19,14 @@ int main(int argc, char *argv[])
 
 
     MainWindow w;
-    w.show();
+
+    if(a.arguments().indexOf("--silent") < 0)
+    {
+        w.show();
+    }else
+    {
+        w.hide();
+    }
 
     return a.exec();
 }

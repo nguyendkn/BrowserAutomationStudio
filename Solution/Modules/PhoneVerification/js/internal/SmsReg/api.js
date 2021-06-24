@@ -73,7 +73,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		var number = _function_argument("number");
 		var confirmData = _function_argument("confirmData");
 		if(_is_nilb(confirmData)){
-			confirmData = _SMS.confirmData[number];
+			confirmData = _SMS.getConfirmData(number);
 		};
 		
 		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.id}, checkErrors:false})!
@@ -98,7 +98,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 			return;
 		};
 		
-		var taskId = _SMS.confirmData[number].id;
+		var taskId = _SMS.getConfirmData(number).id;
 		
 		_call_function(api.makeRequest,{action:actions[status], options:{tzid:taskId}, checkErrors:("1" !== status)})!
 		var resp = _result_function();
@@ -106,7 +106,7 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		var code = null;
 		
 		_call_function(api.getState,{number:number})!

@@ -4052,13 +4052,7 @@
 
         _VisualizeLabels.Visualize();
 
-        var TotalHeight = $(window).height();
-        var FunctionManagerHeight = $("#functions").outerHeight()
-
-        var H =  _Inspector.model.get("height");
-        H = Math.min(H, TotalHeight - FunctionManagerHeight - 300);
-        H = Math.max(H, 100);
-        $("#variableInspector").css("height", H + "px");
+        _Inspector.setHeight();
 
         //_Tour.Start();
         this.trigger('render');

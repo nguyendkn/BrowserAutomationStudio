@@ -178,19 +178,21 @@
           edges: { top: true },
           inertia: false,
           modifiers: [],
-        }).on('resizemove', (event) => {
-          const windowHeight = $(window).height();
-          const functionsHeight = $('#functions').outerHeight();
-
-          let height = windowHeight - event.client.y - functionsHeight;
-          height = Math.min(height, windowHeight - functionsHeight - 300);
-          height = Math.max(height, 100);
-          this.$el.css('height', height + 'px');
-          this.model.set('height', height);
-        });
+        }).on('resizemove', (event) => this.setHeight(event.client.y));
       }
 
       return this;
+    },
+
+    setHeight(height) {
+      const windowHeight = $(window).height();
+      const functionsHeight = $('#functions').outerHeight();
+
+      height = height ? (windowHeight - height - functionsHeight) : _Inspector.model.get('height');
+      height = Math.min(height, windowHeight - functionsHeight - 300);
+      height = Math.max(height, 100);
+      this.$el.css('height', height + 'px');
+      this.model.set('height', height);
     },
 
     toggle() {

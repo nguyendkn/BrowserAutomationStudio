@@ -131,6 +131,30 @@ function SQL_DeleteRecords(){
 	
 	_embedded("SQL_DeleteRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
+function SQL_InsertRecord(){
+	var table = _function_argument("table");
+	var fields = _to_arr(_function_argument("fields"));
+	var data = _function_argument("data");
+	var convert = _avoid_nilb(_function_argument("convert"), true);
+	var idFieldName = _function_argument("idFieldName");
+	var timeout = _function_argument("timeout");
+	
+	if(Array.isArray(data) && ['object', 'array'].indexOf(_get_type(data[0])) > -1){
+		data = data.slice(0, 1);
+	};
+	
+	data = SQL_DataPreparation(data);
+	
+	SQL_CheckDialect();
+	
+	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, fields, data, convert, idFieldName];
+	
+	_if(true, function(){
+		_embedded("SQL_InsertRecord", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	})!
+	
+	_function_return(idFieldName ? VAR_SQL_NODE_PARAMETERS : undefined);
+};
 function SQL_Insert(){
 	var table = _function_argument("table");
 	var fields = _to_arr(_function_argument("fields"));
@@ -142,7 +166,7 @@ function SQL_Insert(){
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, fields, data, convert];
 	
-	_embedded("SQL_Insert", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	_embedded("SQL_InsertMultipleRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
 };
 function SQL_Debug(enable){
 	_SQL_CONFIG["debug"] = (enable==true || enable=="true");
@@ -242,13 +266,13 @@ function SQL_ConvertValuesToObject(){
 	_function_return(values_object);
 };
 function SQL_DataPreparation(data){
-	if(typeof data=="string" && _is_json_string(data)){
+	if(_is_json_string(data)){
 		data = JSON.parse(data);
 	};
-	if(typeof data=="object" && (!Array.isArray(data) || (Array.isArray(data) && typeof data[0]!="object" && csv_parse(data[0]).length==1))){
+	if(_get_type(data)=="object" || (Array.isArray(data) && typeof data[0]=="string" && csv_parse(data[0]).length==1)){
 		data = [data];
 	};
-	if(Array.isArray(data) && typeof data[0]=="object"){
+	if(Array.isArray(data) && ['object', 'array'].indexOf(_get_type(data[0])) > -1){
 		if(Array.isArray(data[0])){
 			data = data.map(function(row){return row.map(function(cell){return SQL_ConvertDates(cell)})});
 		}else{

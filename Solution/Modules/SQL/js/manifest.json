@@ -156,13 +156,30 @@
 		{
             "code": [
                 {
+                    "file": "SQL_InsertRecord_code.js",
+                    "name": "SQL_InsertRecord_code"
+                }
+            ],
+            "description": {
+                "en": "Insert single record",
+                "ru": "Вставить одну запись"
+            },
+            "interface": "SQL_InsertRecord_interface.js",
+            "is_element": false,
+            "name": "SQL_InsertRecord",
+            "select": "SQL_InsertRecord_select.js",
+            "template": "{{data}} -> {{table}}"
+        },
+		{
+            "code": [
+                {
                     "file": "SQL_Insert_code.js",
                     "name": "SQL_Insert_code"
                 }
             ],
             "description": {
-                "en": "Insert records",
-                "ru": "Вставить записи"
+                "en": "Insert multiple records",
+                "ru": "Вставить несколько записей"
             },
             "interface": "SQL_Insert_interface.js",
             "is_element": false,
@@ -216,6 +233,7 @@
 		"SQL_UpdateRecords",
         "SQL_DeleteRecord",
         "SQL_DeleteRecords",
+        "SQL_InsertRecord",
         "SQL_Insert",
         "SQL_Close",
 		"SQL_Debug"
@@ -277,7 +295,7 @@
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, fields, data, convert] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(fields!==\"\"){\r\n        options.fields = fields;\r\n        data = util.format_data(data, fields, convert);\r\n    }else{\r\n        data = util.format_data(data, sql.fields, convert);\r\n    };\r\n    var results = await model.bulkCreate(data, options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
-            "DataName": "SQL_Insert",
+            "DataName": "SQL_InsertMultipleRecords",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
@@ -285,6 +303,13 @@
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, where] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\nvar [where, where_parameterize, where_replacements] = where;\r\n\r\nif(where_parameterize){\r\n    replacements = util.restore_dates(where_replacements);\r\n    where = util.format(where, replacements, config.dialect);\r\n};\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(where!==\"\"){\r\n        if(typeof where==\"object\"){\r\n            options.where = where;\r\n        }else{\r\n            options.where = sequelize.literal(where);\r\n        };\r\n    };\r\n    var results = await model.count(options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    [[SQL_NODE_PARAMETERS]] = results;\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_CountRecords",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, fields, data, convert, idFieldName] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(fields!==\"\"){\r\n        options.fields = fields;\r\n        data = util.format_data(data, fields, convert);\r\n    }else{\r\n        data = util.format_data(data, sql.fields, convert);\r\n    };\r\n    var result = await model.create(data[0], options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(result));\r\n    };\r\n    if(idFieldName){\r\n        [[SQL_NODE_PARAMETERS]] = result[idFieldName];\r\n    };\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
+            "DataName": "SQL_InsertRecord",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3"
@@ -443,21 +468,28 @@
 		"Get the number of records from SQL database.": {"ru":"Получить количество записей из SQL базы данных."},
 		"Variable in which, after successful execution of the action, the number of records will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество записей."},
 		
-		"Records": {"ru":"Записи"},
 		"Can be blank": {"ru":"Может быть пустым"},
-		"Insert records into SQL database.": {"ru":"Вставить записи в SQL базу данных."},
+		"Identifier field name": {"ru":"Имя поля идентификатора"},
+		"Insert single record into SQL database.": {"ru":"Вставить одну запись в SQL базу данных."},
 		"The data to be inserted into the database.": {"ru":"Данные, которые нужно вставить в базу."},
+		"Variable to save the record identifier": {"ru":"Переменная, в которую сохранить идентификатор записи"},
+		"Do not get the identifier of the inserted record.": {"ru":"Не получать идентификатор вставленной записи."},
 		"Insert all fields, the order of the fields matches the database": {"ru":"Вставлять все поля, порядок полей совпадает с базой"},
 		"The field value can be string, number, boolean or date.": {"ru":"Значением поля может быть строка, число, булевый тип или дата."},
 		"You can write strings, numbers, booleans and dates to field.": {"ru":"В поле можно записывать строки, числа, булевый тип и дату."},
 		"Data can be generated manually by using \"List\" module or \"Template\" action.": {"ru":"Данные можно сгенерировать вручную с помощью модуля \"Список\" или действия \"Шаблон\"."},
+		"The name of the identifier field, required to get the identifier of the inserted record.": {"ru":"Имя поля идентификатора, необходимо для получения идентификатора вставленной записи."},
 		"Data in a suitable format can be obtained from the actions: \"Select single record\", \"Select multiple records\".": {"ru":"Данные в подходящем формате можно получить из действий: \"Получить одну запись\", \"Получить несколько записей\"."},
 		"List of field names to be inserted. Can be used as a constraint to avoid accidentally inserting unnecessary fields.": {"ru":"Список имен полей, которые будут вставлены. Может использоваться как ограничение, чтобы избежать случайной вставки ненужных полей."},
-		"Also, this parameter must be specified if the data format is not \"Object list\" and the order of the fields does not match the table.": {"ru":"Также, данный параметр нужно указывать, если формат данных не \"Object list\" и порядок полей не совподает с таблицей."},
 		"This action accepts data in the formats: \"CSV\", \"CSV list\", \"CSV string\", \"List\", \"2D list\", \"Object\", \"Object list\".": {"ru":"Данное действие принимает данные в форматах: \"CSV\", \"CSV list\", \"CSV string\", \"List\", \"2D list\", \"Object\", \"Object list\"."},
-		"If the data format is not \"Object list\" and the order of the fields in the data does not correspond to the database, then the \"List of fields\" parameter must be specified.": {"ru":"Если формат данных не \"Object list\" и в данных порядок полей не соответствует базе, то нужно указывать параметр \"Список полей\"."},
+		"Also, this parameter must be specified if the data format is not \"Object list\" or \"Object\" and the order of the fields does not match the table.": {"ru":"Также, данный параметр нужно указывать, если формат данных не \"Object list\" или \"Object\" и порядок полей не совподает с таблицей."},
+		"Variable in which, after successful execution of the action, the identifier of the inserted record will be written, if the \"Identifier field name\" parameter is specified.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан идентификатор вставленной записи, если указан параметр \"Имя поля идентификатора\"."},
+		"If the data format is not \"Object list\" or \"Object\" and the order of the fields in the data does not correspond to the database, then the \"List of fields\" parameter must be specified.": {"ru":"Если формат данных не \"Object list\" или \"Object\" и в данных порядок полей не соответствует базе, то нужно указывать параметр \"Список полей\"."},
 		"Numbers and booleans can be specified as a string and they will be automatically converted to the correct type, and dates are perceived only as a javascript date object.": {"ru":"Числа и булевый тип можно указывать в виде строки и они будут автоматически конвертированы в нужный тип, а даты воспринимаются только в виде javascript объекта даты."},
 		"For example, the string <code>\"text:123:true\"</code> will be automatically converted to values for three cells, the string <code>\"text\"</code>, the number <code>123</code>, and the boolean <code>true</code>.": {"ru":"Например, строка <code>\"текст:123:true\"</code> будет автоматически преобразована в значения для трех ячеек, строку <code>\"текст\"</code>, число <code>123</code>, и булевый тип <code>true</code>."},
+		"If the \"Identifier field name\" parameter is specified, then after the successful execution of the action, the identifier of the inserted record will be written to the variable specified in the \"Variable to save the record identifier\" parameter.": {"ru":"Если указан параметр \"Имя поля идентификатора\", то после успешного выполнения действия идентификатор вставленной записи будет записан в переменную, указанную в параметре \"Переменная, в которую сохранить идентификатор записи\"."},
+		
+		"Insert multiple records into SQL database.": {"ru":"Вставить несколько записей в SQL базу данных."},
 		
 		"Close connection to SQL database.": {"ru":"Закрыть соединение с SQL базой данных."},
 		"If connection is already closed or not open yet, this action will do nothing.": {"ru":" Если соединение уже закрыто или ещё не открыто, это действие ничего не сделает."},

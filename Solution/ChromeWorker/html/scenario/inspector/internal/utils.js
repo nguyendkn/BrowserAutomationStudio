@@ -1,6 +1,8 @@
 (function (global, $) {
   global.Scenario.utils = {
-    updateVariable: function (pointer, value, type) {
+    updateVariable: function (pointer, value, old, type) {
+      if (value === old) return;
+
       const path = pointer.slice(1).split('/').reduce((path, key, idx) => {
         return path + (idx !== 0 ? (/^\d+$/.test(key) ? `[${key}]` : `['${key}']`) : key);
       }, '');

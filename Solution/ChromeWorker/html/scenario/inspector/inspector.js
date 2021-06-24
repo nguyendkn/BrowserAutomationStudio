@@ -8,7 +8,7 @@
       showNotice: false,
       resources: {},
       variables: {},
-      height: 300,
+      height: 290,
     },
 
     resourcesData: {},
@@ -87,11 +87,11 @@
 
     initialize() {
       const model = new InspectorModel()
-        .on('change:resources', (__, resources) => {
-          const $target = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(resources);
+        .on('change:resources', (__, data) => {
+          const $target = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
 
           if (!isEmpty) {
-            morphdom($target[0], `<div id="inspectorResourcesData">${JSONTree.create(resources)}</div>`, {
+            morphdom($target[0], `<div id="inspectorResourcesData">${JSONTree.create(data)}</div>`, {
               onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
               childrenOnly: true
             });
@@ -99,11 +99,11 @@
           this.$('#inspectorNoResources').toggle(isEmpty);
           $target.toggle(!isEmpty);
         })
-        .on('change:variables', (__, variables) => {
-          const $target = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(variables);
+        .on('change:variables', (__, data) => {
+          const $target = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
 
           if (!isEmpty) {
-            morphdom($target[0], `<div id="inspectorVariablesData">${JSONTree.create(variables)}</div>`, {
+            morphdom($target[0], `<div id="inspectorVariablesData">${JSONTree.create(data)}</div>`, {
               onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
               childrenOnly: true
             });
@@ -121,20 +121,15 @@
         });
 
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
-        // handle content-editable `focus` event.
-        const $el = $(this);
-        $el.data('oldValue', $el.text());
+        const $el = $(this); $el.data('oldValue', $el.text());
       });
 
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
-        // handle content-editable `blur` event.
-        const $el = $(this);
-        // const oldValue = $el.data('oldValue');
-        // const newValue = $el.text();
-        // const path = $el.data('path');
-
-        // if (oldValue === newValue) return;
-        // Scenario.utils.updateVariable(path, newValue, type);
+        const $el = $(this); let type = 'string';
+        if ($el.hasClass('jstBool')) type = 'boolean';
+        if ($el.hasClass('jstNum')) type = 'number';
+        if ($el.hasClass('jstDate')) type = 'date';
+        updateVariable(type, { $trigger : $el });
       });
 
       $.contextMenu({
@@ -151,9 +146,7 @@
         const oldValue = $trigger.data('oldValue');
         const newValue = $trigger.text();
         const path = $trigger.data('path');
-
-        if (oldValue === newValue) return;
-        Scenario.utils.updateVariable(path, newValue, type);
+        Scenario.utils.updateVariable(path, newValue, oldValue, type);
       }
 
       this.model = model;
@@ -173,7 +166,6 @@
       if (!this.interact) {
         this.interact = interact(this.el).resizable({
           edges: { top: true },
-          inertia: false,
           modifiers: [
             interact.modifiers.restrictSize({ min: { height: 100 } }),
             interact.modifiers.restrictSize({ max: { height: 290 } }),
@@ -183,16 +175,12 @@
             move: ({ rect }) => {
               this.$el.css('height', `${rect.height}px`);
               this.model.set('height', rect.height);
-
-              this.$el.css('width', `${rect.width}px`);
-              this.model.set('width', rect.width);
             }
           }
         });
       }
 
       this.$el.css('height', `${this.model.get('height')}px`);
-      this.$el.css('width', `${this.model.get('width')}px`);
       return this;
     },
 

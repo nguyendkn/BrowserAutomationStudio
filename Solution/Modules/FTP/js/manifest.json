@@ -708,7 +708,7 @@
             "LanguageName": "Node",
             "LanguageVersion": "12.18.3",
             "ModuleName": "ssh2-sftp-client",
-            "ModuleVersion": "7.0.0"
+            "ModuleVersion": "6.0.1"
         },
         {
             "LanguageName": "Node",

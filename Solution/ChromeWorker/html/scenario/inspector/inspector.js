@@ -88,31 +88,28 @@
     initialize() {
       const model = new InspectorModel()
         .on('change:resources', (__, resources) => {
-          const $resources = this.$('#inspectorResourcesData'),
-            isEmpty = _.isEmpty(resources);
+          const $target = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(resources);
 
           if (!isEmpty) {
-            morphdom($resources[0], `<div id="inspectorResourcesData">${JSONTree.create(resources)}</div>`, {
+            morphdom($target[0], `<div id="inspectorResourcesData">${JSONTree.create(resources)}</div>`, {
               onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
               childrenOnly: true
             });
           }
           this.$('#inspectorNoResources').toggle(isEmpty);
-          $resources.toggle(!isEmpty);
+          $target.toggle(!isEmpty);
         })
         .on('change:variables', (__, variables) => {
-          const $variables = this.$('#inspectorVariablesData'),
-            isEmpty = _.isEmpty(variables);
+          const $target = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(variables);
 
           if (!isEmpty) {
-            morphdom($variables[0], `<div id="inspectorVariablesData">${JSONTree.create(variables)}</div>`, {
+            morphdom($target[0], `<div id="inspectorVariablesData">${JSONTree.create(variables)}</div>`, {
               onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
               childrenOnly: true
             });
-            $variables.html(JSONTree.create(variables));
           }
           this.$('#inspectorNoVariables').toggle(isEmpty);
-          $variables.toggle(!isEmpty);
+          $target.toggle(!isEmpty);
         })
         .on('diff:variables', ({ usage, path }) => {
           const $element = this.$(`[data-path="${path}"]`);

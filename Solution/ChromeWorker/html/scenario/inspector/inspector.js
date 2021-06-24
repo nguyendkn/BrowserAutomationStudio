@@ -174,22 +174,32 @@
         this.interact = interact(this.el).resizable({
           edges: { top: true },
           inertia: false,
-          modifiers: [],
-        }).on('resizemove', (event) => this.setHeight(event.client.y));
+          modifiers: [
+            interact.modifiers.restrictSize({
+              min: { height: 100 }
+            }),
+            interact.modifiers.restrictSize({
+              max: { height: 290 }
+            }),
+            interact.modifiers.restrictSize({
+              max: 'parent'
+            })
+          ],
+          listeners: {
+            move: ({ rect }) => {
+              this.$el.css('height', `${rect.height}px`);
+              this.model.set('height', rect.height);
+
+              this.$el.css('width', `${rect.width}px`);
+              this.model.set('width', rect.width);
+            }
+          }
+        });
       }
 
+      this.$el.css('height', `${this.model.get('height')}px`);
+      this.$el.css('width', `${this.model.get('width')}px`);
       return this;
-    },
-
-    setHeight(height) {
-      const windowHeight = $(window).height();
-      const functionsHeight = $('#functions').outerHeight();
-
-      height = height ? (windowHeight - height - functionsHeight) : _Inspector.model.get('height');
-      height = Math.min(height, windowHeight - functionsHeight - 300);
-      height = Math.max(height, 100);
-      this.$el.css('height', height + 'px');
-      this.model.set('height', height);
     },
 
     toggle() {

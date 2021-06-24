@@ -61,6 +61,7 @@ public:
     std::vector<std::function<void(int)> > EventPopupClose;
     std::vector<std::function<void(int)> > EventPopupSelect;
     std::vector<std::function<void(bool, std::string)> > EventPopupCreate;
+    std::vector<std::function<void(double)> > EventSetDeviceScaleFactor;
     std::vector<std::function<void(bool, std::string, std::string, bool)> > EventPopupCreate2;
     std::vector<std::function<void()> > EventPopupInfo;
     std::vector<std::function<void(int)> > EventTimezone;

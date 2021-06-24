@@ -353,21 +353,27 @@ namespace BrowserAutomationStudioFramework
             }
 
             {
-                /*QDir dir(QString("custom/") + ModuleName);
-                qDebug()<<"RemoveRecursively";
-                if(!dir.removeRecursively())
-                {
-                    qDebug()<<"RemoveRecursively Failed";
-                    return tr("Failed to remove installed module ") + dir.absolutePath();
-                }*/
 
+                //It is not always possible to remove folder, so we will try to clear its content.
                 QDir dir(QString("custom/") + ModuleName);
                 dir.setFilter(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::NoSymLinks);
                 QStringList ModuleList = dir.entryList();
                 for(QString& Module: ModuleList)
                 {
-                    QFile(QString("custom/") + ModuleName + QString("/") + Module).remove();
+                    QString Path = QString("custom/") + ModuleName + QString("/") + Module;
+                    if(QFileInfo(Path).isDir())
+                    {
+                        if(!QDir(Path).removeRecursively())
+                            return tr("Failed to remove folder ") + Path;
+                    }else
+                    {
+                        if(!QFile(Path).remove())
+                            return tr("Failed to remove file ") + Path;
+                    }
+
                 }
+
+
             }
 
         }

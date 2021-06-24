@@ -24,6 +24,26 @@ function Checksum_PrepareArguments(args){
 			arg = key === 'outputLength' ? Number(_avoid_nil(arg, 64)) : _avoid_nil(arg).toString().trim();
 			if(['algorithm','inputEncoding','outputEncoding'].indexOf(key) > -1 && _is_nilb(arg)){
 				arg = key=='algorithm' ? 'sha512' : (key=='inputEncoding' ? 'utf-8' : 'hex');
+			}else if(key === 'algorithm'){
+				var labels = {
+					"crc-16":"crc16",
+					"crc-32":"crc32",
+					"sha-224":"sha224",
+					"sha-256":"sha256",
+					"sha-384":"sha384",
+					"sha-512":"sha512",
+					"shake-128":"shake128",
+					"shake-256":"shake256",
+					"keccak-224":"keccak224",
+					"keccak-256":"keccak256",
+					"keccak-384":"keccak384",
+					"keccak-512":"keccak512",
+					"blake2b-512":"blake2b512",
+					"blake2s-256":"blake2s256",
+				};
+				if(labels.hasOwnProperty(arg)){
+					arg = labels[arg];
+				};
 			};
 			if(key === 'outputEncoding' && _ends_with(arg, ' encoded')){
 				arg = arg=='hex encoded' ? 'hex' : 'base64';

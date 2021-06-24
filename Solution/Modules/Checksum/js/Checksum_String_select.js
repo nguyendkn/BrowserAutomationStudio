@@ -9,7 +9,6 @@ if(algorithm["original"].length == 0){
     return;
 };
 var base64 = $("#Check").is(':checked');
-var inputEncoding = GetInputConstructorValue("inputEncoding", loader);
 var outputLength = GetInputConstructorValue("outputLength", loader);
 var outputEncoding = GetInputConstructorValue("outputEncoding", loader);
 if(outputEncoding["original"].length == 0){
@@ -22,7 +21,6 @@ try{
         "input": input["updated"],
         "algorithm": algorithm["updated"],
         "base64": base64,
-        "inputEncoding": inputEncoding["updated"],
         "outputLength": outputLength["updated"],
         "outputEncoding": outputEncoding["updated"],
         "variable": "VAR_" + Save

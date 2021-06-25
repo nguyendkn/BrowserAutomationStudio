@@ -31,17 +31,20 @@
       }
 
       if (isGlobal) {
-        const code = [
-          `var obj = JSON.parse(P('basglobal', '${root}') || '{}');`,
-          `obj${path} = ${variable}`,
-          `PSet('basglobal', '${root}', JSON.stringify(obj));`,
-          `delete obj;`,
-          `section_start('test', -2)!`,
-        ].join('\n');
-        console.log(code);
+        const code = `try {
+          var obj = JSON.parse(P('basglobal', '${root}') || '{}');
+          obj${path} = ${variable}
+          PSet('basglobal', '${root}', JSON.stringify(obj));
+          delete obj;
+          section_start('test', -2)!
+        } catch (e) {}`
         BrowserAutomationStudio_Execute(code, false);
       } else {
-        BrowserAutomationStudio_Execute(`VAR_${root}${path} = ${variable};\nsection_start('test', -2)!`, false);
+        const code = `try {
+          VAR_${root}${path} = ${variable};
+          section_start('test', -2)!
+        } catch (e) {}`
+        BrowserAutomationStudio_Execute(code, false);
       }
     }
   };

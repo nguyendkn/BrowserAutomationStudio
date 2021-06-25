@@ -27,8 +27,7 @@ var JSONTree = (function() {
     instances += 1;
     path = [];
     id = 0;
-    return _element(_jsVal('', data, 0, false), {class: 'jstValue'})
-    + "<script>$('*[dataopen]').each(function(t,el){var id = $(el).attr('id');if(id.split('_')[2]!='0')JSONTree.toggle($(el).attr('id'));$(el).removeAttr('dataopen')})</script>"
+    return _element(_jsVal('', data, 0, false), { class: 'jstValue' });
   };
 
   var _escape = function(text) {

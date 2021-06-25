@@ -96,6 +96,7 @@
               onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
               childrenOnly: true
             });
+            this.loadState();
           }
           this.$('#inspectorNoResources').toggle(isEmpty);
           $target.toggle(!isEmpty);
@@ -108,6 +109,7 @@
               onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
               childrenOnly: true
             });
+            this.loadState();
           }
           this.$('#inspectorNoVariables').toggle(isEmpty);
           $target.toggle(!isEmpty);
@@ -239,13 +241,16 @@
       this.$('#inspectorContent').hide();
     },
 
-    loadState(state = this.model.get('state')) {
+    loadState(state) {
       const $container = this.$('#inspectorContent');
+      state = state || this.model.get('state');
 
       if (Array.isArray(state.objects)) {
         state.objects.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && $el.hasClass('jstFolded')) return;
+          if (folded && !$el.hasClass('jstFolded')) {
+            return $el.children('.jstFold').click();
+          }
           $el.children('.jstExpand').click();
         });
       }
@@ -253,28 +258,32 @@
       if (Array.isArray(state.arrays)) {
         state.arrays.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && $el.hasClass('jstFolded')) return;
+          if (folded && !$el.hasClass('jstFolded')) {
+            return $el.children('.jstFold').click();
+          }
           $el.children('.jstExpand').click();
         });
       }
+
+      this.model.set('state', state);
     },
 
     saveState() {
       const $container = this.$('#inspectorContent');
 
-      const objects = _.map($container.find('[data-type="object"]'), (el) => {
-        const $el = $(el), path = $el.data('path');
-        return { path, folded: $el.hasClass('jstFolded') };
+      this.model.set('state', {
+        objects: _.map($container.find('[data-type="object"]'), (el) => {
+          const $el = $(el);
+          return { path: $el.data('path'), folded: $el.hasClass('jstFolded') };
+        }),
+
+        arrays: _.map($container.find('[data-type="array"]'), (el) => {
+          const $el = $(el);
+          return { path: $el.data('path'), folded: $el.hasClass('jstFolded') };
+        })
       });
 
-      const arrays = _.map($container.find('[data-type="array"]'), (el) => {
-        const $el = $(el), path = $el.data('path');
-        return { path, folded: $el.hasClass('jstFolded') };
-      });
-
-      const state = { objects, arrays };
-      this.model.set('state', state);
-      return state;
+      return this.model.get('state');
     },
 
     events: {

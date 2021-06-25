@@ -1,9 +1,9 @@
 (function (global, $) {
   global.Scenario.utils = {
     updateVariable: function (pointer, value, old, type) {
+      value = value.replace(/^('|")/g, '');
+      value = value.replace(/('|")$/g, '');
       if (value === old) return;
-      value = _.trimRight(value, `"'`);
-      value = _.trimLeft(value, `"'`);
 
       const path = pointer.slice(1).split('/').reduce((path, key, idx) => {
         return path + (idx !== 0 ? (/^\d+$/.test(key) ? `[${key}]` : `['${key}']`) : key);
@@ -24,14 +24,4 @@
       BrowserAutomationStudio_Execute(`VAR_${path} = ${value};\nsection_start('test', -2)!`, false);
     }
   };
-
-  _.mixin({
-    trimRight: function (str, chars = ' ') {
-      return str.replace(new RegExp(`[${chars}]+$`, 'g'), '');
-    },
-
-    trimLeft: function (str, chars = ' ') {
-      return str.replace(new RegExp(`^[${chars}]+`, 'g'), '');
-    },
-  });
 })(window, jQuery);

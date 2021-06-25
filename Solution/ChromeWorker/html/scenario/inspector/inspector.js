@@ -120,24 +120,24 @@
           $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
         });
 
-      $(document).on('focusout', '[data-path][contenteditable]', function (e, params) {
-        if (params && !params.update) return;
+      $(document).on('focusout', '[data-path][contenteditable]', function (e, data) {
+        if (data && !data.update) return;
         updateVariable({ $trigger: $(this) });
       });
 
-      $(document).on('keydown', '[data-path][contenteditable]', function (e) {
+      $(document).on('keydown', '[data-path][contenteditable]', function (e, data) {
         if (e.key !== 'Escape' || e.shiftKey) return;
         e.preventDefault();
         $(this).trigger('blur', { update: false });
       });
 
-      $(document).on('keydown', '[data-path][contenteditable]', function (e) {
+      $(document).on('keydown', '[data-path][contenteditable]', function (e, data) {
         if (e.key !== 'Enter' || e.shiftKey) return;
         e.preventDefault();
         $(this).trigger('blur', { update: true });
       });
 
-      $(document).on('focus', '[data-path][contenteditable]', function (e) {
+      $(document).on('focus', '[data-path][contenteditable]', function (e, data) {
         const $el = $(this); $el.data('value', $el.text());
       });
 

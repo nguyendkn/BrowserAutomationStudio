@@ -9,6 +9,7 @@
       resources: {},
       variables: {},
       height: 290,
+      state: {},
     },
 
     resourcesData: {},
@@ -238,7 +239,7 @@
       this.$('#inspectorContent').hide();
     },
 
-    loadState(state) {
+    loadState(state = this.model.get('state')) {
       const $container = this.$('#inspectorContent');
 
       if (Array.isArray(state.objects)) {
@@ -271,7 +272,9 @@
         return { path, folded: $el.hasClass('jstFolded') };
       });
 
-      return { objects, arrays };
+      const state = { objects, arrays };
+      this.model.set('state', state);
+      return state;
     },
 
     events: {

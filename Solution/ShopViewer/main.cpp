@@ -17,16 +17,8 @@ int main(int argc, char *argv[])
     defaultProfile->setPersistentStoragePath("profile");
     defaultProfile->installUrlSchemeHandler("bas", new BasSchemeHandler());
 
-
     MainWindow w;
-
-    if(a.arguments().indexOf("--silent") < 0)
-    {
-        w.show();
-    }else
-    {
-        w.hide();
-    }
+    w.show();
 
     return a.exec();
 }

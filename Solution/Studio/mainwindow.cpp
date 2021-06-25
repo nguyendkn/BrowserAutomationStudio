@@ -39,6 +39,7 @@
 #include "complexlogger.h"
 #include "filelogger.h"
 #include "systemtraynotifier.h"
+#include "nonetraynotifier.h"
 #include "toprightpositioner.h"
 #include "copyresourcecontroller.h"
 #include "versioninfo.h"
@@ -206,8 +207,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     LangModel = new LanguageModel(this);
 
-    TrayNotifier = new SystemTrayNotifier(this);
+    if(qApp->arguments().indexOf("--hide-tray-icon") < 0)
+    {
+        TrayNotifier = new SystemTrayNotifier(this);
+    }else
+    {
+        TrayNotifier = new NoneTrayNotifier(this);
+    }
+
     TrayNotifier->Init();
+
 
     BrowserFactory = 0;
 

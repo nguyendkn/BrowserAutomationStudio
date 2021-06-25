@@ -1,9 +1,15 @@
 (function (global, $) {
+  const trimQuoteRight = (str) => str.replace(/('|")$/g, '');
+
+  const trimQuoteLeft = (str) => str.replace(/^('|")/g, '');
+
+  const clean = (str) => trimQuoteRight(trimQuoteLeft(str));
+
   global.Scenario.utils = {
-    updateVariable: function (pointer, value, old, type) {
-      value = value.replace(/^('|")/g, '');
-      value = value.replace(/('|")$/g, '');
-      if (value === old) return;
+    updateVariable: function (pointer, newValue, oldValue, type) {
+      let value = clean(newValue);
+      let prev = clean(oldValue);
+      if (value === prev) return;
 
       const path = pointer.slice(1).split('/').reduce((path, key, idx) => {
         return path + (idx !== 0 ? (/^\d+$/.test(key) ? `[${key}]` : `['${key}']`) : key);

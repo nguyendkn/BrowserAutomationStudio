@@ -28,7 +28,7 @@
             this.resourcesData[path] = { usage: 0, value, op };
           });
         }
-        Object.entries(this.resourcesData).forEach(([path, entry]) => {
+        _.each(this.resourcesData, (entry, path) => {
           entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
           this.trigger('diff:resources', { ...entry, path });
         });
@@ -44,7 +44,7 @@
             this.variablesData[path] = { usage: 0, value, op };
           });
         }
-        Object.entries(this.variablesData).forEach(([path, entry]) => {
+        _.each(this.variablesData, (entry, path) => {
           entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
           this.trigger('diff:variables', { ...entry, path });
         });

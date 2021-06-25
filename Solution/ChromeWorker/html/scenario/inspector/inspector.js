@@ -120,19 +120,25 @@
           $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
         });
 
+      $(document).on('focusout', '[data-path][contenteditable]', function (e, params) {
+        if (params && !params.update) return;
+        updateVariable({ $trigger: $(this) });
+      });
+
       $(document).on('keydown', '[data-path][contenteditable]', function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          $(this).trigger('blur');
-        }
+        if (e.key !== 'Escape' || e.shiftKey) return;
+        e.preventDefault();
+        $(this).trigger('blur', { update: false });
+      });
+
+      $(document).on('keydown', '[data-path][contenteditable]', function (e) {
+        if (e.key !== 'Enter' || e.shiftKey) return;
+        e.preventDefault();
+        $(this).trigger('blur', { update: true });
       });
 
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
         const $el = $(this); $el.data('value', $el.text());
-      });
-
-      $(document).on('blur', '[data-path][contenteditable]', function (e) {
-        updateVariable({ $trigger: $(this) });
       });
 
       $.contextMenu({

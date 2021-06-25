@@ -129,7 +129,7 @@
         if ($el.hasClass('jstBool')) type = 'boolean';
         if ($el.hasClass('jstNum')) type = 'number';
         if ($el.hasClass('jstDate')) type = 'date';
-        updateVariable(type, { $trigger : $el });
+        updateVariable(type, { $trigger: $el });
       });
 
       $.contextMenu({

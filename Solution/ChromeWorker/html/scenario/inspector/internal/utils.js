@@ -11,9 +11,12 @@
       let previous = clean(oldValue);
       if (variable === previous) return;
 
-      const path = pointer.slice(1).split('/').reduce((path, key, idx) => {
-        return path + (idx !== 0 ? (/^\d+$/.test(key) ? `[${key}]` : `['${key}']`) : key);
-      }, '');
+      const { root, path, isGlobal } = pointer.slice(1).split('/').reduce((data, key, idx) => {
+        if (idx !== 0) data.path += /^\d+$/.test(key) ? `[${key}]` : `['${key}']`;
+        data.root = key.replace('GLOBAL:', '');
+        data.isGlobal = key.includes('GLOBAL');
+        return data;
+      }, { path: '', root: '', isGlobal: false });
 
       if (type === 'number') {
         variable = parseFloat(variable) || `"${variable}"`;
@@ -27,7 +30,19 @@
         variable = `"${variable}"`;
       }
 
-      BrowserAutomationStudio_Execute(`VAR_${path} = ${variable};\nsection_start('test', -2)!`, false);
+      if (isGlobal) {
+        const code = [
+          `var obj = JSON.parse(P('basglobal', '${root}') || '{}');`,
+          `obj${path} = ${variable}`,
+          `PSet('basglobal', '${root}', JSON.stringify(obj));`,
+          `delete obj;`,
+          `section_start('test', -2)!`,
+        ].join('\n');
+        console.log(code);
+        BrowserAutomationStudio_Execute(code, false);
+      } else {
+        BrowserAutomationStudio_Execute(`VAR_${root}${path} = ${variable};\nsection_start('test', -2)!`, false);
+      }
     }
   };
 })(window, jQuery);

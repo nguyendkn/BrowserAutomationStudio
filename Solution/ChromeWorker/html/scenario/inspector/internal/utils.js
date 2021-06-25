@@ -6,7 +6,7 @@
   const clean = (str) => trimQuoteRight(trimQuoteLeft(str));
 
   global.Scenario.utils = {
-    updateVariable: function (newValue, oldValue, pointer, type) {
+    updateVariable(newValue, oldValue, pointer, type) {
       let variable = clean(newValue);
       let previous = clean(oldValue);
       if (variable === previous) return;

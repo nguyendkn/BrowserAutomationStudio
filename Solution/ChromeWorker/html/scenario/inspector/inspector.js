@@ -1,4 +1,4 @@
-(function (global) {
+(function (global, $) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
       callStackPanelScroll: 0,
@@ -120,16 +120,19 @@
           $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
         });
 
+      $(document).on('keydown', '[data-path][contenteditable]', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          $(this).trigger('blur');
+        }
+      });
+
       $(document).on('focus', '[data-path][contenteditable]', function (e) {
-        const $el = $(this); $el.data('oldValue', $el.text());
+        const $el = $(this); $el.data('value', $el.text());
       });
 
       $(document).on('blur', '[data-path][contenteditable]', function (e) {
-        const $el = $(this); let type = 'string';
-        if ($el.hasClass('jstBool')) type = 'boolean';
-        if ($el.hasClass('jstNum')) type = 'number';
-        if ($el.hasClass('jstDate')) type = 'date';
-        updateVariable(type, { $trigger: $el });
+        updateVariable({ $trigger: $(this) });
       });
 
       $.contextMenu({
@@ -142,11 +145,14 @@
         }
       });
 
-      function updateVariable(type, { $trigger }) {
-        const oldValue = $trigger.data('oldValue');
-        const newValue = $trigger.text();
-        const path = $trigger.data('path');
-        Scenario.utils.updateVariable(newValue, oldValue, path, type);
+      function updateVariable({ $trigger }, type) {
+        if (!type) {
+          type = 'string';
+          if ($trigger.hasClass('jstBool')) type = 'boolean';
+          if ($trigger.hasClass('jstNum')) type = 'number';
+          if ($trigger.hasClass('jstDate')) type = 'date';
+        }
+        Scenario.utils.updateVariable($trigger.text(), $trigger.data('value'), $trigger.data('path'), type);
       }
 
       this.model = model;
@@ -284,4 +290,4 @@
   });
 
   global.Scenario.Inspector = InspectorView;
-})(window);
+})(window, jQuery);

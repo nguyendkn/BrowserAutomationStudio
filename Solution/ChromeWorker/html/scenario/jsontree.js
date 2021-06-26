@@ -1,14 +1,5 @@
 
-var JSONTree = (function() {
-  var escapeMap = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    '\'': '&#x27;',
-    '/': '&#x2F;',
-  };
-  
+var JSONTree = (function() {  
   var defaultAttributes = {
     contenteditable: true,
     spellcheck: false,
@@ -23,12 +14,6 @@ var JSONTree = (function() {
     path = [];
     id = 0;
     return _element(_jsVal('', data, 0, false), { class: 'jstValue' });
-  };
-
-  var _escape = function(text) {
-    return text.replace(/[&<>'"]/g, function(c) {
-      return escapeMap[c];
-    });
   };
 
   var _path = function(name) {
@@ -132,7 +117,7 @@ var JSONTree = (function() {
     if (cut["cut"]) {
       clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$(\"#" + id + "\").text(b64_to_utf8(" + _quote(utf8_to_b64(_quote(value))) + "));$(this).hide()'></i>"
     }
-    return _element(_indent(_quote(_escape(cut["data"])), depth), { class: 'jstStr', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
+    return _element(_indent(_quote(_.escape(cut["data"])), depth), { class: 'jstStr', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
   };
 
   var _jsNum = function(name, value, depth) {
@@ -152,7 +137,7 @@ var JSONTree = (function() {
   };
 
   var _property = function(name, value, depth) {
-    var property = _indent(_escape(name) + ': ', depth);
+    var property = _indent(_.escape(name) + ': ', depth);
     var propertyValue = _element(_jsVal(name, value, depth, false), {});
     return _element(property + propertyValue, {class: 'jstProperty'});
   }

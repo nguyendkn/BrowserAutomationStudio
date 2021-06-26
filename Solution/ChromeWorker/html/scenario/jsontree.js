@@ -1,22 +1,17 @@
 
 var JSONTree = (function() {
-
   var escapeMap = {
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
     '\'': '&#x27;',
-    '/': '&#x2F;'
+    '/': '&#x2F;',
   };
   
   var defaultAttributes = {
     contenteditable: true,
     spellcheck: false,
-  };
-
-  var defaultSettings = {
-    indent: 2
   };
 
   var id = 0;
@@ -101,10 +96,7 @@ var JSONTree = (function() {
     if(depth > 0)
       body.push(_openBracket('{', indent ? depth : 0, id));
 
-    var attrs = {id: id}
-    if (depth > 1) attrs.dataopen = "true"
-    body.push(_element(content, attrs))
-
+    body.push(_element(content, { id }))
     if (depth > 0) body.push(_closeBracket('}', depth));
     
     body = body.join('\n');
@@ -124,10 +116,7 @@ var JSONTree = (function() {
     if(depth > 0)
       body.push(_openBracket('[', indent ? depth : 0, id))
 
-    var attrs = {id: id}
-    if (depth > 1) attrs.dataopen = "true"
-    body.push(_element(content, attrs))
-
+    body.push(_element(content, { id }))
     if (depth > 0) body.push(_closeBracket(']', depth))
 
     body = body.join('\n');
@@ -140,8 +129,7 @@ var JSONTree = (function() {
     var cut = _cut(value)
     var id = _id()
     var clip = ""
-    if(cut["cut"])
-    {
+    if (cut["cut"]) {
       clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$(\"#" + id + "\").text(b64_to_utf8(" + _quote(utf8_to_b64(_quote(value))) + "));$(this).hide()'></i>"
     }
     return _element(_indent(_quote(_escape(cut["data"])), depth), { class: 'jstStr', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;

@@ -248,8 +248,8 @@
       if (Array.isArray(state.objects)) {
         state.objects.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && !$el.hasClass('jstFolded')) {
-            return $el.children('.jstFold').click();
+          if (folded && !$el.hasClass('jstCollapsed')) {
+            return $el.prevAll('.jstCollapse').click();
           }
           $el.children('.jstExpand').click();
         });
@@ -258,8 +258,8 @@
       if (Array.isArray(state.arrays)) {
         state.arrays.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && !$el.hasClass('jstFolded')) {
-            return $el.children('.jstFold').click();
+          if (folded && !$el.hasClass('jstCollapsed')) {
+            return $el.prevAll('.jstCollapse').click();
           }
           $el.children('.jstExpand').click();
         });
@@ -274,12 +274,12 @@
       this.model.set('state', {
         objects: _.map($container.find('[data-type="object"]'), (el) => {
           const $el = $(el);
-          return { path: $el.data('path'), folded: $el.hasClass('jstFolded') };
+          return { path: $el.data('path'), folded: $el.hasClass('jstCollapsed') };
         }),
 
         arrays: _.map($container.find('[data-type="array"]'), (el) => {
           const $el = $(el);
-          return { path: $el.data('path'), folded: $el.hasClass('jstFolded') };
+          return { path: $el.data('path'), folded: $el.hasClass('jstCollapsed') };
         })
       });
 

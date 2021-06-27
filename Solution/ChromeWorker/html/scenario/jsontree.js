@@ -1,198 +1,160 @@
 
-var JSONTree = (function() {  
+var JSONTree = (function () {
   var defaultAttributes = {
     contenteditable: true,
     spellcheck: false,
   };
 
-  var id = 0;
-  var path = [];
+  var internalId = 0;
   var instances = 0;
+  var path = [];
 
-  this.create = function(data, settings) {
+  this.create = function (data, settings) {
     instances += 1;
-    path = [];
-    id = 0;
-    return _element(_jsVal('', data, 0, false), { class: 'jstValue' });
+    return '<div class="jstTree">' + _jsVal('', data) + '</div>';
   };
 
-  var _path = function(name) {
+  this.click = function (elem) {
+    var $collection = $(elem).nextAll('.jstList');
+
+    if ($collection.hasClass('jstCollapsed')) {
+      elem.className = 'jstCollapse';
+    } else {
+      elem.className = 'jstExpand';
+    }
+
+    $collection.toggleClass('jstCollapsed');
+    BrowserAutomationStudio_PreserveInterfaceState();
+  };
+
+  var _path = function (name) {
     return '/' + path.concat(name || '').filter((v) => v.length).join('/');
   };
 
-  var _id = function() {
-    return "jsontree_" + instances + '_' + id++;
+  var _id = function () {
+    return "jsontree_" + instances + '_' + internalId++;
   };
 
-  var _jsVal = function(name, value, depth, indent) {
-    if (value !== null) {
-      var type = typeof value;
-      switch (type) {
-        case 'boolean':
-          return _jsBool(name, value, indent ? depth : 0);
-        case 'number':
-          return _jsNum(name, value, indent ? depth : 0);
-        case 'string':
-          if(value.indexOf("__DATE__") == 0)
-          {
-            value = value.slice(8)
-            return _jsDate(name, value, indent ? depth : 0);
-          }
-          return _jsStr(name, value, indent ? depth : 0);
-        default:
-          if (value instanceof Array) {
-            return _jsArr(name, value, depth, indent);
-          } else {
-            return _jsObj(name, value, depth, indent);
-          }
-      }
-    } else {
-      return _jsNull(name, indent ? depth : 0);
+  var _jsVal = function (name, value) {
+    switch (typeof value) {
+      case 'boolean':
+        return _jsBool(name, value);
+      case 'number':
+        return _jsNum(name, value);
+      case 'string':
+        if (value.indexOf("__DATE__") == 0) {
+          value = value.slice(8)
+          return _jsDate(name, value);
+        }
+        return _jsStr(name, value);
+      default:
+        if (_.isNull(value)) {
+          return _jsNull(name);
+        }
+        if (_.isArray(value)) {
+          return _jsArr(name, value);
+        }
+        if (_.isObject(value)) {
+          return _jsObj(name, value);
+        }
+        throw new Error('Can not resolve value type');
     }
   };
 
-  var _jsObj = function(name, object, depth, indent) {
-    var id = _id(); path.push(name);
-    var content = Object.keys(object).sort((a, b) => {
-      var a = a.toUpperCase();
-      var b = b.toUpperCase();
-
-      if (a.indexOf("GLOBAL:") == 0 && b.indexOf("GLOBAL:") == 0 || a.indexOf("GLOBAL:") < 0 && b.indexOf("GLOBAL:") < 0) {
-        if (a < b) return -1;
-        if (a > b) return 1;
-        return 0
-      }
-
-      if (a.indexOf("GLOBAL:") == 0 && b.indexOf("GLOBAL:") < 0) {
-        return true
-      }
-
-      if (a.indexOf("GLOBAL:") < 0 && b.indexOf("GLOBAL:") == 0) {
-        return false
-      }
-
-      return true;
-    }).map((property) => {
-      return _property(property, object[property], depth + 1, true);
-    }).join(_comma());
-
-    var body = [];
-
-    if(depth > 0)
-      body.push(_openBracket('{', indent ? depth : 0, id));
-
-    body.push(_element(content, { id }))
-    if (depth > 0) body.push(_closeBracket('}', depth));
-    
-    body = body.join('\n');
-    var obj = _element(body, { 'data-type': 'object', 'data-path': _path() });
+  var _jsObj = function (name, object, isRoot) {
+    path.push(name);
+    const html = _collection(object, { 'data-type': 'object', 'data-path': _path() }, _id(), ['{', '}'], isRoot);
     path.pop();
-    return obj;
+    return html;
   };
 
-  var _jsArr = function(name, array, depth, indent) {
-    var id = _id(); path.push(name);
-    var content = array.map((element, index) => {
-      return _jsVal(index.toString(), element, depth + 1, true);
-    }).join(_comma());
-
-    var body = [];
-
-    if(depth > 0)
-      body.push(_openBracket('[', indent ? depth : 0, id))
-
-    body.push(_element(content, { id }))
-    if (depth > 0) body.push(_closeBracket(']', depth))
-
-    body = body.join('\n');
-    var arr = _element(body, { 'data-type': 'array', 'data-path': _path() })
+  var _jsArr = function (name, array, isRoot) {
+    path.push(name);
+    const html = _collection(array, { 'data-type': 'array', 'data-path': _path() }, _id(), ['[', ']'], isRoot);
     path.pop();
-    return arr;
+    return html;
   };
 
-  var _jsStr = function(name, value, depth) {
-    var cut = _cut(value)
-    var id = _id()
-    var clip = ""
-    if (cut["cut"]) {
-      clip = " <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$(\"#" + id + "\").text(b64_to_utf8(" + _quote(utf8_to_b64(_quote(value))) + "));$(this).hide()'></i>"
+  var _collapseElem = function (data) {
+    if ((_.isArray(data) || _.isObject(data)) && _.size(data)) {
+      var onClick = 'onclick="JSONTree.click(this); return false;"';
+      return '<span class="jstCollapse" ' + onClick + '></span>';
     }
-    return _element(_indent(_quote(_.escape(cut["data"])), depth), { class: 'jstStr', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
+    return '';
   };
 
-  var _jsNum = function(name, value, depth) {
-    return _element(_indent(value, depth), { class: 'jstNum', 'data-path': _path(name), ...defaultAttributes });
+  var _collection = function (target, attrs, id, [open, close]) {
+    const closing = _element(close, { id: `closing_${id}`, class: 'jstBracket' });
+    const opening = _element(open, { id: `opening_${id}`, class: 'jstBracket' });
+
+    var data = Object.keys(target).map((key, index, arr) => {
+      var html = ['<li class="jstItem">'];
+      html.push(_property(key, target[key]));
+      if (index !== arr.length - 1) {
+        html.push(_comma());
+      }
+      html.push('</li>');
+      return html.join('');
+    }).join('');
+
+    if (data.length) {
+      const element = _element(data, { class: 'jstList', ...attrs }, 'ul');
+      return `${opening}${_collapseElem(target)}${element}${closing}`;
+    }
+
+    return opening + closing;
   };
 
-  var _jsDate = function(name, value, depth) {
-    return _element(_indent(value, depth), { class: 'jstDate', 'data-path': _path(name), ...defaultAttributes });
+  var _jsStr = function (name, value) {
+    var _quote = function (value) {
+      return '"' + value + '"';
+    }
+    var _cut = function (value) {
+      return { data: (value.length > 100) ? value.substr(0, 97) + "..." : value, cut: value.length > 100 };
+    }
+    var cut = _cut(value);
+    var id = _id();
+    var clip = "";
+    if (cut.cut) {
+      clip = ` <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$("#${id}").text(b64_to_utf8("${_quote(utf8_to_b64(_quote(value)))}"));$(this).hide()'></i>`
+    }
+    return _element(_quote(_.escape(cut.data)), { class: 'jstStr', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
   };
 
-  var _jsBool = function(name, value, depth) {
-    return _element(_indent(value, depth), { class: 'jstBool', 'data-path': _path(name), ...defaultAttributes });
+  var _jsNum = function (name, value) {
+    return _element(value, { class: 'jstNum', 'data-path': _path(name), ...defaultAttributes });
   };
 
-  var _jsNull = function(name, depth) {
-    return _element(_indent('null', depth), { class: 'jstNull', 'data-path': _path(name), ...defaultAttributes });
+  var _jsDate = function (name, value) {
+    return _element(value, { class: 'jstDate', 'data-path': _path(name), ...defaultAttributes });
   };
 
-  var _property = function(name, value, depth) {
-    var property = _indent(_.escape(name) + ': ', depth);
-    var propertyValue = _element(_jsVal(name, value, depth, false), {});
-    return _element(property + propertyValue, {class: 'jstProperty'});
-  }
+  var _jsBool = function (name, value) {
+    return _element(value, { class: 'jstBool', 'data-path': _path(name), ...defaultAttributes });
+  };
 
-  var _quote = function(value) {
-    return '"' + value + '"';
-  }
+  var _jsNull = function (name) {
+    return _element('null', { class: 'jstNull', 'data-path': _path(name), ...defaultAttributes });
+  };
 
-  var _cut = function(value) {
-    return {data: (value.length > 100) ? value.substr(0,97) + "..." : value, cut: value.length > 100};
-  }
+  var _property = function (name, value) {
+    var property = _element(_.escape(name), { class: 'jstProperty' });
+    return [property + _colon(), _jsVal(name, value)].join('');
+  };
 
-  var _comma = function() {
-    return _element('\n', {class: 'jstComma'});
-  }
+  var _colon = function () {
+    return _element(': ', { class: 'jstColon' });
+  };
 
-  var _element = function(content, attrs) {
-    var attributes = Object.keys(attrs).map((key) => {
+  var _comma = function () {
+    return _element('\n', { class: 'jstComma' });
+  };
+
+  var _element = function (content, attrs, tag = 'span') {
+    attrs = Object.keys(attrs).map((key) => {
       return `${key}="${attrs[key]}"`;
     }).join(' ');
-    return `<span ${attributes}>${content}</span>`;
-  }
-
-  var _openBracket = function(symbol, depth, id) {
-    return (
-    _element(_indent(symbol, depth), {class: 'jstBracket'}) +
-    _element('', {class: 'jstFold', onclick: 'JSONTree.toggle(\'' + id + '\')'})
-    );
-  }
-
-  this.toggle = function(id) {
-    var element = document.getElementById(id);
-    var parent = element.parentNode;
-    var toggleButton = element.previousElementSibling;
-    if (element.className === '') {
-      element.className = 'jstHiddenBlock';
-      parent.className = 'jstFolded';
-      toggleButton.className = 'jstExpand';
-    } else {
-      element.className = '';
-      parent.className = '';
-      toggleButton.className = 'jstFold';
-    }
-    BrowserAutomationStudio_PreserveInterfaceState();
-  }
-
-  var _closeBracket = function(symbol, depth) {
-    return _element(_indent(symbol, depth), {});
-  }
-
-  var _indent = function(value, depth) {
-    depth = ((depth - 1) * 4)
-    if(depth < 0)
-      depth = 0
-    return Array(depth).join(' ') + value;
+    return `<${tag} ${attrs}>${content}</${tag}>`;
   };
 
   return this;

@@ -1,49 +1,79 @@
-.jstValue {
-    white-space: pre-wrap;
-    font-size: 10px;
-    font-weight: 400;
-    font-family: "Lucida Console", Monaco, monospace;
+ul.jstList {
+  padding-left: 15px;
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 0;
 }
-.jstComma {
-    white-space: pre-wrap;
+
+li.jstItem {
+  padding-left: 0px;
+  list-style: none;
+  position: relative;
 }
+
+.jstCollapse::before {
+  content: "-";
+}
+
+.jstExpand::before {
+  content: "+";
+}
+
+.jstCollapse {
+  user-select: none;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.jstExpand {
+  user-select: none;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
 .jstProperty {
-    color: #666;
-    word-wrap: break-word;
+  color: #666;
+  word-wrap: break-word;
 }
+
 .jstBracket {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
 }
+
+.jstComma {
+  white-space: pre-wrap;
+}
+
+.jstTree {
+  font-family: "Lucida Console", Monaco, monospace;
+  font-weight: 400;
+  font-size: 10px;
+}
+
 .jstBool {
-    color: #2525CC;
-}
-.jstNum {
-    color: #D036D0;
-}
-.jstDate {
-    color: #ce904a;
+  color: #2525cc;
 }
 
 .jstNull {
-    color: gray;
+  color: #d0d0d0;
 }
+
+.jstDate {
+  color: #ce904a;
+}
+
+.jstNull {
+  color: #808080;
+}
+
+.jstNum {
+  color: #d036d0;
+}
+
 .jstStr {
-    color: #2DB669;
+  color: #2db669;
 }
-.jstFold:after {
-    content: ' -';
-    cursor: pointer;
-}
-.jstExpand {
-    white-space: normal;
-}
-.jstExpand:after {
-    content: ' +';
-    cursor: pointer;
-}
-.jstFolded {
-    white-space: normal !important;
-}
-.jstHiddenBlock {
-    display: none;
+
+.jstCollapsed {
+  display: none;
 }

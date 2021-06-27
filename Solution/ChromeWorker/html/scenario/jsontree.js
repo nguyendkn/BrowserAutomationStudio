@@ -10,6 +10,9 @@ var JSONTree = (function () {
   var path = [];
 
   this.create = function (data, settings) {
+    if (!_isCollection(data)) {
+      throw new Error('The root should be an object or an array');
+    }
     instances += 1;
     return '<div class="jstTree">' + _jsVal('', data) + '</div>';
   };
@@ -75,8 +78,14 @@ var JSONTree = (function () {
     return html;
   };
 
+  var _isCollection = function(data) {
+    if (_.isArray(data)) return true;
+    if (_.isObject(data)) return true;
+    return false
+  };
+
   var _collapseElem = function (data) {
-    if ((_.isArray(data) || _.isObject(data)) && _.size(data)) {
+    if (_isCollection(data) && _.size(data)) {
       var onClick = 'onclick="JSONTree.click(this); return false;"';
       return '<span class="jstCollapse" ' + onClick + '></span>';
     }

@@ -12,9 +12,12 @@
       if (variable === previous) return;
 
       const { root, path, isGlobal } = pointer.slice(1).split('/').reduce((data, key, idx) => {
-        if (idx !== 0) data.path += /^\d+$/.test(key) ? `[${key}]` : `['${key}']`;
-        data.root = key.replace('GLOBAL:', '');
-        data.isGlobal = key.includes('GLOBAL');
+        if (idx === 0) {
+          data.root = key.replace('GLOBAL:', '');
+          data.isGlobal = key.includes('GLOBAL');
+        } else {
+          data.path += /^\d+$/.test(key) ? `[${key}]` : `['${key}']`;
+        }
         return data;
       }, { path: '', root: '', isGlobal: false });
 

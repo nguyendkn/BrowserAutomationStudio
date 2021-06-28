@@ -10,11 +10,18 @@ var JSONTree = (function () {
   var path = [];
 
   this.create = function (data, settings) {
-    if (!_isCollection(data)) {
-      throw new Error('The root should be an object or an array');
+    let root = '';
+
+    if (_.isArray(data)) {
+      root = _jsArr('', data);
     }
+
+    if (_.isObject(data)) {
+      root = _jsObj('', data);
+    }
+
     instances += 1;
-    return '<div class="jstTree">' + _jsVal('', data) + '</div>';
+    return `<div class="jstTree">${root}</div>`;
   };
 
   this.click = function (elem) {
@@ -64,42 +71,36 @@ var JSONTree = (function () {
     }
   };
 
-  var _jsObj = function (name, object, isRoot) {
+  var _jsObj = function (name, object) {
     path.push(name);
-    const html = _collection(object, { 'data-type': 'object', 'data-path': _path() }, _id(), ['{', '}'], isRoot);
+    const html = _collection(object, { 'data-type': 'object', 'data-path': _path() }, _id(), ['{', '}'], name === '');
     path.pop();
     return html;
   };
 
-  var _jsArr = function (name, array, isRoot) {
+  var _jsArr = function (name, array) {
     path.push(name);
-    const html = _collection(array, { 'data-type': 'array', 'data-path': _path() }, _id(), ['[', ']'], isRoot);
+    const html = _collection(array, { 'data-type': 'array', 'data-path': _path() }, _id(), ['[', ']'], name === '');
     path.pop();
     return html;
   };
 
-  var _isCollection = function(data) {
-    if (_.isArray(data)) return true;
-    if (_.isObject(data)) return true;
-    return false
-  };
-
-  var _collapseElem = function (data) {
-    if (_isCollection(data) && _.size(data)) {
+  var _collapse = function (data) {
+    if (_.size(data)) {
       var onClick = 'onclick="JSONTree.click(this); return false;"';
       return '<span class="jstCollapse" ' + onClick + '></span>';
     }
     return '';
   };
 
-  var _collection = function (target, attrs, id, [open, close]) {
+  var _collection = function (target, attrs, id, [open, close], isRoot) {
     const closing = _element(close, { id: `closing_${id}`, class: 'jstBracket' });
     const opening = _element(open, { id: `opening_${id}`, class: 'jstBracket' });
 
-    var data = Object.keys(target).map((key, index, arr) => {
+    var data = Object.keys(target).map((key, idx, arr) => {
       var html = ['<li class="jstItem">'];
       html.push(_property(key, target[key]));
-      if (index !== arr.length - 1) {
+      if (idx !== arr.length - 1) {
         html.push(_comma());
       }
       html.push('</li>');
@@ -108,7 +109,7 @@ var JSONTree = (function () {
 
     if (data.length) {
       const element = _element(data, { class: 'jstList', ...attrs }, 'ul');
-      return `${opening}${_collapseElem(target)}${element}${closing}`;
+      return `${opening}${_collapse(target)}${element}${closing}`;
     }
 
     return opening + closing;

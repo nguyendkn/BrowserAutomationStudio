@@ -181,6 +181,7 @@
       if (!this.interact) {
         this.interact = interact(this.el).resizable({
           edges: { top: true },
+          inertia: false,
           modifiers: [
             interact.modifiers.restrictSize({ min: { height: 100 } }),
             interact.modifiers.restrictSize({ max: { height: 290 } }),

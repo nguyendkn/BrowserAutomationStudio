@@ -71,16 +71,16 @@ var JSONTree = (function () {
     }
   };
 
-  var _jsObj = function (name, object) {
-    path.push(name);
-    const html = _collection(object, { 'data-type': 'object', 'data-path': _path() }, _id(), ['{', '}'], name === '');
+  var _jsObj = function (label, value) {
+    path.push(label);
+    const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, _id(), ['{', '}'], label === '');
     path.pop();
     return html;
   };
 
-  var _jsArr = function (name, array) {
-    path.push(name);
-    const html = _collection(array, { 'data-type': 'array', 'data-path': _path() }, _id(), ['[', ']'], name === '');
+  var _jsArr = function (label, value) {
+    path.push(label);
+    const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, _id(), ['[', ']'], label === '');
     path.pop();
     return html;
   };

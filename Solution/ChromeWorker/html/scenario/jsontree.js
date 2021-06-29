@@ -73,14 +73,14 @@ var JSONTree = (function () {
 
   var _jsObj = function (label, value) {
     path.push(label);
-    const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, _id(), ['{', '}'], label === '');
+    const html = _collection(value, { class: 'jstObject', 'data-path': _path() }, _id(), ['{', '}'], label === '');
     path.pop();
     return html;
   };
 
   var _jsArr = function (label, value) {
     path.push(label);
-    const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, _id(), ['[', ']'], label === '');
+    const html = _collection(value, { class: 'jstArray', 'data-path': _path() }, _id(), ['[', ']'], label === '');
     path.pop();
     return html;
   };

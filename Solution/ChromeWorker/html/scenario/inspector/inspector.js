@@ -273,12 +273,12 @@
       const $container = this.$('#inspectorContent');
 
       this.model.set('state', {
-        objects: _.map($container.find('[data-type="object"]'), (el) => {
+        objects: _.map($container.find('.jstObject'), (el) => {
           const $el = $(el);
           return { path: $el.data('path'), folded: $el.hasClass('jstCollapsed') };
         }),
 
-        arrays: _.map($container.find('[data-type="array"]'), (el) => {
+        arrays: _.map($container.find('.jstArray'), (el) => {
           const $el = $(el);
           return { path: $el.data('path'), folded: $el.hasClass('jstCollapsed') };
         })

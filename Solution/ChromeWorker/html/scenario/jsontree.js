@@ -21,20 +21,20 @@ var JSONTree = (function () {
 
     if (!listenersAttached) {
       $(document).on('click', '.jst-item > .fa-minus-circle', function (e) {
-        const $node = $(this).prev('span'), text = $node.text().slice(1, -1);
-        $node.text(`"${b64_to_utf8($node.data('value'))}"`);
-        $node.data('value', utf8_to_b64(text));
-
-        $(this).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        const $el = $(this), $node = $el.prev('span');
+        const text = $node.text().slice(1, -1);
+        $node.text(`"${b64_to_utf8($node.data('value'))}"`)
+          .data('value', utf8_to_b64(text));
+        $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
         return false;
       });
 
       $(document).on('click', '.jst-item > .fa-plus-circle', function (e) {
-        const $node = $(this).prev('span'), text = $node.text().slice(1, -1);
-        $node.text(`"${b64_to_utf8($node.data('value'))}"`);
-        $node.data('value', utf8_to_b64(text));
-
-        $(this).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        const $el = $(this), $node = $el.prev('span');
+        const text = $node.text().slice(1, -1);
+        $node.text(`"${b64_to_utf8($node.data('value'))}"`)
+          .data('value', utf8_to_b64(text));
+        $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
         return false;
       });
 
@@ -55,14 +55,14 @@ var JSONTree = (function () {
   };
 
   this.collapse = function (el) {
-    const $ul = $(el).next('ul').addClass('jst-collapsed');
-    $(el).removeClass().addClass('jst-expand');
+    const $el = $(el); $el.next('ul').addClass('jst-collapsed');
+    $el.removeClass().addClass('jst-expand');
     BrowserAutomationStudio_PreserveInterfaceState();
   };
 
   this.expand = function (el) {
-    const $ul = $(el).next('ul').removeClass('jst-collapsed');
-    $(el).removeClass().addClass('jst-collapse');
+    const $el = $(el); $el.next('ul').removeClass('jst-collapsed');
+    $el.removeClass().addClass('jst-collapse');
     BrowserAutomationStudio_PreserveInterfaceState();
   };
 
@@ -85,7 +85,7 @@ var JSONTree = (function () {
       case 'number':
         return _jsNumber(label, value);
       case 'string':
-        if (value.indexOf("__DATE__") == 0) {
+        if (value.indexOf('__DATE__') == 0) {
           value = value.slice(8)
           return _jsDate(label, value);
         }
@@ -148,9 +148,9 @@ var JSONTree = (function () {
   };
 
   var _jsString = function (name, value) {
-    const cut = value.length > 100;
-    const data = cut ? `${value.slice(0, 97)}...` : value;
-    const clip = cut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
+    const needCut = value.length > 100;
+    const data = needCut ? `${value.slice(0, 97)}...` : value;
+    const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
     return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(name), 'data-value': utf8_to_b64(value), ...defaultAttributes }) + clip;
   };
 

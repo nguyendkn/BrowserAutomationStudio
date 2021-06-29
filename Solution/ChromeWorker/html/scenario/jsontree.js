@@ -25,7 +25,7 @@ var JSONTree = (function () {
   };
 
   this.click = function (elem) {
-    var $collection = $(elem).nextAll('.jstList');
+    var $collection = $(elem).next('ul');
 
     if ($collection.hasClass('jstCollapsed')) {
       elem.className = 'jstCollapse';
@@ -73,14 +73,14 @@ var JSONTree = (function () {
 
   var _jsObj = function (label, value) {
     path.push(label);
-    const html = _collection(value, { class: 'jstObject', 'data-path': _path() }, _id(), ['{', '}'], label === '');
+    const html = _collection(value, { class: 'jstObject', 'data-path': _path() }, ['{', '}'], label === '');
     path.pop();
     return html;
   };
 
   var _jsArr = function (label, value) {
     path.push(label);
-    const html = _collection(value, { class: 'jstArray', 'data-path': _path() }, _id(), ['[', ']'], label === '');
+    const html = _collection(value, { class: 'jstArray', 'data-path': _path() }, ['[', ']'], label === '');
     path.pop();
     return html;
   };
@@ -93,9 +93,9 @@ var JSONTree = (function () {
     return '';
   };
 
-  var _collection = function (target, attrs, id, [open, close], isRoot) {
-    const closing = _element(close, { id: `closing_${id}`, class: 'jstBracket' });
-    const opening = _element(open, { id: `opening_${id}`, class: 'jstBracket' });
+  var _collection = function (target, attrs, [open, close], isRoot) {
+    const closing = _element(close, { class: 'jstBracket' });
+    const opening = _element(open, { class: 'jstBracket' });
 
     var data = Object.keys(target).map((key, idx, arr) => {
       var html = ['<li class="jstItem">'];

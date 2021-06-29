@@ -182,15 +182,17 @@
         this.interact = interact(this.el).resizable({
           edges: { top: true },
           inertia: false,
-          modifiers: [
-            interact.modifiers.restrictSize({ min: { height: 100 } }),
-            interact.modifiers.restrictSize({ max: { height: 290 } }),
-            interact.modifiers.restrictSize({ max: 'parent' })
-          ],
           listeners: {
-            move: ({ rect }) => {
-              this.$el.css('height', `${rect.height}px`);
-              this.model.set('height', rect.height);
+            move: ({ client }) => {
+              const h1 = $(functions).outerHeight();
+              const h2 = $(window).outerHeight();
+              let height = h2 - h1 - client.y;
+
+              height = Math.min(height, 290);
+              height = Math.max(height, 100);
+
+              this.$el.css('height', `${height}px`);
+              this.model.set('height', height);
             }
           }
         });

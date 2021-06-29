@@ -116,8 +116,8 @@
         })
         .on('diff:variables', ({ usage, path }) => {
           const $element = this.$(`[data-path="${path}"]`);
-          if ($element.data('type') === 'object') return;
-          if ($element.data('type') === 'array') return;
+          if ($element.hasClass('jstObject')) return;
+          if ($element.hasClass('jstArray')) return;
 
           const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
           $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);

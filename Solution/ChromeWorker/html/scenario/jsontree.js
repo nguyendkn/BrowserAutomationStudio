@@ -5,12 +5,11 @@ var JSONTree = (function () {
     spellcheck: false,
   };
 
-  var internalId = 0;
-  var instances = 0;
+  var listenersAttached = false;
   var path = [];
 
   this.create = function (data, settings) {
-    let root = '';
+    let root = ''; const self = this;
 
     if (_.isArray(data)) {
       root = _jsArray('', data);
@@ -20,29 +19,63 @@ var JSONTree = (function () {
       root = _jsObject('', data);
     }
 
-    instances += 1;
+    if (!listenersAttached) {
+      $(document).on('click', '.jst-item > .fa-minus-circle', function (e) {
+        const $node = $(this).prev('span'), text = $node.text().slice(1, -1);
+        $node.text(`"${b64_to_utf8($node.data('value'))}"`);
+        $node.data('value', utf8_to_b64(text));
+
+        $(this).removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        return false;
+      });
+
+      $(document).on('click', '.jst-item > .fa-plus-circle', function (e) {
+        const $node = $(this).prev('span'), text = $node.text().slice(1, -1);
+        $node.text(`"${b64_to_utf8($node.data('value'))}"`);
+        $node.data('value', utf8_to_b64(text));
+
+        $(this).removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        return false;
+      });
+
+      $(document).on('click', '.jst-collapse', function (e) {
+        self.collapse(this);
+        return false;
+      });
+
+      $(document).on('click', '.jst-expand', function (e) {
+        self.expand(this);
+        return false;
+      });
+
+      listenersAttached = true;
+    }
+
     return `<div class="jst-tree">${root}</div>`;
   };
 
-  this.toggle = function (elem) {
-    var $collection = $(elem).next('ul');
-
-    if ($collection.hasClass('jst-collapsed')) {
-      elem.className = 'jst-collapse';
-    } else {
-      elem.className = 'jst-expand';
-    }
-
-    $collection.toggleClass('jst-collapsed');
+  this.collapse = function (el) {
+    const $ul = $(el).next('ul').addClass('jst-collapsed');
+    $(el).removeClass().addClass('jst-expand');
     BrowserAutomationStudio_PreserveInterfaceState();
+  };
+
+  this.expand = function (el) {
+    const $ul = $(el).next('ul').removeClass('jst-collapsed');
+    $(el).removeClass().addClass('jst-collapse');
+    BrowserAutomationStudio_PreserveInterfaceState();
+  };
+
+  this.toggle = function (el) {
+    if ($(el).hasClass('jst-expand')) {
+      this.collapse(el);
+    } else {
+      this.expand(el);
+    }
   };
 
   var _path = function (name) {
     return '/' + path.concat(name || '').filter((v) => v.length).join('/');
-  };
-
-  var _id = function () {
-    return "jsontree_" + instances + '_' + internalId++;
   };
 
   var _jsValue = function (label, value) {
@@ -87,8 +120,7 @@ var JSONTree = (function () {
 
   var _collapse = function (data) {
     if (_.size(data)) {
-      var onClick = 'onclick="JSONTree.toggle(this); return false;"';
-      return '<span class="jst-collapse" ' + onClick + '></span>';
+      return '<span class="jst-collapse"></span>';
     }
     return '';
   };
@@ -116,19 +148,10 @@ var JSONTree = (function () {
   };
 
   var _jsString = function (name, value) {
-    var _quote = function (value) {
-      return '"' + value + '"';
-    }
-    var _cut = function (value) {
-      return { data: (value.length > 100) ? value.substr(0, 97) + "..." : value, cut: value.length > 100 };
-    }
-    var cut = _cut(value);
-    var id = _id();
-    var clip = "";
-    if (cut.cut) {
-      clip = ` <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$("#${id}").text(b64_to_utf8("${_quote(utf8_to_b64(_quote(value)))}"));$(this).hide()'></i>`
-    }
-    return _element(_quote(_.escape(cut.data)), { class: 'jst-node-string', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
+    const cut = value.length > 100;
+    const data = cut ? `${value.slice(0, 97)}...` : value;
+    const clip = cut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
+    return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(name), 'data-value': utf8_to_b64(value), ...defaultAttributes }) + clip;
   };
 
   var _jsBoolean = function (name, value) {

@@ -40,6 +40,7 @@
 #include "createemptyprofile.h"
 #include "readallfile.h"
 #include "base64.h"
+#include "writefile.h"
 
 
 #if defined(BAS_DEBUG)
@@ -2060,6 +2061,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if(Data->IsRecord)
     {
     settings.remote_debugging_port = Data->RemoteDebuggingPort;
+    }
+
+    if(Data->IsRecord)
+    {
+        WriteStringToFile("remote_debugging_port.txt", std::to_string(Data->RemoteDebuggingPort));
     }
 
 

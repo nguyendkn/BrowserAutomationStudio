@@ -194,7 +194,10 @@ int main(int argc, char *argv[])
     qDebug()<<CRYPTO_get_locking_callback();
 
     MainWindow w;
-    w.showMaximized();
+    if(qApp->arguments().indexOf("--silent") < 0)
+    {
+        w.showMaximized();
+    }
     (new ProfileBackgroundRemover())->Run();
     int res = a.exec();
     curl_global_cleanup();

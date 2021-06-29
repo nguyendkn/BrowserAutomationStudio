@@ -39,6 +39,7 @@
 #include "complexlogger.h"
 #include "filelogger.h"
 #include "systemtraynotifier.h"
+#include "nonetraynotifier.h"
 #include "toprightpositioner.h"
 #include "copyresourcecontroller.h"
 #include "versioninfo.h"
@@ -206,8 +207,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     LangModel = new LanguageModel(this);
 
-    TrayNotifier = new SystemTrayNotifier(this);
+    if(qApp->arguments().indexOf("--hide-tray-icon") < 0)
+    {
+        TrayNotifier = new SystemTrayNotifier(this);
+    }else
+    {
+        TrayNotifier = new NoneTrayNotifier(this);
+    }
+
     TrayNotifier->Init();
+
 
     BrowserFactory = 0;
 
@@ -424,6 +433,11 @@ MainWindow::MainWindow(QWidget *parent) :
         IsAutorun = true;
 
         OpenFromFileOrDisplayMessageBox(AutorunPath);
+        Record();
+    }
+
+    if(qApp->arguments().indexOf("--autostart-record") >= 0)
+    {
         Record();
     }
 
@@ -1011,6 +1025,11 @@ void MainWindow::Show()
 
 void MainWindow::ShowInternal()
 {
+    if(qApp->arguments().indexOf("--silent") >= 0)
+    {
+        hide();
+        return;
+    }
     if(!isVisible())
         show();
 
@@ -1670,7 +1689,10 @@ void MainWindow::StopAction()
         _ModuleManager->PackModules(ModulesPreserve);
         _ModuleManager->UnpackModules(ModulesPreserve);
     }
-    this->show();
+    if(qApp->arguments().indexOf("--silent") < 0)
+    {
+        this->show();
+    }
 
 }
 

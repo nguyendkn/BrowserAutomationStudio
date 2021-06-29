@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
     defaultProfile->setPersistentStoragePath("profile");
     defaultProfile->installUrlSchemeHandler("bas", new BasSchemeHandler());
 
-
     MainWindow w;
     w.show();
 

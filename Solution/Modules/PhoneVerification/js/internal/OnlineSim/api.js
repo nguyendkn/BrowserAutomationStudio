@@ -82,7 +82,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		
 		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.lastId, msg_list:0, clean:1}})!
 		var resp = _result_function();
@@ -109,7 +109,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 			return;
 		};
 		
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		
 		_call_function(api.makeRequest,{action:actions[status], options:{tzid:confirmData.id}})!
 		var resp = _result_function();
@@ -121,7 +121,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		var code = null;
 		
 		_call_function(api.getState,{number:number})!

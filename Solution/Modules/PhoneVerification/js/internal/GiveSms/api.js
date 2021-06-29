@@ -69,7 +69,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		
 		var options = {order_id:confirmData.id};
 		if(confirmData.repeat){
@@ -91,14 +91,14 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		var status = _function_argument("status").toString();
 		
 		_if(status=="-1" || status=="8", function(){
-			var taskId = _SMS.confirmData[number].id;
+			var taskId = _SMS.getConfirmData(number).id;
 			_call_function(api.makeRequest,{action:(status=="-1" ? "refusenumber" : "bannumber"), options:{order_id:taskId}})!
 		})!
 	};
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
-		var confirmData = _SMS.confirmData[number];
+		var confirmData = _SMS.getConfirmData(number);
 		var code = null;
 		
 		_call_function(api.getState,{number:number})!

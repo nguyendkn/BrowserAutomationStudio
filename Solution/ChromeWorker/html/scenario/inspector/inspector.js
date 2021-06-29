@@ -116,8 +116,8 @@
         })
         .on('diff:variables', ({ usage, path }) => {
           const $element = this.$(`[data-path="${path}"]`);
-          if ($element.hasClass('jstObject')) return;
-          if ($element.hasClass('jstArray')) return;
+          if ($element.data('type') === 'object') return;
+          if ($element.data('type') === 'array') return;
 
           const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
           $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
@@ -275,12 +275,12 @@
       const $container = this.$('#inspectorContent');
 
       this.model.set('state', {
-        objects: _.map($container.find('.jstObject'), (el) => {
+        objects: _.map($container.find('[data-type="object"]'), (el) => {
           const $el = $(el);
           return { path: $el.data('path'), folded: $el.hasClass('jst-collapsed') };
         }),
 
-        arrays: _.map($container.find('.jstArray'), (el) => {
+        arrays: _.map($container.find('[data-type="array"]'), (el) => {
           const $el = $(el);
           return { path: $el.data('path'), folded: $el.hasClass('jst-collapsed') };
         })

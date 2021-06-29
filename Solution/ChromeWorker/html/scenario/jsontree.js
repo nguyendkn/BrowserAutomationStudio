@@ -1,5 +1,4 @@
-
-var JSONTree = (function () {
+const JSONTree = (function () {
   var defaultAttributes = {
     contenteditable: true,
     spellcheck: false,

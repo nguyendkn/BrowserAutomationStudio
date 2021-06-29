@@ -157,9 +157,9 @@
       function updateVariable({ $trigger }, type) {
         if (!type) {
           type = 'string';
-          if ($trigger.hasClass('jstBool')) type = 'boolean';
-          if ($trigger.hasClass('jstNum')) type = 'number';
-          if ($trigger.hasClass('jstDate')) type = 'date';
+          if ($trigger.hasClass('jst-node-boolean')) type = 'boolean';
+          if ($trigger.hasClass('jst-node-number')) type = 'number';
+          if ($trigger.hasClass('jst-node-date')) type = 'date';
         }
         Scenario.utils.updateVariable($trigger.text(), $trigger.data('value'), $trigger.data('path'), type);
       }
@@ -251,20 +251,20 @@
       if (Array.isArray(state.objects)) {
         state.objects.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && !$el.hasClass('jstCollapsed')) {
-            return $el.prevAll('.jstCollapse').click();
+          if (folded && !$el.hasClass('jst-collapsed')) {
+            return $el.prevAll('.jst-collapse').click();
           }
-          $el.children('.jstExpand').click();
+          $el.children('.jst-expand').click();
         });
       }
 
       if (Array.isArray(state.arrays)) {
         state.arrays.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && !$el.hasClass('jstCollapsed')) {
-            return $el.prevAll('.jstCollapse').click();
+          if (folded && !$el.hasClass('jst-collapsed')) {
+            return $el.prevAll('.jst-collapse').click();
           }
-          $el.children('.jstExpand').click();
+          $el.children('.jst-expand').click();
         });
       }
 
@@ -277,12 +277,12 @@
       this.model.set('state', {
         objects: _.map($container.find('.jstObject'), (el) => {
           const $el = $(el);
-          return { path: $el.data('path'), folded: $el.hasClass('jstCollapsed') };
+          return { path: $el.data('path'), folded: $el.hasClass('jst-collapsed') };
         }),
 
         arrays: _.map($container.find('.jstArray'), (el) => {
           const $el = $(el);
-          return { path: $el.data('path'), folded: $el.hasClass('jstCollapsed') };
+          return { path: $el.data('path'), folded: $el.hasClass('jst-collapsed') };
         })
       });
 

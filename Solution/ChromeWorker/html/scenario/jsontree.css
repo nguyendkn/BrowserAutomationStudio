@@ -1,79 +1,86 @@
-ul.jstList {
-  padding-left: 15px;
-  list-style: none;
-  margin-top: 0;
-  margin-bottom: 0;
+.jst-tree > .jst-collapse {
+  display: none;
 }
 
-li.jstItem {
-  padding-left: 0px;
-  list-style: none;
-  position: relative;
+.jst-tree > .jst-bracket {
+  display: none;
 }
 
-.jstCollapse::before {
+.jst-tree > .jst-list {
+  padding: 0;
+}
+
+.jst-collapse:before {
   content: "-";
 }
 
-.jstExpand::before {
+.jst-expand:before {
   content: "+";
 }
 
-.jstCollapse {
-  user-select: none;
-  cursor: pointer;
-  padding: 0 2px;
+.jst-node-boolean {
+  color: #2525cc;
 }
 
-.jstExpand {
-  user-select: none;
-  cursor: pointer;
-  padding: 0 2px;
+.jst-node-number {
+  color: #d036d0;
 }
 
-.jstProperty {
-  color: #666;
+.jst-node-string {
+  color: #2db669;
+}
+
+.jst-node-date {
+  color: #ce904a;
+}
+
+.jst-node-null {
+  color: #808080;
+}
+
+.jst-collapsed {
+  display: none;
+}
+
+.jst-property {
   word-wrap: break-word;
+  color: #666;
 }
 
-.jstBracket {
+.jst-collapse {
+  user-select: none;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.jst-expand {
+  user-select: none;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.jst-bracket {
   white-space: pre-wrap;
 }
 
-.jstComma {
+.jst-comma {
   white-space: pre-wrap;
 }
 
-.jstTree {
+.jst-tree {
   font-family: "Lucida Console", Monaco, monospace;
   font-weight: 400;
   font-size: 10px;
 }
 
-.jstBool {
-  color: #2525cc;
+.jst-list {
+  padding-left: 15px;
+  list-style: none;
+  margin: 0;
 }
 
-.jstNull {
-  color: #d0d0d0;
-}
-
-.jstDate {
-  color: #ce904a;
-}
-
-.jstNull {
-  color: #808080;
-}
-
-.jstNum {
-  color: #d036d0;
-}
-
-.jstStr {
-  color: #2db669;
-}
-
-.jstCollapsed {
-  display: none;
+.jst-item {
+  padding-left: 0px;
+  list-style: none;
+  margin: 0;
 }

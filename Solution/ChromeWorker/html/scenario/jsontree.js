@@ -13,27 +13,27 @@ var JSONTree = (function () {
     let root = '';
 
     if (_.isArray(data)) {
-      root = _jsArr('', data);
+      root = _jsArray('', data);
     }
 
     if (_.isObject(data)) {
-      root = _jsObj('', data);
+      root = _jsObject('', data);
     }
 
     instances += 1;
-    return `<div class="jstTree">${root}</div>`;
+    return `<div class="jst-tree">${root}</div>`;
   };
 
-  this.click = function (elem) {
+  this.toggle = function (elem) {
     var $collection = $(elem).next('ul');
 
-    if ($collection.hasClass('jstCollapsed')) {
-      elem.className = 'jstCollapse';
+    if ($collection.hasClass('jst-collapsed')) {
+      elem.className = 'jst-collapse';
     } else {
-      elem.className = 'jstExpand';
+      elem.className = 'jst-expand';
     }
 
-    $collection.toggleClass('jstCollapsed');
+    $collection.toggleClass('jst-collapsed');
     BrowserAutomationStudio_PreserveInterfaceState();
   };
 
@@ -45,61 +45,61 @@ var JSONTree = (function () {
     return "jsontree_" + instances + '_' + internalId++;
   };
 
-  var _jsVal = function (name, value) {
+  var _jsValue = function (label, value) {
     switch (typeof value) {
       case 'boolean':
-        return _jsBool(name, value);
+        return _jsBoolean(label, value);
       case 'number':
-        return _jsNum(name, value);
+        return _jsNumber(label, value);
       case 'string':
         if (value.indexOf("__DATE__") == 0) {
           value = value.slice(8)
-          return _jsDate(name, value);
+          return _jsDate(label, value);
         }
-        return _jsStr(name, value);
+        return _jsString(label, value);
       default:
         if (_.isNull(value)) {
-          return _jsNull(name);
+          return _jsNull(label);
         }
         if (_.isArray(value)) {
-          return _jsArr(name, value);
+          return _jsArray(label, value);
         }
         if (_.isObject(value)) {
-          return _jsObj(name, value);
+          return _jsObject(label, value);
         }
         throw new Error('Can not resolve value type');
     }
   };
 
-  var _jsObj = function (label, value) {
+  var _jsObject = function (label, value) {
     path.push(label);
-    const html = _collection(value, { class: 'jstObject', 'data-path': _path() }, ['{', '}'], label === '');
+    const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, ['{', '}']);
     path.pop();
     return html;
   };
 
-  var _jsArr = function (label, value) {
+  var _jsArray = function (label, value) {
     path.push(label);
-    const html = _collection(value, { class: 'jstArray', 'data-path': _path() }, ['[', ']'], label === '');
+    const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, ['[', ']']);
     path.pop();
     return html;
   };
 
   var _collapse = function (data) {
     if (_.size(data)) {
-      var onClick = 'onclick="JSONTree.click(this); return false;"';
-      return '<span class="jstCollapse" ' + onClick + '></span>';
+      var onClick = 'onclick="JSONTree.toggle(this); return false;"';
+      return '<span class="jst-collapse" ' + onClick + '></span>';
     }
     return '';
   };
 
-  var _collection = function (target, attrs, [open, close], isRoot) {
-    const closing = _element(close, { class: 'jstBracket' });
-    const opening = _element(open, { class: 'jstBracket' });
+  var _collection = function (value, attrs, brackets) {
+    const closing = _element(brackets[1], { class: 'jst-bracket' });
+    const opening = _element(brackets[0], { class: 'jst-bracket' });
 
-    var data = Object.keys(target).map((key, idx, arr) => {
-      var html = ['<li class="jstItem">'];
-      html.push(_property(key, target[key]));
+    var data = Object.keys(value).map((key, idx, arr) => {
+      var html = ['<li class="jst-item">'];
+      html.push(_property(key, value[key]));
       if (idx !== arr.length - 1) {
         html.push(_comma());
       }
@@ -108,14 +108,14 @@ var JSONTree = (function () {
     }).join('');
 
     if (data.length) {
-      const element = _element(data, { class: 'jstList', ...attrs }, 'ul');
-      return `${opening}${_collapse(target)}${element}${closing}`;
+      const element = _element(data, { class: 'jst-list', ...attrs }, 'ul');
+      return `${opening}${_collapse(value)}${element}${closing}`;
     }
 
     return opening + closing;
   };
 
-  var _jsStr = function (name, value) {
+  var _jsString = function (name, value) {
     var _quote = function (value) {
       return '"' + value + '"';
     }
@@ -128,36 +128,36 @@ var JSONTree = (function () {
     if (cut.cut) {
       clip = ` <i class='fa fa-plus-circle' aria-hidden='true' style='cursor:pointer' onclick='$("#${id}").text(b64_to_utf8("${_quote(utf8_to_b64(_quote(value)))}"));$(this).hide()'></i>`
     }
-    return _element(_quote(_.escape(cut.data)), { class: 'jstStr', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
+    return _element(_quote(_.escape(cut.data)), { class: 'jst-node-string', id: id, 'data-path': _path(name), ...defaultAttributes }) + clip;
   };
 
-  var _jsNum = function (name, value) {
-    return _element(value, { class: 'jstNum', 'data-path': _path(name), ...defaultAttributes });
+  var _jsBoolean = function (name, value) {
+    return _element(value, { class: 'jst-node-boolean', 'data-path': _path(name), ...defaultAttributes });
+  };
+
+  var _jsNumber = function (name, value) {
+    return _element(value, { class: 'jst-node-number', 'data-path': _path(name), ...defaultAttributes });
   };
 
   var _jsDate = function (name, value) {
-    return _element(value, { class: 'jstDate', 'data-path': _path(name), ...defaultAttributes });
+    return _element(value, { class: 'jst-node-date', 'data-path': _path(name), ...defaultAttributes });
   };
 
-  var _jsBool = function (name, value) {
-    return _element(value, { class: 'jstBool', 'data-path': _path(name), ...defaultAttributes });
-  };
-
-  var _jsNull = function (name) {
-    return _element('null', { class: 'jstNull', 'data-path': _path(name), ...defaultAttributes });
+  var _jsNull = function (name, value) {
+    return _element(null, { class: 'jst-node-null', 'data-path': _path(name), ...defaultAttributes });
   };
 
   var _property = function (name, value) {
-    var property = _element(_.escape(name), { class: 'jstProperty' });
-    return [property + _colon(), _jsVal(name, value)].join('');
+    var property = _element(_.escape(name), { class: 'jst-property' });
+    return [property + _colon(), _jsValue(name, value)].join('');
   };
 
   var _colon = function () {
-    return _element(': ', { class: 'jstColon' });
+    return _element(': ', { class: 'jst-colon' });
   };
 
   var _comma = function () {
-    return _element('\n', { class: 'jstComma' });
+    return _element('\n', { class: 'jst-comma' });
   };
 
   var _element = function (content, attrs, tag = 'span') {

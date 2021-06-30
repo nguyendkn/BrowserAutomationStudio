@@ -19,32 +19,32 @@ const JSONTree = (function () {
     }
 
     if (!listenersAttached) {
-      $(document).on('click', '.jst-item > .fa-minus-circle', function (e) {
+      $(document).on('click', '.jst-item > .fa-minus-circle', function (event) {
+        event.preventDefault();
         const $el = $(this), $node = $el.prev('span');
         const text = $node.text().slice(1, -1);
-        $node.text(`"${b64_to_utf8($node.data('value'))}"`)
-          .data('value', utf8_to_b64(text));
+
+        $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
         $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
-        return false;
       });
 
-      $(document).on('click', '.jst-item > .fa-plus-circle', function (e) {
+      $(document).on('click', '.jst-item > .fa-plus-circle', function (event) {
+        event.preventDefault();
         const $el = $(this), $node = $el.prev('span');
         const text = $node.text().slice(1, -1);
-        $node.text(`"${b64_to_utf8($node.data('value'))}"`)
-          .data('value', utf8_to_b64(text));
+
+        $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
         $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
-        return false;
       });
 
-      $(document).on('click', '.jst-collapse', function (e) {
+      $(document).on('click', '.jst-collapse', function (event) {
+        event.preventDefault();
         self.collapse(this);
-        return false;
       });
 
-      $(document).on('click', '.jst-expand', function (e) {
+      $(document).on('click', '.jst-expand', function (event) {
+        event.preventDefault();
         self.expand(this);
-        return false;
       });
 
       listenersAttached = true;

@@ -50,7 +50,7 @@ const JSONTree = (function () {
       listenersAttached = true;
     }
 
-    return `<div class="jst-tree">${root}</div>`;
+    return `<div class="jst-root">${root}</div>`;
   };
 
   this.collapse = function (el) {

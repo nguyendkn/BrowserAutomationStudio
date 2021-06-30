@@ -12,15 +12,15 @@
   cursor: pointer;
 }
 
-.jst-tree > .jst-collapse {
+.jst-root > .jst-collapse {
   display: none;
 }
 
-.jst-tree > .jst-bracket {
+.jst-root > .jst-bracket {
   display: none;
 }
 
-.jst-tree > .jst-list {
+.jst-root > .jst-list {
   padding: 0;
 }
 
@@ -81,7 +81,7 @@
   white-space: pre-wrap;
 }
 
-.jst-tree {
+.jst-root {
   font-family: "Lucida Console", Monaco, monospace;
   font-weight: 400;
   font-size: 10px;

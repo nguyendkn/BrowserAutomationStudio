@@ -117,14 +117,8 @@ const JSONTree = (function () {
     return html;
   }
 
-  function _collapse(data) {
-    if (_.size(data)) {
-      return '<span class="jst-collapse"></span>';
-    }
-    return '';
-  }
-
   function _collection(value, attrs, brackets) {
+    const collapse = !_.isEmpty(value) ? `<span class="jst-collapse"></span>` : '';
     const closing = _element(brackets[1], { class: 'jst-bracket' });
     const opening = _element(brackets[0], { class: 'jst-bracket' });
 
@@ -140,7 +134,7 @@ const JSONTree = (function () {
 
     if (data.length) {
       const element = _element(data, { class: 'jst-list', ...attrs }, 'ul');
-      return `${opening}${_collapse(value)}${element}${closing}`;
+      return `${opening}${collapse}${element}${closing}`;
     }
 
     return opening + closing;

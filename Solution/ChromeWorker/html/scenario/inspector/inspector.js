@@ -93,8 +93,7 @@
 
           if (!isEmpty) {
             morphdom($target[0], `<div id="inspectorResourcesData">${JSONTree.create(data)}</div>`, {
-              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
-              childrenOnly: true
+              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl)
             });
             this.loadState();
           }
@@ -106,8 +105,7 @@
 
           if (!isEmpty) {
             morphdom($target[0], `<div id="inspectorVariablesData">${JSONTree.create(data)}</div>`, {
-              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl),
-              childrenOnly: true
+              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl)
             });
             this.loadState();
           }

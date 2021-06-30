@@ -51,19 +51,19 @@ const JSONTree = (function () {
     }
 
     return `<div class="jst-root">${root}</div>`;
-  };
+  }
 
   this.collapse = function (el) {
     const $el = $(el); $el.next('ul').addClass('jst-collapsed');
     $el.removeClass().addClass('jst-expand');
     BrowserAutomationStudio_PreserveInterfaceState();
-  };
+  }
 
   this.expand = function (el) {
     const $el = $(el); $el.next('ul').removeClass('jst-collapsed');
     $el.removeClass().addClass('jst-collapse');
     BrowserAutomationStudio_PreserveInterfaceState();
-  };
+  }
 
   this.toggle = function (el) {
     if ($(el).hasClass('jst-expand')) {
@@ -71,60 +71,60 @@ const JSONTree = (function () {
     } else {
       this.expand(el);
     }
-  };
+  }
 
-  var _path = function (name) {
+  function _path(name) {
     return '/' + path.concat(name || '').filter((v) => v.length).join('/');
-  };
+  }
 
-  var _jsValue = function (label, value) {
+  function _jsValue(name, value) {
     switch (typeof value) {
       case 'boolean':
-        return _jsBoolean(label, value);
+        return _jsBoolean(name, value);
       case 'number':
-        return _jsNumber(label, value);
+        return _jsNumber(name, value);
       case 'string':
         if (value.indexOf('__DATE__') == 0) {
           value = value.slice(8)
-          return _jsDate(label, value);
+          return _jsDate(name, value);
         }
-        return _jsString(label, value);
+        return _jsString(name, value);
       default:
         if (_.isNull(value)) {
-          return _jsNull(label);
+          return _jsNull(name);
         }
         if (_.isArray(value)) {
-          return _jsArray(label, value);
+          return _jsArray(name, value);
         }
         if (_.isObject(value)) {
-          return _jsObject(label, value);
+          return _jsObject(name, value);
         }
         throw new Error('Can not resolve value type');
     }
-  };
+  }
 
-  var _jsObject = function (label, value) {
-    path.push(label);
+  function _jsObject(name, value) {
+    path.push(name);
     const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, ['{', '}']);
     path.pop();
     return html;
-  };
+  }
 
-  var _jsArray = function (label, value) {
-    path.push(label);
+  function _jsArray(name, value) {
+    path.push(name);
     const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, ['[', ']']);
     path.pop();
     return html;
-  };
+  }
 
-  var _collapse = function (data) {
+  function _collapse(data) {
     if (_.size(data)) {
       return '<span class="jst-collapse"></span>';
     }
     return '';
-  };
+  }
 
-  var _collection = function (value, attrs, brackets) {
+  function _collection(value, attrs, brackets) {
     const closing = _element(brackets[1], { class: 'jst-bracket' });
     const opening = _element(brackets[0], { class: 'jst-bracket' });
 
@@ -144,50 +144,50 @@ const JSONTree = (function () {
     }
 
     return opening + closing;
-  };
+  }
 
-  var _jsString = function (name, value) {
+  function _jsString(name, value) {
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
     return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(name), 'data-value': utf8_to_b64(value), ...defaultAttributes }) + clip;
-  };
+  }
 
-  var _jsBoolean = function (name, value) {
+  function _jsBoolean(name, value) {
     return _element(value, { class: 'jst-node-boolean', 'data-path': _path(name), ...defaultAttributes });
-  };
+  }
 
-  var _jsNumber = function (name, value) {
+  function _jsNumber(name, value) {
     return _element(value, { class: 'jst-node-number', 'data-path': _path(name), ...defaultAttributes });
-  };
+  }
 
-  var _jsDate = function (name, value) {
+  function _jsDate(name, value) {
     return _element(value, { class: 'jst-node-date', 'data-path': _path(name), ...defaultAttributes });
-  };
+  }
 
-  var _jsNull = function (name, value) {
+  function _jsNull(name, value) {
     return _element(null, { class: 'jst-node-null', 'data-path': _path(name), ...defaultAttributes });
-  };
+  }
 
-  var _property = function (name, value) {
+  function _property(name, value) {
     var property = _element(_.escape(name), { class: 'jst-property' });
     return [property + _colon(), _jsValue(name, value)].join('');
-  };
+  }
 
-  var _colon = function () {
+  function _colon() {
     return _element(': ', { class: 'jst-colon' });
-  };
+  }
 
-  var _comma = function () {
+  function _comma() {
     return _element('\n', { class: 'jst-comma' });
-  };
+  }
 
-  var _element = function (content, attrs, tag = 'span') {
+  function _element(content, attrs, tag = 'span') {
     attrs = Object.keys(attrs).map((key) => {
       return `${key}="${attrs[key]}"`;
     }).join(' ');
     return `<${tag} ${attrs}>${content}</${tag}>`;
-  };
+  }
 
   return this;
 })();

@@ -5572,7 +5572,7 @@
         if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
         {
           BrowserAutomationStudio_AskForVariablesUpdate()
-        }else if(_Inspector.model.get("showContent"))
+        }else
         {
           _Inspector.showPendingNotice();
         }
@@ -5882,10 +5882,7 @@
 
       if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
       {
-        if(_Inspector.model.get("showContent"))
-        {
-          _Inspector.hidePendingNotice();
-        }
+        _Inspector.hidePendingNotice();
         BrowserAutomationStudio_AskForVariablesUpdate()
       }
 

@@ -16,9 +16,7 @@
 
     variablesData: {},
 
-    update(data = []) {
-      const [variables, resources] = data;
-
+    update([variables, resources] = []) {
       if (resources != null) {
         const diff = jsonpatch.compare(resources, this.get('resources'));
         this.unset('resources', { silent: true }).set('resources', resources);

@@ -29,9 +29,9 @@
             this.resourcesData[path] = { usage: 0, value, op };
           });
         }
-        _.each(this.resourcesData, (entry, path) => {
-          entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
-          this.trigger('diff:resources', { ...entry, path });
+        _.each(this.resourcesData, (item, path) => {
+          item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
+          this.trigger('diff:resources', { ...item, path });
         });
       }
 
@@ -45,9 +45,9 @@
             this.variablesData[path] = { usage: 0, value, op };
           });
         }
-        _.each(this.variablesData, (entry, path) => {
-          entry.usage = diff.some((v) => v.path === path) ? 1 : (entry.usage + 1);
-          this.trigger('diff:variables', { ...entry, path });
+        _.each(this.variablesData, (item, path) => {
+          item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
+          this.trigger('diff:variables', { ...item, path });
         });
       }
     }
@@ -89,28 +89,28 @@
     initialize() {
       const model = new InspectorModel()
         .on('change:resources', (__, data) => {
-          const $target = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
+          const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
 
           if (!isEmpty) {
-            morphdom($target[0], `<div id="inspectorResourcesData">${JSONTree.create(data)}</div>`, {
-              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl)
+            morphdom($data[0], `<div id="inspectorResourcesData">${JSONTree.create(data)}</div>`, {
+              onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
             });
             this.loadState();
           }
           this.$('#inspectorNoResources').toggle(isEmpty);
-          $target.toggle(!isEmpty);
+          $data.toggle(!isEmpty);
         })
         .on('change:variables', (__, data) => {
-          const $target = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
+          const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
 
           if (!isEmpty) {
-            morphdom($target[0], `<div id="inspectorVariablesData">${JSONTree.create(data)}</div>`, {
-              onBeforeElUpdated: (fromEl, toEl) => !fromEl.isEqualNode(toEl)
+            morphdom($data[0], `<div id="inspectorVariablesData">${JSONTree.create(data)}</div>`, {
+              onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
             });
             this.loadState();
           }
           this.$('#inspectorNoVariables').toggle(isEmpty);
-          $target.toggle(!isEmpty);
+          $data.toggle(!isEmpty);
         })
         .on('diff:variables', ({ usage, path }) => {
           const $element = this.$(`[data-path="${path}"]`);

@@ -19,7 +19,9 @@ const JSONTree = (function () {
     }
 
     if (!listenersAttached) {
-      $(document).on('click', '.jst-item > .fa-minus-circle', function (event) {
+      const $document = $(document);
+
+      $document.on('click', '.jst-item > .fa-minus-circle', function (event) {
         event.preventDefault();
         const $el = $(this), $node = $el.prev();
         const text = $node.text().slice(1, -1);
@@ -28,7 +30,7 @@ const JSONTree = (function () {
         $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
       });
 
-      $(document).on('click', '.jst-item > .fa-plus-circle', function (event) {
+      $document.on('click', '.jst-item > .fa-plus-circle', function (event) {
         event.preventDefault();
         const $el = $(this), $node = $el.prev();
         const text = $node.text().slice(1, -1);
@@ -37,12 +39,12 @@ const JSONTree = (function () {
         $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
       });
 
-      $(document).on('click', '.jst-collapse', function (event) {
+      $document.on('click', '.jst-collapse', function (event) {
         event.preventDefault();
         self.collapse(this);
       });
 
-      $(document).on('click', '.jst-expand', function (event) {
+      $document.on('click', '.jst-expand', function (event) {
         event.preventDefault();
         self.expand(this);
       });

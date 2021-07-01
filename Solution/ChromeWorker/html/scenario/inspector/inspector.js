@@ -1,4 +1,4 @@
-(function (global, $) {
+(function (global, $, _) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
       callStackPanelScroll: 0,
@@ -309,4 +309,4 @@
   });
 
   global.Scenario.Inspector = InspectorView;
-})(window, jQuery);
+})(window, jQuery, _);

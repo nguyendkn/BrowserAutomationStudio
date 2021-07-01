@@ -21,7 +21,7 @@ const JSONTree = (function () {
     if (!listenersAttached) {
       $(document).on('click', '.jst-item > .fa-minus-circle', function (event) {
         event.preventDefault();
-        const $el = $(this), $node = $el.prev('span');
+        const $el = $(this), $node = $el.prev();
         const text = $node.text().slice(1, -1);
 
         $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
@@ -30,7 +30,7 @@ const JSONTree = (function () {
 
       $(document).on('click', '.jst-item > .fa-plus-circle', function (event) {
         event.preventDefault();
-        const $el = $(this), $node = $el.prev('span');
+        const $el = $(this), $node = $el.prev();
         const text = $node.text().slice(1, -1);
 
         $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));

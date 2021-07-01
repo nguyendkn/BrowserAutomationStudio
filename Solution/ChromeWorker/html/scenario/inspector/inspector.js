@@ -123,7 +123,7 @@
 
       $(document).on('focusout', '[data-path][contenteditable]', function (e, data) {
         if (data && !data.update) return;
-        updateVariable({ $trigger: $(this) });
+        updateVariable(null, { $trigger: $(this) });
       });
 
       $(document).on('keydown', '[data-path][contenteditable]', function (e, data) {
@@ -145,14 +145,15 @@
       $.contextMenu({
         selector: '[data-path][contenteditable]',
         items: {
-          date: { name: tr('Date object'), callback: updateVariable },
-          boolean: { name: tr('Boolean'), callback: updateVariable },
-          string: { name: tr('String'), callback: updateVariable },
-          number: { name: tr('Number'), callback: updateVariable },
-        }
+          date: { name: tr('Date object') },
+          boolean: { name: tr('Boolean') },
+          string: { name: tr('String') },
+          number: { name: tr('Number') },
+        },
+        callback: updateVariable,
       });
 
-      function updateVariable({ $trigger }, type) {
+      function updateVariable(type, { $trigger }) {
         if (!type) {
           type = 'string';
           if ($trigger.hasClass('jst-node-boolean')) type = 'boolean';

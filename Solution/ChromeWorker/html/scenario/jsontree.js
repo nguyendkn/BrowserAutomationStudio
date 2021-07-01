@@ -4,18 +4,18 @@ const JSONTree = (function () {
     spellcheck: false,
   };
 
-  var listenersAttached = false;
-  var path = [];
+  let listenersAttached = false;
+  let path = [];
 
-  this.create = function (data, settings) {
+  this.create = function (data, options = {}) {
     let root = ''; const self = this;
 
     if (_.isArray(data)) {
-      root = _jsArray('', data);
+      root = _jsArray('', data, options.rootSort);
     }
 
     if (_.isObject(data)) {
-      root = _jsObject('', data);
+      root = _jsObject('', data, options.rootSort);
     }
 
     if (!listenersAttached) {
@@ -105,26 +105,27 @@ const JSONTree = (function () {
     }
   }
 
-  function _jsObject(name, value) {
+  function _jsObject(name, value, sortFn) {
     path.push(name);
     const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, ['{', '}']);
     path.pop();
     return html;
   }
 
-  function _jsArray(name, value) {
+  function _jsArray(name, value, sortFn) {
     path.push(name);
     const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, ['[', ']']);
     path.pop();
     return html;
   }
 
-  function _collection(value, attrs, brackets) {
+  function _collection(value, attrs, brackets, sortFn) {
     const collapse = !_.isEmpty(value) ? `<span class="jst-collapse"></span>` : '';
     const closing = _element(brackets[1], { class: 'jst-bracket' });
     const opening = _element(brackets[0], { class: 'jst-bracket' });
+    const keys = Object.keys(value); if (sortFn) keys.sort(sortFn);
 
-    var data = Object.keys(value).map((key, idx, arr) => {
+    var data = keys.map((key, idx, arr) => {
       var html = ['<li class="jst-item">'];
       html.push(_property(key, value[key]));
       if (idx !== arr.length - 1) {

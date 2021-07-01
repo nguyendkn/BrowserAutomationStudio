@@ -51,7 +51,7 @@
       }
     },
 
-    variablesSorting: {
+    sortBy: {
       globalsFirst: (a, b) => {
         a = a.toUpperCase();
         b = b.toUpperCase();

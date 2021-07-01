@@ -89,9 +89,10 @@
 
       model.on('change:resources', (__, data) => {
         const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
+        const rootSort = utils.sortBy.globalsLast;
 
         if (!isEmpty) {
-          morphdom($data[0], `<div id="inspectorResourcesData">${JSONTree.create(data)}</div>`, {
+          morphdom($data[0], `<div id="inspectorResourcesData">${JSONTree.create(data, { rootSort })}</div>`, {
             onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
           });
           this.loadState();
@@ -102,9 +103,10 @@
 
       model.on('change:variables', (__, data) => {
         const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
+        const rootSort = utils.sortBy.globalsLast;
 
         if (!isEmpty) {
-          morphdom($data[0], `<div id="inspectorVariablesData">${JSONTree.create(data)}</div>`, {
+          morphdom($data[0], `<div id="inspectorVariablesData">${JSONTree.create(data, { rootSort })}</div>`, {
             onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
           });
           this.loadState();

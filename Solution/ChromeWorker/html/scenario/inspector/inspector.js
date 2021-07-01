@@ -87,39 +87,41 @@
     `),
 
     initialize() {
-      const model = new InspectorModel()
-        .on('change:resources', (__, data) => {
-          const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
+      const model = new InspectorModel();
 
-          if (!isEmpty) {
-            morphdom($data[0], `<div id="inspectorResourcesData">${JSONTree.create(data)}</div>`, {
-              onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
-            });
-            this.loadState();
-          }
-          this.$('#inspectorNoResources').toggle(isEmpty);
-          $data.toggle(!isEmpty);
-        })
-        .on('change:variables', (__, data) => {
-          const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
+      model.on('change:resources', (__, data) => {
+        const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
 
-          if (!isEmpty) {
-            morphdom($data[0], `<div id="inspectorVariablesData">${JSONTree.create(data)}</div>`, {
-              onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
-            });
-            this.loadState();
-          }
-          this.$('#inspectorNoVariables').toggle(isEmpty);
-          $data.toggle(!isEmpty);
-        })
-        .on('diff:variables', ({ usage, path }) => {
-          const $element = this.$(`[data-path="${path}"]`);
-          if ($element.data('type') === 'object') return;
-          if ($element.data('type') === 'array') return;
+        if (!isEmpty) {
+          morphdom($data[0], `<div id="inspectorResourcesData">${JSONTree.create(data)}</div>`, {
+            onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
+          });
+          this.loadState();
+        }
+        this.$('#inspectorNoResources').toggle(isEmpty);
+        $data.toggle(!isEmpty);
+      });
 
-          const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
-          $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
-        });
+      model.on('change:variables', (__, data) => {
+        const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
+
+        if (!isEmpty) {
+          morphdom($data[0], `<div id="inspectorVariablesData">${JSONTree.create(data)}</div>`, {
+            onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
+          });
+          this.loadState();
+        }
+        this.$('#inspectorNoVariables').toggle(isEmpty);
+        $data.toggle(!isEmpty);
+      });
+
+      model.on('diff:variables', ({ usage, path }) => {
+        const $element = this.$(`[data-path="${path}"]`);
+        if ($element.data('type') === 'object') return;
+
+        const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
+        $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
+      });
 
       $(document).on('focusout', '[data-path][contenteditable]', function (e, data) {
         if (data && !data.update) return;

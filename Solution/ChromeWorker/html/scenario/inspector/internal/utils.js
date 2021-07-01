@@ -49,6 +49,38 @@
         } catch (e) {}`
         BrowserAutomationStudio_Execute(code, false);
       }
+    },
+
+    variablesSorting: {
+      globalsFirst: (a, b) => {
+        a = a.toUpperCase();
+        b = b.toUpperCase();
+
+        if (a.startsWith('GLOBAL:') && b.startsWith('GLOBAL:') || !a.includes('GLOBAL:') && !b.includes('GLOBAL:')) {
+          if (a < b) return -1;
+          if (a > b) return 1;
+          return 0;
+        } else if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
+          return -1;
+        } else if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
+          return 1;
+        }
+      },
+
+      globalsLast: (a, b) => {
+        a = a.toUpperCase();
+        b = b.toUpperCase();
+
+        if (a.startsWith('GLOBAL:') && b.startsWith('GLOBAL:') || !a.includes('GLOBAL:') && !b.includes('GLOBAL:')) {
+          if (a < b) return -1;
+          if (a > b) return 1;
+          return 0;
+        } else if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
+          return -1;
+        } else if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
+          return 1;
+        }
+      },
     }
   };
 })(window, jQuery);

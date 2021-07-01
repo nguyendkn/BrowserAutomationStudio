@@ -67,7 +67,7 @@
         }
       },
 
-      globalsLast: (a, b) => {
+      localsFirst: (a, b) => {
         a = a.toUpperCase();
         b = b.toUpperCase();
 

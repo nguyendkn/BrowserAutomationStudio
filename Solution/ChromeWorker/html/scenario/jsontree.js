@@ -20,11 +20,11 @@
       this.data = data;
       this.root = '';
 
-      if (_.isArray(data)) {
+      if (isArray(data)) {
         this.root = _jsArray('', data, this.options.rootSort);
       }
 
-      if (_.isObject(data)) {
+      if (isObject(data)) {
         this.root = _jsObject('', data, this.options.rootSort);
       }
 
@@ -105,13 +105,13 @@
         }
         return _jsString(name, value);
       default:
-        if (_.isNull(value)) {
-          return _jsNull(name);
+        if (value == null) {
+          return _jsNull(name, value);
         }
-        if (_.isArray(value)) {
+        if (isArray(value)) {
           return _jsArray(name, value);
         }
-        if (_.isObject(value)) {
+        if (isObject(value)) {
           return _jsObject(name, value);
         }
         throw new Error('Can not resolve value type');
@@ -197,6 +197,14 @@
       return `${key}="${attrs[key]}"`;
     }).join(' ');
     return `<${tag} ${attrs}>${content}</${tag}>`;
+  }
+
+  function isObject(obj) {
+    return Object.prototype.toString.call(obj) === '[object Object]';
+  }
+
+  function isArray(obj) {
+    return Object.prototype.toString.call(obj) === '[object Array]';
   }
 
   global.JSONTree = JSONTree;

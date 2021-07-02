@@ -1,15 +1,19 @@
-.jst-node-string[data-value] {
+span.jst-node-string[data-value] {
   word-break: break-all;
 }
 
-.jst-item > .fa-minus-circle {
+li.jst-item > .fa-minus-circle {
   margin-left: 2px;
   cursor: pointer;
 }
 
-.jst-item > .fa-plus-circle {
+li.jst-item > .fa-plus-circle {
   margin-left: 2px;
   cursor: pointer;
+}
+
+li.jst-item + li.jst-item {
+  margin-top: 2px;
 }
 
 .jst-root > .jst-collapse {

@@ -92,10 +92,9 @@
 
         if (!isEmpty) {
           if (!this.resourcesTree) {
-            this.resourcesTree = new JSONTree($data[0], data, { rootSort: Scenario.utils.sortBy.localsFirst });
-          } else {
-            this.resourcesTree.update(data);
+            this.resourcesTree = new JSONTree($data[0], { rootSort: Scenario.utils.sortBy.localsFirst });
           }
+          this.resourcesTree.update(data);
           this.loadState();
         }
         this.$('#inspectorNoResources').toggle(isEmpty);
@@ -107,10 +106,9 @@
 
         if (!isEmpty) {
           if (!this.variablesTree) {
-            this.variablesTree = new JSONTree($data[0], data, { rootSort: Scenario.utils.sortBy.localsFirst });
-          } else {
-            this.variablesTree.update(data);
+            this.variablesTree = new JSONTree($data[0], { rootSort: Scenario.utils.sortBy.localsFirst });
           }
+          this.variablesTree.update(data);
           this.loadState();
         }
         this.$('#inspectorNoVariables').toggle(isEmpty);

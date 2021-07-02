@@ -7,35 +7,33 @@
   let path = [];
 
   class JSONTree {
-    constructor (el, data, options) {
-      el.insertAdjacentHTML('beforeend', `<div class="jst-root"></div>`);
-      this.options = options;
-      this.data = data;
-      this.el = el;
-      this.update();
+    constructor (elem, config) {
+      elem.insertAdjacentHTML('beforeend', `<div class="jst-root"></div>`);
+      this.config = config;
+      this.elem = elem;
     }
 
-    update(data = this.data) {
+    update(data) {
       const self = this;
       this.data = data;
       this.root = '';
 
       if (isArray(data)) {
         console.time('Render JSONTree array root');
-        this.root = _jsArray('', data, this.options.rootSort);
+        this.root = _jsArray('', data, this.config.rootSort);
         console.timeEnd('Render JSONTree array root');
       }
 
       if (isObject(data)) {
         console.time('Render JSONTree object root');
-        this.root = _jsObject('', data, this.options.rootSort);
+        this.root = _jsObject('', data, this.config.rootSort);
         console.timeEnd('Render JSONTree object root');
       }
 
       if (!this.listenersAttached) {
-        const $el = $(this.el);
+        const $elem = $(this.elem);
 
-        $el.on('click', '.jst-item > .fa-minus-circle', function (e) {
+        $elem.on('click', '.jst-item > .fa-minus-circle', function (e) {
           e.preventDefault();
           const $el = $(this), $node = $el.prev();
           const text = $node.text().slice(1, -1);
@@ -44,7 +42,7 @@
           $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
         });
 
-        $el.on('click', '.jst-item > .fa-plus-circle', function (e) {
+        $elem.on('click', '.jst-item > .fa-plus-circle', function (e) {
           e.preventDefault();
           const $el = $(this), $node = $el.prev();
           const text = $node.text().slice(1, -1);
@@ -53,12 +51,12 @@
           $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
         });
 
-        $el.on('click', '.jst-collapse', function (event) {
+        $elem.on('click', '.jst-collapse', function (event) {
           event.preventDefault();
           self.collapse(this);
         });
 
-        $el.on('click', '.jst-expand', function (event) {
+        $elem.on('click', '.jst-expand', function (event) {
           event.preventDefault();
           self.expand(this);
         });
@@ -66,7 +64,7 @@
         this.listenersAttached = true;
       }
 
-      morphdom(this.el.firstChild, `<div class="jst-root">${this.root}</div>`, {
+      morphdom(this.elem.firstChild, `<div class="jst-root">${this.root}</div>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
       });
     }

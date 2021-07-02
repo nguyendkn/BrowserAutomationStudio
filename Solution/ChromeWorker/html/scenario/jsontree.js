@@ -29,8 +29,8 @@
       if (!this.listenersAttached) {
         const $document = $(document);
 
-        $document.on('click', '.jst-item > .fa-minus-circle', function (event) {
-          event.preventDefault();
+        $document.on('click', '.jst-item > .fa-minus-circle', function (e) {
+          e.preventDefault();
           const $el = $(this), $node = $el.prev();
           const text = $node.text().slice(1, -1);
 
@@ -38,8 +38,8 @@
           $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
         });
 
-        $document.on('click', '.jst-item > .fa-plus-circle', function (event) {
-          event.preventDefault();
+        $document.on('click', '.jst-item > .fa-plus-circle', function (e) {
+          e.preventDefault();
           const $el = $(this), $node = $el.prev();
           const text = $node.text().slice(1, -1);
 

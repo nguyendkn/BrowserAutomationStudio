@@ -89,12 +89,13 @@
 
       model.on('change:resources', (__, data) => {
         const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
-        const rootSort = Scenario.utils.sortBy.localsFirst;
 
         if (!isEmpty) {
-          morphdom($data[0], `<div id="inspectorResourcesData">${JSONTree.create(data, { rootSort })}</div>`, {
-            onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
-          });
+          if (!this.resourcesTree) {
+            this.resourcesTree = new JSONTree($data[0], data, { rootSort: Scenario.utils.sortBy.localsFirst });
+          } else {
+            this.resourcesTree.update(data);
+          }
           this.loadState();
         }
         this.$('#inspectorNoResources').toggle(isEmpty);
@@ -103,12 +104,13 @@
 
       model.on('change:variables', (__, data) => {
         const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
-        const rootSort = Scenario.utils.sortBy.localsFirst;
 
         if (!isEmpty) {
-          morphdom($data[0], `<div id="inspectorVariablesData">${JSONTree.create(data, { rootSort })}</div>`, {
-            onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
-          });
+          if (!this.variablesTree) {
+            this.variablesTree = new JSONTree($data[0], data, { rootSort: Scenario.utils.sortBy.localsFirst });
+          } else {
+            this.variablesTree.update(data);
+          }
           this.loadState();
         }
         this.$('#inspectorNoVariables').toggle(isEmpty);

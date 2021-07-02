@@ -1,77 +1,88 @@
-const JSONTree = (function () {
+(function (global) {
   var defaultAttributes = {
     contenteditable: true,
     spellcheck: false,
   };
 
-  let listenersAttached = false;
   let path = [];
 
-  this.create = function (data, options = {}) {
-    let root = ''; const self = this;
-
-    if (_.isArray(data)) {
-      root = _jsArray('', data, options.rootSort);
+  class JSONTree {
+    constructor (el, data, options) {
+      el.insertAdjacentHTML('beforeend', `<div class="jst-root"></div>`);
+      this.options = options;
+      this.data = data;
+      this.el = el;
+      this.update();
     }
 
-    if (_.isObject(data)) {
-      root = _jsObject('', data, options.rootSort);
+    update(data = this.data) {
+      let root = ''; const self = this;
+
+      if (_.isArray(data)) {
+        root = _jsArray('', data, self.options.rootSort);
+      }
+
+      if (_.isObject(data)) {
+        root = _jsObject('', data, self.options.rootSort);
+      }
+
+      if (!this.listenersAttached) {
+        const $document = $(document);
+
+        $document.on('click', '.jst-item > .fa-minus-circle', function (event) {
+          event.preventDefault();
+          const $el = $(this), $node = $el.prev();
+          const text = $node.text().slice(1, -1);
+
+          $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
+          $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        });
+
+        $document.on('click', '.jst-item > .fa-plus-circle', function (event) {
+          event.preventDefault();
+          const $el = $(this), $node = $el.prev();
+          const text = $node.text().slice(1, -1);
+
+          $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
+          $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        });
+
+        $document.on('click', '.jst-collapse', function (event) {
+          event.preventDefault();
+          self.collapse(this);
+        });
+
+        $document.on('click', '.jst-expand', function (event) {
+          event.preventDefault();
+          self.expand(this);
+        });
+
+        this.listenersAttached = true;
+      }
+
+      morphdom(this.el.firstChild, `<div class="jst-root">${root}</div>`, {
+        onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
+      });
     }
 
-    if (!listenersAttached) {
-      const $document = $(document);
-
-      $document.on('click', '.jst-item > .fa-minus-circle', function (event) {
-        event.preventDefault();
-        const $el = $(this), $node = $el.prev();
-        const text = $node.text().slice(1, -1);
-
-        $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
-        $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
-      });
-
-      $document.on('click', '.jst-item > .fa-plus-circle', function (event) {
-        event.preventDefault();
-        const $el = $(this), $node = $el.prev();
-        const text = $node.text().slice(1, -1);
-
-        $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
-        $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
-      });
-
-      $document.on('click', '.jst-collapse', function (event) {
-        event.preventDefault();
-        self.collapse(this);
-      });
-
-      $document.on('click', '.jst-expand', function (event) {
-        event.preventDefault();
-        self.expand(this);
-      });
-
-      listenersAttached = true;
+    collapse(el) {
+      const $el = $(el); $el.next('ul').addClass('jst-collapsed');
+      $el.removeClass().addClass('jst-expand');
+      BrowserAutomationStudio_PreserveInterfaceState();
     }
 
-    return `<div class="jst-root">${root}</div>`;
-  }
+    expand(el) {
+      const $el = $(el); $el.next('ul').removeClass('jst-collapsed');
+      $el.removeClass().addClass('jst-collapse');
+      BrowserAutomationStudio_PreserveInterfaceState();
+    }
 
-  this.collapse = function (el) {
-    const $el = $(el); $el.next('ul').addClass('jst-collapsed');
-    $el.removeClass().addClass('jst-expand');
-    BrowserAutomationStudio_PreserveInterfaceState();
-  }
-
-  this.expand = function (el) {
-    const $el = $(el); $el.next('ul').removeClass('jst-collapsed');
-    $el.removeClass().addClass('jst-collapse');
-    BrowserAutomationStudio_PreserveInterfaceState();
-  }
-
-  this.toggle = function (el) {
-    if ($(el).hasClass('jst-expand')) {
-      this.collapse(el);
-    } else {
-      this.expand(el);
+    toggle(el) {
+      if ($(el).hasClass('jst-expand')) {
+        this.collapse(el);
+      } else {
+        this.expand(el);
+      }
     }
   }
 
@@ -186,5 +197,5 @@ const JSONTree = (function () {
     return `<${tag} ${attrs}>${content}</${tag}>`;
   }
 
-  return this;
-})();
+  global.JSONTree = JSONTree;
+})(window);

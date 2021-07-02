@@ -142,7 +142,7 @@
       });
 
       $(document).on('focus', '[data-path][contenteditable]', function (e, data) {
-        const $el = $(this); $el.data('value', $el.text());
+        const $el = $(this); $el.data('text', $el.text());
       });
 
       $.contextMenu({
@@ -163,7 +163,7 @@
           if ($trigger.hasClass('jst-node-number')) type = 'number';
           if ($trigger.hasClass('jst-node-date')) type = 'date';
         }
-        Scenario.utils.updateVariable($trigger.text(), $trigger.data('value'), $trigger.data('path'), type);
+        Scenario.utils.updateVariable($trigger.text(), $trigger.data('text'), $trigger.data('path'), type);
       }
 
       this.model = model;

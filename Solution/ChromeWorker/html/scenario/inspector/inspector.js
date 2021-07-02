@@ -195,8 +195,9 @@
               const h1 = $(functions).outerHeight();
               const h2 = $(window).outerHeight();
               let height = h2 - h1 - client.y;
+              const max = h2 - h1 - 300;
 
-              height = Math.min(height, 290);
+              height = Math.min(height, max);
               height = Math.max(height, 100);
 
               this.$el.css('height', `${height}px`);

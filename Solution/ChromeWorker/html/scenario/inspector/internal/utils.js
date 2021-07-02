@@ -52,7 +52,7 @@
     },
 
     sortBy: {
-      globalsFirst: (a, b) => {
+      globalsFirst(a, b) {
         a = a.toUpperCase();
         b = b.toUpperCase();
 
@@ -67,7 +67,7 @@
         }
       },
 
-      localsFirst: (a, b) => {
+      localsFirst(a, b) {
         a = a.toUpperCase();
         b = b.toUpperCase();
 

@@ -18,18 +18,18 @@
     update(data = this.data) {
       const self = this;
       this.data = data;
-      this.root = ''; 
+      this.root = '';
 
       if (_.isArray(data)) {
-        this.root = _jsArray('', data, self.options.rootSort);
+        this.root = _jsArray('', data, this.options.rootSort);
       }
 
       if (_.isObject(data)) {
-        this.root = _jsObject('', data, self.options.rootSort);
+        this.root = _jsObject('', data, this.options.rootSort);
       }
 
       if (!this.listenersAttached) {
-        const $el = $(self.el);
+        const $el = $(this.el);
 
         $el.on('click', '.jst-item > .fa-minus-circle', function (e) {
           e.preventDefault();

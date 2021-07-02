@@ -114,8 +114,9 @@
         if (isObject(value)) {
           return _jsObject(name, value);
         }
-        throw new Error('Can not resolve value type');
     }
+
+    throw new Error(`Failed to detect value type`);
   }
 
   function _jsObject(name, value, sortFn) {
@@ -192,11 +193,11 @@
     return _element('\n', { class: 'jst-comma' });
   }
 
-  function _element(content, attrs, tag = 'span') {
+  function _element(html, attrs, tag = 'span') {
     attrs = Object.keys(attrs).map((key) => {
       return `${key}="${attrs[key]}"`;
     }).join(' ');
-    return `<${tag} ${attrs}>${content}</${tag}>`;
+    return `<${tag} ${attrs}>${html}</${tag}>`;
   }
 
   function isObject(obj) {

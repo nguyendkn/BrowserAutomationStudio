@@ -58,10 +58,10 @@
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%; background-color: #fafafa; padding: 5px;"></i>
         </a>
       </div>
-      <div id="inspectorNotice" style="<%= model.showNotice ? '' : 'display: none' %>">
+      <div id="inspectorNotice" style="display: none">
         <span><%= tr("Variables will be loaded on next script pause") %></span>
       </div>
-      <div id="inspectorContent" style="<%= model.showNotice ? 'display: none' : '' %>">
+      <div id="inspectorContent" style="display: block">
         <ul class="inspector-navigation" style="display: none">
           <li id="inspectorShowVariables"><%= tr('Variables') %></li>
           <li id="inspectorShowResources"><%= tr('Resources') %></li>
@@ -173,7 +173,11 @@
 
     render() {
       this.setElement('#variableInspector');
-      this.$el.html(this.template({ model: this.model.toJSON() }));
+
+      if (this.$el.is(':empty')) this.$el.html(this.template());
+      const showNotice = this.model.attributes['showNotice'];
+      this.$('#inspectorContent').toggle(!showNotice);
+      this.$('#inspectorNotice').toggle(showNotice);
 
       this.model.update();
       if (this.model.get('showContent')) {

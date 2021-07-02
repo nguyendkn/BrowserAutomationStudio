@@ -16,20 +16,22 @@
     }
 
     update(data = this.data) {
-      let root = ''; const self = this;
+      const self = this;
+      this.data = data;
+      this.root = ''; 
 
       if (_.isArray(data)) {
-        root = _jsArray('', data, self.options.rootSort);
+        this.root = _jsArray('', data, self.options.rootSort);
       }
 
       if (_.isObject(data)) {
-        root = _jsObject('', data, self.options.rootSort);
+        this.root = _jsObject('', data, self.options.rootSort);
       }
 
       if (!this.listenersAttached) {
-        const $document = $(document);
+        const $el = $(self.el);
 
-        $document.on('click', '.jst-item > .fa-minus-circle', function (e) {
+        $el.on('click', '.jst-item > .fa-minus-circle', function (e) {
           e.preventDefault();
           const $el = $(this), $node = $el.prev();
           const text = $node.text().slice(1, -1);
@@ -38,7 +40,7 @@
           $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
         });
 
-        $document.on('click', '.jst-item > .fa-plus-circle', function (e) {
+        $el.on('click', '.jst-item > .fa-plus-circle', function (e) {
           e.preventDefault();
           const $el = $(this), $node = $el.prev();
           const text = $node.text().slice(1, -1);
@@ -47,12 +49,12 @@
           $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
         });
 
-        $document.on('click', '.jst-collapse', function (event) {
+        $el.on('click', '.jst-collapse', function (event) {
           event.preventDefault();
           self.collapse(this);
         });
 
-        $document.on('click', '.jst-expand', function (event) {
+        $el.on('click', '.jst-expand', function (event) {
           event.preventDefault();
           self.expand(this);
         });
@@ -60,7 +62,7 @@
         this.listenersAttached = true;
       }
 
-      morphdom(this.el.firstChild, `<div class="jst-root">${root}</div>`, {
+      morphdom(this.el.firstChild, `<div class="jst-root">${this.root}</div>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
       });
     }

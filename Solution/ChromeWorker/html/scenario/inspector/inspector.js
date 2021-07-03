@@ -132,27 +132,6 @@
         $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
       });
 
-      $(document).on('focusout', '[data-path][contenteditable]', function (e, data) {
-        if (data && !data.update) return;
-        updateVariable(null, { $trigger: $(this) });
-      });
-
-      $(document).on('keydown', '[data-path][contenteditable]', function (e, data) {
-        if (e.key !== 'Escape' || e.shiftKey) return;
-        e.preventDefault();
-        $(this).trigger('blur', { update: false });
-      });
-
-      $(document).on('keydown', '[data-path][contenteditable]', function (e, data) {
-        if (e.key !== 'Enter' || e.shiftKey) return;
-        e.preventDefault();
-        $(this).trigger('blur', { update: true });
-      });
-
-      $(document).on('focus', '[data-path][contenteditable]', function (e, data) {
-        const $el = $(this); $el.data('text', $el.text());
-      });
-
       $.contextMenu({
         selector: '[data-path][contenteditable]',
         items: {
@@ -163,16 +142,6 @@
         },
         callback: updateVariable,
       });
-
-      function updateVariable(type, { $trigger }) {
-        if (!type) {
-          type = 'string';
-          if ($trigger.hasClass('jst-node-boolean')) type = 'boolean';
-          if ($trigger.hasClass('jst-node-number')) type = 'number';
-          if ($trigger.hasClass('jst-node-date')) type = 'date';
-        }
-        Scenario.utils.updateVariable($trigger.text(), $trigger.data('text'), $trigger.data('path'), type);
-      }
 
       this.model = model;
     },
@@ -309,6 +278,27 @@
     },
 
     events: {
+      'focusout [data-path][contenteditable]': function (e, data) {
+        if (data && !data.update) return;
+        updateVariable(null, { $trigger: $(e.target) });
+      },
+
+      'keydown [data-path][contenteditable]': function (e, data) {
+        if (e.key !== 'Escape' || e.shiftKey) return;
+        e.preventDefault();
+        $(e.target).trigger('blur', { update: false });
+      },
+
+      'keydown [data-path][contenteditable]': function (e, data) {
+        if (e.key !== 'Enter' || e.shiftKey) return;
+        e.preventDefault();
+        $(e.target).trigger('blur', { update: true });
+      },
+
+      'foucs [data-path][contenteditable]': function (e, data) {
+        const $el = $(this); $el.data('text', $el.text());
+      },
+
       'click #inspectorShowCallStack': function (e) {
         e.preventDefault();
       },
@@ -328,6 +318,16 @@
       }
     }
   });
+
+  function updateVariable(type, { $trigger }) {
+    if (!type) {
+      type = 'string';
+      if ($trigger.hasClass('jst-node-boolean')) type = 'boolean';
+      if ($trigger.hasClass('jst-node-number')) type = 'number';
+      if ($trigger.hasClass('jst-node-date')) type = 'date';
+    }
+    Scenario.utils.updateVariable($trigger.text(), $trigger.data('text'), $trigger.data('path'), type);
+  }
 
   global.Scenario.Inspector = InspectorView;
 })(window, jQuery, _);

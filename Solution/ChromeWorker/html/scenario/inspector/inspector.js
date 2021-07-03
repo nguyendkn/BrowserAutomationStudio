@@ -153,13 +153,7 @@
       const showNotice = this.model.attributes['showNotice'];
       this.$('#inspectorContent').toggle(!showNotice);
       this.$('#inspectorNotice').toggle(showNotice);
-
       this.model.update();
-      if (this.model.get('showContent')) {
-        this.$el.show();
-      } else {
-        this.$el.hide();
-      }
 
       if (!this.interact) {
         this.interact = interact(this.el).resizable({
@@ -183,6 +177,7 @@
       }
 
       this.$el.css('height', `${this.model.get('height')}px`);
+      this.$el.css('width', `${this.model.get('width')}px`);
       return this;
     },
 

@@ -72,19 +72,19 @@
     }
 
     collapse(el) {
-      const $el = $(el); $el.next('ul').addClass('jst-collapsed');
-      $el.removeClass().addClass('jst-expand');
+      el.nextSibling.classList.add('jst-collapsed');
+      el.className = 'jst-expand';
       this.onCollapse();
     }
 
     expand(el) {
-      const $el = $(el); $el.next('ul').removeClass('jst-collapsed');
-      $el.removeClass().addClass('jst-collapse');
+      el.nextSibling.classList.remove('jst-collapsed');
+      el.className = 'jst-collapse';
       this.onExpand();
     }
 
     toggle(el) {
-      if ($(el).hasClass('jst-expand')) {
+      if (el.classList.contains('jst-expand')) {
         this.collapse(el);
       } else {
         this.expand(el);

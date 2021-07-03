@@ -2811,7 +2811,7 @@ void MainWindow::RunInternal()
 
     if(_WebInterface->HasWebInterface())
     {
-       _WebInterface->Send("start");
+       _WebInterfaceApi->ScriptStarted();
     }
 
     worker->Run();

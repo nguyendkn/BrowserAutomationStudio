@@ -9,6 +9,8 @@
   class JSONTree {
     constructor (elem, config) {
       elem.insertAdjacentHTML('beforeend', `<div class="jst-root"></div>`);
+      this.onCollapse = config.onCollapse || (() => { });
+      this.onExpand = config.onExpand || (() => { });
       this.config = config;
       this.elem = elem;
     }
@@ -72,13 +74,13 @@
     collapse(el) {
       const $el = $(el); $el.next('ul').addClass('jst-collapsed');
       $el.removeClass().addClass('jst-expand');
-      BrowserAutomationStudio_PreserveInterfaceState();
+      this.onCollapse();
     }
 
     expand(el) {
       const $el = $(el); $el.next('ul').removeClass('jst-collapsed');
       $el.removeClass().addClass('jst-collapse');
-      BrowserAutomationStudio_PreserveInterfaceState();
+      this.onExpand();
     }
 
     toggle(el) {

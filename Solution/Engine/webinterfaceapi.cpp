@@ -224,9 +224,40 @@ namespace BrowserAutomationStudioFramework
         if(!WebInterface)
             return;
 
+        //From now on can send "start" event.
+        IsFirstThreadStarted = true;
+
+        //There was event, which didn't fired because of no thread has been started yet.
+        if(IsPendingScriptStart)
+        {
+            ScriptStarted();
+        }
+
         WebInterface->Send("thread_start",false,0);
+    }
+
+    void WebInterfaceApi::ScriptStarted()
+    {
+        if(!WebInterface)
+            return;
+
+        //Remove old pending "start" event, if any exist.
+        IsPendingScriptStart = false;
+
+
+        if(IsFirstThreadStarted)
+        {
+            //Thread already has been started, can send.
+            WebInterface->Send("start",false,0);
+        }
+        else
+        {
+            //Thread has not yet been started, send later.
+            IsPendingScriptStart = true;
+        }
 
     }
+
     void WebInterfaceApi::ThreadSuccess()
     {
         if(!WebInterface)

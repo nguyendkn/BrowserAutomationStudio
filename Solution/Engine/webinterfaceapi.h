@@ -26,6 +26,8 @@ namespace BrowserAutomationStudioFramework
         IDatabaseState *DatabaseState;
         IDatabaseConnector *DatabaseConnector;
         bool SendHideBrowserEvent = false;
+        bool IsFirstThreadStarted = false;
+        bool IsPendingScriptStart = false;
         struct BrowserViewData
         {
           int RequestId = -1;
@@ -56,7 +58,7 @@ namespace BrowserAutomationStudioFramework
 
     public slots:
         void NotifyAboutNewDatabaseStructure();
-
+        void ScriptStarted();
     signals:
         void Restart();
         void AbortInstant();

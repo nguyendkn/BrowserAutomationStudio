@@ -96,22 +96,12 @@ function _write_variables(variables)
 function truncate_variable(item, limit) {
     if (item instanceof Object) {
         if (!(item instanceof Date)) {
-            var keys = Object.keys(item);
-
-            keys.forEach(function (key) {
-                item[key] = truncate_variable(item[key], limit);
-            });
-        
-            if (item instanceof Array) {
-                return item.slice(0, limit);
-            }
-        
-            return keys.slice(0, limit).reduce(function (acc, key) {
-                acc[key] = item[key];
+            return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
+                acc[key] = truncate_variable(item[key], limit);
                 return acc;
-            }, {});
+            }, item instanceof Array ? [] : {});
         }
-        
+
         return "__DATE__" + _format_date(item, "yyyy-MM-dd hh:mm:ss t");
     }
 

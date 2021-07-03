@@ -278,19 +278,22 @@
       },
 
       'keydown [data-path][contenteditable]': function (e, data) {
-        if (e.key !== 'Escape' || e.shiftKey) return;
-        e.preventDefault();
-        $(e.target).trigger('blur', { update: false });
-      },
+        const $el = $(e.target);
 
-      'keydown [data-path][contenteditable]': function (e, data) {
-        if (e.key !== 'Enter' || e.shiftKey) return;
-        e.preventDefault();
-        $(e.target).trigger('blur', { update: true });
+        if (e.key === 'Escape' && !e.shiftKey) {
+          e.preventDefault();
+          $el.trigger('blur', { update: false });
+        }
+
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          $el.trigger('blur', { update: true });
+        }
       },
 
       'focus [data-path][contenteditable]': function (e, data) {
-        const $el = $(this); $el.data('text', $el.text());
+        const $el = $(e.target);
+        $el.data('text', $el.text());
       },
 
       'click #inspectorShowCallStack': function (e) {

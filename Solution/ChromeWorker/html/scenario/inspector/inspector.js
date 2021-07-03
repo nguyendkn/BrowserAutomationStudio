@@ -295,7 +295,7 @@
         $(e.target).trigger('blur', { update: true });
       },
 
-      'foucs [data-path][contenteditable]': function (e, data) {
+      'focus [data-path][contenteditable]': function (e, data) {
         const $el = $(this); $el.data('text', $el.text());
       },
 

@@ -19,6 +19,7 @@
       const self = this;
       this.data = data;
       this.root = '';
+      path = [];
 
       if (isArray(data)) {
         this.root = _jsArray('', data, this.config.rootSort);

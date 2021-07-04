@@ -121,19 +121,19 @@
 
   function _jsObject(name, value, sortFn) {
     path.push(name);
-    const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, ['{', '}'], sortFn);
+    const html = _collection(value, 'object', _path(), ['{', '}'], sortFn);
     path.pop();
     return html;
   }
 
   function _jsArray(name, value, sortFn) {
     path.push(name);
-    const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, ['[', ']'], sortFn);
+    const html = _collection(value, 'array', _path(), ['[', ']'], sortFn);
     path.pop();
     return html;
   }
 
-  function _collection(value, attrs, brackets, sortFn) {
+  function _collection(value, type, path, brackets, sortFn) {
     const collapse = !_.isEmpty(value) ? `<span class="jst-collapse"></span>` : '';
     const closing = _element(brackets[1], { class: 'jst-bracket' });
     const opening = _element(brackets[0], { class: 'jst-bracket' });
@@ -150,7 +150,7 @@
     }).join('');
 
     if (data.length) {
-      const element = _element(data, { class: 'jst-list', ...attrs }, 'ul');
+      const element = _element(data, { class: 'jst-list', 'data-type': type, 'data-path': path }, 'ul');
       return `${opening}${collapse}${element}${closing}`;
     }
 

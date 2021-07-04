@@ -190,11 +190,11 @@
   }
 
   function _colon() {
-    return _element(': ', { class: 'jst-colon' });
+    return _element(':', { class: 'jst-colon' });
   }
 
   function _comma() {
-    return _element('\n', { class: 'jst-comma' });
+    return _element(',', { class: 'jst-comma' });
   }
 
   function _element(html, attrs, tag = 'span') {

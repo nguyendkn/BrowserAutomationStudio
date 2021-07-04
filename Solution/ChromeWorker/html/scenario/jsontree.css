@@ -85,6 +85,10 @@ li.jst-item + li.jst-item {
   white-space: pre-wrap;
 }
 
+.jst-colon {
+  padding-right: 6px;
+}
+
 .jst-root {
   font-family: "Lucida Console", Monaco, monospace;
   font-weight: 400;

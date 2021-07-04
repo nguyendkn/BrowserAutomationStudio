@@ -234,9 +234,8 @@
         state.objects.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
           if (folded && !$el.hasClass('jst-collapsed')) {
-            return $el.prev('.jst-collapse').click();
+            $el.prev('.jst-collapse').click();
           }
-          $el.prev('.jst-expand').click();
         });
       }
 
@@ -244,9 +243,8 @@
         state.arrays.forEach(({ path, folded }) => {
           const $el = $container.find(`[data-path="${path}"]`);
           if (folded && !$el.hasClass('jst-collapsed')) {
-            return $el.prev('.jst-collapse').click();
+            $el.prev('.jst-collapse').click();
           }
-          $el.prev('.jst-expand').click();
         });
       }
 

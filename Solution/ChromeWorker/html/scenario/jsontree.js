@@ -21,15 +21,11 @@
       this.root = '';
 
       if (isArray(data)) {
-        console.time('Render JSONTree array root');
         this.root = _jsArray('', data, this.config.rootSort);
-        console.timeEnd('Render JSONTree array root');
       }
 
       if (isObject(data)) {
-        console.time('Render JSONTree object root');
         this.root = _jsObject('', data, this.config.rootSort);
-        console.timeEnd('Render JSONTree object root');
       }
 
       if (!this.listenersAttached) {

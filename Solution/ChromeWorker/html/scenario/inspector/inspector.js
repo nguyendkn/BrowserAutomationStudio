@@ -72,14 +72,14 @@
             <span class="inspector-label"><%= tr('Variables:') %></span>
           </div>
           <div id="inspectorVariablesData"></div>
-          <div id="inspectorNoVariables" style='font-size: smaller; margin-top: 10px; display: none;'><%= tr('No variables') %></div>
+          <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No variables') %></div>
         </div>
         <div class="inspector-data-tab">
           <div class="inspector-label-container">
             <span class="inspector-label"><%= tr('Resources:') %></span>
           </div>
           <div id="inspectorResourcesData"></div>
-          <div id="inspectorNoResources" style='font-size: smaller; margin-top: 10px; display: none;'><%= tr('No resources') %></div>
+          <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No resources') %></div>
         </div>
       </div>
     `),

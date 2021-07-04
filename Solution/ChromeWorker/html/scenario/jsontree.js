@@ -121,14 +121,14 @@
 
   function _jsObject(name, value, sortFn) {
     path.push(name);
-    const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, ['{', '}']);
+    const html = _collection(value, { 'data-type': 'object', 'data-path': _path() }, ['{', '}'], sortFn);
     path.pop();
     return html;
   }
 
   function _jsArray(name, value, sortFn) {
     path.push(name);
-    const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, ['[', ']']);
+    const html = _collection(value, { 'data-type': 'array', 'data-path': _path() }, ['[', ']'], sortFn);
     path.pop();
     return html;
   }

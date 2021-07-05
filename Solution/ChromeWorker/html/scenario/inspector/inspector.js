@@ -8,7 +8,6 @@
       showNotice: false,
       resources: {},
       variables: {},
-      height: 290,
       state: {},
     },
 
@@ -167,14 +166,11 @@
               height = Math.max(height, 100);
 
               this.$el.css('height', `${height}px`);
-              this.model.set('height', height);
             }
           }
         });
       }
 
-      this.$el.height('height', this.model.get('height'));
-      this.$el.width('width', this.model.get('width'));
       return this;
     },
 

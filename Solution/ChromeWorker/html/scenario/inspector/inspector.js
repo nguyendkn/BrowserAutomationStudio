@@ -264,30 +264,6 @@
     },
 
     events: {
-      'focusout [data-path][contenteditable]': function (e, data) {
-        if (data && !data.update) return;
-        updateVariable(null, { $trigger: $(e.target) });
-      },
-
-      'keydown [data-path][contenteditable]': function (e, data) {
-        const $el = $(e.target);
-
-        if (e.key === 'Escape' && !e.shiftKey) {
-          e.preventDefault();
-          $el.trigger('blur', { update: false });
-        }
-
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          $el.trigger('blur', { update: true });
-        }
-      },
-
-      'focus [data-path][contenteditable]': function (e, data) {
-        const $el = $(e.target);
-        $el.data('text', $el.text());
-      },
-
       'click #inspectorShowCallStack': function (e) {
         e.preventDefault();
       },

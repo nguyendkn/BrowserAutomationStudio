@@ -1,9 +1,4 @@
 (function (global) {
-  const defaultAttributes = {
-    contenteditable: true,
-    spellcheck: false,
-  };
-
   class JSONTree {
     constructor (elem, config) {
       elem.insertAdjacentHTML('beforeend', `<div class="jst-root"></div>`);
@@ -151,23 +146,23 @@
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(path, name), 'data-value': utf8_to_b64(value), ...defaultAttributes }) + clip;
+    return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(path, name), 'data-value': utf8_to_b64(value) }) + clip;
   }
 
   function _jsBoolean(name, value, path) {
-    return _element(value, { class: 'jst-node-boolean', 'data-path': _path(path, name), ...defaultAttributes });
+    return _element(value, { class: 'jst-node-boolean', 'data-path': _path(path, name) });
   }
 
   function _jsNumber(name, value, path) {
-    return _element(value, { class: 'jst-node-number', 'data-path': _path(path, name), ...defaultAttributes });
+    return _element(value, { class: 'jst-node-number', 'data-path': _path(path, name) });
   }
 
   function _jsDate(name, value, path) {
-    return _element(value, { class: 'jst-node-date', 'data-path': _path(path, name), ...defaultAttributes });
+    return _element(value, { class: 'jst-node-date', 'data-path': _path(path, name) });
   }
 
   function _jsNull(name, value, path) {
-    return _element(null, { class: 'jst-node-null', 'data-path': _path(path, name), ...defaultAttributes });
+    return _element(null, { class: 'jst-node-null', 'data-path': _path(path, name) });
   }
 
   function _property(name, value, path) {

@@ -22,11 +22,11 @@
       path = [];
 
       if (isArray(data)) {
-        this.root = _renderArray('', data, this.config.rootSort);
+        this.root = _jsArray('', data, this.config.rootSort);
       }
 
       if (isObject(data)) {
-        this.root = _renderObject('', data, this.config.rootSort);
+        this.root = _jsObject('', data, this.config.rootSort);
       }
 
       if (!this.listenersAttached) {
@@ -110,10 +110,10 @@
           return _jsNull(name, value);
         }
         if (isArray(value)) {
-          return _renderArray(name, value);
+          return _jsArray(name, value);
         }
         if (isObject(value)) {
-          return _renderObject(name, value);
+          return _jsObject(name, value);
         }
     }
 
@@ -147,14 +147,14 @@
     `);
   }
 
-  function _renderObject(name, value, sortFn) {
+  function _jsObject(name, value, sortFn) {
     path.push(name);
     const html = _collection(value, 'object', _path(), ['{', '}'], sortFn);
     path.pop();
     return html;
   }
 
-  function _renderArray(name, value, sortFn) {
+  function _jsArray(name, value, sortFn) {
     path.push(name);
     const html = _collection(value, 'array', _path(), ['[', ']'], sortFn);
     path.pop();

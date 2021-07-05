@@ -11,15 +11,16 @@
       let previous = clean(oldValue);
       if (variable === previous) return;
 
-      const { root, path, isGlobal } = pointer.slice(1).split('/').reduce((data, key, idx) => {
+      const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((acc, key, idx) => {
         if (idx === 0) {
-          data.root = key.replace('GLOBAL:', '');
-          data.isGlobal = key.includes('GLOBAL');
+          acc.isGlobal = key.indexOf('GLOBAL') === 0;
+          acc.isLocal = key.indexOf('GLOBAL') !== 0;
+          acc.root = key.replace('GLOBAL:', '');
         } else {
-          data.path += /^\d+$/.test(key) ? `[${key}]` : `['${key}']`;
+          acc.path += /^\d+$/.test(key) ? `[${key}]` : `['${key}']`;
         }
-        return data;
-      }, { path: '', root: '', isGlobal: false });
+        return acc;
+      }, { path: '', root: '', isLocal: true, isGlobal: false });
 
       if (type === 'number') {
         variable = parseFloat(variable) || `"${variable}"`;

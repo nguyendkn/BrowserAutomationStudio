@@ -1,5 +1,5 @@
 (function (global) {
-  var defaultAttributes = {
+  const defaultAttributes = {
     contenteditable: true,
     spellcheck: false,
   };
@@ -22,11 +22,11 @@
       path = [];
 
       if (isArray(data)) {
-        this.root = _jsArray('', data, this.config.rootSort);
+        this.root = _renderArray('', data, this.config.rootSort);
       }
 
       if (isObject(data)) {
-        this.root = _jsObject('', data, this.config.rootSort);
+        this.root = _renderObject('', data, this.config.rootSort);
       }
 
       if (!this.listenersAttached) {
@@ -110,52 +110,55 @@
           return _jsNull(name, value);
         }
         if (isArray(value)) {
-          return _jsArray(name, value);
+          return _renderArray(name, value);
         }
         if (isObject(value)) {
-          return _jsObject(name, value);
+          return _renderObject(name, value);
         }
     }
 
     throw new Error(`Failed to detect value type`);
   }
 
-  function _jsObject(name, value, sortFn) {
+  function _collection(value, type, path, brackets, sortFn) {
+    return (/*html*/`
+      <span class="jst-bracket">${brackets[0]}</span>
+      <span class="jst-collapse"></span>
+      <ul class="jst-list" data-type="${type}" data-path="${path}">
+      ${(() => {
+        const keys = Object.keys(value);
+
+        if (keys.length) {
+          if (sortFn) keys.sort(sortFn);
+
+          return keys.map((key, idx, arr) => {
+            return (/*html*/`
+              <li class="jst-item">
+                ${_property(key, value[key])}
+                ${idx !== arr.length - 1 ? _comma() : ''}
+              </li>
+            `);
+          }).join('')
+        }
+        return '';
+      })()}
+      </ul>
+      <span class="jst-bracket">${brackets[1]}</span>
+    `);
+  }
+
+  function _renderObject(name, value, sortFn) {
     path.push(name);
     const html = _collection(value, 'object', _path(), ['{', '}'], sortFn);
     path.pop();
     return html;
   }
 
-  function _jsArray(name, value, sortFn) {
+  function _renderArray(name, value, sortFn) {
     path.push(name);
     const html = _collection(value, 'array', _path(), ['[', ']'], sortFn);
     path.pop();
     return html;
-  }
-
-  function _collection(value, type, path, brackets, sortFn) {
-    const collapse = !_.isEmpty(value) ? `<span class="jst-collapse"></span>` : '';
-    const closing = _element(brackets[1], { class: 'jst-bracket' });
-    const opening = _element(brackets[0], { class: 'jst-bracket' });
-    const keys = Object.keys(value); if (sortFn) keys.sort(sortFn);
-
-    var data = keys.map((key, idx, arr) => {
-      var html = ['<li class="jst-item">'];
-      html.push(_property(key, value[key]));
-      if (idx !== arr.length - 1) {
-        html.push(_comma());
-      }
-      html.push('</li>');
-      return html.join('');
-    }).join('');
-
-    if (data.length) {
-      const element = _element(data, { class: 'jst-list', 'data-type': type, 'data-path': path }, 'ul');
-      return `${opening}${collapse}${element}${closing}`;
-    }
-
-    return opening + closing;
   }
 
   function _jsString(name, value) {

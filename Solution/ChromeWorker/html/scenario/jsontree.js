@@ -93,7 +93,7 @@
       case 'number':
         return _jsNumber(name, value, path);
       case 'string':
-        if (value.indexOf('__DATE__') == 0) {
+        if (value.indexOf('__DATE__') === 0) {
           value = value.slice(8)
           return _jsDate(name, value, path);
         }
@@ -114,8 +114,8 @@
   }
 
   function _collection(value, type, path, brackets, sortFn) {
-    const closing = _element(brackets[1], { class: 'jst-bracket' });
-    const opening = _element(brackets[0], { class: 'jst-bracket' });
+    const opening = `<span class="jst-bracket">${brackets[0]}</span>`;
+    const closing = `<span class="jst-bracket">${brackets[1]}</span>`;
     const keys = Object.keys(value);
 
     if (keys.length) {

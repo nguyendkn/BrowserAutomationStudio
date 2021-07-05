@@ -69,13 +69,13 @@
     }
 
     collapse(el) {
-      el.nextSibling.classList.add('jst-collapsed');
+      el.nextElementSibling.classList.add('jst-collapsed');
       el.className = 'jst-expand';
       this.onCollapse();
     }
 
     expand(el) {
-      el.nextSibling.classList.remove('jst-collapsed');
+      el.nextElementSibling.classList.remove('jst-collapsed');
       el.className = 'jst-collapse';
       this.onExpand();
     }
@@ -121,30 +121,29 @@
   }
 
   function _collection(value, type, path, brackets, sortFn) {
-    return (/*html*/`
-      <span class="jst-bracket">${brackets[0]}</span>
-      <span class="jst-collapse"></span>
-      <ul class="jst-list" data-type="${type}" data-path="${path}">
-      ${(() => {
-        const keys = Object.keys(value);
+    const closing = _element(brackets[1], { class: 'jst-bracket' });
+    const opening = _element(brackets[0], { class: 'jst-bracket' });
+    const keys = Object.keys(value);
 
-        if (keys.length) {
-          if (sortFn) keys.sort(sortFn);
+    if (keys.length) {
+      if (sortFn) keys.sort(sortFn);
 
-          return keys.map((key, idx, arr) => {
-            return (/*html*/`
-              <li class="jst-item">
-                ${_property(key, value[key])}
-                ${idx !== arr.length - 1 ? _comma() : ''}
-              </li>
-            `);
-          }).join('')
+      var data = keys.map((key, idx, arr) => {
+        var html = ['<li class="jst-item">'];
+        html.push(_property(key, value[key]));
+        if (idx !== arr.length - 1) {
+          html.push(_comma());
         }
-        return '';
-      })()}
-      </ul>
-      <span class="jst-bracket">${brackets[1]}</span>
-    `);
+        html.push('</li>');
+        return html.join('');
+      }).join('');
+
+      const collapse = `<span class="jst-collapse"></span>`;
+      const element = _element(data, { class: 'jst-list', 'data-type': type, 'data-path': path }, 'ul');
+      return `${opening}${collapse}${element}${closing}`;
+    }
+
+    return opening + closing;
   }
 
   function _jsObject(name, value, sortFn) {

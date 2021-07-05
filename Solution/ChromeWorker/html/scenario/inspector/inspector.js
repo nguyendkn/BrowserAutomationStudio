@@ -91,13 +91,12 @@
         const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
-          if (!this.resourcesTree) {
+          if (!this.resourcesTree)
             this.resourcesTree = new JSONTree($data[0], {
               rootSort: Scenario.utils.sortBy.localsFirst,
               onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             });
-          }
           this.resourcesTree.update(data);
           this.loadState();
         }
@@ -109,13 +108,12 @@
         const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
-          if (!this.variablesTree) {
+          if (!this.variablesTree)
             this.variablesTree = new JSONTree($data[0], {
               rootSort: Scenario.utils.sortBy.localsFirst,
               onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             });
-          }
           this.variablesTree.update(data);
           this.loadState();
         }
@@ -175,8 +173,8 @@
         });
       }
 
-      this.$el.css('height', `${this.model.get('height')}px`);
-      this.$el.css('width', `${this.model.get('width')}px`);
+      this.$el.height('height', this.model.get('height'));
+      this.$el.width('width', this.model.get('width'));
       return this;
     },
 

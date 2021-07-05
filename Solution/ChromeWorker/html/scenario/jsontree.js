@@ -4,8 +4,6 @@
     spellcheck: false,
   };
 
-  let path = [];
-
   class JSONTree {
     constructor (elem, config) {
       elem.insertAdjacentHTML('beforeend', `<div class="jst-root"></div>`);
@@ -19,14 +17,13 @@
       const self = this;
       this.data = data;
       this.root = '';
-      path = [];
 
       if (isArray(data)) {
-        this.root = _jsArray('', data, this.config.rootSort);
+        this.root = _jsArray('', data, '', this.config.rootSort);
       }
 
       if (isObject(data)) {
-        this.root = _jsObject('', data, this.config.rootSort);
+        this.root = _jsObject('', data, '', this.config.rootSort);
       }
 
       if (!this.listenersAttached) {
@@ -89,31 +86,27 @@
     }
   }
 
-  function _path(name) {
-    return '/' + path.concat(name || '').filter((v) => v.length).join('/');
-  }
-
-  function _jsValue(name, value) {
+  function _jsValue(name, value, path) {
     switch (typeof value) {
       case 'boolean':
-        return _jsBoolean(name, value);
+        return _jsBoolean(name, value, path);
       case 'number':
-        return _jsNumber(name, value);
+        return _jsNumber(name, value, path);
       case 'string':
         if (value.indexOf('__DATE__') == 0) {
           value = value.slice(8)
-          return _jsDate(name, value);
+          return _jsDate(name, value, path);
         }
-        return _jsString(name, value);
+        return _jsString(name, value, path);
       default:
         if (value == null) {
-          return _jsNull(name, value);
+          return _jsNull(name, value, path);
         }
         if (isArray(value)) {
-          return _jsArray(name, value);
+          return _jsArray(name, value, path);
         }
         if (isObject(value)) {
-          return _jsObject(name, value);
+          return _jsObject(name, value, path);
         }
     }
 
@@ -130,7 +123,7 @@
 
       var data = keys.map((key, idx, arr) => {
         var html = ['<li class="jst-item">'];
-        html.push(_property(key, value[key]));
+        html.push(_property(key, value[key], path));
         if (idx !== arr.length - 1) {
           html.push(_comma());
         }
@@ -146,54 +139,48 @@
     return opening + closing;
   }
 
-  function _jsObject(name, value, sortFn) {
-    path.push(name);
-    const html = _collection(value, 'object', _path(), ['{', '}'], sortFn);
-    path.pop();
-    return html;
+  function _jsObject(name, value, path, sortFn) {
+    return _collection(value, 'object', _path(path, name), ['{', '}'], sortFn);
   }
 
-  function _jsArray(name, value, sortFn) {
-    path.push(name);
-    const html = _collection(value, 'array', _path(), ['[', ']'], sortFn);
-    path.pop();
-    return html;
+  function _jsArray(name, value, path, sortFn) {
+    return _collection(value, 'array', _path(path, name), ['[', ']'], sortFn);
   }
 
-  function _jsString(name, value) {
+  function _jsString(name, value, path) {
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(name), 'data-value': utf8_to_b64(value), ...defaultAttributes }) + clip;
+    return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(path, name), 'data-value': utf8_to_b64(value), ...defaultAttributes }) + clip;
   }
 
-  function _jsBoolean(name, value) {
-    return _element(value, { class: 'jst-node-boolean', 'data-path': _path(name), ...defaultAttributes });
+  function _jsBoolean(name, value, path) {
+    return _element(value, { class: 'jst-node-boolean', 'data-path': _path(path, name), ...defaultAttributes });
   }
 
-  function _jsNumber(name, value) {
-    return _element(value, { class: 'jst-node-number', 'data-path': _path(name), ...defaultAttributes });
+  function _jsNumber(name, value, path) {
+    return _element(value, { class: 'jst-node-number', 'data-path': _path(path, name), ...defaultAttributes });
   }
 
-  function _jsDate(name, value) {
-    return _element(value, { class: 'jst-node-date', 'data-path': _path(name), ...defaultAttributes });
+  function _jsDate(name, value, path) {
+    return _element(value, { class: 'jst-node-date', 'data-path': _path(path, name), ...defaultAttributes });
   }
 
-  function _jsNull(name, value) {
-    return _element(null, { class: 'jst-node-null', 'data-path': _path(name), ...defaultAttributes });
+  function _jsNull(name, value, path) {
+    return _element(null, { class: 'jst-node-null', 'data-path': _path(path, name), ...defaultAttributes });
   }
 
-  function _property(name, value) {
+  function _property(name, value, path) {
     var property = _element(_.escape(name), { class: 'jst-property' });
-    return [property + _colon(), _jsValue(name, value)].join('');
+    return [property + _colon(), _jsValue(name, value, path)].join('');
   }
 
   function _colon() {
-    return _element(':', { class: 'jst-colon' });
+    return /*html*/`<span class="jst-colon">:</span>`;
   }
 
   function _comma() {
-    return _element(',', { class: 'jst-comma' });
+    return /*html*/`<span class="jst-comma">,</span>`;
   }
 
   function _element(html, attrs, tag = 'span') {
@@ -201,6 +188,10 @@
       return `${key}="${attrs[key]}"`;
     }).join(' ');
     return `<${tag} ${attrs}>${html}</${tag}>`;
+  }
+
+  function _path(path, name) {
+    return name ? `${path}/${name}` : path;
   }
 
   function isObject(obj) {

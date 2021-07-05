@@ -1,9 +1,9 @@
-(function (global, $) {
-  const trimQuoteRight = (str) => str.replace(/('|")$/g, '');
+(function (global, $, _) {
+  const removeRightQuote = (str) => str.replace(/('|")$/g, '');
 
-  const trimQuoteLeft = (str) => str.replace(/^('|")/g, '');
+  const removeLeftQuote = (str) => str.replace(/^('|")/g, '');
 
-  const clean = (str) => trimQuoteRight(trimQuoteLeft(str));
+  const clean = _.compose(removeRightQuote, removeLeftQuote);
 
   global.Scenario.utils = {
     updateVariable(newValue, oldValue, pointer, type) {
@@ -36,7 +36,7 @@
       if (isGlobal) {
         const code = `try {
           var obj = JSON.parse(P('basglobal', '${root}') || '{}');
-          obj${path} = ${variable}
+          obj${path} = ${variable};
           PSet('basglobal', '${root}', JSON.stringify(obj));
           delete obj;
           section_start('test', -2)!
@@ -83,4 +83,4 @@
       },
     }
   };
-})(window, jQuery);
+})(window, jQuery, _);

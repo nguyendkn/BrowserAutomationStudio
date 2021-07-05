@@ -53,9 +53,9 @@
     },
 
     sortBy: {
-      globalsFirst(a, b) {
-        a = a.toUpperCase();
-        b = b.toUpperCase();
+      globalsFirst(first, second) {
+        let a = first.toUpperCase();
+        let b = second.toUpperCase();
 
         if (a.startsWith('GLOBAL:') && b.startsWith('GLOBAL:') || !a.includes('GLOBAL:') && !b.includes('GLOBAL:')) {
           if (a < b) return -1;
@@ -68,9 +68,9 @@
         }
       },
 
-      localsFirst(a, b) {
-        a = a.toUpperCase();
-        b = b.toUpperCase();
+      localsFirst(first, second) {
+        let a = first.toUpperCase();
+        let b = second.toUpperCase();
 
         if (a.startsWith('GLOBAL:') && b.startsWith('GLOBAL:') || !a.includes('GLOBAL:') && !b.includes('GLOBAL:')) {
           if (a < b) return -1;

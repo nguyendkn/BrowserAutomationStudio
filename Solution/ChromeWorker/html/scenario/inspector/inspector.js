@@ -4,17 +4,13 @@
       <div class="modal-dialog" role="document">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4><%= tr("Change variable") %></h4>
+            <h4><%= tr("Change the {0} variable", variable) %></h4>
           </div>
           <div class="inspector-modal-body">
           </div>
           <div class="inspector-modal-footer">
-            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal">
-              <%= tr('Accept') %>
-            </button>
-            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal">
-              <%= tr('Cancel') %>
-            </button>
+            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('Accept') %></button>
+            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
           </div>
         </div>
       </div>
@@ -325,12 +321,15 @@
 
     events: {
       'dblclick span[data-path]': function (e) {
-        const $el = $(e.target);
+        const $el = $(e.target), path = $el.data('path');
 
         InspectorModal.show({
+          variable: path.split('/').pop(),
+
           onAccept: () => {
 
           },
+
           onCancel: () => {
 
           },

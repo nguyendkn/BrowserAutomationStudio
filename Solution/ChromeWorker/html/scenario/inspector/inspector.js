@@ -1,4 +1,50 @@
 (function (global, $, _) {
+  const InspectorModal = Backbone.View.extend({
+    template: _.template(/*html*/`
+      <div class="modal-dialog" role="document">
+        <div class="inspector-modal-content">
+          <div class="inspector-modal-header">
+            <h4 class=""><%= tr('Change variable') %></h4>
+          </div>
+          <div class="inspector-modal-body">
+          </div>
+          <div class="inspector-modal-footer">
+            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('OK') %></button>
+            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
+          </div>
+        </div>
+      </div>
+    `),
+
+    id: 'inspectorModal',
+
+    className: 'modal',
+
+    tagName: 'div',
+
+    render() {
+      if (!this.$el.is(':empty')) return this;
+      this.$el.html(this.template()).modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: false,
+      });
+      return this;
+    },
+
+    show() {
+      if (this.$el.is(':visible')) return this;
+      this.render().$el.modal('show');
+      return this;
+    },
+
+    hide() {
+      if (this.$el.is(':hidden')) return this;
+      this.render().$el.modal('hide');
+      return this;
+    },
+  });
+
   const InspectorModel = Backbone.Model.extend({
     defaults: {
       callStackPanelScroll: 0,
@@ -85,6 +131,7 @@
 
     initialize() {
       const model = new InspectorModel();
+      const modal = new InspectorModal();
 
       model.on('change:resources', (__, data) => {
         const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
@@ -141,6 +188,7 @@
       });
 
       this.model = model;
+      this.modal = modal;
     },
 
     render() {

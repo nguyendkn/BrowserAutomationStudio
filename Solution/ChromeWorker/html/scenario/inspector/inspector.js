@@ -7,6 +7,13 @@
             <h4><%= tr("Change the {0} variable", variable) %></h4>
           </div>
           <div class="inspector-modal-body">
+            <select id="inspectorModalType" class="" name="type">
+              <option value="boolean"><%= tr('Boolean') %></option>
+              <option value="string"><%= tr('String') %></option>
+              <option value="number"><%= tr('Number') %></option>
+              <option value="date"><%= tr('Date') %></option>
+              <option value="raw"><%= tr('Raw') %></option>
+            </select>
           </div>
           <div class="inspector-modal-footer">
             <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('Accept') %></button>
@@ -23,9 +30,23 @@
     tagName: 'div',
 
     events: {
-      'click #inspectorModalAccept': 'accept',
+      'click #inspectorModalAccept': function (e) {
+        e.preventDefault();
+        this.$el.modal('hide');
+        this.remove();
+        this.options.onAccept();
+      },
 
-      'click #inspectorModalCancel': 'cancel',
+      'click #inspectorModalCancel': function (e) {
+        e.preventDefault();
+        this.$el.modal('hide');
+        this.remove();
+        this.options.onCancel();
+      },
+
+      'change #inspectorModalType': function (e) {
+        e.preventDefault();
+      },
     },
 
     render() {
@@ -35,19 +56,7 @@
         show: true,
       });
       return this;
-    },
-
-    accept() {
-      this.$el.modal('hide');
-      this.remove();
-      this.options.onAccept();
-    },
-
-    cancel() {
-      this.$el.modal('hide');
-      this.remove();
-      this.options.onCancel();
-    },
+    }
   }, {
     show(options) {
       const modal = new InspectorModal(options);

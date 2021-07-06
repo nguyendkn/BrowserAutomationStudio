@@ -25,5 +25,11 @@ _.extend(_L, {
   },
   'Resources': {
     ru: 'Ресурсы'
+  },
+  'String': {
+    ru: 'Строка'
+  },
+  'Number': {
+    ru: 'Число'
   }
 });

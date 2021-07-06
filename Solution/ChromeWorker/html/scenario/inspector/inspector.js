@@ -7,12 +7,12 @@
             <h4><%= tr("Change the {0} variable", variable) %></h4>
           </div>
           <div class="inspector-modal-body">
-            <select id="inspectorModalType" class="" name="type">
-              <option value="boolean"><%= tr('Boolean') %></option>
-              <option value="string"><%= tr('String') %></option>
-              <option value="number"><%= tr('Number') %></option>
-              <option value="date"><%= tr('Date') %></option>
-              <option value="raw"><%= tr('Raw') %></option>
+            <select id="inspectorModalSelect" name="type">
+              <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>
+              <option class="inspector-modal-select-option" value="string"><%= tr('String') %></option>
+              <option class="inspector-modal-select-option" value="number"><%= tr('Number') %></option>
+              <option class="inspector-modal-select-option" value="date"><%= tr('Date') %></option>
+              <option class="inspector-modal-select-option" value="raw"><%= tr('Raw') %></option>
             </select>
           </div>
           <div class="inspector-modal-footer">
@@ -30,6 +30,10 @@
     tagName: 'div',
 
     events: {
+      'change #inspectorModalSelect': function (e) {
+        e.preventDefault();
+      },
+
       'click #inspectorModalAccept': function (e) {
         e.preventDefault();
         this.$el.modal('hide');
@@ -43,10 +47,6 @@
         this.remove();
         this.options.onCancel();
       },
-
-      'change #inspectorModalType': function (e) {
-        e.preventDefault();
-      },
     },
 
     render() {
@@ -54,6 +54,12 @@
         backdrop: 'static',
         keyboard: false,
         show: true,
+      });
+      this.$('#inspectorModalSelect').selectpicker({
+        style: 'inspector-modal-select',
+        template: { caret: '' },
+        container: false,
+        width: false
       });
       return this;
     }

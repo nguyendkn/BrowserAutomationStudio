@@ -41,6 +41,67 @@
   height: 290px;
 }
 
+/*****************
+ * Select styles *
+ *****************/
+
+.dropdown-menu > li > a.inspector-modal-select-option.active:hover,
+.dropdown-menu > li > a.inspector-modal-select-option.active,
+.dropdown-menu > li > a.inspector-modal-select-option:hover {
+  background-color: #606060;
+  background-image: none;
+  color: #fff;
+}
+
+.dropdown-menu > li > a.inspector-modal-select-option {
+  transition: background-color 0.3s ease-in-out;
+  border: thin solid transparent;
+  justify-content: space-between;
+  background-color: #787878;
+  background-image: none;
+  padding: 15px 16px;
+  line-height: 18px;
+  font-weight: 500;
+  font-size: 13px;
+  color: #fff;
+  display: flex;
+  outline: 0;
+}
+
+.bootstrap-select > .inspector-modal-select:focus,
+.bootstrap-select > .inspector-modal-select:hover,
+.bootstrap-select.open > .inspector-modal-select {
+  background-color: #787878;
+  outline: 0 !important;
+}
+
+.inspector-modal-select.disabled {
+  background-color: #606060 !important;
+  opacity: 0.8;
+}
+
+.inspector-modal-select:focus {
+  color: #fff;
+}
+
+.inspector-modal-select:hover {
+  color: #fff;
+}
+
+.inspector-modal-select {
+  transition: all 0.3s ease-in-out;
+  background-color: #606060;
+  letter-spacing: -0.2px;
+  border-bottom: none;
+  padding: 15px 16px;
+  line-height: 18px;
+  border-radius: 0;
+  font-weight: 500;
+  font-size: 13px;
+  color: #fff;
+  outline: 0;
+}
+
 /****************
  * Modal styles *
  ****************/
@@ -70,7 +131,6 @@
 }
 
 .inspector-modal-body {
-  border: 1px dashed #606060;
   background: #f7f7f8;
   margin: 27px 0 36px;
   padding: 16px 20px;

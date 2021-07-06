@@ -1,23 +1,25 @@
 (function (global, $, _) {
   const InspectorModal = Backbone.View.extend({
     template: _.template(/*html*/`
-      <div class="modal-dialog" role="document">
-        <div class="inspector-modal-content">
-          <div class="inspector-modal-header">
-            <h4><%= tr("Change the {0} variable", variable) %></h4>
-          </div>
-          <div class="inspector-modal-body">
-            <select id="inspectorModalSelect" name="type">
-              <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>
-              <option class="inspector-modal-select-option" value="string"><%= tr('String') %></option>
-              <option class="inspector-modal-select-option" value="number"><%= tr('Number') %></option>
-              <option class="inspector-modal-select-option" value="date"><%= tr('Date') %></option>
-              <option class="inspector-modal-select-option" value="raw"><%= tr('Raw') %></option>
-            </select>
-          </div>
-          <div class="inspector-modal-footer">
-            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('Accept') %></button>
-            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
+      <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center" role="document">
+          <div class="inspector-modal-content">
+            <div class="inspector-modal-header">
+              <h4><%= tr("Change the {0} variable", variable) %></h4>
+            </div>
+            <div class="inspector-modal-body">
+              <select id="inspectorModalSelect">
+                <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>
+                <option class="inspector-modal-select-option" value="string"><%= tr('String') %></option>
+                <option class="inspector-modal-select-option" value="number"><%= tr('Number') %></option>
+                <option class="inspector-modal-select-option" value="date"><%= tr('Date') %></option>
+                <option class="inspector-modal-select-option" value="raw"><%= tr('Raw') %></option>
+              </select>
+            </div>
+            <div class="inspector-modal-footer">
+              <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('Accept') %></button>
+              <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
+            </div>
           </div>
         </div>
       </div>

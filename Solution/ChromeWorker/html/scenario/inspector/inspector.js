@@ -4,13 +4,17 @@
       <div class="modal-dialog" role="document">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4 class=""><%= tr('Change variable') %></h4>
+            <h4><%= tr("Change variable") %></h4>
           </div>
           <div class="inspector-modal-body">
           </div>
           <div class="inspector-modal-footer">
-            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('OK') %></button>
-            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
+            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal">
+              <%= tr('Accept') %>
+            </button>
+            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal">
+              <%= tr('Cancel') %>
+            </button>
           </div>
         </div>
       </div>
@@ -21,6 +25,16 @@
     className: 'modal',
 
     tagName: 'div',
+
+    events: {
+      'click #inspectorModalAccept': function () {
+        this.trigger('accept').hide();
+      },
+
+      'click #inspectorModalCancel': function () {
+        this.trigger('cancel').hide();
+      },
+    },
 
     render() {
       if (!this.$el.is(':empty')) return this;

@@ -332,10 +332,14 @@
 }
 
 .main {
-  min-height: calc(100vh - 31px);
+  min-height: max-content;
   padding-bottom: 50px;
-  position: relative;
   overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+  margin-right: 0;
+  margin-left: 0;
+  flex: 1;
 }
 
 .maintoolbox
@@ -2045,6 +2049,17 @@ mark
   cursor: pointer;
   color: #fff;
   outline: 0;
+}
+
+/********************
+ * Container styles *
+ ********************/
+
+#containerdata {
+  flex-direction: column;
+  overflow-y: visible;
+  display: flex;
+  height: 100vh;
 }
 
 /********************

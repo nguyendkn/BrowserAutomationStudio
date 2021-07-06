@@ -200,17 +200,6 @@
         $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
       });
 
-      $.contextMenu({
-        selector: '[data-path][contenteditable]',
-        items: {
-          date: { name: tr('Date object') },
-          boolean: { name: tr('Boolean') },
-          string: { name: tr('String') },
-          number: { name: tr('Number') },
-        },
-        callback: updateVariable,
-      });
-
       this.model = model;
     },
 

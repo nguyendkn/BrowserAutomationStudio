@@ -27,36 +27,36 @@
     tagName: 'div',
 
     events: {
-      'click #inspectorModalAccept': function () {
-        this.trigger('accept').hide();
-      },
+      'click #inspectorModalAccept': 'accept',
 
-      'click #inspectorModalCancel': function () {
-        this.trigger('cancel').hide();
-      },
+      'click #inspectorModalCancel': 'cancel',
     },
 
     render() {
-      if (!this.$el.is(':empty')) return this;
-      this.$el.html(this.template()).modal({
+      this.$el.html(this.template(this.options)).modal({
         backdrop: 'static',
         keyboard: false,
-        show: false,
+        show: true,
       });
       return this;
     },
 
-    show() {
-      if (this.$el.is(':visible')) return this;
-      this.render().$el.modal('show');
-      return this;
+    accept() {
+      this.$el.modal('hide');
+      this.remove();
+      this.options.onAccept();
     },
 
-    hide() {
-      if (this.$el.is(':hidden')) return this;
-      this.render().$el.modal('hide');
-      return this;
+    cancel() {
+      this.$el.modal('hide');
+      this.remove();
+      this.options.onCancel();
     },
+  }, {
+    show(options) {
+      const modal = new InspectorModal(options);
+      return modal.render();
+    }
   });
 
   const InspectorModel = Backbone.Model.extend({
@@ -145,7 +145,6 @@
 
     initialize() {
       const model = new InspectorModel();
-      const modal = new InspectorModal();
 
       model.on('change:resources', (__, data) => {
         const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
@@ -202,7 +201,6 @@
       });
 
       this.model = model;
-      this.modal = modal;
     },
 
     render() {
@@ -326,6 +324,21 @@
     },
 
     events: {
+      'dblclick span[data-path]': function (e) {
+        const $el = $(e.target);
+
+        InspectorModal.show({
+          onAccept: () => {
+
+          },
+          onCancel: () => {
+
+          },
+        });
+
+        e.stopPropagation();
+      },
+
       'click #inspectorShowCallStack': function (e) {
         e.preventDefault();
       },

@@ -8,6 +8,11 @@
               <h4><%= tr("Change the {0} variable", variable) %></h4>
             </div>
             <div class="inspector-modal-body">
+              <div class="inspector-modal-inputs">
+                <textarea id="inspectorModalTextarea" style="resize: vertical;"></textarea>
+                <input id="inspectorModalNumberInput" type="number">
+                <input id="inspectorModalTextInput" type="text">
+              </div>
               <select id="inspectorModalSelect">
                 <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>
                 <option class="inspector-modal-select-option" value="string"><%= tr('String') %></option>
@@ -33,6 +38,19 @@
 
     events: {
       'change #inspectorModalSelect': function (e) {
+        let useTextarea = false;
+
+        switch (e.target.value) {
+          case 'boolean':
+            break;
+          case 'number':
+            break;
+          case 'date':
+            break;
+          default:
+            break;
+        }
+
         e.preventDefault();
       },
 

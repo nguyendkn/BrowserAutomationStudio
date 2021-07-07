@@ -1,15 +1,7 @@
 (function (global, $, _) {
-  const removeRightQuote = (str) => str.replace(/('|")$/g, '');
-
-  const removeLeftQuote = (str) => str.replace(/^('|")/g, '');
-
-  const clean = _.compose(removeRightQuote, removeLeftQuote);
-
   global.Scenario.utils = {
     updateVariable(newValue, oldValue, pointer, type) {
-      let variable = clean(newValue);
-      let previous = clean(oldValue);
-      if (variable === previous) return;
+      if (newValue === oldValue) return;
 
       const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((data, key, idx) => {
         if (idx === 0) {

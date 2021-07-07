@@ -55,17 +55,19 @@
       },
 
       'click #inspectorModalAccept': function (e) {
+        const type = this.$('#inspectorModalSelect').val();
         e.preventDefault();
         this.$el.modal('hide');
         this.remove();
-        this.options.onAccept();
+        this.options.callback(null, type);
       },
 
       'click #inspectorModalCancel': function (e) {
+        const type = this.$('#inspectorModalSelect').val();
         e.preventDefault();
         this.$el.modal('hide');
         this.remove();
-        this.options.onCancel();
+        this.options.callback(null, type);
       },
     },
 
@@ -345,18 +347,25 @@
 
     events: {
       'dblclick span[data-path]': function (e) {
-        const $el = $(e.target), path = $el.data('path');
+        const $el = $(e.target);
+        const path = $el.data('path');
+        const type = $el.data('type');
+        const value = jsonpatch.getValueByPointer(this.model.get('variables'), path);
 
         InspectorModal.show({
           variable: path.split('/').pop(),
 
-          onAccept: () => {
-
+          callback: (val, type) => {
+            if (val) {
+              Scenario.utils.updateVariable(value, val, path, type);
+            }
           },
 
-          onCancel: () => {
+          value,
 
-          },
+          type,
+
+          path,
         });
 
         e.stopPropagation();
@@ -381,16 +390,6 @@
       }
     }
   });
-
-  function updateVariable(type, { $trigger }) {
-    if (!type) {
-      type = 'string';
-      if ($trigger.hasClass('jst-node-boolean')) type = 'boolean';
-      if ($trigger.hasClass('jst-node-number')) type = 'number';
-      if ($trigger.hasClass('jst-node-date')) type = 'date';
-    }
-    Scenario.utils.updateVariable($trigger.text(), $trigger.data('text'), $trigger.data('path'), type);
-  }
 
   global.Scenario.Inspector = InspectorView;
 })(window, jQuery, _);

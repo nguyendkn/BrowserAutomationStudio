@@ -12,6 +12,16 @@
                 <textarea id="inspectorModalTextarea" style="resize: vertical; display: none;"></textarea>
                 <input id="inspectorModalNumberInput" type="number" style="display: none;">
                 <input id="inspectorModalTextInput" type="text" style="display: none;">
+                <div class="inspector-modal-boolean" style="display: none;">
+                  <div class="input-radio">
+                    <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false">
+                    <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
+                  </div>
+                  <div class="input-radio">
+                    <input id="inspectorModalBooleanTrue" type="radio" name="boolean" value="true">
+                    <label for="inspectorModalBooleanTrue"><%= tr('True') %></label>
+                  </div>
+                </div>
               </div>
               <select id="inspectorModalSelect">
                 <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>

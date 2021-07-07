@@ -9,9 +9,9 @@
             </div>
             <div class="inspector-modal-body">
               <div class="inspector-modal-inputs">
-                <textarea id="inspectorModalTextarea" style="resize: vertical;"></textarea>
-                <input id="inspectorModalNumberInput" type="number">
-                <input id="inspectorModalTextInput" type="text">
+                <textarea id="inspectorModalTextarea" style="resize: vertical; display: none;"></textarea>
+                <input id="inspectorModalNumberInput" type="number" style="display: none;">
+                <input id="inspectorModalTextInput" type="text" style="display: none;">
               </div>
               <select id="inspectorModalSelect">
                 <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>
@@ -72,19 +72,16 @@
     },
 
     render() {
-      this.$el.html(this.template(this.options)).modal({
-        backdrop: 'static',
-        keyboard: false,
-        show: true,
-      });
-      this.$('#inspectorModalSelect').selectpicker({
+      this.$el.html(this.template(this.options));
+
+      this.$('#inspectorModalSelect').val(this.options.type).selectpicker({
         style: 'inspector-modal-select',
         template: { caret: '' },
-        container: false,
-        width: false
       });
+
+      this.$el.modal({ backdrop: 'static' });
       return this;
-    }
+    },
   }, {
     show(options) {
       const modal = new InspectorModal(options);

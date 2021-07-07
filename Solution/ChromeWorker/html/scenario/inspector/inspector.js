@@ -5,7 +5,7 @@
         <div class="modal-dialog vertical-align-center" role="document">
           <div class="inspector-modal-content">
             <div class="inspector-modal-header">
-              <h4><%= tr("Change the variable") %></h4>
+              <h4><%= tr("Change the variable value") %></h4>
             </div>
             <div class="inspector-modal-body">
               <div class="inspector-modal-inputs">
@@ -87,7 +87,7 @@
     },
 
     render() {
-      this.$el.html(this.template(this.options));
+      this.$el.html(this.template());
 
       this.$('#inspectorModalSelect').val(this.options.type).trigger('change').selectpicker({
         style: 'inspector-modal-select',

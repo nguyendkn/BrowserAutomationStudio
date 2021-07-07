@@ -21,7 +21,7 @@
       } else if (type === 'date') {
         variable = `_parse_date('${variable}', 'auto')`;
       } else if (type === 'raw') {
-        variabble = JSON.stringify(eval(`(${variable})`));
+        variable = JSON.stringify(eval(`(${variable})`));
       } else {
         variable = `"${variable}"`;
       }

@@ -5,7 +5,7 @@
         <div class="modal-dialog vertical-align-center" role="document">
           <div class="inspector-modal-content">
             <div class="inspector-modal-header">
-              <h4><%= tr("Change the {0} variable", variable) %></h4>
+              <h4><%= tr("Change the variable") %></h4>
             </div>
             <div class="inspector-modal-body">
               <div class="inspector-modal-inputs">
@@ -37,44 +37,59 @@
     tagName: 'div',
 
     events: {
-      'change #inspectorModalSelect': function (e) {
-        let useTextarea = false;
+      'change #inspectorModalNumberInput': function (e) {
+        e.preventDefault();
+        this.options.value = e.target.value;
+      },
 
-        switch (e.target.value) {
-          case 'boolean':
-            break;
-          case 'number':
-            break;
-          case 'date':
-            break;
-          default:
-            break;
+      'change #inspectorModalTextInput': function (e) {
+        e.preventDefault();
+        this.options.value = e.target.value;
+      },
+
+      'change #inspectorModalTextarea': function (e) {
+        e.preventDefault();
+        this.options.value = e.target.value;
+      },
+
+      'change #inspectorModalSelect': function (e) {
+        const value = e.target.value || this.options.type;
+        let $input = this.$('#inspectorModalTextarea');
+
+        if (value === 'number') {
+          $input = this.$('#inspectorModalNumberInput');
+        } else if (value === 'boolean' || value === 'date') {
+          $input = this.$('#inspectorModalTextInput');
         }
 
+        this.$('.inspector-modal-inputs').children().not($input).hide();
+        $input.val(this.options.value).show();
         e.preventDefault();
       },
 
       'click #inspectorModalAccept': function (e) {
-        const type = this.$('#inspectorModalSelect').val();
         e.preventDefault();
         this.$el.modal('hide');
-        this.remove();
-        this.options.callback(null, type);
+        this.remove().options.callback({
+          type: this.$('#inspectorModalSelect').val(),
+          value: this.options.value
+        });
       },
 
       'click #inspectorModalCancel': function (e) {
-        const type = this.$('#inspectorModalSelect').val();
         e.preventDefault();
         this.$el.modal('hide');
-        this.remove();
-        this.options.callback(null, type);
+        this.remove().options.callback({
+          type: this.$('#inspectorModalSelect').val(),
+          value: null
+        });
       },
     },
 
     render() {
       this.$el.html(this.template(this.options));
 
-      this.$('#inspectorModalSelect').val(this.options.type).selectpicker({
+      this.$('#inspectorModalSelect').val(this.options.type).trigger('change').selectpicker({
         style: 'inspector-modal-select',
         template: { caret: '' },
       });
@@ -344,25 +359,22 @@
 
     events: {
       'dblclick span[data-path]': function (e) {
-        const $el = $(e.target);
-        const path = $el.data('path');
-        const type = $el.data('type');
-        const value = jsonpatch.getValueByPointer(this.model.get('variables'), path);
+        const path = e.target.dataset.path;
+        const type = e.target.dataset.type;
+        const initial = jsonpatch.getValueByPointer(this.model.get('variables'), path);
 
         InspectorModal.show({
-          variable: path.split('/').pop(),
-
-          callback: (val, type) => {
-            if (val) {
-              Scenario.utils.updateVariable(value, val, path, type);
+          callback: ({ value, type }) => {
+            if (value && value !== initial) {
+              Scenario.utils.updateVariable(value, path, type);
             }
           },
 
-          value,
+          value: initial,
 
-          type,
+          type: type,
 
-          path,
+          path: path,
         });
 
         e.stopPropagation();

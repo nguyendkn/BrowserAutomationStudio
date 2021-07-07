@@ -1,8 +1,6 @@
 (function (global, $, _) {
   global.Scenario.utils = {
-    updateVariable(newValue, oldValue, pointer, type) {
-      if (newValue === oldValue) return;
-
+    updateVariable(variable, pointer, type) {
       const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((data, key, idx) => {
         if (idx === 0) {
           data.isGlobal = key.indexOf('GLOBAL:') === 0;

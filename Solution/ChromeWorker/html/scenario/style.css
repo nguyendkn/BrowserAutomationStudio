@@ -2085,7 +2085,7 @@ mark
  * Utility styles *
  ******************/
 
-.vertical-alignment-helper {
+.vertical-align-helper {
   pointer-events: none;
   display: table;
   height: 100%;

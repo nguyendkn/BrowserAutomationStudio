@@ -120,21 +120,21 @@
     remove() {
       this.$el.unbind();
       this.$el.remove();
-      return this;
+      return this.off();
     }
   }, {
     show(options) {
       const modal = new View(options);
 
-      modal.once('accept', (data) => {
-        modal.off();
-        options.callback({ ...data, cancel: false });
-      });
+      modal.once('accept', (data) => options.callback({
+        cancel: false,
+        ...data,
+      }));
 
-      modal.once('cancel', (data) => {
-        modal.off();
-        options.callback({ ...data, cancel: true });
-      });
+      modal.once('cancel', (data) => options.callback({
+        cancel: true,
+        ...data,
+      }));
 
       return modal.render();
     }

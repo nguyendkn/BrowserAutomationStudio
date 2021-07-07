@@ -146,23 +146,23 @@
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return _element(`"${_.escape(data)}"`, { class: 'jst-node-string', 'data-path': _path(path, name), 'data-value': utf8_to_b64(value) }) + clip;
+    return _element(`"${_.escape(data)}"`, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'string', 'data-value': utf8_to_b64(value) }) + clip;
   }
 
   function _jsBoolean(name, value, path) {
-    return _element(value, { class: 'jst-node-boolean', 'data-path': _path(path, name) });
+    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'boolean' });
   }
 
   function _jsNumber(name, value, path) {
-    return _element(value, { class: 'jst-node-number', 'data-path': _path(path, name) });
+    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'number' });
   }
 
   function _jsDate(name, value, path) {
-    return _element(value, { class: 'jst-node-date', 'data-path': _path(path, name) });
+    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'date' });
   }
 
   function _jsNull(name, value, path) {
-    return _element(null, { class: 'jst-node-null', 'data-path': _path(path, name) });
+    return _element(null, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'null' });
   }
 
   function _property(name, value, path) {

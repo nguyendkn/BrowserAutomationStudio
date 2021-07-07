@@ -1,13 +1,30 @@
-span.jst-node-string[data-value] {
-  word-break: break-all;
+span.jst-node[data-type="boolean"] {
+  color: #2525cc;
 }
 
-li.jst-item > .fa-minus-circle {
+span.jst-node[data-type="number"] {
+  color: #d036d0;
+}
+
+span.jst-node[data-type="string"] {
+  word-break: break-all;
+  color: #2db669;
+}
+
+span.jst-node[data-type="date"] {
+  color: #ce904a;
+}
+
+span.jst-node[data-type="null"] {
+  color: #808080;
+}
+
+.jst-item > .fa-minus-circle {
   margin-left: 2px;
   cursor: pointer;
 }
 
-li.jst-item > .fa-plus-circle {
+.jst-item > .fa-plus-circle {
   margin-left: 2px;
   cursor: pointer;
 }
@@ -34,26 +51,6 @@ li.jst-item + li.jst-item {
 
 .jst-expand:before {
   content: "+";
-}
-
-.jst-node-boolean {
-  color: #2525cc;
-}
-
-.jst-node-number {
-  color: #d036d0;
-}
-
-.jst-node-string {
-  color: #2db669;
-}
-
-.jst-node-date {
-  color: #ce904a;
-}
-
-.jst-node-null {
-  color: #808080;
 }
 
 .jst-collapsed {

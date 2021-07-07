@@ -256,20 +256,19 @@
       'dblclick span[data-path]': function (e) {
         const path = e.target.dataset.path;
         const type = e.target.dataset.type;
-        const initial = jsonpatch.getValueByPointer(this.model.get('variables'), path);
 
         global.Scenario.InspectorModal.show({
-          callback: ({ value, type }) => {
-            if (value && value !== initial) {
-              Scenario.utils.updateVariable(value, path, type);
+          value: jsonpatch.getValueByPointer(this.model.get('variables'), path),
+
+          callback: ({ initialValue, updatedValue, cancel, type }) => {
+            if (!cancel && updatedValue !== initialValue) {
+              Scenario.utils.updateVariable(updatedValue, path, type);
             }
           },
 
-          value: initial,
+          type,
 
-          type: type,
-
-          path: path,
+          path,
         });
 
         e.stopPropagation();

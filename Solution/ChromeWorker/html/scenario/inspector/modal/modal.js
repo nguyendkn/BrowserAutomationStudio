@@ -1,5 +1,14 @@
 (function (global, $, _) {
-  const InspectorModal = Backbone.View.extend({
+  const Model = Backbone.Model.extend({
+    defaults: {
+      previousValue: '',
+      updatedValue: '',
+      type: '',
+      path: '',
+    }
+  });
+
+  const View = Backbone.View.extend({
     template: _.template(/*html*/`
       <div class="vertical-align-helper">
         <div class="modal-dialog vertical-align-center" role="document">
@@ -48,58 +57,58 @@
 
     events: {
       'change #inspectorModalNumberInput': function (e) {
-        e.preventDefault();
-        this.options.value = e.target.value;
+        this.model.set({ updatedValue: e.target.value });
       },
 
       'change #inspectorModalTextInput': function (e) {
-        e.preventDefault();
-        this.options.value = e.target.value;
+        this.model.set({ updatedValue: e.target.value });
       },
 
       'change #inspectorModalTextarea': function (e) {
-        e.preventDefault();
-        this.options.value = e.target.value;
+        this.model.set({ updatedValue: e.target.value });
       },
 
       'change #inspectorModalSelect': function (e) {
-        const value = e.target.value || this.options.type;
+        const type = e.target.value || this.model.get('type');
         let $input = this.$('#inspectorModalTextarea');
 
-        if (value === 'number') {
+        if (type === 'number') {
           $input = this.$('#inspectorModalNumberInput');
-        } else if (value === 'boolean' || value === 'date') {
+        } else if (type === 'boolean' || type === 'date') {
           $input = this.$('#inspectorModalTextInput');
         }
 
         this.$('.inspector-modal-inputs').children().not($input).hide();
-        $input.val(this.options.value).show();
-        e.preventDefault();
+        $input.val(this.model.get('updatedValue')).show();
+        this.model.set('type', type);
       },
 
       'click #inspectorModalAccept': function (e) {
         e.preventDefault();
         this.$el.modal('hide');
-        this.remove().options.callback({
-          type: this.$('#inspectorModalSelect').val(),
-          value: this.options.value
-        });
+        this.trigger('accept', { ...this.model.toJSON() }).remove();
       },
 
       'click #inspectorModalCancel': function (e) {
         e.preventDefault();
         this.$el.modal('hide');
-        this.remove().options.callback({
-          type: this.$('#inspectorModalSelect').val(),
-          value: null
-        });
+        this.trigger('cancel', { ...this.model.toJSON() }).remove();
       },
+    },
+
+    initialize(options) {
+      this.model = new Model({
+        previousValue: options.value,
+        updatedValue: options.value,
+        type: options.type,
+        path: options.path,
+      });
     },
 
     render() {
       this.$el.html(this.template());
 
-      this.$('#inspectorModalSelect').val(this.options.type).trigger('change').selectpicker({
+      this.$('#inspectorModalSelect').val(this.model.get('type')).trigger('change').selectpicker({
         style: 'inspector-modal-select',
         template: { caret: '' },
       });
@@ -107,12 +116,29 @@
       this.$el.modal({ backdrop: 'static' });
       return this;
     },
+
+    remove() {
+      this.$el.unbind();
+      this.$el.remove();
+      return this;
+    }
   }, {
     show(options) {
-      const modal = new InspectorModal(options);
+      const modal = new View(options);
+
+      modal.once('accept', (data) => {
+        modal.off();
+        options.callback({ ...data, cancel: false });
+      });
+
+      modal.once('cancel', (data) => {
+        modal.off();
+        options.callback({ ...data, cancel: true });
+      });
+
       return modal.render();
     }
   });
 
-  global.Scenario.InspectorModal = InspectorModal;
+  global.Scenario.InspectorModal = View;
 })(window, jQuery, _);

@@ -265,8 +265,8 @@
     events: {
       'dblclick #inspectorVariablesData [data-path]': function (e) {
         const raw = $(e.target).hasClass('jst-list');
-        let path = e.target.dataset.path;
-        let type = e.target.dataset.type;
+        let { path } = e.target.dataset;
+        let { type } = e.target.dataset;
         type = raw ? 'raw' : type;
 
         global.Scenario.InspectorModal.show({

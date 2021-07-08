@@ -47,7 +47,17 @@
           this.trigger('diff:variables', { ...item, path });
         });
       }
-    }
+    },
+
+    getVariable(pointer) {
+      const source = this.get('variables');
+      return jsonpatch.getValueByPointer(source, pointer);
+    },
+
+    getResource(pointer) {
+      const source = this.get('resources');
+      return jsonpatch.getValueByPointer(source, pointer);
+    },
   });
 
   const InspectorView = Backbone.View.extend({
@@ -254,21 +264,21 @@
 
     events: {
       'dblclick #inspectorVariablesData [data-path]': function (e) {
-        const path = e.target.dataset.path;
-        const type = e.target.dataset.type;
+        const raw = $(e.target).hasClass('jst-list');
+        let path = e.target.dataset.path;
+        let type = e.target.dataset.type;
+        type = raw ? 'raw' : type;
 
         global.Scenario.InspectorModal.show({
-          value: jsonpatch.getValueByPointer(this.model.get('variables'), path),
+          value: this.model.getVariable(path),
 
-          callback: ({ previousValue, updatedValue, cancel, type }) => {
-            if (!cancel && updatedValue !== previousValue) {
-              Scenario.utils.updateVariable(updatedValue, path, type);
+          callback: ({ isChanged, value, cancel, type }) => {
+            if (!cancel && isChanged) {
+              Scenario.utils.updateVariable(value, path, type);
             }
           },
 
           type,
-
-          path,
         });
 
         e.stopPropagation();

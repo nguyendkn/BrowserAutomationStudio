@@ -1,10 +1,21 @@
 (function (global, $, _) {
   const Model = Backbone.Model.extend({
     defaults: {
-      previousValue: '',
-      updatedValue: '',
+      value: '',
       type: '',
-      path: '',
+    },
+
+    initialize({ value, type }) {
+      this._value = value;
+      this._type = type;
+    },
+
+    toJSON() {
+      const valueChanged = this._value !== this.get('value');
+      const typeChanged = this._type !== this.get('type');
+      const isChanged = valueChanged || typeChanged;
+
+      return { ..._.clone(this.attributes), isChanged };
     }
   });
 
@@ -56,32 +67,32 @@
     events: {
       'change #inspectorModalBooleanFalse': function (e) {
         if (e.target.checked) {
-          this.model.set({ updatedValue: e.target.value });
+          this.model.set({ value: e.target.value });
         }
       },
 
       'change #inspectorModalBooleanTrue': function (e) {
         if (e.target.checked) {
-          this.model.set({ updatedValue: e.target.value });
+          this.model.set({ value: e.target.value });
         }
       },
 
       'change #inspectorModalNumberInput': function (e) {
-        this.model.set({ updatedValue: e.target.value });
+        this.model.set({ value: e.target.value });
       },
 
       'change #inspectorModalTextInput': function (e) {
-        this.model.set({ updatedValue: e.target.value });
+        this.model.set({ value: e.target.value });
       },
 
       'change #inspectorModalTextarea': function (e) {
-        this.model.set({ updatedValue: e.target.value });
+        this.model.set({ value: e.target.value });
       },
 
       'change #inspectorModalSelect': function (e) {
         const type = e.target.value || this.model.get('type');
         let $input = this.$('#inspectorModalTextarea');
-        const value = this.model.get('updatedValue');
+        const value = this.model.get('value');
 
         if (type === 'boolean') {
           $input = this.$('#inspectorModalBoolean');
@@ -115,27 +126,25 @@
 
       'click #inspectorModalAccept': function (e) {
         e.preventDefault();
+
         this.$el.modal('hide');
-        this.trigger('accept', { ...this.model.toJSON() }).close();
+        this.trigger('accept', this.model.toJSON()).close();
       },
 
       'click #inspectorModalCancel': function (e) {
         e.preventDefault();
+
         this.$el.modal('hide');
-        this.trigger('cancel', { ...this.model.toJSON() }).close();
+        this.trigger('cancel', this.model.toJSON()).close();
       },
     },
 
-    initialize({ value, type, path }) {
-      if (type === 'array') type = 'raw';
-      if (type === 'object') type = 'raw';
+    initialize({ value, type }) {
       value = type === 'raw' ? JSON.stringify(value) : value.toString()
 
       const model = new Model({
-        previousValue: value,
-        updatedValue: value,
-        type,
-        path,
+        value: value,
+        type: type,
       });
 
       this.model = model;

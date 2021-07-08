@@ -21,7 +21,7 @@
                 <textarea id="inspectorModalTextarea" style="resize: vertical; display: none;"></textarea>
                 <input id="inspectorModalNumberInput" type="number" style="display: none;">
                 <input id="inspectorModalTextInput" type="text" style="display: none;">
-                <div class="inspector-modal-boolean" style="display: none;">
+                <div id="inspectorModalBoolean" class="inspector-modal-boolean" style="display: none;">
                   <div class="input-radio">
                     <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false">
                     <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
@@ -56,6 +56,18 @@
     tagName: 'div',
 
     events: {
+      'change #inspectorModalBooleanFalse': function (e) {
+        if (e.target.checked) {
+          this.model.set({ updatedValue: e.target.value });
+        }
+      },
+
+      'change #inspectorModalBooleanTrue': function (e) {
+        if (e.target.checked) {
+          this.model.set({ updatedValue: e.target.value });
+        }
+      },
+
       'change #inspectorModalNumberInput': function (e) {
         this.model.set({ updatedValue: e.target.value });
       },
@@ -71,15 +83,31 @@
       'change #inspectorModalSelect': function (e) {
         const type = e.target.value || this.model.get('type');
         let $input = this.$('#inspectorModalTextarea');
+        const value = this.model.get('updatedValue');
 
-        if (type === 'number') {
-          $input = this.$('#inspectorModalNumberInput');
-        } else if (type === 'boolean' || type === 'date') {
-          $input = this.$('#inspectorModalTextInput');
+        if (type === 'boolean') {
+          $input = this.$('#inspectorModalBoolean');
+
+          if (value !== 'true') {
+            $input.find('#inspectorModalBooleanFalse').prop('checked', true);
+          } else {
+            $input.find('#inspectorModalBooleanTrue').prop('checked', true);
+          }
+
+          $input.show();
+        } else {
+          if (type === 'number') {
+            $input = this.$('#inspectorModalNumberInput');
+          }
+
+          if (type === 'date') {
+            $input = this.$('#inspectorModalTextInput');
+          }
+
+          $input.val(value).show();
         }
 
         this.$('.inspector-modal-inputs').children().not($input).hide();
-        $input.val(this.model.get('updatedValue')).show();
         this.model.set('type', type);
       },
 
@@ -98,8 +126,8 @@
 
     initialize(options) {
       this.model = new Model({
-        previousValue: options.value,
-        updatedValue: options.value,
+        previousValue: options.value.toString(),
+        updatedValue: options.value.toString(),
         type: options.type,
         path: options.path,
       });

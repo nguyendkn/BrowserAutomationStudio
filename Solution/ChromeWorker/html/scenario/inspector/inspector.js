@@ -260,8 +260,8 @@
         global.Scenario.InspectorModal.show({
           value: jsonpatch.getValueByPointer(this.model.get('variables'), path),
 
-          callback: ({ initialValue, updatedValue, cancel, type }) => {
-            if (!cancel && updatedValue !== initialValue) {
+          callback: ({ previousValue, updatedValue, cancel, type }) => {
+            if (!cancel && updatedValue !== previousValue) {
               Scenario.utils.updateVariable(updatedValue, path, type);
             }
           },

@@ -253,7 +253,7 @@
     },
 
     events: {
-      'dblclick span[data-path]': function (e) {
+      'dblclick #inspectorVariablesData span[data-path]': function (e) {
         const path = e.target.dataset.path;
         const type = e.target.dataset.type;
 

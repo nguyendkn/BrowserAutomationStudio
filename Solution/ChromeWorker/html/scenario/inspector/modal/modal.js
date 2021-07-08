@@ -32,7 +32,7 @@
                   </div>
                 </div>
               </div>
-              <select id="inspectorModalSelect">
+              <select id="inspectorModalSelect" data-style="inspector-modal-select">
                 <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>
                 <option class="inspector-modal-select-option" value="string"><%= tr('String') %></option>
                 <option class="inspector-modal-select-option" value="number"><%= tr('Number') %></option>
@@ -48,8 +48,6 @@
         </div>
       </div>
     `),
-
-    id: 'inspectorModal',
 
     className: 'modal',
 
@@ -135,11 +133,7 @@
 
     render() {
       this.$el.html(this.template());
-
-      this.$('#inspectorModalSelect').val(this.model.get('type')).trigger('change').selectpicker({
-        style: 'inspector-modal-select',
-        template: { caret: '' },
-      });
+      this.$('#inspectorModalSelect').val(this.model.get('type')).trigger('change').selectpicker();
 
       this.$el.modal({ backdrop: 'static' });
       return this;

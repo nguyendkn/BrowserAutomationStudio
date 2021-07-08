@@ -138,30 +138,24 @@
     initialize({ callback, value, type }) {
       value = type === 'raw' ? JSON.stringify(value) : value.toString()
 
-      const model = new Model({
-        value: value,
-        type: type,
-      });
-
       this.once('accept', (data) => {
         this.$el.modal('hide');
-        callback({ cancel: false, ...this.model.toJSON() });
+        callback({ ...this.model.toJSON(), cancel: false });
         this.close();
       });
 
       this.once('cancel', (data) => {
         this.$el.modal('hide');
-        callback({ cancel: true, ...this.model.toJSON() });
+        callback({ ...this.model.toJSON(), cancel: true });
         this.close();
       });
 
-      this.model = model;
+      this.model = new Model({ value, type });
     },
 
     render() {
       this.$el.html(this.template());
       this.$('#inspectorModalSelect').val(this.model.get('type')).trigger('change').selectpicker();
-
       this.$el.modal({ backdrop: 'static' });
       return this;
     },
@@ -170,11 +164,6 @@
       this.unbind();
       this.remove();
       return this;
-    }
-  }, {
-    show(options) {
-      const modal = new View(options);
-      return modal.render();
     }
   });
 

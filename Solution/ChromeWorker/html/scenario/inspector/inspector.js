@@ -269,17 +269,18 @@
         let { type } = e.target.dataset;
         type = raw ? 'raw' : type;
 
-        global.Scenario.InspectorModal.show({
-          value: this.model.getVariable(path),
-
+        const modal = new global.Scenario.InspectorModal({
           callback: ({ isChanged, value, cancel, type }) => {
             if (!cancel && isChanged) {
               Scenario.utils.updateVariable(value, path, type);
             }
           },
 
+          value: this.model.getVariable(path),
+
           type,
         });
+        modal.render();
 
         e.stopPropagation();
       },

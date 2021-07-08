@@ -268,6 +268,7 @@
         let { path } = e.target.dataset;
         let { type } = e.target.dataset;
         type = raw ? 'raw' : type;
+        e.stopPropagation();
 
         const modal = new global.Scenario.InspectorModal({
           callback: ({ isChanged, value, cancel, type }) => {
@@ -280,21 +281,8 @@
 
           type,
         });
+
         modal.render();
-
-        e.stopPropagation();
-      },
-
-      'click #inspectorShowCallStack': function (e) {
-        e.preventDefault();
-      },
-
-      'click #inspectorShowResources': function (e) {
-        e.preventDefault();
-      },
-
-      'click #inspectorShowVariables': function (e) {
-        e.preventDefault();
       },
 
       'click #inspectorClose': function (e) {

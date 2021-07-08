@@ -112,13 +112,13 @@
       'click #inspectorModalAccept': function (e) {
         e.preventDefault();
         this.$el.modal('hide');
-        this.trigger('accept', { ...this.model.toJSON() }).remove();
+        this.trigger('accept', { ...this.model.toJSON() }).close();
       },
 
       'click #inspectorModalCancel': function (e) {
         e.preventDefault();
         this.$el.modal('hide');
-        this.trigger('cancel', { ...this.model.toJSON() }).remove();
+        this.trigger('cancel', { ...this.model.toJSON() }).close();
       },
     },
 
@@ -139,10 +139,10 @@
       return this;
     },
 
-    remove() {
-      this.$el.unbind();
-      this.$el.remove();
-      return this.off();
+    close() {
+      this.unbind();
+      this.remove();
+      return this;
     }
   }, {
     show(options) {

@@ -122,13 +122,19 @@
       },
     },
 
-    initialize(options) {
-      this.model = new Model({
-        previousValue: options.value.toString(),
-        updatedValue: options.value.toString(),
-        type: options.type,
-        path: options.path,
+    initialize({ value, type, path }) {
+      if (type === 'array') type = 'raw';
+      if (type === 'object') type = 'raw';
+      value = type === 'raw' ? JSON.stringify(value) : value.toString()
+
+      const model = new Model({
+        previousValue: value,
+        updatedValue: value,
+        type,
+        path,
       });
+
+      this.model = model;
     },
 
     render() {

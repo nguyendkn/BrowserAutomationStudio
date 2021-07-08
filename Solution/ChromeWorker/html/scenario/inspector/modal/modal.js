@@ -87,9 +87,13 @@
           $input = this.$('#inspectorModalBoolean');
 
           if (value !== 'true') {
-            $input.find('#inspectorModalBooleanFalse').prop('checked', true);
+            $input.find('#inspectorModalBooleanFalse')
+              .prop('checked', true)
+              .trigger('change');
           } else {
-            $input.find('#inspectorModalBooleanTrue').prop('checked', true);
+            $input.find('#inspectorModalBooleanTrue')
+              .prop('checked', true)
+              .trigger('change');
           }
 
           $input.show();
@@ -102,7 +106,7 @@
             $input = this.$('#inspectorModalTextInput');
           }
 
-          $input.val(value).show();
+          $input.val(value).trigger('change').show();
         }
 
         this.$('.inspector-modal-inputs').children().not($input).hide();

@@ -126,25 +126,33 @@
 
       'click #inspectorModalAccept': function (e) {
         e.preventDefault();
-
-        this.$el.modal('hide');
-        this.trigger('accept', this.model.toJSON()).close();
+        this.trigger('accept');
       },
 
       'click #inspectorModalCancel': function (e) {
         e.preventDefault();
-
-        this.$el.modal('hide');
-        this.trigger('cancel', this.model.toJSON()).close();
+        this.trigger('cancel');
       },
     },
 
-    initialize({ value, type }) {
+    initialize({ callback, value, type }) {
       value = type === 'raw' ? JSON.stringify(value) : value.toString()
 
       const model = new Model({
         value: value,
         type: type,
+      });
+
+      this.once('accept', (data) => {
+        this.$el.modal('hide');
+        callback({ cancel: false, ...this.model.toJSON() });
+        this.close();
+      });
+
+      this.once('cancel', (data) => {
+        this.$el.modal('hide');
+        callback({ cancel: true, ...this.model.toJSON() });
+        this.close();
       });
 
       this.model = model;
@@ -166,17 +174,6 @@
   }, {
     show(options) {
       const modal = new View(options);
-
-      modal.once('accept', (data) => options.callback({
-        cancel: false,
-        ...data,
-      }));
-
-      modal.once('cancel', (data) => options.callback({
-        cancel: true,
-        ...data,
-      }));
-
       return modal.render();
     }
   });

@@ -138,16 +138,16 @@
     initialize({ callback, value, type }) {
       value = type === 'raw' ? JSON.stringify(value) : value.toString()
 
-      this.once('accept', (data) => {
+      this.once('accept', () => {
         this.$el.modal('hide');
-        callback({ ...this.model.toJSON(), cancel: false });
         this.close();
+        callback({ ...this.model.toJSON(), cancel: false });
       });
 
-      this.once('cancel', (data) => {
+      this.once('cancel', () => {
         this.$el.modal('hide');
-        callback({ ...this.model.toJSON(), cancel: true });
         this.close();
+        callback({ ...this.model.toJSON(), cancel: true });
       });
 
       this.model = new Model({ value, type });

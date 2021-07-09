@@ -27,22 +27,17 @@
         variable = `"${variable}"`;
       }
 
-      if (isGlobal) {
-        const code = `try {
+      BrowserAutomationStudio_Execute(`try {
+        if (${isGlobal}) {
           var obj = JSON.parse(P('basglobal', '${root}') || '{}');
           obj${path} = ${variable};
           PSet('basglobal', '${root}', JSON.stringify(obj));
           delete obj;
-          section_start('test', -2)!
-        } catch (e) {}`
-        BrowserAutomationStudio_Execute(code, false);
-      } else {
-        const code = `try {
+        } else {
           VAR_${root}${path} = ${variable};
-          section_start('test', -2)!
-        } catch (e) {}`
-        BrowserAutomationStudio_Execute(code, false);
-      }
+        }
+        section_start('test', -2)!
+      } catch (e) {}`, false);
     },
 
     sortBy: {

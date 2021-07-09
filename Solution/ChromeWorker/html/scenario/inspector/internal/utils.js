@@ -13,7 +13,8 @@
       }, { path: '', root: '', isLocal: true, isGlobal: false });
 
       if (type === 'number') {
-        variable = parseFloat(variable) || `"${variable}"`;
+        const number = parseFloat(variable);
+        variable = isNaN(number) ? `"${variable}"` : number;
       } else if (type === 'boolean') {
         if (!['false', 'true'].includes(variable)) {
           variable = `"${variable}"`;

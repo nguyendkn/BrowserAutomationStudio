@@ -54,22 +54,19 @@
       'change #inspectorModalSelect': function (e) {
         const type = e.target.value || this.model.get('type');
         let $input = this.$('#inspectorModalTextarea');
-        const value = this.model.get('value');
 
         if (type === 'boolean') {
+          const $falseRadio = this.$('#inspectorModalBooleanFalse');
+          const $trueRadio = this.$('#inspectorModalBooleanTrue');
           $input = this.$('#inspectorModalBoolean');
 
-          if (value !== 'true') {
-            $input.find('#inspectorModalBooleanFalse')
-              .prop('checked', true)
-              .trigger('change');
-          } else {
-            $input.find('#inspectorModalBooleanTrue')
-              .prop('checked', true)
-              .trigger('change');
+          if ($falseRadio.prop('checked')) {
+            $falseRadio.trigger('change');
           }
 
-          $input.show();
+          if ($trueRadio.prop('checked')) {
+            $falseRadio.trigger('change');
+          }
         } else {
           if (type === 'number') {
             $input = this.$('#inspectorModalNumberInput');
@@ -79,11 +76,12 @@
             $input = this.$('#inspectorModalTextInput');
           }
 
-          $input.val(value).trigger('change').show();
+          $input.trigger('change');
         }
 
         this.$('.inspector-modal-inputs').children().not($input).hide();
         this.model.set('type', type);
+        $input.show();
       },
 
       'click #inspectorModalAccept': function (e) {

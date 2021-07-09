@@ -44,11 +44,11 @@
                 </div>
               </div>
               <select id="inspectorModalSelect" data-style="inspector-modal-select">
-                <option class="inspector-modal-select-option" value="boolean"><%= tr('Boolean') %></option>
-                <option class="inspector-modal-select-option" value="string"><%= tr('String') %></option>
-                <option class="inspector-modal-select-option" value="number"><%= tr('Number') %></option>
-                <option class="inspector-modal-select-option" value="date"><%= tr('Date') %></option>
-                <option class="inspector-modal-select-option" value="raw"><%= tr('Raw') %></option>
+                <% _.each(['Boolean', 'String', 'Number', 'Date', 'Raw'], (item) => { %>
+                  <option class="inspector-modal-select-option" value="<%= item.toLowerCase() %>" <%= item.toLowerCase() === type ? 'selected' : '' %>>
+                    <%= tr(item) %>
+                  </option>
+                <% }); %>
               </select>
             </div>
             <div class="inspector-modal-footer">
@@ -155,8 +155,8 @@
     },
 
     render() {
-      this.$el.html(this.template());
-      this.$('#inspectorModalSelect').val(this.model.get('type')).trigger('change').selectpicker();
+      this.$el.html(this.template(this.model.toJSON()));
+      this.$('#inspectorModalSelect').trigger('change').selectpicker();
       this.$el.modal({ backdrop: 'static' });
       return this;
     },

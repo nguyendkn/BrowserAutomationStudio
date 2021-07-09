@@ -17,10 +17,10 @@
 
     update([variables, resources] = []) {
       if (resources != null) {
-        const diff = jsonpatch.compare(resources, this.get('resources'));
+        const diff = jsonpatch.compare(this.get('resources'), resources);
         this.unset('resources', { silent: true }).set('resources', resources);
 
-        if (diff.length && !diff.every((v) => v.op === 'remove')) {
+        if (diff.length && !diff.every((v) => v.op === 'add' && v.path.split('/').length === 2)) {
           diff.forEach(({ path, value, op }) => {
             if (_.has(this.resourcesData, path)) return;
             this.resourcesData[path] = { usage: 0, value, op };
@@ -33,10 +33,10 @@
       }
 
       if (variables != null) {
-        const diff = jsonpatch.compare(variables, this.get('variables'));
+        const diff = jsonpatch.compare(this.get('variables'), variables);
         this.unset('variables', { silent: true }).set('variables', variables);
 
-        if (diff.length && !diff.every((v) => v.op === 'remove')) {
+        if (diff.length && !diff.every((v) => v.op === 'add' && v.path.split('/').length === 2)) {
           diff.forEach(({ path, value, op }) => {
             if (_.has(this.variablesData, path)) return;
             this.variablesData[path] = { usage: 0, value, op };

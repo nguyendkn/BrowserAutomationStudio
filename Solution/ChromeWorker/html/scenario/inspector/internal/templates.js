@@ -14,13 +14,13 @@ _.extend(Scenario.JST, {
               <div id="inspectorModalBoolean" class="inspector-modal-boolean" style="display: none;">
                 <div class="input-radio">
                   <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false"
-                    <%= ((value === 'false' && type === 'boolean') || !false) ? 'checked' : '' %>
+                    <%= (value === 'false' && type === 'boolean') || !false ? 'checked' : '' %>
                   >
                   <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
                 </div>
                 <div class="input-radio">
                   <input id="inspectorModalBooleanTrue" type="radio" name="boolean" value="true"
-                    <%= ((value === 'true' && type === 'boolean') || !true) ? 'checked' : '' %>
+                    <%= (value === 'true' && type === 'boolean') || !true ? 'checked' : '' %>
                   >
                   <label for="inspectorModalBooleanTrue"><%= tr('True') %></label>
                 </div>

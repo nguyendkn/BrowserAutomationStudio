@@ -28,34 +28,31 @@
 
     events: {
       'change #inspectorModalBooleanFalse': function (e) {
-        if (e.target.checked) {
-          this.model.set({ value: e.target.value });
-        }
+        if (!e.target.checked) return;
+        this.model.set('value', e.target.value);
       },
 
       'change #inspectorModalBooleanTrue': function (e) {
-        if (e.target.checked) {
-          this.model.set({ value: e.target.value });
-        }
+        if (!e.target.checked) return;
+        this.model.set('value', e.target.value);
       },
 
       'change #inspectorModalNumberInput': function (e) {
-        this.model.set({ value: e.target.value });
+        this.model.set('value', e.target.value);
       },
 
-      'change #inspectorModalTextInput': function (e) {
-        this.model.set({ value: e.target.value });
+      'change #inspectorModalDateInput': function (e) {
+        this.model.set('value', e.target.value);
       },
 
       'change #inspectorModalTextarea': function (e) {
-        this.model.set({ value: e.target.value });
+        this.model.set('value', e.target.value);
       },
 
       'change #inspectorModalSelect': function (e) {
-        const type = e.target.value || this.model.get('type');
         let $input = this.$('#inspectorModalTextarea');
 
-        if (type === 'boolean') {
+        if (e.target.value === 'boolean') {
           const $falseRadio = this.$('#inspectorModalBooleanFalse');
           const $trueRadio = this.$('#inspectorModalBooleanTrue');
           $input = this.$('#inspectorModalBoolean');
@@ -68,19 +65,19 @@
             $falseRadio.trigger('change');
           }
         } else {
-          if (type === 'number') {
+          if (e.target.value === 'number') {
             $input = this.$('#inspectorModalNumberInput');
           }
 
-          if (type === 'date') {
-            $input = this.$('#inspectorModalTextInput');
+          if (e.target.value === 'date') {
+            $input = this.$('#inspectorModalDateInput');
           }
 
           $input.trigger('change');
         }
 
         this.$('.inspector-modal-inputs').children().not($input).hide();
-        this.model.set('type', type);
+        this.model.set('type', e.target.value);
         $input.show();
       },
 

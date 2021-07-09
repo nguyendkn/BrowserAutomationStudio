@@ -61,37 +61,7 @@
   });
 
   const InspectorView = Backbone.View.extend({
-    template: _.template(/*html*/`
-      <div style="position: absolute; top: 9px; right: 30px;">
-        <a href="#" id="inspectorClose" class="text-danger">
-          <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%; background-color: #fafafa; padding: 5px;"></i>
-        </a>
-      </div>
-      <div id="inspectorNotice" style="display: none">
-        <span><%= tr("Variables will be loaded on next script pause") %></span>
-      </div>
-      <div id="inspectorContent" style="display: block">
-        <ul class="inspector-navigation" style="display: none">
-          <li id="inspectorShowVariables"><%= tr('Variables') %></li>
-          <li id="inspectorShowResources"><%= tr('Resources') %></li>
-          <li id="inspectorShowCallStack"><%= tr('Call stack') %></li>
-        </ul>
-        <div class="inspector-data-tab">
-          <div class="inspector-label-container">
-            <span class="inspector-label"><%= tr('Variables:') %></span>
-          </div>
-          <div id="inspectorVariablesData"></div>
-          <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No variables') %></div>
-        </div>
-        <div class="inspector-data-tab">
-          <div class="inspector-label-container">
-            <span class="inspector-label"><%= tr('Resources:') %></span>
-          </div>
-          <div id="inspectorResourcesData"></div>
-          <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No resources') %></div>
-        </div>
-      </div>
-    `),
+    template: Scenario.JST['inspector/main'],
 
     initialize() {
       const model = new InspectorModel();

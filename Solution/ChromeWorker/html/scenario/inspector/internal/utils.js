@@ -40,8 +40,8 @@
       } catch (e) {}`, false);
     },
 
-    sortBy: {
-      globalsFirst(first, second) {
+    sortByGlobals(target) {
+      return target.slice().sort((first, second) => {
         let a = first.toUpperCase();
         let b = second.toUpperCase();
 
@@ -54,9 +54,11 @@
         } else if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
           return 1;
         }
-      },
+      });
+    },
 
-      localsFirst(first, second) {
+    sortByLocals(target) {
+      return target.slice().sort((first, second) => {
         let a = first.toUpperCase();
         let b = second.toUpperCase();
 
@@ -69,8 +71,8 @@
         } else if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
           return 1;
         }
-      },
-    }
+      });
+    },
   };
 
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {

@@ -111,10 +111,10 @@
   function _collection(value, type, path, brackets, sortFn) {
     const opening = `<span class="jst-bracket">${brackets[0]}</span>`;
     const closing = `<span class="jst-bracket">${brackets[1]}</span>`;
-    const keys = Object.keys(value);
+    let keys = Object.keys(value);
 
     if (keys.length) {
-      if (sortFn) keys.sort(sortFn);
+      if (sortFn) keys = sortFn(keys);
 
       var data = keys.map((key, idx, arr) => {
         var html = ['<li class="jst-item">'];

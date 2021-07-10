@@ -72,7 +72,7 @@
         if (!isEmpty) {
           if (!this.resourcesTree)
             this.resourcesTree = new JSONTree($data[0], {
-              rootSort: Scenario.utils.sortBy.localsFirst,
+              rootSort: Scenario.utils.sortByLocals,
               onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             });
@@ -89,7 +89,7 @@
         if (!isEmpty) {
           if (!this.variablesTree)
             this.variablesTree = new JSONTree($data[0], {
-              rootSort: Scenario.utils.sortBy.localsFirst,
+              rootSort: Scenario.utils.sortByLocals,
               onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             });

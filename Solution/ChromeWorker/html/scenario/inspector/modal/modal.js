@@ -93,7 +93,7 @@
     },
 
     initialize({ callback, value, type }) {
-      value = type === 'raw' ? JSON.stringify(value) : value.toString();
+      value = type === 'raw' ? JSON.stringify(value) : String(value);
       value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
 
       this.once('accept', () => {

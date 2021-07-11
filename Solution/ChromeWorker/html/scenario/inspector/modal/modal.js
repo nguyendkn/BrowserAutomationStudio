@@ -99,23 +99,15 @@
           $falseRadio.trigger('change');
         }
       } else {
-        if (option === 'number') {
+        if (option === 'raw' || option === 'string') {
+          
+        } else if (option === 'number') {
           $input = this.$('#inspectorModalNumberInput');
-
-          if (type === 'boolean') {
-            if (value === 'false') $input.val(0);
-            if (value === 'true') $input.val(1);
-          } else {
-            const number = parseFloat(value);
-            $input.val(isNaN(number) ? 0 : number);
-          }
-        }
-
-        if (option === 'date') {
+        } else if (option === 'date') {
           $input = this.$('#inspectorModalDateInput');
         }
 
-        $input.trigger('change');
+        $input.val(Scenario.utils.convert(value, option, type)).trigger('change');
       }
 
       this.$('.inspector-modal-inputs').children().not($input).hide();

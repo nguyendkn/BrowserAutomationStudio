@@ -38,15 +38,12 @@
         let a = first.toUpperCase();
         let b = second.toUpperCase();
 
-        if (a.startsWith('GLOBAL:') && b.startsWith('GLOBAL:') || !a.includes('GLOBAL:') && !b.includes('GLOBAL:')) {
-          if (a < b) return -1;
-          if (a > b) return 1;
-          return 0;
-        } else if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
+        if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
           return -1;
         } else if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
           return 1;
         }
+        return a.localeCompare(b);
       });
     },
 
@@ -55,15 +52,12 @@
         let a = first.toUpperCase();
         let b = second.toUpperCase();
 
-        if (a.startsWith('GLOBAL:') && b.startsWith('GLOBAL:') || !a.includes('GLOBAL:') && !b.includes('GLOBAL:')) {
-          if (a < b) return -1;
-          if (a > b) return 1;
-          return 0;
-        } else if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
+        if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
           return -1;
         } else if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
           return 1;
         }
+        return a.localeCompare(b);
       });
     },
 
@@ -73,13 +67,11 @@
       if (type === 'number') {
         if (str === 'false') return 0;
         if (str === 'true') return 1;
-
         const number = parseFloat(str);
         return isNaN(number) ? 0 : number;
       } else if (type === 'boolean') {
         if (str === 'false') return str;
         if (str === 'true') return str;
-
         return 'false';
       } else if (type === 'raw') {
         if (old === 'string') {

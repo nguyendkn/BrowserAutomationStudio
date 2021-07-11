@@ -50,35 +50,7 @@
       },
 
       'change #inspectorModalSelect': function (e) {
-        let $input = this.$('#inspectorModalTextarea');
-
-        if (e.target.value === 'boolean') {
-          const $falseRadio = this.$('#inspectorModalBooleanFalse');
-          const $trueRadio = this.$('#inspectorModalBooleanTrue');
-          $input = this.$('#inspectorModalBoolean');
-
-          if ($falseRadio.prop('checked')) {
-            $falseRadio.trigger('change');
-          }
-
-          if ($trueRadio.prop('checked')) {
-            $falseRadio.trigger('change');
-          }
-        } else {
-          if (e.target.value === 'number') {
-            $input = this.$('#inspectorModalNumberInput');
-          }
-
-          if (e.target.value === 'date') {
-            $input = this.$('#inspectorModalDateInput');
-          }
-
-          $input.trigger('change');
-        }
-
-        this.$('.inspector-modal-inputs').children().not($input).hide();
-        this.model.set('type', e.target.value);
-        $input.show();
+        this.changeInput(e.target.value);
       },
 
       'click #inspectorModalAccept': function (e) {
@@ -109,6 +81,48 @@
       });
 
       this.model = new Model({ value, type });
+    },
+
+    changeInput(option) {
+      let $input = this.$('#inspectorModalTextarea');
+      const value = this.model.get('value');
+      const type = this.model.get('type');
+
+      if (option === 'boolean') {
+        const $falseRadio = this.$('#inspectorModalBooleanFalse');
+        const $trueRadio = this.$('#inspectorModalBooleanTrue');
+        $input = this.$('#inspectorModalBoolean');
+
+        if ($falseRadio.prop('checked')) {
+          $falseRadio.trigger('change');
+        }
+
+        if ($trueRadio.prop('checked')) {
+          $falseRadio.trigger('change');
+        }
+      } else {
+        if (option === 'number') {
+          $input = this.$('#inspectorModalNumberInput');
+
+          if (type === 'boolean') {
+            if (value === 'false') $input.val(0);
+            if (value === 'true') $input.val(1);
+          } else {
+            const number = parseFloat(value);
+            $input.val(isNaN(number) ? 0 : number);
+          }
+        }
+
+        if (option === 'date') {
+          $input = this.$('#inspectorModalDateInput');
+        }
+
+        $input.trigger('change');
+      }
+
+      this.$('.inspector-modal-inputs').children().not($input).hide();
+      this.model.set('type', option);
+      $input.show();
     },
 
     render() {

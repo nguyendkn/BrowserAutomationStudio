@@ -76,7 +76,7 @@
               onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             });
-          this.resourcesTree.update(data);
+          this.resourcesTree.render(data);
           this.loadState();
         }
         this.$('#inspectorNoResources').toggle(isEmpty);
@@ -93,7 +93,7 @@
               onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             });
-          this.variablesTree.update(data);
+          this.variablesTree.render(data);
           this.loadState();
         }
         this.$('#inspectorNoVariables').toggle(isEmpty);
@@ -246,9 +246,7 @@
               Scenario.utils.updateVariable(value, path, type);
             }
           },
-
           value: this.model.getVariable(path),
-
           type,
         });
 

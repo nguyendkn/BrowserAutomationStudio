@@ -40,7 +40,8 @@
 
         if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
           return -1;
-        } else if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
+        }
+        if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
           return 1;
         }
         return a.localeCompare(b);
@@ -54,7 +55,8 @@
 
         if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
           return -1;
-        } else if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
+        }
+        if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
           return 1;
         }
         return a.localeCompare(b);

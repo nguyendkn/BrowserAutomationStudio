@@ -8,7 +8,7 @@
       this.elem = elem;
     }
 
-    update(data) {
+    render(data) {
       const self = this;
       this.data = data;
       this.root = '';

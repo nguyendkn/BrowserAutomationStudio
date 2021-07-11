@@ -91,13 +91,8 @@
         const $trueRadio = this.$('#inspectorModalBooleanTrue');
         $input = this.$('#inspectorModalBoolean');
 
-        if ($falseRadio.prop('checked')) {
-          $falseRadio.trigger('change');
-        }
-
-        if ($trueRadio.prop('checked')) {
-          $falseRadio.trigger('change');
-        }
+        $falseRadio.trigger('change');
+        $trueRadio.trigger('change');
       } else {
         if (option === 'raw' || option === 'string') {
           

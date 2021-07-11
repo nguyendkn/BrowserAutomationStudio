@@ -69,13 +69,11 @@
       value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
 
       this.once('accept', () => {
-        this.$el.modal('hide');
         this.close();
         callback({ ...this.model.toJSON(), cancel: false });
       });
 
       this.once('cancel', () => {
-        this.$el.modal('hide');
         this.close();
         callback({ ...this.model.toJSON(), cancel: true });
       });
@@ -128,15 +126,26 @@
     render() {
       this.$el.html(this.template(this.model.toJSON()));
       this.$('#inspectorModalSelect').trigger('change').selectpicker();
-      this.$el.modal({ backdrop: 'static' });
-      return this;
+      this.$el.modal({ backdrop: 'static', show: false });
+      return this.show();
     },
 
     close() {
-      this.unbind();
+      this.off();
+      this.hide();
       this.remove();
       return this;
-    }
+    },
+
+    hide() {
+      this.$el.modal('hide');
+      return this;
+    },
+
+    show() {
+      this.$el.modal('show');
+      return this;
+    },
   });
 
   global.Scenario.InspectorModal = View;

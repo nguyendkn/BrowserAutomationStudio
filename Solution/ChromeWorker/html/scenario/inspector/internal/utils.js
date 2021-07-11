@@ -34,9 +34,9 @@
     },
 
     sortByGlobals(target) {
-      return target.slice().sort((first, second) => {
-        let a = first.toUpperCase();
-        let b = second.toUpperCase();
+      return target.slice().sort((a, b) => {
+        a = a.toUpperCase();
+        b = b.toUpperCase();
 
         if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) {
           return -1;
@@ -48,9 +48,9 @@
     },
 
     sortByLocals(target) {
-      return target.slice().sort((first, second) => {
-        let a = first.toUpperCase();
-        let b = second.toUpperCase();
+      return target.slice().sort((a, b) => {
+        a = a.toUpperCase();
+        b = b.toUpperCase();
 
         if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) {
           return -1;

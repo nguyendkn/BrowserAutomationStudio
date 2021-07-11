@@ -7,7 +7,7 @@
           data.isLocal = key.indexOf('GLOBAL:') !== 0;
           data.root = key.replace('GLOBAL:', '');
         } else {
-          data.path += /^\d+$/.test(key) ? `[${key}]` : `['${key}']`;
+          data.path += `['${key}']`;
         }
         return data;
       }, { path: '', root: '', isLocal: true, isGlobal: false });

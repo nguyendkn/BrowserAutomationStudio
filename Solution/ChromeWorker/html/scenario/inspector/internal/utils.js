@@ -12,18 +12,11 @@
         return data;
       }, { path: '', root: '', isLocal: true, isGlobal: false });
 
-      if (type === 'number') {
-        const number = parseFloat(variable);
-        variable = isNaN(number) ? `"${variable}"` : number;
-      } else if (type === 'boolean') {
-        if (!['false', 'true'].includes(variable)) {
-          variable = `"${variable}"`;
-        }
-      } else if (type === 'date') {
+      if (type === 'date') {
         variable = `_parse_date('${variable}', 'auto')`;
       } else if (type === 'raw') {
         variable = JSON.stringify(eval(`(${variable})`));
-      } else {
+      } else if (type === 'string') {
         variable = `"${variable}"`;
       }
 

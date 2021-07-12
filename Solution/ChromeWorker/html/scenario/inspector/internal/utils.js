@@ -17,7 +17,7 @@
       } else if (type === 'raw') {
         variable = JSON.stringify(eval(`(${variable})`));
       } else if (type === 'string') {
-        variable = `"${variable}"`;
+        variable = JSON.stringify(variable);
       }
 
       BrowserAutomationStudio_Execute(`try {

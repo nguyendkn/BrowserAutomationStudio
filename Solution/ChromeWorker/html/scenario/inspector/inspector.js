@@ -234,10 +234,8 @@
 
     events: {
       'dblclick #inspectorVariablesData [data-path]': function (e) {
-        const raw = $(e.target).hasClass('jst-list');
-        let { path } = e.target.dataset;
-        let { type } = e.target.dataset;
-        type = raw ? 'raw' : type;
+        const { path } = e.target.dataset;
+        const { type } = e.target.dataset;
         e.stopPropagation();
 
         const modal = new global.Scenario.InspectorModal({
@@ -247,7 +245,8 @@
             }
           },
           value: this.model.getVariable(path),
-          type,
+          type: type,
+          path: path,
         });
 
         modal.render();

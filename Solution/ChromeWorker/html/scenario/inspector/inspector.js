@@ -237,6 +237,7 @@
         const { path } = e.target.dataset;
         const { type } = e.target.dataset;
         e.stopPropagation();
+        if (!path) return;
 
         const modal = new global.Scenario.InspectorModal({
           callback: ({ isChanged, value, cancel, type }) => {

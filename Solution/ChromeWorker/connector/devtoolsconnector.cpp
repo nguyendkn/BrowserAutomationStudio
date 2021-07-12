@@ -585,8 +585,9 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             {
                 std::string Reason = Parser.GetStringFromJson(Result, "reason");
                 std::string Url = Parser.GetStringFromJson(Result, "url");
+                std::string Disposition = Parser.GetStringFromJson(Result, "disposition");
 
-                if(Reason == "anchorClick")
+                if(Reason == "anchorClick" && Disposition != "currentTab")
                 {
                     ParseNewTabReferrer(Url);
                 }

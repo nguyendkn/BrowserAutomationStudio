@@ -58,14 +58,14 @@ _.extend(Scenario.JST, {
         <li id="inspectorShowResources"><%= tr('Resources') %></li>
         <li id="inspectorShowCallStack"><%= tr('Call stack') %></li>
       </ul>
-      <div class="inspector-data-tab">
+      <div class="inspector-data-tab" data-tab-name="variables">
         <div class="inspector-label-container">
           <span class="inspector-label"><%= tr('Variables:') %></span>
         </div>
         <div id="inspectorVariablesData"></div>
         <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No variables') %></div>
       </div>
-      <div class="inspector-data-tab">
+      <div class="inspector-data-tab" data-tab-name="resources">
         <div class="inspector-label-container">
           <span class="inspector-label"><%= tr('Resources:') %></span>
         </div>

@@ -252,6 +252,21 @@
         modal.render();
       },
 
+      'click #inspectorShowCallstack': function (e) {
+        e.preventDefault();
+        this.model.set('tab', 'callstack');
+      },
+
+      'click #inspectorShowResources': function (e) {
+        e.preventDefault();
+        this.model.set('tab', 'resources');
+      },
+
+      'click #inspectorShowVariables': function (e) {
+        e.preventDefault();
+        this.model.set('tab', 'variables');
+      },
+
       'click #inspectorClose': function (e) {
         e.preventDefault();
         this.model.set('showContent', false);

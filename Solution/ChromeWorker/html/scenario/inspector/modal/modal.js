@@ -6,6 +6,10 @@
     },
 
     initialize({ value, type }) {
+      if (['object', 'array', 'null'].includes(type)) type = 'raw';
+      value = type === 'raw' ? JSON.stringify(value) : String(value);
+      value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
+
       this._value = value;
       this._type = type;
     },
@@ -72,10 +76,6 @@
     },
 
     initialize({ callback, value, type }) {
-      if (['object', 'array', 'null'].includes(type)) type = 'raw';
-      value = type === 'raw' ? JSON.stringify(value) : String(value);
-      value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
-
       this.once('accept', () => {
         this.close();
         callback({ ...this.model.toJSON(), cancel: false });

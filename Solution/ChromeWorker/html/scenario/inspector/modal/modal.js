@@ -22,6 +22,8 @@
   const View = Backbone.View.extend({
     template: Scenario.JST['inspector/modal'],
 
+    attributes: { tabindex: '-1' },
+
     className: 'modal',
 
     tagName: 'div',
@@ -59,6 +61,11 @@
       },
 
       'click #inspectorModalCancel': function (e) {
+        e.preventDefault();
+        this.trigger('cancel');
+      },
+
+      'hidden.bs.modal': function (e) {
         e.preventDefault();
         this.trigger('cancel');
       },
@@ -114,24 +121,14 @@
     render() {
       this.$el.html(this.template(this.model.toJSON()));
       this.$('#inspectorModalSelect').trigger('change').selectpicker();
-      this.$el.modal({ backdrop: 'static', show: false });
-      return this.show();
+      this.$el.modal({});
+      return this;
     },
 
     close() {
-      this.off();
-      this.hide();
-      this.remove();
-      return this;
-    },
-
-    hide() {
       this.$el.modal('hide');
-      return this;
-    },
-
-    show() {
-      this.$el.modal('show');
+      this.unbind();
+      this.remove();
       return this;
     },
   });

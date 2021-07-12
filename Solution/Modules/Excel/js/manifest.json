@@ -873,7 +873,7 @@
             "LanguageVersion": "12.18.3"
         },
         {
-            "Data": "const util = require(\"../ExcelUtil\");\r\nconst crypto = require('crypto');\r\n\r\nvar file_path = [[XLSX_NODE_PARAMETERS]];\r\nvar id = crypto.createHash('md5').update(file_path).digest('hex');\r\nawait util.wait_unlock(id);\r\nif(typeof excel_files!=\"undefined\" || typeof excel_files[id]!=\"undefined\"){\r\n    var file = excel_files[id];\r\n    try{\r\n        await file.save(id);\r\n    }catch(err){\r\n        if(typeof file!=\"undefined\"){\r\n            file.unlock();\r\n            file.setTimeout();\r\n        };\r\n        throw err;\r\n    };\r\n};",
+            "Data": "const util = require(\"../ExcelUtil\");\r\nconst crypto = require('crypto');\r\n\r\nvar file_path = [[XLSX_NODE_PARAMETERS]];\r\nvar id = crypto.createHash('md5').update(file_path).digest('hex');\r\nawait util.wait_unlock(id);\r\nif(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\r\n    var file = excel_files[id];\r\n    try{\r\n        await file.save(id);\r\n    }catch(err){\r\n        if(typeof file!=\"undefined\"){\r\n            file.unlock();\r\n            file.setTimeout();\r\n        };\r\n        throw err;\r\n    };\r\n};",
             "DataName": "Excel_CloseFile",
             "DataType": 0,
             "LanguageName": "Node",

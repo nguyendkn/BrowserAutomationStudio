@@ -63,31 +63,6 @@
         return a.localeCompare(b);
       });
     },
-
-    convert(value, type, old) {
-      const str = value.toString();
-
-      if (type === 'number') {
-        if (str === 'false') return 0;
-        if (str === 'true') return 1;
-        const number = parseFloat(str);
-        return isNaN(number) ? 0 : number;
-      } else if (type === 'boolean') {
-        if (str === 'false' || str === '0') {
-          return false;
-        }
-        if (str === 'true' || str === '1') {
-          return true;
-        }
-        return false;
-      } else if (type === 'raw') {
-        if (old === 'string') {
-          return JSON.stringify(str);
-        }
-      }
-
-      return value;
-    }
   };
 
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {

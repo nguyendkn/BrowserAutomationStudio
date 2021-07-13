@@ -95,7 +95,6 @@
       const type = this.model.get('type');
 
       if (option === 'boolean') {
-        const checked = Scenario.utils.convert(value, option, type);
         const $falseRadio = this.$('#inspectorModalBooleanFalse');
         const $trueRadio = this.$('#inspectorModalBooleanTrue');
         $input = this.$('#inspectorModalBoolean');
@@ -111,7 +110,7 @@
           $input = this.$('#inspectorModalDateInput');
         }
 
-        $input.val(Scenario.utils.convert(value, option, type)).trigger('change');
+        $input.trigger('change');
       }
 
       this.$('.inspector-modal-inputs').children().not($input).hide();

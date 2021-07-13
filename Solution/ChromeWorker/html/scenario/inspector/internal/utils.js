@@ -20,6 +20,7 @@
         variable = JSON.stringify(variable);
       }
 
+      VariablesNeedRefresh = true;
       BrowserAutomationStudio_Execute(`try {
         if (${isGlobal}) {
           var obj = JSON.parse(P('basglobal', '${root}') || '{}');
@@ -29,7 +30,7 @@
         } else {
           VAR_${root}${path} = ${variable};
         }
-        section_start('test', -2)!
+        section_start('test', -3)!
       } catch (e) {}`, false);
     },
 

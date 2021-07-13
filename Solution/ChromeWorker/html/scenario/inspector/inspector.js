@@ -4,6 +4,7 @@
       callStackPanelScroll: 0,
       variablesPanelScroll: 0,
       resourcesPanelScroll: 0,
+      highlightNext: true,
       showContent: false,
       showNotice: false,
       resources: {},
@@ -26,10 +27,12 @@
             this.resourcesData[path] = { usage: 0, value, op };
           });
         }
-        _.each(this.resourcesData, (item, path) => {
-          item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
-          this.trigger('diff:resources', { ...item, path });
-        });
+        if (this.get('highlightNext')) {
+          _.each(this.resourcesData, (item, path) => {
+            item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
+            this.trigger('diff:resources', { ...item, path });
+          });
+        }
       }
 
       if (variables != null) {
@@ -42,11 +45,15 @@
             this.variablesData[path] = { usage: 0, value, op };
           });
         }
-        _.each(this.variablesData, (item, path) => {
-          item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
-          this.trigger('diff:variables', { ...item, path });
-        });
+        if (this.get('highlightNext')) {
+          _.each(this.variablesData, (item, path) => {
+            item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
+            this.trigger('diff:variables', { ...item, path });
+          });
+        }
       }
+
+      this.set('highlightNext', true);
     },
 
     getVariable(pointer) {
@@ -242,6 +249,7 @@
         const modal = new global.Scenario.InspectorModal({
           callback: ({ isChanged, value, cancel, type }) => {
             if (!cancel && isChanged) {
+              this.model.set('highlightNext', false);
               Scenario.utils.updateVariable(value, path, type);
             }
           },

@@ -56,7 +56,10 @@
       }
 
       morphdom(this.elem.firstChild, `<div class="jst-root">${this.root}</div>`, {
-        onBeforeElUpdated: (el, target) => !el.isEqualNode(target)
+        onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
+        onNodeDiscarded: (el) => { },
+        onNodeAdded: (el) => { },
+        childrenOnly: true,
       });
     }
 

@@ -21,13 +21,13 @@
         const diff = jsonpatch.compare(this.get('resources'), resources);
         this.unset('resources', { silent: true }).set('resources', resources);
 
-        if (diff.length && !diff.every((v) => v.op === 'add' && v.path.split('/').length === 2)) {
-          diff.forEach(({ path, value, op }) => {
-            if (_.has(this.resourcesData, path)) return;
-            this.resourcesData[path] = { usage: 0, value, op };
-          });
-        }
         if (this.get('highlightNext')) {
+          if (diff.length && !diff.every((v) => v.op === 'add' && v.path.split('/').length === 2)) {
+            diff.forEach(({ path, value, op }) => {
+              if (_.has(this.resourcesData, path)) return;
+              this.resourcesData[path] = { usage: 0, value, op };
+            });
+          }
           _.each(this.resourcesData, (item, path) => {
             item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
             this.trigger('diff:resources', { ...item, path });
@@ -39,13 +39,13 @@
         const diff = jsonpatch.compare(this.get('variables'), variables);
         this.unset('variables', { silent: true }).set('variables', variables);
 
-        if (diff.length && !diff.every((v) => v.op === 'add' && v.path.split('/').length === 2)) {
-          diff.forEach(({ path, value, op }) => {
-            if (_.has(this.variablesData, path)) return;
-            this.variablesData[path] = { usage: 0, value, op };
-          });
-        }
         if (this.get('highlightNext')) {
+          if (diff.length && !diff.every((v) => v.op === 'add' && v.path.split('/').length === 2)) {
+            diff.forEach(({ path, value, op }) => {
+              if (_.has(this.variablesData, path)) return;
+              this.variablesData[path] = { usage: 0, value, op };
+            });
+          }
           _.each(this.variablesData, (item, path) => {
             item.usage = diff.some((v) => v.path === path) ? 1 : (item.usage + 1);
             this.trigger('diff:variables', { ...item, path });

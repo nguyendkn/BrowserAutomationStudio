@@ -91,16 +91,14 @@
 
     changeInput(option) {
       let $input = this.$('#inspectorModalTextarea');
-      const value = this.model.get('value');
-      const type = this.model.get('type');
 
       if (option === 'boolean') {
         const $falseRadio = this.$('#inspectorModalBooleanFalse');
         const $trueRadio = this.$('#inspectorModalBooleanTrue');
         $input = this.$('#inspectorModalBoolean');
 
-        $falseRadio.prop('checked', !checked).trigger('change');
-        $trueRadio.prop('checked', checked).trigger('change');
+        $falseRadio.trigger('change');
+        $trueRadio.trigger('change');
       } else {
         if (option === 'raw' || option === 'string') {
 

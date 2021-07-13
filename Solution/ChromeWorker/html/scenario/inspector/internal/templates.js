@@ -11,14 +11,14 @@ _.extend(Scenario.JST, {
               <textarea id="inspectorModalTextarea" style="resize: vertical; display: none;"><%- (type === 'raw' || type === 'string') ? value : '' %></textarea>
               <input id="inspectorModalNumberInput" type="number" value="<%- type === 'number' ? value : 0 %>" style="display: none;">
               <input id="inspectorModalDateInput" type="text" value="<%- type === 'date' ? value : '' %>" style="display: none;">
-              <div id="inspectorModalBoolean" class="inspector-modal-boolean" style="display: none;">
-                <div class="input-radio">
+              <div id="inspectorModalBoolean" style="display: none;">
+                <div class="input-radio" data-input-type="boolean">
                   <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false"
                     <%= (value === 'false' && type === 'boolean') || !false ? 'checked' : '' %>
                   >
                   <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
                 </div>
-                <div class="input-radio">
+                <div class="input-radio" data-input-type="boolean">
                   <input id="inspectorModalBooleanTrue" type="radio" name="boolean" value="true"
                     <%= (value === 'true' && type === 'boolean') || !true ? 'checked' : '' %>
                   >
@@ -27,7 +27,7 @@ _.extend(Scenario.JST, {
               </div>
             </div>
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
-              <% _.each(['Boolean', 'String', 'Number', 'Date', 'Raw'], (item) => { %>
+              <% _.each(['Boolean', 'String', 'Number', 'Null', 'Date', 'Raw'], (item) => { %>
                 <option class="inspector-modal-select-option" value="<%= item.toLowerCase() %>" <%= item.toLowerCase() === type ? 'selected' : '' %>>
                   <%= tr(item) %>
                 </option>

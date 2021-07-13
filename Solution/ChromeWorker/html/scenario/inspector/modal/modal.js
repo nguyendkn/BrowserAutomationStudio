@@ -72,7 +72,7 @@
     },
 
     initialize({ callback, value, type }) {
-      if (['object', 'array', 'null'].includes(type)) type = 'raw';
+      if (['object', 'array'].includes(type)) type = 'raw';
       value = type === 'raw' ? JSON.stringify(value) : String(value);
       value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
 

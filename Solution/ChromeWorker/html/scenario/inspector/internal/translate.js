@@ -1,9 +1,9 @@
 _.extend(_L, {
-  'Variables will be loaded on next script pause': {
-    ru: 'Переменные будут загружены при следующей паузе сценария'
+  'Data will be loaded at the next script pause': {
+    ru: 'Данные будут загружены при следующей паузе сценария'
   },
-  'Change the {0} variable': {
-    ru: 'Изменить переменную {0}'
+  'Change the variable value': {
+    ru: 'Изменить значение переменной'
   },
   'No variables': {
     ru: 'Нет переменных'

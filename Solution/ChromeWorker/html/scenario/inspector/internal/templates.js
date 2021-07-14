@@ -64,7 +64,7 @@ _.extend(Scenario.JST, {
       </a>
     </div>
     <div id="inspectorNotice" style="display: none">
-      <span><%= tr("Variables will be loaded on next script pause") %></span>
+      <span><%= tr("Data will be loaded at the next script pause") %></span>
     </div>
     <div id="inspectorContent" style="display: block">
       <ul class="inspector-navigation" style="display: none">

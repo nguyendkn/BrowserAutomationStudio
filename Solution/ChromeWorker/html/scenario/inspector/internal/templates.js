@@ -25,6 +25,20 @@ _.extend(Scenario.JST, {
                   <label for="inspectorModalBooleanTrue"><%= tr('True') %></label>
                 </div>
               </div>
+              <div id="inspectorModalEmpty" style="display: none;">
+                <div class="input-radio" dada-input-type="nullable">
+                  <input id="inspectorModalEmptyUndefined" type="radio" name="nullable" value="undefined"
+                    <%= (value !== 'null' && type === 'null') || !false ? 'checked' : '' %>
+                  >
+                  <label for="inspectorModalEmptyUndefined"><%= tr('Undefined') %></label>
+                </div>
+                <div class="input-radio" data-input-type="nullable">
+                  <input id="inspectorModalEmptyNull" type="radio" name="nullable" value="null"
+                    <%= (value === 'null' && type === 'null') || !true ? 'checked' : '' %>
+                  >
+                  <label for="inspectorModalEmptyNull"><%= tr('Null') %></label>
+                </div>
+              </div>
             </div>
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
               <% _.each(['Boolean', 'String', 'Number', 'Null', 'Date', 'Raw'], (item) => { %>

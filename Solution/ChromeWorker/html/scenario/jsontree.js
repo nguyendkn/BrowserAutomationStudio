@@ -1,7 +1,7 @@
 (function (global) {
   class JSONTree {
-    constructor (elem, config) {
-      elem.insertAdjacentHTML('beforeend', `<div class="jst-root"></div>`);
+    constructor (elem, config = {}) {
+      elem.innerHTML = (/*html*/`<div class="jst-root"></div>`);
       this.onCollapse = config.onCollapse || (() => { });
       this.onExpand = config.onExpand || (() => { });
       this.format = config.format || ((v) => v);
@@ -10,9 +10,8 @@
     }
 
     render(data) {
-      const self = this;
       this.data = data;
-      this.root = '';
+      this.root = null;
 
       if (isArray(data)) {
         this.root = _jsArray('', data, '', this.config.rootSort);
@@ -25,38 +24,38 @@
       if (!this.listenersAttached) {
         const $elem = $(this.elem);
 
-        $elem.on('click', '.jst-item > .fa-minus-circle', function (e) {
+        $elem.on('click', '.jst-item > .fa-minus-circle', (e) => {
           e.preventDefault();
-          const $el = $(this), $node = $el.prev();
+          const $el = $(e.target), $node = $el.prev();
           const text = $node.text().slice(1, -1);
 
           $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
           $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
         });
 
-        $elem.on('click', '.jst-item > .fa-plus-circle', function (e) {
+        $elem.on('click', '.jst-item > .fa-plus-circle', (e) => {
           e.preventDefault();
-          const $el = $(this), $node = $el.prev();
+          const $el = $(e.target), $node = $el.prev();
           const text = $node.text().slice(1, -1);
 
           $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
           $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
         });
 
-        $elem.on('click', '.jst-collapse', function (event) {
-          event.preventDefault();
-          self.collapse(this);
+        $elem.on('click', '.jst-collapse', (e) => {
+          this.collapse(e.target);
+          e.preventDefault();
         });
 
-        $elem.on('click', '.jst-expand', function (event) {
-          event.preventDefault();
-          self.expand(this);
+        $elem.on('click', '.jst-expand', (e) => {
+          this.expand(e.target);
+          e.preventDefault();
         });
 
         this.listenersAttached = true;
       }
 
-      morphdom(this.elem.firstChild, `<div class="jst-root">${this.root}</div>`, {
+      morphdom(this.elem.firstChild, /*html*/`<div class="jst-root">${this.root || ''}</div>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         onNodeDiscarded: (el) => { },
         onNodeAdded: (el) => { },

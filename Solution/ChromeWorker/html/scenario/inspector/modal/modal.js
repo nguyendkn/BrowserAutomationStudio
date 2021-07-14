@@ -29,12 +29,12 @@
     tagName: 'div',
 
     events: {
-      'change #inspectorModalBooleanFalse': function (e) {
+      'change input[type=radio][name=boolean]': function (e) {
         if (!e.target.checked) return;
         this.model.set('value', e.target.value);
       },
 
-      'change #inspectorModalBooleanTrue': function (e) {
+      'change input[type=radio][name=empty]' : function (e) {
         if (!e.target.checked) return;
         this.model.set('value', e.target.value);
       },
@@ -99,6 +99,13 @@
 
         $falseRadio.trigger('change');
         $trueRadio.trigger('change');
+      } else if (option == 'null') {
+        const $undefinedRadio = this.$('#inspectorModalEmptyUndefined');
+        const $nullRadio = this.$('#inspectorModalEmptyNull');
+        $input = this.$('#inspectorModalEmpty');
+
+        $undefinedRadio.trigger('change');
+        $nullRadio.trigger('change');
       } else {
         if (option === 'raw' || option === 'string') {
 

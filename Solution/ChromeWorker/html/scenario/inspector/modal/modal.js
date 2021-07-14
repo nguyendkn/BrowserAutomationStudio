@@ -34,7 +34,7 @@
         this.model.set('value', e.target.value);
       },
 
-      'change input[type=radio][name=empty]' : function (e) {
+      'change input[type=radio][name=empty]': function (e) {
         if (!e.target.checked) return;
         this.model.set('value', e.target.value);
       },
@@ -66,7 +66,6 @@
       },
 
       'hidden.bs.modal': function (e) {
-        e.preventDefault();
         this.trigger('cancel');
       },
     },

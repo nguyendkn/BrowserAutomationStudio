@@ -54,13 +54,13 @@
       this.set('highlightNext', true);
     },
 
-    getVariable(pointer) {
-      const source = this.get('variables');
+    getResource(pointer) {
+      const source = this.get('resources');
       return jsonpatch.getValueByPointer(source, pointer);
     },
 
-    getResource(pointer) {
-      const source = this.get('resources');
+    getVariable(pointer) {
+      const source = this.get('variables');
       return jsonpatch.getValueByPointer(source, pointer);
     },
   });

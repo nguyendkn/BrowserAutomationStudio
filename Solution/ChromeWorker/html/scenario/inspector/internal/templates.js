@@ -27,13 +27,13 @@ _.extend(Scenario.JST, {
               </div>
               <div id="inspectorModalEmpty" style="display: none;">
                 <div class="input-radio" dada-input-type="nullable">
-                  <input id="inspectorModalEmptyUndefined" type="radio" name="nullable" value="undefined"
+                  <input id="inspectorModalEmptyUndefined" type="radio" name="empty" value="undefined"
                     <%= (value !== 'null' && type === 'null') || !false ? 'checked' : '' %>
                   >
                   <label for="inspectorModalEmptyUndefined"><%= tr('Undefined') %></label>
                 </div>
                 <div class="input-radio" data-input-type="nullable">
-                  <input id="inspectorModalEmptyNull" type="radio" name="nullable" value="null"
+                  <input id="inspectorModalEmptyNull" type="radio" name="empty" value="null"
                     <%= (value === 'null' && type === 'null') || !true ? 'checked' : '' %>
                   >
                   <label for="inspectorModalEmptyNull"><%= tr('Null') %></label>
@@ -41,7 +41,7 @@ _.extend(Scenario.JST, {
               </div>
             </div>
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
-              <% _.each(['Boolean', 'String', 'Number', 'Null', 'Date', 'Raw'], (item) => { %>
+              <% _.each(['Boolean', 'String', 'Number', 'Date', 'Null', 'Raw'], (item) => { %>
                 <option class="inspector-modal-select-option" value="<%= item.toLowerCase() %>" <%= item.toLowerCase() === type ? 'selected' : '' %>>
                   <%= tr(item) %>
                 </option>

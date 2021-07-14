@@ -84,8 +84,7 @@
           this.resourcesTree.render(data);
           this.loadState();
         }
-        this.$('#inspectorNoResources').toggle(isEmpty);
-        $data.toggle(!isEmpty);
+        $data.toggle(!isEmpty).prev('#inspectorNoResources').toggle(isEmpty);
       });
 
       model.on('change:variables', (__, data) => {
@@ -101,8 +100,7 @@
           this.variablesTree.render(data);
           this.loadState();
         }
-        this.$('#inspectorNoVariables').toggle(isEmpty);
-        $data.toggle(!isEmpty);
+        $data.toggle(!isEmpty).prev('#inspectorNoVariables').toggle(isEmpty);
       });
 
       model.on('diff:variables', ({ usage, path }) => {

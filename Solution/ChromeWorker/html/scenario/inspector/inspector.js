@@ -83,9 +83,9 @@
         if (!isEmpty) {
           if (!this.resourcesTree)
             this.resourcesTree = new JSONTree($data[0], {
-              rootSort: Scenario.utils.sortByLocals,
-              onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
+              onExpand: BrowserAutomationStudio_PreserveInterfaceState,
+              rootSort: Scenario.utils.sortByLocals
             });
           this.resourcesTree.render(data);
           this.loadState();
@@ -99,9 +99,9 @@
         if (!isEmpty) {
           if (!this.variablesTree)
             this.variablesTree = new JSONTree($data[0], {
-              rootSort: Scenario.utils.sortByLocals,
-              onExpand: BrowserAutomationStudio_PreserveInterfaceState,
               onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
+              onExpand: BrowserAutomationStudio_PreserveInterfaceState,
+              rootSort: Scenario.utils.sortByLocals
             });
           this.variablesTree.render(data);
           this.loadState();
@@ -263,7 +263,6 @@
           type: type,
           path: path,
         });
-
         modal.render();
       },
 

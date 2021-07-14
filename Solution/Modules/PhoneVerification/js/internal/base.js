@@ -118,7 +118,7 @@ _SMS.BaseApi = function(config, data, path){
 		if(_SMS.debug){
 			enText = _avoid_nilb(enText, ruText);
 			
-			_info('[SmsReceive debug] ' + (_K=="ru" ? ruText : enText));
+			_info('[PhoneVerification debug] ' + (_K=="ru" ? ruText : enText));
 		};
 	};
 	

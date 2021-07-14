@@ -12,6 +12,10 @@
       state: {},
     },
 
+    resourcesInit: false,
+
+    variablesInit: false,
+
     resourcesData: {},
 
     variablesData: {},
@@ -23,7 +27,7 @@
         const diff = jsonpatch.compare(this.get('resources'), resources);
         this.unset('resources', { silent: true }).set('resources', resources);
 
-        if (diff.length && !diff.every(v => v.op === 'add' && v.path.split('/').length === 2)) {
+        if (diff.length && this.resourcesInit) {
           diff.forEach(({ path, value, op }) => {
             if (_.has(this.resourcesData, path)) return;
             this.resourcesData[path] = { usage: 6, value, op };
@@ -33,13 +37,14 @@
           if (highlightNext) item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('diff:resources', { ...item, path });
         });
+        this.resourcesInit = true;
       }
 
       if (variables != null) {
         const diff = jsonpatch.compare(this.get('variables'), variables);
         this.unset('variables', { silent: true }).set('variables', variables);
 
-        if (diff.length && !diff.every(v => v.op === 'add' && v.path.split('/').length === 2)) {
+        if (diff.length && this.variablesInit) {
           diff.forEach(({ path, value, op }) => {
             if (_.has(this.variablesData, path)) return;
             this.variablesData[path] = { usage: 6, value, op };
@@ -49,6 +54,7 @@
           if (highlightNext) item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('diff:variables', { ...item, path });
         });
+        this.variablesInit = true;
       }
 
       this.set('highlightNext', true);

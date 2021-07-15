@@ -79,9 +79,7 @@
       value = type === 'raw' ? JSON.stringify(value) : String(value);
       value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
 
-      const model = new Model({ value, type });
-
-      model.on('change:type', (__, type) => {
+      const model = (new Model({ value, type })).on('change:type', (__, type) => {
         let $input = this.$('#inspectorModalRawInput');
 
         if (type === 'boolean') {

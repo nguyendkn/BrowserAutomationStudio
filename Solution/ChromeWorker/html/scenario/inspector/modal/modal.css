@@ -16,18 +16,20 @@
   }
 }
 
-.inspector-modal-inputs > textarea {
+.inspector-modal-inputs > div > textarea {
   min-height: 24px;
   line-height: 18px;
   padding: 2px 2px;
   resize: vertical;
+  width: 100%;
 }
 
-.inspector-modal-inputs > input {
+.inspector-modal-inputs > div > input {
   min-height: 24px;
   line-height: 18px;
   padding: 1px 1px;
   resize: initial;
+  width: 100%;
 }
 
 .inspector-modal-content {

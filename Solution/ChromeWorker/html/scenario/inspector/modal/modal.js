@@ -39,6 +39,10 @@
         this.model.set('value', e.target.value);
       },
 
+      'change #inspectorModalCustomInput': function (e) {
+        this.model.set('value', e.target.value);
+      },
+
       'change #inspectorModalStringInput': function (e) {
         this.model.set('value', e.target.value);
       },
@@ -48,10 +52,6 @@
       },
 
       'change #inspectorModalDateInput': function (e) {
-        this.model.set('value', e.target.value);
-      },
-
-      'change #inspectorModalRawInput': function (e) {
         this.model.set('value', e.target.value);
       },
 
@@ -75,33 +75,34 @@
     },
 
     initialize({ callback, value, type }) {
-      if (['object', 'array'].includes(type)) type = 'raw';
-      value = type === 'raw' ? JSON.stringify(value) : String(value);
+      if (['object', 'array'].includes(type)) type = 'custom';
+      value = type === 'custom' ? JSON.stringify(value) : String(value);
       value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
 
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
-        let $input = this.$('#inspectorModalRawInput');
+        const $inputs = this.$('[data-input-type]');
 
-        if (type === 'boolean') {
-          $input = this.$('#inspectorModalBoolean');
-          const $radio = $input.find('input[type=radio]');
-          $radio.first().prop('checked', true).trigger('change');
-        } else if (type == 'null') {
-          $input = this.$('#inspectorModalEmpty');
-          const $radio = $input.find('input[type=radio]');
-          $radio.first().prop('checked', true).trigger('change');
-        } else {
-          if (type === 'date') {
-            $input = this.$('#inspectorModalDateInput');
-          } else if (type === 'number') {
-            $input = this.$('#inspectorModalNumberInput');
-          } else if (type === 'string') {
-            $input = this.$('#inspectorModalStringInput');
+        const $input = $inputs.filter(function () {
+          return this.dataset.inputType === type;
+        }).show();
+
+        const $other = $inputs.filter(function () {
+          return this.dataset.inputType !== type;
+        }).hide();
+
+        $input.find(':input').each(function (idx) {
+          if (idx === 0) {
+            const $el = $(this), type = $el.attr('type');
+
+            if (!(type === 'radio')) {
+              $el.val(type === 'number' ? 0 : '');
+            } else {
+              $el.prop('checked', true);
+            }
+
+            $el.trigger('change');
           }
-          $input.val(type === 'number' ? 0 : '').trigger('change');
-        }
-
-        this.$('.inspector-modal-inputs').children().not($input.show()).hide();
+        });
       });
 
       this.once('accept', () => {

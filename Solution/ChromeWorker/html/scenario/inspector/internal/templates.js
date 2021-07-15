@@ -28,7 +28,7 @@ _.extend(Scenario.JST, {
                 </div>
               </div>
               <div id="inspectorModalEmpty" style="<%- style('null') %>">
-                <div class="input-radio" dada-input-type="nullable">
+                <div class="input-radio" data-input-type="nullable">
                   <input id="inspectorModalEmptyUndefined" type="radio" name="empty" value="undefined"
                     <%= (value !== 'null' && type === 'null') || !false ? 'checked' : '' %>
                   >

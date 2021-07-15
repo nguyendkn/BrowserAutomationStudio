@@ -96,19 +96,11 @@
       let $input = this.$('#inspectorModalRawInput');
 
       if (option === 'boolean') {
-        const $falseRadio = this.$('#inspectorModalBooleanFalse');
-        const $trueRadio = this.$('#inspectorModalBooleanTrue');
         $input = this.$('#inspectorModalBoolean');
-
-        $falseRadio.trigger('change');
-        $trueRadio.trigger('change');
+        $input.find('input[type=radio]').trigger('change');
       } else if (option == 'null') {
-        const $undefinedRadio = this.$('#inspectorModalEmptyUndefined');
-        const $nullRadio = this.$('#inspectorModalEmptyNull');
         $input = this.$('#inspectorModalEmpty');
-
-        $undefinedRadio.trigger('change');
-        $nullRadio.trigger('change');
+        $input.find('input[type=radio]').trigger('change');
       } else {
         if (option === 'date') {
           $input = this.$('#inspectorModalDateInput');

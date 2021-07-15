@@ -119,7 +119,7 @@
 
     render() {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$('#inspectorModalSelect').trigger('change').selectpicker();
+      this.$('#inspectorModalSelect').selectpicker();
       this.$el.modal({});
       return this;
     },

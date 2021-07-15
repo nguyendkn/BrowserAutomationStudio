@@ -8,25 +8,26 @@ _.extend(Scenario.JST, {
           </div>
           <div class="inspector-modal-body">
             <div class="inspector-modal-inputs">
-              <textarea id="inspectorModalStringInput" style="display: none;" data-input-type="string"><%- type === 'string' ? value : '' %></textarea>
-              <textarea id="inspectorModalRawInput" style="display: none;" data-input-type="raw"><%- type === 'raw' ? value : '' %></textarea>
-              <input id="inspectorModalNumberInput" type="number" value="<%- type === 'number' ? value : 0 %>" style="display: none;">
-              <input id="inspectorModalDateInput" type="text" value="<%- type === 'date' ? value : '' %>" style="display: none;">
-              <div id="inspectorModalBoolean" style="display: none;">
+              <% const style = (target) => type === target ? 'display: block;' : 'display: none;' %>
+              <textarea id="inspectorModalStringInput" style="<%- style('string') %>" data-input-type="string"><%- type === 'string' ? value : '' %></textarea>
+              <textarea id="inspectorModalJsonInput" style="<%- style('raw') %>" data-input-type="raw"><%- type === 'raw' ? value : '' %></textarea>
+              <input id="inspectorModalNumberInput" style="<%- style('number') %>" type="number" value="<%- type === 'number' ? value : 0 %>">
+              <input id="inspectorModalDateInput" style="<%- style('date') %>" type="text" value="<%- type === 'date' ? value : '' %>">
+              <div id="inspectorModalBoolean" style="<%- style('boolean') %>">
                 <div class="input-radio" data-input-type="boolean">
                   <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false"
-                    <%= (value === 'false' && type === 'boolean') || !false ? 'checked' : '' %>
+                    <%= (value !== 'true' && type === 'boolean') || !false ? 'checked' : '' %>
                   >
                   <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
                 </div>
                 <div class="input-radio" data-input-type="boolean">
                   <input id="inspectorModalBooleanTrue" type="radio" name="boolean" value="true"
-                    <%= (value === 'true' && type === 'boolean') || !true ? 'checked' : '' %>
+                    <%= (value === 'true' && type === 'boolean') ? 'checked' : '' %>
                   >
                   <label for="inspectorModalBooleanTrue"><%= tr('True') %></label>
                 </div>
               </div>
-              <div id="inspectorModalEmpty" style="display: none;">
+              <div id="inspectorModalEmpty" style="<%- style('null') %>">
                 <div class="input-radio" dada-input-type="nullable">
                   <input id="inspectorModalEmptyUndefined" type="radio" name="empty" value="undefined"
                     <%= (value !== 'null' && type === 'null') || !false ? 'checked' : '' %>
@@ -35,7 +36,7 @@ _.extend(Scenario.JST, {
                 </div>
                 <div class="input-radio" data-input-type="nullable">
                   <input id="inspectorModalEmptyNull" type="radio" name="empty" value="null"
-                    <%= (value === 'null' && type === 'null') || !true ? 'checked' : '' %>
+                    <%= (value === 'null' && type === 'null') ? 'checked' : '' %>
                   >
                   <label for="inspectorModalEmptyNull"><%= tr('Null') %></label>
                 </div>

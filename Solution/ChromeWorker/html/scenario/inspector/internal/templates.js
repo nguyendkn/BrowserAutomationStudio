@@ -8,7 +8,8 @@ _.extend(Scenario.JST, {
           </div>
           <div class="inspector-modal-body">
             <div class="inspector-modal-inputs">
-              <textarea id="inspectorModalTextarea" style="resize: vertical; display: none;"><%- (type === 'raw' || type === 'string') ? value : '' %></textarea>
+              <textarea id="inspectorModalStringInput" style="display: none;" data-input-type="string"><%- type === 'string' ? value : '' %></textarea>
+              <textarea id="inspectorModalRawInput" style="display: none;" data-input-type="raw"><%- type === 'raw' ? value : '' %></textarea>
               <input id="inspectorModalNumberInput" type="number" value="<%- type === 'number' ? value : 0 %>" style="display: none;">
               <input id="inspectorModalDateInput" type="text" value="<%- type === 'date' ? value : '' %>" style="display: none;">
               <div id="inspectorModalBoolean" style="display: none;">

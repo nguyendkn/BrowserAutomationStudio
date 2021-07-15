@@ -39,6 +39,10 @@
         this.model.set('value', e.target.value);
       },
 
+      'change #inspectorModalStringInput': function (e) {
+        this.model.set('value', e.target.value);
+      },
+
       'change #inspectorModalNumberInput': function (e) {
         this.model.set('value', e.target.value);
       },
@@ -47,7 +51,7 @@
         this.model.set('value', e.target.value);
       },
 
-      'change #inspectorModalTextarea': function (e) {
+      'change #inspectorModalRawInput': function (e) {
         this.model.set('value', e.target.value);
       },
 
@@ -89,7 +93,7 @@
     },
 
     changeInput(option) {
-      let $input = this.$('#inspectorModalTextarea');
+      let $input = this.$('#inspectorModalRawInput');
 
       if (option === 'boolean') {
         const $falseRadio = this.$('#inspectorModalBooleanFalse');
@@ -106,14 +110,13 @@
         $undefinedRadio.trigger('change');
         $nullRadio.trigger('change');
       } else {
-        if (option === 'raw' || option === 'string') {
-
+        if (option === 'date') {
+          $input = this.$('#inspectorModalDateInput');
         } else if (option === 'number') {
           $input = this.$('#inspectorModalNumberInput');
-        } else if (option === 'date') {
-          $input = this.$('#inspectorModalDateInput');
+        } else if (option === 'string') {
+          $input = this.$('#inspectorModalStringInput');
         }
-
         $input.trigger('change');
       }
 

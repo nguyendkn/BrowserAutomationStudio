@@ -56,7 +56,7 @@
       },
 
       'change #inspectorModalSelect': function (e) {
-        this.changeInput(e.target.value);
+        this.model.set('type', e.target.value);
       },
 
       'click #inspectorModalAccept': function (e) {
@@ -79,6 +79,33 @@
       value = type === 'raw' ? JSON.stringify(value) : String(value);
       value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
 
+      const model = new Model({ value, type });
+
+      model.on('change:type', (__, type) => {
+        let $input = this.$('#inspectorModalRawInput');
+
+        if (type === 'boolean') {
+          $input = this.$('#inspectorModalBoolean');
+          const $radio = $input.find('input[type=radio]');
+          $radio.first().prop('checked', true).trigger('change');
+        } else if (type == 'null') {
+          $input = this.$('#inspectorModalEmpty');
+          const $radio = $input.find('input[type=radio]');
+          $radio.first().prop('checked', true).trigger('change');
+        } else {
+          if (type === 'date') {
+            $input = this.$('#inspectorModalDateInput');
+          } else if (type === 'number') {
+            $input = this.$('#inspectorModalNumberInput');
+          } else if (type === 'string') {
+            $input = this.$('#inspectorModalStringInput');
+          }
+          $input.val(type === 'number' ? 0 : '').trigger('change');
+        }
+
+        this.$('.inspector-modal-inputs').children().not($input.show()).hide();
+      });
+
       this.once('accept', () => {
         this.close();
         callback({ ...this.model.toJSON(), cancel: false });
@@ -89,32 +116,7 @@
         callback({ ...this.model.toJSON(), cancel: true });
       });
 
-      this.model = new Model({ value, type });
-    },
-
-    changeInput(option) {
-      let $input = this.$('#inspectorModalRawInput');
-
-      if (option === 'boolean') {
-        $input = this.$('#inspectorModalBoolean');
-        $input.find('input[type=radio]').trigger('change');
-      } else if (option == 'null') {
-        $input = this.$('#inspectorModalEmpty');
-        $input.find('input[type=radio]').trigger('change');
-      } else {
-        if (option === 'date') {
-          $input = this.$('#inspectorModalDateInput');
-        } else if (option === 'number') {
-          $input = this.$('#inspectorModalNumberInput');
-        } else if (option === 'string') {
-          $input = this.$('#inspectorModalStringInput');
-        }
-        $input.trigger('change');
-      }
-
-      this.$('.inspector-modal-inputs').children().not($input).hide();
-      this.model.set('type', option);
-      $input.show();
+      this.model = model;
     },
 
     render() {

@@ -10,7 +10,7 @@ _.extend(Scenario.JST, {
             <div class="inspector-modal-inputs">
               <% const style = (target) => type === target ? 'display: block;' : 'display: none;' %>
               <textarea id="inspectorModalStringInput" style="<%- style('string') %>" data-input-type="string"><%- type === 'string' ? value : '' %></textarea>
-              <textarea id="inspectorModalJsonInput" style="<%- style('raw') %>" data-input-type="raw"><%- type === 'raw' ? value : '' %></textarea>
+              <textarea id="inspectorModalRawInput" style="<%- style('raw') %>" data-input-type="raw"><%- type === 'raw' ? value : '' %></textarea>
               <input id="inspectorModalNumberInput" style="<%- style('number') %>" type="number" value="<%- type === 'number' ? value : 0 %>">
               <input id="inspectorModalDateInput" style="<%- style('date') %>" type="text" value="<%- type === 'date' ? value : '' %>">
               <div id="inspectorModalBoolean" style="<%- style('boolean') %>">

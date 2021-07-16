@@ -183,21 +183,13 @@
     },
 
     hidePendingNotice() {
-      if (this.model.get('showContent')) {
-        this.model.set('showNotice', false);
-        this.$('#inspectorNotice').hide();
-        this.$('#inspectorContent').show();
-        this.restoreScrollState();
-      }
+      this.model.set('showNotice', false);
+      this.$('#inspectorNotice').hide();
     },
 
     showPendingNotice() {
-      if (this.model.get('showContent')) {
-        this.model.set('showNotice', true);
-        this.preserveScrollState();
-        this.$('#inspectorNotice').show();
-        this.$('#inspectorContent').hide();
-      }
+      this.model.set('showNotice', true);
+      this.$('#inspectorNotice').show();
     },
 
     loadState(state) {

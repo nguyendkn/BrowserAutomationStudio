@@ -68,13 +68,13 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/main': _.template(/*html*/`
-    <div style="position: absolute; top: 9px; right: 30px;">
+    <div style="position: absolute; top: 9px; right: 30px; z-index: 1;">
       <a href="#" id="inspectorClose" class="text-danger">
         <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%; background-color: #fafafa; padding: 5px;"></i>
       </a>
     </div>
-    <div id="inspectorNotice" style="display: none">
-      <span><%= tr("Data will be loaded at the next script pause") %></span>
+    <div id="inspectorNotice" style="display: none; position: absolute; background: #fafafa; padding: 40px; height: calc(100% - 37px); width: 100%; left: 0; top: 6px;">
+      <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>
     </div>
     <div id="inspectorContent" style="display: block">
       <ul class="inspector-navigation" style="display: none">
@@ -82,14 +82,14 @@ _.extend(Scenario.JST, {
         <li id="inspectorShowResources"><%= tr('Resources') %></li>
         <li id="inspectorShowCallstack"><%= tr('Call stack') %></li>
       </ul>
-      <div class="inspector-data-tab" data-tab-name="variables">
+      <div class="inspector-tab" data-tab-name="variables">
         <div class="inspector-label-container">
           <span class="inspector-label"><%= tr('Variables:') %></span>
         </div>
         <div id="inspectorVariablesData"></div>
         <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No variables') %></div>
       </div>
-      <div class="inspector-data-tab" data-tab-name="resources">
+      <div class="inspector-tab" data-tab-name="resources">
         <div class="inspector-label-container">
           <span class="inspector-label"><%= tr('Resources:') %></span>
         </div>

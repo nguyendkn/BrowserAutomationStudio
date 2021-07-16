@@ -3752,19 +3752,15 @@
 
         if(_GobalModel.hasChanged("execute_next_id"))
         {
-          _Inspector.preserveScrollState()
             this.rendertaksid();
             this.renderisscriptexecutingcontainer();
-          _Inspector.restoreScrollState()
           return; 
         }
 
 
         if(_GobalModel.hasChanged("isscriptexecuting"))
         {
-          _Inspector.preserveScrollState()
           this.renderisscriptexecutingcontainer();
-          _Inspector.restoreScrollState()
           return;
         }
 
@@ -3783,7 +3779,6 @@
 
 
 
-        _Inspector.preserveScrollState()
 
 
         var index_start = -1;
@@ -3876,7 +3871,6 @@
         console.log("Cached actions: " + cached_actions + " / " + total_actions + ". Total added: " + total_added + ", total removed: " + total_removed)
 
 
-        _Inspector.restoreScrollState()
 
 
         _MainView.SetDefaultInsert()

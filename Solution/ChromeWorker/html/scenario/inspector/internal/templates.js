@@ -9,11 +9,11 @@ _.extend(Scenario.JST, {
           <div class="inspector-modal-body">
             <div class="inspector-modal-inputs">
               <% const style = (target) => type === target ? 'display: block;' : 'display: none;' %>
-              <div style="<%- style('string') %>" data-input-type="string">
-                <textarea id="inspectorModalStringInput"><%- type === 'string' ? value : '' %></textarea>
-              </div>
               <div style="<%- style('custom') %>" data-input-type="custom">
                 <textarea id="inspectorModalCustomInput"><%- type === 'custom' ? value : '' %></textarea>
+              </div>
+              <div style="<%- style('string') %>" data-input-type="string">
+                <textarea id="inspectorModalStringInput"><%- type === 'string' ? value : '' %></textarea>
               </div>
               <div style="<%- style('number') %>" data-input-type="number">
                 <input id="inspectorModalNumberInput" type="number" value="<%- type === 'number' ? value : 0 %>">

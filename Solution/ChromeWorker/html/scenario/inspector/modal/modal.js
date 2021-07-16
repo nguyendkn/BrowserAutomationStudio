@@ -82,15 +82,15 @@
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');
 
-        const $input = $inputs.filter(function () {
+        const $target = $inputs.filter(function () {
           return this.dataset.inputType === type;
         }).show();
 
-        const $other = $inputs.filter(function () {
+        const $unused = $inputs.filter(function () {
           return this.dataset.inputType !== type;
         }).hide();
 
-        $input.find(':input').each(function (idx) {
+        $target.find(':input').each(function (idx) {
           if (idx === 0) {
             const $el = $(this), type = $el.attr('type');
 

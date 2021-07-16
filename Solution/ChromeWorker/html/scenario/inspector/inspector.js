@@ -75,9 +75,22 @@
     template: Scenario.JST['inspector/main'],
 
     initialize() {
-      const model = new InspectorModel();
+      this.model = new InspectorModel();
 
-      model.on('change:resources', (__, data) => {
+      this.model.on('diff:variables', ({ usage, path }) => {
+        const $element = this.$(`[data-path="${path}"]`);
+
+        if ($element.length) {
+          const type = $element.data('type');
+          if (type === 'object') return;
+          if (type === 'array') return;
+
+          const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
+          $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
+        }
+      });
+
+      this.model.on('change:resources', (__, data) => {
         const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
@@ -93,7 +106,7 @@
         $data.toggle(!isEmpty).prev('#inspectorNoResources').toggle(isEmpty);
       });
 
-      model.on('change:variables', (__, data) => {
+      this.model.on('change:variables', (__, data) => {
         const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
@@ -108,21 +121,6 @@
         }
         $data.toggle(!isEmpty).prev('#inspectorNoVariables').toggle(isEmpty);
       });
-
-      model.on('diff:variables', ({ usage, path }) => {
-        const $element = this.$(`[data-path="${path}"]`);
-
-        if ($element.length) {
-          const type = $element.data('type');
-          if (type === 'object') return;
-          if (type === 'array') return;
-
-          const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
-          $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
-        }
-      });
-
-      this.model = model;
     },
 
     render() {

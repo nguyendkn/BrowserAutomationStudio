@@ -803,7 +803,7 @@ _L =
 }
 
 
-function tr(key, ...args)
+function tr(key)
 {
 	if(typeof(key) == "undefined")
 	{
@@ -848,16 +848,12 @@ function tr(key, ...args)
 	
 	if(typeof(_K) == "undefined" || _K == "en")
 		return key;
-	if (key in _L) {
-		if(_K in _L[key]) {
-         if (args.length) {
-            return _L[key][_K].replace(/{(\d+)}/g, (match, i) => { 
-               return typeof args[i] !== 'undefined'
-                 ? args[i]
-                 : match;
-             });
-         }
-         return _L[key][_K];
+	if(key in _L)
+	{
+
+		if(_K in _L[key])
+		{
+			return _L[key][_K]
 		}
 	}
 	return key;

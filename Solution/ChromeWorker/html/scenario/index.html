@@ -5574,11 +5574,12 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
+      
+      if(!_Inspector.model.get("showContent"))
+        return
       if (_GobalModel.get('isMovingExecutionPoint')) {
         return;
       }
-      if (!_Inspector.model.get("showContent"))
-        return
 
       if(VariablesUpdateTakesPlace)
       {

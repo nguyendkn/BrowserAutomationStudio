@@ -1665,7 +1665,7 @@
 
           _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
           var second_line = "section_start(\"test\", " + task.get("id") + ")!"
-          var code = execute_point_code + "\n" + second_line;
+          var code = execute_point_code + "\n" + second_line
           _GobalModel.set('isMovingExecutionPoint', true);
           BrowserAutomationStudio_Execute(code, false)
         }
@@ -3490,7 +3490,7 @@
 
             _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
             var second_line = "section_start(\"test\", " + task.get("id") + ")!"
-            var code = execute_point_code + "\n" + second_line;
+            var code = execute_point_code + "\n" + second_line
             _GobalModel.set('isMovingExecutionPoint', true);
             BrowserAutomationStudio_Execute(code, false)
 

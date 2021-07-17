@@ -126,13 +126,10 @@
     render() {
       this.setElement('#variableInspector');
 
-      if (this.$el.is(':empty')) this.$el.html(this.template());
-      const showNotice = this.model.attributes['showNotice'];
-      this.$('#inspectorContent').toggle(!showNotice);
-      this.$('#inspectorNotice').toggle(showNotice);
+      if (this.$el.is(':empty')) {
+        this.$el.html(this.template());
 
-      if (!this.interact) {
-        this.interact = interact(this.el).resizable({
+        interact(this.el).resizable({
           edges: { top: true },
           inertia: false,
           listeners: {

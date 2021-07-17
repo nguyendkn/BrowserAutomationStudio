@@ -7,6 +7,7 @@
       highlightNext: true,
       showContent: false,
       showNotice: false,
+      needUpdate: true,
       resources: {},
       variables: {},
       state: {},

@@ -1365,6 +1365,8 @@
   <script src="vendor/morphdom/morphdom.min.js"></script>
   <script src="vendor/interact/interact.min.js"></script>
   <script src="vendor/chroma/chroma.min.js"></script>
+  <script src="vendor/dayjs/dayjs.min.js"></script>
+  <script src="vendor/dayjs/plugin/customParseFormat.js"></script>
   <script src="updater/internal/backbone.events.js"></script>
   <script src="updater/internal/progressbar.js"></script>
   <script src="updater/internal/translate.js"></script>
@@ -1513,7 +1515,6 @@
             state: "main",
             istaskexecuting: false,
             isscriptexecuting: false,
-            isMovingExecutionPoint: false,
             execute_next_id: 0,
             isstepnextactivated: false,
             insert_index: 0,
@@ -1666,7 +1667,7 @@
           _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
           var second_line = "section_start(\"test\", " + task.get("id") + ")!"
           var code = execute_point_code + "\n" + second_line
-          _GobalModel.set('isMovingExecutionPoint', true);
+          _Inspector.model.set('needUpdate', false);
           BrowserAutomationStudio_Execute(code, false)
         }
 
@@ -3491,7 +3492,7 @@
             _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
             var second_line = "section_start(\"test\", " + task.get("id") + ")!"
             var code = execute_point_code + "\n" + second_line
-            _GobalModel.set('isMovingExecutionPoint', true);
+            _Inspector.model.set('needUpdate', false);
             BrowserAutomationStudio_Execute(code, false)
 
           }
@@ -5563,23 +5564,16 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdateOrWait()
     {
-        if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
-        {
-          BrowserAutomationStudio_AskForVariablesUpdate()
-        }else
-        {
-          _Inspector.showPendingNotice();
-        }
+      if (!_GobalModel.get('isscriptexecuting') && !_GobalModel.get('istaskexecuting')) {
+        return BrowserAutomationStudio_AskForVariablesUpdate();
+      }
+      _Inspector.showPendingNotice();
     }
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
-
-      if(!_Inspector.model.get("showContent"))
-        return
-      if (_GobalModel.get('isMovingExecutionPoint')) {
-        return;
-      }
+      if (!_Inspector.model.get("showContent")) return;
+      if (!_Inspector.model.get('needUpdate')) return;
 
       if(VariablesUpdateTakesPlace)
       {
@@ -5898,7 +5892,7 @@
         BrowserAutomationStudio_FocusActionFast(parseInt(_NewInsertId))
         _NewInsertId = null
       }*/
-      _GobalModel.set('isMovingExecutionPoint', false);
+      _Inspector.model.set('needUpdate', true);
     }
 
     function BrowserAutomationStudio_PreserveInterfaceState() {

@@ -26,7 +26,7 @@
 
       if (resources != null) {
         const diff = jsonpatch.compare(this.get('resources'), resources);
-        this.unset('resources', { silent: true }).set('resources', resources);
+        this.set('resources', resources);
 
         if (diff.length && this.resourcesInit) {
           diff.forEach(({ path, value, op }) => {
@@ -43,7 +43,7 @@
 
       if (variables != null) {
         const diff = jsonpatch.compare(this.get('variables'), variables);
-        this.unset('variables', { silent: true }).set('variables', variables);
+        this.set('variables', variables);
 
         if (diff.length && this.variablesInit) {
           diff.forEach(({ path, value, op }) => {

@@ -153,7 +153,7 @@
 
     toggle() {
       const showContent = !this.model.get('showContent');
-      this.model.set("showContent", showContent);
+      this.model.set('showContent', showContent);
 
       if (showContent) {
         this.$el.show();

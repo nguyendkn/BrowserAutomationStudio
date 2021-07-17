@@ -1513,6 +1513,7 @@
             state: "main",
             istaskexecuting: false,
             isscriptexecuting: false,
+            isMovingExecutionPoint: false,
             execute_next_id: 0,
             isstepnextactivated: false,
             insert_index: 0,
@@ -1664,7 +1665,8 @@
 
           _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
           var second_line = "section_start(\"test\", " + task.get("id") + ")!"
-          var code = execute_point_code + "\n" + second_line
+          var code = execute_point_code + "\n" + second_line;
+          _GobalModel.set('isMovingExecutionPoint', true);
           BrowserAutomationStudio_Execute(code, false)
         }
 
@@ -3488,7 +3490,8 @@
 
             _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
             var second_line = "section_start(\"test\", " + task.get("id") + ")!"
-            var code = execute_point_code + "\n" + second_line
+            var code = execute_point_code + "\n" + second_line;
+            _GobalModel.set('isMovingExecutionPoint', true);
             BrowserAutomationStudio_Execute(code, false)
 
           }
@@ -5571,8 +5574,10 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
-
-      if(!_Inspector.model.get("showContent"))
+      if (_GobalModel.get('isMovingExecutionPoint')) {
+        return;
+      }
+      if (!_Inspector.model.get("showContent"))
         return
 
       if(VariablesUpdateTakesPlace)
@@ -5892,7 +5897,7 @@
         BrowserAutomationStudio_FocusActionFast(parseInt(_NewInsertId))
         _NewInsertId = null
       }*/
-        
+      _GobalModel.set('isMovingExecutionPoint', false);
     }
 
     function BrowserAutomationStudio_PreserveInterfaceState() {

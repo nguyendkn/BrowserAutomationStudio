@@ -5360,16 +5360,14 @@
     {
       var code = GenerateCode(_TaskCollection.toJSON(),_GobalModel.toJSON())
       var match = code.match(/VAR_[A-Z0-9_]+/g)
-      var variables = null
-      if(match)
-      {
+      var variables = [];
+
+      if (match) {
         variables = _.uniq(match)
-      }else
-        variables = []       
+      }     
 
       JSON.parse(extract_global_variables(code)).forEach(function(el){
         variables.push("GLOBAL:" + el["name"])
-
       })
 
       return variables

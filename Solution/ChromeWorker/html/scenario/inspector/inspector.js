@@ -24,7 +24,7 @@
     update([variables, resources] = []) {
       const highlightNext = this.get('highlightNext');
 
-      if (resources != null) {
+      if (resources) {
         const diff = jsonpatch.compare(this.get('resources'), resources);
         this.unset('resources', { silent: true }).set('resources', resources);
 
@@ -41,7 +41,7 @@
         this.resourcesInit = true;
       }
 
-      if (variables != null) {
+      if (variables) {
         const diff = jsonpatch.compare(this.get('variables'), variables);
         this.unset('variables', { silent: true }).set('variables', variables);
 
@@ -104,7 +104,7 @@
           this.resourcesTree.render(data);
           this.loadState();
         }
-        $data.toggle(!isEmpty).prev('#inspectorNoResources').toggle(isEmpty);
+        $data.toggle(!isEmpty).next('#inspectorNoResources').toggle(isEmpty);
       });
 
       this.model.on('change:variables', (__, data) => {
@@ -120,7 +120,7 @@
           this.variablesTree.render(data);
           this.loadState();
         }
-        $data.toggle(!isEmpty).prev('#inspectorNoVariables').toggle(isEmpty);
+        $data.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
       });
 
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());

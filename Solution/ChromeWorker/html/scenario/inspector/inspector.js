@@ -28,12 +28,11 @@
         const diff = jsonpatch.compare(this.get('resources'), resources);
         this.unset('resources', { silent: true }).set('resources', resources);
 
-        if (diff.length && this.resourcesInit) {
-          diff.forEach(({ path, value, op }) => {
-            if (_.has(this.resourcesData, path)) return;
-            this.resourcesData[path] = { usage: 6, value, op };
-          });
-        }
+        if (this.resourcesInit) diff.forEach(({ path, value, op }) => {
+          if (_.has(this.resourcesData, path)) return;
+          this.resourcesData[path] = { usage: 6, value, op };
+        });
+
         _.each(this.resourcesData, (item, path) => {
           if (highlightNext) item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('diff:resources', { ...item, path });
@@ -45,12 +44,11 @@
         const diff = jsonpatch.compare(this.get('variables'), variables);
         this.unset('variables', { silent: true }).set('variables', variables);
 
-        if (diff.length && this.variablesInit) {
-          diff.forEach(({ path, value, op }) => {
-            if (_.has(this.variablesData, path)) return;
-            this.variablesData[path] = { usage: 6, value, op };
-          });
-        }
+        if (this.variablesInit) diff.forEach(({ path, value, op }) => {
+          if (_.has(this.variablesData, path)) return;
+          this.variablesData[path] = { usage: 6, value, op };
+        });
+
         _.each(this.variablesData, (item, path) => {
           if (highlightNext) item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('diff:variables', { ...item, path });
@@ -92,10 +90,10 @@
       });
 
       this.model.on('change:resources', (__, data) => {
-        const $el = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
+        const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
-          if (!this.resourcesTree) this.resourcesTree = new JSONTree($el[0], {
+          if (!this.resourcesTree) this.resourcesTree = new JSONTree($data[0], {
             onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             onExpand: BrowserAutomationStudio_PreserveInterfaceState,
             rootSort: Scenario.utils.sortByLocals,
@@ -103,14 +101,14 @@
           this.resourcesTree.render(data);
           this.loadState();
         }
-        $el.toggle(!isEmpty).next('#inspectorNoResources').toggle(isEmpty);
+        $data.toggle(!isEmpty).next('#inspectorNoResources').toggle(isEmpty);
       });
 
       this.model.on('change:variables', (__, data) => {
-        const $el = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
+        const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
-          if (!this.variablesTree) this.variablesTree = new JSONTree($el[0], {
+          if (!this.variablesTree) this.variablesTree = new JSONTree($data[0], {
             onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
             onExpand: BrowserAutomationStudio_PreserveInterfaceState,
             rootSort: Scenario.utils.sortByLocals,
@@ -118,7 +116,7 @@
           this.variablesTree.render(data);
           this.loadState();
         }
-        $el.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
+        $data.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
       });
 
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());

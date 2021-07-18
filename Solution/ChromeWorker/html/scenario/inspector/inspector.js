@@ -92,35 +92,33 @@
       });
 
       this.model.on('change:resources', (__, data) => {
-        const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
+        const $el = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
-          if (!this.resourcesTree)
-            this.resourcesTree = new JSONTree($data[0], {
-              onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
-              onExpand: BrowserAutomationStudio_PreserveInterfaceState,
-              rootSort: Scenario.utils.sortByLocals
-            });
+          if (!this.resourcesTree) this.resourcesTree = new JSONTree($el[0], {
+            onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
+            onExpand: BrowserAutomationStudio_PreserveInterfaceState,
+            rootSort: Scenario.utils.sortByLocals,
+          });
           this.resourcesTree.render(data);
           this.loadState();
         }
-        $data.toggle(!isEmpty).next('#inspectorNoResources').toggle(isEmpty);
+        $el.toggle(!isEmpty).next('#inspectorNoResources').toggle(isEmpty);
       });
 
       this.model.on('change:variables', (__, data) => {
-        const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
+        const $el = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
 
         if (!isEmpty) {
-          if (!this.variablesTree)
-            this.variablesTree = new JSONTree($data[0], {
-              onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
-              onExpand: BrowserAutomationStudio_PreserveInterfaceState,
-              rootSort: Scenario.utils.sortByLocals
-            });
+          if (!this.variablesTree) this.variablesTree = new JSONTree($el[0], {
+            onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
+            onExpand: BrowserAutomationStudio_PreserveInterfaceState,
+            rootSort: Scenario.utils.sortByLocals,
+          });
           this.variablesTree.render(data);
           this.loadState();
         }
-        $data.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
+        $el.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
       });
 
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());

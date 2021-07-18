@@ -160,16 +160,19 @@
       } else {
         this.hide();
       }
+      return this;
     },
 
     hide() {
       this.model.set('showContent', false);
       this.trigger('hide').$el.hide();
+      return this;
     },
 
     show() {
       this.model.set('showContent', true);
       this.trigger('show').$el.show();
+      return this;
     },
 
     preserveScrollState() {

@@ -122,6 +122,8 @@
         }
         $data.toggle(!isEmpty).prev('#inspectorNoVariables').toggle(isEmpty);
       });
+
+      this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
     },
 
     render() {
@@ -153,15 +155,21 @@
     },
 
     toggle() {
-      const showContent = !this.model.get('showContent');
-      this.model.set('showContent', showContent);
-
-      if (showContent) {
-        this.$el.show();
-        BrowserAutomationStudio_AskForVariablesUpdateOrWait();
+      if (!this.model.get('showContent')) {
+        this.show();
       } else {
-        this.$el.hide();
+        this.hide();
       }
+    },
+
+    hide() {
+      this.model.set('showContent', false);
+      this.trigger('hide').$el.hide();
+    },
+
+    show() {
+      this.model.set('showContent', true);
+      this.trigger('show').$el.show();
     },
 
     preserveScrollState() {
@@ -271,8 +279,7 @@
 
       'click #inspectorClose': function (e) {
         e.preventDefault();
-        this.model.set('showContent', false);
-        this.$el.hide();
+        this.hide();
       }
     }
   });

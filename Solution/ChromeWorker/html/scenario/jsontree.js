@@ -130,8 +130,8 @@
       }).join('');
 
       const collapse = `<span class="jst-collapse"></span>`;
-      const element = _element(data, { class: 'jst-list', 'data-type': type, 'data-path': path }, 'ul');
-      return `${opening}${collapse}${element}${closing}`;
+      const element = _element(data, { class: 'jst-list', 'data-path': path, 'data-type': type }, 'ul');
+      return opening + collapse + element + closing;
     }
 
     return opening + closing;

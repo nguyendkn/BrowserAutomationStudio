@@ -43,6 +43,7 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     std::vector<std::pair<std::string, std::string> > ParseSelector(const std::string& SelectorString);
     std::string SerializeSelector(const std::vector<std::pair<std::string, std::string> >& SelectorData);
     std::string Javascript(const std::string& Script);
+    bool Evaluate(std::map<std::string, Variant>& Params);
 public:
     virtual void Run();
     virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);

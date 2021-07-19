@@ -241,6 +241,16 @@ std::shared_ptr<TabData> IDevToolsAction::FindTabById(const std::string& TabId)
     return nullptr;
 }
 
+std::string IDevToolsAction::GetDefaultTabId()
+{
+    if(!OverrideDefaultTabId.empty())
+    {
+        return OverrideDefaultTabId;
+    }
+
+    return GlobalState->TabId;
+}
+
 
 void IDevToolsAction::SendWebSocket(const std::string& Method,const std::map<std::string,Variant>& Params, std::string TabId)
 {
@@ -252,13 +262,7 @@ void IDevToolsAction::SendWebSocket(const std::string& Method,const std::map<std
     Data["params"] = picojson::value(ParamsObject);
     if(TabId == "CurrentTab")
     {
-        if(!OverrideDefaultTabId.empty())
-        {
-            Data["sessionId"] = picojson::value(OverrideDefaultTabId);
-        } else
-        {
-            Data["sessionId"] = picojson::value(GlobalState->TabId);
-        }
+        Data["sessionId"] = picojson::value(GetDefaultTabId());
     } else
     {
         Data["sessionId"] = picojson::value(TabId);

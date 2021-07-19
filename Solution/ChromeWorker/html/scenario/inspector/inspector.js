@@ -34,8 +34,10 @@
         });
 
         _.each(this.resourcesData, (item, path) => {
-          if (highlightNext) item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
-          this.trigger('diff:resources', { ...item, path });
+          if (highlightNext) {
+            item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
+          }
+          this.trigger('highlight:resources', { ...item, path });
         });
         this.resourcesInit = true;
       }
@@ -50,8 +52,10 @@
         });
 
         _.each(this.variablesData, (item, path) => {
-          if (highlightNext) item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
-          this.trigger('diff:variables', { ...item, path });
+          if (highlightNext) {
+            item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
+          }
+          this.trigger('highlight:variables', { ...item, path });
         });
         this.variablesInit = true;
       }
@@ -76,7 +80,7 @@
     initialize() {
       this.model = new InspectorModel();
 
-      this.model.on('diff:variables', ({ usage, path }) => {
+      this.model.on('highlight:variables', ({ usage, path }) => {
         const $element = this.$(`[data-path="${path}"]`);
 
         if ($element.length) {

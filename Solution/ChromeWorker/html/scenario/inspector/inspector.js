@@ -81,15 +81,15 @@
       this.model = new InspectorModel();
 
       this.model.on('highlight:variables', ({ usage, path }) => {
-        const $element = this.$(`[data-path="${path}"]`);
+        const $node = this.$(`[data-path="${path}"]`);
 
-        if ($element.length) {
-          const type = $element.data('type');
+        if ($node.length) {
+          const type = $node.data('type');
           if (type === 'object') return;
           if (type === 'array') return;
 
-          const scale = chroma.scale(['red', $element.css('color')]).mode('rgb');
-          $element.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
+          const scale = chroma.scale(['red', $node.css('color')]).mode('rgb');
+          $node.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
         }
       });
 

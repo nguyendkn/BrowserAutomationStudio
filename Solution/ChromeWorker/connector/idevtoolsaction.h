@@ -14,6 +14,7 @@ class IDevToolsAction
     protected:
         JsonParser Parser;
         JsonSerializer Serializer;
+        std::string GetDefaultTabId();
         void SendWebSocket(const std::string& Method,const std::map<std::string,Variant>& Params, std::string TabId = std::string("CurrentTab"));
         std::string GetActualTabId();
         std::shared_ptr<TabData> FindTabById(const std::string& TabId);

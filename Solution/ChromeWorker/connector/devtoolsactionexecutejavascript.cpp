@@ -82,6 +82,32 @@ void DevToolsActionExecuteJavascript::Run()
 
 }
 
+bool DevToolsActionExecuteJavascript::Evaluate(std::map<std::string, Variant>& Params)
+{
+    std::string TabId = GetDefaultTabId();
+    bool TabExists = false;
+    for(std::shared_ptr<TabData> Tab: GlobalState->Tabs)
+    {
+        if(Tab->TabId == TabId)
+        {
+            TabExists = true;
+            break;
+        }
+    }
+
+    if(!TabExists)
+    {
+        //In case if tab is destroyed, Runtime.evaluate request will never return.
+        //Therefore timeout will occur, in order to avoid that, error will be returned immediately.
+        Result->Fail("Tab is destroyed", "TabDestroyed");
+        State = Finished;
+        return true;
+    }
+
+    SendWebSocket("Runtime.evaluate", Params);
+    return false;
+}
+
 std::vector<std::pair<std::string, std::string> > DevToolsActionExecuteJavascript::ParseSelector(const std::string& SelectorString)
 {
     picojson::value AllValue;
@@ -278,7 +304,7 @@ void DevToolsActionExecuteJavascript::Next()
                 if(CurrentContextId >= 0)
                     CurrentParams["contextId"] = Variant(CurrentContextId);
 
-                SendWebSocket("Runtime.evaluate", CurrentParams);
+                Evaluate(CurrentParams);
                 return;
             } else
             {
@@ -343,7 +369,7 @@ void DevToolsActionExecuteJavascript::Next()
         if(CurrentContextId >= 0)
             CurrentParams["contextId"] = Variant(CurrentContextId);
         
-        SendWebSocket("Runtime.evaluate", CurrentParams);
+        Evaluate(CurrentParams);
         return;
     }
 
@@ -357,7 +383,7 @@ void DevToolsActionExecuteJavascript::Next()
         if(CurrentContextId >= 0)
             CurrentParams["contextId"] = Variant(CurrentContextId);
 
-        SendWebSocket("Runtime.evaluate", CurrentParams);
+        Evaluate(CurrentParams);
         return;
     }
 
@@ -453,7 +479,7 @@ void DevToolsActionExecuteJavascript::Next()
     CurrentParams["expression"] = Variant(Script);
     CurrentParams["replMode"] = Variant(true);
     
-    SendWebSocket("Runtime.evaluate", CurrentParams);
+    Evaluate(CurrentParams);
 }
 
 void DevToolsActionExecuteJavascript::OnWebSocketMessage(const std::string& Message, const std::string& Error)

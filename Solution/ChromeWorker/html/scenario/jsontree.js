@@ -132,7 +132,7 @@
       }).join('');
 
       const collapse = `<span class="jst-collapse"></span>`;
-      const element = _element(data, { class: 'jst-list', 'data-path': path, 'data-type': type }, 'ul');
+      const element = `<ul class="jst-list" data-path="${path}" data-type="${type}"></ul>`
       return opening + collapse + element + closing;
     }
 
@@ -151,31 +151,31 @@
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return _element(`"${_.escape(data)}"`, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'string', 'data-value': utf8_to_b64(value) }) + clip;
+    return `<span class="jst-node" data-path="${_path(path, name)}" data-type="string" data-value="${utf8_to_b64(value)}">"${_.escape(data)}"</span>` + clip;
   }
 
   function _jsUndefined(name, value, path) {
-    return _element(void 0, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'undefined' });
+    return `<span class="jst-node" data-path="${_path(path, name)}" data-type="undefined">${void 0}</span>`;
   }
 
   function _jsBoolean(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'boolean' });
+    return `<span class="jst-node" data-path="${_path(path, name)}" data-type="boolean">${value}</span>`;
   }
 
   function _jsNumber(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'number' });
+    return `<span class="jst-node" data-path="${_path(path, name)}" data-type="number">${value}</span>`;
   }
 
   function _jsDate(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'date' });
+    return `<span class="jst-node" data-path="${_path(path, name)}" data-type="date">${value}</span>`;
   }
 
   function _jsNull(name, value, path) {
-    return _element(null, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'null' });
+    return `<span class="jst-node" data-path="${_path(path, name)}" data-type="null">${null}</span>`;
   }
 
   function _property(name, value, path) {
-    var property = _element(_.escape(name), { class: 'jst-property' });
+    let property = `<span class="jst-property">${_.escape(name)}</span>`;
     return [property + _colon(), _jsValue(name, value, path)].join('');
   }
 
@@ -185,13 +185,6 @@
 
   function _comma() {
     return /*html*/`<span class="jst-comma">,</span>`;
-  }
-
-  function _element(html, attrs, tag = 'span') {
-    attrs = Object.keys(attrs).map((key) => {
-      return `${key}="${attrs[key]}"`;
-    }).join(' ');
-    return `<${tag} ${attrs}>${html}</${tag}>`;
   }
 
   function _path(path, name) {

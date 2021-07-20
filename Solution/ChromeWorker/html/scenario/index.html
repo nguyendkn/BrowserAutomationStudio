@@ -5567,7 +5567,7 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
-      if (!_Inspector.model.get("showContent")) return;
+      if (!_Inspector.model.get("contentVisible")) return;
       if (!_Inspector.model.get('needUpdate')) return;
 
       if(VariablesUpdateTakesPlace)

@@ -1,10 +1,10 @@
 (function (global, $, _) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
-      highlightNext: true,
-      showContent: false,
-      showNotice: false,
+      contentVisible: false,
+      noticeVisible: false,
       needUpdate: true,
+      highlight: true,
       resources: {},
       variables: {},
       state: {},
@@ -20,7 +20,7 @@
     variablesData: {},
 
     update([variables, resources] = []) {
-      const highlightNext = this.get('highlightNext');
+      const highlight = this.get('highlight');
 
       if (resources) {
         const diff = jsonpatch.compare(this.get('resources'), resources);
@@ -32,7 +32,7 @@
         });
 
         _.each(this.resourcesData, (item, path) => {
-          if (highlightNext) {
+          if (highlight) {
             item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           }
           this.trigger('highlight:resources', { ...item, path });
@@ -50,7 +50,7 @@
         });
 
         _.each(this.variablesData, (item, path) => {
-          if (highlightNext) {
+          if (highlight) {
             item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           }
           this.trigger('highlight:variables', { ...item, path });
@@ -58,7 +58,7 @@
         this.variablesInit = true;
       }
 
-      this.set('highlightNext', true);
+      this.set('highlight', true);
     },
 
     getResource(pointer) {
@@ -165,7 +165,7 @@
     },
 
     toggle() {
-      if (!this.model.get('showContent')) {
+      if (!this.model.get('contentVisible')) {
         this.show();
       } else {
         this.hide();
@@ -174,24 +174,24 @@
     },
 
     hide() {
-      this.model.set('showContent', false);
+      this.model.set('contentVisible', false);
       this.trigger('hide').$el.hide();
       return this;
     },
 
     show() {
-      this.model.set('showContent', true);
+      this.model.set('contentVisible', true);
       this.trigger('show').$el.show();
       return this;
     },
 
     hidePendingNotice() {
-      this.model.set('showNotice', false);
+      this.model.set('noticeVisible', false);
       this.$('#inspectorNotice').hide();
     },
 
     showPendingNotice() {
-      this.model.set('showNotice', true);
+      this.model.set('noticeVisible', true);
       this.$('#inspectorNotice').show();
     },
 
@@ -248,7 +248,7 @@
         const modal = new global.Scenario.InspectorModal({
           callback: ({ isChanged, value, cancel, type }) => {
             if (!cancel && isChanged) {
-              this.model.set('highlightNext', false);
+              this.model.set('highlight', false);
               Scenario.utils.updateVariable(value, path, type);
             }
           },

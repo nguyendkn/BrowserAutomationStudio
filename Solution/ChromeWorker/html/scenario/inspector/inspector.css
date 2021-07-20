@@ -31,13 +31,16 @@
   margin-top: 5px;
 }
 
+.inspector-tab {
+  overflow: auto;
+}
+
 #variableInspector {
   border-bottom: 1px solid #dbdbdb;
   border-top: 7px solid #e1e1e1;
   background-color: #fafafa;
   padding: 0 15px 5px;
   min-height: 100px;
-  overflow: auto;
   height: 290px;
 }
 

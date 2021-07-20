@@ -121,6 +121,18 @@
         $data.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
       });
 
+      this.model.on('change:tab', (__, tab) => {
+        const $tabs = this.$('[data-tab-name]');
+
+        $tabs.filter((__, el) => {
+          return el.dataset.tabName !== tab;
+        }).hide();
+
+        $tabs.filter((__, el) => {
+          return el.dataset.tabName === tab;
+        }).show();
+      });
+
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
     },
 

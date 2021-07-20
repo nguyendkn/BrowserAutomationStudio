@@ -5567,8 +5567,8 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
+      if (!_Inspector.model.get("contentVisible")) return;
       if (!_Inspector.model.get('needUpdate')) return;
-      if (_Inspector.$el.is(':hidden')) return;
 
       if(VariablesUpdateTakesPlace)
       {

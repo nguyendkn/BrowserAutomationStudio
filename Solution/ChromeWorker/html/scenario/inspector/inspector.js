@@ -1,6 +1,7 @@
 (function (global, $, _) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
+      contentVisible: false,
       needUpdate: true,
       highlight: true,
       resources: {},
@@ -89,8 +90,8 @@
         }
       });
 
-      this.model.on('change:resources', (__, data) => {
-        const $data = this.$('#inspectorResourcesData'), isEmpty = !data.length;
+      this.model.on('change:resources', (__, resources) => {
+        const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(resources);
 
         if (!isEmpty) {
           if (!this.resourcesTree) this.resourcesTree = new JSONTree($data[0], {
@@ -98,14 +99,14 @@
             onExpand: BrowserAutomationStudio_PreserveInterfaceState,
             rootSort: Scenario.utils.sortByLocals,
           });
-          this.resourcesTree.render(data);
+          this.resourcesTree.render(resources);
           this.loadState();
         }
         $data.toggle(!isEmpty).next('#inspectorNoResources').toggle(isEmpty);
       });
 
-      this.model.on('change:variables', (__, data) => {
-        const $data = this.$('#inspectorVariablesData'), isEmpty = !data.length;
+      this.model.on('change:variables', (__, variables) => {
+        const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(variables);
 
         if (!isEmpty) {
           if (!this.variablesTree) this.variablesTree = new JSONTree($data[0], {
@@ -113,7 +114,7 @@
             onExpand: BrowserAutomationStudio_PreserveInterfaceState,
             rootSort: Scenario.utils.sortByLocals,
           });
-          this.variablesTree.render(data);
+          this.variablesTree.render(variables);
           this.loadState();
         }
         $data.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
@@ -172,11 +173,13 @@
     },
 
     hide() {
+      this.model.set('contentVisible', false);
       this.trigger('hide').$el.hide();
       return this;
     },
 
     show() {
+      this.model.set('contentVisible', true);
       this.trigger('show').$el.show();
       return this;
     },

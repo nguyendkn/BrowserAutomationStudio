@@ -36,27 +36,20 @@ function success(text)
 
 function debug_variables(list, callback)
 {
-    var res = {}
-
-    for(var i = 0;i<list.length;i++)
-    {
-        var v = list[i]
-        if(v.indexOf("GLOBAL:") == 0)
-        {
-            res[v] = JSON.parse(P("basglobal",v.slice(7)) || '"__UNDEFINED__"');
-        }else
-        {
-
-            try
-            {
-                res[v.slice(4)] = truncate_variable(eval(v), 100);
-            }catch(e)
-            {
-                res[v.slice(4)] = "__UNDEFINED__";
+    var res = list.reduce((acc, v) => {
+        if (v.indexOf('GLOBAL:') === 0) {
+            acc[v] = JSON.parse(P('basglobal', v.slice(7)) || '"__UNDEFINED__"');
+        } else {
+            try {
+                acc[v.slice(4)] = truncate_variable(eval(v), 100);
+            } catch (e) {
+                acc[v.slice(4)] = '__UNDEFINED__';
             }
         }
-    }
-    Browser.DebugVariablesResult(JSON.stringify([res,JSON.parse(ScriptWorker.PickResources())]),_get_function_body(callback));
+        return acc;
+    }, {});
+
+    Browser.DebugVariablesResult(JSON.stringify([res, JSON.parse(ScriptWorker.PickResources())]), _get_function_body(callback));
 }
 
 function _read_variables(list)

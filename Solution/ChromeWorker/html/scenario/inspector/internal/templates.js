@@ -68,36 +68,35 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/main': _.template(/*html*/`
-    <div id="inspectorNotice" style="display: none; position: absolute; background: #fafafa; padding: 40px; height: calc(100% - 37px); width: 100%; left: 0; top: 6px;">
-      <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>
-    </div>
-    <div id="inspectorContent" style="height: 100%; display: flex; flex-direction: column;">
+    <div id="inspectorContent" style="height: 100%; display: flex; flex-flow: column; position: relative;">
       <ul class="inspector-navigation">
         <li id="inspectorShowVariables"><%= tr('Variables') %></li>
         <li id="inspectorShowResources"><%= tr('Resources') %></li>
         <li id="inspectorShowCallstack"><%= tr('Callstack') %></li>
-        <li id="inspectorClose" style="flex: 0;">
+        <li id="inspectorClose" style="flex: 0; min-width: 36px;">
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%"></i>
         </li>
       </ul>
-      <div class="inspector-tab" data-tab-name="variables">
-        <div class="inspector-label-container">
-          <span class="inspector-label"><%= tr('Variables:') %></span>
-        </div>
+      <div class="inspector-tab" data-tab-name="variables" style="display: block;">
         <div id="inspectorVariablesData"></div>
-        <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No variables') %></div>
+        <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
+          <span><%= tr('No variables') %></span>
+        </div>
       </div>
       <div class="inspector-tab" data-tab-name="resources" style="display: none;">
-        <div class="inspector-label-container">
-          <span class="inspector-label"><%= tr('Resources:') %></span>
-        </div>
         <div id="inspectorResourcesData"></div>
-        <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;"><%= tr('No resources') %></div>
+        <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">
+          <span><%= tr('No resources') %></span>
+        </div>
       </div>
       <div class="inspector-tab" data-tab-name="callstack" style="display: none;">
-        <div class="inspector-label-container">
-          <span class="inspector-label"><%= tr('Callstack:') %></span>
+        <div id="inspectorCallstackData"></div>
+        <div id="inspectorNoCallstack" style="font-size: smaller; margin-top: 10px; display: none;">
+          <span><%= tr('No callstack') %></span>
         </div>
+      </div>
+      <div id="inspectorNotice" style="display: none; position: absolute; background: #fafafa; margin-top: 32px; padding: 40px; height: 100%; width: 100%;">
+        <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>
       </div>
     </div>
   `)

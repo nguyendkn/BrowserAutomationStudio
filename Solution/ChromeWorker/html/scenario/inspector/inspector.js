@@ -90,7 +90,7 @@
       });
 
       this.model.on('change:resources', (__, data) => {
-        const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(data);
+        const $data = this.$('#inspectorResourcesData'), isEmpty = !data.length;
 
         if (!isEmpty) {
           if (!this.resourcesTree) this.resourcesTree = new JSONTree($data[0], {
@@ -105,7 +105,7 @@
       });
 
       this.model.on('change:variables', (__, data) => {
-        const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(data);
+        const $data = this.$('#inspectorVariablesData'), isEmpty = !data.length;
 
         if (!isEmpty) {
           if (!this.variablesTree) this.variablesTree = new JSONTree($data[0], {

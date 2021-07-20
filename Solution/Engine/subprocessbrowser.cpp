@@ -452,6 +452,7 @@ namespace BrowserAutomationStudioFramework
         {
             if(Worker->GetProcessComunicator()->HasProcess())
             {
+                Worker->GetProcessComunicator()->Abort();
                 if(Worker->GetIsRecord())
                 {
                     Worker->SetAsyncResult(1);

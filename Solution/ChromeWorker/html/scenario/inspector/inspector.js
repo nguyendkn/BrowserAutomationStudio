@@ -260,18 +260,18 @@
       },
 
       'click #inspectorShowCallstack': function (e) {
-        e.preventDefault();
         this.model.set('tab', 'callstack');
+        e.preventDefault();
       },
 
       'click #inspectorShowResources': function (e) {
-        e.preventDefault();
         this.model.set('tab', 'resources');
+        e.preventDefault();
       },
 
       'click #inspectorShowVariables': function (e) {
-        e.preventDefault();
         this.model.set('tab', 'variables');
+        e.preventDefault();
       },
 
       'click #inspectorClose': function (e) {

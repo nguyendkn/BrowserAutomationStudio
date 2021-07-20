@@ -6,13 +6,13 @@
     },
 
     initialize({ value, type }) {
-      this._value = value;
-      this._type = type;
+      this.value = value;
+      this.type = type;
     },
 
     toJSON() {
-      const valueChanged = this._value !== this.get('value');
-      const typeChanged = this._type !== this.get('type');
+      const valueChanged = this.value !== this.get('value');
+      const typeChanged = this.type !== this.get('type');
       const isChanged = valueChanged || typeChanged;
 
       return { ..._.clone(this.attributes), isChanged };

@@ -1,9 +1,6 @@
 (function (global, $, _) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
-      callStackPanelScroll: 0,
-      variablesPanelScroll: 0,
-      resourcesPanelScroll: 0,
       highlightNext: true,
       showContent: false,
       showNotice: false,
@@ -11,6 +8,7 @@
       resources: {},
       variables: {},
       state: {},
+      tab: '',
     },
 
     resourcesInit: false,
@@ -173,22 +171,6 @@
       this.model.set('showContent', true);
       this.trigger('show').$el.show();
       return this;
-    },
-
-    preserveScrollState() {
-      if (!this.$('#inspectorNotice').is(':visible')) {
-        this.model.set('variablesPanelScroll', this.$el.scrollTop());
-        // this.model.set('resourcesPanelScroll', this.$el.scrollTop());
-        // this.model.set('callStackPanelScroll', this.$el.scrollTop());
-      }
-    },
-
-    restoreScrollState() {
-      if (!this.$('#inspectorNotice').is(':visible')) {
-        this.$el.scrollTop(this.model.get('variablesPanelScroll'));
-        // this.$el.scrollTop(this.model.get('resourcesPanelScroll'));
-        // this.$el.scrollTop(this.model.get('callStackPanelScroll'));
-      }
     },
 
     hidePendingNotice() {

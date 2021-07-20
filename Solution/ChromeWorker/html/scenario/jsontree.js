@@ -124,9 +124,7 @@
       var data = keys.map((key, idx, arr) => {
         var html = ['<li class="jst-item">'];
         html.push(_property(key, value[key], path));
-        if (idx !== arr.length - 1) {
-          html.push(_comma());
-        }
+        if (idx !== arr.length - 1) html.push(_comma());
         html.push('</li>');
         return html.join('');
       }).join('');

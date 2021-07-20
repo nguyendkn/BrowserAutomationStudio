@@ -1,8 +1,6 @@
 (function (global, $, _) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
-      contentVisible: false,
-      noticeVisible: false,
       needUpdate: true,
       highlight: true,
       resources: {},
@@ -165,7 +163,7 @@
     },
 
     toggle() {
-      if (!this.model.get('contentVisible')) {
+      if (this.$el.is(':hidden')) {
         this.show();
       } else {
         this.hide();
@@ -174,24 +172,22 @@
     },
 
     hide() {
-      this.model.set('contentVisible', false);
       this.trigger('hide').$el.hide();
       return this;
     },
 
     show() {
-      this.model.set('contentVisible', true);
       this.trigger('show').$el.show();
       return this;
     },
 
     hidePendingNotice() {
-      this.model.set('noticeVisible', false);
+      this.$('.inspector-nav-item').removeClass('disabled');
       this.$('#inspectorNotice').hide();
     },
 
     showPendingNotice() {
-      this.model.set('noticeVisible', true);
+      this.$('.inspector-nav-item').addClass('disabled');
       this.$('#inspectorNotice').show();
     },
 

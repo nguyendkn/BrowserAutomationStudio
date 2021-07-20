@@ -1,8 +1,8 @@
-.inspector-navigation > li + li {
+.inspector-nav > li + li {
   border-left: 1px solid #e0e0e0;
 }
 
-.inspector-navigation > li {
+.inspector-nav > li {
   -webkit-user-select: none;
   -webkit-user-drag: none;
   vertical-align: middle;
@@ -12,7 +12,7 @@
   flex: 1;
 }
 
-.inspector-navigation {
+.inspector-nav {
   border-bottom: 1px solid #e0e0e0;
   list-style: none;
   flex-flow: row;

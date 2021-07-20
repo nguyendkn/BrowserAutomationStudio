@@ -69,10 +69,10 @@ _.extend(Scenario.JST, {
 
   'inspector/main': _.template(/*html*/`
     <div id="inspectorContent" style="height: 100%; display: flex; flex-flow: column; position: relative;">
-      <ul class="inspector-navigation">
-        <li id="inspectorShowVariables"><%= tr('Variables') %></li>
-        <li id="inspectorShowResources"><%= tr('Resources') %></li>
-        <li id="inspectorShowCallstack"><%= tr('Callstack') %></li>
+      <ul class="inspector-nav">
+        <li id="inspectorShowVariables" class="inspector-nav-item"><%= tr('Variables') %></li>
+        <li id="inspectorShowResources" class="inspector-nav-item"><%= tr('Resources') %></li>
+        <li id="inspectorShowCallstack" class="inspector-nav-item"><%= tr('Callstack') %></li>
         <li id="inspectorClose" style="flex: 0; min-width: 36px;">
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%"></i>
         </li>

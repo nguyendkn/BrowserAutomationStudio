@@ -91,9 +91,11 @@
       case 'number':
         return _jsNumber(name, value, path);
       case 'string':
+        if (value.indexOf('__UNDEFINED__') === 0) {
+          return _jsUndefined(name, value.slice(13), path);
+        }
         if (value.indexOf('__DATE__') === 0) {
-          value = value.slice(8)
-          return _jsDate(name, value, path);
+          return _jsDate(name, value.slice(8), path);
         }
         return _jsString(name, value, path);
       default:
@@ -150,6 +152,10 @@
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
     return _element(`"${_.escape(data)}"`, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'string', 'data-value': utf8_to_b64(value) }) + clip;
+  }
+
+  function _jsUndefined(name, value, path) {
+    return _element(void 0, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'undefined' });
   }
 
   function _jsBoolean(name, value, path) {

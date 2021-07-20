@@ -1,3 +1,7 @@
+span.jst-node[data-type="undefined"] {
+  color: #808080;
+}
+
 span.jst-node[data-type="boolean"] {
   color: #2525cc;
 }

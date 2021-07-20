@@ -77,7 +77,16 @@
     initialize({ callback, value, type }) {
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
-      value = value.indexOf('__DATE__') === 0 ? value.slice(8) : value;
+
+      if (value.indexOf('__UNDEFINED__') === 0) {
+        value = value.slice(13);
+        type = 'null';
+      }
+
+      if (value.indexOf('__DATE__') === 0) {
+        value = value.slice(8);
+        type = 'date';
+      }
 
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');

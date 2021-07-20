@@ -43,7 +43,7 @@ function debug_variables(list, callback)
         var v = list[i]
         if(v.indexOf("GLOBAL:") == 0)
         {
-            res[v] = JSON.parse(P("basglobal",v.slice(7)) || '""');
+            res[v] = JSON.parse(P("basglobal",v.slice(7)) || '"__UNDEFINED__"');
         }else
         {
 
@@ -52,7 +52,7 @@ function debug_variables(list, callback)
                 res[v.slice(4)] = truncate_variable(eval(v), 100);
             }catch(e)
             {
-                res[v.slice(4)] = "undefined"
+                res[v.slice(4)] = "__UNDEFINED__";
             }
         }
     }
@@ -105,7 +105,7 @@ function truncate_variable(item, limit) {
         return "__DATE__" + _format_date(item, "yyyy-MM-dd hh:mm:ss t");
     }
 
-    return item;
+    return typeof (item) === 'undefined' ? '__UNDEFINED__' : item;
 }
 
 function _web_interface_eval(Script)

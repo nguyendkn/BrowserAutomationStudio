@@ -84,35 +84,6 @@
     }
   }
 
-  function _jsValue(name, value, path) {
-    switch (typeof value) {
-      case 'boolean':
-        return _jsBoolean(name, value, path);
-      case 'number':
-        return _jsNumber(name, value, path);
-      case 'string':
-        if (value.indexOf('__UNDEFINED__') === 0) {
-          return _jsUndefined(name, value.slice(13), path);
-        }
-        if (value.indexOf('__DATE__') === 0) {
-          return _jsDate(name, value.slice(8), path);
-        }
-        return _jsString(name, value, path);
-      default:
-        if (value == null) {
-          return _jsNull(name, value, path);
-        }
-        if (isArray(value)) {
-          return _jsArray(name, value, path);
-        }
-        if (isObject(value)) {
-          return _jsObject(name, value, path);
-        }
-    }
-
-    throw new Error(`Failed to detect value type`);
-  }
-
   function _collection(value, type, path, brackets, sortFn) {
     const opening = `<span class="jst-bracket">${brackets[0]}</span>`;
     const closing = `<span class="jst-bracket">${brackets[1]}</span>`;
@@ -123,7 +94,7 @@
 
       var data = keys.map((key, idx, arr) => {
         var html = ['<li class="jst-item">'];
-        html.push(_property(key, value[key], path));
+        html.push(_jsNode(key, value[key], path));
         if (idx !== arr.length - 1) html.push(_comma());
         html.push('</li>');
         return html.join('');
@@ -172,9 +143,35 @@
     return _element(null, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'null' });
   }
 
-  function _property(name, value, path) {
-    var property = _element(_.escape(name), { class: 'jst-property' });
-    return [property + _colon(), _jsValue(name, value, path)].join('');
+  function _jsNode(name, value, path) {
+    return _element(_.escape(name), { class: 'jst-property' }) + _colon() + (() => {
+      switch (typeof (value)) {
+        case 'boolean':
+          return _jsBoolean(name, value, path);
+        case 'number':
+          return _jsNumber(name, value, path);
+        case 'string':
+          if (value.indexOf('__UNDEFINED__') === 0) {
+            return _jsUndefined(name, value.slice(13), path);
+          }
+          if (value.indexOf('__DATE__') === 0) {
+            return _jsDate(name, value.slice(8), path);
+          }
+          return _jsString(name, value, path);
+        default:
+          if (value == null) {
+            return _jsNull(name, value, path);
+          }
+          if (isArray(value)) {
+            return _jsArray(name, value, path);
+          }
+          if (isObject(value)) {
+            return _jsObject(name, value, path);
+          }
+      }
+
+      throw new Error(`Failed to detect value type`);
+    })();
   }
 
   function _colon() {

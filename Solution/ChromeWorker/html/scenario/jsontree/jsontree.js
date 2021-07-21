@@ -1,5 +1,14 @@
 (function (global) {
   class JSONTree {
+    static colors = {
+      undefined: '#808080',
+      boolean: '#2525cc',
+      string: '#2db669',
+      number: '#d036d0',
+      date: '#ce904a',
+      null: '#808080',
+    };
+
     constructor (elem, config = {}) {
       elem.innerHTML = (/*html*/`<div class="jst-root"></div>`);
       this.onCollapse = config.onCollapse || (() => { });

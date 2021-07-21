@@ -7,7 +7,7 @@ _.extend(Scenario.JST, {
             <h4><%= tr("Change the variable value") %></h4>
           </div>
           <div class="inspector-modal-body">
-            <div class="inspector-modal-inputs">
+            <form class="inspector-modal-form" action="javascript:void(0)">
               <% const style = (target) => type === target ? 'display: block;' : 'display: none;' %>
               <div style="<%- style('custom') %>" data-input-type="custom">
                 <textarea id="inspectorModalCustomInput"><%- type === 'custom' ? value : '' %></textarea>
@@ -28,7 +28,7 @@ _.extend(Scenario.JST, {
                   >
                   <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
                 </div>
-                <div class="input-radio" data-input-type="boolean">
+                <div class="input-radio">
                   <input id="inspectorModalBooleanTrue" type="radio" name="boolean" value="true"
                     <%= (value === 'true' && type === 'boolean') ? 'checked' : '' %>
                   >
@@ -49,7 +49,7 @@ _.extend(Scenario.JST, {
                   <label for="inspectorModalEmptyNull"><%= tr('Null') %></label>
                 </div>
               </div>
-            </div>
+            </form>
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
               <% _.each(['Boolean', 'Custom', 'String', 'Number', 'Date', 'Null'], (item) => { %>
                 <option class="inspector-modal-select-option" value="<%= item.toLowerCase() %>" <%= item.toLowerCase() === type ? 'selected' : '' %>>
@@ -59,8 +59,8 @@ _.extend(Scenario.JST, {
             </select>
           </div>
           <div class="inspector-modal-footer">
-            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" data-dismiss="modal"><%= tr('Accept') %></button>
-            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel" data-dismiss="modal"><%= tr('Cancel') %></button>
+            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept"><%= tr('Accept') %></button>
+            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
           </div>
         </div>
       </div>

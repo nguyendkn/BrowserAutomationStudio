@@ -16,7 +16,7 @@
   }
 }
 
-.inspector-modal-inputs > div > textarea {
+.inspector-modal-form > div > textarea {
   line-height: 18px;
   min-height: 106px;
   padding: 2px 2px;
@@ -24,7 +24,7 @@
   width: 100%;
 }
 
-.inspector-modal-inputs > div > input {
+.inspector-modal-form > div > input {
   line-height: 18px;
   min-height: 24px;
   padding: 1px 1px;
@@ -44,7 +44,7 @@
   margin: 0 8px;
 }
 
-.inspector-modal-inputs {
+.inspector-modal-form {
   flex-direction: column;
   margin-bottom: 10px;
   margin-top: 0px;

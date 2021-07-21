@@ -61,7 +61,7 @@
 
       'click #inspectorModalAccept': function (e) {
         e.preventDefault();
-        this.trigger('accept');
+        this.trigger('submit');
       },
 
       'click #inspectorModalCancel': function (e) {
@@ -93,13 +93,13 @@
 
         const $target = $inputs.filter(function () {
           return this.dataset.inputType === type;
-        }).show();
+        }).show().find(':input').prop('required', !false);
 
         const $unused = $inputs.filter(function () {
           return this.dataset.inputType !== type;
-        }).hide();
+        }).hide().find(':input').prop('required', !true);
 
-        $target.find(':input').each(function (idx) {
+        $target.each(function (idx) {
           if (idx === 0) {
             const $el = $(this), type = $el.attr('type');
 
@@ -122,6 +122,12 @@
       this.once('cancel', () => {
         this.close();
         callback({ ...this.model.toJSON(), cancel: true });
+      });
+
+      this.bind('submit', () => {
+        if (this.$('form')[0].reportValidity()) {
+          this.trigger('accept');
+        }
       });
 
       this.model = model;

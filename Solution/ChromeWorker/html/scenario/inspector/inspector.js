@@ -29,9 +29,9 @@
         if (this.resourcesInit) diff.forEach(({ path, value, op }) => {
           if (_.has(this.resourcesData, path)) {
             if (op === 'remove') delete this.resourcesData[path];
-            return;
+          } else {
+            this.resourcesData[path] = { usage: 6, value, op };
           }
-          this.resourcesData[path] = { usage: 6, value, op };
         });
 
         if (highlight) _.each(this.resourcesData, (item, path) => {
@@ -48,9 +48,9 @@
         if (this.variablesInit) diff.forEach(({ path, value, op }) => {
           if (_.has(this.variablesData, path)) {
             if (op === 'remove') delete this.variablesData[path];
-            return;
+          } else {
+            this.variablesData[path] = { usage: 6, value, op };
           }
-          this.variablesData[path] = { usage: 6, value, op };
         });
 
         if (highlight) _.each(this.variablesData, (item, path) => {

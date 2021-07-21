@@ -91,12 +91,12 @@
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');
 
-        const $target = $inputs.filter(function () {
-          return this.dataset.inputType === type;
+        const $target = $inputs.filter((__, el) => {
+          return el.dataset.inputType === type
         }).show().find(':input').prop('required', !false);
 
-        const $unused = $inputs.filter(function () {
-          return this.dataset.inputType !== type;
+        const $unused = $inputs.filter((__, el) => {
+          return el.dataset.inputType !== type
         }).hide().find(':input').prop('required', !true);
 
         $target.each(function (idx) {

@@ -6,6 +6,7 @@
       highlight: true,
       resources: {},
       variables: {},
+      callstack: {},
       state: {},
       tab: '',
     },

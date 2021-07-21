@@ -92,8 +92,8 @@
     if (keys.length) {
       if (sortFn) keys = sortFn(keys);
 
-      var data = keys.map((key, idx, arr) => {
-        var html = ['<li class="jst-item">'];
+      const data = keys.map((key, idx, arr) => {
+        const html = ['<li class="jst-item">'];
         html.push(_jsNode(key, value[key], path));
         if (idx !== arr.length - 1) html.push(_comma());
         html.push('</li>');
@@ -101,7 +101,7 @@
       }).join('');
 
       const collapse = `<span class="jst-collapse"></span>`;
-      const element = _element(data, { class: 'jst-list', 'data-path': path, 'data-type': type }, 'ul');
+      const element = `<ul class="jst-list" data-path="${path}" data-type="${type}">${data}</ul>`;
       return opening + collapse + element + closing;
     }
 

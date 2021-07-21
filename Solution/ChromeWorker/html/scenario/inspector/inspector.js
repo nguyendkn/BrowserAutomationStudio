@@ -34,10 +34,8 @@
           this.resourcesData[path] = { usage: 6, value, op };
         });
 
-        _.each(this.resourcesData, (item, path) => {
-          if (highlight) {
-            item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
-          }
+        if (highlight) _.each(this.resourcesData, (item, path) => {
+          item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('highlight:resources', { ...item, path });
         });
         this.resourcesInit = true;
@@ -55,10 +53,8 @@
           this.variablesData[path] = { usage: 6, value, op };
         });
 
-        _.each(this.variablesData, (item, path) => {
-          if (highlight) {
-            item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
-          }
+        if (highlight) _.each(this.variablesData, (item, path) => {
+          item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('highlight:variables', { ...item, path });
         });
         this.variablesInit = true;
@@ -92,7 +88,7 @@
           if (type === 'object') return;
           if (type === 'array') return;
 
-          const scale = chroma.scale(['red', $node.css('color')]).mode('rgb');
+          const scale = chroma.scale(['red', JSONTree.colors[type]]).mode('rgb');
           $node.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
         }
       });

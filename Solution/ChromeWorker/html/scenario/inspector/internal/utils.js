@@ -14,7 +14,7 @@
 
       if (type === 'date') {
         variable = `_parse_date('${variable}', 'auto')`;
-      } else if (type === 'raw') {
+      } else if (type === 'custom') {
         variable = JSON.stringify(eval(`(${variable})`));
       } else if (type === 'string') {
         variable = JSON.stringify(variable);

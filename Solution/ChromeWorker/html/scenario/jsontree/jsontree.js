@@ -204,9 +204,5 @@
     return Object.prototype.toString.call(obj) === '[object Array]';
   }
 
-  function isDate(obj) {
-    return Object.prototype.toString.call(obj) === '[object Date]';
-  }
-
   global.JSONTree = JSONTree;
 })(window);

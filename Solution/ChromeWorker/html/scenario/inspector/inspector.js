@@ -187,12 +187,12 @@
       return this;
     },
 
-    hidePendingNotice() {
+    hideNotice() {
       this.$('.inspector-nav-item').removeClass('disabled');
       this.$('#inspectorNotice').hide();
     },
 
-    showPendingNotice() {
+    showNotice() {
       this.$('.inspector-nav-item').addClass('disabled');
       this.$('#inspectorNotice').show();
     },

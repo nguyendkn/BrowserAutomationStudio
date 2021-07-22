@@ -78,22 +78,22 @@ _.extend(Scenario.JST, {
         </li>
       </ul>
       <div class="inspector-tab" data-tab-name="variables" style="display: block;">
-        <div id="inspectorVariablesData"></div>
         <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
           <span><%= tr('No variables') %></span>
         </div>
+        <div id="inspectorVariablesData"></div>
       </div>
       <div class="inspector-tab" data-tab-name="resources" style="display: none;">
-        <div id="inspectorResourcesData"></div>
         <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">
           <span><%= tr('No resources') %></span>
         </div>
+        <div id="inspectorResourcesData"></div>
       </div>
       <div class="inspector-tab" data-tab-name="callstack" style="display: none;">
-        <div id="inspectorCallstackData"></div>
         <div id="inspectorNoCallstack" style="font-size: smaller; margin-top: 10px; display: none;">
           <span><%= tr('No callstack') %></span>
         </div>
+        <div id="inspectorCallstackData"></div>
       </div>
       <div id="inspectorNotice" style="display: none; position: absolute; background: #fafafa; margin-top: 32px; padding: 40px; height: 100%; width: 100%;">
         <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>

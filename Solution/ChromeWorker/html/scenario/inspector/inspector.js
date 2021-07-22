@@ -94,33 +94,23 @@
       });
 
       this.model.on('change:resources', (__, resources) => {
-        const $data = this.$('#inspectorResourcesData'), isEmpty = _.isEmpty(resources);
+        const $data = this.$('#inspectorResourcesData');
+        const isEmpty = _.isEmpty(resources);
 
         if (!isEmpty) {
-          if (!this.resourcesTree) this.resourcesTree = new JSONTree($data[0], {
-            onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
-            onExpand: BrowserAutomationStudio_PreserveInterfaceState,
-            rootSort: Scenario.utils.sortByLocals,
-          });
           this.resourcesTree.render(resources);
-          this.loadState();
         }
-        $data.toggle(!isEmpty).next('#inspectorNoResources').toggle(isEmpty);
+        $data.toggle(!isEmpty).prev('#inspectorNoResources').toggle(isEmpty);
       });
 
       this.model.on('change:variables', (__, variables) => {
-        const $data = this.$('#inspectorVariablesData'), isEmpty = _.isEmpty(variables);
+        const $data = this.$('#inspectorVariablesData');
+        const isEmpty = _.isEmpty(variables);
 
         if (!isEmpty) {
-          if (!this.variablesTree) this.variablesTree = new JSONTree($data[0], {
-            onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
-            onExpand: BrowserAutomationStudio_PreserveInterfaceState,
-            rootSort: Scenario.utils.sortByLocals,
-          });
           this.variablesTree.render(variables);
-          this.loadState();
         }
-        $data.toggle(!isEmpty).next('#inspectorNoVariables').toggle(isEmpty);
+        $data.toggle(!isEmpty).prev('#inspectorNoVariables').toggle(isEmpty);
       });
 
       this.model.on('change:tab', (__, tab) => {
@@ -142,7 +132,21 @@
       this.setElement('#variableInspector');
 
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template());
+        this.$el.html(this.template({}));
+
+        this.resourcesTree = new JSONTree(this.$('#inspectorResourcesData')[0], {
+          onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
+          onExpand: BrowserAutomationStudio_PreserveInterfaceState,
+          rootSort: Scenario.utils.sortByLocals,
+          onRender: () => this.loadState(),
+        });
+
+        this.variablesTree = new JSONTree(this.$('#inspectorVariablesData')[0], {
+          onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
+          onExpand: BrowserAutomationStudio_PreserveInterfaceState,
+          rootSort: Scenario.utils.sortByLocals,
+          onRender: () => this.loadState(),
+        });
 
         interact(this.el).resizable({
           edges: { top: true },

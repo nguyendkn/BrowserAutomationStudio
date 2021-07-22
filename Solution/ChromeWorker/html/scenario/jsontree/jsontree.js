@@ -13,6 +13,7 @@
       elem.innerHTML = (/*html*/`<div class="jst-root"></div>`);
       this.onCollapse = config.onCollapse || (() => { });
       this.onExpand = config.onExpand || (() => { });
+      this.onRender = config.onRender || (() => { });
       this.format = config.format || ((v) => v);
       this.config = config;
       this.elem = elem;
@@ -70,6 +71,7 @@
         onNodeAdded: (el) => { },
         childrenOnly: true,
       });
+      this.onRender();
     }
 
     collapse(el) {

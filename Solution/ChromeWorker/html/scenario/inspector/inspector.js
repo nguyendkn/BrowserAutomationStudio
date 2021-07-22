@@ -1,5 +1,5 @@
 (function (global, $, _) {
-  const InspectorModel = Backbone.Model.extend({
+  const Model = Backbone.Model.extend({
     defaults: {
       highlight: true,
       visible: false,
@@ -74,11 +74,11 @@
     },
   });
 
-  const InspectorView = Backbone.View.extend({
+  const View = Backbone.View.extend({
     template: Scenario.JST['inspector/main'],
 
     initialize() {
-      this.model = new InspectorModel();
+      this.model = new Model();
 
       this.model.on('highlight:variables', ({ usage, path }) => {
         const $node = this.$(`[data-path="${path}"]`);
@@ -287,5 +287,5 @@
     }
   });
 
-  global.Scenario.Inspector = InspectorView;
+  global.Scenario.Inspector = { View };
 })(window, jQuery, _);

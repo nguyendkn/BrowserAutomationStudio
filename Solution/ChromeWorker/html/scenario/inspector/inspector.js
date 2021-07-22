@@ -27,10 +27,10 @@
         this.unset('resources', { silent: true }).set('resources', resources);
 
         if (this.resourcesInit) diff.forEach(({ path, value, op }) => {
-          if (_.has(this.resourcesData, path)) {
-            if (op === 'remove') delete this.resourcesData[path];
-          } else {
+          if (!_.has(this.resourcesData, path)) {
             this.resourcesData[path] = { usage: 6, value, op };
+          } else if (op === 'remove') {
+            delete this.resourcesData[path];
           }
         });
 
@@ -46,10 +46,10 @@
         this.unset('variables', { silent: true }).set('variables', variables);
 
         if (this.variablesInit) diff.forEach(({ path, value, op }) => {
-          if (_.has(this.variablesData, path)) {
-            if (op === 'remove') delete this.variablesData[path];
-          } else {
+          if (!_.has(this.variablesData, path)) {
             this.variablesData[path] = { usage: 6, value, op };
+          } else if (op === 'remove') {
+            delete this.variablesData[path];
           }
         });
 

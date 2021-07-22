@@ -1664,8 +1664,8 @@
           _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
           var second_line = "section_start(\"test\", " + task.get("id") + ")!"
           var code = execute_point_code + "\n" + second_line
-          _Inspector.model.set('needUpdate', false);
-          BrowserAutomationStudio_Execute(code, false)
+          _Inspector.model.set('update', false);
+          BrowserAutomationStudio_Execute(code, false);
         }
 
         
@@ -3487,9 +3487,8 @@
             _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
             var second_line = "section_start(\"test\", " + task.get("id") + ")!"
             var code = execute_point_code + "\n" + second_line
-            _Inspector.model.set('needUpdate', false);
-            BrowserAutomationStudio_Execute(code, false)
-
+            _Inspector.model.set('update', false);
+            BrowserAutomationStudio_Execute(code, false);
           }
       },
 
@@ -5565,8 +5564,8 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
-      if (!_Inspector.model.get("contentVisible")) return;
-      if (!_Inspector.model.get('needUpdate')) return;
+      if (!_Inspector.model.get("visible")) return;
+      if (!_Inspector.model.get('update')) return;
 
       if(VariablesUpdateTakesPlace)
       {
@@ -5882,7 +5881,7 @@
         BrowserAutomationStudio_FocusActionFast(parseInt(_NewInsertId))
         _NewInsertId = null
       }*/
-      _Inspector.model.set('needUpdate', true);
+      _Inspector.model.set('update', true);
     }
 
     function BrowserAutomationStudio_PreserveInterfaceState() {

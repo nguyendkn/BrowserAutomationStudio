@@ -1,12 +1,12 @@
 (function (global, $, _) {
   const InspectorModel = Backbone.Model.extend({
     defaults: {
-      contentVisible: false,
-      needUpdate: true,
       highlight: true,
+      visible: false,
       resources: {},
       variables: {},
       callstack: {},
+      update: true,
       state: {},
       tab: '',
     },
@@ -176,13 +176,13 @@
     },
 
     hide() {
-      this.model.set('contentVisible', false);
+      this.model.set('visible', false);
       this.trigger('hide').$el.hide();
       return this;
     },
 
     show() {
-      this.model.set('contentVisible', true);
+      this.model.set('visible', true);
       this.trigger('show').$el.show();
       return this;
     },

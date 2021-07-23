@@ -141,18 +141,18 @@
 
     events: {
       'click #inspectorShowCallstack': function (e) {
-        this.model.set('tab', 'callstack');
         e.preventDefault();
+        this.model.set('tab', 'callstack');
       },
 
       'click #inspectorShowResources': function (e) {
-        this.model.set('tab', 'resources');
         e.preventDefault();
+        this.model.set('tab', 'resources');
       },
 
       'click #inspectorShowVariables': function (e) {
-        this.model.set('tab', 'variables');
         e.preventDefault();
+        this.model.set('tab', 'variables');
       },
 
       'click #inspectorClose': function (e) {

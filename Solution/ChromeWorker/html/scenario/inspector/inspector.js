@@ -283,5 +283,5 @@
     }
   });
 
-  global.Scenario.Inspector = { View };
+  global.Scenario.Inspector.Main = View;
 })(window, jQuery, _);

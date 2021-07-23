@@ -1334,7 +1334,7 @@
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
-  <script type="text/javascript"> window.Scenario = { JST: {} }; </script>
+  <script type="text/javascript"> window.Scenario = { JST: {}, Inspector: {} }; </script>
   <script src="jquery-2.2.4.min.js" type="text/javascript"></script>
   <script src="underscore-min.js" type="text/javascript"></script>
   <script src="backbone-min.js" type="text/javascript"></script>
@@ -1370,6 +1370,7 @@
   <script src="updater/internal/translate.js"></script>
   <script src="updater/internal/utils.js"></script>
   <script src="updater/updater.js"></script>
+  <script src="inspector/views/callstackView.js"></script>
   <script src="inspector/internal/templates.js"></script>
   <script src="inspector/internal/translate.js"></script>
   <script src="inspector/internal/utils.js"></script>
@@ -1535,7 +1536,7 @@
         model: TaskModel
     });
 
-    var _Inspector = new Scenario.Inspector.View();
+    var _Inspector = new Scenario.Inspector.Main();
 
     var _ActionFinder = new ActionFinder()
     _ActionFinder.Initialize();

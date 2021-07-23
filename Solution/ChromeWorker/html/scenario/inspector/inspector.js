@@ -30,7 +30,7 @@
     },
 
     render() {
-      this.setElement('#variableInspector');
+      this.setElement('#inspector');
 
       if (this.$el.is(':empty')) {
         this.$el.html(this.template({}));

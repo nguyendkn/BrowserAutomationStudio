@@ -48,7 +48,7 @@
         const $data = this.$('#inspectorResourcesData');
         const isEmpty = _.isEmpty(resources);
 
-        if (!isEmpty) this.resourcesTree.render(resources);
+        if (!isEmpty) this.tree.render(resources);
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
@@ -59,7 +59,7 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template());
 
-        this.resourcesTree = new JSONTree(this.$('#inspectorResourcesData')[0], {
+        this.tree = new JSONTree(this.$('#inspectorResourcesData')[0], {
           onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
           onExpand: BrowserAutomationStudio_PreserveInterfaceState,
           rootSort: Scenario.utils.sortByLocals,

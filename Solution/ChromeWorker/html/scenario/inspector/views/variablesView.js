@@ -61,7 +61,7 @@
         const $data = this.$('#inspectorVariablesData');
         const isEmpty = _.isEmpty(variables);
 
-        if (!isEmpty) this.variablesTree.render(variables);
+        if (!isEmpty) this.tree.render(variables);
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
@@ -72,7 +72,7 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template());
 
-        this.variablesTree = new JSONTree(this.$('#inspectorVariablesData')[0], {
+        this.tree = new JSONTree(this.$('#inspectorVariablesData')[0], {
           onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
           onExpand: BrowserAutomationStudio_PreserveInterfaceState,
           rootSort: Scenario.utils.sortByLocals,

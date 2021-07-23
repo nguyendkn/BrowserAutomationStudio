@@ -98,7 +98,7 @@
         const isEmpty = _.isEmpty(resources);
 
         if (!isEmpty) this.resourcesTree.render(resources);
-        $data.toggle(!isEmpty).prev('#inspectorNoResources').toggle(isEmpty);
+        $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
       this.model.on('change:variables', (__, variables) => {
@@ -106,7 +106,7 @@
         const isEmpty = _.isEmpty(variables);
 
         if (!isEmpty) this.variablesTree.render(variables);
-        $data.toggle(!isEmpty).prev('#inspectorNoVariables').toggle(isEmpty);
+        $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
       this.model.on('change:tab', (__, tab) => {

@@ -125,7 +125,7 @@
       });
 
       this.bind('submit', () => {
-        if (this.$('form')[0].reportValidity()) {
+        if (this.$('form')[0].reportValidity() || this.model.get('type') === 'string') {
           this.trigger('accept');
         }
       });

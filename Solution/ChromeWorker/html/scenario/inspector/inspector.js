@@ -94,16 +94,16 @@
       });
 
       this.model.on('change:resources', (__, resources) => {
-        const isEmpty = _.isEmpty(resources);
         const $data = this.$('#inspectorResourcesData');
+        const isEmpty = _.isEmpty(resources);
 
         if (!isEmpty) this.resourcesTree.render(resources);
         $data.toggle(!isEmpty).prev('#inspectorNoResources').toggle(isEmpty);
       });
 
       this.model.on('change:variables', (__, variables) => {
-        const isEmpty = _.isEmpty(variables);
         const $data = this.$('#inspectorVariablesData');
+        const isEmpty = _.isEmpty(variables);
 
         if (!isEmpty) this.variablesTree.render(variables);
         $data.toggle(!isEmpty).prev('#inspectorNoVariables').toggle(isEmpty);

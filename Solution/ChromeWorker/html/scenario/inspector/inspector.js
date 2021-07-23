@@ -140,26 +140,6 @@
     },
 
     events: {
-      'dblclick #inspectorVariablesData [data-path]': function (e) {
-        const { path } = e.target.dataset;
-        const { type } = e.target.dataset;
-        e.stopPropagation();
-        if (!path) return;
-
-        const modal = new global.Scenario.InspectorModal({
-          callback: ({ isChanged, value, cancel, type }) => {
-            if (!cancel && isChanged) {
-              this.variables.model.set('highlight', false);
-              Scenario.utils.updateVariable(value, path, type);
-            }
-          },
-          value: this.variables.model.getVariable(path),
-          type: type,
-          path: path,
-        });
-        modal.render();
-      },
-
       'click #inspectorShowCallstack': function (e) {
         this.model.set('tab', 'callstack');
         e.preventDefault();

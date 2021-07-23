@@ -3,6 +3,7 @@
     defaults: {
       resources: {},
       highlight: true,
+      supportHighlight: false,
     },
 
     init: false,
@@ -15,10 +16,13 @@
     },
 
     update(resources) {
-      const highlight = this.get('highlight');
-      if (resources) {
-        const diff = jsonpatch.compare(this.get('resources'), resources);
-        this.set('resources', resources);
+      if (!resources) return;
+      const prev = this.get('resources');
+      this.set('resources', resources);
+
+      if (this.get('supportHighlight')) {
+        const diff = jsonpatch.compare(prev, resources);
+        const highlight = this.get('highlight');
 
         if (this.init) diff.forEach(({ path, value, op }) => {
           if (!_.has(this.data, path)) {
@@ -30,11 +34,13 @@
 
         if (highlight) _.each(this.data, (item, path) => {
           item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
-          this.trigger('highlight:resources', { ...item, path });
+          this.trigger('highlight', { ...item, path });
         });
-        this.init = true;
+
+        this.set('highlight', true);
       }
-      this.set('highlight', true);
+
+      this.init = true;
     },
   });
 
@@ -43,6 +49,21 @@
 
     initialize() {
       const model = new Model();
+
+      if (model.get('supportHighlight')) {
+        model.on('highlight:resources', ({ usage, path }) => {
+          const $node = this.$(`[data-path="${path}"]`);
+
+          if ($node.length) {
+            const type = $node.data('type');
+            if (type === 'object') return;
+            if (type === 'array') return;
+
+            const scale = chroma.scale(['red', JSONTree.colors[type]]).mode('rgb');
+            $node.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
+          }
+        });
+      }
 
       model.on('change:resources', (__, resources) => {
         const $data = this.$('#inspectorResourcesData');

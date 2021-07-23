@@ -3,6 +3,7 @@
     defaults: {
       variables: {},
       highlight: true,
+      supportHighlight: true,
     },
 
     init: false,
@@ -15,10 +16,13 @@
     },
 
     update(variables) {
-      const highlight = this.get('highlight');
-      if (variables) {
-        const diff = jsonpatch.compare(this.get('variables'), variables);
-        this.set('variables', variables);
+      if (!variables) return;
+      const prev = this.get('variables');
+      this.set('variables', variables);
+
+      if (this.get('supportHighlight')) {
+        const diff = jsonpatch.compare(prev, variables);
+        const highlight = this.get('highlight');
 
         if (this.init) diff.forEach(({ path, value, op }) => {
           if (!_.has(this.data, path)) {
@@ -30,11 +34,13 @@
 
         if (highlight) _.each(this.data, (item, path) => {
           item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
-          this.trigger('highlight:variables', { ...item, path });
+          this.trigger('highlight', { ...item, path });
         });
-        this.init = true;
+
+        this.set('highlight', true);
       }
-      this.set('highlight', true);
+
+      this.init = true;
     },
   });
 
@@ -44,18 +50,20 @@
     initialize() {
       const model = new Model();
 
-      model.on('highlight:variables', ({ usage, path }) => {
-        const $node = this.$(`[data-path="${path}"]`);
+      if (model.get('supportHighlight')) {
+        model.on('highlight', ({ usage, path }) => {
+          const $node = this.$(`[data-path="${path}"]`);
 
-        if ($node.length) {
-          const type = $node.data('type');
-          if (type === 'object') return;
-          if (type === 'array') return;
+          if ($node.length) {
+            const type = $node.data('type');
+            if (type === 'object') return;
+            if (type === 'array') return;
 
-          const scale = chroma.scale(['red', JSONTree.colors[type]]).mode('rgb');
-          $node.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
-        }
-      });
+            const scale = chroma.scale(['red', JSONTree.colors[type]]).mode('rgb');
+            $node.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
+          }
+        });
+      }
 
       model.on('change:variables', (__, variables) => {
         const $data = this.$('#inspectorVariablesData');

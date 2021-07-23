@@ -15,6 +15,9 @@
     },
 
     render() {
+      if (this.$el.is(':empty')) {
+        this.$el.html(this.template());
+      }
       return this;
     },
   });

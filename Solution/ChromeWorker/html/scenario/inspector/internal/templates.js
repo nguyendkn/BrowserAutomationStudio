@@ -77,18 +77,8 @@ _.extend(Scenario.JST, {
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%"></i>
         </li>
       </ul>
-      <div class="inspector-tab" data-tab-name="variables" style="display: block;">
-        <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
-          <span><%= tr('No variables') %></span>
-        </div>
-        <div id="inspectorVariablesData"></div>
-      </div>
-      <div class="inspector-tab" data-tab-name="resources" style="display: none;">
-        <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">
-          <span><%= tr('No resources') %></span>
-        </div>
-        <div id="inspectorResourcesData"></div>
-      </div>
+      <div class="inspector-tab" data-tab-name="variables" style="display: block;"></div>
+      <div class="inspector-tab" data-tab-name="resources" style="display: none;"></div>
       <div class="inspector-tab" data-tab-name="callstack" style="display: none;">
         <div id="inspectorNoCallstack" style="font-size: smaller; margin-top: 10px; display: none;">
           <span><%= tr('No callstack') %></span>
@@ -99,5 +89,19 @@ _.extend(Scenario.JST, {
         <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>
       </div>
     </div>
-  `)
+  `),
+
+  'inspector/variables': _.template(/*html*/`
+    <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
+      <span><%= tr('No variables') %></span>
+    </div>
+    <div id="inspectorVariablesData"></div>
+  `),
+
+  'inspector/resources': _.template(/*html*/`
+    <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">
+      <span><%= tr('No resources') %></span>
+    </div>
+    <div id="inspectorResourcesData"></div>
+  `),
 })

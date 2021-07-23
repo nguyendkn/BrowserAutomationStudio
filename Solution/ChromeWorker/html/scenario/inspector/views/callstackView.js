@@ -1,6 +1,8 @@
 (function (global, $, _) {
   const Model = Backbone.Model.extend({
-
+    defaults: {
+      callstack: {},
+    }
   });
 
   const View = Backbone.View.extend({

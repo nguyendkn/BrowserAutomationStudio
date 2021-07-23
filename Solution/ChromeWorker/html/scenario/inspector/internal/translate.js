@@ -26,6 +26,9 @@ _.extend(_L, {
   'Resources': {
     ru: 'Ресурсы'
   },
+  'Accept': {
+    ru: 'Принять'
+  },
   'String': {
     ru: 'Строка'
   },

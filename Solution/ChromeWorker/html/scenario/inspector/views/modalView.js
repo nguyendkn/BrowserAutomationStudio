@@ -148,5 +148,5 @@
     },
   });
 
-  global.Scenario.InspectorModal = View;
+  global.Scenario.Inspector.Modal = View;
 })(window, jQuery, _);

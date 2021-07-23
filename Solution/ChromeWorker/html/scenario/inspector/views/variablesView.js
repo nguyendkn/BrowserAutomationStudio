@@ -98,7 +98,7 @@
         e.stopPropagation();
         if (!path) return;
 
-        const modal = new global.Scenario.InspectorModal({
+        const modal = new global.Scenario.Inspector.Modal({
           callback: ({ isChanged, value, cancel, type }) => {
             if (!cancel && isChanged) {
               this.model.set('highlight', false);

@@ -9,11 +9,13 @@
     template: global.Scenario.JST['inspector/callstack'],
 
     initialize() {
+      const model = new Model();
 
+      this.model = model;
     },
 
     render() {
-
+      return this;
     },
   });
 

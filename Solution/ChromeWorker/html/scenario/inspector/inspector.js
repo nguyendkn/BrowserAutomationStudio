@@ -43,6 +43,10 @@
           el: this.$('[data-tab-name="resources"]')[0]
         }).on('renderTree', () => this.loadState()).render();
 
+        this.callstack = new Scenario.Inspector.Callstack({
+          el: this.$('[data-tab-name="callstack"]')[0]
+        }).render();
+
         interact(this.el).resizable({
           edges: { top: true },
           inertia: false,
@@ -65,24 +69,19 @@
       return this;
     },
 
-    toggle() {
-      if (this.$el.is(':hidden')) {
-        this.show();
-      } else {
-        this.hide();
+    hide() {
+      if (this.$el.is(':visible')) {
+        this.model.set('visible', false);
+        this.trigger('hide').$el.hide();
       }
       return this;
     },
 
-    hide() {
-      this.model.set('visible', false);
-      this.trigger('hide').$el.hide();
-      return this;
-    },
-
     show() {
-      this.model.set('visible', true);
-      this.trigger('show').$el.show();
+      if (this.$el.is(':hidden')) {
+        this.model.set('visible', true);
+        this.trigger('show').$el.show();
+      }
       return this;
     },
 

@@ -30,7 +30,7 @@
   </div>
 
   <div id="debugbuttoncontainer">
-    <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_Inspector.toggle()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action."><i class="fa fa-bug" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_Inspector.show()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action."><i class="fa fa-bug" aria-hidden="true"></i></button>
   </div>
 
 
@@ -4022,7 +4022,7 @@
           }},
           {text: '<i class="fa fa-bug" aria-hidden="true"></i> ' + tr('Variable Inspector'), action: function(e){
                 e.preventDefault();
-                _Inspector.toggle()
+                _Inspector.show()
 
           }},
         ]);

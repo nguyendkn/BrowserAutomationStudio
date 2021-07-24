@@ -22,7 +22,6 @@
 
       if (this.get('supportHighlight')) {
         const diff = jsonpatch.compare(prev, variables);
-        const highlight = this.get('highlight');
 
         if (this.init) diff.forEach(({ path, value, op }) => {
           if (!_.has(this.data, path)) {
@@ -32,11 +31,10 @@
           }
         });
 
-        if (highlight) _.each(this.data, (item, path) => {
+        if (this.get('highlight')) _.each(this.data, (item, path) => {
           item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('highlight', { ...item, path });
         });
-
         this.set('highlight', true);
       }
 

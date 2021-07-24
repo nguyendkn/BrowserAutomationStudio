@@ -3,10 +3,9 @@
     defaults: {
       variables: {},
       highlight: true,
+      installed: false,
       supportHighlight: true,
     },
-
-    initialized: false,
 
     data: {},
 
@@ -23,9 +22,10 @@
       if (this.get('supportHighlight')) {
         const diff = jsonpatch.compare(prev, variables);
 
-        if (this.initialized) diff.forEach(({ path, value, op }) => {
+        diff.forEach(({ path, value, op }) => {
           if (!_.has(this.data, path)) {
-            this.data[path] = { usage: 6, value, op, addedAt: Date.now(), changedAt: Date.now() };
+            const time = Date.now();
+            this.data[path] = { usage: 6, value, op, addedAt: time, changedAt: time };
           } else {
             if (op === 'remove') {
               return (delete this.data[path]);
@@ -34,14 +34,13 @@
           }
         });
 
-        if (this.get('highlight')) _.each(this.data, (item, path) => {
+        if (this.get('highlight') && this.get('installed')) _.each(this.data, (item, path) => {
           item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('highlight', { ...item, path });
         });
-        this.set('highlight', true);
-      }
 
-      this.initialized = true;
+        this.set('installed', true).set('highlight', true);
+      }
     },
   });
 
@@ -56,9 +55,8 @@
           const $node = this.$(`[data-path="${path}"]`);
 
           if ($node.length) {
-            const type = $node.data('type');
-            if (type === 'object') return;
-            if (type === 'array') return;
+            const { type } = $node[0].dataset;
+            if (['object', 'array'].includes(type)) return;
 
             const scale = chroma.scale(['red', JSONTree.colors[type]]).mode('rgb');
             $node.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);

@@ -2,8 +2,7 @@
   const Model = Backbone.Model.extend({
     defaults: {
       resources: {},
-      highlight: true,
-      installed: false,
+      highlight: false,
       supportHighlight: false,
     },
 
@@ -34,12 +33,12 @@
           }
         });
 
-        if (this.get('highlight') && this.get('installed')) _.each(this.data, (item, path) => {
+        if (this.get('highlight')) _.each(this.data, (item, path) => {
           item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('highlight', { ...item, path });
         });
 
-        this.set('installed', true).set('highlight', true);
+        this.set('highlight', true);
       }
     },
   });

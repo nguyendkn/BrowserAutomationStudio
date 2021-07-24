@@ -87,20 +87,26 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/variables': _.template(/*html*/`
-    <div id="inspectorVariables">
+    <div class="inspector-tools">
+      <input type="text" id="inspectorVariablesFilter" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+    </div>
+    <div id="inspectorVariables" class="inspector-panel">
       <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
         <span><%= tr('No variables') %></span>
       </div>
-      <div id="inspectorVariablesData"></div>
+      <div id="inspectorVariablesData" class="inspector-panel-data"></div>
     </div>
   `),
 
   'inspector/resources': _.template(/*html*/`
-    <div id="inspectorResources">
+    <div class="inspector-tools">
+      <input type="text" id="inspectorResourcesFilter" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+    </div>
+    <div id="inspectorResources" class="inspector-panel">
       <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">
         <span><%= tr('No resources') %></span>
       </div>
-      <div id="inspectorResourcesData"></div>
+      <div id="inspectorResourcesData" class="inspector-panel-data"></div>
     </div>
   `),
 

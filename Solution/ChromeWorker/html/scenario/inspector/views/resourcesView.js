@@ -87,6 +87,24 @@
 
       return this;
     },
+
+    events: {
+      'input #inspectorResourcesFilter': _.debounce(function (e) {
+        const query = e.target.value.trim().toLowerCase();
+
+        this.$('.jst-item').each((__, el) => {
+          const $el = $(el);
+
+          if (query.length) {
+            const $label = $el.children('.jst-property');
+            const text = $label.text().toLowerCase();
+            return $el.toggle(text.includes(query));
+          }
+
+          $el.show();
+        });
+      }, 150),
+    }
   });
 
   global.Scenario.Inspector.Resources = View;

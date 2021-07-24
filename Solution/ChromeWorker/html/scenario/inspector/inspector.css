@@ -24,6 +24,23 @@
   flex: 1;
 }
 
+.inspector-panel-data {
+  padding: 8px 15px;
+}
+
+.inspector-panel {
+  flex-flow: column;
+  display: flex;
+  overflow: auto;
+  height: 100%
+}
+
+.inspector-tools {
+  background: #e0e0e0;
+  padding: 8px 8px;
+  display: flex;
+}
+
 .inspector-nav {
   border-bottom: 1px solid #e0e0e0;
   list-style: none;
@@ -34,8 +51,8 @@
 }
 
 .inspector-tab {
-  padding: 8px 15px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 #inspector {

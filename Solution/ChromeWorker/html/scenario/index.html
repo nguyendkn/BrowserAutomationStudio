@@ -1530,6 +1530,9 @@
           this.bind("change:execute_next_id", function(model) {  
             var execute_next_id = model.get("execute_next_id");
             _WebInterfaceTasks.CurrentIdChanged(execute_next_id)
+            _Inspector.callstack.model.update(
+              GetCallStackForTask(_TaskCollection.get(execute_next_id))
+            );
           });
         }  
     });

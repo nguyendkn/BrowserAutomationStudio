@@ -1,7 +1,27 @@
 (function (global, $, _) {
   const Model = Backbone.Model.extend({
     defaults: {
-      callstack: {},
+      callstack: [0],
+    },
+
+    update(callstack) {
+      let current = this.get('callstack');
+
+      if (callstack.length) {
+        callstack.forEach((id) => {
+          const index = current.lastIndexOf(id);
+  
+          if (index >= 0) {
+            current.splice(index + 1);
+          } else {
+            current.push(id);
+          }
+        });
+      } else {
+        current.splice(1);
+      }
+
+      this.set('callstack', current);
     }
   });
 
@@ -10,6 +30,10 @@
 
     initialize() {
       const model = new Model();
+
+      model.on('change:callstack', (__, callstack) => {
+
+      });
 
       this.model = model;
     },

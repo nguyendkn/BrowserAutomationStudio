@@ -15,21 +15,20 @@
 
     update(variables) {
       if (!variables) return;
-      const prev = this.get('variables');
+      const previous = this.get('variables');
       this.set('variables', variables);
 
       if (this.get('supportHighlight')) {
-        const diff = jsonpatch.compare(prev, variables);
+        const diff = jsonpatch.compare(previous, variables), time = Date.now();
 
         diff.forEach(({ path, value, op }) => {
           if (!_.has(this.data, path)) {
-            const time = Date.now();
             this.data[path] = { usage: 6, value, op, addedAt: time, changedAt: time };
           } else {
             if (op === 'remove') {
               return (delete this.data[path]);
             }
-            this.data[path].changedAt = Date.now();
+            this.data[path].changedAt = time;
           }
         });
 

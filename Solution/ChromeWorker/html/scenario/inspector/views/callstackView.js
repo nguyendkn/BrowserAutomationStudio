@@ -5,12 +5,12 @@
     },
 
     update(callstack) {
-      let current = this.get('callstack');
+      const current = this.get('callstack');
 
       if (callstack.length) {
         callstack.forEach((id) => {
           const index = current.lastIndexOf(id);
-  
+
           if (index >= 0) {
             current.splice(index + 1);
           } else {

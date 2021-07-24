@@ -6,13 +6,13 @@
       supportHighlight: true,
     },
 
-    init: false,
+    initialized: false,
 
     data: {},
 
-    getVariable(pointer) {
+    getVariable(path) {
       const source = this.get('variables');
-      return jsonpatch.getValueByPointer(source, pointer);
+      return jsonpatch.getValueByPointer(source, path);
     },
 
     update(variables) {
@@ -23,11 +23,14 @@
       if (this.get('supportHighlight')) {
         const diff = jsonpatch.compare(prev, variables);
 
-        if (this.init) diff.forEach(({ path, value, op }) => {
+        if (this.initialized) diff.forEach(({ path, value, op }) => {
           if (!_.has(this.data, path)) {
-            this.data[path] = { usage: 6, value, op };
-          } else if (op === 'remove') {
-            delete this.data[path];
+            this.data[path] = { usage: 6, value, op, addedAt: Date.now(), changedAt: Date.now() };
+          } else {
+            if (op === 'remove') {
+              return (delete this.data[path]);
+            }
+            this.data[path].changedAt = Date.now();
           }
         });
 
@@ -38,7 +41,7 @@
         this.set('highlight', true);
       }
 
-      this.init = true;
+      this.initialized = true;
     },
   });
 

@@ -14,7 +14,6 @@
       this.onCollapse = config.onCollapse || (() => { });
       this.onExpand = config.onExpand || (() => { });
       this.onRender = config.onRender || (() => { });
-      this.config = config;
       this.elem = elem;
     }
 
@@ -22,11 +21,11 @@
       let root = '';
 
       if (isArray(data)) {
-        root = _jsArray('', data, '', this.config.rootSort);
+        root = _jsArray('', data, '');
       }
 
       if (isObject(data)) {
-        root = _jsObject('', data, '', this.config.rootSort);
+        root = _jsObject('', data, '');
       }
 
       if (!this.listenersAttached) {
@@ -93,14 +92,12 @@
     }
   }
 
-  function _collection(value, type, path, brackets, sortFn) {
+  function _collection(value, type, path, brackets) {
     const opening = `<span class="jst-bracket">${brackets[0]}</span>`;
     const closing = `<span class="jst-bracket">${brackets[1]}</span>`;
-    let keys = Object.keys(value);
+    const keys = Object.keys(value);
 
     if (keys.length) {
-      if (sortFn) keys = sortFn(keys);
-
       const content = keys.map((key, idx) => {
         return _jsNode(key, value[key], path, idx === keys.length - 1)
       }).join('');
@@ -113,12 +110,12 @@
     return opening + closing;
   }
 
-  function _jsObject(name, value, path, sortFn) {
-    return _collection(value, 'object', _path(path, name), ['{', '}'], sortFn);
+  function _jsObject(name, value, path) {
+    return _collection(value, 'object', _path(path, name), ['{', '}']);
   }
 
-  function _jsArray(name, value, path, sortFn) {
-    return _collection(value, 'array', _path(path, name), ['[', ']'], sortFn);
+  function _jsArray(name, value, path) {
+    return _collection(value, 'array', _path(path, name), ['[', ']']);
   }
 
   function _jsString(name, value, path) {

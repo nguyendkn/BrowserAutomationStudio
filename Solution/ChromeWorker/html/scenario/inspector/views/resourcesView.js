@@ -80,7 +80,6 @@
         this.tree = new JSONTree(this.$('#inspectorResourcesData')[0], {
           onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
           onExpand: BrowserAutomationStudio_PreserveInterfaceState,
-          rootSort: Scenario.utils.sortByLocals,
           onRender: () => this.trigger('renderTree'),
         });
       }

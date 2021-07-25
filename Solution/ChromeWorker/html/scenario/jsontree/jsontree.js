@@ -103,16 +103,12 @@
     if (keys.length) {
       if (sortFn) keys = sortFn(keys);
 
-      const data = keys.map((key, idx, arr) => {
-        const html = ['<li class="jst-item">'];
-        html.push(_jsNode(key, value[key], path));
-        if (idx !== arr.length - 1) html.push(_comma());
-        html.push('</li>');
-        return html.join('');
+      const content = keys.map((key, idx) => {
+        return _jsNode(key, value[key], idx === keys.length - 1)
       }).join('');
 
       const collapse = `<span class="jst-collapse"></span>`;
-      const element = `<ul class="jst-list" data-path="${path}" data-type="${type}">${data}</ul>`;
+      const element = `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`;
       return opening + collapse + element + closing;
     }
 
@@ -154,8 +150,8 @@
     return _element(null, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'null' });
   }
 
-  function _jsNode(name, value, path) {
-    return _element(_.escape(name), { class: 'jst-property' }) + _colon() + (() => {
+  function _jsNode(name, value, path, isLast) {
+    const content = `<span class="jst-property">${_.escape(name)}</span>` + `<span class="jst-colon">:</span>` + (() => {
       switch (typeof (value)) {
         case 'boolean':
           return _jsBoolean(name, value, path);
@@ -183,14 +179,8 @@
 
       throw new Error(`Failed to detect value type`);
     })();
-  }
 
-  function _colon() {
-    return /*html*/`<span class="jst-colon">:</span>`;
-  }
-
-  function _comma() {
-    return /*html*/`<span class="jst-comma">,</span>`;
+    return `<li class="jst-item">${content}${isLast ? '<span class="jst-comma">,</span>' : ''}</li>`
   }
 
   function _element(html, attrs, tag = 'span') {

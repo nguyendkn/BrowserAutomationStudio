@@ -80,7 +80,20 @@
         this.tree = new JSONTree(this.$('#inspectorResourcesData')[0], {
           onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
           onExpand: BrowserAutomationStudio_PreserveInterfaceState,
-          onRender: () => this.trigger('renderTree'),
+          onRender: () => {
+            tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
+              sortFunction: (a, b) => {
+                const $el1 = $(a.elm).children('[data-path]');
+                const $el2 = $(b.elm).children('[data-path]');
+
+                return Scenario.utils.sortByLocals(
+                  $el1[0].dataset.path.split('/')[1],
+                  $el2[0].dataset.path.split('/')[1],
+                );
+              }
+            });
+            this.trigger('renderTree');
+          },
         });
       }
 

@@ -66,6 +66,15 @@
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         onNodeDiscarded: (el) => { },
         onNodeAdded: (el) => { },
+        getNodeKey: (el) => {
+          if (el.nodeType === 1 && el.classList.contains('jst-item')) {
+            let node = el.querySelector('[data-path]');
+            const type = node.dataset.type;
+            const path = node.dataset.path;
+            return path + type;
+          }
+          return el.id;
+        },
         childrenOnly: true,
       });
       this.onRender();

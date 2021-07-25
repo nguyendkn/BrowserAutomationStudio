@@ -10,7 +10,7 @@
     };
 
     constructor (elem, config = {}) {
-      elem.innerHTML = (/*html*/`<div class="jst-root"></div>`);
+      elem.innerHTML = (/*html*/`<ul class="jst-root"></ul>`);
       this.onCollapse = config.onCollapse || (() => { });
       this.onExpand = config.onExpand || (() => { });
       this.onRender = config.onRender || (() => { });
@@ -65,7 +65,7 @@
         this.listenersAttached = true;
       }
 
-      morphdom(this.elem.firstChild, /*html*/`<div class="jst-root">${this.root || ''}</div>`, {
+      morphdom(this.elem.firstChild, /*html*/`<ul class="jst-root">${this.root || ''}</ul>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         onNodeDiscarded: (el) => { },
         onNodeAdded: (el) => { },

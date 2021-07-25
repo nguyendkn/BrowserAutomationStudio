@@ -89,12 +89,6 @@ li.jst-item + li.jst-item {
   padding-right: 6px;
 }
 
-.jst-root {
-  font-family: "Lucida Console", Monaco, monospace;
-  font-weight: 400;
-  font-size: 10px;
-}
-
 .jst-node {
   word-break: break-all;
   padding: 0;
@@ -107,7 +101,7 @@ li.jst-item + li.jst-item {
   margin: 0;
 }
 
-.jst-item {
+.jst-root {
   padding-left: 0px;
   list-style: none;
   margin: 0;

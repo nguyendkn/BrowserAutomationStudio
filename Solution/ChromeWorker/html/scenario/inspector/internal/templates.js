@@ -115,7 +115,7 @@ _.extend(Scenario.JST, {
       <div id="inspectorNoCallstack" style="font-size: smaller; margin-top: 10px; display: none;">
         <span><%= tr('No callstack') %></span>
       </div>
-      <div id="inspectorCallstackData"></div>
+      <div id="inspectorCallstackData" class="inspector-panel-data"></div>
     </div>
   `),
 })

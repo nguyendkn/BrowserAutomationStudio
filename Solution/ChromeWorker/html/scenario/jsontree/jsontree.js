@@ -68,10 +68,13 @@
         onNodeAdded: (el) => { },
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
-            let node = el.querySelector('[data-path]');
-            const type = node.dataset.type;
-            const path = node.dataset.path;
-            return path + type;
+            const { dataset } = el.querySelector('[data-path]');
+
+            const path = dataset.path;
+            if (path) return path;
+
+            const id = dataset.id;
+            if (id) return id;
           }
           return el.id;
         },

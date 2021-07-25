@@ -14,21 +14,19 @@
       this.onCollapse = config.onCollapse || (() => { });
       this.onExpand = config.onExpand || (() => { });
       this.onRender = config.onRender || (() => { });
-      this.format = config.format || ((v) => v);
       this.config = config;
       this.elem = elem;
     }
 
     render(data) {
-      this.data = data;
-      this.root = null;
+      let root = '';
 
       if (isArray(data)) {
-        this.root = _jsArray('', data, '', this.config.rootSort);
+        root = _jsArray('', data, '', this.config.rootSort);
       }
 
       if (isObject(data)) {
-        this.root = _jsObject('', data, '', this.config.rootSort);
+        root = _jsObject('', data, '', this.config.rootSort);
       }
 
       if (!this.listenersAttached) {
@@ -65,7 +63,7 @@
         this.listenersAttached = true;
       }
 
-      morphdom(this.elem.firstChild, /*html*/`<ul class="jst-root">${this.root || ''}</ul>`, {
+      morphdom(this.elem.firstChild, /*html*/`<ul class="jst-root">${root}</ul>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         onNodeDiscarded: (el) => { },
         onNodeAdded: (el) => { },
@@ -177,7 +175,7 @@
           }
       }
 
-      throw new Error(`Failed to detect value type`);
+      throw new Error(`Failed to resolve value type`);
     })();
 
     return `<li class="jst-item">${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`

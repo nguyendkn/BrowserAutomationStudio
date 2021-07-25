@@ -91,7 +91,7 @@
       'input #inspectorResourcesFilter': _.debounce(function (e) {
         const query = e.target.value.trim().toLowerCase();
 
-        this.$('.jst-item').each((__, el) => {
+        this.$('.jst-root > ul > li').each((__, el) => {
           const $el = $(el);
 
           if (query.length) {
@@ -102,7 +102,7 @@
 
           $el.show();
         });
-      }, 250),
+      }, 200),
     }
   });
 

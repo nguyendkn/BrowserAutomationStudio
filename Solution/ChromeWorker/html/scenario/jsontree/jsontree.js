@@ -104,7 +104,7 @@
       if (sortFn) keys = sortFn(keys);
 
       const content = keys.map((key, idx) => {
-        return _jsNode(key, value[key], idx === keys.length - 1)
+        return _jsNode(key, value[key], path, idx === keys.length - 1)
       }).join('');
 
       const collapse = `<span class="jst-collapse"></span>`;
@@ -180,7 +180,7 @@
       throw new Error(`Failed to detect value type`);
     })();
 
-    return `<li class="jst-item">${content}${isLast ? '<span class="jst-comma">,</span>' : ''}</li>`
+    return `<li class="jst-item">${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`
   }
 
   function _element(html, attrs, tag = 'span') {

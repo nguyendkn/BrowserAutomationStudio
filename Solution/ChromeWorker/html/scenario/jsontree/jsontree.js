@@ -64,8 +64,16 @@
 
       morphdom(this.elem.firstChild, /*html*/`<ul class="jst-root">${root}</ul>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
-        onNodeDiscarded: (el) => { },
-        onNodeAdded: (el) => { },
+        onNodeDiscarded: (el) => {
+          if (false) {
+            console.log('JSONTree node discarded:', el);
+          }
+        },
+        onNodeAdded: (el) => {
+          if (false) {
+            console.log('JSONTree node added:', el);
+          }
+        },
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
             const { dataset } = el.querySelector('[data-path]');

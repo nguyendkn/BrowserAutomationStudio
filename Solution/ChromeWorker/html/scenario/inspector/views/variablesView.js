@@ -1,6 +1,7 @@
 (function (global, $, _) {
   const Model = Backbone.Model.extend({
     defaults: {
+      sort: '',
       variables: {},
       highlight: false,
       supportHighlight: true,

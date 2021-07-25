@@ -26,13 +26,15 @@
 
 .inspector-panel-data {
   padding: 8px 15px;
+  overflow: auto;
 }
 
 .inspector-panel {
+  overflow-x: hidden;
+  overflow-y: hidden;
   flex-flow: column;
   display: flex;
-  overflow: auto;
-  height: 100%
+  flex: 1;
 }
 
 .inspector-tools {
@@ -53,6 +55,8 @@
 .inspector-tab {
   overflow-x: hidden;
   overflow-y: hidden;
+  flex-flow: column;
+  display: flex;
 }
 
 #inspector {

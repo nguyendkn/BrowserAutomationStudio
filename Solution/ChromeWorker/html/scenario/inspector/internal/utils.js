@@ -34,26 +34,22 @@
       } catch (e) {}`, false);
     },
 
-    sortByGlobals(target) {
-      return target.slice().sort((a, b) => {
-        a = a.toUpperCase();
-        b = b.toUpperCase();
+    sortByGlobals(a, b) {
+      a = a.toUpperCase();
+      b = b.toUpperCase();
 
-        if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) return -1;
-        if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) return 1;
-        return a.localeCompare(b);
-      });
+      if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) return -1;
+      if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) return 1;
+      return a.localeCompare(b);
     },
 
-    sortByLocals(target) {
-      return target.slice().sort((a, b) => {
-        a = a.toUpperCase();
-        b = b.toUpperCase();
+    sortByLocals(a, b) {
+      a = a.toUpperCase();
+      b = b.toUpperCase();
 
-        if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) return -1;
-        if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) return 1;
-        return a.localeCompare(b);
-      });
+      if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) return -1;
+      if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) return 1;
+      return a.localeCompare(b);
     },
   };
 

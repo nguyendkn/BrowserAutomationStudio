@@ -2,12 +2,11 @@
   const Model = Backbone.Model.extend({
     defaults: {
       sortingMethod: 'alphabetically',
+      metadata: {},
       variables: {},
       highlight: false,
       supportHighlight: true,
     },
-
-    data: {},
 
     getVariable(path) {
       const source = this.get('variables');
@@ -17,23 +16,24 @@
     update(variables) {
       if (!variables) return;
       const previous = this.get('variables');
+      const metadata = this.get('metadata');
       this.set('variables', variables);
 
       if (this.get('supportHighlight')) {
         const diff = jsonpatch.compare(previous, variables), time = Date.now();
 
         diff.forEach(({ path, value, op }) => {
-          if (!_.has(this.data, path)) {
-            this.data[path] = { usage: 6, value, op, addedAt: time, changedAt: time };
+          if (!_.has(metadata, path)) {
+            metadata[path] = { usage: 6, value, op, addedAt: time, changedAt: time };
           } else {
             if (op === 'remove') {
-              return (delete this.data[path]);
+              return (delete metadata[path]);
             }
-            this.data[path].changedAt = time;
+            metadata[path].changedAt = time;
           }
         });
 
-        if (this.get('highlight')) _.each(this.data, (item, path) => {
+        if (this.get('highlight')) _.each(metadata, (item, path) => {
           item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('highlight', { ...item, path });
         });
@@ -102,8 +102,8 @@
           const $el2 = $(b.elm).children('[data-path]');
           const path1 = $el1[0].dataset.path;
           const path2 = $el2[0].dataset.path;
-          const meta1 = this.model.data[path1];
-          const meta2 = this.model.data[path2];
+          const meta1 = this.model.get('metadata')[path1];
+          const meta2 = this.model.get('metadata')[path2];
 
           if (type === 'alphabetically') {
             return Scenario.utils.sortByLocals(

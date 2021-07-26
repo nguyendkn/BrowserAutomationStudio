@@ -1,7 +1,7 @@
 (function (global, $, _) {
   const Model = Backbone.Model.extend({
     defaults: {
-      sort: '',
+      sortingMethod: 'alphabetically',
       resources: {},
       highlight: false,
       supportHighlight: false,
@@ -71,6 +71,10 @@
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
+      model.on('change:sortingMethod', (__, method) => {
+        this.sortTree(method);
+      });
+
       this.model = model;
     },
 
@@ -82,22 +86,37 @@
           onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
           onExpand: BrowserAutomationStudio_PreserveInterfaceState,
           onRender: () => {
-            tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
-              sortFunction: (a, b) => {
-                const $el1 = $(a.elm).children('[data-path]');
-                const $el2 = $(b.elm).children('[data-path]');
-                return Scenario.utils.sortByLocals(
-                  $el1[0].dataset.path.split('/')[1],
-                  $el2[0].dataset.path.split('/')[1],
-                );
-              }
-            });
+            this.sortTree(this.model.get('sortingMethod'));
             this.trigger('renderTree');
           },
         });
       }
 
       return this;
+    },
+
+    sortTree(type) {
+      tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
+        sortFunction: (a, b) => {
+          const $el1 = $(a.elm).children('[data-path]');
+          const $el2 = $(b.elm).children('[data-path]');
+          const path1 = $el1[0].dataset.path;
+          const path2 = $el2[0].dataset.path;
+          const meta1 = this.model.data[path1];
+          const meta2 = this.model.data[path2];
+
+          if (type === 'alphabetically') {
+            return Scenario.utils.sortByLocals(
+              path1.split('/')[1],
+              path2.split('/')[1],
+            );
+          } else if (type === 'byAddedTime') {
+            return meta2.addedAt - meta1.addedAt;
+          } else if (type === 'byChangedTime') {
+            return meta2.changedAt - meta1.changedAt;
+          }
+        }
+      });
     },
 
     events: {

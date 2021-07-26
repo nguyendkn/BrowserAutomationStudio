@@ -91,7 +91,6 @@
           },
         });
       }
-
       return this;
     },
 
@@ -121,6 +120,7 @@
           }
         }
       });
+      return this;
     },
 
     events: {

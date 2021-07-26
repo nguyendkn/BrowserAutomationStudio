@@ -13,14 +13,14 @@
       return jsonpatch.getValueByPointer(source, path);
     },
 
-    update(resources) {
-      if (!resources) return;
-      const previous = this.get('resources');
-      const metadata = this.get('metadata');
-      this.set('resources', resources);
+    update(object) {
+      if (!object) return;
+      const previous = this.get('resources'),
+        metadata = this.get('metadata');
+      this.set('resources', object);
 
       if (this.get('supportHighlight')) {
-        const diff = jsonpatch.compare(previous, resources), time = Date.now();
+        const diff = jsonpatch.compare(previous, object), time = Date.now();
 
         diff.forEach(({ path, value, op }) => {
           if (!_.has(metadata, path)) {

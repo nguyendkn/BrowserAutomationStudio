@@ -97,18 +97,13 @@
     sortTree(type) {
       tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
         sortFunction: (a, b) => {
-          const $el1 = a.elm.querySelector('[data-path]');
-          const path1 = $el1.dataset.path;
+          let { dataset } = a.elm.querySelector(':scope > [data-path]');
+          const path1 = dataset.path;
 
-          const $el2 = b.elm.querySelector('[data-path]');
-          const path2 = $el2.dataset.path;
+          let { dataset } = b.elm.querySelector(':scope > [data-path]');
+          const path2 = dataset.path;
 
-          if (type === 'alphabetically') {
-            return Scenario.utils.sortByLocals(
-              path1.split('/')[1],
-              path2.split('/')[1],
-            );
-          } else {
+          if (type !== 'alphabetically') {
             const meta1 = this.model.get('metadata')[path1];
             const meta2 = this.model.get('metadata')[path2];
 
@@ -116,8 +111,11 @@
               return meta2.addedAt - meta1.addedAt;
             } else if (type === 'byChangedTime') {
               return meta2.changedAt - meta1.changedAt;
+            } else {
+
             }
           }
+          return Scenario.utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
         }
       });
       return this;

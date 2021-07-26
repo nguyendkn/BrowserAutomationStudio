@@ -2,25 +2,25 @@
   const Model = Backbone.Model.extend({
     defaults: {
       sortingMethod: 'alphabetically',
-      metadata: {},
-      variables: {},
-      highlight: false,
       supportHighlight: true,
+      highlight: false,
+      metadata: {},
+      source: {},
     },
 
-    getVariable(path) {
-      const source = this.get('variables');
+    getValue(path) {
+      const source = this.get('source');
       return jsonpatch.getValueByPointer(source, path);
     },
 
-    update(object) {
-      if (!object) return;
-      const previous = this.get('variables'),
-        metadata = this.get('metadata');
-      this.set('variables', object);
+    update(data) {
+      if (!data) return;
+      const metadata = this.get('metadata');
+      const source = this.get('source');
+      this.set('source', data);
 
       if (this.get('supportHighlight')) {
-        const diff = jsonpatch.compare(previous, object), time = Date.now();
+        const diff = jsonpatch.compare(source, data), time = Date.now();
 
         diff.forEach(({ path, value, op }) => {
           if (!_.has(metadata, path)) {
@@ -63,11 +63,11 @@
         });
       }
 
-      model.on('change:variables', (__, variables) => {
+      model.on('change:source', (__, source) => {
         const $data = this.$('#inspectorVariablesData');
-        const isEmpty = _.isEmpty(variables);
+        const isEmpty = _.isEmpty(source);
 
-        if (!isEmpty) this.tree.render(variables);
+        if (!isEmpty) this.tree.render(source);
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
@@ -98,22 +98,26 @@
     sortTree(type) {
       tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
         sortFunction: (a, b) => {
-          const $el1 = $(a.elm).children('[data-path]');
-          const $el2 = $(b.elm).children('[data-path]');
-          const path1 = $el1[0].dataset.path;
-          const path2 = $el2[0].dataset.path;
-          const meta1 = this.model.get('metadata')[path1];
-          const meta2 = this.model.get('metadata')[path2];
+          const $el1 = a.elm.querySelector('[data-path]');
+          const path1 = $el1.dataset.path;
+
+          const $el2 = b.elm.querySelector('[data-path]');
+          const path2 = $el2.dataset.path;
 
           if (type === 'alphabetically') {
             return Scenario.utils.sortByLocals(
               path1.split('/')[1],
               path2.split('/')[1],
             );
-          } else if (type === 'byAddedTime') {
-            return meta2.addedAt - meta1.addedAt;
-          } else if (type === 'byChangedTime') {
-            return meta2.changedAt - meta1.changedAt;
+          } else {
+            const meta1 = this.model.get('metadata')[path1];
+            const meta2 = this.model.get('metadata')[path2];
+
+            if (type === 'byAddedTime') {
+              return meta2.addedAt - meta1.addedAt;
+            } else if (type === 'byChangedTime') {
+              return meta2.changedAt - meta1.changedAt;
+            }
           }
         }
       });
@@ -133,7 +137,7 @@
               Scenario.utils.updateVariable(value, path, type);
             }
           },
-          value: this.model.getVariable(path),
+          value: this.model.getValue(path),
           type: type,
           path: path,
         });

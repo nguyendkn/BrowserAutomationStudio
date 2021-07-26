@@ -2,25 +2,25 @@
   const Model = Backbone.Model.extend({
     defaults: {
       sortingMethod: 'alphabetically',
-      metadata: {},
-      resources: {},
-      highlight: false,
       supportHighlight: false,
+      highlight: false,
+      metadata: {},
+      source: {},
     },
 
-    getResource(path) {
-      const source = this.get('resources');
+    getValue(path) {
+      const source = this.get('source');
       return jsonpatch.getValueByPointer(source, path);
     },
 
-    update(object) {
-      if (!object) return;
-      const previous = this.get('resources'),
-        metadata = this.get('metadata');
-      this.set('resources', object);
+    update(data) {
+      if (!data) return;
+      const metadata = this.get('metadata');
+      const source = this.get('source');
+      this.set('source', data);
 
       if (this.get('supportHighlight')) {
-        const diff = jsonpatch.compare(previous, object), time = Date.now();
+        const diff = jsonpatch.compare(source, data), time = Date.now();
 
         diff.forEach(({ path, value, op }) => {
           if (!_.has(metadata, path)) {
@@ -50,7 +50,7 @@
       const model = new Model();
 
       if (model.get('supportHighlight')) {
-        model.on('highlight:resources', ({ usage, path }) => {
+        model.on('highlight', ({ usage, path }) => {
           const $node = this.$(`[data-path="${path}"]`);
 
           if ($node.length) {
@@ -63,11 +63,11 @@
         });
       }
 
-      model.on('change:resources', (__, resources) => {
+      model.on('change:source', (__, source) => {
         const $data = this.$('#inspectorResourcesData');
-        const isEmpty = _.isEmpty(resources);
+        const isEmpty = _.isEmpty(source);
 
-        if (!isEmpty) this.tree.render(resources);
+        if (!isEmpty) this.tree.render(source);
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
@@ -98,22 +98,26 @@
     sortTree(type) {
       tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
         sortFunction: (a, b) => {
-          const $el1 = $(a.elm).children('[data-path]');
-          const $el2 = $(b.elm).children('[data-path]');
-          const path1 = $el1[0].dataset.path;
-          const path2 = $el2[0].dataset.path;
-          const meta1 = this.model.get('metadata')[path1];
-          const meta2 = this.model.get('metadata')[path2];
+          const $el1 = a.elm.querySelector('[data-path]');
+          const path1 = $el1.dataset.path;
+
+          const $el2 = b.elm.querySelector('[data-path]');
+          const path2 = $el2.dataset.path;
 
           if (type === 'alphabetically') {
             return Scenario.utils.sortByLocals(
               path1.split('/')[1],
               path2.split('/')[1],
             );
-          } else if (type === 'byAddedTime') {
-            return meta2.addedAt - meta1.addedAt;
-          } else if (type === 'byChangedTime') {
-            return meta2.changedAt - meta1.changedAt;
+          } else {
+            const meta1 = this.model.get('metadata')[path1];
+            const meta2 = this.model.get('metadata')[path2];
+
+            if (type === 'byAddedTime') {
+              return meta2.addedAt - meta1.addedAt;
+            } else if (type === 'byChangedTime') {
+              return meta2.changedAt - meta1.changedAt;
+            }
           }
         }
       });

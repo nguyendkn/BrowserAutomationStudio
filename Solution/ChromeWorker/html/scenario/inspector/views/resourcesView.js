@@ -97,11 +97,10 @@
     sortTree(type) {
       tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
         sortFunction: (a, b) => {
-          let { dataset } = a.elm.querySelector(':scope > [data-path]');
-          const path1 = dataset.path;
-
-          let { dataset } = b.elm.querySelector(':scope > [data-path]');
-          const path2 = dataset.path;
+          const [path1, path2] = [a, b].map(({ elm }) => {
+            const node = elm.querySelector(':scope > [data-path]');
+            return node.dataset.path;
+          });
 
           if (type !== 'alphabetically') {
             const meta1 = this.model.get('metadata')[path1];

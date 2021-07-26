@@ -95,6 +95,8 @@
     },
 
     sortTree(type) {
+      const metadata = this.model.get('metadata');
+
       tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
         sortFunction: (a, b) => {
           const [path1, path2] = [a, b].map(({ elm }) => {
@@ -103,8 +105,7 @@
           });
 
           if (type !== 'alphabetically') {
-            const meta1 = this.model.get('metadata')[path1];
-            const meta2 = this.model.get('metadata')[path2];
+            const meta1 = metadata[path1], meta2 = metadata[path2];
 
             if (type === 'byAddedTime') {
               return meta2.addedAt - meta1.addedAt;
@@ -115,7 +116,7 @@
             }
           }
           return Scenario.utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
-        }
+        },
       });
       return this;
     },

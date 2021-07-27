@@ -48,8 +48,6 @@
         }).render();
 
         interact(this.el).resizable({
-          edges: { top: true },
-          inertia: false,
           listeners: {
             move: ({ client }) => {
               const h1 = $(functions).outerHeight();
@@ -62,7 +60,8 @@
 
               this.$el.css('height', `${height}px`);
             }
-          }
+          },
+          edges: { top: true }
         });
       }
 

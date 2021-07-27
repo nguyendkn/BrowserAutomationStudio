@@ -169,7 +169,7 @@ namespace BrowserAutomationStudioFramework
             if(RucaptchaSolver == 0)
             {
                 RucaptchaSolver = new AntigateCaptchaSolver(this);
-                RucaptchaSolver->SetServer("https://rucaptcha.com/");
+                RucaptchaSolver->SetServer("http://rucaptcha.com/");
                 RucaptchaSolver->SetSoftId("1345");
                 RucaptchaSolver->SetMultipleIds(false);
                 RucaptchaSolver->SetHttpClientFactory(HttpClientFactory);
@@ -183,7 +183,7 @@ namespace BrowserAutomationStudioFramework
             if(TwocaptchaSolver == 0)
             {
                 TwocaptchaSolver = new AntigateCaptchaSolver(this);
-                TwocaptchaSolver->SetServer("https://2captcha.com/");
+                TwocaptchaSolver->SetServer("http://2captcha.com/");
                 TwocaptchaSolver->SetSoftId("1346");
                 TwocaptchaSolver->SetMultipleIds(false);
                 TwocaptchaSolver->SetHttpClientFactory(HttpClientFactory);

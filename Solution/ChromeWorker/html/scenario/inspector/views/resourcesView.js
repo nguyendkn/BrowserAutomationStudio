@@ -37,8 +37,7 @@
           item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
           this.trigger('highlight', { ...item, path });
         });
-
-        this.set('highlight', true);
+        this.set('highlight', false);
       }
     },
   });

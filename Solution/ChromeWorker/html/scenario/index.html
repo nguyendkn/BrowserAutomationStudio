@@ -1541,8 +1541,6 @@
         model: TaskModel
     });
 
-    var _Inspector = new Scenario.Inspector.Main();
-
     var _ActionFinder = new ActionFinder()
     _ActionFinder.Initialize();
 
@@ -4093,6 +4091,8 @@
 
     var _ActionUpdater = new Scenario.ActionUpdater();
 
+    var _Inspector = new Scenario.Inspector.Main();
+
     _MultiSelect.Init()
 
     Backbone.history.start();
@@ -5570,7 +5570,7 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
-      if (!_Inspector.model.get("visible")) return;
+      if (!_Inspector.model.get('visible')) return;
       if (!_Inspector.model.get('update')) return;
 
       if(VariablesUpdateTakesPlace)

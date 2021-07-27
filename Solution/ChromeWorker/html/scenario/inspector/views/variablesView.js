@@ -160,6 +160,10 @@
           $el.show();
         });
       }, 200),
+
+      'keydown #inspectorVariablesFilter': function (e) {
+        if (e.key == ' ') e.preventDefault();
+      },
     }
   });
 

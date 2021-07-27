@@ -1,4 +1,4 @@
-const taskWaitInterval = GetInputConstructorValue('taskWaitInterval', loader);
+const taskWaitTimeout = GetInputConstructorValue('taskWaitTimeout', loader);
 const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
 const serviceName = GetInputConstructorValue('serviceName', loader);
 const serviceKey = GetInputConstructorValue('serviceKey', loader);
@@ -6,7 +6,7 @@ const serviceUrl = GetInputConstructorValue('serviceUrl', loader);
 const sendProxy = GetInputConstructorValue('sendProxy', loader);
 const userAgent = GetInputConstructorValue('userAgent', loader);
 
-if (!taskWaitInterval.original.length) {
+if (!taskWaitTimeout.original.length) {
   return Invalid(tr('The "Task solution check interval" parameter is empty'));
 }
 if (!taskWaitDelay.original.length) {
@@ -21,7 +21,7 @@ if (!serviceKey.original.length) {
 
 try {
   const code = Normalize(loader.GetAdditionalData() + _.template($('#funCaptchaBrowser_code').html())({
-    taskWaitInterval: taskWaitInterval.updated,
+    taskWaitTimeout: taskWaitTimeout.updated,
     taskWaitDelay: taskWaitDelay.updated,
     serviceName: serviceName.updated,
     serviceKey: serviceKey.updated,

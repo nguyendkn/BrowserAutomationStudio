@@ -114,8 +114,6 @@
     "engine/tasks/baseTask.js",
     "engine/tasks/baseTaskRuCaptcha.js",
     "engine/tasks/baseTaskAntiCaptcha.js",
-    "engine/api/errors/ruCaptchaErrorHandler.js",
-    "engine/api/errors/antiCaptchaErrorHandler.js",
     "engine/helpers/baseHelper.js"
   ]
 }

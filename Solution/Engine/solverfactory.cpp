@@ -172,7 +172,6 @@ namespace BrowserAutomationStudioFramework
                 RucaptchaSolver->SetServer("http://rucaptcha.com/");
                 RucaptchaSolver->SetSoftId("1345");
                 RucaptchaSolver->SetMultipleIds(false);
-
                 RucaptchaSolver->SetHttpClientFactory(HttpClientFactory);
                 connect(RucaptchaSolver,SIGNAL(Used()),this,SLOT(UsedRucaptcha()));
                 connect(RucaptchaSolver,SIGNAL(Failed()),this,SLOT(FailedRucaptcha()));
@@ -190,7 +189,6 @@ namespace BrowserAutomationStudioFramework
                 TwocaptchaSolver->SetHttpClientFactory(HttpClientFactory);
                 connect(TwocaptchaSolver,SIGNAL(Used()),this,SLOT(Used2Captcha()));
                 connect(TwocaptchaSolver,SIGNAL(Failed()),this,SLOT(Failed2Captcha()));
-
             }
             return TwocaptchaSolver;
         }

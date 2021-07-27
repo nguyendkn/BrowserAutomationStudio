@@ -37,7 +37,8 @@ namespace BrowserAutomationStudioFramework
         int Iterator;
         QTimer timer;
         bool StartImmediate;
-        int timeout;
+        int timeout; // Time in milliseconds between each new check of the task result
+        int delay; // Time in milliseconds between task creation and the first result check
         QString Server;
         QString SoftId;
         void StartMonitor();
@@ -50,6 +51,7 @@ namespace BrowserAutomationStudioFramework
         void SetServer(const QString& Server);
         void SetSoftId(const QString& SoftId);
         void SetTimeout(int timeout);
+        void SetDelay(int delay);
         void SetStartImmediate(bool StartImmediate);
         virtual QString Solve(const QString& base64,const QStringList& props);
         virtual void ReportBad(const QString& id);

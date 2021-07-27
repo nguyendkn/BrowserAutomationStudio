@@ -111,23 +111,16 @@
       const $container = this.$('#inspectorContent');
       state = state || this.model.get('state');
 
-      if (Array.isArray(state.objects)) {
-        state.objects.forEach(({ path, folded }) => {
-          const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && !$el.hasClass('jst-collapsed')) {
-            $el.prev('.jst-collapse').click();
-          }
-        });
-      }
-
-      if (Array.isArray(state.arrays)) {
-        state.arrays.forEach(({ path, folded }) => {
-          const $el = $container.find(`[data-path="${path}"]`);
-          if (folded && !$el.hasClass('jst-collapsed')) {
-            $el.prev('.jst-collapse').click();
-          }
-        });
-      }
+      [state.objects, state.arrays].forEach((data) => {
+        if (Array.isArray(data)) {
+          data.forEach(({ path, folded }) => {
+            const $el = $container.find(`[data-path="${path}"]`);
+            if (folded && !$el.hasClass('jst-collapsed')) {
+              $el.prev('.jst-collapse').click();
+            }
+          });
+        }
+      });
 
       this.model.set('state', state);
     },

@@ -136,8 +136,8 @@
             }
           },
           value: this.model.getValue(path),
-          type: type,
-          path: path,
+          type,
+          path,
         });
         modal.render();
       },

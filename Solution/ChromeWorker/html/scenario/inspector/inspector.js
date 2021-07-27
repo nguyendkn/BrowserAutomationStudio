@@ -15,7 +15,7 @@
       this.model = new Model();
 
       this.model.on('change:tab', (__, tab) => {
-        const $tabs = this.$('[data-tab-name]');
+        const $tabs = this.$('.inspector-tab');
 
         $tabs.filter((__, el) => {
           return el.dataset.tabName !== tab;

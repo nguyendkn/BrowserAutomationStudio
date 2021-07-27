@@ -33,8 +33,11 @@
       });
 
       if (this.get('supportHighlight')) {
-        if (this.get('highlight')) _.each(metadata, (item, path) => {
-          item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
+        const highlight = this.get('highlight');
+        _.each(metadata, (item, path) => {
+          if (highlight) {
+            item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
+          }
           this.trigger('highlight', { ...item, path });
         });
         this.set('highlight', false);

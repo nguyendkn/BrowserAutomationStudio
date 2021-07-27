@@ -1,7 +1,7 @@
 (function (global, $, _) {
   const Model = Backbone.Model.extend({
     defaults: {
-      sortingMethod: 'alphabetically',
+      sortingType: 'alphabetically',
       supportHighlight: true,
       highlight: false,
       metadata: {},
@@ -71,7 +71,7 @@
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
-      model.on('change:sortingMethod', (__, method) => {
+      model.on('change:sortingType', (__, method) => {
         this.sortTree(method);
       });
 
@@ -85,7 +85,7 @@
 
         this.tree = new JSONTree(this.$('#inspectorVariablesData')[0], {
           onRender: () => {
-            this.sortTree(this.model.get('sortingMethod'));
+            this.sortTree(this.model.get('sortingType'));
             this.trigger('renderTree');
           },
           onCollapse: preserveState,

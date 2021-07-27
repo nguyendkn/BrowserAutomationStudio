@@ -20,11 +20,11 @@
     render(data) {
       let root = '';
 
-      if (isArray(data)) {
+      if ($.type(data) === 'array') {
         root = _jsArray('', data, '');
       }
 
-      if (isObject(data)) {
+      if ($.type(data) === 'object') {
         root = _jsObject('', data, '');
       }
 
@@ -167,9 +167,11 @@
 
   function _jsNode(name, value, path, isLast) {
     const content = `<span class="jst-property">${_.escape(name)}</span>` + `<span class="jst-colon">:</span>` + (() => {
-      switch (typeof (value)) {
+      switch ($.type(value)) {
         case 'boolean':
           return _jsBoolean(name, value, path);
+        case 'object':
+          return _jsObject(name, value, path);
         case 'number':
           return _jsNumber(name, value, path);
         case 'string':
@@ -180,16 +182,10 @@
             return _jsDate(name, value.slice(8), path);
           }
           return _jsString(name, value, path);
-        default:
-          if (value == null) {
-            return _jsNull(name, value, path);
-          }
-          if (isArray(value)) {
-            return _jsArray(name, value, path);
-          }
-          if (isObject(value)) {
-            return _jsObject(name, value, path);
-          }
+        case 'array':
+          return _jsArray(name, value, path);
+        case 'null':
+          return _jsNull(name, value, path);
       }
 
       throw new Error(`Failed to resolve value type`);
@@ -207,14 +203,6 @@
 
   function _path(path, name) {
     return name ? `${path}/${name}` : path;
-  }
-
-  function isObject(obj) {
-    return Object.prototype.toString.call(obj) === '[object Object]';
-  }
-
-  function isArray(obj) {
-    return Object.prototype.toString.call(obj) === '[object Array]';
   }
 
   global.JSONTree = JSONTree;

@@ -81,14 +81,15 @@
     render() {
       if (this.$el.is(':empty')) {
         this.$el.html(this.template({}));
+        const preserveState = BrowserAutomationStudio_PreserveInterfaceState;
 
         this.tree = new JSONTree(this.$('#inspectorVariablesData')[0], {
-          onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
-          onExpand: BrowserAutomationStudio_PreserveInterfaceState,
           onRender: () => {
             this.sortTree(this.model.get('sortingMethod'));
             this.trigger('renderTree');
           },
+          onCollapse: preserveState,
+          onExpand: preserveState,
         });
       }
       return this;

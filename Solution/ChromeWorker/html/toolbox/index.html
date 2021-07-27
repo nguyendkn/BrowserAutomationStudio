@@ -5821,7 +5821,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="screen_code">
     _get_browser_screen_settings()!
-    {
+    ;(function(){
       var result = JSON.parse(_result())
       <%= scroll_x %> = result["ScrollX"]
       <%= scroll_y %> = result["ScrollY"]
@@ -5829,7 +5829,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= cursor_y %> = result["CursorY"]
       <%= width %> = result["Width"]
       <%= height %> = result["Height"]
-    }
+    })();
   </script>
 
   <script type="text/template" id="touch_code">

@@ -2,7 +2,6 @@
   const Model = Backbone.Model.extend({
     defaults: {
       visible: false,
-      update: true,
       state: {},
       tab: '',
     },

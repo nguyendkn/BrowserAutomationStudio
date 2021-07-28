@@ -63,8 +63,8 @@
     "For <code>ReCaptcha</code> and <code>HCaptcha</code> solving, it is recommended to use the new API if possible. It is easier to use, and the captcha can be solved faster.": {
       "ru": "Для решения <code>ReCaptcha</code> и <code>HCaptcha</code> рекомендуется использовать новое API, если это возможно. Его проще использовать, и капча может решиться быстрее."
     },
-    "Detailed documentation for solving <code>CoordinatesCaptcha</code> can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#coordinates');return false\">here</a>.": {
-      "ru": "Подробную документацию по решению <code>CoordinatesCaptcha</code> можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_clickcaptcha');return false\">здесь</a>."
+    "Detailed documentation for solving such captchas can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#coordinates');return false\">here</a>.": {
+      "ru": "Подробную документацию по решению подобных капч можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_clickcaptcha');return false\">здесь</a>."
     },
     "This action, unlike the similar one from the <code>Browser</code> module, performs clicks automatically, and you do not need to manually calculate the coordinates for clicks relative to the position of the element on the page. It is recommended to use this action.": {
       "ru": "Данное действие, в отличие от аналогичного из модуля Браузер, выполняет клики автоматически, и вам не нужно вручную расчитывать координаты для кликов относительно положения элемента на странице. Рекомендуется использовать именно это действие."

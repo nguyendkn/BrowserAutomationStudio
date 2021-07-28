@@ -53,7 +53,7 @@
       disable_string: true,
       id: 'taskWaitTimeout',
       help: {
-        description: tr('Task solution check interval in milliseconds'),
+        description: tr('Task solution check interval in milliseconds. With this parameter you can control the length of the pause between each new check of the captcha solution.'),
         examples: [
           { code: '600', description: tr('Wait for 600 milliseconds') },
           { code: '10000', description: tr('Wait for 10 seconds') },
@@ -68,7 +68,7 @@
       disable_string: true,
       id: 'taskWaitDelay',
       help: {
-        description: tr('Task solution check delay in milliseconds'),
+        description: tr('Task solution check delay in milliseconds. With this parameter you can control the length of the pause between sending the task to the service and the start of waiting for a solution. Most often, captcha-solving services specify the required waiting time, in other cases you can specify any value convenient for you.'),
         examples: [
           { code: '600', description: tr('Wait for 600 milliseconds') },
           { code: '10000', description: tr('Wait for 10 seconds') },

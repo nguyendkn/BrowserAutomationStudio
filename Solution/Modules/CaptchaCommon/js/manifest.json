@@ -54,12 +54,6 @@
     "Use custom service URL with port 8083": {
       "ru": "Использовать кастомный URL сервиса с портом 8083"
     },
-    "Task solution check delay in milliseconds": {
-      "ru": "Задержка проверки решения задачи в миллисекундах"
-    },
-    "Task solution check interval in milliseconds": {
-      "ru": "Интервал проверки решения задачи в миллисекундах"
-    },
     "Solve captcha using https://2captcha.com/ service": {
       "ru": "Решить капчу используя сервис https://2captcha.com/"
     },
@@ -84,6 +78,9 @@
     "All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.": {
       "ru": "Для всех сервисов требуется сервисный ключ, который должен быть получен на сайте сервиса и введён в поле <code>Ключ сервиса</code>."
     },
+    "Task solution check interval in milliseconds. With this parameter you can control the length of the pause between each new check of the captcha solution.": {
+      "ru": "Интервал проверки решения задачи в миллисекундах. С помощью этого параметра вы можете контролировать длительность паузы между каждой новой проверкой решения капчи."
+    },
     "You can set the delay and interval for checking the task solution by filling in the appropriate fields. We recommend using the values that are described in the service documentation.": {
       "ru": "Вы можете настроить задержку и интервал проверки решения задачи, заполнив соответствующие поля. Рекомендуется использовать значения, которые описаны в документации сервисов."
     },
@@ -98,6 +95,9 @@
     },
     "The <code>Task solution check interval</code> parameter is responsible for the frequency of sending requests to the service to check the captcha solution. The more you set the value, the longer BAS will wait before sending the next request. It is recommended to use a delay of at least 5 seconds.": {
       "ru": "Параметр <code>Интервал проверки решения задачи</code> отвечает за частоту отправки запросов на сервис для проверки решения капчи. Чем больше вы выставите значение, тем дольше BAS будет ожидать перед тем, как отправить очередной запрос. Рекомендуется использовать задержку не менее 5 секунд."
+    },
+    "Task solution check delay in milliseconds. With this parameter you can control the length of the pause between sending the task to the service and the start of waiting for a solution. Most often, captcha-solving services specify the required waiting time, in other cases you can specify any value convenient for you.": {
+      "ru": "Задержка проверки решения задачи в миллисекундах. С помощью этого параметра вы можете контролировать длительность паузы между отправкой капчи на сервис и началом ожидания решения. Чаще всего, сервисы решения капчи указывают необходимое время ожидания, в остальных случаях вы можете указать любое удобное для вас значение."
     },
     "The <code>Task solution check delay</code> parameter is responsible for the delay before starting to poll the service about receiving the captcha solution. Thus, the task is created first, after that the BAS will wait for the specified time and only then will it start receiving the captcha solution. Most services recommend waiting at least 5 seconds.": {
       "ru": "Параметр <code>Задержка проверки решения задачи</code> отвечает за задержку перед тем, как начинать опрашивать сервис о получении решения капчи. Таким образом, сначала создается задача, после этого BAS будет ожидать указанное время и только после этого начнёт получать решение капчи. Большинство сервисов рекомендуют подождать не менее 5 секунд."

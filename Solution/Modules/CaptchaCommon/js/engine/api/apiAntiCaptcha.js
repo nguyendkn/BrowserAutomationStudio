@@ -1,26 +1,7 @@
 (function (solver, _) {
-  solver.AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (options) {
-    solver.CaptchaApi.call(this, 'AntiCaptcha', options);
+  const AntiCaptchaApi = _.inherit(solver.CaptchaApi, function (method, options) {
+    solver.CaptchaApi.call(this, method, options);
+    this.options.isJsonApi = '1';
   });
-
-  solver.AntiCaptchaApi.prototype.getCreateTaskPayload = function (data) {
-    return { method: 'createTask', data: { task: data, softId: this.options.softId } };
-  };
-
-  solver.AntiCaptchaApi.prototype.getTaskSolutionPayload = function (task) {
-    return { method: 'getTaskResult', data: { taskId: task.id } };
-  };
-
-  solver.AntiCaptchaApi.prototype.setApiRequestParams = function (data) {
-    data.clientKey = this.options.apiKey;
-    data.json = 1;
-  };
-
-  solver.AntiCaptchaApi.prototype.getApiRequestOptions = function (data, method) {
-    return {
-      payload: { data: ['data', JSON.stringify(data)], query: method },
-      content: 'application/json',
-      method: 'POST',
-    };
-  };
+  solver.AntiCaptchaApi = AntiCaptchaApi;
 })(BASCaptchaSolver, BASCaptchaSolver.utils);

@@ -67,7 +67,13 @@
       }
 
       _call_function(self.extractData, {})!
-    }, function () { fail(tr("Failed to find an element with the specified selector for FunCaptcha solving")) })!
+    }, function () {
+      if (_K === 'en') {
+        fail(("Failed to find an element with the specified selector for FunCaptcha solving"));
+      } else {
+        fail("Не удалось найти элемент с указанным селектором для решения FunCaptcha");
+      }
+     })!
   };
 
   solver.helpers.FunCaptchaHelper = FunCaptchaHelper;

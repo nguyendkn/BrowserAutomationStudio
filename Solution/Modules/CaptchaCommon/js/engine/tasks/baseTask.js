@@ -2,7 +2,7 @@
   function BaseTask(type, options) {
     this.params = options.params;
     this.rules = options.rules;
-    this.name = options.name;
+    this.image = options.image;
     this.type = type;
     this.data = {};
   };

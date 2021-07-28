@@ -1,7 +1,7 @@
 /*Browser*/
 _call_function(BASCaptchaSolver.solveHCaptcha, {
   proxy: String(<%= sendProxy %>).toLowerCase() == 'true' ? _PROXY : {},
-  taskWaitInterval: <%= taskWaitInterval %>,
+  taskWaitTimeout: <%= taskWaitTimeout %>,
   taskWaitDelay: <%= taskWaitDelay %>,
   serviceName: <%= serviceName %>,
   serviceUrl: <%= serviceUrl %>,

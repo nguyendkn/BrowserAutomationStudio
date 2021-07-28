@@ -1,9 +1,9 @@
 {
-  "name": "CoordinatesCaptcha",
-  "description": "CoordinatesCaptcha solving",
+  "name": "ClickCaptcha",
+  "description": "Solve captcha with clicks",
   "description_small": {
-    "en": "CoordinatesCaptcha solving",
-    "ru": "Решение CoordinatesCaptcha"
+    "en": "Solve captcha with clicks",
+    "ru": "Решить капчу кликами"
   },
   "major_version": 1,
   "minor_version": 0,
@@ -14,19 +14,19 @@
   "api_version": 1,
   "actions": [
     {
-      "name": "CoordinatesCaptchaElement",
+      "name": "ClickCaptchaElement",
       "description": {
-        "ru": "Решить CoordinatesCaptcha",
-        "en": "Solve CoordinatesCaptcha"
+        "en": "Solve captcha with clicks",
+        "ru": "Решить капчу кликами"
       },
       "template": "{{PATH}}",
       "is_element": true,
-      "interface": "actions/interface/coordinatesCaptchaElement.js",
-      "select": "actions/select/coordinatesCaptchaElement.js",
+      "interface": "actions/interface/clickCaptchaElement.js",
+      "select": "actions/select/clickCaptchaElement.js",
       "code": [
         {
-          "file": "actions/code/coordinatesCaptchaElement.js",
-          "name": "coordinatesCaptchaElement_code"
+          "file": "actions/code/clickCaptchaElement.js",
+          "name": "clickCaptchaElement_code"
         }
       ]
     }

@@ -1563,7 +1563,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
-  <script type="text/template" id="coordinatesCaptchaBrowser">
+  <script type="text/template" id="clickCaptchaBrowser">
     <div class="container-fluid">
       <%= _.template($('#input_constructor').html())({ id: 'imageData', description: tr('Image data'), value_string: '', default_selector: 'string', disable_int: true, help: {
         description: tr('Captcha image data encoded in base64 format')
@@ -8559,7 +8559,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }catch(e)
             {}
 
-          }else if(State == "coordinatesCaptchaBrowser")
+          }else if(State == "clickCaptchaBrowser")
           {
             const clickCoordinatesList = this.$el.find('#clickCoordinatesList').val().toUpperCase();
             const textInstructions = GetInputConstructorValue('textInstructions', loader);
@@ -10434,7 +10434,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "length": _.template($('#length').html()),
           "loopelement": _.template($('#loopelement').html()),
           "setheader": _.template($('#setheader').html()),
-          "coordinatesCaptchaBrowser": _.template($('#coordinatesCaptchaBrowser').html()),
+          "clickCaptchaBrowser": _.template($('#clickCaptchaBrowser').html()),
           "solvecaptcha": _.template($('#solvecaptcha').html()),
           "javascript": _.template($('#javascript').html()),
           "reset": _.template($('#reset').html()),
@@ -10692,7 +10692,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/length": "length",
             "!/loopelement": "loopelement",
             "!/setheader": "setheader",
-            "!/coordinatesCaptchaBrowser": "coordinatesCaptchaBrowser",
+            "!/clickCaptchaBrowser": "clickCaptchaBrowser",
             "!/solvecaptcha": "solvecaptcha",
             "!/javascript": "javascript",
             "!/reset": "reset",
@@ -10980,8 +10980,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         setheader: function(){
           _GobalModel.set({ state: "setheader" });
         },
-        coordinatesCaptchaBrowser: function () {
-          _GobalModel.set({ state: "coordinatesCaptchaBrowser" });
+        clickCaptchaBrowser: function () {
+          _GobalModel.set({ state: "clickCaptchaBrowser" });
         },
         solvecaptcha: function(){
                   _GobalModel.set({ state: "solvecaptcha" });
@@ -11290,7 +11290,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 //{ name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
                 { name: tr(_A["scroll"]["name"]), description: tr(_A["scroll"]["description"]), ref: "scroll" },
                 { name: tr(_A["renderscreen"]["name"]), description: tr(_A["renderscreen"]["description"]), ref: "renderscreen" },
-                { name: tr(_A["coordinatesCaptchaBrowser"]["name"]), description: tr(_A["coordinatesCaptchaBrowser"]["description"]), ref: "coordinatesCaptchaBrowser" },
+                { name: tr(_A["clickCaptchaBrowser"]["name"]), description: tr(_A["clickCaptchaBrowser"]["description"]), ref: "clickCaptchaBrowser" },
                 { name: tr(_A["solvecaptcha"]["name"]), description: tr(_A["solvecaptcha"]["description"]), ref: "solvecaptcha" },
                 { name: tr(_A["recaptchav3"]["name"]), description: tr(_A["recaptchav3"]["description"]), ref: "recaptchav3" },
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },

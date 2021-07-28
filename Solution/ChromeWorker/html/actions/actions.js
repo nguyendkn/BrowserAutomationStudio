@@ -275,9 +275,9 @@ _A = {
       },
       "group":"browser"
    },
-   "coordinatesCaptchaBrowser":{
-      "name":"Solve CoordinatesCaptcha",
-      "description":"Solve CoordinatesCaptcha",
+   "clickCaptchaBrowser":{
+      "name":"Solve captcha with clicks",
+      "description":"Solve captcha with clicks",
       "template":"{{imageData}} -> {{clickCoordinatesList}}",
       "suggestion":{  
          "en":"solve captcha, solve image",

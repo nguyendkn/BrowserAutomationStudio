@@ -19,7 +19,7 @@ if (!serviceKey.original.length) {
 }
 
 try {
-  const code = Normalize(loader.GetAdditionalData() + _.template($('#coordinatesCaptchaElement_code').html())({
+  const code = Normalize(loader.GetAdditionalData() + _.template($('#clickCaptchaElement_code').html())({
     textInstructions: textInstructions.updated,
     taskWaitTimeout: taskWaitTimeout.updated,
     taskWaitDelay: taskWaitDelay.updated,

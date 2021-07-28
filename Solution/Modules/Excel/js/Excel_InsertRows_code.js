@@ -1,1 +1,1 @@
-_call_function(Excel_InsertRows,{ "FilePath": (<%= FilePath %>),"SheetIndexOrName": (<%= SheetIndexOrName %>),"FromRow": (<%= FromRow %>),"Data": (<%= Data %>),"Sync": (<%= Sync %>),"Timeout": (<%= timeout_value() || 60000 %>) })!
+_call_function(Excel_InsertRows,{"FilePath":(<%= FilePath %>), "SheetIndexOrName":(<%= SheetIndexOrName %>), "FromRow":(<%= FromRow %>), "Data":(<%= Data %>), "Convert":(<%= Convert %>), "SetFormat":(<%= SetFormat %>), "Sync":(<%= Sync %>), "Timeout":(<%= timeout_value() || 60000 %>)})!

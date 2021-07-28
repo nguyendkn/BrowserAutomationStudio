@@ -1,16 +1,16 @@
 var FilePath = GetInputConstructorValueFilename("FilePath", loader);
 if(FilePath["original"].length == 0){
-    Invalid(tr("File path") + " " + tr("is empty"));
+    Invalid(tr("The parameter \"") + tr("File path") + tr("\" is not specified"));
     return;
 };
 var SheetIndexOrName = GetInputConstructorValue("SheetIndexOrName", loader);
 if(SheetIndexOrName["original"].length == 0){
-    Invalid(tr("Sheet index or name") + " " + tr("is empty"));
+    Invalid(tr("The parameter \"") + tr("Sheet index or name") + tr("\" is not specified"));
     return;
 };
 var CellAddress = GetInputConstructorValue("CellAddress", loader);
 if(CellAddress["original"].length == 0){
-	Invalid(tr("Cell address") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Cell address") + tr("\" is not specified"));
     return;
 };
 try{

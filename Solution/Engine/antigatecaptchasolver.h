@@ -37,8 +37,8 @@ namespace BrowserAutomationStudioFramework
         int Iterator;
         QTimer timer;
         bool StartImmediate;
-        int timeout;
-        int delay;
+        int timeout; // Time in milliseconds between each new check of the task result
+        int delay; // Time in milliseconds between task creation and the first result check
         QString Server;
         QString SoftId;
         void StartMonitor();

@@ -5890,17 +5890,31 @@
 
     function BrowserAutomationStudio_PreserveInterfaceState() {
       BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
-        inspector: _Inspector.saveState()
+        inspector: {
+          variables: _Inspector.variables.saveState(),
+          resources: _Inspector.resources.saveState(),
+        }
       }));
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(json) {
       const result = _.attempt(() => JSON.parse(json));
+
       if (!_.isError(result)) {
-        _Inspector.loadState(result.inspector);
-      } else {
-        console.log('Failed to load interface state:', result);
+        const { inspector } = result;
+
+        _Inspector.variables.loadState(
+          inspector.variables
+        );
+
+        _Inspector.resources.loadState(
+          inspector.resources
+        );
+
+        return;
       }
+
+      console.log('Failed to load interface state:', result);
     }
 
     function BrowserAutomationStudio_FinishedBackup(fullPath) {

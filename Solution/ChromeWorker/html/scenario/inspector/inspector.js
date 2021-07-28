@@ -2,7 +2,6 @@
   const Model = Backbone.Model.extend({
     defaults: {
       visible: false,
-      state: {},
       tab: '',
     },
   });
@@ -50,11 +49,11 @@
 
         this.variables = new Scenario.Inspector.Variables({
           el: this.$('[data-tab-name="variables"]')[0]
-        }).on('renderTree', () => this.loadState()).render();
+        }).render();
 
         this.resources = new Scenario.Inspector.Resources({
           el: this.$('[data-tab-name="resources"]')[0]
-        }).on('renderTree', () => this.loadState()).render();
+        }).render();
 
         this.callstack = new Scenario.Inspector.Callstack({
           el: this.$('[data-tab-name="callstack"]')[0]
@@ -105,42 +104,6 @@
     showNotice() {
       this.$('.inspector-nav-item').addClass('disabled');
       this.$('#inspectorNotice').show();
-    },
-
-    loadState(state) {
-      const $container = this.$('#inspectorContent');
-      state = state || this.model.get('state');
-
-      [state.objects, state.arrays].forEach((data) => {
-        if (Array.isArray(data)) {
-          data.forEach(({ path, folded }) => {
-            const $el = $container.find(`[data-path="${path}"]`);
-            if (folded && !$el.hasClass('jst-collapsed')) {
-              $el.prev('.jst-collapse').click();
-            }
-          });
-        }
-      });
-
-      this.model.set('state', state);
-    },
-
-    saveState() {
-      const $container = this.$('#inspectorContent');
-
-      this.model.set('state', {
-        objects: _.map($container.find('[data-type="object"]'), el => ({
-          folded: el.classList.contains('jst-collapsed'),
-          path: el.dataset.path,
-        })),
-
-        arrays: _.map($container.find('[data-type="array"]'), el => ({
-          folded: el.classList.contains('jst-collapsed'),
-          path: el.dataset.path,
-        })),
-      });
-
-      return this.model.get('state');
     },
 
     events: {

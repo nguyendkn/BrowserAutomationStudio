@@ -6,6 +6,7 @@
       highlight: false,
       metadata: {},
       source: {},
+      state: {},
     },
 
     getValue(path) {
@@ -90,12 +91,13 @@
           onRender: () => {
             this.sortTree(this.model.get('sortingType'));
             if ($filter.val()) this.filterTree();
-            this.trigger('renderTree');
+            this.loadState();
           },
           onCollapse: preserveState,
           onExpand: preserveState,
         });
       }
+
       return this;
     },
 
@@ -113,6 +115,8 @@
 
         $el.show();
       });
+
+      return this;
     },
 
     sortTree(type) {
@@ -139,7 +143,38 @@
           return Scenario.utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
         },
       });
+
       return this;
+    },
+
+    loadState(state = this.model.get('state')) {
+      [state.objects, state.arrays].forEach((data) => {
+        if (Array.isArray(data)) {
+          data.forEach(({ path, folded }) => {
+            const $el = this.$el.find(`[data-path="${path}"]`);
+            if (folded && !$el.hasClass('jst-collapsed')) {
+              $el.prev('.jst-collapse').click();
+            }
+          });
+        }
+      });
+
+      this.model.set('state', state);
+    },
+
+    saveState() {
+      this.model.set('state', {
+        objects: _.map(this.$el.find('[data-type="object"]'), el => ({
+          folded: el.classList.contains('jst-collapsed'),
+          path: el.dataset.path,
+        })),
+        arrays: _.map(this.$el.find('[data-type="array"]'), el => ({
+          folded: el.classList.contains('jst-collapsed'),
+          path: el.dataset.path,
+        })),
+      });
+
+      return this.model.get('state');
     },
 
     events: {

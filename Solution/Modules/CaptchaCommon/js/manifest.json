@@ -78,8 +78,8 @@
     "Use default service URL, http://rucaptcha.com for RuCaptcha, etc": {
       "ru": "Использовать стандартный URL сервиса, http://rucaptcha.com для RuCaptcha и так далее"
     },
-    "Captcha solving service key. You can get it in your personal account of your service": {
-      "ru": "Ключ от сервиса решения капчи. Вы можете получить его в личном кабинете вашего сервиса"
+    "Captcha solving service key. You can get it in your personal account of selected captcha solving service": {
+      "ru": "Ключ от сервиса решения капчи. Вы можете получить его в личном кабинете выбранного сервиса решения капчи"
     },
     "All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.": {
       "ru": "Для всех сервисов требуется сервисный ключ, который должен быть получен на сайте сервиса и введён в поле <code>Ключ сервиса</code>."

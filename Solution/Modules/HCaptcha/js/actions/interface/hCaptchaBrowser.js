@@ -17,7 +17,7 @@
     }
   }) %>
   <%= _.template($('#input_constructor').html())({
-    help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') },
+    help: { description: tr('Captcha solving service key. You can get it in your personal account of selected captcha solving service') },
     description: tr('Service key'),
     default_selector: 'string',
     disable_int: true,

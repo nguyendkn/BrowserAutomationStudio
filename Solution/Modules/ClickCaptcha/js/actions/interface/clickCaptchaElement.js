@@ -7,14 +7,16 @@
       { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
     ]
   }}) %>
-  <%= _.template($('#input_constructor').html())({ description: tr('Text with instructions'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
-    description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),
+  <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: {
+    description: tr('Captcha solving service key. You can get it in your personal account of selected captcha solving service') 
+  }}) %>
+  <%= _.template($('#input_constructor').html())({ description: tr('Captcha description. Can be empty.'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
+    description: tr('If captcha has any description, it can be added with this field.'),
     examples: [
       { code: tr('Select all images where there is a plane') },
       { code: tr('Select all images where there is a boat') }
     ]
   }}) %>
-  <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
   <div style="margin-left: 15px">
     <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
     <label for="AdvancedCheck" class="tr">Advanced settings.</label>

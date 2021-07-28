@@ -1565,8 +1565,8 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
 
   <script type="text/template" id="clickCaptchaBrowser">
     <div class="container-fluid">
-      <%= _.template($('#input_constructor').html())({ id: 'imageData', description: tr('Image data'), value_string: '', default_selector: 'string', disable_int: true, help: {
-        description: tr('Captcha image data encoded in base64 format')
+      <%= _.template($('#input_constructor').html())({ id: 'imageData', description: tr('Captcha picture data encoded in base64'), value_string: '', default_selector: 'string', disable_int: true, help: {
+        description: tr('Data in base64 format can be obtained from screenshot action or from read file action.')
       }}) %>
       <%= _.template($('#input_constructor').html())({ id: 'serviceName', description: tr('Service name'), variants: [ 'rucaptcha', '2captcha' ], value_string: 'rucaptcha', default_selector: 'string', disable_int: true, help: {
         description: tr('Captcha solving service name'),
@@ -1575,15 +1575,15 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
         ]
       }}) %>
-      <%= _.template($('#input_constructor').html())({ description: tr('Text with instructions'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
-        description: tr('Text with instructions for solving captcha. Optional if the image already has instructions.'),
+      <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
+      <%= _.template($('#input_constructor').html())({ description: tr('Captcha description. Can be empty.'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
+        description: tr('If captcha has any description, it can be added with this field.'),
         examples: [
           { code: tr('Select all images where there is a plane') },
           { code: tr('Select all images where there is a boat') }
         ]
       }}) %>
-      <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
-      <%= _.template($('#variable_constructor').html())({ id: 'clickCoordinatesList', description: tr('List of coordinates'), default_variable: 'COORDINATES_LIST', help: { description: tr('List of coordinates of points for selecting images') } }) %>
+      <%= _.template($('#variable_constructor').html())({ id: 'clickCoordinatesList', description: tr('Click coordinates'), default_variable: 'COORDINATES_LIST', help: { description: tr('List of coordinates of points for selecting images') } }) %>
       <div style="margin-left: 15px">
         <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
         <label for="AdvancedCheck" class="tr">Advanced settings.</label>
@@ -5441,7 +5441,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     header(<%= name %>, <%= value %>)!
   </script>
 
-  <script type="text/template" id="coordinatesCaptchaBrowser_code">
+  <script type="text/template" id="clickCaptchaBrowser_code">
     /*Browser*/
     _call_function(BASCaptchaSolver.solveCoordinatesCaptcha, {
       textInstructions: <%= textInstructions %>,
@@ -8585,7 +8585,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             }
 
             try {
-              const code = Normalize(loader.GetAdditionalData() + _.template($('#coordinatesCaptchaBrowser_code').html())({
+              const code = Normalize(loader.GetAdditionalData() + _.template($('#clickCaptchaBrowser_code').html())({
                 clickCoordinatesList: `VAR_${clickCoordinatesList}`,
                 textInstructions: textInstructions.updated,
                 taskWaitTimeout: taskWaitTimeout.updated,
@@ -11290,9 +11290,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 //{ name: tr(_A["httpauth"]["name"]), description: tr(_A["httpauth"]["description"]), ref: "httpauth" },
                 { name: tr(_A["scroll"]["name"]), description: tr(_A["scroll"]["description"]), ref: "scroll" },
                 { name: tr(_A["renderscreen"]["name"]), description: tr(_A["renderscreen"]["description"]), ref: "renderscreen" },
-                { name: tr(_A["clickCaptchaBrowser"]["name"]), description: tr(_A["clickCaptchaBrowser"]["description"]), ref: "clickCaptchaBrowser" },
                 { name: tr(_A["solvecaptcha"]["name"]), description: tr(_A["solvecaptcha"]["description"]), ref: "solvecaptcha" },
                 { name: tr(_A["recaptchav3"]["name"]), description: tr(_A["recaptchav3"]["description"]), ref: "recaptchav3" },
+                { name: tr(_A["clickCaptchaBrowser"]["name"]), description: tr(_A["clickCaptchaBrowser"]["description"]), ref: "clickCaptchaBrowser" },
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },
                 { name: tr(_A["timeout"]["name"]), description: tr(_A["timeout"]["description"]), ref: "timeout" },
                 { name: tr(_A["browsersettings"]["name"]), description: tr(_A["browsersettings"]["description"]), ref: "browsersettings" },

@@ -14,7 +14,7 @@
   "api_version": 1,
   "actions": [
     {
-      "name": "ClickCaptchaElement",
+      "name": "clickCaptchaElement",
       "description": {
         "en": "Solve captcha with clicks",
         "ru": "Решить капчу кликами"
@@ -36,20 +36,17 @@
   "modules": [],
   "depends": ["CaptchaCommon"],
   "localize": {
-    "Image data": {
-      "ru": "Данные изображения"
-    },
     "List of coordinates": {
       "ru": "Список координат"
     },
-    "Text with instruction": {
-      "ru": "Текст с инструкцией"
-    },
-    "Text with instructions": {
-      "ru": "Текст с инструкциями"
+    "Solve captcha with clicks": {
+      "ru": "Решить капчу кликами"
     },
     "Solve CoordinatesCaptcha": {
       "ru": "Решить CoordinatesCaptcha"
+    },
+    "Captcha description. Can be empty.": {
+      "ru": "Описание капчи. Может быть пустым."
     },
     "Solve <code>CoordinatesCaptcha</code>.": {
       "ru": "Решить <code>CoordinatesCaptcha</code>."
@@ -60,14 +57,11 @@
     "Select all images where there is a plane": {
       "ru": "Выберите все изображения, на которых есть самолёт"
     },
-    "Captcha image data encoded in base64 format": {
-      "ru": "Данные изображения капчи, закодированные в формате base64"
-    },
     "List of coordinates of points for selecting images": {
       "ru": "Список координат точек для выбора изображений"
     },
-    "Text with instructions for solving captcha. Optional if the image already has instructions.": {
-      "ru": "Текст с инструкциями по решению капчи. Необязателен, если на изображении уже есть инструкции."
+    "If captcha has any description, it can be added with this field.": {
+      "ru": "Если у captcha есть какое-либо описание, его можно добавить в это поле."
     },
     "For <code>ReCaptcha</code> and <code>HCaptcha</code> solving, it is recommended to use the new API if possible. It is easier to use, and the captcha can be solved faster.": {
       "ru": "Для решения <code>ReCaptcha</code> и <code>HCaptcha</code> рекомендуется использовать новое API, если это возможно. Его проще использовать, и капча может решиться быстрее."

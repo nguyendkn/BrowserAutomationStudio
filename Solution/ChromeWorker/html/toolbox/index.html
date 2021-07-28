@@ -1583,7 +1583,14 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           { code: tr('Select all images where there is a boat') }
         ]
       }}) %>
-      <%= _.template($('#variable_constructor').html())({ id: 'clickCoordinatesList', description: tr('Click coordinates'), default_variable: 'COORDINATES_LIST', help: { description: tr('List of coordinates of points for selecting images') } }) %>
+      <%= _.template($('#variable_constructor').html())({ id: 'clickCoordinatesList', description: tr('Click coordinates'), default_variable: 'COORDINATES_LIST', help: {
+        description: tr('List containing the coordinates of the points to be clicked. Each item in this list contains <code>X</code> and <code>Y</code> coordinates of one particular point. For example, if the service returns a list of the form <code>[[1,2], [3,5]]</code>, then there are only two points to click. The first point is located at position 1 horizontally and at position 2 vertically. The second point is used in the same way. After getting such a list, you can process it with loops like <code>for</code> or <code>foreach</code>. Inside the loop, you need to call an action that will perform a click on the coordinates, such as the <code>Click On Element</code> action with the <code>at</code> selector, or similar.<br>For the <code>X</code> coordinate you can use a construction like this - <code>[[COORDINATES_LIST]][pointIndex][0]</code>.<br>For the <code>Y</code> coordinate you can use a construction like this - <code>[[COORDINATES_LIST]][pointIndex][1]</code>.'),
+        examples: [
+          { code: '[ [120, 59], [91, 5], [59, 12] ]', description: tr('There are three points to click on the coordinates - X1 = 120, Y1 = 59. X2 = 91, Y2 = 5. X3 = 59, Y3 = 12.') },
+          { code: '[ [15, 380], [1, 1] ]', description: tr('There are two points to click on the coordinates - X1 = 15, Y1 = 380. X2 = 1, Y2 = 1.') },
+          { code: '[ [12, 24] ]', description: tr('There is one point to click on the coordinates - X1 = 12, Y1 = 24.') },
+        ]
+      }}) %>
       <div style="margin-left: 15px">
         <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
         <label for="AdvancedCheck" class="tr">Advanced settings.</label>

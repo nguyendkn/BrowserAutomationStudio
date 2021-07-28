@@ -36,8 +36,8 @@
   "modules": [],
   "depends": ["CaptchaCommon"],
   "localize": {
-    "List of coordinates": {
-      "ru": "Список координат"
+    "Click coordinates": {
+      "ru": "Координаты для клика"
     },
     "Solve captcha with clicks": {
       "ru": "Решить капчу кликами"
@@ -51,14 +51,20 @@
     "Select all images where there is a plane": {
       "ru": "Выберите все изображения, на которых есть самолёт"
     },
-    "List of coordinates of points for selecting images": {
-      "ru": "Список координат точек для выбора изображений"
-    },
     "Solve any type of captcha that requires clicking on images.": {
       "ru": "Решить любой тип капчи, который требует кликать по изображениям."
     },
     "If captcha has any description, it can be added with this field.": {
       "ru": "Если у captcha есть какое-либо описание, его можно добавить в это поле."
+    },
+    "There is one point to click on the coordinates - X1 = 12, Y1 = 24.": {
+      "ru": "Есть одна точка для клика по координатам - X1 = 12, Y1 = 24."
+    },
+    "There are two points to click on the coordinates - X1 = 15, Y1 = 380. X2 = 1, Y2 = 1.": {
+      "ru": "Есть две точки для клика по координатам - X1 = 15, Y1 = 380. X2 = 1, Y2 = 1"
+    },
+    "There are three points to click on the coordinates - X1 = 120, Y1 = 59. X2 = 91, Y2 = 5. X3 = 59, Y3 = 12.": {
+      "ru": "Есть три точки для клика по координатам - X1 = 120, Y1 = 59. X2 = 91, Y2 = 5. X3 = 59, Y3 = 12."
     },
     "For <code>ReCaptcha</code> and <code>HCaptcha</code> solving, it is recommended to use the new API if possible. It is easier to use, and the captcha can be solved faster.": {
       "ru": "Для решения <code>ReCaptcha</code> и <code>HCaptcha</code> рекомендуется использовать новое API, если это возможно. Его проще использовать, и капча может решиться быстрее."
@@ -74,6 +80,9 @@
     },
     "To perform clicks on the received coordinates, you need to take into account the position of the element whose screenshot you are sending relative to the browser window. Therefore, the simplest option would be to use a similar action for a specific element from the browser's context menu, where clicks will be performed automatically.": {
       "ru": "Для выполнения кликов по полученным координатам вам нужно учитывать позицию элемента, скриншот которого вы отправляете, относительно окна браузера. Поэтому самым простым вариантом будет использование аналогичного действия для конкретного элемента из контекстного меню браузера, где клики будут выполняться автоматически."
+    },
+    "List containing the coordinates of the points to be clicked. Each item in this list contains <code>X</code> and <code>Y</code> coordinates of one particular point. For example, if the service returns a list of the form <code>[[1,2], [3,5]]</code>, then there are only two points to click. The first point is located at position 1 horizontally and at position 2 vertically. The second point is used in the same way. After getting such a list, you can process it with loops like <code>for</code> or <code>foreach</code>. Inside the loop, you need to call an action that will perform a click on the coordinates, such as the <code>Click On Element</code> action with the <code>at</code> selector, or similar.<br>For the <code>X</code> coordinate you can use a construction like this - <code>[[COORDINATES_LIST]][pointIndex][0]</code>.<br>For the <code>Y</code> coordinate you can use a construction like this - <code>[[COORDINATES_LIST]][pointIndex][1]</code>.": {
+      "ru": "Список, содержащий координаты точек, по которым нужно кликать. Каждый элемент этого списка содержит координаты <code>X</code> и <code>Y</code> одной конкретной точки. Например, если сервис вернул список вида <code>[[1,2], [3,5]]</code>, значит есть всего две точки, по которым нужно кликнуть. Первая точка расположена на позиции 1 по горизонтали и на позиции 2 по вертикали. Вторая точка используется аналогично. После получения такого списка, вы можете обработать его с помощью циклов, например <code>for</code> или <code>foreach</code>. Внутри цикла вам необходимо вызвать действие, которое выполнит клик по координатам, например, действие <code>Кликнуть На Элемент</code> c селектором <code>at</code>, или другое подобное.<br>Для координаты <code>X</code> вы можете использовать конструкцию такого вида - <code>[[COORDINATES_LIST]][pointIndex][0]</code>.<br>Для координаты <code>Y</code> вы можете использовать конструкцию такого вида - <code>[[COORDINATES_LIST]][pointIndex][1]</code>."
     }
   },
   "browser": [],

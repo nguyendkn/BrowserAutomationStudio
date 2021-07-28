@@ -83,11 +83,13 @@
     render() {
       if (this.$el.is(':empty')) {
         this.$el.html(this.template({}));
+        const $filter = this.$('#inspectorVariablesFilter');
         const preserveState = BrowserAutomationStudio_PreserveInterfaceState;
 
         this.tree = new JSONTree(this.$('#inspectorVariablesData')[0], {
           onRender: () => {
             this.sortTree(this.model.get('sortingType'));
+            if ($filter.val()) this.filterTree();
             this.trigger('renderTree');
           },
           onCollapse: preserveState,
@@ -95,6 +97,22 @@
         });
       }
       return this;
+    },
+
+    filterTree() {
+      const query = this.$('#inspectorVariablesFilter').val().toLowerCase();
+
+      this.$('.jst-root > ul > li').each((__, el) => {
+        const $el = $(el);
+
+        if (query.length) {
+          const $label = $el.children('.jst-property');
+          const text = $label.text().toLowerCase();
+          return $el.toggle(text.includes(query));
+        }
+
+        $el.show();
+      });
     },
 
     sortTree(type) {
@@ -134,7 +152,6 @@
         const modal = new global.Scenario.Inspector.Modal({
           callback: ({ isChanged, value, cancel, type }) => {
             if (!cancel && isChanged) {
-
               Scenario.utils.updateVariable(value, path, type);
             }
           },
@@ -146,19 +163,7 @@
       },
 
       'input #inspectorVariablesFilter': _.debounce(function (e) {
-        const query = e.target.value.trim().toLowerCase();
-
-        this.$('.jst-root > ul > li').each((__, el) => {
-          const $el = $(el);
-
-          if (query.length) {
-            const $label = $el.children('.jst-property');
-            const text = $label.text().toLowerCase();
-            return $el.toggle(text.includes(query));
-          }
-
-          $el.show();
-        });
+        this.filterTree();
       }, 200),
 
       'keydown #inspectorVariablesFilter': function (e) {

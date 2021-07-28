@@ -14,6 +14,7 @@
 			"give-sms.com",
 			"getsms.online",
 			"sms-man.ru",
+			"activation.pw",
 			"cheapsms.ru",
 			"smsvk.net",
 			"sms.kopeechka.store",

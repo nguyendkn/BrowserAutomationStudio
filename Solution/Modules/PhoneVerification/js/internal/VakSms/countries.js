@@ -1,21 +1,21 @@
 _SMS.VakSmsApi.prototype.getRawCountry = function(country){
 	var countries = {
 		"Any": "",
-		"EE": "ee",
-		"FI": "fi",
-		"FR": "fr",
-		"DE": "de",
-		"KZ": "kz",
-		"LV": "lv",
-		"LT": "lt",
-		"NL": "nl",
-		"PL": "pl",
-		"PT": "pt",
 		"RU": "ru",
-		"ES": "es",
-		"SE": "se",
-		"UA": "ua",
-		"GB": "gb"
+        "UA": "ua",
+        "KZ": "kz",
+        "GB": "gb",
+        "DE": "de",
+        "PL": "pl",
+        "EE": "ee",
+        "SE": "se",
+        "LT": "lt",
+        "NL": "nl",
+        "LV": "lv",
+        "ES": "es",
+        "FR": "fr",
+        "PT": "pt",
+        "FI": "fi"
 	};
 	return countries.hasOwnProperty(country) ? countries[country] : countries["Any"];
 };

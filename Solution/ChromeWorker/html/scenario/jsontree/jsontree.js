@@ -36,7 +36,8 @@
           const $el = $(e.target), $node = $el.prev();
           const text = $node.text().slice(1, -1);
 
-          $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
+          $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
+          $node[0].dataset.value = utf8_to_b64(text);
           $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
         });
 
@@ -45,7 +46,8 @@
           const $el = $(e.target), $node = $el.prev();
           const text = $node.text().slice(1, -1);
 
-          $node.text(`"${b64_to_utf8($node.data('value'))}"`).data('value', utf8_to_b64(text));
+          $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
+          $node[0].dataset.value = utf8_to_b64(text);
           $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
         });
 

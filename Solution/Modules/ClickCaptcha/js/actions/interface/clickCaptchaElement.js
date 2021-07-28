@@ -49,7 +49,7 @@
   </div>
 </div>
 <div class="tooltipinternal">
-  <div class="tr tooltip-paragraph-first-fold">Solve <code>CoordinatesCaptcha</code>.</div>
+  <div class="tr tooltip-paragraph-first-fold">Solve any type of captcha that requires clicking on images.</div>
   <div class="tr tooltip-paragraph-fold">All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.</div>
   <div class="tr tooltip-paragraph-fold">This action allows you to solve any captcha that requires you to click on the images according to certain instructions. This can be <code>ReCaptcha</code>, <code>HCaptcha</code>, and other types. To solve such captcha, you must alternately click on the coordinates obtained after the solution.</div>
   <div class="tr tooltip-paragraph-fold">This action, unlike the similar one from the <code>Browser</code> module, performs clicks automatically, and you do not need to manually calculate the coordinates for clicks relative to the position of the element on the page. It is recommended to use this action.</div>
@@ -61,4 +61,4 @@
   <div class="tr tooltip-paragraph-fold">Also if you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar programs, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.</div>
   <div class="tr tooltip-paragraph-last-fold">Detailed documentation for solving <code>CoordinatesCaptcha</code> can be found <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#coordinates');return false">here</a>.</div>
 </div>
-<%= _.template($('#back').html())({ action: 'executeandadd', visible: true, name: tr('Solve CoordinatesCaptcha') }) %>
+<%= _.template($('#back').html())({ action: 'executeandadd', visible: true, name: tr('Solve captcha with clicks') }) %>

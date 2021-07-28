@@ -42,14 +42,8 @@
     "Solve captcha with clicks": {
       "ru": "Решить капчу кликами"
     },
-    "Solve CoordinatesCaptcha": {
-      "ru": "Решить CoordinatesCaptcha"
-    },
     "Captcha description. Can be empty.": {
       "ru": "Описание капчи. Может быть пустым."
-    },
-    "Solve <code>CoordinatesCaptcha</code>.": {
-      "ru": "Решить <code>CoordinatesCaptcha</code>."
     },
     "Select all images where there is a boat": {
       "ru": "Выберите все изображения, на которых есть лодка"
@@ -59,6 +53,9 @@
     },
     "List of coordinates of points for selecting images": {
       "ru": "Список координат точек для выбора изображений"
+    },
+    "Solve any type of captcha that requires clicking on images.": {
+      "ru": "Решить любой тип капчи, который требует кликать по изображениям."
     },
     "If captcha has any description, it can be added with this field.": {
       "ru": "Если у captcha есть какое-либо описание, его можно добавить в это поле."

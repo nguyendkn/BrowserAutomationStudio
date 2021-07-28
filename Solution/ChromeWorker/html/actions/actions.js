@@ -1271,7 +1271,7 @@ _AL =
    "Render" : {"ru": "Скриншот"},
    "Solve Captcha" : {"ru": "Решить Капчу"},
    "Captcha Failed": {"ru": "Решено Неверно"},
-   "Solve CoordinatesCaptcha": {"ru": "Решить CoordinatesCaptcha"},
+   "Solve captcha with clicks": {"ru": "Решить капчу кликами"},
    "Timeout": {"ru": "Таймаут"},
 
    "If" : {"ru": "If"},

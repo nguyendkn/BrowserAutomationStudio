@@ -81,9 +81,6 @@
     "Task solution check interval in milliseconds. With this parameter you can control the length of the pause between each new check of the captcha solution.": {
       "ru": "Интервал проверки решения задачи в миллисекундах. С помощью этого параметра вы можете контролировать длительность паузы между каждой новой проверкой решения капчи."
     },
-    "You can set the delay and interval for checking the task solution by filling in the appropriate fields. We recommend using the values that are described in the service documentation.": {
-      "ru": "Вы можете настроить задержку и интервал проверки решения задачи, заполнив соответствующие поля. Рекомендуется использовать значения, которые описаны в документации сервисов."
-    },
     "Also if you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar programs, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.": {
       "ru": "Также, в случае если вы используете такие программы, как <code>CapMonster</code>, <code>XEvil</code> или аналоги, вы должны заполнить поле <code>Кастомный URL сервиса</code> в соответствии с документацией к данному ПО."
     },

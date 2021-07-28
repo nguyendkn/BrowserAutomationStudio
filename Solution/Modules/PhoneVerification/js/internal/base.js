@@ -86,19 +86,20 @@ _SMS.BaseApi = function(config, data, path){
 	this.beforeRequest = function(){
 		_do(function(){
 			var sleepTime = 0;
+			var nowDate = Date.now();
 			
-			if(api.ban > 0 && api.ban - Date.now() > 0){
-				sleepTime = api.ban - Date.now();
+			if(api.ban > 0 && api.ban - nowDate > 0){
+				sleepTime = api.ban - nowDate;
 			};
 			
-			if(P("sms", api.id).length > 0 && parseInt(P("sms", api.id)) - Date.now() > 0){
-				var time = parseInt(P("sms", api.id)) - Date.now() + rand(0,30);
+			if(P("sms", api.id).length > 0 && parseInt(P("sms", api.id)) - nowDate > 0){
+				var time = parseInt(P("sms", api.id)) - nowDate + rand(0,30);
 				if(time > sleepTime){
 					sleepTime = time;
 				};
 			};
 
-			_if_else(sleepTime==0, function(){
+			_if_else(sleepTime <= 0, function(){
 				_break("function");
 			}, function(){
 				api.log((_K=="ru" ? 'Ждем ' : 'Wait ') + (sleepTime/1000) + (_K=="ru" ? ' секунд перед запросом к ' : ' seconds before requesting ') + api.name);

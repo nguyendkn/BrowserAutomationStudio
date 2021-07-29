@@ -198,11 +198,11 @@
       },
 
       'input #inspectorVariablesFilter': _.debounce(function (e) {
-        this.filterTree();
+        this.filterTree()
       }, 200),
 
       'keydown #inspectorVariablesFilter': function (e) {
-        if (e.key == ' ') e.preventDefault();
+        if (e.key === ' ') e.preventDefault();
       },
     }
   });

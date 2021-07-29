@@ -1,11 +1,11 @@
 var ArchivePath = GetInputConstructorValue("ArchivePath", loader);
 if(ArchivePath["original"].length == 0){
-    Invalid(tr("Archive path") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Archive path") + tr("\" is not specified"));
     return;
 };
 var ArchiveType = GetInputConstructorValue("ArchiveType", loader);
 if(ArchiveType["original"].length == 0){
-	Invalid(tr("Archive type") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Archive type") + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();

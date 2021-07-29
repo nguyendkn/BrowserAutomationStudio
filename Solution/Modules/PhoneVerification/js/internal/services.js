@@ -56,6 +56,17 @@ _SMS.getServiceApi = function(data){
 				ref: 'lyevZ418dni4'
 			}
 		},
+		"activation.pw": {
+			api: this.SmsActivateApi,
+			config: {
+				name: 'ActivationPw',
+				url: 'https://activation.pw',
+				supportedMethods: [
+					'getNumbersCount'
+				],
+				ref: '4dcbfedf7b81f8d067a78a6d825e36de'
+			}
+		},
 		"getsms.online": {
 			api: this.SmsActivateApi,
 			config: {

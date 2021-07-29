@@ -1,6 +1,6 @@
 var FilePath = GetInputConstructorValueFilename("FilePath", loader);
 if(FilePath["original"].length==0){
-    Invalid(tr("File path") + " " + tr("is empty"));
+    Invalid(tr("The parameter \"") + tr("File path") + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();

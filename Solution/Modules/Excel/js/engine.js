@@ -97,7 +97,7 @@ function Excel_WriteToCell(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
-	var data = Excel_PreparationOfDates(_function_argument("Data"));
+	var data = Excel_PreparationOfDates(_function_argument("Data"), _function_argument("Convert"), _function_argument("SetFormat"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
@@ -124,7 +124,7 @@ function Excel_ReadSheet(){
 function Excel_WriteToSheet(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
-	var data = Excel_PreparationOfDates(_function_argument("Data"));
+	var data = Excel_PreparationOfDates(_function_argument("Data"), _function_argument("Convert"), _function_argument("SetFormat"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
@@ -170,7 +170,7 @@ function Excel_InsertRows(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_row = _function_argument("FromRow");
-	var data = Excel_PreparationOfDates(_function_argument("Data"));
+	var data = Excel_PreparationOfDates(_function_argument("Data"), _function_argument("Convert"), _function_argument("SetFormat"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
@@ -220,7 +220,7 @@ function Excel_WriteToCellsRange(){
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var from_cell = Excel_FormatAddress(_function_argument("FromCell"));
 	var to_cell = Excel_FormatAddress(_function_argument("ToCell"));
-	var data = Excel_PreparationOfDates(_function_argument("Data"));
+	var data = Excel_PreparationOfDates(_function_argument("Data"), _function_argument("Convert"), _function_argument("SetFormat"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
@@ -232,7 +232,7 @@ function Excel_WriteToCellsRange(){
 };
 function Excel_ImportToResources(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
-	var sheet_list = Excel_ConvertToList(_function_argument("SheetList"));
+	var sheet_list = _to_arr(_function_argument("SheetList"));
 	var success_number = _function_argument("SuccessNumber");
 	var fail_number = _function_argument("FailNumber");
 	var simultaneous_usage = _function_argument("SimultaneousUsage");
@@ -272,7 +272,7 @@ function Excel_ImportToResources(){
 };
 function Excel_ExportFromResources(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
-	var resource_list = Excel_ConvertToList(_function_argument("ResourceList"));
+	var resource_list = _to_arr(_function_argument("ResourceList"));
 	var sync = _function_argument("Sync");
 	var timeout = _function_argument("Timeout");
 	
@@ -457,7 +457,7 @@ function Excel_GetCellStyles(){
 	var file_path = Excel_FormatPath(_function_argument("FilePath"));
 	var sheet_index_or_name = _function_argument("SheetIndexOrName");
 	var cell_address = Excel_FormatAddress(_function_argument("CellAddress"));
-	var styles_name_list = Excel_ConvertToList(_function_argument("StylesNameList"));
+	var styles_name_list = _to_arr(_function_argument("StylesNameList"));
 	var timeout = _function_argument("Timeout");
 	
 	_XLSX_LAST_ACTION = {ru:"Получить список стилей для одной ячейки",en:"Get style list for single cell"};
@@ -630,21 +630,6 @@ function Excel_NumberToDate(number){
 	
 	return date;
 };
-function Excel_IsJsonString(str){
-	if(typeof str==="string" && str.length > 0 && ((str.slice(0, 1)==="[" && str.slice(-1)==="]") || (str.slice(0, 1)==="{" && str.slice(-1)==="}"))){
-		try{
-			JSON.parse(str);
-		}catch(e){
-			return false;
-		};
-		return true;
-	}else{
-		return false;
-	};
-};
-function Excel_ConvertToList(str){
-	return (str==="" || typeof str=="object") ? str : (Excel_IsJsonString(str) ? JSON.parse(str) : str.split(/,\s|,/));
-};
 function Excel_ConvertDates(results){
 	var values = results[0];
 	var present_date = results[1];
@@ -659,13 +644,18 @@ function Excel_ConvertDates(results){
 	};
 	return values;
 };
-function Excel_PreparationOfDates(data){
-	var present_date = false;
-	var styles = [];
+function Excel_PreparationOfDates(data, convert, set_format){
+	convert = _avoid_nilb(convert, true);
+	set_format = _avoid_nilb(set_format, true);
+	if(!convert && !set_format){
+		return [data, false, null]
+	};
 	if(typeof data=="object" && Array.isArray(data)){
+		var present_date = false;
+		var formats = [];
 		var new_data = [];
 		for(var row_index = 0; row_index < data.length; row_index++){
-			styles[row_index] = [];
+			formats[row_index] = [];
 			new_data[row_index] = [];
 			var row = data[row_index];
 			if(typeof row=="object" && Array.isArray(row)){
@@ -673,23 +663,23 @@ function Excel_PreparationOfDates(data){
 					var cell = row[cell_index];
 					if(cell instanceof Date){
 						present_date = true;
-						new_data[row_index][cell_index] = Excel_DateToNumber(cell);
-						styles[row_index][cell_index] = _XLSX_DATE_FORMAT;
+						new_data[row_index][cell_index] = convert ? Excel_DateToNumber(cell) : cell;
+						formats[row_index][cell_index] = _XLSX_DATE_FORMAT;
 					}else{
 						new_data[row_index][cell_index] = cell;
-						styles[row_index][cell_index] = "General";
+						formats[row_index][cell_index] = "General";
 					};
 				};
 			}else{
 				new_data[row_index] = row;
 			};
 		};
-		return [new_data, present_date ? styles : "General"];
+		return [new_data, convert, set_format ? (present_date ? formats : "General") : null];
     }else{
 		if(data instanceof Date){
-			return [Excel_DateToNumber(data), _XLSX_DATE_FORMAT];
-        }else{
-			return [data, "General"];
+			return [convert ? Excel_DateToNumber(data) : data, convert, set_format ? _XLSX_DATE_FORMAT : null];
+		}else{
+			return [data, convert, set_format ? "General" : null];
 		};
 	};
 };

@@ -15,6 +15,7 @@ if($("#values").val().length == 0){
 	Invalid(tr("The parameter \"") + tr("Values") + tr("\" is not specified"));
     return;
 };
+var convert = $("#Check2").is(':checked');
 var fields = GetInputConstructorValue("fields", loader);
 var limit = GetInputConstructorValue("limit", loader);
 try {
@@ -23,6 +24,7 @@ try {
         "where": where,
         "parameterize": parameterize,
         "values": values,
+        "convert": convert,
         "fields": fields["updated"],
         "limit": limit["updated"]
     });

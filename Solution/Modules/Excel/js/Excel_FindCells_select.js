@@ -1,16 +1,16 @@
 var FilePath = GetInputConstructorValueFilename("FilePath", loader);
 if(FilePath["original"].length == 0){
-    Invalid(tr("File path") + " " + tr("is empty"));
+    Invalid(tr("The parameter \"") + tr("File path") + tr("\" is not specified"));
     return;
 };
 var SheetIndexOrName = GetInputConstructorValue("SheetIndexOrName", loader);
 if(SheetIndexOrName["original"].length == 0){
-    Invalid(tr("Sheet index or name") + " " + tr("is empty"));
+    Invalid(tr("The parameter \"") + tr("Sheet index or name") + tr("\" is not specified"));
     return;
 };
 var Contains = GetInputConstructorValue("Contains", loader);
 if(Contains["original"].length == 0){
-	Invalid(tr("Cells contains") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Cells contains") + tr("\" is not specified"));
     return;
 };
 var Save = this.$el.find("#Save").val().toUpperCase();

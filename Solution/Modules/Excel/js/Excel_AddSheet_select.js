@@ -1,11 +1,11 @@
 var FilePath = GetInputConstructorValueFilename("FilePath", loader);
 if(FilePath["original"].length == 0){
-    Invalid(tr("File path") + " " + tr("is empty"));
+    Invalid(tr("The parameter \"") + tr("File path") + tr("\" is not specified"));
     return;
 };
 var SheetName = GetInputConstructorValue("SheetName", loader);
 if(SheetName["original"].length == 0){
-	Invalid(tr("Sheet name") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Sheet name") + tr("\" is not specified"));
     return;
 };
 var SheetIndex = GetInputConstructorValue("SheetIndex", loader);

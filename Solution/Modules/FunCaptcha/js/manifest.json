@@ -52,8 +52,8 @@
     "This actions solves the <code>FunCaptcha</code>.": {
       "ru": "Данное действие решает <code>FunCaptcha</code>."
     },
-    "All necessary data for the <code>FunCaptcha</code> solution is obtained automatically from the page source.": {
-      "ru": "Все необходимые данные для решения <code>FunCaptcha</code> получаются автоматически из кода страницы."
+    "This action does not require you to search for the necessary information to solve the <code>FunCaptcha</code> manually, everything happens automatically without your interaction using the source code of the page and other data.": {
+      "ru": "Данное действие не требует от вас поиска необходимой информации для решения <code>FunCaptcha</code> в ручном режиме, все происходит автоматически без вашего участия с использованием исходного кода страницы и других данных."
     },
     "Detailed documentation for solving <code>FunCaptcha</code> can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#solving_funcaptcha_new');return false\">here</a>.": {
       "ru": "Подробную документацию по решению <code>FunCaptcha</code> можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_funcaptcha_new');return false\">здесь</a>."

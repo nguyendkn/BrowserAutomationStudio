@@ -1,6 +1,8 @@
 (function (global, $, _) {
-  const Model = global.Scenario.Inspector.ScriptDataModel.extend({
-    defaults: _.extend(global.Scenario.Inspector.ScriptDataModel.prototype.defaults, {
+  const { Inspector } = global.Scenario;
+
+  const Model = Inspector.ScriptDataModel.extend({
+    defaults: _.extend(Inspector.ScriptDataModel.prototype.defaults, {
       supportHighlight: true,
     }),
   });
@@ -143,7 +145,7 @@
         e.stopPropagation();
         if (!path) return;
 
-        const modal = new global.Scenario.Inspector.Modal({
+        const modal = new Inspector.Modal({
           callback: ({ isChanged, value, cancel, type }) => {
             if (!cancel && isChanged) {
               Scenario.utils.updateVariable(value, path, type);
@@ -166,5 +168,5 @@
     }
   });
 
-  global.Scenario.Inspector.Variables = View;
+  Inspector.Variables = View;
 })(window, jQuery, _);

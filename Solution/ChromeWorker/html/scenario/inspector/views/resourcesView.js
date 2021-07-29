@@ -1,6 +1,8 @@
 (function (global, $, _) {
-  const Model = global.Scenario.Inspector.ScriptDataModel.extend({
-    defaults: _.extend(global.Scenario.Inspector.ScriptDataModel.prototype.defaults, {
+  const { Inspector } = global.Scenario;
+
+  const Model = Inspector.ScriptDataModel.extend({
+    defaults: _.extend(Inspector.ScriptDataModel.prototype.defaults, {
       supportHighlight: false,
     }),
   });
@@ -147,5 +149,5 @@
     }
   });
 
-  global.Scenario.Inspector.Resources = View;
+  Inspector.Resources = View;
 })(window, jQuery, _);

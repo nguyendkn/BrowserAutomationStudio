@@ -88,7 +88,16 @@ _.extend(Scenario.JST, {
 
   'inspector/variables': _.template(/*html*/`
     <div class="inspector-tools">
+      <span style="width: 26px; padding: 0px 6px;">
+        <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
+      </span>
       <input type="text" id="inspectorVariablesFilter" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+      <button class="inspector-sort-button">
+        <i class="fa fa-filter"></i>
+      </button>
+      <button class="inspector-filter-button">
+        <i class="fa fa-cog"></i>
+      </button>
     </div>
     <div id="inspectorVariables" class="inspector-panel">
       <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
@@ -100,7 +109,16 @@ _.extend(Scenario.JST, {
 
   'inspector/resources': _.template(/*html*/`
     <div class="inspector-tools">
+      <span style="width: 26px; padding: 0px 6px;">
+        <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
+      </span>
       <input type="text" id="inspectorResourcesFilter" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+      <button class="inspector-sort-button">
+        <i class="fa fa-filter"></i>
+      </button>
+      <button class="inspector-filter-button">
+        <i class="fa fa-cog"></i>
+      </button>
     </div>
     <div id="inspectorResources" class="inspector-panel">
       <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">

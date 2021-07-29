@@ -1,49 +1,8 @@
 (function (global, $, _) {
-  const Model = Backbone.Model.extend({
-    defaults: {
-      sortingType: 'alphabetically',
+  const Model = global.Scenario.Inspector.ScriptDataModel.extend({
+    defaults: _.extend(global.Scenario.Inspector.ScriptDataModel.prototype.defaults, {
       supportHighlight: true,
-      highlight: false,
-      metadata: {},
-      source: {},
-      state: {},
-    },
-
-    getValue(path) {
-      const source = this.get('source');
-      return jsonpatch.getValueByPointer(source, path);
-    },
-
-    update(data) {
-      if (!data) return;
-      const metadata = this.get('metadata');
-      const source = this.get('source');
-      this.set('source', data);
-
-      const diff = jsonpatch.compare(source, data), time = Date.now();
-
-      diff.forEach(({ path, value, op }) => {
-        if (!_.has(metadata, path)) {
-          metadata[path] = { usage: 6, value, op, addedAt: time, changedAt: time };
-        } else {
-          if (op === 'remove') {
-            return (delete metadata[path]);
-          }
-          metadata[path].changedAt = time;
-        }
-      });
-
-      if (this.get('supportHighlight')) {
-        const highlight = this.get('highlight');
-        _.each(metadata, (item, path) => {
-          if (highlight) {
-            item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
-          }
-          this.trigger('highlight', { ...item, path });
-        });
-        this.set('highlight', false);
-      }
-    },
+    }),
   });
 
   const View = Backbone.View.extend({

@@ -84,7 +84,7 @@
     render() {
       if (this.$el.is(':empty')) {
         this.$el.html(this.template({}));
-        const $filter = this.$('#inspectorVariablesFilter');
+        const $filter = this.$('.inspector-filter-input');
         const preserveState = BrowserAutomationStudio_PreserveInterfaceState;
 
         this.tree = new JSONTree(this.$('#inspectorVariablesData')[0], {
@@ -102,7 +102,7 @@
     },
 
     filterTree() {
-      const query = this.$('#inspectorVariablesFilter').val().toLowerCase();
+      const query = this.$('.inspector-filter-input').val().toLowerCase();
 
       this.$('.jst-root > ul > li').each((__, el) => {
         const $el = $(el);
@@ -197,11 +197,11 @@
         modal.render();
       },
 
-      'input #inspectorVariablesFilter': _.debounce(function (e) {
+      'input .inspector-filter-input': _.debounce(function (e) {
         this.filterTree()
       }, 200),
 
-      'keydown #inspectorVariablesFilter': function (e) {
+      'keydown .inspector-filter-input': function (e) {
         if (e.key === ' ') e.preventDefault();
       },
     }

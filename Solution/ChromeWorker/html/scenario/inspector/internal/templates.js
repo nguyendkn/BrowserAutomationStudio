@@ -91,7 +91,7 @@ _.extend(Scenario.JST, {
       <span style="width: 26px; padding: 0px 6px;">
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
-      <input type="text" id="inspectorVariablesFilter" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+      <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
       <button class="inspector-sort-button">
         <i class="fa fa-filter"></i>
       </button>
@@ -112,7 +112,7 @@ _.extend(Scenario.JST, {
       <span style="width: 26px; padding: 0px 6px;">
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
-      <input type="text" id="inspectorResourcesFilter" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+      <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
       <button class="inspector-sort-button">
         <i class="fa fa-filter"></i>
       </button>

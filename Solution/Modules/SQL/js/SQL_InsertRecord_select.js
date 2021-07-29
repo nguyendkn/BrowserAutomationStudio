@@ -10,12 +10,16 @@ if(data["original"].length == 0){
     return;
 };
 var convert = $("#Check").is(':checked');
+var idFieldName = GetInputConstructorValue("idFieldName", loader);
+var Save = this.$el.find("#Save").val().toUpperCase();
 try{
-    var code = loader.GetAdditionalData() + _.template($("#SQL_Insert_code").html())({
+    var code = loader.GetAdditionalData() + _.template($("#SQL_InsertRecord_code").html())({
         "table": table["updated"],
         "fields": fields["updated"],
         "data": data["updated"],
-        "convert": convert
+        "convert": convert,
+        "idFieldName": idFieldName["updated"],
+        "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

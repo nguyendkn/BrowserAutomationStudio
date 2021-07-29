@@ -102,7 +102,7 @@
   </span>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Solve <code>FunCaptcha</code>.</div>
+	<div class="tr tooltip-paragraph-first-fold">This actions solves the <code>FunCaptcha</code>.</div>
   <div class="tr tooltip-paragraph-fold">The <code>FunCaptcha</code> is a captcha from ArkoseLabs. The most popular type of this captcha is the rotation of images with the arrows. To pass such a captcha, you need to put all the pictures in the correct position.</div>
   <div class="tr tooltip-paragraph-fold">All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.</div>
   <div class="tr tooltip-paragraph-fold">All necessary data for the <code>FunCaptcha</code> solution is obtained automatically from the page source.</div>

@@ -102,7 +102,7 @@
   </span>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Solve <code>HCaptcha</code>.</div>
+	<div class="tr tooltip-paragraph-first-fold">This actions solves the <code>HCaptcha</code>.</div>
   <div class="tr tooltip-paragraph-fold">The <code>HCaptcha</code> is a captcha from Intuition Machines. This type of captcha is very similar to ReCaptchaV2 from Google. To pass this captcha, you need to select all the pictures that match the given condition.</div>
   <div class="tr tooltip-paragraph-fold">All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.</div>
   <div class="tr tooltip-paragraph-fold">All necessary data for the <code>HCaptcha</code> solution is obtained automatically from the page source.</div>

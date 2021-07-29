@@ -46,11 +46,11 @@
     "How HCaptcha looks like?": {
       "ru": "Как выглядит HCaptcha?"
     },
-    "Solve <code>HCaptcha</code>.": {
-      "ru": "Решить <code>HCaptcha</code>."
-    },
     "https://i.imgur.com/8ygWWWD.gif": {
       "ru": "https://i.imgur.com/vJptCoA.gif"
+    },
+    "This actions solves the <code>HCaptcha</code>.": {
+      "ru": "Данное действие решает <code>HCaptcha</code>."
     },
     "All necessary data for the <code>HCaptcha</code> solution is obtained automatically from the page source.": {
       "ru": "Все необходимые данные для решения <code>HCaptcha</code> получаются автоматически из кода страницы."

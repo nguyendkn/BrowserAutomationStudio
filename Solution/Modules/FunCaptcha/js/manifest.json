@@ -46,11 +46,11 @@
     "How FunCaptcha looks like?": {
       "ru": "Как выглядит FunCaptcha?"
     },
-    "Solve <code>FunCaptcha</code>.": {
-      "ru": "Решить <code>FunCaptcha</code>."
-    },
     "https://i.imgur.com/D7xAa2b.gif": {
       "ru": "https://i.imgur.com/YMdTIqj.gif"
+    },
+    "This actions solves the <code>FunCaptcha</code>.": {
+      "ru": "Данное действие решает <code>FunCaptcha</code>."
     },
     "All necessary data for the <code>FunCaptcha</code> solution is obtained automatically from the page source.": {
       "ru": "Все необходимые данные для решения <code>FunCaptcha</code> получаются автоматически из кода страницы."

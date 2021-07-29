@@ -1,11 +1,11 @@
 var FolderPath = GetInputConstructorValue("FolderPath", loader);
 if(FolderPath["original"].length == 0){
-	Invalid(tr("Folder path") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Folder path") + tr("\" is not specified"));
     return;
 };
 var ArchiveType = GetInputConstructorValue("ArchiveType", loader);
 if(ArchiveType["original"].length == 0){
-    Invalid(tr("Archive type") + " " + tr("is empty"));
+	Invalid(tr("The parameter \"") + tr("Archive type") + tr("\" is not specified"));
     return;
 };
 var DestinationPath = GetInputConstructorValue("DestinationPath", loader);

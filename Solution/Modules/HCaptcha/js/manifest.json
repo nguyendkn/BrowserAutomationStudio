@@ -60,6 +60,9 @@
     },
     "The <code>HCaptcha</code> is a captcha from Intuition Machines. This type of captcha is very similar to ReCaptchaV2 from Google. To pass this captcha, you need to select all the pictures that match the given condition.": {
       "ru": "<code>HCaptcha</code> - это капча от компании Intuition Machines. Данный тип капчи очень сильно похож на ReCaptchaV2 от компании Google. Для прохождения данной капчи необходимо выбрать все картинки, которые соответствуют заданному условию."
+    },
+    "<code>HCaptcha</code> is solved on the service worker's computer. This means that the site with the captcha can potentially check the IP of the person who solves it and put this IP in the blacklist. There is a special setting <code>Send current proxy to service</code> (under the advanced settings). If you use this option, the worker will solve the captcha through the proxy server that was set using the <code>Proxy</code> action from the browser actions section.": {
+      "ru": "<code>HCaptcha</code> решается на компьютере работника сервиса. Это означает, что сайт с капчей потенциально может проверять IP человека, который её решает и вносить этот IP в черный список. Существует специальная настройка <code>Отправлять текущий прокси на сервис</code> (в разделе продвинутых настроек). Если использовать эту опцию, работник будет решать капчу через прокси сервер, который был установлен с помощью действия <code>Прокси</code> из раздела браузерных действий."
     }
   },
   "browser": ["browser/browser.js"],

@@ -2,9 +2,11 @@
   const { Inspector } = global.Scenario;
 
   const Model = Inspector.ScriptDataModel.extend({
-    defaults: _.extend(Inspector.ScriptDataModel.prototype.defaults, {
-      supportHighlight: false,
-    }),
+    defaults: function () {
+      return _.extend({}, Inspector.ScriptDataModel.prototype.defaults, {
+        supportHighlight: false,
+      })
+    },
   });
 
   const View = Backbone.View.extend({

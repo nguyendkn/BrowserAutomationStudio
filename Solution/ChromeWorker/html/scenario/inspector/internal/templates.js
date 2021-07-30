@@ -92,12 +92,8 @@ _.extend(Scenario.JST, {
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
-      <button class="inspector-sort-button">
-        <i class="fa fa-filter"></i>
-      </button>
-      <button class="inspector-filter-button">
-        <i class="fa fa-cog"></i>
-      </button>
+      <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
+      <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
       <ul class="inspector-filter-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
           <% const lower = type.toLowerCase() %>
@@ -122,12 +118,8 @@ _.extend(Scenario.JST, {
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
-      <button class="inspector-sort-button">
-        <i class="fa fa-filter"></i>
-      </button>
-      <button class="inspector-filter-button">
-        <i class="fa fa-cog"></i>
-      </button>
+      <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
+      <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
       <ul class="inspector-filter-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
           <% const lower = type.toLowerCase() %>

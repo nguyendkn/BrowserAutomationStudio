@@ -75,7 +75,7 @@
           const text = $label.text().toLowerCase();
           return $el.toggle(text.includes(query));
         } else {
-          const $node = $el.children('.jst-node');
+          const $node = $el.children('[data-path]');
           const type = $node[0].dataset.type;
           return $el.toggle(this.model.get('visibleTypes')[type]);
         }

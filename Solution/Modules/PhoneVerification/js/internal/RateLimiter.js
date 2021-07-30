@@ -13,7 +13,7 @@
  *  the parent of this bucket.
  */
 _SMS.rateLimiter = function(options){
-	const rate = this;
+	const limiter = this;
 	
 	this.tokenBucket = new _SMS.tokenBucket({
 		bucketSize: options.tokensPerInterval,
@@ -41,34 +41,34 @@ _SMS.rateLimiter = function(options){
 		var count = _avoid_nilb(_function_argument("count"), 1);
 		
         // Make sure the request isn't for more than we can handle
-        if(count > rate.tokenBucket.bucketSize){
-			fail('Requested tokens ' + count + ' exceeds maximum tokens per interval ' + rate.tokenBucket.bucketSize);
+        if(count > limiter.tokenBucket.bucketSize){
+			fail('Requested tokens ' + count + ' exceeds maximum tokens per interval ' + limiter.tokenBucket.bucketSize);
         };
         var now = Date.now();
         // Advance the current interval and reset the current interval token count
         // if needed
-        if(now < rate.curIntervalStart || now - rate.curIntervalStart >= rate.tokenBucket.interval){
-            rate.curIntervalStart = now;
-            rate.tokensThisInterval = 0;
+        if(now < limiter.curIntervalStart || now - limiter.curIntervalStart >= limiter.tokenBucket.interval){
+            limiter.curIntervalStart = now;
+            limiter.tokensThisInterval = 0;
         };
         // If we don't have enough tokens left in this interval, wait until the
         // next interval
-		_if(count > rate.tokenBucket.tokensPerInterval - rate.tokensThisInterval, function(){
-			_if_else(rate.fireImmediately, function(){
+		_if(count > limiter.tokenBucket.tokensPerInterval - limiter.tokensThisInterval, function(){
+			_if_else(limiter.fireImmediately, function(){
 				_function_return(-1);
 			}, function(){
-				var waitMs = Math.ceil(rate.curIntervalStart + rate.tokenBucket.interval - now);
-				_call_function(rate.wait,{ms:waitMs})!
-				_call_function(rate.tokenBucket.removeTokens,{count:count})!
+				var waitMs = Math.ceil(limiter.curIntervalStart + limiter.tokenBucket.interval - now);
+				_call_function(limiter.wait,{ms:waitMs})!
+				_call_function(limiter.tokenBucket.removeTokens,{count:count})!
 				var remainingTokens = _result_function();
-                rate.tokensThisInterval += count;
+                limiter.tokensThisInterval += count;
 				_function_return(remainingTokens);
 			})!
 		})!
         // Remove the requested number of tokens from the token bucket
-		_call_function(rate.tokenBucket.removeTokens,{count:count})!
+		_call_function(limiter.tokenBucket.removeTokens,{count:count})!
 		var remainingTokens = _result_function();
-        rate.tokensThisInterval += count;
+        limiter.tokensThisInterval += count;
 		_function_return(remainingTokens);
     };
 	
@@ -97,24 +97,24 @@ _SMS.rateLimiter = function(options){
 		count = _avoid_nilb(_function_argument("count"), 1);
 		
         // Make sure the request isn't for more than we can handle
-        if(count > rate.tokenBucket.bucketSize){
+        if(count > limiter.tokenBucket.bucketSize){
 			return false;
 		};
         var now = Date.now();
         // Advance the current interval and reset the current interval token count
         // if needed
-        if(now < rate.curIntervalStart || now - rate.curIntervalStart >= rate.tokenBucket.interval){
-            rate.curIntervalStart = now;
-            rate.tokensThisInterval = 0;
+        if(now < limiter.curIntervalStart || now - limiter.curIntervalStart >= limiter.tokenBucket.interval){
+            limiter.curIntervalStart = now;
+            limiter.tokensThisInterval = 0;
         };
         // If we don't have enough tokens left in this interval, return false
-        if(count > rate.tokenBucket.tokensPerInterval - rate.tokensThisInterval){
+        if(count > limiter.tokenBucket.tokensPerInterval - limiter.tokensThisInterval){
 			return false;
 		};
         // Try to remove the requested number of tokens from the token bucket
-        var removed = rate.tokenBucket.tryRemoveTokens(count);
+        var removed = limiter.tokenBucket.tryRemoveTokens(count);
         if(removed){
-            rate.tokensThisInterval += count;
+            limiter.tokensThisInterval += count;
         };
         return removed;
     };
@@ -124,7 +124,7 @@ _SMS.rateLimiter = function(options){
      * @returns {Number} The number of tokens remaining.
      */
     this.getTokensRemaining = function(){
-        rate.tokenBucket.drip();
-        return rate.tokenBucket.content;
+        limiter.tokenBucket.drip();
+        return limiter.tokenBucket.content;
     };
 };

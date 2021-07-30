@@ -98,8 +98,8 @@ _.extend(Scenario.JST, {
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="inspectorFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
-            <label for="inspectorFilter<%= type %>"><%- type %></label>
+            <input type="checkbox" id="inspectorVariablesFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
+            <label for="inspectorVariablesFilter<%= type %>"><%- type %></label>
           </li>
         <% } %>
       </ul>
@@ -124,8 +124,8 @@ _.extend(Scenario.JST, {
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="inspectorFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
-            <label for="inspectorFilter<%= type %>"><%- type %></label>
+            <input type="checkbox" id="inspectorResoourcesFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
+            <label for="inspectorResoourcesFilter<%= type %>"><%- type %></label>
           </li>
         <% } %>
       </ul>

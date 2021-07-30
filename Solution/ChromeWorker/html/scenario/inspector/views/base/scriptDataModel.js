@@ -44,6 +44,14 @@
         metadata: {},
         source: {},
         state: {},
+        visibleTypes: {
+          undefined: false,
+          boolean: true,
+          string: true,
+          number: true,
+          date: true,
+          null: true,
+        },
       }
     })
   })

@@ -27,6 +27,10 @@
         });
       }
 
+      model.on('change:visibleTypes', (__, types) => {
+        this.filterTree();
+      });
+
       model.on('change:source', (__, source) => {
         const $data = this.$('#inspectorVariablesData');
         const isEmpty = _.isEmpty(source);
@@ -44,15 +48,13 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template({}));
-        const $filter = this.$('.inspector-filter-input');
+        this.$el.html(this.template({ ...this.model.toJSON() }));
         const preserveState = BrowserAutomationStudio_PreserveInterfaceState;
 
         this.tree = new JSONTree(this.$('#inspectorVariablesData')[0], {
           onRender: () => {
             this.sortTree(this.model.get('sortingType'));
-            if ($filter.val()) this.filterTree();
-            this.loadState();
+            this.filterTree().loadState();
           },
           onCollapse: preserveState,
           onExpand: preserveState,
@@ -72,6 +74,10 @@
           const $label = $el.children('.jst-property');
           const text = $label.text().toLowerCase();
           return $el.toggle(text.includes(query));
+        } else {
+          const $node = $el.children('.jst-node');
+          const type = $node[0].dataset.type;
+          return $el.toggle(this.model.get('visibleTypes')[type]);
         }
 
         $el.show();
@@ -156,6 +162,21 @@
           path,
         });
         modal.render();
+      },
+
+      'change .inspector-filter-menu-item > input': function (e) {
+        const $el = $(e.target), type = $el.val();
+
+        this.model.set('visibleTypes', {
+          ...this.model.get('visibleTypes'),
+          [type]: $el.prop('checked')
+        });
+      },
+
+      'click .inspector-filter-button': function (e) {
+        e.preventDefault();
+        const $menu = $(e.currentTarget).next('.inspector-filter-menu');
+        $menu.toggle($menu.is(':hidden'));
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {

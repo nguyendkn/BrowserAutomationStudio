@@ -98,6 +98,15 @@ _.extend(Scenario.JST, {
       <button class="inspector-filter-button">
         <i class="fa fa-cog"></i>
       </button>
+      <ul class="inspector-filter-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
+        <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
+          <% const lower = type.toLowerCase() %>
+          <li class="inspector-filter-menu-item">
+            <input type="checkbox" id="inspectorFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
+            <label for="inspectorFilter<%= type %>"><%- type %></label>
+          </li>
+        <% } %>
+      </ul>
     </div>
     <div id="inspectorVariables" class="inspector-panel">
       <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
@@ -119,6 +128,15 @@ _.extend(Scenario.JST, {
       <button class="inspector-filter-button">
         <i class="fa fa-cog"></i>
       </button>
+      <ul class="inspector-filter-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
+        <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
+          <% const lower = type.toLowerCase() %>
+          <li class="inspector-filter-menu-item">
+            <input type="checkbox" id="inspectorFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
+            <label for="inspectorFilter<%= type %>"><%- type %></label>
+          </li>
+        <% } %>
+      </ul>
     </div>
     <div id="inspectorResources" class="inspector-panel">
       <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">

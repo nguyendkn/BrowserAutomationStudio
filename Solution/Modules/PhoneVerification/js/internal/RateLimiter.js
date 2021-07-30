@@ -15,17 +15,89 @@
 _SMS.rateLimiter = function(options){
 	const limiter = this;
 	
+	this.type = options.type;
+	
+	if(options.type==="service"){
+		if(_is_nilb(options.id)){
+			fail('RateLimiter id not specified, this parameter is required when working in multithreaded mode');
+		};
+		this.id = options.id;
+		if(_is_nilb(P("sms", options.id))){
+			var now = Date.now();
+			PSet("sms", options.id, JSON.stringify({
+				content: options.tokensPerInterval,
+				lastDrip: now,
+				curIntervalStart: now,
+				tokensThisInterval: 0
+			}));
+		};
+	};
+	
 	this.tokenBucket = new _SMS.tokenBucket({
 		bucketSize: options.tokensPerInterval,
 		tokensPerInterval: options.tokensPerInterval,
 		interval: options.interval,
-		parentBucket: options.parentBucket
+		parentBucket: options.parentBucket,
+		type: options.type,
+		id: options.id
 	});
-	// Fill the token bucket to start
-	this.tokenBucket.content = options.tokensPerInterval;
-	this.curIntervalStart = Date.now();
-	this.tokensThisInterval = 0;
+	
+	if(options.type!=="service"){
+		// Fill the token bucket to start
+		this.tokenBucket.setContent(options.tokensPerInterval);
+		this.curIntervalStart = Date.now();
+		this.tokensThisInterval = 0;
+	};
+	
 	this.fireImmediately = _avoid_nilb(options.fireImmediately, false);
+	
+	this.getParams = function(){
+		return JSON.parse(P("sms", limiter.id));
+	};
+	
+	this.changeParams = function(changer){
+		var params = JSON.parse(P("sms", limiter.id));
+		changer(params);
+		PSet("sms", limiter.id, JSON.stringify(params));
+	};
+	
+	this.getTokensThisInterval = function(){
+		return (limiter.type==="service" ? limiter.getParams() : limiter).tokensThisInterval;
+	};
+	
+	this.setTokensThisInterval = function(newTokensThisInterval){
+		if(limiter.type==="service"){
+			limiter.changeParams(function(params){
+				return params.tokensThisInterval = newTokensThisInterval;
+			});
+		}else{
+			limiter.tokensThisInterval = newTokensThisInterval;
+		};
+	};
+	
+	this.plusTokensThisInterval = function(count){
+		if(limiter.type==="service"){
+			limiter.changeParams(function(params){
+				return params.tokensThisInterval += count;
+			});
+		}else{
+			limiter.tokensThisInterval += count;
+		};
+	};
+	
+	this.getCurIntervalStart = function(){
+		return (limiter.type==="service" ? limiter.getParams() : limiter).curIntervalStart;
+	};
+	
+	this.setCurIntervalStart = function(newCurIntervalStart){
+		if(limiter.type==="service"){
+			limiter.changeParams(function(params){
+				return params.curIntervalStart = newCurIntervalStart;
+			});
+		}else{
+			limiter.curIntervalStart = newCurIntervalStart;
+		};
+	};
 	
 	/**
 	 * Asynchronous function
@@ -47,28 +119,28 @@ _SMS.rateLimiter = function(options){
         var now = Date.now();
         // Advance the current interval and reset the current interval token count
         // if needed
-        if(now < limiter.curIntervalStart || now - limiter.curIntervalStart >= limiter.tokenBucket.interval){
-            limiter.curIntervalStart = now;
-            limiter.tokensThisInterval = 0;
+        if(now < limiter.getCurIntervalStart() || now - limiter.getCurIntervalStart() >= limiter.tokenBucket.interval){
+            limiter.setCurIntervalStart(now);
+            limiter.setTokensThisInterval(0);
         };
         // If we don't have enough tokens left in this interval, wait until the
         // next interval
-		_if(count > limiter.tokenBucket.tokensPerInterval - limiter.tokensThisInterval, function(){
+		_if(count > limiter.tokenBucket.tokensPerInterval - limiter.getTokensThisInterval(), function(){
 			_if_else(limiter.fireImmediately, function(){
 				_function_return(-1);
 			}, function(){
-				var waitMs = Math.ceil(limiter.curIntervalStart + limiter.tokenBucket.interval - now);
+				var waitMs = Math.ceil(limiter.getCurIntervalStart() + limiter.tokenBucket.interval - now);
 				_call_function(limiter.wait,{ms:waitMs})!
 				_call_function(limiter.tokenBucket.removeTokens,{count:count})!
 				var remainingTokens = _result_function();
-                limiter.tokensThisInterval += count;
+                limiter.plusTokensThisInterval(count);
 				_function_return(remainingTokens);
 			})!
 		})!
         // Remove the requested number of tokens from the token bucket
 		_call_function(limiter.tokenBucket.removeTokens,{count:count})!
 		var remainingTokens = _result_function();
-        limiter.tokensThisInterval += count;
+        limiter.plusTokensThisInterval(count);
 		_function_return(remainingTokens);
     };
 	
@@ -103,18 +175,18 @@ _SMS.rateLimiter = function(options){
         var now = Date.now();
         // Advance the current interval and reset the current interval token count
         // if needed
-        if(now < limiter.curIntervalStart || now - limiter.curIntervalStart >= limiter.tokenBucket.interval){
-            limiter.curIntervalStart = now;
-            limiter.tokensThisInterval = 0;
+        if(now < limiter.getCurIntervalStart() || now - limiter.getCurIntervalStart() >= limiter.tokenBucket.interval){
+            limiter.setCurIntervalStart(now);
+            limiter.setTokensThisInterval(0);
         };
         // If we don't have enough tokens left in this interval, return false
-        if(count > limiter.tokenBucket.tokensPerInterval - limiter.tokensThisInterval){
+        if(count > limiter.tokenBucket.tokensPerInterval - limiter.getTokensThisInterval()){
 			return false;
 		};
         // Try to remove the requested number of tokens from the token bucket
         var removed = limiter.tokenBucket.tryRemoveTokens(count);
         if(removed){
-            limiter.tokensThisInterval += count;
+            limiter.plusTokensThisInterval(count);
         };
         return removed;
     };
@@ -125,6 +197,6 @@ _SMS.rateLimiter = function(options){
      */
     this.getTokensRemaining = function(){
         limiter.tokenBucket.drip();
-        return limiter.tokenBucket.content;
+        return limiter.tokenBucket.getContent();
     };
 };

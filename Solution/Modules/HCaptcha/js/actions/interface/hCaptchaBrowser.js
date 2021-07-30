@@ -8,7 +8,7 @@
     disable_int: true,
     id: 'serviceName',
     help: {
-      description: tr('Captcha solving service name'),
+      description: tr('Captcha solving service name. You can use service names without the `-newapi` part, the action will work without changes.'),
       examples: [
         { code: 'antigate-newapi', description: tr('Solve captcha using https://anti-captcha.com/ service') },
         { code: 'rucaptcha-newapi', description: tr('Solve captcha using https://rucaptcha.com/ service') },
@@ -83,7 +83,7 @@
       value_string: '',
       id: 'serviceUrl',
       help: {
-        description: tr('Custom service URL. Can be blank'),
+        description: tr('Custom service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.'),
         examples: [
           { code: 'Empty string', description: tr('Use default service URL, http://rucaptcha.com for RuCaptcha, etc') },
           { code: 'http://127.0.0.1:8083', description: tr('Use custom service URL with port 8083') },

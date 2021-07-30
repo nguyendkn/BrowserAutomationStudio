@@ -52,6 +52,9 @@
     "This actions solves the <code>FunCaptcha</code>.": {
       "ru": "Данное действие решает <code>FunCaptcha</code>."
     },
+    "Captcha solving service name. You can use service names without the `-newapi` part, the action will work without changes.": {
+      "ru": "Название сервиса для решения капчи. Вы можете использовать названия сервисов без части `-newapi`, действие будет работать без изменений."
+    },
     "This action does not require you to search for the necessary information to solve the <code>FunCaptcha</code> manually, everything happens automatically without your interaction using the source code of the page and other data.": {
       "ru": "Данное действие не требует от вас поиска необходимой информации для решения <code>FunCaptcha</code> в ручном режиме, все происходит автоматически без вашего участия с использованием исходного кода страницы и других данных."
     },

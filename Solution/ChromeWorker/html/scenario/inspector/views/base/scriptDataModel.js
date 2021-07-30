@@ -45,7 +45,7 @@
         source: {},
         state: {},
         visibleTypes: {
-          undefined: false,
+          undefined: true,
           boolean: true,
           string: true,
           number: true,

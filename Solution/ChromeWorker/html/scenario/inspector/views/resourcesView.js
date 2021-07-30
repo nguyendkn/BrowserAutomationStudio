@@ -77,9 +77,12 @@
           const text = $label.text().toLowerCase();
           return $el.toggle(text.includes(query));
         } else {
-          const $node = $el.children('[data-path]');
-          const type = $node[0].dataset.type;
-          return $el.toggle(this.model.get('visibleTypes')[type]);
+          const { dataset } = $el.children('[data-path]')[0];
+          const types = this.model.get('visibleTypes');
+
+          if (_.has(types, dataset.type)) {
+            return $el.toggle(types[dataset.type]);
+          }
         }
 
         $el.show();

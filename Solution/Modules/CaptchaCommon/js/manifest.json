@@ -63,9 +63,6 @@
     "Solve captcha using https://capmonster.cloud/ service": {
       "ru": "Решить капчу используя сервис https://capmonster.cloud/"
     },
-    "User-Agent that will be used by the service for solving captcha.": {
-      "ru": "User-Agent который будет использоваться сервисом для решения капчи."
-    },
     "Use default service URL, http://rucaptcha.com for RuCaptcha, etc": {
       "ru": "Использовать стандартный URL сервиса, http://rucaptcha.com для RuCaptcha и так далее"
     },
@@ -77,6 +74,9 @@
     },
     "Task solution check interval in milliseconds. With this parameter you can control the length of the pause between each new check of the captcha solution.": {
       "ru": "Интервал проверки решения задачи в миллисекундах. С помощью этого параметра вы можете контролировать длительность паузы между каждой новой проверкой решения капчи."
+    },
+    "User-Agent that will be used by the service for solving captcha. It works only if you use a proxy to solve captcha, i.e. if the `Send current proxy to solver service` option is enabled.": {
+      "ru": "User-Agent который будет использоваться сервисом для решения капчи. Это работает, только если вы используете прокси для решения капчи, то есть если опция `Отправлять текущий прокси на сервис` включена."
     },
     "Also if you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar programs, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.": {
       "ru": "Также, в случае если вы используете такие программы, как <code>CapMonster</code>, <code>XEvil</code> или аналоги, вы должны заполнить поле <code>Кастомный URL сервиса</code> в соответствии с документацией к данному ПО."

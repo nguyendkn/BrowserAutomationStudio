@@ -97,7 +97,7 @@
       default_selector: 'string',
       disable_int: true,
       id: 'userAgent',
-      help: { description: tr('User-Agent that will be used by the service for solving captcha.') }
+      help: { description: tr('User-Agent that will be used by the service for solving captcha. It works only if you use a proxy to solve captcha, i.e. if the `Send current proxy to solver service` option is enabled.') }
     }) %>
   </span>
 </div>

@@ -108,7 +108,7 @@ function SQL_UpdateRecords(){
 	_call_function(SQL_PreParameterization,{"query":where,"parameterize":where_parameterize})!
 	where = _result_function();
 	
-	_call_function(SQL_ConvertValuesToObject,{"values":values,"convert":convert})!
+	_call_function(SQL_ConvertValuesToObject,{"values":values})!
 	values = _result_function();
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, values, convert, where, fields, limit];
@@ -187,9 +187,6 @@ function SQL_RestoreDates(results, format){
 		results = results.map(function(row){return row.map(function(cell){return (cell!==null && cell.isDate) ? _parse_date(cell.date,"auto") : cell})});
 	};
 	return results;
-};
-function SQL_ConvertValue(value){
-	return (typeof value=="string" ? (isNaN(value) ? (value=="true" || value=="false" ? value=="true" : value) : Number(value)) : SQL_ConvertDates(value));
 };
 function SQL_Template(){
 	var e = _function_argument("e");

@@ -48,8 +48,13 @@ _SMS.tokenBucket = function(options){
 			fail('TokenBucket id not specified, this parameter is required when working in multithreaded mode');
 		};
 		this.id = options.id;
+		this.queue = options.queue;
 		if(_is_nilb(P("sms", options.id))){
-			PSet("sms", options.id, JSON.stringify({content:0, lastDrip:Date.now()}));
+			var params = {content:0, lastDrip:Date.now()};
+			if(options.queue){
+				params.queue = [];
+			};
+			PSet("sms", options.id, JSON.stringify(params));
 		};
 	}else{
 		this.content = 0;
@@ -103,6 +108,40 @@ _SMS.tokenBucket = function(options){
 			bucket.lastDrip = newLastDrip;
 		};
 	};
+	
+	this.getQueueIndex = function(){
+		return bucket.getParams().queue.indexOf(thread_number());
+	};
+	
+	this.addToQueue = function(){
+		bucket.changeParams(function(params){
+			var threadNumber = thread_number();
+			if(params.queue.indexOf(threadNumber) < 0){
+				return params.queue.push(threadNumber);
+			};
+			return null;
+		});
+	};
+	
+	this.removeFromQueue = function(){
+		bucket.changeParams(function(params){
+			var threadNumber = thread_number();
+			if(params.queue.indexOf(threadNumber) > -1){
+				return params.queue = params.queue.filter(function(ell){return ell!==threadNumber});
+			};
+			return null;
+		});
+	};
+	
+	this.outFromQueue = function(){
+		bucket.changeParams(function(params){
+			var threadNumber = thread_number();
+			if(params.queue.indexOf(threadNumber)===0){
+				return params.queue.shift();
+			};
+			return null;
+		});
+	};
     
 	/**
 	 * Asynchronous function
@@ -124,35 +163,62 @@ _SMS.tokenBucket = function(options){
         if(count > bucket.bucketSize){
 			fail('Requested tokens ' + count + ' exceeds bucket size ' + bucket.bucketSize);
         };
-        // Drip new tokens into this bucket
-        bucket.drip();
-        // If we don't have enough tokens in this bucket, come back later
-		_if(count > bucket.getContent(), function(){
-			_call_function(bucket.comeBackLater,{count:count})!
+		
+		var result = null;
+		
+		if(bucket.queue){
+			bucket.addToQueue();
+		};
+		
+		_do(function(){
+			// Drip new tokens into this bucket
+			bucket.drip();
+			// If we don't have enough tokens in this bucket, come back later
+			_if(count > bucket.getContent(), function(){
+				_call_function(bucket.waitNext,{count:count})!
+				
+				_next("function");
+			})!
 			
-			_function_return(_result_function());
+			_if(bucket.queue, function(){
+				_if(bucket.getQueueIndex() > 0, function(){
+					_call_function(bucket.waitQueue,{count:count})!
+					
+					_next("function");
+				})!
+			})!
+			
+			_if_else(!_is_nilb(bucket.parentBucket), function(){
+				// Remove the requested from the parent bucket first
+				_call_function(bucket.parentBucket.removeTokens,{count:count})!
+				var remainingTokens = _result_function();
+				// Check that we still have enough tokens in this bucket
+				_if(count > bucket.getContent(), function(){
+					_call_function(bucket.waitNext,{count:count})!
+					
+					_next("function");
+				})!
+				// Tokens were removed from the parent bucket, now remove them from
+				// this bucket. Note that we look at the current bucket and parent
+				// bucket's remaining tokens and return the smaller of the two values
+				bucket.minusContent(count);
+				result = Math.min(remainingTokens, bucket.getContent());
+				
+				_break("function");
+			}, function(){
+				// Remove the requested tokens from this bucket
+				bucket.minusContent(count);
+				result = bucket.getContent();
+				
+				_break("function");
+			})!
 		})!
 		
-		_if_else(bucket.parentBucket != undefined, function(){
-			// Remove the requested from the parent bucket first
-			_call_function(bucket.parentBucket.removeTokens,{count:count})!
-			var remainingTokens = _result_function();
-            // Check that we still have enough tokens in this bucket
-            _if(count > bucket.getContent(), function(){
-				_call_function(bucket.comeBackLater,{count:count})!
-				
-				_function_return(_result_function());
-			})!
-            // Tokens were removed from the parent bucket, now remove them from
-            // this bucket. Note that we look at the current bucket and parent
-            // bucket's remaining tokens and return the smaller of the two values
-            bucket.minusContent(count);
-            _function_return(Math.min(remainingTokens, bucket.getContent()));
-		}, function(){
-			// Remove the requested tokens from this bucket
-            bucket.minusContent(count);
-            _function_return(bucket.getContent());
-		})!
+		if(bucket.queue){
+			bucket.outFromQueue();
+		};
+		
+		_function_return(result);
 	};
 	
 	/**
@@ -170,21 +236,29 @@ _SMS.tokenBucket = function(options){
 	/**
 	 * Asynchronous function
 	 * 
-     * Deferred call to removeTokens() function
+     * Waiting before next iteration
      * @param {Number} count The number of tokens to remove.
-     * @returns {Number} The remainingTokens count.
      */
-	this.comeBackLater = function(){
+	this.waitNext = function(){
 		var count = _function_argument("count");
 		
 		// How long do we need to wait to make up the difference in tokens?
 		var waitMs = Math.ceil((count - bucket.getContent()) * (bucket.interval / bucket.tokensPerInterval));
 		_call_function(bucket.wait,{ms:waitMs})!
+	};
+	
+	/**
+	 * Asynchronous function
+	 * 
+     * Waiting thread queue
+     * @param {Number} count The number of tokens to remove.
+     */
+	this.waitQueue = function(){
+		var count = _function_argument("count");
 		
-		_call_function(bucket.removeTokens,{count:count})!
-		var remainingTokens = _result_function();
-		
-		_function_return(remainingTokens);
+		// How long do we need to wait to make up the difference in tokens?
+		var waitMs = Math.ceil(count * (bucket.interval / bucket.tokensPerInterval));
+		_call_function(bucket.wait,{ms:waitMs})!
 	};
     
 	/**
@@ -199,19 +273,23 @@ _SMS.tokenBucket = function(options){
 		count = _avoid_nilb(_function_argument("count"), 1);
 		
         // Is this an infinite size bucket?
-        if (!bucket.bucketSize)
-            return true;
+        if(!bucket.bucketSize){
+			return true;
+		};
         // Make sure the bucket can hold the requested number of tokens
-        if (count > bucket.bucketSize)
-            return false;
+        if(count > bucket.bucketSize){
+			return false;
+		};
         // Drip new tokens into this bucket
         bucket.drip();
         // If we don't have enough tokens in this bucket, return false
-        if (count > bucket.getContent())
-            return false;
+        if(count > bucket.getContent()){
+			return false;
+		};
         // Try to remove the requested tokens from the parent bucket
-        if (bucket.parentBucket && !bucket.parentBucket.tryRemoveTokens(count))
-            return false;
+        if(bucket.parentBucket && !bucket.parentBucket.tryRemoveTokens(count)){
+			return false;
+		};
         // Remove the requested tokens from this bucket and return
         bucket.minusContent(count);
         return true;

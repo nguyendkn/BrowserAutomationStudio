@@ -9,8 +9,8 @@
  *  one of the following strings: 'second', 'minute', 'hour', day'.
  * @param options.fireImmediately Whether or not the promise will resolve
  *  immediately when rate limiting is in effect (default is false).
- * @param options.parentBucket Optional. A token bucket that will act as
- *  the parent of this bucket.
+ * @param options.parentLimiter Optional. A limiter that will act as
+ *  the parent of this limiter.
  */
 _SMS.rateLimiter = function(options){
 	const limiter = this;
@@ -24,12 +24,16 @@ _SMS.rateLimiter = function(options){
 		this.id = options.id;
 		if(_is_nilb(P("sms", options.id))){
 			var now = Date.now();
-			PSet("sms", options.id, JSON.stringify({
+			var params = {
 				content: options.tokensPerInterval,
 				lastDrip: now,
 				curIntervalStart: now,
 				tokensThisInterval: 0
-			}));
+			};
+			if(options.queue){
+				params.queue = [];
+			};
+			PSet("sms", options.id, JSON.stringify(params));
 		};
 	};
 	
@@ -37,9 +41,10 @@ _SMS.rateLimiter = function(options){
 		bucketSize: options.tokensPerInterval,
 		tokensPerInterval: options.tokensPerInterval,
 		interval: options.interval,
-		parentBucket: options.parentBucket,
+		parentBucket: options.parentLimiter,
 		type: options.type,
-		id: options.id
+		id: options.id,
+		queue: options.queue
 	});
 	
 	if(options.type!=="service"){

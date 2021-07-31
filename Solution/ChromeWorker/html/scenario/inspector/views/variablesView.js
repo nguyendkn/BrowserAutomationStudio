@@ -3,11 +3,10 @@
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
   const Model = ScriptDataModel.extend({
-    defaults: function () {
-      return _.extend({}, ScriptDataModel.prototype.defaults, {
-        supportHighlight: true,
-      })
-    },
+    defaults: () => _.extend({}, ScriptDataModel.prototype.defaults, {
+      supportHighlight: true,
+      supportGroups: true,
+    })
   });
 
   const View = ScriptDataView.extend({

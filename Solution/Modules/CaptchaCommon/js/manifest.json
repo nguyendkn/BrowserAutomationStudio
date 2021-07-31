@@ -108,8 +108,8 @@
     "Task solution check delay in milliseconds. With this parameter you can control the length of the pause between sending the task to the service and the start of waiting for a solution. Most often, captcha-solving services specify the required waiting time, in other cases you can specify any value convenient for you.": {
       "ru": "Задержка проверки решения задачи в миллисекундах. С помощью этого параметра вы можете контролировать длительность паузы между отправкой капчи на сервис и началом ожидания решения. Чаще всего, сервисы решения капчи указывают необходимое время ожидания, в остальных случаях вы можете указать любое удобное для вас значение."
     },
-    "The <code>Task solution check delay</code> parameter is responsible for the delay before starting to poll the service about receiving the captcha solution. Thus, the task is created first, after that the BAS will wait for the specified time and only then will it start receiving the captcha solution. Most services recommend waiting at least 5 seconds.": {
-      "ru": "Параметр <code>Задержка проверки решения задачи</code> отвечает за задержку перед тем, как начинать опрашивать сервис о получении решения капчи. Таким образом, сначала создается задача, после этого BAS будет ожидать указанное время и только после этого начнёт получать решение капчи. Большинство сервисов рекомендуют подождать не менее 5 секунд."
+    "The <code>Task solution check delay</code> parameter is responsible for the duration of waiting before the BAS starts checking the captcha. First, the captcha sent to the service, then the BAS will wait for the specified time, after which the task status check itself will begin. Most services recommend waiting at least 5 seconds.": {
+      "ru": "Параметр <code>Задержка проверки решения задачи</code> отвечает за длительность ожидания перед тем, как BAS начнет проверку капчи. Сначала капча отправляется на сервис, после этого BAS будет ожидать указанное время, по прошествии которого начнется непосредственно проверка состояния задачи. Большинство сервисов рекомендуют подождать не менее 5 секунд."
     }
   },
   "browser": [],

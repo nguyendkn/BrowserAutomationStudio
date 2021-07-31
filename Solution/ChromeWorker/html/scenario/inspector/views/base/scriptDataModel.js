@@ -40,6 +40,7 @@
       defaults: {
         sortingType: 'alphabetically',
         supportHighlight: true,
+        supportGroups: false,
         highlight: false,
         metadata: {},
         source: {},

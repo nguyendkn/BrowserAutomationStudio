@@ -1623,6 +1623,9 @@ _L =
 	"Browser > Element": {"ru": "Браузер > Элемент"},
 	"Recent actions": {"ru": "Последние действия"},
 	"Nothing found": {"ru": "Ничего не найдено"},
+
+	/* Other */
+	"Advanced settings.": {"ru": "Дополнительные настройки."} 
 }
 
 /*window.un = {}

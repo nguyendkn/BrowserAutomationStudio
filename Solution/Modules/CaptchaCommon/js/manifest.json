@@ -51,6 +51,18 @@
     "Use custom service URL with port 8083": {
       "ru": "Использовать кастомный URL сервиса с портом 8083"
     },
+    "The \"Service key\" parameter is empty": {
+      "ru": "Параметр \"Ключ сервиса\" не указан"
+    },
+    "The \"Service name\" parameter is empty": {
+      "ru": "Параметр \"Название сервиса\" не указан"
+    },
+    "The \"Task solution check delay\" parameter is empty": {
+      "ru": "Параметр \"Задержка проверки решения задачи\" не указан"
+    },
+    "The \"Task solution check interval\" parameter is empty": {
+      "ru": "Параметр \"Интервал проверки решения задачи\" не указан"
+    },
     "Solve captcha using https://2captcha.com/ service": {
       "ru": "Решить капчу используя сервис https://2captcha.com/"
     },
@@ -87,11 +99,11 @@
     "If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Custom service URL</code> field located in the additional settings.": {
       "ru": "Если нужного сервиса нет в списке доступных, но он работает через API аналогичный выбранному сервису, вы можете указать необходимый URL сервера в поле <code>Кастомный URL сервиса</code>, находящееся в дополнительных настройках."
     },
-    "When using a proxy, always fill in the field <code>User-Agent</code>, or use the default value, otherwise the captcha solving service can give an error. If this parameter is specified, the service worker will solve the captcha through the given User-Agent, just like it happens with proxies.": {
-      "ru": "При использовании прокси всегда заполняйте поле <code>User-Agent</code>, или используйте стандартное значение, иначе сервис решения капчи может вернуть ошибку. Если этот параметр указан, работник сервиса будет решать капчу через данный User-Agent, точно так же, как это происходит с прокси."
-    },
     "The <code>Task solution check interval</code> parameter is responsible for the frequency of sending requests to the service to check the captcha solution. The more you set the value, the longer BAS will wait before sending the next request. It is recommended to use a delay of at least 5 seconds.": {
       "ru": "Параметр <code>Интервал проверки решения задачи</code> отвечает за частоту отправки запросов на сервис для проверки решения капчи. Чем больше вы выставите значение, тем дольше BAS будет ожидать перед тем, как отправить очередной запрос. Рекомендуется использовать задержку не менее 5 секунд."
+    },
+    "When using a proxy, always fill in the field <code>User-Agent</code>, or use the default value, otherwise the captcha solving service can give an error. If this parameter is specified, the service worker will solve the captcha through the given <code>User-Agent</code>, just like it happens with proxies.": {
+      "ru": "При использовании прокси всегда заполняйте поле <code>User-Agent</code>, или используйте стандартное значение, иначе сервис решения капчи может вернуть ошибку. Если этот параметр указан, работник сервиса будет решать капчу через данный <code>User-Agent</code>, точно так же, как это происходит с прокси."
     },
     "Task solution check delay in milliseconds. With this parameter you can control the length of the pause between sending the task to the service and the start of waiting for a solution. Most often, captcha-solving services specify the required waiting time, in other cases you can specify any value convenient for you.": {
       "ru": "Задержка проверки решения задачи в миллисекундах. С помощью этого параметра вы можете контролировать длительность паузы между отправкой капчи на сервис и началом ожидания решения. Чаще всего, сервисы решения капчи указывают необходимое время ожидания, в остальных случаях вы можете указать любое удобное для вас значение."

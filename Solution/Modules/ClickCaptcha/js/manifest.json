@@ -51,11 +51,17 @@
     "Select all images where there is a plane": {
       "ru": "Выберите все изображения, на которых есть самолёт"
     },
+    "The \"Click coordinates\" variable must not be empty": {
+      "ru": "Переменная \"Координаты для клика\" не должна быть пустой"
+    },
     "Solve any type of captcha that requires clicking on images.": {
       "ru": "Решить любой тип капчи, который требует кликать по изображениям."
     },
     "If captcha has any description, it can be added with this field.": {
       "ru": "Если у captcha есть какое-либо описание, его можно добавить в это поле."
+    },
+    "The \"Captcha picture data encoded in base64\" parameter is empty": {
+      "ru": "Параметр \"Данные изображения в base64\" не указан"
     },
     "There is one point to click on the coordinates - X1 = 12, Y1 = 24.": {
       "ru": "Есть одна точка для клика по координатам - X1 = 12, Y1 = 24."

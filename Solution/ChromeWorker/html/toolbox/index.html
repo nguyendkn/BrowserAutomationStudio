@@ -8579,7 +8579,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             const imageData = GetInputConstructorValue('imageData', loader);
 
             if (!clickCoordinatesList.length) {
-              return Invalid(tr('The "Click coordinates list" variable must not be empty'));
+              return Invalid(tr('The "Click coordinates" variable must not be empty'));
             } else if (!taskWaitTimeout.original.length) {
               return Invalid(tr('The "Task solution check interval" parameter is empty'));
             } else if (!taskWaitDelay.original.length) {
@@ -8589,7 +8589,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             } else if (!serviceKey.original.length) {
               return Invalid(tr('The "Service key" parameter is empty'));
             } else if (!imageData.original.length) {
-              return Invalid(tr('The "Image data" parameter is empty'));
+              return Invalid(tr('The "Captcha picture data encoded in base64" parameter is empty'));
             }
 
             try {

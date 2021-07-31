@@ -43,23 +43,17 @@
     "Advanced settings.": {
       "ru": "Продвинутые настройки."
     },
-    "How FunCaptcha looks like?": {
-      "ru": "Как выглядит FunCaptcha?"
-    },
-    "https://i.imgur.com/D7xAa2b.gif": {
-      "ru": "https://i.imgur.com/YMdTIqj.gif"
-    },
-    "This actions solves the <code>FunCaptcha</code>.": {
-      "ru": "Данное действие решает <code>FunCaptcha</code>."
-    },
     "Captcha solving service name. You can use service names without the `-newapi` part, the action will work without changes.": {
       "ru": "Название сервиса для решения капчи. Вы можете использовать названия сервисов без части `-newapi`, действие будет работать без изменений."
+    },
+    "This actions solves the <code>FunCaptcha</code> (<a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://i.imgur.com/D7xAa2b.gif'); return false;\">screenshot</a>).": {
+      "ru": "Данное действие решает <code>FunCaptcha</code> (<a href=\"#\" onclick=\"BrowserAutomationStudio_OpenUrl('https://i.imgur.com/YMdTIqj.gif'); return false;\">скриншот</a>)."
     },
     "Detailed documentation for solving <code>FunCaptcha</code> can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#solving_funcaptcha_new');return false\">here</a>.": {
       "ru": "Подробную документацию по решению <code>FunCaptcha</code> можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_funcaptcha_new');return false\">здесь</a>."
     },
-    "This action does not require you to search for the necessary information to solve the <code>FunCaptcha</code> manually, everything happens automatically without your interaction using the source code of the page and other data. Exceptions are optional parameters, such as the use of proxies and the User-Agent.": {
-      "ru": "Данное действие не требует от вас поиска необходимой информации для решения <code>FunCaptcha</code> в ручном режиме, все происходит автоматически без вашего участия с использованием исходного кода страницы и других данных. Исключение составляют необязательные параметры, например, использование прокси и Юзер-Агента."
+    "This action does not require you to search for the necessary information to solve the <code>FunCaptcha</code> manually, everything happens automatically without your interaction using the source code of the page and other data. Exceptions are optional parameters, such as the use of proxies and the <code>User-Agent</code>.": {
+      "ru": "Данное действие не требует от вас поиска необходимой информации для решения <code>FunCaptcha</code> в ручном режиме, все происходит автоматически без вашего участия с использованием исходного кода страницы и других данных. Исключение составляют необязательные параметры, например, использование прокси и <code>User-Agent</code>."
     },
     "In most cases, you also do not need to submit the solution of the captcha on the site. The action automatically looks for the <code>FunCaptcha</code> validation function in the page code and executes it using the response from the captcha solving service. The exception may be cases where the site does not use such functions - in such situations you will need to proceed manually. For example, press the submit form button or perform another similar action.": {
       "ru": "В большинстве случаев вам также не нужно подтверждать решение капчи на сайте. Действие автоматически ищет функцию проверки <code>FunCaptcha</code> в коде страницы и выполняет ее, используя ответ от сервиса решения капчи. Исключением могут быть случаи, когда сайт не использует такие функции - в подобных ситуациях вам придется действовать вручную. Например, нажать кнопку отправки формы или выполнить другое аналогичное действие."

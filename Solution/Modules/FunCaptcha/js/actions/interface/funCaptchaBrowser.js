@@ -74,13 +74,13 @@
       }
     }) %>
     <%= _.template($('#input_constructor').html())({
-      description: tr('Custom service URL'),
+      description: tr('Service URL'),
       default_selector: 'string',
       disable_int: true,
       value_string: '',
       id: 'serviceUrl',
       help: {
-        description: tr('Custom service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.'),
+        description: tr('Service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.'),
         examples: [
           { code: 'Empty string', description: tr('Use default service URL, http://rucaptcha.com for RuCaptcha, etc') },
           { code: 'http://127.0.0.1:8083', description: tr('Use custom service URL with port 8083') },
@@ -106,8 +106,8 @@
   <div class="tr tooltip-paragraph-fold"><code>FunCaptcha</code> is solved on the service worker's computer. This means that the site with the captcha can potentially check the IP of the person who solves it and put this IP in the blacklist. There is a special setting <code>Send current proxy to service</code> (under the advanced settings). If you use this option, the worker will solve the captcha through the proxy server that was set using the <code>Proxy</code> action from the browser actions module.</div>
   <div class="tr tooltip-paragraph-fold">When using a proxy, always fill in the field <code>User-Agent</code> or use the default value, otherwise the captcha solving service can give an error. If this parameter is specified, the service worker will solve the captcha using the specified <code>User-Agent</code>.</div>
   <div class="tr tooltip-paragraph-fold">All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.</div>
-  <div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Custom service URL</code> field located in the additional settings.</div>
-  <div class="tr tooltip-paragraph-fold">If you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar software, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.</div>
+  <div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Service URL</code> field located in the additional settings.</div>
+  <div class="tr tooltip-paragraph-fold">If you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar software, you must fill in the <code>Service URL</code> field in accordance with the documentation for this software.</div>
   <div class="tr tooltip-paragraph-fold">The <code>Task solution check interval</code> parameter is responsible for the frequency of sending requests to the service to check the captcha solution. The more you set the value, the longer BAS will wait before sending the next request. It is recommended to use a delay of at least 5 seconds.</div>
   <div class="tr tooltip-paragraph-fold">The <code>Task solution check delay</code> parameter is responsible for the duration of waiting before the BAS starts checking the captcha. First, the captcha sent to the service, then the BAS will wait for the specified time, after which the task status check itself will begin. Most services recommend waiting at least 5 seconds.</div>
   <div class="tr tooltip-paragraph-last-fold">Detailed documentation for solving <code>FunCaptcha</code> can be found <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#solving_funcaptcha_new');return false">here</a>.</div>

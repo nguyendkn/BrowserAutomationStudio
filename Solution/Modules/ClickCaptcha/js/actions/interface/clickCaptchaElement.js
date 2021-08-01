@@ -38,8 +38,8 @@
         { code: '5000', description: tr('Wait for 5 seconds') }
       ]
     }}) %>
-    <%= _.template($('#input_constructor').html())({ description: tr('Custom service URL'), default_selector: 'string', disable_int: true, value_string: '', id: 'serviceUrl', help: {
-      description: tr('Custom service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.'),
+    <%= _.template($('#input_constructor').html())({ description: tr('Service URL'), default_selector: 'string', disable_int: true, value_string: '', id: 'serviceUrl', help: {
+      description: tr('Service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.'),
       examples: [
         { code: 'Empty string', description: tr('Use default service URL, http://rucaptcha.com for RuCaptcha, etc') },
         { code: 'http://127.0.0.1:8083', description: tr('Use custom service URL with port 8083') },
@@ -58,8 +58,8 @@
   <div class="tr tooltip-paragraph-fold">An important point - this action does not perform a verification of the solution of the captcha. You must do it yourself. For example, if you solve <code>ReCaptcha2</code> with this method, after clicking on the coordinates you need to click on the <code>Next</code> or <code>Done</code> button. In the case of <code>ReCaptcha</code> and other similar captcha types, no clicks on the checkbox will be performed. You need to do it manually, and after the grid is displayed, send the image with the grid to the service.</div>
   <div class="tr tooltip-paragraph-fold">The <code>Task solution check interval</code> parameter is responsible for the frequency of sending requests to the service to check the captcha solution. The more you set the value, the longer BAS will wait before sending the next request. It is recommended to use a delay of at least 5 seconds.</div>
   <div class="tr tooltip-paragraph-fold">The <code>Task solution check delay</code> parameter is responsible for the duration of waiting before the BAS starts checking the captcha. First, the captcha sent to the service, then the BAS will wait for the specified time, after which the task status check itself will begin. Most services recommend waiting at least 5 seconds.</div>
-  <div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Custom service URL</code> field located in the additional settings.</div>
-  <div class="tr tooltip-paragraph-fold">If you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar software, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.</div>
+  <div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Service URL</code> field located in the additional settings.</div>
+  <div class="tr tooltip-paragraph-fold">If you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar software, you must fill in the <code>Service URL</code> field in accordance with the documentation for this software.</div>
   <div class="tr tooltip-paragraph-last-fold">Detailed documentation for solving such captchas can be found <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#coordinates');return false">here</a>.</div>
 </div>
 <%= _.template($('#back').html())({ action: 'executeandadd', visible: true, name: tr('Solve captcha with clicks') }) %>

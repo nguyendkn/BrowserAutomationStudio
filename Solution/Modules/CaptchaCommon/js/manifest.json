@@ -18,14 +18,14 @@
   "modules": [],
   "depends": [],
   "localize": {
+    "Service URL": {
+      "ru": "URL сервиса"
+    },
     "Service key": {
       "ru": "Ключ сервиса"
     },
     "Service name": {
       "ru": "Название сервиса"
-    },
-    "Custom service URL": {
-      "ru": "Кастомный URL сервиса"
     },
     "Wait for 5 seconds": {
       "ru": "Ждать в течение 5 секунд"
@@ -90,14 +90,14 @@
     "User-Agent that will be used by the service for solving captcha. It works only if you use a proxy to solve captcha, i.e. if the `Send current proxy to solver service` option is enabled.": {
       "ru": "User-Agent который будет использоваться сервисом для решения капчи. Это работает, только если вы используете прокси для решения капчи, то есть если опция `Отправлять текущий прокси на сервис` включена."
     },
-    "If you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar software, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.": {
-      "ru": "Если вы используете такие программы, как <code>CapMonster</code>, <code>XEvil</code> или аналоги, вы должны заполнить поле <code>Кастомный URL сервиса</code> в соответствии с документацией к данному ПО."
+    "If you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar software, you must fill in the <code>Service URL</code> field in accordance with the documentation for this software.": {
+      "ru": "Если вы используете такие программы, как <code>CapMonster</code>, <code>XEvil</code> или аналоги, вы должны заполнить поле <code>URL сервиса</code> в соответствии с документацией к данному ПО."
     },
-    "Custom service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.": {
-      "ru": "Кастомный URL сервиса. Может быть пустым. Вы можете использовать этот параметр, если нужного вам сервиса нет в списке доступных. В таком случае укажите название сервиса, который работает по аналогичному API, и используйте нужный вам адрес."
+    "Service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.": {
+      "ru": "URL сервиса. Может быть пустым. Вы можете использовать этот параметр, если нужного вам сервиса нет в списке доступных. В таком случае укажите название сервиса, который работает по аналогичному API, и используйте нужный вам адрес."
     },
-    "If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Custom service URL</code> field located in the additional settings.": {
-      "ru": "Если нужного сервиса нет в списке доступных, но он работает через API аналогичный выбранному сервису, вы можете указать необходимый URL сервера в поле <code>Кастомный URL сервиса</code>, находящееся в дополнительных настройках."
+    "If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Service URL</code> field located in the additional settings.": {
+      "ru": "Если нужного сервиса нет в списке доступных, но он работает через API аналогичный выбранному сервису, вы можете указать необходимый URL сервера в поле <code>URL сервиса</code>, находящееся в дополнительных настройках."
     },
     "When using a proxy, always fill in the field <code>User-Agent</code> or use the default value, otherwise the captcha solving service can give an error. If this parameter is specified, the service worker will solve the captcha using the specified <code>User-Agent</code>.": {
       "ru": "При использовании прокси всегда заполняйте поле <code>User-Agent</code> или используйте стандартное значение, иначе сервис решения капчи может вернуть ошибку. Если этот параметр указан, работник сервиса будет решать капчу используя указанный <code>User-Agent</code>."

@@ -88,7 +88,7 @@
           const $el = $(el);
 
           if (query.length) {
-            const $label = $el.children('.jst-property');
+            const $label = $el.children('.jst-label');
             const text = $label.text().toLowerCase();
             return $el.toggle(text.includes(query));
           } else {

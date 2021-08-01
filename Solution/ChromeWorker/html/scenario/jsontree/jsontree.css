@@ -60,11 +60,6 @@ li.jst-item + li.jst-item {
   display: none;
 }
 
-.jst-property {
-  word-wrap: break-word;
-  color: #666;
-}
-
 .jst-collapse {
   user-select: none;
   cursor: pointer;
@@ -83,6 +78,11 @@ li.jst-item + li.jst-item {
 
 .jst-comma {
   white-space: pre-wrap;
+}
+
+.jst-label {
+  word-wrap: break-word;
+  color: #666;
 }
 
 .jst-colon {

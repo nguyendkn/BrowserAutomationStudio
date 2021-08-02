@@ -110,8 +110,8 @@ _.extend(Scenario.JST, {
         <% } %>
       </ul>
     </div>
-    <div id="inspectorVariables" class="inspector-panel">
-      <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
+    <div class="inspector-panel">
+      <div style="font-size: smaller; margin-top: 10px; display: none;">
         <span><%= tr('No variables') %></span>
       </div>
       <div id="inspectorVariablesData" class="inspector-panel-data"></div>
@@ -136,14 +136,14 @@ _.extend(Scenario.JST, {
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="inspectorResoourcesFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
-            <label for="inspectorResoourcesFilter<%= type %>"><%- type %></label>
+            <input type="checkbox" id="inspectorResourcesFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
+            <label for="inspectorResourcesFilter<%= type %>"><%- type %></label>
           </li>
         <% } %>
       </ul>
     </div>
-    <div id="inspectorResources" class="inspector-panel">
-      <div id="inspectorNoResources" style="font-size: smaller; margin-top: 10px; display: none;">
+    <div class="inspector-panel">
+      <div style="font-size: smaller; margin-top: 10px; display: none;">
         <span><%= tr('No resources') %></span>
       </div>
       <div id="inspectorResourcesData" class="inspector-panel-data"></div>

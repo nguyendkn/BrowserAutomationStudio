@@ -1,4 +1,6 @@
 (function (global, $, _) {
+  const { Inspector, JST } = global.Scenario;
+
   const Model = Backbone.Model.extend({
     defaults: {
       tab: 'variables',
@@ -7,7 +9,7 @@
   });
 
   const View = Backbone.View.extend({
-    template: Scenario.JST['inspector/main'],
+    template: JST['inspector/main'],
 
     initialize() {
       this.model = new Model();
@@ -47,15 +49,15 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template({ ...this.model.toJSON() }));
 
-        this.variables = new Scenario.Inspector.Variables({
+        this.variables = new Inspector.Variables({
           el: this.$('[data-tab-name="variables"]')[0]
         }).render();
 
-        this.resources = new Scenario.Inspector.Resources({
+        this.resources = new Inspector.Resources({
           el: this.$('[data-tab-name="resources"]')[0]
         }).render();
 
-        this.callstack = new Scenario.Inspector.Callstack({
+        this.callstack = new Inspector.Callstack({
           el: this.$('[data-tab-name="callstack"]')[0]
         }).render();
 
@@ -129,5 +131,5 @@
     }
   });
 
-  global.Scenario.Inspector.Main = View;
+  Inspector.Main = View;
 })(window, jQuery, _);

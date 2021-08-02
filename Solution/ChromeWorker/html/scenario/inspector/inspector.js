@@ -13,17 +13,17 @@
       this.model = new Model();
 
       _GobalModel.on('change:isscriptexecuting', (__, value) => {
-        if (!value && this.model.get('visible')) {
-          this.variables.model.set('highlight', true);
-          this.resources.model.set('highlight', true);
-        }
+        if (value || !this.model.get('visible')) return;
+        ['variables', 'resources'].forEach(type => {
+          this[type].model.set('highlight', true);
+        });
       });
 
       _GobalModel.on('change:istaskexecuting', (__, value) => {
-        if (!value && this.model.get('visible')) {
-          this.variables.model.set('highlight', true);
-          this.resources.model.set('highlight', true);
-        }
+        if (value || !this.model.get('visible')) return;
+        ['variables', 'resources'].forEach(type => {
+          this[type].model.set('highlight', true);
+        });
       });
 
       this.model.on('change:tab', (__, tab) => {

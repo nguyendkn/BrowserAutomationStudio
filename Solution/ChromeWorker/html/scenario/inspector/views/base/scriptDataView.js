@@ -72,6 +72,7 @@
               return meta2.modifiedAt - meta1.modifiedAt;
             }
           }
+
           return Scenario.utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
         },
       });
@@ -154,17 +155,15 @@
       'click .inspector-filter-button': function (e) {
         e.preventDefault();
         const $menu = $(e.currentTarget).next('.inspector-filter-menu');
-        const isHidden = $menu.is(':hidden');
-        $menu.toggle(isHidden);
-        if (isHidden) $menu.prevAll('ul').hide();
+        const isVisible = $menu.toggle().is(':visible');
+        if (isVisible) $menu.prevAll('ul').hide();
       },
 
       'click .inspector-sort-button': function (e) {
         e.preventDefault();
         const $menu = $(e.currentTarget).next('.inspector-sort-menu');
-        const isHidden = $menu.is(':hidden');
-        $menu.toggle(isHidden);
-        if (isHidden) $menu.nextAll('ul').hide();
+        const isVisible = $menu.toggle().is(':visible');
+        if (isVisible) $menu.nextAll('ul').hide();
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {

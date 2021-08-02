@@ -44,13 +44,21 @@
         });
 
         $elem.on('click', '.jst-collapse', (e) => {
-          this.collapse(e.target);
           e.preventDefault();
+          const el = e.target, list = el.nextElementSibling;
+          list.classList.toggle('jst-collapsed'),
+            el.classList.toggle('jst-collapse'),
+            el.classList.toggle('jst-expand');
+          this.onCollapse();
         });
 
         $elem.on('click', '.jst-expand', (e) => {
-          this.expand(e.target);
           e.preventDefault();
+          const el = e.target, list = el.nextElementSibling;
+          list.classList.toggle('jst-collapsed'),
+            el.classList.toggle('jst-collapse'),
+            el.classList.toggle('jst-expand');
+          this.onExpand();
         });
 
         this.listenersAttached = true;
@@ -73,26 +81,6 @@
         childrenOnly: true,
       });
       this.onRender();
-    }
-
-    collapse(el) {
-      el.nextElementSibling.classList.add('jst-collapsed');
-      el.className = 'jst-expand';
-      this.onCollapse();
-    }
-
-    expand(el) {
-      el.nextElementSibling.classList.remove('jst-collapsed');
-      el.className = 'jst-collapse';
-      this.onExpand();
-    }
-
-    toggle(el) {
-      if (el.classList.contains('jst-expand')) {
-        this.collapse(el);
-      } else {
-        this.expand(el);
-      }
     }
   }
 

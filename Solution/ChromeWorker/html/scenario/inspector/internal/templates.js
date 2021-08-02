@@ -103,6 +103,12 @@ _.extend(Scenario.JST, {
           </li>
         <% } %>
       </ul>
+      <ul class="inspector-sort-menu" style="display: none;">
+        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequncy"><%- tr('Frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
+      </ul>
     </div>
     <div id="inspectorVariables" class="inspector-panel">
       <div id="inspectorNoVariables" style="font-size: smaller; margin-top: 10px; display: none;">
@@ -128,6 +134,12 @@ _.extend(Scenario.JST, {
             <label for="inspectorResoourcesFilter<%= type %>"><%- type %></label>
           </li>
         <% } %>
+      </ul>
+      <ul class="inspector-sort-menu" style="display: none;">
+        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequncy"><%- tr('Frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
       </ul>
     </div>
     <div id="inspectorResources" class="inspector-panel">

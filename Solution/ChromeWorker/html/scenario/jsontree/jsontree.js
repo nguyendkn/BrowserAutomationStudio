@@ -7,7 +7,7 @@
       number: '#d036d0',
       date: '#ce904a',
       null: '#808080',
-    };
+    }
 
     constructor (elem, config = {}) {
       elem.innerHTML = (/*html*/`<ul class="jst-root"></ul>`);

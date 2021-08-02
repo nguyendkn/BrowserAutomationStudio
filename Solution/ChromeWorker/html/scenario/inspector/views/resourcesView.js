@@ -1,5 +1,5 @@
-(function (global, $, _) {
-  const { Inspector, JST } = global.Scenario;
+(function ({ Scenario }, $, _) {
+  const { Inspector, JST } = Scenario;
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
   const Model = ScriptDataModel.extend({
@@ -35,6 +35,12 @@
       'click .inspector-filter-button': function (e) {
         e.preventDefault();
         const $menu = $(e.currentTarget).next('.inspector-filter-menu');
+        $menu.toggle($menu.is(':hidden'));
+      },
+
+      'click .inspector-sort-button': function (e) {
+        e.preventDefault();
+        const $menu = $(e.currentTarget).next('.inspector-sort-menu');
         $menu.toggle($menu.is(':hidden'));
       },
 

@@ -135,6 +135,37 @@
 
         return this.model.get('state');
       },
+
+      events: {
+        'change .inspector-filter-menu-item > input': function (e) {
+          const $el = $(e.target), type = $el.val();
+
+          this.model.set('visibleTypes', {
+            ...this.model.get('visibleTypes'),
+            [type]: $el.prop('checked')
+          });
+        },
+
+        'click .inspector-filter-button': function (e) {
+          e.preventDefault();
+          const $menu = $(e.currentTarget).next('.inspector-filter-menu');
+          $menu.toggle($menu.is(':hidden'));
+        },
+
+        'click .inspector-sort-button': function (e) {
+          e.preventDefault();
+          const $menu = $(e.currentTarget).next('.inspector-sort-menu');
+          $menu.toggle($menu.is(':hidden'));
+        },
+
+        'input .inspector-filter-input': _.debounce(function (e) {
+          this.filterTree()
+        }, 200),
+
+        'keydown .inspector-filter-input': function (e) {
+          if (e.key === ' ') e.preventDefault();
+        },
+      }
     })
   })
 })(window, jQuery, _);

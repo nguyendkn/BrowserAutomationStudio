@@ -16,12 +16,12 @@
 
         diff.forEach(({ path, value, op }) => {
           if (!_.has(metadata, path)) {
-            metadata[path] = { usage: 6, value, op, addedAt: time, changedAt: time };
+            metadata[path] = { usage: 6, value, op, addedAt: time, modifiedAt: time };
           } else {
             if (op === 'remove') {
               return (delete metadata[path]);
             }
-            metadata[path].changedAt = time;
+            metadata[path].modifiedAt = time;
           }
         });
 

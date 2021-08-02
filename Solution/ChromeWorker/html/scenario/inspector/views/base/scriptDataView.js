@@ -66,12 +66,12 @@
             if (type !== 'alphabetically') {
               const meta1 = metadata[path1], meta2 = metadata[path2];
 
-              if (type === 'byAddedTime') {
-                return meta2.addedAt - meta1.addedAt;
-              } else if (type === 'byChangedTime') {
-                return meta2.changedAt - meta1.changedAt;
-              } else {
+              if (type === 'frequency') {
 
+              } else if (type === 'dateAdded') {
+                return meta2.addedAt - meta1.addedAt;
+              } else if (type === 'dateModified') {
+                return meta2.modifiedAt - meta1.modifiedAt;
               }
             }
             return Scenario.utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);

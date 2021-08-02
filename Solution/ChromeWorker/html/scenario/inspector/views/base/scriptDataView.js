@@ -3,7 +3,7 @@
     initialize() {
       const model = this.model;
 
-      if (model.get('supportHighlight')) {
+      if (model.get('allowHighlight')) {
         model.on('highlight', ({ usage, path }) => {
           const $node = this.$(`[data-path="${path}"]`);
 

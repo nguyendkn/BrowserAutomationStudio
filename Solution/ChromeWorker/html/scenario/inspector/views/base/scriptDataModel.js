@@ -18,14 +18,12 @@
           const time = performance.now();
           metadata[path] = { usage: 6, value, op, addedAt: time, modifiedAt: time };
         } else {
-          if (op === 'remove') {
-            return (delete metadata[path]);
-          }
+          if (op === 'remove') return (delete metadata[path]);
           metadata[path].modifiedAt = performance.now();
         }
       });
 
-      if (this.get('supportHighlight')) {
+      if (this.get('allowHighlight')) {
         const highlight = this.get('highlight');
         _.each(metadata, (item, path) => {
           if (highlight) {
@@ -39,8 +37,8 @@
 
     defaults: {
       sortingType: 'alphabetically',
-      supportHighlight: true,
-      supportGroups: false,
+      allowHighlight: true,
+      allowGroups: false,
       highlight: false,
       metadata: {},
       source: {},
@@ -52,7 +50,7 @@
         number: true,
         date: true,
         null: true,
-      },
+      }
     }
   });
 

@@ -4,8 +4,8 @@
 
   const Model = ScriptDataModel.extend({
     defaults: () => _.extend({}, ScriptDataModel.prototype.defaults, {
-      supportHighlight: true,
-      supportGroups: true,
+      allowHighlight: true,
+      allowGroups: true,
     })
   });
 

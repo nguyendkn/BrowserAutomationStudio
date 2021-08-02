@@ -75,6 +75,9 @@
     "Detailed documentation for solving such captchas can be found <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#coordinates');return false\">here</a>.": {
       "ru": "Подробную документацию по решению подобных капч можно посмотреть <a href=\"#\" class=\"tr\" onclick=\"BrowserAutomationStudio_OpenUrl('https://rucaptcha.com/api-rucaptcha#solving_clickcaptcha');return false\">здесь</a>."
     },
+    "This action doesn't perform automatic coordinate clicks, unlike the <code>Solve captcha with clicks</code> action from the browser context menu, which does everything without your interaction. It's much easier to use.": {
+      "ru": "Данное действие не выполняет автоматических кликов по координатам, в отличие от действия <code>Решить капчу кликами</code> из контекстного меню браузера, которое делает всё без вашего участия. Использовать его будет намного проще."
+    },
     "This action, unlike the <code>Solve captcha with clicks</code> action from the <code>Browser</code> module, performs clicks automatically, and you do not need to manually calculate the coordinates for clicks relative to the position of the element on the page. It is recommended to use this action.": {
       "ru": "Данное действие, в отличие от действия <code>Решить капчу кликами</code> из модуля <code>Браузер</code>, выполняет клики автоматически, и вам не нужно вручную расчитывать координаты для кликов относительно положения элемента на странице. Рекомендуется использовать именно это действие."
     },

@@ -93,6 +93,12 @@ _.extend(Scenario.JST, {
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
       <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
+      <ul class="inspector-sort-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
+        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%- tr('Frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
+      </ul>
       <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
       <ul class="inspector-filter-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
@@ -102,12 +108,6 @@ _.extend(Scenario.JST, {
             <label for="inspectorVariablesFilter<%= type %>"><%- type %></label>
           </li>
         <% } %>
-      </ul>
-      <ul class="inspector-sort-menu" style="display: none;">
-        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequncy"><%- tr('Frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
       </ul>
     </div>
     <div id="inspectorVariables" class="inspector-panel">
@@ -125,6 +125,12 @@ _.extend(Scenario.JST, {
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
       <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
+      <ul class="inspector-sort-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
+        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%- tr('Frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
+      </ul>
       <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
       <ul class="inspector-filter-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
@@ -134,12 +140,6 @@ _.extend(Scenario.JST, {
             <label for="inspectorResoourcesFilter<%= type %>"><%- type %></label>
           </li>
         <% } %>
-      </ul>
-      <ul class="inspector-sort-menu" style="display: none;">
-        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequncy"><%- tr('Frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
       </ul>
     </div>
     <div id="inspectorResources" class="inspector-panel">

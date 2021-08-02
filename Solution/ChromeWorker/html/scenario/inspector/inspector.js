@@ -1,8 +1,8 @@
 (function (global, $, _) {
   const Model = Backbone.Model.extend({
     defaults: {
+      tab: 'variables',
       visible: false,
-      tab: '',
     },
   });
 
@@ -45,7 +45,7 @@
       this.setElement('#inspector');
 
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template({}));
+        this.$el.html(this.template({ ...this.model.toJSON() }));
 
         this.variables = new Scenario.Inspector.Variables({
           el: this.$('[data-tab-name="variables"]')[0]

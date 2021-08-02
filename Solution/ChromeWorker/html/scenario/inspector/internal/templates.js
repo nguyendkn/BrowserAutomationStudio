@@ -77,9 +77,9 @@ _.extend(Scenario.JST, {
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%"></i>
         </li>
       </ul>
-      <div class="inspector-tab" data-tab-name="variables" style="display: flex;"></div>
-      <div class="inspector-tab" data-tab-name="resources" style="display: none;"></div>
-      <div class="inspector-tab" data-tab-name="callstack" style="display: none;"></div>
+      <div class="inspector-tab" data-tab-name="variables" style="display: <%= tab === 'variables' ? 'flex' : 'none' %>"></div>
+      <div class="inspector-tab" data-tab-name="resources" style="display: <%= tab === 'resources' ? 'flex' : 'none' %>"></div>
+      <div class="inspector-tab" data-tab-name="callstack" style="display: <%= tab === 'callstack' ? 'flex' : 'none' %>"></div>
       <div id="inspectorNotice" style="display: none; position: absolute; background: #fafafa; margin-top: 32px; padding: 40px; height: 100%; width: 100%;">
         <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>
       </div>

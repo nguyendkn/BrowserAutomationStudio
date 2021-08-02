@@ -891,7 +891,7 @@ Debug:LIBS += -llibmimetic_d
 
 win32:LIBS += -lws2_32 -liconv -llibcurl -lzlib -lShell32 -luser32 -lAdvapi32
 
-QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
+QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.02
 
 INCLUDEPATH += $(BAS_PATH)/include
 LIBS += -L$(BAS_PATH)/lib

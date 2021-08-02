@@ -88,7 +88,7 @@ INCLUDEPATH += zip
 win32:LIBS += -lzlib
 
 win32 {
-    QMAKE_LFLAGS += /SUBSYSTEM:CONSOLE,5.01
+    QMAKE_LFLAGS += /SUBSYSTEM:CONSOLE,5.02
     QMAKE_CXX += /D_USING_V110_SDK71_
     LIBS *= -L"%ProgramFiles(x86)%/Microsoft SDKs/Windows/7.1A/Lib"
     INCLUDEPATH += "%ProgramFiles(x86)%/Microsoft SDKs/Windows/7.1A/Include"

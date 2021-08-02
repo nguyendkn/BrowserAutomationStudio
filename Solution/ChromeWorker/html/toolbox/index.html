@@ -1575,7 +1575,7 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
           { code: '2captcha', description: tr('Solve captcha using https://2captcha.com/ service') },
         ]
       }}) %>
-      <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') } }) %>
+      <%= _.template($('#input_constructor').html())({ id: 'serviceKey', description: tr('Service key'), disable_int: true, default_selector: 'string', help: { description: tr('Captcha solving service key. You can get it in your personal account of selected captcha solving service') } }) %>
       <%= _.template($('#input_constructor').html())({ description: tr('Captcha description. Can be empty.'), value_string: '', default_selector: 'string', disable_int: true, id: 'textInstructions', help: {
         description: tr('If captcha has any description, it can be added with this field.'),
         examples: [

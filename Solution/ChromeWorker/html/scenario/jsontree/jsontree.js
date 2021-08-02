@@ -18,15 +18,7 @@
     }
 
     render(data) {
-      let root = '';
-
-      if ($.type(data) === 'array') {
-        root = _jsArray('', data, '');
-      }
-
-      if ($.type(data) === 'object') {
-        root = _jsObject('', data, '');
-      }
+      const root = _jsNode('', data, '', true);
 
       if (!this.listenersAttached) {
         const $elem = $(this.elem);
@@ -159,7 +151,7 @@
 
   function _jsNode(name, value, path, isLast) {
     const content = `<span class="jst-label">${_.escape(name)}</span>` + `<span class="jst-colon">:</span>` + (() => {
-      switch ($.type(value)) {
+      switch (Object.prototype.toString.call(value).slice(8, -1).toLowerCase()) {
         case 'boolean':
           return _jsBoolean(name, value, path);
         case 'object':

@@ -22,6 +22,26 @@ span.jst-node[data-type="null"] {
   color: #808080;
 }
 
+.jst-root > li > .jst-collapse {
+  display: none;
+}
+
+.jst-root > li > .jst-bracket {
+  display: none;
+}
+
+.jst-root > li > .jst-label {
+  display: none;
+}
+
+.jst-root > li > .jst-colon {
+  display: none;
+}
+
+.jst-root > li > .jst-list {
+  padding: 0;
+}
+
 .jst-item > .fa-minus-circle {
   margin-left: 2px;
   cursor: pointer;
@@ -32,20 +52,8 @@ span.jst-node[data-type="null"] {
   cursor: pointer;
 }
 
-li.jst-item + li.jst-item {
+.jst-item + .jst-item {
   margin-top: 4px;
-}
-
-.jst-root > .jst-collapse {
-  display: none;
-}
-
-.jst-root > .jst-bracket {
-  display: none;
-}
-
-.jst-root > .jst-list {
-  padding: 0;
 }
 
 .jst-collapse:before {

@@ -54,7 +54,7 @@
     sortTree(type) {
       const metadata = this.model.get('metadata');
 
-      tinysort(this.el.querySelectorAll('.jst-root > ul > li'), {
+      tinysort(this.el.querySelectorAll('.jst-root > li > ul > li'), {
         sortFunction: (a, b) => {
           const [path1, path2] = [a, b].map(({ elm }) => {
             const node = elm.querySelector(':scope > [data-path]');
@@ -82,7 +82,7 @@
     filterTree() {
       const query = this.$('.inspector-filter-input').val().toLowerCase();
 
-      this.$('.jst-root > ul > li').each((__, el) => {
+      this.$('.jst-root > li > ul > li').each((__, el) => {
         const $el = $(el);
 
         if (query.length) {

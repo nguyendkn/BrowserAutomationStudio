@@ -144,6 +144,13 @@
         });
       },
 
+      'click .inspector-sort-menu-item': function (e) {
+        e.preventDefault();
+        const $el = $(e.target);
+        const type = $el.data('sortType');
+        this.model.set('sortingType', type);
+      },
+
       'click .inspector-filter-button': function (e) {
         e.preventDefault();
         const $menu = $(e.currentTarget).next('.inspector-filter-menu');

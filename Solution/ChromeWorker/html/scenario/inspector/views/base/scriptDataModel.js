@@ -11,16 +11,17 @@
       const source = this.get('source');
       this.set('source', data);
 
-      const diff = jsonpatch.compare(source, data), time = Date.now();
+      const diff = jsonpatch.compare(source, data);
 
       diff.forEach(({ path, value, op }) => {
         if (!_.has(metadata, path)) {
+          const time = performance.now();
           metadata[path] = { usage: 6, value, op, addedAt: time, modifiedAt: time };
         } else {
           if (op === 'remove') {
             return (delete metadata[path]);
           }
-          metadata[path].modifiedAt = time;
+          metadata[path].modifiedAt = performance.now();
         }
       });
 

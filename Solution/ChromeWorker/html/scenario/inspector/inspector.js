@@ -44,10 +44,8 @@
     },
 
     render() {
-      this.setElement('#inspector');
-
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template({ ...this.model.toJSON() }));
+        this.setElement('#inspector').$el.html(this.template(this.model.toJSON()));
 
         this.variables = new Inspector.Variables({
           el: this.$('[data-tab-name="variables"]')[0]

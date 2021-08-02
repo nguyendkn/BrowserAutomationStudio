@@ -154,13 +154,17 @@
       'click .inspector-filter-button': function (e) {
         e.preventDefault();
         const $menu = $(e.currentTarget).next('.inspector-filter-menu');
-        $menu.toggle($menu.is(':hidden'));
+        const isHidden = $menu.is(':hidden');
+        $menu.toggle(isHidden);
+        if (isHidden) $menu.prevAll('ul').hide();
       },
 
       'click .inspector-sort-button': function (e) {
         e.preventDefault();
         const $menu = $(e.currentTarget).next('.inspector-sort-menu');
-        $menu.toggle($menu.is(':hidden'));
+        const isHidden = $menu.is(':hidden');
+        $menu.toggle(isHidden);
+        if (isHidden) $menu.nextAll('ul').hide();
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {

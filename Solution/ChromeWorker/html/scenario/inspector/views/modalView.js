@@ -1,4 +1,6 @@
-(function (global, $, _) {
+(function ({ Scenario, Backbone }, $, _) {
+  const { Inspector, JST } = Scenario;
+
   const Model = Backbone.Model.extend({
     defaults: {
       value: '',
@@ -20,7 +22,7 @@
   });
 
   const View = Backbone.View.extend({
-    template: Scenario.JST['inspector/modal'],
+    template: JST['inspector/modal'],
 
     attributes: { tabindex: '-1' },
 
@@ -148,5 +150,5 @@
     },
   });
 
-  global.Scenario.Inspector.Modal = View;
+  Inspector.Modal = View;
 })(window, jQuery, _);

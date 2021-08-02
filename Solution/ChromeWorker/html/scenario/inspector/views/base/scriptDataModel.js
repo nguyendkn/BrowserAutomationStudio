@@ -1,4 +1,4 @@
-(function ({ Scenario }, $, _) {
+(function ({ Scenario, Backbone }, $, _) {
   const Model = Backbone.Model.extend({
     getValue(path) {
       const source = this.get('source');

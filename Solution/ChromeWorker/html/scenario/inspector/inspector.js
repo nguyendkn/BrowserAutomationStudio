@@ -1,5 +1,5 @@
-(function (global, $, _) {
-  const { Inspector, JST } = global.Scenario;
+(function ({ Scenario, Backbone }, $, _) {
+  const { Inspector, JST } = Scenario;
 
   const Model = Backbone.Model.extend({
     defaults: {

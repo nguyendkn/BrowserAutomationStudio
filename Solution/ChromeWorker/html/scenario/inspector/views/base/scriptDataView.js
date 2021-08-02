@@ -1,4 +1,4 @@
-(function ({ Scenario }, $, _) {
+(function ({ Scenario, Backbone }, $, _) {
   const View = Backbone.View.extend({
     initialize() {
       const model = this.model;

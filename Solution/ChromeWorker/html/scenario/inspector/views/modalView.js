@@ -93,17 +93,17 @@
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');
 
-        const $target = $inputs.filter((__, el) => {
-          return el.dataset.inputType === type
-        }).show().find(':input').prop('required', !false);
-
         const $unused = $inputs.filter((__, el) => {
           return el.dataset.inputType !== type
-        }).hide().find(':input').prop('required', !true);
+        }).hide().find(':input').prop('required', false);
 
-        $target.each(function (idx) {
+        const $target = $inputs.filter((__, el) => {
+          return el.dataset.inputType === type
+        }).show().find(':input').prop('required', true);
+
+        $target.each((idx, el) => {
           if (idx === 0) {
-            const $el = $(this), type = $el.attr('type');
+            const $el = $(el), type = $el.attr('type');
 
             if (!(type === 'radio')) {
               $el.val(type === 'number' ? 0 : '');

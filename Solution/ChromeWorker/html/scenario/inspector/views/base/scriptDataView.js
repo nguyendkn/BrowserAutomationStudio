@@ -55,7 +55,7 @@
       const metadata = this.model.get('metadata');
 
       tinysort(this.el.querySelectorAll('.jst-root > li > ul > li'), {
-        sortFunction: (a, b) => {
+        sortFunction(a, b) {
           const [path1, path2] = [a, b].map(({ elm }) => {
             const node = elm.querySelector(':scope > [data-path]');
             return node.dataset.path;
@@ -64,12 +64,14 @@
           if (type !== 'alphabetically') {
             const meta1 = metadata[path1], meta2 = metadata[path2];
 
-            if (type === 'frequency') {
-
-            } else if (type === 'dateAdded') {
-              return meta2.addedAt - meta1.addedAt;
-            } else if (type === 'dateModified') {
+            if (type === 'dateModified') {
               return meta2.modifiedAt - meta1.modifiedAt;
+            }
+            if (type === 'dateAdded') {
+              return meta2.addedAt - meta1.addedAt;
+            }
+            if (type === 'frequency') {
+              // TODO
             }
           }
 

@@ -6,10 +6,12 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var params = api.combineParams({metod:action, apikey:api.key}, options);
 		
-		_call_function(api.request,{url:api.url, method:"GET", params:params})!
+		_call_function(api.request,{url:api.url, method:"GET", params:params, timeout:timeout, maxTime:maxTime})!
 		var content = _result_function();
 		
 		api.banThread(20);
@@ -46,7 +48,10 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.makeRequest,{action:"get_balance"})!
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest,{action:"get_balance", timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -55,12 +60,14 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	this.getNumbersCount = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		if(site=="All"){
 			fail(api.name + ': ' + (_K=="ru" ? 'Данный сервис не поддерживает получение количества номеров для всех сайтов, возможно получить количество номеров для одного сайта за раз.' : 'This service does not support getting the count of numbers for all sites, it is possible to get the count of numbers for one site at a time.'));
 		};
 		
-		_call_function(api.makeRequest,{action:"get_count_new", options:{service:site, country:country}})!
+		_call_function(api.makeRequest,{action:"get_count_new", options:{service:site, country:country}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp.online);
@@ -70,6 +77,8 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var numberWithoutPrefix = "";
 		var confirmData = {};
 		if(!_is_nilb(number)){
@@ -82,10 +91,10 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		var maxNumberWait = Date.now() + 600000;
 		_do(function(){
 			if(Date.now() > maxNumberWait){
-				api.errorHandler("ACTION_TIMEOUT", "getNumber");
+				api.errorHandler("ACTION_TIMEOUT");
 			};
 			
-			_call_function(api.makeRequest,{action:"get_number", options:{service:site, country:country, number:numberWithoutPrefix}})!
+			_call_function(api.makeRequest,{action:"get_number", options:{service:site, country:country, number:numberWithoutPrefix}, timeout:timeout, maxTime:maxTime})!
 			var resp = _result_function();
 			
 			if(resp.response=="1"){
@@ -109,9 +118,11 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var confirmData = _SMS.getConfirmData(number);
 		
-		_call_function(api.makeRequest,{action:"get_sms", options:{service:confirmData.site, country:confirmData.country, id:confirmData.id}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"get_sms", options:{service:confirmData.site, country:confirmData.country, id:confirmData.id}, checkErrors:false, timeout:timeout, maxTime:maxTime})!
 		
 		_function_return(_result_function());
 	};
@@ -119,6 +130,8 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	this.setStatus = function(){
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var actions = {
 			"-1":"denial",
@@ -139,12 +152,12 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 			options.id = confirmData.id;
 		};
 		
-		_call_function(api.makeRequest,{action:actions[status], options:options})!
+		_call_function(api.makeRequest,{action:actions[status], options:options, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_if(status=="3", function(){
 			_if(["","null"].indexOf(resp.number) > -1 && [-1,0,"-1","0"].indexOf(resp.id) > -1, function(){
-				_call_function(api.getNumber,{site:site, country:country, number:number})!
+				_call_function(api.getNumber,{site:site, country:country, number:number, timeout:timeout, maxTime:maxTime})!
 				resp = _result_function();
 			})!
 			
@@ -154,9 +167,11 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var code = null;
 		
-		_call_function(api.getState,{number:number})!
+		_call_function(api.getState,{number:number, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(resp.response=="1"){

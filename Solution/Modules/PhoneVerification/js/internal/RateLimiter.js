@@ -115,7 +115,8 @@ _SMS.rateLimiter = function(options){
      * @returns {Number} The remainingTokens count.
      */
     this.removeTokens = function(count){
-		var count = _avoid_nilb(_function_argument("count"), 1);
+		var args = _function_arguments();
+		var count = _avoid_nilb(args.count, 1);
 		
         // Make sure the request isn't for more than we can handle
         if(count > limiter.tokenBucket.bucketSize){
@@ -136,14 +137,14 @@ _SMS.rateLimiter = function(options){
 			}, function(){
 				var waitMs = Math.ceil(limiter.getCurIntervalStart() + limiter.tokenBucket.interval - now);
 				_call_function(limiter.wait,{ms:waitMs})!
-				_call_function(limiter.tokenBucket.removeTokens,{count:count})!
+				_call_function(limiter.tokenBucket.removeTokens, args)!
 				var remainingTokens = _result_function();
                 limiter.plusTokensThisInterval(count);
 				_function_return(remainingTokens);
 			})!
 		})!
         // Remove the requested number of tokens from the token bucket
-		_call_function(limiter.tokenBucket.removeTokens,{count:count})!
+		_call_function(limiter.tokenBucket.removeTokens, args)!
 		var remainingTokens = _result_function();
         limiter.plusTokensThisInterval(count);
 		_function_return(remainingTokens);

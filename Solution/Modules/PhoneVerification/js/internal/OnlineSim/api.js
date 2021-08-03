@@ -7,11 +7,13 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var url = api.url + '/' + action + '.php';
 		var params = api.combineParams({apikey:api.key}, options);
 		
-		_call_function(api.request,{url:url, method:method, params:params})!
+		_call_function(api.request,{url:url, method:method, params:params, timeout:timeout, maxTime:maxTime})!
 		var content = _result_function();
 		
 		var resp = api.parseJSON(content);
@@ -24,7 +26,10 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.makeRequest,{action:"getBalance"})!
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest,{action:"getBalance", timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -33,8 +38,10 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	this.getNumbersCount = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:"getNumbersStats", options:{country:country}})!
+		_call_function(api.makeRequest,{action:"getNumbersStats", options:{country:country}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		var sites = {};
@@ -73,8 +80,10 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:"getNum", options:{service:site, country:country, simoperator:operator, number:true}})!
+		_call_function(api.makeRequest,{action:"getNum", options:{service:site, country:country, simoperator:operator, number:true}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return({api:api, id:resp.tzid, lastId:resp.tzid, number:api.removePlus(resp.number)});
@@ -84,7 +93,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		var number = _function_argument("number");
 		var confirmData = _SMS.getConfirmData(number);
 		
-		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.lastId, msg_list:0, clean:1}})!
+		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.lastId, msg_list:0, clean:1}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(Array.isArray(resp)){
@@ -97,6 +106,8 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	this.setStatus = function(){
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var actions = {
 			"3":"setOperationRevise",
@@ -111,7 +122,7 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 		
 		var confirmData = _SMS.getConfirmData(number);
 		
-		_call_function(api.makeRequest,{action:actions[status], options:{tzid:confirmData.id}})!
+		_call_function(api.makeRequest,{action:actions[status], options:{tzid:confirmData.id}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(status=="3"){
@@ -121,10 +132,12 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var confirmData = _SMS.getConfirmData(number);
 		var code = null;
 		
-		_call_function(api.getState,{number:number})!
+		_call_function(api.getState,{number:number, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(['TZ_NUM_ANSWER','TZ_OVER_OK'].indexOf(resp.response) > -1){

@@ -41,10 +41,12 @@ _SMS = {
 		var service = _function_argument("service");
 		var apiKey = _function_argument("apiKey");
 		var serverUrl = _function_argument("serverUrl");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
-		_call_function(api.getBalance,{})!
+		_call_function(api.getBalance,{timeout:timeout, maxTime:maxTime})!
 		var balance = _result_function();
 		
 		_function_return(_is_nilb(balance) ? null : parseFloat(balance));
@@ -59,6 +61,8 @@ _SMS = {
 		var operator = _SMS.paramClean(_function_argument("operator"));
 		var customSite = _SMS.paramClean(_function_argument("customSite"));
 		var customCountry = _SMS.paramClean(_function_argument("customCountry"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
@@ -67,7 +71,7 @@ _SMS = {
 		site = _is_nilb(customSite) ? (site=="All" ? "All" : api.getRawSite(site)) : customSite;
 		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
 		
-		_call_function(api.getNumbersCount,{site:site, country:country, operator:operator})!
+		_call_function(api.getNumbersCount,{site:site, country:country, operator:operator, timeout:timeout, maxTime:maxTime})!
 		var count = _result_function();
 		
 		_function_return(site=="All" ? (_is_nilb(count) ? {} : count) : (_is_nilb(count) ? 0 : parseInt(count)));
@@ -77,12 +81,14 @@ _SMS = {
 		var service = _function_argument("service");
 		var apiKey = _function_argument("apiKey");
 		var serverUrl = _function_argument("serverUrl");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
 		api.validateMethod('getSites', _K=="ru" ? "Получить список сайтов" : "Get list of sites");
 		
-		_call_function(api.getSites,{})!
+		_call_function(api.getSites,{timeout:timeout, maxTime:maxTime})!
 		
 		_function_return(_result_function());
 	},
@@ -91,12 +97,14 @@ _SMS = {
 		var service = _function_argument("service");
 		var apiKey = _function_argument("apiKey");
 		var serverUrl = _function_argument("serverUrl");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _SMS.init(service, apiKey, serverUrl);
 		
 		api.validateMethod('getCountries', _K=="ru" ? "Получить список стран" : "Get list of countries");
 		
-		_call_function(api.getCountries,{})!
+		_call_function(api.getCountries,{timeout:timeout, maxTime:maxTime})!
 		
 		_function_return(_result_function());
 	},
@@ -110,6 +118,8 @@ _SMS = {
 		var operator = _SMS.paramClean(_function_argument("operator"));
 		var customSite = _SMS.paramClean(_function_argument("customSite"));
 		var customCountry = _SMS.paramClean(_function_argument("customCountry"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		if(_is_nilb(_SMS.confirmData)){
 			_SMS.confirmData = {};
@@ -120,7 +130,7 @@ _SMS = {
 		site = _is_nilb(customSite) ? api.getRawSite(site) : customSite;
 		country = _is_nilb(customCountry) ? api.getRawCountry(country) : customCountry;
 		
-		_call_function(api.getNumber,{site:site, country:country, operator:operator})!
+		_call_function(api.getNumber,{site:site, country:country, operator:operator, timeout:timeout, maxTime:maxTime})!
 		var confirmData = _result_function();
 		var number = confirmData.number;
 		
@@ -131,28 +141,33 @@ _SMS = {
 	
 	getState: function(){
 		var number = _SMS.paramClean(_function_argument("number"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var confirmData = _SMS.getConfirmData(number);
 		var api = confirmData.api;
 		
-		_call_function(api.getState,{number:number})!
+		_call_function(api.getState,{number:number, timeout:timeout, maxTime:maxTime})!
 		_function_return(_result_function());
 	},
 	
 	getCode: function(){
 		var number = _SMS.paramClean(_function_argument("number"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var confirmData = _SMS.getConfirmData(number);
 		var api = confirmData.api;
 		
-		_call_function(api.getCode,{number:number})!
+		_call_function(api.getCode,{number:number, timeout:timeout, maxTime:maxTime})!
 		
 		_function_return(_result_function());
 	},
 	
 	waitCode: function(){
 		var number = _SMS.paramClean(_function_argument("number"));
-		var maxTime = Date.now() + 60000 * _avoid_nilb(_function_argument("timeout"), 10);
+		var timeout = 60000 * _avoid_nilb(_function_argument("timeout"), 10);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var interval = 1000 * _avoid_nilb(_function_argument("interval"), 5);
 		
 		var confirmData = _SMS.getConfirmData(number);
@@ -160,15 +175,15 @@ _SMS = {
 		var code = null;
 		
 		_if(!confirmData.ready, function(){
-			_call_function(_SMS.setStatus,{number:number, status:"1"})!
+			_call_function(_SMS.setStatus,{number:number, status:"1", timeout:timeout, maxTime:maxTime})!
 		})!
 		
 		_do(function(){
 			if(Date.now() > maxTime){
-				api.errorHandler("ACTION_TIMEOUT", _K=="ru" ? "Получить код активации" : "Get activation code");
+				api.errorHandler("ACTION_TIMEOUT");
 			};
 			
-			_call_function(api.getCode,{number:number})!
+			_call_function(api.getCode,{number:number, timeout:timeout, maxTime:maxTime})!
 			code = _result_function();
 			
 			if(!_is_nilb(code) && code !== false){
@@ -185,11 +200,13 @@ _SMS = {
 		var number = _SMS.paramClean(_function_argument("number"));
 		var status = _SMS.paramClean(_function_argument("status"));
 		var deleteInfo = _avoid_nilb(_function_argument("deleteInfo"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var confirmData = _SMS.getConfirmData(number);
 		var api = confirmData.api;
 		
-		_call_function(api.setStatus,{number:number, status:status})!
+		_call_function(api.setStatus,{number:number, status:status, timeout:timeout, maxTime:maxTime})!
 		
 		if(status=="1"){
 			confirmData.ready = true;

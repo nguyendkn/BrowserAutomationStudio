@@ -23,6 +23,24 @@ _SMS.BaseApi = function(config, data, path){
 		this.refTitle = _is_nilb(config.refTitle) ? 'ref' : config.refTitle;
 	};
 	
+	if(!_is_nilb(config.limits) && config.limits.length){
+		var limiter = null;
+		for(var key in config.limits){
+			var limit = config.limits[key];
+			limiter = new _SMS.rateLimiter({
+				tokensPerInterval: limit.requestsPerInterval,
+				interval: limit.interval,
+				queue: _avoid_nilb(limit.queue, true),
+				type: limit.type,
+				id: (limit.type==="service" && _is_nilb(limit.id) ? (api.id + "_" + key) : limit.id),
+				parentLimiter: limiter
+			});
+		};
+		this.limiter = limiter;
+	}else{
+		this.limiter = false;
+	};
+	
 	this.combineParams = function(params, options){
 		for(var key in options){
 			if(!_is_nilb(options[key])){
@@ -76,17 +94,28 @@ _SMS.BaseApi = function(config, data, path){
 	this.ban = 0;
 	
 	this.banThread = function(seconds){
-		api.ban = Date.now() + seconds * 1000;
+		if(seconds){
+			api.ban = Date.now() + seconds * 1000;
+		};
 	};
 	
 	this.banService = function(seconds){
-		PSet("sms", api.id, (Date.now() + seconds * 1000).toString());
+		if(seconds){
+			PSet("sms", api.id, (Date.now() + seconds * 1000).toString());
+		};
 	};
 	
 	this.beforeRequest = function(){
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
 		_do(function(){
 			var sleepTime = 0;
 			var nowDate = Date.now();
+			
+			if(nowDate > maxTime){
+				api.errorHandler("ACTION_TIMEOUT");
+			};
 			
 			if(api.ban > 0 && api.ban - nowDate > 0){
 				sleepTime = api.ban - nowDate;
@@ -99,14 +128,23 @@ _SMS.BaseApi = function(config, data, path){
 				};
 			};
 
-			_if_else(sleepTime <= 0, function(){
-				_break("function");
-			}, function(){
+			_if_else(sleepTime > 0, function(){
+				if(nowDate + sleepTime > maxTime){
+					sleepTime = maxTime - nowDate + rand(0,30);
+				};
+				
 				api.log((_K=="ru" ? 'Ждем ' : 'Wait ') + (sleepTime/1000) + (_K=="ru" ? ' секунд перед запросом к ' : ' seconds before requesting ') + api.name);
 				
 				_call_function(api.sleep,{time:sleepTime})!
+			}, function(){
+				_break("function");
 			})!
 		})!
+		
+		_if(api.limiter, function(){
+			_call_function(api.limiter.removeTokens,{api:api, count:1, timeout:timeout, maxTime:maxTime})!
+			var remainingTokens = _result_function();
+		});
 	};
 	
 	this.sleep = function(){
@@ -125,8 +163,11 @@ _SMS.BaseApi = function(config, data, path){
 	
 	this.request = function(){
 		var url = _function_argument("url");
-		var method = _function_argument("method");
+		var method = _avoid_nilb(_function_argument("method"), "GET");
 		var params = _function_argument("params");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
 		var data = [];
 		
 		if(!_is_nilb(api.ref)){
@@ -141,7 +182,7 @@ _SMS.BaseApi = function(config, data, path){
 			};
 		};
 		
-		_call_function(api.beforeRequest,{})!
+		_call_function(api.beforeRequest,{timeout:timeout, maxTime:maxTime})!
 		
 		_switch_http_client_internal();
 		
@@ -150,20 +191,26 @@ _SMS.BaseApi = function(config, data, path){
 		http_client_set_fail_on_error(false);
 		
 		_do(function(){
-			if(_iterator() > 10){
+			if(_iterator() > 10 || Date.now() > maxTime){
 				_switch_http_client_main();
 				FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;
-				api.errorHandler("FAILED_REQUEST");
+				if(_iterator() > 10){
+					api.errorHandler("FAILED_REQUEST");
+				}else{
+					api.errorHandler("ACTION_TIMEOUT");
+				};
 			};
 			
 			_if_else(method=="GET", function(){
 				api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
 				
+				general_timeout_next(timeout);
 				http_client_get2(url, {"method":"GET"})!
 			}, function(){
 				api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
 				
-				http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":"POST"})!
+				general_timeout_next(timeout);
+				http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":method})!
 			})!
 			
 			if(!http_client_was_error()){
@@ -198,8 +245,8 @@ _SMS.BaseApi = function(config, data, path){
 				"en": "Failed to parse the response from the service. Response content: " + data
 			},
 			"ACTION_TIMEOUT": {
-				"ru": 'Превышено время ожидания выполнения действия "' + data + '".',
-				"en": 'Timed out for execution of an action "' + data + '".'
+				"ru": "Превышено время выполнения действия.",
+				"en": "Timed out for execute action."
 			},
 			"UNSUPPORTED_METHOD": {
 				"ru": 'Метод "' + data + '" не поддерживается.',

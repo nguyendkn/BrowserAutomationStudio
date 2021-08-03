@@ -132,16 +132,6 @@ _SMS.tokenBucket = function(options){
 			return null;
 		});
 	};
-	
-	this.outFromQueue = function(){
-		bucket.changeParams(function(params){
-			var threadNumber = thread_number();
-			if(params.queue.indexOf(threadNumber)===0){
-				return params.queue.shift();
-			};
-			return null;
-		});
-	};
     
 	/**
 	 * Asynchronous function
@@ -154,6 +144,12 @@ _SMS.tokenBucket = function(options){
      */
 	this.removeTokens = function(){
 		var count = _avoid_nilb(_function_argument("count"), 1);
+		var timeout = _function_argument("timeout");
+		var maxTime = _function_argument("maxTime");
+		if(_is_nilb(maxTime) && !_is_nilb(timeout)){
+			maxTime = Date.now() + timeout;
+		};
+		var api = _function_argument("api");
 		
 		// Is this an infinite size bucket?
         if(bucket.bucketSize === 0){
@@ -171,6 +167,11 @@ _SMS.tokenBucket = function(options){
 		};
 		
 		_do(function(){
+			if((timeout || maxTime) && Date.now() > maxTime){
+				bucket.removeFromQueue();
+				api.errorHandler("ACTION_TIMEOUT");
+			};
+			
 			// Drip new tokens into this bucket
 			bucket.drip();
 			// If we don't have enough tokens in this bucket, come back later
@@ -215,7 +216,7 @@ _SMS.tokenBucket = function(options){
 		})!
 		
 		if(bucket.queue){
-			bucket.outFromQueue();
+			bucket.removeFromQueue();
 		};
 		
 		_function_return(result);

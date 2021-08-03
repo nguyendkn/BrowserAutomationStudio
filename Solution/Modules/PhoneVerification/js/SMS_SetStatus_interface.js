@@ -59,4 +59,4 @@
 	<div class="tr tooltip-paragraph-fold">If the service does not support the specified status, then the action will do nothing.</div>
 	<div class="tr tooltip-paragraph-last-fold">If the status cannot be changed or an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
-<%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+<%= _.template($('#back').html())({action:"executeandadd", use_timeout:true, visible:true}) %>

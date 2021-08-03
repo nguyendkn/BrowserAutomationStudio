@@ -6,11 +6,13 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var url = api.url + '/' + action + '/';
 		var params = api.combineParams({apiKey:api.key}, options);
 		
-		_call_function(api.request,{url:url, method:"GET", params:params})!
+		_call_function(api.request,{url:url, method:"GET", params:params, timeout:timeout, maxTime:maxTime})!
 		var content = _result_function();
 		
 		var resp = api.parseJSON(content);
@@ -23,7 +25,10 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.makeRequest,{action:"getBalance"})!
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest,{action:"getBalance", timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -33,8 +38,10 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:(site=="All" ? "getCountNumberList" : "getCountNumber"), options:{service:(site=="All" ? "" : site), country:country, operator:operator}})!
+		_call_function(api.makeRequest,{action:(site=="All" ? "getCountNumberList" : "getCountNumber"), options:{service:(site=="All" ? "" : site), country:country, operator:operator}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(site=="All"){
@@ -52,8 +59,10 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}})!
+		_call_function(api.makeRequest,{action:"getNumber", options:{service:site, country:country, operator:operator}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return({api:api, id:resp.idNum, number:api.removePlus(resp.tel.toString())});
@@ -61,9 +70,11 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var taskId = _SMS.getConfirmData(number).id;
 		
-		_call_function(api.makeRequest,{action:"getSmsCode", options:{idNum:taskId}})!
+		_call_function(api.makeRequest,{action:"getSmsCode", options:{idNum:taskId}, timeout:timeout, maxTime:maxTime})!
 		
 		_function_return(_result_function());
 	};
@@ -71,6 +82,8 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	this.setStatus = function(){
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var actions = {
 			"-1":"end",
@@ -85,7 +98,7 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 		
 		var taskId = _SMS.getConfirmData(number).id;
 		
-		_call_function(api.makeRequest,{action:"setStatus", options:{idNum:taskId, status:actions[status]}})!
+		_call_function(api.makeRequest,{action:"setStatus", options:{idNum:taskId, status:actions[status]}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(["ready","update"].indexOf(resp.status) < 0){
@@ -95,8 +108,10 @@ _SMS.VakSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.getState,{number:number})!
+		_call_function(api.getState,{number:number, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 			
 		_function_return(resp.smsCode);

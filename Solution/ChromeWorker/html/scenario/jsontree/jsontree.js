@@ -84,14 +84,14 @@
     }
   }
 
-  function _collection(value, type, path, brackets) {
+  function _jsIterable(value, type, path, brackets) {
     const opening = `<span class="jst-bracket">${brackets[0]}</span>`;
     const closing = `<span class="jst-bracket">${brackets[1]}</span>`;
     const keys = Object.keys(value);
 
     if (keys.length) {
       const content = keys.map((key, idx) => {
-        return _jsNode(key, value[key], path, idx === keys.length - 1)
+        return _jsNode(key, value[key], key ? `${path}/${key}` : path, idx === keys.length - 1)
       }).join('');
 
       const element = `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`;
@@ -102,38 +102,38 @@
   }
 
   function _jsObject(name, value, path) {
-    return _collection(value, 'object', _path(path, name), ['{', '}']);
+    return _jsIterable(value, 'object', path, ['{', '}']);
   }
 
   function _jsArray(name, value, path) {
-    return _collection(value, 'array', _path(path, name), ['[', ']']);
+    return _jsIterable(value, 'array', path, ['[', ']']);
   }
 
   function _jsString(name, value, path) {
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return _element(`"${_.escape(data)}"`, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'string', 'data-value': utf8_to_b64(value) }) + clip;
+    return _element(`"${_.escape(data)}"`, { class: 'jst-node', 'data-path': path, 'data-type': 'string', 'data-value': utf8_to_b64(value) }) + clip;
   }
 
   function _jsUndefined(name, value, path) {
-    return _element(void 0, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'undefined' });
+    return _element(void 0, { class: 'jst-node', 'data-path': path, 'data-type': 'undefined' });
   }
 
   function _jsBoolean(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'boolean' });
+    return _element(value, { class: 'jst-node', 'data-path': path, 'data-type': 'boolean' });
   }
 
   function _jsNumber(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'number' });
+    return _element(value, { class: 'jst-node', 'data-path': path, 'data-type': 'number' });
   }
 
   function _jsDate(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'date' });
+    return _element(value, { class: 'jst-node', 'data-path': path, 'data-type': 'date' });
   }
 
   function _jsNull(name, value, path) {
-    return _element(null, { class: 'jst-node', 'data-path': _path(path, name), 'data-type': 'null' });
+    return _element(null, { class: 'jst-node', 'data-path': path, 'data-type': 'null' });
   }
 
   function _jsNode(name, value, path, isLast) {
@@ -168,10 +168,6 @@
   function _element(content, attrs) {
     attrs = Object.keys(attrs).map(key => `${key}="${attrs[key]}"`);
     return `<span ${attrs.join(' ')}>${content}</span>`;
-  }
-
-  function _path(path, name) {
-    return name ? `${path}/${name}` : path;
   }
 
   global.JSONTree = JSONTree;

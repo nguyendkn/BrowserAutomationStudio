@@ -144,7 +144,7 @@ _SMS.BaseApi = function(config, data, path){
 		_if(api.limiter, function(){
 			_call_function(api.limiter.removeTokens,{api:api, count:1, timeout:timeout, maxTime:maxTime})!
 			var remainingTokens = _result_function();
-		});
+		})!
 	};
 	
 	this.sleep = function(){

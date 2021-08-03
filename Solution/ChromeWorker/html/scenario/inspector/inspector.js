@@ -16,28 +16,28 @@
 
       _GobalModel.on('change:isscriptexecuting', (__, value) => {
         if (value || !this.model.get('visible')) return;
-        ['variables', 'resources'].forEach(type => {
-          this[type].model.set('highlight', true);
-        });
+        this.variables.model.set('highlight', true);
+        this.resources.model.set('highlight', true);
       });
 
       _GobalModel.on('change:istaskexecuting', (__, value) => {
         if (value || !this.model.get('visible')) return;
-        ['variables', 'resources'].forEach(type => {
-          this[type].model.set('highlight', true);
-        });
+        this.variables.model.set('highlight', true);
+        this.resources.model.set('highlight', true);
       });
 
       this.model.on('change:tab', (__, tab) => {
-        const $tabs = this.$('.inspector-tab');
+        this.$('.inspector-tab').each((__, el) => {
+          const $el = $(el), { tabName } = el.dataset;
 
-        $tabs.filter((__, el) => {
-          return el.dataset.tabName !== tab;
-        }).hide();
+          if (tabName !== tab) {
+            return $el.hide();
+          }
 
-        $tabs.filter((__, el) => {
-          return el.dataset.tabName === tab;
-        }).show();
+          if (tabName === tab) {
+            return $el.show();
+          }
+        });
       });
 
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());

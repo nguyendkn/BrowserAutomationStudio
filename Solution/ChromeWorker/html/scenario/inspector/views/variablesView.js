@@ -1,4 +1,4 @@
-(function ({ Scenario }, $, _) {
+(({ Scenario }, $, _) => {
   const { Inspector, JST } = Scenario;
   const { ScriptDataModel, ScriptDataView } = Inspector;
 

@@ -1,4 +1,6 @@
-(function ({ Scenario, Backbone }, $, _) {
+(({ Scenario, Backbone }, $, _) => {
+  const { Inspector, utils } = Scenario;
+
   const View = Backbone.View.extend({
     initialize() {
       const model = this.model;
@@ -71,11 +73,11 @@
               return meta2.addedAt - meta1.addedAt;
             }
             if (type === 'frequency') {
-              // TODO
+              return meta2.freq - meta1.freq;
             }
           }
 
-          return Scenario.utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
+          return utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
         },
       });
 
@@ -178,5 +180,5 @@
     }
   });
 
-  Scenario.Inspector.ScriptDataView = View;
+  Inspector.ScriptDataView = View;
 })(window, jQuery, _);

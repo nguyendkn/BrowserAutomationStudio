@@ -1,4 +1,4 @@
-(function ({ Scenario, Backbone }, $, _) {
+(({ Scenario, Backbone }, $, _) => {
   const { Inspector, JST } = Scenario;
 
   const Model = Backbone.Model.extend({

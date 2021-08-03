@@ -1,4 +1,6 @@
-(function ({ Scenario, Backbone }, $, _) {
+(({ Scenario, Backbone }, $, _) => {
+  const { Inspector, utils } = Scenario;
+
   const Model = Backbone.Model.extend({
     getValue(path) {
       const source = this.get('source');
@@ -54,5 +56,5 @@
     }
   });
 
-  Scenario.Inspector.ScriptDataModel = Model;
+  Inspector.ScriptDataModel = Model;
 })(window, jQuery, _);

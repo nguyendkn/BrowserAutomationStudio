@@ -1,4 +1,4 @@
-(function (global, $, _) {
+(({ Scenario, Backbone }, $, _) =>  {
   const Model = Backbone.Model.extend({
     defaults: {
       callstack: [0],
@@ -46,5 +46,5 @@
     },
   });
 
-  global.Scenario.Inspector.Callstack = View;
+  Scenario.Inspector.Callstack = View;
 })(window, jQuery, _);

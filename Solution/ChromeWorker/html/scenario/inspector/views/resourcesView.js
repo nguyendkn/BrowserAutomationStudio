@@ -5,11 +5,11 @@
   const Model = ScriptDataModel.extend({
     defaults: () => _.extend({}, ScriptDataModel.prototype.defaults, {
       allowHighlight: false,
-      allowGroups: false,
+      allowGroups: true,
     })
   });
 
-  const View = ScriptDataView.extend({
+  Inspector.Resources = ScriptDataView.extend({
     template: JST['inspector/resources'],
 
     model: new Model(),
@@ -28,6 +28,4 @@
       });
     }
   });
-
-  Inspector.Resources = View;
 })(window, jQuery, _);

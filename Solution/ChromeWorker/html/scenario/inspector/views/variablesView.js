@@ -9,7 +9,7 @@
     })
   });
 
-  const View = ScriptDataView.extend({
+  Inspector.Variables = ScriptDataView.extend({
     template: JST['inspector/variables'],
 
     model: new Model(),
@@ -45,6 +45,4 @@
       });
     }
   });
-
-  Inspector.Variables = View;
 })(window, jQuery, _);

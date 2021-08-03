@@ -36,7 +36,7 @@
     },
 
     defaults: {
-      sortingType: 'alphabetically',
+      sortType: 'alphabetically',
       allowHighlight: true,
       allowGroups: false,
       highlight: false,

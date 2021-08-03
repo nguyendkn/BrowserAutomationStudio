@@ -29,8 +29,8 @@
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
-      model.on('change:sortingType', (__, method) => {
-        this.sortTree(method);
+      model.on('change:sortType', (__, type) => {
+        this.sortTree(type);
       });
     },
 
@@ -40,7 +40,7 @@
 
         this.tree = new JSONTree(this.$('.inspector-panel-data')[0], {
           onRender: () => {
-            this.sortTree(this.model.get('sortingType'));
+            this.sortTree(this.model.get('sortType'));
             this.filterTree().loadState();
           },
           onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
@@ -149,7 +149,7 @@
         e.preventDefault();
         const $el = $(e.target);
         const type = $el.data('sortType');
-        this.model.set('sortingType', type);
+        this.model.set('sortType', type);
       },
 
       'click .inspector-filter-button': function (e) {

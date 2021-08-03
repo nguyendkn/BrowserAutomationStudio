@@ -165,11 +165,9 @@
     return `<li class="jst-item">${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`
   }
 
-  function _element(html, attrs, tag = 'span') {
-    attrs = Object.keys(attrs).map((key) => {
-      return `${key}="${attrs[key]}"`;
-    }).join(' ');
-    return `<${tag} ${attrs}>${html}</${tag}>`;
+  function _element(content, attrs) {
+    attrs = Object.keys(attrs).map(key => `${key}="${attrs[key]}"`);
+    return `<span ${attrs.join(' ')}>${content}</span>`;
   }
 
   function _path(path, name) {

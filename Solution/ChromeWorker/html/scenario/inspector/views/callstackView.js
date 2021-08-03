@@ -27,7 +27,7 @@
     }
   });
 
-  const View = Backbone.View.extend({
+  Inspector.Callstack = Backbone.View.extend({
     template: JST['inspector/callstack'],
 
     initialize() {
@@ -47,6 +47,4 @@
       return this;
     },
   });
-
-  Inspector.Callstack = View;
 })(window, jQuery, _);

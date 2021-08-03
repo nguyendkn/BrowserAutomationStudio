@@ -16,7 +16,7 @@
       const diff = jsonpatch.compare(source, data); diff.forEach(({ path, op }) => {
         const time = performance.now();
         if (!_.has(metadata, path)) {
-          metadata[path] = { usage: 6, op, addedAt: time, modifiedAt: time };
+          metadata[path] = { op, count: 6, usages: 0, addedAt: time, modifiedAt: time };
         } else {
           if (op === 'remove') return (delete metadata[path]);
           metadata[path].modifiedAt = time;
@@ -27,7 +27,7 @@
         const highlight = this.get('highlight');
         _.each(metadata, (item, path) => {
           if (highlight) {
-            item.usage = diff.some(v => v.path === path) ? 1 : (item.usage + 1);
+            item.count = diff.some(v => v.path === path) ? 1 : (item.count + 1);
           }
           this.trigger('highlight', { ...item, path });
         });

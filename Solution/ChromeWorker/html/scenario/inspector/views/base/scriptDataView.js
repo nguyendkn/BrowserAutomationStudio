@@ -6,7 +6,7 @@
       const model = this.model;
 
       if (model.get('allowHighlight')) {
-        model.on('highlight', ({ usage, path }) => {
+        model.on('highlight', ({ count, path }) => {
           const $node = this.$(`[data-path="${path}"]`);
 
           if ($node.length) {
@@ -14,7 +14,7 @@
             if (['object', 'array'].includes(type)) return;
 
             const scale = chroma.scale(['red', JSONTree.colors[type]]).mode('rgb');
-            $node.css('color', scale.colors(6, 'css')[Math.min(usage, 6) - 1]);
+            $node.css('color', scale.colors(6, 'css')[Math.min(count, 6) - 1]);
           }
         });
       }
@@ -73,7 +73,7 @@
               return meta2.addedAt - meta1.addedAt;
             }
             if (type === 'frequency') {
-              return meta2.freq - meta1.freq;
+              return meta2.usages - meta1.usages;
             }
           }
 

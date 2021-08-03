@@ -94,9 +94,8 @@
         return _jsNode(key, value[key], path, idx === keys.length - 1)
       }).join('');
 
-      const collapse = `<span class="jst-collapse"></span>`;
       const element = `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`;
-      return opening + collapse + element + closing;
+      return opening + `<span class="jst-collapse"></span>` + element + closing;
     }
 
     return opening + closing;

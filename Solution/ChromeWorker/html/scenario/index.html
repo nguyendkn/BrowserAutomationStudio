@@ -5362,11 +5362,7 @@
     {
       var code = GenerateCode(_TaskCollection.toJSON(),_GobalModel.toJSON())
       var match = code.match(/VAR_[A-Z0-9_]+/g)
-      var variables = [];
-
-      if (match) {
-        variables = _.uniq(match)
-      }     
+      var variables = match ? _.uniq(match) : [];
 
       JSON.parse(extract_global_variables(code)).forEach(function(el){
         variables.push("GLOBAL:" + el["name"])

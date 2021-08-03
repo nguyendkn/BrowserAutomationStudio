@@ -13,7 +13,7 @@
       const source = this.get('source');
       this.set('source', data);
 
-      const diff = _.each(jsonpatch.compare(source, data), ({ path, op }) => {
+      const diff = jsonpatch.compare(source, data); diff.forEach(({ path, op }) => {
         const time = performance.now();
         if (!_.has(metadata, path)) {
           metadata[path] = { usage: 6, op, addedAt: time, modifiedAt: time };

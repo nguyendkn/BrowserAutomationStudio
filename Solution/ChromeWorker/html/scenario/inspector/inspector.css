@@ -24,6 +24,20 @@
   flex: 1;
 }
 
+.inspector-filter-input:not(:placeholder-shown) {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+
+.inspector-filter-input:placeholder-shown {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.inspector-filter-input {
+  flex: 1;
+}
+
 .inspector-panel-data {
   font-family: "Lucida Console", Monaco, monospace;
   padding: 8px 15px;
@@ -66,7 +80,7 @@
   border-bottom: 1px solid #dbdbdb;
   border-top: 7px solid #e1e1e1;
   background-color: #fafafa;
-  min-height: 100px;
+  min-height: 120px;
   height: 290px;
 }
 

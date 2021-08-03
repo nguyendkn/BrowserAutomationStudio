@@ -91,7 +91,7 @@ _.extend(Scenario.JST, {
       <span style="width: 26px; padding: 0px 6px;">
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
-      <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+      <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>">
       <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
       <ul class="inspector-sort-menu" style="display: none;position: absolute;background: #fff;border: 1px solid;list-style: none;padding: 0 12px;right: 0;top: 73px;">
         <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>

@@ -69,7 +69,7 @@
               const max = h2 - h1 - 300;
 
               height = Math.min(height, max);
-              height = Math.max(height, 100);
+              height = Math.max(height, 120);
 
               this.$el.css('height', `${height}px`);
             }

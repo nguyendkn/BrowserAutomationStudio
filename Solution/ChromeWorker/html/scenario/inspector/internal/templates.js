@@ -91,13 +91,13 @@ _.extend(Scenario.JST, {
       <span style="width: 26px; padding: 0px 6px;">
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
-      <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>">
+      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
       <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
       <ul class="inspector-sort-menu" style="display: none">
-        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%- tr('Frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('Frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('Date added') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('Date modified') %></li>
       </ul>
       <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
       <ul class="inspector-filter-menu" style="display: none">
@@ -123,13 +123,13 @@ _.extend(Scenario.JST, {
       <span style="width: 26px; padding: 0px 6px;">
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
-      <input type="text" class="inspector-filter-input" placeholder="<%- tr('Filter by name...') %>" style="flex: 1;">
+      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>" style="flex: 1;">
       <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
       <ul class="inspector-sort-menu" style="display: none">
-        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%- tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%- tr('Frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%- tr('Date added') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%- tr('Date modified') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('Frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('Date added') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('Date modified') %></li>
       </ul>
       <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
       <ul class="inspector-filter-menu" style="display: none">

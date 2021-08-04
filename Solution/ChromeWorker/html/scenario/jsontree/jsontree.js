@@ -115,31 +115,31 @@
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return _element(`"${_.escape(data)}"`, { class: 'jst-node', 'data-path': path, 'data-type': 'string', 'data-value': utf8_to_b64(value) }) + clip;
+    return _element(`"${_.escape(data)}"`, { path, type: 'string', 'data-value': utf8_to_b64(value) }) + clip;
   }
 
   function _jsUndefined(name, value, path) {
-    return _element(void 0, { class: 'jst-node', 'data-path': path, 'data-type': 'undefined' });
+    return _element(void 0, { path, type: 'undefined' });
   }
 
   function _jsBoolean(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': path, 'data-type': 'boolean' });
+    return _element(value, { path, type: 'boolean' });
   }
 
   function _jsNumber(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': path, 'data-type': 'number' });
+    return _element(value, { path, type: 'number' });
   }
 
   function _jsDate(name, value, path) {
-    return _element(value, { class: 'jst-node', 'data-path': path, 'data-type': 'date' });
+    return _element(value, { path, type: 'date' });
   }
 
   function _jsNull(name, value, path) {
-    return _element(null, { class: 'jst-node', 'data-path': path, 'data-type': 'null' });
+    return _element(null, { path, type: 'null' });
   }
 
   function _jsNode(name, value, path, isLast) {
-    const content = `<span class="jst-label">${_.escape(name)}</span>` + `<span class="jst-colon">:</span>` + (() => {
+    const content = `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` + (() => {
       switch (Object.prototype.toString.call(value).slice(8, -1).toLowerCase()) {
         case 'boolean':
           return _jsBoolean(name, value, path);
@@ -168,8 +168,8 @@
   }
 
   function _element(content, attrs) {
-    attrs = Object.keys(attrs).map(key => `${key}="${attrs[key]}"`);
-    return `<span ${attrs.join(' ')}>${content}</span>`;
+    attrs = Object.keys(attrs).map(key => `data-${key}="${attrs[key]}"`);
+    return `<span class="jst-node" ${attrs.join(' ')}>${content}</span>`;
   }
 
   global.JSONTree = JSONTree;

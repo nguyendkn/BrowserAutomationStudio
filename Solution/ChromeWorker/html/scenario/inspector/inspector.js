@@ -28,15 +28,7 @@
 
       this.model.on('change:tab', (__, tab) => {
         this.$('.inspector-tab').each((__, el) => {
-          const $el = $(el), { tabName } = el.dataset;
-
-          if (tabName !== tab) {
-            return $el.hide();
-          }
-
-          if (tabName === tab) {
-            return $el.show();
-          }
+          $(el).toggle(el.dataset.tabName === tab);
         });
       });
 

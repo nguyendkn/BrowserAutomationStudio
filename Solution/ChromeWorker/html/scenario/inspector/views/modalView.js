@@ -91,7 +91,7 @@
       }
 
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
-        const $inputs = this.$('[data-input-type]');
+        const $inputs = this.$('form').trigger('reset').find('[data-input-type]');
 
         const $unused = $inputs.filter((__, el) => {
           return el.dataset.inputType !== type

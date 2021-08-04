@@ -64,30 +64,28 @@
     sortTree(type) {
       const metadata = this.model.get('metadata');
 
-      tinysort(this.el.querySelectorAll('.jst-root > li > ul > li'), {
-        sortFunction(a, b) {
-          const [path1, path2] = [a, b].map(({ elm }) => {
-            const node = elm.querySelector(':scope > [data-path]');
-            return node.dataset.path;
-          });
+      [...this.el.querySelectorAll('.jst-root > li > ul > li')].sort((a, b) => {
+        const [path1, path2] = [a, b].map(el => {
+          const node = el.querySelector(':scope > [data-path]');
+          return node.dataset.path;
+        });
 
-          if (type !== 'alphabetically') {
-            const meta1 = metadata[path1], meta2 = metadata[path2];
+        if (type !== 'alphabetically') {
+          const meta1 = metadata[path1], meta2 = metadata[path2];
 
-            if (type === 'dateModified') {
-              return meta2.modifiedAt - meta1.modifiedAt;
-            }
-            if (type === 'dateAdded') {
-              return meta2.addedAt - meta1.addedAt;
-            }
-            if (type === 'frequency') {
-              return meta2.usages - meta1.usages;
-            }
+          if (type === 'dateModified') {
+            return meta2.modifiedAt - meta1.modifiedAt;
           }
+          if (type === 'dateAdded') {
+            return meta2.addedAt - meta1.addedAt;
+          }
+          if (type === 'frequency') {
+            return meta2.usages - meta1.usages;
+          }
+        }
 
-          return utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
-        },
-      });
+        return utils.sortByLocals(path1.split('/')[1], path2.split('/')[1]);
+      }).forEach(el => el.parentNode.appendChild(el));
 
       return this;
     },

@@ -82,18 +82,16 @@
     },
 
     hide() {
-      if (this.$el.is(':visible')) {
-        this.model.set('visible', false);
-        this.trigger('hide').$el.hide();
-      }
+      if (!this.$el.is(':visible')) return this;
+      this.model.set('visible', false);
+      this.trigger('hide').$el.hide();
       return this;
     },
 
     show() {
-      if (this.$el.is(':hidden')) {
-        this.model.set('visible', true);
-        this.trigger('show').$el.show();
-      }
+      if (!this.$el.is(':hidden')) return this;
+      this.model.set('visible', true);
+      this.trigger('show').$el.show();
       return this;
     },
 

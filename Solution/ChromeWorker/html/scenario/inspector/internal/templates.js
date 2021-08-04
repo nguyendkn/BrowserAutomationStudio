@@ -92,20 +92,25 @@ _.extend(Scenario.JST, {
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
-      <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
+      <button class="inspector-sort-button">
+        <i class="fa fa-filter"></i>
+      </button>
       <ul class="inspector-sort-menu" style="display: none">
         <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('Frequency of use') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('Date added') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('Date modified') %></li>
       </ul>
-      <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
+      <button class="inspector-filter-button">
+        <i class="fa fa-cog"></i>
+      </button>
       <ul class="inspector-filter-menu" style="display: none">
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
+          <% const id = _.uniqueId('inspectorFilter' + type) %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="inspectorVariablesFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
-            <label for="inspectorVariablesFilter<%= type %>"><%- type %></label>
+            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= typesVisibility[lower] ? 'checked' : '' %>>
+            <label for="<%= id %>"><%- type %></label>
           </li>
         <% } %>
       </ul>
@@ -123,21 +128,26 @@ _.extend(Scenario.JST, {
       <span style="width: 26px; padding: 0px 6px;">
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
-      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>" style="flex: 1;">
-      <button class="inspector-sort-button"><i class="fa fa-filter"></i></button>
+      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
+      <button class="inspector-sort-button">
+        <i class="fa fa-filter"></i>
+      </button>
       <ul class="inspector-sort-menu" style="display: none">
         <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('Frequency of use') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('Date added') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('Date modified') %></li>
       </ul>
-      <button class="inspector-filter-button"><i class="fa fa-cog"></i></button>
+      <button class="inspector-filter-button">
+        <i class="fa fa-cog"></i>
+      </button>
       <ul class="inspector-filter-menu" style="display: none">
         <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
+          <% const id = _.uniqueId('inspectorFilter' + type) %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="inspectorResourcesFilter<%= type %>" value="<%= lower %>" <%= visibleTypes[lower] ? 'checked' : '' %>>
-            <label for="inspectorResourcesFilter<%= type %>"><%- type %></label>
+            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= typesVisibility[lower] ? 'checked' : '' %>>
+            <label for="<%= id %>"><%- type %></label>
           </li>
         <% } %>
       </ul>

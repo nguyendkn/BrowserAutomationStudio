@@ -43,7 +43,7 @@
       metadata: {},
       source: {},
       state: {},
-      visibleTypes: {
+      typesVisibility: {
         undefined: true,
         boolean: true,
         string: true,

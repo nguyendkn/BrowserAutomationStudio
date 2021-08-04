@@ -19,7 +19,7 @@
         });
       }
 
-      model.on('change:visibleTypes', (__, types) => {
+      model.on('change:typesVisibility', (__, types) => {
         this.filterTree();
       });
 
@@ -96,7 +96,7 @@
           return $el.toggle(text.includes(query));
         } else {
           const { dataset } = $el.children('[data-path]')[0];
-          const types = this.model.get('visibleTypes');
+          const types = this.model.get('typesVisibility');
 
           if (_.has(types, dataset.type)) {
             return $el.toggle(types[dataset.type]);
@@ -143,8 +143,8 @@
       'change .inspector-filter-menu-item > input': function (e) {
         const $el = $(e.target), type = $el.val();
 
-        this.model.set('visibleTypes', {
-          ...this.model.get('visibleTypes'),
+        this.model.set('typesVisibility', {
+          ...this.model.get('typesVisibility'),
           [type]: $el.prop('checked')
         });
       },

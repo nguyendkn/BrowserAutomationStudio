@@ -191,33 +191,51 @@ _SMS.BaseApi = function(config, data, path){
 		http_client_set_fail_on_error(false);
 		
 		_do(function(){
-			if(_iterator() > 10 || Date.now() > maxTime){
+			var cycle_index = _iterator();
+			
+			if(cycle_index > 10 || Date.now() > maxTime){
 				_switch_http_client_main();
 				FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;
-				if(_iterator() > 10){
+				if(cycle_index > 10){
 					api.errorHandler("FAILED_REQUEST");
 				}else{
 					api.errorHandler("ACTION_TIMEOUT");
 				};
 			};
 			
-			_if_else(method=="GET", function(){
-				api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
-				
-				general_timeout_next(timeout);
-				http_client_get2(url, {"method":"GET"})!
-			}, function(){
-				api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
-				
-				general_timeout_next(timeout);
-				http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":method})!
+			_if(cycle_index > 1, function(){
+				_call_function(api.sleep,{time:2000})!
 			})!
 			
-			if(!http_client_was_error()){
-				_break();
-			};
+			_call(function(){
+				_on_fail(function(){
+					VAR_LAST_ERROR = _result();
+					VAR_ERROR_ID = ScriptWorker.GetCurrentAction();
+					VAR_WAS_ERROR = false;
+					_break(1,true);
+				});
+				
+				CYCLES.Current().RemoveLabel("function");
+				
+				_if_else(method=="GET", function(){
+					api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
+					
+					general_timeout_next(timeout);
+					http_client_get2(url, {"method":"GET"})!
+				}, function(){
+					api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
+					
+					general_timeout_next(timeout);
+					http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":method})!
+				})!
+				
+			}, null)!
 			
-			_call_function(api.sleep,{time:2000})!
+			if(!http_client_was_error() && !VAR_WAS_ERROR){
+				_break();
+			}else{
+				api.log((_K=="ru" ? 'Ошибка произошедшая во время запроса к' : 'An error occurred during the request to') + ' ' + api.name + ': ' + _clean(VAR_WAS_ERROR ? VAR_LAST_ERROR : http_client_error_string()));
+			};
 		})!
 		
 		FAIL_ON_ERROR = _BAS_FAIL_ON_ERROR;

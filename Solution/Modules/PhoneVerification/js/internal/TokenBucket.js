@@ -125,9 +125,9 @@ _SMS.tokenBucket = function(options){
 	
 	this.removeFromQueue = function(){
 		bucket.changeParams(function(params){
-			var threadNumber = thread_number();
-			if(params.queue.indexOf(threadNumber) > -1){
-				return params.queue = params.queue.filter(function(ell){return ell!==threadNumber});
+			var index = params.queue.indexOf(thread_number());
+			if(index > -1){
+				return params.queue.splice(index, 1);
 			};
 			return null;
 		});

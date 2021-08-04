@@ -16,10 +16,11 @@
       const diff = jsonpatch.compare(source, data); diff.forEach(({ path, op }) => {
         const time = performance.now();
         if (!_.has(metadata, path)) {
-          metadata[path] = { op, count: 6, usages: 0, addedAt: time, modifiedAt: time };
+          metadata[path] = { op, count: 6, usages: 1, addedAt: time, modifiedAt: time };
         } else {
           if (op === 'remove') return (delete metadata[path]);
           metadata[path].modifiedAt = time;
+          metadata[path].usages += 1;
         }
       });
 

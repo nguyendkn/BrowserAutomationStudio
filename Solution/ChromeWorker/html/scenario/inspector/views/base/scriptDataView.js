@@ -64,11 +64,9 @@
     sortTree(type) {
       const metadata = this.model.get('metadata');
 
-      [...this.el.querySelectorAll('.jst-root > li > ul > li')].sort((a, b) => {
-        const [path1, path2] = [a, b].map(el => {
-          const node = el.querySelector(':scope > [data-path]');
-          return node.dataset.path;
-        });
+      [...this.el.querySelectorAll('.jst-root > li > ul > li')].sort((el1, el2) => {
+        const path1 = el1.querySelector(':scope > [data-path]').dataset.path;
+        const path2 = el2.querySelector(':scope > [data-path]').dataset.path;
 
         if (type !== 'alphabetically') {
           const meta1 = metadata[path1], meta2 = metadata[path2];

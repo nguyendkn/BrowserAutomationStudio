@@ -64,7 +64,7 @@
     sortTree(type) {
       const metadata = this.model.get('metadata');
 
-      Object.keys(this.model.get('source')).sort((key1, key2) => {
+      _.keys(this.model.get('source')).sort((key1, key2) => {
         if (type !== 'alphabetically') {
           const meta1 = metadata[`/${key1}`], meta2 = metadata[`/${key2}`];
 

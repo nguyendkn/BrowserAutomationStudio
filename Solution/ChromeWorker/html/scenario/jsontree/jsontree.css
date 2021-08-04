@@ -64,10 +64,6 @@ span.jst-node[data-type="null"] {
   content: "+";
 }
 
-.jst-collapsed {
-  display: none;
-}
-
 .jst-collapse {
   user-select: none;
   cursor: pointer;
@@ -105,12 +101,16 @@ span.jst-node[data-type="null"] {
 
 .jst-list {
   padding-left: 15px;
+  flex-flow: column;
   list-style: none;
+  display: flex;
   margin: 0;
 }
 
 .jst-root {
   padding-left: 0px;
+  flex-flow: column;
   list-style: none;
+  display: flex;
   margin: 0;
 }

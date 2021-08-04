@@ -48,7 +48,8 @@
           const el = e.target, list = el.nextElementSibling;
           list.classList.toggle('jst-collapsed'),
             el.classList.toggle('jst-collapse'),
-            el.classList.toggle('jst-expand');
+            el.classList.toggle('jst-expand'),
+            list.style.display = 'none';
           this.onCollapse();
         });
 
@@ -57,7 +58,8 @@
           const el = e.target, list = el.nextElementSibling;
           list.classList.toggle('jst-collapsed'),
             el.classList.toggle('jst-collapse'),
-            el.classList.toggle('jst-expand');
+            el.classList.toggle('jst-expand'),
+            list.style.display = '';
           this.onExpand();
         });
 

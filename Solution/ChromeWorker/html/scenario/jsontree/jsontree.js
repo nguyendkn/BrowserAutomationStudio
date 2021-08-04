@@ -1,4 +1,4 @@
-(function (global) {
+((global, $, _) => {
   class JSONTree {
     static colors = {
       undefined: '#808080',
@@ -173,4 +173,4 @@
   }
 
   global.JSONTree = JSONTree;
-})(window);
+})(window, jQuery, _);

@@ -34,6 +34,14 @@
       model.on('change:sortType', (__, type) => {
         this.sortTree(type);
       });
+
+      $(document).on('click', ':not(.inspector-filter-menu)', (e) => {
+        this.$('.inspector-filter-menu').hide();
+      });
+
+      $(document).on('click', ':not(.inspector-sort-menu)', (e) => {
+        this.$('.inspector-sort-menu').hide();
+      });
     },
 
     render() {
@@ -149,8 +157,13 @@
         });
       },
 
+      'click .inspector-filter-menu-item': function (e) {
+        e.stopPropagation();
+      },
+
       'click .inspector-sort-menu-item': function (e) {
         e.preventDefault();
+        e.stopPropagation();
         const $el = $(e.target);
         const type = $el.data('sortType');
         this.model.set('sortType', type);
@@ -158,6 +171,7 @@
 
       'click .inspector-filter-button': function (e) {
         e.preventDefault();
+        e.stopPropagation();
         const $menu = $(e.currentTarget).next('.inspector-filter-menu');
         const isVisible = $menu.toggle().is(':visible');
         if (isVisible) $menu.prevAll('ul').hide();
@@ -165,6 +179,7 @@
 
       'click .inspector-sort-button': function (e) {
         e.preventDefault();
+        e.stopPropagation();
         const $menu = $(e.currentTarget).next('.inspector-sort-menu');
         const isVisible = $menu.toggle().is(':visible');
         if (isVisible) $menu.nextAll('ul').hide();

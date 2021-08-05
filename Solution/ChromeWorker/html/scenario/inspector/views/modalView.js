@@ -30,29 +30,13 @@
     tagName: 'div',
 
     events: {
-      'change input[type=radio][name=boolean]': function (e) {
-        if (!e.target.checked) return;
+      'change [data-input-type] textarea': function (e) {
+        if (e.target.type === 'radio' && !e.target.checked) return;
         this.model.set('value', e.target.value);
       },
 
-      'change input[type=radio][name=empty]': function (e) {
-        if (!e.target.checked) return;
-        this.model.set('value', e.target.value);
-      },
-
-      'change #inspectorModalCustomInput': function (e) {
-        this.model.set('value', e.target.value);
-      },
-
-      'change #inspectorModalStringInput': function (e) {
-        this.model.set('value', e.target.value);
-      },
-
-      'change #inspectorModalNumberInput': function (e) {
-        this.model.set('value', e.target.value);
-      },
-
-      'change #inspectorModalDateInput': function (e) {
+      'change [data-input-type] input': function (e) {
+        if (e.target.type === 'radio' && !e.target.checked) return;
         this.model.set('value', e.target.value);
       },
 

@@ -2,25 +2,19 @@
   const { Inspector, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
-    updateHistory(path) {
-      const history = this.get('history');
-      if (history.length > 100) history.shift();
-      this.set('history', history.concat(path));
-    },
-
     getValue(path) {
       const source = this.get('source');
       return jsonpatch.getValueByPointer(source, path);
     },
 
-    update(data) {
-      if (!data) return;
+    update(value) {
+      if (!value) return;
       const metadata = this.get('metadata');
       const updates = this.get('updates');
       const source = this.get('source');
-      this.set('source', data);
+      this.set('source', value);
 
-      const diff = jsonpatch.compare(source, data); diff.forEach(({ path, op }) => {
+      const diff = $.each(jsonpatch.compare(source, value), (__, { path, op }) => {
         const time = performance.now();
         if (!_.has(metadata, path)) {
           metadata[path] = { count: 6, usages: 1, addedAt: time, modifiedAt: time };
@@ -30,7 +24,10 @@
           metadata[path].usages += 1;
           metadata[path].count += 0;
         }
-        this.updateHistory(path);
+
+        const history = this.get('history');
+        if (history.length > 100) history.shift();
+        this.set('history', history.concat(path));
       });
       this.set('updates', updates + !!diff.length);
 

@@ -31,7 +31,7 @@
           if (!path) return;
 
           const modal = new Inspector.Modal({
-            callback: ({ isChanged, value, cancel, type }) => {
+            callback({ isChanged, value, cancel, type }) {
               if (!cancel && isChanged) {
                 utils.updateVariable(value, path, type);
               }

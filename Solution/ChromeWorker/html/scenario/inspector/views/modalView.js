@@ -16,8 +16,7 @@
       const valueChanged = this.value !== this.get('value');
       const typeChanged = this.type !== this.get('type');
       const isChanged = valueChanged || typeChanged;
-
-      return { ..._.clone(this.attributes), isChanged };
+      return { ...this.attributes, isChanged };
     }
   });
 

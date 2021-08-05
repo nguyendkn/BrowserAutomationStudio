@@ -2,6 +2,12 @@
   const { Inspector, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
+    updateHistory(path) {
+      const history = this.get('history');
+      if (history.length > 100) history.shift();
+      this.set('history', history.concat(path));
+    },
+
     getValue(path) {
       const source = this.get('source');
       return jsonpatch.getValueByPointer(source, path);
@@ -16,12 +22,14 @@
       const diff = jsonpatch.compare(source, data); diff.forEach(({ path, op }) => {
         const time = performance.now();
         if (!_.has(metadata, path)) {
-          metadata[path] = { op, count: 6, usages: 1, addedAt: time, modifiedAt: time };
+          metadata[path] = { count: 6, usages: 1, addedAt: time, modifiedAt: time };
         } else {
           if (op === 'remove') return (delete metadata[path]);
           metadata[path].modifiedAt = time;
           metadata[path].usages += 1;
+          metadata[path].count += 0;
         }
+        this.updateHistory(path);
       });
 
       if (this.get('allowHighlight')) {
@@ -42,6 +50,7 @@
       allowGroups: false,
       highlight: false,
       metadata: {},
+      history: [],
       source: {},
       state: {},
       typesVisibility: {

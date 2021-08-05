@@ -7,15 +7,16 @@
       return jsonpatch.getValueByPointer(source, path);
     },
 
-    update(value) {
-      if (!value) return;
+    update(object) {
+      if (!object) return;
       const metadata = this.get('metadata');
       const updates = this.get('updates');
       const source = this.get('source');
-      this.set('source', value);
+      let cache = this.get('cache');
 
-      const diff = $.each(jsonpatch.compare(source, value), (__, { path, op }) => {
+      const diff = $.each(jsonpatch.compare(source, object), (__, { path, op }) => {
         const time = performance.now();
+
         if (!_.has(metadata, path)) {
           metadata[path] = { count: 6, usages: 1, addedAt: time, modifiedAt: time };
         } else {
@@ -25,11 +26,12 @@
           metadata[path].count += 0;
         }
 
-        const history = this.get('history');
-        if (history.length > 100) history.shift();
-        this.set('history', history.concat(path));
+        cache = cache.concat(path).slice(-100);
       });
+
       this.set('updates', updates + !!diff.length);
+      this.set('source', object);
+      this.set('cache', cache);
 
       if (this.get('allowHighlight')) {
         const highlight = this.get('highlight');
@@ -49,10 +51,10 @@
       allowGroups: false,
       highlight: false,
       metadata: {},
-      history: [],
       updates: 0,
       source: {},
       state: {},
+      cache: [],
       typesVisibility: {
         undefined: true,
         boolean: true,

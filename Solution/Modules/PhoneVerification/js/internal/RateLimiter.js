@@ -57,51 +57,42 @@ _SMS.rateLimiter = function(options){
 	this.fireImmediately = _avoid_nilb(options.fireImmediately, false);
 	
 	this.getParams = function(){
-		return JSON.parse(P("sms", limiter.id));
+		return limiter.type==="service" ? JSON.parse(P("sms", limiter.id)) : limiter;
 	};
 	
 	this.changeParams = function(changer){
-		var params = JSON.parse(P("sms", limiter.id));
-		changer(params);
-		PSet("sms", limiter.id, JSON.stringify(params));
+		var params = limiter.getParams();
+		var result = changer(params);
+		if(limiter.type==="service"){
+			PSet("sms", limiter.id, JSON.stringify(params));
+		};
+		return result;
 	};
 	
 	this.getTokensThisInterval = function(){
-		return (limiter.type==="service" ? limiter.getParams() : limiter).tokensThisInterval;
+		return limiter.getParams().tokensThisInterval;
 	};
 	
 	this.setTokensThisInterval = function(newTokensThisInterval){
-		if(limiter.type==="service"){
-			limiter.changeParams(function(params){
-				return params.tokensThisInterval = newTokensThisInterval;
-			});
-		}else{
-			limiter.tokensThisInterval = newTokensThisInterval;
-		};
+		limiter.changeParams(function(params){
+			return params.tokensThisInterval = newTokensThisInterval;
+		});
 	};
 	
 	this.plusTokensThisInterval = function(count){
-		if(limiter.type==="service"){
-			limiter.changeParams(function(params){
-				return params.tokensThisInterval += count;
-			});
-		}else{
-			limiter.tokensThisInterval += count;
-		};
+		limiter.changeParams(function(params){
+			return params.tokensThisInterval += count;
+		});
 	};
 	
 	this.getCurIntervalStart = function(){
-		return (limiter.type==="service" ? limiter.getParams() : limiter).curIntervalStart;
+		return limiter.getParams().curIntervalStart;
 	};
 	
 	this.setCurIntervalStart = function(newCurIntervalStart){
-		if(limiter.type==="service"){
-			limiter.changeParams(function(params){
-				return params.curIntervalStart = newCurIntervalStart;
-			});
-		}else{
-			limiter.curIntervalStart = newCurIntervalStart;
-		};
+		limiter.changeParams(function(params){
+			return params.curIntervalStart = newCurIntervalStart;
+		});
 	};
 	
 	/**

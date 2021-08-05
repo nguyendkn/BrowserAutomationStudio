@@ -62,51 +62,42 @@ _SMS.tokenBucket = function(options){
 	};
 	
 	this.getParams = function(){
-		return JSON.parse(P("sms", bucket.id));
+		return bucket.type==="service" ? JSON.parse(P("sms", bucket.id)) : bucket;
 	};
 	
 	this.changeParams = function(changer){
-		var params = JSON.parse(P("sms", bucket.id));
-		changer(params);
-		PSet("sms", bucket.id, JSON.stringify(params));
+		var params = bucket.getParams();
+		var result = changer(params);
+		if(bucket.type==="service"){
+			PSet("sms", bucket.id, JSON.stringify(params));
+		};
+		return result;
 	};
 	
 	this.getContent = function(){
-		return (bucket.type==="service" ? bucket.getParams() : bucket).content;
+		return bucket.getParams().content;
 	};
 	
 	this.setContent = function(newContent){
-		if(bucket.type==="service"){
-			bucket.changeParams(function(params){
-				return params.content = newContent;
-			});
-		}else{
-			bucket.content = newContent;
-		};
+		bucket.changeParams(function(params){
+			return params.content = newContent;
+		});
 	};
 	
 	this.minusContent = function(count){
-		if(bucket.type==="service"){
-			bucket.changeParams(function(params){
-				return params.content -= count;
-			});
-		}else{
-			bucket.content -= count;
-		};
+		bucket.changeParams(function(params){
+			return params.content -= count;
+		});
 	};
 	
 	this.getLastDrip = function(){
-		return (bucket.type==="service" ? bucket.getParams() : bucket).lastDrip;
+		return bucket.getParams().lastDrip;
 	};
 	
 	this.setLastDrip = function(newLastDrip){
-		if(bucket.type==="service"){
-			bucket.changeParams(function(params){
-				return params.lastDrip = newLastDrip;
-			});
-		}else{
-			bucket.lastDrip = newLastDrip;
-		};
+		bucket.changeParams(function(params){
+			return params.lastDrip = newLastDrip;
+		});
 	};
 	
 	this.getQueueIndex = function(){

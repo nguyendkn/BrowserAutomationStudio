@@ -140,14 +140,14 @@
 
   function jsNode(name, value, path, isLast) {
     const content = `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` + (() => {
-      switch (Object.prototype.toString.call(value).slice(8, -1).toLowerCase()) {
-        case 'boolean':
+      switch (Object.prototype.toString.call(value).slice(8, -1)) {
+        case 'Boolean':
           return jsBoolean(name, value, path);
-        case 'object':
+        case 'Object':
           return jsObject(name, value, path);
-        case 'number':
+        case 'Number':
           return jsNumber(name, value, path);
-        case 'string':
+        case 'String':
           if (value.indexOf('__UNDEFINED__') === 0) {
             return jsUndefined(name, value.slice(13), path);
           }
@@ -155,12 +155,11 @@
             return jsDate(name, value.slice(8), path);
           }
           return jsString(name, value, path);
-        case 'array':
+        case 'Array':
           return jsArray(name, value, path);
-        case 'null':
+        case 'Null':
           return jsNull(name, value, path);
       }
-
       throw new Error(`Failed to resolve value type`);
     })();
 

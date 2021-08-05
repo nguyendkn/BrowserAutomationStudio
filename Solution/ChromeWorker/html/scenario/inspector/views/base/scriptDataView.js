@@ -64,9 +64,10 @@
     sortTree(type) {
       const metadata = this.model.get('metadata');
 
-      _.keys(this.model.get('source')).sort((key1, key2) => {
+      _.keys(this.model.get('source')).sort(utils.sortByLocals((key1, key2) => {
         if (type !== 'alphabetically') {
-          const meta1 = metadata[`/${key1}`], meta2 = metadata[`/${key2}`];
+          const meta1 = metadata[`/${key1}`];
+          const meta2 = metadata[`/${key2}`];
 
           if (type === 'dateModified') {
             return meta2.modifiedAt - meta1.modifiedAt;
@@ -78,9 +79,8 @@
             return meta2.usages - meta1.usages;
           }
         }
-
-        return utils.sortByLocals(key1, key2);
-      }).forEach(key => {
+        return key1.localeCompare(key2);
+      })).forEach(key => {
         const el = this.el.querySelector(`[data-path="/${key}"]`);
         el.parentNode.parentNode.appendChild(el.parentNode);
       });

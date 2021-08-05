@@ -66,10 +66,10 @@
       const updates = this.model.get('updates');
       const cache = this.model.get('cache');
 
-      _.keys(this.model.get('source')).sort(utils.sortByLocals((key1, key2) => {
+      utils.sortByLocals(this.model.get('source'), (a, b) => {
         if (type !== 'alphabetically') {
-          const meta1 = metadata[`/${key1}`];
-          const meta2 = metadata[`/${key2}`];
+          const meta1 = metadata[`/${a}`];
+          const meta2 = metadata[`/${b}`];
 
           if (type === 'dateModified') {
             return meta2.modifiedAt - meta1.modifiedAt;
@@ -79,13 +79,13 @@
             return meta2.addedAt - meta1.addedAt;
           }
 
-          const f1 = cache.filter(h => h === key1).length + updates;
-          const f2 = cache.filter(h => h === key2).length + updates;
-          return meta2.usages / f2 - meta1.usages / f1;
+          const f1 = cache.filter(v => v === a).length + updates;
+          const f2 = cache.filter(v => v === b).length + updates;
+          return (meta2.usages / f2) - (meta1.usages / f1);
         }
 
-        return key1.localeCompare(key2);
-      })).forEach(key => {
+        return a.localeCompare(b);
+      }).forEach(key => {
         const el = this.el.querySelector(`[data-path="/${key}"]`);
         el.parentNode.parentNode.appendChild(el.parentNode);
       });

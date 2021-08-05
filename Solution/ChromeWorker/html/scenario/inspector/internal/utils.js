@@ -36,26 +36,26 @@
       });
     },
 
-    sortByGlobals(compareFn) {
-      return (name1, name2) => {
+    sortByGlobals(src, compareFn) {
+      return _.keys(src).sort((name1, name2) => {
         const a = name1.toUpperCase().startsWith('GLOBAL:');
         const b = name2.toUpperCase().startsWith('GLOBAL:');
 
         if (a && !b) return -1;
         if (!a && b) return 1;
         return compareFn(name1, name2);
-      };
+      });
     },
 
-    sortByLocals(compareFn) {
-      return (name1, name2) => {
+    sortByLocals(src, compareFn) {
+      return _.keys(src).sort((name1, name2) => {
         const a = name1.toUpperCase().startsWith('GLOBAL:');
         const b = name2.toUpperCase().startsWith('GLOBAL:');
 
         if (b && !a) return -1;
         if (!b && a) return 1;
         return compareFn(name1, name2);
-      };
+      });
     },
   };
 

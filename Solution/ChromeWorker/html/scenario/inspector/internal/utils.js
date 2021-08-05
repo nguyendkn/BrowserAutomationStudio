@@ -37,24 +37,24 @@
     },
 
     sortByGlobals(compareFn) {
-      return (a, b) => {
-        a = a.toUpperCase();
-        b = b.toUpperCase();
+      return (name1, name2) => {
+        const a = name1.toUpperCase().startsWith('GLOBAL:');
+        const b = name2.toUpperCase().startsWith('GLOBAL:');
 
-        if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) return -1;
-        if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) return 1;
-        return compareFn(a, b);
+        if (a && !b) return -1;
+        if (!a && b) return 1;
+        return compareFn(name1, name2);
       };
     },
 
     sortByLocals(compareFn) {
-      return (a, b) => {
-        a = a.toUpperCase();
-        b = b.toUpperCase();
+      return (name1, name2) => {
+        const a = name1.toUpperCase().startsWith('GLOBAL:');
+        const b = name2.toUpperCase().startsWith('GLOBAL:');
 
-        if (!a.includes('GLOBAL:') && b.startsWith('GLOBAL:')) return -1;
-        if (a.startsWith('GLOBAL:') && !b.includes('GLOBAL:')) return 1;
-        return compareFn(a, b);
+        if (b && !a) return -1;
+        if (!b && a) return 1;
+        return compareFn(name1, name2);
       };
     },
   };

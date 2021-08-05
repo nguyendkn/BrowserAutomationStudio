@@ -183,7 +183,7 @@ _SMS.tokenBucket = function(options){
 			
 			_if(bucket.queue, function(){
 				_if(bucket.getQueueIndex() > 0, function(){
-					_call_function(bucket.waitQueue,{count:count})!
+					_call_function(bucket.waitNext,{count:count})!
 					
 					_next("function");
 				})!
@@ -225,18 +225,6 @@ _SMS.tokenBucket = function(options){
 	/**
 	 * Asynchronous function
 	 * 
-     * Wait for a specified number of milliseconds
-     * @param {Number} Number of milliseconds to wait.
-     */
-	this.wait = function(){
-		var ms = _function_argument("ms");
-		
-		sleep(ms)!
-	};
-	
-	/**
-	 * Asynchronous function
-	 * 
      * Waiting before next iteration
      * @param {Number} count The number of tokens to remove.
      */
@@ -244,22 +232,8 @@ _SMS.tokenBucket = function(options){
 		var count = _function_argument("count");
 		
 		// How long do we need to wait to make up the difference in tokens?
-		var waitMs = Math.ceil((count - bucket.getContent()) * (bucket.interval / bucket.tokensPerInterval));
-		_call_function(bucket.wait,{ms:waitMs})!
-	};
-	
-	/**
-	 * Asynchronous function
-	 * 
-     * Waiting thread queue
-     * @param {Number} count The number of tokens to remove.
-     */
-	this.waitQueue = function(){
-		var count = _function_argument("count");
-		
-		// How long do we need to wait to make up the difference in tokens?
 		var waitMs = Math.ceil(count * (bucket.interval / bucket.tokensPerInterval));
-		_call_function(bucket.wait,{ms:waitMs})!
+		sleep(waitMs)!
 	};
     
 	/**

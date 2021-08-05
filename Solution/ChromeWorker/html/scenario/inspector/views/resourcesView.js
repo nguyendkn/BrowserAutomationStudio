@@ -1,5 +1,5 @@
 (({ Scenario }, $, _) => {
-  const { Inspector, JST } = Scenario;
+  const { Inspector, JST, utils } = Scenario;
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
   const Model = ScriptDataModel.extend({

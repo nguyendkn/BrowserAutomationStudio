@@ -2,11 +2,6 @@
   const { Inspector, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
-    getValue(path) {
-      const source = this.get('source');
-      return jsonpatch.getValueByPointer(source, path);
-    },
-
     update(object) {
       if (!object) return;
       const metadata = this.get('metadata');

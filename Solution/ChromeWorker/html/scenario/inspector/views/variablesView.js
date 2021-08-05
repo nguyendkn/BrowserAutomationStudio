@@ -1,5 +1,5 @@
 (({ Scenario }, $, _) => {
-  const { Inspector, JST } = Scenario;
+  const { Inspector, JST, utils } = Scenario;
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
   const Model = ScriptDataModel.extend({
@@ -33,10 +33,10 @@
           const modal = new Inspector.Modal({
             callback: ({ isChanged, value, cancel, type }) => {
               if (!cancel && isChanged) {
-                Scenario.utils.updateVariable(value, path, type);
+                utils.updateVariable(value, path, type);
               }
             },
-            value: this.model.getValue(path),
+            value: jsonpatch.getValueByPointer(this.model.get('source'), path),
             type,
             path,
           });

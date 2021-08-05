@@ -16,6 +16,7 @@
     update(data) {
       if (!data) return;
       const metadata = this.get('metadata');
+      const updates = this.get('updates');
       const source = this.get('source');
       this.set('source', data);
 
@@ -31,6 +32,7 @@
         }
         this.updateHistory(path);
       });
+      this.set('updates', updates + !!diff.length);
 
       if (this.get('allowHighlight')) {
         const highlight = this.get('highlight');
@@ -51,6 +53,7 @@
       highlight: false,
       metadata: {},
       history: [],
+      updates: 0,
       source: {},
       state: {},
       typesVisibility: {

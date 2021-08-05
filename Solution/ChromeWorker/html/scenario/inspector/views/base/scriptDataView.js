@@ -63,6 +63,7 @@
 
     sortTree(type) {
       const metadata = this.model.get('metadata');
+      const updates = this.model.get('updates');
       const history = this.model.get('history');
 
       _.keys(this.model.get('source')).sort(utils.sortByLocals((key1, key2) => {
@@ -78,8 +79,8 @@
             return meta2.addedAt - meta1.addedAt;
           }
 
-          const f1 = history.filter(h => h === key1).length;
-          const f2 = history.filter(h => h === key2).length;
+          const f1 = history.filter(h => h === key1).length + updates;
+          const f2 = history.filter(h => h === key2).length + updates;
           return meta2.usages / f2 - meta1.usages / f1;
         }
 

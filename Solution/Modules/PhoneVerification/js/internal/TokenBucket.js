@@ -110,27 +110,35 @@ _SMS.tokenBucket = function(options){
 	};
 	
 	this.getQueueIndex = function(){
-		return bucket.getParams().queue.indexOf(thread_number());
+		if(bucket.queue){
+			return bucket.getParams().queue.indexOf(thread_number());
+		}else{
+			return -1;
+		};
 	};
 	
 	this.addToQueue = function(){
-		bucket.changeParams(function(params){
-			var threadNumber = thread_number();
-			if(params.queue.indexOf(threadNumber) < 0){
-				return params.queue.push(threadNumber);
-			};
-			return null;
-		});
+		if(bucket.queue){
+			bucket.changeParams(function(params){
+				var threadNumber = thread_number();
+				if(params.queue.indexOf(threadNumber) < 0){
+					return params.queue.push(threadNumber);
+				};
+				return null;
+			});
+		};
 	};
 	
 	this.removeFromQueue = function(){
-		bucket.changeParams(function(params){
-			var index = params.queue.indexOf(thread_number());
-			if(index > -1){
-				return params.queue.splice(index, 1);
-			};
-			return null;
-		});
+		if(bucket.queue){
+			bucket.changeParams(function(params){
+				var index = params.queue.indexOf(thread_number());
+				if(index > -1){
+					return params.queue.splice(index, 1);
+				};
+				return null;
+			});
+		};
 	};
     
 	/**
@@ -162,9 +170,7 @@ _SMS.tokenBucket = function(options){
 		
 		var result = null;
 		
-		if(bucket.queue){
-			bucket.addToQueue();
-		};
+		bucket.addToQueue();
 		
 		_do(function(){
 			if((timeout || maxTime) && Date.now() > maxTime){
@@ -174,28 +180,39 @@ _SMS.tokenBucket = function(options){
 			
 			// Drip new tokens into this bucket
 			bucket.drip();
-			// If we don't have enough tokens in this bucket, come back later
-			_if(count > bucket.getContent(), function(){
-				_call_function(bucket.waitNext,{count:count})!
+			
+			var params = bucket.getParams();
+			var queueIndex = bucket.queue ? params.queue.indexOf(thread_number()) : -1;
+			var content = params.content;
+			
+			// If the queue has not yet reached this thread, come back later
+			_if(queueIndex > 0, function(){
+				// How long do we need to wait to make up the difference in tokens?
+				var waitMs = Math.ceil((count * (queueIndex + 1) - content) * (bucket.interval / bucket.tokensPerInterval));
+				_call_function(bucket.wait,{ms:waitMs})!
 				
 				_next("function");
 			})!
 			
-			_if(bucket.queue, function(){
-				_if(bucket.getQueueIndex() > 0, function(){
-					_call_function(bucket.waitNext,{count:count})!
-					
-					_next("function");
-				})!
+			// If we don't have enough tokens in this bucket, come back later
+			_if(count > content, function(){
+				// How long do we need to wait to make up the difference in tokens?
+				var waitMs = Math.ceil((count - content) * (bucket.interval / bucket.tokensPerInterval));
+				_call_function(bucket.wait,{ms:waitMs})!
+				
+				_next("function");
 			})!
 			
 			_if_else(!_is_nilb(bucket.parentBucket), function(){
 				// Remove the requested from the parent bucket first
 				_call_function(bucket.parentBucket.removeTokens,{count:count})!
 				var remainingTokens = _result_function();
+				var content = bucket.getContent();
 				// Check that we still have enough tokens in this bucket
-				_if(count > bucket.getContent(), function(){
-					_call_function(bucket.waitNext,{count:count})!
+				_if(count > content, function(){
+					// How long do we need to wait to make up the difference in tokens?
+					var waitMs = Math.ceil((count - content) * (bucket.interval / bucket.tokensPerInterval));
+					_call_function(bucket.wait,{ms:waitMs})!
 					
 					_next("function");
 				})!
@@ -215,9 +232,7 @@ _SMS.tokenBucket = function(options){
 			})!
 		})!
 		
-		if(bucket.queue){
-			bucket.removeFromQueue();
-		};
+		bucket.removeFromQueue();
 		
 		_function_return(result);
 	};
@@ -225,15 +240,13 @@ _SMS.tokenBucket = function(options){
 	/**
 	 * Asynchronous function
 	 * 
-     * Waiting before next iteration
-     * @param {Number} count The number of tokens to remove.
+     * Wait for a specified number of milliseconds
+     * @param {Number} Number of milliseconds to wait.
      */
-	this.waitNext = function(){
-		var count = _function_argument("count");
+	this.wait = function(){
+		var ms = _function_argument("ms");
 		
-		// How long do we need to wait to make up the difference in tokens?
-		var waitMs = Math.ceil(count * (bucket.interval / bucket.tokensPerInterval));
-		sleep(waitMs)!
+		sleep(ms)!
 	};
     
 	/**

@@ -41,6 +41,12 @@ _.extend(_L, {
   'Resources': {
     ru: 'Ресурсы'
   },
+  'Sorting': {
+    ru: 'Сортировка'
+  },
+  'Filters': {
+    ru: 'Фильтры'
+  },
   'Accept': {
     ru: 'Принять'
   },

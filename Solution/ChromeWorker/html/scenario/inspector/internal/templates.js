@@ -92,7 +92,7 @@ _.extend(Scenario.JST, {
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
-      <button class="inspector-sort-button">
+      <button class="inspector-sort-button" title="<%= tr('Sorting') %>">
         <i class="fa fa-filter"></i>
       </button>
       <ul class="inspector-sort-menu" style="display: none">
@@ -101,7 +101,7 @@ _.extend(Scenario.JST, {
         <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
       </ul>
-      <button class="inspector-filter-button">
+      <button class="inspector-filter-button" title="<%= tr('Filters') %>">
         <i class="fa fa-cog"></i>
       </button>
       <ul class="inspector-filter-menu" style="display: none">
@@ -129,7 +129,7 @@ _.extend(Scenario.JST, {
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
-      <button class="inspector-sort-button">
+      <button class="inspector-sort-button" title="<%= tr('Sorting') %>">
         <i class="fa fa-filter"></i>
       </button>
       <ul class="inspector-sort-menu" style="display: none">
@@ -138,7 +138,7 @@ _.extend(Scenario.JST, {
         <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
         <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
       </ul>
-      <button class="inspector-filter-button">
+      <button class="inspector-filter-button" title="<%= tr('Filters') %>">
         <i class="fa fa-cog"></i>
       </button>
       <ul class="inspector-filter-menu" style="display: none">

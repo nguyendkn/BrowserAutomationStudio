@@ -148,10 +148,10 @@
         case 'Number':
           return jsNumber(name, value, path);
         case 'String':
-          if (value.indexOf('__UNDEFINED__') === 0) {
+          if (value.startsWith('__UNDEFINED__')) {
             return jsUndefined(name, value.slice(13), path);
           }
-          if (value.indexOf('__DATE__') === 0) {
+          if (value.startsWith('__DATE__')) {
             return jsDate(name, value.slice(8), path);
           }
           return jsString(name, value, path);

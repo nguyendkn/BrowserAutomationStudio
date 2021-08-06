@@ -173,6 +173,7 @@
       'click .inspector-filter-button': function (e) {
         e.preventDefault();
         e.stopPropagation();
+
         const $menu = $(e.currentTarget).next('.inspector-filter-menu');
         const isVisible = $menu.toggle().is(':visible');
         if (isVisible) $menu.prevAll('ul').hide();
@@ -181,6 +182,7 @@
       'click .inspector-sort-button': function (e) {
         e.preventDefault();
         e.stopPropagation();
+
         const $menu = $(e.currentTarget).next('.inspector-sort-menu');
         const isVisible = $menu.toggle().is(':visible');
         if (isVisible) $menu.nextAll('ul').hide();

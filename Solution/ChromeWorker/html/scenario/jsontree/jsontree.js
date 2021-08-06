@@ -79,7 +79,7 @@
     }
   });
 
-  function jsIterable(value, type, path, brackets) {
+  function jsIterable(value, path, type, brackets) {
     const opening = `<span class="jst-bracket">${brackets[0]}</span>`;
     const closing = `<span class="jst-bracket">${brackets[1]}</span>`;
     const keys = Object.keys(value);
@@ -96,38 +96,38 @@
     return opening + closing;
   }
 
-  function jsObject(name, value, path) {
-    return jsIterable(value, 'object', path, ['{', '}']);
+  function jsObject(value, path) {
+    return jsIterable(value, path, 'object', ['{', '}']);
   }
 
-  function jsArray(name, value, path) {
-    return jsIterable(value, 'array', path, ['[', ']']);
+  function jsArray(value, path) {
+    return jsIterable(value, path, 'array', ['[', ']']);
   }
 
-  function jsString(name, value, path) {
+  function jsString(value, path) {
     const needCut = value.length > 100;
     const data = needCut ? `${value.slice(0, 97)}...` : value;
     const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
     return element(`"${_.escape(data)}"`, { path, type: 'string', 'data-value': utf8_to_b64(value) }) + clip;
   }
 
-  function jsUndefined(name, value, path) {
+  function jsUndefined(value, path) {
     return element(void 0, { path, type: 'undefined' });
   }
 
-  function jsBoolean(name, value, path) {
+  function jsBoolean(value, path) {
     return element(value, { path, type: 'boolean' });
   }
 
-  function jsNumber(name, value, path) {
+  function jsNumber(value, path) {
     return element(value, { path, type: 'number' });
   }
 
-  function jsDate(name, value, path) {
+  function jsDate(value, path) {
     return element(value, { path, type: 'date' });
   }
 
-  function jsNull(name, value, path) {
+  function jsNull(value, path) {
     return element(value, { path, type: 'null' });
   }
 
@@ -135,23 +135,23 @@
     const content = `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` + (() => {
       switch (Object.prototype.toString.call(value).slice(8, -1)) {
         case 'Boolean':
-          return jsBoolean(name, value, path);
+          return jsBoolean(value, path);
         case 'Object':
-          return jsObject(name, value, path);
+          return jsObject(value, path);
         case 'Number':
-          return jsNumber(name, value, path);
+          return jsNumber(value, path);
         case 'String':
           if (value.startsWith('__UNDEFINED__')) {
-            return jsUndefined(name, value.slice(13), path);
+            return jsUndefined(value.slice(13), path);
           }
           if (value.startsWith('__DATE__')) {
-            return jsDate(name, value.slice(8), path);
+            return jsDate(value.slice(8), path);
           }
-          return jsString(name, value, path);
+          return jsString(value, path);
         case 'Array':
-          return jsArray(name, value, path);
+          return jsArray(value, path);
         case 'Null':
-          return jsNull(name, value, path);
+          return jsNull(value, path);
       }
       throw new Error(`Failed to resolve value type`);
     })();

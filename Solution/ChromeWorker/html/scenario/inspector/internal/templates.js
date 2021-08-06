@@ -68,7 +68,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/main': _.template(/*html*/`
-    <div id="inspectorContent" style="height: 100%; display: flex; flex-flow: column; position: relative;">
+    <div class="inspector-content">
       <ul class="inspector-nav">
         <li id="inspectorShowVariables" class="inspector-nav-item"><%= tr('Variables') %></li>
         <li id="inspectorShowResources" class="inspector-nav-item"><%= tr('Resources') %></li>
@@ -80,7 +80,7 @@ _.extend(Scenario.JST, {
       <div class="inspector-tab" data-tab-name="variables" style="display: <%= tab === 'variables' ? 'flex' : 'none' %>"></div>
       <div class="inspector-tab" data-tab-name="resources" style="display: <%= tab === 'resources' ? 'flex' : 'none' %>"></div>
       <div class="inspector-tab" data-tab-name="callstack" style="display: <%= tab === 'callstack' ? 'flex' : 'none' %>"></div>
-      <div id="inspectorNotice" style="display: none; position: absolute; background: #fafafa; margin-top: 32px; padding: 40px; height: 100%; width: 100%;">
+      <div class="inspector-notice">
         <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>
       </div>
     </div>

@@ -89,12 +89,12 @@
 
     hideNotice() {
       this.$('.inspector-nav-item').removeClass('disabled');
-      this.$('#inspectorNotice').hide();
+      this.$('.inspector-notice').hide();
     },
 
     showNotice() {
       this.$('.inspector-nav-item').addClass('disabled');
-      this.$('#inspectorNotice').show();
+      this.$('.inspector-notice').show();
     },
 
     events: {

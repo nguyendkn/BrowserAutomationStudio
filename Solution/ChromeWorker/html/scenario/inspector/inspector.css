@@ -66,6 +66,23 @@
   right: 0;
 }
 
+.inspector-content {
+  position: relative;
+  flex-flow: column;
+  display: flex;
+  height: 100%;
+}
+
+.inspector-notice {
+  background: #fafafa;
+  position: absolute;
+  margin-top: 32px;
+  padding: 40px;
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
 .inspector-panel {
   overflow-x: hidden;
   overflow-y: hidden;
@@ -207,14 +224,6 @@
   outline: 0;
 }
 
-.inspector-modal-form {
-  flex-direction: column;
-  margin-bottom: 10px;
-  margin-top: 0px;
-  display: flex;
-  width: 100%;
-}
-
 .inspector-modal-header {
   text-align: center;
   line-height: 18px;
@@ -238,4 +247,12 @@
   padding: 15px 20px;
   min-height: 200px;
   display: flex;
+}
+
+.inspector-modal-form {
+  flex-direction: column;
+  margin-bottom: 10px;
+  margin-top: 0px;
+  display: flex;
+  width: 100%;
 }

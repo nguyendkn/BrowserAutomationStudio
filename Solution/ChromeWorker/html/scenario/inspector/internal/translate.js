@@ -8,6 +8,18 @@ _.extend(_L, {
   'Filter by name...': {
     ru: 'Фильтр по имени...'
   },
+  'By frequency of use': {
+    ru: 'По частоте использования'
+  },
+  'By date modified': {
+    ru: 'По дате изменения'
+  },
+  'By date added': {
+    ru: 'По дате добавления'
+  },
+  'Alphabetically': {
+    ru: 'По алфавиту'
+  },
   'No variables': {
     ru: 'Нет переменных'
   },

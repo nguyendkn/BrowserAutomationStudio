@@ -97,9 +97,9 @@ _.extend(Scenario.JST, {
       </button>
       <ul class="inspector-sort-menu" style="display: none">
         <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('Frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('Date added') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('Date modified') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
       </ul>
       <button class="inspector-filter-button">
         <i class="fa fa-cog"></i>
@@ -134,9 +134,9 @@ _.extend(Scenario.JST, {
       </button>
       <ul class="inspector-sort-menu" style="display: none">
         <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('Frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('Date added') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('Date modified') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
+        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
       </ul>
       <button class="inspector-filter-button">
         <i class="fa fa-cog"></i>

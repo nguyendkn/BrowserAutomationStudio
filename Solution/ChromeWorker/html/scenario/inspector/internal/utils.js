@@ -37,25 +37,13 @@
     },
 
     sortByGlobals(src, compareFn) {
-      return _.keys(src).sort((name1, name2) => {
-        const a = name1.toUpperCase().startsWith('GLOBAL:');
-        const b = name2.toUpperCase().startsWith('GLOBAL:');
-
-        if (a && !b) return -1;
-        if (!a && b) return 1;
-        return compareFn(name1, name2);
-      });
+      const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
+      return _.keys(src).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
     },
 
     sortByLocals(src, compareFn) {
-      return _.keys(src).sort((name1, name2) => {
-        const a = name1.toUpperCase().startsWith('GLOBAL:');
-        const b = name2.toUpperCase().startsWith('GLOBAL:');
-
-        if (b && !a) return -1;
-        if (!b && a) return 1;
-        return compareFn(name1, name2);
-      });
+      const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
+      return _.keys(src).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
     },
   };
 

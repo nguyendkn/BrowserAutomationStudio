@@ -5,6 +5,9 @@ _.extend(_L, {
   'Change the variable value': {
     ru: 'Изменить значение переменной'
   },
+  'Filter by name...': {
+    ru: 'Фильтр по имени...'
+  },
   'No variables': {
     ru: 'Нет переменных'
   },

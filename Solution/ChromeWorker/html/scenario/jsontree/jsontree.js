@@ -1,5 +1,5 @@
 ((global, $, _) => {
-  const JSONTree = Backbone.View.extend({
+  global.JSONTree = Backbone.View.extend({
     className: 'jst-root',
 
     tagName: 'ul',
@@ -12,12 +12,8 @@
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
             const { dataset } = el.querySelector('[data-path]');
-
-            const path = dataset.path;
-            if (path) return path;
-
-            const id = dataset.id;
-            if (id) return id;
+            if (dataset.path) return dataset.path;
+            if (dataset.ref) return dataset.ref;
           }
           return el.id;
         },
@@ -163,6 +159,4 @@
     attrs = Object.keys(attrs).map(key => `data-${key}="${attrs[key]}"`);
     return `<span class="jst-node" ${attrs.join(' ')}>${content}</span>`;
   }
-
-  global.JSONTree = JSONTree;
 })(window, jQuery, _);

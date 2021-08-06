@@ -1,72 +1,13 @@
 ((global, $, _) => {
-  class JSONTree {
-    static colors = {
-      undefined: '#808080',
-      boolean: '#2525cc',
-      string: '#2db669',
-      number: '#d036d0',
-      date: '#ce904a',
-      null: '#808080',
-    }
+  const JSONTree = Backbone.View.extend({
+    className: 'jst-root',
 
-    constructor (elem, config = {}) {
-      elem.innerHTML = (/*html*/`<ul class="jst-root"></ul>`);
-      this.onCollapse = config.onCollapse || (() => { });
-      this.onExpand = config.onExpand || (() => { });
-      this.onRender = config.onRender || (() => { });
-      this.elem = elem;
-    }
+    tagName: 'ul',
 
     render(data) {
       const root = jsNode('', data, '', true);
 
-      if (!this.listenersAttached) {
-        const $elem = $(this.elem);
-
-        $elem.on('click', '.jst-item > .fa-minus-circle', (e) => {
-          e.preventDefault();
-          const $el = $(e.target), $node = $el.prev();
-          const text = $node.text().slice(1, -1);
-
-          $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
-          $node[0].dataset.value = utf8_to_b64(text);
-          $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
-        });
-
-        $elem.on('click', '.jst-item > .fa-plus-circle', (e) => {
-          e.preventDefault();
-          const $el = $(e.target), $node = $el.prev();
-          const text = $node.text().slice(1, -1);
-
-          $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
-          $node[0].dataset.value = utf8_to_b64(text);
-          $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
-        });
-
-        $elem.on('click', '.jst-collapse', (e) => {
-          e.preventDefault();
-          const el = e.target, list = el.nextElementSibling;
-          list.classList.toggle('jst-collapsed'),
-            el.classList.toggle('jst-collapse'),
-            el.classList.toggle('jst-expand'),
-            list.style.display = 'none';
-          this.onCollapse();
-        });
-
-        $elem.on('click', '.jst-expand', (e) => {
-          e.preventDefault();
-          const el = e.target, list = el.nextElementSibling;
-          list.classList.toggle('jst-collapsed'),
-            el.classList.toggle('jst-collapse'),
-            el.classList.toggle('jst-expand'),
-            list.style.display = '';
-          this.onExpand();
-        });
-
-        this.listenersAttached = true;
-      }
-
-      morphdom(this.elem.firstChild, /*html*/`<ul class="jst-root">${root}</ul>`, {
+      morphdom(this.el, /*html*/`<ul class="jst-root">${root}</ul>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
@@ -82,9 +23,61 @@
         },
         childrenOnly: true,
       });
-      this.onRender();
+
+      return this.trigger('render');
+    },
+
+    events: {
+      'click .jst-item > .fa-minus-circle': function (e) {
+        e.preventDefault();
+        const $el = $(e.target), $node = $el.prev();
+        const text = $node.text().slice(1, -1);
+
+        $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
+        $node[0].dataset.value = utf8_to_b64(text);
+        $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
+      },
+
+      'click .jst-item > .fa-plus-circle': function (e) {
+        e.preventDefault();
+        const $el = $(e.target), $node = $el.prev();
+        const text = $node.text().slice(1, -1);
+
+        $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
+        $node[0].dataset.value = utf8_to_b64(text);
+        $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
+      },
+
+      'click .jst-collapse': function (e) {
+        e.preventDefault();
+        const el = e.target, list = el.nextElementSibling;
+        list.classList.toggle('jst-collapsed'),
+          el.classList.toggle('jst-collapse'),
+          el.classList.toggle('jst-expand'),
+          list.style.display = 'none';
+        this.trigger('collapse');
+      },
+
+      'click .jst-expand': function (e) {
+        e.preventDefault();
+        const el = e.target, list = el.nextElementSibling;
+        list.classList.toggle('jst-collapsed'),
+          el.classList.toggle('jst-collapse'),
+          el.classList.toggle('jst-expand'),
+          list.style.display = '';
+        this.trigger('expand');
+      },
     }
-  }
+  }, {
+    colors: {
+      undefined: '#808080',
+      boolean: '#2525cc',
+      string: '#2db669',
+      number: '#d036d0',
+      date: '#ce904a',
+      null: '#808080',
+    }
+  });
 
   function jsIterable(value, type, path, brackets) {
     const opening = `<span class="jst-bracket">${brackets[0]}</span>`;

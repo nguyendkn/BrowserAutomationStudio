@@ -48,14 +48,16 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template(this.model.toJSON()));
 
-        this.tree = new JSONTree(this.$('.inspector-panel-data')[0], {
-          onRender: () => {
-            this.sortTree(this.model.get('sortType'));
-            this.filterTree().loadState();
-          },
-          onCollapse: BrowserAutomationStudio_PreserveInterfaceState,
-          onExpand: BrowserAutomationStudio_PreserveInterfaceState,
+        this.tree = (new JSONTree()).on('render', () => {
+          this.sortTree(this.model.get('sortType'));
+          this.filterTree().loadState();
+        }).on('collapse', () => {
+          BrowserAutomationStudio_PreserveInterfaceState();
+        }).on('expand', () => {
+          BrowserAutomationStudio_PreserveInterfaceState();
         });
+
+        this.$('.inspector-panel-data').append(this.tree.el);
       }
 
       return this;

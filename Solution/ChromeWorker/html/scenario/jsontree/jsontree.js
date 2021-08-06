@@ -63,6 +63,10 @@
           list.style.display = '';
         this.trigger('expand');
       },
+
+      'click .jst-icon': function (e) {
+        // pin logic
+      },
     }
   }, {
     colors: {
@@ -152,7 +156,7 @@
       throw new Error(`Failed to resolve value type`);
     })();
 
-    return `<li class="jst-item">${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`
+    return `<li class="jst-item"><i class="jst-icon fa fa-chain"></i>${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`
   }
 
   function element(content, attrs) {

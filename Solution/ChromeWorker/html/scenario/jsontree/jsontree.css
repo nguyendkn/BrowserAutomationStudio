@@ -22,6 +22,12 @@ span.jst-node[data-type="null"] {
   color: #808080;
 }
 
+.jst-root > li > ul > li > .jst-icon {
+  display: inline-block;
+  margin-right: 4px;
+  margin-left: 0px;
+}
+
 .jst-root > li > .jst-collapse {
   display: none;
 }
@@ -113,4 +119,8 @@ span.jst-node[data-type="null"] {
   list-style: none;
   display: flex;
   margin: 0;
+}
+
+.jst-icon {
+  display: none
 }

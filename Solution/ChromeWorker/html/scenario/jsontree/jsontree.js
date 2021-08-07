@@ -138,8 +138,7 @@
 
   function jsIterable(value, path, type, brackets) {
     const content = Object.keys(value).map((key, idx, arr) => {
-      const path = key ? `${path}/${key}` : path;
-      return jsNode(key, value[key], path, idx === arr.length - 1)
+      return jsNode(key, value[key], key ? `${path}/${key}` : path, idx === arr.length - 1)
     }).join('')
 
     return [

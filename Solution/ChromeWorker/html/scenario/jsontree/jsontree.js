@@ -54,19 +54,23 @@
 
       model.on('change:source', () => {
         this.render();
+        this.dragula.containers = [
+          ...this.el.querySelectorAll('.jst-list[data-path=""]')
+        ];
       });
 
       model.on('change:groups', () => {
         this.render();
+        this.dragula.containers = [
+          ...this.el.querySelectorAll('.jst-list[data-path=""]')
+        ];
       });
 
       this.dragula = dragula([], {
-        isContainer: (el) => {
-          if (el.dataset.path !== '') return false;
-          return el.classList.contains('jst-list');
-        },
         removeOnSpill: false,
+
         revertOnSpill: true,
+
         moves(el, source, handle, sibling) {
           if (!handle.classList.contains('jst-item')) return false;
           const node = handle.querySelector('[data-path]');

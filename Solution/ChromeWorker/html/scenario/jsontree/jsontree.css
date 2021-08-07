@@ -45,16 +45,17 @@ span.jst-node[data-type="null"] {
 }
 
 .jst-root > li > .jst-list {
+  min-height: 20px;
   display: flex;
   padding: 0;
 }
 
-.jst-item > .fa-minus-circle {
+.jst-item .fa-minus-circle {
   margin-left: 2px;
   cursor: pointer;
 }
 
-.jst-item > .fa-plus-circle {
+.jst-item .fa-plus-circle {
   margin-left: 2px;
   cursor: pointer;
 }

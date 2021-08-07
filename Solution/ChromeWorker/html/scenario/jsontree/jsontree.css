@@ -45,6 +45,7 @@ span.jst-node[data-type="null"] {
 }
 
 .jst-root > li > .jst-list {
+  display: flex;
   padding: 0;
 }
 

@@ -44,6 +44,7 @@
   font-weight: 400;
   font-size: 10px;
   overflow: auto;
+  flex: 1 1 0%;
 }
 
 .inspector-filter-menu {
@@ -111,6 +112,7 @@
   overflow-y: hidden;
   flex-flow: column;
   display: flex;
+  flex: 1 1 0%;
 }
 
 #inspector {

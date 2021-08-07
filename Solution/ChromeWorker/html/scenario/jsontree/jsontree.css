@@ -1,26 +1,34 @@
-span.jst-node[data-type="undefined"] {
+/*************************
+ * JSONTree types styles *
+ *************************/
+
+.jst-node[data-type="undefined"] {
   color: #808080;
 }
 
-span.jst-node[data-type="boolean"] {
+.jst-node[data-type="boolean"] {
   color: #2525cc;
 }
 
-span.jst-node[data-type="number"] {
+.jst-node[data-type="number"] {
   color: #d036d0;
 }
 
-span.jst-node[data-type="string"] {
+.jst-node[data-type="string"] {
   color: #2db669;
 }
 
-span.jst-node[data-type="date"] {
+.jst-node[data-type="date"] {
   color: #ce904a;
 }
 
-span.jst-node[data-type="null"] {
+.jst-node[data-type="null"] {
   color: #808080;
 }
+
+/************************
+ * JSONTree main styles *
+ ************************/
 
 .jst-root > li > ul > li > .jst-icon {
   display: inline-block;
@@ -33,14 +41,6 @@ span.jst-node[data-type="null"] {
 }
 
 .jst-root > li > .jst-bracket {
-  display: none;
-}
-
-.jst-root > li > .jst-label {
-  display: none;
-}
-
-.jst-root > li > .jst-colon {
   display: none;
 }
 
@@ -94,14 +94,6 @@ span.jst-node[data-type="null"] {
   padding: 0 2px;
 }
 
-.jst-bracket {
-  white-space: pre-wrap;
-}
-
-.jst-comma {
-  white-space: pre-wrap;
-}
-
 .jst-label {
   word-wrap: break-word;
   color: #666;
@@ -137,9 +129,9 @@ span.jst-node[data-type="null"] {
   display: none;
 }
 
-/*****************
- * Groups styles *
- *****************/
+/**************************
+ * JSONTree groups styles *
+ **************************/
 
 .jst-group-body {
   background: transparent;

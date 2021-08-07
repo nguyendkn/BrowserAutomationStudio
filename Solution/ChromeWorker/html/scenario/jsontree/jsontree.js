@@ -121,7 +121,7 @@
                 <i class="jst-group-toggle fa fa-chevron-up"></i>
               </div>
               <div class="jst-group-body">
-                <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, source[k]]))), '', true)}</ul>
+                <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, source[k]]))), '', true, true)}</ul>
               </div>
             </div>`
         )).join('')
@@ -236,31 +236,37 @@
     return element(value, { path, type: 'null' });
   }
 
-  function jsNode(name, value, path, isLast) {
-    const content = `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` + (() => {
-      switch (Object.prototype.toString.call(value).slice(8, -1)) {
-        case 'Boolean':
-          return jsBoolean(value, path);
-        case 'Object':
-          return jsObject(value, path);
-        case 'Number':
-          return jsNumber(value, path);
-        case 'String':
-          if (value.startsWith('__UNDEFINED__')) {
-            return jsUndefined(value.slice(13), path);
+  function jsNode(name, value, path, isLast, isRoot) {
+    return (
+      `<li class="jst-item">${[
+        '<i class="jst-icon fa fa-chain"></i>',
+        !isRoot ? `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` : '',
+        (() => {
+          switch (Object.prototype.toString.call(value).slice(8, -1)) {
+            case 'Boolean':
+              return jsBoolean(value, path);
+            case 'Object':
+              return jsObject(value, path);
+            case 'Number':
+              return jsNumber(value, path);
+            case 'String':
+              if (value.startsWith('__UNDEFINED__')) {
+                return jsUndefined(value.slice(13), path);
+              }
+              if (value.startsWith('__DATE__')) {
+                return jsDate(value.slice(8), path);
+              }
+              return jsString(value, path);
+            case 'Array':
+              return jsArray(value, path);
+            case 'Null':
+              return jsNull(value, path);
           }
-          if (value.startsWith('__DATE__')) {
-            return jsDate(value.slice(8), path);
-          }
-          return jsString(value, path);
-        case 'Array':
-          return jsArray(value, path);
-        case 'Null':
-          return jsNull(value, path);
-      }
-    })();
-
-    return `<li class="jst-item"><i class="jst-icon fa fa-chain"></i>${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`;
+        })(),
+        (!isRoot && !isLast) ? '<span class="jst-comma">,</span>' : ''
+      ].join('')
+      }</li>`
+    )
   }
 
   function element(content, attrs) {

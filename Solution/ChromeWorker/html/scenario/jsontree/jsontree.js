@@ -122,7 +122,7 @@
           `<div class="jst-group" data-group="${group}">
               <div class="jst-group-head">
                 <span class="jst-group-title">${group}</span>
-                <i class="jst-group-toggle fa fa-chevron-down"></i>
+                <i class="jst-group-toggle fa fa-chevron-up"></i>
               </div>
               <div class="jst-group-body">
                 <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, source[k]]))), '', true)}</ul>

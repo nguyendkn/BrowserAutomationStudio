@@ -124,3 +124,23 @@ span.jst-node[data-type="null"] {
 .jst-icon {
   display: none
 }
+
+/*****************
+ * Groups styles *
+ *****************/
+
+.jst-group-body {
+  background: transparent;
+  padding: 4px 2px;
+  border: none;  
+}
+
+.jst-group-head {
+  background: #e0e0e0;
+  padding: 2px 8px;
+  border: none;
+}
+
+.jst-group {
+  border: thin solid #e0e0e0;
+}

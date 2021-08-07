@@ -75,21 +75,19 @@
 
       'click .jst-collapse': function (e) {
         e.preventDefault();
-        const el = e.target, list = el.nextElementSibling;
-        list.classList.toggle('jst-collapsed'),
-          el.classList.toggle('jst-collapse'),
-          el.classList.toggle('jst-expand'),
-          list.style.display = 'none';
+        const $el = $(e.target), $list = $el.next();
+        $list.toggleClass('jst-collapsed').hide();
+        $el.toggleClass('jst-collapse');
+        $el.toggleClass('jst-expand');
         this.trigger('collapse');
       },
 
       'click .jst-expand': function (e) {
         e.preventDefault();
-        const el = e.target, list = el.nextElementSibling;
-        list.classList.toggle('jst-collapsed'),
-          el.classList.toggle('jst-collapse'),
-          el.classList.toggle('jst-expand'),
-          list.style.display = '';
+        const $el = $(e.target), $list = $el.next();
+        $list.toggleClass('jst-collapsed').show();
+        $el.toggleClass('jst-collapse');
+        $el.toggleClass('jst-expand');
         this.trigger('expand');
       },
 

@@ -49,18 +49,27 @@
     },
 
     removeGroup(name) {
-      const lower = name.toLowerCase();
-      if (lower === 'main' || !_.any(this.groups, (_, k) => k === lower)) return;
+      if (!hasGroup(name)) return;
       /// TODO
       return this;
     },
 
+    renameGroup(name) {
+      if (!hasGroup(name)) return;
+      // TODO
+      return this;
+    }
+
     addGroup(name) {
-      const lower = name.toLowerCase();
-      if (lower === 'main' || _.any(this.groups, (_, k) => k === lower)) return;
+      if (hasGroup(name)) return;
       // TODO
       return this;
     },
+
+    hasGroup(name) {
+      const lower = name.toLowerCase();
+      return _.any(this.groups, (_, k) => k === lower);
+    }
 
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {

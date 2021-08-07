@@ -1,16 +1,70 @@
 ((global, $, _) => {
+  const Model = Backbone.Model.extend({
+    defaults: {
+      source: {},
+      groups: {},
+    },
+
+    renameGroup(group, name) {
+      if (!this.hasGroup(group)) return;
+      const groups = this.get('groups');
+      this.set('groups', _.reduce(groups, (acc, v, k) => {
+        acc[k === group ? name : k] = v;
+        return acc;
+      }, {}));
+    },
+
+    removeGroup(group) {
+      if (!this.hasGroup(group)) return;
+      const groups = this.get('groups');
+      this.set('groups', _.reduce(groups, (acc, v, k) => {
+        if (k === group) acc['Main'].push(...v);
+        else acc[k] = v;
+        return acc;
+      }, {}));
+    },
+
+    addGroup(group) {
+      if (this.hasGroup(group)) return;
+      this.set('groups', { ...this.get('groups'), [group]: [] });
+    },
+
+    hasGroup(group) {
+      const name = group.toLowerCase();
+      return _.any(this.get('groups'), (_, key) => {
+        return key.toLowerCase() === name;
+      });
+    },
+
+    update(source) {
+      if (!this.get('groups')['Main']) {
+        this.get('groups')['Main'] = _.keys(source);
+      }
+      this.set('source', source);
+    },
+  });
+
   global.JSONTree = Backbone.View.extend({
     className: 'jst',
 
     tagName: 'div',
 
     initialize() {
-      this.groups = {};
-      this.source = {};
+      const model = new Model();
+
+      model.on('change:source', (__, source) => {
+        this.render();
+      });
+
+      model.on('change:groups', (__, groups) => {
+        this.render();
+      });
+
+      this.model = model;
     },
 
-    render(data) {
-      morphdom(this.el, this.renderRoot(data), {
+    render() {
+      morphdom(this.el, this.renderRoot(), {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
@@ -26,54 +80,24 @@
       return this.trigger('render');
     },
 
-    renderRoot(data) {
-      this.ensureGroups(this.source = data);
+    renderRoot() {
+      const source = this.model.get('source');
+      const groups = this.model.get('groups');
 
       return (
-        `<div class="jst">${_.map(this.groups, (keys, group) => (
+        `<div class="jst">${_.map(groups, (keys, group) => (
           `<div class="jst-group" data-group="${group}">
               <div class="jst-group-head">
                 <span class="jst-group-title">${group}</span>
                 <i class="jst-group-toggle fa fa-chevron-down"></i>
               </div>
               <div class="jst-group-body">
-                <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, data[k]]))), '', true)}</ul>
+                <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, source[k]]))), '', true)}</ul>
               </div>
             </div>`
         )).join('')
         }</div>`
       );
-    },
-
-    ensureGroups(data) {
-      if (!this.groups['Main']) {
-        this.groups['Main'] = _.keys(data);
-      }
-      return this;
-    },
-
-    renameGroup(name) {
-      if (!this.hasGroup(name)) return;
-      // TODO
-      return this;
-    },
-
-    removeGroup(name) {
-      if (!this.hasGroup(name)) return;
-      // TODO
-      return this;
-    },
-
-    addGroup(name) {
-      if (this.hasGroup(name)) return;
-      this.groups[name] = [];
-      this.render(this.source);
-      return this;
-    },
-
-    hasGroup(name) {
-      const lower = name.toLowerCase();
-      return _.any(this.groups, (_, k) => k === lower);
     },
 
     events: {

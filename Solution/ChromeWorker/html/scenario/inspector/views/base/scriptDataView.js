@@ -27,7 +27,7 @@
         const $data = this.$('.inspector-panel-data');
         const isEmpty = _.isEmpty(source);
 
-        if (!isEmpty) this.tree.render(source);
+        if (!isEmpty) this.tree.model.update(source);
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 

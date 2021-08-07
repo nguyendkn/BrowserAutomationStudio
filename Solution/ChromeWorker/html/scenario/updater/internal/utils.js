@@ -57,6 +57,14 @@
       return str.length > limit ? (str.slice(0, limit - 3) + '...') : str;
     },
 
+    concat: function (arr, ...args) {
+      return arr.concat(...args);
+    },
+
+    slice: function (arr, ...args) {
+      return arr.slice(...args);
+    },
+
     isString: function (obj) {
       return Object.prototype.toString.call(obj) === '[object String]';
     },

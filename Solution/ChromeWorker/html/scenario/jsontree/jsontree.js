@@ -80,16 +80,16 @@
         const name = el.querySelector('[data-path]').dataset.path.slice(1);
         const groups = this.model.get('groups');
 
-        const oldGroupName = source.closest('.jst-group').dataset.group;
-        const oldGroup = _.without(groups[oldGroupName], name);
+        const oldName = source.closest('.jst-group').dataset.group;
+        const oldList = _.without(groups[oldName], name);
 
-        const newGroupName = target.closest('.jst-group').dataset.group;
-        const newGroup = _.concat(groups[newGroupName], name);
+        const newName = target.closest('.jst-group').dataset.group;
+        const newList = _.concat(groups[newName], name);
 
         this.model.set('groups', {
           ...groups,
-          [oldGroupName]: oldGroup,
-          [newGroupName]: newGroup,
+          [oldName]: _.uniq(oldList),
+          [newName]: _.uniq(newList),
         }, { silent: true });
       });
 

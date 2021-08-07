@@ -1,13 +1,15 @@
 ((global, $, _) => {
   global.JSONTree = Backbone.View.extend({
-    className: 'jst-root',
+    className: 'jst',
 
-    tagName: 'ul',
+    tagName: 'div',
+
+    initialize() {
+      this.groups = { Main: [] };
+    },
 
     render(data) {
-      const root = jsNode('', data, '', true);
-
-      morphdom(this.el, /*html*/`<ul class="jst-root">${root}</ul>`, {
+      morphdom(this.el, this.renderRoot(data), {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
@@ -21,6 +23,33 @@
       });
 
       return this.trigger('render');
+    },
+
+    renderRoot(data) {
+      const groups = _.groupBy(Object.entries(data), ([key]) => {
+        if (_.size(this.groups) === 1) return 'Main';
+        return Object.entries(this.groups).find(([_, v]) => v.includes(`/${key}`)).shift();
+      });
+
+      return (
+        `<div class="jst">${_.map(groups, (entries, group) => (
+          `<div class="jst-group">
+              <div class="jst-group-head">${group}</div>
+              <div class="jst-group-body">
+                <ul class="jst-root">${jsNode('', Object.fromEntries(entries), '', true)}</ul>
+              </div>
+            </div>`
+        )).join('')
+        }</div>`
+      );
+    },
+
+    removeGroup(groupName) {
+      /// TODO
+    },
+
+    addGroup(groupName) {
+      // TODO
     },
 
     events: {
@@ -153,7 +182,6 @@
         case 'Null':
           return jsNull(value, path);
       }
-      throw new Error(`Failed to resolve value type`);
     })();
 
     return `<li class="jst-item"><i class="jst-icon fa fa-chain"></i>${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`

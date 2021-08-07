@@ -5,7 +5,7 @@
     tagName: 'div',
 
     initialize() {
-      this.groups = { Main: [] };
+      this.groups = {};
     },
 
     render(data) {
@@ -26,17 +26,14 @@
     },
 
     renderRoot(data) {
-      const groups = _.groupBy(Object.entries(data), ([key]) => {
-        if (_.size(this.groups) === 1) return 'Main';
-        return Object.entries(this.groups).find(([_, v]) => v.includes(`/${key}`)).shift();
-      });
+      this.ensureGroups(data);
 
       return (
-        `<div class="jst">${_.map(groups, (entries, group) => (
+        `<div class="jst">${_.map(this.groups, (keys, group) => (
           `<div class="jst-group">
               <div class="jst-group-head">${group}</div>
               <div class="jst-group-body">
-                <ul class="jst-root">${jsNode('', Object.fromEntries(entries), '', true)}</ul>
+                <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, data[k]]))), '', true)}</ul>
               </div>
             </div>`
         )).join('')
@@ -44,12 +41,25 @@
       );
     },
 
-    removeGroup(groupName) {
-      /// TODO
+    ensureGroups(data) {
+      if (!this.groups['Main']) {
+        this.groups['Main'] = _.keys(data);
+      }
+      return this;
     },
 
-    addGroup(groupName) {
+    removeGroup(name) {
+      const lower = name.toLowerCase();
+      if (lower === 'main' || !_.any(this.groups, (_, k) => k === lower)) return;
+      /// TODO
+      return this;
+    },
+
+    addGroup(name) {
+      const lower = name.toLowerCase();
+      if (lower === 'main' || _.any(this.groups, (_, k) => k === lower)) return;
       // TODO
+      return this;
     },
 
     events: {

@@ -53,20 +53,21 @@
     },
 
     renameGroup(name) {
-      if (!hasGroup(name)) return;
+      if (!this.hasGroup(name)) return;
       // TODO
       return this;
     },
 
     removeGroup(name) {
-      if (!hasGroup(name)) return;
+      if (!this.hasGroup(name)) return;
       // TODO
       return this;
     },
 
     addGroup(name) {
-      if (hasGroup(name)) return;
+      if (this.hasGroup(name)) return;
       this.groups[name] = [];
+      this.render(this.source);
       return this;
     },
 
@@ -136,20 +137,21 @@
   });
 
   function jsIterable(value, path, type, brackets) {
-    const opening = `<span class="jst-bracket">${brackets[0]}</span>`;
-    const closing = `<span class="jst-bracket">${brackets[1]}</span>`;
+    const html = (content, collapse = '') => ([
+      `<span class="jst-bracket">${brackets[0]}</span>`,
+      collapse,
+      `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`,
+      `<span class="jst-bracket">${brackets[1]}</span>`
+    ].join(''));
     const keys = Object.keys(value);
 
     if (keys.length) {
-      const content = keys.map((key, idx) => {
+      return html(keys.map((key, idx) => {
         return jsNode(key, value[key], key ? `${path}/${key}` : path, idx === keys.length - 1)
-      }).join('');
-
-      const element = `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`;
-      return opening + `<span class="jst-collapse"></span>` + element + closing;
+      }).join(''), '<span class="jst-collapse"></span>');
     }
 
-    return opening + closing;
+    return html('');
   }
 
   function jsObject(value, path) {

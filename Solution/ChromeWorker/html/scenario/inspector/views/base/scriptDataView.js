@@ -48,7 +48,7 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template(this.model.toJSON()));
 
-        this.tree = (new JSONTree()).on('render', () => {
+        this.tree = (new Scenario.JSONTree()).on('render', () => {
           this.sortTree(this.model.get('sortType'));
           this.filterTree().loadState();
         }).on('collapse', () => {

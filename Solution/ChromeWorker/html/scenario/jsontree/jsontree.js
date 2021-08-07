@@ -1,4 +1,4 @@
-((global, $, _) => {
+(({ Scenario, Backbone }, $, _) => {
   const Model = Backbone.Model.extend({
     defaults: function () {
       return {
@@ -46,7 +46,7 @@
     },
   });
 
-  global.JSONTree = Backbone.View.extend({
+  const View = Backbone.View.extend({
     className: 'jst',
 
     tagName: 'div',
@@ -117,7 +117,7 @@
         const $el = $(e.target), $node = $el.prev(), { path } = $node[0].dataset;
 
         const val = jsonpatch.getValueByPointer(this.source, path), len = val.length;
-        $el.toggleClass('fa-plus-circle').toggleClass('fa-minus-circle');
+        $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
         $node.text(`"${_.truncate(val, len)}"`);
       },
 
@@ -133,8 +133,8 @@
         e.preventDefault();
         const $el = $(e.target), $list = $el.next();
         $list.toggleClass('jst-collapsed').hide();
-        $el.toggleClass('jst-collapse');
-        $el.toggleClass('jst-expand');
+        $el.toggleClass('jst-collapse')
+          .toggleClass('jst-expand');
         this.trigger('collapse');
       },
 
@@ -142,8 +142,8 @@
         e.preventDefault();
         const $el = $(e.target), $list = $el.next();
         $list.toggleClass('jst-collapsed').show();
-        $el.toggleClass('jst-collapse');
-        $el.toggleClass('jst-expand');
+        $el.toggleClass('jst-collapse')
+          .toggleClass('jst-expand');
         this.trigger('expand');
       },
 
@@ -240,4 +240,6 @@
     attrs = Object.keys(attrs).map(key => `data-${key}="${attrs[key]}"`);
     return `<span class="jst-node" ${attrs.join(' ')}>${content}</span>`;
   }
+
+  Scenario.JSONTree = View;
 })(window, jQuery, _);

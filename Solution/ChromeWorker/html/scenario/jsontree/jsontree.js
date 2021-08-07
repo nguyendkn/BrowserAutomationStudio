@@ -7,7 +7,7 @@
       };
     },
 
-    renameGroup(group, name) {
+    renameGroup: function (group, name) {
       if (!this.hasGroup(group)) return;
       const groups = this.get('groups');
       this.set('groups', _.reduce(groups, (acc, v, k) => {
@@ -16,7 +16,7 @@
       }, {}));
     },
 
-    removeGroup(group) {
+    removeGroup: function (group) {
       if (!this.hasGroup(group)) return;
       const groups = this.get('groups');
       this.set('groups', _.reduce(groups, (acc, v, k) => {
@@ -26,19 +26,17 @@
       }, {}));
     },
 
-    addGroup(group) {
+    addGroup: function (group) {
       if (this.hasGroup(group)) return;
       this.set('groups', { ...this.get('groups'), [group]: [] });
     },
 
-    hasGroup(group) {
+    hasGroup: function (group) {
       const name = group.toLowerCase();
-      return _.any(this.get('groups'), (_, key) => {
-        return key.toLowerCase() === name;
-      });
+      return _.any(this.get('groups'), (_, key) => key.toLowerCase() === name);
     },
 
-    update(source) {
+    update: function (source) {
       if (!this.get('groups')['Main']) {
         this.get('groups')['Main'] = _.keys(source);
       }
@@ -54,12 +52,41 @@
     initialize() {
       const model = new Model();
 
-      model.on('change:source', (__, source) => {
+      model.on('change:source', () => {
         this.render();
       });
 
-      model.on('change:groups', (__, groups) => {
+      model.on('change:groups', () => {
         this.render();
+      });
+
+      this.dragula = dragula([], {
+        isContainer: (el) => {
+          if (el.dataset.path !== '') return false;
+          return el.classList.contains('jst-list');
+        },
+        removeOnSpill: false,
+        revertOnSpill: true,
+        moves(el, source, handle, sibling) {
+          if (!handle.classList.contains('jst-item')) return false;
+          const node = handle.querySelector('[data-path]');
+          return node.dataset.path.split('/').length === 2;
+        }
+      }).on('drop', (el, target, source) => {
+        const name = el.querySelector('[data-path]').dataset.path.slice(1);
+        const groups = this.model.get('groups');
+
+        const oldGroupName = source.closest('.jst-group').dataset.group;
+        const oldGroup = _.without(groups[oldGroupName], name);
+
+        const newGroupName = target.closest('.jst-group').dataset.group;
+        const newGroup = _.concat(groups[newGroupName], name);
+
+        this.model.set('groups', {
+          ...groups,
+          [oldGroupName]: oldGroup,
+          [newGroupName]: newGroup,
+        }, { silent: true });
       });
 
       this.model = model;

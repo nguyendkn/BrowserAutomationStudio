@@ -43,7 +43,6 @@
     defaults: {
       sortType: 'alphabetically',
       allowHighlight: true,
-      allowGroups: false,
       highlight: false,
       metadata: {},
       updates: 0,

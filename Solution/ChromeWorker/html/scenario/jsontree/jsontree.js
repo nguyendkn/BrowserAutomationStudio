@@ -137,21 +137,17 @@
   });
 
   function jsIterable(value, path, type, brackets) {
-    const html = (content, collapse = '') => ([
+    const content = Object.keys(value).map((key, idx, arr) => {
+      const path = key ? `${path}/${key}` : path;
+      return jsNode(key, value[key], path, idx === arr.length - 1)
+    }).join('')
+
+    return [
       `<span class="jst-bracket">${brackets[0]}</span>`,
-      collapse,
+      content.length ? '<span class="jst-collapse"></span>' : '',
       `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`,
       `<span class="jst-bracket">${brackets[1]}</span>`
-    ].join(''));
-    const keys = Object.keys(value);
-
-    if (keys.length) {
-      return html(keys.map((key, idx) => {
-        return jsNode(key, value[key], key ? `${path}/${key}` : path, idx === keys.length - 1)
-      }).join(''), '<span class="jst-collapse"></span>');
-    }
-
-    return html('');
+    ].join('');
   }
 
   function jsObject(value, path) {

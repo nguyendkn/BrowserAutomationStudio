@@ -6,6 +6,7 @@
 
     initialize() {
       this.groups = {};
+      this.source = {};
     },
 
     render(data) {
@@ -26,12 +27,15 @@
     },
 
     renderRoot(data) {
-      this.ensureGroups(data);
+      this.ensureGroups(this.source = data);
 
       return (
         `<div class="jst">${_.map(this.groups, (keys, group) => (
-          `<div class="jst-group">
-              <div class="jst-group-head">${group}</div>
+          `<div class="jst-group" data-group="${group}">
+              <div class="jst-group-head">
+                <span class="jst-group-title">${group}</span>
+                <i class="jst-group-toggle fa fa-chevron-down"></i>
+              </div>
               <div class="jst-group-body">
                 <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, data[k]]))), '', true)}</ul>
               </div>
@@ -48,48 +52,54 @@
       return this;
     },
 
-    removeGroup(name) {
-      if (!hasGroup(name)) return;
-      /// TODO
-      return this;
-    },
-
     renameGroup(name) {
       if (!hasGroup(name)) return;
       // TODO
       return this;
-    }
+    },
+
+    removeGroup(name) {
+      if (!hasGroup(name)) return;
+      // TODO
+      return this;
+    },
 
     addGroup(name) {
       if (hasGroup(name)) return;
-      // TODO
+      this.groups[name] = [];
       return this;
     },
 
     hasGroup(name) {
       const lower = name.toLowerCase();
       return _.any(this.groups, (_, k) => k === lower);
-    }
+    },
 
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), $node = $el.prev();
-        const text = $node.text().slice(1, -1);
+        const $el = $(e.target), $node = $el.prev(), { path } = $node[0].dataset;
 
-        $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
-        $node[0].dataset.value = utf8_to_b64(text);
-        $el.removeClass('fa-minus-circle').addClass('fa-plus-circle');
+        const val = jsonpatch.getValueByPointer(this.source, path), len = val.length;
+        $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
+        $node.text(`"${_.truncate(val, 100)}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), $node = $el.prev();
-        const text = $node.text().slice(1, -1);
+        const $el = $(e.target), $node = $el.prev(), { path } = $node[0].dataset;
 
-        $node.text(`"${b64_to_utf8($node[0].dataset.value)}"`);
-        $node[0].dataset.value = utf8_to_b64(text);
-        $el.removeClass('fa-plus-circle').addClass('fa-minus-circle');
+        const val = jsonpatch.getValueByPointer(this.source, path), len = val.length;
+        $el.toggleClass('fa-plus-circle').toggleClass('fa-minus-circle');
+        $node.text(`"${_.truncate(val, len)}"`);
+      },
+
+      'click .jst-group-toggle': function (e) {
+        e.preventDefault();
+        const $el = $(e.target), $group = $el.closest('.jst-group');
+        $group.children('.jst-group-body').toggle();
+        $el.toggleClass('fa-chevron-down');
+        $el.toggleClass('fa-chevron-up');
       },
 
       'click .jst-collapse': function (e) {
@@ -151,10 +161,9 @@
   }
 
   function jsString(value, path) {
-    const needCut = value.length > 100;
-    const data = needCut ? `${value.slice(0, 97)}...` : value;
-    const clip = needCut ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return element(`"${_.escape(data)}"`, { path, type: 'string', 'data-value': utf8_to_b64(value) }) + clip;
+    const data = _.truncate(value, 100);
+    const clip = data !== value ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
+    return element(`"${_.escape(data)}"`, { path, type: 'string' }) + clip;
   }
 
   function jsUndefined(value, path) {

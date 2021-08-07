@@ -53,6 +53,10 @@
       }
     },
 
+    truncate: function (str, limit) {
+      return str.length > limit ? (str.slice(0, limit - 3) + '...') : str;
+    },
+
     isString: function (obj) {
       return Object.prototype.toString.call(obj) === '[object String]';
     },

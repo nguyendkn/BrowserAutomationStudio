@@ -50,18 +50,16 @@
     tagName: 'div',
 
     initialize() {
-      const model = new Model();
+      this.model = new Model();
 
-      model.on('change:source', () => {
-        this.render();
-        this.dragula.containers = [
+      this.model.on('change:source', () => {
+        this.render().dragula.containers = [
           ...this.$('.jst-root > li > ul')
         ];
       });
 
-      model.on('change:groups', () => {
-        this.render();
-        this.dragula.containers = [
+      this.model.on('change:groups', () => {
+        this.render().dragula.containers = [
           ...this.$('.jst-root > li > ul')
         ];
       });
@@ -80,10 +78,10 @@
         const name = el.querySelector('[data-path]').dataset.path.slice(1);
         const groups = this.model.get('groups');
 
-        const oldName = source.closest('.jst-group').dataset.group;
+        const oldName = source.closest('.jst-group').dataset.name;
         const oldList = _.without(groups[oldName], name);
 
-        const newName = target.closest('.jst-group').dataset.group;
+        const newName = target.closest('.jst-group').dataset.name;
         const newList = _.concat(groups[newName], name);
 
         this.model.set('groups', {
@@ -92,8 +90,6 @@
           [newName]: _.uniq(newList),
         }, { silent: true });
       });
-
-      this.model = model;
     },
 
     render() {
@@ -118,10 +114,10 @@
       const groups = this.model.get('groups');
 
       return (
-        `<div class="jst">${_.map(groups, (keys, group) => (
-          `<div class="jst-group" data-group="${group}">
+        `<div class="jst">${_.map(groups, (keys, name) => (
+          `<div class="jst-group" data-name="${name}">
               <div class="jst-group-head">
-                <span class="jst-group-title">${group}</span>
+                <span class="jst-group-title">${name}</span>
                 <i class="jst-group-toggle fa fa-chevron-up"></i>
               </div>
               <div class="jst-group-body">

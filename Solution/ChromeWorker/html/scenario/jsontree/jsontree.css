@@ -70,6 +70,16 @@ span.jst-node[data-type="null"] {
   content: "+";
 }
 
+.jst-list:empty {
+  padding: 0 2px;
+  display: inline;
+}
+
+.jst-root:empty {
+  padding: 0 2px;
+  display: inline;
+}
+
 .jst-collapse {
   user-select: none;
   cursor: pointer;
@@ -122,7 +132,7 @@ span.jst-node[data-type="null"] {
 }
 
 .jst-icon {
-  display: none
+  display: none;
 }
 
 /*****************
@@ -132,7 +142,7 @@ span.jst-node[data-type="null"] {
 .jst-group-body {
   background: transparent;
   padding: 4px 2px;
-  border: none;  
+  border: none;
 }
 
 .jst-group-head {

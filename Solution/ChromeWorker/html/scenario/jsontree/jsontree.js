@@ -1,8 +1,10 @@
 ((global, $, _) => {
   const Model = Backbone.Model.extend({
-    defaults: {
-      source: {},
-      groups: {},
+    defaults: function () {
+      return {
+        source: {},
+        groups: {},
+      };
     },
 
     renameGroup(group, name) {
@@ -231,7 +233,7 @@
       }
     })();
 
-    return `<li class="jst-item"><i class="jst-icon fa fa-chain"></i>${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`
+    return `<li class="jst-item"><i class="jst-icon fa fa-chain"></i>${content}${!isLast ? '<span class="jst-comma">,</span>' : ''}</li>`;
   }
 
   function element(content, attrs) {

@@ -55,27 +55,27 @@
       model.on('change:source', () => {
         this.render();
         this.dragula.containers = [
-          ...this.el.querySelectorAll('.jst-list[data-path=""]')
+          ...this.$('.jst-root > li > ul')
         ];
       });
 
       model.on('change:groups', () => {
         this.render();
         this.dragula.containers = [
-          ...this.el.querySelectorAll('.jst-list[data-path=""]')
+          ...this.$('.jst-root > li > ul')
         ];
       });
 
-      this.dragula = dragula([], {
-        removeOnSpill: false,
-
-        revertOnSpill: true,
-
-        moves(el, source, handle, sibling) {
+      this.dragula = dragula({
+        moves(el, source, handle) {
           if (!handle.classList.contains('jst-item')) return false;
           const node = handle.querySelector('[data-path]');
           return node.dataset.path.split('/').length === 2;
-        }
+        },
+
+        removeOnSpill: false,
+
+        revertOnSpill: true,
       }).on('drop', (el, target, source) => {
         const name = el.querySelector('[data-path]').dataset.path.slice(1);
         const groups = this.model.get('groups');

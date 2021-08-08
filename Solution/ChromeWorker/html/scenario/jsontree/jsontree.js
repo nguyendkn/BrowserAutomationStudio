@@ -160,18 +160,16 @@
         e.preventDefault();
         const $el = $(e.target), $list = $el.next();
         $list.toggleClass('jst-collapsed').hide();
-        $el.toggleClass('jst-collapse')
-          .toggleClass('jst-expand');
-        this.trigger('collapse');
+        $el.toggleClass('jst-collapse').toggleClass('jst-expand');
+        this.trigger('node:collapse');
       },
 
       'click .jst-expand': function (e) {
         e.preventDefault();
         const $el = $(e.target), $list = $el.next();
         $list.toggleClass('jst-collapsed').show();
-        $el.toggleClass('jst-collapse')
-          .toggleClass('jst-expand');
-        this.trigger('expand');
+        $el.toggleClass('jst-collapse').toggleClass('jst-expand');
+        this.trigger('node:expand');
       },
 
       'click .jst-icon': function (e) {

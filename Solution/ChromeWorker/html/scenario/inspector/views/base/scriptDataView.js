@@ -27,7 +27,7 @@
         const $data = this.$('.inspector-panel-data');
         const isEmpty = _.isEmpty(source);
 
-        if (!isEmpty) this.tree.model.update(source);
+        if (!isEmpty) this.viewer.model.update(source);
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
@@ -48,16 +48,19 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template(this.model.toJSON()));
 
-        this.tree = (new Scenario.JSONTree()).on('render', () => {
-          this.sortTree(this.model.get('sortType'));
-          this.filterTree().loadState();
-        }).on('collapse', () => {
-          BrowserAutomationStudio_PreserveInterfaceState();
-        }).on('expand', () => {
-          BrowserAutomationStudio_PreserveInterfaceState();
-        });
+        this.viewer = (new Scenario.JSONTree())
+          .on('node:collapse', () => {
+            BrowserAutomationStudio_PreserveInterfaceState();
+          })
+          .on('node:expand', () => {
+            BrowserAutomationStudio_PreserveInterfaceState();
+          })
+          .on('render', () => {
+            this.sortTree(this.model.get('sortType'));
+            this.filterTree().loadState();
+          });
 
-        this.$('.inspector-panel-data').append(this.tree.el);
+        this.$('.inspector-panel-data').append(this.viewer.el);
       }
 
       return this;

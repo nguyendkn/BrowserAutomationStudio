@@ -8,7 +8,7 @@
     })
   });
 
-  Inspector.Variables = ScriptDataView.extend({
+  Inspector.VariablesView = ScriptDataView.extend({
     template: JST['inspector/variables'],
 
     model: new Model(),

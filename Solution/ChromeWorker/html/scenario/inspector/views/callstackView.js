@@ -27,7 +27,7 @@
     }
   });
 
-  Inspector.Callstack = Backbone.View.extend({
+  Inspector.CallstackView = Backbone.View.extend({
     template: JST['inspector/callstack'],
 
     initialize() {

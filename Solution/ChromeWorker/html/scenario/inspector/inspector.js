@@ -40,15 +40,15 @@
         const html = this.template(this.model.toJSON());
         this.setElement('#inspector').$el.html(html);
 
-        this.variables = new Inspector.Variables({
+        this.variables = new Inspector.VariablesView({
           el: this.$('[data-tab-name="variables"]')[0]
         }).render();
 
-        this.resources = new Inspector.Resources({
+        this.resources = new Inspector.ResourcesView({
           el: this.$('[data-tab-name="resources"]')[0]
         }).render();
 
-        this.callstack = new Inspector.Callstack({
+        this.callstack = new Inspector.CallstackView({
           el: this.$('[data-tab-name="callstack"]')[0]
         }).render();
 
@@ -90,11 +90,13 @@
     hideNotice() {
       this.$('.inspector-nav-item').removeClass('disabled');
       this.$('.inspector-notice').hide();
+      return this;
     },
 
     showNotice() {
       this.$('.inspector-nav-item').addClass('disabled');
       this.$('.inspector-notice').show();
+      return this;
     },
 
     events: {

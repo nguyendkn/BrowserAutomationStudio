@@ -8,7 +8,7 @@
     })
   });
 
-  Inspector.Resources = ScriptDataView.extend({
+  Inspector.ResourcesView = ScriptDataView.extend({
     template: JST['inspector/resources'],
 
     model: new Model(),

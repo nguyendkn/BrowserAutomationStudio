@@ -1,4 +1,6 @@
 (({ Scenario, Backbone }, $, _) => {
+  const { Inspector, JST } = Scenario;
+
   const Model = Backbone.Model.extend({
     defaults: function () {
       return {
@@ -272,5 +274,5 @@
     return `<span class="jst-node" ${attrs.join(' ')}>${content}</span>`;
   }
 
-  Scenario.JSONViewer = View;
+  Inspector.Viewer = View;
 })(window, jQuery, _);

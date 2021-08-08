@@ -181,7 +181,7 @@
 
         const $menu = $(e.currentTarget).next('.inspector-filter-menu');
         const isVisible = $menu.toggle().is(':visible');
-        if (isVisible) $menu.prevAll('ul').hide();
+        if (isVisible) $menu.siblings('ul').hide();
       },
 
       'click .inspector-sort-button': function (e) {
@@ -190,7 +190,7 @@
 
         const $menu = $(e.currentTarget).next('.inspector-sort-menu');
         const isVisible = $menu.toggle().is(':visible');
-        if (isVisible) $menu.nextAll('ul').hide();
+        if (isVisible) $menu.siblings('ul').hide();
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {

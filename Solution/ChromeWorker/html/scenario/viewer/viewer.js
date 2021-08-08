@@ -272,5 +272,5 @@
     return `<span class="jst-node" ${attrs.join(' ')}>${content}</span>`;
   }
 
-  Scenario.JSONTree = View;
+  Scenario.JSONViewer = View;
 })(window, jQuery, _);

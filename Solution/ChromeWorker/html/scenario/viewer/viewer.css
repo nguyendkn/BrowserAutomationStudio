@@ -1,5 +1,5 @@
 /*************************
- * JSONTree types styles *
+ * JSONViewer types styles *
  *************************/
 
 .jst-node[data-type="undefined"] {
@@ -27,7 +27,7 @@
 }
 
 /************************
- * JSONTree main styles *
+ * JSONViewer main styles *
  ************************/
 
 .jst-root > li > ul > li > .jst-icon {
@@ -130,7 +130,7 @@
 }
 
 /**************************
- * JSONTree groups styles *
+ * JSONViewer groups styles *
  **************************/
 
 .jst-group-body {

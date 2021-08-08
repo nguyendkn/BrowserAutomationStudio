@@ -13,7 +13,7 @@
             const { type } = $node[0].dataset;
             if (['object', 'array'].includes(type)) return;
 
-            const scale = chroma.scale(['red', Scenario.JSONTree.colors[type]]);
+            const scale = chroma.scale(['red', Scenario.JSONViewer.colors[type]]);
             $node.css('color', scale.mode('rgb').colors(6)[Math.min(count, 6) - 1]);
           }
         });
@@ -48,7 +48,7 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template(this.model.toJSON()));
 
-        this.viewer = (new Scenario.JSONTree())
+        this.viewer = (new Scenario.JSONViewer())
           .on('node:collapse', () => {
             BrowserAutomationStudio_PreserveInterfaceState();
           })

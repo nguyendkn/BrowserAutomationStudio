@@ -2,28 +2,22 @@
   const { Inspector, JST } = Scenario;
 
   const Model = Backbone.Model.extend({
-    defaults: function () {
-      return {
-        source: {},
-        groups: {},
-      };
-    },
-
     renameGroup: function (group, name) {
       if (!this.hasGroup(group)) return;
-      const groups = this.get('groups');
-      this.set('groups', _.reduce(groups, (acc, v, k) => {
-        acc[k === group ? name : k] = v;
+      if (this.hasGroup(name)) return;
+
+      this.set('groups', _.reduce(this.get('groups'), (acc, val, key) => {
+        acc[key === group ? name : key] = val;
         return acc;
       }, {}));
     },
 
     removeGroup: function (group) {
       if (!this.hasGroup(group)) return;
-      const groups = this.get('groups');
-      this.set('groups', _.reduce(groups, (acc, v, k) => {
-        if (k === group) acc['Main'].push(...v);
-        else acc[k] = v;
+
+      this.set('groups', _.reduce(this.get('groups'), (acc, val, key) => {
+        if (key === group) acc['Main'].push(...val);
+        else acc[key] = val;
         return acc;
       }, {}));
     },
@@ -43,6 +37,13 @@
         this.get('groups')['Main'] = _.keys(source);
       }
       this.set('source', source);
+    },
+
+    defaults: function () {
+      return {
+        source: {},
+        groups: {},
+      };
     },
   });
 

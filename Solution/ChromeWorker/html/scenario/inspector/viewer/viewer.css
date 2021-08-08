@@ -1,6 +1,6 @@
-/*************************
- * JSONViewer types styles *
- *************************/
+/******************
+ * Objects styles *
+ ******************/
 
 .jst-node[data-type="undefined"] {
   color: #808080;
@@ -26,9 +26,9 @@
   color: #808080;
 }
 
-/************************
- * JSONViewer main styles *
- ************************/
+/******************
+ * Primary styles *
+ ******************/
 
 .jst-root > li > ul > li > .jst-icon {
   display: inline-block;
@@ -129,9 +129,9 @@
   display: none;
 }
 
-/**************************
- * JSONViewer groups styles *
- **************************/
+/*****************
+ * Groups styles *
+ *****************/
 
 .jst-group-body {
   background: transparent;

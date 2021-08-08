@@ -2,7 +2,7 @@
   const { Inspector, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
-    update(object) {
+    update: function (object) {
       const metadata = this.get('metadata');
       const updates = this.get('updates');
       const source = this.get('source');

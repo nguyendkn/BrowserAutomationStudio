@@ -3,7 +3,6 @@
 
   const Model = Backbone.Model.extend({
     update(object) {
-      if (!object) return;
       const metadata = this.get('metadata');
       const updates = this.get('updates');
       const source = this.get('source');

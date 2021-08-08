@@ -19,7 +19,7 @@
         });
       }
 
-      model.on('change:typesVisibility', (__, types) => {
+      model.on('change:typesVisibility', () => {
         this.filterTree();
       });
 

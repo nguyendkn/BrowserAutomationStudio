@@ -28,8 +28,7 @@
     },
 
     hasGroup: function (group) {
-      const name = group.toLowerCase();
-      return _.any(this.get('groups'), (_, key) => key.toLowerCase() === name);
+      return _.any(this.get('groups'), (_, key) => key === group);
     },
 
     update: function (source) {

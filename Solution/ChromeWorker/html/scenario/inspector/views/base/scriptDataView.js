@@ -13,8 +13,8 @@
             const { type } = $node[0].dataset;
             if (['object', 'array'].includes(type)) return;
 
-            const scale = chroma.scale(['red', Scenario.JSONTree.colors[type]]).mode('rgb');
-            $node.css('color', scale.colors(6, 'css')[Math.min(count, 6) - 1]);
+            const scale = chroma.scale(['red', Scenario.JSONTree.colors[type]]);
+            $node.css('color', scale.mode('rgb').colors(6)[Math.min(count, 6) - 1]);
           }
         });
       }

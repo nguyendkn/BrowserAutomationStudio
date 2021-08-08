@@ -119,14 +119,16 @@
       return (
         `<div class="jst">${_.map(groups, (keys, name) => (
           `<div class="jst-group" data-name="${name}">
-              <div class="jst-group-head">
-                <span class="jst-group-title">${name}</span>
-                <i class="jst-group-toggle fa fa-chevron-up"></i>
-              </div>
-              <div class="jst-group-body">
-                <ul class="jst-root">${jsNode('', Object.fromEntries(keys.map(k => ([k, source[k]]))), '', true, true)}</ul>
-              </div>
-            </div>`
+            <div class="jst-group-head">
+              <span class="jst-group-title">${name}</span>
+              <i class="jst-group-toggle fa fa-chevron-up"></i>
+            </div>
+            <div class="jst-group-body">
+              <ul class="jst-root">
+                ${jsNode('', Object.fromEntries(keys.map(k => ([k, source[k]]))), '', true, true)}
+              </ul>
+            </div>
+          </div>`
         )).join('')
         }</div>`
       );
@@ -267,7 +269,7 @@
         (!isRoot && !isLast) ? '<span class="jst-comma">,</span>' : ''
       ].join('')
       }</li>`
-    )
+    );
   }
 
   function element(content, attrs) {

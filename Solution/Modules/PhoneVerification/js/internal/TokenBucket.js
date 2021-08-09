@@ -108,10 +108,10 @@ _SMS.tokenBucket = function(options){
 		};
 	};
 	
-	this.addToQueue = function(){
+	this.addToQueue = function(threadNumber){
 		if(bucket.queue){
+			threadNumber = _avoid_nilb(threadNumber, thread_number());
 			bucket.changeParams(function(params){
-				var threadNumber = thread_number();
 				if(params.queue.indexOf(threadNumber) < 0){
 					return params.queue.push(threadNumber);
 				};
@@ -120,12 +120,26 @@ _SMS.tokenBucket = function(options){
 		};
 	};
 	
-	this.removeFromQueue = function(){
+	this.removeFromQueue = function(threadNumber){
 		if(bucket.queue){
+			threadNumber = _avoid_nilb(threadNumber, thread_number());
 			bucket.changeParams(function(params){
-				var index = params.queue.indexOf(thread_number());
+				var index = params.queue.indexOf(threadNumber);
 				if(index > -1){
 					return params.queue.splice(index, 1);
+				};
+				return null;
+			});
+		};
+	};
+	
+	this.clearQueue = function(threadNumber){
+		if(bucket.queue){
+			threadNumber = _avoid_nilb(threadNumber, thread_number());
+			bucket.changeParams(function(params){
+				var index = params.queue.indexOf(threadNumber);
+				if(index > -1){
+					return params.queue.splice(0, index);
 				};
 				return null;
 			});
@@ -160,6 +174,7 @@ _SMS.tokenBucket = function(options){
         };
 		
 		var result = null;
+		var thisQueue = false;
 		
 		bucket.addToQueue();
 		
@@ -178,9 +193,16 @@ _SMS.tokenBucket = function(options){
 			
 			// If the queue has not yet reached this thread, come back later
 			_if(queueIndex > 0, function(){
-				// How long do we need to wait to make up the difference in tokens?
-				var waitMs = Math.ceil((count * (queueIndex + 1) - content) * (bucket.interval / bucket.tokensPerInterval));
-				_call_function(bucket.wait,{ms:waitMs})!
+				_if_else(thisQueue, function(){
+					// Clear the queue before the current thread, since its queue should be in this time
+					bucket.clearQueue();
+				}, function(){
+					// How long do we need to wait to make up the difference in tokens?
+					var waitMs = Math.ceil((count * (queueIndex + 1) - content) * (bucket.interval / bucket.tokensPerInterval));
+					_call_function(bucket.wait,{ms:waitMs})!
+					
+					thisQueue = true;
+				})!
 				
 				_next("function");
 			})!

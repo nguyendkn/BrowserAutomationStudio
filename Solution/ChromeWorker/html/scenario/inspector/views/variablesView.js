@@ -41,6 +41,10 @@
           });
           modal.render();
         },
+
+        'keydown .inspector-filter-input': function (e) {
+          if (e.key === ' ') e.preventDefault();
+        },
       });
     }
   });

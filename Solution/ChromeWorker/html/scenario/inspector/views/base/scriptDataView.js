@@ -196,13 +196,6 @@
       'input .inspector-filter-input': _.debounce(function (e) {
         this.filterTree()
       }, 200),
-
-      'keydown .inspector-filter-input': function (e) {
-        const caret = e.target.selectionStart;
-        if (e.key === ' ' && caret === 0) {
-          e.preventDefault();
-        }
-      },
     }
   });
 

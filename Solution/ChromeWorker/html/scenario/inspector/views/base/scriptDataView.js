@@ -123,7 +123,7 @@
           $item.show();
         });
 
-        $group.toggle(!$items.length || !!$items.filter(':visible').length);
+        // $group.toggle(!$items.length || !!$items.filter(':visible').length);
       });
 
       return this;

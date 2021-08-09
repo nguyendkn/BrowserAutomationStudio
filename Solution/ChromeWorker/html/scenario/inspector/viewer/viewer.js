@@ -53,18 +53,18 @@
       this.model = new Model();
 
       this.model.on('change:source', () => {
-        this.render().dragula.containers = [
+        this.render().drake.containers = [
           ...this.$('.jst-root > li > ul')
         ];
       });
 
       this.model.on('change:groups', () => {
-        this.render().dragula.containers = [
+        this.render().drake.containers = [
           ...this.$('.jst-root > li > ul')
         ];
       });
 
-      this.dragula = dragula({
+      this.drake = dragula({
         moves(el, source, handle) {
           if (!handle.classList.contains('jst-item')) return false;
           const node = handle.querySelector('[data-path]');

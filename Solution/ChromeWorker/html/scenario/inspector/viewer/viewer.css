@@ -140,8 +140,11 @@
 }
 
 .jst-group-head {
+  justify-content: space-between;
   background: #e0e0e0;
+  align-items: center;
   padding: 2px 8px;
+  display: flex;
   border: none;
 }
 

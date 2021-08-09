@@ -23,7 +23,7 @@
 
     events() {
       return _.extend({}, ScriptDataView.prototype.events, {
-        'dblclick #inspectorVariablesData [data-path]': function (e) {
+        'dblclick .inspector-panel-data [data-path]': function (e) {
           const { path } = e.target.dataset;
           const { type } = e.target.dataset;
           e.stopPropagation();

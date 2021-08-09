@@ -133,6 +133,10 @@
  * Groups styles *
  *****************/
 
+.jst-group + .jst-group {
+  margin-top: 10px;
+}
+
 .jst-group-body {
   background: transparent;
   padding: 4px 2px;

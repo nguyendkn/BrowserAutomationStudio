@@ -47,9 +47,7 @@
   });
 
   const View = Backbone.View.extend({
-    className: 'jst',
-
-    tagName: 'div',
+    className: 'jst-viewer',
 
     initialize() {
       this.model = new Model();
@@ -116,7 +114,7 @@
       const groups = this.model.get('groups');
 
       return (
-        `<div class="jst">${_.map(groups, (keys, name) => (
+        `<div class="jst-viewer">${_.map(groups, (keys, name) => (
           `<div class="jst-group" data-name="${name}">
             <div class="jst-group-head">
               <span class="jst-group-title">${name}</span>

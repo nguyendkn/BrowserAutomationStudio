@@ -119,7 +119,7 @@ _.extend(Scenario.JST, {
       <div style="font-size: smaller; margin-top: 10px; display: none;">
         <span><%= tr('No variables') %></span>
       </div>
-      <div id="inspectorVariablesData" class="inspector-panel-data"></div>
+      <div class="inspector-panel-data"></div>
     </div>
   `),
 
@@ -156,7 +156,7 @@ _.extend(Scenario.JST, {
       <div style="font-size: smaller; margin-top: 10px; display: none;">
         <span><%= tr('No resources') %></span>
       </div>
-      <div id="inspectorResourcesData" class="inspector-panel-data"></div>
+      <div class="inspector-panel-data"></div>
     </div>
   `),
 

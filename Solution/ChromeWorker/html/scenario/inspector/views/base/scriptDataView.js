@@ -101,26 +101,26 @@
     filterTree() {
       const query = this.$('.inspector-filter-input').val().toLowerCase();
 
-      this.$('.jst-group').each((__, group) => {
-        const $group = $(group).show();
+      this.$('.jst-group').each((__, el) => {
+        const $group = $(el).show();
 
         const $items = $group.find('.jst-root > li > ul > li').each((__, el) => {
-          const $el = $(el);
-  
+          const $item = $(el);
+
           if (query.length) {
-            const $label = $el.children('.jst-label');
+            const $label = $item.children('.jst-label');
             const text = $label.text().toLowerCase();
-            return $el.toggle(text.includes(query));
+            return $item.toggle(text.includes(query));
           } else {
-            const { dataset } = $el.children('[data-path]')[0];
+            const { dataset } = $item.children('[data-path]')[0];
             const types = this.model.get('typesVisibility');
-  
+
             if (_.has(types, dataset.type)) {
-              return $el.toggle(types[dataset.type]);
+              return $item.toggle(types[dataset.type]);
             }
           }
-  
-          $el.show();
+
+          $item.show();
         });
 
         $group.toggle(!$items.length || !!$items.filter(':visible').length);

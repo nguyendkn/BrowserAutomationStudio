@@ -198,7 +198,10 @@
       }, 200),
 
       'keydown .inspector-filter-input': function (e) {
-        if (e.key === ' ') e.preventDefault();
+        const caret = e.target.selectionStart;
+        if (e.key === ' ' && caret === 0) {
+          e.preventDefault();
+        }
       },
     }
   });

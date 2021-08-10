@@ -136,8 +136,8 @@
       'click .jst-item > .fa-minus-circle': function (e) {
         e.preventDefault();
         const $el = $(e.target), $node = $el.prev(), { path } = $node[0].dataset;
+        const val = jsonpatch.getValueByPointer(this.get('source'), path), len = val.length;
 
-        const val = jsonpatch.getValueByPointer(this.source, path), len = val.length;
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
         $node.text(`"${_.truncate(val, 100)}"`);
       },
@@ -145,8 +145,8 @@
       'click .jst-item > .fa-plus-circle': function (e) {
         e.preventDefault();
         const $el = $(e.target), $node = $el.prev(), { path } = $node[0].dataset;
+        const val = jsonpatch.getValueByPointer(this.get('source'), path), len = val.length;
 
-        const val = jsonpatch.getValueByPointer(this.source, path), len = val.length;
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
         $node.text(`"${_.truncate(val, len)}"`);
       },
@@ -173,10 +173,6 @@
         $list.toggleClass('jst-collapsed').show();
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
         this.trigger('node:expand');
-      },
-
-      'click .jst-icon': function (e) {
-        // pin logic
       },
     }
   }, {

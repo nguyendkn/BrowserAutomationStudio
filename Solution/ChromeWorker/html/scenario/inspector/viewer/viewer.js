@@ -97,9 +97,12 @@
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
-            const { dataset } = el.querySelector('[data-path]');
-            if (dataset.path) return dataset.path;
-            if (dataset.ref) return dataset.ref;
+            const node = el.querySelector('[data-path]');
+            if (node) {
+              const { path, ref } = node.dataset;
+              if (path != null) return path;
+              if (ref != null) return ref;
+            }
           }
           return el.id;
         },

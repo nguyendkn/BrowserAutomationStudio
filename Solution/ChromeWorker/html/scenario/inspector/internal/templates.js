@@ -109,7 +109,7 @@ _.extend(Scenario.JST, {
           <% const id = _.uniqueId('inspectorFilter' + type) %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= typesVisibility[lower] ? 'checked' : '' %>>
+            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
             <label for="<%= id %>"><%- type %></label>
           </li>
         <% } %>
@@ -146,7 +146,7 @@ _.extend(Scenario.JST, {
           <% const id = _.uniqueId('inspectorFilter' + type) %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= typesVisibility[lower] ? 'checked' : '' %>>
+            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
             <label for="<%= id %>"><%- type %></label>
           </li>
         <% } %>

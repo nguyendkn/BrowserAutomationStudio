@@ -48,7 +48,7 @@
       source: {},
       state: {},
       cache: [],
-      typesVisibility: {
+      visibility: {
         undefined: true,
         boolean: true,
         string: true,

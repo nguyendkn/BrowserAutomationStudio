@@ -118,7 +118,15 @@
       'click #inspectorClose': function (e) {
         e.preventDefault();
         this.hide();
-      }
+      },
+
+      'keydown': function (e) {
+        e.stopPropagation();
+      },
+
+      'keyup': function (e) {
+        e.stopPropagation();
+      },
     }
   });
 

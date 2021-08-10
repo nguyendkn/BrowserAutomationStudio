@@ -32,9 +32,12 @@
     },
 
     update: function (source) {
-      if (!this.get('groups')['Main']) {
-        this.get('groups')['Main'] = _.keys(source);
+      const groups = this.get('groups');
+
+      if (!groups['Main'] || _.size(groups) === 1) {
+        groups['Main'] = _.keys(source);
       }
+
       this.set('source', source);
     },
 
@@ -97,12 +100,9 @@
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         getNodeKey: (el) => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
-            const node = el.querySelector('[data-path]');
-            if (node) {
-              const { path, ref } = node.dataset;
-              if (path != null) return path;
-              if (ref != null) return ref;
-            }
+            const { dataset } = el.querySelector('[data-path]');
+            if (dataset.path) return dataset.path;
+            if (dataset.ref) return dataset.ref;
           }
           return el.id;
         },
@@ -126,7 +126,7 @@
             </div>
             <div class="jst-group-body">
               <ul class="jst-root">
-                ${jsNode('', Object.fromEntries(keys.map(k => ([k, source[k]]))), '', true, true)}
+                ${jsNode('', Object.fromEntries(keys.filter(k => _.has(source, k)).map(k => ([k, source[k]]))), '', true, true)}
               </ul>
             </div>
           </div>`

@@ -47,6 +47,13 @@
   flex: 1 1 0%;
 }
 
+.inspector-panel-info {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 100%; 
+}
+
 .inspector-filter-menu {
   min-width: max-content;
   padding: 0 12px;

@@ -120,8 +120,8 @@ _.extend(Scenario.JST, {
       </div>
     </div>
     <div class="inspector-panel">
-      <div style="font-size: smaller; margin-top: 10px; display: none;">
-        <span><%= tr('No variables') %></span>
+      <div class="inspector-panel-info" style="display: none">
+        <span style="text-align: center"><%= tr('No variables') %></span>
       </div>
       <div class="inspector-panel-data"></div>
     </div>
@@ -161,19 +161,19 @@ _.extend(Scenario.JST, {
       </div>
     </div>
     <div class="inspector-panel">
-      <div style="font-size: smaller; margin-top: 10px; display: none;">
-        <span><%= tr('No resources') %></span>
+      <div class="inspector-panel-info" style="display: none">
+        <span style="text-align: center"><%= tr('No resources') %></span>
       </div>
       <div class="inspector-panel-data"></div>
     </div>
   `),
 
   'inspector/callstack': _.template(/*html*/`
-    <div id="inspectorCallstack">
-      <div id="inspectorNoCallstack" style="font-size: smaller; margin-top: 10px; display: none;">
-        <span><%= tr('No callstack') %></span>
+    <div class="inspector-panel">
+      <div class="inspector-panel-infO" style="display: none">
+        <span style="text-align: center"><%= tr('No callstack') %></span>
       </div>
-      <div id="inspectorCallstackData" class="inspector-panel-data"></div>
+      <div class="inspector-panel-data"></div>
     </div>
   `),
 })

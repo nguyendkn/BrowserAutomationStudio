@@ -51,6 +51,7 @@
       visibility: {
         undefined: true,
         boolean: true,
+        groups: false,
         string: true,
         number: true,
         date: true,

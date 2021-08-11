@@ -105,7 +105,7 @@ _.extend(Scenario.JST, {
         <i class="fa fa-cog"></i>
       </button>
       <ul class="inspector-filter-menu" style="display: none">
-        <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
+        <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
           <% const id = _.uniqueId('inspectorFilter' + type) %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">
@@ -142,7 +142,7 @@ _.extend(Scenario.JST, {
         <i class="fa fa-cog"></i>
       </button>
       <ul class="inspector-filter-menu" style="display: none">
-        <% for (const type of ['Undefined', 'Boolean', 'String', 'Number', 'Date', 'Null']) { %>
+        <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
           <% const id = _.uniqueId('inspectorFilter' + type) %>
           <% const lower = type.toLowerCase() %>
           <li class="inspector-filter-menu-item">

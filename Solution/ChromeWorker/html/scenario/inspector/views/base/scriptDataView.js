@@ -99,15 +99,15 @@
 
         const $visible = $items.filter((__, el) => {
           const $item = $(el), { dataset } = $item.children('[data-path]')[0];
-          let found = true;
+          const hidden = _.has(types, dataset.type) && !types[dataset.type];
 
           if (query.length) {
             const $label = $item.children('.jst-label');
             const text = $label.text().toLowerCase();
-            found = text.includes(query);
+            return !hidden && text.includes(query);
           }
 
-          return _.has(types, dataset.type) ? (types[dataset.type] && found) : found;
+          return !hidden;
         });
 
         $items.not($visible.show()).hide();

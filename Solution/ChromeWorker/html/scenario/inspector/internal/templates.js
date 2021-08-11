@@ -8,7 +8,7 @@ _.extend(Scenario.JST, {
           </div>
           <div class="inspector-modal-body">
             <form class="inspector-modal-form" action="javascript:void(0)">
-              <% const style = (target) => type === target ? 'display: block' : 'display: none' %>
+              <% const style = target => type === target ? 'display: block' : 'display: none' %>
               <div style="<%= style('custom') %>" data-input-type="custom">
                 <textarea id="inspectorModalCustomInput"><%- type === 'custom' ? value : '' %></textarea>
               </div>

@@ -174,14 +174,18 @@ _SMS.tokenBucket = function(options){
         };
 		
 		var result = null;
-		var thisQueue = false;
+		var attemptQueue = 0;
 		
 		bucket.addToQueue();
 		
 		_do(function(){
-			if((timeout || maxTime) && Date.now() > maxTime){
+			if(maxTime && Date.now() > maxTime){
 				bucket.removeFromQueue();
-				api.errorHandler("ACTION_TIMEOUT");
+				if(_is_nilb(api)){
+					fail('ACTION_TIMEOUT - ' + (_K=="ru" ? 'Превышено максимальное время выполнения действия.' : 'The maximum execution time for the action has been exceeded.'));
+				}else{
+					api.errorHandler("ACTION_TIMEOUT");
+				};
 			};
 			
 			// Drip new tokens into this bucket
@@ -193,15 +197,15 @@ _SMS.tokenBucket = function(options){
 			
 			// If the queue has not yet reached this thread, come back later
 			_if(queueIndex > 0, function(){
-				_if_else(thisQueue, function(){
+				// How long do we need to wait to make up the difference in tokens?
+				var waitMs = Math.ceil((count * (queueIndex + 1) - content) * (bucket.interval / bucket.tokensPerInterval));
+				_if_else(attemptQueue > 2 || (attemptQueue > 1 && waitMs % (bucket.interval / bucket.tokensPerInterval) == 0), function(){
 					// Clear the queue before the current thread, since its queue should be in this time
 					bucket.clearQueue();
 				}, function(){
-					// How long do we need to wait to make up the difference in tokens?
-					var waitMs = Math.ceil((count * (queueIndex + 1) - content) * (bucket.interval / bucket.tokensPerInterval));
-					_call_function(bucket.wait,{ms:waitMs})!
+					_call_function(bucket.wait,{ms:waitMs, maxTime:maxTime})!
 					
-					thisQueue = true;
+					attemptQueue++;
 				})!
 				
 				_next("function");
@@ -211,7 +215,7 @@ _SMS.tokenBucket = function(options){
 			_if(count > content, function(){
 				// How long do we need to wait to make up the difference in tokens?
 				var waitMs = Math.ceil((count - content) * (bucket.interval / bucket.tokensPerInterval));
-				_call_function(bucket.wait,{ms:waitMs})!
+				_call_function(bucket.wait,{ms:waitMs, maxTime:maxTime})!
 				
 				_next("function");
 			})!
@@ -225,7 +229,7 @@ _SMS.tokenBucket = function(options){
 				_if(count > content, function(){
 					// How long do we need to wait to make up the difference in tokens?
 					var waitMs = Math.ceil((count - content) * (bucket.interval / bucket.tokensPerInterval));
-					_call_function(bucket.wait,{ms:waitMs})!
+					_call_function(bucket.wait,{ms:waitMs, maxTime:maxTime})!
 					
 					_next("function");
 				})!
@@ -258,8 +262,18 @@ _SMS.tokenBucket = function(options){
      */
 	this.wait = function(){
 		var ms = _function_argument("ms");
+		var maxTime = _function_argument("maxTime");
 		
-		sleep(ms)!
+		if(maxTime){
+			var now = Date.now();
+			if(now + ms > maxTime){
+				ms = maxTime - now + rand(0,30);
+			};
+		};
+		
+		_if(ms > 0, function(){
+			sleep(ms)!
+		})!
 	};
     
 	/**

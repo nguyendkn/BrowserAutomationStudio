@@ -24,21 +24,20 @@ _SMS.BaseApi = function(config, data, path){
 	};
 	
 	if(!_is_nilb(config.limits) && config.limits.length){
-		var limiter = null;
+		this.limits = [];
 		for(var key in config.limits){
 			var limit = config.limits[key];
-			limiter = new _SMS.rateLimiter({
+			var limiter = new _SMS.rateLimiter({
 				tokensPerInterval: limit.requestsPerInterval,
 				interval: limit.interval,
 				queue: _avoid_nilb(limit.queue, true),
 				type: limit.type,
-				id: (limit.type==="service" && _is_nilb(limit.id) ? (api.id + "_" + key) : limit.id),
-				parentLimiter: limiter
+				id: (limit.type==="service" && _is_nilb(limit.id) ? (api.id + "_" + key) : limit.id)
 			});
+			this.limits.push(limiter);
 		};
-		this.limiter = limiter;
 	}else{
-		this.limiter = false;
+		this.limits = false;
 	};
 	
 	this.combineParams = function(params, options){
@@ -141,9 +140,17 @@ _SMS.BaseApi = function(config, data, path){
 			})!
 		})!
 		
-		_if(api.limiter, function(){
-			_call_function(api.limiter.removeTokens,{api:api, count:1, timeout:timeout, maxTime:maxTime})!
-			var remainingTokens = _result_function();
+		_if(api.limits && api.limits.length, function(){
+			_do(function(){
+				var limiter_index = _iterator() - 1;
+				if(limiter_index > api.limits.length - 1){
+					_break();
+				};
+				var limiter = api.limits[limiter_index];
+				
+				_call_function(limiter.removeTokens, {api:api, count:1, timeout:timeout, maxTime:maxTime})!
+				var remainingTokens = _result_function();
+			})!
 		})!
 	};
 	
@@ -263,8 +270,8 @@ _SMS.BaseApi = function(config, data, path){
 				"en": "Failed to parse the response from the service. Response content: " + data
 			},
 			"ACTION_TIMEOUT": {
-				"ru": "Превышено время выполнения действия.",
-				"en": "Timed out for execute action."
+				"ru": "Превышено максимальное время выполнения действия.",
+				"en": "The maximum execution time for the action has been exceeded."
 			},
 			"UNSUPPORTED_METHOD": {
 				"ru": 'Метод "' + data + '" не поддерживается.',

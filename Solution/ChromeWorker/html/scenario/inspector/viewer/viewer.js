@@ -241,7 +241,7 @@
     return (
       `<li class="jst-item">${[
         '<i class="jst-icon fa fa-chain"></i>',
-        !isRoot ? `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` : '',
+        !isRoot ? `<span class="jst-label">"${_.escape(name)}"</span><span class="jst-colon">:</span>` : '',
         (() => {
           switch (Object.prototype.toString.call(value).slice(8, -1)) {
             case 'Boolean':

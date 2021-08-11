@@ -75,11 +75,12 @@
 }
 
 .inspector-notice {
+  justify-content: center;
   background: #fafafa;
+  align-items: center;
   position: absolute;
   margin-top: 32px;
-  padding: 40px;
-  display: none;
+  display: flex;
   height: 100%;
   width: 100%;
 }

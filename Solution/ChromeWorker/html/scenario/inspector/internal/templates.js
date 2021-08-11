@@ -80,8 +80,8 @@ _.extend(Scenario.JST, {
       <div class="inspector-tab" data-tab-name="variables" style="display: <%= tab === 'variables' ? 'flex' : 'none' %>"></div>
       <div class="inspector-tab" data-tab-name="resources" style="display: <%= tab === 'resources' ? 'flex' : 'none' %>"></div>
       <div class="inspector-tab" data-tab-name="callstack" style="display: <%= tab === 'callstack' ? 'flex' : 'none' %>"></div>
-      <div class="inspector-notice">
-        <div style="text-align: center; margin: 0 15px;"><%= tr("Data will be loaded at the next script pause") %></div>
+      <div class="inspector-notice" style="display: none;">
+        <span style="text-align: center; user-select: none;"><%= tr("Data will be loaded at the next script pause") %></span>
       </div>
     </div>
   `),

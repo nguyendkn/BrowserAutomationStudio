@@ -96,6 +96,7 @@
     },
 
     render() {
+      console.time('Render Viewer');
       morphdom(this.el, this.renderRoot(), {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         getNodeKey: (el) => {
@@ -108,7 +109,7 @@
         },
         childrenOnly: true,
       });
-
+      console.timeEnd('Render Viewer');
       return this.trigger('render');
     },
 

@@ -48,23 +48,15 @@
 }
 
 .inspector-filter-menu {
-  position: absolute;
-  background: #fff;
-  border: 1px solid;
-  list-style: none;
+  min-width: max-content;
   padding: 0 12px;
-  top: 73px;
-  right: 0;
+  left: auto;
 }
 
 .inspector-sort-menu {
-  position: absolute;
-  background: #fff;
-  border: 1px solid;
-  list-style: none;
+  min-width: max-content;
   padding: 0 12px;
-  top: 73px;
-  right: 0;
+  left: auto;
 }
 
 .inspector-content {

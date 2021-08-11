@@ -92,28 +92,32 @@ _.extend(Scenario.JST, {
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
-      <button class="inspector-sort-button" title="<%= tr('Sorting') %>">
-        <i class="fa fa-filter"></i>
-      </button>
-      <ul class="inspector-sort-menu" style="display: none">
-        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
-      </ul>
-      <button class="inspector-filter-button" title="<%= tr('Filters') %>">
-        <i class="fa fa-cog"></i>
-      </button>
-      <ul class="inspector-filter-menu" style="display: none">
-        <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
-          <% const id = _.uniqueId('inspectorFilter' + type) %>
-          <% const lower = type.toLowerCase() %>
-          <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
-            <label for="<%= id %>"><%- type %></label>
-          </li>
-        <% } %>
-      </ul>
+      <div class="dropdown">
+        <button class="inspector-sort-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-filter"></i>
+        </button>
+        <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
+          <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
+        </ul>
+      </div>
+      <div class="dropdown">
+        <button class="inspector-filter-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-cog"></i>
+        </button>
+        <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
+          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
+            <% const id = _.uniqueId('inspectorFilter' + type) %>
+            <% const lower = type.toLowerCase() %>
+            <li class="inspector-filter-menu-item">
+              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
+              <label for="<%= id %>"><%- type %></label>
+            </li>
+          <% } %>
+        </ul>
+      </div>
     </div>
     <div class="inspector-panel">
       <div style="font-size: smaller; margin-top: 10px; display: none;">
@@ -129,28 +133,32 @@ _.extend(Scenario.JST, {
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
-      <button class="inspector-sort-button" title="<%= tr('Sorting') %>">
-        <i class="fa fa-filter"></i>
-      </button>
-      <ul class="inspector-sort-menu" style="display: none">
-        <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
-        <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
-      </ul>
-      <button class="inspector-filter-button" title="<%= tr('Filters') %>">
-        <i class="fa fa-cog"></i>
-      </button>
-      <ul class="inspector-filter-menu" style="display: none">
-        <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
-          <% const id = _.uniqueId('inspectorFilter' + type) %>
-          <% const lower = type.toLowerCase() %>
-          <li class="inspector-filter-menu-item">
-            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
-            <label for="<%= id %>"><%- type %></label>
-          </li>
-        <% } %>
-      </ul>
+      <div class="dropdown">
+        <button class="inspector-sort-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-filter"></i>
+        </button>
+        <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
+          <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
+        </ul>
+      </div>
+      <div class="dropdown">
+        <button class="inspector-filter-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-cog"></i>
+        </button>
+        <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
+          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
+            <% const id = _.uniqueId('inspectorFilter' + type) %>
+            <% const lower = type.toLowerCase() %>
+            <li class="inspector-filter-menu-item">
+              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
+              <label for="<%= id %>"><%- type %></label>
+            </li>
+          <% } %>
+        </ul>
+      </div>
     </div>
     <div class="inspector-panel">
       <div style="font-size: smaller; margin-top: 10px; display: none;">

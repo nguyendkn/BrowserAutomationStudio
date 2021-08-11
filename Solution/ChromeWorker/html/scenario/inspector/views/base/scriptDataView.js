@@ -163,9 +163,7 @@
 
       'click .inspector-sort-menu-item': function (e) {
         e.preventDefault();
-        const $el = $(e.target);
-        const type = $el.data('sortType');
-        this.model.set('sortType', type);
+        this.model.set('sortType', e.target.dataset.sortType);
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {

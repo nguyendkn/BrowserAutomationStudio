@@ -3,7 +3,6 @@
 
   const Model = Backbone.Model.extend({
     defaults: {
-      tab: 'variables',
       visible: false,
     },
   });
@@ -26,12 +25,6 @@
         this.resources.model.set('highlight', true);
       });
 
-      this.model.on('change:tab', (__, tab) => {
-        this.$('.inspector-tab').each((__, el) => {
-          $(el).toggle(el.dataset.tabName === tab);
-        });
-      });
-
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
     },
 
@@ -41,15 +34,15 @@
         this.setElement('#inspector').$el.html(html);
 
         this.variables = new Inspector.VariablesView({
-          el: this.$('[data-tab-name="variables"]')[0]
+          el: this.$('#variables')[0]
         }).render();
 
         this.resources = new Inspector.ResourcesView({
-          el: this.$('[data-tab-name="resources"]')[0]
+          el: this.$('#resources')[0]
         }).render();
 
         this.callstack = new Inspector.CallstackView({
-          el: this.$('[data-tab-name="callstack"]')[0]
+          el: this.$('#callstack')[0]
         }).render();
 
         interact(this.el).resizable({
@@ -100,21 +93,6 @@
     },
 
     events: {
-      'click #inspectorShowCallstack': function (e) {
-        e.preventDefault();
-        this.model.set('tab', 'callstack');
-      },
-
-      'click #inspectorShowResources': function (e) {
-        e.preventDefault();
-        this.model.set('tab', 'resources');
-      },
-
-      'click #inspectorShowVariables': function (e) {
-        e.preventDefault();
-        this.model.set('tab', 'variables');
-      },
-
       'click #inspectorClose': function (e) {
         e.preventDefault();
         this.hide();

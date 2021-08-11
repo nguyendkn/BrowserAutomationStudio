@@ -69,17 +69,25 @@ _.extend(Scenario.JST, {
 
   'inspector/main': _.template(/*html*/`
     <div class="inspector-content">
-      <ul class="inspector-nav">
-        <li id="inspectorShowVariables" class="inspector-nav-item"><%= tr('Variables') %></li>
-        <li id="inspectorShowResources" class="inspector-nav-item"><%= tr('Resources') %></li>
-        <li id="inspectorShowCallstack" class="inspector-nav-item"><%= tr('Callstack') %></li>
-        <li id="inspectorClose" style="flex: 0; min-width: 36px;">
+      <ul class="inspector-nav" role="tablist">
+        <li role="presentation" class="inspector-nav-item active">
+          <a href="#variables" aria-controls="variables" role="tab" data-toggle="tab"><%= tr('Variables') %></a>
+        </li>
+        <li role="presentation" class="inspector-nav-item">
+          <a href="#resources" aria-controls="resources" role="tab" data-toggle="tab"><%= tr('Resources') %></a>
+        </li>
+        <li role="presentation" class="inspector-nav-item">
+          <a href="#callstack" aria-controls="callstack" role="tab" data-toggle="tab"><%= tr('Callstack') %></a>
+        </li>
+        <li id="inspectorClose" style="flex: 0; min-width: 36px; padding: 4px 0; text-align: center;">
           <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%"></i>
         </li>
       </ul>
-      <div class="inspector-tab" data-tab-name="variables" style="display: <%= tab === 'variables' ? 'flex' : 'none' %>"></div>
-      <div class="inspector-tab" data-tab-name="resources" style="display: <%= tab === 'resources' ? 'flex' : 'none' %>"></div>
-      <div class="inspector-tab" data-tab-name="callstack" style="display: <%= tab === 'callstack' ? 'flex' : 'none' %>"></div>
+      <div class="inspector-tabs">
+        <div role="tabpanel" class="inspector-tab active" id="variables"></div>
+        <div role="tabpanel" class="inspector-tab" id="resources"></div>
+        <div role="tabpanel" class="inspector-tab" id="callstack"></div>
+      </div>
       <div class="inspector-notice" style="display: none;">
         <span style="text-align: center; user-select: none;"><%= tr("Data will be loaded at the next script pause") %></span>
       </div>

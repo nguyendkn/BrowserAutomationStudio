@@ -126,7 +126,6 @@
           }
         });
       }
-
       this.model.set('state', state);
     },
 
@@ -143,7 +142,6 @@
           })),
         ]
       });
-
       return this.model.get('state');
     },
 

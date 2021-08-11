@@ -20,7 +20,7 @@
       }
 
       model.on('change:visibility', () => {
-        this.filterTree();
+        this.filterItems();
       });
 
       model.on('change:source', (__, source) => {
@@ -32,7 +32,7 @@
       });
 
       model.on('change:sortType', (__, type) => {
-        this.sortTree(type);
+        this.sortItems(type);
       });
     },
 
@@ -48,8 +48,8 @@
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('render', () => {
-            this.sortTree(this.model.get('sortType'));
-            this.filterTree().loadState();
+            this.sortItems(this.model.get('sortType'));
+            this.filterItems().loadState();
           });
 
         this.$('.inspector-panel-data').append(this.viewer.el);
@@ -58,7 +58,7 @@
       return this;
     },
 
-    sortTree(type) {
+    sortItems(type) {
       const metadata = this.model.get('metadata');
       const updates = this.model.get('updates');
       const cache = this.model.get('cache');
@@ -90,7 +90,7 @@
       return this;
     },
 
-    filterTree() {
+    filterItems() {
       const query = this.$('.inspector-filter-input').val().toLowerCase();
       const types = this.model.get('visibility');
 
@@ -169,7 +169,7 @@
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {
-        this.filterTree()
+        this.filterItems()
       }, 200),
     }
   });

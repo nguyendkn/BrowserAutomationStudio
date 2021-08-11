@@ -84,9 +84,9 @@ _.extend(Scenario.JST, {
         </li>
       </ul>
       <div class="inspector-tabs">
-        <div role="tabpanel" class="inspector-tab active" id="variables"></div>
-        <div role="tabpanel" class="inspector-tab" id="resources"></div>
-        <div role="tabpanel" class="inspector-tab" id="callstack"></div>
+        <div class="inspector-tab active" id="variables" role="tabpanel"></div>
+        <div class="inspector-tab" id="resources" role="tabpanel"></div>
+        <div class="inspector-tab" id="callstack" role="tabpanel"></div>
       </div>
       <div class="inspector-notice" style="display: none;">
         <span style="text-align: center; user-select: none;"><%= tr("Data will be loaded at the next script pause") %></span>

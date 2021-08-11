@@ -8,20 +8,20 @@ _.extend(Scenario.JST, {
           </div>
           <div class="inspector-modal-body">
             <form class="inspector-modal-form" action="javascript:void(0)">
-              <% const style = (target) => type === target ? 'display: block;' : 'display: none;' %>
-              <div style="<%- style('custom') %>" data-input-type="custom">
+              <% const style = (target) => type === target ? 'display: block' : 'display: none' %>
+              <div style="<%= style('custom') %>" data-input-type="custom">
                 <textarea id="inspectorModalCustomInput"><%- type === 'custom' ? value : '' %></textarea>
               </div>
-              <div style="<%- style('string') %>" data-input-type="string">
+              <div style="<%= style('string') %>" data-input-type="string">
                 <textarea id="inspectorModalStringInput"><%- type === 'string' ? value : '' %></textarea>
               </div>
-              <div style="<%- style('number') %>" data-input-type="number">
+              <div style="<%= style('number') %>" data-input-type="number">
                 <input id="inspectorModalNumberInput" type="number" value="<%- type === 'number' ? value : 0 %>">
               </div>
-              <div style="<%- style('date') %>" data-input-type="date">
+              <div style="<%= style('date') %>" data-input-type="date">
                 <input id="inspectorModalDateInput" type="text" value="<%- type === 'date' ? value : '' %>">
               </div>
-              <div style="<%- style('boolean') %>" data-input-type="boolean">
+              <div style="<%= style('boolean') %>" data-input-type="boolean">
                 <div class="input-radio">
                   <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false"
                     <%= (value !== 'true' && type === 'boolean') || !false ? 'checked' : '' %>
@@ -35,7 +35,7 @@ _.extend(Scenario.JST, {
                   <label for="inspectorModalBooleanTrue"><%= tr('True') %></label>
                 </div>
               </div>
-              <div style="<%- style('null') %>" data-input-type="null">
+              <div style="<%= style('null') %>" data-input-type="null">
                 <div class="input-radio">
                   <input id="inspectorModalEmptyUndefined" type="radio" name="empty" value="undefined"
                     <%= (value !== 'null' && type === 'null') || !false ? 'checked' : '' %>
@@ -109,11 +109,10 @@ _.extend(Scenario.JST, {
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
           <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
-            <% const id = _.uniqueId('inspectorFilter' + type) %>
-            <% const lower = type.toLowerCase() %>
             <li class="inspector-filter-menu-item">
+              <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
               <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
-              <label for="<%= id %>"><%- type %></label>
+              <label for="<%= id %>"><%= type %></label>
             </li>
           <% } %>
         </ul>
@@ -150,11 +149,10 @@ _.extend(Scenario.JST, {
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
           <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
-            <% const id = _.uniqueId('inspectorFilter' + type) %>
-            <% const lower = type.toLowerCase() %>
             <li class="inspector-filter-menu-item">
+              <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
               <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
-              <label for="<%= id %>"><%- type %></label>
+              <label for="<%= id %>"><%= type %></label>
             </li>
           <% } %>
         </ul>

@@ -45,6 +45,11 @@
       const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
       return _.keys(src).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
     },
+
+    scaleColors(colors, count) {
+      const getScale = color2K.getScale(...colors);
+      return [...Array(count).keys()].map(i => getScale(i / (count - 1)));
+    },
   };
 
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {

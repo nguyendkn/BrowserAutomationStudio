@@ -11,10 +11,11 @@
 
           if ($node.length) {
             const { type } = $node[0].dataset;
-            if (['object', 'array'].includes(type)) return;
+            if (type === 'object') return;
+            if (type === 'array') return;
 
-            const scale = chroma.scale(['red', Inspector.Viewer.colors[type]]);
-            $node.css('color', scale.mode('rgb').colors(6)[Math.min(count, 6) - 1]);
+            const scale = utils.scaleColors(['red', Inspector.Viewer.colors[type]], 6);
+            $node.css('color', scale[Math.min(count, 6) - 1]);
           }
         });
       }

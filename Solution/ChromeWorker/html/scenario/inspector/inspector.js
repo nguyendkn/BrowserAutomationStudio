@@ -3,8 +3,8 @@
 
   const Model = Backbone.Model.extend({
     defaults: {
-      visible: false,
-    },
+      visible: false
+    }
   });
 
   const View = Backbone.View.extend({

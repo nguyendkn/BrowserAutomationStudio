@@ -52,10 +52,12 @@
         undefined: true,
         boolean: true,
         groups: false,
+        object: true,
         string: true,
         number: true,
+        array: true,
         date: true,
-        null: true,
+        null: true
       }
     }
   });

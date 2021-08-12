@@ -145,7 +145,7 @@ _.extend(Scenario.JST, {
           <i class="fa fa-cog"></i>
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
-          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
+          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null']) { %>
             <li class="inspector-filter-menu-item">
               <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
               <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>

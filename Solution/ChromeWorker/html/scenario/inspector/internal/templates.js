@@ -95,37 +95,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/variables': _.template(/*html*/`
-    <div class="inspector-tools">
-      <span style="width: 26px; padding: 0px 6px;">
-        <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
-      </span>
-      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
-      <div class="dropdown">
-        <button class="inspector-sort-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-filter"></i>
-        </button>
-        <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
-          <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
-        </ul>
-      </div>
-      <div class="dropdown">
-        <button class="inspector-filter-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-cog"></i>
-        </button>
-        <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
-          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
-            <li class="inspector-filter-menu-item">
-              <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
-              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
-              <label for="<%= id %>"><%= type %></label>
-            </li>
-          <% } %>
-        </ul>
-      </div>
-    </div>
+    <%= Scenario.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No variables') %></span>
@@ -135,37 +105,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/resources': _.template(/*html*/`
-    <div class="inspector-tools">
-      <span style="width: 26px; padding: 0px 6px;">
-        <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
-      </span>
-      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
-      <div class="dropdown">
-        <button class="inspector-sort-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-filter"></i>
-        </button>
-        <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
-          <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
-        </ul>
-      </div>
-      <div class="dropdown">
-        <button class="inspector-filter-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-cog"></i>
-        </button>
-        <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
-          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
-            <li class="inspector-filter-menu-item">
-              <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
-              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
-              <label for="<%= id %>"><%= type %></label>
-            </li>
-          <% } %>
-        </ul>
-      </div>
-    </div>
+    <%= Scenario.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No resources') %></span>
@@ -180,6 +120,40 @@ _.extend(Scenario.JST, {
         <span style="text-align: center"><%= tr('No callstack') %></span>
       </div>
       <div class="inspector-panel-data"></div>
+    </div>
+  `),
+
+  'inspector/tools': _.template(/*html*/`
+    <div class="inspector-tools">
+      <span style="width: 26px; padding: 0px 6px;">
+        <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
+      </span>
+      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
+      <div class="dropdown">
+        <button class="inspector-sort-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-filter"></i>
+        </button>
+        <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
+          <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
+          <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
+        </ul>
+      </div>
+      <div class="dropdown">
+        <button class="inspector-filter-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-cog"></i>
+        </button>
+        <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
+          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Date', 'Null']) { %>
+            <li class="inspector-filter-menu-item">
+              <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
+              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
+              <label for="<%= id %>"><%= type %></label>
+            </li>
+          <% } %>
+        </ul>
+      </div>
     </div>
   `),
 })

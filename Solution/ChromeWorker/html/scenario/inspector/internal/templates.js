@@ -95,7 +95,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/variables': _.template(/*html*/`
-    <%= Scenario.JST['inspector/tools'](obj) %>
+    <%= Scenario.JST['inspector/tools']({ ...obj }) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No variables') %></span>
@@ -105,7 +105,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/resources': _.template(/*html*/`
-    <%= Scenario.JST['inspector/tools'](obj) %>
+    <%= Scenario.JST['inspector/tools']({ ...obj }) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No resources') %></span>

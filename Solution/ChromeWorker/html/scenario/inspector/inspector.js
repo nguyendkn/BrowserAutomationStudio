@@ -13,13 +13,13 @@
     initialize() {
       this.model = new Model();
 
-      _GobalModel.on('change:isscriptexecuting', (__, value) => {
+      _GobalModel.on('change:isscriptexecuting', (_, value) => {
         if (value || !this.model.get('visible')) return;
         this.variables.model.set('highlight', true);
         this.resources.model.set('highlight', true);
       });
 
-      _GobalModel.on('change:istaskexecuting', (__, value) => {
+      _GobalModel.on('change:istaskexecuting', (_, value) => {
         if (value || !this.model.get('visible')) return;
         this.variables.model.set('highlight', true);
         this.resources.model.set('highlight', true);
@@ -45,7 +45,7 @@
           el: this.$('#callstack')[0]
         }).render();
 
-        interact(this.el).resizable({
+        this.interact = interact(this.el).resizable({
           listeners: {
             move: ({ client }) => {
               const h1 = $(functions).outerHeight();
@@ -97,12 +97,14 @@
         e.preventDefault();
         this.hide();
       },
+
       'keydown': function (e) {
         e.stopPropagation();
       },
+
       'keyup': function (e) {
         e.stopPropagation();
-      },
+      }
     }
   });
 

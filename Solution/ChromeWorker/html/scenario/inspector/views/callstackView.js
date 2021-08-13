@@ -42,7 +42,7 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template());
+        this.$el.html(this.template(this.model.toJSON()));
       }
       return this;
     },

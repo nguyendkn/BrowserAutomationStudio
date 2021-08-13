@@ -1334,10 +1334,10 @@
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
-  <script type="text/javascript"> window.Scenario = { JST: {}, Inspector: {} }; </script>
-  <script src="jquery-2.2.4.min.js" type="text/javascript"></script>
-  <script src="underscore-min.js" type="text/javascript"></script>
-  <script src="backbone-min.js" type="text/javascript"></script>
+  <script> window.Scenario = { JST: {}, Inspector: {} }; </script>
+  <script src="jquery-2.2.4.min.js"></script>
+  <script src="underscore-min.js"></script>
+  <script src="backbone-min.js"></script>
   <script src="bootstrap.min.js"></script>
   <script src="context.js"></script>
   <script src="bootbox.min.js"></script>
@@ -1384,9 +1384,9 @@
   <script src="inspector/inspector.js"></script>
   <script src="moveexecutionpoint.js"></script>
   
-  <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
-  <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
-  <script type="text/javascript"> _MACRO_INSERT_ACTIONS_ </script>
+  <script> _L = $.extend(_L, _AL) </script>
+  <script> _MACRO_INSERT_LOCALIZE_ </script>
+  <script> _MACRO_INSERT_ACTIONS_ </script>
 
   <!-- ========= -->
   <!--   Styles  -->
@@ -1407,7 +1407,7 @@
   <!-- =============== -->
   <!-- Javascript code -->
   <!-- =============== -->
-  <script type="text/javascript">
+  <script>
 
     var TaskModel = Backbone.Model.extend({
         defaults: {

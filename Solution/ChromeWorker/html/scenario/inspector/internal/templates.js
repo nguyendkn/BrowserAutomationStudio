@@ -116,7 +116,7 @@ _.extend(Scenario.JST, {
 
   'inspector/callstack': _.template(/*html*/`
     <div class="inspector-panel">
-      <div class="inspector-panel-infO" style="display: none">
+      <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No callstack') %></span>
       </div>
       <div class="inspector-panel-data"></div>

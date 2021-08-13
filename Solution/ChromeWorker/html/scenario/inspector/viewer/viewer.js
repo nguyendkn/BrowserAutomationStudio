@@ -99,7 +99,9 @@
       console.time('Render Viewer');
       morphdom(this.el, this.renderRoot(), {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
-        getNodeKey: (el) => {
+        onNodeDiscarded: el => { },
+        onNodeAdded: el => { },
+        getNodeKey: el => {
           if (el.nodeType === 1 && el.classList.contains('jst-item')) {
             const { dataset } = el.querySelector('[data-path]');
             if (dataset.path) return dataset.path;

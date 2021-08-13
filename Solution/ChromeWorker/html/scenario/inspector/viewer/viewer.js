@@ -96,7 +96,6 @@
     },
 
     render() {
-      console.time('Render Viewer');
       morphdom(this.el, this.renderRoot(), {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
         onNodeDiscarded: el => { },
@@ -109,9 +108,9 @@
           }
           return el.id;
         },
-        childrenOnly: true,
+        childrenOnly: true
       });
-      console.timeEnd('Render Viewer');
+
       return this.trigger('render');
     },
 

@@ -14,8 +14,7 @@
             if (type === 'object') return;
             if (type === 'array') return;
 
-            const scale = utils.scaleColors(['red', Inspector.Viewer.colors[type]], 6);
-            $node.css('color', scale[Math.min(count, 6) - 1]);
+            $node.css('color', utils.scaleColors(['red', Inspector.Viewer.colors[type]], 6)[count - 1]);
           }
         });
       }

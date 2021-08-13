@@ -31,7 +31,7 @@
         const highlight = this.get('highlight');
         _.each(metadata, (item, path) => {
           if (highlight) {
-            item.count = diff.some(v => v.path === path) ? 1 : (item.count + 1);
+            item.count = diff.some(v => v.path === path) ? 1 : Math.min(item.count + 1, 6);
           }
           this.trigger('highlight', { ...item, path });
         });

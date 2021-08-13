@@ -167,17 +167,17 @@
 
       'click .jst-collapse': function (e) {
         e.preventDefault();
-        const $el = $(e.target), $list = $el.next();
-        $list.toggleClass('jst-collapsed').hide();
+        const $el = $(e.target);
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
+        $el.next().toggleClass('jst-collapsed').hide();
         this.trigger('node:collapse');
       },
 
       'click .jst-expand': function (e) {
         e.preventDefault();
-        const $el = $(e.target), $list = $el.next();
-        $list.toggleClass('jst-collapsed').show();
+        const $el = $(e.target);
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
+        $el.next().toggleClass('jst-collapsed').show();
         this.trigger('node:expand');
       },
     }
@@ -193,7 +193,7 @@
   });
 
   function jsIterable(value, path, type, brackets) {
-    const content = Object.keys(value).map((key, idx, arr) => {
+    const content = _.keys(value).map((key, idx, arr) => {
       return jsNode(key, value[key], key ? `${path}/${key}` : path)
     }).join('')
 
@@ -216,27 +216,27 @@
   function jsString(value, path) {
     const data = _.truncate(value, 100);
     const clip = data !== value ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return element(`"${_.escape(data)}"`, { path, type: 'string' }) + clip;
+    return element(`"${_.escape(data)}"`, path, 'string') + clip;
   }
 
   function jsUndefined(value, path) {
-    return element(void 0, { path, type: 'undefined' });
+    return element(void 0, path, 'undefined');
   }
 
   function jsBoolean(value, path) {
-    return element(value, { path, type: 'boolean' });
+    return element(value, path, 'boolean');
   }
 
   function jsNumber(value, path) {
-    return element(value, { path, type: 'number' });
+    return element(value, path, 'number');
   }
 
   function jsDate(value, path) {
-    return element(value, { path, type: 'date' });
+    return element(value, path, 'date');
   }
 
   function jsNull(value, path) {
-    return element(value, { path, type: 'null' });
+    return element(value, path, 'null');
   }
 
   function jsNode(name, value, path, isLast, isRoot) {
@@ -271,8 +271,8 @@
     );
   }
 
-  function element(content, attrs) {
-    attrs = Object.keys(attrs).map(key => `data-${key}="${attrs[key]}"`);
+  function element(content, path, type) {
+    const attrs = _.map(({ path, type }), (v, k) => `data-${k}="${v}"`);
     return `<span class="jst-node" ${attrs.join(' ')}>${content}</span>`;
   }
 

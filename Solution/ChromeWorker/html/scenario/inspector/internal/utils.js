@@ -47,8 +47,8 @@
     },
 
     scaleColors(colors, count) {
-      const getScale = color2K.getScale(...colors);
-      return [...Array(count).keys()].map(i => color2K.toHex(getScale(i / (count - 1))));
+      const scale = _.compose(color2K.toHex, color2K.getScale(...colors));
+      return [...Array(count).keys()].map(i => scale(i / (count - 1)));
     },
   };
 

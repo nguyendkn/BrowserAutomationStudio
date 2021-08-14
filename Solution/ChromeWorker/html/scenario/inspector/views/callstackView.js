@@ -4,6 +4,11 @@
   const Model = Backbone.Model.extend({
     defaults: {
       callstack: [0],
+      visibility: {
+        functions: true,
+        actions: true,
+        labels: true
+      }
     },
 
     update(callstack) {

@@ -115,6 +115,20 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/callstack': _.template(/*html*/`
+    <div class="">
+      <button class="" title="<%= tr('Clear stack') %>" type="button">
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+      </button>
+      <ul class="">
+        <% for (const type of ['Functions', 'Actions', 'Labels']) { %>
+          <li class="">
+            <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
+            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
+            <label for="<%= id %>"><%= type %></label>
+          </li>
+        <% } %>
+      </ul>
+    </div>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No callstack') %></span>

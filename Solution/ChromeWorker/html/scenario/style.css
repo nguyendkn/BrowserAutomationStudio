@@ -439,18 +439,16 @@
 }
 
 
-#debugbuttoncontainer
-{
-    position: fixed;
-    border-left: 1px solid #dbdbdb;
-    border-top: 1px solid #dbdbdb;
-    border-radius: 4px 0px 0px 0px;
-    background-color: #f1f1f1;
-    bottom: 32px;
-    right: 0px;
-    z-index: 7;
+#debugbuttoncontainer {
+  border-left: 1px solid #dbdbdb;
+  border-top: 1px solid #dbdbdb;
+  border-top-left-radius: 4px;
+  background-color: #f1f1f1;
+  position: fixed;
+  bottom: 32px;
+  z-index: 7;
+  right: 0;
 }
-
 
 .findcontrol
 {

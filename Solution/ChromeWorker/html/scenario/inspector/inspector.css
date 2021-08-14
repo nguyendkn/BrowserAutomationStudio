@@ -24,6 +24,7 @@
   text-decoration: none;
   text-align: center;
   user-select: none;
+  font-size: 13px;
   display: block;
   padding: 4px 0;
   color: #333;
@@ -34,8 +35,11 @@
 .inspector-nav > li {
   -webkit-user-select: none;
   -webkit-user-drag: none;
+  justify-content: center;
+  align-items: center;
   text-align: center;
   user-select: none;
+  display: flex;
   flex: 1 1 0%;
 }
 
@@ -50,6 +54,7 @@
 }
 
 .inspector-filter-input {
+  border: none;
   flex: 1;
 }
 
@@ -107,9 +112,20 @@
   flex: 1;
 }
 
+.inspector-tools > .dropdown {
+  border-left: thin solid #e0e0e0;
+}
+
+.inspector-tools-button {
+  background: #fff;
+  border: none;
+  height: 100%;
+  width: 26px;
+}
+
 .inspector-tools {
   background: #e0e0e0;
-  padding: 8px 8px;
+  padding: 3px 3px;
   display: flex;
 }
 

@@ -79,8 +79,8 @@ _.extend(Scenario.JST, {
         <li class="inspector-nav-item" role="presentation">
           <a href="#callstack" aria-controls="callstack" role="tab" data-toggle="tab"><%= tr('Callstack') %></a>
         </li>
-        <li id="inspectorClose" style="flex: 0; min-width: 36px; padding: 4px 0; text-align: center;">
-          <i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%"></i>
+        <li id="inspectorClose" style="flex: 0; min-width: 57px">
+          <i class="fa fa-times" aria-hidden="true"></i>
         </li>
       </ul>
       <div class="inspector-tabs">
@@ -139,12 +139,12 @@ _.extend(Scenario.JST, {
 
   'inspector/tools': _.template(/*html*/`
     <div class="inspector-tools">
-      <span style="width: 26px; padding: 0px 6px;">
-        <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
+      <span style="width: 26px; padding: 3px 6px;">
+        <i class="fa fa-search"></i>
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name') + '...' %>">
       <div class="dropdown">
-        <button class="inspector-sort-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="inspector-tools-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-filter"></i>
         </button>
         <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
@@ -155,7 +155,7 @@ _.extend(Scenario.JST, {
         </ul>
       </div>
       <div class="dropdown">
-        <button class="inspector-filter-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="inspector-tools-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-cog"></i>
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">

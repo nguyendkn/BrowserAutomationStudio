@@ -16,7 +16,7 @@ _SMS.SmsAcktiwatorApi = _SMS.assignApi(function(config, data){
 		var content = _result_function();
 		var resp = content;
 		
-		if(_is_json_string(content)){
+		if(_is_json_string(content) || _starts_with(content, '<!DOCTYPE html>') || !_starts_with(content, '<html>')){
 			resp = api.parseJSON(content);
 			
 			if(checkErrors && (resp.code=="error" || !_is_nilb(resp.code) || resp.error)){

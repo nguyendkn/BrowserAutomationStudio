@@ -30,9 +30,9 @@ _SMS.BaseApi = function(config, data, path){
 			var limiter = new _SMS.rateLimiter({
 				tokensPerInterval: limit.requestsPerInterval,
 				interval: limit.interval,
-				queue: _avoid_nilb(limit.queue, true),
 				type: limit.type,
-				id: (limit.type==="service" && _is_nilb(limit.id) ? (api.id + "_" + key) : limit.id)
+				id: (limit.type==="service" && _is_nilb(limit.id) ? (api.id + "_" + key) : limit.id),
+				queue: _avoid_nilb(limit.queue, true)
 			});
 			this.limits.push(limiter);
 		};
@@ -68,6 +68,7 @@ _SMS.BaseApi = function(config, data, path){
 	
 	this.reduceString = function(str, length){
 		length = _avoid_nilb(length, 100);
+		str = _clean(str);
 		return str.length > length ? str.slice(0, length) + '...' : str;
 	};
 	

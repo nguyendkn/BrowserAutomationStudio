@@ -14,8 +14,6 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		_call_function(api.request,{url:api.url, method:"GET", params:params, timeout:timeout, maxTime:maxTime})!
 		var content = _result_function();
 		
-		api.banThread(10);
-		
 		var resp = api.parseJSON(content);
 		
 		if(checkErrors && resp.status!=200){

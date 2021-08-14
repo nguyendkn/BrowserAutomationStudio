@@ -14,8 +14,6 @@ _SMS.SmsPvaApi = _SMS.assignApi(function(config, data){
 		_call_function(api.request,{url:api.url, method:"GET", params:params, timeout:timeout, maxTime:maxTime})!
 		var content = _result_function();
 		
-		api.banThread(20);
-		
 		if(!_is_json_string(content) && !_starts_with(content, '<!DOCTYPE html>') && !_starts_with(content, '<html>')){
 			api.errorHandler(content);
 		};

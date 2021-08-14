@@ -2029,8 +2029,7 @@
 
       key: function(e)
       {
-        if($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden'))
-        {
+        if ($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden')) {
           if (e.keyCode == 70 && e.ctrlKey)
           {
             _ActionFinder.Show()
@@ -3839,7 +3838,7 @@
 
 
         
-        morphdom(document.getElementById("containerdata"), '<div id="containerdata" >' + html + '</div>', {
+        morphdom(document.getElementById("containerdata"), '<div id="containerdata">' + html + '</div>', {
           onBeforeElUpdated: function(fromEl, toEl) {
               if(fromEl.hasAttribute("noupdate"))
               {
@@ -4044,7 +4043,6 @@
 
         _VisualizeLabels.Visualize();
 
-        //_Tour.Start();
         this.trigger('render');
       }
 
@@ -4079,8 +4077,6 @@
     var _FunctionManager = new FunctionManager()
 
     var _HelpManager = new HelpManager()
-
-    //var _Tour = new BrowserAutomationStudio_Tour()
 
     var _EmbeddedModel = new EmbeddedModel()
 
@@ -5363,11 +5359,9 @@
       var match = code.match(/VAR_[A-Z0-9_]+/g)
       var variables = match ? _.uniq(match) : [];
 
-      JSON.parse(extract_global_variables(code)).forEach(function(el){
-        variables.push("GLOBAL:" + el["name"])
-      })
-
-      return variables
+      return variables.concat(JSON.parse(extract_global_variables(code)).map(el => {
+        return `GLOBAL:${el.name}`;
+      }));
     }
 
     function BrowserAutomationStudio_FocusActionFast(Id)
@@ -6899,12 +6893,6 @@
         res += "\n"
         return {index:index,res:res};
     }
-
-
-
-    
-
-    
   </script>
 </body>
 </html>

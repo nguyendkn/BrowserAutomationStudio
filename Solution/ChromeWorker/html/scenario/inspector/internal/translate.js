@@ -5,9 +5,6 @@ _.extend(_L, {
   'Change the variable value': {
     ru: 'Изменить значение переменной'
   },
-  'Filter by name...': {
-    ru: 'Фильтр по имени...'
-  },
   'By frequency of use': {
     ru: 'По частоте использования'
   },
@@ -16,6 +13,9 @@ _.extend(_L, {
   },
   'By date added': {
     ru: 'По дате добавления'
+  },
+  'Filter by name': {
+    ru: 'Фильтр по имени'
   },
   'Alphabetically': {
     ru: 'По алфавиту'

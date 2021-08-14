@@ -142,7 +142,7 @@ _.extend(Scenario.JST, {
       <span style="width: 26px; padding: 0px 6px;">
         <i class="fa fa-search" style="vertical-align: -webkit-baseline-middle;"></i>
       </span>
-      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name...') %>">
+      <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name') + '...' %>">
       <div class="dropdown">
         <button class="inspector-sort-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-filter"></i>

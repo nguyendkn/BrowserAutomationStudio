@@ -41,6 +41,12 @@ _.extend(_L, {
   'Resources': {
     ru: 'Ресурсы'
   },
+  'Functions': {
+    ru: 'Функции'
+  },
+  'Actions': {
+    ru: 'Действия'
+  },
   'Sorting': {
     ru: 'Сортировка'
   },
@@ -55,5 +61,8 @@ _.extend(_L, {
   },
   'Number': {
     ru: 'Число'
+  },
+  'Labels': {
+    ru: 'Метки'
   }
 });

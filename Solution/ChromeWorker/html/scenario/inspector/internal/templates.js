@@ -115,11 +115,11 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/callstack': _.template(/*html*/`
-    <div class="">
+    <div class="" style="display: flex">
       <button class="" title="<%= tr('Clear stack') %>" type="button">
         <i class="fa fa-refresh" aria-hidden="true"></i>
       </button>
-      <ul class="">
+      <ul class="" style="flex: 1">
         <% for (const type of ['Functions', 'Actions', 'Labels']) { %>
           <li class="">
             <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>

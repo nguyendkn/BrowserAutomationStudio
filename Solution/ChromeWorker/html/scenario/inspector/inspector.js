@@ -81,13 +81,13 @@
     },
 
     hideNotice() {
-      this.$('.inspector-nav-item').removeClass('disabled');
+      this.$('.inspector-nav > li').removeClass('disabled');
       this.$('.inspector-notice').hide();
       return this;
     },
 
     showNotice() {
-      this.$('.inspector-nav-item').addClass('disabled');
+      this.$('.inspector-nav > li').addClass('disabled');
       this.$('.inspector-notice').show();
       return this;
     },

@@ -146,18 +146,18 @@
   display: flex;
 }
 
-.inspector-tabs {
-  overflow-x: hidden;
-  overflow-y: hidden;
-  display: flex;
-  flex: 1 1 0%;
-}
-
-.inspector-tab {
+.inspector-tabs > div {
   overflow-x: hidden;
   overflow-y: hidden;
   flex-flow: column;
   display: none;
+  flex: 1 1 0%;
+}
+
+.inspector-tabs {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  display: flex;
   flex: 1 1 0%;
 }
 

@@ -6,6 +6,14 @@
   border-left: 1px solid #e0e0e0;
 }
 
+.inspector-nav > li.disabled > a {
+  pointer-events: none;
+}
+
+.inspector-nav > li.enabled > a {
+  pointer-events: all;
+}
+
 .inspector-nav > li.active > a {
   background: #e0e0e0;
 }
@@ -127,12 +135,12 @@
 }
 
 .inspector-nav {
-  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
   list-style: none;
-  flex-flow: row;
   display: flex;
   padding: 0;
   margin: 0;
+  flex: 1;
 }
 
 .inspector-tabs > .hidden {

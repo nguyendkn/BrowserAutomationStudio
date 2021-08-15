@@ -69,20 +69,22 @@ _.extend(Scenario.JST, {
 
   'inspector/main': _.template(/*html*/`
     <div class="inspector-content">
-      <ul class="inspector-nav" role="tablist">
-        <li class="inspector-nav-item active" role="presentation">
-          <a href="#variables" aria-controls="variables" role="tab" data-toggle="tab"><%= tr('Variables') %></a>
-        </li>
-        <li class="inspector-nav-item" role="presentation">
-          <a href="#resources" aria-controls="resources" role="tab" data-toggle="tab"><%= tr('Resources') %></a>
-        </li>
-        <li class="inspector-nav-item" role="presentation">
-          <a href="#callstack" aria-controls="callstack" role="tab" data-toggle="tab"><%= tr('Callstack') %></a>
-        </li>
-        <li id="inspectorClose" style="flex: 0; min-width: 57px">
+      <div class="inspector-header" style="display: flex; border-bottom: 1px solid #e0e0e0;">
+        <ul class="inspector-nav" role="tablist">
+          <li class="inspector-nav-item active" role="presentation">
+            <a href="#variables" aria-controls="variables" role="tab" data-toggle="tab"><%= tr('Variables') %></a>
+          </li>
+          <li class="inspector-nav-item" role="presentation">
+            <a href="#resources" aria-controls="resources" role="tab" data-toggle="tab"><%= tr('Resources') %></a>
+          </li>
+          <li class="inspector-nav-item" role="presentation">
+            <a href="#callstack" aria-controls="callstack" role="tab" data-toggle="tab"><%= tr('Callstack') %></a>
+          </li>
+        </ul>
+        <button id="inspectorClose" type="button" style="min-width: 56px; border: none; background: #fafafa;">
           <i class="fa fa-times" aria-hidden="true"></i>
-        </li>
-      </ul>
+        </button>
+      </div>
       <div class="inspector-tabs">
         <div class="inspector-tab active" id="variables" role="tabpanel"></div>
         <div class="inspector-tab" id="resources" role="tabpanel"></div>

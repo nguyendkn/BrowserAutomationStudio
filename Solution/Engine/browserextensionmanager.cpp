@@ -373,7 +373,7 @@ namespace BrowserAutomationStudioFramework
 
         HttpClient->Connect(this,SLOT(OnDoneHttpRequest()));
 
-        QString ExtensionUrl = QString("https://clients2.google.com/service/update2/crx?response=redirect&prodversion=88.0.4324.190&acceptformat=crx2,crx3&x=id%3D") + Request.ExtensionId + QString("%26uc&acceptformat=crx2,crx3");
+        QString ExtensionUrl = QString("https://clients2.google.com/service/update2/crx?response=redirect&prodversion=92.0.4515.131&acceptformat=crx2,crx3&x=id%3D") + Request.ExtensionId + QString("%26uc&acceptformat=crx2,crx3");
         QString ExtensionPath = Request.ExtensionPath + QString("/temp.crx");
         HttpClient->Download(ExtensionUrl, ExtensionPath);
     }

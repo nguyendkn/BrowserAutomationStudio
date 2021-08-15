@@ -92,27 +92,27 @@
 
     filterItems() {
       const query = this.$('.inspector-filter-input').val().toLowerCase();
-      const types = this.model.get('visibility');
+      const visibility = this.model.get('visibility');
 
-      this.$('.jst-group').each((__, el) => {
+      for (const el of this.$('.jst-group')) {
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
         const $visible = $items.filter((__, el) => {
           const $item = $(el), { dataset } = $item.children('[data-path]')[0];
-          const hidden = !types[dataset.type];
+          const visible = visibility[dataset.type];
 
           if (query.length) {
             const $label = $item.children('.jst-label');
             const text = $label.text().toLowerCase();
-            return !hidden && text.includes(query);
+            return visible && text.includes(query);
           }
 
-          return !hidden;
+          return visible;
         });
 
         $items.not($visible.show()).hide();
         $group.toggle(!!$visible.length);
-      });
+      }
 
       return this;
     },

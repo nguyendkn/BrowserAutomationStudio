@@ -51,5 +51,9 @@
       }
       return this;
     },
+
+    events: {
+
+    }
   });
 })(window, jQuery, _);

@@ -1043,7 +1043,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             GlobalState.SwitchingToDelayedTabIndex = -1;
                         }
                     }
-                }else if(TypeName == "other")
+                }else if(TypeName == "other" && starts_with(Url, "chrome-extension://"))
                 {
                     //Extension popup is created
                     std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();

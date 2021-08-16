@@ -176,6 +176,29 @@
  * Callstack styles *
  ********************/
 
+#callstack .callstack-item[data-type=function] {
+  background-image: url(../icons/flash.svg);
+}
+
+#callstack .callstack-item[data-type=action] {
+  background-image: url(../icons/gear.svg);
+}
+
+#callstack .callstack-item[data-type=label] {
+  background-image: url(../icons/tag.svg);
+}
+
+#callstack .callstack-item {
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  line-height: 18px;
+  font-size: 16px;
+  color: #434343;
+  padding: 5px 25px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 #callstack > .inspector-tools > ul > li {
   min-width: 100px;
   padding: 3px 10px;

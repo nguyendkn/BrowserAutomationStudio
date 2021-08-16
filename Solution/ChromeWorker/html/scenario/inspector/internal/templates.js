@@ -140,7 +140,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/stack': _.template(/*html*/`
-    <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column;">
+    <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
       <% stack.forEach(item => { %>
         <li class="callstack-item" data-id="<%= item.id %>" data-type="<%= item.type %>">
           <span><%= item.data.name %></span>

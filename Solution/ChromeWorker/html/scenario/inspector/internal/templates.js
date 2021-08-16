@@ -139,6 +139,10 @@ _.extend(Scenario.JST, {
     </div>
   `),
 
+  'inspector/stack': _.template(/*html*/`
+  
+  `),
+
   'inspector/tools': _.template(/*html*/`
     <div class="inspector-tools">
       <span style="width: 26px; padding: 3px 6px;">

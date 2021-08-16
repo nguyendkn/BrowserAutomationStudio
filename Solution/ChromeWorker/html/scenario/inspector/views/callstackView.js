@@ -54,8 +54,12 @@
     initialize() {
       const model = new Model();
 
-      model.on('change:stack', (__, stack) => {
+      model.on('change:visibility', (__, visibility) => {
+        // TODO
+      });
 
+      model.on('change:stack', (__, stack) => {
+        // TODO
       });
 
       this.model = model;
@@ -68,6 +72,25 @@
       return this;
     },
 
+    renderStack() {
+      const content = JST['inspector/stack'](this.model.get('stack'));
+
+      morphdom(this.el.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${content}</div>`, {
+        onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
+        onNodeDiscarded: el => { },
+        onNodeAdded: el => { },
+        childrenOnly: true
+      });
+    },
+
+    showFunctionParams(id) {
+      // TODO
+    },
+
+    hideFunctionParams(id) {
+      // TODO
+    },
+
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
         const $el = $(e.target), type = $el.val();
@@ -78,7 +101,18 @@
         });
       },
 
+      'click .callstack-show-params': function (e) {
+        e.preventDefault();
+        this.showFunctionParams(null);
+      },
+
+      'click .callstack-hide-params': function (e) {
+        e.preventDefault();
+        this.hideFunctionParams(null);
+      },
+
       'click .inspector-tools > button': function (e) {
+        e.preventDefault();
         this.model.set('stack', []);
       }
     }

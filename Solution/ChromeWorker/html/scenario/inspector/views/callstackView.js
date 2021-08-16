@@ -13,7 +13,8 @@
 
     initialize() {
       _GobalModel.on('change:execute_next_id', (__, id) => {
-        const current = this.get('stack'), { dat } = utils.getTaskInfo(_TaskCollection.get(id));
+        const task = _TaskCollection.get(id);
+        const current = this.get('stack'), { dat } = utils.getTaskInfo(task);
 
         if (dat) {
           current.push({

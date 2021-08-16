@@ -1455,22 +1455,11 @@
         },
         toJSON: function()
         {
-          var attr = this.attributes
-          return {name: attr.name,
-            code: attr.code,
-            internal_label_id: attr.internal_label_id,
-
-            dat_precomputed: null,
+          return {
+            ...this.attributes,
             search_precomputed: null,
             code_precomputed: null,
-            
-            parentid: attr.parentid,
-            id: attr.id,
-            donotexecuteduringrecord:attr.donotexecuteduringrecord,
-            is_selected:attr.is_selected,
-            color:attr.color,
-            is_fold: attr.is_fold,
-            fd: attr.fd
+            dat_precomputed: null,
           }
         },
         search: function()

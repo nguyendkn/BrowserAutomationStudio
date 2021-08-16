@@ -97,16 +97,16 @@
 
     render() {
       morphdom(this.el, this.renderRoot(), {
-        onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
-        onNodeDiscarded: el => { },
-        onNodeAdded: el => { },
-        getNodeKey: el => {
-          if (el.nodeType === 1 && el.classList.contains('jst-item')) {
-            const { dataset } = el.querySelector('[data-path]');
+        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+        onNodeDiscarded: node => { },
+        onNodeAdded: node => { },
+        getNodeKey: node => {
+          if (node.nodeType === 1 && node.classList.contains('jst-item')) {
+            const { dataset } = node.querySelector('[data-path]');
             if (dataset.path) return dataset.path;
             if (dataset.ref) return dataset.ref;
           }
-          return el.id;
+          return node.id;
         },
         childrenOnly: true
       });

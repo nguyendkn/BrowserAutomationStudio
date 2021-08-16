@@ -77,9 +77,9 @@
       const content = JST['inspector/stack'](this.model.toJSON());
 
       morphdom(this.el.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${content}</div>`, {
-        onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
-        onNodeDiscarded: el => { },
-        onNodeAdded: el => { },
+        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+        onNodeDiscarded: node => { },
+        onNodeAdded: node => { },
         childrenOnly: true
       });
 

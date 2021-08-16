@@ -1,5 +1,5 @@
 (({ Scenario }, $, _) => {
-  Scenario.utils = {
+  _.extend(Scenario.utils, {
     updateVariable(variable, pointer, type) {
       const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((data, key, idx) => {
         if (idx === 0) {
@@ -50,7 +50,7 @@
       const scale = _.compose(color2K.toHex, color2K.getScale(...colors));
       return [...Array(count).keys()].map(n => scale(n / (count - 1)));
     },
-  };
+  });
 
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {
     template: { caret: '' },

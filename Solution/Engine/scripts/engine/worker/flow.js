@@ -37,7 +37,7 @@ function success(text)
 function request_callstack(callback) {
     var callstack = JSON.stringify(CYCLES.data);
 
-    Browser.RequestCallstackResult(callback, _get_function_body(callback));
+    Browser.RequestCallstackResult(callstack, _get_function_body(callback));
 }
 
 function debug_variables(list, callback)

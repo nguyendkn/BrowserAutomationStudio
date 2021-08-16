@@ -122,7 +122,7 @@ _.extend(Scenario.JST, {
         <i class="fa fa-refresh" aria-hidden="true"></i>
       </button>
       <ul class="" style="flex: 1">
-        <% ['Functions', 'Actions', 'Labels'].forEach(type => { %>
+        <% _.each(['Functions', 'Actions', 'Labels'], type => { %>
           <li class="">
             <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
             <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
@@ -189,7 +189,7 @@ _.extend(Scenario.JST, {
           <i class="fa fa-cog"></i>
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
-          <% ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null'].forEach(type => { %>
+          <% _.each(['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null'], type => { %>
             <li class="inspector-filter-menu-item">
               <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
               <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>

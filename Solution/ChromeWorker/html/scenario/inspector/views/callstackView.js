@@ -10,22 +10,18 @@
           const task = _TaskCollection.get(id), { dat } = utils.getTaskInfo(task);
 
           if (dat) {
-            let type = '', data = {};
+            let type, data = {};
 
             if (['asyncfunction_call', 'executefunctioninseveralthreads', 'executefunction'].includes(dat.s)) {
+              data = { name: dat.d.find(({ id }) => id === 'FunctionName').data };
               type = 'function';
-              let params = {};
-              const code = task.get('code');
 
               if (dat.s !== 'executefunctioninseveralthreads') {
-                params = [...code.matchAll(/(_thread_start.+|_call_function.+)({.+})/g)][0];
-                params = eval(`(${params[2]})`);
+                data.params = eval(`(${[...task.get('code').matchAll(/\(.+({.+}).*\)!/g)][0][1]})`);
               }
-
-              data = { name: dat.d.find(({ id }) => id === 'FunctionName').data, params };
             } else if (['if', 'for', 'while', 'foreach'].includes(dat.s)) {
-              type = 'action';
               data = { name: dat.s };
+              type = 'action';
             } else if (dat.s === 'goto') {
               data = { name: dat.d.find(({ id }) => id === 'LabelName').data };
               type = 'label';

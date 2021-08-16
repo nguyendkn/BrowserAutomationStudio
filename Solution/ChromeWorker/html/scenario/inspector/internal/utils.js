@@ -49,13 +49,6 @@
     scaleColors(colors, count) {
       const scale = _.compose(color2K.toHex, color2K.getScale(...colors));
       return [...Array(count).keys()].map(n => scale(n / (count - 1)));
-    },
-  });
-
-  _.extend($.fn.selectpicker.Constructor.DEFAULTS, {
-    template: { caret: '' },
-    container: false,
-    header: false,
-    width: false,
+    }
   });
 })(window, jQuery, _);

@@ -1,4 +1,4 @@
-(({ Scenario }) => {
+(({ Scenario }, $, _) => {
   Scenario.utils = {
     getTaskInfo(task) {
       const dat = _.attempt(() => task.dat());
@@ -14,4 +14,11 @@
       };
     },
   };
-})(window);
+
+  _.extend($.fn.selectpicker.Constructor.DEFAULTS, {
+    template: { caret: '' },
+    container: false,
+    header: false,
+    width: false,
+  });
+})(window, jQuery, _);

@@ -97,7 +97,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/variables': _.template(/*html*/`
-    <%= Scenario.JST['inspector/tools']({ ...obj }) %>
+    <%= Scenario.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No variables') %></span>
@@ -107,7 +107,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/resources': _.template(/*html*/`
-    <%= Scenario.JST['inspector/tools']({ ...obj }) %>
+    <%= Scenario.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No resources') %></span>
@@ -117,7 +117,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/callstack': _.template(/*html*/`
-    <div class="" style="display: flex">
+    <div class="inspector-tools" style="display: flex">
       <button class="" title="<%= tr('Clear stack') %>" type="button">
         <i class="fa fa-refresh" aria-hidden="true"></i>
       </button>

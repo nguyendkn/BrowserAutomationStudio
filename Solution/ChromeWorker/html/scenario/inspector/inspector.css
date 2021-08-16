@@ -52,12 +52,10 @@
 }
 
 .inspector-filter-input:not(:placeholder-shown) {
-  -webkit-user-select: auto;
   user-select: auto;
 }
 
 .inspector-filter-input:placeholder-shown {
-  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -172,4 +170,23 @@
   background-color: #fafafa;
   min-height: 120px;
   height: 290px;
+}
+
+/********************
+ * Callstack styles *
+ ********************/
+
+#callstack > .inspector-tools > ul > li {
+  min-width: 100px;
+  padding: 3px 10px;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+#callstack > .inspector-tools > ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  flex: 1;
 }

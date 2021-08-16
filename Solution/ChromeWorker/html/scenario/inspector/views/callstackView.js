@@ -4,9 +4,10 @@
   const Model = Backbone.Model.extend({
     initialize() {
       _GobalModel.on('change:execute_next_id', (__, id) => {
+        let current = this.get('stack');
+
         _.attempt(() => {
-          const task = _TaskCollection.get(id);
-          const current = this.get('stack'), { dat } = utils.getTaskInfo(task);
+          const task = _TaskCollection.get(id), { dat } = utils.getTaskInfo(task);
 
           if (dat) {
             let type = '', data = {};
@@ -30,11 +31,11 @@
               type = 'label';
             }
 
-            if (type) current.push({ id, type, data });
+            if (type) current = current.concat({ id, type, data });
           }
-
-          this.set('stack', current);
         });
+
+        this.set('stack', current);
       });
     },
 
@@ -54,12 +55,12 @@
     initialize() {
       const model = new Model();
 
-      model.on('change:visibility', (__, visibility) => {
-        // TODO
+      model.on('change:visibility', () => {
+        this.filterStack();
       });
 
-      model.on('change:stack', (__, stack) => {
-        // TODO
+      model.on('change:stack', () => {
+        this.renderStack();
       });
 
       this.model = model;
@@ -73,7 +74,7 @@
     },
 
     renderStack() {
-      const content = JST['inspector/stack'](this.model.get('stack'));
+      const content = JST['inspector/stack'](this.model.toJSON());
 
       morphdom(this.el.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${content}</div>`, {
         onBeforeElUpdated: (el, target) => !el.isEqualNode(target),
@@ -81,14 +82,26 @@
         onNodeAdded: el => { },
         childrenOnly: true
       });
+
+      return this;
+    },
+
+    filterStack() {
+      _.each(this.model.get('visibility'), (visible, type) => {
+        this.$(`[data-type="${type.slice(0, -1)}"]`).toggle(visible);
+      });
+
+      return this;
     },
 
     showFunctionParams(id) {
       // TODO
+      return this;
     },
 
     hideFunctionParams(id) {
       // TODO
+      return this;
     },
 
     events: {

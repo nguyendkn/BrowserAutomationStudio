@@ -2,15 +2,6 @@
   const { Inspector, JST, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
-    defaults: {
-      visibility: {
-        functions: true,
-        actions: true,
-        labels: true
-      },
-      stack: []
-    },
-
     initialize() {
       _GobalModel.on('change:execute_next_id', (__, id) => {
         _.attempt(() => {
@@ -45,6 +36,15 @@
           this.set('stack', current);
         });
       });
+    },
+
+    defaults: {
+      visibility: {
+        functions: true,
+        actions: true,
+        labels: true
+      },
+      stack: []
     }
   });
 
@@ -77,6 +77,10 @@
           [type]: $el.prop('checked')
         });
       },
+
+      'click .inspector-tools > button': function (e) {
+        this.model.set('stack', []);
+      }
     }
   });
 })(window, jQuery, _);

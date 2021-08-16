@@ -11,24 +11,26 @@
       }
     },
 
-    update(callstack) {
-      const current = this.get('callstack');
+    initialize() {
+      _GobalModel.on('change:execute_next_id', (__, id) => {
+        const current = this.get('callstack');
 
-      if (callstack.length) {
-        callstack.forEach((id) => {
-          const index = current.lastIndexOf(id);
+        if (callstack.length) {
+          callstack.forEach((id) => {
+            const index = current.lastIndexOf(id);
 
-          if (index >= 0) {
-            current.splice(index + 1);
-          } else {
-            current.push(id);
-          }
-        });
-      } else {
-        current.splice(1);
-      }
+            if (index >= 0) {
+              current.splice(index + 1);
+            } else {
+              current.push(id);
+            }
+          });
+        } else {
+          current.splice(1);
+        }
 
-      this.set('callstack', current);
+        this.set('callstack', current);
+      });
     }
   });
 

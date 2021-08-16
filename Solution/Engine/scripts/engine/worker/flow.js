@@ -34,6 +34,12 @@ function success(text)
     ScriptWorker.Success(text);
 }
 
+function request_callstack(callback) {
+    var callstack = JSON.stringify(CYCLES.data);
+
+    Browser.RequestCallstackResult(callback, _get_function_body(callback));
+}
+
 function debug_variables(list, callback)
 {
     var res = list.reduce(function (acc, v) {

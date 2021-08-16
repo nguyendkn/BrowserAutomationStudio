@@ -333,6 +333,7 @@ public:
     void SetResourceCallback(const std::string & resources);
     void SetInitialStateCallback(const std::string & lang);
     void DebugVariablesResultCallback(const std::string & data);
+    void RequestCallstackResultCallback(const std::string & data);
 
     void MouseClickCallback(int x, int y);
     void MouseClickUpCallback(int x, int y);

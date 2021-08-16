@@ -95,6 +95,7 @@ namespace BrowserAutomationStudioFramework
         virtual void Scroll(int x, int y, const QString& callback);
         virtual void Render(int x, int y, int width, int height, const QString& callback);
         virtual void DebugVariablesResult(const QString& data, const QString& callback);
+        virtual void RequestCallstackResult(const QString& data, const QString& callback);
         virtual void SendRecaptchaV3List(const QString& action, const QString& callback);
         virtual void SendRecaptchaV3Result(const QString& id,const QString& result);
         virtual void SendWorkerSettings(const QString& json, const QString& callback);
@@ -171,6 +172,7 @@ namespace BrowserAutomationStudioFramework
         void OptimizeMemory();
         void WaitCode();
         void DebugVariablesResult();
+        void RequestCallstackResult();
         void RecaptchaV3List();
         void Timezone();
         void Crush();

@@ -1334,6 +1334,14 @@ void MainApp::DebugVariablesResultCallback(const std::string & data)
     SendTextResponce("<DebugVariablesResult></DebugVariablesResult>");
 }
 
+void MainApp::RequestCallstackResultCallback(const std::string & data)
+{
+    if(BrowserScenario)
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_UpdateCallstackResult(") + picojson::value(data).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+
+    SendTextResponce("<RequestCallstackResult></RequestCallstackResult>");
+}
+
 void MainApp::RenderCallback(int x, int y, int width, int height)
 {
     RenderX = x;

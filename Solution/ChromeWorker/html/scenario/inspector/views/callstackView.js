@@ -1,35 +1,30 @@
 (({ Scenario, Backbone }, $, _) => {
-  const { Inspector, JST } = Scenario;
+  const { Inspector, JST, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
     defaults: {
-      callstack: [0],
       visibility: {
         functions: true,
         actions: true,
         labels: true
-      }
+      },
+      stack: []
     },
 
     initialize() {
       _GobalModel.on('change:execute_next_id', (__, id) => {
-        const current = this.get('callstack');
+        const current = this.get('stack'), { dat } = utils.getTaskInfo(_TaskCollection.get(id));
 
-        if (callstack.length) {
-          callstack.forEach((id) => {
-            const index = current.lastIndexOf(id);
-
-            if (index >= 0) {
-              current.splice(index + 1);
-            } else {
-              current.push(id);
-            }
+        if (dat) {
+          current.push({
+            isFunction: ['asyncfunction_call', 'executefunctioninseveralthreads', 'executefunction'].includes(dat.s),
+            isLabel: dat.s === 'goto',
+            isLoop: ['for', 'foreach', 'while'].includes(dat.s),
+            id,
           });
-        } else {
-          current.splice(1);
         }
 
-        this.set('callstack', current);
+        this.set('stack', current);
       });
     }
   });
@@ -40,7 +35,7 @@
     initialize() {
       const model = new Model();
 
-      model.on('change:callstack', (__, callstack) => {
+      model.on('change:stack', (__, stack) => {
 
       });
 

@@ -51,7 +51,7 @@ _.extend(Scenario.JST, {
               </div>
             </form>
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
-              <% _.each(['Boolean', 'Custom', 'String', 'Number', 'Date', 'Null'], (item) => { %>
+              <% _.each(['Boolean', 'Custom', 'String', 'Number', 'Date', 'Null'], item => { %>
                 <option class="inspector-modal-select-option" value="<%= item.toLowerCase() %>" <%= item.toLowerCase() === type ? 'selected' : '' %>>
                   <%= tr(item) %>
                 </option>
@@ -122,13 +122,13 @@ _.extend(Scenario.JST, {
         <i class="fa fa-refresh" aria-hidden="true"></i>
       </button>
       <ul class="" style="flex: 1">
-        <% for (const type of ['Functions', 'Actions', 'Labels']) { %>
+        <% ['Functions', 'Actions', 'Labels'].forEach(type => { %>
           <li class="">
             <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
             <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
             <label for="<%= id %>"><%= type %></label>
           </li>
-        <% } %>
+        <% }) %>
       </ul>
     </div>
     <div class="inspector-panel">
@@ -140,7 +140,11 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/stack': _.template(/*html*/`
-  
+    <div class="callstack-data">
+      <% stack.forEach(item => { %>
+        <div class="callstack-item" data-id="<%= item.id %>" data-type="<%= item.type %>"></div>
+      <% }) %>
+    </div>
   `),
 
   'inspector/tools': _.template(/*html*/`
@@ -165,13 +169,13 @@ _.extend(Scenario.JST, {
           <i class="fa fa-cog"></i>
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
-          <% for (const type of ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null']) { %>
+          <% ['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null'].forEach(type => { %>
             <li class="inspector-filter-menu-item">
               <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
               <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
               <label for="<%= id %>"><%= type %></label>
             </li>
-          <% } %>
+          <% }) %>
         </ul>
       </div>
     </div>

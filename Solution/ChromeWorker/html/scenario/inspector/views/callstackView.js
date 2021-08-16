@@ -13,27 +13,37 @@
 
     initialize() {
       _GobalModel.on('change:execute_next_id', (__, id) => {
-        const task = _TaskCollection.get(id);
-        const current = this.get('stack'), { dat } = utils.getTaskInfo(task);
+        _.attempt(() => {
+          const task = _TaskCollection.get(id);
+          const current = this.get('stack'), { dat } = utils.getTaskInfo(task);
 
-        if (dat) {
-          let type = '', params = {};
+          if (dat) {
+            let type = '', data = {};
 
-          if (['asyncfunction_call', 'executefunctioninseveralthreads', 'executefunction'].includes(dat.s)) {
-            type = 'function';
-            params = { name: dat.d.find(({ id }) => id === 'FunctionName').data };
-          } else if (['for', 'while', 'foreach'].includes(dat.s)) {
-            type = 'action';
-            params = { name: dat.s };
-          } else if (dat.s === 'goto') {
-            params = { name: dat.d.find(({ id }) => id === 'LabelName').data };
-            type = 'label';
+            if (['asyncfunction_call', 'executefunctioninseveralthreads', 'executefunction'].includes(dat.s)) {
+              type = 'function';
+              let params = {};
+              const code = task.get('code');
+
+              if (dat.s !== 'executefunctioninseveralthreads') {
+                params = [...code.matchAll(/(_thread_start.+|_call_function.+)({.+})/g)][0];
+                params = eval(`(${params[2]})`);
+              }
+
+              data = { name: dat.d.find(({ id }) => id === 'FunctionName').data, params };
+            } else if (['if', 'for', 'while', 'foreach'].includes(dat.s)) {
+              type = 'action';
+              data = { name: dat.s };
+            } else if (dat.s === 'goto') {
+              data = { name: dat.d.find(({ id }) => id === 'LabelName').data };
+              type = 'label';
+            }
+
+            if (type) current.push({ id, type, data });
           }
 
-          if (type) current.push({ id, type, params });
-        }
-
-        this.set('stack', current);
+          this.set('stack', current);
+        });
       });
     }
   });

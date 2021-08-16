@@ -22,6 +22,12 @@
             } else if (['if', 'for', 'while', 'foreach'].includes(dat.s)) {
               data = { name: dat.s };
               type = 'action';
+
+              if (dat.s === 'if') {
+                data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
+              } else {
+                data.iterator = ''; // TODO
+              }
             } else if (dat.s === 'goto') {
               data = { name: dat.d.find(({ id }) => id === 'LabelName').data };
               type = 'label';
@@ -90,16 +96,6 @@
       return this;
     },
 
-    showFunctionParams(id) {
-      // TODO
-      return this;
-    },
-
-    hideFunctionParams(id) {
-      // TODO
-      return this;
-    },
-
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
         const $el = $(e.target), type = $el.val();
@@ -110,14 +106,14 @@
         });
       },
 
-      'click .callstack-show-params': function (e) {
+      'click .callstack-toggle-params': function (e) {
         e.preventDefault();
-        this.showFunctionParams(null);
-      },
+        const $el = $(e.currentTarget), $params = $el.closest('.callstack-item').find('ul');
 
-      'click .callstack-hide-params': function (e) {
-        e.preventDefault();
-        this.hideFunctionParams(null);
+        $params.toggle($params.is(':hidden'));
+        const $icon = $el.children();
+        $icon.toggleClass('fa-minus');
+        $icon.toggleClass('fa-plus');
       },
 
       'click .inspector-tools > button': function (e) {

@@ -17,12 +17,20 @@
         const current = this.get('stack'), { dat } = utils.getTaskInfo(task);
 
         if (dat) {
-          current.push({
-            isFunction: ['asyncfunction_call', 'executefunctioninseveralthreads', 'executefunction'].includes(dat.s),
-            isLabel: dat.s === 'goto',
-            isLoop: ['for', 'foreach', 'while'].includes(dat.s),
-            id,
-          });
+          let type = '', params = {};
+
+          if (['asyncfunction_call', 'executefunctioninseveralthreads', 'executefunction'].includes(dat.s)) {
+            type = 'function';
+            params = { name: dat.d.find(({ id }) => id === 'FunctionName').data };
+          } else if (['for', 'while', 'foreach'].includes(dat.s)) {
+            type = 'action';
+            params = { name: dat.s };
+          } else if (dat.s === 'goto') {
+            params = { name: dat.d.find(({ id }) => id === 'LabelName').data };
+            type = 'label';
+          }
+
+          if (type) current.push({ id, type, params });
         }
 
         this.set('stack', current);

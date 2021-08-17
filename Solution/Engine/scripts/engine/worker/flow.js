@@ -36,7 +36,7 @@ function success(text)
 
 function debug_variables(list, callback)
 {
-    var res = list.reduce(function (acc, key) {
+    var variables = list.reduce(function (acc, key) {
         if (key.indexOf('GLOBAL:') === 0) {
             acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
         } else {
@@ -49,7 +49,15 @@ function debug_variables(list, callback)
         return acc;
     }, {});
 
-    Browser.DebugVariablesResult(JSON.stringify([res, JSON.parse(ScriptWorker.PickResources()), CYCLES.Data]), _get_function_body(callback));
+    var callstack = CYCLES.Data.map(function (item) {
+        return {
+            label: item._Label,
+            iterator: item._Iterator,
+            arguments: item._Arguments,
+        }
+    }).reverse();
+
+    Browser.DebugVariablesResult(JSON.stringify([variables, JSON.parse(ScriptWorker.PickResources()), callstack]), _get_function_body(callback));
 }
 
 function _read_variables(list)

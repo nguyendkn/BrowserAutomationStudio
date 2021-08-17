@@ -2,8 +2,12 @@
   const { Inspector, JST, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
+    /*
+    [{"OnFail":"","OnSuccess":"","_Label":["function","argument"],"_Params":{},"_Arguments":{"a1":1,"a2":2},"_Iterator":1,"WasNextOrBreak":false}]
+    */
+    
     update(stack) {
-      this.set('stack', stack.reverse());
+      this.set('stack', stack);
     },
 
     defaults: {

@@ -5756,12 +5756,12 @@
 
     function BrowserAutomationStudio_NotRunningTask(Id)
     {
-      if(Id == -3)
-      {
-        VariablesUpdateTakesPlace = false
-        if(VariablesNeedRefresh)
-          BrowserAutomationStudio_AskForVariablesUpdate()
-        return
+      if (Id === -3) {
+        VariablesUpdateTakesPlace = false;
+        if (VariablesNeedRefresh) {
+          BrowserAutomationStudio_AskForVariablesUpdate();
+        }
+        return;
       }
 
       if(typeof(Id) != "undefined" && Id == -2)

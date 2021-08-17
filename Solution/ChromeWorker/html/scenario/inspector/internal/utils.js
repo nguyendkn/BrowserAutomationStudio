@@ -21,8 +21,7 @@
           variable = JSON.stringify(variable);
         }
 
-        VariablesNeedRefresh = true;
-        BrowserAutomationStudio_Execute(`try {
+        VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`try {
           if (${isGlobal}) {
             var obj = JSON.parse(P('basglobal', '${root}') || '{}');
             obj${path} = ${variable};

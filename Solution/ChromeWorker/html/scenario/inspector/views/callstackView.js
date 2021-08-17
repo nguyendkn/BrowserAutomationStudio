@@ -5,7 +5,7 @@
     update(stack) {
       let current = this.get('stack');
 
-      this.set('stack', stack);
+      this.set('stack', stack.reverse());
     },
 
     defaults: {

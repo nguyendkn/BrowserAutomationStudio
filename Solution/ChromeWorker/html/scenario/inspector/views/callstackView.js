@@ -2,10 +2,6 @@
   const { Inspector, JST, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
-    /*
-    [{"OnFail":"","OnSuccess":"","_Label":["function","argument"],"_Params":{},"_Arguments":{"a1":1,"a2":2},"_Iterator":1,"WasNextOrBreak":false}]
-    */
-    
     update(stack) {
       this.set('stack', stack);
     },
@@ -26,13 +22,13 @@
     initialize() {
       const model = new Model();
 
-      // model.on('change:visibility', () => {
-      //   this.filterStack();
-      // });
+      model.on('change:visibility', () => {
+        // this.filterStack();
+      });
 
-      // model.on('change:stack', () => {
-      //   this.renderStack();
-      // });
+      model.on('change:stack', () => {
+        // this.renderStack();
+      });
 
       this.model = model;
     },

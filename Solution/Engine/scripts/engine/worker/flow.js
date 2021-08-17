@@ -49,7 +49,7 @@ function debug_variables(list, callback)
         return acc;
     }, {});
 
-    Browser.DebugVariablesResult(JSON.stringify([res, JSON.parse(ScriptWorker.PickResources()), CYCLES]), _get_function_body(callback));
+    Browser.DebugVariablesResult(JSON.stringify([res, JSON.parse(ScriptWorker.PickResources()), CYCLES.Data]), _get_function_body(callback));
 }
 
 function _read_variables(list)

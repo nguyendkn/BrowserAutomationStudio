@@ -41,8 +41,8 @@
       });
     },
 
-    update() {
-      // TODO
+    update(stack) {
+      console.log(stack);
     },
 
     defaults: {

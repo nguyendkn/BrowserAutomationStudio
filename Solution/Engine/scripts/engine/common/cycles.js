@@ -25,7 +25,7 @@ function Cycle(Next,Break)
 
     this._Break = Break;
     this._Next = Next;
-    this._Argunments = null;
+    this._Arguments = null;
     this._Iterator = 0;
     this.WasNextOrBreak = false;
 

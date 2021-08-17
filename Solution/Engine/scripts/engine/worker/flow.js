@@ -36,14 +36,14 @@ function success(text)
 
 function debug_variables(list, callback)
 {
-    var res = list.reduce(function (acc, v) {
-        if (v.indexOf('GLOBAL:') === 0) {
-            acc[v] = JSON.parse(P('basglobal', v.slice(7)) || '"__UNDEFINED__"');
+    var res = list.reduce(function (acc, key) {
+        if (key.indexOf('GLOBAL:') === 0) {
+            acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
         } else {
             try {
-                acc[v.slice(4)] = truncate_variable(eval(v), 100);
+                acc[key.slice(4)] = truncate_variable(eval(key), 100);
             } catch (e) {
-                acc[v.slice(4)] = '__UNDEFINED__';
+                acc[key.slice(4)] = '__UNDEFINED__';
             }
         }
         return acc;
@@ -95,7 +95,7 @@ function truncate_variable(item, limit) {
             }, item instanceof Array ? [] : {});
         }
 
-        return "__DATE__" + _format_date(item, "yyyy-MM-dd hh:mm:ss t");
+        return '__DATE__' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');
     }
 
     return typeof (item) === 'undefined' ? '__UNDEFINED__' : item;

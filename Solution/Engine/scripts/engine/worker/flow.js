@@ -49,13 +49,13 @@ function debug_variables(list, callback)
         return acc;
     }, {});
 
-    var callstack = CYCLES.Data.map(function (item) {
+    var callstack = CYCLES.Data.slice().reverse().map(function (item) {
         return {
             label: item._Label,
             iterator: item._Iterator,
             arguments: item._Arguments,
         }
-    }).reverse();
+    });
 
     Browser.DebugVariablesResult(JSON.stringify([variables, JSON.parse(ScriptWorker.PickResources()), callstack]), _get_function_body(callback));
 }

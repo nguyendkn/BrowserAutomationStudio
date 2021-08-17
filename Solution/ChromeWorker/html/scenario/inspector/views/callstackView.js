@@ -41,6 +41,10 @@
       });
     },
 
+    update() {
+      // TODO
+    },
+
     defaults: {
       visibility: {
         functions: true,

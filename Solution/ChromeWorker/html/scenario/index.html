@@ -5558,13 +5558,9 @@
     }
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
-      const [variables, resources] = JSON.parse(data);
-      _Inspector.variables.model.update(variables);
-      _Inspector.resources.model.update(resources);
-    }
-
-    function BrowserAutomationStudio_UpdateCallstackResult(data) {
-      console.log(data);
+      _.zip(['variables', 'resources', 'callstack'], JSON.parse(data)).forEach(([type, data]) => {
+        _Inspector[type].model.update(data);
+      });
     }
 
     var IsChangedUsed = false

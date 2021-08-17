@@ -34,8 +34,7 @@ function success(text)
     ScriptWorker.Success(text);
 }
 
-function debug_variables(list, callback)
-{
+function debug_variables(list, callback) {
     var variables = list.reduce(function (acc, key) {
         if (key.indexOf('GLOBAL:') === 0) {
             acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
@@ -92,7 +91,6 @@ function _write_variables(variables)
         GLOBAL["VAR_" + key] = value;
     }
 }
-
 
 function truncate_variable(item, limit) {
     if (item instanceof Object) {

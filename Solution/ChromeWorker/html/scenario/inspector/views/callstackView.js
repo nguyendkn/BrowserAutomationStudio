@@ -2,47 +2,10 @@
   const { Inspector, JST, utils } = Scenario;
 
   const Model = Backbone.Model.extend({
-    initialize() {
-      _GobalModel.on('change:execute_next_id', (__, id) => {
-        let current = this.get('stack');
-
-        _.attempt(() => {
-          const task = _TaskCollection.get(id), { dat } = utils.getTaskInfo(task);
-
-          if (dat) {
-            let type, data = {};
-
-            if (['asyncfunction_call', 'executefunctioninseveralthreads', 'executefunction'].includes(dat.s)) {
-              data = { name: dat.d.find(({ id }) => id === 'FunctionName').data };
-              type = 'function';
-
-              if (dat.s !== 'executefunctioninseveralthreads') {
-                data.params = eval(`(${[...task.get('code').matchAll(/\(.+({.+}).*\)!/g)][0][1]})`);
-              }
-            } else if (['if', 'for', 'while', 'foreach'].includes(dat.s)) {
-              data = { name: dat.s };
-              type = 'action';
-
-              if (dat.s === 'if') {
-                data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
-              } else {
-                data.iterator = ''; // TODO
-              }
-            } else if (dat.s === 'goto') {
-              data = { name: dat.d.find(({ id }) => id === 'LabelName').data };
-              type = 'label';
-            }
-
-            if (type) current = current.concat({ id, type, data });
-          }
-        });
-
-        this.set('stack', current);
-      });
-    },
-
     update(stack) {
-      console.log(stack);
+      let current = this.get('stack');
+
+      this.set('stack', stack);
     },
 
     defaults: {
@@ -62,11 +25,11 @@
       const model = new Model();
 
       model.on('change:visibility', () => {
-        this.filterStack();
+        // this.filterStack();
       });
 
       model.on('change:stack', () => {
-        this.renderStack();
+        // this.renderStack();
       });
 
       this.model = model;

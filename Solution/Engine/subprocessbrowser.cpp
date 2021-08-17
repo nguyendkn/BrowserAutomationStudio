@@ -370,19 +370,6 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicator()->Send(WriteString);
     }
 
-    void SubprocessBrowser::RequestCallstackResult(const QString& data, const QString& callback)
-    {
-        QString WriteString;
-        QXmlStreamWriter xmlWriter(&WriteString);
-        xmlWriter.writeTextElement("RequestCallstackResult",data);
-
-        Worker->SetScript(callback);
-        Worker->SetFailMessage(tr("Timeout during ") + QString("RequestCallstackResult"));
-        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(RequestCallstackResult()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
-        if(Worker->GetProcessComunicator())
-            Worker->GetProcessComunicator()->Send(WriteString);
-    }
-
     void SubprocessBrowser::SendRecaptchaV3List(const QString& action, const QString& callback)
     {
         QString WriteString;
@@ -960,9 +947,6 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "DebugVariablesResult" && token == QXmlStreamReader::StartElement)
             {
                 emit DebugVariablesResult();
-            }else if(xmlReader.name() == "RequestCallstackResult" && token == QXmlStreamReader::StartElement)
-            {
-                emit RequestCallstackResult();   
             }else if(xmlReader.name() == "RecaptchaV3List" && token == QXmlStreamReader::StartElement)
             {
                 emit RecaptchaV3List();

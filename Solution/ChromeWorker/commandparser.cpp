@@ -568,15 +568,6 @@ void CommandParser::Parse(const std::string& Xml)
                 f(value);
         }
 
-        CommandNode = MessagesNode->first_node("RequestCallstackResult");
-        if(CommandNode)
-        {
-            std::string value = CommandNode->value();
-            WORKER_LOG("RequestCallstackResult");
-            for(auto f:EventRequestCallstackResult)
-                f(value);
-        }
-
         CommandNode = MessagesNode->first_node("ScriptFinished");
         if(CommandNode)
         {

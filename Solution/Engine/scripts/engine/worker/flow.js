@@ -34,10 +34,6 @@ function success(text)
     ScriptWorker.Success(text);
 }
 
-function request_callstack(callback) {
-    Browser.RequestCallstackResult(JSON.stringify(CYCLES), _get_function_body(callback));
-}
-
 function debug_variables(list, callback)
 {
     var res = list.reduce(function (acc, v) {
@@ -53,7 +49,7 @@ function debug_variables(list, callback)
         return acc;
     }, {});
 
-    Browser.DebugVariablesResult(JSON.stringify([res, JSON.parse(ScriptWorker.PickResources())]), _get_function_body(callback));
+    Browser.DebugVariablesResult(JSON.stringify([res, JSON.parse(ScriptWorker.PickResources()), CYCLES]), _get_function_body(callback));
 }
 
 function _read_variables(list)

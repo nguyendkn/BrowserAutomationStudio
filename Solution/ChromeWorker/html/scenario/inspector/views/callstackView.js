@@ -3,8 +3,6 @@
 
   const Model = Backbone.Model.extend({
     update(stack) {
-      let current = this.get('stack');
-
       this.set('stack', stack.reverse());
     },
 
@@ -24,13 +22,13 @@
     initialize() {
       const model = new Model();
 
-      model.on('change:visibility', () => {
-        // this.filterStack();
-      });
+      // model.on('change:visibility', () => {
+      //   this.filterStack();
+      // });
 
-      model.on('change:stack', () => {
-        // this.renderStack();
-      });
+      // model.on('change:stack', () => {
+      //   this.renderStack();
+      // });
 
       this.model = model;
     },

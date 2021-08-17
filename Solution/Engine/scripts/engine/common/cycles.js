@@ -445,7 +445,6 @@ function _call(f,a,n)
     c.SetLabel("function");
     c._Arguments = a;
     c.Start();
-
 }
 
 function _prepare_function_and_call(f,a,n)
@@ -503,7 +502,6 @@ function _call_function(f,a,n)
     c.SetLabel("argument");
     c._Arguments = a;
     c.Start();
-
 }
 
 function _call_task(f,a,n)
@@ -522,7 +520,6 @@ function _call_task(f,a,n)
     c.SetLabel("task");
     c._Arguments = a;
     c.Start();
-
 }
 
 function _function_return(v)

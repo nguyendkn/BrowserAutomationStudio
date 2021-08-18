@@ -3,16 +3,23 @@
 
   const Model = Backbone.Model.extend({
     update(stack) {
-      this.set('stack', stack.map(item => {
+      this.set('stack', _.compact(stack.map(item => {
         const task = _TaskCollection.get(item.action), { dat } = utils.getTaskInfo(task);
 
-        return {
-          dat,
-          label: item.label,
-          iterator: item.iterator,
-          arguments: item.arguments,
+        if (dat) {
+          let type, name;
+
+          if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
+            type = 'function';
+          } else {
+            type = 'action';
+          }
+
+          return { ...item, type };
         }
-      }));
+
+        return null;
+      })));
     },
 
     defaults: {

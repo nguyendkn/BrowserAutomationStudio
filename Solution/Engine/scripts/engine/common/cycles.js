@@ -23,7 +23,7 @@ function Cycle(Next,Break)
     this._Label = [];
     this._Params = {};
 
-    this._Id = ScriptWorker.GetCurrentAction();
+    this._Action = ScriptWorker.GetCurrentAction();
     this._Break = Break;
     this._Next = Next;
     this._Arguments = null;

@@ -3,7 +3,16 @@
 
   const Model = Backbone.Model.extend({
     update(stack) {
-      this.set('stack', stack);
+      this.set('stack', stack.map(item => {
+        const task = _TaskCollection.get(item.action), { dat } = utils.getTaskInfo(task);
+
+        return {
+          dat,
+          label: item.label,
+          iterator: item.iterator,
+          arguments: item.arguments,
+        }
+      }));
     },
 
     defaults: {

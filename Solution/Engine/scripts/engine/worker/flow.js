@@ -50,6 +50,7 @@ function debug_variables(list, callback) {
 
     var callstack = CYCLES.Data.slice().reverse().map(function (item) {
         return {
+            id: item._Id,
             label: item._Label,
             iterator: item._Iterator,
             arguments: item._Arguments,

@@ -1,5 +1,5 @@
-(({ Scenario, Backbone }, $, _) => {
-  const { Inspector, JST } = Scenario;
+(({ App, Backbone }, $, _) => {
+  const { Inspector, JST } = App;
 
   const Model = Backbone.Model.extend({
     renameGroup: function (group, name) {

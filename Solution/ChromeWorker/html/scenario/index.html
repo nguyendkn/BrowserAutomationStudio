@@ -1331,7 +1331,7 @@
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
-  <script> window.Scenario = { JST: {}, Inspector: {} }; </script>
+  <script> window.App = { App: {}, Inspector: {} }; </script>
   <script src="jquery-2.2.4.min.js"></script>
   <script src="underscore-min.js"></script>
   <script src="backbone-min.js"></script>
@@ -4071,9 +4071,9 @@
 
     var _VisualizeLabels = new VisualizeLabels()
 
-    var _ActionUpdater = new Scenario.ActionUpdater();
+    var _ActionUpdater = new App.ActionUpdater();
 
-    var _Inspector = new Scenario.Inspector.Main();
+    var _Inspector = new App.Inspector.Main();
 
     _MultiSelect.Init()
 

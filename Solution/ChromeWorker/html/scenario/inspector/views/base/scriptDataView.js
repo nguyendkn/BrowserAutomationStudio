@@ -1,5 +1,5 @@
-(({ Scenario, Backbone }, $, _) => {
-  const { Inspector, utils } = Scenario;
+(({ App, Backbone }, $, _) => {
+  const { Inspector, utils } = App;
 
   const View = Backbone.View.extend({
     initialize() {

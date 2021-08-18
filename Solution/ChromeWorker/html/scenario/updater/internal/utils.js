@@ -1,6 +1,6 @@
-(function ({ Scenario }, $) {
-  Scenario.filterTasks = function (type) {
-    const tasks = _TaskCollection.map((task, index) => ({ ...Scenario.utils.getTaskInfo(task), index }));
+(function ({ App }, $) {
+  App.filterTasks = function (type) {
+    const tasks = _TaskCollection.map((task, index) => ({ ...App.utils.getTaskInfo(task), index }));
 
     return _.filter(tasks, ({ id, dat, isFold, isSelected }) => {
       if (dat && dat.role && dat.role === 'slave') return false;

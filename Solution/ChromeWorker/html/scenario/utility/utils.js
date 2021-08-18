@@ -1,5 +1,5 @@
-(({ Scenario }, $, _) => {
-  Scenario.utils = {
+(({ App }, $, _) => {
+  App.utils = {
     getTaskInfo(task) {
       const dat = _.attempt(() => task.dat());
       const isDamaged = _.isError(dat);

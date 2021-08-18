@@ -1,5 +1,5 @@
-(({ Scenario }, $, _) => {
-  _.extend(Scenario.utils, {
+(({ App }, $, _) => {
+  _.extend(App.utils, {
     updateVariable(variable, pointer, type) {
       const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((data, key, idx) => {
         if (idx === 0) {

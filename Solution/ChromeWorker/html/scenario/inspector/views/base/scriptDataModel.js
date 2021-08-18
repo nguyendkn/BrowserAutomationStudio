@@ -1,5 +1,5 @@
-(({ Scenario, Backbone }, $, _) => {
-  const { Inspector, utils } = Scenario;
+(({ App, Backbone }, $, _) => {
+  const { Inspector, utils } = App;
 
   const Model = Backbone.Model.extend({
     update: function (object) {

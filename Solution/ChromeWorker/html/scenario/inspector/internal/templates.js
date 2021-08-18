@@ -1,4 +1,4 @@
-_.extend(Scenario.JST, {
+_.extend(App.JST, {
   'inspector/modal': _.template(/*html*/`
     <div class="vertical-align-helper">
       <div class="modal-dialog vertical-align-center" role="document">
@@ -97,7 +97,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/variables': _.template(/*html*/`
-    <%= Scenario.JST['inspector/tools'](obj) %>
+    <%= App.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No variables') %></span>
@@ -107,7 +107,7 @@ _.extend(Scenario.JST, {
   `),
 
   'inspector/resources': _.template(/*html*/`
-    <%= Scenario.JST['inspector/tools'](obj) %>
+    <%= App.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none">
         <span style="text-align: center"><%= tr('No resources') %></span>

@@ -335,7 +335,7 @@
     update() {
       const type = this.$('#actionUpdaterSelect').val();
       this.$('.action-updater-select').trigger('blur');
-      const tasks = window.App.filterTasks(type);
+      const tasks = window.App.utils.filterTasks(type);
       this.model.unset('tasks', { silent: true });
       this.model.set('tasks', tasks);
     },

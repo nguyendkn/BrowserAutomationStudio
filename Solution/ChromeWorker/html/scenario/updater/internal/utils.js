@@ -1,5 +1,5 @@
 (function ({ App }, $) {
-  App.filterTasks = function (type) {
+  App.utils.filterTasks = function (type) {
     const tasks = _TaskCollection.map((task, index) => ({ ...App.utils.getTaskInfo(task), index }));
 
     return _.filter(tasks, ({ id, dat, isFold, isSelected }) => {

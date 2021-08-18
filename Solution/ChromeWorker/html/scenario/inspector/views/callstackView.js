@@ -63,11 +63,9 @@
 
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
-        const $el = $(e.target), type = $el.val();
-
         this.model.set('visibility', {
           ...this.model.get('visibility'),
-          [type]: $el.prop('checked')
+          [e.target.value]: e.target.checked
         });
       },
 

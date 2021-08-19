@@ -139,16 +139,17 @@ _.extend(App.JST, {
   'inspector/stack': _.template(/*html*/`
     <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
       <% _.each(stack, item => { %>
-        <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>">
-          <% const hasParams = item.type === 'function' && !_.isEmpty(item.arguments) %>
+        <% const hasParams = item.type === 'function' && !_.isEmpty(item.arguments) %>
+        <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= hasParams ? 'border: 1px solid #C4C4C4; border-left-width: 4px;' : '' %>">
           <div style="display: flex;">
             <div style="flex: 1; display: flex;">
               <span class="callstack-item-name"><%= item.name %></span>
-              <% if (item.type === 'action' && item.name !== 'If') { %>
-                <span>:<%= item.iterator %></span>
-              <% } %>
-              <% if (item.type === 'action' && item.name === 'If') { %>
-                <span>:<%= item.expression %></span>
+              <% if (item.type === 'action') { %>
+                <% if (item.name === 'If') { %>
+                  <span>:<%= item.expression %></span>
+                <% } else { %>
+                  <span>:<%= item.iterator %></span>
+                <% } %>
               <% } %>
             </div>
             <% if (hasParams) { %>

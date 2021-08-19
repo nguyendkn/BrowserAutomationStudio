@@ -10,6 +10,7 @@
           const data = {};
 
           if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
+            data.name = dat.d.find(({ id }) => id === 'FunctionName').data;
             data.type = 'function';
           } else {
             if (dat.s === 'if') {

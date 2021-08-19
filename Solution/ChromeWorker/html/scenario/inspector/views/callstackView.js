@@ -13,9 +13,10 @@
             type = 'function';
           } else {
             type = 'action';
+            name = _.upperFirst(dat.s);
           }
 
-          return { ...item, type };
+          return { ...item, type, name };
         }
 
         return null;
@@ -39,11 +40,11 @@
       const model = new Model();
 
       model.on('change:visibility', () => {
-        // this.filterStack();
+        this.filterStack();
       });
 
       model.on('change:stack', () => {
-        // this.renderStack();
+        this.renderStack();
       });
 
       this.model = model;

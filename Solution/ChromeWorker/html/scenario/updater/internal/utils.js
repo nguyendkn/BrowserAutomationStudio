@@ -52,6 +52,14 @@
       return arr.slice(...args);
     },
 
+    upperFirst: function (str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    },
+
+    lowerFirst: function (str) {
+      return str.charAt(0).toLowerCase() + str.slice(1);
+    },
+
     isString: function (obj) {
       return Object.prototype.toString.call(obj) === '[object String]';
     },
@@ -61,7 +69,7 @@
     },
 
     sleep: function (time) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         setTimeout(() => resolve(), time);
       });
     }

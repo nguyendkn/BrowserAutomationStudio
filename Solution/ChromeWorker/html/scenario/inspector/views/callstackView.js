@@ -7,16 +7,19 @@
         const task = _TaskCollection.get(item.action), { dat } = utils.getTaskInfo(task);
 
         if (dat) {
-          let type, name;
+          const data = {};
 
           if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
-            type = 'function';
+            data.type = 'function';
           } else {
-            type = 'action';
-            name = _.upperFirst(dat.s);
+            if (dat.s === 'if') {
+              data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
+            }
+            data.name = _.upperFirst(dat.s);
+            data.type = 'action';
           }
 
-          return { ...item, type, name };
+          return { ...item, ...data };
         }
 
         return null;

@@ -190,7 +190,7 @@
 
 #callstack .callstack-item {
   background-repeat: no-repeat;
-  background-position: 5px center;
+  background-position: 5px;
   line-height: 18px;
   font-size: 16px;
   color: #434343;

@@ -145,10 +145,13 @@ _.extend(App.JST, {
         <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>">
           <% const hasParams = item.type === 'function' && !_.isEmpty(item.arguments) %>
           <div style="display: flex;">
-            <div style="flex: 1;">
+            <div style="flex: 1; display: flex;">
               <span><%= item.name %></span>
               <% if (item.type === 'action' && item.name !== 'If') { %>
                 <span>:<%= item.iterator %></span>
+              <% } %>
+              <% if (item.type === 'action' && item.name === 'If') { %>
+                <span>:<%= item.expression %></span>
               <% } %>
             </div>
             <% if (hasParams) { %>

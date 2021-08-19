@@ -65,7 +65,7 @@
 }
 
 .inspector-panel-data {
-  padding: 8px 15px;
+  padding: 8px 8px;
   font-weight: 400;
   font-size: 10px;
   overflow: auto;
@@ -217,13 +217,14 @@
 }
 
 #callstack > .inspector-tools > ul > li {
-  min-width: 100px;
+  min-width: max-content;
   padding: 3px 10px;
   user-select: none;
   -webkit-user-drag: none;
 }
 
 #callstack > .inspector-tools > ul {
+  justify-content: space-around;
   list-style: none;
   display: flex;
   padding: 0;

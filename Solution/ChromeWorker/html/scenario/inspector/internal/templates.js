@@ -117,7 +117,7 @@ _.extend(App.JST, {
   `),
 
   'inspector/callstack': _.template(/*html*/`
-    <div class="inspector-tools" style="display: flex">
+    <div class="inspector-tools" style="background: #fafafa;">
       <ul class="" style="flex: 1">
         <% _.each(['Functions', 'Actions', 'Labels'], type => { %>
           <li class="">

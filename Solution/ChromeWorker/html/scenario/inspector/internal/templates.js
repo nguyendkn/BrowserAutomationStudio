@@ -141,11 +141,11 @@ _.extend(App.JST, {
 
   'inspector/stack': _.template(/*html*/`
     <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
-      <% _.each(stack, ({ type, data, id }) => { %>
-        <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>">
-          <% const hasParams = type === 'function' && !_.isEmpty(data.params) %>
+      <% _.each(stack, item => { %>
+        <li class="callstack-item" data-id="<%= item.id %>" data-type="<%= item.type %>">
+          <% const hasParams = item.type === 'function' && !_.isEmpty(item.arguments) %>
           <div style="display: flex;">
-            <span style="flex: 1;"><%= data.name %></span>
+            <span style="flex: 1;"><%= item.name %></span>
             <% if (hasParams) { %>
               <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button">
                 <i class="fa fa-plus"></i>
@@ -154,7 +154,7 @@ _.extend(App.JST, {
           </div>
           <% if (hasParams) { %>
             <ul style="display: none; list-style: none; flex-flow: column; padding: 0; margin: 0;">
-              <% _.each(data.params, (value, name) => { %>
+              <% _.each(item.arguments, (value, name) => { %>
                 <li class="callstack-function-param">
                   <span><%= name %>:</span>
                   <span><%= value %></span>

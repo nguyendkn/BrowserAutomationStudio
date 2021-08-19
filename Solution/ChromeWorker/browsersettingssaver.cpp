@@ -44,7 +44,13 @@ void BrowserSettingsSaver::Save()
             for(std::pair<std::string, std::string>& Header:Headers)
             {
                 AdditionalHeadersArray.push_back(picojson::value(Header.first));
-                AdditionalHeadersArray.push_back(picojson::value(Header.second));
+                if(Header.first == "Accept-Language")
+                {
+                    AdditionalHeadersArray.push_back(picojson::value(LanguagesHeader));
+                }else
+                {
+                    AdditionalHeadersArray.push_back(picojson::value(Header.second));
+                }
             }
 
             AdditionalHeaders = picojson::value(AdditionalHeadersArray).serialize();

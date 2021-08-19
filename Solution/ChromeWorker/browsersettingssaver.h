@@ -14,6 +14,7 @@ struct BrowserSettingsSaver
 
     //Languages
     std::vector<std::string> Languages;
+    std::string LanguagesHeader;
     std::string UserAgent;
 
     //Record mode

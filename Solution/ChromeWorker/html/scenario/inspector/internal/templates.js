@@ -140,7 +140,7 @@ _.extend(App.JST, {
     <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
       <% _.each(stack, item => { %>
         <% const hasParams = item.type === 'function' && !_.isEmpty(item.arguments) %>
-        <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= hasParams ? 'border: 1px solid #C4C4C4; border-left-width: 4px;' : '' %>">
+        <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= hasParams ? 'border-color: #C4C4C4' : '' %>">
           <div style="display: flex;">
             <div style="flex: 1; display: flex;">
               <span class="callstack-item-name"><%= item.name %></span>
@@ -160,9 +160,9 @@ _.extend(App.JST, {
           </div>
           <% if (hasParams) { %>
             <ul style="display: none; list-style: none; flex-flow: column; padding: 0; margin: 0;">
-              <% _.each(item.arguments, (value, name) => { %>
+              <% _.each(item.arguments, (value, param) => { %>
                 <li class="callstack-function-param">
-                  <span><%= name %>:</span>
+                  <span><%= param %>:</span>
                   <span><%= value %></span>
                 </li>
               <% }) %>

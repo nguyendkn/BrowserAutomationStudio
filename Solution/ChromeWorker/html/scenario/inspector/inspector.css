@@ -176,6 +176,14 @@
  * Callstack styles *
  ********************/
 
+#callstack .callstack-function-param > span:first-of-type {
+
+}
+
+#callstack .callstack-function-param > span:last-of-type {
+  
+}
+
 #callstack .callstack-item[data-type=function] {
   background-image: url(../icons/flash.svg);
 }
@@ -189,6 +197,8 @@
 }
 
 #callstack .callstack-item {
+  border: 1px solid transparent;
+  border-left-width: 4px;
   background-repeat: no-repeat;
   background-position: 5px;
   line-height: 18px;
@@ -197,6 +207,8 @@
   padding: 5px 25px;
   user-select: none;
   -webkit-user-drag: none;
+  flex-flow: column;
+  display: flex;
 }
 
 #callstack > .inspector-tools > ul > li {

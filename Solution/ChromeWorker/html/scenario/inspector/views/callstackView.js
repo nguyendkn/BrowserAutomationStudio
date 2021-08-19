@@ -101,9 +101,9 @@
         $icon.toggleClass('fa-plus');
       },
 
-      'click .callstack-item': function (e) {
+      'click .callstack-item-name': function (e) {
         e.preventDefault();
-        BrowserAutomationStudio_FocusAction(e.currentTarget.dataset.id, false);
+        BrowserAutomationStudio_FocusAction(e.target.closest('li').dataset.id, false);
       }
     }
   });

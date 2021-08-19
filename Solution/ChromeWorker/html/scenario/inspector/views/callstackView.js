@@ -104,11 +104,6 @@
       'click .callstack-item': function (e) {
         e.preventDefault();
         BrowserAutomationStudio_FocusAction(e.currentTarget.dataset.id, false);
-      },
-
-      'click .inspector-tools > button': function (e) {
-        e.preventDefault();
-        this.model.set('stack', []);
       }
     }
   });

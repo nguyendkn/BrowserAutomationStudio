@@ -118,9 +118,6 @@ _.extend(App.JST, {
 
   'inspector/callstack': _.template(/*html*/`
     <div class="inspector-tools" style="display: flex">
-      <button class="" title="<%= tr('Clear stack') %>" type="button">
-        <i class="fa fa-refresh" aria-hidden="true"></i>
-      </button>
       <ul class="" style="flex: 1">
         <% _.each(['Functions', 'Actions', 'Labels'], type => { %>
           <li class="">

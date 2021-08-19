@@ -141,8 +141,8 @@ _.extend(App.JST, {
       <% _.each(stack, item => { %>
         <% const hasParams = item.type === 'function' && !_.isEmpty(item.arguments) %>
         <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= hasParams ? 'border-color: #C4C4C4' : '' %>">
-          <div style="display: flex;">
-            <div style="flex: 1; display: flex;">
+          <div style="display: flex; justify-content: space-between;">
+            <div style="display: flex;">
               <span class="callstack-item-name"><%= item.name %></span>
               <% if (item.type === 'action') { %>
                 <% if (item.name === 'If') { %>

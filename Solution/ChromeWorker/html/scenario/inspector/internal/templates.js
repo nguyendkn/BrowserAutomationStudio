@@ -139,7 +139,7 @@ _.extend(App.JST, {
   'inspector/stack': _.template(/*html*/`
     <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
       <% _.each(stack, item => { %>
-        <% const hasParams = item.type === 'function' && !_.isEmpty(item.arguments) %>
+        <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? 'params' + item.action : '' %>
         <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= hasParams ? 'border-color: #C4C4C4' : '' %>">
           <div style="display: flex; justify-content: space-between;">
             <div style="display: flex;">
@@ -152,14 +152,14 @@ _.extend(App.JST, {
                 <% } %>
               <% } %>
             </div>
-            <% if (hasParams) { %>
-              <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button" data-toggle="collapse" data-target="#params<%= item.action %>" aria-expanded="false" aria-controls="params<%= item.action %>">
+            <% if (paramsId) { %>
+              <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="false" aria-controls="<%= paramsId %>">
                 <i class="fa fa-plus"></i>
               </button>
             <% } %>
           </div>
-          <% if (hasParams) { %>
-            <ul class="collapse" style="list-style: none; flex-flow: column; padding: 0; margin: 0;" id="params<%= item.action %>">
+          <% if (paramsId) { %>
+            <ul class="collapse" style="list-style: none; flex-flow: column; padding: 0; margin: 0;" id="<%= paramsId %>">
               <% _.each(item.arguments, (value, param) => { %>
                 <li class="callstack-function-param">
                   <span><%= param %>:</span>

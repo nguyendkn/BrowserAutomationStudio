@@ -139,16 +139,16 @@ _.extend(App.JST, {
   'inspector/stack': _.template(/*html*/`
     <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
       <% _.each(stack, item => { %>
-        <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? 'params' + item.action : '' %>
-        <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= hasParams ? 'border-color: #C4C4C4' : '' %>">
+        <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '' %>
+        <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= paramsId ? 'border-color: #C4C4C4' : '' %>">
           <div style="display: flex; justify-content: space-between;">
             <div style="display: flex;">
-              <span class="callstack-item-name"><%= item.name %></span>
+              <span class="callstack-item-name"><%= item.name + (item.type === 'action' ? ':' : '') %></span>
               <% if (item.type === 'action') { %>
                 <% if (item.name === 'If') { %>
-                  <span>:<%= item.expression %></span>
+                  <span><%= item.expression %></span>
                 <% } else { %>
-                  <span>:<%= item.iterator %></span>
+                  <span><%= item.iterator %></span>
                 <% } %>
               <% } %>
             </div>

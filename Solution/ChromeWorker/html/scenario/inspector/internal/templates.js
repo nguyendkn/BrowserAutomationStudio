@@ -122,7 +122,7 @@ _.extend(App.JST, {
         <% _.each(['Functions', 'Actions', 'Labels'], type => { %>
           <li class="">
             <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
-            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
+            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= filters[lower] ? 'checked' : '' %>>
             <label for="<%= id %>"><%= type %></label>
           </li>
         <% }) %>
@@ -201,7 +201,7 @@ _.extend(App.JST, {
           <% _.each(['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null'], type => { %>
             <li class="inspector-filter-menu-item">
               <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
-              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= visibility[lower] ? 'checked' : '' %>>
+              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= filters[lower] ? 'checked' : '' %>>
               <label for="<%= id %>"><%= type %></label>
             </li>
           <% }) %>

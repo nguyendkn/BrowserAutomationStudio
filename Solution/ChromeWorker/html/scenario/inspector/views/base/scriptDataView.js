@@ -19,7 +19,7 @@
         });
       }
 
-      model.on('change:visibility', () => {
+      model.on('change:filters', () => {
         this.filterItems();
       });
 
@@ -92,14 +92,14 @@
 
     filterItems() {
       const query = this.$('.inspector-filter-input').val().toLowerCase();
-      const visibility = this.model.get('visibility');
+      const filters = this.model.get('filters');
 
       for (const el of this.$('.jst-group')) {
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
         const $visible = $items.filter((__, el) => {
           const $item = $(el), { dataset } = $item.children('[data-path]')[0];
-          const visible = visibility[dataset.type];
+          const visible = filters[dataset.type];
 
           if (query.length) {
             const $label = $item.children('.jst-label');
@@ -147,8 +147,8 @@
 
     events: {
       'change .inspector-filter-menu-item > input': function (e) {
-        this.model.set('visibility', {
-          ...this.model.get('visibility'),
+        this.model.set('filters', {
+          ...this.model.get('filters'),
           [e.target.value]: e.target.checked
         });
       },

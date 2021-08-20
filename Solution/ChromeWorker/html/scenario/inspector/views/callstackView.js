@@ -28,7 +28,7 @@
     },
 
     defaults: {
-      visibility: {
+      filters: {
         functions: true,
         actions: true,
         labels: true
@@ -42,7 +42,7 @@
 
     initialize() {
       const model = new Model()
-        .on('change:visibility', () => {
+        .on('change:filters', () => {
           this.filterStack();
         })
         .on('change:stack', () => {
@@ -78,7 +78,7 @@
     },
 
     filterStack() {
-      _.each(this.model.get('visibility'), (visible, type) => {
+      _.each(this.model.get('filters'), (visible, type) => {
         this.$(`[data-type="${type.slice(0, -1)}"]`).toggle(visible);
       });
 
@@ -87,8 +87,8 @@
 
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
-        this.model.set('visibility', {
-          ...this.model.get('visibility'),
+        this.model.set('filters', {
+          ...this.model.get('filters'),
           [e.target.value]: e.target.checked
         });
       },

@@ -47,7 +47,7 @@
       source: {},
       state: {},
       cache: [],
-      visibility: {
+      filters: {
         undefined: true,
         boolean: true,
         groups: false,

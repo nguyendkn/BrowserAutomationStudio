@@ -160,7 +160,7 @@ _.extend(App.JST, {
             <% } %>
           </div>
           <% if (paramsId) { %>
-            <ul class="collapse" style="list-style: none; flex-flow: column; padding: 0; margin: 0;" id="<%= paramsId %>">
+            <ul class="callstack-function-params collapse" id="<%= paramsId %>">
               <% _.each(item.arguments, (value, param) => { %>
                 <li class="callstack-function-param">
                   <span><%= param %>:</span>

@@ -176,33 +176,52 @@
  * Callstack styles *
  ********************/
 
-#callstack .callstack-toggle-params[aria-expanded=false] > .fa-minus {
+.callstack-toggle-params[aria-expanded=false] > .fa-minus {
   display: none;
 }
 
-#callstack .callstack-toggle-params[aria-expanded=true] > .fa-plus {
+.callstack-toggle-params[aria-expanded=true] > .fa-plus {
   display: none;
 }
 
-#callstack .callstack-item[data-type=function] {
+.callstack-function-param > span:first-of-type {
+  font-weight: 600;
+  color: #5a5a5a;
+}
+
+.callstack-function-param > span:last-of-type {
+  font-weight: 400;
+  color: #838383;
+}
+
+.callstack-item[data-type=function] {
   background-image: url(../icons/flash.svg);
 }
 
-#callstack .callstack-item[data-type=action] {
+.callstack-item[data-type=action] {
   background-image: url(../icons/gear.svg);
 }
 
-#callstack .callstack-item[data-type=label] {
+.callstack-item[data-type=label] {
   background-image: url(../icons/tag.svg);
 }
 
-#callstack .callstack-toggle-params {
+.callstack-function-params {
+  font-size: smaller;
+  flex-flow: column;
+  list-style: none;
+  padding: 0 10px;
+  margin: 0 0px;
+}
+
+.callstack-toggle-params {
   background: transparent;
+  color: #606060;
   outline: none;
   border: none;
 }
 
-#callstack .callstack-item {
+.callstack-item {
   border: 1px solid transparent;
   border-left-width: 4px;
   background-repeat: no-repeat;

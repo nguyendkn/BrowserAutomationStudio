@@ -41,15 +41,13 @@
     template: JST['inspector/callstack'],
 
     initialize() {
-      const model = new Model();
-
-      model.on('change:visibility', () => {
-        this.filterStack();
-      });
-
-      model.on('change:stack', () => {
-        this.renderStack();
-      });
+      const model = new Model()
+        .on('change:visibility', () => {
+          this.filterStack();
+        })
+        .on('change:stack', () => {
+          this.renderStack();
+        });
 
       this.model = model;
     },

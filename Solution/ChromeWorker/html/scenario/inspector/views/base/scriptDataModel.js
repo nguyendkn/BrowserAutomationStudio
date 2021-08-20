@@ -7,8 +7,8 @@
       const updates = this.get('updates');
       let cache = this.get('cache');
 
-      const diff = $.each(jsonpatch.compare(this.get('source'), source), (__, { path, op }) => {
-        const time = performance.now();
+      const diff = jsonpatch.compare(this.get('source'), source); diff.forEach(item => {
+        const { path, op } = item, time = performance.now();
 
         if (!_.has(metadata, path)) {
           metadata[path] = { count: 6, usages: 1, addedAt: time, modifiedAt: time };

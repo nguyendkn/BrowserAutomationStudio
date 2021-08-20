@@ -1,4 +1,4 @@
-(function ({ App }, $) {
+(function ({ App }, $, _) {
   App.utils.filterTasks = function (type) {
     const tasks = _TaskCollection.map((task, index) => ({ ...App.utils.getTaskInfo(task), index }));
 
@@ -74,4 +74,4 @@
       });
     }
   });
-})(window, jQuery);
+})(window, jQuery, _);

@@ -2,13 +2,12 @@
   const { Inspector, utils } = App;
 
   const Model = Backbone.Model.extend({
-    update: function (object) {
+    update: function (source) {
       const metadata = this.get('metadata');
       const updates = this.get('updates');
-      const source = this.get('source');
       let cache = this.get('cache');
 
-      const diff = $.each(jsonpatch.compare(source, object), (__, { path, op }) => {
+      const diff = $.each(jsonpatch.compare(this.get('source'), source), (__, { path, op }) => {
         const time = performance.now();
 
         if (!_.has(metadata, path)) {
@@ -24,7 +23,7 @@
       });
 
       this.set('updates', updates + !!diff.length);
-      this.set('source', object);
+      this.set('source', source);
       this.set('cache', cache);
 
       if (this.get('allowHighlight')) {

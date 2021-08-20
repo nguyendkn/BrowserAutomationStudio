@@ -2,8 +2,8 @@
   const { Inspector, JST, utils } = App;
 
   const Model = Backbone.Model.extend({
-    update: function (object) {
-      this.set('stack', _.compact(object.map(item => {
+    update: function (source) {
+      this.set('stack', _.compact(source.map(item => {
         const task = _TaskCollection.get(item.action), { dat } = utils.getTaskInfo(task);
 
         if (dat) {

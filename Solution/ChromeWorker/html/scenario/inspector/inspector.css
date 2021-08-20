@@ -194,23 +194,29 @@
   color: #838383;
 }
 
-.callstack-item[data-type=function] {
+.callstack-item[data-type=function] > div {
   background-image: url(../icons/flash.svg);
 }
 
-.callstack-item[data-type=action] {
+.callstack-item[data-type=action] > div {
   background-image: url(../icons/gear.svg);
 }
 
-.callstack-item[data-type=label] {
+.callstack-item[data-type=label] > div {
   background-image: url(../icons/tag.svg);
+}
+
+.callstack-item[data-type] > div {
+  background-position: 0 center;
+  background-repeat: no-repeat;
+  padding-left: 20px;
 }
 
 .callstack-function-params {
   font-size: smaller;
   flex-flow: column;
   list-style: none;
-  padding: 0 10px;
+  padding: 0 20px;
   margin: 0 0px;
 }
 
@@ -224,12 +230,10 @@
 .callstack-item {
   border: 1px solid transparent;
   border-left-width: 4px;
-  background-repeat: no-repeat;
-  background-position: 5px;
   line-height: 18px;
   font-size: 16px;
   color: #434343;
-  padding: 5px 5px 5px 25px;
+  padding: 5px;
   user-select: none;
   -webkit-user-drag: none;
   flex-flow: column;

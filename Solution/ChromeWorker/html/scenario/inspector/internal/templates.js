@@ -143,7 +143,7 @@ _.extend(App.JST, {
         <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= paramsId ? 'border-color: #C4C4C4' : '' %>">
           <div style="display: flex; justify-content: space-between;">
             <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-              <span><%= item.name + (item.type === 'action' ? ':' : '') %></span>
+              <span class="callstack-item-name"><%= item.name + (item.type === 'action' ? ':' : '') %></span>
               <% if (item.type === 'action') { %>
                 <% if (item.name === 'If') { %>
                   <span style="color: #838383; font-size: 95%;"><%= item.expression %></span>

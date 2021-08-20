@@ -91,12 +91,6 @@
         });
       },
 
-      'click .callstack-toggle-params': function (e) {
-        const $el = $(e.currentTarget).children();
-        $el.toggleClass('fa-minus');
-        $el.toggleClass('fa-plus');
-      },
-
       'click .callstack-item-name': function (e) {
         e.preventDefault();
         BrowserAutomationStudio_FocusAction(e.target.closest('li').dataset.id, false);

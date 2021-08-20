@@ -154,6 +154,7 @@ _.extend(App.JST, {
             </div>
             <% if (paramsId) { %>
               <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="false" aria-controls="<%= paramsId %>">
+                <i class="fa fa-minus"></i>
                 <i class="fa fa-plus"></i>
               </button>
             <% } %>

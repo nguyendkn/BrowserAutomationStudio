@@ -175,12 +175,12 @@
  * Callstack styles *
  ********************/
 
-#callstack .callstack-function-param > span:first-of-type {
-
+#callstack .callstack-toggle-params[aria-expanded=false] > .fa-minus {
+  display: none;
 }
 
-#callstack .callstack-function-param > span:last-of-type {
-  
+#callstack .callstack-toggle-params[aria-expanded=true] > .fa-plus {
+  display: none;
 }
 
 #callstack .callstack-item[data-type=function] {

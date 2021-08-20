@@ -137,41 +137,43 @@ _.extend(App.JST, {
   `),
 
   'inspector/stack': _.template(/*html*/`
-    <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
-      <% _.each(stack, item => { %>
-        <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '' %>
-        <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= paramsId ? 'border-color: #C4C4C4' : '' %>">
-          <div style="display: flex; justify-content: space-between;">
-            <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-              <span class="callstack-item-name"><%= item.name + (item.type === 'action' ? ':' : '') %></span>
-              <% if (item.type === 'action') { %>
-                <% if (item.name === 'If') { %>
-                  <span style="color: #838383; font-size: 95%;"><%= item.expression %></span>
-                <% } else { %>
-                  <span style="color: #838383; font-size: 95%;"><%= item.iterator %></span>
+    <% if (stack.length) { %>
+      <ul class="callstack-data" style="display: flex; list-style: none; flex-flow: column; padding: 0; margin: 0;">
+        <% _.each(stack, item => { %>
+          <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '' %>
+          <li class="callstack-item" data-id="<%= item.action %>" data-type="<%= item.type %>" style="<%= paramsId ? 'border-color: #C4C4C4' : '' %>">
+            <div style="display: flex; justify-content: space-between;">
+              <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                <span class="callstack-item-name"><%= item.name + (item.type === 'action' ? ':' : '') %></span>
+                <% if (item.type === 'action') { %>
+                  <% if (item.name === 'If') { %>
+                    <span style="color: #838383; font-size: 95%;"><%= item.expression %></span>
+                  <% } else { %>
+                    <span style="color: #838383; font-size: 95%;"><%= item.iterator %></span>
+                  <% } %>
                 <% } %>
+              </div>
+              <% if (paramsId) { %>
+                <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="false" aria-controls="<%= paramsId %>">
+                  <i class="fa fa-minus"></i>
+                  <i class="fa fa-plus"></i>
+                </button>
               <% } %>
             </div>
             <% if (paramsId) { %>
-              <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="false" aria-controls="<%= paramsId %>">
-                <i class="fa fa-minus"></i>
-                <i class="fa fa-plus"></i>
-              </button>
+              <ul class="callstack-function-params collapse" id="<%= paramsId %>">
+                <% _.each(item.arguments, (value, param) => { %>
+                  <li class="callstack-function-param">
+                    <span><%= param %>:</span>
+                    <span><%= value %></span>
+                  </li>
+                <% }) %>
+              </ul>
             <% } %>
-          </div>
-          <% if (paramsId) { %>
-            <ul class="callstack-function-params collapse" id="<%= paramsId %>">
-              <% _.each(item.arguments, (value, param) => { %>
-                <li class="callstack-function-param">
-                  <span><%= param %>:</span>
-                  <span><%= value %></span>
-                </li>
-              <% }) %>
-            </ul>
-          <% } %>
-        </li>
-      <% }) %>
-    </ul>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
   `),
 
   'inspector/tools': _.template(/*html*/`

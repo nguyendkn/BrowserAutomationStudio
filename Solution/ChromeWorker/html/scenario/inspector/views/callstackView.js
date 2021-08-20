@@ -57,19 +57,23 @@
         this.$el.html(this.template(this.model.toJSON()));
       }
 
-      return this;
+      return this.renderStack();
     },
 
     renderStack() {
-      const content = JST['inspector/stack'](this.model.toJSON());
+      const $data = this.$('.inspector-panel-data');
+      const $info = this.$('.inspector-panel-info');
+      const size = _.size(this.model.get('stack'));
 
-      morphdom(this.el.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${content}</div>`, {
+      morphdom($data[0], `<div class="inspector-panel-data">${JST['inspector/stack'](this.model.toJSON())}</div>`, {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         onNodeDiscarded: node => { },
         onNodeAdded: node => { },
         childrenOnly: true
       });
 
+      $data.toggle(size !== 0);
+      $info.toggle(size === 0);
       return this;
     },
 

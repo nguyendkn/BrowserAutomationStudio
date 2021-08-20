@@ -153,13 +153,13 @@ _.extend(App.JST, {
               <% } %>
             </div>
             <% if (hasParams) { %>
-              <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button">
+              <button class="callstack-toggle-params" title="<%= tr('Toggle function params') %>" type="button" data-toggle="collapse" data-target="#params<%= item.action %>" aria-expanded="false" aria-controls="params<%= item.action %>">
                 <i class="fa fa-plus"></i>
               </button>
             <% } %>
           </div>
           <% if (hasParams) { %>
-            <ul style="display: none; list-style: none; flex-flow: column; padding: 0; margin: 0;">
+            <ul class="collapse" style="list-style: none; flex-flow: column; padding: 0; margin: 0;" id="params<%= item.action %>">
               <% _.each(item.arguments, (value, param) => { %>
                 <li class="callstack-function-param">
                   <span><%= param %>:</span>

@@ -92,13 +92,9 @@
       },
 
       'click .callstack-toggle-params': function (e) {
-        e.preventDefault();
-        const $el = $(e.currentTarget), $params = $el.closest('.callstack-item').find('ul');
-
-        $params.toggle($params.is(':hidden'));
-        const $icon = $el.children();
-        $icon.toggleClass('fa-minus');
-        $icon.toggleClass('fa-plus');
+        const $el = $(e.currentTarget).children();
+        $el.toggleClass('fa-minus');
+        $el.toggleClass('fa-plus');
       },
 
       'click .callstack-item-name': function (e) {

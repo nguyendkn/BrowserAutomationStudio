@@ -20,7 +20,6 @@
       filters: {
         functions: true,
         actions: true,
-        labels: true
       },
       stack: []
     }

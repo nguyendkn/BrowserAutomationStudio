@@ -4,7 +4,7 @@
   const Model = Backbone.Model.extend({
     update: function (source) {
       this.set('stack', source.filter(item => item.info.name).map(item => {
-        const { info } = item;
+        const { info } = item; delete item.info;
 
         if (!(['If', 'For', 'While', 'Foreach'].includes(info.name))) {
           info.type = 'function';

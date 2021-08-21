@@ -443,6 +443,7 @@ function _call(f,a,n)
         f();
 
     },n);
+    _set_function_info({ name: f.name }, c);
     c.SetLabel("function");
     c._Arguments = a;
     c.Start();
@@ -499,7 +500,7 @@ function _call_function(f,a,n)
         f();
 
     },n);
-    c._Info[name] = f.name;
+    _set_function_info({ name: f.name }, c);
     c.SetLabel("function");
     c.SetLabel("argument");
     c._Arguments = a;
@@ -517,7 +518,7 @@ function _call_task(f,a,n)
         f();
 
     },n);
-    c._Info[name] = f.name;
+    _set_function_info({ name: f.name }, c);
     c.SetLabel("function");
     c.SetLabel("argument");
     c.SetLabel("task");
@@ -652,8 +653,8 @@ function _long_goto(label, offset, reverse, callback)
     ScriptWorker.RunSubScript()
 }
 
-function _set_function_info(info) {
+function _set_function_info(info, cycle) {
     if (!ScriptWorker.GetIsRecord()) return;
-    var c = CYCLES.Current();
+    var c = cycle || CYCLES.Current();
     if (c) c._Info = info;
 }

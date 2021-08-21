@@ -12,7 +12,7 @@
           info.type = 'action';
         }
 
-        return { ...item, ...info };
+        return { ...item, ...info }
       }));
     },
 
@@ -31,10 +31,10 @@
     initialize() {
       const model = new Model()
         .on('change:filters', () => {
-          this.filterStack();
+          this.filterStack()
         })
         .on('change:stack', () => {
-          this.renderStack();
+          this.renderStack()
         });
 
       this.model = model;

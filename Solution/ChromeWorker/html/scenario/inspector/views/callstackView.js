@@ -84,7 +84,7 @@
 
       'click .callstack-item-name': function (e) {
         e.preventDefault();
-        BrowserAutomationStudio_FocusAction(e.target.closest('li').dataset.id, false);
+        BrowserAutomationStudio_FocusAction(e.target.closest('li').dataset.id);
       }
     }
   });

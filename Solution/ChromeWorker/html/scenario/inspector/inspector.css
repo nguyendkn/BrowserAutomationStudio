@@ -102,6 +102,8 @@
   justify-content: center;
   background: #fafafa;
   align-items: center;
+  text-align: center;
+  user-select: none;
   display: flex;
   flex: 1;
 }

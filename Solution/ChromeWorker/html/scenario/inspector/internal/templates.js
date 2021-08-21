@@ -69,7 +69,7 @@ _.extend(App.JST, {
 
   'inspector/main': _.template(/*html*/`
     <div class="inspector-content">
-      <div class="inspector-header" style="display: flex;">
+      <div class="inspector-header" style="display: flex; border-bottom: thin solid #e0e0e0;">
         <ul class="inspector-nav" role="tablist">
           <li class="inspector-nav-item active" role="presentation">
             <a href="#variables" aria-controls="variables" role="tab" data-toggle="tab"><%= tr('Variables') %></a>
@@ -81,7 +81,7 @@ _.extend(App.JST, {
             <a href="#callstack" aria-controls="callstack" role="tab" data-toggle="tab"><%= tr('Callstack') %></a>
           </li>
         </ul>
-        <button id="inspectorClose" type="button" style="min-width: 55px; border: none; background: #fafafa;">
+        <button id="inspectorClose" type="button" style="min-width: 56px; border: none; background: #fafafa;">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
       </div>
@@ -91,7 +91,7 @@ _.extend(App.JST, {
         <div class="inspector-tab" id="callstack" role="tabpanel"></div>
       </div>
       <div class="inspector-notice" style="display: none;">
-        <span style="text-align: center; user-select: none;"><%= tr("Data will be loaded at the next script pause") %></span>
+        <span><%= tr("Data will be loaded at the next script pause") %></span>
       </div>
     </div>
   `),

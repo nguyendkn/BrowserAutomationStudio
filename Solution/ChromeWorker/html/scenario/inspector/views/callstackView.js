@@ -3,7 +3,7 @@
 
   const Model = Backbone.Model.extend({
     update: function (source) {
-      this.set('stack', source.map(item => {
+      this.set('stack', source.filter(item => item.info.name).map(item => {
         const { info } = item;
 
         if (!(['If', 'For', 'While', 'Foreach'].includes(info.name))) {

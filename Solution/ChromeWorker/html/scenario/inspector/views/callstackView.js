@@ -3,28 +3,34 @@
 
   const Model = Backbone.Model.extend({
     update: function (source) {
-      this.set('stack', _.compact(source.map(item => {
-        const task = _TaskCollection.get(item.action), { dat } = utils.getTaskInfo(task);
+      const stack = _.compact(source.map(item => {
+        const task = _TaskCollection.get(item.action);
 
-        if (dat) {
-          const data = {};
+        if (task) {
+          const { dat } = utils.getTaskInfo(task);
 
-          if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
-            data.name = dat.d.find(({ id }) => id === 'FunctionName').data;
-            data.type = 'function';
-          } else {
-            if (dat.s === 'if') {
-              data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
+          if (dat) {
+            const data = {};
+
+            if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
+              data.name = dat.d.find(({ id }) => id === 'FunctionName').data;
+              data.type = 'function';
+            } else {
+              if (dat.s === 'if') {
+                data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
+              }
+              data.name = _.upperFirst(dat.s);
+              data.type = 'action';
             }
-            data.name = _.upperFirst(dat.s);
-            data.type = 'action';
-          }
 
-          return { ...item, ...data };
+            return { ...item, ...data };
+          }
         }
 
         return null;
-      })));
+      }));
+
+      this.set('stack', stack);
     },
 
     defaults: {

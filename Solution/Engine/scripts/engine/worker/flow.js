@@ -79,7 +79,6 @@ function _read_variables(list)
     return res;
 }
 
-
 function _write_variables(variables)
 {
     var keys = Object.keys(variables)

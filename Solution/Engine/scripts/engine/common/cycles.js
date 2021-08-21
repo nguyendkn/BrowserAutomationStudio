@@ -655,6 +655,7 @@ function _long_goto(label, offset, reverse, callback)
 
 function _set_function_info(info, cycle) {
     if (!ScriptWorker.GetIsRecord()) return;
+    info.id = ScriptWorker.GetCurrentActionId();
     var c = cycle || CYCLES.Current();
     if (c) c._Info = info;
 }

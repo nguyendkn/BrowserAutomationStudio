@@ -4,24 +4,15 @@
   const Model = Backbone.Model.extend({
     update: function (source) {
       const stack = _.compact(source.map(item => {
-        const { dat } = utils.getTaskInfo(FindTaskById(item.action));
+        const { info } = item;
 
-        if (dat) {
-          const data = {};
-
-          if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
-            data.name = dat.d.find(({ id }) => id === 'FunctionName').data;
-            data.type = 'function';
-          } else {
-            if (dat.s === 'if') {
-              data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
-            }
-            data.name = _.upperFirst(dat.s);
-            data.type = 'action';
-          }
-
-          return { ...item, ...data };
+        if (!(['if', 'for', 'while', 'foreach'].includes(info.name))) {
+          info.type = 'function';
+        } else {
+          info.type = 'action';
         }
+
+        return { ...item, ...info };
       }));
 
       this.set('stack', stack);

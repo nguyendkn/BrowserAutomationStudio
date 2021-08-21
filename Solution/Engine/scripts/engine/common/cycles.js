@@ -20,6 +20,7 @@ function Cycle(Next,Break)
         }
     }
 
+    this._Info = {};
     this._Label = [];
     this._Params = {};
 
@@ -498,6 +499,7 @@ function _call_function(f,a,n)
         f();
 
     },n);
+    c._Info[name] = f.name;
     c.SetLabel("function");
     c.SetLabel("argument");
     c._Arguments = a;
@@ -515,6 +517,7 @@ function _call_task(f,a,n)
         f();
 
     },n);
+    c._Info[name] = f.name;
     c.SetLabel("function");
     c.SetLabel("argument");
     c.SetLabel("task");
@@ -647,4 +650,10 @@ function _long_goto(label, offset, reverse, callback)
 
     ScriptWorker.SetScript(_get_function_body(_BAS_GOTO_DATA[label]))
     ScriptWorker.RunSubScript()
+}
+
+function _set_function_info(info) {
+    if (!ScriptWorker.GetIsRecord()) return;
+    var c = CYCLES.Current();
+    if (c) c._Info = info;
 }

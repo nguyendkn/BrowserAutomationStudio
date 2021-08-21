@@ -18,10 +18,6 @@ function section_start(name, id, callback)
     }
 }
 
-function _set_function_info(info) {
-    
-}
-
 function _sa(id)
 {
     ScriptWorker.SetCurrentAction(id)

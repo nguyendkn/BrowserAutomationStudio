@@ -3,10 +3,10 @@
 
   const Model = Backbone.Model.extend({
     update: function (source) {
-      const stack = _.compact(source.map(item => {
+      this.set('stack', source.map(item => {
         const { info } = item;
 
-        if (!(['if', 'for', 'while', 'foreach'].includes(info.name))) {
+        if (!(['If', 'For', 'While', 'Foreach'].includes(info.name))) {
           info.type = 'function';
         } else {
           info.type = 'action';
@@ -14,8 +14,6 @@
 
         return { ...item, ...info };
       }));
-
-      this.set('stack', stack);
     },
 
     defaults: {

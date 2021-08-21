@@ -5,29 +5,26 @@
     update: function (source) {
       const stack = _.compact(source.map(item => {
         const task = _TaskCollection.get(item.action);
+        if (!task) return;
 
-        if (task) {
-          const { dat } = utils.getTaskInfo(task);
+        const { dat } = utils.getTaskInfo(task);
 
-          if (dat) {
-            const data = {};
+        if (dat) {
+          const data = {};
 
-            if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
-              data.name = dat.d.find(({ id }) => id === 'FunctionName').data;
-              data.type = 'function';
-            } else {
-              if (dat.s === 'if') {
-                data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
-              }
-              data.name = _.upperFirst(dat.s);
-              data.type = 'action';
+          if (!(['if', 'for', 'while', 'foreach'].includes(dat.s))) {
+            data.name = dat.d.find(({ id }) => id === 'FunctionName').data;
+            data.type = 'function';
+          } else {
+            if (dat.s === 'if') {
+              data.expression = dat.d.find(({ id }) => id === 'IfExpression').data;
             }
-
-            return { ...item, ...data };
+            data.name = _.upperFirst(dat.s);
+            data.type = 'action';
           }
-        }
 
-        return null;
+          return { ...item, ...data };
+        }
       }));
 
       this.set('stack', stack);

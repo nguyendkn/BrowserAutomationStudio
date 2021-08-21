@@ -1,6 +1,7 @@
-(({ App }, $, _) => {
+(({ App, Backbone }, $, _) => {
   App.utils = {
     getTaskInfo(task) {
+      if (!(task instanceof Backbone.Model)) return {}; 
       const dat = _.attempt(() => task.dat());
       const isDamaged = _.isError(dat);
       const isEmpty = _.isNull(dat);

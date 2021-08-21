@@ -4,10 +4,7 @@
   const Model = Backbone.Model.extend({
     update: function (source) {
       const stack = _.compact(source.map(item => {
-        const task = _TaskCollection.get(item.action);
-        if (!task) return;
-
-        const { dat } = utils.getTaskInfo(task);
+        const { dat } = utils.getTaskInfo(FindTaskById(item.action));
 
         if (dat) {
           const data = {};

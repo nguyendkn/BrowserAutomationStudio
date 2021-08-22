@@ -62,6 +62,7 @@ class HelpManager
 		var IfData = {"s":"if","v":1,"role":"master","slave":IdElse,"master":IdIf,"if_var":"_cycle_params().if_else","f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":Expression,"class":"expression"},{"id":"IfElse","type":"check","data":true}]}
 		var IfCode = `_cycle_params().if_else = ${Code};
 			_if(_cycle_params().if_else,function(){
+			_set_function_info({ name: "If", expression: "${Code}" });
 			section_insert()
 			})!`
 
@@ -108,6 +109,7 @@ class HelpManager
 
 		var ForData = {"s":"for","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"ForFrom","type":"constr","data":"1","class":"expression"},{"id":"ForTo","type":"constr","data":"10","class":"expression"}]}
 		var ForCode = `_do(function(){
+			 _set_function_info({ name: "For" });
 		   VAR_CYCLE_INDEX = _iterator() - 1 + parseInt(1)
 		   if(VAR_CYCLE_INDEX > parseInt(10))_break();
 		   section_insert()
@@ -141,6 +143,7 @@ class HelpManager
 
 		var WhileData = {"s":"while","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"WhileExpression","type":"constr","data":"true","class":"expression"}]}
 		var WhileCode = `_do(function(){
+			 _set_function_info({ name: "While" });
 		   VAR_CYCLE_INDEX = _iterator() - 1
 		   BREAK_CONDITION = true;
 		   if(!BREAK_CONDITION)_break();
@@ -186,6 +189,7 @@ class HelpManager
 
 		var WhileData = {"s":"while","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"WhileExpression","type":"constr","data":"true","class":"expression"}]}
 		var WhileCode = `_do(function(){
+			 _set_function_info({ name: "While" });
 		   VAR_CYCLE_INDEX = _iterator() - 1
 		   BREAK_CONDITION = true;
 		   if(!BREAK_CONDITION)_break();
@@ -283,6 +287,7 @@ class HelpManager
 		var	RandomId = Math.floor(Math.random() * (999999 - 100000) + 100000)
 		var ForEachCode = `
 			_do_with_params({"foreach_data":(VAR_LIST)},function(){
+			_set_function_info({ name: "Foreach" });
 			VAR_CYCLE_INDEX = _iterator() - 1
 			if(VAR_CYCLE_INDEX > _cycle_param("foreach_data").length - 1)_break();
 			VAR_FOREACH_DATA = _cycle_param("foreach_data")[VAR_CYCLE_INDEX]
@@ -341,6 +346,7 @@ class HelpManager
 		var ForEachData = {"s":"foreach","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"ForArray","type":"constr","data":"[[NEW_LIST]]","class":"expression"}]}
 		var	RandomId = Math.floor(Math.random() * (999999 - 100000) + 100000)
 		var ForEachCode = `_do_with_params({"foreach_data":(VAR_NEW_LIST)},function(){
+			_set_function_info({ name: "Foreach" });
 			VAR_CYCLE_INDEX = _iterator() - 1
 			if(VAR_CYCLE_INDEX > _cycle_param("foreach_data").length - 1)_break();
 			VAR_FOREACH_DATA = _cycle_param("foreach_data")[VAR_CYCLE_INDEX]
@@ -909,6 +915,7 @@ class HelpManager
 		var	RandomId = Math.floor(Math.random() * (999999 - 100000) + 100000)
 		var ForEachCode = `
 			_do_with_params({"foreach_data":(VAR_LIST_FROM_STRING)},function(){
+			_set_function_info({ name: "Foreach" });
 			VAR_CYCLE_INDEX = _iterator() - 1
 			if(VAR_CYCLE_INDEX > _cycle_param("foreach_data").length - 1)_break();
 			VAR_FOREACH_DATA = _cycle_param("foreach_data")[VAR_CYCLE_INDEX]

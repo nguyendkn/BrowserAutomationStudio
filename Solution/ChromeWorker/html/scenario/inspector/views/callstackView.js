@@ -6,10 +6,10 @@
       this.set('stack', source.filter(item => item.info.name).map(item => {
         const { info } = item; delete item.info;
 
-        if (!(['If', 'For', 'While', 'Foreach'].includes(info.name))) {
-          info.type = 'function';
-        } else {
+        if (['If', 'For', 'While', 'Foreach'].includes(info.name)) {
           info.type = 'action';
+        } else {
+          info.type = 'function';
         }
 
         return { ...item, ...info }

@@ -204,6 +204,7 @@ class HelpManager
 
 		var	IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[TEST]] == \"test\"","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
 		var IfCode = `_if(VAR_TEST == "test",function(){
+					_set_function_info({ name: "If", expression: "VAR_TEST == \"test\"" });
 		      section_insert()
 		      })!`		
 
@@ -520,6 +521,7 @@ class HelpManager
 		var IncreaseCode = `VAR_INDEX = parseInt(VAR_INDEX) + parseInt(1)`
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[INDEX]] > 5","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
 		var IfCode = `_if(VAR_INDEX > 5,function(){
+					_set_function_info({ name: "If", expression: "VAR_INDEX > 5" });
    				section_insert()
 			})!`
 		var LogData = {"s":"log","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LogText","type":"constr","data":(tr("Current loop repetition") + " : [[INDEX]]"),"class":"string"}]}
@@ -616,6 +618,7 @@ class HelpManager
 
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[WAS_ERROR]]","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
 		var IfCode = `_if(VAR_WAS_ERROR,function(){
+					_set_function_info({ name: "If", expression: "VAR_WAS_ERROR" });
    				section_insert()
 			})!`
 

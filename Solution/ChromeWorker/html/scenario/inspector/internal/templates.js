@@ -119,7 +119,7 @@ _.extend(App.JST, {
   'inspector/callstack': _.template(/*html*/`
     <div class="inspector-tools" style="background: #fafafa;">
       <ul class="" style="flex: 1">
-        <% _.each(['Functions', 'Actions', 'Labels'], type => { %>
+        <% _.each(['Functions', 'Actions'], type => { %>
           <li class="">
             <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
             <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= filters[lower] ? 'checked' : '' %>>

@@ -55,7 +55,7 @@ _.extend(App.JST, {
                 <option class="inspector-modal-select-option" value="<%= item.toLowerCase() %>" <%= item.toLowerCase() === type ? 'selected' : '' %>>
                   <%= tr(item) %>
                 </option>
-              <% }); %>
+              <% }) %>
             </select>
           </div>
           <div class="inspector-modal-footer">
@@ -210,5 +210,5 @@ _.extend(App.JST, {
         </ul>
       </div>
     </div>
-  `),
+  `)
 })

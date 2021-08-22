@@ -81,7 +81,7 @@ _.extend(App.JST, {
             <a href="#callstack" aria-controls="callstack" role="tab" data-toggle="tab"><%= tr('Callstack') %></a>
           </li>
         </ul>
-        <button id="inspectorClose" type="button" style="min-width: 56px; border: none; background: #fafafa;">
+        <button id="inspectorClose" type="button" style="min-width: 53px; border: none; background: #fafafa;">
           <i class="fa fa-times" aria-hidden="true"></i>
         </button>
       </div>

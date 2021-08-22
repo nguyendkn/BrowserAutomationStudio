@@ -40,7 +40,7 @@ function debug_variables(list, callback) {
             acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
         } else {
             try {
-                acc[key.slice(4)] = truncate_variable(eval(key), 100);
+                acc[key.slice(4)] = _truncate_variable(eval(key), 100);
             } catch (e) {
                 acc[key.slice(4)] = '__UNDEFINED__';
             }
@@ -91,11 +91,11 @@ function _write_variables(variables)
     }
 }
 
-function truncate_variable(item, limit) {
+function _truncate_variable(item, limit) {
     if (item instanceof Object) {
         if (!(item instanceof Date)) {
             return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
-                acc[key] = truncate_variable(item[key], limit);
+                acc[key] = _truncate_variable(item[key], limit);
                 return acc;
             }, item instanceof Array ? [] : {});
         }

@@ -51,6 +51,7 @@ function debug_variables(list, callback) {
     var callstack = CYCLES.Data.map(function (item) {
         return {
             info: item._Info,
+            params: item._Params,
             iterator: item._Iterator,
             arguments: item._Arguments,
         }
@@ -103,7 +104,7 @@ function _truncate_variable(item, limit) {
         return '__DATE__' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');
     }
 
-    return typeof (item) === 'undefined' ? '__UNDEFINED__' : item;
+    return typeof item === 'undefined' ? '__UNDEFINED__' : item;
 }
 
 function _web_interface_eval(Script)

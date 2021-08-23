@@ -8,7 +8,7 @@ _.extend(App.JST, {
           </div>
           <div class="inspector-modal-body">
             <form class="inspector-modal-form" action="javascript:void(0)">
-              <% const style = target => type === target ? 'display: block' : 'display: none'; let id; %>
+              <% const style = target => type === target ? 'display: block' : 'display: none'; %>
               <div style="<%= style('custom') %>" data-input-type="custom">
                 <textarea><%- type === 'custom' ? value : '' %></textarea>
               </div>
@@ -22,28 +22,22 @@ _.extend(App.JST, {
                 <input type="text" value="<%- type === 'date' ? value : '' %>">
               </div>
               <div style="<%= style('boolean') %>" data-input-type="boolean">
-                <div class="input-radio">
-                  <% id = _.uniqueId('inspectorModalInput') %>
-                  <input id="<%= id %>" type="radio" name="boolean" value="false" <%= (type === 'boolean' && value !== 'true') || !false ?'checked' : '' %>>
-                  <label for="<%= id %>"><%= tr('False') %></label>
-                </div>
-                <div class="input-radio">
-                  <% id = _.uniqueId('inspectorModalInput') %>
-                  <input id="<%= id %>" type="radio" name="boolean" value="true" <%= (type === 'boolean' && value === 'true') ? 'checked' : '' %>>
-                  <label for="<%= id %>"><%= tr('True') %></label>
-                </div>
+                <% _.each(['False', 'True'], (item, idx) => { %>
+                  <% const id = _.uniqueId('inspectorModalInput'), val = item.toLowerCase() %>
+                  <div class="input-radio">
+                    <input id="<%= id %>" type="radio" name="boolean" value="<%= val %>"<%= (type === 'boolean' ? value === val : idx === 0) ? 'checked' : '' %>>
+                    <label for="<%= id %>"><%= tr(item) %></label>
+                  </div>
+                <% }) %>
               </div>
               <div style="<%= style('null') %>" data-input-type="null">
-                <div class="input-radio">
-                  <% id = _.uniqueId('inspectorModalInput') %>
-                  <input id="<%= id %>" type="radio" name="empty" value="undefined" <%= (type === 'null' && value !== 'null') || !false ? 'checked' : '' %>>
-                  <label for="<%= id %>"><%= tr('Undefined') %></label>
-                </div>
-                <div class="input-radio">
-                  <% id = _.uniqueId('inspectorModalInput') %>
-                  <input id="<%= id %>" type="radio" name="empty" value="null" <%= (type === 'null' && value === 'null') ? 'checked' : '' %>>
-                  <label for="<%= id %>"><%= tr('Null') %></label>
-                </div>
+                <% _.each(['Undefined', 'Null'], (item, idx) => { %>
+                  <% const id = _.uniqueId('inspectorModalInput'), val = item.toLowerCase() %>
+                  <div class="input-radio">
+                    <input id="<%= id %>" type="radio" name="empty" value="<%= val %>"<%= (type === 'null' ? value === val : idx === 0) ? 'checked' : '' %>>
+                    <label for="<%= id %>"><%= tr(item) %></label>
+                  </div>
+                <% }) %>
               </div>
             </form>
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
@@ -79,7 +73,7 @@ _.extend(App.JST, {
         </ul>
         <button id="inspectorClose" type="button" style="min-width: 28px; border: none; background: #fafafa;">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" height="12" width="12" fill="#000" style="vertical-align: middle">
-            <path d="M12 1.0501l-1.05-1.05L6 4.9501 1.05.0001 0 1.0501l4.95 4.95-4.95 4.95 1.05 1.05L6 7.0501l4.95 4.95 1.05-1.05-4.95-4.95 4.95-4.95z"/>
+            <path d="M12 1.0501l-1.05-1.05L6 4.9501 1.05.0001 0 1.0501l4.95 4.95-4.95 4.95 1.05 1.05L6 7.0501l4.95 4.95 1.05-1.05-4.95-4.95 4.95-4.95z" />
           </svg>
         </button>
       </div>

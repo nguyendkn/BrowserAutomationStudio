@@ -63,12 +63,12 @@
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
 
-      if (value.indexOf('__UNDEFINED__') === 0) {
-        value = value.slice(13);
+      if (value.startsWith('__UNDEFINED__')) {
+        value = 'undefined';
         type = 'null';
       }
 
-      if (value.indexOf('__DATE__') === 0) {
+      if (value.startsWith('__DATE__')) {
         value = value.slice(8);
         type = 'date';
       }

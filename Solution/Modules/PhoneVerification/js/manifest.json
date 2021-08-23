@@ -153,6 +153,8 @@
         "engine.js",
 		"internal/services.js",
 		"internal/base.js",
+		"internal/TokenBucket.js",
+		"internal/RateLimiter.js",
 		
 		"internal/SmsActivate/api.js",
 		"internal/SmsActivate/sites.js",

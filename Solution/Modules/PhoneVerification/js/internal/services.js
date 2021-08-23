@@ -9,7 +9,24 @@ _SMS.getServiceApi = function(data){
 					'getNumbersCount',
 					'getCountries'
 				],
-				ref: 'browserAutomationStudio'
+				ref: 'browserAutomationStudio',
+				limits: [
+					{
+						requestsPerInterval: 200,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"smshub.org": {
@@ -19,6 +36,23 @@ _SMS.getServiceApi = function(data){
 				url: 'https://smshub.org',
 				supportedMethods: [
 					'getNumbersCount'
+				],
+				limits: [
+					{
+						requestsPerInterval: 200,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
 				]
 			}
 		},
@@ -30,7 +64,24 @@ _SMS.getServiceApi = function(data){
 				supportedMethods: [
 					'getNumbersCount'
 				],
-				ref: '598fdb60'
+				ref: '598fdb60',
+				limits: [
+					{
+						requestsPerInterval: 200,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"365sms.ru": {
@@ -40,6 +91,18 @@ _SMS.getServiceApi = function(data){
 				url: 'https://365sms.ru',
 				supportedMethods: [
 					'getNumbersCount'
+				],
+				limits: [
+					{
+						requestsPerInterval: 10,
+						interval: 30000,
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 2000,
+						type: 'service'
+					}
 				]
 			}
 		},
@@ -53,7 +116,24 @@ _SMS.getServiceApi = function(data){
 					'getSites',
 					'getCountries'
 				],
-				ref: 'lyevZ418dni4'
+				ref: 'lyevZ418dni4',
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"activation.pw": {
@@ -64,7 +144,24 @@ _SMS.getServiceApi = function(data){
 				supportedMethods: [
 					'getNumbersCount'
 				],
-				ref: '4dcbfedf7b81f8d067a78a6d825e36de'
+				ref: '4dcbfedf7b81f8d067a78a6d825e36de',
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"getsms.online": {
@@ -75,7 +172,24 @@ _SMS.getServiceApi = function(data){
 				supportedMethods: [
 					'getNumbersCount'
 				],
-				ref: '20111'
+				ref: '20111',
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"cheapsms.ru": {
@@ -86,6 +200,23 @@ _SMS.getServiceApi = function(data){
 				path: '/handler/index',
 				supportedMethods: [
 					'getNumbersCount'
+				],
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
 				]
 			}
 		},
@@ -97,7 +228,24 @@ _SMS.getServiceApi = function(data){
 				supportedMethods: [
 					'getNumbersCount'
 				],
-				ref: 'bablosoft'
+				ref: 'bablosoft',
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"sms.kopeechka.store": {
@@ -108,7 +256,24 @@ _SMS.getServiceApi = function(data){
 				supportedMethods: [
 					'getNumbersCount'
 				],
-				ref: 'bablosoft'
+				ref: 'bablosoft',
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 6,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"sms-reg.com": {
@@ -120,7 +285,24 @@ _SMS.getServiceApi = function(data){
 					'getSites'
 				],
 				ref: 'RUBMC9BX6OIRJG3S',
-				refTitle: 'appid'
+				refTitle: 'appid',
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 3,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"smspva.com": {
@@ -130,6 +312,23 @@ _SMS.getServiceApi = function(data){
 				url: 'http://smspva.com',
 				supportedMethods: [
 					'getNumbersCount'
+				],
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 5,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 'second',
+						type: 'thread'
+					}
 				]
 			}
 		},
@@ -140,6 +339,23 @@ _SMS.getServiceApi = function(data){
 				url: 'http://simsms.org',
 				supportedMethods: [
 					'getNumbersCount'
+				],
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 5,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 'second',
+						type: 'thread'
+					}
 				]
 			}
 		},
@@ -152,7 +368,24 @@ _SMS.getServiceApi = function(data){
 					'getNumbersCount'
 				],
 				ref: '2451761',
-				refTitle: 'dev_id'
+				refTitle: 'dev_id',
+				limits: [
+					{
+						requestsPerInterval: 30,
+						interval: 30000,
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"sms-acktiwator.ru": {
@@ -164,6 +397,23 @@ _SMS.getServiceApi = function(data){
 					'getNumbersCount',
 					'getSites',
 					'getCountries'
+				],
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 6,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 'second',
+						type: 'thread'
+					}
 				]
 			}
 		},
@@ -176,7 +426,24 @@ _SMS.getServiceApi = function(data){
 					'getNumbersCount'
 				],
 				ref: '1007',
-				refTitle: 'softId'
+				refTitle: 'softId',
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 10,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 2,
+						interval: 'second',
+						type: 'thread'
+					}
+				]
 			}
 		},
 		"give-sms.com": {
@@ -186,6 +453,23 @@ _SMS.getServiceApi = function(data){
 				url: 'https://give-sms.com',
 				supportedMethods: [
 					'getNumbersCount'
+				],
+				limits: [
+					{
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 5,
+						interval: 'second',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 1,
+						interval: 'second',
+						type: 'thread'
+					}
 				]
 			}
 		}

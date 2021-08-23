@@ -8,7 +8,7 @@
     disable_int: true,
     id: 'serviceName',
     help: {
-      description: tr('Captcha solving service name'),
+      description: tr('Captcha solving service name. You can use service names without the `-newapi` part, the action will work without changes.'),
       examples: [
         { code: 'antigate-newapi', description: tr('Solve captcha using https://anti-captcha.com/ service') },
         { code: 'rucaptcha-newapi', description: tr('Solve captcha using https://rucaptcha.com/ service') },
@@ -17,15 +17,12 @@
     }
   }) %>
   <%= _.template($('#input_constructor').html())({
-    help: { description: tr('Captcha solving service key. You can get it in your personal account of your service') },
+    help: { description: tr('Captcha solving service key. You can get it in your personal account of selected captcha solving service') },
     description: tr('Service key'),
     default_selector: 'string',
     disable_int: true,
     id: 'serviceKey'
   }) %>
-  <div style="margin-left: 15px">
-    <a href="#" onclick="BrowserAutomationStudio_OpenUrl(tr('https://i.imgur.com/D7xAa2b.gif')); return false;"><%= tr('How FunCaptcha looks like?') %></a>
-  </div>
   <div style="margin-left: 15px">
     <input type="checkbox" id="AdvancedCheck" onchange="$('#Advanced').toggle()" />
     <label for="AdvancedCheck" class="tr">Advanced settings.</label>
@@ -53,7 +50,7 @@
       disable_string: true,
       id: 'taskWaitTimeout',
       help: {
-        description: tr('Task solution check interval in milliseconds'),
+        description: tr('Task solution check interval in milliseconds. With this parameter you can control the length of the pause between each new check of the captcha solution.'),
         examples: [
           { code: '600', description: tr('Wait for 600 milliseconds') },
           { code: '10000', description: tr('Wait for 10 seconds') },
@@ -68,7 +65,7 @@
       disable_string: true,
       id: 'taskWaitDelay',
       help: {
-        description: tr('Task solution check delay in milliseconds'),
+        description: tr('Task solution check delay in milliseconds. With this parameter you can control the length of the pause between sending the task to the service and the start of waiting for a solution. Most often, captcha-solving services specify the required waiting time, in other cases you can specify any value convenient for you.'),
         examples: [
           { code: '600', description: tr('Wait for 600 milliseconds') },
           { code: '10000', description: tr('Wait for 10 seconds') },
@@ -77,15 +74,15 @@
       }
     }) %>
     <%= _.template($('#input_constructor').html())({
-      description: tr('Custom service URL'),
+      description: tr('Service URL'),
       default_selector: 'string',
       disable_int: true,
       value_string: '',
       id: 'serviceUrl',
       help: {
-        description: tr('Custom service URL. Can be blank'),
+        description: tr('Service URL. Can be blank. You can use this option if the service you want is not on the list of available services. In this case, specify the name of the service that works on a similar API and use the address you need.'),
         examples: [
-          { code: 'Empty string', description: tr('Use default service URL, http://rucaptcha.com for RuCaptcha, etc') },
+          { code: tr('Empty string'), description: tr('Use default service URL, http://rucaptcha.com for RuCaptcha, etc') },
           { code: 'http://127.0.0.1:8083', description: tr('Use custom service URL with port 8083') },
           { code: 'http://127.0.0.3:8080', description: tr('Use custom service URL with port 8080') },
         ]
@@ -97,21 +94,23 @@
       default_selector: 'string',
       disable_int: true,
       id: 'userAgent',
-      help: { description: tr('User-Agent that will be used by the service for solving captcha.') }
+      help: { description: tr('User-Agent that will be used by the service for solving captcha. It works only if you use a proxy to solve captcha, i.e. if the `Send current proxy to solver service` option is enabled.') }
     }) %>
   </span>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Solve <code>FunCaptcha</code>.</div>
-  <div class="tr tooltip-paragraph-fold">The <code>FunCaptcha</code> is a captcha from ArkoseLabs. The most popular type of this captcha is the rotation of images with the arrows. To pass such a captcha, you need to put all the pictures in the correct position.</div>
+	<div class="tr tooltip-paragraph-first-fold">This actions solves the <code>FunCaptcha</code> (<a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://i.imgur.com/D7xAa2b.gif'); return false;">screenshot</a>).</div>
+  <div class="tr tooltip-paragraph-fold">In order to solve <code>FunCaptcha</code> first you need to perform all actions, after which the captcha appears on the page. For example, fill out the registration form and submit it (if the captcha is already on the page, you can solve it immediately). After that you need to click the left mouse button on the container with captcha or any element inside it (example - <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://i.imgur.com/Gh6MxBf.png');return false">screenshot</a>), select <code>Solve FunCaptcha</code> option from the browser context menu, fill necessary data and click on <code>OK</code> button.</div>
+  <div class="tr tooltip-paragraph-fold">This action does not require you to search for the necessary information to solve the <code>FunCaptcha</code> manually, everything happens automatically without your interaction using the source code of the page and other data. Exceptions are optional parameters, such as the use of proxies and the <code>User-Agent</code>.</div>
+  <div class="tr tooltip-paragraph-fold">In most cases, you do not need to submit a captcha solution on the site. The action automatically performs <code>FunCaptcha</code> validation, using the response from the service. The only exception is when the site does not use the <code>callback</code> functions - then you will need to proceed manually. For example, press the submit form button or perform some other similar action.</div>
+  <div class="tr tooltip-paragraph-fold">Note - the result of the <code>FunCaptcha</code> solution may not be visually visible on the page. It may seem to you that nothing happened and the captcha was not solved. This is not true - after performing this action the site will consider <code>FunCaptcha</code> solved and you can continue working with it.</div>
+  <div class="tr tooltip-paragraph-fold"><code>FunCaptcha</code> is solved on the service worker's computer. This means that the site with the captcha can potentially check the IP of the person who solves it and put this IP in the blacklist. There is a special setting <code>Send current proxy to service</code> (under the advanced settings). If you use this option, the worker will solve the captcha through the proxy server that was set using the <code>Proxy</code> action from the browser actions module.</div>
+  <div class="tr tooltip-paragraph-fold">When using a proxy, always fill in the field <code>User-Agent</code> or use the default value, otherwise the captcha solving service can give an error. If this parameter is specified, the service worker will solve the captcha using the specified <code>User-Agent</code>.</div>
   <div class="tr tooltip-paragraph-fold">All services requires a service key which which must be obtained on the service website and entered in the <code>Service key</code> field.</div>
-  <div class="tr tooltip-paragraph-fold">All necessary data for the <code>FunCaptcha</code> solution is obtained automatically from the page source.</div>
-  <div class="tr tooltip-paragraph-fold">You can set the delay and interval for checking the task solution by filling in the appropriate fields. We recommend using the values that are described in the service documentation.</div>
+  <div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Service URL</code> field located in the additional settings.</div>
+  <div class="tr tooltip-paragraph-fold">If you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar software, you must fill in the <code>Service URL</code> field in accordance with the documentation for this software.</div>
   <div class="tr tooltip-paragraph-fold">The <code>Task solution check interval</code> parameter is responsible for the frequency of sending requests to the service to check the captcha solution. The more you set the value, the longer BAS will wait before sending the next request. It is recommended to use a delay of at least 5 seconds.</div>
-  <div class="tr tooltip-paragraph-fold">The <code>Task solution check delay</code> parameter is responsible for the delay before starting to poll the service about receiving the captcha solution. Thus, the task is created first, after that the BAS will wait for the specified time and only then will it start receiving the captcha solution. Most services recommend waiting at least 5 seconds.</div>
-  <div class="tr tooltip-paragraph-fold">You can use the current browser proxy by filling in the appropriate field. This is an optional parameter, but some sites may require matching IP addresses. When using a proxy always fill in the <code>User-Agent</code> field, otherwise the service may return an error.</div>
-  <div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify required server URL in the <code>Custom service URL</code> field located in the additional settings.</div>
-  <div class="tr tooltip-paragraph-fold">Also if you use programs such as <code>CapMonster</code>, <code>XEvil</code> or similar programs, you must fill in the <code>Custom service URL</code> field in accordance with the documentation for this software.</div>
+  <div class="tr tooltip-paragraph-fold">The <code>Task solution check delay</code> parameter is responsible for the duration of waiting before the BAS starts checking the captcha. First, the captcha sent to the service, then the BAS will wait for the specified time, after which the task status check itself will begin. Most services recommend waiting at least 5 seconds.</div>
   <div class="tr tooltip-paragraph-last-fold">Detailed documentation for solving <code>FunCaptcha</code> can be found <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://2captcha.com/2captcha-api#solving_funcaptcha_new');return false">here</a>.</div>
 </div>
 <%= _.template($('#back').html())({ action: 'executeandadd', visible: true, name: tr('Solve FunCaptcha') }) %>

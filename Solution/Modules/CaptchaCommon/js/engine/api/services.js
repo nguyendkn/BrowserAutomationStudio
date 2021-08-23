@@ -9,14 +9,14 @@
     },
     'RuCaptcha': {
       api: new solver.RuCaptchaApi('rucaptcha', {
-        supportedTasks: ['FunCaptcha', 'HCaptcha'],
+        supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
         name: 'RuCaptcha'
       }),
       url: 'https://rucaptcha.com/'
     },
     '2Captcha': {
       api: new solver.RuCaptchaApi('2captcha', {
-        supportedTasks: ['FunCaptcha', 'HCaptcha'],
+        supportedTasks: ['CoordinatesCaptcha', 'FunCaptcha', 'HCaptcha'],
         name: '2Captcha'
       }),
       url: 'https://2captcha.com/'

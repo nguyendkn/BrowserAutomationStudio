@@ -42,6 +42,7 @@ _L =
 	"Set combobox to random":{"ru": "Выбрать случайный элемент из комбобокса"},
 	"Start loop":{"ru": "Начать цикл"},
 	"For each element":{"ru": "Для каждого элемента"},
+	"Solve captcha with clicks": {"ru": "Решить капчу кликами"},
 	"Solve Recaptcha 2.0":{"ru": "Решить Recaptcha 2.0"},
 	"Solve FunCaptcha": {"ru": "Решить FunCaptcha"},
 	"Solve HCaptcha": {"ru": "Решить HCaptcha"},

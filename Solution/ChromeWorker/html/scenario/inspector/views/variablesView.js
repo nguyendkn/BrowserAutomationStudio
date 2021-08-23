@@ -13,15 +13,15 @@
 
     model: new Model(),
 
-    initialize() {
+    initialize: function () {
       ScriptDataView.prototype.initialize.apply(this);
     },
 
-    render() {
+    render: function () {
       return ScriptDataView.prototype.render.apply(this);
     },
 
-    events() {
+    events: function () {
       return _.extend({}, ScriptDataView.prototype.events, {
         'dblclick .inspector-panel-data [data-path]': function (e) {
           const { path } = e.target.dataset;

@@ -164,7 +164,7 @@
 
       'input .inspector-filter-input': _.debounce(function (e) {
         this.filterItems()
-      }, 200),
+      }, 200)
     }
   });
 

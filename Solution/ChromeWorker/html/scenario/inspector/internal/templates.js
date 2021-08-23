@@ -8,45 +8,41 @@ _.extend(App.JST, {
           </div>
           <div class="inspector-modal-body">
             <form class="inspector-modal-form" action="javascript:void(0)">
-              <% const style = target => type === target ? 'display: block' : 'display: none' %>
+              <% const style = target => type === target ? 'display: block' : 'display: none'; let id; %>
               <div style="<%= style('custom') %>" data-input-type="custom">
-                <textarea id="inspectorModalCustomInput"><%- type === 'custom' ? value : '' %></textarea>
+                <textarea><%- type === 'custom' ? value : '' %></textarea>
               </div>
               <div style="<%= style('string') %>" data-input-type="string">
-                <textarea id="inspectorModalStringInput"><%- type === 'string' ? value : '' %></textarea>
+                <textarea><%- type === 'string' ? value : '' %></textarea>
               </div>
               <div style="<%= style('number') %>" data-input-type="number">
-                <input id="inspectorModalNumberInput" type="number" value="<%- type === 'number' ? value : 0 %>">
+                <input type="number" value="<%- type === 'number' ? value : 0 %>">
               </div>
               <div style="<%= style('date') %>" data-input-type="date">
-                <input id="inspectorModalDateInput" type="text" value="<%- type === 'date' ? value : '' %>">
+                <input type="text" value="<%- type === 'date' ? value : '' %>">
               </div>
               <div style="<%= style('boolean') %>" data-input-type="boolean">
                 <div class="input-radio">
-                  <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false"
-                    <%= (type === 'boolean' && value !== 'true') || !false ? 'checked' : '' %>
-                  >
-                  <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
+                  <% id = _.uniqueId('inspectorModalInput') %>
+                  <input id="<%= id %>" type="radio" name="boolean" value="false" <%= (type === 'boolean' && value !== 'true') || !false ?'checked' : '' %>>
+                  <label for="<%= id %>"><%= tr('False') %></label>
                 </div>
                 <div class="input-radio">
-                  <input id="inspectorModalBooleanTrue" type="radio" name="boolean" value="true"
-                    <%= (type === 'boolean' && value === 'true') ? 'checked' : '' %>
-                  >
-                  <label for="inspectorModalBooleanTrue"><%= tr('True') %></label>
+                  <% id = _.uniqueId('inspectorModalInput') %>
+                  <input id="<%= id %>" type="radio" name="boolean" value="true" <%= (type === 'boolean' && value === 'true') ? 'checked' : '' %>>
+                  <label for="<%= id %>"><%= tr('True') %></label>
                 </div>
               </div>
               <div style="<%= style('null') %>" data-input-type="null">
                 <div class="input-radio">
-                  <input id="inspectorModalEmptyUndefined" type="radio" name="empty" value="undefined"
-                    <%= (type === 'null' && value !== 'null') || !false ? 'checked' : '' %>
-                  >
-                  <label for="inspectorModalEmptyUndefined"><%= tr('Undefined') %></label>
+                  <% id = _.uniqueId('inspectorModalInput') %>
+                  <input id="<%= id %>" type="radio" name="empty" value="undefined" <%= (type === 'null' && value !== 'null') || !false ? 'checked' : '' %>>
+                  <label for="<%= id %>"><%= tr('Undefined') %></label>
                 </div>
                 <div class="input-radio">
-                  <input id="inspectorModalEmptyNull" type="radio" name="empty" value="null"
-                    <%= (type === 'null' && value === 'null') ? 'checked' : '' %>
-                  >
-                  <label for="inspectorModalEmptyNull"><%= tr('Null') %></label>
+                  <% id = _.uniqueId('inspectorModalInput') %>
+                  <input id="<%= id %>" type="radio" name="empty" value="null" <%= (type === 'null' && value === 'null') ? 'checked' : '' %>>
+                  <label for="<%= id %>"><%= tr('Null') %></label>
                 </div>
               </div>
             </form>

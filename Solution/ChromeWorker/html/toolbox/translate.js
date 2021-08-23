@@ -908,6 +908,7 @@ _L =
 	"Interrupt": {"ru": "Прервать"},
 	"Executing Action": {"ru": "Выполняется действие"},
 	"Tab Index": {"ru": "Номер Вкладки"},
+	"Emulate mouse movements": {"ru": "Имитировать движения мыши"},
 	"Disable mouse emulation.": {"ru": "Отключить эмуляцию мыши."},
 	"Disable mouse and keyboard emulation.": {"ru": "Отключить эмуляцию мыши и клавиатуры."},
 	"Server url. Can be blank": {"ru": "Url сервера. Может быть пустым"},

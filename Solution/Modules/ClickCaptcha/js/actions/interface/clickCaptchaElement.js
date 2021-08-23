@@ -22,6 +22,10 @@
     <label for="AdvancedCheck" class="tr">Advanced settings.</label>
   </div>
   <div id="Advanced" style="display: none;">
+    <span data-preserve="true" data-preserve-type="check" data-preserve-id="emulateMouse">
+      <input type="checkbox" id="emulateMouse" checked />
+      <label for="emulateMouse"><%= tr('Emulate mouse movements') %></label>
+    </span>
     <%= _.template($('#input_constructor').html())({ description: tr('Task solution check interval'), default_selector: 'int', value_number: 5000, disable_string: true, id: 'taskWaitTimeout', help: {
       description: tr('Task solution check interval in milliseconds. With this parameter you can control the length of the pause between each new check of the captcha solution.'),
       examples: [

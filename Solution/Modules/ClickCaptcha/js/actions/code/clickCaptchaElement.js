@@ -3,6 +3,7 @@ _call_function(BASCaptchaSolver.solveCoordinatesCaptcha, {
   textInstructions: <%= textInstructions %>,
   taskWaitTimeout: <%= taskWaitTimeout %>,
   taskWaitDelay: <%= taskWaitDelay %>,
+  emulateMouse: <%= emulateMouse %>,
   serviceName: <%= serviceName %>,
   serviceUrl: <%= serviceUrl %>,
   serviceKey: <%= serviceKey %>,

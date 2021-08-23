@@ -4,6 +4,7 @@
     this.submitCaptcha = _.bind(submitCaptcha, this);
     this.extractData = _.bind(extractData, this);
     this.initialize = _.bind(initialize, this);
+    this.emulateMouse = options.emulateMouse;
   });
 
   function submitCaptcha() {
@@ -26,6 +27,10 @@
       const point = points.shift();
       const x = offsetX + point[0];
       const y = offsetY + point[1];
+
+      _if(self.emulateMouse, function () {
+        move(x, y)!
+      })!
       mouse(x, y)!
     })!
   }

@@ -4,6 +4,7 @@ const taskWaitDelay = GetInputConstructorValue('taskWaitDelay', loader);
 const serviceName = GetInputConstructorValue('serviceName', loader);
 const serviceKey = GetInputConstructorValue('serviceKey', loader);
 const serviceUrl = GetInputConstructorValue('serviceUrl', loader);
+const emulateMouse = $("#emulateMouse").is(':checked');
 
 if (!taskWaitTimeout.original.length) {
   return Invalid(tr('The "Task solution check interval" parameter is empty'));
@@ -26,6 +27,7 @@ try {
     serviceName: serviceName.updated,
     serviceKey: serviceKey.updated,
     serviceUrl: serviceUrl.updated,
+    emulateMouse,
     ...GetPath(loader)
   }), 0);
   BrowserAutomationStudio_Append('', BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

@@ -225,15 +225,18 @@ _SMS.BaseApi = function(config, data, path){
 				
 				CYCLES.Current().RemoveLabel("function");
 				
+				var timeLeft = maxTime - Date.now();
+				var requestTimeout = timeout < 60000 ? timeout : (timeLeft < 60000 ? 60000 : timeLeft);
+				
 				_if_else(method=="GET", function(){
 					api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url);
 					
-					general_timeout_next(timeout);
+					general_timeout_next(requestTimeout);
 					http_client_get2(url, {"method":"GET"})!
 				}, function(){
 					api.log((_K=="ru" ? 'Запрос к' : 'Request') + ' ' + api.name + ': ' + url + ', ' + (_K=="ru" ? 'данные' : 'data') + ': ' + api.paramsToString(params));
 					
-					general_timeout_next(timeout);
+					general_timeout_next(requestTimeout);
 					http_client_post(url, data, {"content-type":"urlencode", "encoding":"UTF-8", "method":method})!
 				})!
 				

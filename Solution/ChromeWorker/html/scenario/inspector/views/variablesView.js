@@ -35,7 +35,7 @@
                 utils.updateVariable(value, path, type);
               }
             },
-            value: jsonpatch.getValueByPointer(this.model.get('source'), path),
+            value: jsonpatch.getValueByPointer(this.viewer.model.get('source'), path),
             type,
             path,
           });

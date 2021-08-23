@@ -90,6 +90,8 @@ void UpdateBrowserData(BrowserData* Data)
 
     Data->Saver.Languages = CombineAcceptLanguageWithPattern(AcceptLanguage,Data->_AcceptLanguagePattern).NavigatorLanguages;
 
+    Data->Saver.LanguagesHeader = CombineAcceptLanguageWithPattern(AcceptLanguage,Data->_AcceptLanguagePattern).Header;
+
     Data->Saver.Save();
 }
 

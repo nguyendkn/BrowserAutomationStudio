@@ -495,8 +495,18 @@ _L =
 	"This action works with absolute coordinates.": {"ru": "Это действие работает с абсолютными координатами."},
 	"If you want to click on element, select it inside browser and choose \"Move And Click On Element\".": {"ru": "Если вы хотите кликнуть по элементу, выберите его в браузере и нажмите на \"Двигать Мышь И Кликнуть На Элемент\"."},
 	"Move mouse and click on given coordinates.": {"ru": "Переместить мышь и кликнуть по заданным координатам."},
+
+	"Command line": {"ru": "Командная строка"},
+	"List of command line parameters can be found": {"ru": "Список параметров командной строки можно найти"},
+	"Each line must contain one command line parameter, which will be used to start browser. It can be just single key or a key and a value.\nExamples:\n--disable-component-update\n--lang=ru-RU": {"ru": "Каждая строка должна содержать один параметр командной строки, который будет использоваться для запуска браузера. Это может быть как только один ключ так и ключ вместе со значением.\nПримеры:\n--disable-component-update\n--lang=ru-RU"},
+	"This field may contain additional command line parameters used to start browser. They can also be specified by changing chrome_command_line.txt file inside apps/BASVERSION folder. If same key will be specified in both places, preference will be given to this field. Previous command line parameter list will be overridden by this value.": {"ru": "Это поле может содержать дополнительные параметры командной строки, используемые для запуска браузера. Их также можно указать, изменив файл chrome_command_line.txt внутри папки apps/BASVERSION. Если в обоих местах будет указан один и тот же ключ, предпочтение будет отдано этому полю. Предыдущий список параметров командной строки будет заменен этим значением."},
+	"Send key only": {"ru": "Отправить только ключ"},
+	"Send key and value": {"ru": "Отправить ключ со значением"},
+	"Remove all command line params": {"ru": "Удалить все параметры командной строки"},
+
+
 	"If you want to change settings for every thread, it is better to use settings tab.": {"ru": "Если вы хотите поменять настройки для всех потоков, то лучше воспользоваться вкладкой настройки."},
-	"\"Flash\", \"Extensions\" and \"Widevine\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "\"Флеш\", \"Расширения\" и \"Widevine\" перезапустят браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
+	"\"Flash\", \"Extensions\", \"Widevine\" or \"Command line\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "Смена параметров \"Флеш\", \"Расширения\", \"Widevine\" или \"Командная строка\" перезапустит браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
 	"Empty string or 0 means, that value wont be changed.": {"ru": "Пустая строка или 0 означает, что значение изменяться не будут."},
 	"Changes browser settings: network, canvas, webgl, etc. Use \"Get Fingerprint\" action to change browser fingerprint.": {"ru": "Изменяет настройки браузера: работа с сетью, canvas, webgl и другое. Используйте действие \"Получить отпечаток\" чтобы поменять отпечаток браузера."},
 	"BAS allows to set timeout for every action individually, to do that click on hourglass icon near cancel button inside action interface.": {"ru": "BAS позволяет установить таймаут для каждого действия индивидуально, для этого щелкните на значок песочных часов возле кнопки отмены внутри интерфейса конкретного действия."},

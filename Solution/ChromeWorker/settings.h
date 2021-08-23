@@ -40,6 +40,7 @@ class settings
     std::string unique_process_id;
     std::wstring profile;
     std::vector<std::wstring> extensions;
+    std::vector<std::wstring> command_line;
     std::string languages;
     std::string modules;
     void SetProfile(std::wstring profile);
@@ -56,6 +57,7 @@ public:
     bool Detector();
     std::wstring Profile();
     std::vector<std::wstring> Extensions();
+    std::vector<std::wstring> AdditionalCommandLine();
     std::string Languages();
     std::string UniqueProcessId();
     std::string Modules();

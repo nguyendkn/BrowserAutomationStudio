@@ -244,6 +244,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
 
 
     bool NextExtensions = false;
+    bool NextCommandLine = false;
     bool NextUseFlash = false;
     bool NextUseWidevine = false;
     bool NextProfile = false;
@@ -258,6 +259,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
+            NextCommandLine = false;
             continue;
         }else if(NextUseWidevine)
         {
@@ -267,6 +269,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
+            NextCommandLine = false;
             continue;
         }else if(NextProfile)
         {
@@ -276,6 +279,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
+            NextCommandLine = false;
             continue;
         }else if(NextNoEmbeddedLanguages)
         {
@@ -285,6 +289,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
+            NextCommandLine = false;
             continue;
         }else if(NextExtensions)
         {
@@ -294,6 +299,17 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
+            NextCommandLine = false;
+            continue;
+        }else if(NextCommandLine)
+        {
+            command_line = split(param,L';');
+            NextUseFlash = false;
+            NextUseWidevine = false;
+            NextProfile = false;
+            NextNoEmbeddedLanguages = false;
+            NextExtensions = false;
+            NextCommandLine = false;
             continue;
         }
 
@@ -316,6 +332,10 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         }else if(param == L"--Extensions")
         {
             NextExtensions = true;
+            continue;
+        }else if(param == L"--CommandLine")
+        {
+            NextCommandLine = true;
             continue;
         }else if(starts_with(param, L"--unique-process-id="))
         {
@@ -349,6 +369,11 @@ std::wstring settings::Profile()
 std::vector<std::wstring> settings::Extensions()
 {
     return extensions;
+}
+
+std::vector<std::wstring> settings::AdditionalCommandLine()
+{
+    return command_line;
 }
 
 std::string settings::Languages()

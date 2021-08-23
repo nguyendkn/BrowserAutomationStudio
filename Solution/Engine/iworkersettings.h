@@ -20,6 +20,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetUseWidevine(bool UseWidevine) = 0;
         virtual void SetProfile(const QString& Profile) = 0;
         virtual void SetExtensions(const QString& Extensions) = 0;
+        virtual void SetCommandLine(const QString& CommandLine) = 0;
         virtual void SetBrowserEngine(const QString& BrowserEngine) = 0;
         virtual void SetTimezone(int Timezone) = 0;
         virtual int GetTimezone() = 0;
@@ -39,6 +40,7 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetRealProfile() = 0;
         virtual bool IsTemporaryProfile() = 0;
         virtual QString GetExtensions() = 0;
+        virtual QString GetCommandLineAdditional() = 0;
         virtual QString GetBrowserEngine() = 0;
         virtual QString GetBrowserEngineVirtual() = 0;
         virtual void SetBrowserEngineVirtual(const QString& BrowserEngine) = 0;

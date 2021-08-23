@@ -24,13 +24,13 @@ _.extend(App.JST, {
               <div style="<%= style('boolean') %>" data-input-type="boolean">
                 <div class="input-radio">
                   <input id="inspectorModalBooleanFalse" type="radio" name="boolean" value="false"
-                    <%= (value !== 'true' && type === 'boolean') || !false ? 'checked' : '' %>
+                    <%= (type === 'boolean' && value !== 'true') || !false ? 'checked' : '' %>
                   >
                   <label for="inspectorModalBooleanFalse"><%= tr('False') %></label>
                 </div>
                 <div class="input-radio">
                   <input id="inspectorModalBooleanTrue" type="radio" name="boolean" value="true"
-                    <%= (value === 'true' && type === 'boolean') ? 'checked' : '' %>
+                    <%= (type === 'boolean' && value === 'true') ? 'checked' : '' %>
                   >
                   <label for="inspectorModalBooleanTrue"><%= tr('True') %></label>
                 </div>
@@ -38,13 +38,13 @@ _.extend(App.JST, {
               <div style="<%= style('null') %>" data-input-type="null">
                 <div class="input-radio">
                   <input id="inspectorModalEmptyUndefined" type="radio" name="empty" value="undefined"
-                    <%= (value !== 'null' && type === 'null') || !false ? 'checked' : '' %>
+                    <%= (type === 'null' && value !== 'null') || !false ? 'checked' : '' %>
                   >
                   <label for="inspectorModalEmptyUndefined"><%= tr('Undefined') %></label>
                 </div>
                 <div class="input-radio">
                   <input id="inspectorModalEmptyNull" type="radio" name="empty" value="null"
-                    <%= (value === 'null' && type === 'null') ? 'checked' : '' %>
+                    <%= (type === 'null' && value === 'null') ? 'checked' : '' %>
                   >
                   <label for="inspectorModalEmptyNull"><%= tr('Null') %></label>
                 </div>

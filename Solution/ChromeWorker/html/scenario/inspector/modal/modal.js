@@ -56,7 +56,7 @@
 
       'hidden.bs.modal': function (e) {
         this.trigger('cancel');
-      },
+      }
     },
 
     initialize({ callback, value, type }) {
@@ -131,7 +131,7 @@
       this.unbind();
       this.remove();
       return this;
-    },
+    }
   });
 
   Inspector.Modal = View;

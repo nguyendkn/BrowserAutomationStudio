@@ -45,6 +45,7 @@ namespace BrowserAutomationStudioFramework
         QHash<QString,QString> Settings;
         QHash<QString,QString> SettingsPreserved;
         QString Extensions;
+        QString CommandLine;
 
         void SetSettingWhichRestartsBrowser(const QString& Key, QJsonObject& Object, bool& NeedRestart, bool& NeedSend);
         void SetSettingWhichRestartsVirtualBrowser(const QString& Key, QJsonObject& Object, bool& NeedToRestartVirtual, bool& NeedSend);
@@ -59,6 +60,7 @@ namespace BrowserAutomationStudioFramework
         virtual void SetWorkerPathNotSafe(const QString& PathNotSafe);
         virtual void SetProfile(const QString& Profile);
         virtual void SetExtensions(const QString& Extensions);
+        virtual void SetCommandLine(const QString& CommandLine);
         virtual void SetUseFlash(bool UseFlash);
         virtual void SetUseWidevine(bool UseWidevine);
 
@@ -96,6 +98,7 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetWorkerPathNotSafe();
         virtual QString GetWorkerPath();
         virtual QString GetExtensions();
+        virtual QString GetCommandLineAdditional();
         virtual void SetBrowserEngine(const QString& BrowserEngine);
         virtual QString GetBrowserEngine();
         virtual QString GetBrowserEngineVirtual();

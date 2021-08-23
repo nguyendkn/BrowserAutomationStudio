@@ -41,6 +41,7 @@ namespace BrowserAutomationStudioFramework
         Profile.clear();
         TempProfile = QString("prof/") + GetRandomString();
         Extensions.clear();
+        CommandLine.clear();
         Timezone = TIMEZONE_NONE;
         TimezoneName = "BAS_NOT_SET";
 
@@ -177,6 +178,10 @@ namespace BrowserAutomationStudioFramework
     {
         this->Extensions = Extensions;
     }
+    void WorkerSettings::SetCommandLine(const QString& CommandLine)
+    {
+        this->CommandLine = CommandLine;
+    }
     void WorkerSettings::SetUseFlash(bool UseFlash)
     {
         this->UseFlash = UseFlash;
@@ -300,6 +305,10 @@ namespace BrowserAutomationStudioFramework
     {
         return Extensions;
     }
+    QString WorkerSettings::GetCommandLineAdditional()
+    {
+        return CommandLine;
+    }
     bool WorkerSettings::GetUseFlash()
     {
         return UseFlash;
@@ -318,6 +327,7 @@ namespace BrowserAutomationStudioFramework
         res->SetUseWidevine(UseWidevine);
         res->SetProfile(Profile);
         res->SetExtensions(Extensions);
+        res->SetCommandLine(CommandLine);
         res->SetBrowserEngine(BrowserEngine);
         res->SetProxyServer(ProxyServer);
         res->SetProxyPort(ProxyPort);
@@ -844,6 +854,19 @@ namespace BrowserAutomationStudioFramework
 
          }
 
+         if(object.contains("CommandLine"))
+         {
+            QString prev = GetCommandLineAdditional();
+            QString next = object["CommandLine"].toString();
+
+            if(prev != next)
+            {
+                NeedRestart = true;
+                SetCommandLine(next);
+            }
+
+         }
+
          if(IsMLA && object.contains("LoadFingerprintFromProfileFolder"))
          {
             QString prev = Get("LoadFingerprintFromProfileFolder");
@@ -1190,6 +1213,9 @@ namespace BrowserAutomationStudioFramework
 
             res.append("--Extensions");
             res.append(GetExtensions().split(QRegExp("[\r\n]"),QString::SkipEmptyParts).join(";"));
+
+            res.append("--CommandLine");
+            res.append(GetCommandLineAdditional().split(QRegExp("[\r\n]"),QString::SkipEmptyParts).join(";"));
         }else if(Engine.startsWith(QString("WebDriver")))
         {
             //res.append("--headless");

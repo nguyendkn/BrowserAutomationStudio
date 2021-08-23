@@ -4,6 +4,6 @@
 #include <vector>
 #include <string>
 
-std::vector<std::pair<std::string,std::string> > ParseChromeCommandLine();
+std::vector<std::pair<std::string,std::string> > ParseChromeCommandLine(const std::vector<std::wstring>& AdditionalParams = std::vector<std::wstring>());
 
 #endif // CHROMECOMMANDLINEPARSER_H

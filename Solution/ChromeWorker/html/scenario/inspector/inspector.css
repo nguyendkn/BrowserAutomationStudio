@@ -27,11 +27,7 @@
 }
 
 .inspector-nav > li > a {
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
   text-decoration: none;
-  text-align: center;
-  user-select: none;
   font-size: 13px;
   display: block;
   padding: 4px 0;
@@ -135,10 +131,8 @@
 
 .inspector-nav {
   border-right: 1px solid #e0e0e0;
-  list-style: none;
   display: flex;
   padding: 0;
-  margin: 0;
   flex: 1;
 }
 
@@ -216,9 +210,7 @@
 .callstack-function-params {
   font-size: smaller;
   flex-flow: column;
-  list-style: none;
   padding: 0 20px;
-  margin: 0 0px;
 }
 
 .callstack-toggle-params {
@@ -250,9 +242,21 @@
 
 #callstack > .inspector-tools > ul {
   justify-content: space-around;
-  list-style: none;
   display: flex;
   padding: 0;
-  margin: 0;
   flex: 1;
+}
+
+/****************
+ * Other styles *
+ ****************/
+
+#inspector ul {
+  list-style: none;
+  margin-bottom: 0;
+}
+
+#inspector ol {
+  list-style: none;
+  margin-bottom: 0;
 }

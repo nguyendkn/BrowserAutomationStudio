@@ -116,17 +116,13 @@
 .jst-list {
   padding-left: 15px;
   flex-flow: column;
-  list-style: none;
   display: flex;
-  margin: 0;
 }
 
 .jst-root {
   padding-left: 0px;
   flex-flow: column;
-  list-style: none;
   display: flex;
-  margin: 0;
 }
 
 .jst-icon {

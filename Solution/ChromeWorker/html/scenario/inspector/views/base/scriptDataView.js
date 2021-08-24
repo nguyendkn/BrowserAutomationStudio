@@ -146,18 +146,18 @@
     },
 
     events: {
-      'change .inspector-filter-menu-item > input': function (e) {
+      'change .inspector-filter-menu > li > input': function (e) {
         this.model.set('filters', {
           ...this.model.get('filters'),
           [e.target.value]: e.target.checked
         });
       },
 
-      'click .inspector-filter-menu-item': function (e) {
+      'click .inspector-filter-menu > li': function (e) {
         e.stopPropagation();
       },
 
-      'click .inspector-sort-menu-item': function (e) {
+      'click .inspector-sort-menu > li': function (e) {
         e.preventDefault();
         this.model.set('sortType', e.target.dataset.sortType);
       },

@@ -113,8 +113,8 @@ _.extend(App.JST, {
       <ul class="" style="flex: 1">
         <% _.each(['Functions', 'Actions'], type => { %>
           <li class="">
-            <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
-            <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= filters[lower] ? 'checked' : '' %>>
+            <% const id = _.uniqueId('inspectorFilter' + type), val = type.toLowerCase() %>
+            <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= filters[val] ? 'checked' : '' %>>
             <label for="<%= id %>"><%= type %></label>
           </li>
         <% }) %>
@@ -179,10 +179,10 @@ _.extend(App.JST, {
           <i class="fa fa-filter"></i>
         </button>
         <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
-          <li class="inspector-sort-menu-item" data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="frequency"><%= tr('By frequency of use') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="dateModified"><%= tr('By date modified') %></li>
-          <li class="inspector-sort-menu-item" data-sort-type="dateAdded"><%= tr('By date added') %></li>
+          <li data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
+          <li data-sort-type="frequency"><%= tr('By frequency of use') %></li>
+          <li data-sort-type="dateModified"><%= tr('By date modified') %></li>
+          <li data-sort-type="dateAdded"><%= tr('By date added') %></li>
         </ul>
       </div>
       <div class="dropdown">
@@ -191,9 +191,9 @@ _.extend(App.JST, {
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
           <% _.each(['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null'], type => { %>
-            <li class="inspector-filter-menu-item">
-              <% const id = _.uniqueId('inspectorFilter' + type), lower = type.toLowerCase() %>
-              <input type="checkbox" id="<%= id %>" value="<%= lower %>" <%= filters[lower] ? 'checked' : '' %>>
+            <li>
+              <% const id = _.uniqueId('inspectorFilter' + type), val = type.toLowerCase() %>
+              <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= filters[val] ? 'checked' : '' %>>
               <label for="<%= id %>"><%= type %></label>
             </li>
           <% }) %>

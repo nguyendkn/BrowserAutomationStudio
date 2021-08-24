@@ -1,26 +1,18 @@
 (({ App, Backbone }, $, _) => {
   const { Inspector, JST } = App;
 
-  const Model = Backbone.Model.extend({
-    defaults: {
-      visible: false
-    }
-  });
-
-  const View = Backbone.View.extend({
+  Inspector.Main = Backbone.View.extend({
     template: JST['inspector/main'],
 
     initialize() {
-      this.model = new Model();
-
       _GobalModel.on('change:isscriptexecuting', (_, value) => {
-        if (value || !this.model.get('visible')) return;
+        if (value || this.$el.is(':hidden')) return;
         this.variables.model.set('highlight', true);
         this.resources.model.set('highlight', true);
       });
 
       _GobalModel.on('change:istaskexecuting', (_, value) => {
-        if (value || !this.model.get('visible')) return;
+        if (value || this.$el.is(':hidden')) return;
         this.variables.model.set('highlight', true);
         this.resources.model.set('highlight', true);
       });
@@ -30,8 +22,7 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        const html = this.template(this.model.toJSON());
-        this.setElement('#inspector').$el.html(html);
+        this.setElement('#inspector').$el.html(this.template());
 
         this.variables = new Inspector.VariablesView({
           el: this.$('#variables')[0]
@@ -68,16 +59,14 @@
 
     hide() {
       if (!this.$el.is(':visible')) return this;
-      this.model.set('visible', false);
-      this.trigger('hide').$el.hide();
-      return this;
+      this.$el.hide();
+      return this.trigger('hide');
     },
 
     show() {
       if (!this.$el.is(':hidden')) return this;
-      this.model.set('visible', true);
-      this.trigger('show').$el.show();
-      return this;
+      this.$el.show();
+      return this.trigger('show');
     },
 
     hideNotice() {
@@ -109,6 +98,4 @@
       }
     }
   });
-
-  Inspector.Main = View;
 })(window, jQuery, _);

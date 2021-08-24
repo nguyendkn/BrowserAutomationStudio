@@ -14,7 +14,7 @@
             if (type === 'object') return;
             if (type === 'array') return;
 
-            $node.css('color', utils.scaleColors(['red', Inspector.Viewer.colors[type]], 6)[count - 1]);
+            $node.css('color', utils.scaleColors(['red', Inspector.Viewer.colors[type]], 6)[count]);
           }
         });
       }

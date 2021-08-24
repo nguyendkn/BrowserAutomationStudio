@@ -11,7 +11,7 @@
         const { path, op } = item, time = performance.now();
 
         if (!_.has(metadata, path)) {
-          metadata[path] = { count: 6, usages: 1, addedAt: time, modifiedAt: time };
+          metadata[path] = { count: 5, usages: 1, addedAt: time, modifiedAt: time };
         } else {
           if (op === 'remove') return (delete metadata[path]);
           metadata[path].modifiedAt = time;
@@ -30,7 +30,7 @@
         const highlight = this.get('highlight');
         _.each(metadata, (item, path) => {
           if (highlight) {
-            item.count = diff.some(v => v.path === path) ? 1 : Math.min(item.count + 1, 6);
+            item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
           }
           this.trigger('highlight', { ...item, path });
         });

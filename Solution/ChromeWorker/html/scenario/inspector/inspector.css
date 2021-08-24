@@ -44,7 +44,7 @@
   text-align: center;
   user-select: none;
   display: flex;
-  flex: 1 1 0%;
+  flex: 1;
 }
 
 .inspector-filter-input:not(:placeholder-shown) {
@@ -94,7 +94,7 @@
   font-weight: 400;
   font-size: 10px;
   overflow: auto;
-  flex: 1 1 0%;
+  flex: 1;
 }
 
 .inspector-panel-info {
@@ -145,18 +145,17 @@
 }
 
 .inspector-tabs > div {
-  overflow-x: hidden;
-  overflow-y: hidden;
-  flex-flow: column;
+  flex-direction: column;
+  overflow: hidden;
   display: none;
-  flex: 1 1 0%;
+  flex: 1;
 }
 
 .inspector-tabs {
-  overflow-x: hidden;
-  overflow-y: hidden;
+  flex-direction: row;
+  overflow: hidden;
   display: flex;
-  flex: 1 1 0%;
+  flex: 1;
 }
 
 #inspector {

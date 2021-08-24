@@ -5542,7 +5542,7 @@
     }
 
     function BrowserAutomationStudio_AskForVariablesUpdate() {
-      if (!_Inspector.model.get('visible')) return;
+      if (!_Inspector.$el.is(':visible')) return;
 
       if (VariablesUpdateTakesPlace) {
         VariablesNeedRefresh = true

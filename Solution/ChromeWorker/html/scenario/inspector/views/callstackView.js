@@ -12,16 +12,19 @@
           info.type = 'function';
         }
 
+        // TODO: preserve params visibility state
         return { ...item, ...info }
       }));
     },
 
-    defaults: {
-      filters: {
-        functions: true,
-        actions: true,
-      },
-      stack: []
+    defaults: function () {
+      return {
+        filters: {
+          functions: true,
+          actions: true,
+        },
+        stack: []
+      }
     }
   });
 

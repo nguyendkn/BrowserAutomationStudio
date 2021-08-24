@@ -5,13 +5,13 @@
     template: JST['inspector/main'],
 
     initialize() {
-      _GobalModel.on('change:isscriptexecuting', (_, value) => {
+      _GobalModel.on('change:isscriptexecuting', (__, value) => {
         if (value || this.$el.is(':hidden')) return;
         this.variables.model.set('highlight', true);
         this.resources.model.set('highlight', true);
       });
 
-      _GobalModel.on('change:istaskexecuting', (_, value) => {
+      _GobalModel.on('change:istaskexecuting', (__, value) => {
         if (value || this.$el.is(':hidden')) return;
         this.variables.model.set('highlight', true);
         this.resources.model.set('highlight', true);
@@ -39,7 +39,7 @@
         this.interact = interact(this.el).resizable({
           listeners: {
             move: ({ client }) => {
-              const h1 = $(functions).outerHeight();
+              const h1 = $('#functions').outerHeight();
               const h2 = $(window).outerHeight();
               let height = h2 - h1 - client.y;
               const max = h2 - h1 - 300;

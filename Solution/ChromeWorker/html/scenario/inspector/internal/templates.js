@@ -92,7 +92,7 @@ _.extend(App.JST, {
     <%= App.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none;">
-        <span style="text-align: center;"><%= tr('No variables') %></span>
+        <span><%= tr('No variables') %></span>
       </div>
       <div class="inspector-panel-data"></div>
     </div>
@@ -102,7 +102,7 @@ _.extend(App.JST, {
     <%= App.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none;">
-        <span style="text-align: center;"><%= tr('No resources') %></span>
+        <span><%= tr('No resources') %></span>
       </div>
       <div class="inspector-panel-data"></div>
     </div>
@@ -122,7 +122,7 @@ _.extend(App.JST, {
     </div>
     <div class="inspector-panel">
       <div class="inspector-panel-info" style="display: none;">
-        <span style="text-align: center;"><%= tr('No callstack') %></span>
+        <span><%= tr('No callstack') %></span>
       </div>
       <div class="inspector-panel-data"></div>
     </div>

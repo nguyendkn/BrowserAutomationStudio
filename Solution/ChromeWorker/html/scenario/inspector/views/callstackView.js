@@ -55,8 +55,6 @@
 
       morphdom($data[0], `<div class="inspector-panel-data">${JST['inspector/stack'](this.model.toJSON())}</div>`, {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
-        onNodeDiscarded: node => { },
-        onNodeAdded: node => { },
         childrenOnly: true
       });
 

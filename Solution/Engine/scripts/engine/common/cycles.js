@@ -111,8 +111,6 @@ function Cycle(Next,Break)
                 }
             }
         }
-
-
     }
 
     this.Start = function()

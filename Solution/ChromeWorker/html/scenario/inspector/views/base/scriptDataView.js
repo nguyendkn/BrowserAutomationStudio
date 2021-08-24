@@ -26,8 +26,8 @@
       model.on('change:source', (__, source) => {
         const $data = this.$('.inspector-panel-data');
         const isEmpty = _.isEmpty(source);
+        this.viewer.model.update(source);
 
-        if (!isEmpty) this.viewer.model.update(source);
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 

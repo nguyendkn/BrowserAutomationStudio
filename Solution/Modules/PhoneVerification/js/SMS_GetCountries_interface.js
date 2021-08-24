@@ -81,4 +81,4 @@
 	<div class="tr tooltip-paragraph-fold">If the required service is not in the list of available ones, but it works through an API similar to the selected service, then you can specify its server url in the corresponding parameter located in the additional settings.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
-<%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+<%= _.template($('#back').html())({action:"executeandadd", use_timeout:true, visible:true}) %>

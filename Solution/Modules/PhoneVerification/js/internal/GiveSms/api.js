@@ -6,13 +6,13 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		var action = _function_argument("action");
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var params = api.combineParams({method:action, userkey:api.key}, options);
 		
-		_call_function(api.request,{url:api.url, method:"GET", params:params})!
+		_call_function(api.request,{url:api.url, method:"GET", params:params, timeout:timeout, maxTime:maxTime})!
 		var content = _result_function();
-		
-		api.banThread(10);
 		
 		var resp = api.parseJSON(content);
 		
@@ -24,7 +24,10 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.makeRequest,{action:"getbalance"})!
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest,{action:"getbalance", timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
@@ -33,8 +36,10 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	this.getNumbersCount = function(){
 		var site = _function_argument("site");
 		var operator = _function_argument("operator");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:"getcount"})!
+		_call_function(api.makeRequest,{action:"getcount", timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		var sites = resp[_is_nilb(operator) ? "ANY" : operator.toLocaleUpperCase()];
@@ -53,8 +58,10 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
 		var operator = _function_argument("operator");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"getnumber", options:{service:site, country:country, operator:operator}, checkErrors:false, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(resp.status==200){
@@ -69,6 +76,8 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var confirmData = _SMS.getConfirmData(number);
 		
 		var options = {order_id:confirmData.id};
@@ -76,7 +85,7 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 			options.last_id = confirmData.lastId;
 		};
 		
-		_call_function(api.makeRequest,{action:(confirmData.repeat ? "wrongcode" : "getcode"), options:options, checkErrors:false})!
+		_call_function(api.makeRequest,{action:(confirmData.repeat ? "wrongcode" : "getcode"), options:options, checkErrors:false, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 			
 		if(!_is_nilb(resp.data.id)){
@@ -89,19 +98,23 @@ _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
 	this.setStatus = function(){
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		_if(status=="-1" || status=="8", function(){
 			var taskId = _SMS.getConfirmData(number).id;
-			_call_function(api.makeRequest,{action:(status=="-1" ? "refusenumber" : "bannumber"), options:{order_id:taskId}})!
+			_call_function(api.makeRequest,{action:(status=="-1" ? "refusenumber" : "bannumber"), options:{order_id:taskId}, timeout:timeout, maxTime:maxTime})!
 		})!
 	};
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var confirmData = _SMS.getConfirmData(number);
 		var code = null;
 		
-		_call_function(api.getState,{number:number})!
+		_call_function(api.getState,{number:number, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(resp.status==200){

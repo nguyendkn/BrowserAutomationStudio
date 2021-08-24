@@ -7,11 +7,13 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		var options = _avoid_nilb(_function_argument("options"), {});
 		var method = _avoid_nilb(_function_argument("method"), "GET");
 		var checkErrors = _avoid_nilb(_function_argument("checkErrors"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var url = api.url + '/' + action + '.php';
 		var params = api.combineParams({apikey:api.key}, options);
 		
-		_call_function(api.request,{url:url, method:method, params:params})!
+		_call_function(api.request,{url:url, method:method, params:params, timeout:timeout, maxTime:maxTime})!
 		var content = _result_function();
 		
 		var resp = api.parseJSON(content);
@@ -24,15 +26,20 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	};
 	
 	this.getBalance = function(){
-		_call_function(api.makeRequest,{action:"getBalance"})!
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest,{action:"getBalance", timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp.balance);
 	};
 	
 	this.getSites = function(){
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:"getList", options:{extended:1}})!
+		_call_function(api.makeRequest,{action:"getList", options:{extended:1}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp.services.map(function(el){return {id:el.service,name:el.description}}));
@@ -41,8 +48,10 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	this.getNumber = function(){
 		var site = _function_argument("site");
 		var country = _function_argument("country");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest,{action:"getNum", options:{service:site, country:country}})!
+		_call_function(api.makeRequest,{action:"getNum", options:{service:site, country:country}, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		var confirmData = {api:api, id:resp.tzid, number:null};
@@ -50,10 +59,10 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		var maxNumberWait = Date.now() + 600000;
 		_do(function(){
 			if(Date.now() > maxNumberWait){
-				api.errorHandler("ACTION_TIMEOUT", "getState");
+				api.errorHandler("ACTION_TIMEOUT");
 			};
 			
-			_call_function(api.getState,{confirmData:confirmData})!
+			_call_function(api.getState,{confirmData:confirmData, timeout:timeout, maxTime:maxTime})!
 			var resp = _result_function();
 
 			if(["TZ_NUM_PREPARE","TZ_NUM_WAIT","TZ_NUM_ANSWER"].indexOf(resp.response) > -1){
@@ -72,11 +81,13 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	this.getState = function(){
 		var number = _function_argument("number");
 		var confirmData = _function_argument("confirmData");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		if(_is_nilb(confirmData)){
 			confirmData = _SMS.getConfirmData(number);
 		};
 		
-		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.id}, checkErrors:false})!
+		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.id}, checkErrors:false, timeout:timeout, maxTime:maxTime})!
 		
 		_function_return(_result_function());
 	};
@@ -84,6 +95,8 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 	this.setStatus = function(){
 		var number = _function_argument("number");
 		var status = _function_argument("status").toString();
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var actions = {
 			"-1":"setOperationUsed",
@@ -100,16 +113,18 @@ _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
 		
 		var taskId = _SMS.getConfirmData(number).id;
 		
-		_call_function(api.makeRequest,{action:actions[status], options:{tzid:taskId}, checkErrors:("1" !== status)})!
+		_call_function(api.makeRequest,{action:actions[status], options:{tzid:taskId}, checkErrors:("1" !== status), timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 	};
 	
 	this.getCode = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var confirmData = _SMS.getConfirmData(number);
 		var code = null;
 		
-		_call_function(api.getState,{number:number})!
+		_call_function(api.getState,{number:number, timeout:timeout, maxTime:maxTime})!
 		var resp = _result_function();
 		
 		if(['TZ_NUM_ANSWER','TZ_OVER_OK'].indexOf(resp.response) > -1){

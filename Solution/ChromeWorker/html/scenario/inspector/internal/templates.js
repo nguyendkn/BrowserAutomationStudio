@@ -59,16 +59,16 @@ _.extend(App.JST, {
 
   'inspector/main': _.template(/*html*/`
     <div class="inspector-content">
-      <div class="inspector-header" style="display: flex; border-bottom: thin solid #e0e0e0;">
+      <div class="inspector-header">
         <ul class="inspector-nav" role="tablist">
-          <li class="inspector-nav-item active" role="presentation">
-            <a href="#variables" aria-controls="variables" role="tab" data-toggle="tab"><%= tr('Variables') %></a>
+          <li class="active" role="presentation">
+            <a data-toggle="tab" href="#variables" role="tab" aria-controls="variables"><%= tr('Variables') %></a>
           </li>
-          <li class="inspector-nav-item" role="presentation">
-            <a href="#resources" aria-controls="resources" role="tab" data-toggle="tab"><%= tr('Resources') %></a>
+          <li class="" role="presentation">
+            <a data-toggle="tab" href="#resources" role="tab" aria-controls="resources"><%= tr('Resources') %></a>
           </li>
-          <li class="inspector-nav-item" role="presentation">
-            <a href="#callstack" aria-controls="callstack" role="tab" data-toggle="tab"><%= tr('Callstack') %></a>
+          <li class="" role="presentation">
+            <a data-toggle="tab" href="#callstack" role="tab" aria-controls="resources"><%= tr('Callstack') %></a>
           </li>
         </ul>
         <button id="inspectorClose" type="button" style="min-width: 28px; border: none; background: #fafafa;">
@@ -82,7 +82,7 @@ _.extend(App.JST, {
         <div class="inspector-tab" id="resources" role="tabpanel"></div>
         <div class="inspector-tab" id="callstack" role="tabpanel"></div>
       </div>
-      <div class="inspector-notice" style="display: none;">
+      <div class="inspector-notice" style="display: none">
         <span><%= tr("Data will be loaded at the next script pause") %></span>
       </div>
     </div>
@@ -91,7 +91,7 @@ _.extend(App.JST, {
   'inspector/variables': _.template(/*html*/`
     <%= App.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
-      <div class="inspector-panel-info" style="display: none;">
+      <div class="inspector-panel-info" style="display: none">
         <span><%= tr('No variables') %></span>
       </div>
       <div class="inspector-panel-data"></div>
@@ -101,7 +101,7 @@ _.extend(App.JST, {
   'inspector/resources': _.template(/*html*/`
     <%= App.JST['inspector/tools'](obj) %>
     <div class="inspector-panel">
-      <div class="inspector-panel-info" style="display: none;">
+      <div class="inspector-panel-info" style="display: none">
         <span><%= tr('No resources') %></span>
       </div>
       <div class="inspector-panel-data"></div>
@@ -121,7 +121,7 @@ _.extend(App.JST, {
       </ul>
     </div>
     <div class="inspector-panel">
-      <div class="inspector-panel-info" style="display: none;">
+      <div class="inspector-panel-info" style="display: none">
         <span><%= tr('No callstack') %></span>
       </div>
       <div class="inspector-panel-data"></div>
@@ -172,7 +172,7 @@ _.extend(App.JST, {
       </span>
       <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name') + '...' %>">
       <div class="dropdown">
-        <button class="inspector-tools-button" title="<%= tr('Sorting') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="inspector-tools-button" data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-filter"></i>
         </button>
         <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
@@ -183,7 +183,7 @@ _.extend(App.JST, {
         </ul>
       </div>
       <div class="dropdown">
-        <button class="inspector-tools-button" title="<%= tr('Filters') %>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="inspector-tools-button" data-toggle="dropdown" type="button" title="<%= tr('Filters') %>" aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-cog"></i>
         </button>
         <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">

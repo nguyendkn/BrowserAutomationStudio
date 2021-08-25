@@ -77,6 +77,11 @@
   height: 100%;
 }
 
+.inspector-header {
+  border-bottom: thin solid #e0e0e0;
+  display: flex;
+}
+
 .inspector-notice {
   justify-content: center;
   background: #fafafa;
@@ -86,6 +91,10 @@
   display: flex;
   flex: 1;
 }
+
+/****************
+ * Panel styles *
+ ****************/
 
 .inspector-panel-data {
   padding: 8px 8px;

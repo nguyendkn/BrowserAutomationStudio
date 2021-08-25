@@ -22,7 +22,8 @@
           functions: true,
           actions: true,
         },
-        stack: []
+        stack: [],
+        state: {},
       }
     }
   });
@@ -78,6 +79,20 @@
         this.model.set('filters', {
           ...this.model.get('filters'),
           [e.target.value]: e.target.checked
+        });
+      },
+
+      'show.bs.collapse .callstack-item > ul': function (e) {
+        this.model.set('state', {
+          ...this.model.get('state'),
+          [e.target.closest('li').dataset.id]: false
+        });
+      },
+
+      'hide.bs.collapse .callstack-item > ul': function (e) {
+        this.model.set('state', {
+          ...this.model.get('state'),
+          [e.target.closest('li').dataset.id]: true
         });
       },
 

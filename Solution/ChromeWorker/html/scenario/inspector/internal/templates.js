@@ -132,7 +132,7 @@ _.extend(App.JST, {
     <% if (stack.length) { %>
       <ul class="callstack-data" style="display: flex; flex-flow: column; padding: 0;">
         <% _.each(stack, item => { %>
-          <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '' %>
+          <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, item.id) ? !state[item.id] : false %>
           <li class="callstack-item" data-id="<%= item.id %>" data-type="<%= item.type %>" style="<%= paramsId ? 'border-color: #c4c4c4' : '' %>">
             <div style="display: flex; justify-content: space-between;">
               <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
@@ -146,14 +146,14 @@ _.extend(App.JST, {
                 <% } %>
               </div>
               <% if (paramsId) { %>
-                <button class="callstack-toggle-params" title="<%= tr('Show or hide function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="false" aria-controls="<%= paramsId %>">
+                <button class="callstack-toggle-params" title="<%= tr('Show or hide function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="<%= expanded %>" aria-controls="<%= paramsId %>">
                   <i class="fa fa-minus"></i>
                   <i class="fa fa-plus"></i>
                 </button>
               <% } %>
             </div>
             <% if (paramsId) { %>
-              <ul class="callstack-function-params collapse" id="<%= paramsId %>">
+              <ul class="callstack-function-params collapse <%= expanded ? 'in' : '' %>" id="<%= paramsId %>" aria-expanded="<%= expanded %>">
                 <% _.each(item.arguments, (value, param) => { %>
                   <li class="callstack-function-param">
                     <span><%= param %>:</span>

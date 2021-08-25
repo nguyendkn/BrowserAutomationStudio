@@ -2,6 +2,9 @@ _.extend(_L, {
   'Data will be loaded at the next script pause': {
     ru: 'Данные будут загружены при следующей паузе сценария'
   },
+  'Show or hide function params': {
+    ru: 'Показать или скрыть параметры функции'
+  },
   'Change the variable value': {
     ru: 'Изменить значение переменной'
   },
@@ -29,12 +32,6 @@ _.extend(_L, {
   'Call stack': {
     ru: 'Стек вызовов'
   },
-  'Variables:': {
-    ru: 'Переменные:'
-  },
-  'Resources:': {
-    ru: 'Ресурсы:'
-  },
   'Variables': {
     ru: 'Переменные'
   },
@@ -61,8 +58,5 @@ _.extend(_L, {
   },
   'Number': {
     ru: 'Число'
-  },
-  'Labels': {
-    ru: 'Метки'
   }
 });

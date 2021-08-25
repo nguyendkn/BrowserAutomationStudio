@@ -151,9 +151,9 @@ _.extend(App.JST, {
             </div>
             <% if (paramsId) { %>
               <ul class="callstack-function-params collapse <%= expanded ? 'in' : '' %>" id="<%= paramsId %>" aria-expanded="<%= expanded %>">
-                <% _.each(item.arguments, (value, param) => { %>
+                <% _.each(item.arguments, (value, name) => { %>
                   <li class="callstack-function-param">
-                    <span><%= param %>:</span>
+                    <span><%= name %>:</span>
                     <span><%= value %></span>
                   </li>
                 <% }) %>

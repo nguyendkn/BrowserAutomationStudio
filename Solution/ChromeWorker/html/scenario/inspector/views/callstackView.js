@@ -12,7 +12,6 @@
           info.type = 'function';
         }
 
-        // TODO: preserve params visibility state
         return { ...item, ...info }
       }));
     },

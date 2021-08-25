@@ -34,6 +34,9 @@ void BrowserSettingsSaver::Save()
                 outfile<<"Attribute.appVersion="<<ReplaceAll(UserAgent, "Mozilla/", "")<<std::endl;
             }
 
+            if(!UserAgentDataBase64.empty())
+                outfile<<"UserAgentData="<<UserAgentDataBase64<<std::endl;
+
 
             outfile<<"FingerprintDetectorEnabled="<<((IsRecord && Detector && !TemporaryDisableDetector) ? "true" : "false")<<std::endl;
             outfile<<"NotificationsInfo="<<((IsRecord) ? "Enable" : "Disable")<<std::endl;

@@ -52,6 +52,7 @@ public:
 
     std::vector<std::pair<std::string,std::string> > _Headers;
     std::string _AcceptLanguagePattern;
+    std::string _UserAgentDataBase64;
     std::string _UniqueProcessId;
     std::map<std::string,ConfigurableItem<std::string> > _StartupScript;
     CefWindowHandle _MainWindowHandle;

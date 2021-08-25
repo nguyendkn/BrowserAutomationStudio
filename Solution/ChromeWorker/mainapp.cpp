@@ -1836,7 +1836,8 @@ void MainApp::SetAcceptLanguagePatternCallback(const std::string& pattern)
 
 void MainApp::SetUserAgentDataCallback(const std::string& data)
 {
-
+    Data->_UserAgentDataBase64 = data;
+    UpdateBrowserData(Data);
     std::vector<std::pair<std::string,std::string> > HeadersCopy = PrepareHeaders(Data);
 
     Async Result = Data->Connector->SetUserAgentData(data, HeadersCopy);

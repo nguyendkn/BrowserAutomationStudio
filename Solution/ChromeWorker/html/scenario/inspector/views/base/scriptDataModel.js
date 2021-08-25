@@ -39,7 +39,7 @@
     },
 
     defaults: {
-      sortType: 'alphabetically',
+      sorting: 'alphabetically',
       allowHighlight: true,
       highlight: false,
       metadata: {},

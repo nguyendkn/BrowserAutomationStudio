@@ -28,7 +28,7 @@
       });
 
       model.on('change:filters', this.filterItems, this);
-      model.on('change:sortType', this.sortItems, this);
+      model.on('change:sorting', this.sortItems, this);
     },
 
     render() {
@@ -57,19 +57,19 @@
     sortItems() {
       const metadata = this.model.get('metadata');
       const updates = this.model.get('updates');
+      const sorting = this.model.get('sorting');
       const cache = this.model.get('cache');
-      const type = this.model.get('sortType');
 
       utils.sortByLocals(this.model.get('source'), (a, b) => {
-        if (type !== 'alphabetically') {
+        if (sorting !== 'alphabetically') {
           const meta1 = metadata[`/${a}`];
           const meta2 = metadata[`/${b}`];
 
-          if (type === 'dateModified') {
+          if (sorting === 'dateModified') {
             return meta2.modifiedAt - meta1.modifiedAt;
           }
 
-          if (type === 'dateAdded') {
+          if (sorting === 'dateAdded') {
             return meta2.addedAt - meta1.addedAt;
           }
 
@@ -156,7 +156,7 @@
 
       'click .inspector-sort-menu > li': function (e) {
         e.preventDefault();
-        this.model.set('sortType', e.target.dataset.sortType);
+        this.model.set('sorting', e.target.dataset.sorting);
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {

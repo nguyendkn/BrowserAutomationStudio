@@ -176,10 +176,10 @@ _.extend(App.JST, {
           <i class="fa fa-filter"></i>
         </button>
         <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
-          <li data-sort-type="alphabetically"><%= tr('Alphabetically') %></li>
-          <li data-sort-type="frequency"><%= tr('By frequency of use') %></li>
-          <li data-sort-type="dateModified"><%= tr('By date modified') %></li>
-          <li data-sort-type="dateAdded"><%= tr('By date added') %></li>
+          <li data-sorting="alphabetically"><%= tr('Alphabetically') %></li>
+          <li data-sorting="frequency"><%= tr('By frequency of use') %></li>
+          <li data-sorting="dateModified"><%= tr('By date modified') %></li>
+          <li data-sorting="dateAdded"><%= tr('By date added') %></li>
         </ul>
       </div>
       <div class="dropdown">

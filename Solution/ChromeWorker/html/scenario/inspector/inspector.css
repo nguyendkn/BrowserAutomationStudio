@@ -199,9 +199,11 @@
 }
 
 .callstack-item[data-type] > div {
+  justify-content: space-between;
   background-position: 0 center;
   background-repeat: no-repeat;
   padding-left: 20px;
+  display: flex; 
 }
 
 .callstack-function-params {
@@ -227,6 +229,12 @@
   user-select: none;
   flex-flow: column;
   display: flex;
+}
+
+.callstack-data {
+  flex-flow: column;
+  display: flex;
+  padding: 0;
 }
 
 #callstack > .inspector-tools > ul > li {

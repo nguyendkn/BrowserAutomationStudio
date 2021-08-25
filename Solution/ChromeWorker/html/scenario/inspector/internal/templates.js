@@ -130,11 +130,11 @@ _.extend(App.JST, {
 
   'inspector/stack': _.template(/*html*/`
     <% if (stack.length) { %>
-      <ul class="callstack-data" style="display: flex; flex-flow: column; padding: 0;">
+      <ul class="callstack-data">
         <% _.each(stack, ({ id, type, name, ...item }) => { %>
           <% const paramsId = (type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, id) && !state[id] %>
           <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= paramsId ? 'border-color: #c4c4c4' : '' %>">
-            <div style="display: flex; justify-content: space-between;">
+            <div>
               <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
                 <span class="callstack-item-name" style="font-weight: 600;"><%= name + (type === 'action' ? ':' : '') %></span>
                 <% if (type === 'action') { %>

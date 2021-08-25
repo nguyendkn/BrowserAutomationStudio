@@ -5869,11 +5869,11 @@
       if (!_.isError(result)) {
         const { inspector } = result;
 
-        _Inspector.variables.loadState(
+        _Inspector.variables.restoreState(
           inspector.variables
         );
 
-        _Inspector.resources.loadState(
+        _Inspector.resources.restoreState(
           inspector.resources
         );
 

@@ -19,10 +19,6 @@
         });
       }
 
-      model.on('change:filters', () => {
-        this.filterItems();
-      });
-
       model.on('change:source', (__, source) => {
         const $data = this.$('.inspector-panel-data');
         const isEmpty = _.isEmpty(source);
@@ -31,9 +27,8 @@
         $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
-      model.on('change:sortType', (__, type) => {
-        this.sortItems(type);
-      });
+      model.on('change:filters', this.filterItems, this);
+      model.on('change:sortType', this.sortItems, this);
     },
 
     render() {
@@ -48,8 +43,9 @@
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('render', () => {
-            this.sortItems(this.model.get('sortType'));
-            this.filterItems().loadState();
+            this.sortItems();
+            this.filterItems();
+            this.restoreState();
           });
 
         this.$('.inspector-panel-data').append(this.viewer.el);
@@ -58,10 +54,11 @@
       return this;
     },
 
-    sortItems(type) {
+    sortItems() {
       const metadata = this.model.get('metadata');
       const updates = this.model.get('updates');
       const cache = this.model.get('cache');
+      const type = this.model.get('sortType');
 
       utils.sortByLocals(this.model.get('source'), (a, b) => {
         if (type !== 'alphabetically') {
@@ -117,7 +114,7 @@
       return this;
     },
 
-    loadState(state = this.model.get('state')) {
+    restoreState(state = this.model.get('state')) {
       if (Array.isArray(state.items)) {
         state.items.forEach(({ path, folded }) => {
           const $el = this.$el.find(`[data-path="${path}"]`);

@@ -135,12 +135,12 @@ _.extend(App.JST, {
           <% const paramsId = (type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, id) && !state[id] %>
           <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= paramsId ? 'border-color: #c4c4c4' : '' %>">
             <div>
-              <span class="callstack-item-name" style="font-weight: 600;"><%= name + (type === 'action' ? ':' : '') %></span>
+              <span class="callstack-item-name"><%= name + (type === 'action' ? ':' : '') %></span>
               <% if (type === 'action') { %>
                 <% if (name === 'If') { %>
-                  <span style="padding-left: 5px; color: #838383; font-size: 95%; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><%= item.expression %></span>
+                  <span class="callstack-item-data"><%= item.expression %></span>
                 <% } else { %>
-                  <span style="padding-left: 5px; color: #838383; font-size: 95%; flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><%= item.iterator %></span>
+                  <span class="callstack-item-data"><%= item.iterator %></span>
                 <% } %>
               <% } else if (paramsId) { %>
                 <button class="callstack-toggle-params" title="<%= tr('Show or hide function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="<%= expanded %>" aria-controls="<%= paramsId %>">

@@ -132,7 +132,7 @@ _.extend(App.JST, {
     <% if (stack.length) { %>
       <ul class="callstack-data" style="display: flex; flex-flow: column; padding: 0;">
         <% _.each(stack, item => { %>
-          <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, item.id) ? !state[item.id] : false %>
+          <% const paramsId = (item.type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, item.id) && !state[item.id] %>
           <li class="callstack-item" data-id="<%= item.id %>" data-type="<%= item.type %>" style="<%= paramsId ? 'border-color: #c4c4c4' : '' %>">
             <div style="display: flex; justify-content: space-between;">
               <div style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">

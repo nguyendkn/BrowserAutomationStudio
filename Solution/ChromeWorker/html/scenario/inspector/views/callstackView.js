@@ -52,17 +52,14 @@
     },
 
     renderStack() {
-      const $data = this.$('.inspector-panel-data');
-      const $info = this.$('.inspector-panel-info');
-      const size = _.size(this.model.get('stack'));
+      const $panel = this.$('.inspector-panel');
+      $panel[0].dataset.empty = _.isEmpty(this.model.get('stack'));
 
-      morphdom($data[0], `<div class="inspector-panel-data">${JST['inspector/stack'](this.model.toJSON())}</div>`, {
+      morphdom($panel.children('.inspector-panel-data')[0], `<div class="inspector-panel-data">${JST['inspector/stack'](this.model.toJSON())}</div>`, {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         childrenOnly: true
       });
 
-      $data.toggle(size !== 0);
-      $info.toggle(size === 0);
       return this;
     },
 

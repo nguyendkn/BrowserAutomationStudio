@@ -90,8 +90,8 @@ _.extend(App.JST, {
 
   'inspector/variables': _.template(/*html*/`
     <%= App.JST['inspector/tools'](obj) %>
-    <div class="inspector-panel">
-      <div class="inspector-panel-info" style="display: none">
+    <div class="inspector-panel" data-empty="true">
+      <div class="inspector-panel-info">
         <span><%= tr('No variables') %></span>
       </div>
       <div class="inspector-panel-data"></div>
@@ -100,8 +100,8 @@ _.extend(App.JST, {
 
   'inspector/resources': _.template(/*html*/`
     <%= App.JST['inspector/tools'](obj) %>
-    <div class="inspector-panel">
-      <div class="inspector-panel-info" style="display: none">
+    <div class="inspector-panel" data-empty="true">
+      <div class="inspector-panel-info">
         <span><%= tr('No resources') %></span>
       </div>
       <div class="inspector-panel-data"></div>
@@ -120,8 +120,8 @@ _.extend(App.JST, {
         <% }) %>
       </ul>
     </div>
-    <div class="inspector-panel">
-      <div class="inspector-panel-info" style="display: none">
+    <div class="inspector-panel" data-empty="true">
+      <div class="inspector-panel-info">
         <span><%= tr('No callstack') %></span>
       </div>
       <div class="inspector-panel-data"></div>

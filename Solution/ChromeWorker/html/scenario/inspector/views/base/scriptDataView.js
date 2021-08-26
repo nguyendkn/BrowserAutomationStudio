@@ -20,11 +20,8 @@
       }
 
       model.on('change:source', (__, source) => {
-        const $data = this.$('.inspector-panel-data');
-        const isEmpty = _.isEmpty(source);
+        this.$('.inspector-panel')[0].dataset.empty = _.isEmpty(source);
         this.viewer.model.update(source);
-
-        $data.toggle(!isEmpty).prev().toggle(isEmpty);
       });
 
       model.on('change:filters', this.filterItems, this);

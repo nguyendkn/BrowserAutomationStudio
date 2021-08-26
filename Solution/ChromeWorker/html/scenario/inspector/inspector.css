@@ -294,7 +294,3 @@
   list-style: none;
   margin-bottom: 0;
 }
-
-#inspector * {
-  -webkit-user-drag: none;
-}

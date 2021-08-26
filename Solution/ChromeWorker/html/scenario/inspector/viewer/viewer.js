@@ -55,51 +55,43 @@
     initialize() {
       this.model = new Model();
 
+      const createSortable = (nodes) => {
+        this.sortable = nodes.map(node => Sortable.create(node, {
+          group: 'nodes',
+          filter: '.pinned',
+          onEnd: ({ item, from, to }) => {
+            const name = item.querySelector('[data-path]').dataset.path.slice(1);
+            const groups = this.model.get('groups');
+
+            const fromName = from.closest('.jst-group').dataset.name;
+            const fromList = _.without(groups[fromName], name);
+
+            const toName = to.closest('.jst-group').dataset.name;
+            const toList = _.concat(groups[toName], name);
+
+            this.model.set('groups', {
+              ...groups,
+              [fromName]: _.uniq(fromList),
+              [toName]: _.uniq(toList),
+            }, { silent: true });
+          }
+        }))
+      }
+
       this.model.on('change:source', () => {
-        this.render().drake.containers = [
-          ...this.$('.jst-root > li > ul')
-        ];
+        this.render();
+        createSortable([...this.$('.jst-root > li > ul')]);
       });
 
       this.model.on('change:groups', () => {
-        this.render().drake.containers = [
-          ...this.$('.jst-root > li > ul')
-        ];
-      });
-
-      this.drake = dragula({
-        moves(el, source, handle) {
-          if (!handle.classList.contains('jst-item')) return false;
-          const node = handle.querySelector('[data-path]');
-          return node.dataset.path.split('/').length === 2;
-        },
-
-        removeOnSpill: false,
-
-        revertOnSpill: true,
-      }).on('drop', (el, target, source) => {
-        const name = el.querySelector('[data-path]').dataset.path.slice(1);
-        const groups = this.model.get('groups');
-
-        const oldName = source.closest('.jst-group').dataset.name;
-        const oldList = _.without(groups[oldName], name);
-
-        const newName = target.closest('.jst-group').dataset.name;
-        const newList = _.concat(groups[newName], name);
-
-        this.model.set('groups', {
-          ...groups,
-          [oldName]: _.uniq(oldList),
-          [newName]: _.uniq(newList),
-        }, { silent: true });
+        this.render();
+        createSortable([...this.$('.jst-root > li > ul')]);
       });
     },
 
     render() {
       morphdom(this.el, this.renderRoot(), {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
-        onNodeDiscarded: node => { },
-        onNodeAdded: node => { },
         getNodeKey: node => {
           if (node.nodeType === 1 && node.classList.contains('jst-item')) {
             const { dataset } = node.querySelector('[data-path]');

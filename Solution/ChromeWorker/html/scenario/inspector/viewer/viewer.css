@@ -65,11 +65,11 @@
 }
 
 .jst-collapse:before {
-  content: "-";
+  content: '-';
 }
 
 .jst-expand:before {
-  content: "+";
+  content: '+';
 }
 
 .jst-list:empty {
@@ -138,9 +138,7 @@
 }
 
 .jst-group-body {
-  background: transparent;
   padding: 4px 2px;
-  border: none;
 }
 
 .jst-group-head {
@@ -149,7 +147,6 @@
   align-items: center;
   padding: 2px 8px;
   display: flex;
-  border: none;
 }
 
 .jst-group {

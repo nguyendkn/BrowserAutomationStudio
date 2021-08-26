@@ -56,6 +56,7 @@
       this.model = new Model();
 
       const createSortable = (nodes) => {
+        _.each(this.sortable, item => item.destroy());
         this.sortable = nodes.map(node => Sortable.create(node, {
           group: 'nodes',
           filter: '.pinned',

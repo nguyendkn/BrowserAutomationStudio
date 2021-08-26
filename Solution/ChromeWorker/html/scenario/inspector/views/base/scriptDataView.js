@@ -28,6 +28,7 @@
       });
 
       model.on('change:filters', this.filterItems, this);
+
       model.on('change:sorting', this.sortItems, this);
     },
 
@@ -43,9 +44,9 @@
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('render', () => {
-            this.sortItems();
-            this.filterItems();
             this.restoreState();
+            this.filterItems();
+            this.sortItems();
           });
 
         this.$('.inspector-panel-data').append(this.viewer.el);

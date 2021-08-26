@@ -44,10 +44,5 @@
       const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
       return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
     },
-
-    scaleColors(colors, count) {
-      const scale = _.compose(color2K.toHex, color2K.getScale(...colors));
-      return [...Array(count).keys()].map(n => scale(n / (count - 1)));
-    }
   });
 })(window, jQuery, _);

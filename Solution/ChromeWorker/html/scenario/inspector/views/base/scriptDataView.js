@@ -2,6 +2,15 @@
   const { Inspector, utils } = App;
 
   const View = Backbone.View.extend({
+    colors: scaleColors({
+      undefined: '#808080',
+      boolean: '#2525cc',
+      string: '#2db669',
+      number: '#d036d0',
+      date: '#ce904a',
+      null: '#808080',
+    }),
+
     initialize() {
       const model = this.model;
 
@@ -14,7 +23,7 @@
             if (type === 'object') return;
             if (type === 'array') return;
 
-            $node.css('color', utils.scaleColors(['red', Inspector.Viewer.colors[type]], 6)[count]);
+            $node.css('color', this.colors[type][count]);
           }
         });
       }
@@ -162,6 +171,14 @@
       }, 200)
     }
   });
+
+  function scaleColors(map, count = 6) {
+    return _.reduce(map, (acc, value, key) => {
+      const scale = _.compose(color2K.toHex, color2K.getScale('red', value));
+      acc[key] = [...Array(count).keys()].map(n => scale(n / (count - 1)));
+      return acc;
+    }, {});
+  }
 
   Inspector.ScriptDataView = View;
 })(window, jQuery, _);

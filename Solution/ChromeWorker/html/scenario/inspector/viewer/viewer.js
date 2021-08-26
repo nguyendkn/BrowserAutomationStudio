@@ -55,6 +55,16 @@
     initialize() {
       this.model = new Model();
 
+      this.model.on('change:source', () => {
+        this.render();
+        createSortable([...this.$('.jst-root > li > ul')]);
+      });
+
+      this.model.on('change:groups', () => {
+        this.render();
+        createSortable([...this.$('.jst-root > li > ul')]);
+      });
+
       const createSortable = (nodes) => {
         _.invoke(this.sortable, 'destroy');
 
@@ -77,18 +87,9 @@
           },
           filter: '.pinned',
           group: 'nodes',
+          sort: false,
         }))
-      }
-
-      this.model.on('change:source', () => {
-        this.render();
-        createSortable([...this.$('.jst-root > li > ul')]);
-      });
-
-      this.model.on('change:groups', () => {
-        this.render();
-        createSortable([...this.$('.jst-root > li > ul')]);
-      });
+      };
     },
 
     render() {

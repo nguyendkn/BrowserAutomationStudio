@@ -30,7 +30,7 @@
 
       model.on('change:source', (__, source) => {
         this.$('.inspector-panel')[0].dataset.empty = _.isEmpty(source);
-        this.viewer.model.update(source);
+        this.viewer.model.update(prepareData(source));
       });
 
       model.on('change:filters', this.filterItems, this);
@@ -178,6 +178,10 @@
       acc[key] = [...Array(count).keys()].map(n => scale(n / (count - 1)));
       return acc;
     }, {});
+  }
+
+  function prepareData(data) {
+    return data;
   }
 
   Inspector.ScriptDataView = View;

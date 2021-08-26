@@ -1,4 +1,4 @@
-(({ App, Backbone }, $, _) => {
+(({ App, Backbone, $, _ }) => {
   const { Inspector, utils } = App;
 
   const View = Backbone.View.extend({
@@ -181,4 +181,4 @@
   }
 
   Inspector.ScriptDataView = View;
-})(window, jQuery, _);
+})(window);

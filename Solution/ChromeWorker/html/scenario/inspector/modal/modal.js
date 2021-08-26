@@ -1,4 +1,4 @@
-(({ App, Backbone }, $, _) => {
+(({ App, Backbone, $, _ }) => {
   const { Inspector, JST } = App;
 
   const Model = Backbone.Model.extend({
@@ -135,4 +135,4 @@
   });
 
   Inspector.Modal = View;
-})(window, jQuery, _);
+})(window);

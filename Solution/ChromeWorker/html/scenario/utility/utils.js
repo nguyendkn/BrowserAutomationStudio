@@ -1,4 +1,4 @@
-(({ App, Backbone }, $, _) => {
+(({ App, Backbone, $, _ }) => {
   App.utils = {
     getTaskInfo(task) {
       if (!(task instanceof Backbone.Model)) return {}; 
@@ -22,4 +22,4 @@
     header: false,
     width: false,
   });
-})(window, jQuery, _);
+})(window);

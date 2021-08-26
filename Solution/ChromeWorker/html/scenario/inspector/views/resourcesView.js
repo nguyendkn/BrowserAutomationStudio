@@ -1,4 +1,4 @@
-(({ App }, $, _) => {
+(({ App, $, _ }) => {
   const { Inspector, JST, utils } = App;
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
@@ -27,4 +27,4 @@
       });
     }
   });
-})(window, jQuery, _);
+})(window);

@@ -1,4 +1,4 @@
-(({ App, Backbone }, $, _) => {
+(({ App, Backbone, $, _ }) => {
   const { Inspector, utils } = App;
 
   const Model = Backbone.Model.extend({
@@ -62,4 +62,4 @@
   });
 
   Inspector.ScriptDataModel = Model;
-})(window, jQuery, _);
+})(window);

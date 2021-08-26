@@ -1,4 +1,4 @@
-(({ App, Backbone }, $, _) => {
+(({ App, Backbone, $, _ }) => {
   const { Inspector, JST, utils } = App;
 
   const Model = Backbone.Model.extend({
@@ -99,4 +99,4 @@
       }
     }
   });
-})(window, jQuery, _);
+})(window);

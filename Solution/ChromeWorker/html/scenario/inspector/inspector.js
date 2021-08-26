@@ -1,4 +1,4 @@
-(({ App, Backbone }, $, _) => {
+(({ App, Backbone, $, _ }) => {
   const { Inspector, JST } = App;
 
   Inspector.Main = Backbone.View.extend({
@@ -98,4 +98,4 @@
       }
     }
   });
-})(window, jQuery, _);
+})(window);

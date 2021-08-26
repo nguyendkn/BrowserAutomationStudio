@@ -1,5 +1,5 @@
 (({ App, Backbone }, $, _) => {
-  const { Inspector, JST } = App;
+  const { Inspector, JST, utils } = App;
 
   const Model = Backbone.Model.extend({
     renameGroup: function (group, name) {
@@ -90,8 +90,7 @@
     },
 
     render() {
-      morphdom(this.el, this.renderRoot(), {
-        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+      utils.morph(this.el, this.renderRoot(), {
         getNodeKey: node => {
           if (node.nodeType === 1 && node.classList.contains('jst-item')) {
             const { dataset } = node.querySelector('[data-path]');
@@ -99,8 +98,7 @@
             if (dataset.ref) return dataset.ref;
           }
           return node.id;
-        },
-        childrenOnly: true
+        }
       });
 
       return this.trigger('render');

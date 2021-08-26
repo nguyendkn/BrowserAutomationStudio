@@ -56,9 +56,8 @@
       $panel[0].dataset.empty = _.isEmpty(this.model.get('stack'));
       const html = JST['inspector/stack'](this.model.toJSON());
 
-      morphdom($panel.children('.inspector-panel-data')[0], `<div class="inspector-panel-data">${html}</div>`, {
-        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
-        childrenOnly: true
+      utils.morph($panel.children('.inspector-panel-data')[0], `<div class="inspector-panel-data">${html}</div>`, {
+
       });
 
       return this;

@@ -44,5 +44,13 @@
       const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
       return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
     },
+
+    morph(from, to, options) {
+      return morphdom(from, to, {
+        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+        childrenOnly: true,
+        ...options
+      });
+    }
   });
 })(window, jQuery, _);

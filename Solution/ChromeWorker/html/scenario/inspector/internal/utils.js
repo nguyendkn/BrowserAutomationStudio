@@ -47,7 +47,9 @@
 
     morph(from, to, options) {
       return morphdom(from, to, {
-        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+        onBeforeElUpdated: (from, to) => {
+          return !from.isEqualNode(to);
+        },
         childrenOnly: true,
         ...options
       });

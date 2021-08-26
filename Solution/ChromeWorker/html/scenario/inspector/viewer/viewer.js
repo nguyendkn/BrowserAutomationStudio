@@ -59,8 +59,6 @@
         _.invoke(this.sortable, 'destroy');
 
         this.sortable = nodes.map(node => Sortable.create(node, {
-          group: 'nodes',
-          filter: '.pinned',
           onEnd: ({ item, from, to }) => {
             const name = item.querySelector('[data-path]').dataset.path.slice(1);
             const groups = this.model.get('groups');
@@ -76,7 +74,9 @@
               [fromName]: _.uniq(fromList),
               [toName]: _.uniq(toList),
             }, { silent: true });
-          }
+          },
+          filter: '.pinned',
+          group: 'nodes',
         }))
       }
 

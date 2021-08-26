@@ -35,14 +35,14 @@
       });
     },
 
-    sortByGlobals(src, compareFn) {
+    sortByGlobals(data, compareFn) {
       const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
-      return _.keys(src).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
+      return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
     },
 
-    sortByLocals(src, compareFn) {
+    sortByLocals(data, compareFn) {
       const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
-      return _.keys(src).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
+      return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
     },
 
     scaleColors(colors, count) {

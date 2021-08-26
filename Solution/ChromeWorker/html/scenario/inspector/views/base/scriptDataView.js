@@ -55,6 +55,33 @@
       return this;
     },
 
+    filterItems() {
+      const query = this.$('.inspector-filter-input').val().toLowerCase();
+      const filters = this.model.get('filters');
+
+      for (const el of this.$('.jst-group')) {
+        const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
+
+        const $visible = $items.filter((__, el) => {
+          const $item = $(el), { dataset } = $item.children('[data-path]')[0];
+          const visible = filters[dataset.type];
+
+          if (query.length) {
+            const $label = $item.children('.jst-label');
+            const text = $label.text().toLowerCase();
+            return visible && text.includes(query);
+          }
+
+          return visible;
+        });
+
+        $items.not($visible.show()).hide();
+        $group.toggle(!!$visible.length);
+      }
+
+      return this;
+    },
+
     sortItems() {
       const metadata = this.model.get('metadata');
       const updates = this.model.get('updates');
@@ -84,33 +111,6 @@
         const el = this.el.querySelector(`[data-path="/${key}"]`);
         el.parentNode.parentNode.appendChild(el.parentNode);
       });
-
-      return this;
-    },
-
-    filterItems() {
-      const query = this.$('.inspector-filter-input').val().toLowerCase();
-      const filters = this.model.get('filters');
-
-      for (const el of this.$('.jst-group')) {
-        const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
-
-        const $visible = $items.filter((__, el) => {
-          const $item = $(el), { dataset } = $item.children('[data-path]')[0];
-          const visible = filters[dataset.type];
-
-          if (query.length) {
-            const $label = $item.children('.jst-label');
-            const text = $label.text().toLowerCase();
-            return visible && text.includes(query);
-          }
-
-          return visible;
-        });
-
-        $items.not($visible.show()).hide();
-        $group.toggle(!!$visible.length);
-      }
 
       return this;
     },
@@ -160,7 +160,7 @@
         this.model.set('sorting', e.target.dataset.sorting);
       },
 
-      'input .inspector-filter-input': _.debounce(function (e) {
+      'input .inspector-filter-input': _.debounce(function () {
         this.filterItems()
       }, 200)
     }

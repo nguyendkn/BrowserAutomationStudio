@@ -57,15 +57,15 @@
 
       this.model.on('change:source', () => {
         this.render();
-        createSortable([...this.$('.jst-root > li > ul')]);
+        initSortable([...this.$('.jst-root > li > ul')]);
       });
 
       this.model.on('change:groups', () => {
         this.render();
-        createSortable([...this.$('.jst-root > li > ul')]);
+        initSortable([...this.$('.jst-root > li > ul')]);
       });
 
-      const createSortable = (nodes) => {
+      const initSortable = nodes => {
         _.invoke(this.sortable, 'destroy');
 
         this.sortable = nodes.map(node => Sortable.create(node, {

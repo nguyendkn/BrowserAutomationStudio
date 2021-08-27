@@ -253,9 +253,9 @@
     );
   }
 
-  function element(content, path, type) {
-    const attrs = _.map(({ path, type }), (v, k) => `data-${k}="${v}"`);
-    return `<span class="jst-node" ${attrs.join(' ')}>${content}</span>`;
+  function element(data, path, type) {
+    const attrs = _.map({ path, type }, (v, k) => `data-${k}="${v}"`);
+    return `<span class="jst-node" ${attrs.join(' ')}>${data}</span>`;
   }
 
   Inspector.Viewer = View;

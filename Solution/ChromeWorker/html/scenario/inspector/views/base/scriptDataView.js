@@ -19,11 +19,8 @@
           const $node = this.$(`[data-path="${path}"]`);
 
           if ($node.length) {
-            const { type } = $node[0].dataset;
-            if (type === 'object') return;
-            if (type === 'array') return;
-
-            $node.css('color', this.colors[type][count]);
+            const colors = this.colors[$node[0].dataset.type];
+            if (colors) $node.css('color', colors[count]);
           }
         });
       }
@@ -65,7 +62,7 @@
       const query = this.$('.inspector-filter-input').val().toLowerCase();
       const filters = this.model.get('filters');
 
-      for (const el of this.$('.jst-group')) {
+      _.each(this.$('.jst-group'), el => {
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
         const $visible = $items.filter((__, el) => {
@@ -83,7 +80,7 @@
 
         $items.not($visible.show()).hide();
         $group.toggle(!!$visible.length);
-      }
+      })
 
       return this;
     },

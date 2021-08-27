@@ -172,12 +172,11 @@
     }
   });
 
-  function scaleColors(map, count = 6) {
+  function scaleColors(map, size = 6) {
     return _.reduce(map, (acc, value, key) => {
       const scale = _.compose(color2K.toHex, color2K.getScale('red', value));
-      acc[key] = [...Array(count).keys()].map(n => scale(n / (count - 1)));
-      return acc;
-    }, {});
+      return { ...acc, [key]: _.range(size).map(n => scale(n / (size - 1))) }
+    }, {})
   }
 
   Inspector.ScriptDataView = View;

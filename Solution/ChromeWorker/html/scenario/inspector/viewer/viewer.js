@@ -139,7 +139,7 @@
         const val = jsonpatch.getValueByPointer(this.model.get('source'), path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        $node.text(`"${_.truncate(val, 100)}"`);
+        $node.text(`"${_.escape(truncate(val, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
@@ -148,7 +148,7 @@
         const val = jsonpatch.getValueByPointer(this.model.get('source'), path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        $node.text(`"${_.truncate(val, len)}"`);
+        $node.text(`"${_.escape(truncate(val, len))}"`);
       },
 
       'click .jst-group-toggle': function (e) {
@@ -173,7 +173,7 @@
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
         $el.next().toggleClass('jst-collapsed').show();
         this.trigger('node:expand');
-      },
+      }
     }
   });
 
@@ -200,8 +200,8 @@
 
   function jsString(value, path) {
     const data = _.truncate(value, 100);
-    const clip = data !== value ? `<i class="fa fa-plus-circle" aria-hidden="true"></i>` : '';
-    return element(`"${_.escape(data)}"`, path, 'string') + clip;
+    const clip = data !== value ? `<i class="fa fa-plus-circle"></i>` : '';
+    return element(`"${data}"`, path, 'string') + clip;
   }
 
   function jsUndefined(value, path) {
@@ -256,8 +256,8 @@
   }
 
   function element(data, path, type) {
-    const attrs = _.map({ path, type }, (v, k) => `data-${k}="${v}"`);
-    return `<span class="jst-node" ${attrs.join(' ')}>${data}</span>`;
+    const attrs = _.map({ path, type }, (val, attr) => `data-${attr}="${val}"`);
+    return `<span class="jst-node" ${attrs.join(' ')}>${_.escape(data)}</span>`;
   }
 
   Inspector.Viewer = View;

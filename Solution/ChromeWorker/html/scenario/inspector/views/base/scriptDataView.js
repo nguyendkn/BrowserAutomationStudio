@@ -3,7 +3,7 @@
 
   const View = Backbone.View.extend({
     colors: scaleColors({
-      undefined: '#808080',
+      undefined: '#8546bc',
       boolean: '#2525cc',
       number: '#d036d0',
       string: '#2db669',

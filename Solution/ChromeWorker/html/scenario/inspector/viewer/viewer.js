@@ -256,8 +256,9 @@
   }
 
   function element(data, path, type) {
-    const attrs = _.map({ path, type }, (val, attr) => `data-${attr}="${val}"`);
-    return `<span class="jst-node" ${attrs.join(' ')}>${_.escape(data)}</span>`;
+    return `<span class="jst-node" data-path="${path}" data-type="${type}">${(() => {
+      return type === 'string' ? _.escape(data) : data;
+    })}</span>`;
   }
 
   Inspector.Viewer = View;

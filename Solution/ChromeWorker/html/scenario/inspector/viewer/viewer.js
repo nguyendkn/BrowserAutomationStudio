@@ -139,7 +139,7 @@
         const val = jsonpatch.getValueByPointer(this.model.get('source'), path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        $node.text(`"${_.escape(truncate(val, 100))}"`);
+        $node.text(`"${_.escape(_.truncate(val, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
@@ -148,7 +148,7 @@
         const val = jsonpatch.getValueByPointer(this.model.get('source'), path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        $node.text(`"${_.escape(truncate(val, len))}"`);
+        $node.text(`"${_.escape(_.truncate(val, len))}"`);
       },
 
       'click .jst-group-toggle': function (e) {
@@ -258,7 +258,7 @@
   function element(data, path, type) {
     return `<span class="jst-node" data-path="${path}" data-type="${type}">${(() => {
       return type === 'string' ? _.escape(data) : data;
-    })}</span>`;
+    })()}</span>`;
   }
 
   Inspector.Viewer = View;

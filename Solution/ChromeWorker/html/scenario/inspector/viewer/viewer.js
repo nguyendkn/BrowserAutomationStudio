@@ -45,8 +45,8 @@
       return {
         source: {},
         groups: {},
-      };
-    },
+      }
+    }
   });
 
   const View = Backbone.View.extend({
@@ -89,7 +89,7 @@
           group: 'nodes',
           sort: false,
         }))
-      };
+      }
 
       this.model = model;
     },

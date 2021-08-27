@@ -53,16 +53,16 @@
     className: 'jst-viewer',
 
     initialize() {
-      this.model = new Model();
+      const model = new Model();
 
-      this.model.on('change:source', () => {
+      model.on('change:source', () => {
         this.render();
-        initSortable([...this.$('.jst-root > li > ul')]);
+        initSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
       });
 
-      this.model.on('change:groups', () => {
+      model.on('change:groups', () => {
         this.render();
-        initSortable([...this.$('.jst-root > li > ul')]);
+        initSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
       });
 
       const initSortable = nodes => {
@@ -90,6 +90,8 @@
           sort: false,
         }))
       };
+
+      this.model = model;
     },
 
     render() {
@@ -121,7 +123,7 @@
             </div>
             <div class="jst-group-body">
               <ul class="jst-root">
-                ${jsNode('', Object.fromEntries(keys.filter(k => _.has(source, k)).map(k => ([k, source[k]]))), '', true, true)}
+                ${jsNode('', Object.fromEntries(keys.filter(k => _.has(source, k)).map(k => [k, source[k]])), '', true, true)}
               </ul>
             </div>
           </div>`

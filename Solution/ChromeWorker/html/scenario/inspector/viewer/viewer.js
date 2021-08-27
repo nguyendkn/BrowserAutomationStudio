@@ -176,7 +176,7 @@
   });
 
   function jsIterable(value, path, type, brackets) {
-    const content = _.keys(value).map((key, idx, arr) => {
+    const content = _.keys(value).map(key => {
       return jsNode(key, value[key], key ? `${path}/${key}` : path)
     }).join('')
 
@@ -203,7 +203,7 @@
   }
 
   function jsUndefined(value, path) {
-    return element(void 0, path, 'undefined');
+    return element(value, path, 'undefined');
   }
 
   function jsBoolean(value, path) {
@@ -229,6 +229,8 @@
         !isRoot ? `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` : '',
         (() => {
           switch (Object.prototype.toString.call(value).slice(8, -1)) {
+            case 'Undefined':
+              return jsUndefined(value, path);
             case 'Boolean':
               return jsBoolean(value, path);
             case 'Object':
@@ -236,9 +238,6 @@
             case 'Number':
               return jsNumber(value, path);
             case 'String':
-              if (value.startsWith('__UNDEFINED__')) {
-                return jsUndefined(value.slice(13), path);
-              }
               if (value.startsWith('__DATE__')) {
                 return jsDate(value.slice(8), path);
               }

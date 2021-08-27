@@ -27,7 +27,7 @@
 
       model.on('change:source', (__, source) => {
         this.$('.inspector-panel')[0].dataset.empty = _.isEmpty(source);
-        this.viewer.model.update(source);
+        this.viewer.model.update(prepareData(source));
       });
 
       model.on('change:filters', this.filterItems, this);
@@ -174,6 +174,19 @@
       const scale = _.compose(color2K.toHex, color2K.getScale('red', value));
       return { ...acc, [key]: _.range(size).map(n => scale(n / (size - 1))) }
     }, {})
+  }
+
+  function prepareData(data) {
+    return _.reduce(data, (acc, val, key) => {
+      if (typeof (val) === 'string') {
+        if (val.startsWith('__UNDEFINED__')) {
+          val = undefined;
+        }
+      } else if (_.isObject(val)) {
+        val = prepareData(val);
+      }
+      return _.extend(acc, { [key]: val });
+    }, Array.isArray(data) ? [] : {});
   }
 
   Inspector.ScriptDataView = View;

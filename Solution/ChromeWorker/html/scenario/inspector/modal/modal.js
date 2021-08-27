@@ -63,8 +63,7 @@
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
 
-      if (value.startsWith('__UNDEFINED__')) {
-        value = 'undefined';
+      if (type === 'undefined') {
         type = 'null';
       }
 

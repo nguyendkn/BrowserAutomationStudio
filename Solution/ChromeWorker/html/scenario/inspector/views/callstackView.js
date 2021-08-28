@@ -2,14 +2,16 @@
   const { Inspector, JST, utils } = App;
 
   const Model = Backbone.Model.extend({
+    actions: ['If', 'For', 'While', 'Foreach'],
+
     update: function (source) {
       this.set('stack', source.filter(item => item.info.name).map(item => {
         const { info } = item; delete item.info;
 
-        if (['If', 'For', 'While', 'Foreach'].includes(info.name)) {
-          info.type = 'action';
-        } else {
+        if (!this.actions.includes(info.name)) {
           info.type = 'function';
+        } else {
+          info.type = 'action';
         }
 
         return { ...item, ...info }

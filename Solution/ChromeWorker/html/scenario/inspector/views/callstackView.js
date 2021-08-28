@@ -13,7 +13,7 @@
         }
 
         return { ...item, ...info }
-      }));
+      }).concat({ type: 'function', name: 'Main' }));
     },
 
     defaults: function () {

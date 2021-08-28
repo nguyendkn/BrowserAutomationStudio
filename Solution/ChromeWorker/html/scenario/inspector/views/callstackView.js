@@ -6,7 +6,7 @@
 
     update: function (source) {
       this.set('stack', source.filter(item => item.info.name).map(item => {
-        const { info } = item; delete item.info;
+        const { info, iterator, arguments } = item;
 
         if (!this.actions.includes(info.name.toLowerCase())) {
           info.type = 'function';
@@ -14,7 +14,7 @@
           info.type = 'action';
         }
 
-        return { ...item, ...info }
+        return { ...info, iterator, arguments }
       }).concat({ type: 'function', name: 'Main' }))
     },
 

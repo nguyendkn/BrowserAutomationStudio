@@ -13,18 +13,16 @@
         }
 
         return { ...item, ...info }
-      }).concat({ type: 'function', name: 'Main' }));
+      }).concat({ type: 'function', name: 'Main' }))
     },
 
-    defaults: function () {
-      return {
-        filters: {
-          functions: true,
-          actions: true,
-        },
-        stack: [],
-        state: {},
-      }
+    defaults: {
+      filters: {
+        functions: true,
+        actions: true,
+      },
+      stack: [],
+      state: {},
     }
   });
 

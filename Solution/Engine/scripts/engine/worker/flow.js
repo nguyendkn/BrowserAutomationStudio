@@ -54,7 +54,7 @@ function debug_variables(list, callback) {
             iterator: item._Iterator,
             arguments: item._Arguments,
         }
-    }).reverse();
+    }).filter(function (item) { return item.info.name }).reverse();
 
     Browser.DebugVariablesResult(JSON.stringify([variables, JSON.parse(ScriptWorker.PickResources()), callstack]), _get_function_body(callback));
 }

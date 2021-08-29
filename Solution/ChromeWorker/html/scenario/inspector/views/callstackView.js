@@ -5,9 +5,7 @@
     actions: ['if', 'for', 'while', 'foreach'],
 
     update: function (source) {
-      this.set('stack', source.filter(item => item.info.name).map(item => {
-        const { info, iterator, arguments } = item;
-
+      this.set('stack', source.map(({ info, iterator, arguments }) => {
         if (!this.actions.includes(info.name.toLowerCase())) {
           info.type = 'function';
         } else {

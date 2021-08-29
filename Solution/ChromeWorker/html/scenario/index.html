@@ -5858,7 +5858,7 @@
           variables: _Inspector.variables.saveState(),
           resources: _Inspector.resources.saveState(),
         }
-      }));
+      }))
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(json) {
@@ -5867,13 +5867,9 @@
       if (!_.isError(result)) {
         const { inspector } = result;
 
-        _Inspector.variables.restoreState(
-          inspector.variables
-        );
+        _Inspector.variables.restoreState(inspector.variables);
 
-        _Inspector.resources.restoreState(
-          inspector.resources
-        );
+        _Inspector.resources.restoreState(inspector.resources);
 
         return;
       }

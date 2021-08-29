@@ -97,10 +97,9 @@
     render() {
       utils.morph(this.el, this.renderRoot(), {
         getNodeKey: node => {
-          if (node.nodeType === 1 && node.classList.contains('jst-item')) {
+          if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('jst-item')) {
             const { dataset } = node.querySelector('[data-path]');
-            if (dataset.path) return dataset.path;
-            if (dataset.ref) return dataset.ref;
+            return dataset.path;
           }
           return node.id;
         }

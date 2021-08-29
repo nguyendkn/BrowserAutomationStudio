@@ -91,7 +91,7 @@
       const sorting = this.model.get('sorting');
       const cache = this.model.get('cache');
 
-      utils.sortByLocals(this.model.get('source'), (a, b) => {
+      sortByLocals(this.model.get('source'), (a, b) => {
         if (sorting !== 'alphabetically') {
           const meta1 = metadata[`/${a}`];
           const meta2 = metadata[`/${b}`];
@@ -168,6 +168,16 @@
       }, 200)
     }
   });
+
+  function sortByGlobals(data, compareFn) {
+    const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
+    return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
+  }
+
+  function sortByLocals(data, compareFn) {
+    const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
+    return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
+  }
 
   function scaleColors(map, size = 6) {
     return _.reduce(map, (acc, value, key) => {

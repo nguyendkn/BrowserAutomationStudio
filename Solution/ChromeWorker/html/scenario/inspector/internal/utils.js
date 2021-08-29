@@ -35,16 +35,6 @@
       });
     },
 
-    sortByGlobals(data, compareFn) {
-      const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
-      return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
-    },
-
-    sortByLocals(data, compareFn) {
-      const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
-      return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
-    },
-
     morph(from, to, options) {
       return morphdom(from, to, {
         onBeforeElUpdated: (from, to) => {

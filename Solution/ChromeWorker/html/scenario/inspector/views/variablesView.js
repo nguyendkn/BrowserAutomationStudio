@@ -2,15 +2,11 @@
   const { Inspector, JST, utils } = App;
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
-  const Model = ScriptDataModel.extend({
-    defaults: () => ({ ...ScriptDataModel.prototype.defaults, allowHighlight: true })
-  });
-
   Inspector.VariablesView = ScriptDataView.extend({
     template: JST['inspector/variables'],
 
     initialize: function () {
-      this.model = new Model();
+      this.model = new ScriptDataModel({ allowHighlight: true });
       ScriptDataView.prototype.initialize.apply(this);
     },
 

@@ -154,7 +154,7 @@
 
       'input .inspector-filter-input': _.debounce(function () {
         this.filterItems()
-      }, 225)
+      }, 200)
     }
   }, {
     colors: scaleColors({

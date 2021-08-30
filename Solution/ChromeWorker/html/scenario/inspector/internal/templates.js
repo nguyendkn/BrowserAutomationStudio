@@ -1,4 +1,4 @@
-(({ App, $, _ }) => {
+(({ App, _ }) => {
   _.extend(App.JST, {
     'inspector/modal': _.template(/*html*/`
       <div class="vertical-align-helper">

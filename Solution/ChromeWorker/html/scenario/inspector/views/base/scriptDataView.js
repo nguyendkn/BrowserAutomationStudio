@@ -168,13 +168,13 @@
   });
 
   function sortByGlobals(data, compareFn) {
-    const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
-    return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
+    const isGlobal = v => v.startsWith('GLOBAL:');
+    return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b))
   }
 
   function sortByLocals(data, compareFn) {
-    const isGlobal = v => v.toUpperCase().startsWith('GLOBAL:');
-    return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
+    const isGlobal = v => v.startsWith('GLOBAL:');
+    return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b))
   }
 
   function scaleColors(map, size = 6) {
@@ -193,8 +193,8 @@
       } else if (_.isObject(val)) {
         val = prepareData(val);
       }
-      return _.extend(acc, { [key]: val });
-    }, Array.isArray(data) ? [] : {});
+      return _.extend(acc, { [key]: val })
+    }, Array.isArray(data) ? [] : {})
   }
 
   Inspector.ScriptDataView = View;

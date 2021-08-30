@@ -3,17 +3,14 @@
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
   const Model = ScriptDataModel.extend({
-    defaults: () => _.extend({}, ScriptDataModel.prototype.defaults, {
-      allowHighlight: true,
-    })
+    defaults: () => ({ ...ScriptDataModel.prototype.defaults, allowHighlight: true })
   });
 
   Inspector.VariablesView = ScriptDataView.extend({
     template: JST['inspector/variables'],
 
-    model: new Model(),
-
     initialize: function () {
+      this.model = new Model();
       ScriptDataView.prototype.initialize.apply(this);
     },
 

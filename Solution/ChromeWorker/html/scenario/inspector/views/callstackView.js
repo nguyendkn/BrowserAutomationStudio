@@ -69,24 +69,18 @@
 
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
-        this.model.set('filters', {
-          ...this.model.get('filters'),
-          [e.target.value]: e.target.checked
-        })
+        const { checked, value } = e.target;
+        this.model.set('filters', { ...this.model.get('filters'), [value]: checked })
       },
 
       'show.bs.collapse .callstack-item > ul': function (e) {
-        this.model.set('state', {
-          ...this.model.get('state'),
-          [e.target.closest('li').dataset.id]: false
-        })
+        const { id } = e.target.closest('li').dataset;
+        this.model.set('state', { ...this.model.get('state'), [id]: false })
       },
 
       'hide.bs.collapse .callstack-item > ul': function (e) {
-        this.model.set('state', {
-          ...this.model.get('state'),
-          [e.target.closest('li').dataset.id]: true
-        })
+        const { id } = e.target.closest('li').dataset;
+        this.model.set('state', { ...this.model.get('state'), [id]: true })
       },
 
       'click .callstack-item-name': function (e) {

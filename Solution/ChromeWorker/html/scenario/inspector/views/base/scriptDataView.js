@@ -148,10 +148,8 @@
 
     events: {
       'change .inspector-filter-menu > li > input': function (e) {
-        this.model.set('filters', {
-          ...this.model.get('filters'),
-          [e.target.value]: e.target.checked
-        });
+        const { checked, value } = e.target;
+        this.model.set('filters', { ...this.model.get('filters'), [value]: checked })
       },
 
       'click .inspector-filter-menu > li': function (e) {

@@ -163,7 +163,7 @@
 
       'input .inspector-filter-input': _.debounce(function () {
         this.filterItems()
-      }, 200)
+      }, 225)
     }
   });
 

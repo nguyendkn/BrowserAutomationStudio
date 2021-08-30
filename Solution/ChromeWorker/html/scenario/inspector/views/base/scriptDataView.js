@@ -2,15 +2,6 @@
   const { Inspector, utils } = App;
 
   const View = Backbone.View.extend({
-    colors: scaleColors({
-      undefined: '#8546bc',
-      boolean: '#2525cc',
-      number: '#d036d0',
-      string: '#2db669',
-      date: '#ce904a',
-      null: '#808080'
-    }),
-
     initialize() {
       const model = this.model;
 
@@ -19,7 +10,7 @@
           const $node = this.$(`[data-path="${path}"]`);
 
           if ($node.length) {
-            const colors = this.colors[$node[0].dataset.type];
+            const colors = View.colors[$node[0].dataset.type];
             if (colors) $node.css('color', colors[count]);
           }
         });
@@ -165,6 +156,15 @@
         this.filterItems()
       }, 225)
     }
+  }, {
+    colors: scaleColors({
+      undefined: '#8546bc',
+      boolean: '#2525cc',
+      number: '#d036d0',
+      string: '#2db669',
+      date: '#ce904a',
+      null: '#808080'
+    })
   });
 
   function sortByGlobals(data, compareFn) {

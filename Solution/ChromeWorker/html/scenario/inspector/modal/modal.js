@@ -88,7 +88,7 @@
           if (idx === 0) {
             const $el = $(el), type = $el.attr('type');
 
-            if (!(type === 'radio')) {
+            if (type !== 'radio') {
               $el.val(type === 'number' ? 0 : '');
             } else {
               $el.prop('checked', true);

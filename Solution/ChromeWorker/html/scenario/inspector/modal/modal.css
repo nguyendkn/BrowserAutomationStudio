@@ -7,7 +7,7 @@
 .dropdown-menu > li > a.inspector-modal-select-option:hover {
   background-color: #606060;
   background-image: none;
-  color: #fff;
+  color: white;
 }
 
 .dropdown-menu > li > a.inspector-modal-select-option {
@@ -20,7 +20,7 @@
   line-height: 18px;
   font-weight: 500;
   font-size: 13px;
-  color: #fff;
+  color: white;
   display: flex;
   outline: 0;
 }
@@ -68,16 +68,16 @@
 }
 
 .inspector-modal-select:focus {
-  color: #fff;
+  color: white;
 }
 
 .inspector-modal-select:hover {
-  color: #fff;
+  color: white;
 }
 
 .inspector-modal-content {
-  background-color: #ffffff;
   border: 1px solid #f7f7f8;
+  background-color: white;
   -webkit-user-select: none;
   -webkit-user-drag: none;
   pointer-events: all;
@@ -97,7 +97,7 @@
   border-radius: 0;
   font-weight: 500;
   font-size: 13px;
-  color: #fff;
+  color: white;
   outline: 0;
 }
 
@@ -128,8 +128,6 @@
 
 .inspector-modal-form {
   flex-direction: column;
-  margin-bottom: 10px;
-  margin-top: 0px;
   display: flex;
   width: 100%;
 }

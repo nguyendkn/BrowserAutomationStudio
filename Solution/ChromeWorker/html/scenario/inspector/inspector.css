@@ -10,10 +10,6 @@
   pointer-events: none;
 }
 
-.inspector-nav > li.enabled > a {
-  pointer-events: all;
-}
-
 .inspector-nav > li.active > a {
   background: #e0e0e0;
 }

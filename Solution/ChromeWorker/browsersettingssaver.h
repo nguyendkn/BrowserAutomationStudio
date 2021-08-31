@@ -16,6 +16,7 @@ struct BrowserSettingsSaver
     std::vector<std::string> Languages;
     std::string LanguagesHeader;
     std::string UserAgent;
+    std::string UserAgentDataBase64;
 
     //Record mode
     bool IsRecord;

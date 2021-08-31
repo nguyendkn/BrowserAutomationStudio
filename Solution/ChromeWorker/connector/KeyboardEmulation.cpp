@@ -221,14 +221,17 @@ std::map<std::string, Variant> KeyboardEmulation::PrepareRawKeyboardEvent(KeyEve
     {
         Key = "Control";
         Code = "ControlLeft";
+        Params["location"] = Variant(1);
     }else if(VirtualCode == VK_MENU)
     {
         Key = "Alt";
         Code = "AltLeft";
+        Params["location"] = Variant(1);
     } else if(VirtualCode == VK_SHIFT)
     {
         Key = "Shift";
         Code = "ShiftLeft";
+        Params["location"] = Variant(1);
     } else if(VirtualCode == VK_BACK)
     {
         Key = "Backspace";
@@ -483,14 +486,17 @@ std::map<std::string, Variant> KeyboardEmulation::PrepareKeyboardEvent(KeyEvent 
     {
         Letter = Key = VK_CONTROL;
         KeyCode = "Control";
+        Params["location"] = Variant(1);
     }else if(Char == CharacterAlt)
     {
         Letter = Key = VK_MENU;
         KeyCode = "Alt";
+        Params["location"] = Variant(1);
     } else if(Char == CharacterShift)
     {
         Letter = Key = VK_SHIFT;
         KeyCode = "Shift";
+        Params["location"] = Variant(1);
     } else if(Char == CharacterBackspace)
     {
         Letter = Key = VK_BACK;

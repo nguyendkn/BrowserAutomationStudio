@@ -140,7 +140,7 @@
     events: {
       'change .inspector-filter-menu > li > input': function (e) {
         const { checked, value } = e.target;
-        this.model.set('filters', { ...this.model.get('filters'), [value]: checked })
+        this.model.set('filters', { ...this.model.get('filters'), [value]: checked });
       },
 
       'click .inspector-filter-menu > li': function (e) {
@@ -169,19 +169,19 @@
 
   function sortByGlobals(data, compareFn) {
     const isGlobal = v => v.startsWith('GLOBAL:');
-    return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b))
+    return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
   }
 
   function sortByLocals(data, compareFn) {
     const isGlobal = v => v.startsWith('GLOBAL:');
-    return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b))
+    return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
   }
 
   function scaleColors(map, size = 6) {
     return _.reduce(map, (acc, value, key) => {
       const scale = _.compose(color2K.toHex, color2K.getScale('red', value));
       return { ...acc, [key]: _.range(size).map(n => scale(n / (size - 1))) }
-    }, {})
+    }, {});
   }
 
   function prepareData(data) {
@@ -194,7 +194,7 @@
         val = prepareData(val);
       }
       return _.extend(acc, { [key]: val })
-    }, Array.isArray(data) ? [] : {})
+    }, Array.isArray(data) ? [] : {});
   }
 
   Inspector.ScriptDataView = View;

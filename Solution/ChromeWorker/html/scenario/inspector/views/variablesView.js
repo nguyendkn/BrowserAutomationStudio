@@ -17,8 +17,8 @@
     events: function () {
       return _.extend({}, ScriptDataView.prototype.events, {
         'dblclick .jst-root > li > ul [data-path]': function (e) {
-          const { path, type } = e.target.dataset;
           e.stopPropagation();
+          const { path, type } = e.target.dataset;
 
           const modal = new Inspector.Modal({
             callback({ isChanged, value, cancel, type }) {

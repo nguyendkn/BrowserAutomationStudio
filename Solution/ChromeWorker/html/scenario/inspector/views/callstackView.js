@@ -70,17 +70,17 @@
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
         const { checked, value } = e.target;
-        this.model.set('filters', { ...this.model.get('filters'), [value]: checked })
+        this.model.set('filters', { ...this.model.get('filters'), [value]: checked });
       },
 
       'show.bs.collapse .callstack-item > ul': function (e) {
         const { id } = e.target.closest('li').dataset;
-        this.model.set('state', { ...this.model.get('state'), [id]: false })
+        this.model.set('state', { ...this.model.get('state'), [id]: false });
       },
 
       'hide.bs.collapse .callstack-item > ul': function (e) {
         const { id } = e.target.closest('li').dataset;
-        this.model.set('state', { ...this.model.get('state'), [id]: true })
+        this.model.set('state', { ...this.model.get('state'), [id]: true });
       },
 
       'click .callstack-item-name': function (e) {

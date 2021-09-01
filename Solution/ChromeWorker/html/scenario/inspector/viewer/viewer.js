@@ -176,25 +176,12 @@
     }
   });
 
-  function jsIterable(value, path, type, brackets) {
-    const content = _.keys(value).map(key => {
-      return jsNode(key, value[key], key ? `${path}/${key}` : path)
-    }).join('')
-
-    return [
-      `<span class="jst-bracket">${brackets[0]}</span>`,
-      content.length ? '<span class="jst-collapse"></span>' : '',
-      `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`,
-      `<span class="jst-bracket">${brackets[1]}</span>`
-    ].join('');
-  }
-
   function jsObject(value, path) {
-    return jsIterable(value, path, 'object', ['{', '}']);
+    return iterable(value, path, 'object', ['{', '}']);
   }
 
   function jsArray(value, path) {
-    return jsIterable(value, path, 'array', ['[', ']']);
+    return iterable(value, path, 'array', ['[', ']']);
   }
 
   function jsString(value, path) {
@@ -247,9 +234,22 @@
     );
   }
 
-  function element(data, path, type) {
+  function iterable(value, path, type, brackets) {
+    const content = _.keys(value).map(key => {
+      return jsNode(key, value[key], key ? `${path}/${key}` : path)
+    }).join('')
+
+    return [
+      `<span class="jst-bracket">${brackets[0]}</span>`,
+      content.length ? '<span class="jst-collapse"></span>' : '',
+      `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`,
+      `<span class="jst-bracket">${brackets[1]}</span>`
+    ].join('');
+  }
+
+  function element(value, path, type) {
     return `<span class="jst-node" data-path="${path}" data-type="${type}">${(() => {
-      return type === 'string' ? `"${_.escape(data)}"` : data;
+      return type === 'string' ? `"${_.escape(value)}"` : value;
     })()}</span>`;
   }
 

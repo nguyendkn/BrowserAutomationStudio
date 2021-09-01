@@ -10,7 +10,7 @@
           info.type = 'action';
         }
         return { ...info, iterator, arguments }
-      }).concat({ type: 'function', name: 'Main' }))
+      }).concat({ name: 'Main', type: 'function' }));
     },
 
     defaults: {

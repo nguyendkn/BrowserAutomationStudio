@@ -2,11 +2,9 @@
   const { Inspector, JST, utils } = App;
 
   const Model = Backbone.Model.extend({
-    actions: ['if', 'for', 'while', 'foreach'],
-
     update: function (source) {
       this.set('stack', source.map(({ info, iterator, arguments }) => {
-        if (!this.actions.includes(info.name.toLowerCase())) {
+        if (!Model.actions.includes(info.name.toLowerCase())) {
           info.type = 'function';
         } else {
           info.type = 'action';
@@ -23,6 +21,13 @@
       stack: [],
       state: {},
     }
+  }, {
+    actions: [
+      'foreach',
+      'while',
+      'for',
+      'if',
+    ]
   });
 
   Inspector.CallstackView = Backbone.View.extend({

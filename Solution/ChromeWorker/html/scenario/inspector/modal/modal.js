@@ -67,11 +67,6 @@
         type = 'null';
       }
 
-      if (value.startsWith('__DATE__')) {
-        value = value.slice(8);
-        type = 'date';
-      }
-
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');
         $inputs.parent('form').trigger('reset');

@@ -215,12 +215,14 @@
     return element(value, path, 'number');
   }
 
-  function jsDate(value, path) {
-    return element(value, path, 'date');
-  }
-
   function jsNull(value, path) {
     return element(value, path, 'null');
+  }
+
+  function jsDate(value, path) {
+    const format = 'YYYY-MM-DD HH:mm:ss [UTC]Z';
+    value = dayjs(value).format(format);
+    return element(value, path, 'date');
   }
 
   function jsNode(name, value, path, isLast, isRoot) {
@@ -230,25 +232,16 @@
         !isRoot ? `<span class="jst-label">${_.escape(name)}</span><span class="jst-colon">:</span>` : '',
         (() => {
           switch (Object.prototype.toString.call(value).slice(8, -1)) {
-            case 'Undefined':
-              return jsUndefined(value, path);
-            case 'Boolean':
-              return jsBoolean(value, path);
-            case 'Object':
-              return jsObject(value, path);
-            case 'Number':
-              return jsNumber(value, path);
-            case 'String':
-              if (value.startsWith('__DATE__')) {
-                return jsDate(value.slice(8), path);
-              }
-              return jsString(value, path);
-            case 'Array':
-              return jsArray(value, path);
-            case 'Null':
-              return jsNull(value, path);
+            case 'Undefined': return jsUndefined(value, path);
+            case 'Boolean': return jsBoolean(value, path);
+            case 'Object': return jsObject(value, path);
+            case 'Number': return jsNumber(value, path);
+            case 'String': return jsString(value, path);
+            case 'Array': return jsArray(value, path);
+            case 'Null': return jsNull(value, path);
+            case 'Date': return jsDate(value, path);
           }
-        })(),
+        })()
       ].join('')
       }</li>`
     );

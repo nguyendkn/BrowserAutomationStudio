@@ -113,7 +113,7 @@
       const groups = this.model.get('groups');
 
       return (
-        `<div class="jst-viewer">${_.map(groups, (keys, name) => (
+        `<div class="${this.el.className}">${_.map(groups, (keys, name) => (
           `<div class="jst-group" data-name="${name}">
             <div class="jst-group-head">
               <i class="jst-group-options fa fa-caret-down"></i>

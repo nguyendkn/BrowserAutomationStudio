@@ -38,7 +38,7 @@
 
         this.interact = interact(this.el).resizable({
           listeners: {
-            move: ({ client, target }) => {
+            move: ({ client }) => {
               const pos = client.y, height = Math.min(
                 window.outerHeight - pos - 30,
                 window.outerHeight - 300 - 30,

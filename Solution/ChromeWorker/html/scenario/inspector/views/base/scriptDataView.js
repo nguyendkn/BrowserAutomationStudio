@@ -157,14 +157,14 @@
       }, 200)
     }
   }, {
-    colors: scaleColors({
-      undefined: '#8546bc',
-      boolean: '#2525cc',
-      number: '#d036d0',
-      string: '#2db669',
-      date: '#ce904a',
-      null: '#808080'
-    })
+    colors: {
+      undefined: scaleColor('#8546bc'),
+      boolean: scaleColor('#2525cc'),
+      number: scaleColor('#d036d0'),
+      string: scaleColor('#2db669'),
+      date: scaleColor('#ce904a'),
+      null: scaleColor('#808080'),
+    }
   });
 
   function sortByGlobals(data, compareFn) {
@@ -177,11 +177,9 @@
     return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
   }
 
-  function scaleColors(map, size = 6) {
-    return _.reduce(map, (acc, value, key) => {
-      const scale = _.compose(color2K.toHex, color2K.getScale('red', value));
-      return { ...acc, [key]: _.range(size).map(n => scale(n / (size - 1))) }
-    }, {});
+  function scaleColor(value, size = 6) {
+    const scale = _.compose(color2K.toHex, color2K.getScale('red', value));
+    return  _.range(size).map(n => scale(n / (size - 1)));
   }
 
   function prepareData(data) {

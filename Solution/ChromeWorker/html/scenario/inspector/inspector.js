@@ -25,15 +25,15 @@
         this.setElement('#inspector').$el.html(this.template());
 
         this.variables = new Inspector.VariablesView({
-          el: this.$('#variables')[0]
+          el: this.el.querySelector('#variables')
         }).render();
 
         this.resources = new Inspector.ResourcesView({
-          el: this.$('#resources')[0]
+          el: this.el.querySelector('#resources')
         }).render();
 
         this.callstack = new Inspector.CallstackView({
-          el: this.$('#callstack')[0]
+          el: this.el.querySelector('#callstack')
         }).render();
 
         this.interact = interact(this.el).resizable({
@@ -95,7 +95,7 @@
 
       'keyup': function (e) {
         e.stopPropagation();
-      }
+      },
     }
   });
 })(window);

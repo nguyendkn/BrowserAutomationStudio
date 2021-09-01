@@ -200,7 +200,7 @@
   function jsString(value, path) {
     const data = _.truncate(value, 100);
     const clip = data !== value ? `<i class="fa fa-plus-circle"></i>` : '';
-    return element(`"${data}"`, path, 'string') + clip;
+    return element(data, path, 'string') + clip;
   }
 
   function jsUndefined(value, path) {
@@ -249,7 +249,7 @@
 
   function element(data, path, type) {
     return `<span class="jst-node" data-path="${path}" data-type="${type}">${(() => {
-      return type === 'string' ? _.escape(data) : data;
+      return type === 'string' ? `"${_.escape(data)}"` : data;
     })()}</span>`;
   }
 

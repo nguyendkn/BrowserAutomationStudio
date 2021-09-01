@@ -38,16 +38,12 @@
 
         this.interact = interact(this.el).resizable({
           listeners: {
-            move: ({ client }) => {
-              const h1 = $('#functions').outerHeight();
-              const h2 = $(window).outerHeight();
-              let height = h2 - h1 - client.y;
-              const max = h2 - h1 - 300;
-
-              height = Math.min(height, max);
-              height = Math.max(height, 120);
-
-              this.$el.css('height', `${height}px`);
+            move: ({ client, target }) => {
+              const pos = client.y, height = Math.min(
+                window.outerHeight - pos - 30,
+                window.outerHeight - 300 - 30,
+              );
+              this.$el.outerHeight(Math.max(height, 120));
             }
           },
           edges: { top: true }

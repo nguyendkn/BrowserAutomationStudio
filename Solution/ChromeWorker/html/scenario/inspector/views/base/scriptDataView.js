@@ -167,19 +167,19 @@
     }
   });
 
-  function sortByGlobals(data, compareFn) {
+  function sortByGlobals(obj, compareFn) {
     const isGlobal = v => v.startsWith('GLOBAL:');
-    return _.keys(data).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
+    return _.keys(obj).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
   }
 
-  function sortByLocals(data, compareFn) {
+  function sortByLocals(obj, compareFn) {
     const isGlobal = v => v.startsWith('GLOBAL:');
-    return _.keys(data).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
+    return _.keys(obj).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
   }
 
-  function scaleColor(value, size = 6) {
-    const scale = _.compose(color2K.toHex, color2K.getScale('red', value));
-    return  _.range(size).map(n => scale(n / (size - 1)));
+  function scaleColor(color, size = 6) {
+    const scale = _.compose(color2K.toHex, color2K.getScale('red', color));
+    return _.range(size).map(n => scale(n / (size - 1)));
   }
 
   function prepareData(data) {

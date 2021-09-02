@@ -605,7 +605,13 @@ namespace BrowserAutomationStudioFramework
                 c.setName(val.toObject()["name"].toString().toUtf8());
                 c.setDomain(val.toObject()["domain"].toString());
                 c.setPath(val.toObject()["path"].toString());
+                if(val.toObject()["expires"].toDouble() < 0)
+                {
+                    c.setExpirationDate(QDateTime::currentDateTime().addYears(10));
+                }else
+                {
                 c.setExpirationDate(QDateTime::fromMSecsSinceEpoch(val.toObject()["expires"].toDouble() * 1000));
+                }
                 c.setHttpOnly(val.toObject()["httpOnly"].toBool());
                 c.setSecure(val.toObject()["secure"].toBool());
                 Cookies.insertCookie(c);

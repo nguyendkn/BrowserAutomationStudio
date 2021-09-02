@@ -14,10 +14,8 @@
       return ScriptDataView.prototype.render.apply(this);
     },
 
-    events: function () {
-      return _.extend({}, ScriptDataView.prototype.events, {
-
-      });
+    events: {
+      ...ScriptDataView.prototype.events
     }
   });
 })(window);

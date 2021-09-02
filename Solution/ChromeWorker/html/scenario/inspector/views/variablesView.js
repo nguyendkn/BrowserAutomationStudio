@@ -14,27 +14,27 @@
       return ScriptDataView.prototype.render.apply(this);
     },
 
-    events: function () {
-      return _.extend({}, ScriptDataView.prototype.events, {
-        'dblclick .jst-root > li > ul [data-path]': function (e) {
-          e.stopPropagation();
-          const { path, type } = e.target.dataset;
+    events: {
+      ...ScriptDataView.prototype.events,
 
-          const modal = new Inspector.Modal({
-            callback({ isChanged, value, cancel, type }) {
-              if (cancel || !isChanged) return;
-              utils.updateVariable(value, path, type);
-            },
-            value: jsonpatch.getValueByPointer(this.viewer.model.get('source'), path),
-            type,
-          });
-          modal.render();
-        },
+      'dblclick .jst-root > li > ul [data-path]': function (e) {
+        e.stopPropagation();
+        const { path, type } = e.target.dataset;
 
-        'keydown .inspector-filter-input': function (e) {
-          if (e.key === ' ') e.preventDefault();
-        }
-      });
+        const modal = new Inspector.Modal({
+          callback({ isChanged, value, cancel, type }) {
+            if (cancel || !isChanged) return;
+            utils.updateVariable(value, path, type);
+          },
+          value: jsonpatch.getValueByPointer(this.viewer.model.get('source'), path),
+          type,
+        });
+        modal.render();
+      },
+
+      'keydown .inspector-filter-input': function (e) {
+        if (e.key === ' ') e.preventDefault();
+      }
     }
   });
 })(window);

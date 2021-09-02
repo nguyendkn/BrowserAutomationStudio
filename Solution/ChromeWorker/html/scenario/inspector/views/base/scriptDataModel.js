@@ -4,7 +4,7 @@
   const Model = Backbone.Model.extend({
     update: function (source) {
       const metadata = this.get('metadata');
-      const updates = this.get('updates');
+      let updates = this.get('updates');
       let cache = this.get('cache');
 
       const diff = jsonpatch.compare(this.get('source'), source); diff.forEach(item => {
@@ -22,7 +22,8 @@
         cache = cache.concat(path).slice(-100);
       });
 
-      this.set('updates', updates + !!diff.length);
+      updates += diff.length !== 0;
+      this.set('updates', updates);
       this.set('source', source);
       this.set('cache', cache);
 

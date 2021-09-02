@@ -5,6 +5,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QDateTime>
+#include <QRegularExpression>
 #include "convertencoding.h"
 #include "every_cpp.h"
 
@@ -18,6 +19,12 @@ namespace BrowserAutomationStudioFramework
         Thread = 0;
         DoSniff = false;
         RequestId = 0;
+    }
+
+    bool CurlHttpClient::IsIp(const QString& Text)
+    {
+        QRegularExpression IpRegexp("^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
+        return IpRegexp.match(Text).hasMatch();
     }
 
     void CurlHttpClient::GenerateRequestId()
@@ -331,11 +338,16 @@ namespace BrowserAutomationStudioFramework
                     QList<QNetworkCookie> cookies = QNetworkCookie::parseCookies(headerValue);
                     foreach(QNetworkCookie cookie,cookies)
                     {
-                        if(cookie.domain().length()>0 && !cookie.domain().startsWith("."))
+                        if(cookie.domain().length()>0 && !cookie.domain().startsWith(".") && !IsIp(cookie.domain()))
                             cookie.setDomain(QString(".") + cookie.domain());
                         if(cookie.domain().isEmpty())
                         {
-                            cookie.setDomain(QString(".") + QUrl(LastUrl).host());
+                            QString DefaultDomain = QUrl(LastUrl).host();
+                            if(!IsIp(DefaultDomain))
+                            {
+                                DefaultDomain = QString(".") + DefaultDomain;
+                            }
+                            cookie.setDomain(DefaultDomain);
                         }
                         Cookies.insertCookie(cookie);
                     }

@@ -57,18 +57,20 @@
 
       model.on('change:source', () => {
         this.render();
-        initSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
+        initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
+        initGroupsSortable([...this.el.querySelectorAll('.jst-group')]);
       });
 
       model.on('change:groups', () => {
         this.render();
-        initSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
+        initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
+        initGroupsSortable([...this.el.querySelectorAll('.jst-group')]);
       });
 
-      const initSortable = nodes => {
-        _.invoke(this.sortable, 'destroy');
+      const initNodesSortable = nodes => {
+        _.invoke(this.sortableNodes, 'destroy');
 
-        this.sortable = nodes.map(node => Sortable.create(node, {
+        this.sortableNodes = nodes.map(node => Sortable.create(node, {
           onEnd: ({ item, from, to }) => {
             const name = item.querySelector('[data-path]').dataset.path.slice(1);
             const groups = this.model.get('groups');
@@ -88,6 +90,19 @@
           filter: '.pinned',
           group: 'nodes',
           sort: false,
+        }))
+      }
+
+      const initGroupsSortable = nodes => {
+        _.invoke(this.sortableGroups, 'destroy');
+
+        this.sortableGroups = nodes.map(node => Sortable.create(node, {
+          onEnd: ({ item, from, to}) => {
+
+          },
+          group: 'groups',
+          filter: null,
+          sort: true,
         }))
       }
 

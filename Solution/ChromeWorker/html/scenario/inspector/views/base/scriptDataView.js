@@ -2,9 +2,7 @@
   const { Inspector, utils } = App;
 
   const View = Backbone.View.extend({
-    initialize() {
-      const model = this.model;
-
+    initialize({ model }) {
       if (model.get('allowHighlight')) {
         model.on('highlight', ({ count, path }) => {
           const $node = this.$(`[data-path="${path}"]`);
@@ -24,6 +22,8 @@
       model.on('change:filters', this.filterItems, this);
 
       model.on('change:sorting', this.sortItems, this);
+
+      this.model = model;
     },
 
     render() {

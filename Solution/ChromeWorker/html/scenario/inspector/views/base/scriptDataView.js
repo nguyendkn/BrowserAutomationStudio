@@ -126,11 +126,11 @@
         items: [
           ..._.map(this.$el.find('[data-type="object"]'), el => ({
             folded: el.classList.contains('jst-collapsed'),
-            path: el.dataset.path,
+            path: el.dataset.path
           })),
           ..._.map(this.$el.find('[data-type="array"]'), el => ({
             folded: el.classList.contains('jst-collapsed'),
-            path: el.dataset.path,
+            path: el.dataset.path
           })),
         ]
       });

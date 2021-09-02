@@ -17,7 +17,7 @@
         this.resources.model.set('highlight', true);
       });
 
-      this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
+      this.on('show', BrowserAutomationStudio_AskForVariablesUpdateOrWait);
     },
 
     render() {

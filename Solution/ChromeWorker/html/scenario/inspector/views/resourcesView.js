@@ -9,10 +9,7 @@
       ScriptDataView.prototype.initialize.call(this, {
         model: new ScriptDataModel({ allowHighlight: true })
       });
-    },
-
-    render: function () {
-      return ScriptDataView.prototype.render.apply(this);
+      _.bindAll(this, 'render');
     },
 
     events: {

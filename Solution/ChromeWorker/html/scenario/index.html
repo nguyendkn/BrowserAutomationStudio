@@ -3835,7 +3835,7 @@
 
 
         
-        morphdom(document.getElementById("containerdata"), '<div id="containerdata">' + html + '</div>', {
+        morphdom(document.getElementById("containerdata"), `<div id="containerdata">${html}</div>`, {
           onBeforeElUpdated: function(fromEl, toEl) {
               if(fromEl.hasAttribute("noupdate"))
               {
@@ -4040,9 +4040,8 @@
 
         _VisualizeLabels.Visualize();
 
-        this.trigger('render');
+        return this.trigger('render');
       }
-
     });
 
     var Router = Backbone.Router.extend({

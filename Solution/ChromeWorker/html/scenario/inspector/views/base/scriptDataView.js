@@ -14,16 +14,18 @@
         });
       }
 
-      model.on('change:source', (__, source) => {
+      this.model = model.on('change:source', (__, source) => {
         this.$('.inspector-panel')[0].dataset.empty = _.isEmpty(source);
         this.viewer.model.update(prepareData(source));
+      })
+
+      this.model.on('change:filters', () => {
+        this.filterItems();
       });
 
-      model.on('change:filters', this.filterItems, this);
-
-      model.on('change:sorting', this.sortItems, this);
-
-      this.model = model;
+      this.model.on('change:sorting', () => {
+        this.sortItems();
+      });
     },
 
     render() {

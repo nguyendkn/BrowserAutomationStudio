@@ -2688,6 +2688,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
     {
         TypeText = ReplaceAll(LastCommand.CommandParam1,"\r\n","<RETURN>");
         TypeText = ReplaceAll(TypeText,"\n","<RETURN>");
+        TypeText = ReplaceAll(TypeText,"<MOUSEDOUBLE>","<MOUSELEFT><MOUSEDOUBLE>");
 
         TypeTextDelay = std::stoi(LastCommand.CommandParam2);
 

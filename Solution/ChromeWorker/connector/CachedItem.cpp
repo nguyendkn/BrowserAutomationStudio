@@ -1,4 +1,12 @@
 #include "CachedItem.h"
+#include <chrono>
+
+using namespace std::chrono;
+
+CachedItem::CachedItem()
+{
+    CreatedAt = duration_cast< milliseconds >( system_clock::now().time_since_epoch() ).count();
+}
 
 void CachedItem::UpdateResponseHeaders(const std::string& Result, const std::string& ObjectName, const std::string& PropertyName)
 {

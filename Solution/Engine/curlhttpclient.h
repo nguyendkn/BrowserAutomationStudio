@@ -44,6 +44,7 @@ namespace BrowserAutomationStudioFramework
         QThread *GetThread();
         QMultiHash<QString,QString> CombineHeaders(const QStringList& RequestOptions);
         void GenerateRequestId();
+        bool IsIp(const QString& Text);
 
     public:
         explicit CurlHttpClient(QObject *parent = 0);

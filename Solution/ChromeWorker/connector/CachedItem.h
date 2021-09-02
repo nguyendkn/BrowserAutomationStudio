@@ -7,6 +7,7 @@
 
 struct CachedItem
 {
+    CachedItem();
     std::map<std::string, std::string> ResponseHeaders;
     std::map<std::string, std::string> RequestHeaders;
     bool IsFinished = false;
@@ -16,6 +17,7 @@ struct CachedItem
     std::string Body;
     std::string Url;
     int Status = 0;
+    long long CreatedAt = 0;
 
     void UpdateResponseHeaders(const std::string& Result, const std::string& ObjectName, const std::string& PropertyName);
     void UpdateRequestHeaders(const std::string& Result, const std::string& ObjectName, const std::string& PropertyName);

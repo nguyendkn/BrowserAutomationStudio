@@ -2262,18 +2262,25 @@ std::string DevToolsConnector::GetAllCacheData(const std::string& Mask)
 
 std::string DevToolsConnector::GetSingleCacheData(const std::string& Mask, bool IsBase64)
 {
+    std::string Result;
+    long long LastTime = 0;
     for (const auto& data : GlobalState.CachedData)
     {
-        if (match(Mask, data.second->Url))
+        if(data.second->CreatedAt > LastTime && match(Mask, data.second->Url))
         {
+            LastTime = data.second->CreatedAt;
             if(IsBase64)
-                return data.second->Body;
+            {
+                Result = data.second->Body;
+            }
             else
-                return base64_decode(data.second->Body);
+            {
+                Result = base64_decode(data.second->Body);
+            }
         }
     }
 
-    return std::string();
+    return Result;
 }
 
 void DevToolsConnector::ClearNetworkData()

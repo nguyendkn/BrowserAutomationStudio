@@ -89,14 +89,14 @@
 
       this.once('accept', () => {
         this.close();
-        const changed = value !== model.get('value') || type !== model.get('type');
-        callback({ ...model.toJSON(), changed, cancel: false });
+        const json = model.toJSON();
+        callback({ ...json, changed: value !== json.value || type !== json.type, cancel: false });
       });
 
       this.once('cancel', () => {
         this.close();
-        const changed = value !== model.get('value') || type !== model.get('type');
-        callback({ ...model.toJSON(), changed, cancel: true });
+        const json = model.toJSON();
+        callback({ ...json, changed: value !== json.value || type !== json.type, cancel: false });
       });
 
       this.model = model;

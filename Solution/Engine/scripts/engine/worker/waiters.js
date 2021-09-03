@@ -237,7 +237,7 @@ function wait_content_visible()
     {
         wait(tr("Failed to wait for content ") + JSON.stringify(text_success),function(){
             _set_result(false);
-            waiter_create_match_path(_arguments()).script("document.readyState!='loading' && self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'",function(){
+            waiter_create_match_path(_arguments()).script("document.readyState!='loading' && Math.round(self.getBoundingClientRect().height) > 0 && Math.round(self.getBoundingClientRect().width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'",function(){
                 _set_result(_result().indexOf("true")>=0);
             })
         },text_success,func);
@@ -287,7 +287,7 @@ function wait_css_visible()
         _set_result(false);
         wait(tr("Failed to wait for css ") + JSON.stringify(text_success), function(){
             _set_result(false);
-            waiter_create_css_path(_arguments()).script("document.readyState!='loading' && self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'",function(){
+            waiter_create_css_path(_arguments()).script("document.readyState!='loading' && Math.round(self.getBoundingClientRect().height) > 0 && Math.round(self.getBoundingClientRect().width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'",function(){
                _set_result(_result().indexOf("true")>=0);
             })
         },text_success,func);
@@ -791,7 +791,7 @@ function wait_element_visible()
             if(BROWSERAUTOMATIONSTUDIO_WAIT_ITERATION == 8)
                 _info(tr("Waiting for element ") + text_success)
             _set_result(false);
-            get_element_selector(_arguments()).script("document.readyState!='loading' && self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'",function(){
+            get_element_selector(_arguments()).script("document.readyState!='loading' && Math.round(self.getBoundingClientRect().height) > 0 && Math.round(self.getBoundingClientRect().width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'",function(){
                _set_result(_result().indexOf("true")>=0);
             })
         },text_success,func);

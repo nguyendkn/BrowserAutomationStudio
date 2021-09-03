@@ -211,8 +211,7 @@ function SQL_PreParameterization(){
 				var ell = _cycle_param("foreach_data")[cycle_index];
 				
 				_call_function(SQL_Template,{"e":ell})!
-				var res = _result_function();
-				replacements[cycle_index] = value;
+				replacements[cycle_index] = _result_function();
 			})!
 			
 			query = query.replace(reg, "?");

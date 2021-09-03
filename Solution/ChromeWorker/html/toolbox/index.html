@@ -5399,7 +5399,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       <%= variable %> = _result() == 1
       <% if(isvisible){ %>
         _if(<%= variable %>, function(){
-          <%= path %>.script("document.readyState!='loading' && self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'")!
+          <%= path %>.script("document.readyState!='loading' && Math.round(self.getBoundingClientRect().height) > 0 && Math.round(self.getBoundingClientRect().width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'")!
           <%= variable %> = _result().indexOf("true")>=0
         })!
       <% } %>

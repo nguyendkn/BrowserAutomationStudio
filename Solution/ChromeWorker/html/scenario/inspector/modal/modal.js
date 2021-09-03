@@ -82,22 +82,21 @@
         });
       });
 
+      this.bind('submit', () => {
+        const valid = this.el.querySelector('form').reportValidity();
+        if (valid || model.get('type') === 'string') this.trigger('accept');
+      });
+
       this.once('accept', () => {
         this.close();
         const changed = value !== model.get('value') || type !== model.get('type');
-        callback({ ...this.model.toJSON(), changed, cancel: false });
+        callback({ ...model.toJSON(), changed, cancel: false });
       });
 
       this.once('cancel', () => {
         this.close();
         const changed = value !== model.get('value') || type !== model.get('type');
-        callback({ ...this.model.toJSON(), changed, cancel: true });
-      });
-
-      this.bind('submit', () => {
-        if (this.$('form')[0].reportValidity() || this.model.get('type') === 'string') {
-          this.trigger('accept');
-        }
+        callback({ ...model.toJSON(), changed, cancel: true });
       });
 
       this.model = model;

@@ -58,13 +58,13 @@
       model.on('change:source', () => {
         this.render();
         initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
-        initGroupsSortable([...this.el.querySelectorAll('.jst-group')]);
+        // initGroupsSortable([...this.el.querySelectorAll('.jst-group')]);
       });
 
       model.on('change:groups', () => {
         this.render();
         initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
-        initGroupsSortable([...this.el.querySelectorAll('.jst-group')]);
+        // initGroupsSortable([...this.el.querySelectorAll('.jst-group')]);
       });
 
       const initNodesSortable = nodes => {

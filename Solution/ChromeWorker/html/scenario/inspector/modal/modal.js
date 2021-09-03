@@ -4,19 +4,7 @@
   const Model = Backbone.Model.extend({
     defaults: {
       value: '',
-      type: '',
-    },
-
-    initialize({ value, type }) {
-      this.value = value;
-      this.type = type;
-    },
-
-    toJSON() {
-      const valueChanged = this.value !== this.get('value');
-      const typeChanged = this.type !== this.get('type');
-      const isChanged = valueChanged || typeChanged;
-      return { ...this.attributes, isChanged };
+      type: ''
     }
   });
 
@@ -96,12 +84,14 @@
 
       this.once('accept', () => {
         this.close();
-        callback({ ...this.model.toJSON(), cancel: false });
+        const changed = value !== model.get('value') || type !== model.get('type');
+        callback({ ...this.model.toJSON(), changed, cancel: false });
       });
 
       this.once('cancel', () => {
         this.close();
-        callback({ ...this.model.toJSON(), cancel: true });
+        const changed = value !== model.get('value') || type !== model.get('type');
+        callback({ ...this.model.toJSON(), changed, cancel: true });
       });
 
       this.bind('submit', () => {

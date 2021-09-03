@@ -213,8 +213,8 @@
 
 .callstack-item > div {
   justify-content: space-between;
-  background-position: 0 center;
   background-repeat: no-repeat;
+  background-position: 0 2px;
   padding-left: 20px;
   display: flex; 
 }
@@ -237,9 +237,6 @@
   color: #838383;
   font-size: 95%;
   flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 .callstack-item-name {

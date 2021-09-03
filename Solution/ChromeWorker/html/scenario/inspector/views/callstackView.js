@@ -92,6 +92,11 @@
         e.preventDefault();
         const { id } = e.target.closest('li').dataset;
         BrowserAutomationStudio_FocusAction(id, false);
+      },
+
+      'click .callstack-item-data': function (e) {
+        e.preventDefault();
+        e.target.classList.toggle('text-truncate');
       }
     }
   });

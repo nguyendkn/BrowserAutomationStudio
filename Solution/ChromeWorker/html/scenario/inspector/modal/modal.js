@@ -90,13 +90,13 @@
       this.once('accept', () => {
         this.close();
         const json = model.toJSON();
-        callback({ ...json, changed: value !== json.value || type !== json.type, cancel: false });
+        callback({ ...json, isChanged: value !== json.value || type !== json.type, cancel: false });
       });
 
       this.once('cancel', () => {
         this.close();
         const json = model.toJSON();
-        callback({ ...json, changed: value !== json.value || type !== json.type, cancel: false });
+        callback({ ...json, isChanged: value !== json.value || type !== json.type, cancel: true });
       });
 
       this.model = model;

@@ -889,7 +889,7 @@ function _random_point()
         if(typeof(_SELECTOR) == "string")
         {
             Selector = _SELECTOR.split(">FRAME>")[0];
-            Code = "(function(){if(!(self.getBoundingClientRect().height > 0 && self.getBoundingClientRect().width > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = self.getBoundingClientRect();var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()";
+            Code = "(function(){if(!(Math.round(self.getBoundingClientRect().height) > 0 && Math.round(self.getBoundingClientRect().width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = self.getBoundingClientRect();var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()";
         }else
         {
             Selector = "";

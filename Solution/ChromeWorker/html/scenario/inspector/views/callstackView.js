@@ -10,7 +10,7 @@
           info.type = 'action';
         }
         return { ...info, iterator, arguments }
-      }).concat({ name: 'Main', type: 'function' }));
+      }).concat({ name: 'Main', type: 'function', id: 0 }));
     },
 
     defaults: {
@@ -19,14 +19,14 @@
         actions: true,
       },
       stack: [],
-      state: {},
+      state: {}
     }
   }, {
     actions: [
       'foreach',
       'while',
       'for',
-      'if',
+      'if'
     ]
   });
 

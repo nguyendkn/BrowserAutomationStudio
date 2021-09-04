@@ -2,9 +2,9 @@
   const { Inspector, utils } = App;
 
   const View = Backbone.View.extend({
-    initialize({ model }) {
-      if (model.get('allowHighlight')) {
-        model.on('highlight', ({ count, path }) => {
+    initialize() {
+      if (this.model.get('allowHighlight')) {
+        this.model.on('highlight', ({ count, path }) => {
           const $node = this.$(`[data-path="${path}"]`);
 
           if ($node.length) {
@@ -14,7 +14,7 @@
         });
       }
 
-      this.model = model.on('change:source', (__, source) => {
+      this.model.on('change:source', (__, source) => {
         this.$('.inspector-panel')[0].dataset.empty = _.isEmpty(source);
         this.viewer.model.update(prepareData(source));
       })

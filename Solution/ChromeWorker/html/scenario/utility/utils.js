@@ -1,5 +1,5 @@
 (({ App, Backbone, $, _ }) => {
-  const toString = Object.prototype.toString.call;
+  const toString = Object.prototype.toString;
 
   App.utils = {
     getTaskInfo(task) {
@@ -42,9 +42,9 @@
 
     lowerFirst: str => str.charAt(0).toLowerCase() + str.slice(1),
 
-    isString: obj => toString(obj) === '[object String]',
+    isString: obj => toString.call(obj) === '[object String]',
 
-    isError: obj => toString(obj) === '[object Error]',
+    isError: obj => toString.call(obj) === '[object Error]',
 
     concat: (arr, ...args) => arr.concat(...args),
 

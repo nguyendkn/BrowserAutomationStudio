@@ -6,6 +6,9 @@
     'Show or hide function params': {
       ru: 'Показать или скрыть параметры функции'
     },
+    'Click to show the full text': {
+      ru: 'Кликните, чтобы показать весь текст'
+    },
     'Change the variable value': {
       ru: 'Изменить значение переменной'
     },
@@ -16,7 +19,7 @@
       ru: 'По дате изменения'
     },
     'By date added': {
-      ru: 'По дате добавления'
+      ru: 'По дате создания'
     },
     'Filter by name': {
       ru: 'Фильтр по имени'

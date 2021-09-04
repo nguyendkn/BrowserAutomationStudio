@@ -4,7 +4,7 @@
   const Model = Backbone.Model.extend({
     defaults: {
       value: '',
-      type: ''
+      type: '',
     }
   });
 

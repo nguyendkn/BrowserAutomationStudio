@@ -195,7 +195,7 @@
       } else if (_.isObject(val)) {
         val = prepareData(val);
       }
-      return _.extend(acc, { [key]: val })
+      return (acc[key] = val, acc);
     }, Array.isArray(data) ? [] : {});
   }
 

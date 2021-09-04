@@ -5,16 +5,12 @@
     template: JST['inspector/main'],
 
     initialize() {
-      _GobalModel.on('change:isscriptexecuting', (__, value) => {
-        if (value || this.$el.is(':hidden')) return;
-        this.variables.model.set('highlight', true);
-        this.resources.model.set('highlight', true);
-      });
-
-      _GobalModel.on('change:istaskexecuting', (__, value) => {
-        if (value || this.$el.is(':hidden')) return;
-        this.variables.model.set('highlight', true);
-        this.resources.model.set('highlight', true);
+      ['isscriptexecuting', 'istaskexecuting'].forEach(type => {
+        _GobalModel.on(`change:${type}`, (__, value) => {
+          if (value || this.$el.is(':hidden')) return;
+          this.variables.model.set('highlight', true);
+          this.resources.model.set('highlight', true);
+        });
       });
 
       this.on('show', BrowserAutomationStudio_AskForVariablesUpdateOrWait);

@@ -1,4 +1,6 @@
 (({ App, Backbone, $, _ }) => {
+  const toString = Object.prototype.toString.call;
+
   App.utils = {
     getTaskInfo(task) {
       if (!(task instanceof Backbone.Model)) return {};
@@ -24,7 +26,7 @@
   });
 
   _.mixin({
-    attempt: function (func, ...args) {
+    attempt: (func, ...args) => {
       try {
         return func(...args);
       } catch (e) {
@@ -32,38 +34,24 @@
       }
     },
 
-    truncate: function (str, limit) {
+    truncate: (str, limit) => {
       return str.length > limit ? (str.slice(0, limit - 3) + '...') : str;
     },
 
-    concat: function (arr, ...args) {
-      return arr.concat(...args);
-    },
+    upperFirst: str => str.charAt(0).toUpperCase() + str.slice(1),
 
-    slice: function (arr, ...args) {
-      return arr.slice(...args);
-    },
+    lowerFirst: str => str.charAt(0).toLowerCase() + str.slice(1),
 
-    upperFirst: function (str) {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    },
+    isString: obj => toString(obj) === '[object String]',
 
-    lowerFirst: function (str) {
-      return str.charAt(0).toLowerCase() + str.slice(1);
-    },
+    isError: obj => toString(obj) === '[object Error]',
 
-    isString: function (obj) {
-      return Object.prototype.toString.call(obj) === '[object String]';
-    },
+    concat: (arr, ...args) => arr.concat(...args),
 
-    isError: function (obj) {
-      return Object.prototype.toString.call(obj) === '[object Error]';
-    },
+    slice: (arr, ...args) => arr.slice(...args),
 
-    sleep: function (time) {
-      return new Promise(resolve => {
-        setTimeout(() => resolve(), time);
-      });
-    }
+    sleep: time => new Promise(resolve => {
+      setTimeout(resolve, time);
+    })
   });
 })(window);

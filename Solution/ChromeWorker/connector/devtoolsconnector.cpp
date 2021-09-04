@@ -230,7 +230,11 @@ void DevToolsConnector::StartProcess()
 
     CommandLine += std::wstring(L"about:blank");
 
-    ProcessLauncher.Start(L"worker.exe", CommandLine, GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation)));
+
+    std::wstring ChromePath = GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation));
+    std::wstring WorkerPath = ChromePath + std::wstring(L"/worker.exe");
+
+    ProcessLauncher.Start(WorkerPath, CommandLine, ChromePath);
 }
 
 void DevToolsConnector::TryToConnect()

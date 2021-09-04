@@ -5,7 +5,7 @@
     template: JST['inspector/main'],
 
     initialize() {
-      ['isscriptexecuting', 'istaskexecuting'].forEach(type => {
+      _.each(['isscriptexecuting', 'istaskexecuting'], type => {
         _GobalModel.on(`change:${type}`, (__, value) => {
           if (value || this.$el.is(':hidden')) return;
           this.variables.model.set('highlight', true);

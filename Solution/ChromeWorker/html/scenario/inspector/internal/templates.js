@@ -73,7 +73,7 @@
             </li>
           </ul>
           <button id="inspectorClose" type="button" style="min-width: 28px; border: none; background: #fafafa;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" height="12" width="12" fill="#000" style="vertical-align: middle">
+            <svg viewBox="0 0 12 12" height="12" width="12" fill="#000" style="vertical-align: middle">
               <path d="M12 1.0501l-1.05-1.05L6 4.9501 1.05.0001 0 1.0501l4.95 4.95-4.95 4.95 1.05 1.05L6 7.0501l4.95 4.95 1.05-1.05-4.95-4.95 4.95-4.95z" />
             </svg>
           </button>

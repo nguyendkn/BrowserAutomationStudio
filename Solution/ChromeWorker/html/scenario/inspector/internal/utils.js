@@ -19,17 +19,19 @@
           variable = JSON.stringify(variable);
         }
 
-        VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`try {
-          if (${isGlobal}) {
-            var obj = JSON.parse(P('basglobal', '${root}') || '{}');
-            obj${path} = ${variable};
-            PSet('basglobal', '${root}', JSON.stringify(obj));
-            delete obj;
-          } else {
-            VAR_${root}${path} = ${variable};
-          }
+        VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
+          try {
+            if (${isGlobal}) {
+              var obj = JSON.parse(P('basglobal', '${root}') || '{}');
+              obj${path} = ${variable};
+              PSet('basglobal', '${root}', JSON.stringify(obj));
+              delete obj;
+            } else {
+              VAR_${root}${path} = ${variable};
+            }
+          } catch (e) {}
           section_start('test', -3)!
-        } catch (e) {}`, false);
+        `, false);
       });
     },
 

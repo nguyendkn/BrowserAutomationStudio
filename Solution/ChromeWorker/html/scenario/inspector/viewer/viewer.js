@@ -43,7 +43,7 @@
 
     getValue: function (path) {
       return jsonpatch.getValueByPointer(this.get('source', path));
-    }
+    },
 
     defaults: function () {
       return {

@@ -122,15 +122,12 @@
     saveState() {
       this.model.set('state', {
         items: [
-          ..._.map(this.$el.find('[data-type="object"]'), el => ({
-            folded: el.classList.contains('jst-collapsed'),
-            path: el.dataset.path
-          })),
-          ..._.map(this.$el.find('[data-type="array"]'), el => ({
-            folded: el.classList.contains('jst-collapsed'),
-            path: el.dataset.path
-          })),
-        ]
+          ...this.el.querySelector('[data-type="object"]'),
+          ...this.el.querySelector('[data-type="array"]'),
+        ].map(el => ({
+          folded: el.classList.contains('jst-collapsed'),
+          path: el.dataset.path
+        }))
       });
       return this.model.get('state');
     },

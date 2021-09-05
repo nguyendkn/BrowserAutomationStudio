@@ -122,8 +122,8 @@
     saveState() {
       this.model.set('state', {
         items: [
-          ...this.el.querySelector('[data-type="object"]'),
-          ...this.el.querySelector('[data-type="array"]'),
+          ...this.el.querySelectorAll('[data-type="object"]'),
+          ...this.el.querySelectorAll('[data-type="array"]'),
         ].map(el => ({
           folded: el.classList.contains('jst-collapsed'),
           path: el.dataset.path

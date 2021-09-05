@@ -27,7 +27,7 @@
       this.set('source', source);
       this.set('cache', cache);
 
-      if (this.get('allowHighlight')) {
+      if (true) {
         const highlight = this.get('highlight');
         _.each(metadata, (item, path) => {
           if (highlight) {
@@ -41,7 +41,6 @@
 
     defaults: {
       sorting: 'alphabetically',
-      allowHighlight: true,
       highlight: false,
       metadata: {},
       updates: 0,

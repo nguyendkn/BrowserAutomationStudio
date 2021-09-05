@@ -1,7 +1,7 @@
 (({ App, Backbone, _ }) => {
   const { Inspector, utils } = App;
 
-  const Model = Backbone.Model.extend({
+  Inspector.ScriptDataModel = Backbone.Model.extend({
     update: function (source) {
       const metadata = this.get('metadata');
       let updates = this.get('updates');
@@ -60,6 +60,4 @@
       }
     }
   });
-
-  Inspector.ScriptDataModel = Model;
 })(window);

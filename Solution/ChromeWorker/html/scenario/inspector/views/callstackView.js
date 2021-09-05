@@ -3,13 +3,16 @@
 
   const Model = Backbone.Model.extend({
     update: function (source) {
-      this.set('stack', source.map(({ info, iterator, arguments }) => {
-        if (!Model.actions.includes(info.name.toLowerCase())) {
-          info.type = 'function';
+      this.set('stack', source.map(item => {
+        let type = null;
+
+        if (!Model.actions.includes(item.name.toLowerCase())) {
+          type = 'function';
         } else {
-          info.type = 'action';
+          type = 'action';
         }
-        return { ...info, iterator, arguments }
+
+        return { ...item, type }
       }).concat({ id: 0, name: 'Main', type: 'function' }));
     },
 

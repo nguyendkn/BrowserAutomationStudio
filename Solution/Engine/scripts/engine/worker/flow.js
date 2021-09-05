@@ -49,12 +49,11 @@ function debug_variables(list, callback) {
     }, {});
 
     var callstack = CYCLES.Data.map(function (item) {
-        return {
-            info: item._Info,
-            iterator: item._Iterator,
-            arguments: item._Arguments,
-        }
-    }).filter(function (item) { return item.info.name }).reverse();
+        return Object.keys(item._Info).reduce(function (acc, key) {
+            acc[key] = item._Info[key];
+            return acc;
+        }, { arguments: item._Arguments, iterator: item._Iterator });
+    }).filter(function (item) { return item.name }).reverse();
 
     Browser.DebugVariablesResult(JSON.stringify([variables, JSON.parse(ScriptWorker.PickResources()), callstack]), _get_function_body(callback));
 }

@@ -57,12 +57,13 @@
     },
 
     renderStack() {
-      const $panel = this.$('.inspector-panel');
-      $panel[0].dataset.empty = _.isEmpty(this.model.get('stack'));
+      const panel = this.el.querySelector('.inspector-panel');
+      panel.dataset.empty = _.isEmpty(this.model.get('stack'));
       const html = JST['inspector/stack'](this.model.toJSON());
 
-      utils.morph($panel.children('.inspector-panel-data')[0], `<div class="inspector-panel-data">${html}</div>`, {
-
+      morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${html}</div>`, {
+        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+        childrenOnly: true,
       });
 
       return this;

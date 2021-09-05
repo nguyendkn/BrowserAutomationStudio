@@ -33,16 +33,6 @@
           section_start('test', -3)!
         `, false);
       });
-    },
-
-    morph(from, to, options) {
-      return morphdom(from, to, {
-        onBeforeElUpdated: (from, to) => {
-          return !from.isEqualNode(to);
-        },
-        childrenOnly: true,
-        ...options
-      });
     }
   });
 })(window);

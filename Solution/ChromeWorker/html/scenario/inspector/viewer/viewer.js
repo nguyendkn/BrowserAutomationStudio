@@ -110,14 +110,16 @@
     },
 
     render() {
-      utils.morph(this.el, this.renderRoot(), {
+      morphdom(this.el, this.renderRoot(), {
+        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         getNodeKey: node => {
           if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('jst-item')) {
             const { dataset } = node.querySelector('[data-path]');
             return dataset.path;
           }
           return node.id;
-        }
+        },
+        childrenOnly: true
       });
 
       return this.trigger('render');

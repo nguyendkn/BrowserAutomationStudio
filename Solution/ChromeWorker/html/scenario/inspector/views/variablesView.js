@@ -22,7 +22,7 @@
             if (cancel || !isChanged) return;
             utils.updateVariable(value, path, type);
           },
-          value: jsonpatch.getValueByPointer(this.viewer.model.get('source'), path),
+          value: this.viewer.model.getValue(path),
           type,
         });
         modal.render();

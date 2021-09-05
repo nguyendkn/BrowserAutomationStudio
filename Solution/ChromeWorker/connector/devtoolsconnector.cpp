@@ -1133,7 +1133,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         it = GlobalState.Tabs.erase(it);
                     } else
                     {
-                        if((*it)->ConnectionState != TabData::Connected)
+                        if((*it)->ConnectionState != TabData::Connected && (*it)->ConnectionState != TabData::Delayed)
                         {
                             EveryTabIsConnected = false;
                         }

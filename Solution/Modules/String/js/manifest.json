@@ -292,6 +292,23 @@
 		{
             "code": [
                 {
+                    "file": "split_to_lines_code.js",
+                    "name": "split_to_lines_code"
+                }
+            ],
+            "description": {
+                "en": "Split text to lines",
+                "ru": "Разделить текст на строки"
+            },
+            "interface": "split_to_lines_interface.js",
+            "is_element": false,
+            "name": "split_to_lines",
+            "select": "split_to_lines_select.js",
+            "template": "{{string}} : {{separator}} -> {{Save}}"
+        },
+		{
+            "code": [
+                {
                     "file": "find_substring_code.js",
                     "name": "find_substring_code"
                 }
@@ -836,11 +853,11 @@
 		"[\"Just\", \"sample\", \"text\"]": {"ru":"[\"Просто\", \"пример\", \"текста\"]"},
 		"The string containing a sentence to be split into words.": {"ru":"Строка, содержащая предложение, которое нужно разделить на слова."},
 		"This action ignores any characters other than letters and numbers.": {"ru":"Это действие игнорирует любые символы, кроме букв и цифр."},
-		"The list can be processed using actions from the \"List\" module.": {"ru":"Список можно обработать с помощью действий из модуля \"Список\"."},
+		"The resulting list can be processed using actions from the \"List\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"Список\"."},
 		"This action will return a list containing the words obtained from the string.": {"ru":"Это действие вернет список, содержащий слова, полученные из строки."},
 		"Variable in which, after successful execution of the action, the list of words will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список слов."},
 		"For example, if the string <code>\"Delicious 100% juice.\"</code> is specified, then the action will return <code>[\"Delicious\", \"100\", \"juice\"]</code>.": {"ru":"Например, если указана строка <code>\"Вкусный 100% сок.\"</code>, то действие вернет <code>[\"Вкусный\", \"100\", \"сок\"]</code>."},
-		"For example, if the string <code>\"Test text\"</code> is specified, then the action will return <code>[\"Test\",\"text\"]</code>, and if the string <code>\"Just example string.\"</code> is specified, then the action will return <code>[\"Just\",\"example\",\"string\"]</code>.": {"ru":"Например, если указана строка <code>\"Тестовый текст\"</code>, то действие вернет <code>[\"Тестовый\",\"текст\"]</code>, а если указана строка <code>\"Просто пример строки.\"</code>, то действие вернет <code>[\"Просто\",\"пример\",\"строки\"]</code>."},
+		"For example, if the string <code>\"Test text\"</code> is specified, then the action will return <code>[\"Test\",\"text\"]</code>, and if the string <code>\"Just example string.\"</code> is specified, then the action will return <code>[\"Just\",\"example\",\"string\"]</code>.": {"ru":"Например, если указана строка <code>\"Test text\"</code>, то действие вернет <code>[\"Test\",\"text\"]</code>, а если указана строка <code>\"Просто пример строки.\"</code>, то действие вернет <code>[\"Просто\",\"пример\",\"строки\"]</code>."},
 		
 		"Split the string into sentences.": {"ru":"Разделить строку на предложения."},
 		"Just sample text. Test text, string": {"ru":"Просто пример текста. Тестовый текст, строка"},
@@ -849,6 +866,29 @@
 		"This action will return a list containing the sentences obtained from the string.": {"ru":"Это действие вернет список, содержащий предложения, полученные из строки."},
 		"Variable in which, after successful execution of the action, the list of sentences will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список предложений."},
 		"For example, if the string <code>\"Just sample text. Test text, string\"</code> is specified, then the action will return <code>[\"Just sample text.\", \"Test text, string\"]</code>, and if the string <code>\"Test text! Test text! Test text!\"</code> is specified, then the action will return <code>[\"Test text!\", \"Test text!\", \"Test text!\"]</code>.": {"ru":"Например, если указана строка <code>\"Просто пример текста. Тестовый текст, строка\"</code>, то действие вернет <code>[\"Просто пример текста.\",\"Тестовый текст, строка\"]</code>, а если указана строка <code>\"Тестовый текст! Тестовый текст! Тестовый текст!\"</code>, то действие вернет <code>[\"Тестовый текст!\",\"Тестовый текст!\",\"Тестовый текст!\"]</code>."},
+		
+		"Limit": {"ru":"Лимит"},
+		"Remove empty lines": {"ru":"Удалить пустые строки"},
+		"Just<br>sample<br>text": {"ru":"Просто<br>пример<br>текста"},
+		"Split string into lines.": {"ru":"Разделить строку на строки."},
+		"Line break, split multiline text": {"ru": "Перенос строки, разделить многострочный текст"},
+		"The resulting list can contain a maximum of 10 items.": {"ru": "Итоговый список может содержать максимум 10 элементов."},
+		"The string containing text to be split into lines.": {"ru":"Строка, содержащая текст, который нужно разделить на строки."},
+		"Don't limit the number of items on the resulting list.": {"ru": "Не ограничивайте количество элементов в итоговом списке."},
+		"Carriage return and line break, split multiline text": {"ru": "Возврат каретки и перенос строки, разделить многострочный текст"},
+		"Line break with or without carriage return, split multiline text": {"ru": "Перевод строки с возвратом каретки или без него, разделить многострочный текст"},
+		"String or regular expression used as the delimiter for the original string.": {"ru":"Строка или регулярное выражение используемые в качестве разделителя исходной строки."},
+		"Variable in which, after successful execution of the action, the list of strings will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список строк."},
+		"Split the original string character by character, each character will be a separate item in the list.": {"ru":"Разделить исходную строку посимвольно, каждый символ будет отдельным элементом списка."},
+		"If the \"Remove empty lines\" parameter is activated, then all empty lines will be removed from the resulting list.": {"ru": "Если активирован параметр \"Удалить пустые строки\", то из итогового списка будут удалены все пустые строки."},
+		"If the separator does not occur in the original string, then the resulting list will contain one element, the original string.": {"ru":"Если разделитель не встречается в исходной строке, то итоговый список будет содержать один элемент, исходную строку."},
+		"If separator is not specified, the string will be split character by character, each character will be a separate item of the list.": {"ru":"Если разделитель не будет указан, то строка будет разделена посимвольно, каждый символ будет отдельным элементом списка."},
+		"This action will return a list containing the lines obtained from the original string as a result of splitting at the specified separator.": {"ru":"Это действие вернет список, содержащий строки, полученные из исходной строки в результате разделения по указанному разделителю."},
+		"For example, if the specified string is <code>\"string\"</code> and the separator is <code>\";\"</code>, then the action will return <code>[\"string\"]</code>.": {"ru":"Например, если указана строка <code>\"string\"</code> и разделитель <code>\";\"</code>, то действие вернет <code>[\"string\"]</code>."},
+		"For example, if the specified string is <code>\"Test:text\"</code> and the separator is <code>\":\"</code>, then the action will return <code>[\"Test\",\"text\"]</code>.": {"ru":"Например, если указана строка <code>\"Test:text\"</code> и разделитель <code>\":\"</code>, то действие вернет <code>[\"Test\",\"text\"]</code>."},
+		"For example, if the specified string is <code>\"string\"</code> and the separator is not specified, then the action will return <code>[\"s\",\"t\",\"r\",\"i\",\"n\",\"g\"]</code>.": {"ru":"Например, если указана строка <code>\"string\"</code> и разделитель не указан, то действие вернет <code>[\"s\",\"t\",\"r\",\"i\",\"n\",\"g\"]</code>."},
+		"For example, if the specified string is <br><code>\"Just<br>example<br>string.\"</code> and the separator is <code>\"\\n\"</code>, then the action will return <code>[\"Just\",\"example\",\"string\"]</code>.": {"ru":"Например, если указана строка <br><code>\"Просто<br>пример<br>строки.\"</code> и разделитель <code>\"\\n\"</code>, то действие вернет <code>[\"Просто\",\"пример\",\"строки\"]</code>."},
+		"An integer specifying the maximum number of items in the resulting list. The string will still be split completely, but the final list will be truncated so that its length does not exceed the specified limit.": {"ru":"Целое число, определяющее максимальное количество элементов в итоговом списке. Строка все равно будет разделена полностью, но итоговый список будет обрезан, так чтобы его длинна не превышала указанный лимит."},
 		
 		"Find a substring in a string.": {"ru":"Найти подстроку в строке."},
 		"The substring to find in the string.": {"ru":"Подстрока, которую нужно найти в строке."},

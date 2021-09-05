@@ -378,7 +378,7 @@ void DevToolsActionExecuteJavascript::Next()
         DoScroll = false;
         IsDoingScroll = true;
         std::map<std::string, Variant> CurrentParams;
-        std::string Script = std::string("(function(){var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");if(self)self.scrollIntoViewIfNeeded(true);})();");
+        std::string Script = std::string("(function(){var self = null; try{ self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");}catch(e){};if(self)self.scrollIntoViewIfNeeded(true);})();");
         CurrentParams["expression"] = Variant(Javascript(Script));
         if(CurrentContextId >= 0)
             CurrentParams["contextId"] = Variant(CurrentContextId);
@@ -422,7 +422,7 @@ void DevToolsActionExecuteJavascript::Next()
     
     if (!ElementSelector.empty())
     {
-        Script += Javascript(std::string("var self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");"));
+        Script += Javascript(std::string("var self = null; try{ self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");}catch(e){};"));
     }else
     {
         Script += Javascript(std::string("var self = document.body;"));

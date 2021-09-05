@@ -32,6 +32,7 @@ class settings
     bool restart;
     bool emulate_mouse;
     bool autostart_debug;
+    bool save_browser_log;
     bool profiles_caching;
     bool debug_toolbox;
     bool debug_scenario;
@@ -49,6 +50,7 @@ public:
     bool UseFlash();
     bool UseWidevine();
     bool AutostartDebug();
+    bool SaveBrowserLog();
     bool ProfilesCaching();
     bool Maximized();
     bool DebugToolbox();

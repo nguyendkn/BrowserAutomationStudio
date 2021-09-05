@@ -52,7 +52,10 @@ function debug_variables(list, callback) {
         return Object.keys(item._Info).reduce(function (acc, key) {
             acc[key] = item._Info[key];
             return acc;
-        }, { arguments: item._Arguments, iterator: item._Iterator });
+        }, {
+            arguments: item._Arguments,
+            iterator: item._Iterator,
+        });
     }).filter(function (item) { return item.name }).reverse();
 
     Browser.DebugVariablesResult(JSON.stringify([variables, JSON.parse(ScriptWorker.PickResources()), callstack]), _get_function_body(callback));

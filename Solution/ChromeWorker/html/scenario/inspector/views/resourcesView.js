@@ -6,10 +6,8 @@
     template: JST['inspector/resources'],
 
     initialize: function () {
-      ScriptDataView.prototype.initialize.call(this, {
-        allowHighlight: false,
-        model: new ScriptDataModel()
-      });
+      this.model = new ScriptDataModel();
+      ScriptDataView.prototype.initialize.call(this, { allowHighlight: false });
     },
 
     events: {

@@ -108,14 +108,12 @@
     },
 
     restoreState(state = this.model.get('state')) {
-      if (Array.isArray(state.items)) {
-        state.items.forEach(({ path, folded }) => {
-          const $el = this.$el.find(`[data-path="${path}"]`);
-          if (folded && !$el.hasClass('jst-collapsed')) {
-            $el.prev('.jst-collapse').click();
-          }
-        });
-      }
+      _.each(state.items, ({ path, folded }) => {
+        const $el = this.$el.find(`[data-path="${path}"]`);
+        if (folded && !$el.hasClass('jst-collapsed')) {
+          $el.prev('.jst-collapse').click();
+        }
+      });
       this.model.set('state', state);
     },
 

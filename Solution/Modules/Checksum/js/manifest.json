@@ -43,7 +43,7 @@
             ],
             "description": {
                 "en": "Get list of algorithms",
-                "ru": "Получите список алгоритмов"
+                "ru": "Получить список алгоритмов"
             },
             "interface": "Checksum_GetAlgorithmsList_interface.js",
             "is_element": false,

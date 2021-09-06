@@ -1,5 +1,5 @@
 (({ App, Backbone, $, _ }) => {
-  const { Inspector, JST, utils } = App;
+  const { Inspector, JST } = App;
 
   const Model = Backbone.Model.extend({
     renameGroup: function (group, name) {

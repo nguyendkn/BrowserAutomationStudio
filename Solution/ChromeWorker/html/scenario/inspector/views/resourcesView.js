@@ -1,5 +1,5 @@
 (({ App, _ }) => {
-  const { Inspector, JST, utils } = App;
+  const { Inspector, JST } = App;
   const { ScriptDataModel, ScriptDataView } = Inspector;
 
   Inspector.ResourcesView = ScriptDataView.extend({

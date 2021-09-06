@@ -1,5 +1,5 @@
 (({ App, Backbone, $, _ }) => {
-  const { Inspector, utils } = App;
+  const { Inspector } = App;
 
   const View = Backbone.View.extend({
     initialize({ allowHighlight }) {

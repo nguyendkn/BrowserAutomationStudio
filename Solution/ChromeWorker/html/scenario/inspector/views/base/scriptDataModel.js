@@ -1,5 +1,5 @@
 (({ App, Backbone, _ }) => {
-  const { Inspector, utils } = App;
+  const { Inspector } = App;
 
   Inspector.ScriptDataModel = Backbone.Model.extend({
     update: function (source) {

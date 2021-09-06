@@ -12,8 +12,8 @@
 
     defaults: {
       filters: {
-        functions: true,
-        actions: true,
+        function: true,
+        action: true,
       },
       stack: [],
       state: {}
@@ -58,7 +58,7 @@
 
     filterStack() {
       _.each(this.model.get('filters'), (visible, type) => {
-        this.$(`[data-type="${type.slice(0, -1)}"]`).toggle(visible);
+        this.$(`[data-type="${type}"]`).toggle(visible);
       });
       return this;
     },

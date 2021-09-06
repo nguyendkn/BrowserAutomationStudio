@@ -114,7 +114,7 @@
         <ul class="" style="flex: 1">
           <% _.each(['Functions', 'Actions'], type => { %>
             <li class="">
-              <% const id = _.uniqueId('inspectorFilter' + type), val = type.toLowerCase() %>
+              <% const id = _.uniqueId('inspectorFilter' + type), val = type.toLowerCase().slice(0, -1) %>
               <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= filters[val] ? 'checked' : '' %>>
               <label for="<%= id %>"><%= type %></label>
             </li>
@@ -134,7 +134,7 @@
         <ul class="callstack-data">
           <% _.each(stack, ({ id, type, name, ...item }) => { %>
             <% const paramsId = (type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, id) && !state[id] %>
-            <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= paramsId ? 'border-color: #c4c4c4;' : '' %><%= filters[type + 's'] ? '' : 'display: none;' %>">
+            <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= paramsId ? 'border-color: #c4c4c4;' : '' %><%= filters[type] ? '' : 'display: none;' %>">
               <div>
                 <span class="callstack-item-name"><%= name + (type === 'action' ? ':' : '') %></span>
                 <% if (type === 'action') { %>

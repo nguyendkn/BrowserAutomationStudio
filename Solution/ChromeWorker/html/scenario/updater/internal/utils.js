@@ -12,20 +12,4 @@
       return type === 'current' ? name === _GobalModel.get('function_name') : true;
     });
   };
-
-  $.fn.slideDownEx = function (...args) {
-    return this.each(function () {
-      if (!$(this).is(':visible')) {
-        $.fn.slideDown.apply($(this), args);
-      }
-    });
-  };
-
-  $.fn.slideUpEx = function (...args) {
-    return this.each(function () {
-      if (!$(this).is(':hidden')) {
-        $.fn.slideDown.apply($(this), args);
-      }
-    });
-  };
 })(window);

@@ -25,6 +25,22 @@
     width: false,
   });
 
+  $.fn.slideDownEx = function (...args) {
+    return this.each(function () {
+      const $el = $(this);
+      if ($el.is(':visible')) return;
+      $.fn.slideDown.apply($el, args);
+    });
+  };
+
+  $.fn.slideUpEx = function (...args) {
+    return this.each(function () {
+      const $el = $(this);
+      if ($el.is(':hidden')) return;
+      $.fn.slideDown.apply($el, args);
+    });
+  };
+
   _.mixin({
     attempt: (func, ...args) => {
       try {

@@ -25,12 +25,7 @@
       state: {}
     }
   }, {
-    actions: [
-      'foreach',
-      'while',
-      'for',
-      'if'
-    ]
+    actions: ['foreach', 'while', 'for', 'if']
   });
 
   Inspector.CallstackView = Backbone.View.extend({

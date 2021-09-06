@@ -78,7 +78,7 @@
       const metadata = this.model.get('metadata');
       const updates = this.model.get('updates');
       const sorting = this.model.get('sorting');
-      const cache = this.model.get('cache');
+      const history = this.model.get('history');
 
       sortByLocals(this.model.get('source'), (a, b) => {
         if (sorting !== 'alphabetically') {
@@ -93,8 +93,8 @@
             return meta2.addedAt - meta1.addedAt;
           }
 
-          const f1 = cache.filter(v => v === a).length + updates;
-          const f2 = cache.filter(v => v === b).length + updates;
+          const f1 = history.filter(v => v === a).length + updates;
+          const f2 = history.filter(v => v === b).length + updates;
           return (meta2.usages / f2) - (meta1.usages / f1);
         }
 

@@ -5,7 +5,7 @@
     update: function (source) {
       const metadata = this.get('metadata');
       let updates = this.get('updates');
-      let cache = this.get('cache');
+      let history = this.get('history');
 
       const diff = jsonpatch.compare(this.get('source'), source); diff.forEach(item => {
         const { path, op } = item, time = performance.now();
@@ -19,13 +19,13 @@
           metadata[path].count += 0;
         }
 
-        cache = cache.concat(path).slice(-100);
+        history = history.concat(path).slice(-100);
       });
 
       updates += diff.length !== 0;
       this.set('updates', updates);
+      this.set('history', history);
       this.set('source', source);
-      this.set('cache', cache);
 
       if (true) {
         const highlight = this.get('highlight');
@@ -43,10 +43,10 @@
       sorting: 'alphabetically',
       highlight: false,
       metadata: {},
+      history: [],
       updates: 0,
       source: {},
       state: {},
-      cache: [],
       filters: {
         undefined: true,
         boolean: true,

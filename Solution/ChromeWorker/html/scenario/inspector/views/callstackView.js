@@ -3,17 +3,11 @@
 
   const Model = Backbone.Model.extend({
     update: function (source) {
-      this.set('stack', source.map(item => {
-        let type = null;
-
-        if (!Model.actions.includes(item.name.toLowerCase())) {
-          type = 'function';
-        } else {
-          type = 'action';
-        }
-
-        return { ...item, type }
-      }).concat({ id: 0, name: 'Main', type: 'function' }));
+      this.set('stack', source.concat({
+        type: 'function',
+        name: 'Main',
+        id: 0,
+      }));
     },
 
     defaults: {
@@ -24,8 +18,6 @@
       stack: [],
       state: {}
     }
-  }, {
-    actions: ['foreach', 'while', 'for', 'if']
   });
 
   Inspector.CallstackView = Backbone.View.extend({

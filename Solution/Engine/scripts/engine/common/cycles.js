@@ -656,6 +656,13 @@ function _set_function_info(info, cycle) {
     cycle = cycle || CYCLES.Current();
     if (cycle) {
         info.id = ScriptWorker.GetCurrentAction();
+        
+        if (['foreach', 'while', 'for', 'if'].indexOf(info.name.toLowerCase()) === -1) {
+            info.type = 'function';
+        } else {
+            info.type = 'action';
+        }
+
         cycle._Info = info;
     }
 }

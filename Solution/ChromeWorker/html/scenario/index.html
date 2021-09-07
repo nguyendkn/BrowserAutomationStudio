@@ -1069,7 +1069,6 @@
   <!-- TEMPLATES -->
   <!-- ========= -->
   <script type="text/template" id="isscriptexecuting" >
-    
     <img draggable="false" src="play.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "" %>" id="play"   data-toggle="tooltip" data-placement="bottom" title="<%= tr("Play. Run rest of the script starting from current action.") %>" />
     <img draggable="false" src="next.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray2" : "" %>" id="stepnext"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Run next action. Only single action will be executed.") %>" />
     <img draggable="false" src="pause.png" class="action-button <%= (isscriptexecuting) ? "" : ((isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "actionbuttongray2") %>" id="pause" />

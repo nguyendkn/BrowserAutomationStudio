@@ -141,7 +141,7 @@
             </div>
             <div class="jst-group-body">
               <ul class="jst-root">
-                ${jsNode('', Object.fromEntries(keys.filter(k => _.has(source, k)).map(k => [k, source[k]])), '', true, true)}
+                ${jsNode('', Object.fromEntries(keys.filter(k => _.has(source, k)).map(k => [k, source[k]])), '', true)}
               </ul>
             </div>
           </div>`
@@ -231,7 +231,7 @@
     return element(value, path, 'date');
   }
 
-  function jsNode(name, value, path, isLast, isRoot) {
+  function jsNode(name, value, path, isRoot) {
     const type = Object.prototype.toString.call(value).slice(8, -1);
     return (
       `<li class="jst-item">${[

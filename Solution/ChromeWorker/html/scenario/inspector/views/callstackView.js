@@ -63,6 +63,14 @@
       return this;
     },
 
+    restoreState(state = this.model.get('state')) {
+
+    },
+
+    saveState() {
+
+    },
+
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
         const { checked, value } = e.target;

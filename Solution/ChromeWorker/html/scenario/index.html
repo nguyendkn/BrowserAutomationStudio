@@ -5862,6 +5862,7 @@
         inspector: {
           variables: _Inspector.variables.saveState(),
           resources: _Inspector.resources.saveState(),
+          callstack: _Inspector.callstack.saveState();
         }
       }));
     }
@@ -5873,6 +5874,7 @@
         const { inspector } = result;
         _Inspector.variables.restoreState(inspector.variables);
         _Inspector.resources.restoreState(inspector.resources);
+        _Inspector.callstack.restoreState(inspector.callstack);
         return;
       }
 

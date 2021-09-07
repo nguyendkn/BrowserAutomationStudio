@@ -19,7 +19,8 @@
       this.model.on('change:sorting', this.sortItems, this);
 
       this.model.on('change:source', (__, source) => {
-        this.$('.inspector-panel')[0].dataset.empty = _.isEmpty(source);
+        const panel = this.el.querySelector('.inspector-panel');
+        _.extend(panel.dataset, { empty: _.isEmpty(source) });
         this.viewer.model.update(prepareData(source));
       });
     },

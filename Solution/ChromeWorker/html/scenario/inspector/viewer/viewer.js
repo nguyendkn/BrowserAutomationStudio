@@ -93,7 +93,6 @@
           },
           filter: '.pinned',
           group: 'nodes',
-          sort: false,
         }))
       }
 
@@ -106,7 +105,6 @@
           },
           group: 'groups',
           filter: null,
-          sort: true,
         }))
       }
 

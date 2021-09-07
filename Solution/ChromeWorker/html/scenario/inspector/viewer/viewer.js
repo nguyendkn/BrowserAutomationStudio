@@ -153,20 +153,20 @@
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), node = $el.prev()[0];
-        const val = this.model.getValue(node.dataset.path), len = val.length;
+        const $el = $(e.target), $node = $el.prev();
+        const val = this.model.getValue($node[0].dataset.path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        node.textContent = `"${_.escape(_.truncate(val, 100))}"`;
+        $node.text(`"${_.escape(_.truncate(val, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), node = $el.prev()[0];
-        const val = this.model.getValue(node.dataset.path), len = val.length;
+        const $el = $(e.target), node = $el.prev();
+        const val = this.model.getValue(node[0].dataset.path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        node.textContent = `"${_.escape(_.truncate(val, len))}"`;
+        node.text(`"${_.escape(_.truncate(val, len))}"`);
       },
 
       'click .jst-group-toggle': function (e) {

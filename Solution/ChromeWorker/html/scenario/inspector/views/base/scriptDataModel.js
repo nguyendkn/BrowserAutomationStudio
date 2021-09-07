@@ -3,6 +3,7 @@
 
   Inspector.ScriptDataModel = Backbone.Model.extend({
     update: function (source) {
+      const highlight = this.get('highlight');
       const metadata = this.get('metadata');
       let updates = this.get('updates');
       let history = this.get('history');
@@ -27,7 +28,6 @@
       this.set('history', history);
       this.set('source', source);
       {
-        const highlight = this.get('highlight');
         _.each(metadata, (item, path) => {
           if (highlight) {
             item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);

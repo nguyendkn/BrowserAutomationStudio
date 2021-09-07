@@ -232,12 +232,13 @@
   }
 
   function jsNode(name, value, path, isLast, isRoot) {
+    const type = Object.prototype.toString.call(value).slice(8, -1);
     return (
       `<li class="jst-item">${[
         '<i class="jst-icon fa fa-chain"></i>',
         !isRoot ? `<span class="jst-label">${_.escape(name)}:</span>` : '',
         (() => {
-          switch (Object.prototype.toString.call(value).slice(8, -1)) {
+          switch (type) {
             case 'Undefined': return jsUndefined(value, path);
             case 'Boolean': return jsBoolean(value, path);
             case 'Object': return jsObject(value, path);
@@ -254,8 +255,8 @@
   }
 
   function iterable(value, path, type, brackets) {
-    const content = _.keys(value).map(key => {
-      return jsNode(key, value[key], key ? `${path}/${key}` : path)
+    const content = _.map(value, (val, key) => {
+      return jsNode(key, val, key ? `${path}/${key}` : path)
     }).join('')
 
     return [

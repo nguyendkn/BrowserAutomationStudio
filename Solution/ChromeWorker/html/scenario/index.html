@@ -5859,6 +5859,7 @@
 
     function BrowserAutomationStudio_PreserveInterfaceState() {
       BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
+        // TODO: create separate global state manager
         inspector: {
           variables: _Inspector.variables.saveState(),
           resources: _Inspector.resources.saveState(),
@@ -5871,11 +5872,9 @@
       const result = _.attempt(() => JSON.parse(json));
 
       if (!_.isError(result)) {
-        const { inspector } = result;
-        _Inspector.variables.restoreState(inspector.variables);
-        _Inspector.resources.restoreState(inspector.resources);
-        _Inspector.callstack.restoreState(inspector.callstack);
-        return;
+        return _.each(result.inspector, (val, key) => {
+          _Inspector[key].restoreState(val);
+        });
       }
 
       console.log('Failed to load interface state:', result);

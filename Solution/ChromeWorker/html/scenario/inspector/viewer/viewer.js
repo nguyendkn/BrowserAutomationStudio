@@ -231,12 +231,12 @@
     return element(value, path, 'date');
   }
 
-  function jsNode(name, value, path, isRoot) {
+  function jsNode(label, value, path, isRoot) {
     const type = Object.prototype.toString.call(value).slice(8, -1);
     return (
       `<li class="jst-item">${[
         '<i class="jst-icon fa fa-chain"></i>',
-        !isRoot ? `<span class="jst-label">${_.escape(name)}:</span>` : '',
+        !isRoot ? `<span class="jst-label">${_.escape(label)}:</span>` : '',
         (() => {
           switch (type) {
             case 'Undefined': return jsUndefined(value, path);

@@ -1,6 +1,6 @@
-/******************
- * Objects styles *
- ******************/
+/****************
+ * Types styles *
+ ****************/
 
 .jst-node[data-type=undefined] {
   color: #8546bc;
@@ -26,14 +26,13 @@
   color: #808080;
 }
 
-/******************
- * Primary styles *
- ******************/
+/***************
+ * Base styles *
+ ***************/
 
 .jst-root > li > ul > li > .jst-icon {
   display: inline-block;
-  margin-right: 4px;
-  margin-left: 0px;
+  margin: 0 4px 0 0;
 }
 
 .jst-root > li > .jst-collapse {
@@ -73,13 +72,13 @@
 }
 
 .jst-list:empty {
-  padding: 0 2px;
   display: inline;
+  padding: 0 2px;
 }
 
 .jst-root:empty {
-  padding: 0 2px;
   display: inline;
+  padding: 0 2px;
 }
 
 .jst-collapse {

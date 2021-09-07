@@ -100,7 +100,7 @@
         _.invoke(this.sortableGroups, 'destroy');
 
         this.sortableGroups = nodes.map(node => Sortable.create(node, {
-          onEnd: ({ item, from, to}) => {
+          onEnd: ({ item, from, to }) => {
 
           },
           group: 'groups',

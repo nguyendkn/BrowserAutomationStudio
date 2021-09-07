@@ -5872,8 +5872,8 @@
       const result = _.attempt(() => JSON.parse(json));
 
       if (!_.isError(result)) {
-        return _.each(result.inspector, (val, key) => {
-          _Inspector[key].restoreState(val);
+        return ['variables', 'resources', 'callstack'].forEach(type => {
+          _Inspector[type].restoreState(result.inspector[type]);
         });
       }
 

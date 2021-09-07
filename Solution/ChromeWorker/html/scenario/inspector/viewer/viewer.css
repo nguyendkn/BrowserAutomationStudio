@@ -100,11 +100,8 @@
 
 .jst-label {
   word-wrap: break-word;
-  color: #666;
-}
-
-.jst-colon {
   padding-right: 6px;
+  color: #666;
 }
 
 .jst-list {

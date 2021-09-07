@@ -26,8 +26,7 @@
       this.set('updates', updates);
       this.set('history', history);
       this.set('source', source);
-
-      if (true) {
+      {
         const highlight = this.get('highlight');
         _.each(metadata, (item, path) => {
           if (highlight) {

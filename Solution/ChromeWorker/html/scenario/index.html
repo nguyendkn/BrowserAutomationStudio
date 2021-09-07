@@ -1775,7 +1775,6 @@
          BrowserAutomationStudio_SaveToUndoManager()
          BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
          this.renderselectiontemplatecontainer()
-         //this.render()
       },
      
       
@@ -1949,7 +1948,6 @@
       removefunction: function(FunctionName)
       {
 
-        /*this.currentFuncName = FunctionName*/
         var self = this
         bootbox.confirm(tr("Are you sure that you want to delete") + " " + FunctionName + " " + tr("function and all its content?"), function(result) {
           if(result)
@@ -2929,7 +2927,6 @@
          BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
 
          this.renderselectiontemplatecontainer()
-         //this.render()
       },
 
       UnfoldAll: function()
@@ -5866,7 +5863,7 @@
           variables: _Inspector.variables.saveState(),
           resources: _Inspector.resources.saveState(),
         }
-      }))
+      }));
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(json) {
@@ -5874,11 +5871,8 @@
 
       if (!_.isError(result)) {
         const { inspector } = result;
-
         _Inspector.variables.restoreState(inspector.variables);
-
         _Inspector.resources.restoreState(inspector.resources);
-
         return;
       }
 

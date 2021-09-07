@@ -81,25 +81,27 @@
       const sorting = this.model.get('sorting');
       const history = this.model.get('history');
 
-      sortByLocals(this.model.get('source'), (a, b) => {
-        if (sorting !== 'alphabetically') {
-          const meta1 = metadata[`/${a}`];
-          const meta2 = metadata[`/${b}`];
+      _.keys(this.model.get('source')).sort((a, b) => {
+        return (a.startsWith('GLOBAL:') - b.startsWith('GLOBAL:')) || (() => {
+          if (sorting !== 'alphabetically') {
+            const meta1 = metadata[`/${a}`];
+            const meta2 = metadata[`/${b}`];
 
-          if (sorting === 'dateModified') {
-            return meta2.modifiedAt - meta1.modifiedAt;
+            if (sorting === 'dateModified') {
+              return meta2.modifiedAt - meta1.modifiedAt;
+            }
+
+            if (sorting === 'dateAdded') {
+              return meta2.addedAt - meta1.addedAt;
+            }
+
+            const f1 = history.filter(v => v === a).length + updates;
+            const f2 = history.filter(v => v === b).length + updates;
+            return (meta2.usages / f2) - (meta1.usages / f1);
           }
 
-          if (sorting === 'dateAdded') {
-            return meta2.addedAt - meta1.addedAt;
-          }
-
-          const f1 = history.filter(v => v === a).length + updates;
-          const f2 = history.filter(v => v === b).length + updates;
-          return (meta2.usages / f2) - (meta1.usages / f1);
-        }
-
-        return a.localeCompare(b);
+          return a.localeCompare(b);
+        })();
       }).forEach(key => {
         const el = this.el.querySelector(`[data-path="/${key}"]`);
         el.parentNode.parentNode.appendChild(el.parentNode);
@@ -160,16 +162,6 @@
       null: scaleColor('#808080'),
     }
   });
-
-  function sortByGlobals(obj, compareFn) {
-    const isGlobal = v => v.startsWith('GLOBAL:');
-    return _.keys(obj).sort((a, b) => (isGlobal(b) - isGlobal(a)) || compareFn(a, b));
-  }
-
-  function sortByLocals(obj, compareFn) {
-    const isGlobal = v => v.startsWith('GLOBAL:');
-    return _.keys(obj).sort((a, b) => (isGlobal(a) - isGlobal(b)) || compareFn(a, b));
-  }
 
   function scaleColor(color, size = 6) {
     const scale = _.compose(color2K.toHex, color2K.getScale('red', color));

@@ -20,8 +20,8 @@
 
       this.model.on('change:source', (__, source) => {
         const panel = this.el.querySelector('.inspector-panel');
-        _.extend(panel.dataset, { empty: _.isEmpty(source) });
         this.viewer.model.update(prepareData(source));
+        panel.dataset.empty = _.isEmpty(source);
       });
     },
 

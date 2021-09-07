@@ -5,8 +5,8 @@
     template: JST['inspector/main'],
 
     initialize() {
-      _.each(['isscriptexecuting', 'istaskexecuting'], type => {
-        _GobalModel.on(`change:${type}`, (__, value) => {
+      _.each(['isscriptexecuting', 'istaskexecuting'], attr => {
+        _GobalModel.on(`change:${attr}`, (__, value) => {
           if (value || this.$el.is(':hidden')) return;
           this.variables.model.set('highlight', true);
           this.resources.model.set('highlight', true);
@@ -36,8 +36,8 @@
           listeners: {
             move: ({ client }) => {
               const pos = client.y, height = Math.min(
-                window.outerHeight - pos - 30,
                 window.outerHeight - 300 - 30,
+                window.outerHeight - pos - 30,
               );
               this.$el.outerHeight(Math.max(height, 120));
             }

@@ -255,8 +255,8 @@
   }
 
   function iterable(value, path, type, brackets) {
-    const content = _.map(value, (val, key) => {
-      return jsNode(key, val, key ? `${path}/${key}` : path)
+    const content = _.keys(value).map(key => {
+      return jsNode(key, value[key], key ? `${path}/${key}` : path)
     }).join('')
 
     return [

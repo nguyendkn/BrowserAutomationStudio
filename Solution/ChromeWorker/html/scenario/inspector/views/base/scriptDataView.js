@@ -60,9 +60,9 @@
           const visible = filters[dataset.type];
 
           if (query.length) {
-            const $label = $item.children('.jst-label');
-            const text = $label.text().toLowerCase();
-            return visible && text.includes(query);
+            const text = $item.children('.jst-label').text();
+            const lower = text.slice(0, -1).toLowerCase();
+            return visible && lower.includes(query);
           }
 
           return visible;

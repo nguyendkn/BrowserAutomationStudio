@@ -22,7 +22,7 @@
         history = history.concat(path).slice(-100);
       });
 
-      updates += diff.length !== 0;
+      if (diff.length) updates += 1;
       this.set('updates', updates);
       this.set('history', history);
       this.set('source', source);

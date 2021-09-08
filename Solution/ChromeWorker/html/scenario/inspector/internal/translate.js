@@ -3,11 +3,11 @@
     'Data will be loaded at the next script pause': {
       ru: 'Данные будут загружены при следующей паузе сценария'
     },
-    'Show or hide function params': {
-      ru: 'Показать или скрыть параметры функции'
+    'Click to show or hide function params': {
+      ru: 'Кликните, чтобы показать или скрыть параметры функции'
     },
-    'Click to show the full text': {
-      ru: 'Кликните, чтобы показать весь текст'
+    'Click to show or hide the full text': {
+      ru: 'Кликните, чтобы показать или скрыть полный текст'
     },
     'Change the variable value': {
       ru: 'Изменить значение переменной'

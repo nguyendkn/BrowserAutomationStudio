@@ -42,7 +42,7 @@
     },
 
     getValue: function (path) {
-      return jsonpatch.getValueByPointer(this.get('source', path));
+      return jsonpatch.getValueByPointer(this.get('source'), path);
     },
 
     defaults: function () {
@@ -236,7 +236,7 @@
     return (
       `<li class="jst-item">${[
         '<i class="jst-icon fa fa-chain"></i>',
-        !isRoot ? `<span class="jst-label">${_.escape(label)}:</span>` : '',
+        isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
         (() => {
           switch (type) {
             case 'undefined': return jsUndefined(value, path);

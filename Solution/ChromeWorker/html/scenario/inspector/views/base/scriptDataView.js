@@ -30,12 +30,8 @@
         this.$el.html(this.template(this.model.toJSON()));
 
         this.viewer = (new Inspector.Viewer())
-          .on('node:collapse', () => {
-            BrowserAutomationStudio_PreserveInterfaceState();
-          })
-          .on('node:expand', () => {
-            BrowserAutomationStudio_PreserveInterfaceState();
-          })
+          .on('node:collapse', BrowserAutomationStudio_PreserveInterfaceState)
+          .on('node:expand', BrowserAutomationStudio_PreserveInterfaceState)
           .on('render', () => {
             this.restoreState();
             this.filterItems();

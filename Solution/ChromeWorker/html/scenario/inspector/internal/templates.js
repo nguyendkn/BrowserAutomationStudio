@@ -175,10 +175,18 @@
             <i class="fa fa-filter"></i>
           </button>
           <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
-            <li data-sorting="alphabetically"><%= tr('Alphabetically') %></li>
-            <li data-sorting="frequency"><%= tr('By frequency of use') %></li>
-            <li data-sorting="dateModified"><%= tr('By date modified') %></li>
-            <li data-sorting="dateAdded"><%= tr('By date added') %></li>
+            <li data-sorting="alphabetically">
+              <a href="#"><%= tr('Alphabetically') %></a>
+            </li>
+            <li data-sorting="frequency">
+              <a href="#"><%= tr('By frequency of use') %></a>
+            </li>
+            <li data-sorting="dateModified">
+              <a href="#"><%= tr('By date modified') %></a>
+            </li>
+            <li data-sorting="dateAdded">
+              <a href="#"><%= tr('By date added') %></a>
+            </li>
           </ul>
         </div>
         <div class="dropdown">

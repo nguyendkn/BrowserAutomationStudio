@@ -143,9 +143,10 @@
         e.stopPropagation();
       },
 
-      'click .inspector-sort-menu > li': function (e) {
+      'click .inspector-sort-menu > li > a': function (e) {
         e.preventDefault();
-        this.model.set('sorting', e.target.dataset.sorting);
+        const { dataset } = e.target.closest('li');
+        this.model.set('sorting', dataset.sorting);
       },
 
       'input .inspector-filter-input': _.debounce(function () {

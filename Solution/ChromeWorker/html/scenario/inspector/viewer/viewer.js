@@ -232,21 +232,21 @@
   }
 
   function jsNode(label, value, path, isRoot) {
-    const type = Object.prototype.toString.call(value).slice(8, -1);
+    const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return (
       `<li class="jst-item">${[
         '<i class="jst-icon fa fa-chain"></i>',
         !isRoot ? `<span class="jst-label">${_.escape(label)}:</span>` : '',
         (() => {
           switch (type) {
-            case 'Undefined': return jsUndefined(value, path);
-            case 'Boolean': return jsBoolean(value, path);
-            case 'Object': return jsObject(value, path);
-            case 'Number': return jsNumber(value, path);
-            case 'String': return jsString(value, path);
-            case 'Array': return jsArray(value, path);
-            case 'Null': return jsNull(value, path);
-            case 'Date': return jsDate(value, path);
+            case 'undefined': return jsUndefined(value, path);
+            case 'boolean': return jsBoolean(value, path);
+            case 'object': return jsObject(value, path);
+            case 'number': return jsNumber(value, path);
+            case 'string': return jsString(value, path);
+            case 'array': return jsArray(value, path);
+            case 'null': return jsNull(value, path);
+            case 'date': return jsDate(value, path);
           }
         })()
       ].join('')

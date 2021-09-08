@@ -1724,6 +1724,7 @@ _SMS.SmsActivateApi.prototype.getRawSite = function(site){
 		},
 		"cheapsms.ru": {
 			"Other": "ot",
+			"Ok.ru": "ok",
 			"VK": "vk",
 			"WhatsApp": "wp",
 			"Viber": "vi",

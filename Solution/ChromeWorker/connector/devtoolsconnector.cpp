@@ -230,7 +230,11 @@ void DevToolsConnector::StartProcess()
 
     CommandLine += std::wstring(L"about:blank");
 
-    ProcessLauncher.Start(L"worker.exe", CommandLine, GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation)));
+
+    std::wstring ChromePath = GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation));
+    std::wstring WorkerPath = ChromePath + std::wstring(L"/worker.exe");
+
+    ProcessLauncher.Start(WorkerPath, CommandLine, ChromePath);
 }
 
 void DevToolsConnector::TryToConnect()
@@ -1129,7 +1133,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                         it = GlobalState.Tabs.erase(it);
                     } else
                     {
-                        if((*it)->ConnectionState != TabData::Connected)
+                        if((*it)->ConnectionState != TabData::Connected && (*it)->ConnectionState != TabData::Delayed)
                         {
                             EveryTabIsConnected = false;
                         }

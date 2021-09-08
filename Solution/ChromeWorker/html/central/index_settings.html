@@ -211,6 +211,7 @@
 			$("#RestartBrowserProcessOnThreadStart").prop("checked",json["restart"])
 			$("#ProfilesCaching").prop("checked",json["profiles_caching"])
 			$("#AutostartDebug").prop("checked",json["autostart_debug"])
+			$("#SaveBrowserLog").prop("checked",json["save_browser_log"])
 			$("#UseHumanLikeMouseMoves").prop("checked",json["emulatemouse"])
 			$('.language-switch[data-lang="Node"][data-version="8.6.0"]').prop("checked",json["languages"].indexOf("Node,8.6.0")>=0)
 			$('.language-switch[data-lang="Node"][data-version="12.18.3"]').prop("checked",json["languages"].indexOf("Node,12.18.3")>=0)
@@ -264,6 +265,7 @@
 				$("#RestartBrowserProcessOnThreadStart").prop("checked",true)
 				$("#ProfilesCaching").prop("checked",true)
 				$("#AutostartDebug").prop("checked",false)
+				$("#SaveBrowserLog").prop("checked",false)
 				$("#UseHumanLikeMouseMoves").prop("checked",true)
 				$('.language-switch').prop("checked", false)
 				$('.language-panel').hide()
@@ -316,6 +318,7 @@
 		    			"restart": $("#RestartBrowserProcessOnThreadStart").prop("checked"),
 						"profiles_caching": $("#ProfilesCaching").prop("checked"),
 						"autostart_debug": $("#AutostartDebug").prop("checked"),
+						"save_browser_log": $("#SaveBrowserLog").prop("checked"),
 		    			"emulatemouse": $("#UseHumanLikeMouseMoves").prop("checked"),
 		    			"languages": languages,
 		    			"modules": modules,
@@ -767,7 +770,19 @@
 			</div>
 			</div>
 		</div>
-	</div>	
+	</div>
+	
+	<div class="container">
+		<div class="form-group text-center">
+			<div class="col-sm-12">
+			<div class="checkbox">
+				<label>
+				<input type="checkbox" id="SaveBrowserLog"> <span class="tr">Save browser communication log to profile folder</span>
+				</label>
+			</div>
+			</div>
+		</div>
+	</div>
 
 	
 	<div style="position: sticky; bottom: 0px; background-color: white">

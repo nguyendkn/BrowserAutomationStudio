@@ -2022,7 +2022,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->OnBrowserCreated.push_back(OnBrowserCreated);
     Data->MainRemoteDebuggingPort = 10000 + rand()%55000;
     std::shared_ptr<IWebSocketClientFactory> WebScoketFactory = std::make_shared<RawCppWebSocketClientFactory>();
-    //WebScoketFactory->SetLogPath(Settings.Profile() + std::wstring(L"/cdp.txt"));
+    if(Settings.SaveBrowserLog())
+    {
+        WebScoketFactory->SetLogPath(Settings.Profile() + std::wstring(L"/cdp.txt"));
+    }
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     WebScoketFactory,

@@ -23,6 +23,7 @@ _L =
 	"Disable System Log" :{"ru": "Отключить лог системных сообщений"},
 	"Restart browser process on thread start" :{"ru": "Перезапускать процесс в начале работы потока"},
 	"Autostart debug interface on each run" :{"ru": "Запускать режим отладки при каждом запуске"},
+	"Save browser communication log to profile folder" :{"ru": "Сохранять лог взаимодействия с браузером в папку профиля"},
 	"Disable webrtc and canvas" :{"ru": "Отключить webrtc и canvas"},
 	"Name:" :{"ru": "Название:"},
 	"Version:" :{"ru": "Версия:"},

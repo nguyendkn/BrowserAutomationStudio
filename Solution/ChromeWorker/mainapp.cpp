@@ -2746,7 +2746,9 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         {
             if(!IsNoWait && !Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
-                RunElementCommandCallbackOnNextTimer = 100;
+                //If selector has been changed after scrolling to element, return empty result
+                SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + std::string("</") + CommandName + ("></Element>"));
+                IsLastCommandNull = true;
                 return;
             }
             JsonParser Parser;
@@ -2806,7 +2808,9 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         {
             if(!IsNoWait && !Result->GetIsSuccess() && Result->GetErrorMessage() == "BAS_NOT_EXISTS")
             {
-                RunElementCommandCallbackOnNextTimer = 100;
+                //If selector has been changed after moving mouse on element, we will click on prevoius mouse position.
+                SendTextResponce(std::string("<Element ID=\"") + CommandId + std::string("\"><") + CommandName + std::string(">") + std::string("</") + CommandName + ("></Element>"));
+                IsLastCommandNull = true;
                 return;
             }
             JsonParser Parser;

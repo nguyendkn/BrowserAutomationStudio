@@ -38,6 +38,7 @@ void settings::Init()
     restart = true;
     emulate_mouse = true;
     autostart_debug = false;
+    save_browser_log = false;
     profiles_caching = true;
     debug_toolbox = false;
     debug_scenario = false;
@@ -143,6 +144,10 @@ void settings::Init()
             if(line.find("AutostartDebug=true") != std::string::npos)
             {
                 autostart_debug = true;
+            }
+            if(line.find("SaveBrowserLog=true") != std::string::npos)
+            {
+                save_browser_log = true;
             }
             if(line.find("ProfilesCaching=false") != std::string::npos)
             {
@@ -415,6 +420,11 @@ bool settings::AutostartDebug()
     return autostart_debug;
 }
 
+bool settings::SaveBrowserLog()
+{
+    return save_browser_log;
+}
+
 bool settings::ProfilesCaching()
 {
     return profiles_caching;
@@ -476,6 +486,7 @@ void settings::SaveToFile()
             outfile<<"EnableFlash="<<((use_flash) ? "true" : "false")<<std::endl;
             outfile<<"EnableWidevine="<<((use_widevine) ? "true" : "false")<<std::endl;
             outfile<<"AutostartDebug="<<((autostart_debug) ? "true" : "false")<<std::endl;
+            outfile<<"SaveBrowserLog="<<((save_browser_log) ? "true" : "false")<<std::endl;
             outfile<<"ProfilesCaching="<<((profiles_caching) ? "true" : "false")<<std::endl;
             outfile<<"ToolboxHeight="<<toolbox_height<<std::endl;
             outfile<<"MaxBrowserStartSimultaneously="<<max_browser_start_simultaneously<<std::endl;
@@ -518,6 +529,7 @@ std::string settings::Serialize()
     res["use_flash"] = picojson::value(use_flash);
     res["use_widevine"] = picojson::value(use_widevine);
     res["autostart_debug"] = picojson::value(autostart_debug);
+    res["save_browser_log"] = picojson::value(save_browser_log);
     res["profiles_caching"] = picojson::value(profiles_caching);
     res["canvas"] = picojson::value(canvas);
     res["canvas_noise"] = picojson::value(canvas_noise);
@@ -559,6 +571,7 @@ void settings::Deserialize(const std::string & Data)
         use_flash = o["use_flash"].get<bool>();
         use_widevine = o["use_widevine"].get<bool>();
         autostart_debug = o["autostart_debug"].get<bool>();
+        save_browser_log = o["save_browser_log"].get<bool>();
         profiles_caching = o["profiles_caching"].get<bool>();
 
         canvas = o["canvas"].get<std::string>();

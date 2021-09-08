@@ -62,14 +62,12 @@
     },
 
     hideNotice() {
-      this.$('.inspector-nav > li').removeClass('disabled');
       this.$('.inspector-notice').hide();
       this.$('.inspector-tabs').show();
       return this;
     },
 
     showNotice() {
-      this.$('.inspector-nav > li').addClass('disabled');
       this.$('.inspector-notice').show();
       this.$('.inspector-tabs').hide();
       return this;

@@ -250,13 +250,13 @@
 .callstack-item {
   border: 1px solid transparent;
   border-left-width: 4px;
+  user-select: none;
+  flex-flow: column;
   line-height: 18px;
   font-size: 16px;
   color: #434343;
-  padding: 5px;
-  user-select: none;
-  flex-flow: column;
   display: flex;
+  padding: 5px;
 }
 
 .callstack-data {

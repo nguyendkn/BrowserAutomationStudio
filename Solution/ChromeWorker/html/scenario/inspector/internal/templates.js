@@ -171,10 +171,10 @@
         </span>
         <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name') + '...' %>">
         <div class="dropdown">
-          <button class="inspector-tools-button" data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-haspopup="true" aria-expanded="false">
+          <button data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-filter"></i>
           </button>
-          <ul class="inspector-sort-menu dropdown-menu dropdown-menu-right">
+          <ul class="dropdown-menu dropdown-menu-right inspector-sort-menu">
             <li data-sorting="alphabetically">
               <a href="#"><%= tr('Alphabetically') %></a>
             </li>
@@ -190,10 +190,10 @@
           </ul>
         </div>
         <div class="dropdown">
-          <button class="inspector-tools-button" data-toggle="dropdown" type="button" title="<%= tr('Filters') %>" aria-haspopup="true" aria-expanded="false">
+          <button data-toggle="dropdown" type="button" title="<%= tr('Filters') %>" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-cog"></i>
           </button>
-          <ul class="inspector-filter-menu dropdown-menu dropdown-menu-right">
+          <ul class="dropdown-menu dropdown-menu-right inspector-filter-menu">
             <% _.each(['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null'], type => { %>
               <li>
                 <% const id = _.uniqueId('inspectorFilter' + type), val = type.toLowerCase() %>

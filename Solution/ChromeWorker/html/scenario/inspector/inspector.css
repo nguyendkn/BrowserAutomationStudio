@@ -123,15 +123,23 @@
   flex: 1;
 }
 
-.inspector-tools > .dropdown {
-  border-left: thin solid #e0e0e0;
+.inspector-tools .dropdown > button:hover {
+  outline: none;
 }
 
-.inspector-tools-button {
+.inspector-tools .dropdown > button:focus {
+  outline: none;
+}
+
+.inspector-tools .dropdown > button {
   background: #fff;
   border: none;
   height: 100%;
   width: 28px;
+}
+
+.inspector-tools .dropdown {
+  border-left: thin solid #e0e0e0;
 }
 
 .inspector-tools {

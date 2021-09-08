@@ -49,18 +49,6 @@
       return this;
     },
 
-    hide() {
-      if (!this.$el.is(':visible')) return this;
-      this.$el.hide();
-      return this.trigger('hide');
-    },
-
-    show() {
-      if (!this.$el.is(':hidden')) return this;
-      this.$el.show();
-      return this.trigger('show');
-    },
-
     hideNotice() {
       this.$('.inspector-notice').hide();
       this.$('.inspector-tabs').show();
@@ -73,19 +61,29 @@
       return this;
     },
 
+    hide() {
+      if (!this.$el.is(':visible')) return this;
+      this.$el.hide();
+      return this.trigger('hide');
+    },
+
+    show() {
+      if (!this.$el.is(':hidden')) return this;
+      this.$el.show();
+      return this.trigger('show');
+    },
+
     events: {
       'click #inspectorClose': function (e) {
         e.preventDefault();
         this.hide();
       },
 
-      'keydown': function (e) {
-        e.stopPropagation();
-      },
+      'keypress': e => e.stopPropagation(),
 
-      'keyup': function (e) {
-        e.stopPropagation();
-      },
+      'keydown': e => e.stopPropagation(),
+
+      'keyup': e => e.stopPropagation(),
     }
   });
 })(window);

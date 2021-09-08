@@ -133,23 +133,21 @@
       <% if (stack.length) { %>
         <ul class="callstack-data">
           <% _.each(stack, ({ id, type, name, ...item }) => { %>
-            <% const paramsId = (type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, id) && !state[id] %>
-            <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= paramsId ? 'border-color: #c4c4c4;' : '' %><%= filters[type] ? '' : 'display: none;' %>">
+            <% const pid = (type === 'function' && !_.isEmpty(item.arguments)) ? _.uniqueId('params') : '', expanded = _.has(state, id) && !state[id] %>
+            <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= pid ? 'border-color: #c4c4c4;' : '' %><%= filters[type] ? '' : 'display: none;' %>">
               <div>
                 <span class="callstack-item-name"><%= name + (type === 'action' ? ':' : '') %></span>
                 <% if (type === 'action') { %>
-                  <span class="callstack-item-data text-truncate" title="<%= tr('Click to show the full text') %>">
-                    <%= name === 'If' ? item.expression : item.iterator %>
-                  </span>
-                <% } else if (paramsId) { %>
-                  <button class="callstack-toggle-params" title="<%= tr('Show or hide function params') %>" type="button" data-toggle="collapse" data-target="#<%= paramsId %>" aria-expanded="<%= expanded %>" aria-controls="<%= paramsId %>">
+                  <span class="callstack-item-data text-truncate" title="<%= tr('Click to show the full text') %>"><%= name === 'If' ? item.expression : item.iterator %></span>
+                <% } else if (pid) { %>
+                  <button class="callstack-toggle-params" title="<%= tr('Show or hide function params') %>" type="button" data-toggle="collapse" data-target="#<%= pid %>" aria-expanded="<%= expanded %>" aria-controls="<%= pid %>">
                     <i class="fa fa-minus"></i>
                     <i class="fa fa-plus"></i>
                   </button>
                 <% } %>
               </div>
-              <% if (paramsId) { %>
-                <ul class="callstack-function-params collapse <%= expanded ? 'in' : '' %>" id="<%= paramsId %>" aria-expanded="<%= expanded %>">
+              <% if (pid) { %>
+                <ul class="callstack-function-params collapse <%= expanded ? 'in' : '' %>" id="<%= pid %>" aria-expanded="<%= expanded %>">
                   <% _.each(item.arguments, (value, name) => { %>
                     <li class="callstack-function-param">
                       <span><%= name %>:</span>

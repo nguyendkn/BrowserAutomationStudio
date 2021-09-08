@@ -58,7 +58,7 @@
           if (query && query.length) {
             const text = $item.children('.jst-label').text();
             const lower = text.slice(0, -1).toLowerCase();
-            return visible && lower.includes(query);
+            return lower.includes(query) && visible;
           }
 
           return visible;
@@ -66,7 +66,7 @@
 
         $items.not($visible.show()).hide();
         $group.toggle(!!$visible.length);
-      })
+      });
 
       return this;
     },

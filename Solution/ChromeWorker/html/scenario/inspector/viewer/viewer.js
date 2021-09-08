@@ -196,11 +196,11 @@
   });
 
   function jsObject(value, path) {
-    return iterable(value, path, 'object', ['{', '}']);
+    return iterable(value, path, 'object', '{}');
   }
 
   function jsArray(value, path) {
-    return iterable(value, path, 'array', ['[', ']']);
+    return iterable(value, path, 'array', '[]');
   }
 
   function jsString(value, path) {

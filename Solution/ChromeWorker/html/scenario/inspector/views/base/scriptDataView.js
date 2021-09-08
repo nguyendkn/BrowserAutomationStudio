@@ -59,7 +59,7 @@
           const $item = $(el), { dataset } = $item.children('[data-path]')[0];
           const visible = filters[dataset.type];
 
-          if (query.length) {
+          if (query && query.length) {
             const text = $item.children('.jst-label').text();
             const lower = text.slice(0, -1).toLowerCase();
             return visible && lower.includes(query);

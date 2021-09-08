@@ -139,9 +139,9 @@
         this.model.set('filters', { ...this.model.get('filters'), [value]: checked });
       },
 
-      'click .inspector-filter-menu > li': function (e) {
-        e.stopPropagation();
-      },
+      'input .inspector-filter-input': _.debounce(function (e) {
+        this.filterItems()
+      }, 200),
 
       'click .inspector-sort-menu > li > a': function (e) {
         e.preventDefault();
@@ -149,9 +149,9 @@
         this.model.set('sorting', dataset.sorting);
       },
 
-      'input .inspector-filter-input': _.debounce(function () {
-        this.filterItems()
-      }, 200)
+      'click .inspector-filter-menu > li': function (e) {
+        e.stopPropagation();
+      }
     }
   }, {
     colors: {

@@ -88,15 +88,13 @@
       });
 
       this.once('accept', () => {
-        this.close();
-        const json = model.toJSON();
-        callback({ ...json, isChanged: value !== json.value || type !== json.type, cancel: false });
+        const json = this.close().model.toJSON();
+        callback({ ...json, isChanged: !_.isEqual(json, { value, type }), cancel: false });
       });
 
       this.once('cancel', () => {
-        this.close();
-        const json = model.toJSON();
-        callback({ ...json, isChanged: value !== json.value || type !== json.type, cancel: true });
+        const json = this.close().model.toJSON();
+        callback({ ...json, isChanged: !_.isEqual(json, { value, type }), cancel: true });
       });
 
       this.model = model;

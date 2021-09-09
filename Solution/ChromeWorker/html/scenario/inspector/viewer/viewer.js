@@ -76,8 +76,7 @@
 
         this.sortableNodes = nodes.map(node => Sortable.create(node, {
           onEnd: ({ item, from, to }) => {
-            const groups = this.model.get('groups');
-            const name = item.dataset.path.slice(1);
+            const groups = this.model.get('groups'), name = item.dataset.path.slice(1);
 
             const fromName = from.closest('.jst-group').dataset.name;
             const fromList = _.without(groups[fromName], name);
@@ -152,19 +151,19 @@
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), { dataset } = e.target.closest('li');
-        const val = this.model.getValue(dataset.path), len = val.length;
+        const { path } = e.target.closest('li').dataset;
+        const val = this.model.getValue(path), len = val.length;
 
-        $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
+        const $el = $(e.target).toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
         $el.prev().text(`"${_.escape(_.truncate(val, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), { dataset } = e.target.closest('li');
-        const val = this.model.getValue(dataset.path), len = val.length;
+        const { path } = e.target.closest('li').dataset;
+        const val = this.model.getValue(path), len = val.length;
 
-        $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
+        const $el = $(e.target).toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
         $el.prev().text(`"${_.escape(_.truncate(val, len))}"`);
       },
 
@@ -267,7 +266,8 @@
   }
 
   function element(value, path, type) {
-    return `<span class="jst-node">${type === 'string' ? `"${_.escape(value)}"` : value}</span>`;
+    const content = type === 'string' ? `"${_.escape(value)}"` : value;
+    return `<span class="jst-node">${content}</span>`;
   }
 
   Inspector.Viewer = View;

@@ -3,8 +3,8 @@
 
   const Model = Backbone.Model.extend({
     defaults: {
-      value: '',
-      type: '',
+      value: null,
+      type: null,
     }
   });
 
@@ -89,12 +89,12 @@
 
       this.once('accept', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, isChanged: !_.isEqual(json, { value, type }), cancel: false });
+        callback({ ...json, isChanged: !_.isEqual({ value, type }, json), cancel: false });
       });
 
       this.once('cancel', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, isChanged: !_.isEqual(json, { value, type }), cancel: true });
+        callback({ ...json, isChanged: !_.isEqual({ value, type }, json), cancel: true });
       });
 
       this.model = model;

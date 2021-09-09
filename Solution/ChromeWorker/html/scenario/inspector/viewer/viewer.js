@@ -152,7 +152,7 @@
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), { dataset } = $el[0].closest('li');
+        const $el = $(e.target), { dataset } = e.target.closest('li');
         const val = this.model.getValue(dataset.path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
@@ -161,7 +161,7 @@
 
       'click .jst-item > .fa-plus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), { dataset } = $el[0].closest('li');
+        const $el = $(e.target), { dataset } = e.target.closest('li');
         const val = this.model.getValue(dataset.path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
@@ -234,7 +234,7 @@
     const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return (
       `<li class="jst-item" data-path="${path}" data-type="${type}">${[
-        isRoot ? '': '<i class="jst-icon fa fa-chain"></i>',
+        '<i class="jst-icon fa fa-chain"></i>',
         isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
         (() => {
           switch (type) {
@@ -267,9 +267,7 @@
   }
 
   function element(value, path, type) {
-    return `<span class="jst-node">${(() => {
-      return type === 'string' ? `"${_.escape(value)}"` : value;
-    })()}</span>`;
+    return `<span class="jst-node">${type === 'string' ? `"${_.escape(value)}"` : value}</span>`;
   }
 
   Inspector.Viewer = View;

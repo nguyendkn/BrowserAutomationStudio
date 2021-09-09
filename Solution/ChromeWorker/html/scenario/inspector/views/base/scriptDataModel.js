@@ -38,7 +38,7 @@
       }
     },
 
-    defaults: {
+    defaults: () => ({
       sorting: 'alphabetically',
       highlight: false,
       metadata: {},
@@ -57,6 +57,6 @@
         date: true,
         null: true
       }
-    }
+    })
   });
 })(window);

@@ -2,27 +2,27 @@
  * Types styles *
  ****************/
 
-.jst-node[data-type=undefined] {
+[data-type=undefined] > .jst-node {
   color: #8546bc;
 }
 
-.jst-node[data-type=boolean] {
+[data-type=boolean] > .jst-node {
   color: #2525cc;
 }
 
-.jst-node[data-type=number] {
+[data-type=number] > .jst-node {
   color: #d036d0;
 }
 
-.jst-node[data-type=string] {
+[data-type=string] > .jst-node {
   color: #2db669;
 }
 
-.jst-node[data-type=date] {
+[data-type=date] > .jst-node {
   color: #ce904a;
 }
 
-.jst-node[data-type=null] {
+[data-type=null] > .jst-node {
   color: #808080;
 }
 

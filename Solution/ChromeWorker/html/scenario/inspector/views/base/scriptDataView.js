@@ -5,10 +5,11 @@
     initialize({ allowHighlight }) {
       if (allowHighlight) {
         this.model.on('highlight', ({ count, path }) => {
-          const $node = this.$(`[data-path="${path}"]`);
+          const $node = this.$(`[data-path="${path}"] > .jst-node`);
 
           if ($node.length) {
-            const colors = View.colors[$node[0].dataset.type];
+            const { dataset } = $node.parent()[0];
+            const colors = View.colors[dataset.type];
             if (colors) $node.css('color', colors[count]);
           }
         });
@@ -52,8 +53,7 @@
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
         const $visible = $items.filter((__, el) => {
-          const $item = $(el), { dataset } = $item.children('[data-path]')[0];
-          const visible = filters[dataset.type];
+          const $item = $(el), visible = filters[el.dataset.type];
 
           if (query && query.length) {
             const text = $item.children('.jst-label').text();
@@ -100,7 +100,7 @@
         })();
       }).forEach(key => {
         const el = this.el.querySelector(`[data-path="/${key}"]`);
-        el.parentNode.parentNode.appendChild(el.parentNode);
+        el.parentNode.appendChild(el);
       });
 
       return this;
@@ -108,7 +108,7 @@
 
     restoreState(state = this.model.get('state')) {
       _.each(state.items, ({ path, folded }) => {
-        const $el = this.$el.find(`[data-path="${path}"]`);
+        const $el = this.$el.find(`[data-path="${path}"] > .jst-list`);
         if (folded && !$el.hasClass('jst-collapsed')) {
           $el.prev('.jst-collapse').click();
         }
@@ -119,11 +119,11 @@
     saveState() {
       this.model.set('state', {
         items: [
-          ...this.el.querySelectorAll('[data-type="object"]'),
-          ...this.el.querySelectorAll('[data-type="array"]'),
+          ...this.el.querySelectorAll('[data-type="object"] > .jst-list'),
+          ...this.el.querySelectorAll('[data-type="array"] > .jst-list'),
         ].map(el => ({
           folded: el.classList.contains('jst-collapsed'),
-          path: el.dataset.path
+          path: el.parentNode.dataset.path
         }))
       });
       return this.model.get('state');

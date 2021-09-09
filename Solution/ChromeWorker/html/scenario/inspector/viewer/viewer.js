@@ -76,8 +76,8 @@
 
         this.sortableNodes = nodes.map(node => Sortable.create(node, {
           onEnd: ({ item, from, to }) => {
-            const name = item.querySelector('[data-path]').dataset.path.slice(1);
             const groups = this.model.get('groups');
+            const name = item.dataset.path.slice(1);
 
             const fromName = from.closest('.jst-group').dataset.name;
             const fromList = _.without(groups[fromName], name);
@@ -116,8 +116,7 @@
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         getNodeKey: node => {
           if (node.nodeType === Node.ELEMENT_NODE && node.classList.contains('jst-item')) {
-            const { dataset } = node.querySelector('[data-path]');
-            return dataset.path;
+            return node.dataset.path;
           }
           return node.id;
         },
@@ -153,20 +152,20 @@
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), $node = $el.prev();
-        const val = this.model.getValue($node[0].dataset.path), len = val.length;
+        const $el = $(e.target), { dataset } = $el[0].closest('li');
+        const val = this.model.getValue(dataset.path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        $node.text(`"${_.escape(_.truncate(val, 100))}"`);
+        $el.prev().text(`"${_.escape(_.truncate(val, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
         e.preventDefault();
-        const $el = $(e.target), node = $el.prev();
-        const val = this.model.getValue(node[0].dataset.path), len = val.length;
+        const $el = $(e.target), { dataset } = $el[0].closest('li');
+        const val = this.model.getValue(dataset.path), len = val.length;
 
         $el.toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
-        node.text(`"${_.escape(_.truncate(val, len))}"`);
+        $el.prev().text(`"${_.escape(_.truncate(val, len))}"`);
       },
 
       'click .jst-group-toggle': function (e) {
@@ -234,7 +233,7 @@
   function jsNode(label, value, path, isRoot) {
     const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return (
-      `<li class="jst-item">${[
+      `<li class="jst-item" data-path="${path}" data-type="${type}">${[
         isRoot ? '': '<i class="jst-icon fa fa-chain"></i>',
         isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
         (() => {
@@ -262,13 +261,13 @@
     return [
       `<span class="jst-bracket">${brackets[0]}</span>`,
       content.length ? '<span class="jst-collapse"></span>' : '',
-      `<ul class="jst-list" data-path="${path}" data-type="${type}">${content}</ul>`,
+      `<ul class="jst-list">${content}</ul>`,
       `<span class="jst-bracket">${brackets[1]}</span>`
     ].join('');
   }
 
   function element(value, path, type) {
-    return `<span class="jst-node" data-path="${path}" data-type="${type}">${(() => {
+    return `<span class="jst-node">${(() => {
       return type === 'string' ? `"${_.escape(value)}"` : value;
     })()}</span>`;
   }

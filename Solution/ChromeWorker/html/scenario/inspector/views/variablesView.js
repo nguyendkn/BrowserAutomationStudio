@@ -10,23 +10,27 @@
       ScriptDataView.prototype.initialize.call(this, { allowHighlight: true });
     },
 
+    openModal: function (e) {
+      e.stopPropagation();
+      const { path, type } = e.target.closest('li').dataset;
+
+      const modal = new Inspector.Modal({
+        callback({ isChanged, value, cancel, type }) {
+          if (cancel || !isChanged) return;
+          updateVariable(value, path, type);
+        },
+        value: this.viewer.model.getValue(path),
+        type,
+      });
+      modal.render();
+    },
+
     events: {
       ...ScriptDataView.prototype.events,
 
-      'dblclick .jst-root > li > ul [data-path]': function (e) {
-        e.stopPropagation();
-        const { path, type } = e.target.dataset;
+      'dblclick .jst-root > li > ul > li > .jst-node': 'openModal',
 
-        const modal = new Inspector.Modal({
-          callback({ isChanged, value, cancel, type }) {
-            if (cancel || !isChanged) return;
-            updateVariable(value, path, type);
-          },
-          value: this.viewer.model.getValue(path),
-          type,
-        });
-        modal.render();
-      },
+      'dblclick .jst-root > li > ul > li > .jst-list': 'openModal',
 
       'keydown .inspector-filter-input': function (e) {
         if (e.key === ' ') e.preventDefault();

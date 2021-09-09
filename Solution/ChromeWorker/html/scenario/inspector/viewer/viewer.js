@@ -61,14 +61,14 @@
 
       this.model.on('change:source', () => {
         this.render();
+        initGroupsSortable([this.el]);
         initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
-        initGroupsSortable([...this.el.querySelectorAll('.jst-viewer')]);
       });
 
       this.model.on('change:groups', () => {
         this.render();
+        initGroupsSortable([this.el]);
         initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
-        initGroupsSortable([...this.el.querySelectorAll('.jst-viewer')]);
       });
 
       const initNodesSortable = nodes => {

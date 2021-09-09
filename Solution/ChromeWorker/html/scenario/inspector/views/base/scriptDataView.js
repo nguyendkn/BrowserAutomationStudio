@@ -177,7 +177,7 @@
         val = prepareData(val);
       }
       return (acc[key] = val, acc);
-    }, Array.isArray(data) ? [] : {});
+    }, _.isArray(data) ? [] : {});
   }
 
   Inspector.ScriptDataView = View;

@@ -111,8 +111,7 @@
 
     close() {
       this.$el.modal('hide');
-      this.unbind();
-      this.remove();
+      this.unbind().remove();
       return this;
     }
   });

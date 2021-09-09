@@ -93,7 +93,7 @@
           },
           filter: '.pinned',
           group: 'nodes',
-        }))
+        }));
       }
 
       const initGroupsSortable = nodes => {
@@ -105,7 +105,7 @@
           },
           group: 'groups',
           filter: null,
-        }))
+        }));
       }
 
       this.model = model;
@@ -235,7 +235,7 @@
     const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return (
       `<li class="jst-item">${[
-        '<i class="jst-icon fa fa-chain"></i>',
+        isRoot ? '': '<i class="jst-icon fa fa-chain"></i>',
         isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
         (() => {
           switch (type) {

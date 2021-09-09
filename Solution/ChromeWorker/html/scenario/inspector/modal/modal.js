@@ -48,12 +48,9 @@
     },
 
     initialize({ callback, value, type }) {
+      if (type === 'undefined') type = 'null';
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
-
-      if (type === 'undefined') {
-        type = 'null';
-      }
 
       const model = (new Model({ value, type })).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');

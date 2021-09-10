@@ -2,10 +2,10 @@
   const { Inspector, JST } = App;
 
   const Model = Backbone.Model.extend({
-    defaults: {
+    defaults: () => ({
       value: null,
       type: null,
-    }
+    })
   });
 
   const View = Backbone.View.extend({

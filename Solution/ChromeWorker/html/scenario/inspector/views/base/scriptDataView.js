@@ -8,7 +8,7 @@
           const $node = this.$(`[data-path="${path}"] > .jst-node`);
 
           if ($node.length) {
-            const { dataset } = $node.parent()[0];
+            const { dataset } = $node[0].parentNode;
             const colors = View.colors[dataset.type];
             if (colors) $node.css('color', colors[count]);
           }
@@ -93,7 +93,7 @@
 
             const f1 = history.filter(v => v === a).length + updates;
             const f2 = history.filter(v => v === b).length + updates;
-            return (meta2.usages / f2) - (meta1.usages / f1);
+            return meta2.usages / f2 - meta1.usages / f1;
           }
 
           return a.localeCompare(b);
@@ -136,7 +136,7 @@
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {
-        this.filterItems()
+        this.filterItems(e.target.value.toLowerCase());
       }, 200),
 
       'click .inspector-sort-menu > li > a': function (e) {

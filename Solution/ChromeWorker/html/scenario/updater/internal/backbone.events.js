@@ -10,5 +10,5 @@
     }
   });
 
-  _.each(['Model', 'Collection', 'Router', 'View', 'History'], (kind) => _.extend(Backbone[kind].prototype, Backbone.Events));
+  _.each(['Model', 'Collection', 'Router', 'View', 'History'], kind => _.extend(Backbone[kind].prototype, Backbone.Events));
 })(window);

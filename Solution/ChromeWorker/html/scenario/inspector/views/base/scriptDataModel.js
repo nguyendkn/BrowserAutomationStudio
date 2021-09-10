@@ -13,10 +13,10 @@
       filters: {
         undefined: true,
         boolean: true,
+        number: true,
         groups: false,
         object: true,
         string: true,
-        number: true,
         array: true,
         date: true,
         null: true

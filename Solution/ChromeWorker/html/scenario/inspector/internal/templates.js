@@ -190,10 +190,10 @@
             <i class="fa fa-cog"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right inspector-filter-menu">
-            <% _.each(['Undefined', 'Boolean', 'Number', 'Groups', 'String', 'Object', 'Array', 'Date', 'Null'], type => { %>
+            <% _.each(filters, (checked, val) => { %>
               <li>
-                <% const id = _.uniqueId('inspectorFilter' + type), val = type.toLowerCase() %>
-                <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= filters[val] ? 'checked' : '' %>>
+                <% const type = _.upperFirst(val), id = _.uniqueId('inspectorFilter' + type) %>
+                <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= checked ? 'checked' : '' %>>
                 <label for="<%= id %>"><%= type %></label>
               </li>
             <% }) %>

@@ -2064,14 +2064,14 @@ mark
  * Scrollbar styles *
  ********************/
 
-::-webkit-scrollbar-track {
-  background: #eaeaea;
-  border-radius: 0px;
-}
-
 ::-webkit-scrollbar-thumb {
   background: #b7b7b7;
   border-radius: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar {

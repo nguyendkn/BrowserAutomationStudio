@@ -21,7 +21,7 @@
 
       this.model.on('change:source', (__, source) => {
         const panel = this.el.querySelector('.inspector-panel');
-        panel.dataset.empty = _.isEmpty(source);
+        panel.dataset.empty = _.size(source) === 0;
         this.viewer.model.update(prepareData(source));
       });
     },
@@ -118,10 +118,7 @@
 
     saveState() {
       this.model.set('state', {
-        items: [
-          ...this.el.querySelectorAll('[data-type="object"] > .jst-list'),
-          ...this.el.querySelectorAll('[data-type="array"] > .jst-list'),
-        ].map(el => ({
+        items: [...this.el.querySelectorAll('[data-type] > .jst-list')].map(el => ({
           folded: el.classList.contains('jst-collapsed'),
           path: el.parentNode.dataset.path
         }))

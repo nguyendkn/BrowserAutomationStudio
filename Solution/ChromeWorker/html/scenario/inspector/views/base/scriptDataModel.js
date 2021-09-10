@@ -1,4 +1,4 @@
-(({ App, Backbone, _ }) => {
+(({ App, Backbone, $, _ }) => {
   const { Inspector } = App;
 
   Inspector.ScriptDataModel = Backbone.Model.extend({
@@ -55,6 +55,7 @@
           }
           this.trigger('highlight', { count: item.count, path });
         });
+
         this.set('highlight', false);
       }
     }

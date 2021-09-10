@@ -9,7 +9,7 @@
             </div>
             <div class="inspector-modal-body">
               <form class="inspector-modal-form" action="javascript:void(0)">
-                <% const style = target => type === target ? 'display: block' : 'display: none'; %>
+                <% const style = target => 'display: ' + (type === target ? 'block' : 'none') %>
                 <div style="<%= style('custom') %>" data-input-type="custom">
                   <textarea><%- type === 'custom' ? value : '' %></textarea>
                 </div>
@@ -26,8 +26,8 @@
                   <% _.each(['false', 'true'], (val, idx) => { %>
                     <div class="input-radio">
                       <% const id = _.uniqueId('inspectorModalInput') %>
-                      <input id="<%= id %>" type="radio" name="boolean" value="<%= val %>"<%= (type === 'boolean' ? value === val : idx === 0) ? 'checked' : '' %>>
-                      <label for="<%= id %>"><%= tr(_.upperFirst(item)) %></label>
+                      <input id="<%= id %>" type="radio" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : idx === 0) ? 'checked' : '' %>>
+                      <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
                     </div>
                   <% }) %>
                 </div>
@@ -35,8 +35,8 @@
                   <% _.each(['undefined', 'null'], (val, idx) => { %>
                     <div class="input-radio">
                       <% const id = _.uniqueId('inspectorModalInput') %>
-                      <input id="<%= id %>" type="radio" name="empty" value="<%= val %>"<%= (type === 'null' ? value === val : idx === 0) ? 'checked' : '' %>>
-                      <label for="<%= id %>"><%= tr(_.upperFirst(item)) %></label>
+                      <input id="<%= id %>" type="radio" name="empty" value="<%= val %>" <%= (type === 'null' ? value === val : idx === 0) ? 'checked' : '' %>>
+                      <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
                     </div>
                   <% }) %>
                 </div>

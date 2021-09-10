@@ -178,7 +178,7 @@
   border-top: 7px solid #e1e1e1;
   background-color: #fafafa;
   min-height: 120px;
-  height: 290px;
+  height: 300px;
 }
 
 /********************
@@ -209,10 +209,6 @@
 
 .callstack-item[data-type=action] > div {
   background-image: url(../icons/gear.svg);
-}
-
-.callstack-item[data-type=label] > div {
-  background-image: url(../icons/tag.svg);
 }
 
 .callstack-item > div {

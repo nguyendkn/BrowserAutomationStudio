@@ -23,28 +23,28 @@
                   <input type="text" value="<%- type === 'date' ? value : '' %>">
                 </div>
                 <div style="<%= style('boolean') %>" data-input-type="boolean">
-                  <% _.each(['False', 'True'], (item, idx) => { %>
-                    <% const id = _.uniqueId('inspectorModalInput'), val = item.toLowerCase() %>
+                  <% _.each(['false', 'true'], (val, idx) => { %>
                     <div class="input-radio">
+                      <% const id = _.uniqueId('inspectorModalInput') %>
                       <input id="<%= id %>" type="radio" name="boolean" value="<%= val %>"<%= (type === 'boolean' ? value === val : idx === 0) ? 'checked' : '' %>>
-                      <label for="<%= id %>"><%= tr(item) %></label>
+                      <label for="<%= id %>"><%= tr(_.upperFirst(item)) %></label>
                     </div>
                   <% }) %>
                 </div>
                 <div style="<%= style('null') %>" data-input-type="null">
-                  <% _.each(['Undefined', 'Null'], (item, idx) => { %>
-                    <% const id = _.uniqueId('inspectorModalInput'), val = item.toLowerCase() %>
+                  <% _.each(['undefined', 'null'], (val, idx) => { %>
                     <div class="input-radio">
+                      <% const id = _.uniqueId('inspectorModalInput') %>
                       <input id="<%= id %>" type="radio" name="empty" value="<%= val %>"<%= (type === 'null' ? value === val : idx === 0) ? 'checked' : '' %>>
-                      <label for="<%= id %>"><%= tr(item) %></label>
+                      <label for="<%= id %>"><%= tr(_.upperFirst(item)) %></label>
                     </div>
                   <% }) %>
                 </div>
               </form>
               <select id="inspectorModalSelect" data-style="inspector-modal-select">
-                <% _.each(['Boolean', 'Custom', 'String', 'Number', 'Date', 'Null'], item => { %>
-                  <option class="inspector-modal-select-option" value="<%= item.toLowerCase() %>" <%= item.toLowerCase() === type ? 'selected' : '' %>>
-                    <%= tr(item) %>
+                <% _.each(['boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
+                  <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>>
+                    <%= tr(_.upperFirst(item)) %>
                   </option>
                 <% }) %>
               </select>

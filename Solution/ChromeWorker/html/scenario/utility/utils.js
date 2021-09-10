@@ -56,11 +56,9 @@
 
     lowerFirst: str => str.charAt(0).toLowerCase() + str.slice(1),
 
+    isSymbol: obj => toString.call(obj) === '[object Symbol]',
+
     isError: obj => toString.call(obj) === '[object Error]',
-
-    isMap: obj => toString.call(obj) === '[object Map]',
-
-    isSet: obj => toString.call(obj) === '[object Set]',
 
     concat: (arr, ...args) => arr.concat(...args),
 

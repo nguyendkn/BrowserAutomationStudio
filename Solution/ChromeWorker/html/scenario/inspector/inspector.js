@@ -32,7 +32,7 @@
           el: this.el.querySelector('#callstack')
         }).render();
 
-        this.interact = interact(this.el).resizable({
+        this.resizable = interact(this.el).resizable({
           listeners: {
             move: ({ client }) => {
               const pos = client.y, height = Math.min(

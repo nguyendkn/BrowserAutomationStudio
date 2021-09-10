@@ -28,16 +28,14 @@
   $.fn.slideDownEx = function (...args) {
     return this.each(function () {
       const $el = $(this);
-      if ($el.is(':visible')) return;
-      $.fn.slideDown.apply($el, args);
+      if (!$el.is(':visible')) $.fn.slideDown.apply($el, args);
     });
   };
 
   $.fn.slideUpEx = function (...args) {
     return this.each(function () {
       const $el = $(this);
-      if ($el.is(':hidden')) return;
-      $.fn.slideDown.apply($el, args);
+      if (!$el.is(':hidden')) $.fn.slideUp.apply($el, args);
     });
   };
 
@@ -58,9 +56,11 @@
 
     lowerFirst: str => str.charAt(0).toLowerCase() + str.slice(1),
 
-    isString: obj => toString.call(obj) === '[object String]',
-
     isError: obj => toString.call(obj) === '[object Error]',
+
+    isMap: obj => toString.call(obj) === '[object Map]',
+
+    isSet: obj => toString.call(obj) === '[object Set]',
 
     concat: (arr, ...args) => arr.concat(...args),
 

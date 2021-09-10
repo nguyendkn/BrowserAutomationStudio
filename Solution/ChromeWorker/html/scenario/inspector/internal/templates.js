@@ -194,7 +194,7 @@
               <li>
                 <% const type = _.upperFirst(val), id = _.uniqueId('inspectorFilter' + type) %>
                 <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= checked ? 'checked' : '' %>>
-                <label for="<%= id %>"><%= type %></label>
+                <label for="<%= id %>"><%= tr(type) %></label>
               </li>
             <% }) %>
           </ul>

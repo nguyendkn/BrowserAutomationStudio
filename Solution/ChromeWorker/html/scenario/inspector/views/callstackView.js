@@ -2,21 +2,21 @@
   const { Inspector, JST } = App;
 
   const Model = Backbone.Model.extend({
-    update: function (source) {
-      this.set('stack', source.concat({
-        type: 'function',
-        name: 'Main',
-        id: 0,
-      }));
-    },
-
-    defaults: {
+    defaults: () => ({
       filters: {
         function: true,
         action: true,
       },
       stack: [],
       state: {}
+    }),
+
+    update: function (source) {
+      this.set('stack', source.concat({
+        type: 'function',
+        name: 'Main',
+        id: 0,
+      }));
     }
   });
 

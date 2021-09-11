@@ -1,4 +1,4 @@
-(function ({ App, $, _ }) {
+(({ App, $, _ }) => {
   App.utils.filterTasks = function (type) {
     const tasks = _TaskCollection.map((task, index) => {
       const dat = _.attempt(() => task.dat());

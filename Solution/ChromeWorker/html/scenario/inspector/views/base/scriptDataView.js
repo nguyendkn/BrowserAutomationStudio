@@ -136,14 +136,13 @@
         this.filterItems(e.target.value.toLowerCase());
       }, 200),
 
-      'click .inspector-sort-menu > li > a': function (e) {
-        e.preventDefault();
-        const { dataset } = e.target.closest('li');
-        this.model.set('sorting', dataset.sorting);
-      },
-
       'click .inspector-filter-menu > li': function (e) {
         e.stopPropagation();
+      },
+
+      'click .inspector-sort-menu > li': function (e) {
+        e.preventDefault();
+        this.model.set('sorting', e.currentTarget.dataset.sorting);
       }
     }
   }, {

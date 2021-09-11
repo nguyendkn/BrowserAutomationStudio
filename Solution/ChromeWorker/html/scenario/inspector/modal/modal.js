@@ -100,7 +100,7 @@
     render() {
       this.$el.html(this.template(this.model.toJSON()));
       this.$('#inspectorModalSelect').selectpicker();
-      this.$el.modal({});
+      this.$el.modal({ backdrop: 'static' });
       return this;
     },
 

@@ -1,23 +1,6 @@
 (({ App, Backbone, $, _ }) => {
   const toString = Object.prototype.toString;
 
-  App.utils = {
-    getTaskInfo(task) {
-      if (!(task instanceof Backbone.Model)) return {};
-      const dat = _.attempt(() => task.dat());
-      const isDamaged = _.isError(dat);
-      const isEmpty = _.isNull(dat);
-
-      return {
-        isSelected: task.get('is_selected'),
-        dat: isDamaged ? null : dat,
-        id: Number(task.get('id')),
-        isDatDamaged: isDamaged,
-        isDatEmpty: isEmpty,
-      };
-    },
-  };
-
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {
     template: { caret: '' },
     container: false,

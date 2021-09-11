@@ -212,6 +212,43 @@ void DevToolsActionExecuteJavascript::ParseFrameCandidatesIteration(picojson::ob
 
 void DevToolsActionExecuteJavascript::Next()
 {
+    if(RequestType == JavascriptExecution)
+    {
+        if(GetStringFromJson(LastMessage, "result.subtype") == "error")
+        {
+            std::string ErrorString = GetStringFromJson(LastMessage, "result.description");
+            picojson::object Object;
+            Object["is_success"] = picojson::value(false);
+            Object["error"] = picojson::value(ErrorString);
+            Object["variables"] = picojson::value(InitialVariables);
+            Result->SetRawData(picojson::value(Object).serialize());
+            Result->Fail(ErrorString, "JsError");
+            State = Finished;
+            return;
+        }else if(GetStringFromJson(LastMessage,"result.value","BAS_NOT_FOUND") != "BAS_NOT_FOUND")
+        {
+            LastMessage = GetStringFromJson(LastMessage, "result.value");
+            Result->SetRawData(LastMessage);
+            if(GetStringFromJson(LastMessage, "variables", "BAS_NOT_FOUND") != "BAS_NOT_FOUND")
+            {
+                if(GetBooleanFromJson(LastMessage, "is_success"))
+                {
+                    Result->Success(GetStringFromJson(LastMessage, "variables"));
+                } else
+                {
+                    Result->Fail(GetStringFromJson(LastMessage, "error"), "JsError", GetStringFromJson(LastMessage, "variables"));
+                }
+                State = Finished;
+                return;
+            }
+        }
+
+        Result->Fail("Unknown response", "UnknownResponse");
+        State = Finished;
+        return;
+
+    }
+
     if(!LastMessage.empty())
     {
         if (RequestType == FrameSearchGetFrameList)
@@ -233,42 +270,7 @@ void DevToolsActionExecuteJavascript::Next()
             RequestType = FrameSearchGetFrameId;
         }
 
-        if(RequestType == JavascriptExecution)
-        {
-            if(GetStringFromJson(LastMessage, "result.subtype") == "error")
-            {
-                std::string ErrorString = GetStringFromJson(LastMessage, "result.description");
-                picojson::object Object;
-                Object["is_success"] = picojson::value(false);
-                Object["error"] = picojson::value(ErrorString);
-                Object["variables"] = picojson::value(InitialVariables);
-                Result->SetRawData(picojson::value(Object).serialize());
-                Result->Fail(ErrorString, "JsError");
-                State = Finished;
-                return;
-            }else if(GetStringFromJson(LastMessage,"result.value","BAS_NOT_FOUND") != "BAS_NOT_FOUND")
-            {
-                LastMessage = GetStringFromJson(LastMessage, "result.value");
-                Result->SetRawData(LastMessage);
-                if(GetStringFromJson(LastMessage, "variables", "BAS_NOT_FOUND") != "BAS_NOT_FOUND")
-                {
-                    if(GetBooleanFromJson(LastMessage, "is_success"))
-                    {
-                        Result->Success(GetStringFromJson(LastMessage, "variables"));
-                    } else
-                    {
-                        Result->Fail(GetStringFromJson(LastMessage, "error"), "JsError", GetStringFromJson(LastMessage, "variables"));
-                    }
-                    State = Finished;
-                    return;
-                }
-            }
-            
-            Result->Fail("Unknown response", "UnknownResponse");
-            State = Finished;
-            return;
-
-        }else if(RequestType == FrameSearchEvaluate)
+        if(RequestType == FrameSearchEvaluate)
         {
             CurrentLoaderId = GetStringFromJson(LastMessage, "result.objectId", "BAS_NOT_FOUND");
             if(CurrentLoaderId == "BAS_NOT_FOUND")

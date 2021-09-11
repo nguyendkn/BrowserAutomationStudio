@@ -18,7 +18,8 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.setElement('#inspector').$el.html(this.template());
+        this.setElement('#inspector');
+        this.$el.html(this.template());
 
         this.variables = new Inspector.VariablesView({
           el: this.el.querySelector('#variables')

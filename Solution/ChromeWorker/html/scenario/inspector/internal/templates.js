@@ -69,7 +69,7 @@
               <a data-toggle="tab" href="#resources" role="tab" aria-controls="resources"><%= tr('Resources') %></a>
             </li>
             <li class="" role="presentation">
-              <a data-toggle="tab" href="#callstack" role="tab" aria-controls="resources"><%= tr('Callstack') %></a>
+              <a data-toggle="tab" href="#callstack" role="tab" aria-controls="callstack"><%= tr('Call stack') %></a>
             </li>
           </ul>
           <button id="inspectorClose" type="button" style="min-width: 28px; border: none; background: #fafafa;">

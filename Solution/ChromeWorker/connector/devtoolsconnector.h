@@ -75,12 +75,21 @@ class DevToolsConnector
     void ProcessTabConnection(std::shared_ptr<TabData> Tab);
     void StartFirstSavedAction(std::shared_ptr<TabData> Tab);
 
+    //InspectAt
+
+    bool IsInspectAtScheduled = false;
+    long long InspectAtTime = 0;
+    int InspectAtX = 0;
+    int InspectAtY = 0;
+    void InspectAtFinalize();
+
     //Helpers
 
     int GenerateId();
     int SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId);
     void InsertAction(std::shared_ptr<IDevToolsAction> Action);
     std::vector<std::shared_ptr<IDevToolsAction> > GetAllActions();
+    void OpenDevToolsInternal(bool IsInspect);
 
     //Callbacks
 
@@ -152,6 +161,7 @@ class DevToolsConnector
         bool InterruptAction(int ActionUniqueId);
         void StartProcess();
         void OpenDevTools();
+        void InspectAt(int X, int Y);
 
         //Browser life cycle
         Async Reset(int Timeout = -1);

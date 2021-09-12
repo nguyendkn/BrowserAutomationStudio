@@ -79,7 +79,7 @@ void BrowserContextMenu::Show(HWND hwnd, int X, int Y, bool IsLink, bool IsMedia
     AppendMenu(hMenu, Enabled, IdGetPageSource, Translate::Tr(L"Get page source").c_str());
     AppendMenu(hMenu, Enabled, IdSavePageAs, Translate::Tr(L"Save page as").c_str());
     AppendMenu(hMenu, Enabled, IdOpenDeveloperTools, Translate::Tr(L"Open developer tools").c_str());
-    //AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
+    AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
 
 
     if(IsLink)
@@ -252,6 +252,9 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Conn
     }else if(Command == IdOpenDeveloperTools)
     {
         Connector->OpenDevTools();
+    }else if(Command == IdInspectElement)
+    {
+        Connector->InspectAt(LastClickX, LastClickY);
     }else if(Command == IdCopyLinkLocation)
     {
         SetClipboard(Url);

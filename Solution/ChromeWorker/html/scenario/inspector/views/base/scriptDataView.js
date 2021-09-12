@@ -114,6 +114,7 @@
         }
       });
       this.model.set('state', state);
+      return this;
     },
 
     saveState() {

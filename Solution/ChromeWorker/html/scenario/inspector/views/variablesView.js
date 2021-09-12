@@ -22,6 +22,7 @@
         value: this.viewer.model.getValue(path),
         type,
       });
+
       modal.render();
     },
 

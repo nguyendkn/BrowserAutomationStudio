@@ -8,7 +8,7 @@
         action: true,
       },
       stack: [],
-      state: {}
+      state: {},
     }),
 
     update: function (source) {

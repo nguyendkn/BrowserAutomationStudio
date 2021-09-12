@@ -124,7 +124,7 @@ void DevToolsConnector::SetExtensionList(const std::vector<std::wstring>& Extens
     this->Extensions = Extensions;
 }
 
-void DevToolsConnector::OpenDevTools()
+void DevToolsConnector::OpenDevToolsInternal(bool IsInspect)
 {
     std::wstring PageId;
 
@@ -140,17 +140,48 @@ void DevToolsConnector::OpenDevTools()
         }
     }
 
+    std::wstring IsInspectorString;
+
+    if(IsInspect)
+    {
+        IsInspectorString = L"inspect=true&";
+    }
+
     if(!PageId.empty())
     {
         std::wstring Url =
                 std::wstring(L"http://127.0.0.1:")
                 + std::to_wstring(GlobalState.Port)
-                + std::wstring(L"/devtools/inspector.html?ws=127.0.0.1:")
+                + std::wstring(L"/devtools/inspector.html?") + IsInspectorString + std::wstring(L"ws=127.0.0.1:")
                 + std::to_wstring(GlobalState.Port)
                 + std::wstring(L"/devtools/page/")
                 + PageId;
         ShellExecute(0, 0, Url.c_str(), 0, 0 , SW_SHOW );
     }
+}
+
+void DevToolsConnector::OpenDevTools()
+{
+    OpenDevToolsInternal(false);
+}
+
+void DevToolsConnector::InspectAt(int X, int Y)
+{
+    OpenDevToolsInternal(true);
+
+    IsInspectAtScheduled = true;
+    InspectAtTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 5000;
+    InspectAtX = X;
+    InspectAtY = Y;
+}
+
+void DevToolsConnector::InspectAtFinalize()
+{
+    IsInspectAtScheduled = false;
+    InspectAtTime = 0;
+    Mouse(MouseEventMove, InspectAtX, InspectAtY);
+    Mouse(MouseEventDown, InspectAtX, InspectAtY);
+    Mouse(MouseEventUp, InspectAtX, InspectAtY);
 }
 
 void DevToolsConnector::StartProcess()
@@ -1492,6 +1523,12 @@ void DevToolsConnector::Timer()
 
     long long Now = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
 
+
+    if(IsInspectAtScheduled && Now > InspectAtTime)
+    {
+        InspectAtFinalize();
+    }
+
     //Process timeout for reset acion
     if(ResetResult)
     {
@@ -2509,6 +2546,9 @@ void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNa
 
 void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button, int MousePressed, int KeyboardPresses, int ClickCount)
 {
+    if(IsInspectAtScheduled)
+        return;
+
     std::map<std::string, Variant> Params;
     std::string TypeName = "mousePressed";
     if(Event == MouseEventUp)
@@ -2543,6 +2583,9 @@ void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button
 
 void DevToolsConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePressed, int KeyboardPresses)
 {
+    if(IsInspectAtScheduled)
+        return;
+
     std::map<std::string, Variant> Params;
     std::string TypeName = "mouseWheel";
     std::string ButtonName = "none";
@@ -2560,6 +2603,9 @@ void DevToolsConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePress
 
 void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure)
 {
+    if(IsInspectAtScheduled)
+        return;
+
     std::map<std::string, Variant> Params;
     std::map<std::string, Variant> Point;
     std::string TypeName = "touchStart";
@@ -2592,6 +2638,9 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
 
 void DevToolsConnector::Key(KeyEvent Event, const std::string& Char, int KeyboardPresses)
 {
+    if(IsInspectAtScheduled)
+        return;
+
     if(EmulateKeyboard.IsKeyboardCharacter(Char))
     {
         std::map<std::string, Variant> Params = EmulateKeyboard.PrepareKeyboardEvent(Event, Char, KeyboardPresses);
@@ -2608,6 +2657,9 @@ void DevToolsConnector::Key(KeyEvent Event, const std::string& Char, int Keyboar
 
 void DevToolsConnector::KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM NativeVirtualKeyCode, int KeyboardPresses)
 {
+    if(IsInspectAtScheduled)
+        return;
+
     std::map<std::string, Variant> Params = EmulateKeyboard.PrepareRawKeyboardEvent(Event, WindowsVirtualKeyCode, NativeVirtualKeyCode, KeyboardPresses);
     SendWebSocket("Input.dispatchKeyEvent", Params, GlobalState.TabId);
 }

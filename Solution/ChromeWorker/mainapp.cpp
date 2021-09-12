@@ -1670,7 +1670,7 @@ void MainApp::ToggleDevTools()
 
 void MainApp::InspectAt(int x, int y)
 {
-    Data->Connector->OpenDevTools();
+    Data->Connector->InspectAt(x, y);
 }
 
 void MainApp::RepeatInspectMouseAt()

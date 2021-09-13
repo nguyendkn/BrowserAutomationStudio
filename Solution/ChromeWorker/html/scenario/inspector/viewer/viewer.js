@@ -145,7 +145,6 @@
 
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
-        e.preventDefault();
         const { path } = e.target.closest('li').dataset;
         const val = this.model.getValue(path), len = val.length;
 
@@ -154,7 +153,6 @@
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
-        e.preventDefault();
         const { path } = e.target.closest('li').dataset;
         const val = this.model.getValue(path), len = val.length;
 
@@ -163,7 +161,6 @@
       },
 
       'click .jst-group-toggle': function (e) {
-        e.preventDefault();
         const $el = $(e.target), $group = $el.closest('.jst-group');
         $group.children('.jst-group-body').toggle();
         $el.toggleClass('fa-chevron-down');
@@ -171,7 +168,6 @@
       },
 
       'click .jst-collapse': function (e) {
-        e.preventDefault();
         const $el = $(e.target);
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
         $el.next().toggleClass('collapsed');
@@ -179,7 +175,6 @@
       },
 
       'click .jst-expand': function (e) {
-        e.preventDefault();
         const $el = $(e.target);
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
         $el.next().toggleClass('collapsed');

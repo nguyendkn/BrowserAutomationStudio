@@ -64,24 +64,22 @@
           return el.dataset.inputType === type
         }).show().find(':input').prop('required', true);
 
-        $target.each((idx, el) => {
-          if (idx === 0) {
-            const $el = $(el), type = $el.attr('type');
+        $target.first().each((__, el) => {
+          const $el = $(el), type = $el.attr('type');
 
-            if (type !== 'radio') {
-              $el.val(type === 'number' ? 0 : '');
-            } else {
-              $el.prop('checked', true);
-            }
-
-            $el.trigger('change');
+          if (type !== 'radio') {
+            $el.val(type === 'number' ? 0 : '');
+          } else {
+            $el.prop('checked', true);
           }
+
+          $el.trigger('change');
         });
       });
 
       model.bind('change', () => {
-        const isEqual = _.isEqual(model.toJSON(), { value, type });
-        this.$('#inspectorModalAccept').prop('disabled', isEqual);
+        const disabled = _.isEqual(model.toJSON(), { value, type });
+        this.$('#inspectorModalAccept').prop('disabled', disabled);
       });
 
       this.bind('submit', () => {

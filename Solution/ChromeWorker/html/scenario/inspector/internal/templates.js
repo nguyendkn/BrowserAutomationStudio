@@ -180,8 +180,8 @@
             <li data-sorting="dateModified">
               <a href="#"><%= tr('By date modified') %></a>
             </li>
-            <li data-sorting="dateAdded">
-              <a href="#"><%= tr('By date added') %></a>
+            <li data-sorting="dateCreated">
+              <a href="#"><%= tr('By date created') %></a>
             </li>
           </ul>
         </div>

@@ -87,8 +87,8 @@
             return meta2.modifiedAt - meta1.modifiedAt;
           }
 
-          if (sorting === 'dateAdded') {
-            return meta2.addedAt - meta1.addedAt;
+          if (sorting === 'dateCreated') {
+            return meta2.createdAt - meta1.createdAt;
           }
 
           const f1 = history.filter(v => v === path1).length + updates;

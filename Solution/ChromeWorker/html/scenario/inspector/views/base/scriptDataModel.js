@@ -38,7 +38,7 @@
           metadata[path].usages += 1;
           metadata[path].count += 0;
         } else {
-          metadata[path] = { modifiedAt: now, addedAt: now, usages: 1, count: 5 };
+          metadata[path] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
         }
 
         history = history.concat(path).slice(-100);

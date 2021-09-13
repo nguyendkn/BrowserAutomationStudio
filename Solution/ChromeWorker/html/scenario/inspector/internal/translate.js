@@ -18,7 +18,7 @@
     'By date modified': {
       ru: 'По дате изменения'
     },
-    'By date added': {
+    'By date created': {
       ru: 'По дате создания'
     },
     'Filter by name': {

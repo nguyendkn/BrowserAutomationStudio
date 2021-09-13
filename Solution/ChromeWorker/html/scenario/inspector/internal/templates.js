@@ -50,7 +50,7 @@
               </select>
             </div>
             <div class="inspector-modal-footer">
-              <button type="button" id="inspectorModalAccept" class="btn-base btn-accept"><%= tr('Accept') %></button>
+              <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" disabled><%= tr('Update') %></button>
               <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
             </div>
           </div>

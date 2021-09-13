@@ -79,6 +79,11 @@
         });
       });
 
+      model.bind('change', () => {
+        const isEqual = _.isEqual({ value, type }, model.toJSON());
+        this.$('#inspectorModalAccept').prop('disabled', isEqual);
+      });
+
       this.bind('submit', () => {
         const valid = this.el.querySelector('form').reportValidity();
         if (valid || model.get('type') === 'string') this.trigger('accept');
@@ -86,12 +91,12 @@
 
       this.once('accept', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, isChanged: !_.isEqual({ value, type }, json), cancel: false });
+        callback({ ...json, cancel: false });
       });
 
       this.once('cancel', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, isChanged: !_.isEqual({ value, type }, json), cancel: true });
+        callback({ ...json, cancel: true });
       });
 
       this.model = model;
@@ -106,7 +111,8 @@
 
     close() {
       this.$el.modal('hide');
-      this.unbind().remove();
+      this.unbind();
+      this.remove();
       return this;
     }
   });

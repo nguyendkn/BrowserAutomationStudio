@@ -46,6 +46,18 @@
   }
 }
 
+.inspector-modal-footer > .btn-accept[disabled] {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  outline: 0;
+}
+
+.inspector-modal-footer > .btn-cancel[disabled] {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  outline: 0;
+}
+
 .inspector-modal-form > div > textarea,
 .inspector-modal-form > div > input {
   line-height: 18px;

@@ -15,9 +15,8 @@
       const { path, type } = e.target.closest('li').dataset;
 
       const modal = new Inspector.Modal({
-        callback({ isChanged, value, cancel, type }) {
-          if (cancel || !isChanged) return;
-          updateVariable(value, path, type);
+        callback({ value, cancel, type }) {
+          if (!cancel) updateVariable(value, path, type);
         },
         value: this.viewer.model.getValue(path),
         type,

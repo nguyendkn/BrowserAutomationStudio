@@ -59,12 +59,15 @@
     initialize() {
       this.model = new Model();
 
-      this.model.on('change', () => {
+      this.model.on('change:groups', () => {
         this.render();
-        initSortable();
       });
 
-      const initSortable = () => {
+      this.model.on('change:source', () => {
+        this.render();
+      });
+
+      this.on('render', () => {
         _.invoke(this.sortable.groups, 'destroy');
         _.invoke(this.sortable.nodes, 'destroy');
 
@@ -97,7 +100,7 @@
             group: 'nodes'
           }))
         }
-      }
+      });
 
       this.sortable = {};
     },

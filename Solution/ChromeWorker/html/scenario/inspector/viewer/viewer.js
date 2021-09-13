@@ -59,52 +59,44 @@
     initialize() {
       this.model = new Model();
 
-      this.model.on('change:source', () => {
+      this.model.on('change', () => {
         this.render();
-        initGroupsSortable([this.el]);
-        initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
+        initSortable();
       });
 
-      this.model.on('change:groups', () => {
-        this.render();
-        initGroupsSortable([this.el]);
-        initNodesSortable([...this.el.querySelectorAll('.jst-root > li > ul')]);
-      });
-
-      const initNodesSortable = nodes => {
+      const initSortable = () => {
+        _.invoke(this.sortable.groups, 'destroy');
         _.invoke(this.sortable.nodes, 'destroy');
 
-        this.sortable.nodes = nodes.map(node => Sortable.create(node, {
-          onEnd: ({ item, from, to }) => {
-            const groups = this.model.get('groups'), name = item.dataset.path.slice(1);
+        this.sortable = {
+          groups: [this.el].map(node => Sortable.create(node, {
+            onEnd: ({ item, from, to }) => {
 
-            const fromName = from.closest('.jst-group').dataset.name;
-            const fromList = _.without(groups[fromName], name);
+            },
+            filter: '.pinned',
+            group: 'groups'
+          })),
 
-            const toName = to.closest('.jst-group').dataset.name;
-            const toList = _.concat(groups[toName], name);
+          nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(node => Sortable.create(node, {
+            onEnd: ({ item, from, to }) => {
+              const groups = this.model.get('groups'), name = item.dataset.path.slice(1);
 
-            this.model.set('groups', {
-              ...groups,
-              [fromName]: _.uniq(fromList),
-              [toName]: _.uniq(toList),
-            }, { silent: true });
-          },
-          filter: '.pinned',
-          group: 'nodes'
-        }));
-      }
+              const fromName = from.closest('.jst-group').dataset.name;
+              const fromList = _.without(groups[fromName], name);
 
-      const initGroupsSortable = nodes => {
-        _.invoke(this.sortable.groups, 'destroy');
+              const toName = to.closest('.jst-group').dataset.name;
+              const toList = _.concat(groups[toName], name);
 
-        this.sortable.groups = nodes.map(node => Sortable.create(node, {
-          onEnd: ({ item, from, to }) => {
-
-          },
-          filter: '.pinned',
-          group: 'groups'
-        }));
+              this.model.set('groups', {
+                ...groups,
+                [fromName]: _.uniq(fromList),
+                [toName]: _.uniq(toList),
+              }, { silent: true });
+            },
+            filter: '.pinned',
+            group: 'nodes'
+          }))
+        }
       }
 
       this.sortable = {};
@@ -266,8 +258,8 @@
   }
 
   function element(value, path, type) {
-    const content = type === 'string' ? `"${_.escape(value)}"` : value;
-    return `<span class="jst-node">${content}</span>`;
+    if (type === 'string') value = `"${_.escape(value)}"`;
+    return `<span class="jst-node">${value}</span>`;
   }
 
   Inspector.Viewer = View;

@@ -174,7 +174,7 @@
         e.preventDefault();
         const $el = $(e.target);
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
-        $el.next().toggleClass('jst-collapsed').hide();
+        $el.next().toggleClass('collapsed');
         this.trigger('node:collapse');
       },
 
@@ -182,7 +182,7 @@
         e.preventDefault();
         const $el = $(e.target);
         $el.toggleClass('jst-collapse').toggleClass('jst-expand');
-        $el.next().toggleClass('jst-collapsed').show();
+        $el.next().toggleClass('collapsed');
         this.trigger('node:expand');
       }
     }

@@ -106,7 +106,7 @@
     restoreState(state = this.model.get('state')) {
       _.each(state.items, ({ path, folded }) => {
         const $el = this.$el.find(`[data-path="${path}"] > .jst-list`);
-        if (folded && !$el.hasClass('jst-collapsed')) {
+        if (folded && !$el.hasClass('collapsed')) {
           $el.prev('.jst-collapse').click();
         }
       });
@@ -117,7 +117,7 @@
     saveState() {
       this.model.set('state', {
         items: [...this.el.querySelectorAll('[data-type] > .jst-list')].map(el => ({
-          folded: el.classList.contains('jst-collapsed'),
+          folded: el.classList.contains('collapsed'),
           path: el.parentNode.dataset.path
         }))
       });

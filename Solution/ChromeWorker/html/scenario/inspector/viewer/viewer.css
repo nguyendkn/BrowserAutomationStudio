@@ -63,12 +63,20 @@
   margin-top: 4px;
 }
 
-.jst-collapse:before {
+.jst-collapse::before {
   content: '-';
 }
 
-.jst-expand:before {
+.jst-expand::before {
   content: '+';
+}
+
+.jst-list.collapsed {
+  display: none;
+}
+
+.jst-root.collapsed {
+  display: none;
 }
 
 .jst-list:empty {

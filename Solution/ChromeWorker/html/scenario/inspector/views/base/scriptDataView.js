@@ -79,24 +79,21 @@
 
       _.keys(this.model.get('source')).sort((a, b) => {
         return (a.startsWith('GLOBAL:') - b.startsWith('GLOBAL:')) || (() => {
-          if (sorting !== 'alphabetically') {
-            const meta1 = metadata[`/${a}`];
-            const meta2 = metadata[`/${b}`];
+          if (sorting === 'alphabetically') return a.localeCompare(b);
+          const path1 = `/${a}`, meta1 = metadata[path1];
+          const path2 = `/${b}`, meta2 = metadata[path2];
 
-            if (sorting === 'dateModified') {
-              return meta2.modifiedAt - meta1.modifiedAt;
-            }
-
-            if (sorting === 'dateAdded') {
-              return meta2.addedAt - meta1.addedAt;
-            }
-
-            const f1 = history.filter(v => v === a).length + updates;
-            const f2 = history.filter(v => v === b).length + updates;
-            return meta2.usages / f2 - meta1.usages / f1;
+          if (sorting === 'dateModified') {
+            return meta2.modifiedAt - meta1.modifiedAt;
           }
 
-          return a.localeCompare(b);
+          if (sorting === 'dateAdded') {
+            return meta2.addedAt - meta1.addedAt;
+          }
+
+          const f1 = history.filter(v => v === path1).length + updates;
+          const f2 = history.filter(v => v === path2).length + updates;
+          return meta2.usages / f2 - meta1.usages / f1;
         })();
       }).forEach(key => {
         const el = this.el.querySelector(`[data-path="/${key}"]`);

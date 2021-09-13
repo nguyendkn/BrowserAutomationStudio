@@ -101,9 +101,11 @@
     },
 
     render() {
-      this.$el.html(this.template(this.model.toJSON()));
-      this.$('#inspectorModalSelect').selectpicker();
-      this.$el.modal({ backdrop: 'static' });
+      if (this.$el.is(':empty')) {
+        this.$el.html(this.template(this.model.toJSON()));
+        this.$('#inspectorModalSelect').selectpicker();
+        this.$el.modal({ backdrop: 'static' });
+      }
       return this;
     },
 

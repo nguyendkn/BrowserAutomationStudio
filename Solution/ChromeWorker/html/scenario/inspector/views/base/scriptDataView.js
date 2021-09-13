@@ -53,10 +53,10 @@
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
         const $visible = $items.filter((__, el) => {
-          const $item = $(el), visible = filters[el.dataset.type];
+          const visible = filters[el.dataset.type];
 
           if (query && query.length) {
-            const text = $item.children('.jst-label').text();
+            const text = $(el).children('.jst-label').text();
             const lower = text.slice(0, -1).toLowerCase();
             return lower.includes(query) && visible;
           }
@@ -160,7 +160,7 @@
   }
 
   function prepareData(data) {
-    return _.reduce(data, (acc, val, key) => {
+    return _.reduce(data, (res, val, key) => {
       if (typeof (val) === 'string') {
         if (val.startsWith('__UNDEFINED__')) {
           val = undefined;
@@ -170,7 +170,7 @@
       } else if (_.isObject(val)) {
         val = prepareData(val);
       }
-      return (acc[key] = val, acc);
+      return (res[key] = val, res);
     }, _.isArray(data) ? [] : {});
   }
 

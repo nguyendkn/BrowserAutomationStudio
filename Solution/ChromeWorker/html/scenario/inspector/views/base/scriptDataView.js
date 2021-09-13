@@ -140,7 +140,8 @@
 
       'click .inspector-sort-menu > li': function (e) {
         e.preventDefault();
-        this.model.set('sorting', e.currentTarget.dataset.sorting);
+        const { sorting } = e.currentTarget.dataset;
+        this.model.set('sorting', sorting);
       }
     }
   }, {

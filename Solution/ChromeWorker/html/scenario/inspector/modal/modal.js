@@ -80,7 +80,7 @@
       });
 
       model.bind('change', () => {
-        const isEqual = _.isEqual({ value, type }, model.toJSON());
+        const isEqual = _.isEqual(model.toJSON(), { value, type });
         this.$('#inspectorModalAccept').prop('disabled', isEqual);
       });
 

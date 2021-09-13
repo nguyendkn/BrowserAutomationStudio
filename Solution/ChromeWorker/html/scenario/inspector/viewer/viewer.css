@@ -104,14 +104,14 @@
 }
 
 .jst-list {
+  flex-direction: column;
   padding-left: 15px;
-  flex-flow: column;
   display: flex;
 }
 
 .jst-root {
+  flex-direction: column;
   padding-left: 0px;
-  flex-flow: column;
   display: flex;
 }
 

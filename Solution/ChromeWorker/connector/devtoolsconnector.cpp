@@ -149,6 +149,11 @@ void DevToolsConnector::OpenDevToolsInternal(bool IsInspect)
 
     if(!PageId.empty())
     {
+        std::wstring ChromePath = GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation));
+        std::wstring WorkerPath = ChromePath + std::wstring(L"/worker.exe");
+
+
+
         std::wstring Url =
                 std::wstring(L"http://127.0.0.1:")
                 + std::to_wstring(GlobalState.Port)
@@ -156,7 +161,39 @@ void DevToolsConnector::OpenDevToolsInternal(bool IsInspect)
                 + std::to_wstring(GlobalState.Port)
                 + std::wstring(L"/devtools/page/")
                 + PageId;
-        ShellExecute(0, 0, Url.c_str(), 0, 0 , SW_SHOW );
+
+        std::wstring CommandLine;
+
+        CommandLine += std::wstring(L"--no-proxy-server");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--disable-site-isolation-trials");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--no-sandbox");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--force-device-scale-factor=1");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--noerrdialogs");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--disable-smooth-scrolling");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--bas-force-visible-window");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(std::wstring(L"--window-size=800,600"));
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(std::wstring(L"--window-position=0,0"));
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += Url;
+
+        ShellExecute(0, 0, WorkerPath.c_str(), CommandLine.c_str(), ChromePath.c_str(), SW_SHOW );
     }
 }
 

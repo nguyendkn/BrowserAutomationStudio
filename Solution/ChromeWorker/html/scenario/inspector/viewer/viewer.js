@@ -92,6 +92,22 @@
         }
       });
 
+      this.$el.contextMenu({
+        items: {
+          add: {
+            name: tr('Add')
+          },
+          rename: {
+            name: tr('Rename')
+          },
+          remove: {
+            name: tr('Remove')
+          },
+        },
+        selector: '.jst-group-options',
+        trigger: 'left'
+      });
+
       this.sortable = {};
     },
 
@@ -101,7 +117,7 @@
 
       morphdom(this.el, (
         `<div class="${this.el.className}">${_.map(groups, (keys, name) => (
-          `<div class="jst-group" data-name="${name}">
+          `<div class="jst-group" data-name="${name}" draggable="false">
             <div class="jst-group-head">
               <i class="jst-group-options fa fa-caret-down"></i>
               <span class="jst-group-title">${name}</span>

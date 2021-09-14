@@ -61,6 +61,7 @@ SOURCES += main.cpp \
     copyfolder.cpp \
     createemptyprofile.cpp \
     deletefolder.cpp \
+    devtoolsrequest2action.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
@@ -135,7 +136,6 @@ SOURCES += main.cpp \
     requestlist.cpp \
     resourcehandler.cpp \
     urlrequestclient.cpp \
-    cefrequest2action.cpp \
     tooltip/gToolTip.cpp \
     checkvalidutf8.cpp \
     fillalpharectangle.cpp \
@@ -221,6 +221,7 @@ HEADERS += \
     copyfolder.h \
     createemptyprofile.h \
     deletefolder.h \
+    devtoolsrequest2action.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileexists.h \
@@ -303,7 +304,6 @@ HEADERS += \
     requestlist.h \
     resourcehandler.h \
     urlrequestclient.h \
-    cefrequest2action.h \
     tooltip/gToolTip.h \
     checkvalidutf8.h \
     fillalpharectangle.h \

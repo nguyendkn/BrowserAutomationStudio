@@ -959,6 +959,18 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     f(RequestId);
             }
         }
+        if(Method == "Network.requestWillBeSentExtraInfo")
+        {
+            //Additional info
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+
+                for(auto f:OnRequestDataAdditional)
+                    f(Result);
+            }
+        }
         if(Method == "Network.loadingFinished" || Method == "Network.loadingFailed" || Method == "Network.requestServedFromCache" || Method == "Network.responseReceived")
         {
             //Request ended
@@ -2404,6 +2416,9 @@ void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result)
 
     if (Url.find("data:") == std::string::npos)
     {
+        for(auto f:OnRequestDataMain)
+            f(Result);
+
         bool Allow = false;
 
         for (const auto& CacheMask : GlobalState.CacheCapture)

@@ -72,7 +72,7 @@ MainApp::MainApp()
     TypeTextDelayCurrent = 0;
     ClearElementCommand();
     IsInterfaceInitialSent = false;
-    _CefReqest2Action = 0;
+    _DevToolsReqest2Action = 0;
     IsMainBrowserCreating = true;
 
     ReadDoTour();
@@ -145,14 +145,15 @@ void MainApp::SetPostManager(PostManager *_PostManager)
     this->_PostManager = _PostManager;
 }
 
-void MainApp::SetCefReqest2Action(CefReqest2Action *_CefReqest2Action)
+void MainApp::SetDevToolsReqest2Action(DevToolsReqest2Action *_DevToolsReqest2Action)
 {
-    this->_CefReqest2Action = _CefReqest2Action;
+    this->_DevToolsReqest2Action = _DevToolsReqest2Action;
+    this->_DevToolsReqest2Action->OnDataReady.push_back(std::bind(&MainApp::OnRecordHttpData,this, _1));
 }
 
-CefReqest2Action * MainApp::GetCefReqest2Action()
+DevToolsReqest2Action * MainApp::GetDevToolsReqest2Action()
 {
-    return _CefReqest2Action;
+    return _DevToolsReqest2Action;
 }
 
 void MainApp::SetSettings(settings *Settings)
@@ -316,15 +317,21 @@ void MainApp::UploadStart()
 
 void MainApp::StartRequest(CefRefPtr<CefRequest> Request)
 {
-    //THREAD TID_IO
-    if(Data->IsRecordHttp && _CefReqest2Action)
-    {
-        std::string Script = _CefReqest2Action->Convert(Request);
-        if(BrowserScenario && !Script.empty())
-        {
-            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script,BrowserScenario->GetMainFrame()->GetURL(), 0);
-        }
+}
 
+void MainApp::OnRequestDataMain(std::string RequestData)
+{
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->ConvertMain(RequestData);
+    }
+}
+
+void MainApp::OnRequestDataAdditional(std::string RequestData)
+{
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->ConvertAdditional(RequestData);
     }
 }
 
@@ -3108,6 +3115,11 @@ void MainApp::Timer()
         }
     }
 
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->Timer();
+    }
+
     if(Data->IsRecord && BrowserToolbox)
     {
         Notifications.Timer(BrowserToolbox);
@@ -3268,9 +3280,21 @@ void MainApp::OnRequestStart(std::string RequestId)
     Data->_RequestList.Add(RequestId);
 }
 
+void MainApp::OnRecordHttpData(std::string Script)
+{
+    if(Data->IsRecordHttp && _DevToolsReqest2Action && BrowserScenario && !Script.empty())
+    {
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script,BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }
+}
+
 void MainApp::OnRequestStop(std::string RequestId)
 {
     Data->_RequestList.Remove(RequestId);
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->ConvertStop(RequestId);
+    }
 }
 
 void MainApp::OnLoadStart()

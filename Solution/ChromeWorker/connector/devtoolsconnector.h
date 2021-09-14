@@ -134,6 +134,8 @@ class DevToolsConnector
         std::vector<std::function<void(std::string)> > OnNativeDialog;
         std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
         std::vector<std::function<void()> > OnBrowserCreated;
+        std::vector<std::function<void(std::string)> > OnRequestDataMain;
+        std::vector<std::function<void(std::string)> > OnRequestDataAdditional;
 
 
         char* GetPaintData();

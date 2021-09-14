@@ -26,7 +26,7 @@
 #include "handlersmanager.h"
 #include "postmanager.h"
 #include "imagefinder.h"
-#include "cefrequest2action.h"
+#include "devtoolsrequest2action.h"
 #include "fingerprintdetector.h"
 #include "notificationmanager.h"
 #include "browserdirectcontrol.h"
@@ -73,7 +73,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     bool IsLastCommandNull;
     BrowserData *Data;
     PostManager *_PostManager;
-    CefReqest2Action *_CefReqest2Action;
+    DevToolsReqest2Action *_DevToolsReqest2Action;
     settings* Settings;
     int ScrollX;
     int ScrollY;
@@ -217,8 +217,8 @@ public:
     void UpdateWindowPositionWithParent();
     void SetData(BrowserData *Data);
     void SetPostManager(PostManager *_PostManager);
-    void SetCefReqest2Action(CefReqest2Action *_CefReqest2Action);
-    CefReqest2Action * GetCefReqest2Action();
+    void SetDevToolsReqest2Action(DevToolsReqest2Action *_DevToolsReqest2Action);
+    DevToolsReqest2Action * GetDevToolsReqest2Action();
     void SetSettings(settings *Settings);
     void SetLayout(MainLayout *Layout);
     BrowserData * GetData();
@@ -368,6 +368,8 @@ public:
     void UploadStart();
     void ComboboxOpened();
     void StartRequest(CefRefPtr<CefRequest> Request);
+    void OnRequestDataMain(std::string RequestData);
+    void OnRequestDataAdditional(std::string RequestData);
     void CursorChanged(int Type);
     void ProcessMessage(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message, bool* is_processed);
     void NewMainBrowserContextCreated(int BrowserId, bool IsMain);
@@ -441,6 +443,7 @@ public:
     void OnScroll();
     void OnRequestStart(std::string RequestId);
     void OnRequestStop(std::string RequestId);
+    void OnRecordHttpData(std::string Script);
     void OnLoadStart();
     void OnLoadStop();
     void OnAddressChanged(std::string Url);

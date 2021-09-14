@@ -7,7 +7,10 @@
 
     initialize: function () {
       this.model = new ScriptDataModel();
-      ScriptDataView.prototype.initialize.call(this, { allowHighlight: false });
+      ScriptDataView.prototype.initialize.call(this, {
+        allowHighlight: false,
+        allowModify: false
+      });
     },
 
     events: {

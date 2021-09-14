@@ -7,7 +7,10 @@
 
     initialize: function () {
       this.model = new ScriptDataModel();
-      ScriptDataView.prototype.initialize.call(this, { allowHighlight: true });
+      ScriptDataView.prototype.initialize.call(this, {
+        allowHighlight: true,
+        allowModify: true
+      });
     },
 
     openModal: function (e) {
@@ -59,16 +62,17 @@
       }
 
       VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
-        try {
-          if (${isGlobal}) {
-            var obj = JSON.parse(P('basglobal', '${root}') || '{}');
-            obj${path} = ${variable};
-            PSet('basglobal', '${root}', JSON.stringify(obj));
-            delete obj;
-          } else {
-            VAR_${root}${path} = ${variable};
-          }
-        } catch (e) {}
+        (function () {
+          try {
+            if (${isGlobal}) {
+              var obj = JSON.parse(P('basglobal', '${root}') || '{}');
+              obj${path} = ${variable};
+              PSet('basglobal', '${root}', JSON.stringify(obj));
+            } else {
+              GLOBAL["VAR_${root}"]${path} = ${variable}
+            }
+          } catch (e) {}
+        })()
         section_start('test', -3)!
       `, false);
     });

@@ -126,7 +126,7 @@
 
       return (
         `<div class="${this.el.className}">${_.map(groups, (keys, name) => {
-          const entries = keys.filter(k => _.has(source, k)).map(k => [k, source[k]]);
+          const value = _.pick(source, ...keys);
           return `<div class="jst-group" data-name="${name}">
             <div class="jst-group-head">
               <i class="jst-group-options fa fa-caret-down"></i>
@@ -134,7 +134,7 @@
               <i class="jst-group-toggle fa fa-chevron-up"></i>
             </div>
             <div class="jst-group-body">
-              <ul class="jst-root">${jsNode('', Object.fromEntries(entries), '', true)}</ul>
+              <ul class="jst-root">${jsNode('root', value, '', true)}</ul>
             </div>
           </div>`
         }).join('')

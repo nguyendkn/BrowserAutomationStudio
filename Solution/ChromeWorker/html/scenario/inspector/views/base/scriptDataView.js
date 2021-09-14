@@ -131,7 +131,7 @@
       const modal = new Inspector.Modal({
         callback: (result) => {
           if (result.cancel) {
-            this.trigget('modal:cancel', result);
+            this.trigger('modal:cancel', result);
           } else {
             this.trigger('modal:accept', result);
           }

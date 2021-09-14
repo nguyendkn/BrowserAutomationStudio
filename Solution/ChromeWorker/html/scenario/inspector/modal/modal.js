@@ -18,12 +18,12 @@
     tagName: 'div',
 
     events: {
-      'change [data-input-type] textarea': function (e) {
+      'input [data-input-type] textarea': function (e) {
         if (e.target.type === 'radio' && !e.target.checked) return;
         this.model.set('value', e.target.value);
       },
 
-      'change [data-input-type] input': function (e) {
+      'input [data-input-type] input': function (e) {
         if (e.target.type === 'radio' && !e.target.checked) return;
         this.model.set('value', e.target.value);
       },

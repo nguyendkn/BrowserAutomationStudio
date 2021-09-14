@@ -72,7 +72,8 @@
 
           nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(node => Sortable.create(node, {
             onEnd: ({ item, from, to }) => {
-              const groups = this.model.get('groups'), name = item.dataset.path.slice(1);
+              const groups = this.model.get('groups');
+              const name = item.dataset.path.slice(1);
 
               const fromName = from.closest('.jst-group').dataset.name;
               const fromList = _.without(groups[fromName], name);
@@ -96,18 +97,18 @@
         items: {
           add: {
             name: tr('Add'), callback: (__, opt) => {
-              // this.model.addGroup();
-            },
+              //this.model.addGroup();
+            }
           },
           rename: {
             name: tr('Rename'), callback: (__, opt) => {
-              // this.model.renameGroup();
-            },
+              //this.model.renameGroup();
+            }
           },
           remove: {
             name: tr('Remove'), callback: (__, opt) => {
-              // this.model.removeGroup();
-            },
+              //this.model.removeGroup();
+            }
           },
         },
         selector: '.jst-group-options',
@@ -122,7 +123,7 @@
       const groups = this.model.get('groups');
 
       morphdom(this.el, (
-        `<div class="${this.el.className}">${_.map(groups, (keys, name) => (
+        `<div class="jst-viewer">${_.map(groups, (keys, name) => (
           `<div class="jst-group" data-name="${name}" draggable="false">
             <div class="jst-group-head">
               <i class="jst-group-options fa fa-caret-down"></i>
@@ -137,7 +138,7 @@
         }</div>`
       ), {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
-        getNodeKey: node => {
+        getNodeKey(node) {
           if (node.classList && node.classList.contains('jst-item')) {
             return node.dataset.path;
           }

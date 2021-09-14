@@ -5,36 +5,21 @@
   Inspector.VariablesView = ScriptDataView.extend({
     template: JST['inspector/variables'],
 
+    allowHighlight: true,
+
+    allowEdit: true,
+
     initialize: function () {
       this.model = new ScriptDataModel();
-      ScriptDataView.prototype.initialize.call(this, {
-        allowHighlight: true,
-        allowModify: true
+      ScriptDataView.prototype.initialize.call(this);
+
+      this.on('modal:accept', ({ value, path, type }) => {
+        updateVariable(value, path, type);
       });
-    },
-
-    openModal: function (e) {
-      e.stopPropagation();
-      const { path, type } = e.target.closest('li').dataset;
-
-      const modal = new Inspector.Modal({
-        callback({ value, cancel, type }) {
-          if (!cancel) updateVariable(value, path, type);
-        },
-        value: this.viewer.model.getValue(path),
-        type,
-        path,
-      });
-
-      modal.render();
     },
 
     events: {
       ...ScriptDataView.prototype.events,
-
-      'dblclick .jst-root > li > ul > li > .jst-node': 'openModal',
-
-      'dblclick .jst-root > li > ul > li > .jst-list': 'openModal',
 
       'keydown .inspector-filter-input': function (e) {
         if (e.key === ' ') e.preventDefault();
@@ -42,9 +27,9 @@
     }
   });
 
-  function updateVariable(variable, pointer, type) {
-    const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((acc, key, idx) => {
-      return idx !== 0 ? { ...acc, path: `${acc.path}['${key}']` } : {
+  function updateVariable(value, pointer, type) {
+    const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((res, key, idx) => {
+      return idx !== 0 ? { ...res, path: `${res.path}['${key}']` } : {
         isGlobal: key.indexOf('GLOBAL:') === 0,
         isLocal: key.indexOf('GLOBAL:') !== 0,
         root: key.replace('GLOBAL:', ''),
@@ -54,11 +39,11 @@
 
     _.attempt(() => {
       if (type === 'date') {
-        variable = `_parse_date('${variable}', 'auto')`;
+        value = `_parse_date('${value}', 'auto')`;
       } else if (type === 'custom') {
-        variable = JSON.stringify(eval(`(${variable})`));
+        value = JSON.stringify(eval(`(${value})`));
       } else if (type === 'string') {
-        variable = JSON.stringify(variable);
+        value = JSON.stringify(value);
       }
 
       VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
@@ -66,10 +51,10 @@
           try {
             if (${isGlobal}) {
               var obj = JSON.parse(P('basglobal', '${root}') || '{}');
-              obj${path} = ${variable};
+              obj${path} = ${value};
               PSet('basglobal', '${root}', JSON.stringify(obj));
             } else {
-              GLOBAL["VAR_${root}"]${path} = ${variable}
+              GLOBAL['VAR_${root}']${path} = ${value};
             }
           } catch (e) {}
         })()

@@ -5,12 +5,13 @@
   Inspector.ResourcesView = ScriptDataView.extend({
     template: JST['inspector/resources'],
 
+    allowHighlight: false,
+
+    allowEdit: false,
+
     initialize: function () {
       this.model = new ScriptDataModel();
-      ScriptDataView.prototype.initialize.call(this, {
-        allowHighlight: false,
-        allowModify: false
-      });
+      ScriptDataView.prototype.initialize.call(this);
     },
 
     events: {

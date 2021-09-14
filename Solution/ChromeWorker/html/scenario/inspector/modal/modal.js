@@ -47,7 +47,7 @@
       }
     },
 
-    initialize({ callback, value, type }) {
+    initialize({ callback, value, type, path }) {
       if (type === 'undefined') type = 'null';
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
@@ -89,12 +89,12 @@
 
       this.once('accept', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, cancel: false });
+        callback({ ...json, path, cancel: false });
       });
 
       this.once('cancel', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, cancel: true });
+        callback({ ...json, path, cancel: true });
       });
 
       this.model = model;

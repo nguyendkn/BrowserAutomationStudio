@@ -2,8 +2,8 @@
   const { Inspector } = App;
 
   const View = Backbone.View.extend({
-    initialize({ allowHighlight }) {
-      if (allowHighlight) {
+    initialize() {
+      if (this.allowHighlight) {
         this.model.on('highlight', ({ count, path }) => {
           const $node = this.$(`[data-path="${path}"] > .jst-node`);
 
@@ -124,7 +124,32 @@
       return this.model.get('state');
     },
 
+    openModal(e) {
+      e.stopPropagation();
+      const { path, type } = e.target.closest('li').dataset;
+
+      const modal = new Inspector.Modal({
+        callback: (result) => {
+          if (result.cancel) {
+            this.trigget('modal:cancel', result);
+          } else {
+            this.trigger('modal:accept', result);
+          }
+        },
+        value: this.viewer.model.getValue(path),
+        allowEdit: this.allowEdit,
+        type,
+        path,
+      });
+
+      modal.render();
+    },
+
     events: {
+      'dblclick .jst-root > li > ul > li > .jst-node': 'openModal',
+
+      'dblclick .jst-root > li > ul > li > .jst-list': 'openModal',
+
       'change .inspector-filter-menu > li > input': function (e) {
         const { checked, value } = e.target;
         this.model.set('filters', { ...this.model.get('filters'), [value]: checked });

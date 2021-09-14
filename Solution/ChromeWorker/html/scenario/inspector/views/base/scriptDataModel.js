@@ -3,24 +3,12 @@
 
   Inspector.ScriptDataModel = Backbone.Model.extend({
     defaults: () => ({
-      sorting: 'alphabetically',
       highlight: false,
       metadata: {},
       history: [],
       updates: 0,
       source: {},
       state: {},
-      filters: {
-        undefined: true,
-        boolean: true,
-        number: true,
-        groups: false,
-        object: true,
-        string: true,
-        array: true,
-        date: true,
-        null: true
-      }
     }),
 
     update: function (source) {

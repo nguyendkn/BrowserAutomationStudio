@@ -90,7 +90,6 @@
     `),
 
     'inspector/variables': _.template(/*html*/`
-      <%= App.JST['inspector/tools'](obj) %>
       <div class="inspector-panel" data-empty="true">
         <div class="inspector-panel-info">
           <span><%= tr('No variables') %></span>
@@ -100,7 +99,6 @@
     `),
 
     'inspector/resources': _.template(/*html*/`
-      <%= App.JST['inspector/tools'](obj) %>
       <div class="inspector-panel" data-empty="true">
         <div class="inspector-panel-info">
           <span><%= tr('No resources') %></span>

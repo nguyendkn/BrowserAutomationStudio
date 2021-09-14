@@ -15,15 +15,16 @@
         });
       }
 
-      this.model.on('change:filters', this.filterItems, this);
-
-      this.model.on('change:sorting', this.sortItems, this);
-
       this.model.on('change:source', (__, source) => {
         const panel = this.el.querySelector('.inspector-panel');
         panel.dataset.empty = _.size(source) === 0;
         this.viewer.model.update(prepareData(source));
       });
+
+      this.tools = new Inspector.ToolsView();
+      this.tools.model.on('change:filters', this.filterItems, this);
+      this.tools.model.on('change:sorting', this.sortItems, this);
+      this.tools.model.on('change:query', this.filterItems, this);
     },
 
     render() {
@@ -39,6 +40,7 @@
             this.sortItems();
           });
 
+        this.$el.prepend(this.tools.render().el);
         this.$('.inspector-panel-data').append(this.viewer.el);
       }
 
@@ -46,8 +48,8 @@
     },
 
     filterItems() {
-      const query = this.$('.inspector-filter-input').val().toLowerCase();
-      const filters = this.model.get('filters');
+      const filters = this.tools.model.get('filters');
+      const query = this.tools.model.get('query');
 
       _.each(this.$('.jst-group'), el => {
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
@@ -72,9 +74,9 @@
     },
 
     sortItems() {
+      const sorting = this.tools.model.get('sorting');
       const metadata = this.model.get('metadata');
       const updates = this.model.get('updates');
-      const sorting = this.model.get('sorting');
       const history = this.model.get('history');
 
       _.keys(this.model.get('source')).sort((a, b) => {
@@ -149,25 +151,6 @@
       'dblclick .jst-root > li > ul > li > .jst-node': 'openModal',
 
       'dblclick .jst-root > li > ul > li > .jst-list': 'openModal',
-
-      'change .inspector-filter-menu > li > input': function (e) {
-        const { checked, value } = e.target;
-        this.model.set('filters', { ...this.model.get('filters'), [value]: checked });
-      },
-
-      'input .inspector-filter-input': _.debounce(function (e) {
-        this.filterItems(e.target.value.toLowerCase());
-      }, 200),
-
-      'click .inspector-filter-menu > li': function (e) {
-        e.stopPropagation();
-      },
-
-      'click .inspector-sort-menu > li': function (e) {
-        e.preventDefault();
-        const { sorting } = e.currentTarget.dataset;
-        this.model.set('sorting', sorting);
-      }
     }
   }, {
     colors: {

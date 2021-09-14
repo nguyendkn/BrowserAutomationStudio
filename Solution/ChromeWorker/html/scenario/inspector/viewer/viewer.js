@@ -2,6 +2,11 @@
   const { Inspector, JST } = App;
 
   const Model = Backbone.Model.extend({
+    defaults: () => ({
+      source: {},
+      groups: {},
+    }),
+
     renameGroup: function (group, name) {
       if (!this.hasGroup(group)) return;
       if (this.hasGroup(name)) return;
@@ -43,13 +48,6 @@
 
     getValue: function (path) {
       return jsonpatch.getValueByPointer(this.get('source'), path);
-    },
-
-    defaults: function () {
-      return {
-        source: {},
-        groups: {},
-      }
     }
   });
 
@@ -57,15 +55,7 @@
     className: 'jst-viewer',
 
     initialize() {
-      this.model = new Model();
-
-      this.model.on('change:groups', () => {
-        this.render();
-      });
-
-      this.model.on('change:source', () => {
-        this.render();
-      });
+      this.model = (new Model()).on('change', this.render, this);
 
       this.on('render', () => {
         _.invoke(this.sortable.groups, 'destroy');

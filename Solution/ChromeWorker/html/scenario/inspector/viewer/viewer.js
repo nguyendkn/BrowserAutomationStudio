@@ -106,25 +106,10 @@
     },
 
     render() {
-      morphdom(this.el, this.renderRoot(), {
-        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
-        getNodeKey: node => {
-          if (node.classList && node.classList.contains('jst-item')) {
-            return node.dataset.path;
-          }
-          return node.id;
-        },
-        childrenOnly: true
-      });
-
-      return this.trigger('render');
-    },
-
-    renderRoot() {
       const source = this.model.get('source');
       const groups = this.model.get('groups');
 
-      return (
+      morphdom(this.el, (
         `<div class="${this.el.className}">${_.map(groups, (keys, name) => (
           `<div class="jst-group" data-name="${name}">
             <div class="jst-group-head">
@@ -138,7 +123,18 @@
           </div>`
         )).join('')
         }</div>`
-      );
+      ), {
+        onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+        getNodeKey: node => {
+          if (node.classList && node.classList.contains('jst-item')) {
+            return node.dataset.path;
+          }
+          return node.id;
+        },
+        childrenOnly: true
+      });
+
+      return this.trigger('render');
     },
 
     events: {

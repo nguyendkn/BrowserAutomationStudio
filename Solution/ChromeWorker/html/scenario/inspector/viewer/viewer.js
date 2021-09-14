@@ -125,19 +125,18 @@
       const groups = this.model.get('groups');
 
       return (
-        `<div class="${this.el.className}">${_.map(groups, (keys, name) => {
-          const value = _.pick(source, ...keys);
-          return `<div class="jst-group" data-name="${name}">
+        `<div class="${this.el.className}">${_.map(groups, (keys, name) => (
+          `<div class="jst-group" data-name="${name}">
             <div class="jst-group-head">
               <i class="jst-group-options fa fa-caret-down"></i>
               <span class="jst-group-title">${name}</span>
               <i class="jst-group-toggle fa fa-chevron-up"></i>
             </div>
             <div class="jst-group-body">
-              <ul class="jst-root">${jsNode('root', value, '', true)}</ul>
+              <ul class="jst-root">${renderNode('root', _.pick(source, ...keys), '', true)}</ul>
             </div>
           </div>`
-        }).join('')
+        )).join('')
         }</div>`
       );
     },
@@ -182,6 +181,29 @@
     }
   });
 
+  function renderNode(label, value, path, isRoot) {
+    const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+    return (
+      `<li class="jst-item" data-path="${path}" data-type="${type}">${[
+        '<i class="jst-icon fa fa-chain"></i>',
+        isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
+        (() => {
+          switch (type) {
+            case 'undefined': return jsUndefined(value, path);
+            case 'boolean': return jsBoolean(value, path);
+            case 'object': return jsObject(value, path);
+            case 'number': return jsNumber(value, path);
+            case 'string': return jsString(value, path);
+            case 'array': return jsArray(value, path);
+            case 'null': return jsNull(value, path);
+            case 'date': return jsDate(value, path);
+          }
+        })()
+      ].join('')
+      }</li>`
+    );
+  }
+
   function jsObject(value, path) {
     return iterable(value, path, 'object', '{}');
   }
@@ -218,32 +240,9 @@
     return element(value, path, 'date');
   }
 
-  function jsNode(label, value, path, isRoot) {
-    const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-    return (
-      `<li class="jst-item" data-path="${path}" data-type="${type}">${[
-        '<i class="jst-icon fa fa-chain"></i>',
-        isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
-        (() => {
-          switch (type) {
-            case 'undefined': return jsUndefined(value, path);
-            case 'boolean': return jsBoolean(value, path);
-            case 'object': return jsObject(value, path);
-            case 'number': return jsNumber(value, path);
-            case 'string': return jsString(value, path);
-            case 'array': return jsArray(value, path);
-            case 'null': return jsNull(value, path);
-            case 'date': return jsDate(value, path);
-          }
-        })()
-      ].join('')
-      }</li>`
-    );
-  }
-
   function iterable(value, path, type, brackets) {
     const content = _.keys(value).map(key => {
-      return jsNode(key, value[key], key ? `${path}/${key}` : path)
+      return renderNode(key, value[key], key ? `${path}/${key}` : path)
     }).join('')
 
     return [

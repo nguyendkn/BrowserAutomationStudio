@@ -50,28 +50,28 @@
       return this;
     },
 
-    hideNotice() {
-      this.$('.inspector-notice').hide();
-      this.$('.inspector-tabs').show();
-      return this;
-    },
-
     showNotice() {
       this.$('.inspector-notice').show();
       this.$('.inspector-tabs').hide();
       return this;
     },
 
-    hide() {
-      if (!this.$el.is(':visible')) return this;
-      this.$el.hide();
-      return this.trigger('hide');
+    hideNotice() {
+      this.$('.inspector-notice').hide();
+      this.$('.inspector-tabs').show();
+      return this;
     },
 
     show() {
-      if (!this.$el.is(':hidden')) return this;
+      if (this.$el.is(':visible')) return this;
       this.$el.show();
       return this.trigger('show');
+    },
+
+    hide() {
+      if (this.$el.is(':hidden')) return this;
+      this.$el.hide();
+      return this.trigger('hide');
     },
 
     events: {

@@ -96,17 +96,17 @@
         items: {
           add: {
             name: tr('Add'), callback: (__, opt) => {
-
+              // this.model.addGroup();
             },
           },
           rename: {
             name: tr('Rename'), callback: (__, opt) => {
-
+              // this.model.renameGroup();
             },
           },
           remove: {
             name: tr('Remove'), callback: (__, opt) => {
-
+              // this.model.removeGroup();
             },
           },
         },

@@ -12,6 +12,10 @@
     initialize: function () {
       this.model = new ScriptDataModel();
       ScriptDataView.prototype.initialize.call(this);
+    },
+
+    events: {
+      ...ScriptDataView.prototype.events,
     }
   });
 })(window);

@@ -80,8 +80,6 @@
         this.hide();
       },
 
-      'keypress': e => e.stopPropagation(),
-
       'keydown': e => e.stopPropagation(),
 
       'keyup': e => e.stopPropagation(),

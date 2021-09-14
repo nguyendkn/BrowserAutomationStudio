@@ -95,13 +95,19 @@
       this.$el.contextMenu({
         items: {
           add: {
-            name: tr('Add')
+            name: tr('Add'), callback: (__, opt) => {
+
+            },
           },
           rename: {
-            name: tr('Rename')
+            name: tr('Rename'), callback: (__, opt) => {
+
+            },
           },
           remove: {
-            name: tr('Remove')
+            name: tr('Remove'), callback: (__, opt) => {
+
+            },
           },
         },
         selector: '.jst-group-options',

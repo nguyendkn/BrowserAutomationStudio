@@ -46,6 +46,7 @@
 }
 
 .inspector-filter-input {
+  padding: 3px;
   border: none;
   flex: 1;
 }

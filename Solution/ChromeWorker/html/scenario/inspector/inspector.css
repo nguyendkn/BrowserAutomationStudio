@@ -85,6 +85,35 @@
 }
 
 /****************
+ * Tools styles *
+ ****************/
+
+.inspector-tools .dropdown > button:hover {
+  outline: none;
+}
+
+.inspector-tools .dropdown > button:focus {
+  outline: none;
+}
+
+.inspector-tools .dropdown > button {
+  background: #fff;
+  border: none;
+  height: 100%;
+  width: 28px;
+}
+
+.inspector-tools .dropdown {
+  border-left: thin solid #e0e0e0;
+}
+
+.inspector-tools {
+  border-bottom: 1px solid #e0e0e0;
+  background: #e0e0e0;
+  display: flex;
+}
+
+/****************
  * Panel styles *
  ****************/
 
@@ -116,31 +145,6 @@
   overflow: hidden;
   display: flex;
   flex: 1;
-}
-
-.inspector-tools .dropdown > button:hover {
-  outline: none;
-}
-
-.inspector-tools .dropdown > button:focus {
-  outline: none;
-}
-
-.inspector-tools .dropdown > button {
-  background: #fff;
-  border: none;
-  height: 100%;
-  width: 28px;
-}
-
-.inspector-tools .dropdown {
-  border-left: thin solid #e0e0e0;
-}
-
-.inspector-tools {
-  border-bottom: 1px solid #e0e0e0;
-  background: #e0e0e0;
-  display: flex;
 }
 
 .inspector-nav {

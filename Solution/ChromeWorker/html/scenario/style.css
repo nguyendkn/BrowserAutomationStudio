@@ -1378,14 +1378,11 @@ label
 }
 
 
-.disabled
-{
-  opacity: 0.4;  
+.action-button2.disabled {
+  opacity: 0.4;
   cursor: default !important;
-  background-color:white !important;
-
+  background-color: white !important;
 }
-
 
 .action-button2:hover
 {

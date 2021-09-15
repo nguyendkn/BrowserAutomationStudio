@@ -105,8 +105,8 @@
               //this.model.renameGroup();
             }
           },
-          remove: {
-            name: tr('Remove'), callback: (__, opt) => {
+          delete: {
+            name: tr('Delete'), callback: (__, opt) => {
               //this.model.removeGroup();
             }
           },

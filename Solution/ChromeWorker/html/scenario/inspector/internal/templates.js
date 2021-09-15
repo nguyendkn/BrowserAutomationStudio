@@ -189,10 +189,10 @@
               <i class="fa fa-cog"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-right inspector-filter-menu">
-              <% _.each(filters, (checked, val) => { %>
+              <% _.each(filters, (checked, value) => { %>
                 <li>
-                  <% const type = _.upperFirst(val), id = _.uniqueId('inspectorFilter' + type) %>
-                  <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= checked ? 'checked' : '' %>>
+                  <% const type = _.upperFirst(value), id = _.uniqueId('inspectorFilter' + type) %>
+                  <input type="checkbox" id="<%= id %>" value="<%= value %>" <%= checked ? 'checked' : '' %>>
                   <label for="<%= id %>"><%= tr(type) %></label>
                 </li>
               <% }) %>

@@ -99,6 +99,9 @@ struct DevToolsGlobalState
     //Data for fetch.enable
     std::vector<RequestRestriction> BlockRequests;
     std::vector<RequestRestriction> CacheCapture;
+    bool HttpAuthEnabled = false;
+    std::string HttpAuthUserName;
+    std::string HttpAuthPassword;
 
     //Popups
     bool IsPopupsAllowed = true;

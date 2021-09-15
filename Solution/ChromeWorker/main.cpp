@@ -17,7 +17,7 @@
 #include "multithreading.h"
 #include "modulesdata.h"
 #include "postmanager.h"
-#include "cefrequest2action.h"
+#include "devtoolsrequest2action.h"
 #include "gToolTip.h"
 #include "generatejsonmenu.h"
 #include "startwith.h"
@@ -1368,18 +1368,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
                     case IDRecordHttpRequests:
                     {
-                        /*app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
-                        if(app->GetCefReqest2Action())
-                            app->GetCefReqest2Action()->Reset();
+                        app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
+                        if(app->GetDevToolsReqest2Action())
+                            app->GetDevToolsReqest2Action()->Reset();
                         if(app->GetData()->IsRecordHttp)
-                        {*/
+                        {
                             MessageBox(
                                         hwnd,
-                                        (TCHAR *)Translate::Tr(L"Http request recorder is temporary disabled. It will be available in one of the following versions.").data(),
+                                        (TCHAR *)Translate::Tr(L"Http request recorder is activated.\nAll requests which browser does will be converted to actions with http client and added to script editor.\nStart interacting with browser to see result.").data(),
                                         (TCHAR *)Translate::Tr(L"Request recorder").data(),
                                         MB_OK | MB_ICONINFORMATION
                             );
-                        //}
+                        }
 
                     }
                     break;
@@ -1917,13 +1917,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     BrowserData * Data = new BrowserData();
     PostManager * _PostManager = new PostManager();
-    CefReqest2Action * _CefReqest2Action = new CefReqest2Action();
 
     {
         Data->IsRecord = Arguments.size() == 6;
         Data->Saver.IsRecord = Data->IsRecord;
         Layout->IsRecord = Data->IsRecord;
         worker_log_init(Data->IsRecord);
+    }
+
+    DevToolsReqest2Action * _DevToolsReqest2Action = 0;
+
+    if(Data->IsRecord)
+    {
+        _DevToolsReqest2Action = new DevToolsReqest2Action();
     }
 
     if(Data->IsRecord)
@@ -2014,6 +2020,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->OnScroll.push_back(std::bind(&MainApp::OnScroll,app.get()));
     Data->Connector->OnRequestStart.push_back(std::bind(&MainApp::OnRequestStart,app.get(),_1));
     Data->Connector->OnRequestStop.push_back(std::bind(&MainApp::OnRequestStop,app.get(),_1));
+    if(Data->IsRecord)
+    {
+        Data->Connector->OnRequestDataMain.push_back(std::bind(&MainApp::OnRequestDataMain,app.get(),_1));
+        Data->Connector->OnRequestDataAdditional.push_back(std::bind(&MainApp::OnRequestDataAdditional,app.get(),_1));
+    }
     Data->Connector->OnLoadStart.push_back(std::bind(&MainApp::OnLoadStart,app.get()));
     Data->Connector->OnLoadStop.push_back(std::bind(&MainApp::OnLoadStop,app.get()));
     Data->Connector->OnAddressChanged.push_back(std::bind(&MainApp::OnAddressChanged,app.get(),_1));
@@ -2048,7 +2059,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     app->SetData(Data);
     app->SetPostManager(_PostManager);
-    app->SetCefReqest2Action(_CefReqest2Action);
+    if(Data->IsRecord)
+    {
+        app->SetDevToolsReqest2Action(_DevToolsReqest2Action);
+    }
     app->InitNetworkProcessIPC();
 
     int exit_code = CefExecuteProcess(main_args, app.get(), NULL);

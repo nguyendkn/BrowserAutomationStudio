@@ -2,10 +2,7 @@
   const toString = Object.prototype.toString;
 
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {
-    template: { caret: '' },
-    container: false,
-    header: false,
-    width: false,
+    template: { caret: '' }
   });
 
   $.fn.slideDownEx = function (...args) {

@@ -9,7 +9,7 @@
             </div>
             <div class="inspector-modal-body">
               <form class="inspector-modal-form" action="javascript:void(0)">
-                <% const style = target => 'display: ' + (type === target ? 'block' : 'none') %>
+                <% const style = v => 'display: ' + (type === v ? 'block' : 'none') %>
                 <div style="<%= style('custom') %>" data-input-type="custom">
                   <textarea><%- type === 'custom' ? value : '' %></textarea>
                 </div>

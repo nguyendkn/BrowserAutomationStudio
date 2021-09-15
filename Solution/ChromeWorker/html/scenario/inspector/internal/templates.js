@@ -160,43 +160,48 @@
 
     'inspector/tools': _.template(/*html*/`
       <div class="inspector-tools">
-        <span style="width: 26px; padding: 3px 6px;">
-          <i class="fa fa-search"></i>
-        </span>
-        <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name') %>...">
-        <div class="dropdown">
-          <button data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-filter"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right inspector-sort-menu">
-            <li data-sorting="alphabetically">
-              <a href="#"><%= tr('Alphabetically') %></a>
-            </li>
-            <li data-sorting="frequency">
-              <a href="#"><%= tr('By frequency of use') %></a>
-            </li>
-            <li data-sorting="dateModified">
-              <a href="#"><%= tr('By date modified') %></a>
-            </li>
-            <li data-sorting="dateCreated">
-              <a href="#"><%= tr('By date created') %></a>
-            </li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <button data-toggle="dropdown" type="button" title="<%= tr('Filters') %>" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-cog"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right inspector-filter-menu">
-            <% _.each(filters, (checked, val) => { %>
-              <li>
-                <% const type = _.upperFirst(val), id = _.uniqueId('inspectorFilter' + type) %>
-                <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= checked ? 'checked' : '' %>>
-                <label for="<%= id %>"><%= tr(type) %></label>
+        <div class="inspector-tools-panel">
+          <span style="width: 26px; padding: 3px 6px;">
+            <i class="fa fa-search"></i>
+          </span>
+          <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name') %>...">
+          <div class="dropdown">
+            <button data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right inspector-sort-menu">
+              <li data-sorting="alphabetically">
+                <a href="#"><%= tr('Alphabetically') %></a>
               </li>
-            <% }) %>
-          </ul>
+              <li data-sorting="frequency">
+                <a href="#"><%= tr('By frequency of use') %></a>
+              </li>
+              <li data-sorting="dateModified">
+                <a href="#"><%= tr('By date modified') %></a>
+              </li>
+              <li data-sorting="dateCreated">
+                <a href="#"><%= tr('By date created') %></a>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown">
+            <button data-toggle="dropdown" type="button" title="<%= tr('Filters') %>" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-cog"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right inspector-filter-menu">
+              <% _.each(filters, (checked, val) => { %>
+                <li>
+                  <% const type = _.upperFirst(val), id = _.uniqueId('inspectorFilter' + type) %>
+                  <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= checked ? 'checked' : '' %>>
+                  <label for="<%= id %>"><%= tr(type) %></label>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
         </div>
+        <button class="inspector-tools-toggle" type="button">
+          <i class="fa fa-chevron-up"></i>
+        </button>
       </div>
     `)
   })

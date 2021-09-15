@@ -34,7 +34,12 @@
     },
 
     toggle() {
-
+      const $icon = this.$('.inspector-tools-toggle > i');
+      const $panel = this.$('.inspector-tools-panel');
+      $icon.toggleClass('fa-chevron-down');
+      $icon.toggleClass('fa-chevron-up');
+      $panel.toggleClass('collapsed');
+      return this;
     },
 
     events: {
@@ -55,7 +60,9 @@
         e.preventDefault();
         const { sorting } = e.currentTarget.dataset;
         this.model.set('sorting', sorting);
-      }
+      },
+
+      'click .inspector-tools-toggle': 'toggle'
     }
   });
 })(window);

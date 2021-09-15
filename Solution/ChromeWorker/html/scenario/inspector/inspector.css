@@ -103,13 +103,31 @@
   width: 28px;
 }
 
+.inspector-tools-panel.collapsed {
+  display: none;
+}
+
 .inspector-tools .dropdown {
-  border-left: thin solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
+}
+
+.inspector-tools-toggle {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  outline: none;
+  border: none;
+  height: 15px;
+}
+
+.inspector-tools-panel {
+  display: flex;
 }
 
 .inspector-tools {
   border-bottom: 1px solid #e0e0e0;
   background: #e0e0e0;
+  flex-flow: column;
   display: flex;
 }
 

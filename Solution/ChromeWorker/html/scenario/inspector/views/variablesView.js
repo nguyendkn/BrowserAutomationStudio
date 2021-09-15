@@ -28,8 +28,8 @@
   });
 
   function updateVariable(value, pointer, type) {
-    const { root, path, isLocal, isGlobal } = pointer.slice(1).split('/').reduce((res, key, idx) => {
-      return idx !== 0 ? { ...res, path: `${res.path}['${key}']` } : {
+    const { root, path, isLocal, isGlobal } = pointer.split('/').slice(1).reduce((data, key, at) => {
+      return at !== 0 ? { ...data, path: `${data.path}['${key}']` } : {
         isGlobal: key.indexOf('GLOBAL:') === 0,
         isLocal: key.indexOf('GLOBAL:') !== 0,
         root: key.replace('GLOBAL:', ''),

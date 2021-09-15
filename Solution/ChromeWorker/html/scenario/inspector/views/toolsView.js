@@ -28,10 +28,13 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        const data = this.model.toJSON();
-        this.$el.html(this.template(data));
+        this.$el.html(this.template(this.model.toJSON()));
       }
       return this;
+    },
+
+    toggle() {
+
     },
 
     events: {
@@ -50,7 +53,8 @@
 
       'click .inspector-sort-menu > li': function (e) {
         e.preventDefault();
-        this.model.set('sorting', e.currentTarget.dataset.sorting);
+        const { sorting } = e.currentTarget.dataset;
+        this.model.set('sorting', sorting);
       }
     }
   });

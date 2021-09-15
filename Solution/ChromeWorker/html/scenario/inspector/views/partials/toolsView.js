@@ -3,8 +3,6 @@
 
   const Model = Backbone.Model.extend({
     defaults: () => ({
-      sorting: 'alphabetically',
-      query: '',
       filters: {
         undefined: true,
         boolean: true,
@@ -15,7 +13,9 @@
         array: true,
         date: true,
         null: true
-      }
+      },
+      sorting: 'alphabetically',
+      query: ''
     })
   });
 

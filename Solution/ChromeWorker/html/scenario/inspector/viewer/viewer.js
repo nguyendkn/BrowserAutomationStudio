@@ -123,7 +123,7 @@
       const groups = this.model.get('groups');
 
       morphdom(this.el, (
-        `<div class="jst-viewer">${_.map(groups, (keys, name) => (
+        `<div class="${this.el.className}">${_.map(groups, (keys, name) => (
           `<div class="jst-group" data-name="${name}" draggable="false">
             <div class="jst-group-head">
               <i class="jst-group-options fa fa-caret-down"></i>

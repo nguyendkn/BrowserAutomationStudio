@@ -131,13 +131,7 @@
       const { path, type } = e.target.closest('li').dataset;
 
       const modal = new Inspector.Modal({
-        callback: (result) => {
-          if (result.cancel) {
-            this.trigger('modal:cancel', result);
-          } else {
-            this.trigger('modal:accept', result);
-          }
-        },
+        callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
         value: this.viewer.model.getValue(path),
         allowEdit: this.allowEdit,
         type,

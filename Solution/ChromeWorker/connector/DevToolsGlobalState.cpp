@@ -31,4 +31,7 @@ void DevToolsGlobalState::Reset()
     UserAgentData.clear();
     ExtensionList.clear();
     IsDeviceScaleFactorModified = false;
+    HttpAuthEnabled = false;
+    HttpAuthUserName.clear();
+    HttpAuthPassword.clear();
 }

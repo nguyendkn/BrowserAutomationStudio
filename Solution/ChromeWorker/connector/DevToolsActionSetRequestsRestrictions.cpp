@@ -61,35 +61,44 @@ void DevToolsActionSetRequestsRestrictions::Run()
 {
     State = Running;
 
-    std::vector<RequestRestriction> Rules;
-
-    for (RequestRestriction& Rule : GlobalState->BlockRequests)
-    {
-        if(!Rule.IsAllow)
-        {
-            Rules.push_back(Rule);
-        }
-    }
-
-    for (RequestRestriction& Rule : GlobalState->CacheCapture)
-    {
-        if(Rule.IsAllow)
-        {
-            Rules.push_back(Rule);
-        }
-    }
-
-    RemoveDuplicates(Rules);
-
     std::vector<Variant> Patterns;
 
-    for (RequestRestriction& Rule : Rules)
+    if(GlobalState->HttpAuthEnabled)
     {
+        //If http auth enabled, allow all, because we don't know beforehand the url which requires auth.
         std::map<std::string, Variant> Pattern = {};
-        Pattern["urlPattern"] = Variant(Rule.Mask);
+        Pattern["urlPattern"] = Variant(std::string("*"));
         Patterns.push_back(Variant(Pattern));
-    }
+    }else
+    {
+        std::vector<RequestRestriction> Rules;
 
+        for (RequestRestriction& Rule : GlobalState->BlockRequests)
+        {
+            if(!Rule.IsAllow)
+            {
+                Rules.push_back(Rule);
+            }
+        }
+
+        for (RequestRestriction& Rule : GlobalState->CacheCapture)
+        {
+            if(Rule.IsAllow)
+            {
+                Rules.push_back(Rule);
+            }
+        }
+
+        RemoveDuplicates(Rules);
+
+
+        for (RequestRestriction& Rule : Rules)
+        {
+            std::map<std::string, Variant> Pattern = {};
+            Pattern["urlPattern"] = Variant(Rule.Mask);
+            Patterns.push_back(Variant(Pattern));
+        }
+    }
 
     if (Patterns.empty())
     {
@@ -98,6 +107,7 @@ void DevToolsActionSetRequestsRestrictions::Run()
     else
     {
         Params["patterns"] = Variant(Patterns);
+        Params["handleAuthRequests"] = Variant(GlobalState->HttpAuthEnabled);
         SendWebSocket("Fetch.enable", Params);
     }
 }

@@ -94,6 +94,7 @@ class DevToolsConnector
     //Callbacks
 
     void OnFetchRequestPaused(std::string& Result);
+    void OnFetchAuthRequired(std::string& Result);
     void OnNetworkRequestWillBeSent(std::string& Result);
     void OnNetworkResponseReceived(std::string& Result);
     void OnNetworkLoadingCompleted(std::string& Result, bool HasError);
@@ -193,6 +194,8 @@ class DevToolsConnector
         Async NavigateForward(bool IsInstant = false, int Timeout = -1);
         Async GetCurrentUrl(int Timeout = -1);
         Async SetRequestsRestrictions(const std::vector<std::pair<bool, std::string> >& Rules, int Timeout = -1);
+        Async SetHttpAuth(const std::string& UserName, const std::string& Password, int Timeout = -1);
+
 
         //Cache
         void SetCacheMasks(const std::vector<std::pair<bool, std::string> >& Rules);

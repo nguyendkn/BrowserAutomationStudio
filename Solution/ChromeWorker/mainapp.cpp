@@ -956,7 +956,12 @@ void MainApp::SetPromptResultCallback(const std::string& value)
 
 void MainApp::SetHttpAuthResultCallback(const std::string& login,const std::string& password)
 {
-    SendTextResponce("<SetHttpAuthResult>1</SetHttpAuthResult>");
+    Async Result = Data->Connector->SetHttpAuth(login, password);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<SetHttpAuthResult>1</SetHttpAuthResult>");
+    });
 }
 
 void MainApp::GetCookiesForUrlCallback(const std::string& value)

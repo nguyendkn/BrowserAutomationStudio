@@ -9,7 +9,7 @@
 
     allowEdit: false,
 
-    initialize: function () {
+    initialize() {
       this.model = new ScriptDataModel();
       ScriptDataView.prototype.initialize.call(this);
     },

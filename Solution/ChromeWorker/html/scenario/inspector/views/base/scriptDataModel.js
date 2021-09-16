@@ -17,8 +17,8 @@
       let updates = this.get('updates');
       let history = this.get('history');
 
-      const diff = jsonpatch.compare(this.get('source'), source); diff.forEach(item => {
-        const { path, op } = item, now = performance.now();
+      const diff = jsonpatch.compare(this.get('source'), source); diff.forEach(({ path, op }) => {
+        const now = performance.now();
 
         if (_.has(metadata, path)) {
           if (op === 'remove') return (delete metadata[path]);

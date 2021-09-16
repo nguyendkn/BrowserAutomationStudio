@@ -12,10 +12,7 @@
     initialize() {
       this.model = new ScriptDataModel();
       ScriptDataView.prototype.initialize.call(this);
-
-      this.on('modal:accept', ({ value, path, type }) => {
-        updateVariable(value, path, type);
-      });
+      this.on('modal:accept', ({ value, path, type }) => updateVariable(value, path, type));
     },
 
     events: {

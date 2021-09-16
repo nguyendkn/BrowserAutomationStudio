@@ -58,8 +58,7 @@
 
       'click .inspector-sort-menu > li': function (e) {
         e.preventDefault();
-        const { sorting } = e.currentTarget.dataset;
-        this.model.set('sorting', sorting);
+        this.model.set('sorting', e.currentTarget.dataset.sorting);
       },
 
       'click .inspector-tools-toggle': 'toggle'

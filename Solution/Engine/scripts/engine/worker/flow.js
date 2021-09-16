@@ -39,11 +39,7 @@ function debug_variables(list, callback) {
         if (key.indexOf('GLOBAL:') === 0) {
             acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
         } else {
-            try {
-                acc[key.slice(4)] = _truncate_variable(eval(key), 100);
-            } catch (e) {
-                acc[key.slice(4)] = '__UNDEFINED__';
-            }
+            acc[key.slice(4)] = _truncate_variable(GLOBAL[key], 100);
         }
         return acc;
     }, {});

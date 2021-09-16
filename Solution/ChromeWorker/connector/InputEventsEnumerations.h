@@ -19,6 +19,14 @@ enum MouseEvent
     MouseEventMove,
 };
 
+enum DragEvent
+{
+    DragEventEnter,
+    DragEventOver,
+    DragEventDrop,
+    DragEventCancel,
+};
+
 enum TouchEvent
 {
     TouchEventDown,

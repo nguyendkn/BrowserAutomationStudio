@@ -86,6 +86,7 @@ class DevToolsConnector
     //Helpers
 
     int GenerateId();
+    std::string GenerateMessage(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId, int &Id);
     int SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId);
     void InsertAction(std::shared_ptr<IDevToolsAction> Action);
     std::vector<std::shared_ptr<IDevToolsAction> > GetAllActions();
@@ -96,6 +97,7 @@ class DevToolsConnector
     void OnFetchRequestPaused(std::string& Result);
     void OnFetchAuthRequired(std::string& Result);
     void OnNetworkRequestWillBeSent(std::string& Result);
+    void OnDragIntercepted(std::string& DragData);
     void OnNetworkResponseReceived(std::string& Result);
     void OnNetworkLoadingCompleted(std::string& Result, bool HasError);
 
@@ -121,6 +123,10 @@ class DevToolsConnector
     void ResetProxy(const std::string& ParentProcessId);
     //https://source.chromium.org/chromium/chromium/src/+/master:content/browser/devtools/devtools_video_consumer.cc;drc=267e9d603200302cd937cc5b788f044186a1b8c6;l=25
     void SetMinCapturePeriod(int MinCapturePeriod);
+
+    //Inputs private
+    //Drag is used only with Mouse method
+    void Drag(DragEvent Event, int X, int Y, int KeyboardPresses = KeyboardModifiersNone);
 
     public:
 

@@ -482,9 +482,15 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.enable", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForRuntimeEnable)
     {
-        Tab->ConnectionState = TabData::WaitingForNetworkEnable;
+        Tab->ConnectionState = TabData::WaitingForDragAndDropInit;
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Network.enable", Params, Tab->TabId);
+    }else if(Tab->ConnectionState == TabData::WaitingForDragAndDropInit)
+    {
+        Tab->ConnectionState = TabData::WaitingForNetworkEnable;
+        std::map<std::string, Variant> Params;
+        Params["enabled"] = Variant(true);
+        Tab->CurrentWebsocketActionId = SendWebSocket("Input.setInterceptDrags", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForNetworkEnable)
     {
         Tab->CurrentWebsocketActionId = 0;
@@ -942,6 +948,23 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     }
                 }
 
+            }
+        }
+        if(Method == "Input.dragIntercepted")
+        {
+            //Request started
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                if(ResultObject["data"].is<picojson::object>())
+                {
+                    picojson::object DragDataObject = ResultObject["data"].get<picojson::object>();
+
+                    std::string DragData = picojson::value(DragDataObject).serialize();
+
+
+                    OnDragIntercepted(DragData);
+                }
             }
         }
         if(Method == "Network.requestWillBeSent")
@@ -1811,15 +1834,12 @@ void DevToolsConnector::InsertAction(std::shared_ptr<IDevToolsAction> Action)
     Actions.push_back(Action);
 }
 
-int DevToolsConnector::SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId)
+std::string DevToolsConnector::GenerateMessage(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId, int &Id)
 {
-    if(!GlobalState.WebSocketClient)
-        return -1;
-
     picojson::value::object Data;
     picojson::value::object ParamsObject = Serializer.SerializeObjectToObject(Params);
 
-    int Id = GenerateId();
+    Id = GenerateId();
 
     Data["id"] = picojson::value((double)Id);
     Data["method"] = picojson::value(Method);
@@ -1830,7 +1850,17 @@ int DevToolsConnector::SendWebSocket(const std::string& Method, const std::map<s
         Data["sessionId"] = picojson::value(SessionId);
     }
 
-    std::string DataString = picojson::value(Data).serialize();
+    return picojson::value(Data).serialize();
+}
+
+int DevToolsConnector::SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId)
+{
+    if(!GlobalState.WebSocketClient)
+        return -1;
+
+    int Id = 0;
+
+    std::string DataString = GenerateMessage(Method, Params, SessionId, Id);
 
     GlobalState.WebSocketClient->Send(DataString);
 
@@ -2465,6 +2495,14 @@ void DevToolsConnector::OnFetchRequestPaused(std::string& Result)
 
 }
 
+void DevToolsConnector::OnDragIntercepted(std::string& DragData)
+{
+    GlobalState.DragAndDropIsEnabled = true;
+    GlobalState.DragAndDropData = DragData;
+
+    Drag(DragEventEnter,GlobalState.CursorX,GlobalState.CursorY);
+}
+
 void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result)
 {
     std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
@@ -2652,10 +2690,68 @@ void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNa
     }
 }
 
+void DevToolsConnector::Drag(DragEvent Event, int X, int Y, int KeyboardPresses)
+{
+    if(IsInspectAtScheduled)
+        return;
+
+    std::map<std::string, Variant> Params;
+    std::string TypeName;
+
+    if(Event == DragEventEnter)
+    {
+        TypeName = "dragEnter";
+    } else if(Event == DragEventOver)
+    {
+        TypeName = "dragOver";
+    }else if(Event == DragEventDrop)
+    {
+        TypeName = "drop";
+    }else if(Event == DragEventCancel)
+    {
+        TypeName = "dragCancel";
+    }
+
+    Params["type"] = Variant(TypeName);
+    Params["x"] = Variant(X);
+    Params["y"] = Variant(Y);
+    Params["modifiers"] = Variant(KeyboardPresses);
+    Params["data"] = Variant(std::string("BAS_DRAG_DATA"));
+
+    int Id = 0;
+
+    std::string DataString = GenerateMessage("Input.dispatchDragEvent", Params, GlobalState.TabId, Id);
+
+    ReplaceAllInPlace(DataString, "\"BAS_DRAG_DATA\"", GlobalState.DragAndDropData);
+
+    GlobalState.WebSocketClient->Send(DataString);
+
+}
+
+
 void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button, int MousePressed, int KeyboardPresses, int ClickCount)
 {
     if(IsInspectAtScheduled)
         return;
+
+    GlobalState.CursorX = X;
+    GlobalState.CursorY = Y;
+
+    if(GlobalState.DragAndDropIsEnabled)
+    {
+        if(Event == MouseEventUp || Event == MouseEventDown)
+        {
+            Drag(DragEventDrop,X,Y);
+            GlobalState.DragAndDropIsEnabled = false;
+            GlobalState.DragAndDropData.clear();
+        } else if(Event == MouseEventMove)
+        {
+            Drag(DragEventOver,X,Y);
+        }
+        return;
+    }
+
+
 
     std::map<std::string, Variant> Params;
     std::string TypeName = "mousePressed";
@@ -2694,6 +2790,9 @@ void DevToolsConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePress
     if(IsInspectAtScheduled)
         return;
 
+    GlobalState.CursorX = X;
+    GlobalState.CursorY = Y;
+
     std::map<std::string, Variant> Params;
     std::string TypeName = "mouseWheel";
     std::string ButtonName = "none";
@@ -2713,6 +2812,9 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
 {
     if(IsInspectAtScheduled)
         return;
+
+    GlobalState.CursorX = X;
+    GlobalState.CursorY = Y;
 
     std::map<std::string, Variant> Params;
     std::map<std::string, Variant> Point;

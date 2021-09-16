@@ -34,4 +34,6 @@ void DevToolsGlobalState::Reset()
     HttpAuthEnabled = false;
     HttpAuthUserName.clear();
     HttpAuthPassword.clear();
+    DragAndDropIsEnabled = false;
+    DragAndDropData.clear();
 }

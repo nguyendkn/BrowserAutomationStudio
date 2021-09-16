@@ -7,7 +7,7 @@
 .dropdown-menu > li > a.inspector-modal-select-option:hover {
   background-color: #606060;
   background-image: none;
-  color: white;
+  color: #fff;
 }
 
 .dropdown-menu > li > a.inspector-modal-select-option {
@@ -20,7 +20,7 @@
   line-height: 18px;
   font-weight: 500;
   font-size: 13px;
-  color: white;
+  color: #fff;
   display: flex;
   outline: 0;
 }
@@ -82,16 +82,16 @@
 }
 
 .inspector-modal-select:focus {
-  color: white;
+  color: #fff;
 }
 
 .inspector-modal-select:hover {
-  color: white;
+  color: #fff;
 }
 
 .inspector-modal-content {
   border: 1px solid #f7f7f8;
-  background-color: white;
+  background-color: #fff;
   -webkit-user-select: none;
   -webkit-user-drag: none;
   pointer-events: all;
@@ -111,7 +111,7 @@
   border-radius: 0;
   font-weight: 500;
   font-size: 13px;
-  color: white;
+  color: #fff;
   outline: 0;
 }
 

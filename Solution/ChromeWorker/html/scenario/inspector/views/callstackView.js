@@ -11,8 +11,8 @@
       state: {},
     }),
 
-    update: function (source) {
-      this.set('stack', source.concat({
+    update: function (stack) {
+      this.set('stack', stack.concat({
         type: 'function',
         name: 'Main',
         id: 0,

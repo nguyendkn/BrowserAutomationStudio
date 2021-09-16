@@ -95,7 +95,7 @@ function _truncate_variable(item, limit) {
             return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
                 acc[key] = _truncate_variable(item[key], limit);
                 return acc;
-            }, item instanceof Array ? [] : {});
+            }, Array.isArray(item) ? [] : {});
         }
 
         return '__DATE__' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');

@@ -8,8 +8,7 @@
     }),
 
     renameGroup: function (group, name) {
-      if (!this.hasGroup(group)) return;
-      if (this.hasGroup(name)) return;
+      if (_.any(this.get('groups'), (_, key) => key === name)) return;
 
       this.set('groups', _.reduce(this.get('groups'), (acc, val, key) => {
         acc[key === group ? name : key] = val;
@@ -18,8 +17,6 @@
     },
 
     removeGroup: function (group) {
-      if (!this.hasGroup(group)) return;
-
       this.set('groups', _.reduce(this.get('groups'), (acc, val, key) => {
         if (key === group) acc['Main'].push(...val);
         else acc[key] = val;
@@ -27,13 +24,9 @@
       }, {}));
     },
 
-    addGroup: function (group) {
-      if (this.hasGroup(group)) return;
-      this.set('groups', { ...this.get('groups'), [group]: [] });
-    },
-
-    hasGroup: function (group) {
-      return _.any(this.get('groups'), (_, key) => key === group);
+    addGroup: function () {
+      const groups = this.get('groups');
+      this.set('groups', { ...groups, [`Group${_.size(groups)}`]: [] });
     },
 
     update: function (source) {
@@ -94,22 +87,22 @@
       });
 
       this.$el.contextMenu({
+        callback: (key, { $trigger }) => {
+          const { name } = $trigger[0].closest('.jst-group').dataset;
+
+          switch (key) {
+            case 'add':
+              return this.model.addGroup();
+            case 'rename':
+              return // this.model.renameGroup(name);
+            case 'delete':
+              return this.model.removeGroup(name); //
+          }
+        },
         items: {
-          add: {
-            name: tr('Add'), callback: (__, opt) => {
-              //this.model.addGroup();
-            }
-          },
-          rename: {
-            name: tr('Rename'), callback: (__, opt) => {
-              //this.model.renameGroup();
-            }
-          },
-          delete: {
-            name: tr('Delete'), callback: (__, opt) => {
-              //this.model.removeGroup();
-            }
-          },
+          add: { name: tr('Add') },
+          rename: { name: tr('Rename') },
+          delete: { name: tr('Delete') },
         },
         selector: '.jst-group-options',
         trigger: 'left'

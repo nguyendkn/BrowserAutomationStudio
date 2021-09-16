@@ -54,20 +54,22 @@
       _.each(this.$('.jst-group'), el => {
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
-        const $visible = $items.filter((__, el) => {
-          const visible = filters[el.dataset.type];
+        if ($items.length) {
+          const $visible = $items.filter((__, el) => {
+            const visible = filters[el.dataset.type];
 
-          if (query) {
-            const text = $(el).children('.jst-label').text();
-            const lower = text.slice(0, -1).toLowerCase();
-            return lower.includes(query) && visible;
-          }
+            if (query) {
+              const text = $(el).children('.jst-label').text();
+              const lower = text.slice(0, -1).toLowerCase();
+              return lower.includes(query) && visible;
+            }
 
-          return visible;
-        });
+            return visible;
+          });
 
-        $items.not($visible.show()).hide();
-        $group.toggle(!!$visible.length);
+          $items.not($visible.show()).hide();
+          $group.toggle(!!$visible.length);
+        }
       });
 
       return this;

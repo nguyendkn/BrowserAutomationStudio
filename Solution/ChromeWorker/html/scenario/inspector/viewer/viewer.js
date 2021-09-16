@@ -155,7 +155,7 @@
         const { path } = e.target.closest('li').dataset;
         const val = this.model.getValue(path), len = val.length;
 
-        const $el = $(e.target).toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
+        const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
         $el.prev().text(`"${_.escape(_.truncate(val, 100))}"`);
       },
 
@@ -163,7 +163,7 @@
         const { path } = e.target.closest('li').dataset;
         const val = this.model.getValue(path), len = val.length;
 
-        const $el = $(e.target).toggleClass('fa-minus-circle').toggleClass('fa-plus-circle');
+        const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
         $el.prev().text(`"${_.escape(_.truncate(val, len))}"`);
       },
 
@@ -176,14 +176,14 @@
 
       'click .jst-collapse': function (e) {
         const $el = $(e.target);
-        $el.toggleClass('jst-collapse').toggleClass('jst-expand');
+        $el.toggleClass('jst-collapse jst-expand');
         $el.next().toggleClass('collapsed');
         this.trigger('node:collapse');
       },
 
       'click .jst-expand': function (e) {
         const $el = $(e.target);
-        $el.toggleClass('jst-collapse').toggleClass('jst-expand');
+        $el.toggleClass('jst-collapse jst-expand');
         $el.next().toggleClass('collapsed');
         this.trigger('node:expand');
       }

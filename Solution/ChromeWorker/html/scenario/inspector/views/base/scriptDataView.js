@@ -57,7 +57,7 @@
         const $visible = $items.filter((__, el) => {
           const visible = filters[el.dataset.type];
 
-          if (query && query.length) {
+          if (query) {
             const text = $(el).children('.jst-label').text();
             const lower = text.slice(0, -1).toLowerCase();
             return lower.includes(query) && visible;

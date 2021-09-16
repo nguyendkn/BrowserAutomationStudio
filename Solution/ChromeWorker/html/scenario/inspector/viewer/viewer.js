@@ -1,5 +1,5 @@
 (({ App, Backbone, $, _ }) => {
-  const { Inspector, JST } = App;
+  const { Inspector } = App;
 
   const Model = Backbone.Model.extend({
     defaults: () => ({
@@ -44,15 +44,14 @@
     }
   });
 
-  const View = Backbone.View.extend({
+  Inspector.Viewer = Backbone.View.extend({
     className: 'jst-viewer',
 
     initialize() {
       this.model = (new Model()).on('change', this.render, this);
 
       this.on('render', () => {
-        _.invoke(this.sortable.groups, 'destroy');
-        _.invoke(this.sortable.nodes, 'destroy');
+        _.each(this.sortable, list => _.invoke(list, 'destroy'));
 
         this.sortable = {
           groups: [this.el].map(node => Sortable.create(node, {
@@ -259,6 +258,4 @@
     if (type === 'string') value = `"${_.escape(value)}"`;
     return `<span class="jst-node">${value}</span>`;
   }
-
-  Inspector.Viewer = View;
 })(window);

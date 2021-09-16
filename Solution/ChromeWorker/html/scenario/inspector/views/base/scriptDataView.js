@@ -5,12 +5,12 @@
     initialize() {
       if (this.allowHighlight) {
         this.model.on('highlight', ({ count, path }) => {
-          const $node = this.$(`[data-path="${path}"] > .jst-node`);
+          const [node] = this.$(`[data-path="${path}"] > .jst-node`);
 
-          if ($node.length) {
-            const { dataset } = $node[0].parentNode;
+          if (node) {
+            const { dataset } = node.parentNode;
             const colors = View.colors[dataset.type];
-            if (colors) $node.css('color', colors[count]);
+            if (colors) node.style.color = colors[count];
           }
         });
       }

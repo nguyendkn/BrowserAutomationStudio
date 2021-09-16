@@ -5,6 +5,7 @@
     defaults: () => ({
       value: null,
       type: null,
+      path: null,
     })
   });
 
@@ -52,7 +53,7 @@
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
 
-      const model = (new Model({ value, type })).on('change:type', (__, type) => {
+      const model = (new Model({ value, type, path })).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');
         $inputs.parent('form').trigger('reset');
 
@@ -78,7 +79,7 @@
       });
 
       model.bind('change', () => {
-        const disabled = _.isEqual(model.toJSON(), { value, type });
+        const disabled = _.isEqual(model.toJSON(), { value, type, path });
         this.$('#inspectorModalAccept').prop('disabled', disabled);
       });
 
@@ -89,12 +90,12 @@
 
       this.once('accept', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, path, cancel: false });
+        callback({ ...json, cancel: false });
       });
 
       this.once('cancel', () => {
         const json = this.close().model.toJSON();
-        callback({ ...json, path, cancel: true });
+        callback({ ...json, cancel: true });
       });
 
       this.model = model;

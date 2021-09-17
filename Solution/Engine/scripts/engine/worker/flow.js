@@ -46,8 +46,7 @@ function debug_variables(list, callback) {
 
     var callstack = CYCLES.Data.map(function (item) {
         return Object.keys(item._Info).reduce(function (acc, key) {
-            acc[key] = item._Info[key];
-            return acc;
+            return (acc[key] = item._Info[key], acc);
         }, {
             arguments: item._Arguments,
             iterator: item._Iterator,

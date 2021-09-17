@@ -48,7 +48,7 @@
     className: 'jst-viewer',
 
     initialize() {
-      this.model = (new Model()).on('change', this.render, this);
+      this.model = new Model().on('change', this.render, this);
 
       this.on('render', () => {
         _.each(this.sortable, list => _.invoke(list, 'destroy'));

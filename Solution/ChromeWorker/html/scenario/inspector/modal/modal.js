@@ -53,7 +53,7 @@
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
 
-      const model = (new Model({ value, type, path })).on('change:type', (__, type) => {
+      const model = new Model({ value, type, path }).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');
         $inputs.parent('form').trigger('reset');
 

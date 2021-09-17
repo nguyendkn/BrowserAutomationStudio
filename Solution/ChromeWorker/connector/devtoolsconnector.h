@@ -259,6 +259,9 @@ class DevToolsConnector
         void TriggerExtensionButton(const std::string ExtensionIdOrNamePart);
         std::vector<std::pair<std::string, std::string> > GetExtensionList();
 
+        //Drag and drop
+        Async StartDragFile(const std::string& Path, int Timeout = -1);
+
 };
 
 #endif // DEVTOOLSCONNECTOR_H

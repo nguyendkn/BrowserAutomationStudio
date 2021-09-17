@@ -47,6 +47,7 @@ SOURCES += main.cpp \
     connector/devtoolsactionrestorecookies.cpp \
     connector/devtoolsactionsavecookies.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
+    connector/devtoolsactionstartdragfile.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
     connector/devtoolsconnector.cpp \
     connector/emoji.cpp \
@@ -207,6 +208,7 @@ HEADERS += \
     connector/devtoolsactionrestorecookies.h \
     connector/devtoolsactionsavecookies.h \
     connector/devtoolsactionsetstartupscript.h \
+    connector/devtoolsactionstartdragfile.h \
     connector/devtoolsactionwebsocketquery.h \
     connector/devtoolsconnector.h \
     connector/emoji.h \

@@ -2690,6 +2690,23 @@ void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNa
     }
 }
 
+Async DevToolsConnector::StartDragFile(const std::string& Path, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+
+    NewAction.reset(ActionsFactory.Create("StartDragFile", &GlobalState));
+
+    std::map<std::string, Variant> Params;
+
+    Params["filename"] = Variant(Path);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
 void DevToolsConnector::Drag(DragEvent Event, int X, int Y, int KeyboardPresses)
 {
     if(IsInspectAtScheduled)
@@ -2815,6 +2832,20 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
 
     GlobalState.CursorX = X;
     GlobalState.CursorY = Y;
+
+    if(GlobalState.DragAndDropIsEnabled)
+    {
+        if(Event == MouseEventUp || Event == MouseEventDown)
+        {
+            Drag(DragEventDrop,X,Y);
+            GlobalState.DragAndDropIsEnabled = false;
+            GlobalState.DragAndDropData.clear();
+        } else if(Event == MouseEventMove)
+        {
+            Drag(DragEventOver,X,Y);
+        }
+        return;
+    }
 
     std::map<std::string, Variant> Params;
     std::map<std::string, Variant> Point;

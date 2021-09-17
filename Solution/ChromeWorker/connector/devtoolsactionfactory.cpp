@@ -24,6 +24,7 @@
 #include "devtoolsactionsavecookies.h"
 #include "devtoolsactionrestorecookies.h"
 #include "DevToolsActionSetRequestsRestrictions.h"
+#include "devtoolsactionstartdragfile.h"
 #include "devtoolsactionresetdevicescalefactor.h"
 #include <random>
 
@@ -120,7 +121,11 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "ResetDeviceScaleFactor")
     {
         Result = new DevToolsActionResetDeviceScaleFactor();
+    }else if(Name == "StartDragFile")
+    {
+        Result = new DevToolsActionStartDragFile();
     }
+
 
 
     if(Result)

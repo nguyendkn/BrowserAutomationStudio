@@ -34,11 +34,8 @@
     },
 
     toggle() {
-      const $icon = this.$('.inspector-tools-toggle > i');
-      const $panel = this.$('.inspector-tools-panel');
-      $icon.toggleClass('fa-chevron-down');
-      $icon.toggleClass('fa-chevron-up');
-      $panel.toggleClass('collapsed');
+      this.$('.inspector-tools-toggle > i').toggleClass('fa-chevron-down fa-chevron-up');
+      this.$('.inspector-tools-panel').toggleClass('collapsed');
       return this;
     },
 

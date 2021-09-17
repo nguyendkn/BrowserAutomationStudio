@@ -58,10 +58,10 @@
             onEnd: ({ item, from, to }) => {
 
             },
+            dataIdAttr: 'data-name',
             filter: '.pinned',
             group: 'groups'
           })),
-
           nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(node => Sortable.create(node, {
             onEnd: ({ item, from, to }) => {
               const groups = this.model.get('groups');
@@ -79,6 +79,7 @@
                 [toName]: _.uniq(toList),
               }, { silent: true });
             },
+            dataIdAttr: 'data-path',
             filter: '.pinned',
             group: 'nodes'
           }))

@@ -95,8 +95,8 @@
             return metaB.createdAt - metaA.createdAt;
           }
 
-          const f1 = history.filter(v => v === pathA).length + updates;
-          const f2 = history.filter(v => v === pathB).length + updates;
+          const f1 = updates + history.filter(v => v === pathA).length;
+          const f2 = updates + history.filter(v => v === pathB).length;
           return metaB.usages / f2 - metaA.usages / f1;
         })();
       }).forEach(key => {

@@ -95,7 +95,7 @@
             case 'rename':
               return // this.model.renameGroup(name);
             case 'delete':
-              return this.model.removeGroup(name); //
+              return this.model.removeGroup(name);
           }
         },
         items: {
@@ -149,18 +149,18 @@
 
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
-        const { path } = e.target.closest('li').dataset;
-        const val = this.model.getValue(path), len = val.length;
-
         const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
+        const { path } = e.target.closest('li').dataset;
+
+        const val = this.model.getValue(path), len = val.length;
         $el.prev().text(`"${_.escape(_.truncate(val, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
-        const { path } = e.target.closest('li').dataset;
-        const val = this.model.getValue(path), len = val.length;
-
         const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
+        const { path } = e.target.closest('li').dataset;
+
+        const val = this.model.getValue(path), len = val.length;
         $el.prev().text(`"${_.escape(_.truncate(val, len))}"`);
       },
 

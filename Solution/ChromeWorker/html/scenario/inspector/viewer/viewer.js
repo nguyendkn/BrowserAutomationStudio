@@ -131,15 +131,18 @@
       ), {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         getNodeKey(node) {
-          if (node.classList) {
-            if (node.classList.contains('jst-group')) {
-              return node.dataset.name;
+          const { classList, dataset, id } = node;
+
+          if (classList) {
+            if (classList.contains('jst-group')) {
+              return dataset.name;
             }
-            if (node.classList.contains('jst-item')) {
-              return node.dataset.path;
+            if (classList.contains('jst-item')) {
+              return dataset.path;
             }
           }
-          return node.id;
+
+          return id;
         },
         childrenOnly: true
       });

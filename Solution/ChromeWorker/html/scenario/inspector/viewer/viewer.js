@@ -130,9 +130,7 @@
         }</div>`
       ), {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
-        getNodeKey(node) {
-          const { classList, dataset, id } = node;
-
+        getNodeKey({ classList, dataset, id }) {
           if (classList) {
             if (classList.contains('jst-group')) {
               return dataset.name;
@@ -141,7 +139,6 @@
               return dataset.path;
             }
           }
-
           return id;
         },
         childrenOnly: true

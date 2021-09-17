@@ -249,12 +249,11 @@
   function iterable(value, path, type, brackets) {
     const content = _.keys(value).map(key => {
       return renderNode(key, value[key], key ? `${path}/${key}` : path)
-    }).join('')
-
+    });
     return [
       `<span class="jst-bracket">${brackets[0]}</span>`,
       content.length ? '<span class="jst-collapse"></span>' : '',
-      `<ul class="jst-list">${content}</ul>`,
+      `<ul class="jst-list">${content.join('')}</ul>`,
       `<span class="jst-bracket">${brackets[1]}</span>`
     ].join('');
   }

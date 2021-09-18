@@ -858,11 +858,12 @@ void MainApp::SetOpenFileNameCallback(const std::string& value)
 
 void MainApp::DragFileCallback(const std::string& value)
 {
-    /*Data->IsDrag = true;
-    CefRefPtr<CefDragData> drag_data = CefDragData::Create();
-    drag_data->AddFile(value,"");
-    BrowserEventsEmulator::StartDrag(_HandlersManager->GetBrowser(),drag_data,DRAG_OPERATION_EVERY,Data->CursorX,Data->CursorY,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);*/
-    SendTextResponce("<DragFile></DragFile>");
+    Async Result = Data->Connector->StartDragFile(value);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        this->SendTextResponce("<DragFile></DragFile>");
+    });
 }
 
 void MainApp::SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id)

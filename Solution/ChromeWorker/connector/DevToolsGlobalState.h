@@ -19,6 +19,7 @@ struct TabData
         WaitingForAttachment,
         WaitingForPageEnable,
         WaitingForRuntimeEnable,
+        WaitingForDragAndDropInit,
         WaitingForNetworkEnable,
         WaitingForSettingStartupScript,
         WaitingForPageReloadForFirstTab,
@@ -70,11 +71,18 @@ struct DevToolsGlobalState
     int ScrollX = -1;
     int ScrollY = -1;
 
+    int CursorX = -1;
+    int CursorY = -1;
+
     int Width = -1;
     int Height = -1;
 
     int WidthDifference = 16;
     int HeightDifference = 88;
+
+    //Drag and drop
+    bool DragAndDropIsEnabled = false;
+    std::string DragAndDropData;
 
     //Settings to change proxy
     std::string UniqueProcessId;

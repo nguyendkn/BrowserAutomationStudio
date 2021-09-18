@@ -68,7 +68,7 @@
       return this;
     },
 
-    saveState() {
+    getState() {
       return this.model.get('state');
     },
 

@@ -32,8 +32,14 @@
         this.$el.html(this.template(this.model.toJSON()));
 
         this.viewer = new Inspector.Viewer()
-          .on('node:collapse', BrowserAutomationStudio_PreserveInterfaceState)
-          .on('node:expand', BrowserAutomationStudio_PreserveInterfaceState)
+          .on('node:collapse', ({ path, expanded }) => {
+            this.model.set('state', { ...this.model.get('state'), [path]: !expanded });
+            BrowserAutomationStudio_PreserveInterfaceState();
+          })
+          .on('node:expand', ({ path, expanded }) => {
+            this.model.set('state', { ...this.model.get('state'), [path]: !expanded });
+            BrowserAutomationStudio_PreserveInterfaceState();
+          })
           .on('render', () => {
             this.restoreState();
             this.filterItems();
@@ -108,7 +114,7 @@
     },
 
     restoreState(state = this.model.get('state')) {
-      _.each(state.items, ({ path, folded }) => {
+      _.each(state, (folded, path) => {
         const $el = this.$el.find(`[data-path="${path}"] > .jst-list`);
         if (folded && !$el.hasClass('collapsed')) {
           $el.prev('.jst-collapse').click();
@@ -118,15 +124,8 @@
       return this;
     },
 
-    saveState() {
-      const state = {
-        items: [...this.el.querySelectorAll('[data-type] > .jst-list')].map(el => ({
-          folded: el.classList.contains('collapsed'),
-          path: el.parentNode.dataset.path
-        }))
-      };
-      this.model.set('state', state);
-      return state;
+    getState() {
+      return this.model.get('state');
     },
 
     openModal(e) {

@@ -5863,7 +5863,7 @@
       // TODO: create separate global state manager
       BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
         inspector: Object.fromEntries(['variables', 'resources', 'callstack'].map(type => {
-          return [type, _Inspector[type].saveState()]
+          return [type, _Inspector[type].getState()]
         }))
       }));
     }

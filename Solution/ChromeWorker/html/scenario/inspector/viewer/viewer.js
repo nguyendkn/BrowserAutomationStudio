@@ -176,14 +176,20 @@
         const $el = $(e.target);
         $el.toggleClass('jst-collapse jst-expand');
         $el.next().toggleClass('collapsed');
-        this.trigger('node:collapse');
+        this.trigger('node:collapse', {
+          ...e.target.closest('li').dataset,
+          expanded: false
+        });
       },
 
       'click .jst-expand': function (e) {
         const $el = $(e.target);
         $el.toggleClass('jst-collapse jst-expand');
         $el.next().toggleClass('collapsed');
-        this.trigger('node:expand');
+        this.trigger('node:expand', {
+          ...e.target.closest('li').dataset,
+          expanded: true
+        });
       }
     }
   });

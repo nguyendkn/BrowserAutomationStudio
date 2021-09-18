@@ -64,11 +64,12 @@
     },
 
     restoreState(state = this.model.get('state')) {
+      this.model.set('state', state);
       return this;
     },
 
     saveState() {
-
+      return this.model.get('state');
     },
 
     events: {

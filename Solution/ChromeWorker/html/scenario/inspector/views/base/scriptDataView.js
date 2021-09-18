@@ -119,13 +119,14 @@
     },
 
     saveState() {
-      this.model.set('state', {
+      const state = {
         items: [...this.el.querySelectorAll('[data-type] > .jst-list')].map(el => ({
           folded: el.classList.contains('collapsed'),
           path: el.parentNode.dataset.path
         }))
-      });
-      return this.model.get('state');
+      };
+      this.model.set('state', state);
+      return state;
     },
 
     openModal(e) {

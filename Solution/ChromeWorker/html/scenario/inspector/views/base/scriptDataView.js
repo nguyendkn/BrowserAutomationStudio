@@ -160,8 +160,8 @@
   });
 
   function scaleColor(color, size = 6) {
-    const scale = _.compose(color2K.toHex, color2K.getScale('red', color));
-    return _.range(size).map(n => scale(n / (size - 1)));
+    const scale = _.compose(color2K.parseToRgba, color2K.getScale('red', color));
+    return _.range(size).map(n => `rgb(${scale(n / (size - 1)).slice(0, -1).join(', ')})`);
   }
 
   function prepareData(data) {

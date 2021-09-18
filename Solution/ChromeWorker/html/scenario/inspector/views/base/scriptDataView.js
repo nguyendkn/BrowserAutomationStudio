@@ -32,12 +32,12 @@
         this.$el.html(this.template(this.model.toJSON()));
 
         this.viewer = new Inspector.Viewer()
-          .on('node:collapse', ({ path, expanded }) => {
-            this.model.set('state', { ...this.model.get('state'), [path]: !expanded });
+          .on('node:collapse', ({ path }) => {
+            this.model.set('state', { ...this.model.get('state'), [path]: !false });
             BrowserAutomationStudio_PreserveInterfaceState();
           })
-          .on('node:expand', ({ path, expanded }) => {
-            this.model.set('state', { ...this.model.get('state'), [path]: !expanded });
+          .on('node:expand', ({ path }) => {
+            this.model.set('state', { ...this.model.get('state'), [path]: !true });
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('render', () => {

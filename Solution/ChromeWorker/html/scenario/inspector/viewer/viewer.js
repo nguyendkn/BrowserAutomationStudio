@@ -177,8 +177,7 @@
         $el.toggleClass('jst-collapse jst-expand');
         $el.next().toggleClass('collapsed');
         this.trigger('node:collapse', {
-          ...e.target.closest('li').dataset,
-          expanded: false
+          ...e.target.closest('li').dataset
         });
       },
 
@@ -187,8 +186,7 @@
         $el.toggleClass('jst-collapse jst-expand');
         $el.next().toggleClass('collapsed');
         this.trigger('node:expand', {
-          ...e.target.closest('li').dataset,
-          expanded: true
+          ...e.target.closest('li').dataset
         });
       }
     }

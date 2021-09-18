@@ -107,6 +107,7 @@
         this.$('#inspectorModalSelect').selectpicker();
         this.$el.modal({ backdrop: 'static' });
       }
+
       return this;
     },
 

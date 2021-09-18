@@ -59,7 +59,7 @@
         childrenOnly: true,
       });
 
-      return this.trigger('render');
+      return this;
     },
 
     filterStack() {

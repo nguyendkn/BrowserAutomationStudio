@@ -906,7 +906,7 @@ void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text
             {
                 //Postpond mouse up
                 State.IsClickingMouse = true;
-                State.MouseUpIsRight = false;
+                State.MouseUpIsRight = true;
                 State.MouseUpX = mousex;
                 State.MouseUpY = mousey;
                 State.IsPresingKey = true;

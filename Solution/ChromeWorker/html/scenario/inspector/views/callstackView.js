@@ -50,10 +50,16 @@
 
       morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${html}</div>`, {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
+        getNodeKey({ classList, dataset, id }) {
+          if (classList.contains('callstack-item')) {
+            return dataset.id;
+          }
+          return id;
+        },
         childrenOnly: true,
       });
 
-      return this;
+      return this.trigger('render');
     },
 
     filterStack() {

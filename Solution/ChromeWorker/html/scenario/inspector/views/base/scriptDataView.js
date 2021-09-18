@@ -50,7 +50,7 @@
         this.$('.inspector-panel-data').append(this.viewer.el);
       }
 
-      return this;
+      return this.trigger('render');
     },
 
     filterItems() {

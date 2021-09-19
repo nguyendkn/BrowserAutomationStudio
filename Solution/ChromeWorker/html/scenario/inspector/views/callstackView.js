@@ -86,13 +86,13 @@
         this.model.set('filters', { ...this.model.get('filters'), [value]: checked });
       },
 
-      'show.bs.collapse .callstack-item > ul': function (e) {
-        const { id } = e.target.closest('li').dataset;
+      'show.bs.collapse .callstack-item': function (e) {
+        const { id } = e.currentTarget.dataset;
         this.model.set('state', { ...this.model.get('state'), [id]: false });
       },
 
-      'hide.bs.collapse .callstack-item > ul': function (e) {
-        const { id } = e.target.closest('li').dataset;
+      'hide.bs.collapse .callstack-item': function (e) {
+        const { id } = e.currentTarget.dataset;
         this.model.set('state', { ...this.model.get('state'), [id]: true });
       },
 

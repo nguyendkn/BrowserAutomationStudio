@@ -29,9 +29,10 @@
       return at !== 0 ? { ...data, path: `${data.path}['${key}']` } : {
         isGlobal: key.indexOf('GLOBAL:') === 0,
         isLocal: key.indexOf('GLOBAL:') !== 0,
-        root: key.replace('GLOBAL:', '')
+        root: key.replace('GLOBAL:', ''),
+        path: ''
       }
-    }, { path: '' });
+    }, {});
 
     _.attempt(() => {
       if (type === 'date') {
@@ -46,16 +47,16 @@
         (function () {
           try {
             if (${isGlobal}) {
-              var obj = JSON.parse(P('basglobal', '${root}') || '{}');
+              const obj = JSON.parse(P('basglobal', '${root}') || '{}');
               obj${path} = ${value};
               PSet('basglobal', '${root}', JSON.stringify(obj));
             } else {
               GLOBAL['VAR_${root}']${path} = ${value};
             }
           } catch (e) {}
-        })()
+        })();
         section_start('test', -3)!
-      `, false);
+      `);
     });
   }
 })(window);

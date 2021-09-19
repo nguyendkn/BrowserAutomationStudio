@@ -22,15 +22,15 @@
         this.$el.html(this.template());
 
         this.variables = new Inspector.VariablesView({
-          el: this.el.querySelector('#variables')
+          el: '#variables'
         }).render();
 
         this.resources = new Inspector.ResourcesView({
-          el: this.el.querySelector('#resources')
+          el: '#resources'
         }).render();
 
         this.callstack = new Inspector.CallstackView({
-          el: this.el.querySelector('#callstack')
+          el: '#callstack'
         }).render();
 
         this.resizable = interact(this.el).resizable({

@@ -74,14 +74,11 @@
     },
 
     events: {
-      'click #inspectorClose': function (e) {
-        e.preventDefault();
-        this.hide();
-      },
-
       'keydown': e => e.stopPropagation(),
 
       'keyup': e => e.stopPropagation(),
+
+      'click #inspectorClose': 'hide'
     }
   });
 })(window);

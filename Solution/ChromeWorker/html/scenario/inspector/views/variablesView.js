@@ -29,10 +29,9 @@
       return at !== 0 ? { ...data, path: `${data.path}['${key}']` } : {
         isGlobal: key.indexOf('GLOBAL:') === 0,
         isLocal: key.indexOf('GLOBAL:') !== 0,
-        root: key.replace('GLOBAL:', ''),
-        path: '',
+        root: key.replace('GLOBAL:', '')
       }
-    }, {});
+    }, { path: '' });
 
     _.attempt(() => {
       if (type === 'date') {

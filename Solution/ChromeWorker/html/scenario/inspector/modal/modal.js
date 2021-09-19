@@ -34,12 +34,10 @@
       },
 
       'click #inspectorModalAccept': function (e) {
-        e.preventDefault();
         this.trigger('submit');
       },
 
       'click #inspectorModalCancel': function (e) {
-        e.preventDefault();
         this.trigger('cancel');
       },
 

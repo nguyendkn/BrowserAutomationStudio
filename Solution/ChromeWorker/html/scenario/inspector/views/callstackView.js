@@ -15,7 +15,7 @@
       this.set('stack', stack.concat({
         type: 'function',
         name: 'Main',
-        id: 0,
+        id: 0
       }));
     }
   });
@@ -46,9 +46,8 @@
     renderStack() {
       const panel = this.el.querySelector('.inspector-panel');
       panel.dataset.empty = _.isEmpty(this.model.get('stack'));
-      const html = JST['inspector/stack'](this.model.toJSON());
 
-      morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${html}</div>`, {
+      morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${JST['inspector/stack'](this.model.toJSON())}</div>`, {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         getNodeKey({ classList, dataset, id }) {
           if (classList) {
@@ -58,7 +57,7 @@
           }
           return id;
         },
-        childrenOnly: true,
+        childrenOnly: true
       });
 
       return this;

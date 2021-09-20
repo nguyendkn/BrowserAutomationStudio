@@ -20,14 +20,6 @@
   };
 
   _.mixin({
-    attempt: (func, ...args) => {
-      try {
-        return func.apply(null, args);
-      } catch (e) {
-        return _.isError(e) ? e : new Error(e);
-      }
-    },
-
     truncate: (str, limit) => {
       return str.length > limit ? (str.slice(0, limit - 3) + '...') : str;
     },
@@ -46,6 +38,14 @@
 
     sleep: time => new Promise(resolve => {
       setTimeout(resolve, time);
-    })
+    }),
+
+    attempt: (func, ...args) => {
+      try {
+        return func.apply(null, args);
+      } catch (e) {
+        return _.isError(e) ? e : new Error(e);
+      }
+    }
   });
 })(window);

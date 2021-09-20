@@ -161,7 +161,10 @@
 
   function scaleColor(color, size = 6) {
     const scale = _.compose(color2K.parseToRgba, color2K.getScale('red', color));
-    return _.range(size).map(n => `rgb(${scale(n / (size - 1)).slice(0, -1).join(', ')})`);
+    return _.range(size).map(n => {
+      const [r, g, b] = scale(n / (size - 1));
+      return `rgb(${r}, ${g}, ${b})`;
+    });
   }
 
   function prepareData(data) {

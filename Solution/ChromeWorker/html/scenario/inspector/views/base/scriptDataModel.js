@@ -28,10 +28,12 @@
       });
 
       if (diff.length) {
-        this.set('history', [...this.get('history'), _.pluck(diff, 'path')].slice(-100));
+        let history = [...this.get('history'), _.pluck(diff, 'path')];
+        history = history.slice(-100);
+        this.set('history', history);
+        this.set('source', source);
       }
 
-      this.set('source', source);
       {
         _.each(metadata, (item, path) => {
           if (highlight) {

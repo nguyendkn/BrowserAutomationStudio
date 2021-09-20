@@ -66,7 +66,7 @@
 
             if (query) {
               const text = $(el).children('.jst-label').text();
-              const lower = text.slice(0, -1).toLowerCase();
+              const lower = _.toLower(text.slice(0, -1));
               return lower.includes(query) && visible;
             }
 

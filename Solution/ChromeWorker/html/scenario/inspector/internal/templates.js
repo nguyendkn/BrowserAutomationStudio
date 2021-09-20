@@ -112,7 +112,7 @@
         <ul class="" style="flex: 1">
           <% _.each(['Functions', 'Actions'], type => { %>
             <li class="">
-              <% const id = _.uniqueId('inspectorFilter' + type), val = type.toLowerCase().slice(0, -1) %>
+              <% const id = _.uniqueId('inspectorFilter' + type), val = _.toLower(type).slice(0, -1) %>
               <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= filters[val] ? 'checked' : '' %>>
               <label for="<%= id %>"><%= type %></label>
             </li>

@@ -47,7 +47,7 @@
       },
 
       'input .inspector-filter-input': _.debounce(function (e) {
-        this.model.set('query', e.target.value.toLowerCase());
+        this.model.set('query', _.toLower(e.target.value));
       }, 250),
 
       'click .inspector-filter-menu > li': function (e) {

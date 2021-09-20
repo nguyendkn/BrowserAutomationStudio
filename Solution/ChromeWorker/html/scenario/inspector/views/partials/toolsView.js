@@ -48,7 +48,7 @@
 
       'input .inspector-filter-input': _.debounce(function (e) {
         this.model.set('query', e.target.value.toLowerCase());
-      }, 200),
+      }, 250),
 
       'click .inspector-filter-menu > li': function (e) {
         e.stopPropagation();

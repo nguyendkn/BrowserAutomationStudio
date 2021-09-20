@@ -196,55 +196,25 @@
         isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
         (() => {
           switch (type) {
-            case 'undefined': return jsUndefined(value, path);
-            case 'boolean': return jsBoolean(value, path);
-            case 'object': return jsObject(value, path);
-            case 'number': return jsNumber(value, path);
-            case 'string': return jsString(value, path);
-            case 'array': return jsArray(value, path);
-            case 'null': return jsNull(value, path);
-            case 'date': return jsDate(value, path);
+            case 'object': return iterable(value, path, type, '{}');
+            case 'array': return iterable(value, path, type, '[]');
+            case 'undefined': return element(value, path, type);
+            case 'boolean': return element(value, path, type);
+            case 'number': return element(value, path, type);
+            case 'null': return element(value, path, type);
+            case 'string':
+              const data = _.truncate(value, 100);
+              const clip = data !== value ? `<i class="fa fa-plus-circle"></i>` : '';
+              return element(data, path, type) + clip;
+            case 'date':
+              const format = 'YYYY-MM-DD HH:mm:ss [UTC]Z';
+              value = dayjs(value).format(format);
+              return element(value, path, type);
           }
         })()
       ].join('')
       }</li>`
     );
-  }
-
-  function jsObject(value, path) {
-    return iterable(value, path, 'object', '{}');
-  }
-
-  function jsArray(value, path) {
-    return iterable(value, path, 'array', '[]');
-  }
-
-  function jsString(value, path) {
-    const data = _.truncate(value, 100);
-    const clip = data !== value ? `<i class="fa fa-plus-circle"></i>` : '';
-    return element(data, path, 'string') + clip;
-  }
-
-  function jsUndefined(value, path) {
-    return element(value, path, 'undefined');
-  }
-
-  function jsBoolean(value, path) {
-    return element(value, path, 'boolean');
-  }
-
-  function jsNumber(value, path) {
-    return element(value, path, 'number');
-  }
-
-  function jsNull(value, path) {
-    return element(value, path, 'null');
-  }
-
-  function jsDate(value, path) {
-    const format = 'YYYY-MM-DD HH:mm:ss [UTC]Z';
-    value = dayjs(value).format(format);
-    return element(value, path, 'date');
   }
 
   function iterable(value, path, type, brackets) {

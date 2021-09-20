@@ -29,7 +29,7 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template(this.model.toJSON()));
+        this.$el.html(this.template());
 
         this.viewer = new Inspector.Viewer()
           .on('node:collapse', ({ path }) => {
@@ -84,8 +84,8 @@
     sortItems() {
       const sorting = this.tools.model.get('sorting');
       const metadata = this.model.get('metadata');
-      const updates = this.model.get('updates');
       const history = this.model.get('history');
+      const updates = history.length, flat = history.flat();
 
       _.keys(this.model.get('source')).sort((a, b) => {
         return (a.startsWith('GLOBAL:') - b.startsWith('GLOBAL:')) || (() => {
@@ -101,8 +101,8 @@
             return metaB.createdAt - metaA.createdAt;
           }
 
-          const f1 = updates + history.filter(v => v === pathA).length;
-          const f2 = updates + history.filter(v => v === pathB).length;
+          const f1 = updates + flat.filter(v => v === pathA).length;
+          const f2 = updates + flat.filter(v => v === pathB).length;
           return metaB.usages / f2 - metaA.usages / f1;
         })();
       }).forEach(key => {

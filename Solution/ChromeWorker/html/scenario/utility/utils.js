@@ -22,7 +22,7 @@
   _.mixin({
     attempt: (func, ...args) => {
       try {
-        return func(...args);
+        return func.apply(null, args);
       } catch (e) {
         return _.isError(e) ? e : new Error(e);
       }

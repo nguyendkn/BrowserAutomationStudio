@@ -5861,16 +5861,16 @@
     }
 
     function BrowserAutomationStudio_PreserveInterfaceState() {
-      // TODO: create separate global state manager
       BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
         inspector: Object.fromEntries(['variables', 'resources', 'callstack'].map(type => {
           return [type, _Inspector[type].getState()]
         }))
       }));
+      // TODO: create separate global state manager
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(json) {
-      const result = _.attempt(() => JSON.parse(json));
+      const result = _.attempt(JSON.parse, json);
 
       if (!_.isError(result)) {
         return ['variables', 'resources', 'callstack'].forEach(type => {

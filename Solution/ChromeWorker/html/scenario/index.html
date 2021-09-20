@@ -1071,22 +1071,22 @@
   <!-- ========= -->
   <script type="text/template" id="isscriptexecuting" >
     
-    <img draggable="false" src="play.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "" %>" id="play"   data-toggle="tooltip" data-placement="bottom" title="<%= tr("Play. Run rest of the script starting from current action.") %>" />
-    <img draggable="false" src="next.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray2" : "" %>" id="stepnext"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Run next action. Only single action will be executed.") %>" />
-    <img draggable="false" src="pause.png" class="action-button <%= (isscriptexecuting) ? "" : ((isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "actionbuttongray2") %>" id="pause" />
+    <img draggable="false" src="icons/play.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "" %>" id="play"   data-toggle="tooltip" data-placement="bottom" title="<%= tr("Play. Run rest of the script starting from current action.") %>" />
+    <img draggable="false" src="icons/next.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray2" : "" %>" id="stepnext"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Run next action. Only single action will be executed.") %>" />
+    <img draggable="false" src="icons/pause.png" class="action-button <%= (isscriptexecuting) ? "" : ((isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "actionbuttongray2") %>" id="pause" />
   </script>
 
   <script type="text/template" id="selectiontemplate">
     <% _TotalSelected = TotalSelected(); %>
     <div style="float:left;text-align:center;white-space: nowrap" class="halfscreenorall">
-      <img draggable="false" src="undo.png" class="action-button2 <%= (_UndoManager.CanUndo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Undo (Ctrl-Z)") %>" id="action-undo" />
-      <img draggable="false" src="redo.png" class="action-button2 <%= (_UndoManager.CanRedo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Redo (Ctrl-Y)") %>" id="action-redo" />
+      <img draggable="false" src="icons/undo.png" class="action-button2 <%= (_UndoManager.CanUndo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Undo (Ctrl-Z)") %>" id="action-undo" />
+      <img draggable="false" src="icons/redo.png" class="action-button2 <%= (_UndoManager.CanRedo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Redo (Ctrl-Y)") %>" id="action-redo" />
 
-      <img draggable="false" src="copy.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Copy (Ctrl-C)") %>" id="action-copy" />
-      <img draggable="false" src="cut.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Cut (Ctrl-X)") %>" id="action-cut" />
-      <img draggable="false" src="paste.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Paste (Ctrl-V)") %>" id="action-paste" />
-      <img draggable="false" src="checkall.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Check All") %>" id="action-checkall" />
-      <img draggable="false" src="uncheckall.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Clear Selection") %>" id="action-uncheckall" />      
+      <img draggable="false" src="icons/copy.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Copy (Ctrl-C)") %>" id="action-copy" />
+      <img draggable="false" src="icons/cut.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Cut (Ctrl-X)") %>" id="action-cut" />
+      <img draggable="false" src="icons/paste.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Paste (Ctrl-V)") %>" id="action-paste" />
+      <img draggable="false" src="icons/checkall.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Check All") %>" id="action-checkall" />
+      <img draggable="false" src="icons/uncheckall.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Clear Selection") %>" id="action-uncheckall" />      
     </div>
     <div style="float:left" class="halfscreenorall">
       <div class="centeredonlyifsmall">
@@ -1102,8 +1102,8 @@
         <span id="isscriptexecutingcontainer">
           
         </span>
-        <img draggable="false" src="stop.png" class="action-button" id="stop" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Stop script and exit 'Record' mode.") %>" />
-        <img draggable="false" src="restart.png" class="action-button" id="restart" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Restart script. Script will be stopped and then started again in 'Record' mode.") %>" />
+        <img draggable="false" src="icons/stop.png" class="action-button" id="stop" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Stop script and exit 'Record' mode.") %>" />
+        <img draggable="false" src="icons/restart.png" class="action-button" id="restart" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Restart script. Script will be stopped and then started again in 'Record' mode.") %>" />
 
       </div>
       <div style="float:left" class="halfscreenorall" >
@@ -1224,7 +1224,7 @@
 
                   <div id="id7-<%= task.get("id") %>" class="tooltitle <%= prepare_styles(task.dat(),task.get("name") ) %>"> <%= prepare_group(task.dat(),task.get("name"),task.get("id")) %> <%= prepare_title(task.dat(),task.get("name")) %> <span id="id71-<%= task.get("id") %>" class="disablenotice" task-id="<%= task.get("id") %>"><%= (task.get("donotexecuteduringrecord"))? " (" + tr("disabled") + ")" : "" %></span>
 
-                    <img id="id8-<%= task.get("id") %>" class="selected" src="selected.png" style="<%= (!task.get("is_selected")) ? "visibility:hidden" : "" %>"></img>
+                    <img id="id8-<%= task.get("id") %>" class="selected" src="icons/selected.png" style="<%= (!task.get("is_selected")) ? "visibility:hidden" : "" %>"></img>
                   </div>
 
                   <div id="id9-<%= task.get("id") %>" class="titlebody " style="position:relative">
@@ -3986,15 +3986,15 @@
         context.attach('html', [
           {header: tr('Actions')},
 
-          {text: '<img draggable="false" src="copy.png" style="width:14px" /> ' + tr('Copy selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/copy.png" style="width:14px" /> ' + tr('Copy selected'), action: function(e){
                 e.preventDefault();
                 self.Copy()
           }},
-          {text: '<img draggable="false" src="paste.png" style="width:14px" /> ' + tr('Paste selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/paste.png" style="width:14px" /> ' + tr('Paste selected'), action: function(e){
                 e.preventDefault();
                 self.Paste()
           }},
-          {text: '<img draggable="false" src="cut.png" style="width:14px" /> ' + tr('Cut selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/cut.png" style="width:14px" /> ' + tr('Cut selected'), action: function(e){
                 e.preventDefault();
                 self.Cut()
           }},
@@ -4040,12 +4040,12 @@
               self.SetSelectedColor("")
           }},
           {divider:true},
-          {text: '<img draggable="false" src="checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
+          {text: '<img draggable="false" src="icons/checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
                 e.preventDefault();
                 self.CheckAll()
 
           }},
-          {text: '<img draggable="false" src="uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
+          {text: '<img draggable="false" src="icons/uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
                 e.preventDefault();
                 self.ClearSelection()
 

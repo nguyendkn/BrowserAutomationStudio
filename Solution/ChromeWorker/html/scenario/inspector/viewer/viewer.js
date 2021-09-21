@@ -63,21 +63,17 @@
             group: 'groups'
           })),
           nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(node => Sortable.create(node, {
-            onEnd: ({ item, from, to }) => {
+            onAdd: ({ item, from, to }) => {
               const groups = this.model.get('groups');
               const name = item.dataset.path.slice(1);
 
               const fromName = from.closest('.jst-group').dataset.name;
-              const fromList = _.without(groups[fromName], name);
+              groups[fromName] = _.uniq(_.without(groups[fromName], name));
 
               const toName = to.closest('.jst-group').dataset.name;
-              const toList = _.concat(groups[toName], name);
+              groups[toName] = _.uniq(_.concat(groups[toName], name));
 
-              this.model.set('groups', {
-                ...groups,
-                [fromName]: _.uniq(fromList),
-                [toName]: _.uniq(toList),
-              }, { silent: true });
+              this.model.set('groups', groups, { silent: true });
             },
             dataIdAttr: 'data-path',
             filter: '.pinned',
@@ -152,37 +148,34 @@
       'click .jst-item > .fa-minus-circle': function (e) {
         const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
         const { path } = e.target.closest('li').dataset;
-
         const text = this.model.getValue(path), len = text.length;
+
         $el.prev().text(`"${_.escape(_.truncate(text, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
         const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
         const { path } = e.target.closest('li').dataset;
-
         const text = this.model.getValue(path), len = text.length;
+
         $el.prev().text(`"${_.escape(_.truncate(text, len))}"`);
       },
 
       'click .jst-group-toggle': function (e) {
         const $el = $(e.target), $group = $el.closest('.jst-group');
+        $el.toggleClass('fa-chevron-down fa-chevron-up');
         $group.children('.jst-group-body').toggle();
-        $el.toggleClass('fa-chevron-down');
-        $el.toggleClass('fa-chevron-up');
       },
 
       'click .jst-collapse': function (e) {
         const el = e.target, $el = $(el);
-        $el.toggleClass('jst-collapse jst-expand');
-        $el.next().toggleClass('collapsed');
+        $el.toggleClass('jst-collapse jst-expand').next().toggleClass('collapsed');
         this.trigger('node:collapse', { ...el.closest('li').dataset });
       },
 
       'click .jst-expand': function (e) {
         const el = e.target, $el = $(el);
-        $el.toggleClass('jst-collapse jst-expand');
-        $el.next().toggleClass('collapsed');
+        $el.toggleClass('jst-collapse jst-expand').next().toggleClass('collapsed');
         this.trigger('node:expand', { ...el.closest('li').dataset });
       }
     }

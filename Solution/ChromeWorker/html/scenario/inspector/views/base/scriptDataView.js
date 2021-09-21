@@ -33,11 +33,11 @@
 
         this.viewer = new Inspector.Viewer()
           .on('node:collapse', ({ path }) => {
-            this.model.set('state', { ...this.model.get('state'), [path]: !false });
+            this.model.set('state', { ...this.model.get('state'), [path]: false });
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('node:expand', ({ path }) => {
-            this.model.set('state', { ...this.model.get('state'), [path]: !true });
+            this.model.set('state', { ...this.model.get('state'), [path]: true });
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('render', () => {
@@ -113,11 +113,10 @@
     },
 
     restoreState(state = this.model.get('state')) {
-      _.each(state, (folded, path) => {
+      _.each(state, (expanded, path) => {
         const $el = this.$el.find(`[data-path="${path}"] > .jst-list`);
-        if (folded && !$el.hasClass('collapsed')) {
-          $el.prev('.jst-collapse').click();
-        }
+        if (!expanded || $el.hasClass('collapsed')) return;
+        $el.prev('.jst-collapse').click();
       });
       this.model.set('state', state);
       return this;

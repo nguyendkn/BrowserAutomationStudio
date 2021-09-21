@@ -109,11 +109,11 @@ class HelpManager
 
 		var ForData = {"s":"for","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"ForFrom","type":"constr","data":"1","class":"expression"},{"id":"ForTo","type":"constr","data":"10","class":"expression"}]}
 		var ForCode = `_do(function(){
-			 _set_function_info({ name: "For" });
-		   VAR_CYCLE_INDEX = _iterator() - 1 + parseInt(1)
-		   if(VAR_CYCLE_INDEX > parseInt(10))_break();
-		   section_insert()
-		   })!`
+			_set_function_info({ name: "For" });
+			VAR_CYCLE_INDEX = _iterator() - 1 + parseInt(1)
+			if(VAR_CYCLE_INDEX > parseInt(10))_break();
+			section_insert()
+		})!`
 
 		var LogData = {"s":"log","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LogText","type":"constr","data":(tr("Current loop repetition") + " : [[CYCLE_INDEX]]"),"class":"string"}]}
 		var LogCode = `log("${tr("Current loop repetition")} : " + VAR_CYCLE_INDEX)`
@@ -143,12 +143,12 @@ class HelpManager
 
 		var WhileData = {"s":"while","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"WhileExpression","type":"constr","data":"true","class":"expression"}]}
 		var WhileCode = `_do(function(){
-			 _set_function_info({ name: "While" });
-		   VAR_CYCLE_INDEX = _iterator() - 1
-		   BREAK_CONDITION = true;
-		   if(!BREAK_CONDITION)_break();
-		   section_insert()
-		   })!`
+			_set_function_info({ name: "While" });
+			VAR_CYCLE_INDEX = _iterator() - 1
+			BREAK_CONDITION = true;
+			if(!BREAK_CONDITION)_break();
+			section_insert()
+		})!`
 
 		var LogData = {"s":"log","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LogText","type":"constr","data":(tr("Current loop repetition") + " : [[CYCLE_INDEX]]"),"class":"string"}]}
 		var LogCode = `log("${tr("Current loop repetition")} : " + VAR_CYCLE_INDEX)`
@@ -189,12 +189,12 @@ class HelpManager
 
 		var WhileData = {"s":"while","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"WhileExpression","type":"constr","data":"true","class":"expression"}]}
 		var WhileCode = `_do(function(){
-			 _set_function_info({ name: "While" });
-		   VAR_CYCLE_INDEX = _iterator() - 1
-		   BREAK_CONDITION = true;
-		   if(!BREAK_CONDITION)_break();
-		   section_insert()
-		   })!`
+			_set_function_info({ name: "While" });
+			VAR_CYCLE_INDEX = _iterator() - 1
+			BREAK_CONDITION = true;
+			if(!BREAK_CONDITION)_break();
+			section_insert()
+		})!`
 
 		var LogData = {"s":"log","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LogText","type":"constr","data":(tr("Current loop repetition") + " : [[CYCLE_INDEX]]"),"class":"string"}]}
 		var LogCode = `log("${tr("Current loop repetition")} : " + VAR_CYCLE_INDEX)`
@@ -204,9 +204,9 @@ class HelpManager
 
 		var	IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[TEST]] == \"test\"","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
 		var IfCode = `_if(VAR_TEST == "test",function(){
-					_set_function_info({ name: "If", expression: "[[TEST]] == \"test\"" });
-		      section_insert()
-		      })!`		
+			_set_function_info({ name: "If", expression: "[[TEST]] == \"test\"" });
+			section_insert()
+		})!`		
 
 		var	LabelFromData = {"s":"goto","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LabelName","type":"text","data":"End loop " + LabelName}]}
 		var LabelFromCode = `_goto("End loop ${LabelName}")!`		
@@ -521,9 +521,9 @@ class HelpManager
 		var IncreaseCode = `VAR_INDEX = parseInt(VAR_INDEX) + parseInt(1)`
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[INDEX]] > 5","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
 		var IfCode = `_if(VAR_INDEX > 5,function(){
-					_set_function_info({ name: "If", expression: "[[INDEX]] > 5" });
-   				section_insert()
-			})!`
+			_set_function_info({ name: "If", expression: "[[INDEX]] > 5" });
+			section_insert()
+		})!`
 		var LogData = {"s":"log","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LogText","type":"constr","data":(tr("Current loop repetition") + " : [[INDEX]]"),"class":"string"}]}
 		var LogCode = `log("${tr("Current loop repetition")} : " + VAR_INDEX)`
 
@@ -618,9 +618,9 @@ class HelpManager
 
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[WAS_ERROR]]","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
 		var IfCode = `_if(VAR_WAS_ERROR,function(){
-					_set_function_info({ name: "If", expression: "[[WAS_ERROR]]" });
-   				section_insert()
-			})!`
+			_set_function_info({ name: "If", expression: "[[WAS_ERROR]]" });
+			section_insert()
+		})!`
 
 		
 		

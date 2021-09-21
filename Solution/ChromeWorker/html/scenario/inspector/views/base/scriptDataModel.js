@@ -14,7 +14,7 @@
       const diff = jsonpatch.compare(this.get('source'), source);
       const highlight = this.get('highlight');
       const metadata = this.get('metadata');
-      
+
       diff.forEach(({ path, op }) => {
         const now = performance.now();
 

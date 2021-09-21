@@ -1,6 +1,6 @@
 (({ App, _ }) => {
   const { Inspector, JST } = App;
-  const { ScriptDataModel, ScriptDataView } = Inspector;
+  const { ScriptDataView } = Inspector;
 
   Inspector.ResourcesView = ScriptDataView.extend({
     template: JST['inspector/resources'],
@@ -10,7 +10,6 @@
     allowEdit: false,
 
     initialize() {
-      this.model = new ScriptDataModel();
       ScriptDataView.prototype.initialize.call(this);
     },
 

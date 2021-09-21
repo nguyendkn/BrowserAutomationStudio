@@ -1,10 +1,13 @@
 (({ App, Backbone, $, _ }) => {
   const { Inspector } = App;
+  const { ScriptDataModel } = Inspector;
 
   const View = Backbone.View.extend({
     initialize() {
+      const model = this.model = new ScriptDataModel();
+
       if (this.allowHighlight) {
-        this.model.on('highlight', ({ count, path }) => {
+        model.on('highlight', ({ count, path }) => {
           const [node] = this.$(`[data-path="${path}"] > .jst-node`);
 
           if (node) {
@@ -15,7 +18,7 @@
         });
       }
 
-      this.model.on('change:source', (__, source) => {
+      model.on('change:source', (__, source) => {
         const panel = this.el.querySelector('.inspector-panel');
         panel.dataset.empty = _.isEmpty(source);
         this.viewer.model.update(prepareData(source));

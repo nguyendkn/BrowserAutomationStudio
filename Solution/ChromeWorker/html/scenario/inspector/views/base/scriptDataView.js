@@ -31,16 +31,18 @@
     },
 
     render() {
+      const model = this.model;
+
       if (this.$el.is(':empty')) {
         this.$el.html(this.template());
 
         this.viewer = new Inspector.Viewer()
           .on('node:collapse', ({ path }) => {
-            this.model.set('state', { ...this.model.get('state'), [path]: false });
+            model.set('state', { ...model.get('state'), [path]: false });
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('node:expand', ({ path }) => {
-            this.model.set('state', { ...this.model.get('state'), [path]: true });
+            model.set('state', { ...model.get('state'), [path]: true });
             BrowserAutomationStudio_PreserveInterfaceState();
           })
           .on('render', () => {
@@ -49,8 +51,8 @@
             this.sortItems();
           });
 
-        this.$el.prepend(this.tools.render().el);
         this.$('.inspector-panel-data').append(this.viewer.el);
+        this.$el.prepend(this.tools.render().el);
       }
 
       return this;
@@ -105,8 +107,8 @@
               return metaB.createdAt - metaA.createdAt;
             }
 
-            const f1 = updates + flat.filter(v => v === a).length;
-            const f2 = updates + flat.filter(v => v === b).length;
+            const f1 = flat.filter(v => v === a).length + updates;
+            const f2 = flat.filter(v => v === b).length + updates;
             return metaB.usages / f2 - metaA.usages / f1;
           })();
         }));
@@ -118,7 +120,7 @@
     restoreState(state = this.model.get('state')) {
       _.each(state, (expanded, path) => {
         const $el = this.$(`[data-path="${path}"] > .jst-list`);
-        if (!expanded || $el.hasClass('collapsed')) return;
+        if (expanded || $el.hasClass('collapsed')) return;
         $el.prev('.jst-collapse').click();
       });
       this.model.set('state', state);

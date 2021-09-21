@@ -68,10 +68,10 @@
               const name = item.dataset.path.slice(1);
 
               const fromName = from.closest('.jst-group').dataset.name;
-              groups[fromName] = _.uniq(_.without(groups[fromName], name));
+              groups[fromName] = _.without(groups[fromName], name);
 
               const toName = to.closest('.jst-group').dataset.name;
-              groups[toName] = _.uniq(_.concat(groups[toName], name));
+              groups[toName] = _.concat(groups[toName], name);
 
               this.model.set('groups', groups, { silent: true });
             },

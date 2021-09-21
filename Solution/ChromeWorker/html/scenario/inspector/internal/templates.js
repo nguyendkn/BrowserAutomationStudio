@@ -65,10 +65,10 @@
             <li class="active" role="presentation">
               <a data-toggle="tab" href="#variables" role="tab" aria-controls="variables"><%= tr('Variables') %></a>
             </li>
-            <li class="" role="presentation">
+            <li role="presentation">
               <a data-toggle="tab" href="#resources" role="tab" aria-controls="resources"><%= tr('Resources') %></a>
             </li>
-            <li class="" role="presentation">
+            <li role="presentation">
               <a data-toggle="tab" href="#callstack" role="tab" aria-controls="callstack"><%= tr('Call stack') %></a>
             </li>
           </ul>

@@ -63,14 +63,12 @@
 
     show() {
       if (this.$el.is(':visible')) return this;
-      this.$el.show();
-      return this.trigger('show');
+      return this.$el.show(), this.trigger('show');
     },
 
     hide() {
       if (this.$el.is(':hidden')) return this;
-      this.$el.hide();
-      return this.trigger('hide');
+      return this.$el.hide(), this.trigger('hide');
     },
 
     events: {

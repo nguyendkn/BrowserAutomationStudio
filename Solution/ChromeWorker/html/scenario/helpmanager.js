@@ -992,6 +992,4 @@ class HelpManager
 
 		BrowserAutomationStudio_FocusAction(IdWrite,true)
 	}
-
-
 }

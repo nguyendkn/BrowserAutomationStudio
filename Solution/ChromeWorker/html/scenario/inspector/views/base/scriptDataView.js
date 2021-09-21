@@ -87,27 +87,26 @@
       const history = this.model.get('history');
       const updates = history.length, flat = history.flat();
 
-      _.keys(this.model.get('source')).sort((a, b) => {
-        return (a.startsWith('GLOBAL:') - b.startsWith('GLOBAL:')) || (() => {
-          if (sorting === 'alphabetically') return a.localeCompare(b);
-          const pathA = `/${a}`, metaA = metadata[pathA];
-          const pathB = `/${b}`, metaB = metadata[pathB];
+      _.each(this.viewer.sortable.nodes, nodes => {
+        nodes.sort(nodes.toArray().sort((a, b) => {
+          return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
+            if (sorting === 'alphabetically') return a.localeCompare(b);
+            const metaA = metadata[a];
+            const metaB = metadata[b];
 
-          if (sorting === 'dateModified') {
-            return metaB.modifiedAt - metaA.modifiedAt;
-          }
+            if (sorting === 'dateModified') {
+              return metaB.modifiedAt - metaA.modifiedAt;
+            }
 
-          if (sorting === 'dateCreated') {
-            return metaB.createdAt - metaA.createdAt;
-          }
+            if (sorting === 'dateCreated') {
+              return metaB.createdAt - metaA.createdAt;
+            }
 
-          const f1 = updates + flat.filter(v => v === pathA).length;
-          const f2 = updates + flat.filter(v => v === pathB).length;
-          return metaB.usages / f2 - metaA.usages / f1;
-        })();
-      }).forEach(key => {
-        const el = this.el.querySelector(`[data-path="/${key}"]`);
-        el.parentNode.appendChild(el);
+            const f1 = updates + flat.filter(v => v === a).length;
+            const f2 = updates + flat.filter(v => v === b).length;
+            return metaB.usages / f2 - metaA.usages / f1;
+          })();
+        }));
       });
 
       return this;

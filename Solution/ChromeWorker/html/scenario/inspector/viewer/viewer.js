@@ -103,8 +103,6 @@
         selector: '.jst-group-options',
         trigger: 'left'
       });
-
-      this.sortable = {};
     },
 
     render() {

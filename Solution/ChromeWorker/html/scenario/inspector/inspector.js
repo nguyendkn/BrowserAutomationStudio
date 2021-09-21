@@ -13,7 +13,7 @@
         });
       });
 
-      this.on('show', BrowserAutomationStudio_AskForVariablesUpdateOrWait);
+      this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
     },
 
     render() {

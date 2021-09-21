@@ -24,17 +24,17 @@
       return str.length > limit ? (str.slice(0, limit - 3) + '...') : str;
     },
 
-    upperFirst: str => str.charAt(0).toUpperCase() + str.slice(1),
-
     lowerFirst: str => str.charAt(0).toLowerCase() + str.slice(1),
+
+    upperFirst: str => str.charAt(0).toUpperCase() + str.slice(1),
 
     isSymbol: obj => toString.call(obj) === '[object Symbol]',
 
     isError: obj => toString.call(obj) === '[object Error]',
 
-    toUpper: str => str == null ? '' : str.toUpperCase(),
-
     toLower: str => str == null ? '' : str.toLowerCase(),
+
+    toUpper: str => str == null ? '' : str.toUpperCase(),
 
     concat: (arr, ...args) => arr.concat(...args),
 

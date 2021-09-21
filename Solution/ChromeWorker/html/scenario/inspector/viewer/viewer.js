@@ -48,7 +48,7 @@
     className: 'jst-viewer',
 
     initialize() {
-      this.model = new Model().on('change', this.render, this);
+      const model = this.model = new Model().on('change', this.render, this);
 
       this.on('render', () => {
         _.each(this.sortable, list => _.invoke(list, 'destroy'));
@@ -63,9 +63,9 @@
             group: 'groups'
           })),
           nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(node => Sortable.create(node, {
-            onAdd: ({ item, from, to }) => {
-              const groups = this.model.get('groups');
+            onAdd({ item, from, to }) {
               const name = item.dataset.path.slice(1);
+              const groups = model.get('groups');
 
               const fromName = from.closest('.jst-group').dataset.name;
               groups[fromName] = _.without(groups[fromName], name);
@@ -73,7 +73,7 @@
               const toName = to.closest('.jst-group').dataset.name;
               groups[toName] = _.concat(groups[toName], name);
 
-              this.model.set('groups', groups, { silent: true });
+              model.set('groups', groups, { silent: true });
             },
             dataIdAttr: 'data-path',
             filter: '.pinned',
@@ -88,11 +88,11 @@
 
           switch (key) {
             case 'add':
-              return this.model.addGroup();
+              return model.addGroup();
             case 'rename':
-              return // this.model.renameGroup(name);
+              return // model.renameGroup(name);
             case 'delete':
-              return this.model.removeGroup(name);
+              return model.removeGroup(name);
           }
         },
         items: {

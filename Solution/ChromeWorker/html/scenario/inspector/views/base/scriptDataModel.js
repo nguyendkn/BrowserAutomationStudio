@@ -11,10 +11,11 @@
     }),
 
     update: function (source) {
+      const diff = jsonpatch.compare(this.get('source'), source);
       const highlight = this.get('highlight');
       const metadata = this.get('metadata');
-
-      const diff = jsonpatch.compare(this.get('source'), source); diff.forEach(({ path, op }) => {
+      
+      diff.forEach(({ path, op }) => {
         const now = performance.now();
 
         if (_.has(metadata, path)) {

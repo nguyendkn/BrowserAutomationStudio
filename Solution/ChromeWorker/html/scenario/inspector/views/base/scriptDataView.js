@@ -17,13 +17,13 @@
 
       this.model.on('change:source', (__, source) => {
         const panel = this.el.querySelector('.inspector-panel');
-        panel.dataset.empty = _.size(source) === 0;
+        panel.dataset.empty = _.isEmpty(source);
         this.viewer.model.update(prepareData(source));
       });
 
       this.tools = new Inspector.ToolsView();
-      this.tools.model.on('change:filters', this.filterItems, this);
       this.tools.model.on('change:sorting', this.sortItems, this);
+      this.tools.model.on('change:filters', this.filterItems, this);
       this.tools.model.on('change:query', this.filterItems, this);
     },
 
@@ -114,7 +114,7 @@
 
     restoreState(state = this.model.get('state')) {
       _.each(state, (expanded, path) => {
-        const $el = this.$el.find(`[data-path="${path}"] > .jst-list`);
+        const $el = this.$(`[data-path="${path}"] > .jst-list`);
         if (!expanded || $el.hasClass('collapsed')) return;
         $el.prev('.jst-collapse').click();
       });
@@ -133,7 +133,6 @@
       const modal = new Inspector.Modal({
         callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
         value: this.viewer.model.getValue(path),
-        allowEdit: this.allowEdit,
         type,
         path,
       });

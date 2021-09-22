@@ -5866,17 +5866,15 @@
           return [type, _Inspector[type].getState()]
         }))
       }));
-      // TODO: create separate global state manager
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(state) {
       const json = _.attempt(JSON.parse, state);
+      if (_.isError(json)) return;
 
-      if (!_.isError(json)) {
-        _.each(json.inspector, (state, type) => {
-          _Inspector[type].restoreState(state);
-        });
-      }
+      _.each(json.inspector, (state, type) => {
+        _Inspector[type].restoreState(state);
+      });
     }
 
     function BrowserAutomationStudio_FinishedBackup(fullPath) {

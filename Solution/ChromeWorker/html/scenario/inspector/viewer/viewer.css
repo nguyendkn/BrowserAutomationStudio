@@ -111,16 +111,18 @@
   color: #666;
 }
 
-.jst-list {
-  flex-direction: column;
-  padding-left: 15px;
+.jst-list,
+.jst-root {
+  flex-flow: column;
   display: flex;
 }
 
+.jst-list {
+  padding-left: 15px;
+}
+
 .jst-root {
-  flex-direction: column;
   padding-left: 0px;
-  display: flex;
 }
 
 .jst-item {

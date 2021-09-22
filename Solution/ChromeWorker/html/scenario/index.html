@@ -5869,12 +5869,12 @@
       // TODO: create separate global state manager
     }
 
-    function BrowserAutomationStudio_LoadInterfaceState(json) {
-      const result = _.attempt(JSON.parse, json);
+    function BrowserAutomationStudio_LoadInterfaceState(state) {
+      const json = _.attempt(JSON.parse, state);
 
-      if (!_.isError(result)) {
-        return ['variables', 'resources', 'callstack'].forEach(type => {
-          _Inspector[type].restoreState(result.inspector[type]);
+      if (!_.isError(json)) {
+        _.each(json.inspector, (state, type) => {
+          _Inspector[type].restoreState(state);
         });
       }
     }

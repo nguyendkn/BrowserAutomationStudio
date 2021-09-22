@@ -24,9 +24,8 @@
   });
 
   function updateVariable(value, pointer, type) {
-    const { root, path, isGlobal } = pointer.split('/').slice(1).reduce((data, key, at) => {
+    const { root, path } = pointer.slice(1).split('/').reduce((data, key, at) => {
       return at !== 0 ? { ...data, path: `${data.path}['${key}']` } : {
-        isGlobal: key.startsWith('GLOBAL:'),
         root: key.replace('GLOBAL:', ''),
         path: ''
       }
@@ -44,7 +43,7 @@
       VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
         (function () {
           try {
-            if (${isGlobal}) {
+            if (${pointer.startsWith('/GLOBAL:')}) {
               const obj = JSON.parse(P('basglobal', '${root}') || '{}');
               obj${path} = ${value};
               PSet('basglobal', '${root}', JSON.stringify(obj));

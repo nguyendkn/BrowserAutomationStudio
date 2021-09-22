@@ -104,6 +104,12 @@ void MainApp::UpdateManualControl(bool NoFocus)
     RECT r = Layout->GetBrowserOuterRectangle(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,true);
     Data->Connector->SetOpenFileDialogManualMode(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect);
+    UpdateBrowserData(Data);
+}
+
+void MainApp::WriteBrowserData()
+{
+    UpdateBrowserData(Data);
 }
 
 std::string MainApp::Javascript(const std::string& Script, const std::string& BrowserType)

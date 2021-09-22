@@ -203,6 +203,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
 public:
     MainApp();
+    void WriteBrowserData();
     BrowserDirectControl * DirectControl();
     void UpdateManualControl(bool NoFocus = false);
     void DirectControlAddAction(const std::string& Script);

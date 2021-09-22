@@ -63,6 +63,9 @@ void BrowserSettingsSaver::Save()
 
             outfile<<"LocaleName="<<Language<<std::endl;
 
+            std::string SelectReplaceString = (SelectReplace) ? "Enable" : "Disable";
+            outfile<<"SelectReplace="<<SelectReplaceString<<std::endl;
+
             if(DeviceScaleFactor >= 1.01 || DeviceScaleFactor <= 0.99)
             {
                 outfile<<"ForceDeviceScaleFactor="<<DeviceScaleFactor<<std::endl;

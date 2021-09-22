@@ -3,11 +3,12 @@
 #include "JsonSerializer.h"
 #include "converter.h"
 
-void PopupEmulation::Init(BrowserData *Data, int FirstIndex, HWND hwnd)
+void PopupEmulation::Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayout* Layout)
 {
     this->Data = Data;
     this->hwnd = hwnd;
     this->FirstIndex = FirstIndex;
+    this->Layout = Layout;
     SelectElementIPC.Init(std::string("inselect") + Data->_UniqueProcessId);
 }
 
@@ -20,7 +21,7 @@ void PopupEmulation::CloseMenu()
     }
 }
 
-void PopupEmulation::ShowMenu(int X, int Y, std::vector<std::string> Options)
+void PopupEmulation::ShowMenu(int X, int Y, int Height, std::vector<std::string> Options)
 {
     CloseMenu();
 
@@ -33,11 +34,36 @@ void PopupEmulation::ShowMenu(int X, int Y, std::vector<std::string> Options)
         i++;
     }
 
+    RECT BrowserRectRelative = Layout->GetBrowserRectangle(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
+
     POINT p;
     p.x = 0;
     p.y = 0;
-
     GetCursorPos(&p);
+
+    POINT p2;
+    p2.x = BrowserRectRelative.right;
+    p2.y = BrowserRectRelative.bottom;
+    ClientToScreen(Data->_MainWindowHandle, &p2);
+
+    POINT p1;
+    p1.x = BrowserRectRelative.left;
+    p1.y = BrowserRectRelative.top;
+    ClientToScreen(Data->_MainWindowHandle, &p1);
+
+
+    if(p.x < p1.x)
+        p.x = p1.x;
+
+    if(p.x > p2.x)
+        p.x = p2.x;
+
+    if(p.y < p1.y)
+        p.y = p1.y;
+
+    if(p.y > p2.y)
+        p.y = p2.y;
+
 
     int Result = TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN | TPM_RETURNCMD, p.x, p.y, 0, hwnd, NULL) - FirstIndex;
 
@@ -85,7 +111,8 @@ void PopupEmulation::Timer()
                     return;
 
                 int X = Parser.GetFloatFromJson(CurrentData,"left");
-                int Y = Parser.GetFloatFromJson(CurrentData,"top") + Parser.GetFloatFromJson(CurrentData,"width");
+                int Y = Parser.GetFloatFromJson(CurrentData,"top");
+                int Height = Parser.GetFloatFromJson(CurrentData,"height");
 
                 std::vector<std::string> Options;
 
@@ -123,7 +150,7 @@ void PopupEmulation::Timer()
                     return;
 
                 CurrentElementId = Parser.GetStringFromJson(CurrentData,"element_id");
-                ShowMenu(X, Y, Options);
+                ShowMenu(X, Y, Height, Options);
                 return;
             }
         }

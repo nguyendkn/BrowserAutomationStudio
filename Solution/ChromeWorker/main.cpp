@@ -2259,7 +2259,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if(hwnd == NULL)
         return 0;
 
-    _PopupEmulation->Init(Data, IDPopupEmulation, hwnd);
+    _PopupEmulation->Init(Data, IDPopupEmulation, hwnd, Layout);
 
     Data->_MainWindowHandle = hwnd;
     Layout->MainWindowHandle = hwnd;

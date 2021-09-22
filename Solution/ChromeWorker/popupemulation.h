@@ -3,6 +3,7 @@
 
 #include "browserdata.h"
 #include "ipcsimple.h"
+#include "mainlayout.h"
 #include <windows.h>
 
 class PopupEmulation
@@ -14,13 +15,14 @@ class PopupEmulation
     int FirstIndex = 0;
     HWND hwnd;
     std::string CurrentElementId;
-    void ShowMenu(int X, int Y, std::vector<std::string> Options);
+    MainLayout* Layout;
+    void ShowMenu(int X, int Y, int Height, std::vector<std::string> Options);
     void CloseMenu();
 
 public:
 
 
-    void Init(BrowserData *Data, int FirstIndex, HWND hwnd);
+    void Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayout* Layout);
     void Timer();
 
     std::vector<std::function<void()> > EventPopupShown;

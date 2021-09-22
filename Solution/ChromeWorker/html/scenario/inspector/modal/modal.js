@@ -9,7 +9,7 @@
     })
   });
 
-  const View = Backbone.View.extend({
+  Inspector.Modal = Backbone.View.extend({
     template: JST['inspector/modal'],
 
     attributes: { tabindex: '-1' },
@@ -111,11 +111,8 @@
 
     close() {
       this.$el.modal('hide');
-      this.unbind();
-      this.remove();
+      this.remove().off();
       return this;
     }
   });
-
-  Inspector.Modal = View;
 })(window);

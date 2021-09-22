@@ -44,7 +44,7 @@
         (function () {
           try {
             if (${pointer.startsWith('/GLOBAL:')}) {
-              const obj = JSON.parse(P('basglobal', '${root}') || '{}');
+              var obj = JSON.parse(P('basglobal', '${root}') || '{}');
               obj${path} = ${value};
               PSet('basglobal', '${root}', JSON.stringify(obj));
             } else {

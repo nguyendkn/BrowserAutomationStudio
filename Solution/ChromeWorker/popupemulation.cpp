@@ -12,10 +12,14 @@ void PopupEmulation::Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayo
     SelectElementIPC.Init(std::string("inselect") + Data->_UniqueProcessId);
 }
 
-void PopupEmulation::CloseMenu()
+void PopupEmulation::CloseMenu(bool ForceClose)
 {
     if(hMenu)
     {
+        if(ForceClose)
+        {
+            SendMessage(hwnd, WM_CANCELMODE, (WPARAM)0, (LPARAM)0);
+        }
         DestroyMenu(hMenu);
         hMenu = 0;
     }
@@ -102,6 +106,10 @@ void PopupEmulation::Timer()
         for(std::string& CurrentData:DataAll)
         {
             JsonParser Parser;
+            if(Parser.GetStringFromJson(CurrentData,"type") == std::string("close_popup"))
+            {
+                CloseMenu(true);
+            }
             if(Parser.GetStringFromJson(CurrentData,"type") == std::string("open_popup"))
             {
                 for(auto f:EventPopupShown)

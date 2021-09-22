@@ -17,7 +17,7 @@ class PopupEmulation
     std::string CurrentElementId;
     MainLayout* Layout;
     void ShowMenu(int X, int Y, int Height, std::vector<std::string> Options);
-    void CloseMenu();
+    void CloseMenu(bool ForceClose = false);
 
 public:
 

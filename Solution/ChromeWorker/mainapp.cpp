@@ -4372,6 +4372,8 @@ void MainApp::ExecuteMouseMove()
     }
     Data->CursorX = CursorX;
     Data->CursorY = CursorY;
+    Data->DirectControlOrAutomationCursorX = Data->CursorX;
+    Data->DirectControlOrAutomationCursorY = Data->CursorY;
 
     RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,false);

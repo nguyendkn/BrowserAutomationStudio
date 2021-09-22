@@ -1958,6 +1958,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->_ParentWindowHandle = 0;
     Data->CursorX = rand()%20 + 30;
     Data->CursorY = rand()%20 + 30;
+    Data->DirectControlOrAutomationCursorX = Data->CursorX;
+    Data->DirectControlOrAutomationCursorY = Data->CursorY;
     Data->ScrollX = 0;
     Data->ScrollY = 0;
     Data->_Inspect.active = false;

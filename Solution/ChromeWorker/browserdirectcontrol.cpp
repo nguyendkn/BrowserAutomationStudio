@@ -828,6 +828,9 @@ void BrowserDirectControl::MouseMove(int X, int Y, bool IsMousePressed, bool IsC
 {
     //TID_UI
 
+    _BrowserData->DirectControlOrAutomationCursorX = X;
+    _BrowserData->DirectControlOrAutomationCursorY = Y;
+
     //Check if control is indirect
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
@@ -1090,6 +1093,8 @@ void BrowserDirectControl::DoMouseEvent(MouseClickItem Item)
 void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeftMousePressed, bool IsRightMousePressed, bool IsCtrlPressed, bool IsShiftPressed, bool IsLeftMouseButton)
 {
     //TID_UI
+    _BrowserData->DirectControlOrAutomationCursorX = X;
+    _BrowserData->DirectControlOrAutomationCursorY = Y;
 
     //Check if control is indirect
     if(_BrowserData->ManualControl == BrowserData::Indirect)

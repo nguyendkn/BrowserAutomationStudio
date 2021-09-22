@@ -23,19 +23,19 @@
                   <input type="text" value="<%- type === 'date' ? value : '' %>">
                 </div>
                 <div style="<%= style('boolean') %>" data-input-type="boolean">
-                  <% _.each(['false', 'true'], (val, idx) => { %>
+                  <% _.each(['false', 'true'], (val, at) => { %>
                     <div class="input-radio">
                       <% const id = _.uniqueId('inspectorModalInput') %>
-                      <input id="<%= id %>" type="radio" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : idx === 0) ? 'checked' : '' %>>
+                      <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : at === 0) ? 'checked' : '' %>>
                       <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
                     </div>
                   <% }) %>
                 </div>
                 <div style="<%= style('null') %>" data-input-type="null">
-                  <% _.each(['undefined', 'null'], (val, idx) => { %>
+                  <% _.each(['undefined', 'null'], (val, at) => { %>
                     <div class="input-radio">
                       <% const id = _.uniqueId('inspectorModalInput') %>
-                      <input id="<%= id %>" type="radio" name="empty" value="<%= val %>" <%= (type === 'null' ? value === val : idx === 0) ? 'checked' : '' %>>
+                      <input type="radio" id="<%= id %>" name="empty" value="<%= val %>" <%= (type === 'null' ? value === val : at === 0) ? 'checked' : '' %>>
                       <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
                     </div>
                   <% }) %>
@@ -43,9 +43,7 @@
               </form>
               <select id="inspectorModalSelect" data-style="inspector-modal-select">
                 <% _.each(['boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
-                  <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>>
-                    <%= tr(_.upperFirst(item)) %>
-                  </option>
+                  <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= tr(_.upperFirst(item)) %></option>
                 <% }) %>
               </select>
             </div>

@@ -168,12 +168,14 @@
       'click .jst-collapse': function (e) {
         const el = e.target, $el = $(el);
         $el.toggleClass('jst-collapse jst-expand').next().toggleClass('collapsed');
+
         this.trigger('node:collapse', { ...el.closest('li').dataset });
       },
 
       'click .jst-expand': function (e) {
         const el = e.target, $el = $(el);
         $el.toggleClass('jst-collapse jst-expand').next().toggleClass('collapsed');
+
         this.trigger('node:expand', { ...el.closest('li').dataset });
       }
     }

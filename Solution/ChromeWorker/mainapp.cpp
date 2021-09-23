@@ -105,6 +105,12 @@ void MainApp::UpdateManualControl(bool NoFocus)
     RECT r = Layout->GetBrowserOuterRectangle(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,true);
     Data->Connector->SetOpenFileDialogManualMode(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect);
+    UpdateBrowserData(Data);
+}
+
+void MainApp::WriteBrowserData()
+{
+    UpdateBrowserData(Data);
 }
 
 std::string MainApp::Javascript(const std::string& Script, const std::string& BrowserType)
@@ -4366,6 +4372,8 @@ void MainApp::ExecuteMouseMove()
     }
     Data->CursorX = CursorX;
     Data->CursorY = CursorY;
+    Data->DirectControlOrAutomationCursorX = Data->CursorX;
+    Data->DirectControlOrAutomationCursorY = Data->CursorY;
 
     RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,false);

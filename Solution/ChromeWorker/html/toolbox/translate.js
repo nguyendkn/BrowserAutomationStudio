@@ -120,7 +120,7 @@ _L =
 	"If current page is first, this action will load empty page.": {"ru": "Если текущая страница загружена первой, это действие загрузит пустую страницу."},
 	"Previous Page": {"ru": "Предыдущая Страница"},
 	"Combobox.": {"ru": "Выпадающий список."},
-	"In order to automate combobox input you need to use keyboard - start typing option that you want to select and then hit ENTER. Alternatively you can find required option by image.": {"ru": "Чтобы автоматизировать выбор элемента из выпадающего списка, вам нужно использовать клавиатуру - начните набирать ту опцию, которую хотите выбрать, и затем нажмите ENTER. В качестве альтернативы вы можете найти нужный вариант по изображению."},
+	"In order to automate combobox input you need to use keyboard - start typing option that you want to select and then hit ENTER.": {"ru": "Чтобы автоматизировать выбор элемента из выпадающего списка, вам нужно использовать клавиатуру - начните набирать ту опцию, которую хотите выбрать, и затем нажмите ENTER."},
 	"Proxy type will be extracted from proxy line": {"ru": "Тип прокси будет извлечен из строки прокси"},
 	"Parameter name is used to identify parameter, could be any string.": {"ru": "Имя параметра используется для его идентификации, может быть любой строкой."},
 	"Variable which will contain parameter value.": {"ru": "Переменная, которая будет содержать значение параметра."},

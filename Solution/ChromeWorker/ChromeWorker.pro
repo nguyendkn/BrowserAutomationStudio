@@ -77,6 +77,7 @@ SOURCES += main.cpp \
     pipesclient.cpp \
     log.cpp \
     commandparser.cpp \
+    popupemulation.cpp \
     prepareurladressbar.cpp \
     resultmanager.cpp \
     xml_encoder.cpp \
@@ -238,6 +239,7 @@ HEADERS += \
     pipesclient.h \
     log.h \
     commandparser.h \
+    popupemulation.h \
     prepareurladressbar.h \
     processcheck.h \
     resultmanager.h \

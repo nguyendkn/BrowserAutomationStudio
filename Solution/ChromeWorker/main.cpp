@@ -41,6 +41,7 @@
 #include "readallfile.h"
 #include "base64.h"
 #include "writefile.h"
+#include "popupemulation.h"
 
 
 #if defined(BAS_DEBUG)
@@ -50,11 +51,12 @@
 int pid = -1;
 CefRefPtr<MainApp> app;
 PipesClient *Client;
+PopupEmulation *_PopupEmulation;
 CommandParser *Parser;
 HWND MousePositionMouseHandle,hwnd,HButtonUp,HButtonDown,HButtonLeft,HButtonRight,HButtonMenu;
 HWND HButtonUpUp,HButtonDownDown,HButtonLeftLeft,HButtonRightRight;
 enum{IDButtonTerminate = 1000,IDButtonQuit,IDButtonUp,IDButtonBackUrl,IDBrowserTabs,IDBrowserMenu,IDButtonLoadUrl,IDButtonDown,IDButtonLeft,IDButtonRight,IDButtonUpUp,IDButtonDownDown,IDButtonLeftLeft,IDButtonRightRight,IDButtonMinimizeMaximize,IDButtonMenu,IDButtonSettings,IDButtonDirectRecord,IDButtonDirectNoRecord,IDButtonIndirect,IDTextHold,IDBrowserLabel,IDLabelTop,IDTextFinished,IDClick,IDMove,IDNone,IDMoveAndClick,IDDrag,IDDrop,IDDragElement,IDDropElement,IDInspect,IDXml,IDText,IDScript,IDClickElement,IDMoveElement,IDMoveAndClickElement,IDClear,IDType,IDExists,IDStyle,IDCheck,IDScreenshot,IDCoordinates,IDFocus,IDSet,IDSetInteger,IDSetRandom,IDGetAttr,IDSetAttr,IDCaptcha,IDLength,IDWaitElement,
-    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowUpdater,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000};
+    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowUpdater,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000, IDPopupEmulation = 60500};
 HCURSOR HCursor = 0;
 HCURSOR HCursorTouch = 0;
 using namespace std::placeholders;
@@ -1201,7 +1203,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     app->ProcessContextMenu(Command);
 
 
-                if(Command >= IDManualTabClose)
+                if(Command >= IDManualTabClose && Command < IDPopupEmulation)
                 {
                     int i = Command - IDManualTabClose;
                     app->DirectControl()->CloseTab(i);
@@ -1460,6 +1462,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
 
                 app->Timer();
+                
+                _PopupEmulation->Timer();
 
                 Layout->Timer(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
 
@@ -1954,6 +1958,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->_ParentWindowHandle = 0;
     Data->CursorX = rand()%20 + 30;
     Data->CursorY = rand()%20 + 30;
+    Data->DirectControlOrAutomationCursorX = Data->CursorX;
+    Data->DirectControlOrAutomationCursorY = Data->CursorY;
     Data->ScrollX = 0;
     Data->ScrollY = 0;
     Data->_Inspect.active = false;
@@ -2064,6 +2070,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         app->SetDevToolsReqest2Action(_DevToolsReqest2Action);
     }
     app->InitNetworkProcessIPC();
+    app->WriteBrowserData();
 
     int exit_code = CefExecuteProcess(main_args, app.get(), NULL);
 
@@ -2102,6 +2109,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
+    _PopupEmulation = new PopupEmulation();
 
     Client = new PipesClient();
     Parser = new CommandParser();
@@ -2113,6 +2121,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     KeyGlobal = Key;
     PidGlobal = Pid;
+    _PopupEmulation->EventPopupShown.push_back(std::bind(&MainApp::ComboboxOpened,app.get()));
     Layout->EventLoadNoDataPage.push_back(std::bind(&MainApp::LoadNoDataCallback,app.get()));
     Parser->EventLoad.push_back(std::bind(&MainApp::LoadCallback,app.get(),_1));
     Parser->EventLoad2.push_back(std::bind(&MainApp::Load2Callback,app.get(),_1,_2,_3));
@@ -2251,6 +2260,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         NULL, NULL, hInstance, NULL);
     if(hwnd == NULL)
         return 0;
+
+    _PopupEmulation->Init(Data, IDPopupEmulation, hwnd, Layout);
 
     Data->_MainWindowHandle = hwnd;
     Layout->MainWindowHandle = hwnd;

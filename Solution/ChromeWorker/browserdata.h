@@ -67,8 +67,10 @@ public:
     std::atomic_int HeightAll;
     std::atomic_int ScrollX;
     std::atomic_int ScrollY;
-    std::atomic_int CursorX;
-    std::atomic_int CursorY;
+    int CursorX;
+    int CursorY;
+    int DirectControlOrAutomationCursorX;
+    int DirectControlOrAutomationCursorY;
     double DeviceScaleFactor = 1.0;
     std::atomic_bool IsRecord;
     std::atomic_bool IsRecordHttp;

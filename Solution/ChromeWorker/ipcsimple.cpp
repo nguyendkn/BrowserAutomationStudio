@@ -1,6 +1,7 @@
 #include "ipcsimple.h"
 #include <random>
 
+
 std::string IPCSimple::GenerateRandomId()
 {
     const std::string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -19,6 +20,11 @@ std::string IPCSimple::GenerateRandomId()
     return random_string;
 }
 
+bool IPCSimple::GetIsActive()
+{
+    return IsActive;
+}
+
 std::string IPCSimple::GetId()
 {
     return Id;
@@ -26,19 +32,21 @@ std::string IPCSimple::GetId()
 
 std::string IPCSimple::Init(const std::string& IdDefault)
 {
+    Stop();
+
     this->Id.clear();
-    std::string Id;
+    std::string IdLocal;
 
     if(IdDefault.empty())
     {
-        Id = GenerateRandomId();
+        IdLocal = GenerateRandomId();
     }else
     {
-        Id = IdDefault;
+        IdLocal = IdDefault;
     }
 
-    std::string IdMem = Id + "mem";
-    std::string IdMut = Id + "mut";
+    std::string IdMem = IdLocal + "mem";
+    std::string IdMut = IdLocal + "mut";
 
     MappingHandler = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 2048,  IdMem.c_str());
 
@@ -67,14 +75,35 @@ std::string IPCSimple::Init(const std::string& IdDefault)
         return this->Id;
     }
 
+    IsActive = true;
+    this->Id = IdLocal;
+    return IdLocal;
+}
 
-    this->Id = Id;
-    return Id;
+IPCSimple::~IPCSimple()
+{
+    Stop();
+}
+
+void IPCSimple::Stop()
+{
+    if(!IsActive)
+        return;
+
+    UnmapViewOfFile(Data);
+    CloseHandle(MappingHandler);
+    ReleaseMutex(MutexHandler);
+    CloseHandle(MutexHandler);
+
+    IsActive = false;
 }
 
 
 bool IPCSimple::Peek()
 {
+    if(!IsActive)
+        return false;
+
     bool res = false;
     res = Data[0] > 0;
     return res;
@@ -83,6 +112,10 @@ bool IPCSimple::Peek()
 std::vector<std::string> IPCSimple::Read()
 {
     std::vector<std::string> Res;
+
+    if(!IsActive)
+        return Res;
+
     WaitForSingleObject(MutexHandler,INFINITE);
 
     int size = Data[0];
@@ -157,4 +190,7 @@ bool IPCSimple::Write(const std::string Id, const std::string& Message)
     CloseHandle(MappingHandler);
     ReleaseMutex(MutexHandler);
     CloseHandle(MutexHandler);
+
+    return true;
 }
+

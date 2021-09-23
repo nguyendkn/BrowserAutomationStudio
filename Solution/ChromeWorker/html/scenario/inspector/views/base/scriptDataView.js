@@ -48,8 +48,8 @@
     render() {
       if (this.$el.is(':empty')) {
         this.$el.html(this.template());
-        this.$('.inspector-panel-data').append(this.tree.el);
         this.$el.prepend(this.tools.render().el);
+        this.$('.inspector-panel-data').append(this.tree.el);
       }
 
       return this;

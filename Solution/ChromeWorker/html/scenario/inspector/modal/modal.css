@@ -92,12 +92,13 @@
 .inspector-modal-content {
   border: 1px solid #f7f7f8;
   background-color: #fff;
-  -webkit-user-select: none;
   -webkit-user-drag: none;
   pointer-events: all;
   position: relative;
   padding: 18px 18px;
   user-select: none;
+  flex-flow: column;
+  display: flex;
   margin: 0 8px;
 }
 

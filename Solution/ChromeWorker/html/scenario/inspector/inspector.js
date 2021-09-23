@@ -5,7 +5,7 @@
     template: JST['inspector/main'],
 
     initialize() {
-      ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
+      _.each(['isscriptexecuting', 'istaskexecuting'], attr => {
         _GobalModel.on(`change:${attr}`, (__, value) => {
           if (value || this.$el.is(':hidden')) return;
           this.variables.model.set('highlight', true);
@@ -35,10 +35,10 @@
 
         this.resizable = interact(this.el).resizable({
           listeners: {
-            move: ({ client: { y: pos } }) => {
+            move: ({ client: { y } }) => {
               this.$el.outerHeight(Math.max(120, Math.min(
                 window.outerHeight - 300 - 30,
-                window.outerHeight - pos - 30,
+                window.outerHeight - y - 30,
               )));
             }
           },

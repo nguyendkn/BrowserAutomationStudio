@@ -1231,6 +1231,17 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
 
+                //Fire all events before closing tab
+                std::vector<std::shared_ptr<IDevToolsAction> > AllActions = GetAllActions();
+                for(std::shared_ptr<IDevToolsAction> Action: AllActions)
+                {
+                    std::vector<std::string> SubscribbedEvents = Action->GetSubscribbedEvents();
+                    if(Action->GetState() == IDevToolsAction::Running && std::find(SubscribbedEvents.begin(), SubscribbedEvents.end(), Method) != SubscribbedEvents.end())
+                    {
+                        Action->OnWebSocketEvent(Method, Result);
+                    }
+                }
+
                 std::string TabId = Parser.GetStringFromJson(Result, "sessionId");
                 bool IsCurrentTabClosing = TabId == GlobalState.TabId;
                 std::string FirstTabId;

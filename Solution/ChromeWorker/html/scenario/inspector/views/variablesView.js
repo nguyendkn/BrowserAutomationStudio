@@ -1,6 +1,7 @@
 (({ App, _ }) => {
   const { Inspector, JST } = App;
   const { ScriptDataView } = Inspector;
+  const parentProto = ScriptDataView.prototype;
 
   Inspector.VariablesView = ScriptDataView.extend({
     template: JST['inspector/variables'],
@@ -10,12 +11,12 @@
     allowEdit: true,
 
     initialize() {
-      ScriptDataView.prototype.initialize.call(this);
+      parentProto.initialize.call(this);
       this.on('modal:accept', ({ value, path, type }) => updateVariable(value, path, type));
     },
 
     events: {
-      ...ScriptDataView.prototype.events,
+      ...parentProto.events,
 
       'keydown .inspector-filter-input': function (e) {
         if (e.key === ' ') e.preventDefault();

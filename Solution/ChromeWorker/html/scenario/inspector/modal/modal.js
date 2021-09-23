@@ -63,7 +63,7 @@
         }).show().find(':input').prop('required', true);
 
         $target.first().each((__, el) => {
-          const { type } = el, $el = $(el);
+          const $el = $(el), { type } = el;
 
           if (type === 'radio') {
             $el.prop('checked', true);
@@ -76,7 +76,7 @@
       });
 
       model.bind('change', () => {
-        const disabled = _.isEqual(model.toJSON(), { value, type, path });
+        const disabled = _.isEqual({ value, type, path }, model.toJSON());
         this.$('#inspectorModalAccept').prop('disabled', disabled);
       });
 

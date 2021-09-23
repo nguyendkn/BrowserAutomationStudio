@@ -24,6 +24,21 @@
         this.tree.model.update(prepareData(source));
       });
 
+      this.tree = new Inspector.TreeView()
+        .on('node:collapse', ({ path }) => {
+          model.set('state', { ...model.get('state'), [path]: false });
+          BrowserAutomationStudio_PreserveInterfaceState();
+        })
+        .on('node:expand', ({ path }) => {
+          model.set('state', { ...model.get('state'), [path]: true });
+          BrowserAutomationStudio_PreserveInterfaceState();
+        })
+        .on('render', () => {
+          this.restoreState();
+          this.filterItems();
+          this.sortItems();
+        });
+
       this.tools = new Inspector.ToolsView();
       this.tools.model.on('change:sorting', this.sortItems, this);
       this.tools.model.on('change:filters', this.filterItems, this);
@@ -31,26 +46,8 @@
     },
 
     render() {
-      const model = this.model;
-
       if (this.$el.is(':empty')) {
         this.$el.html(this.template());
-
-        this.tree = new Inspector.TreeView()
-          .on('node:collapse', ({ path }) => {
-            model.set('state', { ...model.get('state'), [path]: false });
-            BrowserAutomationStudio_PreserveInterfaceState();
-          })
-          .on('node:expand', ({ path }) => {
-            model.set('state', { ...model.get('state'), [path]: true });
-            BrowserAutomationStudio_PreserveInterfaceState();
-          })
-          .on('render', () => {
-            this.restoreState();
-            this.filterItems();
-            this.sortItems();
-          });
-
         this.$('.inspector-panel-data').append(this.tree.el);
         this.$el.prepend(this.tools.render().el);
       }

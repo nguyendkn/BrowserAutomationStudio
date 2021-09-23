@@ -65,16 +65,13 @@
         $target.first().each((__, el) => {
           const { type } = el, $el = $(el);
 
-          if (type !== 'radio') {
-            if (type === 'hidden') {
-              return model.set('value', el.value);
-            }
-            $el.val(type === 'number' ? 0 : '');
-          } else {
+          if (type === 'radio') {
             $el.prop('checked', true);
+          } else if (type !== 'hidden') {
+            $el.val(type === 'number' ? 0 : '');
           }
 
-          $el.trigger('change');
+          $el.trigger('input');
         });
       });
 

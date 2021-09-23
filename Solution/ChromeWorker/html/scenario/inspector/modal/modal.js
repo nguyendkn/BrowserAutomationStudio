@@ -47,7 +47,6 @@
     },
 
     initialize({ callback, value, type, path }) {
-      if (type === 'undefined') type = 'null';
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
 
@@ -64,9 +63,12 @@
         }).show().find(':input').prop('required', true);
 
         $target.first().each((__, el) => {
-          const $el = $(el), type = $el.attr('type');
+          const { type } = el, $el = $(el);
 
           if (type !== 'radio') {
+            if (type === 'hidden') {
+              return model.set('value', el.value);
+            }
             $el.val(type === 'number' ? 0 : '');
           } else {
             $el.prop('checked', true);

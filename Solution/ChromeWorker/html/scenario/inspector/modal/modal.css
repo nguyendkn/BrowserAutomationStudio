@@ -2,15 +2,15 @@
  * Modal styles *
  ****************/
 
-.dropdown-menu > li > a.inspector-modal-select-option.active:hover,
-.dropdown-menu > li > a.inspector-modal-select-option.active,
-.dropdown-menu > li > a.inspector-modal-select-option:hover {
+.dropdown-menu > li > .inspector-modal-select-option.active:hover,
+.dropdown-menu > li > .inspector-modal-select-option.active,
+.dropdown-menu > li > .inspector-modal-select-option:hover {
   background-color: #606060;
   background-image: none;
   color: #fff;
 }
 
-.dropdown-menu > li > a.inspector-modal-select-option {
+.dropdown-menu > li > .inspector-modal-select-option {
   transition: background-color 0.3s ease-in-out;
   border: thin solid transparent;
   justify-content: space-between;

@@ -18,7 +18,7 @@
       if (diff.length) {
         let history = [...this.get('history'), _.pluck(diff, 'path')].slice(-100);
 
-        diff.forEach(({ path, op }) => {
+        _.each(diff, ({ path, op }) => {
           const now = performance.now();
 
           if (_.has(metadata, path)) {

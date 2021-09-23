@@ -44,7 +44,7 @@
     }
   });
 
-  Inspector.Viewer = Backbone.View.extend({
+  Inspector.TreeView = Backbone.View.extend({
     className: 'jst-viewer',
 
     initialize() {

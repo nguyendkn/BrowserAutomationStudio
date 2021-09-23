@@ -21,7 +21,7 @@
       model.on('change:source', (__, source) => {
         const panel = this.el.querySelector('.inspector-panel');
         panel.dataset.empty = _.isEmpty(source);
-        this.viewer.model.update(prepareData(source));
+        this.tree.model.update(prepareData(source));
       });
 
       this.tools = new Inspector.ToolsView();
@@ -36,7 +36,7 @@
       if (this.$el.is(':empty')) {
         this.$el.html(this.template());
 
-        this.viewer = new Inspector.Viewer()
+        this.tree = new Inspector.TreeView()
           .on('node:collapse', ({ path }) => {
             model.set('state', { ...model.get('state'), [path]: false });
             BrowserAutomationStudio_PreserveInterfaceState();
@@ -51,7 +51,7 @@
             this.sortItems();
           });
 
-        this.$('.inspector-panel-data').append(this.viewer.el);
+        this.$('.inspector-panel-data').append(this.tree.el);
         this.$el.prepend(this.tools.render().el);
       }
 
@@ -92,7 +92,7 @@
       const history = this.model.get('history');
       const updates = history.length, flat = history.flat();
 
-      _.each(this.viewer.sortable.nodes, nodes => {
+      _.each(this.tree.sortable.nodes, nodes => {
         nodes.sort(nodes.toArray().sort((a, b) => {
           return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
             if (sorting === 'alphabetically') return a.localeCompare(b);
@@ -137,7 +137,7 @@
 
       const modal = new Inspector.Modal({
         callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
-        value: this.viewer.model.getValue(path),
+        value: this.tree.model.getValue(path),
         type,
         path,
       });

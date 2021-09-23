@@ -8,6 +8,13 @@
               <h4><%= tr("Change the variable value") %></h4>
             </div>
             <div class="inspector-modal-body">
+              <select id="inspectorModalSelect" data-style="inspector-modal-select">
+                <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
+                  <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>>
+                    <%= tr(_.upperFirst(item)) %>
+                  </option>
+                <% }) %>
+              </select>
               <form class="inspector-modal-form" action="javascript:void(0)">
                 <% const style = v => 'display: ' + (type === v ? 'block' : 'none') %>
                 <div style="<%= style('custom') %>" data-input-type="custom">
@@ -38,11 +45,6 @@
                   <input type="hidden" value="null">
                 </div>
               </form>
-              <select id="inspectorModalSelect" data-style="inspector-modal-select">
-                <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
-                  <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= tr(_.upperFirst(item)) %></option>
-                <% }) %>
-              </select>
             </div>
             <div class="inspector-modal-footer">
               <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" disabled><%= tr('Update') %></button>

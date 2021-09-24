@@ -21,18 +21,6 @@
         this.setElement('#inspector');
         this.$el.html(this.template());
 
-        this.variables = new Inspector.VariablesView({
-          el: '#variables'
-        }).render();
-
-        this.resources = new Inspector.ResourcesView({
-          el: '#resources'
-        }).render();
-
-        this.callstack = new Inspector.CallstackView({
-          el: '#callstack'
-        }).render();
-
         this.resizable = interact(this.el).resizable({
           listeners: {
             move: ({ client: { y } }) => {
@@ -44,6 +32,18 @@
           },
           edges: { top: true }
         });
+
+        this.variables = new Inspector.VariablesView({
+          el: '#variables'
+        }).render();
+
+        this.resources = new Inspector.ResourcesView({
+          el: '#resources'
+        }).render();
+
+        this.callstack = new Inspector.CallstackView({
+          el: '#callstack'
+        }).render();
       }
 
       return this;

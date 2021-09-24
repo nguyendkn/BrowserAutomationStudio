@@ -5347,10 +5347,9 @@
       _MainView.play()
     }
 
-    function BrowserAutomationStudio_GetVariablesList()
-    {
-      var code = GenerateCode(_TaskCollection.toJSON(),_GobalModel.toJSON())
-      var match = code.match(/VAR_[A-Z0-9_]+/g)
+    function BrowserAutomationStudio_GetVariablesList() {
+      var code = GenerateCode(_TaskCollection.toJSON(), _GobalModel.toJSON());
+      var match = code.match(/VAR_[A-Z0-9_]+/g);
       var variables = match ? _.uniq(match) : [];
 
       return variables.concat(JSON.parse(extract_global_variables(code)).map(el => {

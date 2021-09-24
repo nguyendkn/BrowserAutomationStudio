@@ -97,7 +97,7 @@
 
       'click .callstack-item-name': function (e) {
         const { id } = e.target.closest('li').dataset;
-        BrowserAutomationStudio_FocusAction(id, false);
+        BrowserAutomationStudio_FocusAction(id);
       },
 
       'click .callstack-item-data': function (e) {

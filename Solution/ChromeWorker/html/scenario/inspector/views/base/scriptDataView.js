@@ -35,14 +35,14 @@
         })
         .on('render', () => {
           this.restoreState();
-          this.filterItems();
-          this.sortItems();
+          this.applyFilters();
+          this.applySorting();
         });
 
       this.tools = new Inspector.ToolsView();
-      this.tools.model.on('change:sorting', this.sortItems, this);
-      this.tools.model.on('change:filters', this.filterItems, this);
-      this.tools.model.on('change:query', this.filterItems, this);
+      this.tools.model.on('change:sorting', this.applySorting, this);
+      this.tools.model.on('change:filters', this.applyFilters, this);
+      this.tools.model.on('change:query', this.applyFilters, this);
     },
 
     render() {
@@ -55,7 +55,7 @@
       return this;
     },
 
-    filterItems() {
+    applyFilters() {
       const filters = this.tools.model.get('filters');
       const query = this.tools.model.get('query');
 
@@ -83,14 +83,14 @@
       return this;
     },
 
-    sortItems() {
+    applySorting() {
       const sorting = this.tools.model.get('sorting');
       const metadata = this.model.get('metadata');
       const history = this.model.get('history');
       const updates = history.length, flat = history.flat();
 
       _.each(this.tree.sortable.nodes, nodes => {
-        const sorted = nodes.toArray().sort((a, b) => {
+        const order = nodes.toArray().sort((a, b) => {
           return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
             if (sorting === 'alphabetically') return a.localeCompare(b);
             const metaA = metadata[a];
@@ -110,7 +110,7 @@
           })();
         });
 
-        nodes.sort(sorted);
+        nodes.sort(order);
       });
 
       return this;

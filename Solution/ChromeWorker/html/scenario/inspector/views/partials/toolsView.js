@@ -34,12 +34,6 @@
       return this;
     },
 
-    toggle() {
-      this.$('.inspector-tools-toggle > i').toggleClass('fa-chevron-down fa-chevron-up');
-      this.$('.inspector-tools-panel').toggleClass('collapsed');
-      return this;
-    },
-
     events: {
       'change .inspector-filter-menu > li > input': function (e) {
         const { checked, value } = e.target;
@@ -48,7 +42,7 @@
 
       'input .inspector-filter-input': _.debounce(function (e) {
         this.model.set('query', _.toLower(e.target.value));
-      }, 250),
+      }, 200),
 
       'click .inspector-filter-menu > li': function (e) {
         e.stopPropagation();
@@ -59,7 +53,10 @@
         this.model.set('sorting', e.currentTarget.dataset.sorting);
       },
 
-      'click .inspector-tools-toggle': 'toggle'
+      'click .inspector-tools-toggle': function (e) {
+        $(e.currentTarget).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+        this.$('.inspector-tools-panel').toggleClass('collapsed');
+      }
     }
   });
 })(window);

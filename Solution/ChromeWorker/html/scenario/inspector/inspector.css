@@ -173,10 +173,6 @@
   flex: 1;
 }
 
-.inspector-tabs > .hidden {
-  display: none;
-}
-
 .inspector-tabs > .active {
   display: flex;
 }

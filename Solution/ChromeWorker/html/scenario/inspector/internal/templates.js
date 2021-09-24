@@ -70,7 +70,7 @@
             </li>
           </ul>
           <button type="button" id="inspectorClose" style="min-width: 28px; border: none; background: #fafafa;">
-            <svg viewBox="0 0 12 12" height="12" width="12" fill="#000" style="vertical-align: middle">
+            <svg viewBox="0 0 12 12" height="12" width="12" fill="#000" style="vertical-align: middle;">
               <path d="M12 1.0501l-1.05-1.05L6 4.9501 1.05.0001 0 1.0501l4.95 4.95-4.95 4.95 1.05 1.05L6 7.0501l4.95 4.95 1.05-1.05-4.95-4.95 4.95-4.95z" />
             </svg>
           </button>
@@ -80,7 +80,7 @@
           <div class="inspector-tab" id="resources" role="tabpanel"></div>
           <div class="inspector-tab" id="callstack" role="tabpanel"></div>
         </div>
-        <div class="inspector-notice" style="display: none">
+        <div class="inspector-notice" style="display: none;">
           <span><%= tr("Data will be loaded at the next script pause") %></span>
         </div>
       </div>
@@ -106,7 +106,7 @@
 
     'inspector/callstack': _.template(/*html*/`
       <div class="inspector-tools" style="background: #fafafa;">
-        <ul class="" style="flex: 1">
+        <ul class="" style="flex: 1;">
           <% _.each(['Functions', 'Actions'], type => { %>
             <li class="">
               <% const id = _.uniqueId('inspectorFilter' + type), val = _.toLower(type).slice(0, -1) %>

@@ -67,7 +67,7 @@
             const visible = filters[el.dataset.type];
 
             if (query) {
-              const text = $(el).children('.jst-label').text();
+              const text = $(el).find('.jst-label').text();
               const lower = _.toLower(text.slice(0, -1));
               return lower.includes(query) && visible;
             }

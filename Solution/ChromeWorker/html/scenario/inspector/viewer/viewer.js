@@ -162,7 +162,7 @@
       'click .jst-group-toggle': function (e) {
         const $el = $(e.target), $group = $el.closest('.jst-group');
         $el.toggleClass('fa-chevron-down fa-chevron-up');
-        $group.children('.jst-group-body').toggle();
+        $group.find('.jst-group-body').toggle();
       },
 
       'click .jst-collapse': function (e) {

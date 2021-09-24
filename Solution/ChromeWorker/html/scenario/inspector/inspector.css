@@ -47,7 +47,7 @@
 
 .inspector-filter-input {
   padding: 3px;
-  border: none;
+  border: 0;
   flex: 1;
 }
 
@@ -89,18 +89,18 @@
  ****************/
 
 .inspector-tools .dropdown > button:hover {
-  outline: none;
+  outline: 0;
 }
 
 .inspector-tools .dropdown > button:focus {
-  outline: none;
+  outline: 0;
 }
 
 .inspector-tools .dropdown > button {
   background: #fff;
-  border: none;
   height: 100%;
   width: 28px;
+  border: 0;
 }
 
 .inspector-tools-panel.collapsed {
@@ -115,9 +115,9 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  outline: none;
-  border: none;
   height: 15px;
+  outline: 0;
+  border: 0;
 }
 
 .inspector-tools-panel {
@@ -245,8 +245,8 @@
 .callstack-toggle-params {
   background: transparent;
   color: #606060;
-  outline: none;
-  border: none;
+  outline: 0;
+  border: 0;
 }
 
 .callstack-item-data {

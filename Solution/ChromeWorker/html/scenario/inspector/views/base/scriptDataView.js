@@ -90,7 +90,7 @@
       const updates = history.length, flat = history.flat();
 
       _.each(this.tree.sortable.nodes, nodes => {
-        nodes.sort(nodes.toArray().sort((a, b) => {
+        const sorted = nodes.toArray().sort((a, b) => {
           return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
             if (sorting === 'alphabetically') return a.localeCompare(b);
             const metaA = metadata[a];
@@ -108,7 +108,9 @@
             const f2 = flat.filter(v => v === b).length + updates;
             return metaB.usages / f2 - metaA.usages / f1;
           })();
-        }));
+        });
+
+        nodes.sort(sorted);
       });
 
       return this;

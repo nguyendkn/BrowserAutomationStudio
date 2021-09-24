@@ -16,8 +16,6 @@
 
     className: 'modal',
 
-    tagName: 'div',
-
     events: {
       'input [data-input-type] textarea': function (e) {
         if (e.target.type === 'radio' && !e.target.checked) return;

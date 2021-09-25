@@ -52,6 +52,7 @@
           null: true
         }
       });
+
       this.tools.model.on('change:sorting', this.applySorting, this);
       this.tools.model.on('change:filters', this.applyFilters, this);
       this.tools.model.on('change:query', this.applyFilters, this);
@@ -104,19 +105,17 @@
       _.each(this.tree.sortable.nodes, nodes => {
         const order = nodes.toArray().sort((a, b) => {
           return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
-            if (sorting === 'alphabetically') return a.localeCompare(b);
-
-            if (sorting === 'dateModified') {
-              return metadata[b].modifiedAt - metadata[a].modifiedAt;
+            switch (sorting) {
+              case 'dateModified':
+                return metadata[b].modifiedAt - metadata[a].modifiedAt;
+              case 'dateCreated':
+                return metadata[b].createdAt - metadata[a].createdAt;
+              case 'frequency':
+                const f2 = cache.filter(v => v === b).length + updates;
+                const f1 = cache.filter(v => v === a).length + updates;
+                return metadata[b].usages / f2 - metadata[a].usages / f1;
             }
-
-            if (sorting === 'dateCreated') {
-              return metadata[b].createdAt - metadata[a].createdAt;
-            }
-
-            const f2 = cache.filter(v => v === b).length + updates;
-            const f1 = cache.filter(v => v === a).length + updates;
-            return metadata[b].usages / f2 - metadata[a].usages / f1;
+            return a.localeCompare(b);
           })();
         });
 

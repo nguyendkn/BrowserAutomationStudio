@@ -49,7 +49,7 @@
           string: true,
           array: true,
           date: true,
-          null: true
+          null: true,
         }
       });
 
@@ -115,6 +115,7 @@
                 const f1 = cache.filter(v => v === a).length + updates;
                 return metadata[b].usages / f2 - metadata[a].usages / f1;
             }
+
             return a.localeCompare(b);
           })();
         });

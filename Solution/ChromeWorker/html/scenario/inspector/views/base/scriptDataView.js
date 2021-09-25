@@ -93,20 +93,18 @@
         const order = nodes.toArray().sort((a, b) => {
           return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
             if (sorting === 'alphabetically') return a.localeCompare(b);
-            const metaA = metadata[a];
-            const metaB = metadata[b];
 
             if (sorting === 'dateModified') {
-              return metaB.modifiedAt - metaA.modifiedAt;
+              return metadata[b].modifiedAt - metadata[a].modifiedAt;
             }
 
             if (sorting === 'dateCreated') {
-              return metaB.createdAt - metaA.createdAt;
+              return metadata[b].createdAt - metadata[a].createdAt;
             }
 
-            const f1 = flat.filter(v => v === a).length + updates;
             const f2 = flat.filter(v => v === b).length + updates;
-            return metaB.usages / f2 - metaA.usages / f1;
+            const f1 = flat.filter(v => v === a).length + updates;
+            return metadata[b].usages / f2 - metadata[a].usages / f1;
           })();
         });
 

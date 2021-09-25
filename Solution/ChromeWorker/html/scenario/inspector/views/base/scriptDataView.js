@@ -75,7 +75,7 @@
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
         if ($items.length) {
-          const $visible = $items.filter((__, el) => {
+          const $visible = $items.filter((at, el) => {
             const visible = filters[el.dataset.type];
 
             if (query) {

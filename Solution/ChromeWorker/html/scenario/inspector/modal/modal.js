@@ -52,15 +52,15 @@
         const $inputs = this.$('[data-input-type]');
         $inputs.parent('form').trigger('reset');
 
-        const $unused = $inputs.filter((__, el) => {
+        const $unused = $inputs.filter((at, el) => {
           return el.dataset.inputType !== type
         }).hide().find(':input').prop('required', false);
 
-        const $target = $inputs.filter((__, el) => {
+        const $target = $inputs.filter((at, el) => {
           return el.dataset.inputType === type
         }).show().find(':input').prop('required', true);
 
-        $target.first().each((__, el) => {
+        $target.first().each((at, el) => {
           const $el = $(el), { type } = el;
 
           if (type === 'radio') {

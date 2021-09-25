@@ -87,7 +87,7 @@
       const sorting = this.tools.model.get('sorting');
       const metadata = this.model.get('metadata');
       const history = this.model.get('history');
-      const updates = history.length, flat = history.flat();
+      const updates = history.length, cache = history.flat();
 
       _.each(this.tree.sortable.nodes, nodes => {
         const order = nodes.toArray().sort((a, b) => {
@@ -102,8 +102,8 @@
               return metadata[b].createdAt - metadata[a].createdAt;
             }
 
-            const f2 = flat.filter(v => v === b).length + updates;
-            const f1 = flat.filter(v => v === a).length + updates;
+            const f2 = cache.filter(v => v === b).length + updates;
+            const f1 = cache.filter(v => v === a).length + updates;
             return metadata[b].usages / f2 - metadata[a].usages / f1;
           })();
         });

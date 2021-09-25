@@ -39,7 +39,19 @@
           this.applySorting();
         });
 
-      this.tools = new Inspector.ToolsView();
+      this.tools = new Inspector.ToolsView({
+        filters: {
+          undefined: true,
+          boolean: true,
+          number: true,
+          groups: false,
+          object: true,
+          string: true,
+          array: true,
+          date: true,
+          null: true
+        }
+      });
       this.tools.model.on('change:sorting', this.applySorting, this);
       this.tools.model.on('change:filters', this.applyFilters, this);
       this.tools.model.on('change:query', this.applyFilters, this);

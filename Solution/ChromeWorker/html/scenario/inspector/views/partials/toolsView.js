@@ -3,18 +3,8 @@
 
   const Model = Backbone.Model.extend({
     defaults: () => ({
-      filters: {
-        undefined: true,
-        boolean: true,
-        number: true,
-        groups: false,
-        object: true,
-        string: true,
-        array: true,
-        date: true,
-        null: true
-      },
       sorting: 'alphabetically',
+      filters: {},
       query: ''
     })
   });
@@ -22,8 +12,12 @@
   Inspector.ToolsView = Backbone.View.extend({
     template: JST['inspector/tools'],
 
-    initialize() {
-      this.model = new Model();
+    initialize(options) {
+      this.model = new Model(_.pick(options, [
+        'filters',
+        'sorting',
+        'query',
+      ]));
     },
 
     render() {

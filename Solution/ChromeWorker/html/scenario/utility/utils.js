@@ -21,7 +21,7 @@
 
   _.mixin({
     truncate: (str, limit) => {
-      return str.length > limit ? (str.slice(0, limit - 3) + '...') : str;
+      return str.length > limit ? (str.substr(0, limit - 3) + '...') : str;
     },
 
     lowerFirst: str => str.charAt(0).toLowerCase() + str.slice(1),

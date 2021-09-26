@@ -1,4 +1,4 @@
-(({ Backbone, $, _ }) => {
+(({ Backbone, _ }) => {
   _.extend(Backbone.Events, {
     once: function (events, callback, context) {
       const boundOff = _.bind(this.off, this);

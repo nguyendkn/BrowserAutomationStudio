@@ -1,4 +1,4 @@
-(({ App, Backbone, $, _ }) => {
+(({ App, $, _ }) => {
   const toString = Object.prototype.toString;
 
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {

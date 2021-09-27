@@ -178,14 +178,14 @@
 }
 
 .inspector-tabs > div {
-  flex-direction: column;
+  flex-flow: column;
   overflow: hidden;
   display: none;
   flex: 1;
 }
 
 .inspector-tabs {
-  flex-direction: column;
+  flex-flow: column;
   overflow: hidden;
   display: flex;
   flex: 1;

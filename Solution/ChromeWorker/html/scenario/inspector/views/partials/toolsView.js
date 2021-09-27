@@ -12,6 +12,8 @@
   Inspector.ToolsView = Backbone.View.extend({
     template: JST['inspector/tools'],
 
+    className: 'inspector-tools',
+
     initialize(options) {
       this.model = new Model(_.pick(options, [
         'filters',

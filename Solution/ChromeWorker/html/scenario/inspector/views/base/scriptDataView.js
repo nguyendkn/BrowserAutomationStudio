@@ -100,7 +100,7 @@
       const sorting = this.tools.model.get('sorting');
       const metadata = this.model.get('metadata');
       const history = this.model.get('history');
-      const updates = history.length, cache = history.flat();
+      const cache = history.flat(), updates = history.length;
 
       _.each(this.tree.sortable.nodes, nodes => {
         const order = nodes.toArray().sort((a, b) => {

@@ -290,6 +290,7 @@ void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
 
     extra_info->SetString(8,ApplicationEngineVersion);
     extra_info->SetString(9,ScriptEngineVersion);
+    extra_info->SetString(10,InterfaceState);
 }
 
 
@@ -2372,10 +2373,11 @@ void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
 
 }
 
-void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version)
+void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version, const std::string & interface_state)
 {
     ApplicationEngineVersion = application_engine_version;
     ScriptEngineVersion = script_engine_version;
+    InterfaceState = interface_state;
     Data->IsTesing = is_testing;
     Schema = schema;
     Code = code;

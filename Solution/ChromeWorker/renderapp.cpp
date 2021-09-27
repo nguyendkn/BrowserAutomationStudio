@@ -28,6 +28,7 @@ void RenderApp::OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info)
     worker_log_init_no_delete(IsRecord);
     ApplicationEngineVersion = extra_info->GetString(8);
     ScriptEngineVersion = extra_info->GetString(9);
+    InterfaceState = extra_info->GetString(10);
 }
 
 bool RenderApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
@@ -131,6 +132,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
 
         object->SetValue("_ApplicationEngineVersion", CefV8Value::CreateString(ApplicationEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_ScriptEngineVersion", CefV8Value::CreateString(ScriptEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("_InterfaceState", CefV8Value::CreateString(InterfaceState), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_K", CefV8Value::CreateString(Lang), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_Z", CefV8Value::CreateInt(100), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_DoTour", CefV8Value::CreateBool(false), V8_PROPERTY_ATTRIBUTE_NONE);

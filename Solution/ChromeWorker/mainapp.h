@@ -186,7 +186,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     ImageFinder _ImageFinder;
     MainLayout *Layout;
 
-    std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData, ApplicationEngineVersion, ScriptEngineVersion;
+    std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData, ApplicationEngineVersion, ScriptEngineVersion, InterfaceState;
     bool IsScenarioInterfaceInitialSent;
     bool IsToolboxInterfaceInitialSent;
     bool ResourcesChanged;
@@ -330,7 +330,7 @@ public:
     void ElementCommandCallback(const ElementCommand &Command);
     void ClearElementCommand();
 
-    void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version);
+    void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version, const std::string & interface_state);
     void SetResourceCallback(const std::string & resources);
     void SetInitialStateCallback(const std::string & lang);
     void DebugVariablesResultCallback(const std::string & data);

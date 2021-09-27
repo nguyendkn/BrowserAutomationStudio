@@ -16,13 +16,14 @@
       this.model = new Model(_.pick(options, [
         'filters',
         'sorting',
-        'query',
+        'query'
       ]));
     },
 
     render() {
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template(this.model.toJSON()));
+        const json = this.model.toJSON();
+        this.$el.html(this.template(json));
       }
 
       return this;

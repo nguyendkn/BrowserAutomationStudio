@@ -2252,7 +2252,6 @@
       taskedit: function()
       {
         BrowserAutomationStudio_EditSaveStart()
-        //BrowserAutomationStudio_EditSaveEnd()
       },
 
       taskcancel: function()
@@ -3948,18 +3947,15 @@
           {text: tr('Delete selected'), action: function(e){
                 e.preventDefault();
                 self.DeleteSelected()
-
           }},
           {divider:true},
           {text: tr('Enable selected'), action: function(e){
                 e.preventDefault();
                 self.EnableSelected()
-
           }},
           {text: tr('Disable selected'), action: function(e){
                 e.preventDefault();
                 self.DisableSelected()
-
           }},
           {divider:true},
           {text: tr('Set color') + ' <span class="action-color-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ' + tr('for selected actions'), action: function(e){
@@ -3990,35 +3986,28 @@
           {text: '<img draggable="false" src="icons/checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
                 e.preventDefault();
                 self.CheckAll()
-
           }},
           {text: '<img draggable="false" src="icons/uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
                 e.preventDefault();
                 self.ClearSelection()
-
           }},
           {divider:true},
           {text: '<i class="fa fa-arrow-circle-left" aria-hidden="true"></i> ' + tr('Fold all'), action: function(e){
                 e.preventDefault();
                 self.FoldAll()
-
           }},
           {text: '<i class="fa fa-arrow-circle-down" aria-hidden="true"></i> ' + tr('Unfold all'), action: function(e){
                 e.preventDefault();
                 self.UnfoldAll()
-
           }},
           {divider:true},
-
           {text: '<i class="fa fa-search" aria-hidden="true"></i> ' + tr('Search'), action: function(e){
                 e.preventDefault();
                 _ActionFinder.Show()
-
           }},
           {text: '<i class="fa fa-bug" aria-hidden="true"></i> ' + tr('Variable Inspector'), action: function(e){
                 e.preventDefault();
-                _Inspector.show()
-
+                _Inspector.show();
           }},
         ]);
 

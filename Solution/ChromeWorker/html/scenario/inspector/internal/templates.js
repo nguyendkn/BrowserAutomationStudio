@@ -141,9 +141,9 @@
               <% } %>
             </div>
             <% if (pid) { %>
-              <ul class="callstack-function-params collapse <%= expanded ? 'in' : '' %>" id="<%= pid %>" aria-expanded="<%= expanded %>">
+              <ul class="callstack-item-params collapse <%= expanded ? 'in' : '' %>" id="<%= pid %>" aria-expanded="<%= expanded %>">
                 <% _.each(item.arguments, (value, name) => { %>
-                  <li class="callstack-function-param">
+                  <li class="callstack-item-param">
                     <span><%= name %>:</span>
                     <span><%= value %></span>
                   </li>

@@ -210,12 +210,12 @@
   display: none;
 }
 
-.callstack-function-param > span:first-of-type {
+.callstack-item-param > span:first-of-type {
   font-weight: 600;
   color: #5a5a5a;
 }
 
-.callstack-function-param > span:last-of-type {
+.callstack-item-param > span:last-of-type {
   font-weight: 400;
   color: #838383;
 }
@@ -236,7 +236,7 @@
   display: flex; 
 }
 
-.callstack-function-params {
+.callstack-item-params {
   font-size: smaller;
   flex-flow: column;
   padding: 0 20px;

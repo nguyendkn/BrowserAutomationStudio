@@ -157,12 +157,12 @@
 
     'inspector/tools': _.template(/*html*/`
       <div class="inspector-tools-panel">
-        <input type="text" class="inspector-filter-input" placeholder="<%= tr('Filter by name') %>..." value="<%= query %>">
+        <input type="text" class="inspector-tools-input" placeholder="<%= tr('Filter by name') %>..." value="<%= query %>">
         <div class="dropdown">
           <button data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-expanded="false" aria-haspopup="true">
             <i class="fa fa-filter"></i>
           </button>
-          <ul class="dropdown-menu dropdown-menu-right inspector-sort-menu">
+          <ul class="dropdown-menu dropdown-menu-right inspector-tools-sorting">
             <li data-sorting="alphabetically">
               <a href="#"><%= tr('Alphabetically') %></a>
             </li>
@@ -182,7 +182,7 @@
             <button data-toggle="dropdown" type="button" title="<%= tr('Filters') %>" aria-expanded="false" aria-haspopup="true">
               <i class="fa fa-cog"></i>
             </button>
-            <ul class="dropdown-menu dropdown-menu-right inspector-filter-menu">
+            <ul class="dropdown-menu dropdown-menu-right inspector-tools-filters">
               <% _.each(filters, (checked, value) => { %>
                 <li>
                   <% const type = _.upperFirst(value), id = _.uniqueId('inspectorFilter' + type) %>

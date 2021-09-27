@@ -18,7 +18,7 @@
     events: {
       ...parentProto.events,
 
-      'keydown .inspector-filter-input': function (e) {
+      'keydown .inspector-tools-input': function (e) {
         if (e.key === ' ') e.preventDefault();
       }
     }

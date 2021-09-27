@@ -37,27 +37,27 @@
   flex: 1;
 }
 
-.inspector-filter-input:not(:placeholder-shown) {
+.inspector-tools-input:not(:placeholder-shown) {
   user-select: auto;
 }
 
-.inspector-filter-input:placeholder-shown {
+.inspector-tools-input:placeholder-shown {
   user-select: none;
 }
 
-.inspector-filter-input {
+.inspector-tools-input {
   padding: 3px;
   border: 0;
   flex: 1;
 }
 
-.inspector-filter-menu {
+.inspector-tools-filters {
   min-width: max-content;
   padding: 0 12px;
   left: auto;
 }
 
-.inspector-sort-menu {
+.inspector-tools-sorting {
   min-width: max-content;
   padding: 0 12px;
   left: auto;

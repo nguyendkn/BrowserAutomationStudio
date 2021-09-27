@@ -157,7 +157,7 @@
 
     'inspector/tools': _.template(/*html*/`
       <div class="inspector-tools-panel">
-        <input type="text" class="inspector-tools-input" placeholder="<%= tr('Filter by name') %>..." value="<%= query %>">
+        <input type="search" class="inspector-tools-input" placeholder="<%= tr('Filter by name') %>..." value="<%= query %>">
         <div class="dropdown">
           <button data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-expanded="false" aria-haspopup="true">
             <i class="fa fa-filter"></i>

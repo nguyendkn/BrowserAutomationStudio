@@ -3859,7 +3859,6 @@
           }
 
       });
-      _Inspector.render();
         console.timeEnd("Apply html");
         console.log("Cached actions: " + cached_actions + " / " + total_actions + ". Total added: " + total_added + ", total removed: " + total_removed)
 
@@ -3879,6 +3878,7 @@
 
         this.renderisscriptexecutingcontainer();
         this.renderselectiontemplatecontainer();
+        _Inspector.render();
 
         var self = this
 
@@ -4076,7 +4076,7 @@
 
     context.init({preventDoubleContext: false});
 
-    $( document ).ready(function() {
+    $(function() {
         //document.documentElement.style.zoom = _Z + '%';
         $(document).keydown(function(e) {
           _MainView.key(e)

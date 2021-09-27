@@ -75,10 +75,6 @@
       return this;
     },
 
-    getState() {
-      return this.model.get('state');
-    },
-
     events: {
       'change .inspector-tools > ul > li > input': function (e) {
         const { checked, value } = e.target;

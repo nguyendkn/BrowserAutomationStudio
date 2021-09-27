@@ -136,10 +136,6 @@
       return this;
     },
 
-    getState() {
-      return this.model.get('state');
-    },
-
     openModal(e) {
       e.stopPropagation();
       const { path, type } = e.target.closest('li').dataset;

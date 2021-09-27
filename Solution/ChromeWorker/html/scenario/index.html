@@ -5851,7 +5851,7 @@
     function BrowserAutomationStudio_PreserveInterfaceState() {
       BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
         inspector: Object.fromEntries(['variables', 'resources', 'callstack'].map(type => {
-          return [type, _Inspector[type].getState()]
+          return [type, _Inspector[type].model.get('state')]
         }))
       }));
     }

@@ -72,7 +72,7 @@
       const filters = this.tools.model.get('filters');
       const query = this.tools.model.get('query');
 
-      _.each(this.$('.jst-group'), el => {
+      this.$('.jst-group').each((at, el) => {
         const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
         if ($items.length) {

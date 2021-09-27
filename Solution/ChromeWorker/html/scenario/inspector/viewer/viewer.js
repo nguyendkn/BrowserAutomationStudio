@@ -184,7 +184,7 @@
   function renderNode(label, value, path, isRoot) {
     const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
     return (
-      `<li class="jst-item" data-path="${path}" data-type="${type}">${[
+      `<li class="jst-item" data-type="${type}" data-path="${path}">${[
         '<i class="jst-icon fa fa-chain"></i>',
         isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
         (() => {

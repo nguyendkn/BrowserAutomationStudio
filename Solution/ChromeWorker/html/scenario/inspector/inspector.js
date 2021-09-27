@@ -1,11 +1,11 @@
-(({ App, Backbone, _ }) => {
+(({ App, Backbone }) => {
   const { Inspector, JST } = App;
 
   Inspector.Main = Backbone.View.extend({
     template: JST['inspector/main'],
 
     initialize() {
-      _.each(['isscriptexecuting', 'istaskexecuting'], attr => {
+      ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
         _GobalModel.on(`change:${attr}`, (__, value) => {
           if (value || this.$el.is(':hidden')) return;
           this.variables.model.set('highlight', true);

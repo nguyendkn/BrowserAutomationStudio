@@ -80,9 +80,8 @@
             const visible = filters[el.dataset.type];
 
             if (query) {
-              const text = $(el).find('.jst-label').text();
-              const lower = _.toLower(text.slice(0, -1));
-              return lower.includes(query) && visible;
+              const text = $(el).find('.jst-label').text().slice(0, -1);
+              return _.toLower(text.trim()).includes(query) && visible;
             }
 
             return visible;

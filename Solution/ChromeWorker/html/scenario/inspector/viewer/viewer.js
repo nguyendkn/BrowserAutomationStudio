@@ -54,7 +54,7 @@
         _.each(this.sortable, list => _.invoke(list, 'destroy'));
 
         this.sortable = {
-          groups: [this.el].map(node => Sortable.create(node, {
+          groups: [this.el].map(el => Sortable.create(el, {
             onEnd: ({ item, from, to }) => {
 
             },
@@ -62,7 +62,8 @@
             filter: '.pinned',
             group: 'groups'
           })),
-          nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(node => Sortable.create(node, {
+
+          nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(el => Sortable.create(el, {
             onAdd({ item, from, to }) {
               const name = item.dataset.path.slice(1);
               const groups = model.get('groups');

@@ -77,6 +77,8 @@ void DevToolsActionExecuteJavascript::Run()
 
     Result->SetResult(InitialVariables);
 
+    SubscribbedEvents.push_back("Target.detachedFromTarget");
+
     LastMessage.clear();
     Next();
 
@@ -104,6 +106,7 @@ bool DevToolsActionExecuteJavascript::Evaluate(std::map<std::string, Variant>& P
         return true;
     }
 
+    CurrentExecutionTabId = TabId;
     SendWebSocket("Runtime.evaluate", Params);
     return false;
 }
@@ -486,7 +489,17 @@ void DevToolsActionExecuteJavascript::Next()
 
 void DevToolsActionExecuteJavascript::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
+    CurrentExecutionTabId.clear();
     LastMessage = Message;
     Next();
 }
 
+void DevToolsActionExecuteJavascript::OnWebSocketEvent(const std::string& Method, const std::string& Message)
+{
+    if(Method == "Target.detachedFromTarget" && !CurrentExecutionTabId.empty() && CurrentExecutionTabId == GetStringFromJson(Message, "sessionId"))
+    {
+        //In case if tab is destroyed after Runtime.evaluate is sent and no answer has been returned yet, return error.
+        Result->Fail("Tab is destroyed", "TabDestroyed");
+        State = Finished;
+    }
+}

@@ -867,21 +867,29 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 std::string Result = picojson::value(ResultObject).serialize();
                 std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
                 std::string NewUrl = Parser.GetStringFromJson(Result, "targetInfo.url");
+                bool Attached = Parser.GetBooleanFromJson(Result, "targetInfo.attached", false);
 
                 bool IsChanged = false;
+
+                //During chrome extensions initial load real url is replaced with not_exists_url.html#real_url. Real url will be loaded after initialization.
+                if(NewUrl.find("chrome-extension://") != std::string::npos && NewUrl.find("not_exists_url.html#") != std::string::npos && !Attached)
+                {
+                    //Extension popup is created
+                    std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                    TabInfo->ConnectionState = TabData::NotStarted;
+                    TabInfo->FrameId = FrameId;
+                    TabInfo->IsWaitingForFirstUrl = true;
+                    //Obtain real url
+                    TabInfo->FirstUrl = ReplaceAll(NewUrl, "not_exists_url.html#", std::string());
+                    GlobalState.Tabs.push_back(TabInfo);
+                    ProcessTabConnection(TabInfo);
+                }
 
 
                 for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
                 {
                     if(FrameId == TabInfo->FrameId)
                     {
-                        //During chrome extensions initial load real url is replaced with not_exists_url.html#real_url. Real url will be loaded after initialization.
-                        if(TabInfo->IsWaitingForFirstUrl && TabInfo->FirstUrl.empty() && NewUrl.find("chrome-extension://") != std::string::npos && NewUrl.find("not_exists_url.html#") != std::string::npos)
-                        {
-                            //Obtain real url
-                            TabInfo->FirstUrl = ReplaceAll(NewUrl, "not_exists_url.html#", std::string());
-                            CheckIfTabsNeedsToLoadFirstUrl(TabInfo);
-                        }
                         //If using tabs.create from extension, real url will be replaced with about:blank#replaceurlreal_url. Real url will be loaded after initialization.
                         if(TabInfo->IsWaitingForFirstUrl && TabInfo->FirstUrl.empty() && NewUrl.find("about:blank#replaceurl") != std::string::npos)
                         {
@@ -1156,15 +1164,6 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             GlobalState.SwitchingToDelayedTabIndex = -1;
                         }
                     }
-                }else if(TypeName == "other" && starts_with(Url, "chrome-extension://"))
-                {
-                    //Extension popup is created
-                    std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                    TabInfo->ConnectionState = TabData::NotStarted;
-                    TabInfo->FrameId = FrameId;
-                    TabInfo->IsWaitingForFirstUrl = true;
-                    GlobalState.Tabs.push_back(TabInfo);
-                    ProcessTabConnection(TabInfo);
                 }else if(TypeName == "background_page")
                 {
                     //Background page for extension has been created, collect info

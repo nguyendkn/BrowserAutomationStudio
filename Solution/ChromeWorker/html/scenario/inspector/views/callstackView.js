@@ -12,11 +12,7 @@
     }),
 
     update: function (stack) {
-      this.set('stack', stack.concat({
-        type: 'function',
-        name: 'Main',
-        id: 0
-      }));
+      this.set('stack', stack);
     }
   });
 

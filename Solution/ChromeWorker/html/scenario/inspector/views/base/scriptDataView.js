@@ -102,7 +102,7 @@
       const cache = history.flat(), updates = history.length;
 
       _.each(this.tree.sortable.nodes, nodes => {
-        const order = nodes.toArray().sort((a, b) => {
+        nodes.sort(nodes.toArray().sort((a, b) => {
           return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
             switch (sorting) {
               case 'dateModified':
@@ -117,9 +117,7 @@
 
             return a.localeCompare(b);
           })();
-        });
-
-        nodes.sort(order);
+        }));
       });
 
       return this;

@@ -215,8 +215,8 @@
 
     return [
       `<span class="jst-bracket">${brackets[0]}</span>`,
-      nodes.length ? '<span class="jst-collapse"></span>' : '',
-      `<ul class="jst-list">${nodes.join('')}</ul>`,
+      nodes.length ? '<span class="jst-expand"></span>' : '',
+      `<ul class="jst-list collapsed">${nodes.join('')}</ul>`,
       `<span class="jst-bracket">${brackets[1]}</span>`
     ].join('');
   }

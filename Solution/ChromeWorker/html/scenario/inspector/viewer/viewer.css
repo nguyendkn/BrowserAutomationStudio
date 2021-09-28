@@ -35,11 +35,9 @@
   margin: 0 4px 0 0;
 }
 
-.jst-root > li > .jst-collapse {
-  display: none;
-}
-
-.jst-root > li > .jst-bracket {
+.jst-root > li > .jst-collapse,
+.jst-root > li > .jst-bracket,
+.jst-root > li > .jst-expand {
   display: none;
 }
 
@@ -67,8 +65,7 @@
   content: '+';
 }
 
-.jst-list.collapsed,
-.jst-root.collapsed {
+.jst-list.collapsed {
   display: none;
 }
 

@@ -128,8 +128,7 @@
     restoreState(state = this.model.get('state')) {
       _.each(state, (expanded, path) => {
         const $el = this.$(`[data-path="${path}"] > .jst-list`);
-        if ($el.hasClass('collapsed') || expanded) return;
-        $el.prev('.jst-collapse').click();
+        if ($el.hasClass('collapsed') && expanded) $el.prev().click();
       });
       this.model.set('state', state);
       return this;

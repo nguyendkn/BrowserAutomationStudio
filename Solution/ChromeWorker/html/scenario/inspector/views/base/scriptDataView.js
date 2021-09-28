@@ -145,9 +145,7 @@
         value: this.tree.model.getValue(path),
         type,
         path,
-      });
-
-      modal.render();
+      }).render();
     },
 
     events: {

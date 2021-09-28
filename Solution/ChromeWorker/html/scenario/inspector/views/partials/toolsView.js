@@ -41,13 +41,13 @@
         this.model.set('query', _.toLower(e.target.value));
       }, 200),
 
-      'click .inspector-tools-filters > li': function (e) {
-        e.stopPropagation();
-      },
-
       'click .inspector-tools-sorting > li': function (e) {
         e.preventDefault();
         this.model.set('sorting', e.currentTarget.dataset.sorting);
+      },
+
+      'click .inspector-tools-filters > li': function (e) {
+        e.stopPropagation();
       },
 
       'click .inspector-tools-toggle': function (e) {

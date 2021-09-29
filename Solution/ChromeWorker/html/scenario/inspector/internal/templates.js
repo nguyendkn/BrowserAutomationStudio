@@ -105,17 +105,6 @@
     `),
 
     'inspector/callstack': _.template(/*html*/`
-      <div class="inspector-tools" style="background: #fafafa;">
-        <ul class="" style="flex: 1;">
-          <% _.each(['Functions', 'Actions'], type => { %>
-            <li class="">
-              <% const id = _.uniqueId('inspectorFilter' + type), val = _.toLower(type).slice(0, -1) %>
-              <input type="checkbox" id="<%= id %>" value="<%= val %>" <%= filters[val] ? 'checked' : '' %>>
-              <label for="<%= id %>"><%= type %></label>
-            </li>
-          <% }) %>
-        </ul>
-      </div>
       <div class="inspector-panel" data-empty="true">
         <div class="inspector-panel-info">
           <span><%= tr('No callstack') %></span>
@@ -128,7 +117,7 @@
       <ul class="callstack-data">
         <% _.each(stack, ({ id, type, name, ...item }) => { %>
           <% const pid = (type !== 'function' || _.isEmpty(item.arguments)) ? '' : _.uniqueId('params'), expanded = _.has(state, id) && !state[id] %>
-          <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= pid ? 'border-color: #c4c4c4;' : '' %><%= filters[type] ? '' : 'display: none;' %>">
+          <li class="callstack-item" data-id="<%= id %>" data-type="<%= type %>" style="<%= pid ? 'border-color: #c4c4c4;' : '' %><%= filters[type + 's'] ? '' : 'display: none;' %>">
             <div>
               <span class="callstack-item-name"><%= name + (type === 'action' ? ':' : '') %></span>
               <% if (type === 'action') { %>

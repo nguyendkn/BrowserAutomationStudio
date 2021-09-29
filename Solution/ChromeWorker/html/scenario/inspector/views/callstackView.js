@@ -3,10 +3,6 @@
 
   const Model = Backbone.Model.extend({
     defaults: () => ({
-      filters: {
-        function: true,
-        action: true,
-      },
       stack: [],
       state: {},
     }),
@@ -20,20 +16,25 @@
     template: JST['inspector/callstack'],
 
     initialize() {
-      const model = new Model()
-        .on('change:filters', () => {
-          this.filterStack()
-        })
+      const model = this.model = new Model()
         .on('change:stack', () => {
           this.renderStack()
         });
 
-      this.model = model;
+      this.tools = new Inspector.ToolsView({
+        filters: {
+          functions: true,
+          actions: true,
+        }
+      });
+
+      this.tools.model.on('change:filters', this.applyFilters, this);
     },
 
     render() {
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template(this.model.toJSON()));
+        this.$el.html(this.template());
+        this.$el.prepend(this.tools.render().el);
       }
 
       return this.renderStack();
@@ -42,8 +43,13 @@
     renderStack() {
       const panel = this.el.querySelector('.inspector-panel');
       panel.dataset.empty = _.isEmpty(this.model.get('stack'));
+      const html = JST['inspector/stack']({
+        ...this.model.toJSON(),
+        filters: this.tools.model.get('filters'),
+        sorting: this.tools.model.get('sorting'),
+      });
 
-      morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${JST['inspector/stack'](this.model.toJSON())}</div>`, {
+      morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${html}</div>`, {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         getNodeKey({ classList, dataset, id }) {
           if (classList) {
@@ -59,9 +65,9 @@
       return this;
     },
 
-    filterStack() {
-      _.each(this.model.get('filters'), (visible, type) => {
-        this.$(`[data-type="${type}"]`).toggle(visible);
+    applyFilters() {
+      _.each(this.tools.model.get('filters'), (visible, type) => {
+        this.$(`[data-type="${type.slice(0, -1)}"]`).toggle(visible);
       });
       return this;
     },

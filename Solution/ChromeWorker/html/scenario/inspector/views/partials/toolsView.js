@@ -32,7 +32,7 @@
     },
 
     events: {
-      'change .inspector-tools-filters > li > input': function (e) {
+      'change .inspector-tools-menu > li > input': function (e) {
         const { checked, value } = e.target;
         this.model.set('filters', { ...this.model.get('filters'), [value]: checked });
       },
@@ -41,12 +41,12 @@
         this.model.set('query', _.toLower(e.target.value.trim()));
       }, 200),
 
-      'click .inspector-tools-sorting > li': function (e) {
+      'click .inspector-tools-menu > [data-sorting]': function (e) {
         e.preventDefault();
         this.model.set('sorting', e.currentTarget.dataset.sorting);
       },
 
-      'click .inspector-tools-filters > li': function (e) {
+      'click .inspector-tools-menu > :not([data-sorting])': function (e) {
         e.stopPropagation();
       },
 

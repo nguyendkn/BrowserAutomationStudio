@@ -157,12 +157,12 @@
 
     'inspector/tools': _.template(/*html*/`
       <div class="inspector-tools-panel">
-        <input type="search" class="inspector-tools-input" placeholder="<%= tr('Filter by name') %>..." value="<%= query %>">
+        <input type="search" class="inspector-tools-input" placeholder="<%= tr('Search by name') %>..." value="<%= query %>">
         <div class="dropdown">
-          <button data-toggle="dropdown" type="button" title="<%= tr('Sorting') %>" aria-expanded="false" aria-haspopup="true">
+          <button data-toggle="dropdown" type="button" aria-expanded="false" aria-haspopup="true">
             <i class="fa fa-filter"></i>
           </button>
-          <ul class="dropdown-menu dropdown-menu-right inspector-tools-sorting">
+          <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu">
             <li data-sorting="alphabetically">
               <a href="#"><%= tr('Alphabetically') %></a>
             </li>
@@ -175,14 +175,7 @@
             <li data-sorting="dateCreated">
               <a href="#"><%= tr('By date created') %></a>
             </li>
-          </ul>
-        </div>
-        <% if (!_.isEmpty(filters)) { %>
-          <div class="dropdown">
-            <button data-toggle="dropdown" type="button" title="<%= tr('Filters') %>" aria-expanded="false" aria-haspopup="true">
-              <i class="fa fa-cog"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right inspector-tools-filters">
+            <% if (!_.isEmpty(filters)) { %>
               <% _.each(filters, (checked, value) => { %>
                 <li>
                   <% const type = _.upperFirst(value), id = _.uniqueId('inspectorFilter' + type) %>
@@ -190,9 +183,9 @@
                   <label for="<%= id %>"><%= tr(type) %></label>
                 </li>
               <% }) %>
-            </ul>
-          </div>
-        <% } %>
+            <% } %>
+          </ul>
+        </div>
       </div>
       <button class="inspector-tools-toggle" type="button">
         <i class="fa fa-chevron-up"></i>

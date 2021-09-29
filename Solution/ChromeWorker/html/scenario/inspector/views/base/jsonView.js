@@ -1,6 +1,6 @@
 (({ App, Backbone, $, _ }) => {
   const { Inspector } = App;
-  
+
   const Model = Backbone.Model.extend({
     defaults: () => ({
       highlight: false,

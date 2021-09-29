@@ -23,10 +23,14 @@
     </div>
   </div>
   <div id="findbuttoncontainer" data-toggle="tooltip" data-placement="auto" data-title="Search action by specified text">
-    <button type="button" class="btn btn-default btn-xs" id="findbutton"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-default btn-xs" id="findbutton">
+      <i class="fa fa-search" aria-hidden="true"></i>
+    </button>
   </div>
   <div id="helplabelcontainer" data-toggle="tooltip" data-placement="bottom" data-title="Following button leads to menu with most used actions and example of usage. It is good place to start if you are new to BAS.">
-    <button type="button" class="btn btn-default btn-xs" id="movetolabelbutton" onclick="BrowserAutomationStudio_HighlightHelpIsActive = false;$('#HelpCenter').modal();"><i class="fa fa-question-circle text-primary" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-default btn-xs" id="movetolabelbutton" onclick="BrowserAutomationStudio_HighlightHelpIsActive = false;$('#HelpCenter').modal();">
+      <i class="fa fa-question-circle text-primary" aria-hidden="true"></i>
+    </button>
   </div>
   <div id="debugbuttoncontainer">
     <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_Inspector.show()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action.">

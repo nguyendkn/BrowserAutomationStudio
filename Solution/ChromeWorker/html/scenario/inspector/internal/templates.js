@@ -88,28 +88,28 @@
 
     'inspector/variables': _.template(/*html*/`
       <div class="inspector-panel" data-empty="true">
+        <div class="inspector-panel-data"></div>
         <div class="inspector-panel-info">
           <span><%= tr('No variables') %></span>
         </div>
-        <div class="inspector-panel-data"></div>
       </div>
     `),
 
     'inspector/resources': _.template(/*html*/`
       <div class="inspector-panel" data-empty="true">
+        <div class="inspector-panel-data"></div>
         <div class="inspector-panel-info">
           <span><%= tr('No resources') %></span>
         </div>
-        <div class="inspector-panel-data"></div>
       </div>
     `),
 
     'inspector/callstack': _.template(/*html*/`
       <div class="inspector-panel" data-empty="true">
+        <div class="inspector-panel-data"></div>
         <div class="inspector-panel-info">
           <span><%= tr('No callstack') %></span>
         </div>
-        <div class="inspector-panel-data"></div>
       </div>
     `),
 

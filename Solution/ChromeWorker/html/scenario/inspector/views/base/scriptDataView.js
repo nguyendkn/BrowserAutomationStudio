@@ -44,7 +44,6 @@
           undefined: true,
           boolean: true,
           number: true,
-          groups: false,
           object: true,
           string: true,
           array: true,

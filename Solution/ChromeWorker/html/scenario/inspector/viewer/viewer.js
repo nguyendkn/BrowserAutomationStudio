@@ -119,7 +119,7 @@
               <i class="jst-group-toggle fa fa-chevron-up"></i>
             </div>
             <div class="jst-group-body">
-              <ul class="jst-root">${renderNode('root', _.pick(source, ...keys), '', true)}</ul>
+              <ul class="jst-root">${renderNode(_.pick(source, ...keys), 'root', '', true)}</ul>
             </div>
           </div>`
         )).join('')
@@ -182,7 +182,7 @@
     }
   });
 
-  function renderNode(label, value, path, isRoot) {
+  function renderNode(value, label, path, isRoot = false) {
     const type = _.toLower(Object.prototype.toString.call(value).slice(8, -1));
 
     return (
@@ -213,7 +213,7 @@
   }
 
   function iterable(value, path, type, brackets) {
-    const nodes = _.map(value, (val, key) => renderNode(key, val, `${path}/${key}`));
+    const nodes = _.map(value, (val, key) => renderNode(val, key, `${path}/${key}`));
 
     return [
       `<span class="jst-bracket">${brackets[0]}</span>`,

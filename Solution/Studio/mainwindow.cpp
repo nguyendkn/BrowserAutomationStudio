@@ -1266,6 +1266,7 @@ QPair<bool,QString> MainWindow::SaveToFileSilent(const QString& file)
     saver.SetConnectionPort(ConnectionPort);
     saver.SetConnectionLogin(ConnectionLogin);
     saver.SetConnectionPassword(ConnectionPassword);
+    saver.SetInterfaceState(InterfaceState);
     saver.SetModulesPreserve(ModulesPreserve);
     saver.SetUnusedModules(_ModuleManager->GetStandartModulesNotUsedInProject(TextEditor->GetText()));
 

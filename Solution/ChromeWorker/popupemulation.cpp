@@ -41,8 +41,8 @@ void PopupEmulation::ShowMenu(int X, int Y, int Height, std::vector<std::string>
     RECT BrowserRectRelative = Layout->GetBrowserRectangle(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
 
     POINT p;
-    p.x = BrowserRectRelative.left + Data->DirectControlOrAutomationCursorX;
-    p.y = BrowserRectRelative.top + Data->DirectControlOrAutomationCursorY;
+    p.x = BrowserRectRelative.left + Data->DirectControlOrAutomationCursorX * (float)(BrowserRectRelative.right - BrowserRectRelative.left) / (float)(Data->WidthBrowser);
+    p.y = BrowserRectRelative.top + Data->DirectControlOrAutomationCursorY * (float)(BrowserRectRelative.bottom - BrowserRectRelative.top) / (float)(Data->HeightBrowser);
     ClientToScreen(Data->_MainWindowHandle, &p);
 
     POINT p2;

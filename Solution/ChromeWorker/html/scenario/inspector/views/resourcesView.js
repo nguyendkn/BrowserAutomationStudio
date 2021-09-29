@@ -1,8 +1,8 @@
 (({ App, _ }) => {
   const { Inspector, JST } = App;
-  const { ScriptDataView } = Inspector;
+  const { JsonView } = Inspector;
 
-  Inspector.ResourcesView = ScriptDataView.extend({
+  Inspector.ResourcesView = JsonView.extend({
     template: JST['inspector/resources'],
 
     allowHighlight: false,
@@ -10,7 +10,7 @@
     allowEdit: false,
 
     initialize() {
-      ScriptDataView.prototype.initialize.call(this);
+      JsonView.prototype.initialize.call(this);
     }
   });
 })(window);

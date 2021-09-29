@@ -1,8 +1,8 @@
 (({ App, _ }) => {
   const { Inspector, JST } = App;
-  const { ScriptDataView } = Inspector;
+  const { JsonView } = Inspector;
 
-  Inspector.VariablesView = ScriptDataView.extend({
+  Inspector.VariablesView = JsonView.extend({
     template: JST['inspector/variables'],
 
     allowHighlight: true,
@@ -10,7 +10,7 @@
     allowEdit: true,
 
     initialize() {
-      ScriptDataView.prototype.initialize.call(this);
+      JsonView.prototype.initialize.call(this);
       this.on('modal:accept', ({ value, path, type }) => updateVariable(value, path, type));
     }
   });

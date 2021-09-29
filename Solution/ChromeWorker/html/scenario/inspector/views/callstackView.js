@@ -32,9 +32,11 @@
     },
 
     render() {
-      if (this.$el.is(':empty')) {
-        this.$el.html(this.template());
-        this.$el.prepend(this.tools.render().el);
+      const $el = this.$el;
+
+      if ($el.is(':empty')) {
+        $el.html(this.template());
+        $el.prepend(this.tools.render().el);
       }
 
       return this.renderStack();
@@ -69,6 +71,7 @@
       _.each(this.tools.model.get('filters'), (visible, type) => {
         this.$(`[data-type="${type.slice(0, -1)}"]`).toggle(visible);
       });
+
       return this;
     },
 

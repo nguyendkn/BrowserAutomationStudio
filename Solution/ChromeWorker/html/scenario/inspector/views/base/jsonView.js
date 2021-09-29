@@ -102,9 +102,11 @@
     },
 
     render() {
-      if (this.$el.is(':empty')) {
-        this.$el.html(this.template());
-        this.$el.prepend(this.tools.render().el);
+      const $el = this.$el;
+
+      if ($el.is(':empty')) {
+        $el.html(this.template());
+        $el.prepend(this.tools.render().el);
         this.$('.inspector-panel-data').append(this.tree.el);
       }
 

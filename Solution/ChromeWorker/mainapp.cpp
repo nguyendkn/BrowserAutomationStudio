@@ -1401,7 +1401,6 @@ void MainApp::CreateTooboxBrowser()
     browser_settings.file_access_from_file_urls = STATE_ENABLED;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserToolbox = CefBrowserHost::CreateBrowserSync(window_info, thandler, "file:///html/toolbox/index.html", browser_settings, CefDictionaryValue::Create(), Context);
@@ -1409,7 +1408,6 @@ void MainApp::CreateTooboxBrowser()
 
     std::string ToolboxScript = ReadAllString("html/toolbox/index.html");
     ToolboxPreprocess(Data->_ModulesData, Data->_UnusedModulesData, ToolboxScript);
-    //BrowserToolbox->GetMainFrame()->LoadString(ToolboxScript, "file:///html/toolbox/index.html");
     WriteStringToFile("html/toolbox/index_prepared.html", ToolboxScript);
     BrowserToolbox->GetMainFrame()->LoadURL("file:///html/toolbox/index_prepared.html");
 
@@ -1437,11 +1435,11 @@ void MainApp::CreateScenarioBrowser()
     browser_settings.file_access_from_file_urls = STATE_ENABLED;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserScenario = CefBrowserHost::CreateBrowserSync(window_info, shandler, "file:///html/scenario/index.html", browser_settings, CefDictionaryValue::Create(), Context);
     IsMainBrowserCreating = true;
+
     std::string ScenarioScript = ReadAllString("html/scenario/index.html");
     ScenarioPreprocess(Data->_ModulesData, ScenarioScript);
     WriteStringToFile("html/scenario/index_prepared.html", ScenarioScript);

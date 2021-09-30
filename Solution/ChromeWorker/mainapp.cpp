@@ -1397,6 +1397,8 @@ void MainApp::CreateTooboxBrowser()
     window_info.SetAsChild(Data->_MainWindowHandle,r);
 
     CefBrowserSettings browser_settings;
+    browser_settings.universal_access_from_file_urls = STATE_ENABLED;
+    browser_settings.file_access_from_file_urls = STATE_ENABLED;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
     //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
@@ -1431,6 +1433,8 @@ void MainApp::CreateScenarioBrowser()
     window_info.SetAsChild(Data->_MainWindowHandle,r);
 
     CefBrowserSettings browser_settings;
+    browser_settings.universal_access_from_file_urls = STATE_ENABLED;
+    browser_settings.file_access_from_file_urls = STATE_ENABLED;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
     //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();

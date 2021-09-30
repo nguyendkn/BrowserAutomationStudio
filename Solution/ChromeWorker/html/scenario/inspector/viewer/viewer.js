@@ -82,28 +82,6 @@
           }))
         }
       });
-
-      this.$el.contextMenu({
-        callback(key, { $trigger }) {
-          const { name } = $trigger[0].closest('.jst-group').dataset;
-
-          switch (key) {
-            case 'add':
-              return model.addGroup();
-            case 'rename':
-              return // model.renameGroup(name);
-            case 'delete':
-              return model.removeGroup(name);
-          }
-        },
-        items: {
-          add: { name: tr('Add') },
-          rename: { name: tr('Rename') },
-          delete: { name: tr('Delete') },
-        },
-        selector: '.jst-group-options',
-        trigger: 'left'
-      });
     },
 
     render() {

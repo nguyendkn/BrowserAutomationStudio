@@ -3,13 +3,19 @@ window.App = {
     <div>
       <nav>
         <li :class="{ active: isActive('variables') }">
-          <a v-on:click.prevent="setActive('variables')" href="#variables">Variables</a>
+          <a v-on:click.prevent="setActive('variables')" href="#variables">
+            {{ $t('nav.variables') }}
+          </a>
         </li>
         <li :class="{ active: isActive('resources') }">
-          <a v-on:click.prevent="setActive('resources')" href="#resources">Resources</a>
+          <a v-on:click.prevent="setActive('resources')" href="#resources">
+            {{ $t('nav.resources') }}
+          </a>
         </li>
         <li :class="{ active: isActive('callstack') }">
-          <a v-on:click.prevent="setActive('callstack')" href="#callstack">Call stack</a>
+          <a v-on:click.prevent="setActive('callstack')" href="#callstack">
+            {{ $t('nav.callstack') }}
+          </a>
         </li>
       </nav>
       <div>

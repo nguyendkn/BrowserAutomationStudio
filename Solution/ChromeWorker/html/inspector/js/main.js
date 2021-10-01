@@ -1,7 +1,5 @@
 Vue.config.productionTip = false;
 
-const locale = new URL(location.href).searchParams.get('lang') || 'en';
-
 new Vue({
   render: h => h(App),
 
@@ -12,6 +10,10 @@ new Vue({
           variables: 'Variables',
           resources: 'Resources',
           callstack: 'Call stack',
+        },
+        filters: {
+          functions: 'Functions',
+          actions: 'Actions',
         }
       },
       ru: {
@@ -19,9 +21,14 @@ new Vue({
           variables: 'Переменные',
           resources: 'Ресурсы',
           callstack: 'Стек вызовов',
+        },
+        filters: {
+          functions: 'Функции',
+          actions: 'Действия',
         }
       },
     },
-    locale
+
+    locale: new URL(location.href).searchParams.get('lang') || 'en'
   })
 }).$mount('#app');

@@ -11,8 +11,6 @@
     'Alphabetically': { ru: 'По алфавиту' },
     'No variables': { ru: 'Нет переменных' },
     'No resources': { ru: 'Нет ресурсов' },
-    'Functions': { ru: 'Функции' },
-    'Actions': { ru: 'Действия' },
     'Groups': { ru: 'Группы' },
     'Rename': { ru: 'Переименовать' },
     'Update': { ru: 'Обновить' },

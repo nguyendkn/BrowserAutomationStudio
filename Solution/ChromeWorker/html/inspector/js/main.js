@@ -29,6 +29,8 @@ new Vue({
       },
     },
 
-    locale: new URL(location.href).searchParams.get('lang') || 'en'
+    locale: new URL(location.href).searchParams.get('lang') || 'en',
+
+    fallbackLocale: 'en'
   })
 }).$mount('#app');

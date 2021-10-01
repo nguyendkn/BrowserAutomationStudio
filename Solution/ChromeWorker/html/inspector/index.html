@@ -7,7 +7,17 @@
     <title>Inspector</title>
   </head>
   <body>
-    <div id="app">Inspector</div>
+    <div id="app">
+      {{title}}
+    </div>
     <script src="./vendor/vue/vue.min.js"></script>
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          title: "Inspector"
+        }
+      });
+    </script>
   </body>
 </html>

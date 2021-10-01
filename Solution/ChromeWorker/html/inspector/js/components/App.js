@@ -9,13 +9,13 @@ window.App = {
           <a v-on:click.prevent="setActive('resources')" href="#resources">Resources</a>
         </li>
         <li :class="{ active: isActive('callstack') }">
-          <a v-on:click.prevent="setActive('callstack')" href="#callstack">Callstack</a>
+          <a v-on:click.prevent="setActive('callstack')" href="#callstack">Call stack</a>
         </li>
       </nav>
       <div>
         <div v-show="isActive('variables')" id="variables">Variables</div>
         <div v-show="isActive('resources')" id="resources">Resources</div>
-        <div v-show="isActive('callstack')" id="callstack">Callstack</div>
+        <div v-show="isActive('callstack')" id="callstack">Call stack</div>
       </div>
     </div>
   `,

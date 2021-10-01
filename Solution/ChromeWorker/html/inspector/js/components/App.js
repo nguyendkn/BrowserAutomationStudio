@@ -2,14 +2,14 @@ window.App = {
   template: /*html*/`
     <div>
       <nav>
-        <li>
-          <a v-on:click.prevent="setActive('variables')" :class="{ active: isActive('variables') }" href="#variables">Variables</a>
+        <li :class="{ active: isActive('variables') }">
+          <a v-on:click.prevent="setActive('variables')" href="#variables">Variables</a>
         </li>
-        <li>
-          <a v-on:click.preventt="setActive('resources')" :class="{ active: isActive('resources') }" href="#resources">Resources</a>
+        <li :class="{ active: isActive('resources') }">
+          <a v-on:click.prevent="setActive('resources')" href="#resources">Resources</a>
         </li>
-        <li>
-          <a v-on:click.prevent="setActive('callstack')" :class="{ active: isActive('callstack') }" href="#callstack">Callstack</a>
+        <li :class="{ active: isActive('callstack') }">
+          <a v-on:click.prevent="setActive('callstack')" href="#callstack">Callstack</a>
         </li>
       </nav>
       <div>

@@ -5,28 +5,8 @@ new Vue({
 
   i18n: new VueI18n({
     messages: {
-      en: {
-        nav: {
-          variables: 'Variables',
-          resources: 'Resources',
-          callstack: 'Call stack',
-        },
-        filters: {
-          functions: 'Functions',
-          actions: 'Actions',
-        }
-      },
-      ru: {
-        nav: {
-          variables: 'Переменные',
-          resources: 'Ресурсы',
-          callstack: 'Стек вызовов',
-        },
-        filters: {
-          functions: 'Функции',
-          actions: 'Действия',
-        }
-      },
+      en: window.locales['en'],
+      ru: window.locales['ru'],
     },
 
     locale: new URL(location.href).searchParams.get('lang') || 'en',

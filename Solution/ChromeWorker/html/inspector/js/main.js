@@ -1,6 +1,6 @@
 Vue.config.productionTip = false;
 
-new Vue({
+const app = new Vue({
   render: h => h(App),
 
   i18n: new VueI18n({
@@ -30,4 +30,6 @@ new Vue({
     locale: new URL(location.href).searchParams.get('lang') || 'en',
     fallbackLocale: 'en'
   })
-}).$mount('#app');
+});
+
+app.$mount('#app');

@@ -51,36 +51,36 @@
       const model = this.model = new Model().on('change', this.render, this);
 
       this.on('render', () => {
-        _.each(this.sortable, list => _.invoke(list, 'destroy'));
+        // _.each(this.sortable, list => _.invoke(list, 'destroy'));
 
-        this.sortable = {
-          groups: [this.el].map(el => Sortable.create(el, {
-            onEnd: ({ item, from, to }) => {
+        // this.sortable = {
+        //   groups: [this.el].map(el => Sortable.create(el, {
+        //     onEnd: ({ item, from, to }) => {
 
-            },
-            dataIdAttr: 'data-name',
-            filter: '.pinned',
-            group: 'groups'
-          })),
+        //     },
+        //     dataIdAttr: 'data-name',
+        //     filter: '.pinned',
+        //     group: 'groups'
+        //   })),
 
-          nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(el => Sortable.create(el, {
-            onAdd({ item, from, to }) {
-              // const name = item.dataset.path.slice(1);
-              // const groups = model.get('groups');
+        //   nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(el => Sortable.create(el, {
+        //     onAdd({ item, from, to }) {
+        //       const name = item.dataset.path.slice(1);
+        //       const groups = model.get('groups');
 
-              // const fromName = from.closest('.jst-group').dataset.name;
-              // groups[fromName] = _.without(groups[fromName], name);
+        //       const fromName = from.closest('.jst-group').dataset.name;
+        //       groups[fromName] = _.without(groups[fromName], name);
 
-              // const toName = to.closest('.jst-group').dataset.name;
-              // groups[toName] = _.concat(groups[toName], name);
+        //       const toName = to.closest('.jst-group').dataset.name;
+        //       groups[toName] = _.concat(groups[toName], name);
 
-              // model.set('groups', groups, { silent: true });
-            },
-            dataIdAttr: 'data-path',
-            filter: '.pinned',
-            group: 'nodes'
-          }))
-        }
+        //       model.set('groups', groups, { silent: true });
+        //     },
+        //     dataIdAttr: 'data-path',
+        //     filter: '.pinned',
+        //     group: 'nodes'
+        //   }))
+        // }
       });
     },
 

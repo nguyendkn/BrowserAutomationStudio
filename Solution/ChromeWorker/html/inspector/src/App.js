@@ -34,20 +34,20 @@ window.App = {
   },
 
   template: /*html*/`
-    <div>
-      <div>
-        <ul>
-          <li :class="{ active: isActive('variables') }">
+    <div class="inspector-content">
+      <div class="inspector-header">
+        <ul class="inspector-tabs" role="tablist">
+          <li class="inspector-tab" :class="{ active: isActive('variables') }">
             <a @click.prevent="setActive('variables')" href="#variables">
               {{ $t('nav.variables') }}
             </a>
           </li>
-          <li :class="{ active: isActive('resources') }">
+          <li class="inspector-tab" :class="{ active: isActive('resources') }">
             <a @click.prevent="setActive('resources')" href="#resources">
               {{ $t('nav.resources') }}
             </a>
           </li>
-          <li :class="{ active: isActive('callstack') }">
+          <li class="inspector-tab" :class="{ active: isActive('callstack') }">
             <a @click.prevent="setActive('callstack')" href="#callstack">
               {{ $t('nav.callstack') }}
             </a>
@@ -59,7 +59,7 @@ window.App = {
           </svg>
         </button>
       </div>
-      <div>
+      <div class="inspector-content">
         <div v-show="isActive('variables')" id="variables">
           Variables content
         </div>
@@ -69,6 +69,9 @@ window.App = {
         <div v-show="isActive('callstack')" id="callstack">
           Call stack content
         </div>
+      </div>
+      <div class="inspector-notice" v-show="false">
+        <span><%= tr("Data will be loaded at the next script pause") %></span>
       </div>
     </div>
   `

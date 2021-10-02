@@ -7,17 +7,22 @@
   toolbar: {
     placeholder: 'Поиск по имени',
     filters: {
+      undefined: 'Undefined',
       functions: 'Функции',
       actions: 'Действия',
+      boolean: 'Булево',
+      object: 'Объект',
       string: 'Строка',
       number: 'Число',
       array: 'Массив',
+      date: 'Дата',
+      null: 'Null'
     },
     sorting: {
       frequency: 'По частоте использования',
       dateModified: 'По дате изменения',
       dateCreated: 'По дате создания',
-      alphabet: 'По алфавиту'
+      alphabetically: 'По алфавиту'
     }
   }
 };

@@ -32,10 +32,6 @@
 
     toLower: str => str == null ? '' : str.toLowerCase(),
 
-    concat: (arr, ...args) => arr.concat(...args),
-
-    slice: (arr, ...args) => arr.slice(...args),
-
     sleep: time => new Promise(resolve => {
       setTimeout(resolve, time);
     }),

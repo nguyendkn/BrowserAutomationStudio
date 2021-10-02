@@ -65,16 +65,16 @@
 
           nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(el => Sortable.create(el, {
             onAdd({ item, from, to }) {
-              const name = item.dataset.path.slice(1);
-              const groups = model.get('groups');
+              // const name = item.dataset.path.slice(1);
+              // const groups = model.get('groups');
 
-              const fromName = from.closest('.jst-group').dataset.name;
-              groups[fromName] = _.without(groups[fromName], name);
+              // const fromName = from.closest('.jst-group').dataset.name;
+              // groups[fromName] = _.without(groups[fromName], name);
 
-              const toName = to.closest('.jst-group').dataset.name;
-              groups[toName] = _.concat(groups[toName], name);
+              // const toName = to.closest('.jst-group').dataset.name;
+              // groups[toName] = _.concat(groups[toName], name);
 
-              model.set('groups', groups, { silent: true });
+              // model.set('groups', groups, { silent: true });
             },
             dataIdAttr: 'data-path',
             filter: '.pinned',

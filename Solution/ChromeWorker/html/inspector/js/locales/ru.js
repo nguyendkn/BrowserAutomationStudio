@@ -2,10 +2,22 @@
   nav: {
     variables: 'Переменные',
     resources: 'Ресурсы',
-    callstack: 'Стек вызовов',
+    callstack: 'Стек вызовов'
   },
-  filters: {
-    functions: 'Функции',
-    actions: 'Действия',
+  toolbar: {
+    placeholder: 'Поиск по имени',
+    filters: {
+      functions: 'Функции',
+      actions: 'Действия',
+      string: 'Строка',
+      number: 'Число',
+      array: 'Массив',
+    },
+    sorting: {
+      frequency: 'По частоте использования',
+      dateModified: 'По дате изменения',
+      dateCreated: 'По дате создания',
+      alphabet: 'По алфавиту'
+    }
   }
 };

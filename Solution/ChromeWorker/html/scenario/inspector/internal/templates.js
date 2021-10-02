@@ -121,9 +121,9 @@
             <div>
               <span class="callstack-item-name"><%= name + (type === 'action' ? ':' : '') %></span>
               <% if (type === 'action') { %>
-                <span class="callstack-item-data text-truncate" title="<%= tr('Click to show or hide the full text') %>"><%= name === 'If' ? item.expression : item.iterator %></span>
+                <span class="callstack-item-data text-truncate"><%= name === 'If' ? item.expression : item.iterator %></span>
               <% } else if (pid) { %>
-                <button class="callstack-toggle-params" title="<%= tr('Click to show or hide function params') %>" type="button" data-toggle="collapse" data-target="#<%= pid %>" aria-expanded="<%= expanded %>" aria-controls="<%= pid %>">
+                <button class="callstack-toggle-params" type="button" data-toggle="collapse" data-target="#<%= pid %>" aria-expanded="<%= expanded %>" aria-controls="<%= pid %>">
                   <i class="fa fa-minus"></i>
                   <i class="fa fa-plus"></i>
                 </button>

@@ -43,7 +43,10 @@ window.App = {
       console.log(data)
     },
   },
+  destroyed() {
+    window.removeEventListener('message', this.handleFrameEvent);
+  },
   mounted() {
-    window.addEventListener('message', this.handleFrameEvent, false);
+    window.addEventListener('message', this.handleFrameEvent);
   }
 };

@@ -1,5 +1,9 @@
 Vue.config.productionTip = false;
 
+window.addEventListener('message', ({ data }) => {
+  console.log(data);
+}, false);
+
 new Vue({
   render: h => h(App),
 

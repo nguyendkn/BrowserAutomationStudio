@@ -1300,7 +1300,7 @@
     </div>
     <div class="bottompannel">
       <div style="display: none; flex: 1;" noupdate>
-        <iframe src="../inspector/index.html?lang=<%= _K %>" style="border: 0; width: 100%;"></iframe>
+        <iframe id="inspectorFrame" src="../inspector/index.html?lang=<%= _K %>" style="border: 0; width: 100%;"></iframe>
       </div>
       <div id="inspector" style="display: none;" noupdate></div>
       <div id="functions">
@@ -5548,6 +5548,7 @@
     }
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
+      App.InspectorFrame.sendData(JSON.parse(data));
       _.zip(['variables', 'resources', 'callstack'], JSON.parse(data)).forEach(([type, data]) => {
         _Inspector[type].model.update(data);
       });

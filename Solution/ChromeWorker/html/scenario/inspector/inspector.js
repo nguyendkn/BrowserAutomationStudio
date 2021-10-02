@@ -1,6 +1,13 @@
 (({ App, Backbone }) => {
   const { Inspector, JST } = App;
 
+  App.InspectorFrame = {
+    sendData(data) {
+      const frame = document.querySelector('#inspectorFrame');
+      frame.contentWindow.postMessage(data, '*');
+    }
+  };
+
   Inspector.Main = Backbone.View.extend({
     template: JST['inspector/main'],
 

@@ -44,6 +44,6 @@ window.App = {
     },
   },
   mounted() {
-    window.addEventListener('message', this.handleFrameEvent);
+    window.addEventListener('message', this.handleFrameEvent, false);
   }
 };

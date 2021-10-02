@@ -27,11 +27,9 @@ window.App = {
   `,
   name: 'App',
   components: {},
-  data() {
-    return {
-      activeTab: 'variables'
-    };
-  },
+  data: () => ({
+    activeTab: 'variables'
+  }),
   methods: {
     isActive(tab) {
       return this.activeTab === tab;

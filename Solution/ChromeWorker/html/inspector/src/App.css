@@ -1,0 +1,45 @@
+.inspector-tab + li {
+  border-left: 1px solid #e0e0e0;
+}
+
+.inspector-tab.active > a {
+  background: #e0e0e0;
+}
+
+.inspector-tab > a:hover {
+  cursor: pointer;
+}
+
+.inspector-tab > a:focus {
+  cursor: pointer;
+}
+
+.inspector-tab > a {
+  text-decoration: none;
+  font-size: 13px;
+  display: block;
+  padding: 4px 0;
+  color: #333;
+  height: 100%;
+  width: 100%;
+}
+
+.inspector-tab {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  user-select: none;
+  display: flex;
+  flex: 1;
+}
+
+.inspector-header {
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+}
+
+.inspector-content {
+  flex-flow: column;
+  display: flex;
+  height: 100%;
+}

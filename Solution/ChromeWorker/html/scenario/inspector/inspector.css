@@ -2,41 +2,6 @@
  * Inspector styles *
  ********************/
 
-.inspector-nav > li + li {
-  border-left: 1px solid #e0e0e0;
-}
-
-.inspector-nav > li.active > a {
-  background: #e0e0e0;
-}
-
-.inspector-nav > li > a:hover {
-  cursor: pointer;
-}
-
-.inspector-nav > li > a:focus {
-  cursor: pointer;
-}
-
-.inspector-nav > li > a {
-  text-decoration: none;
-  font-size: 13px;
-  display: block;
-  padding: 4px 0;
-  color: #333;
-  height: 100%;
-  width: 100%;
-}
-
-.inspector-nav > li {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  user-select: none;
-  display: flex;
-  flex: 1;
-}
-
 .inspector-tools-input:not(:placeholder-shown) {
   user-select: auto;
 }
@@ -55,17 +20,6 @@
   min-width: max-content;
   padding: 0 12px;
   left: auto;
-}
-
-.inspector-content {
-  flex-flow: column;
-  display: flex;
-  height: 100%;
-}
-
-.inspector-header {
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
 }
 
 .inspector-notice {

@@ -38,6 +38,12 @@ window.App = {
     },
     setActive(tab) {
       this.activeTab = tab;
-    }
+    },
+    handleFrameEvent({ data }) {
+      console.log(data)
+    },
+  },
+  mounted() {
+    window.addEventListener('message', this.handleFrameEvent);
   }
 };

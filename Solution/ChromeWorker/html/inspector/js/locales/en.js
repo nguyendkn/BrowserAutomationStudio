@@ -1,4 +1,4 @@
-(window.locales || (window.locales = {}))['en'] = {
+(window.locales || (window.locales = {})).en = {
   nav: {
     variables: 'Variables',
     resources: 'Resources',

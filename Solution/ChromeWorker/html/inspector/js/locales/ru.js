@@ -1,4 +1,4 @@
-(window.locales || (window.locales = {}))['ru'] = {
+(window.locales || (window.locales = {})).ru = {
   nav: {
     variables: 'Переменные',
     resources: 'Ресурсы',

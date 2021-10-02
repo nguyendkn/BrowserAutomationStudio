@@ -1,11 +1,27 @@
 (({ App, Backbone }) => {
   const { Inspector, JST } = App;
 
+  window.addEventListener('message', ({ data }) => {
+    if (data.type === 'hide') {
+      App.InspectorFrame.hide();
+    }
+  }, false);
+
   App.InspectorFrame = {
     sendData(data) {
       const frame = document.querySelector('#inspectorFrame');
       frame.contentWindow.postMessage(data, '*');
-    }
+    },
+
+    show() {
+      const frame = document.querySelector('#inspectorFrame');
+      $(frame.parentNode).show();
+    },
+
+    hide() {
+      const frame = document.querySelector('#inspectorFrame');
+      $(frame.parentNode).hide();
+    },
   };
 
   Inspector.Main = Backbone.View.extend({

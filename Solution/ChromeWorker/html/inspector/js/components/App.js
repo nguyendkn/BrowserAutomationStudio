@@ -39,7 +39,6 @@ window.App = {
     </div>
   `,
   name: 'App',
-  components: {},
   data: () => ({
     activeTab: 'variables'
   }),
@@ -53,6 +52,11 @@ window.App = {
     handleFrameEvent({ data }) {
       console.log(data)
     },
+    hide() {
+      window.parent.postMessage({
+        type: 'hide'
+      }, '*')
+    }
   },
   destroyed() {
     window.removeEventListener('message', this.handleFrameEvent);

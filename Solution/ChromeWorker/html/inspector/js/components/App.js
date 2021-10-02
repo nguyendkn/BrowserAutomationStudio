@@ -71,5 +71,5 @@ window.App = {
         </div>
       </div>
     </div>
-  `,
+  `
 };

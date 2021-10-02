@@ -7,11 +7,6 @@ const app = new Vue({
     messages: { ...window.locales },
     locale: new URL(location.href).searchParams.get('lang') || 'en',
     fallbackLocale: 'en'
-    /* 
-      'Data will be loaded at the next script pause': { ru: 'Данные будут загружены при следующей паузе сценария' },
-      'Change the variable value': { ru: 'Изменить значение переменной' },
-      'Update': { ru: 'Обновить' },
-    */
   })
 });
 

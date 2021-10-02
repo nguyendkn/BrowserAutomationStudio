@@ -5549,7 +5549,8 @@
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
       App.InspectorFrame.sendData(JSON.parse(data));
-      _.zip(['variables', 'resources', 'callstack'], JSON.parse(data)).forEach(([type, data]) => {
+
+      _.each(JSON.parse(data), (data, type) => {
         _Inspector[type].model.update(data);
       });
     }

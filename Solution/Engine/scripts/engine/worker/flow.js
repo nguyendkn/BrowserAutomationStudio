@@ -57,7 +57,11 @@ function debug_variables(list, callback) {
         id: 0
     });
 
-    Browser.DebugVariablesResult(JSON.stringify([variables, JSON.parse(ScriptWorker.PickResources()), callstack]), _get_function_body(callback));
+    Browser.DebugVariablesResult(JSON.stringify({
+        resources: JSON.parse(ScriptWorker.PickResources()),
+        variables: variables,
+        callstack: callstack,
+    }), _get_function_body(callback));
 }
 
 function _read_variables(list)

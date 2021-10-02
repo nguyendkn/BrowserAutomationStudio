@@ -18,8 +18,7 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.setElement('#inspector');
-        this.$el.html(this.template());
+        this.setElement('#inspector').$el.html(this.template());
 
         this.resizable = interact(this.el).resizable({
           listeners: {

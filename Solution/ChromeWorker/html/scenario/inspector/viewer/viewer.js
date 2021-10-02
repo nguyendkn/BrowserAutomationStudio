@@ -161,7 +161,7 @@
   });
 
   function renderNode(value, label, path, isRoot = false) {
-    const type = _.toLower(Object.prototype.toString.call(value).slice(8, -1));
+    const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
 
     return (
       `<li class="jst-item" data-type="${type}" data-path="${path}">${[

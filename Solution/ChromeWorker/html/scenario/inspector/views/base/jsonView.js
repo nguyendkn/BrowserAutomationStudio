@@ -126,7 +126,7 @@
 
             if (query) {
               const text = $(el).find('.jst-label').text().slice(0, -1);
-              return _.toLower(text.trim()).includes(query) && visible;
+              return text.trim().toLowerCase().includes(query) && visible;
             }
 
             return visible;

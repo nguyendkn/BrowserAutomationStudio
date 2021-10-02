@@ -38,7 +38,7 @@
       },
 
       'input .inspector-tools-input': _.debounce(function (e) {
-        this.model.set('query', _.toLower(e.target.value.trim()));
+        this.model.set('query', e.target.value.trim().toLowerCase());
       }, 200),
 
       'click .inspector-tools-menu > [data-sorting]': function (e) {

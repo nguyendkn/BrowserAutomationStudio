@@ -30,8 +30,6 @@
 
     isError: obj => toString.call(obj) === '[object Error]',
 
-    toLower: str => str == null ? '' : str.toLowerCase(),
-
     sleep: time => new Promise(resolve => {
       setTimeout(resolve, time);
     }),

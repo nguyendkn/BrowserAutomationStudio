@@ -31,7 +31,7 @@ window.App = {
     }
   },
 
-  template: /*html*/`
+  template: html`
     <div class="inspector-content">
       <div class="inspector-header">
         <ul class="inspector-tabs" role="tablist">

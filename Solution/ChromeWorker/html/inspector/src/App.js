@@ -22,8 +22,9 @@ window.App = {
       this.activeTab = tab;
     },
 
-    handleFrameEvent({ data }) {
-      console.log(data);
+    handleFrameEvent(e) {
+      const { data } = e;
+      console.log(e);
     },
 
     hide() {

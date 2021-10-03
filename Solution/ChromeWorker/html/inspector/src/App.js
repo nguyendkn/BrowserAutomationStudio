@@ -23,13 +23,11 @@ window.App = {
     },
 
     handleFrameEvent({ data }) {
-      console.log(data)
+      console.log(data);
     },
 
     hide() {
-      window.parent.postMessage({
-        type: 'hide'
-      }, '*')
+      window.parent.postMessage({ type: 'hide' }, '*');
     }
   },
 

@@ -1,9 +1,5 @@
-.inspector-tab + li {
-  border-left: 1px solid #e0e0e0;
-}
-
-.inspector-tab.active > a {
-  background: #e0e0e0;
+.inspector-tab:not(.active) {
+  opacity: 0.5;
 }
 
 .inspector-tab > a:hover {
@@ -15,19 +11,20 @@
 }
 
 .inspector-tab > a {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: -0.2px;
+  color: #606060;
   text-decoration: none;
-  font-size: 13px;
-  display: block;
-  padding: 4px 0;
-  color: #333;
-  height: 100%;
-  width: 100%;
 }
 
 .inspector-tabs {
-  border-right: 1px solid #e0e0e0;
+  background: #f6f6f6;
+  align-items: center;
   display: flex;
   padding: 0;
+  margin: 0;
   flex: 1;
 }
 
@@ -36,12 +33,12 @@
   align-items: center;
   text-align: center;
   user-select: none;
+  min-height: 40px;
   display: flex;
   flex: 1;
 }
 
 .inspector-header {
-  border-bottom: 1px solid #e0e0e0;
   display: flex;
 }
 

@@ -10,3 +10,22 @@ main {
   margin: 0;
   padding: 0;
 }
+
+body {
+  font-family: Helvetica Neue;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b7b7b7;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}

@@ -1,6 +1,8 @@
 window.App = {
   name: 'App',
 
+  // components: { window.Toolbar },
+
   data: () => ({
     activeTab: 'variables'
   }),
@@ -70,7 +72,7 @@ window.App = {
         </div>
       </div>
       <div class="inspector-notice" v-show="false">
-        <span>"Data will be loaded at the next script pause"</span>
+        <span>Data will be loaded at the next script pause</span>
       </div>
     </div>
   `

@@ -9,6 +9,4 @@ const app = new Vue({
     silentTranslationWarn: true,
     fallbackLocale: 'en'
   })
-});
-
-app.$mount('#app');
+}).$mount('#app');

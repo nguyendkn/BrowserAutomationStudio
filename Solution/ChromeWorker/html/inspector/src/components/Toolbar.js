@@ -1,7 +1,20 @@
 window.Toolbar = {
   name: 'Toolbar',
 
+  props: {
+    filters: {
+      required: true,
+      type: Array
+    },
+    sortings: {
+      required: true,
+      type: Array
+    }
+  },
+
   data: () => ({
+    selectedFilters: [],
+    selectedSorting: '',
     query: '',
   }),
 

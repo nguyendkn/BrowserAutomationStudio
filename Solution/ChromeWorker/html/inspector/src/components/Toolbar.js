@@ -26,17 +26,8 @@ window.Toolbar = {
           <i class="fa fa-filter"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu">
-          <li data-sorting="alphabetically">
-            <a href="#">{{ $t('toolbar.sorting.alphabetically') }}</a>
-          </li>
-          <li data-sorting="frequency">
-            <a href="#">{{ $t('toolbar.sorting.frequency') }}</a>
-          </li>
-          <li data-sorting="dateModified">
-            <a href="#">{{ $t('toolbar.sorting.dateModified') }}</a>
-          </li>
-          <li data-sorting="dateCreated">
-            <a href="#">{{ $t('toolbar.sorting.dateCreated') }}</a>
+          <li v-for="item in sortings" :key="item" @click="selectedSorting = item">
+            <a href="#">{{ $t('toolbar.sorting.' + item) }}</a>
           </li>
         </ul>
       </div>

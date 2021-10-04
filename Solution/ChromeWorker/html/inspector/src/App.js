@@ -2,7 +2,12 @@ window.App = {
   name: 'App',
 
   data: () => ({
-    activeTab: 'variables'
+    tabs: [
+      'variables',
+      'resources',
+      'callstack',
+    ],
+    tab: 'variables'
   }),
 
   destroyed() {
@@ -14,14 +19,6 @@ window.App = {
   },
 
   methods: {
-    isActive(tab) {
-      return this.activeTab === tab;
-    },
-
-    setActive(tab) {
-      this.activeTab = tab;
-    },
-
     handleFrameEvent(e) {
       const { data } = e;
       // console.log(e);
@@ -36,22 +33,10 @@ window.App = {
     <div class="inspector-content">
       <div class="inspector-header">
         <ul class="inspector-tabs" role="tablist">
-          <li class="inspector-tab" :class="{ active: isActive('variables') }" role="presentation">
-            <a @click.prevent="setActive('variables')" href="#variables" role="tab">
-              <img src="src/assets/icons/variables.svg" alt="icon">
-              {{ $t('nav.variables') }}
-            </a>
-          </li>
-          <li class="inspector-tab" :class="{ active: isActive('resources') }" role="presentation">
-            <a @click.prevent="setActive('resources')" href="#resources" role="tab">
-              <img src="src/assets/icons/resources.svg" alt="icon">
-              {{ $t('nav.resources') }}
-            </a>
-          </li>
-          <li class="inspector-tab" :class="{ active: isActive('callstack') }" role="presentation">
-            <a @click.prevent="setActive('callstack')" href="#callstack" role="tab">
-              <img src="src/assets/icons/callstack.svg" alt="icon">
-              {{ $t('nav.callstack') }}
+          <li v-for="t in tabs" :key="t" class="inspector-tab" :class="{ active: tab === t }" role="presentation">
+            <a @click.prevent="tab = t" href="#" role="tab">
+              <img :src="'src/assets/icons/' + t + '.svg'" alt="icon">
+              {{ $t('nav.' + t) }}
             </a>
           </li>
         </ul>
@@ -62,13 +47,13 @@ window.App = {
         </button>
       </div>
       <div class="inspector-content">
-        <div v-show="isActive('variables')" id="variables">
+        <div v-show="tab === ('variables')" id="variables">
           Variables content
         </div>
-        <div v-show="isActive('resources')" id="resources">
+        <div v-show="tab === ('resources')" id="resources">
           Resources content
         </div>
-        <div v-show="isActive('callstack')" id="callstack">
+        <div v-show="tab === ('callstack')" id="callstack">
           Call stack content
         </div>
       </div>

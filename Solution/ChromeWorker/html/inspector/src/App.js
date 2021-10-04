@@ -1,8 +1,6 @@
 window.App = {
   name: 'App',
 
-  // components: { window.Toolbar },
-
   data: () => ({
     activeTab: 'variables'
   }),
@@ -38,18 +36,18 @@ window.App = {
     <div class="inspector-content">
       <div class="inspector-header">
         <ul class="inspector-tabs" role="tablist">
-          <li class="inspector-tab" :class="{ active: isActive('variables') }">
-            <a @click.prevent="setActive('variables')" href="#variables">
+          <li class="inspector-tab" :class="{ active: isActive('variables') }" role="presentation">
+            <a @click.prevent="setActive('variables')" href="#variables" role="tab">
               {{ $t('nav.variables') }}
             </a>
           </li>
-          <li class="inspector-tab" :class="{ active: isActive('resources') }">
-            <a @click.prevent="setActive('resources')" href="#resources">
+          <li class="inspector-tab" :class="{ active: isActive('resources') }" role="presentation">
+            <a @click.prevent="setActive('resources')" href="#resources" role="tab">
               {{ $t('nav.resources') }}
             </a>
           </li>
-          <li class="inspector-tab" :class="{ active: isActive('callstack') }">
-            <a @click.prevent="setActive('callstack')" href="#callstack">
+          <li class="inspector-tab" :class="{ active: isActive('callstack') }" role="presentation">
+            <a @click.prevent="setActive('callstack')" href="#callstack" role="tab">
               {{ $t('nav.callstack') }}
             </a>
           </li>

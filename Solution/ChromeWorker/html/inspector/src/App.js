@@ -50,13 +50,13 @@ window.App = {
       </div>
       <div class="inspector-content">
         <div v-show="tab === ('variables')">
-          <Variables />
+          <Variables :source="{}" />
         </div>
         <div v-show="tab === ('resources')">
-          <Resources />
+          <Resources :source="{}" />
         </div>
         <div v-show="tab === ('callstack')">
-          <Callstack />
+          <Callstack :source="[]" />
         </div>
       </div>
       <div class="inspector-notice" v-show="false">

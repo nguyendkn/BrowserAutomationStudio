@@ -1,5 +1,5 @@
-window.Callstack = {
-  name: 'Callstack',
+window.Variables = {
+  name: 'Variables',
 
   components: {
     Toolbar
@@ -13,7 +13,7 @@ window.Callstack = {
     <div class="inspector-panel">
       <div class="inspector-panel-data"></div>
       <div class="inspector-panel-info">
-        <span>No callstack</span>
+        <span>No variables</span>
       </div>
     </div>
   `

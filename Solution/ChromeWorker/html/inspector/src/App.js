@@ -1,6 +1,12 @@
 window.App = {
   name: 'App',
 
+  components: {
+    Variables,
+    Resources,
+    Callstack
+  },
+
   data() {
     return {
       tab: 'variables'
@@ -43,14 +49,14 @@ window.App = {
         </button>
       </div>
       <div class="inspector-content">
-        <div v-show="tab === ('variables')" id="variables">
-          Variables content
+        <div v-show="tab === ('variables')">
+          <Variables />
         </div>
-        <div v-show="tab === ('resources')" id="resources">
-          Resources content
+        <div v-show="tab === ('resources')">
+          <Resources />
         </div>
-        <div v-show="tab === ('callstack')" id="callstack">
-          Call stack content
+        <div v-show="tab === ('callstack')">
+          <Callstack />
         </div>
       </div>
       <div class="inspector-notice" v-show="false">

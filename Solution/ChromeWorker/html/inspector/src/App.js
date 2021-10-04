@@ -55,9 +55,9 @@ window.App = {
             </a>
           </li>
         </ul>
-        <button @click="hide()" type="button" style="min-width: 28px; border: none; background: #f6f6f6;">
-          <svg viewBox="0 0 12 12" height="12" width="12" fill="#000" style="vertical-align: middle;">
-            <path d="M12 1.0501l-1.05-1.05L6 4.9501 1.05.0001 0 1.0501l4.95 4.95-4.95 4.95 1.05 1.05L6 7.0501l4.95 4.95 1.05-1.05-4.95-4.95 4.95-4.95z" />
+        <button @click="hide()" type="button">
+          <svg viewBox="0 0 16 16" height="16" width="16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#606060" d="M2.87348 12.2583L3.93414 13.3189L8 9.25305L12.0659 13.3189L13.1265 12.2583L9.06066 8.19239L13.1265 4.12652L12.0659 3.06586L8 7.13173L3.93414 3.06586L2.87348 4.12652L6.93934 8.19239L2.87348 12.2583Z" />
           </svg>
         </button>
       </div>

@@ -26,7 +26,6 @@
 }
 
 .inspector-tabs {
-  background: #f6f6f6;
   align-items: center;
   display: flex;
   padding: 0;
@@ -44,7 +43,30 @@
   flex: 1;
 }
 
+.inspector-header > button:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.inspector-header > button:focus {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.inspector-header > button > svg {
+  vertical-align: middle;
+}
+
+.inspector-header > button {
+  background: inherit;
+  min-width: 40px;
+  border: none;
+  opacity: 0.5;
+}
+
 .inspector-header {
+  background: #f6f6f6;
+  padding: 0 14px;
   display: flex;
 }
 

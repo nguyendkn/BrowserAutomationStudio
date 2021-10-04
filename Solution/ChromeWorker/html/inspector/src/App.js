@@ -38,16 +38,19 @@ window.App = {
         <ul class="inspector-tabs" role="tablist">
           <li class="inspector-tab" :class="{ active: isActive('variables') }" role="presentation">
             <a @click.prevent="setActive('variables')" href="#variables" role="tab">
+              <img src="src/assets/icons/variables.svg" alt="icon">
               {{ $t('nav.variables') }}
             </a>
           </li>
           <li class="inspector-tab" :class="{ active: isActive('resources') }" role="presentation">
             <a @click.prevent="setActive('resources')" href="#resources" role="tab">
+              <img src="src/assets/icons/resources.svg" alt="icon">
               {{ $t('nav.resources') }}
             </a>
           </li>
           <li class="inspector-tab" :class="{ active: isActive('callstack') }" role="presentation">
             <a @click.prevent="setActive('callstack')" href="#callstack" role="tab">
+              <img src="src/assets/icons/callstack.svg" alt="icon">
               {{ $t('nav.callstack') }}
             </a>
           </li>

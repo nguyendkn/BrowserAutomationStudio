@@ -2,6 +2,10 @@
   opacity: 0.5;
 }
 
+.inspector-tab > a > img {
+  padding-right: 8px;
+}
+
 .inspector-tab > a:hover {
   cursor: pointer;
 }
@@ -11,12 +15,14 @@
 }
 
 .inspector-tab > a {
+  letter-spacing: -0.2px;
+  text-decoration: none;
+  align-items: center;
+  line-height: 17px;
   font-weight: 500;
   font-size: 14px;
-  line-height: 17px;
-  letter-spacing: -0.2px;
   color: #606060;
-  text-decoration: none;
+  display: flex;
 }
 
 .inspector-tabs {

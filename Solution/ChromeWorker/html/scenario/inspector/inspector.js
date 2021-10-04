@@ -99,8 +99,6 @@
       'keydown': e => e.stopPropagation(),
 
       'keyup': e => e.stopPropagation(),
-
-      'click #inspectorClose': 'hide'
     }
   });
 })(window);

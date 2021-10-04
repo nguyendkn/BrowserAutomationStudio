@@ -69,11 +69,6 @@
               <a data-toggle="tab" href="#callstack" role="tab" aria-controls="callstack"><%= tr('Call stack') %></a>
             </li>
           </ul>
-          <button type="button" id="inspectorClose" style="min-width: 28px; border: none; background: #fafafa;">
-            <svg viewBox="0 0 12 12" height="12" width="12" fill="#000" style="vertical-align: middle;">
-              <path d="M12 1.0501l-1.05-1.05L6 4.9501 1.05.0001 0 1.0501l4.95 4.95-4.95 4.95 1.05 1.05L6 7.0501l4.95 4.95 1.05-1.05-4.95-4.95 4.95-4.95z" />
-            </svg>
-          </button>
         </div>
         <div class="inspector-tabs">
           <div class="inspector-tab active" id="variables" role="tabpanel"></div>

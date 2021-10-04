@@ -55,8 +55,9 @@
 .inspector-header > button {
   background: inherit;
   min-width: 40px;
-  border: none;
   opacity: 0.5;
+  outline: 0;
+  border: 0;
 }
 
 .inspector-header {

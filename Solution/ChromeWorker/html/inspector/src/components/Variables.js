@@ -27,7 +27,7 @@ window.Variables = {
     <div class="inspector-panel">
       <div v-show="!isEmpty" class="inspector-panel-data"></div>
       <div v-show="isEmpty" class="inspector-panel-info">
-        <span>{{ $t('content.variablesEmpty') }}</span>
+        <span>{{ $t('tabs.variablesEmpty') }}</span>
       </div>
     </div>
   `

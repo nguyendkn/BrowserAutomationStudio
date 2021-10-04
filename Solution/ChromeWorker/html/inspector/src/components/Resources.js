@@ -27,7 +27,7 @@ window.Resources = {
     <div class="inspector-panel">
       <div v-show="!isEmpty" class="inspector-panel-data"></div>
       <div v-show="isEmpty" class="inspector-panel-info">
-        <span>{{ $t('content.resourcesEmpty') }}</span>
+        <span>{{ $t('tabs.resourcesEmpty') }}</span>
       </div>
     </div>
   `

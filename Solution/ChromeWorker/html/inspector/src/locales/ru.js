@@ -25,7 +25,7 @@
       alphabetically: 'По алфавиту'
     }
   },
-  content: {
+  tabs: {
     callstackEmpty: 'Стек вызовов пуст',
     variablesEmpty: 'Нет переменных',
     resourcesEmpty: 'Нет ресурсов',

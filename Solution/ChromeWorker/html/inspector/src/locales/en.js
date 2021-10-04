@@ -25,7 +25,7 @@
       alphabetically: 'Alphabetically'
     }
   },
-  content: {
+  tabs: {
     callstackEmpty: 'Call stack is empty',
     variablesEmpty: 'No variables',
     resourcesEmpty: 'No resources',

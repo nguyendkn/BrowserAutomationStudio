@@ -1,5 +1,5 @@
 (({ App, _ }) => {
-  const { Inspector, JST } = App;
+  const { Inspector } = App;
   const { JsonView } = Inspector;
 
   Inspector.VariablesView = JsonView.extend({

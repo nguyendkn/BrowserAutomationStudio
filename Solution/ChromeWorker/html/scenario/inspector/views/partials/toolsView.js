@@ -1,5 +1,5 @@
 (({ App, Backbone, $, _ }) => {
-  const { Inspector, JST } = App;
+  const { Inspector } = App;
 
   const Model = Backbone.Model.extend({
     defaults: () => ({

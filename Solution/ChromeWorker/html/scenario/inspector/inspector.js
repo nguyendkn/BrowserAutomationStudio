@@ -1,5 +1,5 @@
 (({ App, Backbone }) => {
-  const { Inspector, JST } = App;
+  const { Inspector } = App;
 
   window.addEventListener('message', ({ data }) => {
     if (data.type === 'hide') {

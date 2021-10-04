@@ -1401,6 +1401,7 @@
   <!-- Javascript code -->
   <!-- =============== -->
   <script type="text/javascript">
+
     var TaskModel = Backbone.Model.extend({
         defaults: {
             name: "",
@@ -1662,6 +1663,7 @@
           var second_line = "section_start(\"test\", " + task.get("id") + ")!"
           var code = execute_point_code + "\n" + second_line
           BrowserAutomationStudio_Execute(code, false)
+
         }
 
         
@@ -4007,6 +4009,7 @@
 
           }},
           {divider:true},
+
           {text: '<i class="fa fa-search" aria-hidden="true"></i> ' + tr('Search'), action: function(e){
                 e.preventDefault();
                 _ActionFinder.Show()
@@ -4037,6 +4040,7 @@
 
         return this.trigger('render');
       }
+
     });
 
     var Router = Backbone.Router.extend({
@@ -5346,14 +5350,23 @@
       _MainView.play()
     }
 
-    function BrowserAutomationStudio_GetVariablesList() {
-      var code = GenerateCode(_TaskCollection.toJSON(), _GobalModel.toJSON());
-      var match = code.match(/VAR_[A-Z0-9_]+/g);
-      var variables = match ? _.uniq(match) : [];
+    function BrowserAutomationStudio_GetVariablesList()
+    {
+      var code = GenerateCode(_TaskCollection.toJSON(),_GobalModel.toJSON())
+      var match = code.match(/VAR_[A-Z0-9_]+/g)
+      var variables = null
+      if(match)
+      {
+        variables = _.uniq(match)
+      }else
+        variables = []       
 
-      return variables.concat(JSON.parse(extract_global_variables(code)).map(el => {
-        return `GLOBAL:${el.name}`;
-      }));
+      JSON.parse(extract_global_variables(code)).forEach(function(el){
+        variables.push("GLOBAL:" + el["name"])
+
+      })
+
+      return variables
     }
 
     function BrowserAutomationStudio_FocusActionFast(Id)
@@ -5415,6 +5428,7 @@
       
         if(function_name != funcdata["name"])
         {
+
           if(_GobalModel.get("function_name") != funcdata["name"])
           {
             _MainView.ClearSelection()
@@ -5431,6 +5445,7 @@
         el.addClass("toolhighlight")
         setTimeout(function(){el.removeClass("toolhighlight")},1000)
       }
+      
     }
 
     function BrowserAutomationStudio_UnfoldTaskMasterSlave(Task)
@@ -5757,12 +5772,12 @@
 
     function BrowserAutomationStudio_NotRunningTask(Id)
     {
-      if (Id === -3) {
-        VariablesUpdateTakesPlace = false;
-        if (VariablesNeedRefresh) {
-          BrowserAutomationStudio_AskForVariablesUpdate();
-        }
-        return;
+      if(Id == -3)
+      {
+        VariablesUpdateTakesPlace = false
+        if(VariablesNeedRefresh)
+          BrowserAutomationStudio_AskForVariablesUpdate()
+        return
       }
 
       if(typeof(Id) != "undefined" && Id == -2)
@@ -5857,7 +5872,13 @@
         if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
           BrowserAutomationStudio_UnfoldParents(Id)
         BrowserAutomationStudio_FocusActionFast(parseInt(Id))
-      }
+      }/*else if(_NewInsertId)
+      {
+        if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
+          BrowserAutomationStudio_UnfoldParents(Id)
+        BrowserAutomationStudio_FocusActionFast(parseInt(_NewInsertId))
+        _NewInsertId = null
+      }*/
     }
 
     function BrowserAutomationStudio_PreserveInterfaceState() {
@@ -6867,6 +6888,13 @@
         res += "\n"
         return {index:index,res:res};
     }
+
+
+
+
+
+
   </script>
+
 </body>
 </html>

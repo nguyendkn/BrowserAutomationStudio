@@ -1,9 +1,11 @@
 window.App = {
   name: 'App',
 
-  data: () => ({
-    tab: 'variables'
-  }),
+  data() {
+    return {
+      tab: 'variables'
+    }
+  },
 
   destroyed() {
     window.removeEventListener('message', this.handleFrameEvent);

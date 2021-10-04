@@ -1,9 +1,9 @@
 window.Tree = {
   name: 'Tree',
 
-  data: () => ({
-
-  }),
+  data() {
+    return {}
+  },
 
   template: html``
-}
+};

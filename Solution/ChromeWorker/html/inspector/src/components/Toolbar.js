@@ -12,11 +12,13 @@ window.Toolbar = {
     }
   },
 
-  data: () => ({
-    selectedFilters: [],
-    selectedSorting: '',
-    query: '',
-  }),
+  data() {
+    return {
+      selectedFilters: [],
+      selectedSorting: '',
+      query: '',
+    }
+  },
 
   template: html`
     <div class="inspector-tools-panel">
@@ -36,4 +38,4 @@ window.Toolbar = {
       <i class="fa fa-chevron-up"></i>
     </button>
   `
-}
+};

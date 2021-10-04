@@ -1,9 +1,9 @@
 window.Callstack = {
   name: 'Callstack',
 
-  data: () => ({
-
-  }),
+  data() {
+    return {}
+  },
 
   template: html``
 };

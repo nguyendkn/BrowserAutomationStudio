@@ -3,7 +3,14 @@
   const { JsonView } = Inspector;
 
   Inspector.ResourcesView = JsonView.extend({
-    template: JST['inspector/resources'],
+    template: _.template(/*html*/`
+      <div class="inspector-panel" data-empty="true">
+        <div class="inspector-panel-data"></div>
+        <div class="inspector-panel-info">
+          <span><%= tr('No resources') %></span>
+        </div>
+      </div>
+    `),
 
     allowHighlight: false,
 

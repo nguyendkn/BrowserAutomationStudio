@@ -55,59 +55,6 @@
       </div>
     `),
 
-    'inspector/main': _.template(/*html*/`
-      <div class="inspector-content">
-        <div class="inspector-header">
-          <ul class="inspector-nav" role="tablist">
-            <li class="active" role="presentation">
-              <a data-toggle="tab" href="#variables" role="tab" aria-controls="variables"><%= tr('Variables') %></a>
-            </li>
-            <li role="presentation">
-              <a data-toggle="tab" href="#resources" role="tab" aria-controls="resources"><%= tr('Resources') %></a>
-            </li>
-            <li role="presentation">
-              <a data-toggle="tab" href="#callstack" role="tab" aria-controls="callstack"><%= tr('Call stack') %></a>
-            </li>
-          </ul>
-        </div>
-        <div class="inspector-tabs">
-          <div class="inspector-tab active" id="variables" role="tabpanel"></div>
-          <div class="inspector-tab" id="resources" role="tabpanel"></div>
-          <div class="inspector-tab" id="callstack" role="tabpanel"></div>
-        </div>
-        <div class="inspector-notice" style="display: none;">
-          <span><%= tr("Data will be loaded at the next script pause") %></span>
-        </div>
-      </div>
-    `),
-
-    'inspector/variables': _.template(/*html*/`
-      <div class="inspector-panel" data-empty="true">
-        <div class="inspector-panel-data"></div>
-        <div class="inspector-panel-info">
-          <span><%= tr('No variables') %></span>
-        </div>
-      </div>
-    `),
-
-    'inspector/resources': _.template(/*html*/`
-      <div class="inspector-panel" data-empty="true">
-        <div class="inspector-panel-data"></div>
-        <div class="inspector-panel-info">
-          <span><%= tr('No resources') %></span>
-        </div>
-      </div>
-    `),
-
-    'inspector/callstack': _.template(/*html*/`
-      <div class="inspector-panel" data-empty="true">
-        <div class="inspector-panel-data"></div>
-        <div class="inspector-panel-info">
-          <span><%= tr('No callstack') %></span>
-        </div>
-      </div>
-    `),
-
     'inspector/stack': _.template(/*html*/`
       <ul class="callstack-data">
         <% _.each(stack, ({ id, type, name, ...item }) => { %>
@@ -137,45 +84,6 @@
           </li>
         <% }) %>
       </ul>
-    `),
-
-    'inspector/tools': _.template(/*html*/`
-      <div class="inspector-tools">
-        <div class="inspector-tools-panel">
-          <input type="search" class="inspector-tools-input" placeholder="<%= tr('Search by name') %>..." value="<%= query %>">
-          <div class="dropdown">
-            <button data-toggle="dropdown" type="button" aria-expanded="false" aria-haspopup="true">
-              <i class="fa fa-filter"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu">
-              <li data-sorting="alphabetically">
-                <a href="#"><%= tr('Alphabetically') %></a>
-              </li>
-              <li data-sorting="frequency">
-                <a href="#"><%= tr('By frequency of use') %></a>
-              </li>
-              <li data-sorting="dateModified">
-                <a href="#"><%= tr('By date modified') %></a>
-              </li>
-              <li data-sorting="dateCreated">
-                <a href="#"><%= tr('By date created') %></a>
-              </li>
-              <% if (!_.isEmpty(filters)) { %>
-                <% _.each(filters, (checked, value) => { %>
-                  <li>
-                    <% const type = _.upperFirst(value), id = _.uniqueId('inspectorFilter' + type) %>
-                    <input type="checkbox" id="<%= id %>" value="<%= value %>" <%= checked ? 'checked' : '' %>>
-                    <label for="<%= id %>"><%= tr(type) %></label>
-                  </li>
-                <% }) %>
-              <% } %>
-            </ul>
-          </div>
-        </div>
-        <button class="inspector-tools-toggle" type="button">
-          <i class="fa fa-chevron-up"></i>
-        </button>
-      </div>
     `)
   })
 })(window);

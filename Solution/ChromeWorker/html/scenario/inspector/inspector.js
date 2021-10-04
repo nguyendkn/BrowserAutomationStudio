@@ -25,7 +25,31 @@
   };
 
   Inspector.Main = Backbone.View.extend({
-    template: JST['inspector/main'],
+    template: _.template(/*html*/`
+      <div class="inspector-content">
+        <div class="inspector-header">
+          <ul class="inspector-nav" role="tablist">
+            <li class="active" role="presentation">
+              <a data-toggle="tab" href="#variables" role="tab" aria-controls="variables"><%= tr('Variables') %></a>
+            </li>
+            <li role="presentation">
+              <a data-toggle="tab" href="#resources" role="tab" aria-controls="resources"><%= tr('Resources') %></a>
+            </li>
+            <li role="presentation">
+              <a data-toggle="tab" href="#callstack" role="tab" aria-controls="callstack"><%= tr('Call stack') %></a>
+            </li>
+          </ul>
+        </div>
+        <div class="inspector-tabs">
+          <div class="inspector-tab active" id="variables" role="tabpanel"></div>
+          <div class="inspector-tab" id="resources" role="tabpanel"></div>
+          <div class="inspector-tab" id="callstack" role="tabpanel"></div>
+        </div>
+        <div class="inspector-notice" style="display: none;">
+          <span><%= tr("Data will be loaded at the next script pause") %></span>
+        </div>
+      </div>
+    `),
 
     initialize() {
       ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {

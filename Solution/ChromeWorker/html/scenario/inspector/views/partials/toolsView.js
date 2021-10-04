@@ -10,7 +10,44 @@
   });
 
   Inspector.ToolsView = Backbone.View.extend({
-    template: JST['inspector/tools'],
+    template: _.template(/*html*/`
+      <div class="inspector-tools">
+        <div class="inspector-tools-panel">
+          <input type="search" class="inspector-tools-input" placeholder="<%= tr('Search by name') %>..." value="<%= query %>">
+          <div class="dropdown">
+            <button data-toggle="dropdown" type="button" aria-expanded="false" aria-haspopup="true">
+              <i class="fa fa-filter"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu">
+              <li data-sorting="alphabetically">
+                <a href="#"><%= tr('Alphabetically') %></a>
+              </li>
+              <li data-sorting="frequency">
+                <a href="#"><%= tr('By frequency of use') %></a>
+              </li>
+              <li data-sorting="dateModified">
+                <a href="#"><%= tr('By date modified') %></a>
+              </li>
+              <li data-sorting="dateCreated">
+                <a href="#"><%= tr('By date created') %></a>
+              </li>
+              <% if (!_.isEmpty(filters)) { %>
+                <% _.each(filters, (checked, value) => { %>
+                  <li>
+                    <% const type = _.upperFirst(value), id = _.uniqueId('inspectorFilter' + type) %>
+                    <input type="checkbox" id="<%= id %>" value="<%= value %>" <%= checked ? 'checked' : '' %>>
+                    <label for="<%= id %>"><%= tr(type) %></label>
+                  </li>
+                <% }) %>
+              <% } %>
+            </ul>
+          </div>
+        </div>
+        <button class="inspector-tools-toggle" type="button">
+          <i class="fa fa-chevron-up"></i>
+        </button>
+      </div>
+    `),
 
     initialize(options) {
       this.model = new Model(_.pick(options, [

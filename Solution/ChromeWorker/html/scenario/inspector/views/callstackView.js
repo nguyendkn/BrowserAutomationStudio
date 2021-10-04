@@ -13,7 +13,14 @@
   });
 
   Inspector.CallstackView = Backbone.View.extend({
-    template: JST['inspector/callstack'],
+    template: _.template(/*html*/`
+      <div class="inspector-panel" data-empty="true">
+        <div class="inspector-panel-data"></div>
+        <div class="inspector-panel-info">
+          <span><%= tr('No callstack') %></span>
+        </div>
+      </div>
+    `),
 
     initialize() {
       const model = this.model = new Model()

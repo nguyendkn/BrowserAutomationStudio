@@ -3,7 +3,14 @@
   const { JsonView } = Inspector;
 
   Inspector.VariablesView = JsonView.extend({
-    template: JST['inspector/variables'],
+    template: _.template(/*html*/`
+      <div class="inspector-panel" data-empty="true">
+        <div class="inspector-panel-data"></div>
+        <div class="inspector-panel-info">
+          <span><%= tr('No variables') %></span>
+        </div>
+      </div>
+    `),
 
     allowHighlight: true,
 

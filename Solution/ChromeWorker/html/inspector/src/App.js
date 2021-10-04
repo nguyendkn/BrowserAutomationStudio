@@ -2,11 +2,6 @@ window.App = {
   name: 'App',
 
   data: () => ({
-    tabs: [
-      'variables',
-      'resources',
-      'callstack',
-    ],
     tab: 'variables'
   }),
 
@@ -33,7 +28,7 @@ window.App = {
     <div class="inspector-content">
       <div class="inspector-header">
         <ul class="inspector-tabs" role="tablist">
-          <li v-for="t in tabs" :key="t" class="inspector-tab" :class="{ active: tab === t }" role="presentation">
+          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" class="inspector-tab" :class="{ active: tab === t }" role="presentation">
             <a @click.prevent="tab = t" href="#" role="tab">
               <img :src="'src/assets/icons/' + t + '.svg'" alt="icon">
               {{ $t('nav.' + t) }}

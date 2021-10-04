@@ -1330,7 +1330,7 @@
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
-  <script>App = { Inspector: {}, utils: {} }</script>
+  <script type="text/javascript">App = { Inspector: {}, utils: {} }</script>
   <script src="underscore-min.js"></script>
   <script src="morphdom.js"></script>
   <script src="vendor/interact/interact.min.js"></script>
@@ -1377,14 +1377,15 @@
   <script src="inspector/modal/modal.js"></script>
   <script src="inspector/inspector.js"></script>
 
-  <script> _L = $.extend(_L, _AL) </script>
-  <script> _MACRO_INSERT_LOCALIZE_ </script>
-  <script> _MACRO_INSERT_ACTIONS_ </script>
+  <script type="text/javascript"> _L = $.extend(_L, _AL) </script>
+  <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
+  <script type="text/javascript"> _MACRO_INSERT_ACTIONS_ </script>
 
   <!-- ========= -->
   <!--   Styles  -->
   <!-- ========= -->
   <link rel="stylesheet" href="bootstrap.min.css">
+  <!--<link rel="stylesheet" href="bootstrap-theme.min.css">-->
   <link rel="stylesheet" href="context.standalone.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="font-awesome.min.css">
@@ -1399,7 +1400,7 @@
   <!-- =============== -->
   <!-- Javascript code -->
   <!-- =============== -->
-  <script>
+  <script type="text/javascript">
     var TaskModel = Backbone.Model.extend({
         defaults: {
             name: "",
@@ -1771,6 +1772,7 @@
          BrowserAutomationStudio_SaveToUndoManager()
          BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
          this.renderselectiontemplatecontainer()
+         //this.render()
       },
      
       
@@ -1943,7 +1945,7 @@
 
       removefunction: function(FunctionName)
       {
-
+        /*this.currentFuncName = FunctionName*/
         var self = this
         bootbox.confirm(tr("Are you sure that you want to delete") + " " + FunctionName + " " + tr("function and all its content?"), function(result) {
           if(result)
@@ -2018,7 +2020,8 @@
 
       key: function(e)
       {
-        if ($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden')) {
+        if ($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden'))
+        {
           if (e.keyCode == 70 && e.ctrlKey)
           {
             _ActionFinder.Show()
@@ -4036,7 +4039,7 @@
 
     var _Router = new Router();
 
-    var _TaskCollection = new TaskCollection();
+    var _TaskCollection = new TaskCollection([/*{name:"Initialize Browser",code:"new_browser()!",id:0},{name:"Load Gmail.com",code:"load(\"gmail.com\")!",id:123},{name:"Load ya.ru",code:"load(\"ya.ru\")!",id:456}*/]);
 
     var _GobalModel = new GobalModel();
 
@@ -4056,6 +4059,8 @@
 
     var _HelpManager = new HelpManager()
 
+    //var _Tour = new BrowserAutomationStudio_Tour()
+
     var _EmbeddedModel = new EmbeddedModel()
 
     var _WebInterfaceTasks = new WebInterfaceTasks()
@@ -4072,7 +4077,7 @@
 
     context.init({preventDoubleContext: false});
 
-    $(function() {
+    $( document ).ready(function() {
         //document.documentElement.style.zoom = _Z + '%';
         $(document).keydown(function(e) {
           _MainView.key(e)

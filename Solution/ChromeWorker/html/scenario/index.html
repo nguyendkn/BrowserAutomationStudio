@@ -1945,6 +1945,7 @@
 
       removefunction: function(FunctionName)
       {
+
         /*this.currentFuncName = FunctionName*/
         var self = this
         bootbox.confirm(tr("Are you sure that you want to delete") + " " + FunctionName + " " + tr("function and all its content?"), function(result) {
@@ -2020,7 +2021,7 @@
 
       key: function(e)
       {
-        if ($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden'))
+        if($('.modal.in').length == 0 && _ActionUpdater.$el.is(':hidden'))
         {
           if (e.keyCode == 70 && e.ctrlKey)
           {
@@ -3945,15 +3946,18 @@
           {text: tr('Delete selected'), action: function(e){
                 e.preventDefault();
                 self.DeleteSelected()
+
           }},
           {divider:true},
           {text: tr('Enable selected'), action: function(e){
                 e.preventDefault();
                 self.EnableSelected()
+
           }},
           {text: tr('Disable selected'), action: function(e){
                 e.preventDefault();
                 self.DisableSelected()
+
           }},
           {divider:true},
           {text: tr('Set color') + ' <span class="action-color-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ' + tr('for selected actions'), action: function(e){
@@ -3984,28 +3988,34 @@
           {text: '<img draggable="false" src="icons/checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
                 e.preventDefault();
                 self.CheckAll()
+
           }},
           {text: '<img draggable="false" src="icons/uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
                 e.preventDefault();
                 self.ClearSelection()
+
           }},
           {divider:true},
           {text: '<i class="fa fa-arrow-circle-left" aria-hidden="true"></i> ' + tr('Fold all'), action: function(e){
                 e.preventDefault();
                 self.FoldAll()
+
           }},
           {text: '<i class="fa fa-arrow-circle-down" aria-hidden="true"></i> ' + tr('Unfold all'), action: function(e){
                 e.preventDefault();
                 self.UnfoldAll()
+
           }},
           {divider:true},
           {text: '<i class="fa fa-search" aria-hidden="true"></i> ' + tr('Search'), action: function(e){
                 e.preventDefault();
                 _ActionFinder.Show()
+
           }},
           {text: '<i class="fa fa-bug" aria-hidden="true"></i> ' + tr('Variable Inspector'), action: function(e){
                 e.preventDefault();
                 _Inspector.show();
+
           }},
         ]);
 

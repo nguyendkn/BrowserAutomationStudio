@@ -24,5 +24,10 @@
       dateCreated: 'By date created',
       alphabetically: 'Alphabetically'
     }
+  },
+  content: {
+    callstackEmpty: 'Call stack is empty',
+    variablesEmpty: 'No variables',
+    resourcesEmpty: 'No resources',
   }
 };

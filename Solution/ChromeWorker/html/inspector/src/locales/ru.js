@@ -24,5 +24,10 @@
       dateCreated: 'По дате создания',
       alphabetically: 'По алфавиту'
     }
+  },
+  content: {
+    callstackEmpty: 'Стек вызовов пуст',
+    variablesEmpty: 'Нет переменных',
+    resourcesEmpty: 'Нет ресурсов',
   }
 };

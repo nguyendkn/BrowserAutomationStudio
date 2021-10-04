@@ -27,7 +27,7 @@ window.Callstack = {
     <div class="inspector-panel">
       <div v-show="!isEmpty" class="inspector-panel-data"></div>
       <div v-show="isEmpty" class="inspector-panel-info">
-        <span>Call stack is empty</span>
+        <span>{{ $t('content.callstackEmpty') }}</span>
       </div>
     </div>
   `

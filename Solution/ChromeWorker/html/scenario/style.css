@@ -2089,9 +2089,3 @@ mark
 .overflow-hidden {
   overflow: hidden !important;
 }
-
-.text-truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}

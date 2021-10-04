@@ -24,7 +24,7 @@ window.App = {
 
     handleFrameEvent(e) {
       const { data } = e;
-      console.log(e);
+      // console.log(e);
     },
 
     hide() {

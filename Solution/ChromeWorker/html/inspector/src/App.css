@@ -48,11 +48,6 @@
   opacity: 1;
 }
 
-.inspector-header > button:focus {
-  cursor: pointer;
-  opacity: 1;
-}
-
 .inspector-header > button > svg {
   vertical-align: middle;
 }

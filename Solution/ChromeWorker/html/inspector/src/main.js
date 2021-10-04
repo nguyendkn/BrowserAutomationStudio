@@ -5,7 +5,6 @@ const app = new Vue({
 
   i18n: new VueI18n({
     locale: new URL(location.href).searchParams.get('lang') || 'en',
-    silentTranslationWarn: true,
     messages: { ...locales },
     fallbackLocale: 'en'
   })

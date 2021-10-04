@@ -15,7 +15,6 @@ window.App = {
 
   methods: {
     handleFrameEvent(e) {
-      const { data } = e;
       // console.log(e);
     },
 

@@ -4,7 +4,7 @@
 
   Inspector.ResourcesView = JsonView.extend({
     template: _.template(/*html*/`
-      <div class="inspector-panel" data-empty="true">
+      <div class="inspector-panel">
         <div class="inspector-panel-data"></div>
         <div class="inspector-panel-info">
           <span><%= tr('No resources') %></span>

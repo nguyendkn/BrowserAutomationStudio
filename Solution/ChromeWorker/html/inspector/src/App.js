@@ -49,13 +49,13 @@ window.App = {
         </button>
       </div>
       <div class="inspector-content">
-        <div v-show="tab === ('variables')">
+        <div v-show="tab === 'variables'">
           <Variables :source="{}" />
         </div>
-        <div v-show="tab === ('resources')">
+        <div v-show="tab === 'resources'">
           <Resources :source="{}" />
         </div>
-        <div v-show="tab === ('callstack')">
+        <div v-show="tab === 'callstack'">
           <Callstack :source="[]" />
         </div>
       </div>

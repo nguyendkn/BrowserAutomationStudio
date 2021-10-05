@@ -84,14 +84,6 @@
  * Panel styles *
  ****************/
 
-.inspector-panel[data-empty=false] > .inspector-panel-info {
-  display: none;
-}
-
-.inspector-panel[data-empty=true] > .inspector-panel-data {
-  display: none;
-}
-
 .inspector-panel-data {
   padding: 8px 8px;
   font-weight: 400;

@@ -49,15 +49,9 @@ window.App = {
         </button>
       </div>
       <div class="inspector-content">
-        <div v-show="tab === 'variables'">
-          <Variables :source="{}" />
-        </div>
-        <div v-show="tab === 'resources'">
-          <Resources :source="{}" />
-        </div>
-        <div v-show="tab === 'callstack'">
-          <Callstack :source="[]" />
-        </div>
+        <Variables :source="{}" v-show="tab === 'variables'" class="inspector-panel" />
+        <Resources :source="{}" v-show="tab === 'resources'" class="inspector-panel" />
+        <Callstack :source="[]" v-show="tab === 'callstack'" class="inspector-panel" />
       </div>
       <div class="inspector-notice" v-show="false">
         <span>Data will be loaded at the next script pause</span>

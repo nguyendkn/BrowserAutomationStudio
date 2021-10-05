@@ -11,8 +11,6 @@
 
     allowHighlight: false,
 
-    allowEdit: false,
-
     initialize() {
       JsonView.prototype.initialize.call(this);
     }

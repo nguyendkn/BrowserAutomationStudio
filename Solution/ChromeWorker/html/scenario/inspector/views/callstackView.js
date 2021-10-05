@@ -72,7 +72,7 @@
         ...this.model.toJSON()
       });
 
-      morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${html}</div>`, {
+      morphdom(this.$('.inspector-panel-data')[0], `<div class="inspector-panel-data">${html}</div>`, {
         onBeforeElUpdated: (from, to) => !from.isEqualNode(to),
         getNodeKey({ classList, dataset, id }) {
           if (classList) {

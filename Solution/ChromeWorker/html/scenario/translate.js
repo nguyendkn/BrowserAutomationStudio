@@ -95,11 +95,20 @@ _L =
    "Frequently used actions:":{
       "ru":"Часто используемые действия:"
    },
+   "For":{
+      "ru":"For"
+   },
    "Repeat actions specified number of times.":{
       "ru":"Повторять действия указанные количество раз."
    },
+   "While":{
+      "ru":"While"
+   },
    "Repeat actions while specified condition.":{
       "ru":"Повторять действия пока условие истинно."
+   },
+   "Foreach":{
+      "ru":"Foreach"
    },
    "Repeat actions for each element in list.":{
       "ru":"Повторять действия для каждого элемента в списке."
@@ -247,6 +256,9 @@ _L =
    },
    "Conditions helps to execute actions depending if specified condition is true. For example, if certain text is present on page, save it to log, otherwise fail thread.":{
       "ru":"Условия помогают выполнять действия в зависимости от того, является ли указанное условие истинным. Например, если определенный текст присутствует на странице, сохранить его в лог, в противном случае завершить поток."
+   },
+   "If":{
+      "ru":"If"
    },
    "executes different actions depending on condition.":{
       "ru":"выполнять различные действия в зависимости от условия."

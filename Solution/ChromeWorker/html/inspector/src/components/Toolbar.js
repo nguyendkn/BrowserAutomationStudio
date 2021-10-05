@@ -41,8 +41,11 @@ window.Toolbar = {
             </svg>
           </button>
           <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu">
-            <li v-for="item in sortings" :key="item" @click="selectedSorting = item">
-              <a href="#">{{ $t('toolbar.sorting.' + item) }}</a>
+            <li v-for="item in sortings" :key="item" @click="updateSortings(item)">
+              <a href="#">{{ $t('toolbar.sortings.' + item) }}</a>
+            </li>
+            <li v-for="item in filters" :key="item" @click="updateFilters(item)">
+              <a href="#">{{ $t('toolbar.filters.' + item) }}</a>
             </li>
           </ul>
         </div>

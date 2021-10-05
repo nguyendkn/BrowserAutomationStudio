@@ -14,7 +14,12 @@ window.Callstack = {
   },
 
   data() {
-    return {}
+    return {
+      filters: [
+        'Functions',
+        'Actions',
+      ]
+    }
   },
 
   computed: {
@@ -25,6 +30,7 @@ window.Callstack = {
 
   template: html`
     <div>
+      <Toolbar :filters="filters" :sortings="[]" />
       <div v-show="!isEmpty" class="inspector-panel-data"></div>
       <div v-show="isEmpty" class="inspector-panel-info">
         <span>{{ $t('tabs.callstackEmpty') }}</span>

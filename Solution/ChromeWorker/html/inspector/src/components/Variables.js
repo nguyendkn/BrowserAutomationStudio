@@ -9,7 +9,7 @@ window.Variables = {
     source: {
       default: () => {},
       required: true,
-      type: Object,
+      type: Object
     }
   },
 

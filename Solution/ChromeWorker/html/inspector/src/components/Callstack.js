@@ -9,7 +9,7 @@ window.Callstack = {
     source: {
       default: () => [],
       required: true,
-      type: Array,
+      type: Array
     }
   },
 

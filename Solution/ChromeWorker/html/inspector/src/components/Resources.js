@@ -9,7 +9,7 @@ window.Resources = {
     source: {
       default: () => {},
       required: true,
-      type: Object,
+      type: Object
     }
   },
 

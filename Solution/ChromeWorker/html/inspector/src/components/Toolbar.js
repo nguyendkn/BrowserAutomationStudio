@@ -2,14 +2,14 @@ window.Toolbar = {
   name: 'Toolbar',
 
   props: {
+    sortings: {
+      required: true,
+      type: Array
+    },
     filters: {
       required: true,
       type: Array
     },
-    sortings: {
-      required: true,
-      type: Array
-    }
   },
 
   data() {

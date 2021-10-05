@@ -2,26 +2,6 @@
  * Inspector styles *
  ********************/
 
-.inspector-tools-input:not(:placeholder-shown) {
-  user-select: auto;
-}
-
-.inspector-tools-input:placeholder-shown {
-  user-select: none;
-}
-
-.inspector-tools-input {
-  padding: 3px;
-  border: 0;
-  flex: 1;
-}
-
-.inspector-tools-menu {
-  min-width: max-content;
-  padding: 0 12px;
-  left: auto;
-}
-
 .inspector-notice {
   justify-content: center;
   background: #fafafa;
@@ -30,54 +10,6 @@
   user-select: none;
   display: flex;
   flex: 1;
-}
-
-/****************
- * Tools styles *
- ****************/
-
-.inspector-tools .dropdown > button:hover {
-  outline: 0;
-}
-
-.inspector-tools .dropdown > button:focus {
-  outline: 0;
-}
-
-.inspector-tools .dropdown > button {
-  background: #fff;
-  height: 100%;
-  width: 28px;
-  border: 0;
-}
-
-.inspector-tools-panel.collapsed {
-  display: none;
-}
-
-.inspector-tools .dropdown {
-  border-left: 1px solid #e0e0e0;
-}
-
-.inspector-tools-toggle {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  height: 15px;
-  outline: 0;
-  border: 0;
-}
-
-.inspector-tools-panel {
-  padding: 4px 10px;
-  display: flex;
-}
-
-.inspector-tools {
-  border-bottom: 1px solid #e0e0e0;
-  background: #e0e0e0;
-  flex-flow: column;
-  display: flex;
 }
 
 /****************
@@ -209,19 +141,6 @@
   flex-flow: column;
   display: flex;
   padding: 0;
-}
-
-#callstack > .inspector-tools > ul > li {
-  min-width: max-content;
-  padding: 3px 10px;
-  user-select: none;
-}
-
-#callstack > .inspector-tools > ul {
-  justify-content: space-around;
-  display: flex;
-  padding: 0;
-  flex: 1;
 }
 
 /*****************

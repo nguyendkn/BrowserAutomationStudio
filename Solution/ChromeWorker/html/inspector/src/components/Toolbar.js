@@ -23,7 +23,7 @@ window.Toolbar = {
   template: html`
     <div class="inspector-tools">
       <div class="inspector-tools-panel">
-        <input v-model="query" type="search" class="inspector-tools-input" :placeholder="$t('toolbar.placeholder') + '...'">
+        <input v-model.trim="query" type="text" class="inspector-tools-input" :placeholder="$t('toolbar.placeholder') + '...'">
         <div class="dropdown">
           <button data-toggle="dropdown" type="button" aria-expanded="false" aria-haspopup="true">
             <i class="fa fa-filter"></i>

@@ -16,14 +16,14 @@ window.Resources = {
   data() {
     return {
       filters: [
-        'Undefined',
-        'Boolean',
-        'Object',
-        'String',
-        'Number',
-        'Array',
-        'Date',
-        'Null'
+        'undefined',
+        'boolean',
+        'object',
+        'string',
+        'number',
+        'array',
+        'date',
+        'null'
       ]
     }
   },

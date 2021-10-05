@@ -16,8 +16,8 @@ window.Callstack = {
   data() {
     return {
       filters: [
-        'Functions',
-        'Actions',
+        'functions',
+        'actions'
       ]
     }
   },

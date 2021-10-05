@@ -32,6 +32,8 @@
   <div id="debugbuttoncontainer">
     <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_Inspector.show()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action."><i class="fa fa-bug" aria-hidden="true"></i></button>
   </div>
+
+
   <div id="container">
 
    <div id="containerdata" ></div>
@@ -1167,10 +1169,10 @@
         
         </span>
       </div>
-
+      
     </div>
-    <div class="container-fluid main">
-      <div id="paddinfind"></div>
+    <div class="container-fluid main" >
+      <div id="paddinfind"> </div>
       <% for(var indexraw = 0;indexraw<data.length;indexraw++){ %>
         <% var index = indexraw - 1 + index_start;%>
         <% if (indexraw == 0) { index = 0; } %>
@@ -5553,7 +5555,8 @@
     }
 
 
-    function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded() {
+    function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
+    {
       if (_GobalModel.get('dontsend')) return;
 
       if (!_.isEqual(VariablesListPrev, BrowserAutomationStudio_GetVariablesList())) {
@@ -5561,7 +5564,8 @@
       }
     }
 
-    function BrowserAutomationStudio_AskForVariablesUpdateOrWait() {
+    function BrowserAutomationStudio_AskForVariablesUpdateOrWait()
+    {
       if (!_GobalModel.get('isscriptexecuting') && !_GobalModel.get('istaskexecuting')) {
         return BrowserAutomationStudio_AskForVariablesUpdate();
       }
@@ -5572,7 +5576,8 @@
     {
       if (!_Inspector.$el.is(':visible')) return;
 
-      if(VariablesUpdateTakesPlace) {
+      if(VariablesUpdateTakesPlace)
+      {
         VariablesNeedRefresh = true
         return
       }

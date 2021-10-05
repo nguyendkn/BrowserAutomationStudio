@@ -14,8 +14,6 @@ window.Toolbar = {
 
   data() {
     return {
-      selectedFilters: [],
-      selectedSorting: '',
       show: false,
       query: '',
     }
@@ -42,11 +40,11 @@ window.Toolbar = {
             </svg>
           </button>
           <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu" v-show="false">
-            <li v-for="item in sortings" :key="item" @click="updateSortings(item)">
-              <a href="#">{{ $t('toolbar.sortings.' + item) }}</a>
+            <li v-for="item in sortings" :key="item">
+              <a href="#" @click.prevent="updateSortings(item)">{{ $t('toolbar.sortings.' + item) }}</a>
             </li>
-            <li v-for="item in filters" :key="item" @click="updateFilters(item)">
-              <a href="#">{{ $t('toolbar.filters.' + item) }}</a>
+            <li v-for="item in filters" :key="item">
+              <a href="#" @click.prevent="updateFilters(item)">{{ $t('toolbar.filters.' + item) }}</a>
             </li>
           </ul>
         </div>

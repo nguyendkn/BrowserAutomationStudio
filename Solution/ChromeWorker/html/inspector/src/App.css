@@ -91,9 +91,12 @@
 }
 
 .inspector-tools .dropdown > button {
-  background: #fff;
+  justify-content: center;
+  align-items: center;
+  background: inherit;
+  padding: 0 10px;
+  display: flex;
   height: 100%;
-  width: 28px;
   border: 0;
 }
 
@@ -102,32 +105,31 @@
 }
 
 .inspector-tools .dropdown {
-  border-left: 1px solid #e0e0e0;
+  border-left: 1px solid #d9d9d9;
 }
 
 .inspector-tools-toggle {
   justify-content: center;
   align-items: center;
+  background: inherit;
   display: flex;
-  height: 15px;
+  height: 20px;
   outline: 0;
   border: 0;
 }
 
 .inspector-tools-panel {
-  padding: 4px 10px;
+  border: 1px solid #d9d9d9;
+  margin: 0px 16px;
+  min-height: 38px;
   display: flex;
 }
 
 .inspector-tools {
-  border-bottom: 1px solid #e0e0e0;
-  background: #e0e0e0;
+  border-bottom: 1px solid #d9d9d9;
+  background: #f6f6f6;
   flex-flow: column;
   display: flex;
-}
-
-.inspector-tools-input:not(:placeholder-shown) {
-  user-select: auto;
 }
 
 .inspector-tools-input:placeholder-shown {
@@ -135,7 +137,12 @@
 }
 
 .inspector-tools-input {
-  padding: 3px;
+  letter-spacing: -0.2px;
+  line-height: 18px;
+  padding: 8px 12px;
+  color: #606060;
+  font-size: 14px;
+  outline: 0;
   border: 0;
   flex: 1;
 }

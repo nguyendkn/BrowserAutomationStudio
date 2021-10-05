@@ -1,9 +1,4 @@
 (window.locales || (window.locales = {})).en = {
-  nav: {
-    variables: 'Variables',
-    resources: 'Resources',
-    callstack: 'Call stack'
-  },
   toolbar: {
     placeholder: 'Search by name',
     filters: {
@@ -28,6 +23,11 @@
   tabs: {
     callstackEmpty: 'Call stack is empty',
     variablesEmpty: 'No variables',
-    resourcesEmpty: 'No resources',
+    resourcesEmpty: 'No resources'
+  },
+  nav: {
+    variables: 'Variables',
+    resources: 'Resources',
+    callstack: 'Call stack'
   }
 };

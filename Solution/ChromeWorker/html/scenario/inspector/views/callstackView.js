@@ -58,15 +58,6 @@
         .on('change:stack', () => {
           this.renderStack()
         });
-
-      this.tools = new Inspector.ToolsView({
-        filters: {
-          functions: true,
-          actions: true,
-        }
-      });
-
-      this.tools.model.on('change:filters', this.applyFilters, this);
     },
 
     render() {
@@ -74,7 +65,6 @@
 
       if ($el.is(':empty')) {
         $el.html(this.template());
-        $el.prepend(this.tools.render().el);
       }
 
       return this.renderStack();
@@ -84,9 +74,7 @@
       const panel = this.el.querySelector('.inspector-panel');
       panel.dataset.empty = _.isEmpty(this.model.get('stack'));
       const html = stackTemplate({
-        ...this.model.toJSON(),
-        filters: this.tools.model.get('filters'),
-        sorting: this.tools.model.get('sorting'),
+        ...this.model.toJSON()
       });
 
       morphdom(panel.querySelector('.inspector-panel-data'), `<div class="inspector-panel-data">${html}</div>`, {
@@ -106,9 +94,9 @@
     },
 
     applyFilters() {
-      _.each(this.tools.model.get('filters'), (visible, type) => {
-        this.$(`[data-type="${type.slice(0, -1)}"]`).toggle(visible);
-      });
+      // _.each(this.tools.model.get('filters'), (visible, type) => {
+      //   this.$(`[data-type="${type.slice(0, -1)}"]`).toggle(visible);
+      // });
 
       return this;
     },
@@ -119,11 +107,6 @@
     },
 
     events: {
-      'change .inspector-tools > ul > li > input': function (e) {
-        const { checked, value } = e.target;
-        this.model.set('filters', { ...this.model.get('filters'), [value]: checked });
-      },
-
       'show.bs.collapse .callstack-item': function (e) {
         const { id } = e.currentTarget.dataset;
         this.model.set('state', { ...this.model.get('state'), [id]: false });

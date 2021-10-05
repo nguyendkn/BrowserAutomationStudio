@@ -82,23 +82,6 @@
           this.applyFilters();
           this.applySorting();
         });
-
-      this.tools = new Inspector.ToolsView({
-        filters: {
-          undefined: true,
-          boolean: true,
-          number: true,
-          object: true,
-          string: true,
-          array: true,
-          date: true,
-          null: true,
-        }
-      });
-
-      this.tools.model.on('change:sorting', this.applySorting, this);
-      this.tools.model.on('change:filters', this.applyFilters, this);
-      this.tools.model.on('change:query', this.applyFilters, this);
     },
 
     render() {
@@ -106,7 +89,6 @@
 
       if ($el.is(':empty')) {
         $el.html(this.template());
-        $el.prepend(this.tools.render().el);
         this.$('.inspector-panel-data').append(this.tree.el);
       }
 
@@ -114,30 +96,30 @@
     },
 
     applyFilters() {
-      const filters = this.tools.model.get('filters');
-      const query = this.tools.model.get('query');
+      // const filters = this.tools.model.get('filters');
+      // const query = this.tools.model.get('query');
 
-      this.$('.jst-group').each((at, el) => {
-        const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
+      // this.$('.jst-group').each((at, el) => {
+      //   const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
 
-        if ($items.length) {
-          const $visible = $items.filter((at, el) => {
-            const visible = filters[el.dataset.type];
+      //   if ($items.length) {
+      //     const $visible = $items.filter((at, el) => {
+      //       const visible = filters[el.dataset.type];
 
-            if (query) {
-              const text = $(el).find('.jst-label').text().slice(0, -1);
-              return text.trim().toLowerCase().includes(query) && visible;
-            }
+      //       if (query) {
+      //         const text = $(el).find('.jst-label').text().slice(0, -1);
+      //         return text.trim().toLowerCase().includes(query) && visible;
+      //       }
 
-            return visible;
-          });
+      //       return visible;
+      //     });
 
-          $items.not($visible.show()).hide();
-          $group.toggle(!!$visible.length);
-        }
-      });
+      //     $items.not($visible.show()).hide();
+      //     $group.toggle(!!$visible.length);
+      //   }
+      // });
 
-      return this;
+      // return this;
     },
 
     applySorting() {

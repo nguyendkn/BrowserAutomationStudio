@@ -47,9 +47,6 @@
     template: _.template(/*html*/`
       <div class="inspector-panel">
         <div class="inspector-panel-data"></div>
-        <div class="inspector-panel-info">
-          <span><%= tr('No callstack') %></span>
-        </div>
       </div>
     `),
 
@@ -71,8 +68,6 @@
     },
 
     renderStack() {
-      const panel = this.el.querySelector('.inspector-panel');
-      panel.dataset.empty = _.isEmpty(this.model.get('stack'));
       const html = stackTemplate({
         ...this.model.toJSON()
       });

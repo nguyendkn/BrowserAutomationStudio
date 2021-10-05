@@ -63,8 +63,6 @@
       }
 
       model.on('change:source', (__, source) => {
-        const panel = this.el.querySelector('.inspector-panel');
-        panel.dataset.empty = _.isEmpty(source);
         this.tree.model.update(prepareData(source));
       });
 

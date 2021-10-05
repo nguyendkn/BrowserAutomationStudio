@@ -20,6 +20,16 @@ window.Toolbar = {
     }
   },
 
+  methods: {
+    updateSortings(sorting) {
+
+    },
+
+    updateFilters(filter) {
+
+    },
+  },
+
   template: html`
     <div class="inspector-tools">
       <div class="inspector-tools-panel">

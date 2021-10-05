@@ -45,9 +45,6 @@
           <div class="inspector-tab" id="resources" role="tabpanel"></div>
           <div class="inspector-tab" id="callstack" role="tabpanel"></div>
         </div>
-        <div class="inspector-notice" style="display: none;">
-          <span><%= tr("Data will be loaded at the next script pause") %></span>
-        </div>
       </div>
     `),
 
@@ -96,14 +93,10 @@
     },
 
     showNotice() {
-      this.$('.inspector-notice').show();
-      this.$('.inspector-tabs').hide();
       return this;
     },
 
     hideNotice() {
-      this.$('.inspector-notice').hide();
-      this.$('.inspector-tabs').show();
       return this;
     },
 

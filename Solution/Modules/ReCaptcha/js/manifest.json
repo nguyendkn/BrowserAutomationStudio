@@ -5,9 +5,9 @@
 	"description_small":{"en": "Solving ReCaptcha", "ru": "Решение ReCaptcha"},
 	"icon":"ReCaptcha.png",
 	"major_version": 7,
-	"minor_version": 0,
-	"developer_name": "bablosoft", 
-	"developer_email": "mail.to.twaego@gmail.com", 
+	"minor_version": 2,
+	"developer_name": "bablosoft & DoctorKrolic",
+	"developer_email": "mail.to.twaego@gmail.com",
 	"developer_site": "https://bablosoft.com",
 	"api_version": 1,
 	"actions":

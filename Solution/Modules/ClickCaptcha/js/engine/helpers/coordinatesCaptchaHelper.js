@@ -49,11 +49,7 @@
     _if_else(_result_function(), function () {
       _call_function(self.extractData, {})!
     }, function () {
-      if (_K === 'en') {
-        fail("Failed to find an element with the specified selector for CoordinatesCaptcha solving");
-      } else {
-        fail("Не удалось найти элемент с указанным селектором для решения CoordinatesCaptcha");
-      }
+      _function_return(null);
     })!
   };
 

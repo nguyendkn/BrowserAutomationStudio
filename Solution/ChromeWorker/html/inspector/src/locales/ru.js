@@ -1,6 +1,12 @@
 (window.locales || (window.locales = {})).ru = {
   toolbar: {
     placeholder: 'Поиск по имени',
+    sortings: {
+      frequency: 'По частоте использования',
+      dateModified: 'По дате изменения',
+      dateCreated: 'По дате создания',
+      alphabetically: 'По алфавиту'
+    },
     filters: {
       undefined: 'Undefined',
       functions: 'Функции',
@@ -12,12 +18,6 @@
       array: 'Массив',
       date: 'Дата',
       null: 'Null'
-    },
-    sorting: {
-      frequency: 'По частоте использования',
-      dateModified: 'По дате изменения',
-      dateCreated: 'По дате создания',
-      alphabetically: 'По алфавиту'
     }
   },
   tabs: {

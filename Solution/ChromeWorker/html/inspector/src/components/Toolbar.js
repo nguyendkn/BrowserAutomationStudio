@@ -40,7 +40,7 @@ window.Toolbar = {
               <path fill="#606060" d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" />
             </svg>
           </button>
-          <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu">
+          <ul class="dropdown-menu dropdown-menu-right inspector-tools-menu" v-show="false">
             <li v-for="item in sortings" :key="item" @click="updateSortings(item)">
               <a href="#">{{ $t('toolbar.sortings.' + item) }}</a>
             </li>

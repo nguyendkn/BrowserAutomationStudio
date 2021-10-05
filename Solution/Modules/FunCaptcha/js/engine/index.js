@@ -6,6 +6,7 @@
     BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.FunCaptchaHelper(args));
     _call_function(BASCaptchaSolver.helper.initialize, {})!
     const data = _result_function();
+    if (data === null) _break();
 
     _call_function(BASCaptchaSolver.api.solve, {
       task: new BASCaptchaSolver.api.FunCaptchaTask({

@@ -21,7 +21,7 @@ window.Toolbar = {
   data() {
     return {
       show: false,
-      query: '',
+      query: ''
     }
   },
 

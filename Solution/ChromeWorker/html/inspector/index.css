@@ -49,12 +49,14 @@ body {
 }
 
 .inspector-tab {
+  transition: opacity 0.4s ease;
   justify-content: center;
   align-items: center;
   text-align: center;
   user-select: none;
   min-height: 40px;
   display: flex;
+  opacity: 1;
   flex: 1;
 }
 
@@ -158,6 +160,7 @@ body {
 }
 
 .inspector-tools-toggle:hover {
+  cursor: pointer;
   opacity: 1;
 }
 

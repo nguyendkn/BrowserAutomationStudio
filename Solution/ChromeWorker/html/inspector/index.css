@@ -118,8 +118,12 @@ body {
 
 .inspector-panel-info {
   justify-content: center;
+  letter-spacing: -0.2px;
   align-items: center;
   text-align: center;
+  line-height: 17px;
+  font-size: 17px;
+  color: #606060;
   display: flex;
   flex: 1;
 }

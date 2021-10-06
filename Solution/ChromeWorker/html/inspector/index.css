@@ -68,6 +68,7 @@ body {
 }
 
 .inspector-header > button {
+  transition: opacity 0.4s ease;
   background: inherit;
   min-width: 40px;
   opacity: 0.5;
@@ -161,6 +162,7 @@ body {
 }
 
 .inspector-tools-toggle {
+  transition: opacity 0.4s ease;
   justify-content: center;
   align-items: center;
   background: inherit;

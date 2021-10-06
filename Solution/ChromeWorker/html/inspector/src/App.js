@@ -9,7 +9,10 @@ window.App = {
 
   data() {
     return {
-      tab: 'variables'
+      tab: 'variables',
+      variables: {},
+      resources: {},
+      callstack: [],
     }
   },
 
@@ -49,9 +52,9 @@ window.App = {
         </button>
       </div>
       <div class="inspector-content">
-        <Variables :source="{}" v-show="tab === 'variables'" class="inspector-panel" />
-        <Resources :source="{}" v-show="tab === 'resources'" class="inspector-panel" />
-        <Callstack :source="[]" v-show="tab === 'callstack'" class="inspector-panel" />
+        <Variables :source="variables" v-show="tab === 'variables'" class="inspector-panel" />
+        <Resources :source="resources" v-show="tab === 'resources'" class="inspector-panel" />
+        <Callstack :source="callstack" v-show="tab === 'callstack'" class="inspector-panel" />
       </div>
       <div class="inspector-notice" v-show="false">
         <span>Data will be loaded at the next script pause</span>

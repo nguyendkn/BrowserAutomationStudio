@@ -38,7 +38,7 @@ window.Toolbar = {
   template: html`
     <div class="inspector-tools">
       <div v-show="show" class="inspector-tools-panel">
-        <input v-model.trim="query" type="text" class="inspector-tools-input" :placeholder="$t('toolbar.placeholder') + '...'" :disabled="!search">
+        <input v-model.trim="query" type="text" class="inspector-tools-input" :placeholder="$t('toolbar.placeholder')" :disabled="!search">
         <div class="dropdown">
           <button data-toggle="dropdown" type="button" aria-expanded="false" aria-haspopup="true">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

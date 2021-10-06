@@ -8,7 +8,6 @@ window.Resources = {
   props: {
     source: {
       default: () => {},
-      required: true,
       type: Object
     }
   },

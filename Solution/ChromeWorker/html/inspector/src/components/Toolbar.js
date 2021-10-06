@@ -6,13 +6,14 @@ window.Toolbar = {
       required: true,
       type: Array
     },
+
     filters: {
       required: true,
       type: Array
     },
+
     search: {
       default: true,
-      required: false,
       type: Boolean
     }
   },

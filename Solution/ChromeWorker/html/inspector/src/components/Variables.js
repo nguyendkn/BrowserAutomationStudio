@@ -8,7 +8,6 @@ window.Variables = {
   props: {
     source: {
       default: () => {},
-      required: true,
       type: Object
     }
   },

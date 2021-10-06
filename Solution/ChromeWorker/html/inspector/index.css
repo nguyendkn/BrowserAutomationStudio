@@ -137,14 +137,6 @@ body {
 
 /* Toolbar */
 
-.inspector-tools .dropdown > button:hover {
-  outline: 0;
-}
-
-.inspector-tools .dropdown > button:focus {
-  outline: 0;
-}
-
 .inspector-tools .dropdown > button {
   justify-content: center;
   align-items: center;
@@ -152,11 +144,8 @@ body {
   padding: 0 10px;
   display: flex;
   height: 100%;
+  outline: 0;
   border: 0;
-}
-
-.inspector-tools-panel.collapsed {
-  display: none;
 }
 
 .inspector-tools .dropdown {

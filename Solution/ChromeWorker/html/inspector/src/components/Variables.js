@@ -7,23 +7,15 @@ window.Variables = {
 
   props: {
     source: {
-      default: () => {},
+      default: () => { },
       type: Object
     }
   },
 
   data() {
     return {
-      filters: [
-        'undefined',
-        'boolean',
-        'object',
-        'string',
-        'number',
-        'array',
-        'date',
-        'null'
-      ]
+      filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
+      sortings: [],
     }
   },
 
@@ -35,7 +27,7 @@ window.Variables = {
 
   template: html`
     <div>
-      <Toolbar :filters="filters" :sortings="[]" />
+      <Toolbar :filters="filters" :sortings="sortings" />
       <div v-show="!isEmpty" class="inspector-panel-data"></div>
       <div v-show="isEmpty" class="inspector-panel-info">
         <span>{{ $t('tabs.variablesEmpty') }}</span>

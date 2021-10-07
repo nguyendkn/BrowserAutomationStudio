@@ -2,6 +2,12 @@
   const { Inspector } = App;
 
   const Model = Backbone.Model.extend({
+    template: _.template(/*html*/`
+      <div class="inspector-panel">
+        <div class="inspector-panel-data"></div>
+      </div>
+    `),
+
     defaults: () => ({
       highlight: false,
       metadata: {},

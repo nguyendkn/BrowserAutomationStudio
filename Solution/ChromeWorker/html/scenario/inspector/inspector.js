@@ -76,11 +76,11 @@
           edges: { top: true }
         });
 
-        this.variables = new Inspector.VariablesView({
+        this.variables = new Inspector.JsonView({
           el: '#variables'
         }).render();
 
-        this.resources = new Inspector.ResourcesView({
+        this.resources = new Inspector.JsonView({
           el: '#resources'
         }).render();
 

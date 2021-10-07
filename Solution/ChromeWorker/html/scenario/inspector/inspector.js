@@ -10,7 +10,7 @@
   App.InspectorFrame = {
     sendData(data) {
       const frame = document.querySelector('#inspectorFrame');
-      frame.contentWindow.postMessage(data, '*');
+      frame.contentWindow.postMessage({ data, type: 'update' }, window.location.origin);
     },
 
     show() {

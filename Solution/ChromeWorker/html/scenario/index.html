@@ -5570,7 +5570,7 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
     {
-      if (!_Inspector.$el.is(':visible')) return;
+      //if (!_Inspector.$el.is(':visible')) return;
 
       if(VariablesUpdateTakesPlace)
       {
@@ -5587,9 +5587,9 @@
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
       App.InspectorFrame.sendData(JSON.parse(data));
-
       _.each(JSON.parse(data), (data, type) => {
-        _Inspector[type].model.update(data);
+        const view = _Inspector[type];
+        if (view) view.model.update(data);
       });
     }
 

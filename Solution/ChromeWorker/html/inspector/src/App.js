@@ -25,12 +25,16 @@ window.App = {
   },
 
   methods: {
-    handleFrameEvent(e) {
-      // console.log(e);
+    handleFrameEvent({ data }) {
+      if (data && data.type) {
+        if (data.type === 'update') {
+          this.callstack = data.data.callstack;
+        }
+      }
     },
 
     hide() {
-      window.parent.postMessage({ type: 'hide' }, '*');
+      window.parent.postMessage({ type: 'hide' }, window.location.origin);
     }
   },
 

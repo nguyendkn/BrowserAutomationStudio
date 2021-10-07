@@ -1,26 +1,4 @@
-/****************
- * Panel styles *
- ****************/
-
-.inspector-tabs > .active {
-  display: flex;
-}
-
-.inspector-tabs > div {
-  flex-flow: column;
-  overflow: hidden;
-  display: none;
-  flex: 1;
-}
-
-.inspector-tabs {
-  flex-flow: column;
-  overflow: hidden;
-  display: flex;
-  flex: 1;
-}
-
-#inspector {
+#inspector, #inspectorNew {
   border-bottom: 1px solid #dbdbdb;
   border-top: 7px solid #e1e1e1;
   min-height: 120px;

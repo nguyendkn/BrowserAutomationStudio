@@ -51,7 +51,7 @@ window.App = {
           </svg>
         </button>
       </div>
-      <div class="inspector-content">
+      <div class="inspector-panels">
         <Variables :source="variables" v-show="tab === 'variables'" class="inspector-panel" />
         <Resources :source="resources" v-show="tab === 'resources'" class="inspector-panel" />
         <Callstack :source="callstack" v-show="tab === 'callstack'" class="inspector-panel" />

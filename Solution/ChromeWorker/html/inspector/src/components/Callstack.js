@@ -23,7 +23,7 @@ window.Callstack = {
 
   computed: {
     isEmpty() {
-      return this.source.length === 0;
+      return Object.keys(this.source).length === 0;
     }
   },
 

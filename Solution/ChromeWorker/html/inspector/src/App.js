@@ -35,10 +35,10 @@ window.App = {
   },
 
   template: html`
-    <div class="inspector-content">
-      <div class="inspector-header">
-        <ul class="inspector-tabs" role="tablist">
-          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" class="inspector-tab" :class="{ active: tab === t }" role="presentation">
+    <div class="app-content">
+      <div class="app-header">
+        <ul class="app-tabs" role="tablist">
+          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" class="app-tab" :class="{ active: tab === t }" role="presentation">
             <a @click.prevent="tab = t" href="#" role="tab">
               <img :src="'src/assets/icons/' + t + '.svg'" alt="icon">
               {{ $t('nav.' + t) }}
@@ -51,12 +51,12 @@ window.App = {
           </svg>
         </button>
       </div>
-      <div class="inspector-panels">
-        <Variables :source="variables" v-show="tab === 'variables'" class="inspector-panel" />
-        <Resources :source="resources" v-show="tab === 'resources'" class="inspector-panel" />
-        <Callstack :source="callstack" v-show="tab === 'callstack'" class="inspector-panel" />
+      <div class="app-panels">
+        <Variables :source="variables" v-show="tab === 'variables'" class="app-panel" />
+        <Resources :source="resources" v-show="tab === 'resources'" class="app-panel" />
+        <Callstack :source="callstack" v-show="tab === 'callstack'" class="app-panel" />
       </div>
-      <div class="inspector-notice" v-show="false">
+      <div class="app-notice" v-show="false">
         <span>Data will be loaded at the next script pause</span>
       </div>
     </div>

@@ -35,15 +35,11 @@
             <li role="presentation">
               <a data-toggle="tab" href="#resources" role="tab" aria-controls="resources"><%= tr('Resources') %></a>
             </li>
-            <li role="presentation">
-              <a data-toggle="tab" href="#callstack" role="tab" aria-controls="callstack"><%= tr('Call stack') %></a>
-            </li>
           </ul>
         </div>
         <div class="inspector-tabs">
           <div class="inspector-tab active" id="variables" role="tabpanel"></div>
           <div class="inspector-tab" id="resources" role="tabpanel"></div>
-          <div class="inspector-tab" id="callstack" role="tabpanel"></div>
         </div>
       </div>
     `),
@@ -82,10 +78,6 @@
 
         this.resources = new Inspector.JsonView({
           el: '#resources'
-        }).render();
-
-        this.callstack = new Inspector.CallstackView({
-          el: '#callstack'
         }).render();
       }
 
@@ -138,4 +130,27 @@
       `);
     });
   }
+
+  Inspector.CallstackView = Backbone.View.extend({
+    events: {
+      'show.bs.collapse .callstack-item': function (e) {
+        const { id } = e.currentTarget.dataset;
+        this.model.set('state', { ...this.model.get('state'), [id]: false });
+      },
+
+      'hide.bs.collapse .callstack-item': function (e) {
+        const { id } = e.currentTarget.dataset;
+        this.model.set('state', { ...this.model.get('state'), [id]: true });
+      },
+
+      'click .callstack-item-name': function (e) {
+        const { id } = e.target.closest('li').dataset;
+        BrowserAutomationStudio_FocusAction(id);
+      },
+
+      'click .callstack-item-data': function (e) {
+        e.target.classList.toggle('text-truncate');
+      }
+    }
+  });
 })(window);

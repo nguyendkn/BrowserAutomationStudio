@@ -1,32 +1,9 @@
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-}
-
-body {
-  font-family: Helvetica Neue;
-}
-
 .inspector-tab:not(.active) {
   opacity: 0.5;
 }
 
 .inspector-tab > a > img {
   padding-right: 8px;
-}
-
-.inspector-tab > a:hover {
-  cursor: pointer;
-}
-
-.inspector-tab > a:focus {
-  cursor: pointer;
 }
 
 .inspector-tab > a {
@@ -74,7 +51,6 @@ body {
   background: inherit;
   min-width: 40px;
   opacity: 0.5;
-  outline: 0;
   border: 0;
 }
 
@@ -144,7 +120,6 @@ body {
   padding: 0 10px;
   display: flex;
   height: 100%;
-  outline: 0;
   border: 0;
 }
 
@@ -165,7 +140,6 @@ body {
   display: flex;
   height: 20px;
   opacity: 0.5;
-  outline: 0;
   border: 0;
 }
 
@@ -194,11 +168,11 @@ body {
 
 .inspector-tools-input {
   letter-spacing: -0.2px;
+  background: #fff;
   line-height: 18px;
   padding: 8px 12px;
   color: #606060;
   font-size: 14px;
-  outline: 0;
   border: 0;
   flex: 1;
 }
@@ -224,4 +198,12 @@ body {
 ::-webkit-scrollbar {
   height: 8px;
   width: 8px;
+}
+
+/* Global */
+
+html, body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  height: 100%;
+  width: 100%;
 }

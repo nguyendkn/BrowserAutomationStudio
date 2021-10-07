@@ -137,3 +137,13 @@
 .jst-group {
   border: thin solid #e0e0e0;
 }
+
+.jst-viewer ul {
+  list-style: none;
+  margin-bottom: 0;
+}
+
+.jst-viewer ol {
+  list-style: none;
+  margin-bottom: 0;
+}

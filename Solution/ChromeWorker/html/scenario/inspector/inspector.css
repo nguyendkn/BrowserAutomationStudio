@@ -84,17 +84,3 @@
   display: flex;
   padding: 0;
 }
-
-/*****************
- * Global styles *
- *****************/
-
-#inspector ul {
-  list-style: none;
-  margin-bottom: 0;
-}
-
-#inspector ol {
-  list-style: none;
-  margin-bottom: 0;
-}

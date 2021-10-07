@@ -56,9 +56,6 @@ window.App = {
         <Resources :source="resources" v-show="tab === 'resources'" class="app-panel" />
         <Callstack :source="callstack" v-show="tab === 'callstack'" class="app-panel" />
       </div>
-      <div class="app-notice" v-show="false">
-        <span>Data will be loaded at the next script pause</span>
-      </div>
     </div>
   `
 };

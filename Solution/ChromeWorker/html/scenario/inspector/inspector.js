@@ -92,14 +92,6 @@
       return this;
     },
 
-    showNotice() {
-      return this;
-    },
-
-    hideNotice() {
-      return this;
-    },
-
     show() {
       if (this.$el.is(':visible')) return this;
       this.$el.show();

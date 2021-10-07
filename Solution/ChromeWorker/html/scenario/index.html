@@ -5567,7 +5567,6 @@
       if (!_GobalModel.get('isscriptexecuting') && !_GobalModel.get('istaskexecuting')) {
         return BrowserAutomationStudio_AskForVariablesUpdate();
       }
-      _Inspector.showNotice();
     }
 
     function BrowserAutomationStudio_AskForVariablesUpdate()
@@ -5872,7 +5871,6 @@
 
       if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
       {
-        _Inspector.hideNotice();
         BrowserAutomationStudio_AskForVariablesUpdate()
       }
 

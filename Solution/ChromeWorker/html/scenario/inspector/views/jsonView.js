@@ -2,12 +2,6 @@
   const { Inspector } = App;
 
   const Model = Backbone.Model.extend({
-    template: _.template(/*html*/`
-      <div class="inspector-panel">
-        <div class="inspector-panel-data"></div>
-      </div>
-    `),
-
     defaults: () => ({
       highlight: false,
       metadata: {},
@@ -53,6 +47,12 @@
   })
 
   const View = Backbone.View.extend({
+    template: _.template(/*html*/`
+      <div class="inspector-panel">
+        <div class="inspector-panel-data"></div>
+      </div>
+    `),
+
     initialize() {
       const model = this.model = new Model();
 

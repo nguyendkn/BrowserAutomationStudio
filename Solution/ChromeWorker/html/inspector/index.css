@@ -106,14 +106,32 @@
 
 /* Toolbar */
 
+.app-toolbar .dropdown.open > button > svg > path {
+  fill: #ffffff;
+}
+
+.app-toolbar .dropdown.open > button {
+  border-color: #606060;
+  background: #3d3f42;
+}
+
+.app-toolbar .dropdown > button > svg > path {
+  transition: fill 0.3s ease;
+}
+
 .app-toolbar .dropdown > button {
+  transition: all 0.3s ease;
   border: 1px solid #d9d9d9;
   justify-content: center;
   align-items: center;
   background: inherit;
-  padding: 0 10px;
   display: flex;
+  padding: 10px;
   height: 100%;
+}
+
+.app-toolbar .dropdown {
+  position: relative;
 }
 
 .app-toolbar-toggle:hover {
@@ -167,9 +185,16 @@
 }
 
 .app-toolbar-menu {
+  border: 1px solid #606060;
+  background: #3d3f42;
   min-width: max-content;
-  padding: 0 12px;
-  left: auto;
+  position: absolute;
+  padding: 13px 12px;
+  flex-flow: column;
+  list-style: none;
+  display: flex;
+  z-index: 1;
+  right: 0;
 }
 
 /* Scrollbar */

@@ -20,6 +20,7 @@ window.Toolbar = {
 
   data() {
     return {
+      dropdown: false,
       show: true,
       query: ''
     }
@@ -33,24 +34,28 @@ window.Toolbar = {
     updateFilters(filter) {
 
     },
+
+    toggleDropdown() {
+      this.dropdown = !this.dropdown;
+    }
   },
 
   template: html`
     <div class="app-toolbar">
       <div v-show="show" class="app-toolbar-panel">
         <input v-model.trim="query" type="text" class="app-toolbar-input" :placeholder="$t('toolbar.placeholder')" :disabled="!search">
-        <div class="dropdown">
-          <button type="button" aria-expanded="false" aria-haspopup="true">
+        <div class="dropdown" :class="{ open: dropdown }">
+          <button @click="toggleDropdown" type="button" aria-expanded="false" aria-haspopup="true">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill="#606060" d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" />
             </svg>
           </button>
-          <ul class="dropdown-menu app-toolbar-menu" v-show="false">
+          <ul class="dropdown-menu app-toolbar-menu" v-show="dropdown">
             <li v-for="item in sortings" :key="item">
-              <a href="#" @click.prevent="updateSortings(item)">{{ $t('toolbar.sortings.' + item) }}</a>
+              <a @click.prevent="updateSortings(item)" href="#">{{ $t('toolbar.sortings.' + item) }}</a>
             </li>
             <li v-for="item in filters" :key="item">
-              <a href="#" @click.prevent="updateFilters(item)">{{ $t('toolbar.filters.' + item) }}</a>
+              <a @click.prevent="updateFilters(item)" href="#">{{ $t('toolbar.filters.' + item) }}</a>
             </li>
           </ul>
         </div>

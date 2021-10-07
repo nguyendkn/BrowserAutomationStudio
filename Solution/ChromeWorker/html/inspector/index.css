@@ -1,3 +1,5 @@
+/* Tabs */
+
 .inspector-tab:not(.active) {
   opacity: 0.5;
 }
@@ -74,12 +76,6 @@
   user-select: none;
   display: flex;
   flex: 1;
-}
-
-.text-truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 /* Panels */
@@ -198,6 +194,14 @@
 ::-webkit-scrollbar {
   height: 8px;
   width: 8px;
+}
+
+/* Utilities */
+
+.text-truncate {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 /* Global */

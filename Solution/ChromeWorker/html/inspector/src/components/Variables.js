@@ -29,9 +29,7 @@ window.Variables = {
     <div>
       <Toolbar :filters="filters" :sortings="sortings" />
       <div v-show="!isEmpty" class="inspector-panel-data"></div>
-      <div v-show="isEmpty" class="inspector-panel-info">
-        <span>{{ $t('tabs.variablesEmpty') }}</span>
-      </div>
+      <div v-show="isEmpty" class="inspector-panel-info">{{ $t('tabs.variablesEmpty') }}</div>
     </div>
   `
 };

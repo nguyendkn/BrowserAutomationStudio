@@ -31,9 +31,7 @@ window.Callstack = {
     <div>
       <Toolbar :filters="filters" :sortings="[]" :search="false" />
       <div v-show="!isEmpty" class="inspector-panel-data"></div>
-      <div v-show="isEmpty" class="inspector-panel-info">
-        <span>{{ $t('tabs.callstackEmpty') }}</span>
-      </div>
+      <div v-show="isEmpty" class="inspector-panel-info">{{ $t('tabs.callstackEmpty') }}</div>
     </div>
   `
 };

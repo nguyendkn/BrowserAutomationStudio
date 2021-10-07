@@ -20,7 +20,7 @@ window.Toolbar = {
 
   data() {
     return {
-      show: false,
+      show: true,
       query: ''
     }
   },

@@ -850,25 +850,26 @@ function BAS_SolveRecaptcha()
 			solver_property("capmonster","IsNotDynamic",IS44)
 	        _call(BAS_CapmonsterUpdateImage,null)!
 	        solve_base64_no_fail("capmonster", native("imageprocessing","getdata",BAS_CAPMONSTER_IMAGE_ID))!
-	        if(_result().indexOf("ERROR_CAPTCHA_UNSOLVABLE") >= 0)
-	        {
+	        _if_else(_result().indexOf("ERROR_CAPTCHA_UNSOLVABLE") >= 0, function(){
 			  _call(Reload_Recaptcha,{selector: RECAPTCHA_PREFIX_SECOND_FRAME})!
 			  SKIP = true
 			  RECAPTCHA2_RESULT = ""
 			  _break()
-	        }else if(_result().indexOf("CAPTCHA_FAIL") >= 0)
-	        {
-	          if(_result().indexOf("Response_Was_Not_Got_Error") >= 0)
-			  {
-				RECAPTCHA2_RESULT = ""
-			  }else
-			  {
-				fail(_result())
-			  }
-	        }else
-	        {
-	          RECAPTCHA2_RESULT = _result()
-	        }
+	        }, function(){
+				if(_result().indexOf("CAPTCHA_FAIL") >= 0)
+				{
+				  if(_result().indexOf("Response_Was_Not_Got_Error") >= 0)
+				  {
+					RECAPTCHA2_RESULT = ""
+				  }else
+				  {
+					fail(_result())
+				  }
+				}else
+				{
+				  RECAPTCHA2_RESULT = _result()
+				}
+			})! 
 	      },function(){
 	        get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME_ELEMENT).render_base64()!
 
@@ -950,11 +951,12 @@ function BAS_SolveRecaptcha()
 	    	        fail("Ip banned. Automated queries")
 	          
 	        get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME).script("document.getElementsByClassName('rc-imageselect-tileselected').length")!
-	        if(RECAPTCHA2_TOTAL_SELECTED == parseInt(_result())){
+	        _if(RECAPTCHA2_TOTAL_SELECTED == parseInt(_result()), function(){
 				wait_load("recaptcha/api2/payload")!
+
 				CAPTCHA_TYPE_DYNAMIC = true
 				_call(BAS_CapmonsterUpdateImage,null)!
-			}
+			})!
 	      })!
 
 	      _if(!CAPTCHA_TYPE_DYNAMIC && !SKIP, function(){
@@ -979,17 +981,18 @@ function BAS_SolveRecaptcha()
 			sleep(500)!
 			
 			get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME + " .rc-imageselect-error-select-more", false).nowait().script("self.getBoundingClientRect().height")!
-			SELECT_MORE_HEIGHT = _result()
+			SELECT_MORE_HEIGHT = Math.round(_result())
 			get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME + " .rc-imageselect-error-select-more", false).nowait().script("self.getBoundingClientRect().width")!
-			SELECT_MORE_WIDTH = _result()
+			SELECT_MORE_WIDTH = Math.round(_result())
 			get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME + " .rc-imageselect-error-dynamic-more", false).nowait().script("self.getBoundingClientRect().height")!
-			DYNAMIC_MORE_HEIGHT = _result()
+			DYNAMIC_MORE_HEIGHT = Math.round(_result())
 			get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME + " .rc-imageselect-error-dynamic-more", false).nowait().script("self.getBoundingClientRect().width")!
-			DYNAMIC_MORE_WIDTH = _result()
+			DYNAMIC_MORE_WIDTH = Math.round(_result())
 			RECAPTCHA2_SELECT_MORE = (SELECT_MORE_HEIGHT != 0 && SELECT_MORE_WIDTH != 0) || (DYNAMIC_MORE_HEIGHT != 0 && DYNAMIC_MORE_WIDTH != 0)
-			
-			if(RECAPTCHA2_SELECT_MORE)
+
+			_if(RECAPTCHA2_SELECT_MORE, function(){
 				_call(Reload_Recaptcha,{selector: RECAPTCHA_PREFIX_SECOND_FRAME})!
+			})!
 	      })!
 	      
 	    })!

@@ -22,8 +22,8 @@
   },
   tabs: {
     callstackEmpty: 'Call stack is empty',
-    variablesEmpty: 'No variables',
-    resourcesEmpty: 'No resources'
+    variablesEmpty: 'Variables list is empty',
+    resourcesEmpty: 'Resources list is empty'
   },
   nav: {
     variables: 'Variables',

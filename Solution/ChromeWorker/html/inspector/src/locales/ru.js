@@ -22,8 +22,8 @@
   },
   tabs: {
     callstackEmpty: 'Стек вызовов пуст',
-    variablesEmpty: 'Нет переменных',
-    resourcesEmpty: 'Нет ресурсов'
+    variablesEmpty: 'Список переменных пуст',
+    resourcesEmpty: 'Список ресурсов пуст'
   },
   nav: {
     variables: 'Переменные',

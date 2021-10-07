@@ -2,10 +2,10 @@
   toolbar: {
     placeholder: 'Поиск по имени',
     sortings: {
-      frequency: 'По частоте использования',
+      alphabetically: 'По алфавиту',
       dateModified: 'По дате изменения',
       dateCreated: 'По дате создания',
-      alphabetically: 'По алфавиту'
+      frequency: 'По частоте использования'
     },
     filters: {
       undefined: 'Undefined',

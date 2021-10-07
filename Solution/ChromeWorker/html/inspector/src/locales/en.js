@@ -2,10 +2,10 @@
   toolbar: {
     placeholder: 'Search by name',
     sortings: {
-      frequency: 'By frequency of use',
+      alphabetically: 'Alphabetically',
       dateModified: 'By date modified',
       dateCreated: 'By date created',
-      alphabetically: 'Alphabetically'
+      frequency: 'By frequency of use'
     },
     filters: {
       undefined: 'Undefined',

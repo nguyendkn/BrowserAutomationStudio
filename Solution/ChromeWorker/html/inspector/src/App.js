@@ -10,9 +10,11 @@ window.App = {
   data() {
     return {
       tab: 'variables',
-      variables: {},
-      resources: {},
-      callstack: [],
+      data: {
+        variables: {},
+        resources: {},
+        callstack: [],
+      },
     }
   },
 
@@ -26,10 +28,8 @@ window.App = {
 
   methods: {
     handleFrameEvent({ data }) {
-      if (data && data.type) {
-        if (data.type === 'update') {
-          this.callstack = data.data.callstack;
-        }
+      if (data && data.type === 'update') {
+        this.data = data.json;
       }
     },
 
@@ -56,9 +56,9 @@ window.App = {
         </button>
       </div>
       <div class="app-panels">
-        <Variables :source="variables" v-show="tab === 'variables'" class="app-panel" />
-        <Resources :source="resources" v-show="tab === 'resources'" class="app-panel" />
-        <Callstack :source="callstack" v-show="tab === 'callstack'" class="app-panel" />
+        <Variables :source="data.variables" v-show="tab === 'variables'" class="app-panel" />
+        <Resources :source="data.resources" v-show="tab === 'resources'" class="app-panel" />
+        <Callstack :source="data.callstack" v-show="tab === 'callstack'" class="app-panel" />
       </div>
     </div>
   `

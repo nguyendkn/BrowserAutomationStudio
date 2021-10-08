@@ -21,7 +21,7 @@
       // });
       this.$('iframe')[0].postMessage({
         type: 'update',
-        data,
+        json: JSON.parse(data),
       }, window.location.origin);
     },
 

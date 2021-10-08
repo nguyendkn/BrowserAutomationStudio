@@ -10,12 +10,57 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      const testData = {
+        callstack: [
+          {
+            arguments: null,
+            iterator: 1,
+            name: 'If',
+            expression: '([[CYCLE_INDEX]] > -1) || (false || true) && 1 && 2 && (true || false)',
+            id: 299996755,
+            type: 'action'
+          },
+          {
+            arguments: null,
+            iterator: 1,
+            name: 'While',
+            id: 363107511,
+            type: 'action'
+          },
+          {
+            arguments: {
+              a1: 1,
+              a2: 2
+            },
+            iterator: 1,
+            name: 'test',
+            id: 388761436,
+            type: 'function'
+          },
+          {
+            arguments: null,
+            iterator: 1,
+            name: 'If',
+            expression: '1',
+            id: 338239073,
+            type: 'action'
+          },
+          {
+            type: 'function',
+            name: 'Main',
+            id: 0
+          }
+        ]
+      };
+    </script>
     <script src="vendor/vue/vue.min.js"></script>
     <script src="vendor/vue-i18n/vue-i18n.min.js"></script>
     <script src="src/locales/en.js"></script>
     <script src="src/locales/ru.js"></script>
     <script src="src/utils/html.js"></script>
     <script src="src/components/Toolbar.js"></script>
+    <script src="src/components/CallstackItem.js"></script>
     <script src="src/components/Callstack.js"></script>
     <script src="src/components/Variables.js"></script>
     <script src="src/components/Resources.js"></script>

@@ -13,7 +13,8 @@ window.App = {
       data: {
         variables: {},
         resources: {},
-        callstack: [],
+        // callstack: [],
+        callstack: testData.callstack
       },
     }
   },

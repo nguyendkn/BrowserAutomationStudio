@@ -9,13 +9,13 @@ window.App = {
 
   data() {
     return {
-      tab: 'variables',
       data: {
         variables: {},
         resources: {},
         // callstack: [],
         callstack: testData.callstack
       },
+      tab: 'variables'
     }
   },
 
@@ -36,6 +36,10 @@ window.App = {
 
     hide() {
       window.parent.postMessage({ type: 'hide' }, window.location.origin);
+    },
+
+    show() {
+      window.parent.postMessage({ type: 'show' }, window.location.origin);
     }
   },
 

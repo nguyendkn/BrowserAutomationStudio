@@ -259,15 +259,13 @@
 }
 
 .callstack-item {
-  border: 1px solid transparent;
-  border-left-width: 4px;
   user-select: none;
   flex-flow: column;
+  padding: 5px 12px;
   line-height: 18px;
   font-size: 16px;
   color: #434343;
   display: flex;
-  padding: 5px;
 }
 
 .callstack-list {

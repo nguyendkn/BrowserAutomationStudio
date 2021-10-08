@@ -8,6 +8,13 @@ window.CallstackItem = {
     }
   },
 
+  computed: {
+    hasArguments() {
+      const { arguments } = this.item;
+      return arguments && Object.keys(arguments).length > 0;
+    }
+  },
+
   template: html`
     <li class="callstack-item">
       <div>
@@ -20,7 +27,7 @@ window.CallstackItem = {
           <i class="fa fa-plus"></i>
         </button>
       </div>
-      <ul class="callstack-item-params">
+      <ul v-if="hasArguments" class="callstack-item-params">
         <li v-for="(value, name) in item.arguments" :key="name" class="callstack-item-param">
           <span>{{ name }}:</span>
           <span>{{ value }}</span>

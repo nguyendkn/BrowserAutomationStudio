@@ -42,8 +42,14 @@
         });
 
         window.addEventListener('message', ({ data }) => {
-          if (data.type === 'hide') this.hide();
-          if (data.type === 'show') this.show();
+          switch (data.type) {
+            case 'focusAction':
+              return BrowserAutomationStudio_FocusAction(data.json.id);
+            case 'hide':
+              return this.hide();
+            case 'show':
+              return this.show();
+          }
         }, false);
 
         // this.variables = new Inspector.JsonView({
@@ -104,27 +110,4 @@
       `);
     });
   }
-
-  Inspector.CallstackView = Backbone.View.extend({
-    events: {
-      'show.bs.collapse .callstack-item': function (e) {
-        const { id } = e.currentTarget.dataset;
-        this.model.set('state', { ...this.model.get('state'), [id]: false });
-      },
-
-      'hide.bs.collapse .callstack-item': function (e) {
-        const { id } = e.currentTarget.dataset;
-        this.model.set('state', { ...this.model.get('state'), [id]: true });
-      },
-
-      'click .callstack-item-name': function (e) {
-        const { id } = e.target.closest('li').dataset;
-        BrowserAutomationStudio_FocusAction(id);
-      },
-
-      'click .callstack-item-data': function (e) {
-        e.target.classList.toggle('text-truncate');
-      }
-    }
-  });
 })(window);

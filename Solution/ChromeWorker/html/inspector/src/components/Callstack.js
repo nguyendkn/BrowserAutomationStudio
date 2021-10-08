@@ -28,7 +28,7 @@ window.Callstack = {
   template: html`
     <div>
       <Toolbar :filters="filters" :sortings="sortings" :search="false" />
-      <div v-show="isEmpty" class="app-panel-info">{{ $t('tabs.callstackEmpty') }}</div>
+      <div v-show="isEmpty" class="app-panel-info" v-t="'tabs.callstackEmpty'"></div>
       <div v-show="!isEmpty" class="app-panel-data"></div>
     </div>
   `

@@ -28,7 +28,7 @@ window.Variables = {
   template: html`
     <div>
       <Toolbar :filters="filters" :sortings="sortings" />
-      <div v-show="isEmpty" class="app-panel-info">{{ $t('tabs.variablesEmpty') }}</div>
+      <div v-show="isEmpty" class="app-panel-info" v-t="'tabs.variablesEmpty'"></div>
       <div v-show="!isEmpty" class="app-panel-data"></div>
     </div>
   `

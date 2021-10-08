@@ -161,24 +161,6 @@
       });
       this.model.set('state', state);
       return this;
-    },
-
-    openModal(e) {
-      e.stopPropagation();
-      const { path, type } = e.target.closest('li').dataset;
-
-      const modal = new Inspector.Modal({
-        callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
-        value: this.tree.model.getValue(path),
-        type,
-        path,
-      }).render();
-    },
-
-    events: {
-      'dblclick .jst-root > li > ul > li > .jst-node': 'openModal',
-
-      'dblclick .jst-root > li > ul > li > .jst-list': 'openModal',
     }
   }, {
     colors: {

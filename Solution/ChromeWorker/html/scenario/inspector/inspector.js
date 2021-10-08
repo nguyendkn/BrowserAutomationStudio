@@ -1,64 +1,33 @@
 (({ App, Backbone }) => {
   const { Inspector } = App;
 
-  window.addEventListener('message', ({ data }) => {
-    if (data.type === 'hide') {
-      App.InspectorFrame.hide();
-    }
-  }, false);
-
-  App.InspectorFrame = {
-    sendData(data) {
-      const frame = document.querySelector('#inspectorFrame');
-      frame.contentWindow.postMessage({ data, type: 'update' }, window.location.origin);
-    },
-
-    show() {
-      const frame = document.querySelector('#inspectorFrame');
-      $(frame.parentNode).show();
-    },
-
-    hide() {
-      const frame = document.querySelector('#inspectorFrame');
-      $(frame.parentNode).hide();
-    },
-  };
-
   Inspector.Main = Backbone.View.extend({
-    template: _.template(/*html*/`
-      <div class="inspector-content">
-        <div class="inspector-header">
-          <ul class="inspector-nav" role="tablist">
-            <li class="active" role="presentation">
-              <a data-toggle="tab" href="#variables" role="tab" aria-controls="variables"><%= tr('Variables') %></a>
-            </li>
-            <li role="presentation">
-              <a data-toggle="tab" href="#resources" role="tab" aria-controls="resources"><%= tr('Resources') %></a>
-            </li>
-          </ul>
-        </div>
-        <div class="inspector-tabs">
-          <div class="inspector-tab active" id="variables" role="tabpanel"></div>
-          <div class="inspector-tab" id="resources" role="tabpanel"></div>
-        </div>
-      </div>
-    `),
-
     initialize() {
       ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
         _GobalModel.on(`change:${attr}`, (__, value) => {
           if (value || this.$el.is(':hidden')) return;
-          this.variables.model.set('highlight', true);
-          this.resources.model.set('highlight', true);
+          // this.variables.model.set('highlight', true);
+          // this.resources.model.set('highlight', true);
         });
       });
 
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
     },
 
+    update(data) {
+      // _.each(JSON.parse(data), (data, type) => {
+      //   const view = _Inspector[type];
+      //   if (view) view.model.update(data);
+      // });
+      this.$('iframe')[0].postMessage({
+        type: 'update',
+        data,
+      }, window.location.origin);
+    },
+
     render() {
       if (this.$el.is(':empty')) {
-        this.setElement('#inspector').$el.html(this.template());
+        this.setElement('#inspector');
 
         this.resizable = interact(this.el).resizable({
           listeners: {
@@ -72,13 +41,18 @@
           edges: { top: true }
         });
 
-        this.variables = new Inspector.JsonView({
-          el: '#variables'
-        }).render();
+        window.addEventListener('message', ({ data }) => {
+          if (data.type === 'hide') this.hide();
+          if (data.type === 'show') this.show();
+        }, false);
 
-        this.resources = new Inspector.JsonView({
-          el: '#resources'
-        }).render();
+        // this.variables = new Inspector.JsonView({
+        //   el: '#variables'
+        // }).render();
+
+        // this.resources = new Inspector.JsonView({
+        //   el: '#resources'
+        // }).render();
       }
 
       return this;

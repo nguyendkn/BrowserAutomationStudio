@@ -1,7 +1,8 @@
-#inspector, #inspectorNew {
+#inspector {
   border-bottom: 1px solid #dbdbdb;
   border-top: 7px solid #e1e1e1;
   min-height: 120px;
+  overflow: hidden;
   height: 300px;
 }
 

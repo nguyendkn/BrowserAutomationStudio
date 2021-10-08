@@ -29,7 +29,7 @@ window.App = {
   methods: {
     handleFrameEvent({ data }) {
       if (data && data.type === 'update') {
-        this.data = data.json;
+        Object.assign(this.data, data.json);
       }
     },
 

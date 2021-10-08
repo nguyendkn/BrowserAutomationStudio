@@ -45,17 +45,17 @@ window.Toolbar = {
       <div v-show="visible" class="app-toolbar-panel">
         <input v-model.trim="query" type="text" class="app-toolbar-input" :placeholder="$t('toolbar.placeholder')" :disabled="!search">
         <div class="dropdown" :class="{ open: dropdown }">
-          <button @click="toggleDropdown" type="button" aria-expanded="false" aria-haspopup="true">
+          <button @click="toggleDropdown" type="button" :aria-expanded="dropdown.toString()" aria-haspopup="true">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill="#606060" d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" />
             </svg>
           </button>
-          <ul v-show="dropdown" class="dropdown-menu app-toolbar-menu">
-            <li v-for="item in sortings" :key="item">
-              <a @click.prevent="updateSortings(item)" href="#">{{ $t('toolbar.sortings.' + item) }}</a>
+          <ul v-show="dropdown" class="dropdown-menu app-toolbar-menu" role="menu">
+            <li v-for="item in sortings" :key="item" role="presentation">
+              <a @click.prevent="updateSortings(item)" href="#" target="_self" role="menuitem">{{ $t('toolbar.sortings.' + item) }}</a>
             </li>
-            <li v-for="item in filters" :key="item">
-              <a @click.prevent="updateFilters(item)" href="#">{{ $t('toolbar.filters.' + item) }}</a>
+            <li v-for="item in filters" :key="item" role="presentation">
+              <a @click.prevent="updateFilters(item)" href="#" target="_self" role="menuitem">{{ $t('toolbar.filters.' + item) }}</a>
             </li>
           </ul>
         </div>

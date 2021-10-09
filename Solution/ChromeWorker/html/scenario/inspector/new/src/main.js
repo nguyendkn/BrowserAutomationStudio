@@ -5,7 +5,7 @@ Vue.use(CollapseTransition);
 const app = new Vue({
   i18n: new VueI18n({
     locale: new URL(window.location.href).searchParams.get('lang') || 'en',
-    messages: { ...locales },
+    messages: { ...window.locales },
     fallbackLocale: 'en'
   }),
 

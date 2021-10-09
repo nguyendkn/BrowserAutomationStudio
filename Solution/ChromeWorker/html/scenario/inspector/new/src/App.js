@@ -10,10 +10,10 @@ window.App = {
   data() {
     return {
       data: {
-        variables: {},
-        resources: {},
+        // variables: {},
+        // resources: {},
         // callstack: [],
-        callstack: testData.callstack
+        ...testData
       },
       tab: 'variables'
     }

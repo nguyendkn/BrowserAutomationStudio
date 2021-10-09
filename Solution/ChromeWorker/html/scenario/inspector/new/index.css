@@ -301,7 +301,7 @@
   transition: opacity .3s ease;
 }
 
-.fade-enter, .fade-leave-active {
+.fade-enter, .fade-leave-to {
   opacity: 0;
 }
 

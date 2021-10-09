@@ -40,7 +40,7 @@ window.CallstackItem = {
     }
   },
 
-  template: html`
+  template: String.raw`
     <li class="callstack-item">
       <div class="callstack-item-title">
         <img class="callstack-item-icon" :src="iconPath">

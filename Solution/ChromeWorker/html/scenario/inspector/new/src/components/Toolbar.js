@@ -40,7 +40,7 @@ window.Toolbar = {
     }
   },
 
-  template: html`
+  template: String.raw`
     <div class="app-toolbar">
       <CollapseTransition>
         <div v-show="visible" class="app-toolbar-panel">

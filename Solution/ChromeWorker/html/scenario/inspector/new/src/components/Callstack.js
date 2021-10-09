@@ -28,7 +28,7 @@ window.Callstack = {
     }
   },
 
-  template: html`
+  template: String.raw`
     <div>
       <Toolbar v-bind="toolbarOptions" />
       <div v-show="isEmpty" class="app-panel-info" v-t="'tabs.callstackEmpty'"></div>

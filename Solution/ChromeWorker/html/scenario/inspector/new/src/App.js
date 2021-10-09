@@ -13,7 +13,7 @@ window.App = {
         // variables: {},
         // resources: {},
         // callstack: [],
-        ...getTestData()
+        ...getData()
       },
       tab: 'variables'
     }
@@ -43,7 +43,7 @@ window.App = {
     }
   },
 
-  template: html`
+  template: String.raw`
     <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs" role="tablist">
@@ -69,7 +69,7 @@ window.App = {
   `
 };
 
-function getTestData() {
+function getData() {
   return {
     callstack: [
       {

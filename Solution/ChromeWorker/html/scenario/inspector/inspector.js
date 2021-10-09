@@ -12,13 +12,27 @@
       });
 
       this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
+
+      window.addEventListener('message', ({ data }) => {
+        switch (data.type) {
+          case 'focusAction':
+            return BrowserAutomationStudio_FocusAction(data.json.id);
+          case 'showModal':
+            // TODO
+            break;
+          case 'hide':
+            return this.hide();
+          case 'show':
+            return this.show();
+        }
+      }, false);
     },
 
     update(data) {
-      this.$('iframe')[0].postMessage({
+      this.$('iframe')[0].contentWindow.postMessage({
         type: 'update',
         json: JSON.parse(data),
-      }, window.location.origin);
+      }, '*');
     },
 
     render() {
@@ -36,20 +50,6 @@
           },
           edges: { top: true }
         });
-
-        window.addEventListener('message', ({ data }) => {
-          switch (data.type) {
-            case 'focusAction':
-              return BrowserAutomationStudio_FocusAction(data.json.id);
-            case 'showModal':
-              // TODO
-              break;
-            case 'hide':
-              return this.hide();
-            case 'show':
-              return this.show();
-          }
-        }, false);
       }
 
       return this;

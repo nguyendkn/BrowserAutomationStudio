@@ -35,11 +35,11 @@ window.App = {
     },
 
     hide() {
-      window.parent.postMessage({ type: 'hide' }, window.location.origin);
+      window.parent.postMessage({ type: 'hide' }, '*');
     },
 
     show() {
-      window.parent.postMessage({ type: 'show' }, window.location.origin);
+      window.parent.postMessage({ type: 'show' }, '*');
     }
   },
 

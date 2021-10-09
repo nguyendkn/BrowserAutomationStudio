@@ -15,8 +15,10 @@ window.Callstack = {
 
   data() {
     return {
-      filters: ['functions', 'actions'],
-      sortings: []
+      toolbarOptions: {
+        filters: ['functions', 'actions'],
+        search: false
+      }
     }
   },
 
@@ -28,7 +30,7 @@ window.Callstack = {
 
   template: html`
     <div>
-      <Toolbar :filters="filters" :sortings="sortings" :search="false" />
+      <Toolbar v-bind="toolbarOptions" />
       <div v-show="isEmpty" class="app-panel-info" v-t="'tabs.callstackEmpty'"></div>
       <div v-show="!isEmpty" class="app-panel-data">
         <ul class="callstack-list">

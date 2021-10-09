@@ -14,8 +14,10 @@ window.Variables = {
 
   data() {
     return {
-      filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
-      sortings: [],
+      toolbarOptions: {
+        filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
+        sortings: ['alphabetically', 'dateModified', 'dateCreated', 'frequency']
+      }
     }
   },
 
@@ -27,7 +29,7 @@ window.Variables = {
 
   template: html`
     <div>
-      <Toolbar :filters="filters" :sortings="sortings" />
+      <Toolbar v-bind="toolbarOptions" />
       <div v-show="isEmpty" class="app-panel-info" v-t="'tabs.variablesEmpty'"></div>
       <div v-show="!isEmpty" class="app-panel-data"></div>
     </div>

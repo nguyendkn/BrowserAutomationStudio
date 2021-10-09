@@ -15,10 +15,6 @@
     },
 
     update(data) {
-      // _.each(JSON.parse(data), (data, type) => {
-      //   const view = _Inspector[type];
-      //   if (view) view.model.update(data);
-      // });
       this.$('iframe')[0].postMessage({
         type: 'update',
         json: JSON.parse(data),
@@ -45,20 +41,15 @@
           switch (data.type) {
             case 'focusAction':
               return BrowserAutomationStudio_FocusAction(data.json.id);
+            case 'showModal':
+              // TODO
+              break;
             case 'hide':
               return this.hide();
             case 'show':
               return this.show();
           }
         }, false);
-
-        // this.variables = new Inspector.JsonView({
-        //   el: '#variables'
-        // }).render();
-
-        // this.resources = new Inspector.JsonView({
-        //   el: '#resources'
-        // }).render();
       }
 
       return this;

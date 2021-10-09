@@ -201,13 +201,15 @@
 /* Callstack */
 
 .callstack-item-param > span:first-of-type {
-  font-weight: 600;
-  color: #5a5a5a;
+  color: #606060;
 }
 
 .callstack-item-param > span:last-of-type {
-  font-weight: 400;
-  color: #838383;
+  color: #538fb5;
+}
+
+.callstack-item-param > span + span {
+  padding-left: 8px;
 }
 
 .callstack-item-title > span {
@@ -221,8 +223,11 @@
 }
 
 .callstack-item-params {
+  background: #f6f6f6;
   flex-flow: column;
-  padding: 0 20px;
+  list-style: none;
+  padding: 9px 26px;
+  display: flex;
 }
 
 .callstack-toggle-params {
@@ -248,14 +253,21 @@
 }
 
 .callstack-item {
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
   letter-spacing: -0.2px;
   user-select: none;
   flex-flow: column;
+  cursor: pointer;
   padding: 5px 12px;
   line-height: 18px;
   font-size: 14px;
-  color: #434343;
   display: flex;
+}
+
+.callstack-item:hover {
+  border-color: #d9d9d9;
+  background: #f6f6f6;
 }
 
 .callstack-list {

@@ -3,12 +3,12 @@ window.Toolbar = {
 
   props: {
     sortings: {
-      required: true,
+      default: () => [],
       type: Array
     },
 
     filters: {
-      required: true,
+      default: () => [],
       type: Array
     },
 
@@ -51,14 +51,16 @@ window.Toolbar = {
                 <path fill="#606060" d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" />
               </svg>
             </button>
-            <ul v-show="dropdown" class="dropdown-menu app-toolbar-menu" role="menu">
-              <li v-for="item in sortings" :key="item" role="presentation">
-                <a v-t="'toolbar.sortings.' + item" @click.prevent="updateSortings(item)" href="#" role="menuitem"></a>
-              </li>
-              <li v-for="item in filters" :key="item" role="presentation">
-                <a v-t="'toolbar.filters.' + item" @click.prevent="updateFilters(item)" href="#" role="menuitem"></a>
-              </li>
-            </ul>
+            <transition name="fade">
+              <ul v-show="dropdown" class="dropdown-menu app-toolbar-menu" role="menu">
+                <li v-for="item in sortings" :key="item" role="presentation">
+                  <a v-t="'toolbar.sortings.' + item" @click.prevent="updateSortings(item)" href="#" role="menuitem"></a>
+                </li>
+                <li v-for="item in filters" :key="item" role="presentation">
+                  <a v-t="'toolbar.filters.' + item" @click.prevent="updateFilters(item)" href="#" role="menuitem"></a>
+                </li>
+              </ul>
+            </transition>
           </div>
         </div>
       </CollapseTransition>

@@ -185,6 +185,25 @@
   flex: 1;
 }
 
+.app-toolbar-menu > li.active {
+
+}
+
+.app-toolbar-menu > li + li {
+  margin-top: 5px;
+}
+
+.app-toolbar-menu > li > a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.app-toolbar-menu > li {
+  letter-spacing: -0.2px;
+  line-height: 15px;
+  font-size: 12px;
+}
+
 .app-toolbar-menu {
   border: 1px solid #606060;
   background: #3d3f42;
@@ -193,6 +212,7 @@
   padding: 13px 12px;
   flex-flow: column;
   list-style: none;
+  margin-top: -1px;
   display: flex;
   z-index: 1;
   right: 0;
@@ -273,6 +293,16 @@
 .callstack-list {
   flex-flow: column;
   display: flex;
+}
+
+/* Transitions */
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s ease;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0;
 }
 
 /* Scrollbar */

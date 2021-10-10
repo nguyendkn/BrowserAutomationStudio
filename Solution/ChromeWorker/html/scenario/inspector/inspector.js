@@ -68,6 +68,17 @@
     }
   });
 
+  function showModal({ path, type }) {
+    // const modal = new Inspector.Modal({
+    //   callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
+    //   value: this.tree.model.getValue(path),
+    //   type,
+    //   path,
+    // });
+
+    // return modal.render();
+  }
+
   function updateVariable(value, pointer, type) {
     const { root, path } = pointer.slice(1).split('/').reduce((data, key, at) => {
       return at !== 0 ? { ...data, path: `${data.path}['${key}']` } : {

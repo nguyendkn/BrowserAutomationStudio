@@ -30,8 +30,10 @@ window.Variables = {
   template: String.raw`
     <div>
       <Toolbar v-bind="toolbarOptions" />
-      <div v-show="isEmpty" class="app-panel-info" v-t="'tabs.variablesEmpty'"></div>
-      <div v-show="!isEmpty" class="app-panel-data"></div>
+      <div v-show="!isEmpty" class="app-panel-content">
+        <!-- TODO -->
+      </div>
+      <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.variablesEmpty'"></div>
     </div>
   `
 };

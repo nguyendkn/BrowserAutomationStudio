@@ -31,12 +31,12 @@ window.Callstack = {
   template: String.raw`
     <div>
       <Toolbar v-bind="toolbarOptions" />
-      <div v-show="isEmpty" class="app-panel-info" v-t="'tabs.callstackEmpty'"></div>
-      <div v-show="!isEmpty" class="app-panel-data">
+      <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
           <CallstackItem v-for="item in source" :key="item.id" :item="item" />
         </ul>
       </div>
+      <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.callstackEmpty'"></div>
     </div>
   `
 };

@@ -47,12 +47,6 @@
   })
 
   const View = Backbone.View.extend({
-    template: _.template(/*html*/`
-      <div class="inspector-panel">
-        <div class="inspector-panel-data"></div>
-      </div>
-    `),
-
     initialize() {
       const model = this.model = new Model();
 
@@ -80,23 +74,7 @@
         .on('node:expand', ({ path }) => {
           model.set('state', { ...model.get('state'), [path]: true });
           BrowserAutomationStudio_PreserveInterfaceState();
-        })
-        .on('render', () => {
-          this.restoreState();
-          this.applyFilters();
-          this.applySorting();
         });
-    },
-
-    render() {
-      const $el = this.$el;
-
-      if ($el.is(':empty')) {
-        $el.html(this.template());
-        this.$('.inspector-panel-data').append(this.tree.el);
-      }
-
-      return this;
     },
 
     applyFilters() {
@@ -151,15 +129,6 @@
       //   }));
       // });
 
-      return this;
-    },
-
-    restoreState(state = this.model.get('state')) {
-      _.each(state, (expanded, path) => {
-        const $el = this.$(`[data-path="${path}"] > .jst-list`);
-        if ($el.hasClass('collapsed') && expanded) $el.prev().click();
-      });
-      this.model.set('state', state);
       return this;
     }
   }, {

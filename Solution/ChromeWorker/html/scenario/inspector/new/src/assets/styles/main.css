@@ -177,16 +177,16 @@
   flex: 1;
 }
 
-.app-toolbar-menu-sorting.active {
+.app-toolbar-menu-sorting.active > a {
 
 }
 
-.app-toolbar-menu-filter.active {
-  
+.app-toolbar-menu-filter.active > a {
+
 }
 
-.app-toolbar-menu > li.active {
-
+.app-toolbar-menu > li.active > a {
+  opacity: 1;
 }
 
 .app-toolbar-menu > li > hr {
@@ -196,10 +196,12 @@
 }
 
 .app-toolbar-menu > li > a {
+  transition: opacity 0.3s ease;
   text-decoration: none;
   padding: 3px 12px;
   color: #ffffff;
   display: block;
+  opacity: 0.5;
   width: 100%;
 }
 

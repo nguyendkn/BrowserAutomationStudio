@@ -14,7 +14,7 @@ window.Resources = {
 
   data() {
     return {
-      toolbarOptions: {
+      toolbarProps: {
         filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
         sortings: ['alphabetically', 'dateModified', 'dateCreated', 'frequency']
       }
@@ -29,7 +29,7 @@ window.Resources = {
 
   template: String.raw`
     <div>
-      <Toolbar v-bind="toolbarOptions" />
+      <Toolbar v-bind="toolbarProps" />
       <div v-show="!isEmpty" class="app-panel-content">
         <!-- TODO -->
       </div>

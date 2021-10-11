@@ -21,7 +21,7 @@ window.Toolbar = {
   data() {
     return {
       dropdown: false,
-      visible: true,
+      visible: false,
       query: ''
     }
   },

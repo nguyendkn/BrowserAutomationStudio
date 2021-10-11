@@ -183,6 +183,7 @@
 .app-toolbar-menu > li > a > img {
   transition: opacity 0.3s ease;
   margin-left: 10px;
+  width: 16px;
   opacity: 0;
 }
 

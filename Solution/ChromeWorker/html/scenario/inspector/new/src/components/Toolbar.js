@@ -64,7 +64,7 @@ window.Toolbar = {
               <ul v-show="dropdown" class="app-toolbar-menu" role="menu">
                 <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }" role="presentation">
                   <a @click.prevent="setActiveItem(item, false)" href="#" role="menuitem">
-                    <span>{{ $t('toolbar.sortings.' + item.name) }}</span>
+                    <span v-t="'toolbar.sortings.' + item.name"></span>
                     <img src="src/assets/icons/arrows.svg" alt="icon">
                   </a>
                 </li>
@@ -73,7 +73,7 @@ window.Toolbar = {
                 </li>
                 <li v-for="item in filters" :key="item.name" :class="{ active: item.active }" role="presentation">
                   <a @click.prevent="setActiveItem(item, true)" href="#" role="menuitem">
-                    <span>{{ $t('toolbar.filters.' + item.name) }}</span>
+                    <span v-t="'toolbar.filters.' + item.name"></span>
                     <img src="src/assets/icons/check.svg" alt="icon">
                   </a>
                 </li>

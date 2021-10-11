@@ -16,7 +16,10 @@ window.Callstack = {
   data() {
     return {
       toolbarProps: {
-        filters: ['functions', 'actions'],
+        items: [
+          { type: 'filter', name: 'functions', active: true },
+          { type: 'filter', name: 'actions', active: true },
+        ],
         search: false
       }
     }

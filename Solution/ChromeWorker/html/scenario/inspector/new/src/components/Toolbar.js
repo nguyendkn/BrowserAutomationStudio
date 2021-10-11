@@ -2,19 +2,14 @@ window.Toolbar = {
   name: 'Toolbar',
 
   props: {
-    sortings: {
-      default: () => [],
-      type: Array
-    },
-
-    filters: {
-      default: () => [],
-      type: Array
-    },
-
     search: {
       default: true,
       type: Boolean
+    },
+
+    items: {
+      required: true,
+      type: Array
     }
   },
 
@@ -26,13 +21,23 @@ window.Toolbar = {
     }
   },
 
-  methods: {
-    updateSortings(sorting) {
-      // TODO
+  computed: {
+    sortings() {
+      return this.items.filter(item => item.type === 'sorting');
     },
+    
+    filters() {
+      return this.items.filter(item => item.type === 'filter');
+    }
+  },
 
-    updateFilters(filter) {
-      // TODO
+  methods: {
+    setActiveItem(item, inclusive = true) {
+      if (!inclusive) this.items.forEach(v => {
+        if (v.type === item.type && v.name !== item.name) v.active = false;
+      });
+
+      item.active = !item.active;
     },
 
     toggleDropdown() {
@@ -57,14 +62,14 @@ window.Toolbar = {
             </button>
             <transition name="fade">
               <ul v-show="dropdown" class="app-toolbar-menu" role="menu">
-                <li v-for="item in sortings" :key="item" role="presentation">
-                  <a v-t="'toolbar.sortings.' + item" @click.prevent="updateSortings(item)" href="#" role="menuitem"></a>
+                <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }" role="presentation">
+                  <a v-t="'toolbar.sortings.' + item.name" @click.prevent="setActiveItem(item, false)" href="#" role="menuitem"></a>
                 </li>
                 <li v-if="!!sortings.length">
                   <hr class="divider">
                 </li>
-                <li v-for="item in filters" :key="item" role="presentation">
-                  <a v-t="'toolbar.filters.' + item" @click.prevent="updateFilters(item)" href="#" role="menuitem"></a>
+                <li v-for="item in filters" :key="item.name" :class="{ active: item.active }" role="presentation">
+                  <a v-t="'toolbar.filters.' + item.name" @click.prevent="setActiveItem(item, true)" href="#" role="menuitem"></a>
                 </li>
               </ul>
             </transition>

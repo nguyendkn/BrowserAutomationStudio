@@ -13,10 +13,15 @@ window.Resources = {
   },
 
   data() {
+    const filters = ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'];
+    const sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
+
     return {
       toolbarProps: {
-        filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
-        sortings: ['alphabetically', 'dateModified', 'dateCreated', 'frequency']
+        items: [
+          ...filters.map(name => ({ name, type: 'filter', active: true })),
+          ...sortings.map((name, at) => ({ name, type: 'sorting', active: at == 0 }))
+        ]
       }
     }
   },

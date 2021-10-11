@@ -7,6 +7,5 @@ new Vue({
     messages: { ...window.locales },
     fallbackLocale: 'en'
   }),
-
   render: h => h(App)
 }).$mount('#app');

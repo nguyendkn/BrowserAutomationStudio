@@ -48,13 +48,13 @@ function debug_variables(list, callback) {
         var info = item._Info;
 
         return {
-            type: _Info.type,
-            name: _Info.name,
-            id: _Info.id,
+            type: info.type,
+            name: info.name,
+            id: info.id,
             options: {
-                expression: _Info.expression || '',
-                arguments: item.arguments || {},
-                iterator: item.iterator || 0,
+                expression: info.expression || '',
+                arguments: item._Arguments || {},
+                iterator: item._iterator || 0,
             }
         }
     }).filter(function (item) { return item.name }).reverse().concat({

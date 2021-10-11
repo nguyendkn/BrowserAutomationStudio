@@ -10,10 +10,9 @@ window.App = {
   data() {
     return {
       data: {
-        // variables: {},
-        // resources: {},
-        // callstack: [],
-        ...getData()
+        variables: {},
+        resources: {},
+        callstack: [],
       },
       tab: 'variables'
     }
@@ -68,50 +67,3 @@ window.App = {
     </div>
   `
 };
-
-function getData() {
-  return {
-    callstack: [
-      {
-        arguments: null,
-        iterator: 1,
-        name: 'If',
-        expression: '([[CYCLE_INDEX]] > -1) || (false || true) && 1 && 2 && (true || false)',
-        id: 299996755,
-        type: 'action'
-      },
-      {
-        arguments: null,
-        iterator: 1,
-        name: 'While',
-        id: 363107511,
-        type: 'action'
-      },
-      {
-        arguments: {
-          a1: 1,
-          a2: 2
-        },
-        iterator: 1,
-        name: 'test',
-        id: 388761436,
-        type: 'function'
-      },
-      {
-        arguments: null,
-        iterator: 1,
-        name: 'If',
-        expression: '1',
-        id: 338239073,
-        type: 'action'
-      },
-      {
-        type: 'function',
-        name: 'Main',
-        id: 0
-      }
-    ],
-    variables: {},
-    resources: {},
-  }
-}

@@ -19,15 +19,15 @@ window.App = {
   },
 
   destroyed() {
-    window.removeEventListener('message', this.handleFrameEvent, false);
+    window.removeEventListener('message', this.handleMessage, false);
   },
 
   mounted() {
-    window.addEventListener('message', this.handleFrameEvent, false);
+    window.addEventListener('message', this.handleMessage, false);
   },
 
   methods: {
-    handleFrameEvent({ data }) {
+    handleMessage({ data }) {
       if (data && data.type === 'update') {
         Object.assign(this.data, data.json);
       }

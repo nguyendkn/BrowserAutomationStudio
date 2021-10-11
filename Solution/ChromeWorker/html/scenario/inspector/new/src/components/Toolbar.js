@@ -32,7 +32,7 @@ window.Toolbar = {
   },
 
   methods: {
-    setActiveItem(item, inclusive = true) {
+    setActiveItem(item, inclusive) {
       if (!inclusive) this.items.forEach(v => {
         if (v.type === item.type && v.name !== item.name) v.active = false;
       });

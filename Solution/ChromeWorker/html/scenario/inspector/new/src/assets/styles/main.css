@@ -181,13 +181,18 @@
 
 }
 
-.app-toolbar-menu > li + li {
-  margin-top: 5px;
+.app-toolbar-menu > li > hr {
+  border: 0;
+  border-top: 1px solid #606060;
+  margin: 10px 0;
 }
 
 .app-toolbar-menu > li > a {
   text-decoration: none;
-  color: #fff;
+  padding: 3px 12px;
+  color: #ffffff;
+  display: block;
+  width: 100%;
 }
 
 .app-toolbar-menu > li {
@@ -201,11 +206,9 @@
   background: #3d3f42;
   min-width: max-content;
   position: absolute;
-  padding: 13px 12px;
-  flex-flow: column;
   list-style: none;
   margin-top: -1px;
-  display: flex;
+  padding: 13px 0;
   z-index: 1;
   right: 0;
 }

@@ -52,9 +52,12 @@ window.Toolbar = {
               </svg>
             </button>
             <transition name="fade">
-              <ul v-show="dropdown" class="dropdown-menu app-toolbar-menu" role="menu">
+              <ul v-show="dropdown" class="app-toolbar-menu" role="menu">
                 <li v-for="item in sortings" :key="item" role="presentation">
                   <a v-t="'toolbar.sortings.' + item" @click.prevent="updateSortings(item)" href="#" role="menuitem"></a>
+                </li>
+                <li v-if="!!sortings.length">
+                  <hr class="divider">
                 </li>
                 <li v-for="item in filters" :key="item" role="presentation">
                   <a v-t="'toolbar.filters.' + item" @click.prevent="updateFilters(item)" href="#" role="menuitem"></a>

@@ -19,8 +19,8 @@ window.Variables = {
     return {
       toolbarProps: {
         items: [
-          ...filters.map(name => ({ name, type: 'filter', active: true })),
-          ...sortings.map((name, at) => ({ name, type: 'sorting', active: at == 0 }))
+          ...sortings.map((name, at) => ({ name, type: 'sorting', active: at === 0 })),
+          ...filters.map(name => ({ name, type: 'filter', active: true }))
         ]
       }
     }

@@ -18,7 +18,7 @@ window.Callstack = {
       toolbarProps: {
         items: [
           { type: 'filter', name: 'functions', active: true },
-          { type: 'filter', name: 'actions', active: true },
+          { type: 'filter', name: 'actions', active: true }
         ],
         search: false
       }

@@ -33,7 +33,7 @@ window.Callstack = {
       <Toolbar v-bind="toolbarOptions" />
       <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
-          <CallstackItem v-for="item in source" :key="item.id" :item="item" />
+          <CallstackItem v-for="item in source" :key="item.id" v-bind="item" />
         </ul>
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.callstackEmpty'"></div>

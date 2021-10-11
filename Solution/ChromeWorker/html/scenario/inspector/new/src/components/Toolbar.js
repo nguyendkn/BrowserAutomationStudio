@@ -62,13 +62,13 @@ window.Toolbar = {
             </button>
             <transition name="fade">
               <ul v-show="dropdown" class="app-toolbar-menu" role="menu">
-                <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }" role="presentation">
+                <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }" class="app-toolbar-menu-sorting" role="presentation">
                   <a v-t="'toolbar.sortings.' + item.name" @click.prevent="setActiveItem(item, false)" href="#" role="menuitem"></a>
                 </li>
                 <li v-if="!!sortings.length">
                   <hr class="divider">
                 </li>
-                <li v-for="item in filters" :key="item.name" :class="{ active: item.active }" role="presentation">
+                <li v-for="item in filters" :key="item.name" :class="{ active: item.active }" class="app-toolbar-menu-filter" role="presentation">
                   <a v-t="'toolbar.filters.' + item.name" @click.prevent="setActiveItem(item, true)" href="#" role="menuitem"></a>
                 </li>
               </ul>

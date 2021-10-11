@@ -177,6 +177,14 @@
   flex: 1;
 }
 
+.app-toolbar-menu-sorting.active {
+
+}
+
+.app-toolbar-menu-filter.active {
+  
+}
+
 .app-toolbar-menu > li.active {
 
 }

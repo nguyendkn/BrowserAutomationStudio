@@ -37,12 +37,12 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.setElement('#inspector');
+        const { $el } = this.setElement('#inspector');
 
-        this.resizable = interact(this.el).resizable({
+        this.resizable = interact($el[0]).resizable({
           listeners: {
-            move: ({ client: { y } }) => {
-              this.$el.outerHeight(Math.max(120, Math.min(
+            move({ client: { y } }) {
+              $el.outerHeight(Math.max(120, Math.min(
                 window.outerHeight - 300 - 30,
                 window.outerHeight - y - 30,
               )));

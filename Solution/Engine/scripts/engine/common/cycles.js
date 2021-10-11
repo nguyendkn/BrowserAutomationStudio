@@ -23,10 +23,10 @@ function Cycle(Next,Break)
     this._Info = {};
     this._Label = [];
     this._Params = {};
+    this._Arguments = null;
 
     this._Break = Break;
     this._Next = Next;
-    this._Arguments = null;
     this._Iterator = 0;
     this.WasNextOrBreak = false;
 

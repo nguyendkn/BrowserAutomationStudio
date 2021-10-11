@@ -45,14 +45,27 @@ function debug_variables(list, callback) {
     }, {});
 
     var callstack = CYCLES.Data.map(function (item) {
-        return Object.keys(item._Info).reduce(function (acc, key) { return (acc[key] = item._Info[key], acc) }, {
-            arguments: item._Arguments,
-            iterator: item._Iterator,
-        });
+        var info = item._Info;
+
+        return {
+            type: _Info.type,
+            name: _Info.name,
+            id: _Info.id,
+            options: {
+                expression: _Info.expression || '',
+                arguments: item.arguments || {},
+                iterator: item.iterator || 0,
+            }
+        }
     }).filter(function (item) { return item.name }).reverse().concat({
         type: 'function',
         name: 'Main',
-        id: 0
+        id: 0,
+        options: {
+            expression: '',
+            arguments: {},
+            iterator: 0,
+        }
     });
 
     Browser.DebugVariablesResult(JSON.stringify({

@@ -1,4 +1,5 @@
 Vue.use(CollapseTransition);
+Vue.use(window['v-click-outside']);
 
 new Vue({
   i18n: new VueI18n({

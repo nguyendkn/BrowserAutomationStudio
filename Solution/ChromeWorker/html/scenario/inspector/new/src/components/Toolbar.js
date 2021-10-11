@@ -1,10 +1,6 @@
 window.Toolbar = {
   name: 'Toolbar',
 
-  directives: {
-    clickOutside: window['v-click-outside'].directive
-  },
-
   props: {
     sortings: {
       default: () => [],

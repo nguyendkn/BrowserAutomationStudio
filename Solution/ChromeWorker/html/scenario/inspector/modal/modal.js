@@ -10,7 +10,7 @@
   });
 
   Inspector.Modal = Backbone.View.extend({
-    template: _.template(/*html*/`
+    template: _.template(String.raw`
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">

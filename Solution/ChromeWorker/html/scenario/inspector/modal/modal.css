@@ -46,13 +46,7 @@
   }
 }
 
-.inspector-modal-footer > .btn-accept:disabled {
-  filter: grayscale(100%);
-  opacity: 0.6;
-  outline: 0;
-}
-
-.inspector-modal-footer > .btn-cancel:disabled {
+.inspector-modal-footer > button:disabled {
   filter: grayscale(100%);
   opacity: 0.6;
   outline: 0;
@@ -61,18 +55,18 @@
 .inspector-modal-form > div > textarea,
 .inspector-modal-form > div > input {
   line-height: 18px;
+  padding: 2px 2px;
   width: 100%;
+  border: 0;
 }
 
 .inspector-modal-form > div > textarea {
   min-height: 106px;
-  padding: 2px 2px;
   resize: vertical;
 }
 
 .inspector-modal-form > div > input {
   min-height: 24px;
-  padding: 1px 1px;
   resize: initial;
 }
 
@@ -95,7 +89,7 @@
   -webkit-user-drag: none;
   pointer-events: all;
   position: relative;
-  padding: 18px 18px;
+  padding: 25px 24px;
   user-select: none;
   flex-flow: column;
   display: flex;
@@ -117,7 +111,6 @@
 }
 
 .inspector-modal-header {
-  text-align: center;
   line-height: 18px;
   font-weight: bold;
   font-size: 16px;

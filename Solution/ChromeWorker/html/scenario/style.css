@@ -2069,23 +2069,15 @@ mark
  * Utility styles *
  ******************/
 
-.vertical-align-helper {
-  pointer-events: none;
-  display: table;
-  height: 100%;
-  width: 100%;
-}
-
-.vertical-align-center {
-  vertical-align: middle;
-  pointer-events: none;
-  display: table-cell;
-}
-
 .overflow-visible {
   overflow: visible !important;
 }
 
 .overflow-hidden {
   overflow: hidden !important;
+}
+
+.modal-centered {
+  align-items: center;
+  display: flex;
 }

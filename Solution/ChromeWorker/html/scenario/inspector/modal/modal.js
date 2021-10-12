@@ -5,61 +5,59 @@
     defaults: () => ({
       value: null,
       type: null,
-      path: null,
+      path: null
     })
   });
 
   Inspector.Modal = Backbone.View.extend({
     template: _.template(/*html*/`
-      <div class="vertical-align-helper">
-        <div class="modal-dialog vertical-align-center" role="document">
-          <div class="inspector-modal-content">
-            <div class="inspector-modal-header">
-              <h4><%= tr("Change the variable value") %></h4>
-            </div>
-            <div class="inspector-modal-body">
-              <select id="inspectorModalSelect" data-style="inspector-modal-select">
-                <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
-                  <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>>
-                    <%= tr(_.upperFirst(item)) %>
-                  </option>
+      <div class="modal-dialog" role="document" style="flex: 1;">
+        <div class="inspector-modal-content">
+          <div class="inspector-modal-header">
+            <h4><%= tr("Change the variable value") %></h4>
+          </div>
+          <div class="inspector-modal-body">
+            <select id="inspectorModalSelect" data-style="inspector-modal-select">
+              <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
+                <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>>
+                  <%= tr(_.upperFirst(item)) %>
+                </option>
+              <% }) %>
+            </select>
+            <form class="inspector-modal-form" action="javascript:void(0)">
+              <% const style = v => 'display: ' + (type === v ? 'block' : 'none') %>
+              <div style="<%= style('custom') %>" data-input-type="custom">
+                <textarea><%- type === 'custom' ? value : '' %></textarea>
+              </div>
+              <div style="<%= style('string') %>" data-input-type="string">
+                <textarea><%- type === 'string' ? value : '' %></textarea>
+              </div>
+              <div style="<%= style('number') %>" data-input-type="number">
+                <input type="number" value="<%- type === 'number' ? value : 0 %>">
+              </div>
+              <div style="<%= style('date') %>" data-input-type="date">
+                <input type="text" value="<%- type === 'date' ? value : '' %>">
+              </div>
+              <div style="<%= style('boolean') %>" data-input-type="boolean">
+                <% _.each(['false', 'true'], (val, at) => { %>
+                  <div class="input-radio">
+                    <% const id = _.uniqueId('inspectorModalInput') %>
+                    <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : at === 0) ? 'checked' : '' %>>
+                    <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
+                  </div>
                 <% }) %>
-              </select>
-              <form class="inspector-modal-form" action="javascript:void(0)">
-                <% const style = v => 'display: ' + (type === v ? 'block' : 'none') %>
-                <div style="<%= style('custom') %>" data-input-type="custom">
-                  <textarea><%- type === 'custom' ? value : '' %></textarea>
-                </div>
-                <div style="<%= style('string') %>" data-input-type="string">
-                  <textarea><%- type === 'string' ? value : '' %></textarea>
-                </div>
-                <div style="<%= style('number') %>" data-input-type="number">
-                  <input type="number" value="<%- type === 'number' ? value : 0 %>">
-                </div>
-                <div style="<%= style('date') %>" data-input-type="date">
-                  <input type="text" value="<%- type === 'date' ? value : '' %>">
-                </div>
-                <div style="<%= style('boolean') %>" data-input-type="boolean">
-                  <% _.each(['false', 'true'], (val, at) => { %>
-                    <div class="input-radio">
-                      <% const id = _.uniqueId('inspectorModalInput') %>
-                      <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : at === 0) ? 'checked' : '' %>>
-                      <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
-                    </div>
-                  <% }) %>
-                </div>
-                <div style="<%= style('undefined') %>" data-input-type="undefined">
-                  <input type="hidden" value="undefined">
-                </div>
-                <div style="<%= style('null') %>" data-input-type="null">
-                  <input type="hidden" value="null">
-                </div>
-              </form>
-            </div>
-            <div class="inspector-modal-footer">
-              <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" disabled><%= tr('Update') %></button>
-              <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
-            </div>
+              </div>
+              <div style="<%= style('undefined') %>" data-input-type="undefined">
+                <input type="hidden" value="undefined">
+              </div>
+              <div style="<%= style('null') %>" data-input-type="null">
+                <input type="hidden" value="null">
+              </div>
+            </form>
+          </div>
+          <div class="inspector-modal-footer">
+            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" disabled><%= tr('Save changes') %></button>
+            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
           </div>
         </div>
       </div>
@@ -67,7 +65,7 @@
 
     attributes: { tabindex: '-1' },
 
-    className: 'modal',
+    className: 'modal modal-centered',
 
     events: {
       'input [data-input-type] textarea': function (e) {

@@ -32,8 +32,8 @@ window.Toolbar = {
   },
 
   methods: {
-    setActiveItem(item, inclusive) {
-      if (!inclusive) this.items.forEach(v => {
+    setActiveItem(item) {
+      if (item.type === 'sorting') this.items.forEach(v => {
         if (v.type === item.type && v.name !== item.name) v.active = false;
       });
 
@@ -63,7 +63,7 @@ window.Toolbar = {
             <transition name="fade">
               <ul v-show="dropdown" class="app-toolbar-menu">
                 <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
-                  <a @click.prevent="setActiveItem(item, false)" href="#">
+                  <a @click.prevent="setActiveItem(item)" href="#">
                     <span v-t="'toolbar.sortings.' + item.name"></span>
                     <img src="src/assets/icons/arrows.svg" alt="icon">
                   </a>
@@ -72,7 +72,7 @@ window.Toolbar = {
                   <hr class="divider">
                 </li>
                 <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
-                  <a @click.prevent="setActiveItem(item, true)" href="#">
+                  <a @click.prevent="setActiveItem(item)" href="#">
                     <span v-t="'toolbar.filters.' + item.name"></span>
                     <img src="src/assets/icons/check.svg" alt="icon">
                   </a>

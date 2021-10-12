@@ -26,8 +26,8 @@
     resourcesEmpty: 'Список ресурсов пуст'
   },
   nav: {
+    callstack: 'Стек вызовов',
     variables: 'Переменные',
-    resources: 'Ресурсы',
-    callstack: 'Стек вызовов'
+    resources: 'Ресурсы'
   }
 };

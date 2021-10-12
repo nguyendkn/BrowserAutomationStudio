@@ -26,8 +26,8 @@
     resourcesEmpty: 'Resources list is empty'
   },
   nav: {
+    callstack: 'Call stack',
     variables: 'Variables',
-    resources: 'Resources',
-    callstack: 'Call stack'
+    resources: 'Resources'
   }
 };

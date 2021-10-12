@@ -15,15 +15,10 @@
 
       window.addEventListener('message', ({ data }) => {
         switch (data.type) {
-          case 'focusAction':
-            return BrowserAutomationStudio_FocusAction(data.json.id);
-          case 'showModal':
-            // TODO
-            break;
-          case 'hide':
-            return this.hide();
-          case 'show':
-            return this.show();
+          case 'focusAction': return BrowserAutomationStudio_FocusAction(data.json.id);
+          case 'showModal': return this.showModal(data.json);
+          case 'hide': return this.hide();
+          case 'show': return this.show();
         }
       }, false);
     },
@@ -68,7 +63,7 @@
     }
   });
 
-  function showModal({ path, type }) {
+  function showModal({ path, type, allowUpdate }) {
     // const modal = new Inspector.Modal({
     //   callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
     //   value: this.tree.model.getValue(path),

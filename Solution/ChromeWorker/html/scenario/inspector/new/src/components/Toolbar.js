@@ -25,7 +25,7 @@ window.Toolbar = {
     sortings() {
       return this.items.filter(item => item.type === 'sorting');
     },
-    
+
     filters() {
       return this.items.filter(item => item.type === 'filter');
     }
@@ -35,9 +35,11 @@ window.Toolbar = {
     setActiveItem(item) {
       const { type, name } = item;
 
-      if (type === 'sorting') this.sortings.forEach(v => {
-        if (name !== v.name) v.active = false;
-      });
+      if (type === 'sorting') {
+        return this.sortings.forEach(v => {
+          v.active = name === v.name;
+        });
+      }
 
       item.active = !item.active;
     },

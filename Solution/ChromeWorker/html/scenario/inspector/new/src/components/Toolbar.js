@@ -61,9 +61,9 @@ window.Toolbar = {
               </svg>
             </button>
             <transition name="fade">
-              <ul v-show="dropdown" class="app-toolbar-menu" role="menu">
-                <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }" role="presentation">
-                  <a @click.prevent="setActiveItem(item, false)" href="#" role="menuitem">
+              <ul v-show="dropdown" class="app-toolbar-menu">
+                <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
+                  <a @click.prevent="setActiveItem(item, false)" href="#">
                     <span v-t="'toolbar.sortings.' + item.name"></span>
                     <img src="src/assets/icons/arrows.svg" alt="icon">
                   </a>
@@ -71,8 +71,8 @@ window.Toolbar = {
                 <li v-if="!!sortings.length">
                   <hr class="divider">
                 </li>
-                <li v-for="item in filters" :key="item.name" :class="{ active: item.active }" role="presentation">
-                  <a @click.prevent="setActiveItem(item, true)" href="#" role="menuitem">
+                <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
+                  <a @click.prevent="setActiveItem(item, true)" href="#">
                     <span v-t="'toolbar.filters.' + item.name"></span>
                     <img src="src/assets/icons/check.svg" alt="icon">
                   </a>

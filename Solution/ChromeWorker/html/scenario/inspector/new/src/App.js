@@ -46,23 +46,23 @@ window.App = {
     <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs" role="tablist">
-          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" class="app-tab" :class="{ active: tab === t }" role="presentation">
-            <a @click.prevent="tab = t" href="#" role="tab">
+          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" :class="{ active: tab === t }" class="app-tab" role="presentation">
+            <a href="#" role="tab" @click.prevent="tab = t">
               <img :src="'src/assets/icons/' + t + '.svg'" alt="icon">
               {{ $t('nav.' + t) }}
             </a>
           </li>
         </ul>
-        <button @click="hide" type="button">
+        <button type="button" @click="hide">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill="#606060" d="M2.87348 12.2583L3.93414 13.3189L8 9.25305L12.0659 13.3189L13.1265 12.2583L9.06066 8.19239L13.1265 4.12652L12.0659 3.06586L8 7.13173L3.93414 3.06586L2.87348 4.12652L6.93934 8.19239L2.87348 12.2583Z" />
           </svg>
         </button>
       </div>
       <div class="app-panels">
-        <Variables :source="data.variables" v-show="tab === 'variables'" class="app-panel" />
-        <Resources :source="data.resources" v-show="tab === 'resources'" class="app-panel" />
-        <Callstack :source="data.callstack" v-show="tab === 'callstack'" class="app-panel" />
+        <Variables v-show="tab === 'variables'" :source="data.variables" class="app-panel" />
+        <Resources v-show="tab === 'resources'" :source="data.resources" class="app-panel" />
+        <Callstack v-show="tab === 'callstack'" :source="data.callstack" class="app-panel" />
       </div>
     </div>
   `

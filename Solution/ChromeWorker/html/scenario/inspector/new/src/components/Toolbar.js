@@ -33,8 +33,10 @@ window.Toolbar = {
 
   methods: {
     setActiveItem(item) {
-      if (item.type === 'sorting') this.items.forEach(v => {
-        if (v.type === item.type && v.name !== item.name) v.active = false;
+      const { type, name } = item;
+
+      if (type === 'sorting') this.sortings.forEach(v => {
+        if (name !== v.name) v.active = false;
       });
 
       item.active = !item.active;

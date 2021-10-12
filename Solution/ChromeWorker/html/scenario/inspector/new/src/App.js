@@ -45,9 +45,9 @@ window.App = {
   template: String.raw`
     <div class="app-content">
       <div class="app-header">
-        <ul class="app-tabs" role="tablist">
-          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" :class="{ active: tab === t }" class="app-tab" role="presentation">
-            <a href="#" role="tab" @click.prevent="tab = t">
+        <ul class="app-tabs">
+          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" :class="{ active: tab === t }" class="app-tab">
+            <a href="#" @click.prevent="tab = t">
               <img :src="'src/assets/icons/' + t + '.svg'" alt="icon">
               {{ $t('nav.' + t) }}
             </a>

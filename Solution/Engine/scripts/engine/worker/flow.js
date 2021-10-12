@@ -45,7 +45,7 @@ function debug_variables(list, callback) {
     }, {});
 
     var callstack = CYCLES.Data.map(function (item) {
-        var info = item._Info;
+        var info = item._info;
 
         return {
             type: info.type,

@@ -20,7 +20,7 @@ function Cycle(Next,Break)
         }
     }
 
-    this._Info = {};
+    this._info = {};
     this._Label = [];
     this._Params = {};
     this._Arguments = null;
@@ -662,5 +662,5 @@ function _set_function_info(info, cycle) {
     }
 
     cycle = cycle || CYCLES.Current();
-    if (cycle) cycle._Info = info;
+    if (cycle) cycle._info = info;
 }

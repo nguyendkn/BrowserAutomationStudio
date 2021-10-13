@@ -122,6 +122,11 @@ void DevToolsReqest2Action::Process(std::shared_ptr<RequestItem> CurrentItem)
     {
         // Adding post action
         std::string PostDataString(CurrentItem->PostRawData.data(),CurrentItem->PostRawData.size());
+        if(!utf8_check_is_valid(PostDataString))
+        {
+            PostDataString = "BINARY DATA";
+        }
+
         std::string code = std::string("\n_switch_http_client_main()\n") +
         std::string("http_client_post_no_redirect(") + JsonEscape(CurrentItem->Url) + std::string(", [\"data\", ") + JsonEscape(PostDataString)
                 + std::string("],{method:(") + JsonEscape(CurrentItem->Method)
@@ -454,16 +459,16 @@ void DevToolsReqest2Action::ConvertMain(const std::string& RequestString)
     // Get content type for POST requests
     if(CurrentItem->IsPost)
     {
-        for (std::map<std::string, std::string>::iterator it=CurrentItem->HeaderMap.begin();it!=CurrentItem->HeaderMap.end();it++)
+    for (std::map<std::string, std::string>::iterator it=CurrentItem->HeaderMap.begin();it!=CurrentItem->HeaderMap.end();it++)
+    {
+        std::string header = it->first;
+        try{std::transform(header.begin(), header.end(), header.begin(), ::tolower);}catch(...){}
+        if(header == "content-type")
         {
-            std::string header = it->first;
-            try{std::transform(header.begin(), header.end(), header.begin(), ::tolower);}catch(...){}
-            if(header == "content-type")
-            {
-                CurrentItem->ContentType = it->second;
-                break;
-            }
+            CurrentItem->ContentType = it->second;
+            break;
         }
+    }
     }
 
     Process(CurrentItem);

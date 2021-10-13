@@ -17,12 +17,10 @@ window.Variables = {
     const sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
 
     return {
-      toolbarProps: {
-        items: [
-          ...sortings.map((name, i) => ({ name, type: 'sorting', active: i === 0 })),
-          ...filters.map(name => ({ name, type: 'filter', active: true }))
-        ]
-      }
+      options: [
+        ...sortings.map((name, i) => ({ name, type: 'sorting', active: i === 0 })),
+        ...filters.map(name => ({ name, type: 'filter', active: true }))
+      ]
     }
   },
 
@@ -41,7 +39,7 @@ window.Variables = {
 
   template: String.raw`
     <div>
-      <Toolbar v-bind="toolbarProps" />
+      <Toolbar :items="options" :search="true" />
       <div v-show="!isEmpty" class="app-panel-content">
         <!-- TODO -->
       </div>

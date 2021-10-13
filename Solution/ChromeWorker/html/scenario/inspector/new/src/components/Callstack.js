@@ -15,13 +15,10 @@ window.Callstack = {
 
   data() {
     return {
-      toolbarProps: {
-        items: [
-          { name: 'functions', type: 'filter', active: true },
-          { name: 'actions', type: 'filter', active: true }
-        ],
-        search: false
-      }
+      options: [
+        { name: 'functions', type: 'filter', active: true },
+        { name: 'actions', type: 'filter', active: true }
+      ]
     }
   },
 
@@ -40,7 +37,7 @@ window.Callstack = {
 
   template: String.raw`
     <div>
-      <Toolbar v-bind="toolbarProps" />
+      <Toolbar :items="options" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
           <CallstackItem v-for="item in source" v-show="isVisible(item.type)" :key="item.id" v-bind="item" />

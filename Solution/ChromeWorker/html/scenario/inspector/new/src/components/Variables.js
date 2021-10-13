@@ -18,7 +18,8 @@ window.Variables = {
 
     return {
       sortings: sortings.map((name, i) => ({ name, active: i === 0 })),
-      filters: filters.map(name => ({ name, active: true }))
+      filters: filters.map(name => ({ name, active: true })),
+      searchQuery: ''
     }
   },
 
@@ -37,7 +38,7 @@ window.Variables = {
 
   template: String.raw`
     <div>
-      <Toolbar :filters.sync="filters" :sortings.sync="sortings" />
+      <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="searchQuery" />
       <div v-show="!isEmpty" class="app-panel-content">
         <!-- TODO -->
       </div>

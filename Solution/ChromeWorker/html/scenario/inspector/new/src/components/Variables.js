@@ -19,7 +19,7 @@ window.Variables = {
     return {
       toolbarProps: {
         items: [
-          ...sortings.map((name, at) => ({ name, type: 'sorting', active: at === 0 })),
+          ...sortings.map((name, i) => ({ name, type: 'sorting', active: i === 0 })),
           ...filters.map(name => ({ name, type: 'filter', active: true }))
         ]
       }
@@ -29,6 +29,13 @@ window.Variables = {
   computed: {
     isEmpty() {
       return !Object.keys(this.source).length;
+    }
+  },
+
+  methods: {
+    isVisible(type) {
+      const filter = this.toolbarProps.items.find(item => item.name.includes(type));
+      return !!filter && filter.active;
     }
   },
 

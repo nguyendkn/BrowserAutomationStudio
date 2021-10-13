@@ -31,12 +31,19 @@ window.Callstack = {
     }
   },
 
+  methods: {
+    isVisible(type) {
+      const filter = this.toolbarProps.items.find(item => item.name.includes(type));
+      return !!filter && filter.active;
+    }
+  },
+
   template: String.raw`
     <div>
       <Toolbar v-bind="toolbarProps" />
       <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
-          <CallstackItem v-for="item in source" :key="item.id" v-bind="item" />
+          <CallstackItem v-for="item in source" v-show="isVisible(item.type)" :key="item.id" v-bind="item" />
         </ul>
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.callstackEmpty'"></div>

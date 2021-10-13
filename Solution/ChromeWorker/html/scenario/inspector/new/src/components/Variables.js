@@ -32,7 +32,7 @@ window.Variables = {
 
   methods: {
     isVisible(type) {
-      const filter = this.toolbarProps.items.find(item => item.name.includes(type));
+      const filter = this.options.find(item => item.name.includes(type));
       return !!filter && filter.active;
     }
   },

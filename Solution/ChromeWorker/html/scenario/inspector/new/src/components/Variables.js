@@ -17,10 +17,8 @@ window.Variables = {
     const sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
 
     return {
-      options: [
-        ...sortings.map((name, i) => ({ name, type: 'sorting', active: i === 0 })),
-        ...filters.map(name => ({ name, type: 'filter', active: true }))
-      ]
+      sortings: sortings.map((name, i) => ({ name, active: i === 0 })),
+      filters: filters.map(name => ({ name, active: true }))
     }
   },
 
@@ -39,7 +37,7 @@ window.Variables = {
 
   template: String.raw`
     <div>
-      <Toolbar :items="options" :search="true" />
+      <Toolbar :filters.sync="filters" :sortings.sync="sortings" />
       <div v-show="!isEmpty" class="app-panel-content">
         <!-- TODO -->
       </div>

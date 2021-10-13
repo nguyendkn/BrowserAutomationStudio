@@ -2,14 +2,19 @@ window.Toolbar = {
   name: 'Toolbar',
 
   props: {
+    sortings: {
+      default: () => [],
+      type: Array
+    },
+
+    filters: {
+      default: () => [],
+      type: Array
+    },
+
     search: {
       default: true,
       type: Boolean
-    },
-
-    items: {
-      required: true,
-      type: Array
     }
   },
 
@@ -21,27 +26,19 @@ window.Toolbar = {
     }
   },
 
-  computed: {
-    sortings() {
-      return this.items.filter(item => item.type === 'sorting');
+  methods: {
+    updateSorting({ name }) {
+      this.$emit('update:sortings', this.sortings.map(item => ({
+        ...item,
+        active: item.name === name
+      })));
     },
 
-    filters() {
-      return this.items.filter(item => item.type === 'filter');
-    }
-  },
-
-  methods: {
-    setActiveItem(item) {
-      const { type, name } = item;
-
-      if (type === 'sorting') {
-        return this.sortings.forEach(item => {
-          item.active = name === item.name;
-        });
-      }
-
-      item.active = !item.active;
+    updateFilter({ name }) {
+      this.$emit('update:filters', this.filters.map(item => ({
+        ...item,
+        active: item.name === name ? !item.active : item.active
+      })));
     },
 
     toggleDropdown() {
@@ -67,7 +64,7 @@ window.Toolbar = {
             <transition name="fade">
               <ul v-show="dropdown" class="app-toolbar-menu">
                 <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
-                  <a href="#" @click.prevent="setActiveItem(item)">
+                  <a href="#" @click.prevent="updateSorting(item)">
                     <span v-t="'toolbar.sortings.' + item.name"></span>
                     <img src="src/assets/icons/arrows.svg" alt="icon">
                   </a>
@@ -76,7 +73,7 @@ window.Toolbar = {
                   <hr class="divider">
                 </li>
                 <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
-                  <a href="#" @click.prevent="setActiveItem(item)">
+                  <a href="#" @click.prevent="updateFilter(item)">
                     <span v-t="'toolbar.filters.' + item.name"></span>
                     <img src="src/assets/icons/check.svg" alt="icon">
                   </a>

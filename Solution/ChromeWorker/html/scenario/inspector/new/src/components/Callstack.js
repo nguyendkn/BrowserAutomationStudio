@@ -15,9 +15,9 @@ window.Callstack = {
 
   data() {
     return {
-      options: [
-        { name: 'functions', type: 'filter', active: true },
-        { name: 'actions', type: 'filter', active: true }
+      filters: [
+        { name: 'functions', active: true },
+        { name: 'actions', active: true }
       ]
     }
   },
@@ -30,14 +30,14 @@ window.Callstack = {
 
   methods: {
     isVisible(type) {
-      const filter = this.options.find(item => item.name.includes(type));
+      const filter = this.filters.find(item => item.name.includes(type));
       return !!filter && filter.active;
     }
   },
 
   template: String.raw`
     <div>
-      <Toolbar :items="options" :search="false" />
+      <Toolbar :filters.sync="filters" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
           <CallstackItem v-for="item in source" v-show="isVisible(item.type)" :key="item.id" v-bind="item" />

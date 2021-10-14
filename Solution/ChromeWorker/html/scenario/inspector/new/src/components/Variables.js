@@ -14,13 +14,13 @@ window.Variables = {
   },
 
   data() {
-    const filters = ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'];
-    const sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
+    const filters = ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
+      sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
 
     return {
       sortings: sortings.map((name, at) => ({ name, active: at === 0 })),
       filters: filters.map(name => ({ name, active: true })),
-      searchQuery: ''
+      query: ''
     }
   },
 
@@ -39,7 +39,7 @@ window.Variables = {
 
   template: String.raw`
     <div class="app-panel">
-      <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="searchQuery" />
+      <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="query" />
       <div v-show="!isEmpty" class="app-panel-content">
         <TreeView :data="source" />
       </div>

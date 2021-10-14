@@ -7,7 +7,6 @@
       metadata: {},
       history: [],
       source: {},
-      state: {},
     }),
 
     update: function (source) {
@@ -59,22 +58,14 @@
         //     const colors = View.colors[dataset.type];
         //     if (colors) node.style.color = colors[count];
         //   }
-        });
+        // });
       }
 
       model.on('change:source', (__, source) => {
         this.tree.model.update(prepareData(source));
       });
 
-      this.tree = new Inspector.TreeView()
-        .on('node:collapse', ({ path }) => {
-          model.set('state', { ...model.get('state'), [path]: false });
-          BrowserAutomationStudio_PreserveInterfaceState();
-        })
-        .on('node:expand', ({ path }) => {
-          model.set('state', { ...model.get('state'), [path]: true });
-          BrowserAutomationStudio_PreserveInterfaceState();
-        });
+      this.tree = new Inspector.TreeView();
     },
 
     applyFilters() {

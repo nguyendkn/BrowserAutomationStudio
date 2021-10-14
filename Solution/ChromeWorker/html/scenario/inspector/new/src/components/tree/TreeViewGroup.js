@@ -30,9 +30,17 @@ window.TreeViewGroup = {
   },
 
   methods: {
-    toggleMode() {
+    editGroup() {
       this.editMode = !this.editMode;
-    }
+    },
+
+    removeGroup() {
+      this.$emit('remove', this.name);
+    },
+
+    addGroup() {
+      this.$emit('add', this.name);
+    },
   },
 
   template: String.raw`
@@ -42,8 +50,14 @@ window.TreeViewGroup = {
         <div style="margin-left: 8px; display: flex; justify-content: space-between; flex: 1;">
           <input v-model="editName" :disabled="!editMode" type="text">
           <div v-if="!editMode">
-            <button type="button" @click="toggleMode">
+            <button type="button" @click="removeGroup">
+              <img src="src/assets/icons/delete.svg">
+            </button>
+            <button type="button" @click="editGroup">
               <img src="src/assets/icons/edit.svg">
+            </button>
+            <button type="button" @click="addGroup">
+              <img src="src/assets/icons/plus.svg">
             </button>
           </div>
           <div v-else>

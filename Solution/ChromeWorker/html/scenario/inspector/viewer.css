@@ -110,30 +110,6 @@
   display: none;
 }
 
-/*****************
- * Groups styles *
- *****************/
-
-.jst-group + .jst-group {
-  margin-top: 10px;
-}
-
-.jst-group-body {
-  padding: 4px 2px;
-}
-
-.jst-group-head {
-  justify-content: space-between;
-  background: #e0e0e0;
-  align-items: center;
-  padding: 2px 8px;
-  display: flex;
-}
-
-.jst-group {
-  border: thin solid #e0e0e0;
-}
-
 .jst-viewer ul {
   list-style: none;
   margin-bottom: 0;

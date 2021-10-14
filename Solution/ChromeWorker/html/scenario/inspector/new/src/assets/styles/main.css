@@ -307,6 +307,33 @@
   display: flex;
 }
 
+/* Tree */
+
+.tree-view > li + li {
+  margin-top: 4px;
+}
+
+.tree-view-group {
+  border: 1px solid var(--color);
+  flex-flow: column;
+  display: flex;
+}
+
+.tree-view-group-header {
+  background: var(--color);
+  align-items: center;
+  line-height: 18px;
+  padding: 5px 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #606060;
+  display: flex;
+}
+
+.tree-view-group-content {
+  padding: 9px 0;
+}
+
 /* Transitions */
 
 .fade-enter-active, .fade-leave-active {

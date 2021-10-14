@@ -7,28 +7,6 @@
       groups: {},
     }),
 
-    renameGroup: function (group, name) {
-      if (_.any(this.get('groups'), (_, key) => key === name)) return;
-
-      this.set('groups', _.reduce(this.get('groups'), (acc, val, key) => {
-        acc[key === group ? name : key] = val;
-        return acc;
-      }, {}));
-    },
-
-    removeGroup: function (group) {
-      this.set('groups', _.reduce(this.get('groups'), (acc, val, key) => {
-        if (key === group) acc['Main'].push(...val);
-        else acc[key] = val;
-        return acc;
-      }, {}));
-    },
-
-    addGroup: function () {
-      const groups = this.get('groups');
-      this.set('groups', { ...groups, [`Group${_.size(groups)}`]: [] });
-    },
-
     update: function (source) {
       const groups = this.get('groups');
 
@@ -54,15 +32,6 @@
         // _.each(this.sortable, list => _.invoke(list, 'destroy'));
 
         // this.sortable = {
-        //   groups: [this.el].map(el => Sortable.create(el, {
-        //     onEnd: ({ item, from, to }) => {
-
-        //     },
-        //     dataIdAttr: 'data-name',
-        //     filter: '.pinned',
-        //     group: 'groups'
-        //   })),
-
         //   nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(el => Sortable.create(el, {
         //     onAdd({ item, from, to }) {
         //       const name = item.dataset.path.slice(1);
@@ -91,11 +60,6 @@
       morphdom(this.el, (
         `<div class="jst-viewer">${_.map(groups, (keys, name) => (
           `<div class="jst-group" data-name="${name}" draggable="false">
-            <div class="jst-group-head">
-              <i class="jst-group-options fa fa-caret-down"></i>
-              <span class="jst-group-title">${name}</span>
-              <i class="jst-group-toggle fa fa-chevron-up"></i>
-            </div>
             <div class="jst-group-body">
               <ul class="jst-root">${renderNode(_.pick(source, ...keys), 'root', '', true)}</ul>
             </div>

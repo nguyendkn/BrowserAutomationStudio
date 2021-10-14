@@ -60,9 +60,9 @@ window.App = {
         </button>
       </div>
       <div class="app-panels">
-        <Variables v-show="tab === 'variables'" :source="data.variables" class="app-panel" />
-        <Resources v-show="tab === 'resources'" :source="data.resources" class="app-panel" />
-        <Callstack v-show="tab === 'callstack'" :source="data.callstack" class="app-panel" />
+        <Variables v-show="tab === 'variables'" :source="data.variables" />
+        <Resources v-show="tab === 'resources'" :source="data.resources" />
+        <Callstack v-show="tab === 'callstack'" :source="data.callstack" />
       </div>
     </div>
   `

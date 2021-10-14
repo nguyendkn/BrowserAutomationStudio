@@ -327,6 +327,10 @@
   display: block;
 }
 
+.tree-view-group-controls > button > svg {
+  display: block;
+}
+
 .tree-view-group-controls {
   display: flex;
 }

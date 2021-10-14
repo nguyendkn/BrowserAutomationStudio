@@ -19,7 +19,8 @@ window.TreeViewGroup = {
         '#9BC4DE',
         '#EC8A82',
         '#8EC38E',
-      ]
+      ],
+      expanded: false
     }
   },
 
@@ -41,6 +42,10 @@ window.TreeViewGroup = {
     addGroup() {
       this.$emit('add', this.name);
     },
+
+    toggle() {
+      this.expanded = !this.expanded;
+    }
   },
 
   template: String.raw`
@@ -58,6 +63,11 @@ window.TreeViewGroup = {
           <button type="button" @click="addGroup">
             <img src="src/assets/icons/plus.svg">
           </button>
+          <button type="button" @click="toggle">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" :style="{ transform: expanded ? 'rotate(180deg)' : '' }">
+              <path fill="#606060" d="M3.51482 9.79281L7.75743 5.55014L12.0001 9.79284L11.2931 10.5L7.75754 6.96435L4.22192 10.4999L3.51482 9.79281Z" />
+            </svg>
+          </button>
         </div>
         <div v-else>
           <div>
@@ -67,9 +77,11 @@ window.TreeViewGroup = {
           </div>
         </div>
       </div>
-      <div class="tree-view-group-content">
-        Group content
-      </div>
+      <collapse-transition>
+        <div v-show="!expanded" class="tree-view-group-content">
+          Group content
+        </div>
+      </collapse-transition>
     </li>
   `
 };

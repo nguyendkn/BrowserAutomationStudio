@@ -15,8 +15,8 @@ window.TreeView = {
   data() {
     return {
       groups: [
-        { name: 'Main' },
-        { name: 'Test' },
+        { name: 'Main', index: 0 },
+        { name: 'Test', index: 1 },
       ]
     };
   },

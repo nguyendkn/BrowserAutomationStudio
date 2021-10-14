@@ -75,7 +75,7 @@ window.Toolbar = {
                 <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
                   <a href="#" @click.prevent="updateSorting(item)">
                     <span v-t="'toolbar.sortings.' + item.name"></span>
-                    <img src="src/assets/icons/arrows.svg" alt="icon">
+                    <img src="src/assets/icons/arrows.svg" alt>
                   </a>
                 </li>
                 <li v-if="!!sortings.length">
@@ -84,7 +84,7 @@ window.Toolbar = {
                 <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
                   <a href="#" @click.prevent="updateFilter(item)">
                     <span v-t="'toolbar.filters.' + item.name"></span>
-                    <img src="src/assets/icons/check.svg" alt="icon">
+                    <img src="src/assets/icons/check.svg" alt>
                   </a>
                 </li>
               </ul>

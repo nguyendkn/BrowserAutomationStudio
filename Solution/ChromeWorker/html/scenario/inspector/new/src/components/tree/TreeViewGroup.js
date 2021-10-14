@@ -46,7 +46,7 @@ window.TreeViewGroup = {
   template: String.raw`
     <li :style="style" class="tree-view-group">
       <div class="tree-view-group-header">
-        <img src="src/assets/icons/folder.svg" alt="icon">
+        <img src="src/assets/icons/folder.svg" alt>
         <div style="margin-left: 8px; display: flex; justify-content: space-between; flex: 1;">
           <input v-model="editName" :disabled="!editMode" type="text">
           <div v-if="!editMode">

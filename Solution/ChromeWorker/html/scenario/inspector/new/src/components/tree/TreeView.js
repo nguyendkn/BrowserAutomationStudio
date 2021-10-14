@@ -15,8 +15,7 @@ window.TreeView = {
   data() {
     return {
       groups: [
-        { name: 'Main', index: 0 },
-        { name: 'Test', index: 1 },
+        { name: 'Main', index: 0 }
       ]
     };
   },
@@ -32,7 +31,6 @@ window.TreeView = {
 
     addGroup() {
       const index = this.groups.length;
-
       this.groups.push({ name: `Group ${index + 1}`, index });
     },
   },

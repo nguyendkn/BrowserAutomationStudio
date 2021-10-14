@@ -47,24 +47,22 @@ window.TreeViewGroup = {
     <li :style="style" class="tree-view-group">
       <div class="tree-view-group-header">
         <img src="src/assets/icons/folder.svg" alt>
-        <div style="margin-left: 8px; display: flex; justify-content: space-between; flex: 1;">
-          <input v-model="editName" :disabled="!editMode" type="text">
-          <div v-if="!editMode">
-            <button type="button" @click="removeGroup">
-              <img src="src/assets/icons/delete.svg">
-            </button>
-            <button type="button" @click="editGroup">
-              <img src="src/assets/icons/edit.svg">
-            </button>
-            <button type="button" @click="addGroup">
-              <img src="src/assets/icons/plus.svg">
-            </button>
-          </div>
-          <div v-else>
-            <div>
-              <div class="tree-view-group-palette">
-                <!-- <input v-for="color in palette" name="palette" type="radio"> -->
-              </div>
+        <input v-model="editName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">
+        <div v-if="!editMode" class="tree-view-group-controls">
+          <button type="button" @click="removeGroup">
+            <img src="src/assets/icons/delete.svg">
+          </button>
+          <button type="button" @click="editGroup">
+            <img src="src/assets/icons/edit.svg">
+          </button>
+          <button type="button" @click="addGroup">
+            <img src="src/assets/icons/plus.svg">
+          </button>
+        </div>
+        <div v-else>
+          <div>
+            <div class="tree-view-group-palette">
+              <!-- <input v-for="color in palette" name="palette" type="radio"> -->
             </div>
           </div>
         </div>

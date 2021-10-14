@@ -319,6 +319,18 @@
   display: flex;
 }
 
+.tree-view-group-controls > button + button {
+  margin-left: 9px;
+}
+
+.tree-view-group-controls > button > img {
+  display: block;
+}
+
+.tree-view-group-controls {
+  display: flex;
+}
+
 .tree-view-group-header {
   background: var(--color);
   align-items: center;

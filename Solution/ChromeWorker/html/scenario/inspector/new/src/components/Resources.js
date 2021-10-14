@@ -18,7 +18,7 @@ window.Resources = {
     const sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
 
     return {
-      sortings: sortings.map((name, i) => ({ name, active: i === 0 })),
+      sortings: sortings.map((name, at) => ({ name, active: at === 0 })),
       filters: filters.map(name => ({ name, active: true })),
       searchQuery: ''
     }

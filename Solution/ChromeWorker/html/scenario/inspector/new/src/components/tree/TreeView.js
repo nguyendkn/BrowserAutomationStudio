@@ -8,9 +8,13 @@ window.TreeView = {
     }
   },
 
-  template: String.raw`
-    <div class="tree-view">
+  data() {
+    return {};
+  },
 
-    </div>
+  template: String.raw`
+    <ul class="tree-view">
+
+    </ul>
   `
 };

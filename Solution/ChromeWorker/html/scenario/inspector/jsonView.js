@@ -49,17 +49,17 @@
     initialize() {
       const model = this.model = new Model();
 
-      if (this.allowHighlight) {
-        // model.on('highlight', ({ count, path }) => {
-        //   const [node] = this.$(`[data-path="${path}"] > .jst-node`);
+      // if (this.allowHighlight) {
+      //   model.on('highlight', ({ count, path }) => {
+      //     const [node] = this.$(`[data-path="${path}"] > .jst-node`);
 
-        //   if (node) {
-        //     const { dataset } = node.parentNode;
-        //     const colors = View.colors[dataset.type];
-        //     if (colors) node.style.color = colors[count];
-        //   }
-        // });
-      }
+      //     if (node) {
+      //       const { dataset } = node.parentNode;
+      //       const colors = View.colors[dataset.type];
+      //       if (colors) node.style.color = colors[count];
+      //     }
+      //   });
+      // }
 
       model.on('change:source', (__, source) => {
         this.tree.model.update(prepareData(source));

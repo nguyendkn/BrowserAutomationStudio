@@ -2,7 +2,8 @@ window.Variables = {
   name: 'Variables',
 
   components: {
-    Toolbar
+    Toolbar,
+    TreeView
   },
 
   props: {
@@ -40,7 +41,7 @@ window.Variables = {
     <div>
       <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="searchQuery" />
       <div v-show="!isEmpty" class="app-panel-content">
-        <!-- TODO -->
+        <TreeView :data="source" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.variablesEmpty'"></div>
     </div>

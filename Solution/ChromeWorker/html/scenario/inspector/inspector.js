@@ -16,7 +16,7 @@
       window.addEventListener('message', ({ data }) => {
         switch (data.type) {
           case 'focusAction': return BrowserAutomationStudio_FocusAction(data.json.id);
-          case 'showModal': return this.showModal(data.json);
+          case 'showModal': return showModal(data.json);
           case 'hide': return this.hide();
           case 'show': return this.show();
         }

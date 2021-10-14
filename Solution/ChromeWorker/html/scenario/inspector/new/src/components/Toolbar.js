@@ -47,7 +47,7 @@ window.Toolbar = {
 
     updateQuery(event) {
       const query = event.target.value.trim();
-      this.$emit('update:query', query);
+      this.$emit('update:query', query.toLowerCase());
     },
 
     toggleDropdown() {

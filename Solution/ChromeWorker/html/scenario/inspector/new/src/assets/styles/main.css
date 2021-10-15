@@ -138,10 +138,6 @@
   padding: 1px;
 }
 
-.app-toolbar-input:disabled::placeholder {
-  color: #d9d9d9;
-}
-
 .app-toolbar-input:disabled {
   background: inherit;
   color: #d9d9d9;
@@ -378,6 +374,14 @@
 }
 
 /* Global */
+
+textarea::placeholder {
+  color: inherit;
+}
+
+input::placeholder {
+  color: inherit;
+}
 
 html, body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

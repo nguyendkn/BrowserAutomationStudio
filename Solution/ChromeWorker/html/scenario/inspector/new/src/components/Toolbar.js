@@ -59,7 +59,7 @@ window.Toolbar = {
     }
   },
 
-  template: html`
+  template: /*html*/`
     <div class="app-toolbar">
       <collapse-transition>
         <div v-show="visible" class="app-toolbar-panel">

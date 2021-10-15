@@ -35,7 +35,7 @@ window.TreeView = {
     },
   },
 
-  template: html`
+  template: /*html*/`
     <ul class="tree-view">
       <TreeViewGroup v-for="group in groups" :key="group.name" :name="group.name" @remove="removeGroup" @add="addGroup" />
     </ul>

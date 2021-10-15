@@ -38,7 +38,7 @@ window.Variables = {
     }
   },
 
-  template: html`
+  template: /*html*/`
     <div class="app-panel">
       <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="query" />
       <div v-show="!isEmpty" class="app-panel-content">

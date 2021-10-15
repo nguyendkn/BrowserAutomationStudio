@@ -2,8 +2,8 @@ window.Variables = {
   name: 'Variables',
 
   components: {
-    Toolbar,
-    TreeView
+    TreeView,
+    Toolbar
   },
 
   props: {
@@ -38,7 +38,7 @@ window.Variables = {
     }
   },
 
-  template: String.raw`
+  template: html`
     <div class="app-panel">
       <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="query" />
       <div v-show="!isEmpty" class="app-panel-content">

@@ -48,7 +48,7 @@ window.TreeViewGroup = {
     }
   },
 
-  template: String.raw`
+  template: html`
     <li :style="style" class="tree-view-group">
       <div class="tree-view-group-header">
         <img src="src/assets/icons/folder.svg" alt>

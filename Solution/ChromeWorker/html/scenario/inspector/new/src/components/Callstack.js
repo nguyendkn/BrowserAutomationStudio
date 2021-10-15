@@ -35,7 +35,7 @@ window.Callstack = {
     }
   },
 
-  template: String.raw`
+  template: html`
     <div class="app-panel">
       <Toolbar :filters.sync="filters" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">

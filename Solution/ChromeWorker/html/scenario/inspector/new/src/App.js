@@ -42,7 +42,7 @@ window.App = {
     }
   },
 
-  template: String.raw`
+  template: html`
     <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs">

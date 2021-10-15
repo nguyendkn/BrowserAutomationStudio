@@ -49,7 +49,7 @@ window.CallstackItem = {
     }
   },
 
-  template: String.raw`
+  template: html`
     <li class="callstack-item" :class="{ preview }">
       <div class="callstack-item-title">
         <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'">

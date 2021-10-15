@@ -1,9 +1,5 @@
 /* Tabs */
 
-.app-tab:not(.active) {
-  opacity: 0.5;
-}
-
 .app-tab > a > img {
   padding-right: 8px;
 }
@@ -20,9 +16,11 @@
 .app-tabs {
   align-items: center;
   display: flex;
-  padding: 0;
-  margin: 0;
   flex: 1;
+}
+
+.app-tab.active {
+  opacity: 1;
 }
 
 .app-tab {
@@ -30,7 +28,7 @@
   justify-content: center;
   user-select: none;
   display: flex;
-  opacity: 1;
+  opacity: 0.5;
   flex: 1;
 }
 

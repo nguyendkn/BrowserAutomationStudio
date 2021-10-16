@@ -32,7 +32,7 @@ window.Variables = {
   },
 
   methods: {
-    isVisible(type) {
+    isVisible({ type }) {
       const filter = this.filters.find(item => item.name.includes(type));
       return !!filter && filter.active;
     }

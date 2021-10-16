@@ -29,7 +29,7 @@ window.Callstack = {
   },
 
   methods: {
-    isVisible(type) {
+    isVisible({ type }) {
       const filter = this.filters.find(item => item.name.includes(type));
       return !!filter && filter.active;
     }
@@ -40,7 +40,7 @@ window.Callstack = {
       <Toolbar :filters.sync="filters" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
-          <CallstackItem v-for="item in source" v-show="isVisible(item.type)" :key="item.id" v-bind="item" />
+          <CallstackItem v-for="item in source" v-show="isVisible(item)" :key="item.id" v-bind="item" />
         </ul>
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.callstackEmpty'"></div>

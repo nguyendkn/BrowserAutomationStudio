@@ -6209,7 +6209,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="if_code">
       _if(<%= expression %>,function(){
-        _set_function_info({ name: "If", expression: <%= JSON.stringify(original) %> });
+        _set_action_info({ name: "If", expression: <%= JSON.stringify(original) %> });
         section_insert()
       })!
       <% if(do_delete.length > 0){ %>
@@ -6250,7 +6250,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="for_code">
       _do(function(){
-        _set_function_info({ name: "For" });
+        _set_action_info({ name: "For" });
         VAR_CYCLE_INDEX = _iterator() - 1 + parseInt(<%= expression_from %>)
         if(VAR_CYCLE_INDEX > parseInt(<%= expression_to %>))_break();
         section_insert()
@@ -6274,7 +6274,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="foreach_code">
       _do_with_params({"foreach_data":(<%= for_array %>)},function(){
-        _set_function_info({ name: "Foreach" });
+        _set_action_info({ name: "Foreach" });
         VAR_CYCLE_INDEX = _iterator() - 1
         if(VAR_CYCLE_INDEX > _cycle_param("foreach_data").length - 1)_break();
         VAR_FOREACH_DATA = _cycle_param("foreach_data")[VAR_CYCLE_INDEX]
@@ -6303,7 +6303,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="while_code">
       _do(function(){
-        _set_function_info({ name: "While" });
+        _set_action_info({ name: "While" });
         VAR_CYCLE_INDEX = _iterator() - 1
         <%= additional %>
         BREAK_CONDITION = <%= expression %>;

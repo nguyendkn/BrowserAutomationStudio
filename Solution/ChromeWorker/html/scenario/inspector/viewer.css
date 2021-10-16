@@ -57,14 +57,6 @@
   margin-top: 4px;
 }
 
-.jst-collapse::before {
-  content: '-';
-}
-
-.jst-expand::before {
-  content: '+';
-}
-
 .jst-list.collapsed {
   display: none;
 }
@@ -108,14 +100,4 @@
 
 .jst-icon {
   display: none;
-}
-
-.jst-viewer ul {
-  list-style: none;
-  margin-bottom: 0;
-}
-
-.jst-viewer ol {
-  list-style: none;
-  margin-bottom: 0;
 }

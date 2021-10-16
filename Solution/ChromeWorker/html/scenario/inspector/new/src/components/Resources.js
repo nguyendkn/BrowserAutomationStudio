@@ -33,7 +33,7 @@ window.Resources = {
 
   methods: {
     isVisible(type) {
-      const filter = this.options.find(item => item.name.includes(type));
+      const filter = this.filters.find(item => item.name.includes(type));
       return !!filter && filter.active;
     }
   },

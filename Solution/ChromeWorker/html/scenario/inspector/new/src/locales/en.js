@@ -1,6 +1,5 @@
 (window.locales || (window.locales = {})).en = {
   toolbar: {
-    placeholder: 'Search by name',
     sortings: {
       alphabetically: 'Alphabetically',
       dateModified: 'By date modified',
@@ -18,7 +17,8 @@
       array: 'Array',
       date: 'Date',
       null: 'Null'
-    }
+    },
+    placeholder: 'Search by name'
   },
   tabs: {
     callstackEmpty: 'Call stack is empty',

@@ -64,8 +64,6 @@
       model.on('change:source', (__, source) => {
         this.tree.model.update(prepareData(source));
       });
-
-      this.tree = new Inspector.TreeView();
     },
 
     applyFilters() {

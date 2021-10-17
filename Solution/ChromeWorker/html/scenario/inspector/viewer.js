@@ -1,36 +1,9 @@
 (({ App, Backbone, $, _ }) => {
   const { Inspector } = App;
 
-  const Model = Backbone.Model.extend({
-    defaults: () => ({
-      source: {},
-      groups: {},
-    }),
-
-    update: function (source) {
-      const groups = this.get('groups');
-
-      if (!groups['Main'] || _.size(groups) === 1) {
-        groups['Main'] = _.keys(source);
-      }
-
-      this.set('source', source);
-    },
-
-    getValue: function (path) {
-      return jsonpatch.getValueByPointer(this.get('source'), path);
-    }
-  });
-
   Inspector.TreeView = Backbone.View.extend({
-    className: 'jst-viewer',
-
     initialize() {
-      const model = this.model = new Model().on('change', this.render, this);
-
       this.on('render', () => {
-        // _.each(this.sortable, list => _.invoke(list, 'destroy'));
-
         // this.sortable = {
         //   nodes: [...this.el.querySelectorAll('.jst-root > li > ul')].map(el => Sortable.create(el, {
         //     onAdd({ item, from, to }) {
@@ -51,6 +24,10 @@
         //   }))
         // }
       });
+
+      this.getValue = function (path) {
+        return jsonpatch.getValueByPointer(this.get('source'), path);
+      }
     },
 
     render() {
@@ -68,14 +45,14 @@
         }</div>`
       ));
 
-      return this.trigger('render');
+      return this;
     },
 
     events: {
       'click .jst-item > .fa-minus-circle': function (e) {
         const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
         const { path } = e.target.closest('li').dataset;
-        const text = this.model.getValue(path), len = text.length;
+        const text = this.getValue(path), len = text.length;
 
         $el.prev().text(`"${_.escape(_.truncate(text, 100))}"`);
       },
@@ -83,15 +60,9 @@
       'click .jst-item > .fa-plus-circle': function (e) {
         const $el = $(e.target).toggleClass('fa-minus-circle fa-plus-circle');
         const { path } = e.target.closest('li').dataset;
-        const text = this.model.getValue(path), len = text.length;
+        const text = this.getValue(path), len = text.length;
 
         $el.prev().text(`"${_.escape(_.truncate(text, len))}"`);
-      },
-
-      'click .jst-group-toggle': function (e) {
-        const $el = $(e.target), $group = $el.closest('.jst-group');
-        $el.toggleClass('fa-chevron-down fa-chevron-up');
-        $group.find('.jst-group-body').toggle();
       },
 
       'click .jst-collapse': function (e) {

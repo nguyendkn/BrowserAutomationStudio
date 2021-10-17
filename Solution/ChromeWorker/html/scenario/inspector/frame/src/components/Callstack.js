@@ -7,7 +7,7 @@ window.Callstack = {
   },
 
   props: {
-    source: {
+    data: {
       default: () => [],
       type: Array
     }
@@ -24,7 +24,7 @@ window.Callstack = {
 
   computed: {
     isEmpty() {
-      return !Object.keys(this.source).length;
+      return !Object.keys(this.data).length;
     }
   },
 
@@ -40,7 +40,7 @@ window.Callstack = {
       <Toolbar :filters.sync="filters" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
-          <CallstackItem v-for="item in source" v-show="isVisible(item)" :key="item.id" v-bind="item" />
+          <CallstackItem v-for="item in data" v-show="isVisible(item)" :key="item.id" v-bind="item" />
         </ul>
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.callstackEmpty'"></div>

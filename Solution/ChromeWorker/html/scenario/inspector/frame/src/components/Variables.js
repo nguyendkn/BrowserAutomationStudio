@@ -7,7 +7,7 @@ window.Variables = {
   },
 
   props: {
-    source: {
+    data: {
       default: () => { },
       type: Object
     }
@@ -27,7 +27,7 @@ window.Variables = {
   computed: {
     isEmpty() {
       return false;
-      // return !Object.keys(this.source).length;
+      // return !Object.keys(this.data).length;
     }
   },
 
@@ -42,7 +42,7 @@ window.Variables = {
     <div class="app-panel">
       <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="query" />
       <div v-show="!isEmpty" class="app-panel-content">
-        <TreeView :data="source" />
+        <TreeView :data="data" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.variablesEmpty'"></div>
     </div>

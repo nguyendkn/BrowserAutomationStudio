@@ -116,17 +116,7 @@
         const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
           .show().find(':input').prop('required', true);
 
-        $target.first().each((at, el) => {
-          const $el = $(el), { type } = el;
-
-          if (type === 'radio') {
-            $el.prop('checked', true);
-          } else if (type !== 'hidden') {
-            $el.val(type === 'number' ? 0 : '');
-          }
-
-          $el.trigger('input');
-        });
+        $target.first().trigger('input');
       });
 
       model.bind('change', () => {

@@ -56,18 +56,17 @@
 .inspector-modal-form > div > input {
   line-height: 18px;
   padding: 2px 2px;
+  resize: none;
   width: 100%;
   border: 0;
 }
 
 .inspector-modal-form > div > textarea {
   min-height: 106px;
-  resize: vertical;
 }
 
 .inspector-modal-form > div > input {
   min-height: 24px;
-  resize: initial;
 }
 
 .inspector-modal-select.disabled {
@@ -84,10 +83,9 @@
 }
 
 .inspector-modal-content {
-  border: 1px solid #f7f7f8;
+  border: 1px solid #f6f6f6;
   background-color: #fff;
   -webkit-user-drag: none;
-  pointer-events: all;
   position: relative;
   padding: 25px 24px;
   user-select: none;
@@ -124,12 +122,9 @@
 }
 
 .inspector-modal-body {
-  justify-content: space-between;
-  background: #f7f7f8;
   align-items: center;
-  margin: 15px 0 30px;
-  padding: 15px 20px;
-  min-height: 200px;
+  margin: 15px 0 24px;
+  padding: 15px 0;
   flex-flow: column;
   display: flex;
 }

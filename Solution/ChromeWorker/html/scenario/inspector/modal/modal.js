@@ -10,11 +10,12 @@
   });
 
   Inspector.Modal = Backbone.View.extend({
-    template: _.template(String.raw`
+    template: _.template(/*html*/`
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4><%= tr("Change the variable value") %></h4>
+            <h4><%= tr('Change the variable value') %></h4>
+            <h6><%= tr('Change or set data type and value') %></h6>
           </div>
           <div class="inspector-modal-body">
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
@@ -53,6 +54,12 @@
               <div style="<%= style('null') %>" data-input-type="null">
                 <input type="hidden" value="null">
               </div>
+              <button type="button" id="inspectorModalCopy" class="btn-base">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 3V0H2v12h4v3h9V3h-3Zm-6 8H3V1h8v2H6v8Zm8 3H7V4h7v10Z" fill="#606060" />
+                </svg>
+                <span style="margin-left: 12px;"><%= tr('Copy to clipboard') %></span>
+              </button>
             </form>
           </div>
           <div class="inspector-modal-footer">
@@ -82,15 +89,15 @@
         this.model.set('type', e.target.value);
       },
 
-      'click #inspectorModalAccept': function (e) {
+      'click #inspectorModalAccept': function () {
         this.trigger('submit');
       },
 
-      'click #inspectorModalCancel': function (e) {
+      'click #inspectorModalCancel': function () {
         this.trigger('cancel');
       },
 
-      'hidden.bs.modal': function (e) {
+      'hidden.bs.modal': function () {
         this.trigger('cancel');
       }
     },
@@ -103,13 +110,11 @@
         const $inputs = this.$('[data-input-type]');
         $inputs.parent('form').trigger('reset');
 
-        const $unused = $inputs.filter((at, el) => {
-          return el.dataset.inputType !== type
-        }).hide().find(':input').prop('required', false);
+        const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
+          .hide().find(':input').prop('required', false);
 
-        const $target = $inputs.filter((at, el) => {
-          return el.dataset.inputType === type
-        }).show().find(':input').prop('required', true);
+        const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
+          .show().find(':input').prop('required', true);
 
         $target.first().each((at, el) => {
           const $el = $(el), { type } = el;
@@ -130,7 +135,7 @@
       });
 
       this.bind('submit', () => {
-        const valid = this.el.querySelector('form').reportValidity();
+        const valid = this.$('form')[0].reportValidity();
         if (valid || model.get('type') === 'string') this.trigger('accept');
       });
 

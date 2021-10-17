@@ -20,7 +20,7 @@
             <select id="inspectorModalSelect" data-style="inspector-modal-select">
               <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                 <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>>
-                  <%= tr(_.upperFirst(item)) %>
+                  <%= tr('$' + _.upperFirst(item)).slice(1) %>
                 </option>
               <% }) %>
             </select>
@@ -165,6 +165,14 @@
   });
 
   _.extend(_L, {
+    // Hack - use the `$` symbol to avoid overriding the translation after loading it from modules
+    '$Date': { ru: '$Дата' },
+    '$Array': { ru: '$Массив' },
+    '$Number': { ru: '$Число' },
+    '$String': { ru: '$Строка' },
+    '$Object': { ru: '$Объект' },
+    '$Custom': { ru: '$Особый' },
+    '$Boolean': { ru: '$Булево' },
     'Save changes': { ru: 'Сохранить изменения' },
     'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
     'Copy the variable name': { ru: 'Копировать имя переменной' },

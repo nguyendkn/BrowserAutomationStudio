@@ -12,7 +12,7 @@ window.TreeViewGroup = {
     return {
       color: '#c0bd9B',
       editMode: false,
-      editName: this.name,
+      newName: this.name,
       palette: [
         '#D9D9D9',
         '#C9C7B0',
@@ -35,6 +35,10 @@ window.TreeViewGroup = {
       this.editMode = !this.editMode;
     },
 
+    updateGroup() {
+      this.$emit('update', this.name);
+    },
+
     removeGroup() {
       this.$emit('remove', this.name);
     },
@@ -52,7 +56,7 @@ window.TreeViewGroup = {
     <li :style="style" class="tree-view-group">
       <div class="tree-view-group-header">
         <img src="src/assets/icons/folder.svg" alt>
-        <input v-model="editName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">
+        <input v-model="newName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">
         <div v-if="!editMode" class="tree-view-group-controls">
           <button type="button" @click="removeGroup">
             <img src="src/assets/icons/delete.svg">
@@ -71,9 +75,7 @@ window.TreeViewGroup = {
         </div>
         <div v-else>
           <div>
-            <div class="tree-view-group-palette">
-              <!-- <input v-for="color in palette" name="palette" type="radio"> -->
-            </div>
+            <div class="tree-view-group-palette"></div>
           </div>
         </div>
       </div>

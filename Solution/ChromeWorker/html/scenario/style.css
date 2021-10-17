@@ -2018,7 +2018,6 @@ mark
 .btn-base {
   transition: all 0.3s ease-in-out;
   border: 1px solid transparent;
-  -webkit-user-select: none;
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
   vertical-align: middle;

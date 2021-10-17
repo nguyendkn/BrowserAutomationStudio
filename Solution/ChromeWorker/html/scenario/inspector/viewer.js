@@ -54,7 +54,7 @@
         const { path } = e.target.closest('li').dataset;
         const text = this.getValue(path), len = text.length;
 
-        $el.prev().text(`"${_.escape(_.truncate(text, 100))}"`);
+        // $el.prev().text(`"${_.escape(_.truncate(text, 100))}"`);
       },
 
       'click .jst-item > .fa-plus-circle': function (e) {
@@ -62,7 +62,7 @@
         const { path } = e.target.closest('li').dataset;
         const text = this.getValue(path), len = text.length;
 
-        $el.prev().text(`"${_.escape(_.truncate(text, len))}"`);
+        // $el.prev().text(`"${_.escape(_.truncate(text, len))}"`);
       },
 
       'click .jst-collapse': function (e) {
@@ -97,7 +97,7 @@
             case 'number': return element(value, path, type);
             case 'null': return element(value, path, type);
             case 'string':
-              const data = _.truncate(value, 100);
+              const data = value; // _.truncate(value, 100);
               const clip = data !== value ? `<i class="fa fa-plus-circle"></i>` : '';
               return element(data, path, type) + clip;
             case 'date':

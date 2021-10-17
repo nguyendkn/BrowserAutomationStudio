@@ -20,10 +20,6 @@
   };
 
   _.mixin({
-    truncate: (str, limit) => {
-      return str.length > limit ? (str.substr(0, limit - 3) + '...') : str;
-    },
-
     upperFirst: str => str.charAt(0).toUpperCase() + str.slice(1),
 
     lowerFirst: str => str.charAt(0).toLowerCase() + str.slice(1),

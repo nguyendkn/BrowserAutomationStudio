@@ -47,8 +47,6 @@
 
   const View = Backbone.View.extend({
     initialize() {
-      const model = this.model = new Model();
-
       // if (this.allowHighlight) {
       //   model.on('highlight', ({ count, path }) => {
       //     const [node] = this.$(`[data-path="${path}"] > .jst-node`);
@@ -60,10 +58,6 @@
       //     }
       //   });
       // }
-
-      model.on('change:source', (__, source) => {
-        this.tree.model.update(prepareData(source));
-      });
     },
 
     applyFilters() {
@@ -89,8 +83,6 @@
       //     $group.toggle(!!$visible.length);
       //   }
       // });
-
-      // return this;
     },
 
     applySorting() {
@@ -117,8 +109,6 @@
       //     })();
       //   }));
       // });
-
-      return this;
     }
   }, {
     // colors: {

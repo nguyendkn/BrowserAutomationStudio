@@ -18,7 +18,7 @@
             <h6><%= tr('Change or set data type and value') %></h6>
           </div>
           <div class="inspector-modal-body">
-            <select id="inspectorModalSelect" data-style="inspector-modal-select">
+            <select data-style="inspector-modal-select">
               <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                 <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>>
                   <%= tr('$' + _.upperFirst(item)).slice(1) %>
@@ -26,7 +26,7 @@
               <% }) %>
             </select>
             <form class="inspector-modal-form" action="javascript:void(0)">
-              <% const style = v => 'display: ' + (type === v ? 'block' : 'none') %>
+              <% const style = v => 'display: ' + (v === type ? 'block' : 'none') %>
               <div style="<%= style('custom') %>" data-input-type="custom">
                 <textarea><%- type === 'custom' ? value : '' %></textarea>
               </div>
@@ -96,8 +96,8 @@
             </div>
           </div>
           <div class="inspector-modal-footer">
-            <button type="button" id="inspectorModalAccept" class="btn-base btn-accept" disabled><%= tr('Save changes') %></button>
-            <button type="button" id="inspectorModalCancel" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
+            <button type="button" class="btn-base btn-accept" disabled><%= tr('Save changes') %></button>
+            <button type="button" class="btn-base btn-cancel"><%= tr('Cancel') %></button>
           </div>
         </div>
       </div>
@@ -118,15 +118,15 @@
         this.model.set('value', e.target.value);
       },
 
-      'change #inspectorModalSelect': function (e) {
+      'change select[data-style]': function (e) {
         this.model.set('type', e.target.value);
       },
 
-      'click #inspectorModalAccept': function () {
+      'click .btn-accept': function () {
         this.trigger('submit');
       },
 
-      'click #inspectorModalCancel': function () {
+      'click .btn-cancel': function () {
         this.trigger('cancel');
       },
 
@@ -154,7 +154,7 @@
 
       model.bind('change', () => {
         const disabled = _.isEqual({ value, type, path }, model.toJSON());
-        this.$('#inspectorModalAccept').prop('disabled', disabled);
+        this.$('.btn-accept').prop('disabled', disabled);
       });
 
       this.bind('submit', () => {
@@ -178,7 +178,7 @@
     render() {
       if (this.$el.is(':empty')) {
         this.$el.html(this.template(this.model.toJSON()));
-        this.$('#inspectorModalSelect').selectpicker();
+        this.$('select').selectpicker();
         this.$el.modal({ backdrop: 'static' });
       }
 

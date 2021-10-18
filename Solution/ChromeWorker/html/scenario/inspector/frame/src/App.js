@@ -15,7 +15,7 @@ window.App = {
         callstack: [],
       },
       tab: 'variables'
-    }
+    };
   },
 
   destroyed() {

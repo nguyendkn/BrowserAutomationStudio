@@ -21,7 +21,7 @@ window.Variables = {
       sortings: sortings.map((name, at) => ({ name, active: at === 0 })),
       filters: filters.map(name => ({ name, active: true })),
       query: ''
-    }
+    };
   },
 
   computed: {

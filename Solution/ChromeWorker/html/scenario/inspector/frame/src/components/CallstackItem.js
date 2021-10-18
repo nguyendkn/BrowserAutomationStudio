@@ -26,7 +26,7 @@ window.CallstackItem = {
   data() {
     return {
       preview: true
-    }
+    };
   },
 
   computed: {

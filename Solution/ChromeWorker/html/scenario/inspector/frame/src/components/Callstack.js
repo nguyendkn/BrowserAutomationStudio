@@ -19,7 +19,7 @@ window.Callstack = {
         { name: 'functions', active: true },
         { name: 'actions', active: true }
       ]
-    }
+    };
   },
 
   computed: {

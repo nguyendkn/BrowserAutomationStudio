@@ -21,7 +21,7 @@ window.TreeViewGroup = {
         '#8EC38E',
       ],
       expanded: false
-    }
+    };
   },
 
   computed: {

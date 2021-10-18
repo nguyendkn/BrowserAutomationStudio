@@ -27,7 +27,7 @@ window.Toolbar = {
     return {
       dropdown: false,
       visible: false
-    }
+    };
   },
 
   methods: {

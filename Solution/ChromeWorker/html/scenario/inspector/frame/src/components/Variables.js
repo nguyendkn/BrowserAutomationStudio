@@ -2,13 +2,13 @@ window.Variables = {
   name: 'Variables',
 
   components: {
-    TreeView,
-    Toolbar
+    Toolbar,
+    TreeView
   },
 
   props: {
     data: {
-      default: () => { },
+      required: true,
       type: Object
     }
   },
@@ -18,7 +18,7 @@ window.Variables = {
       sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
 
     return {
-      sortings: sortings.map((name, at) => ({ name, active: at === 0 })),
+      sortings: sortings.map((name, idx) => ({ name, active: idx === 0 })),
       filters: filters.map(name => ({ name, active: true })),
       query: ''
     };

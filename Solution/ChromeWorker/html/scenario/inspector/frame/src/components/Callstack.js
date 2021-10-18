@@ -8,7 +8,7 @@ window.Callstack = {
 
   props: {
     data: {
-      default: () => [],
+      required: true,
       type: Array
     }
   },

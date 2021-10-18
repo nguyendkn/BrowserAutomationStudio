@@ -45,46 +45,7 @@
     }
   })
 
-  const View = Backbone.View.extend({
-    initialize() {
-      // if (this.allowHighlight) {
-      //   model.on('highlight', ({ count, path }) => {
-      //     const [node] = this.$(`[data-path="${path}"] > .jst-node`);
-
-      //     if (node) {
-      //       const { dataset } = node.parentNode;
-      //       const colors = View.colors[dataset.type];
-      //       if (colors) node.style.color = colors[count];
-      //     }
-      //   });
-      // }
-    },
-
-    applyFilters() {
-      // const filters = this.tools.model.get('filters');
-      // const query = this.tools.model.get('query');
-
-      // this.$('.jst-group').each((at, el) => {
-      //   const $group = $(el), $items = $group.find('.jst-root > li > ul > li');
-
-      //   if ($items.length) {
-      //     const $visible = $items.filter((at, el) => {
-      //       const visible = filters[el.dataset.type];
-
-      //       if (query) {
-      //         const text = $(el).find('.jst-label').text().slice(0, -1);
-      //         return text.trim().toLowerCase().includes(query) && visible;
-      //       }
-
-      //       return visible;
-      //     });
-
-      //     $items.not($visible.show()).hide();
-      //     $group.toggle(!!$visible.length);
-      //   }
-      // });
-    },
-
+  Inspector.JsonView = Backbone.View.extend({
     applySorting() {
       // const sorting = this.tools.model.get('sorting');
       // const metadata = this.model.get('metadata');
@@ -111,6 +72,4 @@
       // });
     }
   });
-
-  Inspector.JsonView = View;
 })(window);

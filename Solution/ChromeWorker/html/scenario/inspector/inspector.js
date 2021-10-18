@@ -24,9 +24,15 @@
     },
 
     update(data) {
+      const json = JSON.parse(data);
+
       this.$('iframe')[0].contentWindow.postMessage({
-        type: 'update',
-        json: JSON.parse(data),
+        json: {
+          variables: prepareData(json.variables),
+          resources: prepareData(json.resources),
+          callstack: json.callstack
+        },
+        type: 'update'
       }, '*');
     },
 
@@ -106,5 +112,20 @@
         section_start('test', -3)!
       `);
     });
+  }
+
+  function prepareData(data) {
+    return _.reduce(data, (res, val, key) => {
+      if (typeof (val) === 'string') {
+        if (val.startsWith('__UNDEFINED__')) {
+          val = undefined;
+        } else if (val.startsWith('__DATE__')) {
+          val = dayjs(val.slice(8), 'yyyy-MM-dd hh:mm:ss [UTC]Z').toDate();
+        }
+      } else if (_.isObject(val)) {
+        val = prepareData(val);
+      }
+      return (res[key] = val, res);
+    }, _.isArray(data) ? [] : {});
   }
 })(window);

@@ -63,7 +63,7 @@ window.Toolbar = {
     <div class="app-toolbar">
       <collapse-transition>
         <div v-show="visible" class="app-toolbar-panel">
-          <input :value="query" :placeholder="$t('toolbar.placeholder')" :disabled="!search" class="app-toolbar-input" type="text" @input="updateQuery">
+          <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" type="text" @input="updateQuery">
           <div :class="{ open: dropdown }" class="dropdown" v-click-outside="() => dropdown = false">
             <button :aria-expanded="dropdown.toString()" aria-haspopup="true" type="button" @click="toggleDropdown">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

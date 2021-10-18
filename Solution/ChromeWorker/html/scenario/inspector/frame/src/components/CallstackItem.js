@@ -36,10 +36,6 @@ window.CallstackItem = {
 
     argValues() {
       return Object.values(this.options.arguments);
-    },
-
-    argKeys() {
-      return Object.keys(this.options.arguments);
     }
   },
 

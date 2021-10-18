@@ -19,11 +19,11 @@ window.App = {
   },
 
   destroyed() {
-    window.removeEventListener('message', this.handleMessage, false);
+    window.removeEventListener('message', this.handleMessage);
   },
 
   mounted() {
-    window.addEventListener('message', this.handleMessage, false);
+    window.addEventListener('message', this.handleMessage);
   },
 
   methods: {

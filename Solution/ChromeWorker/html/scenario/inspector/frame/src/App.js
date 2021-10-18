@@ -12,7 +12,7 @@ window.App = {
       data: {
         variables: {},
         resources: {},
-        callstack: [],
+        callstack: []
       },
       tab: 'variables'
     };

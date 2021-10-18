@@ -28,8 +28,12 @@ window.App = {
 
   methods: {
     handleMessage({ data }) {
-      if (data && data.type === 'update') {
-        Object.assign(this.data, data.json);
+      const { type, json } = data;
+
+      if (type === 'update' && json) {
+        Object.entries(json).forEach(([key, value]) => {
+          this.$set(this.data, key, value);
+        });
       }
     },
 

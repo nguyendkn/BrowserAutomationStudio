@@ -26,8 +26,7 @@ window.Resources = {
 
   computed: {
     isEmpty() {
-      return false;
-      // return !Object.keys(this.data).length;
+      return !Object.keys(this.data).length;
     }
   },
 

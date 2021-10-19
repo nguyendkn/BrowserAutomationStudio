@@ -9,7 +9,7 @@ window.TreeViewGroup = {
   },
 
   data() {
-    const palette = [
+    const colors = [
       '#c0bd9b',
       '#9acbe6',
       '#8ec48f',
@@ -18,7 +18,8 @@ window.TreeViewGroup = {
     ];
 
     return {
-      color: palette[0],
+      colors,
+      color: colors[0],
       editMode: false,
       newName: this.name,
       expanded: false
@@ -76,7 +77,7 @@ window.TreeViewGroup = {
         </div>
         <div v-else>
           <div>
-            <div class="tree-view-group-palette"></div>
+            <div class="tree-view-group-colors"></div>
           </div>
         </div>
       </div>

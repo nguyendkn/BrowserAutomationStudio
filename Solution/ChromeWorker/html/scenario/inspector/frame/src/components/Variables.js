@@ -39,7 +39,7 @@ window.Variables = {
 
   template: /*html*/`
     <div class="app-panel">
-      <Toolbar :filters.sync="filters" :sortings.sync="sortings" :query.sync="query" />
+      <Toolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query" />
       <div v-show="!isEmpty" class="app-panel-content">
         <TreeView :data="data" />
       </div>

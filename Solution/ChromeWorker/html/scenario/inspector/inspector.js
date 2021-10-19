@@ -26,7 +26,7 @@
     update(data) {
       const json = JSON.parse(data);
 
-      window.frames.inspector.contentWindow.postMessage({
+      this.el.querySelector('iframe').contentWindow.postMessage({
         json: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),

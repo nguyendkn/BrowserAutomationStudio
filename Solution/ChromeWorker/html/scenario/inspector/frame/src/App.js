@@ -37,9 +37,9 @@ window.App = {
       const { type, json } = data;
 
       if (type === 'update' && json) {
-        Object.entries(json).forEach(([key, value]) => {
-          this.$set(this.data, key, value);
-        });
+        for (const [key, val] of Object.entries(json)) {
+          this.$set(this.data, key, val);
+        }
       }
     },
 

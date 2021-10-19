@@ -9,17 +9,18 @@ window.TreeViewGroup = {
   },
 
   data() {
+    const palette = [
+      '#c0bd9b',
+      '#9acbe6',
+      '#8ec48f',
+      '#d9d9d9',
+      '#f69b93'
+    ];
+
     return {
-      color: '#c0bd9B',
+      color: palette[0],
       editMode: false,
       newName: this.name,
-      palette: [
-        '#D9D9D9',
-        '#C9C7B0',
-        '#9BC4DE',
-        '#EC8A82',
-        '#8EC38E',
-      ],
       expanded: false
     };
   },

@@ -31,11 +31,11 @@ window.CallstackItem = {
 
   computed: {
     hasArguments() {
-      return Object.keys(this.options.arguments).length > 0;
+      return this.size > 0;
     },
 
-    argValues() {
-      return Object.values(this.options.arguments);
+    size() {
+      return Object.keys(this.options.arguments).length;
     }
   },
 
@@ -51,9 +51,7 @@ window.CallstackItem = {
         <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'">
         <span class="callstack-item-name">{{ name }}:</span>
         <span v-if="type === 'function'" class="callstack-item-data">
-          <span class="callstack-item-bracket">[</span>
-          <span class="callstack-item-preview">{{ argValues.join(', ') }}</span>
-          <span class="callstack-item-bracket">]</span>
+          <span class="callstack-item-preview">[{{ size + ' items' }}]</span>
         </span>
         <span v-else class="callstack-item-data">
           <span>{{ name === 'If' ? options.expression : options.iterator }}</span>

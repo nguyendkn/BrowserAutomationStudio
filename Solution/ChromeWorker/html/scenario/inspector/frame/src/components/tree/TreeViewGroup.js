@@ -2,6 +2,11 @@ window.TreeViewGroup = {
   name: 'TreeViewGroup',
 
   props: {
+    color: {
+      required: true,
+      type: String
+    },
+
     name: {
       required: true,
       type: String
@@ -19,11 +24,10 @@ window.TreeViewGroup = {
 
     return {
       colors,
-      color: colors[0],
       editMode: false,
       expanded: false,
       newName: this.name,
-      newColor: colors[0],
+      newColor: this.color,
     };
   },
 
@@ -34,19 +38,23 @@ window.TreeViewGroup = {
   },
 
   methods: {
-    editGroup() {
+    edit() {
       this.editMode = !this.editMode;
     },
 
-    updateGroup() {
-      this.$emit('update', this.name);
+    update() {
+      this.$emit('update', this.name, {
+        color: this.newColor,
+        name: this.newName,
+      });
+      this.editMode = false;
     },
 
-    removeGroup() {
+    remove() {
       this.$emit('remove', this.name);
     },
 
-    addGroup() {
+    add() {
       this.$emit('add', this.name);
     },
 
@@ -61,13 +69,13 @@ window.TreeViewGroup = {
         <img src="src/assets/icons/folder.svg" alt>
         <input v-model="newName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">
         <div v-if="!editMode" class="tree-view-group-controls">
-          <button type="button" @click="removeGroup">
+          <button type="button" @click="remove">
             <img src="src/assets/icons/delete.svg">
           </button>
-          <button type="button" @click="editGroup">
+          <button type="button" @click="edit">
             <img src="src/assets/icons/edit.svg">
           </button>
-          <button type="button" @click="addGroup">
+          <button type="button" @click="add">
             <img src="src/assets/icons/plus.svg">
           </button>
           <button type="button" @click="toggle">
@@ -77,9 +85,11 @@ window.TreeViewGroup = {
           </button>
         </div>
         <div v-else>
-          <div>
-            <div class="tree-view-group-colors"></div>
-          </div>
+          <button type="button" @click="update">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="m6.25 10.6002-3.55-3.55-.7.7 3.55 3.55.7.7 7.05-7.05-.7-.75-6.35 6.4Z" fill="##606060" />
+            </svg>
+          </button>
         </div>
       </div>
       <div v-show="!expanded" class="tree-view-group-content">

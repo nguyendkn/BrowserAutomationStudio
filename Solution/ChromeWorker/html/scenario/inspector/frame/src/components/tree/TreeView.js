@@ -2,13 +2,14 @@ window.TreeView = {
   name: 'TreeView',
 
   components: {
-    TreeViewGroup
+    TreeViewGroup,
+    TreeViewItem
   },
 
   props: {
     data: {
       required: true,
-      type: [Array, Object]
+      type: Object
     }
   },
 
@@ -37,7 +38,9 @@ window.TreeView = {
 
   template: /*html*/`
     <ul class="tree-view">
-      <TreeViewGroup v-for="group in groups" :key="group.name" :name="group.name" @remove="removeGroup" @add="addGroup" />
+      <TreeViewGroup v-for="group in groups" :key="group.name" :name="group.name" @remove="removeGroup" @add="addGroup">
+        <TreeViewItem v-for="(item, key) in data" :key="key" :label="key" :value="item" />
+      </TreeViewGroup>
     </ul>
   `
 };

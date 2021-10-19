@@ -80,7 +80,7 @@ window.TreeViewGroup = {
         </div>
       </div>
       <div v-show="!expanded" class="tree-view-group-content">
-        Group content
+        <slot></slot>
       </div>
     </li>
   `

@@ -79,11 +79,9 @@ window.TreeViewGroup = {
           </div>
         </div>
       </div>
-      <collapse-transition>
-        <div v-show="!expanded" class="tree-view-group-content">
-          Group content
-        </div>
-      </collapse-transition>
+      <div v-show="!expanded" class="tree-view-group-content">
+        Group content
+      </div>
     </li>
   `
 };

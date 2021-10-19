@@ -24,7 +24,6 @@
 }
 
 .app-tab {
-  transition: opacity 0.3s ease;
   justify-content: center;
   user-select: none;
   display: flex;
@@ -37,7 +36,6 @@
 }
 
 .app-header > button {
-  transition: opacity 0.3s ease;
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -96,12 +94,7 @@
   background: #3d3f42;
 }
 
-.app-toolbar .dropdown > button > svg > path {
-  transition: fill 0.3s ease;
-}
-
 .app-toolbar .dropdown > button {
-  transition: all 0.3s ease;
   border: 1px solid #d9d9d9;
   padding: 10px;
   display: flex;
@@ -116,7 +109,6 @@
 }
 
 .app-toolbar-toggle {
-  transition: opacity 0.3s ease;
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -164,7 +156,6 @@
 }
 
 .app-toolbar-menu > li > a > img {
-  transition: opacity 0.3s ease;
   margin-left: 10px;
   width: 16px;
   opacity: 0;
@@ -178,7 +169,6 @@
 
 .app-toolbar-menu > li > a {
   justify-content: space-between;
-  transition: opacity 0.3s ease;
   text-decoration: none;
   align-items: center;
   padding: 3px 12px;
@@ -262,7 +252,6 @@
 }
 
 .callstack-item {
-  transition: all 0.3s ease;
   border: 1px solid transparent;
   user-select: none;
   flex-flow: column;
@@ -336,16 +325,6 @@
 
 .tree-view-group-content {
   padding: 9px 0;
-}
-
-/* Transitions */
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s ease;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
 }
 
 /* Scrollbar */

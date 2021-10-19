@@ -34,9 +34,9 @@ window.App = {
 
   methods: {
     handleMessage({ data }) {
-      const { type, json } = data;
+      const { json } = data;
 
-      if (type === 'update' && json) {
+      if (json) {
         for (const [key, val] of Object.entries(json)) {
           this.$set(this.data, key, val);
         }

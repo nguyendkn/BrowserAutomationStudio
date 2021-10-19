@@ -26,13 +26,12 @@
     update(data) {
       const json = JSON.parse(data);
 
-      this.$('iframe')[0].contentWindow.postMessage({
+      window.frames.inspector.contentWindow.postMessage({
         json: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),
           callstack: json.callstack
-        },
-        type: 'update'
+        }
       }, '*');
     },
 

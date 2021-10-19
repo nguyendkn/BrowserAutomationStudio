@@ -21,8 +21,9 @@ window.TreeViewGroup = {
       colors,
       color: colors[0],
       editMode: false,
+      expanded: false,
       newName: this.name,
-      expanded: false
+      newColor: colors[0],
     };
   },
 

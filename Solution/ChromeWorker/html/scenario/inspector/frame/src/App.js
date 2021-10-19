@@ -8,10 +8,17 @@ window.App = {
   },
 
   data() {
+    const json = {
+      NEW_VARIABLE1: 0,
+      NEW_VARIABLE2: false,
+      NEW_VARIABLE3: ['STR1', 'STR2'],
+      NEW_VARIABLE4: { a: 2, b: 3, c: { d: 4 } }
+    };
+
     return {
       data: {
-        variables: {},
-        resources: {},
+        variables: { ...json },
+        resources: { ...json },
         callstack: []
       },
       tab: 'variables'

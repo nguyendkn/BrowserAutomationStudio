@@ -2,8 +2,8 @@ window.App = {
   name: 'App',
 
   components: {
-    Resources,
-    Callstack
+    ResourcesPanel,
+    CallstackPanel
   },
 
   data() {

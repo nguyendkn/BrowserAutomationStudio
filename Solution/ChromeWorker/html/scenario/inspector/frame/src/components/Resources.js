@@ -10,6 +10,11 @@ window.Resources = {
     data: {
       required: true,
       type: Object
+    },
+    
+    title: {
+      required: true,
+      type: String
     }
   },
 
@@ -43,7 +48,7 @@ window.Resources = {
       <div v-show="!isEmpty" class="app-panel-content">
         <TreeView :data="data" />
       </div>
-      <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.resourcesEmpty'"></div>
+      <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>
   `
 };

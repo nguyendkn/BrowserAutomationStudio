@@ -2,7 +2,6 @@ window.App = {
   name: 'App',
 
   components: {
-    Variables,
     Resources,
     Callstack
   },
@@ -71,9 +70,20 @@ window.App = {
         </button>
       </div>
       <div class="app-panels">
-        <Variables v-show="tab === 'variables'" :data="data.variables" />
-        <Resources v-show="tab === 'resources'" :data="data.resources" />
-        <Callstack v-show="tab === 'callstack'" :data="data.callstack" />
+        <Resources
+          v-show="tab === 'variables'"
+          :title="'tabs.variablesEmpty'"
+          :data="data.variables"
+        />
+        <Resources
+          v-show="tab === 'resources'"
+          :title="'tabs.resourcesEmpty'"
+          :data="data.resources"
+        />
+        <Callstack
+          v-show="tab === 'callstack'"
+          :data="data.callstack"
+        />
       </div>
     </div>
   `

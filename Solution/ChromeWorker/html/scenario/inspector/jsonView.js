@@ -72,4 +72,49 @@
       // });
     }
   });
+
+  function renderNode(value, label, path, isRoot = false) {
+    const type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
+
+    return (
+      `<li class="jst-item">${[
+        '<i class="jst-icon fa fa-chain"></i>',
+        isRoot ? '' : `<span class="jst-label">${_.escape(label)}:</span>`,
+        (() => {
+          switch (type) {
+            case 'object': return iterable(value, path, type, '{}');
+            case 'array': return iterable(value, path, type, '[]');
+            case 'undefined': return element(value, path, type);
+            case 'boolean': return element(value, path, type);
+            case 'number': return element(value, path, type);
+            case 'null': return element(value, path, type);
+            case 'string':
+              const data = value; // _.truncate(value, 100);
+              const clip = data !== value ? `<i class="fa fa-plus-circle"></i>` : '';
+              return element(data, path, type) + clip;
+            case 'date':
+              const format = 'YYYY-MM-DD HH:mm:ss [UTC]Z';
+              value = dayjs(value).format(format);
+              return element(value, path, type);
+          }
+        })()
+      ].join('')
+      }</li>`
+    );
+  }
+
+  function iterable(value, path, type, brackets) {
+    const nodes = _.map(value, (val, key) => renderNode(val, key, `${path}/${key}`));
+
+    return [
+      `<span class="jst-bracket">${brackets[0]}</span>`,
+      nodes.length ? '<span class="jst-expand"></span>' : '',
+      `<ul class="jst-list collapsed">${nodes.join('')}</ul>`,
+      `<span class="jst-bracket">${brackets[1]}</span>`
+    ].join('');
+  }
+
+  function element(value, path, type) {
+    return `<span class="jst-node">${value}</span>`;
+  }
 })(window);

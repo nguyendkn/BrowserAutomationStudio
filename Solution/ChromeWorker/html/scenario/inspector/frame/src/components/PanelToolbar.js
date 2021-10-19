@@ -1,5 +1,5 @@
-window.Toolbar = {
-  name: 'Toolbar',
+window.PanelToolbar = {
+  name: 'PanelToolbar',
 
   props: {
     sortings: {

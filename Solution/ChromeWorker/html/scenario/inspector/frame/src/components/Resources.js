@@ -2,7 +2,7 @@ window.Resources = {
   name: 'Resources',
 
   components: {
-    Toolbar,
+    PanelToolbar,
     TreeView
   },
 
@@ -44,7 +44,7 @@ window.Resources = {
 
   template: /*html*/`
     <div class="app-panel">
-      <Toolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query" />
+      <PanelToolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query" />
       <div v-show="!isEmpty" class="app-panel-content">
         <TreeView :data="data" />
       </div>

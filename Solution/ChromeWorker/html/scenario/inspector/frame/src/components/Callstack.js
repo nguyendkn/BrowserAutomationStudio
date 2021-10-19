@@ -2,7 +2,7 @@ window.Callstack = {
   name: 'Callstack',
 
   components: {
-    Toolbar,
+    PanelToolbar,
     CallstackItem
   },
 
@@ -37,7 +37,7 @@ window.Callstack = {
 
   template: /*html*/`
     <div class="app-panel">
-      <Toolbar :filters.sync="filters" :search="false" />
+      <PanelToolbar :filters.sync="filters" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
         <ul class="callstack-list">
           <CallstackItem v-for="item in data" v-show="isVisible(item)" :key="item.id" v-bind="item" />

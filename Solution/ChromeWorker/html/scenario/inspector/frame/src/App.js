@@ -70,17 +70,17 @@ window.App = {
         </button>
       </div>
       <div class="app-panels">
-        <Resources
+        <ResourcesPanel
           v-show="tab === 'variables'"
           :title="'tabs.variablesEmpty'"
           :data="data.variables"
         />
-        <Resources
+        <ResourcesPanel
           v-show="tab === 'resources'"
           :title="'tabs.resourcesEmpty'"
           :data="data.resources"
         />
-        <Callstack
+        <CallstackPanel
           v-show="tab === 'callstack'"
           :data="data.callstack"
         />

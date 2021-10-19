@@ -1,5 +1,5 @@
-window.Callstack = {
-  name: 'Callstack',
+window.CallstackPanel = {
+  name: 'CallstackPanel',
 
   components: {
     PanelToolbar,

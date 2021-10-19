@@ -1,5 +1,5 @@
-window.Resources = {
-  name: 'Resources',
+window.ResourcesPanel = {
+  name: 'ResourcesPanel',
 
   components: {
     PanelToolbar,

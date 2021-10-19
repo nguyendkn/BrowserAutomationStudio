@@ -53,7 +53,7 @@ window.App = {
   },
 
   template: /*html*/`
-    <div id="app" class="app-content">
+    <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs">
           <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" :class="{ active: tab === t }" class="app-tab">

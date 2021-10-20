@@ -8,10 +8,14 @@ window.App = {
 
   data() {
     const json = {
-      NEW_VARIABLE1: 0,
-      NEW_VARIABLE2: false,
-      NEW_VARIABLE3: ['STR1', 'STR2'],
-      NEW_VARIABLE4: { a: 2, b: 3, c: { d: 4 } }
+      PROP1: 0,
+      PROP2: 'foo',
+      PROP3: null,
+      PROP4: false,
+      PROP5: undefined,
+      PROP6: new Date(),
+      PROP7: ['STR1', 'STR2'],
+      PROP8: { a: 2, b: 3, c: { d: 4 } }
     };
 
     return {
@@ -35,22 +39,22 @@ window.App = {
   methods: {
     handleMessage({ data }) {
       if (data.json != null) {
-        for (const [key, val] of Object.entries(data.json)) {
+        Object.entries(data.json).forEach(([key, val]) => {
           this.$set(this.data, key, val);
-        }
+        });
       }
-    },
-
-    hide() {
-      window.parent.postMessage({ type: 'hide' }, '*');
     },
 
     show() {
       window.parent.postMessage({ type: 'show' }, '*');
+    },
+
+    hide() {
+      window.parent.postMessage({ type: 'hide' }, '*');
     }
   },
 
-  template: /*html*/`
+  template: /*html*/ `
     <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs">

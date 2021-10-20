@@ -7,14 +7,14 @@ window.ResourcesPanel = {
   },
 
   props: {
-    data: {
-      required: true,
-      type: Object
-    },
-    
     title: {
       required: true,
       type: String
+    },
+
+    data: {
+      required: true,
+      type: Object
     }
   },
 

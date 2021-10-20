@@ -54,7 +54,7 @@ window.App = {
     }
   },
 
-  template: /*html*/ `
+  template: /*html*/`
     <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs">

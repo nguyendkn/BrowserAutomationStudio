@@ -16,7 +16,7 @@ window.TreeView = {
   data() {
     return {
       groups: [
-        { name: 'Main', index: 0, color: '#c0bd9b' }
+        { name: 'Main', color: '#c0bd9b' }
       ]
     };
   },
@@ -39,15 +39,17 @@ window.TreeView = {
     },
 
     addGroup() {
-      const index = this.groups.length;
-      this.groups.push({ name: `Group ${index + 1}`, index, color: '#c0bd9b' });
+      this.groups.push({
+        name: uniqueId('Group '),
+        color: '#c0bd9b'
+      });
     },
   },
 
   template: /*html*/`
     <ul class="tree-view">
       <TreeViewGroup v-for="group in groups"
-        :key="group.index"
+        :key="group.name"
         :name="group.name"
         :color="group.color"
         @remove="removeGroup"

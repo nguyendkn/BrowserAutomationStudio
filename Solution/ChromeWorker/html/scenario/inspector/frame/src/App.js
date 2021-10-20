@@ -28,7 +28,7 @@ window.App = {
     window.removeEventListener('message', this.handleMessage);
   },
 
-  mounted() {
+  created() {
     window.addEventListener('message', this.handleMessage);
   },
 

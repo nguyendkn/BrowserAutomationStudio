@@ -344,6 +344,16 @@
   width: 8px;
 }
 
+/* Placeholder */
+
+textarea::placeholder {
+  color: inherit;
+}
+
+input::placeholder {
+  color: inherit;
+}
+
 /* Utilities */
 
 .text-truncate {
@@ -353,14 +363,6 @@
 }
 
 /* Global */
-
-textarea::placeholder {
-  color: inherit;
-}
-
-input::placeholder {
-  color: inherit;
-}
 
 html, body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

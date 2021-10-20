@@ -10,6 +10,11 @@ window.TreeViewGroup = {
     name: {
       required: true,
       type: String
+    },
+
+    id: {
+      required: true,
+      type: String
     }
   },
 
@@ -43,7 +48,7 @@ window.TreeViewGroup = {
     },
 
     update() {
-      this.$emit('update', this.name, {
+      this.$emit('update', this.id, {
         color: this.newColor,
         name: this.newName,
       });
@@ -51,11 +56,11 @@ window.TreeViewGroup = {
     },
 
     remove() {
-      this.$emit('remove', this.name);
+      this.$emit('remove', this.id);
     },
 
     add() {
-      this.$emit('add', this.name);
+      this.$emit('add', this.id);
     },
 
     toggle() {

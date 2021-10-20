@@ -16,23 +16,23 @@ window.TreeView = {
   data() {
     return {
       groups: [
-        { name: 'Main', color: '#c0bd9b' }
+        { name: 'Main', id: uniqueId(), color: '#c0bd9b' }
       ]
     };
   },
 
   methods: {
-    removeGroup(name) {
+    removeGroup(id) {
       const index = this.groups.findIndex(group => {
-        return group.name === name;
+        return group.id === id;
       });
 
       this.groups.splice(index, 1);
     },
 
-    updateGroup(name, data) {
+    updateGroup(id, data) {
       const index = this.groups.findIndex(group => {
-        return group.name === name;
+        return group.id === id;
       });
 
       Object.assign(this.groups[index], data);
@@ -40,16 +40,18 @@ window.TreeView = {
 
     addGroup() {
       this.groups.push({
-        name: uniqueId('Group '),
+        id: uniqueId(),
+        name: 'Group',
         color: '#c0bd9b'
       });
-    },
+    }
   },
 
   template: /*html*/`
     <ul class="tree-view">
       <TreeViewGroup v-for="group in groups"
-        :key="group.name"
+        :key="group.id"
+        :id="group.id"
         :name="group.name"
         :color="group.color"
         @remove="removeGroup"

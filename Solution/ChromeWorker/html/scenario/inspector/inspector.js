@@ -116,9 +116,9 @@
   function prepareData(data) {
     return _.reduce(data, (res, val, key) => {
       if (typeof (val) === 'string') {
-        if (val === '__UNDEFINED__') {
+        if (val.startsWith('_UNDEFINED_')) {
           val = undefined;
-        } else if (val.startsWith('__DATE__')) {
+        } else if (val.startsWith('_DATE_')) {
           val = dayjs(val.slice(8), 'YYYY-MM-DD HH:mm:ss').toDate();
         }
       } else if (_.isObject(val)) {

@@ -116,10 +116,10 @@ function _truncate_variable(item, limit) {
             }, Array.isArray(item) ? [] : {});
         }
 
-        return '__DATE__' + _format_date(item, 'yyyy-MM-dd hh:mm:ss');
+        return '_DATE_' + _format_date(item, 'yyyy-MM-dd hh:mm:ss');
     }
 
-    return typeof item === 'undefined' ? '__UNDEFINED__' : item;
+    return typeof item === 'undefined' ? '_UNDEFINED_' : item;
 }
 
 function _web_interface_eval(Script)

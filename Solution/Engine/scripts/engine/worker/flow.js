@@ -39,7 +39,7 @@ function debug_variables(list, callback) {
         if (key.indexOf('GLOBAL:') === 0) {
             acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"_UNDEFINED_"');
         } else {
-            acc[key.slice(4)] = _truncate_variable(GLOBAL[key], 100);
+            acc[key.slice(4)] = truncate_variable(GLOBAL[key], 100);
         }
         return acc;
     }, {});
@@ -54,7 +54,7 @@ function debug_variables(list, callback) {
             options: {
                 expression: info.expression || '',
                 arguments: item._Arguments || {},
-                iterator: item._iterator || 0,
+                iterator: item._iterator || 0
             }
         }
     }).filter(function (item) { return item.name }).reverse().concat({
@@ -64,7 +64,7 @@ function debug_variables(list, callback) {
         options: {
             expression: '',
             arguments: {},
-            iterator: 0,
+            iterator: 0
         }
     });
 
@@ -107,11 +107,11 @@ function _write_variables(variables)
     }
 }
 
-function _truncate_variable(item, limit) {
+function truncate_variable(item, limit) {
     if (item instanceof Object) {
         if (!(item instanceof Date)) {
             return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
-                acc[key] = _truncate_variable(item[key], limit);
+                acc[key] = truncate_variable(item[key], limit);
                 return acc;
             }, Array.isArray(item) ? [] : {});
         }

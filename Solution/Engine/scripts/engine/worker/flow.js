@@ -37,7 +37,7 @@ function success(text)
 function debug_variables(list, callback) {
     var variables = list.reduce(function (acc, key) {
         if (key.indexOf('GLOBAL:') === 0) {
-            acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
+            acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"_UNDEFINED_"');
         } else {
             acc[key.slice(4)] = _truncate_variable(GLOBAL[key], 100);
         }

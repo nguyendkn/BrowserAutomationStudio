@@ -3,6 +3,6 @@ globalThis.uniqueId = (() => {
 
   return (prefix = '') => {
     const id = ++counter;
-    return (prefix == null ? '' : prefix) + id;
+    return (prefix == null ? '' : prefix + '') + id;
   };
 })();

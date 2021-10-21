@@ -55,8 +55,17 @@ window.TreeView = {
   },
 
   template: /*html*/`
-    <draggable :disabled="draggableDisabled" :list="groups" chosen-class="chosen" ghost-class="ghost" class="tree-view" handle=".tree-view-group-icon" tag="ul">
-      <TreeViewGroup v-for="group in groups"
+    <draggable
+      handle=".tree-view-group-icon"
+      :disabled="draggableDisabled"
+      chosen-class="chosen"
+      ghost-class="ghost"
+      class="tree-view"
+      :list="groups"
+      tag="ul"
+    >
+      <TreeViewGroup
+        v-for="group in groups"
         :key="group.id"
         :id="group.id"
         :name="group.name"
@@ -65,7 +74,12 @@ window.TreeView = {
         @update="updateGroup"
         @add="addGroup"
       >
-        <TreeViewItem v-for="(item, key) in data" :key="key" :label="key" :value="item" />
+        <TreeViewItem
+          v-for="(item, key) in data"
+          :key="key"
+          :label="key"
+          :value="item"
+        />
       </TreeViewGroup>
     </draggable>
   `

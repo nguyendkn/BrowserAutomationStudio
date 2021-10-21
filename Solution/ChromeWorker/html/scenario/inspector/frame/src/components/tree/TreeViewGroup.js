@@ -71,7 +71,7 @@ window.TreeViewGroup = {
   template: /*html*/`
     <li :style="style" class="tree-view-group">
       <div class="tree-view-group-header">
-        <img src="src/assets/icons/folder.svg" alt>
+        <img class="tree-view-group-icon" src="src/assets/icons/folder.svg" alt>
         <input v-model="newName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">
         <div v-if="!editMode" class="tree-view-group-controls">
           <button type="button" @click="remove">

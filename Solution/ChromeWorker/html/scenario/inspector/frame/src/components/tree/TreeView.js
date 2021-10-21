@@ -22,6 +22,12 @@ window.TreeView = {
     };
   },
 
+  computed: {
+    draggableDisabled() {
+      return this.groups.length === 1;
+    }
+  },
+
   methods: {
     removeGroup(id) {
       const index = this.groups.findIndex(group => {
@@ -49,7 +55,7 @@ window.TreeView = {
   },
 
   template: /*html*/`
-    <draggable :list="groups" chosen-class="chosen" ghost-class="ghost" class="tree-view" handle=".tree-view-group-icon" tag="ul">
+    <draggable :disabled="draggableDisabled" :list="groups" chosen-class="chosen" ghost-class="ghost" class="tree-view" handle=".tree-view-group-icon" tag="ul">
       <TreeViewGroup v-for="group in groups"
         :key="group.id"
         :id="group.id"

@@ -2,6 +2,7 @@ window.TreeView = {
   name: 'TreeView',
 
   components: {
+    draggable: window['vuedraggable'],
     TreeViewGroup,
     TreeViewItem
   },
@@ -48,7 +49,7 @@ window.TreeView = {
   },
 
   template: /*html*/`
-    <ul class="tree-view">
+    <draggable :list="groups" chosen-class="chosen" ghost-class="ghost" class="tree-view" tag="ul">
       <TreeViewGroup v-for="group in groups"
         :key="group.id"
         :id="group.id"
@@ -60,6 +61,6 @@ window.TreeView = {
       >
         <TreeViewItem v-for="(item, key) in data" :key="key" :label="key" :value="item" />
       </TreeViewGroup>
-    </ul>
+    </draggable>
   `
 };

@@ -362,6 +362,12 @@ input::placeholder {
   overflow: hidden;
 }
 
+/* Sortable */
+
+.ghost {
+  opacity: 0.5;
+}
+
 /* Global */
 
 html, body {

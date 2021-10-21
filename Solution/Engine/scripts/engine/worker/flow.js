@@ -116,7 +116,7 @@ function _truncate_variable(item, limit) {
             }, Array.isArray(item) ? [] : {});
         }
 
-        return '__DATE__' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');
+        return '__DATE__' + _format_date(item, 'yyyy-MM-dd hh:mm:ss');
     }
 
     return typeof item === 'undefined' ? '__UNDEFINED__' : item;

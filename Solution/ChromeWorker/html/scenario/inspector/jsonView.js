@@ -93,7 +93,7 @@
               const clip = data !== value ? `<i class="fa fa-plus-circle"></i>` : '';
               return element(data, path) + clip;
             case 'date':
-              const format = 'YYYY-MM-DD HH:mm:ss [UTC]Z';
+              const format = 'YYYY-MM-DD HH:mm:ss';
               value = dayjs(value).format(format);
               return element(value, path);
           }

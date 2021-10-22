@@ -119,7 +119,7 @@
         if (val.startsWith('_UNDEFINED_')) {
           val = undefined;
         } else if (val.startsWith('_DATE_')) {
-          val = dayjs(val.slice(8), 'YYYY-MM-DD HH:mm:ss').toDate();
+          val = dayjs(val.slice(8), 'YYYY-MM-DD HH:mm:ss [UTC]Z').toDate();
         }
       } else if (_.isObject(val)) {
         val = prepareData(val);

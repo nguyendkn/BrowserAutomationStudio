@@ -7,6 +7,11 @@ window.CallstackPanel = {
   },
 
   props: {
+    title: {
+      required: true,
+      type: String
+    },
+
     data: {
       required: true,
       type: Array
@@ -43,7 +48,7 @@ window.CallstackPanel = {
           <CallstackItem v-for="item in data" v-show="isVisible(item)" :key="item.id" v-bind="item" />
         </ul>
       </div>
-      <div v-show="isEmpty" class="app-panel-title" v-t="'tabs.callstackEmpty'"></div>
+      <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>
   `
 };

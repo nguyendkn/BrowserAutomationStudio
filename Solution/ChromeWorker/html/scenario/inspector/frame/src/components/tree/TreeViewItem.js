@@ -21,7 +21,7 @@ window.TreeViewItem = {
       number: '#d036d0',
       string: '#2db669',
       date: '#ce904a',
-      null: '#808080',
+      null: '#808080'
     };
 
     return { color: colors[type], type };

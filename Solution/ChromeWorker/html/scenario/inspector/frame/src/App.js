@@ -1,31 +1,35 @@
 window.App = {
   name: 'App',
 
-  components: {
-    ResourcesPanel,
-    CallstackPanel
-  },
-
   data() {
-    const json = {
-      PROP1: 0,
-      PROP2: 'foo',
-      PROP3: null,
-      PROP4: false,
-      PROP5: undefined,
-      PROP6: new Date(),
-      PROP7: ['STR1', 'STR2'],
-      PROP8: { a: 2, b: 3, c: { d: 4 } }
-    };
-
-    return {
-      data: {
-        variables: { ...json },
-        resources: { ...json },
-        callstack: []
+    const tabs = [
+      {
+        name: 'variables',
+        component: ResourcesPanel,
+        options: {
+          title: 'tabs.variablesEmpty',
+          data: { ...json }
+        }
       },
-      tab: 'variables'
-    };
+      {
+        name: 'resources',
+        component: ResourcesPanel,
+        options: {
+          title: 'tabs.resourcesEmpty',
+          data: { ...json }
+        }
+      },
+      {
+        name: 'callstack',
+        component: CallstackPanel,
+        options: {
+          title: 'tabs.callstackEmpty',
+          data: []
+        }
+      }
+    ];
+
+    return { tabs, tab: tabs[0].name };
   },
 
   destroyed() {
@@ -39,9 +43,10 @@ window.App = {
   methods: {
     handleMessage({ data }) {
       if (data.json != null) {
-        Object.entries(data.json).forEach(([key, val]) => {
-          this.$set(this.data, key, val);
-        });
+        for (const [key, val] of Object.entries(data.json)) {
+          const tab = this.tabs.find(t => t.name === key);
+          if (tab) this.$set(tab.options, 'data', val);
+        }
       }
     },
 
@@ -58,10 +63,10 @@ window.App = {
     <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs">
-          <li v-for="t in ['variables', 'resources', 'callstack']" :key="t" :class="{ active: tab === t }" class="app-tab">
-            <a href="#" @click.prevent="tab = t">
-              <img :src="'src/assets/icons/' + t + '.svg'" alt>
-              {{ $t('nav.' + t) }}
+          <li v-for="t in tabs" :key="t.name" :class="{ active: tab === t.name }" class="app-tab">
+            <a href="#" @click.prevent="tab = t.name">
+              <img :src="'src/assets/icons/' + t.name + '.svg'" alt>
+              {{ $t('nav.' + t.name) }}
             </a>
           </li>
         </ul>
@@ -72,20 +77,9 @@ window.App = {
         </button>
       </div>
       <div class="app-panels">
-        <ResourcesPanel
-          v-show="tab === 'variables'"
-          title="tabs.variablesEmpty"
-          :data="data.variables"
-        />
-        <ResourcesPanel
-          v-show="tab === 'resources'"
-          title="tabs.resourcesEmpty"
-          :data="data.resources"
-        />
-        <CallstackPanel
-          v-show="tab === 'callstack'"
-          :data="data.callstack"
-        />
+        <template v-for="t in tabs">
+          <component :is="t.component" v-show="tab === t.name" v-bind="t.options" />
+        </template>
       </div>
     </div>
   `

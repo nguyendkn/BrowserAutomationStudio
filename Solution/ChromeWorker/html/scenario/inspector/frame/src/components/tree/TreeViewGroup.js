@@ -19,20 +19,14 @@ window.TreeViewGroup = {
   },
 
   data() {
-    const colors = [
-      '#c0bd9b',
-      '#9acbe6',
-      '#8ec48f',
-      '#d9d9d9',
-      '#f69b93'
-    ];
+    const colors = ['#c0bd9b', '#9acbe6', '#8ec48f', '#d9d9d9', '#f69b93'];
 
     return {
       colors,
       editMode: false,
       expanded: false,
       newName: this.name,
-      newColor: this.color,
+      newColor: this.color
     };
   },
 
@@ -50,7 +44,7 @@ window.TreeViewGroup = {
     update() {
       this.$emit('update', this.id, {
         color: this.newColor,
-        name: this.newName,
+        name: this.newName
       });
       this.editMode = false;
     },

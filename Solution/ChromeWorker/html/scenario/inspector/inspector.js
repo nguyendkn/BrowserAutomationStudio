@@ -125,6 +125,6 @@
         val = prepareData(val);
       }
       return (res[key] = val, res);
-    }, _.isArray(data) ? [] : {});
+    }, Array.isArray(data) ? [] : {});
   }
 })(window);

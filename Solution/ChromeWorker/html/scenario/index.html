@@ -5546,8 +5546,7 @@
     }
 
 
-    function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
-    {
+    function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded() {
       if (_GobalModel.get('dontsend')) return;
 
       if (!_.isEqual(VariablesListPrev, BrowserAutomationStudio_GetVariablesList())) {
@@ -5555,15 +5554,13 @@
       }
     }
 
-    function BrowserAutomationStudio_AskForVariablesUpdateOrWait()
-    {
+    function BrowserAutomationStudio_AskForVariablesUpdateOrWait() {
       if (!_GobalModel.get('isscriptexecuting') && !_GobalModel.get('istaskexecuting')) {
         return BrowserAutomationStudio_AskForVariablesUpdate();
       }
     }
 
-    function BrowserAutomationStudio_AskForVariablesUpdate()
-    {
+    function BrowserAutomationStudio_AskForVariablesUpdate() {
       //if (!_Inspector.$el.is(':visible')) return;
 
       if(VariablesUpdateTakesPlace)

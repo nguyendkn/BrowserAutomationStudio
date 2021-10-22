@@ -293,6 +293,7 @@
 .tree-view-group {
   border: 1px solid var(--color);
   flex-flow: column;
+  overflow: hidden;
   display: flex;
 }
 

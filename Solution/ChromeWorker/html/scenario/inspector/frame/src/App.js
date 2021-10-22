@@ -4,24 +4,24 @@ window.App = {
   data() {
     const tabs = [
       {
-        name: 'variables',
         component: ResourcesPanel,
+        name: 'variables',
         options: {
           title: 'tabs.variablesEmpty',
           data: { ...json }
         }
       },
       {
-        name: 'resources',
         component: ResourcesPanel,
+        name: 'resources',
         options: {
           title: 'tabs.resourcesEmpty',
           data: { ...json }
         }
       },
       {
-        name: 'callstack',
         component: CallstackPanel,
+        name: 'callstack',
         options: {
           title: 'tabs.callstackEmpty',
           data: []

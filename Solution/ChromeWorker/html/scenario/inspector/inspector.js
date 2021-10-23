@@ -31,8 +31,7 @@
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),
           callstack: json.callstack
-        },
-        type: 'update'
+        }
       }, '*');
     },
 

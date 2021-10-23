@@ -72,7 +72,6 @@ window.TreeView = {
         :color="group.color"
         @remove="removeGroup"
         @update="updateGroup"
-        @add="addGroup"
       >
         <TreeViewItem
           v-for="(item, key) in data"

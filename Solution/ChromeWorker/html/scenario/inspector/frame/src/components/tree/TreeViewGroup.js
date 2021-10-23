@@ -53,10 +53,6 @@ window.TreeViewGroup = {
       this.$emit('remove', this.id);
     },
 
-    add() {
-      this.$emit('add', this.id);
-    },
-
     toggle() {
       this.expanded = !this.expanded;
     }
@@ -73,9 +69,6 @@ window.TreeViewGroup = {
           </button>
           <button type="button" @click="edit">
             <img src="src/assets/icons/edit.svg">
-          </button>
-          <button type="button" @click="add">
-            <img src="src/assets/icons/plus.svg">
           </button>
           <button type="button" @click="toggle">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" :style="{ transform: expanded ? 'rotate(180deg)' : '' }">

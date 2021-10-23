@@ -42,8 +42,8 @@ window.App = {
 
   methods: {
     handleMessage({ data }) {
-      if (data.json != null) {
-        for (const [key, val] of Object.entries(data.json)) {
+      if (data.payload != null) {
+        for (const [key, val] of Object.entries(data.payload)) {
           const tab = this.tabs.find(t => t.name === key);
           if (tab) this.$set(tab.options, 'data', val);
         }

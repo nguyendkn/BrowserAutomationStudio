@@ -27,11 +27,12 @@
       const json = JSON.parse(data);
 
       this.el.querySelector('iframe').contentWindow.postMessage({
-        json: {
+        payload: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),
           callstack: json.callstack
-        }
+        },
+        type: 'update'
       }, '*');
     },
 

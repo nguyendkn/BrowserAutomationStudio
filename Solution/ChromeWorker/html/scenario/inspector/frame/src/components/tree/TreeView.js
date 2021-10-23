@@ -8,6 +8,11 @@ window.TreeView = {
   },
 
   props: {
+    filters: {
+      required: true,
+      type: Array
+    },
+
     data: {
       required: true,
       type: Object
@@ -54,10 +59,7 @@ window.TreeView = {
 
   template: /*html*/`
     <draggable
-      handle=".tree-view-group-icon"
       :disabled="draggableDisabled"
-      chosen-class="chosen"
-      ghost-class="ghost"
       class="tree-view"
       :list="groups"
       tag="ul"

@@ -3,7 +3,7 @@ window.CallstackPanel = {
 
   components: {
     PanelToolbar,
-    CallstackItem
+    CallstackList
   },
 
   props: {
@@ -33,20 +33,11 @@ window.CallstackPanel = {
     }
   },
 
-  methods: {
-    isVisible({ type }) {
-      const filter = this.filters.find(item => item.name.includes(type));
-      return !!filter && filter.active;
-    }
-  },
-
   template: /*html*/`
     <div class="app-panel">
       <PanelToolbar :filters.sync="filters" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
-        <ul class="callstack-list">
-          <CallstackItem v-for="item in data" v-show="isVisible(item)" :key="item.id" v-bind="item" />
-        </ul>
+        <CallstackList :data="data" :filters="filters" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

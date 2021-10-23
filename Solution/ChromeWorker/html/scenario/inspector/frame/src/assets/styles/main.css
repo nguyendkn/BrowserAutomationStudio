@@ -365,7 +365,11 @@ input::placeholder {
 
 /* Sortable */
 
-.ghost {
+.sortable-chosen {
+  opacity: 0.5;
+}
+
+.sortable-ghost {
   opacity: 0.5;
 }
 

@@ -35,18 +35,11 @@ window.ResourcesPanel = {
     }
   },
 
-  methods: {
-    isVisible({ type }) {
-      const filter = this.filters.find(item => item.name.includes(type));
-      return !!filter && filter.active;
-    }
-  },
-
   template: /*html*/`
     <div class="app-panel">
       <PanelToolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query" />
       <div v-show="!isEmpty" class="app-panel-content">
-        <TreeView :data="data" />
+        <TreeView :data="data" :filters="filters" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

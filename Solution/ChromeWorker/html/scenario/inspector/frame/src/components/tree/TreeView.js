@@ -36,7 +36,6 @@ window.TreeView = {
       const index = this.groups.findIndex(group => {
         return group.id === id;
       });
-
       this.groups.splice(index, 1);
     },
 
@@ -44,7 +43,6 @@ window.TreeView = {
       const index = this.groups.findIndex(group => {
         return group.id === id;
       });
-
       Object.assign(this.groups[index], data);
     },
 

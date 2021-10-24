@@ -51,11 +51,11 @@ window.App = {
     },
 
     show() {
-      window.parent.postMessage({ type: 'show' }, '*');
+      window.top.postMessage({ type: 'show' }, '*');
     },
 
     hide() {
-      window.parent.postMessage({ type: 'hide' }, '*');
+      window.top.postMessage({ type: 'hide' }, '*');
     }
   },
 

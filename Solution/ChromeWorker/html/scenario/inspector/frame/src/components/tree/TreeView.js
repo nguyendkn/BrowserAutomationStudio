@@ -62,7 +62,7 @@ window.TreeView = {
       :list="groups"
       tag="ul"
     >
-      <TreeViewGroup
+      <tree-view-group
         v-for="group in groups"
         :key="group.id"
         :id="group.id"
@@ -71,13 +71,13 @@ window.TreeView = {
         @remove="removeGroup"
         @update="updateGroup"
       >
-        <TreeViewItem
+        <tree-view-item
           v-for="(item, key) in data"
           :key="key"
           :label="key"
           :value="item"
         />
-      </TreeViewGroup>
+      </tree-view-group>
     </draggable>
   `
 };

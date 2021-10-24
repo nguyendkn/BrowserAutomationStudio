@@ -26,7 +26,7 @@ window.CallstackList = {
 
   template: /*html*/`
     <ul class="callstack-list">
-      <CallstackItem v-for="item in data" v-show="isVisible(item)" :key="item.id" v-bind="item" />
+      <callstack-item v-for="item in data" v-show="isVisible(item)" :key="item.id" v-bind="item" />
     </ul>
   `
 };

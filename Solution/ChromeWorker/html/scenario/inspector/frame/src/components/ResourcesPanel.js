@@ -37,7 +37,7 @@ window.ResourcesPanel = {
 
   template: /*html*/`
     <div class="app-panel">
-      <PanelToolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query">
+      <panel-toolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query">
         <template #buttons>
           <button type="button" @click="$refs.view.addGroup()" style="border-left: 0;">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -46,9 +46,9 @@ window.ResourcesPanel = {
             </svg>
           </button>
         </template>
-      </PanelToolbar>
+      </panel-toolbar>
       <div v-show="!isEmpty" class="app-panel-content">
-        <TreeView ref="view" :data="data" :filters="filters" />
+        <tree-view ref="view" :data="data" :filters="filters" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

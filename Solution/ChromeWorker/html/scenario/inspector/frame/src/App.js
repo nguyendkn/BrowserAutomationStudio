@@ -78,7 +78,7 @@ window.App = {
       </div>
       <div class="app-panels">
         <template v-for="t in tabs">
-          <component :is="t.component" v-show="tab === t.name" v-bind="t.options" />
+          <component :is="t.component" v-show="tab === t.name" v-bind="t.options"></component>
         </template>
       </div>
     </div>

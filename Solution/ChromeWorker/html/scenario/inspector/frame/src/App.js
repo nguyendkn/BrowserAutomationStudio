@@ -43,7 +43,7 @@ window.App = {
   methods: {
     handleMessage({ data }) {
       if (data.payload) {
-        for (const tab of tabs) {
+        for (const tab of this.tabs) {
           const json = data.payload[tab.name];
           if (json) tab.options.data = json;
         }

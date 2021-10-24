@@ -4,28 +4,28 @@ window.App = {
   data() {
     const tabs = [
       {
-        component: ResourcesPanel,
-        name: 'variables',
         options: {
           title: 'tabs.variablesEmpty',
           data: { ...json }
-        }
+        },
+        component: ResourcesPanel,
+        name: 'variables'
       },
       {
-        component: ResourcesPanel,
-        name: 'resources',
         options: {
           title: 'tabs.resourcesEmpty',
           data: { ...json }
-        }
+        },
+        component: ResourcesPanel,
+        name: 'resources'
       },
       {
-        component: CallstackPanel,
-        name: 'callstack',
         options: {
           title: 'tabs.callstackEmpty',
           data: []
-        }
+        },
+        component: CallstackPanel,
+        name: 'callstack'
       }
     ];
 
@@ -42,10 +42,10 @@ window.App = {
 
   methods: {
     handleMessage({ data }) {
-      if (data.payload != null) {
-        for (const [key, val] of Object.entries(data.payload)) {
-          const tab = this.tabs.find(t => t.name === key);
-          if (tab) this.$set(tab.options, 'data', val);
+      if (data.payload) {
+        for (const tab of tabs) {
+          const json = data.payload[tab.name];
+          if (json) tab.options.data = json;
         }
       }
     },

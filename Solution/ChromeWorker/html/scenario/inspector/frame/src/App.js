@@ -29,7 +29,7 @@ window.App = {
       }
     ];
 
-    return { tabs, tab: tabs[0].name };
+    return { tabs, tab: tabs[0] };
   },
 
   destroyed() {
@@ -63,8 +63,8 @@ window.App = {
     <div class="app-content">
       <div class="app-header">
         <ul class="app-tabs">
-          <li v-for="t in tabs" :key="t.name" :class="{ active: tab === t.name }" class="app-tab">
-            <a href="#" @click.prevent="tab = t.name">
+          <li v-for="t in tabs" :key="t.name" :class="{ active: tab === t }" class="app-tab">
+            <a href="#" @click.prevent="tab = t">
               <img :src="'src/assets/icons/' + t.name + '.svg'" alt>
               {{ $t('nav.' + t.name) }}
             </a>
@@ -78,7 +78,7 @@ window.App = {
       </div>
       <div class="app-panels">
         <template v-for="t in tabs">
-          <component :is="t.component" v-show="tab === t.name" v-bind="t.options"></component>
+          <component :is="t.component" v-show="tab === t" v-bind="t.options"></component>
         </template>
       </div>
     </div>

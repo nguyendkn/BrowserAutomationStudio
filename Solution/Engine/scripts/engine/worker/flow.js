@@ -46,7 +46,7 @@ var debug_variables = (function () {
         }, {});
 
         var callstack = CYCLES.Data.map(function (item) { return mapCycle(item, item._Info); })
-            .filter(function (item) { return item.name }).reverse().concat(mapCycle({}, {
+            .filter(function (item) { return item.name; }).reverse().concat(mapCycle({}, {
                 type: 'function',
                 name: 'Main',
                 id: 0
@@ -75,8 +75,10 @@ var debug_variables = (function () {
                     return (acc[key] = truncate_variable(item[key], limit), acc);
                 }, Array.isArray(item) ? [] : {});
             }
+
             return '_DATE_' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');
         }
+
         return typeof item === 'undefined' ? '_UNDEFINED_' : item;
     }
 })();

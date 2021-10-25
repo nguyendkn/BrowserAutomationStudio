@@ -128,25 +128,6 @@
     }, Array.isArray(data) ? [] : {});
   }
 
-  // _.each(this.tree.sortable.nodes, nodes => {
-  //   nodes.sort(nodes.toArray().sort((a, b) => {
-  //     return (a.startsWith('/GLOBAL:') - b.startsWith('/GLOBAL:')) || (() => {
-  //       switch (sorting) {
-  //         case 'dateModified':
-  //           return metadata[b].modifiedAt - metadata[a].modifiedAt;
-  //         case 'dateCreated':
-  //           return metadata[b].createdAt - metadata[a].createdAt;
-  //         case 'frequency':
-  //           const f2 = cache.filter(v => v === b).length + updates;
-  //           const f1 = cache.filter(v => v === a).length + updates;
-  //           return metadata[b].usages / f2 - metadata[a].usages / f1;
-  //       }
-
-  //       return a.localeCompare(b);
-  //     })();
-  //   }));
-  // });
-
   const Model = Backbone.Model.extend({
     defaults: () => ({
       highlight: false,

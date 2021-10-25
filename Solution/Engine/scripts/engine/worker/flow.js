@@ -67,6 +67,21 @@ var debug_variables = (function () {
         };
         return { type: info.type, name: info.name, id: info.id, options: options };
     }
+
+    function truncate_variable(item, limit) {
+        if (item instanceof Object) {
+            if (!(item instanceof Date)) {
+                return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
+                    acc[key] = truncate_variable(item[key], limit);
+                    return acc;
+                }, Array.isArray(item) ? [] : {});
+            }
+    
+            return '_DATE_' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');
+        }
+    
+        return typeof item === 'undefined' ? '_UNDEFINED_' : item;
+    }
 })();
 
 function _read_variables(list)
@@ -99,21 +114,6 @@ function _write_variables(variables)
         var value = variables[key]
         GLOBAL["VAR_" + key] = value;
     }
-}
-
-function truncate_variable(item, limit) {
-    if (item instanceof Object) {
-        if (!(item instanceof Date)) {
-            return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
-                acc[key] = truncate_variable(item[key], limit);
-                return acc;
-            }, Array.isArray(item) ? [] : {});
-        }
-
-        return '_DATE_' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');
-    }
-
-    return typeof item === 'undefined' ? '_UNDEFINED_' : item;
 }
 
 function _web_interface_eval(Script)

@@ -4,28 +4,28 @@ window.App = {
   data() {
     const tabs = [
       {
-        options: {
+        name: 'variables',
+        component: ResourcesPanel,
+        props: {
           title: 'tabs.variablesEmpty',
           data: { ...json }
-        },
-        component: ResourcesPanel,
-        name: 'variables'
+        }
       },
       {
-        options: {
+        name: 'resources',
+        component: ResourcesPanel,
+        props: {
           title: 'tabs.resourcesEmpty',
           data: { ...json }
-        },
-        component: ResourcesPanel,
-        name: 'resources'
+        }
       },
       {
-        options: {
+        name: 'callstack',
+        component: CallstackPanel,
+        props: {
           title: 'tabs.callstackEmpty',
           data: []
-        },
-        component: CallstackPanel,
-        name: 'callstack'
+        }
       }
     ];
 
@@ -45,7 +45,7 @@ window.App = {
       if (data.payload) {
         for (const tab of this.tabs) {
           const json = data.payload[tab.name];
-          if (json) tab.options.data = json;
+          if (json) tab.props.data = json;
         }
       }
     },
@@ -78,7 +78,7 @@ window.App = {
       </div>
       <div class="app-panels">
         <template v-for="t in tabs">
-          <component :is="t.component" v-show="tab === t" v-bind="t.options"></component>
+          <component :is="t.component" v-show="tab === t" v-bind="t.props"></component>
         </template>
       </div>
     </div>

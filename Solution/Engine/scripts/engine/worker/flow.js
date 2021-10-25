@@ -72,8 +72,7 @@ var debug_variables = (function () {
         if (item instanceof Object) {
             if (!(item instanceof Date)) {
                 return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
-                    acc[key] = truncate_variable(item[key], limit);
-                    return acc;
+                    return (acc[key] = truncate_variable(item[key], limit), acc);
                 }, Array.isArray(item) ? [] : {});
             }
             return '_DATE_' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');

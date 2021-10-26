@@ -24,7 +24,7 @@ window.App = {
         component: CallstackPanel,
         props: {
           title: 'tabs.callstackEmpty',
-          data: []
+          data: [...stack]
         }
       }
     ];

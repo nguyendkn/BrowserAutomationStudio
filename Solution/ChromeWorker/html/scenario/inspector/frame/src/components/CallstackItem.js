@@ -24,9 +24,7 @@ window.CallstackItem = {
   },
 
   data() {
-    return {
-      preview: true
-    };
+    return { preview: true };
   },
 
   computed: {
@@ -51,7 +49,7 @@ window.CallstackItem = {
         <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'">
         <span class="callstack-item-name">{{ name }}:</span>
         <span v-if="type === 'function'" class="callstack-item-data">
-          <span class="callstack-item-preview">[{{ size + ' items' }}]</span>
+          <span class="callstack-item-preview">[{{ $tc('items', size) }}]</span>
         </span>
         <span v-else class="callstack-item-data">
           <span>{{ name === 'If' ? options.expression : options.iterator }}</span>

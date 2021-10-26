@@ -29,5 +29,6 @@
     callstack: 'Call stack',
     variables: 'Variables',
     resources: 'Resources'
-  }
+  },
+  items: '{n} items | {n} item | {n} items'
 };

@@ -11,6 +11,7 @@ var MaximumHeight = GetInputConstructorValue("MaximumHeight", loader);
 var PerfectCanvasRequest = GetInputConstructorValue("PerfectCanvasRequest", loader);
 var PerfectCanvasDebug = GetInputConstructorValue("PerfectCanvasDebug", loader);
 
+var EnableCustomServers = GetInputConstructorValue("EnableCustomServers", loader);
 
 if(Tags["original"].length == 0)
 {
@@ -48,6 +49,11 @@ if(MaximumHeight["original"].length == 0)
   Invalid("MaximumHeight are empty");
   return;
 }
+if(EnableCustomServers["original"].length == 0)
+{
+  Invalid("EnableCustomServers is empty");
+  return;
+}
 
 
 try{
@@ -64,6 +70,7 @@ try{
       time_limit: AddedDate["updated"],
       perfectcanvas_request: PerfectCanvasRequest["updated"],
 	    perfectcanvas_logs: PerfectCanvasDebug["updated"],
+      enable_custom_server: EnableCustomServers["updated"],
     })
 
   code = Normalize(code,0)

@@ -50,6 +50,13 @@
 	],
 	"localize": 
 	{
+		"Custom servers": {"ru": "Пользовательские серверы"},
+		"If you are the site owner, you can collect fingerprints from users of your site.": {"ru": "Если вы являетесь владельцем сайта, вы можете собирать отпечатки у пользователей вашего сайта."},
+		"Use custom server": {"ru": "Использовать пользовательские серверы"},
+		"This option is useful only if you have custom server functionality enabled in your account. Otherwise, it will always give error. If you have this setting enabled, fingerprint will be obtained only from custom server. It is compatible with PerfectCanvas. Check wiki for more info.": {"ru": "Эта настройка полезна только в том случае, если пользовательские серверы активированы для вашей учетной записи. В противном случае действие всегда будет выдавать ошибку. Если у вас включен этот параметр, отпечаток будет получен только из вашего сервера. Данный метод совместим с PerfectCanvas. Проверьте вики для получения дополнительной информации."},
+		"Use custom server to obtain fingerprint.": {"ru": "Использовать пользовательский сервер для получения отпечатка."},
+		"Obtain fingerprint from common server.": {"ru": "Получить отпечаток из стандартного сервера."},
+		
 		"Time deformation from": {"ru":"Деформация времени от"},
 		"Specifies how much the timing measurement results will be stretched. Big values means that site will think, that code execution will take longer than it actually would. Values which are close to 0.0 creates a sense that code executes faster. For example, if resulting time deformation is 1.1 and execution of particular code will take 10 msec, site will think, that code was executed in 11 msec instead. Values below zero are irrelevant. This parameter works only with \"Time deformation to\" parameter.": {"ru":"Определяет, насколько сильно будут изменены результаты измерения времени. Большие значения означают, что сайт будет считать, что выполнение кода займет больше времени, чем на самом деле. Значения, близкие к 0.0, создадут ощущение, что код выполняется быстрее. Например, если коэффициент деформации времени равен 1.1, а выполнение конкретного кода занимает 10 мс, сайт будет считать, что код был выполнен за 11 мс. Значения не может быть меньше нуля. Этот параметр работает только вместе с другим параметром \"Деформация времени до\"."},
 		"Time deformation coefficient will be selected randomly between 1.0 and 1.2. Time measurements will show higher values than it actually is.": {"ru":"Коэффициент деформации времени будет выбираться случайным образом между 1.0 и 1.2. Измерения времени выполнения кода покажут более высокие значения, чем есть на самом деле."},

@@ -30,12 +30,12 @@ window.ResourcesPanel = {
   },
 
   computed: {
-    isEmpty() {
-      return !Object.keys(this.data).length;
+    activeFilters() {
+      return this.filters.filter(f => f.active);
     },
 
-    activeFilters() {
-      return this.filters.filter(item => item.active);
+    isEmpty() {
+      return !Object.keys(this.data).length;
     }
   },
 

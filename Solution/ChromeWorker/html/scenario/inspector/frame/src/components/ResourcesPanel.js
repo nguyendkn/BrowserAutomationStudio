@@ -32,6 +32,10 @@ window.ResourcesPanel = {
   computed: {
     isEmpty() {
       return !Object.keys(this.data).length;
+    },
+
+    activeFilters() {
+      return this.filters.filter(item => item.active);
     }
   },
 
@@ -48,7 +52,7 @@ window.ResourcesPanel = {
         </template>
       </panel-toolbar>
       <div v-show="!isEmpty" class="app-panel-content">
-        <tree-view ref="view" :data="data" :filters="filters" />
+        <tree-view ref="view" :data="data" :filters="activeFilters" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

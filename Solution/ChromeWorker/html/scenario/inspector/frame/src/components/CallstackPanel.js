@@ -30,6 +30,10 @@ window.CallstackPanel = {
   computed: {
     isEmpty() {
       return !Object.keys(this.data).length;
+    },
+
+    activeFilters() {
+      return this.filters.filter(item => item.active);
     }
   },
 
@@ -37,7 +41,7 @@ window.CallstackPanel = {
     <div class="app-panel">
       <panel-toolbar :filters.sync="filters" :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
-        <callstack-list :data="data" :filters="filters" />
+        <callstack-list :data="data" :filters="activeFilters" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

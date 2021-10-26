@@ -19,8 +19,7 @@ window.CallstackList = {
 
   methods: {
     isVisible({ type }) {
-      const filter = this.filters.find(item => item.name.includes(type));
-      return !!filter && filter.active;
+      return this.filters.some(item => item.name.includes(type));
     }
   },
 

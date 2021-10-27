@@ -11,16 +11,18 @@
         });
       });
 
-      this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
-
       window.addEventListener('message', ({ data }) => {
-        switch (data.type) {
-          case 'focusAction': return BrowserAutomationStudio_FocusAction(data.json.id);
-          case 'showModal': return showModal(data.json);
+        const { json, type } = data;
+
+        switch (type) {
+          case 'focusAction': return BrowserAutomationStudio_FocusAction(json.id);
+          case 'edit': return showModal(json);
           case 'hide': return this.hide();
           case 'show': return this.show();
         }
       });
+
+      this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
     },
 
     update(data) {

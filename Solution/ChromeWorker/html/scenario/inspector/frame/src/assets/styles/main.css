@@ -208,32 +208,24 @@
   padding-left: 8px;
 }
 
-.callstack-item-title > span {
-  align-items: center;
-  display: flex;
-}
-
 .callstack-item-title {
   align-items: center;
   display: flex;
   padding: 8px;
 }
 
-.callstack-item-params > li + li {
-  margin-top: 9px;
+.callstack-item-params > li {
+  padding: 9px 32px;
 }
 
 .callstack-item-params {
-  background: #f6f6f6;
-  flex-flow: column;
   list-style: none;
-  padding: 9px 32px;
-  display: flex;
 }
 
 .callstack-toggle-params {
   background: transparent;
   color: #606060;
+  display: flex;
 }
 
 .callstack-item-preview:not(:empty) {

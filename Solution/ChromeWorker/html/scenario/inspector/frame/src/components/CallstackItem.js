@@ -46,7 +46,7 @@ window.CallstackItem = {
   template: /*html*/`
     <li class="callstack-item" :class="{ preview }">
       <div class="callstack-item-title">
-        <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'">
+        <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name">{{ name }}:</span>
         <span v-if="type === 'function'" class="callstack-item-data">
           <span class="callstack-item-preview">[{{ $tc('items', size) }}]</span>

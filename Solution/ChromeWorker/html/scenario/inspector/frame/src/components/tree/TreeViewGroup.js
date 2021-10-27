@@ -37,10 +37,6 @@ window.TreeViewGroup = {
   },
 
   methods: {
-    edit() {
-      this.editMode = !this.editMode;
-    },
-
     update() {
       this.$emit('update', this.id, {
         color: this.newColor,
@@ -55,11 +51,15 @@ window.TreeViewGroup = {
 
     toggle() {
       this.expanded = !this.expanded;
+    },
+
+    edit() {
+      this.editMode = !this.editMode;
     }
   },
 
   template: /*html*/`
-    <li :style="style" class="tree-view-group">
+    <li class="tree-view-group" :style="style">
       <div class="tree-view-group-header">
         <img src="src/assets/icons/folder.svg" alt>
         <input v-model="newName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">

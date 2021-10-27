@@ -796,7 +796,7 @@ function installation_path(){
 function _get_system_data(){
 	RANDOM_FILE = "temp_" + rand() + ".bat";
 
-	native("filesystem","writefile",JSON.stringify({path:RANDOM_FILE,value:"SET",base64:false,append:false}));
+	native("filesystem","writefile",JSON.stringify({path:RANDOM_FILE,value:"chcp 65001\r\nSET",base64:false,append:false}));
 
 	native_async("processmanager","start",JSON.stringify({location:RANDOM_FILE,working_folder:"",waitfinish:true,arguments:"",version:2}))!
 

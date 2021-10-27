@@ -40,10 +40,10 @@ window.CallstackPanel = {
   template: /*html*/`
     <div class="app-panel">
       <panel-toolbar :filters.sync="filters" :search="false" />
-      <div v-show="!isEmpty" class="app-panel-content">
+      <div v-if="!isEmpty" class="app-panel-content">
         <callstack-list :data="data" :filters="activeFilters" />
       </div>
-      <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
+      <div v-else class="app-panel-title" v-t="title"></div>
     </div>
   `
 };

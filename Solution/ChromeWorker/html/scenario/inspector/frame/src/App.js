@@ -29,7 +29,7 @@ window.App = {
       }
     ];
 
-    return { tabs, tab: tabs[0] };
+    return { tab: tabs[0], tabs };
   },
 
   destroyed() {
@@ -78,7 +78,7 @@ window.App = {
       </div>
       <div class="app-panels">
         <template v-for="t in tabs">
-          <component :is="t.component" v-show="tab === t" v-bind="t.props"></component>
+          <component :is="t.component" v-show="tab === t" v-bind="t.props" />
         </template>
       </div>
     </div>

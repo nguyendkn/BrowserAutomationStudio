@@ -32,18 +32,20 @@ window.TreeView = {
   },
 
   methods: {
-    removeGroup(id) {
-      const index = this.groups.findIndex(group => {
-        return group.id === id;
-      });
+    updateGroup(id, data) {
+      const index = this.getGroupIndex(id);
+      Object.assign(this.groups[index], data);
+    },
+
+    removeGroup(id, data) {
+      const index = this.getGroupIndex(id);
       this.groups.splice(index, 1);
     },
 
-    updateGroup(id, data) {
-      const index = this.groups.findIndex(group => {
+    getGroupIndex(id) {
+      return this.groups.findIndex(group => {
         return group.id === id;
       });
-      Object.assign(this.groups[index], data);
     },
 
     addGroup() {

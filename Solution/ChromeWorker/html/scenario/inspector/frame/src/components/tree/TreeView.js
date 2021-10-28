@@ -21,7 +21,7 @@ window.TreeView = {
 
   data() {
     return {
-      groups: [{ name: 'Main', id: uniqueId(), color: '#c0bd9b' }]
+      groups: [{ name: 'Main', id: uniqueId(), color: '#c0bd9b', primary: true }]
     };
   },
 
@@ -52,7 +52,8 @@ window.TreeView = {
       this.groups.push({
         id: uniqueId(),
         name: 'Group',
-        color: '#c0bd9b'
+        color: '#c0bd9b',
+        primary: false
       });
     }
   },
@@ -70,6 +71,7 @@ window.TreeView = {
         :id="group.id"
         :name="group.name"
         :color="group.color"
+        :primary="group.primary"
         @remove="removeGroup"
         @update="updateGroup"
       >

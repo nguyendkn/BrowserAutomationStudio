@@ -2,6 +2,11 @@ window.TreeViewGroup = {
   name: 'TreeViewGroup',
 
   props: {
+    primary: {
+      required: true,
+      type: Boolean
+    },
+
     color: {
       required: true,
       type: String
@@ -64,12 +69,14 @@ window.TreeViewGroup = {
         <img src="src/assets/icons/folder.svg" alt>
         <input v-model="newName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">
         <div v-if="!editMode" class="tree-view-group-controls">
-          <button type="button" @click="remove">
-            <icon-delete />
-          </button>
-          <button type="button" @click="edit">
-            <icon-edit />
-          </button>
+          <template v-if="!primary">
+            <button type="button" @click="remove">
+              <icon-delete />
+            </button>
+            <button type="button" @click="edit">
+              <icon-edit />
+            </button>
+          </template>
           <button type="button" @click="toggle">
             <icon-chevron :style="{ transform: expanded ? 'rotate(180deg)' : '' }" />
           </button>

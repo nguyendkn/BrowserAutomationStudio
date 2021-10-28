@@ -65,10 +65,10 @@ window.TreeViewGroup = {
         <input v-model="newName" :disabled="!editMode" style="flex: 1; margin-left: 8px;" type="text">
         <div v-if="!editMode" class="tree-view-group-controls">
           <button type="button" @click="remove">
-            <img src="src/assets/icons/delete.svg" alt>
+            <icon-delete />
           </button>
           <button type="button" @click="edit">
-            <img src="src/assets/icons/edit.svg" alt>
+            <icon-edit />
           </button>
           <button type="button" @click="toggle">
             <icon-chevron :style="{ transform: expanded ? 'rotate(180deg)' : '' }" />

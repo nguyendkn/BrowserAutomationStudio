@@ -222,6 +222,10 @@
   list-style: none;
 }
 
+.callstack-toggle-params:hover {
+  opacity: 0.5;
+}
+
 .callstack-toggle-params {
   background: transparent;
   color: #606060;

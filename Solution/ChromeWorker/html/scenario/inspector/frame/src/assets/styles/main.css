@@ -312,6 +312,7 @@
 
 .tree-view-group-content {
   border: 1px solid var(--color);
+  border-top: 0;
   padding: 9px 0;
 }
 

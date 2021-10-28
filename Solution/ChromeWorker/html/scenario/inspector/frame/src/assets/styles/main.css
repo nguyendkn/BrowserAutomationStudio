@@ -368,3 +368,9 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+img, a {
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  user-select: none;
+}

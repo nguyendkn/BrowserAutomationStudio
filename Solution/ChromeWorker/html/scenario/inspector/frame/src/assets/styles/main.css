@@ -214,6 +214,7 @@
 
 .callstack-item-title {
   align-items: center;
+  cursor: pointer;
   display: flex;
   padding: 8px;
 }
@@ -245,7 +246,6 @@
   flex-flow: column;
   line-height: 18px;
   font-size: 14px;
-  cursor: pointer;
   display: flex;
 }
 

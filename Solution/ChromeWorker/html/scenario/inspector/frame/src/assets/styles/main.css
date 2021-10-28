@@ -110,7 +110,6 @@
 
 .app-toolbar-toggle {
   justify-content: center;
-  align-items: center;
   cursor: pointer;
   padding: 2px 0;
   display: flex;
@@ -120,14 +119,6 @@
 .app-toolbar-panel {
   margin: 0 14px;
   display: flex;
-}
-
-.app-toolbar {
-  border-bottom: 1px solid #d9d9d9;
-  background: #f6f6f6;
-  flex-flow: column;
-  display: flex;
-  padding: 1px;
 }
 
 .app-toolbar-input:disabled {
@@ -192,6 +183,14 @@
   padding: 8px 0;
   z-index: 1;
   right: 0;
+}
+
+.app-toolbar {
+  border-bottom: 1px solid #d9d9d9;
+  background: #f6f6f6;
+  flex-flow: column;
+  display: flex;
+  padding: 1px;
 }
 
 /* Callstack */
@@ -368,7 +367,7 @@ input::placeholder {
 /* Global */
 
 html, body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   height: 100%;
   width: 100%;
 }

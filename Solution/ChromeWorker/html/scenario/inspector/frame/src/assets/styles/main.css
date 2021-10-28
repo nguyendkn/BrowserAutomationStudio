@@ -14,7 +14,6 @@
 }
 
 .app-tabs {
-  align-items: center;
   display: flex;
   flex: 1;
 }
@@ -36,8 +35,6 @@
 }
 
 .app-header > button {
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
   margin: 0 11px;
   display: flex;

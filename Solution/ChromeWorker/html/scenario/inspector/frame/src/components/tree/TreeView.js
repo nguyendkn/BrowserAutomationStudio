@@ -60,6 +60,7 @@ window.TreeView = {
 
   template: /*html*/`
     <draggable
+      handle=".tree-view-group-header"
       :disabled="draggableDisabled"
       class="tree-view"
       :list="groups"

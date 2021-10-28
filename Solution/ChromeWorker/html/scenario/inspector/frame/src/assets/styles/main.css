@@ -232,10 +232,6 @@
   display: flex;
 }
 
-.callstack-item-preview:not(:empty) {
-  padding: 0 5px;
-}
-
 .callstack-item-data {
   padding-left: 8px;
   color: #538fb5;

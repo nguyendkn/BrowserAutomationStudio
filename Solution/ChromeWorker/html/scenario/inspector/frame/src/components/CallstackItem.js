@@ -49,13 +49,13 @@ window.CallstackItem = {
         <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name">{{ name }}:</span>
         <span v-if="type === 'function'" class="callstack-item-data">
-          <span class="callstack-item-preview">[{{ $tc('items', size) }}]</span>
+          <span v-show="preview">[{{ $tc('items', size) }}]</span>
         </span>
         <span v-else class="callstack-item-data">
           <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
         </span>
         <button v-if="hasArguments" class="callstack-toggle-params" type="button" @click="togglePreview">
-          <icon-chevron :style="{ transform: !preview ? '' : 'rotate(180deg)' }" />
+          <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />
         </button>
       </div>
       <ul v-if="hasArguments" v-show="!preview" class="callstack-item-params">

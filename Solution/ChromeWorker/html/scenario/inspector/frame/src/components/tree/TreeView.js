@@ -20,9 +20,7 @@ window.TreeView = {
   },
 
   data() {
-    return {
-      groups: [{ name: 'Main', id: uniqueId(), color: '#c0bd9b', primary: true }]
-    };
+    return { groups: [{ id: uniqueId(), name: 'Main', color: '#c0bd9b', primary: true }] };
   },
 
   computed: {

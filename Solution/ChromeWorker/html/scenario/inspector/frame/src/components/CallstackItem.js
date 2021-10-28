@@ -40,6 +40,13 @@ window.CallstackItem = {
   methods: {
     togglePreview() {
       this.preview = !this.preview;
+    },
+
+    focusAction() {
+      window.top.postMessage({
+        type: 'focusAction',
+        json: { id: this.id }
+      }, '*');
     }
   },
 
@@ -47,7 +54,7 @@ window.CallstackItem = {
     <li class="callstack-item" :class="{ preview }">
       <div class="callstack-item-title">
         <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'" alt>
-        <span class="callstack-item-name">{{ name }}:</span>
+        <span class="callstack-item-name" @click="focusAction">{{ name }}:</span>
         <span v-if="type === 'function'" class="callstack-item-data">
           <span v-show="preview">[{{ $tc('items', size) }}]</span>
         </span>

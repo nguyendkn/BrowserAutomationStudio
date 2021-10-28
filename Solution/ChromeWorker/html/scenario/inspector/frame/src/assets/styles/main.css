@@ -208,18 +208,18 @@
   padding-left: 8px;
 }
 
+.callstack-item-params {
+  list-style: none;
+}
+
+.callstack-item-param {
+  padding: 9px 32px;
+}
+
 .callstack-item-title {
   align-items: center;
   display: flex;
   padding: 8px;
-}
-
-.callstack-item-params > li {
-  padding: 9px 32px;
-}
-
-.callstack-item-params {
-  list-style: none;
 }
 
 .callstack-toggle-params:hover {

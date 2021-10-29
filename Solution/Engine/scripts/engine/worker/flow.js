@@ -40,7 +40,7 @@ var debug_variables = (function () {
             if (key.indexOf('GLOBAL:') === 0) {
                 acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"_UNDEFINED_"');
             } else {
-                acc[key.slice(4)] = truncate_variable(GLOBAL[key], 100);
+                acc[key.slice(4)] = truncate_variable(GLOBAL[key]);
             }
             return acc;
         }, {});
@@ -68,18 +68,18 @@ var debug_variables = (function () {
         return { type: info.type, name: info.name, id: info.id, options: options };
     }
 
-    function truncate_variable(item, limit) {
-        if (item instanceof Object) {
-            if (!(item instanceof Date)) {
-                return Object.keys(item).slice(0, limit).reduce(function (acc, key) {
-                    return (acc[key] = truncate_variable(item[key], limit), acc);
-                }, Array.isArray(item) ? [] : {});
+    function truncate_variable(val) {
+        if (val instanceof Object) {
+            if (!(val instanceof Date)) {
+                return Object.keys(val).slice(0, 100).reduce(function (acc, key) {
+                    return (acc[key] = truncate_variable(val[key]), acc);
+                }, Array.isArray(val) ? [] : {});
             }
 
-            return '_DATE_' + _format_date(item, 'yyyy-MM-dd hh:mm:ss t');
+            return '_DATE_' + _format_date(val, 'yyyy-MM-dd hh:mm:ss t');
         }
 
-        return typeof item === 'undefined' ? '_UNDEFINED_' : item;
+        return typeof val === 'undefined' ? '_UNDEFINED_' : val;
     }
 })();
 

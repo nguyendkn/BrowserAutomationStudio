@@ -116,8 +116,8 @@
   }
 
   function prepareData(data) {
-    return _.reduce(data, (res, val, key) => {
-      if (typeof (val) === 'string') {
+    return _.reduce(data, (acc, val, key) => {
+      if (typeof val === 'string') {
         if (val.startsWith('_UNDEFINED_')) {
           val = undefined;
         } else if (val.startsWith('_DATE_')) {
@@ -126,7 +126,7 @@
       } else if (_.isObject(val)) {
         val = prepareData(val);
       }
-      return (res[key] = val, res);
+      return (acc[key] = val, acc);
     }, Array.isArray(data) ? [] : {});
   }
 

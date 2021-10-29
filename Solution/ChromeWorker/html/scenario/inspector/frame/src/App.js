@@ -29,7 +29,7 @@ window.App = {
       }
     ];
 
-    return { tab: tabs[0], tabs };
+    return { tabs, tab: tabs[0] };
   },
 
   destroyed() {

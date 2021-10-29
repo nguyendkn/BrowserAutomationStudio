@@ -11,6 +11,17 @@
   <body>
     <div id="app"></div>
     <script>
+      const json = {
+        VAR1: 0,
+        VAR2: 'foo',
+        VAR3: null,
+        VAR4: false,
+        VAR5: undefined,
+        VAR6: new Date(),
+        VAR7: ['STR1', 'STR2'],
+        VAR8: { a: 2, b: 3, c: { d: 4 } }
+      };
+
       const stack = [
         {
           type: 'action',
@@ -66,17 +77,6 @@
           }
         }
       ];
-
-      const json = {
-        VAR1: 0,
-        VAR2: 'foo',
-        VAR3: null,
-        VAR4: false,
-        VAR5: undefined,
-        VAR6: new Date(),
-        VAR7: ['STR1', 'STR2'],
-        VAR8: { a: 2, b: 3, c: { d: 4 } }
-      };
     </script>
     <script src="vendor/vue/vue.min.js"></script>
     <script src="vendor/color2k/color2k.min.js"></script>

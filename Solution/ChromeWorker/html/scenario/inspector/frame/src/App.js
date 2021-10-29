@@ -5,7 +5,7 @@ window.App = {
     const tabs = [
       {
         name: 'variables',
-        component: ResourcesPanel,
+        component: GroupsPanel,
         props: {
           title: 'tabs.variablesEmpty',
           data: { ...json }
@@ -13,7 +13,7 @@ window.App = {
       },
       {
         name: 'resources',
-        component: ResourcesPanel,
+        component: GroupsPanel,
         props: {
           title: 'tabs.resourcesEmpty',
           data: { ...json }

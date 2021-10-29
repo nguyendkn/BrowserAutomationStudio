@@ -42,11 +42,11 @@ window.App = {
 
   methods: {
     handleMessage({ data }) {
-      if (data.payload) {
-        for (const tab of this.tabs) {
-          const json = data.payload[tab.name];
-          if (json) tab.props.data = json;
-        }
+      if (!data.payload) return;
+
+      for (const tab of this.tabs) {
+        const json = data.payload[tab.name];
+        if (json) tab.props.data = json;
       }
     },
 

@@ -1,4 +1,4 @@
-globalThis.uniqueId = (() => {
+window.uniqueId = (() => {
   let counter = 0;
 
   return (prefix = '') => {

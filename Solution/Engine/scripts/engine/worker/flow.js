@@ -36,26 +36,24 @@ function success(text)
 
 var debug_variables = (function () {
     return function (list, callback) {
-        var variables = list.reduce(function (acc, key) {
-            if (key.indexOf('GLOBAL:') === 0) {
-                acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"_UNDEFINED_"');
-            } else {
-                acc[key.slice(4)] = truncate_variable(GLOBAL[key], 100);
-            }
-            return acc;
-        }, {});
-
-        var callstack = CYCLES.Data.map(function (item) { return mapCycle(item, item._Info); })
-            .filter(function (item) { return item.name; }).reverse().concat(mapCycle({}, {
-                type: 'function',
-                name: 'Main',
-                id: 0
-            }));
-
         Browser.DebugVariablesResult(JSON.stringify({
-            resources: JSON.parse(ScriptWorker.PickResources()),
-            variables: variables,
-            callstack: callstack,
+            variables: list.reduce(function (acc, key) {
+                if (key.indexOf('GLOBAL:') === 0) {
+                    acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"_UNDEFINED_"');
+                } else {
+                    acc[key.slice(4)] = truncate_variable(GLOBAL[key], 100);
+                }
+                return acc;
+            }, {}),
+
+            callstack: CYCLES.Data.map(function (item) { return mapCycle(item, item._Info); })
+                .filter(function (item) { return item.name; }).reverse().concat(mapCycle({}, {
+                    type: 'function',
+                    name: 'Main',
+                    id: 0
+                })),
+
+            resources: JSON.parse(ScriptWorker.PickResources())
         }), _get_function_body(callback));
     };
 

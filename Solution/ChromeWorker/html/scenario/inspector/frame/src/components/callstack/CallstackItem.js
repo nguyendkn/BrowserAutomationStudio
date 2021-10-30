@@ -35,6 +35,10 @@ window.CallstackItem = {
     window.removeEventListener('resize', this.handleResize);
   },
 
+  activated() {
+    this.$nextTick().then(() => this.handleResize());
+  },
+
   computed: {
     hasArguments() {
       return this.size > 0;
@@ -47,6 +51,7 @@ window.CallstackItem = {
 
   methods: {
     handleResize() {
+      if (!this.$refs.preview) return;
       const { offsetWidth, scrollWidth } = this.$refs.preview;
       this.isOverflowing = offsetWidth < scrollWidth;
     },

@@ -48,6 +48,7 @@
 }
 
 #app {
+  letter-spacing: -0.2px;
   flex-flow: column;
   display: flex;
   height: 100%;
@@ -364,7 +365,6 @@ input::placeholder {
 
 html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  letter-spacing: -0.2px;
   height: 100%;
   width: 100%;
 }

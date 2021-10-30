@@ -44,10 +44,10 @@ window.App = {
     handleMessage({ data }) {
       if (!data.payload) return;
 
-      for (const tab of this.tabs) {
+      this.tabs.forEach(tab => {
         const json = data.payload[tab.name];
         if (json) tab.props.data = json;
-      }
+      });
     },
 
     show() {

@@ -68,7 +68,7 @@ window.CallstackItem = {
       <div class="callstack-item-title">
         <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name" @click="focusAction">{{ name }}:</span>
-        <span class="callstack-item-data" ref="preview">
+        <span ref="preview" class="callstack-item-data">
           <template v-if="type === 'function'">
             <span v-show="preview">[{{ $tc('items', size) }}]</span>
           </template>

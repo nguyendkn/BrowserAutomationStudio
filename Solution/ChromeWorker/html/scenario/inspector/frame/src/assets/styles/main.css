@@ -228,7 +228,9 @@
 }
 
 .callstack-item-data {
+  white-space: nowrap;
   padding-left: 8px;
+  overflow: hidden;
   color: #538fb5;
   flex: 1;
 }

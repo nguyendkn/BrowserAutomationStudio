@@ -81,7 +81,7 @@ window.CallstackItem = {
             <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
           </template>
         </span>
-        <button v-if="hasArguments" class="callstack-toggle-params" type="button" @click="togglePreview">
+        <button v-show="hasArguments || isOverflowing" class="callstack-toggle-params" type="button" @click="togglePreview">
           <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />
         </button>
       </div>

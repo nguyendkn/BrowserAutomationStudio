@@ -24,7 +24,15 @@ window.CallstackItem = {
   },
 
   data() {
-    return { preview: true };
+    return { preview: true, isOverflowing: false };
+  },
+
+  created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
   },
 
   computed: {
@@ -38,6 +46,11 @@ window.CallstackItem = {
   },
 
   methods: {
+    handleResize() {
+      const { offsetWidth, scrollWidth } = this.$refs.preview;
+      this.isOverflowing = offsetWidth < scrollWidth;
+    },
+
     togglePreview() {
       this.preview = !this.preview;
     },
@@ -55,11 +68,13 @@ window.CallstackItem = {
       <div class="callstack-item-title">
         <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name" @click="focusAction">{{ name }}:</span>
-        <span v-if="type === 'function'" class="callstack-item-data">
-          <span v-show="preview">[{{ $tc('items', size) }}]</span>
-        </span>
-        <span v-else class="callstack-item-data">
-          <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
+        <span class="callstack-item-data" ref="preview">
+          <template v-if="type === 'function'">
+            <span v-show="preview">[{{ $tc('items', size) }}]</span>
+          </template>
+          <template v-else>
+            <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
+          </template>
         </span>
         <button v-if="hasArguments" class="callstack-toggle-params" type="button" @click="togglePreview">
           <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />

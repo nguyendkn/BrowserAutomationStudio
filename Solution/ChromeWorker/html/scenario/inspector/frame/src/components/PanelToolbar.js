@@ -25,8 +25,8 @@ window.PanelToolbar = {
 
   data() {
     return {
-      dropdown: false,
-      visible: false
+      panelVisible: false,
+      menuVisible: false
     };
   },
 
@@ -50,26 +50,26 @@ window.PanelToolbar = {
       this.$emit('update:query', query.toLowerCase());
     },
 
-    toggleDropdown() {
-      this.dropdown = !this.dropdown;
+    togglePanel() {
+      this.panelVisible = !this.panelVisible;
     },
 
-    toggleVisible() {
-      this.visible = !this.visible;
+    toggleMenu() {
+      this.menuVisible = !this.menuVisible;
     }
   },
 
   template: /*html*/`
     <div class="app-toolbar">
-      <div v-show="visible" class="app-toolbar-panel">
+      <div v-show="panelVisible" class="app-toolbar-panel">
         <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" type="text" @input="updateQuery">
-        <div :class="{ open: dropdown }" class="dropdown" v-click-outside="() => dropdown = false">
-          <button :aria-expanded="dropdown.toString()" aria-haspopup="true" type="button" @click="toggleDropdown">
+        <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="() => menuVisible = false">
+          <button type="button" @click="toggleMenu">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill="#606060" d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" />
             </svg>
           </button>
-          <ul v-show="dropdown" class="app-toolbar-menu">
+          <ul v-show="menuVisible" class="app-toolbar-menu">
             <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
               <a href="#" @click.prevent="updateSorting(item)">
                 <span v-t="'toolbar.sortings.' + item.name"></span>
@@ -89,8 +89,8 @@ window.PanelToolbar = {
         </div>
         <slot name="buttons"></slot>
       </div>
-      <button class="app-toolbar-toggle" type="button" @click="toggleVisible">
-        <icon-chevron :style="{ transform: visible ? '' : 'rotate(180deg)' }" />
+      <button class="app-toolbar-toggle" type="button" @click="togglePanel">
+        <icon-chevron :style="{ transform: panelVisible ? '' : 'rotate(180deg)' }" />
       </button>
     </div>
   `

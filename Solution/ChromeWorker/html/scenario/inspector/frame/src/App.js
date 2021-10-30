@@ -60,7 +60,7 @@ window.App = {
   },
 
   template: /*html*/`
-    <div class="app-content">
+    <div id="app">
       <div class="app-header">
         <ul class="app-tabs">
           <li v-for="t in tabs" :key="t.name" :class="{ active: tab === t }" class="app-tab">

@@ -68,12 +68,12 @@ var debug_variables = (function () {
 
     function truncate_variable(val, limit) {
         if (val instanceof Object) {
-            if (!(val instanceof Date)) {
-                return Object.keys(val).slice(0, limit).reduce(function (acc, key) {
-                    return (acc[key] = truncate_variable(val[key], limit), acc);
-                }, Array.isArray(val) ? [] : {});
+            if (val instanceof Date) {
+                return '_DATE_' + _format_date(val, 'yyyy-MM-dd hh:mm:ss t');
             }
-            return '_DATE_' + _format_date(val, 'yyyy-MM-dd hh:mm:ss t');
+            return Object.keys(val).slice(0, limit).reduce(function (acc, key) {
+                return (acc[key] = truncate_variable(val[key], limit), acc);
+            }, Array.isArray(val) ? [] : {});
         }
         return typeof val === 'undefined' ? '_UNDEFINED_' : val;
     }

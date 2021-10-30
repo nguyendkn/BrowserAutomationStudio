@@ -342,14 +342,6 @@ input::placeholder {
   color: inherit;
 }
 
-/* Utilities */
-
-.text-truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 /* Sortable */
 
 .sortable-chosen {
@@ -369,6 +361,7 @@ html, body {
 }
 
 img, a {
+  -webkit-user-select: none;
   -webkit-user-drag: none;
   user-select: none;
 }

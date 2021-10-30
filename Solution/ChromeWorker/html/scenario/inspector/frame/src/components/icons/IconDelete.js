@@ -1,4 +1,4 @@
-Vue.component('icon-delete', {
+Vue.component('IconDelete', {
   template: /*html*/`
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M5.5 6h1v6h-1V6ZM8.5 6h1v6h-1V6Z" fill="#606060" />

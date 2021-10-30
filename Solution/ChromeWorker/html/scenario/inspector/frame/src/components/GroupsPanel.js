@@ -51,10 +51,10 @@ window.GroupsPanel = {
           </button>
         </template>
       </panel-toolbar>
-      <div v-if="!isEmpty" class="app-panel-content">
+      <div v-if="isEmpty" class="app-panel-title" v-t="title"></div>
+      <div v-else class="app-panel-content">
         <tree-view ref="view" :data="data" :filters="activeFilters" />
       </div>
-      <div v-else class="app-panel-title" v-t="title"></div>
     </div>
   `
 };

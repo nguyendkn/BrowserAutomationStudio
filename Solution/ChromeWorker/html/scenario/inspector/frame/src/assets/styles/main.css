@@ -35,7 +35,6 @@
 }
 
 .app-header > button {
-  cursor: pointer;
   margin: 0 11px;
   display: flex;
   opacity: 0.5;
@@ -107,7 +106,6 @@
 
 .app-toolbar-toggle {
   justify-content: center;
-  cursor: pointer;
   padding: 2px 0;
   display: flex;
   opacity: 0.5;

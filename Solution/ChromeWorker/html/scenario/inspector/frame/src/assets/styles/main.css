@@ -243,10 +243,8 @@
 .callstack-item {
   border: 1px solid transparent;
   user-select: none;
-  flex-flow: column;
   line-height: 18px;
   font-size: 14px;
-  display: flex;
 }
 
 .callstack-item:not(.preview) > .callstack-item-title {
@@ -269,6 +267,7 @@
 
 .callstack-list {
   flex-flow: column;
+  list-style: none;
   display: flex;
 }
 
@@ -370,7 +369,6 @@ html, body {
 }
 
 img, a {
-  -webkit-user-select: none;
   -webkit-user-drag: none;
   user-select: none;
 }

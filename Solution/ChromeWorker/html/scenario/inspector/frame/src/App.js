@@ -77,9 +77,9 @@ window.App = {
         </button>
       </div>
       <div class="app-panels">
-        <template v-for="t in tabs">
-          <component :is="t.component" v-show="tab === t" v-bind="t.props" />
-        </template>
+        <keep-alive>
+          <component :is="tab.component" :key="tab.name" v-bind="tab.props" />
+        </keep-alive>
       </div>
     </div>
   `

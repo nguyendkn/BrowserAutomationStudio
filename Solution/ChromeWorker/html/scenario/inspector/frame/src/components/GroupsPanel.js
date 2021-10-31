@@ -20,7 +20,7 @@ window.GroupsPanel = {
 
   data() {
     const filters = ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
-      sortings = ['alphabetically', 'dateModified', 'dateCreated', 'frequency'];
+      sortings = ['frequency', 'dateModified', 'dateCreated', 'alphabetically'];
 
     return {
       sortings: sortings.map((name, idx) => ({ name, active: idx === 0 })),

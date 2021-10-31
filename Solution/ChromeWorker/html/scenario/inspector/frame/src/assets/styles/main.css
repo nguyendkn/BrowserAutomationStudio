@@ -24,7 +24,7 @@
 
 .app-tab {
   justify-content: center;
-  user-select: none;
+  align-items: center;
   display: flex;
   opacity: 0.5;
   flex: 1;
@@ -106,6 +106,7 @@
 
 .app-toolbar-toggle {
   justify-content: center;
+  align-items: center;
   padding: 2px 0;
   display: flex;
   opacity: 0.5;

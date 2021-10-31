@@ -1,3 +1,5 @@
+'use strict';
+
 Vue.use(window['v-click-outside']);
 
 new Vue({

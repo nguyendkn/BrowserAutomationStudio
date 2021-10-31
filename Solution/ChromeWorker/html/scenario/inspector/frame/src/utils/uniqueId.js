@@ -1,3 +1,5 @@
+'use strict';
+
 window.uniqueId = (() => {
   let counter = 0;
 

@@ -1,3 +1,5 @@
+'use strict';
+
 window.TreeViewGroup = {
   name: 'TreeViewGroup',
 

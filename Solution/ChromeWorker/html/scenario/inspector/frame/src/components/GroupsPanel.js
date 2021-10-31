@@ -1,3 +1,5 @@
+'use strict';
+
 window.GroupsPanel = {
   name: 'GroupsPanel',
 

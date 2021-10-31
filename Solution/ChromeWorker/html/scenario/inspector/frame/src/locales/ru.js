@@ -1,3 +1,5 @@
+'use strict';
+
 (window.locales || (window.locales = {})).ru = {
   toolbar: {
     sortings: {

@@ -1,3 +1,5 @@
+'use strict';
+
 window.CallstackPanel = {
   name: 'CallstackPanel',
 

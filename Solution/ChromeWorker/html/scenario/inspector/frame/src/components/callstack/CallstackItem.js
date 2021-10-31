@@ -1,3 +1,5 @@
+'use strict';
+
 window.CallstackItem = {
   name: 'CallstackItem',
 

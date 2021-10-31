@@ -46,7 +46,7 @@ window.GroupsPanel = {
   template: /*html*/`
     <div class="app-panel">
       <panel-toolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query">
-        <template #buttons>
+        <template #controls>
           <button type="button" style="border-left: 0;" @click="$refs.view.addGroup()">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6.5 3.5V2h-6v12h15V3.5h-9Zm8 9.5h-13V5h13v8Z" fill="#606060" />

@@ -87,7 +87,7 @@ window.PanelToolbar = {
             </li>
           </ul>
         </div>
-        <slot name="buttons"></slot>
+        <slot name="controls"></slot>
       </div>
       <button class="app-toolbar-toggle" type="button" @click="togglePanel">
         <icon-chevron :style="{ transform: panelVisible ? '' : 'rotate(180deg)' }" />

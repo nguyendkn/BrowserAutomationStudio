@@ -34,12 +34,12 @@ window.App = {
     return { tabs, tab: tabs[0] };
   },
 
-  created() {
-    window.addEventListener('message', this.handleMessage);
-  },
-
   destroyed() {
     window.removeEventListener('message', this.handleMessage);
+  },
+
+  created() {
+    window.addEventListener('message', this.handleMessage);
   },
 
   methods: {

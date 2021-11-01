@@ -89,7 +89,7 @@ window.CallstackItem = {
       </div>
       <ul v-if="hasArguments" v-show="!preview" class="callstack-item-params">
         <li v-for="(value, name) in options.arguments" :key="name" class="callstack-item-param">
-          <span>{{ name }}:</span>
+          <span>{{ name }}</span>:
           <span>{{ value }}</span>
         </li>
       </ul>

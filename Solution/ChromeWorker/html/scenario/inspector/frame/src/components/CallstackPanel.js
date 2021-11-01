@@ -31,7 +31,7 @@ window.CallstackPanel = {
 
   computed: {
     activeFilters() {
-      return this.filters.filter(f => f.active);
+      return this.filters.filter(f => f.active).map(f => f.name);
     },
 
     isEmpty() {

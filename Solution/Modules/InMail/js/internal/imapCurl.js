@@ -8,26 +8,36 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 	};
 	
+	this.parseCaps = function(str){
+		var start = str.lastIndexOf('CAPABILITY');
+		if(start > -1){
+			var end = start;
+			for(; end < str.length; end++){
+				var code = str.charCodeAt(end);
+				if(code === 10 || code === 13 || code === 93){
+					break;
+				};
+			};
+			if(end != start){
+				return str.slice(start, end).split(' ').slice(1).filter(function(cap){return !_is_nilb(cap)});
+			};
+		};
+		return [];
+	};
+	
 	this.capability = function(){
-		_call_function(api.request, {query: 'CAPABILITY'})!
-		var resp = _result_function().result;
-		
-		api.caps = resp.slice(resp.indexOf('CAPABILITY') + 11).split(' ');
+		_if(_is_nilb(api.caps), function(){
+			_call_function(api.request, {query: 'CAPABILITY'})!
+			var resp = _result_function();
+			
+			api.caps = api.parseCaps(resp.result);
+		})!;
 		
 		_function_return(api.caps);
 	};
 	
-	this.serverSupports = function(){
-		var cap = _function_argument("cap");
-		
-		_if_else(api.caps, function(){
-			_function_return(api.caps.indexOf(cap) > -1);
-		}, function(){
-			_call_function(api.capability, {})!
-			var caps = _result_function();
-			
-			_function_return(caps.indexOf(cap) > -1);
-		})!
+	this.serverSupports = function(cap){
+		return (api.caps && api.caps.indexOf(cap) > -1);
 	};
 	
 	this.makeRequest = function(){
@@ -37,7 +47,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		var folder = _avoid_nilb(_function_argument("folder"), api.folder);
 		
 		if(isUTF8){
-			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + encodeURIComponent(folder) + '"\r\n' + query;
+			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + api.escape(folder) + '"\r\n' + query;
 		}else{
 			path = _avoid_nil(path, folder);
 		};
@@ -45,10 +55,20 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		_call_function(api.request, {path: path, query: query, multiple: isUTF8, saveOnlyLast: isUTF8})!
 		var resp = _result_function();
 		
+		try{
+			
+			if(_is_nilb(api.caps)){
+				var caps = api.parseCaps(resp.trace);
+				if(caps.length){
+					api.caps = caps;
+				};
+			};
+		}catch(_){}
+		
 		_function_return(resp.result);
 	};
 
-	this.validateUIDList = function(uids, noThrow){
+	this.validateUIDList = function(uids, noError){
 		for(var i = 0, len = uids.length, intval; i < len; ++i){
 			if(typeof uids[i] === 'string'){
 				if(uids[i] === '*' || uids[i] === '*:*'){
@@ -64,18 +84,18 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 			intval = parseInt('' + uids[i], 10);
 			
 			if(isNaN(intval)){
-				var err = new Error('UID/seqno must be an integer, "*", or a range: ' + uids[i]);
-				if(noThrow){
+				var err = 'WRONG_FORMAT_UID';
+				if(noError){
 					return err;
 				}else{
-					throw err;
+					api.errorHandler(err, uids[i]);
 				};
 			}else if (intval <= 0){
-				var err = new Error('UID/seqno must be greater than zero');
-				if(noThrow){
+				var err = 'UID_IS_SMALLER';
+				if(noError){
 					return err;
 				}else{
-					throw err;
+					api.errorHandler(err);
 				};
 			}else if(typeof uids[i] !== 'number'){
 				uids[i] = intval;
@@ -135,7 +155,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		};*/
 	};
 
-	/*this.buildSearchQuery = function(options, info, isOrChild){
+	this.buildSearchQuery = function(options, info, isOrChild){
 		var searchargs = '';
 		
 		for(var i = 0, len = options.length; i < len; ++i){
@@ -153,12 +173,12 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 					criteria = criteria[0].toUpperCase();
 				};
 			}else{
-				throw new Error('Unexpected search option data type. ' + 'Expected string or array. Got: ' + typeof criteria);
+				api.errorHandler('UNEXPECTED_OPTION_TYPE', typeof criteria);
 			};
 			
 			if(criteria === 'OR'){
 				if(args.length !== 2){
-					throw new Error('OR must have exactly two arguments');
+					api.errorHandler('OR_NOT_TWO_ARGS');
 				};
 				
 				if(isOrChild){
@@ -217,10 +237,10 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						}else if(!(args[0]instanceof Date)){
 							if((args[0] = new Date(args[0])).toString() === 'Invalid Date'){
-								throw new Error('Search option argument must be a Date object' + ' or a parseable date string');
+								api.errorHandler('ARG_NOT_DATE', criteria);
 							};
 						};
-						searchargs += modifier + criteria + ' ' + args[0].getDate() + '-' + MONTHS[args[0].getMonth()] + '-' + args[0].getFullYear();
+						searchargs += modifier + criteria + ' ' + args[0].getDate() + '-' + api.months[args[0].getMonth()] + '-' + args[0].getFullYear();
 						break;
 					case 'KEYWORD':
 					case 'UNKEYWORD':
@@ -236,7 +256,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 						};
 						var num = parseInt(args[0], 10);
 						if(isNaN(num)){
-							throw new Error('Search option argument must be a number');
+							api.errorHandler('ARG_NOT_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
@@ -252,29 +272,27 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 						};
 						api.validateUIDList(args);
 						if(args.length === 0){
-							throw new Error('Empty uid list');
+							api.errorHandler('EMPTY_UID_LIST');
 						};
 						searchargs += modifier + criteria + ' ' + args.join(',');
 						break;
 						// Extensions ==========================================================
 					case 'X-GM-MSGID': // Gmail unique message ID
 					case 'X-GM-THRID': // Gmail thread ID
-						_call_function(api.serverSupports, {cap: 'X-GM-EXT-1'})!
-						if(!_result_function()){
+						if(!api.serverSupports('X-GM-EXT-1')){
 							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
 							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						}else{
 							if(!(/^\d+$/.test(args[0]))){
-								throw new Error('Invalid value');
+								api.errorHandler('INVALID_VALUE', criteria);
 							};	
 						};
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
 					case 'X-GM-RAW': // Gmail search syntax
-						_call_function(api.serverSupports, {cap: 'X-GM-EXT-1'})!
-						if(!_result_function()){
+						if(!api.serverSupports('X-GM-EXT-1')){
 							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
@@ -283,8 +301,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 						searchargs += modifier + criteria + ' ' + api.buildString(args[0], info);
 						break;
 					case 'X-GM-LABELS': // Gmail labels
-						_call_function(api.serverSupports, {cap: 'X-GM-EXT-1'})!
-						if(!_result_function()){
+						if(!api.serverSupports('X-GM-EXT-1')){
 							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
@@ -293,8 +310,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
 					case 'MODSEQ':
-						_call_function(api.serverSupports, {cap: 'CONDSTORE'})!
-						if(!_result_function()){
+						if(!api.serverSupports('CONDSTORE')){
 							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
@@ -308,11 +324,11 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 						var seqnos = (args ? [criteria].concat(args) : [criteria]);
 						if(!api.validateUIDList(seqnos, true)){
 							if(seqnos.length === 0){
-								throw new Error('Empty sequence number list');
+								api.errorHandler('EMPTY_SEQUENCE_LIST');
 							};
 							searchargs += modifier + seqnos.join(',');
 						}else{
-							throw new Error('Unexpected search option: ' + criteria);
+							api.errorHandler('UNEXPECTED_OPTION', criteria);
 						};	
 				};
 			};
@@ -323,7 +339,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		};
 		
 		return searchargs;
-	};*/
+	};
 	
 	this.parseUIDs = function(resp){
 		return _avoid_nil(resp.match(/\d+/g), []);
@@ -347,6 +363,8 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		var info = {
 			hasUTF8: false
 		};
+		
+		_call_function(api.capability, {})!
 		
 		var query = api.buildSearchQuery(criteria, info);
 		
@@ -375,7 +393,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 			sorts = [sorts];
 		};
 		if(!sorts.length){
-			throw new Error('Expected array with at least one sort criteria');
+			api.errorHandler('EMPTY_SORT_CRITERIA');
 		};
 		_validate_argument_type(criteria, ['array','string'], 'Search criteria', act);
 		if(typeof criteria === 'string'){
@@ -386,16 +404,15 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 			api.errorHandler('MAILBOX_NOT_SELECTED');
 		};
 		
-		_call_function(api.serverSupports, {cap: 'SORT'})!
-		var supports = _result_function();
+		_call_function(api.capability, {})!
 		
-		if(!supports){
-			throw new Error('Sort is not supported on the server');
+		if(!api.serverSupports('SORT')){
+			api.errorHandler('SORT_NOT_SUPPORT');
 		};
 		
 		sorts = sorts.map(function(c){
 			if(typeof c !== 'string'){
-				throw new Error('Unexpected sort criteria data type. ' + 'Expected string. Got: ' + typeof criteria);
+				api.errorHandler('UNEXPECTED_CRITERION_TYPE', typeof c);
 			};
 			
 			var modifier = '';
@@ -414,7 +431,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 				case 'TO':
 					break;
 				default:
-					throw new Error('Unexpected sort criteria: ' + c);
+					api.errorHandler('UNEXPECTED_CRITERION', c);
 			}
 			
 			return modifier + c;
@@ -446,7 +463,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		var act = '_InMail.imap.store';
 		_validate_argument_type(config, 'object', 'Config', act);
 		if(_is_nilb(config.flags) && _is_nilb(config.keywords)){
-			throw new Error('No Flags no Keywords are not specified');
+			api.errorHandler('NOT_FLAGS_KEYWORDS');
 		};
 		_validate_argument_type(folder, 'string', 'Folder name', act);
 		if(!folder.length){
@@ -463,11 +480,15 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		api.validateUIDList(uids);
 		
 		if(uids.length === 0){
-			throw new Error('Empty uid list');
+			api.errorHandler('EMPTY_UID_LIST');
 		};
 		
 		if((!Array.isArray(items) && typeof items !== 'string') || (Array.isArray(items) && items.length === 0)){
-			throw new Error((isFlags ? 'Flags' : 'Keywords') + ' argument must be a string or a non-empty Array');
+			if(isFlags){
+				api.errorHandler('FLAGS_INVALID_ARGS');
+			}else{
+				api.errorHandler('KEYWORDS_INVALID_ARGS');
+			};
 		};
 		
 		if(!Array.isArray(items)){
@@ -483,7 +504,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 				// keyword contains any char except control characters (%x00-1F and %x7F)
 				// and: '(', ')', '{', ' ', '%', '*', '\', '"', ']'
 				if(/[\(\)\{\\\"\]\%\*\x00-\x20\x7F]/.test(items[i])){
-					throw new Error('The keyword "' + items[i] + '" contains invalid characters');
+					api.errorHandler('KEYWORD_INVALID_CHARS', items[i]);
 				};
 			};
 		};
@@ -575,9 +596,22 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		})!
 	};
 	
-	this.fetch = function(uids, options){
+	this.fetch = function(){
+		var uids = _function_argument("uids");
+		var options = _function_argument("options");
+		var folder = _avoid_nilb(_function_argument("folder"), api.folder);
+		
+		var act = '_InMail.imap.fetch';
+		if(options){
+			_validate_argument_type(options, 'object', 'Options', act);
+		};
+		_validate_argument_type(folder, 'string', 'Folder name', act);
+		if(!folder.length){
+			api.errorHandler('MAILBOX_NOT_SELECTED');
+		};
+		
 		if(_is_nilb(uids) || (Array.isArray(uids) && uids.length === 0)){
-			throw new Error('Nothing to fetch');
+			api.errorHandler('EMPTY_UID_LIST');
 		};
 		
 		if(!Array.isArray(uids)){
@@ -587,35 +621,27 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		api.validateUIDList(uids);
 		
 		if(uids.length === 0){
-			throw new Error('Empty uid list');
+			api.errorHandler('EMPTY_UID_LIST');
 		};
+		
+		_call_function(api.capability, {})!
 		
 		uids = uids.join(',');
 		
 		var cmd = 'UID FETCH ' + uids + ' (';
 		var fetching = [];
-		var i = undefined;
-		var len = undefined;
-		var key = undefined;
 			
-		if(this.serverSupports('X-GM-EXT-1')){
+		if(api.serverSupports('X-GM-EXT-1')){
 			fetching.push('X-GM-THRID');
 			fetching.push('X-GM-MSGID');
 			fetching.push('X-GM-LABELS');
-		};
-		
-		if(this.serverSupports('CONDSTORE') && !this._box.nomodseq){
-			fetching.push('MODSEQ');
 		};
 		
 		fetching.push('UID');
 		fetching.push('FLAGS');
 		fetching.push('INTERNALDATE');
 		
-		var modifiers = undefined;
-		
 		if(options){
-			modifiers = options.modifiers;
 			if(options.envelope){
 				fetching.push('ENVELOPE');
 			};
@@ -639,8 +665,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 				if(!Array.isArray(bodies)){
 					bodies = [bodies];
 				};
-				for(i = 0, len = bodies.length; i < len; ++i){
-					fetching.push(parseExpr(''+bodies[i]));
+				for(var i = 0, len = bodies.length; i < len; ++i){
 					cmd += ' BODY' + prefix + '[' + bodies[i] + ']';
 				};
 			}
@@ -650,19 +675,33 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		
 		cmd += ')';
 		
-		var modkeys = (typeof modifiers === 'object' ? Object.keys(modifiers) : []);
-		var modstr = ' (';
-			
-		for(i = 0, len = modkeys.length, key; i < len; ++i){
-			key = modkeys[i].toUpperCase();
-			if(key === 'CHANGEDSINCE' && this.serverSupports('CONDSTORE') && !this._box.nomodseq){
-				modstr += key + ' ' + modifiers[modkeys[i]] + ' ';
+		_call_function(api.request, {path: folder, query: cmd})!
+		var resp = _result_function();
+		
+		var reg = /{(\d+)}\r?\n?$/;
+		
+		if(reg.test(resp.result)){
+			var start = resp.trace.lastIndexOf(resp.result);
+			if(start > -1){
+				start += resp.result.length;
+				var temp = _avoid_nil(resp.result.match(reg), []);
+				if(temp.length > 0){
+					var result = resp.trace.substr(start, Number(temp[1])).trim();
+					var i = result.indexOf("\r\n");
+					var firstLine = result.slice(0, i + 2);
+					if(firstLine.indexOf("_Part_") > -1){
+						result = result.slice(i + 2);
+					};
+					i = result.lastIndexOf("\r\n");
+					var lastLine = result.slice(i);
+					if(lastLine.indexOf("_Part_") > -1){
+						result = result.slice(0, i);
+					};
+					_function_return(api.decodeQS(result));
+				};
 			};
 		};
 		
-		if(modstr.length > 2){
-			cmd += modstr.substring(0, modstr.length - 1);
-			cmd += ')';
-		};
+		_function_return(resp.result);
 	};
 });

@@ -53,8 +53,8 @@
     "engine": [
         "engine.js",
         "internal/base.js",
-        "internal/imap/curl.js",
-        "internal/imap/configs.js"
+        "internal/configs.js",
+        "internal/imapCurl.js"
 	],
     "icon": "mail.png",
     "info": {

@@ -378,22 +378,21 @@ extern "C" {
         BlobList Blobs;
     };
 
-    int WriteFunction(char* data, size_t size, size_t nmemb, WriteDataClass* writedata)
+    size_t WriteFunction(char* buf, size_t size, size_t nmemb, WriteDataClass* writedata)
     {
-        int result = 0;
+		size_t realsize = size * nmemb;
+		
         if(writedata->WriteToString)
         {
-            writedata->Data.append(data,size * nmemb);
+            writedata->Data.append(buf, realsize);
         }
 
         if(writedata->WriteToFile)
         {
-            writedata->File.write(data,size * nmemb);
+            writedata->File.write(buf, realsize);
         }
 
-        result = size * nmemb;
-
-        return result;
+        return realsize;
     }
 
     int ReadFunction(char* data, size_t size, size_t nmemb, ReadDataClass *readdata)
@@ -531,8 +530,11 @@ extern "C" {
 
     int TraceFunction(CURL *handle, curl_infotype type, char *data, size_t size, QString *trace)
     {
-        trace->append(QString::fromUtf8(QByteArray(data,size)));
-        return 1;
+		if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN)
+		{
+			trace->append(QString::fromUtf8(QByteArray(data,size)));
+		}
+        return 0;
     }
 
     QByteArray GenerateError(const QString& Error)
@@ -557,9 +559,15 @@ extern "C" {
         CURLcode code;
         CURL *curl;
         WriteDataClass WriteData;
+		WriteDataClass HeaderData;
         ReadDataClass ReadData;
         bool Trace = false;
         QString TraceString;
+        bool Multiple = false;
+		QStringList QueryList;
+        bool SaveOnlyLast = false;
+        char ErrBuf[CURL_ERROR_SIZE];
+		
 
         QList<curl_slist *> CurlLists;
         {
@@ -607,6 +615,28 @@ extern "C" {
                 }
 
             }
+			
+			if(InputObject.object().contains("header_to_string"))
+            {
+				HeaderData.WriteToString = InputObject.object()["header_to_string"].toBool();
+            }
+
+            if(InputObject.object().contains("base64_header"))
+            {
+                HeaderData.Base64Write = InputObject.object()["base64_header"].toBool();
+            }
+
+            if(InputObject.object().contains("header_to_file"))
+            {
+				HeaderData.WriteToFile = true;
+                QString FilePath = InputObject.object()["header_to_file"].toString();
+                HeaderData.File.setFileName(FilePath);
+                if(!HeaderData.File.open(QIODevice::WriteOnly))
+                {
+					HeaderData.WriteToFile = false;
+                }
+
+            }
 
             if(InputObject.object().contains("base64_read"))
             {
@@ -616,6 +646,16 @@ extern "C" {
             if(InputObject.object().contains("trace"))
             {
                 Trace = InputObject.object()["trace"].toBool();
+            }
+
+            if(InputObject.object().contains("multiple"))
+            {
+                Multiple = InputObject.object()["multiple"].toBool();
+            }
+			
+			if(InputObject.object().contains("save_only_last"))
+            {
+                SaveOnlyLast = InputObject.object()["save_only_last"].toBool();
             }
 
             if(InputObject.object().contains("read_from_string"))
@@ -720,8 +760,14 @@ extern "C" {
                         case QVariant::String:
                         {
                             //qDebug()<<"String"<<v.toString();
-                            curl_easy_setopt(curl, (CURLoption)keyint, v.toString().toUtf8().data());
-                            break;
+							if(Multiple && key == "CURLOPT_CUSTOMREQUEST")
+							{
+								QueryList = v.toString().split("\r\n");
+							}else
+							{
+								curl_easy_setopt(curl, (CURLoption)keyint, v.toString().toUtf8().data());
+							}
+							break;
                         }
                         case QVariant::Int:
                         {
@@ -762,6 +808,9 @@ extern "C" {
         //Set write function
         curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,&WriteFunction);
         curl_easy_setopt(curl,CURLOPT_WRITEDATA,&WriteData);
+		
+		//Set header function
+		curl_easy_setopt(curl,CURLOPT_HEADERDATA,&HeaderData);
 
         //Set read function
         if(ReadData.ReadFromFile || ReadData.ReadFromString || ReadData.ReadFromBlob)
@@ -783,14 +832,47 @@ extern "C" {
         curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,&ProgressFunction);
         curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,NeedToStop);
         curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0L);
-
-        //Set read function
-
-        code = curl_easy_perform(curl);
+		
+		 //Set error buffer
+        curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,ErrBuf);
+		
+		if(Multiple && !QueryList.isEmpty())
+		{
+			while (!QueryList.isEmpty())
+			{
+				QString Query = QueryList.takeFirst();
+				
+				curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, Query.toUtf8().data());
+				
+				if(SaveOnlyLast && QueryList.isEmpty())
+				{
+					WriteData.Data.clear();
+					HeaderData.Data.clear();
+				}
+				
+				ErrBuf[0] = 0;
+				
+				code = curl_easy_perform(curl);
+				
+				if(code != CURLE_OK){
+					break;
+				}
+			}
+		}else
+		{
+			ErrBuf[0] = 0;
+			
+			code = curl_easy_perform(curl);
+		}
 
         if(WriteData.WriteToFile)
         {
             WriteData.File.close();
+        }
+		
+		if(HeaderData.WriteToFile)
+        {
+            HeaderData.File.close();
         }
 
         //qDebug()<<"--Cleanup";
@@ -802,9 +884,10 @@ extern "C" {
         }
 
         QVariantMap res;
+		
+		res.insert("version",curl_version_info(CURLVERSION_NOW)->version);
 
         res.insert("code",StrinfigyReturnCode((int)code));
-
 
         res.insert("success",true);
 
@@ -814,7 +897,14 @@ extern "C" {
             res.insert("error","");
         }else
         {
-            res.insert("error",curl_easy_strerror(code));
+			size_t len = strlen(ErrBuf);
+			if(len)
+			{
+				res.insert("error",QString::fromUtf8(QByteArray(ErrBuf,len)));
+			}else
+			{
+				res.insert("error",curl_easy_strerror(code));
+			}
         }
 
 
@@ -825,6 +915,14 @@ extern "C" {
         {
             res.insert("result",QString::fromUtf8(WriteData.Data));
         }
+		
+		if(HeaderData.Base64Write)
+		{
+			res.insert("header",QString::fromUtf8(HeaderData.Data.toBase64()));
+		}else
+		{
+			res.insert("header",QString::fromUtf8(HeaderData.Data));
+		}
 
         if(Trace)
         {

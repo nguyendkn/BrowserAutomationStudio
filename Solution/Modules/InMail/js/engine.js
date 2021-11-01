@@ -1,7 +1,11 @@
 _L["Proxy"] = {"ru":"Прокси"};
+_L["Config"] = {"ru":"Конфиг"};
 _L["Proxy type"] = {"ru":"Тип прокси"};
+_L["Folder name"] = {"ru":"Имя папки"};
 _L["Proxy login"] = {"ru":"Логин прокси"};
 _L["Proxy password"] = {"ru":"Пароль прокси"};
+_L["Search criteria"] = {"ru":"Критерии поиска"};
+_L["Sorting criteria"] = {"ru":"Критерии сортировки"};
 
 _InMail = {
 	api: null,
@@ -20,10 +24,10 @@ _InMail = {
 		};
 	},
 	
-	error: function(enText, ruText){
+	error: function(enText, ruText, act){
 		ruText = _avoid_nilb(ruText, enText);
 		
-		fail('_InMail: ' + (_K==="en" ? enText : ruText));
+		fail('_InMail' + (_is_nilb(act) ? '' : '.' + act) + ': ' + (_K==="en" ? enText : ruText));
 	},
 	
 	paramClean: function(str){
@@ -39,20 +43,19 @@ _InMail = {
 		try{
 			this.api = new _InMail[protocol](autoConfig, host, port, encrypt, username, password, folder);
 		}catch(e){
-			log(e);
 			die('_InMail: ' + _K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing') : ('Класс протокола ' + protocol + ' поврежден или отсутствует'), true);
 		};
 	},
 	
-	getApi: function(error){
+	getApi: function(noError){
 		if(!_is_nilb(this.api) && typeof this.api==="object"){
 			return this.api;
 		}else{
-			error = _avoid_nil(error, true);
-			if(error){
-				this.error("Mail module configuration failed or incorrect", "Настройка почтового модуля не выполнена или выполнена неправильно");
-			}else{
+			noError = _avoid_nil(noError, false);
+			if(noError){
 				return false;
+			}else{
+				this.error("Mail module configuration failed or incorrect", "Настройка почтового модуля не выполнена или выполнена неправильно");
 			};
 		};
 	},

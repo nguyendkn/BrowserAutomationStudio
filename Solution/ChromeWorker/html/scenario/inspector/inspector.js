@@ -32,7 +32,7 @@
         payload: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),
-          callstack: prepareData(json.callstack)
+          callstack: json.callstack
         }
       }, '*');
     },

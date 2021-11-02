@@ -32,7 +32,7 @@
         payload: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),
-          callstack: json.callstack
+          callstack: prepareData(json.callstack)
         }
       }, '*');
     },
@@ -45,8 +45,8 @@
           listeners: {
             move({ client: { y } }) {
               $el.outerHeight(Math.max(120, Math.min(
-                window.outerHeight - 300 - 30,
-                window.outerHeight - y - 30,
+                window.outerHeight - 30 - 300,
+                window.outerHeight - 30 - y,
               )));
             }
           },

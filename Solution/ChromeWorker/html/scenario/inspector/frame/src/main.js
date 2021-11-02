@@ -6,6 +6,7 @@ new Vue({
   i18n: new VueI18n({
     locale: new URL(window.location.href).searchParams.get('lang') || 'en',
     messages: { ...window.locales },
+    fallbackLocale: 'en',
     pluralizationRules: {
       ru(choice, choicesLength) {
         if (choice === 0) return 0;
@@ -15,8 +16,7 @@ new Vue({
 
         return choicesLength < 4 || (!teen && choice % 10 >= 2 && choice % 10 <= 4) ? 2 : 3;
       }
-    },
-    fallbackLocale: 'en'
+    }
   }),
   render: h => h(App)
 }).$mount('#app');

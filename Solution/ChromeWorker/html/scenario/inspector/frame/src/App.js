@@ -9,24 +9,24 @@ window.App = {
         name: 'variables',
         component: GroupsPanel,
         props: {
-          title: 'tabs.variablesEmpty',
-          data: { ...json }
+          data: { ...json },
+          title: 'tabs.variablesEmpty'
         }
       },
       {
         name: 'resources',
         component: GroupsPanel,
         props: {
-          title: 'tabs.resourcesEmpty',
-          data: { ...json }
+          data: { ...json },
+          title: 'tabs.resourcesEmpty'
         }
       },
       {
         name: 'callstack',
         component: CallstackPanel,
         props: {
-          title: 'tabs.callstackEmpty',
-          data: [...stack]
+          data: [...stack],
+          title: 'tabs.callstackEmpty'
         }
       }
     ];

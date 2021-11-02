@@ -15,6 +15,11 @@ window.TreeView = {
       type: Array
     },
 
+    query: {
+      required: true,
+      type: String
+    },
+
     data: {
       required: true,
       type: Object
@@ -55,6 +60,12 @@ window.TreeView = {
         color: '#c0bd9b',
         primary: false
       });
+    },
+
+    isVisible(val, key) {
+      const type = Object.prototype.toString.call(val).slice(8, -1).toLowerCase();
+      const query = this.query.toLowerCase();
+      return this.filters.some(f => f.includes(type)) && key.toLowerCase().includes(query);
     }
   },
 
@@ -77,10 +88,11 @@ window.TreeView = {
         @update="updateGroup"
       >
         <tree-view-item
-          v-for="(item, key) in data"
+          v-for="(val, key) in data"
+          v-show="isVisible(val, key)"
           :key="key"
           :label="key"
-          :value="item"
+          :value="val"
         />
       </tree-view-group>
     </draggable>

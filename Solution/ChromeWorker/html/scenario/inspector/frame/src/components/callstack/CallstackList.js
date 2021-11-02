@@ -21,7 +21,7 @@ window.CallstackList = {
 
   methods: {
     isVisible({ type }) {
-      return this.filters.some(item => item.includes(type));
+      return this.filters.some(f => f.includes(type));
     }
   },
 

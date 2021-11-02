@@ -65,6 +65,7 @@ window.PanelToolbar = {
     <div class="app-toolbar">
       <div v-show="panelVisible" class="app-toolbar-panel">
         <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" type="text" @input="updateQuery">
+        <slot name="controls"></slot>
         <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="() => menuVisible = false">
           <button type="button" @click="toggleMenu">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +90,6 @@ window.PanelToolbar = {
             </li>
           </ul>
         </div>
-        <slot name="controls"></slot>
       </div>
       <button class="app-toolbar-toggle" type="button" @click="togglePanel">
         <icon-chevron :style="{ transform: panelVisible ? '' : 'rotate(180deg)' }" />

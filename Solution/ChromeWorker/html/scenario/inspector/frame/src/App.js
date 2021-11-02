@@ -31,7 +31,7 @@ window.App = {
       }
     ];
 
-    return { tabs, tab: tabs[0] };
+    return { tab: tabs[0], tabs };
   },
 
   destroyed() {

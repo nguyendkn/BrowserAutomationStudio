@@ -27,7 +27,14 @@ window.TreeView = {
   },
 
   data() {
-    return { groups: [{ id: uniqueId(), name: 'Main', color: '#c0bd9b', primary: true }] };
+    const main = {
+      id: uniqueId(),
+      name: 'Main',
+      color: '#c0bd9b',
+      primary: true
+    };
+
+    return { groups: [main] };
   },
 
   computed: {

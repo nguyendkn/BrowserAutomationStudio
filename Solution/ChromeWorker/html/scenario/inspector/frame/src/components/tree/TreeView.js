@@ -5,7 +5,7 @@ window.TreeView = {
 
   components: {
     draggable: window['vuedraggable'],
-    TreeViewGroup,
+    GroupItem,
     TreeViewItem
   },
 

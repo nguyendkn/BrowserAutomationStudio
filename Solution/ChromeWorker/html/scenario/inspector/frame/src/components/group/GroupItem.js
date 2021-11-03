@@ -1,7 +1,7 @@
 'use strict';
 
-window.TreeViewGroup = {
-  name: 'TreeViewGroup',
+window.GroupItem = {
+  name: 'GroupItem',
 
   props: {
     primary: {

@@ -19,6 +19,11 @@ window.GroupItem = {
       type: String
     },
 
+    data: {
+      required: true,
+      type: Object
+    },
+
     id: {
       required: true,
       type: String
@@ -40,6 +45,10 @@ window.GroupItem = {
   computed: {
     style() {
       return { '--color': this.color };
+    },
+
+    isEmpty() {
+      return !Object.keys(this.data).length;
     }
   },
 
@@ -94,7 +103,11 @@ window.GroupItem = {
         </div>
       </div>
       <div v-show="!expanded" class="tree-view-group-content">
-        <slot></slot>
+        <slot v-if="!isEmpty"></slot>
+        <template v-else>
+          <span>This group is empty.</span><br>
+          <span>drag the variables here</span>
+        </template>
       </div>
     </li>
   `

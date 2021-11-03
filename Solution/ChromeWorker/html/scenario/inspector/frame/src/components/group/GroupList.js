@@ -31,7 +31,8 @@ window.GroupList = {
       id: uniqueId(),
       name: 'Main',
       color: '#c0bd9b',
-      primary: true
+      primary: true,
+      content: { ...this.data }
     };
 
     return { groups: [main] };
@@ -65,7 +66,8 @@ window.GroupList = {
         id: uniqueId(),
         name: 'Group',
         color: '#c0bd9b',
-        primary: false
+        primary: false,
+        content: {}
       });
     },
 
@@ -88,6 +90,7 @@ window.GroupList = {
         v-for="group in groups"
         :key="group.id"
         :id="group.id"
+        :data="group.content"
         :name="group.name"
         :color="group.color"
         :primary="group.primary"
@@ -95,7 +98,7 @@ window.GroupList = {
         @update="updateGroup"
       >
         <tree-view-item
-          v-for="(val, key) in data"
+          v-for="(val, key) in group.content"
           v-show="isVisible(val, key)"
           :key="key"
           :label="key"

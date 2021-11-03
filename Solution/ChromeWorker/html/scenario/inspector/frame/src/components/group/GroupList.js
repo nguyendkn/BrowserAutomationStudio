@@ -56,9 +56,7 @@ window.GroupList = {
     },
 
     getGroupIndex(id) {
-      return this.groups.findIndex(group => {
-        return group.id === id;
-      });
+      return this.groups.findIndex(group => group.id === id);
     },
 
     addGroup() {

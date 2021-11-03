@@ -23,14 +23,14 @@
     }
   },
   tabs: {
-    callstackEmpty: 'Стек вызовов пуст',
     variablesEmpty: 'Список переменных пуст',
-    resourcesEmpty: 'Список ресурсов пуст'
+    resourcesEmpty: 'Список ресурсов пуст',
+    callstackEmpty: 'Стек вызовов пуст',
   },
   nav: {
-    callstack: 'Стек вызовов',
     variables: 'Переменные',
-    resources: 'Ресурсы'
+    resources: 'Ресурсы',
+    callstack: 'Стек вызовов'
   },
   items: '{n} элементов | {n} элемент | {n} элемента | {n} элементов'
 };

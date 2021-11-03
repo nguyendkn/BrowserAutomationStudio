@@ -2,11 +2,12 @@
 
 (window.locales || (window.locales = {})).en = {
   toolbar: {
+    placeholder: 'Search by name',
     sortings: {
-      alphabetically: 'Alphabetically',
+      frequency: 'By frequency of use',
       dateModified: 'By date modified',
       dateCreated: 'By date created',
-      frequency: 'By frequency of use'
+      alphabetically: 'Alphabetically'
     },
     filters: {
       undefined: 'Undefined',
@@ -19,8 +20,7 @@
       array: 'Array',
       date: 'Date',
       null: 'Null'
-    },
-    placeholder: 'Search by name'
+    }
   },
   tabs: {
     callstackEmpty: 'Call stack is empty',

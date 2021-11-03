@@ -2,11 +2,12 @@
 
 (window.locales || (window.locales = {})).ru = {
   toolbar: {
+    placeholder: 'Поиск по имени',
     sortings: {
-      alphabetically: 'По алфавиту',
+      frequency: 'По частоте использования',
       dateModified: 'По дате изменения',
       dateCreated: 'По дате создания',
-      frequency: 'По частоте использования'
+      alphabetically: 'По алфавиту'
     },
     filters: {
       undefined: 'Undefined',
@@ -19,8 +20,7 @@
       array: 'Массив',
       date: 'Дата',
       null: 'Null'
-    },
-    placeholder: 'Поиск по имени'
+    }
   },
   tabs: {
     callstackEmpty: 'Стек вызовов пуст',

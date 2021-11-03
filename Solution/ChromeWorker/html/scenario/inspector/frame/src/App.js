@@ -78,11 +78,9 @@ window.App = {
           </svg>
         </button>
       </div>
-      <div class="app-panels">
-        <keep-alive>
-          <component :is="tab.component" :key="tab.name" v-bind="tab.props" />
-        </keep-alive>
-      </div>
+      <keep-alive>
+        <component :is="tab.component" :key="tab.name" v-bind="tab.props" />
+      </keep-alive>
     </div>
   `
 };

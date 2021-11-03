@@ -70,7 +70,6 @@
   flex: 1;
 }
 
-.app-panels,
 .app-panel {
   flex-flow: column;
   overflow: hidden;

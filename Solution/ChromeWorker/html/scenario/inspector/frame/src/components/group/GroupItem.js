@@ -75,13 +75,13 @@ window.GroupItem = {
   },
 
   template: /*html*/`
-    <li class="tree-view-group" :style="style">
-      <div class="tree-view-group-header">
+    <li class="group-item" :style="style">
+      <div class="group-item-header">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M6.00024 3.5v-2H.00024414v12H16.0002v-10H6.00024Z" fill="#606060" stroke="#606060" />
         </svg>
         <input v-model="newName" :disabled="!editMode" maxlength="30" style="flex: 1; margin-left: 8px;" type="text">
-        <div v-if="!editMode" class="tree-view-group-controls">
+        <div v-if="!editMode" class="group-item-controls">
           <template v-if="!primary">
             <button type="button" @click="remove">
               <icon-delete />
@@ -102,7 +102,7 @@ window.GroupItem = {
           </button>
         </div>
       </div>
-      <div v-show="!expanded" class="tree-view-group-content">
+      <div v-show="!expanded" class="group-item-content">
         <slot v-if="!isEmpty"></slot>
         <template v-else>
           <span>This group is empty.</span><br>

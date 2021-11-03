@@ -276,35 +276,31 @@
   display: flex;
 }
 
-/* Tree */
+/* Groups */
 
-.tree-view > li + li {
-  margin-top: 4px;
-}
-
-.tree-view-group {
+.group-item {
   flex-flow: column;
   overflow: hidden;
   display: flex;
 }
 
-.tree-view-group-controls > button + button {
+.group-item-controls > button + button {
   margin-left: 9px;
 }
 
-.tree-view-group-controls > button > img {
+.group-item-controls > button > img {
   display: block;
 }
 
-.tree-view-group-controls > button > svg {
+.group-item-controls > button > svg {
   display: block;
 }
 
-.tree-view-group-controls {
+.group-item-controls {
   display: flex;
 }
 
-.tree-view-group-header {
+.group-item-header {
   background: var(--color);
   align-items: center;
   line-height: 18px;
@@ -314,10 +310,16 @@
   display: flex;
 }
 
-.tree-view-group-content {
+.group-item-content {
   border: 1px solid var(--color);
   border-top: 0;
   padding: 9px 0;
+}
+
+/* Tree */
+
+.tree-view > li + li {
+  margin-top: 4px;
 }
 
 /* Scrollbar */

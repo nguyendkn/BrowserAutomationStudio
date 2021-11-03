@@ -80,7 +80,7 @@ window.GroupList = {
 
   template: /*html*/`
     <draggable
-      handle=".tree-view-group-header"
+      handle=".group-item-header"
       :disabled="draggableDisabled"
       class="tree-view"
       :list="groups"

@@ -11,8 +11,8 @@
         });
       });
 
-      window.addEventListener('message', ({ data }) => {
-        const { json, type } = data;
+      window.addEventListener('message', e => {
+        const { json, type } = e.data;
 
         switch (type) {
           case 'focusAction': return BrowserAutomationStudio_FocusAction(json.id);
@@ -71,14 +71,12 @@
   });
 
   function showModal({ path, type, allowUpdate }) {
-    // const modal = new Inspector.Modal({
-    //   callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
-    //   value: this.tree.model.getValue(path),
-    //   type,
-    //   path,
-    // });
-
-    // return modal.render();
+    return new Inspector.Modal({
+      // callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
+      // value: this.tree.model.getValue(path),
+      type,
+      path
+    }).render();
   }
 
   function updateVariable(value, pointer, type) {

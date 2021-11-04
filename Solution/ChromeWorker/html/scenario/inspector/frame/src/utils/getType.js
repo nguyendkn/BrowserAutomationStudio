@@ -1,5 +1,8 @@
 const getType = (() => {
   const toString = Object.prototype.toString;
 
-  return value => toString.call(value).slice(8, -1);
+  return value => {
+    const type = toString.call(value);
+    return type.slice(8, -1);
+  };
 })();

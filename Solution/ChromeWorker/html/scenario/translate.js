@@ -1,5 +1,4 @@
-_L = 
-{
+_L = {
 	"Following button leads to menu with most used actions and example of usage. It is good place to start if you are new to BAS." :{"ru": "Данная кнопка ведет в меню с наиболее часто используемыми действиями и примерами их использования."},
 	
   "Help":{
@@ -730,7 +729,6 @@ _L =
 	"Click to select. Drag to move it. Double click to edit and see description":{"ru": "Нажмите, чтобы выбрать. Перетащите, чтобы переместить его. Дважды щелкните, чтобы изменить и увидеть описание"},
 	"Action":{"ru": "Действие"},
 	"Check specified condition, if it's true execute some action sequence, if it's false execute another action sequence. Finally proceed with next actions.": {"ru": "Проверить заданное условие, если оно истинно, выполнить определенную последовательность действий, если оно ложно выполнить другую последовательность действий, наконец продолжить выполнение скрипта."},
-	"Create new or update existing variable and set its value.": {"ru": "Создать новую переменную или изменить существующую заданным значением."},
 	"A place where new action can be inserted or moved. This one is not active. Click to make it active.":{"ru": "Место, куда можно добавлять или перемещать действия. Это место не активно. Кликните по нему чтобы сделать активным."},
 	"A place where new action can be inserted or moved. This one is active. New actions will be inserted here.":{"ru": "Место, куда можно добавлять или перемещать действия. Это место активно. Сюда будут добавлены новые действия."},
 	"Current function name. Functions are containers, which holds action list. Each script must have at least one function - 'Main'. Thread runs 'Main' function when it starts, while script runs 'OnApplicaionStart' function(if it exists) when it starts.":{"ru": "Имя текущей функции. Функции - это контейнеры, в которых содержится список действий. Каждый скрипт должен иметь хотя бы одну функцию - 'Main'. Поток вызывает функцию 'Main', когда он запускается, а скрипт вызывает функцию 'OnApplicaionStart' (если она существует) при запуске."},
@@ -777,7 +775,7 @@ _L =
 	"Clear Selection" :{"ru": "Очистить Выделение"},
 	"Execute only this action" :{"ru": "Выполнить только это действие"},
 	"Move Execution Point Here" :{"ru": "Переместить точку выполнения"},
-	"Variable Inspector" :{"ru": "Инспектор Переменных"},
+	"Variable inspector" :{"ru": "Инспектор переменных"},
 	"Previous" :{"ru": "Предыдущий"},
 	"Next" :{"ru": "Следующий"},
 	"Search" :{"ru": "Поиск"},

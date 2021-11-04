@@ -14,6 +14,8 @@
 }
 
 .app-tabs {
+  justify-content: space-around;
+  list-style: none;
   display: flex;
   flex: 1;
 }
@@ -23,11 +25,7 @@
 }
 
 .app-tab {
-  justify-content: center;
-  align-items: center;
-  display: flex;
   opacity: 0.5;
-  flex: 1;
 }
 
 .app-header > button:hover {
@@ -63,7 +61,6 @@
 .app-panel-title {
   justify-content: center;
   align-items: center;
-  text-align: center;
   user-select: none;
   color: #606060;
   display: flex;

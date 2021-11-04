@@ -1,5 +1,9 @@
 'use strict';
 
 window.TreeView = {
-  name: 'TreeView'
+  name: 'TreeView',
+
+  components: {
+    TreeViewItem
+  }
 };

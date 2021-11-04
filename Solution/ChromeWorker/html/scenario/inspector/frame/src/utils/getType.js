@@ -1,3 +1,5 @@
+'use strict';
+
 const getType = (() => {
   const toString = Object.prototype.toString;
 

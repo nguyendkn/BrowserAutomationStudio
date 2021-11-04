@@ -23,12 +23,12 @@
     }
   },
   tabs: {
-    variablesEmpty: 'Variables list is empty',
-    resourcesEmpty: 'Resources list is empty',
-    callstackEmpty: 'Call stack is empty'
     variables: 'Variables',
+    variablesEmpty: 'Variables list is empty',
     resources: 'Resources',
-    callstack: 'Call stack'
+    resourcesEmpty: 'Resources list is empty',
+    callstack: 'Call stack',
+    callstackEmpty: 'Call stack is empty'
   },
   items: '{n} items | {n} item | {n} items'
 };

@@ -40,7 +40,8 @@ window.GroupList = {
 
   computed: {
     draggableDisabled() {
-      return this.groups.length === 1;
+      return true;
+      // return this.groups.length === 1;
     }
   },
 

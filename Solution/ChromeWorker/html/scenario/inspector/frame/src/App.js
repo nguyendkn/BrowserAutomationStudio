@@ -79,7 +79,7 @@ window.App = {
         </button>
       </div>
       <keep-alive>
-        <component :is="tab.component" :key="tab.name" v-bind="tab.props" />
+        <component :is="tab.component" :key="tab.name" :data="tab.props.data" :title="tab.props.title" />
       </keep-alive>
     </div>
   `

@@ -293,6 +293,19 @@
   display: block;
 }
 
+.group-item-header > input:disabled {
+  background: transparent;
+  padding: 3px 0px;
+}
+
+.group-item-header > input {
+  letter-spacing: -0.2px;
+  background: #fff;
+  margin-left: 8px;
+  padding: 3px 8px;
+  flex: 1;
+}
+
 .group-item-controls {
   display: flex;
 }
@@ -301,7 +314,8 @@
   background: var(--color);
   align-items: center;
   line-height: 18px;
-  padding: 5px 8px;
+  padding: 2px 8px;
+  min-height: 28px;
   font-size: 14px;
   color: #606060;
   display: flex;

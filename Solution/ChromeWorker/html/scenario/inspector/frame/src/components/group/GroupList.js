@@ -10,6 +10,11 @@ window.GroupList = {
   },
 
   props: {
+    sortings: {
+      required: true,
+      type: Array
+    },
+
     filters: {
       required: true,
       type: Array
@@ -71,7 +76,7 @@ window.GroupList = {
     },
 
     isVisible(val, key) {
-      const type = getType(val).toLowerCase();
+      const type = getType(val);
       const query = this.query.toLowerCase();
       return this.filters.some(f => f.includes(type)) && key.toLowerCase().includes(query);
     }
@@ -81,7 +86,7 @@ window.GroupList = {
     <draggable
       handle=".group-item-header"
       :disabled="draggableDisabled"
-      class="tree-view"
+      class="group-list"
       :list="groups"
       tag="ul"
     >

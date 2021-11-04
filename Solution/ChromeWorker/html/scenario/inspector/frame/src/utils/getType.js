@@ -5,6 +5,6 @@ const getType = (() => {
 
   return value => {
     const type = toString.call(value);
-    return type.slice(8, -1);
+    return type.slice(8, -1).toLowerCase();
   };
 })();

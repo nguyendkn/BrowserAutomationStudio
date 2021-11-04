@@ -104,10 +104,10 @@ window.GroupItem = {
       </div>
       <div v-show="!expanded" class="group-item-content">
         <slot v-if="!isEmpty"></slot>
-        <template v-else>
-          <span>This group is empty.</span><br>
-          <span>drag the variables here</span>
-        </template>
+        <div v-else style="display: flex; align-items: center; justify-content: center; flex-flow: column;">
+          <span>This group is empty.</span>
+          <span>Drag the elements here.</span>
+        </div>
       </div>
     </li>
   `

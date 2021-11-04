@@ -15,7 +15,7 @@ window.TreeViewItem = {
   },
 
   data() {
-    const type = Object.prototype.toString.call(this.value).slice(8, -1).toLowerCase();
+    const type = getType(this.value).toLowerCase();
 
     const colors = {
       undefined: '#8546bc',

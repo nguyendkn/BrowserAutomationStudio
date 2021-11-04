@@ -70,7 +70,7 @@ window.GroupList = {
     },
 
     isVisible(val, key) {
-      const type = Object.prototype.toString.call(val).slice(8, -1).toLowerCase();
+      const type = getType(val).toLowerCase();
       const query = this.query.toLowerCase();
       return this.filters.some(f => f.includes(type)) && key.toLowerCase().includes(query);
     }

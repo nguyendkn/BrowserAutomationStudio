@@ -52,12 +52,12 @@ window.App = {
       });
     },
 
-    show() {
-      window.top.postMessage({ type: 'show' }, '*');
-    },
-
     hide() {
       window.top.postMessage({ type: 'hide' }, '*');
+    },
+
+    show() {
+      window.top.postMessage({ type: 'show' }, '*');
     }
   },
 

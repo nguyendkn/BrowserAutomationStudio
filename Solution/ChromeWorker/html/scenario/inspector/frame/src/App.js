@@ -68,7 +68,7 @@ window.App = {
           <li v-for="t in tabs" :key="t.name" :class="{ active: tab === t }" class="app-tab">
             <a href="#" @click.prevent="tab = t">
               <img :src="'src/assets/icons/' + t.name + '.svg'" alt>
-              {{ $t('nav.' + t.name) }}
+              {{ $t('tabs.' + t.name) }}
             </a>
           </li>
         </ul>

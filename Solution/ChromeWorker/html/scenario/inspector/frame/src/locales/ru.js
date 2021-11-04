@@ -26,8 +26,6 @@
     variablesEmpty: 'Список переменных пуст',
     resourcesEmpty: 'Список ресурсов пуст',
     callstackEmpty: 'Стек вызовов пуст',
-  },
-  nav: {
     variables: 'Переменные',
     resources: 'Ресурсы',
     callstack: 'Стек вызовов'

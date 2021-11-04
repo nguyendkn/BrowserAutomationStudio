@@ -26,8 +26,6 @@
     variablesEmpty: 'Variables list is empty',
     resourcesEmpty: 'Resources list is empty',
     callstackEmpty: 'Call stack is empty'
-  },
-  nav: {
     variables: 'Variables',
     resources: 'Resources',
     callstack: 'Call stack'

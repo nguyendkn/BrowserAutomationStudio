@@ -38,7 +38,7 @@ window.CallstackItem = {
   },
 
   activated() {
-    this.$nextTick().then(() => this.handleResize());
+    this.$nextTick().then(this.handleResize);
   },
 
   computed: {

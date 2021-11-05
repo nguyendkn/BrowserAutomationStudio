@@ -61,7 +61,7 @@ window.PanelToolbar = {
     }
   },
 
-  template: /*html*/`
+  template: html`
     <div class="app-toolbar">
       <div v-show="panelVisible" class="app-toolbar-panel">
         <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" type="text" @input="updateQuery">

@@ -50,7 +50,7 @@ window.GroupsPanel = {
     }
   },
 
-  template: /*html*/`
+  template: html`
     <div class="app-panel">
       <panel-toolbar :sortings.sync="sortings" :filters.sync="filters" :query.sync="query">
         <template #controls>

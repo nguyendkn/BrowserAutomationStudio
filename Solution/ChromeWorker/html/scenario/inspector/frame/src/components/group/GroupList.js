@@ -82,7 +82,7 @@ window.GroupList = {
     }
   },
 
-  template: /*html*/`
+  template: html`
     <draggable
       handle=".group-item-header"
       :disabled="draggableDisabled"
@@ -108,9 +108,7 @@ window.GroupList = {
           :label="key"
           :value="val"
         >
-          <template #label="{ label }">
-            {{ label }}:
-          </template>
+          <template #label="{ label }">{{ label }}:&nbsp;</template>
         </json-tree-node>
       </group-item>
     </draggable>

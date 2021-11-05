@@ -334,6 +334,24 @@
   margin-top: 4px;
 }
 
+/* Json tree */
+
+.jt-node-value > .jt-node {
+  margin-left: 24px;
+}
+
+.jt-node-label {
+  user-select: none;
+}
+
+.jt-node-value {
+  user-select: none;
+}
+
+.jt-node {
+  display: block;
+}
+
 /* Scrollbar */
 
 ::-webkit-scrollbar-thumb {

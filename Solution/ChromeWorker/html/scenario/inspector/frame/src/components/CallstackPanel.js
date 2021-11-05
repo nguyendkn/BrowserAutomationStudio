@@ -39,7 +39,7 @@ window.CallstackPanel = {
     }
   },
 
-  template: /*html*/`
+  template: html`
     <div class="app-panel">
       <panel-toolbar :filters.sync="filters" :search="false" />
       <div v-if="isEmpty" class="app-panel-title" v-t="title"></div>

@@ -37,8 +37,9 @@ window.JsonTreeNode = {
   template: html`
     <span class="jt-node">
       <span class="jt-node-label">
-        <slot name="label" :label="label">{{ label }}:&nbsp;</slot>
+        <slot name="label" :label="label">{{ label }}</slot>
       </span>
+      <span class="jt-node-colon">:&nbsp;</span>
       <span :style="{ color }" class="jt-node-value">
         <template v-if="type === 'undefined' || type === 'null'">
           {{ String(value) }}

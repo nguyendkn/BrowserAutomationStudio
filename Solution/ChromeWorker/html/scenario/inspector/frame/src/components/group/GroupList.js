@@ -108,7 +108,7 @@ window.GroupList = {
           :label="key"
           :value="val"
         >
-          <template #label="{ label }">{{ label }}:&nbsp;</template>
+          <template #label="{ label }">{{ label }}</template>
         </json-tree-node>
       </group-item>
     </draggable>

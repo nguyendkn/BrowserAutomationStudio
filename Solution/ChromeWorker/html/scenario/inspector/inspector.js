@@ -3,13 +3,13 @@
 
   Inspector.Main = Backbone.View.extend({
     initialize() {
-      ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
-        _GobalModel.on(`change:${attr}`, (__, value) => {
-          if (value || this.$el.is(':hidden')) return;
-          // this.variables.model.set('highlight', true);
-          // this.resources.model.set('highlight', true);
-        });
-      });
+      // ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
+      //   _GobalModel.on(`change:${attr}`, (__, value) => {
+      //     if (value || this.$el.is(':hidden')) return;
+      //     this.variables.model.set('highlight', true);
+      //     this.resources.model.set('highlight', true);
+      //   });
+      // });
 
       window.addEventListener('message', e => {
         const { json, type } = e.data;

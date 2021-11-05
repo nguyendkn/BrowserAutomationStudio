@@ -10,9 +10,7 @@ window.App = {
         component: GroupsPanel,
         props: {
           title: 'tabs.variablesEmpty',
-          styles: {
-            '--group-br': '0px'
-          },
+          styles: { '--group-br': '0px' },
           data: { ...json }
         }
       },
@@ -21,9 +19,7 @@ window.App = {
         component: GroupsPanel,
         props: {
           title: 'tabs.resourcesEmpty',
-          styles: {
-            '--group-br': '10px'
-          },
+          styles: { '--group-br': '10px' },
           data: { ...json }
         }
       },
@@ -32,7 +28,6 @@ window.App = {
         component: CallstackPanel,
         props: {
           title: 'tabs.callstackEmpty',
-          styles: {},
           data: [...stack]
         }
       }

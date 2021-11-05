@@ -276,7 +276,9 @@
 /* Groups */
 
 .group-item {
-  border-radius: var(--group-br) var(--group-br) 0 0;
+  border: 1px solid var(--group-color);
+  border-radius: var(--group-br);
+  background: var(--group-color);
   flex-flow: column;
   overflow: hidden;
   display: flex;
@@ -324,9 +326,7 @@
 }
 
 .group-item-content {
-  border: 1px solid var(--group-color);
-  border-radius: 0 0 var(--group-br) var(--group-br);
-  border-top: 0;
+  background: #fff;
   padding: 9px 0;
 }
 

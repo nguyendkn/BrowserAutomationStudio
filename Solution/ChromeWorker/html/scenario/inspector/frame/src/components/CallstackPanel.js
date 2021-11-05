@@ -8,8 +8,6 @@ window.CallstackPanel = {
     CallstackList
   },
 
-  inheritAttrs: false,
-
   props: {
     title: {
       required: true,

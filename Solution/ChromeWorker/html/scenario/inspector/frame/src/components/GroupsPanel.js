@@ -9,6 +9,11 @@ window.GroupsPanel = {
   },
 
   props: {
+    styles: {
+      required: true,
+      type: Object
+    },
+
     title: {
       required: true,
       type: String
@@ -59,7 +64,7 @@ window.GroupsPanel = {
       </panel-toolbar>
       <div v-if="isEmpty" class="app-panel-title" v-t="title"></div>
       <div v-else class="app-panel-content">
-        <group-list ref="list" :data="data" :sortings="activeSortings" :filters="activeFilters" :query="query" />
+        <group-list ref="list" :data="data" :sortings="activeSortings" :filters="activeFilters" :query="query" :style="styles" />
       </div>
     </div>
   `

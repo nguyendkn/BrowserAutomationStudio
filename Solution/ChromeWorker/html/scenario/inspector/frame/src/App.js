@@ -10,6 +10,9 @@ window.App = {
         component: GroupsPanel,
         props: {
           title: 'tabs.variablesEmpty',
+          styles: {
+            '--group-br': '0px'
+          },
           data: { ...json }
         }
       },
@@ -18,6 +21,9 @@ window.App = {
         component: GroupsPanel,
         props: {
           title: 'tabs.resourcesEmpty',
+          styles: {
+            '--group-br': '10px'
+          },
           data: { ...json }
         }
       },
@@ -26,6 +32,7 @@ window.App = {
         component: CallstackPanel,
         props: {
           title: 'tabs.callstackEmpty',
+          styles: {},
           data: [...stack]
         }
       }
@@ -79,7 +86,7 @@ window.App = {
         </button>
       </div>
       <keep-alive>
-        <component :is="tab.component" :key="tab.name" :data="tab.props.data" :title="tab.props.title" />
+        <component :is="tab.component" :key="tab.name" v-bind="tab.props" />
       </keep-alive>
     </div>
   `

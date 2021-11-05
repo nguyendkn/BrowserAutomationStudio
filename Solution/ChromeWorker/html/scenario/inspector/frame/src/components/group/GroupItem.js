@@ -44,7 +44,7 @@ window.GroupItem = {
 
   computed: {
     style() {
-      return { '--color': this.color };
+      return { '--group-color': this.color };
     },
 
     isEmpty() {

@@ -373,6 +373,7 @@ input::placeholder {
 
 html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  min-width: 420px;
   height: 100%;
   width: 100%;
 }

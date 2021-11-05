@@ -4,7 +4,7 @@ window.GroupList = {
   name: 'GroupList',
 
   components: {
-    draggable: window['vuedraggable'],
+    draggable: vuedraggable,
     GroupItem,
     TreeViewItem
   },
@@ -76,9 +76,9 @@ window.GroupList = {
     },
 
     isVisible(val, key) {
-      const type = getType(val);
       const query = this.query.toLowerCase();
-      return this.filters.some(f => f.includes(type)) && key.toLowerCase().includes(query);
+      const type = getType(val);
+      return this.filters.some(f => f === type) && key.toLowerCase().includes(query);
     }
   },
 

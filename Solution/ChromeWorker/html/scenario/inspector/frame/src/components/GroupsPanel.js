@@ -8,6 +8,8 @@ window.GroupsPanel = {
     GroupList
   },
 
+  inheritAttrs: false,
+
   props: {
     styles: {
       required: true,

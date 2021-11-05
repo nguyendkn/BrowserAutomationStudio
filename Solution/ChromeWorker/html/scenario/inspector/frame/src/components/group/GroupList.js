@@ -6,7 +6,7 @@ window.GroupList = {
   components: {
     draggable: vuedraggable,
     GroupItem,
-    TreeViewItem
+    JsonTreeNode
   },
 
   props: {
@@ -101,7 +101,7 @@ window.GroupList = {
         @remove="removeGroup"
         @update="updateGroup"
       >
-        <tree-view-item
+        <json-tree-node
           v-for="(val, key) in group.content"
           v-show="isVisible(val, key)"
           :key="key"
@@ -117,7 +117,7 @@ window.GroupList = {
             </button>
             {{ label }}:
           </template>
-        </tree-view-item>
+        </json-tree-node>
       </group-item>
     </draggable>
   `

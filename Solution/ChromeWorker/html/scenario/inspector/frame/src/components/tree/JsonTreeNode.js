@@ -1,7 +1,7 @@
 'use strict';
 
-window.TreeViewItem = {
-  name: 'TreeViewItem',
+window.JsonTreeNode = {
+  name: 'JsonTreeNode',
 
   props: {
     label: {

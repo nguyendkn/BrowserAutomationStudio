@@ -108,29 +108,29 @@
     className: 'modal modal-centered',
 
     events: {
-      'input [data-input-type] textarea': function (e) {
+      'input [data-input-type] textarea'(e) {
         if (e.target.type === 'radio' && !e.target.checked) return;
         this.model.set('value', e.target.value);
       },
 
-      'input [data-input-type] input': function (e) {
+      'input [data-input-type] input'(e) {
         if (e.target.type === 'radio' && !e.target.checked) return;
         this.model.set('value', e.target.value);
       },
 
-      'change select[data-style]': function (e) {
+      'change select[data-style]'(e) {
         this.model.set('type', e.target.value);
       },
 
-      'click .btn-accept': function () {
+      'click .btn-accept'() {
         this.trigger('submit');
       },
 
-      'click .btn-cancel': function () {
+      'click .btn-cancel'() {
         this.trigger('cancel');
       },
 
-      'hidden.bs.modal': function () {
+      'hidden.bs.modal'() {
         this.trigger('cancel');
       }
     },

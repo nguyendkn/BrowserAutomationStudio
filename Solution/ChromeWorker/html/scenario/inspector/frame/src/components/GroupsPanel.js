@@ -25,7 +25,7 @@ window.GroupsPanel = {
       sortings = ['frequency', 'dateModified', 'dateCreated', 'alphabetically'];
 
     return {
-      sortings: sortings.map((name, idx) => ({ name, active: idx === 0 })),
+      sortings: sortings.map((name, idx) => ({ name, active: idx === 3 })),
       filters: filters.map(name => ({ name, active: true })),
       query: ''
     };

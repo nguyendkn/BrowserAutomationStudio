@@ -133,7 +133,7 @@
       highlight: false,
       metadata: {},
       history: [],
-      source: {},
+      source: {}
     }),
 
     update: function (source) {
@@ -148,7 +148,7 @@
           const now = performance.now();
 
           if (_.has(metadata, path)) {
-            if (op === 'remove') return (delete metadata[path]);
+            if (op === 'remove') return delete metadata[path];
             metadata[path].modifiedAt = now;
             metadata[path].usages += 1;
             metadata[path].count += 0;
@@ -170,5 +170,5 @@
 
       this.set('highlight', false);
     }
-  })
+  });
 })(window);

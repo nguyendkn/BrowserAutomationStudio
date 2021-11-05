@@ -10,6 +10,94 @@
   });
 
   Inspector.Modal = Backbone.View.extend({
+    attributes: { tabindex: '-1' },
+
+    className: 'modal modal-centered',
+
+    events: {
+      'input [data-input-type] textarea'(e) {
+        if (e.target.type === 'radio' && !e.target.checked) return;
+        this.model.set('value', e.target.value);
+      },
+
+      'input [data-input-type] input'(e) {
+        if (e.target.type === 'radio' && !e.target.checked) return;
+        this.model.set('value', e.target.value);
+      },
+
+      'change select[data-style]'(e) {
+        this.model.set('type', e.target.value);
+      },
+
+      'click .btn-accept'() {
+        this.trigger('submit');
+      },
+
+      'click .btn-cancel'() {
+        this.trigger('cancel');
+      },
+
+      'hidden.bs.modal'() {
+        this.trigger('cancel');
+      }
+    },
+
+    initialize({ callback, value, type, path }) {
+      if (['object', 'array'].includes(type)) type = 'custom';
+      value = type === 'custom' ? JSON.stringify(value) : String(value);
+
+      const model = new Model({ value, type, path }).on('change:type', (__, type) => {
+        const $inputs = this.$('[data-input-type]');
+        $inputs.parent('form').trigger('reset');
+
+        const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
+          .hide().find(':input').prop('required', false);
+
+        const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
+          .show().find(':input').prop('required', true);
+
+        $target.first().trigger('input');
+      });
+
+      model.bind('change', () => {
+        const disabled = _.isEqual({ value, type, path }, model.toJSON());
+        this.$('.btn-accept').prop('disabled', disabled);
+      });
+
+      this.bind('submit', () => {
+        const valid = this.$('form')[0].reportValidity();
+        if (valid || model.get('type') === 'string') this.trigger('accept');
+      });
+
+      this.once('accept', () => {
+        const json = this.close().model.toJSON();
+        callback({ ...json, cancel: false });
+      });
+
+      this.once('cancel', () => {
+        const json = this.close().model.toJSON();
+        callback({ ...json, cancel: true });
+      });
+
+      this.model = model;
+    },
+
+    render() {
+      if (this.$el.is(':empty')) {
+        this.$el.html(this.template(this.model.toJSON()));
+        this.$('select').selectpicker();
+        this.$el.modal({ backdrop: 'static' });
+      }
+
+      return this;
+    },
+
+    close() {
+      this.$el.modal('hide');
+      this.remove().off();
+      return this;
+    },
+
     template: _.template(/*html*/`
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
@@ -101,95 +189,7 @@
           </div>
         </div>
       </div>
-    `),
-
-    attributes: { tabindex: '-1' },
-
-    className: 'modal modal-centered',
-
-    events: {
-      'input [data-input-type] textarea'(e) {
-        if (e.target.type === 'radio' && !e.target.checked) return;
-        this.model.set('value', e.target.value);
-      },
-
-      'input [data-input-type] input'(e) {
-        if (e.target.type === 'radio' && !e.target.checked) return;
-        this.model.set('value', e.target.value);
-      },
-
-      'change select[data-style]'(e) {
-        this.model.set('type', e.target.value);
-      },
-
-      'click .btn-accept'() {
-        this.trigger('submit');
-      },
-
-      'click .btn-cancel'() {
-        this.trigger('cancel');
-      },
-
-      'hidden.bs.modal'() {
-        this.trigger('cancel');
-      }
-    },
-
-    initialize({ callback, value, type, path }) {
-      if (['object', 'array'].includes(type)) type = 'custom';
-      value = type === 'custom' ? JSON.stringify(value) : String(value);
-
-      const model = new Model({ value, type, path }).on('change:type', (__, type) => {
-        const $inputs = this.$('[data-input-type]');
-        $inputs.parent('form').trigger('reset');
-
-        const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
-          .hide().find(':input').prop('required', false);
-
-        const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
-          .show().find(':input').prop('required', true);
-
-        $target.first().trigger('input');
-      });
-
-      model.bind('change', () => {
-        const disabled = _.isEqual({ value, type, path }, model.toJSON());
-        this.$('.btn-accept').prop('disabled', disabled);
-      });
-
-      this.bind('submit', () => {
-        const valid = this.$('form')[0].reportValidity();
-        if (valid || model.get('type') === 'string') this.trigger('accept');
-      });
-
-      this.once('accept', () => {
-        const json = this.close().model.toJSON();
-        callback({ ...json, cancel: false });
-      });
-
-      this.once('cancel', () => {
-        const json = this.close().model.toJSON();
-        callback({ ...json, cancel: true });
-      });
-
-      this.model = model;
-    },
-
-    render() {
-      if (this.$el.is(':empty')) {
-        this.$el.html(this.template(this.model.toJSON()));
-        this.$('select').selectpicker();
-        this.$el.modal({ backdrop: 'static' });
-      }
-
-      return this;
-    },
-
-    close() {
-      this.$el.modal('hide');
-      this.remove().off();
-      return this;
-    }
+    `)
   });
 
   _.extend(_L, {

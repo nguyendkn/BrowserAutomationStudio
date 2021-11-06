@@ -110,7 +110,6 @@ namespace BrowserAutomationStudioFramework
         virtual IPreprocessor* GetPreprocessor() = 0;
 
         virtual void SetScript(const QString& Script) = 0;
-        virtual QString GetScript() = 0;
 
         virtual void SetWaiter(IWaiter* Waiter) = 0;
         virtual IWaiter* GetWaiter() = 0;

@@ -343,7 +343,6 @@ namespace BrowserAutomationStudioFramework
 
 
         virtual void SetScript(const QString& Script);
-        virtual QString GetScript();
 
         virtual void SetAsyncResult(const QScriptValue & AsyncResult);
         virtual QScriptValue GetAsyncResult();

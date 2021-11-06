@@ -461,11 +461,6 @@ namespace BrowserAutomationStudioFramework
 
     }
 
-    QString ScriptWorker::GetScript()
-    {
-        return Script;
-    }
-
     void ScriptWorker::SetSolverFactory(ISolverFactory* FactorySolver)
     {
         this->FactorySolver = FactorySolver;

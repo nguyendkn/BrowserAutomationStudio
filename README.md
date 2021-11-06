@@ -21,7 +21,7 @@ Check [issues](https://gitlab.com/bablosoft/bas/-/issues) section.
 3.  If you change certain file, try to keep coding style, naming convention.
 4.  Test you code before commit. It is better to spend time for testing, then for resolving issues later.
 
-**Javascript-only development**
+**Javascript-only development.**
 
 If you are working with javascript most of the time recommended workflow would be following:
 

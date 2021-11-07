@@ -807,9 +807,11 @@ namespace BrowserAutomationStudioFramework
 
             if(!AsyncDieMessage.isEmpty())
             {
+                SequenceDecrypt = 0;
                 engine->evaluate("die(ScriptWorker.GetAndClearAsyncDieMessage());");
             }else if(!AsyncFailMessage.isEmpty())
             {
+                SequenceDecrypt = 0;
                 engine->evaluate("fail(ScriptWorker.GetAndClearAsyncFailMessage());");
             }else
             {
@@ -818,7 +820,7 @@ namespace BrowserAutomationStudioFramework
                     engine->evaluate("_set_result(ScriptWorker.GetAsyncResult())");
                     NeedToSetAsyncResult = false;
                 }
-
+                SequenceDecrypt = 0;
                 engine->evaluate(Script);
             }
 
@@ -913,6 +915,11 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptWorker::Decrypt(const QString& Data)
     {
+        SequenceDecrypt++;
+        if(SequenceDecrypt > 1)
+        {
+            abort();
+        }
         SetScript(Preprocessor->Decrypt(Data));
         //Next time decrypted data will be deleted
         DeleteScriptLater = true;
@@ -1163,7 +1170,10 @@ namespace BrowserAutomationStudioFramework
         if(IsRecord && ProcessComunicator)
             ProcessComunicator->Send("<ScriptFinished/>");
         if(engine)
+        {
+            SequenceDecrypt = 0;
             engine->evaluate(AbortFunction);
+        }
         AbortFunction.clear();
         IsAborted = true;
         if(SignalResourceHandlers)
@@ -3525,6 +3535,7 @@ namespace BrowserAutomationStudioFramework
             Obj["data"] = Variables;
             QJsonDocument doc(Obj);
             QString s = QString("_embedded_parse_variables(%1)").arg(QString::fromUtf8(doc.toJson(QJsonDocument::Compact)));
+            SequenceDecrypt = 0;
             engine->evaluate(s);
             EmbeddedActionId = 0;
             EmbeddedIsSuccess = IsSuccess;
@@ -3547,6 +3558,7 @@ namespace BrowserAutomationStudioFramework
             EmbeddedExecutingApiCode = true;
             EmbeddedIsFunctionCall = ApiString.startsWith("_prepare_function_and_call");
             QString s = QString("_embedded_parse_variables(%1)").arg(EmbeddedVariables);
+            SequenceDecrypt = 0;
             engine->evaluate(s);
             s = Preprocess(ApiString + QString("\n;ScriptWorker.EmbeddedApiResponce(_embedded_prepare_variables(\"%1\"))").arg(EmbeddedVariablesList));
             SetScript(s);
@@ -3579,6 +3591,7 @@ namespace BrowserAutomationStudioFramework
         if(FunctionName == CurrentPrepareFunction)
         {
             CurrentPrepareFunction.clear();
+            SequenceDecrypt = 0;
             engine->evaluate(Preprocess(FunctionData));
             SetScript("_prepare_function_and_call_end();");
             emit PrepareFunctionResultSignal();

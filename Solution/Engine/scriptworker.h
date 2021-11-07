@@ -90,6 +90,8 @@ namespace BrowserAutomationStudioFramework
 
         QString CurrentRequireRequestId;
 
+        int SequenceDecrypt = 0;
+
         QString FailMessage;
         QHash<QString,QObject*> Modules;
         IPop3ClientFactory* Pop3ClientFactory;

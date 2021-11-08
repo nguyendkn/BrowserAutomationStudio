@@ -39,6 +39,7 @@ const stack = [
 
 const json = {
   VAR1: 0,
+  // VAR2: 'foofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofoofbar',
   VAR2: 'foo',
   VAR3: null,
   VAR4: false,

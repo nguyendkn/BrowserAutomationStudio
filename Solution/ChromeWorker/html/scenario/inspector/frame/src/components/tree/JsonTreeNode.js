@@ -4,18 +4,18 @@ window.JsonTreeNode = {
   name: 'JsonTreeNode',
 
   props: {
-    valueFormatter: {
-      default: v => v,
-      type: Function
+    value: {
+      required: true
     },
 
-    label: {
+    name: {
       required: true,
       type: [String, Number]
     },
 
-    value: {
-      required: true
+    path: {
+      required: true,
+      type: Array
     }
   },
 
@@ -37,7 +37,7 @@ window.JsonTreeNode = {
   template: html`
     <span class="jt-node">
       <span class="jt-node-label">
-        <slot name="label" :label="label">{{ label }}</slot>
+        <slot name="label" :name="name">{{ name }}</slot>
       </span>
       <span class="jt-node-colon">:&nbsp;</span>
       <span :style="{ color }" class="jt-node-value">
@@ -45,18 +45,16 @@ window.JsonTreeNode = {
           {{ String(value) }}
         </template>
         <template v-else-if="type === 'string'">
-          <span class="jt-quote">"</span>
-          <span>{{ value }}</span>
-          <span class="jt-quote">"</span>
+          <span>"{{ value }}"</span>
         </template>
         <template v-else-if="type === 'object'">
           <span class="jt-bracket">{</span>
-          <json-tree-node v-for="(val, key) in value" :key="key" :value="val" :label="key" />
+          <json-tree-node v-for="(val, key) in value" :key="key" :value="val" :name="key" :path="path.concat(key)" />
           <span class="jt-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
           <span class="jt-bracket">[</span>
-          <json-tree-node v-for="(val, idx) in value" :key="idx" :value="val" :label="idx" />
+          <json-tree-node v-for="(val, idx) in value" :key="idx" :value="val" :name="idx" :path="path.concat(idx)" />
           <span class="jt-bracket">]</span>
         </template>
         <template v-else>{{ value }}</template>

@@ -105,10 +105,11 @@ window.GroupList = {
           v-for="(val, key) in group.content"
           v-show="isVisible(val, key)"
           :key="key"
-          :label="key"
+          :name="key"
+          :path="[key]"
           :value="val"
         >
-          <template #label="{ label }">{{ label }}</template>
+          <template #label="{ name }">{{ name }}</template>
         </json-tree-node>
       </group-item>
     </draggable>

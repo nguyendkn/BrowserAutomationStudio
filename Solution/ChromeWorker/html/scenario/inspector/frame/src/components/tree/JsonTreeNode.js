@@ -49,12 +49,24 @@ window.JsonTreeNode = {
         </template>
         <template v-else-if="type === 'object'">
           <span class="jt-bracket">{</span>
-          <json-tree-node v-for="(val, key) in value" :key="key" :value="val" :name="key" :path="path.concat(key)" />
+          <json-tree-node
+            v-for="(val, key) in value"
+            :key="key"
+            :value="val"
+            :name="key"
+            :path="path.concat(key)"
+          />
           <span class="jt-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
           <span class="jt-bracket">[</span>
-          <json-tree-node v-for="(val, idx) in value" :key="idx" :value="val" :name="idx" :path="path.concat(idx)" />
+          <json-tree-node
+            v-for="(val, idx) in value"
+            :key="idx"
+            :value="val"
+            :name="idx"
+            :path="path.concat(idx)"
+          />
           <span class="jt-bracket">]</span>
         </template>
         <template v-else>{{ value }}</template>

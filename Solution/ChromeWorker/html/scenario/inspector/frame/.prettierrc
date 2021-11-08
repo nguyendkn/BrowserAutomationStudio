@@ -1,8 +1,9 @@
 {
   "embeddedLanguageFormatting": "off",
+  "quoteProps": "consistent",
   "trailingComma": "none",
   "arrowParens": "avoid",
   "singleQuote": true,
   "endOfLine": "crlf",
-  "printWidth": 100
+  "printWidth": 120
 }

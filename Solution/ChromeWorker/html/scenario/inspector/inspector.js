@@ -70,13 +70,10 @@
     }
   });
 
-  function showModal({ path, type, allowUpdate }) {
-    return new Inspector.Modal({
-      // callback: result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result),
-      // value: this.tree.model.getValue(path),
-      type,
-      path
-    }).render();
+  function showModal(options) {
+    // const callback = result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result);
+    const modal = new Inspector.Modal({ ...options });
+    return modal.render();
   }
 
   function updateVariable(value, pointer, type) {

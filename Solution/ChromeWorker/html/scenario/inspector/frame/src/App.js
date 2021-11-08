@@ -33,15 +33,15 @@ window.App = {
       }
     ];
 
-    return { tab: tabs[0], tabs };
-  },
-
-  destroyed() {
-    window.removeEventListener('message', this.handleMessage);
+    return { tabs, tab: tabs[0] };
   },
 
   created() {
     window.addEventListener('message', this.handleMessage);
+  },
+
+  destroyed() {
+    window.removeEventListener('message', this.handleMessage);
   },
 
   methods: {

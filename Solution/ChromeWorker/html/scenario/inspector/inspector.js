@@ -75,13 +75,8 @@
     return modal.render();
   }
 
-  function updateVariable(pointer, value, type) {
-    const { root, path } = pointer.slice(1).split('/').reduce((acc, key, at) => {
-      return at !== 0 ? { ...acc, path: `${acc.path}['${key}']` } : {
-        root: key.replace('GLOBAL:', ''),
-        path: ''
-      }
-    }, {});
+  function updateVariable([root, ...path], value, type) {
+    path = path.map(k => `['${k}']`).join('');
 
     _.attempt(() => {
       if (type === 'date') {
@@ -95,16 +90,17 @@
       VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
         (function () {
           try {
-            if (${pointer.startsWith('/GLOBAL:')}) {
-              var obj = JSON.parse(P('basglobal', '${root}') || '{}');
+            var root = ${JSON.stringify(root)};
+            if (root.indexOf("GLOBAL:") === 0) {
+              var obj = JSON.parse(P("basglobal", root) || "{}");
               obj${path} = ${value};
-              PSet('basglobal', '${root}', JSON.stringify(obj));
+              PSet("basglobal", 'root, JSON.stringify(obj));
             } else {
-              GLOBAL['VAR_${root}']${path} = ${value};
+              GLOBAL["VAR_" + root]${path} = ${value};
             }
           } catch (e) {}
         })();
-        section_start('test', -3)!
+        section_start("test", -3)!
       `);
     });
   }

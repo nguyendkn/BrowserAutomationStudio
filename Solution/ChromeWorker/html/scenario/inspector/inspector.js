@@ -76,9 +76,9 @@
     return modal.render();
   }
 
-  function updateVariable(value, pointer, type) {
-    const { root, path } = pointer.slice(1).split('/').reduce((data, key, at) => {
-      return at !== 0 ? { ...data, path: `${data.path}['${key}']` } : {
+  function updateVariable(pointer, value, type) {
+    const { root, path } = pointer.slice(1).split('/').reduce((acc, key, at) => {
+      return at !== 0 ? { ...acc, path: `${acc.path}['${key}']` } : {
         root: key.replace('GLOBAL:', ''),
         path: ''
       }

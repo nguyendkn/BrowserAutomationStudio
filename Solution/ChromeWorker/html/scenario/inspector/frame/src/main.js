@@ -1,53 +1,5 @@
 'use strict';
 
-const json = {
-  VAR1: 0,
-  VAR2: 'foo',
-  VAR3: null,
-  VAR4: false,
-  VAR5: undefined,
-  VAR6: new Date(),
-  VAR7: ['foo', ['bar', 'baz']],
-  VAR8: { a: 2, b: 3, c: { d: 4 } }
-};
-
-const stack = [
-  {
-    type: 'action',
-    name: 'If',
-    id: 299996755,
-    options: {
-      expression:
-        '([[CYCLE_INDEX]] > -1) || (false || true) && 1 && 2 && (true || false) && (true || false) && (true || false)',
-      arguments: {},
-      iterator: 1
-    }
-  },
-  {
-    type: 'action',
-    name: 'While',
-    id: 110819768,
-    options: {
-      expression: '',
-      arguments: {},
-      iterator: 2
-    }
-  },
-  {
-    type: 'function',
-    name: 'test',
-    id: 388761436,
-    options: {
-      expression: '',
-      arguments: {
-        a1: 1,
-        a2: 2
-      },
-      iterator: 1
-    }
-  }
-];
-
 Vue.use(window['v-click-outside']);
 
 new Vue({

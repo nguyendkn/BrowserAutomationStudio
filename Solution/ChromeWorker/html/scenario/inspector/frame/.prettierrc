@@ -1,0 +1,8 @@
+{
+  "embeddedLanguageFormatting": "off",
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "singleQuote": true,
+  "endOfLine": "crlf",
+  "printWidth": 100
+}

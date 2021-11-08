@@ -18,7 +18,6 @@
           case 'focusAction': return BrowserAutomationStudio_FocusAction(json.id);
           case 'edit': return showModal(json);
           case 'hide': return this.hide();
-          case 'show': return this.show();
         }
       });
 

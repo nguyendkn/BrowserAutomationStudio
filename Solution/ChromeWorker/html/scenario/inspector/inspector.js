@@ -92,9 +92,10 @@
           try {
             var root = ${JSON.stringify(root)};
             if (root.indexOf("GLOBAL:") === 0) {
+              root = root.slice(7);
               var obj = JSON.parse(P("basglobal", root) || "{}");
               obj${path} = ${value};
-              PSet("basglobal", 'root, JSON.stringify(obj));
+              PSet("basglobal", root, JSON.stringify(obj));
             } else {
               GLOBAL["VAR_" + root]${path} = ${value};
             }

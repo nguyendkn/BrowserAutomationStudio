@@ -314,6 +314,15 @@
   display: flex;
 }
 
+.group-item-title {
+  color: var(--group-color);
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  padding: 7px 0;
+  display: flex;
+}
+
 .group-item-header {
   background: var(--group-color);
   align-items: center;

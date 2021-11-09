@@ -34,6 +34,13 @@ window.JsonTreeNode = {
     return { color: colors[type], type };
   },
 
+  computed: {
+    keys() {
+      const { value } = this;
+      return value == null ? [] : Object.keys(value);
+    }
+  },
+
   template: html`
     <span class="jt-node">
       <span class="jt-node-label">
@@ -50,10 +57,10 @@ window.JsonTreeNode = {
         <template v-else-if="type === 'object'">
           <span class="jt-bracket">{</span>
           <json-tree-node
-            v-for="(val, key) in value"
+            v-for="key in keys"
             :key="key"
-            :value="val"
             :name="key"
+            :value="value[key]"
             :path="path.concat(key)"
           />
           <span class="jt-bracket">}</span>
@@ -61,11 +68,11 @@ window.JsonTreeNode = {
         <template v-else-if="type === 'array'">
           <span class="jt-bracket">[</span>
           <json-tree-node
-            v-for="(val, idx) in value"
-            :key="idx"
-            :value="val"
-            :name="idx"
-            :path="path.concat(idx)"
+            v-for="key in keys"
+            :key="key"
+            :name="key"
+            :value="value[key]"
+            :path="path.concat(key)"
           />
           <span class="jt-bracket">]</span>
         </template>

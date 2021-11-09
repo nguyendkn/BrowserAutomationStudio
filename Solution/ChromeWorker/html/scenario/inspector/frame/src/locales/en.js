@@ -10,16 +10,18 @@
       alphabetically: 'Alphabetically'
     },
     filters: {
+      // Variables/resources
       undefined: 'Undefined',
-      functions: 'Functions',
-      actions: 'Actions',
       boolean: 'Boolean',
       object: 'Object',
       string: 'String',
       number: 'Number',
       array: 'Array',
       date: 'Date',
-      null: 'Null'
+      null: 'Null',
+      // Call stack
+      functions: 'Functions',
+      actions: 'Actions'
     }
   },
   tabs: {

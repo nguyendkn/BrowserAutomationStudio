@@ -10,16 +10,18 @@
       alphabetically: 'По алфавиту'
     },
     filters: {
+      // Variables/resources
       undefined: 'Undefined',
-      functions: 'Функции',
-      actions: 'Действия',
       boolean: 'Булево',
       object: 'Объект',
       string: 'Строка',
       number: 'Число',
       array: 'Массив',
       date: 'Дата',
-      null: 'Null'
+      null: 'Null',
+      // Call stack
+      functions: 'Функции',
+      actions: 'Действия'
     }
   },
   tabs: {

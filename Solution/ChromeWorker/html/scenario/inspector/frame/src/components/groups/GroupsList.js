@@ -4,7 +4,6 @@ window.GroupsList = {
   name: 'GroupsList',
 
   components: {
-    draggable: vuedraggable,
     GroupsItem,
     JsonTreeNode
   },

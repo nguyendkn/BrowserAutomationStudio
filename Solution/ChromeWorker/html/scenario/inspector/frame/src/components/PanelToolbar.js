@@ -48,8 +48,7 @@ window.PanelToolbar = {
     },
 
     updateQuery(event) {
-      const query = event.target.value.trim();
-      this.$emit('update:query', query);
+      this.$emit('update:query', event.target.value.trim());
     },
 
     togglePanel() {

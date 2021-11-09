@@ -166,6 +166,33 @@
 		
 	<%= _.template($('#block_end').html())() %>
 
+	<%= _.template($('#block_start').html())({id: "CustomServersBlock", name: tr("Custom servers"), description: tr(`
+	<span>${tr('If you are the site owner, you can collect fingerprints from users of your site.')}</span> 
+	<a href="#" class="tr-en"  onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=customservers'); return false;">
+		<span>${tr('Learn more.')}</span>
+	</a>
+	<a href="#" class="tr-ru"  onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:customservers'); return false;">
+		<span>${tr('Learn more.')}</span>
+	</a>
+	
+	`)}) %>
+
+	<%= _.template($('#input_constructor').html())({id:"EnableCustomServers", description:tr("Use custom server"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true", "false"],
+		help: 
+		{
+			description: tr("This option is useful only if you have custom server functionality enabled in your account. Otherwise, it will always give error. If you have this setting enabled, fingerprint will be obtained only from custom server. It is compatible with PerfectCanvas. Check wiki for more info."), examples:
+			[
+				{
+				code:"true",description:tr("Use custom server to obtain fingerprint.")
+				},
+				{
+				code:"false",description:tr("Obtain fingerprint from common server.")
+				}
+			]
+		} }) %>
+
+	<%= _.template($('#block_end').html())() %>
+
 
   <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "FINGERPRINT", help: 
 	{

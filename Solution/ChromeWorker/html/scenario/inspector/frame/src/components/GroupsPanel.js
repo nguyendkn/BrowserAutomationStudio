@@ -5,7 +5,7 @@ window.GroupsPanel = {
 
   components: {
     PanelToolbar,
-    GroupList
+    GroupsList
   },
 
   props: {
@@ -64,7 +64,7 @@ window.GroupsPanel = {
       </panel-toolbar>
       <div v-if="isEmpty" class="app-panel-title" v-t="title"></div>
       <div v-else class="app-panel-content">
-        <group-list ref="list" :data="data" :sortings="activeSortings" :filters="activeFilters" :query="query" :style="styles" />
+        <groups-list ref="list" :data="data" :sortings="activeSortings" :filters="activeFilters" :query="query" :style="styles" />
       </div>
     </div>
   `

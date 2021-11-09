@@ -1,7 +1,7 @@
 'use strict';
 
-window.GroupItem = {
-  name: 'GroupItem',
+window.GroupsItem = {
+  name: 'GroupsItem',
 
   props: {
     primary: {

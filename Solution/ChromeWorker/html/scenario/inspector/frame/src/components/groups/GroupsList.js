@@ -1,11 +1,11 @@
 'use strict';
 
-window.GroupList = {
-  name: 'GroupList',
+window.GroupsList = {
+  name: 'GroupsList',
 
   components: {
     draggable: vuedraggable,
-    GroupItem,
+    GroupsItem,
     JsonTreeNode
   },
 
@@ -90,7 +90,7 @@ window.GroupList = {
       :list="groups"
       tag="ul"
     >
-      <group-item
+      <groups-item
         v-for="group in groups"
         :key="group.id"
         :id="group.id"
@@ -111,7 +111,7 @@ window.GroupList = {
         >
           <template #label="{ name }">{{ name }}</template>
         </json-tree-node>
-      </group-item>
+      </groups-item>
     </draggable>
   `
 };

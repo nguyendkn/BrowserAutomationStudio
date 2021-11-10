@@ -32,5 +32,6 @@
     callstack: 'Call stack',
     callstackEmpty: 'Call stack is empty'
   },
+  properties: '{n} properties | {n} property | {n} properties',
   items: '{n} items | {n} item | {n} items'
 };

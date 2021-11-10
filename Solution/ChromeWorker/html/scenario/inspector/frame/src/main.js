@@ -5,10 +5,7 @@ Vue.use(window['v-click-outside']);
 new Vue({
   i18n: new VueI18n({
     locale: new URL(window.location.href).searchParams.get('lang') || 'en',
-    messages: {
-      en: { ...window.locales.en },
-      ru: { ...window.locales.ru }
-    },
+    messages: { ...window.locales },
     fallbackLocale: 'en',
     pluralizationRules: {
       ru(choice, choicesLength) {

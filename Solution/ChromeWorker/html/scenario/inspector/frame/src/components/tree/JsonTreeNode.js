@@ -31,7 +31,7 @@ window.JsonTreeNode = {
       null: '#808080'
     };
 
-    return { color: colors[type], type };
+    return { color: colors[type], type, isExpanded: false };
   },
 
   computed: {
@@ -41,8 +41,14 @@ window.JsonTreeNode = {
     }
   },
 
+  methods: {
+    toggle() {
+      this.isExpanded = !this.isExpanded;
+    }
+  },
+
   template: html`
-    <span class="jt-node">
+    <span class="jt-node" style="position: relative;">
       <span class="jt-node-label">
         <slot name="label" :name="name">{{ name }}</slot>
       </span>
@@ -58,6 +64,7 @@ window.JsonTreeNode = {
           <span class="jt-bracket">{</span>
           <json-tree-node
             v-for="key in keys"
+            v-show="isExpanded"
             :key="key"
             :name="key"
             :value="value[key]"
@@ -69,6 +76,7 @@ window.JsonTreeNode = {
           <span class="jt-bracket">[</span>
           <json-tree-node
             v-for="key in keys"
+            v-show="isExpanded"
             :key="key"
             :name="key"
             :value="value[key]"
@@ -78,6 +86,11 @@ window.JsonTreeNode = {
         </template>
         <template v-else>{{ value }}</template>
       </span>
+      <div style="position: absolute; right: 0; top: 0;">
+        <button v-if="type === 'object' || type  === 'array'" @click="toggle">
+          <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
+        </button>
+      </div>
     </span>
   `
 };

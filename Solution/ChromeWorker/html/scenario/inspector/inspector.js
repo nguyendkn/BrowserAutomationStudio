@@ -89,14 +89,14 @@
             VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
               (function () {
                 try {
-                  var root = ${JSON.stringify(root)};
+                  var root = ${JSON.stringify(root)}, value = ${value};
                   if (root.indexOf("GLOBAL:") === 0) {
                     root = root.slice(7);
                     var obj = JSON.parse(P("basglobal", root) || "{}");
-                    obj${path} = ${value};
+                    obj${path} = value;
                     PSet("basglobal", root, JSON.stringify(obj));
                   } else {
-                    GLOBAL["VAR_" + root]${path} = ${value};
+                    GLOBAL["VAR_" + root]${path} = value;
                   }
                 } catch (e) {}
               })();

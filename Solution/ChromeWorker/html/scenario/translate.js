@@ -845,16 +845,15 @@ function tr(key, values)
    
 	
   if (typeof _K === 'undefined' || _K === 'en') return key;
+
   if (key in _L) {
     if (_K in _L[key]) {
       const res = _L[key][_K];
-      if (values) {
-        return res.replace(/{(.*?)}/g, (_, k) => {
-          return values[k];
-        });
-      }
-      return res;
+      return !values ? res : res.replace(/{(.*?)}/g, (_, k) => {
+         return values[k];
+      });
     }
   }
+
   return key;
 }

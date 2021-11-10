@@ -801,7 +801,7 @@ _L = {
 }
 
 
-function tr(key)
+function tr(key, values)
 {
 	if(typeof(key) == "undefined")
 	{
@@ -844,15 +844,17 @@ function tr(key)
    }
    
 	
-	if(typeof(_K) == "undefined" || _K == "en")
-		return key;
-	if(key in _L)
-	{
-
-		if(_K in _L[key])
-		{
-			return _L[key][_K]
-		}
-	}
-	return key;
+  if (typeof _K === 'undefined' || _K === 'en') return key;
+  if (key in _L) {
+    if (_K in _L[key]) {
+      const res = _L[key][_K];
+      if (values) {
+        return res.replace(/{(.*?)}/g, (_, k) => {
+          return values[k];
+        });
+      }
+      return res;
+    }
+  }
+  return key;
 }

@@ -102,7 +102,7 @@
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4><%= tr('Change the variable value') %></h4>
+            <h4><%= tr('Edit the value of the "{name}" variable', { name }) %></h4>
             <h6><%= tr('Change or set data type and value') %></h6>
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,6 +211,7 @@
     'Save changes': { ru: 'Сохранить изменения' },
     'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
     'Copy the variable name': { ru: 'Копировать имя переменной' },
-    'Search for variable in project': { ru: 'Поиск переменной в проекте' }
+    'Search for variable in project': { ru: 'Поиск переменной в проекте' },
+    'Edit the value of the "{name}" variable': { ru: 'Изменить значение переменной "{name}"' }
   });
 })(window);

@@ -71,8 +71,8 @@
 
   function showModal(options) {
     const modal = new Inspector.Modal({
-      ...options
-      callback: ({ cancel, value, type }) => {
+      ...options,
+      callback({ cancel, value, type }) {
         if (!cancel) {
           let [root, ...path] = options.path;
           path = path.map(k => `['${k}']`).join('');

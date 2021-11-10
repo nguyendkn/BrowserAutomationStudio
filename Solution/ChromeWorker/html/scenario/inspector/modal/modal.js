@@ -5,7 +5,7 @@
     defaults: () => ({
       value: null,
       type: null,
-      path: null
+      name: null
     })
   });
 
@@ -42,11 +42,11 @@
       }
     },
 
-    initialize({ callback, value, type, path }) {
+    initialize({ callback, value, type, name }) {
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
 
-      const model = new Model({ value, type, path }).on('change:type', (__, type) => {
+      const model = new Model({ value, type, name }).on('change:type', (__, type) => {
         const $inputs = this.$('[data-input-type]');
         $inputs.parent('form').trigger('reset');
 
@@ -60,7 +60,7 @@
       });
 
       model.bind('change', () => {
-        const disabled = _.isEqual({ value, type, path }, model.toJSON());
+        const disabled = _.isEqual({ value, type, name }, model.toJSON());
         this.$('.btn-accept').prop('disabled', disabled);
       });
 

@@ -51,7 +51,8 @@ window.JsonTreeNode = {
         json: {
           value: this.value,
           type: this.type,
-          path: this.path
+          path: this.path,
+          name: this.name
         },
         type: 'edit'
       };

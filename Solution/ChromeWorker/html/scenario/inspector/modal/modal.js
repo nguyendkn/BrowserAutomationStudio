@@ -118,9 +118,9 @@
                 </option>
               <% }) %>
             </select>
-            <div class="inspector-modal-body-content" style="border: 1px solid #d9d9d9;">
+            <div class="inspector-modal-body-content">
               <form class="inspector-modal-form" action="javascript:void(0)">
-                <% const style = v => 'display: ' + (v === type ? 'block' : 'none') %>
+                <% const style = v => 'display: ' + (v === type ? 'block;' : 'none;') %>
                 <div style="<%= style('custom') %>" data-input-type="custom">
                   <textarea><%- type === 'custom' ? value : '' %></textarea>
                 </div>
@@ -142,20 +142,20 @@
                     </div>
                   <% }) %>
                 </div>
-                <div style="<%= style('undefined') %>; border: 0;" data-input-type="undefined">
+                <div style="<%= style('undefined') %>" data-input-type="undefined">
                   <input type="hidden" value="undefined">
                 </div>
-                <div style="<%= style('null') %>; border: 0;" data-input-type="null">
+                <div style="<%= style('null') %>" data-input-type="null">
                   <input type="hidden" value="null">
                 </div>
               </form>
               <div class="inspector-modal-tools dropdown" style="display: flex;">
-                <button type="button" id="inspectorModalMenu" class="" style="flex: 0;" data-toggle="dropdown">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 8h16M0 3.5h16M0 12.5h16" />
+                <button type="button" id="inspectorModalMenu" style="flex: 0; border-left-width: 1px;" data-toggle="dropdown">
+                  <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 5h16M0 .5h16M0 9.5h16" stroke="#606060" stroke-linecap="square"/>
                   </svg>
                 </button>
-                <button type="button" id="inspectorModalCopy" class="" style="flex: 1;">
+                <button type="button" id="inspectorModalCopy" style="flex: 1; border-left-width: 0px;">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 3V0H2v12h4v3h9V3h-3Zm-6 8H3V1h8v2H6v8Zm8 3H7V4h7v10Z" fill="#606060" />
                   </svg>

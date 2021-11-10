@@ -3,6 +3,7 @@
 #include <QMap>
 #include <QRegularExpressionMatch>
 #include <QCryptographicHash>
+#include <QJsonParseError>
 #include "every_cpp.h"
 
 
@@ -110,6 +111,30 @@ namespace BrowserAutomationStudioFramework
     {
         CheckCode = true;
         this->AllowedCode = AllowedCode;
+    }
+
+    bool Preprocessor::IsValidEmbeddedCall(const QString& Code)
+    {
+        if(CheckCode)
+        {
+            QRegularExpression Regexp("^_prepare_function_and_call\\s*\\(\\s*\\\"[a-zA-Z_0-9]+\\\"\\s*\\,\\s*(.*)\\)\\!$");
+            QRegularExpressionMatch Match = Regexp.match(Code);
+            if(Match.hasMatch())
+            {
+                QString JsonString = QString("[") + Match.captured(1) + QString("]");
+                QJsonParseError err;
+                QJsonDocument::fromJson(JsonString.toUtf8(), &err);
+                if (err.error != QJsonParseError::NoError)
+                {
+                    abort();
+                }
+
+            }else
+            {
+                abort();
+            }
+        }
+        return true;
     }
 
     bool Preprocessor::IsCodeAllowed(const QString& Code)

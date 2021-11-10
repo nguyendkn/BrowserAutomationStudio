@@ -3557,6 +3557,13 @@ namespace BrowserAutomationStudioFramework
             EmbeddedIsApiCall = true;
             EmbeddedExecutingApiCode = true;
             EmbeddedIsFunctionCall = ApiString.startsWith("_prepare_function_and_call");
+            if(EmbeddedIsFunctionCall)
+            {
+                Preprocessor->IsValidEmbeddedCall(ApiString);
+            }else
+            {
+                Preprocessor->IsCodeAllowed(ApiString);
+            }
             QString s = QString("_embedded_parse_variables(%1)").arg(EmbeddedVariables);
             SequenceDecrypt = 0;
             engine->evaluate(s);

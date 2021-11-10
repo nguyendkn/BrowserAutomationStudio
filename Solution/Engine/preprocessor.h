@@ -42,6 +42,8 @@ namespace BrowserAutomationStudioFramework
         virtual void SetKey(const QByteArray& Key);
         virtual void SetAllowedCode(const QStringList& AllowedCode);
         virtual bool IsCodeAllowed(const QString& Code);
+        virtual bool IsValidEmbeddedCall(const QString& Code);
+
 
         void SetIsRecord(bool IsRecord);
         bool GetIsRecord();

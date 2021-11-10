@@ -46,6 +46,19 @@ window.JsonTreeNode = {
       this.isExpanded = !this.isExpanded;
     },
 
+    edit() {
+      const message = {
+        json: {
+          value: this.value,
+          type: this.type,
+          path: this.path
+        },
+        type: 'edit'
+      };
+
+      window.top.postMessage(message, '*');
+    },
+
     formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD HH:mm:ss [UTC]Z');
     }
@@ -93,7 +106,10 @@ window.JsonTreeNode = {
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
         <template v-else>{{ value }}</template>
       </span>
-      <div style="position: absolute; right: 0; top: 0;">
+      <div style="position: absolute; display: flex; right: 0; top: 0;">
+        <button @click="edit">
+          <icon-edit />
+        </button>
         <button v-if="type === 'object' || type  === 'array'" @click="toggle">
           <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
         </button>

@@ -70,40 +70,44 @@
   });
 
   function showModal(options) {
-    // const callback = result => this.trigger(`modal:${result.cancel ? 'cancel' : 'accept'}`, result);
-    const modal = new Inspector.Modal({ ...options });
-    return modal.render();
-  }
+    const modal = new Inspector.Modal({
+      ...options
+      callback: ({ cancel, value, type }) => {
+        if (!cancel) {
+          let [root, ...path] = options.path;
+          path = path.map(k => `['${k}']`).join('');
 
-  function updateVariable([root, ...path], value, type) {
-    path = path.map(k => `['${k}']`).join('');
-
-    _.attempt(() => {
-      if (type === 'date') {
-        value = `_parse_date('${value}', 'auto')`;
-      } else if (type === 'custom') {
-        value = JSON.stringify(eval(`(${value})`));
-      } else if (type === 'string') {
-        value = JSON.stringify(value);
-      }
-
-      VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
-        (function () {
-          try {
-            var root = ${JSON.stringify(root)};
-            if (root.indexOf("GLOBAL:") === 0) {
-              root = root.slice(7);
-              var obj = JSON.parse(P("basglobal", root) || "{}");
-              obj${path} = ${value};
-              PSet("basglobal", root, JSON.stringify(obj));
-            } else {
-              GLOBAL["VAR_" + root]${path} = ${value};
+          _.attempt(() => {
+            if (type === 'date') {
+              value = `_parse_date('${value}', 'auto')`;
+            } else if (type === 'custom') {
+              value = JSON.stringify(eval(`(${value})`));
+            } else if (type === 'string') {
+              value = JSON.stringify(value);
             }
-          } catch (e) {}
-        })();
-        section_start("test", -3)!
-      `);
+
+            VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
+              (function () {
+                try {
+                  var root = ${JSON.stringify(root)};
+                  if (root.indexOf("GLOBAL:") === 0) {
+                    root = root.slice(7);
+                    var obj = JSON.parse(P("basglobal", root) || "{}");
+                    obj${path} = ${value};
+                    PSet("basglobal", root, JSON.stringify(obj));
+                  } else {
+                    GLOBAL["VAR_" + root]${path} = ${value};
+                  }
+                } catch (e) {}
+              })();
+              section_start("test", -3)!
+            `);
+          });
+        }
+      }
     });
+
+    return modal.render();
   }
 
   function prepareData(data) {

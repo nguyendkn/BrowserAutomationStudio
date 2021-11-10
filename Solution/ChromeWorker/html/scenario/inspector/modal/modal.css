@@ -67,6 +67,19 @@
   min-height: 24px;
 }
 
+.inspector-modal-form > div {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.inspector-modal-tools > button {
+  justify-content: center;
+  background: transparent;
+  padding: 12px 0;
+  display: flex;
+  outline: 0;
+  border: 0;
+}
+
 .inspector-modal-header > button {
   background: transparent;
   position: absolute;
@@ -92,7 +105,6 @@
 }
 
 .inspector-modal-content {
-  border: 1px solid #f6f6f6;
   background-color: #fff;
   -webkit-user-drag: none;
   position: relative;
@@ -127,12 +139,10 @@
 
 .inspector-modal-footer {
   justify-content: space-between;
-  align-items: normal;
   display: flex;
 }
 
 .inspector-modal-body {
-  align-items: center;
   margin: 15px 0 24px;
   padding: 15px 0;
   flex-flow: column;
@@ -140,7 +150,6 @@
 }
 
 .inspector-modal-form {
-  border: 1px solid #d9d9d9;
   flex-flow: column;
   display: flex;
   width: 100%;

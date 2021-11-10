@@ -23,6 +23,7 @@ SOURCES += main.cpp \
     compilewindow.cpp \
     compiler.cpp \
     recentswidget.cpp \
+    scriptallowedcodesaver.cpp \
     singleapplication.cpp \
     databasestatedialog.cpp \
     httpsniffer.cpp \
@@ -39,6 +40,7 @@ HEADERS += mainwindow.h \
     compiler.h \
     every_cpp.h \
     recentswidget.h \
+    scriptallowedcodesaver.h \
     singleapplication.h \
     databasestatedialog.h \
     httpsniffer.h \

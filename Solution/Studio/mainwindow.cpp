@@ -811,7 +811,7 @@ void MainWindow::Compile()
         CompileResults results;
         connect(&results,SIGNAL(CreateArchive()),this,SLOT(CreateArchive()));
         connect(&results,SIGNAL(SaveCurrentProject()),this,SLOT(SavePrevious()));
-        results.Init(compiler,CurrentFileName,compile->GetIsOverrideRemote(),PremiumUsername,PremiumPassword);
+        results.Init(compiler, _ModuleManager, CurrentFileName,compile->GetIsOverrideRemote(),PremiumUsername,PremiumPassword);
         results.exec();
         PremiumUsername = results.GetPremiumUsername();
         PremiumPassword = results.GetPremiumPassword();

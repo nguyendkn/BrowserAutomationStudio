@@ -10,6 +10,7 @@
 #include <QDomDocument>
 #include "preprocessor.h"
 #include "noneencryptor.h"
+#include "scriptallowedcodesaver.h"
 
 #include "ui_compileresults.h"
 
@@ -23,8 +24,9 @@ CompileResults::CompileResults(QWidget *parent) :
     _HttpClientFactory = new HttpClientFactory(this);
 }
 
-void CompileResults::Init(Compiler* _Compiler, const QString& CurrentProject, bool IsOverrideRemote, const QString& PremiumUsername, const QString& PremiumPassword)
+void CompileResults::Init(Compiler* _Compiler, IModuleManager *ModuleManager, const QString& CurrentProject, bool IsOverrideRemote, const QString& PremiumUsername, const QString& PremiumPassword)
 {
+    this->ModuleManager = ModuleManager;
     this->CurrentProject = CurrentProject;
     this->_Compiler = _Compiler;
 
@@ -176,6 +178,8 @@ void CompileResults::Submit()
     NoneEncryptor _NoneEncryptor;
     _Preprocessor.SetEncryptor(&_NoneEncryptor);
 
+    ScriptAllowedCodeSaver _ScriptAllowedCodeSaver;
+
     int ParanoicLevel = _Compiler->GetProtectionStrength();
     if(ParanoicLevel > 0)
     {
@@ -188,16 +192,31 @@ void CompileResults::Submit()
         if(Document.setContent(DataRaw, false))
         {
             QDomElement ProjectElement = Document.documentElement();
+
+            //Generate allowed code
+            QDomElement EmbeddedDataElement = ProjectElement.firstChildElement("EmbeddedData");
+            QDomNode EmbeddedDataTextElement = EmbeddedDataElement.firstChild();
+            QString EmbeddedData = EmbeddedDataTextElement.toText().data();
+            QStringList Exclude;
+            QList<QString> EngineCodeList = ModuleManager->GetModuleEngineCode(Exclude);
+            QList<QString> AllowedCodeItems = _ScriptAllowedCodeSaver.Process(EmbeddedData, EngineCodeList);
+            QDomNode AllowedCodeElement = Document.createElement("AllowedCode");
+            QDomNode AllowedCodeItemText = Document.createTextNode(AllowedCodeItems.join(","));
+            AllowedCodeElement.appendChild(AllowedCodeItemText);
+
+            ProjectElement.insertAfter(AllowedCodeElement, EmbeddedDataElement);
+
+
+            //Preprocess script
             QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
             QDomNode ScriptTextElement = ScriptElement.firstChild();
             QString Script = ScriptTextElement.toText().data();
             Script = _Preprocessor.Preprocess(Script, ParanoicLevel, true);
             Script = _Preprocessor.Encrypt(Script);
-
             QDomNode NewScriptTextElement = Document.createCDATASection(Script);
             ScriptElement.replaceChild(NewScriptTextElement, ScriptTextElement);
-            DataRaw = Document.toString();
 
+            DataRaw = Document.toString();
         }
     }
 

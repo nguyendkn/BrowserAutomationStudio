@@ -2,6 +2,7 @@
 #include <QRegExp>
 #include <QMap>
 #include <QRegularExpressionMatch>
+#include <QCryptographicHash>
 #include "every_cpp.h"
 
 
@@ -103,6 +104,27 @@ namespace BrowserAutomationStudioFramework
     void Preprocessor::SetKey(const QByteArray& Key)
     {
         this->Key = Key;
+    }
+
+    void Preprocessor::SetAllowedCode(const QStringList& AllowedCode)
+    {
+        CheckCode = true;
+        this->AllowedCode = AllowedCode;
+    }
+
+    bool Preprocessor::IsCodeAllowed(const QString& Code)
+    {
+        if(CheckCode)
+        {
+            QCryptographicHash hash(QCryptographicHash::Sha256);
+            hash.addData(Code.toUtf8());
+            QString AdditionalScriptHash = QString::fromUtf8(hash.result().toHex());
+            if(!this->AllowedCode.contains(AdditionalScriptHash))
+            {
+                abort();
+            }
+        }
+        return true;
     }
 
     QString Preprocessor::Encrypt(const QString& Script,int ParanoicLevel)

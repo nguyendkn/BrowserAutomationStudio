@@ -20,6 +20,8 @@ namespace BrowserAutomationStudioFramework
         QString Encrypt(const QString& Script,int ParanoicLevel);
         IEncryptor* Encryptor;
         QByteArray Key;
+        QStringList AllowedCode;
+        bool CheckCode = false;
         int EncryptIterator;
         bool IsRecord;
 
@@ -38,6 +40,8 @@ namespace BrowserAutomationStudioFramework
         virtual void SetEncryptor(IEncryptor* Encryptor);
         virtual IEncryptor* GetEncryptor();
         virtual void SetKey(const QByteArray& Key);
+        virtual void SetAllowedCode(const QStringList& AllowedCode);
+        virtual bool IsCodeAllowed(const QString& Code);
 
         void SetIsRecord(bool IsRecord);
         bool GetIsRecord();

@@ -15,6 +15,8 @@ namespace BrowserAutomationStudioFramework
         virtual void SetEncryptor(IEncryptor* Encryptor) = 0;
         virtual IEncryptor* GetEncryptor() = 0;
         virtual void SetKey(const QByteArray& Key) = 0;
+        virtual void SetAllowedCode(const QStringList& AllowedCode) = 0;
+        virtual bool IsCodeAllowed(const QString& Code) = 0;
 
         virtual QString Preprocess(const QString& Script,int ParanoicLevel,bool IsMainScript) = 0;
         virtual QString Decrypt(const QString& Script) = 0;

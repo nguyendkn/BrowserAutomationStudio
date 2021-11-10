@@ -404,6 +404,12 @@ namespace BrowserAutomationStudioFramework
         return Script;
     }
 
+    QString XmlResourceController::GetAllowedCode()
+    {
+        return AllowedCode;
+    }
+
+
     QString XmlResourceController::GetModuleInfo()
     {
         return ModuleInfo;
@@ -778,6 +784,10 @@ namespace BrowserAutomationStudioFramework
             {
                 xmlReader.readNext();
                 ModuleInfo = xmlReader.text().toString();
+            }else if(xmlReader.name() == "AllowedCode" && token == QXmlStreamReader::StartElement)
+            {
+                xmlReader.readNext();
+                AllowedCode = xmlReader.text().toString();
             }else if(xmlReader.name() == "Module" && token == QXmlStreamReader::StartElement)
             {
                 QString Name;

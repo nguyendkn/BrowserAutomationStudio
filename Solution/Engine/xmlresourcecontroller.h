@@ -24,6 +24,7 @@ namespace BrowserAutomationStudioFramework
         QString ConnectionPassword;
         QString FileName;
         QString FileContent;
+        QString AllowedCode;
         bool Result;
         QString ErrorString;
         QString ScriptName;
@@ -129,6 +130,7 @@ namespace BrowserAutomationStudioFramework
 
         QString GetEmbeddedData();
         QString GetScript();
+        QString GetAllowedCode();
         QString GetModuleInfo();
         QString GetDatabaseId();
         QString GetSchema();

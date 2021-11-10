@@ -548,7 +548,9 @@ namespace BrowserAutomationStudioFramework
         int ScriptLength = AdditionalScripts.size();
         for(int i = 0;i<ScriptLength;i++)
         {
-            AdditionalScripts[i] = Preprocessor->Preprocess(AdditionalScripts[i],0,false);
+            QString AdditionalScript = AdditionalScripts[i];
+            Preprocessor->IsCodeAllowed(AdditionalScript);
+            AdditionalScripts[i] = Preprocessor->Preprocess(AdditionalScript,0,false);
         }
         //Script = Preprocessor->Preprocess(Script,0);
 

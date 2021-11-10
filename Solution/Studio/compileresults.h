@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "compiler.h"
 #include "httpclientfactory.h"
+#include "imodulemanager.h"
 
 
 namespace Ui {
@@ -19,6 +20,7 @@ class CompileResults : public QDialog
     Compiler *_Compiler;
     QString CurrentProject;
     HttpClientFactory *_HttpClientFactory;
+    IModuleManager *ModuleManager;
     enum
     {
         Initial,
@@ -29,7 +31,7 @@ class CompileResults : public QDialog
     QString PremiumPassword;
 public:
     explicit CompileResults(QWidget *parent = nullptr);
-    void Init(Compiler* _Compiler, const QString& CurrentProject, bool IsOverrideRemote, const QString& PremiumUsername, const QString& PremiumPassword);
+    void Init(Compiler* _Compiler, IModuleManager *ModuleManager, const QString& CurrentProject, bool IsOverrideRemote, const QString& PremiumUsername, const QString& PremiumPassword);
     ~CompileResults();
     QString GetPremiumUsername();
     QString GetPremiumPassword();

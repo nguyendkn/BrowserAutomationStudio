@@ -44,6 +44,10 @@ window.JsonTreeNode = {
   methods: {
     toggle() {
       this.isExpanded = !this.isExpanded;
+    },
+
+    formatDate(date) {
+      return dayjs(date).format('YYYY-MM-DD HH:mm:ss [UTC]Z');
     }
   },
 
@@ -86,6 +90,7 @@ window.JsonTreeNode = {
           <span v-show="!isExpanded">{{ $tc('items', keys.length) }}</span>
           <span class="jt-bracket">]</span>
         </template>
+        <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
         <template v-else>{{ value }}</template>
       </span>
       <div style="position: absolute; right: 0; top: 0;">

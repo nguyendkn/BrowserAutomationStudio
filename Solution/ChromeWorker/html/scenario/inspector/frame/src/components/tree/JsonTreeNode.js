@@ -70,6 +70,7 @@ window.JsonTreeNode = {
             :value="value[key]"
             :path="path.concat(key)"
           />
+          <span v-show="!isExpanded">{{ $tc('items', keys.length) }}</span>
           <span class="jt-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
@@ -82,6 +83,7 @@ window.JsonTreeNode = {
             :value="value[key]"
             :path="path.concat(key)"
           />
+          <span v-show="!isExpanded">{{ $tc('items', keys.length) }}</span>
           <span class="jt-bracket">]</span>
         </template>
         <template v-else>{{ value }}</template>

@@ -67,6 +67,17 @@
   min-height: 24px;
 }
 
+.inspector-modal-header > button {
+  background: transparent;
+  position: absolute;
+  display: flex;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  right: 0;
+  top: 0;
+}
+
 .inspector-modal-select.disabled {
   background-color: #606060 !important;
   opacity: 0.8;
@@ -107,6 +118,7 @@
 }
 
 .inspector-modal-header {
+  position: relative;
   line-height: 18px;
   font-weight: bold;
   font-size: 16px;

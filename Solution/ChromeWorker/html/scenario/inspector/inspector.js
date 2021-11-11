@@ -73,20 +73,20 @@
     const modal = new Inspector.Modal({
       ...options,
       callback({ cancel, value, type }) {
-        if (!cancel) {
-          let [root, ...path] = options.path;
-          path = path.map(k => `['${k}']`).join('');
+        if (cancel) return;
+        let [root, ...path] = options.path;
+        path = path.map(k => `['${k}']`).join('');
 
-          _.attempt(() => {
-            if (type === 'date') {
-              value = `_parse_date('${value}', 'auto')`;
-            } else if (type === 'custom') {
-              value = JSON.stringify(eval(`(${value})`));
-            } else if (type === 'string') {
-              value = JSON.stringify(value);
-            }
+        _.attempt(() => {
+          if (type === 'date') {
+            value = `_parse_date('${value}', 'auto')`;
+          } else if (type === 'custom') {
+            value = JSON.stringify(eval(`(${value})`));
+          } else if (type === 'string') {
+            value = JSON.stringify(value);
+          }
 
-            VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
+          VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
               (function () {
                 try {
                   var root = ${JSON.stringify(root)}, value = ${value};
@@ -102,8 +102,8 @@
               })();
               section_start("test", -3)!
             `);
-          });
-        }
+        });
+        
       }
     });
 

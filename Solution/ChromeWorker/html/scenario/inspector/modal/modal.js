@@ -26,15 +26,13 @@
       },
 
       'click #inspectorModalCopyData'(e) {
-        ClipboardJS.copy(this.model.get('value'), {
-          container: this.el
-        });
+        const text = this.model.get('value');
+        ClipboardJS.copy(text, { container: this.el });
       },
 
       'click #inspectorModalCopyName'(e) {
-        ClipboardJS.copy(this.model.get('name'), {
-          container: this.el
-        });
+        const text = this.model.get('name');
+        ClipboardJS.copy(text, { container: this.el });
       },
 
       'change select[data-style]'(e) {

@@ -2,7 +2,8 @@
 
 .dropdown-menu > li > .inspector-modal-select-option.active:hover,
 .dropdown-menu > li > .inspector-modal-select-option.active,
-.dropdown-menu > li > .inspector-modal-select-option:hover {
+.dropdown-menu > li > .inspector-modal-select-option:hover,
+.dropdown-menu > li > .inspector-modal-select-option:focus {
   background-color: #606060;
   background-image: none;
   color: #fff;
@@ -16,7 +17,6 @@
   background-image: none;
   padding: 15px 16px;
   line-height: 18px;
-  font-weight: 500;
   font-size: 13px;
   color: #fff;
   display: flex;

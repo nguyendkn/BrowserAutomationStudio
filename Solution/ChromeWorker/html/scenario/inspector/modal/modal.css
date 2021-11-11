@@ -143,9 +143,8 @@
 }
 
 .inspector-modal-body {
-  margin: 15px 0 24px;
-  padding: 15px 0;
   flex-flow: column;
+  padding: 20px 0;
   display: flex;
 }
 

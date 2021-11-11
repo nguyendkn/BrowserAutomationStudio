@@ -130,34 +130,29 @@
             </select>
             <div class="inspector-modal-body-content">
               <form class="inspector-modal-form" action="javascript:void(0)">
-                <% const style = v => 'display: ' + (v === type ? 'block;' : 'none;') %>
-                <div style="<%= style('custom') %>" data-input-type="custom">
-                  <textarea><%- type === 'custom' ? value : '' %></textarea>
-                </div>
-                <div style="<%= style('string') %>" data-input-type="string">
-                  <textarea><%- type === 'string' ? value : '' %></textarea>
-                </div>
-                <div style="<%= style('number') %>" data-input-type="number">
-                  <input type="number" value="<%- type === 'number' ? value : 0 %>">
-                </div>
-                <div style="<%= style('date') %>" data-input-type="date">
-                  <input type="text" value="<%- type === 'date' ? value : '' %>">
-                </div>
-                <div style="<%= style('boolean') %>" data-input-type="boolean">
-                  <% _.each(['false', 'true'], (val, at) => { %>
-                    <div class="input-radio">
-                      <% const id = _.uniqueId('inspectorModalInput') %>
-                      <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : at === 0) ? 'checked' : '' %>>
-                      <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
-                    </div>
-                  <% }) %>
-                </div>
-                <div style="<%= style('undefined') %>" data-input-type="undefined">
-                  <input type="hidden" value="undefined">
-                </div>
-                <div style="<%= style('null') %>" data-input-type="null">
-                  <input type="hidden" value="null">
-                </div>
+                <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
+                  <div data-input-type="<%= item %>" style="display: <%= item === type ? 'block' : 'none' %>;">
+                    <% if (item === 'boolean') { %>
+                      <% _.each(['false', 'true'], (val, at) => { %>
+                        <div class="input-radio">
+                          <% const id = _.uniqueId('inspectorModalInput') %>
+                          <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : at === 0) ? 'checked' : '' %>>
+                          <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
+                        </div>
+                      <% }) %>
+                    <% } else if (item === 'custom') { %>
+                      <textarea><%- type === 'custom' ? value : '' %></textarea>
+                    <% } else if (item === 'string') { %>
+                      <textarea><%- type === 'string' ? value : '' %></textarea>
+                    <% } else if (item === 'number') { %>
+                      <input type="number" value="<%- type === 'number' ? value : 0 %>">
+                    <% } else if (item === 'date' ) { %>
+                      <input type="text" value="<%- type === 'date' ? value : '' %>">
+                    <% } else { %>
+                      <input type="hidden" value="<%= item %>">
+                    <% } %>
+                  </div>
+                <% }) %>
               </form>
               <div class="inspector-modal-tools dropdown" style="display: flex;">
                 <button type="button" id="inspectorModalShowMenu" style="flex: 0; border-left-width: 1px;" data-toggle="dropdown">

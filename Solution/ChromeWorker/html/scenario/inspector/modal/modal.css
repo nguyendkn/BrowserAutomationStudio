@@ -57,6 +57,7 @@
   padding: 2px 2px;
   resize: vertical;
   width: 100%;
+  outline: 0;
   border: 0;
 }
 

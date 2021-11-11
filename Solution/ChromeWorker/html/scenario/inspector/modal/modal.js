@@ -129,7 +129,7 @@
               <% }) %>
             </select>
             <div class="inspector-modal-body-content">
-              <form class="inspector-modal-form" action="javascript:void(0)">
+              <form class="inspector-modal-form" onsubmit="return false">
                 <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                   <div data-input-type="<%= item %>" style="display: <%= item === type ? 'block' : 'none' %>;">
                     <% if (item === 'boolean') { %>

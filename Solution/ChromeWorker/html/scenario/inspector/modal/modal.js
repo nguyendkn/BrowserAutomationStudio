@@ -22,12 +22,10 @@
 
         if (!valid) {
           this.$('#inspectorModalError').html(el.validationMessage);
-        } else {
-          this.model.set('value', el.value);
         }
 
         $(el).closest('form').toggleClass('invalid', !valid);
-        this.$('.btn-accept').prop('disabled', !valid);
+        this.model.set('value', el.value);
       },
 
       'click #inspectorModalCopyData'(e) {
@@ -59,24 +57,27 @@
 
     initialize({ callback, value, type, name }) {
       if (['object', 'array'].includes(type)) type = 'custom';
-      value = type === 'custom' ? JSON.stringify(value) : String(value);
+      const attrs = { value: type === 'custom' ? JSON.stringify(value) : String(value), type, name };
 
-      const model = new Model({ value, type, name }).on('change:type', (_, type) => {
-        const $inputs = this.$('[data-input-type]');
-        $inputs.parent('form').trigger('reset');
+      this.model = new Model(attrs).on('change', model => {
+        const type = model.get('type'), $form = this.$('form');
 
-        const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
-          .hide().find(':input').prop('required', false);
+        if (model.hasChanged('type')) {
+          const $inputs = $form.trigger('reset').find('[data-input-type]');
 
-        const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
-          .show().find(':input').prop('required', true);
+          const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
+            .hide().find(':input').prop('required', false);
 
-        $target.first().trigger('input');
-      });
+          const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
+            .show().find(':input').prop('required', true);
 
-      model.bind('change', () => {
-        const disabled = _.isEqual({ value, type, name }, model.toJSON());
-        this.$('.btn-accept').prop('disabled', disabled);
+          $target.first().trigger('input');
+        } else if (model.hasChanged('value')) {
+          this.$('.btn-accept').prop('disabled', () => {
+            const equal = _.isEqual(model.toJSON(), attrs);
+            return equal ? true : $form.hasClass('invalid');
+          });
+        }
       });
 
       this.once('accept', () => {
@@ -88,8 +89,6 @@
         const json = this.close().model.toJSON();
         callback({ ...json, cancel: true });
       });
-
-      this.model = model;
     },
 
     render() {

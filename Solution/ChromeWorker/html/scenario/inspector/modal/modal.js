@@ -75,20 +75,20 @@
         } else if (model.hasChanged('value')) {
           this.$('.btn-accept').prop('disabled', () => {
             const equal = _.isEqual(model.toJSON(), attrs);
-            return equal ? true : $form.hasClass('invalid');
+            return equal || $form.hasClass('invalid');
           });
         }
       });
 
-      this.once('accept', () => {
-        const json = this.close().model.toJSON();
-        callback({ ...json, cancel: false });
-      });
+      this.once('accept', () => callback({ 
+        ...this.close().model.toJSON(),
+        cancel: false
+      }));
 
-      this.once('cancel', () => {
-        const json = this.close().model.toJSON();
-        callback({ ...json, cancel: true });
-      });
+      this.once('cancel', () => callback({
+        ...this.close().model.toJSON(),
+        cancel: true
+      }));
     },
 
     render() {

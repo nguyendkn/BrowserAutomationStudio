@@ -39,15 +39,15 @@
         this.model.set('type', e.target.value);
       },
 
-      'click .btn-accept'() {
+      'click .btn-accept'(e) {
         this.trigger('submit');
       },
 
-      'click .btn-cancel'() {
+      'click .btn-cancel'(e) {
         this.trigger('cancel');
       },
 
-      'hidden.bs.modal'() {
+      'hidden.bs.modal'(e) {
         this.trigger('cancel');
       }
     },
@@ -56,7 +56,7 @@
       if (['object', 'array'].includes(type)) type = 'custom';
       value = type === 'custom' ? JSON.stringify(value) : String(value);
 
-      const model = new Model({ value, type, name }).on('change:type', (__, type) => {
+      const model = new Model({ value, type, name }).on('change:type', (_, type) => {
         const $inputs = this.$('[data-input-type]');
         $inputs.parent('form').trigger('reset');
 
@@ -75,8 +75,16 @@
       });
 
       this.bind('submit', () => {
-        const valid = this.$('form')[0].reportValidity();
-        if (valid || model.get('type') === 'string') this.trigger('accept');
+        const $form = this.$('form'), valid = $form[0].checkValidity();
+
+        if (!valid) {
+          const $input = $form.find('[required]');
+          this.$('#inspectorModalError').html(
+            $input[0].validationMessage
+          );
+        } else {
+          this.trigger('accept');
+        }
       });
 
       this.once('accept', () => {
@@ -131,28 +139,30 @@
             <div class="inspector-modal-body-content">
               <form class="inspector-modal-form" onsubmit="return false">
                 <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
+                  <% const required = item === type ? 'required' : '' %>
                   <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
                     <% if (item === 'boolean') { %>
                       <% _.each(['false', 'true'], (val, at) => { %>
                         <div class="input-radio">
                           <% const id = _.uniqueId('inspectorModalInput') %>
-                          <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === 'boolean' ? value === val : at === 0) ? 'checked' : '' %>>
+                          <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === item ? value === val : at === 0) ? 'checked' : '' %> <%= required %>>
                           <label for="<%= id %>"><%= tr(_.upperFirst(val)) %></label>
                         </div>
                       <% }) %>
                     <% } else if (item === 'custom') { %>
-                      <textarea><%- type === 'custom' ? value : '' %></textarea>
+                      <textarea <%= required %>><%- type === item ? value : '' %></textarea>
                     <% } else if (item === 'string') { %>
-                      <textarea><%- type === 'string' ? value : '' %></textarea>
+                      <textarea <%= required %>><%- type === item ? value : '' %></textarea>
                     <% } else if (item === 'number') { %>
-                      <input type="number" value="<%- type === 'number' ? value : 0 %>">
+                      <input type="number" value="<%- type === item ? value : 0 %>" <%= required %>>
                     <% } else if (item === 'date' ) { %>
-                      <input type="text" value="<%- type === 'date' ? value : '' %>">
+                      <input type="text" value="<%- type === item ? value : '' %>" <%= required %>>
                     <% } else { %>
                       <input type="hidden" value="<%= item %>">
                     <% } %>
                   </div>
                 <% }) %>
+                <div id="inspectorModalError" style="border: 1px solid #d8695f; background: #d8695f; text-align: center; padding: 4px; color: #fff; font-size: 12px; line-height: 15px;"></div>
               </form>
               <div class="inspector-modal-tools dropdown" style="display: flex;">
                 <button type="button" id="inspectorModalShowMenu" style="flex: 0; border-left-width: 1px;" data-toggle="dropdown">

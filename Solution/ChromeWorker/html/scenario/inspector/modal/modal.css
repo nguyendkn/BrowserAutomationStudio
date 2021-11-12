@@ -114,6 +114,14 @@
   top: 10px;
 }
 
+.inspector-modal-header > h4 {
+  opacity: 1.0;
+}
+
+.inspector-modal-header > h6 {
+  opacity: 0.5;
+}
+
 .inspector-modal-select.disabled {
   background-color: #606060 !important;
   opacity: 0.8;

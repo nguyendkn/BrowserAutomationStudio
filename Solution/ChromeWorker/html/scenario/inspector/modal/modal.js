@@ -111,8 +111,8 @@
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4 style="opacity: 1.0;"><%= tr('Edit the value of the "{name}" variable', { name }) %></h4>
-            <h6 style="opacity: 0.5;"><%= tr('Change or set data type and value') %></h6>
+            <h4><%= tr('Edit the value of the "{name}" variable', { name }) %></h4>
+            <h6><%= tr('Change or set data type and value') %></h6>
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z" fill="#606060"/>

@@ -222,19 +222,19 @@
   });
 
   _.extend(_L, {
-    // Hack - use the `$` symbol to avoid overriding the translation after loading it from modules
-    '$Date': { ru: '$Дата' },
-    '$Array': { ru: '$Массив' },
-    '$Number': { ru: '$Число' },
-    '$String': { ru: '$Строка' },
-    '$Object': { ru: '$Объект' },
-    '$Custom': { ru: '$Особый' },
-    '$Boolean': { ru: '$Булево' },
-    'Clear data': { ru: 'Очистить данные' },
-    'Save changes': { ru: 'Сохранить изменения' },
-    'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
-    'Copy the variable name': { ru: 'Копировать имя переменной' },
+    'Edit the value of the "{name}" variable': { ru: 'Изменить значение переменной "{name}"' },
     'Search for variable in project': { ru: 'Поиск переменной в проекте' },
-    'Edit the value of the "{name}" variable': { ru: 'Изменить значение переменной "{name}"' }
+    'Copy the variable name': { ru: 'Копировать имя переменной' },
+    'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
+    'Save changes': { ru: 'Сохранить изменения' },
+    'Clear data': { ru: 'Очистить данные' },
+    // Hack - use the `$` symbol to avoid overriding the translation after loading it from modules
+    '$Boolean': { ru: '$Булево' },
+    '$Custom': { ru: '$Особый' },
+    '$Object': { ru: '$Объект' },
+    '$String': { ru: '$Строка' },
+    '$Number': { ru: '$Число' },
+    '$Array': { ru: '$Массив' },
+    '$Date': { ru: '$Дата' }
   });
 })(window);

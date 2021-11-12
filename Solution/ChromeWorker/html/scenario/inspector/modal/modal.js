@@ -15,14 +15,19 @@
     className: 'modal modal-centered',
 
     events: {
-      'input [data-input-type] textarea'(e) {
-        if (e.target.type === 'radio' && !e.target.checked) return;
-        this.model.set('value', e.target.value);
-      },
+      'input [data-input-type] :input'(e) {
+        const el = e.target;
+        if (el.type === 'radio' && !el.checked) return;
+        const valid = el.checkValidity() || this.model.get('type') === 'string';
 
-      'input [data-input-type] input'(e) {
-        if (e.target.type === 'radio' && !e.target.checked) return;
-        this.model.set('value', e.target.value);
+        if (!valid) {
+          this.$('#inspectorModalError').html(el.validationMessage);
+        } else {
+          this.model.set('value', el.value);
+        }
+
+        $(el).closest('form').toggleClass('invalid', !valid);
+        this.$('.btn-accept').prop('disabled', !valid);
       },
 
       'click #inspectorModalCopyData'(e) {
@@ -40,7 +45,7 @@
       },
 
       'click .btn-accept'(e) {
-        this.trigger('submit');
+        this.trigger('accept');
       },
 
       'click .btn-cancel'(e) {
@@ -72,19 +77,6 @@
       model.bind('change', () => {
         const disabled = _.isEqual({ value, type, name }, model.toJSON());
         this.$('.btn-accept').prop('disabled', disabled);
-      });
-
-      this.bind('submit', () => {
-        const $form = this.$('form'), valid = $form[0].checkValidity();
-
-        if (!valid) {
-          const $input = $form.find('[required]');
-          this.$('#inspectorModalError').html(
-            $input[0].validationMessage
-          );
-        } else {
-          this.trigger('accept');
-        }
       });
 
       this.once('accept', () => {
@@ -162,7 +154,7 @@
                     <% } %>
                   </div>
                 <% }) %>
-                <div id="inspectorModalError" style="border: 1px solid #d8695f; background: #d8695f; text-align: center; padding: 4px; color: #fff; font-size: 12px; line-height: 15px;"></div>
+                <span id="inspectorModalError"></span>
               </form>
               <div class="inspector-modal-tools dropdown" style="display: flex;">
                 <button type="button" id="inspectorModalShowMenu" style="flex: 0; border-left-width: 1px;" data-toggle="dropdown">

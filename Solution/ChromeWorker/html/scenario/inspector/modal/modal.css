@@ -69,6 +69,30 @@
   min-height: 24px;
 }
 
+.inspector-modal-form.invalid > span {
+  display: block;
+}
+
+.inspector-modal-form.invalid {
+  border-color: #d8695f;
+}
+
+.inspector-modal-form > span {
+  border: thin solid #d8695f;
+  background: #d8695f;
+  text-align: center;
+  line-height: 15px;
+  font-size: 12px;
+  display: none;
+  padding: 4px;
+  color: #fff;
+}
+
+.inspector-modal-form > div {
+  flex-flow: column;
+  display: flex;
+}
+
 .inspector-modal-tools > button {
   border: 1px solid #D9D9D9;
   justify-content: center;

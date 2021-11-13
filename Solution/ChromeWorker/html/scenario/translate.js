@@ -801,51 +801,58 @@ _L = {
 }
 
 
-function tr(key, values) {
-  if (typeof key === 'undefined') {
-    {
-      var all = $('*[data-placeholder]');
-      //console.log("Placeholder number " + all.length)
-      for (var i = 0; i < all.length; i++) {
-        var el = $(all[i]);
-        el.attr('placeholder', tr(el.attr('data-placeholder')));
-        el.removeAttr('data-placeholder');
+function tr(key)
+{
+	if(typeof(key) == "undefined")
+	{
+      {
+         var all = $("*[data-placeholder]")
+         //console.log("Placeholder number " + all.length)
+         for(var i = 0;i< all.length;i++)
+         {
+            var el = $(all[i])
+            el.attr("placeholder",tr(el.attr("data-placeholder")))
+            el.removeAttr("data-placeholder")
+         }
       }
-    }
 
-    {
-      var all = $('*[data-title]');
-      //console.log("Title number " + all.length)
-      for (var i = 0; i < all.length; i++) {
-        var el = $(all[i]);
-        el.attr('title', tr(el.attr('data-title')));
-        el.removeAttr('data-title');
+      {
+         var all = $("*[data-title]")
+         //console.log("Title number " + all.length)
+         for(var i = 0;i< all.length;i++)
+         {
+            var el = $(all[i])
+            el.attr("title",tr(el.attr("data-title")))
+            el.removeAttr("data-title")
+         }
       }
-    }
 
-    {
-      var all = $('.tr');
-      //console.log("Translate number " + all.length)
+      {
+         var all = $(".tr")
+         //console.log("Translate number " + all.length)
 
-      for (var i = 0; i < all.length; i++) {
-        var el = $(all[i]);
-        var key = el.html();
-        el.html(tr(key));
-        el.removeClass('tr');
+         for(var i = 0;i< all.length;i++)
+         {
+            var el = $(all[i])
+            var key = el.html()
+            el.html(tr(key))
+            el.removeClass("tr")
+         }
       }
-    }
 
-    return;
-  }
+		return;
+   }
+   
+	
+	if(typeof(_K) == "undefined" || _K == "en")
+		return key;
+	if(key in _L)
+	{
 
-  if (typeof _K === 'undefined' || _K === 'en') return key;
-
-  if (key in _L && _K in _L[key]) {
-    const res = _L[key][_K];
-    return !values ? res : res.replace(/{(.*?)}/g, (_, k) => {
-      return values[k];
-    });
-  }
-
-  return key;
+		if(_K in _L[key])
+		{
+			return _L[key][_K]
+		}
+	}
+	return key;
 }

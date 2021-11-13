@@ -861,8 +861,8 @@ function $t(key, values) {
   if (typeof _K === 'undefined') return key;
 
   if (key in _L) {
-    if (_K in _L[key]) {
-      const res = _L[key][_K];
+    const res = _L[key][_K];
+    if (res) {
       return !values ? res : res.replace(/{(.*?)}/g, (_, k) => {
         return values[k];
       });

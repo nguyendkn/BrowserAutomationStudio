@@ -46,7 +46,13 @@
 
       'click .btn-cancel': 'cancel',
 
-      'hidden.bs.modal': 'cancel'
+      'hidden.bs.modal': 'cancel',
+
+      'keydown'(e) {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          this.$('.btn-accept').click();
+        }
+      }
     },
 
     initialize({ callback, value, type, name }) {

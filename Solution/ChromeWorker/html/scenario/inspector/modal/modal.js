@@ -16,16 +16,16 @@
 
     events: {
       'input [data-input-type] :input'(e) {
-        const el = e.target;
+        const el = e.target, model = this.model;
         if (el.type === 'radio' && !el.checked) return;
-        const valid = el.checkValidity() || this.model.get('type') === 'string';
+        const valid = el.checkValidity() || model.get('type') === 'string';
 
         if (!valid) {
           this.$('#inspectorModalError').html(el.validationMessage);
         }
 
         $(el).closest('form').toggleClass('invalid', !valid);
-        this.model.set('value', el.value);
+        model.set('value', el.value);
       },
 
       'click #inspectorModalCopyData'(e) {

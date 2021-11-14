@@ -42,17 +42,11 @@
         this.model.set('type', e.target.value);
       },
 
-      'click .btn-accept'(e) {
-        this.trigger('accept');
-      },
+      'click .btn-accept': 'accept',
 
-      'click .btn-cancel'(e) {
-        this.trigger('cancel');
-      },
+      'click .btn-cancel': 'cancel',
 
-      'hidden.bs.modal'(e) {
-        this.trigger('cancel');
-      }
+      'hidden.bs.modal': 'cancel'
     },
 
     initialize({ callback, value, type, name }) {
@@ -79,16 +73,6 @@
           });
         }
       });
-
-      this.once('accept', () => callback({ 
-        ...this.close().model.toJSON(),
-        cancel: false
-      }));
-
-      this.once('cancel', () => callback({
-        ...this.close().model.toJSON(),
-        cancel: true
-      }));
     },
 
     render() {
@@ -98,6 +82,22 @@
         this.$el.modal({ backdrop: 'static' });
       }
 
+      return this;
+    },
+
+    accept() {
+      this.options.callback({
+        ...this.close().model.toJSON(),
+        cancel: false
+      });
+      return this;
+    },
+
+    cancel() {
+      this.options.callback({
+        ...this.close().model.toJSON(),
+        cancel: true
+      });
       return this;
     },
 

@@ -111,15 +111,21 @@
   outline: 0;
   border: 0;
   right: 0;
-  top: 10px;
+  top: -2px;
+}
+
+.inspector-modal-header > h4 + h6 {
+  margin-top: 3px;
 }
 
 .inspector-modal-header > h4 {
   opacity: 1.0;
+  margin: 0;
 }
 
 .inspector-modal-header > h6 {
   opacity: 0.5;
+  margin: 0;
 }
 
 .inspector-modal-select.disabled {
@@ -140,9 +146,9 @@
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
   position: relative;
-  padding: 25px 24px;
   user-select: none;
   flex-flow: column;
+  padding: 24px;
   display: flex;
   margin: 0 8px;
 }

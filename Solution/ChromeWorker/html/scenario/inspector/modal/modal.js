@@ -29,7 +29,10 @@
       },
 
       'click #inspectorModalSearchVariable'(e) {
-
+        _ActionFinder.Show();
+        $("#findinput").val(this.model.get('name'));
+        _ActionFinder.FindNext(true);
+        this.cancel();
       },
 
       'click #inspectorModalClearData'(e) {

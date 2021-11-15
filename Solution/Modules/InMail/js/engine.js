@@ -41,7 +41,7 @@ _InMail = {
 		};
 		
 		try{
-			this.api = new _InMail[protocol](autoConfig, host, port, encrypt, username, password, folder);
+			this.api = new _InMail[protocol](autoConfig, host, port, encrypt, username, password, folder, timeout);
 		}catch(e){
 			die('_InMail: ' + _K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing') : ('Класс протокола ' + protocol + ' поврежден или отсутствует'), true);
 		};
@@ -107,5 +107,136 @@ _InMail = {
 		if(api){
 			api.clearProxy();
 		};
+	},
+	
+	search: function(){
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
+		var sorts = _InMail.prepareSorts(_function_argument("sorts"));
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
+		
+		var api = _InMail.getApi();
+		
+		_if_else(sorts, function(){
+			_call_function(api.sort, {sorts: sorts, criteria: criteria, folder: folder})!
+		}, function(){
+			_call_function(api.search, {criteria: criteria, folder: folder})!
+		})!
+		
+		var res = _result_function();
+		
+		if(res.length){
+			_function_return(res);
+		}else{
+			if(errorNotFound){
+				_InMail.error('Could not find any letters matching the specified criteria in the specified mailbox folder', 'Не удалось найти ни одного письма, соответствующего указанным критериям, в указанной папке почтового ящика', 'search');
+			}else{
+				_function_return([]);
+			};
+		};
+	},
+	
+	searchLast: function(){
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.search, {criteria: ['ALL'], folder: folder})!
+		var res = _result_function();
+		
+		if(res.length){
+			_function_return(res.pop());
+		}else{
+			if(errorNotFound){
+				_InMail.error('Could not find the last letter in the specified mailbox folder', 'Не удалось найти последнее письмо в указанной папке почтового ящика', 'searchLast');
+			}else{
+				_function_return(0);
+			};
+		};
+	},
+	
+	searchOne: function(){
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
+		var sorts = _InMail.prepareSorts(_function_argument("sorts"));
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
+		
+		var api = _InMail.getApi();
+		
+		_if_else(sorts, function(){
+			_call_function(api.sort, {sorts: sorts, criteria: criteria, folder: folder})!
+		}, function(){
+			_call_function(api.search, {criteria: criteria, folder: folder})!
+		})!
+		
+		var res = _result_function();
+		
+		if(res.length){
+			_function_return(res.shift());
+		}else{
+			if(errorNotFound){
+				_InMail.error('Could not find a letter that matches the specified criteria in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанным критериям, в указанной папке почтового ящика', 'searchOne');
+			}else{
+				_function_return(0);
+			};
+		};
+	},
+	
+	prepareCriteria: function(criteria){
+		if(!_is_nilb(criteria)){
+			_validate_argument_type(criteria, ['array','string','object'], 'Search criteria', '_InMail.prepareCriteria');
+			
+			if(Array.isArray(criteria)){
+				return criteria;
+			}else{
+				if(typeof criteria == 'string'){
+					if(criteria.trim().length){
+						return [criteria];
+					};
+				}else{
+					var keys = Object.keys(criteria).filter(function(key){return !_is_nilb(key) && !_is_nilb(criteria[key])});
+					
+					if(keys.length){
+						return keys.map(function(key){return [key, criteria[key]]});
+					};
+				};
+			};
+		};
+		
+		return ['ALL'];
+	},
+	
+	prepareSorts: function(sorts){
+		if(!_is_nilb(sorts)){
+			_validate_argument_type(sorts, ['array','string','object'], 'Sorting criteria', '_InMail.prepareSorts');
+			
+			if(Array.isArray(sorts)){
+				return sorts;
+			}else{
+				if(typeof sorts == 'string'){
+					if(sorts.trim().length){
+						return [sorts];
+					};
+				}else{
+					var type = sorts.type.trim();
+					var field = sorts.field.trim();
+					if(!_is_nilb(type) && type != 'no sorting' && !_is_nilb(field)){
+						return [(type=='descending' ? '-' : '') + field];
+					};
+				};
+			};
+		};
+		
+		return false;
 	}
 };

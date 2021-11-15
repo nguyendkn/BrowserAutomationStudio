@@ -33,6 +33,57 @@
             "name": "InMail_Proxy",
             "select": "InMail_Proxy_select.js",
             "template": "{{proxyString}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "InMail_SearchLast_code.js",
+                    "name": "InMail_SearchLast_code"
+                }
+            ],
+            "description": {
+                "en": "Find id of the last mail",
+                "ru": "Найти id последнего письма"
+            },
+            "interface": "InMail_SearchLast_interface.js",
+            "is_element": false,
+            "name": "InMail_SearchLast",
+            "select": "InMail_SearchLast_select.js",
+            "template": "{{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "InMail_SearchOne_code.js",
+                    "name": "InMail_SearchOne_code"
+                }
+            ],
+            "description": {
+                "en": "Find id of one mail by criteria",
+                "ru": "Найти id одного письма по критериям"
+            },
+            "interface": "InMail_SearchOne_interface.js",
+            "is_element": false,
+            "name": "InMail_SearchOne",
+            "select": "InMail_SearchOne_select.js",
+            "template": "{{Save}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "InMail_Search_code.js",
+                    "name": "InMail_Search_code"
+                }
+            ],
+            "description": {
+                "en": "Find id of multiple mails",
+                "ru": "Найти id нескольких писем"
+            },
+            "interface": "InMail_Search_interface.js",
+            "is_element": false,
+            "name": "InMail_Search",
+            "select": "InMail_Search_select.js",
+            "template": "{{Save}}"
         }
 	],
     "api_version": 1,
@@ -49,6 +100,27 @@
     "developer_name": "GhostZ",
     "developer_site": "https://t.me/GhostZed",
     "embeddeddata": [
+        {
+            "Data": "const Imap = require('imap');\nconst { format } = require('util');\nconst { Buffer } = require('buffer');\nconst { createHash } = require('crypto');\nconst { once, EventEmitter } = require('events');\n\nclass ImapClient extends EventEmitter {\n    constructor(id, { config, folder='INBOX' }){\n        super();\n        this.locked = true;\n        this.id = id;\n        this.config = config;\n        this.folder = folder;\n        this.timeout = 0;\n        \n        let opts = {\n            user: config.username,\n            password: config.password,\n            host: config.host,\n            port: config.port\n        };\n\n        if(['ssl', 'tls'].includes(config.encrypt)){\n            opts.tls = true;\n            opts.tlsOptions = {\n                servername: config.host\n            };\n        }else if(config.encrypt === 'starttls'){\n            opts.tls = false;\n            opts.autotls = 'always';\n        };\n\n        this.imap = new Imap(opts);\n    }\n\n    static async init(opts){\n        let { config, folder='INBOX' } = opts;\n        let id = createHash('md5').update(`${config.host}@${config.username}:${config.password}`).digest('hex');\n\n        if(typeof _imap_connections!=\"undefined\" && typeof _imap_connections[id]!=\"undefined\" && _imap_connections[id].locked){\n            await once(_imap_connections[id], 'unlock');\n\n            return await this.init(opts);\n        };\n        \n        if(typeof _imap_connections==\"undefined\" || typeof _imap_connections[id]==\"undefined\" || JSON.stringify(_imap_connections[id].config)!=JSON.stringify(config)){\n\n            if(typeof _imap_connections==\"undefined\"){\n                global._imap_connections = {};\n            };\n            \n            _imap_connections[id] = new this(id, opts);\n\n            await _imap_connections[id].connect();\n        }else{\n\n            _imap_connections[id].clearTimeout();\n            \n            if(typeof _imap_connections==\"undefined\" || typeof _imap_connections[id]==\"undefined\"){\n                return await this.init(opts);\n            };\n\n            _imap_connections[id].setFolder(folder);\n        };\n\n        return _imap_connections[id];\n    }\n\n    lock = () => {\n        this.locked = true;\n        this.emit('lock');\n    }\n\n    unlock = () => {\n        this.locked = false;\n        this.emit('unlock');\n    }\n\n    del = () => {\n        if(typeof _imap_connections!=\"undefined\" && typeof _imap_connections[this.id]!=\"undefined\"){\n            return delete _imap_connections[this.id];\n        };\n\n        return true;\n    }\n\n    close = () => {\n        this.clearTimeout();\n        this.imap.removeListener('close', this.close);\n        if(this.imap.state && this.imap.state !== 'disconnected'){\n            try{\n                this.imap.end();\n            }catch(_){}\n        };\n        this.unlock();\n        return this.del();\n    }\n\n    setTimeout = (timeout=300000) => {\n        this.clearTimeout();\n        this.timeout = setTimeout(this.close, timeout);\n    }\n    \n    clearTimeout = () => {\n        if(this.timeout && !this.timeout[\"_destroyed\"]){\n            clearTimeout(this.timeout);\n        };\n    }\n\n    connect = async () => {\n        return new Promise((resolve, reject) => {\n            let imapOnReady = () => {\n                this.imap.removeListener('error', imapOnError);\n                this.imap.removeListener('close', imapOnClose);\n                this.imap.removeListener('end', imapOnEnd);\n                this.imap.once('close', this.close);\n                this.unlock();\n                resolve(this);\n            }\n            \n            let imapOnError = (err) => {\n                this.imap.removeListener('ready', imapOnReady);\n                this.imap.removeListener('close', imapOnClose);\n                this.imap.removeListener('end', imapOnEnd);\n                this.close();\n                reject(err);\n            }\n            \n            let imapOnEnd = () => {\n                this.imap.removeListener('ready', imapOnReady);\n                this.imap.removeListener('error', imapOnError);\n                this.imap.removeListener('close', imapOnClose);\n                this.close();\n                reject(new Error('Connection ended unexpectedly'));\n            }\n            \n            let imapOnClose = () => {\n                this.imap.removeListener('ready', imapOnReady);\n                this.imap.removeListener('error', imapOnError);\n                this.imap.removeListener('end', imapOnEnd);\n                this.close();\n                reject(new Error('Connection closed unexpectedly'));\n            }\n            \n            this.imap.once('ready', imapOnReady);\n            this.imap.once('error', imapOnError);\n            this.imap.once('close', imapOnClose);\n            this.imap.once('end', imapOnEnd);\n            \n            this.imap.connect();\n        });\n    }\n\n    setFolder = (folder) => {\n        if(this.folder !== folder){\n            this.folder = folder;\n        };\n    }\n\n    openBox = async (name=this.folder, readOnly=false) => {\n        if(this.imap._box && this.imap._box.name === name){\n            return this.imap._box;\n        }else{\n            return new Promise((resolve, reject) => {\n                this.imap.openBox(name, readOnly, function(err, box){\n                    if(err){\n                        reject(err);\n                    }else{\n                        resolve(box);\n                    };\n                });\n            });\n        };\n    }\n\n    closeBox = async (autoExpunge=true) => {\n        if(typeof this._box === 'undefined'){\n            return;\n        }else{\n            return new Promise((resolve, reject) => {\n                this.imap.closeBox(autoExpunge, function(err){\n                    if(err){\n                        reject(err);\n                    }else{\n                        resolve();\n                    };\n                });\n            });\n        };\n    }\n\n    addBox = async (name) => {\n        return new Promise((resolve, reject) => {\n            this.imap.addBox(name, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    delBox = async (name) => {\n        return new Promise((resolve, reject) => {\n            this.imap.delBox(name, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    renameBox = async (oldname, newname) => {\n        return new Promise((resolve, reject) => {\n            this.imap.renameBox(oldname, newname, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    status = async (name=this.folder) => {\n        if(this.imap._box && this.imap._box.name === name){\n            await this.closeBox(false);\n        };\n\n        return new Promise((resolve, reject) => {\n            this.imap.status(name, function(err, box){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(box);\n                };\n            });\n        });\n    }\n\n    getBoxes = async (namespace) => {\n        return new Promise((resolve, reject) => {\n            this.imap.getBoxes(namespace, function(err, boxes){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(boxes);\n                };\n            });\n        });\n    }\n\n    expunge = async (uids) => {\n        return new Promise((resolve, reject) => {\n            this.imap.expunge(uids, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    search = async (criteria) => {\n        return new Promise((resolve, reject) => {\n            this.imap.search(criteria, function(err, uids){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(uids);\n                };\n            });\n        });\n    }\n\n    sort = async (sorts, criteria) => {\n        return new Promise((resolve, reject) => {\n            this.imap.sort(sorts, criteria, function(err, uids){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(uids);\n                };\n            });\n        });\n    }\n\n    addFlags = async (uids, flags) => {\n        return new Promise((resolve, reject) => {\n            this.imap.addFlags(uids, flags, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    delFlags = async (uids, flags) => {\n        return new Promise((resolve, reject) => {\n            this.imap.delFlags(uids, flags, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    setFlags = async (uids, flags) => {\n        return new Promise((resolve, reject) => {\n            this.imap.setFlags(uids, flags, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    addKeywords = async (uids, keywords) => {\n        return new Promise((resolve, reject) => {\n            this.imap.addKeywords(uids, keywords, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    delKeywords = async (uids, keywords) => {\n        return new Promise((resolve, reject) => {\n            this.imap.delKeywords(uids, keywords, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    setKeywords = async (uids, keywords) => {\n        return new Promise((resolve, reject) => {\n            this.imap.setKeywords(uids, keywords, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    serverSupports = (cap) => {\n        return this.imap.serverSupports(cap);\n    }\n}\n\nmodule.exports = ImapClient;",
+            "DataName": "InMail_ImapClient",
+            "DataType": 1,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { options, criteria, folder, timeout } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(options);\r\ntry{\r\n    \r\n    let box = await client.openBox(folder);\r\n    \r\n    [[INMAIL_NODE_PARAMETERS]] = await client.search(criteria);\r\n}catch(err){\r\n    client.setTimeout(timeout);\r\n    throw err;\r\n};",
+            "DataName": "InMail_Search",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        },
+        {
+            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { options, sorts, criteria, folder, timeout } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(options);\r\ntry{\r\n    \r\n    let box = await client.openBox(folder);\r\n    \r\n    [[INMAIL_NODE_PARAMETERS]] = await client.sort(sorts, criteria);\r\n}catch(err){\r\n    client.setTimeout(timeout);\r\n    throw err;\r\n};",
+            "DataName": "InMail_Sort",
+            "DataType": 0,
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3"
+        }
     ],
     "engine": [
         "engine.js",
@@ -63,6 +135,10 @@
     },
     "is_autogenerated": true,
     "languages": [
+        {
+            "Name": "Node",
+            "Version": "12.18.3"
+        }
     ],
     "localize": {
 		"Timeout": {"ru":"Таймаут"},
@@ -81,11 +157,29 @@
 		"This action won't start connection, it only sets configuration. Connection will be established after first attempt to access server. When action, which triggers connection will be finished, connection won't be closed immediately. It will be preserved for a time specified in this parameter. If another action will require access to server, connection will be reused.": {"ru":"Это действие не устанавливает соединение сразу. Соединение будет установлено только после первой попытки доступа к серверу. Когда действие, запускающее соединение, будет завершено, соединение не будет закрыто. Оно будет храниться в течение времени, указанного в этом параметре. Если другое действие снова потребует доступа к серверу, соединение будет повторно использовано."},
 		
 		
-		"By default mail client works without proxy, this action sets proxy for mail client.": {"ru":"По умолчанию почтовый клиент работает без прокси, это действие устанавливает его."}
+		"By default mail client works without proxy, this action sets proxy for mail client.": {"ru":"По умолчанию почтовый клиент работает без прокси, это действие устанавливает его."},
+		
+		"Error if mail not found": {"ru":"Ошибка, если письмо не найдено"},
+		"Find and save the id of the last mail in the specified folder.": {"ru":"Найти и сохранить id последнего письма в указанной папке."},
+		"Variable in which, after successful execution of the action, the id of the last mail will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id последнего письма."},
+		
+		"Sorting field": {"ru":"Поле сортировки"},
+		"Field for sorting": {"ru":"Поле для сортировки"},
+		"Find and save the mail id by the specified criteria.": {"ru":"Найти и сохранить id письма по указанным критериям."},
+		"Variable in which, after successful execution of the action, the id of the found mail will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id найденнго письма."},
+		
+		"Find and save the mails id by the specified criteria.": {"ru":"Найти и сохранить id писем по указанным критериям."},
+		"Variable in which, after successful execution of the action, the list of id of the found mails will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список id найденных писем."}
     },
     "major_version": 1,
     "minor_version": 0,
     "modules": [
+        {
+            "LanguageName": "Node",
+            "LanguageVersion": "12.18.3",
+            "ModuleName": "imap",
+            "ModuleVersion": "*"
+        }
     ],
     "name": "InMail"
 }

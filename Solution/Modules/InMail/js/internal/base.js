@@ -1,4 +1,4 @@
-_InMail.baseApi = function(isCurl, protocol, autoConfig, host, port, encrypt, username, password, folder){
+_InMail.baseApi = function(isCurl, protocol, autoConfig, host, port, encrypt, username, password, folder, timeout){
 	const api = this;
 	this.protocol = protocol;
 	
@@ -25,42 +25,35 @@ _InMail.baseApi = function(isCurl, protocol, autoConfig, host, port, encrypt, us
 		
 		var config = domainObj[protocol];
 		
-		this.host = config.host;
-		this.port = config.port;
-		this.encrypt = config.encrypt;
-		this.username = config.username.replace("%email%", username).replace("%login%", login).replace("%domain%", domain);
+		this.config = config;
+		
+		this.config.username = config.username.replace("%email%", username).replace("%login%", login).replace("%domain%", domain);
 	}else{
 		encrypt = _InMail.paramClean(encrypt).toLocaleLowerCase();
 		if(["none","ssl","starttls"].indexOf(encrypt) < 0){
 			_InMail.error("Invalid encryption type specified, mail module only supports ssl, starttls and none", "Указан неверный тип шифрования, почтовый модуль поддерживает только ssl, starttls и none");
 		};
-		this.host = _InMail.paramClean(host);
+		this.config = {};
+		this.config.host = _InMail.paramClean(host);
 		port = _InMail.paramClean(port).toLocaleLowerCase();
-		if(port=="auto"){
-			if(protocol=="imap"){
-				this.port = encrypt=="ssl" ? "993" : "143";
-			}else{
-				this.port = encrypt=="ssl" ? "995" : "110";
-			};
-		}else{
-			this.port = port;
-		};
-		this.encrypt = encrypt;
-		this.username = username;
+		this.config.port = port=="auto" ? (protocol=="imap" ? (encrypt=="ssl" ? "993" : "143") : encrypt=="ssl" ? "995" : "110") : port;
+		this.config.encrypt = encrypt;
+		this.config.username = username;
 	};
 	
-	this.password = password;
-	this.folder = folder;
+	this.config.password = password;
+	this.folder = _InMail.paramClean(folder);
+	this.timeout = timeout;
 	
 	this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	
 	if(isCurl){
 		this.options = {
-			CURLOPT_URL: api.protocol + (api.encrypt=="ssl" ? 's' : '') + '://' + api.host,
-			CURLOPT_PORT: api.port,
-			CURLOPT_USERNAME: api.username,
-			CURLOPT_PASSWORD: api.password,
-			CURLOPT_USE_SSL: api.encrypt=="none" ? 0 : 3,
+			CURLOPT_URL: api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
+			CURLOPT_PORT: api.config.port,
+			CURLOPT_USERNAME: api.config.username,
+			CURLOPT_PASSWORD: api.config.password,
+			CURLOPT_USE_SSL: api.config.encrypt=="none" ? 0 : 3,
 			CURLOPT_SSL_VERIFYPEER: false,
 			CURLOPT_LOGIN_OPTIONS: 'AUTH=PLAIN'
 		};
@@ -132,7 +125,7 @@ _InMail.baseApi = function(isCurl, protocol, autoConfig, host, port, encrypt, us
 			}else{
 				var error = resp.error;
 				
-				if(resp.code == "CURLE_QUOTE_ERROR"){
+				if(resp.code == "CURLE_QUOTE_ERROR" && error == "Quote command returned error"){
 					var trace = resp.trace.trim().split(/\r?\n/);
 					for(var i = trace.length - 1; i > -1; i--){
 						var ell = trace[i];

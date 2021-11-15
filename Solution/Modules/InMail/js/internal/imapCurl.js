@@ -1,6 +1,6 @@
-_InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, username, password, folder){
+_InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, username, password, folder, timeout){
 	const api = this;
-	_InMail.baseApi.call(this, true, "imap", autoConfig, host, port, encrypt, username, password, folder);
+	_InMail.baseApi.call(this, true, "imap", autoConfig, host, port, encrypt, username, password, folder, timeout);
 	
 	this.caps = null;
 
@@ -342,7 +342,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 	};
 	
 	this.parseUIDs = function(resp){
-		return _avoid_nil(resp.match(/\d+/g), []);
+		return _avoid_nil(resp.match(/\d+/g), []).map(function(uid){return parseInt(uid)});
 	};
 	
 	this.search = function(){
@@ -679,14 +679,15 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		var resp = _result_function();
 		
 		var reg = /{(\d+)}\r?\n?$/;
+		var result = resp.result;
 		
-		if(reg.test(resp.result)){
+		if(reg.test(result)){
 			var start = resp.trace.lastIndexOf(resp.result);
 			if(start > -1){
 				start += resp.result.length;
 				var temp = _avoid_nil(resp.result.match(reg), []);
 				if(temp.length > 0){
-					var result = resp.trace.substr(start, Number(temp[1])).trim();
+					result = resp.trace.substr(start, Number(temp[1])).trim();
 					var i = result.indexOf("\r\n");
 					var firstLine = result.slice(0, i + 2);
 					if(firstLine.indexOf("_Part_") > -1){
@@ -697,11 +698,11 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 					if(lastLine.indexOf("_Part_") > -1){
 						result = result.slice(0, i);
 					};
-					_function_return(api.decodeQS(result));
+					result = api.decodeQS(result);
 				};
 			};
 		};
 		
-		_function_return(resp.result);
+		_function_return(result);
 	};
 });

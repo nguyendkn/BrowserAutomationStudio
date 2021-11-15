@@ -45,12 +45,12 @@
 
       'click #inspectorModalCopyData'(e) {
         const text = this.model.get('value');
-        ClipboardJS.copy(text, { container: this.el });
+        BrowserAutomationStudio_SetClipboard(text);
       },
 
       'click #inspectorModalCopyName'(e) {
         const text = this.model.get('name');
-        ClipboardJS.copy(text, { container: this.el });
+        BrowserAutomationStudio_SetClipboard(text);
       },
 
       'change select[data-style]'(e) {

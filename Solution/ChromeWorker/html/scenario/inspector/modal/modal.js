@@ -200,12 +200,12 @@
                   </li>
                 </ul>
               </div>
-              <div style="border: 1px dashed #606060; background: #f7f7f8; align-items: center; padding: 12px 14px; margin-top: 20px; display: flex;">
+              <div class="inspector-modal-description">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M8 0C3.58172 0 0 3.58172 0 8c0 4.4183 3.58172 8 8 8 4.4183 0 8-3.5817 8-8 0-4.41828-3.5817-8-8-8Z" fill="#606060" />
                   <path d="m8.26 10.168.336-4.508V3H7.112v2.66l.294 4.508h.854Zm.434 2.8v-1.666H7v1.666h1.694Z" fill="#fff" />
                 </svg>
-                <span style="line-height: 18px; margin-left: 14px; color: #606060;">Changes browser settings: network, canvas, webgl, etc.</span>
+                <span style="margin-left: 14px;">Changes browser settings: network, canvas, webgl, etc.</span>
               </div>
             </div>
           </div>

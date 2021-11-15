@@ -141,6 +141,17 @@
   color: #fff;
 }
 
+.inspector-modal-description {
+  border: 1px dashed #606060;
+  background: #f7f7f8;
+  align-items: center;
+  padding: 12px 14px;
+  line-height: 18px;
+  margin-top: 20px;
+  color: #606060;
+  display: flex;
+}
+
 .inspector-modal-content {
   background-color: #fff;
   -webkit-user-drag: none;

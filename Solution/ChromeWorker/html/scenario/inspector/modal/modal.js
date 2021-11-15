@@ -28,6 +28,18 @@
         model.set('value', el.value);
       },
 
+      'click #inspectorModalSearchVariable'(e) {
+
+      },
+
+      'click #inspectorModalClearData'(e) {
+        // for (const el of this.$('form')[0].elements) {
+        //   if (el.type !== 'hidden') {
+        //     $(el).val('');
+        //   }
+        // }
+      },
+
       'click #inspectorModalCopyData'(e) {
         const text = this.model.get('value');
         ClipboardJS.copy(text, { container: this.el });

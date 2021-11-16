@@ -79,6 +79,7 @@
 
         if (model.hasChanged('type')) {
           const $inputs = $form.trigger('reset').find('[data-input-type]');
+          this.$('#inspectorModalDescription').html($t(`inspector.descriptions.${type}`));
 
           const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
             .hide().find(':input').prop('required', false);
@@ -218,7 +219,7 @@
                   <path d="M8 0C3.58172 0 0 3.58172 0 8c0 4.4183 3.58172 8 8 8 4.4183 0 8-3.5817 8-8 0-4.41828-3.5817-8-8-8Z" fill="#606060" />
                   <path d="m8.26 10.168.336-4.508V3H7.112v2.66l.294 4.508h.854Zm.434 2.8v-1.666H7v1.666h1.694Z" fill="#fff" />
                 </svg>
-                <span style="margin-left: 14px;"><%= $t('Changes browser settings: network, canvas, webgl, etc.') %></span>
+                <span id="inspectorModalDescription" style="margin-left: 14px;"><%= $t('inspector.descriptions.' + type) %></span>
               </div>
             </div>
           </div>
@@ -238,13 +239,39 @@
     'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
     'Save changes': { ru: 'Сохранить изменения' },
     'Clear data': { ru: 'Очистить данные' },
+    'inspector.descriptions.undefined': {
+      ru: 'Description for Undefined',
+      en: 'Description for Undefined'
+    },
+    'inspector.descriptions.boolean': {
+      ru: 'Description for Boolean',
+      en: 'Description for Boolean'
+    },
+    'inspector.descriptions.custom': {
+      ru: 'Description for Custom',
+      en: 'Description for Custom'
+    },
+    'inspector.descriptions.string': {
+      ru: 'Description for String',
+      en: 'Description for String'
+    },
+    'inspector.descriptions.number': {
+      ru: 'Description for Number',
+      en: 'Description for Number'
+    },
+    'inspector.descriptions.date': {
+      ru: 'Description for Date',
+      en: 'Description for Date'
+    },
+    'inspector.descriptions.null': {
+      ru: 'Description for Null',
+      en: 'Description for Null'
+    },
     'inspector.undefined': { ru: 'Undefined', en: 'Undefined' },
     'inspector.boolean': { ru: 'Булево', en: 'Boolean' },
     'inspector.custom': { ru: 'Особый', en: 'Custom' },
-    'inspector.object': { ru: 'Объект', en: 'Object' },
     'inspector.string': { ru: 'Строка', en: 'String' },
     'inspector.number': { ru: 'Число', en: 'Number' },
-    'inspector.array': { ru: 'Массив', en: 'Array' },
     'inspector.date': { ru: 'Дата', en: 'Date' },
     'inspector.null': { ru: 'Null', en: 'Null' }
   });

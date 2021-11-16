@@ -4,17 +4,15 @@
 .dropdown-menu > li > .inspector-modal-select-option.active,
 .dropdown-menu > li > .inspector-modal-select-option:hover,
 .dropdown-menu > li > .inspector-modal-select-option:focus {
-  background-color: #606060;
-  background-image: none;
+  background: #606060;
   color: #fff;
 }
 
 .dropdown-menu > li > .inspector-modal-select-option {
-  transition: background-color 0.3s ease-in-out;
+  transition: background 0.3s ease-in-out;
   border: thin solid transparent;
   justify-content: space-between;
-  background-color: #787878;
-  background-image: none;
+  background: #787878;
   padding: 15px 16px;
   line-height: 18px;
   font-size: 13px;
@@ -70,7 +68,7 @@
 }
 
 .inspector-modal-form > div > textarea {
-  min-height: 106px;
+  min-height: 36px;
 }
 
 .inspector-modal-form > div > input {

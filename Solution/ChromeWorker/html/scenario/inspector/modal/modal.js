@@ -152,10 +152,13 @@
                   <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
                     <% if (item === 'boolean') { %>
                       <% _.each(['false', 'true'], (val, at) => { %>
-                        <div class="input-radio">
-                          <% const id = _.uniqueId('inspectorModalInput') %>
-                          <input type="radio" id="<%= id %>" name="boolean" value="<%= val %>" <%= (type === item ? value === val : at === 0) ? 'checked' : '' %> <%= required %>>
-                          <label for="<%= id %>"><%= $t(_.upperFirst(val)) %></label>
+                        <div style="padding: 9px 12px;">
+                          <div class="pretty p-default p-round">
+                            <input type="radio" name="boolean" value="<%= val %>" <%= (type === item ? value === val : at === 0) ? 'checked' : '' %> <%= required %>>
+                            <div class="state">
+                              <label style="vertical-align: middle; color: #606060;"><%= $t(_.upperFirst(val)) %></label>
+                            </div>
+                          </div>
                         </div>
                       <% }) %>
                     <% } else if (item === 'custom') { %>

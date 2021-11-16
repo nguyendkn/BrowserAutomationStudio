@@ -45,12 +45,12 @@
 
       'click #inspectorModalCopyData'(e) {
         const text = this.model.get('value');
-        BrowserAutomationStudio_SetClipboard(text);
+        BrowserAutomationStudio_SetClipboard(text/* , false */);
       },
 
       'click #inspectorModalCopyName'(e) {
         const text = this.model.get('name');
-        BrowserAutomationStudio_SetClipboard(text);
+        BrowserAutomationStudio_SetClipboard(text/* , false */);
       },
 
       'change select[data-style]'(e) {
@@ -108,17 +108,15 @@
     },
 
     accept() {
-      this.options.callback({
-        ...this.close().model.toJSON(),
-        cancel: false
+      this.options.callback(false, {
+        ...this.close().model.toJSON()
       });
       return this;
     },
 
     cancel() {
-      this.options.callback({
-        ...this.close().model.toJSON(),
-        cancel: true
+      this.options.callback(true, {
+        ...this.close().model.toJSON()
       });
       return this;
     },

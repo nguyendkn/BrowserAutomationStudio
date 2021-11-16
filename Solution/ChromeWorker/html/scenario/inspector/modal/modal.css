@@ -114,12 +114,21 @@
   top: -2px;
 }
 
+.inspector-modal-tools > ul > li > a:hover {
+  background: #606060;
+}
+
+.inspector-modal-tools > ul > li > a:focus {
+  background: #606060;
+}
+
 .inspector-modal-tools > ul > li > a > svg {
   margin-right: 10px;
 }
 
 .inspector-modal-tools > ul > li > a {
   padding: 10px 20px 10px 10px;
+  -webkit-user-drag: none;
   letter-spacing: -0.2px;
   background: #3D3F42;
   align-items: center;
@@ -127,6 +136,7 @@
   font-size: 12px;
   display: flex;
   color: #fff;
+  outline: 0;
 }
 
 .inspector-modal-header > h4 + h6 {

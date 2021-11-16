@@ -50,22 +50,21 @@
   outline: 0;
 }
 
-.inspector-modal-form > div > textarea,
-.inspector-modal-form > div > input {
+.inspector-modal-form textarea,
+.inspector-modal-form input {
   line-height: 18px;
   max-height: 38vh;
-  padding: 2px 2px;
-  resize: vertical;
+  padding: 2px;
   width: 100%;
   outline: 0;
   border: 0;
 }
 
-.inspector-modal-form > div > textarea {
+.inspector-modal-form textarea {
   min-height: 106px;
 }
 
-.inspector-modal-form > div > input {
+.inspector-modal-form input {
   min-height: 24px;
 }
 

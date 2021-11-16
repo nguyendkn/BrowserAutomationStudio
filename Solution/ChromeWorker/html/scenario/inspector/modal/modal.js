@@ -159,9 +159,9 @@
                         </div>
                       <% }) %>
                     <% } else if (item === 'custom') { %>
-                      <textarea <%= required %>><%- type === item ? value : '' %></textarea>
+                      <textarea style="resize: vertical;" <%= required %>><%- type === item ? value : '' %></textarea>
                     <% } else if (item === 'string') { %>
-                      <textarea <%= required %>><%- type === item ? value : '' %></textarea>
+                      <textarea style="resize: vertical;" <%= required %>><%- type === item ? value : '' %></textarea>
                     <% } else if (item === 'number') { %>
                       <input type="number" value="<%- type === item ? value : 0 %>" <%= required %>>
                     <% } else if (item === 'date' ) { %>

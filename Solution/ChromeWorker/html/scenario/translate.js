@@ -858,16 +858,10 @@ function tr(key)
 }
 
 function $t(key, values) {
-  if (typeof _K === 'undefined') return key;
+   if (typeof _K === 'undefined') return key;
+   const res = key in _L && _K in _L[key] ? _L[key][_K] : key;
 
-  if (key in _L) {
-    const res = _L[key][_K];
-    if (res) {
-      return !values ? res : res.replace(/{(.*?)}/g, (_, k) => {
-        return values[k];
-      });
-    }
-  }
-
-  return key;
+   return !values ? res : res.replace(/{(.*?)}/g, (_, k) => {
+      return values[k];
+   });
 }

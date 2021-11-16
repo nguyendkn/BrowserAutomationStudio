@@ -179,7 +179,7 @@
               <div class="inspector-modal-tools dropdown" style="display: flex;">
                 <button type="button" id="inspectorModalShowMenu" style="flex: 0; border-left-width: 1px;" data-toggle="dropdown">
                   <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 5h16M0 .5h16M0 9.5h16" stroke="#606060" stroke-linecap="square"/>
+                    <path d="M0 5h16M0 .5h16M0 9.5h16" stroke="#606060" stroke-linecap="square" />
                   </svg>
                 </button>
                 <button type="button" id="inspectorModalCopyData" style="flex: 1; border-left-width: 0px;">
@@ -188,7 +188,7 @@
                   </svg>
                   <span style="margin-left: 12px;"><%= $t('Copy to clipboard') %></span>
                 </button>
-                <ul class="dropdown-menu" style="border-radius: 0; border-color: #606060; box-shadow: none; padding: 0; margin: 0;">
+                <ul class="dropdown-menu" style="border-radius: 0; border-color: #606060; box-shadow: none; padding: 0; margin: 0; top: calc(100% - 1px);">
                   <li>
                     <a id="inspectorModalSearchVariable" href="#">
                       <svg width="24" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

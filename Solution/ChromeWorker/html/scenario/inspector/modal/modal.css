@@ -94,10 +94,13 @@
 }
 
 .inspector-modal-tools > button {
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   justify-content: center;
-  background: transparent;
+  letter-spacing: -0.2px;
   align-items: center;
+  background: #fff;
+  line-height: 15px;
+  font-size: 12px;
   padding: 12px;
   display: flex;
   outline: 0;
@@ -112,6 +115,11 @@
   border: 0;
   right: 0;
   top: -2px;
+}
+
+.inspector-modal-tools.open > button[data-toggle] {
+  border-color: #606060;
+  background: #3D3F42;
 }
 
 .inspector-modal-tools > ul > li > a:hover {

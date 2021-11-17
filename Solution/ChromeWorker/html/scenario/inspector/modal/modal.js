@@ -122,6 +122,7 @@
     },
 
     close() {
+      this.$('select').selectpicker('destroy');
       this.$el.modal('hide');
       this.remove().off();
       return this;
@@ -136,7 +137,7 @@
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z" fill="#606060" />
-              </svg>            
+              </svg>
             </button>
           </div>
           <div class="inspector-modal-body">
@@ -178,8 +179,8 @@
               </form>
               <div class="inspector-modal-tools dropdown" style="display: flex;">
                 <button type="button" id="inspectorModalShowMenu" style="flex: 0; border-left-width: 1px;" data-toggle="dropdown">
-                  <svg width="16" height="10" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 5h16M0 .5h16M0 9.5h16" stroke="#606060" stroke-linecap="square" />
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 3h16M0 8h16M0 13h16" stroke="#606060" stroke-linecap="square" />
                   </svg>
                 </button>
                 <button type="button" id="inspectorModalCopyData" style="flex: 1; border-left-width: 0px;">
@@ -188,7 +189,7 @@
                   </svg>
                   <span style="margin-left: 12px;"><%= $t('Copy to clipboard') %></span>
                 </button>
-                <ul class="dropdown-menu" style="border-radius: 0; border-color: #606060; box-shadow: none; padding: 0; margin: 0; top: calc(100% - 1px);">
+                <ul class="dropdown-menu" style="border-radius: 0; border: thin solid #606060; box-shadow: none; padding: 0; margin: 0; top: calc(100% - 1px);">
                   <li>
                     <a id="inspectorModalSearchVariable" href="#">
                       <svg width="24" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

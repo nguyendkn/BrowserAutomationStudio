@@ -131,7 +131,7 @@
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4><%= $t('Edit the value of the "{name}" variable', { name }) %></h4>
+            <h4><%= $t('Edit the "{name}" variable', { name }) %></h4>
             <h6><%= $t('Change or set data type and value') %></h6>
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -146,7 +146,7 @@
               <% }) %>
             </select>
             <div class="inspector-modal-body-content">
-              <form class="inspector-modal-form" onsubmit="return false">
+              <form class="inspector-modal-form" spellcheck="false" onsubmit="return false">
                 <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                   <% const required = item === type ? 'required' : '' %>
                   <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
@@ -234,7 +234,7 @@
   });
 
   _.extend(_L, {
-    'Edit the value of the "{name}" variable': { ru: 'Изменить значение переменной "{name}"' },
+    'Edit the "{name}" variable': { ru: 'Изменить переменную "{name}"' },
     'Search for variable in project': { ru: 'Поиск переменной в проекте' },
     'Copy the variable name': { ru: 'Копировать имя переменной' },
     'Copy to clipboard': { ru: 'Копировать в буфер обмена' },

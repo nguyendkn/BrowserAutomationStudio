@@ -9,7 +9,6 @@
 }
 
 .dropdown-menu > li > .inspector-modal-select-option {
-  transition: background 0.3s ease-in-out;
   border: thin solid transparent;
   justify-content: space-between;
   background: #787878;

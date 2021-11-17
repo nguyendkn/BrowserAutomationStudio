@@ -75,7 +75,7 @@
       callback(cancel, { value, type }) {
         if (cancel) return;
         let [root, ...path] = options.path;
-        path = path.map(k => `['${k}']`).join('');
+        path = path.map(k => `[${JSON.stringify(k)}]`).join('');
 
         _.attempt(() => {
           if (type === 'date') {
@@ -89,7 +89,7 @@
           VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
               (function () {
                 try {
-                  var root = ${JSON.stringify(root)}, value = ${value};
+                  var value = ${value}, root = ${JSON.stringify(root)};
                   if (root.indexOf("GLOBAL:") === 0) {
                     root = root.slice(7);
                     var obj = JSON.parse(P("basglobal", root) || "{}");

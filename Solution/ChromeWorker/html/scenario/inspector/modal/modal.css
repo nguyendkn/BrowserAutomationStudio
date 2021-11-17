@@ -123,7 +123,15 @@
   top: -2px;
 }
 
-.inspector-modal-tools.open > button[data-toggle] {
+.inspector-modal-tools:not(.open) > [data-toggle] > svg:last-of-type {
+  display: none;
+}
+
+.inspector-modal-tools.open > [data-toggle] > svg:first-of-type {
+  display: none;
+}
+
+.inspector-modal-tools.open > [data-toggle] {
   border-color: #606060;
   background: #3D3F42;
 }

@@ -182,6 +182,9 @@
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 3h16M0 8h16M0 13h16" stroke="#606060" stroke-linecap="square" />
                   </svg>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.6065 2.70703 2.70703 12.6065m0-9.89947 9.89947 9.89947" stroke="#fff" stroke-linecap="square" />
+                  </svg>
                 </button>
                 <button type="button" id="inspectorModalCopyData" style="flex: 1; border-left-width: 0px;">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

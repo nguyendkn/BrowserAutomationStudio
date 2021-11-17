@@ -12,8 +12,8 @@
   border: thin solid transparent;
   justify-content: space-between;
   background: #787878;
-  padding: 15px 16px;
-  line-height: 18px;
+  padding: 12px 12px;
+  line-height: 17px;
   font-size: 13px;
   color: #fff;
   display: flex;
@@ -217,14 +217,12 @@
 }
 
 .inspector-modal-select {
-  transition: all 0.3s ease-in-out;
   background-color: #606060;
   letter-spacing: -0.2px;
   border-bottom: none;
-  padding: 15px 16px;
-  line-height: 18px;
+  padding: 12px 12px;
+  line-height: 17px;
   border-radius: 0;
-  font-weight: 500;
   font-size: 13px;
   color: #fff;
   outline: 0;

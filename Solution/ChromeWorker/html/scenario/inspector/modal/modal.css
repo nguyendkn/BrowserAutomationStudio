@@ -75,6 +75,11 @@
   min-height: 24px;
 }
 
+.inspector-modal-form.invalid > div > textarea,
+.inspector-modal-form.invalid > div > input {
+  background: rgba(216, 105, 95, 0.16);
+}
+
 .inspector-modal-form.invalid > span {
   display: block;
 }

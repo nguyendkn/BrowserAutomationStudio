@@ -105,7 +105,7 @@
 }
 
 .inspector-modal-tools > button {
-  border: 1px solid #d9d9d9;
+  border: thin solid #d9d9d9;
   justify-content: center;
   letter-spacing: -0.2px;
   align-items: center;
@@ -194,7 +194,7 @@
 }
 
 .inspector-modal-description {
-  border: 1px dashed #606060;
+  border: thin dashed #606060;
   background: #f7f7f8;
   align-items: center;
   padding: 12px 14px;

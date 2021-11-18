@@ -135,6 +135,14 @@ QList<QString> ScriptAllowedCodeSaver::Process(const QString& Script, const QStr
         Result.append(GenerateHash(CustomItem));
     }
 
+    //This list is filled during compilation
+    QList<QString> PrecomputedHashes;
+    /*PRECOMPUTED-MODULE-ENGINE-CODE*/
+    for(const QString& Hash: PrecomputedHashes)
+    {
+        Result.append(Hash);
+    }
+
     //Add info about current version
     VersionInfo _VersionInfo;
     Result.append(GenerateHash(QString("BASVERSION") + _VersionInfo.VersionString()));

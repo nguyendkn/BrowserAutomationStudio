@@ -3,10 +3,10 @@
 
   const Model = Backbone.Model.extend({
     defaults: () => ({
+      mode: 'variable',
       value: '',
       type: '',
-      name: '',
-      mode: ''
+      name: ''
     })
   });
 
@@ -18,7 +18,7 @@
     events: {
       'input [data-input-type] :input'(e) {
         const el = e.target, model = this.model;
-        if (el.type === 'radio' && !el.checked || model.get('mode') !== 'edit') return;
+        if (el.type === 'radio' && !el.checked || model.get('mode') === 'resource') return;
         const valid = el.checkValidity() || model.get('type') === 'string';
 
         if (!valid) {
@@ -91,7 +91,7 @@
           $target.first().trigger('input');
         } else if (model.hasChanged('value')) {
           this.$('.btn-accept').prop('disabled', () => {
-            if (mode !== 'edit') return true;
+            if (mode === 'resource') return true;
             const equal = _.isEqual(model.toJSON(), attrs);
             return equal || $form.hasClass('invalid');
           });
@@ -134,7 +134,7 @@
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4><%= $t('Edit the "{name}" variable', { name }) %></h4>
+            <h4><%= $t('inspector.' + mode + '.header', { name }) %></h4>
             <h6><%= $t('Change or set data type and value') %></h6>
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +143,7 @@
             </button>
           </div>
           <div class="inspector-modal-body">
-            <select data-style="inspector-modal-select" <%= mode !== 'edit' ? 'disabled' : '' %>>
+            <select data-style="inspector-modal-select" <%= mode === 'resource' ? 'disabled' : '' %>>
               <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                 <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
@@ -151,7 +151,7 @@
             <div class="inspector-modal-body-content">
               <form class="inspector-modal-form" spellcheck="false" onsubmit="return false">
                 <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
-                  <% const required = item === type && mode === 'edit' ? 'required' : '' %>
+                  <% const required = item === type && mode !== 'resource' ? 'required' : '' %>
                   <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
                     <% if (item === 'boolean') { %>
                       <% _.each(['false', 'true'], (val, idx) => { %>
@@ -200,7 +200,7 @@
                       <svg width="24" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="m15.7164 15.111-4.2359-3.9328c2.1796-2.63853 1.8355-6.65365-.8031-8.83329C8.03894.165276 4.02382.509429 1.84418 3.14794-.335456 5.78644.00869703 9.80156 2.6472 11.9812c2.29436 1.9502 5.73589 1.9502 8.0302 0l4.2359 3.9329.8031-.8031ZM1.50003 7.16306c0-2.86795 2.29435-5.1623 5.16229-5.1623 2.86795 0 5.16228 2.29435 5.16228 5.1623 0 2.86794-2.29433 5.16234-5.16228 5.16234-2.86794 0-5.16229-2.2944-5.16229-5.16234Z" fill="#fff" />
                       </svg>
-                      <%= $t('Search for variable in project') %>
+                      <%= $t('inspector.' + mode + '.search') %>
                     </a>
                   </li>
                   <li>
@@ -208,7 +208,7 @@
                       <svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
                       </svg>
-                      <%= $t('Copy the variable name') %>
+                      <%= $t('inspector.' + mode + '.copyName') %>
                     </a>
                   </li>
                   <li>
@@ -240,9 +240,30 @@
   });
 
   _.extend(_L, {
-    'Edit the "{name}" variable': { ru: 'Изменить переменную "{name}"' },
-    'Search for variable in project': { ru: 'Поиск переменной в проекте' },
-    'Copy the variable name': { ru: 'Копировать имя переменной' },
+    'inspector.variable.header': {
+      ru: 'Изменить переменную "{name}"',
+      en: 'Edit the "{name}" variable'
+    },
+    'inspector.variable.search': {
+      ru: 'Поиск переменной в проекте',
+      en: 'Search for variable in project'
+    },
+    'inspector.variable.copyName': {
+      ru: 'Копировать имя переменной',
+      en: 'Copy the variable name'
+    },
+    'inspector.resource.header': {
+      ru: 'Просмотр ресурса "{name}"',
+      en: 'View the "{name}" resource'
+    },
+    'inspector.resource.search': {
+      ru: 'Поиск ресурса в проекте',
+      en: 'Search for resource in project'
+    },
+    'inspector.resource.copyName': {
+      ru: 'Копировать имя ресурса',
+      en: 'Copy the resource name'
+    },
     'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
     'Save changes': { ru: 'Сохранить изменения' },
     'Clear data': { ru: 'Очистить данные' },

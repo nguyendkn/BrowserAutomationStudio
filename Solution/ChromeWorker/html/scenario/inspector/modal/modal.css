@@ -47,6 +47,19 @@
   outline: 0;
 }
 
+.inspector-modal-form .pretty input:checked~.state label:before {
+  border-color: #9d996c;
+}
+
+.inspector-modal-form .pretty input:checked~.state label:after {
+  background-color: #9d996c !important;
+}
+
+.inspector-modal-form.invalid > div > textarea,
+.inspector-modal-form.invalid > div > input {
+  background: rgba(216, 105, 95, 0.16);
+}
+
 .inspector-modal-form > div > textarea,
 .inspector-modal-form > div > input {
   letter-spacing: -0.2px;
@@ -59,25 +72,12 @@
   border: 0;
 }
 
-.inspector-modal-form .pretty input:checked~.state label:before {
-  border-color: #9d996c;
-}
-
-.inspector-modal-form .pretty input:checked~.state label:after {
-  background-color: #9d996c !important;
-}
-
 .inspector-modal-form > div > textarea {
   min-height: 36px;
 }
 
 .inspector-modal-form > div > input {
   min-height: 24px;
-}
-
-.inspector-modal-form.invalid > div > textarea,
-.inspector-modal-form.invalid > div > input {
-  background: rgba(216, 105, 95, 0.16);
 }
 
 .inspector-modal-form.invalid > span {

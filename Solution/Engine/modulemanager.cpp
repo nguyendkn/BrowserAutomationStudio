@@ -345,6 +345,29 @@ namespace BrowserAutomationStudioFramework
         return res;
     }
 
+    void ModuleManager::GetAllPossibleModulesCode(QList<QString>& EngineCode, QList<QString>& EmbeddedCode)
+    {
+        QStringList Folders;
+        Folders.append("modules");
+        Folders.append(QString("external/") + QString::number(qApp->applicationPid()));
+        Folders.append("custom");
+        for(QString& Folder:Folders)
+        {
+            QList<IModuleManager::ModuleInfo> AllModules;
+
+            GetModuleInfoFromFolder(Folder,AllModules,false);
+            for(IModuleManager::ModuleInfo Info: AllModules)
+            {
+                EngineCode.append(Info->EngineCode);
+                for(EmbeddedCodeItem _EmbeddedCodeItem:Info->EmbeddedCodeItems)
+                {
+                    EmbeddedCode.append(_EmbeddedCodeItem.Data);
+                }
+            }
+        }
+
+    }
+
 
     QList<QString> ModuleManager::GetModuleEngineCode(const QStringList& Exclude)
     {

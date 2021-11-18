@@ -201,14 +201,9 @@ void CompileResults::Submit()
             QDomElement EmbeddedDataElement = ProjectElement.firstChildElement("EmbeddedData");
             QDomNode EmbeddedDataTextElement = EmbeddedDataElement.firstChild();
             QString EmbeddedData = EmbeddedDataTextElement.toText().data();
-            QStringList Exclude;
-            QList<QString> EngineCodeList = ModuleManager->GetModuleEngineCode(Exclude);
-            QList<EmbeddedCodeItem> EmbeddedCodeItems = ModuleManager->GetAllEmbeddedCodeItems();
+            QList<QString> EngineCodeList;
             QList<QString> EmbeddedCode;
-            for(EmbeddedCodeItem& Item: EmbeddedCodeItems)
-            {
-                EmbeddedCode.append(Item.Data);
-            }
+            ModuleManager->GetAllPossibleModulesCode(EngineCodeList, EmbeddedCode);
             QList<QString> AllowedCodeItems = _ScriptAllowedCodeSaver.Process(Script, EmbeddedData, EngineCodeList, EmbeddedCode);
             QDomNode AllowedCodeElement = Document.createElement("AllowedCode");
             QDomNode AllowedCodeItemText = Document.createTextNode(AllowedCodeItems.join(","));

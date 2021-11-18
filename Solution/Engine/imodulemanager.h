@@ -110,6 +110,7 @@ namespace BrowserAutomationStudioFramework
         virtual bool IsModuleEnabled(const QString& ModuleName) = 0;
         virtual void SetModuleEnabled(const QString& ModuleName, bool IsEnabled) = 0;
         virtual int GetModuleSystemVersion() = 0;
+        virtual void GetAllPossibleModulesCode(QList<QString>& EngineCode, QList<QString>& EmbeddedCode) = 0;
         virtual QList<QString> GetModuleEngineCode(const QStringList& Exclude) = 0;
         virtual void CacheBrowserCode() = 0;
         virtual void StartAllDlls() = 0;

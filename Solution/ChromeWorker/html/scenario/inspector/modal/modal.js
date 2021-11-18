@@ -19,13 +19,13 @@
       'input [data-input-type] :input'(e) {
         const el = e.target, model = this.model;
         if (el.type === 'radio' && !el.checked || model.get('mode') === 'resource') return;
-        const valid = el.checkValidity() || model.get('type') === 'string';
+        const valid = model.get('type') === 'string' || el.checkValidity();
 
         if (!valid) {
           this.$('#inspectorModalError').html(el.validationMessage);
         }
 
-        $(el).closest('form').toggleClass('invalid', !valid);
+        this.$('form').toggleClass('invalid', !valid);
         model.set('value', el.value);
       },
 

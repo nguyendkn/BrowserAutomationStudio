@@ -11,7 +11,6 @@
 #include "preprocessor.h"
 #include "noneencryptor.h"
 #include "scriptallowedcodesaver.h"
-#include "versioninfo.h"
 #include "ui_compileresults.h"
 
 
@@ -204,9 +203,13 @@ void CompileResults::Submit()
             QString EmbeddedData = EmbeddedDataTextElement.toText().data();
             QStringList Exclude;
             QList<QString> EngineCodeList = ModuleManager->GetModuleEngineCode(Exclude);
-            VersionInfo _VersionInfo;
-            EngineCodeList.append(QString("BASVERSION") + _VersionInfo.VersionString());
-            QList<QString> AllowedCodeItems = _ScriptAllowedCodeSaver.Process(Script, EmbeddedData, EngineCodeList);
+            QList<EmbeddedCodeItem> EmbeddedCodeItems = ModuleManager->GetAllEmbeddedCodeItems();
+            QList<QString> EmbeddedCode;
+            for(EmbeddedCodeItem& Item: EmbeddedCodeItems)
+            {
+                EmbeddedCode.append(Item.Data);
+            }
+            QList<QString> AllowedCodeItems = _ScriptAllowedCodeSaver.Process(Script, EmbeddedData, EngineCodeList, EmbeddedCode);
             QDomNode AllowedCodeElement = Document.createElement("AllowedCode");
             QDomNode AllowedCodeItemText = Document.createTextNode(AllowedCodeItems.join(","));
             AllowedCodeElement.appendChild(AllowedCodeItemText);

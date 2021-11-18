@@ -5,7 +5,10 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 #include <QJsonDocument>
+#include "versioninfo.h"
 #include <regex>
+
+using namespace BrowserAutomationStudioFramework;
 
 ScriptAllowedCodeSaver::ScriptAllowedCodeSaver(QObject *parent) : QObject(parent)
 {
@@ -124,13 +127,17 @@ QList<QString> ScriptAllowedCodeSaver::ProcessNodeScript(const QString& Script)
 }
 
 
-QList<QString> ScriptAllowedCodeSaver::Process(const QString& Script, const QString& EmbeddedData, const QList<QString>& CustomItems)
+QList<QString> ScriptAllowedCodeSaver::Process(const QString& Script, const QString& EmbeddedData, const QList<QString>& ModulesEngineCode, const QList<QString>& ModulesEmbeddedData)
 {
     QList<QString> Result;
-    for(const QString& CustomItem: CustomItems)
+    for(const QString& CustomItem: ModulesEngineCode)
     {
         Result.append(GenerateHash(CustomItem));
     }
+
+    //Add info about current version
+    VersionInfo _VersionInfo;
+    Result.append(GenerateHash(QString("BASVERSION") + _VersionInfo.VersionString()));
 
     //Parse script code and add all functions
     std::string code = Script.toStdString();
@@ -178,6 +185,7 @@ QList<QString> ScriptAllowedCodeSaver::Process(const QString& Script, const QStr
 
     }
 
+    //Add info about all BAS_API code inside script
     QJsonDocument JsonDocument = QJsonDocument::fromJson(EmbeddedData.toUtf8());
     QJsonArray JsonArray = JsonDocument.array();
     for(QJsonValue Value: JsonArray)
@@ -185,6 +193,16 @@ QList<QString> ScriptAllowedCodeSaver::Process(const QString& Script, const QStr
         QJsonObject JsonObject = Value.toObject();
         QString Script = JsonObject["data"].toString();
         for(QString& ResultItem: ProcessNodeScript(Script))
+        {
+            QString ResultHash = GenerateHash(ResultItem);
+            Result.append(ResultHash);
+        }
+    }
+
+    //Add info about all BAS_API code inside modules
+    for(QString EmbeddedData: ModulesEmbeddedData)
+    {
+        for(QString& ResultItem: ProcessNodeScript(EmbeddedData))
         {
             QString ResultHash = GenerateHash(ResultItem);
             Result.append(ResultHash);

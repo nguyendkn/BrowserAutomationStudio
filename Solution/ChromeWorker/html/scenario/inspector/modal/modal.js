@@ -18,7 +18,7 @@
     events: {
       'input [data-input-type] :input'(e) {
         const el = e.target, model = this.model;
-        if (el.type === 'radio' && !el.checked || model.get('mode') === 'resource') return;
+        if (model.get('mode') === 'resource' || (el.type === 'radio' && !el.checked)) return;
         const valid = model.get('type') === 'string' || el.checkValidity();
 
         if (!valid) {

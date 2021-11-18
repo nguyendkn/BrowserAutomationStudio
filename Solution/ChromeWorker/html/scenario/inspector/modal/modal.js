@@ -157,7 +157,7 @@
                         <div class="pretty p-default p-round">
                           <input type="radio" name="boolean" value="<%= val %>" <%= (type === item ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
                           <div class="state">
-                            <label style="vertical-align: middle; color: #606060;"><%= $t(_.upperFirst(val)) %></label>
+                            <label style="vertical-align: middle; color: #606060;"><%= val %></label>
                           </div>
                         </div>
                       </div>

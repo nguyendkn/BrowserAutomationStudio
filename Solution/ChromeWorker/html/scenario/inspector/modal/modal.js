@@ -1,3 +1,5 @@
+'use strict';
+
 (({ App, Backbone, $, _ }) => {
   const { Inspector } = App;
 
@@ -147,7 +149,7 @@
                 <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
             </select>
-            <form class="inspector-modal-form" spellcheck="false" onsubmit="return false">
+            <form class="inspector-modal-form" spellcheck="false" onsubmit="return false" novalidate>
               <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                 <% const required = item === type && mode !== 'resource' ? 'required' : '' %>
                 <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">

@@ -1,3 +1,5 @@
+'use strict';
+
 (({ App, Backbone }) => {
   const { Inspector } = App;
 

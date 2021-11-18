@@ -192,7 +192,7 @@
                 </svg>
                 <span style="margin-left: 12px;"><%= $t('Copy to clipboard') %></span>
               </button>
-              <ul class="dropdown-menu" style="border-radius: 0; border: thin solid #606060; box-shadow: none; padding: 0; margin: 0; top: calc(100% - 1px);">
+              <ul class="dropdown-menu">
                 <li>
                   <a id="inspectorModalSearchVariable" href="#">
                     <svg width="24" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

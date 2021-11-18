@@ -138,7 +138,7 @@
 
 .inspector-modal-tools.open > [data-toggle] {
   border-color: #606060;
-  background: #3D3F42;
+  background: #3d3f42;
 }
 
 .inspector-modal-tools > ul > li > a:hover {
@@ -157,13 +157,22 @@
   padding: 10px 20px 10px 10px;
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
-  background: #3D3F42;
+  background: #3d3f42;
   align-items: center;
   line-height: 15px;
   font-size: 12px;
   display: flex;
   color: #fff;
   outline: 0;
+}
+
+.inspector-modal-tools > ul {
+  border: thin solid #606060;
+  top: calc(100% - 1px);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
 }
 
 .inspector-modal-header > h4 + h6 {

@@ -3,9 +3,10 @@
 
   const Model = Backbone.Model.extend({
     defaults: () => ({
-      value: null,
-      type: null,
-      name: null
+      value: '',
+      type: '',
+      name: '',
+      mode: ''
     })
   });
 
@@ -17,7 +18,7 @@
     events: {
       'input [data-input-type] :input'(e) {
         const el = e.target, model = this.model;
-        if (el.type === 'radio' && !el.checked) return;
+        if (el.type === 'radio' && !el.checked || model.get('mode') !== 'edit') return;
         const valid = el.checkValidity() || model.get('type') === 'string';
 
         if (!valid) {
@@ -70,9 +71,9 @@
       }
     },
 
-    initialize({ callback, value, type, name }) {
+    initialize({ callback, value, type, name, mode }) {
       if (['object', 'array'].includes(type)) type = 'custom';
-      const attrs = { value: type === 'custom' ? JSON.stringify(value) : String(value), type, name };
+      const attrs = { value: type === 'custom' ? JSON.stringify(value) : String(value), type, name, mode };
 
       this.model = new Model(attrs).on('change', model => {
         const type = model.get('type'), $form = this.$('form');
@@ -90,6 +91,7 @@
           $target.first().trigger('input');
         } else if (model.hasChanged('value')) {
           this.$('.btn-accept').prop('disabled', () => {
+            if (mode !== 'edit') return true;
             const equal = _.isEqual(model.toJSON(), attrs);
             return equal || $form.hasClass('invalid');
           });
@@ -141,7 +143,7 @@
             </button>
           </div>
           <div class="inspector-modal-body">
-            <select data-style="inspector-modal-select">
+            <select data-style="inspector-modal-select" <%= mode !== 'edit' ? 'disabled' : '' %>>
               <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                 <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
@@ -149,7 +151,7 @@
             <div class="inspector-modal-body-content">
               <form class="inspector-modal-form" spellcheck="false" onsubmit="return false">
                 <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
-                  <% const required = item === type ? 'required' : '' %>
+                  <% const required = item === type && mode === 'edit' ? 'required' : '' %>
                   <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
                     <% if (item === 'boolean') { %>
                       <% _.each(['false', 'true'], (val, idx) => { %>

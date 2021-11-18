@@ -6,6 +6,7 @@
 #include <QCoreApplication>
 #include "csvhelperwrapper.h"
 #include "browserextensionmanager.h"
+#include "versioninfo.h"
 #include <limits>
 #include "every_cpp.h"
 
@@ -465,6 +466,10 @@ namespace BrowserAutomationStudioFramework
 
     void ScriptMultiWorker::Run()
     {
+        {
+            VersionInfo Info;
+            Preprocessor->IsCodeAllowed(QString("BASVERSION") + Info.VersionString());
+        }
         connect(BrowserFactory->GetPCResourcesSmoothUsage(),SIGNAL(Log(QString)),this,SLOT(NoResources(QString)));
         _PcapDNSListenServer->Start();
         if(!Helper)

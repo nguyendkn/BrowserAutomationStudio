@@ -44,12 +44,12 @@
         // }
       },
 
-      'click #inspectorModalCopyData'(e) {
+      'click #inspectorModalCopyData'() {
         const text = this.model.get('value');
         BrowserAutomationStudio_SetClipboard(text/* , false */);
       },
 
-      'click #inspectorModalCopyName'(e) {
+      'click #inspectorModalCopyName'() {
         const text = this.model.get('name');
         BrowserAutomationStudio_SetClipboard(text/* , false */);
       },
@@ -88,7 +88,7 @@
           const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
             .show().find(':input').prop('required', true);
 
-          $target.first().trigger('input');
+          $target.trigger('input');
         } else if (model.hasChanged('value')) {
           this.$('.btn-accept').prop('disabled', () => {
             if (mode === 'resource') return true;
@@ -105,7 +105,6 @@
         this.$('select').selectpicker();
         this.$el.modal({ backdrop: 'static' });
       }
-
       return this;
     },
 

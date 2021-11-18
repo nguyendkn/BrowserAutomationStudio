@@ -3,6 +3,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonParseError>
+#include <QJsonDocument>
+#include <regex>
 
 ScriptAllowedCodeSaver::ScriptAllowedCodeSaver(QObject *parent) : QObject(parent)
 {
@@ -121,12 +124,58 @@ QList<QString> ScriptAllowedCodeSaver::ProcessNodeScript(const QString& Script)
 }
 
 
-QList<QString> ScriptAllowedCodeSaver::Process(const QString& EmbeddedData, const QList<QString>& CustomItems)
+QList<QString> ScriptAllowedCodeSaver::Process(const QString& Script, const QString& EmbeddedData, const QList<QString>& CustomItems)
 {
     QList<QString> Result;
     for(const QString& CustomItem: CustomItems)
     {
         Result.append(GenerateHash(CustomItem));
+    }
+
+    //Parse script code and add all functions
+    std::string code = Script.toStdString();
+    try
+    {
+        std::regex pieces_regex("section_start\\((\\\"[^\\\"]+\\\")\\s*\\,\\s*\\d+\\)\\!\\s*function");
+        std::smatch pieces_match;
+        std::string::const_iterator SearchStart( code.cbegin() );
+
+        while(std::regex_search(SearchStart, code.cend(), pieces_match, pieces_regex))
+        {
+            std::ssub_match sub_match = pieces_match[1];
+            std::string piece = sub_match.str();
+            QString ItemStringJson = QString::fromStdString(piece);
+
+            QString ItemJson;
+
+            {
+                QJsonParseError err;
+                QJsonDocument Document = QJsonDocument::fromJson((QString("[") + ItemStringJson + QString("]")).toUtf8(),&err);
+
+                if(!err.error && Document.isArray() && !Document.array().isEmpty() && Document.array()[0].isString())
+                {
+                    ItemJson = Document.array()[0].toString();
+                }
+            }
+
+            if(!ItemJson.isEmpty())
+            {
+                QJsonParseError err;
+                QJsonDocument Document = QJsonDocument::fromJson(ItemJson.toUtf8(),&err);
+
+                if(!err.error && Document.isObject() && Document.object().contains("n") && Document.object()["n"].isString())
+                {
+                    QString FunctionName = Document.object()["n"].toString();
+                    Result.append(GenerateHash(QString("FUNCTION") + FunctionName));
+                }
+            }
+
+            SearchStart += pieces_match.position() + pieces_match.length();
+        }
+
+    }catch(...)
+    {
+
     }
 
     QJsonDocument JsonDocument = QJsonDocument::fromJson(EmbeddedData.toUtf8());

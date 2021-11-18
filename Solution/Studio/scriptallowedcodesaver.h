@@ -12,7 +12,7 @@ class ScriptAllowedCodeSaver : public QObject
 
 public:
     explicit ScriptAllowedCodeSaver(QObject *parent = nullptr);
-    QList<QString> Process(const QString& EmbeddedData, const QList<QString>& CustomItems);
+    QList<QString> Process(const QString& Script, const QString& EmbeddedData, const QList<QString>& CustomItems);
 
 signals:
 

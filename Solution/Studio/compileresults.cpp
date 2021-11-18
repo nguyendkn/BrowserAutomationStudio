@@ -193,6 +193,11 @@ void CompileResults::Submit()
         {
             QDomElement ProjectElement = Document.documentElement();
 
+            //Preprocess script start
+            QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
+            QDomNode ScriptTextElement = ScriptElement.firstChild();
+            QString Script = ScriptTextElement.toText().data();
+
             //Generate allowed code
             QDomElement EmbeddedDataElement = ProjectElement.firstChildElement("EmbeddedData");
             QDomNode EmbeddedDataTextElement = EmbeddedDataElement.firstChild();
@@ -201,18 +206,13 @@ void CompileResults::Submit()
             QList<QString> EngineCodeList = ModuleManager->GetModuleEngineCode(Exclude);
             VersionInfo _VersionInfo;
             EngineCodeList.append(QString("BASVERSION") + _VersionInfo.VersionString());
-            QList<QString> AllowedCodeItems = _ScriptAllowedCodeSaver.Process(EmbeddedData, EngineCodeList);
+            QList<QString> AllowedCodeItems = _ScriptAllowedCodeSaver.Process(Script, EmbeddedData, EngineCodeList);
             QDomNode AllowedCodeElement = Document.createElement("AllowedCode");
             QDomNode AllowedCodeItemText = Document.createTextNode(AllowedCodeItems.join(","));
             AllowedCodeElement.appendChild(AllowedCodeItemText);
-
             ProjectElement.insertAfter(AllowedCodeElement, EmbeddedDataElement);
 
-
-            //Preprocess script
-            QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
-            QDomNode ScriptTextElement = ScriptElement.firstChild();
-            QString Script = ScriptTextElement.toText().data();
+            //Preprocess script end
             Script = _Preprocessor.Preprocess(Script, ParanoicLevel, true);
             Script = _Preprocessor.Encrypt(Script);
             QDomNode NewScriptTextElement = Document.createCDATASection(Script);

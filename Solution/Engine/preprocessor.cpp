@@ -117,11 +117,13 @@ namespace BrowserAutomationStudioFramework
     {
         if(CheckCode)
         {
-            QRegularExpression Regexp("^_prepare_function_and_call\\s*\\(\\s*\\\"[a-zA-Z_0-9]+\\\"\\s*\\,\\s*(.*)\\)\\!$");
+            QRegularExpression Regexp("^_prepare_function_and_call\\s*\\(\\s*\\\"([a-zA-Z_0-9]+)\\\"\\s*\\,\\s*(.*)\\)\\!$");
             QRegularExpressionMatch Match = Regexp.match(Code);
             if(Match.hasMatch())
             {
-                QString JsonString = QString("[") + Match.captured(1) + QString("]");
+                QString FunctionName = QString("FUNCTION") + Match.captured(1);
+                IsCodeAllowed(FunctionName);
+                QString JsonString = QString("[") + Match.captured(2) + QString("]");
                 QJsonParseError err;
                 QJsonDocument::fromJson(JsonString.toUtf8(), &err);
                 if (err.error != QJsonParseError::NoError)

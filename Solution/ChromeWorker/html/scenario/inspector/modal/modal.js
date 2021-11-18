@@ -238,66 +238,66 @@
 
   _.extend(_L, {
     'inspector.variable.header': {
-      ru: 'Изменить переменную "{name}"',
-      en: 'Edit the "{name}" variable'
+      en: 'Edit the "{name}" variable',
+      ru: 'Изменить переменную "{name}"'
     },
     'inspector.variable.search': {
-      ru: 'Поиск переменной в проекте',
-      en: 'Search for variable in project'
+      en: 'Search for variable in project',
+      ru: 'Поиск переменной в проекте'
     },
     'inspector.variable.copyName': {
-      ru: 'Копировать имя переменной',
-      en: 'Copy the variable name'
+      en: 'Copy the variable name',
+      ru: 'Копировать имя переменной'
     },
     'inspector.resource.header': {
-      ru: 'Просмотр ресурса "{name}"',
-      en: 'View the "{name}" resource'
+      en: 'View the "{name}" resource',
+      ru: 'Просмотр ресурса "{name}"'
     },
     'inspector.resource.search': {
-      ru: 'Поиск ресурса в проекте',
-      en: 'Search for resource in project'
+      en: 'Search for resource in project',
+      ru: 'Поиск ресурса в проекте'
     },
     'inspector.resource.copyName': {
-      ru: 'Копировать имя ресурса',
-      en: 'Copy the resource name'
+      en: 'Copy the resource name',
+      ru: 'Копировать имя ресурса'
     },
     'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
     'Save changes': { ru: 'Сохранить изменения' },
     'Clear data': { ru: 'Очистить данные' },
     'inspector.descriptions.undefined': {
-      ru: 'Description for Undefined',
-      en: 'Description for Undefined'
+      en: 'Description for Undefined',
+      ru: 'Description for Undefined'
     },
     'inspector.descriptions.boolean': {
-      ru: 'Description for Boolean',
-      en: 'Description for Boolean'
+      en: 'Description for Boolean',
+      ru: 'Description for Boolean'
     },
     'inspector.descriptions.custom': {
-      ru: 'Description for Custom',
-      en: 'Description for Custom'
+      en: 'Description for Custom',
+      ru: 'Description for Custom'
     },
     'inspector.descriptions.string': {
-      ru: 'Description for String',
-      en: 'Description for String'
+      en: 'Description for String',
+      ru: 'Description for String'
     },
     'inspector.descriptions.number': {
-      ru: 'Description for Number',
-      en: 'Description for Number'
+      en: 'Description for Number',
+      ru: 'Description for Number'
     },
     'inspector.descriptions.date': {
-      ru: 'Description for Date',
-      en: 'Description for Date'
+      en: 'Description for Date',
+      ru: 'Description for Date'
     },
     'inspector.descriptions.null': {
-      ru: 'Description for Null',
-      en: 'Description for Null'
+      en: 'Description for Null',
+      ru: 'Description for Null'
     },
-    'inspector.undefined': { ru: 'Undefined', en: 'Undefined' },
-    'inspector.boolean': { ru: 'Булево', en: 'Boolean' },
-    'inspector.custom': { ru: 'Особый', en: 'Custom' },
-    'inspector.string': { ru: 'Строка', en: 'String' },
-    'inspector.number': { ru: 'Число', en: 'Number' },
-    'inspector.date': { ru: 'Дата', en: 'Date' },
-    'inspector.null': { ru: 'Null', en: 'Null' }
+    'inspector.undefined': { en: 'Undefined', ru: 'Undefined' },
+    'inspector.boolean': { en: 'Boolean', ru: 'Булево' },
+    'inspector.custom': { en: 'Custom', ru: 'Особый' },
+    'inspector.string': { en: 'String', ru: 'Строка' },
+    'inspector.number': { en: 'Number', ru: 'Число' },
+    'inspector.date': { en: 'Date', ru: 'Дата' },
+    'inspector.null': { en: 'Null', ru: 'Null' }
   });
 })(window);

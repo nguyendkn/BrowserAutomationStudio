@@ -1983,7 +1983,7 @@ mark
 .btn-base.btn-cancel:hover,
 .btn-base.btn-accept:focus,
 .btn-base.btn-accept:hover {
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-base.btn-cancel:hover {
@@ -1998,14 +1998,14 @@ mark
   border: 1px solid #d8695f;
   background: #d8695f;
   border-radius: 2px;
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-base.btn-accept {
   border: 1px solid #9d996c;
   background: #9d996c;
   border-radius: 2px;
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-base:active,
@@ -2018,7 +2018,6 @@ mark
 .btn-base {
   transition: all 0.3s ease-in-out;
   border: 1px solid transparent;
-  -webkit-user-select: none;
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
   vertical-align: middle;
@@ -2028,7 +2027,6 @@ mark
   user-select: none;
   line-height: 18px;
   min-width: 140px;
-  font-weight: 500;
   font-size: 14px;
   cursor: pointer;
   color: #fff;

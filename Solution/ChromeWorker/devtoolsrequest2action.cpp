@@ -4,6 +4,7 @@
 #include "base64.h"
 #include "checkvalidutf8.h"
 #include "JsonParser.h"
+#include "startwith.h"
 #include <chrono>
 
 using namespace std::chrono;
@@ -101,6 +102,10 @@ void DevToolsReqest2Action::Process(std::shared_ptr<RequestItem> CurrentItem)
             continue;
         }
         if(KeyLow == std::string("content-length"))
+        {
+            continue;
+        }
+        if(starts_with(KeyLow, ":"))
         {
             continue;
         }

@@ -29,14 +29,14 @@
         model.set('value', el.value);
       },
 
-      'click #inspectorModalSearchVariable'(e) {
+      'click #inspectorModalSearchVariable'() {
         _ActionFinder.Show();
         $("#findinput").val(this.model.get('name'));
         _ActionFinder.FindNext(true);
         this.cancel();
       },
 
-      'click #inspectorModalClearData'(e) {
+      'click #inspectorModalClearData'() {
         // for (const el of this.$('form')[0].elements) {
         //   if (el.type !== 'hidden') {
         //     $(el).val('');
@@ -163,9 +163,9 @@
                       </div>
                     <% }) %>
                   <% } else if (item === 'custom') { %>
-                    <textarea style="resize: vertical;" <%= required %>><%- type === item ? value : '' %></textarea>
+                    <textarea <%= required %>><%- type === item ? value : '' %></textarea>
                   <% } else if (item === 'string') { %>
-                    <textarea style="resize: vertical;" <%= required %>><%- type === item ? value : '' %></textarea>
+                    <textarea <%= required %>><%- type === item ? value : '' %></textarea>
                   <% } else if (item === 'number') { %>
                     <input type="number" value="<%- type === item ? value : 0 %>" <%= required %>>
                   <% } else if (item === 'date' ) { %>

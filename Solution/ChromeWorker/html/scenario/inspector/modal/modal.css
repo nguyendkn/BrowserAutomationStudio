@@ -74,10 +74,12 @@
 
 .inspector-modal-form > div > textarea {
   min-height: 36px;
+  resize: vertical;
 }
 
 .inspector-modal-form > div > input {
   min-height: 24px;
+  resize: initial;
 }
 
 .inspector-modal-form.invalid > span {

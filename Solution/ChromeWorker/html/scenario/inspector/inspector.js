@@ -71,7 +71,7 @@
   });
 
   function showModal(options) {
-    const modal = new Inspector.Modal({
+    return new Inspector.Modal({
       ...options,
       callback(cancel, { value, type }) {
         if (cancel) return;
@@ -80,7 +80,7 @@
 
         _.attempt(() => {
           if (type === 'date') {
-            value = `_parse_date('${value}', 'auto')`;
+            value = `new Date('${value}')`;
           } else if (type === 'custom') {
             value = JSON.stringify(eval(`(${value})`));
           } else if (type === 'string') {
@@ -106,9 +106,7 @@
           `);
         });
       }
-    });
-
-    return modal.render();
+    }).render();
   }
 
   function prepareData(data) {

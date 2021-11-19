@@ -32,8 +32,8 @@
       },
 
       'click #inspectorModalSearchVariable'() {
-        _ActionFinder.Show();
         $("#findinput").val(this.model.get('name'));
+        _ActionFinder.Show();
         _ActionFinder.FindNext(true);
         this.cancel();
       },
@@ -239,33 +239,12 @@
   });
 
   _.extend(_L, {
-    'inspector.variable.header': {
-      en: 'Edit the "{name}" variable',
-      ru: 'Изменить переменную "{name}"'
-    },
-    'inspector.variable.search': {
-      en: 'Search for variable in project',
-      ru: 'Поиск переменной в проекте'
-    },
-    'inspector.variable.copyName': {
-      en: 'Copy the variable name',
-      ru: 'Копировать имя переменной'
-    },
-    'inspector.resource.header': {
-      en: 'View the "{name}" resource',
-      ru: 'Просмотр ресурса "{name}"'
-    },
-    'inspector.resource.search': {
-      en: 'Search for resource in project',
-      ru: 'Поиск ресурса в проекте'
-    },
-    'inspector.resource.copyName': {
-      en: 'Copy the resource name',
-      ru: 'Копировать имя ресурса'
-    },
-    'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
-    'Save changes': { ru: 'Сохранить изменения' },
-    'Clear data': { ru: 'Очистить данные' },
+    'inspector.variable.header': { en: 'Edit the "{name}" variable', ru: 'Изменить переменную "{name}"' },
+    'inspector.variable.search': { en: 'Search for variable in project',  ru: 'Поиск переменной в проекте' },
+    'inspector.variable.copyName': { en: 'Copy the variable name', ru: 'Копировать имя переменной' },
+    'inspector.resource.header': { en: 'View the "{name}" resource', ru: 'Просмотр ресурса "{name}"' },
+    'inspector.resource.search': { en: 'Search for resource in project', ru: 'Поиск ресурса в проекте' },
+    'inspector.resource.copyName': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
     'inspector.descriptions.undefined': {
       en: 'Description for Undefined',
       ru: 'Description for Undefined'
@@ -300,6 +279,9 @@
     'inspector.string': { en: 'String', ru: 'Строка' },
     'inspector.number': { en: 'Number', ru: 'Число' },
     'inspector.date': { en: 'Date', ru: 'Дата' },
-    'inspector.null': { en: 'Null', ru: 'Null' }
+    'inspector.null': { en: 'Null', ru: 'Null' },
+    'Copy to clipboard': { ru: 'Копировать в буфер обмена' },
+    'Save changes': { ru: 'Сохранить изменения' },
+    'Clear data': { ru: 'Очистить данные' }
   });
 })(window);

@@ -1,7 +1,15 @@
 var from = GetInputConstructorValue("from", loader);
+var notFrom = GetInputConstructorValue("notFrom", loader);
 var to = GetInputConstructorValue("to", loader);
+var notTo = GetInputConstructorValue("notTo", loader);
 var subject = GetInputConstructorValue("subject", loader);
+var notSubject = GetInputConstructorValue("notSubject", loader);
 var text = GetInputConstructorValue("text", loader);
+var notText = GetInputConstructorValue("notText", loader);
+var flags = GetInputConstructorValue("flags", loader);
+var notFlags = GetInputConstructorValue("notFlags", loader);
+var since = GetInputConstructorValue("since", loader);
+var before = GetInputConstructorValue("before", loader);
 var sortType = GetInputConstructorValue("sortType", loader);
 if(sortType["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Sorting type") + tr("\" is not specified"));
@@ -18,9 +26,17 @@ if(Save.length == 0){
 try{
     var code = loader.GetAdditionalData() + _.template($("#InMail_SearchOne_code").html())({
 		"from": from["updated"],
+		"notFrom": notFrom["updated"],
 		"to": to["updated"],
+		"notTo": notTo["updated"],
 		"subject": subject["updated"],
+		"notSubject": notSubject["updated"],
 		"text": text["updated"],
+		"notText": notText["updated"],
+		"flags": flags["updated"],
+		"notFlags": notFlags["updated"],
+		"since": since["updated"],
+		"before": before["updated"],
 		"sortType": sortType["updated"],
 		"sortField": sortField["updated"],
         "folder": folder["updated"],

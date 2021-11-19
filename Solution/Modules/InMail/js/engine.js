@@ -204,10 +204,34 @@ _InMail = {
 						return [criteria];
 					};
 				}else{
-					var keys = Object.keys(criteria).filter(function(key){return !_is_nilb(key) && !_is_nilb(criteria[key])});
+					var keys = Object.keys(criteria).filter(function(key){
+						if(!_is_nilb(key)){
+							var value = criteria[key];
+							if(!_is_nilb(value)){
+								return (typeof value != "string" || !!value.trim().length);
+							};
+						};
+						return false;
+					});
 					
 					if(keys.length){
-						return keys.map(function(key){return [key, criteria[key]]});
+						var arr = [];
+						
+						for(var i in keys){
+							var key = keys[i];
+							var value = criteria[key];
+							if(['flags', '!flags'].indexOf(key.toLocaleLowerCase()) > -1){
+								var flags = _to_arr(value);
+								if(key.toLocaleLowerCase()=='!flags'){
+									flags = flags.map(function(flag){return flag.slice(0, 1) != '!' ? '!' + flag : flag});
+								};
+								arr = arr.concat(flags);
+							}else{
+								arr.push([key, value]);
+							};
+						};
+						
+						return arr;
 					};
 				};
 			};
@@ -224,7 +248,8 @@ _InMail = {
 				return sorts;
 			}else{
 				if(typeof sorts == 'string'){
-					if(sorts.trim().length){
+					sorts = sorts.trim();
+					if(sorts.length){
 						return [sorts];
 					};
 				}else{

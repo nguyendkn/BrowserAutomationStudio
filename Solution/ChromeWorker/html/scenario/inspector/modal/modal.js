@@ -136,7 +136,7 @@
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
             <h4><%= $t('inspector.' + mode + '.header', { name }) %></h4>
-            <h6><%= $t('Change or set data type and value') %></h6>
+            <h6><%= $t('inspector.' + mode + '.subheader') %></h6>
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z" fill="#606060" />
@@ -242,9 +242,11 @@
     'inspector.variable.header': { en: 'Edit the "{name}" variable', ru: 'Изменить переменную "{name}"' },
     'inspector.variable.search': { en: 'Search for variable in project', ru: 'Поиск переменной в проекте' },
     'inspector.variable.copyName': { en: 'Copy the variable name', ru: 'Копировать имя переменной' },
+    'inspector.variable.subheader': { en: 'Edit variable type and value', ru: 'Изменить тип и значение переменной' },
     'inspector.resource.header': { en: 'View the "{name}" resource', ru: 'Просмотр ресурса "{name}"' },
     'inspector.resource.search': { en: 'Search for resource in project', ru: 'Поиск ресурса в проекте' },
     'inspector.resource.copyName': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
+    'inspector.resource.subheader': { en: 'View resource type and value', ru: 'Просмотр типа и значения ресурса' },
     'inspector.clearData': { en: 'Clear data', ru: 'Очистить данные' },
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },

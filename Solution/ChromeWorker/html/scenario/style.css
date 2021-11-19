@@ -1935,7 +1935,6 @@ mark
 
 .bootstrap-select .dropdown-menu li a span.text {
   padding-right: inherit;
-  display: inline-block;
 }
 
 .bootstrap-select.open > .dropdown-toggle:after {
@@ -1971,7 +1970,6 @@ mark
 }
 
 .bootstrap-select.disabled {
-  cursor: not-allowed;
   opacity: 1;
 }
 

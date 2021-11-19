@@ -27,11 +27,11 @@
   outline: 0 !important;
 }
 
-.inspector-modal-form .pretty input:checked~.state label:before {
+.inspector-modal-form .pretty input:checked ~ .state label:before {
   border-color: #9d996c;
 }
 
-.inspector-modal-form .pretty input:checked~.state label:after {
+.inspector-modal-form .pretty input:checked ~ .state label:after {
   background-color: #9d996c !important;
 }
 
@@ -161,13 +161,13 @@
   margin-top: 3px;
 }
 
-.inspector-modal-header > h4 {
-  opacity: 1.0;
+.inspector-modal-header > h6 {
+  opacity: 0.5;
   margin: 0;
 }
 
-.inspector-modal-header > h6 {
-  opacity: 0.5;
+.inspector-modal-header > h4 {
+  opacity: 1.0;
   margin: 0;
 }
 
@@ -225,29 +225,29 @@
 
 @media only screen and (max-width: 400px) {
   .inspector-modal-footer {
-    flex-flow: column;
-  }
-
-  .inspector-modal-footer > button:last-of-type {
-    margin-left: unset;
+    flex-direction: column;
   }
 
   .inspector-modal-footer > button + button {
     margin-top: 5px;
   }
+
+  .inspector-modal-footer > button:last-of-type {
+    margin-left: unset;
+  }
 }
 
 @media only screen and (min-width: 400px) {
   .inspector-modal-footer {
-    flex-flow: row;
-  }
-
-  .inspector-modal-footer > button:last-of-type {
-    margin-left: auto;
+    flex-direction: row;
   }
 
   .inspector-modal-footer > button + button {
     margin-top: 0px;
+  }
+
+  .inspector-modal-footer > button:last-of-type {
+    margin-left: auto;
   }
 }
 

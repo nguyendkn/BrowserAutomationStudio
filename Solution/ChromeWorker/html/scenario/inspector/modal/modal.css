@@ -27,26 +27,6 @@
   outline: 0 !important;
 }
 
-@media only screen and (max-width: 355px) {
-  .inspector-modal-footer {
-    flex-flow: column;
-    min-height: 85px;
-  }
-}
-
-@media only screen and (min-width: 355px) {
-  .inspector-modal-footer {
-    flex-flow: row;
-    min-height: 0;
-  }
-}
-
-.inspector-modal-footer > button:disabled {
-  filter: grayscale(100%);
-  opacity: 0.6;
-  outline: 0;
-}
-
 .inspector-modal-form .pretty input:checked~.state label:before {
   border-color: #9d996c;
 }
@@ -243,8 +223,41 @@
   color: #606060;
 }
 
+@media only screen and (max-width: 400px) {
+  .inspector-modal-footer {
+    flex-flow: column;
+  }
+
+  .inspector-modal-footer > button:last-of-type {
+    margin-left: unset;
+  }
+
+  .inspector-modal-footer > button + button {
+    margin-top: 5px;
+  }
+}
+
+@media only screen and (min-width: 400px) {
+  .inspector-modal-footer {
+    flex-flow: row;
+  }
+
+  .inspector-modal-footer > button:last-of-type {
+    margin-left: auto;
+  }
+
+  .inspector-modal-footer > button + button {
+    margin-top: 0px;
+  }
+}
+
+.inspector-modal-footer > button:disabled {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  outline: 0;
+}
+
 .inspector-modal-footer {
-  justify-content: space-between;
   display: flex;
 }
 

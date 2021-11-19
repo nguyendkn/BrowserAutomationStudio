@@ -2017,6 +2017,7 @@ mark
 
 .btn-base {
   transition: all 0.3s ease-in-out;
+  transition-property: opacity, color;
   border: 1px solid transparent;
   -webkit-user-drag: none;
   letter-spacing: -0.2px;

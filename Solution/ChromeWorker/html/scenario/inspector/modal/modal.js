@@ -212,6 +212,14 @@
                   </a>
                 </li>
                 <li>
+                  <a id="inspectorModalCopyPath" href="#">
+                    <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
+                    </svg>
+                    <%= $t('inspector.' + mode + '.copyPath') %>
+                  </a>
+                </li>
+                <li>
                   <a id="inspectorModalClearData" href="#">
                     <svg width="24" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                       <path d="M3.4834 14.498h11.5v1h-11.5v-1ZM13.6733 5.25329l-3.96501-3.96c-.09288-.09298-.20316-.16674-.32456-.21706C9.26233 1.0259 9.1322 1 9.00079 1c-.13142 0-.26155.0259-.38294.07623-.1214.05032-.23169.12408-.32456.21706l-7 7c-.09298.09287-.16674.20316-.21706.32456C1.0259 8.73924 1 8.86937 1 9.00079c0 .13141.0259.26154.07623.38294.05032.1214.12408.23168.21706.32456l2.255 2.29001h4.795l5.33001-5.33001c.093-.09288.1667-.20316.217-.32456.0504-.1214.0763-.25153.0763-.38294 0-.13142-.0259-.26155-.0763-.38294-.0503-.1214-.124-.23169-.217-.32456ZM7.92829 10.9983h-3.945l-2-2.00001 3.155-3.155 3.965 3.96-1.175 1.19501Zm1.88-1.88001-3.96-3.965 3.135-3.155 4.00001 3.965-3.17501 3.155Z" fill="#fff" />
@@ -242,10 +250,12 @@
     'inspector.variable.header': { en: 'Edit the "{name}" variable', ru: 'Изменить переменную "{name}"' },
     'inspector.variable.search': { en: 'Search for variable in project', ru: 'Поиск переменной в проекте' },
     'inspector.variable.copyName': { en: 'Copy the variable name', ru: 'Копировать имя переменной' },
+    'inspector.variable.copyPath': { en: 'Copy the variable path', ru: 'Копировать путь переменной' },
     'inspector.variable.subheader': { en: 'Edit variable type and value', ru: 'Изменить тип и значение переменной' },
     'inspector.resource.header': { en: 'View the "{name}" resource', ru: 'Просмотр ресурса "{name}"' },
     'inspector.resource.search': { en: 'Search for resource in project', ru: 'Поиск ресурса в проекте' },
     'inspector.resource.copyName': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
+    'inspector.resource.copyPath': { en: 'Copy the resource path', ru: 'Копировать путь ресурса' },
     'inspector.resource.subheader': { en: 'View resource type and value', ru: 'Просмотр типа и значения ресурса' },
     'inspector.clearData': { en: 'Clear data', ru: 'Очистить данные' },
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },

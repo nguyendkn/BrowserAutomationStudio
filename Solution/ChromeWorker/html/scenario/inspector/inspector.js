@@ -89,9 +89,8 @@
 
           VariablesNeedRefresh = true;
           BrowserAutomationStudio_Execute(`
-            (function () {
+            (function (value, root) {
               try {
-                var value = ${value}, root = ${JSON.stringify(root)};
                 if (root.indexOf("GLOBAL:") === 0) {
                   root = root.slice(7);
                   var obj = JSON.parse(P("basglobal", root) || "{}");
@@ -101,7 +100,7 @@
                   GLOBAL["VAR_" + root]${path} = value;
                 }
               } catch (e) {}
-            })();
+            })(${value}, ${JSON.stringify(root)});
             section_start("test", -3)!
           `);
         });

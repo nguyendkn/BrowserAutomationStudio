@@ -54,7 +54,6 @@
           edges: { top: true }
         });
       }
-
       return this;
     },
 
@@ -88,22 +87,23 @@
             value = JSON.stringify(value);
           }
 
-          VariablesNeedRefresh = true; BrowserAutomationStudio_Execute(`
-              (function () {
-                try {
-                  var value = ${value}, root = ${JSON.stringify(root)};
-                  if (root.indexOf("GLOBAL:") === 0) {
-                    root = root.slice(7);
-                    var obj = JSON.parse(P("basglobal", root) || "{}");
-                    obj${path} = value;
-                    PSet("basglobal", root, JSON.stringify(obj));
-                  } else {
-                    GLOBAL["VAR_" + root]${path} = value;
-                  }
-                } catch (e) {}
-              })();
-              section_start("test", -3)!
-            `);
+          VariablesNeedRefresh = true;
+          BrowserAutomationStudio_Execute(`
+            (function () {
+              try {
+                var value = ${value}, root = ${JSON.stringify(root)};
+                if (root.indexOf("GLOBAL:") === 0) {
+                  root = root.slice(7);
+                  var obj = JSON.parse(P("basglobal", root) || "{}");
+                  obj${path} = value;
+                  PSet("basglobal", root, JSON.stringify(obj));
+                } else {
+                  GLOBAL["VAR_" + root]${path} = value;
+                }
+              } catch (e) {}
+            })();
+            section_start("test", -3)!
+          `);
         });
       }
     });

@@ -32,7 +32,7 @@
       },
 
       'click #inspectorModalSearchVariable'() {
-        $("#findinput").val(this.model.get('name'));
+        $('#findinput').val(this.model.get('name'));
         _ActionFinder.Show();
         _ActionFinder.FindNext(true);
         this.cancel();
@@ -56,8 +56,9 @@
         BrowserAutomationStudio_SetClipboard(text/* , false */);
       },
 
-      'change select[data-style]'(e) {
-        this.model.set('type', e.target.value);
+      'click #inspectorModalCopyPath'() {
+        const text = this.model.get('path');
+        BrowserAutomationStudio_SetClipboard(text/* , false */);
       },
 
       'click .btn-accept': 'accept',
@@ -65,6 +66,10 @@
       'click .btn-cancel': 'cancel',
 
       'hidden.bs.modal': 'cancel',
+
+      'change select'(e) {
+        this.model.set('type', e.target.value);
+      },
 
       'keydown'(e) {
         if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {

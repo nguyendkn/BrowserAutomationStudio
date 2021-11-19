@@ -238,7 +238,9 @@
             </div>
           </div>
           <div class="inspector-modal-footer">
-            <button type="button" class="btn-base btn-accept" disabled><%= $t('inspector.save') %></button>
+            <% if (mode === 'variable') { %>
+              <button type="button" class="btn-base btn-accept" disabled><%= $t('inspector.save') %></button>
+            <% } %>
             <button type="button" class="btn-base btn-cancel"><%= $t('Cancel') %></button>
           </div>
         </div>

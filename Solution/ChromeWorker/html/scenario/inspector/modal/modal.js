@@ -231,7 +231,7 @@
           </div>
           <div class="inspector-modal-footer">
             <button type="button" class="btn-base btn-accept" disabled><%= $t('inspector.save') %></button>
-            <button type="button" class="btn-base btn-cancel"><%= $t('inspector.cancel') %></button>
+            <button type="button" class="btn-base btn-cancel"><%= $t('Cancel') %></button>
           </div>
         </div>
       </div>
@@ -247,7 +247,6 @@
     'inspector.resource.copyName': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
     'inspector.clearData': { en: 'Clear data', ru: 'Очистить данные' },
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
-    'inspector.cancel': { en: 'Cancel', ru: 'Отмена' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },
     'inspector.descriptions.undefined': {
       en: 'Description for Undefined',

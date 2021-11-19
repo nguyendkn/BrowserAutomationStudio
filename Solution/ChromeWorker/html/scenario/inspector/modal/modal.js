@@ -46,18 +46,8 @@
         // }
       },
 
-      'click #inspectorModalCopyData'() {
-        const text = this.model.get('value');
-        BrowserAutomationStudio_SetClipboard(text/* , false */);
-      },
-
-      'click #inspectorModalCopyName'() {
-        const text = this.model.get('name');
-        BrowserAutomationStudio_SetClipboard(text/* , false */);
-      },
-
-      'click #inspectorModalCopyPath'() {
-        const text = this.model.get('path');
+      'click [data-copy-target]'(e) {
+        const text = this.model.get(e.target.dataset.copyTarget);
         BrowserAutomationStudio_SetClipboard(text/* , false */);
       },
 
@@ -193,7 +183,7 @@
                   <path d="M12.6065 2.70703 2.70703 12.6065m0-9.89947 9.89947 9.89947" stroke="#fff" stroke-linecap="square" />
                 </svg>
               </button>
-              <button type="button" id="inspectorModalCopyData" style="flex: 1; border-left-width: 0px;">
+              <button type="button" data-copy-target="value" style="flex: 1; border-left-width: 0px;">
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 3V0H2v12h4v3h9V3h-3Zm-6 8H3V1h8v2H6v8Zm8 3H7V4h7v10Z" fill="#606060" />
                 </svg>
@@ -209,19 +199,19 @@
                   </a>
                 </li>
                 <li>
-                  <a id="inspectorModalCopyName" href="#">
-                    <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
-                    </svg>
-                    <%= $t('inspector.' + mode + '.copyName') %>
-                  </a>
-                </li>
-                <li>
-                  <a id="inspectorModalCopyPath" href="#">
+                  <a data-copy-target="path" href="#">
                     <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                       <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
                     </svg>
                     <%= $t('inspector.' + mode + '.copyPath') %>
+                  </a>
+                </li>
+                <li>
+                  <a data-copy-target="name" href="#">
+                    <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
+                    </svg>
+                    <%= $t('inspector.' + mode + '.copyName') %>
                   </a>
                 </li>
                 <li>

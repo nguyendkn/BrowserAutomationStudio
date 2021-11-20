@@ -20,13 +20,10 @@
     events: {
       'input [data-input-type] :input'(e) {
         const el = e.target, model = this.model;
-        if (model.get('mode') === 'resource' || (el.type === 'radio' && !el.checked)) return;
+        if (model.get('mode') === 'resource' || el.type === 'radio' && !el.checked) return;
         const valid = model.get('type') === 'string' || el.checkValidity();
 
-        if (!valid) {
-          this.$('#inspectorModalError').html(el.validationMessage);
-        }
-
+        if (!valid) this.$('#inspectorModalError').html(el.validationMessage);
         this.$('form').toggleClass('invalid', !valid);
         model.set('value', el.value);
       },

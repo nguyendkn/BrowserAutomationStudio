@@ -1,14 +1,14 @@
 /* Modal styles */
 
-.dropdown-menu > li > .inspector-modal-select-option.active:hover,
-.dropdown-menu > li > .inspector-modal-select-option.active,
-.dropdown-menu > li > .inspector-modal-select-option:hover,
-.dropdown-menu > li > .inspector-modal-select-option:focus {
+.inspector-modal-select + .dropdown-menu li > a.active:hover,
+.inspector-modal-select + .dropdown-menu li > a.active,
+.inspector-modal-select + .dropdown-menu li > a:hover,
+.inspector-modal-select + .dropdown-menu li > a:focus {
   background: #606060;
   color: #fff;
 }
 
-.dropdown-menu > li > .inspector-modal-select-option {
+.inspector-modal-select + .dropdown-menu li > a {
   border: thin solid transparent;
   justify-content: space-between;
   background: #787878;
@@ -33,6 +33,11 @@
 
 .inspector-modal-form .pretty input:checked ~ .state label:after {
   background-color: #9d996c !important;
+}
+
+.inspector-modal-form .pretty .state label {
+  vertical-align: middle;
+  color: #606060;
 }
 
 .inspector-modal-form.invalid > div > textarea,

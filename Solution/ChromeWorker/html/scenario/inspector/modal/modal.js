@@ -139,7 +139,7 @@
           <div class="inspector-modal-body">
             <select data-style="inspector-modal-select" <%= mode === 'resource' ? 'disabled' : '' %>>
               <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
-                <option class="inspector-modal-select-option" value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
+                <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
             </select>
             <form class="inspector-modal-form" spellcheck="false" onsubmit="return false" novalidate>
@@ -152,7 +152,7 @@
                         <div class="pretty p-default p-round">
                           <input type="radio" name="boolean" value="<%= val %>" <%= (type === item ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
                           <div class="state">
-                            <label style="vertical-align: middle; color: #606060;"><%= val %></label>
+                            <label><%= val %></label>
                           </div>
                         </div>
                       </div>

@@ -8,7 +8,7 @@
       mode: 'variable',
       value: '',
       type: '',
-      name: ''
+      path: []
     })
   });
 
@@ -32,7 +32,7 @@
       },
 
       'click #inspectorModalSearchVariable'() {
-        $('#findinput').val(this.model.get('name'));
+        $('#findinput').val(this.model.get('path')[0]);
         _ActionFinder.Show();
         _ActionFinder.FindNext(true);
         this.cancel();
@@ -68,9 +68,9 @@
       }
     },
 
-    initialize({ value, type, name, mode }) {
+    initialize({ value, type, path, mode }) {
       if (['object', 'array'].includes(type)) type = 'custom';
-      const attrs = { value: type === 'custom' ? JSON.stringify(value) : String(value), type, name, mode: 'variable' };
+      const attrs = { value: type === 'custom' ? JSON.stringify(value) : String(value), type, path, mode: 'variable' };
 
       this.model = new Model(attrs).on('change', model => {
         const type = model.get('type'), $form = this.$('form');
@@ -122,15 +122,15 @@
     close() {
       this.$('select').selectpicker('destroy');
       this.$el.modal('hide');
-      this.remove().off();
-      return this;
+      this.model.off();
+      return this.remove();
     },
 
     template: _.template(/*html*/`
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4><%= $t('inspector.' + mode + '.header', { name }) %></h4>
+            <h4><%= $t('inspector.' + mode + '.header', { name: path[0] }) %></h4>
             <h6><%= $t('inspector.' + mode + '.subheader') %></h6>
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

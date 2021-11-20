@@ -121,7 +121,6 @@
     close() {
       this.$('select').selectpicker('destroy');
       this.$el.modal('hide');
-      this.model.off();
       return this.remove();
     },
 

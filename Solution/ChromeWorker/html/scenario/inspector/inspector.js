@@ -89,7 +89,7 @@
 
           VariablesNeedRefresh = true;
           BrowserAutomationStudio_Execute(`
-            (function (value, root) {
+            (function (root, value) {
               try {
                 if (root.indexOf("GLOBAL:") === 0) {
                   root = root.slice(7);
@@ -100,7 +100,7 @@
                   GLOBAL["VAR_" + root]${path} = value;
                 }
               } catch (e) {}
-            })(${value}, ${JSON.stringify(root)});
+            })(${JSON.stringify(root)}, ${value});
             section_start("test", -3)!
           `);
         });

@@ -88,7 +88,6 @@
           $target.trigger('input');
         } else if (model.hasChanged('value')) {
           this.$('.btn-accept').prop('disabled', () => {
-            if (mode === 'resource') return true;
             const equal = _.isEqual(model.toJSON(), attrs);
             return equal || $form.hasClass('invalid');
           });

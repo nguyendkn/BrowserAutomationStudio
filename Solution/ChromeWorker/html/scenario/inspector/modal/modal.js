@@ -13,9 +13,9 @@
   });
 
   Inspector.Modal = Backbone.View.extend({
-    attributes: { tabindex: '-1' },
-
     className: 'modal modal-centered',
+
+    attributes: { tabIndex: -1 },
 
     events: {
       'input [data-input-type] :input'(e) {

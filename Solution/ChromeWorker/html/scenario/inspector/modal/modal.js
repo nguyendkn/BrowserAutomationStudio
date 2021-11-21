@@ -62,6 +62,7 @@
         if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
           this.$('.btn-accept').click();
         }
+        e.stopPropagation();
       }
     },
 

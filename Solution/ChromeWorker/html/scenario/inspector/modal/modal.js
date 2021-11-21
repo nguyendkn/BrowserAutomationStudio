@@ -71,10 +71,10 @@
       const attrs = { value: type === 'custom' ? JSON.stringify(value) : String(value), type, path, mode: 'variable' };
 
       this.model = new Model(attrs).on('change', model => {
-        const type = model.get('type'), $form = this.$('form');
+        const $form = this.$('form');
 
         if (model.hasChanged('type')) {
-          const $inputs = $form.trigger('reset').find('[data-input-type]');
+          const $inputs = $form.trigger('reset').find('[data-input-type]'), type = model.get('type');
           this.$('#inspectorModalDescription').html($t(`inspector.descriptions.${type}`));
 
           const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
@@ -86,8 +86,8 @@
           $target.trigger('input');
         } else if (model.hasChanged('value')) {
           this.$('.btn-accept').prop('disabled', () => {
-            const equal = _.isEqual(model.toJSON(), attrs);
-            return equal || $form.hasClass('invalid');
+            if ($form.hasClass('invalid')) return true;
+            return _.isEqual(model.toJSON(), attrs);
           });
         }
       });

@@ -102,17 +102,13 @@
     },
 
     accept() {
-      this.options.callback(false, {
-        ...this.close().model.toJSON()
-      });
-      return this;
+      this.options.callback(false, this.model.toJSON());
+      return this.close();
     },
 
     cancel() {
-      this.options.callback(true, {
-        ...this.close().model.toJSON()
-      });
-      return this;
+      this.options.callback(true, this.model.toJSON());
+      return this.close();
     },
 
     close() {

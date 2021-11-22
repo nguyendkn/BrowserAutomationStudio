@@ -36,7 +36,7 @@
         if (model.get('mode') === 'resource' || el.type === 'radio' && !el.checked) return;
         const valid = model.get('type') === 'string' || el.checkValidity();
 
-        if (!valid) this.$('#inspectorModalError').html(el.validationMessage);
+        this.$('#inspectorModalError').html(el.validationMessage);
         this.$('form').toggleClass('invalid', !valid);
         model.set('value', el.value);
       },
@@ -89,16 +89,17 @@
         const $form = this.$('form');
 
         if (model.hasChanged('type')) {
-          const $inputs = $form.trigger('reset').find('[data-input-type]'), type = model.get('type');
+          const type = model.get('type');
+
+          _.each($form.trigger('reset')[0].elements, el => {
+            const parent = el.closest('[data-input-type]');
+            el.required = parent.dataset.inputType === type;
+
+            $(parent).toggle(el.required);
+            if (el.required) $(el).trigger('input');
+          });
+
           this.$('#inspectorModalDescription').html($t(`inspector.descriptions.${type}`));
-
-          const $unused = $inputs.filter((_, el) => el.dataset.inputType !== type)
-            .hide().find(':input').prop('required', false);
-
-          const $target = $inputs.filter((_, el) => el.dataset.inputType === type)
-            .show().find(':input').prop('required', true);
-
-          $target.trigger('input');
         } else if (model.hasChanged('value')) {
           const disabled = $form.hasClass('invalid') || model.notChanged();
           this.$('.btn-accept').prop('disabled', disabled);

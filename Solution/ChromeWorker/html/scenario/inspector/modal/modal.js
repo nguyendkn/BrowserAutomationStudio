@@ -100,9 +100,8 @@
 
           $target.trigger('input');
         } else if (model.hasChanged('value')) {
-          this.$('.btn-accept').prop('disabled', () => {
-            return $form.hasClass('invalid') || model.notChanged();
-          });
+          const disabled = $form.hasClass('invalid') || model.notChanged();
+          this.$('.btn-accept').prop('disabled', disabled);
         }
       });
     },

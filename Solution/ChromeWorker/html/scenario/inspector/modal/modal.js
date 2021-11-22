@@ -150,7 +150,7 @@
                 <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
             </select>
-            <form class="inspector-modal-form" spellcheck="false" onsubmit="return false" novalidate>
+            <form class="inspector-modal-form" spellcheck="false" novalidate>
               <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
                 <% const required = item === type && mode !== 'resource' ? 'required' : '' %>
                 <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
@@ -235,7 +235,7 @@
                 <path d="M8 0C3.58172 0 0 3.58172 0 8c0 4.4183 3.58172 8 8 8 4.4183 0 8-3.5817 8-8 0-4.41828-3.5817-8-8-8Z" fill="#606060" />
                 <path d="m8.26 10.168.336-4.508V3H7.112v2.66l.294 4.508h.854Zm.434 2.8v-1.666H7v1.666h1.694Z" fill="#fff" />
               </svg>
-              <span id="inspectorModalDescription" style="margin-left: 14px;"><%= $t('inspector.descriptions.' + type) %></span>
+              <span id="inspectorModalDescription" style="margin-left: 14px; flex: 1;"><%= $t('inspector.descriptions.' + type) %></span>
             </div>
           </div>
           <div class="inspector-modal-footer">

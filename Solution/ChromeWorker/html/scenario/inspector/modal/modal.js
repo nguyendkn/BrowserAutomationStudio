@@ -21,7 +21,7 @@
           _.pick(options, keys)
         );
       };
-      this.set('name', options.name);
+      this.set('name', options.path[0]);
     }
   });
 

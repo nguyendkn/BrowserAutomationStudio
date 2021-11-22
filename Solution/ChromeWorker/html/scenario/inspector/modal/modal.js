@@ -122,8 +122,8 @@
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
-            <h4><%= $t('inspector.' + mode + '.header', { name: path[0] }) %></h4>
-            <h6><%= $t('inspector.' + mode + '.subheader') %></h6>
+            <h4><%= $t('inspector.header.' + mode, { name: path[0] }) %></h4>
+            <h6><%= $t('inspector.subheader.' + mode) %></h6>
             <button data-dismiss="modal">
               <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18 7.05L16.95 6L12 10.95L7.05 6L6 7.05L10.95 12L6 16.95L7.05 18L12 13.05L16.95 18L18 16.95L13.05 12L18 7.05Z" fill="#606060" />
@@ -187,7 +187,7 @@
                     <svg width="24" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                       <path d="m15.7164 15.111-4.2359-3.9328c2.1796-2.63853 1.8355-6.65365-.8031-8.83329C8.03894.165276 4.02382.509429 1.84418 3.14794-.335456 5.78644.00869703 9.80156 2.6472 11.9812c2.29436 1.9502 5.73589 1.9502 8.0302 0l4.2359 3.9329.8031-.8031ZM1.50003 7.16306c0-2.86795 2.29435-5.1623 5.16229-5.1623 2.86795 0 5.16228 2.29435 5.16228 5.1623 0 2.86794-2.29433 5.16234-5.16228 5.16234-2.86794 0-5.16229-2.2944-5.16229-5.16234Z" fill="#fff" />
                     </svg>
-                    <%= $t('inspector.' + mode + '.search') %>
+                    <%= $t('inspector.search.' + mode) %>
                   </a>
                 </li>
                 <li>
@@ -195,7 +195,7 @@
                     <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                       <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
                     </svg>
-                    <%= $t('inspector.' + mode + '.copyPath') %>
+                    <%= $t('inspector.copyPath.' + mode) %>
                   </a>
                 </li>
                 <li>
@@ -203,7 +203,7 @@
                     <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
                       <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
                     </svg>
-                    <%= $t('inspector.' + mode + '.copyName') %>
+                    <%= $t('inspector.copyName.' + mode) %>
                   </a>
                 </li>
                 <li>
@@ -236,16 +236,16 @@
   });
 
   _.extend(_L, {
-    'inspector.variable.header': { en: 'Edit the "{name}" variable', ru: 'Изменить переменную "{name}"' },
-    'inspector.variable.search': { en: 'Search for variable in project', ru: 'Поиск переменной в проекте' },
-    'inspector.variable.copyName': { en: 'Copy the variable name', ru: 'Копировать имя переменной' },
-    'inspector.variable.copyPath': { en: 'Copy the variable path', ru: 'Копировать путь переменной' },
-    'inspector.variable.subheader': { en: 'Edit variable type and value', ru: 'Изменить тип и значение переменной' },
-    'inspector.resource.header': { en: 'View the "{name}" resource', ru: 'Просмотр ресурса "{name}"' },
-    'inspector.resource.search': { en: 'Search for resource in project', ru: 'Поиск ресурса в проекте' },
-    'inspector.resource.copyName': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
-    'inspector.resource.copyPath': { en: 'Copy the resource path', ru: 'Копировать путь ресурса' },
-    'inspector.resource.subheader': { en: 'View resource type and value', ru: 'Просмотр типа и значения ресурса' },
+    'inspector.subheader.variable': { en: 'Edit variable type and value', ru: 'Изменить тип и значение переменной' },
+    'inspector.subheader.resource': { en: 'View resource type and value', ru: 'Просмотр типа и значения ресурса' },
+    'inspector.header.variable': { en: 'Edit the "{name}" variable', ru: 'Изменить переменную "{name}"' },
+    'inspector.header.resource': { en: 'View the "{name}" resource', ru: 'Просмотр ресурса "{name}"' },
+    'inspector.search.variable': { en: 'Search for variable in project', ru: 'Поиск переменной в проекте' },
+    'inspector.search.resource': { en: 'Search for resource in project', ru: 'Поиск ресурса в проекте' },
+    'inspector.copyPath.variable': { en: 'Copy the variable path', ru: 'Копировать путь переменной' },
+    'inspector.copyPath.resource': { en: 'Copy the resource path', ru: 'Копировать путь ресурса' },
+    'inspector.copyName.variable': { en: 'Copy the variable name', ru: 'Копировать имя переменной' },
+    'inspector.copyName.resource': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
     'inspector.clearData': { en: 'Clear data', ru: 'Очистить данные' },
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },

@@ -146,7 +146,7 @@
                         <div class="pretty p-default p-round">
                           <input type="radio" name="boolean" value="<%= val %>" <%= (type === item ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
                           <div class="state">
-                            <label><%= val %></label>
+                            <label><%= $t('inspector.' + val) %></label>
                           </div>
                         </div>
                       </div>
@@ -282,6 +282,8 @@
     'inspector.custom': { en: 'Custom', ru: 'Особый' },
     'inspector.string': { en: 'String', ru: 'Строка' },
     'inspector.number': { en: 'Number', ru: 'Число' },
+    'inspector.false': { en: 'False', ru: 'False' },
+    'inspector.true': { en: 'True', ru: 'True' },
     'inspector.date': { en: 'Date', ru: 'Дата' },
     'inspector.null': { en: 'Null', ru: 'Null' }
   });

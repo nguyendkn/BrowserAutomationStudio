@@ -1,6 +1,6 @@
 'use strict';
 
-(({ App, Backbone }) => {
+(({ App, Backbone, _ }) => {
   const { Inspector } = App;
 
   Inspector.Main = Backbone.View.extend({

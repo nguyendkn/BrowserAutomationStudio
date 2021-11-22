@@ -74,7 +74,7 @@
       },
 
       'keydown'(e) {
-        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+        if (e.target.tagName !== 'TEXTAREA' && e.key === 'Enter') {
           this.$('.btn-accept').click();
         }
         e.stopPropagation();

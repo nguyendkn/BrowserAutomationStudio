@@ -45,10 +45,7 @@
         this.resizable = interact($el[0]).resizable({
           listeners: {
             move({ client: { y } }) {
-              $el.outerHeight(Math.max(120, Math.min(
-                window.outerHeight - 30 - 300,
-                window.outerHeight - 30 - y,
-              )));
+              $el.outerHeight(Math.max(120, window.outerHeight - Math.max(300, y) - 30));
             }
           },
           edges: { top: true }
@@ -129,7 +126,7 @@
       source: {}
     }),
 
-    update: function (source) {
+    update(source) {
       const diff = jsonpatch.compare(this.get('source'), source);
       const highlight = this.get('highlight');
       const metadata = this.get('metadata');

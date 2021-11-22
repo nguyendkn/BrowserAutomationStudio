@@ -8,8 +8,21 @@
       mode: 'variable',
       value: '',
       type: '',
+      name: '',
       path: []
-    })
+    }),
+
+    initialize(options) {
+      const keys = ['value', 'type'];
+      this.notChanged = () => {
+        const { attributes } = this;
+        return _.isEqual(
+          _.pick(attributes, keys),
+          _.pick(options, keys)
+        );
+      };
+      this.set('name', options.name);
+    }
   });
 
   Inspector.Modal = Backbone.View.extend({
@@ -44,8 +57,10 @@
       },
 
       'click [data-copy-target]'(e) {
-        const text = this.model.get(e.target.dataset.copyTarget);
-        BrowserAutomationStudio_SetClipboard(text/* , false */);
+        const val = this.model.get(e.target.dataset.copyTarget);
+        BrowserAutomationStudio_SetClipboard(
+          Array.isArray(val) ? val.map((v, i) => (i === 0 ? v : `[${JSON.stringify(v)}]`)).join('') : val
+        );
       },
 
       'click .btn-accept': 'accept',
@@ -86,8 +101,7 @@
           $target.trigger('input');
         } else if (model.hasChanged('value')) {
           this.$('.btn-accept').prop('disabled', () => {
-            if ($form.hasClass('invalid')) return true;
-            return _.isEqual(model.toJSON(), attrs);
+            return $form.hasClass('invalid') || model.notChanged();
           });
         }
       });

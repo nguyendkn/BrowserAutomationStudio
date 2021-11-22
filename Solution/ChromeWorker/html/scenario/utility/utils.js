@@ -20,13 +20,11 @@
   };
 
   _.mixin({
-    isSymbol: obj => toString.call(obj) === '[object Symbol]',
+    isSymbol: val => toString.call(val) === '[object Symbol]',
 
-    isError: obj => toString.call(obj) === '[object Error]',
+    isError: val => toString.call(val) === '[object Error]',
 
-    sleep: time => new Promise(resolve => {
-      setTimeout(resolve, time);
-    }),
+    sleep: time => new Promise(fn => setTimeout(fn, time)),
 
     attempt: (func, ...args) => {
       try {

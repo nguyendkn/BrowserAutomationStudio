@@ -14,8 +14,8 @@
 
     initialize({ value, type, path }) {
       this.notChanged = () => _.all([
-        this.get('value') === value,
-        this.get('type') === type,
+        value === this.get('value'),
+        type === this.get('type'),
       ], x => x);
       this.set('name', path[0]);
     }
@@ -269,20 +269,20 @@
       ru: ''
     },
     'inspector.descriptions.boolean': {
-      en: '',
-      ru: ''
+      en: 'Logical type accepting only one of two values - true or false.',
+      ru: 'Логический тип, принимающий только одно из двух значений - true (истина) или false (ложь).'
     },
     'inspector.descriptions.custom': {
       en: '',
       ru: ''
     },
     'inspector.descriptions.string': {
-      en: '',
-      ru: ''
+      en: 'String is one of the primitive types that represent any text data.',
+      ru: 'Строка - один из примитивных типов, представляющий собой любые текстовые данные.'
     },
     'inspector.descriptions.number': {
-      en: '',
-      ru: ''
+      en: 'Number is one of the primitive types. It can represent both integer values and values with a fractional part.',
+      ru: 'Число - один из примитивных типов. Может представлять собой как целые значения, так и значения с дробной частью.'
     },
     'inspector.descriptions.date': {
       en: '',

@@ -60,7 +60,7 @@
       'click [data-copy-target]'(e) {
         const val = this.model.get(e.target.dataset.copyTarget);
         BrowserAutomationStudio_SetClipboard(
-          Array.isArray(val) ? val.map((v, i) => (i === 0 ? v : `[${JSON.stringify(v)}]`)).join('') : val
+          Array.isArray(val) ? val.map((v, i) => (i !== 0 ? `[${JSON.stringify(v)}]` : v)).join('') : val
         );
       },
 

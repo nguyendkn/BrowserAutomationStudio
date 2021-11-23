@@ -4,7 +4,9 @@ _L["Proxy type"] = {"ru":"Тип прокси"};
 _L["Folder name"] = {"ru":"Имя папки"};
 _L["Proxy login"] = {"ru":"Логин прокси"};
 _L["Proxy password"] = {"ru":"Пароль прокси"};
+_L["New folder name"] = {"ru":"Новое имя папки"};
 _L["Search criteria"] = {"ru":"Критерии поиска"};
+_L["Old folder name"] = {"ru":"Старое имя папки"};
 _L["Sorting criteria"] = {"ru":"Критерии сортировки"};
 
 _InMail = {
@@ -107,6 +109,36 @@ _InMail = {
 		if(api){
 			api.clearProxy();
 		};
+	},
+	
+	addBox: function(){
+		var name = _function_argument("name");
+		_validate_argument_type(name, 'string', 'Folder name', '_InMail.addBox');
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.addBox, {name: name})!
+	},
+	
+	delBox: function(){
+		var name = _function_argument("name");
+		_validate_argument_type(name, 'string', 'Folder name', '_InMail.delBox');
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.delBox, {name: name})!
+	},
+	
+	renameBox: function(){
+		var act = '_InMail.renameBox';
+		var oldName = _function_argument("oldName");
+		_validate_argument_type(oldName, 'string', 'Old folder name', act);
+		var newName = _function_argument("newName");
+		_validate_argument_type(newName, 'string', 'New folder name', act);
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.renameBox, {oldName: oldName, newName: newName})!
 	},
 	
 	search: function(){
@@ -216,13 +248,13 @@ _InMail = {
 					
 					if(keys.length){
 						var arr = [];
-						
-						for(var i in keys){
+						for(var i = 0; i < keys.length; i++){
 							var key = keys[i];
+							var keyLow = key.toLocaleLowerCase();
 							var value = criteria[key];
-							if(['flags', '!flags'].indexOf(key.toLocaleLowerCase()) > -1){
+							if(['flags', '!flags'].indexOf(keyLow) > -1){
 								var flags = _to_arr(value);
-								if(key.toLocaleLowerCase()=='!flags'){
+								if(keyLow=='!flags'){
 									flags = flags.map(function(flag){return flag.slice(0, 1) != '!' ? '!' + flag : flag});
 								};
 								arr = arr.concat(flags);
@@ -230,7 +262,6 @@ _InMail = {
 								arr.push([key, value]);
 							};
 						};
-						
 						return arr;
 					};
 				};

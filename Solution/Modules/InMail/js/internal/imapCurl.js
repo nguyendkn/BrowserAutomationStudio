@@ -8,6 +8,55 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 	};
 	
+	// RFC 3501, section 5.1.3 UTF-7 encoding/decoding.
+	this.utf7 = (function(){
+		function encode(str){
+			var b = "";
+			for(var i = 0; i < str.length; i++){
+				// Note that we can't simply convert a UTF-8 string to Base64 because
+				// UTF-8 uses a different encoding. In modified UTF-7, all characters
+				// are represented by their two byte Unicode ID.
+				var c = str.charCodeAt(i);
+				// Upper 8 bits shifted into lower 8 bits so that they fit into 1 byte.
+				b += String.fromCharCode(c >> 8);
+				// Lower 8 bits. Cut off the upper 8 bits so that they fit into 1 byte.
+				b += String.fromCharCode(c & 0xFF);
+			};
+			// Modified Base64 uses , instead of / and omits trailing =.
+			return base64_encode(b).replace(/=+$/, '');
+		};
+		
+		function decode(str){
+			var b = base64_decode(str);
+			var r = "";
+			for(var i = 0; i < b.length;){
+				// Calculate charcode from two adjacent bytes.
+				r += (String.fromCharCode(b.charCodeAt(i++) << 8 | b.charCodeAt(i++)));
+			};
+			return r;
+		};
+		
+		return {
+			encode: function(str){
+				// All printable ASCII chars except for & must be represented by themselves.
+				// We replace subsequent non-representable chars with their escape sequence.
+				return str.replace(/&/g, '&-').replace(/[^\x20-\x7e]+/g, function(chunk){
+					// & is represented by an empty sequence &-, otherwise call encode().
+					chunk = (chunk === '&' ? '' : encode(chunk)).replace(new RegExp("\\/", "g"), ',');
+					return '&' + chunk + '-';
+				});
+			},
+			
+			decode: function(str){
+				return str.replace(/&([^-]*)-/g, function(_, chunk){
+					// &- represents &.
+					if (chunk === '') return '&';
+					return decode(chunk.replace(/,/g, '/'));
+				});
+			}
+		}
+	})();
+	
 	this.parseCaps = function(str){
 		var start = str.lastIndexOf('CAPABILITY');
 		if(start > -1){
@@ -44,10 +93,10 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		var path = _function_argument("path");
 		var query = _function_argument("query");
 		var isUTF8 = _avoid_nilb(_function_argument("isUTF8"), false);
-		var folder = _avoid_nilb(_function_argument("folder"), api.folder);
+		var folder = _avoid_nil(_function_argument("folder"), api.folder);
 		
 		if(isUTF8){
-			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + api.escape(folder) + '"\r\n' + query;
+			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + api.escape(api.utf7.encode(folder)) + '"\r\n' + query;
 		}else{
 			path = _avoid_nil(path, folder);
 		};
@@ -101,6 +150,25 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 				uids[i] = intval;
 			};
 		};
+	};
+	
+	this.addBox = function(){
+		var name = _function_argument("name");
+		
+		_call_function(api.makeRequest, {query: 'CREATE "' + api.escape(api.utf7.encode(name)) + '"', folder: ""})!
+	};
+	
+	this.delBox = function(){
+		var name = _function_argument("name");
+		
+		_call_function(api.makeRequest, {query: 'DELETE "' + api.escape(api.utf7.encode(name)) + '"', folder: ""})!
+	};
+	
+	this.renameBox = function(){
+		var oldName = _function_argument("oldName");
+		var newName = _function_argument("newName");
+		
+		_call_function(api.makeRequest, {query: 'RENAME "' + api.escape(api.utf7.encode(oldName)) + '" "' + api.escape(api.utf7.encode(newName)) + '"', folder: ""})!
 	};
 
 	this.hasNonASCII = function(str){

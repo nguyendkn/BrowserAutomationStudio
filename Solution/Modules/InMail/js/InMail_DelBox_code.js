@@ -1,0 +1,1 @@
+_call_function(_InMail.delBox, {name: (<%= name %>)})!

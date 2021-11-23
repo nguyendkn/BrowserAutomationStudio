@@ -2,6 +2,31 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 	const api = this;
 	_InMail.baseApi.call(this, false, "imap", autoConfig, host, port, encrypt, username, password, folder, timeout);
 	
+	this.addBox = function(){
+		var name = _function_argument("name");
+		
+		VAR_INMAIL_NODE_PARAMETERS = {options: {config: api.config, folder: api.folder}, name: name, timeout: api.timeout};
+		
+		_embedded("InMail_AddBox", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+	};
+	
+	this.delBox = function(){
+		var name = _function_argument("name");
+		
+		VAR_INMAIL_NODE_PARAMETERS = {options: {config: api.config, folder: api.folder}, name: name, timeout: api.timeout};
+		
+		_embedded("InMail_DelBox", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+	};
+	
+	this.renameBox = function(){
+		var oldName = _function_argument("oldName");
+		var newName = _function_argument("newName");
+		
+		VAR_INMAIL_NODE_PARAMETERS = {options: {config: api.config, folder: api.folder}, oldName: oldName, newName: newName, timeout: api.timeout};
+		
+		_embedded("InMail_RenameBox", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+	};
+	
 	this.search = function(){
 		var criteria = _function_argument("criteria");
 		var folder = _avoid_nilb(_function_argument("folder"), api.folder);

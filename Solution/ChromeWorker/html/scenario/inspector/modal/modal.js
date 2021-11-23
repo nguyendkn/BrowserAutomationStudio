@@ -98,7 +98,8 @@
             $(parent).toggle(el.required);
           }
 
-          this.$('#inspectorModalDescription').html($t(`inspector.descriptions.${type}`));
+          const description = $t(`inspector.descriptions.${type}`);
+          this.$('#inspectorModalDescription').html(description);
         } else if (model.hasChanged('value')) {
           const disabled = $form.hasClass('invalid') || model.notChanged();
           this.$('.btn-accept').prop('disabled', disabled);
@@ -145,16 +146,16 @@
           </div>
           <div class="inspector-modal-body">
             <select data-style="inspector-modal-select" <%= mode === 'resource' ? 'disabled' : '' %>>
-              <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
+              <% ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'].forEach(item => { %>
                 <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
             </select>
             <form class="inspector-modal-form" spellcheck="false" novalidate>
-              <% _.each(['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'], item => { %>
+              <% ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'].forEach(item => { %>
                 <% const required = item === type && mode !== 'resource' ? 'required' : '' %>
                 <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>
-                    <% _.each(['false', 'true'], (val, idx) => { %>
+                    <% ['false', 'true'].forEach((val, idx) => { %>
                       <div style="padding: 9px 12px;">
                         <div class="pretty p-default p-round">
                           <input type="radio" name="boolean" value="<%= val %>" <%= (type === item ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>

@@ -12,15 +12,12 @@
       path: []
     }),
 
-    initialize(options) {
-      this.notChanged = () => {
-        const { attributes } = this;
-        return _.isEqual(
-          _.pick(attributes, 'type', 'value'),
-          _.pick(options, 'type', 'value'),
-        );
-      };
-      this.set('name', options.path[0]);
+    initialize({ value, type, path }) {
+      this.notChanged = () => _.all([
+        this.get('value') === value,
+        this.get('type') === type,
+      ], x => x);
+      this.set('name', path[0]);
     }
   });
 

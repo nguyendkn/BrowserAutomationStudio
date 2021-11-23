@@ -49,11 +49,12 @@
       },
 
       'click #inspectorModalClearData'() {
-        // for (const el of this.$('form')[0].elements) {
-        //   if (el.type !== 'hidden') {
-        //     $(el).val('');
-        //   }
-        // }
+        const form = this.$('form')[0];
+
+        for (const el of form.elements) {
+          // if (el.type === 'radio') el.checked = false;
+          // else if (el.type !== 'hidden') $(el).val('');
+        }
       },
 
       'click [data-copy-target]'(e) {

@@ -153,13 +153,13 @@
             </select>
             <form class="inspector-modal-form" spellcheck="false" novalidate>
               <% ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'].forEach(item => { %>
-                <% const required = item === type && mode !== 'resource' ? 'required' : '' %>
-                <div data-input-type="<%= item %>" style="display: <%= item === type ? 'flex' : 'none' %>;">
+                <% const match = item === type, required = match && mode !== 'resource' ? 'required' : '' %>
+                <div data-input-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>
                     <% ['false', 'true'].forEach((val, idx) => { %>
                       <div style="padding: 9px 12px;">
                         <div class="pretty p-default p-round">
-                          <input type="radio" name="boolean" value="<%= val %>" <%= (type === item ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
+                          <input type="radio" name="boolean" value="<%= val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
                           <div class="state">
                             <label><%= $t('inspector.' + val) %></label>
                           </div>
@@ -167,13 +167,13 @@
                       </div>
                     <% }) %>
                   <% } else if (item === 'custom') { %>
-                    <textarea <%= required %>><%- type === item ? value : '' %></textarea>
+                    <textarea <%= required %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'string') { %>
-                    <textarea <%= required %>><%- type === item ? value : '' %></textarea>
+                    <textarea <%= required %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'number') { %>
-                    <input type="number" value="<%- type === item ? value : 0 %>" <%= required %>>
+                    <input type="number" value="<%- match ? value : 0 %>" <%= required %>>
                   <% } else if (item === 'date' ) { %>
-                    <input type="text" value="<%- type === item ? value : '' %>" <%= required %>>
+                    <input type="text" value="<%- match ? value : '' %>" <%= required %>>
                   <% } else { %>
                     <input type="hidden" value="<%= item %>">
                   <% } %>

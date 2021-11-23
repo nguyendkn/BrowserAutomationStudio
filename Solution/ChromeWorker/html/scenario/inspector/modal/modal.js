@@ -42,7 +42,7 @@
       },
 
       'click #inspectorModalSearchVariable'() {
-        $('#findinput').val(this.model.get('path')[0]);
+        $('#findinput').val(this.model.get('name'));
         _ActionFinder.Show();
         _ActionFinder.FindNext(true);
         this.cancel();

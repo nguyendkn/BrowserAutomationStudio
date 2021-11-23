@@ -13,12 +13,11 @@
     }),
 
     initialize(options) {
-      const keys = ['value', 'type'];
       this.notChanged = () => {
         const { attributes } = this;
         return _.isEqual(
-          _.pick(attributes, keys),
-          _.pick(options, keys)
+          _.pick(attributes, 'type', 'value'),
+          _.pick(options, 'type', 'value'),
         );
       };
       this.set('name', options.path[0]);

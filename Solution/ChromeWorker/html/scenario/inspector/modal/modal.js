@@ -269,32 +269,32 @@
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },
     'inspector.descriptions.undefined': {
-      en: 'Description for Undefined',
-      ru: 'Description for Undefined'
+      en: '',
+      ru: ''
     },
     'inspector.descriptions.boolean': {
-      en: 'Description for Boolean',
-      ru: 'Description for Boolean'
+      en: '',
+      ru: ''
     },
     'inspector.descriptions.custom': {
-      en: 'Description for Custom',
-      ru: 'Description for Custom'
+      en: '',
+      ru: ''
     },
     'inspector.descriptions.string': {
-      en: 'Description for String',
-      ru: 'Description for String'
+      en: '',
+      ru: ''
     },
     'inspector.descriptions.number': {
-      en: 'Description for Number',
-      ru: 'Description for Number'
+      en: '',
+      ru: ''
     },
     'inspector.descriptions.date': {
-      en: 'Description for Date',
-      ru: 'Description for Date'
+      en: '',
+      ru: ''
     },
     'inspector.descriptions.null': {
-      en: 'Description for Null',
-      ru: 'Description for Null'
+      en: '',
+      ru: ''
     },
     'inspector.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.boolean': { en: 'Boolean', ru: 'Булево' },

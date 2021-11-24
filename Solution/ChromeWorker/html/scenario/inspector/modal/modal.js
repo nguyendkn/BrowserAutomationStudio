@@ -146,7 +146,7 @@
                 <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
             </select>
-            <form class="inspector-modal-form" spellcheck="false" novalidate>
+            <form class="inspector-modal-form" novalidate spellcheck="false">
               <% ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'].forEach(item => { %>
                 <% const match = item === type, required = match && mode !== 'resource' ? 'required' : '' %>
                 <div data-input-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
@@ -177,7 +177,7 @@
               <span id="inspectorModalError"></span>
             </form>
             <div class="inspector-modal-tools dropdown" style="display: flex;">
-              <button type="button" id="inspectorModalShowMenu" style="flex: 0; border-left-width: 1px;" data-toggle="dropdown">
+              <button type="button" data-toggle="dropdown">
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0 3h16M0 8h16M0 13h16" stroke="#606060" stroke-linecap="square" />
                 </svg>
@@ -185,7 +185,7 @@
                   <path d="M12.6065 2.70703 2.70703 12.6065m0-9.89947 9.89947 9.89947" stroke="#fff" stroke-linecap="square" />
                 </svg>
               </button>
-              <button type="button" data-copy-target="value" style="flex: 1; border-left-width: 0px;">
+              <button type="button" data-copy-target="value" style="flex: 1; border-left: 0;">
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 3V0H2v12h4v3h9V3h-3Zm-6 8H3V1h8v2H6v8Zm8 3H7V4h7v10Z" fill="#606060" />
                 </svg>

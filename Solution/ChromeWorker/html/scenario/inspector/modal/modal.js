@@ -275,8 +275,8 @@
       ru: 'Логический тип, принимающий только одно из двух значений - true (истина) или false (ложь).'
     },
     'inspector.descriptions.custom': {
-      en: '',
-      ru: ''
+      en: 'The value of this type is treated as arbitrary JavaScript code. You can use it to specify data in `raw` form. Arrays and objects are set and displayed in the same way as in the code.',
+      ru: 'Значение данного типа рассматривается как произвольный JavaScript код. С помощью него можно задать данные в `сыром` виде. Массивы и объекты задаются и отображаются так же, как и в коде.'
     },
     'inspector.descriptions.string': {
       en: 'String is one of the primitive types that represent any text data.',

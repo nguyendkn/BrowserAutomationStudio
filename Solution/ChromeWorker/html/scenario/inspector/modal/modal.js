@@ -13,10 +13,10 @@
     }),
 
     initialize({ value, type, path }) {
-      this.notChanged = () => _.all([
-        value === this.get('value'),
-        type === this.get('type'),
-      ], x => x);
+      this.isChanged = () => _.any([
+        value !== this.get('value'),
+        type !== this.get('type'),
+      ]);
       this.set('name', path[0]);
     }
   });
@@ -97,7 +97,7 @@
           const description = $t(`inspector.descriptions.${type}`);
           this.$('#inspectorModalDescription').html(description);
         } else if (model.hasChanged('value')) {
-          const disabled = $form.hasClass('invalid') || model.notChanged();
+          const disabled = $form.hasClass('invalid') || !model.isChanged();
           this.$('.btn-accept').prop('disabled', disabled);
         }
       });

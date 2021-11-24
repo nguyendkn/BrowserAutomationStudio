@@ -25,21 +25,25 @@ std::string read_clipboard()
         return std::string();
 }
 
-void write_clipboard(const std::string data)
+void write_clipboard(const std::string data, bool use_prefix)
 {
     if (OpenClipboard(0))
     {
         HGLOBAL clipbuffer;
         char * buffer;
         EmptyClipboard();
-        clipbuffer = GlobalAlloc(GMEM_DDESHARE, data.length() + 5);
+        int offset = use_prefix ? 4 : 0;
+        clipbuffer = GlobalAlloc(GMEM_DDESHARE, data.length() + offset + 1);
         buffer = (char*)GlobalLock(clipbuffer);
-        buffer[0] = 'B';
-        buffer[1] = 'A';
-        buffer[2] = 'S';
-        buffer[3] = ':';
-        memcpy(buffer + 4, data.data(),data.size());
-        buffer[data.length() + 4] = 0;
+        if (use_prefix)
+        {
+            buffer[0] = 'B';
+            buffer[1] = 'A';
+            buffer[2] = 'S';
+            buffer[3] = ':';
+        }
+        memcpy(buffer + offset, data.data(), data.size());
+        buffer[data.length() + offset] = 0;
         GlobalUnlock(clipbuffer);
         SetClipboardData(CF_TEXT,clipbuffer);
         CloseClipboard();

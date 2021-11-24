@@ -203,8 +203,8 @@
                 <% if (path.length > 1) { %>
                   <li>
                     <a href="#" data-copy-target="path">
-                      <svg width="24" height="16" viewBox="0 0 24 16" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 1v1h3v6h1V2h3V1H3ZM12 6v1h4v9h1V7h4V6h-9Z" fill="#fff" />
+                      <svg width="24" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3V0H2v12h4v3h9V3h-3Zm-6 8H3V1h8v2H6v8Zm8 3H7V4h7v10Z" fill="#fff" />
                       </svg>
                       <%= $t('inspector.copyPath.' + mode) %>
                     </a>

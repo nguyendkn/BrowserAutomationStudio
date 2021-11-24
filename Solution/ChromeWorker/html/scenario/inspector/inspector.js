@@ -109,12 +109,10 @@
         if (val.startsWith('_UNDEFINED_')) {
           val = undefined;
         } else if (val.startsWith('_DATE_')) {
-          val = dayjs(val.slice(8), 'YYYY-MM-DD HH:mm:ss [UTC]Z').toDate();
+          val = dayjs(val.slice(6), 'YYYY-MM-DD HH:mm:ss [UTC]Z').toDate();
         }
-      } else if (_.isObject(val)) {
-        val = prepareData(val);
       }
-      return (acc[key] = val, acc);
+      return (acc[key] = _.isObject(val) ? prepareData(val) : val, acc);
     }, Array.isArray(data) ? [] : {});
   }
 

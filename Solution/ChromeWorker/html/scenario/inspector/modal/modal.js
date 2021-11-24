@@ -99,9 +99,10 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template(this.model.toJSON()));
+        this.$el.html(this.template(this.model.toJSON())).modal({
+          backdrop: 'static'
+        });
         this.$('select').selectpicker();
-        this.$el.modal({ backdrop: 'static' });
       }
       return this;
     },

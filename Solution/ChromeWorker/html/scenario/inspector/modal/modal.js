@@ -79,27 +79,21 @@
 
     initialize({ value, type, path, mode }) {
       if (['object', 'array'].includes(type)) type = 'custom';
-      const attrs = { value: type === 'custom' ? JSON.stringify(value) : String(value), type, path, mode: 'variable' };
+      const attrs = { value: type === 'custom' ? JSON.stringify(value) : value + '', type, path, mode: 'variable' };
 
-      this.model = new Model(attrs).on('change', model => {
-        const $form = this.$('form');
-
-        if (model.hasChanged('type')) {
-          const type = model.get('type');
-
-          for (const el of $form.trigger('reset')[0].elements) {
-            const parent = el.closest('[data-input-type]');
-            el.required = parent.dataset.inputType === type;
-            if (el.required) $(el).trigger('input');
-            $(parent).toggle(el.required);
-          }
-
-          const description = $t(`inspector.descriptions.${type}`);
-          this.$('#inspectorModalDescription').html(description);
-        } else if (model.hasChanged('value')) {
-          const disabled = $form.hasClass('invalid') || !model.isChanged();
-          this.$('.btn-accept').prop('disabled', disabled);
+      this.model = new Model(attrs).on('change:type', (model, type) => {
+        for (const el of this.$('form').trigger('reset')[0].elements) {
+          const parent = el.closest('[data-input-type]');
+          el.required = parent.dataset.inputType === type;
+          if (el.required) $(el).trigger('input');
+          $(parent).toggle(el.required);
         }
+
+        const description = $t(`inspector.descriptions.${type}`);
+        this.$('#inspectorModalDescription').html(description);
+      }).on('change:value', model => {
+        const disabled = this.$('form').hasClass('invalid') || !model.isChanged();
+        this.$('.btn-accept').prop('disabled', disabled);
       });
     },
 

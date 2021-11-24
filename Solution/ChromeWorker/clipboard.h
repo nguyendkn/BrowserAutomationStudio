@@ -5,7 +5,7 @@
 #include "startwith.h"
 
 std::string read_clipboard();
-void write_clipboard(const std::string data);
+void write_clipboard(const std::string data, bool use_prefix = true);
 
 
 #endif // CLIPBOARD_H

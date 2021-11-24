@@ -27,7 +27,7 @@
     position: relative;
     margin: 0 10px 10px 0;
     text-decoration: none;
-    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
     font-size: 11px;
     opacity: 0.8;
     font-weight: lighter;
@@ -1661,7 +1661,7 @@ label
 }
 
 .main, #functions, .threads{
-  -webkit-user-select: none; 
+  user-select: none; 
 }
 
 .nowrap
@@ -1897,7 +1897,7 @@ mark
 {
   border:1px solid white;
   cursor: pointer;
-  -webkit-user-select: none; 
+  user-select: none; 
 }
 
 .color-select-active
@@ -2005,7 +2005,7 @@ mark
 .btn-base:active,
 .btn-base:hover,
 .btn-base:focus {
-  outline: none !important;
+  outline: 0 !important;
   text-decoration: none;
 }
 

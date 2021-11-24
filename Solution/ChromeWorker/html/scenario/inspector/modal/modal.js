@@ -236,7 +236,10 @@
                 <path d="M8 0C3.58172 0 0 3.58172 0 8c0 4.4183 3.58172 8 8 8 4.4183 0 8-3.5817 8-8 0-4.41828-3.5817-8-8-8Z" fill="#606060" />
                 <path d="m8.26 10.168.336-4.508V3H7.112v2.66l.294 4.508h.854Zm.434 2.8v-1.666H7v1.666h1.694Z" fill="#fff" />
               </svg>
-              <span id="inspectorModalDescription" style="margin-left: 14px; flex: 1;"><%= $t('inspector.descriptions.' + type) %></span>
+              <div style="margin-left: 14px; flex: 1;">
+                <div id="inspectorModalDescription"><%= $t('inspector.descriptions.' + type) %></div>
+                <div><%= $t('inspector.description', { link: $t('inspector.descriptionLink') }) %></div>
+              </div>
             </div>
           </div>
           <div class="inspector-modal-footer">
@@ -265,8 +268,8 @@
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },
     'inspector.descriptions.undefined': {
-      en: '',
-      ru: ''
+      en: 'Undefined is a primitive type that is a special value. Variables that have no value assigned are of type undefined.',
+      ru: 'Undefined - примитивный тип, являющийся специальным значением. Переменные, не имеющие присвоенного значения, обладают типом undefined.'
     },
     'inspector.descriptions.boolean': {
       en: 'Logical type accepting only one of two values - true or false.',
@@ -289,8 +292,16 @@
       ru: ''
     },
     'inspector.descriptions.null': {
-      en: '',
-      ru: ''
+      en: 'Null is a primitive type. Unlike undefined, which denotes uncertainty, it is the definite meaning of the absence of an object.',
+      ru: 'Null - примитивный тип. В отличие от undefined, обозначающего неопределенность, является определённым значением отсутствия объекта.'
+    },
+    'inspector.descriptionLink': {
+      en: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures',
+      ru: 'https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures'
+    },
+    'inspector.description': {
+      en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`{link}`); return false">here</a>.',
+      ru: 'Подробнее обо всех типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`{link}`); return false">здесь</a>.'
     },
     'inspector.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.boolean': { en: 'Boolean', ru: 'Булево' },

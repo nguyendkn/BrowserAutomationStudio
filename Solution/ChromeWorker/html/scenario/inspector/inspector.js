@@ -132,14 +132,13 @@
       if (diff.length) {
         let history = [...this.get('history'), _.pluck(diff, 'path')].slice(-100);
 
-        _.each(diff, ({ path, op }) => {
+        diff.forEach(({ path, op }) => {
           const now = performance.now();
 
           if (_.has(metadata, path)) {
             if (op === 'remove') return delete metadata[path];
             metadata[path].modifiedAt = now;
             metadata[path].usages += 1;
-            metadata[path].count += 0;
           } else {
             metadata[path] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
           }

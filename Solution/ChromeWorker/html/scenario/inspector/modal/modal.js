@@ -83,10 +83,10 @@
 
       this.model = new Model(attrs).on('change:type', (model, type) => {
         for (const el of this.$('form').trigger('reset')[0].elements) {
-          const parent = el.closest('[data-input-type]');
-          el.required = parent.dataset.inputType === type;
+          const field = el.closest('[data-input-type]');
+          el.required = field.dataset.inputType === type;
           if (el.required) $(el).trigger('input');
-          $(parent).toggle(el.required);
+          $(field).toggle(el.required);
         }
 
         const description = $t(`inspector.descriptions.${type}`);
@@ -140,7 +140,7 @@
                 <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
             </select>
-            <form class="inspector-modal-form" novalidate spellcheck="false">
+            <form class="inspector-modal-form" spellcheck="false" novalidate>
               <% ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'].forEach(item => { %>
                 <% const match = item === type, required = match && mode !== 'resource' ? 'required' : '' %>
                 <div data-input-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">

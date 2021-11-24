@@ -287,8 +287,8 @@
       ru: 'Число - один из примитивных типов. Может представлять собой как целые значения, так и значения с дробной частью.'
     },
     'inspector.descriptions.date': {
-      en: '',
-      ru: ''
+      en: 'Date is a data type that represents a specific moment in time in a platform-independent format.',
+      ru: 'Date - тип данных, который представляет определенный момент времени в независимом от платформы формате.'
     },
     'inspector.descriptions.null': {
       en: 'Null is a primitive type. Unlike undefined, which denotes uncertainty, it is the definite meaning of the absence of an object.',

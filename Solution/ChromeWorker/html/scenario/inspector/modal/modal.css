@@ -12,9 +12,9 @@
   border: thin solid transparent;
   justify-content: space-between;
   background: #787878;
-  padding: 12px 12px;
   line-height: 17px;
   font-size: 13px;
+  padding: 12px;
   color: #fff;
   display: flex;
   outline: 0;
@@ -143,7 +143,6 @@
 .inspector-modal-tools > ul > li > a {
   padding: 10px 20px 10px 10px;
   -webkit-user-drag: none;
-  letter-spacing: -0.2px;
   background: #3d3f42;
   align-items: center;
   line-height: 15px;
@@ -193,7 +192,6 @@
   border: thin dashed #606060;
   background: #f7f7f8;
   padding: 12px 14px;
-  line-height: 18px;
   margin-top: 20px;
   color: #606060;
   display: flex;
@@ -205,6 +203,7 @@
   letter-spacing: -0.2px;
   position: relative;
   user-select: none;
+  line-height: 18px;
   padding: 24px;
   margin: 0 8px;
 }
@@ -223,7 +222,6 @@
 
 .inspector-modal-header {
   position: relative;
-  line-height: 18px;
   color: #606060;
 }
 

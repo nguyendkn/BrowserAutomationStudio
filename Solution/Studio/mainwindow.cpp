@@ -1149,7 +1149,6 @@ QString MainWindow::OpenFromFile(const QString& fileName)
     ConnectionLogin = loader.GetConnectionLogin();
     ConnectionPassword = loader.GetConnectionPassword();
     ScriptEngineVersion = loader.GetEngineVersion();
-    InterfaceState = loader.GetInterfaceState();
 
     SetIsDirty(!loader.GetSchema().isEmpty() || _DataBaseConnector->HasDatabase());
 
@@ -1266,7 +1265,6 @@ QPair<bool,QString> MainWindow::SaveToFileSilent(const QString& file)
     saver.SetConnectionPort(ConnectionPort);
     saver.SetConnectionLogin(ConnectionLogin);
     saver.SetConnectionPassword(ConnectionPassword);
-    saver.SetInterfaceState(InterfaceState);
     saver.SetModulesPreserve(ModulesPreserve);
     saver.SetUnusedModules(_ModuleManager->GetStandartModulesNotUsedInProject(TextEditor->GetText()));
 
@@ -1705,7 +1703,7 @@ void MainWindow::SendCode()
     if(Code.isEmpty())
         Code = " ";
 
-    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun, ScriptEngineVersion, info.VersionString(), InterfaceState);
+    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun, ScriptEngineVersion, info.VersionString());
     _RecordProcessCommunication->SendResources(LastResourceList);
     _RecordProcessCommunication->SetWindow(QString::number(ui->centralWidget->winId()));
 

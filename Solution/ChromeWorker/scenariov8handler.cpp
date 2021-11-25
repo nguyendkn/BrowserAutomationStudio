@@ -17,7 +17,6 @@ ScenarioV8Handler::ScenarioV8Handler()
     IsEditEnd = false;
     url_changed = false;
     IsHightlightMenuItem = false;
-    IsInterfaceState = false;
     IsThreadNumberEditStart = false;
     IsSuccessNumberEditStart = false;
     IsFailNumberEditStart = false;
@@ -341,13 +340,6 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             RunFunctionAsyncName = arguments->GetString(0);
             IsRunFunctionAsync = true;
         }
-    }else if(name == std::string("BrowserAutomationStudio_SaveInterfaceState"))
-    {
-        if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
-        {
-            InterfaceState = arguments->GetString(0);
-            IsInterfaceState = true;
-        }
     }else if(name == std::string("BrowserAutomationStudio_SetClipboard"))
     {
         if (arguments->GetSize() == 1)
@@ -558,16 +550,6 @@ std::pair<std::string, bool> ScenarioV8Handler::GetIsHighlightMenuItem()
     IsHightlightMenuItem = false;
     r.first = HighlightMenuItem;
     HighlightMenuItem.clear();
-    return r;
-}
-
-std::pair<std::string, bool> ScenarioV8Handler::GetIsInterfaceState()
-{
-    std::pair<std::string, bool> r;
-    r.second = IsInterfaceState;
-    IsInterfaceState = false;
-    r.first = InterfaceState;
-    InterfaceState.clear();
     return r;
 }
 

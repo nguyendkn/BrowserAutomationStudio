@@ -376,11 +376,6 @@ namespace BrowserAutomationStudioFramework
         this->ModulesMetaJson = ModulesMetaJson;
     }
 
-    void XmlResourceController::SetInterfaceState(const QString & InterfaceState)
-    {
-        this->InterfaceState = InterfaceState;
-    }
-
 
     QString XmlResourceController::GetFileContent()
     {
@@ -402,11 +397,6 @@ namespace BrowserAutomationStudioFramework
     QString XmlResourceController::GetModulesMetaJson()
     {
         return ModulesMetaJson;
-    }
-
-    QString XmlResourceController::GetInterfaceState()
-    {
-        return InterfaceState;
     }
 
     QString XmlResourceController::GetScript()
@@ -907,10 +897,6 @@ namespace BrowserAutomationStudioFramework
             {
                 xmlReader.readNext();
                 ModulesMetaJson = xmlReader.text().toString();
-            }else if(xmlReader.name() == "InterfaceState" && token == QXmlStreamReader::StartElement)
-            {
-                xmlReader.readNext();
-                InterfaceState = xmlReader.text().toString();
             }else if(xmlReader.name() == "AvailableLanguages" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -1283,8 +1269,6 @@ namespace BrowserAutomationStudioFramework
             xmlWriter.writeTextElement("ChromeCommandLine",ChromeCommandLine);
         if(!ModulesMetaJson.isEmpty())
             xmlWriter.writeTextElement("ModulesMetaJson",ModulesMetaJson);
-        if(!InterfaceState.isEmpty())
-            xmlWriter.writeTextElement("InterfaceState", InterfaceState);
 
 
         xmlWriter.writeStartElement("OutputTitle1");

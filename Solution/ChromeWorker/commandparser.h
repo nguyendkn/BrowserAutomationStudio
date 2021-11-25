@@ -109,7 +109,7 @@ public:
     std::vector<std::function<void(const std::string&)> > EventSetMode;
 
 
-    std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool,const std::string&,const std::string&,const std::string&)> > EventSetCode;
+    std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool,const std::string&,const std::string&)> > EventSetCode;
     std::vector<std::function<void(const std::string&)> > EventSetResources;
     std::vector<std::function<void()> > EventReset;
     std::vector<std::function<void(bool)> > EventNavigateBack;

@@ -82,9 +82,6 @@ private:
     std::string HighlightMenuItem;
     bool IsHightlightMenuItem;
 
-    std::string InterfaceState;
-    bool IsInterfaceState;
-
     std::mutex mut_threadnumbereditstart;
     std::mutex mut_successnumbereditstart;
     std::mutex mut_failnumbereditstart;
@@ -142,7 +139,6 @@ public:
     std::string GetEventTriggerName();
 
     std::pair<std::string, bool> GetIsHighlightMenuItem();
-    std::pair<std::string, bool> GetIsInterfaceState();
 
     bool GetClipboardGetRequest();
     bool GetStartBackup();

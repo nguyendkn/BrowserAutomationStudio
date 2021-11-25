@@ -71,8 +71,7 @@ MainApp::MainApp()
     RunElementCommandCallbackOnNextTimer = -1;
     TypeTextDelayCurrent = 0;
     ClearElementCommand();
-    IsScenarioInterfaceInitialSent = false;
-    IsToolboxInterfaceInitialSent = false;
+    IsInterfaceInitialSent = false;
     _DevToolsReqest2Action = 0;
     IsMainBrowserCreating = true;
 
@@ -290,7 +289,6 @@ void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
 
     extra_info->SetString(8,ApplicationEngineVersion);
     extra_info->SetString(9,ScriptEngineVersion);
-    extra_info->SetString(10,InterfaceState);
 }
 
 
@@ -1399,6 +1397,7 @@ void MainApp::CreateTooboxBrowser()
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
+    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserToolbox = CefBrowserHost::CreateBrowserSync(window_info, thandler, "file:///html/toolbox/index.html", browser_settings, CefDictionaryValue::Create(), Context);
@@ -1406,6 +1405,7 @@ void MainApp::CreateTooboxBrowser()
 
     std::string ToolboxScript = ReadAllString("html/toolbox/index.html");
     ToolboxPreprocess(Data->_ModulesData, Data->_UnusedModulesData, ToolboxScript);
+    //BrowserToolbox->GetMainFrame()->LoadString(ToolboxScript, "file:///html/toolbox/index.html");
     WriteStringToFile("html/toolbox/index_prepared.html", ToolboxScript);
     BrowserToolbox->GetMainFrame()->LoadURL("file:///html/toolbox/index_prepared.html");
 
@@ -1431,6 +1431,7 @@ void MainApp::CreateScenarioBrowser()
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
+    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserScenario = CefBrowserHost::CreateBrowserSync(window_info, shandler, "file:///html/scenario/index.html", browser_settings, CefDictionaryValue::Create(), Context);
@@ -2371,11 +2372,10 @@ void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
 
 }
 
-void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version, const std::string & interface_state)
+void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version)
 {
     ApplicationEngineVersion = application_engine_version;
     ScriptEngineVersion = script_engine_version;
-    InterfaceState = interface_state;
     Data->IsTesing = is_testing;
     Schema = schema;
     Code = code;
@@ -3794,14 +3794,6 @@ void MainApp::HandleScenarioBrowserEvents()
         }
     }
 
-    if(!IsScenarioInterfaceInitialSent && scenariov8handler->GetIsInitialized())
-    {
-        std::string InterfaceInitial = ReadAllString("scenario.json");
-        std::string Script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"scenario");
-        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script,BrowserScenario->GetMainFrame()->GetURL(), 0);
-        IsScenarioInterfaceInitialSent = true;
-    }
-
     if(scenariov8handler->GetIsThreadNumberEditStart() && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_ThreadNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
@@ -3860,9 +3852,6 @@ void MainApp::HandleScenarioBrowserEvents()
     if(res10.second && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
-    std::pair<std::string,bool> res12 = scenariov8handler->GetIsInterfaceState();
-    if(res12.second) WriteStringToFile("scenario.json", res12.first);
-
     std::pair<std::string, bool> res11 = scenariov8handler->GetIsHighlightMenuItem();
     if(res11.second) for (auto f : EventHighlightMenu) f(res11.first);
 
@@ -3895,7 +3884,19 @@ void MainApp::HandleToolboxBrowserEvents()
 
 
     std::pair<std::string,bool> InterfaceJson = toolboxv8handler->GetInterfaceState();
-    if(InterfaceJson.second) WriteStringToFile("interface.json", InterfaceJson.first);
+    if(InterfaceJson.second)
+    {
+        try
+        {
+            std::ofstream outfile("interface.json");
+            if(outfile.is_open())
+            {
+                outfile<<InterfaceJson.first<<std::endl;
+                }
+        }catch(...)
+        {
+        }
+    }
 
 
     std::pair<ToolboxV8Handler::ResultClass,bool> res = toolboxv8handler->GetResult();
@@ -4054,12 +4055,12 @@ void MainApp::HandleToolboxBrowserEvents()
         GlobalVariables.clear();
     }
 
-    if(!IsToolboxInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
+    if(!IsInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
     {
         std::string InterfaceInitial = ReadAllString("interface.json");
         std::string script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
-        IsToolboxInterfaceInitialSent = true;
+        IsInterfaceInitialSent = true;
     }
 
     if(toolboxv8handler->GetIsInitialized() && !Schema.empty())

@@ -42,7 +42,7 @@
       if (!this.el.isConnected) {
         const { $el } = this.setElement('#inspector');
 
-        interact($el[0]).resizable({
+        this.resizable = interact($el[0]).resizable({
           listeners: {
             move({ client: { y } }) {
               $el.outerHeight(Math.max(120, window.outerHeight - Math.max(300, y) - 30));

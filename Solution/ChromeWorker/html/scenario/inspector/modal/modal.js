@@ -5,10 +5,10 @@
 
   const Model = Backbone.Model.extend({
     defaults: () => ({
-      mode: 'variable',
       value: '',
       type: '',
       name: '',
+      mode: '',
       path: []
     }),
 
@@ -35,9 +35,7 @@
       },
 
       'click #inspectorModalClearData'() {
-        const form = this.$('form')[0];
-
-        for (const el of form.elements) {
+        for (const el of this.$('form')[0].elements) {
           // if (el.type === 'radio') el.checked = false;
           // else if (el.type !== 'hidden') $(el).val('');
         }
@@ -45,7 +43,7 @@
 
       'click [data-copy-target]'(e) {
         let val = this.model.get(e.target.dataset.copyTarget);
-        if (Array.isArray(val)) val = val.map((v, i) => (i !== 0 ? `[${JSON.stringify(v)}]` : v)).join('');
+        if (Array.isArray(val)) val = val.map((v, i) => (i === 0 ? v : `[${JSON.stringify(v)}]`)).join('');
         BrowserAutomationStudio_SetClipboard(val, false);
       },
 

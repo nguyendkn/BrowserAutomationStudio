@@ -147,12 +147,10 @@
                 <div data-input-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>
                     <% ['false', 'true'].forEach((val, idx) => { %>
-                      <div style="padding: 9px 12px;">
-                        <div class="pretty p-default p-round">
-                          <input type="radio" name="boolean" value="<%= val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
-                          <div class="state">
-                            <label><%= $t('inspector.' + val) %></label>
-                          </div>
+                      <div class="pretty p-default p-round" style="margin: 9px 12px;">
+                        <input type="radio" name="boolean" value="<%= val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
+                        <div class="state">
+                          <label><%= $t('inspector.' + val) %></label>
                         </div>
                       </div>
                     <% }) %>

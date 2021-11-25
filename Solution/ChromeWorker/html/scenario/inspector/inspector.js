@@ -39,7 +39,7 @@
     },
 
     render() {
-      if (this.$el.is(':empty')) {
+      if (!this.el.isConnected) {
         const { $el } = this.setElement('#inspector');
 
         interact($el[0]).resizable({

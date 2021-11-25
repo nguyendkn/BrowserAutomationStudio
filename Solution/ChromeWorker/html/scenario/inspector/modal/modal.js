@@ -234,7 +234,7 @@
               </svg>
               <div style="margin-left: 14px; flex: 1;">
                 <div id="inspectorModalDescription"><%= $t('inspector.descriptions.' + type) %></div>
-                <div><%= $t('inspector.description', { link: $t('inspector.descriptionLink') }) %></div>
+                <div><%= $t('inspector.description') %></div>
               </div>
             </div>
           </div>
@@ -291,13 +291,9 @@
       en: 'Null is a primitive type. Unlike undefined, which denotes uncertainty, it is the definite meaning of the absence of an object.',
       ru: 'Null - примитивный тип. В отличие от undefined, обозначающего неопределенность, является определённым значением отсутствия объекта.'
     },
-    'inspector.descriptionLink': {
-      en: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures',
-      ru: 'https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures'
-    },
     'inspector.description': {
-      en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`{link}`); return false">here</a>.',
-      ru: 'Подробнее обо всех типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`{link}`); return false">здесь</a>.'
+      en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures`); return false">here</a>.',
+      ru: 'Подробнее обо всех типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures`); return false">здесь</a>.'
     },
     'inspector.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.boolean': { en: 'Boolean', ru: 'Булево' },

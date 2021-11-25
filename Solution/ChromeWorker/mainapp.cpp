@@ -1436,7 +1436,6 @@ void MainApp::CreateScenarioBrowser()
     IsMainBrowserCreating = false;
     BrowserScenario = CefBrowserHost::CreateBrowserSync(window_info, shandler, "file:///html/scenario/index.html", browser_settings, CefDictionaryValue::Create(), Context);
     IsMainBrowserCreating = true;
-
     std::string ScenarioScript = ReadAllString("html/scenario/index.html");
     ScenarioPreprocess(Data->_ModulesData, ScenarioScript);
     WriteStringToFile("html/scenario/index_prepared.html", ScenarioScript);

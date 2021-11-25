@@ -29,7 +29,7 @@
     update(data) {
       const json = JSON.parse(data);
 
-      this.el.querySelector('iframe').contentWindow.postMessage({
+      this.el.contentWindow.postMessage({
         payload: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),

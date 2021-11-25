@@ -27,16 +27,6 @@
     attributes: { tabIndex: -1 },
 
     events: {
-      'input [data-input-type] :input'(e) {
-        const el = e.target, model = this.model;
-        if (model.get('mode') === 'resource' || el.type === 'radio' && !el.checked) return;
-        const valid = model.get('type') === 'string' || el.checkValidity();
-
-        this.$('#inspectorModalError').html(el.validationMessage);
-        this.$('form').toggleClass('invalid', !valid);
-        model.set('value', el.value);
-      },
-
       'click #inspectorModalSearchVariable'() {
         $('#findinput').val(this.model.get('name'));
         _ActionFinder.Show();
@@ -64,6 +54,16 @@
       'click .btn-cancel': 'cancel',
 
       'hidden.bs.modal': 'cancel',
+
+      'input form :input'(e) {
+        const el = e.target, model = this.model;
+        if (model.get('mode') === 'resource' || el.type === 'radio' && !el.checked) return;
+        const valid = model.get('type') === 'string' || el.checkValidity();
+
+        this.$('#inspectorModalError').html(el.validationMessage);
+        this.$('form').toggleClass('invalid', !valid);
+        model.set('value', el.value);
+      },
 
       'change select'(e) {
         this.model.set('type', e.target.value);

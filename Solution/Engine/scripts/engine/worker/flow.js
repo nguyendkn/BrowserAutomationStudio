@@ -39,7 +39,7 @@ var debug_variables = (function () {
         Browser.DebugVariablesResult(JSON.stringify({
             variables: list.reduce(function (acc, key) {
                 if (key.indexOf('GLOBAL:') === 0) {
-                    acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"_UNDEFINED_"');
+                    acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
                 } else {
                     acc[key.slice(4)] = truncate_variable(GLOBAL[key], 100);
                 }
@@ -57,6 +57,18 @@ var debug_variables = (function () {
         }), _get_function_body(callback));
     };
 
+    function truncate_variable(val, limit) {
+        if (val instanceof Object) {
+            if (val instanceof Date) {
+                return '__DATE__' + _format_date(val, 'yyyy-MM-dd hh:mm:ss t');
+            }
+            return Object.keys(val).slice(0, limit).reduce(function (acc, key) {
+                return (acc[key] = truncate_variable(val[key], limit), acc);
+            }, Array.isArray(val) ? [] : {});
+        }
+        return typeof val === 'undefined' ? '__UNDEFINED__' : val;
+    }
+
     function mapCycle(item, info) {
         var options = {
             expression: info.expression || '',
@@ -64,18 +76,6 @@ var debug_variables = (function () {
             iterator: item._Iterator || 0
         };
         return { type: info.type, name: info.name, id: info.id, options: options };
-    }
-
-    function truncate_variable(val, limit) {
-        if (val instanceof Object) {
-            if (val instanceof Date) {
-                return '_DATE_' + _format_date(val, 'yyyy-MM-dd hh:mm:ss t');
-            }
-            return Object.keys(val).slice(0, limit).reduce(function (acc, key) {
-                return (acc[key] = truncate_variable(val[key], limit), acc);
-            }, Array.isArray(val) ? [] : {});
-        }
-        return typeof val === 'undefined' ? '_UNDEFINED_' : val;
     }
 })();
 

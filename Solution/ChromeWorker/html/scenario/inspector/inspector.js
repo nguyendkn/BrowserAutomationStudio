@@ -106,10 +106,10 @@
   function prepareData(data) {
     return _.reduce(data, (acc, val, key) => {
       if (typeof val === 'string') {
-        if (val.startsWith('_UNDEFINED_')) {
+        if (val.startsWith('__UNDEFINED__')) {
           val = undefined;
-        } else if (val.startsWith('_DATE_')) {
-          val = dayjs(val.slice(6), 'YYYY-MM-DD HH:mm:ss [UTC]Z').toDate();
+        } else if (val.startsWith('__DATE__')) {
+          val = dayjs(val.slice(8), 'YYYY-MM-DD HH:mm:ss [UTC]Z').toDate();
         }
       }
       return (acc[key] = _.isObject(val) ? prepareData(val) : val, acc);

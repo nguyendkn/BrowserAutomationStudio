@@ -4242,15 +4242,8 @@
       BrowserAutomationStudio_HandlerIsInitialized = true
 
       //_GobalModel.bind('change', BrowserAutomationStudio_SaveToUndoManager);
-      _TaskCollection.bind('add', BrowserAutomationStudio_SaveToUndoManager);
-      _TaskCollection.bind('change', BrowserAutomationStudio_SaveToUndoManager);
-      _TaskCollection.bind('remove', BrowserAutomationStudio_SaveToUndoManager);  
-
-      _TaskCollection.bind('add', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);
-      _TaskCollection.bind('change', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);
-      _TaskCollection.bind('remove', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);  
-      _TaskCollection.bind('reset', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);  
-      
+      _TaskCollection.on('add change remove', BrowserAutomationStudio_SaveToUndoManager);
+      _TaskCollection.on('add change remove reset', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);
     }
 
     /*

@@ -5337,23 +5337,13 @@
       _MainView.play()
     }
 
-    function BrowserAutomationStudio_GetVariablesList()
-    {
-      var code = GenerateCode(_TaskCollection.toJSON(),_GobalModel.toJSON())
-      var match = code.match(/VAR_[A-Z0-9_]+/g)
-      var variables = null
-      if(match)
-      {
-        variables = _.uniq(match)
-      }else
-        variables = []       
+    function BrowserAutomationStudio_GetVariablesList() {
+      const code = GenerateCode(_TaskCollection.toJSON(), _GobalModel.toJSON());
+      const variables = _.uniq(code.match(/VAR_[A-Z0-9_]+/g) || []);
 
-      JSON.parse(extract_global_variables(code)).forEach(function(el){
-        variables.push("GLOBAL:" + el["name"])
-
-      })
-
-      return variables
+      return variables.concat(JSON.parse(extract_global_variables(code)).map(el => {
+        return `GLOBAL:${el.name}`;
+      }));
     }
 
     function BrowserAutomationStudio_FocusActionFast(Id)

@@ -350,11 +350,11 @@
 }
 
 .jt-node-label {
-  user-select: none;
+  /* user-select: none; */
 }
 
 .jt-node-value {
-  user-select: none;
+  /* user-select: none; */
 }
 
 .jt-node {

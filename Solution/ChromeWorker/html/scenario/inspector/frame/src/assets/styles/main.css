@@ -61,7 +61,6 @@
 .app-panel-title {
   justify-content: center;
   align-items: center;
-  user-select: none;
   color: #606060;
   display: flex;
   flex: 1;

@@ -4234,14 +4234,10 @@
 
     */    
 
-    function BrowserAutomationStudio_HandlersInitialize()
-    {
-      if(BrowserAutomationStudio_HandlerIsInitialized)
-        return
+    function BrowserAutomationStudio_HandlersInitialize() {
+      if (BrowserAutomationStudio_HandlerIsInitialized) return;
 
-      BrowserAutomationStudio_HandlerIsInitialized = true
-
-      //_GobalModel.bind('change', BrowserAutomationStudio_SaveToUndoManager);
+      BrowserAutomationStudio_HandlerIsInitialized = true;
       _TaskCollection.on('add change remove', BrowserAutomationStudio_SaveToUndoManager);
       _TaskCollection.on('add change remove reset', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);
     }

@@ -261,32 +261,32 @@
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },
     'inspector.descriptions.undefined': {
-      en: 'Undefined is a primitive type that is a special value. Variables that have no value assigned are of type undefined.',
-      ru: 'Undefined - примитивный тип, являющийся специальным значением. Переменные, не имеющие присвоенного значения, обладают типом undefined.'
+      en: '<b>Undefined</b> is a primitive type that is a special value. Variables that have no value assigned are of type undefined.',
+      ru: '<b>Undefined</b> - примитивный тип, являющийся специальным значением. Переменные, не имеющие присвоенного значения, обладают типом undefined.'
     },
     'inspector.descriptions.boolean': {
-      en: 'Logical type accepting only one of two values - true or false.',
-      ru: 'Логический тип, принимающий только одно из двух значений - true (истина) или false (ложь).'
+      en: 'Logical type accepting only one of two values - <b>true</b> or <b>false</b>.',
+      ru: 'Логический тип, принимающий только одно из двух значений - <b>true</b> (истина) или <b>false</b> (ложь).'
     },
     'inspector.descriptions.custom': {
-      en: 'The value of this type is treated as arbitrary JavaScript code. You can use it to specify data in `raw` form. Arrays and objects are set and displayed in the same way as in the code.',
-      ru: 'Значение данного типа рассматривается как произвольный JavaScript код. С помощью него можно задать данные в `сыром` виде. Массивы и объекты задаются и отображаются так же, как и в коде.'
+      en: 'The value of this type is treated as arbitrary JavaScript code. You can use it to specify data in <b>raw</b> form. Arrays and objects are set and displayed in the same way as in the code.',
+      ru: 'Значение данного типа рассматривается как произвольный JavaScript код. С помощью него можно задать данные в <b>сыром</b> виде. Массивы и объекты задаются и отображаются так же, как и в коде.'
     },
     'inspector.descriptions.string': {
-      en: 'String is one of the primitive types that represent any text data.',
-      ru: 'Строка - один из примитивных типов, представляющий собой любые текстовые данные.'
+      en: '<b>String</b> is one of the primitive types that represent any text data.',
+      ru: '<b>Строка</b> - один из примитивных типов, представляющий собой любые текстовые данные.'
     },
     'inspector.descriptions.number': {
-      en: 'Number is one of the primitive types. It can represent both integer values and values with a fractional part.',
-      ru: 'Число - один из примитивных типов. Может представлять собой как целые значения, так и значения с дробной частью.'
+      en: '<b>Number</b> is one of the primitive types. It can represent both integer values and values with a fractional part.',
+      ru: '<b>Число</b> - один из примитивных типов. Может представлять собой как целые значения, так и значения с дробной частью.'
     },
     'inspector.descriptions.date': {
-      en: 'Date is a data type that represents a specific moment in time in a platform-independent format.',
-      ru: 'Date - тип данных, который представляет определенный момент времени в независимом от платформы формате.'
+      en: '<b>Date</b> is a data type that represents a specific moment in time in a platform-independent format.',
+      ru: '<b>Date</b> - тип данных, который представляет определенный момент времени в независимом от платформы формате.'
     },
     'inspector.descriptions.null': {
-      en: 'Null is a primitive type. Unlike undefined, which denotes uncertainty, it is the definite meaning of the absence of an object.',
-      ru: 'Null - примитивный тип. В отличие от undefined, обозначающего неопределенность, является определённым значением отсутствия объекта.'
+      en: '<b>Null</b> is a primitive type. Unlike undefined, which denotes uncertainty, it is the definite meaning of the absence of an object.',
+      ru: '<b>Null</b> - примитивный тип. В отличие от undefined, обозначающего неопределенность, является определённым значением отсутствия объекта.'
     },
     'inspector.description': {
       en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures`); return false">here</a>.',

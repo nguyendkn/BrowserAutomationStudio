@@ -137,7 +137,7 @@
           <div class="inspector-modal-body">
             <select data-style="inspector-modal-select" <%= mode === 'resource' ? 'disabled' : '' %>>
               <% types.forEach(item => { %>
-                <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
+                <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.types.' + item) %></option>
               <% }) %>
             </select>
             <form class="inspector-modal-form" spellcheck="false" novalidate>
@@ -292,14 +292,14 @@
       en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures`); return false">here</a>.',
       ru: 'Подробнее обо всех типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures`); return false">здесь</a>.'
     },
-    'inspector.undefined': { en: 'Undefined', ru: 'Undefined' },
-    'inspector.boolean': { en: 'Boolean', ru: 'Булево' },
-    'inspector.custom': { en: 'Custom', ru: 'Особый' },
-    'inspector.string': { en: 'String', ru: 'Строка' },
-    'inspector.number': { en: 'Number', ru: 'Число' },
+    'inspector.types.undefined': { en: 'Undefined', ru: 'Undefined' },
+    'inspector.types.boolean': { en: 'Boolean', ru: 'Булево' },
+    'inspector.types.custom': { en: 'Custom', ru: 'Особый' },
+    'inspector.types.string': { en: 'String', ru: 'Строка' },
+    'inspector.types.number': { en: 'Number', ru: 'Число' },
+    'inspector.types.date': { en: 'Date', ru: 'Дата' },
+    'inspector.types.null': { en: 'Null', ru: 'Null' },
     'inspector.false': { en: 'False', ru: 'False' },
-    'inspector.true': { en: 'True', ru: 'True' },
-    'inspector.date': { en: 'Date', ru: 'Дата' },
-    'inspector.null': { en: 'Null', ru: 'Null' }
+    'inspector.true': { en: 'True', ru: 'True' }
   });
 })(window);

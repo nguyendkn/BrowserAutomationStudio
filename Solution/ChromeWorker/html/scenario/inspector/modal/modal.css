@@ -112,7 +112,7 @@
   outline: 0;
   border: 0;
   right: 0;
-  top: -2px;
+  top: 3px;
 }
 
 .inspector-modal-tools:not(.open) > [data-toggle] > svg:last-of-type {
@@ -163,15 +163,16 @@
 
 .inspector-modal-header > h4 + h6 {
   margin-top: 3px;
+  opacity: 0.5;
 }
 
 .inspector-modal-header > h6 {
-  opacity: 0.5;
+  font-size: 12px;
   margin: 0;
 }
 
 .inspector-modal-header > h4 {
-  opacity: 1.0;
+  font-size: 16px;
   margin: 0;
 }
 

@@ -81,8 +81,8 @@
 
       this.model = new Model(attrs).on('change:type', (model, type) => {
         for (const el of this.$('form').trigger('reset')[0].elements) {
-          const field = el.closest('[data-input-type]');
-          el.required = field.dataset.inputType === type;
+          const field = el.closest('[data-type]');
+          el.required = field.dataset.type === type;
           if (el.required) $(el).trigger('input');
           $(field).toggle(el.required);
         }
@@ -143,7 +143,7 @@
             <form class="inspector-modal-form" spellcheck="false" novalidate>
               <% types.forEach(item => { %>
                 <% const match = item === type, required = match && mode !== 'resource' ? 'required' : '' %>
-                <div data-input-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
+                <div data-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>
                     <% ['false', 'true'].forEach((val, idx) => { %>
                       <div class="pretty p-default p-round" style="margin: 9px 12px;">

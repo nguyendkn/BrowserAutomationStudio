@@ -97,7 +97,8 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        this.$el.html(this.template(this.model.toJSON())).modal({
+        const types = ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'];
+        this.$el.html(this.template({ ...this.model.toJSON(), types })).modal({
           backdrop: 'static'
         });
         this.$('select').selectpicker();
@@ -135,12 +136,12 @@
           </div>
           <div class="inspector-modal-body">
             <select data-style="inspector-modal-select" <%= mode === 'resource' ? 'disabled' : '' %>>
-              <% ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'].forEach(item => { %>
+              <% types.forEach(item => { %>
                 <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.' + item) %></option>
               <% }) %>
             </select>
             <form class="inspector-modal-form" spellcheck="false" novalidate>
-              <% ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'].forEach(item => { %>
+              <% types.forEach(item => { %>
                 <% const match = item === type, required = match && mode !== 'resource' ? 'required' : '' %>
                 <div data-input-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>

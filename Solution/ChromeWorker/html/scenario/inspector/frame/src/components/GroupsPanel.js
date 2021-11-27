@@ -78,14 +78,14 @@ window.GroupsPanel = {
           this.history = [...this.history, ...history].slice(-100);
         }
 
-        // _.each(metadata, (item, path) => {
-        //   if (highlight) {
-        //     item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
-        //   }
-        //   this.trigger('highlight', { count: item.count, path });
-        // });
+        Object.entries(metadata).forEach(([path, item]) => {
+          if (highlight) {
+            item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
+          }
+          //this.trigger('highlight', { count: item.count, path });
+        });
 
-        // this.set('highlight', false);
+        this.highlight = false;
       },
 
       deep: true

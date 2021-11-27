@@ -32,6 +32,8 @@ window.GroupsPanel = {
     return {
       sortings: sortings.map((name, idx) => ({ name, active: idx === 3 })),
       filters: filters.map(name => ({ name, active: true })),
+      metadata: {},
+      history: [],
       query: ''
     };
   },
@@ -47,6 +49,42 @@ window.GroupsPanel = {
 
     isEmpty() {
       return !Object.keys(this.data).length;
+    }
+  },
+
+  watch: {
+    data(newData, oldData) {
+      const diff = jsonpatch.compare(oldData, newData);
+      const highlight = this.highlight;
+      const metadata = this.metadata;
+
+      if (diff.length) {
+        let history = [];
+
+        diff.forEach(({ path, op }) => {
+          const now = performance.now();
+          history.push(path);
+
+          if (Object.prototype.hasOwnProperty.call(metadata, path)) {
+            if (op === 'remove') return delete metadata[path];
+            metadata[path].modifiedAt = now;
+            metadata[path].usages += 1;
+          } else {
+            metadata[path] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
+          }
+        });
+
+        this.history = [...this.history, ...history].slice(-100);
+      }
+
+      // _.each(metadata, (item, path) => {
+      //   if (highlight) {
+      //     item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
+      //   }
+      //   this.trigger('highlight', { count: item.count, path });
+      // });
+
+      // this.set('highlight', false);
     }
   },
 

@@ -5,13 +5,13 @@
 
   Inspector.Main = Backbone.View.extend({
     initialize() {
-      // ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
-      //   _GobalModel.on(`change:${attr}`, (__, value) => {
-      //     if (value || this.$el.is(':hidden')) return;
-      //     this.variables.model.set('highlight', true);
-      //     this.resources.model.set('highlight', true);
-      //   });
-      // });
+      ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
+        _GobalModel.on(`change:${attr}`, (model, value) => {
+          if (value || this.$el.is(':hidden')) return;
+          // this.variables.model.set('highlight', true);
+          // this.resources.model.set('highlight', true);
+        });
+      });
 
       window.addEventListener('message', e => {
         const { json, type } = e.data;
@@ -22,8 +22,6 @@
           case 'hide': return this.hide();
         }
       });
-
-      // this.on('show', () => BrowserAutomationStudio_AskForVariablesUpdateOrWait());
     },
 
     update(data) {
@@ -100,6 +98,7 @@
         `);
       });
     };
+
     return new Inspector.Modal({ ...options, callback }).render();
   }
 

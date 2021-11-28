@@ -53,15 +53,17 @@
     },
 
     show() {
-      if (this.$el.is(':visible')) return this;
-      this.$el.show();
-      return this.trigger('show');
+      if (!this.$el.is(':visible')) {
+        this.$el.show();
+      }
+      return this;
     },
 
     hide() {
-      if (this.$el.is(':hidden')) return this;
-      this.$el.hide();
-      return this.trigger('hide');
+      if (!this.$el.is(':hidden')) {
+        this.$el.hide();
+      }
+      return this;
     }
   });
 

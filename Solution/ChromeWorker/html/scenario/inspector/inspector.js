@@ -52,17 +52,13 @@
       return this;
     },
 
-    hide() {
-      if (this.$el.is(':visible')) {
-        this.$el.hide();
-      }
+    show() {
+      this.$el.show();
       return this;
     },
 
-    show() {
-      if (this.$el.is(':hidden')) {
-        this.$el.show();
-      }
+    hide() {
+      this.$el.hide();
       return this;
     }
   });

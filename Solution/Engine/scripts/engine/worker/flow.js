@@ -59,9 +59,7 @@ var debug_variables = (function () {
 
     function truncate_variable(val, limit) {
         if (val instanceof Object) {
-            if (val instanceof Date) {
-                return '__DATE__' + _format_date(val, 'yyyy-MM-dd hh:mm:ss t');
-            }
+            if (val instanceof Date) return '__DATE__' + val.toJSON();
             return Object.keys(val).slice(0, limit).reduce(function (acc, key) {
                 return (acc[key] = truncate_variable(val[key], limit), acc);
             }, Array.isArray(val) ? [] : {});

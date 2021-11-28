@@ -52,16 +52,16 @@
       return this;
     },
 
-    show() {
-      if (!this.$el.is(':visible')) {
-        this.$el.show();
+    hide() {
+      if (this.$el.is(':visible')) {
+        this.$el.hide();
       }
       return this;
     },
 
-    hide() {
-      if (!this.$el.is(':hidden')) {
-        this.$el.hide();
+    show() {
+      if (this.$el.is(':hidden')) {
+        this.$el.show();
       }
       return this;
     }

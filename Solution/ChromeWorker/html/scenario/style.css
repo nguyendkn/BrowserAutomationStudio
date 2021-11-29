@@ -68,7 +68,6 @@
 .tool
 {
     padding-top:0px;
-    /*padding-bottom:3px;*/
     padding-left:0px;
     padding-right:0px;
   	border: 1px solid #ddd;
@@ -103,7 +102,7 @@
 {
     width: 16px;
     height: 16px;
-    -webkit-filter: grayscale(30%);
+    filter: grayscale(30%);
     opacity: 0.7;
     margin-top: 2px;
     margin-bottom: 4px;
@@ -174,8 +173,6 @@
     height: 6px;
     border: 1px solid #c1c1c1;
     border-radius: 3px;
-    /*margin-top: 7px;
-    margin-bottom: 7px;*/
     min-width: 150px;
     pointer-events: none;
 }
@@ -481,15 +478,12 @@ label
 
 .threads
 {
-	/*border-bottom: 1px solid #DBDBDB;*/
   border-bottom: 1px solid #bcbcbc;
   width:100%;
-  background-color:white;
   position:fixed ;
   top:0px;
   right:0px;
   z-index: 3;
-  /*box-shadow: 0px 1px 3px 1px #efefef;*/
   background-color: #fafafa;
 }
 
@@ -667,14 +661,9 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
     
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
@@ -732,26 +721,10 @@ label
 .FunctionManagerEditSection
 {
     margin-top: 25px;
-    /* border-bottom: 1px solid #eaeaea; */
     font-size: 14px;
-    /* display: inline-block; */
-    /* width: 50%; */
-    /* padding-left: 30px; */
-    /* border-top: 1px solid #e6e6e6; */
-    /* padding-top: 8px; */
-    /* padding-bottom: 2px; */
-    /* background-color: #f2f1ff; */
-    /* color: #31708f; */
     padding: 4px;
-    /* display: inline-block; */
-    /* padding-right: 20px; */
-    /* width: 200px; */
     border-bottom: 1px solid #e4e4e4;
     font-style: italic;
-    /* margin-left: 13px; */
-    /* margin-right: 31px; */
-    /* display: inline-block; */
-    /* padding-right: 11px; */
     padding-left: 10px;
     display: flex;
     align-items: center;
@@ -782,14 +755,9 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
     
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
@@ -803,14 +771,9 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
     
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
@@ -824,14 +787,9 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
     
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
@@ -845,14 +803,9 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 22px;
     
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
@@ -865,15 +818,9 @@ label
     color: #333 !important;
     text-decoration: none !important;
     padding-left: 10px;
-    display: inline-block;
     width: 100%;
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
     line-height: 20px;
     
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
@@ -904,7 +851,6 @@ label
   color: #333 !important;
   border-bottom: 1px solid #DBDBDB;
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   text-align: center;
@@ -931,7 +877,6 @@ label
   color: #333;
   
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
@@ -956,7 +901,6 @@ label
   color: #333;
   
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
@@ -982,7 +926,6 @@ label
   color: #333;
   
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
@@ -1008,7 +951,6 @@ label
   color: #333;
   
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
@@ -1034,7 +976,6 @@ label
   color: #333;
   
   text-decoration: none !important;
-  /* padding: 10px; */
   display: block;
   width: 40px;
   float: right;
@@ -1059,7 +1000,6 @@ label
   color: #333;
   
   text-decoration: none !important;
-  /* padding: 10px; */
   display: block;
   width: 40px;
   float: right;
@@ -1128,10 +1068,6 @@ label
 
 .FunctionManagerItemLine, .FunctionManagerItemLine:hover
 {
-    /* margin-bottom: 10px; */
-    /* margin-top: 10px; */
-    /* margin-left: 4px; */
-    /* border-bottom: 1px solid rgb(224, 224, 224); */
     margin: 2px;
     padding: 8px;
     background-color: #f8f8f8;
@@ -1195,7 +1131,6 @@ label
 .FunctionManagerItemMenuDescriptionIcon
 {
     color: #f44336c9;
-    /*margin-left: 10px;*/
     width: 17px;
     text-align: center;
     filter: grayscale(40%);
@@ -1247,7 +1182,6 @@ label
   color: #333;
   text-align: center;
   line-height: 30px;
-  /* color: black; */
   font-size: 12px;
   border: 1px solid #d8d8d8;
   text-decoration: none;
@@ -1269,7 +1203,6 @@ label
   text-align: center;
   line-height: 30px;
   background-color: #d9534f;
-  /* color: black; */
   font-size: 12px;
   border: 1px solid #d43f3a;
   text-decoration: none;
@@ -1291,7 +1224,6 @@ label
   color: white;
   text-align: center;
   line-height: 30px;
-  /* color: black; */
   font-size: 12px;
   border: 1px solid #4cae4c;
   text-decoration: none;
@@ -1317,9 +1249,7 @@ label
   background-color: #d9534f;
   color: white;
   border-radius: 50%;
-  /* -webkit-filter: grayscale(15%); */
   font-size: 18px;
-  /* font-weight: 100; */
   text-decoration: none;
 
 }
@@ -1349,9 +1279,7 @@ label
   margin-right:2px;
   padding:5px;
   border: 1px solid #fafafa;
-  -webkit-filter: grayscale(15%) !important;
-
-  
+  filter: grayscale(15%) !important;
 }
 
 .action-button:hover
@@ -1402,7 +1330,7 @@ label
 
 .actionbuttongray
 {
-  -webkit-filter: grayscale(100%) !important;
+  filter: grayscale(100%) !important;
 }
 
 
@@ -1417,7 +1345,7 @@ label
 
 .actionbuttongray2
 {
-  -webkit-filter: grayscale(100%) !important;
+  filter: grayscale(100%) !important;
   display:none !important;
 }
 
@@ -1789,13 +1717,10 @@ label
   max-width: 100px;
   height: 30px;
   border-radius: 4px;
-  /*object-fit: none;
-  object-position: 0% 50%;*/
 }
 
 .titleid
 {
-  /*border-top: 1px solid #efefef;*/
   background-color: #f5f5f5;
   font-size: 8px;
   color: #b6b6b6;
@@ -1832,7 +1757,6 @@ mark
 #multiselect
 {
   background-color: rgba(139, 139, 139, 0.3);
-  /*border: 1px solid #b20e8c;*/
   position: absolute;
   z-index: 2;
 }

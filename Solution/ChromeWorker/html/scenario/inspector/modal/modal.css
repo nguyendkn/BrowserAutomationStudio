@@ -48,8 +48,8 @@
   letter-spacing: -0.2px;
   padding: 9px 12px;
   line-height: 18px;
+  min-height: 36px;
   max-height: 38vh;
-  min-height: 38px;
   color: #606060;
   width: 100%;
   outline: 0;
@@ -215,30 +215,30 @@
 }
 
 @media (max-width: 400px) {
-  .inspector-modal-footer > button:last-of-type {
-    margin-left: unset;
+  .inspector-modal-footer {
+    flex-direction: column;
   }
 
   .inspector-modal-footer > button + button {
     margin-top: 5px;
   }
 
-  .inspector-modal-footer {
-    flex-direction: column;
+  .inspector-modal-footer > button:last-of-type {
+    margin-left: unset;
   }
 }
 
 @media (min-width: 400px) {
-  .inspector-modal-footer > button:last-of-type {
-    margin-left: auto;
+  .inspector-modal-footer {
+    flex-direction: row;
   }
 
   .inspector-modal-footer > button + button {
     margin-top: 0px;
   }
 
-  .inspector-modal-footer {
-    flex-direction: row;
+  .inspector-modal-footer > button:last-of-type {
+    margin-left: auto;
   }
 }
 

@@ -56,14 +56,6 @@
   border: 0;
 }
 
-.inspector-modal-form > div > textarea {
-  resize: vertical;
-}
-
-.inspector-modal-form > div > input {
-  resize: initial;
-}
-
 .inspector-modal-form.invalid > span {
   display: block;
 }

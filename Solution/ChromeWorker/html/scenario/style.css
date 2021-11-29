@@ -1710,9 +1710,7 @@ mark
   opacity: 0.3 !important;
 }
 
-/************************
- * Global select styles *
- ************************/
+/* Global select styles */
 
 .bootstrap-select .dropdown-menu > li.selected > a::after {
   visibility: visible;
@@ -1764,9 +1762,7 @@ mark
   margin: 0;
 }
 
-/************************
- * Custom button styles *
- ************************/
+/* Custom button styles */
 
 .btn-base.btn-cancel:focus,
 .btn-base.btn-cancel:hover,
@@ -1823,9 +1819,7 @@ mark
   outline: 0;
 }
 
-/********************
- * Container styles *
- ********************/
+/* Container styles */
 
 #containerdata {
   flex-direction: column;
@@ -1834,9 +1828,7 @@ mark
   height: 100vh;
 }
 
-/********************
- * Scrollbar styles *
- ********************/
+/* Scrollbar styles */
 
 ::-webkit-scrollbar-thumb {
   background: #b7b7b7;
@@ -1853,9 +1845,7 @@ mark
   width: 8px;
 }
 
-/******************
- * Utility styles *
- ******************/
+/* Utility styles */
 
 .overflow-visible {
   overflow: visible !important;
@@ -1868,4 +1858,10 @@ mark
 .modal-centered {
   align-items: center;
   display: flex;
+}
+
+/* Global styles */
+
+textarea {
+  resize: vertical;
 }

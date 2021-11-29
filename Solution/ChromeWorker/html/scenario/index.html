@@ -1330,8 +1330,6 @@
       }
   </script>
 
-
-
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
@@ -1371,11 +1369,9 @@
   <script src="inspector/modal/modal.js"></script>
   <script src="inspector/inspector.js"></script>
   
-
-  <script> _L = $.extend(_L, _AL)</script>
+  <script> _L = $.extend(_L, _AL) </script>
   <script> _MACRO_INSERT_LOCALIZE_ </script>
   <script> _MACRO_INSERT_ACTIONS_ </script>
-
 
   <!-- ========= -->
   <!--   Styles  -->
@@ -4033,7 +4029,6 @@
 
         return this.trigger('render');
       }
-
     });
 
     var Router = Backbone.Router.extend({
@@ -4233,8 +4228,8 @@
       if (BrowserAutomationStudio_HandlerIsInitialized) return;
 
       BrowserAutomationStudio_HandlerIsInitialized = true;
-      _TaskCollection.on('add change remove', BrowserAutomationStudio_SaveToUndoManager);
-      _TaskCollection.on('add change remove reset', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);
+      _TaskCollection.on('add change remove', () => BrowserAutomationStudio_SaveToUndoManager());
+      _TaskCollection.on('add change remove reset', () => BrowserAutomationStudio_AskForVariablesUpdateIfNeeded());
     }
 
     /*
@@ -6088,12 +6083,8 @@
 
 
 
-      BrowserAutomationStudio_SaveToUndoManager()
-
-      
-
-
-      BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
+      BrowserAutomationStudio_SaveToUndoManager();
+      BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
 
       
 
@@ -6849,13 +6840,6 @@
         res += "\n"
         return {index:index,res:res};
     }
-
-
-
-    
-
-    
   </script>
-
 </body>
 </html>

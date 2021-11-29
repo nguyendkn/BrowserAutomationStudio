@@ -5519,28 +5519,24 @@
 
     function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded() {
       if (_GobalModel.get('dontsend')) return;
+      if (_GobalModel.get('istaskexecuting')) return;
+      if (_GobalModel.get('isscriptexecuting')) return;
 
       const variables = BrowserAutomationStudio_GetVariablesList();
-
       if (_.isEqual(variables, VariablesListPrev)) return;
-      if (_GobalModel.get('isscriptexecuting')) return;
-      if (_GobalModel.get('istaskexecuting')) return;
-
       BrowserAutomationStudio_AskForVariablesUpdate();
     }
 
     function BrowserAutomationStudio_AskForVariablesUpdate() {
-      //if (!_Inspector.$el.is(':visible')) return;
-
       if (VariablesUpdateTakesPlace) {
         VariablesNeedRefresh = true;
         return;
       }
 
+      VariablesListPrev = BrowserAutomationStudio_GetVariablesList();
       VariablesUpdateTakesPlace = true;
       VariablesNeedRefresh = false;
 
-      VariablesListPrev = BrowserAutomationStudio_GetVariablesList();
       BrowserAutomationStudio_Execute(`debug_variables(${JSON.stringify(VariablesListPrev)})!\nsection_start("test", -3)!`);
     }
 

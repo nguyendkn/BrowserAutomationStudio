@@ -155,13 +155,13 @@
   opacity: 0.5;
 }
 
-.inspector-modal-header > h6 {
-  font-size: 12px;
+.inspector-modal-header > h4 {
+  font-size: 16px;
   margin: 0;
 }
 
-.inspector-modal-header > h4 {
-  font-size: 16px;
+.inspector-modal-header > h6 {
+  font-size: 12px;
   margin: 0;
 }
 

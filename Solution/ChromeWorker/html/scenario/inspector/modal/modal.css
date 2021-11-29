@@ -49,6 +49,7 @@
   padding: 9px 12px;
   line-height: 18px;
   max-height: 38vh;
+  min-height: 38px;
   color: #606060;
   width: 100%;
   outline: 0;
@@ -56,12 +57,10 @@
 }
 
 .inspector-modal-form > div > textarea {
-  min-height: 36px;
   resize: vertical;
 }
 
 .inspector-modal-form > div > input {
-  min-height: 24px;
   resize: initial;
 }
 

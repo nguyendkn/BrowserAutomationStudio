@@ -7,7 +7,7 @@
       frequency: 'По частоте использования',
       dateModified: 'По дате изменения',
       dateCreated: 'По дате создания',
-      alphabetically: 'По алфавиту'
+      alphabetically: 'По алфавиту',
     },
     filters: {
       // Variables/resources
@@ -21,8 +21,8 @@
       null: 'Null',
       // Call stack
       functions: 'Функции',
-      actions: 'Действия'
-    }
+      actions: 'Действия',
+    },
   },
   tabs: {
     variables: 'Переменные',
@@ -30,7 +30,7 @@
     resources: 'Ресурсы',
     resourcesEmpty: 'Список ресурсов пуст',
     callstack: 'Стек вызовов',
-    callstackEmpty: 'Стек вызовов пуст'
+    callstackEmpty: 'Стек вызовов пуст',
   },
-  items: '{n} элементов | {n} элемент | {n} элемента | {n} элементов'
+  items: '{n} элементов | {n} элемент | {n} элемента | {n} элементов',
 };

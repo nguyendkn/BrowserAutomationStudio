@@ -5,24 +5,24 @@ window.GroupsPanel = {
 
   components: {
     PanelToolbar,
-    GroupsList
+    GroupsList,
   },
 
   props: {
     styles: {
       required: true,
-      type: Object
+      type: Object,
     },
 
     title: {
       required: true,
-      type: String
+      type: String,
     },
 
     data: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
 
   data() {
@@ -34,7 +34,7 @@ window.GroupsPanel = {
       filters: filters.map(name => ({ name, active: true })),
       metadata: {},
       history: [],
-      query: ''
+      query: '',
     };
   },
 
@@ -49,7 +49,7 @@ window.GroupsPanel = {
 
     isEmpty() {
       return !Object.keys(this.data).length;
-    }
+    },
   },
 
   watch: {
@@ -88,8 +88,8 @@ window.GroupsPanel = {
         this.highlight = false;
       },
 
-      deep: true
-    }
+      deep: true,
+    },
   },
 
   template: html`
@@ -116,5 +116,5 @@ window.GroupsPanel = {
         />
       </div>
     </div>
-  `
+  `,
 };

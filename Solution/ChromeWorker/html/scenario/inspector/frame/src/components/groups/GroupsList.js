@@ -5,29 +5,29 @@ window.GroupsList = {
 
   components: {
     GroupsItem,
-    JsonTreeNode
+    JsonTreeNode,
   },
 
   props: {
     sortings: {
       required: true,
-      type: Array
+      type: Array,
     },
 
     filters: {
       required: true,
-      type: Array
+      type: Array,
     },
 
     query: {
       required: true,
-      type: String
+      type: String,
     },
 
     data: {
       required: true,
-      type: Object
-    }
+      type: Object,
+    },
   },
 
   data() {
@@ -36,7 +36,7 @@ window.GroupsList = {
       name: 'Main',
       color: '#c0bd9b',
       primary: true,
-      content: { ...this.data }
+      content: { ...this.data },
     };
 
     return { groups: [main] };
@@ -46,7 +46,7 @@ window.GroupsList = {
     draggableDisabled() {
       return true;
       // return this.groups.length === 1;
-    }
+    },
   },
 
   methods: {
@@ -70,7 +70,7 @@ window.GroupsList = {
         name: 'Group',
         color: '#c0bd9b',
         primary: false,
-        content: {}
+        content: {},
       });
     },
 
@@ -78,7 +78,7 @@ window.GroupsList = {
       const query = this.query.toLowerCase();
       const type = getType(val);
       return this.filters.some(f => f === type) && key.toLowerCase().includes(query);
-    }
+    },
   },
 
   template: html`
@@ -112,5 +112,5 @@ window.GroupsList = {
         </json-tree-node>
       </groups-item>
     </draggable>
-  `
+  `,
 };

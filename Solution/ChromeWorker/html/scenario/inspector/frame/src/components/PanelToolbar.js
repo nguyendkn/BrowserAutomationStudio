@@ -6,45 +6,47 @@ window.PanelToolbar = {
   props: {
     sortings: {
       default: () => [],
-      type: Array
+      type: Array,
     },
 
     filters: {
       default: () => [],
-      type: Array
+      type: Array,
     },
 
     search: {
       default: true,
-      type: Boolean
+      type: Boolean,
     },
 
     query: {
       default: '',
-      type: String
-    }
+      type: String,
+    },
   },
 
   data() {
     return {
       panelVisible: false,
-      menuVisible: false
+      menuVisible: false,
     };
   },
 
   methods: {
     updateSorting({ name }) {
-      this.$emit('update:sortings', this.sortings.map(item => ({
+      const sortings = this.sortings.map(item => ({
         ...item,
-        active: item.name === name
-      })));
+        active: item.name === name,
+      }));
+      this.$emit('update:sortings', sortings);
     },
 
     updateFilter({ name }) {
-      this.$emit('update:filters', this.filters.map(item => ({
+      const filters = this.filters.map(item => ({
         ...item,
-        active: item.name === name ? !item.active : item.active
-      })));
+        active: item.name === name ? !item.active : item.active,
+      }));
+      this.$emit('update:filters', filters);
     },
 
     updateQuery(event) {
@@ -57,7 +59,7 @@ window.PanelToolbar = {
 
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
-    }
+    },
   },
 
   template: html`
@@ -94,5 +96,5 @@ window.PanelToolbar = {
         <icon-chevron :style="{ transform: panelVisible ? '' : 'rotate(180deg)' }" />
       </button>
     </div>
-  `
+  `,
 };

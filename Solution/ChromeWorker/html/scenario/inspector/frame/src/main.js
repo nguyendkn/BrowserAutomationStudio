@@ -15,8 +15,8 @@ new Vue({
         if (!teen && choice % 10 === 1) return 1;
 
         return choicesLength < 4 || (!teen && choice % 10 >= 2 && choice % 10 <= 4) ? 2 : 3;
-      }
-    }
+      },
+    },
   }),
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app');

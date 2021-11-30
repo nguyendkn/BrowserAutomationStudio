@@ -7,7 +7,7 @@
       frequency: 'By frequency of use',
       dateModified: 'By date modified',
       dateCreated: 'By date created',
-      alphabetically: 'Alphabetically'
+      alphabetically: 'Alphabetically',
     },
     filters: {
       // Variables/resources
@@ -21,8 +21,8 @@
       null: 'Null',
       // Call stack
       functions: 'Functions',
-      actions: 'Actions'
-    }
+      actions: 'Actions',
+    },
   },
   tabs: {
     variables: 'Variables',
@@ -30,7 +30,7 @@
     resources: 'Resources',
     resourcesEmpty: 'Resources list is empty',
     callstack: 'Call stack',
-    callstackEmpty: 'Call stack is empty'
+    callstackEmpty: 'Call stack is empty',
   },
-  items: '{n} items | {n} item | {n} items'
+  items: '{n} items | {n} item | {n} items',
 };

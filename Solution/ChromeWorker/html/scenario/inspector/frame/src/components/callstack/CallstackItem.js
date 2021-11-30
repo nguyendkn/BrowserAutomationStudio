@@ -6,23 +6,23 @@ window.CallstackItem = {
   props: {
     options: {
       required: true,
-      type: Object
+      type: Object,
     },
 
     type: {
       required: true,
-      type: String
+      type: String,
     },
 
     name: {
       required: true,
-      type: String
+      type: String,
     },
 
     id: {
       required: true,
-      type: Number
-    }
+      type: Number,
+    },
   },
 
   data() {
@@ -48,7 +48,7 @@ window.CallstackItem = {
 
     size() {
       return Object.keys(this.options.arguments).length;
-    }
+    },
   },
 
   methods: {
@@ -67,7 +67,7 @@ window.CallstackItem = {
         type: 'focusAction',
         json: { id: this.id }
       }, '*');
-    }
+    },
   },
 
   template: html`
@@ -94,5 +94,5 @@ window.CallstackItem = {
         </li>
       </ul>
     </li>
-  `
+  `,
 };

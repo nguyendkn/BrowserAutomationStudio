@@ -5,27 +5,27 @@ window.CallstackPanel = {
 
   components: {
     PanelToolbar,
-    CallstackList
+    CallstackList,
   },
 
   props: {
     title: {
       required: true,
-      type: String
+      type: String,
     },
 
     data: {
       required: true,
-      type: Array
-    }
+      type: Array,
+    },
   },
 
   data() {
     return {
       filters: [
         { name: 'functions', active: true },
-        { name: 'actions', active: true }
-      ]
+        { name: 'actions', active: true },
+      ],
     };
   },
 
@@ -36,7 +36,7 @@ window.CallstackPanel = {
 
     isEmpty() {
       return !Object.keys(this.data).length;
-    }
+    },
   },
 
   template: html`
@@ -47,5 +47,5 @@ window.CallstackPanel = {
         <callstack-list :data="data" :filters="activeFilters" />
       </div>
     </div>
-  `
+  `,
 };

@@ -6,28 +6,28 @@ window.GroupsItem = {
   props: {
     primary: {
       required: true,
-      type: Boolean
+      type: Boolean,
     },
 
     color: {
       required: true,
-      type: String
+      type: String,
     },
 
     name: {
       required: true,
-      type: String
+      type: String,
     },
 
     data: {
       required: true,
-      type: Object
+      type: Object,
     },
 
     id: {
       required: true,
-      type: String
-    }
+      type: String,
+    },
   },
 
   data() {
@@ -38,7 +38,7 @@ window.GroupsItem = {
       editMode: false,
       expanded: false,
       newName: this.name,
-      newColor: this.color
+      newColor: this.color,
     };
   },
 
@@ -49,14 +49,14 @@ window.GroupsItem = {
 
     isEmpty() {
       return !Object.keys(this.data).length;
-    }
+    },
   },
 
   methods: {
     update() {
       this.$emit('update', this.id, {
         color: this.newColor,
-        name: this.newName
+        name: this.newName,
       });
       this.editMode = false;
     },
@@ -71,7 +71,7 @@ window.GroupsItem = {
 
     edit() {
       this.editMode = !this.editMode;
-    }
+    },
   },
 
   template: html`
@@ -110,5 +110,5 @@ window.GroupsItem = {
         </div>
       </div>
     </li>
-  `
+  `,
 };

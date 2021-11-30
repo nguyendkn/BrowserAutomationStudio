@@ -5,18 +5,18 @@ window.JsonTreeNode = {
 
   props: {
     value: {
-      required: true
+      required: true,
     },
 
     name: {
       required: true,
-      type: [String, Number]
+      type: [String, Number],
     },
 
     path: {
       required: true,
-      type: Array
-    }
+      type: Array,
+    },
   },
 
   data() {
@@ -28,7 +28,7 @@ window.JsonTreeNode = {
       number: '#d036d0',
       string: '#2db669',
       date: '#ce904a',
-      null: '#808080'
+      null: '#808080',
     };
 
     return { color: colors[type], type, isExpanded: false };
@@ -38,7 +38,7 @@ window.JsonTreeNode = {
     keys() {
       const { value } = this;
       return value == null ? [] : Object.keys(value);
-    }
+    },
   },
 
   methods: {
@@ -51,9 +51,9 @@ window.JsonTreeNode = {
         json: {
           value: this.value,
           type: this.type,
-          path: this.path
+          path: this.path,
         },
-        type: 'edit'
+        type: 'edit',
       };
 
       window.top.postMessage(message, '*');
@@ -61,7 +61,7 @@ window.JsonTreeNode = {
 
     formatDate(date) {
       return dayjs(date).format('YYYY-MM-DD HH:mm:ss [UTC]Z');
-    }
+    },
   },
 
   template: html`
@@ -115,5 +115,5 @@ window.JsonTreeNode = {
         </button>
       </div>
     </span>
-  `
+  `,
 };

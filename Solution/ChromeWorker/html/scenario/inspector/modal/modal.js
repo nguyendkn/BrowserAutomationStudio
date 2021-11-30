@@ -35,10 +35,18 @@
       },
 
       'click #inspectorModalClearData'() {
-        for (const el of this.$('form')[0].elements) {
-          // if (el.type === 'radio') el.checked = false;
-          // else if (el.type !== 'hidden') $(el).val('');
-        }
+        const type = this.model.get('type');
+
+        _.each(this.$('form')[0].elements, el => {
+          if (el.type !== 'hidden' && el.closest('[data-type]').dataset.type === type) {
+            if (el.type !== 'radio') {
+              el.value = el.type === 'number' ? '0' : '';
+            } else if (el.value === 'false') {
+              el.checked = true;
+            }
+            $(el).trigger('input');
+          }
+        });
       },
 
       'click [data-copy-target]'(e) {

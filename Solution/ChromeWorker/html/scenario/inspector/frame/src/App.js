@@ -11,7 +11,7 @@ window.App = {
         props: {
           title: 'tabs.variablesEmpty',
           styles: { '--group-br': '0px' },
-          data: { ...generateData('VAR') }
+          data: { ...getItems('VAR') }
         }
       },
       {
@@ -20,7 +20,7 @@ window.App = {
         props: {
           title: 'tabs.resourcesEmpty',
           styles: { '--group-br': '10px' },
-          data: { ...generateData('RES') }
+          data: { ...getItems('RES') }
         }
       },
       {
@@ -83,7 +83,7 @@ window.App = {
   `
 };
 
-function generateData(prefix) {
+function getItems(prefix) {
   return {
     [prefix + 1]: 0,
     [prefix + 2]: 'foo',

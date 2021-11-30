@@ -47,6 +47,29 @@ window.GroupsPanel = {
       return this.filters.filter(f => f.active).map(f => f.name);
     },
 
+    sortedData() {
+      const { data, metadata, activeSortings } = this;
+
+      const sortedKeys = Object.keys(data).sort((a, b) => {
+        if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
+
+        switch (activeSortings[0]) {
+          case 'dateModified':
+            return metadata[b].modifiedAt - metadata[a].modifiedAt;
+          case 'dateCreated':
+            return metadata[b].createdAt - metadata[a].createdAt;
+          case 'frequency':
+            const f2 = cache.filter(v => v === b).length + updates;
+            const f1 = cache.filter(v => v === a).length + updates;
+            return metadata[b].usages / f2 - metadata[a].usages / f1;
+        }
+
+        return a.localeCompare(b);
+      });
+
+      return sortedKeys.reduce((acc, key) => (acc[key] = data[key], acc), {});
+    },
+
     isEmpty() {
       return !Object.keys(this.data).length;
     },

@@ -2,7 +2,7 @@
   const toString = Object.prototype.toString;
 
   _.extend($.fn.selectpicker.Constructor.DEFAULTS, {
-    template: { caret: '' }
+    template: { caret: '' },
   });
 
   $.fn.slideDownEx = function (...args) {
@@ -32,6 +32,6 @@
       } catch (e) {
         return _.isError(e) ? e : new Error(e);
       }
-    }
+    },
   });
 })(window);

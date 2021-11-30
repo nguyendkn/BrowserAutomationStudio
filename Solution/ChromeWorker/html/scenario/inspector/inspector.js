@@ -31,8 +31,8 @@
         payload: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),
-          callstack: json.callstack
-        }
+          callstack: json.callstack,
+        },
       }, '*');
     },
 
@@ -44,9 +44,9 @@
           listeners: {
             move({ client: { y } }) {
               $el.outerHeight(Math.max(120, window.outerHeight - Math.max(300, y) - 30));
-            }
+            },
           },
-          edges: { top: true }
+          edges: { top: true },
         });
       }
 
@@ -67,7 +67,7 @@
       }
 
       return this;
-    }
+    },
   });
 
   function showModal(options) {

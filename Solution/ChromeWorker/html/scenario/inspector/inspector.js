@@ -49,16 +49,23 @@
           edges: { top: true }
         });
       }
-      return this;
-    },
 
-    show() {
-      this.$el.show();
       return this;
     },
 
     hide() {
-      this.$el.hide();
+      if (this.$el.is(':visible')) {
+        this.$el.hide();
+      }
+
+      return this;
+    },
+
+    show() {
+      if (this.$el.is(':hidden')) {
+        this.$el.show();
+      }
+
       return this;
     }
   });

@@ -5,9 +5,7 @@ const scaleColor = (color, size = 6) => {
   return _.range(size).map(n => `rgb(${scale(n / (size - 1)).slice(0, -1).join(', ')})`);
 };
 
-const html = (raw, ...args) => {
-  return String.raw({ raw }, args);
-};
+const html = (raw, ...args) => String.raw({ raw }, args);
 
 const uniqueId = (() => {
   let counter = 0;
@@ -22,9 +20,11 @@ const getType = (() => {
   const toString = Object.prototype.toString;
 
   return value => {
+    if (value === null) return 'null';
+
     const type = typeof value;
     if (type !== 'object') return type;
-    if (value === null) return 'null';
+
     return toString.call(value).slice(8, -1).toLowerCase();
   };
 })();

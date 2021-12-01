@@ -11,7 +11,16 @@ window.App = {
         props: {
           title: 'tabs.variablesEmpty',
           styles: { '--group-br': '0px' },
-          data: { ...getItems('VAR') },
+          data: {
+            VAR1: 0,
+            VAR2: 'foo',
+            VAR3: null,
+            VAR4: false,
+            VAR5: undefined,
+            VAR6: new Date(),
+            VAR7: ['foo', ['bar', 'baz']],
+            VAR8: { a: 2, b: 3, c: { d: 4 } },
+          },
         },
       },
       {
@@ -20,7 +29,16 @@ window.App = {
         props: {
           title: 'tabs.resourcesEmpty',
           styles: { '--group-br': '10px' },
-          data: { ...getItems('RES') },
+          data: {
+            RES1: 0,
+            RES2: 'foo',
+            RES3: null,
+            RES4: false,
+            RES5: undefined,
+            RES6: new Date(),
+            RES7: ['foo', ['bar', 'baz']],
+            RES8: { a: 2, b: 3, c: { d: 4 } },
+          },
         },
       },
       {
@@ -82,16 +100,3 @@ window.App = {
     </div>
   `,
 };
-
-function getItems(prefix) {
-  return {
-    [prefix + 1]: 0,
-    [prefix + 2]: 'foo',
-    [prefix + 3]: null,
-    [prefix + 4]: false,
-    [prefix + 5]: undefined,
-    [prefix + 6]: new Date(),
-    [prefix + 7]: ['foo', ['bar', 'baz']],
-    [prefix + 8]: { a: 2, b: 3, c: { d: 4 } },
-  };
-}

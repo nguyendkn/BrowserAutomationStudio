@@ -10,7 +10,7 @@
       alphabetically: 'По алфавиту',
     },
     filters: {
-      // Variables/resources
+      /* Variables/resources */
       undefined: 'Undefined',
       boolean: 'Булево',
       object: 'Объект',
@@ -19,7 +19,7 @@
       array: 'Массив',
       date: 'Дата',
       null: 'Null',
-      // Call stack
+      /* Call stack */
       functions: 'Функции',
       actions: 'Действия',
     },

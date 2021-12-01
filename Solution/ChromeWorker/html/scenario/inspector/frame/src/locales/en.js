@@ -10,7 +10,7 @@
       alphabetically: 'Alphabetically',
     },
     filters: {
-      // Variables/resources
+      /* Variables/resources */
       undefined: 'Undefined',
       boolean: 'Boolean',
       object: 'Object',
@@ -19,7 +19,7 @@
       array: 'Array',
       date: 'Date',
       null: 'Null',
-      // Call stack
+      /* Call stack */
       functions: 'Functions',
       actions: 'Actions',
     },

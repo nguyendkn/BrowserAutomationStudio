@@ -348,13 +348,13 @@
   margin-left: 24px;
 }
 
-.jt-node-label {
-  /* user-select: none; */
-}
+/* .jt-node-label {
+  user-select: none;
+} */
 
-.jt-node-value {
-  /* user-select: none; */
-}
+/* .jt-node-value {
+  user-select: none;
+} */
 
 .jt-node {
   display: block;

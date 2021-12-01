@@ -48,7 +48,8 @@ window.GroupsPanel = {
     },
 
     sortedData() {
-      const { data, metadata, activeSortings } = this;
+      const { data, history, metadata, activeSortings } = this;
+      const cache = history.flat(), updates = history.length;
 
       const sortedKeys = Object.keys(data).sort((a, b) => {
         if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;

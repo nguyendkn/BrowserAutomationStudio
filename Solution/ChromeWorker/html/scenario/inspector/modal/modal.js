@@ -58,7 +58,8 @@
 
       'input form :input'(e) {
         const el = e.target, model = this.model;
-        if (model.get('mode') === 'resource' || (el.type === 'radio' && !el.checked)) return;
+        if (model.get('mode') === 'resource') return;
+        if (el.type === 'radio' && !el.checked) return;
         const valid = model.get('type') === 'string' || el.checkValidity();
 
         this.$('#inspectorModalError').html(el.validationMessage);

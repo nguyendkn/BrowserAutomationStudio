@@ -11,8 +11,8 @@ window.App = {
         props: {
           title: 'tabs.variablesEmpty',
           styles: { '--group-br': '0px' },
-          data: { ...getItems('VAR') }
-        }
+          data: { ...getItems('VAR') },
+        },
       },
       {
         name: 'resources',
@@ -20,17 +20,17 @@ window.App = {
         props: {
           title: 'tabs.resourcesEmpty',
           styles: { '--group-br': '10px' },
-          data: { ...getItems('RES') }
-        }
+          data: { ...getItems('RES') },
+        },
       },
       {
         name: 'callstack',
         component: CallstackPanel,
         props: {
           title: 'tabs.callstackEmpty',
-          data: []
-        }
-      }
+          data: [],
+        },
+      },
     ];
 
     return { tabs, tab: tabs[0] };
@@ -56,7 +56,7 @@ window.App = {
 
     hide() {
       window.top.postMessage({ type: 'hide' }, '*');
-    }
+    },
   },
 
   template: html`
@@ -80,7 +80,7 @@ window.App = {
         <component :is="tab.component" :key="tab.name" v-bind="tab.props" />
       </keep-alive>
     </div>
-  `
+  `,
 };
 
 function getItems(prefix) {
@@ -92,6 +92,6 @@ function getItems(prefix) {
     [prefix + 5]: undefined,
     [prefix + 6]: new Date(),
     [prefix + 7]: ['foo', ['bar', 'baz']],
-    [prefix + 8]: { a: 2, b: 3, c: { d: 4 } }
+    [prefix + 8]: { a: 2, b: 3, c: { d: 4 } },
   };
 }

@@ -6211,23 +6211,18 @@
 
       return JSON.stringify(res)
     }
-    function extract_global_variables(code)
-    {
-      var res = []
-      var regexp = new RegExp("PSet\\(\\s*\\\"basglobal\\\"\\s*\\,\\s*\\\"([^\\\"]+)\\\"","g")
-      var matches;
-      while (matches = regexp.exec(code))
-      {
+
+    function extract_global_variables(code) {
+      const regexp = /PSet\(\s*\"basglobal\"\s*\,\s*\"([^\"]+)\"/g;
+      let res = [];
+      let matches;
+
+      while (matches = regexp.exec(code)) {
         res.push(JSON.parse("\"" + matches[1] + "\""));
       }
 
-      res = res.filter(function(item, pos) {
-            return res.indexOf(item) == pos;
-      })
-
-      res = res.map(function(el){return {name: el.toString()}})
-
-      return JSON.stringify(res)
+      res = res.filter((item, pos) => res.indexOf(item) === pos);
+      return JSON.stringify(res.map(name => ({ name })));
     }
 
     function extract_labels(code)

@@ -49,7 +49,6 @@
           edges: { top: true },
         });
       }
-
       return this;
     },
 
@@ -57,7 +56,6 @@
       if (this.$el.is(':visible')) {
         this.$el.hide();
       }
-
       return this;
     },
 
@@ -65,7 +63,6 @@
       if (this.$el.is(':hidden')) {
         this.$el.show();
       }
-
       return this;
     },
   });

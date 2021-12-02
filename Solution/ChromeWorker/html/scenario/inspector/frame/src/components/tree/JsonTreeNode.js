@@ -106,8 +106,8 @@ window.JsonTreeNode = {
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
         <template v-else>{{ value }}</template>
       </span>
-      <div style="position: absolute; display: flex; right: 0; top: 0;">
-        <button @click="edit">
+      <div style="position: absolute; display: flex; right: 12px; top: 0;">
+        <button @click="edit" style="margin-right: 12px;">
           <icon-edit />
         </button>
         <button v-if="type === 'object' || type  === 'array'" @click="toggle">

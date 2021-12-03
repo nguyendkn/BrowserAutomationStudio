@@ -52,6 +52,7 @@ window.JsonTreeNode = {
           value: this.value,
           type: this.type,
           path: this.path,
+          mode: this.$root.$children[0].tab.name.slice(0, -1) // TODO: use normal mode detection!
         },
         type: 'edit',
       };

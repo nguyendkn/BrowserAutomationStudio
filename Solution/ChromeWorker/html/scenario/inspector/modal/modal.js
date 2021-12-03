@@ -82,7 +82,7 @@
 
     initialize({ value, type, path, mode }) {
       if (['object', 'array'].includes(type)) type = 'custom';
-      const attrs = { value: type === 'custom' ? JSON.stringify(value) : value + '', type, path, mode: 'variable' };
+      const attrs = { value: type === 'custom' ? JSON.stringify(value) : value + '', type, path, mode };
 
       this.model = new Model(attrs).on('change:type', (model, type) => {
         for (const el of this.$('form').trigger('reset')[0].elements) {

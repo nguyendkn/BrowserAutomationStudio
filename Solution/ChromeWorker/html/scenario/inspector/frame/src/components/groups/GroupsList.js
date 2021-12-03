@@ -9,22 +9,7 @@ window.GroupsList = {
   },
 
   props: {
-    sortings: {
-      required: true,
-      type: Array,
-    },
-
-    filters: {
-      required: true,
-      type: Array,
-    },
-
-    query: {
-      required: true,
-      type: String,
-    },
-
-    data: {
+    source: {
       required: true,
       type: Object,
     },
@@ -36,7 +21,7 @@ window.GroupsList = {
       name: 'Main',
       color: '#c0bd9b',
       primary: true,
-      content: { ...this.data },
+      source: { ...this.source },
     };
 
     return { groups: [main] };
@@ -70,14 +55,8 @@ window.GroupsList = {
         name: 'Group',
         color: '#c0bd9b',
         primary: false,
-        content: {},
+        source: {},
       });
-    },
-
-    isVisible(val, key) {
-      const query = this.query.toLowerCase();
-      const type = getType(val);
-      return this.filters.some(f => f === type) && key.toLowerCase().includes(query);
     },
   },
 
@@ -93,16 +72,15 @@ window.GroupsList = {
         v-for="group in groups"
         :key="group.id"
         :id="group.id"
-        :data="group.content"
         :name="group.name"
         :color="group.color"
+        :source="group.source"
         :primary="group.primary"
         @remove="removeGroup"
         @update="updateGroup"
       >
         <json-tree-node
-          v-for="(val, key) in group.content"
-          v-show="isVisible(val, key)"
+          v-for="(val, key) in group.source"
           :key="key"
           :name="key"
           :path="[key]"

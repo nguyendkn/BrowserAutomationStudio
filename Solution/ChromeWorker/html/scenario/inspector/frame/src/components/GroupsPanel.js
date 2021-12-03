@@ -48,27 +48,36 @@ window.GroupsPanel = {
     },
 
     sortedData() {
-      const { data, history, metadata, activeSortings } = this;
+      const { data, history, metadata, activeFilters, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
+      const query = this.query.toLowerCase();
 
-      const sortedKeys = Object.keys(data).sort((a, b) => {
-        if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
+      const sortedKeys = Object.keys(data)
+        .filter(key => {
+          if (!key.toLowerCase().includes(query)) return false;
+          const type = getType(data[key]);
+          return this.activeFilters.some(f => f === type);
+        })
+        .sort((a, b) => {
+          if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
+          // a = `/${a}`;
+          // b = `/${b}`;
 
-        switch (activeSortings[0]) {
-          case 'dateModified':
-            return metadata[b].modifiedAt - metadata[a].modifiedAt;
-          case 'dateCreated':
-            return metadata[b].createdAt - metadata[a].createdAt;
-          case 'frequency':
-            const f2 = cache.filter(v => v === b).length + updates;
-            const f1 = cache.filter(v => v === a).length + updates;
-            return metadata[b].usages / f2 - metadata[a].usages / f1;
-        }
+          // switch (activeSortings[0]) {
+          //   case 'dateModified':
+          //     return metadata[b].modifiedAt - metadata[a].modifiedAt;
+          //   case 'dateCreated':
+          //     return metadata[b].createdAt - metadata[a].createdAt;
+          //   case 'frequency':
+          //     const f2 = cache.filter(v => v === b).length + updates;
+          //     const f1 = cache.filter(v => v === a).length + updates;
+          //     return metadata[b].usages / f2 - metadata[a].usages / f1;
+          // }
 
-        return a.localeCompare(b);
-      });
+          return a.localeCompare(b);
+        });
 
-      return sortedKeys.reduce((acc, key) => (acc[key] = data[key], acc), {});
+      return sortedKeys.reduce((acc, key) => ((acc[key] = data[key]), acc), {});
     },
 
     isEmpty() {
@@ -102,13 +111,13 @@ window.GroupsPanel = {
           this.history = [...this.history, ...history].slice(-100);
         }
 
-        Object.entries(metadata).forEach(([path, item]) => {
-          if (highlight) {
-            item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
-          }
-        });
+        // Object.entries(metadata).forEach(([path, item]) => {
+        //   if (highlight) {
+        //     item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
+        //   }
+        // });
 
-        this.highlight = false;
+        // this.highlight = false;
       },
 
       deep: true,
@@ -131,11 +140,8 @@ window.GroupsPanel = {
       <div v-else class="app-panel-content">
         <groups-list
           ref="list"
-          :data="data"
-          :query="query"
           :style="styles"
-          :filters="activeFilters"
-          :sortings="activeSortings"
+          :source="sortedData"
         />
       </div>
     </div>

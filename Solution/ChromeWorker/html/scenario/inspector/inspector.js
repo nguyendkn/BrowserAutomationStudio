@@ -5,21 +5,23 @@
 
   Inspector.Main = Backbone.View.extend({
     initialize() {
-      window.addEventListener('message', e => {
-        const { json, type } = e.data;
-
+      window.addEventListener('message', ({ data: { json, type } }) => {
         switch (type) {
           case 'focusAction': return BrowserAutomationStudio_FocusAction(json.id);
           case 'edit': return showModal(json);
           case 'hide': return this.hide();
+          case 'show': return this.show();
         }
       });
 
-      ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
-        _GobalModel.on(`change:${attr}`, (model, value) => {
-          if (value || this.$el.is(':hidden')) return;
-          // this.el.contentWindow.postMessage({ type: 'highlight' }, '*');
-        });
+      _GobalModel.on(`change:isscriptexecuting`, (_, value) => {
+        if (value || this.$el.is(':hidden')) return;
+        // this.el.contentWindow.postMessage({ type: 'highlight' }, '*');
+      });
+
+      _GobalModel.on(`change:istaskexecuting`, (_, value) => {
+        if (value || this.$el.is(':hidden')) return;
+        // this.el.contentWindow.postMessage({ type: 'highlight' }, '*');
       });
     },
 

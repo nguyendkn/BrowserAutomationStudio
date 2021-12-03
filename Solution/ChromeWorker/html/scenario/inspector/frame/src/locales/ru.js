@@ -1,8 +1,15 @@
 'use strict';
 
 (window.locales || (window.locales = {})).ru = {
+  tabs: {
+    variables: 'Переменные',
+    variablesEmpty: 'Список переменных пуст',
+    resources: 'Ресурсы',
+    resourcesEmpty: 'Список ресурсов пуст',
+    callstack: 'Стек вызовов',
+    callstackEmpty: 'Стек вызовов пуст',
+  },
   toolbar: {
-    placeholder: 'Поиск по имени',
     sortings: {
       frequency: 'По частоте использования',
       dateModified: 'По дате изменения',
@@ -21,14 +28,7 @@
       functions: 'Функции',
       actions: 'Действия',
     },
-  },
-  tabs: {
-    variables: 'Переменные',
-    variablesEmpty: 'Список переменных пуст',
-    resources: 'Ресурсы',
-    resourcesEmpty: 'Список ресурсов пуст',
-    callstack: 'Стек вызовов',
-    callstackEmpty: 'Стек вызовов пуст',
+    placeholder: 'Поиск по имени',
   },
   items: '{n} элементов | {n} элемент | {n} элемента | {n} элементов',
 };

@@ -1,8 +1,15 @@
 'use strict';
 
 (window.locales || (window.locales = {})).en = {
+  tabs: {
+    variables: 'Variables',
+    variablesEmpty: 'Variables list is empty',
+    resources: 'Resources',
+    resourcesEmpty: 'Resources list is empty',
+    callstack: 'Call stack',
+    callstackEmpty: 'Call stack is empty',
+  },
   toolbar: {
-    placeholder: 'Search by name',
     sortings: {
       frequency: 'By frequency of use',
       dateModified: 'By date modified',
@@ -21,14 +28,7 @@
       functions: 'Functions',
       actions: 'Actions',
     },
-  },
-  tabs: {
-    variables: 'Variables',
-    variablesEmpty: 'Variables list is empty',
-    resources: 'Resources',
-    resourcesEmpty: 'Resources list is empty',
-    callstack: 'Call stack',
-    callstackEmpty: 'Call stack is empty',
+    placeholder: 'Search by name',
   },
   items: '{n} items | {n} item | {n} items',
 };

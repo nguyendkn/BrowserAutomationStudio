@@ -18,8 +18,7 @@
       ['isscriptexecuting', 'istaskexecuting'].forEach(attr => {
         _GobalModel.on(`change:${attr}`, (model, value) => {
           if (value || this.$el.is(':hidden')) return;
-          // this.variables.model.set('highlight', true);
-          // this.resources.model.set('highlight', true);
+          // this.el.contentWindow.postMessage({ type: 'highlight' }, '*');
         });
       });
     },
@@ -33,6 +32,7 @@
           resources: prepareData(json.resources),
           callstack: json.callstack,
         },
+        type: 'update',
       }, '*');
     },
 

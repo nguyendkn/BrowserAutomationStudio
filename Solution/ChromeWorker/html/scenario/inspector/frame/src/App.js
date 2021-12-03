@@ -64,12 +64,14 @@ window.App = {
 
   methods: {
     handleMessage({ data }) {
-      if (!data.payload) return;
+      const { type, payload } = data;
 
-      this.tabs.forEach(tab => {
-        const json = data.payload[tab.name];
-        if (json) tab.props.data = json;
-      });
+      if (type === 'update' && payload) {
+        this.tabs.forEach(tab => {
+          const json = payload[tab.name];
+          if (json) tab.props.data = json;
+        });
+      }
     },
 
     hide() {

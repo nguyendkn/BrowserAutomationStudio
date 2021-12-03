@@ -16,26 +16,28 @@
 
       _GobalModel.on(`change:isscriptexecuting`, (_, value) => {
         if (value || this.$el.is(':hidden')) return;
-        // this.el.contentWindow.postMessage({ type: 'highlight' }, '*');
+        this.send({ type: 'highlight' });
       });
 
       _GobalModel.on(`change:istaskexecuting`, (_, value) => {
         if (value || this.$el.is(':hidden')) return;
-        // this.el.contentWindow.postMessage({ type: 'highlight' }, '*');
+        this.send({ type: 'highlight' });
       });
+
+      this.send = msg => this.el.contentWindow.postMessage(msg, '*');
     },
 
     update(data) {
       const json = JSON.parse(data);
 
-      this.el.contentWindow.postMessage({
+      this.send({
         payload: {
           variables: prepareData(json.variables),
           resources: prepareData(json.resources),
           callstack: json.callstack,
         },
         type: 'update',
-      }, '*');
+      });
     },
 
     render() {

@@ -73,27 +73,32 @@ function BrowserAutomationStudio_GetFingerprint()
 		{
 			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = true;
 			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
 			FINGERPRINT_JSON.additional.api_url = "https://customcanvas.bablosoft.com/prepare"
 		}else if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
 		{
 			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
 			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
 			FINGERPRINT_JSON.additional.api_url = "https://customfingerprints.bablosoft.com/prepare"
 		}else
 		{
 			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
 			FINGERPRINT_JSON.additional.server_type_is_post_data = false;
+			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
 			FINGERPRINT_JSON.additional.api_url = "https://customfingerprints.bablosoft.com/prepare"
 		}
 	}else if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
 	{
 		FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = true;
 		FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
 		FINGERPRINT_JSON.additional.api_url = "https://canvas.bablosoft.com/prepare"
 	}else
 	{
 		FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
 		FINGERPRINT_JSON.additional.server_type_is_post_data = false;
+		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
 		FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
 	}
 
@@ -146,7 +151,7 @@ function BrowserAutomationStudio_GetFingerprint()
 		sleep(5000)!
 
 		_do(function(){
-			http_client_get2("https://canvas.bablosoft.com/status/" + FINGERPRINT_JSON.request_id,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
+			http_client_get2(FINGERPRINT_JSON.additional.status_url + "/" + FINGERPRINT_JSON.request_id,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
 
 			var json = http_client_content()
 	

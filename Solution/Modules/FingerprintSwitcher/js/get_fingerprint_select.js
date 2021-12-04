@@ -12,6 +12,7 @@ var PerfectCanvasRequest = GetInputConstructorValue("PerfectCanvasRequest", load
 var PerfectCanvasDebug = GetInputConstructorValue("PerfectCanvasDebug", loader);
 
 var EnableCustomServers = GetInputConstructorValue("EnableCustomServers", loader);
+var DynamicPerfectCanvas = GetInputConstructorValue("DynamicPerfectCanvas", loader);
 
 if(Tags["original"].length == 0)
 {
@@ -54,6 +55,11 @@ if(EnableCustomServers["original"].length == 0)
   Invalid("EnableCustomServers is empty");
   return;
 }
+if(DynamicPerfectCanvas["original"].length == 0)
+{
+  Invalid("DynamicPerfectCanvas is empty");
+  return;
+}
 
 
 try{
@@ -71,6 +77,7 @@ try{
       perfectcanvas_request: PerfectCanvasRequest["updated"],
 	    perfectcanvas_logs: PerfectCanvasDebug["updated"],
       enable_custom_server: EnableCustomServers["updated"],
+      dynamic_perfect_canvas: DynamicPerfectCanvas["updated"],
     })
 
   code = Normalize(code,0)

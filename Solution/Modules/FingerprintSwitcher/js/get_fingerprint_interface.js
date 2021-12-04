@@ -191,6 +191,20 @@
 			]
 		} }) %>
 
+	<%= _.template($('#input_constructor').html())({id:"DynamicPerfectCanvas", description:tr("PerfetCanvas rendering in real time"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"],
+		help: 
+		{
+			description: tr("In case if fingerprint with specified PerfectCanvas request is not present in static database, canvas data will be rendered in real time from machines which are currently connected. This is default behavior, but sometimes you may avoid dynamic rendering to save time or for some other reason. In order to do that, set this value to false. This settings has no effect if PerfectCanvas request is not set."), examples:
+			[
+				{
+				code:"true",description:tr("Fingerprints with specified PerfectCanvas request will be searched inside static database, if not found, canvas data will be rendered in real time from machines which are currently connected.")
+				},
+				{
+				code:"false",description:tr("Fingerprints with specified PerfectCanvas request will be searched inside static database, if not found, error will occur.")
+				}
+			]
+		} }) %>
+
 	<%= _.template($('#block_end').html())() %>
 
 

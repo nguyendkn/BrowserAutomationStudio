@@ -103,6 +103,7 @@
     render() {
       if (this.$el.is(':empty')) {
         const types = ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'];
+
         this.$el.html(this.template({ ...this.model.toJSON(), types })).modal({
           backdrop: 'static',
         });

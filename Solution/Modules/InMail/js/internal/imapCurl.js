@@ -1,6 +1,6 @@
-_InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, username, password, folder, timeout){
+_InMail.imap = _InMail.assignApi(function(config){
 	const api = this;
-	_InMail.baseApi.call(this, true, "imap", autoConfig, host, port, encrypt, username, password, folder, timeout);
+	_InMail.baseApi.call(this, true, "imap", config);
 	
 	this.caps = null;
 
@@ -8,54 +8,110 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 	};
 	
-	// RFC 3501, section 5.1.3 UTF-7 encoding/decoding.
-	this.utf7 = (function(){
-		function encode(str){
-			var b = "";
-			for(var i = 0; i < str.length; i++){
-				// Note that we can't simply convert a UTF-8 string to Base64 because
-				// UTF-8 uses a different encoding. In modified UTF-7, all characters
-				// are represented by their two byte Unicode ID.
-				var c = str.charCodeAt(i);
-				// Upper 8 bits shifted into lower 8 bits so that they fit into 1 byte.
-				b += String.fromCharCode(c >> 8);
-				// Lower 8 bits. Cut off the upper 8 bits so that they fit into 1 byte.
-				b += String.fromCharCode(c & 0xFF);
-			};
-			// Modified Base64 uses , instead of / and omits trailing =.
-			return base64_encode(b).replace(/=+$/, '');
-		};
-		
-		function decode(str){
-			var b = base64_decode(str);
-			var r = "";
-			for(var i = 0; i < b.length;){
-				// Calculate charcode from two adjacent bytes.
-				r += (String.fromCharCode(b.charCodeAt(i++) << 8 | b.charCodeAt(i++)));
-			};
-			return r;
-		};
-		
-		return {
-			encode: function(str){
-				// All printable ASCII chars except for & must be represented by themselves.
-				// We replace subsequent non-representable chars with their escape sequence.
-				return str.replace(/&/g, '&-').replace(/[^\x20-\x7e]+/g, function(chunk){
-					// & is represented by an empty sequence &-, otherwise call encode().
-					chunk = (chunk === '&' ? '' : encode(chunk)).replace(new RegExp("\\/", "g"), ',');
-					return '&' + chunk + '-';
-				});
-			},
+	// RFC 4648, section 4 Base64 encoding/decoding.
+	this.base64 = {
+		table: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+		encode: function(str){
+			var padding = str.length % 3;
+			var ret = '';
+			var position = -1;
+			var a = undefined;
+			var b = undefined;
+			var c = undefined;
+			var buffer = undefined;
+			// Make sure any padding is handled outside of the loop.
+			var length = str.length - padding;
 			
-			decode: function(str){
-				return str.replace(/&([^-]*)-/g, function(_, chunk){
-					// &- represents &.
-					if (chunk === '') return '&';
-					return decode(chunk.replace(/,/g, '/'));
-				});
-			}
+			while(++position < length){
+				// Read three bytes, i.e. 24 bits.
+				a = str.charCodeAt(position) << 16;
+				b = str.charCodeAt(++position) << 8;
+				c = str.charCodeAt(++position);
+				buffer = a + b + c;
+				// Turn the 24 bits into four chunks of 6 bits each, and append the
+				// matching character for each of them to the ret.
+				ret += (this.table.charAt(buffer >> 18 & 0x3F) + this.table.charAt(buffer >> 12 & 0x3F) + this.table.charAt(buffer >> 6 & 0x3F) + this.table.charAt(buffer & 0x3F));
+			};
+			
+			if(padding == 2){
+				a = str.charCodeAt(position) << 8;
+				b = str.charCodeAt(++position);
+				buffer = a + b;
+				ret += (this.table.charAt(buffer >> 10) + this.table.charAt((buffer >> 4) & 0x3F) + this.table.charAt((buffer << 2) & 0x3F) + '=');
+			}else if(padding == 1){
+				buffer = str.charCodeAt(position);
+				ret += (this.table.charAt(buffer >> 2) + this.table.charAt((buffer << 4) & 0x3F) + '==');
+			};
+			
+			return ret;
+		},
+		decode: function(str){
+			str = str.replace(/==?$/, '');
+			var length = str.length;
+			var bitCounter = 0;
+			var bitStorage = undefined;
+			var buffer = undefined;
+			var ret = '';
+			var position = -1;
+			while(++position < length){
+				buffer = this.table.indexOf(str.charAt(position));
+				bitStorage = bitCounter % 4 ? bitStorage * 64 + buffer : buffer;
+				// Unless this is the first of a group of 4 characters…
+				if(bitCounter++ % 4){
+					// …convert the first 8 bits to a single ASCII character.
+					ret += String.fromCharCode(0xFF & bitStorage >> (-2 * bitCounter & 6));
+				};
+			};
+			return ret;
 		}
-	})();
+	};
+	
+	// RFC 3501, section 5.1.3 UTF-7 encoding/decoding.
+	this.utf7 = {
+		encode: function(str){
+			// All printable ASCII chars except for & must be represented by themselves.
+			// We replace subsequent non-representable chars with their escape sequence.
+			return str.replace(/&/g, '&-').replace(/[^\x20-\x7e]+/g, function(chunk){
+				// & is represented by an empty sequence &-, otherwise the encoding is performed.
+				if(chunk === '&'){
+					chunk = '';
+				}else{
+					var b = '';
+					for(var i = 0; i < chunk.length; i++){
+						// Note that we can't simply convert a UTF-8 string to Base64 because
+						// UTF-8 uses a different encoding. In modified UTF-7, all characters
+						// are represented by their two byte Unicode ID.
+						var c = chunk.charCodeAt(i);
+						// Upper 8 bits shifted into lower 8 bits so that they fit into 1 byte.
+						b += String.fromCharCode(c >> 8);
+						// Lower 8 bits. Cut off the upper 8 bits so that they fit into 1 byte.
+						b += String.fromCharCode(c & 0xFF);
+					};
+					// Modified Base64 uses , instead of / and omits trailing =.
+					chunk = api.base64.encode(b).replace(/=+$/, '');
+					
+					chunk = chunk.replace(new RegExp('\\/', 'g'), ',');
+				};
+				return '&' + chunk + '-';
+			});
+		},
+		
+		decode: function(str){
+			return str.replace(/&([^-]*)-/g, function(_, chunk){
+				// &- represents &.
+				if(chunk === ''){
+					return '&';
+				};
+				var b = api.base64.decode(chunk.replace(/,/g, '/'));
+				var ret = '';
+				for(var i = 0; i < b.length;){
+					// Calculate charcode from two adjacent bytes.
+					ret += (String.fromCharCode(b.charCodeAt(i++) << 8 | b.charCodeAt(i++)));
+				};
+				return ret;
+			});
+		}
+	};
 	
 	this.parseCaps = function(str){
 		var start = str.lastIndexOf('CAPABILITY');
@@ -89,11 +145,325 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		return (api.caps && api.caps.indexOf(cap) > -1);
 	};
 	
+	this.prepareFolder = function(folder, allowBlank){
+		folder = allowBlank ? _avoid_nil(folder, api.folder) : _avoid_nilb(folder, api.folder);
+		
+		_validate_argument_type(folder, 'string', 'Folder name', '_InMail.imap');
+		if(!allowBlank && !folder.length){
+			api.errorHandler('MAILBOX_NOT_SELECTED');
+		};
+		
+		return folder;
+	};
+	
+	this.parseExpr = function(o, result, start, useBrackets){
+		result = _avoid_nilb(result, []);
+		start = _avoid_nilb(start, 0);
+		useBrackets = _avoid_nilb(useBrackets, true);
+		var inQuote = false;
+		var lastPos = start - 1;
+		var isTop = false;
+		var isBody = false;
+		var escaping = false;
+		var val = undefined;
+		
+		if(typeof o === 'string'){
+			o = {str: o};
+			isTop = true;
+		};
+		
+		for(var i = start, len = o.str.length; i < len; ++i){
+			if(!inQuote){
+				if(isBody){
+					if (o.str[i] === ']') {
+						val = api.convStr(o.str.substring(lastPos + 1, i + 1));
+						result.push(val);
+						lastPos = i;
+						isBody = false;
+					};
+				}else if(o.str[i] === '"'){
+					inQuote = true;
+				}else if (o.str[i] === ' ' || o.str[i] === ')' || (useBrackets && o.str[i] === ']')){
+					if(i - (lastPos + 1) > 0){
+						val = api.convStr(o.str.substring(lastPos + 1, i));
+						result.push(val);
+					};
+					if((o.str[i] === ')' || (useBrackets && o.str[i] === ']')) && !isTop){
+						return i;
+					};
+					lastPos = i;
+				}else if((o.str[i] === '(' || (useBrackets && o.str[i] === '['))){
+					if(o.str[i] === '[' && i - 4 >= start && o.str.substring(i - 4, i).toUpperCase() === 'BODY'){
+						isBody = true;
+						lastPos = i - 5;
+					}else{
+						var innerResult = [];
+						i = api.parseExpr(o, innerResult, i + 1, useBrackets);
+						lastPos = i;
+						result.push(innerResult);
+					};
+				};
+			}else if(o.str[i] === '\\'){
+				escaping = !escaping;
+			}else if(o.str[i] === '"'){
+				if(!escaping){
+					inQuote = false;
+				};
+				escaping = false;
+			};
+			if(i + 1 === len && len - (lastPos + 1) > 0){
+				result.push(api.convStr(o.str.substring(lastPos + 1)));
+			};
+		};
+		
+		return (isTop ? result : start);
+	};
+
+	this.convStr = function(str){
+		if(str[0] === '"'){
+			str = str.substring(1, str.length - 1);
+			var newstr = '';
+			var isEscaping = false;
+			var p = 0;
+			for(var i = 0, len = str.length; i < len; ++i){
+				if(str[i] === '\\'){
+					if(!isEscaping){
+						isEscaping = true;
+					}else{
+						isEscaping = false;
+						newstr += str.substring(p, i - 1);
+						p = i;
+					};
+				}else if(str[i] === '"'){
+					if(isEscaping){
+						isEscaping = false;
+						newstr += str.substring(p, i - 1);
+						p = i;
+					};
+				};
+			};
+			if(p === 0){
+				return str;
+			}else{
+				newstr += str.substring(p);
+				return newstr;
+			};
+		}else if(str === 'NIL'){
+			return null;
+		}else if(/^\d+$/.test(str)){
+			// some IMAP extensions utilize large (64-bit) integers, which JavaScript
+			// can't handle natively, so we'll just keep it as a string if it's too big
+			var val = parseInt(str, 10);
+			return (val.toString() === str ? val : str);
+		};
+
+		return str;
+	};
+	
+	this.parser = function(str, boxes){
+		var info = api.parseUntagged(str);
+		var type = info.type;
+		var specialAttrs = [
+			'\\All',
+			'\\Archive',
+			'\\Drafts',
+			'\\Flagged',
+			'\\Important',
+			'\\Junk',
+			'\\Sent',
+			'\\Trash'
+		];
+		
+		if(type == 'capability'){
+			return info.text.map(function(v){return v.toUpperCase()});
+		}else if (type == 'sort' || type == 'thread' || type == 'esearch'){
+			return info.text;
+		}else if(type == 'search'){
+			if(typeof info.text.results != "undefined"){
+				// CONDSTORE-modified search results
+				return info.text.results;
+			}else{
+				return info.text;
+			};
+		}else if(type == 'list') {
+			var box = {
+				attribs: info.text.flags,
+				delimiter: info.text.delimiter,
+				children: null
+			};
+			
+			for(i = 0, len = specialAttrs.length; i < len; ++i){
+				if (box.attribs.indexOf(specialAttrs[i]) > -1){
+					box.special_use_attrib = specialAttrs[i];
+				};
+			};
+			
+			var name = info.text.name;
+			var curChildren = boxes;
+			
+			if(box.delimiter){
+				var path = name.split(box.delimiter);
+				name = path.pop();
+				for(i = 0, len = path.length; i < len; ++i){
+					if(!curChildren[ path[i] ]){
+						curChildren[ path[i] ] = {};
+					};
+					if(!curChildren[ path[i] ].children){
+						curChildren[ path[i] ].children = {};
+					};
+					curChildren = curChildren[ path[i] ].children;
+				};
+			};
+			if(curChildren[name]){
+				box.children = curChildren[name].children;
+			};
+			curChildren[name] = box;
+			return;
+		}else if(type == 'status'){
+			var box = {
+				name: info.text.name,
+				uidnext: 0,
+				uidvalidity: 0,
+				messages: {
+					total: 0,
+					'new': 0,
+					unseen: 0
+				}
+			};
+			var attrs = info.text.attrs;
+			if(attrs){
+				if(typeof attrs.recent != "undefined"){
+					box.messages['new'] = attrs.recent;
+				};
+				if(typeof attrs.unseen != "undefined"){
+					box.messages.unseen = attrs.unseen;
+				};
+				if(typeof attrs.messages != "undefined"){
+					box.messages.total = attrs.messages;
+				};
+				if(typeof attrs.uidnext != "undefined"){
+					box.uidnext = attrs.uidnext;
+				};
+				if(typeof attrs.uidvalidity != "undefined"){
+					box.uidvalidity = attrs.uidvalidity;
+				};
+				if(typeof attrs.highestmodseq != "undefined"){ // CONDSTORE
+					box.highestmodseq = ''+attrs.highestmodseq;
+				};
+			};
+			return box;
+		}else{
+			return info.text;
+		};
+	};
+	
+	this.parseUntagged = function(str){
+		var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(str);
+		
+		var type, val;
+		
+		type = (m[1] || m[3]).toLowerCase();
+		
+		if(type === 'search' || type === 'capability' || type === 'sort'){
+			val = api.parse.search(type, m[5]);
+		}else if(type === 'thread'){
+			val = api.parse.thread(m[5]);
+		}else if(type === 'list'){
+			val = api.parse.list(m[5]);
+		}else if(type === 'status'){
+			val = api.parse.status(m[5]);
+		}else if(type === 'esearch'){
+			val = api.parse.esearch(m[5]);
+		}else{
+			val = m[5];
+		};
+		
+		return {
+			type: type,
+			text: val
+		};
+	};
+	
+	this.parse = {
+		search: function(type, text){
+			if(text){
+				var regSearchModseq = /^(.+) \(MODSEQ (.+?)\)$/i;
+				if(type === 'search' && regSearchModseq.test(text)){
+					// CONDSTORE search response
+					var p = regSearchModseq.exec(text);
+					return {
+						results: p[1].split(' '),
+						modseq: p[2]
+					};
+				}else{
+					var val = [];
+					if(text[0] === '('){
+						val = /^\((.*)\)$/.exec(text)[1].split(' ');
+					}else{
+						val = text.split(' ');
+					};
+					
+					if(type === 'search' || type === 'sort'){
+						val = val.map(function(v){return parseInt(v, 10)});
+					};
+					return val;
+				};
+			}else{
+				return [];
+			};
+		},
+		thread: function(text){
+			if(text){
+				return api.parseExpr(text);
+			}else{
+				return [];
+			};
+		},
+		list:  function(text){
+			var r = api.parseExpr(text);
+			return {
+				flags: r[0],
+				delimiter: r[1],
+				name: api.utf7.decode(''+r[2])
+			};
+		},
+		status:  function(text){
+			var r = api.parseExpr(text), attrs = {};
+			// r[1] is [KEY1, VAL1, KEY2, VAL2, .... KEYn, VALn]
+			for (var i = 0, len = r[1].length; i < len; i += 2){
+				attrs[r[1][i].toLowerCase()] = r[1][i + 1];
+			};
+			return {
+				name: api.utf7.decode(''+r[0]),
+				attrs: attrs
+			};
+		},
+		esearch:  function(text){
+			var r = api.parseExpr(text.toUpperCase().replace('UID', '')), attrs = {};
+			
+			// RFC4731 unfortunately is lacking on documentation, so we're going to
+			// assume that the response text always begins with (TAG "A123") and skip that
+			// part ...
+			
+			for(var i = 1, len = r.length, key, val; i < len; i += 2){
+				key = r[i].toLowerCase();
+				val = r[i + 1];
+				if(key === 'all'){
+					val = val.toString().split(',');
+				};
+				attrs[key] = val;
+			};
+			return attrs;
+		}
+	};
+	
 	this.makeRequest = function(){
 		var path = _function_argument("path");
 		var query = _function_argument("query");
 		var isUTF8 = _avoid_nilb(_function_argument("isUTF8"), false);
-		var folder = _avoid_nil(_function_argument("folder"), api.folder);
+		var multiple = _avoid_nilb(_function_argument("multiple"), false);
+		var saveOnlyLast = _avoid_nilb(_function_argument("saveOnlyLast"), false);
+		var folder = api.prepareFolder(_function_argument("folder"), true);
 		
 		if(isUTF8){
 			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + api.escape(api.utf7.encode(folder)) + '"\r\n' + query;
@@ -101,7 +471,7 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 			path = _avoid_nil(path, folder);
 		};
 		
-		_call_function(api.request, {path: path, query: query, multiple: isUTF8, saveOnlyLast: isUTF8})!
+		_call_function(api.request, {path: path, query: query, multiple: (multiple || isUTF8), saveOnlyLast: (saveOnlyLast || isUTF8)})!
 		var resp = _result_function();
 		
 		try{
@@ -152,23 +522,84 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		};
 	};
 	
+	this.prepareUIDs = function(uids){
+		if(_is_nilb(uids) || (Array.isArray(uids) && uids.length === 0)){
+			api.errorHandler('EMPTY_UID_LIST');
+		};
+		
+		if(!Array.isArray(uids)){
+			uids = [uids];
+		};
+		
+		api.validateUIDList(uids);
+		
+		if(uids.length === 0){
+			api.errorHandler('EMPTY_UID_LIST');
+		};
+		
+		return uids.join(',');
+	};
+	
+	this.prepareCriteria = function(criteria){
+		_validate_argument_type(criteria, ['array','string'], 'Search criteria', '_InMail.imap');
+		if(typeof criteria === 'string'){
+			criteria = [criteria];
+		};
+		return criteria;
+	};
+	
+	this.status = function(){
+		var name = _function_argument("name");
+		
+		var info = [ 'MESSAGES', 'RECENT', 'UNSEEN', 'UIDVALIDITY', 'UIDNEXT' ];
+		
+		if(api.serverSupports('CONDSTORE')){
+			info.push('HIGHESTMODSEQ');
+		};
+		
+		info = info.join(' ');
+		
+		var cmd = 'STATUS "' + escape(api.utf7.encode(''+name)) + '" (' + info + ')';
+		
+		_call_function(api.makeRequest, {query: cmd, folder: ""})!
+		var resp = _result_function();
+		
+		var result = api.parser(resp);
+		
+		_function_return(result);
+	};
+	
+	this.getBoxes = function(){
+		_call_function(api.makeRequest, {query: "", folder: ""})!
+		var resp = _result_function();
+		
+		var boxes = {};
+		var lines = resp.split('\r\n');
+		
+		for(var i = 0; i < lines.length; i++){
+			api.parser(lines[i], boxes);
+		};
+		
+		_function_return(boxes);
+	};
+	
 	this.addBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'CREATE "' + api.escape(api.utf7.encode(name)) + '"', folder: ""})!
+		_call_function(api.makeRequest, {query: 'CREATE "' + api.escape(api.utf7.encode(''+name)) + '"', folder: ""})!
 	};
 	
 	this.delBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'DELETE "' + api.escape(api.utf7.encode(name)) + '"', folder: ""})!
+		_call_function(api.makeRequest, {query: 'DELETE "' + api.escape(api.utf7.encode(''+name)) + '"', folder: ""})!
 	};
 	
 	this.renameBox = function(){
 		var oldName = _function_argument("oldName");
 		var newName = _function_argument("newName");
 		
-		_call_function(api.makeRequest, {query: 'RENAME "' + api.escape(api.utf7.encode(oldName)) + '" "' + api.escape(api.utf7.encode(newName)) + '"', folder: ""})!
+		_call_function(api.makeRequest, {query: 'RENAME "' + api.escape(api.utf7.encode(''+oldName)) + '" "' + api.escape(api.utf7.encode(''+newName)) + '"', folder: ""})!
 	};
 
 	this.hasNonASCII = function(str){
@@ -409,23 +840,9 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		return searchargs;
 	};
 	
-	this.parseUIDs = function(resp){
-		return _avoid_nil(resp.match(/\d+/g), []).map(function(uid){return parseInt(uid)});
-	};
-	
 	this.search = function(){
-		var criteria = _function_argument("criteria");
-		var folder = _avoid_nilb(_function_argument("folder"), api.folder);
-		
-		var act = '_InMail.imap.search';
-		_validate_argument_type(criteria, ['array','string'], 'Search criteria', act);
-		if(typeof criteria === 'string'){
-			criteria = [criteria];
-		};
-		_validate_argument_type(folder, 'string', 'Folder name', act);
-		if(!folder.length){
-			api.errorHandler('MAILBOX_NOT_SELECTED');
-		};
+		var criteria = api.prepareCriteria(_function_argument("criteria"));
+		var folder = api.prepareFolder(_function_argument("folder"));
 		
 		var cmd = 'UID SEARCH';
 		var info = {
@@ -445,31 +862,97 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		_call_function(api.makeRequest, {query: cmd, folder: folder, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parseUIDs(resp);
+		var result = api.parser(resp);
 		
 		_function_return(result);
 	};
 	
+	this.esearch = function(){
+		var criteria = api.prepareCriteria(_function_argument("criteria"));
+		var options = _avoid_nil(_function_argument("options"));
+		var folder = api.prepareFolder(_function_argument("folder"));
+		
+		_validate_argument_type(options, ['array','string'], 'Options', '_InMail.imap');
+		
+		_call_function(api.capability, {})!
+		
+		if(!api.serverSupports('ESEARCH')){
+			api.errorHandler('ESEARCH_NOT_SUPPORT');
+		};
+		
+		if(Array.isArray(options)){
+			options = options.join(' ');
+		};
+		
+		var cmd = 'UID SEARCH RETURN (' + options + ')';
+		var info = {
+			hasUTF8: false
+		};
+		
+		var query = api.buildSearchQuery(criteria, info);
+		
+		if(info.hasUTF8){
+			cmd += ' CHARSET UTF-8';
+		};
+		
+		cmd += query;
+		
+		_call_function(api.makeRequest, {query: cmd, folder: folder, isUTF8: info.hasUTF8})!
+		var resp = _result_function();
+		
+		var result = api.parser(resp);
+		
+		_function_return(result);
+	};
+	
+	this.searchLast = function(){
+		var args = _function_arguments();
+		args.criteria = ['ALL'];
+		var last = 0;
+		
+		_call_function(api.capability, {})!
+		
+		_if_else(api.serverSupports('ESEARCH'), function(){
+			args.options = 'MAX';
+			_call_function(api.esearch, args)!
+			last = _result_function().max || 0;
+		}, function(){
+			_call_function(api.search, args)!
+			last = _result_function().pop() || 0;
+		})!;
+		
+		_function_return(last);
+	};
+	
+	this.count = function(){
+		var args = _function_arguments();
+		var count = 0;
+		
+		_call_function(api.capability, {})!
+		
+		_if_else(api.serverSupports('ESEARCH'), function(){
+			args.options = 'COUNT';
+			_call_function(api.esearch, args)!
+			count = _result_function().count;
+		}, function(){
+			_call_function(api.search, args)!
+			count = _result_function().length;
+		})!;
+		
+		_function_return(count);
+	};
+	
 	this.sort = function(){
 		var sorts = _function_argument("sorts");
-		var criteria = _function_argument("criteria");
-		var folder = _avoid_nilb(_function_argument("folder"), api.folder);
+		var criteria = api.prepareCriteria(_function_argument("criteria"));
+		var folder = api.prepareFolder(_function_argument("folder"));
 		
-		var act = '_InMail.imap.sort';
-		_validate_argument_type(sorts, ['array','string'], 'Sorting criteria', act);
+		_validate_argument_type(sorts, ['array','string'], 'Sorting criteria', '_InMail.imap');
 		if(typeof sorts === 'string'){
 			sorts = [sorts];
 		};
 		if(!sorts.length){
 			api.errorHandler('EMPTY_SORT_CRITERIA');
-		};
-		_validate_argument_type(criteria, ['array','string'], 'Search criteria', act);
-		if(typeof criteria === 'string'){
-			criteria = [criteria];
-		};
-		_validate_argument_type(folder, 'string', 'Folder name', act);
-		if(!folder.length){
-			api.errorHandler('MAILBOX_NOT_SELECTED');
 		};
 		
 		_call_function(api.capability, {})!
@@ -518,38 +1001,24 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		_call_function(api.makeRequest, {query: cmd, folder: folder, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parseUIDs(resp);
+		var result = api.parser(resp);
 		
 		_function_return(result);
 	};
 	
 	this.store = function(){
-		var uids = _function_argument("uids");
+		var uids = api.prepareUIDs(_function_argument("uids"));
 		var config = _function_argument("config");
-		var folder = _avoid_nilb(_function_argument("folder"), api.folder);
+		var folder = api.prepareFolder(_function_argument("folder"));
 		
 		var act = '_InMail.imap.store';
 		_validate_argument_type(config, 'object', 'Config', act);
 		if(_is_nilb(config.flags) && _is_nilb(config.keywords)){
 			api.errorHandler('NOT_FLAGS_KEYWORDS');
 		};
-		_validate_argument_type(folder, 'string', 'Folder name', act);
-		if(!folder.length){
-			api.errorHandler('MAILBOX_NOT_SELECTED');
-		};
 		
 		var isFlags = !_is_nilb(config.flags);
 		var items = (isFlags ? config.flags : config.keywords);
-		
-		if(!Array.isArray(uids)){
-			uids = [uids];
-		};
-		
-		api.validateUIDList(uids);
-		
-		if(uids.length === 0){
-			api.errorHandler('EMPTY_UID_LIST');
-		};
 		
 		if((!Array.isArray(items) && typeof items !== 'string') || (Array.isArray(items) && items.length === 0)){
 			if(isFlags){
@@ -578,7 +1047,6 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		};
 		
 		items = items.join(' ');
-		uids = uids.join(',');
 		
 		var cmd = 'UID STORE ' + uids + ' ' + config.mode + 'FLAGS.SILENT (' + items + ')';
 		
@@ -664,37 +1132,27 @@ _InMail.imap = _InMail.assignApi(function(autoConfig, host, port, encrypt, usern
 		})!
 	};
 	
+	this.delMsgs = function(){
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var folder = api.prepareFolder(_function_argument("folder"));
+		
+		var cmd = 'UID STORE ' + uids + ' +FLAGS.SILENT (\\Deleted)\r\nEXPUNGE';
+		
+		_call_function(api.makeRequest, {query: cmd, folder: folder, multiple: true})!
+		var resp = _result_function();
+	};
+	
 	this.fetch = function(){
-		var uids = _function_argument("uids");
+		var uids = api.prepareUIDs(_function_argument("uids"));
 		var options = _function_argument("options");
-		var folder = _avoid_nilb(_function_argument("folder"), api.folder);
+		var folder = api.prepareFolder(_function_argument("folder"));
 		
 		var act = '_InMail.imap.fetch';
 		if(options){
 			_validate_argument_type(options, 'object', 'Options', act);
 		};
-		_validate_argument_type(folder, 'string', 'Folder name', act);
-		if(!folder.length){
-			api.errorHandler('MAILBOX_NOT_SELECTED');
-		};
-		
-		if(_is_nilb(uids) || (Array.isArray(uids) && uids.length === 0)){
-			api.errorHandler('EMPTY_UID_LIST');
-		};
-		
-		if(!Array.isArray(uids)){
-			uids = [uids];
-		};
-		
-		api.validateUIDList(uids);
-		
-		if(uids.length === 0){
-			api.errorHandler('EMPTY_UID_LIST');
-		};
 		
 		_call_function(api.capability, {})!
-		
-		uids = uids.join(',');
 		
 		var cmd = 'UID FETCH ' + uids + ' (';
 		var fetching = [];

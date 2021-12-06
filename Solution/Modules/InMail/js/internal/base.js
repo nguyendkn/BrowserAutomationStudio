@@ -1,49 +1,7 @@
-_InMail.baseApi = function(isCurl, protocol, autoConfig, host, port, encrypt, username, password, folder, timeout){
+_InMail.baseApi = function(isCurl, protocol, config){
 	const api = this;
 	this.protocol = protocol;
-	
-	if([true, "true", 1].indexOf(autoConfig) > -1){
-		var split = username.split("@");
-		var login = split[0];
-		var domain = split[1];
-		
-		var configs = _InMail.configs();
-		var domainObj = configs[domain];
-		if(_is_nil(domainObj)){
-			for(var key in configs){
-				var obj = configs[key];
-				if(obj.domains && obj.domains.indexOf(domain) > -1){
-					domainObj = obj;
-					break;
-				};
-			};
-		};
-		
-		if(_is_nil(domainObj) || _is_nil(domainObj[protocol])){
-			_InMail.error('Failed to configure ' + protocol + ' for mail "' + domain + '", please use manual configuration', 'Не удалось настроить ' + protocol + ' для почты "' + domain + '", пожалуйста используйте ручную настройку');
-		};
-		
-		var config = domainObj[protocol];
-		
-		this.config = config;
-		
-		this.config.username = config.username.replace("%email%", username).replace("%login%", login).replace("%domain%", domain);
-	}else{
-		encrypt = _InMail.paramClean(encrypt).toLocaleLowerCase();
-		if(["none","ssl","starttls"].indexOf(encrypt) < 0){
-			_InMail.error("Invalid encryption type specified, mail module only supports ssl, starttls and none", "Указан неверный тип шифрования, почтовый модуль поддерживает только ssl, starttls и none");
-		};
-		this.config = {};
-		this.config.host = _InMail.paramClean(host);
-		port = _InMail.paramClean(port).toLocaleLowerCase();
-		this.config.port = port=="auto" ? (protocol=="imap" ? (encrypt=="ssl" ? "993" : "143") : encrypt=="ssl" ? "995" : "110") : port;
-		this.config.encrypt = encrypt;
-		this.config.username = username;
-	};
-	
-	this.config.password = password;
-	this.folder = _InMail.paramClean(folder);
-	this.timeout = timeout;
+	this.config = config;
 	
 	this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 	
@@ -114,13 +72,18 @@ _InMail.baseApi = function(isCurl, protocol, autoConfig, host, port, encrypt, us
 				options["CURLOPT_CUSTOMREQUEST"] = query;
 			};
 			
+			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «' + options["CURLOPT_URL"] + '»');
+			
 			_call_function(api.wrapper, {options: options, trace: true, saveHeader: saveHeader, multiple: multiple, saveOnlyLast: saveOnlyLast})!
 			var resp = _result_function();
 			
 			__RESP = resp;
+			resp.result = resp.result.trim();
+			resp.error = resp.error.trim();
+			
+			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'ответ' : 'response') + ': «‎' + resp.code + '»' + (resp.result ? ', ' + (_K=="ru" ? 'результат' : 'result') + ': «‎' + resp.result + '»' : '') + (resp.error ? ', ' + (_K=="ru" ? 'ошибка' : 'error') + ': «‎' + resp.error + '»' : ''));
 			
 			if(resp.code == "CURLE_OK"){
-				resp.result = resp.result.trim();
 				_function_return(resp);
 			}else{
 				var error = resp.error;
@@ -201,6 +164,10 @@ _InMail.baseApi = function(isCurl, protocol, autoConfig, host, port, encrypt, us
 			"SORT_NOT_SUPPORT": {
 				"ru": "Сортировка не поддерживается на сервере",
 				"en": "Sort is not supported on the server"
+			},
+			"ESEARCH_NOT_SUPPORT": {
+				"ru": "ESEARCH не поддерживается на сервере",
+				"en": "ESEARCH is not supported on the server"
 			},
 			"UNEXPECTED_OPTION": {
 				"ru": "Неожиданный параметр поиска: " + data,

@@ -42,11 +42,57 @@ _InMail = {
 			this.error("Invalid protocol specified, mail module only supports imap and pop3 protocols", "Указан неверный протокол, почтовый модуль поддерживает только протоколы imap и pop3");
 		};
 		
-		try{
-			this.api = new _InMail[protocol](autoConfig, host, port, encrypt, username, password, folder, timeout);
-		}catch(e){
-			die('_InMail: ' + _K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing') : ('Класс протокола ' + protocol + ' поврежден или отсутствует'), true);
+		var config = {};
+		
+		if([true, "true", 1].indexOf(autoConfig) > -1){
+			var split = username.split("@");
+			var login = split[0];
+			var domain = split[1];
+			
+			var configs = this.configs();
+			var domainObj = configs[domain];
+			if(_is_nil(domainObj)){
+				for(var key in configs){
+					var obj = configs[key];
+					if(obj.domains && obj.domains.indexOf(domain) > -1){
+						domainObj = obj;
+						break;
+					};
+				};
+			};
+			
+			if(_is_nil(domainObj) || _is_nil(domainObj[protocol])){
+				this.error('Failed to configure ' + protocol + ' for mail "' + domain + '", please use manual configuration', 'Не удалось настроить ' + protocol + ' для почты "' + domain + '", пожалуйста используйте ручную настройку');
+			};
+			
+			config = domainObj[protocol];
+			
+			config.username = config.username.replace("%email%", username).replace("%login%", login).replace("%domain%", domain);
+		}else{
+			encrypt = this.paramClean(encrypt).toLocaleLowerCase();
+			if(["none","ssl","starttls"].indexOf(encrypt) < 0){
+				this.error("Invalid encryption type specified, mail module only supports ssl, starttls and none", "Указан неверный тип шифрования, почтовый модуль поддерживает только ssl, starttls и none");
+			};
+			config.host = this.paramClean(host);
+			port = this.paramClean(port).toLocaleLowerCase();
+			config.port = port=="auto" ? (protocol=="imap" ? (encrypt=="ssl" ? "993" : "143") : encrypt=="ssl" ? "995" : "110") : port;
+			config.encrypt = encrypt;
+			config.username = username;
 		};
+
+		config.password = password;
+		
+		var api = this.getApi(true);
+		if(!api || protocol != api.protocol || JSON.stringify(config) != JSON.stringify(api.config)){
+			try{
+				this.api = new _InMail[protocol](config);
+			}catch(e){
+				die('_InMail: ' + _K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing') : ('Класс протокола ' + protocol + ' поврежден или отсутствует'), true);
+			};
+		};
+		
+		this.api.folder = _InMail.paramClean(folder);
+		this.api.timeout = timeout*1000;
 	},
 	
 	getApi: function(noError){
@@ -94,7 +140,7 @@ _InMail = {
 				password: proxyObj["password"]
 			};
 			
-			var api = this.getApi(false);
+			var api = this.getApi(true);
 			if(api){
 				api.setProxy(this.proxy);
 			};
@@ -105,10 +151,49 @@ _InMail = {
 	
 	clearProxy: function(){
 		this.proxy = null;
-		var api = this.getApi(false);
+		var api = this.getApi(true);
 		if(api){
 			api.clearProxy();
 		};
+	},
+	
+	addInfo: function(){
+		var boxes = _function_argument("boxes");
+		var parent = _function_argument("parent");
+		
+		var api = _InMail.getApi();
+		
+		_do_with_params({names: Object.keys(boxes)}, function(){
+			var i = _iterator() - 1;
+			if(i > _cycle_param("names").length - 1){
+				_break();
+			};
+			var name = _cycle_param("names")[i];
+			var box = boxes[name];
+			var fullName = (parent ? parent + box.delimiter : '') + name
+			
+			_call_function(api.status, {name: fullName})!
+			box.info = _result_function();
+			
+			_if(box.children, function(){
+				_call_function(_InMail.addInfo, {boxes: box.children, parent: fullName})!
+			})!
+		})!
+	},
+	
+	foldersInfo: function(){
+		var addMsgsCount = _avoid_nilb(_function_argument("addMsgsCount"), false);
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.getBoxes, {})!
+		var boxes = _result_function();
+		
+		_if(addMsgsCount, function(){
+			_call_function(_InMail.addInfo, {boxes: boxes})!
+		})!
+		
+		_function_return(boxes);
 	},
 	
 	addBox: function(){
@@ -180,11 +265,11 @@ _InMail = {
 		
 		var api = _InMail.getApi();
 		
-		_call_function(api.search, {criteria: ['ALL'], folder: folder})!
-		var res = _result_function();
+		_call_function(api.searchLast, {folder: folder})!
+		var last = _result_function();
 		
-		if(res.length){
-			_function_return(res.pop());
+		if(last){
+			_function_return(last);
 		}else{
 			if(errorNotFound){
 				_InMail.error('Could not find the last letter in the specified mailbox folder', 'Не удалось найти последнее письмо в указанной папке почтового ящика', 'searchLast');
@@ -222,6 +307,72 @@ _InMail = {
 				_function_return(0);
 			};
 		};
+	},
+	
+	count: function(){
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.count, {criteria: criteria, folder: folder})!
+		var count = _result_function();
+		
+		_function_return(count);
+	},
+	
+	addFlags: function(){
+		var uids = _function_argument("uids");
+		var flags = _to_arr(_function_argument("flags"));
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.addFlags, {uids: uids, flags: flags, folder: folder})!
+	},
+	
+	delFlags: function(){
+		var uids = _function_argument("uids");
+		var flags = _to_arr(_function_argument("flags"));
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.delFlags, {uids: uids, flags: flags, folder: folder})!
+	},
+	
+	setFlags: function(){
+		var uids = _function_argument("uids");
+		var flags = _to_arr(_function_argument("flags"));
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.setFlags, {uids: uids, flags: flags, folder: folder})!
+	},
+	
+	delMsgs: function(){
+		var uids = _function_argument("uids");
+		var folder = _function_argument("folder");
+		if(folder){
+			folder = _InMail.paramClean(folder);
+		};
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.delMsgs, {uids: uids, folder: folder})!
 	},
 	
 	prepareCriteria: function(criteria){

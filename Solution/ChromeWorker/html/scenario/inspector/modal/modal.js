@@ -102,7 +102,7 @@
 
     render() {
       if (this.$el.is(':empty')) {
-        const types = ['undefined', 'boolean', 'custom', 'string', 'number', 'date', 'null'];
+        const types = ['custom', 'undefined', 'boolean', 'string', 'number', 'date', 'null'];
 
         this.$el.html(this.template({ ...this.model.toJSON(), types })).modal({
           backdrop: 'static',
@@ -298,7 +298,7 @@
     },
     'inspector.types.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.types.boolean': { en: 'Boolean', ru: 'Булево' },
-    'inspector.types.custom': { en: 'Custom', ru: 'Особый' },
+    'inspector.types.custom': { en: 'Expression', ru: 'Выражение' },
     'inspector.types.string': { en: 'String', ru: 'Строка' },
     'inspector.types.number': { en: 'Number', ru: 'Число' },
     'inspector.types.date': { en: 'Date', ru: 'Дата' },

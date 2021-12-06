@@ -1397,7 +1397,6 @@ void MainApp::CreateTooboxBrowser()
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserToolbox = CefBrowserHost::CreateBrowserSync(window_info, thandler, "file:///html/toolbox/index.html", browser_settings, CefDictionaryValue::Create(), Context);
@@ -1431,7 +1430,6 @@ void MainApp::CreateScenarioBrowser()
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserScenario = CefBrowserHost::CreateBrowserSync(window_info, shandler, "file:///html/scenario/index.html", browser_settings, CefDictionaryValue::Create(), Context);

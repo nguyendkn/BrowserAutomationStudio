@@ -63,7 +63,7 @@
         if (el.type === 'radio' && !el.checked) return;
         const valid = model.get('type') === 'string' || el.checkValidity();
 
-        this.$('#inspectorModalError').html(el.validationMessage);
+        this.$('#inspectorModalError').html($t(el.validationMessage));
         this.$('form').toggleClass('invalid', !valid);
         model.set('value', el.value);
       },

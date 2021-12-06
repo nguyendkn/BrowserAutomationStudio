@@ -47,14 +47,18 @@
 #app {
   letter-spacing: -0.2px;
   flex-flow: column;
+  overflow: auto;
   display: flex;
   height: 100%;
 }
 
 /* Panels */
 
-.app-panel-content {
+.app-panel-content-wrapper {
   overflow: auto;
+}
+
+.app-panel-content {
   padding: 4px;
 }
 
@@ -402,6 +406,7 @@ input::placeholder {
 html, body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   min-width: 420px;
+  overflow: hidden;
   height: 100%;
   width: 100%;
 }

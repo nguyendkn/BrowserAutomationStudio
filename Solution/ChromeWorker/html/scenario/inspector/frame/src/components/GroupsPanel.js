@@ -137,14 +137,8 @@ window.GroupsPanel = {
         </template>
       </panel-toolbar>
       <div v-if="isEmpty" class="app-panel-title" v-t="title"></div>
-      <div v-else class="app-panel-content-wrapper">
-        <div class="app-panel-content">
-          <groups-list
-            ref="list"
-            :style="styles"
-            :source="sortedData"
-          />
-        </div>
+      <div v-else class="app-panel-content">
+        <groups-list ref="list" :style="styles" :source="sortedData" />
       </div>
     </div>
   `,

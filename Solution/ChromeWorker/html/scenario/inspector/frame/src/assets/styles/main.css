@@ -47,18 +47,14 @@
 #app {
   letter-spacing: -0.2px;
   flex-flow: column;
-  overflow: auto;
   display: flex;
   height: 100%;
 }
 
 /* Panels */
 
-.app-panel-content-wrapper {
-  overflow: auto;
-}
-
 .app-panel-content {
+  overflow: auto;
   padding: 4px;
 }
 

@@ -842,7 +842,12 @@ extern "C" {
 			{
 				QString Query = QueryList.takeFirst();
 				
-				curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, Query.toUtf8().data());
+				if(Query.isEmpty())
+				{
+					curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, NULL);
+				}else{
+					curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, Query.toUtf8().data());
+				}
 				
 				if(SaveOnlyLast && QueryList.isEmpty())
 				{

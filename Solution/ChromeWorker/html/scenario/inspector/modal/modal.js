@@ -305,5 +305,8 @@
     'inspector.types.null': { en: 'Null', ru: 'Null' },
     'inspector.false': { en: 'False', ru: 'False' },
     'inspector.true': { en: 'True', ru: 'True' },
+
+    'Please fill out this field.': { ru: 'Заполните это поле.' },
+    'Please enter a number.': { ru: 'Введите число.' },
   });
 })(window);

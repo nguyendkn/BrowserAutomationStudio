@@ -28,16 +28,8 @@
     },
 
     update(data) {
-      const json = JSON.parse(data);
-
-      this.send({
-        payload: {
-          variables: prepareData(json.variables),
-          resources: prepareData(json.resources),
-          callstack: json.callstack,
-        },
-        type: 'update',
-      });
+      const json = prepareData(JSON.parse(data));
+      this.send({ payload: json, type: 'update' });
     },
 
     render() {

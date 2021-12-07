@@ -17,7 +17,6 @@
         value !== this.get('value'),
         type !== this.get('type'),
       ]);
-
       this.set('name', path[0]);
     },
   });

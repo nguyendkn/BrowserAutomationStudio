@@ -5,6 +5,8 @@
 
   Inspector.Main = Backbone.View.extend({
     initialize() {
+      let queue = false;
+
       window.addEventListener('message', ({ data: { json, type } }) => {
         switch (type) {
           case 'focusAction': return BrowserAutomationStudio_FocusAction(json.id);
@@ -24,12 +26,18 @@
         this.send({ type: 'highlight' });
       });
 
-      this.send = msg => this.el.contentWindow.postMessage(msg, '*');
+      this.send = msg => {
+        if (queue) return this.once('load', () => {
+          queue = false;
+          this.send(msg);
+        });
+        this.el.contentWindow.postMessage(msg, '*');
+      };
     },
 
     update(data) {
-      const json = prepareData(JSON.parse(data));
-      this.send({ payload: json, type: 'update' });
+      const payload = prepareData(JSON.parse(data));
+      this.send({ payload, type: 'update' });
     },
 
     render() {
@@ -60,6 +68,12 @@
         this.$el.show();
       }
       return this;
+    },
+
+    events: {
+      load() {
+        this.trigger('load');
+      },
     },
   });
 
@@ -101,7 +115,7 @@
   }
 
   function prepareData(data) {
-    return _.reduce(data, (acc, val, key) => {
+    const iteratee = (acc, val, key) => {
       if (typeof val === 'string') {
         if (val.startsWith('__UNDEFINED__')) {
           val = undefined;
@@ -112,6 +126,7 @@
         val = prepareData(val);
       }
       return (acc[key] = val, acc);
-    }, Array.isArray(data) ? [] : {});
+    };
+    return _.reduce(data, iteratee, Array.isArray(data) ? [] : {});
   }
 })(window);

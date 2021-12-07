@@ -104,9 +104,8 @@
       if (this.$el.is(':empty')) {
         const types = ['custom', 'undefined', 'boolean', 'string', 'number', 'date', 'null'];
 
-        this.$el.html(this.template({ ...this.model.toJSON(), types })).modal({
-          backdrop: 'static',
-        });
+        const html = this.template({ ...this.model.toJSON(), types });
+        this.$el.html(html).modal({ backdrop: 'static' });
         this.$('select').selectpicker();
       }
       return this;
@@ -273,8 +272,8 @@
       ru: 'Логический тип, принимающий только одно из двух значений - <b>true</b> (истина) или <b>false</b> (ложь).',
     },
     'inspector.descriptions.custom': {
-      en: 'The value of this type is treated as arbitrary JavaScript code. You can use it to specify data in <b>raw</b> form. Arrays and objects are set and displayed in the same way as in the code.',
-      ru: 'Значение данного типа рассматривается как произвольный JavaScript код. С помощью него можно задать данные в <b>сыром</b> виде. Массивы и объекты задаются и отображаются так же, как и в коде.',
+      en: 'The value of this type is treated as arbitrary <b>JavaScript</b> code. You can use it to specify data in <b>raw</b> form. Arrays and objects are set and displayed in the same way as in the code.',
+      ru: 'Значение данного типа рассматривается как произвольный <b>JavaScript</b> код. С помощью него можно задать данные в <b>сыром</b> виде. Массивы и объекты задаются и отображаются так же, как и в коде.',
     },
     'inspector.descriptions.string': {
       en: '<b>String</b> is one of the primitive types that represent any text data.',

@@ -233,7 +233,7 @@
               </svg>
               <div style="margin-left: 14px; flex: 1;">
                 <div id="inspectorModalDescription"><%= $t('inspector.descriptions.' + type) %></div>
-                <div><%= $t('inspector.description') %></div>
+                <div style="margin-top: 2px;"><%= $t('inspector.description') %></div>
               </div>
             </div>
           </div>
@@ -264,8 +264,8 @@
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },
 
     'inspector.descriptions.undefined': {
-      en: '<b>Undefined</b> is a primitive type that is a special value. Variables that have no value assigned are of type undefined.',
-      ru: '<b>Undefined</b> - примитивный тип, являющийся специальным значением. Переменные, не имеющие присвоенного значения, обладают типом undefined.',
+      en: '<b>Undefined</b> is a primitive type that is a special value. Variables that have no value assigned are of type <b>undefined</b>.',
+      ru: '<b>Undefined</b> - примитивный тип, являющийся специальным значением. Переменные, не имеющие присвоенного значения, обладают типом <b>undefined</b>.',
     },
     'inspector.descriptions.boolean': {
       en: 'Logical type accepting only one of two values - <b>true</b> or <b>false</b>.',
@@ -288,8 +288,8 @@
       ru: '<b>Date</b> - тип данных, который представляет определенный момент времени в независимом от платформы формате.',
     },
     'inspector.descriptions.null': {
-      en: '<b>Null</b> is a primitive type. Unlike undefined, which denotes uncertainty, it is the definite meaning of the absence of an object.',
-      ru: '<b>Null</b> - примитивный тип. В отличие от undefined, обозначающего неопределенность, является определённым значением отсутствия объекта.',
+      en: '<b>Null</b> is a primitive type. Unlike <b>undefined</b>, which denotes uncertainty, it is the definite meaning of the absence of an object.',
+      ru: '<b>Null</b> - примитивный тип. В отличие от <b>undefined</b>, обозначающего неопределенность, является определённым значением отсутствия объекта.',
     },
     'inspector.description': {
       en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures`); return false;">here</a>.',

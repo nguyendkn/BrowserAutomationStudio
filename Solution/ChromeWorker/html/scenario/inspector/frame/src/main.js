@@ -19,9 +19,9 @@ const i18n = new VueI18n({
 });
 
 const store = new Vuex.Store({
-  state: {
+  state: () => ({
     toolbarVisible: false,
-  },
+  }),
   mutations: {
     toggleToolbar(state) {
       state.toolbarVisible = !state.toolbarVisible;

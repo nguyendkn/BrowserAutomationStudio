@@ -45,7 +45,7 @@
       },
 
       'click [data-copy-target]'(e) {
-        let val = this.model.get(e.target.dataset.copyTarget);
+        let val = this.model.get(e.currentTarget.dataset.copyTarget);
         if (Array.isArray(val)) val = val.map((v, i) => (i === 0 ? v : `[${JSON.stringify(v)}]`)).join('');
         BrowserAutomationStudio_SetClipboard(val, false);
       },

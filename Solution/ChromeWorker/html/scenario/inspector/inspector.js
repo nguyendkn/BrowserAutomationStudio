@@ -5,7 +5,7 @@
 
   Inspector.Main = Backbone.View.extend({
     initialize() {
-      let delay = true;
+      let pending = true;
 
       window.addEventListener('message', ({ data: { json, type } }) => {
         switch (type) {
@@ -27,8 +27,8 @@
       });
 
       this.send = msg => {
-        if (delay) return this.once('load', () => {
-          delay = false;
+        if (pending) return this.once('load', () => {
+          pending = false;
           this.send(msg);
         });
         this.el.contentWindow.postMessage(msg, '*');

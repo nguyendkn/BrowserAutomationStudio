@@ -30,5 +30,8 @@
     },
     placeholder: 'Поиск по имени',
   },
+  groups: {
+    empty: 'This group is empty.\nDrag the elements here.'
+  },
   items: '{n} элементов | {n} элемент | {n} элемента | {n} элементов',
 };

@@ -100,10 +100,7 @@ window.GroupsItem = {
       </div>
       <div v-show="!expanded" class="group-item-content">
         <slot v-if="!isEmpty"></slot>
-        <div v-else class="group-item-title">
-          <span>This group is empty.</span>
-          <span>Drag the elements here.</span>
-        </div>
+        <div v-else class="group-item-title" v-t="'groups.empty'"></div>
       </div>
     </li>
   `,

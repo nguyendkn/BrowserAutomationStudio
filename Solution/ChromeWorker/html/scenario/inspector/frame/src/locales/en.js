@@ -30,5 +30,8 @@
     },
     placeholder: 'Search by name',
   },
+  groups: {
+    empty: 'This group is empty.\nDrag the elements here.'
+  },
   items: '{n} items | {n} item | {n} items',
 };

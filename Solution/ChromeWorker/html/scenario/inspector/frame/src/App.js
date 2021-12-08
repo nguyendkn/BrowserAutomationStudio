@@ -37,12 +37,12 @@ window.App = {
   },
 
   created() {
-    window.top.postMessage({ type: 'created' }, '*');
+    this.send({ type: 'created' });
     window.addEventListener('message', this.handleMessage);
   },
 
   destroyed() {
-    window.top.postMessage({ type: 'destroyed' }, '*');
+    this.send({ type: 'destroyed' });
     window.removeEventListener('message', this.handleMessage);
   },
 
@@ -58,8 +58,16 @@ window.App = {
       }
     },
 
+    send(message) {
+      window.top.postMessage(message, '*');
+    },
+
     hide() {
-      window.top.postMessage({ type: 'hide' }, '*');
+      this.send({ type: 'hide' });
+    },
+
+    show() {
+      this.send({ type: 'show' });
     },
   },
 

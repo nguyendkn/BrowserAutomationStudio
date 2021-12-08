@@ -17,12 +17,12 @@
         }
       });
 
-      _GobalModel.on(`change:isscriptexecuting`, (_, value) => {
+      _GobalModel.on('change:isscriptexecuting', (_, value) => {
         if (value || this.$el.is(':hidden')) return;
         this.send({ type: 'highlight' });
       });
 
-      _GobalModel.on(`change:istaskexecuting`, (_, value) => {
+      _GobalModel.on('change:istaskexecuting', (_, value) => {
         if (value || this.$el.is(':hidden')) return;
         this.send({ type: 'highlight' });
       });

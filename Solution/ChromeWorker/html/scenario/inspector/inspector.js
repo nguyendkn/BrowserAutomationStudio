@@ -5,7 +5,7 @@
 
   Inspector.Main = Backbone.View.extend({
     initialize() {
-      let delay = false;
+      let delay = true;
 
       window.addEventListener('message', ({ data: { json, type } }) => {
         switch (type) {

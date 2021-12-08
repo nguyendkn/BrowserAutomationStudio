@@ -549,7 +549,7 @@ namespace BrowserAutomationStudioFramework
 
         for(FunctionData& FuncData:Data)
         {
-            if(ExcludedFunctions.contains(FuncData.Name))
+            if(ExcludedFunctions.contains(FuncData.Name) || FuncData.Name == "OnApplicationStart")
             {
                 continue;
             }

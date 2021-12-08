@@ -26,10 +26,13 @@ window.PanelToolbar = {
   },
 
   data() {
-    return {
-      panelVisible: false,
-      menuVisible: false,
-    };
+    return { menuVisible: false };
+  },
+
+  computed: {
+    panelVisible() {
+      return this.$store.state.toolbarVisible;
+    },
   },
 
   methods: {
@@ -53,12 +56,16 @@ window.PanelToolbar = {
       this.$emit('update:query', event.target.value.trim());
     },
 
-    togglePanel() {
-      this.panelVisible = !this.panelVisible;
-    },
-
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
+    },
+
+    hideMenu() {
+      this.menuVisible = false;
+    },
+
+    showMenu() {
+      this.menuVisible = true;
     },
   },
 
@@ -67,7 +74,7 @@ window.PanelToolbar = {
       <div v-show="panelVisible" class="app-toolbar-panel">
         <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" type="text" @input="updateQuery">
         <slot name="controls"></slot>
-        <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="() => menuVisible = false">
+        <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="hideMenu">
           <button type="button" @click="toggleMenu">
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
               <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" fill="#606060" />
@@ -92,7 +99,7 @@ window.PanelToolbar = {
           </ul>
         </div>
       </div>
-      <button class="app-toolbar-toggle" type="button" @click="togglePanel">
+      <button class="app-toolbar-toggle" type="button" @click="$store.commit('toggleToolbar')">
         <icon-chevron :style="{ transform: panelVisible ? '' : 'rotate(180deg)' }" />
       </button>
     </div>

@@ -18,7 +18,19 @@ const i18n = new VueI18n({
   },
 });
 
+const store = new Vuex.Store({
+  state: {
+    toolbarVisible: false,
+  },
+  mutations: {
+    toggleToolbar(state) {
+      state.toolbarVisible = !state.toolbarVisible;
+    }
+  },
+});
+
 new Vue({
   i18n,
+  store,
   render: h => h(App),
 }).$mount('#app');

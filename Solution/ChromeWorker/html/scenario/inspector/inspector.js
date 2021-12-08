@@ -13,6 +13,7 @@
           case 'edit': return showModal(json);
           case 'hide': return this.hide();
           case 'show': return this.show();
+          default: this.trigger(type);
         }
       });
 
@@ -27,7 +28,7 @@
       });
 
       this.send = msg => {
-        if (pending) return this.once('load', () => {
+        if (pending) return this.once('created', () => {
           pending = false;
           this.send(msg);
         });
@@ -68,12 +69,6 @@
         this.$el.show();
       }
       return this;
-    },
-
-    events: {
-      load() {
-        this.trigger('load');
-      },
     },
   });
 

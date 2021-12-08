@@ -37,10 +37,12 @@ window.App = {
   },
 
   created() {
+    window.top.postMessage({ type: 'created' }, '*');
     window.addEventListener('message', this.handleMessage);
   },
 
   destroyed() {
+    window.top.postMessage({ type: 'destroyed' }, '*');
     window.removeEventListener('message', this.handleMessage);
   },
 

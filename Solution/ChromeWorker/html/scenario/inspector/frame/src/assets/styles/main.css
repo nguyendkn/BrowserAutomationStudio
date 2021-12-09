@@ -15,7 +15,6 @@
 
 .app-tabs {
   justify-content: space-around;
-  list-style: none;
   display: flex;
   flex: 1;
 }
@@ -167,7 +166,6 @@
   background: #3d3f42;
   min-width: max-content;
   position: absolute;
-  list-style: none;
   margin-top: -1px;
   padding: 8px 0;
   z-index: 1;
@@ -200,10 +198,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-}
-
-.callstack-item-params {
-  list-style: none;
 }
 
 .callstack-item-param {
@@ -266,7 +260,6 @@
 
 .callstack-list {
   flex-flow: column;
-  list-style: none;
   display: flex;
 }
 
@@ -302,6 +295,7 @@
   letter-spacing: -0.2px;
   background: #fff;
   margin-left: 8px;
+  min-height: 24px;
   padding: 3px 8px;
   color: #606060;
   flex: 1;
@@ -406,4 +400,8 @@ html, body {
 img, a {
   -webkit-user-drag: none;
   user-select: none;
+}
+
+ul, ol {
+  list-style: none;
 }

@@ -68,13 +68,11 @@
       },
 
       'hidden.bs.select'(e) {
-        const { selectpicker } = $(e.target).data();
-        selectpicker.$button.trigger('blur');
+        $(e.target).data('selectpicker').$button.blur();
       },
 
       'loaded.bs.select'(e) {
-        const { selectpicker } = $(e.target).data();
-        selectpicker.$button.trigger('blur');
+        $(e.target).data('selectpicker').$button.blur();
       },
 
       'change select'(e) {

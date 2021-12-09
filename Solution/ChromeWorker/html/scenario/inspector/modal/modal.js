@@ -67,6 +67,16 @@
         model.set('value', el.value);
       },
 
+      'hidden.bs.select'(e) {
+        const { selectpicker } = $(e.target).data();
+        selectpicker.$button.trigger('blur');
+      },
+
+      'loaded.bs.select'(e) {
+        const { selectpicker } = $(e.target).data();
+        selectpicker.$button.trigger('blur');
+      },
+
       'change select'(e) {
         this.model.set('type', e.target.value);
       },

@@ -9,14 +9,14 @@ window.GroupsItem = {
       type: Boolean,
     },
 
-    source: {
-      required: true,
-      type: Object,
-    },
-
     color: {
       required: true,
       type: String,
+    },
+
+    items: {
+      required: true,
+      type: Array,
     },
 
     name: {
@@ -44,7 +44,7 @@ window.GroupsItem = {
 
   computed: {
     isEmpty() {
-      return !Object.keys(this.source).length;
+      return !this.items.length;
     },
   },
 

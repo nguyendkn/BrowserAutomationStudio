@@ -16,15 +16,17 @@ window.GroupsList = {
   },
 
   data() {
-    const main = {
-      id: uniqueId(),
-      name: 'Main',
-      color: '#c0bd9b',
-      primary: true,
-      source: { ...this.source },
-    };
+    const groups = [
+      {
+        id: uniqueId(),
+        name: 'Main',
+        color: '#c0bd9b',
+        primary: true,
+        items: Object.keys(this.source),
+      },
+    ];
 
-    return { groups: [main] };
+    return { groups };
   },
 
   computed: {
@@ -55,7 +57,7 @@ window.GroupsList = {
         name: 'Group',
         color: '#c0bd9b',
         primary: false,
-        source: {},
+        items: [],
       });
     },
   },
@@ -74,17 +76,17 @@ window.GroupsList = {
         :id="group.id"
         :name="group.name"
         :color="group.color"
-        :source="group.source"
+        :items="group.items"
         :primary="group.primary"
         @remove="removeGroup"
         @update="updateGroup"
       >
         <json-tree-node
-          v-for="(val, key) in group.source"
+          v-for="key in group.items"
           :key="key"
           :name="key"
           :path="[key]"
-          :value="val"
+          :value="source[key]"
         >
           <template #label="{ name }">{{ name }}</template>
         </json-tree-node>

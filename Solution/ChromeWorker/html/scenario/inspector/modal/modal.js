@@ -68,11 +68,11 @@
       },
 
       'hidden.bs.select'(e) {
-        $(e.target).data('selectpicker').$button.blur();
+        $(e.target.nextElementSibling).blur();
       },
 
       'loaded.bs.select'(e) {
-        $(e.target).data('selectpicker').$button.blur();
+        $(e.target.nextElementSibling).blur();
       },
 
       'change select'(e) {

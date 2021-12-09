@@ -20,8 +20,6 @@ window.JsonTreeNode = {
   },
 
   data() {
-    const type = getType(this.value);
-
     const colors = {
       undefined: '#8546bc',
       boolean: '#2525cc',
@@ -31,13 +29,21 @@ window.JsonTreeNode = {
       null: '#808080',
     };
 
-    return { color: colors[type], type, isExpanded: false };
+    return { colors, isExpanded: false };
   },
 
   computed: {
     keys() {
       const { value } = this;
       return value == null ? [] : Object.keys(value);
+    },
+
+    color() {
+      return this.colors[this.type];
+    },
+
+    type() {
+      return getType(this.value);
     },
   },
 
@@ -52,7 +58,7 @@ window.JsonTreeNode = {
           value: this.value,
           type: this.type,
           path: this.path,
-          mode: this.$root.$children[0].tab.name.slice(0, -1) // TODO: use normal mode detection!
+          mode: this.$root.$children[0].tab.name.slice(0, -1), // TODO: use normal mode detection!
         },
         type: 'edit',
       };

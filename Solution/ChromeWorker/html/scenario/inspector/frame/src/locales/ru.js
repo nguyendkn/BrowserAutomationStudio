@@ -31,7 +31,7 @@
     placeholder: 'Поиск по имени',
   },
   groups: {
-    empty: 'This group is empty.\nDrag the elements here.'
+    empty: 'Эта группа пуста. Перетащите элементы сюда.',
   },
   items: '{n} элементов | {n} элемент | {n} элемента | {n} элементов',
 };

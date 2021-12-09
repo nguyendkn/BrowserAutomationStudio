@@ -9,26 +9,26 @@ window.App = {
         name: 'variables',
         component: GroupsPanel,
         props: {
+          data: {},
           title: 'tabs.variablesEmpty',
           styles: { '--group-br': '0px' },
-          data: {},
         },
       },
       {
         name: 'resources',
         component: GroupsPanel,
         props: {
+          data: {},
           title: 'tabs.resourcesEmpty',
           styles: { '--group-br': '10px' },
-          data: {},
         },
       },
       {
         name: 'callstack',
         component: CallstackPanel,
         props: {
-          title: 'tabs.callstackEmpty',
           data: [],
+          title: 'tabs.callstackEmpty',
         },
       },
     ];

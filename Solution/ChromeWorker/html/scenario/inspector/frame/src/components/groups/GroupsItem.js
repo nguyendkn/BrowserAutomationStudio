@@ -76,7 +76,7 @@ window.GroupsItem = {
         <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M6.00024 3.5v-2H.00024414v12H16.0002v-10H6.00024Z" fill="#606060" stroke="#606060" />
         </svg>
-        <input v-model="newName" :disabled="!editMode" maxlength="30" type="text">
+        <input v-model="newName" :disabled="!editMode" maxlength="30" type="text" @blur="update">
         <div v-if="!editMode" class="group-item-controls">
           <template v-if="!primary">
             <button type="button" @click="remove">

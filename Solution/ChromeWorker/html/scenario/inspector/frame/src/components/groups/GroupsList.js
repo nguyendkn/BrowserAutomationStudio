@@ -60,6 +60,10 @@ window.GroupsList = {
         items: [],
       });
     },
+
+    has(obj, key) {
+      return Object.prototype.hasOwnProperty.call(obj, key);
+    },
   },
 
   template: html`
@@ -81,15 +85,16 @@ window.GroupsList = {
         @remove="removeGroup"
         @update="updateGroup"
       >
-        <json-tree-node
-          v-for="key in group.items"
-          :key="key"
-          :name="key"
-          :path="[key]"
-          :value="source[key]"
-        >
-          <template #label="{ name }">{{ name }}</template>
-        </json-tree-node>
+        <template v-for="key in group.items" :key="key">
+          <json-tree-node
+            v-if="has(source, key)"
+            :name="key"
+            :path="[key]"
+            :value="source[key]"
+          >
+            <template #label="{ name }">{{ name }}</template>
+          </json-tree-node>
+        </template>
       </groups-item>
     </draggable>
   `,

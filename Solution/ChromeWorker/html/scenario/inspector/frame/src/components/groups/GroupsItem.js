@@ -67,9 +67,7 @@ window.GroupsItem = {
 
     edit() {
       this.editMode = true;
-      this.$nextTick(() => {
-        this.$refs.input.focus();
-      });
+      this.$nextTick(() => this.$refs.input.focus());
     },
   },
 
@@ -80,7 +78,14 @@ window.GroupsItem = {
           <path d="M6.00024 3.5v-2H.00024414v12H16.0002v-10H6.00024Z" fill="#606060" stroke="#606060" />
         </svg>
         <input ref="input" v-model="newName" :disabled="!editMode" maxlength="30" spellcheck="false" type="text" @keydown.enter="update" @blur="update">
-        <div v-if="!editMode" class="group-item-controls">
+        <div v-if="editMode" class="group-item-controls">
+          <button type="button" style="background: #fff; padding: 4px 6px;" @click="update">
+            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path d="m6.25 10.6002-3.55-3.55-.7.7 3.55 3.55.7.7 7.05-7.05-.7-.75-6.35 6.4Z" fill="#606060" />
+            </svg>
+          </button>
+        </div>
+        <div v-else class="group-item-controls">
           <template v-if="!primary">
             <button type="button" @click="remove">
               <icon-delete />
@@ -93,17 +98,10 @@ window.GroupsItem = {
             <icon-chevron :style="{ transform: expanded ? 'rotate(180deg)' : '' }" />
           </button>
         </div>
-        <div v-else class="group-item-controls">
-          <button type="button" style="background: #fff; padding: 4px 6px;" @click="update">
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-              <path d="m6.25 10.6002-3.55-3.55-.7.7 3.55 3.55.7.7 7.05-7.05-.7-.75-6.35 6.4Z" fill="#606060" />
-            </svg>
-          </button>
-        </div>
       </div>
       <div v-show="!expanded" class="group-item-content">
-        <slot v-if="!isEmpty"></slot>
-        <div v-else class="group-item-title" v-t="'groups.empty'"></div>
+        <div v-if="isEmpty" class="group-item-title" v-t="'groups.empty'"></div>
+        <slot v-else></slot>
       </div>
     </li>
   `,

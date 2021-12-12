@@ -1705,11 +1705,6 @@ mark
   display:none;
 }
 
-.tour-backdrop
-{
-  opacity: 0.3 !important;
-}
-
 /* Global select styles */
 
 .bootstrap-select .dropdown-menu > li.selected > a::after {
@@ -1822,8 +1817,8 @@ mark
 /* Container styles */
 
 #containerdata {
-  flex-direction: column;
   overflow-y: visible;
+  flex-flow: column;
   display: flex;
   height: 100vh;
 }

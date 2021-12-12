@@ -77,7 +77,7 @@ window.CallstackItem = {
         <span class="callstack-item-name" @click="focusAction">{{ name }}:</span>
         <span ref="preview" class="callstack-item-data">
           <template v-if="type === 'function'">
-            <span v-show="preview">[{{ $tc('items', size) }}]</span>
+            <span v-show="preview">[{{ size > 0 ? $tc('items', size) : '' }}]</span>
           </template>
           <template v-else>
             <span>{{ name === 'If' ? options.expression : options.iterator }}</span>

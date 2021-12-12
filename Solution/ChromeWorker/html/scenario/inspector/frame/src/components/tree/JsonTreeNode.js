@@ -74,7 +74,7 @@ window.JsonTreeNode = {
   template: html`
     <span class="jt-node" style="position: relative;">
       <span class="jt-node-label">
-        <slot name="label" :name="name">{{ name }}</slot>
+        <slot name="label" :label="name">{{ name }}</slot>
       </span>
       <span class="jt-node-colon">:&nbsp;</span>
       <span :style="{ color }" class="jt-node-value">

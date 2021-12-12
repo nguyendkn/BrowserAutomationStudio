@@ -99,10 +99,12 @@ window.GroupsItem = {
           </button>
         </div>
       </div>
-      <div v-show="!expanded" class="group-item-content">
-        <div v-if="isEmpty" class="group-item-title" v-t="'groups.empty'"></div>
+      <draggable v-show="!expanded" class="group-item-content" :list="items" group="items" :disabled="true">
+        <template v-if="isEmpty" slot="header">
+          <div class="group-item-title" v-t="'groups.empty'"></div>
+        </template>
         <slot v-else></slot>
-      </div>
+      </draggable>
     </li>
   `,
 };

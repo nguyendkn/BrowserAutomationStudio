@@ -62,7 +62,6 @@ window.JsonTreeNode = {
         },
         type: 'edit',
       };
-
       window.top.postMessage(message, '*');
     },
 
@@ -72,7 +71,7 @@ window.JsonTreeNode = {
   },
 
   template: html`
-    <span class="jt-node" style="position: relative;">
+    <span class="jt-node">
       <span class="jt-node-label">
         <slot name="label" :label="name">{{ name }}</slot>
       </span>

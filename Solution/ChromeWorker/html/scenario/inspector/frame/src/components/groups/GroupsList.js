@@ -85,9 +85,10 @@ window.GroupsList = {
         @remove="removeGroup"
         @update="updateGroup"
       >
-        <template v-for="key in group.items" :key="key">
+        <template v-for="key in group.items">
           <json-tree-node
             v-if="has(source, key)"
+            :key="key"
             :name="key"
             :path="[key]"
             :value="source[key]"

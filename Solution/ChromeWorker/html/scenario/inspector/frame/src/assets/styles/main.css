@@ -275,7 +275,7 @@
 }
 
 .group-item-controls > button + button {
-  margin-left: 9px;
+  margin-left: 12px;
 }
 
 .group-item-controls > button > img {
@@ -288,7 +288,7 @@
 
 .group-item-header > input:disabled {
   background: transparent;
-  padding: 3px 0px;
+  padding: 3px 0;
 }
 
 .group-item-header > input {

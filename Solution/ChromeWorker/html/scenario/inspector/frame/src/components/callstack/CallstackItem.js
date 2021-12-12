@@ -46,8 +46,17 @@ window.CallstackItem = {
       return this.size > 0;
     },
 
+    isFunction() {
+      return this.type === 'function';
+    },
+
+    isAction() {
+      return this.type === 'action';
+    },
+
     size() {
-      return Object.keys(this.options.arguments).length;
+      const args = this.options.arguments;
+      return Object.keys(args).length;
     },
   },
 
@@ -73,14 +82,14 @@ window.CallstackItem = {
   template: html`
     <li class="callstack-item" :class="{ preview }">
       <div class="callstack-item-title">
-        <img :src="'src/assets/icons/' + (type === 'action' ? 'gear' : 'flash') + '.svg'" alt>
+        <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name" @click="focusAction">{{ name }}:</span>
         <span ref="preview" class="callstack-item-data">
-          <template v-if="type === 'function'">
-            <span v-show="preview">[{{ size > 0 ? $tc('items', size) : '' }}]</span>
+          <template v-if="isAction">
+            <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
           </template>
           <template v-else>
-            <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
+            <span v-show="preview">[{{ size > 0 ? $tc('items', size) : '' }}]</span>
           </template>
         </span>
         <button v-show="hasArguments || isOverflowing" class="callstack-toggle-params" type="button" @click="togglePreview">

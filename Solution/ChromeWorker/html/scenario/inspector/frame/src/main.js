@@ -13,7 +13,7 @@ const i18n = new VueI18n({
       return choicesLength < 4 || (!teen && choice % 10 >= 2 && choice % 10 <= 4) ? 2 : 3;
     },
   },
-  locale: new URL(window.location.href).searchParams.get('lang') || 'en',
+  locale: new URL(window.location.href).searchParams.get('lang'),
   messages: { ...window.locales },
 });
 

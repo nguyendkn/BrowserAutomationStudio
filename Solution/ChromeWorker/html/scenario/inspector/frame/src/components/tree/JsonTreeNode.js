@@ -54,7 +54,7 @@ window.JsonTreeNode = {
 
     edit() {
       const message = {
-        json: {
+        payload: {
           value: this.value,
           type: this.type,
           path: this.path,

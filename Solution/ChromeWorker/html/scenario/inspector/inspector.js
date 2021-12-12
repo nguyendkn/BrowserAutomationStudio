@@ -7,10 +7,10 @@
     initialize() {
       let created = false;
 
-      window.addEventListener('message', ({ data: { json, type } }) => {
+      window.addEventListener('message', ({ data: { payload, type } }) => {
         switch (type) {
-          case 'focusAction': return BrowserAutomationStudio_FocusAction(json.id);
-          case 'edit': return showModal(json);
+          case 'focusAction': return BrowserAutomationStudio_FocusAction(payload.id);
+          case 'edit': return showModal(payload);
           case 'hide': return this.hide();
           case 'show': return this.show();
           default: this.trigger(type);

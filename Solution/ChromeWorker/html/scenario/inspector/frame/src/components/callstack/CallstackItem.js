@@ -72,10 +72,11 @@ window.CallstackItem = {
     },
 
     focusAction() {
-      window.top.postMessage({
+      const message = {
         type: 'focusAction',
-        json: { id: this.id }
-      }, '*');
+        payload: { id: this.id },
+      };
+      window.top.postMessage(message, '*');
     },
   },
 

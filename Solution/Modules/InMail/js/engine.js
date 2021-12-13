@@ -49,23 +49,11 @@ _InMail = {
 			var login = split[0];
 			var domain = split[1];
 			
-			var configs = this.configs();
-			var domainObj = configs[domain];
-			if(_is_nil(domainObj)){
-				for(var key in configs){
-					var obj = configs[key];
-					if(obj.domains && obj.domains.indexOf(domain) > -1){
-						domainObj = obj;
-						break;
-					};
-				};
-			};
+			config = this.findConfig(domain, protocol);
 			
-			if(_is_nil(domainObj) || _is_nil(domainObj[protocol])){
+			if(!config){
 				this.error('Failed to configure ' + protocol + ' for mail "' + domain + '", please use manual configuration', 'Не удалось настроить ' + protocol + ' для почты "' + domain + '", пожалуйста используйте ручную настройку');
 			};
-			
-			config = domainObj[protocol];
 			
 			config.username = config.username.replace("%email%", username).replace("%login%", login).replace("%domain%", domain);
 		}else{
@@ -157,41 +145,35 @@ _InMail = {
 		};
 	},
 	
-	addInfo: function(){
-		var boxes = _function_argument("boxes");
-		var parent = _function_argument("parent");
+	status: function(){
+		var name = _function_argument("name");
+		_validate_argument_type(name, 'string', 'Folder name', '_InMail.status');
 		
 		var api = _InMail.getApi();
 		
-		_do_with_params({names: Object.keys(boxes)}, function(){
-			var i = _iterator() - 1;
-			if(i > _cycle_param("names").length - 1){
-				_break();
-			};
-			var name = _cycle_param("names")[i];
-			var box = boxes[name];
-			var fullName = (parent ? parent + box.delimiter : '') + name
-			
-			_call_function(api.status, {name: fullName})!
-			box.info = _result_function();
-			
-			_if(box.children, function(){
-				_call_function(_InMail.addInfo, {boxes: box.children, parent: fullName})!
-			})!
-		})!
+		_call_function(api.status, {name: name})!
+		var info = _result_function();
+		
+		_function_return(info);
 	},
 	
-	foldersInfo: function(){
-		var addMsgsCount = _avoid_nilb(_function_argument("addMsgsCount"), false);
+	getBoxes: function(){
+		var format = _InMail.paramClean(_function_argument("format")).toLocaleLowerCase();
 		
 		var api = _InMail.getApi();
 		
 		_call_function(api.getBoxes, {})!
 		var boxes = _result_function();
 		
-		_if(addMsgsCount, function(){
-			_call_function(_InMail.addInfo, {boxes: boxes})!
-		})!
+		if(format != 'object'){
+			boxes = _InMail.boxesToList(boxes);
+			if(_starts_with(format, 'csv')){
+				boxes = boxes.map(function(box){return csv_generate([box.name, csv_generate(box.attribs, ','), box.delimiter], ':')});
+				if(format == 'csv string'){
+					boxes = boxes.join('\n');
+				};
+			};
+		};
 		
 		_function_return(boxes);
 	},
@@ -229,10 +211,7 @@ _InMail = {
 	search: function(){
 		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
 		var sorts = _InMail.prepareSorts(_function_argument("sorts"));
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
 		var api = _InMail.getApi();
@@ -257,10 +236,7 @@ _InMail = {
 	},
 	
 	searchLast: function(){
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
 		var api = _InMail.getApi();
@@ -282,10 +258,7 @@ _InMail = {
 	searchOne: function(){
 		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
 		var sorts = _InMail.prepareSorts(_function_argument("sorts"));
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
 		var api = _InMail.getApi();
@@ -311,10 +284,7 @@ _InMail = {
 	
 	count: function(){
 		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		
 		var api = _InMail.getApi();
 		
@@ -327,10 +297,7 @@ _InMail = {
 	addFlags: function(){
 		var uids = _function_argument("uids");
 		var flags = _to_arr(_function_argument("flags"));
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		
 		var api = _InMail.getApi();
 		
@@ -340,10 +307,7 @@ _InMail = {
 	delFlags: function(){
 		var uids = _function_argument("uids");
 		var flags = _to_arr(_function_argument("flags"));
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		
 		var api = _InMail.getApi();
 		
@@ -353,10 +317,7 @@ _InMail = {
 	setFlags: function(){
 		var uids = _function_argument("uids");
 		var flags = _to_arr(_function_argument("flags"));
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		
 		var api = _InMail.getApi();
 		
@@ -365,14 +326,65 @@ _InMail = {
 	
 	delMsgs: function(){
 		var uids = _function_argument("uids");
-		var folder = _function_argument("folder");
-		if(folder){
-			folder = _InMail.paramClean(folder);
-		};
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
 		
 		var api = _InMail.getApi();
 		
 		_call_function(api.delMsgs, {uids: uids, folder: folder})!
+	},
+	
+	copyMsgs: function(){
+		var uids = _function_argument("uids");
+		var toFolder = _InMail.paramClean(_function_argument("toFolder"));
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.copyMsgs, {uids: uids, toFolder: toFolder, folder: folder})!
+	},
+	
+	moveMsgs: function(){
+		var uids = _function_argument("uids");
+		var toFolder = _InMail.paramClean(_function_argument("toFolder"));
+		var folder = _InMail.prepareFolder(_function_argument("folder"));
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.moveMsgs, {uids: uids, toFolder: toFolder, folder: folder})!
+	},
+	
+	boxesToList: function(boxes, parent){
+		var api = this.getApi();
+		var list = [];
+		
+		for(var name in boxes){
+			var box = boxes[name];
+			
+			if(box.isChildren = !!parent){
+				name = (parent.name + parent.delimiter) + name;
+				parent.children.push(name);
+				box.parent = parent.name;
+			}else{
+				box.parent = null;
+			};
+			
+			box.name = name;
+			
+			list.push(box);
+			
+			if(box.children){
+				var children = box.children;
+				box.children = [];
+				children = this.boxesToList(children, box);
+				list = list.concat(children);
+			};
+		};
+		
+		return list;
+	},
+	
+	prepareFolder: function(folder){
+		return folder ? this.paramClean(folder) : folder;
 	},
 	
 	prepareCriteria: function(criteria){

@@ -3,6 +3,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	_InMail.baseApi.call(this, true, "imap", config);
 	
 	this.caps = null;
+	this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 	this.escape = function(str){
 		return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
@@ -113,6 +114,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 		}
 	};
 	
+	this.encodeName = function(name){
+		return api.escape(api.utf7.encode('' + name));
+	};
+	
 	this.parseCaps = function(str){
 		var start = str.lastIndexOf('CAPABILITY');
 		if(start > -1){
@@ -124,7 +129,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 				};
 			};
 			if(end != start){
-				return str.slice(start, end).split(' ').slice(1).filter(function(cap){return !_is_nilb(cap)});
+				return str.slice(start, end).split(' ').slice(1).filter(function(cap){
+					return !_is_nilb(cap);
+				}).map(function(cap){
+					return cap.toUpperCase();
+				});
 			};
 		};
 		return [];
@@ -260,9 +269,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return str;
 	};
 	
-	this.parser = function(str, boxes){
-		var info = api.parseUntagged(str);
-		var type = info.type;
+	this.parse = function(str){
 		var specialAttrs = [
 			'\\All',
 			'\\Archive',
@@ -273,188 +280,147 @@ _InMail.imap = _InMail.assignApi(function(config){
 			'\\Sent',
 			'\\Trash'
 		];
+		var results = [];
+		var lines = str.split('\r\n');
 		
-		if(type == 'capability'){
-			return info.text.map(function(v){return v.toUpperCase()});
-		}else if (type == 'sort' || type == 'thread' || type == 'esearch'){
-			return info.text;
-		}else if(type == 'search'){
-			if(typeof info.text.results != "undefined"){
-				// CONDSTORE-modified search results
-				return info.text.results;
-			}else{
-				return info.text;
-			};
-		}else if(type == 'list') {
-			var box = {
-				attribs: info.text.flags,
-				delimiter: info.text.delimiter,
-				children: null
-			};
+		for(var i = 0; i < lines.length; i++){
+			var line = lines[i];
 			
-			for(i = 0, len = specialAttrs.length; i < len; ++i){
-				if (box.attribs.indexOf(specialAttrs[i]) > -1){
-					box.special_use_attrib = specialAttrs[i];
-				};
-			};
+			var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(line);
+		
+			var type = (m[1] || m[3]).toLowerCase();
+			var text = m[5];
 			
-			var name = info.text.name;
-			var curChildren = boxes;
-			
-			if(box.delimiter){
-				var path = name.split(box.delimiter);
-				name = path.pop();
-				for(i = 0, len = path.length; i < len; ++i){
-					if(!curChildren[ path[i] ]){
-						curChildren[ path[i] ] = {};
-					};
-					if(!curChildren[ path[i] ].children){
-						curChildren[ path[i] ].children = {};
-					};
-					curChildren = curChildren[ path[i] ].children;
-				};
-			};
-			if(curChildren[name]){
-				box.children = curChildren[name].children;
-			};
-			curChildren[name] = box;
-			return;
-		}else if(type == 'status'){
-			var box = {
-				name: info.text.name,
-				uidnext: 0,
-				uidvalidity: 0,
-				messages: {
-					total: 0,
-					'new': 0,
-					unseen: 0
-				}
-			};
-			var attrs = info.text.attrs;
-			if(attrs){
-				if(typeof attrs.recent != "undefined"){
-					box.messages['new'] = attrs.recent;
-				};
-				if(typeof attrs.unseen != "undefined"){
-					box.messages.unseen = attrs.unseen;
-				};
-				if(typeof attrs.messages != "undefined"){
-					box.messages.total = attrs.messages;
-				};
-				if(typeof attrs.uidnext != "undefined"){
-					box.uidnext = attrs.uidnext;
-				};
-				if(typeof attrs.uidvalidity != "undefined"){
-					box.uidvalidity = attrs.uidvalidity;
-				};
-				if(typeof attrs.highestmodseq != "undefined"){ // CONDSTORE
-					box.highestmodseq = ''+attrs.highestmodseq;
-				};
-			};
-			return box;
-		}else{
-			return info.text;
-		};
-	};
-	
-	this.parseUntagged = function(str){
-		var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(str);
-		
-		var type, val;
-		
-		type = (m[1] || m[3]).toLowerCase();
-		
-		if(type === 'search' || type === 'capability' || type === 'sort'){
-			val = api.parse.search(type, m[5]);
-		}else if(type === 'thread'){
-			val = api.parse.thread(m[5]);
-		}else if(type === 'list'){
-			val = api.parse.list(m[5]);
-		}else if(type === 'status'){
-			val = api.parse.status(m[5]);
-		}else if(type === 'esearch'){
-			val = api.parse.esearch(m[5]);
-		}else{
-			val = m[5];
-		};
-		
-		return {
-			type: type,
-			text: val
-		};
-	};
-	
-	this.parse = {
-		search: function(type, text){
-			if(text){
-				var regSearchModseq = /^(.+) \(MODSEQ (.+?)\)$/i;
-				if(type === 'search' && regSearchModseq.test(text)){
-					// CONDSTORE search response
-					var p = regSearchModseq.exec(text);
-					return {
-						results: p[1].split(' '),
-						modseq: p[2]
+			if(type === 'search' || type === 'capability' || type === 'sort'){
+				if(text){
+					var regSearchModseq = /^(.+) \(MODSEQ (.+?)\)$/i;
+					if(type === 'search' && regSearchModseq.test(text)){
+						// CONDSTORE search response
+						var p = regSearchModseq.exec(text);
+						results.push(p[1].split(' '));
+						results.push(p[2]);
+					}else{
+						var val = [];
+						if(text[0] === '('){
+							val = /^\((.*)\)$/.exec(text)[1].split(' ');
+						}else{
+							val = text.split(' ');
+						};
+						
+						if(type === 'search' || type === 'sort'){
+							val = val.map(function(v){return parseInt(v, 10)});
+						};
+						if(type == 'capability'){
+							val = val.map(function(v){return v.toUpperCase()});
+						};
+						results.push(val);
 					};
 				}else{
-					var val = [];
-					if(text[0] === '('){
-						val = /^\((.*)\)$/.exec(text)[1].split(' ');
-					}else{
-						val = text.split(' ');
-					};
-					
-					if(type === 'search' || type === 'sort'){
-						val = val.map(function(v){return parseInt(v, 10)});
-					};
-					return val;
+					results.push([]);
 				};
-			}else{
-				return [];
-			};
-		},
-		thread: function(text){
-			if(text){
-				return api.parseExpr(text);
-			}else{
-				return [];
-			};
-		},
-		list:  function(text){
-			var r = api.parseExpr(text);
-			return {
-				flags: r[0],
-				delimiter: r[1],
-				name: api.utf7.decode(''+r[2])
-			};
-		},
-		status:  function(text){
-			var r = api.parseExpr(text), attrs = {};
-			// r[1] is [KEY1, VAL1, KEY2, VAL2, .... KEYn, VALn]
-			for (var i = 0, len = r[1].length; i < len; i += 2){
-				attrs[r[1][i].toLowerCase()] = r[1][i + 1];
-			};
-			return {
-				name: api.utf7.decode(''+r[0]),
-				attrs: attrs
-			};
-		},
-		esearch:  function(text){
-			var r = api.parseExpr(text.toUpperCase().replace('UID', '')), attrs = {};
-			
-			// RFC4731 unfortunately is lacking on documentation, so we're going to
-			// assume that the response text always begins with (TAG "A123") and skip that
-			// part ...
-			
-			for(var i = 1, len = r.length, key, val; i < len; i += 2){
-				key = r[i].toLowerCase();
-				val = r[i + 1];
-				if(key === 'all'){
-					val = val.toString().split(',');
+			}else if(type === 'thread'){
+				if(text){
+					results.push(api.parseExpr(text));
+				}else{
+					results.push([]);
 				};
-				attrs[key] = val;
+			}else if(type === 'list'){
+				if(results.length === 0){
+					results.push({});
+				};
+				var r = api.parseExpr(text);			
+				
+				var name = api.utf7.decode(''+r[2]);
+				var box = {
+					attribs: r[0],
+					delimiter: r[1],
+					children: null
+				};
+				
+				for(var j = 0, len = specialAttrs.length; j < len; ++j){
+					if (box.attribs.indexOf(specialAttrs[j]) > -1){
+						box.special_use_attrib = specialAttrs[j];
+					};
+				};
+				
+				var curChildren = results[0];
+				if(box.delimiter){
+					var path = name.split(box.delimiter);
+					name = path.pop();
+					for(var j = 0, len = path.length; j < len; ++j){
+						if(!curChildren[ path[j] ]){
+							curChildren[ path[j] ] = {};
+						};
+						if(!curChildren[ path[j] ].children){
+							curChildren[ path[j] ].children = {};
+						};
+						curChildren = curChildren[ path[j] ].children;
+					};
+				};
+				if(curChildren[name]){
+					box.children = curChildren[name].children;
+				};
+				curChildren[name] = box;
+			}else if(type === 'status'){
+				var r = api.parseExpr(text);
+				var attrs = {};
+				// r[1] is [KEY1, VAL1, KEY2, VAL2, .... KEYn, VALn]
+				for(var j = 0, len = r[1].length; j < len; j += 2){
+					attrs[r[1][j].toLowerCase()] = r[1][j + 1];
+				};
+				var box = {
+					name: api.utf7.decode(''+r[0]),
+					uidnext: 0,
+					uidvalidity: 0,
+					messages: {
+						total: 0,
+						'new': 0,
+						unseen: 0
+					}
+				};
+				if(attrs){
+					if(typeof attrs.recent != "undefined"){
+						box.messages['new'] = attrs.recent;
+					};
+					if(typeof attrs.unseen != "undefined"){
+						box.messages.unseen = attrs.unseen;
+					};
+					if(typeof attrs.messages != "undefined"){
+						box.messages.total = attrs.messages;
+					};
+					if(typeof attrs.uidnext != "undefined"){
+						box.uidnext = attrs.uidnext;
+					};
+					if(typeof attrs.uidvalidity != "undefined"){
+						box.uidvalidity = attrs.uidvalidity;
+					};
+					if(typeof attrs.highestmodseq != "undefined"){ // CONDSTORE
+						box.highestmodseq = ''+attrs.highestmodseq;
+					};
+				};
+				results.push(box);
+			}else if(type === 'esearch'){
+				var r = api.parseExpr(text.toUpperCase().replace('UID', '')), attrs = {};
+			
+				// RFC4731 unfortunately is lacking on documentation, so we're going to
+				// assume that the response text always begins with (TAG "A123") and skip that
+				// part ...
+				
+				for(var j = 1, len = r.length, key, val; j < len; j += 2){
+					key = r[j].toLowerCase();
+					val = r[j + 1];
+					if(key === 'all'){
+						val = val.toString().split(',');
+					};
+					attrs[key] = val;
+				};
+				results.push(attrs);
+			}else{
+				results.push(text);
 			};
-			return attrs;
-		}
+		};
+		
+		return results;
 	};
 	
 	this.makeRequest = function(){
@@ -466,9 +432,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var folder = api.prepareFolder(_function_argument("folder"), true);
 		
 		if(isUTF8){
-			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + api.escape(api.utf7.encode(folder)) + '"\r\n' + query;
+			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + api.encodeName(folder) + '"\r\n' + query;
 		}else{
-			path = _avoid_nil(path, folder);
+			path = _avoid_nil(path, api.encodeName(folder));
 		};
 		
 		_call_function(api.request, {path: path, query: query, multiple: (multiple || isUTF8), saveOnlyLast: (saveOnlyLast || isUTF8)})!
@@ -559,47 +525,42 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		info = info.join(' ');
 		
-		var cmd = 'STATUS "' + escape(api.utf7.encode(''+name)) + '" (' + info + ')';
+		var cmd = 'STATUS "' + api.encodeName(name) + '" (' + info + ')';
 		
 		_call_function(api.makeRequest, {query: cmd, folder: ""})!
 		var resp = _result_function();
 		
-		var result = api.parser(resp);
+		var result = api.parse(resp);
 		
-		_function_return(result);
+		_function_return(result[0]);
 	};
 	
 	this.getBoxes = function(){
 		_call_function(api.makeRequest, {query: "", folder: ""})!
 		var resp = _result_function();
 		
-		var boxes = {};
-		var lines = resp.split('\r\n');
+		var result = api.parse(resp);
 		
-		for(var i = 0; i < lines.length; i++){
-			api.parser(lines[i], boxes);
-		};
-		
-		_function_return(boxes);
+		_function_return(result[0]);
 	};
 	
 	this.addBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'CREATE "' + api.escape(api.utf7.encode(''+name)) + '"', folder: ""})!
+		_call_function(api.makeRequest, {query: 'CREATE "' + api.encodeName(name) + '"', folder: ""})!
 	};
 	
 	this.delBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'DELETE "' + api.escape(api.utf7.encode(''+name)) + '"', folder: ""})!
+		_call_function(api.makeRequest, {query: 'DELETE "' + api.encodeName(name) + '"', folder: ""})!
 	};
 	
 	this.renameBox = function(){
 		var oldName = _function_argument("oldName");
 		var newName = _function_argument("newName");
 		
-		_call_function(api.makeRequest, {query: 'RENAME "' + api.escape(api.utf7.encode(''+oldName)) + '" "' + api.escape(api.utf7.encode(''+newName)) + '"', folder: ""})!
+		_call_function(api.makeRequest, {query: 'RENAME "' + api.encodeName(oldName) + '" "' + api.encodeName(newName) + '"', folder: ""})!
 	};
 
 	this.hasNonASCII = function(str){
@@ -655,7 +616,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 
 	this.buildSearchQuery = function(options, info, isOrChild){
-		var searchargs = '';
+		var searchargs = '';		
 		
 		for(var i = 0, len = options.length; i < len; ++i){
 			var criteria = (isOrChild ? options : options[i]);
@@ -862,9 +823,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, folder: folder, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parser(resp);
+		var result = api.parse(resp);
 		
-		_function_return(result);
+		_function_return(result[0]);
 	};
 	
 	this.esearch = function(){
@@ -900,9 +861,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, folder: folder, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parser(resp);
+		var result = api.parse(resp);
 		
-		_function_return(result);
+		_function_return(result[0]);
 	};
 	
 	this.searchLast = function(){
@@ -1001,9 +962,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, folder: folder, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parser(resp);
+		var result = api.parse(resp);
 		
-		_function_return(result);
+		_function_return(result[0]);
 	};
 	
 	this.store = function(){
@@ -1139,6 +1100,42 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var cmd = 'UID STORE ' + uids + ' +FLAGS.SILENT (\\Deleted)\r\nEXPUNGE';
 		
 		_call_function(api.makeRequest, {query: cmd, folder: folder, multiple: true})!
+		var resp = _result_function();
+	};
+	
+	this.copyMsgs = function(){
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var folder = api.prepareFolder(_function_argument("folder"));
+		var toFolder = _function_argument("toFolder");
+		_validate_argument_type(toFolder, 'string', 'To folder', '_InMail.imap');
+		if(!toFolder.length){
+			api.errorHandler('TOBOX_NOT_SPECIFIED');
+		};
+		
+		var cmd = 'UID COPY ' + uids + ' "' + api.encodeName(toFolder) + '"';
+		
+		_call_function(api.makeRequest, {query: cmd, folder: folder})!
+		var resp = _result_function();
+	};
+	
+	this.moveMsgs = function(){
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var folder = api.prepareFolder(_function_argument("folder"));
+		var toFolder = _function_argument("toFolder");
+		_validate_argument_type(toFolder, 'string', 'To folder', '_InMail.imap');
+		if(!toFolder.length){
+			api.errorHandler('TOBOX_NOT_SPECIFIED');
+		};
+		
+		_call_function(api.capability, {})!
+		
+		if(!api.serverSupports('MOVE')){
+			api.errorHandler('MOVE_NOT_SUPPORT');
+		};
+		
+		var cmd = 'UID MOVE ' + uids + ' "' + api.encodeName(toFolder) + '"';
+		
+		_call_function(api.makeRequest, {query: cmd, folder: folder})!
 		var resp = _result_function();
 	};
 	

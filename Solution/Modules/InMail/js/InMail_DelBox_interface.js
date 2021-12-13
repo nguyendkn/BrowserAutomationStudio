@@ -3,6 +3,9 @@
 		id: "name",
 		description: tr("Folder name"),
 		default_selector: "string",
+		variants: [
+			{value: "INBOX", description: tr("Default folder incoming messages")}
+		],
 		disable_int: true, 
 		value_string: "",
 		help: {

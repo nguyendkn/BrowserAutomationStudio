@@ -268,4 +268,32 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		_embedded("InMail_DelMsgs", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
+	
+	this.copyMsgs = function(){
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var folder = api.prepareFolder(_function_argument("folder"));
+		var toFolder = _function_argument("toFolder");
+		_validate_argument_type(toFolder, 'string', 'To folder', '_InMail.imap');
+		if(!toFolder.length){
+			api.errorHandler('TOBOX_NOT_SPECIFIED');
+		};
+		
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, folder: folder, toFolder: toFolder, connect: api.getConnect()};
+		
+		_embedded("InMail_DelMsgs", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+	};
+	
+	this.moveMsgs = function(){
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var folder = api.prepareFolder(_function_argument("folder"));
+		var toFolder = _function_argument("toFolder");
+		_validate_argument_type(toFolder, 'string', 'To folder', '_InMail.imap');
+		if(!toFolder.length){
+			api.errorHandler('TOBOX_NOT_SPECIFIED');
+		};
+		
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, folder: folder, toFolder: toFolder, connect: api.getConnect()};
+		
+		_embedded("InMail_DelMsgs", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+	};
 });

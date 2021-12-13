@@ -1,3 +1,22 @@
+_InMail.findConfig = function(domain, protocol){
+	var configs = this.configs();
+	var domainObj = configs[domain];
+	if(!domainObj){
+		for(var key in configs){
+			var obj = configs[key];
+			if(obj.domains && obj.domains.indexOf(domain) > -1){
+				domainObj = obj;
+				break;
+			};
+		};
+	};
+	
+	if(domainObj && domainObj[protocol]){
+		return domainObj[protocol];
+	};
+	
+	return null;
+};
 _InMail.configs = function(){
 	return {
 		"mail.com": {

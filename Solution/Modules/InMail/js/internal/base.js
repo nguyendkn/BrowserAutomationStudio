@@ -3,8 +3,6 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	this.protocol = protocol;
 	this.config = config;
 	
-	this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-	
 	if(isCurl){
 		this.options = {
 			CURLOPT_URL: api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
@@ -162,12 +160,16 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				"en": data + " is not supported by the server"
 			},
 			"SORT_NOT_SUPPORT": {
-				"ru": "Сортировка не поддерживается на сервере",
-				"en": "Sort is not supported on the server"
+				"ru": "Сортировка не поддерживается на сервере, используйте поиск без сортировки",
+				"en": "Sort is not supported on the server, use non-sorting search"
 			},
 			"ESEARCH_NOT_SUPPORT": {
 				"ru": "ESEARCH не поддерживается на сервере",
 				"en": "ESEARCH is not supported on the server"
+			},
+			"MOVE_NOT_SUPPORT": {
+				"ru": "Перемещение не поддерживается на сервере",
+				"en": "Move is not supported on the server"
 			},
 			"UNEXPECTED_OPTION": {
 				"ru": "Неожиданный параметр поиска: " + data,
@@ -188,6 +190,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"MAILBOX_NOT_SELECTED": {
 				"ru": "Почтовый ящик не выбран или выбран неправильно",
 				"en": "Mailbox not selected or selected incorrectly"
+			},
+			"TOBOX_NOT_SPECIFIED": {
+				"ru": "Конечный почтовый ящик не указан или указан неправильно",
+				"en": "Destination mailbox not specified or specified incorrectly"
 			},
 			"EMPTY_SORT_CRITERIA": {
 				"ru": "Ожидается массив хотя бы с одним критерием сортировки",

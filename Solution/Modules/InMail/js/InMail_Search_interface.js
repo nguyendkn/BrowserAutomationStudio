@@ -278,6 +278,9 @@
 			id: "folder",
 			description: tr("Folder name"),
 			default_selector: "string",
+			variants: [
+				{value: "INBOX", description: tr("Default folder incoming messages")}
+			],
 			disable_int: true,
 			value_string: "",
 			help: {
@@ -285,7 +288,7 @@
 			}
 		}) %>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-			<input type="checkbox" checked="checked" id="Check" style="margin-left:25px"/> <label for="Check" class="tr">Error if mail not found</label>
+			<input type="checkbox" checked="checked" id="Check" style="margin-left:25px"/> <label for="Check" class="tr">Error if mails not found</label>
 		</span>
 	<%= _.template($('#block_end').html())() %>
 	<%= _.template($('#variable_constructor').html())({

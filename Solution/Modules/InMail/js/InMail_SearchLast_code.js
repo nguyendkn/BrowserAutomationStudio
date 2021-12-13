@@ -1,2 +1,2 @@
-_call_function(_InMail.searchLast, {folder: (<%= folder %>), errorNotFound: (<%= errorNotFound %>)})!
+_call_function(_InMail.searchLast, {errorNotFound: (<%= errorNotFound %>)<%if(folder!=='""'){%>, folder: (<%= folder %>)<%}%>})!
 <%= variable %> = _result_function();

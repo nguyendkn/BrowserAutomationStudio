@@ -91,8 +91,8 @@ window.GroupsPanel = {
 
   watch: {
     data: {
-      handler(newData, oldData) {
-        const diff = jsonpatch.compare(oldData, newData);
+      handler($new, $old) {
+        const diff = jsonpatch.compare($old, $new);
         const highlight = this.highlight;
         const metadata = this.metadata;
 
@@ -123,8 +123,6 @@ window.GroupsPanel = {
 
         this.highlight = false;
       },
-
-      deep: true,
     },
   },
 

@@ -89,8 +89,8 @@ window.CallstackItem = {
           <template v-if="isAction">
             <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
           </template>
-          <template v-else>
-            <span v-show="preview">[{{ size > 0 ? $tc('items', size) : '' }}]</span>
+          <template v-else-if="size > 0">
+            <span v-show="preview">[{{ $tc('items', size) }}]</span>
           </template>
         </span>
         <button v-show="hasArguments || isOverflowing" class="callstack-toggle-params" type="button" @click="togglePreview">

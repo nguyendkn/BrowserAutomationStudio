@@ -84,7 +84,7 @@ window.CallstackItem = {
     <li class="callstack-item" :class="{ preview }">
       <div class="callstack-item-title">
         <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>
-        <span class="callstack-item-name" @click="focusAction">{{ name }}:</span>
+        <span class="callstack-item-name" @click="focusAction">{{ name + (size > 0 || isAction ? ':' : '') }}</span>
         <span ref="preview" class="callstack-item-data">
           <template v-if="isAction">
             <span>{{ name === 'If' ? options.expression : options.iterator }}</span>

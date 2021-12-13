@@ -69,8 +69,8 @@ window.GroupsPanel = {
             case 'dateCreated':
               return metadata[b].createdAt - metadata[a].createdAt;
             case 'frequency':
-              const f2 = cache.filter(v => v === b).length + updates;
               const f1 = cache.filter(v => v === a).length + updates;
+              const f2 = cache.filter(v => v === b).length + updates;
               return metadata[b].usages / f2 - metadata[a].usages / f1;
           }
 

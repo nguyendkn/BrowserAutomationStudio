@@ -48,40 +48,44 @@ window.GroupsPanel = {
     },
 
     sortedData() {
-      const { data, history, metadata, activeFilters, activeSortings } = this;
+      const { source, history, metadata, activeFilters, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
       const query = this.query.toLowerCase();
 
-      const result = Object.keys(data)
+      const result = Object.keys(source)
         .filter(key => {
           if (!key.toLowerCase().includes(query)) return false;
-          const type = getType(data[key]);
+          const type = getType(source[key]);
           return this.activeFilters.some(f => f === type);
         })
         .sort((a, b) => {
           if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
-          // a = `/${a}`;
-          // b = `/${b}`;
+          a = `/${a}`;
+          b = `/${b}`;
 
-          // switch (activeSortings[0]) {
-          //   case 'dateModified':
-          //     return metadata[b].modifiedAt - metadata[a].modifiedAt;
-          //   case 'dateCreated':
-          //     return metadata[b].createdAt - metadata[a].createdAt;
-          //   case 'frequency':
-          //     const f2 = cache.filter(v => v === b).length + updates;
-          //     const f1 = cache.filter(v => v === a).length + updates;
-          //     return metadata[b].usages / f2 - metadata[a].usages / f1;
-          // }
+          switch (activeSortings[0]) {
+            case 'dateModified':
+              return metadata[b].modifiedAt - metadata[a].modifiedAt;
+            case 'dateCreated':
+              return metadata[b].createdAt - metadata[a].createdAt;
+            case 'frequency':
+              const f2 = cache.filter(v => v === b).length + updates;
+              const f1 = cache.filter(v => v === a).length + updates;
+              return metadata[b].usages / f2 - metadata[a].usages / f1;
+          }
 
           return a.localeCompare(b);
         });
 
-      return result.reduce((acc, key) => (acc[key] = data[key], acc), {});
+      return result.reduce((acc, key) => (acc[key] = source[key], acc), {});
     },
 
     isEmpty() {
       return !Object.keys(this.data).length;
+    },
+
+    source() {
+      return this.transform(this.data);
     },
   },
 
@@ -117,10 +121,29 @@ window.GroupsPanel = {
           }
         });
 
-        // this.highlight = false;
+        this.highlight = false;
       },
 
       deep: true,
+    },
+  },
+
+  methods: {
+    transform(data) {
+      const iteratee = (acc, key) => {
+        let val = data[key];
+        if (typeof val === 'string') {
+          if (val.startsWith('__UNDEFINED__')) {
+            val = undefined;
+          } else if (val.startsWith('__DATE__')) {
+            val = new Date(val.slice(8));
+          }
+        } else if (typeof val === 'object' && val) {
+          val = this.transform(val);
+        }
+        return (acc[key] = val), acc;
+      };
+      return Object.keys(data).reduce(iteratee, Array.isArray(data) ? [] : {});
     },
   },
 

@@ -36,6 +36,17 @@ window.GroupsList = {
     },
   },
 
+  watch: {
+    source(source) {
+      const keys = Object.keys(source);
+      this.groups.forEach(group => {
+        group.items = keys.filter(key => {
+          return group.items.includes(key);
+        });
+      });
+    },
+  },
+
   methods: {
     updateGroup(id, data) {
       const index = this.getGroupIndex(id);

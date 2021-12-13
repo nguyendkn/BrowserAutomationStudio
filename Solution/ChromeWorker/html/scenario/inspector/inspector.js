@@ -37,8 +37,8 @@
     },
 
     update(data) {
-      const payload = prepareData(JSON.parse(data));
-      this.send({ payload, type: 'update' });
+      const payload = JSON.parse(data);
+      this.send({ type: 'update', payload });
     },
 
     render() {
@@ -107,21 +107,5 @@
     };
 
     return new Inspector.Modal({ ...options, callback }).render();
-  }
-
-  function prepareData(data) {
-    const iteratee = (acc, val, key) => {
-      if (typeof val === 'string') {
-        if (val.startsWith('__UNDEFINED__')) {
-          val = undefined;
-        } else if (val.startsWith('__DATE__')) {
-          val = new Date(val.slice(8));
-        }
-      } else if (_.isObject(val)) {
-        val = prepareData(val);
-      }
-      return (acc[key] = val, acc);
-    };
-    return _.reduce(data, iteratee, Array.isArray(data) ? [] : {});
   }
 })(window);

@@ -90,39 +90,37 @@ window.GroupsPanel = {
   },
 
   watch: {
-    data: {
-      handler($new, $old) {
-        const diff = jsonpatch.compare($old, $new);
-        const highlight = this.highlight;
-        const metadata = this.metadata;
+    data($new, $old) {
+      const diff = jsonpatch.compare($old, $new);
+      const highlight = this.highlight;
+      const metadata = this.metadata;
 
-        if (diff.length) {
-          let history = [];
+      if (diff.length) {
+        let history = [];
 
-          diff.forEach(({ path, op }) => {
-            const now = performance.now();
-            history.push(path);
+        diff.forEach(({ path, op }) => {
+          const now = performance.now();
+          history.push(path);
 
-            if (Object.prototype.hasOwnProperty.call(metadata, path)) {
-              if (op === 'remove') return delete metadata[path];
-              metadata[path].modifiedAt = now;
-              metadata[path].usages += 1;
-            } else {
-              metadata[path] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
-            }
-          });
-
-          this.history = [...this.history, ...history].slice(-100);
-        }
-
-        Object.entries(metadata).forEach(([path, item]) => {
-          if (highlight) {
-            // item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
+          if (Object.prototype.hasOwnProperty.call(metadata, path)) {
+            if (op === 'remove') return delete metadata[path];
+            metadata[path].modifiedAt = now;
+            metadata[path].usages += 1;
+          } else {
+            metadata[path] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
           }
         });
 
-        this.highlight = false;
-      },
+        this.history = [...this.history, ...history].slice(-100);
+      }
+
+      Object.entries(metadata).forEach(([path, item]) => {
+        if (highlight) {
+          item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
+        }
+      });
+
+      this.highlight = false;
     },
   },
 
@@ -139,7 +137,7 @@ window.GroupsPanel = {
         } else if (typeof val === 'object' && val) {
           val = this.transform(val);
         }
-        return (acc[key] = val), acc;
+        return (acc[key] = val, acc);
       };
       return Object.keys(data).reduce(iteratee, Array.isArray(data) ? [] : {});
     },

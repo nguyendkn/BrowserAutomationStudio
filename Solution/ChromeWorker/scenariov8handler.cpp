@@ -345,6 +345,13 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         if (arguments->GetSize() == 1)
         {
             clipboard_set = arguments->GetString(0);
+            clipboard_prefix = true;
+            IsClipboardSetRequest = true;
+        }
+        if (arguments->GetSize() == 2)
+        {
+            clipboard_set = arguments->GetString(0);
+            clipboard_prefix = arguments->GetBool(1);
             IsClipboardSetRequest = true;
         }
     }else if(name == std::string("BrowserAutomationStudio_GetClipboard"))
@@ -391,14 +398,15 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
     return true;
 }
 
-std::pair<std::string, bool> ScenarioV8Handler::GetClipboardSetRequest()
+std::pair<std::pair<std::string, bool>, bool> ScenarioV8Handler::GetClipboardSetRequest()
 {
-    std::pair<std::string, bool> r;
-    r.first = clipboard_set;
+    std::pair<std::pair<std::string, bool>, bool> r;
+    r.first = std::make_pair(clipboard_set, clipboard_prefix);
     r.second = IsClipboardSetRequest;
 
     IsClipboardSetRequest = false;
 
+    clipboard_prefix = true;
     clipboard_set.clear();
 
     return r;

@@ -12,13 +12,13 @@
 
     _call_function(_.script, {
       element: self.$element(),
-      script: '(self.getBoundingClientRect().left + positionx)'
+      script: '(self.getBoundingClientRect().left + scrollx + positionx)'
     })!
     const offsetX = parseInt(_result_function());
 
     _call_function(_.script, {
       element: self.$element(),
-      script: '(self.getBoundingClientRect().top + positiony)'
+      script: '(self.getBoundingClientRect().top + scrolly + positiony)'
     })!
     const offsetY = parseInt(_result_function());
 

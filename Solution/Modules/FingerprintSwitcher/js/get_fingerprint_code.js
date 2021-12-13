@@ -9,6 +9,8 @@ _call(BrowserAutomationStudio_GetFingerprint,[{
 	time_limit: (<%= time_limit %>),
 	perfectcanvas_request: (<%= perfectcanvas_request %>),
 	perfectcanvas_logs: (<%= perfectcanvas_logs %>),
+	enable_custom_server: (<%= enable_custom_server %>),
+	dynamic_perfect_canvas: (<%= dynamic_perfect_canvas %>)
 }])!
 
 <%= variable %> = _result()

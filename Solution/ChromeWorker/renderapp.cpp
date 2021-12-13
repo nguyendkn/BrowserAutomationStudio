@@ -54,17 +54,19 @@ void RenderApp::OnBrowserCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDic
 
 void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context)
 {
+    std::string url = frame->GetURL().ToString();
+
     //Toolbox Browser
-    if(starts_with(frame->GetURL().ToString(), "file:///html/toolbox"))
+    if(starts_with(url, "file:///html/toolbox"))
     {
         WORKER_LOG("OnContextCreated<<ToolboxBrowser");
         if(frame->IsMain())
         {
             toolboxv8handler = new InterprocessV8Handler("Toolbox");
+            CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("NewToolboxBrowserContextCreated");
+            frame->SendProcessMessage(PID_BROWSER, msg);
         }
 
-        CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("NewToolboxBrowserContextCreated");
-        frame->SendProcessMessage(PID_BROWSER, msg);
         CefRefPtr<CefV8Value> object = context->GetGlobal();
         object->SetValue("BrowserAutomationStudio_SendEmbeddedData", CefV8Value::CreateFunction("BrowserAutomationStudio_SendEmbeddedData", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Append", CefV8Value::CreateFunction("BrowserAutomationStudio_Append", toolboxv8handler), V8_PROPERTY_ATTRIBUTE_NONE);
@@ -90,16 +92,17 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
     }
 
     //Scenario Browser
-    if(starts_with(frame->GetURL().ToString(), "file:///html/scenario"))
+    if(starts_with(url, "file:///html/scenario"))
     {
         WORKER_LOG("OnContextCreated<<BrowserScenario");
-        CefRefPtr<CefV8Value> object = context->GetGlobal();
         if(frame->IsMain())
+        {
             scenariov8handler = new InterprocessV8Handler("Scenario");
+            CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("NewScenarioBrowserContextCreated");
+            frame->SendProcessMessage(PID_BROWSER, msg);
+        }
 
-        CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("NewScenarioBrowserContextCreated");
-        frame->SendProcessMessage(PID_BROWSER, msg);
-
+        CefRefPtr<CefV8Value> object = context->GetGlobal();
         object->SetValue("BrowserAutomationStudio_UpdateEmbeddedData", CefV8Value::CreateFunction("BrowserAutomationStudio_UpdateEmbeddedData", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_SendCode", CefV8Value::CreateFunction("BrowserAutomationStudio_SendCode", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_Initialized", CefV8Value::CreateFunction("BrowserAutomationStudio_Initialized", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
@@ -137,7 +140,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
     }
 
     //Central Browser
-    if(starts_with(frame->GetURL().ToString(), "file:///html/central") || starts_with(frame->GetURL().ToString(), "file:///html/menu"))
+    if(starts_with(url, "file:///html/central") || starts_with(url, "file:///html/menu"))
     {
 
         WORKER_LOG("OnContextCreated<<BrowserCentral");
@@ -159,7 +162,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
     }
 
     //Detector browser
-    if(starts_with(frame->GetURL().ToString(), "file:///html/detector"))
+    if(starts_with(url, "file:///html/detector"))
     {
         WORKER_LOG("OnContextCreated<<BrowserDetector");
         CefRefPtr<CefV8Value> object = context->GetGlobal();
@@ -178,9 +181,9 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
     }
 
     //Main Browser
-    if(!starts_with(frame->GetURL().ToString(),"chrome-devtools://"))
+    if(!starts_with(url,"chrome-devtools://"))
     {
-        WORKER_LOG(std::string("OnContextCreated<<MainBrowser<<") + std::to_string(browser->GetIdentifier()) + "<<" + std::to_string(frame->IsMain()) + "<<" + frame->GetURL().ToString());
+        WORKER_LOG(std::string("OnContextCreated<<MainBrowser<<") + std::to_string(browser->GetIdentifier()) + "<<" + std::to_string(frame->IsMain()) + "<<" + url);
         CefRefPtr<CefV8Value> object = context->GetGlobal();
 
         CefRefPtr<CefProcessMessage> msg = CefProcessMessage::Create("NewMainBrowserContextCreated");

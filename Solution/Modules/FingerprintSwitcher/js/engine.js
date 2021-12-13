@@ -60,31 +60,64 @@ function BrowserAutomationStudio_GetFingerprint()
 	if(FINGERPRINT_JSON.time_limit != "*")
 		q += "&time_limit=" + encodeURIComponent(FINGERPRINT_JSON.time_limit)	
 
-	var api_url;
-	
-	if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
+	FINGERPRINT_JSON.additional = {}
+	FINGERPRINT_JSON.additional.api_url = null
+	FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false
+	FINGERPRINT_JSON.additional.server_type_is_post_data = false
+	FINGERPRINT_JSON.additional.final_fingerprint_valid = false
+	FINGERPRINT_JSON.additional.dynamic_perfect_canvas = typeof(FINGERPRINT_JSON.dynamic_perfect_canvas) == "string" && FINGERPRINT_JSON.dynamic_perfect_canvas == "true"
+		
+
+	if(typeof(FINGERPRINT_JSON.enable_custom_server) == "string" && FINGERPRINT_JSON.enable_custom_server == "true")
 	{
-		api_url = "https://canvas.bablosoft.com/prepare"
+		if(typeof(FINGERPRINT_JSON.is_custom_server_retry) == "boolean" && FINGERPRINT_JSON.is_custom_server_retry)
+		{
+			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = true;
+			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
+			FINGERPRINT_JSON.additional.api_url = "https://customcanvas.bablosoft.com/prepare"
+		}else if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
+		{
+			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
+			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
+			FINGERPRINT_JSON.additional.api_url = "https://customfingerprints.bablosoft.com/prepare"
+		}else
+		{
+			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
+			FINGERPRINT_JSON.additional.server_type_is_post_data = false;
+			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
+			FINGERPRINT_JSON.additional.api_url = "https://customfingerprints.bablosoft.com/prepare"
+		}
+	}else if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
+	{
+		FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = true;
+		FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
+		FINGERPRINT_JSON.additional.api_url = "https://canvas.bablosoft.com/prepare"
 	}else
 	{
-		api_url = "https://fingerprints.bablosoft.com/prepare"
+		FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
+		FINGERPRINT_JSON.additional.server_type_is_post_data = false;
+		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
+		FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
 	}
 
-	api_url += q
+	FINGERPRINT_JSON.additional.api_url += q
 
-	FINGERPRINT_JSON.perfectcanvas_logs = FINGERPRINT_JSON.perfectcanvas_logs == "true"
+	FINGERPRINT_JSON.perfectcanvas_logs = (typeof(FINGERPRINT_JSON.perfectcanvas_logs) == "string" && FINGERPRINT_JSON.perfectcanvas_logs == "true") || (typeof(FINGERPRINT_JSON.perfectcanvas_logs) == "boolean" && FINGERPRINT_JSON.perfectcanvas_logs)
 
 
 	_switch_http_client_internal()
 	http_client_set_fail_on_error(false)
 
-	_if_else(FINGERPRINT_JSON.perfectcanvas_request.length > 0, function(){
+	_if_else(FINGERPRINT_JSON.additional.server_type_is_perfect_canvas, function(){
 		if(FINGERPRINT_JSON.perfectcanvas_logs)
 		{
 			log("(PerfectCanvas) Start obtaining fingerprint")
 		}
 		_do(function(){
-			http_client_post(api_url, ["data", FINGERPRINT_JSON.perfectcanvas_request], {"content-type":"custom/" + ("application/octet-stream"), "encoding":("UTF-8"), "method":("POST"),headers:("Accept-Encoding: gzip, deflate")})!
+			http_client_post(FINGERPRINT_JSON.additional.api_url, ["data", FINGERPRINT_JSON.perfectcanvas_request], {"content-type":"custom/" + ("application/octet-stream"), "encoding":("UTF-8"), "method":("POST"),headers:("Accept-Encoding: gzip, deflate")})!
 
 			var json = http_client_content()
 	
@@ -119,7 +152,7 @@ function BrowserAutomationStudio_GetFingerprint()
 		sleep(5000)!
 
 		_do(function(){
-			http_client_get2("https://canvas.bablosoft.com/status/" + FINGERPRINT_JSON.request_id,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
+			http_client_get2(FINGERPRINT_JSON.additional.status_url + "/" + FINGERPRINT_JSON.request_id,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
 
 			var json = http_client_content()
 	
@@ -155,8 +188,13 @@ function BrowserAutomationStudio_GetFingerprint()
 		_do(function(){
 			if(_iterator()>15)
 				fail("Query limit reached")
-	
-			http_client_get2(api_url,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
+
+			_if_else(FINGERPRINT_JSON.additional.server_type_is_post_data, function(){
+				http_client_post(FINGERPRINT_JSON.additional.api_url, ["data", FINGERPRINT_JSON.perfectcanvas_request], {"content-type":"custom/" + ("application/octet-stream"), "encoding":("UTF-8"), "method":("POST"),headers:("Accept-Encoding: gzip, deflate")})!
+			}, function(){
+				http_client_get2(FINGERPRINT_JSON.additional.api_url,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
+			})!
+
 			var json = http_client_content()
 	
 			try
@@ -164,6 +202,7 @@ function BrowserAutomationStudio_GetFingerprint()
 				var json_parsed = JSON.parse(json)
 				if(!json_parsed["trylater"])
 				{
+					FINGERPRINT_JSON.additional.final_fingerprint_valid = json_parsed.valid
 					_set_result(json)
 					_break()
 				}
@@ -173,12 +212,17 @@ function BrowserAutomationStudio_GetFingerprint()
 		})!  
 	})!
 
-	
-	delete FINGERPRINT_JSON
-
 
 	http_client_set_fail_on_error(true)
 	_switch_http_client_main()
+
+	_if(!FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid && FINGERPRINT_JSON.additional.dynamic_perfect_canvas, function(){
+		FINGERPRINT_JSON.is_custom_server_retry = true
+		_call(BrowserAutomationStudio_GetFingerprint,[FINGERPRINT_JSON])!
+	})!
+
+	delete FINGERPRINT_JSON
+
 }
 
 function BrowserAutomationStudio_ApplyFingerprint()

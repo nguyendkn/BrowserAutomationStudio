@@ -52,7 +52,7 @@ window.GroupsPanel = {
       const cache = history.flat(), updates = history.length;
       const query = this.query.toLowerCase();
 
-      const sortedKeys = Object.keys(data)
+      const result = Object.keys(data)
         .filter(key => {
           if (!key.toLowerCase().includes(query)) return false;
           const type = getType(data[key]);
@@ -77,7 +77,7 @@ window.GroupsPanel = {
           return a.localeCompare(b);
         });
 
-      return sortedKeys.reduce((acc, key) => ((acc[key] = data[key]), acc), {});
+      return result.reduce((acc, key) => (acc[key] = data[key], acc), {});
     },
 
     isEmpty() {
@@ -111,11 +111,11 @@ window.GroupsPanel = {
           this.history = [...this.history, ...history].slice(-100);
         }
 
-        // Object.entries(metadata).forEach(([path, item]) => {
-        //   if (highlight) {
-        //     item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
-        //   }
-        // });
+        Object.entries(metadata).forEach(([path, item]) => {
+          if (highlight) {
+            // item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
+          }
+        });
 
         // this.highlight = false;
       },

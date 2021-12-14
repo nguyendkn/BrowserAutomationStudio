@@ -41,7 +41,7 @@ var debug_variables = (function () {
                 if (key.indexOf('GLOBAL:') === 0) {
                     acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
                 } else {
-                    acc[key.slice(4)] = truncate_variable(GLOBAL[key], 100);
+                    acc[key.slice(4)] = truncate(GLOBAL[key], 100);
                 }
                 return acc;
             }, {}),
@@ -57,11 +57,11 @@ var debug_variables = (function () {
         }), _get_function_body(callback));
     };
 
-    function truncate_variable(val, limit) {
+    function truncate(val, limit) {
         if (val instanceof Object) {
             if (val instanceof Date) return '__DATE__' + val.toJSON();
             return Object.keys(val).slice(0, limit).reduce(function (acc, key) {
-                return (acc[key] = truncate_variable(val[key], limit), acc);
+                return (acc[key] = truncate(val[key], limit), acc);
             }, Array.isArray(val) ? [] : {});
         }
         return typeof val === 'undefined' ? '__UNDEFINED__' : val;

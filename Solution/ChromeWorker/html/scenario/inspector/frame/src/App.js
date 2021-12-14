@@ -36,14 +36,14 @@ window.App = {
     return { tab: tabs[0], tabs };
   },
 
-  destroyed() {
-    window.removeEventListener('message', this.handleMessage);
-    this.send('destroyed');
-  },
-
   mounted() {
     window.addEventListener('message', this.handleMessage);
     this.send('mounted');
+  },
+
+  destroyed() {
+    window.removeEventListener('message', this.handleMessage);
+    this.send('destroyed');
   },
 
   methods: {

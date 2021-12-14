@@ -36,7 +36,7 @@ function success(text)
 
 var debug_variables = (function () {
     return function (list, callback) {
-        Browser.DebugVariablesResult(JSON.stringify({
+        const result = JSON.stringify({
             variables: list.reduce(function (acc, key) {
                 if (key.indexOf('GLOBAL:') === 0) {
                     const val = P('basglobal', key.slice(7)) || '"__UNDEFINED__"';
@@ -55,7 +55,9 @@ var debug_variables = (function () {
                 })),
 
             resources: JSON.parse(ScriptWorker.PickResources())
-        }), _get_function_body(callback));
+        });
+
+        Browser.DebugVariablesResult(result, _get_function_body(callback));
     };
 
     function truncate(val, limit) {

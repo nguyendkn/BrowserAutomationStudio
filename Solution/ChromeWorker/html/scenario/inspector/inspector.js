@@ -5,7 +5,7 @@
 
   Inspector.Main = Backbone.View.extend({
     initialize() {
-      let created = false;
+      let mounted = false;
 
       window.addEventListener('message', ({ data: { payload, type } }) => {
         switch (type) {
@@ -28,8 +28,8 @@
       });
 
       this.send = msg => {
-        if (!created) this.once('created', () => {
-          created = true;
+        if (!mounted) this.once('mounted', () => {
+          mounted = true;
           this.send(msg);
         });
         this.el.contentWindow.postMessage(msg, '*');

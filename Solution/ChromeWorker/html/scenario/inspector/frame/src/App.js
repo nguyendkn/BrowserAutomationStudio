@@ -41,9 +41,9 @@ window.App = {
     this.send('destroyed');
   },
 
-  created() {
+  mounted() {
     window.addEventListener('message', this.handleMessage);
-    this.send('created');
+    this.send('mounted');
   },
 
   methods: {

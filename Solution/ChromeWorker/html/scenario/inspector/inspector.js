@@ -28,7 +28,7 @@
       });
 
       this.send = msg => {
-        if (!mounted) this.once('mounted', () => {
+        if (!mounted) return this.once('mounted', () => {
           mounted = true;
           this.send(msg);
         });

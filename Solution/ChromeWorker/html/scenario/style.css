@@ -405,7 +405,7 @@
   border-top-left-radius: 4px;
   background-color: #f1f1f1;
   position: fixed;
-  bottom: 32px;
+  bottom: 30px;
   z-index: 7;
   right: 0;
 }
@@ -499,10 +499,10 @@ label
 }
 
 #functions {
+  border-top: 1px solid #dbdbdb;
   text-align: center;
   line-height: 30px;
-  min-height: 30px;
-  width: 100%;
+  max-height: 30px;
 }
 
 #FunctionName
@@ -1152,10 +1152,9 @@ label
 }
 
 .bottompannel {
-  border-top: 1px solid #DBDBDB;
   max-height: calc(100vh - 300px);
   background-color: #fff;
-  flex-direction: column;
+  flex-flow: column;
   position: sticky;
   display: flex;
   width: 100%;

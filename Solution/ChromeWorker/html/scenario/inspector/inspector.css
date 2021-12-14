@@ -1,6 +1,6 @@
 #inspector {
-  border: 1px solid #dbdbdb;
-  border-top-width: 4px;
+  border: 0 solid #dbdbdb;
+  border-top-width: 5px;
   user-select: none;
   min-height: 120px;
   height: 250px;

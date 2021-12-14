@@ -39,7 +39,8 @@ var debug_variables = (function () {
         Browser.DebugVariablesResult(JSON.stringify({
             variables: list.reduce(function (acc, key) {
                 if (key.indexOf('GLOBAL:') === 0) {
-                    acc[key] = JSON.parse(P('basglobal', key.slice(7)) || '"__UNDEFINED__"');
+                    const val = P('basglobal', key.slice(7)) || '"__UNDEFINED__"';
+                    acc[key] = truncate(JSON.parse(val), 100);
                 } else {
                     acc[key.slice(4)] = truncate(GLOBAL[key], 100);
                 }

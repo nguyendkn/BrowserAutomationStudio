@@ -88,11 +88,7 @@ window.GroupsList = {
       <groups-item
         v-for="group in groups"
         :key="group.id"
-        :id="group.id"
-        :name="group.name"
-        :color="group.color"
-        :items="group.items"
-        :primary="group.primary"
+        v-bind="group"
         @remove="removeGroup"
         @update="updateGroup"
       >

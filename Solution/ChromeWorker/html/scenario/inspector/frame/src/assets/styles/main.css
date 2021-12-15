@@ -269,9 +269,7 @@
   border: 1px solid var(--group-color);
   border-radius: var(--group-br);
   background: var(--group-color);
-  flex-flow: column;
   overflow: hidden;
-  display: flex;
 }
 
 .group-item-controls > button + button {

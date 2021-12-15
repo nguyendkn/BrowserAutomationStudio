@@ -83,45 +83,47 @@ window.GroupsItem = {
 
   template: html`
     <li class="group-item" :style="style">
-      <div class="group-item-header">
-        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
-        </svg>
-        <input ref="input" v-model="newName" :disabled="!editMode" maxlength="30" spellcheck="false" type="text" @keydown.enter="update" @blur="() => {}">
-        <div v-if="editMode" class="group-item-controls">
-          <ul class="group-item-swatches">
-            <li v-for="(value, key) in colors" class="group-item-swatch" @click="newColor = key">
-              <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" style="display: block;">
-                <circle cx="6" cy="6" r="6" :fill="'rgb(' + value + ')'" />
+      <div style="background: #fff; border-radius: var(--group-br);">
+        <div class="group-item-header">
+          <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
+          </svg>
+          <input ref="input" v-model="newName" :disabled="!editMode" maxlength="30" spellcheck="false" type="text" @keydown.enter="update" @blur="() => {}">
+          <div v-if="editMode" class="group-item-controls">
+            <ul class="group-item-swatches">
+              <li v-for="(value, key) in colors" class="group-item-swatch" @click="newColor = key">
+                <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                  <circle cx="6" cy="6" r="6" :fill="'rgb(' + value + ')'" />
+                </svg>
+              </li>
+            </ul>
+            <button type="button" style="background: #fff; padding: 4px 6px;" @click="update">
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <path d="m6.25 10.6002-3.55-3.55-.7.7 3.55 3.55.7.7 7.05-7.05-.7-.75-6.35 6.4Z" fill="#606060" />
               </svg>
-            </li>
-          </ul>
-          <button type="button" style="background: #fff; padding: 4px 6px;" @click="update">
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-              <path d="m6.25 10.6002-3.55-3.55-.7.7 3.55 3.55.7.7 7.05-7.05-.7-.75-6.35 6.4Z" fill="#606060" />
-            </svg>
-          </button>
+            </button>
+          </div>
+          <div v-else class="group-item-controls">
+            <template v-if="!primary">
+              <button type="button" @click="remove">
+                <icon-delete />
+              </button>
+              <button type="button" @click="edit">
+                <icon-edit />
+              </button>
+            </template>
+            <button type="button" @click="toggle">
+              <icon-chevron :style="{ transform: expanded ? 'rotate(180deg)' : '' }" />
+            </button>
+          </div>
         </div>
-        <div v-else class="group-item-controls">
-          <template v-if="!primary">
-            <button type="button" @click="remove">
-              <icon-delete />
-            </button>
-            <button type="button" @click="edit">
-              <icon-edit />
-            </button>
+        <draggable v-show="!expanded" class="group-item-content" :list="items" group="items" :disabled="true">
+          <template v-if="isEmpty" slot="header">
+            <div class="group-item-title" v-t="'groups.empty'"></div>
           </template>
-          <button type="button" @click="toggle">
-            <icon-chevron :style="{ transform: expanded ? 'rotate(180deg)' : '' }" />
-          </button>
-        </div>
+          <slot v-else></slot>
+        </draggable>
       </div>
-      <draggable v-show="!expanded" class="group-item-content" :list="items" group="items" :disabled="true">
-        <template v-if="isEmpty" slot="header">
-          <div class="group-item-title" v-t="'groups.empty'"></div>
-        </template>
-        <slot v-else></slot>
-      </draggable>
     </li>
   `,
 };

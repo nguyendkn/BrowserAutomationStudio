@@ -268,9 +268,10 @@
 .group-item {
   --color-lighten: rgba(var(--color-rgb), 0.3);
   --color-normal: rgba(var(--color-rgb), 1.0);
-  border: 1px solid var(--color-normal);
+  background: var(--color-normal);
   border-radius: var(--group-br);
   overflow: hidden;
+  padding: 1px 1px;
 }
 
 .group-item-controls > button + button {
@@ -326,6 +327,7 @@
   color: var(--color-normal);
   white-space: pre-wrap;
   text-align: center;
+  user-select: none;
   line-height: 18px;
   padding: 12px 0;
 }

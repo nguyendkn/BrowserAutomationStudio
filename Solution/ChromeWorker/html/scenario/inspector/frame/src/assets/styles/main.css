@@ -266,9 +266,9 @@
 /* Groups */
 
 .group-item {
-  border: 1px solid var(--group-color);
+  border: 1px solid var(--color-normal);
   border-radius: var(--group-br);
-  background: var(--group-color);
+  background: var(--color-normal);
   overflow: hidden;
 }
 
@@ -322,7 +322,7 @@
 }
 
 .group-item-title {
-  color: var(--group-color);
+  color: var(--color-normal);
   white-space: pre-wrap;
   text-align: center;
   line-height: 18px;
@@ -330,7 +330,7 @@
 }
 
 .group-item-header {
-  background: var(--group-color);
+  background: var(--color-normal);
   align-items: center;
   line-height: 18px;
   padding: 3px 8px;
@@ -362,11 +362,11 @@
 } */
 
 .jt-node:hover {
-  background: var(--group-color-rgba);
+  background: var(--color-lighten);
 }
 
 .jt-node:focus {
-  background: var(--group-color-rgba);
+  background: var(--color-lighten);
 }
 
 .jt-node {

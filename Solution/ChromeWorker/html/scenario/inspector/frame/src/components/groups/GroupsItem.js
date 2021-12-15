@@ -33,11 +33,11 @@ window.GroupsItem = {
   data() {
     return {
       colors: {
-        brown: '#c0bd9b',
-        green: '#8ec48f',
-        blue: '#9acbe6',
-        gray: '#d9d9d9',
-        red: '#f69b93',
+        brown: '192, 189, 155',
+        green: '142, 196, 143',
+        blue: '154, 203, 230',
+        gray: '217, 217, 217',
+        red: '246, 155, 147',
       },
       editMode: false,
       expanded: false,
@@ -54,8 +54,8 @@ window.GroupsItem = {
     style() {
       const color = this.colors[this.newColor];
       return {
-        '--group-color': color,
-        '--group-color-rgba': color2K.opacify(color, -0.76),
+        '--color-lighten': `rgba(${color}, 0.3)`,
+        '--color-normal': `rgba(${color}, 1.0)`,
       };
     },
   },
@@ -94,7 +94,7 @@ window.GroupsItem = {
           <ul class="group-item-swatches">
             <li v-for="(value, key) in colors" class="group-item-swatch" @click="newColor = key">
               <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" style="display: block;">
-                <circle cx="6" cy="6" r="6" :fill="value" />
+                <circle cx="6" cy="6" r="6" :fill="'rgb(' + value + ')'" />
               </svg>
             </li>
           </ul>

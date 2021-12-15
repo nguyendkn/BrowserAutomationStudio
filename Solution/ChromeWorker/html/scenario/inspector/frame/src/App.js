@@ -20,7 +20,7 @@ window.App = {
         props: {
           data: {},
           title: 'tabs.resourcesEmpty',
-          styles: { '--group-br': '10px' },
+          styles: { '--group-br': '9px' },
         },
       },
       {

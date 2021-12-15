@@ -268,10 +268,8 @@
 .group-item {
   --color-lighten: rgba(var(--color-rgb), 0.3);
   --color-normal: rgba(var(--color-rgb), 1.0);
-  background: var(--color-normal);
   border-radius: var(--group-br);
   overflow: hidden;
-  padding: 1px 1px;
 }
 
 .group-item-controls > button + button {
@@ -341,8 +339,19 @@
   display: flex;
 }
 
+.group-item-header:hover {
+  background: rgba(var(--color-rgb), 0.5);
+}
+
+.group-item-header:focus {
+  background: rgba(var(--color-rgb), 0.5);
+}
+
 .group-item-content {
+  border-radius: 0 0 var(--group-br) var(--group-br);
   background: rgba(var(--color-rgb), 0.08);
+  border: 1px solid var(--color-normal);
+  border-top-width: 0;
   padding: 4px 0;
 }
 

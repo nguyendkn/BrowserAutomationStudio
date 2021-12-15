@@ -31,11 +31,14 @@ window.GroupsItem = {
   },
 
   data() {
-    const colors = ['#c0bd9b', '#9acbe6', '#8ec48f', '#d9d9d9', '#f69b93'];
-    // const colors = ['brown', 'blue', 'green', 'gray', 'red'];
-
     return {
-      colors,
+      colors: {
+        brown: '#c0bd9b',
+        green: '#9acbe6',
+        blue: '#8ec48f',
+        gray: '#d9d9d9',
+        red: '#f69b93',
+      },
       editMode: false,
       expanded: false,
       newName: this.name,
@@ -49,10 +52,10 @@ window.GroupsItem = {
     },
 
     style() {
-      const { newColor } = this;
+      const color = this.colors[this.newColor];
       return {
-        '--group-color': newColor,
-        '--group-color-rgba': color2K.opacify(newColor, -0.76),
+        '--group-color': color,
+        '--group-color-rgba': color2K.opacify(color, -0.76),
       };
     },
   },
@@ -89,9 +92,9 @@ window.GroupsItem = {
         <input ref="input" v-model="newName" :disabled="!editMode" maxlength="30" spellcheck="false" type="text" @keydown.enter="update" @blur="() => {}">
         <div v-if="editMode" class="group-item-controls">
           <ul class="group-item-swatches">
-            <li v-for="color in colors" class="group-item-swatch" @click="newColor = color">
+            <li v-for="(value, key) in colors" class="group-item-swatch" @click="newColor = key">
               <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" style="display: block;">
-                <circle cx="6" cy="6" r="6" :fill="color" />
+                <circle cx="6" cy="6" r="6" :fill="value" />
               </svg>
             </li>
           </ul>

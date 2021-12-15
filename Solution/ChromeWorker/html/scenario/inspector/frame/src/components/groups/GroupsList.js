@@ -20,7 +20,7 @@ window.GroupsList = {
       {
         id: uniqueId(),
         name: 'Main',
-        color: '#c0bd9b',
+        color: 'brown',
         primary: true,
         items: Object.keys(this.source),
       },
@@ -66,7 +66,7 @@ window.GroupsList = {
       this.groups.push({
         id: uniqueId(),
         name: 'Group',
-        color: '#c0bd9b',
+        color: 'brown',
         primary: false,
         items: [],
       });

@@ -34,8 +34,8 @@ window.GroupsItem = {
     return {
       colors: {
         brown: '#c0bd9b',
-        green: '#9acbe6',
-        blue: '#8ec48f',
+        green: '#8ec48f',
+        blue: '#9acbe6',
         gray: '#d9d9d9',
         red: '#f69b93',
       },

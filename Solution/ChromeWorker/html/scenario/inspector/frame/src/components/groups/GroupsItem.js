@@ -52,10 +52,8 @@ window.GroupsItem = {
     },
 
     style() {
-      const color = this.colors[this.newColor];
       return {
-        '--color-lighten': `rgba(${color}, 0.3)`,
-        '--color-normal': `rgba(${color}, 1.0)`,
+        '--color-rgb': this.colors[this.newColor],
       };
     },
   },

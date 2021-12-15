@@ -141,8 +141,8 @@
 }
 
 .app-toolbar-menu > li > hr {
-  border: 0;
-  border-top: 1px solid #606060;
+  border: 0 solid #606060;
+  border-top-width: 1px;
   margin: 10px 0;
 }
 

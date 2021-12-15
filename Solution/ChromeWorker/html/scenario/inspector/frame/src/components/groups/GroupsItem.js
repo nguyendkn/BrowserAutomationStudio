@@ -32,6 +32,7 @@ window.GroupsItem = {
 
   data() {
     const colors = ['#c0bd9b', '#9acbe6', '#8ec48f', '#d9d9d9', '#f69b93'];
+    // const colors = ['brown', 'blue', 'green', 'gray', 'red'];
 
     return {
       colors,

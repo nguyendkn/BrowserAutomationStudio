@@ -361,6 +361,14 @@
   user-select: none;
 } */
 
+.jt-node:hover {
+  background: var(--group-color-rgba);
+}
+
+.jt-node:focus {
+  background: var(--group-color-rgba);
+}
+
 .jt-node {
   position: relative;
   display: block;

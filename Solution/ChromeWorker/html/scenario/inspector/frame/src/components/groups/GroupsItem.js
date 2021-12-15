@@ -47,6 +47,14 @@ window.GroupsItem = {
     isEmpty() {
       return !this.items.length;
     },
+
+    style() {
+      const { newColor } = this;
+      return {
+        '--group-color': newColor,
+        '--group-color-rgba': color2K.opacify(newColor, -0.76),
+      };
+    },
   },
 
   methods: {
@@ -73,7 +81,7 @@ window.GroupsItem = {
   },
 
   template: html`
-    <li class="group-item" :style="{ '--group-color': newColor }">
+    <li class="group-item" :style="style">
       <div class="group-item-header">
         <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M6.00024 3.5v-2H.00024414v12H16.0002v-10H6.00024Z" fill="#606060" stroke="#606060" />

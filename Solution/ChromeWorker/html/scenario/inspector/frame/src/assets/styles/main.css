@@ -317,6 +317,7 @@
 }
 
 .group-item-swatch {
+  border: thin solid;
   border-radius: 50%;
   cursor: pointer;
   padding: 1px;
@@ -382,6 +383,7 @@
 
 .jt-node {
   position: relative;
+  padding: 5px 0;
   display: block;
 }
 

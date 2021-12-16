@@ -73,9 +73,8 @@ window.JsonTreeNode = {
   template: html`
     <span class="jt-node">
       <span class="jt-node-label">
-        <slot name="label" :label="name">{{ name }}</slot>
+        <slot name="label" :label="name">{{ name }}</slot><span>:&nbsp;</span>
       </span>
-      <span class="jt-node-colon">:&nbsp;</span>
       <span :style="{ color }" class="jt-node-value">
         <template v-if="type === 'undefined' || type === 'null'">
           {{ String(value) }}
@@ -113,11 +112,11 @@ window.JsonTreeNode = {
         <template v-else>{{ value }}</template>
       </span>
       <div style="position: absolute; display: flex; right: 0; top: 0;">
-        <button @click="edit">
-          <icon-edit />
+        <button type="button" @click="edit">
+          <icon-edit style="display: block;" />
         </button>
-        <button v-if="type === 'object' || type  === 'array'" @click="toggle" style="margin-left: 12px;">
-          <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
+        <button v-if="type === 'object' || type  === 'array'" type="button" style="margin-left: 12px;" @click="toggle">
+          <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" style="display: block;" />
         </button>
       </div>
     </span>

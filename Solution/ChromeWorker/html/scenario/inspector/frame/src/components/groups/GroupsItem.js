@@ -59,10 +59,10 @@ window.GroupsItem = {
   },
 
   methods: {
-    update() {
+    update(cancel) {
       this.$emit('update', this.id, {
-        color: this.newColor,
-        name: this.newName,
+        color: cancel ? (this.newColor = this.color) : this.newColor,
+        name: cancel ? (this.newName = this.name) : this.newName,
       });
       this.isEditing = false;
     },
@@ -71,9 +71,19 @@ window.GroupsItem = {
       this.$emit('remove', this.id);
     },
 
+    accept() {
+      this.update(false);
+    },
+
+    cancel() {
+      this.update(true);
+    },
+
     edit() {
       this.isEditing = true;
-      this.$nextTick(() => this.$refs.input.focus());
+      this.$nextTick(() => {
+        this.$refs.input.focus();
+      });
     },
   },
 
@@ -83,7 +93,7 @@ window.GroupsItem = {
         <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
         </svg>
-        <input ref="input" v-model="newName" :disabled="!isEditing" maxlength="30" spellcheck="false" type="text" @keydown.enter="update" @blur="() => {}">
+        <input ref="input" v-model="newName" :disabled="!isEditing" maxlength="30" spellcheck="false" type="text" @keydown.enter="accept" @keydown.esc="cancel">
         <div v-if="isEditing" class="group-item-controls">
           <ul class="group-item-swatches">
             <li v-for="(value, key) in colors" class="group-item-swatch" :style="{ borderColor: newColor === key ? 'rgb(' + value + ')' : 'transparent' }" @click="newColor = key">

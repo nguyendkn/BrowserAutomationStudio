@@ -405,7 +405,7 @@
   border-top-left-radius: 4px;
   background-color: #f1f1f1;
   position: fixed;
-  bottom: 30px;
+  bottom: 32px;
   z-index: 7;
   right: 0;
 }
@@ -449,15 +449,14 @@ label
   margin-bottom:10px;
 }
 
-.threads
-{
+.threads {
   border-bottom: 1px solid #bcbcbc;
-  width:100%;
-  position:fixed ;
-  top:0px;
-  right:0px;
-  z-index: 3;
   background-color: #fafafa;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  right: 0;
+  top: 0;
 }
 
 #findbutton
@@ -502,7 +501,6 @@ label
   border-top: 1px solid #dbdbdb;
   text-align: center;
   line-height: 30px;
-  max-height: 30px;
 }
 
 #FunctionName
@@ -1157,7 +1155,6 @@ label
   flex-flow: column;
   position: sticky;
   display: flex;
-  width: 100%;
   z-index: 9;
   bottom: 0;
   right: 0;

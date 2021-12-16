@@ -47,10 +47,6 @@ window.GroupsItem = {
   },
 
   computed: {
-    isEmpty() {
-      return !this.items.length;
-    },
-
     style() {
       return {
         '--color-rgb': this.colors[this.newColor],
@@ -123,10 +119,10 @@ window.GroupsItem = {
         </div>
       </div>
       <draggable v-show="!isExpanded" class="group-item-content" :list="items" group="items" :disabled="true">
-        <template v-if="isEmpty" slot="header">
+        <slot v-if="items.length"></slot>
+        <template v-else slot="header">
           <div class="group-item-title" v-t="'groups.empty'"></div>
         </template>
-        <slot v-else></slot>
       </draggable>
     </li>
   `,

@@ -37,10 +37,10 @@ window.GroupsItem = {
       isExpanded: false,
       isEditing: false,
       colors: {
-        brown: '192, 189, 155',
-        green: '142, 196, 143',
-        blue: '154, 203, 230',
         gray: '217, 217, 217',
+        brown: '192, 189, 155',
+        blue: '154, 203, 230',
+        green: '142, 196, 143',
         red: '246, 155, 147',
       },
     };

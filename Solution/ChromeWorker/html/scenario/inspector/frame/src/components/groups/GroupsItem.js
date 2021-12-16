@@ -32,6 +32,10 @@ window.GroupsItem = {
 
   data() {
     return {
+      newColor: this.color,
+      newName: this.name,
+      isExpanded: false,
+      isEditing: false,
       colors: {
         brown: '192, 189, 155',
         green: '142, 196, 143',
@@ -39,10 +43,6 @@ window.GroupsItem = {
         gray: '217, 217, 217',
         red: '246, 155, 147',
       },
-      editMode: false,
-      expanded: false,
-      newName: this.name,
-      newColor: this.color,
     };
   },
 
@@ -64,31 +64,27 @@ window.GroupsItem = {
         color: this.newColor,
         name: this.newName,
       });
-      this.editMode = false;
+      this.isEditing = false;
     },
 
     remove() {
       this.$emit('remove', this.id);
     },
 
-    toggle() {
-      this.expanded = !this.expanded;
-    },
-
     edit() {
-      this.editMode = true;
+      this.isEditing = true;
       this.$nextTick(() => this.$refs.input.focus());
     },
   },
 
   template: html`
     <li class="group-item" :style="style">
-      <div class="group-item-header" :style="editMode ? { '--opacity': 1.0 } : {}">
+      <div class="group-item-header" :style="isEditing ? { '--opacity': 1.0 } : {}">
         <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
         </svg>
-        <input ref="input" v-model="newName" :disabled="!editMode" maxlength="30" spellcheck="false" type="text" @keydown.enter="update" @blur="() => {}">
-        <div v-if="editMode" class="group-item-controls">
+        <input ref="input" v-model="newName" :disabled="!isEditing" maxlength="30" spellcheck="false" type="text" @keydown.enter="update" @blur="() => {}">
+        <div v-if="isEditing" class="group-item-controls">
           <ul class="group-item-swatches">
             <li v-for="(value, key) in colors" class="group-item-swatch" :style="{ borderColor: newColor === key ? 'rgb(' + value + ')' : 'transparent' }" @click="newColor = key">
               <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" style="display: block;">
@@ -111,12 +107,12 @@ window.GroupsItem = {
               <icon-edit />
             </button>
           </template>
-          <button type="button" @click="toggle">
-            <icon-chevron :style="{ transform: expanded ? 'rotate(180deg)' : '' }" />
+          <button type="button" @click="isExpanded = !isExpanded">
+            <icon-chevron :style="{ transform: isExpanded ? 'rotate(180deg)' : '' }" />
           </button>
         </div>
       </div>
-      <draggable v-show="!expanded" class="group-item-content" :list="items" group="items" :disabled="true">
+      <draggable v-show="!isExpanded" class="group-item-content" :list="items" group="items" :disabled="true">
         <template v-if="isEmpty" slot="header">
           <div class="group-item-title" v-t="'groups.empty'"></div>
         </template>

@@ -48,7 +48,7 @@
         this.resizable = interact($el[0]).resizable({
           listeners: {
             move({ client: { y } }) {
-              $el.outerHeight(Math.max(120, window.outerHeight - Math.max(300, y) - 30));
+              $el.outerHeight(Math.max(110, window.outerHeight - Math.max(300, y) - 30));
             },
           },
           edges: { top: true },

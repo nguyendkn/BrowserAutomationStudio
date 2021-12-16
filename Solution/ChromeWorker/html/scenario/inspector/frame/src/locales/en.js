@@ -31,7 +31,7 @@
     placeholder: 'Search by name',
   },
   groups: {
-    empty: 'This group is empty.\nYou can drag the elements here.',
+    empty: 'This group is empty. You can drag the elements here.',
   },
   items: '{n} items | {n} item | {n} items',
 };

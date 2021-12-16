@@ -265,11 +265,12 @@
 
 /* Groups */
 
-.group-item {
-  --color-lighten: rgba(var(--color-rgb), 0.3);
-  --color-normal: rgba(var(--color-rgb), 1.0);
-  border-radius: var(--group-br);
-  overflow: hidden;
+.group-item-controls > button:focus > svg {
+  opacity: 1.0;
+}
+
+.group-item-controls > button:hover > svg {
+  opacity: 0.5;
 }
 
 .group-item-controls > button + button {
@@ -357,6 +358,13 @@
 
 .group-list > li + li {
   margin-top: 4px;
+}
+
+.group-item {
+  --color-lighten: rgba(var(--color-rgb), 0.3);
+  --color-normal: rgba(var(--color-rgb), 1.0);
+  border-radius: var(--group-br);
+  overflow: hidden;
 }
 
 /* Json tree */

@@ -409,11 +409,7 @@
 
 /* Placeholder */
 
-textarea::placeholder {
-  color: inherit;
-}
-
-input::placeholder {
+::placeholder {
   color: inherit;
 }
 

@@ -58,16 +58,12 @@
     },
 
     hide() {
-      if (this.$el.is(':visible')) {
-        this.$el.hide();
-      }
+      this.$el.hide();
       return this;
     },
 
     show() {
-      if (this.$el.is(':hidden')) {
-        this.$el.show();
-      }
+      this.$el.show();
       return this;
     },
   });

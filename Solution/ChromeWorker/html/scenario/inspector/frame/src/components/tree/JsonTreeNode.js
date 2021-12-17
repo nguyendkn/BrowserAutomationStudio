@@ -35,7 +35,7 @@ window.JsonTreeNode = {
   computed: {
     keys() {
       const { value } = this;
-      return value == null ? [] : Object.keys(value);
+      return value ? Object.keys(value) : [];
     },
 
     color() {

@@ -37,7 +37,7 @@ window.GroupsItem = {
       isExpanded: false,
       isEditing: false,
       colors: {
-        gray: '217, 217, 217',
+        gray: '209, 209, 209',
         brown: '192, 189, 155',
         blue: '154, 203, 230',
         green: '142, 196, 143',
@@ -85,7 +85,7 @@ window.GroupsItem = {
 
   template: html`
     <li class="group-item" :style="style">
-      <div class="group-item-header" :style="isEditing ? { '--opacity': 1.0 } : {}">
+      <div class="group-item-header">
         <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
         </svg>

@@ -334,20 +334,12 @@
 }
 
 .group-item-header {
-  background: rgba(var(--color-rgb), var(--opacity, 1.0));
+  background: var(--color-normal);
   align-items: center;
   line-height: 18px;
   padding: 3px 8px;
   color: #606060;
   display: flex;
-}
-
-.group-item-header:hover {
-  --opacity: 0.5;
-}
-
-.group-item-header:focus {
-  --opacity: 0.5;
 }
 
 .group-item-content {

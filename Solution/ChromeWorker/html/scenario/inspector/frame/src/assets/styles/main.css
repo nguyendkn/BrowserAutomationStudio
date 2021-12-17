@@ -1,14 +1,17 @@
 /* Tabs */
 
 .app-tab > a > img {
-  padding-right: 8px;
+  margin-right: 8px;
+}
+
+.app-tab > a > svg {
+  margin-right: 8px;
 }
 
 .app-tab > a {
   text-decoration: none;
   align-items: center;
   line-height: 17px;
-  font-size: 14px;
   color: #606060;
   display: flex;
 }
@@ -38,13 +41,14 @@
 
 .app-header {
   background: #f6f6f6;
-  padding: 12px 16px;
+  padding: 13px 16px;
   display: flex;
 }
 
 #app {
   letter-spacing: -0.2px;
   flex-flow: column;
+  font-size: 14px;
   display: flex;
   height: 100%;
 }
@@ -67,7 +71,6 @@
 .app-panel {
   flex-flow: column;
   overflow: hidden;
-  font-size: 14px;
   display: flex;
   flex: 1;
 }

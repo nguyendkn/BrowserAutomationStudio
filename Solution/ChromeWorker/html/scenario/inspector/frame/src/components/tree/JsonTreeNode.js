@@ -115,7 +115,7 @@ window.JsonTreeNode = {
         <button type="button" @click="edit">
           <icon-edit style="display: block;" />
         </button>
-        <button v-if="type === 'object' || type  === 'array'" type="button" style="margin-left: 12px;" @click="toggle">
+        <button v-if="(type === 'object' || type  === 'array') && keys.length" type="button" style="margin-left: 12px;" @click="toggle">
           <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" style="display: block;" />
         </button>
       </div>

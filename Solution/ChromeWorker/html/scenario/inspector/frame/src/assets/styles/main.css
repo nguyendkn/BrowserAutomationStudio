@@ -239,7 +239,6 @@
 
 .callstack-item {
   border: 1px solid transparent;
-  user-select: none;
   line-height: 18px;
 }
 
@@ -327,12 +326,11 @@
 }
 
 .group-item-title {
-  color: var(--color-normal);
-  white-space: pre-wrap;
   text-align: center;
   user-select: none;
   line-height: 18px;
   padding: 12px 0;
+  color: #606060;
 }
 
 .group-item-header {

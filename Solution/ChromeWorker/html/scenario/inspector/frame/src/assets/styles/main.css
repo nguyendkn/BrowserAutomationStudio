@@ -78,7 +78,7 @@
 /* Toolbar */
 
 .app-toolbar .dropdown.open > button > svg > path {
-  fill: #ffffff;
+  fill: #fff;
 }
 
 .app-toolbar .dropdown.open > button {
@@ -154,9 +154,9 @@
   text-decoration: none;
   align-items: center;
   padding: 3px 12px;
-  color: #ffffff;
   display: flex;
   opacity: 0.5;
+  color: #fff;
 }
 
 .app-toolbar-menu > li {
@@ -309,6 +309,14 @@
   margin-left: 5px;
 }
 
+.group-item-swatch > svg {
+  display: block;
+}
+
+.group-item-swatch > img {
+  display: block;
+}
+
 .group-item-swatches {
   border-right: 1px solid #f6f6f3;
   border-left: 1px solid #f6f6f3;
@@ -327,7 +335,6 @@
 
 .group-item-title {
   text-align: center;
-  user-select: none;
   line-height: 18px;
   padding: 12px 0;
   color: #606060;
@@ -356,7 +363,7 @@
   --color-lighten: rgba(var(--color-rgb), 0.24);
   --color-normal: rgba(var(--color-rgb), 1.00);
   border: 1px solid var(--color-normal);
-  border-radius: var(--group-br);
+  border-radius: var(--group-br, 0);
   overflow: hidden;
 }
 

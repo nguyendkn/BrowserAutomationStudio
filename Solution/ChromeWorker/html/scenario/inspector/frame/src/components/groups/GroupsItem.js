@@ -37,10 +37,10 @@ window.GroupsItem = {
       isExpanded: false,
       isEditing: false,
       colors: {
-        gray: '209, 209, 209',
+        green: '142, 196, 143',
         brown: '192, 189, 155',
         blue: '154, 203, 230',
-        green: '142, 196, 143',
+        gray: '209, 209, 209',
         red: '246, 155, 147',
       },
     };
@@ -93,7 +93,7 @@ window.GroupsItem = {
         <div v-if="isEditing" class="group-item-controls">
           <ul class="group-item-swatches">
             <li v-for="(value, key) in colors" class="group-item-swatch" :style="{ borderColor: newColor === key ? 'rgb(' + value + ')' : 'transparent' }" @click="newColor = key">
-              <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+              <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="6" cy="6" r="6" :fill="'rgb(' + value + ')'" />
               </svg>
             </li>

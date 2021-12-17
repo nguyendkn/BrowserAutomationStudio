@@ -45,6 +45,10 @@ window.JsonTreeNode = {
     type() {
       return getType(this.value);
     },
+
+    size() {
+      return this.keys.length;
+    },
   },
 
   methods: {
@@ -71,10 +75,8 @@ window.JsonTreeNode = {
   },
 
   template: html`
-    <span class="jt-node">
-      <span class="jt-node-label">
-        <slot name="label" :label="name">{{ name }}</slot><span>:&nbsp;</span>
-      </span>
+    <div class="jt-node">
+      <span class="jt-node-label"><slot name="label" :label="name">{{ name }}</slot><span>:&nbsp;</span></span>
       <span :style="{ color }" class="jt-node-value">
         <template v-if="type === 'undefined' || type === 'null'">
           {{ String(value) }}
@@ -92,7 +94,7 @@ window.JsonTreeNode = {
             :value="value[key]"
             :path="path.concat(key)"
           />
-          <span v-show="!isExpanded">{{ $tc('items', keys.length) }}</span>
+          <span v-show="!isExpanded">{{ $tc('items', size) }}</span>
           <span class="jt-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
@@ -105,20 +107,20 @@ window.JsonTreeNode = {
             :value="value[key]"
             :path="path.concat(key)"
           />
-          <span v-show="!isExpanded">{{ $tc('items', keys.length) }}</span>
+          <span v-show="!isExpanded">{{ $tc('items', size) }}</span>
           <span class="jt-bracket">]</span>
         </template>
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
         <template v-else>{{ value }}</template>
       </span>
-      <div style="position: absolute; display: flex; right: 0; top: 0;">
+      <div style="position: absolute; display: flex; right: 0; top: 6px;">
         <button type="button" @click="edit">
           <icon-edit style="display: block;" />
         </button>
-        <button v-if="(type === 'object' || type  === 'array') && keys.length" type="button" style="margin-left: 12px;" @click="toggle">
+        <button v-if="(type === 'object' || type  === 'array') && size" type="button" style="margin-left: 12px;" @click="toggle">
           <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" style="display: block;" />
         </button>
       </div>
-    </span>
+    </div>
   `,
 };

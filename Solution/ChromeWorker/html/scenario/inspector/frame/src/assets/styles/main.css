@@ -384,8 +384,8 @@
 
 .jt-node {
   position: relative;
+  line-height: 18px;
   padding: 5px 0;
-  display: block;
 }
 
 /* Scrollbar */

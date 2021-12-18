@@ -32,6 +32,7 @@ window.GroupsPanel = {
     return {
       sortings: sortings.map((name, idx) => ({ name, active: idx === 3 })),
       filters: filters.map(name => ({ name, active: true })),
+      highlight: false,
       metadata: {},
       history: [],
       query: '',

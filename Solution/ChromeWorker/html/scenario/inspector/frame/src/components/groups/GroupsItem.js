@@ -57,6 +57,7 @@ window.GroupsItem = {
   methods: {
     update(cancel) {
       if (!this.isEditing) return;
+      if (!this.newName) cancel = true;
       this.$emit('update', this.id, {
         color: cancel ? (this.newColor = this.color) : this.newColor,
         name: cancel ? (this.newName = this.name) : this.newName,
@@ -91,7 +92,7 @@ window.GroupsItem = {
           <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
         </svg>
         <div class="group-item-inputs" v-click-outside="accept">
-          <input ref="input" v-model="newName" :disabled="!isEditing" maxlength="30" spellcheck="false" type="text" @keydown.enter="accept" @keydown.esc="cancel">
+          <input ref="input" v-model.trim="newName" :disabled="!isEditing" maxlength="30" spellcheck="false" type="text" @keydown.enter="accept" @keydown.esc="cancel">
           <div v-if="isEditing" class="group-item-controls">
             <ul class="group-item-swatches">
               <li v-for="(value, key) in colors" class="group-item-swatch" :style="{ borderColor: newColor === key ? 'rgb(' + value + ')' : 'transparent' }" @click="newColor = key">

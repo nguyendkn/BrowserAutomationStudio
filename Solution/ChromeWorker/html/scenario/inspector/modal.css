@@ -38,6 +38,16 @@
   color: #606060;
 }
 
+.inspector-modal-form input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.inspector-modal-form input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .inspector-modal-form.invalid > div > textarea,
 .inspector-modal-form.invalid > div > input {
   background: rgba(216, 105, 95, 0.16);

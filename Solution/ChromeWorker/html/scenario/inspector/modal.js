@@ -168,9 +168,9 @@
                   <% } else if (item === 'string') { %>
                     <textarea <%= required %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'number') { %>
-                    <input type="number" value="<%- match ? value : 0 %>" <%= required %>>
+                    <input type="number" value="<%- match ? value : 0 %>" step="any" <%= required %>>
                   <% } else if (item === 'date' ) { %>
-                    <input type="text" value="<%- match ? value : '' %>" <%= required %>>
+                    <input type="text" value="<%- match ? value : '' %>" step="any" <%= required %>>
                   <% } else { %>
                     <input type="hidden" value="<%= item %>">
                   <% } %>

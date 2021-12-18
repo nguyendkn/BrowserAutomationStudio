@@ -52,8 +52,8 @@ window.App = {
 
       if (type === 'update' && payload) {
         this.tabs.forEach(tab => {
-          const json = payload[tab.name];
-          if (json) tab.props.data = json;
+          const data = payload[tab.name];
+          if (data) tab.props.data = data;
         });
       }
     },

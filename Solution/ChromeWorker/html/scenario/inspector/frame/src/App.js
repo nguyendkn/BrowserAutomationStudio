@@ -7,33 +7,33 @@ window.App = {
     const tabs = [
       {
         name: 'variables',
-        component: GroupsPanel,
         props: {
           data: {},
           title: 'tabs.variablesEmpty',
           styles: { '--group-br': '0px' },
         },
+        component: GroupsPanel,
       },
       {
         name: 'resources',
-        component: GroupsPanel,
         props: {
           data: {},
           title: 'tabs.resourcesEmpty',
           styles: { '--group-br': '9px' },
         },
+        component: GroupsPanel,
       },
       {
         name: 'callstack',
-        component: CallstackPanel,
         props: {
           data: [],
           title: 'tabs.callstackEmpty',
         },
+        component: CallstackPanel,
       },
     ];
 
-    return { tab: tabs[0], tabs };
+    return { tabs, tab: tabs[0] };
   },
 
   destroyed() {

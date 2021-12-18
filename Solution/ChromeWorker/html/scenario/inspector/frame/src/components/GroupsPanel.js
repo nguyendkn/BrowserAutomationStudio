@@ -92,18 +92,20 @@ window.GroupsPanel = {
 
   watch: {
     data($new, $old) {
+      const has = Object.prototype.hasOwnProperty;
       const diff = jsonpatch.compare($old, $new);
       const highlight = this.highlight;
       const metadata = this.metadata;
 
       if (diff.length) {
-        let history = [];
+        const history = [];
 
         diff.forEach(({ path, op }) => {
+          if (path.split('/').length > 2) return;
           const now = performance.now();
           history.push(path);
 
-          if (Object.prototype.hasOwnProperty.call(metadata, path)) {
+          if (has.call(metadata, path)) {
             if (op === 'remove') return delete metadata[path];
             metadata[path].modifiedAt = now;
             metadata[path].usages += 1;
@@ -112,7 +114,7 @@ window.GroupsPanel = {
           }
         });
 
-        this.history = [...this.history, ...history].slice(-100);
+        this.history = this.history.concat(history).slice(-100);
       }
 
       Object.entries(metadata).forEach(([path, item]) => {

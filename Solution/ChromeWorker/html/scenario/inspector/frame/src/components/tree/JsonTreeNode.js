@@ -23,8 +23,8 @@ window.JsonTreeNode = {
     const colors = {
       undefined: '#8546bc',
       boolean: '#2525cc',
-      number: '#d036d0',
       string: '#2db669',
+      number: '#d036d0',
       date: '#ce904a',
       null: '#808080',
     };
@@ -117,7 +117,7 @@ window.JsonTreeNode = {
         <button type="button" @click="edit">
           <icon-edit style="display: block;" />
         </button>
-        <button v-if="(type === 'object' || type  === 'array') && size" type="button" style="margin-left: 12px;" @click="toggle">
+        <button v-if="(type === 'object' || type === 'array') && size" type="button" style="margin-left: 12px;" @click="toggle">
           <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" style="display: block;" />
         </button>
       </div>

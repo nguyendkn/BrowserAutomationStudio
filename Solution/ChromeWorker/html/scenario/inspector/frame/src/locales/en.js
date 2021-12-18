@@ -3,10 +3,10 @@
 (window.locales || (window.locales = {})).en = {
   tabs: {
     variables: 'Variables',
-    variablesEmpty: 'Variables list is empty',
     resources: 'Resources',
-    resourcesEmpty: 'Resources list is empty',
     callstack: 'Call stack',
+    variablesEmpty: 'Variables list is empty',
+    resourcesEmpty: 'Resources list is empty',
     callstackEmpty: 'Call stack is empty',
   },
   toolbar: {

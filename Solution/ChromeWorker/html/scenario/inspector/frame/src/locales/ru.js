@@ -3,10 +3,10 @@
 (window.locales || (window.locales = {})).ru = {
   tabs: {
     variables: 'Переменные',
-    variablesEmpty: 'Список переменных пуст',
     resources: 'Ресурсы',
-    resourcesEmpty: 'Список ресурсов пуст',
     callstack: 'Стек вызовов',
+    variablesEmpty: 'Список переменных пуст',
+    resourcesEmpty: 'Список ресурсов пуст',
     callstackEmpty: 'Стек вызовов пуст',
   },
   toolbar: {

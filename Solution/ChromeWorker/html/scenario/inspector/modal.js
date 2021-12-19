@@ -151,25 +151,25 @@
             </select>
             <form class="inspector-modal-form" spellcheck="false" novalidate>
               <% types.forEach(item => { %>
-                <% const match = item === type, required = match && mode !== 'resource' ? 'required' : '' %>
+                <% const match = item === type, modifier = mode === 'resource' ? 'readonly' : match ? 'required' : '' %>
                 <div data-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>
                     <% ['false', 'true'].forEach((val, idx) => { %>
                       <div class="pretty p-default p-round" style="margin: 9px 12px;">
-                        <input type="radio" name="boolean" value="<%= val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= required %>>
+                        <input type="radio" name="boolean" value="<%= val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= modifier %>>
                         <div class="state">
                           <label><%= $t('inspector.' + val) %></label>
                         </div>
                       </div>
                     <% }) %>
                   <% } else if (item === 'custom') { %>
-                    <textarea <%= required %>><%- match ? value : '' %></textarea>
+                    <textarea <%= modifier %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'string') { %>
-                    <textarea <%= required %>><%- match ? value : '' %></textarea>
+                    <textarea <%= modifier %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'number') { %>
-                    <input type="number" value="<%- match ? value : 0 %>" step="any" <%= required %>>
+                    <input type="number" value="<%- match ? value : 0 %>" step="any" <%= modifier %>>
                   <% } else if (item === 'date' ) { %>
-                    <input type="text" value="<%- match ? value : '' %>" step="any" <%= required %>>
+                    <input type="text" value="<%- match ? value : '' %>" step="any" <%= modifier %>>
                   <% } else { %>
                     <input type="hidden" value="<%= item %>">
                   <% } %>

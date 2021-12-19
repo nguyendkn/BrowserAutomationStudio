@@ -33,11 +33,6 @@
   background-color: #9d996c !important;
 }
 
-.inspector-modal-form .pretty .state label {
-  vertical-align: middle;
-  color: #606060;
-}
-
 .inspector-modal-form input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
@@ -60,7 +55,6 @@
   line-height: 18px;
   min-height: 36px;
   max-height: 38vh;
-  color: #606060;
   width: 100%;
   outline: 0;
   border: 0;
@@ -193,7 +187,6 @@
   background: #f7f7f8;
   padding: 12px 14px;
   margin-top: 20px;
-  color: #606060;
   display: flex;
 }
 
@@ -203,6 +196,7 @@
   letter-spacing: -0.2px;
   position: relative;
   line-height: 18px;
+  color: #606060;
   padding: 24px;
   margin: 0 8px;
 }
@@ -221,7 +215,6 @@
 
 .inspector-modal-header {
   position: relative;
-  color: #606060;
 }
 
 @media (max-width: 400px) {

@@ -3,11 +3,9 @@
 .inspector-modal-select + .dropdown-menu li > a:hover,
 .inspector-modal-select + .dropdown-menu li > a:focus {
   background: #606060;
-  color: #fff;
 }
 
 .inspector-modal-select + .dropdown-menu li > a {
-  border: thin solid transparent;
   justify-content: space-between;
   background: #787878;
   line-height: 17px;
@@ -205,10 +203,10 @@
   letter-spacing: -0.2px;
   border-bottom: none;
   background: #606060;
-  padding: 12px 12px;
   line-height: 17px;
   border-radius: 0;
   font-size: 13px;
+  padding: 12px;
   color: #fff;
   outline: 0;
 }

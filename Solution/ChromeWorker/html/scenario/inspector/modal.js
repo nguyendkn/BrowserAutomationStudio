@@ -56,9 +56,8 @@
 
       'hidden.bs.modal': 'cancel',
 
-      'input form :input'(e) {
+      'input :input[required]'(e) {
         const el = e.target, model = this.model;
-        if (model.get('mode') === 'resource') return;
         if (el.type === 'radio' && !el.checked) return;
         const valid = model.get('type') === 'string' || el.checkValidity();
 
@@ -67,20 +66,20 @@
         model.set('value', el.value);
       },
 
-      'hidden.bs.select'(e) {
-        $(e.target.nextElementSibling).blur();
-      },
-
-      'loaded.bs.select'(e) {
-        $(e.target.nextElementSibling).blur();
-      },
-
-      'change select'(e) {
+      'changed.bs.select'(e) {
         this.model.set('type', e.target.value);
       },
 
+      'hidden.bs.select'(e) {
+        e.target.nextElementSibling.blur();
+      },
+
+      'loaded.bs.select'(e) {
+        e.target.nextElementSibling.blur();
+      },
+
       'keydown'(e) {
-        if (e.target.tagName !== 'TEXTAREA' && e.key === 'Enter') {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
           this.$('.btn-accept').click();
         }
         e.stopPropagation();

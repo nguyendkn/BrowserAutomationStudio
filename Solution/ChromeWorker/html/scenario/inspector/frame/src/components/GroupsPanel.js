@@ -49,9 +49,10 @@ window.GroupsPanel = {
     },
 
     sortedData() {
-      const { source, history, metadata, activeFilters, activeSortings } = this;
+      const { data, history, metadata, activeFilters, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
       const query = this.query.toLowerCase();
+      const source = this.transform(data);
 
       const result = Object.keys(source)
         .filter(key => {
@@ -83,10 +84,6 @@ window.GroupsPanel = {
 
     isEmpty() {
       return !Object.keys(this.data).length;
-    },
-
-    source() {
-      return this.transform(this.data);
     },
   },
 
@@ -129,7 +126,7 @@ window.GroupsPanel = {
 
   methods: {
     transform(data) {
-      const iteratee = (acc, key) => {
+      const callback = (acc, key) => {
         let val = data[key];
         if (typeof val === 'string') {
           if (val.startsWith('__UNDEFINED__')) {
@@ -140,9 +137,9 @@ window.GroupsPanel = {
         } else if (typeof val === 'object' && val) {
           val = this.transform(val);
         }
-        return (acc[key] = val, acc);
+        return acc[key] = val, acc;
       };
-      return Object.keys(data).reduce(iteratee, Array.isArray(data) ? [] : {});
+      return Object.keys(data).reduce(callback, Array.isArray(data) ? [] : {});
     },
   },
 

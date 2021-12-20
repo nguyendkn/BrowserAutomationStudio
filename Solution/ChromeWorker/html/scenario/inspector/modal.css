@@ -152,9 +152,17 @@
   margin: 0;
 }
 
+.inspector-modal-header > button:active {
+  opacity: 0.5;
+}
+
+.inspector-modal-header > button:hover {
+  opacity: 0.5;
+}
+
 .inspector-modal-header > h4 + h6 {
+  color: #60606099;
   margin-top: 3px;
-  opacity: 0.6;
 }
 
 .inspector-modal-header > h4 {
@@ -217,7 +225,7 @@
 
 @media (max-width: 400px) {
   .inspector-modal-footer {
-    flex-direction: column;
+    flex-flow: column;
   }
 
   .inspector-modal-footer > button + button {
@@ -231,7 +239,7 @@
 
 @media (min-width: 400px) {
   .inspector-modal-footer {
-    flex-direction: row;
+    flex-flow: row;
   }
 
   .inspector-modal-footer > button + button {

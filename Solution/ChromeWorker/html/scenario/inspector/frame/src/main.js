@@ -14,7 +14,7 @@ const i18n = new VueI18n({
     },
   },
   messages: { ...window.locales },
-  locale: new URL(window.location.href).searchParams.get('lang'),
+  locale: new URLSearchParams(window.location.search).get('lang'),
 });
 
 const store = new Vuex.Store({

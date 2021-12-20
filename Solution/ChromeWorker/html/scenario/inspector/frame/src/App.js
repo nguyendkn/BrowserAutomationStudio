@@ -50,7 +50,7 @@ window.App = {
     handleMessage({ data }) {
       const { type, payload } = data;
 
-      if (type === 'update' && payload) {
+      if (payload && type === 'update') {
         this.tabs.forEach(tab => {
           const data = payload[tab.name];
           if (data) tab.props.data = data;

@@ -55,18 +55,16 @@ window.GroupsList = {
   },
 
   methods: {
-    updateGroup(id, data) {
-      const index = this.getGroupIndex(id);
+    updateGroup(index, data) {
       Object.assign(this.groups[index], data);
     },
 
-    removeGroup(id, data) {
-      const index = this.getGroupIndex(id);
+    removeGroup(index, data) {
       this.groups.splice(index, 1);
     },
 
-    getGroupIndex(id) {
-      return this.groups.findIndex(group => group.id === id);
+    deleteGroup(index, data) {
+      this.groups.splice(index, 1);
     },
 
     addGroup() {
@@ -93,14 +91,14 @@ window.GroupsList = {
       tag="ul"
     >
       <groups-item
-        v-for="group in groups"
+        v-for="(group, index) in groups"
         :key="group.id"
         :name="group.name"
         :color="group.color"
         :items="group.items"
         :primary="group.primary"
-        @remove="removeGroup(group.id, $event)"
-        @update="updateGroup(group.id, $event)"
+        @update="updateGroup(index, $event)"
+        @remove="removeGroup(index, $event)"
       >
         <template v-for="key in group.items">
           <json-tree-node

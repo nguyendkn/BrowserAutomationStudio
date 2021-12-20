@@ -32,10 +32,6 @@ window.GroupsItem = {
 
   data() {
     return {
-      newColor: this.color,
-      newName: this.name,
-      isExpanded: false,
-      isEditing: false,
       colors: {
         green: '142, 196, 143',
         brown: '192, 189, 155',
@@ -43,6 +39,10 @@ window.GroupsItem = {
         gray: '209, 209, 209',
         red: '246, 155, 147',
       },
+      isEditing: false,
+      isExpanded: false,
+      newName: this.name,
+      newColor: this.color,
     };
   },
 
@@ -57,11 +57,17 @@ window.GroupsItem = {
   methods: {
     update(cancel) {
       if (!this.isEditing) return;
-      if (!this.newName) cancel = true;
-      this.$emit('update', this.id, {
-        color: cancel ? (this.newColor = this.color) : this.newColor,
-        name: cancel ? (this.newName = this.name) : this.newName,
-      });
+
+      if (this.newName && !cancel) {
+        this.$emit('update', this.id, {
+          color: this.newColor,
+          name: this.newName,
+        });
+      } else {
+        this.newColor = this.color;
+        this.newName = this.name;
+      }
+
       this.isEditing = false;
     },
 

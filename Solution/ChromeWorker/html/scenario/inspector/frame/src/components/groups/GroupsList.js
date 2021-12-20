@@ -95,9 +95,12 @@ window.GroupsList = {
       <groups-item
         v-for="group in groups"
         :key="group.id"
-        v-bind="group"
-        @remove="removeGroup"
-        @update="updateGroup"
+        :name="group.name"
+        :color="group.color"
+        :items="group.items"
+        :primary="group.primary"
+        @remove="removeGroup(group.id, $event)"
+        @update="updateGroup(group.id, $event)"
       >
         <template v-for="key in group.items">
           <json-tree-node

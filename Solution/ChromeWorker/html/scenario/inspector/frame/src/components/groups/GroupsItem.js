@@ -23,11 +23,6 @@ window.GroupsItem = {
       required: true,
       type: String,
     },
-
-    id: {
-      required: true,
-      type: String,
-    },
   },
 
   data() {
@@ -59,7 +54,7 @@ window.GroupsItem = {
       if (!this.isEditing) return;
 
       if (this.newName && !cancel) {
-        this.$emit('update', this.id, {
+        this.$emit('update', {
           color: this.newColor,
           name: this.newName,
         });
@@ -72,7 +67,7 @@ window.GroupsItem = {
     },
 
     remove() {
-      this.$emit('remove', this.id);
+      this.$emit('remove');
     },
 
     accept() {

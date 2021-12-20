@@ -5513,7 +5513,7 @@
     }
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
-      _Inspector.update(data);
+      _Inspector.send({ type: 'update', payload: JSON.parse(data) });
     }
 
     var IsChangedUsed = false

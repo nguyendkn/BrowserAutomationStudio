@@ -36,11 +36,6 @@
       };
     },
 
-    update(data) {
-      const payload = JSON.parse(data);
-      this.send({ type: 'update', payload });
-    },
-
     render() {
       if (!this.el.isConnected) {
         const { $el } = this.setElement('#inspector');

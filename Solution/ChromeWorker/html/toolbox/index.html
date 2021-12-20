@@ -6212,9 +6212,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         _set_action_info({ name: "If", expression: <%= JSON.stringify(original) %> });
         section_insert()
       })!
-      <% if(do_delete.length > 0){ %>
-        delete <%= do_delete %>;
-      <% } %>
+      <% if (do_delete.length) { %>delete <%= do_delete %>;<% } %>
   </script>
 
   <script type="text/template" id="proxy_code">

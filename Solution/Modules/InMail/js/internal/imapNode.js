@@ -6,7 +6,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return {
 			config: api.config,
 			timeout: api.timeout,
-			folder: api.folder,
+			box: api.box,
 			debug: _InMail.debug
 		};
 	};
@@ -19,15 +19,15 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 	};
 	
-	this.prepareFolder = function(folder, allowBlank){
-		folder = allowBlank ? _avoid_nil(folder, api.folder) : _avoid_nilb(folder, api.folder);
+	this.prepareBox = function(box, allowBlank){
+		box = allowBlank ? _avoid_nil(box, api.box) : _avoid_nilb(box, api.box);
 		
-		_validate_argument_type(folder, 'string', 'Folder name', '_InMail.imap');
-		if(!folder.length){
+		_validate_argument_type(box, 'string', 'Folder name', '_InMail.imap');
+		if(!box.length){
 			api.errorHandler('MAILBOX_NOT_SELECTED');
 		};
 		
-		return folder;
+		return box;
 	};
 
 	this.validateUIDList = function(uids, noError){
@@ -80,7 +80,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 			api.errorHandler('EMPTY_UID_LIST');
 		};
 		
-		return uids.join(',');
+		return uids;
 	};
 	
 	this.prepareCriteria = function(criteria){
@@ -136,9 +136,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.search = function(){
 		var criteria = api.prepareCriteria(_function_argument("criteria"));
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {criteria: criteria, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {criteria: criteria, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_Search", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 		
@@ -148,11 +148,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.esearch = function(){
 		var criteria = api.prepareCriteria(_function_argument("criteria"));
 		var options = _function_argument("options");
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
 		_validate_argument_type(options, ['array','string'], 'Options', '_InMail.imap');
 		
-		VAR_INMAIL_NODE_PARAMETERS = {criteria: criteria, options: options, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {criteria: criteria, options: options, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_Esearch", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 		
@@ -160,9 +160,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.searchLast = function(){
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_SearchLast", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 		
@@ -171,9 +171,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.count = function(){
 		var criteria = api.prepareCriteria(_function_argument("criteria"));
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {criteria: criteria, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {criteria: criteria, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_Count", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 		
@@ -183,7 +183,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.sort = function(){
 		var sorts = _function_argument("sorts");
 		var criteria = api.prepareCriteria(_function_argument("criteria"));
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
 		_validate_argument_type(sorts, ['array','string'], 'Sorting criteria', '_InMail.imap');
 		if(typeof sorts === 'string'){
@@ -193,7 +193,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 			api.errorHandler('EMPTY_SORT_CRITERIA');
 		};
 		
-		VAR_INMAIL_NODE_PARAMETERS = {sorts: sorts, criteria: criteria, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {sorts: sorts, criteria: criteria, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_Sort", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 		
@@ -203,9 +203,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.addFlags = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var flags = _function_argument("flags");
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, flags: flags, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, flags: flags, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_AddFlags", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
@@ -213,9 +213,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.delFlags = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var flags = _function_argument("flags");
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, flags: flags, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, flags: flags, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_DelFlags", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
@@ -223,9 +223,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.setFlags = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var flags = _function_argument("flags");
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, flags: flags, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, flags: flags, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_SetFlags", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
@@ -233,9 +233,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.addKeywords = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var keywords = _function_argument("keywords");
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, keywords: keywords, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, keywords: keywords, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_AddKeywords", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
@@ -243,9 +243,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.delKeywords = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var keywords = _function_argument("keywords");
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, keywords: keywords, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, keywords: keywords, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_DelKeywords", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
@@ -253,47 +253,72 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.setKeywords = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var keywords = _function_argument("keywords");
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, keywords: keywords, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, keywords: keywords, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_SetKeywords", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
 	
-	this.delMsgs = function(){
+	this.delMessages = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
-		var folder = api.prepareFolder(_function_argument("folder"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, folder: folder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, box: box, connect: api.getConnect()};
 		
-		_embedded("InMail_DelMsgs", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+		_embedded("InMail_DelMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
 	
-	this.copyMsgs = function(){
+	this.copyMessages = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
-		var folder = api.prepareFolder(_function_argument("folder"));
-		var toFolder = _function_argument("toFolder");
-		_validate_argument_type(toFolder, 'string', 'To folder', '_InMail.imap');
-		if(!toFolder.length){
+		var box = api.prepareBox(_function_argument("box"));
+		var toBox = _function_argument("toBox");
+		_validate_argument_type(toBox, 'string', 'To folder', '_InMail.imap');
+		if(!toBox.length){
 			api.errorHandler('TOBOX_NOT_SPECIFIED');
 		};
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, folder: folder, toFolder: toFolder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, box: box, toBox: toBox, connect: api.getConnect()};
 		
-		_embedded("InMail_DelMsgs", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+		_embedded("InMail_DelMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
 	
-	this.moveMsgs = function(){
+	this.moveMessages = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
-		var folder = api.prepareFolder(_function_argument("folder"));
-		var toFolder = _function_argument("toFolder");
-		_validate_argument_type(toFolder, 'string', 'To folder', '_InMail.imap');
-		if(!toFolder.length){
+		var box = api.prepareBox(_function_argument("box"));
+		var toBox = _function_argument("toBox");
+		_validate_argument_type(toBox, 'string', 'To folder', '_InMail.imap');
+		if(!toBox.length){
 			api.errorHandler('TOBOX_NOT_SPECIFIED');
 		};
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, folder: folder, toFolder: toFolder, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, box: box, toBox: toBox, connect: api.getConnect()};
 		
-		_embedded("InMail_DelMsgs", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+		_embedded("InMail_DelMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+	};
+	
+	this.getMessages = function(){
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var body = _avoid_nilb(_function_argument("body"), true);
+		var headers = _avoid_nilb(_function_argument("headers"), false);
+		var size = _avoid_nilb(_function_argument("size"), false);
+		var attachments = _avoid_nilb(_function_argument("attachments"), false);
+		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
+		var box = api.prepareBox(_function_argument("box"));
+		
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, body: body, headers: headers, size: size, attachments: attachments, markSeen: markSeen, box: box, connect: api.getConnect()};
+		
+		_embedded("InMail_GetMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+		
+		var messages = VAR_INMAIL_NODE_PARAMETERS;
+		
+		for(var i = 0; i < messages.length; i++){
+			var message = messages[i];
+			if(message.date){
+				message.date = new Date(message.date);
+			};
+		};
+		
+		_function_return(messages);
 	};
 });

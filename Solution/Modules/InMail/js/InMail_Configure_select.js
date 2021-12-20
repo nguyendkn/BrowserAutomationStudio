@@ -27,8 +27,8 @@ if($('#autoConfig').val() != "true"){
 };
 var username = GetInputConstructorValue("username", loader);
 var password = GetInputConstructorValue("password", loader);
-var folder = GetInputConstructorValue("folder", loader);
-if(folder["original"].length == 0){
+var box = GetInputConstructorValue("box", loader);
+if(box["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Folder name") + tr("\" is not specified"));
     return;
 };
@@ -46,7 +46,7 @@ try{
         "encrypt": encrypt["updated"],
         "username": username["updated"],
         "password": password["updated"],
-        "folder": folder["updated"],
+        "box": box["updated"],
         "timeout": timeout["updated"]
     });
     code = Normalize(code, 0);

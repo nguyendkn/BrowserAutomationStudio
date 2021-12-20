@@ -1,4 +1,4 @@
-var folder = GetInputConstructorValue("folder", loader);
+var box = GetInputConstructorValue("box", loader);
 var errorNotFound = $("#Check").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
@@ -7,7 +7,7 @@ if(Save.length == 0){
 };
 try{
     var code = loader.GetAdditionalData() + _.template($("#InMail_SearchLast_code").html())({
-        "folder": folder["updated"],
+        "box": box["updated"],
         "errorNotFound": errorNotFound,
         "variable": "VAR_" + Save
     });

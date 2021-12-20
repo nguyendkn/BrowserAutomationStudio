@@ -16,7 +16,7 @@ if(sortType["original"].length == 0){
     return;
 };
 var sortField = GetInputConstructorValue("sortField", loader);
-var folder = GetInputConstructorValue("folder", loader);
+var box = GetInputConstructorValue("box", loader);
 var errorNotFound = $("#Check").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
@@ -39,7 +39,7 @@ try{
 		"before": before["updated"],
 		"sortType": sortType["updated"],
 		"sortField": sortField["updated"],
-        "folder": folder["updated"],
+        "box": box["updated"],
         "errorNotFound": errorNotFound,
         "variable": "VAR_" + Save
     });

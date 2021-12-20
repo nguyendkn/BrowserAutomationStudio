@@ -9,7 +9,7 @@
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
-		id: "toFolder",
+		id: "toBox",
 		description: tr("To folder"),
 		default_selector: "string",
 		variants: [
@@ -23,7 +23,7 @@
 	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<%= _.template($('#input_constructor').html())({
-			id: "folder",
+			id: "box",
 			description: tr("Folder name"),
 			default_selector: "string",
 			variants: [

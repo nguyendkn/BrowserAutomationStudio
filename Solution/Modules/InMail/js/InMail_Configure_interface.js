@@ -103,7 +103,7 @@
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
-		id: "folder",
+		id: "box",
 		description: tr("Folder name"),
 		default_selector: "string",
 		variants: [

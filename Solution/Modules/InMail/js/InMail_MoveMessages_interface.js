@@ -8,9 +8,22 @@
 			description: tr("Message Id")
 		}
 	}) %>
+	<%= _.template($('#input_constructor').html())({
+		id: "toBox",
+		description: tr("To folder"),
+		default_selector: "string",
+		variants: [
+			{value: "INBOX", description: tr("Default folder incoming messages")}
+		],
+		disable_int: true,
+		value_string: "",
+		help: {
+			description: tr("Folder name")
+		}
+	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<%= _.template($('#input_constructor').html())({
-			id: "folder",
+			id: "box",
 			description: tr("Folder name"),
 			default_selector: "string",
 			variants: [
@@ -25,6 +38,6 @@
 	<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Delete message with the specified Id.</div>
+	<div class="tr tooltip-paragraph-first-fold">Move message from one mailbox to another.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

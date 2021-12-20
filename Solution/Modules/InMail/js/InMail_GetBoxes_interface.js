@@ -12,7 +12,6 @@
 		description: tr("Data format"),
 		default_selector: "string",
 		variants: [
-			"Object",
 			"Objects list",
 			"CSV list",
 			"CSV string"

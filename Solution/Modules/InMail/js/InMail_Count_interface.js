@@ -232,7 +232,7 @@
 	<%= _.template($('#block_end').html())() %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<%= _.template($('#input_constructor').html())({
-			id: "folder",
+			id: "box",
 			description: tr("Folder name"),
 			default_selector: "string",
 			variants: [

@@ -8,12 +8,12 @@ if(flags["original"].length == 0){
     Invalid(tr("The parameter \"") + tr("Flags") + tr("\" is not specified"));
     return;
 }
-var folder = GetInputConstructorValue("folder", loader);
+var box = GetInputConstructorValue("box", loader);
 try{
     var code = loader.GetAdditionalData() + _.template($("#InMail_SetFlags_code").html())({
         "uids": uids["updated"],
         "flags": flags["updated"],
-        "folder": folder["updated"]
+        "box": box["updated"]
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

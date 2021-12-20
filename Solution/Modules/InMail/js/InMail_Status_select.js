@@ -3,8 +3,8 @@ if(name["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Folder name") + tr("\" is not specified"));
     return;
 };
-var res_name = this.$el.find("#res_name").val().toUpperCase();
-if(res_name.length == 0){
+var resName = this.$el.find("#resName").val().toUpperCase();
+if(resName.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Folder name") + tr("\" is not specified"));
     return;
 };
@@ -36,7 +36,7 @@ if(unseen.length == 0){
 try{
     var code = loader.GetAdditionalData() + _.template($("#InMail_Status_code").html())({
         "name": name["updated"],
-        "res_name": "VAR_" + res_name,
+        "resName": "VAR_" + resName,
 		"uidnext": "VAR_" + uidnext,
         "uidvalidity": "VAR_" + uidvalidity,
         "total": "VAR_" + total,

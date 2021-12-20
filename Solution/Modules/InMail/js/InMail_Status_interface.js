@@ -13,7 +13,7 @@
 		} 
 	}) %>
 	<%= _.template($('#variable_constructor').html())({
-		id: "res_name",
+		id: "resName",
 		description: tr("Folder name"),
 		default_variable: "MAILBOX_NAME",
 		help: {

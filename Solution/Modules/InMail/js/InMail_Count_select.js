@@ -10,7 +10,7 @@ var flags = GetInputConstructorValue("flags", loader);
 var notFlags = GetInputConstructorValue("notFlags", loader);
 var since = GetInputConstructorValue("since", loader);
 var before = GetInputConstructorValue("before", loader);
-var folder = GetInputConstructorValue("folder", loader);
+var box = GetInputConstructorValue("box", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
@@ -30,7 +30,7 @@ try{
 		"notFlags": notFlags["updated"],
 		"since": since["updated"],
 		"before": before["updated"],
-        "folder": folder["updated"],
+        "box": box["updated"],
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

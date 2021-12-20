@@ -1,6 +1,6 @@
 _call_function(_InMail.status, {name: (<%= name %>)})!
 var boxInfo = _result_function();
-<%= res_name %> = boxInfo["name"];
+<%= resName %> = boxInfo["name"];
 <%= uidnext %> = boxInfo["uidnext"];
 <%= uidvalidity %> = boxInfo["uidvalidity"];
 <%= total %> = boxInfo["messages"]["total"];

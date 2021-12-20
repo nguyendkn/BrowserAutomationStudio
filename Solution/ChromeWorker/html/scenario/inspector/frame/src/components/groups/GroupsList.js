@@ -38,20 +38,16 @@ window.GroupsList = {
 
   watch: {
     source(source) {
-      let keys = Object.keys(source);
+      const keys = Object.keys(source);
 
       this.groups.slice(1).forEach(group => {
-        const items = [];
-
-        keys = keys.filter(key => {
+        group.items = keys.slice().filter((key, idx) => {
           if (group.items.includes(key)) {
-            items.push(key);
-            return false;
+            keys.splice(idx, 1);
+            return true;
           }
-          return true;
+          return false;
         });
-
-        group.items = items;
       });
 
       this.groups[0].items = keys;

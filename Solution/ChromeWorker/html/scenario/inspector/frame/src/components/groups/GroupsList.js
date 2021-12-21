@@ -6,6 +6,7 @@ window.GroupsList = {
   components: {
     GroupsItem,
     JsonTreeNode,
+    VDraggable: window['vuedraggable'],
   },
 
   props: {
@@ -27,13 +28,6 @@ window.GroupsList = {
     ];
 
     return { groups };
-  },
-
-  computed: {
-    draggableDisabled() {
-      return true;
-      // return this.groups.length === 1;
-    },
   },
 
   watch: {
@@ -83,9 +77,16 @@ window.GroupsList = {
   },
 
   template: html`
-    <draggable
+    <v-draggable
       handle=".group-item-header"
-      :disabled="draggableDisabled"
+      :options="{
+        filter: [
+          '.group-item-controls',
+          'input:enabled',
+          'input.active',
+        ].join(',')
+      }"
+      :disabled="groups.length === 1"
       class="group-list"
       :list="groups"
       tag="ul"
@@ -120,6 +121,6 @@ window.GroupsList = {
           </json-tree-node>
         </template>
       </groups-item>
-    </draggable>
+    </v-draggable>
   `,
 };

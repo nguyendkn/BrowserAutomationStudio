@@ -10,7 +10,7 @@
       window.addEventListener('message', ({ data: { payload, type } }) => {
         switch (type) {
           case 'focusAction': return BrowserAutomationStudio_FocusAction(payload.id);
-          case 'edit': return showModal(payload);
+          case 'edit': return edit(payload);
           case 'hide': return this.hide();
           case 'show': return this.show();
           default: this.trigger(type);
@@ -40,10 +40,8 @@
         const { $el } = this.setElement('#inspector');
 
         this.resizable = interact($el[0]).resizable({
-          listeners: {
-            move({ client: { y } }) {
-              $el.outerHeight(Math.max(110, window.outerHeight - Math.max(y, 300) - 32));
-            },
+          onmove({ client: { y } }) {
+            $el.outerHeight(Math.max(110, window.outerHeight - Math.max(y, 300) - 32));
           },
           edges: { top: true },
         });
@@ -62,7 +60,7 @@
     },
   });
 
-  function showModal(options) {
+  function edit(options) {
     const callback = (cancel, { value, type }) => {
       if (cancel) return;
       let [root, ...path] = options.path;

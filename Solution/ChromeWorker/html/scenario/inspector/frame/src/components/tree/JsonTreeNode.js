@@ -113,12 +113,12 @@ window.JsonTreeNode = {
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
         <template v-else>{{ value }}</template>
       </span>
-      <div style="position: absolute; display: flex; right: 0; top: 6px;">
+      <div class="jt-node-actions">
         <button type="button" @click="edit">
-          <icon-edit style="display: block;" />
+          <icon-edit />
         </button>
-        <button v-if="(type === 'object' || type === 'array') && size" type="button" style="margin-left: 12px;" @click="toggle">
-          <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" style="display: block;" />
+        <button v-if="(type === 'object' || type === 'array') && size" type="button" @click="toggle">
+          <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
         </button>
       </div>
     </div>

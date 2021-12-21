@@ -373,8 +373,32 @@
 
 /* Json tree */
 
+.jt-node-actions > button + button {
+  margin-left: 12px;
+}
+
+.jt-node-actions > button:active {
+  opacity: 1.0;
+}
+
+.jt-node-actions > button:hover {
+  opacity: 1.0;
+}
+
+.jt-node-actions > button {
+  display: flex;
+  opacity: 0.5;
+}
+
 .jt-node-value > .jt-node {
   margin-left: 24px;
+}
+
+.jt-node-actions {
+  position: absolute;
+  display: flex;
+  right: 8px;
+  top: 6px;
 }
 
 .jt-node:hover {

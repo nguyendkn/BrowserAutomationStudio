@@ -369,6 +369,14 @@
   margin-left: 12px;
 }
 
+.jt-node:active > .jt-node-actions {
+  display: flex;
+}
+
+.jt-node:hover > .jt-node-actions {
+  display: flex;
+}
+
 .jt-node-actions > button:active {
   opacity: 1.0;
 }
@@ -388,7 +396,7 @@
 
 .jt-node-actions {
   position: absolute;
-  display: flex;
+  display: none;
   right: 8px;
   top: 6px;
 }
@@ -397,7 +405,7 @@
   background: var(--color-lighten);
 }
 
-.jt-node:focus {
+.jt-node:hover {
   background: var(--color-lighten);
 }
 

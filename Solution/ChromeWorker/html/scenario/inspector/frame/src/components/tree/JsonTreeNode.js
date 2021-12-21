@@ -85,7 +85,7 @@ window.JsonTreeNode = {
           <span>"{{ value }}"</span>
         </template>
         <template v-else-if="type === 'object'">
-          <span class="jt-bracket">{</span>
+          <span class="jt-node-bracket">{</span>
           <json-tree-node
             v-for="key in keys"
             v-show="isExpanded"
@@ -95,10 +95,10 @@ window.JsonTreeNode = {
             :path="path.concat(key)"
           />
           <span v-show="!isExpanded">{{ $tc('items', size) }}</span>
-          <span class="jt-bracket">}</span>
+          <span class="jt-node-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
-          <span class="jt-bracket">[</span>
+          <span class="jt-node-bracket">[</span>
           <json-tree-node
             v-for="key in keys"
             v-show="isExpanded"
@@ -108,7 +108,7 @@ window.JsonTreeNode = {
             :path="path.concat(key)"
           />
           <span v-show="!isExpanded">{{ $tc('items', size) }}</span>
-          <span class="jt-bracket">]</span>
+          <span class="jt-node-bracket">]</span>
         </template>
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
         <template v-else>{{ value }}</template>

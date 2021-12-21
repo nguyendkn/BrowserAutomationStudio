@@ -78,17 +78,15 @@ window.GroupsList = {
 
   template: html`
     <v-draggable
-      handle=".group-item-header"
-      :options="{
-        filter: [
-          '.group-item-controls',
-          'input:enabled',
-          'input.active',
-        ].join(',')
-      }"
+      v-model="groups"
       :disabled="groups.length === 1"
+      :filter="[
+        '.group-item-controls',
+        'input:enabled',
+        'input.active',
+      ].join(',')"
+      handle=".group-item-header"
       class="group-list"
-      :list="groups"
       tag="ul"
     >
       <groups-item

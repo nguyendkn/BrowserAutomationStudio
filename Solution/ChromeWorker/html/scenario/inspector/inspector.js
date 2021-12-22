@@ -27,11 +27,11 @@
         this.send({ type: 'highlight' });
       });
 
-      this.send = async msg => {
+      this.send = async message => {
         if (!mounted) await new Promise(resolve => {
           this.once('mounted', () => resolve(mounted = true));
         });
-        this.el.contentWindow.postMessage(msg, '*');
+        this.el.contentWindow.postMessage(message, '*');
       };
     },
 

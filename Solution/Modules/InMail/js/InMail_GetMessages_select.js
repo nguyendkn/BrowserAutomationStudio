@@ -21,9 +21,21 @@ if(subject && saveSubject.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Letter subject") + tr("\" is not specified"));
     return;
 };
-var text = $("#text").is(':checked');
-var saveText = this.$el.find("#saveText").val().toUpperCase();
-if(text && saveText.length == 0){
+var textHtml = $("#textHtml").is(':checked');
+var saveTextHtml = this.$el.find("#saveTextHtml").val().toUpperCase();
+if(textHtml && saveTextHtml.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Text of letter") + tr("\" is not specified"));
+    return;
+};
+var textPlain = $("#textPlain").is(':checked');
+var saveTextPlain = this.$el.find("#saveTextPlain").val().toUpperCase();
+if(textPlain && saveTextPlain.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Text of letter") + tr("\" is not specified"));
+    return;
+};
+var textRaw = $("#textRaw").is(':checked');
+var saveTextRaw = this.$el.find("#saveTextRaw").val().toUpperCase();
+if(textRaw && saveTextRaw.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Text of letter") + tr("\" is not specified"));
     return;
 };
@@ -52,6 +64,12 @@ if(attachments && saveAttachments.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Attachments") + tr("\" is not specified"));
     return;
 };
+var rawHeader = $("#rawHeader").is(':checked');
+var saveRawHeader = this.$el.find("#saveRawHeader").val().toUpperCase();
+if(rawHeader && saveRawHeader.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Technical mail headers") + tr("\" is not specified"));
+    return;
+};
 var markSeen = $("#markSeen").is(':checked');
 var box = GetInputConstructorValue("box", loader);
 try{
@@ -64,8 +82,13 @@ try{
 		"subject": subject,
         "saveSubject": "VAR_" + saveSubject,
 		"headers": [],
-		"text": text,
-        "saveText": "VAR_" + saveText,
+		"textHtml": textHtml,
+        "saveTextHtml": "VAR_" + saveTextHtml,
+		"textPlain": textPlain,
+        "saveTextPlain": "VAR_" + saveTextPlain,
+		"textRaw": textRaw,
+        "saveTextRaw": "VAR_" + saveTextRaw,
+		"body": [],
 		"size": size,
         "saveSize": "VAR_" + saveSize,
 		"flags": flags,
@@ -75,6 +98,8 @@ try{
         "attachments": attachments,
         "attachmentsMask": attachmentsMask["updated"],
         "saveAttachments": "VAR_" + saveAttachments,
+        "rawHeader": rawHeader,
+        "saveRawHeader": "VAR_" + saveRawHeader,
         "markSeen": markSeen,
         "box": box["updated"]
     });

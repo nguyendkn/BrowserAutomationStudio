@@ -536,7 +536,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.getBoxes = function(){
-		_call_function(api.makeRequest, {query: "", box: ""})!
+		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: ""})!
 		var resp = _result_function();
 		
 		var result = api.parse(resp);

@@ -367,6 +367,10 @@ _InMail = {
 		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, attachments: attachments, markSeen: markSeen, box: box})!
 		var messages = _result_function();
 		
+		if(!res.length){
+			_InMail.error('Could not find a letter matching the specified identifier in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
+		};
+		
 		_function_return(messages);
 	},
 	

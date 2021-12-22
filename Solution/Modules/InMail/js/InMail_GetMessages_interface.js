@@ -81,16 +81,64 @@
 				</form>
 			</div>
 		</div>
-		<span data-preserve="true" data-preserve-type="check" data-preserve-id="text">
-			<input type="checkbox" checked="checked" id="text" style="margin-left:25px"/> <label for="text" class="tr">Text of letter</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of letter"), description: tr("Text of letter")})) %>"></i>
+		<span data-preserve="true" data-preserve-type="check" data-preserve-id="textHtml">
+			<input type="checkbox" checked="checked" id="textHtml" style="margin-left:25px"/> <label for="textHtml"><span class="tr">Text of letter</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/html"), description: tr("text/html")})) %>"></i>
+		</span>
+		<span id="advancedTextHtml">
+			<%= _.template($('#variable_constructor').html())({
+				id: "saveTextHtml",
+				description: tr("Text of letter") + " (text/html)",
+				default_variable: "MAIL_TEXT_HTML",
+				help: {
+					description: tr("Text of letter") + " (text/html)",
+				}
+			}) %>
+		</span>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<hr style="margin-top:0px;margin-bottom:0px"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<span data-preserve="true" data-preserve-type="check" data-preserve-id="textPlain">
+			<input type="checkbox" checked="checked" id="textPlain" style="margin-left:25px"/> <label for="textPlain"><span class="tr">Text of letter</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/plain"), description: tr("text/plain")})) %>"></i>
+		</span>
+		<span id="advancedTextPlain">
+			<%= _.template($('#variable_constructor').html())({
+				id: "saveTextPlain",
+				description: tr("Text of letter") + " (text/plain)",
+				default_variable: "MAIL_TEXT_PLAIN",
+				help: {
+					description: tr("Text of letter") + " (text/plain)",
+				}
+			}) %>
+		</span>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<hr style="margin-top:0px;margin-bottom:0px"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<span data-preserve="true" data-preserve-type="check" data-preserve-id="textRaw">
+			<input type="checkbox" id="textRaw" style="margin-left:25px"/> <label for="textRaw"><span class="tr">Text of letter</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("raw"), description: tr("raw")})) %>"></i>
 		</span>
 		<span id="advancedText">
 			<%= _.template($('#variable_constructor').html())({
-				id: "saveText",
-				description: tr("Text of letter"),
-				default_variable: "MAIL_TEXT",
+				id: "saveTextRaw",
+				description: tr("Text of letter") + " (raw)",
+				default_variable: "MAIL_TEXT_RAW",
 				help: {
-					description: tr("Text of letter"),
+					description: tr("Text of letter") + " (raw)",
 				}
 			}) %>
 		</span>
@@ -200,6 +248,30 @@
 				}
 			}) %>
 		</span>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<hr style="margin-top:0px;margin-bottom:0px"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<span data-preserve="true" data-preserve-type="check" data-preserve-id="rawHeader">
+			<input type="checkbox" id="rawHeader" style="margin-left:25px"/> <label for="rawHeader" class="tr">Technical mail headers</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Technical mail headers"), description: tr("Technical mail headers")})) %>"></i>
+		</span>
+		<span id="advancedRawHeader">
+			<%= _.template($('#variable_constructor').html())({
+				id: "saveRawHeader",
+				description: tr("Technical mail headers"),
+				default_variable: "MAIL_RAW_HEADERS",
+				help: {
+					description: tr("Technical mail headers"),
+				}
+			}) %>
+		</span>
 	<%= _.template($('#block_end').html())() %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="markSeen">
@@ -221,28 +293,31 @@
 	<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
+	<div class="tr tooltip-paragraph-first-fold">Get mail with the specified identifier.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
 <script>
 		
-		function setVisible(e){
+		function switchField(e){
 			var target = (e.target || e);
 			var next = target.closest('span').nextElementSibling;
-			next.style.display = target.checked ? 'block' : 'none';
+			for(var ell of next.getElementsByTagName('input')){
+				ell.disabled = !target.checked;
+			};
 		};
 		
-		var ells = ['from','to','subject','text','size','flags','date','attachments'];
+		var ells = ['from','to','subject','textPlain','textHtml','textRaw','size','flags','date','attachments','rawHeader'];
 		
 		$(document).ready(function(){
 			setTimeout(function(){
 				ells.forEach(function(ell){
-					setVisible(document.getElementById(ell));
+					switchField(document.getElementById(ell));
 				});
 			}, 0);
         });
 		
 		ells.forEach(function(ell){
-			document.getElementById(ell).addEventListener('change', setVisible);
+			document.getElementById(ell).addEventListener('change', switchField);
 		});
 
 </script>

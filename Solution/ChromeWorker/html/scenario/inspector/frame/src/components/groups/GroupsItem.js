@@ -4,8 +4,13 @@ window.GroupsItem = {
   name: 'GroupsItem',
 
   props: {
-    primary: {
-      required: true,
+    allowRemove: {
+      default: false,
+      type: Boolean,
+    },
+
+    allowEdit: {
+      default: false,
       type: Boolean,
     },
 
@@ -109,14 +114,12 @@ window.GroupsItem = {
             </button>
           </div>
           <div v-else class="group-item-controls">
-            <template v-if="!primary">
-              <button type="button" @click="remove">
-                <icon-delete />
-              </button>
-              <button type="button" @click="edit">
-                <icon-edit />
-              </button>
-            </template>
+            <button v-if="allowRemove" type="button" @click="remove">
+              <icon-delete />
+            </button>
+            <button v-if="allowEdit" type="button" @click="edit">
+              <icon-edit />
+            </button>
             <button type="button" @click="isExpanded = !isExpanded">
               <icon-chevron :style="{ transform: isExpanded ? 'rotate(180deg)' : '' }" />
             </button>

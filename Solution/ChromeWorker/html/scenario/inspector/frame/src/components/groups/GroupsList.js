@@ -21,7 +21,6 @@ window.GroupsList = {
         id: 0,
         name: 'Main',
         color: 'brown',
-        primary: true,
         items: [],
       },
     ];
@@ -74,7 +73,6 @@ window.GroupsList = {
         id: ++this.counter,
         name: 'Group',
         color: 'brown',
-        primary: false,
         items: [],
       });
     },
@@ -99,7 +97,8 @@ window.GroupsList = {
         :name="group.name"
         :color="group.color"
         :items="group.items"
-        :primary="group.primary"
+        :allow-edit="group.id > 0"
+        :allow-remove="group.id > 0"
         @update="updateGroup(index, $event)"
         @remove="removeGroup(index, $event)"
       >

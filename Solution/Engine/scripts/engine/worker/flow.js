@@ -36,10 +36,10 @@ function success(text)
 
 var debug_variables = (function () {
     return function (list, callback) {
-        const result = JSON.stringify({
+        var result = JSON.stringify({
             variables: list.reduce(function (acc, key) {
                 if (key.indexOf('GLOBAL:') === 0) {
-                    const val = P('basglobal', key.slice(7)) || '"__UNDEFINED__"';
+                    var val = P('basglobal', key.slice(7)) || '"__UNDEFINED__"';
                     acc[key] = truncate(JSON.parse(val), 100);
                 } else {
                     acc[key.slice(4)] = truncate(GLOBAL[key], 100);

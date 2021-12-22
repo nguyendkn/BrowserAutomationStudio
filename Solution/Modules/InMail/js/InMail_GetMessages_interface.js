@@ -224,12 +224,12 @@
 			</form>
 		</div>
 	</div>
-	<span data-preserve="true" data-preserve-type="check" data-preserve-id="attachNames">
-		<input type="checkbox" id="attachNames" style="margin-left:25px"/> <label for="attachNames" class="tr">Get list of attached file names</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get list of attached file names"), description: tr("Get list of attached file names")})) %>"></i>
+	<span data-preserve="true" data-preserve-type="check" data-preserve-id="attachnames">
+		<input type="checkbox" id="attachnames" style="margin-left:25px"/> <label for="attachnames" class="tr">Get list of attached file names</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get list of attached file names"), description: tr("Get list of attached file names")})) %>"></i>
 	</span>
-	<span id="advancedAttachedNames">
+	<span id="advancedAttachnames">
 		<%= _.template($('#variable_constructor').html())({
-			id: "saveAttachNames",
+			id: "saveAttachnames",
 			description: tr("Attachments names"),
 			default_variable: "MAIL_ATTACHMENTS_NAMES_LIST",
 			help: {
@@ -328,7 +328,7 @@
 			};
 		};
 		
-		var ells = ['from','to','subject','textPlain','textHtml','textRaw','size','flags','date','attachNames','attachments','rawHeader'];
+		var ells = ['from','to','subject','textPlain','textHtml','textRaw','size','flags','date','attachnames','attachments','rawHeader'];
 		
 		$(document).ready(function(){
 			setTimeout(function(){

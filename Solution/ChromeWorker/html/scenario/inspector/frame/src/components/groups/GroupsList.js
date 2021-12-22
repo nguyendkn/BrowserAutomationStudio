@@ -22,28 +22,35 @@ window.GroupsList = {
         name: 'Main',
         color: 'brown',
         primary: true,
-        items: Object.keys(this.source),
+        items: [],
       },
     ];
 
-    return { groups };
+    return { groups, counter: 0 };
   },
 
   watch: {
-    source(source) {
-      const keys = Object.keys(source);
+    source: {
+      handler(source) {
+        let { groups } = this, keys = Object.keys(source);
 
-      this.groups.slice(1).forEach(group => {
-        group.items = keys.slice().filter((key, idx) => {
-          if (group.items.includes(key)) {
-            keys.splice(idx, 1);
-            return true;
+        groups.forEach(group => {
+          if (group.id !== 0) {
+            [group.items, keys] = keys.reduce((acc, key) => {
+              if (group.items.includes(key)) {
+                acc[0].push(key);
+              } else {
+                acc[1].push(key);
+              }
+              return acc;
+            }, [[], []]);
           }
-          return false;
         });
-      });
 
-      this.groups[0].items = keys;
+        groups.find(group => group.id === 0).items = keys;
+      },
+
+      immediate: true,
     },
   },
 

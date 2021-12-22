@@ -36,7 +36,7 @@ window.PanelToolbar = {
   },
 
   methods: {
-    updateSorting({ name }) {
+    updateSortings(name) {
       const sortings = this.sortings.map(item => ({
         ...item,
         active: item.name === name,
@@ -44,7 +44,7 @@ window.PanelToolbar = {
       this.$emit('update:sortings', sortings);
     },
 
-    updateFilter({ name }) {
+    updateFilters(name) {
       const filters = this.filters.map(item => ({
         ...item,
         active: item.name === name ? !item.active : item.active,
@@ -82,18 +82,18 @@ window.PanelToolbar = {
             </svg>
           </button>
           <ul v-show="menuVisible" class="app-toolbar-menu">
-            <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
-              <a href="#" @click.prevent="updateSorting(item)">
-                <span v-t="'toolbar.sortings.' + item.name"></span>
+            <li v-for="{ name, active } in sortings" :key="name" :class="{ active }">
+              <a href="#" @click.prevent="updateSortings(name)">
+                <span v-t="'toolbar.sortings.' + name"></span>
                 <img src="src/assets/icons/arrows.svg" alt>
               </a>
             </li>
             <li v-if="!!sortings.length">
               <hr class="divider">
             </li>
-            <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
-              <a href="#" @click.prevent="updateFilter(item)">
-                <span v-t="'toolbar.filters.' + item.name"></span>
+            <li v-for="{ name, active } in filters" :key="name" :class="{ active }">
+              <a href="#" @click.prevent="updateFilters(name)">
+                <span v-t="'toolbar.filters.' + name"></span>
                 <img src="src/assets/icons/check.svg" alt>
               </a>
             </li>

@@ -67,7 +67,7 @@
 }
 
 .inspector-modal-form > span {
-  border: thin solid #d8695f;
+  border: 1px solid #d8695f;
   background: #d8695f;
   text-align: center;
   line-height: 15px;
@@ -83,7 +83,7 @@
 }
 
 .inspector-modal-tools > button {
-  border: thin solid #d9d9d9;
+  border: 1px solid #d9d9d9;
   justify-content: center;
   letter-spacing: -0.2px;
   align-items: center;
@@ -144,7 +144,7 @@
 }
 
 .inspector-modal-tools > ul {
-  border: thin solid #606060;
+  border: 1px solid #606060;
   top: calc(100% - 1px);
   border-radius: 0;
   box-shadow: none;
@@ -189,7 +189,7 @@
 }
 
 .inspector-modal-description {
-  border: thin dashed #606060;
+  border: 1px dashed #606060;
   background: #f7f7f8;
   padding: 12px 14px;
   margin-top: 20px;
@@ -265,7 +265,7 @@
 }
 
 .inspector-modal-form {
-  border: thin solid #d9d9d9;
+  border: 1px solid #d9d9d9;
   border-bottom: 0;
   border-top: 0;
 }

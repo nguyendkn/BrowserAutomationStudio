@@ -18,7 +18,7 @@ window.GroupsList = {
   data() {
     const groups = [
       {
-        id: uniqueId(),
+        id: 0,
         name: 'Main',
         color: 'brown',
         primary: true,
@@ -62,7 +62,7 @@ window.GroupsList = {
 
     addGroup() {
       this.groups.push({
-        id: uniqueId(),
+        id: ++this.counter,
         name: 'Group',
         color: 'brown',
         primary: false,

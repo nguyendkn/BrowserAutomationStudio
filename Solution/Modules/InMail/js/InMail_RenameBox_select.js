@@ -1,10 +1,10 @@
 var oldName = GetInputConstructorValue("oldName", loader);
-if(name["original"].length == 0){
+if(oldName["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Old folder name") + tr("\" is not specified"));
     return;
 };
 var newName = GetInputConstructorValue("newName", loader);
-if(name["original"].length == 0){
+if(newName["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("New folder name") + tr("\" is not specified"));
     return;
 };

@@ -302,11 +302,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var body = _avoid_nilb(_function_argument("body"), true);
 		var headers = _avoid_nilb(_function_argument("headers"), false);
 		var size = _avoid_nilb(_function_argument("size"), false);
+		var attachNames = _avoid_nilb(_function_argument("attachNames"), false);
 		var attachments = _avoid_nilb(_function_argument("attachments"), false);
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
 		var box = api.prepareBox(_function_argument("box"));
 		
-		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, body: body, headers: headers, size: size, attachments: attachments, markSeen: markSeen, box: box, connect: api.getConnect()};
+		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, body: body, headers: headers, size: size, attachNames: attachNames, attachments: attachments, markSeen: markSeen, box: box, connect: api.getConnect()};
 		
 		_embedded("InMail_GetMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 		

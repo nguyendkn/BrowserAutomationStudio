@@ -358,16 +358,17 @@ _InMail = {
 		var body = _avoid_nilb(_function_argument("body"), true);
 		var headers = _avoid_nilb(_function_argument("headers"), false);
 		var size = _avoid_nilb(_function_argument("size"), false);
+		var attachNames = _avoid_nilb(_function_argument("attachNames"), false);
 		var attachments = _avoid_nilb(_function_argument("attachments"), false);
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
 		
-		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, attachments: attachments, markSeen: markSeen, box: box})!
+		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, attachNames: attachNames, attachments: attachments, markSeen: markSeen, box: box})!
 		var messages = _result_function();
 		
-		if(!res.length){
+		if(!messages.length){
 			_InMail.error('Could not find a letter matching the specified identifier in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
 		};
 		

@@ -57,6 +57,12 @@ if(date && saveDate.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Receiving date") + tr("\" is not specified"));
     return;
 };
+var attachNames = $("#attachNames").is(':checked');
+var saveAttachNames = this.$el.find("#saveAttachNames").val().toUpperCase();
+if(attachNames && saveAttachNames.length == 0){
+	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Attachments names") + tr("\" is not specified"));
+    return;
+};
 var attachments = $("#attachments").is(':checked');
 var attachmentsMask = GetInputConstructorValue("attachmentsMask", loader);
 var saveAttachments = this.$el.find("#saveAttachments").val().toUpperCase();
@@ -95,6 +101,8 @@ try{
         "saveFlags": "VAR_" + saveFlags,
         "date": date,
         "saveDate": "VAR_" + saveDate,
+        "attachNames": attachNames,
+        "saveAttachNames": "VAR_" + saveAttachNames,
         "attachments": attachments,
         "attachmentsMask": attachmentsMask["updated"],
         "saveAttachments": "VAR_" + saveAttachments,

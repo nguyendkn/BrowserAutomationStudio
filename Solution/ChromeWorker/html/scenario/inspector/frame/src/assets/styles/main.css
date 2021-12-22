@@ -121,10 +121,10 @@
 .app-toolbar-input {
   border: 1px solid #d9d9d9;
   letter-spacing: -0.2px;
-  background: #fff;
   padding: 9px 12px;
-  color: #606060;
+  background: #fff;
   border-right: 0;
+  color: #606060;
   flex: 1;
 }
 
@@ -165,8 +165,8 @@
 
 .app-toolbar-menu {
   border: 1px solid #606060;
-  background: #3d3f42;
   min-width: max-content;
+  background: #3d3f42;
   position: absolute;
   margin-top: -1px;
   padding: 8px 0;
@@ -179,7 +179,6 @@
   background: #f6f6f6;
   flex-flow: column;
   display: flex;
-  padding: 1px;
 }
 
 /* Callstack */
@@ -266,8 +265,8 @@
 
 /* Groups */
 
-.group-item-controls > button:focus > svg {
-  opacity: 1.0;
+.group-item-controls > button:active > svg {
+  opacity: 0.5;
 }
 
 .group-item-controls > button:hover > svg {
@@ -440,11 +439,11 @@
 /* Sortable */
 
 .sortable-chosen {
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 .sortable-ghost {
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 /* Global */

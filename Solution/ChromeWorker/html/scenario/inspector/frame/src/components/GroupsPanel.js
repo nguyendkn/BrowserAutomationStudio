@@ -118,6 +118,7 @@ window.GroupsPanel = {
         if (highlight) {
           item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
         }
+        // this.trigger('highlight', { count: item.count, path });
       });
 
       this.highlight = false;

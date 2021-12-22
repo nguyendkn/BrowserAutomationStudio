@@ -10,7 +10,7 @@ window.App = {
         props: {
           data: {},
           title: 'tabs.variablesEmpty',
-          styles: { '--group-br': '0px' },
+          styles: { '--border-radius': '0px' },
         },
         component: GroupsPanel,
       },
@@ -19,7 +19,7 @@ window.App = {
         props: {
           data: {},
           title: 'tabs.resourcesEmpty',
-          styles: { '--group-br': '9px' },
+          styles: { '--border-radius': '9px' },
         },
         component: GroupsPanel,
       },

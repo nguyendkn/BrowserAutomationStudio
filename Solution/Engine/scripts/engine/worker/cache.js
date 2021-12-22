@@ -279,7 +279,7 @@ function browser_ip(callback)
     http_client_set_fail_on_error(false)
     http_client_set_proxy(_PROXY["server"], _PROXY["Port"], _PROXY["IsHttp"], _PROXY["name"], _PROXY["password"])
     http_client_get2("http://ip.bablosoft.com/?requestid=" + rand(0,100000),{method:("GET"),headers:("")}, function(){
-        if(http_client_was_error())
+        if(http_client_was_error() || http_client_status() != 200)
             _set_result("")
         else
             _set_result(http_client_encoded_content("auto"))
@@ -299,7 +299,7 @@ function browser_ip_https(callback)
     http_client_set_fail_on_error(false)
     http_client_set_proxy(_PROXY["server"], _PROXY["Port"], _PROXY["IsHttp"], _PROXY["name"], _PROXY["password"])
     http_client_get2("https://ip" + rand(1,3) + ".bablosoft.com?requestid=" + rand(0,100000),{method:("GET"),headers:("")}, function(){
-        if(http_client_was_error())
+        if(http_client_was_error() || http_client_status() != 200)
             _set_result("")
         else
             _set_result(http_client_encoded_content("auto"))

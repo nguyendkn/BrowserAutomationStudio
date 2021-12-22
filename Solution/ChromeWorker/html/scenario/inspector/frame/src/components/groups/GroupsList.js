@@ -60,11 +60,13 @@ window.GroupsList = {
     },
 
     removeGroup(index, data) {
-      this.groups.splice(index, 1);
+      const [{ items }] = this.groups.splice(index, 1);
+      this.groups.find(({ id }) => id === 0).items.push(...items);
     },
 
     deleteGroup(index, data) {
-      this.groups.splice(index, 1);
+      const [{ items }] = this.groups.splice(index, 1);
+      this.groups.find(({ id }) => id === 0).items.push(...items);
     },
 
     addGroup() {

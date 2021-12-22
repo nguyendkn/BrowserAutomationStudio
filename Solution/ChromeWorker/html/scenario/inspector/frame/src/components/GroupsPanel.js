@@ -30,7 +30,7 @@ window.GroupsPanel = {
       sortings = ['frequency', 'dateModified', 'dateCreated', 'alphabetically'];
 
     return {
-      sortings: sortings.map((name, idx) => ({ name, active: idx === 3 })),
+      sortings: sortings.map(name => ({ name, active: name === 'alphabetically' })),
       filters: filters.map(name => ({ name, active: true })),
       highlight: false,
       metadata: {},
@@ -137,7 +137,7 @@ window.GroupsPanel = {
         } else if (typeof val === 'object' && val) {
           val = this.transform(val);
         }
-        return acc[key] = val, acc;
+        return (acc[key] = val, acc);
       };
       return Object.keys(data).reduce(callback, Array.isArray(data) ? [] : {});
     },

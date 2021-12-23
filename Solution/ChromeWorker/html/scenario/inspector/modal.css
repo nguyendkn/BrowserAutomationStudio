@@ -119,11 +119,11 @@
   background: #3d3f42;
 }
 
-.inspector-modal-tools > ul > li > a:hover {
+.inspector-modal-tools > ul > li > a:focus {
   background: #606060;
 }
 
-.inspector-modal-tools > ul > li > a:focus {
+.inspector-modal-tools > ul > li > a:hover {
   background: #606060;
 }
 

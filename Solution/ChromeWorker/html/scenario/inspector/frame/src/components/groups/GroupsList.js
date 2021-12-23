@@ -102,12 +102,12 @@ window.GroupsList = {
         @update="updateGroup(index, $event)"
         @remove="removeGroup(index, $event)"
       >
-        <template v-for="key in group.items">
+        <template v-for="item in group.items">
           <json-tree-node
-            :key="key"
-            :name="key"
-            :path="[key]"
-            :value="source[key]"
+            :key="item"
+            :name="item"
+            :path="[item]"
+            :value="source[item]"
           >
             <template #label="{ label }">
               <button type="button" style="margin: 0 8px; height: 16px; line-height: 16px;">

@@ -10,7 +10,7 @@ window.JsonTreeNode = {
 
     name: {
       required: true,
-      type: [String, Number],
+      type: String,
     },
 
     path: {
@@ -90,8 +90,8 @@ window.JsonTreeNode = {
             v-for="key in keys"
             v-show="isExpanded"
             :key="key"
-            :name="key"
             :value="value[key]"
+            :name="key"
             :path="path.concat(key)"
           />
           <span v-show="!isExpanded" style="color: rgba(96, 96, 96, 0.65);">{{ $tc('items', size) }}</span>
@@ -103,8 +103,8 @@ window.JsonTreeNode = {
             v-for="key in keys"
             v-show="isExpanded"
             :key="key"
-            :name="key"
             :value="value[key]"
+            :name="key"
             :path="path.concat(key)"
           />
           <span v-show="!isExpanded" style="color: rgba(96, 96, 96, 0.65);">{{ $tc('items', size) }}</span>

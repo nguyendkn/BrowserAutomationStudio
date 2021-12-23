@@ -225,7 +225,7 @@
 
 @media (max-width: 400px) {
   .inspector-modal-footer {
-    flex-flow: column;
+    flex-direction: column;
   }
 
   .inspector-modal-footer > button + button {
@@ -239,7 +239,7 @@
 
 @media (min-width: 400px) {
   .inspector-modal-footer {
-    flex-flow: row;
+    flex-direction: row;
   }
 
   .inspector-modal-footer > button + button {

@@ -93,7 +93,7 @@ window.CallstackItem = {
             <span v-show="preview">[{{ $tc('items', size) }}]</span>
           </template>
         </span>
-        <button v-show="hasArguments || isOverflowing" class="callstack-toggle-params" type="button" @click="togglePreview">
+        <button v-show="hasArguments || isOverflowing" type="button" class="callstack-toggle-params" @click="togglePreview">
           <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />
         </button>
       </div>

@@ -100,7 +100,7 @@ window.PanelToolbar = {
           </ul>
         </div>
       </div>
-      <button class="app-toolbar-toggle" type="button" @click="$store.commit('toggleToolbar')">
+      <button type="button" class="app-toolbar-toggle" @click="$store.commit('toggleToolbar')">
         <icon-chevron :style="{ transform: panelVisible ? '' : 'rotate(180deg)' }" />
       </button>
     </div>

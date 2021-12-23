@@ -13,9 +13,6 @@
 				description: tr("Folder name")
 			}
 		}) %>
-		<span data-preserve="true" data-preserve-type="check" data-preserve-id="Check">
-			<input type="checkbox" checked="checked" id="Check" style="margin-left:25px"/> <label for="Check" class="tr">Error if mail not found</label>
-		</span>
 	<%= _.template($('#block_end').html())() %>
 	<%= _.template($('#variable_constructor').html())({
 		id: "Save",
@@ -27,6 +24,6 @@
 	}) %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Find and save the id of the last mail in the specified folder.</div>
+	<div class="tr tooltip-paragraph-first-fold">Find and save the id of the last letter in the specified folder.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

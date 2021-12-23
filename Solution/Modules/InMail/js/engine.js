@@ -368,11 +368,60 @@ _InMail = {
 		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, attachnames: attachnames, attachments: attachments, markSeen: markSeen, box: box})!
 		var messages = _result_function();
 		
+		_function_return(messages);
+	},
+	
+	getMessage: function(){
+		var args = _function_arguments();
+		var uid = args.uid;
+		delete args.uid;
+		
+		if(typeof uid == "string" && uid.indexOf(',') > 0){
+			uid.split(',');
+		};
+		
+		if(Array.isArray(uid)){
+			uid = uid[0];
+		};
+		
+		args.uids = uid;
+		
+		_call_function(_InMail.getMessages, args)!
+		var messages = _result_function();
+		
 		if(!messages.length){
 			_InMail.error('Could not find a letter matching the specified identifier in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
 		};
 		
-		_function_return(messages);
+		_function_return(messages[0]);
+	},
+	
+	getLastMessage: function(){
+		var args = _function_arguments();
+		
+		_call_function(_InMail.searchLast, {box: args.box})!
+		var uid = _result_function();
+		
+		args.uid = uid;
+		
+		_call_function(_InMail.getMessage, args)!
+		var message = _result_function();
+		
+		_function_return(message);
+	},
+	
+	findMessage: function(){
+		var args = _function_arguments();
+		
+		_call_function(_InMail.searchOne, args)!
+		var uid = _result_function();
+		
+		args.uid = uid;
+		
+		_call_function(_InMail.getMessage, args)!
+		var message = _result_function();
+		
+		_function_return(message);
 	},
 	
 	boxesToList: function(boxes, parent){

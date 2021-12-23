@@ -1,0 +1,31 @@
+<%if((getTextHtml && getLinksTextHtml) || (getTextPlain && getLinksTextPlain) || (getTextRaw && getLinksTextRaw)){%>/*Dat:eyJzIjoiZXh0cmFjdF91cmxzIn0=*/<%}%>
+_call_function(_InMail.findMessage, {criteria: {<%= [["from", from], ['"!from"', notFrom], ["to", to], ['"!to"', notTo], ["subject", subject], ['"!subject"', notSubject], ["text", text], ['"!text"', notText], ["flags", flags], ['"!flags"', notFlags], ["since", since], ["before", before]].filter(function(el){return el[1] !== '""'}).map(function(el){return el[0] + ':(' + el[1] + ')'}).join(', ') %>}, sorts: {type: (<%= sortType %>), field: (<%= sortField %>)}, body: [<%= [['html', getTextHtml], ['plain', getTextPlain], ['raw', getTextRaw]].filter(function(el){return el[1]}).map(function(el){return "'" + el[0] + "'"}).join(', ') %>], headers: [<%= [['from', getFrom], ['to', getTo], ['subject', getSubject], ['raw', getRawHeader]].filter(function(el){return el[1]}).map(function(el){return "'" + el[0] + "'"}).join(', ') %>]<%if(getSize){%>, size: <%= getSize %><%}%><%if(getAttachNames){%>, attachnames: <%= getAttachNames %><%}%><%if(getAttachments){%>, attachments: (<%= attachmentsMask %>)<%}%><%if(markSeen){%>, markSeen: <%= markSeen %><%}%><%if(box!=='""'){%>, box: (<%= box %>)<%}%>})!
+var messageData = _result_function();
+<%= saveUid %> = messageData["uid"];
+<%if(getFrom){%><%= saveFrom %> = messageData["headers"]["from"];<%}%>
+<%if(getTo){%><%= saveTo %> = messageData["headers"]["to"];<%}%>
+<%if(getSubject){%><%= saveSubject %> = messageData["headers"]["subject"];<%}%>
+<%if(getRawHeader){%><%= saveRawHeader %> = messageData["headers"]["raw"];<%}%>
+<%if(getTextHtml){%>
+	<%= saveTextHtml %> = messageData["body"]["html"];
+	<%if(getLinksTextHtml){%>
+		<%= saveLinksTextHtml %> = _extract_urls(messageData["body"]["html"]);
+	<%}%>
+<%}%>
+<%if(getTextPlain){%>
+	<%= saveTextPlain %> = messageData["body"]["plain"];
+	<%if(getLinksTextPlain){%>
+		<%= saveLinksTextPlain %> = _extract_urls(messageData["body"]["plain"]);
+	<%}%>
+<%}%>
+<%if(getTextRaw){%>
+	<%= saveTextRaw %> = messageData["body"]["raw"];
+	<%if(getLinksTextRaw){%>
+		<%= saveLinksTextRaw %> = _extract_urls(messageData["body"]["raw"]);
+	<%}%>
+<%}%>
+<%if(getSize){%><%= saveSize %> = messageData["size"];<%}%>
+<%if(getFlags){%><%= saveFlags %> = messageData["flags"];<%}%>
+<%if(getDate){%><%= saveDate %> = messageData["date"];<%}%>
+<%if(getAttachNames){%><%= saveAttachnames %> = messageData["attachnames"];<%}%>
+<%if(getAttachments){%><%= saveAttachments %> = messageData["attachments"];<%}%>

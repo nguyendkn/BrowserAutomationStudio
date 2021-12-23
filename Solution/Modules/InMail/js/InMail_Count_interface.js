@@ -162,7 +162,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Letter flags</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Letter flags"), description: tr("Letter flags")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Flags of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of letter"), description: tr("Flags of letter")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "flags",
 			description: tr("Contains"),

@@ -17,7 +17,6 @@ if(sortType["original"].length == 0){
 };
 var sortField = GetInputConstructorValue("sortField", loader);
 var box = GetInputConstructorValue("box", loader);
-var errorNotFound = $("#Check").is(':checked');
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + tr("\" is not specified"));
@@ -40,7 +39,6 @@ try{
 		"sortType": sortType["updated"],
 		"sortField": sortField["updated"],
         "box": box["updated"],
-        "errorNotFound": errorNotFound,
         "variable": "VAR_" + Save
     });
     code = Normalize(code, 0);

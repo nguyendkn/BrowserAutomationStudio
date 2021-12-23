@@ -280,7 +280,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, box: box, toBox: toBox, connect: api.getConnect()};
 		
-		_embedded("InMail_DelMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+		_embedded("InMail_CopyMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
 	
 	this.moveMessages = function(){
@@ -294,7 +294,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		VAR_INMAIL_NODE_PARAMETERS = {uids: uids, box: box, toBox: toBox, connect: api.getConnect()};
 		
-		_embedded("InMail_DelMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
+		_embedded("InMail_MoveMessages", "Node", "12.18.3", "INMAIL_NODE_PARAMETERS", 60000)!
 	};
 	
 	this.getMessages = function(){

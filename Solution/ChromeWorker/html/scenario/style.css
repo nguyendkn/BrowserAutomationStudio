@@ -1150,7 +1150,6 @@ label
 }
 
 .bottompannel {
-  max-height: calc(100vh - 300px);
   background-color: #fff;
   flex-flow: column;
   position: sticky;
@@ -1771,16 +1770,14 @@ mark
 }
 
 .btn-base.btn-cancel {
-  border: 1px solid #d8695f;
+  border-color: #d8695f;
   background: #d8695f;
-  border-radius: 2px;
   color: #fff;
 }
 
 .btn-base.btn-accept {
-  border: 1px solid #9d996c;
+  border-color: #9d996c;
   background: #9d996c;
-  border-radius: 2px;
   color: #fff;
 }
 
@@ -1798,13 +1795,11 @@ mark
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
   vertical-align: middle;
-  display: inline-block;
-  text-align: center;
+  border-radius: 2px;
   padding: 10px 12px;
   user-select: none;
   line-height: 18px;
   min-width: 140px;
-  font-size: 14px;
   cursor: pointer;
   color: #fff;
   outline: 0;

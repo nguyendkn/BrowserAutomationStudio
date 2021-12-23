@@ -156,7 +156,7 @@
                   <% if (item === 'boolean') { %>
                     <% ['false', 'true'].forEach((val, idx) => { %>
                       <div class="pretty p-default p-round" style="margin: 9px 12px;">
-                        <input type="radio" name="boolean" value="<%= val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= modifier %>>
+                        <input type="radio" name="boolean" value="<%- val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= modifier %>>
                         <div class="state">
                           <label><%= $t('inspector.' + val) %></label>
                         </div>
@@ -171,7 +171,7 @@
                   <% } else if (item === 'date' ) { %>
                     <input type="text" value="<%- match ? value : '' %>" step="any" <%= modifier %>>
                   <% } else { %>
-                    <input type="hidden" value="<%= item %>">
+                    <input type="hidden" value="<%- item %>">
                   <% } %>
                 </div>
               <% }) %>

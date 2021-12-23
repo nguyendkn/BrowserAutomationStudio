@@ -177,10 +177,11 @@
 
 .app-toolbar-menu {
   border: 1px solid #606060;
-  min-width: max-content;
   background: #3d3f42;
   position: absolute;
+  width: max-content;
   margin-top: -1px;
+  min-width: 150px;
   padding: 8px 0;
   z-index: 1;
   right: 0;

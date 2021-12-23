@@ -21,12 +21,12 @@ window.JsonTreeNode = {
 
   data() {
     const colors = {
-      undefined: '#8546bc',
+      undefined: '#808080',
       boolean: '#2525cc',
       string: '#2db669',
       number: '#d036d0',
       date: '#ce904a',
-      null: '#808080',
+      null: '#8546bc',
     };
 
     return { colors, isExpanded: false };
@@ -94,7 +94,7 @@ window.JsonTreeNode = {
             :value="value[key]"
             :path="path.concat(key)"
           />
-          <span v-show="!isExpanded">{{ $tc('items', size) }}</span>
+          <span v-show="!isExpanded" style="color: rgba(96, 96, 96, 0.65);">{{ $tc('items', size) }}</span>
           <span class="jt-node-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
@@ -107,7 +107,7 @@ window.JsonTreeNode = {
             :value="value[key]"
             :path="path.concat(key)"
           />
-          <span v-show="!isExpanded">{{ $tc('items', size) }}</span>
+          <span v-show="!isExpanded" style="color: rgba(96, 96, 96, 0.65);">{{ $tc('items', size) }}</span>
           <span class="jt-node-bracket">]</span>
         </template>
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>

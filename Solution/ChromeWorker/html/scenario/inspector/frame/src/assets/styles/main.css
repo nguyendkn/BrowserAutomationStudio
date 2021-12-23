@@ -104,6 +104,10 @@
   position: relative;
 }
 
+.app-toolbar-toggle:active {
+  opacity: 1;
+}
+
 .app-toolbar-toggle:hover {
   opacity: 1;
 }
@@ -384,11 +388,11 @@
 }
 
 .jt-node-actions > button:active {
-  opacity: 1.0;
+  opacity: 1;
 }
 
 .jt-node-actions > button:hover {
-  opacity: 1.0;
+  opacity: 1;
 }
 
 .jt-node-actions > button {
@@ -457,7 +461,7 @@
 /* Global */
 
 html, body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   min-width: 420px;
   overflow: hidden;
   height: 100%;

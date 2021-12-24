@@ -5,7 +5,7 @@
 
   Inspector.View = Backbone.View.extend({
     initialize() {
-      let mounted = false;
+      let connected = false;
 
       window.addEventListener('message', ({ data: { payload, type } }) => {
         switch (type) {
@@ -13,7 +13,15 @@
           case 'edit': return edit(payload);
           case 'hide': return this.hide();
           case 'show': return this.show();
-          default: this.trigger(type);
+          default: {
+            if (type === 'destroyed') {
+              connected = false;
+            }
+            if (type === 'mounted') {
+              connected = true;
+            }
+            this.trigger(type);
+          }
         }
       });
 
@@ -28,8 +36,8 @@
       });
 
       this.send = async message => {
-        if (!mounted) await new Promise(resolve => {
-          this.once('mounted', () => resolve(mounted = true));
+        if (!connected) await new Promise(resolve => {
+          this.once('mounted', () => resolve());
         });
         this.el.contentWindow.postMessage(message, '*');
       };

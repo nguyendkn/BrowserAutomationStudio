@@ -5,7 +5,7 @@
 
   Inspector.View = Backbone.View.extend({
     initialize() {
-      let connected = false;
+      let attached = false;
 
       window.addEventListener('message', ({ data: { payload, type } }) => {
         switch (type) {
@@ -15,10 +15,10 @@
           case 'show': return this.show();
           default: {
             if (type === 'destroyed') {
-              connected = false;
+              attached = false;
             }
             if (type === 'mounted') {
-              connected = true;
+              attached = true;
             }
             this.trigger(type);
           }
@@ -36,7 +36,7 @@
       });
 
       this.send = async message => {
-        if (!connected) await new Promise(resolve => {
+        if (!attached) await new Promise(resolve => {
           this.once('mounted', () => resolve());
         });
         this.el.contentWindow.postMessage(message, '*');

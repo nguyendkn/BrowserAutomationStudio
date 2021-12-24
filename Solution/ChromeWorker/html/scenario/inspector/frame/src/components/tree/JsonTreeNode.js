@@ -78,12 +78,8 @@ window.JsonTreeNode = {
     <div class="jt-node">
       <span class="jt-node-label"><slot name="label" :label="name">{{ name }}</slot><span>:&nbsp;</span></span>
       <span :style="{ color }" class="jt-node-value">
-        <template v-if="type === 'undefined' || type === 'null'">
-          {{ String(value) }}
-        </template>
-        <template v-else-if="type === 'string'">
-          <span>"{{ value }}"</span>
-        </template>
+        <template v-if="type === 'undefined' || type === 'null'">{{ String(value) }}</template>
+        <template v-else-if="type === 'string'">"{{ value }}"</template>
         <template v-else-if="type === 'object'">
           <span class="jt-node-bracket">{</span>
           <json-tree-node

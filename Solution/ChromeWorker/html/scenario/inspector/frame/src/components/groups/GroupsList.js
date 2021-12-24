@@ -30,8 +30,8 @@ window.GroupsList = {
 
   watch: {
     source: {
-      handler(source) {
-        let { groups } = this, keys = Object.keys(source);
+      handler(value) {
+        let { groups } = this, keys = Object.keys(value);
 
         groups.forEach(group => {
           if (group.id !== 0) {

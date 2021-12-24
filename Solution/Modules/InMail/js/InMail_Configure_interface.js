@@ -139,7 +139,7 @@
 				$('#advancedSettings').show();
 			}else{
 				$('#advancedSettings').hide();
-			}
+			};
 		};
 		
 		$(document).ready(function(){

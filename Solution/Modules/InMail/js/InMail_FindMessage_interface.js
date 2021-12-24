@@ -627,6 +627,80 @@
 		</span>
 	<%= _.template($('#block_end').html())() %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<hr style="margin-top:0px;margin-bottom:0px"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<span data-preserve="true" data-preserve-type="check" data-preserve-id="wait">
+			<input type="checkbox" id="wait" style="margin-left:25px"/> <label for="wait" class="tr">Wait letters</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Wait letters"), description: tr("Wait letters")})) %>"></i>
+		</span>
+		<span id="waitSettings">
+			<%= _.template($('#input_constructor').html())({
+				id: "foundOver",
+				description: tr("Number of letters"),
+				default_selector: "int",
+				disable_string: true,
+				value_number: 0,
+				min_number: 0,
+				max_number: 999999,
+				help: {
+					description: tr("Number of letters")
+				}
+			}) %>
+			<%= _.template($('#input_constructor').html())({
+				id: "interval",
+				description: tr("Interval (seconds)"),
+				default_selector: "int",
+				disable_string: true,
+				value_number: 5,
+				min_number: 1,
+				max_number: 999999,
+				help: {
+					description: tr("Interval in seconds to check existence letters matching the specified criteria."),
+					examples: [
+						{code: 2, description: tr("Check every 2 seconds")},
+						{code: 5, description: tr("Check every 5 seconds")},
+						{code: 10, description: tr("Check every 10 seconds")}
+					]
+				}
+			}) %>
+			<%= _.template($('#input_constructor').html())({
+				id: "timeout",
+				description: tr("Timeout (seconds)"),
+				default_selector: "int",
+				disable_string: true,
+				value_number: 300,
+				min_number: 1,
+				max_number: 999999,
+				help: {
+					description: tr("Maximum waiting time for letters in seconds. If the specified time expires and the letter is not found, then the action will end with an error."),
+					examples: [
+						{code: 300, description: tr("Wait 5 minutes")},
+						{code: 600, description: tr("Wait 10 minutes")},
+						{code: 900, description: tr("Wait 15 minutes")},
+						{code: 1200, description: tr("Wait 20 minutes")}
+					]
+				}
+			}) %>
+		</span>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<hr style="margin-top:0px;margin-bottom:0px"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="markSeen">
 			<input type="checkbox" id="markSeen" style="margin-left:25px"/> <label for="markSeen" class="tr">Mark message as read when fetched</label>
 		</span>
@@ -640,7 +714,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Folder name")
+				description: tr("Optional parameter.") + " " + tr("Folder name")
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>
@@ -656,7 +730,7 @@
 			let id = target[0].id || "";
 			let disable = !target.is(':checked');
 			let next = target.closest('span').next();
-			if(id.startsWith('getLinks')){
+			if(id.startsWith('getLinks') || id === 'wait'){
 				if(disable){
 					next.hide();
 				}else{
@@ -675,7 +749,7 @@
 			};
 		};
 		
-		let ids = ['getFrom','getTo','getSubject','getTextHtml','getLinksTextHtml','getTextPlain','getLinksTextPlain','getTextRaw','getLinksTextRaw','getSize','getFlags','getDate','getAttachNames','getAttachments','getRawHeader'];
+		let ids = ['getFrom','getTo','getSubject','getTextHtml','getLinksTextHtml','getTextPlain','getLinksTextPlain','getTextRaw','getLinksTextRaw','getSize','getFlags','getDate','getAttachNames','getAttachments','getRawHeader','wait'];
 		
 		$(document).ready(function(){
 			setTimeout(function(){

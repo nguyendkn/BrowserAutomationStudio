@@ -116,6 +116,22 @@ if(getRawHeader && saveRawHeader.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Technical headers of letter") + tr("\" is not specified"));
     return;
 };
+var wait = $("#wait").is(':checked');
+var foundOver = GetInputConstructorValue("foundOver", loader);
+if(wait && foundOver["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Number of letters") + tr("\" is not specified"));
+    return;
+};
+var interval = GetInputConstructorValue("interval", loader);
+if(wait && interval["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Interval") + tr("\" is not specified"));
+    return;
+};
+var timeout = GetInputConstructorValue("timeout", loader);
+if(wait && timeout["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
+    return;
+};
 var markSeen = $("#markSeen").is(':checked');
 var box = GetInputConstructorValue("box", loader);
 try{
@@ -166,6 +182,10 @@ try{
         "saveAttachments": "VAR_" + saveAttachments,
         "getRawHeader": getRawHeader,
         "saveRawHeader": "VAR_" + saveRawHeader,
+		"wait": wait,
+		"foundOver": foundOver["updated"],
+        "interval": interval["updated"],
+        "timeout": timeout["updated"],
         "markSeen": markSeen,
         "box": box["updated"]
     });

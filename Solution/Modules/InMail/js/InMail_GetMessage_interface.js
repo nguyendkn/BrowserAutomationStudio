@@ -365,7 +365,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Folder name")
+				description: tr("Optional parameter.") + " " + tr("Folder name")
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>

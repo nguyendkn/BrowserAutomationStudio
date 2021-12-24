@@ -211,6 +211,8 @@ _InMail = {
 	search: function(){
 		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
 		var sorts = _InMail.prepareSorts(_function_argument("sorts"));
+		var maxResults = parseInt(_InMail.paramClean(_function_argument("maxResults")));
+		var offset = parseInt(_InMail.paramClean(_function_argument("offset")));
 		var box = _InMail.prepareBox(_function_argument("box"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
@@ -225,6 +227,14 @@ _InMail = {
 		var res = _result_function();
 		
 		if(res.length){
+			if(maxResults){
+				res = res.slice(0, maxResults);
+			};
+			
+			if(offset){
+				res = res.map(function(uid){return uid + offset});
+			};
+			
 			_function_return(res);
 		}else{
 			if(errorNotFound){
@@ -233,6 +243,44 @@ _InMail = {
 				_function_return([]);
 			};
 		};
+	},
+	
+	wait: function(){
+		var criteria = _function_argument("criteria");
+		var sorts = _function_argument("sorts");
+		var foundOver = parseInt(_InMail.paramClean(_function_argument("foundOver"))) || 0;
+		var interval = 1000 * (parseInt(_InMail.paramClean(_function_argument("interval"))) || 5);
+		var timeout = 1000 * (parseInt(_InMail.paramClean(_function_argument("timeout"))) || 300);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		var maxResults = parseInt(_InMail.paramClean(_function_argument("maxResults")));
+		var offset = parseInt(_InMail.paramClean(_function_argument("offset")));
+		var box = _function_argument("box");
+		var res = [];
+		
+		_do(function(){
+			if(Date.now() > maxTime){
+				_InMail.error('Failed to wait for the required number of messages matching the specified criteria in the specified mailbox folder', 'Не удалось дождаться нужного количества писем, соответствующих указанным критериям, в указанной папке почтового ящика', 'wait');
+			};
+			
+			_call_function(_InMail.search,{criteria:criteria, sorts:sorts, box:box, errorNotFound: false})!
+			res = _result_function();
+			
+			if(res.length > foundOver){
+				_break();
+			};
+			
+			sleep(interval)!
+		})!
+		
+		if(maxResults){
+			res = res.slice(0, maxResults);
+		};
+		
+		if(offset){
+			res = res.map(function(uid){return uid + offset});
+		};
+		
+		_function_return(res);
 	},
 	
 	searchLast: function(){
@@ -256,30 +304,25 @@ _InMail = {
 	},
 	
 	searchOne: function(){
-		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
-		var sorts = _InMail.prepareSorts(_function_argument("sorts"));
-		var box = _InMail.prepareBox(_function_argument("box"));
-		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
+		var args = _function_arguments();
 		
-		var api = _InMail.getApi();
-		
-		_if_else(sorts, function(){
-			_call_function(api.sort, {sorts: sorts, criteria: criteria, box: box})!
-		}, function(){
-			_call_function(api.search, {criteria: criteria, box: box})!
-		})!
-		
+		_call_function(_InMail.search, args)!
 		var res = _result_function();
 		
 		if(res.length){
-			_function_return(res.shift());
+			_function_return(res[0]);
 		}else{
-			if(errorNotFound){
-				_InMail.error('Could not find a letter that matches the specified criteria in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанным критериям, в указанной папке почтового ящика', 'searchOne');
-			}else{
-				_function_return(0);
-			};
+			_function_return(0);
 		};
+	},
+	
+	waitOne: function(){
+		var args = _function_arguments();
+		
+		_call_function(_InMail.wait, args)!
+		var res = _result_function();
+		
+		_function_return(res[0]);
 	},
 	
 	count: function(){
@@ -414,6 +457,20 @@ _InMail = {
 		var args = _function_arguments();
 		
 		_call_function(_InMail.searchOne, args)!
+		var uid = _result_function();
+		
+		args.uid = uid;
+		
+		_call_function(_InMail.getMessage, args)!
+		var message = _result_function();
+		
+		_function_return(message);
+	},
+	
+	waitMessage: function(){
+		var args = _function_arguments();
+		
+		_call_function(_InMail.waitOne, args)!
 		var uid = _result_function();
 		
 		args.uid = uid;

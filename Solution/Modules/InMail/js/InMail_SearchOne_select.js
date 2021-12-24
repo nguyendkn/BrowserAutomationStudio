@@ -16,6 +16,22 @@ if(sortType["original"].length == 0){
     return;
 };
 var sortField = GetInputConstructorValue("sortField", loader);
+var wait = $("#wait").is(':checked');
+var foundOver = GetInputConstructorValue("foundOver", loader);
+if(wait && foundOver["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Number of letters") + tr("\" is not specified"));
+    return;
+};
+var interval = GetInputConstructorValue("interval", loader);
+if(wait && interval["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Interval") + tr("\" is not specified"));
+    return;
+};
+var timeout = GetInputConstructorValue("timeout", loader);
+if(wait && timeout["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
+    return;
+};
 var box = GetInputConstructorValue("box", loader);
 var Save = this.$el.find("#Save").val().toUpperCase();
 if(Save.length == 0){
@@ -38,6 +54,10 @@ try{
 		"before": before["updated"],
 		"sortType": sortType["updated"],
 		"sortField": sortField["updated"],
+		"wait": wait,
+		"foundOver": foundOver["updated"],
+        "interval": interval["updated"],
+        "timeout": timeout["updated"],
         "box": box["updated"],
         "variable": "VAR_" + Save
     });

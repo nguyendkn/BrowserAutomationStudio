@@ -43,7 +43,7 @@ class HelpManager
 	{
         BrowserAutomationStudio_StopSaveToUndoManager = false
 		BrowserAutomationStudio_SaveToUndoManager()
-		BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
+		BrowserAutomationStudio_AskForVariablesUpdate()
 	}
 
 	If(Expression,Code,Description)

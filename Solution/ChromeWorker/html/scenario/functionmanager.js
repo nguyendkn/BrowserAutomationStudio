@@ -711,7 +711,7 @@ function FunctionManager()
 				//_MainView.SetDefaultInsert()
 				_MainView.model.set("dontsend",false)
 				BrowserAutomationStudio_SaveToUndoManager()
-				BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
+				BrowserAutomationStudio_AskForVariablesUpdate()
 				_MainView.send()
 				_MainView.render()
 				self.RenderDefault()
@@ -763,7 +763,7 @@ function FunctionManager()
 
           		BrowserAutomationStudio_StopSaveToUndoManager = false
         		BrowserAutomationStudio_SaveToUndoManager()
-        		BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
+        		BrowserAutomationStudio_AskForVariablesUpdate()
 
 
           		

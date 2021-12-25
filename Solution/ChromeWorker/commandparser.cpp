@@ -161,9 +161,16 @@ void CommandParser::Parse(const std::string& Xml)
                 script_engine_version = CommandNodeInternal->value();
             }
 
+            std::string interface_state;
+            CommandNodeInternal = CommandNode->first_node("InterfaceState");
+            if(CommandNodeInternal)
+            {
+                interface_state = CommandNodeInternal->value();
+            }
+
             WORKER_LOG("SetCode");
             for(auto f:EventSetCode)
-                f(code,embedded,schema,is_testing, script_engine_version, application_engine_version);
+                f(code,embedded,schema,is_testing, interface_state, script_engine_version, application_engine_version);
         }
 
         CommandNode = MessagesNode->first_node("SetResources");

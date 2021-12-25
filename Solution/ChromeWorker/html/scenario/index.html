@@ -5813,20 +5813,11 @@
     }
 
     function BrowserAutomationStudio_PreserveInterfaceState() {
-      BrowserAutomationStudio_SaveInterfaceState(JSON.stringify({
-        // inspector: Object.fromEntries(['variables', 'resources', 'callstack'].map(type => {
-        //   return [type, _Inspector[type].model.get('state')]
-        // }))
-      }));
+
     }
 
     function BrowserAutomationStudio_LoadInterfaceState(state) {
-      const json = _.attempt(JSON.parse, state);
-      if (_.isError(json)) return;
 
-      _.each(json.inspector, (state, type) => {
-        // _Inspector[type].restoreState(state);
-      });
     }
 
     function BrowserAutomationStudio_FinishedBackup(fullPath) {

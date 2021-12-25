@@ -64,10 +64,6 @@ private:
     bool IsSuccessNumberEditStart;
     bool IsFailNumberEditStart;
     bool IsRunFunctionStart;
-    bool IsIf;
-    bool IsSetVariable;
-    bool IsSetLabel;
-    bool IsMoveLabel;
     bool IsRunFunctionSeveralThreadsStart;
     bool IsRunFunctionAsync;
     bool IsOpenAction;
@@ -81,6 +77,12 @@ private:
 
     std::string HighlightMenuItem;
     bool IsHightlightMenuItem;
+
+    std::string InterfaceState;
+    bool IsInterfaceState;
+
+    std::string InterfaceJson;
+    bool IsInterfaceJson;
 
     std::mutex mut_threadnumbereditstart;
     std::mutex mut_successnumbereditstart;
@@ -120,10 +122,6 @@ public:
     bool GetIsSuccessNumberEditStart();
     bool GetIsFailNumberEditStart();
     std::pair<std::string, bool> GetIsRunFunctionStart();
-    bool GetIsSetLabel();
-    bool GetIsIf();
-    bool GetIsSetVariable();
-    bool GetIsMoveLabel();
     std::pair<std::string, bool> GetIsRunFunctionSeveralThreadsStart();
     std::pair<std::string, bool> GetIsRunFunctionAsync();
     std::pair<std::string, bool> GetIsOpenAction();
@@ -139,6 +137,8 @@ public:
     std::string GetEventTriggerName();
 
     std::pair<std::string, bool> GetIsHighlightMenuItem();
+    std::pair<std::string, bool> GetIsInterfaceState();
+    std::pair<std::string, bool> GetIsInterfaceJson();
 
     bool GetClipboardGetRequest();
     bool GetStartBackup();

@@ -45,18 +45,18 @@
 
     render() {
       if (!this.el.isConnected) {
-        const { $el } = this.setElement('#inspector');
+        const { el } = this.setElement('#inspector');
 
-        this.resizable = interact($el[0]).resizable({
+        this.resizable = interact(el).resizable({
           onmove({ client: { y } }) {
-            $el.outerHeight(Math.max(110, window.outerHeight - Math.max(y, 300) - 32));
+            el.style.height = `${Math.max(110, window.outerHeight - Math.max(y, 300) - 32)}px`;
           },
           listeners: {
-            start({ target }) {
-              target.children[0].style.pointerEvents = 'none';
+            start() {
+              el.children[0].style.pointerEvents = 'none';
             },
-            end({ target }) {
-              target.children[0].style.pointerEvents = 'auto';
+            end() {
+              el.children[0].style.pointerEvents = 'auto';
             },
           },
           edges: { top: true },

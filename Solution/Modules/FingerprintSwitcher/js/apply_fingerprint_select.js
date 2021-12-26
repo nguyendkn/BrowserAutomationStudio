@@ -5,6 +5,14 @@ var AudioNoise = GetInputConstructorValue("AudioNoise", loader);
 var SafeBattery = GetInputConstructorValue("SafeBattery", loader);
 var SafeRectangles = GetInputConstructorValue("SafeRectangles", loader);
 var PerfectCanvas = GetInputConstructorValue("PerfectCanvas", loader);
+var Sensor = GetInputConstructorValue("EmulateSensor", loader);
+
+
+if(Sensor["original"].length == 0)
+{
+  Invalid("Sensor is empty");
+  return;
+}
 
 if(Fingerprint["original"].length == 0)
 {
@@ -57,7 +65,8 @@ try{
       audio: AudioNoise["updated"],
       battery: SafeBattery["updated"],
       rectangles: SafeRectangles["updated"],
-      perfectcanvas: PerfectCanvas["updated"]
+      perfectcanvas: PerfectCanvas["updated"],
+      sensor: Sensor["updated"],
   	})
 
   code = Normalize(code,0)

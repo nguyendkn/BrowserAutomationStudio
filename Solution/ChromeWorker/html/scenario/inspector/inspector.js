@@ -48,16 +48,17 @@
         const { el } = this.setElement('#inspector');
 
         this.resizable = interact(el).resizable({
-          onmove({ client: { x, y } }) {
-            el.style.height = `${Math.max(110, window.outerHeight - Math.max(y, 300) - 32)}px`;
-          },
           listeners: {
-            start() {
-              el.children[0].style.pointerEvents = 'none';
+            move({ client: { x, y } }) {
+              const height = window.outerHeight - Math.max(y, 300);
+              el.style.height = `${Math.max(110, height - 32)}px`;
             },
-            end() {
-              el.children[0].style.pointerEvents = 'auto';
-            },
+          },
+          onstart() {
+            el.children[0].style.pointerEvents = 'none';
+          },
+          onend() {
+            el.children[0].style.pointerEvents = 'auto';
           },
           edges: { top: true },
         });

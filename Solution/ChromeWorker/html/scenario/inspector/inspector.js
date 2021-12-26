@@ -7,7 +7,7 @@
     initialize() {
       let attached = false;
 
-      window.addEventListener('message', ({ data: { payload, type } }) => {
+      window.addEventListener('message', ({ data: { type, payload } }) => {
         switch (type) {
           case 'focusAction': return BrowserAutomationStudio_FocusAction(payload.id);
           case 'edit': return edit(payload);
@@ -20,7 +20,7 @@
             if (type === 'mounted') {
               attached = true;
             }
-            this.trigger(type);
+            this.trigger(type, payload);
           }
         }
       });

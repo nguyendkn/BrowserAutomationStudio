@@ -48,7 +48,7 @@
         const { el } = this.setElement('#inspector');
 
         this.resizable = interact(el).resizable({
-          onmove({ client: { y } }) {
+          onmove({ client: { x, y } }) {
             el.style.height = `${Math.max(110, window.outerHeight - Math.max(y, 300) - 32)}px`;
           },
           listeners: {

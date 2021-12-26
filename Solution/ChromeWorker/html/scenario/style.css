@@ -310,12 +310,10 @@
 
 .main {
   min-height: max-content;
-  padding-bottom: 50px;
+  padding: 0 15px 50px;
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
-  margin-right: 0;
-  margin-left: 0;
   flex: 1;
 }
 

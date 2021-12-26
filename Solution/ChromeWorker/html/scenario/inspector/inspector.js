@@ -37,7 +37,7 @@
 
       this.send = async message => {
         if (!attached) await new Promise(resolve => {
-          this.once('mounted', () => resolve());
+          this.once('mounted', resolve);
         });
         this.el.contentWindow.postMessage(message, '*');
       };

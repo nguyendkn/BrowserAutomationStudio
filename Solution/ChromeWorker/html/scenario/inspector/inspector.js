@@ -39,7 +39,7 @@
         if (!attached) await new Promise(resolve => {
           this.once('mounted', resolve);
         });
-        this.el.contentWindow.postMessage(message, '*');
+        this.el.children[0].contentWindow.postMessage(message, '*');
       };
     },
 
@@ -50,6 +50,14 @@
         this.resizable = interact($el[0]).resizable({
           onmove({ client: { y } }) {
             $el.outerHeight(Math.max(110, window.outerHeight - Math.max(y, 300) - 32));
+          },
+          listeners: {
+            start({ target }) {
+              target.children[0].style.pointerEvents = 'none';
+            },
+            end({ target }) {
+              target.children[0].style.pointerEvents = 'auto';
+            },
           },
           edges: { top: true },
         });

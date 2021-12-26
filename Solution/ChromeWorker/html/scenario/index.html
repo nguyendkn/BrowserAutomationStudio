@@ -1301,7 +1301,9 @@
       </svg>
     </div>
     <div class="bottompannel">
-      <iframe id="inspector" src="inspector/frame/index.html?lang=<%= _K %>" style="display: none;" noupdate></iframe>
+      <div id="inspector" style="display: none;" noupdate>
+        <iframe src="inspector/frame/index.html?lang=<%= _K %>" style="border: 0; flex: 1;"></iframe>
+      </div>
       <div id="functions">
         <a id="FunctionName" title="<%= tr('Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.') %>">
           <%= global.function_name %>
@@ -3815,9 +3817,6 @@
         var total_added = 0;
         var total_removed = 0;
         
-
-
-        
         morphdom(document.getElementById("containerdata"), '<div id="containerdata" >' + html + '</div>', {
           onBeforeElUpdated: function(fromEl, toEl) {
               if(fromEl.hasAttribute("noupdate"))
@@ -3862,7 +3861,6 @@
 
         
         //_CacheLoader.Stop()
-
         this.renderisscriptexecutingcontainer();
         this.renderselectiontemplatecontainer();
         _Inspector.render();

@@ -51,6 +51,10 @@
 	"localize": 
 	{
 		"Custom servers": {"ru": "Пользовательские серверы"},
+		"Emulate Sensor API": {"ru": "Эмуляция датчиков устройства"},
+
+		"Chrome browser has Sensor API, which allows to read data from devices like accelerometer, gyroscope or others. Data from that devices is available only on mobile platforms. After checking this setting data for that devices will be generated and replaced automatically. Enable this option in order to emulate mobile fingerprints more precisely.": {"ru": "Chrome поддерживает считывание данных из датчиков устройства, таких как акселерометр, гироскоп или другие. Данные с этих устройств доступны только на мобильных платформах. После установки данной настройки, данные для этих устройств будут сгенерированы и заменены автоматически. Включите эту опцию для более точной эмуляции мобильных отпечатков."},
+		
 		"If you are the site owner, you can collect fingerprints from users of your site.": {"ru": "Если вы являетесь владельцем сайта, вы можете собирать отпечатки у пользователей вашего сайта."},
 		"Use custom server": {"ru": "Использовать пользовательские серверы"},
 		"This option is useful only if you have custom server functionality enabled in your account. Otherwise, it will always give error. If you have this setting enabled, fingerprint will be obtained only from custom server. It is compatible with PerfectCanvas. Check wiki for more info.": {"ru": "Эта настройка полезна только в том случае, если пользовательские серверы активированы для вашей учетной записи. В противном случае действие всегда будет выдавать ошибку. Если у вас включен этот параметр, отпечаток будет получен только из вашего сервера. Данный метод совместим с PerfectCanvas. Проверьте вики для получения дополнительной информации."},

@@ -242,6 +242,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	FINGERPRINT_BATTERY = false
 	FINGERPRINT_RECTANGLES = false
 	FINGERPRINT_PERFECTCANVAS = true
+	FINGERPRINT_SENSOR = false
 
 	if(typeof(_arguments()) == "object")
 	{
@@ -263,6 +264,8 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGERPRINT_RECTANGLES = _arguments()[5]
 		if(_arguments().length > 6 && FINGERPRINT_JSON["perfectcanvas"])
 			FINGERPRINT_PERFECTCANVAS = _arguments()[6]
+		if(_arguments().length > 7 && FINGERPRINT_JSON["sensor"])
+			FINGERPRINT_SENSOR = _arguments()[7]
 			
 	}else
 	{
@@ -273,7 +276,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			fail(e.message)
 		}
 	}
-	
+
 	//Check fingerprint is valid
     if(FINGERPRINT_JSON["valid"] == false)
 	{
@@ -291,7 +294,9 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	   		"webgl": FINGERPRINT_WEBGL,
 	   		"audio": FINGERPRINT_AUDIO,
 	   		"battery": FINGERPRINT_BATTERY,
-	   		"rectangles": FINGERPRINT_RECTANGLES
+	   		"rectangles": FINGERPRINT_RECTANGLES,
+			"perfectcanvas": FINGERPRINT_PERFECTCANVAS,
+			"sensor": FINGERPRINT_SENSOR
 	   	}
 		if(typeof(_arguments()) == "object")
 		{
@@ -307,7 +312,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 
 
-	_if(FINGERPRINT_CANVAS || FINGERPRINT_WEBGL || FINGERPRINT_AUDIO || FINGERPRINT_BATTERY || FINGERPRINT_RECTANGLES, function(){
+	_if(FINGERPRINT_CANVAS || FINGERPRINT_WEBGL || FINGERPRINT_AUDIO || FINGERPRINT_BATTERY || FINGERPRINT_RECTANGLES || FINGERPRINT_SENSOR, function(){
 		var Settings = {}
 
 		if(FINGERPRINT_RECTANGLES)
@@ -358,6 +363,17 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			}
 		}
 
+		if(FINGERPRINT_SENSOR)
+		{
+			var Keys = Object.keys(FINGERPRINT_JSON["sensor"])
+			for(var i = 0;i<Keys.length;i++)
+			{
+				var Key = Keys[i]
+				var Value = FINGERPRINT_JSON["sensor"][Key]
+				Settings["Fingerprints." + Key] = Value.toString()
+			}
+		}
+		
 		if(FINGERPRINT_BATTERY)
 		{
 			Settings["Fingerprints.BatteryEnabled"] = "true"

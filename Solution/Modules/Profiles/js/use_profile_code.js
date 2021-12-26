@@ -24,7 +24,7 @@ _if(<%= load_fp %> == "true", function(){
 	FINGERPRINT_JSON = native("filesystem", "readfile", JSON.stringify({value: (<%= profile %>) + "/fingerprint.json",base64:false,from:0,to:0}))
 	_if(FINGERPRINT_JSON.length > 0, function(){
 		FINGERPRINT_JSON = JSON.parse(FINGERPRINT_JSON)
-		_call(BrowserAutomationStudio_ApplyFingerprint,[FINGERPRINT_JSON["fingerprint"],FINGERPRINT_JSON["canvas"],FINGERPRINT_JSON["webgl"],FINGERPRINT_JSON["audio"],FINGERPRINT_JSON["battery"],FINGERPRINT_JSON["rectangles"]])!
+		_call(BrowserAutomationStudio_ApplyFingerprint,[FINGERPRINT_JSON["fingerprint"],FINGERPRINT_JSON["canvas"],FINGERPRINT_JSON["webgl"],FINGERPRINT_JSON["audio"],FINGERPRINT_JSON["battery"],FINGERPRINT_JSON["rectangles"],FINGERPRINT_JSON["perfectcanvas"],FINGERPRINT_JSON["sensor"]])!
 	})!
 
 	FINGERPRINT_JSON = native("filesystem", "readfile", JSON.stringify({value: (<%= profile %>) + "/performance.json",base64:false,from:0,to:0}))

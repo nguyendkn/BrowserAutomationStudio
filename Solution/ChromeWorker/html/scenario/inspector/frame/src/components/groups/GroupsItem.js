@@ -126,7 +126,7 @@ window.GroupsItem = {
           </div>
         </div>
       </div>
-      <draggable v-show="!isExpanded" :list="items" :style="{ '--content': JSON.stringify($t('groups.empty')) }" class="group-item-content" group="items" handle=".jt-node-label > button">
+      <draggable v-show="!isExpanded" :list="items" :style="{ '--content': JSON.stringify($t('groups.empty')) }" class="group-item-content" group="items" handle=".jt-node-label">
         <slot v-if="items.length"></slot>
       </draggable>
     </li>

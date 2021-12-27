@@ -443,6 +443,16 @@
   background: var(--color-lighten);
 }
 
+.jt-node-label {
+  user-select: none;
+  cursor: pointer;
+}
+
+.jt-node-value {
+  user-select: auto;
+  cursor: initial;
+}
+
 .jt-node {
   position: relative;
   line-height: 18px;

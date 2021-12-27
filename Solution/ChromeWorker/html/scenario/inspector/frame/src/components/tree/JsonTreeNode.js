@@ -54,14 +54,14 @@ window.JsonTreeNode = {
   methods: {
     collapse(signal = false) {
       if (signal && (this.type === 'array' || this.type === 'object')) {
-        this.$refs.child.forEach(node => node.collapse(signal));
+        this.$refs.node.forEach(ref => ref.collapse(signal));
       }
       this.isExpanded = false;
     },
 
     expand(signal = false) {
       if (signal && (this.type === 'array' || this.type === 'object')) {
-        this.$refs.child.forEach(node => node.expand(signal));
+        this.$refs.node.forEach(ref => ref.expand(signal));
       }
       this.isExpanded = true;
     },
@@ -103,7 +103,7 @@ window.JsonTreeNode = {
           <json-tree-node
             v-for="key in keys"
             v-show="isExpanded"
-            ref="child"
+            ref="node"
             :key="key"
             :value="value[key]"
             :name="key"
@@ -117,7 +117,7 @@ window.JsonTreeNode = {
           <json-tree-node
             v-for="key in keys"
             v-show="isExpanded"
-            ref="child"
+            ref="node"
             :key="key"
             :value="value[key]"
             :name="key"

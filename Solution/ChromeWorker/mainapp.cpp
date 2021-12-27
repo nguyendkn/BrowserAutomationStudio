@@ -819,6 +819,7 @@ void MainApp::NavigateBackCallback(bool IsInstant)
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        Data->_RequestList.RemoveAll();
         this->SendTextResponce("<NavigateBack></NavigateBack>");
     });
 }

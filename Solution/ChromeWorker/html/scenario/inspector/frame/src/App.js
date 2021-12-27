@@ -36,14 +36,14 @@ window.App = {
     return { tabs, tab: tabs[0] };
   },
 
-  destroyed() {
-    window.removeEventListener('message', this.handleMessage);
-    this.send('destroyed');
-  },
-
   mounted() {
     window.addEventListener('message', this.handleMessage);
     this.send('mounted');
+  },
+
+  destroyed() {
+    window.removeEventListener('message', this.handleMessage);
+    this.send('destroyed');
   },
 
   methods: {
@@ -63,7 +63,7 @@ window.App = {
     },
   },
 
-  template: html`
+  template: `
     <div id="app">
       <div class="app-header">
         <ul class="app-tabs">

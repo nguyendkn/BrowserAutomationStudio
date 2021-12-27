@@ -11,7 +11,3 @@ const getType = (() => {
     return toString.call(value).slice(8, -1).toLowerCase();
   };
 })();
-
-const html = (raw, ...args) => String.raw({ raw }, args);
-
-const code = (raw, ...args) => String.raw({ raw }, args);

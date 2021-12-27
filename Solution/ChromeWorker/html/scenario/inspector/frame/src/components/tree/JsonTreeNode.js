@@ -52,8 +52,26 @@ window.JsonTreeNode = {
   },
 
   methods: {
-    toggle() {
-      this.isExpanded = !this.isExpanded;
+    collapse(signal = false) {
+      if (signal && (this.type === 'array' || this.type === 'object')) {
+        this.$refs.child.forEach(node => node.collapse(signal));
+      }
+      this.isExpanded = false;
+    },
+
+    expand(signal = false) {
+      if (signal && (this.type === 'array' || this.type === 'object')) {
+        this.$refs.child.forEach(node => node.expand(signal));
+      }
+      this.isExpanded = true;
+    },
+
+    toggle(signal = true) {
+      if (this.isExpanded) {
+        this.collapse(signal);
+      } else {
+        this.expand(signal);
+      }
     },
 
     edit() {
@@ -85,6 +103,7 @@ window.JsonTreeNode = {
           <json-tree-node
             v-for="key in keys"
             v-show="isExpanded"
+            ref="child"
             :key="key"
             :value="value[key]"
             :name="key"
@@ -98,6 +117,7 @@ window.JsonTreeNode = {
           <json-tree-node
             v-for="key in keys"
             v-show="isExpanded"
+            ref="child"
             :key="key"
             :value="value[key]"
             :name="key"
@@ -113,7 +133,7 @@ window.JsonTreeNode = {
         <button type="button" @click="edit">
           <icon-edit />
         </button>
-        <button v-if="(type === 'object' || type === 'array') && size" type="button" @click="toggle">
+        <button v-if="(type === 'object' || type === 'array') && size" type="button"  @click.ctrl="toggle(true)" @click.exact="toggle(false)">
           <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
         </button>
       </div>

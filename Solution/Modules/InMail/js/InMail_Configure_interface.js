@@ -134,18 +134,20 @@
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
 <script>
 		
-		function setVisibleAdvanced(){
-			if($('#autoConfig').val() != "true"){
-				$('#advancedSettings').show();
-			}else{
-				$('#advancedSettings').hide();
-			};
-		};
-		
 		$(document).ready(function(){
-			setTimeout(setVisibleAdvanced, 0);
-        });
-		
-        $('#autoConfig').on('blur', setVisibleAdvanced);
+			setTimeout(function(){
+				let setVisibleAdvanced = function(e){
+					if($('#autoConfig').val() != "true"){
+						$('#advancedSettings').show();
+					}else{
+						$('#advancedSettings').hide();
+					};
+				};
+				
+				$('#autoConfig').on('blur', setVisibleAdvanced);
+				
+				setVisibleAdvanced();
+			}, 0);
+		});
 
 </script>

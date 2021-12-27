@@ -374,43 +374,43 @@
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
 <script>
-		
-		function switchField(e){
-			let target = $(e.target || e);
-			let id = target[0].id || "";
-			let disable = !target.is(':checked');
-			let next = target.closest('span').next();
-			if(id.startsWith('getLinks')){
-				if(disable){
-					next.hide();
-				}else{
-					next.show();
-				};
-			}else{
-				next.find('input').prop('disabled', disable);
-			};
-			if(id.startsWith('getText')){
-				let children = next.children('div');
-				if(disable){
-					children.hide();
-				}else{
-					children.show();
-				};
-			};
-		};
-		
-		let ids = ['getFrom','getTo','getSubject','getTextHtml','getLinksTextHtml','getTextPlain','getLinksTextPlain','getTextRaw','getLinksTextRaw','getSize','getFlags','getDate','getAttachNames','getAttachments','getRawHeader'];
-		
+
 		$(document).ready(function(){
 			setTimeout(function(){
+				let switchField = function(e){
+					let target = e.target ? $(e.target) : e;
+					if(target.length){
+						let id = target.prop("id");
+						let disable = !target.is(':checked');
+						let next = target.closest('span').next();
+						if(id.startsWith('getLinks')){
+							if(disable){
+								next.hide();
+							}else{
+								next.show();
+							};
+						}else{
+							next.find('input').prop('disabled', disable);
+						};
+						if(id.startsWith('getText')){
+							let children = next.children('div');
+							if(disable){
+								children.hide();
+							}else{
+								children.show();
+							};
+						};
+					};
+				};
+				let ids = ['getFrom','getTo','getSubject','getTextHtml','getLinksTextHtml','getTextPlain','getLinksTextPlain','getTextRaw','getLinksTextRaw','getSize','getFlags','getDate','getAttachNames','getAttachments','getRawHeader'];
 				ids.forEach(function(id){
-					switchField('#' + id);
+					let ell = $('#' + id);
+					if(ell.length){
+						ell.on('change', switchField);
+						switchField(ell);
+					};
 				});
 			}, 0);
-        });
-		
-		ids.forEach(function(id){
-			$('#' + id).on('change', switchField);
 		});
 
 </script>

@@ -47,13 +47,13 @@ var debug_variables = (function () {
                 return acc;
             }, {}),
 
-            callstack: CYCLES.Data.reduce(function (acc, val) {
-                return (val._Info.name && val._Info.type && acc.unshift(cycle({
+            callstack: CYCLES.Data.reduceRight(function (acc, val) {
+                return (val._Info.name && val._Info.type && acc.push(cycle({
                     arguments: val._Arguments,
                     iterator: val._Iterator,
                     info: val._Info,
                 })), acc);
-            }, [cycle({ info: { type: 'function', name: 'Main', id: 0 } })]),
+            }, []).concat(cycle({ info: { type: 'function', name: 'Main', id: 0 } })),
 
             resources: JSON.parse(ScriptWorker.PickResources())
         });

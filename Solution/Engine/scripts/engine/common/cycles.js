@@ -118,15 +118,6 @@ function Cycle(Next,Break)
         CYCLES.Push(this);
         this.Next();
     }
-
-    this.toJSON = function()
-    {
-        return {
-            arguments: this._Arguments,
-            iterator: this._Iterator,
-            info: this._Info,
-        };
-    }
 }
 
 function Cycles()

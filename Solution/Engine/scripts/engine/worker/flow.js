@@ -48,8 +48,11 @@ var debug_variables = (function () {
             }, {}),
 
             callstack: CYCLES.Data.reduce(function (acc, val) {
-                var item = val.toJSON(), name = item.info.name;
-                return (name && acc.unshift(cycle(item)), acc);
+                return (val._Info.name && val._Info.type && acc.unshift(cycle({
+                    arguments: val._Arguments,
+                    iterator: val._Iterator,
+                    info: val._Info,
+                })), acc);
             }, [cycle({ info: { type: 'function', name: 'Main', id: 0 } })]),
 
             resources: JSON.parse(ScriptWorker.PickResources())

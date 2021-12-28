@@ -47,12 +47,10 @@ var debug_variables = (function () {
                 return acc;
             }, {}),
 
-            callstack: CYCLES.Data.map(function (item) { return mapCycle(item, item._Info); })
-                .filter(function (item) { return item.name; }).reverse().concat(mapCycle({}, {
-                    type: 'function',
-                    name: 'Main',
-                    id: 0
-                })),
+            callstack: CYCLES.Data.reduce(function (acc, val) {
+                var item = val.toJSON(), name = item.info.name;
+                return (name && acc.unshift(cycle(item)), acc);
+            }, [cycle({ info: { type: 'function', name: 'Main', id: 0 } })]),
 
             resources: JSON.parse(ScriptWorker.PickResources())
         });
@@ -70,11 +68,11 @@ var debug_variables = (function () {
         return typeof val === 'undefined' ? '__UNDEFINED__' : val;
     }
 
-    function mapCycle(item, info) {
-        var options = {
+    function cycle(item) {
+        var info = item.info, options = {
             expression: info.expression || '',
-            arguments: item._Arguments || {},
-            iterator: item._Iterator || 0
+            arguments: item.arguments || {},
+            iterator: item.iterator || 0,
         };
         return { type: info.type, name: info.name, id: info.id, options: options };
     }

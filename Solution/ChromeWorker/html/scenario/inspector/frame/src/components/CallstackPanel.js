@@ -14,6 +14,11 @@ window.CallstackPanel = {
       type: String,
     },
 
+    name: {
+      required: true,
+      type: String,
+    },
+
     data: {
       required: true,
       type: Array,

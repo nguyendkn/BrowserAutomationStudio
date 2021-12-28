@@ -19,6 +19,11 @@ window.GroupsPanel = {
       type: String,
     },
 
+    name: {
+      required: true,
+      type: String,
+    },
+
     data: {
       required: true,
       type: Object,

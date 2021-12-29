@@ -920,6 +920,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 int xPos = LOWORD(lParam);
                 int yPos = HIWORD(lParam);
 
+                if(Layout->IsTouchCursor())
+                {
+                    xPos += 7;
+                    yPos += 7;
+                }
+
                 RECT r = Layout->GetBrowserRectangle(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
 
                 int MousePositionX = (float)(xPos - r.left) * (float)(app->GetData()->WidthBrowser) / (float)(r.right - r.left),MousePositionY = (float)(yPos - r.top) * (float)(app->GetData()->HeightBrowser) / (float)(r.bottom - r.top);
@@ -1124,6 +1130,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             int xPos = LOWORD(lParam);
             int yPos = HIWORD(lParam);
+
+            if(Layout->IsTouchCursor())
+            {
+                xPos += 7;
+                yPos += 7;
+            }
+
 
             if((!IsControlButton || (Layout->IsManualControlAction && !app->GetData()->IsRecord)) && (Layout->State == MainLayout::Ready || Layout->IsManualControlAction))
             {

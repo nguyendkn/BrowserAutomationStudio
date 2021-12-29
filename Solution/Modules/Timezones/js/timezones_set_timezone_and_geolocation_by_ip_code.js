@@ -21,3 +21,4 @@ _if((<%= change_browserlanguage %>) == "true", function(){
 	header("Accept-Language", language + "-" + country)!
 	_settings({"Fingerprints.Locale":IP_INFO["country"].toLowerCase()})!
 })!
+sleep(1000)!

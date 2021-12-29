@@ -3,3 +3,4 @@ _if((<%= latitude %>).toString().length > 0 && (<%= longitude %>).toString().len
 })!
 
 geolocation_object(<%= geolocation %>)!
+sleep(1000)!

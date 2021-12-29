@@ -5463,6 +5463,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="setheader_code">
     header(<%= name %>, <%= value %>)!
+    sleep(1000)!
   </script>
 
   <script type="text/template" id="clickCaptchaBrowser_code">
@@ -6245,6 +6246,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       set_proxy(hash["server"], hash["Port"], hash["IsHttp"], hash["name"], hash["password"])!
       sleep(1000)!
       set_proxy_extended(<%= DetectExternalIp %> == "true", <%= ChangeGeolocation %> == "true", <%= ChangeWebrtcIp %> == "true", <%= ChangeTimezone %> == "true", <%= ChangeBrowserLanguage %> == "true", <%= ip_info_method %>, <%= ip_api_key %>, <%= function_name %>)!
+      sleep(1000)!
   </script>
 
   <script type="text/template" id="for_code">

@@ -25,6 +25,7 @@ _if(<%= load_fp %> == "true", function(){
 	_if(FINGERPRINT_JSON.length > 0, function(){
 		FINGERPRINT_JSON = JSON.parse(FINGERPRINT_JSON)
 		_call(BrowserAutomationStudio_ApplyFingerprint,[FINGERPRINT_JSON["fingerprint"],FINGERPRINT_JSON["canvas"],FINGERPRINT_JSON["webgl"],FINGERPRINT_JSON["audio"],FINGERPRINT_JSON["battery"],FINGERPRINT_JSON["rectangles"],FINGERPRINT_JSON["perfectcanvas"],FINGERPRINT_JSON["sensor"]])!
+		sleep(1000)!
 	})!
 
 	FINGERPRINT_JSON = native("filesystem", "readfile", JSON.stringify({value: (<%= profile %>) + "/performance.json",base64:false,from:0,to:0}))
@@ -48,5 +49,6 @@ _if(<%= load_proxy %> == "true", function(){
 		set_proxy(_ARG["server"], _ARG["Port"], _ARG["IsHttp"], _ARG["name"], _ARG["password"])!
 		sleep(1000)!
 		set_proxy_extended(true, true, true, true, true)!
+		sleep(1000)!
 	})!
 })!

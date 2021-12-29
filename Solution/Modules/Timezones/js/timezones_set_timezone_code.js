@@ -10,3 +10,4 @@ if((<%= timezonename %>).toString().length > 0)
 }
 
 _settings(UpdatedSettings)!
+sleep(1000)!

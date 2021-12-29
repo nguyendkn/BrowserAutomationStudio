@@ -33,20 +33,15 @@ window.GroupsList = {
       handler(value) {
         const keys = Object.keys(value);
 
-        this.groups = this.groups.map(({ items, color, name, id }) => ({
-          items: items.filter(item => {
+        const [{ items }] = this.groups.filter(group => {
+          group.items = group.items.filter(item => {
             const index = keys.indexOf(item.key);
-            return index >= 0 && keys.splice(index, 1);
-          }),
-          color,
-          name,
-          id,
-        }));
+            return ~index && keys.splice(index, 1);
+          });
+          return group.id === 0;
+        });
 
-        this.groups.find(({ id }) => id === 0).items.push(...keys.map(key => ({
-          fixed: false,
-          key
-        })));
+        keys.forEach(key => items.push({ key, fixed: false }));
       },
 
       immediate: true,

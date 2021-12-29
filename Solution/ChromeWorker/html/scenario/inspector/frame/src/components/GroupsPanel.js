@@ -67,8 +67,6 @@ window.GroupsPanel = {
         })
         .sort((a, b) => {
           if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
-          a = `/${a}`;
-          b = `/${b}`;
 
           switch (activeSortings[0]) {
             case 'dateModified':
@@ -95,34 +93,36 @@ window.GroupsPanel = {
   watch: {
     data($new, $old) {
       const has = Object.prototype.hasOwnProperty;
-      const diff = jsonpatch.compare($old, $new);
+      const diff = microdiff($old, $new);
       const highlight = this.highlight;
       const metadata = this.metadata;
 
       if (diff.length) {
         const history = [];
 
-        diff.forEach(({ path, op }) => {
-          if (path.split('/').length > 2) return;
-          const now = performance.now();
-          history.push(path);
+        diff.forEach(({ path, type }) => {
+          if (path.length === 1) {
+            const name = path[0], now = performance.now();
 
-          if (has.call(metadata, path)) {
-            if (op === 'remove') return delete metadata[path];
-            metadata[path].modifiedAt = now;
-            metadata[path].usages += 1;
-            metadata[path].count += 0;
-          } else {
-            metadata[path] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
+            if (has.call(metadata, name)) {
+              if (type === 'REMOVE') return delete metadata[name];
+              metadata[name].modifiedAt = now;
+              metadata[name].usages += 1;
+              metadata[name].count += 0;
+            } else {
+              metadata[name] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
+            }
+  
+            history.push(name);
           }
         });
 
         this.history = this.history.concat(history).slice(-100);
       }
 
-      Object.entries(metadata).forEach(([path, item]) => {
+      Object.entries(metadata).forEach(([name, item]) => {
         if (highlight) {
-          item.count = diff.some(v => v.path === path) ? 0 : Math.min(item.count + 1, 5);
+          item.count = diff.some(v => v.path[0] === name) ? 0 : Math.min(item.count + 1, 5);
         }
         // this.trigger('highlight', { count: item.count, path });
       });

@@ -19,13 +19,28 @@ const i18n = new VueI18n({
 
 const store = new Vuex.Store({
   state: () => ({
+    ...(scriptStorage.getItem('state') || {}),
     toolbarVisible: false,
   }),
   mutations: {
-    toggleToolbar(state) {
+    toggleToolbar(state, payload) {
       state.toolbarVisible = !state.toolbarVisible;
     },
+    setExpandedItem(state, { path }) {
+      state.items[path] = true;
+    },
+    setCollapsedItem(state, { path }) {
+      state.items[path] = false;
+    },
   },
+});
+
+store.subscribe((mutation, state) => {
+  if (mutation.type !== 'toggleToolbar') {
+    scriptStorage.setItem('state', {
+      items: state.items
+    });
+  }
 });
 
 const app = new Vue({

@@ -111,6 +111,7 @@ window.GroupsPanel = {
             if (op === 'remove') return delete metadata[path];
             metadata[path].modifiedAt = now;
             metadata[path].usages += 1;
+            metadata[path].count += 0;
           } else {
             metadata[path] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
           }

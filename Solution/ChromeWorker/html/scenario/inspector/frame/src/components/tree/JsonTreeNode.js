@@ -57,6 +57,7 @@ window.JsonTreeNode = {
         this.$refs.node.forEach(ref => ref.collapse(signal));
       }
       this.isExpanded = false;
+      // this.$store.commit('setCollapsedItem', { path: this.path.join('|') });
     },
 
     expand(signal = false) {
@@ -64,6 +65,7 @@ window.JsonTreeNode = {
         this.$refs.node.forEach(ref => ref.expand(signal));
       }
       this.isExpanded = true;
+      // this.$store.commit('setExpandedItem', { path: this.path.join('|') });
     },
 
     toggle(signal = true) {

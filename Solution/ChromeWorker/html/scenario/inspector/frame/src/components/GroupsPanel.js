@@ -105,7 +105,7 @@ window.GroupsPanel = {
 
         diff.forEach(({ path, type }) => {
           if (path.length === 1) {
-            const name = path[0], now = performance.now();
+            const [name] = path, now = performance.now();
 
             if (has.call(metadata, name)) {
               if (type === 'REMOVE') return delete metadata[name];
@@ -126,8 +126,8 @@ window.GroupsPanel = {
       Object.entries(metadata).forEach(([name, item]) => {
         if (highlight) {
           item.count = diff.some(v => v.path[0] === name) ? 0 : Math.min(item.count + 1, 5);
+          // this.trigger('highlight', { count: item.count, path });
         }
-        // this.trigger('highlight', { count: item.count, path });
       });
 
       this.highlight = false;

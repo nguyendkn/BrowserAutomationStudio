@@ -21,10 +21,7 @@ window.GroupsList = {
         id: 0,
         name: 'Main',
         color: 'brown',
-        items: Object.keys(this.source).map(key => ({
-          fixed: false,
-          key,
-        })),
+        items: [],
       },
     ];
 
@@ -32,23 +29,27 @@ window.GroupsList = {
   },
 
   watch: {
-    source(value) {
-      const keys = Object.keys(value);
+    source: {
+      handler(value) {
+        const keys = Object.keys(value);
 
-      this.groups = this.groups.map(({ items, color, name, id }) => ({
-        items: items.filter(item => {
-          const index = keys.indexOf(item.key);
-          return index >= 0 && keys.splice(index, 1);
-        }),
-        color,
-        name,
-        id,
-      }));
+        this.groups = this.groups.map(({ items, color, name, id }) => ({
+          items: items.filter(item => {
+            const index = keys.indexOf(item.key);
+            return index >= 0 && keys.splice(index, 1);
+          }),
+          color,
+          name,
+          id,
+        }));
 
-      this.groups.find(({ id }) => id === 0).items.push(...keys.map(key => ({
-        fixed: false,
-        key
-      })));
+        this.groups.find(({ id }) => id === 0).items.push(...keys.map(key => ({
+          fixed: false,
+          key
+        })));
+      },
+
+      immediate: true,
     },
   },
 

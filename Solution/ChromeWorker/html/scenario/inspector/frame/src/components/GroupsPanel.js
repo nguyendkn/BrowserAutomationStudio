@@ -161,8 +161,8 @@ window.GroupsPanel = {
           </button>
         </template>
       </panel-toolbar>
-      <div v-if="isEmpty" class="app-panel-title" v-t="title"></div>
-      <div v-else class="app-panel-content">
+      <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
+      <div v-show="!isEmpty" class="app-panel-content">
         <groups-list ref="list" :style="styles" :source="sortedData" />
       </div>
     </div>

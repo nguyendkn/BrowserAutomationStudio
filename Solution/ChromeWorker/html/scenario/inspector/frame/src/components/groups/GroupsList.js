@@ -5,7 +5,7 @@ window.GroupsList = {
 
   components: {
     GroupsItem,
-    JsonTreeNode,
+    JsonTreeRoot,
   },
 
   props: {
@@ -98,12 +98,7 @@ window.GroupsList = {
         @remove="removeGroup(index, $event)"
       >
         <template v-for="item in group.items">
-          <json-tree-node
-            :key="item.key"
-            :name="item.key"
-            :path="[item.key]"
-            :value="source[item.key]"
-          >
+          <json-tree-root :key="item.key" :name="item.key" :data="source[item.key]">
             <template #label="{ label }">
               <button type="button" style="margin: 0 8px; line-height: 16px;" @click="item.fixed = !item.fixed">
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="vertical-align: sub;">
@@ -113,7 +108,7 @@ window.GroupsList = {
               </button>
               <span>{{ label }}</span>
             </template>
-          </json-tree-node>
+          </json-tree-root>
         </template>
       </groups-item>
     </draggable>

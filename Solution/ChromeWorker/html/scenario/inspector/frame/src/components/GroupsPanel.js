@@ -54,10 +54,9 @@ window.GroupsPanel = {
     },
 
     sortedData() {
-      const { data, history, metadata, activeFilters, activeSortings } = this;
+      const { source, history, metadata, activeFilters, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
       const query = this.query.toLowerCase();
-      const source = this.transform(data);
 
       const result = Object.keys(source)
         .filter(key => {
@@ -88,10 +87,14 @@ window.GroupsPanel = {
     isEmpty() {
       return !Object.keys(this.data).length;
     },
+
+    source() {
+      return this.transform(this.data);
+    },
   },
 
   watch: {
-    data($new, $old) {
+    source($new, $old) {
       const has = Object.prototype.hasOwnProperty;
       const diff = microdiff($old, $new);
       const highlight = this.highlight;

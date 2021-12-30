@@ -1164,38 +1164,41 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             GlobalState.SwitchingToDelayedTabIndex = -1;
                         }
                     }
-                }else if(TypeName == "background_page")
+                }else if(TypeName == "background_page" || TypeName == "service_worker")
                 {
                     //Background page for extension has been created, collect info
                     std::shared_ptr<ExtensionInfo> ExtInfo;
                     std::string Id = Parser.GetStringFromJson(Result, "targetInfo.url");
-                    ReplaceAllInPlace(Id,"chrome-extension://","");
-                    if(Id.length() >= 32)
+                    if(starts_with(Id,"chrome-extension://"))
                     {
-                        Id = Id.substr(0,32);
-
-                        for(std::shared_ptr<ExtensionInfo> ExtInfoCurrent: GlobalState.ExtensionList)
+                        ReplaceAllInPlace(Id,"chrome-extension://","");
+                        if(Id.length() >= 32)
                         {
-                            if(Id == ExtInfoCurrent->Id)
+                            Id = Id.substr(0,32);
+
+                            for(std::shared_ptr<ExtensionInfo> ExtInfoCurrent: GlobalState.ExtensionList)
                             {
-                                ExtInfo = ExtInfoCurrent;
-                                break;
+                                if(Id == ExtInfoCurrent->Id)
+                                {
+                                    ExtInfo = ExtInfoCurrent;
+                                    break;
+                                }
                             }
+
+                            bool NeedToAdd = false;
+                            if(!ExtInfo)
+                            {
+                                ExtInfo = std::make_shared<ExtensionInfo>();
+                                NeedToAdd = true;
+                            }
+
+                            ExtInfo->Id = Id;
+                            ExtInfo->FrameId = FrameId;
+                            ExtInfo->Name = Parser.GetStringFromJson(Result, "targetInfo.title");
+
+                            if(NeedToAdd)
+                                GlobalState.ExtensionList.push_back(ExtInfo);
                         }
-
-                        bool NeedToAdd = false;
-                        if(!ExtInfo)
-                        {
-                            ExtInfo = std::make_shared<ExtensionInfo>();
-                            NeedToAdd = true;
-                        }
-
-                        ExtInfo->Id = Id;
-                        ExtInfo->FrameId = FrameId;
-                        ExtInfo->Name = Parser.GetStringFromJson(Result, "targetInfo.title");
-
-                        if(NeedToAdd)
-                            GlobalState.ExtensionList.push_back(ExtInfo);
                     }
                 }
             }
@@ -2673,31 +2676,33 @@ void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNa
         }
     }
 
-    if(!Id.empty())
+    if(Id.empty())
     {
-        //Create folder if needed
-        std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
-        CreateDirectoryA(Folder.c_str(), NULL);
-        Folder += GlobalState.ParentProcessId;
-        CreateDirectoryA(Folder.c_str(), NULL);
+        Id = ExtensionIdOrNamePart;
+    }
 
-        //Path of file to write
-        std::string ExtensionPath = Folder + std::string("/") + Id;
+    //Create folder if needed
+    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
+    CreateDirectoryA(Folder.c_str(), NULL);
+    Folder += GlobalState.ParentProcessId;
+    CreateDirectoryA(Folder.c_str(), NULL);
 
-        //This will create file, which tells browser to trigger extension
-        try
+    //Path of file to write
+    std::string ExtensionPath = Folder + std::string("/") + Id;
+
+    //This will create file, which tells browser to trigger extension
+    try
+    {
+        std::ofstream outfile(ExtensionPath, std::ios::binary);
+        if(outfile.is_open())
         {
-            std::ofstream outfile(ExtensionPath, std::ios::binary);
-            if(outfile.is_open())
-            {
-                outfile << "-";
-            }
-            outfile.flush();
-            outfile.close();
-        } catch(...)
-        {
-
+            outfile << "-";
         }
+        outfile.flush();
+        outfile.close();
+    } catch(...)
+    {
+
     }
 }
 

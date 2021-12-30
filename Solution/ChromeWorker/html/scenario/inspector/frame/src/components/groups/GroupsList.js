@@ -13,6 +13,10 @@ window.GroupsList = {
       required: true,
       type: Object,
     },
+    order: {
+      required: true,
+      type: Array,
+    },
   },
 
   data() {
@@ -30,8 +34,8 @@ window.GroupsList = {
 
   watch: {
     source: {
-      handler(value) {
-        const keys = Object.keys(value);
+      handler(source) {
+        const keys = Object.keys(source);
 
         const [{ items }] = this.groups.filter(group => {
           group.items = group.items.filter(item => {
@@ -42,6 +46,19 @@ window.GroupsList = {
         });
 
         keys.forEach(key => items.push({ key, fixed: false }));
+      },
+
+      immediate: true,
+    },
+
+    order: {
+      handler(order) {
+        this.groups.forEach(group => {
+          group.items.sort((a, b) => {;
+            /// if (a.fixed || b.fixed) return 0;
+            return order.indexOf(a.key) - order.indexOf(b.key);
+          });
+        });
       },
 
       immediate: true,

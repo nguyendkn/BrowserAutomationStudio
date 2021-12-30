@@ -53,9 +53,8 @@ window.GroupsPanel = {
       return this.filters.filter(f => f.active).map(f => f.name);
     },
 
-    sortedData() {
-      const { source, history, metadata, activeFilters, activeSortings } = this;
-      const cache = history.flat(), updates = history.length;
+    filteredData() {
+      const { source, activeFilter } = this;
       const query = this.query.toLowerCase();
 
       const result = Object.keys(source)
@@ -64,24 +63,30 @@ window.GroupsPanel = {
           const type = getType(source[key]);
           return this.activeFilters.some(f => f === type);
         })
-        .sort((a, b) => {
-          if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
-
-          switch (activeSortings[0]) {
-            case 'dateModified':
-              return metadata[b].modifiedAt - metadata[a].modifiedAt;
-            case 'dateCreated':
-              return metadata[b].createdAt - metadata[a].createdAt;
-            case 'frequency':
-              const f1 = cache.filter(v => v === a).length + updates;
-              const f2 = cache.filter(v => v === b).length + updates;
-              return metadata[b].usages / f2 - metadata[a].usages / f1;
-          }
-
-          return a.localeCompare(b);
-        });
 
       return result.reduce((acc, key) => (acc[key] = source[key], acc), {});
+    },
+
+    sortedKeys() {
+      const { history, metadata, activeSortings } = this;
+      const cache = history.flat(), updates = history.length;
+
+      return Object.keys(this.filteredData).sort((a, b) => {
+        if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
+
+        switch (activeSortings[0]) {
+          case 'dateModified':
+            return metadata[b].modifiedAt - metadata[a].modifiedAt;
+          case 'dateCreated':
+            return metadata[b].createdAt - metadata[a].createdAt;
+          case 'frequency':
+            const f1 = cache.filter(v => v === a).length + updates;
+            const f2 = cache.filter(v => v === b).length + updates;
+            return metadata[b].usages / f2 - metadata[a].usages / f1;
+        }
+
+        return a.localeCompare(b);
+      });
     },
 
     isEmpty() {
@@ -167,7 +172,7 @@ window.GroupsPanel = {
       </panel-toolbar>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
       <div v-show="!isEmpty" class="app-panel-content">
-        <groups-list ref="list" :style="styles" :source="sortedData" />
+        <groups-list ref="list" :style="styles" :source="filteredData" :order="sortedKeys" />
       </div>
     </div>
   `,

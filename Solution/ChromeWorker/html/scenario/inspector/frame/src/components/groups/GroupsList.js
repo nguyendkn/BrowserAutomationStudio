@@ -13,6 +13,7 @@ window.GroupsList = {
       required: true,
       type: Object,
     },
+
     order: {
       required: true,
       type: Array,
@@ -66,7 +67,7 @@ window.GroupsList = {
 
   methods: {
     updateGroup(index, data) {
-      Object.assign(this.groups[index], data);
+      this.groups[index] = Object.assign({}, this.groups[index], data);
     },
 
     removeGroup(index, data) {

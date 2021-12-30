@@ -100,7 +100,6 @@ window.GroupsPanel = {
 
   watch: {
     source($new, $old) {
-      const has = Object.prototype.hasOwnProperty;
       const diff = microdiff($old, $new);
       const highlight = this.highlight;
       const metadata = this.metadata;
@@ -112,7 +111,7 @@ window.GroupsPanel = {
           if (path.length === 1) {
             const [name] = path, now = performance.now();
 
-            if (has.call(metadata, name)) {
+            if (hasOwn(metadata, name)) {
               if (type === 'REMOVE') return delete metadata[name];
               metadata[name].modifiedAt = now;
               metadata[name].usages += 1;

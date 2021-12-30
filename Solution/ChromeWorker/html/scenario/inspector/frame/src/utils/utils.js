@@ -11,3 +11,14 @@ const getType = (() => {
     return toString.call(value).slice(8, -1).toLowerCase();
   };
 })();
+
+const hasOwn = (() => {
+  const has = Object.prototype.hasOwnProperty;
+
+  return (value, key) => {
+    if (value == null) {
+      throw new TypeError('Cannot convert undefined or null to object');
+    }
+    return has.call(Object(value), key);
+  };
+})();

@@ -54,7 +54,7 @@ window.GroupsPanel = {
     },
 
     filteredData() {
-      const { source, activeFilter } = this;
+      const { source, activeFilters } = this;
       const query = this.query.toLowerCase();
 
       const result = Object.keys(source)

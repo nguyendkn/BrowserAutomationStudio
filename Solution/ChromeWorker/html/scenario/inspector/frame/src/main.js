@@ -38,7 +38,7 @@ const store = new Vuex.Store({
 store.subscribe((mutation, state) => {
   if (mutation.type !== 'toggleToolbar') {
     scriptStorage.setItem('state', {
-      items: state.items
+      items: state.items,
     });
   }
 });

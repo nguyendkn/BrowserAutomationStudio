@@ -54,9 +54,8 @@ window.GroupsList = {
     order: {
       handler(order) {
         this.groups.forEach(group => {
-          group.items.sort((a, b) => {;
-            /// if (a.fixed || b.fixed) return 0;
-            return order.indexOf(a.key) - order.indexOf(b.key);
+          group.items.sort((a, b) => {
+            return b.fixed - a.fixed || order.indexOf(a.key) - order.indexOf(b.key);
           });
         });
       },

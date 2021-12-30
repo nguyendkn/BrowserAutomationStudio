@@ -524,7 +524,51 @@
         "engine.js",
         "internal/base.js",
         "internal/configs.js",
-        "internal/imapNode.js"
+        "internal/curl.js",
+        "internal/imapCurl.js"
+	],
+	"dll": [
+		{
+			"name": "inmailcurl",
+			"filename32": "inmailcurl32.dll",
+			"filename64": "inmailcurl64.dll",
+			"startdllfunction": "StartDll",
+			"enddllfunction": "EndDll",
+			"startthreadfunction": "StartThread",
+			"endthreadfunction": "EndThread",
+			"exportlist": [
+				{
+					"name": "curl_init",
+					"isasync": false,
+					"waitinfinite": false,
+					"workfunction": "InMail_CurlInit"
+				},
+				{
+					"name": "curl_is_init",
+					"isasync": false,
+					"waitinfinite": false,
+					"workfunction": "InMail_CurlIsInit"
+				},
+				{
+					"name": "curl_set_opts",
+					"isasync": false,
+					"waitinfinite": false,
+					"workfunction": "InMail_CurlSetOpts"
+				},
+				{
+					"name": "curl_request",
+					"isasync": true,
+					"waitinfinite": false,
+					"workfunction": "InMail_CurlRequest"
+				},
+				{
+					"name": "curl_cleanup",
+					"isasync": false,
+					"waitinfinite": false,
+					"workfunction": "InMail_CurlCleanup"
+				}
+			]
+		}
 	],
     "icon": "mail.png",
     "info": {

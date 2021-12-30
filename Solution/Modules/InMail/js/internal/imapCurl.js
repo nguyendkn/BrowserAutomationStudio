@@ -424,20 +424,19 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.makeRequest = function(){
-		var path = _function_argument("path");
 		var query = _function_argument("query");
 		var isUTF8 = _avoid_nilb(_function_argument("isUTF8"), false);
-		var multiple = _avoid_nilb(_function_argument("multiple"), false);
-		var saveOnlyLast = _avoid_nilb(_function_argument("saveOnlyLast"), false);
 		var box = api.prepareBox(_function_argument("box"), true);
+		var path = api.encodeName(box);
 		
-		if(isUTF8){
-			query = 'ENABLE UTF8=ACCEPT\r\nSELECT "' + api.encodeName(box) + '"\r\n' + query;
-		}else{
-			path = _avoid_nil(path, api.encodeName(box));
-		};
+		_if_else(isUTF8, function(){
+			_call_function(api.request, {path: "", query: 'ENABLE UTF8=ACCEPT'})!
+			
+			_call_function(api.request, {path: path, query: query})!
+		}, function(){
+			_call_function(api.request, {path: path, query: query})!
+		})!
 		
-		_call_function(api.request, {path: path, query: query, multiple: (multiple || isUTF8), saveOnlyLast: (saveOnlyLast || isUTF8)})!
 		var resp = _result_function();
 		
 		try{
@@ -1097,9 +1096,14 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var box = api.prepareBox(_function_argument("box"));
 		
-		var cmd = 'UID STORE ' + uids + ' +FLAGS.SILENT (\\Deleted)\r\nEXPUNGE';
+		var cmd = 'UID STORE ' + uids + ' +FLAGS.SILENT (\\Deleted)';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, multiple: true})!
+		_call_function(api.makeRequest, {query: cmd, box: box})!
+		var resp = _result_function();
+		
+		var cmd = 'EXPUNGE'
+		
+		_call_function(api.makeRequest, {query: cmd, box: box})!
 		var resp = _result_function();
 	};
 	
@@ -1198,33 +1202,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += ')';
 		
-		_call_function(api.request, {path: box, query: cmd})!
+		_call_function(api.request, {path: api.encodeName(box), query: cmd})!
 		var resp = _result_function();
-		
-		var reg = /{(\d+)}\r?\n?$/;
 		var result = resp.result;
-		
-		if(reg.test(result)){
-			var start = resp.trace.lastIndexOf(resp.result);
-			if(start > -1){
-				start += resp.result.length;
-				var temp = _avoid_nil(resp.result.match(reg), []);
-				if(temp.length > 0){
-					result = resp.trace.substr(start, Number(temp[1])).trim();
-					var i = result.indexOf("\r\n");
-					var firstLine = result.slice(0, i + 2);
-					if(firstLine.indexOf("_Part_") > -1){
-						result = result.slice(i + 2);
-					};
-					i = result.lastIndexOf("\r\n");
-					var lastLine = result.slice(i);
-					if(lastLine.indexOf("_Part_") > -1){
-						result = result.slice(0, i);
-					};
-					result = api.decodeQS(result);
-				};
-			};
-		};
 		
 		_function_return(result);
 	};

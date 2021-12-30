@@ -4,75 +4,68 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	this.config = config;
 	
 	if(isCurl){
-		this.options = {
-			CURLOPT_URL: api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
-			CURLOPT_PORT: api.config.port,
-			CURLOPT_USERNAME: api.config.username,
-			CURLOPT_PASSWORD: api.config.password,
-			CURLOPT_USE_SSL: api.config.encrypt=="none" ? 0 : 3,
-			CURLOPT_SSL_VERIFYPEER: false,
-			CURLOPT_LOGIN_OPTIONS: 'AUTH=PLAIN'
+		
+		this.curlOpts = {
+			url: api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
+			port: api.config.port,
+			username: api.config.username,
+			password: api.config.password,
+			use_ssl: api.config.encrypt=="none" ? 0 : 3,
+			ssl_verifypeer: false,
+			login_options: 'AUTH=PLAIN'
+		};
+		
+		this.setOptions = function(opts){
+			var resp = _InMail.curl.setOptions(opts);
+			if(!resp.success){
+				_InMail.error(resp.error, api.protocol);
+			};
+		};
+		
+		this.init = function(){
+			_InMail.curl.init();
+			api.setOptions(api.curlOpts);
 		};
 		
 		this.setProxy = function(proxy){
-			api.options["CURLOPT_PROXY"] = (proxy.type=="socks5" ? "socks5h" : proxy.type) + '://' + proxy.host + ':' + proxy.port;
-			if(!_is_nilb(proxy.username) && !_is_nilb(proxy.password)){
-				api.options["CURLOPT_PROXYUSERNAME"] = proxy.username;
-				api.options["CURLOPT_PROXYPASSWORD"] = proxy.password;
+			api.curlOpts.proxy = (proxy.type=="socks5" ? "socks5h" : proxy.type) + '://' + proxy.host + ':' + proxy.port;
+			api.curlOpts.proxyusername = _is_nilb(proxy.username) ? "" : proxy.username;
+			api.curlOpts.proxypassword = _is_nilb(proxy.password) ? "" : proxy.password;
+			if(_InMail.curl.isInit()){
+				_InMail.curl.cleanup();
 			};
 		};
 		
 		this.clearProxy = function(){
-			delete api.options["CURLOPT_PROXY"];
-			delete api.options["CURLOPT_PROXYUSERNAME"];
-			delete api.options["CURLOPT_PROXYPASSWORD"];
-		};
-		
-		this.wrapper = function(){
-			var options = _function_argument("options");
-			var trace = _avoid_nilb(_function_argument("trace"), false);
-			var saveHeader = _avoid_nilb(_function_argument("saveHeader"), false);
-			var multiple = _avoid_nilb(_function_argument("multiple"), false);
-			var saveOnlyLast = _avoid_nilb(_function_argument("saveOnlyLast"), false);
-			
-			native_async("curlwrapper","easyperform", JSON.stringify({
-				write_to_string: true,
-				options: options,
-				trace: trace,
-				header_to_string: saveHeader,
-				multiple: multiple,
-				save_only_last: saveOnlyLast
-			}))!
-			
-			_function_return(JSON.parse(_result()));
+			delete api.curlOpts.proxy;
+			delete api.curlOpts.proxyusername;
+			delete api.curlOpts.proxypassword;
+			if(_InMail.curl.isInit()){
+				_InMail.curl.cleanup();
+			};
 		};
 		
 		this.request = function(){
 			var path = _function_argument("path");
 			var query = _function_argument("query");
-			var saveHeader = _avoid_nilb(_function_argument("saveHeader"), false);
-			var multiple = _avoid_nilb(_function_argument("multiple"), false);
-			var saveOnlyLast = _avoid_nilb(_function_argument("saveOnlyLast"), false);
 			
 			var options = {};
 			
-			for(var key in api.options){
-				if(!_is_nilb(api.options[key])){
-					options[key] = api.options[key];
-				};
+			if(_is_nilb(path)){
+				options.url = api.curlOpts.url;
+			}else{
+				options.url = api.curlOpts.url + (path.slice(0, 1) != '/' ? '/' : '') + path;
 			};
 			
-			if(!_is_nilb(path)){
-				options["CURLOPT_URL"] += (path.slice(0, 1) != '/' ? '/' : '') + path;
+			options.customrequest = _is_nilb(query) ? "" : query;
+			
+			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '»');
+			
+			if(!_InMail.curl.isInit()){
+				api.init();
 			};
 			
-			if(!_is_nilb(query)){
-				options["CURLOPT_CUSTOMREQUEST"] = query;
-			};
-			
-			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «' + options["CURLOPT_URL"] + '»');
-			
-			_call_function(api.wrapper, {options: options, trace: true, saveHeader: saveHeader, multiple: multiple, saveOnlyLast: saveOnlyLast})!
+			_call_function(_InMail.curl.request, {options: options, trace: true})!
 			var resp = _result_function();
 			
 			__RESP = resp;
@@ -81,12 +74,12 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'ответ' : 'response') + ': «‎' + resp.code + '»' + (resp.result ? ', ' + (_K=="ru" ? 'результат' : 'result') + ': «‎' + resp.result + '»' : '') + (resp.error ? ', ' + (_K=="ru" ? 'ошибка' : 'error') + ': «‎' + resp.error + '»' : ''));
 			
-			if(resp.code == "CURLE_OK"){
+			if(resp.success){
 				_function_return(resp);
 			}else{
 				var error = resp.error;
 				
-				if(resp.code == "CURLE_QUOTE_ERROR" && error == "Quote command returned error"){
+				if(resp.code == "QUOTE_ERROR" && error == "Quote command returned error"){
 					var trace = resp.trace.trim().split(/\r?\n/);
 					for(var i = trace.length - 1; i > -1; i--){
 						var ell = trace[i];

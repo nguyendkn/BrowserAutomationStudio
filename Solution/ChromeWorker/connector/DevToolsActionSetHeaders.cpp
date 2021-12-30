@@ -3,6 +3,12 @@
 
 void DevToolsActionSetHeaders::Run()
 {
+    if(Params["headers"].Map.size() == 0)
+    {
+        Result->Success();
+        State = Finished;
+        return;
+    }
     State = Running;
     IsSettingHeaders = true;
     IsSettingUA = false;

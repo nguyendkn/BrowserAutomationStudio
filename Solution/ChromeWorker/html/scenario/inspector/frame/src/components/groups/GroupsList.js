@@ -35,8 +35,8 @@ window.GroupsList = {
 
   watch: {
     source: {
-      handler(source) {
-        const keys = Object.keys(source);
+      handler(value) {
+        const keys = Object.keys(value);
 
         const [{ items }] = this.groups.filter(group => {
           group.items = group.items.filter(item => {
@@ -53,10 +53,10 @@ window.GroupsList = {
     },
 
     order: {
-      handler(order) {
+      handler(value) {
         this.groups.forEach(group => {
           group.items.sort((a, b) => {
-            return b.fixed - a.fixed || order.indexOf(a.key) - order.indexOf(b.key);
+            return b.fixed - a.fixed || value.indexOf(a.key) - value.indexOf(b.key);
           });
         });
       },
@@ -109,8 +109,8 @@ window.GroupsList = {
         :name="group.name"
         :color="group.color"
         :items="group.items"
-        :allow-edit="group.id > 0"
-        :allow-remove="group.id > 0"
+        :allow-edit="group.id !== 0"
+        :allow-remove="group.id !== 0"
         @update="updateGroup(index, $event)"
         @remove="removeGroup(index, $event)"
       >

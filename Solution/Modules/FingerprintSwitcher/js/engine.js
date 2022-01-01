@@ -421,10 +421,16 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	})!
 	
 	//User agent
+	FINGEPRINT_SETTINGS = {}
 
 	_if(typeof(FINGERPRINT_JSON["useragentdata"]) == "string", function(){
-		_set_user_agent_data(FINGERPRINT_JSON["useragentdata"])!
+		_if_else(FINGERPRINT_JSON["useragentdata"].length == 0, function(){
+			_set_user_agent_data("eyJicmFuZHMiOltdLCJtb2JpbGUiOmZhbHNlLCJmdWxsVmVyc2lvbiI6IiIsInBsYXRmb3JtIjoiIiwicGxhdGZvcm1WZXJzaW9uIjoiIiwiYXJjaGl0ZWN0dXJlIjoiIiwibW9kZWwiOiIifQ==")!
+		}, function(){
+			_set_user_agent_data(FINGERPRINT_JSON["useragentdata"])!
+		})!
 	})!
+
 
 	try
 	{
@@ -454,7 +460,6 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	})!
 
 	//Native code
-	FINGEPRINT_SETTINGS = {}
 	if(FINGERPRINT_JSON["native_code"])
 	{
 		var split = FINGERPRINT_JSON["native_code"].split("Object")

@@ -5,8 +5,6 @@
 
 class DevToolsActionSetHeaders : public IDevToolsAction
 {
-    bool IsSettingHeaders = false;
-    bool IsSettingUA = false;
 public:
     virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
     virtual ActionSaverBehavior GetActionSaverBehavior();

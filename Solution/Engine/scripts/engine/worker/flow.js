@@ -48,11 +48,14 @@ var debug_variables = (function () {
             }, {}),
 
             callstack: CYCLES.Data.reduceRight(function (acc, val) {
-                return (val._Info.name && val._Info.type && acc.push(cycle({
-                    arguments: val._Arguments,
-                    iterator: val._Iterator,
-                    info: val._Info,
-                })), acc);
+                if (val._Info.name && val._Info.type) {
+                    acc.push(cycle({
+                        arguments: val._Arguments,
+                        iterator: val._Iterator,
+                        info: val._Info,
+                    }));
+                }
+                return acc;
             }, []).concat(cycle({ info: { type: 'function', name: 'Main', id: 0 } })),
 
             resources: JSON.parse(ScriptWorker.PickResources())

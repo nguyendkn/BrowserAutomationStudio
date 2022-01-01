@@ -80,7 +80,7 @@ window.CallstackItem = {
     },
   },
 
-  template: `
+  template: /*html*/ `
     <li class="callstack-item" :class="{ preview }">
       <div class="callstack-item-title">
         <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>

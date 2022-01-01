@@ -85,7 +85,7 @@
 
       _.attempt(() => {
         if (type === 'date') {
-          value = `new Date('${value}')`;
+          value = `_parse_date('${value}', 'auto')`;
         } else if (type === 'custom') {
           value = JSON.stringify(eval(`(${value})`));
         } else if (type === 'string') {

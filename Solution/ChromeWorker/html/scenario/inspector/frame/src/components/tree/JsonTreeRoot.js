@@ -17,7 +17,7 @@ window.JsonTreeRoot = {
     },
   },
 
-  template: `
+  template: /*html*/ `
     <div class="jt-root">
       <json-tree-node :name="name" :path="[name]" :value="data">
         <template #label="{ label }">

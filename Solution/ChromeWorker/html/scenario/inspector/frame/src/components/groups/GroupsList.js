@@ -90,7 +90,7 @@ window.GroupsList = {
     },
   },
 
-  template: `
+  template: /*html*/ `
     <draggable
       v-model="groups"
       :disabled="groups.length === 1"

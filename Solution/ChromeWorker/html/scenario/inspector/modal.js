@@ -133,7 +133,7 @@
       return this.remove();
     },
 
-    template: _.template(/*html*/`
+    template: _.template(/*html*/ `
       <div class="modal-dialog" role="document" style="flex: 1;">
         <div class="inspector-modal-content">
           <div class="inspector-modal-header">
@@ -269,7 +269,6 @@
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
     'inspector.clearData': { en: 'Clear data', ru: 'Очистить данные' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },
-
     'inspector.descriptions.undefined': {
       en: '<b>Undefined</b> is a primitive type that is a special value. Variables that have no value assigned are of type <b>undefined</b>.',
       ru: '<b>Undefined</b> - примитивный тип, являющийся специальным значением. Переменные, не имеющие присвоенного значения, обладают типом <b>undefined</b>.',
@@ -302,7 +301,6 @@
       en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures`); return false;">here</a>.',
       ru: 'Подробнее обо всех типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures`); return false;">здесь</a>.',
     },
-
     'inspector.types.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.types.boolean': { en: 'Boolean', ru: 'Булево' },
     'inspector.types.custom': { en: 'Expression', ru: 'Выражение' },
@@ -312,7 +310,6 @@
     'inspector.types.null': { en: 'Null', ru: 'Null' },
     'inspector.false': { en: 'False', ru: 'False' },
     'inspector.true': { en: 'True', ru: 'True' },
-
     'Please fill out this field.': { ru: 'Заполните это поле.' },
     'Please enter a number.': { ru: 'Введите число.' },
   });

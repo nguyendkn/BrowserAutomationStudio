@@ -7,26 +7,24 @@ const bas = {
   },
 
   get interface() {
-    return _InterfaceJson || '{}';
+    try {
+      return JSON.parse(_InterfaceJson || '{}');
+    } catch {
+      return {};
+    }
   },
 
   get lang() {
-    return _K || 'en';
+    return _K;
   },
 
   get zoom() {
-    return _Z || 100;
+    return _Z;
   },
 };
 
 const scriptStorage = new (class ScriptStorage {
-  #state = {};
-
-  constructor() {
-    try {
-      this.#state = JSON.parse(bas.interface);
-    } catch {}
-  }
+  #state = bas.interface;
 
   setItem(key, value) {
     this.#state[key] = value;

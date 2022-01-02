@@ -6,29 +6,29 @@ window.App = {
   data() {
     const tabs = [
       {
-        name: 'variables',
         props: {
           data: {},
           title: 'tabs.variablesEmpty',
           styles: { '--border-radius': '0px' },
         },
+        name: 'variables',
         component: GroupsPanel,
       },
       {
-        name: 'resources',
         props: {
           data: {},
           title: 'tabs.resourcesEmpty',
           styles: { '--border-radius': '9px' },
         },
+        name: 'resources',
         component: GroupsPanel,
       },
       {
-        name: 'callstack',
         props: {
           data: [],
           title: 'tabs.callstackEmpty',
         },
+        name: 'callstack',
         component: CallstackPanel,
       },
     ];

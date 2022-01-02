@@ -1387,6 +1387,7 @@ void MainWindow::New()
         WidgetController->DeleteAllView();
         SetCurrentFileName(fileName);
         Settings->setValue("CurrentFileName",CurrentFileName);
+        InterfaceState.clear();
         Schema.clear();
         ConnectionIsRemote = false;
         ConnectionServer.clear();

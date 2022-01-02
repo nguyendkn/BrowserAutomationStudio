@@ -60,7 +60,7 @@ window.GroupsPanel = {
       const result = Object.keys(source)
         .filter(key => {
           if (!key.toLowerCase().includes(query)) return false;
-          const type = getType(source[key]);
+          const type = typeOf(source[key]);
           return this.activeFilters.some(f => f === type);
         })
 

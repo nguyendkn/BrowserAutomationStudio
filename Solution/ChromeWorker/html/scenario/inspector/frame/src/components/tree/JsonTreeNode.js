@@ -43,7 +43,7 @@ window.JsonTreeNode = {
     },
 
     type() {
-      return getType(this.value);
+      return typeOf(this.value);
     },
 
     size() {

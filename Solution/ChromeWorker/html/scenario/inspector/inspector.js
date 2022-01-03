@@ -1,6 +1,6 @@
 'use strict';
 
-(({ App, Backbone, _ }) => {
+(({ App, Backbone, $, _ }) => {
   const { Inspector } = App;
 
   Inspector.View = Backbone.View.extend({
@@ -45,23 +45,20 @@
 
     render() {
       if (!this.el.isConnected) {
-        const { el } = this.setElement('#inspector');
-
-        this.resizable = interact(el).resizable({
-          listeners: {
-            move({ client: { x, y } }) {
-              const height = window.outerHeight - Math.max(y, 300);
-              el.style.height = `${Math.max(110, height - 32)}px`;
+        this.setElement(
+          $('#inspector').resizable({
+            onDragStart(...args) {
+              document.documentElement.classList.toggle('cursor-ns-resize');
             },
-          },
-          onstart() {
-            el.children[0].style.pointerEvents = 'none';
-          },
-          onend() {
-            el.children[0].style.pointerEvents = 'auto';
-          },
-          edges: { top: true },
-        });
+            onDragEnd(...args) {
+              document.documentElement.classList.toggle('cursor-ns-resize');
+            },
+            onDrag(...args) {
+              const height = Math.min(args[3], window.outerHeight - 300);
+              return (args[1].outerHeight(Math.max(110, height)), false);
+            },
+          })
+        );
       }
       return this;
     },

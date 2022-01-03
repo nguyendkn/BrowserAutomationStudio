@@ -1,7 +1,7 @@
 #inspector {
   border-top: 6px solid #dbdbdb;
   user-select: none;
-  min-height: 110px;
+  cursor: ns-resize;
   display: flex;
   height: 300px;
 }

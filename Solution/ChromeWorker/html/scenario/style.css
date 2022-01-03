@@ -1831,14 +1831,6 @@ mark
 
 /* Utility styles */
 
-.cursor-ns-resize {
-  cursor: ns-resize !important;
-}
-
-.cursor-ew-resize {
-  cursor: ew-resize !important;
-}
-
 .overflow-visible {
   overflow: visible !important;
 }

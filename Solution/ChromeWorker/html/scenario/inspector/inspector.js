@@ -47,15 +47,15 @@
       if (!this.el.isConnected) {
         this.setElement(
           $('#inspector').resizable({
-            onDragStart(...args) {
-              document.documentElement.style.cursor = null || 'ns-resize';
+            onDragStart(e, ...args) {
+              document.body.style.cursor = e.type === 'mouseup' ? '' : 'ns-resize';
             },
-            onDragEnd(...args) {
-              document.documentElement.style.cursor = null && 'ns-resize';
+            onDragEnd(e, ...args) {
+              document.body.style.cursor = e.type === 'mouseup' ? '' : 'ns-resize';
             },
-            onDrag(...args) {
-              const height = Math.min(args[3], window.outerHeight - 300);
-              return (args[1].outerHeight(Math.max(110, height)), false);
+            onDrag(e, ...args) {
+              const height = Math.min(args[2], window.outerHeight - 300);
+              return args[0].outerHeight(Math.max(110, height)), false;
             },
           })
         );

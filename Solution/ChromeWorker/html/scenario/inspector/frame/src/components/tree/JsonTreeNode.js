@@ -20,16 +20,18 @@ window.JsonTreeNode = {
   },
 
   data() {
-    const colors = {
-      undefined: '#808080',
-      boolean: '#2525cc',
-      string: '#2db669',
-      number: '#d036d0',
-      date: '#ce904a',
-      null: '#8546bc',
+    return {
+      colors: {
+        null: '#8546bc',
+        date: '#ce904a',
+        number: '#d036d0',
+        string: '#2db669',
+        boolean: '#2525cc',
+        undefined: '#808080',
+      },
+      isHovered: false,
+      isExpanded: false,
     };
-
-    return { colors, isExpanded: false };
   },
 
   computed: {
@@ -44,10 +46,6 @@ window.JsonTreeNode = {
 
     type() {
       return typeOf(this.value);
-    },
-
-    size() {
-      return this.keys.length;
     },
   },
 
@@ -95,9 +93,9 @@ window.JsonTreeNode = {
   },
 
   template: /*html*/ `
-    <div class="jt-node">
+    <div class="jt-node" :class="{ hover: isHovered }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false">
       <span class="jt-node-label"><slot name="label" :label="name">{{ name }}</slot><span>:&nbsp;</span></span>
-      <span :style="{ color }" class="jt-node-value">
+      <span class="jt-node-value" :style="{ color }">
         <template v-if="type === 'undefined' || type === 'null'">{{ String(value) }}</template>
         <template v-else-if="type === 'string'">"{{ value }}"</template>
         <template v-else-if="type === 'object'">
@@ -111,7 +109,7 @@ window.JsonTreeNode = {
             :name="key"
             :path="path.concat(key)"
           />
-          <span v-show="!isExpanded" style="color: rgba(96, 96, 96, 0.65);">{{ $tc('items', size) }}</span>
+          <span v-show="!isExpanded" style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
           <span class="jt-node-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
@@ -125,7 +123,7 @@ window.JsonTreeNode = {
             :name="key"
             :path="path.concat(key)"
           />
-          <span v-show="!isExpanded" style="color: rgba(96, 96, 96, 0.65);">{{ $tc('items', size) }}</span>
+          <span v-show="!isExpanded" style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
           <span class="jt-node-bracket">]</span>
         </template>
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
@@ -135,7 +133,7 @@ window.JsonTreeNode = {
         <button type="button" @click="edit">
           <icon-edit />
         </button>
-        <button v-if="(type === 'object' || type === 'array') && size" type="button" @click="toggle($event.ctrlKey)">
+        <button v-if="(type === 'object' || type === 'array') && keys.length" type="button" @click="toggle($event.ctrlKey)">
           <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
         </button>
       </div>

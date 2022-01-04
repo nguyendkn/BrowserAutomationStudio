@@ -403,11 +403,11 @@
   margin-left: 12px;
 }
 
-.jt-node:active > .jt-node-actions {
+.jt-node.active > .jt-node-actions {
   display: flex;
 }
 
-.jt-node:hover > .jt-node-actions {
+.jt-node.hover > .jt-node-actions {
   display: flex;
 }
 
@@ -435,11 +435,11 @@
   top: 6px;
 }
 
-.jt-node:active {
+.jt-node.active {
   background: var(--color-lighten);
 }
 
-.jt-node:hover {
+.jt-node.hover {
   background: var(--color-lighten);
 }
 

@@ -350,40 +350,6 @@
   z-index:1;
 }
 
-#setvariablecontainer
-{
-  position: fixed;
-  border-left: 1px solid #dbdbdb;
-  border-top: 1px solid #dbdbdb;
-  border-radius: 4px 0 0 0;
-  background-color: #f1f1f1;
-  top:calc(50% - 60px);
-  right:0;
-  z-index:1;
-}
-
-#ifcontainer
-{
-  position: fixed;
-  border-left: 1px solid #dbdbdb;
-  border-radius: 0 0 0 0;
-  background-color: #f1f1f1;
-  top:calc(50% - 30px);
-  right:0;
-  z-index:1;
-}
-
-#setlabelcontainer
-{
-  position: fixed;
-  border-left: 1px solid #dbdbdb;
-  border-radius: 0 0 0 0;
-  background-color: #f1f1f1;
-  top:50%;
-  right:0;
-  z-index:1;
-}
-
 #helplabelcontainer
 {
   position: fixed;
@@ -470,29 +436,6 @@ label
 #movetolabelbutton
 {
   margin:4px;
-}
-
-#setlabelbutton
-{
-  margin:4px;
-}
-
-#setvariablebutton
-{
-  margin:4px;
-  font-size: 10px;
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  font-weight: bold;
-}
-
-#ifbutton
-{
-  margin:4px;
-  width: 22px;
-  height: 22px;
-  padding:2px
 }
 
 #functions {
@@ -1753,14 +1696,17 @@ mark
 /* Custom button styles */
 
 .btn-base.btn-cancel:focus,
-.btn-base.btn-cancel:hover,
+.btn-base.btn-cancel:hover {
+  color: #fff;
+}
+
 .btn-base.btn-accept:focus,
 .btn-base.btn-accept:hover {
   color: #fff;
 }
 
 .btn-base.btn-cancel:hover {
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .btn-base.btn-accept:hover {
@@ -1777,13 +1723,6 @@ mark
   border-color: #9d996c;
   background: #9d996c;
   color: #fff;
-}
-
-.btn-base:active,
-.btn-base:hover,
-.btn-base:focus {
-  outline: 0 !important;
-  text-decoration: none;
 }
 
 .btn-base {

@@ -119,7 +119,7 @@ window.GroupsPanel = {
             } else {
               metadata[name] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
             }
-  
+
             history.push(name);
           }
         });
@@ -127,12 +127,11 @@ window.GroupsPanel = {
         this.history = this.history.concat(history).slice(-100);
       }
 
-      Object.entries(metadata).forEach(([name, item]) => {
-        if (highlight) {
+      if (highlight) {
+        Object.entries(metadata).forEach(([name, item]) => {
           item.count = diff.some(v => v.path[0] === name) ? 0 : Math.min(item.count + 1, 5);
-          // this.trigger('highlight', { count: item.count, path });
-        }
-      });
+        });
+      }
 
       this.highlight = false;
     },

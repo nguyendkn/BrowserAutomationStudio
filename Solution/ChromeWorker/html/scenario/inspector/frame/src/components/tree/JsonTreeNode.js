@@ -20,6 +20,11 @@ window.JsonTreeNode = {
   },
 
   data() {
+    const scaled = (color, length = 6) => {
+      const scale = color2K.getScale('#ff0000', color);
+      return Array.from({ length }, (_, n) => scale(n / (length - 1)));
+    };
+
     return {
       colors: {
         null: '#8546bc',
@@ -28,6 +33,14 @@ window.JsonTreeNode = {
         string: '#2db669',
         boolean: '#2525cc',
         undefined: '#808080',
+      },
+      scaled: {
+        null: scaled('#8546bc'),
+        date: scaled('#ce904a'),
+        number: scaled('#d036d0'),
+        string: scaled('#2db669'),
+        boolean: scaled('#2525cc'),
+        undefined: scaled('#808080'),
       },
       isHovered: false,
       isExpanded: false,
@@ -105,8 +118,8 @@ window.JsonTreeNode = {
             v-show="isExpanded"
             ref="node"
             :key="key"
-            :value="value[key]"
             :name="key"
+            :value="value[key]"
             :path="path.concat(key)"
           />
           <span v-show="!isExpanded" style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
@@ -119,8 +132,8 @@ window.JsonTreeNode = {
             v-show="isExpanded"
             ref="node"
             :key="key"
-            :value="value[key]"
             :name="key"
+            :value="value[key]"
             :path="path.concat(key)"
           />
           <span v-show="!isExpanded" style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>

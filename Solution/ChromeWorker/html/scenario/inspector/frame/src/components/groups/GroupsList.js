@@ -26,7 +26,7 @@ window.GroupsList = {
   },
 
   data() {
-    const groups = this.$store.state.groups[this.id];
+    const groups = this.$store.state.groups[this.id] || [];
 
     if (!groups.length) {
       groups.push({

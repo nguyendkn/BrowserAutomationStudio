@@ -46,6 +46,16 @@ window.App = {
     this.send('destroyed');
   },
 
+  watch: {
+    tab({ name }) {
+      if (name === 'callstack') {
+        this.$nextTick(() => {
+          window.dispatchEvent(new Event('resize'));
+        });
+      }
+    },
+  },
+
   methods: {
     handleMessage({ data }) {
       const { type, payload } = data;
@@ -80,9 +90,9 @@ window.App = {
           </svg>
         </button>
       </div>
-      <keep-alive>
-        <component :is="tab.component" :key="tab.name" v-bind="{ ...tab.props, name: tab.name }" />
-      </keep-alive>
+      <template v-for="item in tabs">
+        <component :is="item.component" v-show="tab === item" :key="item.name" :name="item.name" v-bind="item.props" />
+      </template>
     </div>
   `,
 };

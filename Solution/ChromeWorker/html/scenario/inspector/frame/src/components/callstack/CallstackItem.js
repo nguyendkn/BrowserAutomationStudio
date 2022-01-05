@@ -26,7 +26,16 @@ window.CallstackItem = {
   },
 
   data() {
-    return { preview: true, isOverflowing: false };
+    return {
+      preview: true,
+      overflow: false,
+      overflowWidth: -1,
+      overflowHeight: -1,
+    };
+  },
+
+  mounted() {
+    this.$nextTick(() => true && this.handleResize());
   },
 
   created() {
@@ -35,10 +44,6 @@ window.CallstackItem = {
 
   destroyed() {
     window.removeEventListener('resize', this.handleResize);
-  },
-
-  activated() {
-    this.$nextTick().then(this.handleResize);
   },
 
   computed: {
@@ -62,13 +67,18 @@ window.CallstackItem = {
 
   methods: {
     handleResize() {
-      if (!this.$refs.preview) return;
-      const { offsetWidth, scrollWidth } = this.$refs.preview;
-      this.isOverflowing = offsetWidth < scrollWidth;
-    },
+      const { offsetHeight, scrollHeight } = this.$refs.preview;
+      if (offsetHeight < scrollHeight && this.preview) {
+        this.overflowHeight = scrollHeight;
+      }
 
-    togglePreview() {
-      this.preview = !this.preview;
+      const { offsetWidth, scrollWidth } = this.$refs.preview;
+      if (offsetWidth < scrollWidth && this.preview) {
+        this.overflowWidth = scrollWidth;
+      }
+
+      this.overflow = offsetHeight < this.overflowHeight || offsetWidth < this.overflowWidth;
+      if (!this.overflow) this.preview = true;
     },
 
     focusAction() {
@@ -86,14 +96,10 @@ window.CallstackItem = {
         <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name" @click="focusAction">{{ name + (hasArguments || isAction ? ':' : '') }}</span>
         <span ref="preview" class="callstack-item-data">
-          <template v-if="isAction">
-            <span>{{ name === 'If' ? options.expression : options.iterator }}</span>
-          </template>
-          <template v-else-if="hasArguments">
-            <span v-show="preview">[{{ $tc('items', size) }}]</span>
-          </template>
+          <template v-if="isAction"><span>{{ name === 'If' ? options.expression : options.iterator }}</span></template>
+          <template v-else-if="hasArguments"><span v-show="preview">[{{ $tc('items', size) }}]</span></template>
         </span>
-        <button v-show="hasArguments || isOverflowing" type="button" class="callstack-toggle-params" @click="togglePreview">
+        <button v-show="hasArguments || overflow" type="button" class="callstack-toggle-params" @click="preview = !preview">
           <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />
         </button>
       </div>

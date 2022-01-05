@@ -240,14 +240,13 @@
 
 .callstack-item-title {
   align-items: center;
+  overflow: hidden;
   cursor: pointer;
   display: flex;
   padding: 8px;
 }
 
 .callstack-item-data {
-  white-space: nowrap;
-  overflow: hidden;
   color: #538fb5;
   flex: 1;
 }
@@ -269,6 +268,12 @@
   background: rgba(217, 217, 217, var(--opacity, 1));
 }
 
+.callstack-item.preview .callstack-item-data {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .callstack-item:not(.preview) {
   border-color: #d9d9d9;
   background: #f6f6f6;
@@ -282,6 +287,7 @@
 .callstack-item {
   border: 1px solid transparent;
   line-height: 18px;
+  overflow: hidden;
 }
 
 .callstack-list {

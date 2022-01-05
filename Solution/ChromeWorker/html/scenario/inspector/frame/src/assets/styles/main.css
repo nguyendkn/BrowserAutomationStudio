@@ -399,6 +399,18 @@
 
 /* Json tree */
 
+.expanded > .jt-node-value > .jt-node-bracket:first-of-type {
+  padding-left: var(--intent, 0);
+}
+
+.expanded > .jt-node-value > .jt-node-bracket:last-of-type {
+  padding-left: var(--indent, 0);
+}
+
+.expanded > .jt-node-value > .jt-node > .jt-node-label {
+  padding-left: var(--indent, 0);
+}
+
 .jt-node-actions > button + button {
   margin-left: 12px;
 }
@@ -422,10 +434,6 @@
 .jt-node-actions > button {
   display: flex;
   opacity: 0.5;
-}
-
-.jt-node-value > .jt-node {
-  margin-left: 24px;
 }
 
 .jt-node-actions {

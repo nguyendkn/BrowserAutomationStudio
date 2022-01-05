@@ -21,6 +21,14 @@ const store = new Vuex.Store({
   state: () => {
     const state = Object.assign({}, scriptStorage.getItem('state'));
 
+    if (!state.sortings || typeOf(state.sortings) !== 'object') {
+      state.sortings = {};
+    }
+
+    if (!state.filters || typeOf(state.filters) !== 'object') {
+      state.filters = {};
+    }
+
     if (!state.groups || typeOf(state.groups) !== 'object') {
       state.groups = {};
     }
@@ -32,6 +40,12 @@ const store = new Vuex.Store({
     return { ...state, toolbarVisible: false };
   },
   mutations: {
+    setSortings(state, { sortings, id }) {
+      // state.sortings[id] = sortings;
+    },
+    setFilters(state, { filters, id }) {
+      // state.filters[id] = filters;
+    },
     setCollapsedItem(state, { path }) {
       // state.items[path.join('|')] = false;
     },

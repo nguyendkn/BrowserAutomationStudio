@@ -18,22 +18,40 @@ window.GroupsList = {
       required: true,
       type: Array,
     },
+
+    id: {
+      required: true,
+      type: String,
+    }
   },
 
   data() {
-    const groups = [
-      {
+    const groups = this.$store.state.groups[this.id];
+
+    if (!groups.length) {
+      groups.push({
         id: 0,
         name: 'Main',
         color: 'brown',
         items: [],
-      },
-    ];
+      });
+    }
 
     return { groups, counter: 0 };
   },
 
   watch: {
+    groups: {
+      handler(value) {
+        this.$store.commit('setGroups', {
+          groups: value,
+          id: this.id,
+        });
+      },
+
+      deep: true,
+    },
+
     source: {
       handler(value) {
         const keys = Object.keys(value);
@@ -49,7 +67,7 @@ window.GroupsList = {
         keys.forEach(key => items.push({ key, fixed: false }));
       },
 
-      immediate: true,
+      // immediate: true,
     },
 
     order: {
@@ -61,7 +79,7 @@ window.GroupsList = {
         });
       },
 
-      immediate: true,
+      // immediate: true,
     },
   },
 

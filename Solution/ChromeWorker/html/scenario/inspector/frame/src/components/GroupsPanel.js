@@ -171,7 +171,7 @@ window.GroupsPanel = {
       </panel-toolbar>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
       <div v-show="!isEmpty" class="app-panel-content">
-        <groups-list ref="list" :style="styles" :source="filteredData" :order="sortedKeys" />
+        <groups-list ref="list" :style="styles" :source="filteredData" :order="sortedKeys" :id="name" />
       </div>
     </div>
   `,

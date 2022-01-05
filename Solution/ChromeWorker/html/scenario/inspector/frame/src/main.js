@@ -18,27 +18,40 @@ const i18n = new VueI18n({
 });
 
 const store = new Vuex.Store({
-  state: () => ({
-    ...(scriptStorage.getItem('state') || {}),
-    toolbarVisible: false,
-  }),
+  state: () => {
+    const state = Object.assign({}, scriptStorage.getItem('state'));
+
+    if (!state.groups || typeOf(state.groups) !== 'object') {
+      state.groups = {};
+    }
+
+    if (!state.items || typeOf(state.items) !== 'array') {
+      state.items = [];
+    }
+
+    return { ...state, toolbarVisible: false };
+  },
   mutations: {
-    toggleToolbar(state, payload) {
-      state.toolbarVisible = !state.toolbarVisible;
+    setCollapsedItem(state, { path }) {
+      // state.items[path.join('|')] = false;
     },
     setExpandedItem(state, { path }) {
-      state.items[path] = true;
+      // state.items[path.join('|')] = true;
     },
-    setCollapsedItem(state, { path }) {
-      state.items[path] = false;
+    setGroups(state, { groups, id }) {
+      // state.groups[id] = groups;
+    },
+    toggleToolbar(state, payload) {
+      state.toolbarVisible = !state.toolbarVisible;
     },
   },
 });
 
-store.subscribe((mutation, state) => {
+store.subscribe((mutation, { groups, items }) => {
   if (mutation.type !== 'toggleToolbar') {
     scriptStorage.setItem('state', {
-      items: state.items,
+      groups,
+      items,
     });
   }
 });

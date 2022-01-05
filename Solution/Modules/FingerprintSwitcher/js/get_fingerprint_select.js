@@ -13,6 +13,7 @@ var PerfectCanvasDebug = GetInputConstructorValue("PerfectCanvasDebug", loader);
 
 var EnableCustomServers = GetInputConstructorValue("EnableCustomServers", loader);
 var DynamicPerfectCanvas = GetInputConstructorValue("DynamicPerfectCanvas", loader);
+var EnablePrecomputedFingerprints = GetInputConstructorValue("EnablePrecomputedFingerprints", loader);
 
 if(Tags["original"].length == 0)
 {
@@ -60,6 +61,12 @@ if(DynamicPerfectCanvas["original"].length == 0)
   Invalid("DynamicPerfectCanvas is empty");
   return;
 }
+if(EnablePrecomputedFingerprints["original"].length == 0)
+{
+  Invalid("EnablePrecomputedFingerprints is empty");
+  return;
+}
+
 
 
 try{
@@ -78,6 +85,7 @@ try{
 	    perfectcanvas_logs: PerfectCanvasDebug["updated"],
       enable_custom_server: EnableCustomServers["updated"],
       dynamic_perfect_canvas: DynamicPerfectCanvas["updated"],
+      enable_precomputed_fingerprints: EnablePrecomputedFingerprints["updated"]
     })
 
   code = Normalize(code,0)

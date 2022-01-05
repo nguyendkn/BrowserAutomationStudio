@@ -411,6 +411,16 @@
   padding-left: var(--indent, 0);
 }
 
+.jt-root > .jt-node > .jt-node-label {
+  user-select: none;
+  cursor: pointer;
+}
+
+.jt-root > .jt-node > .jt-node-value {
+  user-select: auto;
+  cursor: initial;
+}
+
 .jt-node-actions > button + button {
   margin-left: 12px;
 }
@@ -451,16 +461,6 @@
   background: var(--color-lighten);
 }
 
-.jt-node-label {
-  user-select: none;
-  cursor: pointer;
-}
-
-.jt-node-value {
-  user-select: auto;
-  cursor: initial;
-}
-
 .jt-node {
   position: relative;
   line-height: 18px;
@@ -486,7 +486,11 @@
 
 /* Placeholder */
 
-::placeholder {
+textarea::placeholder {
+  color: inherit;
+}
+
+input::placeholder {
   color: inherit;
 }
 

@@ -34,18 +34,6 @@ window.CallstackItem = {
     };
   },
 
-  mounted() {
-    this.$nextTick(() => true && this.handleResize());
-  },
-
-  created() {
-    window.addEventListener('resize', this.handleResize);
-  },
-
-  destroyed() {
-    window.removeEventListener('resize', this.handleResize);
-  },
-
   computed: {
     hasArguments() {
       return this.size > 0;
@@ -63,6 +51,18 @@ window.CallstackItem = {
       const args = this.options.arguments;
       return Object.keys(args).length;
     },
+  },
+
+  mounted() {
+    this.$nextTick(() => this.handleResize.call(this));
+  },
+
+  created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
   },
 
   methods: {

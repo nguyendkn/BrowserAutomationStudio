@@ -36,16 +36,6 @@ window.App = {
     return { tabs, tab: tabs[0] };
   },
 
-  mounted() {
-    window.addEventListener('message', this.handleMessage);
-    this.send('mounted');
-  },
-
-  destroyed() {
-    window.removeEventListener('message', this.handleMessage);
-    this.send('destroyed');
-  },
-
   watch: {
     tab({ name }) {
       if (name === 'callstack') {
@@ -54,6 +44,16 @@ window.App = {
         });
       }
     },
+  },
+
+  mounted() {
+    window.addEventListener('message', this.handleMessage);
+    this.send('mounted');
+  },
+
+  destroyed() {
+    window.removeEventListener('message', this.handleMessage);
+    this.send('destroyed');
   },
 
   methods: {

@@ -61,9 +61,11 @@ const store = new Vuex.Store({
   },
 });
 
-store.subscribe((mutation, { groups, items }) => {
-  if (mutation.type !== 'toggleToolbar') {
+store.subscribe(({ type }, { sortings, filters, groups, items }) => {
+  if (type !== 'toggleToolbar') {
     scriptStorage.setItem('state', {
+      sortings,
+      filters,
       groups,
       items,
     });

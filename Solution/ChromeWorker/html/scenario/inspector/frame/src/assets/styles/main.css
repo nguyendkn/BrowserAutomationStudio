@@ -26,8 +26,16 @@
   opacity: 1;
 }
 
+.app-tab.hover {
+  opacity: 1;
+}
+
 .app-tab {
   opacity: 0.5;
+}
+
+.app-header > button:active {
+  opacity: 1;
 }
 
 .app-header > button:hover {
@@ -86,13 +94,13 @@
   background: #3d3f42;
 }
 
-.app-toolbar .dropdown.open > button > svg > path {
-  fill: #fff;
-}
-
 .app-toolbar-menu-wrapper::-webkit-scrollbar {
   height: 5px;
   width: 5px;
+}
+
+.app-toolbar .open > button > svg > path {
+  fill: #fff;
 }
 
 .app-toolbar-panel button:active > svg {
@@ -501,6 +509,14 @@
 }
 
 /* Placeholder */
+
+textarea:placeholder-shown {
+  user-select: none;
+}
+
+input:placeholder-shown {
+  user-select: none;
+}
 
 textarea::placeholder {
   color: inherit;

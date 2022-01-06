@@ -1091,10 +1091,8 @@ label
 }
 
 .bottompannel {
-  background-color: #fff;
-  flex-flow: column;
+  background: #fff;
   position: sticky;
-  display: flex;
   z-index: 9;
   bottom: 0;
   right: 0;

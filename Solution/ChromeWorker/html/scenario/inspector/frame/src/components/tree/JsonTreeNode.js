@@ -20,10 +20,10 @@ window.JsonTreeNode = {
   },
 
   data() {
-    const scaled = (color, length = 6) => {
-      return Array.from({ length }, (val, idx) => {
+    const scaled = (color, count = 6) => {
+      return [...Array(count).keys()].map(idx => {
         const [r, g, b] = [255, 0, 0].map((v, i) => {
-          return Math.round(v + (color[i] - v) * (idx / (length - 1)));
+          return Math.round(v + (color[i] - v) * (idx / (count - 1)));
         });
         return `rgb(${r}, ${g}, ${b})`;
       });

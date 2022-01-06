@@ -81,23 +81,25 @@ window.PanelToolbar = {
               <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" fill="#606060" />
             </svg>
           </button>
-          <ul v-show="menuVisible" class="app-toolbar-menu">
-            <li v-for="{ name, active } in sortings" :key="name" :class="{ active }">
-              <a href="#" @click.prevent="updateSortings(name)">
-                <span v-t="'toolbar.sortings.' + name"></span>
-                <img src="src/assets/icons/arrows.svg" alt>
-              </a>
-            </li>
-            <li v-if="!!sortings.length">
-              <hr class="divider">
-            </li>
-            <li v-for="{ name, active } in filters" :key="name" :class="{ active }">
-              <a href="#" @click.prevent="updateFilters(name)">
-                <span v-t="'toolbar.filters.' + name"></span>
-                <img src="src/assets/icons/check.svg" alt>
-              </a>
-            </li>
-          </ul>
+          <div v-show="menuVisible" class="app-toolbar-menu-wrapper" style="max-height: calc(100vh - 80px); position: absolute; overflow: auto; z-index: 1; right: 0;">
+            <ul class="app-toolbar-menu">
+              <li v-for="{ name, active } in sortings" :key="name" :class="{ active }">
+                <a href="#" @click.prevent="updateSortings(name)">
+                  <span v-t="'toolbar.sortings.' + name"></span>
+                  <img src="src/assets/icons/arrows.svg" alt>
+                </a>
+              </li>
+              <li v-if="!!sortings.length">
+                <hr class="divider">
+              </li>
+              <li v-for="{ name, active } in filters" :key="name" :class="{ active }">
+                <a href="#" @click.prevent="updateFilters(name)">
+                  <span v-t="'toolbar.filters.' + name"></span>
+                  <img src="src/assets/icons/check.svg" alt>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <button type="button" class="app-toolbar-toggle" @click="$store.commit('toggleToolbar')">

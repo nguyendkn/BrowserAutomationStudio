@@ -78,8 +78,21 @@
 
 /* Toolbar */
 
+.app-toolbar-menu-wrapper::-webkit-scrollbar-thumb {
+  background: #606060;
+}
+
+.app-toolbar-menu-wrapper::-webkit-scrollbar-track {
+  background: #3d3f42;
+}
+
 .app-toolbar .dropdown.open > button > svg > path {
   fill: #fff;
+}
+
+.app-toolbar-menu-wrapper::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
 }
 
 .app-toolbar-panel button:active > svg {
@@ -179,13 +192,10 @@
 .app-toolbar-menu {
   border: 1px solid #606060;
   background: #3d3f42;
-  position: absolute;
   width: max-content;
   margin-top: -1px;
   min-width: 150px;
   padding: 8px 0;
-  z-index: 1;
-  right: 0;
 }
 
 .app-toolbar {

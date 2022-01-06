@@ -337,7 +337,6 @@
   background-color: #fafafa;
   z-index:5;
   box-shadow: 0 1px 3px 1px #efefef;
-
 }
 
 #findbuttoncontainer
@@ -1152,18 +1151,16 @@ label
   margin-top: 10px;
 }
 
-.actionbuttongray
-{
+.actionbuttongray {
   filter: grayscale(100%) !important;
 }
 
-#play.actionbuttongray
-{
+#play.actionbuttongray {
   opacity: 0.65;
 }
 
 #pause.actionbuttongray {
-    opacity: 0.65;
+  opacity: 0.65;
 }
 
 .actionbuttongray2
@@ -1587,14 +1584,12 @@ mark
   text-align: center
 }
 
-#findprev
-{
-  min-width:50px;
+#findprev {
+  min-width: 50px;
 }
 
-#findnext
-{
-  min-width:50px;
+#findnext {
+  min-width: 50px;
 }
 
 .action-color-1

@@ -4,6 +4,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.caps = null;
 	this.months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	this.specialAttrs = ['\\All', '\\Archive', '\\Drafts', '\\Flagged', '\\Important', '\\Junk', '\\Sent', '\\Trash'];
 
 	this.escape = function(str){
 		return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
@@ -165,6 +166,17 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return box;
 	};
 	
+	this.decodeWords = function(str){
+		return (
+			(str || '')
+                .toString()
+                // remove spaces between mime encoded words
+                .replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
+                // decode words
+                .replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return _InMail.curl.decoder(charset, encoding, text) || text})
+		);
+	};
+	
 	this.parseExpr = function(o, result, start, useBrackets){
 		result = _avoid_nilb(result, []);
 		start = _avoid_nilb(start, 0);
@@ -270,157 +282,298 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.parse = function(str){
-		var specialAttrs = [
-			'\\All',
-			'\\Archive',
-			'\\Drafts',
-			'\\Flagged',
-			'\\Important',
-			'\\Junk',
-			'\\Sent',
-			'\\Trash'
-		];
-		var results = [];
-		var lines = str.split('\r\n');
+		var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(str);
 		
-		for(var i = 0; i < lines.length; i++){
-			var line = lines[i];
-			
-			var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(line);
-		
-			var type = (m[1] || m[3]).toLowerCase();
-			var text = m[5];
-			
-			if(type === 'search' || type === 'capability' || type === 'sort'){
-				if(text){
-					var regSearchModseq = /^(.+) \(MODSEQ (.+?)\)$/i;
-					if(type === 'search' && regSearchModseq.test(text)){
-						// CONDSTORE search response
-						var p = regSearchModseq.exec(text);
-						results.push(p[1].split(' '));
-						results.push(p[2]);
-					}else{
-						var val = [];
-						if(text[0] === '('){
-							val = /^\((.*)\)$/.exec(text)[1].split(' ');
-						}else{
-							val = text.split(' ');
-						};
-						
-						if(type === 'search' || type === 'sort'){
-							val = val.map(function(v){return parseInt(v, 10)});
-						};
-						if(type == 'capability'){
-							val = val.map(function(v){return v.toUpperCase()});
-						};
-						results.push(val);
-					};
-				}else{
-					results.push([]);
-				};
-			}else if(type === 'thread'){
-				if(text){
-					results.push(api.parseExpr(text));
-				}else{
-					results.push([]);
-				};
-			}else if(type === 'list'){
-				if(results.length === 0){
-					results.push({});
-				};
-				var r = api.parseExpr(text);			
-				
-				var name = api.utf7.decode(''+r[2]);
-				var box = {
-					attribs: r[0],
-					delimiter: r[1],
-					children: null
-				};
-				
-				for(var j = 0, len = specialAttrs.length; j < len; ++j){
-					if (box.attribs.indexOf(specialAttrs[j]) > -1){
-						box.special_use_attrib = specialAttrs[j];
-					};
-				};
-				
-				var curChildren = results[0];
-				if(box.delimiter){
-					var path = name.split(box.delimiter);
-					name = path.pop();
-					for(var j = 0, len = path.length; j < len; ++j){
-						if(!curChildren[ path[j] ]){
-							curChildren[ path[j] ] = {};
-						};
-						if(!curChildren[ path[j] ].children){
-							curChildren[ path[j] ].children = {};
-						};
-						curChildren = curChildren[ path[j] ].children;
-					};
-				};
-				if(curChildren[name]){
-					box.children = curChildren[name].children;
-				};
-				curChildren[name] = box;
-			}else if(type === 'status'){
-				var r = api.parseExpr(text);
-				var attrs = {};
-				// r[1] is [KEY1, VAL1, KEY2, VAL2, .... KEYn, VALn]
-				for(var j = 0, len = r[1].length; j < len; j += 2){
-					attrs[r[1][j].toLowerCase()] = r[1][j + 1];
-				};
-				var box = {
-					name: api.utf7.decode(''+r[0]),
-					uidnext: 0,
-					uidvalidity: 0,
-					messages: {
-						total: 0,
-						'new': 0,
-						unseen: 0
-					}
-				};
-				if(attrs){
-					if(typeof attrs.recent != "undefined"){
-						box.messages['new'] = attrs.recent;
-					};
-					if(typeof attrs.unseen != "undefined"){
-						box.messages.unseen = attrs.unseen;
-					};
-					if(typeof attrs.messages != "undefined"){
-						box.messages.total = attrs.messages;
-					};
-					if(typeof attrs.uidnext != "undefined"){
-						box.uidnext = attrs.uidnext;
-					};
-					if(typeof attrs.uidvalidity != "undefined"){
-						box.uidvalidity = attrs.uidvalidity;
-					};
-					if(typeof attrs.highestmodseq != "undefined"){ // CONDSTORE
-						box.highestmodseq = ''+attrs.highestmodseq;
-					};
-				};
-				results.push(box);
-			}else if(type === 'esearch'){
-				var r = api.parseExpr(text.toUpperCase().replace('UID', '')), attrs = {};
-			
-				// RFC4731 unfortunately is lacking on documentation, so we're going to
-				// assume that the response text always begins with (TAG "A123") and skip that
-				// part ...
-				
-				for(var j = 1, len = r.length, key, val; j < len; j += 2){
-					key = r[j].toLowerCase();
-					val = r[j + 1];
-					if(key === 'all'){
-						val = val.toString().split(',');
-					};
-					attrs[key] = val;
-				};
-				results.push(attrs);
+		return {
+			type: (m[1] || m[3]).toLowerCase(),
+			num: parseInt(m[2], 10),
+			text: m[5]
+		};
+	};
+	
+	this.parseSearch = function(str){
+		var info = api.parse(str);
+		if(info.text){
+			var regSearchModseq = /^(.+) \(MODSEQ (.+?)\)$/i;
+			if(info.type === 'search' && regSearchModseq.test(info.text)){
+				// CONDSTORE search response
+				var p = regSearchModseq.exec(info.text);
+				return p[1].split(' ');
 			}else{
-				results.push(text);
+				var val = [];
+				if(info.text[0] === '('){
+					val = /^\((.*)\)$/.exec(info.text)[1].split(' ');
+				}else{
+					val = info.text.split(' ');
+				};
+				
+				if(['search','sort'].indexOf(info.type) > -1){
+					val = val.map(function(v){return parseInt(v, 10)});
+				};
+				if(info.type == 'capability'){
+					val = val.map(function(v){return v.toUpperCase()});
+				};
+				return val;
+			};
+		}else{
+			return [];
+		};
+	};
+
+	this.parseBodyStructure = function(cur, prefix, partID){
+		var ret = [], i, len;
+		if(typeof prefix == "undefined"){
+			var result = (Array.isArray(cur) ? cur : api.parseExpr(cur));
+			if(result.length){
+				ret = api.parseBodyStructure(result, '', 1);
+			};
+		}else{
+			var part, partLen = cur.length, next;
+			if(Array.isArray(cur[0])){ // multipart
+				next = -1;
+				while(Array.isArray(cur[++next])){
+					ret.push(api.parseBodyStructure(cur[next], (prefix + (prefix !== '' ? '.' : '') + (partID++).toString()), 1));
+				};
+				part = {
+					type: cur[next++].toLowerCase()
+				};
+				if(partLen > next){
+					if(Array.isArray(cur[next])){
+						part.params = {};
+						for(i = 0, len = cur[next].length; i < len; i += 2){
+							part.params[cur[next][i].toLowerCase()] = api.decodeWords(cur[next][i + 1]);
+						};
+					}else{
+						part.params = cur[next];
+					};
+					++next;
+				};
+			}else{ // single part
+				next = 7;
+				if(typeof cur[1] === 'string'){
+					part = {
+						// the path identifier for this part, useful for fetching specific
+						// parts of a message
+						partID: (prefix !== '' ? prefix : '1'),
+						// required fields as per RFC 3501 -- null or otherwise
+						type: cur[0].toLowerCase(),
+						subtype: cur[1].toLowerCase(),
+						params: null,
+						id: cur[3],
+						description: cur[4],
+						encoding: cur[5],
+						size: cur[6]
+					};
+				}else{
+					// type information for malformed multipart body
+					part = {
+						type: cur[0] ? cur[0].toLowerCase() : null,
+						params: null 
+					};
+					cur.splice(1, 0, null);
+					++partLen;
+					next = 2;
+				};
+				if(Array.isArray(cur[2])){
+					part.params = {};
+					for(i = 0, len = cur[2].length; i < len; i += 2){
+						part.params[cur[2][i].toLowerCase()] = api.decodeWords(cur[2][i + 1]);
+					};
+					if(cur[1] === null){
+						++next;
+					};
+				};
+				if(part.type === 'message' && part.subtype === 'rfc822'){
+					// envelope
+					if(partLen > next && Array.isArray(cur[next])){
+						part.envelope = api.parseFetchEnvelope(cur[next]);
+					}else{
+						part.envelope = null;
+					};
+					++next;
+					
+					// body
+					if(partLen > next && Array.isArray(cur[next])){
+						part.body = api.parseBodyStructure(cur[next], prefix, 1);
+					}else{
+						part.body = null;
+					};
+					++next;
+				};
+				if((part.type === 'text' || (part.type === 'message' && part.subtype === 'rfc822')) && partLen > next){
+					part.lines = cur[next++];
+				};
+				if(typeof cur[1] === 'string' && partLen > next){
+					part.md5 = cur[next++];
+				};
+			};
+			// add any extra fields that may or may not be omitted entirely
+			api.parseStructExtra(part, partLen, cur, next);
+			ret.unshift(part);
+		};
+		return ret;
+	};
+
+	this.parseStructExtra = function(part, partLen, cur, next){
+		if(partLen > next){
+			// disposition
+			// null or a special k/v list with these kinds of values:
+			// e.g.: ['Foo', null]
+			//       ['Foo', ['Bar', 'Baz']]
+			//       ['Foo', ['Bar', 'Baz', 'Bam', 'Pow']]
+			var disposition = {
+				type: null,
+				params: null 
+			};
+			if(Array.isArray(cur[next])){
+				disposition.type = cur[next][0];
+				if(Array.isArray(cur[next][1])){
+					disposition.params = {};
+					for(var i = 0, len = cur[next][1].length, key; i < len; i += 2){
+						key = cur[next][1][i].toLowerCase();
+						disposition.params[key] = api.decodeWords(cur[next][1][i + 1]);
+					};
+				};
+			}else if(cur[next] !== null){
+				disposition.type = cur[next];
+			};
+			if(disposition.type === null){
+				part.disposition = null;
+			}else{
+				part.disposition = disposition;
+			};
+			
+			++next;
+		};
+		if(partLen > next){
+			// language can be a string or a list of one or more strings, so let's
+			// make this more consistent ...
+			if(cur[next] !== null){
+				part.language = (Array.isArray(cur[next]) ? cur[next] : [cur[next]]);
+			}else{
+				part.language = null;
+			};
+			++next;
+		};
+		if(partLen > next){
+			part.location = cur[next++];
+		};
+		if(partLen > next){
+			// extension stuff introduced by later RFCs
+			// this can really be any value: a string, number, or (un)nested list
+			// let's not parse it for now ...
+			part.extensions = cur[next];
+		};
+	};
+
+	this.parseFetchEnvelope = function(list){
+		return {
+			date: new Date(list[0]),
+			subject: api.decodeWords(list[1]),
+			from: api.parseEnvelopeAddresses(list[2]),
+			sender: api.parseEnvelopeAddresses(list[3]),
+			replyTo: api.parseEnvelopeAddresses(list[4]),
+			to: api.parseEnvelopeAddresses(list[5]),
+			cc: api.parseEnvelopeAddresses(list[6]),
+			bcc: api.parseEnvelopeAddresses(list[7]),
+			inReplyTo: list[8],
+			messageId: list[9]
+		};
+	};
+
+	this.parseEnvelopeAddresses = function(list){
+		var addresses = null;
+		if(Array.isArray(list)){
+			addresses = [];
+			var inGroup = false, curGroup;
+			for(var i = 0, len = list.length, addr; i < len; ++i){
+				addr = list[i];
+				if(addr[2] === null){ // end of group addresses
+					inGroup = false;
+					if(curGroup){
+						addresses.push(curGroup);
+						curGroup = undefined;
+					};
+				}else if(addr[3] === null){ // start of group addresses
+					inGroup = true;
+					curGroup = {
+						group: addr[2],
+						addresses: []
+					};
+				}else{ // regular user address
+					var info = {
+						name: api.decodeWords(addr[0]),
+						mailbox: addr[2],
+						host: addr[3]
+					};
+					if(inGroup){
+						curGroup.addresses.push(info);
+					}else if(!inGroup){
+						addresses.push(info);
+					};
+				};
+				list[i] = addr;
+			};
+			if(inGroup){
+				// no end of group found, assume implicit end
+				addresses.push(curGroup);
 			};
 		};
-		
-		return results;
+		return addresses;
+	};
+
+	this.parseHeader = function(str, noDecode){
+		var lines = str.split('\r\n');
+		var len = lines.length;
+		var header = {};
+		var h = undefined;
+		var i = undefined;
+			
+		for(i = 0; i < len; ++i){
+			if(lines[i].length === 0){
+				break; // empty line separates message's header and body
+			};
+			if(lines[i][0] === '\t' || lines[i][0] === ' '){
+				if(!Array.isArray(header[h])){
+					continue; // ignore invalid first line
+				};
+				// folded header content
+				var val = lines[i];
+				if(!noDecode){
+					if(/=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=$/i.test(lines[i - 1]) && /^[ \t]=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=/i.test(val)){
+						// RFC2047 says to *ignore* leading whitespace in folded header values
+						// for adjacent encoded-words ...
+						val = val.substring(1);
+					};
+				};
+				header[h][header[h].length - 1] += val;
+			}else{
+				var m = /^([^:]+):[ \t]?(.+)?$/.exec(lines[i]);
+				if(m){
+					h = m[1].toLowerCase().trim();
+					if(m[2]){
+						if(header[h] === undefined){
+							header[h] = [m[2]];
+						}else{
+							header[h].push(m[2]);
+						};
+					}else{
+						header[h] = [''];
+					};
+				}else{
+					break;
+				};
+			};
+		};
+		if(!noDecode){
+			for(h in header){
+				var hvs = header[h];
+				for(i = 0, len = header[h].length; i < len; ++i){
+					hvs[i] = api.decodeWords(hvs[i]);
+				};
+			};
+		};
+		return header;
 	};
 	
 	this.makeRequest = function(){
@@ -442,7 +595,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		try{
 			
 			if(_is_nilb(api.caps)){
-				var caps = api.parseCaps(resp.trace);
+				var caps = api.parseCaps(resp.debug);
 				if(caps.length){
 					api.caps = caps;
 				};
@@ -493,7 +646,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 		};
 		
 		if(!Array.isArray(uids)){
-			uids = [uids];
+			if(typeof uids == "string"){
+				uids = uids.split(',');
+			}else{
+				uids = [uids];
+			};
 		};
 		
 		api.validateUIDList(uids);
@@ -516,11 +673,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.status = function(){
 		var name = _function_argument("name");
 		
-		var info = [ 'MESSAGES', 'RECENT', 'UNSEEN', 'UIDVALIDITY', 'UIDNEXT' ];
-		
-		if(api.serverSupports('CONDSTORE')){
-			info.push('HIGHESTMODSEQ');
-		};
+		var info = ['MESSAGES', 'RECENT', 'UNSEEN', 'UIDVALIDITY', 'UIDNEXT'];
 		
 		info = info.join(' ');
 		
@@ -529,18 +682,97 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, box: ""})!
 		var resp = _result_function();
 		
-		var result = api.parse(resp);
+		var info = api.parse(resp);
 		
-		_function_return(result[0]);
+		var r = api.parseExpr(info.text);
+		var attrs = {};
+		// r[1] is [KEY1, VAL1, KEY2, VAL2, .... KEYn, VALn]
+		for(var j = 0, len = r[1].length; j < len; j += 2){
+			attrs[r[1][j].toLowerCase()] = r[1][j + 1];
+		};
+		
+		var box = {
+			name: api.utf7.decode(''+r[0]),
+			uidnext: 0,
+			uidvalidity: 0,
+			messages: {
+				total: 0,
+				'new': 0,
+				unseen: 0
+			}
+		};
+		
+		if(attrs){
+			if(typeof attrs.recent != "undefined"){
+				box.messages['new'] = attrs.recent;
+			};
+			if(typeof attrs.unseen != "undefined"){
+				box.messages.unseen = attrs.unseen;
+			};
+			if(typeof attrs.messages != "undefined"){
+				box.messages.total = attrs.messages;
+			};
+			if(typeof attrs.uidnext != "undefined"){
+				box.uidnext = attrs.uidnext;
+			};
+			if(typeof attrs.uidvalidity != "undefined"){
+				box.uidvalidity = attrs.uidvalidity;
+			};
+		};
+		
+		_function_return(box);
 	};
 	
 	this.getBoxes = function(){
 		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: ""})!
 		var resp = _result_function();
 		
-		var result = api.parse(resp);
+		var lines = resp.split('\r\n');
+		var boxes = {};
 		
-		_function_return(result[0]);
+		for(var i = 0; i < lines.length; i++){
+			var line = lines[i];
+			
+			var info = api.parse(line);
+			
+			var r = api.parseExpr(info.text);
+			
+			var name = api.utf7.decode(''+r[2]);
+			
+			var box = {
+				attribs: r[0],
+				delimiter: r[1],
+				children: null
+			};
+			
+			for(var j = 0, len = api.specialAttrs.length; j < len; ++j){
+				if(box.attribs.indexOf(api.specialAttrs[j]) > -1){
+					box.special_use_attrib = api.specialAttrs[j];
+				};
+			};
+			
+			var curChildren = boxes;
+			
+			if(box.delimiter){
+				var path = name.split(box.delimiter);
+				name = path.pop();
+				for(var j = 0, len = path.length; j < len; ++j){
+					if(!curChildren[ path[j] ]){
+						curChildren[ path[j] ] = {};
+					};
+					if(!curChildren[ path[j] ].children){
+						curChildren[ path[j] ].children = {};
+					};
+					curChildren = curChildren[ path[j] ].children;
+				};
+			};
+			if(curChildren[name]){
+				box.children = curChildren[name].children;
+			};
+			curChildren[name] = box;
+		};
+		
+		_function_return(boxes);
 	};
 	
 	this.addBox = function(){
@@ -822,9 +1054,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parse(resp);
+		var result = api.parseSearch(resp);
 		
-		_function_return(result[0]);
+		_function_return(result);
 	};
 	
 	this.esearch = function(){
@@ -860,9 +1092,25 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parse(resp);
+		var info = api.parse(resp);
 		
-		_function_return(result[0]);
+		var r = api.parseExpr(info.text.toUpperCase().replace('UID', ''));
+		var attrs = {};
+			
+		// RFC4731 unfortunately is lacking on documentation, so we're going to
+		// assume that the response text always begins with (TAG "A123") and skip that
+		// part ...
+		
+		for(var j = 1, key, val; j < r.length; j += 2){
+			key = r[j].toLowerCase();
+			val = r[j + 1];
+			if(key === 'all'){
+				val = val.toString().split(',');
+			};
+			attrs[key] = val;
+		};
+		
+		_function_return(attrs);
 	};
 	
 	this.searchLast = function(){
@@ -961,9 +1209,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
-		var result = api.parse(resp);
+		var result = api.parseSearch(resp);
 		
-		_function_return(result[0]);
+		_function_return(result);
 	};
 	
 	this.store = function(){
@@ -992,7 +1240,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 			items = [items];
 		};
 		
-		for(var i = 0, len = items.length; i < len; ++i){
+		for(var i = 0; i < items.length; ++i){
 			if(isFlags){
 				if(items[i][0] !== '\\'){
 					items[i] = '\\' + items[i];
@@ -1143,9 +1391,61 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var resp = _result_function();
 	};
 	
+	this.parseFetchParts = function(str){
+		var firstBreak = str.indexOf('\r\n');
+		var fetсh = {};
+		if(firstBreak > -1){
+			fetсh.head = str.slice(0, firstBreak);
+			fetсh.body = str.slice(firstBreak + 2);
+		}else{
+			fetсh.head = str;
+			fetсh.body = '';
+		};
+		return fetсh;
+	};
+	
+	this.parseFetch = function(fetсh, msg){
+		var list = api.parseExpr(fetсh.head);
+		if(Array.isArray(list[0])){
+			list = list[0];
+		};
+		// list is [KEY1, VAL1, KEY2, VAL2, .... KEYn, VALn]
+		for(var j = 0, len = list.length, key, val, m; j < len; j += 2){
+			key = list[j].toLowerCase();
+			val = list[j + 1];
+			if(key === 'envelope'){
+				val = api.parseFetchEnvelope(val);
+			}else if(key === 'internaldate'){
+				key = 'date';
+				val = new Date(val);
+			}else if(key === 'rfc822.size'){
+				key = 'size';
+			}else if(key === 'modseq'){ // always a list of one value
+				val = ''+val[0];
+			}else if(key === 'body' || key === 'bodystructure'){
+				key = 'struct';
+				val = api.parseBodyStructure(val);
+			}else if(m = /^BODY\[(.*)\]$/i.exec(list[j])){
+				key = m[1];
+				if(key && /\{(\d+)\}$/.test(val)){
+					val = parseInt(val.slice(1, -1), 10);
+					msg.parts.push({
+						which: key,
+						size: val,
+						body: fetсh.body.slice(0, val)
+					});
+					fetсh.body = fetсh.body.slice(val);
+				};
+				continue;
+			};
+			msg.attributes[key] = val;
+		};
+	};
+	
 	this.fetch = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var options = _function_argument("options");
+		var additional = _avoid_nilb(_function_argument("additional"), true);
 		var box = api.prepareBox(_function_argument("box"));
 		
 		var act = '_InMail.imap.fetch';
@@ -1153,35 +1453,26 @@ _InMail.imap = _InMail.assignApi(function(config){
 			_validate_argument_type(options, 'object', 'Options', act);
 		};
 		
-		_call_function(api.capability, {})!
-		
 		var cmd = 'UID FETCH ' + uids + ' (';
+		
 		var fetching = [];
-			
-		if(api.serverSupports('X-GM-EXT-1')){
-			fetching.push('X-GM-THRID');
-			fetching.push('X-GM-MSGID');
-			fetching.push('X-GM-LABELS');
+		
+		if(additional){
+			fetching.push('UID');
+			fetching.push('FLAGS');
+			fetching.push('INTERNALDATE');
 		};
 		
-		fetching.push('UID');
-		fetching.push('FLAGS');
-		fetching.push('INTERNALDATE');
-		
 		if(options){
+			
 			if(options.envelope){
 				fetching.push('ENVELOPE');
 			};
 			if(options.struct){
 				fetching.push('BODYSTRUCTURE');
 			};
-			if (options.size){
+			if(options.size){
 				fetching.push('RFC822.SIZE');
-			};
-			if(Array.isArray(options.extensions)){
-				options.extensions.forEach(function(extension){
-					fetching.push(extension.toUpperCase());
-				});
 			};
 			
 			cmd += fetching.join(' ');
@@ -1192,20 +1483,296 @@ _InMail.imap = _InMail.assignApi(function(config){
 				if(!Array.isArray(bodies)){
 					bodies = [bodies];
 				};
-				for(var i = 0, len = bodies.length; i < len; ++i){
+				for(var i = 0; i < bodies.length; i++){
 					cmd += ' BODY' + prefix + '[' + bodies[i] + ']';
 				};
-			}
+			};
 		}else{
 			cmd += fetching.join(' ');
 		};
 		
 		cmd += ')';
 		
-		_call_function(api.request, {path: api.encodeName(box), query: cmd})!
+		_call_function(api.request, {path: api.encodeName(box), query: cmd, isFetсh: true})!
 		var resp = _result_function();
-		var result = resp.result;
 		
-		_function_return(result);
+		var fetchCache = {};
+		var fetсhList = resp.fetсhlist;
+		
+		for(var i = 0; i < fetсhList.length; ++i){
+			var fetсh = api.parseFetchParts(fetсhList[i]);
+			var info = api.parse(fetсh.head);
+			var seqno = info.num;
+			fetсh.head = info.text;
+			var msg = fetchCache[seqno];
+			if(typeof msg == "undefined"){
+				msg = fetchCache[seqno] = {
+					attributes: {},
+					parts: []
+				};
+			};
+			api.parseFetch(fetсh, msg);
+			var remains = fetсh.body.trim();
+			while(remains != '' && remains != ')' && _starts_with(remains, 'BODY[')){
+				fetсh = api.parseFetchParts(remains);
+				api.parseFetch(fetсh, msg);
+				remains = fetсh.body.trim();
+			};
+		};
+		
+		var messages = [];
+		
+		for(var seqno in fetchCache){
+			messages.push(fetchCache[seqno]);
+		};
+		
+		_function_return(messages);
 	};
+	
+	this.getParts = function(struct, parts){
+		parts = _avoid_nilb(parts, []);
+        for(var i = 0; i < struct.length; i++){
+			part = struct[i];
+            if(Array.isArray(part)){
+                api.getParts(part, parts);
+            }else if(part.partID){
+                parts.push(part);
+            };
+        };
+        return parts;
+    };
+	
+	this.getPartData = function(){
+		var uid = _function_argument("uid");
+		var part = _function_argument("part");
+		var saveToFile = _avoid_nilb(_function_argument("saveToFile"), false);
+		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
+		var box = api.prepareBox(_function_argument("box"));
+		
+		_call_function(api.fetch, {uids: uid, options: {bodies: [part.partID], markSeen: markSeen}, additional: false, box: box})!
+		var result = _result_function()[0];
+		
+		var data = result.parts[0].body;
+		var encoding = part.encoding.toLowerCase();
+		var charset = (part.params && part.params.charset) ? part.params.charset.toLowerCase() : '';
+		if(encoding === 'base64'){
+			if(saveToFile){
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:_InMail.curl.multipleBase64ToOne(data), base64:true, append:false}));
+			}else{
+				var list =  data.split('\r\n');
+				var result = '';
+				for(var i = 0; i < list.length; i++){
+					var data = list[i];
+					result += _InMail.curl.decoder(charset || 'utf-8', 'b', data);
+				};
+				_function_return(result);
+			};
+		}else if(encoding === 'quoted-printable'){
+			var result = _InMail.curl.decoder(charset || 'utf-8', 'q', data);
+			if(saveToFile){
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:true, append:false}));
+			}else{
+				_function_return(result);
+			};
+		}else if(encoding === '7bit' || encoding === '7bits'){
+			var result = _InMail.curl.decoder('latin1', '', data);
+			if(saveToFile){
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:true, append:false}));
+			}else{
+				_function_return(result);
+			};
+		}else if(encoding === '8bit' || encoding === '8bits' || encoding === 'binary'){
+			if(saveToFile){
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:data, base64:true, append:false}));
+			}else{
+				_function_return(data);
+			};
+		}else if(encoding === 'uuencode'){
+			var parts = data.split('\n');
+			var merged = parts.splice(1, parts.length - 4).join('');
+			if(saveToFile){
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:merged, base64:true, append:false}));
+			}else{
+				_function_return(merged);
+			};
+		}else{
+			api.errorHandler('UNKNOWN_ENCODING', part.encoding);
+		};
+    };
+	
+	this.getParamInfo = function(data){
+        data = _avoid_nilb(data, []);
+        if(!Array.isArray(data)){
+            data = [data];
+        };
+        var raw = false;
+        data = data.filter(function(d){return !(raw = (d === 'raw'))});
+        var base = data.length > 0;
+        return {
+            base: base,
+            raw: raw,
+            any: base || raw,
+            data: data
+        };
+    };
+	
+	this.randStr = function(length, chars){
+		length = _avoid_nilb(length, 10);
+		chars = _avoid_nilb(chars, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+        var str  = '';
+        for(var i = 0; i < length; i++){
+            str += chars.charAt(Math.floor(Math.random() * chars.length));
+        };
+        return str;
+    };
+	
+	this.getMessages = function(){
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var body = api.getParamInfo(_function_argument("body"));
+		var headers = api.getParamInfo(_function_argument("headers"));
+		var attachments = _function_argument("attachments");
+		var size = _avoid_nilb(_function_argument("size"), false);
+		var attachnames = _avoid_nilb(_function_argument("attachnames"), false);
+		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
+		var box = api.prepareBox(_function_argument("box"));
+		
+		var options = {
+			markSeen: markSeen,
+			size: size
+		};
+
+		if(headers.any || body.raw){
+			options.bodies = [];
+		};
+
+		if(headers.base){
+			options.bodies.push('HEADER.FIELDS (' + headers.data.map(function(h){return h.toUpperCase()}).join(' ') + ')');
+		};
+
+		if(headers.raw){
+			options.bodies.push('HEADER');
+		};
+
+		if(body.raw){
+			options.bodies.push('TEXT');
+		};
+
+		if(body.base || attachnames || attachments){
+			options.struct = true;
+		};
+		
+		_call_function(api.fetch, {uids: uids, options: options, markSeen: markSeen, box: box})!
+		var msgs = _result_function();
+		
+		var messages = [];
+		
+		_do_with_params({msgs:msgs}, function(){
+			var msg_index = _iterator() - 1;
+			if(msg_index > _cycle_param("msgs").length - 1){
+				_break();
+			};
+			var msg = _cycle_param("msgs")[msg_index];
+			var attrs = msg.attributes;
+			var parts = msg.parts;
+			var message = {};
+			if(body.any){
+				message.body = {};
+			};
+			if(headers.any){
+				message.headers = {};
+				if(headers.raw){
+					message.headers.raw = {};
+				};
+			};
+			messages.push(message);
+			for(var key in attrs){
+				if(key !== 'struct'){
+					message[key] = attrs[key];
+				};
+			};
+			for(var part_index in parts){
+				var part = parts[part_index];
+				if(_starts_with(part.which, 'HEADER')){
+					var parsed = api.parseHeader(part.body);
+					var obj = part.which === 'HEADER' ? message.headers.raw : message.headers;
+					for(var key in parsed){
+						var value = parsed[key];
+						obj[key] = Array.isArray(value) && value.length < 2 ? value[0] : value;
+					};
+				}else{
+					message.body.raw = part.body;
+				};
+			};
+			
+			_if(body.base || attachnames || attachments, function(){
+				parts = api.getParts(attrs.struct);
+				_if(body.base, function(){
+					_do_with_params({types:body.data}, function(){
+						var type_index = _iterator() - 1;
+						if(type_index > _cycle_param("types").length - 1){
+							_break();
+						};
+						var type = _cycle_param("types")[type_index];
+						message.body[type] = '';
+						var filtered = parts.filter(function(p){return p.type.toLowerCase() === 'text' && p.subtype.toLowerCase() === type});
+						_do_with_params({parts:filtered}, function(){
+							var part_index = _iterator() - 1;
+							if(part_index > _cycle_param("parts").length - 1){
+								_break();
+							};
+							var part = _cycle_param("parts")[type_index];
+							_call_function(api.getPartData, {uid: attrs.uid, part: part, markSeen: markSeen, box: box})!
+							var partData = _result_function();
+							message.body[type] += partData.toString();
+						})!
+					})!
+				})!
+				_if(attachnames || attachments, function(){
+					var filtered = parts.filter(function(p){return p.disposition && p.disposition.type.toLowerCase() === 'attachment'});
+					if(attachnames){
+						message.attachnames = filtered.map(function(p){return p.disposition.params.filename});
+					};
+					_if(attachments, function(){
+						message.attachments = [];
+						if(filtered.length && attachments !== true && attachments.toString().trim() !== '*'){
+							if(!Array.isArray(attachments)){
+								attachments = attachments.split(';');
+							};
+							var maskFiltered = [];
+							var ids = [];
+							for(var mask_index in attachments){
+								var mask = attachments[mask_index];
+								var regex = new RegExp(mask.replace(/\*([^*])*?/gi, '.*'));
+								for(var part_index in parts){
+									var part = parts[part_index];
+									if(regex.test(part.disposition.params.filename) && !ids.includes(part.partID)){
+										maskFiltered.push(part);
+										ids.push(part.partID);
+									};
+								};
+							};
+							filtered = maskFiltered;
+						};
+						_do_with_params({parts:filtered}, function(){
+							var part_index = _iterator() - 1;
+							if(part_index > _cycle_param("parts").length - 1){
+								_break();
+							};
+							var part = _cycle_param("parts")[type_index];
+							var randomFile = api.randStr() + '.file';
+							_call_function(api.getPartData, {uid: attrs.uid, part: part, markSeen: markSeen, saveToFile: randomFile, box: box})!
+							var partData = _result_function();
+							message.attachments.push({
+								name: part.disposition.params.filename,
+								type: part.type + '/' + part.subtype,
+								path: randomFile
+							});
+						})!
+					})!
+				})!
+			})!
+		})!
+
+		_function_return(messages);
+    };
 });

@@ -566,6 +566,18 @@
 					"isasync": false,
 					"waitinfinite": false,
 					"workfunction": "InMail_CurlCleanup"
+				},
+				{
+					"name": "decoder",
+					"isasync": false,
+					"waitinfinite": false,
+					"workfunction": "InMail_Decoder"
+				},
+				{
+					"name": "multiple_base64_to_one",
+					"isasync": false,
+					"waitinfinite": false,
+					"workfunction": "InMail_MultipleBase64ToOne"
 				}
 			]
 		}

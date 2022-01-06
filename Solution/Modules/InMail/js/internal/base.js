@@ -48,6 +48,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		this.request = function(){
 			var path = _function_argument("path");
 			var query = _function_argument("query");
+			var isFetсh = _avoid_nilb(_function_argument("isFetсh"), false);
 			
 			var options = {};
 			
@@ -65,7 +66,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				api.init();
 			};
 			
-			_call_function(_InMail.curl.request, {options: options, trace: true})!
+			_call_function(_InMail.curl.request, {options: options, isFetсh: isFetсh})!
 			var resp = _result_function();
 			
 			__RESP = resp;
@@ -80,9 +81,9 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				var error = resp.error;
 				
 				if(resp.code == "QUOTE_ERROR" && error == "Quote command returned error"){
-					var trace = resp.trace.trim().split(/\r?\n/);
-					for(var i = trace.length - 1; i > -1; i--){
-						var ell = trace[i];
+					var debug = resp.debug.trim().split(/\r?\n/);
+					for(var i = debug.length - 1; i > -1; i--){
+						var ell = debug[i];
 						ell = ell.slice(ell.indexOf(" ") + 1);
 						if(_starts_with(ell, "BAD") || _starts_with(ell, "NO")){
 							error = ell;
@@ -99,28 +100,6 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	
 	if(!_is_nilb(_InMail.proxy) && typeof _InMail.proxy==="object"){
 		api.setProxy(_InMail.proxy);
-	};
-	
-	// Decode Quoted-Printable
-	this.decodeQS = function(str){
-		return str
-			// https://tools.ietf.org/html/rfc2045#section-6.7, rule 3:
-			// “Therefore, when decoding a `Quoted-Printable` body, any trailing white
-			// space on a line must be deleted, as it will necessarily have been added
-			// by intermediate transport agents.”
-			.replace(/[\t\x20]$/gm, '')
-			// Remove hard line breaks preceded by `=`. Proper `Quoted-Printable`-
-			// encoded data only contains CRLF line  endings, but for compatibility
-			// reasons we support separate CR and LF too.
-			.replace(/=(?:\r\n?|\n|$)/g, '')
-			// Decode escape sequences of the form `=XX` where `XX` is any
-			// combination of two hexidecimal digits. For optimal compatibility,
-			// lowercase hexadecimal digits are supported as well. See
-			// https://tools.ietf.org/html/rfc2045#section-6.7, note 1.
-			.replace(/=([a-fA-F0-9]{2})/g, function($0, $1) {
-				var codePoint = parseInt($1, 16);
-				return String.fromCharCode(codePoint);
-			});
 	};
 	
 	this.errorHandler = function(error, data){
@@ -223,6 +202,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"FLAGS_INVALID_ARGS": {
 				"ru": 'Аргумент флагов должен быть строкой или непустым массивом',
 				"en": 'Flags argument must be a string or a non-empty Array'
+			},
+			"UNKNOWN_ENCODING": {
+				"ru": 'Неизвестная кодировка' + data,
+				"en": 'Unknown encoding ' + data
 			}
 		};
 		

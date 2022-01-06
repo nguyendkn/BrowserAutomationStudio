@@ -17,7 +17,7 @@
 			"CSV string"
 		],
 		disable_int: true,
-		value_string: "Object",
+		value_string: "Objects list",
 		help: {
 			description: tr("The format in which the read data will be saved to variable.")
 		} 

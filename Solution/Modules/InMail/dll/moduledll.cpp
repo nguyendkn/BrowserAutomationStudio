@@ -5,6 +5,7 @@
 #include <QByteArray>
 #include <QVariant>
 #include <QJsonArray>
+#include <QTextCodec>
 #include "curl/curl.h"
 
 extern "C" {
@@ -465,11 +466,48 @@ extern "C" {
         return realsize;
     }
 	
-	int TraceFunction(CURL *handle, curl_infotype type, char *data, size_t size, QByteArray *tracedata)
+	struct DebugClass
     {
-		if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN)
+		bool isFetсh = false;
+		bool isFetсhData = false;
+		QByteArray Data;
+		QByteArray FetсhData;
+		QStringList FetсhList;
+    };
+	
+	int DebugFunction(CURL *handle, curl_infotype type, char *data, size_t size, DebugClass *DebugData)
+    {
+		if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN && type != CURLINFO_TEXT)
 		{
-			tracedata->append(data, size);
+			DebugData->Data.append(data, size);
+			if(type == CURLINFO_HEADER_IN && DebugData->isFetсh)
+			{
+				QString start;
+				for(int i = 0, len = size < 23 ? size : 23; i < len; i++)
+				{
+					start[i] = data[i];
+				}
+				if(start.endsWith("Fetch completed"))
+				{
+					DebugData->isFetсhData = false;
+					DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));
+					DebugData->FetсhData.clear();
+				}else if(start.contains(QRegExp("^\\* \\d+ FETCH")))
+				{
+					if(DebugData->isFetсhData)
+					{
+						DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));
+						DebugData->FetсhData.clear();
+					}else
+					{
+						DebugData->isFetсhData = true;
+					}
+				}
+				if(DebugData->isFetсhData)
+				{
+					DebugData->FetсhData.append(data, size);
+				}
+			}
 		}
         return 0;
     }
@@ -620,8 +658,8 @@ extern "C" {
 		
 		CURLcode code;
 		QByteArray WriteData;
-		bool Trace = false;
-        QByteArray TraceData;
+		DebugClass DebugData;
+		bool isFetсh = false;
 		
 		QJsonDocument InputDocument;
 		QJsonParseError err;
@@ -631,26 +669,24 @@ extern "C" {
 			return SetError("Failed to parse json", AllocateSpace, AllocateData);
 		}
 		QJsonObject InputObject = InputDocument.object();
+		
+		if(InputObject.contains("isFetсh"))
+		{
+			isFetсh = InputObject["isFetсh"].toBool();
+			DebugData.isFetсh = isFetсh;
+		}
 
 		if(InputObject.contains("options"))
 		{
 			CurlSetOpts(curl, InputObject["options"].toObject());
-		}
-
-		if(InputObject.contains("trace"))
-		{
-			Trace = InputObject["trace"].toBool();
 		}
 		
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &WriteFunction);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &WriteData);
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
 		
-		if(Trace)
-		{
-			curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, &TraceFunction);
-			curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &TraceData);
-		}
+		curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, &DebugFunction);
+		curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &DebugData);
 		
         curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, &ProgressFunction);
         curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NeedToStop);
@@ -674,8 +710,11 @@ extern "C" {
 		
 		res.insert("result", QString::fromUtf8(WriteData));
 		
-		if(Trace){
-			res.insert("trace", QString::fromUtf8(TraceData));
+		res.insert("debug", QString::fromUtf8(DebugData.Data));
+		
+		if(isFetсh)
+		{
+			res.insert("fetсhlist", DebugData.FetсhList);
 		}
 		
         QJsonObject object = QJsonObject::fromVariantMap(res);
@@ -691,5 +730,96 @@ extern "C" {
 	void InMail_CurlCleanup(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
     {
 		CurlCleanup((CurlData*)ThreadData);
+	}
+	
+	void InMail_Decoder(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
+    {
+		QJsonDocument InputDocument;
+		QJsonParseError err;
+		InputDocument = QJsonDocument::fromJson(QByteArray(InputJson), &err);
+		if(err.error)
+		{
+			return SetError("Failed to parse json", AllocateSpace, AllocateData);
+		}
+		QJsonObject InputObject = InputDocument.object();
+		
+		QByteArray Charset = InputObject["charset"].toString().toUtf8();
+		QString Encoding = InputObject["encoding"].toString();
+		QByteArray Data = InputObject["data"].toVariant().toByteArray();
+		QByteArray DecodedData;
+		QString Result;
+		
+		if(Encoding == "q")
+		{
+			for(int i = 0; i < Data.length(); ++i)
+			{
+				if(Data.at(i) == '=' && i+2<Data.length())
+				{
+					QString strValue = Data.mid((++i)++, 2);
+					bool converted;
+					char character = strValue.toUInt(&converted, 16);
+					if(converted)
+					{
+						DecodedData.append(character);
+					}else
+					{
+						DecodedData.append("=" + strValue);
+					}
+				}else if(Data.at(i) == '_')
+				{
+					DecodedData.append(' ');
+				}else
+				{
+					DecodedData.append(Data.at(i));
+				}
+			}
+		}else if(Encoding == "b")
+		{
+			DecodedData = QByteArray::fromBase64(Data);
+		}else
+		{
+			DecodedData = Data;
+		}
+		
+		QTextCodec *Codec = QTextCodec::codecForName(Charset);
+		if(Codec)
+		{
+			Result = Codec->toUnicode(DecodedData);
+		}else
+		{
+			Result = QString::fromUtf8(DecodedData);
+		}
+
+        QVariantMap res;
+		
+		res.insert("success", true);
+		
+		res.insert("result", Result);
+		
+        QJsonObject object = QJsonObject::fromVariantMap(res);
+
+        QJsonDocument document;
+        document.setObject(object);
+
+        QByteArray ResArray = document.toJson();
+
+        SetResult(&ResArray, AllocateSpace, AllocateData);
+	}
+	
+	void InMail_MultipleBase64ToOne(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
+    {
+		QString Str(InputJson);
+		QStringList List = Str.split("\r\n");
+		
+		QByteArray Result;
+		
+		for(QString Base64:List)
+		{
+			Result.append(QByteArray::fromBase64(Base64.toLatin1()));
+		}
+		
+		QByteArray ResArray = Result.toBase64();
+
+        SetResult(&ResArray, AllocateSpace, AllocateData);
 	}
 }

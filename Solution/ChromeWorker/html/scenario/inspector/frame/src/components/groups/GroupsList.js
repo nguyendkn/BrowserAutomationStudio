@@ -22,7 +22,7 @@ window.GroupsList = {
     id: {
       required: true,
       type: String,
-    }
+    },
   },
 
   data() {

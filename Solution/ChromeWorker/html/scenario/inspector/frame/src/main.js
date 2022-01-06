@@ -30,7 +30,7 @@ const store = new Vuex.Store({
       }
     });
 
-    return { ...state, toolbarVisible: false };
+    return { toolbarVisible: false, ...state };
   },
   mutations: {
     setCollapsedItem(state, { path, id }) {

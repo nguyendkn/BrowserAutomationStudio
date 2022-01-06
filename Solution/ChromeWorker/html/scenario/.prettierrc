@@ -1,5 +1,4 @@
 {
-  "embeddedLanguageFormatting": "off",
   "quoteProps": "consistent",
   "arrowParens": "avoid",
   "singleQuote": true,

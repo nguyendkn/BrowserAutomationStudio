@@ -3,21 +3,21 @@
 #visualizelabels
 {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
   width: 100%;
 }
 
 .tool-div
 {
-    margin-bottom: 0;
+    margin-bottom: 0px;
     display: table;
     table-layout: fixed;
 }
 
 .tag {
     background: #ececec;
-    border-radius: 0 3px 3px 0;
+    border-radius: 0px 3px 3px 0px;
     color: #5d6998ae;
     display: inline-block;
     height: 22px;
@@ -65,16 +65,16 @@
 
 .tool
 {
-    padding-top:0;
-    padding-left:0;
-    padding-right:0;
+    padding-top:0px;
+    padding-left:0px;
+    padding-right:0px;
   	border: 1px solid #ddd;
   	border-radius:3px;
   	cursor: pointer;
     text-align: center;
     transition: border-color 1s ease;
     min-width: 150px;
-    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.1);
 }
 
 .toolhighlight .tooltitle 
@@ -257,7 +257,7 @@
 .clearfix
 {
   clear:both;
-  max-height:0
+  max-height:0px
 }
 
 .toolinserttop
@@ -272,7 +272,7 @@
 .toolselected,.toolselected:hover
 {
   border: 1px solid #ff9090 !important;
-  box-shadow: 0 0 7px 0 rgba(255, 0, 0, 0.2);
+  box-shadow: 0px 0px 7px 0px rgba(255, 0, 0, 0.2);
 }
 
 .tool:hover
@@ -344,7 +344,7 @@
   position: fixed;
   border-left: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
-  border-radius: 0 0 0 4px;
+  border-radius: 0px 0px 0px 4px;
   background-color: #f1f1f1;
   z-index:1;
 }
@@ -355,10 +355,10 @@
   border-left: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
   border-top: 1px solid #dbdbdb;
-  border-radius: 4px 0 0 4px;
+  border-radius: 4px 0px 0px 4px;
   background-color: #f1f1f1;
   top:calc(50% - 15px);
-  right:0;
+  right:0px;
   z-index:1;
 }
 
@@ -464,10 +464,10 @@ label
 {
   display: none;
   position: fixed;
-  top:0;
+  top:0px;
   bottom:32px;
-  left: 0;
-  right:0;
+  left: 0px;
+  right:0px;
   z-index: 10;
   background-color: white;
   overflow-y: auto;
@@ -907,7 +907,7 @@ label
     padding: 8px;
     background-color: #f8f8f8;
     margin-left: 20px;
-    margin-right: 0;
+    margin-right: 0px;
     border-bottom: 1px solid #DBDBDB;
     display:flex;
     align-items: center;
@@ -945,8 +945,8 @@ label
   margin-left:10px;
   margin-right:10px;
   display:none;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0px;
+  padding-right: 0px;
   margin-top: -8px;
 }
 
@@ -1038,7 +1038,7 @@ label
   border: 1px solid #d43f3a;
   text-decoration: none;
   margin: 5px;
-  margin-bottom: 0;
+  margin-bottom: 0px;
 }
 
 #FunctionManagerAddTaskCancel:hover
@@ -1059,7 +1059,7 @@ label
   border: 1px solid #4cae4c;
   text-decoration: none;
   margin: 5px;
-  margin-bottom: 0;
+  margin-bottom: 0px;
 }
 
 #FunctionManagerAddTaskResult:hover
@@ -1151,15 +1151,18 @@ label
   margin-top: 10px;
 }
 
-.actionbuttongray {
+.actionbuttongray
+{
   filter: grayscale(100%) !important;
 }
 
-#play.actionbuttongray {
+#play.actionbuttongray
+{
   opacity: 0.65;
 }
 
-#pause.actionbuttongray {
+#pause.actionbuttongray
+{
   opacity: 0.65;
 }
 
@@ -1179,10 +1182,10 @@ label
 {
   padding-left: 6px;
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 0px;
+  left: 0px;
   bottom: 1px;
-  padding-top: 0;
+  padding-top: 0px;
   padding-right: 10px;
   display: flex;
   flex-direction: column;
@@ -1193,10 +1196,10 @@ label
 {
   padding-right: 6px;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0px;
+  right: 0px;
   bottom: 1px;
-  padding-top: 0;
+  padding-top: 0px;
   padding-left: 5px;
   display: flex;
   flex-direction: column;
@@ -1295,7 +1298,7 @@ label
 
 #FileHelpCenter .modal-body,#MultithreadingHelpCenter .modal-body,#OutputHelpCenter .modal-body,#ErrorHelpCenter .modal-body,#FunctionHelpCenter .modal-body,#LabelHelpCenter .modal-body,#BrowserHelpCenter .modal-body,#ConditionHelpCenter .modal-body,#VariablesHelpCenter .modal-body,#LoopHelpCenter .modal-body,#HelpCenter .modal-body
 {
-  padding-bottom: 0;
+  padding-bottom: 0px;
 }
 
 .examplelabel
@@ -1455,7 +1458,7 @@ label
   #findbuttoncontainer
   {
     top:176px;
-    right:0;
+    right:0px;
     z-index: 5;
   }
 
@@ -1501,7 +1504,7 @@ label
   #findbuttoncontainer
   {
     top:101px;
-    right:0;
+    right:0px;
   }
 
   .findtoolbox
@@ -1528,7 +1531,7 @@ label
   background-color: #f5f5f5;
   font-size: 8px;
   color: #b6b6b6;
-  margin-top: 0;
+  margin-top: 0px;
   text-align: right;
   padding-right: 10px;
 }
@@ -1540,8 +1543,8 @@ label
 
 .titledescription
 {
-  padding-top: 0;
-  margin-top: 0;
+  padding-top: 0px;
+  margin-top: 0px;
   margin-right: 4px;
   margin-left: 4px;
   padding-bottom: 2px;
@@ -1552,7 +1555,7 @@ label
 
 mark
 {
-  padding: 0 !important;
+  padding: 0px !important;
   color: #000 !important;
   background: #ffffa9 !important;
 }
@@ -1584,11 +1587,13 @@ mark
   text-align: center
 }
 
-#findprev {
+#findprev
+{
   min-width: 50px;
 }
 
-#findnext {
+#findnext 
+{
   min-width: 50px;
 }
 

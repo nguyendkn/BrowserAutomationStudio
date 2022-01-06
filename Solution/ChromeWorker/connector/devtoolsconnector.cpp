@@ -2121,7 +2121,7 @@ Async DevToolsConnector::SetHeaders(const std::vector<std::pair<std::string, std
 
     for (const auto& Header : Headers)
     {
-        if(Header.first != "Accept-Language")
+        if(Header.first != "Accept-Language" && Header.first != "User-Agent")
             Object[Header.first] = Variant(Header.second);
     }
 

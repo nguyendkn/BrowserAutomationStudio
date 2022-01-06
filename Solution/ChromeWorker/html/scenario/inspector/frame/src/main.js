@@ -21,36 +21,29 @@ const store = new Vuex.Store({
   state: () => {
     const state = Object.assign({}, scriptStorage.getItem('state'));
 
-    if (!state.sortings || typeOf(state.sortings) !== 'object') {
-      state.sortings = {};
-    }
-
-    if (!state.filters || typeOf(state.filters) !== 'object') {
-      state.filters = {};
-    }
-
-    if (!state.groups || typeOf(state.groups) !== 'object') {
-      state.groups = {};
-    }
-
-    if (!state.items || typeOf(state.items) !== 'array') {
-      state.items = [];
-    }
+    ['sortings', 'filters', 'groups', 'items'].forEach(prop => {
+      if (!state[prop] || typeOf(state[prop]) !== 'object') {
+        state[prop] = {
+          variables: prop === 'items' ? {} : [],
+          resources: prop === 'items' ? {} : [],
+        };
+      }
+    });
 
     return { ...state, toolbarVisible: false };
   },
   mutations: {
+    setCollapsedItem(state, { path, id }) {
+      // state.items[id][path.join('|')] = false;
+    },
+    setExpandedItem(state, { path, id }) {
+      // state.items[id][path.join('|')] = true;
+    },
     setSortings(state, { sortings, id }) {
       // state.sortings[id] = sortings;
     },
     setFilters(state, { filters, id }) {
       // state.filters[id] = filters;
-    },
-    setCollapsedItem(state, { path }) {
-      // state.items[path.join('|')] = false;
-    },
-    setExpandedItem(state, { path }) {
-      // state.items[path.join('|')] = true;
     },
     setGroups(state, { groups, id }) {
       // state.groups[id] = groups;

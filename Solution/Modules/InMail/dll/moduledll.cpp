@@ -487,7 +487,7 @@ extern "C" {
 				{
 					start[i] = data[i];
 				}
-				if(start.endsWith("Fetch completed") || start.contains("OK Success"))
+				if(start.contains(QRegExp("^[A-Z]\\d+ OK")))
 				{
 					DebugData->isFetсhData = false;
 					DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));

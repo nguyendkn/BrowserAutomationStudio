@@ -72,7 +72,7 @@ function BrowserAutomationStudio_GetFingerprint()
 		FINGERPRINT_JSON.additional.enable_precomputed_fingerprints = false
 	}
 	FINGERPRINT_JSON.additional.is_custom_server = typeof(FINGERPRINT_JSON.enable_custom_server) == "string" && FINGERPRINT_JSON.enable_custom_server == "true"
-		
+
 
 	if(FINGERPRINT_JSON.additional.is_custom_server)
 	{
@@ -109,6 +109,7 @@ function BrowserAutomationStudio_GetFingerprint()
 			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
 			FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
 			FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
+			q += "&returnpc=true"
 		}
 	}else
 	{
@@ -116,6 +117,7 @@ function BrowserAutomationStudio_GetFingerprint()
 		FINGERPRINT_JSON.additional.server_type_is_post_data = false;
 		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
 		FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
+		q += "&returnpc=true"
 	}
 
 	FINGERPRINT_JSON.additional.api_url += q

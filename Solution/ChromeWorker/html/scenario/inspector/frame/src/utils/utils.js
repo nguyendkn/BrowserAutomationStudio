@@ -13,11 +13,5 @@ const typeOf = (() => {
 
 const hasOwn = (() => {
   const has = Object.prototype.hasOwnProperty;
-
-  return (value, key) => {
-    if (value == null) {
-      throw new TypeError('Cannot convert undefined or null to object');
-    }
-    return has.call(Object(value), key);
-  };
+  return (object, key) => has.call(object, key);
 })();

@@ -487,7 +487,7 @@ extern "C" {
 				{
 					start[i] = data[i];
 				}
-				if(start.endsWith("Fetch completed"))
+				if(start.endsWith("Fetch completed") || start.contains("OK Success"))
 				{
 					DebugData->isFetсhData = false;
 					DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));

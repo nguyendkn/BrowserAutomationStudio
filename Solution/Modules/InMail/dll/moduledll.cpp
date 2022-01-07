@@ -487,12 +487,7 @@ extern "C" {
 				{
 					start[i] = data[i];
 				}
-				if(start.contains(QRegExp("^[A-Z]\\d+ OK")))
-				{
-					DebugData->isFetсhData = false;
-					DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));
-					DebugData->FetсhData.clear();
-				}else if(start.contains(QRegExp("^\\* \\d+ FETCH")))
+				if(start.contains(QRegExp("^\\* \\d+ FETCH")))
 				{
 					if(DebugData->isFetсhData)
 					{
@@ -502,6 +497,11 @@ extern "C" {
 					{
 						DebugData->isFetсhData = true;
 					}
+				}else if(DebugData->isFetсhData && start.contains(QRegExp("^[A-Z]\\d+ OK")))
+				{
+					DebugData->isFetсhData = false;
+					DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));
+					DebugData->FetсhData.clear();
 				}
 				if(DebugData->isFetсhData)
 				{

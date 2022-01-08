@@ -67,18 +67,20 @@ window.CallstackItem = {
 
   methods: {
     handleResize() {
-      const { offsetHeight, scrollHeight } = this.$refs.preview;
-      if (offsetHeight < scrollHeight && this.preview) {
-        this.overflowHeight = scrollHeight;
+      if (this.isAction) {
+        const { offsetHeight, scrollHeight } = this.$refs.preview;
+        if (offsetHeight < scrollHeight && this.preview) {
+          this.overflowHeight = scrollHeight;
+        }
+  
+        const { offsetWidth, scrollWidth } = this.$refs.preview;
+        if (offsetWidth < scrollWidth && this.preview) {
+          this.overflowWidth = scrollWidth;
+        }
+  
+        this.overflow = offsetHeight < this.overflowHeight || offsetWidth < this.overflowWidth;
+        if (!this.overflow) this.preview = true;
       }
-
-      const { offsetWidth, scrollWidth } = this.$refs.preview;
-      if (offsetWidth < scrollWidth && this.preview) {
-        this.overflowWidth = scrollWidth;
-      }
-
-      this.overflow = offsetHeight < this.overflowHeight || offsetWidth < this.overflowWidth;
-      if (!this.overflow) this.preview = true;
     },
 
     focusAction() {
@@ -91,7 +93,7 @@ window.CallstackItem = {
   },
 
   template: /*html*/ `
-    <li class="callstack-item" :class="{ preview }">
+    <li class="callstack-item" :class="{ preview, action: isAction, function: isFunction }">
       <div class="callstack-item-title">
         <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name" @click="focusAction">{{ name + (hasArguments || isAction ? ':' : '') }}</span>

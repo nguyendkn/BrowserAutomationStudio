@@ -36,13 +36,13 @@ function success(text)
 
 var debug_variables = (function () {
     return function (list, callback) {
-        var result = JSON.stringify({
+        var result = {
             variables: list.reduce(function (acc, key) {
                 if (key.indexOf('GLOBAL:') === 0) {
                     var val = P('basglobal', key.slice(7)) || '"__UNDEFINED__"';
-                    acc[key] = truncate(JSON.parse(val), 100);
+                    acc[key] = truncate(JSON.parse(val));
                 } else {
-                    acc[key.slice(4)] = truncate(GLOBAL[key], 100);
+                    acc[key.slice(4)] = truncate(GLOBAL[key]);
                 }
                 return acc;
             }, {}),
@@ -59,16 +59,16 @@ var debug_variables = (function () {
             }, []).concat(cycle({ info: { type: 'function', name: 'Main', id: 0 } })),
 
             resources: JSON.parse(ScriptWorker.PickResources())
-        });
+        };
 
-        Browser.DebugVariablesResult(result, _get_function_body(callback));
+        Browser.DebugVariablesResult(JSON.stringify(result), _get_function_body(callback));
     };
 
-    function truncate(val, limit) {
+    function truncate(val) {
         if (val instanceof Object) {
             if (val instanceof Date) return '__DATE__' + val.toJSON();
-            return Object.keys(val).slice(0, limit).reduce(function (acc, key) {
-                return (acc[key] = truncate(val[key], limit), acc);
+            return Object.keys(val).slice(0, 100).reduce(function (acc, key) {
+                return (acc[key] = truncate(val[key]), acc);
             }, Array.isArray(val) ? [] : {});
         }
         return typeof val === 'undefined' ? '__UNDEFINED__' : val;

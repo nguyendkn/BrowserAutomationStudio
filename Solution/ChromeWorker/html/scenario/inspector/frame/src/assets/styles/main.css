@@ -274,16 +274,16 @@
   margin: 0 8px;
 }
 
+.callstack-item.function:not(.preview) > .callstack-item-title {
+  background: rgba(217, 217, 217, var(--opacity, 1));
+}
+
 .callstack-item:not(.preview) > .callstack-item-title:active {
   --opacity: 0.5;
 }
 
 .callstack-item:not(.preview) > .callstack-item-title:hover {
   --opacity: 0.5;
-}
-
-.callstack-item:not(.preview) > .callstack-item-title {
-  background: rgba(217, 217, 217, var(--opacity, 1));
 }
 
 .callstack-item.preview .callstack-item-data {
@@ -293,6 +293,11 @@
 }
 
 .callstack-item:not(.preview) {
+  border-color: #d9d9d9;
+  background: #f6f6f6;
+}
+
+.callstack-item:active {
   border-color: #d9d9d9;
   background: #f6f6f6;
 }

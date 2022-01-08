@@ -1,19 +1,32 @@
-/* Tabs */
+/* App */
 
-.app-tab > a > img {
-  margin-right: 8px;
+#app {
+  letter-spacing: -0.2px;
+  flex-flow: column;
+  font-size: 14px;
+  display: flex;
+  height: 100%;
 }
 
-.app-tab > a > svg {
-  margin-right: 8px;
+/* Tabs */
+
+.app-tab.active > a {
+  opacity: 1;
+}
+
+.app-tab.hover > a {
+  opacity: 1;
 }
 
 .app-tab > a {
+  grid-auto-flow: column;
   text-decoration: none;
   align-items: center;
   line-height: 18px;
   color: #606060;
-  display: flex;
+  display: grid;
+  opacity: 0.5;
+  gap: 8px;
 }
 
 .app-tabs {
@@ -22,17 +35,7 @@
   flex: 1;
 }
 
-.app-tab.active {
-  opacity: 1;
-}
-
-.app-tab.hover {
-  opacity: 1;
-}
-
-.app-tab {
-  opacity: 0.5;
-}
+/* Header */
 
 .app-header > button:active {
   opacity: 1;
@@ -51,14 +54,6 @@
   background: #f6f6f6;
   padding: 13px 16px;
   display: flex;
-}
-
-#app {
-  letter-spacing: -0.2px;
-  flex-flow: column;
-  font-size: 14px;
-  display: flex;
-  height: 100%;
 }
 
 /* Panels */
@@ -534,11 +529,11 @@ input::placeholder {
 /* Sortable */
 
 .sortable-chosen {
-  opacity: 0.65;
+  opacity: 0.7;
 }
 
 .sortable-ghost {
-  opacity: 0.65;
+  opacity: 0.7;
 }
 
 /* Global */

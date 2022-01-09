@@ -652,15 +652,16 @@ function _long_goto(label, offset, reverse, callback)
 }
 
 function _set_action_info(info, cycle) {
-    if (!ScriptWorker.GetIsRecord()) return;
-    info.id = ScriptWorker.GetCurrentAction();
+    if (ScriptWorker.GetIsRecord() && info) {
+        info.id = ScriptWorker.GetCurrentAction();
 
-    if (['foreach', 'while', 'for', 'if'].indexOf(info.name.toLowerCase()) < 0) {
-        info.type = 'function';
-    } else {
-        info.type = 'action';
+        if (['foreach', 'while', 'for', 'if'].indexOf(info.name.toLowerCase()) < 0) {
+            info.type = 'function';
+        } else {
+            info.type = 'action';
+        }
+    
+        cycle = cycle || CYCLES.Current();
+        if (cycle) cycle._Info = info;
     }
-
-    cycle = cycle || CYCLES.Current();
-    if (cycle) cycle._Info = info;
 }

@@ -9,6 +9,11 @@ window.GroupsList = {
   },
 
   props: {
+    filter: {
+      required: true,
+      type: Function,
+    },
+
     source: {
       required: true,
       type: Object,
@@ -133,7 +138,7 @@ window.GroupsList = {
         @remove="removeGroup(index, $event)"
       >
         <template v-for="item in group.items">
-          <json-tree-root :key="item.key" :name="item.key" :data="source[item.key]">
+          <json-tree-root v-show="filter(item.key, source[item.key])" :key="item.key" :name="item.key" :data="source[item.key]">
             <template #label="{ label }">
               <button type="button" style="margin: 0 8px; line-height: 16px; border: 1px solid; border-radius: 50%;" :style="{ borderColor: item.fixed ? 'var(--color-normal)' : 'transparent' }" @click="item.fixed = !item.fixed">
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="vertical-align: sub;">

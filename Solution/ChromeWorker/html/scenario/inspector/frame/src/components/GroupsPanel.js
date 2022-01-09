@@ -53,25 +53,19 @@ window.GroupsPanel = {
       return this.filters.filter(f => f.active).map(f => f.name);
     },
 
-    filteredData() {
-      const { source, activeFilters } = this;
-      const query = this.query.toLowerCase();
-
-      const result = Object.keys(source)
-        .filter(key => {
-          if (!key.toLowerCase().includes(query)) return false;
-          const type = typeOf(source[key]);
-          return this.activeFilters.some(f => f === type);
-        })
-
-      return result.reduce((acc, key) => (acc[key] = source[key], acc), {});
+    isEmpty() {
+      return !Object.keys(this.data).length;
     },
 
-    sortedKeys() {
+    source() {
+      return this.transform(this.data);
+    },
+
+    order() {
       const { history, metadata, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
 
-      return Object.keys(this.filteredData).sort((a, b) => {
+      return Object.keys(this.source).sort((a, b) => {
         if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
 
         switch (activeSortings[0]) {
@@ -87,14 +81,6 @@ window.GroupsPanel = {
 
         return a.localeCompare(b);
       });
-    },
-
-    isEmpty() {
-      return !Object.keys(this.data).length;
-    },
-
-    source() {
-      return this.transform(this.data);
     },
   },
 
@@ -154,6 +140,15 @@ window.GroupsPanel = {
       };
       return Object.keys(data).reduce(callback, Array.isArray(data) ? [] : {});
     },
+
+    filter(name, value) {
+      const { source, activeFilters } = this;
+      const query = this.query.toLowerCase();
+
+      if (!name.toLowerCase().includes(query)) return false;
+      const type = typeOf(value);
+      return activeFilters.some(f => f === type);
+    },
   },
 
   template: /*html*/ `
@@ -170,7 +165,7 @@ window.GroupsPanel = {
       </panel-toolbar>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
       <div v-show="!isEmpty" class="app-panel-content">
-        <groups-list ref="list" :style="styles" :source="filteredData" :order="sortedKeys" :id="name" />
+        <groups-list ref="list" :style="styles" :source="source" :order="order" :filter="filter" :id="name" />
       </div>
     </div>
   `,

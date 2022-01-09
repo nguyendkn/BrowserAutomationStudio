@@ -655,7 +655,7 @@ function _set_action_info(info, cycle) {
     if (ScriptWorker.GetIsRecord() && info) {
         info.id = ScriptWorker.GetCurrentAction();
 
-        if (['foreach', 'while', 'for', 'if'].indexOf(info.name.toLowerCase()) < 0) {
+        if (['if', 'for', 'while', 'foreach'].indexOf(info.name.toLowerCase()) < 0) {
             info.type = 'function';
         } else {
             info.type = 'action';

@@ -50,10 +50,8 @@
 .inspector-modal-form > div > input {
   letter-spacing: -0.2px;
   padding: 9px 12px;
-  line-height: 18px;
   min-height: 36px;
-  max-height: 38vh;
-  width: 100%;
+  max-height: 40vh;
   outline: 0;
   border: 0;
 }
@@ -119,7 +117,7 @@
   background: #3d3f42;
 }
 
-.inspector-modal-tools > ul > li > a:focus {
+.inspector-modal-tools > ul > li > a:active {
   background: #606060;
 }
 

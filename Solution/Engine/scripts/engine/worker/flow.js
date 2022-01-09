@@ -68,7 +68,8 @@ var debug_variables = (function () {
         if (val instanceof Object) {
             if (val instanceof Date) return '__DATE__' + val.toJSON();
             return Object.keys(val).slice(0, 100).reduce(function (acc, key) {
-                return (acc[key] = truncate(val[key]), acc);
+                var value = truncate(val[key]);
+                return (acc[key] = value, acc);
             }, Array.isArray(val) ? [] : {});
         }
         return typeof val === 'undefined' ? '__UNDEFINED__' : val;

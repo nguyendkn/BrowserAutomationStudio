@@ -20,10 +20,10 @@ window.JsonTreeNode = {
   },
 
   data() {
-    const scaled = (color, count = 6) => {
+    const scale = (color, count = 6) => {
       return [...Array(count).keys()].map(idx => {
         const [r, g, b] = [255, 0, 0].map((v, i) => {
-          return Math.round(v + (color[i] - v) * (idx / (count - 1)));
+          return Math.round((color[i] - v) * (idx / (count - 1)) + v);
         });
         return `rgb(${r}, ${g}, ${b})`;
       });
@@ -39,12 +39,12 @@ window.JsonTreeNode = {
         undefined: '#808080',
       },
       scaled: {
-        null: scaled([133, 70, 188]),
-        date: scaled([206, 144, 74]),
-        number: scaled([208, 54, 208]),
-        string: scaled([45, 182, 105]),
-        boolean: scaled([37, 37, 204]),
-        undefined: scaled([128, 128, 128]),
+        null: scale([133, 70, 188]),
+        date: scale([206, 144, 74]),
+        number: scale([208, 54, 208]),
+        string: scale([45, 182, 105]),
+        boolean: scale([37, 37, 204]),
+        undefined: scale([128, 128, 128]),
       },
       isHovered: false,
       isExpanded: false,

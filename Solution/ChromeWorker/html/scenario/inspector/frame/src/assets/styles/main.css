@@ -484,11 +484,11 @@
   top: 6px;
 }
 
-.jt-node.hovered {
+.jt-node.focused {
   background: var(--color-lighten);
 }
 
-.jt-node.focused {
+.jt-node.hovered {
   background: var(--color-lighten);
 }
 
@@ -502,12 +502,10 @@
 
 ::-webkit-scrollbar-thumb {
   background: #b7b7b7;
-  border-radius: 1px;
 }
 
 ::-webkit-scrollbar-track {
   background: #eaeaea;
-  border-radius: 0;
 }
 
 ::-webkit-scrollbar {
@@ -536,11 +534,11 @@ input::placeholder {
 /* Sortable */
 
 .sortable-chosen {
-  opacity: 0.7;
+  opacity: 0.73;
 }
 
 .sortable-ghost {
-  opacity: 0.7;
+  opacity: 0.73;
 }
 
 /* Global */

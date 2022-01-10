@@ -206,6 +206,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"UNKNOWN_ENCODING": {
 				"ru": 'Неизвестная кодировка' + data,
 				"en": 'Unknown encoding ' + data
+			},
+			"UEE_INVALID_DATA": {
+				"ru": 'Неверные UUE данные',
+				"en": 'Invalid UUE data'
 			}
 		};
 		

@@ -124,6 +124,14 @@ window.GroupsPanel = {
   },
 
   methods: {
+    filter(name, value) {
+      let query = this.query.trim();
+      query = query.toLowerCase();
+      name = name.toLowerCase();
+
+      return name.includes(query) && this.activeFilters.includes(typeOf(value));
+    },
+
     transform(data) {
       const callback = (acc, key) => {
         let val = data[key];
@@ -139,15 +147,6 @@ window.GroupsPanel = {
         return (acc[key] = val, acc);
       };
       return Object.keys(data).reduce(callback, Array.isArray(data) ? [] : {});
-    },
-
-    filter(name, value) {
-      const { source, activeFilters } = this;
-      const query = this.query.toLowerCase();
-
-      if (!name.toLowerCase().includes(query)) return false;
-      const type = typeOf(value);
-      return activeFilters.some(f => f === type);
     },
   },
 

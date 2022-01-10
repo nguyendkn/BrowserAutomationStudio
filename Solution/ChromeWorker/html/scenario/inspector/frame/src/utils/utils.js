@@ -6,8 +6,7 @@ const typeOf = (() => {
   return value => {
     if (value === null) return 'null';
     if (value !== Object(value)) return typeof value;
-    const type = toString.call(value).slice(8, -1).toLowerCase();
-    return type.includes('function') ? 'function' : type;
+    return toString.call(value).slice(8, -1).toLowerCase();
   };
 })();
 

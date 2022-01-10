@@ -63,7 +63,7 @@
 
         this.$('#inspectorModalError').html($t(el.validationMessage));
         this.$('form').toggleClass('invalid', !valid);
-        model.set('value', el.value);
+        if (valid) model.set('value', el.value);
       },
 
       'changed.bs.select'(e) {

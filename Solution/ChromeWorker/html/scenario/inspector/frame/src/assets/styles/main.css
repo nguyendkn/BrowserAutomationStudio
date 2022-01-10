@@ -435,6 +435,13 @@
   padding-left: var(--indent, 0);
 }
 
+.jt-root > .jt-node > .jt-node-label > button {
+  border: 1px solid var(--color);
+  border-radius: 50%;
+  line-height: 16px;
+  margin: 0 8px;
+}
+
 .jt-root > .jt-node > .jt-node-label {
   user-select: none;
   cursor: pointer;
@@ -445,16 +452,16 @@
   cursor: initial;
 }
 
+.jt-node.focused > .jt-node-actions {
+  display: flex;
+}
+
+.jt-node.hovered > .jt-node-actions {
+  display: flex;
+}
+
 .jt-node-actions > button + button {
   margin-left: 12px;
-}
-
-.jt-node.active > .jt-node-actions {
-  display: flex;
-}
-
-.jt-node.hover > .jt-node-actions {
-  display: flex;
 }
 
 .jt-node-actions > button:active {
@@ -477,11 +484,11 @@
   top: 6px;
 }
 
-.jt-node.active {
+.jt-node.hovered {
   background: var(--color-lighten);
 }
 
-.jt-node.hover {
+.jt-node.focused {
   background: var(--color-lighten);
 }
 

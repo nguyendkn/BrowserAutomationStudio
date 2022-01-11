@@ -79,7 +79,8 @@ window.GroupsList = {
       handler(order) {
         this.groups.forEach(group => {
           group.items.sort((a, b) => {
-            return b.fixed - a.fixed || order.indexOf(a.key) - order.indexOf(b.key);
+            const global = b.fixed === a.fixed && a.key.startsWith('GLOBAL:') - b.key.startsWith('GLOBAL:');
+            return global || b.fixed - a.fixed || order.indexOf(a.key) - order.indexOf(b.key);
           });
         });
       },

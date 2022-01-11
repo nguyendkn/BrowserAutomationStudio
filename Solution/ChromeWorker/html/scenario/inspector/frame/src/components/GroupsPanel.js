@@ -66,8 +66,6 @@ window.GroupsPanel = {
       const cache = history.flat(), updates = history.length;
 
       return Object.keys(this.source).sort((a, b) => {
-        if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
-
         switch (activeSortings[0]) {
           case 'dateModified':
             return metadata[b].modifiedAt - metadata[a].modifiedAt;

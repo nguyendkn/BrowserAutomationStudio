@@ -36,7 +36,7 @@ window.GroupsItem = {
         green: '142, 196, 143',
         brown: '192, 189, 155',
         blue: '154, 203, 230',
-        gray: '209, 209, 209',
+        gray: '207, 207, 207',
         red: '246, 155, 147',
       },
       isEditing: false,
@@ -135,7 +135,7 @@ window.GroupsItem = {
         </div>
       </div>
       <draggable v-show="!isExpanded" :list="items" :style="{ '--content': JSON.stringify($t('groups.empty')) }" class="group-item-content" group="items" handle=".jt-node-label" filter="button">
-        <slot v-if="items.length"></slot>
+        <slot></slot>
       </draggable>
     </li>
   `,

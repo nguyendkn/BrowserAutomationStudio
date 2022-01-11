@@ -30,23 +30,23 @@ const store = new Vuex.Store({
       }
     });
 
-    return { toolbarVisible: false, ...state };
+    return { ...state, toolbarVisible: false };
   },
   mutations: {
     setCollapsedItem(state, { path, id }) {
-      // state.items[id][path.join('|')] = false;
+      state.items[id][path.join('|')] = false;
     },
     setExpandedItem(state, { path, id }) {
-      // state.items[id][path.join('|')] = true;
+      state.items[id][path.join('|')] = true;
     },
     setSortings(state, { sortings, id }) {
-      // state.sortings[id] = sortings;
+      state.sortings[id] = sortings;
     },
     setFilters(state, { filters, id }) {
-      // state.filters[id] = filters;
+      state.filters[id] = filters;
     },
     setGroups(state, { groups, id }) {
-      // state.groups[id] = groups;
+      state.groups[id] = groups;
     },
     toggleToolbar(state, payload) {
       state.toolbarVisible = !state.toolbarVisible;
@@ -56,12 +56,7 @@ const store = new Vuex.Store({
 
 store.subscribe(({ type }, { sortings, filters, groups, items }) => {
   if (type !== 'toggleToolbar') {
-    scriptStorage.setItem('state', {
-      sortings,
-      filters,
-      groups,
-      items,
-    });
+    scriptStorage.setItem('state', { sortings, filters, groups, items });
   }
 });
 

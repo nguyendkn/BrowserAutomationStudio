@@ -55,6 +55,14 @@ window.GroupsItem = {
   },
 
   methods: {
+    // onMove({ to, from, relatedContext, draggedContext }) {
+    //   if (to === from) {
+    //     const related = relatedContext.element.fixed;
+    //     const dragged = draggedContext.element.fixed;
+    //     return  related && dragged && related === dragged;
+    //   }
+    // },
+
     update(cancel) {
       if (!this.isEditing) return;
 

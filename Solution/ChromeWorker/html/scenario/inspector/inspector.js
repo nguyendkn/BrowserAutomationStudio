@@ -48,10 +48,10 @@
         this.setElement(
           $('#inspector').resizable({
             onDragStart(e, ...args) {
-              document.body.style.cursor = e.type !== 'mouseup' ? 'ns-resize' : '';
+              $('body').css('cursor', e.type !== 'mouseup' ? 'ns-resize' : '');
             },
             onDragEnd(e, ...args) {
-              document.body.style.cursor = e.type !== 'mouseup' ? 'ns-resize' : '';
+              $('body').css('cursor', e.type !== 'mouseup' ? 'ns-resize' : '');
             },
             onDrag(e, ...args) {
               const height = Math.min(args[2], window.outerHeight - 300);

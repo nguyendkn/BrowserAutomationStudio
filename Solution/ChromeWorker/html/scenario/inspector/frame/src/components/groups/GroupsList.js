@@ -47,10 +47,10 @@ window.GroupsList = {
 
   watch: {
     groups: {
-      handler(value) {
+      handler(groups) {
         this.$store.commit('setGroups', {
-          groups: value,
           id: this.id,
+          groups,
         });
       },
 
@@ -58,8 +58,8 @@ window.GroupsList = {
     },
 
     source: {
-      handler(value) {
-        const keys = Object.keys(value);
+      handler(source) {
+        const keys = Object.keys(source);
 
         const [{ items }] = this.groups.filter(group => {
           group.items = group.items.filter(item => {
@@ -72,19 +72,19 @@ window.GroupsList = {
         keys.forEach(key => items.push({ key, fixed: false }));
       },
 
-      // immediate: true,
+      immediate: false,
     },
 
     order: {
-      handler(value) {
+      handler(order) {
         this.groups.forEach(group => {
           group.items.sort((a, b) => {
-            return b.fixed - a.fixed || value.indexOf(a.key) - value.indexOf(b.key);
+            return b.fixed - a.fixed || order.indexOf(a.key) - order.indexOf(b.key);
           });
         });
       },
 
-      // immediate: true,
+      immediate: true,
     },
   },
 

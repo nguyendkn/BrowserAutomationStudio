@@ -323,8 +323,12 @@
   opacity: 0.5;
 }
 
-.group-item-controls > button + button {
-  margin-left: 12px;
+.group-item-inputs > input:enabled + div {
+  background: #fff;
+}
+
+.group-item-inputs > input.enabled + div {
+  background: #fff;
 }
 
 .group-item-controls > button > img {
@@ -343,14 +347,15 @@
 .group-item-inputs > input {
   letter-spacing: -0.2px;
   line-height: 18px;
-  margin-left: 8px;
   padding: 3px 0;
   color: inherit;
   flex: 1;
 }
 
 .group-item-controls {
-  display: flex;
+  grid-auto-flow: column;
+  display: grid;
+  gap: 12px;
 }
 
 .group-item-swatches > li + li {
@@ -361,7 +366,6 @@
   border-right: 1px solid #f6f6f3;
   align-items: center;
   background: #fff;
-  padding: 0 12px;
   display: flex;
 }
 
@@ -381,6 +385,7 @@
 }
 
 .group-item-inputs {
+  margin-left: 8px;
   display: flex;
   flex: 1;
 }

@@ -34,12 +34,7 @@ window.GroupsList = {
     const groups = this.$store.state.groups[this.id] || [];
 
     if (!groups.length) {
-      groups.push({
-        id: 0,
-        name: 'Main',
-        color: 'brown',
-        items: [],
-      });
+      groups.push({ id: 0, name: 'Main', color: 'brown', items: [] });
     }
 
     return { groups, counter: groups.length - 1 };
@@ -53,7 +48,6 @@ window.GroupsList = {
           groups,
         });
       },
-
       deep: true,
     },
 
@@ -71,7 +65,6 @@ window.GroupsList = {
 
         keys.forEach(key => items.push({ key, fixed: false }));
       },
-
       immediate: false,
     },
 
@@ -84,7 +77,6 @@ window.GroupsList = {
           });
         });
       },
-
       immediate: true,
     },
   },

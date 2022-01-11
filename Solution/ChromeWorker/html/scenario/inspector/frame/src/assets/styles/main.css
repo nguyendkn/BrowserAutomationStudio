@@ -441,8 +441,6 @@
 }
 
 .jt-root > .jt-node > .jt-node-label > button {
-  border: 1px solid var(--color);
-  border-radius: 50%;
   line-height: 16px;
   margin: 0 8px;
 }

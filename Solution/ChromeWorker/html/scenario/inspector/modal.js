@@ -88,7 +88,7 @@
 
     initialize({ value, type, path, mode }) {
       if (['object', 'array'].includes(type)) type = 'custom';
-      const attrs = { value: type === 'custom' ? JSON.stringify(value) : value + '', type, path, mode };
+      const attrs = { value: type === 'custom' ? JSON.stringify(value) : value + '', type, path, mode: mode.slice(0, -1) };
 
       this.model = new Model(attrs).on('change:type', (model, type) => {
         for (const el of this.$('form').trigger('reset')[0].elements) {
@@ -146,12 +146,12 @@
             </button>
           </div>
           <div class="inspector-modal-body">
-            <select data-style="inspector-modal-select" <%= mode === 'resources' ? 'disabled' : '' %>>
+            <select data-style="inspector-modal-select" <%= mode === 'resource' ? 'disabled' : '' %>>
               <% types.forEach(item => { %><option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.types.' + item) %></option><% }) %>
             </select>
             <form class="inspector-modal-form" spellcheck="false" novalidate>
               <% types.forEach(item => { %>
-                <% const match = item === type, modifier = mode === 'resources' ? 'readonly' : match ? 'required' : '' %>
+                <% const match = item === type, modifier = mode === 'resource' ? 'readonly' : match ? 'required' : '' %>
                 <div data-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>
                     <% ['false', 'true'].forEach((val, idx) => { %>
@@ -221,7 +221,7 @@
                     </a>
                   </li>
                 <% } %>
-                <% if (mode === 'variables') { %>
+                <% if (mode === 'variable') { %>
                   <li>
                     <a href="#" id="inspectorModalClearData">
                       <svg width="24" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
@@ -245,7 +245,7 @@
             </div>
           </div>
           <div class="inspector-modal-footer">
-            <% if (mode === 'variables') { %>
+            <% if (mode === 'variable') { %>
               <button type="button" class="btn-base btn-accept" disabled><%= $t('inspector.save') %></button>
             <% } %>
             <button type="button" class="btn-base btn-cancel"><%= $t('Cancel') %></button>
@@ -256,16 +256,16 @@
   });
 
   _.extend(_L, {
-    'inspector.subheader.variables': { en: 'Edit variable type and value', ru: 'Изменить тип и значение переменной' },
-    'inspector.subheader.resources': { en: 'View resource type and value', ru: 'Просмотр типа и значения ресурса' },
-    'inspector.header.variables': { en: 'Edit the "{name}" variable', ru: 'Изменить переменную "{name}"' },
-    'inspector.header.resources': { en: 'View the "{name}" resource', ru: 'Просмотр ресурса "{name}"' },
-    'inspector.search.variables': { en: 'Search for variable in project', ru: 'Поиск переменной в проекте' },
-    'inspector.search.resources': { en: 'Search for resource in project', ru: 'Поиск ресурса в проекте' },
-    'inspector.copyPath.variables': { en: 'Copy the variable path', ru: 'Копировать путь переменной' },
-    'inspector.copyPath.resources': { en: 'Copy the resource path', ru: 'Копировать путь ресурса' },
-    'inspector.copyName.variables': { en: 'Copy the variable name', ru: 'Копировать имя переменной' },
-    'inspector.copyName.resources': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
+    'inspector.subheader.variable': { en: 'Edit variable type and value', ru: 'Изменить тип и значение переменной' },
+    'inspector.subheader.resource': { en: 'View resource type and value', ru: 'Просмотр типа и значения ресурса' },
+    'inspector.header.variable': { en: 'Edit the "{name}" variable', ru: 'Изменить переменную "{name}"' },
+    'inspector.header.resource': { en: 'View the "{name}" resource', ru: 'Просмотр ресурса "{name}"' },
+    'inspector.search.variable': { en: 'Search for variable in project', ru: 'Поиск переменной в проекте' },
+    'inspector.search.resource': { en: 'Search for resource in project', ru: 'Поиск ресурса в проекте' },
+    'inspector.copyPath.variable': { en: 'Copy the variable path', ru: 'Копировать путь переменной' },
+    'inspector.copyPath.resource': { en: 'Copy the resource path', ru: 'Копировать путь ресурса' },
+    'inspector.copyName.variable': { en: 'Copy the variable name', ru: 'Копировать имя переменной' },
+    'inspector.copyName.resource': { en: 'Copy the resource name', ru: 'Копировать имя ресурса' },
     'inspector.copyData': { en: 'Copy to clipboard', ru: 'Копировать в буфер обмена' },
     'inspector.clearData': { en: 'Clear data', ru: 'Очистить данные' },
     'inspector.save': { en: 'Save changes', ru: 'Сохранить изменения' },

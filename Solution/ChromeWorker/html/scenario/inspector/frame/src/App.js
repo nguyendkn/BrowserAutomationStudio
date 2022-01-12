@@ -39,9 +39,7 @@ window.App = {
   watch: {
     tab({ name }) {
       if (name === 'callstack') {
-        this.$nextTick(() => {
-          window.dispatchEvent(new Event('resize'));
-        });
+        this.$nextTick(() => window.dispatchEvent(new Event('resize')));
       }
     },
   },

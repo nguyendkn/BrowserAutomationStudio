@@ -441,8 +441,8 @@
 }
 
 .jt-root > .jt-node > .jt-node-label > button {
-  line-height: 16px;
   margin: 0 8px;
+  height: 16px;
 }
 
 .jt-root > .jt-node > .jt-node-label {

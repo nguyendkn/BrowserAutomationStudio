@@ -68,19 +68,25 @@ window.JsonTreeNode = {
 
   methods: {
     collapse(signal = false) {
-      if (signal && (this.type === 'array' || this.type === 'object')) {
-        this.$refs.node.forEach(ref => ref.collapse(signal));
+      const { type, path } = this;
+
+      if (signal && (type === 'array' || type === 'object')) {
+        this.$refs.node.forEach(ref => ref.collapse(true));
       }
+
       this.isExpanded = false;
-      // this.$store.commit('setCollapsedItem', { path: this.path });
+      this.$store.commit('setCollapsedItem', { path });
     },
 
     expand(signal = false) {
-      if (signal && (this.type === 'array' || this.type === 'object')) {
-        this.$refs.node.forEach(ref => ref.expand(signal));
+      const { type, path } = this;
+
+      if (signal && (type === 'array' || type === 'object')) {
+        this.$refs.node.forEach(ref => ref.expand(true));
       }
+
       this.isExpanded = true;
-      // this.$store.commit('setExpandedItem', { path: this.path });
+      this.$store.commit('setExpandedItem', { path });
     },
 
     toggle(signal = true) {

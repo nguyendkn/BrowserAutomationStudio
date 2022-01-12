@@ -456,15 +456,11 @@
 }
 
 .jt-node.focused > .jt-node-actions {
-  display: flex;
+  display: grid;
 }
 
 .jt-node.hovered > .jt-node-actions {
-  display: flex;
-}
-
-.jt-node-actions > button + button {
-  margin-left: 12px;
+  display: grid;
 }
 
 .jt-node-actions > button:active {
@@ -481,7 +477,9 @@
 }
 
 .jt-node-actions {
+  grid-auto-flow: column;
   position: absolute;
+  column-gap: 12px;
   display: none;
   right: 8px;
   top: 6px;

@@ -83,6 +83,11 @@ window.GroupsPanel = {
   },
 
   watch: {
+    activeSortings(sortings) {
+      const { $store, name: id } = this;
+      $store.commit('setSortings', { id, sortings });
+    },
+
     activeFilters(filters) {
       const { $store, name: id } = this;
       $store.commit('setFilters', { id, filters });

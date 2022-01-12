@@ -8,6 +8,12 @@ window.GroupsList = {
     JsonTreeRoot,
   },
 
+  provide() {
+    return {
+      id: this.id,
+    };
+  },
+
   props: {
     filter: {
       required: true,

@@ -3,6 +3,8 @@
 window.JsonTreeNode = {
   name: 'JsonTreeNode',
 
+  inject: ['id'],
+
   props: {
     value: {
       required: true,
@@ -74,8 +76,8 @@ window.JsonTreeNode = {
         this.$refs.node.forEach(ref => ref.collapse(true));
       }
 
+      this.$store.commit('setCollapsedItem', { path, id: this.id });
       this.isExpanded = false;
-      this.$store.commit('setCollapsedItem', { path, id: this.$root.$children[0].tab.name });
     },
 
     expand(signal = false) {
@@ -85,8 +87,8 @@ window.JsonTreeNode = {
         this.$refs.node.forEach(ref => ref.expand(true));
       }
 
+      this.$store.commit('setExpandedItem', { path, id: this.id });
       this.isExpanded = true;
-      this.$store.commit('setExpandedItem', { path, id: this.$root.$children[0].tab.name });
     },
 
     toggle(signal = true) {
@@ -103,7 +105,7 @@ window.JsonTreeNode = {
           value: this.value,
           type: this.type,
           path: this.path,
-          mode: this.$root.$children[0].tab.name.slice(0, -1), // TODO: use normal mode detection!
+          mode: this.id.slice(0, -1),
         },
         type: 'edit',
       };

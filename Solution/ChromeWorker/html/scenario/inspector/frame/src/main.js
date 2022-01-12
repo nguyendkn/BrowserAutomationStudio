@@ -21,12 +21,12 @@ const store = new Vuex.Store({
   state: () => {
     const state = Object.assign({}, scriptStorage.getItem('state'));
 
-    ['items', 'groups', 'filters', 'sortings'].forEach(prop => {
-      state[prop] = Object.assign({}, state[prop]);
+    ['items', 'groups', 'filters', 'sortings'].forEach(key => {
+      state[key] = Object.assign({}, state[key]);
 
-      ['variables', 'resources', 'callstack'].forEach(key => {
-        if (typeOf(state[prop][key]) !== (prop === 'items' ? 'object' : 'array')) {
-          state[prop][key] = prop === 'items' ? {} : [];
+      ['variables', 'resources', 'callstack'].forEach(id => {
+        if (typeOf(state[key][id]) !== (key === 'items' ? 'object' : 'array')) {
+          state[key][id] = key === 'items' ? {} : [];
         }
       });
     });

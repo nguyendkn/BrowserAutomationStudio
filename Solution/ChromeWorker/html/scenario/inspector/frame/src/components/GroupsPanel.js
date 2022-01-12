@@ -31,12 +31,16 @@ window.GroupsPanel = {
   },
 
   data() {
-    const filters = ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'],
-      sortings = ['frequency', 'dateModified', 'dateCreated', 'alphabetically'];
+    const sortings = this.$store.state.sortings[this.name];
+    const filters = this.$store.state.filters[this.name];
 
     return {
-      sortings: sortings.map(name => ({ name, active: name === 'alphabetically' })),
-      filters: filters.map(name => ({ name, active: true })),
+      sortings: ['frequency', 'dateModified', 'dateCreated', 'alphabetically'].map(name => {
+        return { name, active: sortings.length ? sortings.includes(name) : name === 'alphabetically' };
+      }),
+      filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'].map(name => {
+        return { name, active: filters.length ? filters.includes(name) : true };
+      }),
       highlight: false,
       metadata: {},
       history: [],

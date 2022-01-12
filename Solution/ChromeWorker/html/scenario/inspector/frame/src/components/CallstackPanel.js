@@ -26,11 +26,12 @@ window.CallstackPanel = {
   },
 
   data() {
+    const filters = this.$store.state.filters[this.name];
+
     return {
-      filters: [
-        { name: 'functions', active: true },
-        { name: 'actions', active: true },
-      ],
+      filters: ['functions', 'actions'].map(name => {
+        return { name, active: filters.length ? filters.includes(name) : true };
+      }),
     };
   },
 
@@ -41,6 +42,13 @@ window.CallstackPanel = {
 
     isEmpty() {
       return !Object.keys(this.data).length;
+    },
+  },
+
+  watch: {
+    activeFilters(filters) {
+      const { $store, name: id } = this;
+      $store.commit('setFilters', { id, filters });
     },
   },
 

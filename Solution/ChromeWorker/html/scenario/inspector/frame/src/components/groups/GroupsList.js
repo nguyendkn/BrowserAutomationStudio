@@ -43,10 +43,8 @@ window.GroupsList = {
   watch: {
     groups: {
       handler(groups) {
-        this.$store.commit('setGroups', {
-          id: this.id,
-          groups,
-        });
+        const { $store, id } = this;
+        $store.commit('setGroups', { id, groups });
       },
       deep: true,
     },
@@ -83,7 +81,7 @@ window.GroupsList = {
 
   methods: {
     updateGroup(index, data) {
-      this.groups[index] = Object.assign({}, this.groups[index], data);
+      this.groups[index] = Object.assign(this.groups[index], data);
     },
 
     removeGroup(index, data) {

@@ -21,13 +21,14 @@ const store = new Vuex.Store({
   state: () => {
     const state = Object.assign({}, scriptStorage.getItem('state'));
 
-    ['sortings', 'filters', 'groups', 'items'].forEach(prop => {
-      if (!state[prop] || typeOf(state[prop]) !== 'object') {
-        state[prop] = {
-          variables: prop === 'items' ? {} : [],
-          resources: prop === 'items' ? {} : [],
-        };
-      }
+    ['items', 'groups', 'filters', 'sortings'].forEach(prop => {
+      state[prop] = Object.assign({}, state[prop]);
+
+      ['variables', 'resources', 'callstack'].forEach(key => {
+        if (typeOf(state[prop][key]) !== (prop === 'items' ? 'object' : 'array')) {
+          state[prop][key] = prop === 'items' ? {} : [];
+        }
+      });
     });
 
     return { ...state, toolbarVisible: false };

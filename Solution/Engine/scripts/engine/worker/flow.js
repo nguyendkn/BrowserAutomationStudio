@@ -56,7 +56,7 @@ var debug_variables = (function () {
                     }));
                 }
                 return acc;
-            }, []).concat(cycle({ info: { type: 'function', name: 'Main', id: 0 } })),
+            }, []).concat(cycle({ info: { id: 0, name: 'Main', type: 'function' } })),
 
             resources: JSON.parse(ScriptWorker.PickResources())
         };
@@ -81,7 +81,7 @@ var debug_variables = (function () {
             arguments: item.arguments || {},
             iterator: item.iterator || 0,
         };
-        return { type: info.type, name: info.name, id: info.id, options: options };
+        return { id: info.id, name: info.name, type: info.type, options: options };
     }
 })();
 

@@ -31,8 +31,8 @@ window.GroupsPanel = {
   },
 
   data() {
-    const sortings = this.$store.state.sortings[this.name];
-    const filters = this.$store.state.filters[this.name];
+    const { sortings } = this.$store.state[this.name];
+    const { filters } = this.$store.state[this.name];
 
     return {
       sortings: ['frequency', 'dateModified', 'dateCreated', 'alphabetically'].map(name => {

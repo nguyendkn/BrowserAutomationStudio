@@ -21,12 +21,12 @@ const store = new Vuex.Store({
   state: () => {
     const state = Object.assign({}, scriptStorage.getItem('state'));
 
-    ['items', 'groups', 'filters', 'sortings'].forEach(key => {
-      state[key] = Object.assign({}, state[key]);
+    ['variables', 'resources', 'callstack'].forEach(id => {
+      state[id] = Object.assign({}, state[id]);
 
-      ['variables', 'resources', 'callstack'].forEach(id => {
-        if (typeOf(state[key][id]) !== (key === 'items' ? 'object' : 'array')) {
-          state[key][id] = key === 'items' ? {} : [];
+      ['items', 'groups', 'filters', 'sortings'].forEach(key => {
+        if (typeOf(state[id][key]) !== (key === 'items' ? 'object' : 'array')) {
+          state[id][key] = key === 'items' ? {} : [];
         }
       });
     });
@@ -35,19 +35,19 @@ const store = new Vuex.Store({
   },
   mutations: {
     setCollapsedItem(state, { path, id }) {
-      state.items[id][path.join('|')] = false;
+      state[id].items[path.join('|')] = false;
     },
     setExpandedItem(state, { path, id }) {
-      state.items[id][path.join('|')] = true;
+      state[id].items[path.join('|')] = true;
     },
     setSortings(state, { sortings, id }) {
-      state.sortings[id] = sortings;
+      state[id].sortings = sortings;
     },
     setFilters(state, { filters, id }) {
-      state.filters[id] = filters;
+      state[id].filters = filters;
     },
     setGroups(state, { groups, id }) {
-      state.groups[id] = groups;
+      state[id].groups = groups;
     },
     toggleToolbar(state, payload) {
       state.toolbarVisible = !state.toolbarVisible;
@@ -55,9 +55,9 @@ const store = new Vuex.Store({
   },
 });
 
-store.subscribe(({ type }, { sortings, filters, groups, items }) => {
+store.subscribe(({ type }, { variables, resources, callstack }) => {
   if (type !== 'toggleToolbar') {
-    scriptStorage.setItem('state', { sortings, filters, groups, items });
+    scriptStorage.setItem('state', { variables, resources, callstack });
   }
 });
 

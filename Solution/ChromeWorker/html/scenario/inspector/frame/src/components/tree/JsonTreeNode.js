@@ -75,7 +75,7 @@ window.JsonTreeNode = {
       }
 
       this.isExpanded = false;
-      this.$store.commit('setCollapsedItem', { path });
+      this.$store.commit('setCollapsedItem', { path, id: this.$root.$children[0].tab.name });
     },
 
     expand(signal = false) {
@@ -86,7 +86,7 @@ window.JsonTreeNode = {
       }
 
       this.isExpanded = true;
-      this.$store.commit('setExpandedItem', { path });
+      this.$store.commit('setExpandedItem', { path, id: this.$root.$children[0].tab.name });
     },
 
     toggle(signal = true) {

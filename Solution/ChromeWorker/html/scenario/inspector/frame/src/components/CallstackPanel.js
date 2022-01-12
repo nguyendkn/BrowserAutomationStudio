@@ -26,7 +26,7 @@ window.CallstackPanel = {
   },
 
   data() {
-    const filters = this.$store.state.filters[this.name];
+    const { filters } = this.$store.state[this.name];
 
     return {
       filters: ['functions', 'actions'].map(name => {

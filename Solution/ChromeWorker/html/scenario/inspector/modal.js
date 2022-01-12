@@ -57,13 +57,18 @@
       'hidden.bs.modal': 'cancel',
 
       'input :input[required]'(e) {
-        const el = e.target, model = this.model;
-        if (el.type === 'radio' && !el.checked) return;
-        const valid = model.get('type') === 'string' || el.checkValidity();
+        if (e.target.type === 'radio' && !e.target.checked) return;
+        const el = e.target, model = this.model.set('value', el.value);
+
+        if (model.get('type') === 'string' || el.checkValidity()) {
+          this.$('form').removeClass('invalid');
+          this.$('.btn-accept').prop('disabled', false || !model.isChanged());
+        } else {
+          this.$('form').addClass('invalid');
+          this.$('.btn-accept').prop('disabled', true || !model.isChanged());
+        }
 
         this.$('#inspectorModalError').html($t(el.validationMessage));
-        this.$('form').toggleClass('invalid', !valid);
-        if (valid) model.set('value', el.value);
       },
 
       'changed.bs.select'(e) {
@@ -100,19 +105,16 @@
 
         const description = $t(`inspector.descriptions.${type}`);
         this.$('#inspectorModalDescription').html(description);
-      }).on('change:value', model => {
-        const disabled = this.$('form').hasClass('invalid') || !model.isChanged();
-        this.$('.btn-accept').prop('disabled', disabled);
       });
     },
 
     render() {
       if (this.$el.is(':empty')) {
-        const types = ['custom', 'undefined', 'boolean', 'string', 'number', 'date', 'null'];
-
-        const html = this.template({ ...this.model.toJSON(), types });
-        this.$el.html(html).modal({ backdrop: 'static' });
-        this.$('select').selectpicker();
+        const html = this.template({
+          types: ['custom', 'undefined', 'boolean', 'string', 'number', 'date', 'null'],
+          ...this.model.toJSON(),
+        });
+        this.$el.html(html).modal({ backdrop: 'static' }).find('select').selectpicker();
       }
       return this;
     },

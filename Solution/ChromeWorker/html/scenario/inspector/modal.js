@@ -298,8 +298,8 @@
       ru: '<b>Null</b> - примитивный тип. В отличие от <b>undefined</b>, обозначающего неопределенность, является определённым значением отсутствия объекта.',
     },
     'inspector.description': {
-      en: 'You can read more about all data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures`); return false;">here</a>.',
-      ru: 'Подробнее обо всех типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(`https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures`); return false;">здесь</a>.',
+      en: 'You can read more about data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(\'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures\'); return false;">here</a>.',
+      ru: 'Подробно о типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(\'https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures\'); return false;">здесь</a>.',
     },
     'inspector.types.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.types.boolean': { en: 'Boolean', ru: 'Булево' },

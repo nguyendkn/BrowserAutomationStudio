@@ -83,6 +83,11 @@ window.GroupsPanel = {
   },
 
   watch: {
+    activeFilters(filters) {
+      const { $store, name: id } = this;
+      $store.commit('setFilters', { id, filters });
+    },
+
     source($new, $old) {
       const diff = microdiff($old, $new);
       const highlight = this.highlight;

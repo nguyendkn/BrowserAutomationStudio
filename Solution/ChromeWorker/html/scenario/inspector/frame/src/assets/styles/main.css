@@ -391,11 +391,11 @@
 }
 
 .group-item-content:empty::before {
-  content: var(--content);
+  content: var(--title);
 }
 
 .group-item-content.empty::before {
-  content: var(--content);
+  content: var(--title);
 }
 
 .group-item-content::before {

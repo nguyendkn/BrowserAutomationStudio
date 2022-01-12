@@ -105,7 +105,7 @@ window.JsonTreeNode = {
           value: this.value,
           type: this.type,
           path: this.path,
-          mode: this.id.slice(0, -1),
+          mode: this.id,
         },
         type: 'edit',
       };

@@ -47,13 +47,22 @@ window.JsonTreeNode = {
   },
 
   computed: {
-    keys() {
-      const { value } = this;
-      return value ? Object.keys(value) : [];
+    indent() {
+      const depth = this.path.length;
+      return `${24 * (depth - 1)}px`;
     },
 
     color() {
       return this.colors[this.type];
+    },
+
+    scale() {
+      return this.scaled[this.type];
+    },
+
+    keys() {
+      const { value } = this;
+      return value ? Object.keys(value) : [];
     },
 
     type() {
@@ -111,7 +120,7 @@ window.JsonTreeNode = {
   },
 
   template: /*html*/ `
-    <div class="jt-node" :class="{ hovered: isHovered, expanded: isExpanded }" :style="{ '--indent': 24 * (path.length - 1) + 'px' }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false">
+    <div class="jt-node" :class="{ hovered: isHovered, expanded: isExpanded }" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false">
       <span class="jt-node-label"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
       <span class="jt-node-value" :style="{ color }">
         <template v-if="type === 'undefined' || type === 'null'">{{ String(value) }}</template>

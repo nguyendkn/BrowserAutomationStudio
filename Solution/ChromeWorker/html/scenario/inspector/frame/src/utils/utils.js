@@ -1,5 +1,14 @@
 'use strict';
 
+const scale = (color, count = 6) => {
+  return [...Array(count).keys()].map(idx => {
+    const [r, g, b] = [255, 0, 0].map((v, i) => {
+      return Math.round((color[i] - v) * (idx / (count - 1)) + v);
+    });
+    return `rgb(${r}, ${g}, ${b})`;
+  });
+};
+
 const typeOf = (() => {
   const toString = Object.prototype.toString;
 

@@ -22,14 +22,7 @@ window.JsonTreeNode = {
   },
 
   data() {
-    const scale = (color, count = 6) => {
-      return [...Array(count).keys()].map(idx => {
-        const [r, g, b] = [255, 0, 0].map((v, i) => {
-          return Math.round((color[i] - v) * (idx / (count - 1)) + v);
-        });
-        return `rgb(${r}, ${g}, ${b})`;
-      });
-    };
+    const expand = this.$store.state[this.id].items[this.path.join('|')] || false;
 
     return {
       colors: {
@@ -49,7 +42,7 @@ window.JsonTreeNode = {
         undefined: scale([128, 128, 128]),
       },
       isHovered: false,
-      isExpanded: false,
+      isExpanded: expand,
     };
   },
 
@@ -70,24 +63,24 @@ window.JsonTreeNode = {
 
   methods: {
     collapse(signal = false) {
-      const { type, path } = this;
+      const { id, type, path } = this;
 
       if (signal && (type === 'array' || type === 'object')) {
         this.$refs.node.forEach(ref => ref.collapse(true));
       }
 
-      this.$store.commit('setCollapsedItem', { path, id: this.id });
+      this.$store.commit('setCollapsedItem', { id, path });
       this.isExpanded = false;
     },
 
     expand(signal = false) {
-      const { type, path } = this;
+      const { id, type, path } = this;
 
       if (signal && (type === 'array' || type === 'object')) {
         this.$refs.node.forEach(ref => ref.expand(true));
       }
 
-      this.$store.commit('setExpandedItem', { path, id: this.id });
+      this.$store.commit('setExpandedItem', { id, path });
       this.isExpanded = true;
     },
 

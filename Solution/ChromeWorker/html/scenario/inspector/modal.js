@@ -92,10 +92,9 @@
     },
 
     initialize({ value, type, path, mode }) {
-      if (['object', 'array'].includes(type)) type = 'custom';
-      const attrs = { value: type === 'custom' ? JSON.stringify(value) : value + '', type, path, mode: mode.slice(0, -1) };
+      [type, value] = ['object', 'array'].includes(type) ? ['custom', JSON.stringify(value)] : [type, `${value}`];
 
-      this.model = new Model(attrs).on('change:type', (model, type) => {
+      this.model = new Model({ value, type, path, mode: mode.slice(0, -1) }).on('change:type', (model, type) => {
         for (const el of this.$('form').trigger('reset')[0].elements) {
           const field = el.closest('[data-type]');
           el.required = field.dataset.type === type;
@@ -173,7 +172,7 @@
                   <% } else if (item === 'date' ) { %>
                     <input type="text" value="<%- match ? value : '' %>" step="any" <%= modifier %>>
                   <% } else { %>
-                    <input type="hidden" value="<%- item %>">
+                    <input type="hidden" value="<%- item %>" <%= modifier %>>
                   <% } %>
                 </div>
               <% }) %>

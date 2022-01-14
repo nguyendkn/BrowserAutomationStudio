@@ -11,13 +11,13 @@ window.JsonTreeNode = {
     },
 
     name: {
-      required: true,
       type: String,
+      required: true,
     },
 
     path: {
-      required: true,
       type: Array,
+      required: true,
     },
   },
 

@@ -5,23 +5,23 @@ window.PanelToolbar = {
 
   props: {
     sortings: {
-      default: () => [],
       type: Array,
+      default: () => [],
     },
 
     filters: {
-      default: () => [],
       type: Array,
+      default: () => [],
     },
 
     search: {
-      default: true,
       type: Boolean,
+      default: true,
     },
 
     query: {
-      default: '',
       type: String,
+      default: '',
     },
   },
 

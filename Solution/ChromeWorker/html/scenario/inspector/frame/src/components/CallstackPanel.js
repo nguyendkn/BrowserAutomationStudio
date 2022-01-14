@@ -10,18 +10,18 @@ window.CallstackPanel = {
 
   props: {
     title: {
-      required: true,
       type: String,
+      required: true,
     },
 
     name: {
-      required: true,
       type: String,
+      required: true,
     },
 
     data: {
-      required: true,
       type: Array,
+      required: true,
     },
   },
 

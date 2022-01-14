@@ -13,6 +13,7 @@ window.JsonTreeRoot = {
     },
 
     name: {
+      type: String,
       required: true,
     },
   },

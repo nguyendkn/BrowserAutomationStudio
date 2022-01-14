@@ -16,23 +16,23 @@ window.GroupsList = {
 
   props: {
     filter: {
-      required: true,
       type: Function,
+      required: true,
     },
 
     source: {
-      required: true,
       type: Object,
+      required: true,
     },
 
     order: {
-      required: true,
       type: Array,
+      required: true,
     },
 
     id: {
-      required: true,
       type: String,
+      required: true,
     },
   },
 

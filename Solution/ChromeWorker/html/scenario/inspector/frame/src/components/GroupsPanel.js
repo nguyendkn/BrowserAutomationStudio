@@ -10,23 +10,23 @@ window.GroupsPanel = {
 
   props: {
     styles: {
-      required: true,
       type: Object,
+      required: true,
     },
 
     title: {
-      required: true,
       type: String,
+      required: true,
     },
 
     name: {
-      required: true,
       type: String,
+      required: true,
     },
 
     data: {
-      required: true,
       type: Object,
+      required: true,
     },
   },
 

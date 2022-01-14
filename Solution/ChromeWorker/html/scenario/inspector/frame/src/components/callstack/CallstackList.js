@@ -9,13 +9,13 @@ window.CallstackList = {
 
   props: {
     filters: {
-      required: true,
       type: Array,
+      required: true,
     },
 
     data: {
-      required: true,
       type: Array,
+      required: true,
     },
   },
 

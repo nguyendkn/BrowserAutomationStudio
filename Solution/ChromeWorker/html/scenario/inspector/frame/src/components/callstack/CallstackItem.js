@@ -5,23 +5,23 @@ window.CallstackItem = {
 
   props: {
     options: {
-      required: true,
       type: Object,
+      required: true,
     },
 
     type: {
-      required: true,
       type: String,
+      required: true,
     },
 
     name: {
-      required: true,
       type: String,
+      required: true,
     },
 
     id: {
-      required: true,
       type: Number,
+      required: true,
     },
   },
 

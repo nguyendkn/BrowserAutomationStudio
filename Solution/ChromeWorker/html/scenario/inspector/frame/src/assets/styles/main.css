@@ -214,12 +214,6 @@
   padding-left: 8px;
 }
 
-.callstack-item-param > span {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
 .callstack-item-param-value {
   color: #538fb5;
 }
@@ -229,25 +223,27 @@
 }
 
 .callstack-item-params {
-  border-top: 1px solid #d9d9d9;
   padding: 4px 0;
   display: grid;
   row-gap: 4px;
 }
 
 .callstack-item-param {
+  text-overflow: ellipsis;
+  white-space: nowrap;
   padding: 5px 32px;
+  overflow: hidden;
 }
 
-.callstack-toggle-params:active {
+.callstack-item-toggle:active {
   opacity: 0.5;
 }
 
-.callstack-toggle-params:hover {
+.callstack-item-toggle:hover {
   opacity: 0.5;
 }
 
-.callstack-toggle-params {
+.callstack-item-toggle {
   display: flex;
 }
 
@@ -266,6 +262,7 @@
 
 .callstack-item-name {
   font-weight: 600;
+  color: #606060;
   margin: 0 8px;
 }
 

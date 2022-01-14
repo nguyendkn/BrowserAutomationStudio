@@ -54,7 +54,7 @@ window.CallstackItem = {
   },
 
   mounted() {
-    this.$nextTick(() => this.handleResize.call(this));
+    this.$nextTick().then(() => this.handleResize());
   },
 
   created() {
@@ -101,7 +101,7 @@ window.CallstackItem = {
           <span v-if="isAction">{{ name === 'If' ? options.expression : options.iterator }}</span>
           <span v-else-if="hasArguments" v-show="preview">[{{ $tc('params', size) }}]</span>
         </span>
-        <button v-show="hasArguments || overflow" type="button" class="callstack-toggle-params" @click="preview = !preview">
+        <button v-show="hasArguments || overflow" type="button" class="callstack-item-toggle" @click="preview = !preview">
           <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />
         </button>
       </div>

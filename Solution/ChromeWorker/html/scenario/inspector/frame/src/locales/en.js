@@ -33,5 +33,6 @@
   groups: {
     title: 'This group is empty. You can drag the elements here.',
   },
+  params: '{n} parameters | {n} parameter | {n} parameters',
   items: '{n} items | {n} item | {n} items',
 };

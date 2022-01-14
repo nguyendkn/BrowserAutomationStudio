@@ -99,7 +99,7 @@ window.CallstackItem = {
         <span class="callstack-item-name" @click="focusAction">{{ name + (hasArguments || isAction ? ':' : '') }}</span>
         <span ref="preview" class="callstack-item-data">
           <template v-if="isAction"><span>{{ name === 'If' ? options.expression : options.iterator }}</span></template>
-          <template v-else-if="hasArguments"><span v-show="preview">[{{ $tc('items', size) }}]</span></template>
+          <template v-else-if="hasArguments"><span v-show="preview">[{{ $tc('params', size) }}]</span></template>
         </span>
         <button v-show="hasArguments || overflow" type="button" class="callstack-toggle-params" @click="preview = !preview">
           <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />

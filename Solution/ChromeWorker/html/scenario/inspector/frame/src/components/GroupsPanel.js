@@ -31,8 +31,7 @@ window.GroupsPanel = {
   },
 
   data() {
-    const { sortings } = this.$store.state[this.name];
-    const { filters } = this.$store.state[this.name];
+    const { sortings, filters } = this.$store.state[this.name];
 
     return {
       sortings: ['frequency', 'dateModified', 'dateCreated', 'alphabetically'].map(name => {
@@ -137,7 +136,7 @@ window.GroupsPanel = {
 
   methods: {
     filter(name, value) {
-      let query = this.query.trim();
+      let query = this.query.slice();
       query = query.toLowerCase();
       name = name.toLowerCase();
 

@@ -55,13 +55,12 @@ window.GroupsItem = {
   },
 
   methods: {
-    // onMove({ to, from, relatedContext, draggedContext }) {
-    //   if (to === from) {
-    //     const related = relatedContext.element.fixed;
-    //     const dragged = draggedContext.element.fixed;
-    //     return  related && dragged && related === dragged;
-    //   }
-    // },
+    onMove({ to, from, relatedContext, draggedContext }) {
+      // if (to !== from) return;
+      // const related = relatedContext.element.fixed;
+      // const dragged = draggedContext.element.fixed;
+      // return related && dragged && related === dragged;
+    },
 
     update(cancel) {
       if (!this.isEditing) return;
@@ -134,7 +133,7 @@ window.GroupsItem = {
           </div>
         </div>
       </div>
-      <draggable v-show="!isExpanded" :list="items" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-node-label" filter="button" group="items">
+      <draggable v-show="!isExpanded" :list="items" :move="onMove" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-node-label" filter="button" group="items">
         <slot></slot>
       </draggable>
     </li>

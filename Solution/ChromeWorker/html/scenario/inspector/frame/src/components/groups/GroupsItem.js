@@ -56,10 +56,18 @@ window.GroupsItem = {
 
   methods: {
     onMove({ to, from, relatedContext, draggedContext }) {
-      // if (to !== from) return;
+      if (to !== from) return;
       // const related = relatedContext.element.fixed;
       // const dragged = draggedContext.element.fixed;
       // return related && dragged && related === dragged;
+    },
+
+    onAdd(e) {
+      // console.log(e);
+    },
+
+    onEnd(e) {
+      // console.log(e);
     },
 
     update(cancel) {
@@ -133,7 +141,7 @@ window.GroupsItem = {
           </div>
         </div>
       </div>
-      <draggable v-show="!isExpanded" :list="items" :move="onMove" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-node-label" filter="button" group="items">
+      <draggable v-show="!isExpanded" :list="items" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-node-label" filter="button" group="items" :move="onMove" @end="onEnd" @add="onAdd">
         <slot></slot>
       </draggable>
     </li>

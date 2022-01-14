@@ -460,16 +460,15 @@
 }
 
 .jt-node-actions > button:active {
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .jt-node-actions > button:hover {
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .jt-node-actions > button {
   display: flex;
-  opacity: 0.5;
 }
 
 .jt-node-actions {

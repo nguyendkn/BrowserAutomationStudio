@@ -263,7 +263,7 @@
 .callstack-item-name {
   font-weight: 600;
   color: #606060;
-  margin: 0 8px;
+  padding: 0 8px;
 }
 
 .callstack-item.function:not(.preview) > .callstack-item-title {

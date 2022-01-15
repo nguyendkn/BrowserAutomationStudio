@@ -100,7 +100,7 @@ window.CallstackItem = {
 
   template: /*html*/ `
     <li class="callstack-item" :class="{ preview, action: isAction, function: isFunction }">
-      <div class="callstack-item-title" @click.self="toggle">
+      <div class="callstack-item-title" @mousedown.self.prevent="() => {}" @mouseup.self.prevent="() => {}" @click.self="toggle">
         <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name" @click="focusAction">{{ name + (hasArguments || isAction ? ':' : '') }}</span>
         <span ref="preview" class="callstack-item-data">

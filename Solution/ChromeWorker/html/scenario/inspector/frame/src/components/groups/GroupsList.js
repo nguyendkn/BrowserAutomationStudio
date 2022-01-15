@@ -86,6 +86,18 @@ window.GroupsList = {
   },
 
   methods: {
+    toggleFixed(group, index) {
+      const item = group.items[index];
+
+      if (item.fixed) {
+        // move to original position
+      } else {
+        // move to start position
+      }
+
+      item.fixed = !item.fixed;
+    },
+
     updateGroup(index, data) {
       this.groups[index] = Object.assign(this.groups[index], data);
     },

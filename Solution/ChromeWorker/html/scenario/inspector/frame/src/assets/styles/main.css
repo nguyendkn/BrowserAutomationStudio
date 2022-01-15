@@ -244,6 +244,7 @@
 }
 
 .callstack-item-toggle {
+  margin-left: auto;
   display: flex;
 }
 
@@ -257,7 +258,6 @@
 
 .callstack-item-data {
   color: #538fb5;
-  flex: 1;
 }
 
 .callstack-item-name {

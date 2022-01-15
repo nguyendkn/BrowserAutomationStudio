@@ -322,10 +322,12 @@
 
 .group-item-inputs > input:enabled + div {
   background: #fff;
+  padding: 4px;
 }
 
 .group-item-inputs > input.enabled + div {
   background: #fff;
+  padding: 4px;
 }
 
 .group-item-controls > button > img {

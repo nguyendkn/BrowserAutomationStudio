@@ -62,7 +62,7 @@ window.GroupsList = {
         const [{ items }] = this.groups.filter(group => {
           group.items = group.items.filter(item => {
             const index = keys.indexOf(item.key);
-            return ~index && keys.splice(index, 1);
+            return index > -1 && keys.splice(index, 1);
           });
           return group.id === 0;
         });

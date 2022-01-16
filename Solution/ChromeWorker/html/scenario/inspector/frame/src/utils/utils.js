@@ -1,9 +1,9 @@
 'use strict';
 
 const scale = (color, count = 6) => {
-  return [...Array(count).keys()].map(idx => {
+  return [...Array(count).keys()].map(n => {
     const [r, g, b] = [255, 0, 0].map((v, i) => {
-      return Math.round((color[i] - v) * (idx / (count - 1)) + v);
+      return Math.round((color[i] - v) * (n / (count - 1)) + v);
     });
     return `rgb(${r}, ${g}, ${b})`;
   });

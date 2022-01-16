@@ -173,10 +173,10 @@ window.GroupsPanel = {
           </button>
         </template>
       </panel-toolbar>
-      <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
       <div v-show="!isEmpty" class="app-panel-content">
         <groups-list ref="list" :style="styles" :source="source" :order="order" :filter="filter" :id="name" />
       </div>
+      <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>
   `,
 };

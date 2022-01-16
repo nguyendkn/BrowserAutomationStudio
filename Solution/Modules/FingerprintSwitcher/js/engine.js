@@ -66,9 +66,15 @@ function BrowserAutomationStudio_GetFingerprint()
 	FINGERPRINT_JSON.additional.server_type_is_post_data = false
 	FINGERPRINT_JSON.additional.final_fingerprint_valid = false
 	FINGERPRINT_JSON.additional.dynamic_perfect_canvas = typeof(FINGERPRINT_JSON.dynamic_perfect_canvas) == "string" && FINGERPRINT_JSON.dynamic_perfect_canvas == "true"
-		
+	FINGERPRINT_JSON.additional.enable_precomputed_fingerprints = true
+	if(typeof(FINGERPRINT_JSON.enable_precomputed_fingerprints) == "string" && FINGERPRINT_JSON.enable_precomputed_fingerprints == "false")
+	{
+		FINGERPRINT_JSON.additional.enable_precomputed_fingerprints = false
+	}
+	FINGERPRINT_JSON.additional.is_custom_server = typeof(FINGERPRINT_JSON.enable_custom_server) == "string" && FINGERPRINT_JSON.enable_custom_server == "true"
 
-	if(typeof(FINGERPRINT_JSON.enable_custom_server) == "string" && FINGERPRINT_JSON.enable_custom_server == "true")
+
+	if(FINGERPRINT_JSON.additional.is_custom_server)
 	{
 		if(typeof(FINGERPRINT_JSON.is_custom_server_retry) == "boolean" && FINGERPRINT_JSON.is_custom_server_retry)
 		{
@@ -91,16 +97,27 @@ function BrowserAutomationStudio_GetFingerprint()
 		}
 	}else if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
 	{
-		FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = true;
-		FINGERPRINT_JSON.additional.server_type_is_post_data = true;
-		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
-		FINGERPRINT_JSON.additional.api_url = "https://canvas.bablosoft.com/prepare"
+		if((typeof(FINGERPRINT_JSON.is_main_server_retry) == "boolean" && FINGERPRINT_JSON.is_main_server_retry) || !FINGERPRINT_JSON.additional.enable_precomputed_fingerprints)
+		{
+			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = true;
+			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+			FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
+			FINGERPRINT_JSON.additional.api_url = "https://canvas.bablosoft.com/prepare"
+		}else
+		{
+			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
+			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
+			FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
+			FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
+			q += "&returnpc=true"
+		}
 	}else
 	{
 		FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
 		FINGERPRINT_JSON.additional.server_type_is_post_data = false;
 		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com/status"
 		FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
+		q += "&returnpc=true"
 	}
 
 	FINGERPRINT_JSON.additional.api_url += q
@@ -216,8 +233,13 @@ function BrowserAutomationStudio_GetFingerprint()
 	http_client_set_fail_on_error(true)
 	_switch_http_client_main()
 
-	_if(!FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid && FINGERPRINT_JSON.additional.dynamic_perfect_canvas, function(){
+	_if(FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid && FINGERPRINT_JSON.additional.dynamic_perfect_canvas, function(){
 		FINGERPRINT_JSON.is_custom_server_retry = true
+		_call(BrowserAutomationStudio_GetFingerprint,[FINGERPRINT_JSON])!
+	})!
+
+	_if(!FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid, function(){
+		FINGERPRINT_JSON.is_main_server_retry = true
 		_call(BrowserAutomationStudio_GetFingerprint,[FINGERPRINT_JSON])!
 	})!
 

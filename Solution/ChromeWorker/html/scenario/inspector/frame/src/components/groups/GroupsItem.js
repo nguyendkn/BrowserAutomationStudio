@@ -56,12 +56,16 @@ window.GroupsItem = {
 
   methods: {
     onMove({ to, from, relatedContext, draggedContext }) {
+      const related = relatedContext.element;
+      const dragged = draggedContext.element;
       if (to === from) {
-        const related = relatedContext.element;
-        const dragged = draggedContext.element;
         return related.fixed && dragged.fixed;
+      } else {
+        // console.log({ draggedContext, relatedContext });
+        // if (dragged.fixed && draggedContext.futureIndex > 0) {
+        //   return false;
+        // }
       }
-      // return related && dragged && related === dragged;
     },
 
     update(cancel) {

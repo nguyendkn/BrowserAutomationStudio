@@ -1,6 +1,6 @@
 #inspector {
   max-height: calc(100vh - 300px);
-  border-top: 6px solid #dbdbdb;
+  border-top: 5px solid #dbdbdb;
   user-select: none;
   cursor: ns-resize;
   display: flex;

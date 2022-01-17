@@ -131,7 +131,7 @@ window.GroupsList = {
         @update="updateGroup(index, $event)"
         @remove="removeGroup(index, $event)"
       >
-        <json-tree-root v-for="item in group.items" v-show="filter(item.key, source[item.key])" :key="item.key" :name="item.key" :data="source[item.key]">
+        <json-tree-root v-for="item in group.items" v-show="filter(item.key, source[item.key])" :key="item.key" :name="item.key" :value="source[item.key]">
           <template #label="{ label }">
             <button type="button" :style="{ opacity: item.fixed ? 1.0 : 0.5 }" @click="toggleFixed(group.items, item)">
               <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" style="vertical-align: sub;">

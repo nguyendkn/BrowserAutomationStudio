@@ -8,8 +8,20 @@ window.JsonTreeRoot = {
   },
 
   props: {
-    data: {
+    value: {
       required: true,
+      validator(value) {
+        return [
+          'null',
+          'date',
+          'array',
+          'object',
+          'number',
+          'string',
+          'boolean',
+          'undefined',
+        ].includes(typeOf(value));
+      },
     },
 
     name: {
@@ -20,7 +32,7 @@ window.JsonTreeRoot = {
 
   template: /*html*/ `
     <div class="jt-root">
-      <json-tree-node :name="name" :path="[name]" :value="data">
+      <json-tree-node :name="name" :path="[name]" :value="value">
         <template #label="{ label }">
           <slot name="label" :label="name">{{ name }}</slot>
         </template>

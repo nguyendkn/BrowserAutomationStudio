@@ -8,6 +8,18 @@ window.JsonTreeNode = {
   props: {
     value: {
       required: true,
+      validator(value) {
+        return [
+          'null',
+          'date',
+          'array',
+          'object',
+          'number',
+          'string',
+          'boolean',
+          'undefined',
+        ].includes(typeOf(value));
+      },
     },
 
     name: {

@@ -144,7 +144,7 @@ window.GroupsPanel = {
     },
 
     transform(data) {
-      const callback = (acc, key) => {
+      return Object.keys(data).reduce((acc, key) => {
         let val = data[key];
         if (typeof val === 'string') {
           if (val.startsWith('__UNDEFINED__')) {
@@ -156,8 +156,7 @@ window.GroupsPanel = {
           val = this.transform(val);
         }
         return (acc[key] = val, acc);
-      };
-      return Object.keys(data).reduce(callback, Array.isArray(data) ? [] : {});
+      }, Array.isArray(data) ? [] : {});
     },
   },
 

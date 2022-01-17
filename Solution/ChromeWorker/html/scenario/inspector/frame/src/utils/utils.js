@@ -3,7 +3,7 @@
 const scale = (color, count = 6) => {
   return [...Array(count).keys()].map(n => {
     const [r, g, b] = [255, 0, 0].map((v, i) => {
-      return Math.round((color[i] - v) * (n / (count - 1)) + v);
+      return Math.round(v + (color[i] - v) * (n / (count - 1)));
     });
     return `rgb(${r}, ${g}, ${b})`;
   });

@@ -1,8 +1,11 @@
 <div class="container-fluid">
+	<span data-preserve="true" data-preserve-type="check" data-preserve-id="getUid">
+		<input type="checkbox" checked="checked" id="getUid" style="margin-left:25px"/> <label for="getUid" class="tr">Get message Id</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get message Id"), description: tr("Get message Id")})) %>"></i>
+	</span>
 	<%= _.template($('#variable_constructor').html())({
 		id: "saveUid",
 		description: tr("Message Id"),
-		default_variable: "LAST_MAIL_ID",
+		default_variable: "MAIL_ID",
 		help: {
 			description: tr("Message Id")
 		}
@@ -104,7 +107,7 @@
 		}) %>
 		<div>
 			<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextHtml">
-				<input type="checkbox" id="getLinksTextHtml" style="margin-left:25px"/> <label for="getLinksTextHtml"><span class="tr">Parse links from body of letter</span> (text/html)</label>
+				<input type="checkbox" id="getLinksTextHtml" style="margin-left:25px"/> <label for="getLinksTextHtml"><span class="tr">Parse links from body of letter</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/html"), description: tr("text/html")})) %>"></i>
 			</span>
 			<span>
 				<%= _.template($('#variable_constructor').html())({
@@ -143,7 +146,7 @@
 		}) %>
 		<div>
 			<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextPlain">
-				<input type="checkbox" id="getLinksTextPlain" style="margin-left:25px"/> <label for="getLinksTextPlain"><span class="tr">Parse links from body of letter</span> (text/plain)</label>
+				<input type="checkbox" id="getLinksTextPlain" style="margin-left:25px"/> <label for="getLinksTextPlain"><span class="tr">Parse links from body of letter</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/plain"), description: tr("text/plain")})) %>"></i>
 			</span>
 			<span>
 				<%= _.template($('#variable_constructor').html())({
@@ -182,7 +185,7 @@
 		}) %>
 		<div>
 			<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextRaw">
-				<input type="checkbox" id="getLinksTextRaw" style="margin-left:25px"/> <label for="getLinksTextRaw"><span class="tr">Parse links from body of letter</span> (raw)</label>
+				<input type="checkbox" id="getLinksTextRaw" style="margin-left:25px"/> <label for="getLinksTextRaw"><span class="tr">Parse links from body of letter</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("raw"), description: tr("raw")})) %>"></i>
 			</span>
 			<span>
 				<%= _.template($('#variable_constructor').html())({
@@ -351,9 +354,60 @@
 		}) %>
 	</span>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
-		<span data-preserve="true" data-preserve-type="check" data-preserve-id="markSeen">
-			<input type="checkbox" id="markSeen" style="margin-left:25px"/> <label for="markSeen" class="tr">Mark message as read when fetched</label>
+		<span data-preserve="true" data-preserve-type="check" data-preserve-id="delAfter">
+			<input type="checkbox" id="delAfter" style="margin-left:25px"/> <label for="delAfter" class="tr">Delete letter after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Delete letter after receiving"), description: tr("Delete letter after receiving")})) %>"></i>
 		</span>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<hr style="margin-top:0px;margin-bottom:0px"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<span data-preserve="true" data-preserve-type="check" data-preserve-id="setFlagsAfter">
+			<input type="checkbox" id="setFlagsAfter" style="margin-left:25px"/> <label for="setFlagsAfter" class="tr">Set flags after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Set flags after receiving"), description: tr("Set flags after receiving")})) %>"></i>
+		</span>
+		<span id="setFlagsSettings">
+			<%= _.template($('#input_constructor').html())({
+				id: "setFlags",
+				description: tr("Flags"),
+				default_selector: "string",
+				variants: [
+					{value: "\\Seen", description: tr("Message has been read")},
+					{value: "\\Answered", description: tr("Message has been answered")},
+					{value: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
+					{value: "\\Deleted", description: tr("Message is marked for removal")},
+					{value: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+				],
+				disable_int: true,
+				value_string: "",
+				help: {
+					description: tr("List or one flag.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
+					examples: [
+						{code: "\\Seen", description: tr("Message has been read")},
+						{code: "\\Answered", description: tr("Message has been answered")},
+						{code: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
+						{code: "\\Deleted", description: tr("Message is marked for removal")},
+						{code: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+					]
+				}
+			}) %>
+		</span>
+		<div class="container-fluid">
+			<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<div class="col-xs-12">
+							<hr style="margin-top:0px;margin-bottom:0px"/>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 		<%= _.template($('#input_constructor').html())({
 			id: "box",
 			description: tr("Folder name"),
@@ -383,7 +437,7 @@
 						let id = target.prop("id");
 						let disable = !target.is(':checked');
 						let next = target.closest('span').next();
-						if(id.startsWith('getLinks')){
+						if(id.startsWith('getLinks') || id.startsWith('setFlags')){
 							if(disable){
 								next.hide();
 							}else{
@@ -402,7 +456,7 @@
 						};
 					};
 				};
-				let ids = ['getFrom','getTo','getSubject','getTextHtml','getLinksTextHtml','getTextPlain','getLinksTextPlain','getTextRaw','getLinksTextRaw','getSize','getFlags','getDate','getAttachNames','getAttachments','getRawHeader'];
+				let ids = ['getUid','getFrom','getTo','getSubject','getTextHtml','getLinksTextHtml','getTextPlain','getLinksTextPlain','getTextRaw','getLinksTextRaw','getSize','getFlags','getDate','getAttachNames','getAttachments','getRawHeader','setFlagsAfter'];
 				ids.forEach(function(id){
 					let ell = $('#' + id);
 					if(ell.length){

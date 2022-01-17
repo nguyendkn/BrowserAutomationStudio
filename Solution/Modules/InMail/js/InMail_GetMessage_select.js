@@ -98,7 +98,13 @@ if(getRawHeader && saveRawHeader.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Technical headers of letter") + tr("\" is not specified"));
     return;
 };
-var markSeen = $("#markSeen").is(':checked');
+var delAfter = $("#delAfter").is(':checked');
+var setFlagsAfter = $("#setFlagsAfter").is(':checked');
+var setFlags = GetInputConstructorValue("setFlags", loader);
+if(setFlagsAfter && setFlags["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Flags") + tr("\" is not specified"));
+    return;
+};
 var box = GetInputConstructorValue("box", loader);
 try{
     var code = loader.GetAdditionalData() + _.template($("#InMail_GetMessage_code").html())({
@@ -134,7 +140,9 @@ try{
         "saveAttachments": "VAR_" + saveAttachments,
         "getRawHeader": getRawHeader,
         "saveRawHeader": "VAR_" + saveRawHeader,
-        "markSeen": markSeen,
+        "delAfter": delAfter,
+		"setFlagsAfter": setFlagsAfter,
+		"setFlags": setFlags["updated"],
         "box": box["updated"]
     });
     code = Normalize(code, 0);

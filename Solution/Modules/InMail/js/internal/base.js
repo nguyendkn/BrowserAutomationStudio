@@ -62,11 +62,13 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '»');
 			
+			_InMail.curl.clearTimeout();
+			
 			if(!_InMail.curl.isInit()){
 				api.init();
 			};
 			
-			_call_function(_InMail.curl.request, {options: options, isFetсh: isFetсh})!
+			_call_function(_InMail.curl.request, {options: options, isFetсh: isFetсh, timeout: (api.timeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
 			
 			__RESP = resp;
@@ -210,6 +212,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"UEE_INVALID_DATA": {
 				"ru": 'Неверные UUE данные',
 				"en": 'Invalid UUE data'
+			},
+			"EMPTY_MSGS_LIST": {
+				"ru": 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика',
+				"en": 'Could not find a letter matching the specified identifier in the specified mailbox folder'
 			}
 		};
 		

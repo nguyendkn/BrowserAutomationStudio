@@ -16,8 +16,9 @@ if(sortType["original"].length == 0){
     return;
 };
 var sortField = GetInputConstructorValue("sortField", loader);
+var getUid = $("#getUid").is(':checked');
 var saveUid = this.$el.find("#saveUid").val().toUpperCase();
-if(saveUid.length == 0){
+if(getUid && saveUid.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Message Id") + tr("\" is not specified"));
     return;
 };
@@ -132,7 +133,13 @@ if(wait && timeout["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
     return;
 };
-var markSeen = $("#markSeen").is(':checked');
+var delAfter = $("#delAfter").is(':checked');
+var setFlagsAfter = $("#setFlagsAfter").is(':checked');
+var setFlags = GetInputConstructorValue("setFlags", loader);
+if(setFlagsAfter && setFlags["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Flags") + tr("\" is not specified"));
+    return;
+};
 var box = GetInputConstructorValue("box", loader);
 try{
     var code = loader.GetAdditionalData() + _.template($("#InMail_FindMessage_code").html())({
@@ -150,6 +157,7 @@ try{
 		"before": before["updated"],
 		"sortType": sortType["updated"],
 		"sortField": sortField["updated"],
+		"getUid": getUid,
 		"saveUid": "VAR_" + saveUid,
 		"getFrom": getFrom,
         "saveFrom": "VAR_" + saveFrom,
@@ -186,7 +194,9 @@ try{
 		"foundOver": foundOver["updated"],
         "interval": interval["updated"],
         "timeout": timeout["updated"],
-        "markSeen": markSeen,
+        "delAfter": delAfter,
+		"setFlagsAfter": setFlagsAfter,
+		"setFlags": setFlags["updated"],
         "box": box["updated"]
     });
     code = Normalize(code, 0);

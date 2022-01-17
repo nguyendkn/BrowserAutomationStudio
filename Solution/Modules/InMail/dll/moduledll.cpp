@@ -8,12 +8,16 @@
 #include <QTextCodec>
 #include "curl/curl.h"
 
+using namespace std;
+
 extern "C" {
 	
 	struct CurlData
     {
 		CURL *handler = NULL;
-    };
+		Timer timer;
+		int timeout = 5 * 60 * 1000;
+    }
 
     void *StartDll()
     {
@@ -38,6 +42,8 @@ extern "C" {
 			curl_easy_cleanup(data->handler);
 			data->handler = NULL;
 		}
+		
+		data->timer.stop();
 	}
 	
 	void EndThread(void *ThreadData)
@@ -646,6 +652,24 @@ extern "C" {
         SetResult(&ResArray, AllocateSpace, AllocateData);
 	}
 	
+	void SetTimeout(CurlData *data)
+    {		
+		data->timer.setTimeout([=]() {
+			if(data->handler)
+			{
+				curl_easy_cleanup(data->handler);
+				data->handler = NULL;
+			}
+		}, data->timeout);
+    }
+	
+	void InMail_ClearTimeout(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
+    {
+		CurlData *data = (CurlData*)ThreadData;
+		
+		data->timer.stop();
+    }
+	
 	void InMail_CurlRequest(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
     {
 		CurlData *data = (CurlData*)ThreadData;
@@ -653,7 +677,8 @@ extern "C" {
 		
 		if(!curl)
 		{
-			return SetError("Handler is not initialized", AllocateSpace, AllocateData);
+			SetError("Handler is not initialized", AllocateSpace, AllocateData);
+			return SetTimeout(data);
 		}
 		
 		CURLcode code;
@@ -666,7 +691,8 @@ extern "C" {
 		InputDocument = QJsonDocument::fromJson(QByteArray(InputJson), &err);
 		if(err.error)
 		{
-			return SetError("Failed to parse json", AllocateSpace, AllocateData);
+			SetError("Failed to parse json", AllocateSpace, AllocateData);
+			return SetTimeout(data);
 		}
 		QJsonObject InputObject = InputDocument.object();
 		
@@ -679,6 +705,11 @@ extern "C" {
 		if(InputObject.contains("options"))
 		{
 			CurlSetOpts(curl, InputObject["options"].toObject());
+		}
+		
+		if(InputObject.contains("timeout"))
+		{
+			data->timeout = InputObject["timeout"].toInt();
 		}
 		
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &WriteFunction);
@@ -723,8 +754,10 @@ extern "C" {
         document.setObject(object);
 
         QByteArray ResArray = document.toJson();
-
+		
         SetResult(&ResArray, AllocateSpace, AllocateData);
+		
+		SetTimeout(data);
     }
 	
 	void InMail_CurlCleanup(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)

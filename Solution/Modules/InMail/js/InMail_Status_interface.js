@@ -13,30 +13,6 @@
 		} 
 	}) %>
 	<%= _.template($('#variable_constructor').html())({
-		id: "resName",
-		description: tr("Folder name"),
-		default_variable: "MAILBOX_NAME",
-		help: {
-			description: tr("Folder name"),
-		}
-	}) %>
-	<%= _.template($('#variable_constructor').html())({
-		id: "uidnext",
-		description: tr("Next identifier"),
-		default_variable: "MAILBOX_NEXT_ID",
-		help: {
-			description: tr("Next identifier"),
-		}
-	}) %>
-	<%= _.template($('#variable_constructor').html())({
-		id: "uidvalidity",
-		description: tr("Validity identifier"),
-		default_variable: "MAILBOX_VALIDITY_ID",
-		help: {
-			description: tr("Validity identifier"),
-		}
-	}) %>
-	<%= _.template($('#variable_constructor').html())({
 		id: "total",
 		description: tr("Total messages"),
 		default_variable: "MESSAGES_TOTAL_COUNT",

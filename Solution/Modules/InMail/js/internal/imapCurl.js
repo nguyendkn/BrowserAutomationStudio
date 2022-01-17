@@ -714,7 +714,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.status = function(){
 		var name = _function_argument("name");
 		
-		var info = ['MESSAGES', 'RECENT', 'UNSEEN', 'UIDVALIDITY', 'UIDNEXT'];
+		var info = ['MESSAGES', 'RECENT', 'UNSEEN'];
 		
 		info = info.join(' ');
 		
@@ -734,8 +734,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var box = {
 			name: api.utf7.decode(''+r[0]),
-			uidnext: 0,
-			uidvalidity: 0,
 			messages: {
 				total: 0,
 				'new': 0,
@@ -752,12 +750,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 			};
 			if(typeof attrs.messages != "undefined"){
 				box.messages.total = attrs.messages;
-			};
-			if(typeof attrs.uidnext != "undefined"){
-				box.uidnext = attrs.uidnext;
-			};
-			if(typeof attrs.uidvalidity != "undefined"){
-				box.uidvalidity = attrs.uidvalidity;
 			};
 		};
 		
@@ -1486,7 +1478,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.fetch = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var options = _function_argument("options");
-		var additional = _avoid_nilb(_function_argument("additional"), true);
 		var box = api.prepareBox(_function_argument("box"));
 		
 		var act = '_InMail.imap.fetch';
@@ -1496,16 +1487,19 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'UID FETCH ' + uids + ' (';
 		
-		var fetching = [];
-		
-		if(additional){
-			fetching.push('UID');
-			fetching.push('FLAGS');
-			fetching.push('INTERNALDATE');
-		};
-		
 		if(options){
 			
+			var fetching = [];
+			
+			if(options.uid){
+				fetching.push('UID');
+			};
+			if(options.flags){
+				fetching.push('FLAGS');
+			};
+			if(options.date){
+				fetching.push('INTERNALDATE');
+			};
 			if(options.envelope){
 				fetching.push('ENVELOPE');
 			};
@@ -1528,8 +1522,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 					cmd += ' BODY' + prefix + '[' + bodies[i] + ']';
 				};
 			};
-		}else{
-			cmd += fetching.join(' ');
 		};
 		
 		cmd += ')';
@@ -1590,7 +1582,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
 		var box = api.prepareBox(_function_argument("box"));
 		
-		_call_function(api.fetch, {uids: uid, options: {bodies: [part.partID], markSeen: markSeen}, additional: false, box: box})!
+		_call_function(api.fetch, {uids: uid, options: {bodies: [part.partID], markSeen: markSeen}, box: box})!
 		var result = _result_function()[0];
 		
 		var data = result.parts[0].body;
@@ -1675,13 +1667,18 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var headers = api.getParamInfo(_function_argument("headers"));
 		var attachments = _function_argument("attachments");
 		var size = _avoid_nilb(_function_argument("size"), false);
+		var flags = _avoid_nilb(_function_argument("flags"), false);
+		var date = _avoid_nilb(_function_argument("date"), false);
 		var attachnames = _avoid_nilb(_function_argument("attachnames"), false);
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
 		var box = api.prepareBox(_function_argument("box"));
 		
 		var options = {
+			uid: true,
 			markSeen: markSeen,
-			size: size
+			size: size,
+			flags: flags,
+			date: date
 		};
 
 		if(headers.any || body.raw){
@@ -1815,4 +1812,18 @@ _InMail.imap = _InMail.assignApi(function(config){
 
 		_function_return(messages);
     };
+	
+	this.getFlags = function(){
+		var uid = api.prepareUIDs(_function_argument("uid"));
+		var box = api.prepareBox(_function_argument("box"));
+		
+		_call_function(api.fetch, {uids: uid, options: {flags: true}, markSeen: false, box: box})!
+		var msgs = _result_function();
+		
+		if(!msgs.length){
+			api.errorHandler('EMPTY_MSGS_LIST');
+		};
+		
+		_function_return(msgs[0].attributes.flags);
+	};
 });

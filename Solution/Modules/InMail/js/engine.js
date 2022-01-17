@@ -337,6 +337,18 @@ _InMail = {
 		_function_return(count);
 	},
 	
+	getFlags: function(){
+		var uid = _InMail.uidsToOne(_function_argument("uid"));
+		var box = _InMail.prepareBox(_function_argument("box"));
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.getFlags, {uid: uid, box: box})!
+		var flags = _result_function();
+		
+		_function_return(flags);
+	},
+	
 	addFlags: function(){
 		var uids = _function_argument("uids");
 		var flags = _to_arr(_function_argument("flags"));
@@ -401,6 +413,8 @@ _InMail = {
 		var body = _avoid_nilb(_function_argument("body"), true);
 		var headers = _avoid_nilb(_function_argument("headers"), false);
 		var size = _avoid_nilb(_function_argument("size"), false);
+		var flags = _avoid_nilb(_function_argument("flags"), false);
+		var date = _avoid_nilb(_function_argument("date"), false);
 		var attachnames = _avoid_nilb(_function_argument("attachnames"), false);
 		var attachments = _avoid_nilb(_function_argument("attachments"), false);
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
@@ -408,7 +422,7 @@ _InMail = {
 		
 		var api = _InMail.getApi();
 		
-		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, attachnames: attachnames, attachments: attachments, markSeen: markSeen, box: box})!
+		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, flags: flags, date: date, attachnames: attachnames, attachments: attachments, markSeen: markSeen, box: box})!
 		var messages = _result_function();
 		
 		_function_return(messages);
@@ -416,18 +430,8 @@ _InMail = {
 	
 	getMessage: function(){
 		var args = _function_arguments();
-		var uid = args.uid;
+		args.uids = _InMail.uidsToOne(args.uid);
 		delete args.uid;
-		
-		if(typeof uid == "string" && uid.indexOf(',') > 0){
-			uid.split(',');
-		};
-		
-		if(Array.isArray(uid)){
-			uid = uid[0];
-		};
-		
-		args.uids = uid;
 		
 		_call_function(_InMail.getMessages, args)!
 		var messages = _result_function();
@@ -435,6 +439,14 @@ _InMail = {
 		if(!messages.length){
 			_InMail.error('Could not find a letter matching the specified identifier in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
 		};
+		
+		_if_else(args.delAfter, function(){
+			_call_function(_InMail.delMessages, args)!
+		}, function(){
+			_if(args.setFlags, function(){
+				_call_function(_InMail.setFlags, {uids: uid, flags: args.setFlags, box: args.box})!
+			})!
+		})!
 		
 		_function_return(messages[0]);
 	},
@@ -479,6 +491,17 @@ _InMail = {
 		var message = _result_function();
 		
 		_function_return(message);
+	},
+	
+	uidsToOne: function(uids){
+		if(typeof uids == "string" && uids.indexOf(',') > 0){
+			uids.split(',');
+		};
+		
+		if(Array.isArray(uids)){
+			uids = uids[0];
+		};
+		return uids;
 	},
 	
 	boxesToList: function(boxes, parent){

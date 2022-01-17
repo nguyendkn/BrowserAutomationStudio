@@ -1,1 +1,1 @@
-_call_function(_InMail.setFlags, {uids: (<%= uids %>), flags: (<%= flags %>)<%if(box!=='""'){%>, box: (<%= box %>)<%}%>})!
+_call_function(_InMail.<%if(add){%>add<%}else{%>set<%}%>Flags, {uids: (<%= uids %>), flags: (<%= flags %>)<%if(box!=='""'){%>, box: (<%= box %>)<%}%>})!

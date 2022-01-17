@@ -3,21 +3,6 @@ if(name["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Folder name") + tr("\" is not specified"));
     return;
 };
-var resName = this.$el.find("#resName").val().toUpperCase();
-if(resName.length == 0){
-	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Folder name") + tr("\" is not specified"));
-    return;
-};
-var uidnext = this.$el.find("#uidnext").val().toUpperCase();
-if(uidnext.length == 0){
-	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Next identifier") + tr("\" is not specified"));
-    return;
-};
-var uidvalidity = this.$el.find("#uidvalidity").val().toUpperCase();
-if(uidvalidity.length == 0){
-	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Validity identifier") + tr("\" is not specified"));
-    return;
-};
 var total = this.$el.find("#total").val().toUpperCase();
 if(total.length == 0){
 	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Total messages") + tr("\" is not specified"));
@@ -36,9 +21,6 @@ if(unseen.length == 0){
 try{
     var code = loader.GetAdditionalData() + _.template($("#InMail_Status_code").html())({
         "name": name["updated"],
-        "resName": "VAR_" + resName,
-		"uidnext": "VAR_" + uidnext,
-        "uidvalidity": "VAR_" + uidvalidity,
         "total": "VAR_" + total,
         "recent": "VAR_" + recent,
         "unseen": "VAR_" + unseen

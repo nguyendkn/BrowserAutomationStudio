@@ -258,36 +258,19 @@
 		{
             "code": [
                 {
-                    "file": "InMail_AddFlags_code.js",
-                    "name": "InMail_AddFlags_code"
+                    "file": "InMail_GetFlags_code.js",
+                    "name": "InMail_GetFlags_code"
                 }
             ],
             "description": {
-                "en": "Add flags",
-                "ru": "Добавить флаги"
+                "en": "Get email flags by id",
+                "ru": "Получить флаги письма по id"
             },
-            "interface": "InMail_AddFlags_interface.js",
+            "interface": "InMail_GetFlags_interface.js",
             "is_element": false,
-            "name": "InMail_AddFlags",
-            "select": "InMail_AddFlags_select.js",
-            "template": "{{uids}} + {{flags}}"
-        },
-		{
-            "code": [
-                {
-                    "file": "InMail_DelFlags_code.js",
-                    "name": "InMail_DelFlags_code"
-                }
-            ],
-            "description": {
-                "en": "Remove flags",
-                "ru": "Удалить флаги"
-            },
-            "interface": "InMail_DelFlags_interface.js",
-            "is_element": false,
-            "name": "InMail_DelFlags",
-            "select": "InMail_DelFlags_select.js",
-            "template": "{{uids}} - {{flags}}"
+            "name": "InMail_GetFlags",
+            "select": "InMail_GetFlags_select.js",
+            "template": "{{uid}} -> {{Save}}"
         },
 		{
             "code": [
@@ -297,14 +280,31 @@
                 }
             ],
             "description": {
-                "en": "Set flags",
-                "ru": "Установить флаги"
+                "en": "Set email flags by id",
+                "ru": "Установить флаги письма по id"
             },
             "interface": "InMail_SetFlags_interface.js",
             "is_element": false,
             "name": "InMail_SetFlags",
             "select": "InMail_SetFlags_select.js",
             "template": "{{flags}} -> {{uids}}"
+        },
+		{
+            "code": [
+                {
+                    "file": "InMail_DelFlags_code.js",
+                    "name": "InMail_DelFlags_code"
+                }
+            ],
+            "description": {
+                "en": "Remove email flags by id",
+                "ru": "Удалить флаги письма по id"
+            },
+            "interface": "InMail_DelFlags_interface.js",
+            "is_element": false,
+            "name": "InMail_DelFlags",
+            "select": "InMail_DelFlags_select.js",
+            "template": "{{uids}} - {{flags}}"
         },
 		{
             "code": [
@@ -371,155 +371,7 @@
     "developer_email": "sasha9817@mail.ru",
     "developer_name": "GhostZ",
     "developer_site": "https://t.me/GhostZed",
-    "embeddeddata": [
-        {
-            "Data": "const Imap = require('imap');\nconst { format } = require('util');\nconst { Buffer } = require('buffer');\nconst { createHash } = require('crypto');\nconst { once, EventEmitter } = require('events');\nconst qp = require('quoted-printable');\nconst iconv = require('iconv-lite');\nconst utf8 = require('utf8');\nconst uuencode = require('uuencode');\n\nclass ImapClient extends EventEmitter {\n    constructor(id, { config, box='INBOX', timeout=300000, debug=false }, logger=console.log){\n        super();\n        this.locked = true;\n        this.id = id;\n        this.config = config;\n        this.box = box;\n        this.timeout = 0;\n        this.timeoutMs = timeout;\n        this.debug = debug;\n        this.logger = logger;\n        \n        let opts = {\n            user: config.username,\n            password: config.password,\n            host: config.host,\n            port: config.port\n        };\n\n        if(['ssl', 'tls'].includes(config.encrypt)){\n            opts.tls = true;\n            opts.tlsOptions = {\n                servername: config.host\n            };\n        }else if(config.encrypt === 'starttls'){\n            opts.tls = false;\n            opts.autotls = 'always';\n        };\n\n        if(debug){\n            opts.debug = this.log;\n        };\n\n        this.imap = new Imap(opts);\n    }\n\n    static async init(opts, logger){\n        let { config, box='INBOX', timeout, debug } = opts;\n        let id = createHash('md5').update(`${config.host}@${config.username}:${config.password}`).digest('hex');\n\n        if(typeof _imap_connections!=\"undefined\" && typeof _imap_connections[id]!=\"undefined\" && _imap_connections[id].locked){\n            await once(_imap_connections[id], 'unlock');\n\n            return await this.init(opts, logger);\n        };\n        \n        if(typeof _imap_connections==\"undefined\" || typeof _imap_connections[id]==\"undefined\" || JSON.stringify(_imap_connections[id].config)!=JSON.stringify(config)){\n\n            if(typeof _imap_connections==\"undefined\"){\n                global._imap_connections = {};\n            };\n            \n            _imap_connections[id] = new this(id, opts, logger);\n\n            await _imap_connections[id].connect();\n        }else{\n\n            _imap_connections[id].clearTimeout();\n            \n            if(typeof _imap_connections==\"undefined\" || typeof _imap_connections[id]==\"undefined\"){\n                return await this.init(opts, logger);\n            };\n            \n            _imap_connections[id].setTimeoutMs(timeout);\n            _imap_connections[id].setBox(box);\n            _imap_connections[id].setDebug(debug, logger);\n        };\n\n        return _imap_connections[id];\n    }\n\n    lock = () => {\n        this.locked = true;\n        this.emit('lock');\n    }\n\n    unlock = () => {\n        this.locked = false;\n        this.emit('unlock');\n    }\n\n    del = () => {\n        if(typeof _imap_connections!=\"undefined\" && typeof _imap_connections[this.id]!=\"undefined\"){\n            return delete _imap_connections[this.id];\n        };\n\n        return true;\n    }\n\n    close = () => {\n        this.clearTimeout();\n        this.imap.removeAllListeners('close');\n        if(this.imap.state && this.imap.state !== 'disconnected'){\n            try{\n                this.imap.end();\n            }catch(_){}\n        };\n        this.unlock();\n        this.closed = true;\n        this.emit('close');\n        return this.del();\n    }\n\n    setTimeout = (ms=this.timeoutMs) => {\n        this.clearTimeout();\n        if(!this.closed){\n            this.timeout = setTimeout(this.close, ms);\n        };\n    }\n    \n    clearTimeout = () => {\n        if(this.timeout && !this.timeout[\"_destroyed\"]){\n            clearTimeout(this.timeout);\n        };\n    }\n\n    connect = () => {\n        return new Promise((resolve, reject) => {\n            let imapOnReady = () => {\n                this.imap.removeListener('error', imapOnError);\n                this.imap.removeListener('close', imapOnClose);\n                this.imap.removeListener('end', imapOnEnd);\n                this.imap.once('close', this.close);\n                this.unlock();\n                resolve(this);\n            }\n            \n            let imapOnError = (err) => {\n                this.imap.removeListener('ready', imapOnReady);\n                this.imap.removeListener('close', imapOnClose);\n                this.imap.removeListener('end', imapOnEnd);\n                this.close();\n                reject(err);\n            }\n            \n            let imapOnEnd = () => {\n                this.imap.removeListener('ready', imapOnReady);\n                this.imap.removeListener('error', imapOnError);\n                this.imap.removeListener('close', imapOnClose);\n                this.close();\n                reject(new Error('Connection ended unexpectedly'));\n            }\n            \n            let imapOnClose = () => {\n                this.imap.removeListener('ready', imapOnReady);\n                this.imap.removeListener('error', imapOnError);\n                this.imap.removeListener('end', imapOnEnd);\n                this.close();\n                reject(new Error('Connection closed unexpectedly'));\n            }\n            \n            this.imap.once('ready', imapOnReady);\n            this.imap.once('error', imapOnError);\n            this.imap.once('close', imapOnClose);\n            this.imap.once('end', imapOnEnd);\n            \n            this.imap.connect();\n        });\n    }\n\n    setTimeoutMs = (ms) => {\n        if(ms && this.timeoutMs !== ms){\n            this.timeoutMs = ms;\n        };\n    }\n\n    setBox = (box) => {\n        if(box && this.box !== box){\n            this.box = box;\n        };\n    }\n\n    setDebug = (enable, logger) => {\n        if(typeof enable !== \"undefined\" && this.debug !== enable){\n            this.debug = enable;\n            if(enable){\n                this.imap.debug = this.log;\n                if(this.imap._parser){\n                    this.imap._parser.debug = this.log;\n                };\n            }else{\n                this.imap.debug = undefined;\n                if(this.imap._parser){\n                    this.imap._parser.debug = undefined;\n                };\n            };\n        };\n        this.logger = logger;\n    }\n\n    log = (...args) => {\n        if(this.debug){\n            this.logger(format(...args));\n        };\n    }\n\n    openBox = async (name = this.box, readOnly = false) => {\n        if(this.imap._box && this.imap._box.name === name){\n            return this.imap._box;\n        }else{\n            return await (new Promise((resolve, reject) => {\n                this.imap.openBox(name, readOnly, function(err, box){\n                    if(err){\n                        reject(err);\n                    }else{\n                        resolve(box);\n                    };\n                });\n            }));\n        };\n    }\n\n    closeBox = async (autoExpunge = true) => {\n        if(typeof this.imap._box === 'undefined'){\n            return;\n        }else{\n            return await (new Promise((resolve, reject) => {\n                this.imap.closeBox(autoExpunge, function(err){\n                    if(err){\n                        reject(err);\n                    }else{\n                        resolve();\n                    };\n                });\n            }));\n        };\n    }\n\n    addBox = (name) => {\n        return new Promise((resolve, reject) => {\n            this.imap.addBox(name, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    delBox = (name) => {\n        return new Promise((resolve, reject) => {\n            this.imap.delBox(name, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    renameBox = (oldname, newname) => {\n        return new Promise((resolve, reject) => {\n            this.imap.renameBox(oldname, newname, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    status = async (name = this.box) => {\n        if(this.imap._box && this.imap._box.name === name){\n            await this.closeBox(false);\n        };\n        return await (new Promise((resolve, reject) => {\n            this.imap.status(name, function(err, box){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(box);\n                };\n            });\n        }));\n    }\n\n    getBoxes = (namespace = '') => {\n        return new Promise((resolve, reject) => {\n            this.imap.getBoxes(namespace, function(err, boxes){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(boxes);\n                };\n            });\n        });\n    }\n\n    expunge = (uids) => {\n        return new Promise((resolve, reject) => {\n            this.imap.expunge(uids, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    search = (criteria) => {\n        return new Promise((resolve, reject) => {\n            this.imap.search(criteria, function(err, uids){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(uids);\n                };\n            });\n        });\n    }\n\n    esearch = (criteria, options) => {\n        return new Promise((resolve, reject) => {\n            this.imap.esearch(criteria, options, function(err, info){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(info);\n                };\n            });\n        });\n    }\n\n    sort = (sorts, criteria) => {\n        return new Promise((resolve, reject) => {\n            this.imap.sort(sorts, criteria, function(err, uids){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve(uids);\n                };\n            });\n        });\n    }\n\n    getFlags = (uids) => {\n        return new Promise((resolve, reject) => {\n            let messages = [];\n            if(!Array.isArray(uids)){\n                uids = [uids];\n            };\n            uids = uids.join(',');\n            this.imap._enqueue('UID FETCH ' + uids + ' (FLAGS)');\n            let req = this.imap._queue[this.imap._queue.length - 1];\n            req.fetchCache = {};\n            req.fetching = ['FLAGS'];\n            let fetch = req.bodyEmitter = new EventEmitter();\n            function fetchOnMessage(msg){\n                let flags = [];\n                function messageOnAttributes(attrs){\n                    if(attrs.flags){\n                        flags.push(...attrs.flags);\n                    };\n                };\n                msg.once('attributes', messageOnAttributes);\n                msg.once('end', function(){\n                    msg.removeListener('attributes', messageOnAttributes);\n                    messages.push(flags);\n                });\n            };\n            function fetchOnError(err){\n                fetch.removeListener('message', fetchOnMessage);\n                fetch.removeListener('end', fetchOnEnd);\n                reject(err);\n            };\n            function fetchOnEnd(){\n                fetch.removeListener('message', fetchOnMessage);\n                fetch.removeListener('error', fetchOnError);\n                resolve(messages);\n            };\n            fetch.on('message', fetchOnMessage);\n            fetch.once('error', fetchOnError);\n            fetch.once('end', fetchOnEnd);\n        });\n    }\n\n    addFlags = (uids, flags) => {\n        return new Promise((resolve, reject) => {\n            this.imap.addFlags(uids, flags, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    delFlags = (uids, flags) => {\n        return new Promise((resolve, reject) => {\n            this.imap.delFlags(uids, flags, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    setFlags = (uids, flags) => {\n        return new Promise((resolve, reject) => {\n            this.imap.setFlags(uids, flags, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    addKeywords = (uids, keywords) => {\n        return new Promise((resolve, reject) => {\n            this.imap.addKeywords(uids, keywords, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    delKeywords = (uids, keywords) => {\n        return new Promise((resolve, reject) => {\n            this.imap.delKeywords(uids, keywords, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    setKeywords = (uids, keywords) => {\n        return new Promise((resolve, reject) => {\n            this.imap.setKeywords(uids, keywords, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    copy = (uids, toBox) => {\n        return new Promise((resolve, reject) => {\n            this.imap.copy(uids, toBox, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    move = (uids, toBox) => {\n        return new Promise((resolve, reject) => {\n            this.imap.move(uids, toBox, function(err){\n                if(err){\n                    reject(err);\n                }else{\n                    resolve();\n                };\n            });\n        });\n    }\n\n    fetch = (uids, options) => {\n        const self = this;\n        return new Promise((resolve, reject) => {\n            let fetch = self.imap.fetch(uids, options);\n            let messages = [];\n            let isHeader = /^HEADER/g;\n            function fetchOnMessage(msg, seqno){\n                self.getMessage(msg).then(function(message){\n                    message.seqno = seqno;\n                    messages.push(message);\n                });\n            };\n            function fetchOnError(err){\n                fetch.removeListener('message', fetchOnMessage);\n                fetch.removeListener('end', fetchOnEnd);\n                reject(err);\n            };\n            function fetchOnEnd(){\n                fetch.removeListener('message', fetchOnMessage);\n                fetch.removeListener('error', fetchOnError);\n                resolve(messages);\n            };\n            fetch.on('message', fetchOnMessage);\n            fetch.once('error', fetchOnError);\n            fetch.once('end', fetchOnEnd);\n        });\n    }\n\n    serverSupports = (cap) => {\n        return this.imap.serverSupports(cap);\n    }\n\n    getMessage = (msg) => {\n        return new Promise(function (resolve){\n            let message = {\n                attributes: undefined,\n                parts: []\n            };\n            function messageOnBody(stream, info){\n                let body = '';\n                function streamOnData(chunk){\n                    body += chunk.toString('utf8');\n                };\n                stream.on('data', streamOnData);\n                stream.once('end', function(){\n                    stream.removeListener('data', streamOnData);\n                    message.parts.push({\n                        which: info.which,\n                        size: info.size,\n                        body: body\n                    });\n                });\n            };\n            function messageOnAttributes(attrs){\n                message.attributes = attrs;\n            };\n            function messageOnEnd(){\n                msg.removeListener('body', messageOnBody);\n                msg.removeListener('attributes', messageOnAttributes);\n                resolve(message);\n            };\n            msg.on('body', messageOnBody);\n            msg.once('attributes', messageOnAttributes);\n            msg.once('end', messageOnEnd);\n        });\n    }\n\n    decodeWords = (str) => {\n        return this.parseHeader(`val: ${str}`).val[0];\n    }\n\n    getParts = (struct, parts = []) => {\n        for(let part of struct){\n            if(Array.isArray(part)){\n                this.getParts(part, parts);\n            }else if(part.partID){\n                if(part.params && part.params.name){\n                    part.params.name = this.decodeWords(part.params.name);\n                };\n                if(part.disposition && part.disposition.params && part.disposition.params.filename){\n                    part.disposition.params.filename = this.decodeWords(part.disposition.params.filename);\n                };\n                parts.push(part);\n            };\n        };\n        return parts;\n    }\n\n    getPartData = (uid, part, markSeen = false) => {\n        const self = this;\n        return new Promise(function (resolve, reject){\n            let fetch = self.imap.fetch(uid, {bodies: [part.partID], markSeen});\n            function fetchOnMessage(msg){\n                self.getMessage(msg).then(function(result){\n                    if(result.parts.length !== 1){\n                        reject(new Error('Got ' + result.parts.length + ' parts, should get 1'));\n                        return;\n                    };\n                    let data = result.parts[0].body;\n                    let encoding = part.encoding.toLocaleLowerCase();\n                    let charset = (part.params && part.params.charset) ? part.params.charset.toLocaleLowerCase() : '';\n                    if(encoding === 'base64'){\n                        resolve(Buffer.concat(data.split(/\\r?\\n/).map(function(b){return Buffer.from(b, 'base64')})));\n                    }else if(encoding === 'quoted-printable'){\n                        if(charset === 'utf-8'){\n                            resolve(Buffer.from(utf8.decode(qp.decode(data))).toString());\n                        }else{\n                            resolve(Buffer.from(qp.decode(data)).toString());\n                        };\n                    }else if(encoding === '7bit' || encoding === '7bits'){\n                        resolve(Buffer.from(data).toString('ascii'));\n                    }else if(encoding === '8bit' || encoding === '8bits' || encoding === 'binary'){\n                        resolve(iconv.decode(Buffer.from(data), charset || 'utf-8'));\n                    }else if(encoding === 'uuencode'){\n                        let parts = data.toString().split('\\n');\n                        let merged = parts.splice(1, parts.length - 4).join('');\n                        resolve(uuencode.decode(merged));\n                    }else{\n                        reject(new Error('Unknown encoding ' + part.encoding));\n                    };\n                });\n            };\n            function fetchOnError(err){\n                fetch.removeListener('message', fetchOnMessage);\n                fetch.removeListener('end', fetchOnEnd);\n                reject(err);\n            };\n            function fetchOnEnd(){\n                fetch.removeListener('message', fetchOnMessage);\n                fetch.removeListener('error', fetchOnError);\n            };\n            fetch.once('message', fetchOnMessage);\n            fetch.once('error', fetchOnError);\n            fetch.once('end', fetchOnEnd);\n        });\n    }\n\n    delParent = (boxes) => {\n        for(let name in boxes){\n            let box = boxes[name];\n            delete box.parent;\n            if(box.children){\n                this.delParent(box.children);\n            };\n        };\n        return boxes;\n    }\n\n    randStr = (length = 10, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') => {\n        let str  = '';\n        for(var i = 0; i < length; i++){\n            str += chars.charAt(Math.floor(Math.random() * chars.length));\n        };\n        return str;\n    }\n\n    getParamInfo = (data = []) => {\n        if(!data){\n            data = [];\n        };\n        if(!Array.isArray(data)){\n            data = [data];\n        };\n        let raw = false;\n        data = data.filter(function(d){return !(raw = (d === 'raw'))});\n        let base = data.length > 0;\n        return {\n            base,\n            raw,\n            any: base || raw,\n            data\n        };\n    }\n\n    parseHeader = Imap.parseHeader\n}\n\nmodule.exports = ImapClient;",
-            "DataName": "InMail_ImapClient",
-            "DataType": 1,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { criteria, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    [[INMAIL_NODE_PARAMETERS]] = await client.search(criteria);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_Search",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { sorts, criteria, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    [[INMAIL_NODE_PARAMETERS]] = await client.sort(sorts, criteria);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_Sort",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { name, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.addBox(name);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_AddBox",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet {  name, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.delBox(name);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_DelBox",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { oldName, newName, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.renameBox(oldName, newName);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_RenameBox",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, flags, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.addFlags(uids, flags);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_AddFlags",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, flags, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.delFlags(uids, flags);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_DelFlags",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, flags, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.setFlags(uids, flags);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_SetFlags",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, keywords, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.addKeywords(uids, keywords);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_AddKeywords",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, keywords, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.delKeywords(uids, keywords);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_DelKeywords",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, keywords, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.setKeywords(uids, keywords);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_SetKeywords",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.addFlags(uids, '\\\\Deleted');\r\n    await client.expunge();\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_DelMessages",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { name, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    [[INMAIL_NODE_PARAMETERS]] = await client.status(name);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_Status",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    let boxes = await client.getBoxes();\r\n    [[INMAIL_NODE_PARAMETERS]] = client.delParent(boxes);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_GetBoxes",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { criteria, options, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    [[INMAIL_NODE_PARAMETERS]] = await client.esearch(criteria, options);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_Esearch",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { criteria, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    let count = 0;\r\n\r\n    if(client.serverSupports('ESEARCH')){\r\n        let info = await client.esearch(criteria, 'COUNT');\r\n        count = info.count || 0;\r\n    }else{\r\n        let uids = await client.search(criteria).length;\r\n        count = uids.length;\r\n    };\r\n\r\n    [[INMAIL_NODE_PARAMETERS]] = count;\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_Count",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    let last = 0;\r\n\r\n    if(client.serverSupports('ESEARCH')){\r\n        let info = await client.esearch(['ALL'], 'MAX');\r\n        last = info.max || 0;\r\n    }else{\r\n        let uids = await client.search(['ALL']);\r\n        last = uids.pop() || 0;\r\n    };\r\n    \r\n    [[INMAIL_NODE_PARAMETERS]] = last;\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_SearchLast",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, box, toBox, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.copy(uids, toBox);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_CopyMessages",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\n\r\nlet { uids, box, toBox, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    await client.move(uids, toBox);\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_MoveMessages",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        },
-        {
-            "Data": "const ImapClient = require(\"../InMail_ImapClient\");\r\nconst { writeFile } = require('fs').promises;\r\nconst { resolve } = require('path');\r\n\r\nlet { uids, body, headers, size, attachnames, attachments, markSeen, box, connect } = [[INMAIL_NODE_PARAMETERS]];\r\n\r\nlet client = await ImapClient.init(connect, console.log);\r\ntry{\r\n    await client.openBox(box);\r\n    \r\n    let options = {\r\n        markSeen,\r\n        size\r\n    };\r\n\r\n    body = client.getParamInfo(body);\r\n    headers = client.getParamInfo(headers);\r\n\r\n    if(headers.any || body.raw){\r\n        options.bodies = [];\r\n    };\r\n\r\n    if(headers.base){\r\n        options.bodies.push(`HEADER.FIELDS (${headers.data.map(function(h){return h.toLocaleUpperCase()}).join(' ')})`);\r\n    };\r\n\r\n    if(headers.raw){\r\n        options.bodies.push('HEADER');\r\n    };\r\n\r\n    if(body.raw){\r\n        options.bodies.push('TEXT');\r\n    };\r\n\r\n    if(body.base || attachnames || attachments){\r\n        options.struct = true;\r\n    };\r\n\r\n    let msgs = await client.fetch(uids, options);\r\n    \r\n    let messages = [];\r\n\r\n    for(let msg of msgs){\r\n        let attrs = msg.attributes;\r\n        let parts = msg.parts;\r\n        let message = {};\r\n        if(body.any){\r\n            message.body = {};\r\n        };\r\n        if(headers.any){\r\n            message.headers = {};\r\n            if(headers.raw){\r\n                message.headers.raw = {};\r\n            };\r\n        };\r\n        messages.push(message);\r\n        for(let key in attrs){\r\n            if(key !== 'struct'){\r\n                message[key] = key === 'date' ? attrs[key].toString() : attrs[key];\r\n            };\r\n        };\r\n        for(let part of parts){\r\n            if(part.which.startsWith('HEADER')){\r\n                let parsed = client.parseHeader(part.body);\r\n                let obj = part.which === 'HEADER' ? message.headers.raw : message.headers;\r\n                for(let key in parsed){\r\n                    let value = parsed[key];\r\n                    obj[key] = Array.isArray(value) && value.length < 2 ? value[0] : value;\r\n                };\r\n            }else{\r\n                message.body.raw = part.body;\r\n            };\r\n        };\r\n        if(body.base || attachnames || attachments){\r\n            parts = client.getParts(attrs.struct);\r\n            if(body.base){\r\n                for(let type of body.data){\r\n                    message.body[type] = '';\r\n                    let filtered = parts.filter(function(p){return p.type.toLocaleLowerCase() === 'text' && p.subtype.toLocaleLowerCase() === type});\r\n                    for(let part of filtered){\r\n                        let partData = await client.getPartData(attrs.uid, part, markSeen);\r\n                        message.body[type] += partData.toString();\r\n                    };\r\n                };\r\n            };\r\n            if(attachnames || attachments){\r\n                let filtered = parts.filter(function(p){return p.disposition && p.disposition.type.toLocaleLowerCase() === 'attachment'});\r\n                if(attachnames){\r\n                    message.attachnames = filtered.map(function(p){return p.disposition.params.filename});\r\n                };\r\n                if(attachments){\r\n                    message.attachments = [];\r\n                    if(filtered.length && attachments !== true && attachments.toString().trim() !== '*'){\r\n                        if(!Array.isArray(attachments)){\r\n                            attachments = attachments.split(';');\r\n                        };\r\n                        let maskFiltered = [];\r\n                        let ids = [];\r\n                        for(let mask of attachments){\r\n                            let regex = new RegExp(mask.replace(/\\*([^*])*?/gi, '.*'));\r\n                            for(let part of filtered){\r\n                                if(regex.test(part.disposition.params.filename) && !ids.includes(part.partID)){\r\n                                    maskFiltered.push(part);\r\n                                    ids.push(part.partID);\r\n                                };\r\n                            };\r\n                        };\r\n                        filtered = maskFiltered;\r\n                    };\r\n                    for(let part of filtered){\r\n                        let randomFile = resolve(`${client.randStr()}.file`).split('\\\\').join('/');\r\n                        let partData = await client.getPartData(attrs.uid, part, markSeen);\r\n                        await writeFile(randomFile, partData);\r\n                        message.attachments.push({\r\n                            name: part.disposition.params.filename,\r\n                            type: `${part.type}/${part.subtype}`,\r\n                            path: randomFile\r\n                        });\r\n                    };\r\n                };\r\n            };\r\n        };\r\n    };\r\n\r\n    [[INMAIL_NODE_PARAMETERS]] = messages;\r\n}catch(err){\r\n    client.setTimeout();\r\n    throw err;\r\n};",
-            "DataName": "InMail_GetMessages",
-            "DataType": 0,
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
-        }
-    ],
+    "embeddeddata": [],
     "engine": [
         "engine.js",
         "internal/base.js",
@@ -556,6 +408,12 @@
 					"workfunction": "InMail_CurlSetOpts"
 				},
 				{
+					"name": "curl_clear_timeout",
+					"isasync": false,
+					"waitinfinite": false,
+					"workfunction": "InMail_ClearTimeout"
+				},
+				{
 					"name": "curl_request",
 					"isasync": true,
 					"waitinfinite": false,
@@ -589,11 +447,7 @@
     },
     "is_autogenerated": true,
     "languages": [
-        {
-            "Name": "Node",
-            "Version": "12.18.3"
-        }
-    ],
+	],
     "localize": {
 		"Timeout": {"ru":"Таймаут"},
 		"Protocol": {"ru":"Протокол"},
@@ -651,6 +505,7 @@
 		"Get receiving date": {"ru":"Получить дату получения"},
 		"sort alphabetically": {"ru":"сортировка по алфавиту"},
 		"Save attached files": {"ru":"Сохранить вложенные файлы"},
+		"Get message Id": {"ru":"Получить идентификатор сообщения"},
 		"Links from body of letter": {"ru":"Ссылки из тела письма"},
 		"Check every 5 seconds": {"ru":"Проверять каждые 5 секунд"},
 		"Check every 2 seconds": {"ru":"Проверять каждые 2 секунды"},
@@ -658,12 +513,13 @@
 		"Check every 10 seconds": {"ru":"Проверять каждые 10 секунд"},
 		"Get recipient of letter": {"ru":"Получить получателя письма"},
 		"Technical headers of letter": {"ru":"Технические заголовки письма"},
+		"Set flags after receiving": {"ru":"Установить флаги после получения"},
+		"Delete letter after receiving": {"ru":"Удалить письмо после получения"},
 		"Parse links from body of letter": {"ru":"Парсить ссылки из тела письма"},
 		"Do not filter by missing flags": {"ru":"Не фильтровать по отсутствию флагов"},
 		"Get technical headers of letter": {"ru":"Получить технические заголовки письма"},
 		"Get list of attached file names": {"ru":"Получить список имён вложенных файлов"},
 		"Do not filter by the presence of flags": {"ru":"Не фильтровать по наличию флагов"},
-		"Mark message as read when fetched": {"ru":"Пометить сообщение как прочитанное при получении"},
 		"List of flags that the letter should contain.": {"ru":"Список флагов, которые должно содержать письмо."},
 		"List of flags that the letter should not contain.": {"ru":"Список флагов, которые не должно содержать письмо."},
 		"Find and get the content of the letter by the specified criteria.": {"ru":"Найти и получить содержимое письма по указанным критериям."},
@@ -708,19 +564,21 @@
 		
 		"Deletes the specified mailbox that exists on the server.": {"ru":"Удаляет указанный почтовый ящик, существующий на сервере."},
 		
+		"Get a list of flags for the specified message.": {"ru":"Получить список флагов для указанного сообщения."},
+		"Variable in which, after successful execution of the action, the list of flags will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана список флагов."},
+		
 		"Flags": {"ru":"Флаги"},
 		"List or one flag.": {"ru":"Список или один флаг."},
 		"Message has been read": {"ru":"Сообщение прочитано"},
 		"Message has been answered": {"ru":"На сообщение был дан ответ"},
+		"Add flags to existing ones": {"ru":"Добавить флаги к существующим"},
 		"Message is marked for removal": {"ru":"Сообщение отмечено для удаления"},
-		"Add a flag or several flags to the message.": {"ru":"Добавить флаг или несколько флагов к сообщению."},
+		"Set a flag or several flags for the message.": {"ru":"Установить флаг или несколько флагов для сообщения."},
 		"Message has not completed composition (marked as a draft)": {"ru":"Сообщение не завершено (помечено как черновик)"},
 		"Message is \"flagged\" for urgent/special attention": {"ru":"Сообщение \"помечено\" как требующее срочного/особого внимания"},
 		"The possible flags may differ depending on the server implementation.": {"ru":"Возможные флаги могут отличаться в зависимости от реализации на сервере."},
 		
 		"Remove a flag or several flags from a message.": {"ru":"Удалить флаг или несколько флагов с сообщения."},
-		
-		"Set a flag or several flags for the message.": {"ru":"Установить флаг или несколько флагов для сообщения."},
 		
 		"Data format": {"ru":"Формат данных"},
 		"Get a list of folders in the specified mailbox.": {"ru":"Получить список папок в указанном почтовом ящике."},
@@ -730,8 +588,6 @@
 		"Total messages": {"ru":"Всего сообщений"},
 		"Recent messages": {"ru":"Недавних сообщений"},
 		"Unseen messages": {"ru":"Непрочитанных сообщений"},
-		"Next identifier": {"ru":"Следующий идентификатор"},
-		"Validity identifier": {"ru":"Идентификатор действительности"},
 		"Get information about the folder in the specified mailbox.": {"ru":"Получить информацию о папке в указанном почтовом ящике."},
 		
 		"Enable mail receiving module debug.": {"ru":"Включите отладку модуля приема почты."},
@@ -741,36 +597,6 @@
     "major_version": 1,
     "minor_version": 0,
     "modules": [
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "imap",
-            "ModuleVersion": "*"
-        },
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "quoted-printable",
-            "ModuleVersion": "*"
-        },
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "iconv-lite",
-            "ModuleVersion": "*"
-        },
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "utf8",
-            "ModuleVersion": "*"
-        },
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "uuencode",
-            "ModuleVersion": "*"
-        }
-    ],
+	],
     "name": "InMail"
 }

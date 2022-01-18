@@ -284,7 +284,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGERPRINT_BATTERY = _arguments()[4]
 		if(_arguments().length > 5 && FINGERPRINT_JSON["rectangles"])
 			FINGERPRINT_RECTANGLES = _arguments()[5]
-		if(_arguments().length > 6 && FINGERPRINT_JSON["perfectcanvas"])
+		if(_arguments().length > 6 && typeof(_arguments()[6]) == "boolean" && FINGERPRINT_JSON["perfectcanvas"])
 			FINGERPRINT_PERFECTCANVAS = _arguments()[6]
 		if(_arguments().length > 7 && FINGERPRINT_JSON["sensor"])
 			FINGERPRINT_SENSOR = _arguments()[7]

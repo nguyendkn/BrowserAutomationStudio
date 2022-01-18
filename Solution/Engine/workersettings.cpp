@@ -25,13 +25,13 @@ namespace BrowserAutomationStudioFramework
 
     void WorkerSettings::Clear()
     {
-        Webrtc = "enable";
-        Canvas = "enable";
-        Audio = "enable";
+        Webrtc = "disable";
+        Canvas = "disable";
+        Audio = "disable";
         QUIC = "disable";
         UseFlash = false;
         UseWidevine = false;
-        Webgl = "enable";
+        Webgl = "disable";
         ProxyPort = 0;
         ProxyIsHttp = true;
         ProxyServer.clear();

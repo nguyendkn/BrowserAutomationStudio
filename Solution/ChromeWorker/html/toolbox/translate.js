@@ -800,7 +800,7 @@ _L =
 	"Use free version" :{"ru": "Использовать бесплатную версию"},
 	"Use pro version" :{"ru": "Использовать pro версию"},
 	"Custom IP information function" :{"ru": "Отдельная функция для получения информации об IP"},
-	"Custom BAS function, which takes IP string as input(&quot;IP&quot; input parameter) and returns JSON with IP information. This parameter is used only if &quot;IP info method&quot; is set to &quot;custom function&quot; value." :{"ru": "Отдельная функция BAS, которая получает строку IP (входной параметр называется &quot;IP&quot;) и возвращает JSON с информацией об IP. Этот параметр используется только в том случае, если для параметра &quot;Метод получения информации о IP&quot; задано значение &quot;custom function&quot;."},
+	"Custom BAS function, which takes IP string as input(&quot;Ip&quot; input parameter) and returns JSON with IP information. This parameter is used only if &quot;IP info method&quot; is set to &quot;custom function&quot; value." :{"ru": "Отдельная функция BAS, которая получает строку IP (входной параметр называется &quot;Ip&quot;) и возвращает JSON с информацией об IP. Этот параметр используется только в том случае, если для параметра &quot;Метод получения информации о IP&quot; задано значение &quot;custom function&quot;."},
 	"JSON example, which must return custom function." :{"ru": "Пример JSON, который должна возвращать функция."},
 	"Key" :{"ru": "Ключ"},
 

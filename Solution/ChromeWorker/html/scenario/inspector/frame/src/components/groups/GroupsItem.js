@@ -60,22 +60,13 @@ window.GroupsItem = {
       const dragged = draggedContext.element;
 
       if (related && !(dragged.fixed && related.fixed)) {
-        if (to === from) {
-          // if (dragged.fixed === related.fixed) {
-          //   return relatedContext.index - draggedContext.index === 1 && -1;
-          // }
-          // if (dragged.fixed) {
-          //   if (relatedContext.index !== 0) return false;
-          // }
-          // return relatedContext.index === 0 ? dragged.fixed : false;
-          // return relatedContext.index - draggedContext.index === 1 && -1;
-        }
-        if (related.fixed || dragged.fixed) {
+        if (to !== from && (related.fixed || dragged.fixed)) {
           return (
             relatedContext.index === (related.fixed ? relatedContext.list.length - 1 : 0) &&
             willInsertAfter === related.fixed
           );
         }
+        return draggedContext.index === draggedContext.futureIndex && -1;
       }
     },
 

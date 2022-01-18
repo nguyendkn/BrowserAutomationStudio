@@ -60,11 +60,14 @@ window.GroupsItem = {
       const dragged = draggedContext.element;
 
       if (related && !(dragged.fixed && related.fixed)) {
-        if (to !== from && (related.fixed || dragged.fixed)) {
-          return (
-            relatedContext.index === (related.fixed ? relatedContext.list.length - 1 : 0) &&
-            willInsertAfter === related.fixed
-          );
+        if (to !== from) {
+          if (related.fixed || dragged.fixed) {
+            return (
+              relatedContext.index === (related.fixed ? relatedContext.list.length - 1 : 0) &&
+              willInsertAfter === related.fixed
+            );
+          }
+          return true;
         }
         return draggedContext.index === draggedContext.futureIndex && -1;
       }

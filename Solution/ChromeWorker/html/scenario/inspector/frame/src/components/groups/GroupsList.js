@@ -119,7 +119,7 @@ window.GroupsList = {
   },
 
   template: /*html*/ `
-    <draggable v-model="groups" :disabled="groups.length === 1" :prevent-on-filter="false" filter="input + div, input:enabled, input.enabled" handle=".group-item-header" class="group-list" tag="ul">
+    <draggable v-model="groups" :prevent-on-filter="false" :disabled="groups.length === 1" filter="input + div, input:enabled, input.enabled" handle=".group-item-header" class="group-list" tag="ul">
       <groups-item
         v-for="(group, index) in groups"
         :key="group.id"

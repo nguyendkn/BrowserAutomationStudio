@@ -22,11 +22,11 @@ void settings::Init()
     use_flash = false;
     use_widevine = false;
     force_utf8 = true;
-    canvas = "enable";
-    audio = "enable";
+    canvas = "disable";
+    audio = "disable";
     quic = "disable";
-    webrtc = "enable";
-    webgl = "enable";
+    webrtc = "disable";
+    webgl = "disable";
     toolbox_height = 300;
     scenario_width = 500;
     zoom = 100;

@@ -56,7 +56,7 @@
           },
           onDrag(e, ...args) {
             const height = Math.min(args[2], window.outerHeight - 300);
-            return (args[0].outerHeight(Math.max(110, height)), false);
+            return args[0].css('height', Math.max(110, height)), false;
           },
         });
       }

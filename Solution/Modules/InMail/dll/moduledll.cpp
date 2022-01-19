@@ -8,7 +8,29 @@
 #include <QTextCodec>
 #include "curl/curl.h"
 
-using namespace std;
+Timer::~Timer()
+{
+	//We should never leave the sleepy thread alone.
+	stop();
+}
+
+void Timer::stop()
+{
+	//Stop the thread from sleep state
+	sleepyThread.interrupt();
+	//Wait for exit
+	if (sleepyThread.joinable())
+	{
+		try
+		{
+			sleepyThread.join();
+		}
+		catch (std::exception)
+		{
+			abort();
+		}
+	}
+}
 
 extern "C" {
 	
@@ -653,7 +675,7 @@ extern "C" {
 	}
 	
 	void SetTimeout(CurlData *data)
-    {		
+    {
 		data->timer.setTimeout([=]() {
 			if(data->handler)
 			{

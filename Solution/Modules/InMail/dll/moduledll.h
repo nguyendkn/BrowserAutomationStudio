@@ -1,54 +1,67 @@
 #ifndef MODULEDLL_H
 #define MODULEDLL_H
 
-#include <thread>
+#include <boost/thread.hpp>
 #include <chrono>
 #include <atomic>
 
 class Timer
 {
-	std::atomic<bool> active{true};
-	
-    public:
-		template <typename Function>
-		void setTimeout(Function function, int delay);
-		
-		template <typename Function>
-        void setInterval(Function function, int interval);
-		
-        void stop();
+	boost::thread sleepyThread;
+
+public:
+	~Timer();
+
+	template <typename Function>
+	void setTimeout(Function function, int delay);
+
+	template <typename Function>
+	void setInterval(Function function, int interval);
+
+	void stop();
 };
 
 template <typename Function>
 void Timer::setTimeout(Function function, int delay)
 {
-    active = true;
-    std::thread t([=]() {
-        if(!active.load()) return;
-        std::this_thread::sleep_for(std::chrono::milliseconds(delay));
-        if(!active.load()) return;
-        function();
-    });
-    t.detach();
+	//Check if there's a previous thread not finished, cancel it. 
+	stop();
+
+	sleepyThread = boost::thread([=]()
+	{
+		try
+		{
+			boost::this_thread::sleep_for(boost::chrono::milliseconds(delay));
+			function();
+		}
+		catch (boost::thread_interrupted interrupted)
+		{
+			//Wake up.
+		}
+	});
 }
 
 template <typename Function>
 void Timer::setInterval(Function function, int interval)
 {
-    active = true;
-    std::thread t([=]() {
-        while(active.load()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(interval));
-            if(!active.load()) return;
-            function();
-        }
-    });
-    t.detach();
-}
+	//Check if there's a previous thread not finished, cancel it. 
+	stop();
 
-void Timer::stop()
-{
-    active = false;
+	sleepyThread = boost::thread([=]()
+	{
+		try
+		{
+			while (true)
+			{
+				boost::this_thread::sleep_for(boost::chrono::milliseconds(interval));
+				function();
+			}
+		}
+		catch (boost::thread_interrupted interrupted)
+		{
+			//Wake up.
+		}
+	});
 }
 
 extern "C" {

@@ -10,7 +10,6 @@ window.App = {
         props: {
           data: {},
           title: 'tabs.variablesEmpty',
-          styles: { '--border-radius': '0px' },
         },
         component: GroupsPanel,
       },
@@ -19,7 +18,6 @@ window.App = {
         props: {
           data: {},
           title: 'tabs.resourcesEmpty',
-          styles: { '--border-radius': '9px' },
         },
         component: GroupsPanel,
       },
@@ -108,7 +106,7 @@ window.App = {
         </button>
       </div>
       <template v-for="item in tabs">
-        <component :is="item.component" v-show="tab === item" :key="item.name" :name="item.name" v-bind="item.props" />
+        <component :is="item.component" v-show="tab === item" :key="item.name" :name="item.name" :class="item.name" v-bind="item.props" />
       </template>
     </div>
   `,

@@ -41,14 +41,10 @@
   margin: 0;
 }
 
-.inspector-modal-form.invalid > div > textarea,
-.inspector-modal-form.invalid > div > input {
-  background: rgba(216, 105, 95, 0.16);
-}
-
 .inspector-modal-form > div > textarea,
 .inspector-modal-form > div > input {
   letter-spacing: -0.2px;
+  background: inherit;
   padding: 9px 12px;
   min-height: 36px;
   max-height: 40vh;
@@ -61,6 +57,7 @@
 }
 
 .inspector-modal-form.invalid {
+  background: rgba(216, 105, 95, 0.16);
   border-color: #d8695f;
 }
 

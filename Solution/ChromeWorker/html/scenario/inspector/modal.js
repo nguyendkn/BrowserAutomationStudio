@@ -148,7 +148,9 @@
           </div>
           <div class="inspector-modal-body">
             <select data-style="inspector-modal-select" <%= mode === 'resource' ? 'disabled' : '' %>>
-              <% types.forEach(item => { %><option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.types.' + item) %></option><% }) %>
+              <% types.forEach(item => { %>
+                <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.types.' + item) %></option>
+              <% }) %>
             </select>
             <form class="inspector-modal-form" spellcheck="false" novalidate>
               <% types.forEach(item => { %>

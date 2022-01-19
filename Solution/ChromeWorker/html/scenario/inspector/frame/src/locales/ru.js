@@ -10,7 +10,7 @@
     callstackEmpty: 'Стек вызовов пуст',
   },
   toolbar: {
-    placeholder: 'Поиск по имени',
+    placeholder: 'Поиск по имени...',
     sortings: {
       frequency: 'По частоте использования',
       dateModified: 'По дате изменения',

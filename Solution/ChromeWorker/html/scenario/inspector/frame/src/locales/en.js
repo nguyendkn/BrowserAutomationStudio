@@ -10,7 +10,7 @@
     callstackEmpty: 'Call stack is empty',
   },
   toolbar: {
-    placeholder: 'Search by name',
+    placeholder: 'Search by name...',
     sortings: {
       frequency: 'By frequency of use',
       dateModified: 'By date modified',

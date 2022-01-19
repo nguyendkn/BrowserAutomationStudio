@@ -10,7 +10,7 @@ const scale = (color, count = 6) => {
 };
 
 const typeOf = (() => {
-  const toString = Object.prototype.toString;
+  const { toString } = Object.prototype;
 
   return value => {
     if (value === null) return 'null';

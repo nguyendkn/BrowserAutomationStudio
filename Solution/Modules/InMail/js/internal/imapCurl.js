@@ -1510,8 +1510,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 				fetching.push('RFC822.SIZE');
 			};
 			
-			cmd += fetching.join(' ');
-			
 			if(!_is_nilb(options.bodies)){
 				var bodies = options.bodies;
 				var prefix = (options.markSeen ? '' : '.PEEK');
@@ -1519,9 +1517,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 					bodies = [bodies];
 				};
 				for(var i = 0; i < bodies.length; i++){
-					cmd += ' BODY' + prefix + '[' + bodies[i] + ']';
+					fetching.push('BODY' + prefix + '[' + bodies[i] + ']');
 				};
 			};
+			
+			cmd += fetching.join(' ');
 		};
 		
 		cmd += ')';

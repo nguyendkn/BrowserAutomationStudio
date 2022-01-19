@@ -243,7 +243,7 @@
               </svg>
               <div style="margin-left: 14px; flex: 1;">
                 <div id="inspectorModalDescription"><%= $t('inspector.descriptions.' + type) %></div>
-                <div style="margin-top: 2px;"><%= $t('inspector.description') %></div>
+                <div><%= $t('inspector.description') %></div>
               </div>
             </div>
           </div>

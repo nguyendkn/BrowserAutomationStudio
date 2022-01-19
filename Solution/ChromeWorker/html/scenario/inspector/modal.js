@@ -92,9 +92,9 @@
     },
 
     initialize({ value, type, path, mode }) {
-      [type, value] = ['object', 'array'].includes(type) ? ['custom', JSON.stringify(value)] : [type, `${value}`];
+      [type, value] = ['object', 'array'].includes(type) ? ['script', JSON.stringify(value)] : [type, `${value}`];
 
-      this.model = new Model({ value, type, path, mode: mode.slice(0, -1) }).on('change:type', (model, type) => {
+      this.model = new Model({ value, type, path, mode: mode.slice(0, -1) }).on('change:type', (_, type) => {
         for (const el of this.$('form').trigger('reset')[0].elements) {
           const field = el.closest('[data-type]');
           el.required = field.dataset.type === type;
@@ -110,7 +110,7 @@
     render() {
       if (this.$el.is(':empty')) {
         const html = this.template({
-          types: ['custom', 'undefined', 'boolean', 'string', 'number', 'date', 'null'],
+          types: ['script', 'undefined', 'boolean', 'string', 'number', 'date', 'null'],
           ...this.model.toJSON(),
         });
         this.$el.html(html).modal({ backdrop: 'static' }).find('select').selectpicker();
@@ -163,7 +163,7 @@
                         </div>
                       </div>
                     <% }) %>
-                  <% } else if (item === 'custom') { %>
+                  <% } else if (item === 'script') { %>
                     <textarea <%= modifier %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'string') { %>
                     <textarea <%= modifier %>><%- match ? value : '' %></textarea>
@@ -278,7 +278,7 @@
       en: 'Logical type accepting only one of two values - <b>true</b> or <b>false</b>.',
       ru: 'Логический тип, принимающий только одно из двух значений - <b>true</b> (истина) или <b>false</b> (ложь).',
     },
-    'inspector.descriptions.custom': {
+    'inspector.descriptions.script': {
       en: 'The value of this type is treated as arbitrary <b>JavaScript</b> code. You can use it to specify data in <b>raw</b> form. Arrays and objects are set and displayed in the same way as in the code.',
       ru: 'Значение данного типа рассматривается как произвольный <b>JavaScript</b> код. С помощью него можно задать данные в <b>сыром</b> виде. Массивы и объекты задаются и отображаются так же, как и в коде.',
     },
@@ -304,7 +304,7 @@
     },
     'inspector.types.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.types.boolean': { en: 'Boolean', ru: 'Булево' },
-    'inspector.types.custom': { en: 'Expression', ru: 'Выражение' },
+    'inspector.types.script': { en: 'Expression', ru: 'Выражение' },
     'inspector.types.string': { en: 'String', ru: 'Строка' },
     'inspector.types.number': { en: 'Number', ru: 'Число' },
     'inspector.types.date': { en: 'Date', ru: 'Дата' },

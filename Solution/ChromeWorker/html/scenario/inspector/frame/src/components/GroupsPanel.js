@@ -60,15 +60,11 @@ window.GroupsPanel = {
       return !Object.keys(this.data).length;
     },
 
-    source() {
-      return Object.assign({}, this.data);
-    },
-
     order() {
       const { history, metadata, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
 
-      return Object.keys(this.source).sort((a, b) => {
+      return Object.keys(this.data).sort((a, b) => {
         if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
 
         switch (activeSortings[0]) {
@@ -96,7 +92,7 @@ window.GroupsPanel = {
       this.$store.commit('setFilters', { id: this.name, filters });
     },
 
-    source($new, $old) {
+    data($new, $old) {
       const diff = microdiff($old, $new);
       const highlight = this.highlight;
       const metadata = this.metadata;
@@ -157,7 +153,7 @@ window.GroupsPanel = {
         </template>
       </panel-toolbar>
       <div v-show="!isEmpty" class="app-panel-content">
-        <groups-list ref="list" :style="styles" :source="source" :order="order" :filter="filter" :id="name" />
+        <groups-list ref="list" :style="styles" :source="data" :order="order" :filter="filter" :id="name" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

@@ -76,11 +76,11 @@ var debug_variables = (function () {
     }
 
     function cycle(item) {
-        var info = item.info, options = {
+        var info = item.info, options = truncate({
             expression: info.expression || '',
             arguments: item.arguments || {},
             iterator: item.iterator || 0,
-        };
+        });
         return { id: info.id, name: info.name, type: info.type, options: options };
     }
 })();

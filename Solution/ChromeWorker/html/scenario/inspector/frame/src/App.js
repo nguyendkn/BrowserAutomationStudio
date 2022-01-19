@@ -61,11 +61,28 @@ window.App = {
       const { type, payload } = data;
 
       if (type === 'update' && payload) {
-        this.tabs.forEach(tab => {
-          const data = payload[tab.name];
-          if (data) tab.props.data = data;
+        this.tabs.forEach(({ name, props }) => {
+          if (hasOwn(payload, name)) {
+            props.data = this.transform(payload[name]);
+          }
         });
       }
+    },
+
+    transform(data) {
+      return Object.keys(data).reduce((acc, key) => {
+        let val = data[key];
+        if (typeof val === 'string') {
+          if (val.startsWith('__UNDEFINED__')) {
+            val = undefined;
+          } else if (val.startsWith('__DATE__')) {
+            val = new Date(val.slice(8));
+          }
+        } else if (typeof val === 'object' && val) {
+          val = this.transform(val);
+        }
+        return (acc[key] = val), acc;
+      }, Array.isArray(data) ? [] : {});
     },
 
     send(type) {

@@ -40,7 +40,7 @@ window.GroupsItem = {
         red: '246, 155, 147',
       },
       isEditing: false,
-      isExpanded: false,
+      isExpanded: true,
       newName: this.name,
       newColor: this.color,
     };
@@ -145,12 +145,12 @@ window.GroupsItem = {
               <icon-edit />
             </button>
             <button type="button" @click="isExpanded = !isExpanded">
-              <icon-chevron :style="{ transform: isExpanded ? 'rotate(180deg)' : '' }" />
+              <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
             </button>
           </div>
         </div>
       </div>
-      <draggable v-show="!isExpanded" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-node-label" filter="button" group="items" :list="items" :move="onMove" @add="onAdd">
+      <draggable v-show="isExpanded" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-node-label" filter="button" group="items" :list="items" :move="onMove" @add="onAdd">
         <slot></slot>
       </draggable>
     </li>

@@ -39,7 +39,7 @@ var debug_variables = (function () {
         var result = {
             variables: list.reduce(function (acc, key) {
                 if (key.indexOf('GLOBAL:') === 0) {
-                    var val = P('basglobal', key.slice(7)) || '"__UNDEFINED__"';
+                    var val = P('basglobal', key.slice(7)) || '"__undefined__"';
                     acc[key] = truncate(JSON.parse(val));
                 } else {
                     acc[key.slice(4)] = truncate(GLOBAL[key]);
@@ -66,13 +66,13 @@ var debug_variables = (function () {
 
     function truncate(val) {
         if (val instanceof Object) {
-            if (val instanceof Date) return '__DATE__' + val.toJSON();
+            if (val instanceof Date) return '__date__' + val.toJSON();
             return Object.keys(val).slice(0, 100).reduce(function (acc, key) {
                 var value = truncate(val[key]);
                 return (acc[key] = value, acc);
             }, Array.isArray(val) ? [] : {});
         }
-        return typeof val === 'undefined' ? '__UNDEFINED__' : val;
+        return typeof val === 'undefined' ? '__undefined__' : val;
     }
 
     function cycle(item) {

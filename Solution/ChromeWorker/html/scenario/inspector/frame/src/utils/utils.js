@@ -10,7 +10,7 @@ const scale = (color, count = 6) => {
 };
 
 const mutate = (obj, mutator) => {
-  if (obj && typeof obj === 'object') {
+  if (obj !== null && typeof obj === 'object') {
     Object.keys(obj).forEach(key => {
       obj[key] = mutate(obj[key], mutator);
     });

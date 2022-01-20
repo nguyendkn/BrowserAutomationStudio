@@ -354,17 +354,13 @@
 .group-item-controls {
   grid-auto-flow: column;
   display: grid;
-  gap: 12px;
-}
-
-.group-item-swatches > li + li {
-  margin-left: 5px;
+  gap: 0 12px;
 }
 
 .group-item-swatches {
-  align-items: center;
-  background: #fff;
-  display: flex;
+  grid-auto-flow: column;
+  display: grid;
+  gap: 0 5px;
 }
 
 .group-item-swatch {

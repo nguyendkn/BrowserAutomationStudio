@@ -561,7 +561,13 @@ function BrowserAutomationStudio_ApplyFingerprint()
 					FINGEPRINT_SETTINGS[KeySettings] = (FINGERPRINT_JSON["connection"][Key]) ? "1" : "0";
 				}else if(typeof(FINGERPRINT_JSON["connection"][Key]) == "object" && FINGERPRINT_JSON["connection"][Key] == null)
 				{
-					FINGEPRINT_SETTINGS[KeySettings] = "0";
+					if(Key == "downlinkMax")
+					{
+						FINGEPRINT_SETTINGS[KeySettings] = "INFINITY";
+					}else
+					{
+						FINGEPRINT_SETTINGS[KeySettings] = "0";
+					}
 				}else
 				{
 					FINGEPRINT_SETTINGS[KeySettings] = FINGERPRINT_JSON["connection"][Key].toString()

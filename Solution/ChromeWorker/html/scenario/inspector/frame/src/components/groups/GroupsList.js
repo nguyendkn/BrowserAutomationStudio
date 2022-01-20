@@ -95,12 +95,6 @@ window.GroupsList = {
       main.items.push(...items), this.sortGroup(main);
     },
 
-    deleteGroup(index, data) {
-      const main = this.groups.find(({ id }) => id === 0);
-      const [{ items }] = this.groups.splice(index, 1);
-      main.items.push(...items), this.sortGroup(main);
-    },
-
     sortGroup({ items }) {
       const { order } = this;
 

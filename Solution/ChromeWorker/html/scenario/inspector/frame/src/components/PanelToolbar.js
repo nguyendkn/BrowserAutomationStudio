@@ -19,6 +19,11 @@ window.PanelToolbar = {
       default: true,
     },
 
+    order: {
+      type: String,
+      default: '',
+    },
+
     query: {
       type: String,
       default: '',

@@ -64,15 +64,15 @@ var debug_variables = (function () {
         Browser.DebugVariablesResult(JSON.stringify(result), _get_function_body(callback));
     };
 
-    function truncate(val) {
-        if (val instanceof Object) {
-            if (val instanceof Date) return '__date__' + val.toJSON();
-            return Object.keys(val).slice(0, 100).reduce(function (acc, key) {
-                var value = truncate(val[key]);
+    function truncate(obj) {
+        if (obj instanceof Object) {
+            if (obj instanceof Date) return '__date__' + obj.toJSON();
+            return Object.keys(obj).slice(0, 100).reduce(function (acc, key) {
+                var value = truncate(obj[key]);
                 return (acc[key] = value, acc);
-            }, Array.isArray(val) ? [] : {});
+            }, Array.isArray(obj) ? [] : {});
         }
-        return typeof val === 'undefined' ? '__undefined__' : val;
+        return typeof obj === 'undefined' ? '__undefined__' : obj;
     }
 
     function cycle(item) {

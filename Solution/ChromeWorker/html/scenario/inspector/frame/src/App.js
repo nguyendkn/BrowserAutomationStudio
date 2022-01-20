@@ -61,26 +61,19 @@ window.App = {
       if (type === 'update' && payload) {
         this.tabs.forEach(({ name, props }) => {
           if (hasOwn(payload, name)) {
-            props.data = this.transform(payload[name]);
+            props.data = mutate(payload[name], value => {
+              if (typeof value === 'string') {
+                if (value.startsWith('__UNDEFINED__')) {
+                  return undefined;
+                } else if (value.startsWith('__DATE__')) {
+                  return new Date(value.slice(8));
+                }
+              }
+              return value;
+            });
           }
         });
       }
-    },
-
-    transform(data) {
-      return Object.keys(data).reduce((acc, key) => {
-        let val = data[key];
-        if (typeof val === 'string') {
-          if (val.startsWith('__UNDEFINED__')) {
-            val = undefined;
-          } else if (val.startsWith('__DATE__')) {
-            val = new Date(val.slice(8));
-          }
-        } else if (typeof val === 'object' && val) {
-          val = this.transform(val);
-        }
-        return (acc[key] = val), acc;
-      }, Array.isArray(data) ? [] : {});
     },
 
     send(type) {

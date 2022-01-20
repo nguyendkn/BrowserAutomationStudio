@@ -57,11 +57,13 @@ window.GroupsPanel = {
     },
 
     sorted() {
-      const { history, metadata, activeSortings } = this;
+      const { order, history, metadata, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
+      const descending = order === 'descending'; 
 
       return Object.keys(this.data).sort((a, b) => {
         if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
+        [a, b] = descending ? [b, a] : [a, b];
 
         switch (activeSortings[0]) {
           case 'dateModified':

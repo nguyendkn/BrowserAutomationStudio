@@ -47,8 +47,7 @@ window.CallstackPanel = {
 
   watch: {
     activeFilters(filters) {
-      const { $store, name: id } = this;
-      $store.commit('setFilters', { id, filters });
+      this.$store.commit('setFilters', { id: this.name, filters });
     },
   },
 

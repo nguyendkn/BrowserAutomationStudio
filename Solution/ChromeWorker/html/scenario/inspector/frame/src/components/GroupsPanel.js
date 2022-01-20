@@ -73,7 +73,7 @@ window.GroupsPanel = {
             return metadata[b].usages / f2 - metadata[a].usages / f1;
         }
 
-        return a.localeCompare(b);
+        return (a > b) - (a < b);
       });
     },
   },

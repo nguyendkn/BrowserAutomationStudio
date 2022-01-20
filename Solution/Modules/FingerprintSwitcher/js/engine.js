@@ -445,6 +445,16 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	//User agent
 	FINGEPRINT_SETTINGS = {}
 
+	if(typeof(FINGERPRINT_JSON["ChromeApp"]) == "string")
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.ChromeApp"] = FINGERPRINT_JSON["ChromeApp"]
+	}
+
+	if(typeof(FINGERPRINT_JSON["ChromeRuntime"]) == "string")
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.ChromeRuntime"] = FINGERPRINT_JSON["ChromeRuntime"]
+	}
+
 	_if(typeof(FINGERPRINT_JSON["useragentdata"]) == "string", function(){
 		_if_else(FINGERPRINT_JSON["useragentdata"].length == 0, function(){
 			_set_user_agent_data("eyJicmFuZHMiOltdLCJtb2JpbGUiOmZhbHNlLCJmdWxsVmVyc2lvbiI6IiIsInBsYXRmb3JtIjoiIiwicGxhdGZvcm1WZXJzaW9uIjoiIiwiYXJjaGl0ZWN0dXJlIjoiIiwibW9kZWwiOiIifQ==")!

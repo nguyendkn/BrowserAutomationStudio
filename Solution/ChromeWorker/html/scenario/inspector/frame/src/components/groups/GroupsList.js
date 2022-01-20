@@ -43,7 +43,7 @@ window.GroupsList = {
       groups.push({ id: 0, name: 'Main', color: 'brown', items: [] });
     }
 
-    return { groups, counter: groups.length - 1 };
+    return { groups, counter: Math.max(...groups.map(({ id }) => id)) };
   },
 
   watch: {

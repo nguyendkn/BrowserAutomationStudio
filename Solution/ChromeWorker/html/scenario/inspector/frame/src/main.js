@@ -18,13 +18,13 @@ const i18n = new VueI18n({
 });
 
 const store = new Vuex.Store({
-  state: () => {
+  state() {
     const state = Object.assign({}, scriptStorage.getItem('state'));
 
     ['variables', 'resources', 'callstack'].forEach(id => {
       state[id] = Object.assign({}, state[id]);
 
-      ['items', 'groups', 'filters', 'sortings'].forEach(key => {
+      ['sortings', 'filters', 'groups', 'items'].forEach(key => {
         if (typeOf(state[id][key]) !== (key === 'items' ? 'object' : 'array')) {
           state[id][key] = key === 'items' ? {} : [];
         }

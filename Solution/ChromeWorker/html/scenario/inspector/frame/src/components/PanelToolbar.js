@@ -3,6 +3,10 @@
 window.PanelToolbar = {
   name: 'PanelToolbar',
 
+  model: {
+    prop: 'query',
+  },
+
   props: {
     sortings: {
       type: Array,
@@ -41,7 +45,7 @@ window.PanelToolbar = {
   },
 
   methods: {
-    updateSortings(name) {
+    updateSortings({ name }) {
       const sortings = this.sortings.map(item => ({
         ...item,
         active: item.name === name,
@@ -49,17 +53,12 @@ window.PanelToolbar = {
       this.$emit('update:sortings', sortings);
     },
 
-    updateFilters(name) {
+    updateFilters({ name }) {
       const filters = this.filters.map(item => ({
         ...item,
         active: item.name === name ? !item.active : item.active,
       }));
       this.$emit('update:filters', filters);
-    },
-
-    updateQuery(event) {
-      const { value } = event.target;
-      this.$emit('update:query', value.trim());
     },
 
     toggleMenu() {
@@ -78,7 +77,7 @@ window.PanelToolbar = {
   template: /*html*/ `
     <div class="app-toolbar">
       <div v-show="panelVisible" class="app-toolbar-panel">
-        <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" spellcheck="false" type="text" @input="updateQuery">
+        <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" spellcheck="false" type="text" @input="$emit('input', $event.target.value)">
         <slot name="controls"></slot>
         <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="hideMenu">
           <button type="button" @click="toggleMenu">
@@ -88,18 +87,18 @@ window.PanelToolbar = {
           </button>
           <div v-show="menuVisible" class="app-toolbar-menu-wrapper">
             <ul class="app-toolbar-menu">
-              <li v-for="{ name, active } in sortings" :key="name" :class="{ active }">
-                <a href="#" @click.prevent="updateSortings(name)">
-                  <span v-t="'toolbar.sortings.' + name"></span>
+              <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
+                <a href="#" @click.prevent="updateSortings(item)">
+                  <span v-t="'toolbar.sortings.' + item.name"></span>
                   <img src="src/assets/icons/arrows.svg" alt>
                 </a>
               </li>
               <li v-if="!!sortings.length">
                 <hr class="divider">
               </li>
-              <li v-for="{ name, active } in filters" :key="name" :class="{ active }">
-                <a href="#" @click.prevent="updateFilters(name)">
-                  <span v-t="'toolbar.filters.' + name"></span>
+              <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
+                <a href="#" @click.prevent="updateFilters(item)">
+                  <span v-t="'toolbar.filters.' + item.name"></span>
                   <img src="src/assets/icons/check.svg" alt>
                 </a>
               </li>

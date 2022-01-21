@@ -140,7 +140,7 @@ window.GroupsPanel = {
 
   template: /*html*/ `
     <div class="app-panel">
-      <panel-toolbar :sortings.sync="sortings" :filters.sync="filters" :order.sync="order" :query.sync="query">
+      <panel-toolbar v-model.trim="query" :sortings.sync="sortings" :filters.sync="filters" :order.sync="order">
         <template #controls>
           <button type="button" style="border-right-color: transparent;" @click="$refs.list.addGroup()">
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">

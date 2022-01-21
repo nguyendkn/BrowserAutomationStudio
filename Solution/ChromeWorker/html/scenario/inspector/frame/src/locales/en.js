@@ -29,6 +29,9 @@
       functions: 'Functions',
       actions: 'Actions',
     },
+    options: {
+      groups: 'Groups',
+    },
   },
   groups: {
     title: 'This group is empty. You can drag the elements here.',

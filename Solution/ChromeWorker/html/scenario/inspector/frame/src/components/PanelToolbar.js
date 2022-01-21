@@ -18,6 +18,11 @@ window.PanelToolbar = {
       default: () => [],
     },
 
+    options: {
+      type: Array,
+      default: () => [],
+    },
+
     search: {
       type: Boolean,
       default: true,
@@ -62,6 +67,14 @@ window.PanelToolbar = {
       this.$emit('update:filters', filters);
     },
 
+    toggleOption(item) {
+      const options = this.options.map(({ name, active }) => ({
+        active: name === item.name ? !active : active,
+        name,
+      }));
+      this.$emit('update:options', options);
+    },
+
     toggleMenu() {
       this.menuVisible = !this.menuVisible;
     },
@@ -94,12 +107,21 @@ window.PanelToolbar = {
                   <img :style="{ transform: order === 'descending' ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
                 </a>
               </li>
-              <li v-if="!!sortings.length">
+              <li v-if="sortings.length">
                 <hr class="divider">
               </li>
               <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
                 <a href="#" @click.prevent="toggleFilter(item)">
                   <span v-t="'toolbar.filters.' + item.name"></span>
+                  <img src="src/assets/icons/check.svg" alt>
+                </a>
+              </li>
+              <li v-if="options.length">
+                <hr class="divider">
+              </li>
+              <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
+                <a href="#" @click.prevent="toggleOption(item)">
+                  <span v-t="'toolbar.options.' + item.name"></span>
                   <img src="src/assets/icons/check.svg" alt>
                 </a>
               </li>

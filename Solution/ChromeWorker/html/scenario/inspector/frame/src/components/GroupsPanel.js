@@ -26,7 +26,7 @@ window.GroupsPanel = {
   },
 
   data() {
-    const { sortings, filters } = this.$store.state[this.name];
+    const { sortings, options, filters } = this.$store.state[this.name];
 
     return {
       sortings: ['frequency', 'dateModified', 'dateCreated', 'alphabetically'].map(name => {
@@ -34,6 +34,9 @@ window.GroupsPanel = {
       }),
       filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'].map(name => {
         return { name, active: filters.length ? filters.includes(name) : true };
+      }),
+      options: ['groups'].map(name => {
+        return { name, active: options.length ? options.includes(name) : true };
       }),
       order: 'ascending',
       highlight: false,
@@ -140,7 +143,7 @@ window.GroupsPanel = {
 
   template: /*html*/ `
     <div class="app-panel">
-      <panel-toolbar v-model.trim="query" :sortings.sync="sortings" :filters.sync="filters" :order.sync="order">
+      <panel-toolbar v-model.trim="query" :sortings.sync="sortings" :filters.sync="filters" :options.sync="options" :order.sync="order">
         <template #controls>
           <button type="button" style="border-right-color: transparent;" @click="$refs.list.addGroup()">
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">

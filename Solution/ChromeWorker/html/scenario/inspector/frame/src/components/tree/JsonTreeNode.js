@@ -87,7 +87,7 @@ window.JsonTreeNode = {
       const { id, path, $refs } = this;
 
       if (signal && $refs.node) {
-        // $refs.node.forEach(ref => ref.collapse(true));
+        $refs.node.forEach(ref => ref.collapse(true));
       }
 
       this.$store.commit('setCollapsedItem', { id, path });
@@ -98,7 +98,7 @@ window.JsonTreeNode = {
       const { id, path, $refs } = this;
 
       if (signal && $refs.node) {
-        // $refs.node.forEach(ref => ref.expand(true));
+        $refs.node.forEach(ref => ref.expand(true));
       }
 
       this.$store.commit('setExpandedItem', { id, path });

@@ -87,7 +87,7 @@ window.JsonTreeNode = {
       const { id, path, $refs } = this;
 
       if (signal && $refs.node) {
-        $refs.node.forEach(ref => ref.collapse(true));
+        // $refs.node.forEach(ref => ref.collapse(true));
       }
 
       this.$store.commit('setCollapsedItem', { id, path });
@@ -98,7 +98,7 @@ window.JsonTreeNode = {
       const { id, path, $refs } = this;
 
       if (signal && $refs.node) {
-        $refs.node.forEach(ref => ref.expand(true));
+        // $refs.node.forEach(ref => ref.expand(true));
       }
 
       this.$store.commit('setExpandedItem', { id, path });
@@ -139,30 +139,30 @@ window.JsonTreeNode = {
         <template v-else-if="type === 'string'">"{{ value }}"</template>
         <template v-else-if="type === 'object'">
           <span class="jt-node-bracket">{</span>
-          <json-tree-node
-            v-for="key in keys"
-            v-show="isExpanded"
-            ref="node"
-            :key="key"
-            :name="key"
-            :value="value[key]"
-            :path="path.concat(key)"
-          />
-          <span v-show="!isExpanded" style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
+          <template v-if="isExpanded">
+            <json-tree-node
+              v-for="key in keys"
+              :key="key"
+              :name="key"
+              :value="value[key]"
+              :path="path.concat(key)"
+            />
+          </template>
+          <span v-else style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
           <span class="jt-node-bracket">}</span>
         </template>
         <template v-else-if="type === 'array'">
           <span class="jt-node-bracket">[</span>
-          <json-tree-node
-            v-for="key in keys"
-            v-show="isExpanded"
-            ref="node"
-            :key="key"
-            :name="key"
-            :value="value[key]"
-            :path="path.concat(key)"
-          />
-          <span v-show="!isExpanded" style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
+          <template v-if="isExpanded">
+            <json-tree-node
+              v-for="key in keys"
+              :key="key"
+              :name="key"
+              :value="value[key]"
+              :path="path.concat(key)"
+            />
+          </template>
+          <span v-else style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
           <span class="jt-node-bracket">]</span>
         </template>
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>

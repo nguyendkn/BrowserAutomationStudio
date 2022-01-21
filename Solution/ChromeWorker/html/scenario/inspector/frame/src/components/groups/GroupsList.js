@@ -30,6 +30,11 @@ window.GroupsList = {
       required: true,
     },
 
+    flat: {
+      type: Boolean,
+      required: true,
+    },
+
     id: {
       type: String,
       required: true,
@@ -77,6 +82,21 @@ window.GroupsList = {
       },
       immediate: true,
     },
+
+    flat: {
+      handler(flat) {
+        if (flat) {
+          const { groups } = this;
+
+          for (let index = groups.length - 1; index >= 0; index--) {
+            if (groups[index].id !== 0) {
+              this.removeGroup(index);
+            }
+          }
+        }
+      },
+      immediate: false,
+    },
   },
 
   methods: {
@@ -115,7 +135,7 @@ window.GroupsList = {
   },
 
   template: /*html*/ `
-    <draggable v-model="groups" :prevent-on-filter="false" :disabled="groups.length === 1" filter="input + div, input:enabled, input.enabled" handle=".group-item-header" class="group-list" tag="ul">
+    <draggable v-model="groups" :prevent-on-filter="false" :disabled="groups.length === 1" :class="{ flat }" filter="input + div, input:enabled, input.enabled" handle=".group-item-header" class="group-list" tag="ul">
       <groups-item
         v-for="(group, index) in groups"
         :key="group.id"

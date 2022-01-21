@@ -82,6 +82,10 @@ window.GroupsPanel = {
         return (a > b) - (a < b);
       });
     },
+
+    flat() {
+      return !this.options[0].active;
+    },
   },
 
   watch: {
@@ -148,7 +152,7 @@ window.GroupsPanel = {
   template: /*html*/ `
     <div class="app-panel">
       <panel-toolbar v-model.trim="query" :sortings.sync="sortings" :filters.sync="filters" :options.sync="options" :order.sync="order">
-        <template v-if="!isEmpty" #controls>
+        <template v-if="!isEmpty && !flat" #controls>
           <button type="button" style="border-right-color: transparent;" @click="$refs.list.addGroup()">
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
               <path d="M6.5 3.5V2h-6v12h15V3.5h-9Zm8 9.5h-13V5h13v8Z" fill="#606060" />
@@ -158,7 +162,7 @@ window.GroupsPanel = {
         </template>
       </panel-toolbar>
       <div v-show="!isEmpty" class="app-panel-content">
-        <groups-list ref="list" :source="data" :order="sorted" :filter="filter" :id="name" />
+        <groups-list ref="list" :source="data" :order="sorted" :filter="filter" :flat="flat" :id="name" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

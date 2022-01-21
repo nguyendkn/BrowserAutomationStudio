@@ -45,18 +45,19 @@ window.PanelToolbar = {
   },
 
   methods: {
-    updateSortings({ name }) {
-      const sortings = this.sortings.map(item => ({
-        ...item,
-        active: item.name === name,
+    toggleSorting(item) {
+      if (item.active) this.$emit('update:order', this.order === 'descending' ? 'asending' : 'descending');
+      const sortings = this.sortings.map(({ name, active }) => ({
+        active: name === item.name,
+        name,
       }));
       this.$emit('update:sortings', sortings);
     },
 
-    updateFilters({ name }) {
-      const filters = this.filters.map(item => ({
-        ...item,
-        active: item.name === name ? !item.active : item.active,
+    toggleFilter(item) {
+      const filters = this.filters.map(({ name, active }) => ({
+        active: name === item.name ? !active : active,
+        name,
       }));
       this.$emit('update:filters', filters);
     },
@@ -88,16 +89,16 @@ window.PanelToolbar = {
           <div v-show="menuVisible" class="app-toolbar-menu-wrapper">
             <ul class="app-toolbar-menu">
               <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
-                <a href="#" @click.prevent="updateSortings(item)">
+                <a href="#" @click.prevent="toggleSorting(item)">
                   <span v-t="'toolbar.sortings.' + item.name"></span>
-                  <img src="src/assets/icons/arrows.svg" alt>
+                  <img :style="{ transform: order === 'descending' ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
                 </a>
               </li>
               <li v-if="!!sortings.length">
                 <hr class="divider">
               </li>
               <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
-                <a href="#" @click.prevent="updateFilters(item)">
+                <a href="#" @click.prevent="toggleFilter(item)">
                   <span v-t="'toolbar.filters.' + item.name"></span>
                   <img src="src/assets/icons/check.svg" alt>
                 </a>

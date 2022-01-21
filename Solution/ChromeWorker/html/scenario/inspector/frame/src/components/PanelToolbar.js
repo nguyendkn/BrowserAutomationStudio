@@ -51,7 +51,7 @@ window.PanelToolbar = {
 
   methods: {
     toggleSorting(item) {
-      if (item.active) this.$emit('update:order', this.order === 'descending' ? 'asending' : 'descending');
+      if (item.active) this.$emit('update:order', this.order === 'ascending' ? 'descending' : 'ascending');
       const sortings = this.sortings.map(({ name, active }) => ({
         active: name === item.name,
         name,

@@ -86,7 +86,7 @@ window.PanelToolbar = {
               <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" fill="#606060" />
             </svg>
           </button>
-          <div v-show="menuVisible" class="app-toolbar-menu-wrapper" style="max-height: calc(100vh - 80px); position: absolute; overflow: auto; z-index: 1; right: 0;">
+          <div v-show="menuVisible" class="app-toolbar-menu-wrapper">
             <ul class="app-toolbar-menu">
               <li v-for="{ name, active } in sortings" :key="name" :class="{ active }">
                 <a href="#" @click.prevent="updateSortings(name)">

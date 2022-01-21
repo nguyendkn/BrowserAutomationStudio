@@ -82,7 +82,7 @@ window.GroupsItem = {
     update(cancel) {
       if (!this.isEditing) return;
 
-      if (this.newName && !cancel) {
+      if (!cancel && this.newName) {
         this.$emit('update', {
           color: this.newColor,
           name: this.newName,

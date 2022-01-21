@@ -93,6 +93,10 @@ window.GroupsPanel = {
       this.$store.commit('setFilters', { id: this.name, filters });
     },
 
+    activeOptions(options) {
+      this.$store.commit('setOptions', { id: this.name, options });
+    },
+
     data($new, $old) {
       const diff = microdiff($old, $new);
       const highlight = this.highlight;

@@ -67,10 +67,11 @@ var debug_variables = (function () {
     function truncate(obj) {
         if (obj instanceof Object) {
             if (obj instanceof Date) return '__date__' + obj.toJSON();
+            if (Array.isArray(obj)) return obj.slice(0, 100);
             return Object.keys(obj).slice(0, 100).reduce(function (acc, key) {
                 var value = truncate(obj[key]);
                 return (acc[key] = value, acc);
-            }, Array.isArray(obj) ? [] : {});
+            }, {});
         }
         return typeof obj === 'undefined' ? '__undefined__' : obj;
     }

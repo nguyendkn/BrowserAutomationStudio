@@ -57,11 +57,11 @@ window.GroupsPanel = {
     },
 
     sorted() {
-      const { order, history, metadata, activeSortings } = this;
+      const { data, order, history, metadata, activeSortings } = this;
       const cache = history.flat(), updates = history.length;
-      const descending = order === 'descending'; 
+      const descending = order === 'descending';
 
-      return Object.keys(this.data).sort((a, b) => {
+      return Object.keys(data).sort((a, b) => {
         if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
         [a, b] = descending ? [b, a] : [a, b];
 
@@ -101,9 +101,9 @@ window.GroupsPanel = {
         diff.forEach(({ path, type }) => {
           if (path.length === 1) {
             const [name] = path, now = performance.now();
+            if (type === 'REMOVE') return delete metadata[name];
 
             if (hasOwn(metadata, name)) {
-              if (type === 'REMOVE') return delete metadata[name];
               metadata[name].modifiedAt = now;
               metadata[name].usages += 1;
               metadata[name].count += 0;

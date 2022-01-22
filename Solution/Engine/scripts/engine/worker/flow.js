@@ -38,8 +38,8 @@ var debug_variables = (function () {
     return function (list, callback) {
         var result = {
             variables: list.reduce(function (acc, key) {
-                if (key.indexOf('GLOBAL:') === 0) {
-                    var val = P('basglobal', key.slice(7)) || '"__undefined__"';
+                if (key.indexOf("GLOBAL:") === 0) {
+                    var val = P("basglobal", key.slice(7)) || '"__undefined__"';
                     acc[key] = truncate(JSON.parse(val));
                 } else {
                     acc[key.slice(4)] = truncate(GLOBAL[key]);
@@ -56,7 +56,7 @@ var debug_variables = (function () {
                     }));
                 }
                 return acc;
-            }, []).concat(cycle({ info: { id: 0, name: 'Main', type: 'function' } })),
+            }, []).concat(cycle({ info: { id: 0, name: "Main", type: "function" } })),
 
             resources: JSON.parse(ScriptWorker.PickResources())
         };
@@ -66,19 +66,19 @@ var debug_variables = (function () {
 
     function truncate(obj) {
         if (obj instanceof Object) {
-            if (obj instanceof Date) return '__date__' + obj.toJSON();
+            if (obj instanceof Date) return "__date__" + obj.toJSON();
             if (Array.isArray(obj)) return obj.slice(0, 100);
             return Object.keys(obj).slice(0, 100).reduce(function (acc, key) {
                 var value = truncate(obj[key]);
                 return (acc[key] = value, acc);
             }, {});
         }
-        return typeof obj === 'undefined' ? '__undefined__' : obj;
+        return typeof obj === "undefined" ? "__undefined__" : obj;
     }
 
     function cycle(item) {
         var info = item.info, options = truncate({
-            expression: info.expression || '',
+            expression: info.expression || "",
             arguments: item.arguments || {},
             iterator: item.iterator || 0,
         });

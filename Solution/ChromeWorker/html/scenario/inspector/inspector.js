@@ -107,7 +107,6 @@
         `);
       });
     };
-
     return new Inspector.Modal({ ...options, callback }).render();
   }
 })(window);

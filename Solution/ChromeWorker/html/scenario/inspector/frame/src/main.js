@@ -19,7 +19,7 @@ const i18n = new VueI18n({
 
 const store = new Vuex.Store({
   state() {
-    const state = Object.assign({}, scriptStorage.getItem('state'));
+    const state = Object.assign({}, scriptStorage.get('state'));
 
     ['variables', 'resources', 'callstack'].forEach(id => {
       state[id] = Object.assign({}, state[id]);
@@ -60,7 +60,7 @@ const store = new Vuex.Store({
 
 store.subscribe(({ type }, { variables, resources, callstack }) => {
   if (type !== 'toggleToolbar') {
-    scriptStorage.setItem('state', { variables, resources, callstack });
+    scriptStorage.set('state', { variables, resources, callstack });
   }
 });
 

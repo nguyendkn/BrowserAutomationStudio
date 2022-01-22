@@ -655,10 +655,10 @@ function _set_action_info(info, cycle) {
     if (ScriptWorker.GetIsRecord() && info) {
         info.id = ScriptWorker.GetCurrentAction();
 
-        if (['if', 'for', 'while', 'foreach'].indexOf(info.name.toLowerCase()) < 0) {
-            info.type = 'function';
+        if (["if", "for", "while", "foreach"].indexOf(info.name.toLowerCase()) < 0) {
+            info.type = "function";
         } else {
-            info.type = 'action';
+            info.type = "action";
         }
     
         cycle = cycle || CYCLES.Current();

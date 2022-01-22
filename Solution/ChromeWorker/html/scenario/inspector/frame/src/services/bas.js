@@ -26,16 +26,16 @@ const bas = {
 const scriptStorage = new (class ScriptStorage {
   #state = bas.interface;
 
-  setItem(key, value) {
+  set(key, value) {
     this.#state[key] = value;
     bas.saveInterface({ ...this.#state });
   }
 
-  removeItem(key) {
+  remove(key) {
     delete this.#state[key];
   }
 
-  getItem(key) {
+  get(key) {
     return this.#state[key];
   }
 })();

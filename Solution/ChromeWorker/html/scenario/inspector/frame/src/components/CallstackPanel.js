@@ -30,7 +30,8 @@ window.CallstackPanel = {
 
     return {
       filters: ['functions', 'actions'].map(name => {
-        return { name, active: filters.length ? filters.includes(name) : true };
+        const filter = filters.find(item => item.name === name);
+        return { name, active: filter ? filter.active : true };
       }),
     };
   },
@@ -46,7 +47,7 @@ window.CallstackPanel = {
   },
 
   watch: {
-    activeFilters(filters) {
+    filters(filters) {
       this.$store.commit('setFilters', { id: this.name, filters });
     },
   },

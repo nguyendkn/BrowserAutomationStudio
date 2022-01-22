@@ -30,13 +30,16 @@ window.GroupsPanel = {
 
     return {
       sortings: ['frequency', 'dateModified', 'dateCreated', 'alphabetically'].map(name => {
-        return { name, active: sortings.length ? sortings.includes(name) : name === 'alphabetically' };
+        const sorting = sortings.find(item => item.name === name);
+        return { name, active: sorting ? sorting.active : name === 'alphabetically' };
       }),
       filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'].map(name => {
-        return { name, active: filters.length ? filters.includes(name) : true };
+        const filter = filters.find(item => item.name === name);
+        return { name, active: filter ? filter.active : true };
       }),
       options: ['groups'].map(name => {
-        return { name, active: options.length ? options.includes(name) : true };
+        const option = options.find(item => item.name === name);
+        return { name, active: option ? option.active : true };
       }),
       order: 'ascending',
       highlight: false,
@@ -89,15 +92,15 @@ window.GroupsPanel = {
   },
 
   watch: {
-    activeSortings(sortings) {
+    sortings(sortings) {
       this.$store.commit('setSortings', { id: this.name, sortings });
     },
 
-    activeFilters(filters) {
+    filters(filters) {
       this.$store.commit('setFilters', { id: this.name, filters });
     },
 
-    activeOptions(options) {
+    options(options) {
       this.$store.commit('setOptions', { id: this.name, options });
     },
 

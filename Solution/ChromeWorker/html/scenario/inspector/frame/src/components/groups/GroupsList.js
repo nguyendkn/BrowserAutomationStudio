@@ -73,7 +73,6 @@ window.GroupsList = {
 
         keys.forEach(key => items.push({ key, fixed: false }));
       },
-      immediate: false,
     },
 
     order: {
@@ -95,7 +94,6 @@ window.GroupsList = {
           }
         }
       },
-      immediate: false,
     },
   },
 

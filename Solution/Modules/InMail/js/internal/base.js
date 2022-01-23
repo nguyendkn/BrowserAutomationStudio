@@ -215,7 +215,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			},
 			"EMPTY_MSGS_LIST": {
 				"ru": 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика',
-				"en": 'Could not find a letter matching the specified identifier in the specified mailbox folder'
+				"en": 'Could not find a message matching the specified identifier in the specified mailbox folder'
 			}
 		};
 		

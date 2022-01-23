@@ -9,13 +9,18 @@
 		disable_int: true, 
 		value_string: "",
 		help: {
-			description: tr("Folder name")
+			description: tr("Folder name") + ". " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+			examples: [
+				{code: "INBOX", description: tr("Default folder incoming messages")},
+				{code: "Spam", description: tr("Spam folder, on some mails")},
+				{code: "Trash", description: tr("Trash folder, on some mails")}
+			]
 		} 
 	}) %>
 	<%= _.template($('#variable_constructor').html())({
 		id: "total",
 		description: tr("Total messages"),
-		default_variable: "MESSAGES_TOTAL_COUNT",
+		default_variable: "MAIL_TOTAL_COUNT",
 		help: {
 			description: tr("Total messages"),
 		}
@@ -23,7 +28,7 @@
 	<%= _.template($('#variable_constructor').html())({
 		id: "recent",
 		description: tr("Recent messages"),
-		default_variable: "MESSAGES_RECENT_COUNT",
+		default_variable: "MAIL_RECENT_COUNT",
 		help: {
 			description: tr("Recent messages"),
 		}
@@ -31,7 +36,7 @@
 	<%= _.template($('#variable_constructor').html())({
 		id: "unseen",
 		description: tr("Unseen messages"),
-		default_variable: "MESSAGES_UNSEEN_COUNT",
+		default_variable: "MAIL_UNSEEN_COUNT",
 		help: {
 			description: tr("Unseen messages"),
 		}

@@ -22,9 +22,12 @@
 		disable_int: true,
 		value_string: "",
 		help: {
-			description: tr("List or one flag.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
+			description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
 			examples: [
-				{code: "\\Seen", description: tr("Message has been read")},
+				{code: "\\Seen,\\Flagged"},
+				{code: "\\Seen, \\Flagged"},
+				{code: "[\"\\Seen\", \"\\Flagged\"]"},
+				{code: "<br/>\\Seen", description: tr("Message has been read")},
 				{code: "\\Answered", description: tr("Message has been answered")},
 				{code: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
 				{code: "\\Deleted", description: tr("Message is marked for removal")},
@@ -34,7 +37,7 @@
 	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="add">
-			<input type="checkbox" id="add" style="margin-left:25px"/> <label for="add" class="tr">Add flags to existing ones</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Add flags to existing ones"), description: tr("Add flags to existing ones")})) %>"></i>
+			<input type="checkbox" id="add" style="margin-left:25px"/> <label for="add" class="tr">Add flags to existing ones</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Add flags to existing ones"), description: tr("Optional parameter.") + " " + tr("Add flags to existing ones")})) %>"></i>
 		</span>
 		<%= _.template($('#input_constructor').html())({
 			id: "box",
@@ -46,7 +49,13 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("Folder name")
+				description: tr("Optional parameter.") + " " + tr("The name of the folder in which this action will be performed, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.") + " " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+				examples: [
+					{code: "INBOX", description: tr("Default folder incoming messages")},
+					{code: "Spam", description: tr("Spam folder, on some mails")},
+					{code: "Trash", description: tr("Trash folder, on some mails")},
+					{code: tr("Empty string"), description: tr("Use the folder specified in the \"Configure receiving mail\" action")}
+				]
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>

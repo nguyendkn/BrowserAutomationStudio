@@ -17,8 +17,8 @@ if(sortType["original"].length == 0){
 };
 var sortField = GetInputConstructorValue("sortField", loader);
 var wait = $("#wait").is(':checked');
-var foundOver = GetInputConstructorValue("foundOver", loader);
-if(wait && foundOver["original"].length == 0){
+var minResults = GetInputConstructorValue("minResults", loader);
+if(wait && minResults["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Number of letters") + tr("\" is not specified"));
     return;
 };
@@ -55,7 +55,7 @@ try{
 		"sortType": sortType["updated"],
 		"sortField": sortField["updated"],
 		"wait": wait,
-		"foundOver": foundOver["updated"],
+		"minResults": minResults["updated"],
         "interval": interval["updated"],
         "timeout": timeout["updated"],
         "box": box["updated"],

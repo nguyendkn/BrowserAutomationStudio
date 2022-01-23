@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<%= _.template($('#block_start').html())({id:"Filtration", name: tr("Filtration"), description: tr("Using the parameters from this block, you can filter the results as you need, or leave them without filtering.")}) %>
-		<span class="tr" style="margin-left:15px">Sender of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of letter"), description: tr("Sender of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Sender of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of message"), description: tr("Sender of message")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "from",
 			description: tr("Contains"),
@@ -42,7 +42,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Recipient of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Recipient of letter"), description: tr("Recipient of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Recipient of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Recipient of message"), description: tr("Recipient of message")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "to",
 			description: tr("Contains"),
@@ -82,7 +82,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Letter subject</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Letter subject"), description: tr("Letter subject")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Message subject</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Message subject"), description: tr("Message subject")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "subject",
 			description: tr("Contains"),
@@ -122,7 +122,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Text of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of letter"), description: tr("Text of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Text of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of message"), description: tr("Text of message")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "text",
 			description: tr("Contains"),
@@ -162,7 +162,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Flags of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of letter"), description: tr("Flags of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Flags of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of message"), description: tr("Flags of message")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "flags",
 			description: tr("Contains"),
@@ -170,7 +170,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the letter should contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -187,7 +187,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the letter should not contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should not contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -241,16 +241,22 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("Folder name")
+				description: tr("Optional parameter.") + " " + tr("The name of the folder in which this action will be performed, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.") + " " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+				examples: [
+					{code: "INBOX", description: tr("Default folder incoming messages")},
+					{code: "Spam", description: tr("Spam folder, on some mails")},
+					{code: "Trash", description: tr("Trash folder, on some mails")},
+					{code: tr("Empty string"), description: tr("Use the folder specified in the \"Configure receiving mail\" action")}
+				]
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>
 	<%= _.template($('#variable_constructor').html())({
 		id: "Save",
 		description: tr("Variable to save the result"),
-		default_variable: "MAILS_LENGTH",
+		default_variable: "MAIL_COUNT",
 		help: {
-			description: tr("Variable in which, after successful execution of the action, the list of id of the found mails will be written.")
+			description: tr("Variable in which, after successful execution of the action, the number of messages will be written.")
 		}
 	}) %>
 </div>

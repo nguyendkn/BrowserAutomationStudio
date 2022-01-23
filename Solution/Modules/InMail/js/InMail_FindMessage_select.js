@@ -118,8 +118,8 @@ if(getRawHeader && saveRawHeader.length == 0){
     return;
 };
 var wait = $("#wait").is(':checked');
-var foundOver = GetInputConstructorValue("foundOver", loader);
-if(wait && foundOver["original"].length == 0){
+var minResults = GetInputConstructorValue("minResults", loader);
+if(wait && minResults["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Number of letters") + tr("\" is not specified"));
     return;
 };
@@ -191,7 +191,7 @@ try{
         "getRawHeader": getRawHeader,
         "saveRawHeader": "VAR_" + saveRawHeader,
 		"wait": wait,
-		"foundOver": foundOver["updated"],
+		"minResults": minResults["updated"],
         "interval": interval["updated"],
         "timeout": timeout["updated"],
         "delAfter": delAfter,

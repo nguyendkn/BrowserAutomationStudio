@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<%= _.template($('#block_start').html())({id:"Filtration", name: tr("Filtration"), description: tr("Using the parameters from this block, you can filter the results as you need, or leave them without filtering.")}) %>
-		<span class="tr" style="margin-left:15px">Sender of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of letter"), description: tr("Sender of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Sender of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of message"), description: tr("Sender of message, \"From\" field") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "admin@site.com"}, {code: "no-reply@example.com"}, {code: "Test &lt;info@test.com&gt;"}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "from",
 			description: tr("Contains"),
@@ -42,7 +42,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Recipient of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Recipient of letter"), description: tr("Recipient of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Recipient of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Recipient of message"), description: tr("Recipient of message, \"To\" field") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "you@site.com"}, {code: "name@example.com"}, {code: "User &lt;user@test.com&gt;"}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "to",
 			description: tr("Contains"),
@@ -82,7 +82,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Letter subject</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Letter subject"), description: tr("Letter subject")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Message subject</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Message subject"), description: tr("Message subject, \"Subject\" field") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: tr("Marketing")}, {code: tr("Business proposal")}, {code: tr("Email confirmation")}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "subject",
 			description: tr("Contains"),
@@ -122,7 +122,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Text of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of letter"), description: tr("Text of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Text of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of message"), description: tr("Text of message")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "text",
 			description: tr("Contains"),
@@ -162,7 +162,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Flags of letter</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of letter"), description: tr("Flags of letter")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Flags of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of message"), description: tr("Flags of message")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "flags",
 			description: tr("Contains"),
@@ -170,7 +170,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the letter should contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -187,7 +187,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the letter should not contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should not contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -243,7 +243,7 @@
 			disable_int: true,
 			value_string: "no sorting",
 			help: {
-				description: tr("Sorting type"),
+				description: tr("By default, sorting is disabled, but you can enable it by changing the value of this parameter and specifying the \"Sorting field\" parameter. Sorting is not supported by all mail services, if sorting is enabled, but the service does not support it, the action will fail."),
 				examples: [
 					{code: "no sorting", description: tr("No sorting")},
 					{code: "ascending", description: tr("Sort ascending")},
@@ -256,33 +256,41 @@
 			description: tr("Sorting field"),
 			default_selector: "string",
 			variants: [
-				{value: "from", description: tr("Sender of letter") + ", " + tr("sort alphabetically")},
-				{value: "to", description: tr("Recipient of letter") + ", " + tr("sort alphabetically")},
-				{value: "subject", description: tr("Letter subject") + ", " + tr("sort alphabetically")},
-				{value: "size", description: tr("Letter size")},
+				{value: "from", description: tr("Sender of message") + ", " + tr("first \"From\" address") + ", " + tr("sort alphabetically")},
+				{value: "to", description: tr("Recipient of message") + ", " + tr("first \"To\" address") + ", " + tr("sort alphabetically")},
+				{value: "subject", description: tr("Message subject") + ", " + tr("sort alphabetically")},
+				{value: "size", description: tr("Message size")},
 				{value: "date", description: tr("Receiving date")}
 			],
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Field for sorting"),
+				description: tr("Part of the message by which sorting will be performed."),
 				examples: [
-					{code: "size", description: tr("Letter size")},
+					{code: "from", description: tr("Sender of message") + ", " + tr("first \"From\" address") + ", " + tr("sort alphabetically")},
+					{code: "to", description: tr("Recipient of message") + ", " + tr("first \"To\" address") + ", " + tr("sort alphabetically")},
+					{code: "subject", description: tr("Message subject") + ", " + tr("sort alphabetically")},
+					{code: "size", description: tr("Message size")},
 					{code: "date", description: tr("Receiving date")}
 				]
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>
-	<%= _.template($('#block_start').html())({id:"Parsing", name: tr("Parsing"), description: tr("Using the parameters from this block, you can select which parts of the letter will be fetched and in which variables will be saved.")}) %>
+	<%= _.template($('#block_start').html())({id:"Parsing", name: tr("Parsing"), description: tr("Using the parameters from this block, you can select which parts of the message will be fetched and in which variables will be saved.")}) %>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getUid">
-			<input type="checkbox" checked="checked" id="getUid" style="margin-left:25px"/> <label for="getUid" class="tr">Get message Id</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get message Id"), description: tr("Get message Id")})) %>"></i>
+			<input type="checkbox" checked="checked" id="getUid" style="margin-left:25px"/> <label for="getUid" class="tr">Get message Id</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get message Id"), description: tr("If enabled, then the message Id will be stored in the variable below."), examples: [{code: tr("Activated"), description: tr("Save message Id")}, {code: tr("Deactivated"), description: tr("Don't save message Id")}]})) %>"></i>
 		</span>
 		<%= _.template($('#variable_constructor').html())({
 			id: "saveUid",
 			description: tr("Message Id"),
 			default_variable: "MAIL_ID",
 			help: {
-				description: tr("Message Id")
+				description: tr("Variable in which, after successful execution of the action, the id of the received message will be written."),
+				examples: [
+					{code: 134},
+					{code: 370},
+					{code: 458}
+				]
 			}
 		}) %>
 		<div class="container-fluid">
@@ -297,15 +305,20 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getFrom">
-			<input type="checkbox" id="getFrom" style="margin-left:25px"/> <label for="getFrom" class="tr">Get sender of letter</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get sender of letter"), description: tr("Get sender of letter")})) %>"></i>
+			<input type="checkbox" id="getFrom" style="margin-left:25px"/> <label for="getFrom" class="tr">Get sender of message</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get sender of message"), description: tr("If enabled, then the sender of the message will be retrieved from the server and stored in the variable below."), examples: [{code: tr("Activated"), description: tr("Get message sender from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message sender from server")}]})) %>"></i>
 		</span>
 		<span id="advancedFrom">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveFrom",
-				description: tr("Sender of letter"),
+				description: tr("Sender of message"),
 				default_variable: "MAIL_SENDER",
 				help: {
-					description: tr("Sender of letter")
+					description: tr("Variable in which, after successful execution of the action, the sender of the received message will be written."),
+					examples: [
+						{code: "admin@site.com"},
+						{code: "no-reply@example.com"},
+						{code: "Test &lt;info@test.com&gt;"}
+					]
 				}
 			}) %>
 		</span>
@@ -321,15 +334,20 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getTo">
-			<input type="checkbox" id="getTo" style="margin-left:25px"/> <label for="getTo" class="tr">Get recipient of letter</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get recipient of letter"), description: tr("Get recipient of letter")})) %>"></i>
+			<input type="checkbox" id="getTo" style="margin-left:25px"/> <label for="getTo" class="tr">Get recipient of message</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get recipient of message"), description: tr("If enabled, then the recipient of the message will be retrieved from the server and stored in the variable below."), examples: [{code: tr("Activated"), description: tr("Get message recipient from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message recipient from server")}]})) %>"></i>
 		</span>
 		<span id="advancedTo">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveTo",
-				description: tr("Recipient of letter"),
+				description: tr("Recipient of message"),
 				default_variable: "MAIL_RECIPIENT",
 				help: {
-					description: tr("Recipient of letter")
+					description: tr("Variable in which, after successful execution of the action, the recipient of the received message will be written."),
+					examples: [
+						{code: "you@site.com"},
+						{code: "name@example.com"},
+						{code: "User &lt;user@test.com&gt;"}
+					]
 				}
 			}) %>
 		</span>
@@ -345,15 +363,20 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getSubject">
-			<input type="checkbox" id="getSubject" style="margin-left:25px"/> <label for="getSubject" class="tr">Get letter subject</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get letter subject"), description: tr("Get letter subject")})) %>"></i>
+			<input type="checkbox" id="getSubject" style="margin-left:25px"/> <label for="getSubject" class="tr">Get message subject</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get message subject"), description: tr("If enabled, then the subject of the message will be retrieved from the server and stored in the variable below."), examples: [{code: tr("Activated"), description: tr("Get message subject from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message subject from server")}]})) %>"></i>
 		</span>
 		<span id="advancedSubject">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveSubject",
-				description: tr("Letter subject"),
+				description: tr("Message subject"),
 				default_variable: "MAIL_SUBJECT",
 				help: {
-					description: tr("Letter subject")
+					description: tr("Variable in which, after successful execution of the action, the subject of the received message will be written."),
+					examples: [
+						{code: tr("Marketing")},
+						{code: tr("Business proposal")},
+						{code: tr("Email confirmation")}
+					]
 				}
 			}) %>
 		</span>
@@ -369,28 +392,28 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getTextHtml">
-			<input type="checkbox" checked="checked" id="getTextHtml" style="margin-left:25px"/> <label for="getTextHtml"><span class="tr">Get body of letter</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/html"), description: tr("text/html")})) %>"></i>
+			<input type="checkbox" checked="checked" id="getTextHtml" style="margin-left:25px"/> <label for="getTextHtml"><span class="tr">Get body of message</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/html"), description: tr("text/html")})) %>"></i>
 		</span>
 		<span id="advancedTextHtml">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveTextHtml",
-				description: tr("Body of letter") + " (text/html)",
+				description: tr("Body of message") + " (text/html)",
 				default_variable: "MAIL_TEXT_HTML",
 				help: {
-					description: tr("Body of letter") + " (text/html)"
+					description: tr("Body of message") + " (text/html)"
 				}
 			}) %>
 			<div>
 				<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextHtml">
-					<input type="checkbox" id="getLinksTextHtml" style="margin-left:25px"/> <label for="getLinksTextHtml"><span class="tr">Parse links from body of letter</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/html"), description: tr("text/html")})) %>"></i>
+					<input type="checkbox" id="getLinksTextHtml" style="margin-left:25px"/> <label for="getLinksTextHtml"><span class="tr">Parse links from body of message</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/html"), description: tr("text/html")})) %>"></i>
 				</span>
 				<span>
 					<%= _.template($('#variable_constructor').html())({
 						id: "saveLinksTextHtml",
-						description: tr("Links from body of letter") + " (text/html)",
+						description: tr("Links from body of message") + " (text/html)",
 						default_variable: "MAIL_TEXT_HTML_LINKS_LIST",
 						help: {
-							description: tr("Links from body of letter") + " (text/html)"
+							description: tr("Links from body of message") + " (text/html)"
 						}
 					}) %>
 				</span>
@@ -408,28 +431,28 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getTextPlain">
-			<input type="checkbox" checked="checked" id="getTextPlain" style="margin-left:25px"/> <label for="getTextPlain"><span class="tr">Get body of letter</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/plain"), description: tr("text/plain")})) %>"></i>
+			<input type="checkbox" checked="checked" id="getTextPlain" style="margin-left:25px"/> <label for="getTextPlain"><span class="tr">Get body of message</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/plain"), description: tr("text/plain")})) %>"></i>
 		</span>
 		<span id="advancedTextPlain">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveTextPlain",
-				description: tr("Body of letter") + " (text/plain)",
+				description: tr("Body of message") + " (text/plain)",
 				default_variable: "MAIL_TEXT_PLAIN",
 				help: {
-					description: tr("Body of letter") + " (text/plain)"
+					description: tr("Body of message") + " (text/plain)"
 				}
 			}) %>
 			<div>
 				<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextPlain">
-					<input type="checkbox" id="getLinksTextPlain" style="margin-left:25px"/> <label for="getLinksTextPlain"><span class="tr">Parse links from body of letter</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/plain"), description: tr("text/plain")})) %>"></i>
+					<input type="checkbox" id="getLinksTextPlain" style="margin-left:25px"/> <label for="getLinksTextPlain"><span class="tr">Parse links from body of message</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("text/plain"), description: tr("text/plain")})) %>"></i>
 				</span>
 				<span>
 					<%= _.template($('#variable_constructor').html())({
 						id: "saveLinksTextPlain",
-						description: tr("Links from body of letter") + " (text/plain)",
+						description: tr("Links from body of message") + " (text/plain)",
 						default_variable: "MAIL_TEXT_PLAIN_LINKS_LIST",
 						help: {
-							description: tr("Links from body of letter") + " (text/plain)"
+							description: tr("Links from body of message") + " (text/plain)"
 						}
 					}) %>
 				</span>
@@ -447,28 +470,28 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getTextRaw">
-			<input type="checkbox" id="getTextRaw" style="margin-left:25px"/> <label for="getTextRaw"><span class="tr">Get body of letter</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("raw"), description: tr("raw")})) %>"></i>
+			<input type="checkbox" id="getTextRaw" style="margin-left:25px"/> <label for="getTextRaw"><span class="tr">Get body of message</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("raw"), description: tr("raw")})) %>"></i>
 		</span>
 		<span id="advancedTextRaw">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveTextRaw",
-				description: tr("Body of letter") + " (raw)",
+				description: tr("Body of message") + " (raw)",
 				default_variable: "MAIL_TEXT_RAW",
 				help: {
-					description: tr("Body of letter") + " (raw)"
+					description: tr("Body of message") + " (raw)"
 				}
 			}) %>
 			<div>
 				<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextRaw">
-					<input type="checkbox" id="getLinksTextRaw" style="margin-left:25px"/> <label for="getLinksTextRaw"><span class="tr">Parse links from body of letter</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("raw"), description: tr("raw")})) %>"></i>
+					<input type="checkbox" id="getLinksTextRaw" style="margin-left:25px"/> <label for="getLinksTextRaw"><span class="tr">Parse links from body of message</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("raw"), description: tr("raw")})) %>"></i>
 				</span>
 				<span>
 					<%= _.template($('#variable_constructor').html())({
 						id: "saveLinksTextRaw",
-						description: tr("Links from body of letter") + " (raw)",
+						description: tr("Links from body of message") + " (raw)",
 						default_variable: "MAIL_TEXT_RAW_LINKS_LIST",
 						help: {
-							description: tr("Links from body of letter") + " (raw)"
+							description: tr("Links from body of message") + " (raw)"
 						}
 					}) %>
 				</span>
@@ -486,15 +509,20 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getSize">
-			<input type="checkbox" id="getSize" style="margin-left:25px"/> <label for="getSize" class="tr">Get letter size</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get letter size"), description: tr("Get letter size")})) %>"></i>
+			<input type="checkbox" id="getSize" style="margin-left:25px"/> <label for="getSize" class="tr">Get message size</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get message size"), description: tr("If enabled, then the size of the message will be retrieved from the server and stored in the variable below."), examples: [{code: tr("Activated"), description: tr("Get message size from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message size from server")}]})) %>"></i>
 		</span>
 		<span id="advancedSize">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveSize",
-				description: tr("Letter size"),
+				description: tr("Message size"),
 				default_variable: "MAIL_SIZE",
 				help: {
-					description: tr("Letter size")
+					description: tr("Variable in which, after successful execution of the action, the size of the received message will be written."),
+					examples: [
+						{code: 175},
+						{code: 2345},
+						{code: 11546}
+					]
 				}
 			}) %>
 		</span>
@@ -510,15 +538,20 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getFlags">
-			<input type="checkbox" id="getFlags" style="margin-left:25px"/> <label for="getFlags" class="tr">Get flags of letter</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get flags of letter"), description: tr("Get flags of letter")})) %>"></i>
+			<input type="checkbox" id="getFlags" style="margin-left:25px"/> <label for="getFlags" class="tr">Get flags of message</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get flags of message"), description: tr("If enabled, then the list of message flags will be retrieved from the server and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Get message flags from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message flags from server")}]})) %>"></i>
 		</span>
 		<span id="advancedFlags">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveFlags",
-				description: tr("Flags of letter"),
-				default_variable: "MAIL_FLAGS",
+				description: tr("Flags of message"),
+				default_variable: "MAIL_FLAGS_LIST",
 				help: {
-					description: tr("Flags of letter")
+					description: tr("Variable in which, after successful execution of the action, the list of flags of the received message will be written.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."),
+					examples: [
+						{code: "[\"\\Seen\"]"},
+						{code: "[\"\\Seen\", \"\\Flagged\"]"},
+						{code: "[\"\\Seen\", \"\\Answered\", ]"}
+					]
 				}
 			}) %>
 		</span>
@@ -534,7 +567,7 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getDate">
-			<input type="checkbox" id="getDate" style="margin-left:25px"/> <label for="getDate" class="tr">Get receiving date</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get receiving date"), description: tr("Get receiving date")})) %>"></i>
+			<input type="checkbox" id="getDate" style="margin-left:25px"/> <label for="getDate" class="tr">Get receiving date</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get receiving date"), description: tr("If enabled, then the date of the message will be retrieved from the server and stored in the variable below.") + " " + tr("The resulting date can be processed using actions from the \"Date and time\" module."), examples: [{code: tr("Activated"), description: tr("Get message date from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message date from server")}]})) %>"></i>
 		</span>
 		<span id="advancedDate">
 			<%= _.template($('#variable_constructor').html())({
@@ -542,7 +575,12 @@
 				description: tr("Receiving date"),
 				default_variable: "MAIL_DATE",
 				help: {
-					description: tr("Receiving date")
+					description: tr("Variable in which, after successful execution of the action, the date of the received message will be written.") + " " + tr("The resulting date can be processed using actions from the \"Date and time\" module."),
+					examples: [
+						{code: new Date('May 13 2021')},
+						{code: new Date('Jan 20 2022 16:57:26')},
+						{code: new Date()}
+					]
 				}
 			}) %>
 		</span>
@@ -558,7 +596,7 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getAttachNames">
-			<input type="checkbox" id="getAttachNames" style="margin-left:25px"/> <label for="getAttachNames" class="tr">Get list of attached file names</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get list of attached file names"), description: tr("Get list of attached file names")})) %>"></i>
+			<input type="checkbox" id="getAttachNames" style="margin-left:25px"/> <label for="getAttachNames" class="tr">Get list of attached file names</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get list of attached file names"), description: tr("If enabled, then the list of filenames attached to the message will be retrieved from the server and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Get message date from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message date from server")}]})) %>"></i>
 		</span>
 		<span id="advancedAttachnames">
 			<%= _.template($('#variable_constructor').html())({
@@ -566,7 +604,12 @@
 				description: tr("Attachment names"),
 				default_variable: "MAIL_ATTACHMENT_NAMES_LIST",
 				help: {
-					description: tr("Attachment names")
+					description: tr("Variable in which, after successful execution of the action, the list of filenames attached to the received message will be written.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."),
+					examples: [
+						{code: "[\"photo.png\"]"},
+						{code: "[\"document.pdf\", \"text.txt\"]"},
+						{code: "[\"index.html\", \"script.js\", \"icon.ico\"]"}
+					]
 				}
 			}) %>
 		</span>
@@ -582,7 +625,7 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getAttachments">
-			<input type="checkbox" id="getAttachments" style="margin-left:25px"/> <label for="getAttachments" class="tr">Save attached files</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Save attached files"), description: tr("Save attached files")})) %>"></i>
+			<input type="checkbox" id="getAttachments" style="margin-left:25px"/> <label for="getAttachments" class="tr">Save attached files</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Save attached files"), description: tr("If enabled, then the attachments of the message will be received from the server and saved to the computer as files with a random name, a list of objects with information about attachments will be written to the variable specified below the mask.") + " " + tr("The resulting list can be processed using actions from the \"JSON\" module.") + " " + tr("You can choose which attachments will be saved by specifying the filename mask in the parameter below."), examples: [{code: tr("Activated"), description: tr("Get message attachments from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message attachments from server")}]})) %>"></i>
 		</span>
 		<span id="advancedAttachments">
 			<%= _.template($('#input_constructor').html())({
@@ -592,15 +635,24 @@
 				disable_int: true,
 				value_string: "*",
 				help: {
-					description: tr("File name mask")
+					description: tr("The file name mask by which attachments will be filtered. Only files whose names match the mask will be retrieved and saved.") + " " + tr("You can specify several masks by separating them with \";\"."),
+					examples: [
+						{code: tr("*.js"), description: tr("All JavaScript files")},
+						{code: tr("*.txt"), description: tr("All text files")},
+						{code: tr("*.js;*.txt"), description: tr("All JavaScript and text files")},
+						{code: tr("*"), description: tr("All files")}
+					]
 				}
 			}) %>
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveAttachments",
 				description: tr("Attachments"),
-				default_variable: "MAIL_ATTACHMENTS",
+				default_variable: "MAIL_ATTACHMENTS_LIST",
 				help: {
-					description: tr("Attachments")
+					description: tr("Variable in which, after successful execution of the action, the list of objects containing information about the saved attachments of the message will be written.") + " " + tr("The resulting list can be processed using actions from the \"JSON\" module.") + " " + tr("The \"name\" property of the object will contain the original file name, the \"path\" property will contain the path to the saved file, and the \"type\" property will contain the mime type of the file. Having obtained the path to the file and its original name from the object, you can rename it using the \"Move file/folder\" action from the \"Filesystem\" module."),
+					examples: [
+						{code: "[{<br/>name: \"photo.png\",<br/>path: \"1VVDZIew0K.file\",<br/>type: \"image/png\"<br/>}, {<br/>name: \"document.pdf\",<br/>path: \"D0rThm7KHp.file\",<br/>type: \"application/pdf\"<br/>}, {<br/>name: \"text.txt\",<br/>path: \"uBhN59Tokt.file\",<br/>type: \"text/plain\"<br/>}]"}
+					]
 				}
 			}) %>
 		</span>
@@ -616,15 +668,15 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getRawHeader">
-			<input type="checkbox" id="getRawHeader" style="margin-left:25px"/> <label for="getRawHeader" class="tr">Get technical headers of letter</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get technical headers of letter"), description: tr("Get technical headers of letter")})) %>"></i>
+			<input type="checkbox" id="getRawHeader" style="margin-left:25px"/> <label for="getRawHeader" class="tr">Get technical headers of message</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get technical headers of message"), description: tr("Get technical headers of message")})) %>"></i>
 		</span>
 		<span id="advancedRawHeader">
 			<%= _.template($('#variable_constructor').html())({
 				id: "saveRawHeader",
-				description: tr("Technical headers of letter"),
+				description: tr("Technical headers of message"),
 				default_variable: "MAIL_RAW_HEADERS",
 				help: {
-					description: tr("Technical headers of letter")
+					description: tr("Technical headers of message")
 				}
 			}) %>
 		</span>
@@ -642,19 +694,24 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="wait">
-			<input type="checkbox" id="wait" style="margin-left:25px"/> <label for="wait" class="tr">Wait letters</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Wait letters"), description: tr("Wait letters")})) %>"></i>
+			<input type="checkbox" id="wait" style="margin-left:25px"/> <label for="wait" class="tr">Wait message</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Wait message"), description: tr("Optional parameter.") + " " + tr("If enabled, then the action will not fail if the message is not found according to the specified criteria, but will wait for the specified time, and only if the message is not found within the specified time, the action will fail."), examples: [{code: tr("Activated"), description: tr("Wait message")}, {code: tr("Deactivated"), description: tr("Don't wait message")}]})) %>"></i>
 		</span>
 		<span id="waitSettings">
 			<%= _.template($('#input_constructor').html())({
-				id: "foundOver",
-				description: tr("Number of letters"),
+				id: "minResults",
+				description: tr("Number of messages"),
 				default_selector: "int",
 				disable_string: true,
-				value_number: 0,
-				min_number: 0,
+				value_number: 1,
+				min_number: 1,
 				max_number: 999999,
 				help: {
-					description: tr("Number of letters")
+					description: tr("Wait for the appearance of the specified number of messages matching the specified criteria. The action will be completed successfully when the number of messages matching the specified criteria is equal to or greater than the number specified in this parameter."),
+					examples: [
+						{code: 1, description: tr("Wait for one message matching the specified criteria")},
+						{code: 5, description: tr("Wait for five messages matching the specified criteria")},
+						{code: 10, description: tr("Wait for ten messages matching the specified criteria")}
+					]
 				}
 			}) %>
 			<%= _.template($('#input_constructor').html())({
@@ -666,7 +723,7 @@
 				min_number: 1,
 				max_number: 999999,
 				help: {
-					description: tr("Interval in seconds to check existence letters matching the specified criteria."),
+					description: tr("Interval in seconds to check existence messages matching the specified criteria."),
 					examples: [
 						{code: 2, description: tr("Check every 2 seconds")},
 						{code: 5, description: tr("Check every 5 seconds")},
@@ -683,7 +740,7 @@
 				min_number: 1,
 				max_number: 999999,
 				help: {
-					description: tr("Maximum waiting time for letters in seconds. If the specified time expires and the letter is not found, then the action will end with an error."),
+					description: tr("Maximum waiting time for messages in seconds. If the specified time expires and the message is not found, then the action will end with an error."),
 					examples: [
 						{code: 300, description: tr("Wait 5 minutes")},
 						{code: 600, description: tr("Wait 10 minutes")},
@@ -705,7 +762,7 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="delAfter">
-			<input type="checkbox" id="delAfter" style="margin-left:25px"/> <label for="delAfter" class="tr">Delete letter after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Delete letter after receiving"), description: tr("Delete letter after receiving")})) %>"></i>
+			<input type="checkbox" id="delAfter" style="margin-left:25px"/> <label for="delAfter" class="tr">Delete message after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Delete message after receiving"), description: tr("Optional parameter.") + " " + tr("If activated, after successfully receiving the message will be deleted from the mailbox. When this parameter is enabled, the \"Set flags after receiving\" parameter is ignored."), examples: [{code: tr("Activated"), description: tr("Delete message after receiving")}, {code: tr("Deactivated"), description: tr("Don't delete message after receiving")}]})) %>"></i>
 		</span>
 		<div class="container-fluid">
 			<div class="col-xs-12">
@@ -719,7 +776,7 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="setFlagsAfter">
-			<input type="checkbox" id="setFlagsAfter" style="margin-left:25px"/> <label for="setFlagsAfter" class="tr">Set flags after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Set flags after receiving"), description: tr("Set flags after receiving")})) %>"></i>
+			<input type="checkbox" id="setFlagsAfter" style="margin-left:25px"/> <label for="setFlagsAfter" class="tr">Set flags after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Set flags after receiving"), description: tr("Optional parameter.") + " " + tr("If activated, after successfully receiving the message, one or more of the specified flags will be set for it. This parameter is ignored if the \"Delete message after receiving\" parameter is enabled."), examples: [{code: tr("Activated"), description: tr("Set flags after receiving")}, {code: tr("Deactivated"), description: tr("Don't set flags after receiving")}]})) %>"></i>
 		</span>
 		<span id="setFlagsSettings">
 			<%= _.template($('#input_constructor').html())({
@@ -736,9 +793,12 @@
 				disable_int: true,
 				value_string: "",
 				help: {
-					description: tr("List or one flag.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
+					description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
 					examples: [
-						{code: "\\Seen", description: tr("Message has been read")},
+						{code: "\\Seen,\\Flagged"},
+						{code: "\\Seen, \\Flagged"},
+						{code: "[\"\\Seen\", \"\\Flagged\"]"},
+						{code: "<br/>\\Seen", description: tr("Message has been read")},
 						{code: "\\Answered", description: tr("Message has been answered")},
 						{code: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
 						{code: "\\Deleted", description: tr("Message is marked for removal")},
@@ -768,13 +828,19 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("Folder name")
+				description: tr("Optional parameter.") + " " + tr("The name of the folder in which this action will be performed, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.") + " " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+				examples: [
+					{code: "INBOX", description: tr("Default folder incoming messages")},
+					{code: "Spam", description: tr("Spam folder, on some mails")},
+					{code: "Trash", description: tr("Trash folder, on some mails")},
+					{code: tr("Empty string"), description: tr("Use the folder specified in the \"Configure receiving mail\" action")}
+				]
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Find and get the content of the letter by the specified criteria.</div>
+	<div class="tr tooltip-paragraph-first-fold">Find and get the content of the message by the specified criteria.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
 <script>

@@ -42,7 +42,7 @@
                 }
             ],
             "description": {
-                "en": "Get content of one mail by criteria",
+                "en": "Get content of one message by criteria",
                 "ru": "Получить содержимое одного письма по критериям"
             },
             "interface": "InMail_FindMessage_interface.js",
@@ -59,7 +59,7 @@
                 }
             ],
             "description": {
-                "en": "Get content of last mail",
+                "en": "Get content of last message",
                 "ru": "Получить содержимое последнего письма"
             },
             "interface": "InMail_GetLastMessage_interface.js",
@@ -76,7 +76,7 @@
                 }
             ],
             "description": {
-                "en": "Find id of the last mail",
+                "en": "Find id of the last message",
                 "ru": "Найти id последнего письма"
             },
             "interface": "InMail_SearchLast_interface.js",
@@ -93,7 +93,7 @@
                 }
             ],
             "description": {
-                "en": "Find id of one mail by criteria",
+                "en": "Find id of one message by criteria",
                 "ru": "Найти id одного письма по критериям"
             },
             "interface": "InMail_SearchOne_interface.js",
@@ -110,8 +110,8 @@
                 }
             ],
             "description": {
-                "en": "Find id of multiple mails",
-                "ru": "Найти id нескольких писем"
+                "en": "Find id of multiple messages by criteria",
+                "ru": "Найти id нескольких писем по критериям"
             },
             "interface": "InMail_Search_interface.js",
             "is_element": false,
@@ -127,7 +127,7 @@
                 }
             ],
             "description": {
-                "en": "Get mail content by id",
+                "en": "Get message content by id",
                 "ru": "Получить содержимое письма по id"
             },
             "interface": "InMail_GetMessage_interface.js",
@@ -144,7 +144,7 @@
                 }
             ],
             "description": {
-                "en": "Number of mails",
+                "en": "Number of messages",
                 "ru": "Количество писем"
             },
             "interface": "InMail_Count_interface.js",
@@ -161,7 +161,7 @@
                 }
             ],
             "description": {
-                "en": "Delete mail by id",
+                "en": "Delete message by id",
                 "ru": "Удалить письмо по id"
             },
             "interface": "InMail_DelMessages_interface.js",
@@ -178,7 +178,7 @@
                 }
             ],
             "description": {
-                "en": "Copy mail by id",
+                "en": "Copy message by id",
                 "ru": "Копировать письмо по id"
             },
             "interface": "InMail_CopyMessages_interface.js",
@@ -195,7 +195,7 @@
                 }
             ],
             "description": {
-                "en": "Move mail by id",
+                "en": "Move message by id",
                 "ru": "Переместить письмо по id"
             },
             "interface": "InMail_MoveMessages_interface.js",
@@ -263,7 +263,7 @@
                 }
             ],
             "description": {
-                "en": "Get email flags by id",
+                "en": "Get message flags by id",
                 "ru": "Получить флаги письма по id"
             },
             "interface": "InMail_GetFlags_interface.js",
@@ -280,7 +280,7 @@
                 }
             ],
             "description": {
-                "en": "Set email flags by id",
+                "en": "Set message flags by id",
                 "ru": "Установить флаги письма по id"
             },
             "interface": "InMail_SetFlags_interface.js",
@@ -297,7 +297,7 @@
                 }
             ],
             "description": {
-                "en": "Remove email flags by id",
+                "en": "Remove message flags by id",
                 "ru": "Удалить флаги письма по id"
             },
             "interface": "InMail_DelFlags_interface.js",
@@ -451,22 +451,32 @@
     "localize": {
 		"Timeout": {"ru":"Таймаут"},
 		"Protocol": {"ru":"Протокол"},
-		"Host name": {"ru":"Имя хоста"},
 		"Folder name": {"ru":"Имя папки"},
+		"Server address": {"ru":"Адрес сервера"},
 		"Timeout (seconds)": {"ru":"Таймаут (секунд)"},
 		"Auto configuration": {"ru":"Автоматическая настройка"},
 		"Without using encryption": {"ru":"Без использования шифрования"},
-		"Default folder incoming messages": {"ru":"Папка по умолчанию для входящих сообщений"},
+		"Password of the mail server.": {"ru":"Пароль почтового сервера."},
+		"Trash folder, on some mails": {"ru":"Корзина, на некоторых почтах"},
+		"Spam folder, on some mails": {"ru":"Спам-папка, на некоторых почтах"},
+		"Port number of the mail server.": {"ru":"Номер порта почтового сервера."},
+		"Username of the mail server.": {"ru":"Имя пользователя почтового сервера."},
+		"Default folder incoming messages": {"ru":"Папка по умолчанию для входящих писем"},
+		"Address (URL or IP) of the mail server.": {"ru":"Адрес (URL или IP) почтового сервера."},
+		"Encryption type of connection to the mail server.": {"ru":"Тип шифрования соединения с почтовым сервером."},
 		"Default port for imap protocol with SSL encryption": {"ru":"Порт по умолчанию для протокола imap с SSL шифрованием"},
 		"Default port for pop3 protocol with SSL encryption": {"ru":"Порт по умолчанию для протокола pop3 с SSL шифрованием"},
 		"Configure access to the mail server to read email.": {"ru":"Настроить доступ к почтовому серверу для чтения электронной почты."},
 		"Automatically detect port based on protocol and encryption type": {"ru":"Автоматическое определение порта на основе протокола и типа шифрования"},
+		"The protocol by which the connection to the mail server will be made.": {"ru":"Протокол по которому будет производиться подключение к почтовому серверу."},
 		"Default port for imap protocol without encryption or with STARTTLS encryption": {"ru":"Порт по умолчанию для протокола imap без шифрования или с STARTTLS шифрованием"},
 		"Default port for pop3 protocol without encryption or with STARTTLS encryption": {"ru":"Порт по умолчанию для протокола pop3 без шифрования или с STARTTLS шифрованием"},
+		"The name of the folder in which all actions will be performed if no other folder is specified in their additional settings.": {"ru":"Имя папки, в которой будут выполняться все действия, если в их допалнительных настройках не указанна другая папка."},
 		"This action won't start connection, it only sets configuration. Connection will be established after first attempt to access server. When action, which triggers connection will be finished, connection won't be closed immediately. It will be preserved for a time specified in this parameter. If another action will require access to server, connection will be reused.": {"ru":"Это действие не устанавливает соединение сразу. Соединение будет установлено только после первой попытки доступа к серверу. Когда действие, запускающее соединение, будет завершено, соединение не будет закрыто. Оно будет храниться в течение времени, указанного в этом параметре. Если другое действие снова потребует доступа к серверу, соединение будет повторно использовано."},
 		
 		"By default mail client works without proxy, this action sets proxy for mail client.": {"ru":"По умолчанию почтовый клиент работает без прокси, это действие устанавливает его."},
 		
+		"Flags": {"ru":"Флаги"},
 		"Parsing": {"ru":"Парсинг"},
 		"To date": {"ru":"До даты"},
 		"Timeout": {"ru":"Таймаут"},
@@ -474,15 +484,20 @@
 		"Contains": {"ru":"Содержит"},
 		"From date": {"ru":"От даты"},
 		"Sorting": {"ru":"Сортировка"},
+		"Marketing": {"ru":"Маркетинг"},
+		"All files": {"ru":"Все файлы"},
 		"Attachments": {"ru":"Вложения"},
+		"Get message": {"ru":"Получить"},
 		"Filtration": {"ru":"Фильтрация"},
-		"Wait letters": {"ru":"Ждать письма"},
-		"Letter size": {"ru":"Размер письма"},
-		"Body of letter": {"ru":"Тело письма"},
-		"Letter subject": {"ru":"Тема письма"},
-		"Text of letter": {"ru":"Текст письма"},
+		"Activated": {"ru":"Активирован"},
+		"Deactivated": {"ru":"Деактивирован"},
+		"Wait message": {"ru":"Ждать письмо"},
+		"Message size": {"ru":"Размер письма"},
+		"Body of message": {"ru":"Тело письма"},
+		"Message subject": {"ru":"Тема письма"},
+		"Text of message": {"ru":"Текст письма"},
 		"Wait 5 minutes": {"ru":"Ждать 5 минут"},
-		"Flags of letter": {"ru":"Флаги письма"},
+		"Flags of message": {"ru":"Флаги письма"},
 		"Does not contain": {"ru":"Не содержит"},
 		"Sorting field": {"ru":"Поле сортировки"},
 		"Receiving date": {"ru":"Дата получения"},
@@ -492,69 +507,159 @@
 		"Attachment names": {"ru":"Имена вложений"},
 		"File name mask": {"ru":"Маска имени файла"},
 		"Variables list": {"ru":"Список переменных"},
+		"All text files": {"ru":"Все текстовые файлы"},
 		"Timeout (seconds)": {"ru":"Таймаут (секунд)"},
-		"Number of letters": {"ru":"Количество писем"},
+		"Don't wait message": {"ru":"Не ждать письмо"},
+		"Number of messages": {"ru":"Количество писем"},
 		"Interval (seconds)": {"ru":"Интервал (секунд)"},
-		"Sender of letter": {"ru":"Отправитель письма"},
+		"Sender of message": {"ru":"Отправитель письма"},
+		"Business proposal": {"ru":"Деловое предложение"},
 		"Field for sorting": {"ru":"Поле для сортировки"},
-		"Recipient of letter": {"ru":"Получатель письма"},
-		"Get letter size": {"ru":"Получить размер письма"},
-		"Get letter subject": {"ru":"Получить тему письма"},
-		"Get body of letter": {"ru":"Получить тело письма"},
-		"Get flags of letter": {"ru":"Получить флаги письма"},
+		"Email confirmation": {"ru":"Подтверждение почты"},
+		"Message has been read": {"ru":"Письмо прочитано"},
+		"Recipient of message": {"ru":"Получатель письма"},
+		"Get message size": {"ru":"Получить размер письма"},
+		"Get message subject": {"ru":"Получить тему письма"},
+		"Get body of message": {"ru":"Получить тело письма"},
+		"All JavaScript files": {"ru":"Все JavaScript файлы"},
+		"Get flags of message": {"ru":"Получить флаги письма"},
 		"Get receiving date": {"ru":"Получить дату получения"},
 		"sort alphabetically": {"ru":"сортировка по алфавиту"},
+		"first \"To\" address" : {"ru": "первый \"To\" адрес"},
+		"Get message Id": {"ru":"Получить идентификатор письма"},
 		"Save attached files": {"ru":"Сохранить вложенные файлы"},
-		"Get message Id": {"ru":"Получить идентификатор сообщения"},
-		"Links from body of letter": {"ru":"Ссылки из тела письма"},
+		"Save message Id": {"ru":"Сохранить идентификатор письма"},
+		"first \"From\" address" : {"ru": "первый \"From\" адрес"},
 		"Check every 5 seconds": {"ru":"Проверять каждые 5 секунд"},
 		"Check every 2 seconds": {"ru":"Проверять каждые 2 секунды"},
-		"Get sender of letter": {"ru":"Получить отправителя письма"},
+		"Links from body of message": {"ru":"Ссылки из тела письма"},
+		"from server and save": {"ru":"письма с сервера и сохранить"},
+		"Get sender of message": {"ru":"Получить отправителя письма"},
 		"Check every 10 seconds": {"ru":"Проверять каждые 10 секунд"},
-		"Get recipient of letter": {"ru":"Получить получателя письма"},
-		"Technical headers of letter": {"ru":"Технические заголовки письма"},
+		"Message has been answered": {"ru":"На письмо был дан ответ"},
+		"Get recipient of message": {"ru":"Получить получателя письма"},
+		"Don't save message Id": {"ru":"Не сохранять идентификатор письма"},
+		"Technical headers of message": {"ru":"Технические заголовки письма"},
 		"Set flags after receiving": {"ru":"Установить флаги после получения"},
-		"Delete letter after receiving": {"ru":"Удалить письмо после получения"},
-		"Parse links from body of letter": {"ru":"Парсить ссылки из тела письма"},
+		"Message is marked for removal": {"ru":"Письмо отмечено для удаления"},
+		"Delete message after receiving": {"ru":"Удалить письмо после получения"},
+		"All JavaScript and text files": {"ru":"Все JavaScript и текстовые файлы"},
+		"Parse links from body of message": {"ru":"Парсить ссылки из тела письма"},
+		"Message subject, \"Subject\" field": {"ru":"Тема письма, поле \"Subject\""},
+		"Recipient of message, \"To\" field": {"ru":"Получатель письма, поле \"To\""},
 		"Do not filter by missing flags": {"ru":"Не фильтровать по отсутствию флагов"},
-		"Get technical headers of letter": {"ru":"Получить технические заголовки письма"},
+		"Sender of message, \"From\" field": {"ru":"Отправитель письма, поле \"From\""},
 		"Get list of attached file names": {"ru":"Получить список имён вложенных файлов"},
+		"Get technical headers of message": {"ru":"Получить технические заголовки письма"},
+		"Don't delete message after receiving": {"ru":"Не удалять письмо после получения"},
 		"Do not filter by the presence of flags": {"ru":"Не фильтровать по наличию флагов"},
-		"List of flags that the letter should contain.": {"ru":"Список флагов, которые должно содержать письмо."},
-		"List of flags that the letter should not contain.": {"ru":"Список флагов, которые не должно содержать письмо."},
-		"Find and get the content of the letter by the specified criteria.": {"ru":"Найти и получить содержимое письма по указанным критериям."},
-		"Interval in seconds to check existence letters matching the specified criteria.": {"ru":"Интервал в секундах для проверки наличия писем, соответствующих указанным критериям."},
+		"Don't set flags after receiving": {"ru":"Не устанавливать флаги письмо после получения"},
+		"List of flags that the message should contain.": {"ru":"Список флагов, которые должно содержать письмо."},
+		"List of flags that the message should not contain.": {"ru":"Список флагов, которые не должно содержать письмо."},
+		"Message has not completed composition (marked as a draft)": {"ru":"Письмо не завершено (помечено как черновик)"},
+		"Wait for one message matching the specified criteria": {"ru":"Ждать одно письмо, соответствующее указанным критериям"},
+		"Wait for five messages matching the specified criteria": {"ru":"Ждать пять писем, соответствующих указанным критериям"},
+		"Wait for ten messages matching the specified criteria": {"ru":"Ждать десять писем, соответствующих указанным критериям"},
+		"Message is \"flagged\" for urgent/special attention": {"ru":"Письмо \"помечено\" как требующее срочного/особого внимания"},
+		"List or one flag which needs to set for the message.": {"ru":"Список или один флаг, которые нужно установить для письма."},
+		"Part of the message by which sorting will be performed." : {"ru": "Часть письма, по которой будет производится сортировка."},
+		"You can specify several masks by separating them with \";\".": {"ru":"Можно указать несколько масок, разделив их при помощи \";\"."},
+		"Find and get the content of the message by the specified criteria.": {"ru":"Найти и получить содержимое письма по указанным критериям."},
+		"Use the folder specified in the \"Configure receiving mail\" action": {"ru":"Использовать папку указанную в действии \"Настроить получение почты\""},
+		"The possible flags may differ depending on the server implementation.": {"ru":"Возможные флаги могут отличаться в зависимости от реализации на сервере."},
+		"The resulting list can be processed using actions from the \"JSON\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"JSON\"."},
+		"The resulting list can be processed using actions from the \"List\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"Список\"."},
+		"You can get a list of mailbox folders using the \"Folder list\" action.": {"ru":"Список папок почтового ящика можно получить с помощью действия \"Список папок\"."},
+		"The resulting date can be processed using actions from the \"Date and time\" module.": {"ru":"Полученную дату можно обработать с помощью действий из модуля \"Дата и время\"."},
+		"Interval in seconds to check existence messages matching the specified criteria.": {"ru":"Интервал в секундах для проверки наличия писем, соответствующих указанным критериям."},
+		"using the two parameters below, you can make filter by the contents of this field.": {"ru":"используя два параметра ниже, можно произвести фильтрацию по содержимому этого поля."},
 		"As a list, you can use a string consisting of column names, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из имен полей, разделенных запятыми."},
+		"You can choose which attachments will be saved by specifying the filename mask in the parameter below.": {"ru":"Вы можете выбрать, какие вложения будут сохранены, указав маску имени файла в параметр ниже."},
 		"Using the parameters from this block, you can filter the results as you need, or leave them without filtering.": {"ru":"Используя параметры из этого блока, вы можете отфильтровать результаты по своему усмотрению или оставить их без фильтрации."},
 		"Using the parameters from this block, you can sort the results in the order you need, or leave them without sorting.": {"ru":"Используя параметры из этого блока, вы можете отсортировать результаты в нужном вам порядке или оставить их без сортировки."},
-		"Using the parameters from this block, you can select which parts of the letter will be fetched and in which variables will be saved.": {"ru":"Используя параметры из этого блока, вы можете выбрать какие части письма будут получены и в какие переменные будут сохранены."},
-		"Maximum waiting time for letters in seconds. If the specified time expires and the letter is not found, then the action will end with an error.": {"ru":"Максимальное время ожидания писем в секундах. Если указанное время выйдет и писма не будет найдены, то действие завершится ошибкой."},
+		"Using the parameters from this block, you can select which parts of the message will be fetched and in which variables will be saved.": {"ru":"Используя параметры из этого блока, вы можете выбрать какие части письма будут получены и в какие переменные будут сохранены."},
+		"The file name mask by which attachments will be filtered. Only files whose names match the mask will be retrieved and saved.": {"ru":"Маска имен файлов по которой будет производиться фильтрация вложений. Только файлы, имена которых соответствуют маске, будут получены и сохранены."},
+		"Maximum waiting time for messages in seconds. If the specified time expires and the message is not found, then the action will end with an error.": {"ru":"Максимальное время ожидания писем в секундах. Если указанное время выйдет и писма не будет найдены, то действие завершится ошибкой."},
+		"The name of the folder in which this action will be performed, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.": {"ru":"Имя папки, в которой будет выполнятся это действие, если не указано, то будет использоватся папка указанная в действии \"Настроить получение почты\"."},
+		"If activated, after successfully receiving the message will be deleted from the mailbox. When this parameter is enabled, the \"Set flags after receiving\" parameter is ignored.": {"ru":"Если активирован, то после удачного получения письмо будет удалено с почтового ящика. При активации этого параметра, параметр \"Установить флаги после получения\" игнорируется."},
+		"If activated, after successfully receiving the message, one or more of the specified flags will be set for it. This parameter is ignored if the \"Delete message after receiving\" parameter is enabled.": {"ru":"Если активирован, то после удачного получения письма для него будет установлен один или несколько указанных флагов. Этот параметр игнорируется, если активирован параметр \"Удалить письмо после получения\"."},
+		"If enabled, then the action will not fail if the message is not found according to the specified criteria, but will wait for the specified time, and only if the message is not found within the specified time, the action will fail.": {"ru":"Если активирован, то действие не завершится ошибкой, если письмо не будет найдено по заданным критериям, а будет ждать его указанное время, и только если за указанное время письмо не будет найдено, действие завершится ошибкой."},
+		"Wait for the appearance of the specified number of messages matching the specified criteria. The action will be completed successfully when the number of messages matching the specified criteria is equal to or greater than the number specified in this parameter.": {"ru":"Ждать появления указанного количества писем, соответствующих указанным критериям. Действие будет завершено успешно, когда количество писем, соответствующих указанным критериям, будет равно или больше числа указанного в этом параметре."},
+		"By default, sorting is disabled, but you can enable it by changing the value of this parameter and specifying the \"Sorting field\" parameter. Sorting is not supported by all mail services, if sorting is enabled, but the service does not support it, the action will fail." : {"ru": "По умолчанию сортировка отключена, но вы можете включить её, изменив значение этого параметра и указав параметр \"Поле сортировки\". Сортировка поддерживается не всеми почтовыми сервисами, если сортировка включена, но сервис её не поддерживает, действие завершится ошибкой."},
+		"The \"name\" property of the object will contain the original file name, the \"path\" property will contain the path to the saved file, and the \"type\" property will contain the mime type of the file. Having obtained the path to the file and its original name from the object, you can rename it using the \"Move file/folder\" action from the \"Filesystem\" module.": {"ru":"Свойство \"name\" объекта будет содержать оригинальное имя файла, свойство \"path\" будет содержать путь к сохраненному файлу, а свойство \"type\" будет содержать mime тип файла. Получив из объекта путь к файлу и его оригинальное имя, вы можете переименовать его с помощью действия \"Переместить Файл/Папку\" из модуля \"Файловая система\"."},
 		
-		"Get the content of the last letter in the specified folder.": {"ru":"Получить содержимое последнего письма в указанной папке."},
+		"Get message date from server and save": {"ru":"Получить дату письма с сервера и сохранить"},
+		"Get message size from server and save": {"ru":"Получить размер письма с сервера и сохранить"},
+		"Get message flags from server and save": {"ru":"Получить флаги письма с сервера и сохранить"},
+		"Get message subject from server and save": {"ru":"Получить тему письма с сервера и сохранить"},
+		"Get message sender from server and save": {"ru":"Получить отправителя письма с сервера и сохранить"},
+		"Get message recipient from server and save": {"ru":"Получить получателя письма с сервера и сохранить"},
+		"Get message attachments from server and save": {"ru":"Получить вложения письма с сервера и сохранить"},
 		
-		"Find and save the id of the last letter in the specified folder.": {"ru":"Найти и сохранить id последнего письма в указанной папке."},
-		"Variable in which, after successful execution of the action, the id of the last mail will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id последнего письма."},
+		"Don't get message date from server": {"ru":"Не получать дату письма с сервера"},
+		"Don't get message size from server": {"ru":"Не получать размер письма с сервера"},
+		"Don't get message flags from server": {"ru":"Не получать флаги письма с сервера"},
+		"Don't get message subject from server": {"ru":"Не получать тему письма с сервера"},
+		"Don't get message sender from server": {"ru":"Не получать отправителя письма с сервера"},
+		"Don't get message recipient from server": {"ru":"Не получать получателя письма с сервера"},
+		"Don't get message attachments from server": {"ru":"Не получать вложения письма с сервера"},
 		
-		"Find and save the letter id by the specified criteria.": {"ru":"Найти и сохранить id письма по указанным критериям."},
-		"Variable in which, after successful execution of the action, the id of the found mail will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id найденнго письма."},
+		"If enabled, then the message Id will be stored in the variable below.": {"ru":"Если активирован, то идентификатор письма будет сохранен в переменную указанную ниже."},
+		"If enabled, then the date of the message will be retrieved from the server and stored in the variable below.": {"ru":"Если активирован, то дата письма будет получен с сервера и сохранен в переменную указанную ниже."},
+		"If enabled, then the size of the message will be retrieved from the server and stored in the variable below.": {"ru":"Если активирован, то размер письма будет получен с сервера и сохранен в переменную указанную ниже."},
+		"If enabled, then the subject of the message will be retrieved from the server and stored in the variable below.": {"ru":"Если активирован, то тема письма будет получен с сервера и сохранен в переменную указанную ниже."},
+		"If enabled, then the sender of the message will be retrieved from the server and stored in the variable below.": {"ru":"Если активирован, то отправитель письма будет получен с сервера и сохранен в переменную указанную ниже."},
+		"If enabled, then the list of message flags will be retrieved from the server and stored in the variable below.": {"ru":"Если активирован, то список флагов письма будет получен с сервера и сохранен в переменную указанную ниже."},
+		"If enabled, then the recipient of the message will be retrieved from the server and stored in the variable below.": {"ru":"Если активирован, то получатель письма будет получен с сервера и сохранен в переменную указанную ниже."},
+		"If enabled, then the list of filenames attached to the message will be retrieved from the server and stored in the variable below.": {"ru":"Если активирован, то список имен файлов, прикрепленных к письму, будет получен с сервера и сохранен в переменную указанную ниже."},
+		"If enabled, then the attachments of the message will be received from the server and saved to the computer as files with a random name, a list of objects with information about attachments will be written to the variable specified below the mask.": {"ru":"Если активирован, то вложения письма будет получен с сервера и сохранен на компьютер в виде файлов со случайным названием, в переменную указанную ниже маски, будет записан список объектов с информацией о вложениях."},
+		
+		"Variable in which, after successful execution of the action, the date of the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана дата полученного письма."},
+		"Variable in which, after successful execution of the action, the size of the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан размер полученного письма."},
+		"Variable in which, after successful execution of the action, the subject of the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана тема полученного письма."},
+		"Variable in which, after successful execution of the action, the id of the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан идентификатор полученного письма."},
+		"Variable in which, after successful execution of the action, the sender of the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан отправитель полученного письма."},
+		"Variable in which, after successful execution of the action, the recipient of the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан получатель полученного письма."},
+		"Variable in which, after successful execution of the action, the list of flags of the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список флагов полученного письма."},
+		"Variable in which, after successful execution of the action, the list of filenames attached to the received message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список имен файлов, прикрепленных к полученному письму."},
+		"Variable in which, after successful execution of the action, the list of objects containing information about the saved attachments of the message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список объектов, содержащих информацию о сохраненых вложениях письма."},
+		
+		"Get the content of the last message in the specified folder.": {"ru":"Получить содержимое последнего письма в указанной папке."},
+		
+		"Find and save the id of the last message in the specified folder.": {"ru":"Найти и сохранить id последнего письма в указанной папке."},
+		"Variable in which, after successful execution of the action, the id of the last message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id последнего письма."},
+		
+		"Find and save the message id by the specified criteria.": {"ru":"Найти и сохранить id письма по указанным критериям."},
+		"Variable in which, after successful execution of the action, the id of the found message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id найденнго письма."},
 		
 		"Offset": {"ru":"Смещение"},
+		"Wait messages": {"ru":"Ждать письма"},
+		"Don't wait messages": {"ru":"Не ждать письма"},
+		"Add 1 to all found id": {"ru":"Прибавить 1 ко всем найденным id"},
+		"Add 5 to all found id": {"ru":"Прибавить 5 ко всем найденным id"},
+		"Subtract 1 from all found id": {"ru":"Отнять 1 у всех найденных id"},
+		"Subtract 5 from all found id": {"ru":"Отнять 5 у всех найденных id"},
 		"Maximum number of results": {"ru":"Максимальное количество результатов"},
-		"Find and save the letters id by the specified criteria.": {"ru":"Найти и сохранить id писем по указанным критериям."},
-		"Variable in which, after successful execution of the action, the list of id of the found mails will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список id найденных писем."},
+		"Don't add offset to found id": {"ru":"Не добавлять смещение найденным id"},
+		"Don't limit the number of results": {"ru":"Не ограничивать количество результатов"},
+		"Find and save the messages id by the specified criteria.": {"ru":"Найти и сохранить id писем по указанным критериям."},
+		"Variable in which, after successful execution of the action, the list of id of the found messages will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список id найденных писем."},
+		"Add the specified offset to all found ids. If this parameter is specified, then the specified offset will be added to all found ids. The offset can be any positive or negative integer.": {"ru":"Добавить указанное смещение ко всем найденным id. Если этот параметр указан, то ко всем найденным id будет добавлено указанное смещение. Смещение может быть любым положительным или отрицательным целым числом."},
+		"Limit the number of returned ids to the specified number. If this parameter is specified, then the resulting id list will be truncated to the specified number. If the parameter is not specified or equal to 0, then the limit will not be applied and the full result will be returned.": {"ru":"Ограничить количество возвращаемых id указанным числом. Если этот параметр указан, то итоговый список id будет обрезан до указанного количества. Если параметр не указан или равен 0, то ограничение не будет применятся и будет возвращен полный результат."},
 		
-		"Get the content of the letter with the specified identifier.": {"ru":"Получить содержимое письма с указанным идентификатором."},
+		"Get the content of the message with the specified identifier.": {"ru":"Получить содержимое письма с указанным идентификатором."},
 		
 		"Get the number of messages that match the specified criteria.": {"ru":"Получить количество писем соответствующих указанным критериям."},
-		"Variable in which, after successful execution of the action, the number of messages will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество собщений."},
+		"Variable in which, after successful execution of the action, the number of messages will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество писем."},
+		"If enabled, the action will not fail if the messages is not found according to the specified criteria, but will wait for the specified time, and only if the messages is not found within the specified time, the action will fail.": {"ru":"Если активирован, то действие не завершится ошибкой, если письма не будут найдены по заданным критериям, а будет ждать их указанное время, и только если за указанное время письма не будут найдены, действие завершится ошибкой."},
 		
-		"Message Id": {"ru":"Идентификатор сообщения"},
-		"Delete message with the specified Id.": {"ru":"Удалить сообщение с указанным идентификатором."},
+		"Message Id": {"ru":"Идентификатор письма"},
+		"Delete message with the specified Id.": {"ru":"Удалить письмо с указанным идентификатором."},
 		
 		"To folder": {"ru":"В папку"},
-		"Copy message from one mailbox to another.": {"ru":"Скопировать сообщение из одного почтового ящика в другой."},
+		"Copy message from one mailbox to another.": {"ru":"Скопировать письмо из одного почтового ящика в другой."},
 		
-		"Move message from one mailbox to another.": {"ru":"Переместить сообщение из одного почтового ящика в другой."},
+		"Move message from one mailbox to another.": {"ru":"Переместить письмо из одного почтового ящика в другой."},
 		
 		"Creates a new mailbox on the server.": {"ru":"Создает новый почтовый ящик на сервере."},
 		
@@ -564,30 +669,23 @@
 		
 		"Deletes the specified mailbox that exists on the server.": {"ru":"Удаляет указанный почтовый ящик, существующий на сервере."},
 		
-		"Get a list of flags for the specified message.": {"ru":"Получить список флагов для указанного сообщения."},
+		"Get a list of flags for the specified message.": {"ru":"Получить список флагов для указанного письма."},
 		"Variable in which, after successful execution of the action, the list of flags will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана список флагов."},
 		
-		"Flags": {"ru":"Флаги"},
-		"List or one flag.": {"ru":"Список или один флаг."},
-		"Message has been read": {"ru":"Сообщение прочитано"},
-		"Message has been answered": {"ru":"На сообщение был дан ответ"},
 		"Add flags to existing ones": {"ru":"Добавить флаги к существующим"},
-		"Message is marked for removal": {"ru":"Сообщение отмечено для удаления"},
-		"Set a flag or several flags for the message.": {"ru":"Установить флаг или несколько флагов для сообщения."},
-		"Message has not completed composition (marked as a draft)": {"ru":"Сообщение не завершено (помечено как черновик)"},
-		"Message is \"flagged\" for urgent/special attention": {"ru":"Сообщение \"помечено\" как требующее срочного/особого внимания"},
-		"The possible flags may differ depending on the server implementation.": {"ru":"Возможные флаги могут отличаться в зависимости от реализации на сервере."},
+		"Set a flag or several flags for the message.": {"ru":"Установить флаг или несколько флагов для письма."},
 		
-		"Remove a flag or several flags from a message.": {"ru":"Удалить флаг или несколько флагов с сообщения."},
+		"Remove a flag or several flags from a message.": {"ru":"Удалить флаг или несколько флагов с письма."},
+		"List or one flag which needs to remove from the message.": {"ru":"Список или один флаг, которые нужно удалить с письма."},
 		
 		"Data format": {"ru":"Формат данных"},
 		"Get a list of folders in the specified mailbox.": {"ru":"Получить список папок в указанном почтовом ящике."},
 		"The format in which the read data will be saved to variable.": {"ru":"Формат, в котором прочитанные данные будут сохранены в переменную."},
 		"Variable in which, after successful execution of the action, the list of folders will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записана список папок."},
 		
-		"Total messages": {"ru":"Всего сообщений"},
-		"Recent messages": {"ru":"Недавних сообщений"},
-		"Unseen messages": {"ru":"Непрочитанных сообщений"},
+		"Total messages": {"ru":"Всего писем"},
+		"Recent messages": {"ru":"Недавних писем"},
+		"Unseen messages": {"ru":"Непрочитанных писем"},
 		"Get information about the folder in the specified mailbox.": {"ru":"Получить информацию о папке в указанном почтовом ящике."},
 		
 		"Enable mail receiving module debug.": {"ru":"Включите отладку модуля приема почты."},

@@ -80,7 +80,7 @@ _InMail = {
 		};
 		
 		this.api.box = _InMail.paramClean(box);
-		this.api.timeout = timeout*1000;
+		this.api.timeout = (parseInt(_InMail.paramClean(timeout)) || 5 * 60) * 1000;
 	},
 	
 	getApi: function(noError){
@@ -108,7 +108,7 @@ _InMail = {
 				
 				type = this.paramClean(type);
 				if(!_is_nilb(type) && type != "auto"){
-					proxyObj["IsHttp"] = type == "http";
+					proxyObj["IsHttp"] = _starts_with(type, "http");
 				};
 			};
 			
@@ -238,7 +238,7 @@ _InMail = {
 			_function_return(res);
 		}else{
 			if(errorNotFound){
-				_InMail.error('Could not find any letters matching the specified criteria in the specified mailbox folder', 'Не удалось найти ни одного письма, соответствующего указанным критериям, в указанной папке почтового ящика', 'search');
+				_InMail.error('Could not find any messages matching the specified criteria in the specified mailbox folder', 'Не удалось найти ни одного письма, соответствующего указанным критериям, в указанной папке почтового ящика', 'search');
 			}else{
 				_function_return([]);
 			};
@@ -248,7 +248,7 @@ _InMail = {
 	wait: function(){
 		var criteria = _function_argument("criteria");
 		var sorts = _function_argument("sorts");
-		var foundOver = parseInt(_InMail.paramClean(_function_argument("foundOver"))) || 0;
+		var minResults = parseInt(_InMail.paramClean(_function_argument("minResults"))) || 1;
 		var interval = 1000 * (parseInt(_InMail.paramClean(_function_argument("interval"))) || 5);
 		var timeout = 1000 * (parseInt(_InMail.paramClean(_function_argument("timeout"))) || 300);
 		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
@@ -262,10 +262,10 @@ _InMail = {
 				_InMail.error('Failed to wait for the required number of messages matching the specified criteria in the specified mailbox folder', 'Не удалось дождаться нужного количества писем, соответствующих указанным критериям, в указанной папке почтового ящика', 'wait');
 			};
 			
-			_call_function(_InMail.search,{criteria:criteria, sorts:sorts, box:box, errorNotFound: false})!
+			_call_function(_InMail.search, {criteria:criteria, sorts:sorts, box:box, errorNotFound: false})!
 			res = _result_function();
 			
-			if(res.length > foundOver){
+			if(res.length >= minResults){
 				_break();
 			};
 			
@@ -296,7 +296,7 @@ _InMail = {
 			_function_return(last);
 		}else{
 			if(errorNotFound){
-				_InMail.error('Could not find the last letter in the specified mailbox folder', 'Не удалось найти последнее письмо в указанной папке почтового ящика', 'searchLast');
+				_InMail.error('Could not find the last message in the specified mailbox folder', 'Не удалось найти последнее письмо в указанной папке почтового ящика', 'searchLast');
 			}else{
 				_function_return(0);
 			};
@@ -437,16 +437,8 @@ _InMail = {
 		var messages = _result_function();
 		
 		if(!messages.length){
-			_InMail.error('Could not find a letter matching the specified identifier in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
+			_InMail.error('Could not find a message matching the specified identifier in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
 		};
-		
-		_if_else(args.delAfter, function(){
-			_call_function(_InMail.delMessages, args)!
-		}, function(){
-			_if(args.setFlags, function(){
-				_call_function(_InMail.setFlags, {uids: uid, flags: args.setFlags, box: args.box})!
-			})!
-		})!
 		
 		_function_return(messages[0]);
 	},
@@ -567,7 +559,7 @@ _InMail = {
 							var keyLow = key.toLocaleLowerCase();
 							var value = criteria[key];
 							if(['flags', '!flags'].indexOf(keyLow) > -1){
-								var flags = _to_arr(value);
+								var flags = _to_arr(value).map(function(flag){return flag.slice(0, 1) == '\\' ? flag.slice(1) : flag});
 								if(keyLow=='!flags'){
 									flags = flags.map(function(flag){return flag.slice(0, 1) != '!' ? '!' + flag : flag});
 								};

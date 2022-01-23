@@ -10,7 +10,11 @@
 		disable_int: true,
 		value_string: "imap",
 		help: {
-			description: tr("The protocol by which the connection to the remote server will be made.")
+			description: tr("The protocol by which the connection to the mail server will be made."),
+			examples: [
+				{code: "imap"},
+				{code: "pop3"}
+			]
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
@@ -24,21 +28,25 @@
 		disable_int: true,
 		value_string: "false",
 		help: {
-			description: tr("Auto configuration")
+			description: tr("Auto configuration"),
+			examples: [
+				{code: "true"},
+				{code: "false"}
+			]
 		}
 	}) %>
 	<span id="advancedSettings">
 		<%= _.template($('#input_constructor').html())({
 			id: "host",
-			description: tr("Host name"),
+			description: tr("Server address"),
 			default_selector: "string",
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Host (URL or IP) of the remote server."),
+				description: tr("Address (URL or IP) of the mail server."),
 				examples: [
-					{code: "ftp.site.com"},
-					{code: "ftp15.testsite.com"},
+					{code: "imap.site.com"},
+					{code: "pop.example.com"},
 					{code: "96.256.27.26"}
 				]
 			}
@@ -57,8 +65,9 @@
 			disable_int: true,
 			value_string: "auto",
 			help: {
-				description: tr("Port of the remote server."),
+				description: tr("Port number of the mail server."),
 				examples: [
+					{code: "auto", description: tr("Automatically detect port based on protocol and encryption type")},
 					{code: "993", description: tr("Default port for imap protocol with SSL encryption")},
 					{code: "143", description: tr("Default port for imap protocol without encryption or with STARTTLS encryption")},
 					{code: "995", description: tr("Default port for pop3 protocol with SSL encryption")},
@@ -72,13 +81,18 @@
 			default_selector: "string",
 			variants: [
 				{value: "none", description: tr("Without using encryption")},
-				"ssl",
-				"starttls"
+				"SSL",
+				"STARTTLS"
 			],
 			disable_int: true,
-			value_string: "ssl",
+			value_string: "SSL",
 			help: {
-				description: tr("Encryption")
+				description: tr("Encryption type of connection to the mail server."),
+				examples: [
+					{code: "none", description: tr("Without using encryption")},
+					{code: "SSL"},
+					{code: "STARTTLS"}
+				]
 			}
 		}) %>
 	</span>
@@ -89,7 +103,7 @@
 		disable_int: true,
 		value_string: "",
 		help: {
-			description: tr("Username of the remote server.")
+			description: tr("Username of the mail server.")
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
@@ -99,7 +113,7 @@
 		disable_int: true,
 		value_string: "",
 		help: {
-			description: tr("Password of the remote server.")
+			description: tr("Password of the mail server.")
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
@@ -112,7 +126,12 @@
 		disable_int: true,
 		value_string: "INBOX",
 		help: {
-			description: tr("Folder name")
+			description: tr("The name of the folder in which all actions will be performed if no other folder is specified in their additional settings."),
+			examples: [
+				{code: "INBOX", description: tr("Default folder incoming messages")},
+				{code: "Spam", description: tr("Spam folder, on some mails")},
+				{code: "Trash", description: tr("Trash folder, on some mails")}
+			]
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
@@ -121,8 +140,8 @@
 		default_selector: "int",
 		disable_string: true,
 		value_number: 300,
-		min_number:0,
-		max_number:999999,
+		min_number: 0,
+		max_number: 999999,
 		help: {
 			description: tr("This action won't start connection, it only sets configuration. Connection will be established after first attempt to access server. When action, which triggers connection will be finished, connection won't be closed immediately. It will be preserved for a time specified in this parameter. If another action will require access to server, connection will be reused.")
 		}

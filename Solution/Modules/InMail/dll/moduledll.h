@@ -9,17 +9,41 @@ class Timer
 {
 	boost::thread sleepyThread;
 
-public:
-	~Timer();
+	public:
+		~Timer();
 
-	template <typename Function>
-	void setTimeout(Function function, int delay);
+		template <typename Function>
+		void setTimeout(Function function, int delay);
 
-	template <typename Function>
-	void setInterval(Function function, int interval);
+		template <typename Function>
+		void setInterval(Function function, int interval);
 
-	void stop();
+		void stop();
 };
+
+Timer::~Timer()
+{
+	//We should never leave the sleepy thread alone.
+	stop();
+}
+
+void Timer::stop()
+{
+	//Stop the thread from sleep state
+	sleepyThread.interrupt();
+	//Wait for exit
+	if (sleepyThread.joinable())
+	{
+		try
+		{
+			sleepyThread.join();
+		}
+		catch (std::exception)
+		{
+			abort();
+		}
+	}
+}
 
 template <typename Function>
 void Timer::setTimeout(Function function, int delay)

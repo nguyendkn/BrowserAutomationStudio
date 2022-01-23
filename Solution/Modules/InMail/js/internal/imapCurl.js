@@ -1754,7 +1754,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 						};
 						var type = _cycle_param("types")[type_index];
 						message.body[type] = '';
-						var filtered = parts.filter(function(p){return p.type.toLowerCase() === 'text' && p.subtype.toLowerCase() === type});
+						var filtered = parts.filter(function(p){return p.type.toLowerCase() === 'text' && p.subtype.toLowerCase() === type && !p.disposition});
 						_do_with_params({parts:filtered}, function(){
 							var part_index = _iterator() - 1;
 							if(part_index > _cycle_param("parts").length - 1){
@@ -1763,6 +1763,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 							_call_function(api.getPartData, {uid: attrs.uid, part: _cycle_param("parts")[part_index], markSeen: markSeen, box: box})!
 							message.body[type] += _result_function();
 						})!
+						message.body[type] = message.body[type].trim();
 					})!
 				})!
 				_if(attachnames || attachments, function(){

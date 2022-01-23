@@ -1,5 +1,5 @@
 <%if((getTextHtml && getLinksTextHtml) || (getTextPlain && getLinksTextPlain) || (getTextRaw && getLinksTextRaw)){%>/*Dat:eyJzIjoiZXh0cmFjdF91cmxzIn0=*/<%}%>
-_call_function(_InMail.getMessage, {uid: (<%= uid %>), body: [<%= [['html', getTextHtml], ['plain', getTextPlain], ['raw', getTextRaw]].filter(function(el){return el[1]}).map(function(el){return "'" + el[0] + "'"}).join(', ') %>], headers: [<%= [['from', getFrom], ['to', getTo], ['subject', getSubject], ['raw', getRawHeader]].filter(function(el){return el[1]}).map(function(el){return "'" + el[0] + "'"}).join(', ') %>]<%if(getSize){%>, size: <%= getSize %><%}%><%if(getFlags){%>, flags: <%= getFlags %><%}%><%if(getDate){%>, date: <%= getDate %><%}%><%if(getAttachNames){%>, attachnames: <%= getAttachNames %><%}%><%if(getAttachments){%>, attachments: (<%= attachmentsMask %>)<%}%><%if(delAfter){%>, delAfter: <%= delAfter %><%}%><%if(setFlagsAfter){%>, setFlags: (<%= setFlags %>)<%}%><%if(box!=='""'){%>, box: (<%= box %>)<%}%>})!
+_call_function(_InMail.getMessage, {uid: (<%= uid %>), body: [<%= [['html', getTextHtml], ['plain', getTextPlain], ['raw', getTextRaw]].filter(function(el){return el[1]}).map(function(el){return "'" + el[0] + "'"}).join(', ') %>], headers: [<%= [['from', getFrom], ['to', getTo], ['subject', getSubject], ['raw', getRawHeader]].filter(function(el){return el[1]}).map(function(el){return "'" + el[0] + "'"}).join(', ') %>]<%if(getSize){%>, size: <%= getSize %><%}%><%if(getFlags){%>, flags: <%= getFlags %><%}%><%if(getDate){%>, date: <%= getDate %><%}%><%if(getAttachNames){%>, attachnames: <%= getAttachNames %><%}%><%if(getAttachments){%>, attachments: (<%= attachmentsMask %>)<%}%><%if(box!=='""'){%>, box: (<%= box %>)<%}%>})!
 var messageData = _result_function();
 <%if(getFrom){%><%= saveFrom %> = messageData["headers"]["from"];<%}%>
 <%if(getTo){%><%= saveTo %> = messageData["headers"]["to"];<%}%>
@@ -28,3 +28,9 @@ var messageData = _result_function();
 <%if(getDate){%><%= saveDate %> = messageData["date"];<%}%>
 <%if(getAttachNames){%><%= saveAttachnames %> = messageData["attachnames"];<%}%>
 <%if(getAttachments){%><%= saveAttachments %> = messageData["attachments"];<%}%>
+
+<%if(delAfter){%>
+	_call_function(_InMail.delMessages, {uids: messageData["uid"]<%if(box!=='""'){%>, box: (<%= box %>)<%}%>})!
+<%}else if(setFlagsAfter){%>
+	_call_function(_InMail.setFlags, {uids: messageData["uid"], flags: (<%= setFlags %>)<%if(box!=='""'){%>, box: (<%= box %>)<%}%>})!
+<%}%>

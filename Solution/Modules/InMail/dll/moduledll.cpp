@@ -8,30 +8,6 @@
 #include <QTextCodec>
 #include "curl/curl.h"
 
-Timer::~Timer()
-{
-	//We should never leave the sleepy thread alone.
-	stop();
-}
-
-void Timer::stop()
-{
-	//Stop the thread from sleep state
-	sleepyThread.interrupt();
-	//Wait for exit
-	if (sleepyThread.joinable())
-	{
-		try
-		{
-			sleepyThread.join();
-		}
-		catch (std::exception)
-		{
-			abort();
-		}
-	}
-}
-
 extern "C" {
 	
 	struct CurlData
@@ -748,15 +724,15 @@ extern "C" {
 		code = curl_easy_perform(curl);
 		
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, NULL);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, NULL);
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 0);
 		
 		curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, NULL);
 		curl_easy_setopt(curl, CURLOPT_DEBUGDATA, NULL);
 		
-        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, NULL);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
-        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
+		curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, NULL);
+		curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
+		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
 		
 		QVariantMap res;
 

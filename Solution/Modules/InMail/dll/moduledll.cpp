@@ -483,16 +483,17 @@ extern "C" {
     {
 		if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN && type != CURLINFO_TEXT)
 		{
-			DebugData->Data.append(data, size);
 			if(type == CURLINFO_HEADER_IN && DebugData->isFetсh)
 			{
 				QString start;
+				bool isFetсhHead = false;
 				for(int i = 0, len = size < 23 ? size : 23; i < len; i++)
 				{
 					start[i] = data[i];
 				}
 				if(start.contains(QRegExp("^\\* \\d+ FETCH")))
 				{
+					isFetсhHead = true;
 					if(DebugData->isFetсhData)
 					{
 						DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));
@@ -510,8 +511,13 @@ extern "C" {
 				if(DebugData->isFetсhData)
 				{
 					DebugData->FetсhData.append(data, size);
+					if(!isFetсhHead)
+					{
+						return 0; //Don't write to Debug data any Fetch data except header
+					}
 				}
 			}
+			DebugData->Data.append(data, size);
 		}
         return 0;
     }
@@ -661,7 +667,7 @@ extern "C" {
 		}, data->timeout);
     }
 	
-	void InMail_ClearTimeout(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
+	void InMail_CurlClearTimeout(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
     {
 		CurlData *data = (CurlData*)ThreadData;
 		
@@ -844,23 +850,6 @@ extern "C" {
         document.setObject(object);
 
         QByteArray ResArray = document.toJson();
-
-        SetResult(&ResArray, AllocateSpace, AllocateData);
-	}
-	
-	void InMail_MultipleBase64ToOne(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
-    {
-		QString Str(InputJson);
-		QStringList List = Str.split("\r\n");
-		
-		QByteArray Result;
-		
-		for(QString Base64:List)
-		{
-			Result.append(QByteArray::fromBase64(Base64.toLatin1()));
-		}
-		
-		QByteArray ResArray = Result.toBase64();
 
         SetResult(&ResArray, AllocateSpace, AllocateData);
 	}

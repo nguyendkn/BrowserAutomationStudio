@@ -411,7 +411,7 @@
 					"name": "curl_clear_timeout",
 					"isasync": false,
 					"waitinfinite": false,
-					"workfunction": "InMail_ClearTimeout"
+					"workfunction": "InMail_CurlClearTimeout"
 				},
 				{
 					"name": "curl_request",
@@ -430,12 +430,6 @@
 					"isasync": false,
 					"waitinfinite": false,
 					"workfunction": "InMail_Decoder"
-				},
-				{
-					"name": "multiple_base64_to_one",
-					"isasync": false,
-					"waitinfinite": false,
-					"workfunction": "InMail_MultipleBase64ToOne"
 				}
 			]
 		}

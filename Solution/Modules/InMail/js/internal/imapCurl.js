@@ -1583,55 +1583,43 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var box = api.prepareBox(_function_argument("box"));
 		
 		_call_function(api.fetch, {uids: uid, options: {bodies: [part.partID], markSeen: markSeen}, box: box})!
-		var result = _result_function()[0];
-		
-		var data = result.parts[0].body;
+		var data = _result_function()[0].parts[0].body;
 		var encoding = part.encoding.toLowerCase();
-		var charset = (part.params && part.params.charset) ? part.params.charset.toLowerCase() : '';
+		var charset = ((part.params && part.params.charset) ? part.params.charset.toLowerCase() : '') || 'utf-8';
+		var result = '';
 		if(encoding === 'base64'){
-			if(saveToFile){
-				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:_InMail.curl.multipleBase64ToOne(data), base64:true, append:false}));
-			}else{
-				var list =  data.split('\r\n');
-				var result = '';
-				for(var i = 0; i < list.length; i++){
-					var data = list[i];
-					result += _InMail.curl.decoder(charset || 'utf-8', 'b', data);
+			var list =  data.split('\r\n');
+			for(var i = 0; i < list.length; i++){
+				var line = list[i];
+				if(saveToFile){
+					if(i){
+						native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:true}));
+					}else{
+						native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:false}));
+					};
+				}else{
+					result += _InMail.curl.decoder(charset, 'b', data);
 				};
-				_function_return(result);
 			};
 		}else if(encoding === 'quoted-printable'){
-			var result = _InMail.curl.decoder(charset || 'utf-8', 'q', data);
-			if(saveToFile){
-				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:true, append:false}));
-			}else{
-				_function_return(result);
-			};
+			result = _InMail.curl.decoder(charset, 'q', data);
 		}else if(encoding === '7bit' || encoding === '7bits'){
-			var result = _InMail.curl.decoder('latin1', '', data);
-			if(saveToFile){
-				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:true, append:false}));
-			}else{
-				_function_return(result);
-			};
+			result = _InMail.curl.decoder('latin1', '', data);
 		}else if(encoding === '8bit' || encoding === '8bits' || encoding === 'binary'){
-			var result = _InMail.curl.decoder(charset || 'utf-8', '', data);
-			if(saveToFile){
-				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:true, append:false}));
-			}else{
-				_function_return(result);
-			};
+			result = _InMail.curl.decoder(charset, '', data);
 		}else if(encoding === 'uuencode'){
 			var parts = data.split('\n');
-			var merged = parts.splice(1, parts.length - 4).join('');
-			var result = api.uuedecode(merged);
-			if(saveToFile){
-				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:true, append:false}));
-			}else{
-				_function_return(result);
-			};
+			result = api.uuedecode(parts.splice(1, parts.length - 4).join(''));
 		}else{
 			api.errorHandler('UNKNOWN_ENCODING', part.encoding);
+		};
+		
+		if(saveToFile){
+			if(encoding !== 'base64'){
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:false, append:false}));
+			};
+		}else{
+			_function_return(result);
 		};
     };
 	

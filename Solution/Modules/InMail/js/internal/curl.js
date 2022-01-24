@@ -33,9 +33,5 @@ _InMail.curl = {
 		encoding = encoding.toLowerCase();
 		var resp = JSON.parse(native("inmailcurl", "decoder", JSON.stringify({charset: charset, encoding: encoding, data: data})));
 		return resp.result;
-	},
-	
-	multipleBase64ToOne: function(data){
-		return native("inmailcurl", "multiple_base64_to_one", data);
 	}
 };

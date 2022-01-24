@@ -71,11 +71,21 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			_call_function(_InMail.curl.request, {options: options, isFetсh: isFetсh, timeout: (api.timeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
 			
-			__RESP = resp;
-			resp.result = resp.result.trim();
-			resp.error = resp.error.trim();
+			__RESP = resp;			
 			
-			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'ответ' : 'response') + ': «‎' + resp.code + '»' + (resp.result ? ', ' + (_K=="ru" ? 'результат' : 'result') + ': «‎' + resp.result + '»' : '') + (resp.error ? ', ' + (_K=="ru" ? 'ошибка' : 'error') + ': «‎' + resp.error + '»' : ''));
+			var msg = api.protocol + ' ' + (_K=="ru" ? 'ответ' : 'response') + ': «‎' + resp.code + '»';
+			
+			if(resp.result){
+				resp.result = resp.result.trim();
+				msg += (', ' + (_K=="ru" ? 'результат' : 'result') + ': «‎' + resp.result + '»');
+			};
+			
+			if(resp.error){
+				resp.error = resp.error.trim();
+				msg += (', ' + (_K=="ru" ? 'ошибка' : 'error') + ': «‎' + resp.error + '»');
+			};
+			
+			_InMail.log(msg);
 			
 			if(resp.success){
 				_function_return(resp);

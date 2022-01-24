@@ -34,7 +34,12 @@
 		description: tr("Variable to save the result"),
 		default_variable: "MAIL_FLAGS_LIST",
 		help: {
-			description: tr("Variable in which, after successful execution of the action, the list of flags will be written.")
+			description: tr("Variable in which, after successful execution of the action, the list of flags will be written."),
+			examples: [
+				{code: "[\"\\Seen\"]"},
+				{code: "[\"\\Seen\", \"\\Flagged\"]"},
+				{code: "[\"\\Seen\", \"\\Answered\", \"\\Deleted\"]"}
+			]
 		}
 	}) %>
 </div>

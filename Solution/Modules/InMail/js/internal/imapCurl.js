@@ -1775,16 +1775,27 @@ _InMail.imap = _InMail.assignApi(function(config){
 						message.attachments = [];
 						if(filtered.length && attachments !== true && attachments.toString().trim() !== '*'){
 							if(!Array.isArray(attachments)){
-								attachments = attachments.split(';');
+								if(attachments instanceof RegExp){
+									attachments = [attachments];
+								}else{
+									attachments = attachments.split(';');
+								};
 							};
 							var maskFiltered = [];
 							var ids = [];
 							for(var mask_index in attachments){
 								var mask = attachments[mask_index];
-								var regex = new RegExp(mask.replace(/\*([^*])*?/gi, '.*'));
+								var match = true;
+								if(typeof mask === "string"){
+									if(_starts_with(mask, '!')){
+										match = false;
+										mask = mask.slice(1);
+									};
+									mask = new RegExp(mask.replace(/([.])/g, '\\$1').replace(/\*/g, '.+').replace(/\?/g, '.'));
+								};
 								for(var part_index in parts){
 									var part = parts[part_index];
-									if(regex.test(part.disposition.params.filename) && !ids.includes(part.partID)){
+									if(mask.test(part.disposition.params.filename) === match && ids.indexOf(part.partID) < 0){
 										maskFiltered.push(part);
 										ids.push(part.partID);
 									};

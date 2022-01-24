@@ -529,8 +529,11 @@
 }
 
 .jt-node {
+  text-overflow: ellipsis;
+  white-space: nowrap;
   position: relative;
   line-height: 18px;
+  overflow: hidden;
   padding: 5px 0;
 }
 

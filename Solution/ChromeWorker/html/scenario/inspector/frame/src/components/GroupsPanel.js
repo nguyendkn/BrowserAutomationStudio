@@ -144,11 +144,10 @@ window.GroupsPanel = {
 
   methods: {
     filter(name, value) {
-      let query = this.query.slice();
-      query = query.toLowerCase();
-      name = name.toLowerCase();
-
-      return name.includes(query) && this.activeFilters.includes(typeOf(value));
+      if (name.toLowerCase().includes(this.query.toLowerCase())) {
+        return this.activeFilters.includes(typeOf(value));
+      }
+      return false;
     },
   },
 

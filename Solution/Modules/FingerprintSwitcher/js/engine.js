@@ -284,7 +284,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGERPRINT_BATTERY = _arguments()[4]
 		if(_arguments().length > 5 && FINGERPRINT_JSON["rectangles"])
 			FINGERPRINT_RECTANGLES = _arguments()[5]
-		if(_arguments().length > 6 && FINGERPRINT_JSON["perfectcanvas"])
+		if(_arguments().length > 6 && typeof(_arguments()[6]) == "boolean" && FINGERPRINT_JSON["perfectcanvas"])
 			FINGERPRINT_PERFECTCANVAS = _arguments()[6]
 		if(_arguments().length > 7 && FINGERPRINT_JSON["sensor"])
 			FINGERPRINT_SENSOR = _arguments()[7]
@@ -445,6 +445,16 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	//User agent
 	FINGEPRINT_SETTINGS = {}
 
+	if(typeof(FINGERPRINT_JSON["ChromeApp"]) == "string")
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.ChromeApp"] = FINGERPRINT_JSON["ChromeApp"]
+	}
+
+	if(typeof(FINGERPRINT_JSON["ChromeRuntime"]) == "string")
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.ChromeRuntime"] = FINGERPRINT_JSON["ChromeRuntime"]
+	}
+
 	_if(typeof(FINGERPRINT_JSON["useragentdata"]) == "string", function(){
 		_if_else(FINGERPRINT_JSON["useragentdata"].length == 0, function(){
 			_set_user_agent_data("eyJicmFuZHMiOltdLCJtb2JpbGUiOmZhbHNlLCJmdWxsVmVyc2lvbiI6IiIsInBsYXRmb3JtIjoiIiwicGxhdGZvcm1WZXJzaW9uIjoiIiwiYXJjaGl0ZWN0dXJlIjoiIiwibW9kZWwiOiIifQ==")!
@@ -551,7 +561,13 @@ function BrowserAutomationStudio_ApplyFingerprint()
 					FINGEPRINT_SETTINGS[KeySettings] = (FINGERPRINT_JSON["connection"][Key]) ? "1" : "0";
 				}else if(typeof(FINGERPRINT_JSON["connection"][Key]) == "object" && FINGERPRINT_JSON["connection"][Key] == null)
 				{
-					FINGEPRINT_SETTINGS[KeySettings] = "0";
+					if(Key == "downlinkMax")
+					{
+						FINGEPRINT_SETTINGS[KeySettings] = "INFINITY";
+					}else
+					{
+						FINGEPRINT_SETTINGS[KeySettings] = "0";
+					}
 				}else
 				{
 					FINGEPRINT_SETTINGS[KeySettings] = FINGERPRINT_JSON["connection"][Key].toString()

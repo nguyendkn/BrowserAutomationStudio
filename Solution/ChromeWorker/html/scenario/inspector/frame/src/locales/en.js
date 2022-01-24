@@ -10,7 +10,6 @@
     callstackEmpty: 'Call stack is empty',
   },
   toolbar: {
-    placeholder: 'Search by name...',
     sortings: {
       frequency: 'By frequency of use',
       dateModified: 'By date modified',
@@ -32,6 +31,7 @@
     options: {
       groups: 'Groups',
     },
+    placeholder: 'Search by name...',
   },
   groups: {
     title: 'This group is empty. You can drag the elements here.',

@@ -10,7 +10,6 @@
     callstackEmpty: 'Стек вызовов пуст',
   },
   toolbar: {
-    placeholder: 'Поиск по имени...',
     sortings: {
       frequency: 'По частоте использования',
       dateModified: 'По дате изменения',
@@ -32,6 +31,7 @@
     options: {
       groups: 'Группы',
     },
+    placeholder: 'Поиск по имени...',
   },
   groups: {
     title: 'Эта группа пуста. Вы можете перетащить элементы сюда.',

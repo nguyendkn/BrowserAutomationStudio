@@ -28,11 +28,12 @@ const scriptStorage = new (class ScriptStorage {
 
   set(key, value) {
     this.#state[key] = value;
-    bas.saveInterface({ ...this.#state });
+    bas.saveInterface(this.#state);
   }
 
   remove(key) {
     delete this.#state[key];
+    bas.saveInterface(this.#state);
   }
 
   get(key) {

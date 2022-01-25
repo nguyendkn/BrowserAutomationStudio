@@ -104,9 +104,7 @@ window.GroupsPanel = {
     },
 
     data($new, $old) {
-      const diff = microdiff($old, $new);
-      const highlight = this.highlight;
-      const metadata = this.metadata;
+      const { metadata } = this, diff = microdiff($old, $new);
 
       if (diff.length) {
         const history = [];

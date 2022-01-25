@@ -11,6 +11,7 @@ window.JsonTreeRoot = {
     value: {
       required: true,
       validator(value) {
+        // prettier-ignore
         return [
           'null',
           'date',

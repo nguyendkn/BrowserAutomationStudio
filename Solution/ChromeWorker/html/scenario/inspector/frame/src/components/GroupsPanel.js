@@ -42,7 +42,6 @@ window.GroupsPanel = {
         return { name, active: option ? option.active : true };
       }),
       order: 'ascending',
-      highlight: false,
       metadata: {},
       history: [],
       query: '',
@@ -120,9 +119,8 @@ window.GroupsPanel = {
             if (hasOwn(metadata, name)) {
               metadata[name].modifiedAt = now;
               metadata[name].usages += 1;
-              metadata[name].count += 0;
             } else {
-              metadata[name] = { modifiedAt: now, createdAt: now, usages: 1, count: 5 };
+              metadata[name] = { modifiedAt: now, createdAt: now, usages: 1 };
             }
 
             history.push(name);
@@ -130,15 +128,8 @@ window.GroupsPanel = {
         });
 
         this.history = this.history.concat(history).slice(-100);
+        this.$store.commit('setDiff', { id: this.name, diff });
       }
-
-      if (highlight) {
-        Object.entries(metadata).forEach(([name, item]) => {
-          item.count = diff.some(v => v.path[0] === name) ? 0 : Math.min(item.count + 1, 5);
-        });
-      }
-
-      this.highlight = false;
     },
   },
 

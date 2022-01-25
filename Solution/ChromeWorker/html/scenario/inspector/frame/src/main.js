@@ -31,14 +31,14 @@ const store = new Vuex.Store({
       });
     });
 
-    return { ...state, toolbarVisible: false };
+    return { ...state, diff: { variables: [], resources: [] }, toolbarVisible: false };
   },
   mutations: {
-    setCollapsedNode(state, { path, id }) {
+    setNodeCollapsed(state, { path, id }) {
       const pointer = JSON.stringify(path);
       state[id].nodes[pointer] = false;
     },
-    setExpandedNode(state, { path, id }) {
+    setNodeExpanded(state, { path, id }) {
       const pointer = JSON.stringify(path);
       state[id].nodes[pointer] = true;
     },
@@ -54,14 +54,17 @@ const store = new Vuex.Store({
     setGroups(state, { groups, id }) {
       state[id].groups = groups;
     },
-    toggleToolbar(state, payload) {
+    setDiff(state, { diff, id }) {
+      state.diff[id] = diff;
+    },
+    toggleToolbar(state) {
       state.toolbarVisible = !state.toolbarVisible;
     },
   },
 });
 
 store.subscribe(({ type }, { variables, resources, callstack }) => {
-  if (type !== 'toggleToolbar') {
+  if (type !== 'toggleToolbar' && type !== 'setDiff') {
     scriptStorage.set('state', { variables, resources, callstack });
   }
 });

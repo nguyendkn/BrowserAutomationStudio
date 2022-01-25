@@ -9,6 +9,7 @@ window.JsonTreeNode = {
     value: {
       required: true,
       validator(value) {
+        // prettier-ignore
         return [
           'null',
           'date',
@@ -38,14 +39,6 @@ window.JsonTreeNode = {
 
     return {
       colors: {
-        null: '#8546bc',
-        date: '#ce904a',
-        number: '#d036d0',
-        string: '#2db669',
-        boolean: '#2525cc',
-        undefined: '#808080',
-      },
-      scaled: {
         null: scale([133, 70, 188]),
         date: scale([206, 144, 74]),
         number: scale([208, 54, 208]),
@@ -53,6 +46,7 @@ window.JsonTreeNode = {
         boolean: scale([37, 37, 204]),
         undefined: scale([128, 128, 128]),
       },
+      counter: 5,
       isHovered: false,
       isExpanded: expand,
     };
@@ -65,7 +59,8 @@ window.JsonTreeNode = {
     },
 
     color() {
-      return this.colors[this.type];
+      const colors = this.colors[this.type];
+      return colors && colors[this.counter];
     },
 
     keys() {
@@ -76,21 +71,41 @@ window.JsonTreeNode = {
     type() {
       return typeOf(this.value);
     },
+
+    diff() {
+      return this.$store.state.diff[this.id];
+    },
+  },
+
+  watch: {
+    diff(diff, { length }) {
+      if (length) {
+        for (const { path } of diff) {
+          if (this.path.length === path.length) {
+            if (this.path.every((key, idx) => key === path[idx].toString())) {
+              return (this.counter = 0);
+            }
+          }
+        }
+
+        this.counter = Math.min(this.counter + 1, 5);
+      }
+    },
   },
 
   methods: {
     collapse() {
-      this.$store.commit('setCollapsedNode', {
+      this.$store.commit('setNodeCollapsed', {
         path: this.path,
-        id: this.id, 
+        id: this.id,
       });
       this.isExpanded = false;
     },
 
     expand() {
-      this.$store.commit('setExpandedNode', {
+      this.$store.commit('setNodeExpanded', {
         path: this.path,
-        id: this.id, 
+        id: this.id,
       });
       this.isExpanded = true;
     },

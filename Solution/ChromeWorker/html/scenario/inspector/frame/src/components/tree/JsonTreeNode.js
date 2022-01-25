@@ -35,7 +35,9 @@ window.JsonTreeNode = {
   },
 
   data() {
-    const expand = this.$store.state[this.id].nodes[JSON.stringify(this.path)] || false;
+    const { $store, path, id } = this;
+    const expand = $store.state[id].nodes[JSON.stringify(path)] || false;
+    const counter = $store.state.counters[id][JSON.stringify(path)];
 
     return {
       colors: {
@@ -46,9 +48,9 @@ window.JsonTreeNode = {
         boolean: scale([37, 37, 204]),
         undefined: scale([128, 128, 128]),
       },
-      counter: 5,
       isHovered: false,
       isExpanded: expand,
+      counter: counter == null ? 5 : counter,
     };
   },
 
@@ -90,6 +92,14 @@ window.JsonTreeNode = {
 
         this.counter = Math.min(this.counter + 1, 5);
       }
+    },
+
+    counter(counter) {
+      this.$store.commit('setNodeCounter', {
+        path: this.path,
+        id: this.id,
+        counter,
+      });
     },
   },
 

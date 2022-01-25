@@ -20,6 +20,8 @@ const i18n = new VueI18n({
 const store = new Vuex.Store({
   state() {
     const state = Object.assign({}, scriptStorage.get('state'));
+    const counters = { variables: {}, resources: {} };
+    const diff = { variables: [], resources: [] };
 
     ['variables', 'resources', 'callstack'].forEach(id => {
       state[id] = Object.assign({}, state[id]);
@@ -31,30 +33,34 @@ const store = new Vuex.Store({
       });
     });
 
-    return { ...state, diff: { variables: [], resources: [] }, toolbarVisible: false };
+    return { ...state, diff, counters, toolbarVisible: false };
   },
   mutations: {
-    setNodeCollapsed(state, { path, id }) {
+    setNodeCounter(state, { id, path, counter }) {
+      const pointer = JSON.stringify(path);
+      state.counters[id][pointer] = counter;
+    },
+    setNodeCollapsed(state, { id, path }) {
       const pointer = JSON.stringify(path);
       state[id].nodes[pointer] = false;
     },
-    setNodeExpanded(state, { path, id }) {
+    setNodeExpanded(state, { id, path }) {
       const pointer = JSON.stringify(path);
       state[id].nodes[pointer] = true;
     },
-    setSortings(state, { sortings, id }) {
+    setSortings(state, { id, sortings }) {
       state[id].sortings = sortings;
     },
-    setFilters(state, { filters, id }) {
+    setFilters(state, { id, filters }) {
       state[id].filters = filters;
     },
-    setOptions(state, { options, id }) {
+    setOptions(state, { id, options }) {
       state[id].options = options;
     },
-    setGroups(state, { groups, id }) {
+    setGroups(state, { id, groups }) {
       state[id].groups = groups;
     },
-    setDiff(state, { diff, id }) {
+    setDiff(state, { id, diff }) {
       state.diff[id] = diff;
     },
     toggleToolbar(state) {

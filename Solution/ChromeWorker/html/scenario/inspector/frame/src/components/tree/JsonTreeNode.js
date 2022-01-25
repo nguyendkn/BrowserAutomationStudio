@@ -34,7 +34,7 @@ window.JsonTreeNode = {
   },
 
   data() {
-    const expand = this.$store.state[this.id].items[this.path.join('|')] || false;
+    const expand = this.$store.state[this.id].nodes[JSON.stringify(this.path)] || false;
 
     return {
       colors: {
@@ -80,7 +80,7 @@ window.JsonTreeNode = {
 
   methods: {
     collapse() {
-      this.$store.commit('setCollapsedItem', {
+      this.$store.commit('setCollapsedNode', {
         path: this.path,
         id: this.id, 
       });
@@ -88,7 +88,7 @@ window.JsonTreeNode = {
     },
 
     expand() {
-      this.$store.commit('setExpandedItem', {
+      this.$store.commit('setExpandedNode', {
         path: this.path,
         id: this.id, 
       });

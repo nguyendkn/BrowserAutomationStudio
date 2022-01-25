@@ -24,9 +24,9 @@ const store = new Vuex.Store({
     ['variables', 'resources', 'callstack'].forEach(id => {
       state[id] = Object.assign({}, state[id]);
 
-      ['sortings', 'filters', 'options', 'groups', 'items'].forEach(key => {
-        if (typeOf(state[id][key]) !== (key === 'items' ? 'object' : 'array')) {
-          state[id][key] = key === 'items' ? {} : [];
+      ['sortings', 'filters', 'options', 'groups', 'nodes'].forEach(key => {
+        if (typeOf(state[id][key]) !== (key === 'nodes' ? 'object' : 'array')) {
+          state[id][key] = key === 'nodes' ? {} : [];
         }
       });
     });
@@ -34,11 +34,13 @@ const store = new Vuex.Store({
     return { ...state, toolbarVisible: false };
   },
   mutations: {
-    setCollapsedItem(state, { path, id }) {
-      state[id].items[path.join('|')] = false;
+    setCollapsedNode(state, { path, id }) {
+      const pointer = JSON.stringify(path);
+      state[id].nodes[pointer] = false;
     },
-    setExpandedItem(state, { path, id }) {
-      state[id].items[path.join('|')] = true;
+    setExpandedNode(state, { path, id }) {
+      const pointer = JSON.stringify(path);
+      state[id].nodes[pointer] = true;
     },
     setSortings(state, { sortings, id }) {
       state[id].sortings = sortings;

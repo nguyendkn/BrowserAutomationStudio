@@ -70,7 +70,7 @@ const store = new Vuex.Store({
 });
 
 store.subscribe(({ type }, { variables, resources, callstack }) => {
-  if (type !== 'toggleToolbar' && type !== 'setDiff') {
+  if (type !== 'toggleToolbar' && type !== 'setDiff' && type !== 'setNodeCounter') {
     scriptStorage.set('state', { variables, resources, callstack });
   }
 });

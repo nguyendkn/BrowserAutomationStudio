@@ -25,16 +25,6 @@
         }
       });
 
-      _GobalModel.on('change:isscriptexecuting', (_, value) => {
-        if (value || this.$el.is(':hidden')) return;
-        this.send({ type: 'highlight' });
-      });
-
-      _GobalModel.on('change:istaskexecuting', (_, value) => {
-        if (value || this.$el.is(':hidden')) return;
-        this.send({ type: 'highlight' });
-      });
-
       this.send = async message => {
         if (!attached) {
           await new Promise(resolve => this.once('mounted', resolve));

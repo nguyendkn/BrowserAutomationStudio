@@ -726,6 +726,24 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	try
 	{
+		if(typeof(FINGERPRINT_JSON["bluetooth"]) == "boolean")
+		{
+			if(FINGERPRINT_JSON["bluetooth"])
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.Bluetooth"] = "Enable"
+			}else
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.Bluetooth"] = "Disable"
+			}
+		}
+
+	}catch(e)
+	{
+		
+	}
+
+	try
+	{
 		if(FINGERPRINT_JSON["heap"])
 		{
 			FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Enable"

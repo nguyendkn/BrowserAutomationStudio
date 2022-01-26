@@ -233,18 +233,20 @@ function BrowserAutomationStudio_GetFingerprint()
 	http_client_set_fail_on_error(true)
 	_switch_http_client_main()
 
-	_if(FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid && FINGERPRINT_JSON.additional.dynamic_perfect_canvas, function(){
+	_if(typeof(FINGERPRINT_JSON) == "object" && FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid && FINGERPRINT_JSON.additional.dynamic_perfect_canvas, function(){
 		FINGERPRINT_JSON.is_custom_server_retry = true
 		_call(BrowserAutomationStudio_GetFingerprint,[FINGERPRINT_JSON])!
 	})!
 
-	_if(!FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid, function(){
+	_if(typeof(FINGERPRINT_JSON) == "object" && !FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid, function(){
 		FINGERPRINT_JSON.is_main_server_retry = true
 		_call(BrowserAutomationStudio_GetFingerprint,[FINGERPRINT_JSON])!
 	})!
 
-	delete FINGERPRINT_JSON
-
+	if(typeof(FINGERPRINT_JSON) == "object")
+	{
+		delete FINGERPRINT_JSON
+	}
 }
 
 function BrowserAutomationStudio_ApplyFingerprint()
@@ -566,7 +568,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 						FINGEPRINT_SETTINGS[KeySettings] = "INFINITY";
 					}else
 					{
-						FINGEPRINT_SETTINGS[KeySettings] = "0";
+					FINGEPRINT_SETTINGS[KeySettings] = "0";
 					}
 				}else
 				{

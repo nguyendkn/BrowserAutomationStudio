@@ -112,7 +112,11 @@ window.GroupsPanel = {
         diff.forEach(({ path, type }) => {
           if (path.length === 1) {
             const [name] = path, now = performance.now();
-            if (type === 'REMOVE') return delete metadata[name];
+
+            if (type === 'REMOVE') {
+              this.$store.commit('removeNode', { id: this.name, path });
+              return delete metadata[name];
+            }
 
             if (hasOwn(metadata, name)) {
               metadata[name].modifiedAt = now;

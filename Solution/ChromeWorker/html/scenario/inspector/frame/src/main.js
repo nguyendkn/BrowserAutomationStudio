@@ -48,6 +48,10 @@ const store = new Vuex.Store({
       const pointer = JSON.stringify(path);
       state[id].nodes[pointer] = true;
     },
+    removeNode(state, { id, path }) {
+      const pointer = JSON.stringify(path);
+      delete state[id].nodes[pointer];
+    },
     setSortings(state, { id, sortings }) {
       state[id].sortings = sortings;
     },

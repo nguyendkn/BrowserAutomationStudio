@@ -11,27 +11,27 @@
 extern "C" {
 	
 	struct CurlData
-    {
+	{
 		CURL *handler = NULL;
 		Timer timer;
 		int timeout = 5 * 60 * 1000;
-    }
+	}
 
-    void *StartDll()
-    {
+	void *StartDll()
+	{
 		return 0;
-    }
+	}
 	
 	void EndDll(void *DllData)
-    {
+	{
 
-    }
+	}
 	
 	void *StartThread()
-    {
+	{
 		CurlData *data = new CurlData();
-        return data;
-    }
+		return data;
+	}
 	
 	void CurlCleanup(CurlData *data)
 	{
@@ -45,94 +45,94 @@ extern "C" {
 	}
 	
 	void EndThread(void *ThreadData)
-    {
+	{
 		CurlCleanup((CurlData*)ThreadData);
-    }
+	}
 
-    const char *StringifyReturnCode(int key)
-    {
-        if(key == 0)return "OK";
-        if(key == 1)return "UNSUPPORTED_PROTOCOL";
-        if(key == 2)return "FAILED_INIT";
-        if(key == 3)return "URL_MALFORMAT";
-        if(key == 4)return "NOT_BUILT_IN";
-        if(key == 5)return "COULDNT_RESOLVE_PROXY";
-        if(key == 6)return "COULDNT_RESOLVE_HOST";
-        if(key == 7)return "COULDNT_CONNECT";
-        if(key == 8)return "FTP_WEIRD_SERVER_REPLY";
-        if(key == 9)return "REMOTE_ACCESS_DENIED";
-        if(key == 10)return "FTP_ACCEPT_FAILED";
-        if(key == 11)return "FTP_WEIRD_PASS_REPLY";
-        if(key == 12)return "FTP_ACCEPT_TIMEOUT";
-        if(key == 13)return "FTP_WEIRD_PASV_REPLY";
-        if(key == 14)return "FTP_WEIRD_227_FORMAT";
-        if(key == 15)return "FTP_CANT_GET_HOST";
-        if(key == 16)return "HTTP2";
-        if(key == 17)return "FTP_COULDNT_SET_TYPE";
-        if(key == 18)return "PARTIAL_FILE";
-        if(key == 19)return "FTP_COULDNT_RETR_FILE";
-        if(key == 21)return "QUOTE_ERROR";
-        if(key == 22)return "HTTP_RETURNED_ERROR";
-        if(key == 23)return "WRITE_ERROR";
-        if(key == 25)return "UPLOAD_FAILED";
-        if(key == 26)return "READ_ERROR";
-        if(key == 27)return "OUT_OF_MEMORY";
-        if(key == 28)return "OPERATION_TIMEDOUT";
-        if(key == 30)return "FTP_PORT_FAILED";
-        if(key == 31)return "FTP_COULDNT_USE_REST";
-        if(key == 33)return "RANGE_ERROR";
-        if(key == 34)return "HTTP_POST_ERROR";
-        if(key == 35)return "SSL_CONNECT_ERROR";
-        if(key == 36)return "BAD_DOWNLOAD_RESUME";
-        if(key == 37)return "FILE_COULDNT_READ_FILE";
-        if(key == 38)return "LDAP_CANNOT_BIND";
-        if(key == 39)return "LDAP_SEARCH_FAILED";
-        if(key == 41)return "FUNCTION_NOT_FOUND";
-        if(key == 42)return "ABORTED_BY_CALLBACK";
-        if(key == 43)return "BAD_FUNCTION_ARGUMENT";
-        if(key == 45)return "INTERFACE_FAILED";
-        if(key == 47)return "TOO_MANY_REDIRECTS ";
-        if(key == 48)return "UNKNOWN_OPTION";
-        if(key == 49)return "TELNET_OPTION_SYNTAX ";
-        if(key == 51)return "PEER_FAILED_VERIFICATION";
-        if(key == 52)return "GOT_NOTHING";
-        if(key == 53)return "SSL_ENGINE_NOTFOUND";
-        if(key == 54)return "SSL_ENGINE_SETFAILED";
-        if(key == 55)return "SEND_ERROR";
-        if(key == 56)return "RECV_ERROR";
-        if(key == 58)return "SSL_CERTPROBLEM";
-        if(key == 59)return "SSL_CIPHER";
-        if(key == 60)return "SSL_CACERT";
-        if(key == 61)return "BAD_CONTENT_ENCODING";
-        if(key == 62)return "LDAP_INVALID_URL";
-        if(key == 63)return "FILESIZE_EXCEEDED";
-        if(key == 64)return "USE_SSL_FAILED";
-        if(key == 65)return "SEND_FAIL_REWIND";
-        if(key == 66)return "SSL_ENGINE_INITFAILED";
-        if(key == 67)return "LOGIN_DENIED";
-        if(key == 68)return "TFTP_NOTFOUND";
-        if(key == 69)return "TFTP_PERM";
-        if(key == 70)return "REMOTE_DISK_FULL";
-        if(key == 71)return "TFTP_ILLEGAL";
-        if(key == 72)return "TFTP_UNKNOWNID";
-        if(key == 73)return "REMOTE_FILE_EXISTS";
-        if(key == 74)return "TFTP_NOSUCHUSER";
-        if(key == 75)return "CONV_FAILED";
-        if(key == 76)return "CONV_REQD";
-        if(key == 77)return "SSL_CACERT_BADFILE";
-        if(key == 78)return "REMOTE_FILE_NOT_FOUND";
-        if(key == 79)return "SSH";
-        if(key == 80)return "SSL_SHUTDOWN_FAILED";
-        if(key == 81)return "AGAIN";
-        if(key == 82)return "SSL_CRL_BADFILE";
-        if(key == 83)return "SSL_ISSUER_ERROR";
-        if(key == 84)return "FTP_PRET_FAILED";
-        if(key == 85)return "RTSP_CSEQ_ERROR";
-        if(key == 86)return "RTSP_SESSION_ERROR";
-        if(key == 87)return "FTP_BAD_FILE_LIST";
-        if(key == 88)return "CHUNK_FAILED";
-        if(key == 89)return "NO_CONNECTION_AVAILABLE";
-        if(key == 90)return "SSL_PINNEDPUBKEYNOTMATCH";
+	const char *StringifyReturnCode(int key)
+	{
+		if(key == 0)return "OK";
+		if(key == 1)return "UNSUPPORTED_PROTOCOL";
+		if(key == 2)return "FAILED_INIT";
+		if(key == 3)return "URL_MALFORMAT";
+		if(key == 4)return "NOT_BUILT_IN";
+		if(key == 5)return "COULDNT_RESOLVE_PROXY";
+		if(key == 6)return "COULDNT_RESOLVE_HOST";
+		if(key == 7)return "COULDNT_CONNECT";
+		if(key == 8)return "FTP_WEIRD_SERVER_REPLY";
+		if(key == 9)return "REMOTE_ACCESS_DENIED";
+		if(key == 10)return "FTP_ACCEPT_FAILED";
+		if(key == 11)return "FTP_WEIRD_PASS_REPLY";
+		if(key == 12)return "FTP_ACCEPT_TIMEOUT";
+		if(key == 13)return "FTP_WEIRD_PASV_REPLY";
+		if(key == 14)return "FTP_WEIRD_227_FORMAT";
+		if(key == 15)return "FTP_CANT_GET_HOST";
+		if(key == 16)return "HTTP2";
+		if(key == 17)return "FTP_COULDNT_SET_TYPE";
+		if(key == 18)return "PARTIAL_FILE";
+		if(key == 19)return "FTP_COULDNT_RETR_FILE";
+		if(key == 21)return "QUOTE_ERROR";
+		if(key == 22)return "HTTP_RETURNED_ERROR";
+		if(key == 23)return "WRITE_ERROR";
+		if(key == 25)return "UPLOAD_FAILED";
+		if(key == 26)return "READ_ERROR";
+		if(key == 27)return "OUT_OF_MEMORY";
+		if(key == 28)return "OPERATION_TIMEDOUT";
+		if(key == 30)return "FTP_PORT_FAILED";
+		if(key == 31)return "FTP_COULDNT_USE_REST";
+		if(key == 33)return "RANGE_ERROR";
+		if(key == 34)return "HTTP_POST_ERROR";
+		if(key == 35)return "SSL_CONNECT_ERROR";
+		if(key == 36)return "BAD_DOWNLOAD_RESUME";
+		if(key == 37)return "FILE_COULDNT_READ_FILE";
+		if(key == 38)return "LDAP_CANNOT_BIND";
+		if(key == 39)return "LDAP_SEARCH_FAILED";
+		if(key == 41)return "FUNCTION_NOT_FOUND";
+		if(key == 42)return "ABORTED_BY_CALLBACK";
+		if(key == 43)return "BAD_FUNCTION_ARGUMENT";
+		if(key == 45)return "INTERFACE_FAILED";
+		if(key == 47)return "TOO_MANY_REDIRECTS ";
+		if(key == 48)return "UNKNOWN_OPTION";
+		if(key == 49)return "TELNET_OPTION_SYNTAX ";
+		if(key == 51)return "PEER_FAILED_VERIFICATION";
+		if(key == 52)return "GOT_NOTHING";
+		if(key == 53)return "SSL_ENGINE_NOTFOUND";
+		if(key == 54)return "SSL_ENGINE_SETFAILED";
+		if(key == 55)return "SEND_ERROR";
+		if(key == 56)return "RECV_ERROR";
+		if(key == 58)return "SSL_CERTPROBLEM";
+		if(key == 59)return "SSL_CIPHER";
+		if(key == 60)return "SSL_CACERT";
+		if(key == 61)return "BAD_CONTENT_ENCODING";
+		if(key == 62)return "LDAP_INVALID_URL";
+		if(key == 63)return "FILESIZE_EXCEEDED";
+		if(key == 64)return "USE_SSL_FAILED";
+		if(key == 65)return "SEND_FAIL_REWIND";
+		if(key == 66)return "SSL_ENGINE_INITFAILED";
+		if(key == 67)return "LOGIN_DENIED";
+		if(key == 68)return "TFTP_NOTFOUND";
+		if(key == 69)return "TFTP_PERM";
+		if(key == 70)return "REMOTE_DISK_FULL";
+		if(key == 71)return "TFTP_ILLEGAL";
+		if(key == 72)return "TFTP_UNKNOWNID";
+		if(key == 73)return "REMOTE_FILE_EXISTS";
+		if(key == 74)return "TFTP_NOSUCHUSER";
+		if(key == 75)return "CONV_FAILED";
+		if(key == 76)return "CONV_REQD";
+		if(key == 77)return "SSL_CACERT_BADFILE";
+		if(key == 78)return "REMOTE_FILE_NOT_FOUND";
+		if(key == 79)return "SSH";
+		if(key == 80)return "SSL_SHUTDOWN_FAILED";
+		if(key == 81)return "AGAIN";
+		if(key == 82)return "SSL_CRL_BADFILE";
+		if(key == 83)return "SSL_ISSUER_ERROR";
+		if(key == 84)return "FTP_PRET_FAILED";
+		if(key == 85)return "RTSP_CSEQ_ERROR";
+		if(key == 86)return "RTSP_SESSION_ERROR";
+		if(key == 87)return "FTP_BAD_FILE_LIST";
+		if(key == 88)return "CHUNK_FAILED";
+		if(key == 89)return "NO_CONNECTION_AVAILABLE";
+		if(key == 90)return "SSL_PINNEDPUBKEYNOTMATCH";
 		if(key == 91)return "SSL_INVALIDCERTSTATUS";
 		if(key == 92)return "HTTP2_STREAM";
 		if(key == 93)return "RECURSIVE_API_CALL";
@@ -140,17 +140,17 @@ extern "C" {
 		if(key == 95)return "HTTP3";
 		if(key == 96)return "QUIC_CONNECT_ERROR";
 		if(key == 98)return "SSL_CLIENTCERT";
-        return "UNKNOWN";
-    }
+		return "UNKNOWN";
+	}
 	
 	int ParseKey(QString key)
-    {
+	{
 		key = key.toUpper();
 		if(key.startsWith("CURLOPT_"))
 		{
 			key.remove(0, 8);
 		}
-        if(key == "WRITEDATA") return 10000 + 1;
+		if(key == "WRITEDATA") return 10000 + 1;
 		if(key == "FILE") return 10000 + 1;
 		if(key == "URL") return 10000 + 2;
 		if(key == "PORT") return 3;
@@ -458,29 +458,29 @@ extern "C" {
 		if(key == "PROXY_CAINFO_BLOB") return 40000 + 310;
 		if(key == "MAXLIFETIME_CONN") return 314;
 		if(key == "MIME_OPTIONS") return 315;
-        return -1;
-    }
+		return -1;
+	}
 	
 	int WriteFunction(char* data, size_t size, size_t nmemb, QByteArray *writedata)
-    {
-        size_t realsize = size * nmemb;;
-        
+	{
+		size_t realsize = size * nmemb;
+		
 		writedata->append(data, realsize);
 		
-        return realsize;
-    }
+		return realsize;
+	}
 	
 	struct DebugClass
-    {
+	{
 		bool isFetch = false;
 		bool isFetchData = false;
 		QByteArray Data;
 		QByteArray FetchData;
 		QStringList FetchList;
-    };
+	};
 	
 	int DebugFunction(CURL *handle, curl_infotype type, char *data, size_t size, DebugClass *DebugData)
-    {
+	{
 		if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN) //Don't save SSL data as it is binary
 		{
 			if(DebugData->isFetch && type == CURLINFO_HEADER_IN) //Check only incoming header data
@@ -519,19 +519,19 @@ extern "C" {
 			}
 			DebugData->Data.append(data, size);
 		}
-        return 0;
-    }
+		return 0;
+	}
 	
 	int ProgressFunction(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow)
-    {
-        if(*((bool *)clientp))
+	{
+		if(*((bool *)clientp))
 		{
 			return 1;
-        }else
+		}else
 		{
 			return 0;
 		}
-    }
+	}
 	
 	void SetResultArray(QByteArray *ResArray, ResizeFunction AllocateSpace, void *AllocateData)
 	{
@@ -543,25 +543,25 @@ extern "C" {
 	void SetResultVariant(QVariantMap ResMap, ResizeFunction AllocateSpace, void *AllocateData)
 	{
 		QJsonObject object = QJsonObject::fromVariantMap(ResMap);
-
-        QJsonDocument document;
-        document.setObject(object);
-
-        QByteArray ResArray = document.toJson();
+		
+		QJsonDocument document;
+		document.setObject(object);
+		
+		QByteArray ResArray = document.toJson();
 		
 		SetResultArray(&ResArray, AllocateSpace, AllocateData);
 	}
 	
 	void SetError(QString err, ResizeFunction AllocateSpace, void *AllocateData)
-    {
-        QVariantMap res;
-
-        res.insert("success", false);
-
-        res.insert("error", err);
+	{
+		QVariantMap res;
+		
+		res.insert("success", false);
+		
+		res.insert("error", err);
 		
 		SetResultVariant(res, AllocateSpace, AllocateData);
-    }
+	}
 	
 	void CurlSetOpts(CURL *curl, QJsonObject Options)
 	{
@@ -571,7 +571,7 @@ extern "C" {
 			if(keyint >= 0)
 			{
 				QVariant v = Options[key].toVariant();
-
+				
 				switch(v.type())
 				{
 					case QVariant::String:
@@ -623,8 +623,8 @@ extern "C" {
 		{
 			res = QByteArray("false");
 		}
-
-        SetResultArray(&res, AllocateSpace, AllocateData);
+		
+		SetResultArray(&res, AllocateSpace, AllocateData);
 	}
 	
 	void InMail_CurlSetOpts(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
@@ -650,12 +650,12 @@ extern "C" {
 		QVariantMap res;
 		
 		res.insert("success", true);
-
-        SetResultVariant(res, AllocateSpace, AllocateData);
+		
+		SetResultVariant(res, AllocateSpace, AllocateData);
 	}
 	
 	void SetTimeout(CurlData *data)
-    {
+	{
 		data->timer.setTimeout([=]() {
 			if(data->handler)
 			{
@@ -663,17 +663,17 @@ extern "C" {
 				data->handler = NULL;
 			}
 		}, data->timeout);
-    }
+	}
 	
 	void InMail_CurlClearTimeout(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
-    {
+	{
 		CurlData *data = (CurlData*)ThreadData;
 		
 		data->timer.stop();
-    }
+	}
 	
 	void InMail_CurlRequest(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
-    {
+	{
 		CurlData *data = (CurlData*)ThreadData;
 		CURL *curl = (CURL*)data->handler;
 		
@@ -713,15 +713,15 @@ extern "C" {
 		}
 		
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &WriteFunction);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &WriteData);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &WriteData);
 		curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
 		
 		curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, &DebugFunction);
 		curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &DebugData);
 		
-        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, &ProgressFunction);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NeedToStop);
-        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+		curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, &ProgressFunction);
+		curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NeedToStop);
+		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
 		
 		code = curl_easy_perform(curl);
 		
@@ -737,18 +737,18 @@ extern "C" {
 		curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
 		
 		QVariantMap res;
-
-        res.insert("code", StringifyReturnCode((int)code));
+		
+		res.insert("code", StringifyReturnCode((int)code));
 		
 		if(code == CURLE_OK)
-        {
+		{
 			res.insert("success", true);
 			res.insert("error", "");
-        }else
-        {
+		}else
+		{
 			res.insert("success", false);
-            res.insert("error", curl_easy_strerror(code));
-        }
+			res.insert("error", curl_easy_strerror(code));
+		}
 		
 		res.insert("result", QString::fromUtf8(WriteData));
 		
@@ -759,18 +759,18 @@ extern "C" {
 			res.insert("fetchlist", DebugData.FetchList);
 		}
 		
-        SetResultVariant(res, AllocateSpace, AllocateData);
+		SetResultVariant(res, AllocateSpace, AllocateData);
 		
 		SetTimeout(data);
-    }
+	}
 	
 	void InMail_CurlCleanup(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
-    {
+	{
 		CurlCleanup((CurlData*)ThreadData);
 	}
 	
 	void InMail_Decoder(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
-    {
+	{
 		QJsonDocument InputDocument;
 		QJsonParseError err;
 		InputDocument = QJsonDocument::fromJson(QByteArray(InputJson), &err);
@@ -826,13 +826,13 @@ extern "C" {
 		{
 			Result = QString::fromUtf8(DecodedData);
 		}
-
-        QVariantMap res;
+		
+		QVariantMap res;
 		
 		res.insert("success", true);
 		
 		res.insert("result", Result);
-
-        SetResultVariant(res, AllocateSpace, AllocateData);
+		
+		SetResultVariant(res, AllocateSpace, AllocateData);
 	}
 }

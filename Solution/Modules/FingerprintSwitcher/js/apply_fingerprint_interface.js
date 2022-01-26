@@ -16,7 +16,7 @@
 
   <%= _.template($('#input_constructor').html())({id:"SafeRectangles", description:tr("Safe Element Size"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("If this settings is set to true, results of API which returns element coordinates will be updated to protect against 'client rects' fingerprinting.")}}) %>
   
-  <%= _.template($('#input_constructor').html())({id:"EmulateSensor", description:tr("Emulate Sensor API"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true", "false"], help: { description: tr("Chrome browser has Sensor API, which allows to read data from devices like accelerometer, gyroscope or others. Data from that devices is available only on mobile platforms. After checking this setting data for that devices will be generated and replaced automatically. Enable this option in order to emulate mobile fingerprints more precisely.")}}) %>
+  <%= _.template($('#input_constructor').html())({id:"EmulateSensor", description:tr("Emulate Sensor API"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("Chrome browser has Sensor API, which allows to read data from devices like accelerometer, gyroscope or others. Data from that devices is available only on mobile platforms. After checking this setting data for that devices will be generated and replaced automatically. Enable this option in order to emulate mobile fingerprints more precisely.")}}) %>
 </div>
 
 <div class="tooltipinternal">

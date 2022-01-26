@@ -160,6 +160,16 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return api.escape(api.utf7.encode('' + name));
 	};
 	
+	this.randStr = function(length, chars){
+		length = _avoid_nilb(length, 10);
+		chars = _avoid_nilb(chars, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+        var str  = '';
+        for(var i = 0; i < length; i++){
+            str += chars.charAt(Math.floor(Math.random() * chars.length));
+        };
+        return str;
+    };
+	
 	this.parseCaps = function(str){
 		var start = str.lastIndexOf('CAPABILITY');
 		if(start > -1){
@@ -1426,19 +1436,19 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.parseFetchParts = function(str){
 		var firstBreak = str.indexOf('\r\n');
-		var fetсh = {};
+		var fetch = {};
 		if(firstBreak > -1){
-			fetсh.head = str.slice(0, firstBreak);
-			fetсh.body = str.slice(firstBreak + 2);
+			fetch.head = str.slice(0, firstBreak);
+			fetch.body = str.slice(firstBreak + 2);
 		}else{
-			fetсh.head = str;
-			fetсh.body = '';
+			fetch.head = str;
+			fetch.body = '';
 		};
-		return fetсh;
+		return fetch;
 	};
 	
-	this.parseFetch = function(fetсh, msg){
-		var list = api.parseExpr(fetсh.head);
+	this.parseFetch = function(fetch, msg){
+		var list = api.parseExpr(fetch.head);
 		if(Array.isArray(list[0])){
 			list = list[0];
 		};
@@ -1465,9 +1475,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 					msg.parts.push({
 						which: key,
 						size: val,
-						body: fetсh.body.slice(0, val)
+						body: fetch.body.slice(0, val)
 					});
-					fetсh.body = fetсh.body.slice(val);
+					fetch.body = fetch.body.slice(val);
 				};
 				continue;
 			};
@@ -1526,17 +1536,17 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += ')';
 		
-		_call_function(api.request, {path: api.encodeName(box), query: cmd, isFetсh: true})!
+		_call_function(api.request, {path: api.encodeName(box), query: cmd, isFetch: true})!
 		var resp = _result_function();
 		
 		var fetchCache = {};
-		var fetсhList = resp.fetсhlist;
+		var fetchList = resp.fetchlist;
 		
-		for(var i = 0; i < fetсhList.length; ++i){
-			var fetсh = api.parseFetchParts(fetсhList[i]);
-			var info = api.parse(fetсh.head);
+		for(var i = 0; i < fetchList.length; ++i){
+			var fetch = api.parseFetchParts(fetchList[i]);
+			var info = api.parse(fetch.head);
 			var seqno = info.num;
-			fetсh.head = info.text;
+			fetch.head = info.text;
 			var msg = fetchCache[seqno];
 			if(typeof msg == "undefined"){
 				msg = fetchCache[seqno] = {
@@ -1544,12 +1554,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 					parts: []
 				};
 			};
-			api.parseFetch(fetсh, msg);
-			var remains = fetсh.body.trim();
+			api.parseFetch(fetch, msg);
+			var remains = fetch.body.trim();
 			while(remains != '' && remains != ')' && _starts_with(remains, 'BODY[')){
-				fetсh = api.parseFetchParts(remains);
-				api.parseFetch(fetсh, msg);
-				remains = fetсh.body.trim();
+				fetch = api.parseFetchParts(remains);
+				api.parseFetch(fetch, msg);
+				remains = fetch.body.trim();
 			};
 		};
 		
@@ -1592,20 +1602,16 @@ _InMail.imap = _InMail.assignApi(function(config){
 			for(var i = 0; i < list.length; i++){
 				var line = list[i];
 				if(saveToFile){
-					if(i){
-						native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:true}));
-					}else{
-						native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:false}));
-					};
+					native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:!!i}));
 				}else{
 					result += _InMail.curl.decoder(charset, 'b', data);
 				};
 			};
 		}else if(encoding === 'quoted-printable'){
 			result = _InMail.curl.decoder(charset, 'q', data);
-		}else if(encoding === '7bit' || encoding === '7bits'){
+		}else if(['7bit', '7bits'].indexOf(encoding) > -1){
 			result = _InMail.curl.decoder('latin1', '', data);
-		}else if(encoding === '8bit' || encoding === '8bits' || encoding === 'binary'){
+		}else if(['8bit', '8bits', 'binary'].indexOf(encoding) > -1){
 			result = _InMail.curl.decoder(charset, '', data);
 		}else if(encoding === 'uuencode'){
 			var parts = data.split('\n');
@@ -1637,16 +1643,6 @@ _InMail.imap = _InMail.assignApi(function(config){
             any: base || raw,
             data: data
         };
-    };
-	
-	this.randStr = function(length, chars){
-		length = _avoid_nilb(length, 10);
-		chars = _avoid_nilb(chars, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
-        var str  = '';
-        for(var i = 0; i < length; i++){
-            str += chars.charAt(Math.floor(Math.random() * chars.length));
-        };
-        return str;
     };
 	
 	this.getMessages = function(){

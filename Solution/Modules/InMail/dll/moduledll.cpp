@@ -472,48 +472,48 @@ extern "C" {
 	
 	struct DebugClass
     {
-		bool isFetсh = false;
-		bool isFetсhData = false;
+		bool isFetch = false;
+		bool isFetchData = false;
 		QByteArray Data;
-		QByteArray FetсhData;
-		QStringList FetсhList;
+		QByteArray FetchData;
+		QStringList FetchList;
     };
 	
 	int DebugFunction(CURL *handle, curl_infotype type, char *data, size_t size, DebugClass *DebugData)
     {
-		if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN && type != CURLINFO_TEXT)
+		if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN) //Don't save SSL data as it is binary
 		{
-			if(type == CURLINFO_HEADER_IN && DebugData->isFetсh)
+			if(DebugData->isFetch && type == CURLINFO_HEADER_IN) //Check only incoming header data
 			{
 				QString start;
-				bool isFetсhHead = false;
+				bool isFetchHead = false;
 				for(int i = 0, len = size < 23 ? size : 23; i < len; i++)
 				{
 					start[i] = data[i];
 				}
-				if(start.contains(QRegExp("^\\* \\d+ FETCH")))
+				if(start.contains(QRegExp("^\\* \\d+ FETCH"))) //Check if data is a Fetch data header
 				{
-					isFetсhHead = true;
-					if(DebugData->isFetсhData)
+					isFetchHead = true;
+					if(DebugData->isFetchData) //Write past Fetch data to list
 					{
-						DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));
-						DebugData->FetсhData.clear();
+						DebugData->FetchList.append(QString::fromUtf8(DebugData->FetchData));
+						DebugData->FetchData.clear();
 					}else
 					{
-						DebugData->isFetсhData = true;
+						DebugData->isFetchData = true;
 					}
-				}else if(DebugData->isFetсhData && start.contains(QRegExp("^[A-Z]\\d+ OK")))
+				}else if(DebugData->isFetchData && start.contains(QRegExp("^[A-Z]\\d+ OK"))) //Check if the data is a successful completion of the command
 				{
-					DebugData->isFetсhData = false;
-					DebugData->FetсhList.append(QString::fromUtf8(DebugData->FetсhData));
-					DebugData->FetсhData.clear();
+					DebugData->isFetchData = false;
+					DebugData->FetchList.append(QString::fromUtf8(DebugData->FetchData));
+					DebugData->FetchData.clear();
 				}
-				if(DebugData->isFetсhData)
+				if(DebugData->isFetchData)
 				{
-					DebugData->FetсhData.append(data, size);
-					if(!isFetсhHead)
+					DebugData->FetchData.append(data, size);
+					if(!isFetchHead) //Don't write to Debug data any Fetch data except header
 					{
-						return 0; //Don't write to Debug data any Fetch data except header
+						return 0;
 					}
 				}
 			}
@@ -533,11 +533,23 @@ extern "C" {
 		}
     }
 	
-	void SetResult(QByteArray *ResArray, ResizeFunction AllocateSpace, void *AllocateData)
+	void SetResultArray(QByteArray *ResArray, ResizeFunction AllocateSpace, void *AllocateData)
 	{
 		char *ResMemory = AllocateSpace(ResArray->size(), AllocateData);
 		
 		memcpy(ResMemory, ResArray->data(), ResArray->size());
+	}
+	
+	void SetResultVariant(QVariantMap ResMap, ResizeFunction AllocateSpace, void *AllocateData)
+	{
+		QJsonObject object = QJsonObject::fromVariantMap(ResMap);
+
+        QJsonDocument document;
+        document.setObject(object);
+
+        QByteArray ResArray = document.toJson();
+		
+		SetResultArray(&ResArray, AllocateSpace, AllocateData);
 	}
 	
 	void SetError(QString err, ResizeFunction AllocateSpace, void *AllocateData)
@@ -547,15 +559,8 @@ extern "C" {
         res.insert("success", false);
 
         res.insert("error", err);
-
-        QJsonObject object = QJsonObject::fromVariantMap(res);
-
-        QJsonDocument document;
-        document.setObject(object);
-
-        QByteArray ResArray = document.toJson();
 		
-		SetResult(&ResArray, AllocateSpace, AllocateData);
+		SetResultVariant(res, AllocateSpace, AllocateData);
     }
 	
 	void CurlSetOpts(CURL *curl, QJsonObject Options)
@@ -609,17 +614,17 @@ extern "C" {
 	void InMail_CurlIsInit(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
 	{
 		CurlData *data = (CurlData*)ThreadData;
-		QByteArray ResArray;
+		QByteArray res;
 		
 		if(data->handler)
 		{
-			ResArray = QByteArray("true");
+			res = QByteArray("true");
 		}else
 		{
-			ResArray = QByteArray("false");
+			res = QByteArray("false");
 		}
 
-        SetResult(&ResArray, AllocateSpace, AllocateData);
+        SetResultArray(&res, AllocateSpace, AllocateData);
 	}
 	
 	void InMail_CurlSetOpts(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
@@ -645,15 +650,8 @@ extern "C" {
 		QVariantMap res;
 		
 		res.insert("success", true);
-		
-        QJsonObject object = QJsonObject::fromVariantMap(res);
 
-        QJsonDocument document;
-        document.setObject(object);
-
-        QByteArray ResArray = document.toJson();
-
-        SetResult(&ResArray, AllocateSpace, AllocateData);
+        SetResultVariant(res, AllocateSpace, AllocateData);
 	}
 	
 	void SetTimeout(CurlData *data)
@@ -688,7 +686,6 @@ extern "C" {
 		CURLcode code;
 		QByteArray WriteData;
 		DebugClass DebugData;
-		bool isFetсh = false;
 		
 		QJsonDocument InputDocument;
 		QJsonParseError err;
@@ -700,10 +697,9 @@ extern "C" {
 		}
 		QJsonObject InputObject = InputDocument.object();
 		
-		if(InputObject.contains("isFetсh"))
+		if(InputObject.contains("isFetch"))
 		{
-			isFetсh = InputObject["isFetсh"].toBool();
-			DebugData.isFetсh = isFetсh;
+			DebugData.isFetch = InputObject["isFetch"].toBool();
 		}
 
 		if(InputObject.contains("options"))
@@ -758,19 +754,12 @@ extern "C" {
 		
 		res.insert("debug", QString::fromUtf8(DebugData.Data));
 		
-		if(isFetсh)
+		if(DebugData.isFetch)
 		{
-			res.insert("fetсhlist", DebugData.FetсhList);
+			res.insert("fetchlist", DebugData.FetchList);
 		}
 		
-        QJsonObject object = QJsonObject::fromVariantMap(res);
-
-        QJsonDocument document;
-        document.setObject(object);
-
-        QByteArray ResArray = document.toJson();
-		
-        SetResult(&ResArray, AllocateSpace, AllocateData);
+        SetResultVariant(res, AllocateSpace, AllocateData);
 		
 		SetTimeout(data);
     }
@@ -843,14 +832,7 @@ extern "C" {
 		res.insert("success", true);
 		
 		res.insert("result", Result);
-		
-        QJsonObject object = QJsonObject::fromVariantMap(res);
 
-        QJsonDocument document;
-        document.setObject(object);
-
-        QByteArray ResArray = document.toJson();
-
-        SetResult(&ResArray, AllocateSpace, AllocateData);
+        SetResultVariant(res, AllocateSpace, AllocateData);
 	}
 }

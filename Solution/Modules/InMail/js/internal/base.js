@@ -5,6 +5,11 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	
 	if(isCurl){
 		
+		if(_InMail.curl.isInit()){
+			_InMail.curl.clearTimeout();
+			_InMail.curl.cleanup();
+		};
+		
 		this.curlOpts = {
 			url: api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
 			port: api.config.port,
@@ -48,7 +53,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		this.request = function(){
 			var path = _function_argument("path");
 			var query = _function_argument("query");
-			var isFetсh = _avoid_nilb(_function_argument("isFetсh"), false);
+			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
 			
 			var options = {};
 			
@@ -68,7 +73,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				api.init();
 			};
 			
-			_call_function(_InMail.curl.request, {options: options, isFetсh: isFetсh, timeout: (api.timeout || 5 * 60 * 1000)})!
+			_call_function(_InMail.curl.request, {options: options, isFetch: isFetch, timeout: (api.timeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
 			
 			__RESP = resp;			

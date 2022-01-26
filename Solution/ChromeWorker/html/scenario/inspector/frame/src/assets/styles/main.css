@@ -465,15 +465,15 @@
 /* Json tree */
 
 .expanded > .jt-node-value > .jt-node-bracket:first-of-type {
-  padding-left: var(--intent, 0);
+  padding-left: calc(var(--intent, 0) + 8px);
 }
 
 .expanded > .jt-node-value > .jt-node-bracket:last-of-type {
-  padding-left: var(--indent, 0);
+  padding-left: calc(var(--indent, 0) + 8px);
 }
 
 .expanded > .jt-node-value > .jt-node > .jt-node-label {
-  padding-left: var(--indent, 0);
+  padding-left: calc(var(--indent, 0) + 8px);
 }
 
 .jt-root > .jt-node > .jt-node-label > button {
@@ -575,11 +575,11 @@ input::placeholder {
 /* Sortable */
 
 .sortable-chosen {
-  opacity: 0.73;
+  opacity: 0.75;
 }
 
 .sortable-ghost {
-  opacity: 0.73;
+  opacity: 0.75;
 }
 
 /* Global */

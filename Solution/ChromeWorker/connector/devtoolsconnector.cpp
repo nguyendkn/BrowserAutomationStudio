@@ -1566,7 +1566,10 @@ void DevToolsConnector::Timer()
 
                         CurrentParams["url"] = Variant(GlobalState.LoadNextUrl);
                         if(!GlobalState.LoadNextData.empty())
+                        {
                             CurrentParams["referrer"] = Variant(GlobalState.LoadNextData);
+                            CurrentParams["referrerPolicy"] = Variant(std::string("unsafeUrl"));
+                        }
 
                         SendWebSocket("Page.navigate", CurrentParams, GlobalState.SwitchToTabId);
                     }
@@ -2052,7 +2055,10 @@ Async DevToolsConnector::Load(const std::string& Url, bool IsInstant, const std:
 
     Params["url"] = Variant(std::string(Url));
     if(!Referrer.empty())
+    {
         Params["referrer"] = Variant(std::string(Referrer));
+        Params["referrerPolicy"] = Variant(std::string("unsafeUrl"));
+    }
 
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);

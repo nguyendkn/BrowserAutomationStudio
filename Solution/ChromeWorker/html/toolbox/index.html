@@ -6211,7 +6211,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       _if(<%= expression %>,function(){
         section_insert()
       })!
-      <% if(do_delete.length > 0) { %>
+      <% if(do_delete.length > 0){ %>
         delete <%= do_delete %>;
       <% } %>
   </script>
@@ -9013,7 +9013,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                try{
                 if(!ElseEnabled)
                 {
-                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
+                  var code = loader.GetAdditionalData() + `\n_cycle_params().if_else_expression = ${JSON.stringify(val.original)};\n`;
+                  code += _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
                   code = Normalize(code,0)
                   BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, 1, false);
                 }else
@@ -9041,6 +9042,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   code += _.template($('#' + State + "_code").html())({expression:v, do_delete: ""})
                   code = Normalize(code,0)
                   BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls({role: "master", slave: slave_id, master: master_id, if_var: v}) + code, 1, false, master_id.toString());
+
                   if(!_GobalModel.get("isedit"))
                   {
                     code = _.template($('#' + State + "_code").html())({expression:"!" + v, do_delete: v})

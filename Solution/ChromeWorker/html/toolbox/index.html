@@ -9043,7 +9043,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
                   if(!_GobalModel.get("isedit"))
                   {
-                    code = _.template($('#' + State + "_code").html())({expression:"!" + v, original: val.original, do_delete: v})
+                    code = _.template($('#' + State + "_code").html())({expression:"!" + v, original: `!(${val.original})`, do_delete: v})
                     code = Normalize(code,0)
                     BrowserAutomationStudio_Append("Else", BrowserAutomationStudio_SaveControls({role: "slave", slave: slave_id, master: master_id, if_var: v}) + code, 1, false, slave_id.toString());
                   }

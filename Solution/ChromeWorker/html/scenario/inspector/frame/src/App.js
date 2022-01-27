@@ -85,7 +85,7 @@ window.App = {
     <div id="app">
       <div class="app-header">
         <ul class="app-tabs">
-          <li v-for="item in tabs" :key="item.name" :class="{ active: tab === item }" class="app-tab">
+          <li v-for="item in tabs" :key="item.name" :class="{ active: item === tab }" class="app-tab">
             <a href="#" @click.prevent="tab = item">
               <img :src="'src/assets/icons/' + item.name + '.svg'" alt>
               {{ $t('tabs.' + item.name) }}
@@ -99,7 +99,7 @@ window.App = {
         </button>
       </div>
       <template v-for="item in tabs">
-        <component :is="item.component" v-show="tab === item" :key="item.name" :name="item.name" :class="item.name" v-bind="item.props" />
+        <component :is="item.component" v-show="item === tab" :key="item.name" :name="item.name" :class="item.name" v-bind="item.props" />
       </template>
     </div>
   `,

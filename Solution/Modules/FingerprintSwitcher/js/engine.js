@@ -386,14 +386,10 @@ function BrowserAutomationStudio_ApplyFingerprint()
 				
 			}
 
-			log(1)
-
 			if(typeof(FINGERPRINT_JSON["webgl_properties"]["version2"]) == "undefined")
 			{
-				log(2)
 				Settings["Fingerprints.Webgl2Type"] = "Disable"
 			}
-			log(3)
 		}
 
 		if(FINGERPRINT_SENSOR)

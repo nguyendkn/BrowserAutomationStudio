@@ -396,18 +396,24 @@ function _repeat(t,n,b)
 
 function _if(c,f,n)
 {
+    var expression = _cycle_param('if_else_expression');
+
     _do(function(i){
         var cc = CYCLES.Current();
         if(cc)
+        {
             cc.RemoveLabel("function");
+            _set_action_info({ name: "If", expression: expression }, cc);
+        }
         if(i>0 || !c)
         {
             _break();
             return;
         }
         f();
-    },n)
+    },n);
 
+    delete _cycle_params().if_else_expression;
 }
 
 function _if_else(c, f1, f2,n)

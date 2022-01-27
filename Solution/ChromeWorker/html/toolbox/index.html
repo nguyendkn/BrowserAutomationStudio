@@ -6209,10 +6209,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="if_code">
       _if(<%= expression %>,function(){
-        _set_action_info({ name: "If", expression: <%= JSON.stringify(original) %> });
         section_insert()
       })!
-      <% if (do_delete.length) { %>delete <%= do_delete %>;<% } %>
+      <% if(do_delete.length) { %>
+        delete <%= do_delete %>;
+      <% } %>
   </script>
 
   <script type="text/template" id="proxy_code">
@@ -9012,7 +9013,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                try{
                 if(!ElseEnabled)
                 {
-                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:UpdatedVal, original: val.original, do_delete: ""})
+                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
                   code = Normalize(code,0)
                   BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, 1, false);
                 }else
@@ -9035,15 +9036,15 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
                   var code = loader.GetAdditionalData() + "\n" +  v + " = " + UpdatedVal + ";\n"
- 
+                  code += `_cycle_params().if_else_expression = ${JSON.stringify(val.original)};\n`
 
-                  code += _.template($('#' + State + "_code").html())({expression:v, original: val.original, do_delete: ""})
+                  code += _.template($('#' + State + "_code").html())({expression:v, do_delete: ""})
                   code = Normalize(code,0)
-                  BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls({role: "master", slave: slave_id, master: master_id, if_var: v}) + code, 1, false, master_id.toString());
 
+                  BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls({role: "master", slave: slave_id, master: master_id, if_var: v}) + code, 1, false, master_id.toString());
                   if(!_GobalModel.get("isedit"))
                   {
-                    code = _.template($('#' + State + "_code").html())({expression:"!" + v, original: `!(${val.original})`, do_delete: v})
+                    code = _.template($('#' + State + "_code").html())({expression:"!" + v, do_delete: v})
                     code = Normalize(code,0)
                     BrowserAutomationStudio_Append("Else", BrowserAutomationStudio_SaveControls({role: "slave", slave: slave_id, master: master_id, if_var: v}) + code, 1, false, slave_id.toString());
                   }

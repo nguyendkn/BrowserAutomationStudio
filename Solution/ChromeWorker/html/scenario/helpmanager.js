@@ -61,10 +61,10 @@ class HelpManager
 
 		var IfData = {"s":"if","v":1,"role":"master","slave":IdElse,"master":IdIf,"if_var":"_cycle_params().if_else","f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":Expression,"class":"expression"},{"id":"IfElse","type":"check","data":true}]}
 		var IfCode = `_cycle_params().if_else = ${Code};
-			_if(_cycle_params().if_else,function(){
-			_set_action_info({ name: "If", expression: "${Expression}" });
+		_cycle_params().if_else_expression = ${JSON.stringify(Expression)}
+		_if(_cycle_params().if_else,function(){
 			section_insert()
-			})!`
+		})!`
 
 
 		var LogData = {"s":"log","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LogText","type":"constr","data":tr("Condition is met"),"class":"string"}]}
@@ -203,8 +203,8 @@ class HelpManager
 		var SleepCode = `sleep(1000)!`		
 
 		var	IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[TEST]] == \"test\"","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
-		var IfCode = `_if(VAR_TEST == "test",function(){
-			_set_action_info({ name: "If", expression: "[[TEST]] == \"test\"" });
+		var IfCode = `_cycle_params().if_else_expression = "[[TEST]] == \"test\"";
+		_if(VAR_TEST == "test",function(){
 			section_insert()
 		})!`		
 
@@ -520,8 +520,8 @@ class HelpManager
 		var IncreaseData = {"s":"incvariable","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"SetVariableName","type":"var","data":"INDEX"},{"id":"IncVariableValue","type":"constr","data":"1","class":"int"}]}
 		var IncreaseCode = `VAR_INDEX = parseInt(VAR_INDEX) + parseInt(1)`
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[INDEX]] > 5","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
-		var IfCode = `_if(VAR_INDEX > 5,function(){
-			_set_action_info({ name: "If", expression: "[[INDEX]] > 5" });
+		var IfCode = `_cycle_params().if_else_expression = "[[INDEX]] > 5";
+		_if(VAR_INDEX > 5,function(){
 			section_insert()
 		})!`
 		var LogData = {"s":"log","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"LogText","type":"constr","data":(tr("Current loop repetition") + " : [[INDEX]]"),"class":"string"}]}
@@ -617,8 +617,8 @@ class HelpManager
       load("google.com")!`
 
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[WAS_ERROR]]","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
-		var IfCode = `_if(VAR_WAS_ERROR,function(){
-			_set_action_info({ name: "If", expression: "[[WAS_ERROR]]" });
+		var IfCode = `_cycle_params().if_else_expression = "[[WAS_ERROR]]";
+		_if(VAR_WAS_ERROR,function(){
 			section_insert()
 		})!`
 

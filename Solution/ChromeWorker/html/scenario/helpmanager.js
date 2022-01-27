@@ -61,7 +61,7 @@ class HelpManager
 
 		var IfData = {"s":"if","v":1,"role":"master","slave":IdElse,"master":IdIf,"if_var":"_cycle_params().if_else","f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":Expression,"class":"expression"},{"id":"IfElse","type":"check","data":true}]}
 		var IfCode = `_cycle_params().if_else = ${Code};
-		_cycle_params().if_else_expression = ${JSON.stringify(Expression)}
+		_cycle_params().if_else_expression = ${JSON.stringify(Expression)};
 		_if(_cycle_params().if_else,function(){
 			section_insert()
 		})!`

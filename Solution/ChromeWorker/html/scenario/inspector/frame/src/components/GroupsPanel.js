@@ -61,6 +61,12 @@ window.GroupsPanel = {
       return !Object.keys(this.data).length;
     },
 
+    usages() {
+      return this.history.flat().reduce((acc, key) => {
+        return (acc[key] = (acc[key] || 0) + 1, acc);
+      }, {});
+    },
+
     sorted() {
       const { data, order, usages, metadata, activeSortings } = this;
       const ascending = order === 'ascending';
@@ -80,12 +86,6 @@ window.GroupsPanel = {
 
         return (a > b) - (a < b);
       });
-    },
-
-    usages() {
-      return this.history.flat().reduce((acc, key) => {
-        return (acc[key] = (acc[key] || 0) + 1, acc);
-      }, {});
     },
 
     flat() {

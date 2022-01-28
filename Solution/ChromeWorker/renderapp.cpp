@@ -136,7 +136,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
 
         object->SetValue("_ApplicationEngineVersion", CefV8Value::CreateString(ApplicationEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_ScriptEngineVersion", CefV8Value::CreateString(ScriptEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
-        object->SetValue("_InterfaceJson", CefV8Value::CreateString(InterfaceState), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("_I", CefV8Value::CreateString(InterfaceState), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_K", CefV8Value::CreateString(Lang), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_Z", CefV8Value::CreateInt(100), V8_PROPERTY_ATTRIBUTE_NONE);
         return;

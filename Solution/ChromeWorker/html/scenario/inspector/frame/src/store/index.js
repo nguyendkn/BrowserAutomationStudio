@@ -2,7 +2,7 @@
 
 const store = new Vuex.Store({
   state() {
-    const state = Object.assign({}, scriptStorage.get('state'));
+    const state = Object.assign({}, parseJSON(bas.state));
     const counters = { variables: {}, resources: {} };
     const diff = { variables: [], resources: [] };
 
@@ -58,6 +58,6 @@ const store = new Vuex.Store({
 
 store.subscribe(({ type }, { variables, resources, callstack }) => {
   if (type !== 'toggleToolbar' && type !== 'setDiff' && type !== 'setNodeCounter') {
-    scriptStorage.set('state', { variables, resources, callstack });
+    BrowserAutomationStudio_SaveInterfaceJson(JSON.stringify({ variables, resources, callstack }));
   }
 });

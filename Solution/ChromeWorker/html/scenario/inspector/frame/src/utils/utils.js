@@ -18,6 +18,14 @@ const mutate = (obj, mutator) => {
   return mutator(obj);
 };
 
+const parseJSON = text => {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return {};
+  }
+};
+
 const typeOf = (() => {
   const { toString } = Object.prototype;
 

@@ -72,12 +72,12 @@ window.CallstackItem = {
         if (offsetHeight < scrollHeight && this.preview) {
           this.overflowHeight = scrollHeight;
         }
-  
+
         const { offsetWidth, scrollWidth } = this.$refs.preview;
         if (offsetWidth < scrollWidth && this.preview) {
           this.overflowWidth = scrollWidth;
         }
-  
+
         this.overflow = offsetHeight < this.overflowHeight || offsetWidth < this.overflowWidth;
         if (!this.overflow) this.preview = true;
       }

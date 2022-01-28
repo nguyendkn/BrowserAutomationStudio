@@ -62,8 +62,7 @@ window.GroupsPanel = {
     },
 
     sorted() {
-      const { data, order, history, metadata, activeSortings } = this;
-      const cache = history.flat(), updates = history.length;
+      const { data, order, usages, metadata, activeSortings } = this;
       const ascending = order === 'ascending';
 
       return Object.keys(data).sort((a, b) => {
@@ -76,13 +75,17 @@ window.GroupsPanel = {
           case 'dateCreated':
             return metadata[b].createdAt - metadata[a].createdAt;
           case 'frequency':
-            const f1 = cache.filter(v => v === a).length + updates;
-            const f2 = cache.filter(v => v === b).length + updates;
-            return metadata[b].usages / f2 - metadata[a].usages / f1;
+            return usages[b] - usages[a];
         }
 
         return (a > b) - (a < b);
       });
+    },
+
+    usages() {
+      return this.history.flat().reduce((acc, key) => {
+        return (acc[key] = (acc[key] || 0) + 1, acc);
+      }, {});
     },
 
     flat() {
@@ -120,9 +123,8 @@ window.GroupsPanel = {
 
             if (hasOwn(metadata, name)) {
               metadata[name].modifiedAt = now;
-              metadata[name].usages += 1;
             } else {
-              metadata[name] = { modifiedAt: now, createdAt: now, usages: 1 };
+              metadata[name] = { modifiedAt: now, createdAt: now };
             }
 
             history.push(name);

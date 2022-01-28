@@ -72,7 +72,7 @@
 
       _.attempt(() => {
         if (type === 'date') {
-          value = `_parse_date('${value}', 'auto')`;
+          value = `_parse_date("${value}", "auto")`;
         } else if (type === 'script') {
           value = JSON.stringify(eval(`(${value})`));
         } else if (type === 'string') {

@@ -68,7 +68,7 @@
           this.$('.btn-accept').prop('disabled', true || !model.isChanged());
         }
 
-        this.$('#inspectorModalError').html($t(el.validationMessage));
+        this.$('.error').html($t(el.validationMessage));
       },
 
       'changed.bs.select'(e) {
@@ -178,7 +178,7 @@
                   <% } %>
                 </div>
               <% }) %>
-              <span id="inspectorModalError"></span>
+              <span class="error"></span>
             </form>
             <div class="inspector-modal-tools dropdown" style="display: flex;">
               <button type="button" data-toggle="dropdown">
@@ -241,10 +241,7 @@
                 <path d="M8 0C3.58172 0 0 3.58172 0 8c0 4.4183 3.58172 8 8 8 4.4183 0 8-3.5817 8-8 0-4.41828-3.5817-8-8-8Z" fill="#606060" />
                 <path d="m8.26 10.168.336-4.508V3H7.112v2.66l.294 4.508h.854Zm.434 2.8v-1.666H7v1.666h1.694Z" fill="#fff" />
               </svg>
-              <div style="margin-left: 14px; flex: 1;">
-                <div id="inspectorModalDescription"><%= $t('inspector.descriptions.' + type) %></div>
-                <div><%= $t('inspector.description') %></div>
-              </div>
+              <div id="inspectorModalDescription" style="margin-left: 14px; flex: 1;"><%= $t('inspector.descriptions.' + type) %></div>
             </div>
           </div>
           <div class="inspector-modal-footer">
@@ -299,10 +296,6 @@
     'inspector.descriptions.null': {
       en: '<b>Null</b> is a primitive type. Unlike <b>undefined</b>, which denotes uncertainty, it is the definite meaning of the absence of an object.',
       ru: '<b>Null</b> - примитивный тип. В отличие от <b>undefined</b>, обозначающего неопределенность, является определённым значением отсутствия объекта.',
-    },
-    'inspector.description': {
-      en: 'You can read more about data types <a href="#" onclick="BrowserAutomationStudio_OpenUrl(\'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures\'); return false;">here</a>.',
-      ru: 'Подробно о типах данных вы можете прочитать <a href="#" onclick="BrowserAutomationStudio_OpenUrl(\'https://developer.mozilla.org/ru/docs/Web/JavaScript/Data_structures\'); return false;">здесь</a>.',
     },
     'inspector.types.undefined': { en: 'Undefined', ru: 'Undefined' },
     'inspector.types.boolean': { en: 'Boolean', ru: 'Булево' },

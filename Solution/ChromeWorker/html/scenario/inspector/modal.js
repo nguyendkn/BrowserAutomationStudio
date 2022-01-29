@@ -29,8 +29,8 @@
     events: {
       'click #inspectorModalSearchVariable'() {
         $('#findinput').val(this.model.get('name'));
-        _ActionFinder.Show();
         _ActionFinder.FindNext(true);
+        _ActionFinder.Show();
         this.cancel();
       },
 
@@ -46,7 +46,11 @@
 
       'click [data-copy-target]'(e) {
         let val = this.model.get(e.currentTarget.dataset.copyTarget);
-        if (Array.isArray(val)) val = val.map((v, i) => (i === 0 ? v : `[${JSON.stringify(v)}]`)).join('');
+
+        if (Array.isArray(val)) {
+          val = val.reduce((v, i) => (v + `[${JSON.stringify(i)}]`));
+        }
+
         BrowserAutomationStudio_SetClipboard(val, false);
       },
 

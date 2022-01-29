@@ -31,6 +31,18 @@
   background: #9d996c !important;
 }
 
+.inspector-modal-form ::-webkit-calendar-picker-indicator:active {
+  opacity: 0.5;
+}
+
+.inspector-modal-form ::-webkit-calendar-picker-indicator:hover {
+  opacity: 0.5;
+}
+
+.inspector-modal-form ::-webkit-calendar-picker-indicator {
+  background: transparent;
+}
+
 .inspector-modal-form input::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
@@ -82,8 +94,9 @@
   justify-content: center;
   letter-spacing: -0.2px;
   align-items: center;
-  background: #fff;
+  user-select: none;
   line-height: 15px;
+  background: #fff;
   font-size: 12px;
   padding: 12px;
   display: flex;
@@ -131,6 +144,7 @@
   -webkit-user-drag: none;
   background: #3d3f42;
   align-items: center;
+  user-select: none;
   line-height: 15px;
   font-size: 12px;
   display: flex;

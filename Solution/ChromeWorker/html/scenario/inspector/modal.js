@@ -48,7 +48,7 @@
         let val = this.model.get(e.currentTarget.dataset.copyTarget);
 
         if (Array.isArray(val)) {
-          val = val.reduce((v, i) => (v + `[${JSON.stringify(i)}]`));
+          val = val.reduce((v, k) => v + `[${JSON.stringify(k)}]`);
         }
 
         BrowserAutomationStudio_SetClipboard(val, false);
@@ -96,6 +96,7 @@
     },
 
     initialize({ value, type, path, mode }) {
+      if (type === 'date') value = isNaN(value) ? '' : value.toISOString().slice(0, 23);
       [type, value] = ['object', 'array'].includes(type) ? ['script', JSON.stringify(value)] : [type, `${value}`];
 
       this.model = new Model({ value, type, path, mode: mode.slice(0, -1) }).on('change:type', (_, type) => {
@@ -176,7 +177,7 @@
                   <% } else if (item === 'number') { %>
                     <input type="number" value="<%- match ? value : 0 %>" step="any" <%= modifier %>>
                   <% } else if (item === 'date' ) { %>
-                    <input type="text" value="<%- match ? value : '' %>" step="any" <%= modifier %>>
+                    <input type="datetime-local" value="<%- match ? value : '' %>" step="1" <%= modifier %>>
                   <% } else { %>
                     <input type="hidden" value="<%- item %>" <%= modifier %>>
                   <% } %>

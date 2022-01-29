@@ -65,37 +65,38 @@
   });
 
   function edit(options) {
-    const callback = (cancel, { value, type }) => {
-      if (cancel) return;
-      let [root, ...path] = options.path;
-      path = path.map(k => `[${JSON.stringify(k)}]`).join('');
+    const callback = (accept, { value, type }) => {
+      if (accept) {
+        let [root, ...path] = options.path;
+        path = path.map(k => `[${JSON.stringify(k)}]`).join('');
 
-      _.attempt(() => {
-        if (type === 'date') {
-          value = `_parse_date("${value}", "auto")`;
-        } else if (type === 'script') {
-          value = JSON.stringify(eval(`(${value})`));
-        } else if (type === 'string') {
-          value = JSON.stringify(value);
-        }
+        _.attempt(() => {
+          if (type === 'date') {
+            value = `_parse_date("${value}", "auto")`;
+          } else if (type === 'script') {
+            value = JSON.stringify(eval(`(${value})`));
+          } else if (type === 'string') {
+            value = JSON.stringify(value);
+          }
 
-        VariablesNeedRefresh = true;
-        BrowserAutomationStudio_Execute(`
-          (function (root, value) {
-            try {
-              if (root.indexOf("GLOBAL:") === 0) {
-                root = root.slice(7);
-                var obj = JSON.parse(P("basglobal", root) || "{}");
-                obj${path} = value;
-                PSet("basglobal", root, JSON.stringify(obj));
-              } else {
-                GLOBAL["VAR_" + root]${path} = value;
-              }
-            } catch (e) {}
-          })(${JSON.stringify(root)}, ${value});
-          section_start("test", -3)!
-        `);
-      });
+          VariablesNeedRefresh = true;
+          BrowserAutomationStudio_Execute(`
+            (function (root, value) {
+              try {
+                if (root.indexOf("GLOBAL:") === 0) {
+                  root = root.slice(7);
+                  var obj = JSON.parse(P("basglobal", root) || "{}");
+                  obj${path} = value;
+                  PSet("basglobal", root, JSON.stringify(obj));
+                } else {
+                  GLOBAL["VAR_" + root]${path} = value;
+                }
+              } catch (e) {}
+            })(${JSON.stringify(root)}, ${value});
+            section_start("test", -3)!
+          `);
+        });
+      }
     };
     return new Inspector.Modal({ ...options, callback }).render();
   }

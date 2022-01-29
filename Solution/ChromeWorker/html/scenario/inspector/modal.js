@@ -118,12 +118,12 @@
       return this;
     },
 
-    accept() {
+    cancel() {
       this.options.callback(false, this.model.toJSON());
       return this.close();
     },
 
-    cancel() {
+    accept() {
       this.options.callback(true, this.model.toJSON());
       return this.close();
     },

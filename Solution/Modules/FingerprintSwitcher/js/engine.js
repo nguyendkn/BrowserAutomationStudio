@@ -334,7 +334,19 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	    native("filesystem", "writefile", JSON.stringify({path: _get_profile() + "/fingerprint.json",value: value,base64:false,append:false}))
 	}
 
-
+	_if(typeof(FINGERPRINT_JSON["features"]) == "object", function(){
+		var Settings = {}
+		var Keys = Object.keys(FINGERPRINT_JSON["features"])
+		for(var i = 0;i<Keys.length;i++)
+		{
+			var Key = Keys[i]
+			if(typeof(FINGERPRINT_JSON["features"][Key]) == "boolean")
+			{
+				Settings["Fingerprints.Feature." + Key] = (FINGERPRINT_JSON["features"][Key]) ? "Enable" : "Disable"
+			}
+		}
+		_settings(Settings)!
+	})!
 
 	_if(FINGERPRINT_CANVAS || FINGERPRINT_WEBGL || FINGERPRINT_AUDIO || FINGERPRINT_BATTERY || FINGERPRINT_RECTANGLES || FINGERPRINT_SENSOR, function(){
 		var Settings = {}
@@ -529,7 +541,6 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	})!
 
-	
 	var BrowserMode = "desktop"
 	try
 	{
@@ -765,6 +776,14 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	}
 
 	_settings(FINGEPRINT_SETTINGS)!
+
+	
+	_if(ScriptWorker.GetIsRecord(), function(){
+		url()!
+		_if(_result() == "about:blank", function(){
+			_load("data:text/plain,", "", false)!
+		})!
+	})!
 
 }
 

@@ -39,7 +39,7 @@ window.GroupsPanel = {
       }),
       options: ['groups'].map(name => {
         const option = options.find(item => item.name === name);
-        return { name, active: option ? option.active : true };
+        return { name, active: option ? option.active : false };
       }),
       order: 'ascending',
       metadata: {},

@@ -96,7 +96,7 @@
     },
 
     initialize({ value, type, path, mode }) {
-      if (type === 'date') value = isNaN(value) ? '' : value.toISOString().slice(0, 23);
+      if (type === 'date') value = isNaN(value) ? '' : value.toISOString().slice(0, 19);
       [type, value] = ['object', 'array'].includes(type) ? ['script', JSON.stringify(value)] : [type, `${value}`];
 
       this.model = new Model({ value, type, path, mode: mode.slice(0, -1) }).on('change:type', (_, type) => {

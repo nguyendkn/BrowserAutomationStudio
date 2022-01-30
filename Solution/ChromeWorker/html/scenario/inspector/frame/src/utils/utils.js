@@ -8,6 +8,10 @@ const parseJSON = (text, reviver) => {
   }
 };
 
+const post = (type, payload = {}) => {
+  window.top.postMessage({ type, payload }, '*');
+};
+
 const scale = (color, count = 6) => {
   return [...Array(count).keys()].map(n => {
     const [r, g, b] = [255, 0, 0].map((v, i) => {

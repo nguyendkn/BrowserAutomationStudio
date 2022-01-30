@@ -129,16 +129,12 @@ window.JsonTreeNode = {
     },
 
     edit() {
-      const message = {
-        payload: {
-          value: this.value,
-          type: this.type,
-          path: this.path,
-          mode: this.id,
-        },
-        type: 'edit',
-      };
-      window.top.postMessage(message, '*');
+      post('edit', {
+        value: this.value,
+        type: this.type,
+        path: this.path,
+        mode: this.id,
+      });
     },
 
     formatDate(date) {

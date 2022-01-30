@@ -84,11 +84,9 @@ window.CallstackItem = {
     },
 
     focusAction() {
-      const message = {
-        type: 'focusAction',
-        payload: { id: this.id },
-      };
-      window.top.postMessage(message, '*');
+      post('focusAction', {
+        id: this.id,
+      });
     },
 
     toggle() {

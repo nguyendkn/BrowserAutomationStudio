@@ -45,7 +45,7 @@ window.GroupsList = {
     const { groups } = this.$store.state[this.id];
 
     if (!groups.length) {
-      groups.push({ id: 0, name: 'Main', color: 'brown', items: [], expanded: true });
+      groups.push({ id: 0, name: 'Main', color: 'brown', expanded: true, items: [] });
     }
 
     return { groups, counter: Math.max(...groups.map(({ id }) => id)) };
@@ -129,8 +129,8 @@ window.GroupsList = {
         id: ++this.counter,
         name: 'Group',
         color: 'brown',
-        items: [],
         expanded: true,
+        items: [],
       });
     },
   },

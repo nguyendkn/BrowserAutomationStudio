@@ -5800,9 +5800,29 @@
         
     }
 
-    function BrowserAutomationStudio_PreserveInterfaceState() {}
+    function BrowserAutomationStudio_PreserveInterfaceState() {
+      const state = JSON.stringify({
+        inspector: {
+          visible: _Inspector.$el.is(':visible'),
+          height: _Inspector.$el.css('height'),
+        }
+      });
+      BrowserAutomationStudio_SaveInterfaceState(state);
+    }
 
-    function BrowserAutomationStudio_LoadInterfaceState(state) {}
+    function BrowserAutomationStudio_LoadInterfaceState(state) {
+      _.attempt(() => {
+        const { inspector } = JSON.parse(state);
+
+        if (inspector.visible) {
+          _Inspector.$el.show();
+        } else {
+          _Inspector.$el.hide();
+        }
+
+        _Inspector.$el.css('height', inspector.height);
+      });
+    }
 
     function BrowserAutomationStudio_FinishedBackup(fullPath) {
       _ActionUpdater.model.trigger('backup', fullPath);

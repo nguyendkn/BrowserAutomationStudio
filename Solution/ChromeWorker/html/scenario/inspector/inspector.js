@@ -40,9 +40,11 @@
         this.setElement('#inspector').$el.resizable({
           onDragStart(e, ...args) {
             body.style.cursor = e.type !== 'mouseup' ? 'ns-resize' : '';
+            BrowserAutomationStudio_PreserveInterfaceState();
           },
           onDragEnd(e, ...args) {
             body.style.cursor = e.type !== 'mouseup' ? 'ns-resize' : '';
+            BrowserAutomationStudio_PreserveInterfaceState();
           },
           onDrag(e, ...args) {
             const height = Math.min(args[2], window.outerHeight - 300);
@@ -55,11 +57,13 @@
 
     show() {
       this.$el.show();
+      BrowserAutomationStudio_PreserveInterfaceState();
       return this;
     },
 
     hide() {
       this.$el.hide();
+      BrowserAutomationStudio_PreserveInterfaceState();
       return this;
     },
   });

@@ -1746,7 +1746,7 @@
 
          this.model.set("dontsend",false)
          BrowserAutomationStudio_SaveToUndoManager()
-         BrowserAutomationStudio_AskForVariablesUpdate()
+         BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
          this.renderselectiontemplatecontainer()
          //this.render()
       },
@@ -1910,7 +1910,7 @@
           this.SetDefaultInsert()
           this.model.set("dontsend",false)
           BrowserAutomationStudio_SaveToUndoManager()
-          BrowserAutomationStudio_AskForVariablesUpdate()
+          BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
           this.send()
           this.render()
         }*/
@@ -1957,7 +1957,7 @@
             _CacheLoader.Start()
             self.model.set("dontsend",false)
             BrowserAutomationStudio_SaveToUndoManager()
-            BrowserAutomationStudio_AskForVariablesUpdate()
+            BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
             self.send()
             self.render()
             _FunctionManager.RenderDefault()
@@ -2212,7 +2212,7 @@
 
         BrowserAutomationStudio_StopSaveToUndoManager = false
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
 
         //BrowserAutomationStudio_FocusAction(NewId,true)
         BrowserAutomationStudio_FocusAction(IdIgnoreErrors,true)
@@ -2296,7 +2296,7 @@
         
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.render()
         this.send()
 
@@ -2597,7 +2597,7 @@
         
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
 
@@ -2791,7 +2791,7 @@
         this.model.set("dontsend",false)
         //this.SetDefaultInsert()
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
 
@@ -2843,7 +2843,7 @@
 
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
       },
@@ -2878,7 +2878,7 @@
 
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
       },
@@ -2900,7 +2900,7 @@
          this.model.set("dontsend",false)
          
          BrowserAutomationStudio_SaveToUndoManager()
-         BrowserAutomationStudio_AskForVariablesUpdate()
+         BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
 
          this.renderselectiontemplatecontainer()
          //this.render()
@@ -3053,7 +3053,7 @@
           {
             this.model.set("dontsend",false)
             BrowserAutomationStudio_SaveToUndoManager()
-            BrowserAutomationStudio_AskForVariablesUpdate()
+            BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
             this.send()
             this.render()
           }
@@ -3396,7 +3396,7 @@
 
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
       },
@@ -3430,7 +3430,7 @@
 
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
       },
@@ -4170,7 +4170,7 @@
         }
 
       _GobalModel.set("dontsend",false)
-      BrowserAutomationStudio_AskForVariablesUpdate()
+      BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
       _MainView.send()
       _MainView.render()
 
@@ -4192,7 +4192,7 @@
 
       BrowserAutomationStudio_HandlerIsInitialized = true;
       _TaskCollection.on('add change remove', () => BrowserAutomationStudio_SaveToUndoManager());
-      _TaskCollection.on('add change remove reset', () => BrowserAutomationStudio_AskForVariablesUpdate());
+      _TaskCollection.on('add change remove reset', () => BrowserAutomationStudio_AskForVariablesUpdateIfNeeded());
     }
 
     /*
@@ -5474,16 +5474,18 @@
       }
     }
 
-    function BrowserAutomationStudio_AskForVariablesUpdate(force = false) {
-      if (!force) {
-        if (_GobalModel.get('dontsend')) return;
-        if (_GobalModel.get('istaskexecuting')) return;
-        if (_GobalModel.get('isscriptexecuting')) return;
+    function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded() {
+      if (_GobalModel.get('dontsend')) return;
 
-        const variables = BrowserAutomationStudio_GetVariablesList();
-        if (_.isEqual(variables, VariablesListPrev)) return;
-      }
+      const variables = BrowserAutomationStudio_GetVariablesList();
+      if (_.isEqual(variables, VariablesListPrev)) return;
+      if (_GobalModel.get('isscriptexecuting')) return;
+      if (_GobalModel.get('istaskexecuting')) return;
 
+      BrowserAutomationStudio_AskForVariablesUpdate();
+    }
+
+    function BrowserAutomationStudio_AskForVariablesUpdate() {
       if (VariablesUpdateTakesPlace) {
         VariablesNeedRefresh = true;
         return;
@@ -5665,7 +5667,7 @@
         _MainView.PreserveInsert()
 
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdate()
+        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         _MainView.send()
 
 
@@ -5693,7 +5695,7 @@
       {
         VariablesUpdateTakesPlace = false
         if(VariablesNeedRefresh)
-          BrowserAutomationStudio_AskForVariablesUpdate(true)
+          BrowserAutomationStudio_AskForVariablesUpdate()
         return
       }
 
@@ -5777,7 +5779,7 @@
 
       if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
       {
-        BrowserAutomationStudio_AskForVariablesUpdate(true)
+        BrowserAutomationStudio_AskForVariablesUpdate()
       }
 
       if(typeof(Id) != "undefined")
@@ -6031,7 +6033,7 @@
 
 
       BrowserAutomationStudio_SaveToUndoManager();
-      BrowserAutomationStudio_AskForVariablesUpdate();
+      BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
 
       
 

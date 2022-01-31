@@ -224,7 +224,7 @@ function DragAndDrop()
 					_MainView.model.set("dontsend",false)
 					BrowserAutomationStudio_StopSaveToUndoManager = false
 					BrowserAutomationStudio_SaveToUndoManager()
-					BrowserAutomationStudio_AskForVariablesUpdate()
+					BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
 					_MainView.send()
 					_MainView.render()
 				}else
@@ -351,7 +351,7 @@ function DragAndDrop()
 
 								BrowserAutomationStudio_StopSaveToUndoManager = false
 								BrowserAutomationStudio_SaveToUndoManager()
-								BrowserAutomationStudio_AskForVariablesUpdate()
+								BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
 
 								   BrowserAutomationStudio_FocusAction(IdLabelFrom,false)
 								BrowserAutomationStudio_FocusAction(IdLabelTo,true)
@@ -407,7 +407,7 @@ _goto(${JSON.stringify(Name)})!`,IdLabelFrom)
 
 					BrowserAutomationStudio_StopSaveToUndoManager = false
 					BrowserAutomationStudio_SaveToUndoManager()
-					BrowserAutomationStudio_AskForVariablesUpdate()
+					BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
 
 					   BrowserAutomationStudio_FocusAction(IdLabelFrom,false)
 							

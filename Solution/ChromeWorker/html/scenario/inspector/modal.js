@@ -162,7 +162,7 @@
                 <% const match = item === type, modifier = mode === 'resource' ? 'readonly' : match ? 'required' : '' %>
                 <div data-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
                   <% if (item === 'boolean') { %>
-                    <% ['false', 'true'].forEach((val, idx) => { %>
+                    <% ['true', 'false'].forEach((val, idx) => { %>
                       <div class="pretty p-default p-round" style="margin: 9px 12px;">
                         <input type="radio" name="boolean" value="<%- val %>" <%= (match ? value === val : idx === 0) ? 'checked' : '' %> <%= modifier %>>
                         <div class="state">
@@ -171,9 +171,9 @@
                       </div>
                     <% }) %>
                   <% } else if (item === 'script') { %>
-                    <textarea <%= modifier %>><%- match ? value : '' %></textarea>
+                    <textarea wrap="off" <%= modifier %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'string') { %>
-                    <textarea <%= modifier %>><%- match ? value : '' %></textarea>
+                    <textarea wrap="off" <%= modifier %>><%- match ? value : '' %></textarea>
                   <% } else if (item === 'number') { %>
                     <input type="number" value="<%- match ? value : 0 %>" step="any" <%= modifier %>>
                   <% } else if (item === 'date' ) { %>

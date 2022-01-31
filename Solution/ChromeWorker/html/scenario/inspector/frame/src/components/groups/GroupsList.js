@@ -92,6 +92,8 @@ window.GroupsList = {
               this.removeGroup(index);
             }
           }
+
+          this.$refs.group[0].isExpanded = true;
         }
       },
     },
@@ -136,6 +138,7 @@ window.GroupsList = {
     <draggable v-model="groups" :prevent-on-filter="false" :disabled="groups.length === 1" :class="{ flat }" filter="input + div, input:enabled, input.enabled" handle=".group-item-header" class="group-list" tag="ul">
       <groups-item
         v-for="(group, index) in groups"
+        ref="group"
         :key="group.id"
         :name="group.name"
         :color="group.color"

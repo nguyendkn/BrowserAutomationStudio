@@ -200,7 +200,7 @@
 .inspector-modal-description {
   border: 1px dashed #606060;
   background: #f7f7f8;
-  margin-top: 20px;
+  margin-top: 15px;
   padding: 12px;
   display: flex;
 }
@@ -212,7 +212,7 @@
   line-height: 18px;
   background: #fff;
   color: #606060;
-  padding: 24px;
+  padding: 20px;
   margin: 0 8px;
 }
 
@@ -269,7 +269,7 @@
 }
 
 .inspector-modal-body {
-  padding: 20px 0;
+  padding: 15px 0;
 }
 
 .inspector-modal-form {

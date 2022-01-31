@@ -91,7 +91,7 @@ window.PanelToolbar = {
   template: /*html*/ `
     <div class="app-toolbar">
       <div v-show="panelVisible" class="app-toolbar-panel">
-        <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" spellcheck="false" type="text" @input="$emit('input', $event.target.value)">
+        <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" spellcheck="false" type="text" @input="$emit('input', $event.target.value)" @keydown.esc="$emit('input', '')">
         <slot name="controls"></slot>
         <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="hideMenu">
           <button type="button" @click="toggleMenu">

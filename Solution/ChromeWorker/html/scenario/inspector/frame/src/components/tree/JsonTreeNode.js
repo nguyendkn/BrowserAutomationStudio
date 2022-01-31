@@ -128,6 +128,16 @@ window.JsonTreeNode = {
       }
     },
 
+    copy() {
+      const { type, value } = this, text = JSON.stringify(value);
+
+      if (value != null) {
+        BrowserAutomationStudio_SetClipboard(text, false);
+      } else {
+        BrowserAutomationStudio_SetClipboard(type, false);
+      }
+    },
+
     edit() {
       post('edit', {
         value: this.value,
@@ -180,6 +190,9 @@ window.JsonTreeNode = {
         <template v-else>{{ value }}</template>
       </span>
       <div class="jt-node-actions">
+        <button type="button" @click="copy">
+          <icon-copy />
+        </button>
         <button type="button" @click="edit">
           <icon-edit />
         </button>

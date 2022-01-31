@@ -14,6 +14,11 @@ window.GroupsItem = {
       default: false,
     },
 
+    isExpanded: {
+      type: Boolean,
+      default: false,
+    },
+
     color: {
       type: String,
       required: true,
@@ -40,7 +45,6 @@ window.GroupsItem = {
         red: '246, 155, 147',
       },
       isEditing: false,
-      isExpanded: true,
       newName: this.name,
       newColor: this.color,
     };
@@ -144,7 +148,7 @@ window.GroupsItem = {
             <button v-if="allowEdit" type="button" @click="edit">
               <icon-edit />
             </button>
-            <button type="button" @click="isExpanded = !isExpanded">
+            <button type="button" @click="$emit('update:is-expanded', !isExpanded)">
               <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
             </button>
           </div>

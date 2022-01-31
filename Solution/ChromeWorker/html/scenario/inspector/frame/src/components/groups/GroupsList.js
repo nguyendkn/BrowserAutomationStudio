@@ -45,7 +45,7 @@ window.GroupsList = {
     const { groups } = this.$store.state[this.id];
 
     if (!groups.length) {
-      groups.push({ id: 0, name: 'Main', color: 'brown', items: [] });
+      groups.push({ id: 0, name: 'Main', color: 'brown', items: [], expanded: true });
     }
 
     return { groups, counter: Math.max(...groups.map(({ id }) => id)) };
@@ -93,7 +93,7 @@ window.GroupsList = {
             }
           }
 
-          this.$refs.group[0].isExpanded = true;
+          groups[0].expanded = true;
         }
       },
     },
@@ -130,6 +130,7 @@ window.GroupsList = {
         name: 'Group',
         color: 'brown',
         items: [],
+        expanded: true,
       });
     },
   },
@@ -138,13 +139,13 @@ window.GroupsList = {
     <draggable v-model="groups" :prevent-on-filter="false" :disabled="groups.length === 1" :class="{ flat }" filter="input + div, input:enabled, input.enabled" handle=".group-item-header" class="group-list" tag="ul">
       <groups-item
         v-for="(group, index) in groups"
-        ref="group"
         :key="group.id"
         :name="group.name"
         :color="group.color"
         :items="group.items"
         :allow-edit="group.id !== 0"
         :allow-remove="group.id !== 0"
+        :is-expanded.sync="group.expanded"
         @update="updateGroup(index, $event)"
         @remove="removeGroup(index, $event)"
         @item-added="sortGroup(group)"

@@ -123,7 +123,7 @@ window.GroupsList = {
     },
 
     addGroup() {
-      this.groups.push({
+      this.groups.unshift({
         id: ++this.counter,
         name: 'Group',
         color: 'brown',

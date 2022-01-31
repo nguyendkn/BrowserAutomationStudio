@@ -1,6 +1,6 @@
 <div class="container-fluid">
 	<%= _.template($('#block_start').html())({id:"Filtration", name: tr("Filtration"), description: tr("Using the parameters from this block, you can filter the messages as you need, or leave them without filtering.")}) %>
-		<span class="tr" style="margin-left:15px">Sender of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of message"), description: tr("Sender of message")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Sender of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of message"), description: tr("Sender of message, \"From\" field") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "admin@site.com"}, {code: "no-reply@example.com"}, {code: "Test &lt;info@test.com&gt;"}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "from",
 			description: tr("Contains"),
@@ -42,7 +42,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Recipient of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Recipient of message"), description: tr("Recipient of message")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Recipient of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Recipient of message"), description: tr("Recipient of message, \"To\" field") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "you@site.com"}, {code: "name@example.com"}, {code: "User &lt;user@test.com&gt;"}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "to",
 			description: tr("Contains"),
@@ -82,7 +82,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Message subject</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Message subject"), description: tr("Message subject")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Message subject</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Message subject"), description: tr("Message subject, \"Subject\" field") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: tr("Marketing")}, {code: tr("Business proposal")}, {code: tr("Email confirmation")}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "subject",
 			description: tr("Contains"),
@@ -122,7 +122,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Text of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of message"), description: tr("Text of message")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Text of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of message"), description: tr("Text of message") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "&lt;HTML&gt;&lt;BODY&gt;&lt;div&gt;" + tr("Use code 9779 to confirm") + "&lt;/div&gt;&lt;/BODY&gt;&lt;/HTML&gt;"}, {code: tr("Use code 9779 to confirm")}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "text",
 			description: tr("Contains"),
@@ -162,7 +162,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Flags of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of message"), description: tr("Flags of message")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Flags of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of message"), description: tr("Flags of message") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "unseen"}, {code: "flagged,recent,unseen"}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "flags",
 			description: tr("Contains"),
@@ -208,7 +208,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone).") + " " + tr("Date can be created using actions from the \"Date and time\" module.")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone)") + ", " + tr("using the two parameters below, you can make filter by the contents of this field.") + " " + tr("Date can be created using actions from the \"Date and time\" module."), examples: [{code: new Date('May 13 2021')}, {code: new Date('Jan 20 2022 16:57:26')}, {code: new Date()}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "since",
 			description: tr("From date"),
@@ -216,7 +216,12 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("From date") + " " + tr("Date can be created using actions from the \"Date and time\" module.")
+				description: tr("Message received is within or later than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
+				examples: [
+					{code: 'May 13 2021'},
+					{code: new Date('Jan 20 2022 16:57:26')},
+					{code: new Date()}
+				]
 			}
 		}) %>
 		<%= _.template($('#input_constructor').html())({
@@ -226,7 +231,12 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("To date") + " " + tr("Date can be created using actions from the \"Date and time\" module.")
+				description: tr("Message received is earlier than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
+				examples: [
+					{code: 'May 13 2021'},
+					{code: new Date('Jan 20 2022 16:57:26')},
+					{code: new Date()}
+				]
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>

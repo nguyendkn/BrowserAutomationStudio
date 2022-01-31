@@ -1,7 +1,7 @@
 var getUid = $("#getUid").is(':checked');
 var saveUid = this.$el.find("#saveUid").val().toUpperCase();
 if(getUid && saveUid.length == 0){
-	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Message Id") + tr("\" is not specified"));
+	Invalid(tr("The parameter \"") + tr("Variable") + " -> " + tr("Message id") + tr("\" is not specified"));
     return;
 };
 var getFrom = $("#getFrom").is(':checked');

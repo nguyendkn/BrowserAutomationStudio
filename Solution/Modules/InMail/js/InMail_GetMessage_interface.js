@@ -1,11 +1,11 @@
 <div class="container-fluid">
 	<%= _.template($('#input_constructor').html())({
 		id: "uid",
-		description: tr("Message Id"),
+		description: tr("Message id"),
 		default_selector: "string",
 		value_string: "",
 		help: {
-			description: tr("The identifier of the message which content needs to be retrieved."),
+			description: tr("The id of the message which content need to be retrieved."),
 			examples: [
 				{code: 134},
 				{code: 370},
@@ -112,7 +112,7 @@
 		</div>
 	</div>
 	<span data-preserve="true" data-preserve-type="check" data-preserve-id="getTextHtml">
-		<input type="checkbox" checked="checked" id="getTextHtml" style="margin-left:25px"/> <label for="getTextHtml"><span class="tr">Get body of message</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get body of message") + " (text/html)", description: tr("Get body of message") + " (text/html)", examples: [{code: tr("Activated"), description: tr("Get message body (text/html) from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message body (text/html) from server")}]})) %>"></i>
+		<input type="checkbox" checked="checked" id="getTextHtml" style="margin-left:25px"/> <label for="getTextHtml"><span class="tr">Get body of message</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get body of message") + " (text/html)", description: tr("If enabled, then the body of the message in html format (text/html) will be retrieved from the server and stored in the variable below.") + " " + tr("text/html is the MIME type of data represented in html format, html is the markup language for web pages.") + " " + tr("If the message does not contain a body with this type, then an empty string will be stored."), examples: [{code: tr("Activated"), description: tr("Get message body (text/html) from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message body (text/html) from server")}]})) %>"></i>
 	</span>
 	<span id="advancedTextHtml">
 		<%= _.template($('#variable_constructor').html())({
@@ -120,7 +120,11 @@
 			description: tr("Body of message") + " (text/html)",
 			default_variable: "MAIL_TEXT_HTML",
 			help: {
-				description: tr("Body of message") + " (text/html)"
+				description: tr("Variable in which, after successful execution of the action, the body of the retrieved message in html format (text/html) will be written.") + " " + tr("text/html is the MIME type of data represented in html format, html is the markup language for web pages.") + " " + tr("If the message does not contain a body with this type, then an empty string will be stored."),
+				examples: [
+					{code: "&lt;HTML&gt;&lt;BODY&gt;&lt;div&gt;" + tr("Use code 9779 to confirm") + "&lt;/div&gt;&lt;/BODY&gt;&lt;/HTML&gt;"},
+					{code: "<br/>" + tr("Empty string"), description: tr("The message does not contain a body in html format")}
+				]
 			}
 		}) %>
 		<div>
@@ -156,7 +160,7 @@
 		</div>
 	</div>
 	<span data-preserve="true" data-preserve-type="check" data-preserve-id="getTextPlain">
-		<input type="checkbox" checked="checked" id="getTextPlain" style="margin-left:25px"/> <label for="getTextPlain"><span class="tr">Get body of message</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get body of message") + " (text/plain)", description: tr("Get body of message") + " (text/plain)", examples: [{code: tr("Activated"), description: tr("Get message body (text/plain) from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message body (text/plain) from server")}]})) %>"></i>
+		<input type="checkbox" checked="checked" id="getTextPlain" style="margin-left:25px"/> <label for="getTextPlain"><span class="tr">Get body of message</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get body of message") + " (text/plain)", description: tr("If enabled, then the body of the message in text format (text/plain) will be retrieved from the server and stored in the variable below.") + " " + tr("text/plain is a MIME type that is the base type for text files.") + " " + tr("If the message does not contain a body with this type, then an empty string will be stored."), examples: [{code: tr("Activated"), description: tr("Get message body (text/plain) from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message body (text/plain) from server")}]})) %>"></i>
 	</span>
 	<span id="advancedTextPlain">
 		<%= _.template($('#variable_constructor').html())({
@@ -164,7 +168,11 @@
 			description: tr("Body of message") + " (text/plain)",
 			default_variable: "MAIL_TEXT_PLAIN",
 			help: {
-				description: tr("Body of message") + " (text/plain)"
+				description: tr("Variable in which, after successful execution of the action, the body of the retrieved message in text format (text/plain) will be written.") + " " + tr("text/plain is a MIME type that is the base type for text files.") + " " + tr("If the message does not contain a body with this type, then an empty string will be stored."),
+				examples: [
+					{code: tr("Use code 9779 to confirm")},
+					{code: "<br/>" + tr("Empty string"), description: tr("The message does not contain a body in text format")}
+				]
 			}
 		}) %>
 		<div>
@@ -200,7 +208,7 @@
 		</div>
 	</div>
 	<span data-preserve="true" data-preserve-type="check" data-preserve-id="getTextRaw">
-		<input type="checkbox" id="getTextRaw" style="margin-left:25px"/> <label for="getTextRaw"><span class="tr">Get body of message</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get body of message") + " (raw)", description: tr("Get body of message") + " (raw)", examples: [{code: tr("Activated"), description: tr("Get message body (raw) from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message body (raw) from server")}]})) %>"></i>
+		<input type="checkbox" id="getTextRaw" style="margin-left:25px"/> <label for="getTextRaw"><span class="tr">Get body of message</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get body of message") + " (raw)", description: tr("If enabled, then the body of the message in raw form (raw) will be retrieved from the server and stored in the variable below.") + " " + tr("raw - this means that the body of the message will be retrieved in its raw form, without any processing."), examples: [{code: tr("Activated"), description: tr("Get message body (raw) from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message body (raw) from server")}]})) %>"></i>
 	</span>
 	<span id="advancedTextRaw">
 		<%= _.template($('#variable_constructor').html())({
@@ -208,7 +216,11 @@
 			description: tr("Body of message") + " (raw)",
 			default_variable: "MAIL_TEXT_RAW",
 			help: {
-				description: tr("Body of message") + " (raw)"
+				description: tr("Variable in which, after successful execution of the action, the body of the retrieved message in raw form (raw) will be written.") + " " + tr("raw - this means that the body of the message will be retrieved in its raw form, without any processing."),
+				examples: [
+					{code: "----ALT--d449E7c1653598173380270778C1f6B21643480035<br/>Content-Type: text/plain; charset=utf-8<br/>Content-Transfer-Encoding: base64<br/><br/>ClVzZSBjb2RlIDk3NzkgdG8gY29uZmlybQrCoArCoA==<br/><br/>----ALT--d449E7c1653598173380270778C1f6B21643480035"},
+					{code: "<br/>" + tr("Empty string"), description: tr("The message does not contain a body")}
+				]
 			}
 		}) %>
 		<div>
@@ -452,7 +464,7 @@
 				disable_int: true,
 				value_string: "",
 				help: {
-					description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
+					description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
 					examples: [
 						{code: "\\Seen,\\Flagged"},
 						{code: "\\Seen, \\Flagged"},
@@ -499,7 +511,13 @@
 	<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Get the content of the message with the specified identifier.</div>
+	<div class="tr tooltip-paragraph-first-fold">Get the content of the message with the specified id.</div>
+	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">Using the parameters from this action, you can choose which parts of the message will be retrieved and saved, and which ones will be skipped, thereby saving traffic and time by getting only what you need.</div>
+	<div class="tr tooltip-paragraph-fold">To perform this action, you need the id of message.</div>
+	<div class="tr tooltip-paragraph-fold">You can get the id of a message using the actions "Find id of the last message", "Find id of one message by criteria".</div>
+	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
 <script>

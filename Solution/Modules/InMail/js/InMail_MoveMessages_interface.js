@@ -1,11 +1,17 @@
 <div class="container-fluid">
 	<%= _.template($('#input_constructor').html())({
 		id: "uids",
-		description: tr("Message Id"),
+		description: tr("Message id"),
 		default_selector: "string",
 		value_string: "",
 		help: {
-			description: tr("Message Id")
+			description: tr("The id of the message which need to be moved from one mailbox folder to another. If a list is specified instead of one message id, then all messages from the specified list will be moved") + ", " + tr("as a list, you can use a string consisting of id, separated by commas."),
+			examples: [
+				{code: 134},
+				{code: "263,339"},
+				{code: "145, 187, 422"},
+				{code: "[254, 356, 593, 694, 947]"}
+			]
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
@@ -18,7 +24,12 @@
 		disable_int: true,
 		value_string: "",
 		help: {
-			description: tr("Folder name")
+			description: tr("The name of the folder where the message or several messages will be moved."),
+			examples: [
+				{code: "INBOX", description: tr("Default folder incoming messages")},
+				{code: "Spam", description: tr("Spam folder, on some mails")},
+				{code: "Trash", description: tr("Trash folder, on some mails")}
+			]
 		}
 	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
@@ -44,6 +55,15 @@
 	<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Move message from one mailbox to another.</div>
+	<div class="tr tooltip-paragraph-first-fold">Move the specified message from one mailbox to another.</div>
+	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action will move the message from one mailbox folder to another. After the move, the message will have a new id, and you will not be able to work with it using the same id.</div>
+	<div class="tr tooltip-paragraph-fold">To perform this action, you need the id of message.</div>
+	<div class="tr tooltip-paragraph-fold">You can get the id of a message using the actions "Find id of the last message", "Find id of one message by criteria".</div>
+	<div class="tooltip-paragraph-fold"><span class="tr">This action can move several messages at once</span>, <span class="tr">for this, instead of one id, a list of id must be specified</span>, <span class="tr">as a list, you can use a string consisting of id, separated by commas.</span></div>
+	<div class="tr tooltip-paragraph-fold">You can get a list of message ids using the "Find id of multiple messages by criteria" action.</div>
+	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
+	<div class="tr tooltip-paragraph-fold">Moving messages is not supported by all mail services, if the service does not support moving, then the action will fail.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

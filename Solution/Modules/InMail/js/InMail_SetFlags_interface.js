@@ -1,11 +1,17 @@
 <div class="container-fluid">
 	<%= _.template($('#input_constructor').html())({
 		id: "uids",
-		description: tr("Message Id"),
+		description: tr("Message id"),
 		default_selector: "string",
 		value_string: "",
 		help: {
-			description: tr("Message Id")
+			description: tr("The id of the message for which need to set the flags. If a list is specified instead of one message id, then flags will be set for all messages from the specified list") + ", " + tr("as a list, you can use a string consisting of id, separated by commas."),
+			examples: [
+				{code: 134},
+				{code: "263,339"},
+				{code: "145, 187, 422"},
+				{code: "[254, 356, 593, 694, 947]"}
+			]
 		}
 	}) %>
 	<%= _.template($('#input_constructor').html())({
@@ -22,7 +28,7 @@
 		disable_int: true,
 		value_string: "",
 		help: {
-			description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
+			description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
 			examples: [
 				{code: "\\Seen,\\Flagged"},
 				{code: "\\Seen, \\Flagged"},
@@ -37,7 +43,7 @@
 	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="add">
-			<input type="checkbox" id="add" style="margin-left:25px"/> <label for="add" class="tr">Add flags to existing ones</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Add flags to existing ones"), description: tr("Optional parameter.") + " " + tr("Add flags to existing ones")})) %>"></i>
+			<input type="checkbox" id="add" style="margin-left:25px"/> <label for="add" class="tr">Add flags to existing ones</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Add flags to existing ones"), description: tr("Optional parameter.") + " " + tr("If enabled, the specified flags will be added to the existing flags, rather than replacing them."), examples: [{code: tr("Activated"), description: tr("Add the specified flags to existing ones")}, {code: tr("Deactivated"), description: tr("Replace existing flags with the specified ones")}]})) %>"></i>
 		</span>
 		<%= _.template($('#input_constructor').html())({
 			id: "box",
@@ -61,6 +67,24 @@
 	<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Set a flag or several flags for the message.</div>
+	<div class="tr tooltip-paragraph-first-fold">Set a flag or several flags for the specified message.</div>
+	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action will set the flags for the specified message.</div>
+	<div class="tr tooltip-paragraph-fold">Instead of setting flags, you can add them to the existing ones by activating the corresponding parameter in the additional settings.</div>
+	<div class="tr tooltip-paragraph-fold">Flags are system message tags starting with <code>\</code>. Possible flags:</div>
+	<div class="tooltip-paragraph-fold"><code>\Seen</code> - <span class="tr">Message has been read</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Answered</code> - <span class="tr">Message has been answered</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Flagged</code> - <span class="tr">Message is "flagged" for urgent/special attention</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Deleted</code> - <span class="tr">Message is marked for removal</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Draft</code> - <span class="tr">Message has not completed composition (marked as a draft)</span>.</div>
+	<div class="tr tooltip-paragraph-fold">The possible flags may differ depending on the server implementation.</div>
+	<div class="tr tooltip-paragraph-fold">To perform this action, you need the id of message.</div>
+	<div class="tr tooltip-paragraph-fold">You can get the id of a message using the actions "Find id of the last message", "Find id of one message by criteria".</div>
+	<div class="tooltip-paragraph-fold"><span class="tr">This action can set flags for several messages at once</span>, <span class="tr">for this, instead of one id, a list of id must be specified</span>, <span class="tr">as a list, you can use a string consisting of id, separated by commas.</span></div>
+	<div class="tr tooltip-paragraph-fold">You can get a list of message ids using the "Find id of multiple messages by criteria" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can get message flags using the "Get message flags by id" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can remove message flags using the "Remove message flags by id" action.</div>
+	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

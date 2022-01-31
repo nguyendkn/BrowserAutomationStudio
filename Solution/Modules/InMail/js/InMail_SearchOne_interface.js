@@ -122,7 +122,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Text of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of message"), description: tr("Text of message")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Text of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Text of message"), description: tr("Text of message") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "&lt;HTML&gt;&lt;BODY&gt;&lt;div&gt;" + tr("Use code 9779 to confirm") + "&lt;/div&gt;&lt;/BODY&gt;&lt;/HTML&gt;"}, {code: tr("Use code 9779 to confirm")}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "text",
 			description: tr("Contains"),
@@ -162,7 +162,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Flags of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of message"), description: tr("Flags of message")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Flags of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Flags of message"), description: tr("Flags of message") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "unseen"}, {code: "flagged,recent,unseen"}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "flags",
 			description: tr("Contains"),
@@ -170,7 +170,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the message should contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -187,7 +187,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the message should not contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should not contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -208,7 +208,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Receiving date")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone)") + ", " + tr("using the two parameters below, you can make filter by the contents of this field.") + " " + tr("Date can be created using actions from the \"Date and time\" module."), examples: [{code: new Date('May 13 2021')}, {code: new Date('Jan 20 2022 16:57:26')}, {code: new Date()}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "since",
 			description: tr("From date"),
@@ -216,7 +216,12 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("From date")
+				description: tr("Message received is within or later than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
+				examples: [
+					{code: 'May 13 2021'},
+					{code: new Date('Jan 20 2022 16:57:26')},
+					{code: new Date()}
+				]
 			}
 		}) %>
 		<%= _.template($('#input_constructor').html())({
@@ -226,7 +231,12 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("To date")
+				description: tr("Message received is earlier than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
+				examples: [
+					{code: 'May 13 2021'},
+					{code: new Date('Jan 20 2022 16:57:26')},
+					{code: new Date()}
+				]
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>
@@ -392,6 +402,10 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Find and save the message id by the specified criteria.</div>
+	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return the id of the message found by the specified criteria.</div>
+	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
 <script>

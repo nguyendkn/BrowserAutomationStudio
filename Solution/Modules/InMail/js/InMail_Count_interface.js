@@ -1,5 +1,5 @@
 <div class="container-fluid">
-	<%= _.template($('#block_start').html())({id:"Filtration", name: tr("Filtration"), description: tr("Using the parameters from this block, you can filter the results as you need, or leave them without filtering.")}) %>
+	<%= _.template($('#block_start').html())({id:"Filtration", name: tr("Filtration"), description: tr("Using the parameters from this block, you can filter the messages as you need, or leave them without filtering.")}) %>
 		<span class="tr" style="margin-left:15px">Sender of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of message"), description: tr("Sender of message")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "from",
@@ -170,7 +170,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the message should contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -187,7 +187,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the message should not contain.") + " " + tr("As a list, you can use a string consisting of column names, separated by commas."),
+				description: tr("List of flags that the message should not contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -208,7 +208,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Receiving date")})) %>"></i>
+		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone).") + " " + tr("Date can be created using actions from the \"Date and time\" module.")})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "since",
 			description: tr("From date"),
@@ -216,7 +216,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("From date")
+				description: tr("From date") + " " + tr("Date can be created using actions from the \"Date and time\" module.")
 			}
 		}) %>
 		<%= _.template($('#input_constructor').html())({
@@ -226,7 +226,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("To date")
+				description: tr("To date") + " " + tr("Date can be created using actions from the \"Date and time\" module.")
 			}
 		}) %>
 	<%= _.template($('#block_end').html())() %>
@@ -256,11 +256,20 @@
 		description: tr("Variable to save the result"),
 		default_variable: "MAIL_COUNT",
 		help: {
-			description: tr("Variable in which, after successful execution of the action, the number of messages will be written.")
+			description: tr("Variable in which, after successful execution of the action, the number of messages will be written."),
+			examples: [
+				{code: 2},
+				{code: 13},
+				{code: 256}
+			]
 		}
 	}) %>
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get the number of messages that match the specified criteria.</div>
+	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return the number of messages matching the specified filtering criteria, or the count of all messages if no filtering criteria is specified.</div>
+	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

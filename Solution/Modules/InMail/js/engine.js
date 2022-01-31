@@ -379,6 +379,15 @@ _InMail = {
 		_call_function(api.setFlags, {uids: uids, flags: flags, box: box})!
 	},
 	
+	expunge: function(){
+		var uids = _function_argument("uids");
+		var box = _InMail.prepareBox(_function_argument("box"));
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.expunge, {uids: uids, box: box})!
+	},
+	
 	delMessages: function(){
 		var uids = _function_argument("uids");
 		var box = _InMail.prepareBox(_function_argument("box"));
@@ -437,7 +446,7 @@ _InMail = {
 		var messages = _result_function();
 		
 		if(!messages.length){
-			_InMail.error('Could not find a message matching the specified identifier in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
+			_InMail.error('Could not find a message matching the specified id in the specified mailbox folder', 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика', 'getMessages');
 		};
 		
 		_function_return(messages[0]);

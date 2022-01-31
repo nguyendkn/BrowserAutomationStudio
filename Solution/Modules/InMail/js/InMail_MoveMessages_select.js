@@ -1,6 +1,6 @@
 var uids = GetInputConstructorValue("uids", loader);
 if(uids["original"].length == 0){
-    Invalid(tr("The parameter \"") + tr("Message Id") + tr("\" is not specified"));
+    Invalid(tr("The parameter \"") + tr("Message id") + tr("\" is not specified"));
     return;
 };
 var toBox = GetInputConstructorValue("toBox", loader);

@@ -163,12 +163,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.randStr = function(length, chars){
 		length = _avoid_nilb(length, 10);
 		chars = _avoid_nilb(chars, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
-        var str  = '';
-        for(var i = 0; i < length; i++){
-            str += chars.charAt(Math.floor(Math.random() * chars.length));
-        };
-        return str;
-    };
+		var str  = '';
+		for(var i = 0; i < length; i++){
+			str += chars.charAt(Math.floor(Math.random() * chars.length));
+		};
+		return str;
+	};
 	
 	this.parseCaps = function(str){
 		var start = str.lastIndexOf('CAPABILITY');
@@ -220,11 +220,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.decodeWords = function(str){
 		return (
 			(str || '')
-                .toString()
-                // remove spaces between mime encoded words
-                .replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
-                // decode words
-                .replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return _InMail.curl.decoder(charset, encoding, text) || text})
+				.toString()
+				// remove spaces between mime encoded words
+				.replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
+				// decode words
+				.replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return _InMail.curl.decoder(charset, encoding, text) || text})
 		);
 	};
 	
@@ -403,7 +403,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 				next = 7;
 				if(typeof cur[1] === 'string'){
 					part = {
-						// the path identifier for this part, useful for fetching specific
+						// the path id for this part, useful for fetching specific
 						// parts of a message
 						partID: (prefix !== '' ? prefix : '1'),
 						// required fields as per RFC 3501 -- null or otherwise
@@ -470,8 +470,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 			// disposition
 			// null or a special k/v list with these kinds of values:
 			// e.g.: ['Foo', null]
-			//       ['Foo', ['Bar', 'Baz']]
-			//       ['Foo', ['Bar', 'Baz', 'Bam', 'Pow']]
+			//		 ['Foo', ['Bar', 'Baz']]
+			//		 ['Foo', ['Bar', 'Baz', 'Bam', 'Pow']]
 			var disposition = {
 				type: null,
 				params: null 
@@ -698,7 +698,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		if(!Array.isArray(uids)){
 			if(typeof uids == "string"){
-				uids = uids.split(',');
+				uids = _to_arr(uids);
 			}else{
 				uids = [uids];
 			};
@@ -845,27 +845,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 		};
 		return false;
 	};
-	
-	/*this.toLatin1 = function(str){
-		var ret = '';
-		
-		for(var i = 0; i < str.length; i++){
-			var charcode = str.charCodeAt(i);
-			if(charcode < 0x80){
-				ret += String.fromCharCode(charcode);
-			}else if(charcode < 0x800){
-				ret += String.fromCharCode(0xc0 | (charcode >> 6), 0x80 | (charcode & 0x3f));
-			}else if(charcode < 0xd800 || charcode >= 0xe000){
-				ret += String.fromCharCode(0xe0 | (charcode >> 12), 0x80 | ((charcode>>6) & 0x3f), 0x80 | (charcode & 0x3f));
-			}else{
-				i++;
-				charcode = 0x10000 + (((charcode & 0x3ff)<<10) | (str.charCodeAt(i) & 0x3ff));
-				ret += String.fromCharCode(0xf0 | (charcode >>18), 0x80 | ((charcode>>12) & 0x3f), 0x80 | ((charcode>>6) & 0x3f), 0x80 | (charcode & 0x3f));
-			};
-		};
-		
-		return ret;
-	};*/
 
 	this.buildString = function(str, info){
 		if(typeof str !== 'string'){
@@ -877,16 +856,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 		};
 		
 		return '"' + api.escape(str) + '"';
-		
-		/*if(api.hasNonASCII(str)){
-			if(info){
-				info.hasUTF8 = true;
-			};
-			var latin1 = api.toLatin1(str);
-			return '{' + latin1.length + '}\r\n' + latin1;
-		}else{
-			return '"' + api.escape(str) + '"';
-		};*/
 	};
 
 	this.buildSearchQuery = function(options, info, isOrChild){
@@ -1383,19 +1352,29 @@ _InMail.imap = _InMail.assignApi(function(config){
 		})!
 	};
 	
-	this.delMessages = function(){
-		var uids = api.prepareUIDs(_function_argument("uids"));
+	this.expunge = function(){
+		var uids = _function_argument("uids");
 		var box = api.prepareBox(_function_argument("box"));
 		
-		var cmd = 'UID STORE ' + uids + ' +FLAGS.SILENT (\\Deleted)';
+		_if(uids, function(){
+			uids = api.prepareUIDs(uids);
+			
+			_call_function(api.capability, {})!
+		})!
+		
+		var cmd = (uids && api.serverSupports('UIDPLUS')) ? ('UID EXPUNGE ' + uids) : 'EXPUNGE';
 		
 		_call_function(api.makeRequest, {query: cmd, box: box})!
 		var resp = _result_function();
+	};
+	
+	this.delMessages = function(){
+		var uids = _function_argument("uids");
+		var box = _function_argument("box");
 		
-		var cmd = 'EXPUNGE'
+		_call_function(api.addFlags, {uids: uids, flags: '\\Deleted', box: box})!
 		
-		_call_function(api.makeRequest, {query: cmd, box: box})!
-		var resp = _result_function();
+		_call_function(api.expunge, {uids: uids, box: box})!
 	};
 	
 	this.copyMessages = function(){
@@ -1574,16 +1553,16 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.getParts = function(struct, parts){
 		parts = _avoid_nilb(parts, []);
-        for(var i = 0; i < struct.length; i++){
+		for(var i = 0; i < struct.length; i++){
 			part = struct[i];
-            if(Array.isArray(part)){
-                api.getParts(part, parts);
-            }else if(part.partID){
-                parts.push(part);
-            };
-        };
-        return parts;
-    };
+			if(Array.isArray(part)){
+				api.getParts(part, parts);
+			}else if(part.partID){
+				parts.push(part);
+			};
+		};
+		return parts;
+	};
 	
 	this.getPartData = function(){
 		var uid = _function_argument("uid");
@@ -1598,13 +1577,15 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var charset = ((part.params && part.params.charset) ? part.params.charset.toLowerCase() : '') || 'utf-8';
 		var result = '';
 		if(encoding === 'base64'){
-			var list =  data.split('\r\n');
+			var list =  data.trim().split('\r\n');
 			for(var i = 0; i < list.length; i++){
-				var line = list[i];
-				if(saveToFile){
-					native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:!!i}));
-				}else{
-					result += _InMail.curl.decoder(charset, 'b', data);
+				var line = list[i].trim();
+				if(line){
+					if(saveToFile){
+						native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:!!i}));
+					}else{
+						result += _InMail.curl.decoder(charset, 'b', line);
+					};
 				};
 			};
 		}else if(encoding === 'quoted-printable'){
@@ -1627,23 +1608,23 @@ _InMail.imap = _InMail.assignApi(function(config){
 		}else{
 			_function_return(result);
 		};
-    };
+	};
 	
 	this.getParamInfo = function(data){
-        data = _avoid_nilb(data, []);
-        if(!Array.isArray(data)){
-            data = [data];
-        };
-        var raw = false;
-        data = data.filter(function(d){return !(raw = (d === 'raw'))});
-        var base = data.length > 0;
-        return {
-            base: base,
-            raw: raw,
-            any: base || raw,
-            data: data
-        };
-    };
+		data = _avoid_nilb(data, []);
+		if(!Array.isArray(data)){
+			data = [data];
+		};
+		var raw = false;
+		data = data.filter(function(d){return !(raw = (d === 'raw'))});
+		var base = data.length > 0;
+		return {
+			base: base,
+			raw: raw,
+			any: base || raw,
+			data: data
+		};
+	};
 	
 	this.getMessages = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
@@ -1717,14 +1698,14 @@ _InMail.imap = _InMail.assignApi(function(config){
 			for(var part_index in parts){
 				var part = parts[part_index];
 				if(_starts_with(part.which, 'HEADER')){
-					var parsed = api.parseHeader(part.body);
+					var parsed = api.parseHeader(part.body.trim());
 					var obj = part.which === 'HEADER' ? message.headers.raw : message.headers;
 					for(var key in parsed){
 						var value = parsed[key];
 						obj[key] = Array.isArray(value) && value.length < 2 ? value[0] : value;
 					};
 				}else{
-					message.body.raw = part.body;
+					message.body.raw = part.body.trim();
 				};
 			};
 			
@@ -1807,7 +1788,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		})!
 
 		_function_return(messages);
-    };
+	};
 	
 	this.getFlags = function(){
 		var uid = api.prepareUIDs(_function_argument("uid"));

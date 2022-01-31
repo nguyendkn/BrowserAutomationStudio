@@ -1,11 +1,16 @@
 <div class="container-fluid">
 	<%= _.template($('#input_constructor').html())({
 		id: "uid",
-		description: tr("Message Id"),
+		description: tr("Message id"),
 		default_selector: "string",
 		value_string: "",
 		help: {
-			description: tr("Message Id")
+			description: tr("The id of the message which flags needs to be retrieved."),
+			examples: [
+				{code: 134},
+				{code: 370},
+				{code: 458}
+			]
 		}
 	}) %>
 	<%= _.template($('#block_start').html())({id:"Additional", name: tr("Additional settings"), description: ""}) %>
@@ -34,7 +39,7 @@
 		description: tr("Variable to save the result"),
 		default_variable: "MAIL_FLAGS_LIST",
 		help: {
-			description: tr("Variable in which, after successful execution of the action, the list of flags will be written."),
+			description: tr("Variable in which, after successful execution of the action, the list of flags will be written.") + " " + tr("The possible flags may differ depending on the server implementation."),
 			examples: [
 				{code: "[\"\\Seen\"]"},
 				{code: "[\"\\Seen\", \"\\Flagged\"]"},
@@ -45,5 +50,21 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get a list of flags for the specified message.</div>
+	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a list of flags set for the specified message.</div>
+	<div class="tr tooltip-paragraph-fold">The resulting list can be processed using actions from the "List" module.</div>
+	<div class="tr tooltip-paragraph-fold">Flags are system message tags starting with <code>\</code>. Possible flags:</div>
+	<div class="tooltip-paragraph-fold"><code>\Seen</code> - <span class="tr">Message has been read</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Answered</code> - <span class="tr">Message has been answered</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Flagged</code> - <span class="tr">Message is "flagged" for urgent/special attention</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Deleted</code> - <span class="tr">Message is marked for removal</span>.</div>
+	<div class="tooltip-paragraph-fold"><code>\Draft</code> - <span class="tr">Message has not completed composition (marked as a draft)</span>.</div>
+	<div class="tr tooltip-paragraph-fold">The possible flags may differ depending on the server implementation.</div>
+	<div class="tr tooltip-paragraph-fold">To perform this action, you need the id of message.</div>
+	<div class="tr tooltip-paragraph-fold">You can get the id of a message using the actions "Find id of the last message", "Find id of one message by criteria".</div>
+	<div class="tr tooltip-paragraph-fold">You can set message flags using the "Set message flags by id" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can remove message flags using the "Remove message flags by id" action.</div>
+	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
+	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

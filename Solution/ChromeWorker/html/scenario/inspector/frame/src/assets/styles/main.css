@@ -310,12 +310,12 @@
 
 .group-item-inputs > input:enabled + div {
   background: #fff;
-  padding: 3px;
+  padding: 2px;
 }
 
 .group-item-inputs > input.enabled + div {
   background: #fff;
-  padding: 3px;
+  padding: 2px;
 }
 
 .group-item-controls > button > img {
@@ -347,6 +347,7 @@
 
 .group-item-swatches {
   grid-auto-flow: column;
+  align-items: center;
   display: grid;
   gap: 0 5px;
 }
@@ -568,7 +569,6 @@ input::placeholder {
 
 html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  min-width: 210px;
   overflow: hidden;
   height: 100vh;
   width: 100vw;

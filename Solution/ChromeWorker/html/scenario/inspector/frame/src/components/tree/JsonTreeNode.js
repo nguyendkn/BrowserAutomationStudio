@@ -48,7 +48,7 @@ window.JsonTreeNode = {
         boolean: '#2525cc',
         undefined: '#808080',
       },
-      labels: ['#f51900', '#fb6000', '#ff8c00', '#b37643', '#8c6b53', '#606060'],
+      labels: ['#f51900', '#ff5200', '#eb8200', '#a97643', '#78893f', '#606060'],
       isHovered: false,
       isExpanded: expand,
       counter: counter == null ? 5 : counter,

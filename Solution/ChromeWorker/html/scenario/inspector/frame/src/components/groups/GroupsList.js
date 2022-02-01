@@ -97,6 +97,7 @@ window.GroupsList = {
         }
       },
     },
+    immediate: true,
   },
 
   methods: {

@@ -3,7 +3,7 @@
 #app {
   letter-spacing: -0.2px;
   flex-flow: column;
-  font-size: 14px;
+  font-size: 12px;
   display: flex;
   height: 100%;
 }
@@ -113,7 +113,7 @@
 
 .app-toolbar-panel button {
   border: 1px solid #d9d9d9;
-  padding: 8px 10px;
+  padding: 6px 8px;
   display: flex;
 }
 
@@ -133,7 +133,6 @@
   justify-content: center;
   align-items: center;
   display: flex;
-  padding: 2px;
   opacity: 0.5;
 }
 
@@ -150,7 +149,7 @@
 .app-toolbar-input {
   border: 1px solid #d9d9d9;
   letter-spacing: -0.2px;
-  padding: 8px 10px;
+  padding: 6px 8px;
   background: #fff;
   border-right: 0;
   color: #606060;
@@ -174,14 +173,14 @@
 .app-toolbar-menu > li > hr {
   border: 0 solid #606060;
   border-top-width: 1px;
-  margin: 8px 0;
+  margin: 6px 0;
 }
 
 .app-toolbar-menu > li > a {
   justify-content: space-between;
   text-decoration: none;
   align-items: center;
-  padding: 3px 12px;
+  padding: 3px 10px;
   display: flex;
   opacity: 0.5;
   color: #fff;
@@ -200,10 +199,9 @@
   border: 1px solid #606060;
   background: #3d3f42;
   width: max-content;
-  line-height: 15px;
   min-width: 150px;
   font-size: 12px;
-  padding: 8px 0;
+  padding: 6px 0;
 }
 
 .app-toolbar {
@@ -327,12 +325,12 @@
 
 .group-item-inputs > input:enabled + div {
   background: #fff;
-  padding: 4px;
+  padding: 3px;
 }
 
 .group-item-inputs > input.enabled + div {
   background: #fff;
-  padding: 4px;
+  padding: 3px;
 }
 
 .group-item-controls > button > img {
@@ -350,7 +348,7 @@
 
 .group-item-inputs > input {
   letter-spacing: -0.2px;
-  line-height: 18px;
+  line-height: 16px;
   padding: 3px 0;
   color: inherit;
   flex: 1;
@@ -407,7 +405,7 @@
   border-top: 1px solid var(--color-normal);
   background: rgba(var(--color-rgb), 0.08);
   flex-flow: column;
-  padding: 4px 0;
+  padding: 3px 0;
   display: flex;
 }
 
@@ -516,8 +514,9 @@
   position: absolute;
   column-gap: 12px;
   display: none;
+  height: 100%;
   right: 8px;
-  top: 6px;
+  top: 0px;
 }
 
 .jt-node.focused {
@@ -534,7 +533,7 @@
   position: relative;
   line-height: 18px;
   overflow: hidden;
-  padding: 5px 0;
+  padding: 3px 0;
 }
 
 /* Scrollbar */
@@ -586,7 +585,7 @@ input::placeholder {
 
 html, body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  min-width: 420px;
+  min-width: 210px;
   overflow: hidden;
   height: 100vh;
   width: 100vw;

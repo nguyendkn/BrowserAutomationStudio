@@ -122,7 +122,7 @@ window.GroupsItem = {
   template: /*html*/ `
     <li class="group-item" :style="style">
       <div class="group-item-header">
-        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
         </svg>
         <div class="group-item-inputs" v-click-outside="accept">

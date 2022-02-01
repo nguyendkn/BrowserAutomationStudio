@@ -96,8 +96,8 @@ window.GroupsList = {
           groups[0].expanded = true;
         }
       },
+      immediate: true,
     },
-    immediate: true,
   },
 
   methods: {

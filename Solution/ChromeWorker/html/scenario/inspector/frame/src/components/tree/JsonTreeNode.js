@@ -40,15 +40,14 @@ window.JsonTreeNode = {
     const counter = $store.state.counters[id][JSON.stringify(path)];
 
     return {
-      colors: {
-        null: '#8546bc',
-        date: '#ce904a',
-        number: '#d036d0',
-        string: '#2db669',
-        boolean: '#2525cc',
-        undefined: '#808080',
-      },
-      labels: ['#f51900', '#ff5200', '#eb8200', '#a97643', '#78893f', '#606060'],
+      colors: [
+        '#f51900',
+        '#ff5200',
+        '#eb8200',
+        '#a97643',
+        '#78893f',
+        '#606060',
+      ],
       isHovered: false,
       isExpanded: expand,
       counter: counter == null ? 5 : counter,
@@ -61,12 +60,8 @@ window.JsonTreeNode = {
       return `${24 * (depth - 1)}px`;
     },
 
-    label() {
-      return this.labels[this.counter];
-    },
-
     color() {
-      return this.colors[this.type];
+      return this.colors[this.counter];
     },
 
     keys() {
@@ -157,9 +152,9 @@ window.JsonTreeNode = {
   },
 
   template: /*html*/ `
-    <div class="jt-node" :class="{ hovered: isHovered, expanded: isExpanded }" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false">
-      <span class="jt-node-label" style="display: inline-flex;" :style="{ color: label }"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
-      <span class="jt-node-value" :style="{ color }">
+    <div class="jt-node" :class="[type, { hovered: isHovered, expanded: isExpanded }]" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false">
+      <span class="jt-node-label" style="display: inline-flex;" :style="{ color }"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
+      <span class="jt-node-value">
         <template v-if="type === 'undefined' || type === 'null'">{{ type }}</template>
         <template v-else-if="type === 'string'">"{{ value }}"</template>
         <template v-else-if="type === 'object'">

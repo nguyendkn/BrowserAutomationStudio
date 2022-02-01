@@ -514,9 +514,8 @@
   position: absolute;
   column-gap: 12px;
   display: none;
-  height: 100%;
   right: 8px;
-  top: 0px;
+  top: 4px;
 }
 
 .jt-node.focused {
@@ -601,6 +600,30 @@ ul, ol {
 }
 
 /* Theme */
+
+.undefined > .jt-node-value {
+  color: #808080;
+}
+
+.boolean > .jt-node-value {
+  color: #2525cc;
+}
+
+.string > .jt-node-value {
+  color: #2db669;
+}
+
+.number > .jt-node-value {
+  color: #d036d0;
+}
+
+.date > .jt-node-value {
+  color: #ce904a;
+}
+
+.null > .jt-node-value {
+  color: #8546bc;
+}
 
 .variables .group-item {
   border-radius: 0px;

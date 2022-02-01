@@ -35,6 +35,7 @@
   },
   groups: {
     title: 'This group is empty. You can drag the elements here.',
+    confirm: 'Do you really want to delete the "{name}" group?',
   },
   params: '{n} parameters | {n} parameter | {n} parameters',
   items: '{n} items | {n} item | {n} items',

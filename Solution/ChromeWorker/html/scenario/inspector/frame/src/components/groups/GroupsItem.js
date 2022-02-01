@@ -100,7 +100,9 @@ window.GroupsItem = {
     },
 
     remove() {
-      this.$emit('remove');
+      this.$confirm(this.$t('groups.confirm', { name: this.name }), result => {
+        if (result) this.$emit('remove');
+      });
     },
 
     accept() {

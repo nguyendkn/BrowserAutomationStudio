@@ -12,15 +12,6 @@ const post = (type, payload = {}) => {
   window.top.postMessage({ type, payload }, '*');
 };
 
-const scale = (color, count = 6) => {
-  return [...Array(count).keys()].map(n => {
-    const [r, g, b] = [255, 0, 0].map((v, i) => {
-      return Math.round(v + (color[i] - v) * (n / (count - 1)));
-    });
-    return `rgb(${r}, ${g}, ${b})`;
-  });
-};
-
 const mutate = (obj, mutator) => {
   if (obj !== null && typeof obj === 'object') {
     Object.keys(obj).forEach(key => {

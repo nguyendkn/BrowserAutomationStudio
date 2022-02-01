@@ -41,13 +41,14 @@ window.JsonTreeNode = {
 
     return {
       colors: {
-        null: scale([133, 70, 188]),
-        date: scale([206, 144, 74]),
-        number: scale([208, 54, 208]),
-        string: scale([45, 182, 105]),
-        boolean: scale([37, 37, 204]),
-        undefined: scale([128, 128, 128]),
+        null: '#8546bc',
+        date: '#ce904a',
+        number: '#d036d0',
+        string: '#2db669',
+        boolean: '#2525cc',
+        undefined: '#808080',
       },
+      labels: ['#f51900', '#fb6000', '#ff8c00', '#b37643', '#8c6b53', '#606060'],
       isHovered: false,
       isExpanded: expand,
       counter: counter == null ? 5 : counter,
@@ -60,9 +61,12 @@ window.JsonTreeNode = {
       return `${24 * (depth - 1)}px`;
     },
 
+    label() {
+      return this.labels[this.counter];
+    },
+
     color() {
-      const colors = this.colors[this.type];
-      return colors && colors[this.counter];
+      return this.colors[this.type];
     },
 
     keys() {
@@ -154,7 +158,7 @@ window.JsonTreeNode = {
 
   template: /*html*/ `
     <div class="jt-node" :class="{ hovered: isHovered, expanded: isExpanded }" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false">
-      <span class="jt-node-label" style="display: inline-flex;"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
+      <span class="jt-node-label" style="display: inline-flex;" :style="{ color: label }"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
       <span class="jt-node-value" :style="{ color }">
         <template v-if="type === 'undefined' || type === 'null'">{{ type }}</template>
         <template v-else-if="type === 'string'">"{{ value }}"</template>

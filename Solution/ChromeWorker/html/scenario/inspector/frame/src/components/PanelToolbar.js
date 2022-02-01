@@ -89,54 +89,49 @@ window.PanelToolbar = {
   },
 
   template: /*html*/ `
-    <div class="app-toolbar">
-      <div v-show="panelVisible" class="app-toolbar-panel">
-        <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" spellcheck="false" type="text" @input="$emit('input', $event.target.value)" @keydown.esc="$emit('input', '')">
-        <button type="button" style="border-right-color: transparent;" @click="$emit('input', '')">
+    <div v-show="panelVisible" class="app-toolbar">
+      <input :value="query" :disabled="!search" :placeholder="$t('toolbar.placeholder')" class="app-toolbar-input" spellcheck="false" type="text" @input="$emit('input', $event.target.value)" @keydown.esc="$emit('input', '')">
+      <button type="button" style="border-right-color: transparent;" @click="$emit('input', '')">
+        <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.87348 12.2583L3.93414 13.3189L8 9.25305L12.0659 13.3189L13.1265 12.2583L9.06066 8.19239L13.1265 4.12652L12.0659 3.06586L8 7.13173L3.93414 3.06586L2.87348 4.12652L6.93934 8.19239L2.87348 12.2583Z" fill="#606060" />
+        </svg>
+      </button>
+      <slot name="controls"></slot>
+      <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="hideMenu">
+        <button type="button" @click="toggleMenu">
           <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.87348 12.2583L3.93414 13.3189L8 9.25305L12.0659 13.3189L13.1265 12.2583L9.06066 8.19239L13.1265 4.12652L12.0659 3.06586L8 7.13173L3.93414 3.06586L2.87348 4.12652L6.93934 8.19239L2.87348 12.2583Z" fill="#606060" />
+            <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" fill="#606060" />
           </svg>
         </button>
-        <slot name="controls"></slot>
-        <div :class="{ open: menuVisible }" class="dropdown" v-click-outside="hideMenu">
-          <button type="button" @click="toggleMenu">
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" fill="#606060" />
-            </svg>
-          </button>
-          <div v-show="menuVisible" class="app-toolbar-menu-wrapper">
-            <ul class="app-toolbar-menu">
-              <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
-                <a href="#" @click.prevent="toggleSorting(item)">
-                  <span v-t="'toolbar.sortings.' + item.name"></span>
-                  <img :style="{ transform: order === 'descending' ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
-                </a>
-              </li>
-              <li v-if="sortings.length">
-                <hr class="divider">
-              </li>
-              <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
-                <a href="#" @click.prevent="toggleFilter(item)">
-                  <span v-t="'toolbar.filters.' + item.name"></span>
-                  <img src="src/assets/icons/check.svg" alt>
-                </a>
-              </li>
-              <li v-if="options.length">
-                <hr class="divider">
-              </li>
-              <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
-                <a href="#" @click.prevent="toggleOption(item)">
-                  <span v-t="'toolbar.options.' + item.name"></span>
-                  <img src="src/assets/icons/check.svg" alt>
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div v-show="menuVisible" class="app-toolbar-menu-wrapper">
+          <ul class="app-toolbar-menu">
+            <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
+              <a href="#" @click.prevent="toggleSorting(item)">
+                <span v-t="'toolbar.sortings.' + item.name"></span>
+                <img :style="{ transform: order === 'descending' ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
+              </a>
+            </li>
+            <li v-if="sortings.length">
+              <hr class="divider">
+            </li>
+            <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
+              <a href="#" @click.prevent="toggleFilter(item)">
+                <span v-t="'toolbar.filters.' + item.name"></span>
+                <img src="src/assets/icons/check.svg" alt>
+              </a>
+            </li>
+            <li v-if="options.length">
+              <hr class="divider">
+            </li>
+            <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
+              <a href="#" @click.prevent="toggleOption(item)">
+                <span v-t="'toolbar.options.' + item.name"></span>
+                <img src="src/assets/icons/check.svg" alt>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
-      <button type="button" class="app-toolbar-toggle" @click="$store.commit('toggleToolbar')">
-        <icon-chevron :style="{ transform: panelVisible ? '' : 'rotate(180deg)' }" />
-      </button>
     </div>
   `,
 };

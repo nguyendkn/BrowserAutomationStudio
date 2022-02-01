@@ -37,6 +37,10 @@
 
 /* Header */
 
+.app-header > button + button {
+  margin-left: 8px;
+}
+
 .app-header > button:active {
   opacity: 1;
 }
@@ -46,19 +50,21 @@
 }
 
 .app-header > button {
+  padding: 0 1px;
   display: flex;
   opacity: 0.5;
 }
 
 .app-header {
   background: #f6f6f6;
-  padding: 12px 12px;
+  padding: 8px 12px;
   display: flex;
 }
 
 /* Panels */
 
 .app-panel-content {
+  border-top: 1px solid #d9d9d9;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 4px;
@@ -98,11 +104,11 @@
   fill: #fff;
 }
 
-.app-toolbar-panel button:active > svg {
+.app-toolbar button:active > svg {
   opacity: 0.5;
 }
 
-.app-toolbar-panel button:hover > svg {
+.app-toolbar button:hover > svg {
   opacity: 0.5;
 }
 
@@ -111,7 +117,7 @@
   background: #3d3f42;
 }
 
-.app-toolbar-panel button {
+.app-toolbar button {
   border: 1px solid #d9d9d9;
   padding: 6px 8px;
   display: flex;
@@ -119,26 +125,6 @@
 
 .app-toolbar .dropdown {
   position: relative;
-}
-
-.app-toolbar-toggle:active {
-  opacity: 1;
-}
-
-.app-toolbar-toggle:hover {
-  opacity: 1;
-}
-
-.app-toolbar-toggle {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  opacity: 0.5;
-}
-
-.app-toolbar-panel {
-  margin: 0 12px;
-  display: flex;
 }
 
 .app-toolbar-input:disabled {
@@ -205,9 +191,8 @@
 }
 
 .app-toolbar {
-  border-bottom: 1px solid #d9d9d9;
+  padding: 0 12px 8px;
   background: #f6f6f6;
-  flex-flow: column;
   display: flex;
 }
 
@@ -480,12 +465,10 @@
 }
 
 .jt-root > .jt-node > .jt-node-label {
-  user-select: none;
   cursor: pointer;
 }
 
 .jt-root > .jt-node > .jt-node-value {
-  user-select: auto;
   cursor: initial;
 }
 
@@ -530,6 +513,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   position: relative;
+  user-select: none;
   line-height: 18px;
   overflow: hidden;
   padding: 3px 0;

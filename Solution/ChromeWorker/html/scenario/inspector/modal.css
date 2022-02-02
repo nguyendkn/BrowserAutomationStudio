@@ -8,9 +8,9 @@
 .inspector-modal-select + .dropdown-menu li > a {
   justify-content: space-between;
   background: #787878;
+  padding: 9px 12px;
   line-height: 17px;
   font-size: 13px;
-  padding: 12px;
   color: #fff;
   display: flex;
   outline: 0;
@@ -97,8 +97,8 @@
   user-select: none;
   line-height: 15px;
   background: #fff;
+  padding: 9px 9px;
   font-size: 12px;
-  padding: 12px;
   display: flex;
   outline: 0;
 }
@@ -140,7 +140,7 @@
 }
 
 .inspector-modal-tools > ul > li > a {
-  padding: 10px 20px 10px 10px;
+  padding: 9px 15px 9px 5px;
   -webkit-user-drag: none;
   background: #3d3f42;
   align-items: center;
@@ -201,8 +201,8 @@
   border: 1px dashed #606060;
   background: #f7f7f8;
   margin-top: 15px;
-  padding: 12px;
   display: flex;
+  padding: 9px;
 }
 
 .inspector-modal-content {
@@ -212,16 +212,16 @@
   line-height: 18px;
   background: #fff;
   color: #606060;
-  padding: 20px;
+  padding: 15px;
 }
 
 .inspector-modal-select {
   letter-spacing: -0.2px;
   background: #606060;
   line-height: 17px;
+  padding: 9px 12px;
   border-radius: 0;
   font-size: 13px;
-  padding: 12px;
   color: #fff;
   outline: 0;
 }
@@ -261,6 +261,14 @@
 .inspector-modal-footer > button:disabled {
   filter: grayscale(100%);
   opacity: 0.8;
+}
+
+.inspector-modal-footer > .btn-accept {
+  padding: 9px 12px;
+}
+
+.inspector-modal-footer > .btn-cancel {
+  padding: 9px 12px;
 }
 
 .inspector-modal-footer {

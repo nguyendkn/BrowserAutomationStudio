@@ -41,7 +41,7 @@ window.JsonTreeNode = {
 
     return {
       colors: [
-        '#f51900',
+        '#dc1600',
         '#ff5200',
         '#eb8200',
         '#a97643',

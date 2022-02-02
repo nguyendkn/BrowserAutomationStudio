@@ -310,12 +310,12 @@
 
 .group-item-inputs > input:enabled + div {
   background: #fff;
-  padding: 2px;
+  padding: 3px;
 }
 
 .group-item-inputs > input.enabled + div {
   background: #fff;
-  padding: 2px;
+  padding: 3px;
 }
 
 .group-item-controls > button > img {
@@ -331,9 +331,11 @@
   padding: 3px 8px;
 }
 
-.group-item-inputs > input {
+.group-item-inputs > input,
+.group-item-inputs > span {
   letter-spacing: -0.2px;
   line-height: 16px;
+  user-select: none;
   padding: 3px 0;
   color: inherit;
   flex: 1;
@@ -363,7 +365,7 @@
 .group-item-header {
   background: var(--color-normal);
   align-items: center;
-  padding: 2px 8px;
+  padding: 1px 8px;
   display: flex;
 }
 
@@ -558,7 +560,7 @@ input::placeholder {
 /* Sortable */
 
 .sortable-chosen {
-  opacity: 0.75;
+  opacity: 1.00;
 }
 
 .sortable-ghost {

@@ -152,7 +152,7 @@ window.JsonTreeNode = {
   },
 
   template: /*html*/ `
-    <div class="jt-node" :class="[type, { hovered: isHovered, expanded: isExpanded }]" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false">
+    <div class="jt-node" :class="[type, { hovered: isHovered, expanded: isExpanded }]" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false" @click.stop="edit">
       <span class="jt-node-label" style="display: inline-flex;" :style="{ color }"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
       <span class="jt-node-value">
         <template v-if="type === 'undefined' || type === 'null'">{{ type }}</template>
@@ -188,7 +188,7 @@ window.JsonTreeNode = {
         <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
         <template v-else>{{ value }}</template>
       </span>
-      <div class="jt-node-actions">
+      <div class="jt-node-actions" @click.stop>
         <button type="button" @click="copy">
           <icon-copy />
         </button>

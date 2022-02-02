@@ -99,6 +99,11 @@ window.GroupsItem = {
       this.isEditing = false;
     },
 
+    toggle(event) {
+      if (this.isEditing) return;
+      this.$emit('update:is-expanded', !this.isExpanded);
+    },
+
     remove() {
       this.$confirm(this.$t('groups.confirm', { name: this.name }), result => {
         if (result) this.$emit('remove');
@@ -123,13 +128,14 @@ window.GroupsItem = {
 
   template: /*html*/ `
     <li class="group-item" :style="style">
-      <div class="group-item-header">
+      <div class="group-item-header" @click="toggle">
         <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
         </svg>
         <div class="group-item-inputs" v-click-outside="accept">
-          <input ref="input" v-model.trim="newName" :disabled="!isEditing" maxlength="30" spellcheck="false" type="text" @keydown.enter="accept" @keydown.esc="cancel">
-          <div v-if="isEditing" class="group-item-controls">
+          <input v-if="isEditing" ref="input" v-model.trim="newName" maxlength="30" spellcheck="false" type="text" @keydown.enter="accept" @keydown.esc="cancel">
+          <span v-else>{{ name }}</span>
+          <div v-if="isEditing" class="group-item-controls" @click.stop>
             <ul class="group-item-swatches">
               <li v-for="(value, key) in colors" :key="key" :style="{ borderColor: newColor === key ? 'rgb(' + value + ')' : 'transparent' }" class="group-item-swatch" @click="newColor = key">
                 <svg width="12" height="12" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +149,7 @@ window.GroupsItem = {
               </svg>
             </button>
           </div>
-          <div v-else class="group-item-controls">
+          <div v-else class="group-item-controls" @click.stop>
             <button v-if="allowRemove" type="button" @click="remove">
               <icon-delete />
             </button>

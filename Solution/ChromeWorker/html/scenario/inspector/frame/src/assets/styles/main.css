@@ -450,36 +450,28 @@
 
 /* Json tree */
 
-.expanded > .jt-node-value > .jt-node-bracket:first-of-type {
-  padding-left: calc(var(--intent, 0) + 8px);
-}
-
-.expanded > .jt-node-value > .jt-node-bracket:last-of-type {
+.expanded > .jt-node-nodes > .jt-node > .jt-node-inner > .jt-node-label {
   padding-left: calc(var(--indent, 0) + 8px);
 }
 
-.expanded > .jt-node-value > .jt-node > .jt-node-label {
+.expanded > .jt-node-nodes > .jt-node-bracket:first-of-type  {
   padding-left: calc(var(--indent, 0) + 8px);
 }
 
-.jt-root > .jt-node > .jt-node-label > button {
+.expanded > .jt-node-nodes > .jt-node-bracket:last-of-type  {
+  padding-left: calc(var(--indent, 0) + 8px);
+}
+
+.jt-root > .jt-node > .jt-node-inner > .jt-node-label > button {
   margin: 0 8px;
   height: 16px;
 }
 
-.jt-root > .jt-node > .jt-node-label {
-  cursor: pointer;
-}
-
-.jt-root > .jt-node > .jt-node-value {
-  cursor: initial;
-}
-
-.jt-node.focused > .jt-node-actions {
+.jt-node.focused > .jt-node-inner > .jt-node-actions {
   display: grid;
 }
 
-.jt-node.hovered > .jt-node-actions {
+.jt-node.hovered > .jt-node-inner> .jt-node-actions {
   display: grid;
 }
 
@@ -497,11 +489,9 @@
 
 .jt-node-actions {
   grid-auto-flow: column;
-  position: absolute;
+  margin-right: 8px;
   column-gap: 12px;
   display: none;
-  right: 8px;
-  top: 4px;
 }
 
 .jt-node.focused {
@@ -512,10 +502,15 @@
   background: var(--color-lighten);
 }
 
+.jt-node-label {
+  display: flex;
+}
+
+.jt-node-value {
+  display: flex;
+}
+
 .jt-node {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  position: relative;
   user-select: none;
   line-height: 18px;
   overflow: hidden;
@@ -587,27 +582,27 @@ ul, ol {
 
 /* Theme */
 
-.undefined > .jt-node-value {
+.undefined > .jt-node-inner > .jt-node-value {
   color: #808080;
 }
 
-.boolean > .jt-node-value {
+.boolean > .jt-node-inner > .jt-node-value {
   color: #2525cc;
 }
 
-.string > .jt-node-value {
+.string > .jt-node-inner > .jt-node-value {
   color: #2db669;
 }
 
-.number > .jt-node-value {
+.number > .jt-node-inner > .jt-node-value {
   color: #d036d0;
 }
 
-.date > .jt-node-value {
+.date > .jt-node-inner > .jt-node-value {
   color: #ce904a;
 }
 
-.null > .jt-node-value {
+.null > .jt-node-inner > .jt-node-value {
   color: #8546bc;
 }
 

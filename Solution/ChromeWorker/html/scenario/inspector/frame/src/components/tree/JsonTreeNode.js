@@ -153,51 +153,61 @@ window.JsonTreeNode = {
 
   template: /*html*/ `
     <div class="jt-node" :class="[type, { hovered: isHovered, expanded: isExpanded }]" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false" @click.stop="edit">
-      <span class="jt-node-label" style="display: inline-flex;" :style="{ color }"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
-      <span class="jt-node-value">
-        <template v-if="type === 'undefined' || type === 'null'">{{ type }}</template>
-        <template v-else-if="type === 'string'">"{{ value }}"</template>
-        <template v-else-if="type === 'object'">
-          <span class="jt-node-bracket">{</span>
-          <template v-if="isExpanded">
-            <json-tree-node
-              v-for="key in keys"
-              :key="key"
-              :name="key"
-              :value="value[key]"
-              :path="path.concat(key)"
-            />
+      <div class="jt-node-inner" style="display: flex">
+        <span class="jt-node-label" :style="{ color }">
+          <slot name="label" :label="name">{{ name }}</slot>:&nbsp;
+        </span>
+        <span class="jt-node-value" style="margin-right: 8px; min-width: 0; flex: 1;">
+          <template v-if="type === 'undefined' || type === 'null'">{{ type }}</template>
+          <template v-else-if="type === 'string'">"<span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ value }}</span>"</template>
+          <template v-else-if="type === 'object'">
+            <span class="jt-node-bracket">{</span>
+            <template v-if="!isExpanded">
+              <span style="color: #606060a6;">&nbsp;{{ $tc('items', keys.length) }}&nbsp;</span>
+              <span class="jt-node-bracket">}</span>
+            </template>
           </template>
-          <span v-else style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
-          <span class="jt-node-bracket">}</span>
-        </template>
-        <template v-else-if="type === 'array'">
-          <span class="jt-node-bracket">[</span>
-          <template v-if="isExpanded">
-            <json-tree-node
-              v-for="key in keys"
-              :key="key"
-              :name="key"
-              :value="value[key]"
-              :path="path.concat(key)"
-            />
+          <template v-else-if="type === 'array'">
+            <span class="jt-node-bracket">[</span>
+            <template v-if="!isExpanded">
+              <span style="color: #606060a6;">&nbsp;{{ $tc('items', keys.length) }}&nbsp;</span>
+              <span class="jt-node-bracket">]</span>
+            </template>
           </template>
-          <span v-else style="color: #606060a6;">{{ $tc('items', keys.length) }}</span>
-          <span class="jt-node-bracket">]</span>
-        </template>
-        <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
-        <template v-else>{{ value }}</template>
-      </span>
-      <div class="jt-node-actions" @click.stop>
-        <button type="button" @click="copy">
-          <icon-copy />
-        </button>
-        <button type="button" @click="edit">
-          <icon-edit />
-        </button>
-        <button v-if="(type === 'object' || type === 'array') && keys.length" type="button" @click="toggle">
-          <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
-        </button>
+          <template v-else-if="type === 'date'">{{ formatDate(value) }}</template>
+          <template v-else>{{ value }}</template>
+        </span>
+        <div class="jt-node-actions" @click.stop>
+          <button type="button" @click="copy">
+            <icon-copy />
+          </button>
+          <button type="button" @click="edit">
+            <icon-edit />
+          </button>
+          <button v-if="(type === 'object' || type === 'array') && keys.length" type="button" @click="toggle">
+            <icon-chevron :style="{ transform: isExpanded ? '' : 'rotate(180deg)' }" />
+          </button>
+        </div>
+      </div>
+      <div v-if="type === 'object' && isExpanded" class="jt-node-nodes">
+        <json-tree-node
+          v-for="key in keys"
+          :key="key"
+          :name="key"
+          :value="value[key]"
+          :path="path.concat(key)"
+        />
+        <span class="jt-node-bracket">}</span>
+      </div>
+      <div v-if="type === 'array' && isExpanded" class="jt-node-nodes">
+        <json-tree-node
+          v-for="key in keys"
+          :key="key"
+          :name="key"
+          :value="value[key]"
+          :path="path.concat(key)"
+        />
+        <span class="jt-node-bracket">]</span>
       </div>
     </div>
   `,

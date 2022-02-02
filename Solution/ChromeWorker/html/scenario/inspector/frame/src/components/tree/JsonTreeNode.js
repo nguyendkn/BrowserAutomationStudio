@@ -189,24 +189,12 @@ window.JsonTreeNode = {
           </button>
         </div>
       </div>
-      <div v-if="type === 'object' && isExpanded" class="jt-node-nodes">
-        <json-tree-node
-          v-for="key in keys"
-          :key="key"
-          :name="key"
-          :value="value[key]"
-          :path="path.concat(key)"
-        />
+      <div v-if="isExpanded && type === 'object'" class="jt-node-nodes">
+        <json-tree-node v-for="key in keys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)" />
         <span class="jt-node-bracket">}</span>
       </div>
-      <div v-if="type === 'array' && isExpanded" class="jt-node-nodes">
-        <json-tree-node
-          v-for="key in keys"
-          :key="key"
-          :name="key"
-          :value="value[key]"
-          :path="path.concat(key)"
-        />
+      <div v-if="isExpanded && type === 'array'" class="jt-node-nodes">
+        <json-tree-node v-for="key in keys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)" />
         <span class="jt-node-bracket">]</span>
       </div>
     </div>

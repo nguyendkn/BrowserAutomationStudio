@@ -462,17 +462,17 @@
   padding-left: calc(var(--indent, 0) + 8px);
 }
 
-.jt-root > .jt-node > .jt-node-inner > .jt-node-label > button {
-  margin: 0 8px;
-  height: 16px;
-}
-
 .jt-node.focused > .jt-node-inner > .jt-node-actions {
   display: grid;
 }
 
-.jt-node.hovered > .jt-node-inner> .jt-node-actions {
+.jt-node.hovered > .jt-node-inner > .jt-node-actions {
   display: grid;
+}
+
+.jt-node > .jt-node-inner > .jt-node-label > button {
+  margin: 0 8px;
+  height: 16px;
 }
 
 .jt-node-actions > button:active {

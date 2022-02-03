@@ -4,44 +4,18 @@ window.App = {
   name: 'App',
 
   data() {
-    const tabs = [
-      {
-        name: 'variables',
-        props: {
-          data: {},
-          options: [],
-          filters: [],
-          sortings: [],
-          order: 'ascending',
-          title: 'tabs.variablesEmpty',
-        },
-        component: GroupsPanel,
+    const tabs = ['variables', 'resources', 'callstack'].map(name => ({
+      component: name === 'callstack' ? CallstackPanel : GroupsPanel,
+      props: {
+        data: name === 'callstack' ? [] : {},
+        title: `tabs.${name}Empty`,
+        order: 'ascending',
+        sortings: [],
+        filters: [],
+        options: [],
       },
-      {
-        name: 'resources',
-        props: {
-          data: {},
-          options: [],
-          filters: [],
-          sortings: [],
-          order: 'ascending',
-          title: 'tabs.resourcesEmpty',
-        },
-        component: GroupsPanel,
-      },
-      {
-        name: 'callstack',
-        props: {
-          data: [],
-          options: [],
-          filters: [],
-          sortings: [],
-          order: 'ascending',
-          title: 'tabs.callstackEmpty',
-        },
-        component: CallstackPanel,
-      },
-    ];
+      name,
+    }));
 
     return { menu: false, tab: tabs[0], tabs };
   },

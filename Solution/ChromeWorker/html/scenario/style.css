@@ -1752,12 +1752,10 @@ mark
 
 ::-webkit-scrollbar-thumb {
   background: #b7b7b7;
-  border-radius: 0;
 }
 
 ::-webkit-scrollbar-track {
   background: #eaeaea;
-  border-radius: 0;
 }
 
 ::-webkit-scrollbar {

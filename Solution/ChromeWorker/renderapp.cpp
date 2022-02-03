@@ -133,6 +133,7 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_StartBackup", CefV8Value::CreateFunction("BrowserAutomationStudio_StartBackup", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_SaveInterfaceJson", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveInterfaceJson", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_SaveInterfaceState", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveInterfaceState", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_DebugVariables", CefV8Value::CreateFunction("BrowserAutomationStudio_DebugVariables", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
 
         object->SetValue("_ApplicationEngineVersion", CefV8Value::CreateString(ApplicationEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_ScriptEngineVersion", CefV8Value::CreateString(ScriptEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);

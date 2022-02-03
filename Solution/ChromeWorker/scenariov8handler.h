@@ -78,6 +78,9 @@ private:
     std::string HighlightMenuItem;
     bool IsHightlightMenuItem;
 
+    std::string DebugVariables;
+    bool IsDebugVariables;
+
     std::string InterfaceState;
     bool IsInterfaceState;
 
@@ -137,6 +140,7 @@ public:
     std::string GetEventTriggerName();
 
     std::pair<std::string, bool> GetIsHighlightMenuItem();
+    std::pair<std::string, bool> GetIsDebugVariables();
     std::pair<std::string, bool> GetIsInterfaceState();
     std::pair<std::string, bool> GetIsInterfaceJson();
 

@@ -3868,6 +3868,14 @@ void MainApp::HandleScenarioBrowserEvents()
         SendTextResponce(std::string("<SaveInterface>") + res13.first + std::string("</SaveInterface>"));
     }
 
+    std::pair<std::string,bool> res14 = scenariov8handler->GetIsDebugVariables();
+    if(res14.second)
+    {
+        std::string CodeSend = std::string("debug_variables(") + res14.first + std::string(")!\nsection_start(\"test\", -3)!");
+        xml_encode(CodeSend);
+        SendTextResponce(std::string("<WaitCode is_play='0'>") + CodeSend + std::string("</WaitCode>"));
+    }
+
     ScenarioV8Handler::RestartType res3 = scenariov8handler->GetNeedRestart();
 
     if(res3 == ScenarioV8Handler::Restart)

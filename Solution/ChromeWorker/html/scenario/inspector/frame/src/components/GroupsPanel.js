@@ -9,6 +9,26 @@ window.GroupsPanel = {
   },
 
   props: {
+    sortings: {
+      type: Array,
+      default: () => [],
+    },
+
+    filters: {
+      type: Array,
+      default: () => [],
+    },
+
+    options: {
+      type: Array,
+      default: () => [],
+    },
+
+    order: {
+      type: String,
+      required: true,
+    },
+
     title: {
       type: String,
       required: true,
@@ -26,22 +46,7 @@ window.GroupsPanel = {
   },
 
   data() {
-    const { sortings, options, filters } = this.$store.state[this.name];
-
     return {
-      sortings: ['frequency', 'dateModified', 'dateCreated', 'alphabetically'].map(name => {
-        const sorting = sortings.find(item => item.name === name);
-        return { name, active: sorting ? sorting.active : name === 'alphabetically' };
-      }),
-      filters: ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'].map(name => {
-        const filter = filters.find(item => item.name === name);
-        return { name, active: filter ? filter.active : true };
-      }),
-      options: ['groups'].map(name => {
-        const option = options.find(item => item.name === name);
-        return { name, active: option ? option.active : false };
-      }),
-      order: 'ascending',
       metadata: {},
       history: [],
       query: '',
@@ -94,18 +99,6 @@ window.GroupsPanel = {
   },
 
   watch: {
-    sortings(sortings) {
-      this.$store.commit('setSortings', { id: this.name, sortings });
-    },
-
-    filters(filters) {
-      this.$store.commit('setFilters', { id: this.name, filters });
-    },
-
-    options(options) {
-      this.$store.commit('setOptions', { id: this.name, options });
-    },
-
     data($new, $old) {
       const { metadata } = this, diff = microdiff($old, $new);
 
@@ -148,9 +141,9 @@ window.GroupsPanel = {
 
   template: /*html*/ `
     <div class="app-panel">
-      <panel-toolbar v-model.trim="query" :sortings.sync="sortings" :filters.sync="filters" :options.sync="options" :order.sync="order">
+      <panel-toolbar v-model.trim="query">
         <template v-if="!isEmpty && !flat" #controls>
-          <button type="button" style="border-right-color: transparent;" @click="$refs.list.addGroup()">
+          <button type="button" @click="$refs.list.addGroup()">
             <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
               <path d="M6.5 3.5V2h-6v12h15V3.5h-9Zm8 9.5h-13V5h13v8Z" fill="#606060" />
               <path d="M7.5 12h1V9.5H11v-1H8.5V6h-1v2.5H5v1h2.5V12Z" fill="#606060" />

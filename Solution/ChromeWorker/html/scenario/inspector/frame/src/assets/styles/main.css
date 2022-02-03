@@ -37,10 +37,6 @@
 
 /* Header */
 
-.app-header > button + button {
-  margin-left: 8px;
-}
-
 .app-header > button:active {
   opacity: 1;
 }
@@ -50,13 +46,14 @@
 }
 
 .app-header > button {
-  padding: 0 1px;
+  margin: 0 9px;
   display: flex;
   opacity: 0.5;
 }
 
 .app-header {
   background: #f6f6f6;
+  position: relative;
   padding: 8px 12px;
   display: flex;
 }
@@ -85,29 +82,67 @@
   flex: 1;
 }
 
-/* Toolbar */
+/* Menu */
 
-.app-toolbar-menu-wrapper::-webkit-scrollbar-thumb {
+.app-menu::-webkit-scrollbar-thumb {
   background: #606060;
 }
 
-.app-toolbar-menu-wrapper::-webkit-scrollbar-track {
+.app-menu::-webkit-scrollbar-track {
   background: #3d3f42;
 }
 
-.app-toolbar-menu-wrapper::-webkit-scrollbar {
+.app-menu::-webkit-scrollbar {
   height: 5px;
   width: 5px;
 }
 
-.app-toolbar .open > button > svg > path {
-  fill: #fff;
+.app-menu > li.active > a > img {
+  opacity: 1;
 }
 
-.app-toolbar .dropdown.open > button {
-  border-color: #606060;
-  background: #3d3f42;
+.app-menu > li.active > a {
+  opacity: 1;
 }
+
+.app-menu > li > a > img {
+  margin-left: 10px;
+  width: 16px;
+  opacity: 0;
+}
+
+.app-menu > li > hr {
+  border: 0 solid #606060;
+  border-top-width: 1px;
+  margin: 6px 0;
+}
+
+.app-menu > li > a {
+  justify-content: space-between;
+  text-decoration: none;
+  align-items: center;
+  padding: 3px 8px;
+  display: flex;
+  opacity: 0.5;
+  color: #fff;
+}
+
+.app-menu {
+  max-height: calc(100vh - 35px);
+  border: 1px solid #606060;
+  background: #3d3f42;
+  width: max-content;
+  position: absolute;
+  min-width: 150px;
+  font-size: 12px;
+  padding: 6px 0;
+  overflow: auto;
+  right: 12px;
+  z-index: 1;
+  top: 100%;
+}
+
+/* Toolbar */
 
 .app-toolbar button:active > svg {
   opacity: 0.5;
@@ -123,10 +158,6 @@
   display: flex;
 }
 
-.app-toolbar .dropdown {
-  position: relative;
-}
-
 .app-toolbar-input:disabled {
   background: inherit;
   color: #d9d9d9;
@@ -140,54 +171,6 @@
   border-right: 0;
   color: #606060;
   flex: 1;
-}
-
-.app-toolbar-menu > li.active > a > img {
-  opacity: 1;
-}
-
-.app-toolbar-menu > li.active > a {
-  opacity: 1;
-}
-
-.app-toolbar-menu > li > a > img {
-  margin-left: 10px;
-  width: 16px;
-  opacity: 0;
-}
-
-.app-toolbar-menu > li > hr {
-  border: 0 solid #606060;
-  border-top-width: 1px;
-  margin: 6px 0;
-}
-
-.app-toolbar-menu > li > a {
-  justify-content: space-between;
-  text-decoration: none;
-  align-items: center;
-  padding: 3px 8px;
-  display: flex;
-  opacity: 0.5;
-  color: #fff;
-}
-
-.app-toolbar-menu-wrapper {
-  max-height: calc(100vh - 80px);
-  top: calc(100% - 1px);
-  position: absolute;
-  overflow: auto;
-  z-index: 1;
-  right: 0;
-}
-
-.app-toolbar-menu {
-  border: 1px solid #606060;
-  background: #3d3f42;
-  width: max-content;
-  min-width: 150px;
-  font-size: 12px;
-  padding: 6px 0;
 }
 
 .app-toolbar {

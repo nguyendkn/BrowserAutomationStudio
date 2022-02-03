@@ -10,6 +10,13 @@
     callstackEmpty: 'Call stack is empty',
   },
   toolbar: {
+    placeholder: 'Search by name...',
+  },
+  groups: {
+    title: 'This group is empty. You can drag the elements here.',
+    confirm: 'Do you really want to delete the "{name}" group?',
+  },
+  menu: {
     sortings: {
       frequency: 'By frequency of use',
       dateModified: 'By date modified',
@@ -31,11 +38,6 @@
     options: {
       groups: 'Groups',
     },
-    placeholder: 'Search by name...',
-  },
-  groups: {
-    title: 'This group is empty. You can drag the elements here.',
-    confirm: 'Do you really want to delete the "{name}" group?',
   },
   params: '{n} parameters | {n} parameter | {n} parameters',
   items: '{n} items | {n} item | {n} items',

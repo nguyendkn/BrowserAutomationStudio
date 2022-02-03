@@ -9,6 +9,10 @@ window.App = {
         name: 'variables',
         props: {
           data: {},
+          options: [],
+          filters: [],
+          sortings: [],
+          order: 'ascending',
           title: 'tabs.variablesEmpty',
         },
         component: GroupsPanel,
@@ -17,6 +21,10 @@ window.App = {
         name: 'resources',
         props: {
           data: {},
+          options: [],
+          filters: [],
+          sortings: [],
+          order: 'ascending',
           title: 'tabs.resourcesEmpty',
         },
         component: GroupsPanel,
@@ -25,16 +33,50 @@ window.App = {
         name: 'callstack',
         props: {
           data: [],
+          options: [],
+          filters: [],
+          sortings: [],
+          order: 'ascending',
           title: 'tabs.callstackEmpty',
         },
         component: CallstackPanel,
       },
     ];
 
-    return { tab: tabs[0], tabs };
+    return { menu: false, tab: tabs[0], tabs };
+  },
+
+  computed: {
+    sortings() {
+      return this.tab.props.sortings;
+    },
+
+    filters() {
+      return this.tab.props.filters;
+    },
+
+    options() {
+      return this.tab.props.options;
+    },
+
+    order() {
+      return this.tab.props.order;
+    },
   },
 
   watch: {
+    sortings(sortings) {
+      this.$store.commit('setSortings', { id: this.tab.name, sortings });
+    },
+
+    filters(filters) {
+      this.$store.commit('setFilters', { id: this.tab.name, filters });
+    },
+
+    options(options) {
+      this.$store.commit('setOptions', { id: this.tab.name, options });
+    },
+
     tab({ name }) {
       if (name === 'callstack') {
         this.$nextTick(() => {
@@ -42,6 +84,32 @@ window.App = {
         });
       }
     },
+  },
+
+  created() {
+    this.tabs.forEach(({ name, props }) => {
+      const { sortings, options, filters } = this.$store.state[name];
+
+      if (name !== 'callstack') {
+        props.sortings = ['frequency', 'dateModified', 'dateCreated', 'alphabetically'].map(name => {
+          const sorting = sortings.find(item => item.name === name);
+          return { name, active: sorting ? sorting.active : name === 'alphabetically' };
+        });
+        props.filters = ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'].map(name => {
+          const filter = filters.find(item => item.name === name);
+          return { name, active: filter ? filter.active : true };
+        });
+        props.options = ['groups'].map(name => {
+          const option = options.find(item => item.name === name);
+          return { name, active: option ? option.active : false };
+        });
+      } else {
+        props.filters = ['functions', 'actions'].map(name => {
+          const filter = filters.find(item => item.name === name);
+          return { name, active: filter ? filter.active : true };
+        });
+      }
+    });
   },
 
   mounted() {
@@ -76,6 +144,28 @@ window.App = {
       }
     },
 
+    toggleSorting(item) {
+      if (item.active) this.tab.props.order = this.tab.props.order === 'ascending' ? 'descending' : 'ascending';
+      this.tab.props.sortings = this.sortings.map(({ name, active }) => ({
+        active: name === item.name,
+        name,
+      }));
+    },
+
+    toggleFilter(item) {
+      this.tab.props.filters = this.filters.map(({ name, active }) => ({
+        active: name === item.name ? !active : active,
+        name,
+      }));
+    },
+
+    toggleOption(item) {
+      this.tab.props.options = this.options.map(({ name, active }) => ({
+        active: name === item.name ? !active : active,
+        name,
+      }));
+    },
+
     hide() {
       post('hide');
     },
@@ -96,6 +186,11 @@ window.App = {
             </a>
           </li>
         </ul>
+        <button type="button" @click.stop="menu = !menu">
+          <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" fill="#606060" />
+          </svg>
+        </button>
         <button type="button" @click="$store.commit('toggleToolbar')">
           <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
             <path d="m15.7164 15.111-4.2359-3.9328c2.1796-2.63853 1.8355-6.65365-.8031-8.83329C8.03894.165276 4.02382.509429 1.84418 3.14794-.335456 5.78644.00869703 9.80156 2.6472 11.9812c2.29436 1.9502 5.73589 1.9502 8.0302 0l4.2359 3.9329.8031-.8031ZM1.50003 7.16306c0-2.86795 2.29435-5.1623 5.16229-5.1623 2.86795 0 5.16228 2.29435 5.16228 5.1623 0 2.86794-2.29433 5.16234-5.16228 5.16234-2.86794 0-5.16229-2.2944-5.16229-5.16234Z" fill="#606060" />
@@ -106,6 +201,32 @@ window.App = {
             <path d="M2.87348 12.2583L3.93414 13.3189L8 9.25305L12.0659 13.3189L13.1265 12.2583L9.06066 8.19239L13.1265 4.12652L12.0659 3.06586L8 7.13173L3.93414 3.06586L2.87348 4.12652L6.93934 8.19239L2.87348 12.2583Z" fill="#606060" />
           </svg>
         </button>
+        <ul v-show="menu" class="app-menu" v-click-outside="() => menu = false">
+          <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
+            <a href="#" @click.prevent="toggleSorting(item)">
+              <span v-t="'menu.sortings.' + item.name"></span>
+              <img :style="{ transform: order === 'descending' ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
+            </a>
+          </li>
+          <li v-if="sortings.length">
+            <hr class="divider">
+          </li>
+          <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
+            <a href="#" @click.prevent="toggleFilter(item)">
+              <span v-t="'menu.filters.' + item.name"></span>
+              <img src="src/assets/icons/check.svg" alt>
+            </a>
+          </li>
+          <li v-if="options.length">
+            <hr class="divider">
+          </li>
+          <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
+            <a href="#" @click.prevent="toggleOption(item)">
+              <span v-t="'menu.options.' + item.name"></span>
+              <img src="src/assets/icons/check.svg" alt>
+            </a>
+          </li>
+        </ul>
       </div>
       <template v-for="item in tabs">
         <component :is="item.component" v-show="item === tab" :key="item.name" :name="item.name" :class="item.name" v-bind="item.props" />

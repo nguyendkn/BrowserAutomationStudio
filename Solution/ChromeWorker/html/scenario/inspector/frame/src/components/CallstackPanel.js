@@ -9,6 +9,26 @@ window.CallstackPanel = {
   },
 
   props: {
+    sortings: {
+      type: Array,
+      default: () => [],
+    },
+
+    filters: {
+      type: Array,
+      default: () => [],
+    },
+
+    options: {
+      type: Array,
+      default: () => [],
+    },
+
+    order: {
+      type: String,
+      required: true,
+    },
+
     title: {
       type: String,
       required: true,
@@ -25,17 +45,6 @@ window.CallstackPanel = {
     },
   },
 
-  data() {
-    const { filters } = this.$store.state[this.name];
-
-    return {
-      filters: ['functions', 'actions'].map(name => {
-        const filter = filters.find(item => item.name === name);
-        return { name, active: filter ? filter.active : true };
-      }),
-    };
-  },
-
   computed: {
     activeFilters() {
       return this.filters.filter(f => f.active).map(f => f.name);
@@ -46,15 +55,9 @@ window.CallstackPanel = {
     },
   },
 
-  watch: {
-    filters(filters) {
-      this.$store.commit('setFilters', { id: this.name, filters });
-    },
-  },
-
   template: /*html*/ `
     <div class="app-panel">
-      <panel-toolbar :filters.sync="filters" :search="false" />
+      <panel-toolbar :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
         <callstack-list :data="data" :filters="activeFilters" />
       </div>

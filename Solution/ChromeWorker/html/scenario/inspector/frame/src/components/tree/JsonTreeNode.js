@@ -153,10 +153,8 @@ window.JsonTreeNode = {
 
   template: /*html*/ `
     <div class="jt-node" :class="[type, { hovered: isHovered, expanded: isExpanded }]" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false" @click.stop="edit">
-      <div class="jt-node-inner" style="display: flex">
-        <span class="jt-node-label" :style="{ color }">
-          <slot name="label" :label="name">{{ name }}</slot>:&nbsp;
-        </span>
+      <div class="jt-node-inner">
+        <span class="jt-node-label" :style="{ color }"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
         <span class="jt-node-value" style="margin-right: 8px; min-width: 0; flex: 1;">
           <template v-if="type === 'undefined' || type === 'null'">{{ type }}</template>
           <template v-else-if="type === 'string'">"<span style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ value }}</span>"</template>

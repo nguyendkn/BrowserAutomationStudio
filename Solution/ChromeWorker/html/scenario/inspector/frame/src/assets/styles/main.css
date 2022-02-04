@@ -486,6 +486,10 @@
   background: var(--color-lighten);
 }
 
+.jt-node-inner {
+  display: flex;
+}
+
 .jt-node-label {
   display: flex;
 }

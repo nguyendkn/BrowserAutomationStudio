@@ -37,6 +37,9 @@ window.GroupsItem = {
 
   data() {
     return {
+      newColor: this.color,
+      newName: this.name,
+      isEditing: false,
       colors: {
         green: '142, 196, 143',
         brown: '192, 189, 155',
@@ -44,9 +47,6 @@ window.GroupsItem = {
         gray: '207, 207, 207',
         red: '246, 155, 147',
       },
-      isEditing: false,
-      newName: this.name,
-      newColor: this.color,
     };
   },
 
@@ -83,10 +83,10 @@ window.GroupsItem = {
       }
     },
 
-    update(cancel) {
+    update(accept) {
       if (!this.isEditing) return;
 
-      if (!cancel && this.newName) {
+      if (accept && this.newName) {
         this.$emit('update', {
           color: this.newColor,
           name: this.newName,
@@ -110,11 +110,11 @@ window.GroupsItem = {
       });
     },
 
-    accept() {
+    cancel() {
       this.update(false);
     },
 
-    cancel() {
+    accept() {
       this.update(true);
     },
 

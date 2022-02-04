@@ -37,15 +37,15 @@
 
 /* Header */
 
-.app-header > button:active {
+.app-header button:active {
   opacity: 1;
 }
 
-.app-header > button:hover {
+.app-header button:hover {
   opacity: 1;
 }
 
-.app-header > button {
+.app-header button {
   margin: 0 9px;
   display: flex;
   opacity: 0.5;

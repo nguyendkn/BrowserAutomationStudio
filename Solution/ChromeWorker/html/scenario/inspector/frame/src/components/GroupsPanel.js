@@ -77,19 +77,20 @@ window.GroupsPanel = {
       const ascending = order === 'ascending';
 
       return Object.keys(data).sort((a, b) => {
-        if (a.startsWith('GLOBAL:') !== b.startsWith('GLOBAL:')) return 0;
-        [a, b] = ascending ? [a, b] : [b, a];
+        if (a.startsWith('GLOBAL:') === b.startsWith('GLOBAL:')) {
+          if (!ascending) [a, b] = [b, a];
 
-        switch (activeSortings[0]) {
-          case 'dateModified':
-            return metadata[b].modifiedAt - metadata[a].modifiedAt;
-          case 'dateCreated':
-            return metadata[b].createdAt - metadata[a].createdAt;
-          case 'frequency':
-            return usages[b] - usages[a];
+          switch (activeSortings[0]) {
+            case 'dateModified':
+              return metadata[b].modifiedAt - metadata[a].modifiedAt;
+            case 'dateCreated':
+              return metadata[b].createdAt - metadata[a].createdAt;
+            case 'frequency':
+              return usages[b] - usages[a];
+          }
+  
+          return (a > b) - (a < b);
         }
-
-        return (a > b) - (a < b);
       });
     },
 

@@ -132,10 +132,8 @@
   max-height: calc(100vh - 35px);
   border: 1px solid #606060;
   background: #3d3f42;
-  width: max-content;
   position: absolute;
   min-width: 150px;
-  font-size: 12px;
   padding: 6px 0;
   overflow: auto;
   right: 12px;

@@ -82,10 +82,12 @@ window.App = {
           const sorting = sortings.find(item => item.name === name);
           return { name, active: sorting ? sorting.active : name === 'alphabetically' };
         });
+
         props.filters = ['undefined', 'boolean', 'object', 'string', 'number', 'array', 'date', 'null'].map(name => {
           const filter = filters.find(item => item.name === name);
           return { name, active: filter ? filter.active : true };
         });
+
         props.options = ['groups'].map(name => {
           const option = options.find(item => item.name === name);
           return { name, active: option ? option.active : false };
@@ -132,7 +134,7 @@ window.App = {
     },
 
     toggleSorting(item) {
-      if (item.active) this.tab.props.order = this.tab.props.order === 'ascending' ? 'descending' : 'ascending';
+      if (item.active) this.tab.props.order = this.order === 'ascending' ? 'descending' : 'ascending';
       this.tab.props.sortings = this.sortings.map(({ name, active }) => ({
         active: name === item.name,
         name,

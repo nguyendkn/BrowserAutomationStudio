@@ -73,7 +73,7 @@ window.GroupsItem = {
           }
           return true;
         }
-        return draggedContext.index === draggedContext.futureIndex && -1;
+        return draggedContext.index === draggedContext.futureIndex;
       }
     },
 

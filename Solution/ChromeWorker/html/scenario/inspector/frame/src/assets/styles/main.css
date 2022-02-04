@@ -203,7 +203,7 @@
 .callstack-item-param {
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 5px 32px;
+  padding: 4px 28px;
   overflow: hidden;
 }
 
@@ -225,7 +225,7 @@
   overflow: hidden;
   cursor: pointer;
   display: flex;
-  padding: 8px;
+  padding: 6px;
 }
 
 .callstack-item-data {
@@ -235,7 +235,7 @@
 .callstack-item-name {
   font-weight: 600;
   color: #606060;
-  padding: 0 8px;
+  padding: 0 6px;
 }
 
 .callstack-item.function:not(.preview) > .callstack-item-title {

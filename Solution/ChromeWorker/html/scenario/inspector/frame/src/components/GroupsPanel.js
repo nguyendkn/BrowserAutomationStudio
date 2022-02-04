@@ -137,20 +137,15 @@ window.GroupsPanel = {
       }
       return false;
     },
+
+    addGroup() {
+      this.$refs.list.addGroup();
+    },
   },
 
   template: /*html*/ `
     <div class="app-panel">
-      <panel-toolbar v-model.trim="query">
-        <template v-if="!isEmpty && !flat" #controls>
-          <button type="button" style="border-left-color: transparent;" @click="$refs.list.addGroup()">
-            <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6.5 3.5V2h-6v12h15V3.5h-9Zm8 9.5h-13V5h13v8Z" fill="#606060" />
-              <path d="M7.5 12h1V9.5H11v-1H8.5V6h-1v2.5H5v1h2.5V12Z" fill="#606060" />
-            </svg>
-          </button>
-        </template>
-      </panel-toolbar>
+      <panel-toolbar v-model.trim="query" />
       <div v-show="!isEmpty" class="app-panel-content">
         <groups-list ref="list" :source="data" :order="sorted" :filter="filter" :flat="flat" :id="name" />
       </div>

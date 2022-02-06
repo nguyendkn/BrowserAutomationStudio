@@ -24,9 +24,9 @@ window.CallstackPanel = {
       default: () => [],
     },
 
-    order: {
-      type: String,
-      required: true,
+    reverse: {
+      type: Boolean,
+      default: false,
     },
 
     title: {

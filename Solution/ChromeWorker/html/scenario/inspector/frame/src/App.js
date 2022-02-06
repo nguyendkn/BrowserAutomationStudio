@@ -9,7 +9,7 @@ window.App = {
       props: {
         data: name === 'callstack' ? [] : {},
         title: `tabs.${name}Empty`,
-        order: 'ascending',
+        reverse: false,
         sortings: [],
         filters: [],
         options: [],
@@ -33,8 +33,8 @@ window.App = {
       return this.tab.props.options;
     },
 
-    order() {
-      return this.tab.props.order;
+    reverse() {
+      return this.tab.props.reverse;
     },
 
     data() {
@@ -134,11 +134,12 @@ window.App = {
     },
 
     toggleSorting(item) {
-      if (item.active) this.tab.props.order = this.order === 'ascending' ? 'descending' : 'ascending';
       this.tab.props.sortings = this.sortings.map(({ name, active }) => ({
         active: name === item.name,
         name,
       }));
+
+      if (item.active) this.tab.props.reverse = !this.reverse;
     },
 
     toggleFilter(item) {
@@ -200,7 +201,7 @@ window.App = {
           <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
             <a href="#" @click.prevent="toggleSorting(item)">
               <span v-t="'menu.sortings.' + item.name"></span>
-              <img :style="{ transform: order === 'descending' ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
+              <img :style="{ transform: reverse ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
             </a>
           </li>
           <li v-if="sortings.length">

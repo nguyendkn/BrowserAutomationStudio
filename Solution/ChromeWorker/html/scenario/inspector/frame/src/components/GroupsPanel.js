@@ -24,9 +24,9 @@ window.GroupsPanel = {
       default: () => [],
     },
 
-    order: {
-      type: String,
-      required: true,
+    reverse: {
+      type: Boolean,
+      default: false,
     },
 
     title: {
@@ -72,13 +72,12 @@ window.GroupsPanel = {
       }, {});
     },
 
-    sorted() {
-      const { data, order, usages, metadata, activeSortings } = this;
-      const ascending = order === 'ascending';
+    order() {
+      const { data, usages, reverse, metadata, activeSortings } = this;
 
       return Object.keys(data).sort((a, b) => {
         if (a.startsWith('GLOBAL:') === b.startsWith('GLOBAL:')) {
-          if (!ascending) [a, b] = [b, a];
+          if (reverse) [a, b] = [b, a];
 
           switch (activeSortings[0]) {
             case 'dateModified':
@@ -148,7 +147,7 @@ window.GroupsPanel = {
     <div class="app-panel">
       <panel-toolbar v-model.trim="query" />
       <div v-show="!isEmpty" class="app-panel-content">
-        <groups-list ref="list" :source="data" :order="sorted" :filter="filter" :flat="flat" :id="name" />
+        <groups-list ref="list" :source="data" :filter="filter" :order="order" :flat="flat" :id="name" />
       </div>
       <div v-show="isEmpty" class="app-panel-title" v-t="title"></div>
     </div>

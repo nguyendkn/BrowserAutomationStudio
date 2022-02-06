@@ -207,18 +207,18 @@ window.App = {
           <li v-if="sortings.length">
             <hr class="divider">
           </li>
-          <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
-            <a href="#" @click.prevent="toggleFilter(item)">
-              <span v-t="'menu.filters.' + item.name"></span>
+          <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
+            <a href="#" @click.prevent="toggleOption(item)">
+              <span v-t="'menu.options.' + item.name"></span>
               <img src="src/assets/icons/check.svg" alt>
             </a>
           </li>
           <li v-if="options.length">
             <hr class="divider">
           </li>
-          <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
-            <a href="#" @click.prevent="toggleOption(item)">
-              <span v-t="'menu.options.' + item.name"></span>
+          <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
+            <a href="#" @click.prevent="toggleFilter(item)">
+              <span v-t="'menu.filters.' + item.name"></span>
               <img src="src/assets/icons/check.svg" alt>
             </a>
           </li>

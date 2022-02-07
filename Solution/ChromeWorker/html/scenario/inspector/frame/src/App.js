@@ -187,7 +187,7 @@ window.App = {
             <path d="M7.5 12h1V9.5H11v-1H8.5V6h-1v2.5H5v1h2.5V12Z" fill="#606060" />
           </svg>
         </button>
-        <button type="button" :class="{ active: menu }"@click.stop="menu = !menu">
+        <button type="button" :class="{ active: menu }" @click.stop="menu = !menu">
           <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
             <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" fill="#606060" />
           </svg>

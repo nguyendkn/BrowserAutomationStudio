@@ -29,21 +29,15 @@
       });
 
       this.confirm = ({ message }) => {
-        bootbox.confirm(message, result =>
-          this.send({
-            type: 'confirm',
-            payload: { result },
-          })
-        );
+        bootbox.confirm(message, result => {
+          this.send({ type: 'confirm', payload: { result } });
+        });
       };
 
       this.prompt = ({ message }) => {
-        bootbox.prompt(message, result =>
-          this.send({
-            type: 'prompt',
-            payload: { result },
-          })
-        );
+        bootbox.prompt(message, result => {
+          this.send({ type: 'prompt', payload: { result } });
+        });
       };
 
       this.send = async message => {
@@ -72,6 +66,8 @@
             return args[0].css('height', Math.max(110, height)), false;
           },
         });
+
+        BrowserAutomationStudio_AskForVariablesUpdate();
       }
       return this;
     },

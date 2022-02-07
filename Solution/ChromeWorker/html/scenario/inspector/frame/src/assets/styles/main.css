@@ -37,10 +37,12 @@
 
 /* Header */
 
+.app-header button.active,
 .app-header button:active {
   opacity: 1;
 }
 
+.app-header button.hover,
 .app-header button:hover {
   opacity: 1;
 }
@@ -315,9 +317,12 @@
 
 .group-item-inputs > input,
 .group-item-inputs > span {
+  text-overflow: ellipsis;
   letter-spacing: -0.2px;
+  white-space: nowrap;
   line-height: 16px;
   user-select: none;
+  overflow: hidden;
   padding: 3px 0;
   color: inherit;
   flex: 1;
@@ -354,6 +359,7 @@
 .group-item-inputs {
   margin-left: 8px;
   display: flex;
+  min-width: 0;
   flex: 1;
 }
 

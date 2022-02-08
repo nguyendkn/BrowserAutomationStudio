@@ -507,12 +507,14 @@
 .jt-node-value {
   text-overflow: ellipsis;
   overflow: hidden;
+  display: block;
   min-width: 0;
 }
 
 .jt-node-label {
   text-overflow: initial;
   overflow: hidden;
+  display: flex;
   min-width: 0;
 }
 

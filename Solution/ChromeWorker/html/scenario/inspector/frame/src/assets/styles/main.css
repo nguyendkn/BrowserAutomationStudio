@@ -3,10 +3,60 @@
 #app {
   letter-spacing: -0.2px;
   flex-flow: column;
-  min-width: 215px;
+  min-width: 230px;
   font-size: 12px;
   display: flex;
   height: 100%;
+}
+
+/* Media */
+
+@media (max-width: 320px) {
+  .app-tab > a {
+    justify-content: start;
+  }
+
+  .app-tabs {
+    margin-right: auto;
+    flex: 0;
+  }
+
+  .app-tab {
+    flex: 1 0 100%;
+  }
+
+  .app-menu {
+    top: 70px;
+  }
+}
+
+@media (min-width: 320px) {
+  .app-tab > a {
+    justify-content: center;
+  }
+
+  .app-tabs {
+    margin-right: auto;
+    flex: 1;
+  }
+
+  .app-tab {
+    flex: 1 0 50%;
+  }
+
+  .app-menu {
+    top: 52px;
+  }
+}
+
+@media (min-width: 405px) {
+  .app-tab {
+    flex: 1 0 0%;
+  }
+
+  .app-menu {
+    top: 34px;
+  }
 }
 
 /* Tabs */
@@ -22,6 +72,7 @@
 .app-tab > a {
   grid-auto-flow: column;
   text-decoration: none;
+  white-space: nowrap;
   align-items: center;
   line-height: 18px;
   color: #606060;
@@ -32,8 +83,9 @@
 
 .app-tabs {
   justify-content: space-around;
+  margin-right: auto;
+  flex-wrap: wrap;
   display: flex;
-  flex: 1;
 }
 
 /* Toolbar */
@@ -147,7 +199,6 @@
   overflow: auto;
   right: 12px;
   z-index: 1;
-  top: 34px;
 }
 
 /* Search */

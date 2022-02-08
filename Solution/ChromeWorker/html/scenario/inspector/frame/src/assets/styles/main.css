@@ -3,6 +3,7 @@
 #app {
   letter-spacing: -0.2px;
   flex-flow: column;
+  min-width: 215px;
   font-size: 12px;
   display: flex;
   height: 100%;
@@ -494,19 +495,29 @@
   background: var(--color-lighten);
 }
 
+.jt-node-preview {
+  color: rgba(96, 96, 96, 0.65);
+  padding: 0 3px;
+}
+
 .jt-node-inner {
   display: flex;
 }
 
-.jt-node-label {
-  display: flex;
+.jt-node-value {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  min-width: 0;
 }
 
-.jt-node-value {
-  display: flex;
+.jt-node-label {
+  text-overflow: initial;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .jt-node {
+  white-space: nowrap;
   user-select: none;
   line-height: 18px;
   overflow: hidden;

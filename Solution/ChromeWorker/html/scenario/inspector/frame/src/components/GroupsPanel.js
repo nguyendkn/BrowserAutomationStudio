@@ -4,7 +4,6 @@ window.GroupsPanel = {
   name: 'GroupsPanel',
 
   components: {
-    PanelToolbar,
     GroupsList,
   },
 
@@ -29,6 +28,11 @@ window.GroupsPanel = {
       default: false,
     },
 
+    query: {
+      type: String,
+      default: '',
+    },
+
     title: {
       type: String,
       required: true,
@@ -49,7 +53,6 @@ window.GroupsPanel = {
     return {
       metadata: {},
       history: [],
-      query: '',
     };
   },
 
@@ -145,7 +148,6 @@ window.GroupsPanel = {
 
   template: /*html*/ `
     <div class="app-panel">
-      <panel-toolbar v-model.trim="query" />
       <div v-show="!isEmpty" class="app-panel-content">
         <groups-list ref="list" :source="data" :filter="filter" :order="order" :flat="flat" :id="name" />
       </div>

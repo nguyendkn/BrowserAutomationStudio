@@ -4,7 +4,6 @@ window.CallstackPanel = {
   name: 'CallstackPanel',
 
   components: {
-    PanelToolbar,
     CallstackList,
   },
 
@@ -27,6 +26,11 @@ window.CallstackPanel = {
     reverse: {
       type: Boolean,
       default: false,
+    },
+
+    query: {
+      type: String,
+      default: '',
     },
 
     title: {
@@ -57,7 +61,6 @@ window.CallstackPanel = {
 
   template: /*html*/ `
     <div class="app-panel">
-      <panel-toolbar :search="false" />
       <div v-show="!isEmpty" class="app-panel-content">
         <callstack-list :data="data" :filters="activeFilters" />
       </div>

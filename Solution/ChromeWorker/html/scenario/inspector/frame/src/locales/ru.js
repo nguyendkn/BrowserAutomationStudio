@@ -32,7 +32,7 @@
       groups: 'Группы',
     },
   },
-  toolbar: {
+  search: {
     placeholder: 'Поиск по имени...',
   },
   groups: {

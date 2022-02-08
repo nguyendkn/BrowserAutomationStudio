@@ -32,7 +32,7 @@
       groups: 'Groups',
     },
   },
-  toolbar: {
+  search: {
     placeholder: 'Search by name...',
   },
   groups: {

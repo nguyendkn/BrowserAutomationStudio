@@ -16,7 +16,7 @@ const store = new Vuex.Store({
       });
     });
 
-    return { ...state, diff, counters, toolbarVisible: false };
+    return { ...state, diff, counters };
   },
   mutations: {
     setNodeCounter(state, { id, path, counter }) {
@@ -50,14 +50,11 @@ const store = new Vuex.Store({
     setDiff(state, { id, diff }) {
       state.diff[id] = diff;
     },
-    toggleToolbar(state) {
-      state.toolbarVisible = !state.toolbarVisible;
-    },
   },
 });
 
 store.subscribe(({ type }, { variables, resources, callstack }) => {
-  if (type !== 'toggleToolbar' && type !== 'setDiff' && type !== 'setNodeCounter') {
+  if (type !== 'setDiff' && type !== 'setNodeCounter') {
     BrowserAutomationStudio_SaveInterfaceJson(JSON.stringify({ variables, resources, callstack }));
   }
 });

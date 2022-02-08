@@ -51,7 +51,7 @@
 
 @media (min-width: 405px) {
   .app-tab {
-    flex: 1 0 0%;
+    flex: unset;
   }
 
   .app-menu {
@@ -85,6 +85,14 @@
   justify-content: space-around;
   margin-right: auto;
   flex-wrap: wrap;
+  display: flex;
+}
+
+/* Tool */
+
+.app-tool {
+  justify-content: flex-end;
+  min-width: 108px;
   display: flex;
 }
 

@@ -137,7 +137,7 @@
 }
 
 .app-menu {
-  max-height: calc(100vh - 60px);
+  max-height: calc(100vh - 34px);
   border: 1px solid #606060;
   background: #3d3f42;
   position: absolute;

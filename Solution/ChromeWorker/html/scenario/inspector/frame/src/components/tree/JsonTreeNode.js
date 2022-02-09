@@ -127,6 +127,16 @@ window.JsonTreeNode = {
       }
     },
 
+    click() {
+      const { type, keys } = this;
+
+      if ((type === 'object' || type === 'array') && keys.length) {
+        return this.toggle();
+      }
+
+      this.edit();
+    },
+
     copy() {
       const { type, value } = this, text = JSON.stringify(value);
 
@@ -152,9 +162,9 @@ window.JsonTreeNode = {
   },
 
   template: /*html*/ `
-    <div class="jt-node" :class="[type, { hovered: isHovered, expanded: isExpanded }]" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false" @click.stop="edit">
+    <div class="jt-node" :class="[type, { hovered: isHovered, expanded: isExpanded }]" :style="{ '--indent': indent }" @mouseover.stop="isHovered = true" @mouseout.stop="isHovered = false" @click.stop="click">
       <div class="jt-node-inner">
-        <span class="jt-node-label" :style="{ color }"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
+        <span class="jt-node-label" :style="{ color }" @click.stop="edit"><slot name="label" :label="name">{{ name }}</slot>:&nbsp;</span>
         <span class="jt-node-value" style="margin-right: 8px; flex: 1;">
           <template v-if="type === 'undefined' || type === 'null'">{{ type }}</template>
           <template v-else-if="type === 'string'">"{{ value }}"</template>

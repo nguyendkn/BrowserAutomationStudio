@@ -23,10 +23,6 @@
   .app-tab {
     flex: 1 0 100%;
   }
-
-  .app-menu {
-    max-height: calc(100vh - 70px);
-  }
 }
 
 @media (min-width: 295px) {
@@ -41,19 +37,11 @@
   .app-tab {
     flex: 1 0 50%;
   }
-
-  .app-menu {
-    max-height: calc(100vh - 52px);
-  }
 }
 
 @media (min-width: 370px) {
   .app-tab {
     flex: unset;
-  }
-
-  .app-menu {
-    max-height: calc(100vh - 34px);
   }
 }
 
@@ -196,6 +184,7 @@
 }
 
 .app-menu {
+  max-height: calc(100vh - 100% - 16px);
   border: 1px solid #606060;
   top: calc(100% + 8px);
   background: #3d3f42;

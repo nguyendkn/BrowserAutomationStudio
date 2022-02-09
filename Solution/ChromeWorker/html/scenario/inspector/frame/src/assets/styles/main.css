@@ -11,7 +11,7 @@
 
 /* Media */
 
-@media (max-width: 320px) {
+@media (max-width: 295px) {
   .app-tab > a {
     justify-content: start;
   }
@@ -30,7 +30,7 @@
   }
 }
 
-@media (min-width: 320px) {
+@media (min-width: 295px) {
   .app-tab > a {
     justify-content: center;
   }
@@ -49,7 +49,7 @@
   }
 }
 
-@media (min-width: 405px) {
+@media (min-width: 370px) {
   .app-tab {
     flex: unset;
   }

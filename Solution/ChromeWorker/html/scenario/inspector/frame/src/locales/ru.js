@@ -4,7 +4,7 @@
   tabs: {
     variables: 'Переменные',
     resources: 'Ресурсы',
-    callstack: 'Стек вызовов',
+    callstack: 'Стек',
     variablesEmpty: 'Список переменных пуст',
     resourcesEmpty: 'Список ресурсов пуст',
     callstackEmpty: 'Стек вызовов пуст',

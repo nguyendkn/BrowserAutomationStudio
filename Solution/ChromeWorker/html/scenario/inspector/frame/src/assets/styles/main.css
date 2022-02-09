@@ -109,7 +109,7 @@
   background: #f6f6f6;
   padding: 8px 12px;
   display: grid;
-  row-gap: 8px;
+  gap: 8px 0;
 }
 
 /* Panels */
@@ -217,7 +217,7 @@
 
 .app-search-input {
   border: 1px solid #d9d9d9;
-  letter-spacing: -0.2px;
+  letter-spacing: inherit;
   padding: 6px 8px;
   background: #fff;
   border-right: 0;
@@ -246,7 +246,7 @@
 .callstack-item-params {
   padding: 4px 0;
   display: grid;
-  row-gap: 4px;
+  gap: 4px 0;
 }
 
 .callstack-item-param {
@@ -328,7 +328,7 @@
 
 .callstack-list {
   display: grid;
-  row-gap: 4px;
+  gap: 4px 0;
 }
 
 /* Groups */
@@ -366,8 +366,8 @@
 
 .group-item-inputs > input,
 .group-item-inputs > span {
+  letter-spacing: inherit;
   text-overflow: ellipsis;
-  letter-spacing: -0.2px;
   white-space: nowrap;
   line-height: 16px;
   user-select: none;
@@ -445,7 +445,7 @@
 
 .group-list {
   display: grid;
-  row-gap: 4px;
+  gap: 4px 0;
 }
 
 /* Flat mode */
@@ -527,8 +527,8 @@
 .jt-node-actions {
   grid-auto-flow: column;
   margin-right: 8px;
-  column-gap: 12px;
   display: none;
+  gap: 0 12px;
 }
 
 .jt-node.focused {

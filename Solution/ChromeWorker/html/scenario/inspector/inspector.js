@@ -54,11 +54,11 @@
 
         this.setElement('#inspector').$el.resizable({
           onDragStart(e, ...args) {
-            body.style.cursor = e.type !== 'mouseup' ? 'ns-resize' : '';
+            body.style.cursor = e.type === 'mouseup' ? '' : 'ns-resize';
             BrowserAutomationStudio_PreserveInterfaceState();
           },
           onDragEnd(e, ...args) {
-            body.style.cursor = e.type !== 'mouseup' ? 'ns-resize' : '';
+            body.style.cursor = e.type === 'mouseup' ? '' : 'ns-resize';
             BrowserAutomationStudio_PreserveInterfaceState();
           },
           onDrag(e, ...args) {

@@ -311,6 +311,7 @@
     'inspector.types.null': { en: 'Null', ru: 'Null' },
     'inspector.false': { en: 'False', ru: 'False' },
     'inspector.true': { en: 'True', ru: 'True' },
+    'Please enter a valid value. The field is incomplete or has an invalid date.': { ru: 'Введите верное значение. Поле не заполнено или введена недействительная дата.' },
     'Please fill out this field.': { ru: 'Заполните это поле.' },
     'Please enter a number.': { ru: 'Введите число.' },
   });

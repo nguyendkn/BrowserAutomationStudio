@@ -9,7 +9,7 @@
   height: 100%;
 }
 
-/* Media */
+/* Tabs */
 
 @media (max-width: 295px) {
   .app-tab > a {
@@ -44,8 +44,6 @@
     flex: unset;
   }
 }
-
-/* Tabs */
 
 .app-tab.active > a {
   opacity: 1;
@@ -425,7 +423,7 @@
 .group-item-content::before {
   text-align: center;
   line-height: 18px;
-  padding: 5px;
+  padding: 3px;
 }
 
 .group-item-content {

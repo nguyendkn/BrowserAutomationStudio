@@ -908,6 +908,24 @@ void CommandParser::Parse(const std::string& Xml)
 
         }
 
+        CommandNode = MessagesNode->first_node("SetComboboxIndex");
+        if(CommandNode)
+        {
+            WORKER_LOG("SetComboboxIndex");
+            int index = -1;
+            for (rapidxml::xml_attribute<> *attr = CommandNode->first_attribute(); attr; attr = attr->next_attribute())
+            {
+                if(std::string(attr->name()) == std::string("index"))
+                {
+                    index = std::stoi(std::string(attr->value()));
+                }
+            }
+
+            for(auto f:EventSetComboboxIndex)
+                f(index);
+
+        }
+
         CommandNode = MessagesNode->first_node("Scroll");
         if(CommandNode)
         {

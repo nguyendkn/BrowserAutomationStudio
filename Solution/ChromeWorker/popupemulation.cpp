@@ -12,6 +12,11 @@ void PopupEmulation::Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayo
     SelectElementIPC.Init(std::string("inselect") + Data->_UniqueProcessId);
 }
 
+bool PopupEmulation::GetMenuVisibility()
+{
+    return (Data->ManualControl != BrowserData::Indirect) || Data->IsRecord;
+}
+
 void PopupEmulation::CloseMenu(bool ForceClose)
 {
     if(hMenu)
@@ -27,6 +32,9 @@ void PopupEmulation::CloseMenu(bool ForceClose)
 
 void PopupEmulation::ShowMenu(int X, int Y, int Height, std::vector<std::string> Options)
 {
+    if(!GetMenuVisibility())
+        return;
+
     CloseMenu();
 
     hMenu = CreatePopupMenu();
@@ -92,6 +100,28 @@ void PopupEmulation::ShowMenu(int X, int Y, int Height, std::vector<std::string>
 
 }
 
+void PopupEmulation::SetIndex(int Index)
+{
+    CloseMenu(true);
+
+    if(CurrentElementId.empty())
+    {
+        return;
+    }
+
+
+
+    JsonSerializer Serializer;
+    std::map<std::string, Variant> SendObject;
+    SendObject["type"] = Variant(std::string("popup_result"));
+    SendObject["index"] = Variant(Index);
+    SendObject["element_id"] = Variant(CurrentElementId);
+    std::string SendData = Serializer.SerializeObjectToString(SendObject);
+
+    IPCSimple::Write(std::string("outselect") + CurrentElementId + Data->_UniqueProcessId, SendData);
+
+}
+
 void PopupEmulation::Timer()
 {
     /*if(hMenu && Data->ManualControl == BrowserData::Indirect)
@@ -115,8 +145,8 @@ void PopupEmulation::Timer()
                 for(auto f:EventPopupShown)
                     f();
 
-                if(Data->ManualControl == BrowserData::Indirect)
-                    return;
+                /*if(Data->ManualControl == BrowserData::Indirect)
+                    return;*/
 
                 int X = Parser.GetFloatFromJson(CurrentData,"left");
                 int Y = Parser.GetFloatFromJson(CurrentData,"top");

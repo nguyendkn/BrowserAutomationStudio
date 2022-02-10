@@ -146,6 +146,11 @@ void MainApp::SetData(BrowserData *Data)
 
 }
 
+void MainApp::SetPopupEmulation(PopupEmulation *_PopupEmulation)
+{
+    this->_PopupEmulation = _PopupEmulation;
+}
+
 void MainApp::SetPostManager(PostManager *_PostManager)
 {
     this->_PostManager = _PostManager;
@@ -855,6 +860,13 @@ void MainApp::PopupCreate2Callback(bool is_silent, const std::string& url, const
 
     });
 }
+
+void MainApp::SetComboboxIndexCallback(int Index)
+{
+    _PopupEmulation->SetIndex(Index);
+    this->SendTextResponce(std::string("<SetComboboxIndex></SetComboboxIndex>"));
+}
+
 
 void MainApp::SetOpenFileNameCallback(const std::string& value)
 {

@@ -9,6 +9,11 @@
     resourcesEmpty: 'Resources list is empty',
     callstackEmpty: 'Call stack is empty',
   },
+  buttons: {
+    search: 'Search',
+    group: 'Create group',
+    menu: 'Filters and sorting',
+  },
   menu: {
     sortings: {
       frequency: 'By frequency of use',

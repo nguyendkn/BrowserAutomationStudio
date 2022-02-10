@@ -9,6 +9,11 @@
     resourcesEmpty: 'Список ресурсов пуст',
     callstackEmpty: 'Стек вызовов пуст',
   },
+  buttons: {
+    search: 'Поиск',
+    group: 'Создать группу',
+    menu: 'Фильтры и сортировка',
+  },
   menu: {
     sortings: {
       frequency: 'По частоте использования',

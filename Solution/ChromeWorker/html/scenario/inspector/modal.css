@@ -55,7 +55,7 @@
 
 .inspector-modal-form > div > textarea,
 .inspector-modal-form > div > input {
-  letter-spacing: -0.2px;
+  letter-spacing: inherit;
   background: inherit;
   padding: 9px 12px;
   max-height: 40vh;
@@ -91,7 +91,7 @@
 .inspector-modal-tools > button {
   border: 1px solid #d9d9d9;
   justify-content: center;
-  letter-spacing: -0.2px;
+  letter-spacing: inherit;
   align-items: center;
   user-select: none;
   line-height: 16px;
@@ -109,7 +109,7 @@
   outline: 0;
   border: 0;
   right: 0;
-  top: 3px;
+  top: 2px;
 }
 
 .inspector-modal-tools:not(.open) > [data-toggle] > svg:last-of-type {
@@ -215,7 +215,7 @@
 }
 
 .inspector-modal-select {
-  letter-spacing: -0.2px;
+  letter-spacing: inherit;
   background: #606060;
   line-height: 16px;
   padding: 9px 12px;

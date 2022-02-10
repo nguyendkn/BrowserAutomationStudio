@@ -205,7 +205,7 @@ window.App = {
               </svg>
             </button>
           </div>
-          <ul v-show="menu" class="app-menu" v-click-outside="{ middleware: e => !e.target.closest('.app-tool > .active'), handler: () => this.menu = false, capture: true }">
+          <ul v-show="menu" class="app-menu" v-click-outside="{ middleware: e => !e.target.closest('.app-tool > .active'), handler: () => menu = false, capture: true }">
             <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
               <a href="#" @click.prevent="toggleSorting(item)">
                 <span v-t="'menu.sortings.' + item.name"></span>

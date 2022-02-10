@@ -138,7 +138,7 @@ window.JsonTreeNode = {
     },
 
     copy() {
-      const { type, value } = this, text = JSON.stringify(value);
+      const { type, value } = this, text = type === 'string' ? value : JSON.stringify(value);
 
       if (value != null) {
         BrowserAutomationStudio_SetClipboard(text, false);

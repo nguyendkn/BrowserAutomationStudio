@@ -67,8 +67,8 @@
 
 .app-tabs {
   justify-content: space-around;
-  margin-right: auto;
   flex-wrap: wrap;
+  margin: 0 auto;
   display: flex;
 }
 
@@ -195,6 +195,10 @@
 }
 
 /* Search */
+
+.app-search button:disabled > svg {
+  opacity: 0.5;
+}
 
 .app-search button:active > svg {
   opacity: 0.5;

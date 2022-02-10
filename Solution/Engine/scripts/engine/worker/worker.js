@@ -1102,6 +1102,14 @@ function _load(text, referrer, is_instant, callback)
     })
 }
 
+function _set_combobox_index(index, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.SetComboboxIndex(_ARG[0], _get_function_body(_ARG[1]));
+    })
+}
+
 function _popupcreate2(is_silent, url, referrer, is_instant, callback)
 {
     _ARG = arguments

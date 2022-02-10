@@ -5761,19 +5761,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   
   <script type="text/template" id="set_code">
       <%= waiter %>
-      get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<option_list.length;i++){var option = option_list.item(i);if(option.innerHTML == " + JSON.stringify(<%= set %>) + ")break;[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
-      _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+      get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = -1;for(var i = 0;i<option_list.length;i++){var option = option_list.item(i);if(option.innerHTML == " + JSON.stringify(<%= set %>) + "){[[RESULT]] = i;break;}}",JSON.stringify({}))!
+      _SELECT_INDEX = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
       _call(_random_point, {})!
-      _if(_result().length > 0 && _SELECT_TYPE, function(){
+      _if(_result().length > 0 && _SELECT_INDEX >= 0, function(){
         move({})!
         <%= path %>.clarify(X,Y)!
         _call(_clarify,{})!
         mouse(X,Y)!
         <%= timeout_general() %>
-        _type(_SELECT_TYPE,30)!
-        delete _SELECT_TYPE
+        sleep(rand(2000,3000))!
+        _set_combobox_index(_SELECT_INDEX)!
+        sleep(rand(1000,1200))!
       })!
-      delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="waitelement_code">
@@ -5789,36 +5789,32 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="set_integer_code">
     <%= waiter %>
-    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';for(var i = 0;i<" + <%= set %> + ";i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
-    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
     _call(_random_point, {})!
-    _if(_result().length > 0 && _SELECT_TYPE, function(){
-      move({})!
-      <%= path %>.clarify(X,Y)!
-      _call(_clarify,{})!
-      mouse(X,Y)!
-      <%= timeout_general() %>
-      _type(_SELECT_TYPE,30)!
-      delete _SELECT_TYPE
-    })!
-    delete _SELECT_TYPE
+    move({})!
+    <%= path %>.clarify(X,Y)!
+    _call(_clarify,{})!
+    mouse(X,Y)!
+    <%= timeout_general() %>
+    sleep(rand(2000,3000))!
+    _set_combobox_index(<%= set %>)!
+    sleep(rand(1000,1200))!
   </script>
 
   <script type="text/template" id="set_random_code">
     <%= waiter %>
-    get_element_selector(_SELECTOR, false).script2("[[RESULT]]='';if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = '<HOME>';var index = Math.floor((Math.random() * option_list.length));for(var i = 0;i<index;i++){[[RESULT]] += '<DOWN>';}[[RESULT]] += '<RETURN>'",JSON.stringify({}))!
-    _SELECT_TYPE = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
+    get_element_selector(_SELECTOR, false).script2("[[RESULT]]=-1;if(self.tagName.toLowerCase() != 'select')throw 'wrong type';var option_list = self.querySelectorAll('option');[[RESULT]] = -1;[[RESULT]] = Math.floor((Math.random() * (option_list.length + 1)));",JSON.stringify({}))!
+    _SELECT_INDEX = JSON.parse(JSON.parse(_result()).variables)["RESULT"]
     _call(_random_point, {})!
-    _if(_result().length > 0 && _SELECT_TYPE, function(){
+    _if(_result().length > 0 && _SELECT_INDEX >= 0, function(){
       move({})!
       <%= path %>.clarify(X,Y)!
       _call(_clarify,{})!
       mouse(X,Y)!
       <%= timeout_general() %>
-      _type(_SELECT_TYPE,30)!
-      delete _SELECT_TYPE
+      sleep(rand(2000,3000))!
+      _set_combobox_index(_SELECT_INDEX)!
+      sleep(rand(1000,1200))!
     })!
-    delete _SELECT_TYPE
   </script>
 
   <script type="text/template" id="attr_code">

@@ -33,6 +33,7 @@
 #include "ipcsimple.h"
 #include "donothingcallback.h"
 #include "emptyrequestcontexthandler.h"
+#include "popupemulation.h"
 
 
 
@@ -72,6 +73,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     bool IsLastCommandNull;
     BrowserData *Data;
+    PopupEmulation *_PopupEmulation = 0;
     PostManager *_PostManager;
     DevToolsReqest2Action *_DevToolsReqest2Action;
     settings* Settings;
@@ -218,6 +220,7 @@ public:
     void UpdateWindowPositionWithParent();
     void SetData(BrowserData *Data);
     void SetPostManager(PostManager *_PostManager);
+    void SetPopupEmulation(PopupEmulation *_PopupEmulation);
     void SetDevToolsReqest2Action(DevToolsReqest2Action *_DevToolsReqest2Action);
     DevToolsReqest2Action * GetDevToolsReqest2Action();
     void SetSettings(settings *Settings);
@@ -279,6 +282,7 @@ public:
     void RecaptchaV3ListCallback(const std::string& value);
     void ClickExtensionButton(const std::string& id);
     void SetOpenFileNameCallback(const std::string& value);
+    void SetComboboxIndexCallback(int Index);
     void DragFileCallback(const std::string& value);
     void SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id);
     void RunTaskCallback(const std::string& function_name,const std::string& params,const std::string& result_id);

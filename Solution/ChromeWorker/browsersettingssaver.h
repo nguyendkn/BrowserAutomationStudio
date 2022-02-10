@@ -23,9 +23,6 @@ struct BrowserSettingsSaver
 
     double DeviceScaleFactor = 1.0;
 
-    //Intercept showing menu from select html element
-    bool SelectReplace = false;
-
     //Headers
     std::vector<std::pair<std::string, std::string> > Headers;
 

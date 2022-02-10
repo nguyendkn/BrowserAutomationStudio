@@ -209,6 +209,10 @@
   opacity: 0.5;
 }
 
+.app-search-input::placeholder {
+  opacity: 0.5;
+}
+
 .app-search button {
   border: 1px solid #d9d9d9;
   display: flex;

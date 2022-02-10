@@ -232,7 +232,7 @@ window.App = {
             </li>
           </ul>
         </div>
-        <search-filter v-show="search" v-model.trim="tab.props.query" :search="tab.name !== 'callstack'" />
+        <search-filter v-show="search" v-model.trim="tab.props.query" :disabled="tab.name === 'callstack'" />
       </div>
       <component :is="item.component" v-for="item in tabs" v-show="item === tab" ref="tab" :key="item.name" :name="item.name" :class="item.name" v-bind="item.props" />
     </div>

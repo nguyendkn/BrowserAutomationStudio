@@ -963,7 +963,7 @@
             </div>
             <div class="form-group">
               <span class="tr">Color</span>: 
-              <span style="user-select: none;">
+              <span style="-webkit-user-select: none;">
                 <span class="color-select color-select-active" color-id="" style="background-color:#f3f3f3">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="color-select action-color-1" color-id="1">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="color-select action-color-2" color-id="2">&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -3805,6 +3805,9 @@
         var total_added = 0;
         var total_removed = 0;
         
+
+
+        
         morphdom(document.getElementById("containerdata"), '<div id="containerdata" >' + html + '</div>', {
           onBeforeElUpdated: function(fromEl, toEl) {
               if(fromEl.hasAttribute("noupdate"))
@@ -5290,13 +5293,23 @@
       _MainView.play()
     }
 
-    function BrowserAutomationStudio_GetVariablesList() {
-      const code = GenerateCode(_TaskCollection.toJSON(), _GobalModel.toJSON());
-      const variables = _.uniq(code.match(/VAR_[A-Z0-9_]+/g) || []);
+    function BrowserAutomationStudio_GetVariablesList()
+    {
+      var code = GenerateCode(_TaskCollection.toJSON(),_GobalModel.toJSON())
+      var match = code.match(/VAR_[A-Z0-9_]+/g)
+      var variables = null
+      if(match)
+      {
+        variables = _.uniq(match)
+      }else
+        variables = []       
 
-      return variables.concat(JSON.parse(extract_global_variables(code)).map(el => {
-        return `GLOBAL:${el.name}`;
-      }));
+      JSON.parse(extract_global_variables(code)).forEach(function(el){
+        variables.push("GLOBAL:" + el["name"])
+
+      })
+
+      return variables
     }
 
     function BrowserAutomationStudio_FocusActionFast(Id)
@@ -5856,7 +5869,8 @@
       _GobalModel.set('istaskexecuting', true);
     }
 
-    function BrowserAutomationStudio_Parse(Code) {
+    function BrowserAutomationStudio_Parse(Code)
+    {
       BrowserAutomationStudio_LastCode = Code
       Code = Code.replace(/_set_goto_label\(\"_internal_\d+\"\)!/g,"")
 
@@ -6056,13 +6070,21 @@
 
 
 
-      BrowserAutomationStudio_SaveToUndoManager();
-      BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
+      BrowserAutomationStudio_SaveToUndoManager()
 
       
 
-      _MainView.render();
-      _WebInterfaceTasks.CodeReady();
+
+      BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
+
+      
+
+      _MainView.render()
+
+            //alert(InsertData.length)
+
+      _WebInterfaceTasks.CodeReady()
+
     }
 
     function UpdateInsertPlacesTooltips()
@@ -6184,18 +6206,23 @@
 
       return JSON.stringify(res)
     }
-
-    function extract_global_variables(code) {
-      const regexp = /PSet\(\s*\"basglobal\"\s*\,\s*\"([^\"]+)\"/g;
-      let res = [];
-      let matches;
-
-      while (matches = regexp.exec(code)) {
+    function extract_global_variables(code)
+    {
+      var res = []
+      var regexp = new RegExp("PSet\\(\\s*\\\"basglobal\\\"\\s*\\,\\s*\\\"([^\\\"]+)\\\"","g")
+      var matches;
+      while (matches = regexp.exec(code))
+      {
         res.push(JSON.parse("\"" + matches[1] + "\""));
       }
 
-      res = res.filter((item, pos) => res.indexOf(item) === pos);
-      return JSON.stringify(res.map(name => ({ name })));
+      res = res.filter(function(item, pos) {
+            return res.indexOf(item) == pos;
+      })
+
+      res = res.map(function(el){return {name: el.toString()}})
+
+      return JSON.stringify(res)
     }
 
     function extract_labels(code)

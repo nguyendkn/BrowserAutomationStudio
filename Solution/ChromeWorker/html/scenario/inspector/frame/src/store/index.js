@@ -4,7 +4,7 @@ const store = new Vuex.Store({
   state() {
     const state = Object.assign({}, parseJSON(bas.state));
     const counters = { variables: {}, resources: {} };
-    const diff = { variables: [], resources: [] };
+    const diff = { variables: null, resources: null };
 
     ['variables', 'resources', 'callstack'].forEach(id => {
       state[id] = Object.assign({}, state[id]);

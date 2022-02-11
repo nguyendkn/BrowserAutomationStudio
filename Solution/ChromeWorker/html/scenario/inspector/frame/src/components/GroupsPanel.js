@@ -23,6 +23,11 @@ window.GroupsPanel = {
       default: () => [],
     },
 
+    executed: {
+      type: Boolean,
+      default: false,
+    },
+
     reverse: {
       type: Boolean,
       default: false,
@@ -103,7 +108,7 @@ window.GroupsPanel = {
 
   watch: {
     data($new, $old) {
-      const { metadata } = this, diff = microdiff($old, $new);
+      const { metadata, executed } = this, diff = microdiff($old, $new);
 
       if (diff.length) {
         const history = [];
@@ -128,8 +133,9 @@ window.GroupsPanel = {
         });
 
         this.history = this.history.concat(history).slice(-100);
-        this.$store.commit('setDiff', { id: this.name, diff });
       }
+
+      if (diff.length || executed) this.$store.commit('setDiff', { id: this.name, diff });
     },
   },
 

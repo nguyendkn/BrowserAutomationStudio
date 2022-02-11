@@ -28,6 +28,14 @@
         }
       });
 
+      _GobalModel.on('change:isscriptexecuting', (_, value) => {
+        this.send({ type: 'action', payload: { executed: !value } });
+      });
+
+      _GobalModel.on('change:istaskexecuting', (_, value) => {
+        this.send({ type: 'action', payload: { executed: !value } });
+      });
+
       this.confirm = ({ message }) => {
         bootbox.confirm(message, result => {
           this.send({ type: 'confirm', payload: { result } });

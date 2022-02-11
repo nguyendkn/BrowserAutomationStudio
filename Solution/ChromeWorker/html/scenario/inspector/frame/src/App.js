@@ -22,7 +22,7 @@ window.App = {
       name,
     }));
 
-    return { menu: false, search: false, tab: tabs[0], tabs };
+    return { menu: false, search: false, executed: false, tab: tabs[0], tabs };
   },
 
   computed: {
@@ -124,21 +124,25 @@ window.App = {
     handleMessage({ data }) {
       const { type, payload } = data;
 
-      if (type === 'update' && payload) {
-        this.tabs.forEach(({ name, props }) => {
-          if (hasOwn(payload, name)) {
-            props.data = mutate(payload[name], value => {
-              if (typeof value === 'string') {
-                if (value.startsWith('__undefined__')) {
-                  return undefined;
-                } else if (value.startsWith('__date__')) {
-                  return new Date(value.slice(8));
+      if (payload) {
+        if (type === 'update') {
+          this.tabs.forEach(({ name, props }) => {
+            if (hasOwn(payload, name)) {
+              props.data = mutate(payload[name], value => {
+                if (typeof value === 'string') {
+                  if (value.startsWith('__undefined__')) {
+                    return undefined;
+                  } else if (value.startsWith('__date__')) {
+                    return new Date(value.slice(8));
+                  }
                 }
-              }
-              return value;
-            });
-          }
-        });
+                return value;
+              });
+            }
+          });
+        } else if (type === 'action') {
+          this.executed = payload.executed;
+        }
       }
     },
 
@@ -238,7 +242,7 @@ window.App = {
         </div>
         <search-filter v-model.trim="tab.props.query" :disabled="tab.name === 'callstack'" :visible.sync="search" />
       </div>
-      <component :is="item.component" v-for="item in tabs" v-show="item === tab" ref="tab" :key="item.name" :name="item.name" :class="item.name" v-bind="item.props" />
+      <component :is="item.component" v-for="item in tabs" v-show="item === tab" ref="tab" :key="item.name" :name="item.name" :class="item.name" :executed="executed" v-bind="item.props" />
     </div>
   `,
 };

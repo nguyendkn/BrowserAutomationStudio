@@ -18,7 +18,6 @@ ScenarioV8Handler::ScenarioV8Handler()
     url_changed = false;
     IsInterfaceJson = false;
     IsInterfaceState = false;
-    IsDebugVariables = false;
     IsHightlightMenuItem = false;
     IsThreadNumberEditStart = false;
     IsSuccessNumberEditStart = false;
@@ -27,6 +26,7 @@ ScenarioV8Handler::ScenarioV8Handler()
     IsClipboardSetRequest = false;
     IsUpdateEmbeddedData = false;
     IsRunFunctionStart = false;
+    LastResultIsSilent = false;
     LastResultIsPlay = false;
     IsRunFunctionSeveralThreadsStart = false;
     IsRunFunctionAsync = false;
@@ -111,16 +111,18 @@ bool ScenarioV8Handler::GetIsEditEnd()
 
 
 
-std::pair< std::pair<std::string,bool>, bool> ScenarioV8Handler::GetExecuteCode()
+std::pair< std::pair<std::string,bool>, std::pair<bool,bool> > ScenarioV8Handler::GetExecuteCode()
 {
-    std::pair< std::pair<std::string,bool>, bool> r;
+    std::pair< std::pair<std::string,bool>, std::pair<bool,bool> > r;
     r.first.first = LastResultExecute;
     r.first.second = LastResultIsPlay;
-    r.second = ChangedExecute;
+    r.second.first = ChangedExecute;
+    r.second.second = LastResultIsSilent;
 
     ChangedExecute = false;
 
     LastResultExecute.clear();
+    LastResultIsSilent = false;
     LastResultIsPlay = false;
 
     return r;
@@ -215,12 +217,21 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         {
             LastResultExecute = arguments->GetString(0);
             LastResultIsPlay = false;
+            LastResultIsSilent = false;
             ChangedExecute = true;
         }
         if (arguments->GetSize() == 2 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_BOOL)
         {
             LastResultExecute = arguments->GetString(0);
             LastResultIsPlay = arguments->GetBool(1);
+            LastResultIsSilent = false;
+            ChangedExecute = true;
+        }
+        if (arguments->GetSize() == 3 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_BOOL && arguments->GetType(2) == VTYPE_BOOL)
+        {
+            LastResultExecute = arguments->GetString(0);
+            LastResultIsPlay = arguments->GetBool(1);
+            LastResultIsSilent = arguments->GetBool(2);
             ChangedExecute = true;
         }
     }else if(name == std::string("BrowserAutomationStudio_SetCurrentFunction"))

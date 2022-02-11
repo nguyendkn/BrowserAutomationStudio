@@ -3700,10 +3700,11 @@ void MainApp::HandleScenarioBrowserEvents()
     }
 
 
-    std::pair< std::pair<std::string,bool>, bool> res2 = scenariov8handler->GetExecuteCode();
-    if(res2.second)
+    std::pair< std::pair<std::string,bool>, std::pair<bool,bool> > res2 = scenariov8handler->GetExecuteCode();
+    if(res2.second.first)
     {
-        Layout->UpdateState(MainLayout::Hold);
+        if(!res2.second.second)
+            Layout->UpdateState(MainLayout::Hold);
         if(BrowserToolbox)
             BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         std::string CodeSend = res2.first.first;

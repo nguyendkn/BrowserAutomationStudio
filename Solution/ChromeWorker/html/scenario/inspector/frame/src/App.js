@@ -69,6 +69,10 @@ window.App = {
       this.$store.commit('setOptions', { id: this.tab.name, options });
     },
 
+    search(search) {
+      if (!search) this.tab.props.query = '';
+    },
+
     tab({ name }) {
       if (name === 'callstack') {
         this.$nextTick(() => {

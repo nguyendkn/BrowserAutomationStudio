@@ -742,6 +742,31 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	try
 	{
+		if(typeof(FINGERPRINT_JSON["codecs"]) == "object" && FINGERPRINT_JSON["codecs"].length > 0)
+		{
+			var TheoraData = null
+			for(var i = 0;i < FINGERPRINT_JSON["codecs"].length;i++)
+			{
+				var DataCandidate = FINGERPRINT_JSON["codecs"][i]
+				if(DataCandidate.contentType == 'video/ogg; codecs="theora"')
+				{
+					TheoraData = DataCandidate
+					break;
+				}
+			}
+			if(typeof(TheoraData) == "object" && TheoraData != null && !TheoraData.supported)
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.IsTheoraEnabled"] = "Disable"
+			}
+		}
+			
+	}catch(e)
+	{
+		
+	}
+
+	try
+	{
 		if(typeof(FINGERPRINT_JSON["bluetooth"]) == "boolean")
 		{
 			if(FINGERPRINT_JSON["bluetooth"])

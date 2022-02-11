@@ -2170,6 +2170,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventPopupSelect.push_back(std::bind(&MainApp::PopupSelectCallback,app.get(),_1));
     Parser->EventPopupCreate.push_back(std::bind(&MainApp::PopupCreateCallback,app.get(),_1,_2));
     Parser->EventPopupCreate2.push_back(std::bind(&MainApp::PopupCreate2Callback,app.get(),_1,_2,_3,_4));
+    Parser->EventSetComboboxIndex.push_back(std::bind(&MainApp::SetComboboxIndexCallback,app.get(),_1));
     Parser->EventPopupInfo.push_back(std::bind(&MainApp::PopupInfoCallback,app.get()));
     Parser->EventMouseMove.push_back(std::bind(&MainApp::MouseMoveCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10));
     Parser->EventSetDeviceScaleFactor.push_back(std::bind(&MainApp::SetDeviceScaleFactorCallback,app.get(),_1));
@@ -2275,6 +2276,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         return 0;
 
     _PopupEmulation->Init(Data, IDPopupEmulation, hwnd, Layout);
+    app->SetPopupEmulation(_PopupEmulation);
 
     Data->_MainWindowHandle = hwnd;
     Layout->MainWindowHandle = hwnd;

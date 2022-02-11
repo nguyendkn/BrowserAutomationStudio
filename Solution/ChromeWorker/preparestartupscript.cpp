@@ -94,8 +94,6 @@ void UpdateBrowserData(BrowserData* Data)
 
     Data->Saver.LanguagesHeader = CombineAcceptLanguageWithPattern(AcceptLanguage,Data->_AcceptLanguagePattern).Header;
 
-    Data->Saver.SelectReplace = (Data->ManualControl != BrowserData::Indirect) || Data->IsRecord;
-
     Data->Saver.Save();
 }
 

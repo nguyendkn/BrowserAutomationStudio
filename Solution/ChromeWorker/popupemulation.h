@@ -13,6 +13,7 @@ class PopupEmulation
     bool IsActive = false;
     HMENU hMenu = 0;
     int FirstIndex = 0;
+    bool GetMenuVisibility();
     HWND hwnd;
     std::string CurrentElementId;
     MainLayout* Layout;
@@ -24,6 +25,7 @@ public:
 
     void Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayout* Layout);
     void Timer();
+    void SetIndex(int Index);
 
     std::vector<std::function<void()> > EventPopupShown;
 };

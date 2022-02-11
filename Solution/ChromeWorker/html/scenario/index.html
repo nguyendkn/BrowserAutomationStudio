@@ -5282,8 +5282,8 @@
     }
 
     var VariablesListPrev = []
-    var VariablesUpdateTakesPlace = false
-    var VariablesNeedRefresh = false
+    var VariablesUpdateRequested = false
+    var VariablesUpdateNeeded = false
 
     function BrowserAutomationStudio_Play()
     {
@@ -5486,19 +5486,23 @@
     }
 
     function BrowserAutomationStudio_AskForVariablesUpdate() {
-      if (VariablesUpdateTakesPlace) {
-        VariablesNeedRefresh = true;
+      if (VariablesUpdateRequested) {
+        VariablesUpdateNeeded = true;
         return;
       }
 
       VariablesListPrev = BrowserAutomationStudio_GetVariablesList();
-      VariablesUpdateTakesPlace = true;
-      VariablesNeedRefresh = false;
+      VariablesUpdateRequested = true;
+      VariablesUpdateNeeded = false;
 
       BrowserAutomationStudio_Execute(`debug_variables(${JSON.stringify(VariablesListPrev)})!\nsection_start("test", -3)!`, false, true);
     }
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
+      if (VariablesUpdateRequested) {
+        VariablesUpdateRequested = false;
+        VariablesUpdateNeeded = false;
+      }
       _Inspector.send({ type: 'update', payload: JSON.parse(data) });
     }
 
@@ -5693,8 +5697,8 @@
     {
       if(Id == -3)
       {
-        VariablesUpdateTakesPlace = false
-        if(VariablesNeedRefresh)
+        VariablesUpdateRequested = false
+        if(VariablesUpdateNeeded)
           BrowserAutomationStudio_AskForVariablesUpdate()
         return
       }

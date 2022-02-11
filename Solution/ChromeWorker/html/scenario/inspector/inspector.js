@@ -108,7 +108,7 @@
             value = JSON.stringify(value);
           }
 
-          VariablesNeedRefresh = true;
+          VariablesUpdateNeeded = true;
           BrowserAutomationStudio_Execute(`
             (function (root, value) {
               try {

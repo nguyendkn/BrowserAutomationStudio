@@ -3,7 +3,7 @@
 #app {
   letter-spacing: -0.2px;
   flex-flow: column;
-  min-width: 230px;
+  min-width: 170px;
   font-size: 12px;
   display: flex;
   height: 100%;
@@ -11,7 +11,7 @@
 
 /* Tabs */
 
-@media (max-width: 295px) {
+@media (max-width: 305px) {
   .app-tab > a {
     justify-content: start;
   }
@@ -25,7 +25,7 @@
   }
 }
 
-@media (min-width: 295px) {
+@media (min-width: 305px) {
   .app-tab > a {
     justify-content: center;
   }
@@ -76,8 +76,21 @@
 
 .app-tool {
   justify-content: flex-end;
-  min-width: 108px;
+  min-width: 118px;
+  margin: 0 auto;
   display: flex;
+}
+
+@media (max-width: 236px) {
+  .app-tool {
+    margin-top: 8px;
+  }
+}
+
+@media (min-width: 237px) {
+  .app-tool {
+    margin-top: 0px;
+  }
 }
 
 /* Toolbar */
@@ -100,12 +113,14 @@
 
 .app-toolbar {
   position: relative;
+  flex-flow: wrap;
   display: flex;
 }
 
 /* Header */
 
 .app-header {
+  border-bottom: 1px solid #d9d9d9;
   background: #f6f6f6;
   padding: 8px 12px;
   display: grid;
@@ -129,7 +144,6 @@
 }
 
 .app-panel {
-  border-top: 1px solid #d9d9d9;
   flex-flow: column;
   overflow: hidden;
   display: flex;
@@ -231,11 +245,13 @@
   background: #fff;
   border-right: 0;
   color: #606060;
+  min-width: 0;
   flex: 1;
 }
 
 .app-search {
   display: flex;
+  min-width: 0;
 }
 
 /* Callstack */

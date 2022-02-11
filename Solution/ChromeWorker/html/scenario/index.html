@@ -5495,7 +5495,7 @@
       VariablesUpdateTakesPlace = true;
       VariablesNeedRefresh = false;
 
-      BrowserAutomationStudio_DebugVariables(JSON.stringify(VariablesListPrev));
+      BrowserAutomationStudio_Execute(`debug_variables(${JSON.stringify(VariablesListPrev)})!\nsection_start("test", -3)!`);
     }
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {

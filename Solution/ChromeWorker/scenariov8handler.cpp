@@ -353,13 +353,6 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             InterfaceJson = arguments->GetString(0);
             IsInterfaceJson = true;
         }
-    }else if(name == std::string("BrowserAutomationStudio_DebugVariables"))
-    {
-        if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
-        {
-            DebugVariables = arguments->GetString(0);
-            IsDebugVariables = true;
-        }
     }else if(name == std::string("BrowserAutomationStudio_SetClipboard"))
     {
         if (arguments->GetSize() == 1)
@@ -536,16 +529,6 @@ std::pair<std::string, bool> ScenarioV8Handler::GetIsHighlightMenuItem()
     IsHightlightMenuItem = false;
     r.first = HighlightMenuItem;
     HighlightMenuItem.clear();
-    return r;
-}
-
-std::pair<std::string, bool> ScenarioV8Handler::GetIsDebugVariables()
-{
-    std::pair<std::string, bool> r;
-    r.second = IsDebugVariables;
-    IsDebugVariables = false;
-    r.first = DebugVariables;
-    DebugVariables.clear();
     return r;
 }
 

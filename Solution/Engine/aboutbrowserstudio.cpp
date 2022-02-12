@@ -9,7 +9,7 @@ AboutBrowserStudio::AboutBrowserStudio(const QString& Version,const QString& Ser
     ui(new Ui::AboutBrowserStudio)
 {
     ui->setupUi(this);
-    ui->LabelWebkit->setText(QString("<b>") + "96.0.4664.110" + QString("</b>"));
+    ui->LabelWebkit->setText(QString("<b>") + "98.0.4758.82" + QString("</b>"));
     ui->LabelVersion->setText(QString("<b>") + Version + QString("</b>"));
     ui->LabelLicenseType->setText(QString("<b>") + tr("Free") + QString("</b>"));
 

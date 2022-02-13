@@ -1,4 +1,5 @@
-_L = {
+_L = 
+{
 	"Following button leads to menu with most used actions and example of usage. It is good place to start if you are new to BAS." :{"ru": "Данная кнопка ведет в меню с наиболее часто используемыми действиями и примерами их использования."},
 	
   "Help":{
@@ -737,7 +738,7 @@ _L = {
 	"Edit function name":{"ru": "Редактировать имя функции"},
 	"Delete current function and all content":{"ru": "Удалить текущую функцию и все содержимое"},
 	"Add new function":{"ru": "Добавить новую функцию"},
-	"Show variables list. You can create variable with 'Set Variable' action.": {"ru": "Показать список перменных. Вы можете создать переменную с помощью действия 'Установить переменную'."},
+	"Show variables list. You can create variable with 'Set Variable' action.": {"ru": "Показать список переменных. Вы можете создать переменную с помощью действия 'Установить переменную'."},
 	"Task Description":{"ru": "Описание задания"},
 	"disabled" :{"ru": "отключено"},
 	"(This button will only change task description)" :{"ru": "(Эта кнопка изменит только описание задания)"},

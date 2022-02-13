@@ -90,15 +90,17 @@ window.JsonTreeNode = {
     diff: {
       handler(diff, prev) {
         if (diff && prev !== null) {
-          for (const { path } of diff) {
-            if (this.path.length === path.length) {
-              if (this.path.every((key, idx) => key === path[idx].toString())) {
-                return (this.counter = 0);
+          if (diff.length || this.$store.state.executed) {
+            for (const { path } of diff) {
+              if (this.path.length === path.length) {
+                if (this.path.every((key, idx) => key === path[idx].toString())) {
+                  return (this.counter = 0);
+                }
               }
             }
+    
+            this.counter = Math.min(this.counter + 1, 5);
           }
-  
-          this.counter = Math.min(this.counter + 1, 5);
         }
       },
       immediate: true,

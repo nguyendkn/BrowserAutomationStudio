@@ -22,7 +22,7 @@ window.App = {
       name,
     }));
 
-    return { menu: false, search: false, executed: false, tab: tabs[0], tabs };
+    return { menu: false, search: false, tab: tabs[0], tabs };
   },
 
   computed: {
@@ -140,9 +140,9 @@ window.App = {
               });
             }
           });
-        } else if (type === 'action') {
-          this.executed = payload.executed;
         }
+
+        this.$store.commit('setExecuted', { executed: type === 'action' && payload.executed });
       }
     },
 
@@ -242,7 +242,7 @@ window.App = {
         </div>
         <search-filter v-model.trim="tab.props.query" :disabled="tab.name === 'callstack'" :visible.sync="search" />
       </div>
-      <component :is="item.component" v-for="item in tabs" v-show="item === tab" ref="tab" :key="item.name" :name="item.name" :class="item.name" :executed="executed" v-bind="item.props" />
+      <component :is="item.component" v-for="item in tabs" v-show="item === tab" ref="tab" :key="item.name" :name="item.name" :class="item.name" v-bind="item.props" />
     </div>
   `,
 };

@@ -23,11 +23,6 @@ window.CallstackPanel = {
       default: () => [],
     },
 
-    executed: {
-      type: Boolean,
-      default: false,
-    },
-
     reverse: {
       type: Boolean,
       default: false,

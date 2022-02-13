@@ -11,8 +11,8 @@
         // prettier-ignore
         switch (type) {
           case 'focusAction': return BrowserAutomationStudio_FocusAction(payload.id);
-          case 'confirm': return this.confirm(payload);
-          case 'prompt': return this.prompt(payload);
+          case 'confirm': return confirm(payload);
+          case 'prompt': return prompt(payload);
           case 'edit': return edit(payload);
           case 'hide': return this.hide();
           case 'show': return this.show();
@@ -36,13 +36,13 @@
         this.send({ type: 'action', payload: { executed: !value } });
       });
 
-      this.confirm = ({ message }) => {
+      const confirm = ({ message }) => {
         bootbox.confirm(message, result => {
           this.send({ type: 'confirm', payload: { result } });
         });
       };
 
-      this.prompt = ({ message }) => {
+      const prompt = ({ message }) => {
         bootbox.prompt(message, result => {
           this.send({ type: 'prompt', payload: { result } });
         });

@@ -16,7 +16,7 @@ const store = new Vuex.Store({
       });
     });
 
-    return { ...state, diff, counters };
+    return { ...state, diff, counters, executed: false };
   },
   mutations: {
     setNodeCounter(state, { id, path, counter }) {
@@ -47,6 +47,9 @@ const store = new Vuex.Store({
     setGroups(state, { id, groups }) {
       state[id].groups = groups;
     },
+    setExecuted(state, { executed }) {
+      state.executed = executed;
+    },
     setDiff(state, { id, diff }) {
       state.diff[id] = diff;
     },
@@ -54,7 +57,7 @@ const store = new Vuex.Store({
 });
 
 store.subscribe(({ type }, { variables, resources, callstack }) => {
-  if (type !== 'setDiff' && type !== 'setNodeCounter') {
+  if (type !== 'setDiff' && type !== 'setExecuted' && type !== 'setNodeCounter') {
     BrowserAutomationStudio_SaveInterfaceJson(JSON.stringify({ variables, resources, callstack }));
   }
 });

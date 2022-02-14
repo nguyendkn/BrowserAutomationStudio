@@ -94,8 +94,8 @@
   });
 
   function edit(options) {
-    const callback = (accept, { value, type }) => {
-      if (accept) {
+    const callback = (accept, { changed, value, type }) => {
+      if (changed && accept) {
         let [root, ...path] = options.path;
         path = path.map(k => `[${JSON.stringify(k)}]`).join('');
 

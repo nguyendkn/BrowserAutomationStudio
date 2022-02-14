@@ -58,18 +58,16 @@
 
       'click .btn-cancel': 'cancel',
 
-      'hidden.bs.modal': 'cancel',
-
       'input :input[required]'(e) {
         if (e.target.type === 'radio' && !e.target.checked) return;
         const el = e.target, model = this.model.set('value', el.value);
 
         if (model.get('type') === 'string' || el.checkValidity()) {
+          this.$('.btn-accept').prop('disabled', false);
           this.$('form').removeClass('invalid');
-          this.$('.btn-accept').prop('disabled', false || !model.isChanged());
         } else {
+          this.$('.btn-accept').prop('disabled', true);
           this.$('form').addClass('invalid');
-          this.$('.btn-accept').prop('disabled', true || !model.isChanged());
         }
 
         this.$('.error').html($t(el.validationMessage));
@@ -88,8 +86,13 @@
       },
 
       'keydown'(e) {
-        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-          this.$('.btn-accept').click();
+        if (e.target.tagName !== 'TEXTAREA') {
+          if (e.key === 'Escape') {
+            this.$('.btn-cancel').click();
+          }
+          if (e.key === 'Enter') {
+            this.$('.btn-accept').click();
+          }
         }
         e.stopPropagation();
       },
@@ -118,18 +121,24 @@
           types: ['script', 'undefined', 'boolean', 'string', 'number', 'date', 'null'],
           ...this.model.toJSON(),
         });
-        this.$el.html(html).modal({ backdrop: 'static' }).find('select').selectpicker();
+        this.$el.html(html).modal({ backdrop: 'static', keyboard: false }).find('select').selectpicker();
       }
       return this;
     },
 
     cancel() {
-      this.options.callback(false, this.model.toJSON());
+      this.options.callback(false, {
+        changed: this.model.isChanged(),
+        ...this.model.toJSON(),
+      });
       return this.close();
     },
 
     accept() {
-      this.options.callback(true, this.model.toJSON());
+      this.options.callback(true, {
+        changed: this.model.isChanged(),
+        ...this.model.toJSON(),
+      });
       return this.close();
     },
 
@@ -157,7 +166,7 @@
                 <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.types.' + item) %></option>
               <% }) %>
             </select>
-            <form class="inspector-modal-form" spellcheck="false" novalidate>
+            <form class="inspector-modal-form" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" novalidate>
               <% types.forEach(item => { %>
                 <% const match = item === type, modifier = mode === 'resource' ? 'readonly' : match ? 'required' : '' %>
                 <div data-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">
@@ -251,7 +260,7 @@
           </div>
           <div class="inspector-modal-footer">
             <% if (mode === 'variable') { %>
-              <button type="button" class="btn-base btn-accept" disabled><%= $t('inspector.save') %></button>
+              <button type="button" class="btn-base btn-accept"><%= $t('inspector.save') %></button>
             <% } %>
             <button type="button" class="btn-base btn-cancel"><%= $t('Cancel') %></button>
           </div>

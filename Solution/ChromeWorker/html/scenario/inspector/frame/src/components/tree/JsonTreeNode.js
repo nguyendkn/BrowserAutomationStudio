@@ -93,6 +93,22 @@ window.JsonTreeNode = {
       });
     },
 
+    keys() {
+      const { type, keys } = this;
+
+      if ((type === 'array' || type === 'object') && !keys.length) {
+        this.collapse();
+      }
+    },
+
+    type() {
+      const { type, keys } = this;
+
+      if ((type === 'array' || type === 'object') && !keys.length) {
+        this.collapse();
+      }
+    },
+
     diff: {
       handler(diff, prev) {
         if (diff && prev !== null) {

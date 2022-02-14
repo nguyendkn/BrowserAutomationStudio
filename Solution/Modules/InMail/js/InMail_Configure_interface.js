@@ -62,7 +62,6 @@
 				{value: "110", description: tr("Default port for pop3 protocol without encryption or with STARTTLS encryption")}
 			],
 			default_selector: "string",
-			disable_int: true,
 			value_string: "auto",
 			help: {
 				description: tr("Port number of the mail server."),

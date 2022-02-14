@@ -26,7 +26,7 @@
 		variants: [
 			"http",
 			"socks5",
-			"auto"
+			{value: "auto", description: tr("Proxy type will be extracted from proxy line")}
 		],
 		help: {
 			description: tr("socks5 and http proxy types are supported."),
@@ -59,5 +59,8 @@
 </div>
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">By default mail client works without proxy, this action sets proxy for mail client.</div>
+	<div class="tr tooltip-paragraph-fold">Use resources if you want to take them from file, url or database.</div>
+	<div class="tr tooltip-paragraph-fold">You can change proxy once and it will be applied to every action which works with email.</div>
+	<div class="tr tooltip-paragraph-last-fold">Proxy with empty parameter will reset it to default value(direct connection).</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

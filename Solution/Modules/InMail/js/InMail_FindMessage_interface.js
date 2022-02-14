@@ -8,11 +8,11 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Search by 'from' field(mail sender). Put here part of sender address to filter by mail sender. Leave blank not to filter by sender."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message sender address") + ", " + tr("that the searched message should contain") + ".",
 				examples:[
-					{code: tr("Empty string"), description: tr("Don't filter by sender.")},
-					{code: "@twitter.com", description: tr("Search for message from mail with twitter domain")},
-					{code: "info@twitter.com", description: tr("Search for email sent from info@twitter.com")}
+					{code: "@twitter.com"},
+					{code: "info@twitter.com"},
+					{code: tr("Empty string"), description: tr("Don't filter by content in sender")}
 				]
 			}
 		}) %>
@@ -23,11 +23,11 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Search by 'from' field(mail sender). Put here part of sender address to filter by mail sender. Leave blank not to filter by sender."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message sender address") + ", " + tr("that the searched message should not contain") + ".",
 				examples:[
-					{code: tr("Empty string"), description: tr("Don't filter by sender.")},
-					{code: "@twitter.com", description: tr("Search for message from mail with twitter domain")},
-					{code: "info@twitter.com", description: tr("Search for email sent from info@twitter.com")}
+					{code: "@twitter.com"},
+					{code: "info@twitter.com"},
+					{code: tr("Empty string"), description: tr("Don't filter by non-content in sender")}
 				]
 			}
 		}) %>
@@ -50,10 +50,11 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Search by 'to' field(mail recepient). Put here part of recepient address to filter by mail receiver. Leave blank not to filter by recepient. This parameter is usefull if you collect mail from several mailboxes."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message recipient address") + ", " + tr("that the searched message should contain") + ".",
 				examples: [
-					{code: tr("Empty string"), description: tr("Don't filter by recepient.")},
-					{code: "test@yourdomain.com", description: tr("Search for message which is sent to test@yourdomain.com mailbox")}
+					{code: "you@site.com"},
+					{code: "test@yourdomain.com"},
+					{code: tr("Empty string"), description: tr("Don't filter by content in recipient")}
 				]
 			}
 		}) %>
@@ -64,10 +65,11 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Search by 'to' field(mail recepient). Put here part of recepient address to filter by mail receiver. Leave blank not to filter by recepient. This parameter is usefull if you collect mail from several mailboxes."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message recipient address") + ", " + tr("that the searched message should not contain") + ".",
 				examples: [
-					{code: tr("Empty string"), description: tr("Don't filter by recepient.")},
-					{code: "test@yourdomain.com", description: tr("Search for message which is sent to test@yourdomain.com mailbox")}
+					{code: "you@site.com"},
+					{code: "test@yourdomain.com"},
+					{code: tr("Empty string"), description: tr("Don't filter by non-content in recipient")}
 				]
 			}
 		}) %>
@@ -90,10 +92,11 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("Search email by subject. This could be combined with other queries."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message subject") + ", " + tr("that the searched message should contain") + ".",
 				examples: [
-					{code: tr("Empty string"), description: tr("Don't filter by mail subject")},
-					{code: tr("Subject string part"), description: tr("Search message with subject that contains specified string")}
+					{code: tr("Business proposal")},
+					{code: tr("Email confirmation")},
+					{code: tr("Empty string"), description: tr("Don't filter by content in subject")}
 				]
 			}
 		}) %>
@@ -104,10 +107,11 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("Search email by subject. This could be combined with other queries."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message subject") + ", " + tr("that the searched message should not contain") + ".",
 				examples: [
-					{code: tr("Empty string"), description: tr("Don't filter by mail subject")},
-					{code: tr("Subject string part"), description: tr("Search message with subject that contains specified string")}
+					{code: tr("Business proposal")},
+					{code: tr("Email confirmation")},
+					{code: tr("Empty string"), description: tr("Don't filter by non-content in subject")}
 				]
 			}
 		}) %>
@@ -130,10 +134,11 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Search email by message text. This could be combined with other queries."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message text") + ", " + tr("that the searched message should contain") + ".",
 				examples: [
-					{code: tr("Empty string"), description: tr("Don't filter by mail body")},
-					{code: tr("Body string part"), description: tr("Search message with text that contains specified string")}
+					{code: "Hello"},
+					{code: "CODE:"},
+					{code: tr("Empty string"), description: tr("Don't filter by content in text")}
 				]
 			}
 		}) %>
@@ -144,10 +149,11 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Search email by message text. This could be combined with other queries."),
+				description: tr("Optional parameter.") + " " + tr("Part of the message text") + ", " + tr("that the searched message should not contain") + ".",
 				examples: [
-					{code: tr("Empty string"), description: tr("Don't filter by mail body")},
-					{code: tr("Body string part"), description: tr("Search message with text that contains specified string")}
+					{code: "Hello"},
+					{code: "CODE:"},
+					{code: tr("Empty string"), description: tr("Don't filter by non-content in text")}
 				]
 			}
 		}) %>
@@ -170,7 +176,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the message should contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
+				description: tr("Optional parameter.") + " " + tr("List of flags that the searched message should contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -187,7 +193,7 @@
 			disable_int: true,
 			value_string: "",
 			help:{
-				description: tr("List of flags that the message should not contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
+				description: tr("Optional parameter.") + " " + tr("List of flags that the searched message should not contain.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas."),
 				examples: [
 					{code: "unseen"},
 					{code: "flagged,recent,unseen"},
@@ -216,7 +222,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Message received is within or later than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
+				description: tr("Optional parameter.") + " " + tr("Message received is within or later than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
 				examples: [
 					{code: 'May 13 2021'},
 					{code: new Date('Jan 20 2022 16:57:26')},
@@ -231,7 +237,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Message received is earlier than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
+				description: tr("Optional parameter.") + " " + tr("Message received is earlier than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
 				examples: [
 					{code: 'May 13 2021'},
 					{code: new Date('Jan 20 2022 16:57:26')},
@@ -253,7 +259,7 @@
 			disable_int: true,
 			value_string: "no sorting",
 			help: {
-				description: tr("By default, sorting is disabled, but you can enable it by changing the value of this parameter and specifying the \"Sorting field\" parameter. Sorting is not supported by all mail services, if sorting is enabled, but the service does not support it, the action will fail."),
+				description: tr("By default, sorting is disabled, but you can enable it by changing the value of this parameter and specifying the \"Sorting field\" parameter.") + " " + tr("Sorting is not supported by all mail services, if sorting is enabled, but the service does not support it, the action will fail."),
 				examples: [
 					{code: "no sorting", description: tr("No sorting")},
 					{code: "ascending", description: tr("Sort ascending")},
@@ -883,6 +889,14 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Find and get the content of the message by the specified criteria.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action will get the first message that matches the specified criteria and store parts of it in the specified variables.</div>
+	<div class="tr tooltip-paragraph-fold">Using the parameters from the "Filtration" block, you can filter messages at your discretion or leave them unfiltered.</div>
+	<div class="tr tooltip-paragraph-fold">In the "Sorting" block, you can set the order and field for sorting.</div>
+	<div class="tr tooltip-paragraph-fold">Filtering and sorting is performed on the side of the mail server.</div>
+	<div class="tr tooltip-paragraph-fold">Sorting is not supported by all mail services, if sorting is enabled, but the service does not support it, the action will fail.</div>
+	<div class="tr tooltip-paragraph-fold">Using the parameters from the "Parsing" block, you can choose which parts of the message will be retrieved and saved, and which ones will be skipped, thereby saving traffic and time by getting only what you need.</div>
+	<div class="tr tooltip-paragraph-fold">This action can wait for an message for the specified time if you activate the corresponding parameter in the additional settings.</div>
+	<div class="tr tooltip-paragraph-fold">This action can delete the message or set flags for it, after successful receipt, for this you need to use the corresponding parameters in the additional settings.</div>
 	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

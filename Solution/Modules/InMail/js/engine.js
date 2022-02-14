@@ -63,7 +63,7 @@ _InMail = {
 			};
 			config.host = this.paramClean(host);
 			port = this.paramClean(port).toLocaleLowerCase();
-			config.port = port=="auto" ? (protocol=="imap" ? (encrypt=="ssl" ? "993" : "143") : encrypt=="ssl" ? "995" : "110") : port;
+			config.port = port=="auto" ? (protocol=="imap" ? (encrypt=="ssl" ? 993 : 143) : encrypt=="ssl" ? 995 : 110) : Number(port);
 			config.encrypt = encrypt;
 			config.username = username;
 		};

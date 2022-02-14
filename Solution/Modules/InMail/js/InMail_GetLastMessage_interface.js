@@ -515,7 +515,9 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Get the content of the last message in the specified folder.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
+	<div class="tr tooltip-paragraph-fold">This action will get the latest message and save parts of it into the specified variables.</div>
 	<div class="tr tooltip-paragraph-fold">Using the parameters from this action, you can choose which parts of the message will be retrieved and saved, and which ones will be skipped, thereby saving traffic and time by getting only what you need.</div>
+	<div class="tr tooltip-paragraph-fold">This action can delete the message or set flags for it, after successful receipt, for this you need to use the corresponding parameters in the additional settings.</div>
 	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

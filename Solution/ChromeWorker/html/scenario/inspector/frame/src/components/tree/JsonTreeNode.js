@@ -79,6 +79,12 @@ window.JsonTreeNode = {
   },
 
   watch: {
+    '$store.state.executed'(executed) {
+      if (executed) {
+        this.highlight();
+      }
+    },
+
     counter(counter) {
       this.$store.commit('setNodeCounter', {
         path: this.path,
@@ -90,24 +96,28 @@ window.JsonTreeNode = {
     diff: {
       handler(diff, prev) {
         if (diff && prev !== null) {
-          if (diff.length || this.$store.state.executed) {
-            for (const { path } of diff) {
-              if (this.path.length === path.length) {
-                if (this.path.every((key, idx) => key === path[idx].toString())) {
-                  return (this.counter = 0);
-                }
-              }
-            }
-    
-            this.counter = Math.min(this.counter + 1, 5);
-          }
+          this.highlight(diff);
         }
       },
-      immediate: true,
+      // immediate: true,
     },
   },
 
   methods: {
+    highlight(diff = []) {
+      if (diff.length || this.$store.state.executed) {
+        for (const { path } of diff) {
+          if (this.path.length === path.length) {
+            if (this.path.every((key, idx) => key === path[idx].toString())) {
+              return (this.counter = 0);
+            }
+          }
+        }
+
+        this.counter = Math.min(this.counter + 1, 5);
+      }
+    },
+
     collapse() {
       this.$store.commit('setNodeCollapsed', {
         path: this.path,

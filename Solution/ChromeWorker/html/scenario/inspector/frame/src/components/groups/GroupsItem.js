@@ -63,7 +63,7 @@ window.GroupsItem = {
       const related = relatedContext.element;
       const dragged = draggedContext.element;
 
-      if (related && dragged && to === from) {
+      if (to === from && related && dragged) {
         return related.fixed === dragged.fixed;
       }
     },

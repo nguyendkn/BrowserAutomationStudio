@@ -180,7 +180,7 @@
                 <option value="<%= item %>" <%= item === type ? 'selected' : '' %>><%= $t('inspector.types.' + item) %></option>
               <% }) %>
             </select>
-            <form class="inspector-modal-form" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" novalidate>
+            <form class="inspector-modal-form" spellcheck="false" autocomplete="off" autocapitalize="off" novalidate>
               <% types.forEach(item => { %>
                 <% const match = item === type, modifier = mode === 'resource' ? 'readonly' : match ? 'required' : '' %>
                 <div data-type="<%= item %>" style="display: <%= match ? 'flex' : 'none' %>;">

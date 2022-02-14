@@ -97,7 +97,7 @@
 
     initialize({ value, type, path, mode }) {
       if (type === 'date') value = isNaN(value) ? '' : value.toISOString().slice(0, 19);
-      [type, value] = ['object', 'array'].includes(type) ? ['script', JSON.stringify(value)] : [type, `${value}`];
+      [type, value] = ['object', 'array'].includes(type) ? ['script', JSON.stringify(value, null, 4)] : [type, `${value}`];
 
       this.model = new Model({ value, type, path, mode: mode.slice(0, -1) }).on('change:type', (_, type) => {
         for (const el of this.$('form').trigger('reset')[0].elements) {

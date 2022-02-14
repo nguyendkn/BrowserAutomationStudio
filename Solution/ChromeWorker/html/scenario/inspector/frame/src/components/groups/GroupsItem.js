@@ -59,27 +59,12 @@ window.GroupsItem = {
   },
 
   methods: {
-    onMove({ to, from, relatedContext, draggedContext, willInsertAfter }) {
+    onMove({ to, from, relatedContext, draggedContext }) {
       const related = relatedContext.element;
       const dragged = draggedContext.element;
 
-      if (related && !(dragged.fixed && related.fixed)) {
-        if (to !== from) {
-          if (related.fixed || dragged.fixed) {
-            return (
-              relatedContext.index === (related.fixed ? relatedContext.list.length - 1 : 0) &&
-              willInsertAfter === related.fixed
-            );
-          }
-          return true;
-        }
-        return draggedContext.index === draggedContext.futureIndex;
-      }
-    },
-
-    onAdd({ newIndex }) {
-      if (!this.items[newIndex].fixed) {
-        this.$emit('item-added');
+      if (related && dragged && to === from) {
+        return related.fixed === dragged.fixed;
       }
     },
 
@@ -164,7 +149,7 @@ window.GroupsItem = {
           </div>
         </div>
       </div>
-      <draggable v-show="isExpanded" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-root > .jt-node > .jt-node-inner > .jt-node-label" group="items" :list="items" :move="onMove" @add="onAdd">
+      <draggable v-show="isExpanded" :style="{ '--title': JSON.stringify($t('groups.title')) }" class="group-item-content" handle=".jt-root > .jt-node > .jt-node-inner > .jt-node-label" group="items" :list="items" :move="onMove" @add="$emit('item-added')" @update="$emit('item-moved')">
         <slot></slot>
       </draggable>
     </li>

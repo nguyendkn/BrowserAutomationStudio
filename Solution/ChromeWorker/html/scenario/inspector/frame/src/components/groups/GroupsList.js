@@ -150,6 +150,7 @@ window.GroupsList = {
         @update="updateGroup(index, $event)"
         @remove="removeGroup(index, $event)"
         @item-added="sortGroup(group)"
+        @item-moved="sortGroup(group)"
       >
         <json-tree-root v-for="item in group.items" v-show="filter(item.key, source[item.key])" :key="item.key" :name="item.key" :value="source[item.key]">
           <template #label="{ label }">

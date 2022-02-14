@@ -70,6 +70,8 @@
 
       'click .btn-cancel': 'cancel',
 
+      'hidden.bs.modal': 'cancel',
+
       'input :input[required]'(e) {
         if (e.target.type === 'radio' && !e.target.checked) return;
         const el = e.target, model = this.model.set('value', el.value);

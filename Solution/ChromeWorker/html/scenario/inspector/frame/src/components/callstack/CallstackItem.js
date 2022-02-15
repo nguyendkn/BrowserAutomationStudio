@@ -98,14 +98,14 @@ window.CallstackItem = {
 
   template: /*html*/ `
     <li class="callstack-item" :class="{ preview, action: isAction, function: isFunction }">
-      <div class="callstack-item-title" @mousedown.self.prevent="() => {}" @mouseup.self.prevent="() => {}" @click.self="toggle">
+      <div class="callstack-item-title" @click="focusAction">
         <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>
-        <span class="callstack-item-name" @click="focusAction">{{ name + (hasArguments || isAction ? ':' : '') }}</span>
+        <span class="callstack-item-name">{{ name + (hasArguments || isAction ? ':' : '') }}</span>
         <span ref="preview" class="callstack-item-data">
           <span v-if="isAction">{{ name === 'If' ? options.expression : options.iterator }}</span>
           <span v-else-if="hasArguments" v-show="preview">[{{ $tc('params', size) }}]</span>
         </span>
-        <button v-show="hasArguments || overflow" type="button" class="callstack-item-toggle" @click="toggle">
+        <button v-show="hasArguments || overflow" type="button" class="callstack-item-toggle" @click.stop="toggle">
           <icon-chevron :style="{ transform: preview ? 'rotate(180deg)' : '' }" />
         </button>
       </div>

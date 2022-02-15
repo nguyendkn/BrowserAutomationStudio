@@ -396,7 +396,7 @@ function _repeat(t,n,b)
 
 function _if(c,f,n)
 {
-    var expression = _cycle_param('if_else_expression');
+    var expression = ScriptWorker.GetIsRecord() ? _cycle_param('if_else_expression') : null;
 
     _do(function(i){
         var cc = CYCLES.Current();
@@ -413,7 +413,7 @@ function _if(c,f,n)
         f();
     },n);
 
-    delete _cycle_params().if_else_expression;
+    if (ScriptWorker.GetIsRecord()) delete _cycle_params().if_else_expression;
 }
 
 function _if_else(c, f1, f2,n)
@@ -669,5 +669,11 @@ function _set_action_info(info, cycle) {
     
         cycle = cycle || CYCLES.Current();
         if (cycle) cycle._Info = info;
+    }
+}
+
+function _set_if_expression(expression) {
+    if (ScriptWorker.GetIsRecord()) {
+        _cycle_params().if_else_expression = expression;
     }
 }

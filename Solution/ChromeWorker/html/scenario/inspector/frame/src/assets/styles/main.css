@@ -260,7 +260,7 @@
 /* Callstack */
 
 .callstack-item-param > span + span {
-  padding-left: 8px;
+  margin-left: 8px;
 }
 
 .callstack-item-param-value {
@@ -272,6 +272,7 @@
 }
 
 .callstack-item-params {
+  border-top: 1px solid #d9d9d9;
   padding: 4px 0;
   display: grid;
   gap: 4px 0;
@@ -311,7 +312,6 @@
 
 .callstack-item-name {
   font-weight: 600;
-  color: #606060;
   padding: 0 6px;
 }
 
@@ -352,6 +352,7 @@
   border: 1px solid transparent;
   line-height: 18px;
   overflow: hidden;
+  color: #606060;
 }
 
 .callstack-list {

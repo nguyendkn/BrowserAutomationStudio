@@ -1504,6 +1504,14 @@
             var execute_next_id = model.get("execute_next_id");
             _WebInterfaceTasks.CurrentIdChanged(execute_next_id)
           });
+
+          this.on("change:isscriptexecuting", (_, value) => {
+            if (!value) BrowserAutomationStudio_AskForVariablesUpdate();
+          });
+
+          this.on("change:istaskexecuting", (_, value) => {
+            if (!value) BrowserAutomationStudio_AskForVariablesUpdate();
+          });
         }  
     });
     var TaskCollection = Backbone.Collection.extend({
@@ -3544,7 +3552,7 @@
           return;
         }
 
-        this.isEdit = true
+        this.isEdit = VariablesUpdateSkip = true
 
         var task = this.collection.at(this.currentTargetId)
 
@@ -5280,9 +5288,10 @@
 
     }
 
-    var VariablesListPrev = []
-    var VariablesUpdateRequested = false
-    var VariablesUpdateNeeded = false
+    var VariablesUpdateRequested = false;
+    var VariablesUpdateNeeded = false;
+    var VariablesUpdateSkip = false;
+    var VariablesListPrev = [];
 
     function BrowserAutomationStudio_Play()
     {
@@ -5497,6 +5506,11 @@
     function BrowserAutomationStudio_AskForVariablesUpdate() {
       if (VariablesUpdateRequested) {
         VariablesUpdateNeeded = true;
+        return;
+      }
+
+      if (VariablesUpdateSkip) {
+        VariablesUpdateSkip = false;
         return;
       }
 

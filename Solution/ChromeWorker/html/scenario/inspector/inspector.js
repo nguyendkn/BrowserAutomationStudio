@@ -28,16 +28,6 @@
         }
       });
 
-      _GobalModel.on('change:isscriptexecuting', (_, value) => {
-        if (value || _MainView.isEdit) return;
-        BrowserAutomationStudio_AskForVariablesUpdate();
-      });
-
-      _GobalModel.on('change:istaskexecuting', (_, value) => {
-        if (value || _MainView.isEdit) return;
-        BrowserAutomationStudio_AskForVariablesUpdate();
-      });
-
       const confirm = ({ message }) => {
         bootbox.confirm(message, result => {
           this.send({ type: 'confirm', payload: { result } });

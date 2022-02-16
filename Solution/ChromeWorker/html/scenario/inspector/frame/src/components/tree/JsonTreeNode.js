@@ -37,7 +37,6 @@ window.JsonTreeNode = {
   data() {
     const { $store, path, id } = this;
     const expand = $store.state[id].nodes[JSON.stringify(path)] || false;
-    const counter = $store.state.counters[id][JSON.stringify(path)];
 
     return {
       colors: [
@@ -50,11 +49,16 @@ window.JsonTreeNode = {
       ],
       isHovered: false,
       isExpanded: expand,
-      counter: counter == null ? 5 : counter,
     };
   },
 
   computed: {
+    counter() {
+      const pointer = JSON.stringify(this.path);
+      const { counters } = this.$store.state;
+      return counters[this.id][pointer];
+    },
+
     indent() {
       const depth = this.path.length;
       return `${24 * (depth - 1)}px`;
@@ -72,21 +76,9 @@ window.JsonTreeNode = {
     type() {
       return typeOf(this.value);
     },
-
-    diff() {
-      return this.$store.state.diff[this.id];
-    },
   },
 
   watch: {
-    counter(counter) {
-      this.$store.commit('setNodeCounter', {
-        path: this.path,
-        id: this.id,
-        counter,
-      });
-    },
-
     keys() {
       const { type, keys } = this;
 
@@ -101,24 +93,6 @@ window.JsonTreeNode = {
       if ((type === 'array' || type === 'object') && !keys.length) {
         this.collapse();
       }
-    },
-
-    diff: {
-      handler(diff, prev) {
-        if (diff && prev !== null) {
-          if (diff.length) {
-            for (const { path } of diff) {
-              if (this.path.length === path.length) {
-                if (this.path.every((key, idx) => key === path[idx].toString())) {
-                  return (this.counter = 0);
-                }
-              }
-            }
-          }
-
-          this.counter = Math.min(this.counter + 1, 5);
-        }
-      },
     },
   },
 
@@ -218,11 +192,11 @@ window.JsonTreeNode = {
         </div>
       </div>
       <div v-if="isExpanded && type === 'object'" class="jt-node-nodes">
-        <json-tree-node v-for="key in keys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)" />
+        <json-tree-node v-for="(val, key) in value" :key="key" :name="key" :value="val" :path="path.concat(key)" />
         <span class="jt-node-bracket">}</span>
       </div>
       <div v-if="isExpanded && type === 'array'" class="jt-node-nodes">
-        <json-tree-node v-for="key in keys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)" />
+        <json-tree-node v-for="(val, key) in value" :key="key" :name="key" :value="val" :path="path.concat(key)" />
         <span class="jt-node-bracket">]</span>
       </div>
     </div>

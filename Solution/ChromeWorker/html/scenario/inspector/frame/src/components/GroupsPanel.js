@@ -53,6 +53,7 @@ window.GroupsPanel = {
     return {
       metadata: {},
       history: [],
+      diff: null,
     };
   },
 
@@ -102,8 +103,8 @@ window.GroupsPanel = {
   },
 
   watch: {
-    data($new, $old) {
-      const { metadata } = this, diff = microdiff($old, $new);
+    data(data, prev) {
+      const { metadata } = this, diff = microdiff(prev, data);
 
       if (diff.length) {
         const history = [];
@@ -130,7 +131,25 @@ window.GroupsPanel = {
         this.history = this.history.concat(history).slice(-100);
       }
 
-      this.$store.commit('setDiff', { id: this.name, diff });
+      this.diff = diff;
+    },
+
+    diff(diff, prev) {
+      const { name, $store } = this, counters = $store.state.counters[name];
+
+      const pointers = diff.map(({ path }) => {
+        const pointer = JSON.stringify(path);
+        counters[pointer] = prev ? 0 : 5;
+        return pointer;
+      });
+
+      Object.keys(counters).forEach(key => {
+        if (!pointers.includes(key)) {
+          counters[key] = Math.min(counters[key] + 1, 5);
+        }
+      });
+
+      $store.commit('setCounters', { id: name, counters });
     },
   },
 

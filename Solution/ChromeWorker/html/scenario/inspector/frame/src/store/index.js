@@ -3,8 +3,6 @@
 const store = new Vuex.Store({
   state() {
     const state = Object.assign({}, parseJSON(bas.state));
-    const counters = { variables: {}, resources: {} };
-    const diff = { variables: null, resources: null };
 
     ['variables', 'resources', 'callstack'].forEach(id => {
       state[id] = Object.assign({}, state[id]);
@@ -16,13 +14,9 @@ const store = new Vuex.Store({
       });
     });
 
-    return { ...state, diff, counters };
+    return { ...state, counters: { variables: {}, resources: {} } };
   },
   mutations: {
-    setNodeCounter(state, { id, path, counter }) {
-      const pointer = JSON.stringify(path);
-      state.counters[id][pointer] = counter;
-    },
     setNodeCollapsed(state, { id, path }) {
       const pointer = JSON.stringify(path);
       state[id].nodes[pointer] = false;
@@ -34,6 +28,9 @@ const store = new Vuex.Store({
     removeNode(state, { id, path }) {
       const pointer = JSON.stringify(path);
       delete state[id].nodes[pointer];
+    },
+    setCounters(state, { id, counters }) {
+      state.counters[id] = counters;
     },
     setSortings(state, { id, sortings }) {
       state[id].sortings = sortings;
@@ -47,14 +44,11 @@ const store = new Vuex.Store({
     setGroups(state, { id, groups }) {
       state[id].groups = groups;
     },
-    setDiff(state, { id, diff }) {
-      state.diff[id] = diff;
-    },
   },
 });
 
 store.subscribe(({ type }, { variables, resources, callstack }) => {
-  if (type !== 'setDiff' && type !== 'setNodeCounter') {
+  if (type !== 'setCounters') {
     BrowserAutomationStudio_SaveInterfaceJson(JSON.stringify({ variables, resources, callstack }));
   }
 });

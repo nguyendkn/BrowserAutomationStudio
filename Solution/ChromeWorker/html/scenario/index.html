@@ -3705,10 +3705,6 @@
       },
 
       render: function(model){
-
-
-
-
         if(_GobalModel.hasChanged("dontsend"))
         {
           return;
@@ -5793,11 +5789,6 @@
         SendTask()
       }else
         _GobalModel.set("istaskexecuting",false)
-
-      if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
-      {
-        BrowserAutomationStudio_AskForVariablesUpdate()
-      }
 
       if(typeof(Id) != "undefined")
       {

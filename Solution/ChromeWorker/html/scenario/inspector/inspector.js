@@ -29,11 +29,13 @@
       });
 
       _GobalModel.on('change:isscriptexecuting', (_, value) => {
-        this.send({ type: 'action', payload: { executed: !value } });
+        if (value || _MainView.isEdit) return;
+        BrowserAutomationStudio_AskForVariablesUpdate();
       });
 
       _GobalModel.on('change:istaskexecuting', (_, value) => {
-        this.send({ type: 'action', payload: { executed: !value } });
+        if (value || _MainView.isEdit) return;
+        BrowserAutomationStudio_AskForVariablesUpdate();
       });
 
       const confirm = ({ message }) => {

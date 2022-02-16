@@ -124,25 +124,21 @@ window.App = {
     handleMessage({ data }) {
       const { type, payload } = data;
 
-      if (payload) {
-        if (type === 'update') {
-          this.tabs.forEach(({ name, props }) => {
-            if (hasOwn(payload, name)) {
-              props.data = mutate(payload[name], value => {
-                if (typeof value === 'string') {
-                  if (value.startsWith('__undefined__')) {
-                    return undefined;
-                  } else if (value.startsWith('__date__')) {
-                    return new Date(value.slice(8));
-                  }
+      if (payload && type === 'update') {
+        this.tabs.forEach(({ name, props }) => {
+          if (hasOwn(payload, name)) {
+            props.data = mutate(payload[name], value => {
+              if (typeof value === 'string') {
+                if (value.startsWith('__undefined__')) {
+                  return undefined;
+                } else if (value.startsWith('__date__')) {
+                  return new Date(value.slice(8));
                 }
-                return value;
-              });
-            }
-          });
-        }
-
-        this.$store.commit('setExecuted', { executed: type === 'action' && payload.executed });
+              }
+              return value;
+            });
+          }
+        });
       }
     },
 

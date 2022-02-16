@@ -115,7 +115,7 @@ window.GroupsItem = {
     <li class="group-item" :style="style">
       <div class="group-item-header" @click="toggle">
         <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-          <path d="M6 3.5v-2H0v12H16v-10H6Z" fill="#606060" stroke="#606060" />
+          <path d="M6 3.5v-2H0v12H16v-10H6Z" stroke="#606060" />
         </svg>
         <div class="group-item-inputs" v-click-outside="accept">
           <input v-if="isEditing" ref="input" v-model.trim="newName" maxlength="30" spellcheck="false" type="text" @keydown.enter="accept" @keydown.esc="cancel">
@@ -131,7 +131,7 @@ window.GroupsItem = {
               </ul>
               <button type="button" @click="accept">
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                  <path d="m6.25 10.6002-3.55-3.55-.7.7 3.55 3.55.7.7 7.05-7.05-.7-.75-6.35 6.4Z" fill="#606060" />
+                  <path d="m6.25 10.6002-3.55-3.55-.7.7 3.55 3.55.7.7 7.05-7.05-.7-.75-6.35 6.4Z" />
                 </svg>
               </button>
             </template>

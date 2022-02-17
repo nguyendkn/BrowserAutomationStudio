@@ -49,20 +49,11 @@
         Browser.DebugVariablesResult(stringify(result), _get_function_body(callback));
     };
 
-    function get(obj, path) {
-        for (var i = 0; i < path.length; i++) {
-            if (typeof obj === "object" && obj) {
-                var key = path[i];
-
-                if (!obj || !obj.hasOwnProperty(key)) {
-                    obj = undefined;
-                    break;
-                }
-
-                obj = obj[key];
-            }
-        }
-        return obj;
+    function stringify(value) {
+        return JSON.stringify(value, function (key) {
+            if (this[key] instanceof Date) return "__date__" + this[key].toJSON();
+            return typeof this[key] === "undefined" ? "__undefined__" : this[key];
+        })
     }
 
     function truncate(value) {
@@ -83,11 +74,20 @@
         return value;
     }
 
-    function stringify(value) {
-        return JSON.stringify(value, function (key, value) {
-            if (value instanceof Date) return "__date__" + value.toJSON();
-            return typeof value === "undefined" ? "__undefined__" : value;
-        })
+    function get(obj, path) {
+        for (var i = 0; i < path.length; i++) {
+            if (typeof obj === "object" && obj) {
+                var key = path[i];
+
+                if (!obj || !obj.hasOwnProperty(key)) {
+                    obj = undefined;
+                    break;
+                }
+
+                obj = obj[key];
+            }
+        }
+        return obj;
     }
 
     function global(name) {

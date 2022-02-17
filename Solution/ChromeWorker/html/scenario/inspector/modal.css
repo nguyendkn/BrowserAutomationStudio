@@ -57,7 +57,6 @@
 .inspector-modal-form > div > input {
   letter-spacing: inherit;
   word-break: break-all;
-  white-space: normal;
   background: inherit;
   padding: 9px 12px;
   max-height: 40vh;
@@ -99,8 +98,8 @@
   user-select: none;
   line-height: 16px;
   background: #fff;
-  padding: 9px 9px;
   display: flex;
+  padding: 9px;
   outline: 0;
 }
 
@@ -143,7 +142,6 @@
 .inspector-modal-tools > ul > li > a {
   padding: 9px 15px 9px 5px;
   -webkit-user-drag: none;
-  background: #3d3f42;
   align-items: center;
   user-select: none;
   line-height: 16px;
@@ -156,6 +154,7 @@
 .inspector-modal-tools > ul {
   border: 1px solid #606060;
   top: calc(100% - 1px);
+  background: #3d3f42;
   border-radius: 0;
   box-shadow: none;
   padding: 0;
@@ -266,11 +265,11 @@
 }
 
 .inspector-modal-footer > .btn-accept {
-  padding: 7px 10px;
+  padding: 7px 9px;
 }
 
 .inspector-modal-footer > .btn-cancel {
-  padding: 7px 10px;
+  padding: 7px 9px;
 }
 
 .inspector-modal-footer {

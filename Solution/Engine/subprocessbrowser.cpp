@@ -372,6 +372,19 @@ namespace BrowserAutomationStudioFramework
 
     }
 
+    void SubprocessBrowser::RequestVariablesResult(const QString& data, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeTextElement("RequestVariablesResult",data);
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("RequestVariablesResult"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(RequestVariablesResult()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicator())
+            Worker->GetProcessComunicator()->Send(WriteString);
+    }
+
     void SubprocessBrowser::DebugVariablesResult(const QString& data, const QString& callback)
     {
         QString WriteString;
@@ -959,6 +972,9 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "Jquery" && token == QXmlStreamReader::StartElement)
             {
                 emit Jquery();
+            }else if(xmlReader.name() == "RequestVariablesResult" && token == QXmlStreamReader::StartElement)
+            {
+                emit RequestVariablesResult();
             }else if(xmlReader.name() == "DebugVariablesResult" && token == QXmlStreamReader::StartElement)
             {
                 emit DebugVariablesResult();

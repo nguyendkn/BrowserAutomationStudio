@@ -337,6 +337,7 @@ public:
     void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & interface_state, const std::string & script_engine_version, const std::string & application_engine_version);
     void SetResourceCallback(const std::string & resources);
     void SetInitialStateCallback(const std::string & lang);
+    void RequestVariablesResultCallback(const std::string & data);
     void DebugVariablesResultCallback(const std::string & data);
 
     void MouseClickCallback(int x, int y);

@@ -92,7 +92,7 @@ var debug_variables = (function () {
 var request_variables = function () {
     var has = Object.prototype.hasOwnProperty;
 
-    return function (list) {
+    return function (list, callback) {
         var variables = list.map(function (path) {
             path = JSON.parse(path);
 
@@ -110,11 +110,13 @@ var request_variables = function () {
 
             return "__undefined__";
         });
+
+        Browser.RequestVariablesResult(JSON.stringify(variables), _get_function_body(callback));
     };
 
     function get(obj, path) {
         for (var i = 0; i < path.length; i++) {
-            if (typeof obj === 'object' && obj) {
+            if (typeof obj === "object" && obj) {
                 var key = path[i];
 
                 if (!has.call(obj, key)) {

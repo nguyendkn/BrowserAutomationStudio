@@ -68,6 +68,7 @@ namespace BrowserAutomationStudioFramework
         virtual void PopupInfo(const QString& callback) = 0;
         virtual void Scroll(int x, int y, const QString& callback) = 0;
         virtual void Render(int x, int y, int width, int height, const QString& callback) = 0;
+        virtual void RequestVariablesResult(const QString& data, const QString& callback) = 0;
         virtual void DebugVariablesResult(const QString& data, const QString& callback) = 0;
         virtual void SendRecaptchaV3List(const QString& action, const QString& callback) = 0;
         virtual void SendRecaptchaV3Result(const QString& id,const QString& result) = 0;

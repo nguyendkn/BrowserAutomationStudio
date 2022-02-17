@@ -1359,6 +1359,14 @@ void MainApp::ScrollCallback(int x, int y)
     });
 }
 
+void MainApp::RequestVariablesResultCallback(const std::string & data)
+{
+    if(BrowserScenario)
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RequestVariablesResult(") + picojson::value(data).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+
+    SendTextResponce("<RequestVariablesResult></RequestVariablesResult>");
+}
+
 void MainApp::DebugVariablesResultCallback(const std::string & data)
 {
     if(BrowserScenario)

@@ -89,6 +89,46 @@ var debug_variables = (function () {
     }
 })();
 
+var request_variables = function () {
+    var has = Object.prototype.hasOwnProperty;
+
+    return function (list) {
+        var variables = list.map(function (path) {
+            path = JSON.parse(path);
+
+            if (path.length) {
+                var name = path[0], value = null;
+
+                if (name.indexOf("GLOBAL:") === 0) {
+                    value = JSON.parse(P("basglobal", name.slice(7)) || '"__undefined__"');
+                } else {
+                    value = GLOBAL[name];
+                }
+
+                return get(value, path.slice(1));
+            }
+
+            return "__undefined__";
+        });
+    };
+
+    function get(obj, path) {
+        for (var i = 0; i < path.length; i++) {
+            if (typeof obj === 'object' && obj) {
+                var key = path[i];
+
+                if (!has.call(obj, key)) {
+                    obj = "__undefined__";
+                    break;
+                }
+
+                obj = obj[key];
+            }
+        }
+        return obj;
+    }
+};
+
 function _read_variables(list)
 {
     var res = {}

@@ -1,34 +1,31 @@
 ;(function (self) {
-    var has = Object.prototype.hasOwnProperty, fn = _get_function_body;
-
     self.request_variables = function (list, callback) {
         var variables = list.reduce(function (acc, key) {
-            key = JSON.parse(key);
+            var path = JSON.parse(key);
 
-            if (key.length) {
-                var name = key[0], value = null;
+            if (path.length) {
+                var name = path[0], value = null;
 
                 if (name.indexOf("GLOBAL:") === 0) {
-                    value = JSON.parse(P("basglobal", name.slice(7)) || '"__undefined__"');
+                    value = global(name);
                 } else {
                     value = GLOBAL[name];
                 }
 
-                return (acc[key] = get(value, key.slice(1)), acc);
+                return (acc[key] = get(value, path.slice(1)), acc);
             }
 
-            return (acc[key] = "__undefined__", acc);
+            return (acc[key] = undefined, acc);
         }, {});
 
-        Browser.RequestVariablesResult(JSON.stringify(variables), fn(callback));
+        Browser.RequestVariablesResult(stringify(variables), _get_function_body(callback));
     };
 
     self.debug_variables = function (list, callback) {
         var result = {
             variables: list.reduce(function (acc, key) {
                 if (key.indexOf("GLOBAL:") === 0) {
-                    var val = P("basglobal", key.slice(7)) || '"__undefined__"';
-                    acc[key] = truncate(JSON.parse(val));
+                    acc[key] = truncate(global(key));
                 } else {
                     acc[key.slice(4)] = truncate(GLOBAL[key]);
                 }
@@ -49,7 +46,7 @@
             resources: JSON.parse(ScriptWorker.PickResources())
         };
 
-        Browser.DebugVariablesResult(JSON.stringify(result), fn(callback));
+        Browser.DebugVariablesResult(stringify(result), _get_function_body(callback));
     };
 
     function get(obj, path) {
@@ -57,8 +54,8 @@
             if (typeof obj === "object" && obj) {
                 var key = path[i];
 
-                if (!has.call(obj, key)) {
-                    obj = "__undefined__";
+                if (!obj || !obj.hasOwnProperty(key)) {
+                    obj = undefined;
                     break;
                 }
 
@@ -69,18 +66,33 @@
     }
 
     function truncate(value) {
-        if (value instanceof Object) {
-            if (value instanceof Date) return "__date__" + value.toJSON();
+        var type = Object.prototype.toString.call(value);
 
-            if (Array.isArray(value)) return value.slice(0, 100).map(function (value) {
-                return truncate(value);
-            });
-
+        if (type === "[object Object]") {
             return Object.keys(value).slice(0, 100).reduce(function (acc, key) {
                 return (acc[key] = truncate(value[key]), acc);
             }, {});
         }
-        return typeof value === "undefined" ? "__undefined__" : value;
+
+        if (type === "[object Array]") {
+            return value.slice(0, 100).map(function (value) {
+                return truncate(value);
+            });
+        }
+
+        return value;
+    }
+
+    function stringify(value) {
+        return JSON.stringify(value, function (key, value) {
+            if (value instanceof Date) return "__date__" + value.toJSON();
+            return typeof value === "undefined" ? "__undefined__" : value;
+        })
+    }
+
+    function global(name) {
+        var value = P("basglobal", name.slice(7));
+        return JSON.parse(value || '"__undefined__"');
     }
 
     function cycle(item) {

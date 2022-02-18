@@ -1319,7 +1319,6 @@
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
-  <script>window.App = { Inspector: {}, utils: {} };</script>
   <script src="jquery-2.1.3.min.js"></script>
   <script src="underscore-min.js"></script>
   <script src="backbone-min.js"></script>
@@ -1328,24 +1327,29 @@
   <script src="bootbox.min.js"></script>
   <script src="vendor/resizable/resizable.min.js"></script>
   <script src="vendor/velocity/velocity.min.js"></script>
+  <script src="diff_match_patch_uncompressed.js"></script>
+  <script src="mark.js"></script>
+  <script src="vendor/bootstrap-select/bootstrap-select.min.js"></script>
+  <script src="morphdom.js"></script>
+
+  <!-- ========= -->
+  <!--  Scripts  -->
+  <!-- ========= -->
+  <script>window.App = _.extend({ Inspector: {}, utils: {} }, Backbone.Events)</script>
   <script src="../actions/actions.js"></script>
   <script src="translate.js"></script>
   <script src="undo.js"></script>
-  <script src="diff_match_patch_uncompressed.js"></script>
   <script src="actionfinder.js"></script>
-  <script src="mark.js"></script>
   <script src="multiselect.js"></script>
   <script src="draganddrop.js"></script>
   <script src="updategotos.js"></script>
   <script src="embeddedmodel.js"></script>
-  <script src="vendor/bootstrap-select/bootstrap-select.min.js"></script>
   <script src="edgescroll.js"></script>
   <script src="functionmanager.js"></script>
   <script src="webinterfacetasks.js"></script>
   <script src="visualizelabels.js"></script>
   <script src="helpmanager.js"></script>
   <script src="utility/utils.js"></script>
-  <script src="morphdom.js"></script>
   <script src="updater/internal/backbone.events.js"></script>
   <script src="updater/internal/progressbar.js"></script>
   <script src="updater/internal/translate.js"></script>
@@ -1354,7 +1358,6 @@
   <script src="moveexecutionpoint.js"></script>
   <script src="inspector/inspector.js"></script>
   <script src="inspector/modal.js"></script>
-  <script>_.extend(window.App, Backbone.Events)</script>
 
   <script> _L = $.extend(_L, _AL) </script>
   <script> _MACRO_INSERT_LOCALIZE_ </script>

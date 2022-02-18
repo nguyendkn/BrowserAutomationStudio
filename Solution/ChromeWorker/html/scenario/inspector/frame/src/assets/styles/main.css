@@ -246,9 +246,8 @@
   border: 1px solid #d9d9d9;
   letter-spacing: inherit;
   padding: 6px 8px;
-  background: #fff;
   border-right: 0;
-  color: #606060;
+  color: inherit;
   min-width: 0;
   flex: 1;
 }

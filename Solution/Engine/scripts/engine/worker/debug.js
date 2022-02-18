@@ -6,10 +6,10 @@
 
     self.request_variables = function (list, callback) {
         var variables = (Array.isArray(list) ? list : [list]).reduce(function (acc, key) {
-            var path = JSON.parse(key);
+            var path = JSON.parse(key), value = undefined;
 
             if (path.length) {
-                var name = path[0], value = null;
+                var name = path[0], index = 0, length = path.length;
 
                 if (name.indexOf('GLOBAL:') === 0) {
                     value = global(name);
@@ -17,10 +17,10 @@
                     value = local(name);
                 }
 
-                return (acc[key] = get(value, path.slice(1)), acc);
+                while (value != null && index < length) value = value[path[index++]];
             }
 
-            return (acc[key] = undefined, acc);
+            return (acc[key] = value, acc);
         }, {});
 
         Browser.RequestVariablesResult(stringify(variables), fn(callback));
@@ -81,16 +81,6 @@
         }
 
         return type === 'string' ? value.slice(0, MAX_CHARS) : value;
-    }
-
-    function get(obj, path) {
-        var index = 0, length = path.length;
-
-        while (obj != null && index < length) {
-            obj = obj[path[index++]];
-        }
-
-        return (index && index == length) ? obj : undefined;
     }
 
     function global(name) {

@@ -1354,7 +1354,8 @@
   <script src="moveexecutionpoint.js"></script>
   <script src="inspector/inspector.js"></script>
   <script src="inspector/modal.js"></script>
-  
+  <script>_.extend(window.App, Backbone.Events)</script>
+
   <script> _L = $.extend(_L, _AL) </script>
   <script> _MACRO_INSERT_LOCALIZE_ </script>
   <script> _MACRO_INSERT_ACTIONS_ </script>
@@ -5522,7 +5523,7 @@
     }
 
     function BrowserAutomationStudio_RequestVariablesResult(data) {
-      console.log('requestVariablesResult:', JSON.parse(data));
+      App.trigger('variablesRequest', JSON.parse(data));
     }
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {

@@ -1,8 +1,11 @@
 (function (self) {
     var fn = _get_function_body;
+    const MAX_CHARS = 1000;
+    const MAX_ITEMS = 100;
+    const MAX_DEPTH = 10;
 
     self.request_variables = function (list, callback) {
-        var variables = list.reduce(function (acc, key) {
+        var variables = (Array.isArray(list) ? list : [list]).reduce(function (acc, key) {
             var path = JSON.parse(key);
 
             if (path.length) {
@@ -11,7 +14,7 @@
                 if (name.indexOf('GLOBAL:') === 0) {
                     value = global(name);
                 } else {
-                    value = GLOBAL[name];
+                    value = local(name);
                 }
 
                 return (acc[key] = get(value, path.slice(1)), acc);
@@ -29,7 +32,7 @@
                 if (key.indexOf('GLOBAL:') === 0) {
                     acc[key] = truncate(global(key));
                 } else {
-                    acc[key.slice(4)] = truncate(GLOBAL[key]);
+                    acc[key.slice(4)] = truncate(local[key]);
                 }
                 return acc;
             }, {}),
@@ -63,13 +66,13 @@
             var type = Object.prototype.toString.call(value);
 
             if (type === '[object Object]') {
-                return Object.keys(value).slice(0, 100).reduce(function (acc, key) {
+                return Object.keys(value).slice(0, MAX_ITEMS).reduce(function (acc, key) {
                     return (acc[key] = truncate(value[key]), acc);
                 }, {});
             }
-    
+
             if (type === '[object Array]') {
-                return value.slice(0, 100).map(function (value) {
+                return value.slice(0, MAX_ITEMS).map(function (value) {
                     return truncate(value);
                 });
             }
@@ -91,6 +94,11 @@
     function global(name) {
         var value = P('basglobal', name.slice(7));
         return JSON.parse(value || '"__undefined__"');
+    }
+
+    function local(name) {
+        var prefix = name.indexOf('VAR_') === 0;
+        return self[(prefix ? '' : 'VAR_') + name];
     }
 
     function cycle(item) {

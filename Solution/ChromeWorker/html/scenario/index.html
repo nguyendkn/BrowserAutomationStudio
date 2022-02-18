@@ -5521,6 +5521,10 @@
       BrowserAutomationStudio_Execute(`debug_variables(${JSON.stringify(VariablesListPrev)})!\nsection_start("test", -3)!`, false, true);
     }
 
+    function BrowserAutomationStudio_RequestVariablesResult(data) {
+      console.log('requestVariablesResult:', JSON.parse(data));
+    }
+
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
       if (VariablesUpdateRequested) {
         VariablesUpdateRequested = false;

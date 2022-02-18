@@ -32,7 +32,7 @@
                 if (key.indexOf('GLOBAL:') === 0) {
                     acc[key] = truncate(global(key));
                 } else {
-                    acc[key.slice(4)] = truncate(local[key]);
+                    acc[key.slice(4)] = truncate(local(key));
                 }
                 return acc;
             }, {}),

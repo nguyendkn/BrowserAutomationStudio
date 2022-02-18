@@ -62,9 +62,9 @@
     }
 
     function truncate(value, depth) {
-        var depth = depth || 0;
+        var depth = depth || 0, type = typeof value;
 
-        if (typeof value === 'object') {
+        if (type === 'object') {
             var type = Object.prototype.toString.call(value);
 
             if (type === '[object Object]') {
@@ -80,7 +80,7 @@
             }
         }
 
-        return value;
+        return type === 'string' ? value.slice(0, MAX_CHARS) : value;
     }
 
     function get(obj, path) {

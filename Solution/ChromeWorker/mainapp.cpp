@@ -3918,7 +3918,7 @@ void MainApp::HandleToolboxBrowserEvents()
 
 
     std::pair<std::string,bool> InterfaceJson = toolboxv8handler->GetInterfaceState();
-    if(InterfaceJson.second) WriteStringToFile("toolbox.json", InterfaceJson.first);
+    if(InterfaceJson.second) WriteStringToFile("interface.json", InterfaceJson.first);
 
 
     std::pair<ToolboxV8Handler::ResultClass,bool> res = toolboxv8handler->GetResult();
@@ -4079,7 +4079,7 @@ void MainApp::HandleToolboxBrowserEvents()
 
     if(!IsToolboxInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
     {
-        std::string InterfaceInitial = ReadAllString("toolbox.json");
+        std::string InterfaceInitial = ReadAllString("interface.json");
         std::string script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
         IsToolboxInterfaceInitialSent = true;

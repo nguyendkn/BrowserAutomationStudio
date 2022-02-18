@@ -61,19 +61,21 @@
         })
     }
 
-    function truncate(value) {
+    function truncate(value, depth) {
+        var depth = depth || 0;
+
         if (typeof value === 'object') {
             var type = Object.prototype.toString.call(value);
 
             if (type === '[object Object]') {
-                return Object.keys(value).slice(0, MAX_ITEMS).reduce(function (acc, key) {
-                    return (acc[key] = truncate(value[key]), acc);
+                return depth >= MAX_DEPTH ? {} : Object.keys(value).slice(0, MAX_ITEMS).reduce(function (acc, key) {
+                    return (acc[key] = truncate(value[key], depth + 1), acc);
                 }, {});
             }
 
             if (type === '[object Array]') {
-                return value.slice(0, MAX_ITEMS).map(function (value) {
-                    return truncate(value);
+                return depth >= MAX_DEPTH ? [] : value.slice(0, MAX_ITEMS).map(function (value) {
+                    return truncate(value, depth + 1);
                 });
             }
         }

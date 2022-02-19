@@ -62,10 +62,10 @@
     }
 
     function truncate(value, depth) {
-        var depth = depth || 0, type = typeof value;
+        var type = typeof value;
 
-        if (type === 'object') {
-            var type = Object.prototype.toString.call(value);
+        if (type === 'object' && value) {
+            var type = Object.prototype.toString.call(value), depth = depth || 0;
 
             if (type === '[object Object]') {
                 return depth >= MAX_DEPTH ? {} : Object.keys(value).slice(0, MAX_ITEMS).reduce(function (acc, key) {

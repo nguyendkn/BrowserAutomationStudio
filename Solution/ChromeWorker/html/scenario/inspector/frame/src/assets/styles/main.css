@@ -553,6 +553,11 @@
   display: flex;
 }
 
+.jt-node-ellipsis {
+  padding-left: calc(var(--indent) + 32px);
+  display: block;
+}
+
 .jt-node-actions {
   grid-auto-flow: column;
   margin-right: 8px;

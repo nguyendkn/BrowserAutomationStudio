@@ -9,7 +9,7 @@
             var path = JSON.parse(key), value = undefined;
 
             if (path.length) {
-                var name = path[0], index = 0, length = path.length;
+                var name = path[0], index = 1, length = path.length - 1;
 
                 if (name.indexOf('GLOBAL:') === 0) {
                     value = global(name);
@@ -68,15 +68,25 @@
             var type = Object.prototype.toString.call(value), depth = depth || 0;
 
             if (type === '[object Object]') {
-                return depth >= MAX_DEPTH ? {} : Object.keys(value).slice(0, MAX_ITEMS).reduce(function (acc, key) {
-                    return (acc[key] = truncate(value[key], depth + 1), acc);
-                }, {});
+                if (depth < MAX_DEPTH) {
+                    var keys = Object.keys(value), object = keys.slice(0, MAX_ITEMS).reduce(function (acc, key) {
+                        return (acc[key] = truncate(value[key], depth + 1), acc);
+                    }, {});
+                    if (keys.length > 100) object.__length__ = keys.length;
+                    return object;
+                }
+                return {};
             }
 
             if (type === '[object Array]') {
-                return depth >= MAX_DEPTH ? [] : value.slice(0, MAX_ITEMS).map(function (value) {
-                    return truncate(value, depth + 1);
-                });
+                if (depth < MAX_DEPTH) {
+                    var array = value.slice(0, MAX_ITEMS).map(function (value) {
+                        return truncate(value, depth + 1);
+                    });
+                    if (value.length > 100) array.push(value.length);
+                    return array;
+                }
+                return [];
             }
         }
 

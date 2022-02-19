@@ -53,6 +53,35 @@ window.JsonTreeNode = {
   },
 
   computed: {
+    filteredKeys() {
+      const { type, keys } = this;
+
+      return keys.length <= 100 ? keys : keys.filter((key, idx) => {
+        if (type === 'object' && key === '__length__') {
+          return false;
+        }
+        if (type === 'array' && idx === keys.length - 1) {
+          return false;
+        }
+        return true;
+      });
+    },
+
+    length() {
+      const { type, keys, value } = this;
+
+      if (keys.length > 100) {
+        if (type === 'object') {
+          return value.__length__;
+        }
+        if (type === 'array') {
+          return value.slice(-1)[0];
+        }
+      }
+
+      return keys.length;
+    },
+
     counter() {
       const pointer = JSON.stringify(this.path);
       const { counters } = this.$store.state;
@@ -69,8 +98,9 @@ window.JsonTreeNode = {
     },
 
     keys() {
-      const { value } = this;
-      return value ? Object.keys(value) : [];
+      const { value, type } = this;
+      const keys = value ? Object.keys(value) : [];
+      return type === 'array' ? keys.map(key => parseInt(key, 10)) : keys;
     },
 
     type() {
@@ -165,14 +195,14 @@ window.JsonTreeNode = {
           <template v-else-if="type === 'object'">
             <span class="jt-node-bracket">{</span>
             <template v-if="!isExpanded">
-              <span class="jt-node-preview">{{ $tc('items', keys.length) }}</span>
+              <span class="jt-node-preview">{{ $tc('items', length) }}</span>
               <span class="jt-node-bracket">}</span>
             </template>
           </template>
           <template v-else-if="type === 'array'">
             <span class="jt-node-bracket">[</span>
             <template v-if="!isExpanded">
-              <span class="jt-node-preview">{{ $tc('items', keys.length) }}</span>
+              <span class="jt-node-preview">{{ $tc('items', length) }}</span>
               <span class="jt-node-bracket">]</span>
             </template>
           </template>
@@ -192,11 +222,13 @@ window.JsonTreeNode = {
         </div>
       </div>
       <div v-if="isExpanded && type === 'object'" class="jt-node-nodes">
-        <json-tree-node v-for="(val, key) in value" :key="key" :name="key" :value="val" :path="path.concat(key)" />
+        <json-tree-node v-for="key in filteredKeys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)"  />
+        <span v-if="length > 100" class="jt-node-ellipsis">...</span>
         <span class="jt-node-bracket">}</span>
       </div>
       <div v-if="isExpanded && type === 'array'" class="jt-node-nodes">
-        <json-tree-node v-for="(val, key) in value" :key="key" :name="key" :value="val" :path="path.concat(key)" />
+        <json-tree-node v-for="key in filteredKeys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)" />
+        <span v-if="length > 100" class="jt-node-ellipsis">...</span>
         <span class="jt-node-bracket">]</span>
       </div>
     </div>

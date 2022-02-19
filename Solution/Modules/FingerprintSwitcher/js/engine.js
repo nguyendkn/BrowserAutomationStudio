@@ -233,18 +233,20 @@ function BrowserAutomationStudio_GetFingerprint()
 	http_client_set_fail_on_error(true)
 	_switch_http_client_main()
 
-	_if(FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid && FINGERPRINT_JSON.additional.dynamic_perfect_canvas, function(){
+	_if(typeof(FINGERPRINT_JSON) == "object" && FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid && FINGERPRINT_JSON.additional.dynamic_perfect_canvas, function(){
 		FINGERPRINT_JSON.is_custom_server_retry = true
 		_call(BrowserAutomationStudio_GetFingerprint,[FINGERPRINT_JSON])!
 	})!
 
-	_if(!FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid, function(){
+	_if(typeof(FINGERPRINT_JSON) == "object" && !FINGERPRINT_JSON.additional.is_custom_server && !FINGERPRINT_JSON.additional.server_type_is_perfect_canvas && FINGERPRINT_JSON.additional.server_type_is_post_data && !FINGERPRINT_JSON.additional.final_fingerprint_valid, function(){
 		FINGERPRINT_JSON.is_main_server_retry = true
 		_call(BrowserAutomationStudio_GetFingerprint,[FINGERPRINT_JSON])!
 	})!
 
-	delete FINGERPRINT_JSON
-
+	if(typeof(FINGERPRINT_JSON) == "object")
+	{
+		delete FINGERPRINT_JSON
+	}
 }
 
 function BrowserAutomationStudio_ApplyFingerprint()
@@ -332,7 +334,19 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	    native("filesystem", "writefile", JSON.stringify({path: _get_profile() + "/fingerprint.json",value: value,base64:false,append:false}))
 	}
 
-
+	_if(typeof(FINGERPRINT_JSON["features"]) == "object", function(){
+		var Settings = {}
+		var Keys = Object.keys(FINGERPRINT_JSON["features"])
+		for(var i = 0;i<Keys.length;i++)
+		{
+			var Key = Keys[i]
+			if(typeof(FINGERPRINT_JSON["features"][Key]) == "boolean")
+			{
+				Settings["Fingerprints.Feature." + Key] = (FINGERPRINT_JSON["features"][Key]) ? "Enable" : "Disable"
+			}
+		}
+		_settings(Settings)!
+	})!
 
 	_if(FINGERPRINT_CANVAS || FINGERPRINT_WEBGL || FINGERPRINT_AUDIO || FINGERPRINT_BATTERY || FINGERPRINT_RECTANGLES || FINGERPRINT_SENSOR, function(){
 		var Settings = {}
@@ -382,6 +396,11 @@ function BrowserAutomationStudio_ApplyFingerprint()
 				}
 				
 				
+			}
+
+			if(typeof(FINGERPRINT_JSON["webgl_properties"]["version2"]) == "undefined")
+			{
+				Settings["Fingerprints.Webgl2Type"] = "Disable"
 			}
 		}
 
@@ -522,7 +541,6 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		}
 	})!
 
-	
 	var BrowserMode = "desktop"
 	try
 	{
@@ -566,7 +584,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 						FINGEPRINT_SETTINGS[KeySettings] = "INFINITY";
 					}else
 					{
-						FINGEPRINT_SETTINGS[KeySettings] = "0";
+					FINGEPRINT_SETTINGS[KeySettings] = "0";
 					}
 				}else
 				{
@@ -724,6 +742,49 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	try
 	{
+		if(typeof(FINGERPRINT_JSON["codecs"]) == "object" && FINGERPRINT_JSON["codecs"].length > 0)
+		{
+			var TheoraData = null
+			for(var i = 0;i < FINGERPRINT_JSON["codecs"].length;i++)
+			{
+				var DataCandidate = FINGERPRINT_JSON["codecs"][i]
+				if(DataCandidate.contentType == 'video/ogg; codecs="theora"')
+				{
+					TheoraData = DataCandidate
+					break;
+				}
+			}
+			if(typeof(TheoraData) == "object" && TheoraData != null && !TheoraData.supported)
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.IsTheoraEnabled"] = "Disable"
+			}
+		}
+			
+	}catch(e)
+	{
+		
+	}
+
+	try
+	{
+		if(typeof(FINGERPRINT_JSON["bluetooth"]) == "boolean")
+		{
+			if(FINGERPRINT_JSON["bluetooth"])
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.Bluetooth"] = "Enable"
+			}else
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.Bluetooth"] = "Disable"
+			}
+		}
+
+	}catch(e)
+	{
+		
+	}
+
+	try
+	{
 		if(FINGERPRINT_JSON["heap"])
 		{
 			FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Enable"
@@ -740,6 +801,14 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	}
 
 	_settings(FINGEPRINT_SETTINGS)!
+
+	
+	_if(ScriptWorker.GetIsRecord(), function(){
+		url()!
+		_if(_result() == "about:blank", function(){
+			_load("data:text/plain,", "", false)!
+		})!
+	})!
 
 }
 

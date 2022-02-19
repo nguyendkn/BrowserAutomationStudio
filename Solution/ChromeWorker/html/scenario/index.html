@@ -1335,7 +1335,7 @@
   <!-- ========= -->
   <!--  Scripts  -->
   <!-- ========= -->
-  <script>window.App = _.extend({ Inspector: {}, utils: {} }, Backbone.Events)</script>
+  <script>window.App = { Inspector: {}, utils: {} };</script>
   <script src="../actions/actions.js"></script>
   <script src="translate.js"></script>
   <script src="undo.js"></script>
@@ -1358,6 +1358,7 @@
   <script src="moveexecutionpoint.js"></script>
   <script src="inspector/inspector.js"></script>
   <script src="inspector/modal.js"></script>
+  <script>_.extend(window.App, Backbone.Events);</script>
 
   <script> _L = $.extend(_L, _AL) </script>
   <script> _MACRO_INSERT_LOCALIZE_ </script>
@@ -5526,7 +5527,7 @@
     }
 
     function BrowserAutomationStudio_RequestVariablesResult(data) {
-      App.trigger('variablesRequest', JSON.parse(data));
+      App.trigger('variablesRequest', App.utils.parseJSON(data));
     }
 
     function BrowserAutomationStudio_UpdateVariablesResult(data) {
@@ -5534,7 +5535,7 @@
         VariablesUpdateRequested = false;
         VariablesUpdateNeeded = false;
       }
-      _Inspector.send({ type: 'update', payload: JSON.parse(data) });
+      _Inspector.send({ type: 'update', payload: App.utils.parseJSON(data) });
     }
 
     var IsChangedUsed = false

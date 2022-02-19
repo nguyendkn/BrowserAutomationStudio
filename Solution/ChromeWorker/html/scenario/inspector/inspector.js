@@ -86,12 +86,14 @@
   });
 
   function edit(options) {
+    const pointer = JSON.stringify(options.path);
+
     App.once('variablesRequest', value => {
       const callback = (accept, { changed, value, type }) => {
-        if (changed && accept) {
+        if (accept && changed) {
           let [root, ...path] = options.path;
           path = path.map(k => `[${JSON.stringify(k)}]`).join('');
-  
+
           _.attempt(() => {
             if (type === 'date') {
               value = `_parse_date("${value}", "auto")`;
@@ -100,7 +102,7 @@
             } else if (type === 'string') {
               value = JSON.stringify(value);
             }
-  
+
             VariablesUpdateNeeded = true;
             BrowserAutomationStudio_Execute(`
               (function (root, value) {
@@ -121,9 +123,9 @@
         }
       };
 
-      return new Inspector.Modal({ ...options, value: value[JSON.stringify(options.path)], callback }).render();
+      return new Inspector.Modal({ ...options, value: value[pointer], callback }).render();
     });
 
-    BrowserAutomationStudio_Execute(`request_variables([${JSON.stringify(JSON.stringify(options.path))}])!\nsection_start("test", -3)!`, false, true);
+    BrowserAutomationStudio_Execute(`request_variables(${JSON.stringify([pointer])})!\nsection_start("test", -3)!`);
   }
 })(window);

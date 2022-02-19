@@ -12,15 +12,6 @@ const post = (type, payload = {}) => {
   window.top.postMessage({ type, payload }, '*');
 };
 
-const mutate = (obj, mutator) => {
-  if (obj !== null && typeof obj === 'object') {
-    Object.keys(obj).forEach(key => {
-      obj[key] = mutate(obj[key], mutator);
-    });
-  }
-  return mutator(obj);
-};
-
 const typeOf = (() => {
   const { toString } = Object.prototype;
 

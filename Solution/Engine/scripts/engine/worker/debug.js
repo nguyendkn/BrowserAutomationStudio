@@ -94,11 +94,13 @@
     }
 
     function cycle(item) {
-        var info = item.info, options = truncate({
-            expression: info.expression || '',
-            arguments: item.arguments || {},
-            iterator: item.iterator || 0,
-        });
+        var info = item.info, options = { expression: info.expression || '', iterator: item.iterator || 0 };
+
+        options.arguments = Object.keys(item.arguments).reduce(function (acc, key) {
+            var value = item.arguments[key];
+            return (acc[key] = value == null ? String(value) : JSON.stringify(value), acc);
+        }, {});
+
         return { id: info.id, name: info.name, type: info.type, options: options };
     }
 })(this);

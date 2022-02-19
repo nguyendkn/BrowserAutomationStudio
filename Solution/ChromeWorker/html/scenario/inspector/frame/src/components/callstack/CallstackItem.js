@@ -112,7 +112,7 @@ window.CallstackItem = {
       <ul v-if="hasArguments" v-show="!preview" class="callstack-item-params">
         <li v-for="(value, name) in options.arguments" :key="name" class="callstack-item-param">
           <span class="callstack-item-param-name">{{ name }}:</span>
-          <span class="callstack-item-param-value">{{ value == null ? String(value) : JSON.stringify(value) }}</span>
+          <span class="callstack-item-param-value">{{ value }}</span>
         </li>
       </ul>
     </li>

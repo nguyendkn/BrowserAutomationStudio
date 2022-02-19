@@ -94,6 +94,9 @@ BrowserDirectControl * MainApp::DirectControl()
 
 void MainApp::UpdateManualControl(bool NoFocus)
 {
+    if(Data->ManualControl != BrowserData::DirectNoRecord && Data->IsRecord && DirectControl())
+        DirectControl()->ClearSequence();
+
     Layout->HideCentralBrowser();
     if(Layout->IsManualControlAction && Data->ManualControl != BrowserData::DirectNoRecord)
     {

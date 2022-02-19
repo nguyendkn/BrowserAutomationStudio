@@ -1511,11 +1511,11 @@
           });
 
           this.on("change:isscriptexecuting", (_, value) => {
-            if (!value) BrowserAutomationStudio_AskForVariablesUpdate();
+            value || BrowserAutomationStudio_AskForVariablesUpdate();
           });
 
           this.on("change:istaskexecuting", (_, value) => {
-            if (!value) BrowserAutomationStudio_AskForVariablesUpdate();
+            value || BrowserAutomationStudio_AskForVariablesUpdate();
           });
         }  
     });

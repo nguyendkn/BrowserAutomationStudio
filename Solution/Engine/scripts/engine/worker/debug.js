@@ -68,25 +68,23 @@
             var type = Object.prototype.toString.call(value), depth = depth || 0;
 
             if (type === '[object Object]') {
-                if (depth < MAX_DEPTH) {
-                    var keys = Object.keys(value), object = keys.slice(0, MAX_ITEMS).reduce(function (acc, key) {
-                        return (acc[key] = truncate(value[key], depth + 1), acc);
-                    }, {});
-                    if (keys.length > 100) object.__length__ = keys.length;
-                    return object;
-                }
-                return {};
+                if (depth >= MAX_DEPTH) return {};
+
+                var keys = Object.keys(value), object = keys.slice(0, MAX_ITEMS).reduce(function (acc, key) {
+                    return (acc[key] = truncate(value[key], depth + 1), acc);
+                }, {});
+                if (keys.length > 100) object.__length__ = keys.length;
+                return object;
             }
 
             if (type === '[object Array]') {
-                if (depth < MAX_DEPTH) {
-                    var array = value.slice(0, MAX_ITEMS).map(function (value) {
-                        return truncate(value, depth + 1);
-                    });
-                    if (value.length > 100) array.push(value.length);
-                    return array;
-                }
-                return [];
+                if (depth >= MAX_DEPTH) return [];
+
+                var array = value.slice(0, MAX_ITEMS).map(function (value) {
+                    return truncate(value, depth + 1);
+                });
+                if (value.length > 100) array.push(value.length);
+                return array;
             }
         }
 

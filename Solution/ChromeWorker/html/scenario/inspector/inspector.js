@@ -126,6 +126,6 @@
       return new Inspector.Modal({ ...options, value: value[pointer], callback }).render();
     });
 
-    BrowserAutomationStudio_Execute(`request_variables(${JSON.stringify([pointer])})!\nsection_start("test", -3)!`);
+    BrowserAutomationStudio_Execute(`request_variables(${JSON.stringify(pointer)})!\nsection_start("test", -3)!`);
   }
 })(window);

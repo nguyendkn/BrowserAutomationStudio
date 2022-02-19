@@ -1,5 +1,5 @@
 <div class="container-fluid">
-	<%= _.template($('#block_start').html())({id:"Filtration", name: tr("Filtration"), description: tr("Using the parameters from this block, you can filter the messages as you need, or leave them without filtering.")}) %>
+	<%= _.template($('#block_start').html())({id:"Filtration", name: tr("Filtration"), description: tr("Using the parameters from this block, you can filter the messages as you need, or leave them without filtering. You can combine the parameters of this block in any order, the specified parameters will be taken into account when filtering, and those not specified will be ignored.")}) %>
 		<span class="tr" style="margin-left:15px">Sender of message</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Sender of message"), description: tr("Sender of message, \"From\" field") + ", " + tr("using the two parameters below, you can make filter by the contents of this field."), examples: [{code: "admin@site.com"}, {code: "no-reply@example.com"}, {code: "Test &lt;info@test.com&gt;"}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "from",

@@ -32,6 +32,11 @@ if(box["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Folder name") + tr("\" is not specified"));
     return;
 };
+var connectTimeout = GetInputConstructorValue("connectTimeout", loader);
+if(connectTimeout["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Connection timeout") + tr("\" is not specified"));
+    return;
+};
 var timeout = GetInputConstructorValue("timeout", loader);
 if(timeout["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
@@ -47,6 +52,7 @@ try{
         "username": username["updated"],
         "password": password["updated"],
         "box": box["updated"],
+        "connectTimeout": connectTimeout["updated"],
         "timeout": timeout["updated"]
     });
     code = Normalize(code, 0);

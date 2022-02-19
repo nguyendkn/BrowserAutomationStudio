@@ -36,7 +36,7 @@ _InMail = {
 		return _avoid_nil(str).toString().trim();
 	},
 	
-	configure: function(protocol, autoConfig, host, port, encrypt, username, password, box, timeout){
+	configure: function(protocol, autoConfig, host, port, encrypt, username, password, box, connectTimeout, timeout){
 		protocol = this.paramClean(protocol).toLocaleLowerCase();
 		if(["imap","pop3"].indexOf(protocol) < 0){
 			this.error("Invalid protocol specified, mail module only supports imap and pop3 protocols", "Указан неверный протокол, почтовый модуль поддерживает только протоколы imap и pop3");
@@ -47,19 +47,24 @@ _InMail = {
 		if([true, "true", 1].indexOf(autoConfig) > -1){
 			var split = username.split("@");
 			var login = split[0];
-			var domain = split[1];
+			var domain = (split[1] || "").trim();
+			
+			if(!domain){
+				this.error('Failed to configure ' + protocol + ' connection, the specified username does not contain a domain', 'Не удалось настроить подключение по ' + protocol + ', указанный логин не содержит домена');
+			};
 			
 			config = this.findConfig(domain, protocol);
 			
 			if(!config){
-				this.error('Failed to configure ' + protocol + ' for mail "' + domain + '", please use manual configuration', 'Не удалось настроить ' + protocol + ' для почты "' + domain + '", пожалуйста используйте ручную настройку');
+				this.error('Failed to configure ' + protocol + ' connection for mail "' + domain + '", please use manual configuration', 'Не удалось настроить подключение по ' + protocol + ' для почты "' + domain + '", пожалуйста используйте ручную настройку');
 			};
 			
+			config.host = config.host.replace("%domain%", domain);
 			config.username = config.username.replace("%email%", username).replace("%login%", login).replace("%domain%", domain);
 		}else{
 			encrypt = this.paramClean(encrypt).toLocaleLowerCase();
 			if(["none","ssl","starttls"].indexOf(encrypt) < 0){
-				this.error("Invalid encryption type specified, mail module only supports ssl, starttls and none", "Указан неверный тип шифрования, почтовый модуль поддерживает только ssl, starttls и none");
+				this.error("Invalid encryption type specified, mail module only supports SSL, STARTTLS and none", "Указан неверный тип шифрования, почтовый модуль поддерживает только SSL, STARTTLS и none");
 			};
 			config.host = this.paramClean(host);
 			port = this.paramClean(port).toLocaleLowerCase();
@@ -74,13 +79,18 @@ _InMail = {
 		if(!api || protocol != api.protocol || JSON.stringify(config) != JSON.stringify(api.config)){
 			try{
 				this.api = new _InMail[protocol](config);
-			}catch(e){
-				die('_InMail: ' + _K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing') : ('Класс протокола ' + protocol + ' поврежден или отсутствует'), true);
+			}catch(err){
+				die('_InMail: ' + (_K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing | Error: ') : ('Класс протокола ' + protocol + ' поврежден или отсутствует | Ошибка: ')) + err, true);
 			};
 		};
 		
 		this.api.box = _InMail.paramClean(box);
-		this.api.timeout = (parseInt(_InMail.paramClean(timeout)) || 5 * 60) * 1000;
+		this.api.timeout = 1000 * (parseInt(_InMail.paramClean(timeout)) || 300);
+		this.api.setConnectTimeout(1000 * (parseInt(_InMail.paramClean(connectTimeout)) || 300));
+		
+		if(!_is_nilb(this.proxy) && typeof this.proxy==="object"){
+			this.api.setProxy(this.proxy);
+		};
 	},
 	
 	getApi: function(noError){
@@ -415,6 +425,19 @@ _InMail = {
 		var api = _InMail.getApi();
 		
 		_call_function(api.moveMessages, {uids: uids, toBox: toBox, box: box})!
+	},
+	
+	fetch: function(){
+		var uids = _function_argument("uids");
+		var options = _function_argument("options");
+		var box = _InMail.prepareBox(_function_argument("box"));
+		
+		var api = _InMail.getApi();
+		
+		_call_function(api.fetch, {uids: uids, options: options, box: box})!
+		var messages = _result_function();
+		
+		_function_return(messages);
 	},
 	
 	getMessages: function(){

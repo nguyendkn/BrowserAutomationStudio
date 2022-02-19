@@ -50,6 +50,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			};
 		};
 		
+		this.setConnectTimeout = function(ms){
+			api.curlOpts.connecttimeout_ms = ms;
+		};
+		
 		this.request = function(){
 			var path = _function_argument("path");
 			var query = _function_argument("query");
@@ -113,10 +117,6 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				_InMail.error(resp.code + ' - ' + error, null, api.protocol);
 			};
 		};
-	};
-	
-	if(!_is_nilb(_InMail.proxy) && typeof _InMail.proxy==="object"){
-		api.setProxy(_InMail.proxy);
 	};
 	
 	this.errorHandler = function(error, data){
@@ -231,6 +231,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"EMPTY_MSGS_LIST": {
 				"ru": 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика',
 				"en": 'Could not find a message matching the specified id in the specified mailbox folder'
+			},
+			"NOT_AVAILABLE_ON_POP3": {
+				"ru": 'Функция "' + data + '" недоступна по pop3',
+				"en": '"' + data + '" function is not available on pop3'
 			}
 		};
 		

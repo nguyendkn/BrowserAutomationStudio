@@ -144,8 +144,8 @@
 				}
 			],
 			"description": {
-				"en": "Number of messages",
-				"ru": "Количество писем"
+				"en": "Get number of messages by criteria",
+				"ru": "Получить количество писем по критериям"
 			},
 			"interface": "InMail_Count_interface.js",
 			"is_element": false,
@@ -207,57 +207,6 @@
 		{
 			"code": [
 				{
-					"file": "InMail_AddBox_code.js",
-					"name": "InMail_AddBox_code"
-				}
-			],
-			"description": {
-				"en": "Create new folder",
-				"ru": "Создать новую папку"
-			},
-			"interface": "InMail_AddBox_interface.js",
-			"is_element": false,
-			"name": "InMail_AddBox",
-			"select": "InMail_AddBox_select.js",
-			"template": "{{name}}"
-		},
-		{
-			"code": [
-				{
-					"file": "InMail_RenameBox_code.js",
-					"name": "InMail_RenameBox_code"
-				}
-			],
-			"description": {
-				"en": "Rename folder",
-				"ru": "Переименовать папку"
-			},
-			"interface": "InMail_RenameBox_interface.js",
-			"is_element": false,
-			"name": "InMail_RenameBox",
-			"select": "InMail_RenameBox_select.js",
-			"template": "{{oldName}} -> {{newName}}"
-		},
-		{
-			"code": [
-				{
-					"file": "InMail_DelBox_code.js",
-					"name": "InMail_DelBox_code"
-				}
-			],
-			"description": {
-				"en": "Delete folder",
-				"ru": "Удалить папку"
-			},
-			"interface": "InMail_DelBox_interface.js",
-			"is_element": false,
-			"name": "InMail_DelBox",
-			"select": "InMail_DelBox_select.js",
-			"template": "{{name}}"
-		},
-		{
-			"code": [
-				{
 					"file": "InMail_GetFlags_code.js",
 					"name": "InMail_GetFlags_code"
 				}
@@ -314,8 +263,8 @@
 				}
 			],
 			"description": {
-				"en": "Folder list",
-				"ru": "Список папок"
+				"en": "Get list of folders",
+				"ru": "Получить список папок"
 			},
 			"interface": "InMail_GetBoxes_interface.js",
 			"is_element": false,
@@ -331,13 +280,64 @@
 				}
 			],
 			"description": {
-				"en": "Folder info",
-				"ru": "Информация о папке"
+				"en": "Get info about folder",
+				"ru": "Получить информацию о папке"
 			},
 			"interface": "InMail_Status_interface.js",
 			"is_element": false,
 			"name": "InMail_Status",
 			"select": "InMail_Status_select.js",
+			"template": "{{name}}"
+		},
+		{
+			"code": [
+				{
+					"file": "InMail_AddBox_code.js",
+					"name": "InMail_AddBox_code"
+				}
+			],
+			"description": {
+				"en": "Create new folder",
+				"ru": "Создать новую папку"
+			},
+			"interface": "InMail_AddBox_interface.js",
+			"is_element": false,
+			"name": "InMail_AddBox",
+			"select": "InMail_AddBox_select.js",
+			"template": "{{name}}"
+		},
+		{
+			"code": [
+				{
+					"file": "InMail_RenameBox_code.js",
+					"name": "InMail_RenameBox_code"
+				}
+			],
+			"description": {
+				"en": "Rename folder",
+				"ru": "Переименовать папку"
+			},
+			"interface": "InMail_RenameBox_interface.js",
+			"is_element": false,
+			"name": "InMail_RenameBox",
+			"select": "InMail_RenameBox_select.js",
+			"template": "{{oldName}} -> {{newName}}"
+		},
+		{
+			"code": [
+				{
+					"file": "InMail_DelBox_code.js",
+					"name": "InMail_DelBox_code"
+				}
+			],
+			"description": {
+				"en": "Delete folder",
+				"ru": "Удалить папку"
+			},
+			"interface": "InMail_DelBox_interface.js",
+			"is_element": false,
+			"name": "InMail_DelBox",
+			"select": "InMail_DelBox_select.js",
 			"template": "{{name}}"
 		},
 		{
@@ -377,7 +377,8 @@
 		"internal/base.js",
 		"internal/configs.js",
 		"internal/curl.js",
-		"internal/imapCurl.js"
+		"internal/imapCurl.js",
+		"internal/pop3Curl.js"
 	],
 	"dll": [
 		{
@@ -445,30 +446,61 @@
 	"localize": {
 		"Timeout": {"ru":"Таймаут"},
 		"Protocol": {"ru":"Протокол"},
+		"for gmail":{"ru":"для gmail"},
 		"Folder name": {"ru":"Имя папки"},
 		"Server address": {"ru":"Адрес сервера"},
 		"Timeout (seconds)": {"ru":"Таймаут (секунд)"},
+		"Connection timeout": {"ru":"Таймаут подключения"},
+		"in order to work with BAS":{"ru":"для работы с BAS"},
+		"Gmail also requires to":{"ru":"Gmail также требует"},
 		"Auto configuration": {"ru":"Автоматическая настройка"},
 		"Without using encryption": {"ru":"Без использования шифрования"},
-		"Password of the mail server.": {"ru":"Пароль почтового сервера."},
 		"Trash folder, on some mails": {"ru":"Корзина, на некоторых почтах"},
+		"Connection timeout (seconds)": {"ru":"Таймаут подключения (секунд)"},
 		"Spam folder, on some mails": {"ru":"Спам-папка, на некоторых почтах"},
 		"Port number of the mail server.": {"ru":"Номер порта почтового сервера."},
-		"Username of the mail server.": {"ru":"Имя пользователя почтового сервера."},
+		"allow insecure applications":{"ru":"разрешить доступ небезопасным приложениям"},
 		"Default folder incoming messages": {"ru":"Папка по умолчанию для входящих писем"},
+		"Automatically configure connection": {"ru":"Автоматически настраивать подключение"},
+		"Specify connection settings manually": {"ru":"Указать настройки подключения вручную"},
 		"Address (URL or IP) of the mail server.": {"ru":"Адрес (URL или IP) почтового сервера."},
+		"The username may also not include the mail domain.":{"ru":"Логин может также не включать почтовый домен."},
 		"Encryption type of connection to the mail server.": {"ru":"Тип шифрования соединения с почтовым сервером."},
+		"Mail.ru doesn't allow to make search in mailbox.":{"ru":"Mail.ru не позволяет искать письма в почтовом ящике."},
 		"Default port for imap protocol with SSL encryption": {"ru":"Порт по умолчанию для протокола imap с SSL шифрованием"},
 		"Default port for pop3 protocol with SSL encryption": {"ru":"Порт по умолчанию для протокола pop3 с SSL шифрованием"},
+		"See the settings of the used protocol for your mail.": {"ru":"Смотрите настройки используемого протокола для вашей почты."},
 		"Configure access to the mail server to read email.": {"ru":"Настроить доступ к почтовому серверу для чтения электронной почты."},
+		"It will be preserved for a time specified in this parameter.": {"ru":"Оно будет храниться в течение времени, указанного в этом параметре."},
 		"Automatically detect port based on protocol and encryption type": {"ru":"Автоматическое определение порта на основе протокола и типа шифрования"},
+        "It will be preserved for a time specified in \"Timeout\" parameter.": {"ru":"Оно будет храниться в течение времени, указанного в параметре \"Таймаут\"."},
 		"The protocol by which the connection to the mail server will be made.": {"ru":"Протокол по которому будет производиться подключение к почтовому серверу."},
+		"The value of this parameter is ignored if auto configuration is enabled.": {"ru":"Значение этого параметра игнорируется, если активирована автоматическая настройка."},
 		"Default port for imap protocol without encryption or with STARTTLS encryption": {"ru":"Порт по умолчанию для протокола imap без шифрования или с STARTTLS шифрованием"},
 		"Default port for pop3 protocol without encryption or with STARTTLS encryption": {"ru":"Порт по умолчанию для протокола pop3 без шифрования или с STARTTLS шифрованием"},
+		"Also, the mail service may have a separate password for connecting via imap/pop3.": {"ru":"Также почтовый сервис может иметь отдельный пароль для подключения по imap/pop3."},
+		"If another action will require access to server, connection will be reused.": {"ru":"Если другое действие снова потребует доступа к серверу, соединение будет повторно использовано."},
+		"This action should be called once before any other action that works with the mail server.": {"ru":"Это действие нужно вызвать один раз перед любым другим действием, которое работает с почтовым сервером."},
+		"The number of seconds after which the connection to the mail server will be considered unsuccessful.": {"ru":"Количество секунд, по истечению которого подключение к почтовому серверу будет считается неудачным."},
+		"With auto configuration enabled, this field should contain an email address along with the domain.": {"ru":"При включенной автоматической настройке это поле должно содержать адрес электронной почты вместе с доменом."},
+		"For most mail services, you also need to allow imap/pop3 access in your account settings. Here are":{"ru":"Для большинства почтовых сервисов вам также необходимо разрешить доступ по imap/pop3 в настройках учетной записи. Вот"},
 		"The name of the folder in which all actions will be performed if no other folder is specified in their additional settings.": {"ru":"Имя папки, в которой будут выполняться все действия, если в их дополнительных настройках не указана другая папка."},
-		"This action won't start connection, it only sets configuration. Connection will be established after first attempt to access server. When action, which triggers connection will be finished, connection won't be closed immediately. It will be preserved for a time specified in this parameter. If another action will require access to server, connection will be reused.": {"ru":"Это действие не устанавливает соединение сразу. Соединение будет установлено только после первой попытки доступа к серверу. Когда действие, запускающее соединение, будет завершено, соединение не будет закрыто. Оно будет храниться в течение времени, указанного в этом параметре. Если другое действие снова потребует доступа к серверу, соединение будет повторно использовано."},
+        "You don't need to close connection explicitly, it will be closed automatically after timeout or when the script will stop.": {"ru":"Вам не нужно специально закрывать соединение, оно будет закрыто автоматически по истечении таймаута или при остановке скрипта."},
+		"The username of the mail server, this is almost always the same as the email address, but may not include the mail domain.": {"ru":"Имя пользователя почтового сервера, оно почти всегда совпадает с адресом электронной почты, но может не включать почтовый домен."},
+		"To automatically determine the settings, a pre-prepared list is used, if the settings cannot be determined, the action will fail.": {"ru":"Для автоматического определения настроек используется заранее подготовленный список, если определить настройки не удастся, то действие завершится ошибкой."},
+		"Depending on the mail service, the connection may be available only via imap or only via pop3, or it may not be available at all via these protocols.": {"ru":"В зависимости от почтового сервиса подключение может быть доступно только по imap или только по pop3, а может быть вообще недоступно по этим протоколам."},
+		"The password of the mail server, it is almost always the same as the email password, but the mail service may have a separate password for access via imap and pop3 protocols.": {"ru":"Пароль почтового сервера, он почти всегда совпадает с паролем электронной почты, но почтовый сервис может иметь отдельный пароль для доступа по imap и pop3 протоколам."},
+		"If the value is <code>true</code> and the username is an email address along with a domain, then the action will try to automatically determine the server address, port and encryption type.": {"ru":"Если значение равно <code>true</code> и в качестве логина указан адрес электронной почты вместе с доменом, то действие попытается автоматически определить адрес сервера, порт и тип шифрования."},
+		"You also need to fill server address, port, encryption type, your username and password. These can usually be found by searching for the imap/pop3 settings for your mail service, like this: \"gmail imap settings\".":{"ru":"Также вам нужно заполнить адрес сервера, порт, тип шифрования, ваше имя пользователя и пароль. Их обычно можно найти, выполнив поиск настроек imap/pop3 для вашего почтового сервиса, например: \"Настройки gmail imap\"."},
+		"This action won't start connection, it only sets configuration. Connection will be established after first attempt to access server. When action, which triggers connection will be finished, connection won't be closed immediately.": {"ru":"Это действие не устанавливает соединение сразу. Соединение будет установлено только после первой попытки доступа к серверу. Когда действие, запускающее соединение, будет завершено, соединение не будет закрыто."},
+		"This action can automatically determine the server address, port and encryption type, for this you need to specify <code>true</code> in the \"Auto configuration\" parameter, and specify the email address along with the domain as the username.":{"ru":"Это действие может автоматически определять адрес сервера, порт и тип шифрования, для этого нужно указать <code>true</code> в параметр \"Автоматическая настройка\", а в качестве логина указать адрес электронной почты вместе с доменом."},
+		"Specify the protocol, imap or pop3, by which the connection to the mail server will be made in the \"Protocol\" parameter, please note that when using the pop3, most of the module functions will not be available. If the action is not available on pop3, then it will end with an appropriate error.":{"ru":"Укажите протокол, imap или pop3, по которому будет производится подключение к почтовому серверу в параметр \"Протокол\", учтите что при использовании pop3 большинство функций модуля будут не доступны. Если действие недоступно по pop3, то оно завершится соответствующей ошибкой."},
+		"Mailbox can contain several folders, and you can work with messages from a specific folder by changing \"Folder name\" parameter. By default it is set to \"INBOX\", this folder contains incoming messages. Each mail service provides its own default names for different folders. For example, this is default name of gmail trash folder \"[Gmail]/Trash\" and spam folder is \"[Gmail]/Spam\". You can also create your own folders and use them in this action.":{"ru":"Почтовый ящик может содержать несколько папок, и вы можете работать с письмами из определенной папки, изменяя параметр \"Имя папки\". По умолчанию он установлен в \"INBOX\", эта папка содержит входящие письма. Каждый почтовый сервис предоставляет свои собственные имена по умолчанию для разных папок. Например, имя по умолчанию для папки удаленных писем в gmail - \"[Gmail]/Trash\", для папки спама - \"[Gmail]/Spam\". Вы также можете создавать свои собственные папки и использовать их в этом действии."},
 		
+		"Use resources if you want to take them from file, url or database.": {"ru": "Используйте ресурсы, если вы хотите взять прокси из файла, url или базы данных."},
+		"Proxy with empty parameter will reset it to default value(direct connection).": {"ru": "Пустой параметр сбросит прокси до значения по умолчанию(прямое соединение)."},
 		"By default mail client works without proxy, this action sets proxy for mail client.": {"ru":"По умолчанию почтовый клиент работает без прокси, это действие устанавливает его."},
+		"You can change proxy once and it will be applied to every action which works with email.":{"ru":"Вы можете изменить прокси один раз, и он будет применяться к каждому действию, которое работает с получением писем."},
 		
 		"Flags": {"ru":"Флаги"},
 		"Parsing": {"ru":"Парсинг"},
@@ -584,7 +616,7 @@
 		"The resulting list can be processed using actions from the \"List\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"Список\"."},
 		"You can get a list of mailbox folders using the \"Folder list\" action.": {"ru":"Список папок почтового ящика можно получить с помощью действия \"Список папок\"."},
 		"This field must contain a date or a string that can be converted to a date.": {"ru":"Это поле должно содержать дату или строку, которую можно преобразовать в дату."},
-		"As a list, you can use a string consisting of flags, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из флагом, разделенных запятыми."},
+		"As a list, you can use a string consisting of flags, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из флагов, разделенных запятыми."},
 		"The resulting date can be processed using actions from the \"Date and time\" module.": {"ru":"Полученную дату можно обработать с помощью действий из модуля \"Дата и время\"."},
 		"Interval in seconds to check existence messages matching the specified criteria.": {"ru":"Интервал в секундах для проверки наличия писем, соответствующих указанным критериям."},
 		"using the two parameters below, you can make filter by the contents of this field.": {"ru":"используя два параметра ниже, можно произвести фильтрацию по содержимому этого поля."},
@@ -593,7 +625,6 @@
 		"raw - this means that the body of the message will be retrieved in its raw form, without any processing.": {"ru":"raw - это означает, что тело письма будет получено в сыром виде, без какой либо обработки."},
 		"You can choose which attachments will be saved by specifying the filename mask in the parameter below.": {"ru":"Вы можете выбрать, какие вложения будут сохранены, указав маску имени файла в параметр ниже."},
 		"text/html is the MIME type of data represented in html format, html is the markup language for web pages.": {"ru":"text/html - это MIME тип, данных представленных в html формате, html является языком разметки веб-страниц."},
-		"Using the parameters from this block, you can filter the results as you need, or leave them without filtering.": {"ru":"Используя параметры из этого блока, вы можете отфильтровать результаты по своему усмотрению или оставить их без фильтрации."},
 		"Using the parameters from this block, you can sort the results in the order you need, or leave them without sorting.": {"ru":"Используя параметры из этого блока, вы можете отсортировать результаты в нужном вам порядке или оставить их без сортировки."},
 		"This action will get the first message that matches the specified criteria and store parts of it in the specified variables.": {"ru":"Это действие получит первое письмо, соответствующее указанным критериям, и сохранит его части в указанные переменные."},
 		"Using the parameters from the \"Filtration\" block, you can filter messages at your discretion or leave them unfiltered.": {"ru":"Используя параметры из блока \"Фильтрация\" вы можете отфильтровать письма по своему усмотрению или оставить без фильтрации."},
@@ -613,6 +644,7 @@
 		"If activated, after successfully receiving the message, one or more of the specified flags will be set for it. This parameter is ignored if the \"Delete message after receiving\" parameter is enabled.": {"ru":"Если активирован, то после удачного получения письма для него будет установлен один или несколько указанных флагов. Этот параметр игнорируется, если активирован параметр \"Удалить письмо после получения\"."},
 		"If enabled, then the action will not fail if the message is not found according to the specified criteria, but will wait for the specified time, and only if the message is not found within the specified time, the action will fail.": {"ru":"Если активирован, то действие не завершится ошибкой, если письмо не будет найдено по заданным критериям, а будет ждать его указанное время, и только если за указанное время письмо не будет найдено, действие завершится ошибкой."},
 		"Wait for the appearance of the specified number of messages matching the specified criteria. The action will be completed successfully when the number of messages matching the specified criteria is equal to or greater than the number specified in this parameter.": {"ru":"Ждать появления указанного количества писем, соответствующих указанным критериям. Действие будет завершено успешно, когда количество писем, соответствующих указанным критериям, будет равно или больше числа указанного в этом параметре."},
+		"Using the parameters from this block, you can filter the results as you need, or leave them without filtering. You can combine the parameters of this block in any order, the specified parameters will be taken into account when filtering, and those not specified will be ignored.": {"ru":"Используя параметры из этого блока, вы можете отфильтровать результаты по своему усмотрению или оставить их без фильтрации. Вы можете комбинировать параметры этого блока в любом порядке, указанные параметры будут учтены при фильтрации, а не указанные проигнорированы."},
 		"The \"name\" property of the object will contain the original file name, the \"path\" property will contain the path to the saved file, and the \"type\" property will contain the mime type of the file. Having obtained the path to the file and its original name from the object, you can rename it using the \"Move file/folder\" action from the \"Filesystem\" module.": {"ru":"Свойство \"name\" объекта будет содержать оригинальное имя файла, свойство \"path\" будет содержать путь к сохраненному файлу, а свойство \"type\" будет содержать mime тип файла. Получив из объекта путь к файлу и его оригинальное имя, вы можете переименовать его с помощью действия \"Переместить Файл/Папку\" из модуля \"Файловая система\"."},
 		"The file name mask by which attachments will be filtered. Only files whose names match the mask will be retrieved and saved. In the mask, the character <code>*</code> is perceived as a sequence of any characters, and the character <code>?</code> treated as one any character. If the mask begins with the character <code>!</code>, then all attachments whose names do not match this mask will be retrieved and saved.": {"ru":"Маска имен файлов по которой будет производиться фильтрация вложений. Только файлы, имена которых соответствуют маске, будут получены и сохранены. В маске символ <code>*</code> воспринимается как последовательность любых символов, а символ <code>?</code> воспринимается как один любой символ. Если маска начинается с символа <code>!</code>, то все вложения имена которых не соответствуют этой маске будут получены и сохранены."},
 		
@@ -692,6 +724,7 @@
 		"This action will return the id of the last message.": {"ru":"Это действие вернет id последнего письма."},
 		"Find and save the id of the last message in the specified folder.": {"ru":"Найти и сохранить id последнего письма в указанной папке."},
 		"Variable in which, after successful execution of the action, the id of the last message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id последнего письма."},
+		"The received id can be used in other module actions, for example, to receive a message, set flags and delete.": {"ru":"Полученный id можно использовать в других действия модуля, например для получения письма, установки флагов и удаления."},
 		
 		"Find and save the message id by the specified criteria.": {"ru":"Найти и сохранить id письма по указанным критериям."},
 		"This action will return the id of the message found by the specified criteria.": {"ru":"Это действие вернет id письма, найденного по указанным критериям."},
@@ -722,9 +755,9 @@
 		"Filtering is performed on the server side.": {"ru":"Фильтрация выполняется на стороне сервера."},
 		"Get the number of messages that match the specified criteria.": {"ru":"Получить количество писем соответствующих указанным критериям."},
 		"Variable in which, after successful execution of the action, the number of messages will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество писем."},
-		"Using the parameters from this block, you can filter the messages as you need, or leave them without filtering.": {"ru":"Используя параметры из этого блока, вы можете отфильтровать письма по своему усмотрению или оставить их без фильтрации."},
 		"This action will return the number of messages matching the specified filtering criteria, or the count of all messages if no filtering criteria is specified.": {"ru":"Это действие вернет количество писем, соответствующих указанным критериям фильтрации, или количество всех писем, если критерии фильтрации не указаны."},
 		"If enabled, the action will not fail if the messages is not found according to the specified criteria, but will wait for the specified time, and only if the messages is not found within the specified time, the action will fail.": {"ru":"Если активирован, то действие не завершится ошибкой, если письма не будут найдены по заданным критериям, а будет ждать их указанное время, и только если за указанное время письма не будут найдены, действие завершится ошибкой."},
+		"Using the parameters from this block, you can filter the messages as you need, or leave them without filtering. You can combine the parameters of this block in any order, the specified parameters will be taken into account when filtering, and those not specified will be ignored.": {"ru":"Используя параметры из этого блока, вы можете отфильтровать письма по своему усмотрению или оставить их без фильтрации. Вы можете комбинировать параметры этого блока в любом порядке, указанные параметры будут учтены при фильтрации, а не указанные проигнорированы."},
 		
 		"Delete the specified message.": {"ru":"Удалить указанное письмо."},
 		"This action can delete several messages at once": {"ru":"Это действие может удалять несколько писем сразу"},
@@ -753,26 +786,6 @@
 		"This action will move the message from one mailbox folder to another. After the move, the message will have a new id, and you will not be able to work with it using the same id.": {"ru":"Это действие переместит письмо из одной папки почтового ящика в другую. После перемещения письмо будет иметь новый id, и вы не сможете работать с ним по тому же id."},
 		"The id of the message which need to be moved from one mailbox folder to another. If a list is specified instead of one message id, then all messages from the specified list will be moved": {"ru":"id письма, которое нужно переместить из одной папки почтового ящика в другую. Если вместо одного id письма будет указан список, то все письма из указанного списка будут перемещены"},
 		"In the additional settings, you can specify the name of the folder from which the message will be moved, otherwise the folder specified in the \"Configure receiving mail\" action will be used.": {"ru":"В дополнительных настройках можно указать имя папки, из которой будет перемещено письмо, иначе будет использоваться папка, указанная в действии \"Настроить получение почты\"."},
-		
-		"Create a new mailbox folder.": {"ru":"Создать новую папку почтового ящика."},
-		"Create subfolder bar in folder foo": {"ru":"Создать подпапку bar в папке foo"},
-		"The name of the folder which need to be created.": {"ru":"Имя папки, которую нужно создать."},
-		"This action will create a new folder with the specified name in the mailbox.": {"ru":"Это действие создаст новую папку с указанным именем в почтовом ящике."},
-		"You cannot create a folder with the name INBOX or with the same name as an existing folder.": {"ru":"Нельзя создать папку с именем INBOX или с тем же именем, что и у существующей папки."},
-		
-		"New folder name": {"ru":"Новое имя папки"},
-		"Old folder name": {"ru":"Старое имя папки"},
-		"Rename the specified mailbox folder.": {"ru":"Переименовать указанную папку почтового ящика."},
-		"The name of the folder which need to be renamed.": {"ru":"Имя папки, которую нужно переименовать."},
-		"This action will rename the specified folder in the mailbox.": {"ru":"Это действие переименует указанную папку в почтовом ящике."},
-		"The folder name to which the specified folder will be renamed.": {"ru":"Имя папки, в которое будет переименована указанная папка."},
-		"Renaming INBOX is allowed and has special behavior. It moves all messages from INBOX to a new folder with the specified name, while INBOX remains empty.": {"ru":"Переименование INBOX разрешено и имеет особое поведение. Оно перемещает все письма из INBOX в новую папку с указанным именем, а INBOX остается пустой."},
-		
-		"Delete subfolder bar from foo folder": {"ru":"Удалить подпапку bar из папки foo"},
-		"Delete the specified mailbox folder.": {"ru":"Удалить указанную папку почтового ящика."},
-		"The name of the folder which need to be deleted.": {"ru":"Имя папки, которую нужно удалить."},
-		"You cannot delete a folder with the name INBOX.": {"ru":"Нельзя удалить папку с именем INBOX."},
-		"This action will completely and permanently delete the folder with the specified name and all messages it contains from the mailbox.": {"ru":"Это действие полностью и безвозвратно удалит папку с указанным именем и все содержащиеся в ней письма из почтового ящика."},
 		
 		"Get a list of flags for the specified message.": {"ru":"Получить список флагов для указанного письма."},
 		"The id of the message which flags needs to be retrieved.": {"ru":"id письма, флаги которого нужно получить."},
@@ -827,6 +840,26 @@
 		"Variable in which, after successful execution of the action, the number of all messages in the specified folder will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество всех писем в указанной папке."},
 		"Variable in which, after successful execution of the action, the number of recent messages in the specified folder will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество недавних писем в указанной папке."},
 		"Variable in which, after successful execution of the action, the number of unseen messages in the specified folder will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записано количество непрочитанных писем в указанной папке."},
+		
+		"Create a new mailbox folder.": {"ru":"Создать новую папку почтового ящика."},
+		"Create subfolder bar in folder foo": {"ru":"Создать подпапку bar в папке foo"},
+		"The name of the folder which need to be created.": {"ru":"Имя папки, которую нужно создать."},
+		"This action will create a new folder with the specified name in the mailbox.": {"ru":"Это действие создаст новую папку с указанным именем в почтовом ящике."},
+		"You cannot create a folder with the name INBOX or with the same name as an existing folder.": {"ru":"Нельзя создать папку с именем INBOX или с тем же именем, что и у существующей папки."},
+		
+		"New folder name": {"ru":"Новое имя папки"},
+		"Old folder name": {"ru":"Старое имя папки"},
+		"Rename the specified mailbox folder.": {"ru":"Переименовать указанную папку почтового ящика."},
+		"The name of the folder which need to be renamed.": {"ru":"Имя папки, которую нужно переименовать."},
+		"This action will rename the specified folder in the mailbox.": {"ru":"Это действие переименует указанную папку в почтовом ящике."},
+		"The folder name to which the specified folder will be renamed.": {"ru":"Имя папки, в которое будет переименована указанная папка."},
+		"Renaming INBOX is allowed and has special behavior. It moves all messages from INBOX to a new folder with the specified name, while INBOX remains empty.": {"ru":"Переименование INBOX разрешено и имеет особое поведение. Оно перемещает все письма из INBOX в новую папку с указанным именем, а INBOX остается пустой."},
+		
+		"Delete subfolder bar from foo folder": {"ru":"Удалить подпапку bar из папки foo"},
+		"Delete the specified mailbox folder.": {"ru":"Удалить указанную папку почтового ящика."},
+		"The name of the folder which need to be deleted.": {"ru":"Имя папки, которую нужно удалить."},
+		"You cannot delete a folder with the name INBOX.": {"ru":"Нельзя удалить папку с именем INBOX."},
+		"This action will completely and permanently delete the folder with the specified name and all messages it contains from the mailbox.": {"ru":"Это действие полностью и безвозвратно удалит папку с указанным именем и все содержащиеся в ней письма из почтового ящика."},
 		
 		"Enable mail receiving module debug.": {"ru":"Включите отладку модуля приема почты."},
 		"Enable or disable mail receiving module debug.": {"ru":"Включить или отключить отладку модуля приема почты."},

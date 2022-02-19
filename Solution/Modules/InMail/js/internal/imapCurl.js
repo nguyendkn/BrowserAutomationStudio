@@ -1498,6 +1498,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 			if(options.size){
 				fetching.push('RFC822.SIZE');
 			};
+			if(Array.isArray(options.extensions)){
+				options.extensions.forEach(function(extension){
+					fetching.push(extension.toUpperCase());
+				});
+			};
 			
 			if(!_is_nilb(options.bodies)){
 				var bodies = options.bodies;

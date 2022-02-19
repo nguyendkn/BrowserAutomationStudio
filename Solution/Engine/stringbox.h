@@ -28,6 +28,8 @@ namespace BrowserAutomationStudioFramework
         bool DoMix;
         void Erase(QList<QPair<QString,StringBoxNode> >::iterator it);
         bool Greedy;
+        QString TypeId;
+        QString GetIdFromDatabaseResource(const QString& ResourceData);
 
     public:
         explicit StringBox(QObject *parent = 0);
@@ -60,6 +62,7 @@ namespace BrowserAutomationStudioFramework
         void SetMaxFail(int fail);
         void SetMaxSimultaneousUse(int sim);
         void SetInterval(int interval);
+        void SetTypeId(const QString& TypeId);
         virtual void SetDoMix(bool DoMix);
 
         bool GetDoMix();

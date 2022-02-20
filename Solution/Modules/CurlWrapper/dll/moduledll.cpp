@@ -11,6 +11,7 @@
 #include <QJsonArray>
 #include <QSharedPointer>
 #include <QDateTime>
+#include <QTextCodec>
 //#include <QDebug>
 #include "curl/curl.h"
 
@@ -34,7 +35,7 @@ extern "C" {
 
     void* StartThread()
     {
-        return 0;
+        return new CurlDataClass();
     }
 
     void EndThread(void * DllData)
@@ -1031,6 +1032,84 @@ extern "C" {
         char * ResMemory = AllocateSpace(ResArray.size(),AllocateData);
         memcpy(ResMemory, ResArray.data(), ResArray.size() );
     }
+
+
+    void Decoder(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
+    {
+        QJsonDocument InputDocument;
+        QJsonParseError err;
+        InputDocument = QJsonDocument::fromJson(QByteArray(InputJson), &err);
+        if(err.error)
+        {
+            QByteArray ResArray = GenerateError("Failed to parse json");
+
+            char * ResMemory = AllocateSpace(ResArray.size(),AllocateData);
+            memcpy(ResMemory, ResArray.data(), ResArray.size() );
+            return;
+        }
+        QJsonObject InputObject = InputDocument.object();
+
+        QByteArray Charset = InputObject["charset"].toString().toUtf8();
+        QString Encoding = InputObject["encoding"].toString().toLower();
+        QByteArray Data = InputObject["data"].toString().toUtf8();
+        QByteArray DecodedData;
+        QString Result;
+
+        if(Encoding == QString("q"))
+        {
+            QByteArray src = Data;
+            int len = src.length();
+            for (int i = 0; i < len; i++)
+            {
+                if (src[i] == '_')
+                {
+                    DecodedData += 0x20;
+                }
+                else if (src[i] == '=')
+                {
+                    if (i+2 < len)
+                    {
+                        DecodedData += QByteArray::fromHex(src.mid(i+1,2));
+                        i += 2;
+                    }
+                }
+                else
+                {
+                    DecodedData += src[i];
+                }
+            }
+        }
+        else if (Encoding == QString("b"))
+        {
+            DecodedData = QByteArray::fromBase64(Data);
+        }
+        QTextCodec *codec = QTextCodec::codecForName(Charset);
+        if (codec)
+        {
+            Result = codec->toUnicode(DecodedData);
+        }else
+        {
+            Result = QString::fromUtf8(DecodedData);
+        }
+
+
+        QVariantMap res;
+
+        res.insert("success", true);
+
+        res.insert("result", Result);
+
+        QJsonObject object = QJsonObject::fromVariantMap(res);
+
+        QJsonDocument document;
+        document.setObject(object);
+
+        QByteArray ResArray = document.toJson();
+
+        char * ResMemory = AllocateSpace(ResArray.size(),AllocateData);
+        memcpy(ResMemory, ResArray.data(), ResArray.size() );
+    }
+
 
 
 }

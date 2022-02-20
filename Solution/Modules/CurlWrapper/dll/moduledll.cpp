@@ -10,10 +10,17 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QSharedPointer>
+#include <QDateTime>
 //#include <QDebug>
 #include "curl/curl.h"
 
 extern "C" {
+
+    struct CurlDataClass
+    {
+        CURL *Handler = 0;
+        quint64 EndTimeout = 0;
+    };
 
     void* StartDll()
     {
@@ -32,8 +39,41 @@ extern "C" {
 
     void EndThread(void * DllData)
     {
+        CurlDataClass* CurlData = (CurlDataClass*)DllData;
+
+        if(CurlData)
+        {
+            if(CurlData->Handler)
+            {
+                curl_easy_cleanup(CurlData->Handler);
+                CurlData->Handler = 0;
+            }
+            CurlData->EndTimeout = 0;
+            delete CurlData;
+        }
 
     }
+
+    void IddleThread(void * ThreadData)
+    {
+        CurlDataClass* CurlData = (CurlDataClass*)ThreadData;
+
+        if(CurlData)
+        {
+            quint64 Now = QDateTime::currentMSecsSinceEpoch();
+            if(CurlData->EndTimeout > 0 && Now > CurlData->EndTimeout)
+            {
+                if(CurlData->Handler)
+                {
+                    curl_easy_cleanup(CurlData->Handler);
+                    CurlData->Handler = NULL;
+                }
+
+                CurlData->EndTimeout = 0;
+            }
+        }
+    }
+
 
     QString StrinfigyReturnCode(int key)
     {
@@ -623,7 +663,23 @@ extern "C" {
 
     }
 
+    void CurlEasyCleanup(char *InputJson, ResizeFunction AllocateSpace, void* AllocateData, void* DllData, void* ThreadData, unsigned int ThreadId, bool *NeedToStop, bool* WasError)
+    {
+        CurlDataClass* CurlData = (CurlDataClass*)ThreadData;
+
+        if(CurlData && CurlData->Handler && CurlData->EndTimeout > 0 /* if timeout is currently active */)
+        {
+            curl_easy_cleanup(CurlData->Handler);
+            CurlData->Handler = 0;
+            CurlData->EndTimeout = 0;
+        }
+
+    }
+
     void CurlEasyPerform(char *InputJson, ResizeFunction AllocateSpace, void* AllocateData, void* DllData, void* ThreadData, unsigned int ThreadId, bool *NeedToStop, bool* WasError)    {
+
+
+        CurlDataClass* CurlData = (CurlDataClass*)ThreadData;
 
         CURLcode code;
         CURL *curl;
@@ -632,6 +688,8 @@ extern "C" {
         bool IsTrace = false;
         bool IsFetch = false;
         TraceDataClass TraceData;
+        bool SaveSession = false;
+        int Timeout = -1;
 
         QList<curl_slist *> CurlLists;
         {
@@ -693,6 +751,16 @@ extern "C" {
             if(InputObject.object().contains("is_fetch"))
             {
                 IsFetch = InputObject.object()["is_fetch"].toBool();
+            }
+
+            if(InputObject.object().contains("save_session"))
+            {
+                SaveSession = InputObject.object()["save_session"].toBool();
+            }
+
+            if(InputObject.object().contains("timeout"))
+            {
+                Timeout = InputObject.object()["timeout"].toInt();
             }
 
             if(InputObject.object().contains("read_from_string"))
@@ -778,7 +846,36 @@ extern "C" {
             }
             //qDebug()<<"++Create";
 
-            curl = curl_easy_init();
+            bool IsInitialized = false;
+            if(Timeout >= 0 && SaveSession)
+            {
+                if(CurlData && CurlData->Handler)
+                {
+                    //Use saved session
+                    curl_easy_reset(CurlData->Handler);
+                    curl = CurlData->Handler;
+                    IsInitialized = true;
+                }
+            }else
+            {
+                if(CurlData && CurlData->Handler)
+                {
+                    //Delete previous session, this session can't reuse it
+                    curl_easy_cleanup(CurlData->Handler);
+                    CurlData->Handler = 0;
+                }
+            }
+
+            if(CurlData)
+            {
+                //Don't delete while performing request
+                CurlData->EndTimeout = 0;
+            }
+
+            if(!IsInitialized)
+            {
+                curl = curl_easy_init();
+            }
 
             //Init curl
 
@@ -873,7 +970,16 @@ extern "C" {
         }
 
         //qDebug()<<"--Cleanup";
-        curl_easy_cleanup(curl);
+        if(Timeout >= 0 && SaveSession)
+        {
+            CurlData->Handler = curl;
+
+            CurlData->EndTimeout = QDateTime::currentMSecsSinceEpoch() + Timeout;
+
+        }else
+        {
+            curl_easy_cleanup(curl);
+        }
         for(curl_slist * list:CurlLists)
         {
             //qDebug()<<"ListRemove";

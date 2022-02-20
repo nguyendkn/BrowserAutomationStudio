@@ -123,7 +123,7 @@
           types: ['script', 'undefined', 'boolean', 'string', 'number', 'date', 'null'],
           ...this.model.toJSON(),
         });
-        this.$el.html(html).modal({ backdrop: 'static', keyboard: false }).find('select').selectpicker();
+        this.$el.html(html).modal({ backdrop: 'static' }).find('select').selectpicker();
       }
       return this;
     },

@@ -222,7 +222,7 @@ window.JsonTreeNode = {
         </div>
       </div>
       <div v-if="isExpanded && type === 'object'" class="jt-node-nodes">
-        <json-tree-node v-for="key in filteredKeys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)"  />
+        <json-tree-node v-for="key in filteredKeys" :key="key" :name="key" :value="value[key]" :path="path.concat(key)" />
         <span v-if="length > 100" class="jt-node-ellipsis">...</span>
         <span class="jt-node-bracket">}</span>
       </div>

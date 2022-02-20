@@ -56,8 +56,13 @@
 
     function stringify(value) {
         return JSON.stringify(value, function (key) {
-            if (this[key] instanceof Date) return '__date__' + this[key].toJSON();
-            return typeof this[key] === 'undefined' ? '__undefined__' : this[key];
+            var value = this[key];
+
+            if (value instanceof Date) {
+                return '__date__' + value.toJSON();
+            }
+
+            return typeof value === 'undefined' ? '__undefined__' : value;
         })
     }
 

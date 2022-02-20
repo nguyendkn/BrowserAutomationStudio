@@ -3,7 +3,6 @@
 #include <QJsonObject>
 #include <QMap>
 #include <QDir>
-#include <QRegularExpression>
 #include <QJsonDocument>
 #include <QByteArray>
 #include <QVariant>
@@ -379,65 +378,6 @@ extern "C" {
         BlobList Blobs;
     };
 
-    struct TraceDataClass
-    {
-        bool SaveHeadersInData = false;
-        bool SaveTraceData = false;
-        QByteArray TraceData;
-        QByteArray HeadersInData;
-    };
-
-    QStringList GetFetchData(const QString& HeadersIn)
-    {
-        QStringList Result;
-
-        int IndexFetch1 = HeadersIn.indexOf(QRegularExpression("\\\n\\* \\d+ FETCH", QRegularExpression::MultilineOption));
-        int IndexFetch2 = HeadersIn.indexOf(QRegularExpression("^\\* \\d+ FETCH", QRegularExpression::MultilineOption));
-        int IndexFetchStart = -1;
-        if(IndexFetch1 >= 0 && IndexFetch1 > IndexFetchStart)
-        {
-            IndexFetchStart = IndexFetch1;
-        }
-        if(IndexFetch2 >= 0 && IndexFetch2 > IndexFetchStart)
-        {
-            IndexFetchStart = IndexFetch2;
-        }
-
-        if(IndexFetchStart < 0)
-        {
-            return Result;
-        }
-
-        int IndexFetchEnd = HeadersIn.indexOf(QRegularExpression("\\\n[A-Z]\\d+ OK", QRegularExpression::MultilineOption),IndexFetchStart);
-        if(IndexFetchEnd < 0)
-        {
-            return Result;
-        }
-
-        int IndexCurrent = IndexFetchStart;
-
-
-        while(true)
-        {
-            int IndexCurrentNew = HeadersIn.indexOf(QRegularExpression("\\\n\\* \\d+ FETCH", QRegularExpression::MultilineOption),IndexCurrent + 5);
-
-            if(IndexCurrentNew < 0 || IndexCurrentNew >= IndexFetchEnd)
-            {
-                //Add last portion and finish
-                Result.append(HeadersIn.mid(IndexCurrent,IndexFetchEnd - IndexCurrent + 1));
-                break;
-            }
-
-            Result.append(HeadersIn.mid(IndexCurrent,IndexCurrentNew - IndexCurrent + 1));
-
-            IndexCurrent = IndexCurrentNew + 1;
-        }
-
-        return Result;
-
-
-    }
-
     int WriteFunction(char* data, size_t size, size_t nmemb, WriteDataClass* writedata)
     {
         int result = 0;
@@ -589,20 +529,9 @@ extern "C" {
     }
 
 
-    int TraceFunction(CURL *handle, curl_infotype type, char *data, size_t size, TraceDataClass *TraceData)
+    int TraceFunction(CURL *handle, curl_infotype type, char *data, size_t size, QString *trace)
     {
-        if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN) //Don't save SSL data as it is binary
-        {
-            if(TraceData->SaveHeadersInData && type == CURLINFO_HEADER_IN)
-            {
-                TraceData->HeadersInData.append(data, size);
-            }
-            if(TraceData->SaveTraceData)
-            {
-                TraceData->TraceData.append(data, size);
-            }
-        }
-
+        trace->append(QString::fromUtf8(QByteArray(data,size)));
         return 1;
     }
 
@@ -629,9 +558,8 @@ extern "C" {
         CURL *curl;
         WriteDataClass WriteData;
         ReadDataClass ReadData;
-        bool IsTrace = false;
-        bool IsFetch = false;
-        TraceDataClass TraceData;
+        bool Trace = false;
+        QString TraceString;
 
         QList<curl_slist *> CurlLists;
         {
@@ -687,12 +615,7 @@ extern "C" {
 
             if(InputObject.object().contains("trace"))
             {
-                IsTrace = InputObject.object()["trace"].toBool();
-            }
-
-            if(InputObject.object().contains("is_fetch"))
-            {
-                IsFetch = InputObject.object()["is_fetch"].toBool();
+                Trace = InputObject.object()["trace"].toBool();
             }
 
             if(InputObject.object().contains("read_from_string"))
@@ -849,13 +772,11 @@ extern "C" {
             curl_easy_setopt(curl,CURLOPT_UPLOAD, 1L);
         }
 
-        if(IsTrace || IsFetch)
+        if(Trace)
         {
-            TraceData.SaveHeadersInData = IsFetch;
-            TraceData.SaveTraceData = IsTrace;
             curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
             curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, &TraceFunction);
-            curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &TraceData);
+            curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &TraceString);
         }
 
         //Set progress function
@@ -905,16 +826,10 @@ extern "C" {
             res.insert("result",QString::fromUtf8(WriteData.Data));
         }
 
-        if(IsTrace)
+        if(Trace)
         {
-            res.insert("trace",QString::fromUtf8(TraceData.TraceData));
+            res.insert("trace",TraceString);
         }
-
-        if(IsFetch)
-        {
-            res.insert("fetchlist",GetFetchData(QString::fromUtf8(TraceData.HeadersInData)));
-        }
-
         QJsonObject object = QJsonObject::fromVariantMap(res);
 
         QJsonDocument document;

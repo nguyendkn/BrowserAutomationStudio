@@ -4,6 +4,7 @@
 #include <QHash>
 #include <QFile>
 #include <QSharedPointer>
+#include <QTimer>
 #include "imodulemanager.h"
 #include "engine_global.h"
 
@@ -20,6 +21,7 @@ namespace BrowserAutomationStudioFramework
             int ThreadNumber;
             void *data;
         };
+        QTimer* IddleTimer = 0;
         using DllData = std::shared_ptr<DllDataClass>;
         QList<DllData> DllDataList;
         QList<DllData> ThreadDataList;
@@ -70,7 +72,8 @@ namespace BrowserAutomationStudioFramework
 
     signals:
 
-    public slots:
+    private slots:
+        void IddleThreads();
 
     };
 }

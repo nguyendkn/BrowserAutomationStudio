@@ -93,7 +93,7 @@
             }
         }
 
-        return type === 'string' ? value.slice(0, MAX_CHARS) : value;
+        return type === 'string' && value.length > MAX_CHARS ? value.slice(0, MAX_CHARS) + '...' : value;
     }
 
     function global(name) {

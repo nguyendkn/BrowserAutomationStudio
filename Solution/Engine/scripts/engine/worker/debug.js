@@ -9,7 +9,7 @@
             var path = JSON.parse(key), value = undefined;
 
             if (path.length) {
-                var name = path[0], index = 1, length = path.length - 1;
+                var name = path[0], path = path.slice(1), index = 0, length = path.length;
 
                 if (name.indexOf('GLOBAL:') === 0) {
                     value = global(name);

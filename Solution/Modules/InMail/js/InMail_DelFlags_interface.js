@@ -28,16 +28,11 @@
 		disable_int: true,
 		value_string: "",
 		help: {
-			description: tr("List or one flag which needs to remove from the message.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
+			description: tr("List or one flag which needs to remove from the message.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation.") + "<br/><strong>\\Seen</strong> - " + tr("Message has been read") + "<br/><strong>\\Answered</strong> - " + tr("Message has been answered") + "<br/><strong>\\Flagged</strong> - " + tr("Message is \"flagged\" for urgent/special attention") + "<br/><strong>\\Deleted</strong> - " + tr("Message is marked for removal") + "<br/><strong>\\Draft</strong> - " + tr("Message has not completed composition (marked as a draft)"),
 			examples: [
 				{code: "\\Seen,\\Flagged"},
 				{code: "\\Seen, \\Flagged"},
-				{code: "[\"\\Seen\", \"\\Flagged\"]"},
-				{code: "<br/>\\Seen", description: tr("Message has been read")},
-				{code: "\\Answered", description: tr("Message has been answered")},
-				{code: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
-				{code: "\\Deleted", description: tr("Message is marked for removal")},
-				{code: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+				{code: "[\"\\Seen\", \"\\Flagged\"]"}
 			]
 		}
 	}) %>

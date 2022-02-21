@@ -27,7 +27,7 @@
 				examples:[
 					{code: "@twitter.com"},
 					{code: "info@twitter.com"},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in sender")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in sender")}
 				]
 			}
 		}) %>
@@ -69,7 +69,7 @@
 				examples: [
 					{code: "you@site.com"},
 					{code: "test@yourdomain.com"},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in recipient")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in recipient")}
 				]
 			}
 		}) %>
@@ -111,7 +111,7 @@
 				examples: [
 					{code: tr("Business proposal")},
 					{code: tr("Email confirmation")},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in subject")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in subject")}
 				]
 			}
 		}) %>
@@ -153,7 +153,7 @@
 				examples: [
 					{code: "Hello"},
 					{code: "CODE:"},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in text")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in text")}
 				]
 			}
 		}) %>
@@ -173,6 +173,13 @@
 			id: "flags",
 			description: tr("Contains"),
 			default_selector: "string",
+			variants: [
+				{value: "\\Seen", description: tr("Message has been read")},
+				{value: "\\Answered", description: tr("Message has been answered")},
+				{value: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
+				{value: "\\Deleted", description: tr("Message is marked for removal")},
+				{value: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+			],
 			disable_int: true,
 			value_string: "",
 			help:{
@@ -190,6 +197,13 @@
 			id: "notFlags",
 			description: tr("Does not contain"),
 			default_selector: "string",
+			variants: [
+				{value: "\\Seen", description: tr("Message has been read")},
+				{value: "\\Answered", description: tr("Message has been answered")},
+				{value: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
+				{value: "\\Deleted", description: tr("Message is marked for removal")},
+				{value: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+			],
 			disable_int: true,
 			value_string: "",
 			help:{
@@ -214,7 +228,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone)") + ", " + tr("using the two parameters below, you can make filter by the contents of this field.") + " " + tr("Date can be created using actions from the \"Date and time\" module."), examples: [{code: new Date('May 13 2021')}, {code: new Date('Jan 20 2022 16:57:26')}, {code: new Date()}]})) %>"></i>
+		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone)") + ", " + tr("using the two parameters below, you can make filter by the contents of this field.") + " " + tr("Date can be created using actions from the \"Date and time\" module."), examples: [{code: '9/14/2003'}, {code: 'May 13 2021'}, {code: '1622214946346'}, {code: new Date('Jan 20 2022 16:57:26')}, {code: new Date()}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "since",
 			description: tr("From date"),
@@ -224,7 +238,9 @@
 			help: {
 				description: tr("Optional parameter.") + " " + tr("Message received is within or later than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
 				examples: [
+					{code: '9/14/2003'},
 					{code: 'May 13 2021'},
+					{code: '1622214946346'},
 					{code: new Date('Jan 20 2022 16:57:26')},
 					{code: new Date()}
 				]
@@ -239,7 +255,9 @@
 			help: {
 				description: tr("Optional parameter.") + " " + tr("Message received is earlier than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
 				examples: [
+					{code: '9/14/2003'},
 					{code: 'May 13 2021'},
+					{code: '1622214946346'},
 					{code: new Date('Jan 20 2022 16:57:26')},
 					{code: new Date()}
 				]

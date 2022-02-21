@@ -27,7 +27,7 @@
 				examples:[
 					{code: "@twitter.com"},
 					{code: "info@twitter.com"},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in sender")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in sender")}
 				]
 			}
 		}) %>
@@ -69,7 +69,7 @@
 				examples: [
 					{code: "you@site.com"},
 					{code: "test@yourdomain.com"},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in recipient")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in recipient")}
 				]
 			}
 		}) %>
@@ -111,7 +111,7 @@
 				examples: [
 					{code: tr("Business proposal")},
 					{code: tr("Email confirmation")},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in subject")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in subject")}
 				]
 			}
 		}) %>
@@ -153,7 +153,7 @@
 				examples: [
 					{code: "Hello"},
 					{code: "CODE:"},
-					{code: tr("Empty string"), description: tr("Don't filter by non-content in text")}
+					{code: tr("Empty string"), description: tr("Don't filter by \"Does not contain\" field in text")}
 				]
 			}
 		}) %>
@@ -173,6 +173,13 @@
 			id: "flags",
 			description: tr("Contains"),
 			default_selector: "string",
+			variants: [
+				{value: "\\Seen", description: tr("Message has been read")},
+				{value: "\\Answered", description: tr("Message has been answered")},
+				{value: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
+				{value: "\\Deleted", description: tr("Message is marked for removal")},
+				{value: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+			],
 			disable_int: true,
 			value_string: "",
 			help:{
@@ -190,6 +197,13 @@
 			id: "notFlags",
 			description: tr("Does not contain"),
 			default_selector: "string",
+			variants: [
+				{value: "\\Seen", description: tr("Message has been read")},
+				{value: "\\Answered", description: tr("Message has been answered")},
+				{value: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
+				{value: "\\Deleted", description: tr("Message is marked for removal")},
+				{value: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+			],
 			disable_int: true,
 			value_string: "",
 			help:{
@@ -214,7 +228,7 @@
 				</form>
 			</div>
 		</div>
-		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone)") + ", " + tr("using the two parameters below, you can make filter by the contents of this field.") + " " + tr("Date can be created using actions from the \"Date and time\" module."), examples: [{code: new Date('May 13 2021')}, {code: new Date('Jan 20 2022 16:57:26')}, {code: new Date()}]})) %>"></i>
+		<span class="tr" style="margin-left:15px">Receiving date</span> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Receiving date"), description: tr("Internal date of the message (disregarding time and timezone)") + ", " + tr("using the two parameters below, you can make filter by the contents of this field.") + " " + tr("Date can be created using actions from the \"Date and time\" module."), examples: [{code: '9/14/2003'}, {code: 'May 13 2021'}, {code: '1622214946346'}, {code: new Date('Jan 20 2022 16:57:26')}, {code: new Date()}]})) %>"></i>
 		<%= _.template($('#input_constructor').html())({
 			id: "since",
 			description: tr("From date"),
@@ -224,7 +238,9 @@
 			help: {
 				description: tr("Optional parameter.") + " " + tr("Message received is within or later than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
 				examples: [
+					{code: '9/14/2003'},
 					{code: 'May 13 2021'},
+					{code: '1622214946346'},
 					{code: new Date('Jan 20 2022 16:57:26')},
 					{code: new Date()}
 				]
@@ -239,7 +255,9 @@
 			help: {
 				description: tr("Optional parameter.") + " " + tr("Message received is earlier than the specified date.") + " " + tr("This field must contain a date or a string that can be converted to a date.") + " " + tr("Date can be created using actions from the \"Date and time\" module."),
 				examples: [
+					{code: '9/14/2003'},
 					{code: 'May 13 2021'},
+					{code: '1622214946346'},
 					{code: new Date('Jan 20 2022 16:57:26')},
 					{code: new Date()}
 				]
@@ -639,7 +657,7 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="getAttachNames">
-			<input type="checkbox" id="getAttachNames" style="margin-left:25px"/> <label for="getAttachNames" class="tr">Get list of attached file names</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get list of attached file names"), description: tr("If enabled, then the list of filenames attached to the message will be retrieved from the server and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Get message date from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message date from server")}]})) %>"></i>
+			<input type="checkbox" id="getAttachNames" style="margin-left:25px"/> <label for="getAttachNames" class="tr">Get list of attached file names</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Get list of attached file names"), description: tr("If enabled, then the list of filenames attached to the message will be retrieved from the server and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Get list of file attachment names of the message from server and save")}, {code: tr("Deactivated"), description: tr("Don't get list of file attachment names of the message from server")}]})) %>"></i>
 		</span>
 		<span id="advancedAttachnames">
 			<%= _.template($('#variable_constructor').html())({
@@ -683,7 +701,7 @@
 						{code: tr("*.js"), description: tr("All JavaScript files")},
 						{code: tr("*.txt"), description: tr("All text files")},
 						{code: tr("!*.txt"), description: tr("All files except text")},
-						{code: tr("*.js;*.txt"), description: tr("All JavaScript and text files")},
+						{code: tr("*.js;*.txt"), description: tr("All JavaScript and all text files")},
 						{code: tr("*"), description: tr("All files")}
 					]
 				}
@@ -840,16 +858,11 @@
 				disable_int: true,
 				value_string: "",
 				help: {
-					description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation."),
+					description: tr("List or one flag which needs to set for the message.") + " " + tr("As a list, you can use a string consisting of flags, separated by commas.") + " " + tr("The possible flags may differ depending on the server implementation.") + "<br/><strong>\\Seen</strong> - " + tr("Message has been read") + "<br/><strong>\\Answered</strong> - " + tr("Message has been answered") + "<br/><strong>\\Flagged</strong> - " + tr("Message is \"flagged\" for urgent/special attention") + "<br/><strong>\\Deleted</strong> - " + tr("Message is marked for removal") + "<br/><strong>\\Draft</strong> - " + tr("Message has not completed composition (marked as a draft)"),
 					examples: [
 						{code: "\\Seen,\\Flagged"},
 						{code: "\\Seen, \\Flagged"},
-						{code: "[\"\\Seen\", \"\\Flagged\"]"},
-						{code: "<br/>\\Seen", description: tr("Message has been read")},
-						{code: "\\Answered", description: tr("Message has been answered")},
-						{code: "\\Flagged", description: tr("Message is \"flagged\" for urgent/special attention")},
-						{code: "\\Deleted", description: tr("Message is marked for removal")},
-						{code: "\\Draft", description: tr("Message has not completed composition (marked as a draft)")}
+						{code: "[\"\\Seen\", \"\\Flagged\"]"}
 					]
 				}
 			}) %>

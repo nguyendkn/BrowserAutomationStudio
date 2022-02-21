@@ -70,10 +70,10 @@
         var type = typeof value;
 
         if (type === 'object' && value) {
-            var type = Object.prototype.toString.call(value), depth = depth || 0;
+            var type = Object.prototype.toString.call(value), depth = depth || 1;
 
             if (type === '[object Object]') {
-                if (depth >= MAX_DEPTH) return {};
+                if (depth > MAX_DEPTH) return {};
 
                 var keys = Object.keys(value), object = keys.slice(0, MAX_ITEMS).reduce(function (acc, key) {
                     return (acc[key] = truncate(value[key], depth + 1), acc);
@@ -83,7 +83,7 @@
             }
 
             if (type === '[object Array]') {
-                if (depth >= MAX_DEPTH) return [];
+                if (depth > MAX_DEPTH) return [];
 
                 var array = value.slice(0, MAX_ITEMS).map(function (value) {
                     return truncate(value, depth + 1);

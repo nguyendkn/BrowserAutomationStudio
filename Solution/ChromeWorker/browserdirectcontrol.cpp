@@ -107,6 +107,13 @@ void BrowserDirectControl::TimeoutLastInspect()
 
 void BrowserDirectControl::ApplyInspectResult(MouseClickItem Item, InspectResult Inspect)
 {
+    if(_BrowserData->ManualControl != BrowserData::DirectRecord)
+    {
+        IsInspecting = false;
+        MouseClicks.clear();
+        return;
+    }
+
     //TID_UI
     bool IsDownOrUp = Item.IsDownOrUp;
     bool IsDrop = Item.IsDrop;
@@ -469,6 +476,11 @@ void BrowserDirectControl::SendSequenceItems(std::vector<SequenceItem>& Items)
     {
         SendSequenceItem(Wait);
     }
+}
+
+void BrowserDirectControl::ClearSequence()
+{
+    Sequence.clear();
 }
 
 void BrowserDirectControl::ProcessSequence()

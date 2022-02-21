@@ -1892,17 +1892,18 @@ _InMail.configs = function(){
 		},
 		"rambler.ru": {
 			imap: {
-				host: "mail.rambler.ru",
+				host: "imap.rambler.ru",
 				port: 993,
 				encrypt: "ssl",
 				username: "%email%"
 			},
 			pop3: {
-				host: "mail.rambler.ru",
+				host: "pop.rambler.ru",
 				port: 995,
 				encrypt: "ssl",
 				username: "%email%"
-			}
+			},
+			domains: ["rambler.ua", "autorambler.ru", "myrambler.ru", "lenta.ru", "ro.ru"]
 		},
 		"red.plala.or.jp": {
 			pop3: {

@@ -427,19 +427,6 @@ _InMail = {
 		_call_function(api.moveMessages, {uids: uids, toBox: toBox, box: box})!
 	},
 	
-	fetch: function(){
-		var uids = _function_argument("uids");
-		var options = _function_argument("options");
-		var box = _InMail.prepareBox(_function_argument("box"));
-		
-		var api = _InMail.getApi();
-		
-		_call_function(api.fetch, {uids: uids, options: options, box: box})!
-		var messages = _result_function();
-		
-		_function_return(messages);
-	},
-	
 	getMessages: function(){
 		var uids = _function_argument("uids");
 		var body = _avoid_nilb(_function_argument("body"), true);

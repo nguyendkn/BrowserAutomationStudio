@@ -106,6 +106,71 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		};
 	};
 	
+	this.decodeWords = function(str){
+		return (
+			(str || '')
+				.toString()
+				// remove spaces between mime encoded words
+				.replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
+				// decode words
+				.replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return _InMail.curl.decoder(charset, encoding, text) || text})
+		);
+	};
+
+	this.parseHeader = function(str, noDecode){
+		var lines = str.split('\r\n');
+		var len = lines.length;
+		var header = {};
+		var h = undefined;
+		var i = undefined;
+			
+		for(i = 0; i < len; ++i){
+			if(lines[i].length === 0){
+				break; // empty line separates message's header and body
+			};
+			if(lines[i][0] === '\t' || lines[i][0] === ' '){
+				if(!Array.isArray(header[h])){
+					continue; // ignore invalid first line
+				};
+				// folded header content
+				var val = lines[i];
+				if(!noDecode){
+					if(/=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=$/i.test(lines[i - 1]) && /^[ \t]=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=/i.test(val)){
+						// RFC2047 says to *ignore* leading whitespace in folded header values
+						// for adjacent encoded-words ...
+						val = val.substring(1);
+					};
+				};
+				header[h][header[h].length - 1] += val;
+			}else{
+				var m = /^([^:]+):[ \t]?(.+)?$/.exec(lines[i]);
+				if(m){
+					h = m[1].toLowerCase().trim();
+					if(m[2]){
+						if(header[h] === undefined){
+							header[h] = [m[2]];
+						}else{
+							header[h].push(m[2]);
+						};
+					}else{
+						header[h] = [''];
+					};
+				}else{
+					break;
+				};
+			};
+		};
+		if(!noDecode){
+			for(h in header){
+				var hvs = header[h];
+				for(i = 0, len = header[h].length; i < len; ++i){
+					hvs[i] = api.decodeWords(hvs[i]);
+				};
+			};
+		};
+		return header;
+	};
+	
 	this.errorHandler = function(error, data){
 		error = error.toString();
 		data = _avoid_nil(data).toString();

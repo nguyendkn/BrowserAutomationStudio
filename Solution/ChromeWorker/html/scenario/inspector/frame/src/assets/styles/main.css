@@ -60,6 +60,7 @@
   align-items: center;
   line-height: 18px;
   color: #606060;
+  padding: 8px 0;
   display: grid;
   opacity: 0.5;
   gap: 0 8px;
@@ -77,20 +78,9 @@
 .app-tool {
   justify-content: flex-end;
   min-width: 118px;
+  padding: 8px 0;
   margin: 0 auto;
   display: flex;
-}
-
-@media (max-width: 236px) {
-  .app-tool {
-    margin-top: 8px;
-  }
-}
-
-@media (min-width: 237px) {
-  .app-tool {
-    margin-top: 0px;
-  }
 }
 
 /* Toolbar */
@@ -127,7 +117,7 @@
 .app-header {
   border-bottom: 1px solid #d9d9d9;
   background: #f6f6f6;
-  padding: 8px 12px;
+  padding: 0 12px;
   color: #606060;
   display: grid;
   gap: 8px 0;
@@ -205,13 +195,13 @@
 .app-menu {
   max-height: calc(100vh - 100% - 16px);
   border: 1px solid #606060;
-  top: calc(100% + 8px);
   background: #3d3f42;
   position: absolute;
   min-width: 150px;
   padding: 6px 0;
   overflow: auto;
   z-index: 1;
+  top: 100%;
   right: 0;
 }
 

@@ -1,6 +1,6 @@
 (function (self) {
     var fn = _get_function_body;
-    const MAX_CHARS = 1000;
+    const MAX_CHARS = 300;
     const MAX_ITEMS = 100;
     const MAX_DEPTH = 10;
 

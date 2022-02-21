@@ -5,79 +5,65 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	
 	if(isCurl){
 		
-		if(_InMail.curl.isInit()){
-			_InMail.curl.clearTimeout();
-			_InMail.curl.cleanup();
-		};
+		_InMail.curl.cleanup();
 		
 		this.curlOpts = {
-			url: api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
-			port: api.config.port,
-			username: api.config.username,
-			password: api.config.password,
-			use_ssl: api.config.encrypt=="none" ? 0 : 3,
-			ssl_verifypeer: false,
-			login_options: 'AUTH=PLAIN'
-		};
-		
-		this.setOptions = function(opts){
-			var resp = _InMail.curl.setOptions(opts);
-			if(!resp.success){
-				_InMail.error(resp.error, api.protocol);
-			};
-		};
-		
-		this.init = function(){
-			_InMail.curl.init();
-			api.setOptions(api.curlOpts);
+			"CURLOPT_URL": api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
+			"CURLOPT_PORT": api.config.port,
+			"CURLOPT_USERNAME": api.config.username,
+			"CURLOPT_PASSWORD": api.config.password,
+			"CURLOPT_USE_SSL": api.config.encrypt=="none" ? 0 : 3,
+			"CURLOPT_SSL_VERIFYPEER": false,
+			"CURLOPT_LOGIN_OPTIONS": 'AUTH=PLAIN'
 		};
 		
 		this.setProxy = function(proxy){
-			api.curlOpts.proxy = (proxy.type=="socks5" ? "socks5h" : proxy.type) + '://' + proxy.host + ':' + proxy.port;
-			api.curlOpts.proxyusername = _is_nilb(proxy.username) ? "" : proxy.username;
-			api.curlOpts.proxypassword = _is_nilb(proxy.password) ? "" : proxy.password;
-			if(_InMail.curl.isInit()){
-				_InMail.curl.cleanup();
-			};
+			api.curlOpts["CURLOPT_PROXY"] = (proxy.type=="socks5" ? "socks5h" : proxy.type) + '://' + proxy.host + ':' + proxy.port;
+			api.curlOpts["CURLOPT_PROXYUSERNAME"] = _is_nilb(proxy.username) ? "" : proxy.username;
+			api.curlOpts["CURLOPT_PROXYPASSWORD"] = _is_nilb(proxy.password) ? "" : proxy.password;
+			_InMail.curl.cleanup();
 		};
 		
 		this.clearProxy = function(){
-			delete api.curlOpts.proxy;
-			delete api.curlOpts.proxyusername;
-			delete api.curlOpts.proxypassword;
-			if(_InMail.curl.isInit()){
-				_InMail.curl.cleanup();
-			};
+			delete api.curlOpts["CURLOPT_PROXY"];
+			delete api.curlOpts["CURLOPT_PROXYUSERNAME"];
+			delete api.curlOpts["CURLOPT_PROXYPASSWORD"];
+			_InMail.curl.cleanup();
 		};
 		
 		this.setConnectTimeout = function(ms){
-			api.curlOpts.connecttimeout_ms = ms;
+			api.curlOpts["CURLOPT_CONNECTTIMEOUT_MS"] = ms;
 		};
 		
 		this.request = function(){
-			var path = _function_argument("path");
+			var path = '' + _function_argument("path");
 			var query = _function_argument("query");
 			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
+			var noBody = _avoid_nilb(_function_argument("noBody"), false);
 			
 			var options = {};
 			
-			if(_is_nilb(path)){
-				options.url = api.curlOpts.url;
+			for(var key in api.curlOpts){
+				if(!_is_nilb(api.curlOpts[key])){
+					options[key] = api.curlOpts[key];
+				};
+			};
+			
+			if(!_is_nilb(path)){
+				options["CURLOPT_URL"] += (path.slice(0, 1) != '/' ? '/' : '') + path;
+			};
+			
+			if(noBody){
+				options["CURLOPT_NOBODY"] = true;
 			}else{
-				options.url = api.curlOpts.url + (path.slice(0, 1) != '/' ? '/' : '') + path;
+				options["CURLOPT_NOBODY"] = false;
 			};
 			
-			options.customrequest = _is_nilb(query) ? "" : query;
+			options["CURLOPT_CUSTOMREQUEST"] = _is_nil(query) ? "" : query;
 			
-			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '»');
+			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «‎' + options["CURLOPT_URL"] + '»');
 			
-			_InMail.curl.clearTimeout();
-			
-			if(!_InMail.curl.isInit()){
-				api.init();
-			};
-			
-			_call_function(_InMail.curl.request, {options: options, isFetch: isFetch, timeout: (api.timeout || 5 * 60 * 1000)})!
+			_call_function(_InMail.curl.request, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.timeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
 			
 			__RESP = resp;			
@@ -96,19 +82,20 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			_InMail.log(msg);
 			
-			if(resp.success){
+			if(resp.code == "CURLE_OK"){
 				_function_return(resp);
 			}else{
 				var error = resp.error;
 				
-				if(resp.code == "QUOTE_ERROR" && error == "Quote command returned error"){
-					var debug = resp.debug.trim().split(/\r?\n/);
+				if((resp.code == "CURLE_QUOTE_ERROR" && error == "Quote command returned error") || (resp.code == "CURLE_RECV_ERROR" && error == "Failure when receiving data from the peer")){
+					var debug = resp.trace.trim().split(/\r?\n/);
 					for(var i = debug.length - 1; i > -1; i--){
 						var ell = debug[i];
-						ell = ell.slice(ell.indexOf(" ") + 1);
-						if(_starts_with(ell, "BAD") || _starts_with(ell, "NO")){
-							error = ell;
-							error = error.slice(error.indexOf(" ") + 1).trim();
+						if(resp.code == "CURLE_QUOTE_ERROR"){
+							ell = ell.slice(ell.indexOf(" ") + 1);
+						};
+						if((resp.code == "CURLE_QUOTE_ERROR" && (_starts_with(ell, "BAD") || _starts_with(ell, "NO"))) || (resp.code == "CURLE_RECV_ERROR" && _starts_with(ell, "-ERR"))){
+							error = ell.slice(ell.indexOf(" ") + 1).trim();
 							break;
 						};
 					};

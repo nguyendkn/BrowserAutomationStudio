@@ -13,7 +13,7 @@ var port = GetInputConstructorValue("port", loader);
 var encrypt = GetInputConstructorValue("encrypt", loader);
 if($('#autoConfig').val() != "true"){
 	if(host["original"].length == 0){
-		Invalid(tr("The parameter \"") + tr("Host name") + tr("\" is not specified"));
+		Invalid(tr("The parameter \"") + tr("Server address") + tr("\" is not specified"));
 		return;
 	};
 	if(port["original"].length == 0){
@@ -26,6 +26,10 @@ if($('#autoConfig').val() != "true"){
 	};
 };
 var username = GetInputConstructorValue("username", loader);
+if($('#autoConfig').val() == "true" && username["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Username") + tr("\" is not specified"));
+	return;
+};
 var password = GetInputConstructorValue("password", loader);
 var box = GetInputConstructorValue("box", loader);
 if(box["original"].length == 0){

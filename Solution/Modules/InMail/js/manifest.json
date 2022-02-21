@@ -380,61 +380,6 @@
 		"internal/imapCurl.js",
 		"internal/pop3Curl.js"
 	],
-	"dll": [
-		{
-			"name": "inmailcurl",
-			"filename32": "inmailcurl32.dll",
-			"filename64": "inmailcurl64.dll",
-			"startdllfunction": "StartDll",
-			"enddllfunction": "EndDll",
-			"startthreadfunction": "StartThread",
-			"endthreadfunction": "EndThread",
-			"exportlist": [
-				{
-					"name": "curl_init",
-					"isasync": false,
-					"waitinfinite": false,
-					"workfunction": "InMail_CurlInit"
-				},
-				{
-					"name": "curl_is_init",
-					"isasync": false,
-					"waitinfinite": false,
-					"workfunction": "InMail_CurlIsInit"
-				},
-				{
-					"name": "curl_set_opts",
-					"isasync": false,
-					"waitinfinite": false,
-					"workfunction": "InMail_CurlSetOpts"
-				},
-				{
-					"name": "curl_clear_timeout",
-					"isasync": false,
-					"waitinfinite": false,
-					"workfunction": "InMail_CurlClearTimeout"
-				},
-				{
-					"name": "curl_request",
-					"isasync": true,
-					"waitinfinite": false,
-					"workfunction": "InMail_CurlRequest"
-				},
-				{
-					"name": "curl_cleanup",
-					"isasync": false,
-					"waitinfinite": false,
-					"workfunction": "InMail_CurlCleanup"
-				},
-				{
-					"name": "decoder",
-					"isasync": false,
-					"waitinfinite": false,
-					"workfunction": "InMail_Decoder"
-				}
-			]
-		}
-	],
 	"icon": "mail.png",
 	"info": {
 		"en": "Module for working with incoming mail",

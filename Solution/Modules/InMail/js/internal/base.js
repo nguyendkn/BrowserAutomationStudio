@@ -285,8 +285,8 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				"en": 'Could not find a message matching the specified id in the specified mailbox folder'
 			},
 			"NOT_AVAILABLE_ON_POP3": {
-				"ru": 'Функция "' + data + '" недоступна по pop3',
-				"en": '"' + data + '" function is not available on pop3'
+				"ru": 'Функция "' + data + '" недоступна по pop3,  используйте подключение по imap, если это возможно',
+				"en": '"' + data + '" function is not available on pop3, use imap connection if it possible'
 			}
 		};
 		

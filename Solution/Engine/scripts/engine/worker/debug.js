@@ -1,7 +1,9 @@
 (function (self) {
     var tag = Object.prototype.toString;
+    var fn = _get_function_body;
     var lastVariables = {};
     var lastResources = {};
+
     const MAX_CHARS = 300;
     const MAX_ITEMS = 100;
     const MAX_DEPTH = 10;
@@ -25,7 +27,7 @@
             return (acc[key] = value, acc);
         }, {});
 
-        Browser.RequestVariablesResult(stringify(variables), _get_function_body(callback));
+        Browser.RequestVariablesResult(stringify(variables), fn(callback));
     };
 
     self.debug_variables = function (list, callback) {
@@ -68,7 +70,7 @@
 
         lastResources = clone(resources);
 
-        Browser.DebugVariablesResult(stringify(result), _get_function_body(callback));
+        Browser.DebugVariablesResult(stringify(result), fn(callback));
     };
 
     function stringify(value) {

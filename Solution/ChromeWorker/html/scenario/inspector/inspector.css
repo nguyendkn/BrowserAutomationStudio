@@ -1,8 +1,31 @@
+/* Inspector */
+
+#inspector .loader > button.active,
+#inspector .loader > button:active {
+  opacity: 1;
+}
+
+#inspector .loader > button.hover,
+#inspector .loader > button:hover {
+  opacity: 1;
+}
+
+#inspector .loader > button {
+  background: inherit;
+  position: absolute;
+  display: flex;
+  opacity: 0.5;
+  right: 12px;
+  outline: 0;
+  border: 0;
+  top: 8px;
+}
+
 #inspector .loader {
   justify-content: center;
-  background: #f6f6f680;
   align-items: center;
   position: absolute;
+  background: #fff;
   color: #606060;
   display: flex;
   height: 100%;

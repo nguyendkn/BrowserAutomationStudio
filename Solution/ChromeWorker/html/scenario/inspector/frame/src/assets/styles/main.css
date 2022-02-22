@@ -85,9 +85,9 @@
 
 /* Toolbar */
 
-.app-toolbar button.disabled,
-.app-toolbar button:disabled {
-  opacity: 0.5;
+.app-toolbar button.hover,
+.app-toolbar button:hover {
+  opacity: 1.0;
 }
 
 .app-toolbar button.active,
@@ -95,9 +95,10 @@
   opacity: 1.0;
 }
 
-.app-toolbar button.hover,
-.app-toolbar button:hover {
-  opacity: 1.0;
+.app-toolbar button.disabled,
+.app-toolbar button:disabled {
+  cursor: auto;
+  opacity: 0.5;
 }
 
 .app-toolbar button {

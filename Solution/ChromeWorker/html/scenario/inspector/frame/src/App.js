@@ -159,6 +159,7 @@ window.App = {
         active: name === item.name ? !active : active,
         name,
       }));
+      this.menu = false;
     },
 
     hide() {

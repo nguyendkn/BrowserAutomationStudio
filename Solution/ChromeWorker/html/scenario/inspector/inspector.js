@@ -16,6 +16,7 @@
           case 'edit': return edit(payload);
           case 'hide': return this.hide();
           case 'show': return this.show();
+          case 'get': return get(payload);
           default: {
             if (type === 'destroyed') {
               attached = false;
@@ -37,6 +38,12 @@
       const prompt = ({ message }) => {
         bootbox.prompt(message, result => {
           this.send({ type: 'prompt', payload: { result } });
+        });
+      };
+
+      const get = ({ path }) => {
+        request({ path }).then(value => {
+          this.send({ type: 'get', payload: { value } });
         });
       };
 
@@ -86,9 +93,7 @@
   });
 
   function edit(options) {
-    const pointer = JSON.stringify(options.path);
-
-    App.once('variablesRequest', value => {
+    request(options).then(value => {
       const callback = (accept, { changed, value, type }) => {
         if (accept && changed) {
           let [root, ...path] = options.path;
@@ -123,9 +128,15 @@
         }
       };
 
-      return new Inspector.Modal({ ...options, value: value[pointer], callback }).render();
+      return new Inspector.Modal({ ...options, callback, value }).render();
     });
+  }
 
-    BrowserAutomationStudio_Execute(`request_variables(${JSON.stringify(pointer)})!\nsection_start("test", -3)!`);
+  function request({ path }) {
+    return new Promise(resolve => {
+      const pointer = JSON.stringify(path);
+      App.once('variablesRequest', value => resolve(value[pointer]));
+      BrowserAutomationStudio_Execute(`request_variables(${JSON.stringify(pointer)})!\nsection_start("test", -3)!`);
+    });
   }
 })(window);

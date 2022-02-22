@@ -162,12 +162,18 @@ window.JsonTreeNode = {
     },
 
     copy() {
-      const { type, value } = this, text = type === 'string' ? value : JSON.stringify(value);
+      const { type, value, length } = this, text = type === 'string' ? value : JSON.stringify(value);
 
-      if (value != null) {
-        BrowserAutomationStudio_SetClipboard(text, false);
+      if (['string', 'object', 'array'].includes(type) && (length > (type === 'string' ? 300 : 100))) {
+        post('get', { path: this.path }, ({ value }) => {
+          BrowserAutomationStudio_SetClipboard(type === 'string' ? value : JSON.stringify(value), false);
+        });
       } else {
-        BrowserAutomationStudio_SetClipboard(type, false);
+        if (value == null) {
+          BrowserAutomationStudio_SetClipboard(type, false);
+        } else {
+          BrowserAutomationStudio_SetClipboard(text, false);
+        }
       }
     },
 

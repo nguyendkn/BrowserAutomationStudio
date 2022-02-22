@@ -1,15 +1,23 @@
 'use strict';
 
+const post = (type, payload, callback) => {
+  if (callback) {
+    window.addEventListener('message', ({ data }) => {
+      if (data.type === type) {
+        callback(data.payload);
+      }
+    }, { once: true });
+  }
+
+  window.top.postMessage({ type, payload: payload || {} }, '*');
+};
+
 const parseJSON = (text, reviver) => {
   try {
     return JSON.parse(text, reviver);
   } catch {
     return {};
   }
-};
-
-const post = (type, payload = {}) => {
-  window.top.postMessage({ type, payload }, '*');
 };
 
 const typeOf = (() => {

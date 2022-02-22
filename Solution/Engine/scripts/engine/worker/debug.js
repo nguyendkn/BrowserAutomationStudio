@@ -48,7 +48,7 @@
                 return acc;
             }, []).concat(cycle({ info: { id: 0, name: 'Main', type: 'function' } })),
 
-            resources: JSON.parse(ScriptWorker.PickResources())
+            resources: JSON.parse(ScriptWorker.PickResources()),
         };
 
         Browser.DebugVariablesResult(stringify(result), fn(callback));
@@ -63,7 +63,7 @@
             }
 
             return typeof value === 'undefined' ? '__undefined__' : value;
-        })
+        });
     }
 
     function truncate(value, depth) {
@@ -138,8 +138,7 @@
                     continue;
                 }
                 var newObjKey = newObj[key];
-                var areObjects =
-                    typeof objKey === 'object' && typeof newObjKey === 'object';
+                var areObjects = typeof objKey === 'object' && typeof newObjKey === 'object';
                 if (
                     objKey &&
                     newObjKey &&
@@ -147,12 +146,7 @@
                     !richTypes[Object.getPrototypeOf(objKey).constructor.name] &&
                     (!options.cyclesFix || _stack.indexOf(objKey) < 0)
                 ) {
-                    var nestedDiffs = diff(
-                        objKey,
-                        newObjKey,
-                        options,
-                        options.cyclesFix ? _stack.concat([objKey]) : []
-                    );
+                    var nestedDiffs = diff(objKey, newObjKey, options, options.cyclesFix ? _stack.concat([objKey]) : []);
                     diffs.push.apply(
                         diffs,
                         nestedDiffs.map(function (difference) {
@@ -162,12 +156,7 @@
                     );
                 } else if (
                     objKey !== newObjKey &&
-                    !(
-                        areObjects &&
-                        (isNaN(objKey)
-                            ? objKey + '' === newObjKey + ''
-                            : +objKey === +newObjKey)
-                    )
+                    !(areObjects && (isNaN(objKey) ? objKey + '' === newObjKey + '' : +objKey === +newObjKey))
                 ) {
                     diffs.push({
                         path: [path],
@@ -189,6 +178,6 @@
                 }
             }
             return diffs;
-        }
+        };
     })();
 })(this);

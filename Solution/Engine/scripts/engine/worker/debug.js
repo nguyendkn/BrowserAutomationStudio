@@ -116,4 +116,79 @@
 
         return { id: info.id, name: info.name, type: info.type, options: options };
     }
+
+    var microdiff = (function () {
+        var richTypes = { Date: true, RegExp: true, String: true, Number: true };
+
+        return function diff(obj, newObj, options, _stack) {
+            if (options === void 0) options = { cyclesFix: true };
+            if (_stack === void 0) _stack = [];
+            var diffs = [];
+            var isObjArray = Array.isArray(obj);
+
+            for (var key in obj) {
+                var objKey = obj[key];
+                var path = isObjArray ? +key : key;
+                if (!(key in newObj)) {
+                    diffs.push({
+                        type: 'REMOVE',
+                        path: [path],
+                        oldValue: obj[key],
+                    });
+                    continue;
+                }
+                var newObjKey = newObj[key];
+                var areObjects =
+                    typeof objKey === 'object' && typeof newObjKey === 'object';
+                if (
+                    objKey &&
+                    newObjKey &&
+                    areObjects &&
+                    !richTypes[Object.getPrototypeOf(objKey).constructor.name] &&
+                    (!options.cyclesFix || _stack.indexOf(objKey) < 0)
+                ) {
+                    var nestedDiffs = diff(
+                        objKey,
+                        newObjKey,
+                        options,
+                        options.cyclesFix ? _stack.concat([objKey]) : []
+                    );
+                    diffs.push.apply(
+                        diffs,
+                        nestedDiffs.map(function (difference) {
+                            difference.path.unshift(path);
+                            return difference;
+                        })
+                    );
+                } else if (
+                    objKey !== newObjKey &&
+                    !(
+                        areObjects &&
+                        (isNaN(objKey)
+                            ? objKey + '' === newObjKey + ''
+                            : +objKey === +newObjKey)
+                    )
+                ) {
+                    diffs.push({
+                        path: [path],
+                        type: 'CHANGE',
+                        value: newObjKey,
+                        oldValue: objKey,
+                    });
+                }
+            }
+
+            var isNewObjArray = Array.isArray(newObj);
+            for (var key in newObj) {
+                if (!(key in obj)) {
+                    diffs.push({
+                        type: 'CREATE',
+                        path: [isNewObjArray ? +key : key],
+                        value: newObj[key],
+                    });
+                }
+            }
+            return diffs;
+        }
+    })();
 })(this);

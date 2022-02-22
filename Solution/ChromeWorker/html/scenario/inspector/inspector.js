@@ -51,7 +51,7 @@
         if (!attached) {
           await new Promise(resolve => this.once('mounted', resolve));
         }
-        this.$iframe[0].contentWindow.postMessage(message, '*');
+        this.$('iframe')[0].contentWindow.postMessage(message, '*');
       };
     },
 
@@ -75,10 +75,6 @@
           handleSelector: '.handle',
         });
 
-        ['.loader', '.handle', 'iframe'].forEach(key => {
-          this[`$${key.replace('.', '')}`] = this.$(key);
-        });
-
         BrowserAutomationStudio_AskForVariablesUpdate();
       }
       return this;
@@ -89,9 +85,9 @@
 
       this.timeout = setTimeout(() => {
         if (arguments[0]) {
-          this.$loader.show();
+          this.$('.loader').show();
         } else {
-          this.$loader.hide();
+          this.$('.loader').hide();
         }
       }, 150);
     },

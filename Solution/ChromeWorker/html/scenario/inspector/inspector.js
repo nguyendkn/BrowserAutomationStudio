@@ -51,7 +51,7 @@
         if (!attached) {
           await new Promise(resolve => this.once('mounted', resolve));
         }
-        this.el.children[0].contentWindow.postMessage(message, '*');
+        this.el.children[1].contentWindow.postMessage(message, '*');
       };
     },
 
@@ -72,11 +72,23 @@
             const height = Math.min(args[2], window.innerHeight - 300);
             return args[0].css('height', Math.max(110, height)), false;
           },
+          handleSelector: '.handle',
         });
 
         BrowserAutomationStudio_AskForVariablesUpdate();
       }
       return this;
+    },
+
+    wait() {
+      if (arguments[0]) {
+        this.timeout = setTimeout(() => {
+          this.$('.loader').show();
+        }, 100);
+      } else {
+        this.$('.loader').hide();
+        clearTimeout(this.timeout);
+      }
     },
 
     show() {

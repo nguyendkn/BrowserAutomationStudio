@@ -1290,7 +1290,11 @@
     </div>
     <div class="bottompannel">
       <div id="inspector" style="display: none; height: 300px;" noupdate>
-        <iframe src="inspector/frame/index.html?lang=<%= _K %>" style="border: 0; width: 100%; height: 100%;"></iframe>
+        <div class="handle" style="background: #dbdbdb; cursor: ns-resize; height: 6px;"></div>
+        <div style="height: calc(100% - 6px); position: relative; display: flex;">
+          <iframe src="inspector/frame/index.html?lang=<%= _K %>" style="border: 0; width: 100%; height: 100%;"></iframe>
+          <div class="loader" style="display: none;"><%= tr('Variables will be loaded on next script pause') %></div>
+        </div>
       </div>
       <div id="functions">
         <a id="FunctionName" title="<%= tr('Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.') %>">
@@ -1511,12 +1515,16 @@
           });
 
           this.on("change:isscriptexecuting", (_, value) => {
+            _Inspector.wait(value);
+
             if (!value) {
               BrowserAutomationStudio_AskForVariablesUpdate();
             }
           });
 
           this.on("change:istaskexecuting", (_, value) => {
+            _Inspector.wait(value);
+
             if (!value) {
               BrowserAutomationStudio_AskForVariablesUpdate();
             }

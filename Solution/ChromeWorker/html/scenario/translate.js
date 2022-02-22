@@ -777,6 +777,7 @@ _L =
 	"Execute only this action" :{"ru": "Выполнить только это действие"},
 	"Move Execution Point Here" :{"ru": "Переместить точку выполнения"},
 	"Variable inspector" :{"ru": "Инспектор переменных"},
+   "Variables will be loaded on next script pause" :{"ru": "Переменные будут загружены при следующей паузе сценария"},
 	"Previous" :{"ru": "Предыдущий"},
 	"Next" :{"ru": "Следующий"},
 	"Search" :{"ru": "Поиск"},

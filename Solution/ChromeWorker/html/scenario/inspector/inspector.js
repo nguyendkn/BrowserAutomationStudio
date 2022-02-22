@@ -51,7 +51,7 @@
         if (!attached) {
           await new Promise(resolve => this.once('mounted', resolve));
         }
-        this.el.children[1].contentWindow.postMessage(message, '*');
+        this.$('iframe').contentWindow.postMessage(message, '*');
       };
     },
 

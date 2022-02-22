@@ -28,7 +28,10 @@
 
     events: {
       'click #inspectorModalSearchVariable'() {
-        $('#findinput').val(this.model.get('name'));
+        const name = this.model.get('name');
+        const mode = this.model.get('mode');
+
+        $('#findinput').val(mode === 'resource' ? `{{${name}}}` : name);
         _ActionFinder.FindNext(true);
         _ActionFinder.Show();
         this.cancel();

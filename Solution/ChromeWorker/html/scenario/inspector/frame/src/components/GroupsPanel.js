@@ -47,13 +47,17 @@ window.GroupsPanel = {
       type: Object,
       required: true,
     },
+
+    diff: {
+      type: Array,
+      required: true,
+    },
   },
 
   data() {
     return {
       metadata: {},
       history: [],
-      diff: null,
     };
   },
 
@@ -91,7 +95,7 @@ window.GroupsPanel = {
             case 'frequency':
               return usages[b] - usages[a];
           }
-  
+
           return (a > b) - (a < b);
         }
       });
@@ -103,54 +107,57 @@ window.GroupsPanel = {
   },
 
   watch: {
-    data(data, prev) {
-      const { metadata } = this, diff = microdiff(prev, data);
+    diff: [
+      function (diff, prev) {
+        const { metadata } = this;
 
-      if (diff.length) {
-        const history = [];
+        if (diff.length) {
+          const history = [];
 
-        diff.forEach(({ path, type }) => {
-          if (path.length === 1) {
-            const [name] = path, now = performance.now();
+          diff.forEach(({ path, type }) => {
+            if (path.length === 1) {
+              const [name] = path, now = performance.now();
 
-            if (type === 'REMOVE') {
-              this.$store.commit('removeNode', { id: this.name, path });
-              return delete metadata[name];
+              if (type === 'REMOVE') {
+                this.$store.commit('removeNode', { id: this.name, path });
+                return delete metadata[name];
+              }
+
+              if (hasOwn(metadata, name)) {
+                metadata[name].modifiedAt = now;
+              } else {
+                metadata[name] = { modifiedAt: now, createdAt: now };
+              }
+
+              history.push(name);
             }
+          });
 
-            if (hasOwn(metadata, name)) {
-              metadata[name].modifiedAt = now;
-            } else {
-              metadata[name] = { modifiedAt: now, createdAt: now };
-            }
+          this.history = this.history.concat(history).slice(-100);
+        }
+      },
 
-            history.push(name);
+      function (diff, prev) {
+        const { name, $store } = this, counters = $store.state.counters[name];
+
+        const pointers = diff.reduce((acc, { path }) => {
+          for (let i = path.length; i > 0; i--) {
+            const pointer = JSON.stringify(path.slice(0, i));
+            counters[pointer] = prev ? 0 : 5;
+            acc.push(pointer);
+          }
+          return acc;
+        }, []);
+
+        Object.keys(counters).forEach(key => {
+          if (!pointers.includes(key)) {
+            counters[key] = Math.min(counters[key] + 1, 5);
           }
         });
 
-        this.history = this.history.concat(history).slice(-100);
-      }
-
-      this.diff = diff;
-    },
-
-    diff(diff, prev) {
-      const { name, $store } = this, counters = $store.state.counters[name];
-
-      const pointers = diff.map(({ path }) => {
-        const pointer = JSON.stringify(path);
-        counters[pointer] = prev ? 0 : 5;
-        return pointer;
-      });
-
-      Object.keys(counters).forEach(key => {
-        if (!pointers.includes(key)) {
-          counters[key] = Math.min(counters[key] + 1, 5);
-        }
-      });
-
-      $store.commit('setCounters', { id: name, counters });
-    },
+        $store.commit('setCounters', { id: name, counters });
+      },
+    ],
   },
 
   methods: {

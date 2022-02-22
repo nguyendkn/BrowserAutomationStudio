@@ -47,6 +47,11 @@ window.CallstackPanel = {
       type: Array,
       required: true,
     },
+
+    diff: {
+      type: Array,
+      required: true,
+    },
   },
 
   computed: {

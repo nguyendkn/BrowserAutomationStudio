@@ -17,6 +17,7 @@ window.App = {
         sortings: [],
         filters: [],
         options: [],
+        diff: null,
         query: '',
       },
       name,
@@ -128,6 +129,9 @@ window.App = {
       if (payload && type === 'update') {
         this.tabs.forEach(({ name, props }) => {
           if (hasOwn(payload, name)) {
+            if (hasOwn(payload.diff, name)) {
+              props.diff = payload.diff[name];
+            }
             props.data = payload[name];
           }
         });

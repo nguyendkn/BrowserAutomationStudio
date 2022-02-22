@@ -1,5 +1,7 @@
 (function (self) {
-    var fn = _get_function_body;
+    var tag = Object.prototype.toString;
+    var lastVariables = {};
+    var lastResources = {};
     const MAX_CHARS = 300;
     const MAX_ITEMS = 100;
     const MAX_DEPTH = 10;
@@ -23,18 +25,26 @@
             return (acc[key] = value, acc);
         }, {});
 
-        Browser.RequestVariablesResult(stringify(variables), fn(callback));
+        Browser.RequestVariablesResult(stringify(variables), _get_function_body(callback));
     };
 
     self.debug_variables = function (list, callback) {
+        var resources = JSON.parse(ScriptWorker.PickResources()), variables = list.reduce(function (acc, key) {
+            if (key.indexOf('GLOBAL:') === 0) {
+                acc[key] = global(key);
+            } else {
+                acc[key.slice(4)] = local(key);
+            }
+            return acc;
+        }, {});
+
         var result = {
-            variables: list.reduce(function (acc, key) {
-                if (key.indexOf('GLOBAL:') === 0) {
-                    acc[key] = truncate(global(key));
-                } else {
-                    acc[key.slice(4)] = truncate(local(key));
-                }
-                return acc;
+            variables: Object.keys(variables).reduce(function (acc, key) {
+                return (acc[key] = truncate(variables[key]), acc);
+            }, {}),
+
+            resources: Object.keys(resources).reduce(function (acc, key) {
+                return (acc[key] = truncate(resources[key]), acc);
             }, {}),
 
             callstack: CYCLES.Data.reduceRight(function (acc, val) {
@@ -48,10 +58,17 @@
                 return acc;
             }, []).concat(cycle({ info: { id: 0, name: 'Main', type: 'function' } })),
 
-            resources: JSON.parse(ScriptWorker.PickResources()),
+            diff: {
+                variables: microdiff(lastVariables, variables),
+                resources: microdiff(lastResources, resources),
+            },
         };
 
-        Browser.DebugVariablesResult(stringify(result), fn(callback));
+        lastVariables = clone(variables);
+
+        lastResources = clone(resources);
+
+        Browser.DebugVariablesResult(stringify(result), _get_function_body(callback));
     };
 
     function stringify(value) {
@@ -70,7 +87,7 @@
         var type = typeof value;
 
         if (type === 'object' && value) {
-            var type = Object.prototype.toString.call(value), depth = depth || 1;
+            var type = tag.call(value), depth = depth || 1;
 
             if (type === '[object Object]') {
                 if (depth > MAX_DEPTH) return {};
@@ -78,7 +95,7 @@
                 var keys = Object.keys(value), object = keys.slice(0, MAX_ITEMS).reduce(function (acc, key) {
                     return (acc[key] = truncate(value[key], depth + 1), acc);
                 }, {});
-                if (keys.length > 100) object.__length__ = keys.length;
+                if (keys.length > MAX_ITEMS) object.__length__ = keys.length;
                 return object;
             }
 
@@ -88,7 +105,7 @@
                 var array = value.slice(0, MAX_ITEMS).map(function (value) {
                     return truncate(value, depth + 1);
                 });
-                if (value.length > 100) array.push(value.length);
+                if (value.length > MAX_ITEMS) array.push(value.length);
                 return array;
             }
         }
@@ -117,6 +134,26 @@
         return { id: info.id, name: info.name, type: info.type, options: options };
     }
 
+    function clone(obj) {
+        if (typeof obj === 'function') return obj;
+        var result = Array.isArray(obj) ? [] : {};
+
+        for (var key in obj) {
+            var value = obj[key], type = tag.call(value).slice(8, -1);
+            if (type === 'Array' || type === 'Object') {
+                result[key] = clone(value);
+            } else if (type === 'Date') {
+                result[key] = new Date(value);
+            } else if (type === 'RegExp') {
+                result[key] = new RegExp(value);
+            } else {
+                result[key] = value;
+            }
+        }
+
+        return result;
+    }
+
     var microdiff = (function () {
         var richTypes = { Date: true, RegExp: true, String: true, Number: true };
 
@@ -133,7 +170,6 @@
                     diffs.push({
                         type: 'REMOVE',
                         path: [path],
-                        oldValue: obj[key],
                     });
                     continue;
                 }
@@ -161,8 +197,6 @@
                     diffs.push({
                         path: [path],
                         type: 'CHANGE',
-                        value: newObjKey,
-                        oldValue: objKey,
                     });
                 }
             }
@@ -173,7 +207,6 @@
                     diffs.push({
                         type: 'CREATE',
                         path: [isNewObjArray ? +key : key],
-                        value: newObj[key],
                     });
                 }
             }

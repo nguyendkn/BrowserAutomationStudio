@@ -1782,4 +1782,5 @@ mark
 
 textarea {
   resize: vertical;
+  cursor: auto;
 }

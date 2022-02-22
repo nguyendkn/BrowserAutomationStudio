@@ -109,21 +109,27 @@ window.JsonTreeNode = {
   },
 
   watch: {
-    keys() {
-      const { type, keys } = this;
+    keys: {
+      handler() {
+        const { type, keys } = this;
 
-      if ((type === 'array' || type === 'object') && !keys.length) {
-        this.collapse();
-      }
+        if ((type === 'array' || type === 'object') && !keys.length) {
+          this.collapse();
+        }
+      },
+      immediate: true,
     },
 
-    type() {
-      const { type, keys } = this;
-
-      if ((type === 'array' || type === 'object') && !keys.length) {
-        this.collapse();
-      }
-    },
+    type: {
+      handler() {
+        const { type, keys } = this;
+  
+        if ((type === 'array' || type === 'object') && !keys.length) {
+          this.collapse();
+        }
+      },
+      immediate: true,
+    }
   },
 
   methods: {

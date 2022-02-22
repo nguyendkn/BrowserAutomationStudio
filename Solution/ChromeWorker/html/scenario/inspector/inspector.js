@@ -93,7 +93,7 @@
   });
 
   function edit(options) {
-    request(options).then(value => {
+    Promise.resolve().then(() => options.mode === 'variables' ? request(options) : options.value).then(value => {
       const callback = (accept, { changed, value, type }) => {
         if (accept && changed) {
           let [root, ...path] = options.path;

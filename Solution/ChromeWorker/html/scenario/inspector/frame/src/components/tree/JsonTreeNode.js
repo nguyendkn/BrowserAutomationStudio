@@ -168,9 +168,9 @@ window.JsonTreeNode = {
     },
 
     copy() {
-      const { type, value, length } = this, text = type === 'string' ? value : JSON.stringify(value);
+      const { id, type, value, length } = this, text = type === 'string' ? value : JSON.stringify(value);
 
-      if (['string', 'object', 'array'].includes(type) && (length > (type === 'string' ? 300 : 100))) {
+      if (id === 'variables' && ['string', 'object', 'array'].includes(type) && (length > (type === 'string' ? 300 : 100))) {
         post('get', { path: this.path }, ({ value }) => {
           BrowserAutomationStudio_SetClipboard(type === 'string' ? value : JSON.stringify(value), false);
         });

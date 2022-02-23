@@ -5,7 +5,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	
 	if(isCurl){
 		
-		_InMail.curl.cleanup();
+		native("curlwrapper", "easycleanup");
 		
 		this.curlOpts = {
 			"CURLOPT_URL": api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
@@ -21,22 +21,30 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			api.curlOpts["CURLOPT_PROXY"] = (proxy.type=="socks5" ? "socks5h" : proxy.type) + '://' + proxy.host + ':' + proxy.port;
 			api.curlOpts["CURLOPT_PROXYUSERNAME"] = _is_nilb(proxy.username) ? "" : proxy.username;
 			api.curlOpts["CURLOPT_PROXYPASSWORD"] = _is_nilb(proxy.password) ? "" : proxy.password;
-			_InMail.curl.cleanup();
+			native("curlwrapper", "easycleanup");
 		};
 		
 		this.clearProxy = function(){
 			delete api.curlOpts["CURLOPT_PROXY"];
 			delete api.curlOpts["CURLOPT_PROXYUSERNAME"];
 			delete api.curlOpts["CURLOPT_PROXYPASSWORD"];
-			_InMail.curl.cleanup();
+			native("curlwrapper", "easycleanup");
 		};
 		
 		this.setConnectTimeout = function(ms){
 			api.curlOpts["CURLOPT_CONNECTTIMEOUT_MS"] = ms;
 		};
 		
+		this.wrapper = function(){
+			var args = _function_arguments();
+			
+			native_async("curlwrapper", "easyperform", JSON.stringify(args))!
+			
+			_function_return(JSON.parse(_result()));
+		},
+		
 		this.request = function(){
-			var path = '' + _function_argument("path");
+			var path = _function_argument("path");
 			var query = _function_argument("query");
 			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
 			var noBody = _avoid_nilb(_function_argument("noBody"), false);
@@ -50,6 +58,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			};
 			
 			if(!_is_nilb(path)){
+				path = '' + path;
 				options["CURLOPT_URL"] += (path.slice(0, 1) != '/' ? '/' : '') + path;
 			};
 			
@@ -63,7 +72,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «‎' + options["CURLOPT_URL"] + '»');
 			
-			_call_function(_InMail.curl.request, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.timeout || 5 * 60 * 1000)})!
+			_call_function(api.wrapper, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.timeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
 			
 			__RESP = resp;			
@@ -104,71 +113,177 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				_InMail.error(resp.code + ' - ' + error, null, api.protocol);
 			};
 		};
-	};
 	
-	this.decodeWords = function(str){
-		return (
-			(str || '')
-				.toString()
-				// remove spaces between mime encoded words
-				.replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
-				// decode words
-				.replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return _InMail.curl.decoder(charset, encoding, text) || text})
-		);
-	};
-
-	this.parseHeader = function(str, noDecode){
-		var lines = str.split('\r\n');
-		var len = lines.length;
-		var header = {};
-		var h = undefined;
-		var i = undefined;
-			
-		for(i = 0; i < len; ++i){
-			if(lines[i].length === 0){
-				break; // empty line separates message's header and body
+		this.decoder = function(charset, encoding, data){
+			encoding = encoding.toLowerCase();
+			var resp = JSON.parse(native("curlwrapper", "decoder", JSON.stringify({charset: charset, encoding: encoding, data: data})));
+			if(!resp.success){
+				_InMail.error('FAIL_DECODE - ' + resp.error);
 			};
-			if(lines[i][0] === '\t' || lines[i][0] === ' '){
-				if(!Array.isArray(header[h])){
-					continue; // ignore invalid first line
+			return resp.result;
+		};
+		
+		this.decodeWords = function(str){
+			return (
+				(str || '')
+					.toString()
+					// remove spaces between mime encoded words
+					.replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
+					// decode words
+					.replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return api.decoder(charset, encoding, text) || text})
+			);
+		};
+
+		this.parseHeader = function(str, noDecode){
+			var lines = str.split('\r\n');
+			var len = lines.length;
+			var header = {};
+			var h = undefined;
+			var i = undefined;
+				
+			for(i = 0; i < len; ++i){
+				if(lines[i].length === 0){
+					break; // empty line separates message's header and body
 				};
-				// folded header content
-				var val = lines[i];
-				if(!noDecode){
-					if(/=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=$/i.test(lines[i - 1]) && /^[ \t]=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=/i.test(val)){
-						// RFC2047 says to *ignore* leading whitespace in folded header values
-						// for adjacent encoded-words ...
-						val = val.substring(1);
+				if(lines[i][0] === '\t' || lines[i][0] === ' '){
+					if(!Array.isArray(header[h])){
+						continue; // ignore invalid first line
 					};
-				};
-				header[h][header[h].length - 1] += val;
-			}else{
-				var m = /^([^:]+):[ \t]?(.+)?$/.exec(lines[i]);
-				if(m){
-					h = m[1].toLowerCase().trim();
-					if(m[2]){
-						if(header[h] === undefined){
-							header[h] = [m[2]];
+					// folded header content
+					var val = lines[i];
+					if(!noDecode){
+						if(/=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=$/i.test(lines[i - 1]) && /^[ \t]=\?([^?*]*?)(?:\*.*?)?\?([qb])\?(.*?)\?=/i.test(val)){
+							// RFC2047 says to *ignore* leading whitespace in folded header values
+							// for adjacent encoded-words ...
+							val = val.substring(1);
+						};
+					};
+					header[h][header[h].length - 1] += val;
+				}else{
+					var m = /^([^:]+):[ \t]?(.+)?$/.exec(lines[i]);
+					if(m){
+						h = m[1].toLowerCase().trim();
+						if(m[2]){
+							if(header[h] === undefined){
+								header[h] = [m[2]];
+							}else{
+								header[h].push(m[2]);
+							};
 						}else{
-							header[h].push(m[2]);
+							header[h] = [''];
 						};
 					}else{
-						header[h] = [''];
+						break;
 					};
+				};
+			};
+			if(!noDecode){
+				for(h in header){
+					var hvs = header[h];
+					for(i = 0, len = header[h].length; i < len; ++i){
+						hvs[i] = api.decodeWords(hvs[i]);
+					};
+					if(header[h].length < 2){
+						header[h] = hvs[0];
+					};
+				};
+			};
+			return header;
+		};
+		
+		this.uuedecode = function(str){
+			var stop = false;
+			var i = 0;
+			var out = '';
+			
+			do{
+				if(i < str.length){
+					var n = str.charCodeAt(i) - 32 & 0x3F;
+					
+					++i;
+					
+					if(n > 45){
+						api.errorHandler('UEE_INVALID_DATA');
+					};
+					
+					if(n < 45){
+						stop = true;
+					};
+					
+					while(n > 0){
+						var c1 = str.charCodeAt(i);
+						var c2 = str.charCodeAt(i + 1);
+						var c3 = str.charCodeAt(i + 2);
+						var c4 = str.charCodeAt(i + 3);
+						
+						out += String.fromCharCode(((c1 - 32 & 0x3F) << 2 | (c2 - 32 & 0x3F) >> 4) & 0xFF);
+						out += String.fromCharCode(((c2 - 32 & 0x3F) << 4 | (c3 - 32 & 0x3F) >> 2) & 0xFF);
+						out += String.fromCharCode(((c3 - 32 & 0x3F) << 6 | c4 - 32 & 0x3F) & 0xFF);
+						i += 4;
+						n -= 3;
+					};
+					
+					++i;
 				}else{
-					break;
+					stop = true;
 				};
+			}while(!stop);
+			
+			return out;
+		};
+		
+		this.processPartData = function(data, encoding, charset, saveToFile){
+			charset = charset || 'utf-8';
+			saveToFile = _avoid_nilb(saveToFile, false);
+			
+			var result = '';
+			if(encoding === 'base64'){
+				var list =  data.trim().split('\r\n');
+				for(var i = 0; i < list.length; i++){
+					var line = list[i].trim();
+					if(line){
+						if(saveToFile){
+							native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:!!i}));
+						}else{
+							result += api.decoder(charset, 'b', line);
+						};
+					};
+				};
+			}else if(encoding === 'quoted-printable'){
+				result = api.decoder(charset, 'q', data);
+			}else if(['7bit', '7bits'].indexOf(encoding) > -1){
+				result = api.decoder('latin1', '', data);
+			}else if(['8bit', '8bits', 'binary'].indexOf(encoding) > -1){
+				result = api.decoder(charset, '', data);
+			}else if(encoding === 'uuencode'){
+				var parts = data.split('\n');
+				result = api.uuedecode(parts.splice(1, parts.length - 4).join(''));
+			}else{
+				api.errorHandler('UNKNOWN_ENCODING', part.encoding);
+			};
+			
+			if(saveToFile){
+				if(encoding !== 'base64'){
+					native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:false, append:false}));
+				};
+			}else{
+				return result;
 			};
 		};
-		if(!noDecode){
-			for(h in header){
-				var hvs = header[h];
-				for(i = 0, len = header[h].length; i < len; ++i){
-					hvs[i] = api.decodeWords(hvs[i]);
-				};
-			};
+		
+		this.maskToRegExp = function(mask){
+			return (new RegExp(mask.replace(/([.])/g, '\\$1').replace(/\*/g, '.+').replace(/\?/g, '.')));
 		};
-		return header;
+		
+		this.randStr = function(length, chars){
+			length = _avoid_nilb(length, 10);
+			chars = _avoid_nilb(chars, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+			var str  = '';
+			for(var i = 0; i < length; i++){
+				str += chars.charAt(Math.floor(Math.random() * chars.length));
+			};
+			return str;
+		};
 	};
 	
 	this.errorHandler = function(error, data){

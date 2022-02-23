@@ -106,7 +106,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	this.search = function(){
 		api.validateCriteria(_function_argument("criteria"));
 		
-		_call_function(api.request, {path: "", query: "LIST"})!
+		_call_function(api.request, {query: "LIST"})!
 		var result = _result_function().result;
 		
 		result = result.split("\r\n").filter(function(ell){return ell});
@@ -117,7 +117,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	};
 	
 	this.searchLast = function(){
-		_call_function(api.request, {path: "", query: "LIST"})!
+		_call_function(api.request, {query: "LIST"})!
 		var result = _result_function().result;
 		
 		var last = 0;
@@ -135,7 +135,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	this.count = function(){
 		api.validateCriteria(_function_argument("criteria"));
 		
-		_call_function(api.request, {path: "", query: "STAT", noBody: true})!
+		_call_function(api.request, {query: "STAT", noBody: true})!
 		var trace = _result_function().trace;
 		
 		var count = 0;
@@ -161,8 +161,112 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			var resp = _result_function();
 		})!
 		
-		_call_function(api.request, {path: "", query: "QUIT", noBody: true})!
+		_call_function(api.request, {query: "QUIT", noBody: true})!
 		var resp = _result_function();
+	};
+	
+	this.parseHeaderParams = function(name, header){
+		var items = header.split(';');
+		var value = items[0].trim();
+		var obj = {params: {} };
+		var temp = [];
+		
+		if(name == "content-type"){
+			temp = value.toLowerCase().split('/');
+			obj.type = temp[0];
+			obj.subtype = temp[1];
+		}else if(name == "content-disposition"){
+			obj.type = value.toLowerCase();
+		}else{
+			obj.value = value;
+		}
+		
+		items = items.slice(1);
+		if(items.length){
+			for(var i in items){
+				var item = items[i].trim();
+				if(item){
+					temp = item.split('=');
+					var key = temp[0].trim().toLowerCase();
+					var value = temp.slice(1).join('=').trim();
+					if(_starts_with(value, '"') && _ends_with(value, '"')){
+						value = value.slice(1, -1);
+					};
+					obj.params[key] = value;
+				};
+			};
+		};
+		
+		return obj;
+	};
+	
+	this.parseMultipart = function(multipart, boundary, parts){
+		parts = _avoid_nilb(parts, []);
+		var state = 0;
+		var lastline = '';
+		var headers = '';
+		var body = '';
+		for(var i = 0; i < multipart.length; i++){
+			var oneChar = multipart.charAt(i);
+			var prevChar = multipart.charAt(i - 1);
+			var newLineDetected = oneChar === '\n' && prevChar === '\r';
+			var newLineChar = oneChar === '\n' || oneChar === '\r';
+			if(!newLineChar){
+				lastline += oneChar;
+			};
+			if(0 === state && newLineDetected){
+				if('--' + boundary === lastline){
+					state = 1;
+				};
+				lastline = '';
+			}else if(1 === state && newLineDetected){
+				if(lastline === ''){
+					state = 2;
+				}else{
+					if(headers.length){
+						headers += '\r\n';
+					};
+					headers += lastline;
+				};
+				lastline = '';
+			}else if(2 === state){
+				if(lastline.length > boundary.length + 4){
+					lastline = ''; // mem save
+				};
+				if('--' + boundary === lastline){
+					body = body.slice(0, body.length - lastline.length - 1).trim();
+					headers = api.parseHeader(headers.trim());
+					if(headers["content-type"]){
+						headers["content-type"] = api.parseHeaderParams('content-type', headers["content-type"]);
+					};
+					if(headers["content-disposition"]){
+						headers["content-disposition"] = api.parseHeaderParams('content-disposition', headers["content-disposition"]);
+					};
+					if(headers["content-type"] && headers["content-type"].type == 'multipart'){
+						api.parseMultipart(body, headers["content-type"].params.boundary, parts);
+					}else{
+						parts.push({
+							headers: headers,
+							body: body
+						});
+					};
+					body = '';
+					lastline = '';
+					state = 3;
+					headers = '';
+				}else{
+					body += oneChar;
+				};
+				if(newLineDetected){
+					lastline = '';
+				};
+			}else if(3 === state){
+				if(newLineDetected){
+					state = 1;
+				};
+			};
+		};
+		return parts;
 	};
 	
 	this.getParamInfo = function(data){
@@ -171,7 +275,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			data = [data];
 		};
 		var raw = false;
-		data = data.filter(function(d){return !(raw = (d === 'raw'))}).map(function(d){return d.toLowerCase()});
+		data = data.map(function(d){return d.toLowerCase()}).filter(function(d){return !(raw = (d === 'raw'))});
 		var base = data.length > 0;
 		return {
 			base: base,
@@ -185,7 +289,6 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		var parsed = api.parseHeader(data.trim());
 		for(var key in parsed){
 			var value = parsed[key];
-			value = Array.isArray(value) && value.length < 2 ? value[0] : value;
 			if(headers.raw){
 				message.headers.raw[key] = value;
 			};
@@ -196,6 +299,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 				message.date = new Date(value);
 			};
 		};
+		return parsed["content-type"];
 	};
 	
 	this.getMessages = function(){
@@ -223,11 +327,23 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			if(body.any){
 				message.body = {};
 			};
+			if(body.data.indexOf('html') > -1){
+				message.body.html = "";
+			};
+			if(body.data.indexOf('plain') > -1){
+				message.body.plain = "";
+			};
 			if(headers.any){
 				message.headers = {};
 				if(headers.raw){
 					message.headers.raw = {};
 				};
+			};
+			if(attachnames){
+				message.attachnames = [];
+			};
+			if(attachments){
+				message.attachments = [];
 			};
 			messages.push(message);
 			
@@ -247,7 +363,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			})!
 			
 			_if((headers.any || date) && !(body.any || attachnames || attachments), function(){
-				_call_function(api.request, {path: "", query: "TOP " + uid + " 0"})!
+				_call_function(api.request, {query: "TOP " + uid + " 0"})!
 				var resp = _result_function();
 				
 				api.processHeaders(resp.result, message, headers, date);
@@ -256,18 +372,89 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 				var resp = _result_function();
 				
 				var temp = resp.result.split('\r\n\r\n');
-				var headerData = temp[0];
+				var bodyContentType = api.processHeaders(temp[0], message, headers, date);
 				var bodyData = temp.slice(1).join('\r\n\r\n').trim();
 				delete temp;
 				
-				api.processHeaders(headerData, message, headers, date);
-				
-				if(body.base || attachnames || attachments){
-					
-				};
-				
 				if(body.raw){
 					message.body.raw = bodyData;
+				};
+				
+				if(body.base || attachnames || attachments){
+					bodyContentType = api.parseHeaderParams('content-type', bodyContentType);
+					if(bodyContentType.type == 'multipart'){
+						bodyData = api.parseMultipart(bodyData, bodyContentType.params.boundary);
+						if(bodyData.length){
+							if(body.base){
+								for(var type_index in body.data){
+									var type = body.data[type_index];
+									for(var part_index in bodyData){
+										var part = bodyData[part_index];
+										if(part.headers["content-type"] && part.headers["content-type"].type === 'text' && part.headers["content-type"].subtype === type && !part.headers["content-disposition"]){
+											var encoding = part.headers["content-transfer-encoding"].toLowerCase();
+											var charset = (part.headers["content-type"].params.charset ? part.headers["content-type"].params.charset.toLowerCase() : '') || 'utf-8';
+											message.body[type] += api.processPartData(part.body, encoding, charset);
+										};
+									};
+									message.body[type] = message.body[type].trim();
+								};
+							};
+							
+							if(attachnames || attachments){
+								for(var part_index in bodyData){
+									var part = bodyData[part_index];
+									if(part.headers["content-disposition"] && ['inline', 'attachment'].indexOf(part.headers["content-disposition"].type) > -1){
+										var filename = part.headers["content-disposition"].params.filename;
+										if(attachnames){
+											message.attachnames.push(filename);
+										};
+										
+										if(attachments){
+											var saveThis = true;
+											if(attachments !== true && attachments.toString().trim() !== '*'){
+												if(!Array.isArray(attachments)){
+													if(attachments instanceof RegExp){
+														attachments = [attachments];
+													}else{
+														attachments = attachments.split(';');
+													};
+												};
+												for(var mask_index in attachments){
+													var mask = attachments[mask_index];
+													var match = true;
+													if(typeof mask === "string"){
+														if(_starts_with(mask, '!')){
+															match = false;
+															mask = mask.slice(1);
+														};
+														mask = api.maskToRegExp(mask);
+													};
+													if(mask.test(filename) === match){
+														saveThis = true;
+														break;
+													}else{
+														saveThis = false;
+													};
+												};
+											};
+											if(saveThis){
+												var randomFile = api.randStr() + '.file';
+												var encoding = part.headers["content-transfer-encoding"].toLowerCase();
+												var charset = (part.headers["content-type"].params.charset ? part.headers["content-type"].params.charset.toLowerCase() : '') || 'utf-8';
+												api.processPartData(part.body, encoding, charset, randomFile);
+												var randomFileDir = JSON.parse(native("filesystem", "fileinfo", randomFile)).directory;
+												message.attachments.push({
+													name: filename,
+													type: part.headers["content-type"].type + '/' + part.headers["content-type"].subtype,
+													path: randomFileDir + '/' + randomFile
+												});
+											};
+										};
+									};
+								};
+							};
+						};
+					};
 				};
 			})!
 		})!

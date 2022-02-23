@@ -376,7 +376,6 @@
 		"engine.js",
 		"internal/base.js",
 		"internal/configs.js",
-		"internal/curl.js",
 		"internal/imapCurl.js",
 		"internal/pop3Curl.js"
 	],

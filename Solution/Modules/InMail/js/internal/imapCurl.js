@@ -115,59 +115,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		}
 	};
 	
-	this.uuedecode = function(str){
-		var stop = false;
-		var i = 0;
-		var out = '';
-		
-		do{
-			if(i < str.length){
-				var n = str.charCodeAt(i) - 32 & 0x3F;
-				
-				++i;
-				
-				if(n > 45){
-					api.errorHandler('UEE_INVALID_DATA');
-				};
-				
-				if(n < 45){
-					stop = true;
-				};
-				
-				while(n > 0){
-					var c1 = str.charCodeAt(i);
-					var c2 = str.charCodeAt(i + 1);
-					var c3 = str.charCodeAt(i + 2);
-					var c4 = str.charCodeAt(i + 3);
-					
-					out += String.fromCharCode(((c1 - 32 & 0x3F) << 2 | (c2 - 32 & 0x3F) >> 4) & 0xFF);
-					out += String.fromCharCode(((c2 - 32 & 0x3F) << 4 | (c3 - 32 & 0x3F) >> 2) & 0xFF);
-					out += String.fromCharCode(((c3 - 32 & 0x3F) << 6 | c4 - 32 & 0x3F) & 0xFF);
-					i += 4;
-					n -= 3;
-				};
-				
-				++i;
-			}else{
-				stop = true;
-			};
-		}while(!stop);
-		
-		return out;
-	};
-	
 	this.encodeName = function(name){
 		return api.escape(api.utf7.encode('' + name));
-	};
-	
-	this.randStr = function(length, chars){
-		length = _avoid_nilb(length, 10);
-		chars = _avoid_nilb(chars, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
-		var str  = '';
-		for(var i = 0; i < length; i++){
-			str += chars.charAt(Math.floor(Math.random() * chars.length));
-		};
-		return str;
 	};
 	
 	this.parseCaps = function(str){
@@ -569,7 +518,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var path = api.encodeName(box);
 		
 		_if_else(isUTF8, function(){
-			_call_function(api.request, {path: "", query: 'ENABLE UTF8=ACCEPT'})!
+			_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT'})!
 			
 			_call_function(api.request, {path: path, query: query})!
 		}, function(){
@@ -1515,37 +1464,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var data = _result_function()[0].parts[0].body;
 		var encoding = part.encoding.toLowerCase();
 		var charset = ((part.params && part.params.charset) ? part.params.charset.toLowerCase() : '') || 'utf-8';
-		var result = '';
-		if(encoding === 'base64'){
-			var list =  data.trim().split('\r\n');
-			for(var i = 0; i < list.length; i++){
-				var line = list[i].trim();
-				if(line){
-					if(saveToFile){
-						native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:!!i}));
-					}else{
-						result += _InMail.curl.decoder(charset, 'b', line);
-					};
-				};
-			};
-		}else if(encoding === 'quoted-printable'){
-			result = _InMail.curl.decoder(charset, 'q', data);
-		}else if(['7bit', '7bits'].indexOf(encoding) > -1){
-			result = _InMail.curl.decoder('latin1', '', data);
-		}else if(['8bit', '8bits', 'binary'].indexOf(encoding) > -1){
-			result = _InMail.curl.decoder(charset, '', data);
-		}else if(encoding === 'uuencode'){
-			var parts = data.split('\n');
-			result = api.uuedecode(parts.splice(1, parts.length - 4).join(''));
-		}else{
-			api.errorHandler('UNKNOWN_ENCODING', part.encoding);
-		};
 		
-		if(saveToFile){
-			if(encoding !== 'base64'){
-				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:false, append:false}));
-			};
-		}else{
+		var result = api.processPartData(data, encoding, charset);
+		
+		if(!saveToFile){
 			_function_return(result);
 		};
 	};
@@ -1641,8 +1563,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 					var parsed = api.parseHeader(part.body.trim());
 					var obj = part.which === 'HEADER' ? message.headers.raw : message.headers;
 					for(var key in parsed){
-						var value = parsed[key];
-						obj[key] = Array.isArray(value) && value.length < 2 ? value[0] : value;
+						obj[key] = parsed[key];
 					};
 				}else{
 					message.body.raw = part.body.trim();
@@ -1672,7 +1593,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 					})!
 				})!
 				_if(attachnames || attachments, function(){
-					var filtered = parts.filter(function(p){return p.disposition && p.disposition.type && ['inline', 'attachment'].indexOf(p.disposition.type.toLowerCase())});
+					var filtered = parts.filter(function(p){return p.disposition && p.disposition.type && ['inline', 'attachment'].indexOf(p.disposition.type.toLowerCase()) > -1});
 					if(attachnames){
 						message.attachnames = filtered.map(function(p){return p.disposition.params.filename});
 					};
@@ -1696,7 +1617,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 										match = false;
 										mask = mask.slice(1);
 									};
-									mask = new RegExp(mask.replace(/([.])/g, '\\$1').replace(/\*/g, '.+').replace(/\?/g, '.'));
+									mask = api.maskToRegExp(mask);
 								};
 								for(var part_index in parts){
 									var part = parts[part_index];
@@ -1716,10 +1637,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 							var part = _cycle_param("parts")[part_index];
 							var randomFile = api.randStr() + '.file';
 							_call_function(api.getPartData, {uid: attrs.uid, part: part, markSeen: markSeen, saveToFile: randomFile, box: box})!
+							var randomFileDir = JSON.parse(native("filesystem", "fileinfo", randomFile)).directory;
 							message.attachments.push({
 								name: part.disposition.params.filename,
 								type: part.type + '/' + part.subtype,
-								path: randomFile
+								path: randomFileDir + '/' + randomFile
 							});
 						})!
 					})!

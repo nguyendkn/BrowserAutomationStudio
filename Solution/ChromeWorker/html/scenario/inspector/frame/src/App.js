@@ -53,6 +53,11 @@ window.App = {
       return this.tab.props.data;
     },
 
+    flat() {
+      const { options } = this.tab.props;
+      return options.length && options[0].active;
+    },
+
     ref() {
       return this.$refs.tab[this.tabs.indexOf(this.tab)];
     },
@@ -127,7 +132,7 @@ window.App = {
     getClickOutsideConfig(type) {
       return {
         middleware: e => !e.target.closest('.app-tool > .active'),
-        handler: () => this[`${type}Menu`] = false,
+        handler: () => (this[`${type}Menu`] = false),
         capture: true,
       };
     },
@@ -168,6 +173,16 @@ window.App = {
         active: name === item.name ? !active : active,
         name,
       }));
+    },
+
+    toggleFlat(item) {
+      if (item.name === 'groups' && item.active) {
+        post('confirm', { message: this.$t('groups.toggle') }, ({ result }) => {
+          if (result) this.toggleOption(item);
+        });
+      } else {
+        this.toggleOption(item);
+      }
       this.groupsMenu = false;
     },
 
@@ -208,7 +223,7 @@ window.App = {
                 <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" />
               </svg>
             </button>
-            <button type="button" :class="{ active: groupsMenu }" :title="$t('buttons.groups')" @click="groupsMenu = !groupsMenu">
+            <button v-if="tab.name !== 'callstack'" type="button" :class="{ active: groupsMenu }" :title="$t('buttons.groups')" @click="groupsMenu = !groupsMenu">
               <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.5 3.5V2h-6v12h15V3.5h-9Zm8 9.5h-13V5h13v8Z" />
               </svg>
@@ -238,7 +253,7 @@ window.App = {
           </ul>
           <ul v-show="groupsMenu" class="app-menu" v-click-outside="getClickOutsideConfig('groups')">
             <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
-              <a href="#" @click.prevent="toggleOption(item)">
+              <a href="#" style="opacity: 1;" @click.prevent="toggleFlat(item)">
                 <span v-t="'groupsMenu.options.' + item.name"></span>
                 <img src="src/assets/icons/check.svg" alt>
               </a>
@@ -246,7 +261,7 @@ window.App = {
             <li v-if="options.length">
               <hr class="divider">
             </li>
-            <li class="active">
+            <li class="active" :class="{ disabled: !flat }">
               <a href="#" @click.prevent="addGroup">
                 <span v-t="'groupsMenu.buttons.add'"></span>
               </a>

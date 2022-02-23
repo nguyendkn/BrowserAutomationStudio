@@ -1,5 +1,3 @@
-/* Inspector */
-
 #inspector .loader > button.active,
 #inspector .loader > button:active {
   opacity: 1;

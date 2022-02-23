@@ -303,7 +303,10 @@
 }
 
 .callstack-item-data {
+  text-overflow: ellipsis;
   color: #538fb5;
+  overflow: hidden;
+  min-width: 0;
 }
 
 .callstack-item-name {
@@ -326,9 +329,7 @@
 }
 
 .callstack-item.preview .callstack-item-data {
-  text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .callstack-item:not(.preview) {

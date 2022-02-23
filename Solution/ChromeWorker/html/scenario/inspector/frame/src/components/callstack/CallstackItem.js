@@ -102,7 +102,7 @@ window.CallstackItem = {
         <img :src="'src/assets/icons/' + (isAction ? 'gear' : 'flash') + '.svg'" alt>
         <span class="callstack-item-name">
           <span>{{ name }}&nbsp;</span>
-          <span style="font-size: 10px; font-weight: 400; color: #606060bf;">({{ id }})</span>
+          <span style="font-size: 10px; font-weight: 400; color: #606060a6;">({{ id }})</span>
           <span>{{ hasArguments || isAction ? ':' : '' }}</span>
         </span>
         <span ref="preview" class="callstack-item-data">

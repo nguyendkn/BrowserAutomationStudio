@@ -161,6 +161,14 @@ namespace BrowserAutomationStudioFramework
 
     void ModuleManager::StartAllDlls()
     {
+        if(!IddleTimer)
+        {
+            IddleTimer = new QTimer(this);
+            IddleTimer->setSingleShot(false);
+            IddleTimer->setInterval(3000);
+            connect(IddleTimer,SIGNAL(timeout()),this,SLOT(IddleThreads()));
+            IddleTimer->start();
+        }
         DllDataList.clear();
         ThreadDataList.clear();
         ModuleInfoCache = GetModuleInfo(true);
@@ -189,6 +197,12 @@ namespace BrowserAutomationStudioFramework
 
     void ModuleManager::StopAllDlls()
     {
+        if(IddleTimer)
+        {
+            IddleTimer->stop();
+            IddleTimer->deleteLater();
+            IddleTimer = 0;
+        }
         for(ModuleInfo Info:ModuleInfoCache)
         {
             if(!Info->IsEnabled)
@@ -242,6 +256,31 @@ namespace BrowserAutomationStudioFramework
                 ThreadDataList.append(data);
             }
         }
+    }
+
+    void ModuleManager::IddleThreads()
+    {
+        for(ModuleInfo Info:ModuleInfoCache)
+        {
+            if(!Info->IsEnabled)
+                continue;
+            for(ModuleDll dll:Info->Dlls)
+            {
+                if(dll->IddleThreadFunction)
+                {
+                    QListIterator<DllData> i(ThreadDataList);
+                    while (i.hasNext())
+                    {
+                        DllData data = i.next();
+                        if(data->DllName == dll->Name)
+                        {
+                            dll->IddleThreadFunction(data->data);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     bool ModuleManager::GetIsRunning()
@@ -682,6 +721,15 @@ namespace BrowserAutomationStudioFramework
                                         {
                                             dll->StartThreadFunction = 0;
                                         }
+
+                                        if(obj.contains("iddlefunction"))
+                                        {
+                                            dll->IddleThreadFunction = (ModuleOnIddleFunction)dll->Library->resolve(obj["iddlefunction"].toString().toUtf8().data());
+                                        }else
+                                        {
+                                            dll->IddleThreadFunction = 0;
+                                        }
+
                                         if(obj.contains("endthreadfunction"))
                                         {
                                             dll->EndThreadFunction = (ModuleOnEndFunction)dll->Library->resolve(obj["endthreadfunction"].toString().toUtf8().data());

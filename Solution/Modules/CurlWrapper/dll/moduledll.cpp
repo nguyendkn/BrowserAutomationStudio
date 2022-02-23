@@ -3,16 +3,25 @@
 #include <QJsonObject>
 #include <QMap>
 #include <QDir>
+#include <QRegularExpression>
 #include <QJsonDocument>
 #include <QByteArray>
 #include <QVariant>
 #include <QFile>
 #include <QJsonArray>
 #include <QSharedPointer>
+#include <QDateTime>
+#include <QTextCodec>
 //#include <QDebug>
 #include "curl/curl.h"
 
 extern "C" {
+
+    struct CurlDataClass
+    {
+        CURL *Handler = 0;
+        quint64 EndTimeout = 0;
+    };
 
     void* StartDll()
     {
@@ -26,13 +35,46 @@ extern "C" {
 
     void* StartThread()
     {
-        return 0;
+        return new CurlDataClass();
     }
 
     void EndThread(void * DllData)
     {
+        CurlDataClass* CurlData = (CurlDataClass*)DllData;
+
+        if(CurlData)
+        {
+            if(CurlData->Handler)
+            {
+                curl_easy_cleanup(CurlData->Handler);
+                CurlData->Handler = 0;
+            }
+            CurlData->EndTimeout = 0;
+            delete CurlData;
+        }
 
     }
+
+    void IddleThread(void * ThreadData)
+    {
+        CurlDataClass* CurlData = (CurlDataClass*)ThreadData;
+
+        if(CurlData)
+        {
+            quint64 Now = QDateTime::currentMSecsSinceEpoch();
+            if(CurlData->EndTimeout > 0 && Now > CurlData->EndTimeout)
+            {
+                if(CurlData->Handler)
+                {
+                    curl_easy_cleanup(CurlData->Handler);
+                    CurlData->Handler = NULL;
+                }
+
+                CurlData->EndTimeout = 0;
+            }
+        }
+    }
+
 
     QString StrinfigyReturnCode(int key)
     {
@@ -378,6 +420,65 @@ extern "C" {
         BlobList Blobs;
     };
 
+    struct TraceDataClass
+    {
+        bool SaveHeadersInData = false;
+        bool SaveTraceData = false;
+        QByteArray TraceData;
+        QByteArray HeadersInData;
+    };
+
+    QStringList GetFetchData(const QString& HeadersIn)
+    {
+        QStringList Result;
+
+        int IndexFetch1 = HeadersIn.indexOf(QRegularExpression("\\\n\\* \\d+ FETCH", QRegularExpression::MultilineOption));
+        int IndexFetch2 = HeadersIn.indexOf(QRegularExpression("^\\* \\d+ FETCH", QRegularExpression::MultilineOption));
+        int IndexFetchStart = -1;
+        if(IndexFetch1 >= 0 && IndexFetch1 > IndexFetchStart)
+        {
+            IndexFetchStart = IndexFetch1;
+        }
+        if(IndexFetch2 >= 0 && IndexFetch2 > IndexFetchStart)
+        {
+            IndexFetchStart = IndexFetch2;
+        }
+
+        if(IndexFetchStart < 0)
+        {
+            return Result;
+        }
+
+        int IndexFetchEnd = HeadersIn.indexOf(QRegularExpression("\\\n[A-Z]\\d+ OK", QRegularExpression::MultilineOption),IndexFetchStart);
+        if(IndexFetchEnd < 0)
+        {
+            return Result;
+        }
+
+        int IndexCurrent = IndexFetchStart;
+
+
+        while(true)
+        {
+            int IndexCurrentNew = HeadersIn.indexOf(QRegularExpression("\\\n\\* \\d+ FETCH", QRegularExpression::MultilineOption),IndexCurrent + 5);
+
+            if(IndexCurrentNew < 0 || IndexCurrentNew >= IndexFetchEnd)
+            {
+                //Add last portion and finish
+                Result.append(HeadersIn.mid(IndexCurrent,IndexFetchEnd - IndexCurrent + 1));
+                break;
+            }
+
+            Result.append(HeadersIn.mid(IndexCurrent,IndexCurrentNew - IndexCurrent + 1));
+
+            IndexCurrent = IndexCurrentNew + 1;
+        }
+
+        return Result;
+
+
+    }
+
     int WriteFunction(char* data, size_t size, size_t nmemb, WriteDataClass* writedata)
     {
         int result = 0;
@@ -529,9 +630,20 @@ extern "C" {
     }
 
 
-    int TraceFunction(CURL *handle, curl_infotype type, char *data, size_t size, QString *trace)
+    int TraceFunction(CURL *handle, curl_infotype type, char *data, size_t size, TraceDataClass *TraceData)
     {
-        trace->append(QString::fromUtf8(QByteArray(data,size)));
+        if(type != CURLINFO_SSL_DATA_OUT && type != CURLINFO_SSL_DATA_IN) //Don't save SSL data as it is binary
+        {
+            if(TraceData->SaveHeadersInData && type == CURLINFO_HEADER_IN)
+            {
+                TraceData->HeadersInData.append(data, size);
+            }
+            if(TraceData->SaveTraceData)
+            {
+                TraceData->TraceData.append(data, size);
+            }
+        }
+
         return 1;
     }
 
@@ -552,14 +664,33 @@ extern "C" {
 
     }
 
+    void CurlEasyCleanup(char *InputJson, ResizeFunction AllocateSpace, void* AllocateData, void* DllData, void* ThreadData, unsigned int ThreadId, bool *NeedToStop, bool* WasError)
+    {
+        CurlDataClass* CurlData = (CurlDataClass*)ThreadData;
+
+        if(CurlData && CurlData->Handler && CurlData->EndTimeout > 0 /* if timeout is currently active */)
+        {
+            curl_easy_cleanup(CurlData->Handler);
+            CurlData->Handler = 0;
+            CurlData->EndTimeout = 0;
+        }
+
+    }
+
     void CurlEasyPerform(char *InputJson, ResizeFunction AllocateSpace, void* AllocateData, void* DllData, void* ThreadData, unsigned int ThreadId, bool *NeedToStop, bool* WasError)    {
+
+
+        CurlDataClass* CurlData = (CurlDataClass*)ThreadData;
 
         CURLcode code;
         CURL *curl;
         WriteDataClass WriteData;
         ReadDataClass ReadData;
-        bool Trace = false;
-        QString TraceString;
+        bool IsTrace = false;
+        bool IsFetch = false;
+        TraceDataClass TraceData;
+        bool SaveSession = false;
+        int Timeout = -1;
 
         QList<curl_slist *> CurlLists;
         {
@@ -615,7 +746,22 @@ extern "C" {
 
             if(InputObject.object().contains("trace"))
             {
-                Trace = InputObject.object()["trace"].toBool();
+                IsTrace = InputObject.object()["trace"].toBool();
+            }
+
+            if(InputObject.object().contains("is_fetch"))
+            {
+                IsFetch = InputObject.object()["is_fetch"].toBool();
+            }
+
+            if(InputObject.object().contains("save_session"))
+            {
+                SaveSession = InputObject.object()["save_session"].toBool();
+            }
+
+            if(InputObject.object().contains("timeout"))
+            {
+                Timeout = InputObject.object()["timeout"].toInt();
             }
 
             if(InputObject.object().contains("read_from_string"))
@@ -701,7 +847,36 @@ extern "C" {
             }
             //qDebug()<<"++Create";
 
-            curl = curl_easy_init();
+            bool IsInitialized = false;
+            if(Timeout >= 0 && SaveSession)
+            {
+                if(CurlData && CurlData->Handler)
+                {
+                    //Use saved session
+                    curl_easy_reset(CurlData->Handler);
+                    curl = CurlData->Handler;
+                    IsInitialized = true;
+                }
+            }else
+            {
+                if(CurlData && CurlData->Handler)
+                {
+                    //Delete previous session, this session can't reuse it
+                    curl_easy_cleanup(CurlData->Handler);
+                    CurlData->Handler = 0;
+                }
+            }
+
+            if(CurlData)
+            {
+                //Don't delete while performing request
+                CurlData->EndTimeout = 0;
+            }
+
+            if(!IsInitialized)
+            {
+                curl = curl_easy_init();
+            }
 
             //Init curl
 
@@ -772,11 +947,13 @@ extern "C" {
             curl_easy_setopt(curl,CURLOPT_UPLOAD, 1L);
         }
 
-        if(Trace)
+        if(IsTrace || IsFetch)
         {
+            TraceData.SaveHeadersInData = IsFetch;
+            TraceData.SaveTraceData = IsTrace;
             curl_easy_setopt(curl, CURLOPT_VERBOSE, 1);
             curl_easy_setopt(curl, CURLOPT_DEBUGFUNCTION, &TraceFunction);
-            curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &TraceString);
+            curl_easy_setopt(curl, CURLOPT_DEBUGDATA, &TraceData);
         }
 
         //Set progress function
@@ -794,7 +971,16 @@ extern "C" {
         }
 
         //qDebug()<<"--Cleanup";
-        curl_easy_cleanup(curl);
+        if(Timeout >= 0 && SaveSession)
+        {
+            CurlData->Handler = curl;
+
+            CurlData->EndTimeout = QDateTime::currentMSecsSinceEpoch() + Timeout;
+
+        }else
+        {
+            curl_easy_cleanup(curl);
+        }
         for(curl_slist * list:CurlLists)
         {
             //qDebug()<<"ListRemove";
@@ -826,10 +1012,16 @@ extern "C" {
             res.insert("result",QString::fromUtf8(WriteData.Data));
         }
 
-        if(Trace)
+        if(IsTrace)
         {
-            res.insert("trace",TraceString);
+            res.insert("trace",QString::fromUtf8(TraceData.TraceData));
         }
+
+        if(IsFetch)
+        {
+            res.insert("fetchlist",GetFetchData(QString::fromUtf8(TraceData.HeadersInData)));
+        }
+
         QJsonObject object = QJsonObject::fromVariantMap(res);
 
         QJsonDocument document;
@@ -840,6 +1032,84 @@ extern "C" {
         char * ResMemory = AllocateSpace(ResArray.size(),AllocateData);
         memcpy(ResMemory, ResArray.data(), ResArray.size() );
     }
+
+
+    void Decoder(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void *DllData, void *ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError)
+    {
+        QJsonDocument InputDocument;
+        QJsonParseError err;
+        InputDocument = QJsonDocument::fromJson(QByteArray(InputJson), &err);
+        if(err.error)
+        {
+            QByteArray ResArray = GenerateError("Failed to parse json");
+
+            char * ResMemory = AllocateSpace(ResArray.size(),AllocateData);
+            memcpy(ResMemory, ResArray.data(), ResArray.size() );
+            return;
+        }
+        QJsonObject InputObject = InputDocument.object();
+
+        QByteArray Charset = InputObject["charset"].toString().toUtf8();
+        QString Encoding = InputObject["encoding"].toString().toLower();
+        QByteArray Data = InputObject["data"].toString().toUtf8();
+        QByteArray DecodedData;
+        QString Result;
+
+        if(Encoding == QString("q"))
+        {
+            QByteArray src = Data;
+            int len = src.length();
+            for (int i = 0; i < len; i++)
+            {
+                if (src[i] == '_')
+                {
+                    DecodedData += 0x20;
+                }
+                else if (src[i] == '=')
+                {
+                    if (i+2 < len)
+                    {
+                        DecodedData += QByteArray::fromHex(src.mid(i+1,2));
+                        i += 2;
+                    }
+                }
+                else
+                {
+                    DecodedData += src[i];
+                }
+            }
+        }
+        else if (Encoding == QString("b"))
+        {
+            DecodedData = QByteArray::fromBase64(Data);
+        }
+        QTextCodec *codec = QTextCodec::codecForName(Charset);
+        if (codec)
+        {
+            Result = codec->toUnicode(DecodedData);
+        }else
+        {
+            Result = QString::fromUtf8(DecodedData);
+        }
+
+
+        QVariantMap res;
+
+        res.insert("success", true);
+
+        res.insert("result", Result);
+
+        QJsonObject object = QJsonObject::fromVariantMap(res);
+
+        QJsonDocument document;
+        document.setObject(object);
+
+        QByteArray ResArray = document.toJson();
+
+        char * ResMemory = AllocateSpace(ResArray.size(),AllocateData);
+        memcpy(ResMemory, ResArray.data(), ResArray.size() );
+    }
+
 
 
 }

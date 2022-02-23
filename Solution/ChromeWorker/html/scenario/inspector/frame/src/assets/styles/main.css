@@ -307,8 +307,10 @@
 }
 
 .callstack-item-name {
+  align-items: center;
   font-weight: 600;
   padding: 0 6px;
+  display: flex;
 }
 
 .callstack-item.function:not(.preview) > .callstack-item-title {

@@ -7,7 +7,7 @@ const store = new Vuex.Store({
     ['variables', 'resources', 'callstack'].forEach(id => {
       state[id] = Object.assign({}, state[id]);
 
-      ['sortings', 'filters', 'options', 'groups', 'nodes'].forEach(key => {
+      (id === 'callstack' ? ['filters'] : ['sortings', 'filters', 'options', 'groups', 'nodes']).forEach(key => {
         if (typeOf(state[id][key]) !== (key === 'nodes' ? 'object' : 'array')) {
           state[id][key] = key === 'nodes' ? {} : [];
         }

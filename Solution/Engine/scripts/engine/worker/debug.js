@@ -33,9 +33,9 @@
     self.debug_variables = function (list, callback) {
         var resources = JSON.parse(ScriptWorker.PickResources()), variables = list.reduce(function (acc, key) {
             if (key.indexOf('GLOBAL:') === 0) {
-                acc[key] = clone(global(key));
+                acc[key] = global(key);
             } else {
-                acc[key.slice(4)] = clone(local(key));
+                acc[key.slice(4)] = local(key);
             }
             return acc;
         }, {});
@@ -66,9 +66,9 @@
             },
         };
 
-        lastVariables = variables;
+        lastVariables = clone(variables);
 
-        lastResources = resources;
+        lastResources = clone(resources);
 
         Browser.DebugVariablesResult(stringify(result), fn(callback));
     };

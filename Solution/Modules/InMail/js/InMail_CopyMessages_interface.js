@@ -58,6 +58,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Copy the specified message from one mailbox to another.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will copy the message from one mailbox folder to another. The copy of the message will have a different id.</div>
+	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder from which the message will be copied, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
 	<div class="tr tooltip-paragraph-fold">To perform this action, you need the id of message.</div>
 	<div class="tr tooltip-paragraph-fold">You can get the id of a message using the actions "Find id of the last message", "Find id of one message by criteria".</div>

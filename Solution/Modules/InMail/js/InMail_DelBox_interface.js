@@ -20,6 +20,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Delete the specified mailbox folder.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will completely and permanently delete the folder with the specified name and all messages it contains from the mailbox.</div>
+	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">You cannot delete a folder with the name INBOX.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

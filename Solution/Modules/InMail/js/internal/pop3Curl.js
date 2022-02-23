@@ -2,8 +2,8 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	const api = this;
 	_InMail.baseApi.call(this, true, "pop3", config);
 	
-	this.validateCriteria = function(criteria){
-		_validate_argument_type(criteria, ['array','string'], 'Search criteria', '_InMail.pop3');
+	this.validateCriteria = function(criteria, act){
+		_InMail.validateArgType(criteria, ['array','string'], 'Search criteria', act);
 		if(typeof criteria === 'string'){
 			criteria = [criteria];
 		};
@@ -11,27 +11,27 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			criteria[0] = criteria[0].toUpperCase();
 		};
 		if(criteria[0] != "ALL" || criteria.length > 1){
-			api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Фильтрация' : 'Filtration');
+			api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Фильтрация' : 'Filtration', act);
 		};
 	};
 	
-	this.validateUIDList = function(uids){
+	this.validateUIDList = function(uids, act){
 		for(var i = 0, len = uids.length, intval; i < len; ++i){			
 			intval = parseInt('' + uids[i], 10);
 			
 			if(isNaN(intval)){
-				api.errorHandler('WRONG_FORMAT_UID', uids[i]);
+				api.errorHandler('WRONG_FORMAT_UID', uids[i], act);
 			}else if (intval <= 0){
-				api.errorHandler('UID_IS_SMALLER');
+				api.errorHandler('UID_IS_SMALLER', null, act);
 			}else if(typeof uids[i] !== 'number'){
 				uids[i] = intval;
 			};
 		};
 	};
 	
-	this.prepareUIDs = function(uids){
+	this.prepareUIDs = function(uids, act){
 		if(_is_nilb(uids) || (Array.isArray(uids) && uids.length === 0)){
-			api.errorHandler('EMPTY_UID_LIST');
+			api.errorHandler('EMPTY_UID_LIST', null, act);
 		};
 		
 		if(!Array.isArray(uids)){
@@ -42,71 +42,72 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			};
 		};
 		
-		api.validateUIDList(uids);
+		api.validateUIDList(uids, act);
 		
 		if(uids.length === 0){
-			api.errorHandler('EMPTY_UID_LIST');
+			api.errorHandler('EMPTY_UID_LIST', null, act);
 		};
 		
 		return uids;
 	};
 	
 	this.status = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Информация о папке' : 'Folder info');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Информация о папке' : 'Folder info', 'pop3.status');
 	};
 	
 	this.getBoxes = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Получить список папок' : 'Get list of folders');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Получить список папок' : 'Get list of folders', 'pop3.getBoxes');
 	};
 	
 	this.addBox = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Создать папку' : 'Create folder');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Создать папку' : 'Create folder', 'pop3.addBox');
 	};
 	
 	this.delBox = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Удалить папку' : 'Delete folder');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Удалить папку' : 'Delete folder', 'pop3.delBox');
 	};
 	
 	this.renameBox = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Переименовать папку' : 'Rename folder');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Переименовать папку' : 'Rename folder', 'pop3.renameBox');
 	};
 	
 	this.sort = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Сортировка' : 'Sorting');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Сортировка' : 'Sorting', 'pop3.sort');
 	};
 	
 	this.getFlags = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Получить флаги' : 'Get flags');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Получить флаги' : 'Get flags', 'pop3.getFlags');
 	};
 	
 	this.setFlags = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Установить флаги' : 'Set flags');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Установить флаги' : 'Set flags', 'pop3.setFlags');
 	};
 	
 	this.addFlags = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Добавить флаги' : 'Add Flags');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Добавить флаги' : 'Add Flags', 'pop3.addFlags');
 	};
 	
 	this.delFlags = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Удалить флаги' : 'Remove flags');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Удалить флаги' : 'Remove flags', 'pop3.delFlags');
 	};
 	
 	this.expunge = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', 'Expunge');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', 'Expunge', 'pop3.expunge');
 	};
 	
 	this.copyMessages = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Копировать письмо' : 'Copy message');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Копировать письмо' : 'Copy message', 'pop3.copyMessages');
 	};
 	
 	this.moveMessages = function(){
-		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Переместить письмо' : 'Move message');
+		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Переместить письмо' : 'Move message', 'pop3.moveMessages');
 	};
 	
 	this.search = function(){
-		api.validateCriteria(_function_argument("criteria"));
+		var act = 'pop3.search'
+		api.validateCriteria(_function_argument("criteria"), 'pop3.search');
 		
-		_call_function(api.request, {query: "LIST"})!
+		_call_function(api.request, {query: "LIST", act: act})!
 		var result = _result_function().result;
 		
 		result = result.split("\r\n").filter(function(ell){return ell});
@@ -117,7 +118,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	};
 	
 	this.searchLast = function(){
-		_call_function(api.request, {query: "LIST"})!
+		_call_function(api.request, {query: "LIST", act: 'pop3.searchLast'})!
 		var result = _result_function().result;
 		
 		var last = 0;
@@ -133,9 +134,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	};
 	
 	this.count = function(){
-		api.validateCriteria(_function_argument("criteria"));
+		var act = 'pop3.count'
+		api.validateCriteria(_function_argument("criteria"), act);
 		
-		_call_function(api.request, {query: "STAT", noBody: true})!
+		_call_function(api.request, {query: "STAT", noBody: true, act: act})!
 		var trace = _result_function().trace;
 		
 		var count = 0;
@@ -150,24 +152,26 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	};
 	
 	this.delMessages = function(){
-		var uids = api.prepareUIDs(_function_argument("uids"));
+		var act = 'pop3.delMessages'
+		var uids = api.prepareUIDs(_function_argument("uids"), act);
 		
 		_do_with_params({uids:uids}, function(){
 			var uid_index = _iterator() - 1;
 			if(uid_index > _cycle_param("uids").length - 1){
 				_break();
 			};
-			_call_function(api.request, {path: _cycle_param("uids")[uid_index], query: "DELE", noBody: true})!
+			_call_function(api.request, {path: _cycle_param("uids")[uid_index], query: "DELE", noBody: true, act: act})!
 			var resp = _result_function();
 		})!
 		
-		_call_function(api.request, {query: "QUIT", noBody: true})!
+		_call_function(api.request, {query: "QUIT", noBody: true, act: act})!
 		var resp = _result_function();
 	};
 	
 	this.parseHeaderParams = function(name, value){
 		var items = value.split(';');
 		value = items[0].trim();
+		items = items.slice(1);
 		var obj = {params: {} };
 		var temp = [];
 		
@@ -179,9 +183,8 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			obj.type = value.toLowerCase();
 		}else{
 			obj.value = value;
-		}
+		};
 		
-		items = items.slice(1);
 		if(items.length){
 			for(var i in items){
 				var item = items[i].trim();
@@ -287,7 +290,8 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	};
 	
 	this.getMessages = function(){
-		var uids = api.prepareUIDs(_function_argument("uids"));
+		var act = 'pop3.getMessages'
+		var uids = api.prepareUIDs(_function_argument("uids"), act);
 		var body = api.getParamInfo(_function_argument("body"));
 		var headers = api.getParamInfo(_function_argument("headers"));
 		var attachments = _function_argument("attachments");
@@ -296,7 +300,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		var attachnames = _avoid_nilb(_function_argument("attachnames"), false);
 		
 		if(_function_argument("flags")){
-			api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Получить флаги' : 'Get flags');
+			api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Получить флаги' : 'Get flags', act);
 		};
 		
 		var messages = [];
@@ -332,7 +336,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			messages.push(message);
 			
 			_if(size, function(){
-				_call_function(api.request, {path: uid, query: "LIST", noBody: true})!
+				_call_function(api.request, {path: uid, query: "LIST", noBody: true, act: act})!
 				var trace = _result_function().trace;
 				
 				message.size = 0;
@@ -347,12 +351,12 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			})!
 			
 			_if((headers.any || date) && !(body.any || attachnames || attachments), function(){
-				_call_function(api.request, {query: "TOP " + uid + " 0"})!
+				_call_function(api.request, {query: "TOP " + uid + " 0", act: act})!
 				var resp = _result_function();
 				
 				api.processHeaders(resp.result, message, headers, date);
 			}, function(){
-				_call_function(api.request, {path: uid, query: "RETR"})!
+				_call_function(api.request, {path: uid, query: "RETR", act: act})!
 				var resp = _result_function();
 				
 				var temp = resp.result.split('\r\n\r\n');

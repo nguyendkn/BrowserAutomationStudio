@@ -1,13 +1,26 @@
+_L["Port"] = {"ru":"Порт"};
 _L["Proxy"] = {"ru":"Прокси"};
 _L["Config"] = {"ru":"Конфиг"};
+_L["Username"] = {"ru":"Логин"};
+_L["Offset"] = {"ru":"Смещение"};
+_L["Timeout"] = {"ru":"Таймаут"};
+_L["Password"] = {"ru":"Пароль"};
+_L["Protocol"] = {"ru":"Протокол"};
+_L["Interval"] = {"ru":"Интервал"};
+_L["Encryption"] = {"ru":"Шифрование"};
 _L["Proxy type"] = {"ru":"Тип прокси"};
 _L["Folder name"] = {"ru":"Имя папки"};
 _L["Proxy login"] = {"ru":"Логин прокси"};
+_L["Data format"] = {"ru":"Формат данных"};
 _L["Proxy password"] = {"ru":"Пароль прокси"};
+_L["Server address"] = {"ru":"Адрес сервера"};
 _L["New folder name"] = {"ru":"Новое имя папки"};
 _L["Search criteria"] = {"ru":"Критерии поиска"};
 _L["Old folder name"] = {"ru":"Старое имя папки"};
+_L["Number of messages"] = {"ru":"Количество писем"};
 _L["Sorting criteria"] = {"ru":"Критерии сортировки"};
+_L["Connection timeout"] = {"ru":"Таймаут подключения"};
+_L["Maximum number of results"] = {"ru":"Максимальное количество результатов"};
 
 _InMail = {
 	api: null,
@@ -28,8 +41,15 @@ _InMail = {
 	
 	error: function(enText, ruText, act){
 		ruText = _avoid_nilb(ruText, enText);
+		act = this.prepareAct(act);
 		
-		fail('_InMail' + (_is_nilb(act) ? '' : '.' + act) + ': ' + (_K==="en" ? enText : ruText));
+		fail(act + ': ' + (_K==="en" ? enText : ruText));
+	},
+	
+	validateArgType: function(value, type, name, act){
+		act = this.prepareAct(act);
+		
+		_validate_argument_type(value, type, name, act);
 	},
 	
 	paramClean: function(str){
@@ -37,9 +57,17 @@ _InMail = {
 	},
 	
 	configure: function(protocol, autoConfig, host, port, encrypt, username, password, box, connectTimeout, timeout){
+		var act = 'configure';
+		this.validateArgType(protocol, 'string', 'Protocol', act);
+		this.validateArgType(username, 'string', 'Username', act);
+		this.validateArgType(password, 'string', 'Password', act);
+		this.validateArgType(box, 'string', 'Folder name', act);
+		this.validateArgType(connectTimeout, 'number', 'Connection timeout', act);
+		this.validateArgType(timeout, 'number', 'Timeout', act);
+		
 		protocol = this.paramClean(protocol).toLocaleLowerCase();
 		if(["imap","pop3"].indexOf(protocol) < 0){
-			this.error("Invalid protocol specified, mail module only supports imap and pop3 protocols", "Указан неверный протокол, почтовый модуль поддерживает только протоколы imap и pop3");
+			this.error("Invalid protocol specified, mail module only supports imap and pop3 protocols", "Указан неверный протокол, почтовый модуль поддерживает только протоколы imap и pop3", act);
 		};
 		
 		var config = {};
@@ -50,22 +78,27 @@ _InMail = {
 			var domain = (split[1] || "").trim();
 			
 			if(!domain){
-				this.error('Failed to configure ' + protocol + ' connection, the specified username does not contain a domain', 'Не удалось настроить подключение по ' + protocol + ', указанный логин не содержит домена');
+				this.error('Failed to configure ' + protocol + ' connection, the specified username does not contain a domain', 'Не удалось настроить подключение по ' + protocol + ', указанный логин не содержит домена', act);
 			};
 			
 			config = this.findConfig(domain, protocol);
 			
 			if(!config){
-				this.error('Failed to configure ' + protocol + ' connection for mail "' + domain + '", please use manual configuration', 'Не удалось настроить подключение по ' + protocol + ' для почты "' + domain + '", пожалуйста используйте ручную настройку');
+				this.error('Failed to configure ' + protocol + ' connection for mail "' + domain + '", please use manual configuration', 'Не удалось настроить подключение по ' + protocol + ' для почты "' + domain + '", пожалуйста используйте ручную настройку', act);
 			};
 			
 			config.host = config.host.replace("%domain%", domain);
 			config.username = config.username.replace("%email%", username).replace("%login%", login).replace("%domain%", domain);
 		}else{
+			this.validateArgType(host, 'string', 'Server address', act);
+			this.validateArgType(port, ['number','string'], 'Port', act);
+			this.validateArgType(encrypt, 'string', 'Encryption', act);
+			
 			encrypt = this.paramClean(encrypt).toLocaleLowerCase();
 			if(["none","ssl","starttls"].indexOf(encrypt) < 0){
-				this.error("Invalid encryption type specified, mail module only supports SSL, STARTTLS and none", "Указан неверный тип шифрования, почтовый модуль поддерживает только SSL, STARTTLS и none");
+				this.error('Invalid encryption type specified, mail module only supports SSL, STARTTLS and none', 'Указан неверный тип шифрования, почтовый модуль поддерживает только SSL, STARTTLS и none', act);
 			};
+			
 			config.host = this.paramClean(host);
 			port = this.paramClean(port).toLocaleLowerCase();
 			config.port = port=="auto" ? (protocol=="imap" ? (encrypt=="ssl" ? 993 : 143) : encrypt=="ssl" ? 995 : 110) : Number(port);
@@ -80,13 +113,13 @@ _InMail = {
 			try{
 				this.api = new _InMail[protocol](config);
 			}catch(err){
-				die('_InMail: ' + (_K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing | Error: ') : ('Класс протокола ' + protocol + ' поврежден или отсутствует | Ошибка: ')) + err, true);
+				die(act + ': ' + (_K==="en" ? ('Class of protocol ' + protocol + ' is corrupted or missing | Error: ') : ('Класс протокола ' + protocol + ' поврежден или отсутствует | Ошибка: ')) + err, true);
 			};
 		};
 		
 		this.api.box = _InMail.paramClean(box);
-		this.api.timeout = 1000 * (parseInt(_InMail.paramClean(timeout)) || 300);
-		this.api.setConnectTimeout(1000 * (parseInt(_InMail.paramClean(connectTimeout)) || 300));
+		this.api.setConnectTimeout(1000 * (connectTimeout || 300));
+		this.api.timeout = 1000 * (timeout || 300);
 		
 		if(!_is_nilb(this.proxy) && typeof this.proxy==="object"){
 			this.api.setProxy(this.proxy);
@@ -108,13 +141,13 @@ _InMail = {
 	
 	setProxy: function(proxyString, type, username, password){
 		if(proxyString){
-			var act = '_InMail.setProxy';
-			_validate_argument_type(proxyString, 'string', 'Proxy', act);
+			var act = 'setProxy';
+			this.validateArgType(proxyString, 'string', 'Proxy', act);
 			
 			var proxyObj = proxy_parse(proxyString);
 			
 			if(!_is_nilb(type)){
-				_validate_argument_type(type, 'string', 'Proxy type', act);
+				this.validateArgType(type, 'string', 'Proxy type', act);
 				
 				type = this.paramClean(type);
 				if(!_is_nilb(type) && type != "auto"){
@@ -123,8 +156,8 @@ _InMail = {
 			};
 			
 			if(!_is_nilb(username) && !_is_nilb(password)){
-				_validate_argument_type(username, 'string', 'Proxy login', act);
-				_validate_argument_type(password, 'string', 'Proxy password', act);
+				this.validateArgType(username, 'string', 'Proxy login', act);
+				this.validateArgType(password, 'string', 'Proxy password', act);
 				
 				proxyObj["name"] = username;
 				proxyObj["password"] = password;
@@ -157,7 +190,7 @@ _InMail = {
 	
 	status: function(){
 		var name = _function_argument("name");
-		_validate_argument_type(name, 'string', 'Folder name', '_InMail.status');
+		_InMail.validateArgType(name, 'string', 'Folder name', 'status');
 		
 		var api = _InMail.getApi();
 		
@@ -168,7 +201,9 @@ _InMail = {
 	},
 	
 	getBoxes: function(){
-		var format = _InMail.paramClean(_function_argument("format")).toLocaleLowerCase();
+		var format = _function_argument("format");
+		_InMail.validateArgType(format, 'string', 'Data format', 'getBoxes');
+		format = _InMail.paramClean(format).toLocaleLowerCase();
 		
 		var api = _InMail.getApi();
 		
@@ -190,7 +225,7 @@ _InMail = {
 	
 	addBox: function(){
 		var name = _function_argument("name");
-		_validate_argument_type(name, 'string', 'Folder name', '_InMail.addBox');
+		_InMail.validateArgType(name, 'string', 'Folder name', 'addBox');
 		
 		var api = _InMail.getApi();
 		
@@ -199,7 +234,7 @@ _InMail = {
 	
 	delBox: function(){
 		var name = _function_argument("name");
-		_validate_argument_type(name, 'string', 'Folder name', '_InMail.delBox');
+		_InMail.validateArgType(name, 'string', 'Folder name', 'delBox');
 		
 		var api = _InMail.getApi();
 		
@@ -207,11 +242,11 @@ _InMail = {
 	},
 	
 	renameBox: function(){
-		var act = '_InMail.renameBox';
+		var act = 'renameBox';
 		var oldName = _function_argument("oldName");
-		_validate_argument_type(oldName, 'string', 'Old folder name', act);
+		_InMail.validateArgType(oldName, 'string', 'Old folder name', act);
 		var newName = _function_argument("newName");
-		_validate_argument_type(newName, 'string', 'New folder name', act);
+		_InMail.validateArgType(newName, 'string', 'New folder name', act);
 		
 		var api = _InMail.getApi();
 		
@@ -219,10 +254,17 @@ _InMail = {
 	},
 	
 	search: function(){
-		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
-		var sorts = _InMail.prepareSorts(_function_argument("sorts"));
-		var maxResults = parseInt(_InMail.paramClean(_function_argument("maxResults")));
-		var offset = parseInt(_InMail.paramClean(_function_argument("offset")));
+		var act = 'search';
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), act);
+		var sorts = _InMail.prepareSorts(_function_argument("sorts"), act);
+		var maxResults = _function_argument("maxResults");
+		if(maxResults){
+			_InMail.validateArgType(maxResults, 'number', 'Maximum number of results', act);
+		};
+		var offset = _function_argument("offset");
+		if(offset){
+			_InMail.validateArgType(offset, 'number', 'Offset', act);
+		};
 		var box = _InMail.prepareBox(_function_argument("box"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
@@ -256,15 +298,28 @@ _InMail = {
 	},
 	
 	wait: function(){
+		var act = 'wait';
 		var criteria = _function_argument("criteria");
 		var sorts = _function_argument("sorts");
-		var minResults = parseInt(_InMail.paramClean(_function_argument("minResults"))) || 1;
-		var interval = 1000 * (parseInt(_InMail.paramClean(_function_argument("interval"))) || 5);
-		var timeout = 1000 * (parseInt(_InMail.paramClean(_function_argument("timeout"))) || 300);
+		var minResults = _avoid_nilb(_function_argument("minResults"), 1);
+		_InMail.validateArgType(minResults, 'number', 'Number of messages', act);
+		var interval = _avoid_nilb(_function_argument("interval"), 5);
+		_InMail.validateArgType(interval, 'number', 'Interval', act);
+		interval = 1000 * interval;
+		var timeout = _avoid_nilb(_function_argument("timeout"), 300);
+		_InMail.validateArgType(timeout, 'number', 'Timeout', act);
+		timeout = 1000 * timeout;
 		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
-		var maxResults = parseInt(_InMail.paramClean(_function_argument("maxResults")));
-		var offset = parseInt(_InMail.paramClean(_function_argument("offset")));
+		var maxResults = _function_argument("maxResults");
+		if(maxResults){
+			_InMail.validateArgType(maxResults, 'number', 'Maximum number of results', act);
+		};
+		var offset = _function_argument("offset");
+		if(offset){
+			_InMail.validateArgType(offset, 'number', 'Offset', act);
+		};
 		var box = _function_argument("box");
+		
 		var res = [];
 		
 		_do(function(){
@@ -336,7 +391,7 @@ _InMail = {
 	},
 	
 	count: function(){
-		var criteria = _InMail.prepareCriteria(_function_argument("criteria"));
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), 'count');
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
@@ -545,13 +600,23 @@ _InMail = {
 		return list;
 	},
 	
+	prepareAct: function(act){
+		act = _avoid_nil(act, '_InMail');
+		
+		if(!_starts_with(act, '_InMail')){
+			act = '_InMail.' + act;
+		};
+		
+		return act;
+	},
+	
 	prepareBox: function(box){
 		return box ? this.paramClean(box) : box;
 	},
 	
-	prepareCriteria: function(criteria){
+	prepareCriteria: function(criteria, act){
 		if(!_is_nilb(criteria)){
-			_validate_argument_type(criteria, ['array','string','object'], 'Search criteria', '_InMail.prepareCriteria');
+			_InMail.validateArgType(criteria, ['array','string','object'], 'Search criteria', act);
 			
 			if(Array.isArray(criteria)){
 				return criteria;
@@ -596,9 +661,9 @@ _InMail = {
 		return ['ALL'];
 	},
 	
-	prepareSorts: function(sorts){
+	prepareSorts: function(sorts, act){
 		if(!_is_nilb(sorts)){
-			_validate_argument_type(sorts, ['array','string','object'], 'Sorting criteria', '_InMail.prepareSorts');
+			_InMail.validateArgType(sorts, ['array','string','object'], 'Sorting criteria', act);
 			
 			if(Array.isArray(sorts)){
 				return sorts;

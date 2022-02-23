@@ -305,6 +305,7 @@
 	<div class="tr tooltip-paragraph-fold">This action will return the number of messages matching the specified filtering criteria, or the count of all messages if no filtering criteria is specified.</div>
 	<div class="tr tooltip-paragraph-fold">Using the parameters from the "Filtration" block, you can filter messages at your discretion or leave them unfiltered.</div>
 	<div class="tr tooltip-paragraph-fold">Filtering is performed on the server side.</div>
+	<div class="tr tooltip-paragraph-fold">Filtering is available only when connecting via imap, if the action is called when connecting via pop3 and filtering is active, then the action will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

@@ -52,6 +52,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Get a list of flags for the specified message.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a list of flags set for the specified message.</div>
+	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting list can be processed using actions from the "List" module.</div>
 	<div class="tr tooltip-paragraph-fold">Flags are system message tags starting with <code>\</code>. Possible flags:</div>
 	<div class="tooltip-paragraph-fold"><code>\Seen</code> - <span class="tr">Message has been read</span>.</div>

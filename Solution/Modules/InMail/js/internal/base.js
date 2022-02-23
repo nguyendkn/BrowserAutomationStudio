@@ -48,6 +48,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			var query = _function_argument("query");
 			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
 			var noBody = _avoid_nilb(_function_argument("noBody"), false);
+			var act = _avoid_nilb(_function_argument("act"), api.protocol);
 			
 			var options = {};
 			
@@ -73,9 +74,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «‎' + options["CURLOPT_URL"] + '»');
 			
 			_call_function(api.wrapper, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.timeout || 5 * 60 * 1000)})!
-			var resp = _result_function();
-			
-			__RESP = resp;			
+			var resp = _result_function();	
 			
 			var msg = api.protocol + ' ' + (_K=="ru" ? 'ответ' : 'response') + ': «‎' + resp.code + '»';
 			
@@ -110,7 +109,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 					};
 				};
 				
-				_InMail.error(resp.code + ' - ' + error, null, api.protocol);
+				_InMail.error(resp.code + ' - ' + error, null, act);
 			};
 		};
 	
@@ -118,7 +117,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			encoding = encoding.toLowerCase();
 			var resp = JSON.parse(native("curlwrapper", "decoder", JSON.stringify({charset: charset, encoding: encoding, data: data})));
 			if(!resp.success){
-				_InMail.error('FAIL_DECODE - ' + resp.error);
+				_InMail.error('FAIL_DECODE - ' + resp.error, null, api.protocol + '.decoder');
 			};
 			return resp.result;
 		};
@@ -302,9 +301,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		};
 	};
 	
-	this.errorHandler = function(error, data){
+	this.errorHandler = function(error, data, act){
 		error = error.toString();
 		data = _avoid_nil(data).toString();
+		act = _avoid_nilb(act, api.protocol);
 		
 		var errors = {
 			"INVALID_VALUE": {
@@ -423,15 +423,15 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		
 		var errorObj = errors[error];
 		
-		var message = '_InMail.' + api.protocol + ' : ' + error;
+		var message = act + ' : ' + error;
 		if(_is_nilb(errorObj)){
 			if(error==data || _is_nilb(data)){
-				fail(message);
+				_InMail.error(error, null, act);
 			}else{
-				fail(message + ", " + data);
+				_InMail.error(error + ", " + data, null, act);
 			};
 		}else{
-			fail(message + " - " + errorObj[_K]);
+			_InMail.error(error + " - " + errorObj[_K], null, act);
 		};
 	};
 };

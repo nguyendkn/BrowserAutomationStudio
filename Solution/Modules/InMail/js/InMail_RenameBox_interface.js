@@ -37,6 +37,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Rename the specified mailbox folder.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will rename the specified folder in the mailbox.</div>
+	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">Renaming INBOX is allowed and has special behavior. It moves all messages from INBOX to a new folder with the specified name, while INBOX remains empty.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>

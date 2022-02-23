@@ -471,6 +471,7 @@
 	<div class="tr tooltip-paragraph-fold">In the "Sorting" block, you can set the order and field for sorting.</div>
 	<div class="tr tooltip-paragraph-fold">Filtering and sorting is performed on the side of the mail server.</div>
 	<div class="tr tooltip-paragraph-fold">Sorting is not supported by all mail services, if sorting is enabled, but the service does not support it, the action will fail.</div>
+	<div class="tr tooltip-paragraph-fold">Filtering and sorting are only available when connecting via imap, if the action is called when connecting via pop3 and filtering or sorting is active, then the action will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">The resulting list can be processed using actions from the "List" module.</div>
 	<div class="tr tooltip-paragraph-fold">This action can wait for an messages for the specified time if you activate the corresponding parameter in the additional settings.</div>
 	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>

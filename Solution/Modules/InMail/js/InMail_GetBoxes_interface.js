@@ -32,6 +32,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Get a list of folders in the specified mailbox.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return the folder list of the specified mailbox in the specified format.</div>
+	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">CSV list - a list that consists of CSV strings and CSV string consists of name, attributes and delimiter of folder separated with ":" symbol.</span> <span class="tr">Example:</span> <code>["INBOX::/","Spam:\"\\Marked,\\Junk\":/","Trash:\"\\Marked,\\Trash\":/"]</code></div>
 	<div class="tooltip-paragraph-fold"><span class="tr">CSV string - this CSV strings separated by a line break, and consisting of name, attributes and delimiter of folder separated with ":" symbol.</span> <span class="tr">Example:</span> <code><br/>INBOX::/<br/>Spam:"\\Marked,\\Junk":/<br/>Trash:"\\Marked,\\Trash":/</code></div>
 	<div class="tr tooltip-paragraph-fold">Object list - a list that consists of objects, in an object, <span style="color:black">name</span> property contains the name, <span style="color:black">attribs</span> contains a list of attributes, and <span style="color:black">delimiter</span> contains the delimiter of folder.</div>

@@ -61,6 +61,7 @@
 	<div class="tr tooltip-paragraph-first-fold">Get information about the folder in the specified mailbox.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will get information about the specified folder, namely the number of all, recent and unseen messages.</div>
+	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">Recent messages are messages received during the current session and have the <code>\Recent</code> flag.</div>
 	<div class="tr tooltip-paragraph-fold">Unseen messages are messages that do not have the <code>\Seen</code> flag.</div>
 	<div class="tr tooltip-paragraph-fold">You can get a list of mailbox folders using the "Folder list" action.</div>

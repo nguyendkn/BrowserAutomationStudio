@@ -10,11 +10,11 @@
     callstackEmpty: 'Стек вызовов пуст',
   },
   buttons: {
+    filters: 'Фильтры и сортировка',
+    groups: 'Управление группами',
     search: 'Поиск',
-    group: 'Создать группу',
-    menu: 'Фильтры и сортировка',
   },
-  menu: {
+  filtersMenu: {
     sortings: {
       frequency: 'По частоте использования',
       dateModified: 'По дате изменения',
@@ -33,8 +33,13 @@
       functions: 'Функции',
       actions: 'Действия',
     },
+  },
+  groupsMenu: {
     options: {
-      groups: 'Группы',
+      groups: 'Включить группы',
+    },
+    buttons: {
+      add: 'Добавить группу',
     },
   },
   search: {

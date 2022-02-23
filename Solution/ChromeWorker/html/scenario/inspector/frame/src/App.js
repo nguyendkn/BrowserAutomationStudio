@@ -23,7 +23,13 @@ window.App = {
       name,
     }));
 
-    return { menu: false, search: false, tab: tabs[0], tabs };
+    return {
+      tabs,
+      tab: tabs[0],
+      search: false,
+      groupsMenu: false,
+      filtersMenu: false,
+    };
   },
 
   computed: {
@@ -45,11 +51,6 @@ window.App = {
 
     data() {
       return this.tab.props.data;
-    },
-
-    flat() {
-      const { options } = this.tab.props;
-      return options.length && options[0].active;
     },
 
     ref() {
@@ -123,6 +124,14 @@ window.App = {
   },
 
   methods: {
+    getClickOutsideConfig(type) {
+      return {
+        middleware: e => !e.target.closest('.app-tool > .active'),
+        handler: () => this[`${type}Menu`] = false,
+        capture: true,
+      };
+    },
+
     handleMessage({ data }) {
       const { type, payload } = data;
 
@@ -159,7 +168,12 @@ window.App = {
         active: name === item.name ? !active : active,
         name,
       }));
-      this.menu = false;
+      this.groupsMenu = false;
+    },
+
+    addGroup() {
+      this.groupsMenu = false;
+      this.ref.addGroup();
     },
 
     hide() {
@@ -189,15 +203,14 @@ window.App = {
                 <path d="m15.7164 15.111-4.2359-3.9328c2.1796-2.63853 1.8355-6.65365-.8031-8.83329C8.03894.165276 4.02382.509429 1.84418 3.14794-.335456 5.78644.00869703 9.80156 2.6472 11.9812c2.29436 1.9502 5.73589 1.9502 8.0302 0l4.2359 3.9329.8031-.8031ZM1.50003 7.16306c0-2.86795 2.29435-5.1623 5.16229-5.1623 2.86795 0 5.16228 2.29435 5.16228 5.1623 0 2.86794-2.29433 5.16234-5.16228 5.16234-2.86794 0-5.16229-2.2944-5.16229-5.16234Z" />
               </svg>
             </button>
-            <button type="button" :class="{ active: menu }" :title="$t('buttons.menu')" @click="menu = !menu">
+            <button type="button" :class="{ active: filtersMenu }" :title="$t('buttons.filters')" @click="filtersMenu = !filtersMenu">
               <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.0001 2L1 2V4L5.91452 10.5V15H9.91452V10.5L15.0001 4V2ZM8.91452 10.0855V14H6.91452V10.0855L2.4145 4H13.5861L8.91452 10.0855Z" />
               </svg>
             </button>
-            <button v-if="flat && Object.keys(data).length" type="button" :title="$t('buttons.group')" @click="ref.addGroup">
+            <button type="button" :class="{ active: groupsMenu }" :title="$t('buttons.groups')" @click="groupsMenu = !groupsMenu">
               <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.5 3.5V2h-6v12h15V3.5h-9Zm8 9.5h-13V5h13v8Z" />
-                <path d="M7.5 12h1V9.5H11v-1H8.5V6h-1v2.5H5v1h2.5V12Z" />
               </svg>
             </button>
             <button type="button" style="margin-left: 16px;" @click="hide">
@@ -206,29 +219,36 @@ window.App = {
               </svg>
             </button>
           </div>
-          <ul v-show="menu" class="app-menu" v-click-outside="{ middleware: e => !e.target.closest('.app-tool > .active'), handler: () => menu = false, capture: true }">
+          <ul v-show="filtersMenu" class="app-menu" v-click-outside="getClickOutsideConfig('filters')">
             <li v-for="item in sortings" :key="item.name" :class="{ active: item.active }">
               <a href="#" @click.prevent="toggleSorting(item)">
-                <span v-t="'menu.sortings.' + item.name"></span>
+                <span v-t="'filtersMenu.sortings.' + item.name"></span>
                 <img :style="{ transform: reverse ? 'rotate(180deg)' : '' }" src="src/assets/icons/arrows.svg" alt>
               </a>
             </li>
             <li v-if="sortings.length">
               <hr class="divider">
             </li>
+            <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
+              <a href="#" @click.prevent="toggleFilter(item)">
+                <span v-t="'filtersMenu.filters.' + item.name"></span>
+                <img src="src/assets/icons/check.svg" alt>
+              </a>
+            </li>
+          </ul>
+          <ul v-show="groupsMenu" class="app-menu" v-click-outside="getClickOutsideConfig('groups')">
             <li v-for="item in options" :key="item.name" :class="{ active: item.active }">
               <a href="#" @click.prevent="toggleOption(item)">
-                <span v-t="'menu.options.' + item.name"></span>
+                <span v-t="'groupsMenu.options.' + item.name"></span>
                 <img src="src/assets/icons/check.svg" alt>
               </a>
             </li>
             <li v-if="options.length">
               <hr class="divider">
             </li>
-            <li v-for="item in filters" :key="item.name" :class="{ active: item.active }">
-              <a href="#" @click.prevent="toggleFilter(item)">
-                <span v-t="'menu.filters.' + item.name"></span>
-                <img src="src/assets/icons/check.svg" alt>
+            <li class="active">
+              <a href="#" @click.prevent="addGroup">
+                <span v-t="'groupsMenu.buttons.add'"></span>
               </a>
             </li>
           </ul>

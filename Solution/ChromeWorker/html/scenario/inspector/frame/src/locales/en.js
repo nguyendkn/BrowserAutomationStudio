@@ -10,11 +10,11 @@
     callstackEmpty: 'Call stack is empty',
   },
   buttons: {
+    filters: 'Filters and sorting',
+    groups: 'Group management',
     search: 'Search',
-    group: 'Create group',
-    menu: 'Filters and sorting',
   },
-  menu: {
+  filtersMenu: {
     sortings: {
       frequency: 'By frequency of use',
       dateModified: 'By date modified',
@@ -33,8 +33,13 @@
       functions: 'Functions',
       actions: 'Actions',
     },
+  },
+  groupsMenu: {
     options: {
-      groups: 'Groups',
+      groups: 'Enable groups',
+    },
+    buttons: {
+      add: 'Add group',
     },
   },
   search: {

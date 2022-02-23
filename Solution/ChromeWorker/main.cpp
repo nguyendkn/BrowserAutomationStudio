@@ -2225,6 +2225,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventElementCommand.push_back(std::bind(&MainApp::ElementCommandCallback,app.get(),_1));
     Parser->EventRequestVariablesResult.push_back(std::bind(&MainApp::RequestVariablesResultCallback,app.get(),_1));
     Parser->EventDebugVariablesResult.push_back(std::bind(&MainApp::DebugVariablesResultCallback,app.get(),_1));
+    Parser->EventDebugCallstackResult.push_back(std::bind(&MainApp::DebugCallstackResultCallback,app.get(),_1));
     Parser->EventRestoreOriginalStage.push_back(RestoreOriginalStage);
     Parser->EventSetMode.push_back(SetMode);
 

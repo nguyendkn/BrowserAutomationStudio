@@ -1666,8 +1666,8 @@
         {
           var execute_point_code = GenerateCodeForMovingExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
 
-          _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
-          var second_line = "section_start(\"test\", " + task.get("id") + ")!"
+          _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
+          var second_line = "debug_callstack()!\nsection_start(\"test\", " + task.get("id") + ")!"
           var code = execute_point_code + "\n" + second_line
           BrowserAutomationStudio_Execute(code, false)
         }
@@ -3488,8 +3488,8 @@
           {
             var execute_point_code = GenerateCodeForMovingExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
 
-            _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
-            var second_line = "section_start(\"test\", " + task.get("id") + ")!"
+            _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
+            var second_line = "debug_callstack()!\nsection_start(\"test\", " + task.get("id") + ")!"
             var code = execute_point_code + "\n" + second_line
             BrowserAutomationStudio_Execute(code, false)
 
@@ -5554,6 +5554,10 @@
         VariablesUpdateRequested = false;
         VariablesUpdateNeeded = false;
       }
+      _Inspector.send({ type: 'update', payload: App.utils.parseJSON(data) });
+    }
+
+    function BrowserAutomationStudio_UpdateCallstackResult(data) {
       _Inspector.send({ type: 'update', payload: App.utils.parseJSON(data) });
     }
 

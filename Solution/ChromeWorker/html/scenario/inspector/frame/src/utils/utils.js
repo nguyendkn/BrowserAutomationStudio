@@ -32,5 +32,5 @@ const typeOf = (() => {
 
 const hasOwn = (() => {
   const has = Object.prototype.hasOwnProperty;
-  return (object, key) => has.call(object, key);
+  return (object, key) => object != null && has.call(object, key);
 })();

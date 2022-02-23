@@ -73,6 +73,23 @@
         Browser.DebugVariablesResult(stringify(result), fn(callback));
     };
 
+    self.debug_callstack = function (callback) {
+        var result = {
+            callstack: CYCLES.Data.reduceRight(function (acc, val) {
+                if (val._Info.name && val._Info.type) {
+                    acc.push(cycle({
+                        arguments: val._Arguments,
+                        iterator: val._Iterator,
+                        info: val._Info,
+                    }));
+                }
+                return acc;
+            }, []).concat(cycle({ info: { id: 0, name: 'Main', type: 'function' } })),
+        };
+
+        Browser.DebugCallstackResult(stringify(result), fn(callback));
+    };
+
     function stringify(value) {
         return JSON.stringify(value, function (key) {
             var value = this[key];

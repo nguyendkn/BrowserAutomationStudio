@@ -106,6 +106,7 @@ public:
     std::vector<std::function<void(const std::string&)> > EventIsUrlLoadedByMask;
     std::vector<std::function<void(const std::string&)> > EventRequestVariablesResult;
     std::vector<std::function<void(const std::string&)> > EventDebugVariablesResult;
+    std::vector<std::function<void(const std::string&)> > EventDebugCallstackResult;
     std::vector<std::function<void()> > EventGetLoadStats;
     std::vector<std::function<void()> > EventRestoreOriginalStage;
     std::vector<std::function<void(const std::string&)> > EventSetMode;

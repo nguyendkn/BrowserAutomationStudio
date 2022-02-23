@@ -339,6 +339,7 @@ public:
     void SetInitialStateCallback(const std::string & lang);
     void RequestVariablesResultCallback(const std::string & data);
     void DebugVariablesResultCallback(const std::string & data);
+    void DebugCallstackResultCallback(const std::string & data);
 
     void MouseClickCallback(int x, int y);
     void MouseClickUpCallback(int x, int y);

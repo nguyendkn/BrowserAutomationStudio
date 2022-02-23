@@ -1472,22 +1472,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 		};
 	};
 	
-	this.getParamInfo = function(data){
-		data = _avoid_nilb(data, []);
-		if(!Array.isArray(data)){
-			data = [data];
-		};
-		var raw = false;
-		data = data.filter(function(d){return !(raw = (d === 'raw'))});
-		var base = data.length > 0;
-		return {
-			base: base,
-			raw: raw,
-			any: base || raw,
-			data: data
-		};
-	};
-	
 	this.getMessages = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var body = api.getParamInfo(_function_argument("body"));

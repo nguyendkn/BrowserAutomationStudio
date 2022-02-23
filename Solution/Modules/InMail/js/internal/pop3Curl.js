@@ -165,9 +165,9 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		var resp = _result_function();
 	};
 	
-	this.parseHeaderParams = function(name, header){
-		var items = header.split(';');
-		var value = items[0].trim();
+	this.parseHeaderParams = function(name, value){
+		var items = value.split(';');
+		value = items[0].trim();
 		var obj = {params: {} };
 		var temp = [];
 		
@@ -188,11 +188,11 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 				if(item){
 					temp = item.split('=');
 					var key = temp[0].trim().toLowerCase();
-					var value = temp.slice(1).join('=').trim();
-					if(_starts_with(value, '"') && _ends_with(value, '"')){
-						value = value.slice(1, -1);
+					var val = temp.slice(1).join('=').trim();
+					if(_starts_with(val, '"') && _ends_with(val, '"')){
+						val = val.slice(1, -1);
 					};
-					obj.params[key] = value;
+					obj.params[key] = val;
 				};
 			};
 		};
@@ -267,22 +267,6 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			};
 		};
 		return parts;
-	};
-	
-	this.getParamInfo = function(data){
-		data = _avoid_nilb(data, []);
-		if(!Array.isArray(data)){
-			data = [data];
-		};
-		var raw = false;
-		data = data.map(function(d){return d.toLowerCase()}).filter(function(d){return !(raw = (d === 'raw'))});
-		var base = data.length > 0;
-		return {
-			base: base,
-			raw: raw,
-			any: base || raw,
-			data: data
-		};
 	};
 	
 	this.processHeaders = function(data, message, headers, date){

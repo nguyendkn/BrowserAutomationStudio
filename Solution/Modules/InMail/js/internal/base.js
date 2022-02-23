@@ -232,6 +232,22 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			return out;
 		};
 		
+		this.getParamInfo = function(data){
+			data = _avoid_nilb(data, []);
+			if(!Array.isArray(data)){
+				data = [data];
+			};
+			var raw = false;
+			data = data.map(function(d){return d.toLowerCase()}).filter(function(d){return !(raw = (d === 'raw'))});
+			var base = data.length > 0;
+			return {
+				base: base,
+				raw: raw,
+				any: base || raw,
+				data: data
+			};
+		};
+		
 		this.processPartData = function(data, encoding, charset, saveToFile){
 			charset = charset || 'utf-8';
 			saveToFile = _avoid_nilb(saveToFile, false);

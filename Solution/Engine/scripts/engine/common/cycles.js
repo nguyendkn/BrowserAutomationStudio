@@ -666,9 +666,17 @@ function _set_action_info(info, cycle) {
         } else {
             info.type = "action";
         }
-    
+
         cycle = cycle || CYCLES.Current();
-        if (cycle) cycle._Info = info;
+
+        if (cycle) {
+            Object.keys(info).forEach(function (key) {
+                if (key === "id" && key in cycle._Info) {
+                    return;
+                }
+                cycle._Info[key] = info[key];
+            });
+        }
     }
 }
 

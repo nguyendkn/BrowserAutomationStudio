@@ -170,6 +170,11 @@
   opacity: 1;
 }
 
+.app-menu > li.disabled > a {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .app-menu > li > a > img {
   margin-left: 10px;
   width: 16px;

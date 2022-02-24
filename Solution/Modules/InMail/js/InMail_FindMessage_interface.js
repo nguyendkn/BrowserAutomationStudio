@@ -436,14 +436,14 @@
 				help: {
 					description: tr("Variable in which, after successful execution of the action, the body of the retrieved message in html format (text/html) will be written.") + " " + tr("text/html is the MIME type of data represented in html format, html is the markup language for web pages.") + " " + tr("If the message does not contain a body with this type, then an empty string will be stored."),
 					examples: [
-						{code: "&lt;HTML&gt;&lt;BODY&gt;&lt;div&gt;" + tr("Use code 9779 to confirm") + "&lt;/div&gt;&lt;/BODY&gt;&lt;/HTML&gt;"},
-						{code: "<br/>" + tr("Empty string"), description: tr("The message does not contain a body in html format")}
+						{code: "<p style=\"margin-bottom:6px\">&lt;HTML&gt;&lt;BODY&gt;&lt;div&gt;" + tr("Use code 9779 to confirm") + "&lt;/div&gt;&lt;/BODY&gt;&lt;/HTML&gt;</p>"},
+						{code: tr("Empty string"), description: tr("The message does not contain a body in html format")}
 					]
 				}
 			}) %>
 			<div>
 				<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextHtml">
-					<input type="checkbox" id="getLinksTextHtml" style="margin-left:25px"/> <label for="getLinksTextHtml"><span class="tr">Parse links from body of message</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Parse links from body of message") + " (text/html)", description: tr("If enabled, then all links will be extracted from the retrieved message body (text/html) and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Get message size from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message size from server")}]})) %>"></i>
+					<input type="checkbox" id="getLinksTextHtml" style="margin-left:25px"/> <label for="getLinksTextHtml"><span class="tr">Parse links from body of message</span> (text/html)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Parse links from body of message") + " (text/html)", description: tr("If enabled, then all links will be extracted from the retrieved message body (text/html) and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Extract links from message body") + " (text/html)"}, {code: tr("Deactivated"), description: tr("Don't extract links from message body") + " (text/html)"}]})) %>"></i>
 				</span>
 				<span>
 					<%= _.template($('#variable_constructor').html())({
@@ -484,14 +484,14 @@
 				help: {
 					description: tr("Variable in which, after successful execution of the action, the body of the retrieved message in text format (text/plain) will be written.") + " " + tr("text/plain is a MIME type that is the base type for text files.") + " " + tr("If the message does not contain a body with this type, then an empty string will be stored."),
 					examples: [
-						{code: tr("Use code 9779 to confirm")},
-						{code: "<br/>" + tr("Empty string"), description: tr("The message does not contain a body in text format")}
+						{code: "<p style=\"margin-bottom:6px\">" + tr("Use code 9779 to confirm") + "</p>"},
+						{code: tr("Empty string"), description: tr("The message does not contain a body in text format")}
 					]
 				}
 			}) %>
 			<div>
 				<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextPlain">
-					<input type="checkbox" id="getLinksTextPlain" style="margin-left:25px"/> <label for="getLinksTextPlain"><span class="tr">Parse links from body of message</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Parse links from body of message") + " (text/plain)", description: tr("If enabled, then all links will be extracted from the retrieved message body (text/plain) and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Get message size from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message size from server")}]})) %>"></i>
+					<input type="checkbox" id="getLinksTextPlain" style="margin-left:25px"/> <label for="getLinksTextPlain"><span class="tr">Parse links from body of message</span> (text/plain)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Parse links from body of message") + " (text/plain)", description: tr("If enabled, then all links will be extracted from the retrieved message body (text/plain) and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Extract links from message body") + " (text/plain)"}, {code: tr("Deactivated"), description: tr("Don't extract links from message body") + " (text/plain)"}]})) %>"></i>
 				</span>
 				<span>
 					<%= _.template($('#variable_constructor').html())({
@@ -532,14 +532,14 @@
 				help: {
 					description: tr("Variable in which, after successful execution of the action, the body of the retrieved message in raw form (raw) will be written.") + " " + tr("raw - this means that the body of the message will be retrieved in its raw form, without any processing."),
 					examples: [
-						{code: "----ALT--d449E7c1653598173380270778C1f6B21643480035<br/>Content-Type: text/plain; charset=utf-8<br/>Content-Transfer-Encoding: base64<br/><br/>ClVzZSBjb2RlIDk3NzkgdG8gY29uZmlybQrCoArCoA==<br/><br/>----ALT--d449E7c1653598173380270778C1f6B21643480035"},
-						{code: "<br/>" + tr("Empty string"), description: tr("The message does not contain a body")}
+						{code: "----ALT--d449E7c1653598173380270778C1f6B21643480035<br/>Content-Type: text/plain; charset=utf-8<br/>Content-Transfer-Encoding: base64<p style=\"margin-top:6px;margin-bottom:6px\">ClVzZSBjb2RlIDk3NzkgdG8gY29uZmlybQrCoArCoA==</p><p style=\"margin-bottom:6px\">----ALT--d449E7c1653598173380270778C1f6B21643480035</p>"},
+						{code: tr("Empty string"), description: tr("The message does not contain a body")}
 					]
 				}
 			}) %>
 			<div>
 				<span data-preserve="true" data-preserve-type="check" data-preserve-id="getLinksTextRaw">
-					<input type="checkbox" id="getLinksTextRaw" style="margin-left:25px"/> <label for="getLinksTextRaw"><span class="tr">Parse links from body of message</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Parse links from body of message") + " (raw)", description: tr("If enabled, then all links will be extracted from the retrieved message body (raw) and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Get message size from server and save")}, {code: tr("Deactivated"), description: tr("Don't get message size from server")}]})) %>"></i>
+					<input type="checkbox" id="getLinksTextRaw" style="margin-left:25px"/> <label for="getLinksTextRaw"><span class="tr">Parse links from body of message</span> (raw)</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Parse links from body of message") + " (raw)", description: tr("If enabled, then all links will be extracted from the retrieved message body (raw) and stored in the variable below.") + " " + tr("The resulting list can be processed using actions from the \"List\" module."), examples: [{code: tr("Activated"), description: tr("Extract links from message body") + " (raw)"}, {code: tr("Deactivated"), description: tr("Don't extract links from message body") + " (raw)"}]})) %>"></i>
 				</span>
 				<span>
 					<%= _.template($('#variable_constructor').html())({
@@ -841,7 +841,7 @@
 			</div>
 		</div>
 		<span data-preserve="true" data-preserve-type="check" data-preserve-id="setFlagsAfter">
-			<input type="checkbox" id="setFlagsAfter" style="margin-left:25px"/> <label for="setFlagsAfter" class="tr">Set flags after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Set flags after receiving"), description: tr("Optional parameter.") + " " + tr("If activated, after successfully receiving the message, one or more of the specified flags will be set for it. This parameter is ignored if the \"Delete message after receiving\" parameter is enabled."), examples: [{code: tr("Activated"), description: tr("Set flags after receiving")}, {code: tr("Deactivated"), description: tr("Don't set flags after receiving")}]})) %>"></i>
+			<input type="checkbox" id="setFlagsAfter" style="margin-left:25px"/> <label for="setFlagsAfter" class="tr">Set flags after receiving</label> <i class="fa fa-question-circle help-input" data-toggle="tooltip" data-html="true" title="<%= _.escape(_.template($("#tooltip-input").html())({title: tr("Set flags after receiving"), description: tr("Optional parameter.") + " " + tr("If activated, after successfully receiving the message, one or more of the specified flags will be set for it. This parameter is ignored if the \"Delete message after receiving\" parameter is enabled."), examples: [{code: tr("Activated"), description: tr("Set message flags after receiving")}, {code: tr("Deactivated"), description: tr("Don't set message flags after receiving")}]})) %>"></i>
 		</span>
 		<span id="setFlagsSettings">
 			<%= _.template($('#input_constructor').html())({

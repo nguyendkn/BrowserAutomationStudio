@@ -6,7 +6,7 @@
 		disable_int: true, 
 		value_string: "",
 		help: {
-			description: tr("The name of the folder which need to be deleted.") + " " + tr("You cannot delete a folder with the name INBOX."),
+			description: tr("The name of the folder which need to be deleted.") + " " + tr("You cannot delete a folder with the name INBOX.") + " " + tr("You can get a list of mailbox folders using the \"Get list of folders\" action."),
 			examples: [
 				{code: "foo"},
 				{code: "bar"},
@@ -22,6 +22,7 @@
 	<div class="tr tooltip-paragraph-fold">This action will completely and permanently delete the folder with the specified name and all messages it contains from the mailbox.</div>
 	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">You cannot delete a folder with the name INBOX.</div>
+	<div class="tr tooltip-paragraph-fold">You can get a list of mailbox folders using the "Get list of folders" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

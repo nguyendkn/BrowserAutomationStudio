@@ -494,7 +494,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("The name of the folder in which this action will be performed, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.") + " " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+				description: tr("Optional parameter.") + " " + tr("The name of the folder in which this action will be performed, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.") + " " + tr("You can get a list of mailbox folders using the \"Get list of folders\" action."),
 				examples: [
 					{code: "INBOX", description: tr("Default folder incoming messages")},
 					{code: "Spam", description: tr("Spam folder, on some mails")},
@@ -510,8 +510,7 @@
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will get the message by id and save its parts to the specified variables.</div>
 	<div class="tr tooltip-paragraph-fold">Using the parameters from this action, you can choose which parts of the message will be retrieved and saved, and which ones will be skipped, thereby saving traffic and time by getting only what you need.</div>
-	<div class="tr tooltip-paragraph-fold">To perform this action, you need the id of message.</div>
-	<div class="tr tooltip-paragraph-fold">You can get the id of a message using the actions "Find id of the last message", "Find id of one message by criteria".</div>
+	<div class="tr tooltip-paragraph-fold">To perform this action, you need to get the id of the message, you can do this using the actions "Find id of the last message", "Find id of one message by criteria".</div>
 	<div class="tr tooltip-paragraph-fold">This action can delete the message or set flags for it, after successful receipt, for this you need to use the corresponding parameters in the additional settings.</div>
 	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder in which this action will be performed, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

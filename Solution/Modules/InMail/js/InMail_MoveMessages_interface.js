@@ -43,7 +43,7 @@
 			disable_int: true,
 			value_string: "",
 			help: {
-				description: tr("Optional parameter.") + " " + tr("The name of the folder from which the message will be moved, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.") + " " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+				description: tr("Optional parameter.") + " " + tr("The name of the folder from which the message will be moved, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.") + " " + tr("You can get a list of mailbox folders using the \"Get list of folders\" action."),
 				examples: [
 					{code: "INBOX", description: tr("Default folder incoming messages")},
 					{code: "Spam", description: tr("Spam folder, on some mails")},
@@ -60,8 +60,7 @@
 	<div class="tr tooltip-paragraph-fold">This action will move the message from one mailbox folder to another. After the move, the message will have a new id, and you will not be able to work with it using the same id.</div>
 	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">In the additional settings, you can specify the name of the folder from which the message will be moved, otherwise the folder specified in the "Configure receiving mail" action will be used.</div>
-	<div class="tr tooltip-paragraph-fold">To perform this action, you need the id of message.</div>
-	<div class="tr tooltip-paragraph-fold">You can get the id of a message using the actions "Find id of the last message", "Find id of one message by criteria".</div>
+	<div class="tr tooltip-paragraph-fold">To perform this action, you need to get the id of the message, you can do this using the actions "Find id of the last message", "Find id of one message by criteria".</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">This action can move several messages at once</span>, <span class="tr">for this, instead of one id, a list of id must be specified</span>, <span class="tr">as a list, you can use a string consisting of id, separated by commas.</span></div>
 	<div class="tr tooltip-paragraph-fold">You can get a list of message ids using the "Find id of multiple messages by criteria" action.</div>
 	<div class="tr tooltip-paragraph-fold">Moving messages is not supported by all mail services, if the service does not support moving, then the action will fail.</div>

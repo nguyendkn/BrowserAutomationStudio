@@ -9,7 +9,7 @@
 		disable_int: true, 
 		value_string: "",
 		help: {
-			description: tr("The name of the folder which need to get information about.") + " " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+			description: tr("The name of the folder which need to get information about.") + " " + tr("You can get a list of mailbox folders using the \"Get list of folders\" action."),
 			examples: [
 				{code: "INBOX", description: tr("Default folder incoming messages")},
 				{code: "Spam", description: tr("Spam folder, on some mails")},
@@ -64,7 +64,7 @@
 	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>
 	<div class="tr tooltip-paragraph-fold">Recent messages are messages received during the current session and have the <code>\Recent</code> flag.</div>
 	<div class="tr tooltip-paragraph-fold">Unseen messages are messages that do not have the <code>\Seen</code> flag.</div>
-	<div class="tr tooltip-paragraph-fold">You can get a list of mailbox folders using the "Folder list" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can get a list of mailbox folders using the "Get list of folders" action.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

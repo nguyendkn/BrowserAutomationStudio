@@ -559,12 +559,12 @@
 		"The resulting list can be processed using actions from the \"JSON\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"JSON\"."},
 		"The resulting object can be processed using actions from the \"JSON\" module.": {"ru":"Полученный объект можно обработать с помощью действий из модуля \"JSON\"."},
 		"The resulting list can be processed using actions from the \"List\" module.": {"ru":"Полученный список можно обработать с помощью действий из модуля \"Список\"."},
-		"You can get a list of mailbox folders using the \"Folder list\" action.": {"ru":"Список папок почтового ящика можно получить с помощью действия \"Список папок\"."},
 		"This field must contain a date or a string that can be converted to a date.": {"ru":"Это поле должно содержать дату или строку, которую можно преобразовать в дату."},
 		"As a list, you can use a string consisting of flags, separated by commas.": {"ru":"В качестве списка можно использовать строку, состоящую из флагов, разделенных запятыми."},
 		"The resulting date can be processed using actions from the \"Date and time\" module.": {"ru":"Полученную дату можно обработать с помощью действий из модуля \"Дата и время\"."},
 		"Interval in seconds to check existence messages matching the specified criteria.": {"ru":"Интервал в секундах для проверки наличия писем, соответствующих указанным критериям."},
 		"using the two parameters below, you can make filter by the contents of this field.": {"ru":"используя два параметра ниже, можно произвести фильтрацию по содержимому этого поля."},
+		"You can get a list of mailbox folders using the \"Get list of folders\" action.": {"ru":"Список папок почтового ящика можно получить с помощью действия \"Получить список папок\"."},
 		"If the message does not contain a body with this type, then an empty string will be stored.": {"ru":"Если письмо не содержит тела с таким типом, то будет сохранена пустая строка."},
 		"In order to execute this action correctly you need to run \"Configure receiving mail\" action first.": {"ru":"Для правильной работы необходимо сначала выполнить действие \"Настроить получение почты\"."},
 		"raw - this means that the body of the message will be retrieved in its raw form, without any processing.": {"ru":"raw - это означает, что тело письма будет получено в сыром виде, без какой либо обработки."},
@@ -698,9 +698,9 @@
 		"Limit the number of returned ids to the specified number. If this parameter is specified, then the resulting id list will be truncated to the specified number. If the parameter is not specified or equal to 0, then the limit will not be applied and the full result will be returned.": {"ru":"Ограничить количество возвращаемых id указанным числом. Если этот параметр указан, то итоговый список id будет обрезан до указанного количества. Если параметр не указан или равен 0, то ограничение не будет применятся и будет возвращен полный результат."},
 		
 		"Get the content of the message with the specified id.": {"ru":"Получить содержимое письма с указанным id."},
-		"To perform this action, you need the id of message.": {"ru":"Для выполнения этого действия нужно id письма."},
 		"The id of the message which content need to be retrieved.": {"ru":"id письма, содержимое которого нужно получить."},
 		"This action will get the message by id and save its parts to the specified variables.": {"ru":"Это действие получит письмо по id и сохранит его части в указанные переменные."},
+		"To perform this action, you need to get the id of the message, you can do this using the actions \"Find id of the last message\", \"Find id of one message by criteria\".": {"ru":"Для выполнения этого действия нужно получить id письма, сделать это можно с помощью действий \"Найти id последнего письма\", \"Найти id одного письма по критериям\"."},
 		
 		"Filtering is performed on the server side.": {"ru":"Фильтрация выполняется на стороне сервера."},
 		"Get the number of messages that match the specified criteria.": {"ru":"Получить количество писем соответствующих указанным критериям."},
@@ -716,7 +716,6 @@
 		"as a list, you can use a string consisting of id, separated by commas.": {"ru":"в качестве списка можно использовать строку, состоящую из id, разделенных запятыми."},
 		"This action completely and permanently removes the specified message from the mailbox.": {"ru":"Это действие полностью и безвозвратно удалит указанное письмо с почтового ящика."},
 		"You can get a list of message ids using the \"Find id of multiple messages by criteria\" action.": {"ru":"Получить список id писем можно с помощью действия \"Найти id нескольких писем по критериям\"."},
-		"You can get the id of a message using the actions \"Find id of the last message\", \"Find id of one message by criteria\".": {"ru":"Получить id письма можно с помощью действий \"Найти id последнего письма\", \"Найти id одного письма по критериям\"."},
 		"The id of the message which need to be deleted from the mailbox. If a list is specified instead of one message id, then all messages from the specified list will be deleted": {"ru":"id письма, которое нужно удалить из почтового ящика. Если вместо одного id письма будет указан список, то все письма из указанного списка будут удалены"},
 		
 		"To folder": {"ru":"В папку"},
@@ -762,7 +761,7 @@
 		"List or one flag which needs to remove from the message.": {"ru":"Список или один флаг, которые нужно удалить с письма."},
 		"Remove a flag or several flags from the specified message.": {"ru":"Удалить флаг или несколько флагов с указанного письма."},
 		"This action can remove flags for several messages at once": {"ru":"Это действие может удалять флаги с нескольких писем сразу"},
-		"The id of the message from which need to remove the flags. If a list is specified instead of one message id, then flags will be removed from all messages from the specified list": {"ru":"id письма, с которого нужно удалить флаги. Если вместо одного id письма будет указан список, то с всех писем из указанного списка будут удалены флаги"},
+		"The id of the message from which need to remove the flags. If a list is specified instead of one message id, then flags will be removed from all messages from the specified list": {"ru":"id письма, с которого нужно удалить флаги. Если вместо одного id письма будет указан список, то со всех писем из указанного списка будут удалены флаги"},
 		
 		"Example:": {"ru":"Пример:"},
 		"Data format": {"ru":"Формат данных"},

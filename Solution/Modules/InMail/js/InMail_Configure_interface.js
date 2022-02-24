@@ -131,7 +131,7 @@
 		disable_int: true,
 		value_string: "INBOX",
 		help: {
-			description: tr("The name of the folder in which all actions will be performed if no other folder is specified in their additional settings.") + " " + tr("You can get a list of mailbox folders using the \"Folder list\" action."),
+			description: tr("The name of the folder in which all actions will be performed if no other folder is specified in their additional settings.") + " " + tr("You can get a list of mailbox folders using the \"Get list of folders\" action."),
 			examples: [
 				{code: "INBOX", description: tr("Default folder incoming messages")},
 				{code: "Spam", description: tr("Spam folder, on some mails")},
@@ -176,7 +176,7 @@
 	<div class="tooltip-paragraph-fold"><span class="tr">Gmail also requires to</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://myaccount.google.com/lesssecureapps');return false">allow insecure applications</a> <span class="tr">in order to work with BAS</span>.</div>
 	<div class="tr tooltip-paragraph-fold">Mail.ru doesn't allow to make search in mailbox.</div>
 	<div class="tr tooltip-paragraph-fold">Mailbox can contain several folders, and you can work with messages from a specific folder by changing "Folder name" parameter. By default it is set to "INBOX", this folder contains incoming messages. Each mail service provides its own default names for different folders. For example, this is default name of gmail trash folder "[Gmail]/Trash" and spam folder is "[Gmail]/Spam". You can also create your own folders and use them in this action.</div>
-	<div class="tr tooltip-paragraph-fold">You can get a list of mailbox folders using the "Folder list" action.</div>
+	<div class="tr tooltip-paragraph-fold">You can get a list of mailbox folders using the "Get list of folders" action.</div>
 	<div class="tooltip-paragraph-fold"><span class="tr">This action won't start connection, it only sets configuration. Connection will be established after first attempt to access server. When action, which triggers connection will be finished, connection won't be closed immediately.</span> <span class="tr">It will be preserved for a time specified in "Timeout" parameter.</span> <span class="tr">If another action will require access to server, connection will be reused.</span></div>
 	<div class="tr tooltip-paragraph-fold">You don't need to close connection explicitly, it will be closed automatically after timeout or when the script will stop.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>

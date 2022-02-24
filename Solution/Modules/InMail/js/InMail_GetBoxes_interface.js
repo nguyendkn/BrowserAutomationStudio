@@ -22,8 +22,8 @@
 			description: tr("The format in which the list of folders will be saved to a variable."),
 			examples: [
 				{code: "Objects list", description: "[{name:\"INBOX\",attribs:[],delimiter:\"/\"},{name:\"Spam\",attribs:[\"\\Marked\",\"\\Junk\"],delimiter:\"/\"}]"},
-				{code: "<br/>CSV list", description: "[\"INBOX::/\",\"Spam:\"\\Marked,\\Junk\":/\"]"},
-				{code: "<br/>CSV string", description: "INBOX::/<br/>Spam:\"\\Marked,\\Junk\":/"}
+				{code: "<br style=\"display:block;content:'';margin:6px;\"/>CSV list", description: "[\"INBOX::/\",\"Spam:\"\\Marked,\\Junk\":/\"]"},
+				{code: "<br style=\"display:block;content:'';margin:6px;\"/>CSV string", description: "INBOX::/<br/>Spam:\"\\Marked,\\Junk\":/"}
 			]
 		} 
 	}) %>

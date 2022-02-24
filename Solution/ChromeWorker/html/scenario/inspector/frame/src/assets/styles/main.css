@@ -110,7 +110,6 @@
 .app-toolbar button.disabled,
 .app-toolbar button:disabled {
   opacity: 0.5;
-  cursor: auto;
 }
 
 /* Header */

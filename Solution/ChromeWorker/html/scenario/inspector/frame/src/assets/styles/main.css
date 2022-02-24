@@ -11,6 +11,34 @@
 
 /* Tabs */
 
+.app-tabs {
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  display: flex;
+}
+
+.app-tab > a {
+  grid-auto-flow: column;
+  text-decoration: none;
+  white-space: nowrap;
+  align-items: center;
+  line-height: 18px;
+  color: #606060;
+  padding: 8px 0;
+  display: grid;
+  opacity: 0.5;
+  gap: 0 8px;
+}
+
+.app-tab.hover > a {
+  opacity: 1;
+}
+
+.app-tab.active > a {
+  opacity: 1;
+}
+
 @media (max-width: 305px) {
   .app-tab > a {
     justify-content: start;
@@ -45,34 +73,6 @@
   }
 }
 
-.app-tab.active > a {
-  opacity: 1;
-}
-
-.app-tab.hover > a {
-  opacity: 1;
-}
-
-.app-tab > a {
-  grid-auto-flow: column;
-  text-decoration: none;
-  white-space: nowrap;
-  align-items: center;
-  line-height: 18px;
-  color: #606060;
-  padding: 8px 0;
-  display: grid;
-  opacity: 0.5;
-  gap: 0 8px;
-}
-
-.app-tabs {
-  justify-content: space-around;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  display: flex;
-}
-
 /* Tool */
 
 .app-tool {
@@ -84,6 +84,18 @@
 }
 
 /* Toolbar */
+
+.app-toolbar {
+  position: relative;
+  flex-flow: wrap;
+  display: flex;
+}
+
+.app-toolbar button {
+  display: flex;
+  margin: 0 6px;
+  opacity: 0.5;
+}
 
 .app-toolbar button.hover,
 .app-toolbar button:hover {
@@ -97,20 +109,8 @@
 
 .app-toolbar button.disabled,
 .app-toolbar button:disabled {
+  opacity: 0.5;
   cursor: auto;
-  opacity: 0.5;
-}
-
-.app-toolbar button {
-  margin: 0 6px;
-  display: flex;
-  opacity: 0.5;
-}
-
-.app-toolbar {
-  position: relative;
-  flex-flow: wrap;
-  display: flex;
 }
 
 /* Header */
@@ -253,7 +253,7 @@
 }
 
 .app-search {
-  margin-bottom: 8px;
+  margin: 0 0 8px;
   display: flex;
   min-width: 0;
 }

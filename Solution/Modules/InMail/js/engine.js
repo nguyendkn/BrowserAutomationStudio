@@ -118,8 +118,8 @@ _InMail = {
 		};
 		
 		this.api.box = _InMail.paramClean(box);
-		this.api.setConnectTimeout(1000 * (connectTimeout || 300));
 		this.api.timeout = 1000 * (timeout || 300);
+		this.api.setConnectTimeout(1000 * (connectTimeout || 300));
 		
 		if(!_is_nilb(this.proxy) && typeof this.proxy==="object"){
 			this.api.setProxy(this.proxy);

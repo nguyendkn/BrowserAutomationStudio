@@ -521,9 +521,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_if_else(isUTF8, function(){
 			_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT', act: act})!
 			
-			_call_function(api.request, {path: path, query: query, act: act})!
+			_call_function(api.request, {query: query, path: path, act: act})!
 		}, function(){
-			_call_function(api.request, {path: path, query: query, act: act})!
+			_call_function(api.request, {query: query, path: path, act: act})!
 		})!
 		
 		var resp = _result_function();

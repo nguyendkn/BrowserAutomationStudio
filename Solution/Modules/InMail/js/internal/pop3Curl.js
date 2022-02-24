@@ -2,55 +2,6 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	const api = this;
 	_InMail.baseApi.call(this, true, "pop3", config);
 	
-	this.validateCriteria = function(criteria, act){
-		_InMail.validateArgType(criteria, ['array','string'], 'Search criteria', act);
-		if(typeof criteria === 'string'){
-			criteria = [criteria];
-		};
-		if(typeof criteria[0] === 'string'){
-			criteria[0] = criteria[0].toUpperCase();
-		};
-		if(criteria[0] != "ALL" || criteria.length > 1){
-			api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Фильтрация' : 'Filtration', act);
-		};
-	};
-	
-	this.validateUIDList = function(uids, act){
-		for(var i = 0, len = uids.length, intval; i < len; ++i){			
-			intval = parseInt('' + uids[i], 10);
-			
-			if(isNaN(intval)){
-				api.errorHandler('WRONG_FORMAT_UID', uids[i], act);
-			}else if (intval <= 0){
-				api.errorHandler('UID_IS_SMALLER', null, act);
-			}else if(typeof uids[i] !== 'number'){
-				uids[i] = intval;
-			};
-		};
-	};
-	
-	this.prepareUIDs = function(uids, act){
-		if(_is_nilb(uids) || (Array.isArray(uids) && uids.length === 0)){
-			api.errorHandler('EMPTY_UID_LIST', null, act);
-		};
-		
-		if(!Array.isArray(uids)){
-			if(typeof uids == "string"){
-				uids = _to_arr(uids);
-			}else{
-				uids = [uids];
-			};
-		};
-		
-		api.validateUIDList(uids, act);
-		
-		if(uids.length === 0){
-			api.errorHandler('EMPTY_UID_LIST', null, act);
-		};
-		
-		return uids;
-	};
-	
 	this.status = function(){
 		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Информация о папке' : 'Folder info', 'pop3.status');
 	};
@@ -103,31 +54,169 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Переместить письмо' : 'Move message', 'pop3.moveMessages');
 	};
 	
+	this.validateCriteria = function(criteria, act){
+		_InMail.validateArgType(criteria, ['array','string'], 'Search criteria', act);
+		if(typeof criteria === 'string'){
+			criteria = [criteria];
+		};
+		if(typeof criteria[0] === 'string'){
+			criteria[0] = criteria[0].toUpperCase();
+		};
+		if(criteria[0] != "ALL" || criteria.length > 1){
+			api.errorHandler('NOT_AVAILABLE_ON_POP3', _K=="ru" ? 'Фильтрация' : 'Filtration', act);
+		};
+	};
+	
+	this.validateUIDList = function(uids, act){
+		for(var i = 0, len = uids.length, intval; i < len; ++i){			
+			intval = parseInt('' + uids[i], 10);
+			
+			if(isNaN(intval)){
+				api.errorHandler('WRONG_FORMAT_UID', uids[i], act);
+			}else if (intval <= 0){
+				api.errorHandler('UID_IS_SMALLER', null, act);
+			}else if(typeof uids[i] !== 'number'){
+				uids[i] = intval;
+			};
+		};
+	};
+	
+	this.prepareUIDs = function(uids, act){
+		if(_is_nilb(uids) || (Array.isArray(uids) && uids.length === 0)){
+			api.errorHandler('EMPTY_UID_LIST', null, act);
+		};
+		
+		if(!Array.isArray(uids)){
+			if(typeof uids == "string"){
+				uids = _to_arr(uids);
+			}else{
+				uids = [uids];
+			};
+		};
+		
+		api.validateUIDList(uids, act);
+		
+		if(uids.length === 0){
+			api.errorHandler('EMPTY_UID_LIST', null, act);
+		};
+		
+		return uids;
+	};
+	
+	this.makeRequest = function(){
+		var query = _function_argument("query");
+		var path = _function_argument("path");
+		var act = _avoid_nilb(_function_argument("act"), api.protocol);
+		var noBody = _avoid_nilb(_function_argument("noBody"), false);
+		
+		_call_function(api.request, {path: path, query: query, noBody: noBody, act: act})!
+		var resp = _result_function();
+		
+		if(noBody){
+			var indexStart = resp.trace.lastIndexOf(query);
+			indexStart = resp.trace.indexOf('\r\n', indexStart) + 2;
+			indexStart = resp.trace.indexOf(' ', indexStart) + 1;
+			var indexEnd = resp.trace.indexOf('\r\n', indexStart);
+			_function_return(resp.trace.slice(indexStart, indexEnd));
+		}else{
+			_function_return(resp.result);
+		};
+	};
+	
+	this.list = function(){
+		var uid = _function_argument("uid");
+		
+		var opts = {query: "LIST", act: 'pop3.list'};
+		if(uid){
+			opts.path = uid;
+			opts.noBody = true;
+		};
+		
+		_call_function(api.makeRequest, opts)!
+		var info = _result_function();
+		
+		var list = info.split("\r\n").map(function(ell){
+			var temp = ell.split(' ');
+			return {
+				uid: parseInt(temp[0]),
+				size: parseInt(temp[1])
+			};
+		});
+		
+		if(uid){
+			_function_return(list[0]);
+		}else{
+			_function_return(list);
+		};
+	};
+	
+	this.stat = function(){
+		_call_function(api.makeRequest, {query: "STAT", noBody: true, act: 'pop3.stat'})!
+		var info = _result_function();
+		
+		var temp = info.split(' ');
+		
+		_function_return({
+			count: parseInt(temp[0]),
+			size: parseInt(temp[1])
+		});
+	};
+	
+	this.retr = function(){
+		var uid = _function_argument("uid");
+		
+		_call_function(api.makeRequest, {query: "RETR", path: uid, act: 'pop3.retr'})!
+		var resp = _result_function();
+		
+		_function_return(resp);
+	};
+	
+	this.top = function(){
+		var uid = _function_argument("uid");
+		var lines = _avoid_nilb(_function_argument("lines"), 0);
+		
+		_call_function(api.makeRequest, {query: ("TOP " + uid + " " + lines), act: 'pop3.top'})!
+		var resp = _result_function();
+		
+		_function_return(resp);
+	};
+	
+	this.dele = function(){
+		var uid = _function_argument("uid");
+		
+		_call_function(api.makeRequest, {query: "DELE", path: uid, noBody: true, act: 'pop3.dele'})!
+		var info = _result_function();
+	};
+	
+	this.rset = function(){
+		_call_function(api.makeRequest, {query: "RSET", noBody: true, act: 'pop3.rset'})!
+		var info = _result_function();
+	};
+	
+	this.quit = function(){
+		_call_function(api.makeRequest, {query: "QUIT", noBody: true, act: 'pop3.quit'})!
+		var info = _result_function();
+	};
+	
 	this.search = function(){
-		var act = 'pop3.search'
 		api.validateCriteria(_function_argument("criteria"), 'pop3.search');
 		
-		_call_function(api.request, {query: "LIST", act: act})!
-		var result = _result_function().result;
+		_call_function(api.list, {})!
+		var list = _result_function();
 		
-		result = result.split("\r\n").filter(function(ell){return ell});
+		list = list.map(function(ell){return ell.uid});
 		
-		result = result.map(function(ell){return parseInt(ell.slice(0, ell.indexOf(' ')))});
-		
-		_function_return(result);
+		_function_return(list);
 	};
 	
 	this.searchLast = function(){
-		_call_function(api.request, {query: "LIST", act: 'pop3.searchLast'})!
-		var result = _result_function().result;
+		_call_function(api.list, {})!
+		var list = _result_function();
 		
 		var last = 0;
 		
-		var indexStart = result.lastIndexOf('\r\n') + 2;
-		
-		if(indexStart > 1){
-			var indexEnd = result.indexOf(' ', indexStart);
-			last = parseInt(result.slice(indexStart, indexEnd));
+		if(list.length){
+			last = list.pop().uid;
 		};
 		
 		_function_return(last);
@@ -137,35 +226,26 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		var act = 'pop3.count'
 		api.validateCriteria(_function_argument("criteria"), act);
 		
-		_call_function(api.request, {query: "STAT", noBody: true, act: act})!
-		var trace = _result_function().trace;
+		_call_function(api.stat, {})!
+		var stat = _result_function();
 		
-		var count = 0;
-		
-		var indexStart = trace.lastIndexOf('STAT\r\n+OK') + 10;
-		if(indexStart > 9){
-			var indexEnd = trace.indexOf(' ', indexStart);
-			count = parseInt(trace.slice(indexStart, indexEnd));
-		};
-		
-		_function_return(count);
+		_function_return(stat.count || 0);
 	};
 	
 	this.delMessages = function(){
 		var act = 'pop3.delMessages'
 		var uids = api.prepareUIDs(_function_argument("uids"), act);
 		
-		_do_with_params({uids:uids}, function(){
+		_do_with_params({uids: uids}, function(){
 			var uid_index = _iterator() - 1;
 			if(uid_index > _cycle_param("uids").length - 1){
 				_break();
 			};
-			_call_function(api.request, {path: _cycle_param("uids")[uid_index], query: "DELE", noBody: true, act: act})!
-			var resp = _result_function();
+			var uid = _cycle_param("uids")[uid_index];
+			_call_function(api.dele, {uid: uid})!
 		})!
 		
-		_call_function(api.request, {query: "QUIT", noBody: true, act: act})!
-		var resp = _result_function();
+		_call_function(api.quit, {})!
 	};
 	
 	this.parseHeaderParams = function(name, value){
@@ -336,30 +416,22 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			messages.push(message);
 			
 			_if(size, function(){
-				_call_function(api.request, {path: uid, query: "LIST", noBody: true, act: act})!
-				var trace = _result_function().trace;
+				_call_function(api.list, {uid: uid})!
+				var info = _result_function();
 				
-				message.size = 0;
-		
-				var indexStart = trace.lastIndexOf('LIST');
-				if(indexStart > -1){
-					indexStart = trace.indexOf('+OK', indexStart);
-					var indexEnd = trace.indexOf('\r\n', indexStart);
-					var temp = trace.slice(indexStart, indexEnd);
-					message.size = parseInt(temp.slice(temp.lastIndexOf(' ')));
-				};
+				message.size = info.size || 0;
 			})!
 			
-			_if((headers.any || date) && !(body.any || attachnames || attachments), function(){
-				_call_function(api.request, {query: "TOP " + uid + " 0", act: act})!
+			_if_else((headers.any || date) && !(body.any || attachnames || attachments), function(){
+				_call_function(api.top, {uid: uid})!
 				var resp = _result_function();
 				
-				api.processHeaders(resp.result, message, headers, date);
+				api.processHeaders(resp, message, headers, date);
 			}, function(){
-				_call_function(api.request, {path: uid, query: "RETR", act: act})!
+				_call_function(api.retr, {uid: uid})!
 				var resp = _result_function();
 				
-				var temp = resp.result.split('\r\n\r\n');
+				var temp = resp.split('\r\n\r\n');
 				var bodyContentType = api.processHeaders(temp[0], message, headers, date);
 				var bodyData = temp.slice(1).join('\r\n\r\n').trim();
 				delete temp;

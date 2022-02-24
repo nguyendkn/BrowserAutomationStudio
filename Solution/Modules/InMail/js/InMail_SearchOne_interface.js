@@ -369,7 +369,7 @@
 				min_number: 1,
 				max_number: 999999,
 				help: {
-					description: tr("Maximum waiting time for messages in seconds. If the specified time expires and the message is not found, then the action will end with an error."),
+					description: tr("Maximum waiting time for messages in seconds. If the specified time expires and the messages are not found, then the action will end with an error."),
 					examples: [
 						{code: 300, description: tr("Wait 5 minutes")},
 						{code: 600, description: tr("Wait 10 minutes")},

@@ -33,6 +33,7 @@
 #inspector {
   max-height: calc(100vh - 300px);
   user-select: none;
+  min-height: 110px;
   flex-flow: column;
   display: flex;
 }

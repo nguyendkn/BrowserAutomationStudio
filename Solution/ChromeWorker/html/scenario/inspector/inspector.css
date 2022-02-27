@@ -1,22 +1,9 @@
-#inspector .loader > button.active,
-#inspector .loader > button:active {
-  opacity: 1;
-}
-
-#inspector .loader > button.hover,
-#inspector .loader > button:hover {
-  opacity: 1;
-}
-
-#inspector .loader > button {
-  background: inherit;
-  position: absolute;
+#inspector {
+  max-height: calc(100vh - 300px);
+  user-select: none;
+  min-height: 110px;
+  flex-flow: column;
   display: flex;
-  opacity: 0.5;
-  right: 12px;
-  outline: 0;
-  border: 0;
-  top: 8px;
 }
 
 #inspector .loader {
@@ -30,10 +17,23 @@
   width: 100%;
 }
 
-#inspector {
-  max-height: calc(100vh - 300px);
-  user-select: none;
-  min-height: 110px;
-  flex-flow: column;
+#inspector .loader > button {
+  background: inherit;
+  position: absolute;
   display: flex;
+  opacity: 0.5;
+  right: 12px;
+  outline: 0;
+  border: 0;
+  top: 8px;
+}
+
+#inspector .loader > button.hover,
+#inspector .loader > button:hover {
+  opacity: 1;
+}
+
+#inspector .loader > button.active,
+#inspector .loader > button:active {
+  opacity: 1;
 }

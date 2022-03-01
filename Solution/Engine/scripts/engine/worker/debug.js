@@ -31,14 +31,14 @@
     };
 
     self.debug_variables = function (list, callback) {
-        var resources = JSON.parse(ScriptWorker.PickResources()), variables = list.reduce(function (acc, key) {
+        var resources = JSON.parse(ScriptWorker.PickResources()), variables = clone(list.reduce(function (acc, key) {
             if (key.indexOf('GLOBAL:') === 0) {
                 acc[key] = global(key);
             } else {
-                acc[key.slice(4)] = clone(local(key));
+                acc[key.slice(4)] = local(key);
             }
             return acc;
-        }, {});
+        }, {}));
 
         var result = {
             variables: Object.keys(variables).reduce(function (acc, key) {

@@ -35,7 +35,7 @@
             if (key.indexOf('GLOBAL:') === 0) {
                 acc[key] = global(key);
             } else {
-                acc[key.slice(4)] = local(key);
+                acc[key.slice(4)] = clone(local(key));
             }
             return acc;
         }, {});
@@ -66,9 +66,9 @@
             },
         };
 
-        lastVariables = clone(variables);
+        lastVariables = variables;
 
-        lastResources = clone(resources);
+        lastResources = resources;
 
         Browser.DebugVariablesResult(stringify(result), fn(callback));
     };

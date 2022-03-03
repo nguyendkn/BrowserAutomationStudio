@@ -142,7 +142,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.capability = function(){
 		_if(_is_nilb(api.caps), function(){
-			_call_function(api.request, {query: 'CAPABILITY', act: 'imap.capability'})!
+			_call_function(api.request, {query: 'CAPABILITY', act: 'capability'})!
 			var resp = _result_function();
 			
 			api.caps = api.parseCaps(resp.result);
@@ -158,7 +158,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.prepareBox = function(box, act, allowBlank){
 		box = allowBlank ? _avoid_nil(box, api.box) : _avoid_nilb(box, api.box);
 		
-		_InMail.validateArgType(box, 'string', 'Folder name', act);
+		api.validateArgType(box, 'string', 'Folder name', act);
 		if(!allowBlank && !box.length){
 			api.errorHandler('MAILBOX_NOT_SELECTED', null, act);
 		};
@@ -514,7 +514,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.makeRequest = function(){
 		var query = _function_argument("query");
 		var isUTF8 = _avoid_nilb(_function_argument("isUTF8"), false);
-		var act = _avoid_nilb(_function_argument("act"), api.protocol);
+		var act = _function_argument("act");
 		var box = api.prepareBox(_function_argument("box"), act, true);
 		var path = api.encodeName(box);
 		
@@ -599,7 +599,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.prepareCriteria = function(criteria, act){
-		_InMail.validateArgType(criteria, ['array','string'], 'Search criteria', act);
+		api.validateArgType(criteria, ['array','string'], 'Search criteria', act);
 		if(typeof criteria === 'string'){
 			criteria = [criteria];
 		};
@@ -615,7 +615,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'STATUS "' + api.encodeName(name) + '" (' + info + ')';
 		
-		_call_function(api.makeRequest, {query: cmd, box: "", act: 'imap.status'})!
+		_call_function(api.makeRequest, {query: cmd, box: "", act: 'status'})!
 		var resp = _result_function();
 		
 		var info = api.parse(resp);
@@ -652,7 +652,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.getBoxes = function(){
-		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: "", act: 'imap.getBoxes'})!
+		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: "", act: 'getBoxes'})!
 		var resp = _result_function();
 		
 		var lines = resp.split('\r\n');
@@ -706,20 +706,20 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.addBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'CREATE "' + api.encodeName(name) + '"', box: "", act: 'imap.addBox'})!
+		_call_function(api.makeRequest, {query: 'CREATE "' + api.encodeName(name) + '"', box: "", act: 'addBox'})!
 	};
 	
 	this.delBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'DELETE "' + api.encodeName(name) + '"', box: "", act: 'imap.delBox'})!
+		_call_function(api.makeRequest, {query: 'DELETE "' + api.encodeName(name) + '"', box: "", act: 'delBox'})!
 	};
 	
 	this.renameBox = function(){
 		var oldName = _function_argument("oldName");
 		var newName = _function_argument("newName");
 		
-		_call_function(api.makeRequest, {query: 'RENAME "' + api.encodeName(oldName) + '" "' + api.encodeName(newName) + '"', box: "", act: 'imap.renameBox'})!
+		_call_function(api.makeRequest, {query: 'RENAME "' + api.encodeName(oldName) + '" "' + api.encodeName(newName) + '"', box: "", act: 'renameBox'})!
 	};
 
 	this.hasNonASCII = function(str){
@@ -930,7 +930,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.search = function(){
-		var act = 'imap.search';
+		var act = 'search';
 		var criteria = api.prepareCriteria(_function_argument("criteria"), act);
 		var box = api.prepareBox(_function_argument("box"), act);
 		
@@ -958,10 +958,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.esearch = function(){
-		var act = 'imap.esearch';
+		var act = 'esearch';
 		var criteria = api.prepareCriteria(_function_argument("criteria"), act);
 		var options = _avoid_nil(_function_argument("options"));
-		_InMail.validateArgType(options, ['array','string'], 'Options', act);
+		api.validateArgType(options, ['array','string'], 'Options', act);
 		var box = api.prepareBox(_function_argument("box"), act);
 		
 		
@@ -1050,12 +1050,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.sort = function(){
-		var act = 'imap.sort';
+		var act = 'sort';
 		var sorts = _function_argument("sorts");
 		var criteria = api.prepareCriteria(_function_argument("criteria"), act);
 		var box = api.prepareBox(_function_argument("box"), act);
 		
-		_InMail.validateArgType(sorts, ['array','string'], 'Sorting criteria', act);
+		api.validateArgType(sorts, ['array','string'], 'Sorting criteria', act);
 		if(typeof sorts === 'string'){
 			sorts = [sorts];
 		};
@@ -1115,12 +1115,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.store = function(){
-		var act = 'imap.store';
+		var act = 'store';
 		var uids = api.prepareUIDs(_function_argument("uids"), act);
 		var config = _function_argument("config");
 		var box = api.prepareBox(_function_argument("box"), act);
 		
-		_InMail.validateArgType(config, 'object', 'Config', act);
+		api.validateArgType(config, 'object', 'Config', act);
 		if(_is_nilb(config.flags) && _is_nilb(config.keywords)){
 			api.errorHandler('NOT_FLAGS_KEYWORDS', null, act);
 		};
@@ -1241,7 +1241,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.expunge = function(){
-		var act = 'imap.expunge';
+		var act = 'expunge';
 		var uids = _function_argument("uids");
 		var box = api.prepareBox(_function_argument("box"), act);
 		
@@ -1267,11 +1267,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.copyMessages = function(){
-		var act = 'imap.copyMessages';
+		var act = 'copyMessages';
 		var uids = api.prepareUIDs(_function_argument("uids"), act);
 		var box = api.prepareBox(_function_argument("box"), act);
 		var toBox = _function_argument("toBox");
-		_InMail.validateArgType(toBox, 'string', 'To folder', act);
+		api.validateArgType(toBox, 'string', 'To folder', act);
 		if(!toBox.length){
 			api.errorHandler('TOBOX_NOT_SPECIFIED', null, act);
 		};
@@ -1283,11 +1283,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.moveMessages = function(){
-		var act = 'imap.moveMessages';
+		var act = 'moveMessages';
 		var uids = api.prepareUIDs(_function_argument("uids"), act);
 		var box = api.prepareBox(_function_argument("box"), act);
 		var toBox = _function_argument("toBox");
-		_InMail.validateArgType(toBox, 'string', 'To folder', act);
+		api.validateArgType(toBox, 'string', 'To folder', act);
 		if(!toBox.length){
 			api.errorHandler('TOBOX_NOT_SPECIFIED', null, act);
 		};
@@ -1356,13 +1356,13 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.fetch = function(){
-		var act = 'imap.fetch';
+		var act = 'fetch';
 		var uids = api.prepareUIDs(_function_argument("uids"), act);
 		var options = _function_argument("options");
 		var box = api.prepareBox(_function_argument("box"), act);
 		
 		if(options){
-			_InMail.validateArgType(options, 'object', 'Options', act);
+			api.validateArgType(options, 'object', 'Options', act);
 		};
 		
 		var cmd = 'UID FETCH ' + uids + ' (';
@@ -1480,7 +1480,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.getMessages = function(){
-		var uids = api.prepareUIDs(_function_argument("uids"), 'imap.getMessages');
+		var uids = api.prepareUIDs(_function_argument("uids"), 'getMessages');
 		var body = api.getParamInfo(_function_argument("body"));
 		var headers = api.getParamInfo(_function_argument("headers"));
 		var attachments = _function_argument("attachments");
@@ -1644,7 +1644,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.getFlags = function(){
-		var act = 'imap.getFlags';
+		var act = 'getFlags';
 		var uid = api.prepareUIDs(_function_argument("uid"), act);
 		var box = api.prepareBox(_function_argument("box"), act);
 		

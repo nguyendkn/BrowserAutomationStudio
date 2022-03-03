@@ -36,9 +36,9 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		};
 		
 		this.wrapper = function(){
-			var args = _function_arguments();
+			var params = _function_arguments();
 			
-			native_async("curlwrapper", "easyperform", JSON.stringify(args))!
+			native_async("curlwrapper", "easyperform", JSON.stringify(params))!
 			
 			_function_return(JSON.parse(_result()));
 		},
@@ -48,7 +48,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			var query = _function_argument("query");
 			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
 			var noBody = _avoid_nilb(_function_argument("noBody"), false);
-			var act = _avoid_nilb(_function_argument("act"), api.protocol);
+			var act = api.prepareAct(_function_argument("act"));
 			
 			var options = {};
 			
@@ -69,12 +69,14 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				options["CURLOPT_NOBODY"] = false;
 			};
 			
-			options["CURLOPT_CUSTOMREQUEST"] = _is_nil(query) ? "" : query;
+			options["CURLOPT_CUSTOMREQUEST"] = _is_nil(query) ? "" : query.trim();
 			
 			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «‎' + options["CURLOPT_URL"] + '»');
 			
 			_call_function(api.wrapper, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.timeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
+			
+			resp.code = resp.code.replace('CURLE_', '');
 			
 			var msg = api.protocol + ' ' + (_K=="ru" ? 'ответ' : 'response') + ': «‎' + resp.code + '»';
 			
@@ -90,19 +92,19 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			_InMail.log(msg);
 			
-			if(resp.code == "CURLE_OK"){
+			if(resp.code == "OK"){
 				_function_return(resp);
 			}else{
 				var error = resp.error;
 				
-				if((resp.code == "CURLE_QUOTE_ERROR" && error == "Quote command returned error") || (resp.code == "CURLE_RECV_ERROR" && error == "Failure when receiving data from the peer")){
+				if((resp.code == "QUOTE_ERROR" && error == "Quote command returned error") || (resp.code == "RECV_ERROR" && error == "Failure when receiving data from the peer")){
 					var debug = resp.trace.trim().split(/\r?\n/);
 					for(var i = debug.length - 1; i > -1; i--){
 						var ell = debug[i];
-						if(resp.code == "CURLE_QUOTE_ERROR"){
+						if(resp.code == "QUOTE_ERROR"){
 							ell = ell.slice(ell.indexOf(" ") + 1);
 						};
-						if((resp.code == "CURLE_QUOTE_ERROR" && (_starts_with(ell, "BAD") || _starts_with(ell, "NO"))) || (resp.code == "CURLE_RECV_ERROR" && _starts_with(ell, "-ERR"))){
+						if((resp.code == "QUOTE_ERROR" && (_starts_with(ell, "BAD") || _starts_with(ell, "NO"))) || (resp.code == "RECV_ERROR" && _starts_with(ell, "-ERR"))){
 							error = ell.slice(ell.indexOf(" ") + 1).trim();
 							break;
 						};
@@ -163,7 +165,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 					if(m){
 						h = m[1].toLowerCase().trim();
 						if(m[2]){
-							if(header[h] === undefined){
+							if(typeof header[h] === "undefined"){
 								header[h] = [m[2]];
 							}else{
 								header[h].push(m[2]);
@@ -301,10 +303,16 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		};
 	};
 	
+	this.validateArgType = function(value, type, name, act){
+		act = api.prepareAct(act);
+		
+		_InMail.validateArgType(value, type, name, act);
+	};
+	
 	this.errorHandler = function(error, data, act){
 		error = error.toString();
 		data = _avoid_nil(data).toString();
-		act = _avoid_nilb(act, api.protocol);
+		act = api.prepareAct(act);
 		
 		var errors = {
 			"INVALID_VALUE": {
@@ -415,24 +423,34 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				"ru": 'Не удалось найти письмо, соответствующее указанному идентификатору, в указанной папке почтового ящика',
 				"en": 'Could not find a message matching the specified id in the specified mailbox folder'
 			},
-			"NOT_AVAILABLE_ON_POP3": {
+			"NOT_AVAILABLE_POP3": {
 				"ru": 'Функция "' + data + '" недоступна по pop3,  используйте подключение по imap, если это возможно',
 				"en": '"' + data + '" function is not available on pop3, use imap connection if it possible'
 			}
 		};
 		
 		var errorObj = errors[error];
+		var message = error;
 		
-		var message = act + ' : ' + error;
 		if(_is_nilb(errorObj)){
-			if(error==data || _is_nilb(data)){
-				_InMail.error(error, null, act);
-			}else{
-				_InMail.error(error + ", " + data, null, act);
+			if(error!=data && !_is_nilb(data)){
+				message += ", " + data;
 			};
 		}else{
-			_InMail.error(error + " - " + errorObj[_K], null, act);
+			message += " - " + errorObj[_K];;
 		};
+		
+		_InMail.error(message, null, act);
+	};
+	
+	this.prepareAct = function(act){
+		act = _avoid_nilb(act, api.protocol);
+		
+		if(!_starts_with(act, api.protocol)){
+			act = api.protocol + '.' + act;
+		};
+		
+		return act;
 	};
 };
 _InMail.assignApi = function(fn){

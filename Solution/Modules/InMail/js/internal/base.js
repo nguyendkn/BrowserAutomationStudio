@@ -2,6 +2,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	const api = this;
 	this.protocol = protocol;
 	this.config = config;
+	this.action = protocol;
 	
 	if(isCurl){
 		
@@ -48,7 +49,6 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			var query = _function_argument("query");
 			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
 			var noBody = _avoid_nilb(_function_argument("noBody"), false);
-			var act = api.prepareAct(_function_argument("act"));
 			
 			var options = {};
 			
@@ -111,7 +111,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 					};
 				};
 				
-				_InMail.error(resp.code + ' - ' + error, null, act);
+				_InMail.error(resp.code + ' - ' + error, null, api.cutAction());
 			};
 		};
 	
@@ -119,7 +119,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			encoding = encoding.toLowerCase();
 			var resp = JSON.parse(native("curlwrapper", "decoder", JSON.stringify({charset: charset, encoding: encoding, data: data})));
 			if(!resp.success){
-				_InMail.error('FAIL_DECODE - ' + resp.error, null, api.protocol + '.decoder');
+				_InMail.error('FAIL_DECODE - ' + resp.error, null, api.cutAction());
 			};
 			return resp.result;
 		};
@@ -303,16 +303,35 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		};
 	};
 	
-	this.validateArgType = function(value, type, name, act){
-		act = api.prepareAct(act);
+	this.setAction = function(action){
+		action = action || api.protocol;
 		
-		_InMail.validateArgType(value, type, name, act);
+		if(!_starts_with(action, api.protocol)){
+			action = api.protocol + '.' + action;
+		};
+		
+		api.action = action;
 	};
 	
-	this.errorHandler = function(error, data, act){
+	this.clearAction = function(){
+		api.action = api.protocol;
+	};
+	
+	this.cutAction = function(){
+		var act = api.action;
+		api.clearAction();
+		return act;
+	};
+	
+	this.validateArgType = function(value, type, name){
+		var act = api.cutAction();
+		_InMail.validateArgType(value, type, name, act);
+		api.action = act;
+	};
+	
+	this.errorHandler = function(error, data){
 		error = error.toString();
 		data = _avoid_nil(data).toString();
-		act = api.prepareAct(act);
 		
 		var errors = {
 			"INVALID_VALUE": {
@@ -440,17 +459,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			message += " - " + errorObj[_K];;
 		};
 		
-		_InMail.error(message, null, act);
-	};
-	
-	this.prepareAct = function(act){
-		act = _avoid_nilb(act, api.protocol);
-		
-		if(!_starts_with(act, api.protocol)){
-			act = api.protocol + '.' + act;
-		};
-		
-		return act;
+		_InMail.error(message, null, api.cutAction());
 	};
 };
 _InMail.assignApi = function(fn){

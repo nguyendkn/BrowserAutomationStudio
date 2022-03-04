@@ -189,26 +189,32 @@ _InMail = {
 	},
 	
 	status: function(){
+		var act = 'status';
 		var name = _function_argument("name");
-		_InMail.validateArgType(name, 'string', 'Folder name', 'status');
+		_InMail.validateArgType(name, 'string', 'Folder name', act);
 		
 		var api = _InMail.getApi();
+		api.setAction(act);
 		
 		_call_function(api.status, {name: name})!
 		var info = _result_function();
+		api.clearAction();
 		
 		_function_return(info);
 	},
 	
 	getBoxes: function(){
+		var act = 'getBoxes';
 		var format = _function_argument("format");
-		_InMail.validateArgType(format, 'string', 'Data format', 'getBoxes');
+		_InMail.validateArgType(format, 'string', 'Data format', act);
 		format = _InMail.paramClean(format).toLocaleLowerCase();
 		
 		var api = _InMail.getApi();
+		api.setAction(act);
 		
 		_call_function(api.getBoxes, {})!
 		var boxes = _result_function();
+		api.clearAction();
 		
 		if(format != 'object'){
 			boxes = _InMail.boxesToList(boxes);
@@ -224,21 +230,27 @@ _InMail = {
 	},
 	
 	addBox: function(){
+		var act = 'addBox';
 		var name = _function_argument("name");
-		_InMail.validateArgType(name, 'string', 'Folder name', 'addBox');
+		_InMail.validateArgType(name, 'string', 'Folder name', act);
 		
 		var api = _InMail.getApi();
+		api.setAction(act);
 		
 		_call_function(api.addBox, {name: name})!
+		api.clearAction();
 	},
 	
 	delBox: function(){
+		var act = 'delBox';
 		var name = _function_argument("name");
-		_InMail.validateArgType(name, 'string', 'Folder name', 'delBox');
+		_InMail.validateArgType(name, 'string', 'Folder name', act);
 		
 		var api = _InMail.getApi();
+		api.setAction(act);
 		
 		_call_function(api.delBox, {name: name})!
+		api.clearAction();
 	},
 	
 	renameBox: function(){
@@ -249,8 +261,10 @@ _InMail = {
 		_InMail.validateArgType(newName, 'string', 'New folder name', act);
 		
 		var api = _InMail.getApi();
+		api.setAction(act);
 		
 		_call_function(api.renameBox, {oldName: oldName, newName: newName})!
+		api.clearAction();
 	},
 	
 	search: function(){
@@ -271,12 +285,17 @@ _InMail = {
 		var api = _InMail.getApi();
 		
 		_if_else(sorts, function(){
+			api.setAction('sort');
+			
 			_call_function(api.sort, {sorts: sorts, criteria: criteria, box: box})!
 		}, function(){
+			api.setAction(act);
+			
 			_call_function(api.search, {criteria: criteria, box: box})!
 		})!
 		
 		var res = _result_function();
+		api.clearAction();
 		
 		if(res.length){
 			if(maxResults){
@@ -353,9 +372,11 @@ _InMail = {
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
 		var api = _InMail.getApi();
+		api.setAction('searchLast');
 		
 		_call_function(api.searchLast, {box: box})!
 		var last = _result_function();
+		api.clearAction();
 		
 		if(last){
 			_function_return(last);
@@ -395,9 +416,11 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('count');
 		
 		_call_function(api.count, {criteria: criteria, box: box})!
 		var count = _result_function();
+		api.clearAction();
 		
 		_function_return(count);
 	},
@@ -407,9 +430,11 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('getFlags');
 		
 		_call_function(api.getFlags, {uid: uid, box: box})!
 		var flags = _result_function();
+		api.clearAction();
 		
 		_function_return(flags);
 	},
@@ -420,8 +445,10 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('addFlags');
 		
 		_call_function(api.addFlags, {uids: uids, flags: flags, box: box})!
+		api.clearAction();
 	},
 	
 	delFlags: function(){
@@ -430,8 +457,10 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('delFlags');
 		
 		_call_function(api.delFlags, {uids: uids, flags: flags, box: box})!
+		api.clearAction();
 	},
 	
 	setFlags: function(){
@@ -440,8 +469,10 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('setFlags');
 		
 		_call_function(api.setFlags, {uids: uids, flags: flags, box: box})!
+		api.clearAction();
 	},
 	
 	expunge: function(){
@@ -449,8 +480,10 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('expunge');
 		
 		_call_function(api.expunge, {uids: uids, box: box})!
+		api.clearAction();
 	},
 	
 	delMessages: function(){
@@ -458,8 +491,10 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('delMessages');
 		
 		_call_function(api.delMessages, {uids: uids, box: box})!
+		api.clearAction();
 	},
 	
 	copyMessages: function(){
@@ -468,8 +503,10 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('copyMessages');
 		
 		_call_function(api.copyMessages, {uids: uids, toBox: toBox, box: box})!
+		api.clearAction();
 	},
 	
 	moveMessages: function(){
@@ -478,8 +515,10 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('moveMessages');
 		
 		_call_function(api.moveMessages, {uids: uids, toBox: toBox, box: box})!
+		api.clearAction();
 	},
 	
 	getMessages: function(){
@@ -495,9 +534,11 @@ _InMail = {
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
+		api.setAction('getMessages');
 		
 		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, flags: flags, date: date, attachnames: attachnames, attachments: attachments, markSeen: markSeen, box: box})!
 		var messages = _result_function();
+		api.clearAction();
 		
 		_function_return(messages);
 	},

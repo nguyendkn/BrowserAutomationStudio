@@ -142,7 +142,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.capability = function(){
 		_if(_is_nilb(api.caps), function(){
-			_call_function(api.request, {query: 'CAPABILITY', act: 'capability'})!
+			_call_function(api.request, {query: 'CAPABILITY'})!
 			var resp = _result_function();
 			
 			api.caps = api.parseCaps(resp.result);
@@ -155,12 +155,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return (api.caps && api.caps.indexOf(cap) > -1);
 	};
 	
-	this.prepareBox = function(box, act, allowBlank){
+	this.prepareBox = function(box, allowBlank){
 		box = allowBlank ? _avoid_nil(box, api.box) : _avoid_nilb(box, api.box);
 		
-		api.validateArgType(box, 'string', 'Folder name', act);
+		api.validateArgType(box, 'string', 'Folder name');
 		if(!allowBlank && !box.length){
-			api.errorHandler('MAILBOX_NOT_SELECTED', null, act);
+			api.errorHandler('MAILBOX_NOT_SELECTED');
 		};
 		
 		return box;
@@ -514,16 +514,15 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.makeRequest = function(){
 		var query = _function_argument("query");
 		var isUTF8 = _avoid_nilb(_function_argument("isUTF8"), false);
-		var act = _function_argument("act");
-		var box = api.prepareBox(_function_argument("box"), act, true);
+		var box = api.prepareBox(_function_argument("box"), true);
 		var path = api.encodeName(box);
 		
 		_if_else(isUTF8, function(){
-			_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT', act: act})!
+			_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT'})!
 			
-			_call_function(api.request, {query: query, path: path, act: act})!
+			_call_function(api.request, {query: query, path: path})!
 		}, function(){
-			_call_function(api.request, {query: query, path: path, act: act})!
+			_call_function(api.request, {query: query, path: path})!
 		})!
 		
 		var resp = _result_function();
@@ -541,7 +540,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_function_return(resp.result);
 	};
 
-	this.validateUIDList = function(uids, act, noError){
+	this.validateUIDList = function(uids, noError){
 		for(var i = 0, len = uids.length, intval; i < len; ++i){
 			if(typeof uids[i] === 'string'){
 				if(uids[i] === '*' || uids[i] === '*:*'){
@@ -561,14 +560,14 @@ _InMail.imap = _InMail.assignApi(function(config){
 				if(noError){
 					return err;
 				}else{
-					api.errorHandler(err, uids[i], act);
+					api.errorHandler(err, uids[i]);
 				};
 			}else if (intval <= 0){
 				var err = 'UID_IS_SMALLER';
 				if(noError){
 					return err;
 				}else{
-					api.errorHandler(err, null, act);
+					api.errorHandler(err);
 				};
 			}else if(typeof uids[i] !== 'number'){
 				uids[i] = intval;
@@ -576,9 +575,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		};
 	};
 	
-	this.prepareUIDs = function(uids, act){
+	this.prepareUIDs = function(uids){
 		if(_is_nilb(uids) || (Array.isArray(uids) && uids.length === 0)){
-			api.errorHandler('EMPTY_UID_LIST', null, act);
+			api.errorHandler('EMPTY_UID_LIST');
 		};
 		
 		if(!Array.isArray(uids)){
@@ -589,17 +588,17 @@ _InMail.imap = _InMail.assignApi(function(config){
 			};
 		};
 		
-		api.validateUIDList(uids, act);
+		api.validateUIDList(uids);
 		
 		if(uids.length === 0){
-			api.errorHandler('EMPTY_UID_LIST', null, act);
+			api.errorHandler('EMPTY_UID_LIST');
 		};
 		
 		return uids.join(',');
 	};
 	
-	this.prepareCriteria = function(criteria, act){
-		api.validateArgType(criteria, ['array','string'], 'Search criteria', act);
+	this.prepareCriteria = function(criteria){
+		api.validateArgType(criteria, ['array','string'], 'Search criteria');
 		if(typeof criteria === 'string'){
 			criteria = [criteria];
 		};
@@ -615,7 +614,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'STATUS "' + api.encodeName(name) + '" (' + info + ')';
 		
-		_call_function(api.makeRequest, {query: cmd, box: "", act: 'status'})!
+		_call_function(api.makeRequest, {query: cmd, box: ""})!
 		var resp = _result_function();
 		
 		var info = api.parse(resp);
@@ -651,8 +650,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_function_return(box);
 	};
 	
-	this.getBoxes = function(){
-		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: "", act: 'getBoxes'})!
+	this.getBoxes = function(){		
+		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: ""})!
 		var resp = _result_function();
 		
 		var lines = resp.split('\r\n');
@@ -706,20 +705,23 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.addBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'CREATE "' + api.encodeName(name) + '"', box: "", act: 'addBox'})!
+		_call_function(api.makeRequest, {query: 'CREATE "' + api.encodeName(name) + '"', box: ""})!
+		var resp = _result_function();
 	};
 	
 	this.delBox = function(){
 		var name = _function_argument("name");
 		
-		_call_function(api.makeRequest, {query: 'DELETE "' + api.encodeName(name) + '"', box: "", act: 'delBox'})!
+		_call_function(api.makeRequest, {query: 'DELETE "' + api.encodeName(name) + '"', box: ""})!
+		var resp = _result_function();
 	};
 	
 	this.renameBox = function(){
 		var oldName = _function_argument("oldName");
 		var newName = _function_argument("newName");
 		
-		_call_function(api.makeRequest, {query: 'RENAME "' + api.encodeName(oldName) + '" "' + api.encodeName(newName) + '"', box: "", act: 'renameBox'})!
+		_call_function(api.makeRequest, {query: 'RENAME "' + api.encodeName(oldName) + '" "' + api.encodeName(newName) + '"', box: ""})!
+		var resp = _result_function();
 	};
 
 	this.hasNonASCII = function(str){
@@ -743,7 +745,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return '"' + api.escape(str) + '"';
 	};
 
-	this.buildSearchQuery = function(options, info, act, isOrChild){
+	this.buildSearchQuery = function(options, info, isOrChild){
 		var searchargs = '';		
 		
 		for(var i = 0, len = options.length; i < len; ++i){
@@ -761,12 +763,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 					criteria = criteria[0].toUpperCase();
 				};
 			}else{
-				api.errorHandler('UNEXPECTED_OPTION_TYPE', typeof criteria, act);
+				api.errorHandler('UNEXPECTED_OPTION_TYPE', typeof criteria);
 			};
 			
 			if(criteria === 'OR'){
 				if(args.length !== 2){
-					api.errorHandler('OR_NOT_TWO_ARGS', null, act);
+					api.errorHandler('OR_NOT_TWO_ARGS');
 				};
 				
 				if(isOrChild){
@@ -775,9 +777,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 					searchargs += ' OR (';
 				};
 				
-				searchargs += api.buildSearchQuery(args[0], info, act, true);
+				searchargs += api.buildSearchQuery(args[0], info, true);
 				searchargs += ') (';
-				searchargs += api.buildSearchQuery(args[1], info, act, true);
+				searchargs += api.buildSearchQuery(args[1], info, true);
 				searchargs += ')';
 			}else{
 				if(criteria[0] === '!'){
@@ -811,7 +813,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 					case 'TEXT':
 					case 'TO':
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' ' + api.buildString(args[0], info);
 						break;
@@ -822,10 +824,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 					case 'SENTSINCE':
 					case 'SINCE':
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						}else if(!(args[0]instanceof Date)){
 							if((args[0] = new Date(args[0])).toString() === 'Invalid Date'){
-								api.errorHandler('ARG_NOT_DATE', criteria, act);
+								api.errorHandler('ARG_NOT_DATE', criteria);
 							};
 						};
 						searchargs += modifier + criteria + ' ' + args[0].getDate() + '-' + api.months[args[0].getMonth()] + '-' + args[0].getFullYear();
@@ -833,34 +835,34 @@ _InMail.imap = _InMail.assignApi(function(config){
 					case 'KEYWORD':
 					case 'UNKEYWORD':
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
 					case 'LARGER':
 					case 'SMALLER':
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
 						var num = parseInt(args[0], 10);
 						if(isNaN(num)){
-							api.errorHandler('ARG_NOT_NUM', criteria, act);
+							api.errorHandler('ARG_NOT_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
 					case 'HEADER':
 						if(!args || args.length !== 2){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' "' + api.escape('' + args[0]) + '" ' + api.buildString(args[1], info);
 						break;
 					case 'UID':
 						if(!args){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
-						api.validateUIDList(args, act);
+						api.validateUIDList(args);
 						if(args.length === 0){
-							api.errorHandler('EMPTY_UID_LIST', null, act);
+							api.errorHandler('EMPTY_UID_LIST');
 						};
 						searchargs += modifier + criteria + ' ' + args.join(',');
 						break;
@@ -868,41 +870,41 @@ _InMail.imap = _InMail.assignApi(function(config){
 					case 'X-GM-MSGID': // Gmail unique message ID
 					case 'X-GM-THRID': // Gmail thread ID
 						if(!api.serverSupports('X-GM-EXT-1')){
-							api.errorHandler('SERVER_NOT_SUPPORT', criteria, act);
+							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						}else{
 							if(!(/^\d+$/.test(args[0]))){
-								api.errorHandler('INVALID_VALUE', criteria, act);
+								api.errorHandler('INVALID_VALUE', criteria);
 							};	
 						};
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
 					case 'X-GM-RAW': // Gmail search syntax
 						if(!api.serverSupports('X-GM-EXT-1')){
-							api.errorHandler('SERVER_NOT_SUPPORT', criteria, act);
+							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' ' + api.buildString(args[0], info);
 						break;
 					case 'X-GM-LABELS': // Gmail labels
 						if(!api.serverSupports('X-GM-EXT-1')){
-							api.errorHandler('SERVER_NOT_SUPPORT', criteria, act);
+							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
 					case 'MODSEQ':
 						if(!api.serverSupports('CONDSTORE')){
-							api.errorHandler('SERVER_NOT_SUPPORT', criteria, act);
+							api.errorHandler('SERVER_NOT_SUPPORT', criteria);
 						};
 						if(!args || args.length !== 1){
-							api.errorHandler('INCORRECT_ARGS_NUM', criteria, act);
+							api.errorHandler('INCORRECT_ARGS_NUM', criteria);
 						};
 						searchargs += modifier + criteria + ' ' + args[0];
 						break;
@@ -910,13 +912,13 @@ _InMail.imap = _InMail.assignApi(function(config){
 						// last hope it's a seqno set
 						// http://tools.ietf.org/html/rfc3501#section-6.4.4
 						var seqnos = (args ? [criteria].concat(args) : [criteria]);
-						if(!api.validateUIDList(seqnos, act, true)){
+						if(!api.validateUIDList(seqnos, true)){
 							if(seqnos.length === 0){
-								api.errorHandler('EMPTY_SEQUENCE_LIST', null, act);
+								api.errorHandler('EMPTY_SEQUENCE_LIST');
 							};
 							searchargs += modifier + seqnos.join(',');
 						}else{
-							api.errorHandler('UNEXPECTED_OPTION', criteria, act);
+							api.errorHandler('UNEXPECTED_OPTION', criteria);
 						};	
 				};
 			};
@@ -930,9 +932,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.search = function(){
-		var act = 'search';
-		var criteria = api.prepareCriteria(_function_argument("criteria"), act);
-		var box = api.prepareBox(_function_argument("box"), act);
+		var criteria = api.prepareCriteria(_function_argument("criteria"));
+		var box = api.prepareBox(_function_argument("box"));
 		
 		var cmd = 'UID SEARCH';
 		var info = {
@@ -941,7 +942,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		_call_function(api.capability, {})!
 		
-		var query = api.buildSearchQuery(criteria, info, act);
+		var query = api.buildSearchQuery(criteria, info);
 		
 		if(info.hasUTF8){
 			cmd += ' CHARSET UTF-8';
@@ -949,7 +950,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += query;
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8, act: act})!
+		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
 		var result = api.parseSearch(resp);
@@ -958,17 +959,16 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.esearch = function(){
-		var act = 'esearch';
-		var criteria = api.prepareCriteria(_function_argument("criteria"), act);
+		var criteria = api.prepareCriteria(_function_argument("criteria"));
 		var options = _avoid_nil(_function_argument("options"));
-		api.validateArgType(options, ['array','string'], 'Options', act);
-		var box = api.prepareBox(_function_argument("box"), act);
+		api.validateArgType(options, ['array','string'], 'Options');
+		var box = api.prepareBox(_function_argument("box"));
 		
 		
 		_call_function(api.capability, {})!
 		
 		if(!api.serverSupports('ESEARCH')){
-			api.errorHandler('ESEARCH_NOT_SUPPORT', null, act);
+			api.errorHandler('ESEARCH_NOT_SUPPORT');
 		};
 		
 		if(Array.isArray(options)){
@@ -980,7 +980,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 			hasUTF8: false
 		};
 		
-		var query = api.buildSearchQuery(criteria, info, act);
+		var query = api.buildSearchQuery(criteria, info);
 		
 		if(info.hasUTF8){
 			cmd += ' CHARSET UTF-8';
@@ -988,7 +988,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += query;
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8, act: act})!
+		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
 		var info = api.parse(resp);
@@ -1050,28 +1050,27 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.sort = function(){
-		var act = 'sort';
 		var sorts = _function_argument("sorts");
-		var criteria = api.prepareCriteria(_function_argument("criteria"), act);
-		var box = api.prepareBox(_function_argument("box"), act);
+		var criteria = api.prepareCriteria(_function_argument("criteria"));
+		var box = api.prepareBox(_function_argument("box"));
 		
-		api.validateArgType(sorts, ['array','string'], 'Sorting criteria', act);
+		api.validateArgType(sorts, ['array','string'], 'Sorting criteria');
 		if(typeof sorts === 'string'){
 			sorts = [sorts];
 		};
 		if(!sorts.length){
-			api.errorHandler('EMPTY_SORT_CRITERIA', null, act);
+			api.errorHandler('EMPTY_SORT_CRITERIA');
 		};
 		
 		_call_function(api.capability, {})!
 		
 		if(!api.serverSupports('SORT')){
-			api.errorHandler('SORT_NOT_SUPPORT', null, act);
+			api.errorHandler('SORT_NOT_SUPPORT');
 		};
 		
 		sorts = sorts.map(function(c){
 			if(typeof c !== 'string'){
-				api.errorHandler('UNEXPECTED_CRITERION_TYPE', typeof c, act);
+				api.errorHandler('UNEXPECTED_CRITERION_TYPE', typeof c);
 			};
 			
 			var modifier = '';
@@ -1090,7 +1089,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 				case 'TO':
 					break;
 				default:
-					api.errorHandler('UNEXPECTED_CRITERION', c, act);
+					api.errorHandler('UNEXPECTED_CRITERION', c);
 			};
 			
 			return modifier + c;
@@ -1102,11 +1101,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 			hasUTF8: false
 		};
 		
-		var query = api.buildSearchQuery(criteria, info, act);
+		var query = api.buildSearchQuery(criteria, info);
 		
 		var cmd = 'UID SORT (' + sorts + ') ' + (info.hasUTF8 ? 'UTF-8' : 'US-ASCII') + query;
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8, act: act})!
+		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
 		var resp = _result_function();
 		
 		var result = api.parseSearch(resp);
@@ -1115,14 +1114,13 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.store = function(){
-		var act = 'store';
-		var uids = api.prepareUIDs(_function_argument("uids"), act);
+		var uids = api.prepareUIDs(_function_argument("uids"));
 		var config = _function_argument("config");
-		var box = api.prepareBox(_function_argument("box"), act);
+		var box = api.prepareBox(_function_argument("box"));
 		
-		api.validateArgType(config, 'object', 'Config', act);
+		api.validateArgType(config, 'object', 'Config');
 		if(_is_nilb(config.flags) && _is_nilb(config.keywords)){
-			api.errorHandler('NOT_FLAGS_KEYWORDS', null, act);
+			api.errorHandler('NOT_FLAGS_KEYWORDS');
 		};
 		
 		var isFlags = !_is_nilb(config.flags);
@@ -1130,9 +1128,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		if((!Array.isArray(items) && typeof items !== 'string') || (Array.isArray(items) && items.length === 0)){
 			if(isFlags){
-				api.errorHandler('FLAGS_INVALID_ARGS', null, act);
+				api.errorHandler('FLAGS_INVALID_ARGS');
 			}else{
-				api.errorHandler('KEYWORDS_INVALID_ARGS', null, act);
+				api.errorHandler('KEYWORDS_INVALID_ARGS');
 			};
 		};
 		
@@ -1149,7 +1147,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 				// keyword contains any char except control characters (%x00-1F and %x7F)
 				// and: '(', ')', '{', ' ', '%', '*', '\', '"', ']'
 				if(/[\(\)\{\\\"\]\%\*\x00-\x20\x7F]/.test(items[i])){
-					api.errorHandler('KEYWORD_INVALID_CHARS', items[i], act);
+					api.errorHandler('KEYWORD_INVALID_CHARS', items[i]);
 				};
 			};
 		};
@@ -1158,7 +1156,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'UID STORE ' + uids + ' ' + config.mode + 'FLAGS.SILENT (' + items + ')';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, act: act})!
+		_call_function(api.makeRequest, {query: cmd, box: box})!
 		var resp = _result_function();
 	};
 	
@@ -1241,19 +1239,18 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.expunge = function(){
-		var act = 'expunge';
 		var uids = _function_argument("uids");
-		var box = api.prepareBox(_function_argument("box"), act);
+		var box = api.prepareBox(_function_argument("box"));
 		
 		_if(uids, function(){
-			uids = api.prepareUIDs(uids, act);
+			uids = api.prepareUIDs(uids);
 			
 			_call_function(api.capability, {})!
 		})!
 		
 		var cmd = (uids && api.serverSupports('UIDPLUS')) ? ('UID EXPUNGE ' + uids) : 'EXPUNGE';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, act: act})!
+		_call_function(api.makeRequest, {query: cmd, box: box})!
 		var resp = _result_function();
 	};
 	
@@ -1267,40 +1264,38 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.copyMessages = function(){
-		var act = 'copyMessages';
-		var uids = api.prepareUIDs(_function_argument("uids"), act);
-		var box = api.prepareBox(_function_argument("box"), act);
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var box = api.prepareBox(_function_argument("box"));
 		var toBox = _function_argument("toBox");
-		api.validateArgType(toBox, 'string', 'To folder', act);
+		api.validateArgType(toBox, 'string', 'To folder');
 		if(!toBox.length){
-			api.errorHandler('TOBOX_NOT_SPECIFIED', null, act);
+			api.errorHandler('TOBOX_NOT_SPECIFIED');
 		};
 		
 		var cmd = 'UID COPY ' + uids + ' "' + api.encodeName(toBox) + '"';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, act: act})!
+		_call_function(api.makeRequest, {query: cmd, box: box})!
 		var resp = _result_function();
 	};
 	
 	this.moveMessages = function(){
-		var act = 'moveMessages';
-		var uids = api.prepareUIDs(_function_argument("uids"), act);
-		var box = api.prepareBox(_function_argument("box"), act);
+		var uids = api.prepareUIDs(_function_argument("uids"));
+		var box = api.prepareBox(_function_argument("box"));
 		var toBox = _function_argument("toBox");
-		api.validateArgType(toBox, 'string', 'To folder', act);
+		api.validateArgType(toBox, 'string', 'To folder');
 		if(!toBox.length){
-			api.errorHandler('TOBOX_NOT_SPECIFIED', null, act);
+			api.errorHandler('TOBOX_NOT_SPECIFIED');
 		};
 		
 		_call_function(api.capability, {})!
 		
 		if(!api.serverSupports('MOVE')){
-			api.errorHandler('MOVE_NOT_SUPPORT', null, act);
+			api.errorHandler('MOVE_NOT_SUPPORT');
 		};
 		
 		var cmd = 'UID MOVE ' + uids + ' "' + api.encodeName(toBox) + '"';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, act: act})!
+		_call_function(api.makeRequest, {query: cmd, box: box})!
 		var resp = _result_function();
 	};
 	
@@ -1356,13 +1351,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.fetch = function(){
-		var act = 'fetch';
-		var uids = api.prepareUIDs(_function_argument("uids"), act);
+		var uids = api.prepareUIDs(_function_argument("uids"));
 		var options = _function_argument("options");
-		var box = api.prepareBox(_function_argument("box"), act);
+		var box = api.prepareBox(_function_argument("box"));
 		
 		if(options){
-			api.validateArgType(options, 'object', 'Options', act);
+			api.validateArgType(options, 'object', 'Options');
 		};
 		
 		var cmd = 'UID FETCH ' + uids + ' (';
@@ -1411,7 +1405,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += ')';
 		
-		_call_function(api.request, {path: api.encodeName(box), query: cmd, isFetch: true, act: act})!
+		_call_function(api.request, {path: api.encodeName(box), query: cmd, isFetch: true})!
 		var resp = _result_function();
 		
 		var fetchCache = {};
@@ -1644,15 +1638,14 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.getFlags = function(){
-		var act = 'getFlags';
-		var uid = api.prepareUIDs(_function_argument("uid"), act);
-		var box = api.prepareBox(_function_argument("box"), act);
+		var uid = api.prepareUIDs(_function_argument("uid"));
+		var box = api.prepareBox(_function_argument("box"));
 		
 		_call_function(api.fetch, {uids: uid, options: {flags: true}, markSeen: false, box: box})!
 		var msgs = _result_function();
 		
 		if(!msgs.length){
-			api.errorHandler('EMPTY_MSGS_LIST', null, act);
+			api.errorHandler('EMPTY_MSGS_LIST');
 		};
 		
 		_function_return(msgs[0].attributes.flags);

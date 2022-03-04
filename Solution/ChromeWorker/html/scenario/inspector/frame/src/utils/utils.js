@@ -9,7 +9,7 @@ const post = (type, payload, callback) => {
     }, { once: true });
   }
 
-  window.top.postMessage({ type, payload: payload || {} }, '*');
+  window.parent.postMessage({ type, payload: payload || {} }, '*');
 };
 
 const parseJSON = (text, reviver) => {

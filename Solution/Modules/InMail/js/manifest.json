@@ -374,6 +374,7 @@
 	"embeddeddata": [],
 	"engine": [
 		"engine.js",
+		"internal/translate.js",
 		"internal/base.js",
 		"internal/configs.js",
 		"internal/imapCurl.js",

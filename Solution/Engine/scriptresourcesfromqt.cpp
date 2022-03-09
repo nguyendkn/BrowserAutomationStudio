@@ -39,7 +39,7 @@ namespace BrowserAutomationStudioFramework
         return GetFromRes(":/engine/scripts/browser/jquery.js");
     }
 
-    QList<QString> ScriptResourcesFromQt::GetEngineScripts()
+    QList<QString> ScriptResourcesFromQt::GetEngineScripts(bool record)
     {
         QList<QString> res;
         res.append(GetFromRes(":/engine/scripts/engine/worker/template.js"));
@@ -49,7 +49,7 @@ namespace BrowserAutomationStudioFramework
         res.append(GetFromRes(":/engine/scripts/engine/common/html_parser.js"));
         res.append(GetFromRes(":/engine/scripts/engine/common/helpers.js"));
         res.append(GetFromRes(":/engine/scripts/engine/common/translit.js"));
-        res.append(GetFromRes(":/engine/scripts/engine/worker/debug.js"));
+        if (record) res.append(GetFromRes(":/engine/scripts/engine/worker/debug.js"));
         res.append(GetFromRes(":/engine/scripts/engine/worker/flow.js"));
         res.append(GetFromRes(":/engine/scripts/engine/worker/httpclient.js"));
         res.append(GetFromRes(":/engine/scripts/engine/worker/pop3client.js"));

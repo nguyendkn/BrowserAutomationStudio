@@ -20,12 +20,13 @@ function Cycle(Next,Break)
         }
     }
 
+    this._Info = {};
     this._Label = [];
-    this._Params = {}
+    this._Params = {};
+    this._Arguments = null;
 
     this._Break = Break;
     this._Next = Next;
-    this._Argunments = null;
     this._Iterator = 0;
     this.WasNextOrBreak = false;
 
@@ -110,8 +111,6 @@ function Cycle(Next,Break)
                 }
             }
         }
-
-
     }
 
     this.Start = function()
@@ -397,18 +396,24 @@ function _repeat(t,n,b)
 
 function _if(c,f,n)
 {
+    var expression = ScriptWorker.GetIsRecord() ? _cycle_param('if_else_expression') : null;
+
     _do(function(i){
         var cc = CYCLES.Current();
         if(cc)
+        {
             cc.RemoveLabel("function");
+            _set_action_info({ name: "If", expression: expression }, cc);
+        }
         if(i>0 || !c)
         {
             _break();
             return;
         }
         f();
-    },n)
+    },n);
 
+    if (ScriptWorker.GetIsRecord()) delete _cycle_params().if_else_expression;
 }
 
 function _if_else(c, f1, f2,n)
@@ -442,10 +447,10 @@ function _call(f,a,n)
         f();
 
     },n);
+    _set_action_info({ name: f.name }, c);
     c.SetLabel("function");
     c._Arguments = a;
     c.Start();
-
 }
 
 function _prepare_function_and_call(f,a,n)
@@ -499,11 +504,11 @@ function _call_function(f,a,n)
         f();
 
     },n);
+    _set_action_info({ name: f.name }, c);
     c.SetLabel("function");
     c.SetLabel("argument");
     c._Arguments = a;
     c.Start();
-
 }
 
 function _call_task(f,a,n)
@@ -517,12 +522,12 @@ function _call_task(f,a,n)
         f();
 
     },n);
+    _set_action_info({ name: f.name }, c);
     c.SetLabel("function");
     c.SetLabel("argument");
     c.SetLabel("task");
     c._Arguments = a;
     c.Start();
-
 }
 
 function _function_return(v)
@@ -650,4 +655,33 @@ function _long_goto(label, offset, reverse, callback)
 
     ScriptWorker.SetScript(_get_function_body(_BAS_GOTO_DATA[label]))
     ScriptWorker.RunSubScript()
+}
+
+function _set_action_info(info, cycle) {
+    if (ScriptWorker.GetIsRecord() && info) {
+        info.id = ScriptWorker.GetCurrentAction();
+
+        if (["if", "for", "while", "foreach"].indexOf(info.name.toLowerCase()) < 0) {
+            info.type = "function";
+        } else {
+            info.type = "action";
+        }
+
+        cycle = cycle || CYCLES.Current();
+
+        if (cycle) {
+            Object.keys(info).forEach(function (key) {
+                if (key === "id" && key in cycle._Info) {
+                    return;
+                }
+                cycle._Info[key] = info[key];
+            });
+        }
+    }
+}
+
+function _set_if_expression(expression) {
+    if (ScriptWorker.GetIsRecord()) {
+        _cycle_params().if_else_expression = expression;
+    }
 }

@@ -28,6 +28,7 @@ void RenderApp::OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info)
     worker_log_init_no_delete(IsRecord);
     ApplicationEngineVersion = extra_info->GetString(8);
     ScriptEngineVersion = extra_info->GetString(9);
+    InterfaceState = extra_info->GetString(10);
 }
 
 bool RenderApp::OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefProcessId source_process, CefRefPtr<CefProcessMessage> message)
@@ -130,12 +131,14 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
         object->SetValue("BrowserAutomationStudio_TriggerEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_TriggerEvent", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_HandleEvent", CefV8Value::CreateFunction("BrowserAutomationStudio_HandleEvent", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("BrowserAutomationStudio_StartBackup", CefV8Value::CreateFunction("BrowserAutomationStudio_StartBackup", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_SaveInterfaceJson", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveInterfaceJson", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("BrowserAutomationStudio_SaveInterfaceState", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveInterfaceState", scenariov8handler), V8_PROPERTY_ATTRIBUTE_NONE);
 
         object->SetValue("_ApplicationEngineVersion", CefV8Value::CreateString(ApplicationEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_ScriptEngineVersion", CefV8Value::CreateString(ScriptEngineVersion), V8_PROPERTY_ATTRIBUTE_NONE);
+        object->SetValue("_I", CefV8Value::CreateString(InterfaceState), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_K", CefV8Value::CreateString(Lang), V8_PROPERTY_ATTRIBUTE_NONE);
         object->SetValue("_Z", CefV8Value::CreateInt(100), V8_PROPERTY_ATTRIBUTE_NONE);
-        object->SetValue("_DoTour", CefV8Value::CreateBool(false), V8_PROPERTY_ATTRIBUTE_NONE);
         return;
     }
 

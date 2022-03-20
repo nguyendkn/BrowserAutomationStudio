@@ -104,13 +104,15 @@ public:
     std::vector<std::function<void(const std::string&)> > EventFindCacheByMaskString;
     std::vector<std::function<void(const std::string&)> > EventFindAllCache;
     std::vector<std::function<void(const std::string&)> > EventIsUrlLoadedByMask;
+    std::vector<std::function<void(const std::string&)> > EventRequestVariablesResult;
     std::vector<std::function<void(const std::string&)> > EventDebugVariablesResult;
+    std::vector<std::function<void(const std::string&)> > EventDebugCallstackResult;
     std::vector<std::function<void()> > EventGetLoadStats;
     std::vector<std::function<void()> > EventRestoreOriginalStage;
     std::vector<std::function<void(const std::string&)> > EventSetMode;
 
 
-    std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool,const std::string&,const std::string&)> > EventSetCode;
+    std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool,const std::string&,const std::string&,const std::string&)> > EventSetCode;
     std::vector<std::function<void(const std::string&)> > EventSetResources;
     std::vector<std::function<void()> > EventReset;
     std::vector<std::function<void(bool)> > EventNavigateBack;

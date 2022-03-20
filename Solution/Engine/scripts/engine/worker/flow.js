@@ -34,31 +34,6 @@ function success(text)
     ScriptWorker.Success(text);
 }
 
-function debug_variables(list, callback)
-{
-    var res = {}
-
-    for(var i = 0;i<list.length;i++)
-    {
-        var v = list[i]
-        if(v.indexOf("GLOBAL:") == 0)
-        {
-            res[v] = JSON.parse(P("basglobal",v.slice(7)) || '""');
-        }else
-        {
-
-            try
-            {
-                res[v.slice(4)] = truncate_variable(eval(v), 100);
-            }catch(e)
-            {
-                res[v.slice(4)] = "undefined"
-            }
-        }
-    }
-    Browser.DebugVariablesResult(JSON.stringify([res,JSON.parse(ScriptWorker.PickResources())]),_get_function_body(callback));
-}
-
 function _read_variables(list)
 {
     var res = {}
@@ -79,7 +54,6 @@ function _read_variables(list)
     return res;
 }
 
-
 function _write_variables(variables)
 {
     var keys = Object.keys(variables)
@@ -90,32 +64,6 @@ function _write_variables(variables)
         var value = variables[key]
         GLOBAL["VAR_" + key] = value;
     }
-}
-
-
-function truncate_variable(item, limit) {
-    if (item instanceof Object) {
-        if (!(item instanceof Date)) {
-            var keys = Object.keys(item);
-
-            keys.forEach(function (key) {
-                item[key] = truncate_variable(item[key], limit);
-            });
-        
-            if (item instanceof Array) {
-                return item.slice(0, limit);
-            }
-        
-            return keys.slice(0, limit).reduce(function (acc, key) {
-                acc[key] = item[key];
-                return acc;
-            }, {});
-        }
-        
-        return "__DATE__" + _format_date(item, "yyyy-MM-dd hh:mm:ss t");
-    }
-
-    return item;
 }
 
 function _web_interface_eval(Script)

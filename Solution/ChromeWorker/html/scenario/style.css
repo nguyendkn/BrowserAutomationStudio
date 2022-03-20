@@ -1,5 +1,4 @@
-.mytooltip{min-width:200px;position:absolute;z-index:1070;display:block;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:12px;font-style:normal;font-weight:400;line-height:1.42857143;text-align:left;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;letter-spacing:normal;word-break:normal;word-spacing:normal;word-wrap:normal;white-space:normal;filter:alpha(opacity=0);opacity:0;line-break:auto}.mytooltip.in{filter:alpha(opacity=90);opacity:.9}.mytooltip.top{padding:5px 0;margin-top:-3px}.mytooltip.right{padding:0 5px;margin-left:3px}.mytooltip.bottom{padding:5px 0;margin-top:3px}.mytooltip.left{padding:0 5px;margin-left:-3px}.mytooltip-inner{max-width:200px;padding:3px 8px;color:#fff;text-align:center;background-color:#000;border-radius:4px}.mytooltip-arrow{position:absolute;width:0;height:0;border-color:transparent;border-style:solid}.mytooltip.top .mytooltip-arrow{bottom:0;left:50%;margin-left:-5px;border-width:5px 5px 0;border-top-color:#000}.mytooltip.top-left .mytooltip-arrow{right:5px;bottom:0;margin-bottom:-5px;border-width:5px 5px 0;border-top-color:#000}.mytooltip.top-right .mytooltip-arrow{bottom:0;left:5px;margin-bottom:-5px;border-width:5px 5px 0;border-top-color:#000}.mytooltip.right .mytooltip-arrow{top:50%;left:0;margin-top:-5px;border-width:5px 5px 5px 0;border-right-color:#000}.mytooltip.left .mytooltip-arrow{top:50%;right:0;margin-top:-5px;border-width:5px 0 5px 5px;border-left-color:#000}.mytooltip.bottom .mytooltip-arrow{top:0;left:50%;margin-left:-5px;border-width:0 5px 5px;border-bottom-color:#000}.mytooltip.bottom-left .mytooltip-arrow{top:0;right:5px;margin-top:-5px;border-width:0 5px 5px;border-bottom-color:#000}.mytooltip.bottom-right .mytooltip-arrow{top:0;left:5px;margin-top:-5px;border-width:0 5px 5px;border-bottom-color:#000}
-
+.mytooltip{min-width:200px;position:absolute;z-index:1070;display:block;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:12px;font-style:normal;font-weight:400;line-height:1.42857143;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;letter-spacing:normal;word-break:normal;word-spacing:normal;word-wrap:normal;white-space:normal;filter:alpha(opacity=0);opacity:0;line-break:auto}.mytooltip.in{filter:alpha(opacity=90);opacity:.9}.mytooltip.top{padding:5px 0;margin-top:-3px}.mytooltip.right{padding:0 5px;margin-left:3px}.mytooltip.bottom{padding:5px 0;margin-top:3px}.mytooltip.left{padding:0 5px;margin-left:-3px}.mytooltip-inner{max-width:200px;padding:3px 8px;color:#fff;text-align:center;background-color:#000;border-radius:4px}.mytooltip-arrow{position:absolute;width:0;height:0;border-color:transparent;border-style:solid}.mytooltip.top .mytooltip-arrow{bottom:0;left:50%;margin-left:-5px;border-width:5px 5px 0;border-top-color:#000}.mytooltip.top-left .mytooltip-arrow{right:5px;bottom:0;margin-bottom:-5px;border-width:5px 5px 0;border-top-color:#000}.mytooltip.top-right .mytooltip-arrow{bottom:0;left:5px;margin-bottom:-5px;border-width:5px 5px 0;border-top-color:#000}.mytooltip.right .mytooltip-arrow{top:50%;left:0;margin-top:-5px;border-width:5px 5px 5px 0;border-right-color:#000}.mytooltip.left .mytooltip-arrow{top:50%;right:0;margin-top:-5px;border-width:5px 0 5px 5px;border-left-color:#000}.mytooltip.bottom .mytooltip-arrow{top:0;left:50%;margin-left:-5px;border-width:0 5px 5px;border-bottom-color:#000}.mytooltip.bottom-left .mytooltip-arrow{top:0;right:5px;margin-top:-5px;border-width:0 5px 5px;border-bottom-color:#000}.mytooltip.bottom-right .mytooltip-arrow{top:0;left:5px;margin-top:-5px;border-width:0 5px 5px;border-bottom-color:#000}
 
 #visualizelabels
 {
@@ -27,16 +26,11 @@
     position: relative;
     margin: 0 10px 10px 0;
     text-decoration: none;
-    -webkit-transition: color 0.2s;
+    transition: color 0.2s;
     font-size: 11px;
     opacity: 0.8;
     font-weight: lighter;
     white-space: nowrap
-
-}
-
-.tag:hover {
-    text-decoration: 
 
 }
 
@@ -57,7 +51,6 @@
   border-bottom: 11px solid transparent;
   border-right: 10px solid #ececec;
   border-top: 11px solid transparent;
-  
   content: '';
   position: absolute;
   left: 0;
@@ -73,7 +66,6 @@
 .tool
 {
     padding-top:0px;
-    /*padding-bottom:3px;*/
     padding-left:0px;
     padding-right:0px;
   	border: 1px solid #ddd;
@@ -81,15 +73,8 @@
   	cursor: pointer;
     text-align: center;
     transition: border-color 1s ease;
-
     min-width: 150px;
     box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.1);
-}
-
-.toolhighlight
-{
-  /*border: 1px solid #ffffa9 !important;*/
-  /*box-shadow: 0px 0px 8px 0px rgba(255, 255, 0, 0.5) !important;*/
 }
 
 .toolhighlight .tooltitle 
@@ -107,14 +92,13 @@
   font-size: 12px;
   color: #7d7d7d;
   white-space: nowrap;
-
 }
 
 .toolgroup
 {
     width: 16px;
     height: 16px;
-    -webkit-filter: grayscale(30%);
+    filter: grayscale(30%);
     opacity: 0.7;
     margin-top: 2px;
     margin-bottom: 4px;
@@ -148,7 +132,6 @@
     padding-left: 10px;
     padding-right: 3px;
     text-align: left !important;
-    
     font-size: 75% !important;
     background-color: #f5f5f5;
     font-weight: bold;
@@ -185,13 +168,9 @@
     height: 6px;
     border: 1px solid #c1c1c1;
     border-radius: 3px;
-    /*margin-top: 7px;
-    margin-bottom: 7px;*/
     min-width: 150px;
     pointer-events: none;
 }
-
-
 
 .dragactive .toolinsert, .dragactivelabel .toolinsert
 {
@@ -221,7 +200,6 @@
 {
   color:transparent;
 }
-
 
 .toolinsertdata
 {
@@ -274,7 +252,6 @@
 .toolinsertright
 {
   max-width: 150px;
-
 }
 
 .clearfix
@@ -331,10 +308,13 @@
   font-size: 20px;
 }
 
-.main
-{
-  position:relative;
+.main {
+  min-height: max-content;
+  padding: 0 15px 50px;
   overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+  flex: 1;
 }
 
 .maintoolbox
@@ -344,7 +324,6 @@
     clear: left;
     height: 40px;
     line-height: 28px;
-    
 }
 
 .findtoolbox
@@ -358,70 +337,21 @@
   background-color: #fafafa;
   z-index:5;
   box-shadow: 0px 1px 3px 1px #efefef;
-
 }
 
 #findbuttoncontainer
 {
   position: fixed;
-  
   border-left: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
   border-radius: 0px 0px 0px 4px;
   background-color: #f1f1f1;
   z-index:1;
-
-}
-
-#setvariablecontainer
-{
-  position: fixed;
-  
-  border-left: 1px solid #dbdbdb;
-  border-top: 1px solid #dbdbdb;
-
-  border-radius: 4px 0px 0px 0px;
-  background-color: #f1f1f1;
-  top:calc(50% - 60px);
-  right:0px;
-  z-index:1;
-
-}
-
-
-#ifcontainer
-{
-  position: fixed;
-  
-  border-left: 1px solid #dbdbdb;
-  
-  border-radius: 0px 0px 0px 0px;
-  background-color: #f1f1f1;
-  top:calc(50% - 30px);
-  right:0px;
-  z-index:1;
-
-}
-
-
-#setlabelcontainer
-{
-  position: fixed;
-  
-  border-left: 1px solid #dbdbdb;
-  
-  border-radius: 0px 0px 0px 0px;
-  background-color: #f1f1f1;
-  top:50%;
-  right:0px;
-  z-index:1;
-
 }
 
 #helplabelcontainer
 {
   position: fixed;
-  
   border-left: 1px solid #dbdbdb;
   border-bottom: 1px solid #dbdbdb;
   border-top: 1px solid #dbdbdb;
@@ -430,29 +360,24 @@
   top:calc(50% - 15px);
   right:0px;
   z-index:1;
-
 }
 
-
-#debugbuttoncontainer
-{
-    position: fixed;
-    border-left: 1px solid #dbdbdb;
-    border-top: 1px solid #dbdbdb;
-    border-radius: 4px 0px 0px 0px;
-    background-color: #f1f1f1;
-    bottom: 32px;
-    right: 0px;
-    z-index: 7;
+#debugbuttoncontainer {
+  border-left: 1px solid #dbdbdb;
+  border-top: 1px solid #dbdbdb;
+  border-top-left-radius: 4px;
+  background-color: #f1f1f1;
+  position: fixed;
+  bottom: 32px;
+  z-index: 7;
+  right: 0;
 }
-
 
 .findcontrol
 {
   margin-top:10px;
   margin-left:10px;
   margin-right:10px;
-
 }
 
 .findcontrol .btn
@@ -487,53 +412,15 @@ label
   margin-bottom:10px;
 }
 
-.threads
-{
-	/*border-bottom: 1px solid #DBDBDB;*/
+.threads {
   border-bottom: 1px solid #bcbcbc;
-  width:100%;
-  background-color:white;
-  position:fixed ;
-  top:0px;
-  right:0px;
-  z-index: 3;
-  /*box-shadow: 0px 1px 3px 1px #efefef;*/
   background-color: #fafafa;
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  right: 0;
+  top: 0;
 }
-
-#variableinspector
-{
- border-bottom: 1px solid #DBDBDB;
- padding-bottom:5px;
- height: 200px;
- overflow: auto;
- border-top: 7px solid #e1e1e1;
- background-color: #fafafa;
-}
-
-.variableslabel
-{
-    background-color: #fefad7;
-    margin-top: 5px;
-    font-size: small;
-    font-style: italic;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    color: #3e3e3e;
-    border-radius: 2px;
-}
-
-.variableslabelcontainer
-{
-  text-align: center;
-  border-bottom: 1px solid #e0e0e0;
-  height: 10px;
-  margin-bottom: 9px;
-  margin-top: 7px;
-}
-
 
 #findbutton
 {
@@ -550,35 +437,10 @@ label
   margin:4px;
 }
 
-#setlabelbutton
-{
-  margin:4px;
-}
-
-#setvariablebutton
-{
-  margin:4px;
-  font-size: 10px;
-  width: 22px;
-  height: 22px;
-  padding: 0px;
-  font-weight: bold;
-}
-
-#ifbutton
-{
-  margin:4px;
-  width: 22px;
-  height: 22px;
-  padding:2px
-}
-
-#functions
-{
-  line-height: 30px;
-  width: 100%;
+#functions {
+  border-top: 1px solid #dbdbdb;
   text-align: center;
-  
+  line-height: 30px;
 }
 
 #FunctionName
@@ -699,25 +561,16 @@ label
 
 #FunctionManagerEditFunctionName
 {
-
-    
     font-size: 12px;
     color: #333 !important;
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
-    
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
-    
 }
 
 #FunctionManagerEditFunctionDescriptionPanel
@@ -726,7 +579,6 @@ label
   border-bottom: 1px solid #DBDBDB;
   border-left: 2px solid #f8003680;
   margin-top:10px;
-
 }
 
 #FunctionManagerEditFunctionReturnDescriptionPanel
@@ -735,7 +587,6 @@ label
   border-bottom: 1px solid #DBDBDB;
   border-left: 2px solid #f8003680;
   margin-top:10px;
-
 }
 
 #FunctionManagerEditFunctionReturnVariablePanel
@@ -744,9 +595,7 @@ label
   border-bottom: 1px solid #DBDBDB;
   border-left: 2px solid #f8003680;
   margin-top:10px;
-
 }
-
 
 .FunctionManagerEditFunctionParamPanel
 {
@@ -754,7 +603,6 @@ label
   border-bottom: 1px solid #DBDBDB;
   border-left: 2px solid #f8003680;
   margin-top:10px;
-
 }
 
 #FunctionManagerEditHasReturnValuePanel
@@ -763,34 +611,15 @@ label
   border-bottom: 1px solid #DBDBDB;
   border-left: 2px solid #f8003680;
   margin-top:10px;
-
 }
-
-
 
 .FunctionManagerEditSection
 {
     margin-top: 25px;
-    /* border-bottom: 1px solid #eaeaea; */
     font-size: 14px;
-    /* display: inline-block; */
-    /* width: 50%; */
-    /* padding-left: 30px; */
-    /* border-top: 1px solid #e6e6e6; */
-    /* padding-top: 8px; */
-    /* padding-bottom: 2px; */
-    /* background-color: #f2f1ff; */
-    /* color: #31708f; */
     padding: 4px;
-    /* display: inline-block; */
-    /* padding-right: 20px; */
-    /* width: 200px; */
     border-bottom: 1px solid #e4e4e4;
     font-style: italic;
-    /* margin-left: 13px; */
-    /* margin-right: 31px; */
-    /* display: inline-block; */
-    /* padding-right: 11px; */
     padding-left: 10px;
     display: flex;
     align-items: center;
@@ -821,18 +650,11 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
-    
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
-    
 }
 
 #FunctionManagerEditFunctionReturnDescription
@@ -842,18 +664,11 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
-    
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
-    
 }
 
 #FunctionManagerEditFunctionReturnVariable
@@ -863,18 +678,11 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 20px;
-    
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
-    
 }
 
 .FunctionManagerEditFunctionParam
@@ -884,18 +692,11 @@ label
     text-decoration: none !important;
     padding-left: 10px;
     display: inline-block;
-    width: calc(100% - 50px)
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
+    width: calc(100% - 50px);
     line-height: 22px;
-    
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
-    
 }
 
 #FunctionManagerEditHasReturnValue
@@ -904,15 +705,8 @@ label
     color: #333 !important;
     text-decoration: none !important;
     padding-left: 10px;
-    display: inline-block;
     width: 100%;
- /*margin-right:40px;*/
- 
- /*border-radius: 5px;*/;
-    /* min-height: 40px; */
     line-height: 20px;
-    
-    /* height: 40px; */
     overflow: hidden;
     padding-top: 10px;
     padding-bottom: 9px;
@@ -943,7 +737,6 @@ label
   color: #333 !important;
   border-bottom: 1px solid #DBDBDB;
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   text-align: center;
@@ -952,177 +745,122 @@ label
   margin-left: 10px;
 }
 
-
 .FunctionManagerItemMenu:hover, .FunctionManagerItemMenuCurrent
 {
   background-color: #f1f1f1;
-
 }
-
-
-
-
 
 .FunctionManagerEditFunctionLink, .FunctionManagerEditFunctionLink:hover
 {
-  
   font-size: 12px;
   color: #333;
-  
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
   text-align: center;
   height: 40px;
   line-height: 40px;
-  
-
 }
-
 
 .FunctionManagerEditFunctionLink:hover .FunctionManagerEditFunctionLinkIcon
 {
   color: #555 !important;
-
 }
 
 .FunctionManagerEditFunctionDescriptionLink, .FunctionManagerEditFunctionDescriptionLink:hover
 {
-  
   font-size: 12px;
   color: #333;
-  
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
   text-align: center;
   height: 40px;
   line-height: 40px;
-  
-
 }
-
 
 .FunctionManagerEditFunctionDescriptionLink:hover .FunctionManagerEditFunctionLinkIcon
 {
   color: #555 !important;
-
 }
-
 
 .FunctionManagerEditFunctionReturnDescriptionLink, .FunctionManagerEditFunctionReturnDescriptionLink:hover
 {
-  
   font-size: 12px;
   color: #333;
-  
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
   text-align: center;
   height: 40px;
   line-height: 40px;
-  
-
 }
-
 
 .FunctionManagerEditFunctionReturnDescriptionLink:hover .FunctionManagerEditFunctionLinkIcon
 {
   color: #555 !important;
-
 }
-
 
 .FunctionManagerEditFunctionReturnVariableLink, .FunctionManagerEditFunctionReturnVariableLink:hover
 {
-  
   font-size: 12px;
   color: #333;
-  
   text-decoration: none !important;
-  /* padding: 10px; */
   display: inline-block;
   width: 40px;
   float: right;
   text-align: center;
   height: 40px;
   line-height: 40px;
-  
-
 }
-
 
 .FunctionManagerEditFunctionReturnVariableLink:hover .FunctionManagerEditFunctionLinkIcon
 {
   color: #555 !important;
-
 }
-
 
 .FunctionManagerEditFunctionParamLink, .FunctionManagerEditFunctionParamLink:hover
 {
-  
   font-size: 12px;
   color: #333;
-  
   text-decoration: none !important;
-  /* padding: 10px; */
   display: block;
   width: 40px;
   float: right;
   text-align: center;
   height: 30px;
   line-height: 40px;
-  
-
 }
-
 
 .FunctionManagerEditFunctionParamLink:hover .FunctionManagerEditFunctionLinkIcon
 {
   color: #555 !important;
-
 }
 
 .FunctionManagerEditFunctionDeleteParam, .FunctionManagerEditFunctionDeleteParam:hover
 {
-  
   font-size: 12px;
   color: #333;
-  
   text-decoration: none !important;
-  /* padding: 10px; */
   display: block;
   width: 40px;
   float: right;
   text-align: center;
   height: 30px;
   line-height: 40px;
-  
-
 }
-
 
 .FunctionManagerEditFunctionDeleteParam:hover .FunctionManagerEditFunctionLinkIcon
 {
   color: #555 !important;
-
 }
-
-
-
 
 .FunctionManagerItemClick:hover
 {
   background-color: #f1f1f1;
-
 }
 
 .FunctionManagerItem
@@ -1131,12 +869,10 @@ label
   margin: 10px;
 }
 
-
 .FunctionManagerItem1
 {
   border-left: 2px solid #f8003680;
 }
-
 .FunctionManagerItem2
 {
   border-left: 2px solid #009cde80;
@@ -1167,10 +903,6 @@ label
 
 .FunctionManagerItemLine, .FunctionManagerItemLine:hover
 {
-    /* margin-bottom: 10px; */
-    /* margin-top: 10px; */
-    /* margin-left: 4px; */
-    /* border-bottom: 1px solid rgb(224, 224, 224); */
     margin: 2px;
     padding: 8px;
     background-color: #f8f8f8;
@@ -1206,7 +938,6 @@ label
 {
   font-size: small;
   color: gray;
-
 }
 
 .FunctionManagerItemMenuContent
@@ -1224,17 +955,14 @@ label
   display:none !important;
 }
 
-
 .FunctionManagerItemLineLeft
 {
   flex-grow: 1;
-
 }
 
 .FunctionManagerItemMenuDescriptionIcon
 {
     color: #f44336c9;
-    /*margin-left: 10px;*/
     width: 17px;
     text-align: center;
     filter: grayscale(40%);
@@ -1270,7 +998,6 @@ label
   clear:both;
 }
 
-
 #FunctionManagerAddTask
 {
   position:fixed;
@@ -1286,7 +1013,6 @@ label
   color: #333;
   text-align: center;
   line-height: 30px;
-  /* color: black; */
   font-size: 12px;
   border: 1px solid #d8d8d8;
   text-decoration: none;
@@ -1308,7 +1034,6 @@ label
   text-align: center;
   line-height: 30px;
   background-color: #d9534f;
-  /* color: black; */
   font-size: 12px;
   border: 1px solid #d43f3a;
   text-decoration: none;
@@ -1330,7 +1055,6 @@ label
   color: white;
   text-align: center;
   line-height: 30px;
-  /* color: black; */
   font-size: 12px;
   border: 1px solid #4cae4c;
   text-decoration: none;
@@ -1342,7 +1066,6 @@ label
 {
   background-color: #449d44 !important;
 }
-
 
 #FunctionManagerAddTask, #FunctionManagerAddTask:hover
 {
@@ -1356,11 +1079,8 @@ label
   background-color: #d9534f;
   color: white;
   border-radius: 50%;
-  /* -webkit-filter: grayscale(15%); */
   font-size: 18px;
-  /* font-weight: 100; */
   text-decoration: none;
-
 }
 
 .movetofunction
@@ -1369,18 +1089,12 @@ label
   font-style: italic;
 }
 
-.bottompannel
-{
-  border-top: 1px solid #DBDBDB;
-  width:100%;
-  background-color:white;
-  position:fixed;
-  bottom:0px;
-  right:0px;
-  /*padding-top:5px;*/
-  /*padding-bottom:5px;*/
+.bottompannel {
+  background: #fff;
+  position: sticky;
   z-index: 9;
-  /*box-shadow: 0px -1px 3px 1px #efefef;*/
+  bottom: 0;
+  right: 0;
 }
 
 .action-button
@@ -1389,9 +1103,7 @@ label
   margin-right:2px;
   padding:5px;
   border: 1px solid #fafafa;
-  -webkit-filter: grayscale(15%) !important;
-
-  
+  filter: grayscale(15%) !important;
 }
 
 .action-button:hover
@@ -1406,15 +1118,11 @@ label
   margin-right:3px;
 }
 
-
-.disabled
-{
-  opacity: 0.4;  
+.action-button2.disabled {
+  opacity: 0.4;
   cursor: default !important;
-  background-color:white !important;
-
+  background-color: white !important;
 }
-
 
 .action-button2:hover
 {
@@ -1445,9 +1153,8 @@ label
 
 .actionbuttongray
 {
-  -webkit-filter: grayscale(100%) !important;
+  filter: grayscale(100%) !important;
 }
-
 
 #play.actionbuttongray
 {
@@ -1455,12 +1162,12 @@ label
 }
 
 #pause.actionbuttongray {
-    opacity: 0.65;
+  opacity: 0.65;
 }
 
 .actionbuttongray2
 {
-  -webkit-filter: grayscale(100%) !important;
+  filter: grayscale(100%) !important;
   display:none !important;
 }
 
@@ -1479,7 +1186,6 @@ label
   bottom: 1px;
   padding-top: 0px;
   padding-right: 10px;
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1494,11 +1200,9 @@ label
   bottom: 1px;
   padding-top: 0px;
   padding-left: 5px;
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 }
 
 .toolnotexecute .executing
@@ -1570,7 +1274,6 @@ label
 {
     color:#D44646 !important;
     opacity: 1 !important;
-
 }
 
 .helprow1
@@ -1585,7 +1288,6 @@ label
     float: left;
     margin-top: 2px;
 }
-
 
 #FileHelpCenter hr,#MultithreadingHelpCenter hr,#OutputHelpCenter hr,#ParseHelpCenter hr,#ErrorHelpCenter hr,#FunctionHelpCenter hr,#LabelHelpCenter hr,#BrowserHelpCenter hr,#ConditionHelpCenter hr,#VariablesHelpCenter hr,#LoopHelpCenter hr,#HelpCenter hr
 {
@@ -1682,7 +1384,6 @@ label
   color:darkred;
 }
 
-
 #thread-number-edit
 {
   font-size: smaller;
@@ -1704,7 +1405,7 @@ label
 }
 
 .main, #functions, .threads{
-  -webkit-user-select: none; 
+  user-select: none; 
 }
 
 .nowrap
@@ -1760,15 +1461,10 @@ label
     z-index: 5;
   }
 
-
-
-
   .findtoolbox
   {
     top:175px;
   }
-
-
 }
 
 @media screen and (min-width: 420px) {
@@ -1814,17 +1510,12 @@ label
   {
     top:100px;
   }
-
-  
 }
 
 @media screen and (min-width: 520px) {
   .action-button {
-
       margin-right: 10px;
   }
-
-  
 }
 
 .pathimg
@@ -1832,13 +1523,10 @@ label
   max-width: 100px;
   height: 30px;
   border-radius: 4px;
-  /*object-fit: none;
-  object-position: 0% 50%;*/
 }
 
 .titleid
 {
-  /*border-top: 1px solid #efefef;*/
   background-color: #f5f5f5;
   font-size: 8px;
   color: #b6b6b6;
@@ -1854,7 +1542,6 @@ label
 
 .titledescription
 {
-
   padding-top: 0px;
   margin-top: 0px;
   margin-right: 4px;
@@ -1875,7 +1562,6 @@ mark
 #multiselect
 {
   background-color: rgba(139, 139, 139, 0.3);
-  /*border: 1px solid #b20e8c;*/
   position: absolute;
   z-index: 2;
 }
@@ -1888,7 +1574,6 @@ mark
   margin-top:3px;
   margin-left:5px;
 }
-
 
 #draganddrop
 {
@@ -1940,7 +1625,7 @@ mark
 {
   border:1px solid white;
   cursor: pointer;
-  -webkit-user-select: none; 
+  user-select: none; 
 }
 
 .color-select-active
@@ -1953,14 +1638,7 @@ mark
   display:none;
 }
 
-.tour-backdrop
-{
-  opacity: 0.3 !important;
-}
-
-/************************
- * Global select styles *
- ************************/
+/* Global select styles */
 
 .bootstrap-select .dropdown-menu > li.selected > a::after {
   visibility: visible;
@@ -1978,7 +1656,6 @@ mark
 
 .bootstrap-select .dropdown-menu li a span.text {
   padding-right: inherit;
-  display: inline-block;
 }
 
 .bootstrap-select.open > .dropdown-toggle:after {
@@ -2013,24 +1690,20 @@ mark
   margin: 0;
 }
 
-.bootstrap-select.disabled {
-  cursor: not-allowed;
-  opacity: 1;
-}
-
-/************************
- * Custom button styles *
- ************************/
+/* Custom button styles */
 
 .btn-base.btn-cancel:focus,
-.btn-base.btn-cancel:hover,
+.btn-base.btn-cancel:hover {
+  color: #fff;
+}
+
 .btn-base.btn-accept:focus,
 .btn-base.btn-accept:hover {
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-base.btn-cancel:hover {
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .btn-base.btn-accept:hover {
@@ -2038,58 +1711,51 @@ mark
 }
 
 .btn-base.btn-cancel {
-  border: 1px solid #d8695f;
+  border-color: #d8695f;
   background: #d8695f;
-  border-radius: 2px;
-  color: #ffffff;
+  color: #fff;
 }
 
 .btn-base.btn-accept {
-  border: 1px solid #9d996c;
+  border-color: #9d996c;
   background: #9d996c;
-  border-radius: 2px;
-  color: #ffffff;
-}
-
-.btn-base:active,
-.btn-base:hover,
-.btn-base:focus {
-  outline: none !important;
-  text-decoration: none;
+  color: #fff;
 }
 
 .btn-base {
   transition: all 0.3s ease-in-out;
+  transition-property: opacity, color;
   border: 1px solid transparent;
-  -webkit-user-select: none;
   -webkit-user-drag: none;
   letter-spacing: -0.2px;
   vertical-align: middle;
-  display: inline-block;
-  text-align: center;
+  border-radius: 2px;
   padding: 10px 12px;
   user-select: none;
   line-height: 18px;
   min-width: 140px;
-  font-weight: 500;
-  font-size: 14px;
   cursor: pointer;
   color: #fff;
   outline: 0;
 }
 
-/********************
- * Scrollbar styles *
- ********************/
+/* Container styles */
 
-::-webkit-scrollbar-track {
-  background: #eaeaea;
-  border-radius: 0px;
+#containerdata {
+  overflow-y: visible;
+  flex-flow: column;
+  display: flex;
+  height: 100vh;
 }
+
+/* Scrollbar styles */
 
 ::-webkit-scrollbar-thumb {
   background: #b7b7b7;
-  border-radius: 1px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eaeaea;
 }
 
 ::-webkit-scrollbar {
@@ -2097,9 +1763,7 @@ mark
   width: 8px;
 }
 
-/******************
- * Utility styles *
- ******************/
+/* Utility styles */
 
 .overflow-visible {
   overflow: visible !important;
@@ -2107,4 +1771,16 @@ mark
 
 .overflow-hidden {
   overflow: hidden !important;
+}
+
+.modal-centered {
+  align-items: center;
+  display: flex;
+}
+
+/* Global styles */
+
+textarea {
+  resize: vertical;
+  cursor: auto;
 }

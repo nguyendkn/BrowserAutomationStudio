@@ -2193,7 +2193,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventStartSection.push_back(std::bind(&MainApp::StartSectionCallback,app.get(),_1));
     Parser->EventSetFontList.push_back(std::bind(&MainApp::SetFontListCallback,app.get(),_1));
     Parser->EventScriptFinished.push_back(std::bind(&MainApp::ScriptFinishedCallback,app.get()));
-    Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4,_5,_6));
+    Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4,_5,_6,_7));
     Parser->EventSetResources.push_back(std::bind(&MainApp::SetResourceCallback,app.get(),_1));
     Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get(), _1));
     Parser->EventIsChanged.push_back(std::bind(&MainApp::IsChangedCallback,app.get()));
@@ -2223,7 +2223,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventIsUrlLoadedByMask.push_back(std::bind(&MainApp::IsUrlLoadedByMaskCallback,app.get(),_1));
     Parser->EventGetLoadStats.push_back(std::bind(&MainApp::GetLoadStatsCallback,app.get()));
     Parser->EventElementCommand.push_back(std::bind(&MainApp::ElementCommandCallback,app.get(),_1));
+    Parser->EventRequestVariablesResult.push_back(std::bind(&MainApp::RequestVariablesResultCallback,app.get(),_1));
     Parser->EventDebugVariablesResult.push_back(std::bind(&MainApp::DebugVariablesResultCallback,app.get(),_1));
+    Parser->EventDebugCallstackResult.push_back(std::bind(&MainApp::DebugCallstackResultCallback,app.get(),_1));
     Parser->EventRestoreOriginalStage.push_back(RestoreOriginalStage);
     Parser->EventSetMode.push_back(SetMode);
 

@@ -95,7 +95,9 @@ namespace BrowserAutomationStudioFramework
         virtual void StartSection(const QString& Name, int Id, const QString& callback);
         virtual void Scroll(int x, int y, const QString& callback);
         virtual void Render(int x, int y, int width, int height, const QString& callback);
+        virtual void RequestVariablesResult(const QString& data, const QString& callback);
         virtual void DebugVariablesResult(const QString& data, const QString& callback);
+        virtual void DebugCallstackResult(const QString& data, const QString& callback);
         virtual void SendRecaptchaV3List(const QString& action, const QString& callback);
         virtual void SendRecaptchaV3Result(const QString& id,const QString& result);
         virtual void SendWorkerSettings(const QString& json, const QString& callback);
@@ -172,7 +174,9 @@ namespace BrowserAutomationStudioFramework
         void Jquery();
         void OptimizeMemory();
         void WaitCode();
+        void RequestVariablesResult();
         void DebugVariablesResult();
+        void DebugCallstackResult();
         void RecaptchaV3List();
         void Timezone();
         void Crush();

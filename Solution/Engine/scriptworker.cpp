@@ -711,7 +711,7 @@ namespace BrowserAutomationStudioFramework
         }
         Browser->SetScriptResources(ScriptResources);
 
-        foreach(QString script, ScriptResources->GetEngineScripts())
+        foreach(QString script, ScriptResources->GetEngineScripts(IsRecord))
             engine->evaluate(script);
 
 

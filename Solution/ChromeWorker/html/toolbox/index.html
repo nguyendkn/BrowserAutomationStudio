@@ -6247,6 +6247,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="for_code">
       _do(function(){
+        _set_action_info({ name: "For" });
         VAR_CYCLE_INDEX = _iterator() - 1 + parseInt(<%= expression_from %>)
         if(VAR_CYCLE_INDEX > parseInt(<%= expression_to %>))_break();
         section_insert()
@@ -6270,6 +6271,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="foreach_code">
       _do_with_params({"foreach_data":(<%= for_array %>)},function(){
+        _set_action_info({ name: "Foreach" });
         VAR_CYCLE_INDEX = _iterator() - 1
         if(VAR_CYCLE_INDEX > _cycle_param("foreach_data").length - 1)_break();
         VAR_FOREACH_DATA = _cycle_param("foreach_data")[VAR_CYCLE_INDEX]
@@ -6298,6 +6300,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
   <script type="text/template" id="while_code">
       _do(function(){
+        _set_action_info({ name: "While" });
         VAR_CYCLE_INDEX = _iterator() - 1
         <%= additional %>
         BREAK_CONDITION = <%= expression %>;
@@ -9008,7 +9011,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                try{
                 if(!ElseEnabled)
                 {
-                  var code = loader.GetAdditionalData() + _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
+                  var code = loader.GetAdditionalData() + `\n_set_if_expression(${JSON.stringify(val.original)});\n`;
+                  code += _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
                   code = Normalize(code,0)
                   BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, 1, false);
                 }else
@@ -9031,7 +9035,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
                   var code = loader.GetAdditionalData() + "\n" +  v + " = " + UpdatedVal + ";\n"
- 
+                  code += `_set_if_expression(${JSON.stringify(val.original)});\n`
 
                   code += _.template($('#' + State + "_code").html())({expression:v, do_delete: ""})
                   code = Normalize(code,0)

@@ -75,6 +75,7 @@
           handleSelector: '.handle',
         });
 
+        new ResizeObserver(() => this.calc()).observe(this.el);
         BrowserAutomationStudio_AskForVariablesUpdate();
       }
       return this;
@@ -93,15 +94,20 @@
     },
 
     show() {
-      this.$el.show();
+      this.$el.show(), this.calc();
       BrowserAutomationStudio_PreserveInterfaceState();
       return this;
     },
 
     hide() {
-      this.$el.hide();
+      this.$el.hide(), this.calc();
       BrowserAutomationStudio_PreserveInterfaceState();
       return this;
+    },
+
+    calc() {
+      const height = this.$el.is(':visible') && this.$el.height();
+      $('.main').css('padding-bottom', `${height + 50 + 0}px`);
     },
   });
 

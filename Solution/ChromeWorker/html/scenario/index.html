@@ -1158,7 +1158,7 @@
         <span id="selectiontemplatecontainer"></span>
       </div>
     </div>
-    <div class="main">
+    <div class="main" style="padding-bottom: <%= (_Inspector.$el.is(':visible') ? _Inspector.$el.height() : 0) + 50 %>px;">
       <div id="paddinfind"></div>
       <% for(var indexraw = 0;indexraw<data.length;indexraw++){ %>
         <% var index = indexraw - 1 + index_start;%>

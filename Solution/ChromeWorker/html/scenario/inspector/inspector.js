@@ -75,6 +75,7 @@
           handleSelector: '.handle',
         });
 
+        new ResizeObserver(() => this.calc()).observe(this.el);
         BrowserAutomationStudio_AskForVariablesUpdate();
       }
       return this;
@@ -102,6 +103,11 @@
       this.$el.hide();
       BrowserAutomationStudio_PreserveInterfaceState();
       return this;
+    },
+
+    calc() {
+      const height = this.$el.is(':visible') && this.$el.height();
+      $('.main').css('padding-bottom', `${height + 50 + 0}px`);
     },
   });
 

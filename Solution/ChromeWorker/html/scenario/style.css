@@ -309,12 +309,10 @@
 }
 
 .main {
-  min-height: max-content;
   padding: 0 15px 50px;
   overflow-x: hidden;
   overflow-y: hidden;
   position: relative;
-  flex: 1;
 }
 
 .maintoolbox
@@ -1091,7 +1089,8 @@ label
 
 .bottompannel {
   background: #fff;
-  position: sticky;
+  position: fixed;
+  width: 100%;
   z-index: 9;
   bottom: 0;
   right: 0;
@@ -1737,15 +1736,6 @@ mark
   cursor: pointer;
   color: #fff;
   outline: 0;
-}
-
-/* Container styles */
-
-#containerdata {
-  overflow-y: visible;
-  flex-flow: column;
-  display: flex;
-  height: 100vh;
 }
 
 /* Scrollbar styles */

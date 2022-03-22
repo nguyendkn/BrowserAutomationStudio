@@ -94,13 +94,13 @@
     },
 
     show() {
-      this.$el.show(), this.calc();
+      this.$el.show();
       BrowserAutomationStudio_PreserveInterfaceState();
       return this;
     },
 
     hide() {
-      this.$el.hide(), this.calc();
+      this.$el.hide();
       BrowserAutomationStudio_PreserveInterfaceState();
       return this;
     },

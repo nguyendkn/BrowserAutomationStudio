@@ -269,7 +269,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			}else if(encoding === 'quoted-printable'){
 				result = api.decoder(charset, 'q', data);
 			}else if(['7bit', '7bits'].indexOf(encoding) > -1){
-				result = api.decoder('latin1', '', data);
+				result = data;
 			}else if(['8bit', '8bits', 'binary'].indexOf(encoding) > -1){
 				result = api.decoder(charset, '', data);
 			}else if(encoding === 'uuencode'){

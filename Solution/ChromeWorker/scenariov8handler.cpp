@@ -16,6 +16,8 @@ ScenarioV8Handler::ScenarioV8Handler()
     IsEditStart = false;
     IsEditEnd = false;
     url_changed = false;
+    IsInterfaceJson = false;
+    IsInterfaceState = false;
     IsHightlightMenuItem = false;
     IsThreadNumberEditStart = false;
     IsSuccessNumberEditStart = false;
@@ -24,11 +26,8 @@ ScenarioV8Handler::ScenarioV8Handler()
     IsClipboardSetRequest = false;
     IsUpdateEmbeddedData = false;
     IsRunFunctionStart = false;
-    IsSetLabel = false;
+    LastResultIsSilent = false;
     LastResultIsPlay = false;
-    IsMoveLabel = false;
-    IsIf = false;
-    IsSetVariable = false;
     IsRunFunctionSeveralThreadsStart = false;
     IsRunFunctionAsync = false;
     IsOpenAction = false;
@@ -112,16 +111,18 @@ bool ScenarioV8Handler::GetIsEditEnd()
 
 
 
-std::pair< std::pair<std::string,bool>, bool> ScenarioV8Handler::GetExecuteCode()
+std::pair< std::pair<std::string,bool>, std::pair<bool,bool> > ScenarioV8Handler::GetExecuteCode()
 {
-    std::pair< std::pair<std::string,bool>, bool> r;
+    std::pair< std::pair<std::string,bool>, std::pair<bool,bool> > r;
     r.first.first = LastResultExecute;
     r.first.second = LastResultIsPlay;
-    r.second = ChangedExecute;
+    r.second.first = ChangedExecute;
+    r.second.second = LastResultIsSilent;
 
     ChangedExecute = false;
 
     LastResultExecute.clear();
+    LastResultIsSilent = false;
     LastResultIsPlay = false;
 
     return r;
@@ -216,12 +217,21 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         {
             LastResultExecute = arguments->GetString(0);
             LastResultIsPlay = false;
+            LastResultIsSilent = false;
             ChangedExecute = true;
         }
         if (arguments->GetSize() == 2 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_BOOL)
         {
             LastResultExecute = arguments->GetString(0);
             LastResultIsPlay = arguments->GetBool(1);
+            LastResultIsSilent = false;
+            ChangedExecute = true;
+        }
+        if (arguments->GetSize() == 3 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_BOOL && arguments->GetType(2) == VTYPE_BOOL)
+        {
+            LastResultExecute = arguments->GetString(0);
+            LastResultIsPlay = arguments->GetBool(1);
+            LastResultIsSilent = arguments->GetBool(2);
             ChangedExecute = true;
         }
     }else if(name == std::string("BrowserAutomationStudio_SetCurrentFunction"))
@@ -340,6 +350,20 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             RunFunctionAsyncName = arguments->GetString(0);
             IsRunFunctionAsync = true;
         }
+    }else if(name == std::string("BrowserAutomationStudio_SaveInterfaceState"))
+    {
+        if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
+        {
+            InterfaceState = arguments->GetString(0);
+            IsInterfaceState = true;
+        }
+    }else if(name == std::string("BrowserAutomationStudio_SaveInterfaceJson"))
+    {
+        if (arguments->GetSize() == 1 && arguments->GetType(0) == VTYPE_STRING)
+        {
+            InterfaceJson = arguments->GetString(0);
+            IsInterfaceJson = true;
+        }
     }else if(name == std::string("BrowserAutomationStudio_SetClipboard"))
     {
         if (arguments->GetSize() == 1)
@@ -353,12 +377,6 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
             clipboard_set = arguments->GetString(0);
             clipboard_prefix = arguments->GetBool(1);
             IsClipboardSetRequest = true;
-        }
-    }else if(name == std::string("BrowserAutomationStudio_GetClipboard"))
-    {
-        if (arguments->GetSize() == 0)
-        {
-            IsClipboardGetRequest = true;
         }
     }else if(name == std::string("BrowserAutomationStudio_GetClipboard"))
     {
@@ -460,38 +478,10 @@ std::pair<std::string, bool> ScenarioV8Handler::GetIsRunFunctionStart()
     return r;
 }
 
-bool ScenarioV8Handler::GetIsSetLabel()
-{
-    bool res = IsSetLabel;
-    IsSetLabel = false;
-    return res;
-}
-
-bool ScenarioV8Handler::GetIsIf()
-{
-    bool res = IsIf;
-    IsIf = false;
-    return res;
-}
-
 bool ScenarioV8Handler::GetIsEditSaveStart()
 {
     bool res = IsEditSaveStart;
     IsEditSaveStart = false;
-    return res;
-}
-
-bool ScenarioV8Handler::GetIsSetVariable()
-{
-    bool res = IsSetVariable;
-    IsSetVariable = false;
-    return res;
-}
-
-bool ScenarioV8Handler::GetIsMoveLabel()
-{
-    bool res = IsMoveLabel;
-    IsMoveLabel = false;
     return res;
 }
 
@@ -550,6 +540,26 @@ std::pair<std::string, bool> ScenarioV8Handler::GetIsHighlightMenuItem()
     IsHightlightMenuItem = false;
     r.first = HighlightMenuItem;
     HighlightMenuItem.clear();
+    return r;
+}
+
+std::pair<std::string, bool> ScenarioV8Handler::GetIsInterfaceState()
+{
+    std::pair<std::string, bool> r;
+    r.second = IsInterfaceState;
+    IsInterfaceState = false;
+    r.first = InterfaceState;
+    InterfaceState.clear();
+    return r;
+}
+
+std::pair<std::string, bool> ScenarioV8Handler::GetIsInterfaceJson()
+{
+    std::pair<std::string, bool> r;
+    r.second = IsInterfaceJson;
+    IsInterfaceJson = false;
+    r.first = InterfaceJson;
+    InterfaceJson.clear();
     return r;
 }
 

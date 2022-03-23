@@ -44,7 +44,7 @@ extern "C" {
 
         if(CurlData)
         {
-            if(CurlData->Handler)
+            if(CurlData->EndTimeout > 0 && CurlData->Handler)
             {
                 curl_easy_cleanup(CurlData->Handler);
                 CurlData->Handler = 0;

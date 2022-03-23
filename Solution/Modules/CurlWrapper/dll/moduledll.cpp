@@ -1083,6 +1083,10 @@ extern "C" {
         {
             DecodedData = QByteArray::fromBase64(Data);
         }
+        else
+        {
+            DecodedData = Data;
+        }
         QTextCodec *codec = QTextCodec::codecForName(Charset);
         if (codec)
         {

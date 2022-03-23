@@ -256,7 +256,6 @@ _InMail = {
 			_InMail.validateArgType(offset, 'number', 'Offset', act);
 		};
 		var box = _InMail.prepareBox(_function_argument("box"));
-		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
 		var api = _InMail.getApi();
 		
@@ -284,11 +283,7 @@ _InMail = {
 			
 			_function_return(res);
 		}else{
-			if(errorNotFound){
-				_InMail.error('Could not find any messages matching the specified criteria in the specified mailbox folder', 'Не удалось найти ни одного письма, соответствующего указанным критериям, в указанной папке почтового ящика', 'search');
-			}else{
-				_function_return([]);
-			};
+			_function_return([]);
 		};
 	},
 	
@@ -322,7 +317,7 @@ _InMail = {
 				_InMail.error('Failed to wait for the required number of messages matching the specified criteria in the specified mailbox folder', 'Не удалось дождаться нужного количества писем, соответствующих указанным критериям, в указанной папке почтового ящика', 'wait');
 			};
 			
-			_call_function(_InMail.search, {criteria:criteria, sorts:sorts, box:box, errorNotFound: false})!
+			_call_function(_InMail.search, {criteria:criteria, sorts:sorts, box:box})!
 			res = _result_function();
 			
 			if(res.length >= minResults){
@@ -367,6 +362,7 @@ _InMail = {
 	
 	searchOne: function(){
 		var args = _function_arguments();
+		var errorNotFound = _avoid_nilb(args.errorNotFound, true);
 		
 		_call_function(_InMail.search, args)!
 		var res = _result_function();
@@ -374,7 +370,11 @@ _InMail = {
 		if(res.length){
 			_function_return(res[0]);
 		}else{
-			_function_return(0);
+			if(errorNotFound){
+				_InMail.error('Could not find any messages matching the specified criteria in the specified mailbox folder', 'Не удалось найти ни одного письма, соответствующего указанным критериям, в указанной папке почтового ящика', 'searchOne');
+			}else{
+				_function_return(0);
+			};
 		};
 	},
 	

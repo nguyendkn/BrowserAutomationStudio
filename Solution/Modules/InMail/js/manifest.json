@@ -682,6 +682,7 @@
 		"Variable in which, after successful execution of the action, the id of the found message will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан id найденного письма."},
 		
 		"Offset": {"ru":"Смещение"},
+		"Empty list": {"ru":"Пустой список"},
 		"Wait messages": {"ru":"Ждать письма"},
 		"Don't wait messages": {"ru":"Не ждать письма"},
 		"Add 1 to all found id": {"ru":"Прибавить 1 ко всем найденным id"},
@@ -692,9 +693,10 @@
 		"Don't add offset to found id": {"ru":"Не добавлять смещение найденным id"},
 		"Don't limit the number of results": {"ru":"Не ограничивать количество результатов"},
 		"Find and save the messages id by the specified criteria.": {"ru":"Найти и сохранить id писем по указанным критериям."},
-		"This action will return a list of id of the messages found by the specified criteria.": {"ru":"Это действие вернет список id писем, найденных по указанным критериям."},
+		"Mail does not contain messages matching the specified criteria": {"ru":"Почта не содержит писем, соответствующих указанным критериям"},
 		"Variable in which, after successful execution of the action, the list of id of the found messages will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список id найденных писем."},
 		"This action can wait for an messages for the specified time if you activate the corresponding parameter in the additional settings.": {"ru":"Это действие может ждать письма указанное время, если активировать соответствующий параметр в дополнительных настройках."},
+		"This action will return a list of id of the messages found by the specified criteria. If the mail does not contain messages matching the specified criteria, then the action will return an empty list.": {"ru":"Это действие вернет список id писем, найденных по указанным критериям. Если почта не содержит писем, соответствующих указанным критериям, то действие вернет пустой список."},
 		"Add the specified offset to all found ids. If this parameter is specified, then the specified offset will be added to all found ids. The offset can be any positive or negative integer.": {"ru":"Добавить указанное смещение ко всем найденным id. Если этот параметр указан, то ко всем найденным id будет добавлено указанное смещение. Смещение может быть любым положительным или отрицательным целым числом."},
 		"Limit the number of returned ids to the specified number. If this parameter is specified, then the resulting id list will be truncated to the specified number. If the parameter is not specified or equal to 0, then the limit will not be applied and the full result will be returned.": {"ru":"Ограничить количество возвращаемых id указанным числом. Если этот параметр указан, то итоговый список id будет обрезан до указанного количества. Если параметр не указан или равен 0, то ограничение не будет применятся и будет возвращен полный результат."},
 		

@@ -457,7 +457,8 @@
 			examples: [
 				{code: "[639]"},
 				{code: "[145, 187, 422]"},
-				{code: "[254, 356, 593, 694, 947]"}
+				{code: "[254, 356, 593, 694, 947]"},
+				{code: tr("Empty list"), description: tr("Mail does not contain messages matching the specified criteria")}
 			]
 		}
 	}) %>
@@ -465,7 +466,7 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Find and save the messages id by the specified criteria.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
-	<div class="tr tooltip-paragraph-fold">This action will return a list of id of the messages found by the specified criteria.</div>
+	<div class="tr tooltip-paragraph-fold">This action will return a list of id of the messages found by the specified criteria. If the mail does not contain messages matching the specified criteria, then the action will return an empty list.</div>
 	<div class="tr tooltip-paragraph-fold">The received id can be used in other module actions, for example, to receive a message, set flags and delete.</div>
 	<div class="tr tooltip-paragraph-fold">Using the parameters from the "Filtration" block, you can filter messages at your discretion or leave them unfiltered.</div>
 	<div class="tr tooltip-paragraph-fold">In the "Sorting" block, you can set the order and field for sorting.</div>

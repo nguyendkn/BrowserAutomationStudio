@@ -25,8 +25,36 @@ std::string read_clipboard()
         return std::string();
 }
 
-void write_clipboard(const std::string data, bool use_prefix)
+void write_clipboard(const std::string data, bool use_prefix, bool is_base64)
 {
+    if (is_base64)
+    {
+        if (OpenClipboard(0))
+        {
+            EmptyClipboard();
+
+            std::wstring dec = s2ws(base64_decode(data));
+            std::wstring str = use_prefix ? (std::wstring(L"BAS:") + dec) : std::wstring(dec);
+
+            size_t size_m = sizeof(WCHAR) * (str.size() + 1);
+            HGLOBAL clipbuffer = GlobalAlloc(GMEM_DDESHARE, size_m);
+            if (clipbuffer)
+            {
+                WCHAR* buffer = (WCHAR*)GlobalLock(clipbuffer);
+                if (buffer)
+                {
+                    wcscpy_s(buffer, size_m / sizeof(WCHAR), str.c_str());
+                    GlobalUnlock(clipbuffer);
+                    SetClipboardData(CF_UNICODETEXT, clipbuffer);
+                }
+            }
+
+            CloseClipboard();
+        }
+
+        return;
+    }
+
     if (OpenClipboard(0))
     {
         HGLOBAL clipbuffer;

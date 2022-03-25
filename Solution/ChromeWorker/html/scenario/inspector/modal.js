@@ -54,7 +54,7 @@
           val = val.reduce((v, k) => v + `[${JSON.stringify(k)}]`);
         }
 
-        BrowserAutomationStudio_SetClipboard(val, false);
+        BrowserAutomationStudio_SetClipboard(utf8_to_b64(val), false, true);
       },
 
       'click .btn-cancel': 'cancel',

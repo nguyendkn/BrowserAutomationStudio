@@ -20,6 +20,11 @@ const parseJSON = (text, reviver) => {
   }
 };
 
+const setClipboard = data => {
+  const text = window.btoa(unescape(encodeURIComponent(data)));
+  BrowserAutomationStudio_SetClipboard(text, false, true);
+};
+
 const typeOf = (() => {
   const { toString } = Object.prototype;
 

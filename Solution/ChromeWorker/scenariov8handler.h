@@ -98,6 +98,7 @@ private:
     bool IsStartBackup;
 
     std::string clipboard_set;
+    bool clipboard_encoded;
     bool clipboard_prefix;
 
     bool ChangedWebInterfaceResult;
@@ -128,7 +129,7 @@ public:
     std::pair<std::string, bool> GetIsOpenAction();
     std::pair<std::string, bool> GetIsEditStart();
     bool GetIsEditSaveStart();
-    std::pair<std::pair<std::string, bool>, bool> GetClipboardSetRequest();
+    std::pair<std::pair<std::string, std::pair<bool,bool>>, bool> GetClipboardSetRequest();
     std::pair<std::string, bool> GetUpdateEmbeddedData();
     std::pair<std::string, bool> GetDetectorDataCode();
     std::pair<std::string, bool> GetCurrentFunction();

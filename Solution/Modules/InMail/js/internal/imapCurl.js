@@ -1466,7 +1466,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var encoding = part.encoding.toLowerCase();
 		var charset = ((part.params && part.params.charset) ? part.params.charset.toLowerCase() : '') || 'utf-8';
 		
-		var result = api.processPartData(data, encoding, charset);
+		var result = api.processPartData(data, encoding, charset, saveToFile);
 		
 		if(!saveToFile){
 			_function_return(result);

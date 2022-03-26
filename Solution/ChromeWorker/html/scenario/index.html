@@ -1525,6 +1525,10 @@
             _Inspector.wait(value);
 
             if (!value) {
+              if (VariablesUpdateSkip) {
+                VariablesUpdateSkip = false;
+                return BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
+              }
               BrowserAutomationStudio_AskForVariablesUpdate();
             }
           });
@@ -1533,6 +1537,10 @@
             _Inspector.wait(value);
 
             if (!value) {
+              if (VariablesUpdateSkip) {
+                VariablesUpdateSkip = false;
+                return BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
+              }
               BrowserAutomationStudio_AskForVariablesUpdate();
             }
           });
@@ -5530,11 +5538,6 @@
     function BrowserAutomationStudio_AskForVariablesUpdate() {
       if (VariablesUpdateRequested) {
         VariablesUpdateNeeded = true;
-        return;
-      }
-
-      if (VariablesUpdateSkip) {
-        VariablesUpdateSkip = false;
         return;
       }
 

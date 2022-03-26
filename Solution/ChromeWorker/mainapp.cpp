@@ -3754,10 +3754,10 @@ void MainApp::HandleScenarioBrowserEvents()
         }
     }
 
-    std::pair<std::pair<std::string, bool>, bool> res6 = scenariov8handler->GetClipboardSetRequest();
+    std::pair<std::pair<std::string, std::pair<bool, bool>>, bool> res6 = scenariov8handler->GetClipboardSetRequest();
     if(res6.second)
     {
-        write_clipboard(res6.first.first, res6.first.second);
+        write_clipboard(res6.first.first, res6.first.second.first, res6.first.second.second);
     }
 
     if(Data->IsRecord)

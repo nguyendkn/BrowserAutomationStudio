@@ -172,13 +172,13 @@ window.JsonTreeNode = {
 
       if (id === 'variables' && ['string', 'object', 'array'].includes(type) && (length > (type === 'string' ? 300 : 100))) {
         post('get', { path: this.path }, ({ value }) => {
-          BrowserAutomationStudio_SetClipboard(type === 'string' ? value : JSON.stringify(value), false);
+          setClipboard(type === 'string' ? value : JSON.stringify(value));
         });
       } else {
         if (value == null) {
-          BrowserAutomationStudio_SetClipboard(type, false);
+          setClipboard(type);
         } else {
-          BrowserAutomationStudio_SetClipboard(text, false);
+          setClipboard(text);
         }
       }
     },

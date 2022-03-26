@@ -34,6 +34,8 @@ ScenarioV8Handler::ScenarioV8Handler()
     IsEditSaveStart = false;
     ChangedIsInsideElementLoop = false;
     IsStartBackup = false;
+    clipboard_encoded = false;
+    clipboard_prefix = false;
 }
 
 std::pair<bool, bool> ScenarioV8Handler::GetIsInsideElementLoop()
@@ -183,6 +185,8 @@ ScenarioV8Handler::RestartType ScenarioV8Handler::GetNeedRestart()
 
 bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> arguments)
 {
+    size_t size = arguments->GetSize();
+
     if(name == std::string("BrowserAutomationStudio_SendCode"))
     {
         if (arguments->GetSize() == 7 && arguments->GetType(0) == VTYPE_STRING && arguments->GetType(1) == VTYPE_STRING && arguments->GetType(2) == VTYPE_STRING && arguments->GetType(3) == VTYPE_STRING&& arguments->GetType(4) == VTYPE_STRING&& arguments->GetType(5) == VTYPE_STRING)
@@ -366,16 +370,11 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
         }
     }else if(name == std::string("BrowserAutomationStudio_SetClipboard"))
     {
-        if (arguments->GetSize() == 1)
+        if (size > 0)
         {
             clipboard_set = arguments->GetString(0);
-            clipboard_prefix = true;
-            IsClipboardSetRequest = true;
-        }
-        if (arguments->GetSize() == 2)
-        {
-            clipboard_set = arguments->GetString(0);
-            clipboard_prefix = arguments->GetBool(1);
+            clipboard_prefix = size > 1 ? arguments->GetBool(1) : true;
+            clipboard_encoded = size > 2 ? arguments->GetBool(2) : false;
             IsClipboardSetRequest = true;
         }
     }else if(name == std::string("BrowserAutomationStudio_GetClipboard"))
@@ -416,14 +415,15 @@ bool ScenarioV8Handler::Execute(const CefString& name, CefRefPtr<CefListValue> a
     return true;
 }
 
-std::pair<std::pair<std::string, bool>, bool> ScenarioV8Handler::GetClipboardSetRequest()
+std::pair<std::pair<std::string, std::pair<bool, bool>>, bool> ScenarioV8Handler::GetClipboardSetRequest()
 {
-    std::pair<std::pair<std::string, bool>, bool> r;
-    r.first = std::make_pair(clipboard_set, clipboard_prefix);
+    std::pair<std::pair<std::string, std::pair<bool, bool>>, bool> r;
+    r.first = std::make_pair(clipboard_set, std::make_pair(clipboard_prefix, clipboard_encoded));
     r.second = IsClipboardSetRequest;
 
     IsClipboardSetRequest = false;
 
+    clipboard_encoded = false;
     clipboard_prefix = true;
     clipboard_set.clear();
 

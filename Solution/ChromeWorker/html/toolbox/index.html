@@ -9009,7 +9009,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                try{
                 if(!ElseEnabled)
                 {
-                  var code = loader.GetAdditionalData() + `\n_set_if_expression(${JSON.stringify(val.original)});\n`;
+                  var code = loader.GetAdditionalData() + `\n_set_if_expression(${JSON.stringify(utf8_to_b64(val.original))});\n`;
                   code += _.template($('#' + State + "_code").html())({expression:UpdatedVal, do_delete: ""})
                   code = Normalize(code,0)
                   BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, 1, false);
@@ -9033,7 +9033,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
                   var code = loader.GetAdditionalData() + "\n" +  v + " = " + UpdatedVal + ";\n"
-                  code += `_set_if_expression(${JSON.stringify(val.original)});\n`
+                  code += `_set_if_expression(${JSON.stringify(utf8_to_b64(val.original))});\n`
 
                   code += _.template($('#' + State + "_code").html())({expression:v, do_delete: ""})
                   code = Normalize(code,0)

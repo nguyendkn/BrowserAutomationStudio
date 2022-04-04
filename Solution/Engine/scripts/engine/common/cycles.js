@@ -682,6 +682,6 @@ function _set_action_info(info, cycle) {
 
 function _set_if_expression(expression) {
     if (ScriptWorker.GetIsRecord()) {
-        _cycle_params().if_else_expression = expression;
+        _cycle_params().if_else_expression = base64_decode(expression);
     }
 }

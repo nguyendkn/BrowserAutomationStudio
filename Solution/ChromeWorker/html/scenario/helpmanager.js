@@ -61,7 +61,7 @@ class HelpManager
 
 		var IfData = {"s":"if","v":1,"role":"master","slave":IdElse,"master":IdIf,"if_var":"_cycle_params().if_else","f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":Expression,"class":"expression"},{"id":"IfElse","type":"check","data":true}]}
 		var IfCode = `_cycle_params().if_else = ${Code};
-		_set_if_expression(${JSON.stringify(Expression)});
+		_set_if_expression("${utf8_to_b64(Expression)}");
 		_if(_cycle_params().if_else,function(){
 			section_insert()
 		})!`
@@ -203,7 +203,7 @@ class HelpManager
 		var SleepCode = `sleep(1000)!`		
 
 		var	IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[TEST]] == \"test\"","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
-		var IfCode = `_set_if_expression("[[TEST]] == \"test\"");
+		var IfCode = `_set_if_expression("${utf8_to_b64('[[TEST]] == "test"')}");
 		_if(VAR_TEST == "test",function(){
 			section_insert()
 		})!`		
@@ -520,7 +520,7 @@ class HelpManager
 		var IncreaseData = {"s":"incvariable","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"SetVariableName","type":"var","data":"INDEX"},{"id":"IncVariableValue","type":"constr","data":"1","class":"int"}]}
 		var IncreaseCode = `VAR_INDEX = parseInt(VAR_INDEX) + parseInt(1)`
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[INDEX]] > 5","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
-		var IfCode = `_set_if_expression("[[INDEX]] > 5");
+		var IfCode = `_set_if_expression("${utf8_to_b64('[[INDEX]] > 5')}");
 		_if(VAR_INDEX > 5,function(){
 			section_insert()
 		})!`
@@ -617,7 +617,7 @@ class HelpManager
       load("google.com")!`
 
 		var IfData = {"s":"if","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"IfExpression","type":"constr","data":"[[WAS_ERROR]]","class":"expression"},{"id":"IfElse","type":"check","data":false}]}
-		var IfCode = `_set_if_expression("[[WAS_ERROR]]");
+		var IfCode = `_set_if_expression("${utf8_to_b64('[[WAS_ERROR]]')}");
 		_if(VAR_WAS_ERROR,function(){
 			section_insert()
 		})!`

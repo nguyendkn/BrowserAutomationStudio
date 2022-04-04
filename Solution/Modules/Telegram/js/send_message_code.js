@@ -12,7 +12,7 @@ var getTime = function() {
 	return '[' + hh + ':' + mm + ':' + ss + ']'
 }
 
-var mess, _url, json, tmp = "";
+var mess, _url_temp, json, tmp = "";
 
 tmp = encodeURIComponent(<%= message %>)
 
@@ -26,10 +26,10 @@ tmp = encodeURIComponent(<%= message %>)
 	mess = tmp
 <% } %>	
 
-_url = "https://api.telegram.org/bot"+ <%= token %> + "/sendMessage?chat_id=" + <%= chat_id %> + "&text=" + mess + (<%= is_num_thread %> === true || <%= is_time %> === true ? '&parse_mode=HTML' : '')
+_url_temp = "https://api.telegram.org/bot"+ <%= token %> + "/sendMessage?chat_id=" + <%= chat_id %> + "&text=" + mess + (<%= is_num_thread %> === true || <%= is_time %> === true ? '&parse_mode=HTML' : '')
 
 _switch_http_client_internal()
-http_client_get2(_url, {method:("GET")})!
+http_client_get2(_url_temp, {method:("GET")})!
 var json = JSON.parse(http_client_content())
 _switch_http_client_main()
 if (!json['ok'])

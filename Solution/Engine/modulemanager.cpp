@@ -1152,6 +1152,18 @@ namespace BrowserAutomationStudioFramework
                             }
 
                         }
+
+                        if(doc.object().contains("dependent_actions"))
+                        {
+                            foreach(QJsonValue val, doc.object()["dependent_actions"].toArray())
+                            {
+                                if(!val.isString())
+                                    continue;
+                                QString Name = val.toString();
+                                ActionToModule[Name] = Module->Name;
+                            }
+
+                        }
                     }
                 }
             }

@@ -132,6 +132,18 @@ window.JsonTreeNode = {
     }
   },
 
+  created() {
+    this.click = debounce(() => {
+      const { type, keys } = this;
+
+      if ((type === 'object' || type === 'array') && keys.length) {
+        return this.toggle();
+      }
+
+      this.edit();
+    }, 250);
+  },
+
   methods: {
     collapse() {
       this.$store.commit('setNodeCollapsed', {
@@ -155,16 +167,6 @@ window.JsonTreeNode = {
       } else {
         this.expand();
       }
-    },
-
-    click() {
-      const { type, keys } = this;
-
-      if ((type === 'object' || type === 'array') && keys.length) {
-        return this.toggle();
-      }
-
-      this.edit();
     },
 
     copy() {

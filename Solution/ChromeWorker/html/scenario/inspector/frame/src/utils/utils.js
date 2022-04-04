@@ -20,6 +20,17 @@ const parseJSON = (text, reviver) => {
   }
 };
 
+const debounce = (fn, delay) => {
+  let timeout = 0;
+  return function (...args) {
+    if (!timeout) {
+      fn.apply(this, args);
+    }
+    clearTimeout(timeout);
+    timeout = setTimeout(() => (timeout = 0), delay);
+  };
+};
+
 const setClipboard = data => {
   const text = window.btoa(unescape(encodeURIComponent(data)));
   BrowserAutomationStudio_SetClipboard(text, false, true);

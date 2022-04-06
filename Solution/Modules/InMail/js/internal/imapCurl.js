@@ -271,7 +271,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.parse = function(str){
-		str = str.trim();
+		str = str.split('\r\n')[0].trim();
 		
 		var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(str);
 		
@@ -1008,10 +1008,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 		for(var j = 1, key, val; j < r.length; j += 2){
 			key = r[j].toLowerCase();
 			val = r[j + 1];
-			if(key === '*'){
-				key = r[j + 2].toLowerCase();
-				++j;
-			};
 			if(key === 'all'){
 				val = val.toString().split(',');
 			};

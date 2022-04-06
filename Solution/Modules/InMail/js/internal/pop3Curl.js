@@ -282,7 +282,7 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		var lastline = '';
 		var headers = '';
 		var body = '';
-		for(var i = 0; i < multipart.length; i++){
+		for(var i = 0; i < multipart.length; ++i){
 			var oneChar = multipart.charAt(i);
 			var prevChar = multipart.charAt(i - 1);
 			var newLineDetected = oneChar === '\n' && prevChar === '\r';

@@ -99,7 +99,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				
 				if((resp.code == "QUOTE_ERROR" && error == "Quote command returned error") || (resp.code == "RECV_ERROR" && error == "Failure when receiving data from the peer")){
 					var debug = resp.trace.trim().split(/\r?\n/);
-					for(var i = debug.length - 1; i > -1; i--){
+					for(var i = debug.length - 1; i > -1; --i){
 						var ell = debug[i];
 						if(resp.code == "QUOTE_ERROR"){
 							ell = ell.slice(ell.indexOf(" ") + 1);
@@ -256,7 +256,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			var result = '';
 			if(encoding === 'base64'){
 				var list =  data.trim().split('\r\n');
-				for(var i = 0; i < list.length; i++){
+				for(var i = 0; i < list.length; ++i){
 					var line = list[i].trim();
 					if(line){
 						if(saveToFile){
@@ -296,7 +296,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			length = _avoid_nilb(length, 10);
 			chars = _avoid_nilb(chars, 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
 			var str  = '';
-			for(var i = 0; i < length; i++){
+			for(var i = 0; i < length; ++i){
 				str += chars.charAt(Math.floor(Math.random() * chars.length));
 			};
 			return str;
@@ -445,6 +445,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"NOT_AVAILABLE_POP3": {
 				"ru": 'Функция "' + data + '" недоступна по pop3,  используйте подключение по imap, если это возможно',
 				"en": '"' + data + '" function is not available on pop3, use imap connection if it possible'
+			},
+			"FAILED_PARSE": {
+				"ru": 'Не удалось распарсить результат: "' + data + '"',
+				"en": 'Failed to parse result: "' + data + '"'
 			}
 		};
 		

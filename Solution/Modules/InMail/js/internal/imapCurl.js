@@ -79,7 +79,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 					chunk = '';
 				}else{
 					var b = '';
-					for(var i = 0; i < chunk.length; i++){
+					for(var i = 0; i < chunk.length; ++i){
 						// Note that we can't simply convert a UTF-8 string to Base64 because
 						// UTF-8 uses a different encoding. In modified UTF-7, all characters
 						// are represented by their two byte Unicode ID.
@@ -123,7 +123,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var start = str.lastIndexOf('CAPABILITY');
 		if(start > -1){
 			var end = start;
-			for(; end < str.length; end++){
+			for(; end < str.length; ++end){
 				var code = str.charCodeAt(end);
 				if(code === 10 || code === 13 || code === 93){
 					break;
@@ -271,13 +271,19 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.parse = function(str){
+		str = str.trim();
+		
 		var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(str);
+		
+		if(!m){
+			api.errorHandler('FAILED_PARSE', str);
+		};
 		
 		return {
 			type: (m[1] || m[3]).toLowerCase(),
 			num: parseInt(m[2], 10),
 			text: m[5]
-		};
+		};	
 	};
 	
 	this.parseSearch = function(str){
@@ -964,7 +970,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 		api.validateArgType(options, ['array','string'], 'Options');
 		var box = api.prepareBox(_function_argument("box"));
 		
-		
 		_call_function(api.capability, {})!
 		
 		if(!api.serverSupports('ESEARCH')){
@@ -995,7 +1000,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var r = api.parseExpr(info.text.toUpperCase().replace('UID', ''));
 		var attrs = {};
-			
+		
 		// RFC4731 unfortunately is lacking on documentation, so we're going to
 		// assume that the response text always begins with (TAG "A123") and skip that
 		// part ...
@@ -1003,6 +1008,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 		for(var j = 1, key, val; j < r.length; j += 2){
 			key = r[j].toLowerCase();
 			val = r[j + 1];
+			if(key === '*'){
+				key = r[j + 2].toLowerCase();
+				++j;
+			};
 			if(key === 'all'){
 				val = val.toString().split(',');
 			};
@@ -1395,7 +1404,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 				if(!Array.isArray(bodies)){
 					bodies = [bodies];
 				};
-				for(var i = 0; i < bodies.length; i++){
+				for(var i = 0; i < bodies.length; ++i){
 					fetching.push('BODY' + prefix + '[' + bodies[i] + ']');
 				};
 			};
@@ -1443,7 +1452,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.getParts = function(struct, parts){
 		parts = _avoid_nilb(parts, []);
-		for(var i = 0; i < struct.length; i++){
+		for(var i = 0; i < struct.length; ++i){
 			part = struct[i];
 			if(Array.isArray(part)){
 				api.getParts(part, parts);

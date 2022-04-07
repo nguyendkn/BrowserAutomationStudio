@@ -1503,6 +1503,7 @@
             state: "main",
             istaskexecuting: false,
             isscriptexecuting: false,
+            isexecutionaborting: false,
             execute_next_id: 0,
             isstepnextactivated: false,
             insert_index: 0,
@@ -1521,29 +1522,31 @@
             _WebInterfaceTasks.CurrentIdChanged(execute_next_id)
           });
 
+          this.on("change:isexecutionaborting", (_, value) => {
+            if (!value) requestUpdate();
+          });
+
           this.on("change:isscriptexecuting", (_, value) => {
             _Inspector.wait(value);
 
-            if (!value) {
-              if (VariablesUpdateSkip) {
-                VariablesUpdateSkip = false;
-                return BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
-              }
-              BrowserAutomationStudio_AskForVariablesUpdate();
-            }
+            if (!value) requestUpdate();
           });
 
           this.on("change:istaskexecuting", (_, value) => {
             _Inspector.wait(value);
 
-            if (!value) {
+            if (!value) requestUpdate();
+          });
+
+          const requestUpdate = () => {
+            if (!this.get("isexecutionaborting")) {
               if (VariablesUpdateSkip) {
                 VariablesUpdateSkip = false;
                 return BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
               }
               BrowserAutomationStudio_AskForVariablesUpdate();
             }
-          });
+          };
         }  
     });
     var TaskCollection = Backbone.Collection.extend({
@@ -2083,7 +2086,8 @@
           event.preventDefault();
           return;
         }
-        this.model.set("isscriptexecuting", false)
+        this.model.set("isexecutionaborting", true);
+        this.model.set("isscriptexecuting", false);
       },
 
       restart: function()
@@ -5854,7 +5858,7 @@
         BrowserAutomationStudio_FocusActionFast(parseInt(_NewInsertId))
         _NewInsertId = null
       }*/
-        
+      _GobalModel.set("isexecutionaborting", false);
     }
 
     function BrowserAutomationStudio_PreserveInterfaceState() {

@@ -666,6 +666,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 		for(var i = 0; i < lines.length; i++){
 			var line = lines[i];
 			
+			if(line.indexOf('LIST') < 0){
+				continue;
+			};
+			
 			var info = api.parse(line);
 			
 			var r = api.parseExpr(info.text);

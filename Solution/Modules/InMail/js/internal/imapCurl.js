@@ -270,8 +270,13 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return str;
 	};
 	
+	this.delUpdateData = function(str){
+		str = str.replace(/\* \d+ EXISTS\r?\n?/g, '').replace(/\* \d+ RECENT\r?\n?/g, '');
+		return str;
+	};
+	
 	this.parse = function(str){
-		str = str.split('\r\n')[0].trim();
+		str = api.delUpdateData(str).trim(); //Delete update data when mailbox changes
 		
 		var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(str);
 		
@@ -1309,7 +1314,6 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.parseFetchParts = function(str){
-		str = str.replace(/\* \d+ EXISTS\r?\n?/g, '').replace(/\* \d+ RECENT\r?\n?/g, ''); //Delete update data when mailbox changes
 		var firstBreak = str.indexOf('\r\n');
 		var fetch = {};
 		if(firstBreak > -1){
@@ -1422,6 +1426,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var fetchList = resp.fetchlist;
 		
 		for(var i = 0; i < fetchList.length; ++i){
+			fetchList[i] = api.delUpdateData(fetchList[i]); //Delete update data when mailbox changes
 			var fetch = api.parseFetchParts(fetchList[i]);
 			var info = api.parse(fetch.head);
 			var seqno = info.num;

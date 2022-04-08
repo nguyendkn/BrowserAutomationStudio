@@ -1309,6 +1309,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.parseFetchParts = function(str){
+		str = str.replace(/\* \d+ EXISTS\r?\n?/g, '').replace(/\* \d+ RECENT\r?\n?/g, ''); //Delete update data when mailbox changes
 		var firstBreak = str.indexOf('\r\n');
 		var fetch = {};
 		if(firstBreak > -1){

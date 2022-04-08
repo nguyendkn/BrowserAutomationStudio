@@ -748,6 +748,10 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 Params["type"] = Variant(DialogType);
 
+                std::string TabId = Parser.GetStringFromJson(Message, "sessionId");
+                if(!TabId.empty())
+                    Params["session"] = Variant(TabId);
+
                 NewAction->SetTimeout(-1);
                 NewAction->SetParams(Params);
 

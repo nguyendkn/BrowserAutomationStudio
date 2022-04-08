@@ -107,6 +107,23 @@ window.GroupsPanel = {
   },
 
   watch: {
+    data: [
+      function (data, prev) {
+        const { metadata } = this;
+
+        Object.keys(data).forEach(key => {
+          const now = performance.now();
+
+          if (!hasOwn(metadata, name)) {
+            metadata[key] = {
+              modifiedAt: now,
+              createdAt: now,
+            };
+          }
+        });
+      }
+    ],
+
     diff: [
       function (diff, prev) {
         const { metadata } = this;

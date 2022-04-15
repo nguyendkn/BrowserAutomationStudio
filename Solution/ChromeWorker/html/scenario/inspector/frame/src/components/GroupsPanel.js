@@ -107,23 +107,6 @@ window.GroupsPanel = {
   },
 
   watch: {
-    data: [
-      function (data, prev) {
-        const { metadata } = this;
-
-        Object.keys(data).forEach(key => {
-          const now = performance.now();
-
-          if (!hasOwn(metadata, name)) {
-            metadata[key] = {
-              modifiedAt: now,
-              createdAt: now,
-            };
-          }
-        });
-      }
-    ],
-
     diff: [
       function (diff, prev) {
         const { metadata } = this;
@@ -175,6 +158,25 @@ window.GroupsPanel = {
         $store.commit('setCounters', { id: name, counters });
       },
     ],
+  },
+
+  created() {
+    const unwatch = this.$watch('data', data => {
+      const { metadata } = this;
+
+      Object.keys(data).forEach(key => {
+        const now = performance.now();
+
+        if (!hasOwn(metadata, name)) {
+          metadata[key] = {
+            modifiedAt: now,
+            createdAt: now,
+          };
+        }
+      });
+
+      unwatch();
+    });
   },
 
   methods: {

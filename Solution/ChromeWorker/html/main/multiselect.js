@@ -6,7 +6,6 @@
 
   
     ;_BAS_HIDE(DomPredictionHelper) = function(_bas_use_css, _bas_use_ids, _bas_check_density, _query_selector_host) {
-  
       this.recursiveNodes = function(e) {
         var n;
         if (e.nodeName && e.parentNode && e !== document.body && !(e instanceof ShadowRoot) && !(e.parentNode instanceof ShadowRoot)) {
@@ -606,7 +605,7 @@
         
         try
         {
-          elements = _query_selector_host.querySelectorAll(query)
+          elements = _BAS_HIDE(BrowserAutomationStudio_Original)["querySelectorAll"].call(null, _query_selector_host, query)
         }catch(e)
         {
           elements = []

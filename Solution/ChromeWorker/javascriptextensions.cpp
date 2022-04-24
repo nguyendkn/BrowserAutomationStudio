@@ -39,6 +39,48 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         //WORKER_LOG(additional);
     }
 
+    std::string original_functions;
+
+    original_functions = ";_BAS_HIDE(BrowserAutomationStudio_OriginalData) = {"
+                            "DocumentQuerySelectorAll: Document.prototype.querySelectorAll,"
+                            "ElementQuerySelectorAll: Element.prototype.querySelectorAll,"
+                            "ShadowRootQuerySelectorAll: ShadowRoot.prototype.querySelectorAll,"
+
+                            "DocumentQuerySelector: Document.prototype.querySelector,"
+                            "ElementQuerySelector: Element.prototype.querySelector,"
+                            "ShadowRootQuerySelector: ShadowRoot.prototype.querySelector,"
+                         "};"
+            ";_BAS_HIDE(BrowserAutomationStudio_Original) = {"
+                "querySelectorAll: function(element, selector)"
+                "{"
+                    "if(element instanceof Document)"
+                    "{"
+                        "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['DocumentQuerySelectorAll'].call(element, selector);"
+                    "}else if(element instanceof ShadowRoot)"
+                    "{"
+                         "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ShadowRootQuerySelectorAll'].call(element, selector);"
+                    "}else"
+                    "{"
+                        "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ElementQuerySelectorAll'].call(element, selector);"
+                    "}"
+                "},"
+                "querySelector: function(element, selector)"
+                "{"
+                     "if(element instanceof Document)"
+                     "{"
+                         "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['DocumentQuerySelector'].call(element, selector);"
+                     "}else if(element instanceof ShadowRoot)"
+                     "{"
+                          "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ShadowRootQuerySelector'].call(element, selector);"
+                     "}else"
+                     "{"
+                         "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ElementQuerySelector'].call(element, selector);"
+                     "}"
+                "},"
+                "evaluate: Document.prototype.evaluate"
+            "};";
+
+
     std::string inspect_script;
 
     if(IsRecord)
@@ -107,6 +149,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
 
                     "if(xpath)xpath += ' >SHADOW> ';"
                     "xpath += ' >XPATH> ' + _BAS_HIDE(BrowserAutomationStudio_CreateXPathFromElement)(el);"
+
                 "}catch(e){};"
 
 
@@ -444,6 +487,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "};");
     }
     return
+    original_functions +
     additional +
     inspect_script
      + std::string(
@@ -740,7 +784,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "{"
                     "if(!(res instanceof ShadowRoot))"
                     "{"
-                        "res = document.evaluate(select_value, res, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null ).snapshotItem(0);"
+                        "res = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null ).snapshotItem(0);"
                     "}else"
                     "{"
                         "var found = false;"
@@ -748,7 +792,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                         "{"
                             "try"
                             "{"
-                                "var q = document.evaluate(select_value, res.children[j], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
+                                "var q = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res.children[j], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
                                 "if(q.snapshotLength > 0)"
                                 "{"
                                     "res = q.snapshotItem(0);"
@@ -768,7 +812,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "{"
                     "if(!(res instanceof ShadowRoot))"
                     "{"
-                        "var q = document.evaluate(select_value, res, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
+                        "var q = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
                         "var len = q.snapshotLength;res=[];"
                         "for(var it = 0;it<len;it++)res.push(q.snapshotItem(it));"
                     "}else"
@@ -778,7 +822,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                         "{"
                             "try"
                             "{"
-                                "var q = document.evaluate(select_value, res.children[j], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
+                                "var q = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res.children[j], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
                                 "var len = q.snapshotLength;"
                                 "for(var it = 0;it<len;it++){if(r.indexOf(q.snapshotItem(it))<0)r.push(q.snapshotItem(it));}"
                             "}catch(e){}"
@@ -788,11 +832,11 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "}"
                 "if(select_type == 'css')"
                 "{"
-                    "res = res.querySelector(select_value);"
+                    "res = _BAS_HIDE(BrowserAutomationStudio_Original)['querySelector'].call(null, res, select_value);"
                 "}"
                 "if(select_type == 'all')"
                 "{"
-                    "res = res.querySelectorAll(select_value);"
+                    "res = _BAS_HIDE(BrowserAutomationStudio_Original)['querySelectorAll'].call(null, res, select_value);"
                 "}"
                 "if(select_type == 'at')"
                 "{"

@@ -112,6 +112,8 @@
   });
 
   function edit(options) {
+    if (document.querySelector('.modal.in')) return;
+
     Promise.resolve().then(() => options.mode === 'variables' ? request(options) : options.value).then(value => {
       const callback = (accept, { changed, value, type }) => {
         if (accept && changed) {

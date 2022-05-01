@@ -1348,6 +1348,8 @@
   <!-- ========= -->
   <script>window.App = { Inspector: {}, utils: {} };</script>
   <script src="../actions/actions.js"></script>
+  <script src="utility/logger.js"></script>
+  <script src="utility/utils.js"></script>
   <script src="translate.js"></script>
   <script src="undo.js"></script>
   <script src="actionfinder.js"></script>
@@ -1360,7 +1362,6 @@
   <script src="webinterfacetasks.js"></script>
   <script src="visualizelabels.js"></script>
   <script src="helpmanager.js"></script>
-  <script src="utility/utils.js"></script>
   <script src="updater/internal/backbone.events.js"></script>
   <script src="updater/internal/progressbar.js"></script>
   <script src="updater/internal/translate.js"></script>
@@ -1527,12 +1528,14 @@
           });
 
           this.on("change:isscriptexecuting", (_, value) => {
+            log.info(`The script has been ${value ? "started" : "completed"}`);
             _Inspector.wait(value);
 
             if (!value) requestUpdate();
           });
 
           this.on("change:istaskexecuting", (_, value) => {
+            log.info(`The task has been ${value ? "started" : "completed"}`);
             _Inspector.wait(value);
 
             if (!value) requestUpdate();
@@ -2344,7 +2347,7 @@
         this.render()
         this.send()
 
-        $('#editmodal').modal('hide');
+        $('#editmodal').data('accept', true).modal('hide');
 
         this.isEdit = false
       },
@@ -3599,7 +3602,15 @@
         $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active")
 
         $("#TaskDontRunWhenRecording").prop('checked', this.collection.at(this.currentTargetId).get("donotexecuteduringrecord"))
-        if (!options.disableModal) $("#editmodal").modal({})
+        if (!options.disableModal) {
+          $("#editmodal").modal().data('accept', false).one('hidden.bs.modal', (event) => {
+            if ((VariablesUpdateSkip = $(event.target).data('accept'))) {
+              log.info(`Task editing has been finished`);
+            } else {
+              log.info(`Task editing has been canceled`);
+            }
+          });
+        }
         var match = code.match(/\/\*Dat\:([^\*]+)\*\//)
         if(match)
         {
@@ -5532,15 +5543,25 @@
       if (_GobalModel.get('dontsend')) return;
 
       const variables = BrowserAutomationStudio_GetVariablesList();
-      if (_.isEqual(variables, VariablesListPrev)) return;
-      if (_GobalModel.get('isscriptexecuting')) return;
-      if (_GobalModel.get('istaskexecuting')) return;
+
+      if (_.isEqual(variables, VariablesListPrev)) {
+        return log.info('Skipping a non-strict variables update - variables haven’t changed yet');
+      }
+
+      if (_GobalModel.get('isscriptexecuting')) {
+        return log.info('Skipping a non-strict variables update - the script is still running');
+      }
+
+      if (_GobalModel.get('istaskexecuting')) {
+        return log.info('Skipping a non-strict variables update - the task is still running');
+      }
 
       BrowserAutomationStudio_AskForVariablesUpdate();
     }
 
     function BrowserAutomationStudio_AskForVariablesUpdate() {
       if (VariablesUpdateRequested) {
+        log.info('Request to update variables has already been sent');
         VariablesUpdateNeeded = true;
         return;
       }
@@ -5549,6 +5570,7 @@
       VariablesUpdateRequested = true;
       VariablesUpdateNeeded = false;
 
+      log.info('Request to update the list of variables', VariablesListPrev);
       BrowserAutomationStudio_Execute(`debug_variables(${JSON.stringify(VariablesListPrev)})!\nsection_start("test", -3)!`, false, true);
     }
 
@@ -5561,10 +5583,12 @@
         VariablesUpdateRequested = false;
         VariablesUpdateNeeded = false;
       }
+      log.info('Received an update for variables');
       _Inspector.send({ type: 'update', payload: App.utils.parseJSON(data) });
     }
 
     function BrowserAutomationStudio_UpdateCallstackResult(data) {
+      log.info('Received an update for callstack');
       _Inspector.send({ type: 'update', payload: App.utils.parseJSON(data) });
     }
 
@@ -5600,10 +5624,8 @@
     
     function BrowserAutomationStudio_EditCancel()
     {
-      $('#editmodal').modal('hide');
+      $('#editmodal').data('accept', false).modal('hide');
     }
-
-
   
     function BrowserAutomationStudio_AddTask(Name, Code, Id, DontInterrupt, DontSendToDetector)
     {
@@ -5665,7 +5687,7 @@
           {
             _MainView.taskeditcustom(Name,Code,donotexecuteduringrecord)
             _ActionUpdater.model.trigger('toolbox.editSuccess');
-            $('#editmodal').modal('hide');
+            $('#editmodal').data('accept', true).modal('hide');
             return
           }
         }

@@ -82,6 +82,8 @@ void UpdateBrowserData(BrowserData* Data)
         }
     }
 
+    Data->Saver.IsProxySet = Data->IsProxySet;
+
     Data->Saver.Headers = Data->_Headers;
 
     Data->Saver.UserAgent = UserAgent;

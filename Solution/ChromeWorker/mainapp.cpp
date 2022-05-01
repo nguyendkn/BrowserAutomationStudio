@@ -1790,6 +1790,8 @@ void MainApp::MouseLeave()
 void MainApp::SetProxyCallback(const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target)
 {
     WORKER_LOG(std::string("SetProxyCallback ") + server + std::string(" ") + std::to_string(Port) + std::string(" ") + target);
+    Data->IsProxySet = !server.empty();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetProxy(server, Port, IsHttp, username, password);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)

@@ -1997,6 +1997,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Saver.TemporaryDisableDetector = false;
     Data->UrlHandler = 0;
     Data->LastClickIsFromIndirectControl = true;
+    Data->IsProxySet = false;
 
     //Create profile fast if it is empty
     if(Settings.ProfilesCaching())

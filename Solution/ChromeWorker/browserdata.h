@@ -85,6 +85,7 @@ public:
     std::string BrowserCode;
     ModulesDataList _UnusedModulesData;
     MultiSelectData _MultiSelectData;
+    std::atomic_bool IsProxySet;
 
     //Touch
     std::atomic_bool IsTouchScreen;

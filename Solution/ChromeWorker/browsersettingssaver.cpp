@@ -40,6 +40,7 @@ void BrowserSettingsSaver::Save()
 
             outfile<<"FingerprintDetectorEnabled="<<((IsRecord && Detector && !TemporaryDisableDetector) ? "true" : "false")<<std::endl;
             outfile<<"NotificationsInfo="<<((IsRecord) ? "Enable" : "Disable")<<std::endl;
+            outfile<<"IsProxySet="<<((IsProxySet) ? "Enable" : "Disable")<<std::endl;
 
             std::string AdditionalHeaders;
             picojson::value::array AdditionalHeadersArray;

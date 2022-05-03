@@ -255,17 +255,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			var result = '';
 			if(encoding === 'base64'){
-				var list =  data.trim().split('\r\n');
-				for(var i = 0; i < list.length; ++i){
-					var line = list[i].trim();
-					if(line){
-						if(saveToFile){
-							native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:line, base64:true, append:!!i}));
-						}else{
-							result += api.decoder(charset, 'b', line);
-						};
-					};
-				};
+				result = api.decoder(charset, 'b', data.split('\r\n').join(''));
 			}else if(encoding === 'quoted-printable'){
 				result = api.decoder(charset, 'q', data);
 			}else if(['7bit', '7bits'].indexOf(encoding) > -1){
@@ -280,9 +270,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			};
 			
 			if(saveToFile){
-				if(encoding !== 'base64'){
-					native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:false, append:false}));
-				};
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:false, append:false}));
 			}else{
 				return result;
 			};

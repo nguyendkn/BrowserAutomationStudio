@@ -11,6 +11,7 @@ struct BrowserSettingsSaver
 
     bool Detector;
     bool TemporaryDisableDetector;
+    bool IsProxySet;
 
     //Languages
     std::vector<std::string> Languages;

@@ -255,7 +255,8 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			var result = '';
 			if(encoding === 'base64'){
-				result = api.decoder(charset, 'b', data.split('\r\n').join(''));
+				data = data.trim().split('\r\n').join('');
+				result = api.decoder(charset, 'b', data);
 			}else if(encoding === 'quoted-printable'){
 				result = api.decoder(charset, 'q', data);
 			}else if(['7bit', '7bits'].indexOf(encoding) > -1){

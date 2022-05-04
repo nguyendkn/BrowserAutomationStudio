@@ -7,9 +7,19 @@
 
 std::vector<std::pair<std::string,std::string> > ParseChromeCommandLine(const std::vector<std::wstring>& AdditionalParams)
 {
+    return ParseCommandLine("chrome_command_line.txt", AdditionalParams);
+}
+
+std::vector<std::pair<std::string,std::string> > ParseWorkerCommandLine(const std::vector<std::wstring>& AdditionalParams)
+{
+    return ParseCommandLine("worker_command_line.txt", AdditionalParams);
+}
+
+std::vector<std::pair<std::string,std::string> > ParseCommandLine(const std::string& File, const std::vector<std::wstring>& AdditionalParams)
+{
     std::vector<std::string> lines;
 
-    std::ifstream fin("chrome_command_line.txt");
+    std::ifstream fin(File);
     if(fin.is_open())
     {
         std::string line;

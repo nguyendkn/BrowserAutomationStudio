@@ -1593,7 +1593,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 					})!
 				})!
 				_if(attachnames || attachments, function(){
-					var filtered = parts.filter(function(p){return p.disposition && p.disposition.type && ['inline', 'attachment'].indexOf(p.disposition.type.toLowerCase()) > -1});
+					var filtered = parts.filter(function(p){return p.disposition && p.disposition.type && ['inline', 'attachment'].indexOf(p.disposition.type.toLowerCase()) > -1 && p.disposition.params && p.disposition.params.filename});
 					if(attachnames){
 						message.attachnames = filtered.map(function(p){return p.disposition.params.filename});
 					};

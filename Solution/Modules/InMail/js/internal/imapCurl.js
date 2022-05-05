@@ -528,14 +528,15 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var box = api.prepareBox(_function_argument("box"), true);
 		var path = api.encodeName(box);
 		
-		_if_else(isUTF8, function(){
-			_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT'})!
+		_if(isUTF8, function(){
+			_call_function(api.capability, {})!
 			
-			_call_function(api.request, {query: query, path: path})!
-		}, function(){
-			_call_function(api.request, {query: query, path: path})!
+			_if(api.serverSupports('ENABLE'), function(){
+				_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT'})!
+			})!			
 		})!
 		
+		_call_function(api.request, {query: query, path: path})!
 		var resp = _result_function();
 		
 		try{

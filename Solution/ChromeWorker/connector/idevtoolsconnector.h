@@ -10,9 +10,6 @@
 class IDevToolsConnector
 {
     protected:
-        // Proxy
-        virtual void ResetProxy(const std::string& ParentProcessId) = 0;
-
         // Actions
         virtual void InsertAction(std::shared_ptr<IDevToolsAction> Action) = 0;
     public:

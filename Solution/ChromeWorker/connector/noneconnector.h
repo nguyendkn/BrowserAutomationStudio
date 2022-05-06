@@ -10,7 +10,6 @@
 
 class NoneConnector : public IDevToolsConnector
 {
-    void ResetProxy(const std::string& ParentProcessId);
     void InsertAction(std::shared_ptr<IDevToolsAction> Action);
 
     public:

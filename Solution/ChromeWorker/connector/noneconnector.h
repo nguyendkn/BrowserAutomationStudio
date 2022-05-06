@@ -1,136 +1,19 @@
-#ifndef DEVTOOLSCONNECTOR_H
-#define DEVTOOLSCONNECTOR_H
+#ifndef NONECONNECTOR_H
+#define NONECONNECTOR_H
 
 #include "idevtoolsconnector.h"
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
-#include <map>
-#include <memory>
-#include "idevtoolsaction.h"
-#include "devtoolsactionfactory.h"
-#include "ActionSaver.h"
-#include "JsonParser.h"
-#include "JsonSerializer.h"
 #include "InputEventsEnumerations.h"
 #include "KeyboardEmulation.h"
 #include <windows.h>
-#include "sharedmemoryipc.h"
-#include "chromeprocesslauncher.h"
 
-class DevToolsConnector : public IDevToolsConnector
+class NoneConnector : public IDevToolsConnector
 {
-    KeyboardEmulation EmulateKeyboard;
-
-    std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory;
-    std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory;
-    DevToolsGlobalState GlobalState;
-
-    JsonParser Parser;
-    JsonSerializer Serializer;
-
-    DevToolsActionFactory ActionsFactory;
-    ActionSaver ActionsSaver;
-
-    std::vector<std::shared_ptr<IDevToolsAction> > Actions;
-    int CurrentHttpClientActionId = 0;
-
-    std::wstring ProfilePath;
-    std::vector<std::wstring> Extensions;
-    std::vector<std::pair<std::string,std::string> > CommandLineAdditional;
-    ChromeProcessLauncher ProcessLauncher;
-
-    //Switch tab after close
-    int SwitchTabAfterCloseCurrentActionId = 0;
-    std::string SwitchTabAfterCloseCurrentTabId;
-    std::string SwitchTabAfterCloseCurrentFrameId;
-
-    //Connection settings
-
-    bool IsConnectionOrLaunch = true;
-    int TargetPort = -1;
-
-    //Connection data
-
-    enum{
-        WaitingForBrowserClose,
-        NotStarted,
-        WaitingForBrowserEndpoint,
-        WaitingForWebsocket,
-        WaitingForAutoconnectEnable,
-        WaitingForDownloadsEnable,
-        WaitingFirstTab,
-        Connected
-    }ConnectionState = NotStarted;
-    std::string Endpoint;
-
-    bool WasBrowserCreationEvent = false;
-
-    //Connection methods
-
-    void TryToConnect();
-    void OnHttpClientResult(bool IsSuccess,int StatusCode,std::string& Data);
-    void OnBrowserEndpointObtained(bool IsSuccess,int StatusCode,std::string& Data);
-    void OnWebSocketConnected(bool IsSuccess);
-    void OnWebSocketDisconnected();
-    void OnWebSocketMessage(std::string& Message);
-    void ProcessTabConnection(std::shared_ptr<TabData> Tab);
-    void StartFirstSavedAction(std::shared_ptr<TabData> Tab);
-
-    //InspectAt
-
-    bool IsInspectAtScheduled = false;
-    long long InspectAtTime = 0;
-    int InspectAtX = 0;
-    int InspectAtY = 0;
-    void InspectAtFinalize();
-
-    //Helpers
-
-    int GenerateId();
-    std::string GenerateMessage(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId, int &Id);
-    int SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId);
-    void InsertAction(std::shared_ptr<IDevToolsAction> Action);
-    std::vector<std::shared_ptr<IDevToolsAction> > GetAllActions();
-    void OpenDevToolsInternal(bool IsInspect);
-
-    //Callbacks
-
-    void OnFetchRequestPaused(std::string& Result);
-    void OnFetchAuthRequired(std::string& Result);
-    void OnNetworkRequestWillBeSent(std::string& Result);
-    void OnDragIntercepted(std::string& DragData);
-    void OnNetworkResponseReceived(std::string& Result);
-    void OnNetworkLoadingCompleted(std::string& Result, bool HasError);
-
-
-
-    //Reset method
-    Async ResetResult;
-    long long ResetMethodDeadline = 0;
-
-    //Paint data
-    std::vector<char> ImageData;
-    int PaintWidth = 0;
-    int PaintHeight = 0;
-    int LastMetadataPaintWidth = 0;
-    int LastMetadataPaintHeight = 0;
-    SharedMemoryIPC* IPC = 0;
-    void HandleIPCData();
-    void HandleIPCDataNoDeviceScale();
-    void HandleIPCDataWithDeviceScale();
-    void PaintNotify();
-    void ParseNewTabReferrer(const std::string& NewTabReferrer);
-    void CheckIfTabsNeedsToLoadFirstUrl(std::shared_ptr<TabData> Tab);
     void ResetProxy(const std::string& ParentProcessId);
-    //https://source.chromium.org/chromium/chromium/src/+/master:content/browser/devtools/devtools_video_consumer.cc;drc=267e9d603200302cd937cc5b788f044186a1b8c6;l=25
-    void SetMinCapturePeriod(int MinCapturePeriod);
-
-    //Inputs private
-    //Drag is used only with Mouse method
-    void Drag(DragEvent Event, int X, int Y, int KeyboardPresses = KeyboardModifiersNone);
+    void InsertAction(std::shared_ptr<IDevToolsAction> Action);
 
     public:
-
         char* GetPaintData();
         int GetPaintWidth();
         int GetPaintHeight();
@@ -249,4 +132,4 @@ class DevToolsConnector : public IDevToolsConnector
         Async StartDragFile(const std::string& Path, int Timeout = -1);
 };
 
-#endif // DEVTOOLSCONNECTOR_H
+#endif // NONECONNECTOR_H

@@ -49,6 +49,7 @@ SOURCES += main.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
     connector/devtoolsactionstartdragfile.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
+    connector/noneconnector.cpp \
     connector/devtoolsconnector.cpp \
     connector/emoji.cpp \
     connector/idevtoolsaction.cpp \
@@ -211,7 +212,9 @@ HEADERS += \
     connector/devtoolsactionsetstartupscript.h \
     connector/devtoolsactionstartdragfile.h \
     connector/devtoolsactionwebsocketquery.h \
+    connector/noneconnector.h \
     connector/devtoolsconnector.h \
+    connector/idevtoolsconnector.h \
     connector/emoji.h \
     connector/idevtoolsaction.h \
     connector/rawcpphttpclient.h \

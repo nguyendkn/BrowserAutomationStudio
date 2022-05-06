@@ -3145,4 +3145,3 @@ Async DevToolsConnector::SaveCookies(int Timeout)
     InsertAction(NewAction);
     return NewAction->GetResult();
 }
-

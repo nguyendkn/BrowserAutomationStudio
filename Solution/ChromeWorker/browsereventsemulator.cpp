@@ -100,7 +100,7 @@ int random(int max)
     return rand() % (max);
 }
 
-void BrowserEventsEmulator::MouseMoveLine(DevToolsConnector* Connector, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight, bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
+void BrowserEventsEmulator::MouseMoveLine(IDevToolsConnector* Connector, bool & IsMouseMoveSimulation, int MouseStartX, int MouseStartY, int MouseEndX, int MouseEndY , int& MouseCurrentX, int& MouseCurrentY, float Speed, int BrowserWidth, int BrowserHeight, bool IsMousePress, bool IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
 {
     if(!IsMouseMoveSimulation)
         return;
@@ -181,7 +181,7 @@ void BrowserEventsEmulator::MouseMoveLine(DevToolsConnector* Connector, bool & I
     }
 }
 
-void BrowserEventsEmulator::MouseMove(DevToolsConnector* Connector,
+void BrowserEventsEmulator::MouseMove(IDevToolsConnector* Connector,
                                       bool & IsMouseMoveSimulation,
                                       int MouseStartX, int MouseStartY,
                                       int MouseEndX, int MouseEndY,
@@ -465,7 +465,7 @@ void BrowserEventsEmulator::MouseMove(DevToolsConnector* Connector,
 
 }
 
-void BrowserEventsEmulator::MouseClick(DevToolsConnector* Connector, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
+void BrowserEventsEmulator::MouseClick(IDevToolsConnector* Connector, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
 {
     int X = x - scroll.first;
     int Y = y - scroll.second;
@@ -541,7 +541,7 @@ void BrowserEventsEmulator::MouseClick(DevToolsConnector* Connector, int x, int 
     }
 }
 
-void BrowserEventsEmulator::Key(DevToolsConnector *Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
+void BrowserEventsEmulator::Key(IDevToolsConnector *Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)
 {
     MouseButton CurrentMouseState = MouseButtonNone;
 

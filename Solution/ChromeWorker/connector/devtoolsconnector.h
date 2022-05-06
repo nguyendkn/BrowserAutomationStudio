@@ -23,7 +23,6 @@ class DevToolsConnector : public IDevToolsConnector
 
     std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory;
     std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory;
-    DevToolsGlobalState GlobalState;
 
     JsonParser Parser;
     JsonSerializer Serializer;

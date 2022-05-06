@@ -58,6 +58,8 @@ void DevToolsConnector::Initialize
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
     this->WebSocketClientFactory = WebSocketClientFactory;
 
+    GlobalState.ProxySaver.reset(new ProxySaver());
+
     ISimpleHttpClient * HttpClient = this->SimpleHttpClientFactory->Create();
     HttpClient->GlobalActivate();
     delete HttpClient;

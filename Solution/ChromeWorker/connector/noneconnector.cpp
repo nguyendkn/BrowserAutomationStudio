@@ -13,6 +13,13 @@ void NoneConnector::Initialize
         const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
 )
 {
+    GlobalState.ProxySaver.reset(new ProxySaver());
+
+    GlobalState.Port = Port;
+    GlobalState.UniqueProcessId = UniqueProcessId;
+    GlobalState.ParentProcessId = ParentProcessId;
+    GlobalState.ChromeExecutableLocation = ChromeExecutableLocation;
+    GlobalState.ConstantStartupScript = ConstantStartupScript;
 }
 
 char* NoneConnector::GetPaintData()
@@ -181,6 +188,13 @@ Async NoneConnector::Reload(bool IsInstant, int Timeout)
 
 Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, const std::string Login, const std::string Password, int Timeout)
 {
+    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
+    CreateDirectoryA(Folder.c_str(), NULL);
+    Folder += GlobalState.ParentProcessId;
+    CreateDirectoryA(Folder.c_str(), NULL);
+    std::string Path = Folder + std::string("/s");
+    GlobalState.ProxySaver->Save(Server, Port, IsHttp, Login, Password, Path);
+
     std::shared_ptr<IDevToolsAction> NewAction;
     NewAction->SetTimeout(Timeout);
     InsertAction(NewAction);

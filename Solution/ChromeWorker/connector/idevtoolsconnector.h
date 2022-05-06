@@ -10,6 +10,9 @@
 class IDevToolsConnector
 {
     protected:
+        // State
+        DevToolsGlobalState GlobalState;
+
         // Actions
         virtual void InsertAction(std::shared_ptr<IDevToolsAction> Action) = 0;
     public:

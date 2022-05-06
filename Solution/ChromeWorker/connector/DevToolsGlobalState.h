@@ -3,6 +3,7 @@
 
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
+#include "proxysaver.h"
 #include "RequestRestriction.h"
 #include <memory>
 #include <map>
@@ -55,6 +56,7 @@ struct ExtensionInfo
 
 struct DevToolsGlobalState
 {
+    std::shared_ptr<ProxySaver> ProxySaver;
     std::shared_ptr<ISimpleHttpClient> HttpClient;
     std::shared_ptr<IWebSocketClient> WebSocketClient;
     std::string TabId;

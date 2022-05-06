@@ -5,7 +5,6 @@
 
 class DevToolsActionSetProxy : public IDevToolsAction
 {
-	std::string GenerateProxyData(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);
 	long long FinishActionTime = 0;
     bool WaitingForStopNetworkActivity = false;
     bool WaitingForResetAllConnections = false;

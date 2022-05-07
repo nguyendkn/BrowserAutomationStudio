@@ -591,7 +591,9 @@ namespace BrowserAutomationStudioFramework
 
             }else
             {
-                return QString();
+                CRXReadData(Stream,IsError);
+                if(IsError)
+                    return QString();
             }
 
         }

@@ -42,6 +42,7 @@
 #include "base64.h"
 #include "writefile.h"
 #include "popupemulation.h"
+#include "noneconnector.h"
 #include "devtoolsconnector.h"
 
 
@@ -2033,7 +2034,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     {
         DeinstallWidevine(Settings.Profile());
     }
-    Data->Connector = new DevToolsConnector();
+    Data->Connector = new NoneConnector();
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
     Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));

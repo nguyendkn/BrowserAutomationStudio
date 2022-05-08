@@ -56,3 +56,8 @@ void ProxySaver::Save(const std::string& Server, int Port, bool IsHttp, const st
     {
     }
 }
+
+void ProxySaver::Reset(const std::string &Path)
+{
+    Save(std::string(), 0, true, std::string(), std::string(), Path);
+}

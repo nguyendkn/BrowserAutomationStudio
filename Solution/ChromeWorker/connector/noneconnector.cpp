@@ -24,7 +24,8 @@ void NoneConnector::Initialize
 
 char* NoneConnector::GetPaintData()
 {
-    return std::string().data();
+    std::vector<char> data;
+    return data.data();
 }
 
 int NoneConnector::GetPaintWidth()

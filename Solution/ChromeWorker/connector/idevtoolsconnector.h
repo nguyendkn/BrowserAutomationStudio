@@ -46,13 +46,12 @@ class IDevToolsConnector
 
         virtual void Timer() = 0;
 
-        virtual void Initialize
-        (
-                std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
-                std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
-                int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
-                const std::string& ConstantStartupScript,
-                const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
+        virtual void Initialize(
+            std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
+            std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
+            int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
+            const std::string& ConstantStartupScript,
+            const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
         ) = 0;
         virtual void SetProfilePath(const std::wstring& Path) = 0;
         virtual void SetExtensionList(const std::vector<std::wstring>& Extensions) = 0;

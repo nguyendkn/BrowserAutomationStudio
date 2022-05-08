@@ -4,13 +4,12 @@
 
 using namespace std::placeholders;
 
-void NoneConnector::Initialize
-(
-        std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
-        std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
-        int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
-        const std::string& ConstantStartupScript,
-        const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
+void NoneConnector::Initialize(
+    std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
+    std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
+    int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
+    const std::string& ConstantStartupScript,
+    const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
 )
 {
     GlobalState.ProxySaver.reset(new ProxySaver());

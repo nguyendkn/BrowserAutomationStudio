@@ -55,7 +55,7 @@
 	<%= _.template($('#block_end').html())() %>
 </div>
 <div class="tooltipinternal">
-	<div class="tr tooltip-paragraph-first-fold">Copy the specified message from one mailbox to another.</div>
+	<div class="tr tooltip-paragraph-first-fold">Copy the specified message from one mailbox folder to another.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
 	<div class="tr tooltip-paragraph-fold">This action will copy the message from one mailbox folder to another. The copy of the message will have a different id.</div>
 	<div class="tr tooltip-paragraph-fold">This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.</div>

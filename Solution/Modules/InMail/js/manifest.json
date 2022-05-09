@@ -724,7 +724,7 @@
 		"To folder": {"ru":"В папку"},
 		"From folder": {"ru":"Из папки"},
 		"This action can copy several messages at once": {"ru":"Это действие может копировать несколько писем сразу"},
-		"Copy the specified message from one mailbox to another.": {"ru":"Скопировать указанное письмо из одного почтового ящика в другой."},
+		"Copy the specified message from one mailbox folder to another.": {"ru":"Скопировать указанное письмо из одной папки почтового ящика в другую."},
 		"The name of the folder where the message or several messages will be copied.": {"ru":"Имя папки, в которую будет скопировано письмо или несколько писем."},
 		"This action will copy the message from one mailbox folder to another. The copy of the message will have a different id.": {"ru":"Это действие скопирует письмо из одной папки почтового ящика в другую. Копия письма будет иметь другой id."},
 		"This action is only available when connecting via imap, if the action is called when connecting via pop3, it will immediately fail.": {"ru":"Это действие доступно только при подключении по imap, если действие будет вызвано при подключении по pop3, то будет немедленно завершено ошибкой."},
@@ -733,7 +733,7 @@
 		"In the additional settings, you can specify the name of the folder from which the message will be copied, otherwise the folder specified in the \"Configure receiving mail\" action will be used.": {"ru":"В дополнительных настройках можно указать имя папки, из которой будет скопировано письмо, иначе будет использоваться папка, указанная в действии \"Настроить получение почты\"."},
 		
 		"This action can move several messages at once": {"ru":"Это действие может перемещать несколько писем сразу"},
-		"Move the specified message from one mailbox to another.": {"ru":"Переместить указанное письмо из одного почтового ящика в другой."},
+		"Move the specified message from one mailbox folder to another.": {"ru":"Переместить указанное письмо из одной папки почтового ящика в другую."},
 		"The name of the folder where the message or several messages will be moved.": {"ru":"Имя папки, в которую будет перемещено письмо или несколько писем."},
 		"Moving messages is not supported by all mail services, if the service does not support moving, then the action will fail.": {"ru":"Перемещение писем поддерживается не всеми почтовыми сервисами, если сервис не поддерживает перемещение, то действие завершится ошибкой."},
 		"The name of the folder from which the message will be moved, if not specified, the folder specified in the \"Configure receiving mail\" action will be used.": {"ru":"Имя папки, из которой будет перемещено письмо, если не указано, то будет использоваться папка указанная в действии \"Настроить получение почты\"."},

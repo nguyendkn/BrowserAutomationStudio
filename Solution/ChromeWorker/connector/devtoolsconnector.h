@@ -138,8 +138,6 @@ class DevToolsConnector : public IDevToolsConnector
         int GetScrollX();
         int GetScrollY();
 
-        std::vector<std::function<void(std::string&, std::string&)> > OnMessage;
-
         void Timer();
 
         void Initialize

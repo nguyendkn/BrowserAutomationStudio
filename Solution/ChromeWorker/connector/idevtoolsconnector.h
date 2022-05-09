@@ -43,6 +43,7 @@ class IDevToolsConnector
         std::vector<std::function<void()> > OnBrowserCreated;
         std::vector<std::function<void(std::string)> > OnRequestDataMain;
         std::vector<std::function<void(std::string)> > OnRequestDataAdditional;
+        std::vector<std::function<void(std::string&, std::string&)> > OnMessage;
 
         virtual void Timer() = 0;
 

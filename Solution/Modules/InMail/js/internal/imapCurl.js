@@ -119,6 +119,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return api.escape(api.utf7.encode('' + name));
 	};
 	
+	this.encodeNameUrl = function(name){
+		return encodeURIComponent(api.encodeName(name));
+	};
+	
 	this.parseCaps = function(str){
 		var start = str.lastIndexOf('CAPABILITY');
 		if(start > -1){
@@ -526,7 +530,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var query = _function_argument("query");
 		var isUTF8 = _avoid_nilb(_function_argument("isUTF8"), false);
 		var box = api.prepareBox(_function_argument("box"), true);
-		var path = api.encodeName(box);
+		var path = api.encodeNameUrl(box);
 		
 		_if(isUTF8, function(){
 			_call_function(api.capability, {})!
@@ -1420,7 +1424,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += ')';
 		
-		_call_function(api.request, {path: api.encodeName(box), query: cmd, isFetch: true})!
+		_call_function(api.request, {path: api.encodeNameUrl(box), query: cmd, isFetch: true})!
 		var resp = _result_function();
 		
 		var fetchCache = {};

@@ -120,7 +120,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.encodeNameUrl = function(name){
-		return encodeURIComponent(api.encodeName(name));
+		return encodeURIComponent(api.utf7.encode('' + name));
 	};
 	
 	this.parseCaps = function(str){

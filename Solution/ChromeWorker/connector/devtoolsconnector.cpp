@@ -1291,9 +1291,10 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 std::string Result = picojson::value(ResultObject).serialize();
 
                 //Save information about frames and context
-                if (Method == "Runtime.executionContextCreated")
+                if (Method == "Runtime.executionContextCreated" && Parser.GetBooleanFromJson(Result, "context.auxData.isDefault", true))
                 {
                     std::string FrameId = Parser.GetStringFromJson(Result, "context.auxData.frameId");
+
                     int ContextId = Parser.GetFloatFromJson(Result, "context.id");
                     GlobalState.FrameIdToContextId[FrameId] = ContextId;
                 }

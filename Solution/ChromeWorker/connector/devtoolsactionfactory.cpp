@@ -26,6 +26,7 @@
 #include "DevToolsActionSetRequestsRestrictions.h"
 #include "devtoolsactionstartdragfile.h"
 #include "devtoolsactionresetdevicescalefactor.h"
+#include "devtoolsactionempty.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -124,6 +125,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "StartDragFile")
     {
         Result = new DevToolsActionStartDragFile();
+    }else if(Name == "Empty")
+    {
+        Result = new DevToolsActionEmpty();
     }
 
 

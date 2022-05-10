@@ -7,7 +7,6 @@
 #include <map>
 #include <memory>
 #include "idevtoolsaction.h"
-#include "devtoolsactionfactory.h"
 #include "ActionSaver.h"
 #include "JsonParser.h"
 #include "JsonSerializer.h"
@@ -27,7 +26,6 @@ class DevToolsConnector : public IDevToolsConnector
     JsonParser Parser;
     JsonSerializer Serializer;
 
-    DevToolsActionFactory ActionsFactory;
     ActionSaver ActionsSaver;
 
     std::vector<std::shared_ptr<IDevToolsAction> > Actions;

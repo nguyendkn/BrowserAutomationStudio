@@ -49,6 +49,7 @@ SOURCES += main.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
     connector/devtoolsactionstartdragfile.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
+    connector/devtoolsactionempty.cpp \
     connector/noneconnector.cpp \
     connector/devtoolsconnector.cpp \
     connector/proxysaver.cpp \
@@ -213,6 +214,7 @@ HEADERS += \
     connector/devtoolsactionsetstartupscript.h \
     connector/devtoolsactionstartdragfile.h \
     connector/devtoolsactionwebsocketquery.h \
+    connector/devtoolsactionempty.h \
     connector/noneconnector.h \
     connector/devtoolsconnector.h \
     connector/proxysaver.h \

@@ -10,8 +10,6 @@
 
 class NoneConnector : public IDevToolsConnector
 {
-    void InsertAction(std::shared_ptr<IDevToolsAction> Action);
-
     public:
         char* GetPaintData();
         int GetPaintWidth();

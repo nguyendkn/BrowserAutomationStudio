@@ -3,6 +3,7 @@
 
 #include "ISimpleHttpClientFactory.h"
 #include "IWebSocketClientFactory.h"
+#include "devtoolsactionfactory.h"
 #include "KeyboardEmulation.h"
 #include "idevtoolsaction.h"
 #include <windows.h>
@@ -13,8 +14,8 @@ class IDevToolsConnector
         // State
         DevToolsGlobalState GlobalState;
 
-        // Actions
-        virtual void InsertAction(std::shared_ptr<IDevToolsAction> Action) = 0;
+        // Factory
+        DevToolsActionFactory ActionsFactory;
     public:
         // Paint
         virtual char* GetPaintData() = 0;

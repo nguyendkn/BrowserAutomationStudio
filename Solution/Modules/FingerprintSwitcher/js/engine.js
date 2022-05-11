@@ -365,6 +365,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		{
 			Settings["Canvas"] = "noise"
 			Settings["CanvasNoise"] = FINGERPRINT_JSON["canvas"]
+			Settings["Fingerprints.PerfectCanvasSkipZeroEntropyCode"] = "Enable"
 		}
 
 		if(FINGERPRINT_WEBGL)

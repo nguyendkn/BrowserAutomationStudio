@@ -15,6 +15,7 @@ if(timeout["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
     return;
 };
+var dialect_options = GetInputConstructorValue("dialect_options", loader);
 try{
     var code = loader.GetAdditionalData() + _.template($("#SQL_Setup_code").html())({
         "dialect": dialect["updated"],
@@ -25,7 +26,8 @@ try{
         "database": database["updated"],
         "storage": storage["updated"],
 		"connect_timeout": connect_timeout["updated"],
-        "timeout": timeout["updated"]
+        "timeout": timeout["updated"],
+        "dialect_options": dialect_options["updated"]
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

@@ -2,6 +2,7 @@ _SQL_CONFIG = {
 	id: (rand(10) + thread_number()),
 	data: {
 		dialect: "",
+		dialectOptions: "",
 		host: "",
 		port: "",
 		username: "",
@@ -14,7 +15,11 @@ _SQL_CONFIG = {
 	debug: false
 };
 
-function SQL_Setup(dialect, host, port, username, password, database, storage, connect_timeout, timeout){
+function SQL_Setup(dialect, host, port, username, password, database, storage, connect_timeout, timeout, dialect_options){
+	dialect_options = _avoid_nil(dialect_options);
+	if(_is_json_string(dialect_options)){
+		dialect_options = JSON.parse(dialect_options);
+	};
 	_SQL_CONFIG["data"]["dialect"] = dialect;
 	_SQL_CONFIG["data"]["host"] = host;
 	_SQL_CONFIG["data"]["port"] = (port==="auto" || port==="") ? "" : Number(port);
@@ -22,6 +27,7 @@ function SQL_Setup(dialect, host, port, username, password, database, storage, c
 	_SQL_CONFIG["data"]["password"] = password;
 	_SQL_CONFIG["data"]["database"] = database;
 	_SQL_CONFIG["data"]["storage"] = storage.split("\\").join("/");
+	_SQL_CONFIG["data"]["dialectOptions"] = dialect_options;
 	_SQL_CONFIG["connect_timeout"] = connect_timeout!=="" ? connect_timeout*1000 : "";
 	_SQL_CONFIG["timeout"] = timeout*1000;
 };
@@ -191,7 +197,7 @@ function SQL_RestoreDates(results, format){
 function SQL_Template(){
 	var e = _function_argument("e");
 	
-	_template(e)!
+	_template(e.trim())!
 	var r = _result();
 	
 	_function_return(r);
@@ -244,19 +250,22 @@ function SQL_ConvertValuesToObject(){
 	_do_with_params({"foreach_data":values_array},function(){
 		var cycle_index = _iterator() - 1;
 		if(cycle_index > _cycle_param("foreach_data").length - 1){_break()};
-		var value = _cycle_param("foreach_data")[cycle_index];
+		var data = _cycle_param("foreach_data")[cycle_index];
 		
-		var split = value.split(/\s?=\s?/);
-		var key = split[0];
-		var value = split[1];
+		var sep_index = data.indexOf('=');
 		
-		_call_function(SQL_Template,{"e":key})!
-		var key = _result_function();
-		
-		_call_function(SQL_Template,{"e":value})!
-		var value = _result_function();
-		
-		values_object[key] = SQL_ConvertDates(value);
+		_if(sep_index > -1,function(){
+			var key = data.slice(0, sep_index - (data.charAt(sep_index - 1)== ' ' ? 1 : 0));
+			var value = data.slice(sep_index + 1 + (data.charAt(sep_index + 1)== ' ' ? 1 : 0));
+			
+			_call_function(SQL_Template,{"e":key})!
+			var key = _result_function();
+			
+			_call_function(SQL_Template,{"e":value})!
+			var value = _result_function();
+			
+			values_object[key] = SQL_ConvertDates(value);
+		})!
 	})!
 	
 	_function_return(values_object);

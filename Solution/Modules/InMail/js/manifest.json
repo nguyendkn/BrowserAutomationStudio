@@ -37,23 +37,6 @@
 		{
 			"code": [
 				{
-					"file": "InMail_FindMessage_code.js",
-					"name": "InMail_FindMessage_code"
-				}
-			],
-			"description": {
-				"en": "Get content of one message by criteria",
-				"ru": "Получить содержимое одного письма по критериям"
-			},
-			"interface": "InMail_FindMessage_interface.js",
-			"is_element": false,
-			"name": "InMail_FindMessage",
-			"select": "InMail_FindMessage_select.js",
-			"template": ""
-		},
-		{
-			"code": [
-				{
 					"file": "InMail_GetLastMessage_code.js",
 					"name": "InMail_GetLastMessage_code"
 				}
@@ -84,6 +67,23 @@
 			"name": "InMail_SearchLast",
 			"select": "InMail_SearchLast_select.js",
 			"template": "{{Save}}"
+		},
+		{
+			"code": [
+				{
+					"file": "InMail_FindMessage_code.js",
+					"name": "InMail_FindMessage_code"
+				}
+			],
+			"description": {
+				"en": "Get content of one message by criteria",
+				"ru": "Получить содержимое одного письма по критериям"
+			},
+			"interface": "InMail_FindMessage_interface.js",
+			"is_element": false,
+			"name": "InMail_FindMessage",
+			"select": "InMail_FindMessage_select.js",
+			"template": ""
 		},
 		{
 			"code": [

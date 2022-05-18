@@ -118,9 +118,3 @@ function imap_custom_query_log()
     _ensure_imap_client()
     return ImapClient.CustomQueryLog();
 }
-
-
-
-
-
-

@@ -250,7 +250,6 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		};
 		
 		this.processPartData = function(data, encoding, charset, saveToFile){
-			log(_to_string([data, encoding, charset, saveToFile]));
 			charset = charset || 'utf-8';
 			saveToFile = _avoid_nilb(saveToFile, false);
 			

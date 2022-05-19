@@ -1033,7 +1033,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.searchLast = function(){
 		var args = _function_arguments();
-		args.criteria = ['ALL'];
+		args.criteria = _avoid_nilb(args.criteria, ['ALL']);
 		var last = 0;
 		
 		_call_function(api.capability, {})!

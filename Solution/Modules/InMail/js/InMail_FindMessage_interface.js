@@ -902,7 +902,7 @@
 <div class="tooltipinternal">
 	<div class="tr tooltip-paragraph-first-fold">Find and get the content of the message by the specified criteria.</div>
 	<div class="tr tooltip-paragraph-fold">In order to execute this action correctly you need to run "Configure receiving mail" action first.</div>
-	<div class="tr tooltip-paragraph-fold">This action will get the first message that matches the specified criteria and store parts of it in the specified variables.</div>
+	<div class="tr tooltip-paragraph-fold">This action will get the last message that matches the specified criteria and store parts of it in the specified variables.</div>
 	<div class="tr tooltip-paragraph-fold">Using the parameters from the "Filtration" block, you can filter messages at your discretion or leave them unfiltered.</div>
 	<div class="tr tooltip-paragraph-fold">In the "Sorting" block, you can set the order and field for sorting.</div>
 	<div class="tr tooltip-paragraph-fold">Filtering and sorting is performed on the side of the mail server.</div>

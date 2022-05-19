@@ -339,13 +339,15 @@ _InMail = {
 	},
 	
 	searchLast: function(){
+		var act = 'searchLast';
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), act);
 		var box = _InMail.prepareBox(_function_argument("box"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
 		var api = _InMail.getApi();
-		api.setAction('searchLast');
+		api.setAction(act);
 		
-		_call_function(api.searchLast, {box: box})!
+		_call_function(api.searchLast, {criteria: criteria, box: box})!
 		var last = _result_function();
 		api.clearAction();
 		
@@ -353,7 +355,7 @@ _InMail = {
 			_function_return(last);
 		}else{
 			if(errorNotFound){
-				_InMail.error('Could not find the last message in the specified mailbox folder', 'Не удалось найти последнее письмо в указанной папке почтового ящика', 'searchLast');
+				_InMail.error('Could not find the last message in the specified mailbox folder', 'Не удалось найти последнее письмо в указанной папке почтового ящика', act);
 			}else{
 				_function_return(0);
 			};
@@ -361,17 +363,35 @@ _InMail = {
 	},
 	
 	searchOne: function(){
-		var args = _function_arguments();
-		var errorNotFound = _avoid_nilb(args.errorNotFound, true);
+		var act = 'searchOne';
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), act);
+		var sorts = _InMail.prepareSorts(_function_argument("sorts"), act);
+		var box = _InMail.prepareBox(_function_argument("box"));
+		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
 		
-		_call_function(_InMail.search, args)!
-		var res = _result_function();
+		var api = _InMail.getApi();
 		
-		if(res.length){
-			_function_return(res[0]);
+		var one = 0;
+		
+		_if_else(sorts, function(){
+			api.setAction('sort');
+			
+			_call_function(api.sort, {sorts: sorts, criteria: criteria, box: box})!
+			one = _result_function().pop() || 0;
+			api.clearAction();
+		}, function(){
+			api.setAction('searchLast');
+			
+			_call_function(api.searchLast, {criteria: criteria, box: box})!
+			one = _result_function();
+			api.clearAction();
+		})!
+		
+		if(one){
+			_function_return(one);
 		}else{
 			if(errorNotFound){
-				_InMail.error('Could not find any messages matching the specified criteria in the specified mailbox folder', 'Не удалось найти ни одного письма, соответствующего указанным критериям, в указанной папке почтового ящика', 'searchOne');
+				_InMail.error('Could not find any messages matching the specified criteria in the specified mailbox folder', 'Не удалось найти ни одного письма, соответствующего указанным критериям, в указанной папке почтового ящика', act);
 			}else{
 				_function_return(0);
 			};
@@ -388,11 +408,12 @@ _InMail = {
 	},
 	
 	count: function(){
-		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), 'count');
+		var act = 'count';
+		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), act);
 		var box = _InMail.prepareBox(_function_argument("box"));
 		
 		var api = _InMail.getApi();
-		api.setAction('count');
+		api.setAction(act);
 		
 		_call_function(api.count, {criteria: criteria, box: box})!
 		var count = _result_function();

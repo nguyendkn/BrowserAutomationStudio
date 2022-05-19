@@ -205,6 +205,8 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	};
 	
 	this.searchLast = function(){
+		api.validateCriteria(_function_argument("criteria"));
+		
 		_call_function(api.list, {})!
 		var list = _result_function();
 		

@@ -410,7 +410,7 @@ _InMail = {
 		_call_function(_InMail.wait, args)!
 		var res = _result_function();
 		
-		_function_return(res[0]);
+		_function_return(res.pop());
 	},
 	
 	count: function(){

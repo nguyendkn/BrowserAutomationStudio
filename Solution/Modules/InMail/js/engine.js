@@ -310,11 +310,17 @@ _InMail = {
 		};
 		var box = _function_argument("box");
 		
+		var api = _InMail.getApi();
+		
 		var res = [];
 		
-		_do(function(){
+		_do(function(i){
 			if(Date.now() > maxTime){
 				_InMail.error('Failed to wait for the required number of messages matching the specified criteria in the specified mailbox folder', 'Не удалось дождаться нужного количества писем, соответствующих указанным критериям, в указанной папке почтового ящика', 'wait');
+			};
+			
+			if(i && i % 3 === 0){
+				api.reset();
 			};
 			
 			_call_function(_InMail.search, {criteria:criteria, sorts:sorts, box:box})!

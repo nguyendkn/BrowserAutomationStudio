@@ -6,7 +6,11 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	
 	if(isCurl){
 		
-		native("curlwrapper", "easycleanup");
+		this.reset = function(){
+			native("curlwrapper", "easycleanup");
+		};
+		
+		api.reset();
 		
 		this.curlOpts = {
 			"CURLOPT_URL": api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
@@ -22,14 +26,14 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			api.curlOpts["CURLOPT_PROXY"] = (proxy.type=="socks5" ? "socks5h" : proxy.type) + '://' + proxy.host + ':' + proxy.port;
 			api.curlOpts["CURLOPT_PROXYUSERNAME"] = _is_nilb(proxy.username) ? "" : proxy.username;
 			api.curlOpts["CURLOPT_PROXYPASSWORD"] = _is_nilb(proxy.password) ? "" : proxy.password;
-			native("curlwrapper", "easycleanup");
+			api.reset();
 		};
 		
 		this.clearProxy = function(){
 			delete api.curlOpts["CURLOPT_PROXY"];
 			delete api.curlOpts["CURLOPT_PROXYUSERNAME"];
 			delete api.curlOpts["CURLOPT_PROXYPASSWORD"];
-			native("curlwrapper", "easycleanup");
+			api.reset();
 		};
 		
 		this.setConnectTimeout = function(ms){

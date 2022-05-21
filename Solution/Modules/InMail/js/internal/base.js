@@ -134,6 +134,8 @@ _InMail.baseApi = function(isCurl, protocol, config){
 					.toString()
 					// remove spaces between mime encoded words
 					.replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
+					// convert all underscores to spaces
+					.replace(/[_\s]/g, ' ')
 					// decode words
 					.replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return api.decoder(charset, encoding, text) || text})
 			);

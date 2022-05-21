@@ -51,8 +51,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		var query = _function_argument("query");
 		var path = _function_argument("path");
 		var noBody = _avoid_nilb(_function_argument("noBody"), false);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.request, {path: path, query: query, noBody: noBody})!
+		_call_function(api.request, {path: path, query: query, noBody: noBody, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		if(noBody){
@@ -68,8 +70,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	
 	this.list = function(){
 		var uid = _function_argument("uid");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		var opts = {query: "LIST"};
+		var opts = {query: "LIST", timeout: timeout, maxTime: maxTime};
 		if(uid){
 			opts.path = uid;
 			opts.noBody = true;
@@ -93,8 +97,11 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		};
 	};
 	
-	this.stat = function(){		
-		_call_function(api.makeRequest, {query: "STAT", noBody: true})!
+	this.stat = function(){
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest, {query: "STAT", noBody: true, timeout: timeout, maxTime: maxTime})!
 		var info = _result_function();
 		
 		var temp = info.split(' ');
@@ -107,8 +114,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	
 	this.retr = function(){
 		var uid = _function_argument("uid");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest, {query: "RETR", path: uid})!
+		_call_function(api.makeRequest, {query: "RETR", path: uid, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp);
@@ -117,8 +126,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	this.top = function(){
 		var uid = _function_argument("uid");
 		var lines = _avoid_nilb(_function_argument("lines"), 0);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest, {query: ("TOP " + uid + " " + lines)})!
+		_call_function(api.makeRequest, {query: ("TOP " + uid + " " + lines), timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		_function_return(resp);
@@ -126,18 +137,26 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	
 	this.dele = function(){
 		var uid = _function_argument("uid");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest, {query: "DELE", path: uid, noBody: true})!
+		_call_function(api.makeRequest, {query: "DELE", path: uid, noBody: true, timeout: timeout, maxTime: maxTime})!
 		var info = _result_function();
 	};
 	
 	this.rset = function(){
-		_call_function(api.makeRequest, {query: "RSET", noBody: true})!
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest, {query: "RSET", noBody: true, timeout: timeout, maxTime: maxTime})!
 		var info = _result_function();
 	};
 	
 	this.quit = function(){
-		_call_function(api.makeRequest, {query: "QUIT", noBody: true})!
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest, {query: "QUIT", noBody: true, timeout: timeout, maxTime: maxTime})!
 		var info = _result_function();
 	};
 	
@@ -195,8 +214,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	
 	this.search = function(){
 		api.validateCriteria(_function_argument("criteria"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.list, {})!
+		_call_function(api.list, {timeout: timeout, maxTime: maxTime})!
 		var list = _result_function();
 		
 		list = list.map(function(ell){return ell.uid});
@@ -206,8 +227,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	
 	this.searchLast = function(){
 		api.validateCriteria(_function_argument("criteria"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.list, {})!
+		_call_function(api.list, {timeout: timeout, maxTime: maxTime})!
 		var list = _result_function();
 		
 		var last = 0;
@@ -221,8 +244,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	
 	this.count = function(){
 		api.validateCriteria(_function_argument("criteria"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.stat, {})!
+		_call_function(api.stat, {timeout: timeout, maxTime: maxTime})!
 		var stat = _result_function();
 		
 		_function_return(stat.count || 0);
@@ -230,6 +255,8 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 	
 	this.delMessages = function(){
 		var uids = api.prepareUIDs(_function_argument("uids"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		_do_with_params({uids: uids}, function(){
 			var uid_index = _iterator() - 1;
@@ -237,10 +264,10 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 				_break();
 			};
 			var uid = _cycle_param("uids")[uid_index];
-			_call_function(api.dele, {uid: uid})!
+			_call_function(api.dele, {uid: uid, timeout: timeout, maxTime: maxTime})!
 		})!
 		
-		_call_function(api.quit, {})!
+		_call_function(api.quit, {timeout: timeout, maxTime: maxTime})!
 	};
 	
 	this.parseHeaderParams = function(name, value){
@@ -372,6 +399,8 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 		var size = _avoid_nilb(_function_argument("size"), false);
 		var date = _avoid_nilb(_function_argument("date"), false);
 		var attachnames = _avoid_nilb(_function_argument("attachnames"), false);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		if(_function_argument("flags")){
 			api.errorHandler('NOT_AVAILABLE_POP3', _K=="ru" ? 'Получить флаги' : 'Get flags');
@@ -410,19 +439,19 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 			messages.push(message);
 			
 			_if(size, function(){
-				_call_function(api.list, {uid: uid})!
+				_call_function(api.list, {uid: uid, timeout: timeout, maxTime: maxTime})!
 				var info = _result_function();
 				
 				message.size = info.size || 0;
 			})!
 			
 			_if_else((headers.any || date) && !(body.any || attachnames || attachments), function(){
-				_call_function(api.top, {uid: uid})!
+				_call_function(api.top, {uid: uid, timeout: timeout, maxTime: maxTime})!
 				var resp = _result_function();
 				
 				api.processHeaders(resp, message, headers, date);
 			}, function(){
-				_call_function(api.retr, {uid: uid})!
+				_call_function(api.retr, {uid: uid, timeout: timeout, maxTime: maxTime})!
 				var resp = _result_function();
 				
 				var temp = resp.split('\r\n\r\n');

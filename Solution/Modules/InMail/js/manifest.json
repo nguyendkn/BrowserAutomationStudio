@@ -389,10 +389,10 @@
 	"languages": [
 	],
 	"localize": {
-		"Timeout": {"ru":"Таймаут"},
 		"Protocol": {"ru":"Протокол"},
 		"for gmail":{"ru":"для gmail"},
 		"Folder name": {"ru":"Имя папки"},
+		"Reset timeout": {"ru":"Таймаут сброса"},
 		"Server address": {"ru":"Адрес сервера"},
 		"Connection timeout": {"ru":"Таймаут подключения"},
 		"in order to work with BAS":{"ru":"для работы с BAS"},

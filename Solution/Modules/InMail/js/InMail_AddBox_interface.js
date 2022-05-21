@@ -24,4 +24,4 @@
 	<div class="tr tooltip-paragraph-fold">You cannot create a folder with the name INBOX or with the same name as an existing folder.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
-<%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+<%= _.template($('#back').html())({action:"executeandadd", use_timeout:true, visible:true}) %>

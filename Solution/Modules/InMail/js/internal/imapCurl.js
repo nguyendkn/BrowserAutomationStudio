@@ -145,8 +145,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.capability = function(){
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
 		_if(_is_nilb(api.caps), function(){
-			_call_function(api.request, {query: 'CAPABILITY'})!
+			_call_function(api.request, {query: 'CAPABILITY', timeout: timeout, maxTime: maxTime})!
 			var resp = _result_function();
 			
 			api.caps = api.parseCaps(resp.result);
@@ -531,16 +534,18 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var isUTF8 = _avoid_nilb(_function_argument("isUTF8"), false);
 		var box = api.prepareBox(_function_argument("box"), true);
 		var path = api.encodeNameUrl(box);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		_if(isUTF8, function(){
-			_call_function(api.capability, {})!
+			_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
 			
 			_if(api.serverSupports('ENABLE'), function(){
-				_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT'})!
+				_call_function(api.request, {query: 'ENABLE UTF8=ACCEPT', timeout: timeout, maxTime: maxTime})!
 			})!			
 		})!
 		
-		_call_function(api.request, {query: query, path: path})!
+		_call_function(api.request, {query: query, path: path, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		try{
@@ -623,6 +628,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.status = function(){
 		var name = _function_argument("name");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var info = ['MESSAGES', 'RECENT', 'UNSEEN'];
 		
@@ -630,7 +637,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'STATUS "' + api.encodeName(name) + '" (' + info + ')';
 		
-		_call_function(api.makeRequest, {query: cmd, box: ""})!
+		_call_function(api.makeRequest, {query: cmd, box: "", timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		var info = api.parse(resp);
@@ -666,8 +673,11 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_function_return(box);
 	};
 	
-	this.getBoxes = function(){		
-		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: ""})!
+	this.getBoxes = function(){
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
+		
+		_call_function(api.makeRequest, {query: 'LIST "" "*"', box: "", timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		var lines = resp.split('\r\n');
@@ -724,23 +734,29 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.addBox = function(){
 		var name = _function_argument("name");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest, {query: 'CREATE "' + api.encodeName(name) + '"', box: ""})!
+		_call_function(api.makeRequest, {query: 'CREATE "' + api.encodeName(name) + '"', box: "", timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 	};
 	
 	this.delBox = function(){
 		var name = _function_argument("name");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest, {query: 'DELETE "' + api.encodeName(name) + '"', box: ""})!
+		_call_function(api.makeRequest, {query: 'DELETE "' + api.encodeName(name) + '"', box: "", timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 	};
 	
 	this.renameBox = function(){
 		var oldName = _function_argument("oldName");
 		var newName = _function_argument("newName");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.makeRequest, {query: 'RENAME "' + api.encodeName(oldName) + '" "' + api.encodeName(newName) + '"', box: ""})!
+		_call_function(api.makeRequest, {query: 'RENAME "' + api.encodeName(oldName) + '" "' + api.encodeName(newName) + '"', box: "", timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 	};
 
@@ -954,13 +970,15 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.search = function(){
 		var criteria = api.prepareCriteria(_function_argument("criteria"));
 		var box = api.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var cmd = 'UID SEARCH';
 		var info = {
 			hasUTF8: false
 		};
 		
-		_call_function(api.capability, {})!
+		_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
 		
 		var query = api.buildSearchQuery(criteria, info);
 		
@@ -970,7 +988,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += query;
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
+		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		var result = api.parseSearch(resp);
@@ -983,6 +1001,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var options = _avoid_nil(_function_argument("options"));
 		api.validateArgType(options, ['array','string'], 'Options');
 		var box = api.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		_call_function(api.capability, {})!
 		
@@ -1007,7 +1027,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += query;
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
+		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		var info = api.parse(resp);
@@ -1036,7 +1056,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		args.criteria = _avoid_nilb(args.criteria, ['ALL']);
 		var last = 0;
 		
-		_call_function(api.capability, {})!
+		_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
 		
 		_if_else(api.serverSupports('ESEARCH'), function(){
 			args.options = 'MAX';
@@ -1054,7 +1074,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var args = _function_arguments();
 		var count = 0;
 		
-		_call_function(api.capability, {})!
+		_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
 		
 		_if_else(api.serverSupports('ESEARCH'), function(){
 			args.options = 'COUNT';
@@ -1072,6 +1092,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var sorts = _function_argument("sorts");
 		var criteria = api.prepareCriteria(_function_argument("criteria"));
 		var box = api.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		api.validateArgType(sorts, ['array','string'], 'Sorting criteria');
 		if(typeof sorts === 'string'){
@@ -1081,7 +1103,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 			api.errorHandler('EMPTY_SORT_CRITERIA');
 		};
 		
-		_call_function(api.capability, {})!
+		_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
 		
 		if(!api.serverSupports('SORT')){
 			api.errorHandler('SORT_NOT_SUPPORT');
@@ -1124,7 +1146,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'UID SORT (' + sorts + ') ' + (info.hasUTF8 ? 'UTF-8' : 'US-ASCII') + query;
 		
-		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8})!
+		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		var result = api.parseSearch(resp);
@@ -1136,6 +1158,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var config = _function_argument("config");
 		var box = api.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		api.validateArgType(config, 'object', 'Config');
 		if(_is_nilb(config.flags) && _is_nilb(config.keywords)){
@@ -1175,7 +1199,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'UID STORE ' + uids + ' ' + config.mode + 'FLAGS.SILENT (' + items + ')';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box})!
+		_call_function(api.makeRequest, {query: cmd, box: box, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 	};
 	
@@ -1188,7 +1212,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 				mode: '+',
 				flags: args.flags
 			},
-			box: args.box
+			box: args.box,
+			timeout: args.timeout,
+			maxTime: args.maxTime
 		})!
 	};
 	
@@ -1201,7 +1227,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 				mode: '-',
 				flags: args.flags
 			},
-			box: args.box
+			box: args.box,
+			timeout: args.timeout,
+			maxTime: args.maxTime
 		})!
 	};
 	
@@ -1214,7 +1242,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 				mode: '',
 				flags: args.flags
 			},
-			box: args.box
+			box: args.box,
+			timeout: args.timeout,
+			maxTime: args.maxTime
 		})!
 	};
 	
@@ -1227,7 +1257,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 				mode: '+',
 				keywords: args.keywords
 			},
-			box: args.box
+			box: args.box,
+			timeout: args.timeout,
+			maxTime: args.maxTime
 		})!
 	};
 	
@@ -1240,7 +1272,9 @@ _InMail.imap = _InMail.assignApi(function(config){
 				mode: '-',
 				keywords: args.keywords
 			},
-			box: args.box
+			box: args.box,
+			timeout: args.timeout,
+			maxTime: args.maxTime
 		})!
 	};
 	
@@ -1253,33 +1287,39 @@ _InMail.imap = _InMail.assignApi(function(config){
 				mode: '',
 				keywords: args.keywords
 			},
-			box: args.box
+			box: args.box,
+			timeout: args.timeout,
+			maxTime: args.maxTime
 		})!
 	};
 	
 	this.expunge = function(){
 		var uids = _function_argument("uids");
 		var box = api.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		_if(uids, function(){
 			uids = api.prepareUIDs(uids);
 			
-			_call_function(api.capability, {})!
+			_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
 		})!
 		
 		var cmd = (uids && api.serverSupports('UIDPLUS')) ? ('UID EXPUNGE ' + uids) : 'EXPUNGE';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box})!
+		_call_function(api.makeRequest, {query: cmd, box: box, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 	};
 	
 	this.delMessages = function(){
 		var uids = _function_argument("uids");
 		var box = _function_argument("box");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.addFlags, {uids: uids, flags: '\\Deleted', box: box})!
+		_call_function(api.addFlags, {uids: uids, flags: '\\Deleted', box: box, timeout: timeout, maxTime: maxTime})!
 		
-		_call_function(api.expunge, {uids: uids, box: box})!
+		_call_function(api.expunge, {uids: uids, box: box, timeout: timeout, maxTime: maxTime})!
 	};
 	
 	this.copyMessages = function(){
@@ -1290,10 +1330,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 		if(!toBox.length){
 			api.errorHandler('TOBOX_NOT_SPECIFIED');
 		};
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var cmd = 'UID COPY ' + uids + ' "' + api.encodeName(toBox) + '"';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box})!
+		_call_function(api.makeRequest, {query: cmd, box: box, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 	};
 	
@@ -1305,8 +1347,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 		if(!toBox.length){
 			api.errorHandler('TOBOX_NOT_SPECIFIED');
 		};
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.capability, {})!
+		_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
 		
 		if(!api.serverSupports('MOVE')){
 			api.errorHandler('MOVE_NOT_SUPPORT');
@@ -1314,7 +1358,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		var cmd = 'UID MOVE ' + uids + ' "' + api.encodeName(toBox) + '"';
 		
-		_call_function(api.makeRequest, {query: cmd, box: box})!
+		_call_function(api.makeRequest, {query: cmd, box: box, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 	};
 	
@@ -1373,6 +1417,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var uids = api.prepareUIDs(_function_argument("uids"));
 		var options = _function_argument("options");
 		var box = api.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		if(options){
 			api.validateArgType(options, 'object', 'Options');
@@ -1424,7 +1470,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		cmd += ')';
 		
-		_call_function(api.request, {path: api.encodeNameUrl(box), query: cmd, isFetch: true})!
+		_call_function(api.request, {path: api.encodeNameUrl(box), query: cmd, isFetch: true, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
 		var fetchCache = {};
@@ -1480,8 +1526,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var saveToFile = _avoid_nilb(_function_argument("saveToFile"), false);
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
 		var box = _function_argument("box");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.fetch, {uids: uid, options: {bodies: [part.partID], markSeen: markSeen}, box: box})!
+		_call_function(api.fetch, {uids: uid, options: {bodies: [part.partID], markSeen: markSeen}, box: box, timeout: timeout, maxTime: maxTime})!
 		var data = _result_function()[0].parts[0].body;
 		var encoding = part.encoding.toLowerCase();
 		var charset = ((part.params && part.params.charset) ? part.params.charset.toLowerCase() : '') || 'utf-8';
@@ -1504,6 +1552,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var attachnames = _avoid_nilb(_function_argument("attachnames"), false);
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
 		var box = _function_argument("box");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var options = {
 			uid: true,
@@ -1533,7 +1583,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 			options.struct = true;
 		};
 		
-		_call_function(api.fetch, {uids: uids, options: options, markSeen: markSeen, box: box})!
+		_call_function(api.fetch, {uids: uids, options: options, markSeen: markSeen, box: box, timeout: timeout, maxTime: maxTime})!
 		var msgs = _result_function();
 		
 		var messages = [];
@@ -1591,7 +1641,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 							if(part_index > _cycle_param("parts").length - 1){
 								_break();
 							};
-							_call_function(api.getPartData, {uid: attrs.uid, part: _cycle_param("parts")[part_index], markSeen: markSeen, box: box})!
+							_call_function(api.getPartData, {uid: attrs.uid, part: _cycle_param("parts")[part_index], markSeen: markSeen, box: box, timeout: timeout, maxTime: maxTime})!
 							message.body[type] += _result_function();
 						})!
 						message.body[type] = message.body[type].trim();
@@ -1641,7 +1691,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 							};
 							var part = _cycle_param("parts")[part_index];
 							var randomFile = api.randStr() + '.file';
-							_call_function(api.getPartData, {uid: attrs.uid, part: part, markSeen: markSeen, saveToFile: randomFile, box: box})!
+							_call_function(api.getPartData, {uid: attrs.uid, part: part, markSeen: markSeen, saveToFile: randomFile, box: box, timeout: timeout, maxTime: maxTime})!
 							var randomFileDir = JSON.parse(native("filesystem", "fileinfo", randomFile)).directory;
 							message.attachments.push({
 								name: part.disposition.params.filename,
@@ -1660,8 +1710,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.getFlags = function(){
 		var uid = api.prepareUIDs(_function_argument("uid"));
 		var box = api.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
-		_call_function(api.fetch, {uids: uid, options: {flags: true}, markSeen: false, box: box})!
+		_call_function(api.fetch, {uids: uid, options: {flags: true}, markSeen: false, box: box, timeout: timeout, maxTime: maxTime})!
 		var msgs = _result_function();
 		
 		if(!msgs.length){

@@ -1054,9 +1054,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 	this.searchLast = function(){
 		var args = _function_arguments();
 		args.criteria = _avoid_nilb(args.criteria, ['ALL']);
+		args.timeout = _avoid_nilb(args.timeout, 60000);
+		args.maxTime = _avoid_nilb(args.maxTime, Date.now() + args.timeout);
+		
 		var last = 0;
 		
-		_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
+		_call_function(api.capability, {timeout: args.timeout, maxTime: args.maxTime})!
 		
 		_if_else(api.serverSupports('ESEARCH'), function(){
 			args.options = 'MAX';
@@ -1072,9 +1075,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 	
 	this.count = function(){
 		var args = _function_arguments();
+		args.timeout = _avoid_nilb(args.timeout, 60000);
+		args.maxTime = _avoid_nilb(args.maxTime, Date.now() + args.timeout);
+		
 		var count = 0;
 		
-		_call_function(api.capability, {timeout: timeout, maxTime: maxTime})!
+		_call_function(api.capability, {timeout: args.timeout, maxTime: args.maxTime})!
 		
 		_if_else(api.serverSupports('ESEARCH'), function(){
 			args.options = 'COUNT';

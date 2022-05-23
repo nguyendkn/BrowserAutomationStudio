@@ -53,6 +53,8 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			var query = _function_argument("query");
 			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
 			var noBody = _avoid_nilb(_function_argument("noBody"), false);
+			var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+			var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 			
 			var options = {};
 			
@@ -73,11 +75,16 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				options["CURLOPT_NOBODY"] = false;
 			};
 			
+			if(timeout && maxTime){
+				var timeLeft = maxTime - Date.now();
+				options["CURLOPT_TIMEOUT_MS"] = timeout < 60000 ? timeout : (timeLeft < 60000 ? 60000 : timeLeft);
+			};
+			
 			options["CURLOPT_CUSTOMREQUEST"] = _is_nil(query) ? "" : query.trim();
 			
 			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «‎' + options["CURLOPT_URL"] + '»');
 			
-			_call_function(api.wrapper, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.timeout || 5 * 60 * 1000)})!
+			_call_function(api.wrapper, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.resetTimeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
 			
 			resp.code = resp.code.replace('CURLE_', '');
@@ -115,7 +122,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 					};
 				};
 				
-				_InMail.error(resp.code + ' - ' + error, null, api.cutAction());
+				api.errorHandler(resp.code, error);
 			};
 		};
 	
@@ -123,7 +130,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			encoding = encoding.toLowerCase();
 			var resp = JSON.parse(native("curlwrapper", "decoder", JSON.stringify({charset: charset, encoding: encoding, data: data})));
 			if(!resp.success){
-				_InMail.error('FAIL_DECODE - ' + resp.error, null, api.cutAction());
+				api.errorHandler('FAIL_DECODE', resp.error);
 			};
 			return resp.result;
 		};
@@ -446,6 +453,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"FAILED_PARSE": {
 				"ru": 'Не удалось распарсить результат: "' + data + '"',
 				"en": 'Failed to parse result: "' + data + '"'
+			},
+			"OPERATION_TIMEDOUT": {
+				"ru": "Превышено максимальное время выполнения действия.",
+				"en": "The maximum execution time for the action has been exceeded."
 			}
 		};
 		
@@ -454,7 +465,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		
 		if(_is_nilb(errorObj)){
 			if(error!=data && !_is_nilb(data)){
-				message += ", " + data;
+				message += " - " + data;
 			};
 		}else{
 			message += " - " + errorObj[_K];;

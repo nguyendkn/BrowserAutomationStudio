@@ -12,6 +12,7 @@ _L["Proxy type"] = {"ru":"Тип прокси"};
 _L["Folder name"] = {"ru":"Имя папки"};
 _L["Proxy login"] = {"ru":"Логин прокси"};
 _L["Data format"] = {"ru":"Формат данных"};
+_L["Reset timeout"] = {"ru":"Таймаут сброса"};
 _L["Proxy password"] = {"ru":"Пароль прокси"};
 _L["Server address"] = {"ru":"Адрес сервера"};
 _L["New folder name"] = {"ru":"Новое имя папки"};

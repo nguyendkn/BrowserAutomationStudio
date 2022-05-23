@@ -153,7 +153,7 @@
 			}
 		}) %>
 		<%= _.template($('#input_constructor').html())({
-			id: "timeout",
+			id: "resetTimeout",
 			description: tr("Reset timeout (seconds)"),
 			default_selector: "int",
 			disable_string: true,

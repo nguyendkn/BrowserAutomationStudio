@@ -41,9 +41,9 @@ if(connectTimeout["original"].length == 0){
 	Invalid(tr("The parameter \"") + tr("Connection timeout") + tr("\" is not specified"));
     return;
 };
-var timeout = GetInputConstructorValue("timeout", loader);
-if(timeout["original"].length == 0){
-	Invalid(tr("The parameter \"") + tr("Timeout") + tr("\" is not specified"));
+var resetTimeout = GetInputConstructorValue("resetTimeout", loader);
+if(resetTimeout["original"].length == 0){
+	Invalid(tr("The parameter \"") + tr("Reset timeout") + tr("\" is not specified"));
     return;
 };
 try{
@@ -57,7 +57,7 @@ try{
         "password": password["updated"],
         "box": box["updated"],
         "connectTimeout": connectTimeout["updated"],
-        "timeout": timeout["updated"]
+        "resetTimeout": resetTimeout["updated"]
     });
     code = Normalize(code, 0);
     BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd);

@@ -32,14 +32,14 @@ _InMail = {
 		return _avoid_nil(str).toString().trim();
 	},
 	
-	configure: function(protocol, autoConfig, host, port, encrypt, username, password, box, connectTimeout, timeout){
+	configure: function(protocol, autoConfig, host, port, encrypt, username, password, box, connectTimeout, resetTimeout){
 		var act = 'configure';
 		this.validateArgType(protocol, 'string', 'Protocol', act);
 		this.validateArgType(username, 'string', 'Username', act);
 		this.validateArgType(password, 'string', 'Password', act);
 		this.validateArgType(box, 'string', 'Folder name', act);
 		this.validateArgType(connectTimeout, 'number', 'Connection timeout', act);
-		this.validateArgType(timeout, 'number', 'Timeout', act);
+		this.validateArgType(resetTimeout, 'number', 'Reset timeout', act);
 		
 		protocol = this.paramClean(protocol).toLocaleLowerCase();
 		if(["imap","pop3"].indexOf(protocol) < 0){
@@ -94,7 +94,7 @@ _InMail = {
 		};
 		
 		this.api.box = _InMail.paramClean(box);
-		this.api.timeout = 1000 * (timeout || 300);
+		this.api.resetTimeout = 1000 * (resetTimeout || 300);
 		this.api.setConnectTimeout(1000 * (connectTimeout || 300));
 		
 		if(!_is_nilb(this.proxy) && typeof this.proxy==="object"){
@@ -168,11 +168,13 @@ _InMail = {
 		var act = 'status';
 		var name = _function_argument("name");
 		_InMail.validateArgType(name, 'string', 'Folder name', act);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction(act);
 		
-		_call_function(api.status, {name: name})!
+		_call_function(api.status, {name: name, timeout: timeout, maxTime: maxTime})!
 		var info = _result_function();
 		api.clearAction();
 		
@@ -184,11 +186,13 @@ _InMail = {
 		var format = _function_argument("format");
 		_InMail.validateArgType(format, 'string', 'Data format', act);
 		format = _InMail.paramClean(format).toLocaleLowerCase();
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction(act);
 		
-		_call_function(api.getBoxes, {})!
+		_call_function(api.getBoxes, {timeout: timeout, maxTime: maxTime})!
 		var boxes = _result_function();
 		api.clearAction();
 		
@@ -209,11 +213,13 @@ _InMail = {
 		var act = 'addBox';
 		var name = _function_argument("name");
 		_InMail.validateArgType(name, 'string', 'Folder name', act);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction(act);
 		
-		_call_function(api.addBox, {name: name})!
+		_call_function(api.addBox, {name: name, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -221,11 +227,13 @@ _InMail = {
 		var act = 'delBox';
 		var name = _function_argument("name");
 		_InMail.validateArgType(name, 'string', 'Folder name', act);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction(act);
 		
-		_call_function(api.delBox, {name: name})!
+		_call_function(api.delBox, {name: name, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -235,11 +243,13 @@ _InMail = {
 		_InMail.validateArgType(oldName, 'string', 'Old folder name', act);
 		var newName = _function_argument("newName");
 		_InMail.validateArgType(newName, 'string', 'New folder name', act);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction(act);
 		
-		_call_function(api.renameBox, {oldName: oldName, newName: newName})!
+		_call_function(api.renameBox, {oldName: oldName, newName: newName, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -256,17 +266,19 @@ _InMail = {
 			_InMail.validateArgType(offset, 'number', 'Offset', act);
 		};
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		
 		_if_else(sorts, function(){
 			api.setAction('sort');
 			
-			_call_function(api.sort, {sorts: sorts, criteria: criteria, box: box})!
+			_call_function(api.sort, {sorts: sorts, criteria: criteria, box: box, timeout: timeout, maxTime: maxTime})!
 		}, function(){
 			api.setAction(act);
 			
-			_call_function(api.search, {criteria: criteria, box: box})!
+			_call_function(api.search, {criteria: criteria, box: box, timeout: timeout, maxTime: maxTime})!
 		})!
 		
 		var res = _result_function();
@@ -293,12 +305,10 @@ _InMail = {
 		var sorts = _function_argument("sorts");
 		var minResults = _avoid_nilb(_function_argument("minResults"), 1);
 		_InMail.validateArgType(minResults, 'number', 'Number of messages', act);
-		var interval = _avoid_nilb(_function_argument("interval"), 5);
+		var interval = _avoid_nilb(_function_argument("interval"), 5000);
 		_InMail.validateArgType(interval, 'number', 'Interval', act);
-		interval = 1000 * interval;
-		var timeout = _avoid_nilb(_function_argument("timeout"), 300);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 300000);
 		_InMail.validateArgType(timeout, 'number', 'Timeout', act);
-		timeout = 1000 * timeout;
 		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var maxResults = _function_argument("maxResults");
 		if(maxResults){
@@ -323,7 +333,7 @@ _InMail = {
 				api.reset();
 			};
 			
-			_call_function(_InMail.search, {criteria:criteria, sorts:sorts, box:box})!
+			_call_function(_InMail.search, {criteria:criteria, sorts:sorts, box:box, timeout: timeout, maxTime: maxTime})!
 			res = _result_function();
 			
 			if(res.length >= minResults){
@@ -349,11 +359,13 @@ _InMail = {
 		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), act);
 		var box = _InMail.prepareBox(_function_argument("box"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction(act);
 		
-		_call_function(api.searchLast, {criteria: criteria, box: box})!
+		_call_function(api.searchLast, {criteria: criteria, box: box, timeout: timeout, maxTime: maxTime})!
 		var last = _result_function();
 		api.clearAction();
 		
@@ -374,6 +386,8 @@ _InMail = {
 		var sorts = _InMail.prepareSorts(_function_argument("sorts"), act);
 		var box = _InMail.prepareBox(_function_argument("box"));
 		var errorNotFound = _avoid_nilb(_function_argument("errorNotFound"), true);
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		
@@ -382,13 +396,13 @@ _InMail = {
 		_if_else(sorts, function(){
 			api.setAction('sort');
 			
-			_call_function(api.sort, {sorts: sorts, criteria: criteria, box: box})!
+			_call_function(api.sort, {sorts: sorts, criteria: criteria, box: box, timeout: timeout, maxTime: maxTime})!
 			one = _result_function().pop() || 0;
 			api.clearAction();
 		}, function(){
 			api.setAction('searchLast');
 			
-			_call_function(api.searchLast, {criteria: criteria, box: box})!
+			_call_function(api.searchLast, {criteria: criteria, box: box, timeout: timeout, maxTime: maxTime})!
 			one = _result_function();
 			api.clearAction();
 		})!
@@ -417,11 +431,13 @@ _InMail = {
 		var act = 'count';
 		var criteria = _InMail.prepareCriteria(_function_argument("criteria"), act);
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction(act);
 		
-		_call_function(api.count, {criteria: criteria, box: box})!
+		_call_function(api.count, {criteria: criteria, box: box, timeout: timeout, maxTime: maxTime})!
 		var count = _result_function();
 		api.clearAction();
 		
@@ -431,11 +447,13 @@ _InMail = {
 	getFlags: function(){
 		var uid = _InMail.uidsToOne(_function_argument("uid"));
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('getFlags');
 		
-		_call_function(api.getFlags, {uid: uid, box: box})!
+		_call_function(api.getFlags, {uid: uid, box: box, timeout: timeout, maxTime: maxTime})!
 		var flags = _result_function();
 		api.clearAction();
 		
@@ -446,11 +464,13 @@ _InMail = {
 		var uids = _function_argument("uids");
 		var flags = _to_arr(_function_argument("flags"));
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('addFlags');
 		
-		_call_function(api.addFlags, {uids: uids, flags: flags, box: box})!
+		_call_function(api.addFlags, {uids: uids, flags: flags, box: box, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -458,11 +478,13 @@ _InMail = {
 		var uids = _function_argument("uids");
 		var flags = _to_arr(_function_argument("flags"));
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('delFlags');
 		
-		_call_function(api.delFlags, {uids: uids, flags: flags, box: box})!
+		_call_function(api.delFlags, {uids: uids, flags: flags, box: box, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -470,33 +492,39 @@ _InMail = {
 		var uids = _function_argument("uids");
 		var flags = _to_arr(_function_argument("flags"));
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('setFlags');
 		
-		_call_function(api.setFlags, {uids: uids, flags: flags, box: box})!
+		_call_function(api.setFlags, {uids: uids, flags: flags, box: box, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
 	expunge: function(){
 		var uids = _function_argument("uids");
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('expunge');
 		
-		_call_function(api.expunge, {uids: uids, box: box})!
+		_call_function(api.expunge, {uids: uids, box: box, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
 	delMessages: function(){
 		var uids = _function_argument("uids");
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('delMessages');
 		
-		_call_function(api.delMessages, {uids: uids, box: box})!
+		_call_function(api.delMessages, {uids: uids, box: box, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -504,11 +532,13 @@ _InMail = {
 		var uids = _function_argument("uids");
 		var toBox = _InMail.paramClean(_function_argument("toBox"));
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('copyMessages');
 		
-		_call_function(api.copyMessages, {uids: uids, toBox: toBox, box: box})!
+		_call_function(api.copyMessages, {uids: uids, toBox: toBox, box: box, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -516,11 +546,13 @@ _InMail = {
 		var uids = _function_argument("uids");
 		var toBox = _InMail.paramClean(_function_argument("toBox"));
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('moveMessages');
 		
-		_call_function(api.moveMessages, {uids: uids, toBox: toBox, box: box})!
+		_call_function(api.moveMessages, {uids: uids, toBox: toBox, box: box, timeout: timeout, maxTime: maxTime})!
 		api.clearAction();
 	},
 	
@@ -535,11 +567,13 @@ _InMail = {
 		var attachments = _avoid_nilb(_function_argument("attachments"), false);
 		var markSeen = _avoid_nilb(_function_argument("markSeen"), false);
 		var box = _InMail.prepareBox(_function_argument("box"));
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		var api = _InMail.getApi();
 		api.setAction('getMessages');
 		
-		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, flags: flags, date: date, attachnames: attachnames, attachments: attachments, markSeen: markSeen, box: box})!
+		_call_function(api.getMessages, {uids: uids, body: body, headers: headers, size: size, flags: flags, date: date, attachnames: attachnames, attachments: attachments, markSeen: markSeen, box: box, timeout: timeout, maxTime: maxTime})!
 		var messages = _result_function();
 		api.clearAction();
 		
@@ -563,8 +597,10 @@ _InMail = {
 	
 	getLastMessage: function(){
 		var args = _function_arguments();
+		args.timeout = _avoid_nilb(args.timeout, 60000);
+		args.maxTime = _avoid_nilb(args.maxTime, Date.now() + args.timeout);
 		
-		_call_function(_InMail.searchLast, {box: args.box})!
+		_call_function(_InMail.searchLast, {box: args.box, timeout: args.timeout, maxTime: args.maxTime})!
 		var uid = _result_function();
 		
 		args.uid = uid;
@@ -577,6 +613,8 @@ _InMail = {
 	
 	findMessage: function(){
 		var args = _function_arguments();
+		args.timeout = _avoid_nilb(args.timeout, 60000);
+		args.maxTime = _avoid_nilb(args.maxTime, Date.now() + args.timeout);
 		
 		_call_function(_InMail.searchOne, args)!
 		var uid = _result_function();
@@ -591,6 +629,8 @@ _InMail = {
 	
 	waitMessage: function(){
 		var args = _function_arguments();
+		args.timeout = _avoid_nilb(args.timeout, 60000);
+		args.maxTime = _avoid_nilb(args.maxTime, Date.now() + args.timeout);
 		
 		_call_function(_InMail.waitOne, args)!
 		var uid = _result_function();

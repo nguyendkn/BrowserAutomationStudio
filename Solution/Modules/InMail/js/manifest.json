@@ -253,7 +253,7 @@
 			"is_element": false,
 			"name": "InMail_DelFlags",
 			"select": "InMail_DelFlags_select.js",
-			"template": "{{uids}} - {{flags}}"
+			"template": "{{uids}} -> {{flags}}"
 		},
 		{
 			"code": [

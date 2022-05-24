@@ -793,7 +793,6 @@
 			"CV<br/><span style='color:gray' title='sms-activate.org, 5sim.net, sms-man.ru, activation.pw'>" + tr("Cape Verde") + "</span>",
 			"SD<br/><span style='color:gray' title='smshub.org, sms-man.ru, activation.pw, onlinesim.ru'>" + tr("Sudan") + "</span>",
 			"AZ<br/><span style='color:gray' title='5sim.net, sms-man.ru, activation.pw, onlinesim.ru'>" + tr("Azerbaijan") + "</span>",
-			"Any<br/><span style='color:gray' title='getsms.online, sms-reg.com, onlinesim.ru'>" + tr("") + "</span>",
 			"QA<br/><span style='color:gray' title='sms-activate.org, sms-man.ru, activation.pw'>" + tr("Qatar") + "</span>",
 			"CF<br/><span style='color:gray' title='sms-activate.org, sms-man.ru, activation.pw'>" + tr("Central African Republic") + "</span>",
 			"IS<br/><span style='color:gray' title='sms-activate.org, sms-man.ru, activation.pw'>" + tr("Iceland") + "</span>",

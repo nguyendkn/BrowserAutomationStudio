@@ -483,7 +483,6 @@
 		"Cape Verde":{"ru":"Кабо-Верде"},
 		"Sudan":{"ru":"Судан"},
 		"Azerbaijan":{"ru":"Азербайджан"},
-		"":{"ru":""},
 		"Qatar":{"ru":"Катар"},
 		"Central African Republic":{"ru":"Центрально-Африканская Республика"},
 		"Iceland":{"ru":"Исландия"},
@@ -513,7 +512,7 @@
 		"Western Sahara":{"ru":"Западная Сахара"}
     },
     "major_version": 1,
-    "minor_version": 0,
+    "minor_version": 1,
     "modules": [],
     "name": "PhoneVerification"
 }

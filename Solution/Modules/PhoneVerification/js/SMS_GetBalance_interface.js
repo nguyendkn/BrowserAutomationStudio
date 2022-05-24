@@ -4,7 +4,7 @@
 		description: tr("Service"),
 		default_selector: "string",
 		variants: [
-			"sms-activate.ru",
+			"sms-activate.org<br/><span style='color:gray'>" + tr("Ex sms-activate.ru") + "</span>",
 			"smshub.org",
 			"5sim.net",
 			"onlinesim.ru",
@@ -17,17 +17,17 @@
 			"activation.pw",
 			"cheapsms.ru",
 			"smsvk.net",
-			"sms.kopeechka.store",
+			"smscode.me<br/><span style='color:gray'>" + tr("Ex sms.kopeechka.store") + "</span>",
 			"365sms.ru",
 			"smspva.com",
 			"simsms.org"
 		],
 		disable_int: true,
-		value_string: "sms-activate.ru",
+		value_string: "sms-activate.org",
 		help: {
 			description: tr("SMS receiving service for which need to get a balance."),
 			examples: [
-				{code: "sms-activate.ru", description: "https://sms-activate.ru"},
+				{code: "sms-activate.org", description: "https://sms-activate.org"},
 				{code: "smshub.org", description: "https://smshub.org"},
 				{code: "sms-reg.com", description: "https://sms-reg.com"}
 			]
@@ -61,7 +61,7 @@
 					{code: "https://sms.org"},
 					{code: "http://receive-sms.com"},
 					{code: "http://127.0.0.1:8888"},
-					{code: tr("Empty string"), description: tr("Use default server url, https://sms-activate.ru for sms-activate.ru, etc")}
+					{code: tr("Empty string"), description: tr("Use default server url, https://api.sms-activate.org for sms-activate.org, etc")}
 				]
 			}
 		}) %>

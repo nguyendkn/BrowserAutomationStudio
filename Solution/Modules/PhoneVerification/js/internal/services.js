@@ -1,10 +1,10 @@
 _SMS.getServiceApi = function(data){
 	var services = {
-		"sms-activate.ru": {
+		"sms-activate.org": {
 			api: this.SmsActivateApi,
 			config: {
 				name: 'Sms-activate',
-				url: 'https://sms-activate.ru',
+				url: 'https://api.sms-activate.org',
 				supportedMethods: [
 					'getNumbersCount',
 					'getCountries'
@@ -248,11 +248,11 @@ _SMS.getServiceApi = function(data){
 				]
 			}
 		},
-		"sms.kopeechka.store": {
+		"smscode.me": {
 			api: this.SmsActivateApi,
 			config: {
-				name: 'Sms.Kopeechka.Store',
-				url: 'https://sms.kopeechka.store',
+				name: 'SMScode.me',
+				url: 'https://smscode.me',
 				supportedMethods: [
 					'getNumbersCount'
 				],
@@ -484,4 +484,14 @@ _SMS.getServiceApi = function(data){
 	}catch(e){
 		die(_K=="ru" ? ('Класс сервиса ' + service + ' поврежден или отсутствует') : ('Class of service ' + service + ' is corrupted or missing'), true);
 	};
+};
+_SMS.getBasicName = function(service){
+	var aliases = {
+		"sms-activate.ru": "sms-activate.org",
+		"sms.kopeechka.store": "smscode.me"
+	};
+	if(aliases.hasOwnProperty(service)){
+		return aliases[service];
+	};
+	return service;
 };

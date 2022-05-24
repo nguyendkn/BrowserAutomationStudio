@@ -47,7 +47,7 @@
 					{code: "https://sms.org"},
 					{code: "http://receive-sms.com"},
 					{code: "http://127.0.0.1:8888"},
-					{code: tr("Empty string"), description: tr("Use default server url, https://sms-activate.ru for sms-activate.ru, etc")}
+					{code: tr("Empty string"), description: tr("Use default server url, https://api.sms-activate.org for sms-activate.org, etc")}
 				]
 			}
 		}) %>

@@ -5,10 +5,11 @@ _SMS.BaseApi = function(config, data, path){
 	this.key = data.key;
 	this.service = data.service;
 	
-	if(_is_nilb(data.url)){
+	if(_is_nilb(data.url) || data.url==config.url){
 		this.url = config.url;
 		this.name = config.name;
 	}else{
+		this.customUrl = data.url;
 		var url = _trim_right(data.url, '/\\ ');
 		var name = url.replace(new RegExp('https?://'),"").replace(/^(?:\d+)?api(?:\d+)?./,"");
 		this.url = url;

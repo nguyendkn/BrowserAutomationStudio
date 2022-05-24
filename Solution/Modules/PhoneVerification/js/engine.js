@@ -8,7 +8,7 @@ _SMS = {
 	},
 	
 	init: function(service, apiKey, serverUrl){
-		service = this.paramClean(service);
+		service = this.getBasicName(this.paramClean(service));
 		apiKey = this.paramClean(apiKey);
 		serverUrl = this.paramClean(serverUrl);
 		
@@ -35,6 +35,11 @@ _SMS = {
 		};
 		
 		return _SMS.confirmData[number];
+	},
+	
+	setConfirmData: function(confirmData){
+		confirmData.api = _SMS.init(confirmData.api.service, confirmData.api.key, confirmData.api.customUrl);
+		_SMS.confirmData[confirmData.number] = confirmData;
 	},
 	
 	getBalance: function(){

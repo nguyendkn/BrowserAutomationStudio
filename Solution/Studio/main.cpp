@@ -18,6 +18,7 @@
 #include <curl/curl.h>
 #include <QSslSocket>
 #include <openssl/ssl.h>
+#include <QSettings>
 #include <QThread>
 #include <QMessageBox>
 #include "mongodatabaseconnector.h"
@@ -198,7 +199,8 @@ int main(int argc, char *argv[])
     {
         w.showMaximized();
     }
-    (new ProfileBackgroundRemover())->Run();
+    QSettings Settings("settings.ini", QSettings::IniFormat);
+    (new ProfileBackgroundRemover())->Run(Settings.value("RunProfileRemoverImmediately", false).toBool());
     int res = a.exec();
     curl_global_cleanup();
     CRYPTO_set_locking_callback(0);

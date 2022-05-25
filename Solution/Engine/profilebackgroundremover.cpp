@@ -54,10 +54,11 @@ void ProfileBackgroundRemover::Timer()
     }
 }
 
-void ProfileBackgroundRemover::Run()
+void ProfileBackgroundRemover::Run(bool immediate)
 {
     _Timer->setInterval(10000);
     _Timer->setSingleShot(false);
     connect(_Timer,SIGNAL(timeout()),this,SLOT(Timer()));
+    if (immediate) Timer();
     _Timer->start();
 }

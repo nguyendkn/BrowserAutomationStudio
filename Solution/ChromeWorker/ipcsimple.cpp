@@ -48,14 +48,14 @@ std::string IPCSimple::Init(const std::string& IdDefault)
     std::string IdMem = IdLocal + "mem";
     std::string IdMut = IdLocal + "mut";
 
-    MappingHandler = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 16384,  IdMem.c_str());
+    MappingHandler = CreateFileMappingA(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, 32768,  IdMem.c_str());
 
     if(MappingHandler == NULL)
     {
         return this->Id;
     }
 
-    Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,16384);
+    Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,32768);
 
     if(Data == NULL)
     {
@@ -159,7 +159,7 @@ bool IPCSimple::Write(const std::string Id, const std::string& Message)
     }
 
     //Map
-    unsigned char *Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,16384);
+    unsigned char *Data = (unsigned char *)MapViewOfFile(MappingHandler, FILE_MAP_ALL_ACCESS,0,0,32768);
 
     if(Data == NULL)
     {

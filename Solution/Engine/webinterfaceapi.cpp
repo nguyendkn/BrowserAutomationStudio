@@ -749,6 +749,13 @@ namespace BrowserAutomationStudioFramework
             WebInterface->Send(MessageType,IsAsync,Id);
         }
 
+        if(MessageType == "set_interface_language")
+        {
+            QSettings Settings("settings.ini",QSettings::IniFormat);
+            Settings.setValue("DefaultLanguageScript",Data["lang"].toString());
+            Settings.sync();
+        }
+
         if(MessageType == "get_global_variable")
         {
             QString Res = "\"\"";

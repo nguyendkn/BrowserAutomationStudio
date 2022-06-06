@@ -1523,10 +1523,6 @@
             _WebInterfaceTasks.CurrentIdChanged(execute_next_id)
           });
 
-          this.on("change:isexecutionaborting", (_, value) => {
-            if (!value) requestUpdate();
-          });
-
           this.on("change:isscriptexecuting", (_, value) => {
             log.info(`The script has been ${value ? "started" : "completed"}`);
             _Inspector.wait(value);
@@ -1541,15 +1537,16 @@
             if (!value) requestUpdate();
           });
 
-          const requestUpdate = () => {
+          const requestUpdate = () => _.defer(() => {
             if (!this.get("isexecutionaborting")) {
               if (VariablesUpdateSkip) {
                 VariablesUpdateSkip = false;
                 return BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
               }
-              BrowserAutomationStudio_AskForVariablesUpdate();
+              return BrowserAutomationStudio_AskForVariablesUpdate();
             }
-          };
+            this.once("change:isexecutionaborting", (_, value) => value && requestUpdate());
+          });
         }  
     });
     var TaskCollection = Backbone.Collection.extend({
@@ -6898,13 +6895,6 @@
         res += "\n"
         return {index:index,res:res};
     }
-
-
-
-    
-
-    
   </script>
-
 </body>
 </html>

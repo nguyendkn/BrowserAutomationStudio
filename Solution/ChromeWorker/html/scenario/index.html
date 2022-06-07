@@ -1668,8 +1668,7 @@
 
       moveexecutionpointfast: function(event)
       {
-        if(_GobalModel.get("isscriptexecuting"))
-            return;
+        if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
         var task = FindTaskById(parseInt($(event.target).closest("*[data-index]").attr("task-id")));
 
@@ -2102,19 +2101,15 @@
 
       play: function(event)
       {
-        if($("#play").hasClass("actionbuttongray"))
-        {
+        if ($("#play").hasClass("actionbuttongray")) {
           event.preventDefault();
           return;
         }
-        this.model.set("isscriptexecuting", true)
-        if(!this.model.get("istaskexecuting"))
-        {
-          SendTask()
+        this.model.set("isscriptexecuting", true);
+        if (!this.model.get("istaskexecuting") && !this.model.get("isexecutionaborting")) {
+          SendTask();
         }
       },
-
-
 
       UpdateInsertDataInterface: function()
       {
@@ -3492,8 +3487,7 @@
 
       MoveExecutionPointHere: function()
       {
-          if(_GobalModel.get("isscriptexecuting"))
-            return;
+          if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
           var task = this.collection.at(this.currentTargetId);
           if(task)

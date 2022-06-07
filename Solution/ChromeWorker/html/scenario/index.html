@@ -1668,8 +1668,7 @@
 
       moveexecutionpointfast: function(event)
       {
-        if(_GobalModel.get("isscriptexecuting"))
-            return;
+        if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
         var task = FindTaskById(parseInt($(event.target).closest("*[data-index]").attr("task-id")));
 
@@ -3488,8 +3487,7 @@
 
       MoveExecutionPointHere: function()
       {
-          if(_GobalModel.get("isscriptexecuting"))
-            return;
+          if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
           var task = this.collection.at(this.currentTargetId);
           if(task)

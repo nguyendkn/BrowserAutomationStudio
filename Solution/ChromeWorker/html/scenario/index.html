@@ -2102,19 +2102,15 @@
 
       play: function(event)
       {
-        if($("#play").hasClass("actionbuttongray"))
-        {
+        if ($("#play").hasClass("actionbuttongray")) {
           event.preventDefault();
           return;
         }
-        this.model.set("isscriptexecuting", true)
-        if(!this.model.get("istaskexecuting"))
-        {
-          SendTask()
+        this.model.set("isscriptexecuting", true);
+        if (!this.model.get("istaskexecuting") && !this.model.get("isexecutionaborting")) {
+          SendTask();
         }
       },
-
-
 
       UpdateInsertDataInterface: function()
       {

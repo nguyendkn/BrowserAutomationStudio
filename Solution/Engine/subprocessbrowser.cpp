@@ -1229,6 +1229,19 @@ namespace BrowserAutomationStudioFramework
         WorkerSettings->Clear();
     }
 
+    QString SubprocessBrowser::GetBrowserProcessId()
+    {
+        if(!WorkerSettings)
+            return QString();
+
+        if(Worker && Worker->GetProcessComunicator())
+        {
+            return QString::number(Worker->GetProcessComunicator()->GetPID());
+        }
+
+        return QString();
+    }
+
     QString SubprocessBrowser::GetBrowserUniqueId()
     {
         if(!WorkerSettings)

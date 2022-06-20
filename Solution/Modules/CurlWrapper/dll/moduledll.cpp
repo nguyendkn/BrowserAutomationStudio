@@ -1061,11 +1061,7 @@ extern "C" {
             int len = src.length();
             for (int i = 0; i < len; i++)
             {
-                if (src[i] == '_')
-                {
-                    DecodedData += 0x20;
-                }
-                else if (src[i] == '=')
+                if (src[i] == '=')
                 {
                     if (i+2 < len)
                     {

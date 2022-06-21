@@ -48,16 +48,6 @@ class DevToolsConnector : public IDevToolsConnector
 
     //Connection data
 
-    enum{
-        WaitingForBrowserClose,
-        NotStarted,
-        WaitingForBrowserEndpoint,
-        WaitingForWebsocket,
-        WaitingForAutoconnectEnable,
-        WaitingForDownloadsEnable,
-        WaitingFirstTab,
-        Connected
-    }ConnectionState = NotStarted;
     std::string Endpoint;
 
     bool WasBrowserCreationEvent = false;

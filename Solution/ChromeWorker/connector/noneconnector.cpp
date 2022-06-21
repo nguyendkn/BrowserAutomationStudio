@@ -79,6 +79,14 @@ void NoneConnector::StartProcess()
 
 void NoneConnector::Timer()
 {
+    if (ConnectionState == Connected) return;
+
+    for (auto f:OnBrowserCreated)
+    {
+        f();
+    }
+
+    ConnectionState = Connected;
 }
 
 Async NoneConnector::GetTabsList(int Timeout)

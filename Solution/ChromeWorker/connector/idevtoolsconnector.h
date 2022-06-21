@@ -16,6 +16,18 @@ class IDevToolsConnector
 
         // Factory
         DevToolsActionFactory ActionsFactory;
+
+        // Connection
+        enum {
+            WaitingForAutoconnectEnable,
+            WaitingForDownloadsEnable,
+            WaitingForBrowserEndpoint,
+            WaitingForBrowserClose,
+            WaitingForWebsocket,
+            WaitingFirstTab,
+            NotStarted,
+            Connected
+        } ConnectionState = NotStarted;
     public:
         // Paint
         virtual char* GetPaintData() = 0;

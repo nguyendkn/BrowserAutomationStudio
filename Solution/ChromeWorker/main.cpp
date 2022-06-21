@@ -28,6 +28,7 @@
 #include "fileutils.h"
 #include "prepareurladressbar.h"
 #include "proxyconfigreplace.h"
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include "ipcsimple.h"
@@ -2034,7 +2035,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     {
         DeinstallWidevine(Settings.Profile());
     }
-    Data->Connector = new NoneConnector();
+    auto WorkerCommandLine = ParseWorkerCommandLine();
+    if (std::any_of(WorkerCommandLine.begin(), WorkerCommandLine.end(), [](const std::pair<std::string, std::string> &p) { return p.first == std::string("--mock-connector"); }))
+    {
+        // Initialize dummy connector.
+        Data->Connector = new DevToolsConnector();
+    }else
+    {
+        // Initialize default connector.
+        Data->Connector = new DevToolsConnector();
+    }
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
     Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));

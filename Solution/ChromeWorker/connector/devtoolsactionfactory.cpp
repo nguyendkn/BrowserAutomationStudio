@@ -141,6 +141,7 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
         Result->GetResult()->SetActionUniqueId(UniqueId);
         Result->SetGroupId(Rand());
         Result->SetGlobalState(GlobalState);
+        if (Name == "Empty") Result->Run();
     }
 
     return Result;
